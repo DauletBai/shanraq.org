@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
-	"syscall/js"
-
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/v5"
 	"shanraq.org/internal/models"
@@ -15,7 +13,7 @@ type CategoryHandler struct {
 	DB *sql.DB
 }
 
-func (h. *CategoryHandler) GetCategories(w http.ResponseWriter, r *http.Request) {
+func (h *CategoryHandler) GetCategories(w http.ResponseWriter, r *http.Request) {
 	rows, err := h.DB.Query("SELECT id, name FROM categories")
 	if err != nil {
 		http.Error(w, "Unable to fetch categories", http.StatusInternalServerError)
