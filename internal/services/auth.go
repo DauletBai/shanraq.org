@@ -2,8 +2,6 @@ package services
 
 import (
 	"errors"
-	"go/token"
-	"os/user"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
