@@ -1,0 +1,19 @@
+{{ define "content" }}
+<h1>Manage Articles</h1>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Actions</th>
+    </tr>
+    {{ range .Articles }}
+    <tr>
+        <td>{{ .Title }}</td>
+        <td>
+            <a href="/admin/articles/{{ .ID }}/edit">Edit</a>
+            <a href="/admin/articles/{{ .ID }}/delete">Delete</a>
+        </td>
+    </tr>
+    {{ end }}
+</table>
+<a href="/admin/articles/new">Create New Article</a>
+{{ end }}
