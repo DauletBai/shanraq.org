@@ -2,13 +2,10 @@ package app
 
 import (
 	"database/sql"
-	"os/user"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/sirupsen/logrus"
-	"golang.org/x/tools/go/cfg"
 	"shanraq.org/config"
 	"shanraq.org/internal/handlers"
 	"shanraq.org/internal/repositories"

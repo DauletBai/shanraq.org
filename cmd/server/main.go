@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
 
 	"shanraq.org/config"
 	"shanraq.org/internal/app"
