@@ -1,9 +1,8 @@
-<img src="static/assets/brand/logo.png" alt="logotype" with="70"/>
+<div class="text-center mx-auto">
+    <img src="static/assets/brand/logo.png" alt="logotype" with="60">
+</div>
 
 <h2>
-    <p align="center">
-        <strong>Audio, video chat with AI</strong>
-    </p>
     <p align="center">
         <a href="https://github.com/topics/golang">
             <img src="https://img.shields.io/github/go-mod/go-version/DauletBai/shanraq.org/micro-anon" alt="Go" />
@@ -26,7 +25,7 @@
 
 # shanraq.org
 
-This is a project to restore health using AI through video chat
+Audio, video chat with AI
 
 ## Description
 
