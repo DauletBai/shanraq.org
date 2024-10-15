@@ -24,10 +24,14 @@
     About project
 </h2>
 
-# shanraq.org
+# Header
 
 This is a project to restore health using AI through video chat
 
-## Description
+## Example
+<!-- 
+```bash
+# Terminal
+$ go run .
 
-This is a project to restore health using AI through video chat
+``` -->
