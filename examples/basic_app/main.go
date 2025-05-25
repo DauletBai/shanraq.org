@@ -2,7 +2,6 @@
 package main
 
 import (
-	//"fmt"
 	"log"      // Standard log for initial error checking before framework logger is ready
 	"net/http" // Для http.StatusOK
 	"os"

@@ -2,113 +2,100 @@
 package http
 
 import (
-	"log"  // Standard log for initial error checking before framework logger is ready
 	"net/http" 
-	"os"
 
-	"github.com/go-chi/chi/v5/middleware" 
+	"github.com/go-chi/chi/v5"
 
-	"github.com/DauletBai/shanraq.org/core/config"
-	"github.com/DauletBai/shanraq.org/core/kernel"
-	"github.com/DauletBai/shanraq.org/core/logger"
-	shanraqHTTP "github.com/DauletBai/shanraq.org/http" 
+	k "github.com/DauletBai/shanraq.org/core/kernel"
 )
 
-func main() {
-	// +++ Диагностические строки (оставляем, раз они помогают) +++
-	var _ = config.DefaultConfigFileName
-	var _ logger.LogLevel = logger.LevelDebug
-	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Router is a wrapper around chi.Router.
+type Router struct { // Тип Router экспортируемый
+	chiRouter *chi.Mux
+	kernel    *k.Kernel
+}
 
-	// --- Создание dummy config файла для примера ---
-	// (Этот код остается таким же, как и раньше)
-	dummyConfigContent := `
-app:
-  name: "My Shanraq App"
-  environment: "development" 
-  version: "1.0.0"
-
-server:
-  address: "localhost" # Адрес для прослушивания, пустая строка для всех интерфейсов
-  port: 8080
-  read_timeout_seconds: 10
-  write_timeout_seconds: 10
-  idle_timeout_seconds: 60
-  shutdown_timeout_seconds: 15 # Таймаут для graceful shutdown
-
-logger:
-  level: "DEBUG" 
-  json_output: false
-  add_source: true # Включим исходники в логах для примера
-`
-	configDir := "./configs"
-	if err := os.MkdirAll(configDir, 0755); err != nil {
-		log.Fatalf("Failed to create config dir: %v", err)
+// NewRouter creates a new Shanraq Router. (Функция NewRouter экспортируемая)
+func NewRouter(kernel *k.Kernel) *Router {
+	chiMux := chi.NewRouter()
+	return &Router{
+		chiRouter: chiMux,
+		kernel:    kernel,
 	}
-	configFilePath := configDir + "/config.yaml"
-	if err := os.WriteFile(configFilePath, []byte(dummyConfigContent), 0644); err != nil {
-		log.Fatalf("Failed to write dummy config: %v", err)
+}
+
+func (r *Router) ChiRouter() *chi.Mux {
+	return r.chiRouter
+}
+
+func (r *Router) Kernel() *k.Kernel {
+	return r.kernel
+}
+
+func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	r.chiRouter.ServeHTTP(w, req)
+}
+
+// adaptHandler использует Context и HandlerFunc из текущего пакета http
+func (r *Router) adaptHandler(handler HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		shanraqCtx := NewContext(w, req, r.kernel) // NewContext из context.go (тот же пакет)
+		handler(shanraqCtx)
 	}
-	defer os.RemoveAll(configDir)
+}
 
-	// --- Инициализация ядра ---
-	appKernel, err := kernel.New(
-		kernel.WithConfigFile("config", "./configs"), // Загружаем наш dummy config
-	)
-	if err != nil {
-		// Используем стандартный log, так как наш логгер может быть еще не инициализирован
-		log.Fatalf("Failed to initialize Shanraq Kernel: %v", err)
+// Use принимает chi-совместимые middleware
+func (r *Router) Use(middlewares ...func(next http.Handler) http.Handler) {
+	for _, mw := range middlewares {
+		r.chiRouter.Use(mw)
 	}
+}
 
-	appLogger := appKernel.Logger()
-	appConfig := appKernel.Config() // Получаем доступ к конфигурации
+// GET, POST и т.д. используют HandlerFunc из текущего пакета http
+func (r *Router) GET(pattern string, handler HandlerFunc) {
+	r.chiRouter.Get(pattern, r.adaptHandler(handler))
+}
 
-	appLogger.Info("Application starting...", "appName", appConfig.GetString("app.name"), "version", appConfig.GetString("app.version"))
+func (r *Router) POST(pattern string, handler HandlerFunc) {
+	r.chiRouter.Post(pattern, r.adaptHandler(handler))
+}
 
-	// --- Настройка маршрутизатора ---
-	appRouter := shanraqHTTP.NewRouter(appKernel)
+func (r *Router) PUT(pattern string, handler HandlerFunc) {
+	r.chiRouter.Put(pattern, r.adaptHandler(handler))
+}
 
-	// Добавляем некоторые стандартные middleware от chi
-	appRouter.Use(middleware.RequestID)  // Добавляет уникальный ID каждому запросу
-	appRouter.Use(middleware.RealIP)     // Определяет реальный IP клиента (полезно за прокси)
-	appRouter.Use(middleware.Recoverer)  // Перехватывает паники в обработчиках и возвращает 500
+func (r *Router) DELETE(pattern string, handler HandlerFunc) {
+	r.chiRouter.Delete(pattern, r.adaptHandler(handler))
+}
 
-	// Простое middleware для логирования запросов с использованием нашего логгера
-	appRouter.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// Создаем Shanraq контекст внутри middleware, если он нужен здесь.
-			// В данном случае, мы используем логгер из ядра напрямую.
-			reqLogger := appKernel.Logger().With("method", r.Method, "path", r.URL.Path, "remoteAddr", r.RemoteAddr, "requestID", middleware.GetReqID(r.Context()))
-			reqLogger.Info("Incoming request")
-			
-			// Передаем управление следующему обработчику в цепочке
-			next.ServeHTTP(w, r) 
-		})
+func (r *Router) PATCH(pattern string, handler HandlerFunc) {
+	r.chiRouter.Patch(pattern, r.adaptHandler(handler))
+}
+
+func (r *Router) OPTIONS(pattern string, handler HandlerFunc) {
+	r.chiRouter.Options(pattern, r.adaptHandler(handler))
+}
+
+func (r *Router) Mount(pattern string, handler http.Handler) {
+	r.chiRouter.Mount(pattern, handler)
+}
+
+func (r *Router) Group(fn func(sr *Router)) {
+	r.chiRouter.Group(func(chiSubRouter chi.Router) {
+		subRouter := &Router{
+			chiRouter: chiSubRouter.(*chi.Mux),
+			kernel:    r.kernel,
+		}
+		fn(subRouter)
 	})
+}
 
-
-	// Регистрируем тестовый маршрут
-	appRouter.GET("/hello", func(c *shanraqHTTP.Context) {
-		c.Logger().Info("Handler for /hello called") 
-		c.JSON(http.StatusOK, map[string]string{
-			"message": "Hello from Shanraq Framework!",
-			"appName": c.Kernel().Config().GetString("app.name"), 
-		})
+func (r *Router) Route(pattern string, fn func(sr *Router)) {
+	r.chiRouter.Route(pattern, func(chiSubRouter chi.Router) {
+		subRouter := &Router{
+			chiRouter: chiSubRouter.(*chi.Mux),
+			kernel:    r.kernel,
+		}
+		fn(subRouter)
 	})
-
-	appRouter.GET("/panic", func(c *shanraqHTTP.Context) {
-		c.Logger().Warn("This handler will panic!")
-		panic("Simulated panic in handler")
-	})
-
-	// --- Создание и запуск HTTP сервера ---
-	httpServer := shanraqHTTP.NewServer(appKernel, appRouter)
-
-	appLogger.Info("Attempting to start HTTP server...")
-	if err := httpServer.ListenAndServe(); err != nil {
-		appLogger.Error("Failed to start or run HTTP server", "error", err)
-		os.Exit(1) // Выходим, если сервер не смог запуститься
-	}
-
-	appLogger.Info("Application has shut down gracefully.")
 }

@@ -23,7 +23,6 @@ type Server struct {
 
 // NewServer creates a new Shanraq HTTP Server.
 func NewServer(kernel *k.Kernel, router *Router) *Server {
-	// Получаем настройки сервера из конфигурации
 	addr := kernel.Config().GetString("server.address") // e.g., "localhost" or "" for all interfaces
 	port := kernel.Config().GetInt("server.port")
 	if port == 0 {
@@ -49,7 +48,7 @@ func NewServer(kernel *k.Kernel, router *Router) *Server {
 		router: router,
 		httpServer: &http.Server{
 			Addr:         fullAddr,
-			Handler:      router, // Наш Shanraq роутер является http.Handler
+			Handler:      router, 
 			ReadTimeout:  time.Duration(readTimeoutSeconds) * time.Second,
 			WriteTimeout: time.Duration(writeTimeoutSeconds) * time.Second,
 			IdleTimeout:  time.Duration(idleTimeoutSeconds) * time.Second,
@@ -62,20 +61,16 @@ func (s *Server) ListenAndServe() error {
 	logger := s.kernel.Logger()
 	logger.Info("Starting HTTP server...", "address", s.httpServer.Addr)
 
-	// Канал для ошибок от сервера
 	serverErrors := make(chan error, 1)
 
-	// Запускаем сервер в отдельной горутине
 	go func() {
 		logger.Info(fmt.Sprintf("HTTP server listening on %s", s.httpServer.Addr))
 		serverErrors <- s.httpServer.ListenAndServe()
 	}()
 
-	// Канал для сигналов ОС (graceful shutdown)
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
-	// Блокируемся до получения сигнала или ошибки сервера
 	select {
 	case err := <-serverErrors:
 		if err != nil && !errors.Is(err, http.ErrServerClosed) {
@@ -88,7 +83,6 @@ func (s *Server) ListenAndServe() error {
 	case sig := <-quit:
 		logger.Info("OS signal received, initiating graceful shutdown...", "signal", sig.String())
 
-		// Создаем контекст с таймаутом для graceful shutdown
 		shutdownTimeout := s.kernel.Config().GetInt("server.shutdown_timeout_seconds")
 		if shutdownTimeout == 0 {
 			shutdownTimeout = 15 // Default
@@ -96,7 +90,6 @@ func (s *Server) ListenAndServe() error {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(shutdownTimeout)*time.Second)
 		defer cancel()
 
-		// Выполняем graceful shutdown
 		if err := s.httpServer.Shutdown(ctx); err != nil {
 			logger.Error("HTTP server graceful shutdown failed", "error", err)
 			return err

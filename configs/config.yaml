@@ -1,0 +1,18 @@
+
+app:
+  name: "My Shanraq App"
+  environment: "development" 
+  version: "1.0.0"
+
+server:
+  address: "localhost" # Адрес для прослушивания, пустая строка для всех интерфейсов
+  port: 8080
+  read_timeout_seconds: 10
+  write_timeout_seconds: 10
+  idle_timeout_seconds: 60
+  shutdown_timeout_seconds: 15 # Таймаут для graceful shutdown
+
+logger:
+  level: "DEBUG" 
+  json_output: false
+  add_source: true # Включим исходники в логах для примера

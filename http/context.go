@@ -11,6 +11,7 @@ import (
 	"github.com/DauletBai/shanraq.org/core/logger"
 )
 
+type HandlerFunc func(*Context)
 // Context wraps the standard http.ResponseWriter and *http.Request,
 // and provides access to framework services and helper methods.
 type Context struct {
