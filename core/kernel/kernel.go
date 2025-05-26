@@ -2,6 +2,7 @@
 package kernel
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"os"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/DauletBai/shanraq.org/core/config"
 	"github.com/DauletBai/shanraq.org/core/logger"
+	"github.com/DauletBai/shanraq.org/database"
 )
 
 // AppEnvironment defines the application environment (e.g., development, production).
@@ -28,11 +30,10 @@ const (
 type Kernel struct {
 	configProvider config.Provider
 	logger         logger.Interface
-	basePath       string         // Root path of the application
-	environment    AppEnvironment // Application environment
-
-	mu sync.RWMutex // For thread-safe access to kernel properties if needed in future
-	// Add other core services here: e.g., database connection pool, router, etc.
+	db             *sql.DB
+	basePath       string         
+	environment    AppEnvironment 
+	mu 			   sync.RWMutex 
 }
 
 // Option is a functional option for configuring the Kernel.
@@ -42,17 +43,13 @@ type Option func(*Kernel) error
 // It initializes essential services like config and logger.
 func New(opts ...Option) (*Kernel, error) {
 	k := &Kernel{
-		// Set sensible defaults
 		environment: EnvDevelopment, // Default to development
 	}
 
-	// Determine base path (usually where the executable is or project root)
-	// This is a simple way, might need refinement for different deployment scenarios.
 	execPath, err := os.Executable()
 	if err == nil {
 		k.basePath = filepath.Dir(execPath)
 	} else {
-		// Fallback to current working directory if executable path can't be determined
 		cwd, _ := os.Getwd()
 		k.basePath = cwd
 	}
@@ -66,10 +63,7 @@ func New(opts ...Option) (*Kernel, error) {
 
 	// Initialize default config provider if not already set by an option
 	if k.configProvider == nil {
-		if err := WithDefaultConfigFile()(k); err != nil { // This will use ViperProvider
-			// Log a warning if config loading failed but don't make it fatal for the kernel creation itself.
-			// The application can decide later if a missing config is critical.
-			// If a logger is already initialized, use it. Otherwise, print to stderr.
+		if err := WithDefaultConfigFile()(k); err != nil { 
 			warningMsg := fmt.Sprintf("kernel warning: could not load default config: %v. Continuing with defaults/env vars.", err)
 			if k.logger != nil {
 				k.logger.Warn(warningMsg)
@@ -90,7 +84,6 @@ func New(opts ...Option) (*Kernel, error) {
 		logLevelStr := "INFO"
 		logJSON := false
 		logAddSource := false
-
 		if k.configProvider != nil {
 			// Try to get logger settings from config
 			logLevelStr = k.configProvider.GetString("logger.level")
@@ -121,21 +114,46 @@ func New(opts ...Option) (*Kernel, error) {
         }
     }
 
+	// INITIALIZING CONNECTION TO DB
+	if k.configProvider != nil && (k.configProvider.IsSet("database.dsn") || k.configProvider.IsSet("database.host")) {
+		dbConn, err := database.NewConnection(k.configProvider, k.logger) 
+		if err != nil {
+			k.logger.Error("Failed to connect to database during kernel initialization", "error", err)
+		}
+		k.db = dbConn
+	} else {
+		k.logger.Info("Database connection is not configured, skipping initialization.")
+	}
+
 	return k, nil
 }
 
-// Config returns the configuration provider.
 func (k *Kernel) Config() config.Provider {
 	k.mu.RLock()
 	defer k.mu.RUnlock()
 	return k.configProvider
 }
 
-// Logger returns the logger instance.
 func (k *Kernel) Logger() logger.Interface {
 	k.mu.RLock()
 	defer k.mu.RUnlock()
 	return k.logger
+}
+
+func (k *Kernel) DB() *sql.DB {
+	k.mu.RLock()
+	defer k.mu.RUnlock()
+	return k.db
+}
+
+func (k *Kernel) CloseDB() error {
+	k.mu.Lock()
+	defer k.mu.Unlock()
+	if k.db != nil {
+		k.logger.Info("Closing database connection...")
+		return k.db.Close()
+	}
+	return nil
 }
 
 // BasePath returns the application's base path.
@@ -179,8 +197,33 @@ func (k *Kernel) SetEnvironment(env AppEnvironment) {
 	}
 }
 
-// --- Kernel Options ---
+// func (k *Kernel) DB() *sql.DB { 
+// 	k.mu.RLock()
+// 	defer k.mu.RUnlock()
+// 	return k.db
+// }
 
+// func (k *Kernel) CloseDB() error { 
+// 	k.mu.Lock()
+// 	defer k.mu.Unlock()
+// 	if k.db != nil {
+// 		k.logger.Info("Closing database connection...")
+// 		return k.db.Close()
+// 	}
+// 	return nil
+// }
+
+func WithDB(db *sql.DB) Option {
+	return func(k *Kernel) error {
+		if db == nil {
+			return errors.New("database connection (*sql.DB) cannot be nil if provided via option")
+		}
+		k.db = db
+		return nil
+	}
+}
+
+// --- Kernel Options ---
 // WithConfigProvider sets a custom configuration provider.
 func WithConfigProvider(provider config.Provider) Option {
 	return func(k *Kernel) error {

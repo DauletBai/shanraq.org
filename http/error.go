@@ -29,3 +29,31 @@ func (e *HTTPError) Error() string {
 	}
 	return fmt.Sprintf("HTTP %d: %s", e.Code, e.Message)
 }
+
+// FieldError описывает ошибку для конкретного поля.
+type FieldError struct {
+	Field   string `json:"field"`   
+	Message string `json:"message"` 
+}
+
+// ValidationErrors is a list of validation errors.
+type ValidationErrors struct {
+	Errors []FieldError `json:"validation_errors"` 
+}
+
+// NewValidationErrors creates an instance of ValidationErrors.
+func NewValidationErrors() *ValidationErrors {
+	return &ValidationErrors{
+		Errors: make([]FieldError, 0),
+	}
+}
+
+// Add adds a new field error.
+func (ve *ValidationErrors) Add(field, message string) {
+	ve.Errors = append(ve.Errors, FieldError{Field: field, Message: message})
+}
+
+// IsEmpty checks if there are any validation errors.
+func (ve *ValidationErrors) IsEmpty() bool {
+	return len(ve.Errors) == 0
+}

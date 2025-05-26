@@ -5,19 +5,36 @@ import (
 	"net/http" 
 
 	"github.com/go-chi/chi/v5"
+	//"github.com/go-chi/chi/v5/middleware"
 
 	k "github.com/DauletBai/shanraq.org/core/kernel"
 )
 
 // Router is a wrapper around chi.Router.
-type Router struct { // Тип Router экспортируемый
+type Router struct { 
 	chiRouter *chi.Mux
 	kernel    *k.Kernel
 }
 
-// NewRouter creates a new Shanraq Router. (Функция NewRouter экспортируемая)
+// NewRouter creates a new Shanraq Router.
 func NewRouter(kernel *k.Kernel) *Router {
 	chiMux := chi.NewRouter()
+
+	// Custom Handler for 404 Not Found
+	chiMux.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		shanraqCtx := NewContext(w, r, kernel) 
+		// Use existing HTTPError for consistency
+		err := NewHTTPError(http.StatusNotFound, "The requested resource was not found.")
+		shanraqCtx.Error(err) 
+	})
+
+	// Custom Handler for 405 Method Not Allowed
+	chiMux.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
+		shanraqCtx := NewContext(w, r, kernel)
+		err := NewHTTPError(http.StatusMethodNotAllowed, "The method is not allowed for the requested resource.")
+		shanraqCtx.Error(err)
+	})
+
 	return &Router{
 		chiRouter: chiMux,
 		kernel:    kernel,
@@ -36,22 +53,21 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	r.chiRouter.ServeHTTP(w, req)
 }
 
-// adaptHandler использует Context и HandlerFunc из текущего пакета http
+// adaptHandler uses Context and HandlerFunc from the current http package
 func (r *Router) adaptHandler(handler HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		shanraqCtx := NewContext(w, req, r.kernel) // NewContext из context.go (тот же пакет)
+		shanraqCtx := NewContext(w, req, r.kernel) 
 		handler(shanraqCtx)
 	}
 }
 
-// Use принимает chi-совместимые middleware
+// Use accepts chi-compatible middleware
 func (r *Router) Use(middlewares ...func(next http.Handler) http.Handler) {
 	for _, mw := range middlewares {
 		r.chiRouter.Use(mw)
 	}
 }
 
-// GET, POST и т.д. используют HandlerFunc из текущего пакета http
 func (r *Router) GET(pattern string, handler HandlerFunc) {
 	r.chiRouter.Get(pattern, r.adaptHandler(handler))
 }
