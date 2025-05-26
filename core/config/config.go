@@ -40,11 +40,17 @@ type Provider interface {
 	// SetDefault sets the default value for a key.
 	// Default values are not written to config files.
 	SetDefault(key string, value interface{})
+
+	ConfigFileUsed() string
 }
 
 // ViperProvider implements the Provider interface using github.com/spf13/viper.
 type ViperProvider struct {
 	vp *viper.Viper
+}
+
+func (p *ViperProvider) ConfigFileUsed() string {
+    return p.vp.ConfigFileUsed()
 }
 
 // NewViperProvider creates and initializes a new Viper-based configuration provider.

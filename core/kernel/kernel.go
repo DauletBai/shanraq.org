@@ -110,18 +110,16 @@ func New(opts ...Option) (*Kernel, error) {
 	}
 	
 	k.logger.Info("Shanraq Kernel initialized", "environment", k.environment, "basePath", k.basePath)
-	if k.configProvider != nil {
-		if vp, ok := k.configProvider.(*config.ViperProvider); ok {
-			// This is a bit of a hack to get the config file path if viper is used.
-			// Consider adding a method to the config.Provider interface if this is a common need.
-			configFileUsed := vp.Get("viper.configfile") // Viper stores its own file path here
-			if configFileUsed != nil && configFileUsed.(string) != "" {
-				k.logger.Info("Configuration loaded", "file", configFileUsed)
-			} else {
-				k.logger.Info("No configuration file loaded, or path not available. Using defaults/env vars.")
-			}
-		}
-	}
+    if k.configProvider != nil {
+        configFile := k.configProvider.ConfigFileUsed()
+        if configFile != "" {
+            k.logger.Info("Configuration loaded", "file", configFile)
+        } else if k.configProvider.IsSet("app.name") { 
+             k.logger.Info("Configuration loaded (no file, using environment variables or defaults)")
+        } else {
+            k.logger.Info("No configuration file loaded and no alternative sources found.")
+        }
+    }
 
 	return k, nil
 }

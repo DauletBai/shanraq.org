@@ -6,12 +6,13 @@ import (
 	"net/http" // Для http.StatusOK
 	"os"
 
-	"github.com/go-chi/chi/v5/middleware" 
+	chiMiddleware "github.com/go-chi/chi/v5/middleware" 
 
 	"github.com/DauletBai/shanraq.org/core/config"
 	"github.com/DauletBai/shanraq.org/core/kernel"
 	"github.com/DauletBai/shanraq.org/core/logger"
-	shanraqHTTP "github.com/DauletBai/shanraq.org/http"
+	shqHTTP "github.com/DauletBai/shanraq.org/http"
+	frameworkMiddleware "github.com/DauletBai/shanraq.org/http/middleware"
 )
 
 func main() {
@@ -51,64 +52,44 @@ logger:
 	}
 	defer os.RemoveAll(configDir)
 
-	// --- Инициализация ядра ---
-	appKernel, err := kernel.New(
-		kernel.WithConfigFile("config", "./configs"), // Загружаем наш dummy config
+	appKernel, err := kernel.New (
+		kernel.WithConfigFile("config", "./configs"), 
 	)
 	if err != nil {
-		// Используем стандартный log, так как наш логгер может быть еще не инициализирован
 		log.Fatalf("Failed to initialize Shanraq Kernel: %v", err)
 	}
 
 	appLogger := appKernel.Logger()
-	appConfig := appKernel.Config() // Получаем доступ к конфигурации
+	appConfig := appKernel.Config() 
 
 	appLogger.Info("Application starting...", "appName", appConfig.GetString("app.name"), "version", appConfig.GetString("app.version"))
 
-	// --- Настройка маршрутизатора ---
-	appRouter := shanraqHTTP.NewRouter(appKernel)
+    appRouter := shqHTTP.NewRouter(appKernel)
 
-	// Добавляем некоторые стандартные middleware от chi
-	appRouter.Use(middleware.RequestID)  // Добавляет уникальный ID каждому запросу
-	appRouter.Use(middleware.RealIP)     // Определяет реальный IP клиента (полезно за прокси)
-	appRouter.Use(middleware.Recoverer)  // Перехватывает паники в обработчиках и возвращает 500
+    appRouter.Use(chiMiddleware.RequestID)
+    appRouter.Use(chiMiddleware.RealIP)
+    appRouter.Use(chiMiddleware.Recoverer)
 
-	// Простое middleware для логирования запросов с использованием нашего логгера
-	appRouter.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// Создаем Shanraq контекст внутри middleware, если он нужен здесь.
-			// В данном случае, мы используем логгер из ядра напрямую.
-			reqLogger := appKernel.Logger().With("method", r.Method, "path", r.URL.Path, "remoteAddr", r.RemoteAddr, "requestID", middleware.GetReqID(r.Context()))
-			reqLogger.Info("Incoming request")
-			
-			// Передаем управление следующему обработчику в цепочке
-			next.ServeHTTP(w, r) 
-		})
-	})
+    appRouter.Use(frameworkMiddleware.RequestLogger(appKernel))
 
+	appRouter.GET("/hello", func(c *shqHTTP.Context) { 
+        c.Logger().Info("Handler for /hello called")
+        c.JSON(http.StatusOK, map[string]string{
+            "message": "Hello from Shanraq Framework!",
+            "appName": c.Kernel().Config().GetString("app.name"),
+        })
+    })
 
-	// Регистрируем тестовый маршрут
-	appRouter.GET("/hello", func(c *shanraqHTTP.Context) {
-		c.Logger().Info("Handler for /hello called") // Используем логгер из Shanraq Context
-		c.JSON(http.StatusOK, map[string]string{
-			"message": "Hello from Shanraq Framework!",
-			"appName": c.Kernel().Config().GetString("app.name"), // Доступ к конфигу через контекст
-		})
-	})
+	appRouter.GET("/panic", func(c *shqHTTP.Context) {
+        c.Logger().Warn("This handler will panic!")
+        panic("Simulated panic in handler")
+    })
 
-	appRouter.GET("/panic", func(c *shanraqHTTP.Context) {
-		c.Logger().Warn("This handler will panic!")
-		panic("Simulated panic in handler")
-	})
-
-	// --- Создание и запуск HTTP сервера ---
-	httpServer := shanraqHTTP.NewServer(appKernel, appRouter)
-
-	appLogger.Info("Attempting to start HTTP server...")
-	if err := httpServer.ListenAndServe(); err != nil {
-		appLogger.Error("Failed to start or run HTTP server", "error", err)
-		os.Exit(1) // Выходим, если сервер не смог запуститься
-	}
-
-	appLogger.Info("Application has shut down gracefully.")
+    httpServer := shqHTTP.NewServer(appKernel, appRouter)
+    appLogger.Info("Attempting to start HTTP server...")
+    if err := httpServer.ListenAndServe(); err != nil {
+        appLogger.Error("Failed to start or run HTTP server", "error", err)
+        os.Exit(1)
+    }
+    appLogger.Info("Application has shut down gracefully.")
 }
