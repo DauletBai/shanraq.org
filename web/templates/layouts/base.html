@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en" class="h-100" data-bs-theme="auto">
+<head>
+    {{template "head" .}}
+</head>
+<body class="d-flex h-100">
+    <div class="d-flex w-100 h-100 flex-column">
+        {{template "header" .}}
+        <main class="container">
+            {{template "main" .}}
+        </main>
+        {{template "footer" .}}
+    </div>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

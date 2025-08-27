@@ -1,0 +1,9 @@
+# Compiled binary
+server
+
+# System files
+.DS_Store
+
+# IDE/Editor specific
+.idea/
+.vscode/
