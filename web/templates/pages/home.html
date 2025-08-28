@@ -1,28 +1,27 @@
 {{define "main"}}
-<div class="px-4 py-4 my-auto text-center">
-    <h1 class="display-4">Human Potential Index</h1>
-    <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Where the world's talents are fully realized.</p>
-    </div>
-</div>
-
-<h3 class="mb-3">Countries List</h3>
-<table class="table table-hover">
-    <thead class="table-light">
-    <tr>
-        <th>Flag</th>
-        <th>Name</th>
-        <th>Population</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{range .Data.Countries}}
+    <h4 class="my-3">Global Human Potential Index</h4>
+    <table class="table table-hover">
+        <thead class="table-light">
         <tr>
-            <td>{{ .FlagCode }}</td>
-            <td>{{ .Name }}</td>
-            <td>{{ .Population }}</td>
+            <th>Rank</th>
+            <th>Flag</th>
+            <th>Country</th>
+            <th>Population</th>
+            <th>HPI Score</th>
         </tr>
-    {{end}}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        {{range .Data.RankedCountries}}
+            <tr>
+                <td><strong>{{ .Rank }}</strong></td>
+                <td>{{ .Country.FlagCode }}</td>
+                <td><a href="/country/{{ .Country.Name }}">{{ .Country.Name }}</a></td>
+                <td>{{ .Country.Population }}</td>
+                <td><strong>{{ printf "%.2f" .HPI }}</strong></td>
+            </tr>
+        {{end}}
+        </tbody>
+    </table>
+{{end}}
+{{define "scripts"}}
 {{end}}

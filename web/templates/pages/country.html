@@ -1,0 +1,89 @@
+{{define "main"}}
+<div class="container-fluid">
+    <div class="row align-items-center">
+        <div class="col-md-8 mt-3">
+            <h4>{{ .Data.Details.Country.Name }}</h4>
+            <p class="lead">Detailed achievements and statistics.</p>
+        </div>
+    </div>
+    <hr class="my-4">
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <h4>Strengths Profile</h4>
+            {{if .Data.Details.ChartData}}
+            <canvas id="radarChart"></canvas>
+            {{else}}
+            <p>Not enough data to build a chart.</p>
+            {{end}}
+        </div>
+        <div class="col-md-8">
+            <h4>Achievements</h4>
+            {{if .Data.Details.Awards}}
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Competition</th>
+                    <th>Year</th>
+                    <th>🥇</th>
+                    <th>🥈</th>
+                    <th>🥉</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{range .Data.Details.Awards}}
+                <tr>
+                    <td>{{ .CategoryName }}</td>
+                    <td>{{ .CompetitionName }}</td>
+                    <td>{{ .Year }}</td>
+                    <td>{{ .Gold }}</td>
+                    <td>{{ .Silver }}</td>
+                    <td>{{ .Bronze }}</td>
+                </tr>
+                {{end}}
+                </tbody>
+            </table>
+            {{else}}
+            <p>No awards data available for this country yet.</p>
+            {{end}}
+        </div>
+    </div>
+</div>
+{{end}}
+
+{{define "scripts"}}
+{{if .Data.Details.ChartData}}
+<script>
+    // Этот скрипт теперь выполнится ПОСЛЕ загрузки Chart.js
+    const chartData = {{ toJSON .Data.Details.ChartData }};
+    const labels = Object.keys(chartData);
+    const dataPoints = Object.values(chartData);
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Weighted Points',
+            data: dataPoints,
+            fill: true,
+            backgroundColor: 'rgba(13, 110, 253, 0.2)',
+            borderColor: 'rgb(13, 110, 253)',
+            pointBackgroundColor: 'rgb(13, 110, 253)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgb(13, 110, 253)'
+        }]
+    };
+
+    const config = {
+        type: 'radar',
+        data: data,
+        options: {
+            elements: { line: { borderWidth: 3 } },
+            scales: { r: { ticks: { display: false } } }
+        }
+    };
+
+    new Chart(document.getElementById('radarChart'), config);
+</script>
+{{end}}
+{{end}}
