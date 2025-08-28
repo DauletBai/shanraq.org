@@ -1,31 +1,32 @@
-# Этап 1: Сборка приложения
+# Этап 1: Общий этап сборки
 FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
-# Копируем go.mod и go.sum и загружаем зависимости
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Копируем остальной код
 COPY . .
 
-# Собираем бинарный файл
+# Собираем основной веб-сервер
 RUN CGO_ENABLED=0 GOOS=linux go build -v -o /app/server ./cmd/server
 
-# Этап 2: Создание минимального образа для запуска
-FROM alpine:latest
+# Этап 2: Финальный образ для основного приложения (минималистичный)
+FROM alpine:latest AS app-release
 
 WORKDIR /app
 
-# Копируем веб-файлы (шаблоны и статику)
 COPY --from=builder /app/web ./web
-
-# Копируем только исполняемый файл из этапа сборки
 COPY --from=builder /app/server .
 
-# Открываем порт, на котором будет работать наше приложение
 EXPOSE 8080
-
-# Команда для запуска приложения
 CMD ["/app/server"]
+
+# Этап 3: Финальный образ для seeder (с Go внутри)
+FROM golang:1.24-alpine AS seeder-release
+
+WORKDIR /app
+
+COPY --from=builder /app .
+
+# Команда по умолчанию не нужна, так как мы указываем ее в docker-compose

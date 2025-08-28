@@ -1,9 +1,12 @@
 package service
 
 import (
+	"math"
 	"shanraq.org/internal/models"
 	"sort"
 )
+
+const PageSize = 10
 
 type Store interface {
 	GetAllCountryStats() ([]CountryStats, error)
@@ -29,10 +32,10 @@ func NewIndexService(store Store) *IndexService {
 }
 
 // GetRankedCountries - главный метод, который выполняет все расчеты
-func (s *IndexService) GetRankedCountries() ([]models.RankedCountry, error) {
+func (s *IndexService) GetRankedCountries(page int) (models.PaginatedRanking, error) {
 	stats, err := s.store.GetAllCountryStats()
 	if err != nil {
-		return nil, err
+		return models.PaginatedRanking{}, err
 	}
 
 	var rankedCountries []models.RankedCountry
@@ -59,12 +62,44 @@ func (s *IndexService) GetRankedCountries() ([]models.RankedCountry, error) {
 		return rankedCountries[i].HPI > rankedCountries[j].HPI
 	})
 
-	// Шаг 4: Присваиваем ранг
-	for i := range rankedCountries {
-		rankedCountries[i].Rank = i + 1
-	}
+	// НАЧАЛО ЛОГИКИ ПАГИНАЦИИ
+    totalItems := len(rankedCountries)
+    totalPages := int(math.Ceil(float64(totalItems) / float64(PageSize)))
+    
+    if page < 1 {
+        page = 1
+    }
+    if page > totalPages {
+        page = totalPages
+    }
 
-	return rankedCountries, nil
+    start := (page - 1) * PageSize
+    end := start + PageSize
+    if end > totalItems {
+        end = totalItems
+    }
+    
+    // "Нарезаем" нужный кусок от общего отсортированного списка
+    paginatedCountries := rankedCountries[start:end]
+
+    // Присваиваем ранг только для стран на текущей странице
+    for i := range paginatedCountries {
+        paginatedCountries[i].Rank = start + i + 1
+    }
+
+    pagination := models.PaginationData{
+        CurrentPage: page,
+        TotalPages:  totalPages,
+        HasNext:     page < totalPages,
+        HasPrev:     page > 1,
+        NextPage:    page + 1,
+        PrevPage:    page - 1,
+    }
+
+    return models.PaginatedRanking{
+        Countries:  paginatedCountries,
+        Pagination: pagination,
+    }, nil
 }
 
 func (s *IndexService) GetCountryDetails(name string) (models.CountryDetails, error) {

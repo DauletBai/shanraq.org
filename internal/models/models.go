@@ -34,3 +34,19 @@ type CountryDetails struct {
 	Awards  []AwardInfo
 	ChartData map[string]int
 }
+
+// PaginationData содержит всю информацию для рендеринга кнопок пагинации
+type PaginationData struct {
+	CurrentPage int
+	TotalPages  int
+	NextPage    int
+	PrevPage    int
+	HasNext     bool
+	HasPrev     bool
+}
+
+// PaginatedRanking - итоговая структура, которую мы передаем в шаблон
+type PaginatedRanking struct {
+	Countries  []RankedCountry
+	Pagination PaginationData
+}

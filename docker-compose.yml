@@ -2,12 +2,14 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      target: app-release
     ports:
       - "8080:8080"
     depends_on:
       db:
-        condition: service_healthy # Запускаем только после того, как БД будет готова
+        condition: service_healthy 
     environment:
       # Параметры для подключения к БД (можно вынести в .env файл)
       - DATABASE_URL=postgres://user:password@db:5432/shanraqdb?sslmode=disable
@@ -23,12 +25,22 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./migrations:/docker-entrypoint-initdb.d # Автоматически выполнит наш SQL-скрипт при первом запуске
+      - ./migrations:/docker-entrypoint-initdb.d 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U user -d shanraqdb"]
       interval: 10s
       timeout: 5s
       retries: 5
+      
+  seeder: 
+    build:
+      context: .
+      target: seeder-release
+    command: go run ./cmd/seeder 
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/shanraqdb?sslmode=disable
 
 volumes:
   postgres_data:

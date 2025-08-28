@@ -6,22 +6,49 @@
             <th>Rank</th>
             <th>Flag</th>
             <th>Country</th>
-            <th>Population</th>
-            <th>HPI Score</th>
+            <th class="text-end">Population</th>
+            <th class="text-end">HPI Score</th>
         </tr>
         </thead>
         <tbody>
-        {{range .Data.RankedCountries}}
+        {{range .Data.Ranking.Countries}}
             <tr>
                 <td><strong>{{ .Rank }}</strong></td>
                 <td>{{ .Country.FlagCode }}</td>
                 <td><a href="/country/{{ .Country.Name }}">{{ .Country.Name }}</a></td>
-                <td>{{ .Country.Population }}</td>
-                <td><strong>{{ printf "%.2f" .HPI }}</strong></td>
+                <td class="text-end">{{ formatPopulation .Country.Population }}</td>
+                <td class="text-end"><strong>{{ printf "%.2f" .HPI }}</strong></td>
             </tr>
         {{end}}
         </tbody>
     </table>
+    <nav>
+        <ul class="pagination justify-content-center">
+            {{if .Data.Ranking.Pagination.HasPrev}}
+                <li class="page-item">
+                    <a class="page-link" href="/?page={{.Data.Ranking.Pagination.PrevPage}}">Previous</a>
+                </li>
+            {{else}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Previous</a>
+                </li>
+            {{end}}
+
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="#">{{.Data.Ranking.Pagination.CurrentPage}} / {{.Data.Ranking.Pagination.TotalPages}}</a>
+            </li>
+            
+            {{if .Data.Ranking.Pagination.HasNext}}
+                <li class="page-item">
+                    <a class="page-link" href="/?page={{.Data.Ranking.Pagination.NextPage}}">Next</a>
+                </li>
+            {{else}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            {{end}}
+        </ul>
+    </nav>
 {{end}}
 {{define "scripts"}}
 {{end}}
