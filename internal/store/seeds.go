@@ -5,11 +5,9 @@ import "shanraq.org/internal/models"
 // GetCountrySeedData возвращает полный список стран для посева
 func GetCountrySeedData() []models.Country {
 	return []models.Country{
-		{Name: "Afghanistan", Population: 42239854, FlagCode: "af"},
-		{Name: "Albania", Population: 2832439, FlagCode: "al"},
-		{Name: "Algeria", Population: 45606480, FlagCode: "dz"},
-		// ... и так далее для всех 195 стран ...
-		// (Я приведу сокращенный список здесь, но в вашем файле будет полный)
+        {Name: "Afghanistan", Population: 42239854, FlagCode: "af"},
+        {Name: "Albania", Population: 2832439, FlagCode: "al"},
+        {Name: "Algeria", Population: 45606480, FlagCode: "dz"},
         {Name: "Argentina", Population: 45808747, FlagCode: "ar"},
         {Name: "Armenia", Population: 2780469, FlagCode: "am"},
         {Name: "Australia", Population: 26439111, FlagCode: "au"},
@@ -199,4 +197,76 @@ func GetCountrySeedData() []models.Country {
         {Name: "Zambia", Population: 20569737, FlagCode: "zm"},
         {Name: "Zimbabwe", Population: 16665409, FlagCode: "zw"},
 	}
+    return []models.Country{
+ 	   {Name: "Afghanistan", Population: 42239854, FlagCode: "af"}, {Name: "Albania", Population: 2832439, FlagCode: "al"},
+ 	   {Name: "Algeria", Population: 45606480, FlagCode: "dz"}, {Name: "Andorra", Population: 80088, FlagCode: "ad"},
+        // ... и так далее для всех стран
+    }
+}
+type MedalData struct {
+	CountryName string
+	Gold        int
+	Silver      int
+	Bronze      int
+}
+
+// GetCompetitionSeedData возвращает все данные по соревнованиям
+func GetCompetitionSeedData() map[string]map[string][]MedalData {
+	data := make(map[string]map[string][]MedalData)
+
+	// --- СПОРТ ---
+	data["Sport"] = make(map[string][]MedalData)
+	data["Sport"]["Summer Olympics 2024"] = []MedalData{
+		{CountryName: "USA", Gold: 40, Silver: 44, Bronze: 42},
+		{CountryName: "China", Gold: 38, Silver: 32, Bronze: 18},
+		{CountryName: "Japan", Gold: 27, Silver: 14, Bronze: 17},
+        {CountryName: "Australia", Gold: 18, Silver: 19, Bronze: 16},
+	}
+	data["Sport"]["Winter Olympics 2022"] = []MedalData{
+		{CountryName: "Norway", Gold: 16, Silver: 8, Bronze: 13},
+		{CountryName: "Germany", Gold: 12, Silver: 10, Bronze: 5},
+		{CountryName: "China", Gold: 9, Silver: 4, Bronze: 2},
+        {CountryName: "USA", Gold: 8, Silver: 10, Bronze: 7},
+	}
+    data["Sport"]["Summer Olympics 2020"] = []MedalData{
+		{CountryName: "USA", Gold: 39, Silver: 41, Bronze: 33},
+		{CountryName: "China", Gold: 38, Silver: 32, Bronze: 18},
+		{CountryName: "Japan", Gold: 27, Silver: 14, Bronze: 17},
+	}
+
+	// --- ФУНДАМЕНТАЛЬНАЯ НАУКА ---
+	data["Science"] = make(map[string][]MedalData)
+	data["Science"]["IMO 2023"] = []MedalData{
+		{CountryName: "China", Gold: 6, Silver: 0, Bronze: 0}, 
+        {CountryName: "USA", Gold: 5, Silver: 1, Bronze: 0},
+		{CountryName: "South Korea", Gold: 4, Silver: 2, Bronze: 0},
+	}
+    data["Science"]["IMO 2022"] = []MedalData{
+		{CountryName: "China", Gold: 6, Silver: 0, Bronze: 0},
+		{CountryName: "South Korea", Gold: 5, Silver: 1, Bronze: 0},
+		{CountryName: "USA", Gold: 4, Silver: 1, Bronze: 0},
+	}
+
+    // --- ТЕХНОЛОГИИ И ИНЖЕНЕРИЯ ---
+    data["IT & Engineering"] = make(map[string][]MedalData)
+    data["IT & Engineering"]["IOI 2023"] = []MedalData{
+        {CountryName: "China", Gold: 4, Silver: 0, Bronze: 0}, 
+        {CountryName: "USA", Gold: 3, Silver: 1, Bronze: 0},
+        {CountryName: "Japan", Gold: 2, Silver: 2, Bronze: 0},
+ }
+
+	// --- ИСКУССТВО И КУЛЬТУРА ---
+	data["Arts & Culture"] = make(map[string][]MedalData)
+	data["Arts & Culture"]["Eurovision 2024"] = []MedalData{
+		{CountryName: "Switzerland", Gold: 1, Silver: 0, Bronze: 0},
+		{CountryName: "Croatia", Gold: 0, Silver: 1, Bronze: 0},
+		{CountryName: "Ukraine", Gold: 0, Silver: 0, Bronze: 1},
+	}
+    data["Arts & Culture"]["Eurovision 2023"] = []MedalData{
+		{CountryName: "Sweden", Gold: 1, Silver: 0, Bronze: 0},
+		{CountryName: "Finland", Gold: 0, Silver: 1, Bronze: 0},
+		{CountryName: "Israel", Gold: 0, Silver: 0, Bronze: 1},
+	}
+
+	return data
 }

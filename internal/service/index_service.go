@@ -108,12 +108,13 @@ func (s *IndexService) GetCountryDetails(name string) (models.CountryDetails, er
 		return models.CountryDetails{}, err
 	}
 
-	// Инициализируем карту со всеми нашими основными категориями и нулевыми значениями
+	// Инициализируем карту со всеми нашими НОВЫМИ категориями
 	chartData := map[string]int{
-		"Science":            0,
-		"Sport":              0,
-		"Arts & Culture":     0,
-		"Professional Skills": 0,
+		"Sport":                    0,
+		"Science":      0,
+		"IT & Engineering": 0,
+		"Arts & Culture":           0,
+		"Professional Skills":      0,
 	}
 
 	// Проходим по наградам страны и суммируем очки только для тех категорий, что у нее есть
@@ -125,7 +126,40 @@ func (s *IndexService) GetCountryDetails(name string) (models.CountryDetails, er
 		}
 	}
 
-	details.ChartData = chartData // Добавляем посчитанные данные в результат
+	details.ChartData = chartData 
 
 	return details, nil
+}
+
+// GetAllRankedCountries возвращает полный список стран для карты
+func (s *IndexService) GetAllRankedCountries() ([]models.RankedCountry, error) {
+    // Эта логика дублирует GetRankedCountries, но без пагинации
+    stats, err := s.store.GetAllCountryStats()
+    if err != nil {
+        return nil, err
+    }
+
+    var rankedCountries []models.RankedCountry
+    for _, stat := range stats {
+        totalPoints := (stat.TotalGold * 3) + (stat.TotalSilver * 2) + (stat.TotalBronze * 1)
+        var hpi float64
+        if stat.Population > 0 {
+            hpi = (float64(totalPoints) / float64(stat.Population)) * 1000000
+        }
+        rankedCountries = append(rankedCountries, models.RankedCountry{
+            Country:     stat.Country,
+            TotalPoints: totalPoints,
+            HPI:         hpi,
+        })
+    }
+
+    sort.Slice(rankedCountries, func(i, j int) bool {
+        return rankedCountries[i].HPI > rankedCountries[j].HPI
+    })
+
+    for i := range rankedCountries {
+        rankedCountries[i].Rank = i + 1
+    }
+
+    return rankedCountries, nil
 }

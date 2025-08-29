@@ -5,3 +5,13 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.table>:not(caption)>*>* {
+    padding: .3rem .5rem;
+}
+
+td .fi {
+    font-size: 1.3rem; 
+    border-radius: 3px;
+    vertical-align: middle; 
+}

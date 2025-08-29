@@ -1,14 +1,14 @@
 {{define "main"}}
-<div class="container-fluid">
+<div class="container">
     <div class="row align-items-center">
         <div class="col-md-8 mt-3">
             <h4>{{ .Data.Details.Country.Name }}</h4>
-            <p class="lead">Detailed achievements and statistics.</p>
+            <p class="lead mb-0">Detailed achievements and statistics.</p>
         </div>
     </div>
-    <hr class="my-4">
+    <hr class="mt-2 mb-4">
     <div class="row mb-3">
-        <div class="col-md-4">
+        <div class="col-md-4 mb-3">
             <h4>Strengths Profile</h4>
             {{if .Data.Details.ChartData}}
             <canvas id="radarChart"></canvas>
@@ -16,7 +16,7 @@
             <p>Not enough data to build a chart.</p>
             {{end}}
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 mb-3">
             <h4>Achievements</h4>
             {{if .Data.Details.Awards}}
             <table class="table table-sm">

@@ -1,54 +1,97 @@
+<!-- web/templates/pages/home.html -->
 {{define "main"}}
-    <h4 class="my-3">Global Human Potential Index</h4>
-    <table class="table table-hover">
-        <thead class="table-light">
-        <tr>
-            <th>Rank</th>
-            <th>Flag</th>
-            <th>Country</th>
-            <th class="text-end">Population</th>
-            <th class="text-end">HPI Score</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{range .Data.Ranking.Countries}}
-            <tr>
-                <td><strong>{{ .Rank }}</strong></td>
-                <td>{{ .Country.FlagCode }}</td>
-                <td><a href="/country/{{ .Country.Name }}">{{ .Country.Name }}</a></td>
-                <td class="text-end">{{ formatPopulation .Country.Population }}</td>
-                <td class="text-end"><strong>{{ printf "%.2f" .HPI }}</strong></td>
-            </tr>
-        {{end}}
-        </tbody>
-    </table>
-    <nav>
-        <ul class="pagination justify-content-center">
-            {{if .Data.Ranking.Pagination.HasPrev}}
-                <li class="page-item">
-                    <a class="page-link" href="/?page={{.Data.Ranking.Pagination.PrevPage}}">Previous</a>
-                </li>
-            {{else}}
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Previous</a>
-                </li>
-            {{end}}
+    <h4 class="text-center my-4">Global Human Potential Index</h4>
+    <div class="row row-cols-1 row-cols-lg-2">
+        <div class="col mb-3">
+            <div id="world-map" style="width: 100%; height: 350px" class="mb-2"></div>
+        </div>
+        <div class="col mb-3">
+            <table class="table table-hover">
+                <thead class="table-light">
+                <tr>
+                    <th class="text-end">Rank</th>
+                    <th>Flag</th>
+                    <th>Country</th>
+                    <th class="text-end">Population</th>
+                    <th class="text-end">HPI Score</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{range .Data.Ranking.Countries}}
+                    <tr>
+                        <td class="text-end"><strong>{{ .Rank }}</strong></td>
+                        <td>
+                            <span class="fi fi-{{ .Country.FlagCode }} me-2"></span>
+                            {{ toUpper .Country.FlagCode }}
+                        </td>
+                        <td><a href="/country/{{ .Country.Name }}">{{ .Country.Name }}</a></td>
+                        <td class="text-end">{{ formatPopulation .Country.Population }}</td>
+                        <td class="text-end"><strong>{{ printf "%.2f" .HPI }}</strong></td>
+                    </tr>
+                {{end}}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination justify-content-center">
+                    {{if .Data.Ranking.Pagination.HasPrev}}
+                        <li class="page-item">
+                            <a class="page-link" href="/?page={{.Data.Ranking.Pagination.PrevPage}}">Previous</a>
+                        </li>
+                    {{else}}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Previous</a>
+                        </li>
+                    {{end}}
 
-            <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">{{.Data.Ranking.Pagination.CurrentPage}} / {{.Data.Ranking.Pagination.TotalPages}}</a>
-            </li>
-            
-            {{if .Data.Ranking.Pagination.HasNext}}
-                <li class="page-item">
-                    <a class="page-link" href="/?page={{.Data.Ranking.Pagination.NextPage}}">Next</a>
-                </li>
-            {{else}}
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            {{end}}
-        </ul>
-    </nav>
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{.Data.Ranking.Pagination.CurrentPage}} / {{.Data.Ranking.Pagination.TotalPages}}</a>
+                    </li>
+                    
+                    {{if .Data.Ranking.Pagination.HasNext}}
+                        <li class="page-item">
+                            <a class="page-link" href="/?page={{.Data.Ranking.Pagination.NextPage}}">Next</a>
+                        </li>
+                    {{else}}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    {{end}}
+                </ul>
+            </nav>
+        </div>
+    </div>
 {{end}}
-{{define "scripts"}}
+{{define "page_scripts"}}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const rawMapData = {{ toJSON .Data.MapData }};
+
+  const mapData = {};
+  for (const [k, v] of Object.entries(rawMapData || {})) {
+    mapData[String(k).toUpperCase()] = Number(v) || 0;
+  }
+
+  new jsVectorMap({
+    selector: '#world-map',
+    map: 'world',
+    backgroundColor: 'transparent',
+    regionStyle: {
+        initial: { fill: '#eef3f7' },
+        hover:   { fill: '#b8d6ff' }
+    },
+    series: {
+        regions: [{
+        values: mapData, // { US: 1.69, NO: 14.07, ... }
+        scale: ['#E6F2FF', '#0D47A1'],
+        normalizeFunction: 'linear'
+        }]
+    },
+    onRegionTooltipShow: (tooltip, code) => {
+        const c = String(code || '').toUpperCase();
+        const hpi = mapData[c] ?? 0;
+        tooltip.textContent = `${tooltip.textContent}: ${hpi.toFixed(2)}`;
+    }
+    });
+});
+</script>
 {{end}}
