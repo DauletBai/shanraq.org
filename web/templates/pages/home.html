@@ -10,7 +10,7 @@
                 <thead class="table-light">
                 <tr>
                     <th class="text-end">Rank</th>
-                    <th>Flag</th>
+                    <th class="text-center">Flag</th>
                     <th>Country</th>
                     <th class="text-end">Population</th>
                     <th class="text-end">HPI Score</th>
@@ -20,10 +20,7 @@
                 {{range .Data.Ranking.Countries}}
                     <tr>
                         <td class="text-end"><strong>{{ .Rank }}</strong></td>
-                        <td>
-                            <span class="fi fi-{{ .Country.FlagCode }} me-2"></span>
-                            {{ toUpper .Country.FlagCode }}
-                        </td>
+                        <td class="text-center"><span class="fi fi-{{ .Country.FlagCode }} me-2"></span></td>
                         <td><a href="/country/{{ .Country.Name }}">{{ .Country.Name }}</a></td>
                         <td class="text-end">{{ formatPopulation .Country.Population }}</td>
                         <td class="text-end"><strong>{{ printf "%.2f" .HPI }}</strong></td>
@@ -64,34 +61,25 @@
 {{define "page_scripts"}}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const rawMapData = {{ toJSON .Data.MapData }};
-
-  const mapData = {};
-  for (const [k, v] of Object.entries(rawMapData || {})) {
-    mapData[String(k).toUpperCase()] = Number(v) || 0;
-  }
+  const mapData = {{ toJSON .Data.MapData }}; 
 
   new jsVectorMap({
     selector: '#world-map',
     map: 'world',
     backgroundColor: 'transparent',
-    regionStyle: {
-        initial: { fill: '#eef3f7' },
-        hover:   { fill: '#b8d6ff' }
-    },
     series: {
-        regions: [{
-        values: mapData, // { US: 1.69, NO: 14.07, ... }
-        scale: ['#E6F2FF', '#0D47A1'],
-        normalizeFunction: 'linear'
-        }]
+      regions: [{
+        attribute: 'fill',                 
+        values: mapData,
+        scale: ['#E6F2FF', '#0D47A1'],     
+        normalize: 'polynomial'            
+      }]
     },
-    onRegionTooltipShow: (tooltip, code) => {
-        const c = String(code || '').toUpperCase();
-        const hpi = mapData[c] ?? 0;
-        tooltip.textContent = `${tooltip.textContent}: ${hpi.toFixed(2)}`;
+    onRegionTooltipShow(tooltip, code){
+      const val = mapData[code] ?? mapData[code.toUpperCase()] ?? mapData[code.toLowerCase()] ?? 0;
+      tooltip.html(tooltip.html() + ': ' + val.toFixed(2));
     }
-    });
+  });
 });
 </script>
 {{end}}

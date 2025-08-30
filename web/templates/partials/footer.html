@@ -1,5 +1,10 @@
 {{define "footer"}}
 <footer class="bg-body-tertiary border-top mt-auto text-center text-muted pt-3">
-    <p>&copy; {{ currentYear }}<a href="/" class="ms-1">Shanraq.org</a>, Powered by AI <a href="https://alem.ai/">Alem</a></p>
+    <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of use</a>
+        <a href="/about">About Us</a>
+    </div>
+    <p class="pt-3">&copy; {{ currentYear }}<a href="/" class="ms-1">Shanraq.org</a>, Powered by AI <a href="https://alem.ai/">Alem</a></p>
 </footer>
 {{end}}
