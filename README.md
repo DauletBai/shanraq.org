@@ -21,7 +21,7 @@ Shanraq.org is a modern web application that leverages the agglutinative feature
 
 ### 1. Clone the Project
 ```bash
-git clone https://github.com/shanraq.org/shanraq.org.git
+git clone https://github.com/DauletBai/shanraq.org.git
 cd shanraq.org
 ```
 
@@ -231,7 +231,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - 🌐 Website: https://shanraq.org
 - 📧 Email: info@shanraq.org
 - 💬 Discord: https://discord.gg/shanraq
-- 🐙 GitHub: https://github.com/shanraq.org/shanraq
+- 🐙 GitHub: https://github.com/DauletBai/shanraq.org
 - 📱 Telegram: https://t.me/shanraq_org
 
 ## 🙏 Acknowledgments
