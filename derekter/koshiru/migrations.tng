@@ -1,0 +1,471 @@
+// migrations.tng - Tenge Migration System
+// Agglutinative database migration management
+
+atqar migration_jasau() -> MigrationManager {
+    jasau manager: MigrationManager = migration_manager_create();
+    qaytar manager;
+}
+
+// Migration creation
+atqar migration_jasau(name: jol) -> Migration {
+    jasau migration: Migration = migration_create();
+    migration.name = name;
+    migration.version = migration_get_next_version();
+    migration.created_at = current_timestamp();
+    migration.status = "pending";
+    qaytar migration;
+}
+
+atqar migration_table_jasau(migration: Migration, table_name: jol, fields: Field[]) -> TableMigration {
+    jasau table_migration: TableMigration = table_migration_create();
+    table_migration.type = "CREATE_TABLE";
+    table_migration.table_name = table_name;
+    table_migration.fields = fields;
+    
+    migration.operations = migration.operations + [table_migration];
+    qaytar table_migration;
+}
+
+atqar migration_table_zhoyu(migration: Migration, table_name: jol) -> TableMigration {
+    jasau table_migration: TableMigration = table_migration_create();
+    table_migration.type = "DROP_TABLE";
+    table_migration.table_name = table_name;
+    
+    migration.operations = migration.operations + [table_migration];
+    qaytar table_migration;
+}
+
+atqar migration_field_qosu(migration: Migration, table_name: jol, field: Field) -> FieldMigration {
+    jasau field_migration: FieldMigration = field_migration_create();
+    field_migration.type = "ADD_COLUMN";
+    field_migration.table_name = table_name;
+    field_migration.field = field;
+    
+    migration.operations = migration.operations + [field_migration];
+    qaytar field_migration;
+}
+
+atqar migration_field_zhoyu(migration: Migration, table_name: jol, field_name: jol) -> FieldMigration {
+    jasau field_migration: FieldMigration = field_migration_create();
+    field_migration.type = "DROP_COLUMN";
+    field_migration.table_name = table_name;
+    field_migration.field_name = field_name;
+    
+    migration.operations = migration.operations + [field_migration];
+    qaytar field_migration;
+}
+
+atqar migration_field_zhangartu(migration: Migration, table_name: jol, field_name: jol, new_field: Field) -> FieldMigration {
+    jasau field_migration: FieldMigration = field_migration_create();
+    field_migration.type = "ALTER_COLUMN";
+    field_migration.table_name = table_name;
+    field_migration.field_name = field_name;
+    field_migration.new_field = new_field;
+    
+    migration.operations = migration.operations + [field_migration];
+    qaytar field_migration;
+}
+
+atqar migration_index_qosu(migration: Migration, table_name: jol, index: Index) -> IndexMigration {
+    jasau index_migration: IndexMigration = index_migration_create();
+    index_migration.type = "CREATE_INDEX";
+    index_migration.table_name = table_name;
+    index_migration.index = index;
+    
+    migration.operations = migration.operations + [index_migration];
+    qaytar index_migration;
+}
+
+atqar migration_index_zhoyu(migration: Migration, table_name: jol, index_name: jol) -> IndexMigration {
+    jasau index_migration: IndexMigration = index_migration_create();
+    index_migration.type = "DROP_INDEX";
+    index_migration.table_name = table_name;
+    index_migration.index_name = index_name;
+    
+    migration.operations = migration.operations + [index_migration];
+    qaytar index_migration;
+}
+
+atqar migration_data_qosu(migration: Migration, table_name: jol, data: JsonObject[]) -> DataMigration {
+    jasau data_migration: DataMigration = data_migration_create();
+    data_migration.type = "INSERT_DATA";
+    data_migration.table_name = table_name;
+    data_migration.data = data;
+    
+    migration.operations = migration.operations + [data_migration];
+    qaytar data_migration;
+}
+
+// Migration execution
+atqar migration_ishke_engizu(migration: Migration) -> aqıqat {
+    jasau i: san = 0;
+    
+    azirshe (i < migration.operations.length) {
+        jasau operation: MigrationOperation = migration.operations[i];
+        jasau result: aqıqat = migration_operation_ishke_engizu(operation);
+        
+        eгер (!result) {
+            migration.status = "failed";
+            migration.error = "Operation failed at index " + int_to_string(i);
+            qaytar jin;
+        }
+        
+        i = i + 1;
+    }
+    
+    migration.status = "completed";
+    migration.completed_at = current_timestamp();
+    
+    // Record migration in database
+    migration_record_saktau(migration);
+    
+    qaytar jan;
+}
+
+atqar migration_operation_ishke_engizu(operation: MigrationOperation) -> aqıqat {
+    eгер (operation.type == "CREATE_TABLE") {
+        qaytar migration_create_table_ishke_engizu(operation);
+    } aitpese eгер (operation.type == "DROP_TABLE") {
+        qaytar migration_drop_table_ishke_engizu(operation);
+    } aitpese eгер (operation.type == "ADD_COLUMN") {
+        qaytar migration_add_column_ishke_engizu(operation);
+    } aitpese eгер (operation.type == "DROP_COLUMN") {
+        qaytar migration_drop_column_ishke_engizu(operation);
+    } aitpese eгер (operation.type == "ALTER_COLUMN") {
+        qaytar migration_alter_column_ishke_engizu(operation);
+    } aitpese eгер (operation.type == "CREATE_INDEX") {
+        qaytar migration_create_index_ishke_engizu(operation);
+    } aitpese eгер (operation.type == "DROP_INDEX") {
+        qaytar migration_drop_index_ishke_engizu(operation);
+    } aitpese eгер (operation.type == "INSERT_DATA") {
+        qaytar migration_insert_data_ishke_engizu(operation);
+    }
+    
+    qaytar jin;
+}
+
+// Table operations
+atqar migration_create_table_ishke_engizu(operation: TableMigration) -> aqıqat {
+    jasau sql: jol = "CREATE TABLE " + operation.table_name + " (";
+    jasau field_definitions: jol[] = [];
+    
+    jasau i: san = 0;
+    azirshe (i < operation.fields.length) {
+        jasau field: Field = operation.fields[i];
+        jasau definition: jol = migration_build_field_definition(field);
+        field_definitions = field_definitions + [definition];
+        i = i + 1;
+    }
+    
+    sql = sql + string_join(field_definitions, ", ");
+    sql = sql + ")";
+    
+    jasau result: QueryResult = database_execute_query(sql);
+    qaytar result.success;
+}
+
+atqar migration_drop_table_ishke_engizu(operation: TableMigration) -> aqıqat {
+    jasau sql: jol = "DROP TABLE " + operation.table_name;
+    jasau result: QueryResult = database_execute_query(sql);
+    qaytar result.success;
+}
+
+// Field operations
+atqar migration_add_column_ishke_engizu(operation: FieldMigration) -> aqıqat {
+    jasau field_definition: jol = migration_build_field_definition(operation.field);
+    jasau sql: jol = "ALTER TABLE " + operation.table_name + " ADD COLUMN " + field_definition;
+    jasau result: QueryResult = database_execute_query(sql);
+    qaytar result.success;
+}
+
+atqar migration_drop_column_ishke_engizu(operation: FieldMigration) -> aqıqat {
+    jasau sql: jol = "ALTER TABLE " + operation.table_name + " DROP COLUMN " + operation.field_name;
+    jasau result: QueryResult = database_execute_query(sql);
+    qaytar result.success;
+}
+
+atqar migration_alter_column_ishke_engizu(operation: FieldMigration) -> aqıqat {
+    jasau field_definition: jol = migration_build_field_definition(operation.new_field);
+    jasau sql: jol = "ALTER TABLE " + operation.table_name + " ALTER COLUMN " + operation.field_name + " " + field_definition;
+    jasau result: QueryResult = database_execute_query(sql);
+    qaytar result.success;
+}
+
+// Index operations
+atqar migration_create_index_ishke_engizu(operation: IndexMigration) -> aqıqat {
+    jasau index_name: jol = operation.table_name + "_" + string_join(operation.index.fields, "_") + "_idx";
+    jasau unique_keyword: jol = operation.index.unique ? "UNIQUE " : "";
+    jasau sql: jol = "CREATE " + unique_keyword + "INDEX " + index_name + " ON " + operation.table_name + " (" + string_join(operation.index.fields, ", ") + ")";
+    jasau result: QueryResult = database_execute_query(sql);
+    qaytar result.success;
+}
+
+atqar migration_drop_index_ishke_engizu(operation: IndexMigration) -> aqıqat {
+    jasau sql: jol = "DROP INDEX " + operation.index_name;
+    jasau result: QueryResult = database_execute_query(sql);
+    qaytar result.success;
+}
+
+// Data operations
+atqar migration_insert_data_ishke_engizu(operation: DataMigration) -> aqıqat {
+    jasau i: san = 0;
+    
+    azirshe (i < operation.data.length) {
+        jasau record: JsonObject = operation.data[i];
+        jasau fields: jol[] = json_object_get_keys(record);
+        jasau values: jol[] = [];
+        
+        jasau j: san = 0;
+        azirshe (j < fields.length) {
+            jasau value: jol = json_object_get_string(record, fields[j]);
+            values = values + ["'" + value + "'"];
+            j = j + 1;
+        }
+        
+        jasau sql: jol = "INSERT INTO " + operation.table_name + " (" + string_join(fields, ", ") + ") VALUES (" + string_join(values, ", ") + ")";
+        jasau result: QueryResult = database_execute_query(sql);
+        
+        eгер (!result.success) {
+            qaytar jin;
+        }
+        
+        i = i + 1;
+    }
+    
+    qaytar jan;
+}
+
+// Field definition building
+atqar migration_build_field_definition(field: Field) -> jol {
+    jasau definition: jol = field.name + " " + field.type;
+    
+    jasau i: san = 0;
+    azirshe (i < field.constraints.length) {
+        jasau constraint: FieldConstraint = field.constraints[i];
+        
+        eгер (constraint.type == "PRIMARY_KEY") {
+            definition = definition + " PRIMARY KEY";
+        } aitpese eгер (constraint.type == "NOT_NULL") {
+            definition = definition + " NOT NULL";
+        } aitpese eгер (constraint.type == "UNIQUE") {
+            definition = definition + " UNIQUE";
+        } aitpese eгер (constraint.type == "DEFAULT") {
+            definition = definition + " DEFAULT '" + constraint.default_value + "'";
+        } aitpese eгер (constraint.type == "FOREIGN_KEY") {
+            definition = definition + " REFERENCES " + constraint.referenced_table + "(" + constraint.referenced_field + ")";
+        } aitpese eгер (constraint.type == "CHECK") {
+            definition = definition + " CHECK (" + constraint.check_expression + ")";
+        }
+        
+        i = i + 1;
+    }
+    
+    qaytar definition;
+}
+
+// Migration management
+atqar migration_manager_ishke_engizu(manager: MigrationManager) -> aqıqat {
+    jasau pending_migrations: Migration[] = migration_manager_pending_migrations_alu(manager);
+    jasau i: san = 0;
+    
+    azirshe (i < pending_migrations.length) {
+        jasau migration: Migration = pending_migrations[i];
+        jasau result: aqıqat = migration_ishke_engizu(migration);
+        
+        eгер (!result) {
+            korset("Migration failed: " + migration.name + " - " + migration.error);
+            qaytar jin;
+        }
+        
+        korset("Migration completed: " + migration.name);
+        i = i + 1;
+    }
+    
+    qaytar jan;
+}
+
+atqar migration_manager_rollback(manager: MigrationManager, steps: san) -> aqıqat {
+    jasau recent_migrations: Migration[] = migration_manager_recent_migrations_alu(manager, steps);
+    jasau i: san = recent_migrations.length - 1;
+    
+    azirshe (i >= 0) {
+        jasau migration: Migration = recent_migrations[i];
+        jasau result: aqıqat = migration_rollback_ishke_engizu(migration);
+        
+        eгер (!result) {
+            korset("Migration rollback failed: " + migration.name);
+            qaytar jin;
+        }
+        
+        korset("Migration rolled back: " + migration.name);
+        i = i - 1;
+    }
+    
+    qaytar jan;
+}
+
+atqar migration_rollback_ishke_engizu(migration: Migration) -> aqıqat {
+    jasau i: san = migration.operations.length - 1;
+    
+    azirshe (i >= 0) {
+        jasau operation: MigrationOperation = migration.operations[i];
+        jasau result: aqıqat = migration_operation_rollback_ishke_engizu(operation);
+        
+        eгер (!result) {
+            migration.status = "rollback_failed";
+            migration.error = "Rollback failed at operation index " + int_to_string(i);
+            qaytar jin;
+        }
+        
+        i = i - 1;
+    }
+    
+    migration.status = "rolled_back";
+    migration.rolled_back_at = current_timestamp();
+    
+    qaytar jan;
+}
+
+atqar migration_operation_rollback_ishke_engizu(operation: MigrationOperation) -> aqıqat {
+    eгер (operation.type == "CREATE_TABLE") {
+        // Rollback: DROP TABLE
+        jasau sql: jol = "DROP TABLE " + operation.table_name;
+        jasau result: QueryResult = database_execute_query(sql);
+        qaytar result.success;
+    } aitpese eгер (operation.type == "DROP_TABLE") {
+        // Rollback: CREATE TABLE (requires original schema)
+        qaytar jin; // Cannot rollback DROP TABLE without original schema
+    } aitpese eгер (operation.type == "ADD_COLUMN") {
+        // Rollback: DROP COLUMN
+        jasau sql: jol = "ALTER TABLE " + operation.table_name + " DROP COLUMN " + operation.field.name;
+        jasau result: QueryResult = database_execute_query(sql);
+        qaytar result.success;
+    } aitpese eгер (operation.type == "DROP_COLUMN") {
+        // Rollback: ADD COLUMN (requires original field definition)
+        qaytar jin; // Cannot rollback DROP COLUMN without original field definition
+    }
+    
+    qaytar jin;
+}
+
+// Migration status tracking
+atqar migration_record_saktau(migration: Migration) {
+    jasau sql: jol = "INSERT INTO migrations (name, version, status, created_at, completed_at) VALUES ('" + 
+                     migration.name + "', " + migration.version + ", '" + migration.status + "', " + 
+                     migration.created_at + ", " + migration.completed_at + ")";
+    database_execute_query(sql);
+}
+
+atqar migration_manager_pending_migrations_alu(manager: MigrationManager) -> Migration[] {
+    jasau all_migrations: Migration[] = migration_manager_all_migrations_alu(manager);
+    jasau completed_migrations: jol[] = migration_manager_completed_migrations_alu(manager);
+    jasau pending: Migration[] = [];
+    
+    jasau i: san = 0;
+    azirshe (i < all_migrations.length) {
+        jasau migration: Migration = all_migrations[i];
+        jasau is_completed: aqıqat = jin;
+        
+        jasau j: san = 0;
+        azirshe (j < completed_migrations.length) {
+            eгер (completed_migrations[j] == migration.name) {
+                is_completed = jan;
+                break;
+            }
+            j = j + 1;
+        }
+        
+        eгер (!is_completed) {
+            pending = pending + [migration];
+        }
+        
+        i = i + 1;
+    }
+    
+    qaytar pending;
+}
+
+atqar migration_manager_recent_migrations_alu(manager: MigrationManager, limit: san) -> Migration[] {
+    jasau sql: jol = "SELECT * FROM migrations WHERE status = 'completed' ORDER BY completed_at DESC LIMIT " + int_to_string(limit);
+    jasau result: QueryResult = database_execute_query(sql);
+    jasau migrations: Migration[] = [];
+    
+    jasau i: san = 0;
+    azirshe (i < result.rows.length) {
+        jasau row: JsonObject = result.rows[i];
+        jasau migration: Migration = migration_create();
+        migration.name = json_object_get_string(row, "name");
+        migration.version = json_object_get_number(row, "version");
+        migration.status = json_object_get_string(row, "status");
+        migrations = migrations + [migration];
+        i = i + 1;
+    }
+    
+    qaytar migrations;
+}
+
+atqar migration_manager_all_migrations_alu(manager: MigrationManager) -> Migration[] {
+    // Implementation depends on migration discovery mechanism
+    jasau migrations: Migration[] = [];
+    qaytar migrations;
+}
+
+atqar migration_manager_completed_migrations_alu(manager: MigrationManager) -> jol[] {
+    jasau sql: jol = "SELECT name FROM migrations WHERE status = 'completed'";
+    jasau result: QueryResult = database_execute_query(sql);
+    jasau completed: jol[] = [];
+    
+    jasau i: san = 0;
+    azirshe (i < result.rows.length) {
+        jasau row: JsonObject = result.rows[i];
+        completed = completed + [json_object_get_string(row, "name")];
+        i = i + 1;
+    }
+    
+    qaytar completed;
+}
+
+atqar migration_get_next_version() -> san {
+    jasau sql: jol = "SELECT MAX(version) as max_version FROM migrations";
+    jasau result: QueryResult = database_execute_query(sql);
+    
+    eгер (result.rows.length > 0) {
+        jasau max_version: san = json_object_get_number(result.rows[0], "max_version");
+        qaytar max_version + 1;
+    }
+    
+    qaytar 1;
+}
+
+// Factory functions
+atqar migration_manager_create() -> MigrationManager {
+    jasau manager: MigrationManager = MigrationManager();
+    qaytar manager;
+}
+
+atqar migration_create() -> Migration {
+    jasau migration: Migration = Migration();
+    migration.operations = [];
+    qaytar migration;
+}
+
+atqar table_migration_create() -> TableMigration {
+    jasau table_migration: TableMigration = TableMigration();
+    qaytar table_migration;
+}
+
+atqar field_migration_create() -> FieldMigration {
+    jasau field_migration: FieldMigration = FieldMigration();
+    qaytar field_migration;
+}
+
+atqar index_migration_create() -> IndexMigration {
+    jasau index_migration: IndexMigration = IndexMigration();
+    qaytar index_migration;
+}
+
+atqar data_migration_create() -> DataMigration {
+    jasau data_migration: DataMigration = DataMigration();
+    qaytar data_migration;
+}
+

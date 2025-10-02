@@ -1,0 +1,299 @@
+// user_model.tng - Пайдаланушы модельі
+// Агглютинативтік ORM модель
+
+atqar user_model_jasau() -> Model {
+    jasau model: Model = model_create("users");
+    
+    // Полелерді қосу
+    jasau id_field: Field = field_qosu("id", "VARCHAR(36)", [constraint_primary_key()]);
+    jasau name_field: Field = field_qosu("name", "VARCHAR(100)", [constraint_not_null()]);
+    jasau email_field: Field = field_qosu("email", "VARCHAR(255)", [constraint_not_null(), constraint_unique()]);
+    jasau password_field: Field = field_qosu("password", "VARCHAR(255)", [constraint_not_null()]);
+    jasau role_field: Field = field_qosu("role", "VARCHAR(50)", [constraint_not_null()]);
+    jasau status_field: Field = field_qosu("status", "VARCHAR(20)", [constraint_not_null()]);
+    jasau created_at_field: Field = field_qosu("created_at", "TIMESTAMP", [constraint_not_null()]);
+    jasau updated_at_field: Field = field_qosu("updated_at", "TIMESTAMP", [constraint_not_null()]);
+    jasau last_login_field: Field = field_qosu("last_login", "TIMESTAMP", []);
+    
+    // Полелерді модельге қосу
+    model_add_field(model, id_field);
+    model_add_field(model, name_field);
+    model_add_field(model, email_field);
+    model_add_field(model, password_field);
+    model_add_field(model, role_field);
+    model_add_field(model, status_field);
+    model_add_field(model, created_at_field);
+    model_add_field(model, updated_at_field);
+    model_add_field(model, last_login_field);
+    
+    qaytar model;
+}
+
+// Пайдаланушы жасау
+atqar user_jasau(name: jol, email: jol, password: jol, role: jol) -> JsonObject {
+    jasau model: Model = user_model_jasau();
+    jasau data: JsonObject = json_object_create();
+    
+    json_object_set_string(data, "name", name);
+    json_object_set_string(data, "email", email);
+    json_object_set_string(data, "password", hash_password(password));
+    json_object_set_string(data, "role", role);
+    json_object_set_string(data, "status", "active");
+    json_object_set_string(data, "created_at", current_timestamp());
+    json_object_set_string(data, "updated_at", current_timestamp());
+    
+    jasau user: JsonObject = model_create_record(model, data);
+    qaytar user;
+}
+
+// Пайдаланушыны ID бойынша табу
+atqar user_tabu_by_id(id: jol) -> JsonObject {
+    jasau model: Model = user_model_jasau();
+    jasau user: JsonObject = model_read_record(model, id);
+    qaytar user;
+}
+
+// Пайдаланушыны email бойынша табу
+atqar user_tabu_by_email(email: jol) -> JsonObject {
+    jasau model: Model = user_model_jasau();
+    jasau query: jol = "SELECT * FROM users WHERE email = '" + email + "'";
+    jasau result: QueryResult = database_query(query);
+    
+    eger (result.rows.length > 0) {
+        qaytar result.rows[0];
+    } aitpese {
+        qaytar NULL;
+    }
+}
+
+// Пайдаланушыны жаңарту
+atqar user_zhangartu(id: jol, name: jol, email: jol, role: jol, status: jol) -> aqıqat {
+    jasau model: Model = user_model_jasau();
+    jasau data: JsonObject = json_object_create();
+    
+    eger (name != "") {
+        json_object_set_string(data, "name", name);
+    }
+    
+    eger (email != "") {
+        json_object_set_string(data, "email", email);
+    }
+    
+    eger (role != "") {
+        json_object_set_string(data, "role", role);
+    }
+    
+    eger (status != "") {
+        json_object_set_string(data, "status", status);
+    }
+    
+    json_object_set_string(data, "updated_at", current_timestamp());
+    
+    jasau success: aqıqat = model_update_record(model, id, data);
+    qaytar success;
+}
+
+// Пайдаланушыны жою
+atqar user_zhoyu(id: jol) -> aqıqat {
+    jasau model: Model = user_model_jasau();
+    jasau success: aqıqat = model_delete_record(model, id);
+    qaytar success;
+}
+
+// Пайдаланушы тізімі
+atqar user_tizimi(limit: san, offset: san, role: jol, status: jol) -> JsonObject[] {
+    jasau query: jol = "SELECT * FROM users";
+    jasau conditions: jol[] = [];
+    
+    eger (role != "") {
+        conditions = conditions + ["role = '" + role + "'"];
+    }
+    
+    eger (status != "") {
+        conditions = conditions + ["status = '" + status + "'"];
+    }
+    
+    eger (conditions.length > 0) {
+        query = query + " WHERE " + string_join(conditions, " AND ");
+    }
+    
+    query = query + " ORDER BY created_at DESC LIMIT " + limit + " OFFSET " + offset;
+    
+    jasau result: QueryResult = database_query(query);
+    qaytar result.rows;
+}
+
+// Пайдаланушы саны
+atqar user_sany(role: jol, status: jol) -> san {
+    jasau query: jol = "SELECT COUNT(*) as count FROM users";
+    jasau conditions: jol[] = [];
+    
+    eger (role != "") {
+        conditions = conditions + ["role = '" + role + "'"];
+    }
+    
+    eger (status != "") {
+        conditions = conditions + ["status = '" + status + "'"];
+    }
+    
+    eger (conditions.length > 0) {
+        query = query + " WHERE " + string_join(conditions, " AND ");
+    }
+    
+    jasau result: QueryResult = database_query(query);
+    jasau count: san = result.rows[0].count;
+    qaytar count;
+}
+
+// Парольді тексеру
+atqar user_parol_tekseru(email: jol, password: jol) -> aqıqat {
+    jasau user: JsonObject = user_tabu_by_email(email);
+    
+    eger (user == NULL) {
+        qaytar jin;
+    }
+    
+    jasau stored_password: jol = json_object_get_string(user, "password");
+    jasau hashed_input: jol = hash_password(password);
+    
+    qaytar stored_password == hashed_input;
+}
+
+// Пайдаланушы профилі
+atqar user_profil_alu(id: jol) -> JsonObject {
+    jasau user: JsonObject = user_tabu_by_id(id);
+    
+    eger (user == NULL) {
+        qaytar NULL;
+    }
+    
+    // Парольді алып тастау
+    json_object_remove(user, "password");
+    
+    qaytar user;
+}
+
+// Пайдаланушы рөлдері
+atqar user_role_qosu(user_id: jol, role: jol) -> aqıqat {
+    jasau query: jol = "INSERT INTO user_roles (user_id, role) VALUES ('" + user_id + "', '" + role + "')";
+    jasau result: QueryResult = database_query(query);
+    qaytar result.success;
+}
+
+atqar user_role_alu(user_id: jol) -> jol[] {
+    jasau query: jol = "SELECT role FROM user_roles WHERE user_id = '" + user_id + "'";
+    jasau result: QueryResult = database_query(query);
+    jasau roles: jol[] = [];
+    jasau i: san = 0;
+    
+    azirshe (i < result.rows.length) {
+        jasau role: jol = result.rows[i].role;
+        roles = roles + [role];
+        i = i + 1;
+    }
+    
+    qaytar roles;
+}
+
+// Пайдаланушы рұқсаттары
+atqar user_ruqsat_tekseru(user_id: jol, permission: jol) -> aqıqat {
+    jasau roles: jol[] = user_role_alu(user_id);
+    jasau i: san = 0;
+    
+    azirshe (i < roles.length) {
+        jasau role: jol = roles[i];
+        
+        eger (role == "admin") {
+            qaytar jan;  // Админ барлық рұқсаттарға ие
+        }
+        
+        // Роль бойынша рұқсаттарды тексеру
+        jasau role_permissions: jol[] = get_role_permissions(role);
+        jasau j: san = 0;
+        
+        azirshe (j < role_permissions.length) {
+            eger (role_permissions[j] == permission) {
+                qaytar jan;
+            }
+            j = j + 1;
+        }
+        
+        i = i + 1;
+    }
+    
+    qaytar jin;
+}
+
+// Роль рұқсаттарын алу
+atqar get_role_permissions(role: jol) -> jol[] {
+    eger (role == "user") {
+        qaytar ["read_profile", "update_profile"];
+    } aitpese eger (role == "moderator") {
+        qaytar ["read_profile", "update_profile", "read_users", "moderate_content"];
+    } aitpese eger (role == "admin") {
+        qaytar ["all"];  // Барлық рұқсаттар
+    } aitpese {
+        qaytar [];
+    }
+}
+
+// Пайдаланушы статистикасы
+atqar user_statistika_alu() -> JsonObject {
+    jasau stats: JsonObject = json_object_create();
+    
+    jasau total_users: san = user_sany("", "");
+    jasau active_users: san = user_sany("", "active");
+    jasau admin_users: san = user_sany("admin", "");
+    jasau moderator_users: san = user_sany("moderator", "");
+    
+    json_object_set_number(stats, "total_users", total_users);
+    json_object_set_number(stats, "active_users", active_users);
+    json_object_set_number(stats, "admin_users", admin_users);
+    json_object_set_number(stats, "moderator_users", moderator_users);
+    
+    qaytar stats;
+}
+
+// Пайдаланушы іздеу
+atqar user_izdeu(query: jol, limit: san, offset: san) -> JsonObject[] {
+    jasau search_query: jol = "SELECT * FROM users WHERE name LIKE '%" + query + "%' OR email LIKE '%" + query + "%' ORDER BY created_at DESC LIMIT " + limit + " OFFSET " + offset;
+    jasau result: QueryResult = database_query(search_query);
+    qaytar result.rows;
+}
+
+// Пайдаланушы фильтрлеу
+atqar user_filterleu(filters: JsonObject) -> JsonObject[] {
+    jasau query: jol = "SELECT * FROM users";
+    jasau conditions: jol[] = [];
+    
+    jasau role: jol = json_object_get_string(filters, "role");
+    jasau status: jol = json_object_get_string(filters, "status");
+    jasau date_from: jol = json_object_get_string(filters, "date_from");
+    jasau date_to: jol = json_object_get_string(filters, "date_to");
+    
+    eger (role != "") {
+        conditions = conditions + ["role = '" + role + "'"];
+    }
+    
+    eger (status != "") {
+        conditions = conditions + ["status = '" + status + "'"];
+    }
+    
+    eger (date_from != "") {
+        conditions = conditions + ["created_at >= '" + date_from + "'"];
+    }
+    
+    eger (date_to != "") {
+        conditions = conditions + ["created_at <= '" + date_to + "'"];
+    }
+    
+    eger (conditions.length > 0) {
+        query = query + " WHERE " + string_join(conditions, " AND ");
+    }
+    
+    query = query + " ORDER BY created_at DESC";
+    
+    jasau result: QueryResult = database_query(query);
+    qaytar result.rows;
+}
+

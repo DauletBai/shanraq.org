@@ -1,0 +1,179 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Tenge",
+  "scopeName": "source.tenge",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#functions"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.tenge",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.tenge",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.tenge",
+          "match": "\\b(atqar|jasau|eger|azirshe|while|for|if|else|qaytar|end|endif|endwhile|endfor)\\b"
+        },
+        {
+          "name": "keyword.other.tenge",
+          "match": "\\b(import|export|public|private|static|const|var|let|true|false|null|NULL|aqıqat_ras|aqıqat_jin)\\b"
+        },
+        {
+          "name": "keyword.operator.tenge",
+          "match": "\\b(and|or|not|in|is|as)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "support.type.tenge",
+          "match": "\\b(san|jol|aqıqat|JsonObject|WebServer|Component|TemplateEngine|ArchetypeEngine|MorphemeEngine|PhonemeEngine|Vector|Map|Array|Function|Class|Struct|Interface|Enum)\\b"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.tenge",
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*(_jasau|_alu|_qosu|_zhangartu|_zhoyu|_tekseru|_opt|_eng|_man)\\b"
+        },
+        {
+          "name": "entity.name.function.tenge",
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\s*\\("
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.tenge",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.tenge",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.tenge",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.tenge",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.template.tenge",
+          "begin": "`",
+          "end": "`",
+          "patterns": [
+            {
+              "name": "constant.character.escape.tenge",
+              "match": "\\\\."
+            },
+            {
+              "name": "variable.other.tenge",
+              "match": "\\$\\{[^}]+\\}"
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.tenge",
+          "match": "\\b\\d+(\\.\\d+)?([eE][+-]?\\d+)?\\b"
+        },
+        {
+          "name": "constant.numeric.hex.tenge",
+          "match": "\\b0[xX][0-9a-fA-F]+\\b"
+        },
+        {
+          "name": "constant.numeric.binary.tenge",
+          "match": "\\b0[bB][01]+\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.tenge",
+          "match": "\\+\\+|--|\\+=|-=|\\*=|/=|%=|==|!=|<=|>=|<|>|&&|\\|\\||!"
+        },
+        {
+          "name": "keyword.operator.tenge",
+          "match": "\\+|-|\\*|/|%|\\^|&|\\||~|<<|>>"
+        },
+        {
+          "name": "keyword.operator.tenge",
+          "match": "="
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.separator.tenge",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.separator.tenge",
+          "match": ","
+        },
+        {
+          "name": "punctuation.definition.tenge",
+          "match": "[{}]"
+        },
+        {
+          "name": "punctuation.definition.tenge",
+          "match": "[\\[\\]]"
+        },
+        {
+          "name": "punctuation.definition.tenge",
+          "match": "[()]"
+        }
+      ]
+    }
+  }
+}

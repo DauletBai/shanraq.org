@@ -1,0 +1,93 @@
+// user_test.tng - Пайдаланушы бірлік тесттері
+// Unit tests for user management
+
+atqar user_test_jasau() -> TestSuite {
+    jasau test_suite: TestSuite = test_suite_jasau("User Management Tests");
+    qaytar test_suite;
+}
+
+// Test user creation
+atqar test_user_jasau() -> aqıqat {
+    jasau test_data: JsonObject = json_object_create();
+    json_object_set_string(test_data, "name", "Test User");
+    json_object_set_string(test_data, "email", "test@example.com");
+    json_object_set_string(test_data, "password", "password123");
+    json_object_set_string(test_data, "role", "user");
+    
+    jasau result: JsonObject = paydalanu_tirkelu_jasau(
+        json_object_get_string(test_data, "name"),
+        json_object_get_string(test_data, "email"),
+        json_object_get_string(test_data, "password"),
+        json_object_get_string(test_data, "role")
+    );
+    
+    eгер (json_object_get_boolean(result, "success")) {
+        korset("✅ User creation test passed");
+        qaytar jan;
+    } aitpese {
+        korset("❌ User creation test failed");
+        qaytar jin;
+    }
+}
+
+// Test user authentication
+atqar test_user_kimdik_tekseru() -> aqıqat {
+    jasau email: jol = "test@example.com";
+    jasau password: jol = "password123";
+    
+    jasau result: JsonObject = paydalanu_kimdik_tekseru(email, password);
+    
+    eгер (json_object_get_boolean(result, "success")) {
+        korset("✅ User authentication test passed");
+        qaytar jan;
+    } aitpese {
+        korset("❌ User authentication test failed");
+        qaytar jin;
+    }
+}
+
+// Test user validation
+atqar test_user_tekseu() -> aqıqat {
+    jasau validation_result: JsonObject = paydalanu_tekseu_jasau(
+        "Test User",
+        "test@example.com",
+        "password123"
+    );
+    
+    eгер (json_object_get_boolean(validation_result, "valid")) {
+        korset("✅ User validation test passed");
+        qaytar jan;
+    } aitpese {
+        korset("❌ User validation test failed");
+        qaytar jin;
+    }
+}
+
+// Run all user tests
+atqar user_testlerin_ishke_engizu() {
+    korset("🧪 Пайдаланушы тесттерін іске қосу...");
+    
+    jasau passed: san = 0;
+    jasau total: san = 3;
+    
+    eгер (test_user_jasau()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_user_kimdik_tekseru()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_user_tekseu()) {
+        passed = passed + 1;
+    }
+    
+    korset("📊 Тест нәтижелері: " + passed + "/" + total + " өтті");
+    
+    eгер (passed == total) {
+        korset("✅ Барлық пайдаланушы тесттері сәтті өтті!");
+    } aitpese {
+        korset("❌ Кейбір пайдаланушы тесттері сәтсіз!");
+    }
+}
+

@@ -1,0 +1,319 @@
+// jojj_test.tng - JOJJ операциялары тесттері
+// JOJJ Operations Tests
+
+import "framework/jojj/jojj_interface.tng";
+import "ısker_qisyn/paydalanu_baskaru/paydalanusylar_jojj.tng";
+import "ısker_qisyn/mazmun_baskaru/maqalalar_jojj.tng";
+import "ısker_qisyn/mazmun_baskaru/sanattar_jojj.tng";
+
+// JOJJ тесттері
+atqar jojj_test_jasau() -> TestSuite {
+    jasau test_suite: TestSuite = test_suite_jasau("JOJJ Operations Tests");
+    qaytar test_suite;
+}
+
+// Тест пайдаланушылар JOJJ операциялары
+atqar test_paydalanusylar_jojj() -> aqıqat {
+    korset("🧪 Пайдаланушылар JOJJ тесттерін іске қосу...");
+    
+    // Инициализация
+    jasau connection: DatabaseConnection = sqlite_connection_jasau("test.db");
+    jasau paydalanusylar: PaydalanusylarJOJJ = new PaydalanusylarJOJJ(connection);
+    
+    // Jasau - Пайдаланушы жасау
+    jasau create_result: JsonObject = paydalanusylar.paydalanu_jasau(
+        "Test User",
+        "test@example.com",
+        "password123",
+        "user"
+    );
+    
+    eгер (!json_object_get_boolean(create_result, "success")) {
+        korset("❌ Пайдаланушы жасау қатесі: " + json_object_get_string(create_result, "error"));
+        qaytar jin;
+    }
+    
+    jasau user: JsonObject = json_object_get_object(create_result, "entity");
+    jasau user_id: jol = json_object_get_string(user, "id");
+    
+    // Oqu - Пайдаланушыны алу
+    jasau read_result: JsonObject = paydalanusylar.paydalanu_oqu(user_id);
+    
+    eгер (read_result == NULL) {
+        korset("❌ Пайдаланушыны алу қатесі");
+        qaytar jin;
+    }
+    
+    // Janartu - Пайдаланушыны жаңарту
+    jasau update_result: JsonObject = paydalanusylar.paydalanu_janartu(
+        user_id,
+        "Updated Test User",
+        "updated@example.com",
+        "admin",
+        "active"
+    );
+    
+    eгер (!json_object_get_boolean(update_result, "success")) {
+        korset("❌ Пайдаланушыны жаңарту қатесі: " + json_object_get_string(update_result, "error"));
+        qaytar jin;
+    }
+    
+    // Joiu - Пайдаланушыны жою
+    jasau delete_result: aqıqat = paydalanusylar.paydalanu_joiu(user_id);
+    
+    eгер (!delete_result) {
+        korset("❌ Пайдаланушыны жою қатесі");
+        qaytar jin;
+    }
+    
+    korset("✅ Пайдаланушылар JOJJ тесттері сәтті өтті");
+    qaytar jan;
+}
+
+// Тест мақалалар JOJJ операциялары
+atqar test_maqalalar_jojj() -> aqıqat {
+    korset("🧪 Мақалалар JOJJ тесттерін іске қосу...");
+    
+    // Инициализация
+    jasau connection: DatabaseConnection = sqlite_connection_jasau("test.db");
+    jasau maqalalar: MaqalalarJOJJ = new MaqalalarJOJJ(connection);
+    
+    // Создаем автора
+    jasau author_id: jol = "author123";
+    
+    // Jasau - Мақала жасау
+    jasau create_result: JsonObject = maqalalar.maqala_jasau(
+        "Test Article",
+        "This is a test article content",
+        author_id,
+        "",
+        "published"
+    );
+    
+    eгер (!json_object_get_boolean(create_result, "success")) {
+        korset("❌ Мақала жасау қатесі: " + json_object_get_string(create_result, "error"));
+        qaytar jin;
+    }
+    
+    jasau article: JsonObject = json_object_get_object(create_result, "entity");
+    jasau article_id: jol = json_object_get_string(article, "id");
+    
+    // Oqu - Мақаланы алу
+    jasau read_result: JsonObject = maqalalar.maqala_oqu(article_id);
+    
+    eгер (read_result == NULL) {
+        korset("❌ Мақаланы алу қатесі");
+        qaytar jin;
+    }
+    
+    // Janartu - Мақаланы жаңарту
+    jasau update_result: JsonObject = maqalalar.maqala_janartu(
+        article_id,
+        "Updated Test Article",
+        "Updated article content",
+        "",
+        "draft"
+    );
+    
+    eгер (!json_object_get_boolean(update_result, "success")) {
+        korset("❌ Мақаланы жаңарту қатесі: " + json_object_get_string(update_result, "error"));
+        qaytar jin;
+    }
+    
+    // Joiu - Мақаланы жою
+    jasau delete_result: aqıqat = maqalalar.maqala_joiu(article_id);
+    
+    eгер (!delete_result) {
+        korset("❌ Мақаланы жою қатесі");
+        qaytar jin;
+    }
+    
+    korset("✅ Мақалалар JOJJ тесттері сәтті өтті");
+    qaytar jan;
+}
+
+// Тест санаттар JOJJ операциялары
+atqar test_sanattar_jojj() -> aqıqat {
+    korset("🧪 Санаттар JOJJ тесттерін іске қосу...");
+    
+    // Инициализация
+    jasau connection: DatabaseConnection = sqlite_connection_jasau("test.db");
+    jasau sanattar: SanattarJOJJ = new SanattarJOJJ(connection);
+    
+    // Jasau - Санат жасау
+    jasau create_result: JsonObject = sanattar.sanat_jasau(
+        "Test Category",
+        "This is a test category",
+        "",
+        "#ff0000",
+        "icon-test"
+    );
+    
+    eгер (!json_object_get_boolean(create_result, "success")) {
+        korset("❌ Санат жасау қатесі: " + json_object_get_string(create_result, "error"));
+        qaytar jin;
+    }
+    
+    jasau category: JsonObject = json_object_get_object(create_result, "entity");
+    jasau category_id: jol = json_object_get_string(category, "id");
+    
+    // Oqu - Санатты алу
+    jasau read_result: JsonObject = sanattar.sanat_oqu(category_id);
+    
+    eгер (read_result == NULL) {
+        korset("❌ Санатты алу қатесі");
+        qaytar jin;
+    }
+    
+    // Janartu - Санатты жаңарту
+    jasau update_result: JsonObject = sanattar.sanat_janartu(
+        category_id,
+        "Updated Test Category",
+        "Updated category description",
+        "",
+        "#00ff00",
+        "icon-updated",
+        1
+    );
+    
+    eгер (!json_object_get_boolean(update_result, "success")) {
+        korset("❌ Санатты жаңарту қатесі: " + json_object_get_string(update_result, "error"));
+        qaytar jin;
+    }
+    
+    // Joiu - Санатты жою
+    jasau delete_result: aqıqat = sanattar.sanat_joiu(category_id);
+    
+    eгер (!delete_result) {
+        korset("❌ Санатты жою қатесі");
+        qaytar jin;
+    }
+    
+    korset("✅ Санаттар JOJJ тесттері сәтті өтті");
+    qaytar jan;
+}
+
+// Тест JOJJ интерфейса
+atqar test_jojj_interface() -> aqıqat {
+    korset("🧪 JOJJ интерфейс тесттерін іске қосу...");
+    
+    // Инициализация
+    jasau connection: DatabaseConnection = sqlite_connection_jasau("test.db");
+    jasau jojj: JOJJBase = jojj_factory_jasau("test_table", connection);
+    
+    // Тест создания записи
+    jasau entity: JsonObject = json_object_create();
+    json_object_set_string(entity, "name", "Test Entity");
+    json_object_set_string(entity, "description", "Test description");
+    
+    jasau create_result: JsonObject = jojj.jasau(entity);
+    
+    eгер (!json_object_get_boolean(create_result, "success")) {
+        korset("❌ JOJJ жасау қатесі: " + json_object_get_string(create_result, "error"));
+        qaytar jin;
+    }
+    
+    jasau created_entity: JsonObject = json_object_get_object(create_result, "entity");
+    jasau entity_id: jol = json_object_get_string(created_entity, "id");
+    
+    // Тест чтения записи
+    jasau read_result: JsonObject = jojj.oqu(entity_id);
+    
+    eгер (read_result == NULL) {
+        korset("❌ JOJJ оқу қатесі");
+        qaytar jin;
+    }
+    
+    // Тест обновления записи
+    jasau update_data: JsonObject = json_object_create();
+    json_object_set_string(update_data, "name", "Updated Test Entity");
+    
+    jasau update_result: JsonObject = jojj.janartu(entity_id, update_data);
+    
+    eгер (!json_object_get_boolean(update_result, "success")) {
+        korset("❌ JOJJ жаңарту қатесі: " + json_object_get_string(update_result, "error"));
+        qaytar jin;
+    }
+    
+    // Тест удаления записи
+    jasau delete_result: aqıqat = jojj.joiu(entity_id);
+    
+    eгер (!delete_result) {
+        korset("❌ JOJJ жою қатесі");
+        qaytar jin;
+    }
+    
+    korset("✅ JOJJ интерфейс тесттері сәтті өтті");
+    qaytar jan;
+}
+
+// Тест валидации
+atqar test_jojj_validation() -> aqıqat {
+    korset("🧪 JOJJ валидация тесттерін іске қосу...");
+    
+    // Тест валидации пользователя
+    jasau user_validation: JsonObject = paydalanu_tekseu_jasau("", "invalid-email", "123");
+    
+    eгер (json_object_get_boolean(user_validation, "valid")) {
+        korset("❌ Пайдаланушы валидация қатесі");
+        qaytar jin;
+    }
+    
+    // Тест валидации статьи
+    jasau article_validation: JsonObject = maqala_tekseu_jasau("", "");
+    
+    eгер (json_object_get_boolean(article_validation, "valid")) {
+        korset("❌ Мақала валидация қатесі");
+        qaytar jin;
+    }
+    
+    // Тест валидации категории
+    jasau category_validation: JsonObject = sanat_tekseu_jasau("", "");
+    
+    eгер (json_object_get_boolean(category_validation, "valid")) {
+        korset("❌ Санат валидация қатесі");
+        qaytar jin;
+    }
+    
+    korset("✅ JOJJ валидация тесттері сәтті өтті");
+    qaytar jan;
+}
+
+// Запуск всех JOJJ тестов
+atqar jojj_testlerin_ishke_engizu() {
+    korset("🧪 JOJJ тесттерін іске қосу...");
+    korset("=====================================================");
+    
+    jasau passed: san = 0;
+    jasau total: san = 5;
+    
+    eгер (test_paydalanusylar_jojj()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_maqalalar_jojj()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_sanattar_jojj()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_jojj_interface()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_jojj_validation()) {
+        passed = passed + 1;
+    }
+    
+    korset("📊 JOJJ тест нәтижелері: " + passed + "/" + total + " өтті");
+    korset("=====================================================");
+    
+    eгер (passed == total) {
+        korset("✅ Барлық JOJJ тесттері сәтті өтті!");
+        korset("🎉 JOJJ интерфейсі толық жұмыс істейді!");
+    } aitpese {
+        korset("❌ Кейбір JOJJ тесттері сәтсіз!");
+    }
+}

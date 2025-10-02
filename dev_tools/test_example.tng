@@ -1,0 +1,67 @@
+// test_example.tng - Пример файла Tenge для тестирования VS Code расширения
+// Test file for Tenge VS Code extension
+
+// Импорт модулей
+import "framework/template/template_engine.tng";
+import "artjagy/server/tenge_server.tng";
+
+// Создание веб-сервера
+atqar web_server_jasau(port: san) -> WebServer {
+    jasau server: WebServer = web_server_create(port);
+    qaytar server;
+}
+
+// Создание шаблона
+atqar template_engine_jasau() -> TemplateEngine {
+    jasau engine: TemplateEngine = template_engine_create();
+    qaytar engine;
+}
+
+// Создание пользователя
+atqar user_jasau(name: jol, email: jol, password: jol) -> JsonObject {
+    eger (name == "" || email == "" || password == "") {
+        qaytar NULL;
+    }
+    
+    jasau user: JsonObject = json_object_create();
+    json_object_set_string(user, "name", name);
+    json_object_set_string(user, "email", email);
+    json_object_set_string(user, "password", hash_password(password));
+    
+    qaytar user;
+}
+
+// Проверка пароля
+atqar user_parol_tekseru(email: jol, password: jol) -> aqıqat {
+    jasau user: JsonObject = user_alu(email);
+    eger (user == NULL) {
+        qaytar aqıqat_jin;
+    }
+    
+    jasau stored_password: jol = json_object_get_string(user, "password");
+    qaytar verify_password(password, stored_password);
+}
+
+// Основная функция
+atqar main() -> san {
+    jasau server: WebServer = web_server_jasau(3000);
+    jasau engine: TemplateEngine = template_engine_jasau();
+    
+    // Создание пользователя
+    jasau user: JsonObject = user_jasau("Алма", "alma@example.com", "password123");
+    
+    // Проверка пароля
+    jasau is_valid: aqıqat = user_parol_tekseru("alma@example.com", "password123");
+    
+    eger (is_valid) {
+        print("Пользователь успешно аутентифицирован");
+    } aitpese {
+        print("Ошибка аутентификации");
+    }
+    
+    qaytar 0;
+}
+
+
+
+

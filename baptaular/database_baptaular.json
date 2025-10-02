@@ -1,0 +1,29 @@
+{
+  "connections": {
+    "default": {
+      "type": "sqlite",
+      "database": "tenge_web.db",
+      "synchronize": true,
+      "logging": false
+    },
+    "production": {
+      "type": "postgres",
+      "host": "localhost",
+      "port": 5432,
+      "database": "tenge_web_prod",
+      "username": "tenge_user",
+      "password": "tenge_password",
+      "ssl": true
+    }
+  },
+  "migrations": {
+    "enabled": true,
+    "path": "derekter/koshiru",
+    "table": "migrations"
+  },
+  "seeding": {
+    "enabled": true,
+    "path": "derekter/seeders"
+  }
+}
+

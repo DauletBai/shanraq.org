@@ -1,0 +1,366 @@
+// middleware.tng - Tenge Middleware System
+// Agglutinative middleware framework
+
+atqar middleware_jasau() -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    qaytar middleware;
+}
+
+// Middleware chain management
+atqar middleware_chain_jasau() -> MiddlewareChain {
+    jasau chain: MiddlewareChain = middleware_chain_create();
+    qaytar chain;
+}
+
+// Add middleware to chain
+atqar middleware_chain_qosu(chain: MiddlewareChain, middleware: Middleware) {
+    chain.middlewares = chain.middlewares + [middleware];
+}
+
+// Execute middleware chain
+atqar middleware_chain_ishke_engizu(chain: MiddlewareChain, request: WebRequest, response: WebResponse) -> aqıqat {
+    jasau i: san = 0;
+    
+    azirshe (i < chain.middlewares.length) {
+        jasau middleware: Middleware = chain.middlewares[i];
+        jasau result: aqıqat = middleware_execute(middleware, request, response);
+        
+        eгер (!result) {
+            qaytar jin;
+        }
+        
+        i = i + 1;
+    }
+    
+    qaytar jan;
+}
+
+// Logging middleware
+atqar logging_middleware_jasau() -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "logging";
+    middleware.execute = logging_middleware_execute;
+    qaytar middleware;
+}
+
+atqar logging_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    jasau timestamp: jol = current_timestamp();
+    jasau method: jol = web_request_get_method(request);
+    jasau path: jol = web_request_get_path(request);
+    jasau ip: jol = web_request_get_ip(request);
+    
+    korset("[" + timestamp + "] " + method + " " + path + " from " + ip);
+    
+    qaytar jan;
+}
+
+// Authentication middleware
+atqar kimdik_middleware_jasau() -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "kimdik";
+    middleware.execute = kimdik_middleware_execute;
+    qaytar middleware;
+}
+
+atqar kimdik_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    jasau token: jol = web_request_get_header(request, "Authorization");
+    
+    eгер (token == "") {
+        web_response_set_status(response, 401);
+        web_response_set_json(response, json_object_create_with_string("error", "Token required"));
+        qaytar jin;
+    }
+    
+    jasau user_id: jol = web_jwt_token_decode(token);
+    
+    eгер (user_id == "") {
+        web_response_set_status(response, 401);
+        web_response_set_json(response, json_object_create_with_string("error", "Invalid token"));
+        qaytar jin;
+    }
+    
+    // Set user context
+    web_request_set_user_id(request, user_id);
+    
+    qaytar jan;
+}
+
+// Authorization middleware
+atqar ruqsat_middleware_jasau(required_permission: jol) -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "ruqsat";
+    middleware.execute = ruqsat_middleware_execute;
+    middleware.data = json_object_create_with_string("permission", required_permission);
+    qaytar middleware;
+}
+
+atqar ruqsat_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    jasau user_id: jol = web_request_get_user_id(request);
+    
+    eгер (user_id == "") {
+        web_response_set_status(response, 401);
+        web_response_set_json(response, json_object_create_with_string("error", "Authentication required"));
+        qaytar jin;
+    }
+    
+    jasau required_permission: jol = json_object_get_string(middleware.data, "permission");
+    jasau has_permission: aqıqat = user_ruqsat_tekseru(user_id, required_permission);
+    
+    eгер (!has_permission) {
+        web_response_set_status(response, 403);
+        web_response_set_json(response, json_object_create_with_string("error", "Insufficient permissions"));
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Rate limiting middleware
+atqar rate_limit_middleware_jasau(max_requests: san, window_seconds: san) -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "rate_limit";
+    middleware.execute = rate_limit_middleware_execute;
+    
+    jasau data: JsonObject = json_object_create();
+    json_object_set_number(data, "max_requests", max_requests);
+    json_object_set_number(data, "window_seconds", window_seconds);
+    middleware.data = data;
+    
+    qaytar middleware;
+}
+
+atqar rate_limit_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    jasau ip: jol = web_request_get_ip(request);
+    jasau max_requests: san = json_object_get_number(middleware.data, "max_requests");
+    jasau window_seconds: san = json_object_get_number(middleware.data, "window_seconds");
+    
+    jasau current_requests: san = rate_limit_get_requests(ip, window_seconds);
+    
+    eгер (current_requests >= max_requests) {
+        web_response_set_status(response, 429);
+        web_response_set_json(response, json_object_create_with_string("error", "Rate limit exceeded"));
+        qaytar jin;
+    }
+    
+    rate_limit_increment_requests(ip);
+    
+    qaytar jan;
+}
+
+// CORS middleware
+atqar cors_middleware_jasau() -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "cors";
+    middleware.execute = cors_middleware_execute;
+    qaytar middleware;
+}
+
+atqar cors_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    jasau origin: jol = web_request_get_header(request, "Origin");
+    
+    // Set CORS headers
+    web_response_set_header(response, "Access-Control-Allow-Origin", origin);
+    web_response_set_header(response, "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    web_response_set_header(response, "Access-Control-Allow-Headers", "Content-Type, Authorization");
+    web_response_set_header(response, "Access-Control-Max-Age", "3600");
+    
+    // Handle preflight requests
+    eгер (web_request_get_method(request) == "OPTIONS") {
+        web_response_set_status(response, 200);
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Security middleware
+atqar kawipsizdik_middleware_jasau() -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "kawipsizdik";
+    middleware.execute = kawipsizdik_middleware_execute;
+    qaytar middleware;
+}
+
+atqar kawipsizdik_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    // Set security headers
+    web_response_set_header(response, "X-Content-Type-Options", "nosniff");
+    web_response_set_header(response, "X-Frame-Options", "DENY");
+    web_response_set_header(response, "X-XSS-Protection", "1; mode=block");
+    web_response_set_header(response, "Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    
+    // Validate request
+    jasau user_agent: jol = web_request_get_header(request, "User-Agent");
+    
+    eгер (user_agent == "" || user_agent.length < 10) {
+        web_response_set_status(response, 400);
+        web_response_set_json(response, json_object_create_with_string("error", "Invalid User-Agent"));
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Validation middleware
+atqar tekseu_middleware_jasau(schema: JsonObject) -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "tekseu";
+    middleware.execute = tekseu_middleware_execute;
+    middleware.data = schema;
+    qaytar middleware;
+}
+
+atqar tekseu_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    jasau body: jol = web_request_get_body(request);
+    jasau data: JsonObject = json_parse_object(body);
+    
+    jasau validation_result: JsonObject = json_schema_validate(data, middleware.data);
+    
+    eгер (!json_object_get_boolean(validation_result, "valid")) {
+        web_response_set_status(response, 400);
+        web_response_set_json(response, validation_result);
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Compression middleware
+atqar compression_middleware_jasau() -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "compression";
+    middleware.execute = compression_middleware_execute;
+    qaytar middleware;
+}
+
+atqar compression_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    jasau accept_encoding: jol = web_request_get_header(request, "Accept-Encoding");
+    
+    eгер (accept_encoding.contains("gzip")) {
+        web_response_set_header(response, "Content-Encoding", "gzip");
+        web_response_set_compression(response, "gzip");
+    } aitpese eгер (accept_encoding.contains("deflate")) {
+        web_response_set_header(response, "Content-Encoding", "deflate");
+        web_response_set_compression(response, "deflate");
+    }
+    
+    qaytar jan;
+}
+
+// Cache middleware
+atqar cache_middleware_jasau(ttl_seconds: san) -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "cache";
+    middleware.execute = cache_middleware_execute;
+    middleware.data = json_object_create_with_number("ttl", ttl_seconds);
+    qaytar middleware;
+}
+
+atqar cache_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    jasau cache_key: jol = web_request_get_cache_key(request);
+    jasau cached_response: JsonObject = cache_get(cache_key);
+    
+    eгер (cached_response != NULL) {
+        web_response_set_json(response, cached_response);
+        web_response_set_status(response, 200);
+        qaytar jin;
+    }
+    
+    // Set cache headers
+    jasau ttl: san = json_object_get_number(middleware.data, "ttl");
+    web_response_set_header(response, "Cache-Control", "public, max-age=" + int_to_string(ttl));
+    
+    qaytar jan;
+}
+
+// Error handling middleware
+atqar error_handling_middleware_jasau() -> Middleware {
+    jasau middleware: Middleware = middleware_create();
+    middleware.name = "error_handling";
+    middleware.execute = error_handling_middleware_execute;
+    qaytar middleware;
+}
+
+atqar error_handling_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    // This middleware should be the last in the chain
+    // It handles any unhandled errors
+    
+    qaytar jan;
+}
+
+// Middleware factory functions
+atqar middleware_create() -> Middleware {
+    jasau middleware: Middleware = Middleware();
+    middleware.name = "";
+    middleware.execute = NULL;
+    middleware.data = NULL;
+    qaytar middleware;
+}
+
+atqar middleware_chain_create() -> MiddlewareChain {
+    jasau chain: MiddlewareChain = MiddlewareChain();
+    chain.middlewares = [];
+    qaytar chain;
+}
+
+// Rate limiting helper functions
+atqar rate_limit_get_requests(ip: jol, window_seconds: san) -> san {
+    jasau key: jol = "rate_limit:" + ip;
+    jasau requests: san = cache_get_number(key);
+    qaytar requests;
+}
+
+atqar rate_limit_increment_requests(ip: jol) {
+    jasau key: jol = "rate_limit:" + ip;
+    jasau current: san = cache_get_number(key);
+    cache_set_number(key, current + 1, 60); // 1 minute TTL
+}
+
+// Cache helper functions
+atqar cache_get(key: jol) -> JsonObject {
+    // Implementation depends on cache backend
+    qaytar NULL;
+}
+
+atqar cache_set(key: jol, value: JsonObject, ttl: san) {
+    // Implementation depends on cache backend
+}
+
+atqar cache_get_number(key: jol) -> san {
+    // Implementation depends on cache backend
+    qaytar 0;
+}
+
+atqar cache_set_number(key: jol, value: san, ttl: san) {
+    // Implementation depends on cache backend
+}
+
+// JSON schema validation
+atqar json_schema_validate(data: JsonObject, schema: JsonObject) -> JsonObject {
+    jasau result: JsonObject = json_object_create();
+    json_object_set_boolean(result, "valid", jan);
+    json_object_set_array(result, "errors", []);
+    
+    // Basic validation implementation
+    // TODO: Implement full JSON schema validation
+    
+    qaytar result;
+}
+
+// Helper functions
+atqar json_object_create_with_string(key: jol, value: jol) -> JsonObject {
+    jasau obj: JsonObject = json_object_create();
+    json_object_set_string(obj, key, value);
+    qaytar obj;
+}
+
+atqar json_object_create_with_number(key: jol, value: san) -> JsonObject {
+    jasau obj: JsonObject = json_object_create();
+    json_object_set_number(obj, key, value);
+    qaytar obj;
+}
+
+atqar json_object_get_boolean(obj: JsonObject, key: jol) -> aqıqat {
+    // Implementation depends on JSON library
+    qaytar jin;
+}
+

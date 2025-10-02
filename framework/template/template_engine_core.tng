@@ -1,0 +1,309 @@
+// template_engine_core.tng - Shanraq Template Engine Core
+// Шанрак Үлгі Қозғалтқышының Негізі / Shanraq Template Engine Core
+
+jasau struct TemplateEngine {
+    cache: JsonObject;           // Template cache
+    helpers: JsonObject;         // Helper functions
+    partials: JsonObject;        // Partial templates
+    layouts: JsonObject;         // Layout templates
+    filters: JsonObject;         // Template filters
+    compilers: JsonObject;       // Compiled templates
+    morpheme_engine: MorphemeEngine;  // For agglutinative features
+    phoneme_engine: PhonemeEngine;    // For optimization
+}
+
+jasau struct TemplateContext {
+    data: JsonObject;            // Template data
+    locals: JsonObject;          // Local variables
+    parent: TemplateContext;     // Parent context
+    root: TemplateContext;       // Root context
+    helpers: JsonObject;         // Available helpers
+    filters: JsonObject;         // Available filters
+}
+
+jasau struct CompiledTemplate {
+    source: jol;                 // Original template
+    compiled: jol;               // Compiled JavaScript-like code
+    dependencies: jol[];        // Template dependencies
+    cache_key: jol;             // Cache key
+    last_modified: san;         // Last modification time
+}
+
+// Initialize template engine
+atqar template_engine_jasau() -> TemplateEngine {
+    jasau engine: TemplateEngine = TemplateEngine();
+    engine.cache = json_object_create();
+    engine.helpers = json_object_create();
+    engine.partials = json_object_create();
+    engine.layouts = json_object_create();
+    engine.filters = json_object_create();
+    engine.compilers = json_object_create();
+    engine.morpheme_engine = morpheme_engine_jasau();
+    engine.phoneme_engine = phoneme_engine_jasau();
+    
+    // Register built-in helpers
+    template_helpers_qosu(engine);
+    
+    // Register built-in filters
+    template_filters_qosu(engine);
+    
+    qaytar engine;
+}
+
+// Main template rendering function
+atqar template_render(engine: TemplateEngine, template_name: jol, data: JsonObject) -> jol {
+    // Check cache first
+    jasau cache_key: jol = template_name + "_" + json_object_hash(data);
+    eгер (json_object_bar_ma(engine.cache, cache_key)) {
+        jasau cached: CompiledTemplate = json_object_get_object(engine.cache, cache_key);
+        qaytar template_execute_compiled(cached, data);
+    }
+    
+    // Load template
+    jasau template_source: jol = template_load(engine, template_name);
+    eгер (template_source == "") {
+        qaytar "Template not found: " + template_name;
+    }
+    
+    // Compile template
+    jasau compiled: CompiledTemplate = template_compile(engine, template_name, template_source);
+    
+    // Cache compiled template
+    json_object_set_object(engine.cache, cache_key, compiled);
+    
+    // Execute template
+    qaytar template_execute_compiled(compiled, data);
+}
+
+// Load template from file system
+atqar template_load(engine: TemplateEngine, template_name: jol) -> jol {
+    jasau template_path: jol = "betjagy/ulgi/" + template_name + ".tng";
+    jasau content: jol = file_read(template_path);
+    qaytar content;
+}
+
+// Compile template to executable code
+atqar template_compile(engine: TemplateEngine, template_name: jol, source: jol) -> CompiledTemplate {
+    jasau compiled: CompiledTemplate = CompiledTemplate();
+    compiled.source = source;
+    compiled.dependencies = [];
+    compiled.cache_key = template_name + "_" + string_hash(source);
+    compiled.last_modified = system_time_millis();
+    
+    // Parse template syntax
+    jasau parsed: JsonObject = template_parse(engine, source);
+    
+    // Generate compiled code
+    compiled.compiled = template_generate_code(engine, parsed);
+    
+    qaytar compiled;
+}
+
+// Parse template syntax
+atqar template_parse(engine: TemplateEngine, source: jol) -> JsonObject {
+    jasau parsed: JsonObject = json_object_create();
+    jasau tokens: JsonObject[] = template_tokenize(source);
+    
+    // Parse tokens into AST
+    jasau ast: JsonObject = template_parse_ast(engine, tokens);
+    json_object_set_object(parsed, "ast", ast);
+    
+    qaytar parsed;
+}
+
+// Tokenize template source
+atqar template_tokenize(source: jol) -> JsonObject[] {
+    jasau tokens: JsonObject[] = [];
+    jasau lines: jol[] = string_split(source, "\n");
+    
+    san i = 0;
+    while (i < array_uzyn_bolu(lines)) {
+        jasau line: jol = lines[i];
+        jasau trimmed: jol = string_trim(line);
+        
+        // Skip empty lines
+        eгер (trimmed == "") {
+            i = i + 1;
+            continue;
+        }
+        
+        // Parse different token types
+        jasau token: JsonObject = template_parse_line(trimmed);
+        eгер (token != NULL) {
+            tokens = tokens + [token];
+        }
+        
+        i = i + 1;
+    }
+    
+    qaytar tokens;
+}
+
+// Parse individual line
+atqar template_parse_line(line: jol) -> JsonObject {
+    jasau token: JsonObject = json_object_create();
+    
+    // Variable interpolation: {{ variable }}
+    eгер (string_starts_with(line, "{{") && string_ends_with(line, "}}")) {
+        json_object_set_string(token, "type", "variable");
+        jasau content: jol = string_substring(line, 2, string_length(line) - 2);
+        json_object_set_string(token, "content", string_trim(content));
+    }
+    // Helper call: {{#helper args}}
+    basqa eгер (string_starts_with(line, "{{#")) {
+        json_object_set_string(token, "type", "helper");
+        jasau content: jol = string_substring(line, 3, string_length(line) - 2);
+        jasau parts: jol[] = string_split(string_trim(content), " ");
+        json_object_set_string(token, "name", parts[0]);
+        json_object_set_array_string(token, "args", array_slice(parts, 1));
+    }
+    // Conditional: {{#eger condition}}
+    basqa eгер (string_starts_with(line, "{{#eger")) {
+        json_object_set_string(token, "type", "conditional");
+        jasau content: jol = string_substring(line, 7, string_length(line) - 2);
+        json_object_set_string(token, "condition", string_trim(content));
+    }
+    // Loop: {{#each array}}
+    basqa eгер (string_starts_with(line, "{{#each")) {
+        json_object_set_string(token, "type", "loop");
+        jasau content: jol = string_substring(line, 8, string_length(line) - 2);
+        json_object_set_string(token, "array", string_trim(content));
+    }
+    // End block: {{/}}
+    basqa eгер (string_starts_with(line, "{{/")) {
+        json_object_set_string(token, "type", "end_block");
+    }
+    // Comment: {{!-- comment --}}
+    basqa eгер (string_starts_with(line, "{{!--")) {
+        json_object_set_string(token, "type", "comment");
+    }
+    // Plain text
+    basqa {
+        json_object_set_string(token, "type", "text");
+        json_object_set_string(token, "content", line);
+    }
+    
+    qaytar token;
+}
+
+// Generate executable code from AST
+atqar template_generate_code(engine: TemplateEngine, parsed: JsonObject) -> jol {
+    jasau ast: JsonObject = json_object_get_object(parsed, "ast");
+    jasau code: jol = "jasau result: jol = \"\";\n";
+    
+    // Generate code for each AST node
+    jasau nodes: JsonObject[] = json_object_get_array_object(ast, "nodes");
+    san i = 0;
+    while (i < array_uzyn_bolu(nodes)) {
+        jasau node: JsonObject = nodes[i];
+        jasau node_code: jol = template_generate_node_code(engine, node);
+        code = code + node_code + "\n";
+        i = i + 1;
+    }
+    
+    code = code + "qaytar result;";
+    qaytar code;
+}
+
+// Generate code for individual node
+atqar template_generate_node_code(engine: TemplateEngine, node: JsonObject) -> jol {
+    jasau type: jol = json_object_get_string(node, "type");
+    
+    eгер (type == "text") {
+        jasau content: jol = json_object_get_string(node, "content");
+        qaytar "result = result + \"" + string_escape(content) + "\";";
+    }
+    basqa eгер (type == "variable") {
+        jasau content: jol = json_object_get_string(node, "content");
+        qaytar "result = result + string_to_string(" + content + ");";
+    }
+    basqa eгер (type == "helper") {
+        jasau name: jol = json_object_get_string(node, "name");
+        jasau args: jol[] = json_object_get_array_string(node, "args");
+        jasau helper_code: jol = template_generate_helper_code(engine, name, args);
+        qaytar helper_code;
+    }
+    basqa eгер (type == "conditional") {
+        jasau condition: jol = json_object_get_string(node, "condition");
+        qaytar "eger (" + condition + ") {";
+    }
+    basqa eгер (type == "loop") {
+        jasau array: jol = json_object_get_string(node, "array");
+        qaytar "san i = 0; while (i < array_uzyn_bolu(" + array + ")) { jasau item = " + array + "[i];";
+    }
+    basqa eгер (type == "end_block") {
+        qaytar "}";
+    }
+    
+    qaytar "";
+}
+
+// Generate helper code
+atqar template_generate_helper_code(engine: TemplateEngine, name: jol, args: jol[]) -> jol {
+    jasau helper_function: Function = json_object_get_function(engine.helpers, name);
+    eгер (helper_function != NULL) {
+        jasau args_string: jol = string_join(args, ", ");
+        qaytar "result = result + " + name + "(" + args_string + ");";
+    }
+    
+    qaytar "result = result + \"[Helper not found: " + name + "]\";";
+}
+
+// Execute compiled template
+atqar template_execute_compiled(compiled: CompiledTemplate, data: JsonObject) -> jol {
+    // This would execute the compiled JavaScript-like code
+    // For now, return a placeholder
+    qaytar "Compiled template executed with data";
+}
+
+// Parse AST from tokens
+atqar template_parse_ast(engine: TemplateEngine, tokens: JsonObject[]) -> JsonObject {
+    jasau ast: JsonObject = json_object_create();
+    jasau nodes: JsonObject[] = [];
+    
+    san i = 0;
+    while (i < array_uzyn_bolu(tokens)) {
+        jasau token: JsonObject = tokens[i];
+        jasau node: JsonObject = template_create_ast_node(token);
+        nodes = nodes + [node];
+        i = i + 1;
+    }
+    
+    json_object_set_array_object(ast, "nodes", nodes);
+    qaytar ast;
+}
+
+// Create AST node from token
+atqar template_create_ast_node(token: JsonObject) -> JsonObject {
+    jasau node: JsonObject = json_object_create();
+    jasau type: jol = json_object_get_string(token, "type");
+    
+    json_object_set_string(node, "type", type);
+    
+    eгер (type == "variable") {
+        json_object_set_string(node, "content", json_object_get_string(token, "content"));
+    }
+    basqa eгер (type == "helper") {
+        json_object_set_string(node, "name", json_object_get_string(token, "name"));
+        json_object_set_array_string(node, "args", json_object_get_array_string(token, "args"));
+    }
+    basqa eгер (type == "conditional") {
+        json_object_set_string(node, "condition", json_object_get_string(token, "condition"));
+    }
+    basqa eгер (type == "loop") {
+        json_object_set_string(node, "array", json_object_get_string(token, "array"));
+    }
+    basqa eгер (type == "text") {
+        json_object_set_string(node, "content", json_object_get_string(token, "content"));
+    }
+    
+    qaytar node;
+}
+
+
+
+
+
+
+
+

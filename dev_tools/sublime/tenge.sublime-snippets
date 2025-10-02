@@ -1,0 +1,162 @@
+<snippet>
+  <content><![CDATA[atqar ${1:function_name}(${2:parameters}) -> ${3:return_type} {
+    ${4:// function body}
+    qaytar ${5:value};
+}]]></content>
+  <tabTrigger>func</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a Tenge function</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[jasau ${1:variable_name}: ${2:type} = ${3:value};]]></content>
+  <tabTrigger>var</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a Tenge variable</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[eger (${1:condition}) {
+    ${2:// if body}
+}]]></content>
+  <tabTrigger>if</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create an if statement</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[eger (${1:condition}) {
+    ${2:// if body}
+} aitpese {
+    ${3:// else body}
+}]]></content>
+  <tabTrigger>ifelse</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create an if-else statement</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[azirshe (${1:condition}) {
+    ${2:// loop body}
+}]]></content>
+  <tabTrigger>while</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a while loop</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[jasau ${1:i}: san = 0;
+azirshe (${1:i} < ${2:limit}) {
+    ${3:// loop body}
+    ${1:i} = ${1:i} + 1;
+}]]></content>
+  <tabTrigger>for</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a for loop</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[class ${1:ClassName} {
+    ${2:// class members}
+}]]></content>
+  <tabTrigger>class</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a Tenge class</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[import "${1:module_path}";]]></content>
+  <tabTrigger>import</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create an import statement</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[jasau ${1:object_name}: JsonObject = json_object_create();
+json_object_set_string(${1:object_name}, "${2:key}", ${3:value});]]></content>
+  <tabTrigger>json</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a JSON object</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[atqar web_server_jasau(port: san) -> WebServer {
+    jasau server: WebServer = web_server_create(port);
+    qaytar server;
+}]]></content>
+  <tabTrigger>server</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a web server function</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[atqar template_engine_jasau() -> TemplateEngine {
+    jasau engine: TemplateEngine = template_engine_create();
+    qaytar engine;
+}]]></content>
+  <tabTrigger>template</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a template engine function</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[atqar ${1:archetype_name}_arhetip_pattern_jasau() -> ArchetypePattern {
+    jasau pattern: ArchetypePattern = ArchetypePattern();
+    pattern.name = "${1:archetype_name}";
+    qaytar pattern;
+}]]></content>
+  <tabTrigger>archetype</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create an archetype pattern</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[atqar morpheme_${1:action}_jasau(${2:parameters}) -> ${3:return_type} {
+    ${4:// morpheme processing}
+    qaytar ${5:result};
+}]]></content>
+  <tabTrigger>morpheme</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a morpheme-based function</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[atqar phoneme_${1:action}_opt(${2:parameters}) -> ${3:return_type} {
+    ${4:// phoneme optimization}
+    qaytar ${5:result};
+}]]></content>
+  <tabTrigger>phoneme</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a phoneme-based function</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[#pragma omp simd
+atqar simd_${1:operation}_jasau(${2:parameters}) -> ${3:return_type} {
+    ${4:// SIMD operations}
+    qaytar ${5:result};
+}]]></content>
+  <tabTrigger>simd</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a SIMD function</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[try {
+    ${1:// try body}
+} catch (${2:error}) {
+    ${3:// catch body}
+}]]></content>
+  <tabTrigger>try</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a try-catch block</description>
+</snippet>
+
+<snippet>
+  <content><![CDATA[/*
+ * ${1:comment}
+ */]]></content>
+  <tabTrigger>comment</tabTrigger>
+  <scope>source.tenge</scope>
+  <description>Create a comment block</description>
+</snippet>

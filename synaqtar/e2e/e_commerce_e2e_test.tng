@@ -1,0 +1,290 @@
+// e_commerce_e2e_test.tng - E-commerce End-to-End тесттері
+// E-commerce End-to-End tests
+
+atqar e_commerce_e2e_test_jasau() -> TestSuite {
+    jasau test_suite: TestSuite = test_suite_jasau("E-Commerce E2E Tests");
+    qaytar test_suite;
+}
+
+// Test complete e-commerce flow
+atqar test_e_commerce_tolik_flow() -> aqıqat {
+    korset("🧪 E-commerce толық ағындын тестілеу...");
+    
+    // Initialize e-commerce system
+    jasau init_result: aqıqat = e_commerce_initialize();
+    eгер (!init_result) {
+        korset("❌ E-commerce жүйені іске қосу қатесі");
+        qaytar jin;
+    }
+    
+    // Step 1: Create product
+    jasau product_result: JsonObject = onim_jasau(
+        "E2E Test Product",
+        "This is a test product for E2E testing",
+        99.99,
+        "electronics",
+        10,
+        "seller123"
+    );
+    
+    eгер (!json_object_get_boolean(product_result, "success")) {
+        korset("❌ Өнім жасау қатесі: " + json_object_get_string(product_result, "error"));
+        qaytar jin;
+    }
+    
+    jasau product: JsonObject = json_object_get_object(product_result, "product");
+    jasau product_id: jol = json_object_get_string(product, "id");
+    
+    // Step 2: Search for product
+    jasau search_results: JsonObject[] = onim_izdeu("E2E Test", "", 0, 0, 10, 0);
+    
+    eгер (search_results.length == 0) {
+        korset("❌ Өнім іздеу нәтижесі жоқ");
+        qaytar jin;
+    }
+    
+    // Step 3: Add product to cart
+    jasau cart: JsonObject = json_object_create();
+    json_object_set_string(cart, "id", uuid_generate());
+    json_object_set_string(cart, "user_id", "user123");
+    json_object_set_array(cart, "items", [product]);
+    json_object_set_number(cart, "total", 99.99);
+    json_object_set_number(cart, "created_at", current_timestamp());
+    json_object_set_number(cart, "updated_at", current_timestamp());
+    
+    jasau cart_save_result: aqıqat = sebet_derekterna_saktau(cart);
+    
+    eгер (!cart_save_result) {
+        korset("❌ Себетке қосу қатесі");
+        qaytar jin;
+    }
+    
+    // Step 4: Create order
+    jasau shipping_address: JsonObject = json_object_create();
+    json_object_set_string(shipping_address, "street", "123 Test Street");
+    json_object_set_string(shipping_address, "city", "Test City");
+    json_object_set_string(shipping_address, "zip", "12345");
+    json_object_set_string(shipping_address, "country", "Test Country");
+    
+    jasau order_result: JsonObject = buyrys_jasau(
+        "user123",
+        json_object_get_string(cart, "id"),
+        shipping_address,
+        "credit_card"
+    );
+    
+    eгер (!json_object_get_boolean(order_result, "success")) {
+        korset("❌ Тапсырыс жасау қатесі: " + json_object_get_string(order_result, "error"));
+        qaytar jin;
+    }
+    
+    // Step 5: Update order status
+    jasau order: JsonObject = json_object_get_object(order_result, "order");
+    json_object_set_string(order, "status", "completed");
+    json_object_set_number(order, "updated_at", current_timestamp());
+    
+    jasau order_update_result: aqıqat = buyrys_zhangartu(order);
+    
+    eгер (!order_update_result) {
+        korset("❌ Тапсырыс статусын жаңарту қатесі");
+        qaytar jin;
+    }
+    
+    // Step 6: Check statistics
+    jasau stats: JsonObject = e_commerce_statistika_alu();
+    
+    eгер (json_object_get_number(stats, "total_products") < 1) {
+        korset("❌ Өнімдер статистикасы дұрыс емес");
+        qaytar jin;
+    }
+    
+    eгер (json_object_get_number(stats, "total_orders") < 1) {
+        korset("❌ Тапсырыстар статистикасы дұрыс емес");
+        qaytar jin;
+    }
+    
+    korset("✅ E-commerce толық ағынды сәтті өтті");
+    qaytar jan;
+}
+
+// Test product management flow
+atqar test_onim_baskaru_flow() -> aqıqat {
+    korset("🧪 Өнім басқару ағындын тестілеу...");
+    
+    // Create multiple products
+    jasau products: JsonObject[] = [];
+    
+    jasau i: san = 1;
+    azirshe (i <= 5) {
+        jasau product_result: JsonObject = onim_jasau(
+            "Test Product " + i,
+            "Test product description " + i,
+            50.00 + (i * 10),
+            "test_category",
+            5 + i,
+            "seller123"
+        );
+        
+        eгер (json_object_get_boolean(product_result, "success")) {
+            products = products + [json_object_get_object(product_result, "product")];
+        }
+        
+        i = i + 1;
+    }
+    
+    eгер (products.length != 5) {
+        korset("❌ Өнімдерді жасау қатесі");
+        qaytar jin;
+    }
+    
+    // Test product search by category
+    jasau category_results: JsonObject[] = onim_izdeu("", "test_category", 0, 0, 10, 0);
+    
+    eгер (category_results.length != 5) {
+        korset("❌ Категория бойынша іздеу қатесі");
+        qaytar jin;
+    }
+    
+    // Test price range search
+    jasau price_results: JsonObject[] = onim_izdeu("", "", 60, 80, 10, 0);
+    
+    eгер (price_results.length == 0) {
+        korset("❌ Баға диапазоны бойынша іздеу қатесі");
+        qaytar jin;
+    }
+    
+    // Test product update
+    jasau first_product: JsonObject = products[0];
+    json_object_set_string(first_product, "name", "Updated Test Product 1");
+    json_object_set_number(first_product, "price", 75.00);
+    json_object_set_number(first_product, "updated_at", current_timestamp());
+    
+    jasau update_result: aqıqat = onim_zhangartu(first_product);
+    
+    eгер (!update_result) {
+        korset("❌ Өнімді жаңарту қатесі");
+        qaytar jin;
+    }
+    
+    korset("✅ Өнім басқару ағынды сәтті өтті");
+    qaytar jan;
+}
+
+// Test cart and order management flow
+atqar test_sebet_buyrys_flow() -> aqıqat {
+    korset("🧪 Себет және тапсырыс басқару ағындын тестілеу...");
+    
+    // Create test products
+    jasau product1_result: JsonObject = onim_jasau(
+        "Cart Test Product 1",
+        "Test product for cart",
+        25.00,
+        "test",
+        5,
+        "seller123"
+    );
+    
+    jasau product2_result: JsonObject = onim_jasau(
+        "Cart Test Product 2",
+        "Another test product for cart",
+        35.00,
+        "test",
+        3,
+        "seller123"
+    );
+    
+    eгер (!json_object_get_boolean(product1_result, "success") || !json_object_get_boolean(product2_result, "success")) {
+        korset("❌ Тест өнімдерін жасау қатесі");
+        qaytar jin;
+    }
+    
+    jasau product1: JsonObject = json_object_get_object(product1_result, "product");
+    jasau product2: JsonObject = json_object_get_object(product2_result, "product");
+    
+    // Create cart with multiple items
+    jasau cart: JsonObject = json_object_create();
+    json_object_set_string(cart, "id", uuid_generate());
+    json_object_set_string(cart, "user_id", "user123");
+    json_object_set_array(cart, "items", [product1, product2]);
+    json_object_set_number(cart, "total", 60.00);
+    json_object_set_number(cart, "created_at", current_timestamp());
+    json_object_set_number(cart, "updated_at", current_timestamp());
+    
+    jasau cart_save_result: aqıqat = sebet_derekterna_saktau(cart);
+    
+    eгер (!cart_save_result) {
+        korset("❌ Себетті сақтау қатесі");
+        qaytar jin;
+    }
+    
+    // Retrieve cart
+    jasau retrieved_cart: JsonObject = sebet_derekternan_alu("user123");
+    
+    eгер (retrieved_cart == NULL) {
+        korset("❌ Себетті алу қатесі");
+        qaytar jin;
+    }
+    
+    // Create order
+    jasau shipping_address: JsonObject = json_object_create();
+    json_object_set_string(shipping_address, "street", "456 Test Avenue");
+    json_object_set_string(shipping_address, "city", "Test City");
+    json_object_set_string(shipping_address, "zip", "54321");
+    json_object_set_string(shipping_address, "country", "Test Country");
+    
+    jasau order_result: JsonObject = buyrys_jasau(
+        "user123",
+        json_object_get_string(cart, "id"),
+        shipping_address,
+        "paypal"
+    );
+    
+    eгер (!json_object_get_boolean(order_result, "success")) {
+        korset("❌ Тапсырыс жасау қатесі: " + json_object_get_string(order_result, "error"));
+        qaytar jin;
+    }
+    
+    // Update order status to shipped
+    jasau order: JsonObject = json_object_get_object(order_result, "order");
+    json_object_set_string(order, "status", "shipped");
+    json_object_set_number(order, "updated_at", current_timestamp());
+    
+    jasau order_update_result: aqıqat = buyrys_zhangartu(order);
+    
+    eгер (!order_update_result) {
+        korset("❌ Тапсырыс статусын жаңарту қатесі");
+        qaytar jin;
+    }
+    
+    korset("✅ Себет және тапсырыс басқару ағынды сәтті өтті");
+    qaytar jan;
+}
+
+// Run all e-commerce E2E tests
+atqar e_commerce_e2e_testlerin_ishke_engizu() {
+    korset("🧪 E-commerce E2E тесттерін іске қосу...");
+    
+    jasau passed: san = 0;
+    jasau total: san = 3;
+    
+    eгер (test_e_commerce_tolik_flow()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_onim_baskaru_flow()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_sebet_buyrys_flow()) {
+        passed = passed + 1;
+    }
+    
+    korset("📊 E2E тест нәтижелері: " + passed + "/" + total + " өтті");
+    
+    eгер (passed == total) {
+        korset("✅ Барлық E-commerce E2E тесттері сәтті өтті!");
+    } aitpese {
+        korset("❌ Кейбір E-commerce E2E тесттері сәтсіз!");
+    }
+}
+

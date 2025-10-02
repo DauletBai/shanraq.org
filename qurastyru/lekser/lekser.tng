@@ -1,0 +1,372 @@
+// lekser.tng - Tenge лексер (токенизатор)
+// Агглютинативтік лексер
+
+atqar lekser_jasau() -> Lexer {
+    jasau lexer: Lexer = lexer_create();
+    
+    // Токен түрлерін анықтау
+    lexer_add_token_type(lexer, "IDENTIFIER", "[a-zA-Z_][a-zA-Z0-9_]*");
+    lexer_add_token_type(lexer, "NUMBER", "[0-9]+(\\.[0-9]+)?");
+    lexer_add_token_type(lexer, "STRING", "\"([^\"\\\\]|\\\\.)*\"");
+    lexer_add_token_type(lexer, "CHAR", "'([^'\\\\]|\\\\.)'");
+    lexer_add_token_type(lexer, "KEYWORD", "\\b(atqar|jasau|eger|aitpese|azirshe|qaytar|korset|NULL|jan|jin)\\b");
+    lexer_add_token_type(lexer, "OPERATOR", "[+\\-*/%=<>!&|^~]");
+    lexer_add_token_type(lexer, "DELIMITER", "[{}();,\\[\\]]");
+    lexer_add_token_type(lexer, "WHITESPACE", "\\s+");
+    lexer_add_token_type(lexer, "COMMENT", "//.*|/\\*[\\s\\S]*?\\*/");
+    
+    qaytar lexer;
+}
+
+// Кодды токендерге бөлу
+atqar lekser_tokenize(lexer: Lexer, code: jol) -> Token[] {
+    jasau tokens: Token[] = [];
+    jasau position: san = 0;
+    jasau line: san = 1;
+    jasau column: san = 1;
+    
+    azirshe (position < code.length) {
+        jasau token: Token = lekser_next_token(lexer, code, position, line, column);
+        
+        eger (token.type != "WHITESPACE" && token.type != "COMMENT") {
+            tokens = tokens + [token];
+        }
+        
+        position = token.end_position;
+        line = token.line;
+        column = token.column;
+    }
+    
+    qaytar tokens;
+}
+
+// Келесі токенді алу
+atqar lekser_next_token(lexer: Lexer, code: jol, position: san, line: san, column: san) -> Token {
+    jasau token: Token = token_create();
+    token.start_position = position;
+    token.line = line;
+    token.column = column;
+    
+    // Whitespace өткізу
+    azirshe (position < code.length && lekser_is_whitespace(code[position])) {
+        eger (code[position] == '\n') {
+            line = line + 1;
+            column = 1;
+        } aitpese {
+            column = column + 1;
+        }
+        position = position + 1;
+    }
+    
+    eger (position >= code.length) {
+        token.type = "EOF";
+        token.value = "";
+        token.end_position = position;
+        qaytar token;
+    }
+    
+    // Комментарий тексеру
+    eгер (lekser_is_comment_start(code, position)) {
+        jasau comment: jol = lekser_parse_comment(code, position);
+        token.type = "COMMENT";
+        token.value = comment;
+        token.end_position = position + comment.length;
+        qaytar token;
+    }
+    
+    // Строка тексеру
+    eгер (code[position] == '"') {
+        jasau string_value: jol = lekser_parse_string(code, position);
+        token.type = "STRING";
+        token.value = string_value;
+        token.end_position = position + string_value.length + 2; // +2 for quotes
+        qaytar token;
+    }
+    
+    // Символ тексеру
+    eгер (code[position] == '\'') {
+        jasau char_value: jol = lekser_parse_char(code, position);
+        token.type = "CHAR";
+        token.value = char_value;
+        token.end_position = position + char_value.length + 2; // +2 for quotes
+        qaytar token;
+    }
+    
+    // Сан тексеру
+    eгер (lekser_is_digit(code[position])) {
+        jasau number_value: jol = lekser_parse_number(code, position);
+        token.type = "NUMBER";
+        token.value = number_value;
+        token.end_position = position + number_value.length;
+        qaytar token;
+    }
+    
+    // Идентификатор немесе кілт сөз тексеру
+    eгер (lekser_is_alpha(code[position]) || code[position] == '_') {
+        jasau identifier: jol = lekser_parse_identifier(code, position);
+        
+        eгер (lekser_is_keyword(identifier)) {
+            token.type = "KEYWORD";
+        } aitpese {
+            token.type = "IDENTIFIER";
+        }
+        
+        token.value = identifier;
+        token.end_position = position + identifier.length;
+        qaytar token;
+    }
+    
+    // Оператор тексеру
+    eгер (lekser_is_operator(code[position])) {
+        jasau operator: jol = lekser_parse_operator(code, position);
+        token.type = "OPERATOR";
+        token.value = operator;
+        token.end_position = position + operator.length;
+        qaytar token;
+    }
+    
+    // Делимитер тексеру
+    eгер (lekser_is_delimiter(code[position])) {
+        token.type = "DELIMITER";
+        token.value = code[position];
+        token.end_position = position + 1;
+        qaytar token;
+    }
+    
+    // Белгісіз символ
+    token.type = "UNKNOWN";
+    token.value = code[position];
+    token.end_position = position + 1;
+    qaytar token;
+}
+
+// Whitespace тексеру
+atqar lekser_is_whitespace(char: jol) -> aqıqat {
+    qaytar char == ' ' || char == '\t' || char == '\n' || char == '\r';
+}
+
+// Комментарий басын тексеру
+atqar lekser_is_comment_start(code: jol, position: san) -> aqıqat {
+    eгер (position + 1 < code.length) {
+        qaytar code[position] == '/' && (code[position + 1] == '/' || code[position + 1] == '*');
+    }
+    qaytar jin;
+}
+
+// Комментарий парслау
+atqar lekser_parse_comment(code: jol, position: san) -> jol {
+    eгер (position + 1 < code.length && code[position + 1] == '/') {
+        // Бір жолдық комментарий
+        jasau comment: jol = "";
+        jasau i: san = position + 2;
+        
+        azirshe (i < code.length && code[i] != '\n') {
+            comment = comment + code[i];
+            i = i + 1;
+        }
+        
+        qaytar comment;
+    } aitpese eгер (position + 1 < code.length && code[position + 1] == '*') {
+        // Көп жолдық комментарий
+        jasau comment: jol = "";
+        jasau i: san = position + 2;
+        
+        azirshe (i + 1 < code.length) {
+            eгер (code[i] == '*' && code[i + 1] == '/') {
+                qaytar comment;
+            }
+            comment = comment + code[i];
+            i = i + 1;
+        }
+        
+        qaytar comment;
+    }
+    
+    qaytar "";
+}
+
+// Строка парслау
+atqar lekser_parse_string(code: jol, position: san) -> jol {
+    jasau string_value: jol = "";
+    jasau i: san = position + 1; // " символын өткізу
+    
+    azirshe (i < code.length && code[i] != '"') {
+        eгер (code[i] == '\\' && i + 1 < code.length) {
+            // Escape символ
+            jasau escaped_char: jol = lekser_parse_escape_sequence(code, i);
+            string_value = string_value + escaped_char;
+            i = i + 2;
+        } aitpese {
+            string_value = string_value + code[i];
+            i = i + 1;
+        }
+    }
+    
+    qaytar string_value;
+}
+
+// Символ парслау
+atqar lekser_parse_char(code: jol, position: san) -> jol {
+    jasau char_value: jol = "";
+    jasau i: san = position + 1; // ' символын өткізу
+    
+    eгер (i < code.length && code[i] == '\\' && i + 1 < code.length) {
+        // Escape символ
+        char_value = lekser_parse_escape_sequence(code, i);
+    } aitpese eгер (i < code.length) {
+        char_value = code[i];
+    }
+    
+    qaytar char_value;
+}
+
+// Escape последовательность парслау
+atqar lekser_parse_escape_sequence(code: jol, position: san) -> jol {
+    eгер (position + 1 < code.length) {
+        jasau next_char: jol = code[position + 1];
+        
+        eгер (next_char == 'n') {
+            qaytar '\n';
+        } aitpese eгер (next_char == 't') {
+            qaytar '\t';
+        } aitpese eгер (next_char == 'r') {
+            qaytar '\r';
+        } aitpese eгер (next_char == '\\') {
+            qaytar '\\';
+        } aitpese eгер (next_char == '"') {
+            qaytar '"';
+        } aitpese eгер (next_char == '\'') {
+            qaytar '\'';
+        }
+    }
+    
+    qaytar code[position + 1];
+}
+
+// Сан парслау
+atqar lekser_parse_number(code: jol, position: san) -> jol {
+    jasau number: jol = "";
+    jasau i: san = position;
+    jasau has_dot: aqıqat = jin;
+    
+    azirshe (i < code.length && (lekser_is_digit(code[i]) || code[i] == '.')) {
+        eгер (code[i] == '.') {
+            eгер (has_dot) {
+                // Екінші нүкте - қате
+                qaytar number;
+            }
+            has_dot = jan;
+        }
+        
+        number = number + code[i];
+        i = i + 1;
+    }
+    
+    qaytar number;
+}
+
+// Идентификатор парслау
+atqar lekser_parse_identifier(code: jol, position: san) -> jol {
+    jasau identifier: jol = "";
+    jasau i: san = position;
+    
+    azirshe (i < code.length && (lekser_is_alpha(code[i]) || lekser_is_digit(code[i]) || code[i] == '_')) {
+        identifier = identifier + code[i];
+        i = i + 1;
+    }
+    
+    qaytar identifier;
+}
+
+// Оператор парслау
+atqar lekser_parse_operator(code: jol, position: san) -> jol {
+    jasau operator: jol = "";
+    jasau i: san = position;
+    
+    azirshe (i < code.length && lekser_is_operator(code[i])) {
+        operator = operator + code[i];
+        i = i + 1;
+    }
+    
+    qaytar operator;
+}
+
+// Сан тексеру
+atqar lekser_is_digit(char: jol) -> aqıqat {
+    qaytar char >= '0' && char <= '9';
+}
+
+// Харф тексеру
+atqar lekser_is_alpha(char: jol) -> aqıqat {
+    qaytar (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z');
+}
+
+// Оператор тексеру
+atqar lekser_is_operator(char: jol) -> aqıqat {
+    qaytar char == '+' || char == '-' || char == '*' || char == '/' || 
+           char == '%' || char == '=' || char == '<' || char == '>' || 
+           char == '!' || char == '&' || char == '|' || char == '^' || char == '~';
+}
+
+// Делимитер тексеру
+atqar lekser_is_delimiter(char: jol) -> aqıqat {
+    qaytar char == '{' || char == '}' || char == '(' || char == ')' || 
+           char == ';' || char == ',' || char == '[' || char == ']';
+}
+
+// Кілт сөз тексеру
+atqar lekser_is_keyword(identifier: jol) -> aqıqat {
+    jasau keywords: jol[] = ["atqar", "jasau", "eger", "aitpese", "azirshe", "qaytar", "korset", "NULL", "jan", "jin"];
+    jasau i: san = 0;
+    
+    azirshe (i < keywords.length) {
+        eгер (identifier == keywords[i]) {
+            qaytar jan;
+        }
+        i = i + 1;
+    }
+    
+    qaytar jin;
+}
+
+// Токен жасау
+atqar token_create() -> Token {
+    jasau token: Token = Token();
+    token.type = "";
+    token.value = "";
+    token.start_position = 0;
+    token.end_position = 0;
+    token.line = 1;
+    token.column = 1;
+    qaytar token;
+}
+
+// Лексер жасау
+atqar lexer_create() -> Lexer {
+    jasau lexer: Lexer = Lexer();
+    lexer.token_types = [];
+    qaytar lexer;
+}
+
+// Токен түрін қосу
+atqar lexer_add_token_type(lexer: Lexer, type: jol, pattern: jol) {
+    jasau token_type: TokenType = TokenType();
+    token_type.type = type;
+    token_type.pattern = pattern;
+    lexer.token_types = lexer.token_types + [token_type];
+}
+
+// Токендерді көрсету
+atqar lekser_tokens_korset(tokens: Token[]) {
+    jasau i: san = 0;
+    
+    korset("Токендер тізімі:");
+    korset("==================");
+    
+    azirshe (i < tokens.length) {
+        jasau token: Token = tokens[i];
+        korset("[" + token.line + ":" + token.column + "] " + token.type + ": " + token.value);
+        i = i + 1;
+    }
+}
+

@@ -1,0 +1,81 @@
+%YAML 1.2
+---
+name: Tenge
+file_extensions:
+  - tng
+scope: source.tenge
+
+contexts:
+  main:
+    - match: \b(atqar|jasau|eger|azirshe|while|for|if|else|qaytar|end|endif|endwhile|endfor)\b
+      scope: keyword.control.tenge
+    - match: \b(import|export|public|private|static|const|var|let|true|false|null|NULL|aqıqat_ras|aqıqat_jin)\b
+      scope: keyword.other.tenge
+    - match: \b(and|or|not|in|is|as)\b
+      scope: keyword.operator.tenge
+    - match: \b(san|jol|aqıqat|JsonObject|WebServer|Component|TemplateEngine|ArchetypeEngine|MorphemeEngine|PhonemeEngine|Vector|Map|Array|Function|Class|Struct|Interface|Enum)\b
+      scope: support.type.tenge
+    - match: \b[a-zA-Z_][a-zA-Z0-9_]*(_jasau|_alu|_qosu|_zhangartu|_zhoyu|_tekseru|_opt|_eng|_man)\b
+      scope: entity.name.function.tenge
+    - match: \b[a-zA-Z_][a-zA-Z0-9_]*\s*\(
+      scope: entity.name.function.tenge
+    - match: \b\d+(\.\d+)?([eE][+-]?\d+)?\b
+      scope: constant.numeric.tenge
+    - match: \b0[xX][0-9a-fA-F]+\b
+      scope: constant.numeric.hex.tenge
+    - match: \b0[bB][01]+\b
+      scope: constant.numeric.binary.tenge
+    - match: \+\+|--|\+=|-=|\*=|/=|%=|==|!=|<=|>=|<|>|&&|\|\||!
+      scope: keyword.operator.tenge
+    - match: \+|-|\*|/|%|\^|&|\||~|<<|>>
+      scope: keyword.operator.tenge
+    - match: =
+      scope: keyword.operator.tenge
+    - match: ;
+      scope: punctuation.separator.tenge
+    - match: ,
+      scope: punctuation.separator.tenge
+    - match: [{}]
+      scope: punctuation.definition.tenge
+    - match: [\[\]]
+      scope: punctuation.definition.tenge
+    - match: [()]
+      scope: punctuation.definition.tenge
+    - include: comments
+    - include: strings
+
+  comments:
+    - match: //.*$
+      scope: comment.line.double-slash.tenge
+    - match: /\*
+      push:
+        - meta_scope: comment.block.tenge
+        - match: \*/
+          pop: true
+        - match: \n
+          scope: comment.block.tenge
+
+  strings:
+    - match: "
+      push:
+        - meta_scope: string.quoted.double.tenge
+        - match: \\(.)
+          scope: constant.character.escape.tenge
+        - match: "
+          pop: true
+    - match: '
+      push:
+        - meta_scope: string.quoted.single.tenge
+        - match: \\(.)
+          scope: constant.character.escape.tenge
+        - match: '
+          pop: true
+    - match: `
+      push:
+        - meta_scope: string.template.tenge
+        - match: \\(.)
+          scope: constant.character.escape.tenge
+        - match: \$\{[^}]+\}
+          scope: variable.other.tenge
+        - match: `
+          pop: true

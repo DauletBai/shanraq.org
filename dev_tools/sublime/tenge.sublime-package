@@ -1,0 +1,12 @@
+{
+  "name": "Tenge Language Support",
+  "description": "Tenge programming language support for Sublime Text",
+  "version": "1.0.0",
+  "author": "Shanraq Team",
+  "homepage": "https://shanraq.org",
+  "repository": "https://github.com/shanraq/tenge-sublime",
+  "issues": "https://github.com/shanraq/tenge-sublime/issues",
+  "platforms": ["*"],
+  "sublime_text": ">=3000",
+  "dependencies": []
+}

@@ -1,0 +1,146 @@
+// user_integration_test.tng - Пайдаланушы интеграция тесттері
+// User integration tests
+
+atqar user_integration_test_jasau() -> TestSuite {
+    jasau test_suite: TestSuite = test_suite_jasau("User Integration Tests");
+    qaytar test_suite;
+}
+
+// Test complete user registration flow
+atqar test_paydalanu_tirkelu_flow() -> aqıqat {
+    korset("🧪 Пайдаланушы тіркеу ағындын тестілеу...");
+    
+    // Initialize system
+    jasau init_result: aqıqat = paydalanu_baskaru_initialize();
+    eгер (!init_result) {
+        korset("❌ Жүйені іске қосу қатесі");
+        qaytar jin;
+    }
+    
+    // Test user registration
+    jasau registration_result: JsonObject = paydalanu_tirkelu_jasau(
+        "Integration Test User",
+        "integration@test.com",
+        "password123",
+        "user"
+    );
+    
+    eгер (!json_object_get_boolean(registration_result, "success")) {
+        korset("❌ Пайдаланушы тіркеу қатесі: " + json_object_get_string(registration_result, "error"));
+        qaytar jin;
+    }
+    
+    // Test user authentication
+    jasau auth_result: JsonObject = paydalanu_kimdik_tekseru(
+        "integration@test.com",
+        "password123"
+    );
+    
+    eгер (!json_object_get_boolean(auth_result, "success")) {
+        korset("❌ Пайдаланушы аутентификация қатесі: " + json_object_get_string(auth_result, "error"));
+        qaytar jin;
+    }
+    
+    // Test user profile update
+    jasau user: JsonObject = json_object_get_object(auth_result, "user");
+    json_object_set_string(user, "name", "Updated Integration Test User");
+    json_object_set_number(user, "updated_at", current_timestamp());
+    
+    jasau update_result: aqıqat = paydalanu_zhangartu(user);
+    
+    eгер (!update_result) {
+        korset("❌ Пайдаланушы профилін жаңарту қатесі");
+        qaytar jin;
+    }
+    
+    korset("✅ Пайдаланушы тіркеу ағынды сәтті өтті");
+    qaytar jan;
+}
+
+// Test user password change flow
+atqar test_parol_ozgertu_flow() -> aqıqat {
+    korset("🧪 Пароль өзгерту ағындын тестілеу...");
+    
+    // Test password strength validation
+    jasau strength_result: JsonObject = parol_kuat_tekseu("newpassword123");
+    
+    eгер (json_object_get_string(strength_result, "strength") == "weak") {
+        korset("❌ Пароль күші тесті сәтсіз");
+        qaytar jin;
+    }
+    
+    // Test password change
+    jasau change_result: JsonObject = paydalanu_parol_ozgertu(
+        "integration@test.com",
+        "password123",
+        "newpassword123"
+    );
+    
+    eгер (!json_object_get_boolean(change_result, "success")) {
+        korset("❌ Пароль өзгерту қатесі: " + json_object_get_string(change_result, "error"));
+        qaytar jin;
+    }
+    
+    // Test authentication with new password
+    jasau new_auth_result: JsonObject = paydalanu_kimdik_tekseru(
+        "integration@test.com",
+        "newpassword123"
+    );
+    
+    eгер (!json_object_get_boolean(new_auth_result, "success")) {
+        korset("❌ Жаңа парольмен аутентификация қатесі");
+        qaytar jin;
+    }
+    
+    korset("✅ Пароль өзгерту ағынды сәтті өтті");
+    qaytar jan;
+}
+
+// Test user statistics
+atqar test_paydalanu_statistika() -> aqıqat {
+    korset("🧪 Пайдаланушы статистикасын тестілеу...");
+    
+    jasau stats: JsonObject = paydalanu_statistika_alu();
+    
+    eгер (json_object_get_number(stats, "total_users") < 1) {
+        korset("❌ Пайдаланушылар саны дұрыс емес");
+        qaytar jin;
+    }
+    
+    eгер (json_object_get_number(stats, "active_users") < 1) {
+        korset("❌ Белсенді пайдаланушылар саны дұрыс емес");
+        qaytar jin;
+    }
+    
+    korset("✅ Пайдаланушы статистикасы дұрыс");
+    qaytar jan;
+}
+
+// Run all user integration tests
+atqar user_integration_testlerin_ishke_engizu() {
+    korset("🧪 Пайдаланушы интеграция тесттерін іске қосу...");
+    
+    jasau passed: san = 0;
+    jasau total: san = 3;
+    
+    eгер (test_paydalanu_tirkelu_flow()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_parol_ozgertu_flow()) {
+        passed = passed + 1;
+    }
+    
+    eгер (test_paydalanu_statistika()) {
+        passed = passed + 1;
+    }
+    
+    korset("📊 Интеграция тест нәтижелері: " + passed + "/" + total + " өтті");
+    
+    eгер (passed == total) {
+        korset("✅ Барлық пайдаланушы интеграция тесттері сәтті өтті!");
+    } aitpese {
+        korset("❌ Кейбір пайдаланушы интеграция тесттері сәтсіз!");
+    }
+}
+

@@ -1,0 +1,381 @@
+// sanattar_jojj.tng - Санаттар JOJJ интерфейсі
+// Categories JOJJ Interface
+
+import "framework/jojj/jojj_interface.tng";
+
+// Санаттар JOJJ классы
+class SanattarJOJJ extends JOJJBase {
+    constructor(connection: DatabaseConnection) {
+        super("sanattar", connection);
+    }
+    
+    // Jasau - Санат жасау
+    atqar sanat_jasau(name: jol, description: jol, parent_id: jol, color: jol, icon: jol) -> JsonObject {
+        // Валидация
+        jasau validation: JsonObject = sanat_tekseu_jasau(name, description);
+        
+        eгер (!json_object_get_boolean(validation, "valid")) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "Validation failed");
+            json_object_set_array(error, "validation_errors", json_object_get_array(validation, "errors"));
+            qaytar error;
+        }
+        
+        // Проверка уникальности названия
+        jasau existing: JsonObject = this.oqu_name_boyynsha(name);
+        
+        eгер (existing != NULL) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "Category with this name already exists");
+            qaytar error;
+        }
+        
+        // Проверка существования родительской категории
+        eгер (parent_id != "") {
+            jasau parent: JsonObject = this.oqu(parent_id);
+            
+            eгер (parent == NULL) {
+                jasau error: JsonObject = json_object_create();
+                json_object_set_boolean(error, "success", jin);
+                json_object_set_string(error, "error", "Parent category not found");
+                qaytar error;
+            }
+        }
+        
+        // Создание категории
+        jasau category: JsonObject = json_object_create();
+        json_object_set_string(category, "name", name);
+        json_object_set_string(category, "description", description);
+        json_object_set_string(category, "parent_id", parent_id);
+        json_object_set_string(category, "color", color);
+        json_object_set_string(category, "icon", icon);
+        json_object_set_string(category, "slug", sanat_slug_jasau(name));
+        json_object_set_number(category, "sort_order", 0);
+        json_object_set_string(category, "status", "active");
+        
+        jasau result: JsonObject = this.jasau(category);
+        
+        qaytar result;
+    }
+    
+    // Oqu - Санатты алу
+    atqar sanat_oqu(id: jol) -> JsonObject {
+        jasau category: JsonObject = this.oqu(id);
+        
+        eгер (category != NULL) {
+            // Добавляем информацию о родительской категории
+            jasau parent_id: jol = json_object_get_string(category, "parent_id");
+            eгер (parent_id != "") {
+                jasau parent: JsonObject = this.oqu(parent_id);
+                json_object_set_object(category, "parent", parent);
+            }
+            
+            // Добавляем информацию о дочерних категориях
+            jasau children: JsonObject[] = this.oqu_children(id);
+            json_object_set_array(category, "children", children);
+            
+            // Добавляем количество статей в категории
+            jasau article_count: san = this.maqalalar_sany(id);
+            json_object_set_number(category, "article_count", article_count);
+        }
+        
+        qaytar category;
+    }
+    
+    // Oqu - Барлық санаттарды алу
+    atqar sanattar_oqu_barlik() -> JsonObject[] {
+        jasau categories: JsonObject[] = this.oqu_barlik();
+        
+        // Добавляем информацию о родительских категориях и количестве статей
+        jasau i: san = 0;
+        azirshe (i < categories.length) {
+            jasau category: JsonObject = categories[i];
+            
+            // Добавляем родительскую категорию
+            jasau parent_id: jol = json_object_get_string(category, "parent_id");
+            eгер (parent_id != "") {
+                jasau parent: JsonObject = this.oqu(parent_id);
+                json_object_set_object(category, "parent", parent);
+            }
+            
+            // Добавляем количество статей
+            jasau article_count: san = this.maqalalar_sany(json_object_get_string(category, "id"));
+            json_object_set_number(category, "article_count", article_count);
+            
+            i = i + 1;
+        }
+        
+        qaytar categories;
+    }
+    
+    // Oqu - Санаттарды іздеу
+    atqar sanattar_oqu_izdeu(name: jol, description: jol, parent_id: jol, status: jol) -> JsonObject[] {
+        jasau criteria: JsonObject = json_object_create();
+        
+        eгер (name != "") {
+            json_object_set_string(criteria, "name", name);
+        }
+        
+        eгер (description != "") {
+            json_object_set_string(criteria, "description", description);
+        }
+        
+        eгер (parent_id != "") {
+            json_object_set_string(criteria, "parent_id", parent_id);
+        }
+        
+        eгер (status != "") {
+            json_object_set_string(criteria, "status", status);
+        }
+        
+        jasau categories: JsonObject[] = this.oqu_izdeu(criteria);
+        
+        // Добавляем информацию о родительских категориях и количестве статей
+        jasau i: san = 0;
+        azirshe (i < categories.length) {
+            jasau category: JsonObject = categories[i];
+            
+            // Добавляем родительскую категорию
+            jasau parent_id: jol = json_object_get_string(category, "parent_id");
+            eгер (parent_id != "") {
+                jasau parent: JsonObject = this.oqu(parent_id);
+                json_object_set_object(category, "parent", parent);
+            }
+            
+            // Добавляем количество статей
+            jasau article_count: san = this.maqalalar_sany(json_object_get_string(category, "id"));
+            json_object_set_number(category, "article_count", article_count);
+            
+            i = i + 1;
+        }
+        
+        qaytar categories;
+    }
+    
+    // Janartu - Санатты жаңарту
+    atqar sanat_janartu(id: jol, name: jol, description: jol, parent_id: jol, color: jol, icon: jol, sort_order: san) -> JsonObject {
+        // Проверка существования категории
+        jasau existing: JsonObject = this.oqu(id);
+        
+        eгер (existing == NULL) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "Category not found");
+            qaytar error;
+        }
+        
+        // Проверка уникальности названия (если изменилось)
+        eгер (name != "" && name != json_object_get_string(existing, "name")) {
+            jasau name_check: JsonObject = this.oqu_name_boyynsha(name);
+            
+            eгер (name_check != NULL) {
+                jasau error: JsonObject = json_object_create();
+                json_object_set_boolean(error, "success", jin);
+                json_object_set_string(error, "error", "Category with this name already exists");
+                qaytar error;
+            }
+        }
+        
+        // Проверка существования родительской категории (если изменилась)
+        eгер (parent_id != "" && parent_id != json_object_get_string(existing, "parent_id")) {
+            jasau parent: JsonObject = this.oqu(parent_id);
+            
+            eгер (parent == NULL) {
+                jasau error: JsonObject = json_object_create();
+                json_object_set_boolean(error, "success", jin);
+                json_object_set_string(error, "error", "Parent category not found");
+                qaytar error;
+            }
+            
+            // Проверка на циклическую зависимость
+            eгер (this.cyclical_dependency_check(id, parent_id)) {
+                jasau error: JsonObject = json_object_create();
+                json_object_set_boolean(error, "success", jin);
+                json_object_set_string(error, "error", "Circular dependency detected");
+                qaytar error;
+            }
+        }
+        
+        // Подготовка данных для обновления
+        jasau update_data: JsonObject = json_object_create();
+        
+        eгер (name != "") {
+            json_object_set_string(update_data, "name", name);
+            json_object_set_string(update_data, "slug", sanat_slug_jasau(name));
+        }
+        
+        eгер (description != "") {
+            json_object_set_string(update_data, "description", description);
+        }
+        
+        eгер (parent_id != "") {
+            json_object_set_string(update_data, "parent_id", parent_id);
+        }
+        
+        eгер (color != "") {
+            json_object_set_string(update_data, "color", color);
+        }
+        
+        eгер (icon != "") {
+            json_object_set_string(update_data, "icon", icon);
+        }
+        
+        eгер (sort_order >= 0) {
+            json_object_set_number(update_data, "sort_order", sort_order);
+        }
+        
+        qaytar this.janartu(id, update_data);
+    }
+    
+    // Joiu - Санатты жою
+    atqar sanat_joiu(id: jol) -> aqıqat {
+        // Проверка существования категории
+        jasau category: JsonObject = this.oqu(id);
+        
+        eгер (category == NULL) {
+            qaytar jin;
+        }
+        
+        // Проверка наличия дочерних категорий
+        jasau children: JsonObject[] = this.oqu_children(id);
+        
+        eгер (children.length > 0) {
+            qaytar jin; // Нельзя удалить категорию с дочерними
+        }
+        
+        // Проверка наличия статей в категории
+        jasau article_count: san = this.maqalalar_sany(id);
+        
+        eгер (article_count > 0) {
+            qaytar jin; // Нельзя удалить категорию со статьями
+        }
+        
+        qaytar this.joiu(id);
+    }
+    
+    // Дополнительные методы
+    atqar oqu_name_boyynsha(name: jol) -> JsonObject {
+        jasau sql: jol = "SELECT * FROM " + this.table_name + " WHERE name = ?";
+        jasau result: QueryResult = database_query_ishke_engizu(this.connection, sql, [name]);
+        
+        eгер (result.success && result.rows.length > 0) {
+            qaytar result.rows[0];
+        }
+        
+        qaytar NULL;
+    }
+    
+    atqar oqu_children(parent_id: jol) -> JsonObject[] {
+        jasau sql: jol = "SELECT * FROM " + this.table_name + " WHERE parent_id = ? ORDER BY sort_order ASC, name ASC";
+        jasau result: QueryResult = database_query_ishke_engizu(this.connection, sql, [parent_id]);
+        
+        eгер (result.success) {
+            qaytar result.rows;
+        }
+        
+        qaytar [];
+    }
+    
+    atqar oqu_root_categories() -> JsonObject[] {
+        jasau sql: jol = "SELECT * FROM " + this.table_name + " WHERE parent_id = '' OR parent_id IS NULL ORDER BY sort_order ASC, name ASC";
+        jasau result: QueryResult = database_query_ishke_engizu(this.connection, sql);
+        
+        eгер (result.success) {
+            qaytar result.rows;
+        }
+        
+        qaytar [];
+    }
+    
+    atqar cyclical_dependency_check(category_id: jol, parent_id: jol) -> aqıqat {
+        eгер (category_id == parent_id) {
+            qaytar jan; // Прямая циклическая зависимость
+        }
+        
+        // Проверяем всю цепочку родителей
+        jasau current_parent: jol = parent_id;
+        
+        azirshe (current_parent != "") {
+            jasau parent: JsonObject = this.oqu(current_parent);
+            
+            eгер (parent == NULL) {
+                qaytar jin; // Родитель не найден
+            }
+            
+            current_parent = json_object_get_string(parent, "parent_id");
+            
+            eгер (current_parent == category_id) {
+                qaytar jan; // Циклическая зависимость обнаружена
+            }
+        }
+        
+        qaytar jin;
+    }
+    
+    atqar maqalalar_sany(category_id: jol) -> san {
+        jasau sql: jol = "SELECT COUNT(*) as count FROM maqalalar WHERE category_id = ? AND status = 'published'";
+        jasau result: QueryResult = database_query_ishke_engizu(this.connection, sql, [category_id]);
+        
+        eгер (result.success && result.rows.length > 0) {
+            qaytar result.rows[0].count;
+        }
+        
+        qaytar 0;
+    }
+    
+    atqar sanattar_hierarchy() -> JsonObject {
+        jasau root_categories: JsonObject[] = this.oqu_root_categories();
+        jasau hierarchy: JsonObject = json_object_create();
+        json_object_set_array(hierarchy, "categories", root_categories);
+        
+        // Рекурсивно добавляем дочерние категории
+        jasau i: san = 0;
+        azirshe (i < root_categories.length) {
+            jasau category: JsonObject = root_categories[i];
+            jasau children: JsonObject[] = this.oqu_children(json_object_get_string(category, "id"));
+            json_object_set_array(category, "children", children);
+            
+            // Рекурсивно обрабатываем дочерние категории
+            this.add_children_recursively(category);
+            
+            i = i + 1;
+        }
+        
+        qaytar hierarchy;
+    }
+    
+    atqar add_children_recursively(category: JsonObject) {
+        jasau children: JsonObject[] = json_object_get_array(category, "children");
+        
+        jasau i: san = 0;
+        azirshe (i < children.length) {
+            jasau child: JsonObject = children[i];
+            jasau grand_children: JsonObject[] = this.oqu_children(json_object_get_string(child, "id"));
+            json_object_set_array(child, "children", grand_children);
+            
+            // Рекурсивно обрабатываем внуков
+            this.add_children_recursively(child);
+            
+            i = i + 1;
+        }
+    }
+    
+    atqar sanattar_statistika() -> JsonObject {
+        jasau total_sql: jol = "SELECT COUNT(*) as total FROM " + this.table_name;
+        jasau active_sql: jol = "SELECT COUNT(*) as active FROM " + this.table_name + " WHERE status = 'active'";
+        jasau root_sql: jol = "SELECT COUNT(*) as root FROM " + this.table_name + " WHERE parent_id = '' OR parent_id IS NULL";
+        
+        jasau total_result: QueryResult = database_query_ishke_engizu(this.connection, total_sql);
+        jasau active_result: QueryResult = database_query_ishke_engizu(this.connection, active_sql);
+        jasau root_result: QueryResult = database_query_ishke_engizu(this.connection, root_sql);
+        
+        jasau stats: JsonObject = json_object_create();
+        json_object_set_number(stats, "total_categories", total_result.rows[0].total);
+        json_object_set_number(stats, "active_categories", active_result.rows[0].active);
+        json_object_set_number(stats, "root_categories", root_result.rows[0].root);
+        
+        qaytar stats;
+    }
+}

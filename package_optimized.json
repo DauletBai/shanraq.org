@@ -1,0 +1,62 @@
+{
+  "name": "shanraq",
+  "version": "1.0.0",
+  "description": "Shanraq.org - Агглютинативтік веб-қосымша",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "server": "node artjagy/server/main.js",
+    "demo": "python3 synaqtar/demo/template_server.py",
+    "test": "node synaqtar/unit/run_tests.js",
+    "test:unit": "node synaqtar/unit/run_tests.js",
+    "test:integration": "node synaqtar/integration/run_tests.js",
+    "test:e2e": "node synaqtar/e2e/run_tests.js",
+    "test:all": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "lint": "node dev_tools/linter/tenge-linter.py",
+    "format": "node dev_tools/formatter/tenge-formatter.py",
+    "build": "node qurastyru/kompilyator.tng",
+    "dev": "npm run server",
+    "docs": "echo 'Documentation available in qujattama/'"
+  },
+  "keywords": [
+    "shanraq",
+    "agglutinative",
+    "kazakh",
+    "programming",
+    "language",
+    "web",
+    "framework",
+    "tenge"
+  ],
+  "author": "Shanraq.org Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.0",
+    "sqlite3": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "bcryptjs": "^2.4.0",
+    "cors": "^2.8.0",
+    "helmet": "^7.0.0",
+    "express-rate-limit": "^7.0.0",
+    "compression": "^1.7.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shanraq.org/shanraq.org.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shanraq.org/shanraq.org/issues"
+  },
+  "homepage": "https://shanraq.org"
+}
+

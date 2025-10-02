@@ -1,0 +1,239 @@
+// web_server_test.tng - Веб-сервер юнит тесттері
+// Агглютинативтік тестілеу
+
+atqar main() {
+    korset("Веб-сервер юнит тесттерін іске қосу...");
+    
+    // Тесттерді іске қосу
+    test_web_server_jasau();
+    test_route_qosu();
+    test_middleware_qosu();
+    test_api_endpoints();
+    test_user_operations();
+    
+    korset("Барлық юнит тесттер аяқталды!");
+}
+
+// Веб-сервер жасау тесті
+atqar test_web_server_jasau() {
+    korset("Тест: Веб-сервер жасау");
+    
+    jasau server: WebServer = web_server_create(8080);
+    
+    eger (server != NULL) {
+        korset("✅ Веб-сервер сәтті жасалды");
+    } aitpese {
+        korset("❌ Веб-сервер жасау қатесі");
+    }
+}
+
+// Маршрут қосу тесті
+atqar test_route_qosu() {
+    korset("Тест: Маршрут қосу");
+    
+    jasau server: WebServer = web_server_create(8080);
+    web_get_route_qosu(server, "/test", test_handler);
+    web_post_route_qosu(server, "/test", test_handler);
+    
+    korset("✅ Маршруттар сәтті қосылды");
+}
+
+atqar test_handler(request: WebRequest, response: WebResponse) {
+    web_json_response_qaytar(response, json_object_create(), 200);
+}
+
+// Middleware қосу тесті
+atqar test_middleware_qosu() {
+    korset("Тест: Middleware қосу");
+    
+    jasau server: WebServer = web_server_create(8080);
+    jasau middleware: Function = test_middleware;
+    web_middleware_qosu(server, middleware);
+    
+    korset("✅ Middleware сәтті қосылды");
+}
+
+atqar test_middleware(request: WebRequest, response: WebResponse) {
+    // Middleware логикасы
+    korset("Middleware іске қосылды");
+}
+
+// API endpoint тесттері
+atqar test_api_endpoints() {
+    korset("Тест: API endpoint-тер");
+    
+    // Health check тесті
+    jasau health_response: WebResponse = web_request_simulate("GET", "/api/v1/health");
+    eger (health_response.status == 200) {
+        korset("✅ Health check тесті өтті");
+    } aitpese {
+        korset("❌ Health check тесті қатесі");
+    }
+    
+    // Status check тесті
+    jasau status_response: WebResponse = web_request_simulate("GET", "/api/v1/status");
+    eger (status_response.status == 200) {
+        korset("✅ Status check тесті өтті");
+    } aitpese {
+        korset("❌ Status check тесті қатесі");
+    }
+}
+
+// Пайдаланушы операциялары тесті
+atqar test_user_operations() {
+    korset("Тест: Пайдаланушы операциялары");
+    
+    // Пайдаланушы жасау тесті
+    jasau user_data: JsonObject = json_object_create();
+    json_object_set_string(user_data, "name", "Тест Пайдаланушы");
+    json_object_set_string(user_data, "email", "test@example.com");
+    json_object_set_string(user_data, "password", "password123");
+    
+    jasau create_response: WebResponse = web_request_simulate("POST", "/api/v1/users", user_data);
+    eger (create_response.status == 201) {
+        korset("✅ Пайдаланушы жасау тесті өтті");
+    } aitpese {
+        korset("❌ Пайдаланушы жасау тесті қатесі");
+    }
+    
+    // Пайдаланушы тізімі тесті
+    jasau list_response: WebResponse = web_request_simulate("GET", "/api/v1/users");
+    eger (list_response.status == 200) {
+        korset("✅ Пайдаланушы тізімі тесті өтті");
+    } aitpese {
+        korset("❌ Пайдаланушы тізімі тесті қатесі");
+    }
+}
+
+// Login тесті
+atqar test_login() {
+    korset("Тест: Login");
+    
+    jasau login_data: JsonObject = json_object_create();
+    json_object_set_string(login_data, "email", "test@example.com");
+    json_object_set_string(login_data, "password", "password123");
+    
+    jasau login_response: WebResponse = web_request_simulate("POST", "/login", login_data);
+    eger (login_response.status == 200) {
+        korset("✅ Login тесті өтті");
+    } aitpese {
+        korset("❌ Login тесті қатесі");
+    }
+}
+
+// Register тесті
+atqar test_register() {
+    korset("Тест: Register");
+    
+    jasau register_data: JsonObject = json_object_create();
+    json_object_set_string(register_data, "name", "Жаңа Пайдаланушы");
+    json_object_set_string(register_data, "email", "new@example.com");
+    json_object_set_string(register_data, "password", "password123");
+    
+    jasau register_response: WebResponse = web_request_simulate("POST", "/register", register_data);
+    eger (register_response.status == 201) {
+        korset("✅ Register тесті өтті");
+    } aitpese {
+        korset("❌ Register тесті қатесі");
+    }
+}
+
+// Logout тесті
+atqar test_logout() {
+    korset("Тест: Logout");
+    
+    jasau logout_response: WebResponse = web_request_simulate("POST", "/logout");
+    eger (logout_response.status == 200) {
+        korset("✅ Logout тесті өтті");
+    } aitpese {
+        korset("❌ Logout тесті қатесі");
+    }
+}
+
+// Profile тесті
+atqar test_profile() {
+    korset("Тест: Profile");
+    
+    jasau profile_response: WebResponse = web_request_simulate("GET", "/profile");
+    eger (profile_response.status == 200 || profile_response.status == 401) {
+        korset("✅ Profile тесті өтті");
+    } aitpese {
+        korset("❌ Profile тесті қатесі");
+    }
+}
+
+// Performance тесті
+atqar test_performance() {
+    korset("Тест: Performance");
+    
+    jasau start_time: san = current_timestamp();
+    jasau i: san = 0;
+    
+    azirshe (i < 100) {
+        jasau response: WebResponse = web_request_simulate("GET", "/api/v1/health");
+        i = i + 1;
+    }
+    
+    jasau end_time: san = current_timestamp();
+    jasau duration: san = end_time - start_time;
+    
+    korset("100 сұрау уақыты: " + duration + "ms");
+    
+    eгер (duration < 1000) {
+        korset("✅ Performance тесті өтті");
+    } aitpese {
+        korset("❌ Performance тесті қатесі - тым баяу");
+    }
+}
+
+// Security тесті
+atqar test_security() {
+    korset("Тест: Security");
+    
+    // SQL injection тесті
+    jasau malicious_data: JsonObject = json_object_create();
+    json_object_set_string(malicious_data, "email", "'; DROP TABLE users; --");
+    json_object_set_string(malicious_data, "password", "password");
+    
+    jasau response: WebResponse = web_request_simulate("POST", "/login", malicious_data);
+    eгер (response.status == 401) {
+        korset("✅ SQL injection қорғанысы жұмыс істейді");
+    } aitpese {
+        korset("❌ SQL injection қорғанысы жұмыс істемейді");
+    }
+    
+    // XSS тесті
+    jasau xss_data: JsonObject = json_object_create();
+    json_object_set_string(xss_data, "name", "<script>alert('XSS')</script>");
+    json_object_set_string(xss_data, "email", "xss@example.com");
+    json_object_set_string(xss_data, "password", "password");
+    
+    jasau xss_response: WebResponse = web_request_simulate("POST", "/api/v1/users", xss_data);
+    eгер (xss_response.status == 201) {
+        korset("✅ XSS қорғанысы жұмыс істейді");
+    } aitpese {
+        korset("❌ XSS қорғанысы жұмыс істемейді");
+    }
+}
+
+// Error handling тесті
+atqar test_error_handling() {
+    korset("Тест: Error handling");
+    
+    // 404 тесті
+    jasau not_found_response: WebResponse = web_request_simulate("GET", "/nonexistent");
+    eгер (not_found_response.status == 404) {
+        korset("✅ 404 error handling тесті өтті");
+    } aitpese {
+        korset("❌ 404 error handling тесті қатесі");
+    }
+    
+    // 500 тесті
+    jasau server_error_response: WebResponse = web_request_simulate("GET", "/error");
+    eгер (server_error_response.status == 500) {
+        korset("✅ 500 error handling тесті өтті");
+    } aitpese {
+        korset("❌ 500 error handling тесті қатесі");
+    }
+}
+

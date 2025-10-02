@@ -1,0 +1,506 @@
+// transpiler.tng - Tenge транспайлер (C код генерация)
+// Агглютинативтік транспайлер
+
+atqar transpiler_jasau() -> Transpiler {
+    jasau transpiler: Transpiler = transpiler_create();
+    qaytar transpiler;
+}
+
+// AST-ты C кодқа түрлендіру
+atqar transpiler_transpile(transpiler: Transpiler, ast: AST) -> jol {
+    jasau c_code: jol = "";
+    
+    // C заголовок файлдарын қосу
+    c_code = c_code + transpiler_generate_headers();
+    c_code = c_code + "\n";
+    
+    // Глобальды айнымалыларды қосу
+    c_code = c_code + transpiler_generate_globals();
+    c_code = c_code + "\n";
+    
+    // AST node-дарын өңдеу
+    jasau i: san = 0;
+    azirshe (i < ast.nodes.length) {
+        jasau node: ASTNode = ast.nodes[i];
+        jasau node_code: jol = transpiler_transpile_node(transpiler, node);
+        c_code = c_code + node_code + "\n";
+        i = i + 1;
+    }
+    
+    qaytar c_code;
+}
+
+// C заголовок файлдарын генерациялау
+atqar transpiler_generate_headers() -> jol {
+    jasau headers: jol = "";
+    
+    headers = headers + "#include <stdio.h>\n";
+    headers = headers + "#include <stdlib.h>\n";
+    headers = headers + "#include <string.h>\n";
+    headers = headers + "#include <stdbool.h>\n";
+    headers = headers + "#include <math.h>\n";
+    headers = headers + "#include <time.h>\n";
+    headers = headers + "\n";
+    
+    // Tenge типтерін анықтау
+    headers = headers + "// Tenge типтері\n";
+    headers = headers + "typedef char* jol;\n";
+    headers = headers + "typedef int san;\n";
+    headers = headers + "typedef bool aqıqat;\n";
+    headers = headers + "typedef void* Function;\n";
+    headers = headers + "typedef void* WebServer;\n";
+    headers = headers + "typedef void* WebRequest;\n";
+    headers = headers + "typedef void* WebResponse;\n";
+    headers = headers + "typedef void* JsonObject;\n";
+    headers = headers + "typedef void* JsonArray;\n";
+    headers = headers + "typedef void* Model;\n";
+    headers = headers + "typedef void* Field;\n";
+    headers = headers + "typedef void* Migration;\n";
+    headers = headers + "typedef void* Component;\n";
+    headers = headers + "typedef void* AST;\n";
+    headers = headers + "typedef void* ASTNode;\n";
+    headers = headers + "typedef void* Token;\n";
+    headers = headers + "typedef void* Lexer;\n";
+    headers = headers + "typedef void* Parser;\n";
+    headers = headers + "typedef void* Transpiler;\n";
+    headers = headers + "\n";
+    
+    // Tenge функцияларын декларациялау
+    headers = headers + "// Tenge функциялары\n";
+    headers = headers + "jol korset(jol message);\n";
+    headers = headers + "jol current_timestamp();\n";
+    headers = headers + "jol hash_password(jol password);\n";
+    headers = headers + "jol string_to_int(jol str);\n";
+    headers = headers + "jol int_to_string(int value);\n";
+    headers = headers + "jol string_join(jol* array, jol separator);\n";
+    headers = headers + "jol json_parse_object(jol json);\n";
+    headers = headers + "jol json_object_create();\n";
+    headers = headers + "jol json_object_get_string(JsonObject obj, jol key);\n";
+    headers = headers + "jol json_object_set_string(JsonObject obj, jol key, jol value);\n";
+    headers = headers + "jol json_object_set_number(JsonObject obj, jol key, san value);\n";
+    headers = headers + "jol json_object_set_array(JsonObject obj, jol key, JsonObject* array);\n";
+    headers = headers + "jol json_object_set_object(JsonObject obj, jol key, JsonObject value);\n";
+    headers = headers + "jol json_object_remove(JsonObject obj, jol key);\n";
+    headers = headers + "jol web_server_create(san port);\n";
+    headers = headers + "jol web_server_listen(WebServer server);\n";
+    headers = headers + "jol web_get_route_qosu(WebServer server, jol path, Function handler);\n";
+    headers = headers + "jol web_post_route_qosu(WebServer server, jol path, Function handler);\n";
+    headers = headers + "jol web_put_route_qosu(WebServer server, jol path, Function handler);\n";
+    headers = headers + "jol web_delete_route_qosu(WebServer server, jol path, Function handler);\n";
+    headers = headers + "jol web_middleware_qosu(WebServer server, Function middleware);\n";
+    headers = headers + "jol web_static_qosu(WebServer server, jol path, jol directory);\n";
+    headers = headers + "jol web_cors_middleware_qosu(WebServer server);\n";
+    headers = headers + "jol web_request_get_body(WebRequest request);\n";
+    headers = headers + "jol web_request_get_query(WebRequest request, jol key);\n";
+    headers = headers + "jol web_request_get_param(WebRequest request, jol key);\n";
+    headers = headers + "jol web_request_get_header(WebRequest request, jol key);\n";
+    headers = headers + "jol web_response_qaytar(WebResponse response, jol data, san status);\n";
+    headers = headers + "jol web_json_response_qaytar(WebResponse response, JsonObject data, san status);\n";
+    headers = headers + "jol web_html_response_qaytar(WebResponse response, jol html, san status);\n";
+    headers = headers + "jol web_jwt_token_jasau(jol user_id);\n";
+    headers = headers + "jol web_jwt_token_decode(jol token);\n";
+    headers = headers + "jol web_template_engin_ishke_engizu(jol template, JsonObject data);\n";
+    headers = headers + "jol web_logging_middleware(WebRequest request, WebResponse response);\n";
+    headers = headers + "jol web_auth_middleware(WebRequest request, WebResponse response);\n";
+    headers = headers + "jol web_rate_limit_middleware(WebRequest request, WebResponse response);\n";
+    headers = headers + "jol web_request_simulate(jol method, jol path, JsonObject data);\n";
+    headers = headers + "jol model_create(jol name);\n";
+    headers = headers + "jol model_add_field(Model model, Field field);\n";
+    headers = headers + "jol model_create_record(Model model, JsonObject data);\n";
+    headers = headers + "jol model_read_record(Model model, jol id);\n";
+    headers = headers + "jol model_update_record(Model model, jol id, JsonObject data);\n";
+    headers = headers + "jol model_delete_record(Model model, jol id);\n";
+    headers = headers + "jol field_qosu(jol name, jol type, jol* constraints);\n";
+    headers = headers + "jol constraint_primary_key();\n";
+    headers = headers + "jol constraint_not_null();\n";
+    headers = headers + "jol constraint_unique();\n";
+    headers = headers + "jol migration_create(jol name);\n";
+    headers = headers + "jol migration_add_table(Migration migration, jol name, Field* fields);\n";
+    headers = headers + "jol migration_run(Migration migration);\n";
+    headers = headers + "jol component_create(jol name);\n";
+    headers = headers + "jol component_set_html(Component component, jol html);\n";
+    headers = headers + "jol component_set_css(Component component, jol css);\n";
+    headers = headers + "jol component_set_js(Component component, jol js);\n";
+    headers = headers + "jol component_get_html(Component component);\n";
+    headers = headers + "jol database_query(jol query);\n";
+    headers = headers + "jol lexer_create();\n";
+    headers = headers + "jol lexer_add_token_type(Lexer lexer, jol type, jol pattern);\n";
+    headers = headers + "jol lekser_tokenize(Lexer lexer, jol code);\n";
+    headers = headers + "jol parser_create();\n";
+    headers = headers + "jol parser_parse(Parser parser, Token* tokens);\n";
+    headers = headers + "jol transpiler_create();\n";
+    headers = headers + "jol transpiler_transpile(Transpiler transpiler, AST ast);\n";
+    headers = headers + "\n";
+    
+    qaytar headers;
+}
+
+// Глобальды айнымалыларды генерациялау
+atqar transpiler_generate_globals() -> jol {
+    jasau globals: jol = "";
+    
+    globals = globals + "// Глобальды айнымалылар\n";
+    globals = globals + "static WebServer global_server = NULL;\n";
+    globals = globals + "static JsonObject global_data = NULL;\n";
+    globals = globals + "\n";
+    
+    qaytar globals;
+}
+
+// AST node-ды C кодқа түрлендіру
+atqar transpiler_transpile_node(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau node_type: jol = node.type;
+    
+    eгер (node_type == "FUNCTION_DECLARATION") {
+        qaytar transpiler_transpile_function_declaration(transpiler, node);
+    } aitpese eгер (node_type == "VARIABLE_DECLARATION") {
+        qaytar transpiler_transpile_variable_declaration(transpiler, node);
+    } aitpese eгер (node_type == "IF_STATEMENT") {
+        qaytar transpiler_transpile_if_statement(transpiler, node);
+    } aitpese eгер (node_type == "WHILE_LOOP") {
+        qaytar transpiler_transpile_while_loop(transpiler, node);
+    } aitpese eгер (node_type == "PRINT_STATEMENT") {
+        qaytar transpiler_transpile_print_statement(transpiler, node);
+    } aitpese eгер (node_type == "RETURN_STATEMENT") {
+        qaytar transpiler_transpile_return_statement(transpiler, node);
+    } aitpese eгер (node_type == "ASSIGNMENT") {
+        qaytar transpiler_transpile_assignment(transpiler, node);
+    } aitpese eгер (node_type == "FUNCTION_CALL") {
+        qaytar transpiler_transpile_function_call(transpiler, node);
+    } aitpese {
+        qaytar transpiler_transpile_expression(transpiler, node);
+    }
+}
+
+// Функция декларациясын түрлендіру
+atqar transpiler_transpile_function_declaration(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau function_name: jol = node.string_values["name"];
+    jasau return_type: jol = node.string_values["return_type"];
+    jasau parameters: ASTNode[] = node.array_values["parameters"];
+    jasau body: ASTNode[] = node.array_values["body"];
+    
+    // Return типін C типіне түрлендіру
+    jasau c_return_type: jol = transpiler_convert_type(return_type);
+    
+    // Функция басы
+    c_code = c_code + c_return_type + " " + function_name + "(";
+    
+    // Параметрлерді түрлендіру
+    jasau i: san = 0;
+    azirshe (i < parameters.length) {
+        jasau param: ASTNode = parameters[i];
+        jasau param_name: jol = param.string_values["name"];
+        jasau param_type: jol = param.string_values["type"];
+        jasau c_param_type: jol = transpiler_convert_type(param_type);
+        
+        c_code = c_code + c_param_type + " " + param_name;
+        
+        eгер (i < parameters.length - 1) {
+            c_code = c_code + ", ";
+        }
+        
+        i = i + 1;
+    }
+    
+    c_code = c_code + ") {\n";
+    
+    // Функция денесін түрлендіру
+    jasau j: san = 0;
+    azirshe (j < body.length) {
+        jasau body_node: ASTNode = body[j];
+        jasau body_code: jol = transpiler_transpile_node(transpiler, body_node);
+        c_code = c_code + "    " + body_code + ";\n";
+        j = j + 1;
+    }
+    
+    c_code = c_code + "}\n";
+    
+    qaytar c_code;
+}
+
+// Айнымалы декларациясын түрлендіру
+atqar transpiler_transpile_variable_declaration(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau variable_name: jol = node.string_values["name"];
+    jasau variable_type: jol = node.string_values["type"];
+    jasau value: ASTNode = node.node_values["value"];
+    
+    // C типін анықтау
+    jasau c_type: jol = transpiler_convert_type(variable_type);
+    
+    c_code = c_code + c_type + " " + variable_name;
+    
+    eгер (value != NULL) {
+        jasau value_code: jol = transpiler_transpile_expression(transpiler, value);
+        c_code = c_code + " = " + value_code;
+    }
+    
+    qaytar c_code;
+}
+
+// If statement түрлендіру
+atqar transpiler_transpile_if_statement(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau condition: ASTNode = node.node_values["condition"];
+    jasau if_body: ASTNode[] = node.array_values["if_body"];
+    jasau else_body: ASTNode[] = node.array_values["else_body"];
+    
+    // If басы
+    jasau condition_code: jol = transpiler_transpile_expression(transpiler, condition);
+    c_code = c_code + "if (" + condition_code + ") {\n";
+    
+    // If денесін түрлендіру
+    jasau i: san = 0;
+    azirshe (i < if_body.length) {
+        jasau body_node: ASTNode = if_body[i];
+        jasau body_code: jol = transpiler_transpile_node(transpiler, body_node);
+        c_code = c_code + "    " + body_code + ";\n";
+        i = i + 1;
+    }
+    
+    c_code = c_code + "}";
+    
+    // Else бөлігін түрлендіру
+    eгер (else_body.length > 0) {
+        c_code = c_code + " else {\n";
+        
+        jasau j: san = 0;
+        azirshe (j < else_body.length) {
+            jasau else_node: ASTNode = else_body[j];
+            jasau else_code: jol = transpiler_transpile_node(transpiler, else_node);
+            c_code = c_code + "    " + else_code + ";\n";
+            j = j + 1;
+        }
+        
+        c_code = c_code + "}";
+    }
+    
+    qaytar c_code;
+}
+
+// While loop түрлендіру
+atqar transpiler_transpile_while_loop(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau condition: ASTNode = node.node_values["condition"];
+    jasau body: ASTNode[] = node.array_values["body"];
+    
+    // While басы
+    jasau condition_code: jol = transpiler_transpile_expression(transpiler, condition);
+    c_code = c_code + "while (" + condition_code + ") {\n";
+    
+    // While денесін түрлендіру
+    jasau i: san = 0;
+    azirshe (i < body.length) {
+        jasau body_node: ASTNode = body[i];
+        jasau body_code: jol = transpiler_transpile_node(transpiler, body_node);
+        c_code = c_code + "    " + body_code + ";\n";
+        i = i + 1;
+    }
+    
+    c_code = c_code + "}";
+    
+    qaytar c_code;
+}
+
+// Print statement түрлендіру
+atqar transpiler_transpile_print_statement(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau value: ASTNode = node.node_values["value"];
+    
+    jasau value_code: jol = transpiler_transpile_expression(transpiler, value);
+    c_code = c_code + "printf(\"%s\\n\", " + value_code + ")";
+    
+    qaytar c_code;
+}
+
+// Return statement түрлендіру
+atqar transpiler_transpile_return_statement(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau value: ASTNode = node.node_values["value"];
+    
+    eгер (value != NULL) {
+        jasau value_code: jol = transpiler_transpile_expression(transpiler, value);
+        c_code = c_code + "return " + value_code;
+    } aitpese {
+        c_code = c_code + "return";
+    }
+    
+    qaytar c_code;
+}
+
+// Assignment түрлендіру
+atqar transpiler_transpile_assignment(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau left: ASTNode = node.node_values["left"];
+    jasau right: ASTNode = node.node_values["right"];
+    
+    jasau left_code: jol = transpiler_transpile_expression(transpiler, left);
+    jasau right_code: jol = transpiler_transpile_expression(transpiler, right);
+    
+    c_code = c_code + left_code + " = " + right_code;
+    
+    qaytar c_code;
+}
+
+// Функция шақыру түрлендіру
+atqar transpiler_transpile_function_call(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau function_name: jol = node.string_values["name"];
+    jasau arguments: ASTNode[] = node.array_values["arguments"];
+    
+    c_code = c_code + function_name + "(";
+    
+    jasau i: san = 0;
+    azirshe (i < arguments.length) {
+        jasau argument: ASTNode = arguments[i];
+        jasau argument_code: jol = transpiler_transpile_expression(transpiler, argument);
+        c_code = c_code + argument_code;
+        
+        eгер (i < arguments.length - 1) {
+            c_code = c_code + ", ";
+        }
+        
+        i = i + 1;
+    }
+    
+    c_code = c_code + ")";
+    
+    qaytar c_code;
+}
+
+// Expression түрлендіру
+atqar transpiler_transpile_expression(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau node_type: jol = node.type;
+    
+    eгер (node_type == "IDENTIFIER") {
+        jasau name: jol = node.string_values["name"];
+        qaytar name;
+    } aitpese eгер (node_type == "NUMBER") {
+        jasau value: jol = node.string_values["value"];
+        qaytar value;
+    } aitpese eгер (node_type == "STRING") {
+        jasau value: jol = node.string_values["value"];
+        qaytar "\"" + value + "\"";
+    } aitpese eгер (node_type == "BOOLEAN") {
+        jasau value: jol = node.string_values["value"];
+        eгер (value == "jan") {
+            qaytar "true";
+        } aitpese {
+            qaytar "false";
+        }
+    } aitpese eгер (node_type == "NULL") {
+        qaytar "NULL";
+    } aitpese eгер (node_type == "ADDITIVE" || node_type == "MULTIPLICATIVE" || 
+             node_type == "RELATIONAL" || node_type == "EQUALITY" || 
+             node_type == "LOGICAL_AND" || node_type == "LOGICAL_OR") {
+        qaytar transpiler_transpile_binary_expression(transpiler, node);
+    } aitpese eгер (node_type == "UNARY") {
+        qaytar transpiler_transpile_unary_expression(transpiler, node);
+    } aitpese eгер (node_type == "FUNCTION_CALL") {
+        qaytar transpiler_transpile_function_call(transpiler, node);
+    } aitpese {
+        qaytar "NULL";
+    }
+}
+
+// Binary expression түрлендіру
+atqar transpiler_transpile_binary_expression(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau operator: jol = node.string_values["operator"];
+    jasau left: ASTNode = node.node_values["left"];
+    jasau right: ASTNode = node.node_values["right"];
+    
+    jasau left_code: jol = transpiler_transpile_expression(transpiler, left);
+    jasau right_code: jol = transpiler_transpile_expression(transpiler, right);
+    
+    c_code = c_code + "(" + left_code + " " + operator + " " + right_code + ")";
+    
+    qaytar c_code;
+}
+
+// Unary expression түрлендіру
+atqar transpiler_transpile_unary_expression(transpiler: Transpiler, node: ASTNode) -> jol {
+    jasau c_code: jol = "";
+    jasau operator: jol = node.string_values["operator"];
+    jasau operand: ASTNode = node.node_values["operand"];
+    
+    jasau operand_code: jol = transpiler_transpile_expression(transpiler, operand);
+    c_code = c_code + operator + "(" + operand_code + ")";
+    
+    qaytar c_code;
+}
+
+// Tenge типін C типіне түрлендіру
+atqar transpiler_convert_type(tenge_type: jol) -> jol {
+    eгер (tenge_type == "jol") {
+        qaytar "jol";
+    } aitpese eгер (tenge_type == "san") {
+        qaytar "san";
+    } aitpese eгер (tenge_type == "aqıqat") {
+        qaytar "aqıqat";
+    } aitpese eгер (tenge_type == "Function") {
+        qaytar "Function";
+    } aitpese eгер (tenge_type == "WebServer") {
+        qaytar "WebServer";
+    } aitpese eгер (tenge_type == "WebRequest") {
+        qaytar "WebRequest";
+    } aitpese eгер (tenge_type == "WebResponse") {
+        qaytar "WebResponse";
+    } aitpese eгер (tenge_type == "JsonObject") {
+        qaytar "JsonObject";
+    } aitpese eгер (tenge_type == "JsonArray") {
+        qaytar "JsonArray";
+    } aitpese eгер (tenge_type == "Model") {
+        qaytar "Model";
+    } aitpese eгер (tenge_type == "Field") {
+        qaytar "Field";
+    } aitpese eгер (tenge_type == "Migration") {
+        qaytar "Migration";
+    } aitpese eгер (tenge_type == "Component") {
+        qaytar "Component";
+    } aitpese eгер (tenge_type == "AST") {
+        qaytar "AST";
+    } aitpese eгер (tenge_type == "ASTNode") {
+        qaytar "ASTNode";
+    } aitpese eгер (tenge_type == "Token") {
+        qaytar "Token";
+    } aitpese eгер (tenge_type == "Lexer") {
+        qaytar "Lexer";
+    } aitpese eгер (tenge_type == "Parser") {
+        qaytar "Parser";
+    } aitpese eгер (tenge_type == "Transpiler") {
+        qaytar "Transpiler";
+    } aitpese {
+        qaytar "void*";
+    }
+}
+
+// Транспайлер жасау
+atqar transpiler_create() -> Transpiler {
+    jasau transpiler: Transpiler = Transpiler();
+    qaytar transpiler;
+}
+
+// C кодты файлға жазу
+atqar transpiler_write_to_file(c_code: jol, filename: jol) -> aqıqat {
+    jasau file: FILE = fopen(filename, "w");
+    
+    eгер (file == NULL) {
+        qaytar jin;
+    }
+    
+    jasau result: san = fprintf(file, "%s", c_code);
+    fclose(file);
+    
+    qaytar result > 0;
+}
+
+// C кодты компиляциялау
+atqar transpiler_compile_c_code(c_filename: jol, output_filename: jol) -> aqıqat {
+    jasau command: jol = "gcc -o " + output_filename + " " + c_filename + " -lm";
+    jasau result: san = system(command);
+    
+    qaytar result == 0;
+}
+

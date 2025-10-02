@@ -1,0 +1,276 @@
+// paydalanusylar_jojj.tng - Пайдаланушылар JOJJ интерфейсі
+// Users JOJJ Interface
+
+import "framework/jojj/jojj_interface.tng";
+
+// Пайдаланушылар JOJJ классы
+class PaydalanusylarJOJJ extends JOJJBase {
+    constructor(connection: DatabaseConnection) {
+        super("paydalanusylar", connection);
+    }
+    
+    // Jasau - Пайдаланушы жасау
+    atqar paydalanu_jasau(name: jol, email: jol, password: jol, role: jol) -> JsonObject {
+        // Валидация
+        jasau validation: JsonObject = paydalanu_tekseu_jasau(name, email, password);
+        
+        eгер (!json_object_get_boolean(validation, "valid")) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "Validation failed");
+            json_object_set_array(error, "validation_errors", json_object_get_array(validation, "errors"));
+            qaytar error;
+        }
+        
+        // Проверка уникальности email
+        jasau existing: JsonObject = this.oqu_email_boyynsha(email);
+        
+        eгер (existing != NULL) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "User with this email already exists");
+            qaytar error;
+        }
+        
+        // Создание пользователя
+        jasau user: JsonObject = json_object_create();
+        json_object_set_string(user, "name", name);
+        json_object_set_string(user, "email", email);
+        json_object_set_string(user, "password", parol_hash_jasau(password));
+        json_object_set_string(user, "role", role);
+        json_object_set_string(user, "status", "active");
+        json_object_set_number(user, "last_login", 0);
+        
+        jasau result: JsonObject = this.jasau(user);
+        
+        eгер (json_object_get_boolean(result, "success")) {
+            // Удаляем пароль из ответа
+            jasau user_entity: JsonObject = json_object_get_object(result, "entity");
+            json_object_remove(user_entity, "password");
+        }
+        
+        qaytar result;
+    }
+    
+    // Oqu - Пайдаланушыны алу
+    atqar paydalanu_oqu(id: jol) -> JsonObject {
+        jasau user: JsonObject = this.oqu(id);
+        
+        eгер (user != NULL) {
+            // Удаляем пароль из ответа
+            json_object_remove(user, "password");
+        }
+        
+        qaytar user;
+    }
+    
+    // Oqu - Барлық пайдаланушыларды алу
+    atqar paydalanusylar_oqu_barlik() -> JsonObject[] {
+        jasau users: JsonObject[] = this.oqu_barlik();
+        
+        // Удаляем пароли из всех пользователей
+        jasau i: san = 0;
+        azirshe (i < users.length) {
+            json_object_remove(users[i], "password");
+            i = i + 1;
+        }
+        
+        qaytar users;
+    }
+    
+    // Oqu - Пайдаланушыларды іздеу
+    atqar paydalanusylar_oqu_izdeu(name: jol, email: jol, role: jol, status: jol) -> JsonObject[] {
+        jasau criteria: JsonObject = json_object_create();
+        
+        eгер (name != "") {
+            json_object_set_string(criteria, "name", name);
+        }
+        
+        eгер (email != "") {
+            json_object_set_string(criteria, "email", email);
+        }
+        
+        eгер (role != "") {
+            json_object_set_string(criteria, "role", role);
+        }
+        
+        eгер (status != "") {
+            json_object_set_string(criteria, "status", status);
+        }
+        
+        jasau users: JsonObject[] = this.oqu_izdeu(criteria);
+        
+        // Удаляем пароли из всех пользователей
+        jasau i: san = 0;
+        azirshe (i < users.length) {
+            json_object_remove(users[i], "password");
+            i = i + 1;
+        }
+        
+        qaytar users;
+    }
+    
+    // Janartu - Пайдаланушыны жаңарту
+    atqar paydalanu_janartu(id: jol, name: jol, email: jol, role: jol, status: jol) -> JsonObject {
+        // Проверка существования пользователя
+        jasau existing: JsonObject = this.oqu(id);
+        
+        eгер (existing == NULL) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "User not found");
+            qaytar error;
+        }
+        
+        // Проверка уникальности email (если изменился)
+        eгер (email != "" && email != json_object_get_string(existing, "email")) {
+            jasau email_check: JsonObject = this.oqu_email_boyynsha(email);
+            
+            eгер (email_check != NULL) {
+                jasau error: JsonObject = json_object_create();
+                json_object_set_boolean(error, "success", jin);
+                json_object_set_string(error, "error", "User with this email already exists");
+                qaytar error;
+            }
+        }
+        
+        // Подготовка данных для обновления
+        jasau update_data: JsonObject = json_object_create();
+        
+        eгер (name != "") {
+            json_object_set_string(update_data, "name", name);
+        }
+        
+        eгер (email != "") {
+            json_object_set_string(update_data, "email", email);
+        }
+        
+        eгер (role != "") {
+            json_object_set_string(update_data, "role", role);
+        }
+        
+        eгер (status != "") {
+            json_object_set_string(update_data, "status", status);
+        }
+        
+        qaytar this.janartu(id, update_data);
+    }
+    
+    // Janartu - Парольді жаңарту
+    atqar paydalanu_parol_janartu(id: jol, old_password: jol, new_password: jol) -> JsonObject {
+        // Получаем пользователя
+        jasau user: JsonObject = this.oqu(id);
+        
+        eгер (user == NULL) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "User not found");
+            qaytar error;
+        }
+        
+        // Проверяем старый пароль
+        jasau stored_password: jol = json_object_get_string(user, "password");
+        jasau password_valid: aqıqat = parol_tekseru(old_password, stored_password);
+        
+        eгер (!password_valid) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "Invalid old password");
+            qaytar error;
+        }
+        
+        // Валидация нового пароля
+        jasau validation: JsonObject = parol_kuat_tekseu(new_password);
+        
+        eгер (json_object_get_string(validation, "strength") == "weak") {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "New password is too weak");
+            json_object_set_array(error, "feedback", json_object_get_array(validation, "feedback"));
+            qaytar error;
+        }
+        
+        // Обновляем пароль
+        jasau update_data: JsonObject = json_object_create();
+        json_object_set_string(update_data, "password", parol_hash_jasau(new_password));
+        
+        qaytar this.janartu(id, update_data);
+    }
+    
+    // Joiu - Пайдаланушыны жою
+    atqar paydalanu_joiu(id: jol) -> aqıqat {
+        // Проверка существования пользователя
+        jasau user: JsonObject = this.oqu(id);
+        
+        eгер (user == NULL) {
+            qaytar jin;
+        }
+        
+        qaytar this.joiu(id);
+    }
+    
+    // Дополнительные методы
+    atqar oqu_email_boyynsha(email: jol) -> JsonObject {
+        jasau sql: jol = "SELECT * FROM " + this.table_name + " WHERE email = ?";
+        jasau result: QueryResult = database_query_ishke_engizu(this.connection, sql, [email]);
+        
+        eгер (result.success && result.rows.length > 0) {
+            qaytar result.rows[0];
+        }
+        
+        qaytar NULL;
+    }
+    
+    atqar paydalanu_kimdik_tekseru(email: jol, password: jol) -> JsonObject {
+        jasau user: JsonObject = this.oqu_email_boyynsha(email);
+        
+        eгер (user == NULL) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "User not found");
+            qaytar error;
+        }
+        
+        jasau stored_password: jol = json_object_get_string(user, "password");
+        jasau password_valid: aqıqat = parol_tekseru(password, stored_password);
+        
+        eгер (!password_valid) {
+            jasau error: JsonObject = json_object_create();
+            json_object_set_boolean(error, "success", jin);
+            json_object_set_string(error, "error", "Invalid password");
+            qaytar error;
+        }
+        
+        // Обновляем время последнего входа
+        jasau update_data: JsonObject = json_object_create();
+        json_object_set_number(update_data, "last_login", current_timestamp());
+        this.janartu(json_object_get_string(user, "id"), update_data);
+        
+        // Удаляем пароль из ответа
+        json_object_remove(user, "password");
+        
+        jasau result: JsonObject = json_object_create();
+        json_object_set_boolean(result, "success", jan);
+        json_object_set_object(result, "user", user);
+        json_object_set_string(result, "token", jwt_token_jasau(json_object_get_string(user, "id"), 3600));
+        
+        qaytar result;
+    }
+    
+    atqar paydalanusylar_statistika() -> JsonObject {
+        jasau total_sql: jol = "SELECT COUNT(*) as total FROM " + this.table_name;
+        jasau active_sql: jol = "SELECT COUNT(*) as active FROM " + this.table_name + " WHERE status = 'active'";
+        jasau recent_sql: jol = "SELECT COUNT(*) as recent FROM " + this.table_name + " WHERE created_at > " + (current_timestamp() - 86400);
+        
+        jasau total_result: QueryResult = database_query_ishke_engizu(this.connection, total_sql);
+        jasau active_result: QueryResult = database_query_ishke_engizu(this.connection, active_sql);
+        jasau recent_result: QueryResult = database_query_ishke_engizu(this.connection, recent_sql);
+        
+        jasau stats: JsonObject = json_object_create();
+        json_object_set_number(stats, "total_users", total_result.rows[0].total);
+        json_object_set_number(stats, "active_users", active_result.rows[0].active);
+        json_object_set_number(stats, "new_users_24h", recent_result.rows[0].recent);
+        
+        qaytar stats;
+    }
+}

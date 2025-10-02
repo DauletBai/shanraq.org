@@ -1,0 +1,37 @@
+{
+  "server": {
+    "port": 8080,
+    "host": "localhost",
+    "environment": "development"
+  },
+  "database": {
+    "type": "sqlite",
+    "host": "localhost",
+    "port": 5432,
+    "name": "tenge_web",
+    "username": "",
+    "password": "",
+    "ssl": false
+  },
+  "security": {
+    "jwt_secret": "tenge_web_secret_key",
+    "bcrypt_rounds": 12,
+    "session_timeout": 3600
+  },
+  "cache": {
+    "enabled": true,
+    "type": "memory",
+    "ttl": 300
+  },
+  "logging": {
+    "level": "info",
+    "file": "logs/tenge_web.log"
+  },
+  "features": {
+    "morpheme_cache": true,
+    "phoneme_optimizer": true,
+    "archetype_engine": true,
+    "simd_processor": true
+  }
+}
+

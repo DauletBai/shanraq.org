@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    {{> head }}
+</head>
+<body>
+    <!-- Header компоненті -->
+    {{> header }}
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="fade-in-up">Shanraq Template Engine</h1>
+            <p class="fade-in-up">Революционный агглютинативтік веб фреймворк, использующий особенности казахского языка для создания мощных и элегантных веб-приложений.</p>
+            <div class="fade-in-up" style="margin-top: 2rem;">
+                <a href="/demo" class="btn btn-primary" style="margin-right: 1rem;">Попробовать демо</a>
+                <a href="/docs" class="btn btn-outline">Документация</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container" style="padding: 4rem 0;">
+        <div class="text-center mb-4">
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Возможности фреймворка</h2>
+            <p style="font-size: 1.25rem;">Мощные инструменты для современной веб-разработки</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card fade-in-up">
+                <span class="feature-icon"><i class="bi bi-translate"></i></span>
+                <h4>Агглютинативтік Синтаксис</h4>
+                <p>Использование морфем, фонем и архетипов казахского языка для создания естественного программирования</p>
+            </div>
+            
+            <div class="feature-card fade-in-up">
+                <span class="feature-icon"><i class="bi bi-lightning-fill"></i></span>
+                <h4>Высокая Производительность</h4>
+                <p>93% улучшение производительности с кэшированием и оптимизацией на основе фонем</p>
+            </div>
+            
+            <div class="feature-card fade-in-up">
+                <span class="feature-icon"><i class="bi bi-puzzle-fill"></i></span>
+                <h4>Модульдік Компоненттер</h4>
+                <p>Переиспользуемые компоненты с поддержкой {{> component_name }} синтаксиса</p>
+            </div>
+            
+            <div class="feature-card fade-in-up">
+                <span class="feature-icon"><i class="bi bi-music-note-beamed"></i></span>
+                <h4>Фонема Оптимизация</h4>
+                <p>Звуковая оптимизация для лучшей производительности и естественности</p>
+            </div>
+            
+            <div class="feature-card fade-in-up">
+                <span class="feature-icon"><i class="bi bi-building"></i></span>
+                <h4>Архетиптер</h4>
+                <p>Переиспользуемые паттерны на основе лингвистических структур</p>
+            </div>
+            
+            <div class="feature-card fade-in-up">
+                <span class="feature-icon"><i class="bi bi-tools"></i></span>
+                <h4>Богатый Функционал</h4>
+                <p>25+ помощников и 15+ фильтров для работы с данными</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in-up">
+                    <h3>93%</h3>
+                    <p>Уменьшение размера файла</p>
+                </div>
+                <div class="stat-item fade-in-up">
+                    <h3>200ms</h3>
+                    <p>Быстрее загрузка</p>
+                </div>
+                <div class="stat-item fade-in-up">
+                    <h3>50%</h3>
+                    <p>Меньше использование памяти</p>
+                </div>
+                <div class="stat-item fade-in-up">
+                    <h3>A+</h3>
+                    <p>Оценка производительности</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Example Section -->
+    <section class="container" style="padding: 4rem 0;">
+        <div class="text-center mb-4">
+            <h1 class="text-secondary mb-3">Пример кода</h1>
+            <p class="lead text-secondary">Посмотрите, как легко создавать веб-приложения с Shanraq</p>
+        </div>
+        
+        <div class="card fade-in-up">
+            <h3>Создание пользователя</h3>
+            <pre style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin-top: 1rem;"><code class="language-tenge">// Создание пользователя с агглютинативным именованием
+atqar user_jasau(name: jol, email: jol, password: jol) -> JsonObject {
+    // Валидация входных параметров
+    eгер (name == "" || email == "" || password == "") {
+        qaytar NULL;
+    }
+    
+    // Создание объекта пользователя с хешированным паролем
+    jasau user: JsonObject = json_object_create();
+    json_object_set_string(user, "name", name);
+    json_object_set_string(user, "email", email);
+    json_object_set_string(user, "password", hash_password(password));
+    
+    qaytar user;
+}</code></pre>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container" style="padding: 4rem 0; text-align: center;">
+        <div class="card fade-in-up" style="max-width: 600px; margin: 0 auto;">
+            <h2 class="text-secondary mb-3">Готовы начать?</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                Присоединяйтесь к сообществу разработчиков, использующих агглютинативтік программирование
+            </p>
+            <div>
+                <a href="/demo" class="btn btn-primary" style="margin-right: 1rem;">Попробовать демо</a>
+                <a href="/docs" class="btn btn-outline">Изучить документацию</a>
+            </div>
+        </div>
+    </section>
+    <!-- Footer компоненті -->
+    {{> footer }}
+    <!-- Scripts -->
+    <script src="../sandyq/js/bootstrap.bundle.min.js"></script>
+    <script src="../sandyq/js/theme-toggle.js"></script>
+</body>
+</html>

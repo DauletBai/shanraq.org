@@ -1,0 +1,154 @@
+// template_utils.tng - Shanraq Template Utilities
+// Шанрак Үлгі Утилиттері / Shanraq Template Utilities
+
+// Utility functions
+atqar string_escape(text: jol) -> jol {
+    qaytar string_replace(string_replace(text, "\"", "\\\""), "\n", "\\n");
+}
+
+atqar string_hash(text: jol) -> jol {
+    qaytar "hash_" + text; // Placeholder
+}
+
+atqar array_slice(array: jol[], start: san, end: san) -> jol[] {
+    jasau sliced: jol[] = [];
+    san i = start;
+    while (i < end && i < array_uzyn_bolu(array)) {
+        sliced = sliced + [array[i]];
+        i = i + 1;
+    }
+    qaytar sliced;
+}
+
+atqar array_copy(array: jol[]) -> jol[] {
+    jasau copy: jol[] = [];
+    san i = 0;
+    while (i < array_uzyn_bolu(array)) {
+        copy = copy + [array[i]];
+        i = i + 1;
+    }
+    qaytar copy;
+}
+
+atqar system_time_millis() -> san {
+    qaytar 0; // Placeholder
+}
+
+atqar file_read(path: jol) -> jol {
+    qaytar ""; // Placeholder
+}
+
+// JSON Object utilities
+atqar json_object_create() -> JsonObject {
+    qaytar NULL; // Placeholder
+}
+
+atqar json_object_set_string(obj: JsonObject, key: jol, value: jol) {
+    // Placeholder
+}
+
+atqar json_object_set_function(obj: JsonObject, key: jol, value: Function) {
+    // Placeholder
+}
+
+atqar json_object_set_object(obj: JsonObject, key: jol, value: JsonObject) {
+    // Placeholder
+}
+
+atqar json_object_set_array_string(obj: JsonObject, key: jol, value: jol[]) {
+    // Placeholder
+}
+
+atqar json_object_set_array_object(obj: JsonObject, key: jol, value: JsonObject[]) {
+    // Placeholder
+}
+
+atqar json_object_get_string(obj: JsonObject, key: jol) -> jol {
+    qaytar ""; // Placeholder
+}
+
+atqar json_object_get_object(obj: JsonObject, key: jol) -> JsonObject {
+    qaytar NULL; // Placeholder
+}
+
+atqar json_object_get_array_string(obj: JsonObject, key: jol) -> jol[] {
+    qaytar []; // Placeholder
+}
+
+atqar json_object_get_array_object(obj: JsonObject, key: jol) -> JsonObject[] {
+    qaytar []; // Placeholder
+}
+
+atqar json_object_get_function(obj: JsonObject, key: jol) -> Function {
+    qaytar NULL; // Placeholder
+}
+
+atqar json_object_bar_ma(obj: JsonObject, key: jol) -> aqıqat {
+    qaytar aqıqat_ras; // Placeholder
+}
+
+atqar json_object_kiltter_alu(obj: JsonObject) -> jol[] {
+    qaytar []; // Placeholder
+}
+
+atqar json_object_hash(obj: JsonObject) -> jol {
+    qaytar "hash"; // Placeholder
+}
+
+// String utilities
+atqar string_starts_with(text: jol, prefix: jol) -> aqıqat {
+    qaytar aqıqat_ras; // Placeholder
+}
+
+atqar string_ends_with(text: jol, suffix: jol) -> aqıqat {
+    qaytar aqıqat_ras; // Placeholder
+}
+
+atqar string_substring(text: jol, start: san, end: san) -> jol {
+    qaytar text; // Placeholder
+}
+
+atqar string_length(text: jol) -> san {
+    qaytar 0; // Placeholder
+}
+
+atqar string_trim(text: jol) -> jol {
+    qaytar text; // Placeholder
+}
+
+atqar string_split(text: jol, separator: jol) -> jol[] {
+    qaytar []; // Placeholder
+}
+
+atqar string_join(array: jol[], separator: jol) -> jol {
+    qaytar ""; // Placeholder
+}
+
+atqar string_replace(text: jol, search: jol, replace: jol) -> jol {
+    qaytar text; // Placeholder
+}
+
+atqar string_upper(text: jol) -> jol {
+    qaytar text; // Placeholder
+}
+
+atqar string_lower(text: jol) -> jol {
+    qaytar text; // Placeholder
+}
+
+atqar string_to_string(value: jol) -> jol {
+    qaytar value; // Placeholder
+}
+
+// Array utilities
+atqar array_uzyn_bolu(array: jol[]) -> san {
+    qaytar 0; // Placeholder
+}
+
+
+
+
+
+
+
+

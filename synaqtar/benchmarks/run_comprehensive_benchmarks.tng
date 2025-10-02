@@ -1,0 +1,468 @@
+// run_comprehensive_benchmarks.tng - Запуск всех бенчмарков
+// Run Comprehensive Benchmarks for Shanraq.org
+
+import "benchmark_runner.tng";
+import "benchmark_helpers.tng";
+import "final_benchmark_report.tng";
+
+// ==================== ОСНОВНОЙ СКРИПТ ЗАПУСКА ====================
+
+// Главная функция запуска всех бенчмарков
+atqar main() -> void {
+    korset("🚀 ЗАПУСК ПОЛНОГО БЕНЧМАРКА SHANRAQ.ORG");
+    korset("=====================================================");
+    korset("📅 Время начала: " + get_current_timestamp());
+    korset("🔧 Версия: 1.0.0");
+    korset("💻 Платформа: " + get_platform_info());
+    korset("=====================================================");
+    
+    // Проверка системных требований
+    eger (!check_system_requirements()) {
+        korset("❌ Системные требования не выполнены!");
+        qaytar;
+    }
+    
+    // Инициализация
+    korset("🔧 Инициализация бенчмарков...");
+    initialize_benchmarks();
+    
+    // Запуск всех категорий бенчмарков
+    korset("📊 Запуск финансово-математических бенчмарков...");
+    jasau financial_results: FinancialMathResults = run_financial_math_benchmarks();
+    
+    korset("💾 Запуск CRUD бенчмарков...");
+    jasau crud_results: CRUDDatabaseResults = run_crud_database_benchmarks();
+    
+    korset("🌐 Запуск сетевых бенчмарков...");
+    jasau network_results: NetworkResults = run_network_benchmarks();
+    
+    korset("🔍 Запуск сравнительных бенчмарков...");
+    jasau comparison_results: PerformanceComparison = compare_performance();
+    
+    // Генерация итогового отчета
+    korset("📝 Генерация итогового отчета...");
+    jasau final_report: FinalBenchmarkReport = generate_final_benchmark_report();
+    
+    // Вывод результатов
+    korset("📊 РЕЗУЛЬТАТЫ БЕНЧМАРКОВ:");
+    korset("=====================================================");
+    print_benchmark_results(financial_results, crud_results, network_results);
+    
+    // Сравнение с другими языками
+    korset("🔍 СРАВНЕНИЕ С ДРУГИМИ ЯЗЫКАМИ:");
+    korset("=====================================================");
+    print_language_comparison(comparison_results);
+    
+    // Рекомендации
+    korset("💡 РЕКОМЕНДАЦИИ:");
+    korset("=====================================================");
+    print_recommendations(final_report.recommendations);
+    
+    // Сохранение отчета
+    korset("💾 Сохранение отчета...");
+    save_comprehensive_report(final_report);
+    
+    korset("✅ ВСЕ БЕНЧМАРКИ ЗАВЕРШЕНЫ!");
+    korset("📅 Время завершения: " + get_current_timestamp());
+    korset("📄 Отчет сохранен в файл: benchmark_report_" + get_current_timestamp() + ".json");
+}
+
+// ==================== ПРОВЕРКА СИСТЕМНЫХ ТРЕБОВАНИЙ ====================
+
+// Проверка системных требований
+atqar check_system_requirements() -> aqıqat {
+    korset("🔍 Проверка системных требований...");
+    
+    // Проверка памяти
+    jasau available_memory: san = get_available_memory();
+    eger (available_memory < 1024 * 1024 * 1024) { // 1GB
+        korset("❌ Недостаточно памяти: " + float_to_string(available_memory / (1024 * 1024 * 1024)) + " GB");
+        qaytar jalgiz;
+    }
+    
+    // Проверка CPU
+    jasau cpu_cores: san = get_cpu_cores();
+    eger (cpu_cores < 2) {
+        korset("❌ Недостаточно ядер CPU: " + int_to_string(cpu_cores));
+        qaytar jalgiz;
+    }
+    
+    // Проверка дискового пространства
+    jasau free_space: san = get_free_disk_space();
+    eger (free_space < 500 * 1024 * 1024) { // 500MB
+        korset("❌ Недостаточно дискового пространства: " + float_to_string(free_space / (1024 * 1024)) + " MB");
+        qaytar jalgiz;
+    }
+    
+    // Проверка сетевого соединения
+    eger (!check_network_connection()) {
+        korset("❌ Нет сетевого соединения");
+        qaytar jalgiz;
+    }
+    
+    korset("✅ Системные требования выполнены");
+    qaytar jan;
+}
+
+// ==================== ИНИЦИАЛИЗАЦИЯ ====================
+
+// Инициализация бенчмарков
+atqar initialize_benchmarks() -> void {
+    // Создание временных файлов
+    create_temp_directories();
+    
+    // Инициализация базы данных
+    initialize_test_database();
+    
+    // Настройка окружения
+    setup_benchmark_environment();
+    
+    // Очистка предыдущих результатов
+    cleanup_previous_results();
+}
+
+// Создание временных директорий
+atqar create_temp_directories() -> void {
+    create_directory("temp/benchmarks");
+    create_directory("temp/databases");
+    create_directory("temp/logs");
+    create_directory("temp/results");
+}
+
+// Инициализация тестовой базы данных
+atqar initialize_test_database() -> void {
+    jasau connection: DatabaseConnection = sqlite_connection_jasau("temp/benchmarks/test.db");
+    
+    // Создание тестовых таблиц
+    sql_execute(connection, "CREATE TABLE IF NOT EXISTS test_users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)");
+    sql_execute(connection, "CREATE TABLE IF NOT EXISTS test_orders (id INTEGER PRIMARY KEY, user_id INTEGER, amount REAL)");
+    sql_execute(connection, "CREATE TABLE IF NOT EXISTS test_products (id INTEGER PRIMARY KEY, name TEXT, price REAL)");
+    
+    connection_close(connection);
+}
+
+// Настройка окружения бенчмарков
+atqar setup_benchmark_environment() -> void {
+    // Установка переменных окружения
+    set_environment_variable("BENCHMARK_MODE", "true");
+    set_environment_variable("BENCHMARK_OUTPUT", "temp/results/");
+    set_environment_variable("BENCHMARK_VERBOSE", "true");
+    
+    // Настройка логирования
+    setup_benchmark_logging();
+}
+
+// Очистка предыдущих результатов
+atqar cleanup_previous_results() -> void {
+    delete_directory("temp/benchmarks");
+    delete_directory("temp/databases");
+    delete_directory("temp/logs");
+    delete_directory("temp/results");
+}
+
+// ==================== ВЫВОД РЕЗУЛЬТАТОВ ====================
+
+// Вывод результатов бенчмарков
+atqar print_benchmark_results(financial: FinancialMathResults, crud: CRUDDatabaseResults, network: NetworkResults) -> void {
+    // Финансово-математические результаты
+    korset("📊 ФИНАНСОВО-МАТЕМАТИЧЕСКИЕ РЕЗУЛЬТАТЫ:");
+    korset("  🎲 Монте-Карло: " + float_to_string(financial.monte_carlo.operations_per_second) + " оп/сек");
+    korset("  🔢 Фибоначчи: " + float_to_string(financial.fibonacci.execution_time * 1000) + " мс");
+    korset("  📈 Быстрая сортировка: " + float_to_string(financial.quicksort.execution_time * 1000) + " мс");
+    korset("  🔢 Матричное умножение: " + float_to_string(financial.matrix_multiplication.execution_time * 1000) + " мс");
+    korset("  📐 Численное интегрирование: " + float_to_string(financial.numerical_integration.execution_time * 1000) + " мс");
+    korset("  📊 Статистические вычисления: " + float_to_string(financial.statistical_calculations.execution_time * 1000) + " мс");
+    
+    // CRUD результаты
+    korset("💾 CRUD БАЗА ДАННЫХ РЕЗУЛЬТАТЫ:");
+    korset("  ➕ Создание (Jasau): " + float_to_string(crud.create_benchmark.operations_per_second) + " оп/сек");
+    korset("  👁️ Чтение (Oqu): " + float_to_string(crud.read_benchmark.operations_per_second) + " оп/сек");
+    korset("  ✏️ Обновление (Janartu): " + float_to_string(crud.update_benchmark.operations_per_second) + " оп/сек");
+    korset("  🗑️ Удаление (Joiu): " + float_to_string(crud.delete_benchmark.operations_per_second) + " оп/сек");
+    korset("  🔄 Комплексные операции: " + float_to_string(crud.complex_operations.operations_per_second) + " оп/сек");
+    korset("  💳 Транзакции: " + float_to_string(crud.transactions.operations_per_second) + " оп/сек");
+    
+    // Сетевые результаты
+    korset("🌐 СЕТЕВЫЕ РЕЗУЛЬТАТЫ:");
+    korset("  🌐 HTTP запросы: " + float_to_string(network.http_requests.operations_per_second) + " оп/сек");
+    korset("  📄 JSON парсинг: " + float_to_string(network.json_parsing.operations_per_second) + " оп/сек");
+    korset("  🔌 WebSocket: " + float_to_string(network.websocket_connections.operations_per_second) + " оп/сек");
+    korset("  🎯 API эндпоинты: " + float_to_string(network.api_endpoints.operations_per_second) + " оп/сек");
+}
+
+// Вывод сравнения с другими языками
+atqar print_language_comparison(comparison: PerformanceComparison) -> void {
+    korset("🔍 СРАВНЕНИЕ С ДРУГИМИ ЯЗЫКАМИ:");
+    
+    for (jasau i: san = 0; i < comparison.languages.length; i++) {
+        jasau lang: LanguageBenchmarkData = comparison.languages[i];
+        korset("  " + lang.language + ":");
+        korset("    Монте-Карло: " + float_to_string(lang.monte_carlo_ops_per_sec) + " оп/сек");
+        korset("    Фибоначчи: " + float_to_string(lang.fibonacci_time_ms) + " мс");
+        korset("    Быстрая сортировка: " + float_to_string(lang.quicksort_time_ms) + " мс");
+        korset("    Матричное умножение: " + float_to_string(lang.matrix_mult_time_ms) + " мс");
+        korset("    CRUD операции: " + float_to_string(lang.crud_ops_per_sec) + " оп/сек");
+        korset("    Использование памяти: " + float_to_string(lang.memory_usage_mb) + " MB");
+        korset("    Время компиляции: " + float_to_string(lang.compilation_time_ms) + " мс");
+        korset("");
+    }
+    
+    korset("🏆 ЛУЧШИЙ ИСПОЛНИТЕЛЬ: " + comparison.best_performer);
+    korset("📊 РЕЙТИНГ SHANRAQ.ORG: " + int_to_string(comparison.shanraq_ranking) + "/6");
+}
+
+// Вывод рекомендаций
+atqar print_recommendations(recommendations: Recommendations) -> void {
+    korset("💡 КРАТКОСРОЧНЫЕ РЕКОМЕНДАЦИИ:");
+    for (jasau i: san = 0; i < recommendations.short_term.length; i++) {
+        eger (recommendations.short_term[i] != "") {
+            korset("  • " + recommendations.short_term[i]);
+        }
+    }
+    
+    korset("💡 СРЕДНЕСРОЧНЫЕ РЕКОМЕНДАЦИИ:");
+    for (jasau i: san = 0; i < recommendations.medium_term.length; i++) {
+        eger (recommendations.medium_term[i] != "") {
+            korset("  • " + recommendations.medium_term[i]);
+        }
+    }
+    
+    korset("💡 ДОЛГОСРОЧНЫЕ РЕКОМЕНДАЦИИ:");
+    for (jasau i: san = 0; i < recommendations.long_term.length; i++) {
+        eger (recommendations.long_term[i] != "") {
+            korset("  • " + recommendations.long_term[i]);
+        }
+    }
+    
+    korset("💡 ПРИОРИТЕТНЫЕ РЕКОМЕНДАЦИИ:");
+    for (jasau i: san = 0; i < recommendations.priority.length; i++) {
+        eger (recommendations.priority[i] != "") {
+            korset("  ⭐ " + recommendations.priority[i]);
+        }
+    }
+}
+
+// ==================== СОХРАНЕНИЕ ОТЧЕТА ====================
+
+// Сохранение комплексного отчета
+atqar save_comprehensive_report(report: FinalBenchmarkReport) -> void {
+    jasau timestamp: jol = get_current_timestamp();
+    jasau filename: jol = "temp/results/comprehensive_benchmark_report_" + timestamp + ".json";
+    
+    // Конвертация в JSON
+    jasau json_data: jol = convert_final_report_to_json(report);
+    
+    // Сохранение файла
+    write_file(filename, json_data);
+    
+    // Создание HTML отчета
+    jasau html_filename: jol = "temp/results/benchmark_report_" + timestamp + ".html";
+    jasau html_data: jol = convert_final_report_to_html(report);
+    write_file(html_filename, html_data);
+    
+    korset("📄 JSON отчет: " + filename);
+    korset("📄 HTML отчет: " + html_filename);
+}
+
+// Конвертация итогового отчета в JSON
+atqar convert_final_report_to_json(report: FinalBenchmarkReport) -> jol {
+    jasau json: jol = "{";
+    json = json + "\"timestamp\":\"" + report.timestamp + "\",";
+    json = json + "\"version\":\"" + report.version + "\",";
+    json = json + "\"executive_summary\":{";
+    json = json + "\"overall_rating\":\"" + report.executive_summary.overall_rating + "\",";
+    json = json + "\"performance_score\":" + float_to_string(report.executive_summary.performance_score) + ",";
+    json = json + "\"optimization_potential\":" + float_to_string(report.executive_summary.optimization_potential);
+    json = json + "}";
+    json = json + "}";
+    qaytar json;
+}
+
+// Конвертация итогового отчета в HTML
+atqar convert_final_report_to_html(report: FinalBenchmarkReport) -> jol {
+    jasau html: jol = "";
+    html = html + "<!DOCTYPE html>";
+    html = html + "<html><head><title>Shanraq.org Benchmark Report</title></head>";
+    html = html + "<body>";
+    html = html + "<h1>Shanraq.org Benchmark Report</h1>";
+    html = html + "<p>Timestamp: " + report.timestamp + "</p>";
+    html = html + "<p>Version: " + report.version + "</p>";
+    html = html + "<h2>Executive Summary</h2>";
+    html = html + "<p>Overall Rating: " + report.executive_summary.overall_rating + "</p>";
+    html = html + "<p>Performance Score: " + float_to_string(report.executive_summary.performance_score) + "/100</p>";
+    html = html + "<p>Optimization Potential: " + float_to_string(report.executive_summary.optimization_potential * 100) + "%</p>";
+    html = html + "</body></html>";
+    qaytar html;
+}
+
+// ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
+
+// Получение информации о платформе
+atqar get_platform_info() -> jol {
+    qaytar get_os_name() + " " + get_os_version();
+}
+
+// Получение доступной памяти
+atqar get_available_memory() -> san {
+    qaytar get_system_memory();
+}
+
+// Получение количества ядер CPU
+atqar get_cpu_cores() -> san {
+    qaytar get_cpu_count();
+}
+
+// Получение свободного дискового пространства
+atqar get_free_disk_space() -> san {
+    qaytar get_disk_free_space();
+}
+
+// Проверка сетевого соединения
+atqar check_network_connection() -> aqıqat {
+    qaytar test_network_connectivity();
+}
+
+// Создание директории
+atqar create_directory(path: jol) -> void {
+    create_dir(path);
+}
+
+// Удаление директории
+atqar delete_directory(path: jol) -> void {
+    remove_dir(path);
+}
+
+// Настройка логирования бенчмарков
+atqar setup_benchmark_logging() -> void {
+    setup_logger("benchmark", "temp/logs/benchmark.log");
+}
+
+// Закрытие соединения с базой данных
+atqar connection_close(connection: DatabaseConnection) -> void {
+    sqlite_connection_close(connection);
+}
+
+// Установка переменной окружения
+atqar set_environment_variable(name: jol, value: jol) -> void {
+    set_env_var(name, value);
+}
+
+// Запись файла
+atqar write_file(filename: jol, content: jol) -> void {
+    file_write(filename, content);
+}
+
+// Создание директории
+atqar create_dir(path: jol) -> void {
+    mkdir(path);
+}
+
+// Удаление директории
+atqar remove_dir(path: jol) -> void {
+    rmdir(path);
+}
+
+// Настройка логгера
+atqar setup_logger(name: jol, filename: jol) -> void {
+    configure_logger(name, filename);
+}
+
+// Установка переменной окружения
+atqar set_env_var(name: jol, value: jol) -> void {
+    set_environment_variable(name, value);
+}
+
+// Запись в файл
+atqar file_write(filename: jol, content: jol) -> void {
+    write_to_file(filename, content);
+}
+
+// Получение имени ОС
+atqar get_os_name() -> jol {
+    qaytar get_operating_system_name();
+}
+
+// Получение версии ОС
+atqar get_os_version() -> jol {
+    qaytar get_operating_system_version();
+}
+
+// Получение системной памяти
+atqar get_system_memory() -> san {
+    qaytar get_total_memory();
+}
+
+// Получение количества CPU
+atqar get_cpu_count() -> san {
+    qaytar get_processor_count();
+}
+
+// Получение свободного места на диске
+atqar get_disk_free_space() -> san {
+    qaytar get_free_disk_space_bytes();
+}
+
+// Тест сетевого соединения
+atqar test_network_connectivity() -> aqıqat {
+    qaytar test_network_connection();
+}
+
+// Настройка логгера
+atqar configure_logger(name: jol, filename: jol) -> void {
+    setup_logging(name, filename);
+}
+
+// Установка переменной окружения
+atqar set_environment_variable(name: jol, value: jol) -> void {
+    putenv(name, value);
+}
+
+// Запись в файл
+atqar write_to_file(filename: jol, content: jol) -> void {
+    save_file(filename, content);
+}
+
+// Получение имени операционной системы
+atqar get_operating_system_name() -> jol {
+    qaytar get_os_name_string();
+}
+
+// Получение версии операционной системы
+atqar get_operating_system_version() -> jol {
+    qaytar get_os_version_string();
+}
+
+// Получение общей памяти
+atqar get_total_memory() -> san {
+    qaytar get_system_memory_bytes();
+}
+
+// Получение количества процессоров
+atqar get_processor_count() -> san {
+    qaytar get_cpu_core_count();
+}
+
+// Получение свободного места на диске в байтах
+atqar get_free_disk_space_bytes() -> san {
+    qaytar get_disk_free_bytes();
+}
+
+// Тест сетевого соединения
+atqar test_network_connection() -> aqıqat {
+    qaytar test_network_connectivity();
+}
+
+// Настройка логирования
+atqar setup_logging(name: jol, filename: jol) -> void {
+    initialize_logger(name, filename);
+}
+
+// Установка переменной окружения
+atqar putenv(name: jol, value: jol) -> void {
+    set_env(name, value);
+}
+
+// Сохранение файла
+atqar save_file(filename: jol, content: jol) -> void {
+    write_file_content(filename, content);
+}

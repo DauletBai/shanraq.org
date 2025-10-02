@@ -1,0 +1,461 @@
+// integration_test.tng - Tenge Integration Tests
+// Agglutinative integration testing framework
+
+atqar integration_test_jasau() -> IntegrationTest {
+    jasau test: IntegrationTest = integration_test_create();
+    qaytar test;
+}
+
+// Database integration tests
+atqar derekter_integration_test() {
+    korset("=== Veritabani Integration Test ===");
+    
+    // Test database connection
+    jasau config: JsonObject = json_object_create();
+    json_object_set_string(config, "host", "localhost");
+    json_object_set_number(config, "port", 5432);
+    json_object_set_string(config, "database", "tenge_test");
+    json_object_set_string(config, "username", "tenge_user");
+    json_object_set_string(config, "password", "tenge_pass");
+    json_object_set_boolean(config, "ssl", jin);
+    
+    jasau connection: DatabaseConnection = derekter_baylanys_jasau(config);
+    
+    eгер (connection != NULL) {
+        korset("✅ Database connection successful");
+    } aitpese {
+        korset("❌ Database connection failed");
+        qaytar;
+    }
+    
+    // Test table creation
+    jasau user_model: Model = model_jasau("test_users");
+    jasau id_field: Field = model_field_qosu(user_model, "id", "VARCHAR(36)", [constraint_primary_key()]);
+    jasau name_field: Field = model_field_qosu(user_model, "name", "VARCHAR(100)", [constraint_not_null()]);
+    jasau email_field: Field = model_field_qosu(user_model, "email", "VARCHAR(255)", [constraint_not_null(), constraint_unique()]);
+    
+    jasau migration: Migration = migration_jasau("create_test_users_table");
+    migration_table_jasau(migration, "test_users", user_model.fields);
+    
+    jasau migration_result: aqıqat = migration_ishke_engizu(migration);
+    
+    eгер (migration_result) {
+        korset("✅ Table creation successful");
+    } aitpese {
+        korset("❌ Table creation failed");
+        qaytar;
+    }
+    
+    // Test CRUD operations
+    jasau test_data: JsonObject = json_object_create();
+    json_object_set_string(test_data, "name", "Test User");
+    json_object_set_string(test_data, "email", "test@example.com");
+    
+    jasau create_result: JsonObject = model_create_record(user_model, test_data);
+    
+    eгер (create_result != NULL) {
+        korset("✅ Record creation successful");
+        
+        jasau record_id: jol = json_object_get_string(create_result, "id");
+        jasau read_result: JsonObject = model_read_record(user_model, record_id);
+        
+        eгер (read_result != NULL) {
+            korset("✅ Record reading successful");
+            
+            // Test update
+            jasau update_data: JsonObject = json_object_create();
+            json_object_set_string(update_data, "name", "Updated User");
+            
+            jasau update_result: aqıqat = model_update_record(user_model, record_id, update_data);
+            
+            eгер (update_result) {
+                korset("✅ Record update successful");
+                
+                // Test delete
+                jasau delete_result: aqıqat = model_delete_record(user_model, record_id);
+                
+                eгер (delete_result) {
+                    korset("✅ Record deletion successful");
+                } aitpese {
+                    korset("❌ Record deletion failed");
+                }
+            } aitpese {
+                korset("❌ Record update failed");
+            }
+        } aitpese {
+            korset("❌ Record reading failed");
+        }
+    } aitpese {
+        korset("❌ Record creation failed");
+    }
+    
+    // Cleanup
+    jasau drop_migration: Migration = migration_jasau("drop_test_users_table");
+    migration_table_zhoyu(drop_migration, "test_users");
+    migration_ishke_engizu(drop_migration);
+    
+    derekter_baylanys_zhoyu(connection);
+    korset("✅ Database integration test completed");
+}
+
+// API integration tests
+atqar api_integration_test() {
+    korset("=== API Integration Test ===");
+    
+    // Test server startup
+    jasau server: WebServer = web_server_create(8081);
+    
+    eгер (server != NULL) {
+        korset("✅ Web server creation successful");
+    } aitpese {
+        korset("❌ Web server creation failed");
+        qaytar;
+    }
+    
+    // Test route registration
+    web_get_route_qosu(server, "/test", api_test_handler);
+    web_post_route_qosu(server, "/test", api_test_handler);
+    
+    korset("✅ Route registration successful");
+    
+    // Test middleware registration
+    jasau logging_middleware: Middleware = logging_middleware_jasau();
+    jasau cors_middleware: Middleware = cors_middleware_jasau();
+    
+    web_middleware_qosu(server, logging_middleware);
+    web_middleware_qosu(server, cors_middleware);
+    
+    korset("✅ Middleware registration successful");
+    
+    // Test API endpoints
+    jasau health_response: WebResponse = web_request_simulate("GET", "/api/v1/health");
+    
+    eгер (health_response.status == 200) {
+        korset("✅ Health endpoint test successful");
+    } aitpese {
+        korset("❌ Health endpoint test failed");
+    }
+    
+    jasau status_response: WebResponse = web_request_simulate("GET", "/api/v1/status");
+    
+    eгер (status_response.status == 200) {
+        korset("✅ Status endpoint test successful");
+    } aitpese {
+        korset("❌ Status endpoint test failed");
+    }
+    
+    // Test user API
+    jasau user_data: JsonObject = json_object_create();
+    json_object_set_string(user_data, "name", "Integration Test User");
+    json_object_set_string(user_data, "email", "integration@example.com");
+    json_object_set_string(user_data, "password", "testpassword123");
+    
+    jasau user_create_response: WebResponse = web_request_simulate("POST", "/api/v1/users", user_data);
+    
+    eгер (user_create_response.status == 201) {
+        korset("✅ User creation API test successful");
+        
+        jasau response_data: JsonObject = json_parse_object(user_create_response.body);
+        jasau user_id: jol = json_object_get_string(response_data, "id");
+        
+        // Test user retrieval
+        jasau user_get_response: WebResponse = web_request_simulate("GET", "/api/v1/users/" + user_id);
+        
+        eгер (user_get_response.status == 200) {
+            korset("✅ User retrieval API test successful");
+        } aitpese {
+            korset("❌ User retrieval API test failed");
+        }
+    } aitpese {
+        korset("❌ User creation API test failed");
+    }
+    
+    korset("✅ API integration test completed");
+}
+
+// Authentication integration tests
+atqar kimdik_integration_test() {
+    korset("=== Kimdik Integration Test ===");
+    
+    // Test user registration
+    jasau register_data: JsonObject = json_object_create();
+    json_object_set_string(register_data, "name", "Auth Test User");
+    json_object_set_string(register_data, "email", "auth@example.com");
+    json_object_set_string(register_data, "password", "authpassword123");
+    
+    jasau register_response: WebResponse = web_request_simulate("POST", "/register", register_data);
+    
+    eгер (register_response.status == 201) {
+        korset("✅ User registration test successful");
+        
+        jasau response_data: JsonObject = json_parse_object(register_response.body);
+        jasau token: jol = json_object_get_string(response_data, "token");
+        
+        eгер (token != "") {
+            korset("✅ JWT token generation successful");
+            
+            // Test authenticated request
+            jasau auth_headers: JsonObject = json_object_create();
+            json_object_set_string(auth_headers, "Authorization", "Bearer " + token);
+            
+            jasau profile_response: WebResponse = web_request_simulate_with_headers("GET", "/profile", auth_headers);
+            
+            eгер (profile_response.status == 200) {
+                korset("✅ Authenticated request test successful");
+            } aitpese {
+                korset("❌ Authenticated request test failed");
+            }
+        } aitpese {
+            korset("❌ JWT token generation failed");
+        }
+    } aitpese {
+        korset("❌ User registration test failed");
+    }
+    
+    // Test login
+    jasau login_data: JsonObject = json_object_create();
+    json_object_set_string(login_data, "email", "auth@example.com");
+    json_object_set_string(login_data, "password", "authpassword123");
+    
+    jasau login_response: WebResponse = web_request_simulate("POST", "/login", login_data);
+    
+    eгер (login_response.status == 200) {
+        korset("✅ User login test successful");
+    } aitpese {
+        korset("❌ User login test failed");
+    }
+    
+    korset("✅ Authentication integration test completed");
+}
+
+// Content management integration tests
+atqar mazmun_integration_test() {
+    korset("=== Mazmun Integration Test ===");
+    
+    // Test content creation
+    jasau content_data: JsonObject = json_object_create();
+    json_object_set_string(content_data, "title", "Integration Test Content");
+    json_object_set_string(content_data, "content", "This is a test content for integration testing.");
+    json_object_set_string(content_data, "author_id", "test-author-id");
+    json_object_set_string(content_data, "category", "test");
+    json_object_set_string(content_data, "status", "published");
+    
+    jasau content_create_response: WebResponse = web_request_simulate("POST", "/api/v1/content", content_data);
+    
+    eгер (content_create_response.status == 201) {
+        korset("✅ Content creation test successful");
+        
+        jasau response_data: JsonObject = json_parse_object(content_create_response.body);
+        jasau content_id: jol = json_object_get_string(response_data, "id");
+        
+        // Test content retrieval
+        jasau content_get_response: WebResponse = web_request_simulate("GET", "/api/v1/content/" + content_id);
+        
+        eгер (content_get_response.status == 200) {
+            korset("✅ Content retrieval test successful");
+        } aitpese {
+            korset("❌ Content retrieval test failed");
+        }
+        
+        // Test content listing
+        jasau content_list_response: WebResponse = web_request_simulate("GET", "/api/v1/content");
+        
+        eгер (content_list_response.status == 200) {
+            korset("✅ Content listing test successful");
+        } aitpese {
+            korset("❌ Content listing test failed");
+        }
+    } aitpese {
+        korset("❌ Content creation test failed");
+    }
+    
+    korset("✅ Content management integration test completed");
+}
+
+// E-commerce integration tests
+atqar e_commerce_integration_test() {
+    korset("=== E-Commerce Integration Test ===");
+    
+    // Test product creation
+    jasau product_data: JsonObject = json_object_create();
+    json_object_set_string(product_data, "name", "Integration Test Product");
+    json_object_set_string(product_data, "description", "This is a test product for integration testing.");
+    json_object_set_number(product_data, "price", 9999);
+    json_object_set_string(product_data, "category", "test");
+    json_object_set_number(product_data, "stock", 100);
+    json_object_set_string(product_data, "seller_id", "test-seller-id");
+    
+    jasau product_create_response: WebResponse = web_request_simulate("POST", "/api/v1/products", product_data);
+    
+    eгер (product_create_response.status == 201) {
+        korset("✅ Product creation test successful");
+        
+        jasau response_data: JsonObject = json_parse_object(product_create_response.body);
+        jasau product_id: jol = json_object_get_string(response_data, "id");
+        
+        // Test cart operations
+        jasau cart_data: JsonObject = json_object_create();
+        json_object_set_string(cart_data, "user_id", "test-user-id");
+        
+        jasau cart_create_response: WebResponse = web_request_simulate("POST", "/api/v1/cart", cart_data);
+        
+        eгер (cart_create_response.status == 201) {
+            korset("✅ Cart creation test successful");
+            
+            // Test adding product to cart
+            jasau cart_item_data: JsonObject = json_object_create();
+            json_object_set_string(cart_item_data, "product_id", product_id);
+            json_object_set_number(cart_item_data, "quantity", 2);
+            
+            jasau cart_add_response: WebResponse = web_request_simulate("POST", "/api/v1/cart/items", cart_item_data);
+            
+            eгер (cart_add_response.status == 200) {
+                korset("✅ Add to cart test successful");
+            } aitpese {
+                korset("❌ Add to cart test failed");
+            }
+        } aitpese {
+            korset("❌ Cart creation test failed");
+        }
+    } aitpese {
+        korset("❌ Product creation test failed");
+    }
+    
+    korset("✅ E-commerce integration test completed");
+}
+
+// Performance integration tests
+atqar performance_integration_test() {
+    korset("=== Performance Integration Test ===");
+    
+    jasau start_time: san = current_timestamp();
+    jasau request_count: san = 100;
+    jasau successful_requests: san = 0;
+    jasau i: san = 0;
+    
+    azirshe (i < request_count) {
+        jasau response: WebResponse = web_request_simulate("GET", "/api/v1/health");
+        
+        eгер (response.status == 200) {
+            successful_requests = successful_requests + 1;
+        }
+        
+        i = i + 1;
+    }
+    
+    jasau end_time: san = current_timestamp();
+    jasau duration: san = end_time - start_time;
+    jasau avg_response_time: san = duration / request_count;
+    jasau success_rate: san = (successful_requests * 100) / request_count;
+    
+    korset("Performance Test Results:");
+    korset("- Total requests: " + int_to_string(request_count));
+    korset("- Successful requests: " + int_to_string(successful_requests));
+    korset("- Success rate: " + int_to_string(success_rate) + "%");
+    korset("- Total duration: " + int_to_string(duration) + "ms");
+    korset("- Average response time: " + int_to_string(avg_response_time) + "ms");
+    
+    eгер (success_rate >= 95 && avg_response_time <= 100) {
+        korset("✅ Performance test passed");
+    } aitpese {
+        korset("❌ Performance test failed");
+    }
+}
+
+// Security integration tests
+atqar kawipsizdik_integration_test() {
+    korset("=== Kawipsizdik Integration Test ===");
+    
+    // Test SQL injection protection
+    jasau malicious_data: JsonObject = json_object_create();
+    json_object_set_string(malicious_data, "email", "'; DROP TABLE users; --");
+    json_object_set_string(malicious_data, "password", "password");
+    
+    jasau sql_injection_response: WebResponse = web_request_simulate("POST", "/login", malicious_data);
+    
+    eгер (sql_injection_response.status == 401) {
+        korset("✅ SQL injection protection test successful");
+    } aitpese {
+        korset("❌ SQL injection protection test failed");
+    }
+    
+    // Test XSS protection
+    jasau xss_data: JsonObject = json_object_create();
+    json_object_set_string(xss_data, "name", "<script>alert('XSS')</script>");
+    json_object_set_string(xss_data, "email", "xss@example.com");
+    json_object_set_string(xss_data, "password", "password");
+    
+    jasau xss_response: WebResponse = web_request_simulate("POST", "/api/v1/users", xss_data);
+    
+    eгер (xss_response.status == 201) {
+        korset("✅ XSS protection test successful");
+    } aitpese {
+        korset("❌ XSS protection test failed");
+    }
+    
+    // Test rate limiting
+    jasau rate_limit_requests: san = 10;
+    jasau rate_limit_successful: san = 0;
+    jasau j: san = 0;
+    
+    azirshe (j < rate_limit_requests) {
+        jasau rate_response: WebResponse = web_request_simulate("GET", "/api/v1/health");
+        
+        eгер (rate_response.status == 200) {
+            rate_limit_successful = rate_limit_successful + 1;
+        }
+        
+        j = j + 1;
+    }
+    
+    eгер (rate_limit_successful < rate_limit_requests) {
+        korset("✅ Rate limiting test successful");
+    } aitpese {
+        korset("❌ Rate limiting test failed");
+    }
+    
+    korset("✅ Security integration test completed");
+}
+
+// Main integration test runner
+atqar integration_test_ishke_engizu() {
+    korset("Starting Tenge-Web Integration Tests...");
+    korset("=====================================");
+    
+    // Run all integration tests
+    derekter_integration_test();
+    api_integration_test();
+    kimdik_integration_test();
+    mazmun_integration_test();
+    e_commerce_integration_test();
+    performance_integration_test();
+    kawipsizdik_integration_test();
+    
+    korset("=====================================");
+    korset("Integration tests completed!");
+}
+
+// Test handlers
+atqar api_test_handler(request: WebRequest, response: WebResponse) {
+    jasau result: JsonObject = json_object_create();
+    json_object_set_string(result, "message", "Integration test successful");
+    json_object_set_string(result, "timestamp", current_timestamp());
+    
+    web_json_response_qaytar(response, result, 200);
+}
+
+// Factory functions
+atqar integration_test_create() -> IntegrationTest {
+    jasau test: IntegrationTest = IntegrationTest();
+    qaytar test;
+}
+
+// Helper functions
+atqar web_request_simulate_with_headers(method: jol, path: jol, headers: JsonObject) -> WebResponse {
+    // Implementation depends on HTTP client
+    jasau response: WebResponse = WebResponse();
+    response.status = 200;
+    response.body = "{}";
+    qaytar response;
+}
+

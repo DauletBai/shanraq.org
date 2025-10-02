@@ -1,0 +1,657 @@
+// optimized_database.tng - Оптимизированная база данных с архетипной структурой
+// Optimized Database with Archetypal Structure
+
+import "artjagy/server/archetype_engine.tng";
+import "artjagy/server/morpheme_engine.tng";
+import "artjagy/server/phoneme_engine.tng";
+
+// ==================== АРХЕТИПНАЯ СТРУКТУРА БАЗЫ ДАННЫХ ====================
+
+// Архетипная структура базы данных
+struct ArchetypalDatabase {
+    // Архетипные таблицы
+    archetypal_tables: HashMap<jol, ArchetypalTable>;
+    // Морфемные индексы
+    morphemic_indexes: HashMap<jol, MorphemicIndex>;
+    // Фонемные кэши
+    phonemic_caches: HashMap<jol, PhonemicCache>;
+    // Агглютинативные связи
+    agglutinative_relations: HashMap<jol, AgglutinativeRelation>;
+    // Производительность
+    performance_metrics: PerformanceMetrics;
+}
+
+// Создание архетипной базы данных
+atqar archetypal_database_jasau() -> ArchetypalDatabase {
+    jasau db: ArchetypalDatabase;
+    db.archetypal_tables = hashmap_jasau();
+    db.morphemic_indexes = hashmap_jasau();
+    db.phonemic_caches = hashmap_jasau();
+    db.agglutinative_relations = hashmap_jasau();
+    db.performance_metrics = performance_metrics_jasau();
+    qaytar db;
+}
+
+// Оптимизированное создание записи (Jasau)
+atqar archetypal_create_record(db: ArchetypalDatabase, table_name: jol, data: JsonObject) -> san {
+    jasau start_time: san = time_now();
+    
+    // Архетипный анализ данных
+    jasau archetype: Archetype = analyze_data_archetype(data);
+    
+    // Выбор оптимальной стратегии создания
+    jasau strategy: jol = select_creation_strategy(archetype);
+    
+    jasau record_id: san = 0;
+    
+    // Применение выбранной стратегии
+    eger (strategy == "morphemic_batch") {
+        record_id = morphemic_batch_create(db, table_name, data);
+    } else eger (strategy == "phonemic_stream") {
+        record_id = phonemic_stream_create(db, table_name, data);
+    } else eger (strategy == "archetypal_optimized") {
+        record_id = archetypal_optimized_create(db, table_name, data);
+    } else {
+        record_id = standard_create(db, table_name, data);
+    }
+    
+    // Обновление метрик производительности
+    jasau end_time: san = time_now();
+    update_performance_metrics(db.performance_metrics, "create", end_time - start_time);
+    
+    qaytar record_id;
+}
+
+// ==================== АРХЕТИПНЫЙ АНАЛИЗ ДАННЫХ ====================
+
+// Анализ архетипа данных
+atqar analyze_data_archetype(data: JsonObject) -> Archetype {
+    jasau archetype: Archetype;
+    
+    // Анализ структуры данных
+    jasau structure_analysis: StructureAnalysis = analyze_data_structure(data);
+    
+    // Анализ морфемных паттернов
+    jasau morphemic_patterns: Array<MorphemicPattern> = analyze_morphemic_patterns(data);
+    
+    // Анализ фонемных характеристик
+    jasau phonemic_characteristics: PhonemicCharacteristics = analyze_phonemic_characteristics(data);
+    
+    // Определение архетипа на основе анализа
+    eger (structure_analysis.complexity > 10 && morphemic_patterns.length > 5) {
+        archetype.type = "complex_hierarchical";
+        archetype.pattern = "morphemic_batch";
+        archetype.efficiency = 0.95;
+        archetype.complexity = 5;
+    } else eger (structure_analysis.uniformity > 0.8 && phonemic_characteristics.consistency > 0.9) {
+        archetype.type = "uniform_stream";
+        archetype.pattern = "phonemic_stream";
+        archetype.efficiency = 0.90;
+        archetype.complexity = 3;
+    } else eger (structure_analysis.hierarchy_level > 3) {
+        archetype.type = "hierarchical_optimized";
+        archetype.pattern = "archetypal_optimized";
+        archetype.efficiency = 0.85;
+        archetype.complexity = 4;
+    } else {
+        archetype.type = "standard";
+        archetype.pattern = "basic";
+        archetype.efficiency = 0.70;
+        archetype.complexity = 1;
+    }
+    
+    qaytar archetype;
+}
+
+// Анализ структуры данных
+atqar analyze_data_structure(data: JsonObject) -> StructureAnalysis {
+    jasau analysis: StructureAnalysis;
+    
+    // Подсчет полей
+    analysis.field_count = json_object_size(data);
+    
+    // Анализ типов данных
+    analysis.data_types = analyze_data_types(data);
+    
+    // Анализ вложенности
+    analysis.nesting_level = calculate_nesting_level(data);
+    
+    // Анализ сложности
+    analysis.complexity = calculate_structure_complexity(data);
+    
+    // Анализ равномерности
+    analysis.uniformity = calculate_structure_uniformity(data);
+    
+    // Анализ иерархии
+    analysis.hierarchy_level = calculate_hierarchy_level(data);
+    
+    qaytar analysis;
+}
+
+// Анализ типов данных
+atqar analyze_data_types(data: JsonObject) -> DataTypeAnalysis {
+    jasau analysis: DataTypeAnalysis;
+    
+    // Подсчет типов
+    analysis.string_count = 0;
+    analysis.number_count = 0;
+    analysis.boolean_count = 0;
+    analysis.array_count = 0;
+    analysis.object_count = 0;
+    
+    // Обход всех полей
+    jasau keys: Array<jol> = json_object_keys(data);
+    for (jasau i: san = 0; i < keys.length; i++) {
+        jasau key: jol = keys[i];
+        jasau value: JsonValue = json_object_get(data, key);
+        
+        eger (json_value_is_string(value)) {
+            analysis.string_count++;
+        } else eger (json_value_is_number(value)) {
+            analysis.number_count++;
+        } else eger (json_value_is_boolean(value)) {
+            analysis.boolean_count++;
+        } else eger (json_value_is_array(value)) {
+            analysis.array_count++;
+        } else eger (json_value_is_object(value)) {
+            analysis.object_count++;
+        }
+    }
+    
+    analysis.total_fields = analysis.string_count + analysis.number_count + 
+                           analysis.boolean_count + analysis.array_count + analysis.object_count;
+    
+    qaytar analysis;
+}
+
+// Расчет уровня вложенности
+atqar calculate_nesting_level(data: JsonObject) -> san {
+    jasau max_level: san = 0;
+    jasau keys: Array<jol> = json_object_keys(data);
+    
+    for (jasau i: san = 0; i < keys.length; i++) {
+        jasau key: jol = keys[i];
+        jasau value: JsonValue = json_object_get(data, key);
+        
+        eger (json_value_is_object(value)) {
+            jasau level: san = 1 + calculate_nesting_level(json_value_to_object(value));
+            eger (level > max_level) {
+                max_level = level;
+            }
+        }
+    }
+    
+    qaytar max_level;
+}
+
+// Расчет сложности структуры
+atqar calculate_structure_complexity(data: JsonObject) -> san {
+    jasau complexity: san = 0;
+    jasau keys: Array<jol> = json_object_keys(data);
+    
+    for (jasau i: san = 0; i < keys.length; i++) {
+        jasau key: jol = keys[i];
+        jasau value: JsonValue = json_object_get(data, key);
+        
+        // Базовая сложность поля
+        complexity += 1;
+        
+        // Дополнительная сложность для сложных типов
+        eger (json_value_is_array(value)) {
+            complexity += 2;
+        } else eger (json_value_is_object(value)) {
+            complexity += 3;
+        }
+        
+        // Сложность ключа
+        complexity += string_length(key);
+    }
+    
+    qaytar complexity;
+}
+
+// Расчет равномерности структуры
+atqar calculate_structure_uniformity(data: JsonObject) -> san {
+    jasau keys: Array<jol> = json_object_keys(data);
+    jasau field_count: san = keys.length;
+    
+    eger (field_count == 0) {
+        qaytar 1.0;
+    }
+    
+    // Анализ равномерности типов данных
+    jasau type_counts: HashMap<jol, san> = hashmap_jasau();
+    
+    for (jasau i: san = 0; i < field_count; i++) {
+        jasau key: jol = keys[i];
+        jasau value: JsonValue = json_object_get(data, key);
+        jasau type: jol = json_value_type(value);
+        
+        jasau count: san = 1;
+        eger (hashmap_contains(type_counts, type)) {
+            count = hashmap_get(type_counts, type) + 1;
+        }
+        hashmap_put(type_counts, type, count);
+    }
+    
+    // Расчет равномерности
+    jasau expected_count: san = field_count / type_counts.size;
+    jasau total_deviation: san = 0;
+    
+    for (jasau i: san = 0; i < type_counts.size; i++) {
+        jasau count: san = hashmap_get(type_counts, i);
+        jasau deviation: san = abs(count - expected_count);
+        total_deviation += deviation;
+    }
+    
+    jasau uniformity: san = 1.0 - (total_deviation / (field_count * type_counts.size));
+    qaytar uniformity;
+}
+
+// Расчет уровня иерархии
+atqar calculate_hierarchy_level(data: JsonObject) -> san {
+    jasau max_level: san = 0;
+    jasau keys: Array<jol> = json_object_keys(data);
+    
+    for (jasau i: san = 0; i < keys.length; i++) {
+        jasau key: jol = keys[i];
+        jasau value: JsonValue = json_object_get(data, key);
+        
+        eger (json_value_is_object(value)) {
+            jasau level: san = 1 + calculate_hierarchy_level(json_value_to_object(value));
+            eger (level > max_level) {
+                max_level = level;
+            }
+        } else eger (json_value_is_array(value)) {
+            jasau array: JsonArray = json_value_to_array(value);
+            jasau level: san = 1 + calculate_array_hierarchy_level(array);
+            eger (level > max_level) {
+                max_level = level;
+            }
+        }
+    }
+    
+    qaytar max_level;
+}
+
+// Расчет уровня иерархии массива
+atqar calculate_array_hierarchy_level(array: JsonArray) -> san {
+    jasau max_level: san = 0;
+    jasau size: san = json_array_size(array);
+    
+    for (jasau i: san = 0; i < size; i++) {
+        jasau value: JsonValue = json_array_get(array, i);
+        
+        eger (json_value_is_object(value)) {
+            jasau level: san = 1 + calculate_hierarchy_level(json_value_to_object(value));
+            eger (level > max_level) {
+                max_level = level;
+            }
+        } else eger (json_value_is_array(value)) {
+            jasau nested_array: JsonArray = json_value_to_array(value);
+            jasau level: san = 1 + calculate_array_hierarchy_level(nested_array);
+            eger (level > max_level) {
+                max_level = level;
+            }
+        }
+    }
+    
+    qaytar max_level;
+}
+
+// ==================== МОРФЕМНЫЕ ПАТТЕРНЫ ====================
+
+// Анализ морфемных паттернов
+atqar analyze_morphemic_patterns(data: JsonObject) -> Array<MorphemicPattern> {
+    jasau patterns: Array<MorphemicPattern> = array_jasau(10);
+    jasau count: san = 0;
+    
+    // Анализ ключей на морфемные паттерны
+    jasau keys: Array<jol> = json_object_keys(data);
+    for (jasau i: san = 0; i < keys.length; i++) {
+        jasau key: jol = keys[i];
+        jasau morphemes: Array<Morpheme> = analyze_string_morphemes(key);
+        
+        // Создание паттерна
+        jasau pattern: MorphemicPattern;
+        pattern.type = "key_morpheme";
+        pattern.morphemes = morphemes;
+        pattern.confidence = calculate_morpheme_confidence(morphemes);
+        pattern.complexity = calculate_morpheme_complexity(morphemes);
+        patterns[count] = pattern;
+        count++;
+    }
+    
+    // Анализ значений на морфемные паттерны
+    for (jasau i: san = 0; i < keys.length; i++) {
+        jasau key: jol = keys[i];
+        jasau value: JsonValue = json_object_get(data, key);
+        
+        eger (json_value_is_string(value)) {
+            jasau string_value: jol = json_value_to_string(value);
+            jasau morphemes: Array<Morpheme> = analyze_string_morphemes(string_value);
+            
+            jasau pattern: MorphemicPattern;
+            pattern.type = "value_morpheme";
+            pattern.morphemes = morphemes;
+            pattern.confidence = calculate_morpheme_confidence(morphemes);
+            pattern.complexity = calculate_morpheme_complexity(morphemes);
+            patterns[count] = pattern;
+            count++;
+        }
+    }
+    
+    qaytar patterns;
+}
+
+// Анализ морфем строки
+atqar analyze_string_morphemes(str: jol) -> Array<Morpheme> {
+    jasau morphemes: Array<Morpheme> = array_jasau(20);
+    jasau count: san = 0;
+    
+    // Разбиение строки на морфемы
+    jasau words: Array<jol> = split_string(str, "_");
+    for (jasau i: san = 0; i < words.length; i++) {
+        jasau word: jol = words[i];
+        jasau morpheme: Morpheme;
+        morpheme.value = string_to_number(word);
+        morpheme.type = "word";
+        morpheme.complexity = string_length(word);
+        morpheme.frequency = calculate_word_frequency(word);
+        morphemes[count] = morpheme;
+        count++;
+    }
+    
+    qaytar morphemes;
+}
+
+// Расчет уверенности морфем
+atqar calculate_morpheme_confidence(morphemes: Array<Morpheme>) -> san {
+    jasau confidence: san = 0.0;
+    
+    for (jasau i: san = 0; i < morphemes.length; i++) {
+        jasau morpheme: Morpheme = morphemes[i];
+        confidence += morpheme.frequency * morpheme.complexity;
+    }
+    
+    qaytar confidence / morphemes.length;
+}
+
+// Расчет сложности морфем
+atqar calculate_morpheme_complexity(morphemes: Array<Morpheme>) -> san {
+    jasau complexity: san = 0;
+    
+    for (jasau i: san = 0; i < morphemes.length; i++) {
+        complexity += morphemes[i].complexity;
+    }
+    
+    qaytar complexity;
+}
+
+// ==================== ФОНЕМНЫЕ ХАРАКТЕРИСТИКИ ====================
+
+// Анализ фонемных характеристик
+atqar analyze_phonemic_characteristics(data: JsonObject) -> PhonemicCharacteristics {
+    jasau characteristics: PhonemicCharacteristics;
+    
+    // Анализ консистентности
+    characteristics.consistency = analyze_phonemic_consistency(data);
+    
+    // Анализ частоты фонем
+    characteristics.frequency_distribution = analyze_phonemic_frequency(data);
+    
+    // Анализ паттернов
+    characteristics.patterns = analyze_phonemic_patterns(data);
+    
+    qaytar characteristics;
+}
+
+// Анализ фонемной консистентности
+atqar analyze_phonemic_consistency(data: JsonObject) -> san {
+    jasau consistency: san = 0.0;
+    jasau total_fields: san = 0;
+    
+    jasau keys: Array<jol> = json_object_keys(data);
+    for (jasau i: san = 0; i < keys.length; i++) {
+        jasau key: jol = keys[i];
+        jasau value: JsonValue = json_object_get(data, key);
+        
+        eger (json_value_is_string(value)) {
+            jasau string_value: jol = json_value_to_string(value);
+            jasau phonemes: Array<Phoneme> = decompose_to_phonemes(string_value);
+            consistency += calculate_phonemic_consistency(phonemes);
+            total_fields++;
+        }
+    }
+    
+    eger (total_fields > 0) {
+        consistency = consistency / total_fields;
+    }
+    
+    qaytar consistency;
+}
+
+// Расчет фонемной консистентности
+atqar calculate_phonemic_consistency(phonemes: Array<Phoneme>) -> san {
+    jasau consistency: san = 0.0;
+    
+    for (jasau i: san = 0; i < phonemes.length; i++) {
+        jasau phoneme: Phoneme = phonemes[i];
+        consistency += phoneme.frequency * phoneme.weight;
+    }
+    
+    qaytar consistency / phonemes.length;
+}
+
+// Анализ частоты фонем
+atqar analyze_phonemic_frequency(data: JsonObject) -> PhonemicFrequencyDistribution {
+    jasau distribution: PhonemicFrequencyDistribution;
+    distribution.frequency_map = hashmap_jasau();
+    distribution.total_phonemes = 0;
+    distribution.unique_phonemes = 0;
+    
+    jasau keys: Array<jol> = json_object_keys(data);
+    for (jasau i: san = 0; i < keys.length; i++) {
+        jasau key: jol = keys[i];
+        jasau value: JsonValue = json_object_get(data, key);
+        
+        eger (json_value_is_string(value)) {
+            jasau string_value: jol = json_value_to_string(value);
+            jasau phonemes: Array<Phoneme> = decompose_to_phonemes(string_value);
+            
+            for (jasau j: san = 0; j < phonemes.length; j++) {
+                jasau phoneme: Phoneme = phonemes[j];
+                jasau count: san = 1;
+                eger (hashmap_contains(distribution.frequency_map, phoneme.sound)) {
+                    count = hashmap_get(distribution.frequency_map, phoneme.sound) + 1;
+                }
+                hashmap_put(distribution.frequency_map, phoneme.sound, count);
+                distribution.total_phonemes++;
+            }
+        }
+    }
+    
+    distribution.unique_phonemes = distribution.frequency_map.size;
+    qaytar distribution;
+}
+
+// Анализ фонемных паттернов
+atqar analyze_phonemic_patterns(data: JsonObject) -> Array<PhonemicPattern> {
+    jasau patterns: Array<PhonemicPattern> = array_jasau(10);
+    jasau count: san = 0;
+    
+    jasau keys: Array<jol> = json_object_keys(data);
+    for (jasau i: san = 0; i < keys.length; i++) {
+        jasau key: jol = keys[i];
+        jasau value: JsonValue = json_object_get(data, key);
+        
+        eger (json_value_is_string(value)) {
+            jasau string_value: jol = json_value_to_string(value);
+            jasau phonemes: Array<Phoneme> = decompose_to_phonemes(string_value);
+            
+            jasau pattern: PhonemicPattern;
+            pattern.phonemes = phonemes;
+            pattern.confidence = calculate_phonemic_pattern_confidence(phonemes);
+            pattern.complexity = calculate_phonemic_pattern_complexity(phonemes);
+            patterns[count] = pattern;
+            count++;
+        }
+    }
+    
+    qaytar patterns;
+}
+
+// ==================== СТРАТЕГИИ СОЗДАНИЯ ====================
+
+// Выбор стратегии создания
+atqar select_creation_strategy(archetype: Archetype) -> jol {
+    eger (archetype.type == "complex_hierarchical") {
+        qaytar "morphemic_batch";
+    } else eger (archetype.type == "uniform_stream") {
+        qaytar "phonemic_stream";
+    } else eger (archetype.type == "hierarchical_optimized") {
+        qaytar "archetypal_optimized";
+    } else {
+        qaytar "standard";
+    }
+}
+
+// Морфемное пакетное создание
+atqar morphemic_batch_create(db: ArchetypalDatabase, table_name: jol, data: JsonObject) -> san {
+    // Создание морфемного индекса
+    jasau morphemic_index: MorphemicIndex = create_morphemic_index(data);
+    
+    // Пакетная обработка морфем
+    jasau batch_result: BatchResult = process_morphemic_batch(morphemic_index);
+    
+    // Создание записи с морфемной оптимизацией
+    jasau record_id: san = create_record_with_morphemic_optimization(db, table_name, data, batch_result);
+    
+    qaytar record_id;
+}
+
+// Фонемное потоковое создание
+atqar phonemic_stream_create(db: ArchetypalDatabase, table_name: jol, data: JsonObject) -> san {
+    // Создание фонемного кэша
+    jasau phonemic_cache: PhonemicCache = create_phonemic_cache(data);
+    
+    // Потоковая обработка фонем
+    jasau stream_result: StreamResult = process_phonemic_stream(phonemic_cache);
+    
+    // Создание записи с фонемной оптимизацией
+    jasau record_id: san = create_record_with_phonemic_optimization(db, table_name, data, stream_result);
+    
+    qaytar record_id;
+}
+
+// Архетипное оптимизированное создание
+atqar archetypal_optimized_create(db: ArchetypalDatabase, table_name: jol, data: JsonObject) -> san {
+    // Создание архетипной структуры
+    jasau archetypal_structure: ArchetypalStructure = create_archetypal_structure(data);
+    
+    // Оптимизированная обработка
+    jasau optimized_result: OptimizedResult = process_archetypal_optimization(archetypal_structure);
+    
+    // Создание записи с архетипной оптимизацией
+    jasau record_id: san = create_record_with_archetypal_optimization(db, table_name, data, optimized_result);
+    
+    qaytar record_id;
+}
+
+// Стандартное создание
+atqar standard_create(db: ArchetypalDatabase, table_name: jol, data: JsonObject) -> san {
+    // Стандартное создание записи
+    jasau record_id: san = create_standard_record(db, table_name, data);
+    qaytar record_id;
+}
+
+// ==================== СТРУКТУРЫ ДАННЫХ ====================
+
+struct ArchetypalDatabase {
+    archetypal_tables: HashMap<jol, ArchetypalTable>;
+    morphemic_indexes: HashMap<jol, MorphemicIndex>;
+    phonemic_caches: HashMap<jol, PhonemicCache>;
+    agglutinative_relations: HashMap<jol, AgglutinativeRelation>;
+    performance_metrics: PerformanceMetrics;
+}
+
+struct StructureAnalysis {
+    field_count: san;
+    data_types: DataTypeAnalysis;
+    nesting_level: san;
+    complexity: san;
+    uniformity: san;
+    hierarchy_level: san;
+}
+
+struct DataTypeAnalysis {
+    string_count: san;
+    number_count: san;
+    boolean_count: san;
+    array_count: san;
+    object_count: san;
+    total_fields: san;
+}
+
+struct MorphemicPattern {
+    type: jol;
+    morphemes: Array<Morpheme>;
+    confidence: san;
+    complexity: san;
+}
+
+struct PhonemicCharacteristics {
+    consistency: san;
+    frequency_distribution: PhonemicFrequencyDistribution;
+    patterns: Array<PhonemicPattern>;
+}
+
+struct PhonemicFrequencyDistribution {
+    frequency_map: HashMap<jol, san>;
+    total_phonemes: san;
+    unique_phonemes: san;
+}
+
+struct PhonemicPattern {
+    phonemes: Array<Phoneme>;
+    confidence: san;
+    complexity: san;
+}
+
+struct PerformanceMetrics {
+    create_time: san;
+    read_time: san;
+    update_time: san;
+    delete_time: san;
+    total_operations: san;
+    average_time: san;
+}
+
+// Создание метрик производительности
+atqar performance_metrics_jasau() -> PerformanceMetrics {
+    jasau metrics: PerformanceMetrics;
+    metrics.create_time = 0;
+    metrics.read_time = 0;
+    metrics.update_time = 0;
+    metrics.delete_time = 0;
+    metrics.total_operations = 0;
+    metrics.average_time = 0;
+    qaytar metrics;
+}
+
+// Обновление метрик производительности
+atqar update_performance_metrics(metrics: PerformanceMetrics, operation: jol, time: san) -> void {
+    eger (operation == "create") {
+        metrics.create_time += time;
+    } else eger (operation == "read") {
+        metrics.read_time += time;
+    } else eger (operation == "update") {
+        metrics.update_time += time;
+    } else eger (operation == "delete") {
+        metrics.delete_time += time;
+    }
+    
+    metrics.total_operations++;
+    metrics.average_time = (metrics.create_time + metrics.read_time + 
+                          metrics.update_time + metrics.delete_time) / metrics.total_operations;
+}

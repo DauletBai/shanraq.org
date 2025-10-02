@@ -1,0 +1,327 @@
+# Tenge-Web Development Rules
+# Тенге-Веб Дамыту Ережелері / Tenge-Web Development Rules
+
+## ⚠️ CRITICAL RULE - ALWAYS FOLLOW / СЫРТҚЫ ЕРЕЖЕ - ӘРҚАШАН ҮЛЕСІН
+**NEVER use anglicisms or loanwords. ALWAYS use pure Kazakh words automatically.**
+**ЕШҚАШАН ағылшын сөздерін қолданбаңыз. ӘРҚАШАН таза қазақ сөздерін пайдаланыңыз.**
+**Examples: business → ısker, database → derekter_qory, testing → synaqtar**
+
+## 🔍 FILE EXISTENCE CHECK - ALWAYS FOLLOW / ФАЙЛ БАРЛЫҒЫН ТЕКСЕРУ - ӘРҚАШАН ҮЛЕСІН
+**ALWAYS check if a file exists before creating a new one.**
+**ӘРҚАШАН жаңа файл жасамас бұрын файл барлығын тексеріңіз.**
+**If a file exists, EDIT it instead of creating a new one.**
+**Егер файл бар болса, жаңасын жасамастан, оны өңдеңіз.**
+**This prevents duplicate files and maintains project organization.**
+**Бұл дубликат файлдарды болдырмайды және жоба ұйымдастырылуын қамтамасыз етеді.**
+
+## Project Overview / Жоба Шолу
+This is Tenge-Web - an agglutinative web application framework built on the Tenge programming language, which is based on Kazakh language's agglutinative features. The project uses Kazakh morphemes, phonemes, and archetypes to create a natural programming syntax.
+
+Бұл Тенге-Веб - қазақ тілінің агглютинативтік ерекшеліктеріне негізделген Тенге бағдарламалау тілінде жасалған агглютинативтік веб-қосымша фреймворкі. Жоба қазақ морфемалары, фонемалары және архетиптерін пайдаланып, табиғи бағдарламалау синтаксисін жасайды.
+
+## Naming Conventions
+
+### Directory and File Names
+- Use Latin Kazakh equivalents for all directory and file names
+- **ALWAYS use pure Kazakh words, NEVER use anglicisms or loanwords**
+- **AUTOMATICALLY replace any English terms with Kazakh equivalents**
+- Examples:
+  - `frontend` → `betjagy` (бетжағы)
+  - `backend` → `artjagy` (артжағы)
+  - `middleware` → `ortalyq` (орталық)
+  - `components` → `komponentter` (компоненттер)
+  - `controllers` → `baskaru` (басқару)
+  - `services` → `kizmetter` (қызметтер)
+  - `models` → `modelder` (модельдер)
+  - `migrations` → `koshiru` (көшіру)
+  - `templates` → `ulgi` (үлгі)
+  - `assets` → `kaynar` (қайнар)
+  - `styles` → `stil` (стиль)
+  - `pages` → `better` (беттер)
+  - `utils` → `komek` (көмек)
+  - `config` → `konfig` (конфиг)
+  - `database` → `derekter_qory` (деректер коры)
+  - `security` → `kawipsizdik` (қауіпсіздік)
+  - `authentication` → `kimdik` (кімдік)
+  - `authorization` → `ruqsat` (рұқсат)
+  - `validation` → `tekseu` (тексеру)
+  - `logging` → `jurnal` (журнал)
+  - `monitoring` → `kuzetu` (күзету)
+  - `testing` → `synaqtar` (сынақтар)
+  - `documentation` → `qujattama` (құжаттама)
+
+### Code Structure
+- All function names must use agglutinative Kazakh morphemes
+- Use proper Kazakh agglutinative syntax for function composition
+- **CRITICAL: Always use pure Kazakh words, never anglicisms**
+- **AUTOMATICALLY replace English terms with Kazakh equivalents**
+- Examples:
+  - `jasau` (жасау) - create
+  - `alu` (алу) - get/retrieve
+  - `qosu` (қосу) - add
+  - `zhangartu` (жаңарту) - update
+  - `zhoyu` (жою) - delete
+  - `tekseru` (тексеру) - check/validate
+  - `opt` (опт) - optimize
+  - `eng` (енг) - engine
+  - `man` (ман) - manager
+
+## Code Documentation
+
+### Comments
+- Write ALL comments in English only
+- Comments should be for documentation purposes only
+- Use clear, concise English explanations
+- Follow standard documentation practices
+
+### Code Examples
+```tenge
+// Create user function with agglutinative naming
+atqar user_jasau(name: jol, email: jol, password: jol) -> JsonObject {
+    // Validate input parameters
+    eger (name == "" || email == "" || password == "") {
+        qaytar NULL;
+    }
+    
+    // Create user object with hashed password
+    jasau user: JsonObject = json_object_create();
+    json_object_set_string(user, "name", name);
+    json_object_set_string(user, "email", email);
+    json_object_set_string(user, "password", hash_password(password));
+    
+    qaytar user;
+}
+```
+
+## Architecture Principles
+
+### Agglutinative Structure
+- Build architecture based on Kazakh language's agglutinative features
+- Use morphemes as building blocks for function names
+- Implement phoneme-based optimization
+- Create archetype-based system design
+
+### Business Logic
+- Structure business logic around Kazakh linguistic patterns
+- Use agglutinative composition for complex operations
+- Implement morpheme-based data processing
+- Create phoneme-aware algorithms
+
+### System Design
+- Design components using Kazakh agglutinative principles
+- Use morpheme concatenation for function composition
+- Implement phoneme-based routing
+- Create archetype-driven architecture
+
+## Development Guidelines
+
+### Function Naming
+- Always use agglutinative Kazakh morphemes
+- Compose complex functions by combining morphemes
+- Use proper Kazakh syntax for function names
+- Examples:
+  - `web_server_jasau` (web server create)
+  - `user_parol_tekseru` (user password check)
+  - `database_connection_opt` (database connection optimize)
+
+### Variable Naming
+- Use descriptive Kazakh terms for variables
+- Follow agglutinative patterns
+- Examples:
+  - `jasau` (create)
+  - `alu` (get)
+  - `qosu` (add)
+  - `zhangartu` (update)
+  - `zhoyu` (delete)
+
+### Code Organization
+- Organize code using Kazakh linguistic structure
+- Group related functions by morpheme
+- Use phoneme-based optimization
+- Implement archetype-based modules
+
+## File Structure Rules
+
+### Directory Organization
+```
+tenge-web/
+├── betjagy/            # frontend (бетжағы)
+│   ├── better/         # pages (беттер) - HTML files go here
+│   ├── sandyq/         # assets (қайнар) - CSS, JS, images
+│   └── ulgi/           # templates (үлгі) - template files
+├── artjagy/            # backend (артжағы)
+│   └── server/         # server components
+├── framework/          # web framework
+│   ├── template/       # template engine
+│   ├── ortalya/        # middleware
+│   └── kawipsizdik/    # security
+├── ısker_qisyn/        # business logic
+│   ├── paydalanu_baskaru/  # user management
+│   ├── mazmun_baskaru/     # content management
+│   └── e_commerce/         # e-commerce
+├── derekter/           # database layer
+│   ├── orm/            # ORM
+│   ├── koshiru/        # migrations
+│   └── modelder/       # models
+├── qurastyru/          # compiler
+│   ├── lekser/         # lexer
+│   ├── parser/         # parser
+│   └── transpiler/     # transpiler
+├── algasqy/            # archetypes (архетиптер)
+├── synaqtar/           # testing (сынақтар)
+│   ├── unit/           # unit tests
+│   ├── integration/    # integration tests
+│   ├── e2e/            # end-to-end tests
+│   ├── benchmarks/     # benchmarks
+│   └── demo/           # demo files
+└── qujattama/          # documentation (құжаттама)
+    ├── api/            # API documentation
+    ├── architecture/   # architecture docs
+    └── user-guide/     # user guide
+```
+
+### File Placement Rules
+- **HTML files**: Always place in `betjagy/better/` directory
+- **CSS files**: Place in `betjagy/sandyq/css/` directory  
+- **JavaScript files**: Place in `betjagy/sandyq/js/` directory
+- **Images/assets**: Place in `betjagy/sandyq/brand/` or `betjagy/sandyq/` directory
+- **Template files**: Place in `betjagy/ulgi/` directory
+- **Backend code**: Place in `artjagy/` directory
+- **Database files**: Place in `derekter/` directory
+- **Test files**: Place in `synaqtar/` directory
+- **Documentation**: Place in `qujattama/` directory
+- **Configuration**: Place in `konfig/` directory
+
+### File Management Rules / Файл Басқару Ережелері
+- **ALWAYS check if a file exists before creating a new one**
+- **ӘРҚАШАН жаңа файл жасамас бұрын файл барлығын тексеріңіз**
+- **If a file exists, EDIT it instead of creating a new one**
+- **Егер файл бар болса, жаңасын жасамастан, оны өңдеңіз**
+- **Use descriptive names to avoid conflicts (e.g., `blog_template.tng` vs `blog_page.tng`)**
+- **Қақтығыстарды болдырмау үшін сипаттамалық атауларды пайдаланыңыз (мысалы, `blog_template.tng` vs `blog_page.tng`)**
+- **Never create duplicate files with the same name in different directories**
+- **Ешқашан әртүрлі директорияларда бірдей атаумен дубликат файлдар жасамаңыз**
+- **Follow the directory structure rules strictly**
+- **Директория құрылымы ережелерін қатаң сақтаңыз**
+
+### Root Directory Rules / Түбір Директория Ережелері
+- **NEVER** place HTML files in root directory
+- **ЕШҚАШАН HTML файлдарды түбір директорияға орналастырмаңыз**
+- **NEVER** place CSS/JS files in root directory
+- **ЕШҚАШАН CSS/JS файлдарды түбір директорияға орналастырмаңыз**
+- **NEVER** place demo files in root directory
+- **ЕШҚАШАН демо файлдарды түбір директорияға орналастырмаңыз**
+- Root directory should only contain:
+- Түбір директория тек мынаны ғана қамтуы керек:
+  - Project configuration files (package.json, Makefile, Dockerfile)
+  - Жоба конфигурация файлдары (package.json, Makefile, Dockerfile)
+  - Main documentation files (README.md, COMPLETION.md)
+  - Негізгі құжаттама файлдары (README.md, COMPLETION.md)
+  - Core framework files
+  - Негізгі фреймворк файлдары
+  - Build/launch scripts (if necessary)
+  - Құрастыру/іске қосу скриптері (қажет болса)
+
+## Code Quality Standards
+
+### Agglutinative Compliance
+- Ensure all function names follow Kazakh agglutinative rules
+- Use proper morpheme combination
+- Implement phoneme-based optimization
+- Follow archetype patterns
+
+### Documentation Standards
+- Write comprehensive English documentation
+- Use clear, professional English
+- Document all public functions
+- Include usage examples
+
+### Testing Requirements
+- Test agglutinative function composition
+- Verify morpheme-based operations
+- Test phoneme-aware algorithms
+- Validate archetype implementations
+
+## Implementation Notes
+
+### Language Features
+- Leverage Kazakh agglutinative features
+- Use morpheme concatenation
+- Implement phoneme-based processing
+- Create archetype-driven systems
+
+### Performance Optimization
+- Use agglutinative patterns for optimization
+- Implement morpheme-based caching
+- Apply phoneme-aware algorithms
+- Utilize archetype-based performance
+
+### Security Considerations
+- Implement agglutinative security patterns
+- Use morpheme-based validation
+- Apply phoneme-aware security
+- Create archetype-driven security
+
+## Development Workflow
+
+1. **Planning**: Use Kazakh agglutinative principles for architecture
+2. **Implementation**: Follow morpheme-based development
+3. **Testing**: Test phoneme-aware functionality
+4. **Documentation**: Write comprehensive English documentation
+5. **Review**: Ensure agglutinative compliance
+
+## Code Review Checklist
+
+- [ ] All function names use agglutinative Kazakh morphemes
+- [ ] Directory and file names use Latin Kazakh equivalents
+- [ ] All comments are in English
+- [ ] Code follows Kazakh linguistic patterns
+- [ ] Architecture uses agglutinative principles
+- [ ] Business logic follows Kazakh language features
+- [ ] Documentation is comprehensive and in English
+- [ ] Testing covers agglutinative functionality
+- [ ] **File existence checked before creating new files**
+- [ ] **No duplicate files with same names in different directories**
+- [ ] **Files placed in correct directories according to structure rules**
+
+## Examples of Correct Implementation
+
+### Function Naming
+```tenge
+// Correct agglutinative function names
+atqar web_server_jasau(port: san) -> WebServer
+atqar user_parol_tekseru(email: jol, password: jol) -> aqıqat
+atqar database_connection_opt() -> aqıqat
+atqar template_engine_ishke_engizu(template: jol, data: JsonObject) -> jol
+```
+
+### Directory Structure
+```
+betjagy/                # frontend
+├── komponentter/       # components
+├── better/             # pages
+├── stil/              # styles
+└── kaynar/            # assets
+```
+
+### Code Documentation
+```tenge
+// Create user with validation and hashing
+atqar user_jasau(name: jol, email: jol, password: jol) -> JsonObject {
+    // Validate input parameters
+    eger (name == "" || email == "" || password == "") {
+        qaytar NULL;
+    }
+    
+    // Create user object with hashed password
+    jasau user: JsonObject = json_object_create();
+    json_object_set_string(user, "name", name);
+    json_object_set_string(user, "email", email);
+    json_object_set_string(user, "password", hash_password(password));
+    
+    qaytar user;
+}
+```
+
+Remember: Always maintain the agglutinative nature of the Tenge language while writing clear, professional English documentation.
+
