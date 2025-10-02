@@ -1,0 +1,71 @@
+# GitHub Linguist Settings for Tenge Language
+# This file configures GitHub's Linguist tool settings for Tenge language support
+
+# Language settings
+language:
+  # Language name
+  name: "Tenge"
+  
+  # Language type
+  type: "programming"
+  
+  # Language group
+  group: "Tenge"
+  
+  # Language color (Shanraq brand color)
+  color: "#FF6B35"
+  
+  # Language aliases
+  aliases:
+    - "tenge"
+    - "tenge-lang"
+    - "shanraq"
+  
+  # Language search terms
+  search_term: "tenge language shanraq agglutinative kazakh"
+  
+  # Language description
+  description: "Tenge - Agglutinative programming language based on Kazakh language features"
+  
+  # Language website
+  website: "https://shanraq.org"
+  
+  # Language repository
+  repository: "https://github.com/DauletBai/shanraq.org"
+  
+  # Language logo
+  logo: "betjagy/sandyq/brand/favicon.svg"
+
+# File type settings
+file_types:
+  - extension: ".tng"
+    language: "Tenge"
+    color: "#FF6B35"
+    type: "programming"
+    group: "Tenge"
+    aliases:
+      - "tenge"
+      - "tenge-lang"
+      - "shanraq"
+    search_term: "tenge language shanraq agglutinative kazakh"
+    description: "Tenge - Agglutinative programming language based on Kazakh language features"
+    website: "https://shanraq.org"
+    repository: "https://github.com/DauletBai/shanraq.org"
+    logo: "betjagy/sandyq/brand/favicon.svg"
+
+# Language statistics settings
+statistics:
+  - language: "Tenge"
+    percentage: 0
+    color: "#FF6B35"
+    type: "programming"
+    group: "Tenge"
+    aliases:
+      - "tenge"
+      - "tenge-lang"
+      - "shanraq"
+    search_term: "tenge language shanraq agglutinative kazakh"
+    description: "Tenge - Agglutinative programming language based on Kazakh language features"
+    website: "https://shanraq.org"
+    repository: "https://github.com/DauletBai/shanraq.org"
+    logo: "betjagy/sandyq/brand/favicon.svg"

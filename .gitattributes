@@ -1,0 +1,45 @@
+# Tenge Language Support
+*.tng linguist-language=Tenge
+*.tng linguist-detectable=true
+
+# Documentation
+*.md linguist-documentation
+*.txt linguist-documentation
+
+# Generated files
+*.svg linguist-generated
+*.pdf linguist-generated
+*.png linguist-generated
+*.jpg linguist-generated
+*.jpeg linguist-generated
+
+# Configuration files
+*.json linguist-vendored
+*.yml linguist-vendored
+*.yaml linguist-vendored
+*.xml linguist-vendored
+*.toml linguist-vendored
+
+# Lock files
+package-lock.json linguist-vendored
+yarn.lock linguist-vendored
+pnpm-lock.yaml linguist-vendored
+
+# Dependencies
+node_modules/ linguist-vendored
+vendor/ linguist-vendored
+
+# Build artifacts
+dist/ linguist-vendored
+build/ linguist-vendored
+target/ linguist-vendored
+
+# IDE files
+.vscode/ linguist-vendored
+.idea/ linguist-vendored
+*.swp linguist-vendored
+*.swo linguist-vendored
+
+# OS files
+.DS_Store linguist-vendored
+Thumbs.db linguist-vendored
