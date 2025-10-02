@@ -1,0 +1,471 @@
+// event_sourcing.tng - Event Sourcing System
+// Event-driven architecture for transaction journal and rollbacks
+
+// Event structure for financial transactions
+atqar financial_event_jasau(event_type: jol, aggregate_id: jol, event_data: JsonObject, version: san) -> FinancialEvent {
+    jasau event: FinancialEvent = financial_event_create();
+    
+    event.event_id = uuid_generate();
+    event.event_type = event_type;
+    event.aggregate_id = aggregate_id;
+    event.event_data = event_data;
+    event.version = version;
+    event.timestamp = current_timestamp();
+    event.correlation_id = get_correlation_id();
+    event.causation_id = get_causation_id();
+    event.user_id = get_current_user_id();
+    event.source_ip = get_client_ip();
+    
+    // Generate event hash for integrity
+    event.event_hash = event_sourcing_calculate_hash(event);
+    
+    // Store event
+    jasau stored: aqıqat = event_sourcing_store_event(event);
+    
+    eгер (!stored) {
+        korset("❌ Failed to store financial event");
+        qaytar NULL;
+    }
+    
+    qaytar event;
+}
+
+// Event store for financial events
+atqar event_store_jasau() -> EventStore {
+    jasau store: EventStore = event_store_create();
+    
+    store.store_id = uuid_generate();
+    store.created_at = current_timestamp();
+    store.status = "active";
+    
+    // Initialize event streams
+    jasau streams: jol[] = [
+        "transaction_stream",
+        "account_stream",
+        "user_stream",
+        "payment_stream",
+        "audit_stream"
+    ];
+    
+    jasau i: san = 0;
+    azirshe (i < streams.length) {
+        event_store_initialize_stream(store, streams[i]);
+        i = i + 1;
+    }
+    
+    qaytar store;
+}
+
+// Transaction event types
+atqar transaction_event_jasau(transaction_id: jol, event_type: jol, event_data: JsonObject) -> FinancialEvent {
+    jasau event_data_with_metadata: JsonObject = json_object_create();
+    
+    // Add transaction metadata
+    json_object_set_string(event_data_with_metadata, "transaction_id", transaction_id);
+    json_object_set_string(event_data_with_metadata, "event_type", event_type);
+    json_object_set_number(event_data_with_metadata, "timestamp", current_timestamp());
+    json_object_set_object(event_data_with_metadata, "data", event_data);
+    
+    // Get current version for transaction
+    jasau current_version: san = event_sourcing_get_aggregate_version(transaction_id);
+    jasau next_version: san = current_version + 1;
+    
+    jasau event: FinancialEvent = financial_event_jasau(
+        event_type,
+        transaction_id,
+        event_data_with_metadata,
+        next_version
+    );
+    
+    qaytar event;
+}
+
+// Transaction lifecycle events
+atqar transaction_created_event_jasau(transaction_id: jol, from_account: jol, to_account: jol, amount: Decimal128, currency: jol) -> FinancialEvent {
+    jasau event_data: JsonObject = json_object_create();
+    
+    json_object_set_string(event_data, "from_account", from_account);
+    json_object_set_string(event_data, "to_account", to_account);
+    json_object_set_string(event_data, "amount", decimal128_to_string(amount));
+    json_object_set_string(event_data, "currency", currency);
+    json_object_set_string(event_data, "status", "created");
+    
+    jasau event: FinancialEvent = transaction_event_jasau(transaction_id, "TransactionCreated", event_data);
+    
+    qaytar event;
+}
+
+atqar transaction_authorized_event_jasau(transaction_id: jol, authorized_by: jol, authorization_level: jol) -> FinancialEvent {
+    jasau event_data: JsonObject = json_object_create();
+    
+    json_object_set_string(event_data, "authorized_by", authorized_by);
+    json_object_set_string(event_data, "authorization_level", authorization_level);
+    json_object_set_string(event_data, "status", "authorized");
+    json_object_set_number(event_data, "authorized_at", current_timestamp());
+    
+    jasau event: FinancialEvent = transaction_event_jasau(transaction_id, "TransactionAuthorized", event_data);
+    
+    qaytar event;
+}
+
+atqar transaction_executed_event_jasau(transaction_id: jol, execution_time: san, fees: Decimal128) -> FinancialEvent {
+    jasau event_data: JsonObject = json_object_create();
+    
+    json_object_set_number(event_data, "execution_time", execution_time);
+    json_object_set_string(event_data, "fees", decimal128_to_string(fees));
+    json_object_set_string(event_data, "status", "executed");
+    json_object_set_number(event_data, "executed_at", current_timestamp());
+    
+    jasau event: FinancialEvent = transaction_event_jasau(transaction_id, "TransactionExecuted", event_data);
+    
+    qaytar event;
+}
+
+atqar transaction_failed_event_jasau(transaction_id: jol, failure_reason: jol, error_code: jol) -> FinancialEvent {
+    jasau event_data: JsonObject = json_object_create();
+    
+    json_object_set_string(event_data, "failure_reason", failure_reason);
+    json_object_set_string(event_data, "error_code", error_code);
+    json_object_set_string(event_data, "status", "failed");
+    json_object_set_number(event_data, "failed_at", current_timestamp());
+    
+    jasau event: FinancialEvent = transaction_event_jasau(transaction_id, "TransactionFailed", event_data);
+    
+    qaytar event;
+}
+
+atqar transaction_rolled_back_event_jasau(transaction_id: jol, rollback_reason: jol, rolled_back_by: jol) -> FinancialEvent {
+    jasau event_data: JsonObject = json_object_create();
+    
+    json_object_set_string(event_data, "rollback_reason", rollback_reason);
+    json_object_set_string(event_data, "rolled_back_by", rolled_back_by);
+    json_object_set_string(event_data, "status", "rolled_back");
+    json_object_set_number(event_data, "rolled_back_at", current_timestamp());
+    
+    jasau event: FinancialEvent = transaction_event_jasau(transaction_id, "TransactionRolledBack", event_data);
+    
+    qaytar event;
+}
+
+// Event replay for state reconstruction
+atqar event_replay_jasau(aggregate_id: jol, from_version: san, to_version: san) -> JsonObject {
+    // Get events for aggregate
+    jasau events: FinancialEvent[] = event_sourcing_get_events(aggregate_id, from_version, to_version);
+    
+    eгер (events == NULL || events.length == 0) {
+        korset("❌ No events found for aggregate: " + aggregate_id);
+        qaytar NULL;
+    }
+    
+    // Initialize state
+    jasau state: JsonObject = json_object_create();
+    json_object_set_string(state, "aggregate_id", aggregate_id);
+    json_object_set_string(state, "status", "initial");
+    json_object_set_string(state, "balance", "0");
+    
+    // Replay events
+    jasau i: san = 0;
+    azirshe (i < events.length) {
+        jasau event: FinancialEvent = events[i];
+        
+        // Apply event to state
+        state = event_sourcing_apply_event_to_state(state, event);
+        
+        i = i + 1;
+    }
+    
+    qaytar state;
+}
+
+// Event snapshot for performance optimization
+atqar event_snapshot_jasau(aggregate_id: jol, version: san) -> EventSnapshot {
+    jasau snapshot: EventSnapshot = event_snapshot_create();
+    
+    // Get current state by replaying all events
+    jasau state: JsonObject = event_replay_jasau(aggregate_id, 0, version);
+    
+    eгер (state == NULL) {
+        korset("❌ Failed to replay events for snapshot");
+        qaytar NULL;
+    }
+    
+    // Create snapshot
+    snapshot.snapshot_id = uuid_generate();
+    snapshot.aggregate_id = aggregate_id;
+    snapshot.version = version;
+    snapshot.state = state;
+    snapshot.created_at = current_timestamp();
+    
+    // Store snapshot
+    jasau stored: aqıqat = event_sourcing_store_snapshot(snapshot);
+    
+    eгер (!stored) {
+        korset("❌ Failed to store event snapshot");
+        qaytar NULL;
+    }
+    
+    qaytar snapshot;
+}
+
+// Event snapshot retrieval with fallback to replay
+atqar event_snapshot_alu(aggregate_id: jol, version: san) -> JsonObject {
+    // Try to get snapshot first
+    jasau snapshot: EventSnapshot = event_sourcing_get_snapshot(aggregate_id, version);
+    
+    eгер (snapshot != NULL) {
+        // Use snapshot and replay remaining events
+        jasau remaining_events: FinancialEvent[] = event_sourcing_get_events(aggregate_id, snapshot.version + 1, version);
+        
+        jasau state: JsonObject = snapshot.state;
+        
+        // Apply remaining events
+        jasau i: san = 0;
+        azirshe (i < remaining_events.length) {
+            state = event_sourcing_apply_event_to_state(state, remaining_events[i]);
+            i = i + 1;
+        }
+        
+        qaytar state;
+    } else {
+        // No snapshot found, replay all events
+        qaytar event_replay_jasau(aggregate_id, 0, version);
+    }
+}
+
+// Transaction rollback using event sourcing
+atqar transaction_rollback_event_sourcing(transaction_id: jol, rollback_reason: jol) -> aqıqat {
+    // Get all events for transaction
+    jasau events: FinancialEvent[] = event_sourcing_get_events(transaction_id, 0, -1);
+    
+    eгер (events == NULL || events.length == 0) {
+        korset("❌ No events found for transaction: " + transaction_id);
+        qaytar jin;
+    }
+    
+    // Check if transaction can be rolled back
+    jasau can_rollback: aqıqat = event_sourcing_can_rollback_transaction(transaction_id);
+    
+    eгер (!can_rollback) {
+        korset("❌ Transaction cannot be rolled back");
+        qaytar jin;
+    }
+    
+    // Create rollback events in reverse order
+    jasau rollback_events: FinancialEvent[] = [];
+    
+    jasau i: san = events.length - 1;
+    azirshe (i >= 0) {
+        jasau event: FinancialEvent = events[i];
+        
+        // Create compensating event
+        jasau compensating_event: FinancialEvent = event_sourcing_create_compensating_event(event);
+        
+        eгер (compensating_event != NULL) {
+            rollback_events = rollback_events + [compensating_event];
+        }
+        
+        i = i - 1;
+    }
+    
+    // Apply rollback events
+    jasau j: san = 0;
+    azirshe (j < rollback_events.length) {
+        jasau rollback_event: FinancialEvent = rollback_events[j];
+        
+        jasau applied: aqıqat = event_sourcing_apply_event(rollback_event);
+        
+        eгер (!applied) {
+            korset("❌ Failed to apply rollback event: " + rollback_event.event_id);
+            qaytar jin;
+        }
+        
+        j = j + 1;
+    }
+    
+    // Create rollback event
+    jasau rollback_event: FinancialEvent = transaction_rolled_back_event_jasau(
+        transaction_id,
+        rollback_reason,
+        get_current_user_id()
+    );
+    
+    // Store rollback event
+    jasau stored: aqıqat = event_sourcing_store_event(rollback_event);
+    
+    eгер (!stored) {
+        korset("❌ Failed to store rollback event");
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Event sourcing projection for read models
+atqar event_projection_jasau(projection_name: jol, event_types: jol[]) -> EventProjection {
+    jasau projection: EventProjection = event_projection_create();
+    
+    projection.projection_id = uuid_generate();
+    projection.projection_name = projection_name;
+    projection.event_types = event_types;
+    projection.status = "active";
+    projection.created_at = current_timestamp();
+    projection.last_processed_event = 0;
+    
+    // Initialize projection state
+    projection.state = json_object_create();
+    
+    // Store projection
+    jasau stored: aqıqat = event_sourcing_store_projection(projection);
+    
+    eгер (!stored) {
+        korset("❌ Failed to store event projection");
+        qaytar NULL;
+    }
+    
+    qaytar projection;
+}
+
+// Projection update handler
+atqar projection_update_handler_jasau(projection_id: jol, event: FinancialEvent) -> aqıqat {
+    // Get projection
+    jasau projection: EventProjection = event_sourcing_get_projection(projection_id);
+    
+    eгер (projection == NULL) {
+        korset("❌ Projection not found: " + projection_id);
+        qaytar jin;
+    }
+    
+    // Check if event type is handled by projection
+    jasau handles_event: aqıqat = event_sourcing_projection_handles_event(projection, event.event_type);
+    
+    eгер (!handles_event) {
+        qaytar jan; // Event not relevant to this projection
+    }
+    
+    // Update projection state
+    jasau updated_state: JsonObject = event_sourcing_apply_event_to_projection(projection, event);
+    
+    eгер (updated_state == NULL) {
+        korset("❌ Failed to update projection state");
+        qaytar jin;
+    }
+    
+    // Update projection
+    projection.state = updated_state;
+    projection.last_processed_event = event.version;
+    projection.updated_at = current_timestamp();
+    
+    // Store updated projection
+    jasau stored: aqıqat = event_sourcing_store_projection(projection);
+    
+    eгер (!stored) {
+        korset("❌ Failed to store updated projection");
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Event sourcing query for transaction history
+atqar transaction_history_query_jasau(account_id: jol, start_date: san, end_date: san) -> FinancialEvent[] {
+    // Get all events for account in date range
+    jasau events: FinancialEvent[] = event_sourcing_get_events_by_account(account_id, start_date, end_date);
+    
+    // Filter by transaction events
+    jasau transaction_events: FinancialEvent[] = [];
+    
+    jasau i: san = 0;
+    azirshe (i < events.length) {
+        jasau event: FinancialEvent = events[i];
+        
+        eгер (event.event_type.startsWith("Transaction")) {
+            transaction_events = transaction_events + [event];
+        }
+        
+        i = i + 1;
+    }
+    
+    // Sort by timestamp
+    transaction_events = event_sourcing_sort_events_by_timestamp(transaction_events);
+    
+    qaytar transaction_events;
+}
+
+// Event sourcing audit trail
+atqar event_audit_trail_jasau(aggregate_id: jol) -> JsonObject {
+    jasau audit_trail: JsonObject = json_object_create();
+    
+    // Get all events for aggregate
+    jasau events: FinancialEvent[] = event_sourcing_get_events(aggregate_id, 0, -1);
+    
+    eгер (events == NULL || events.length == 0) {
+        json_object_set_string(audit_trail, "message", "No events found");
+        qaytar audit_trail;
+    }
+    
+    // Build audit trail
+    jasau event_list: JsonObject[] = [];
+    
+    jasau i: san = 0;
+    azirshe (i < events.length) {
+        jasau event: FinancialEvent = events[i];
+        
+        jasau event_info: JsonObject = json_object_create();
+        json_object_set_string(event_info, "event_id", event.event_id);
+        json_object_set_string(event_info, "event_type", event.event_type);
+        json_object_set_number(event_info, "version", event.version);
+        json_object_set_number(event_info, "timestamp", event.timestamp);
+        json_object_set_string(event_info, "user_id", event.user_id);
+        json_object_set_string(event_info, "correlation_id", event.correlation_id);
+        json_object_set_object(event_info, "data", event.event_data);
+        
+        event_list = event_list + [event_info];
+        
+        i = i + 1;
+    }
+    
+    json_object_set_string(audit_trail, "aggregate_id", aggregate_id);
+    json_object_set_number(audit_trail, "total_events", events.length);
+    json_object_set_array(audit_trail, "events", event_list);
+    json_object_set_number(audit_trail, "generated_at", current_timestamp());
+    
+    qaytar audit_trail;
+}
+
+// Event sourcing performance monitoring
+atqar event_sourcing_performance_monitor_jasau() -> EventSourcingMonitor {
+    jasau monitor: EventSourcingMonitor = event_sourcing_monitor_create();
+    
+    monitor.events_stored = 0;
+    monitor.events_replayed = 0;
+    monitor.snapshots_created = 0;
+    monitor.projections_updated = 0;
+    monitor.average_replay_time = 0;
+    monitor.start_time = current_timestamp();
+    
+    qaytar monitor;
+}
+
+// Get event sourcing statistics
+atqar event_sourcing_statistics_alu(monitor: EventSourcingMonitor) -> JsonObject {
+    jasau stats: JsonObject = json_object_create();
+    
+    jasau uptime: san = current_timestamp() - monitor.start_time;
+    
+    json_object_set_number(stats, "uptime_seconds", uptime);
+    json_object_set_number(stats, "events_stored", monitor.events_stored);
+    json_object_set_number(stats, "events_replayed", monitor.events_replayed);
+    json_object_set_number(stats, "snapshots_created", monitor.snapshots_created);
+    json_object_set_number(stats, "projections_updated", monitor.projections_updated);
+    json_object_set_number(stats, "average_replay_time_ms", monitor.average_replay_time);
+    
+    // Calculate rates
+    jasau events_per_second: san = 0;
+    eгер (uptime > 0) {
+        events_per_second = monitor.events_stored / uptime;
+    }
+    
+    json_object_set_number(stats, "events_per_second", events_per_second);
+    
+    qaytar stats;
+}

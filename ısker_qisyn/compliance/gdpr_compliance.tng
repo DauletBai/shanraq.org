@@ -1,0 +1,450 @@
+// gdpr_compliance.tng - GDPR and KZ Personal Data Law Compliance
+// Implements comprehensive data protection and privacy compliance
+
+// GDPR Compliance Manager
+atqar gdpr_compliance_manager_jasau() -> GDPRComplianceManager {
+    jasau manager: GDPRComplianceManager = gdpr_compliance_manager_create();
+    
+    manager.manager_id = uuid_generate();
+    manager.status = "active";
+    manager.created_at = current_timestamp();
+    
+    // Configure GDPR compliance settings
+    jasau gdpr_config: JsonObject = json_object_create();
+    json_object_set_string(gdpr_config, "data_retention_period", "7y");
+    json_object_set_string(gdpr_config, "consent_management", "enabled");
+    json_object_set_string(gdpr_config, "data_portability", "enabled");
+    json_object_set_string(gdpr_config, "right_to_erasure", "enabled");
+    json_object_set_string(gdpr_config, "data_minimization", "enabled");
+    json_object_set_string(gdpr_config, "purpose_limitation", "enabled");
+    
+    manager.gdpr_config = gdpr_config;
+    
+    // Configure KZ Personal Data Law compliance
+    jasau kz_pd_config: JsonObject = json_object_create();
+    json_object_set_string(kz_pd_config, "data_localization", "enabled");
+    json_object_set_string(kz_pd_config, "consent_requirements", "enabled");
+    json_object_set_string(kz_pd_config, "data_subject_rights", "enabled");
+    json_object_set_string(kz_pd_config, "data_breach_notification", "enabled");
+    json_object_set_string(kz_pd_config, "data_processing_records", "enabled");
+    
+    manager.kz_pd_config = kz_pd_config;
+    
+    qaytar manager;
+}
+
+// Personal Data Processing
+atqar personal_data_processing_jasau(data_subject_id: jol, data_type: jol, processing_purpose: jol, legal_basis: jol) -> aqıqat {
+    // Validate legal basis
+    jasau valid_legal_basis: aqıqat = gdpr_validate_legal_basis(legal_basis);
+    
+    eгер (!valid_legal_basis) {
+        korset("❌ Invalid legal basis for data processing: " + legal_basis);
+        qaytar jin;
+    }
+    
+    // Check data subject consent
+    jasau consent_valid: aqıqat = gdpr_check_consent(data_subject_id, data_type, processing_purpose);
+    
+    eгер (!consent_valid) {
+        korset("❌ No valid consent for data processing");
+        qaytar jin;
+    }
+    
+    // Record data processing activity
+    jasau processing_record: JsonObject = json_object_create();
+    json_object_set_string(processing_record, "data_subject_id", data_subject_id);
+    json_object_set_string(processing_record, "data_type", data_type);
+    json_object_set_string(processing_record, "processing_purpose", processing_purpose);
+    json_object_set_string(processing_record, "legal_basis", legal_basis);
+    json_object_set_number(processing_record, "timestamp", current_timestamp());
+    json_object_set_string(processing_record, "processor_id", get_current_processor_id());
+    
+    jasau record_stored: aqıqat = gdpr_store_processing_record(processing_record);
+    
+    eгер (!record_stored) {
+        korset("❌ Failed to store data processing record");
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Consent Management
+atqar consent_management_jasau(data_subject_id: jol, consent_type: jol, consent_details: JsonObject) -> aqıqat {
+    // Create consent record
+    jasau consent_record: JsonObject = json_object_create();
+    json_object_set_string(consent_record, "data_subject_id", data_subject_id);
+    json_object_set_string(consent_record, "consent_type", consent_type);
+    json_object_set_object(consent_record, "consent_details", consent_details);
+    json_object_set_boolean(consent_record, "consent_given", jan);
+    json_object_set_number(consent_record, "consent_timestamp", current_timestamp());
+    json_object_set_string(consent_record, "consent_method", "explicit");
+    json_object_set_string(consent_record, "consent_version", "1.0");
+    
+    // Store consent record
+    jasau consent_stored: aqıqat = gdpr_store_consent_record(consent_record);
+    
+    eгер (!consent_stored) {
+        korset("❌ Failed to store consent record");
+        qaytar jin;
+    }
+    
+    // Send consent confirmation
+    jasau confirmation_sent: aqıqat = gdpr_send_consent_confirmation(data_subject_id, consent_record);
+    
+    eгер (!confirmation_sent) {
+        korset("❌ Failed to send consent confirmation");
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Data Subject Rights
+atqar data_subject_rights_jasau(data_subject_id: jol, right_type: jol, request_details: JsonObject) -> JsonObject {
+    jasau result: JsonObject = json_object_create();
+    
+    eгер (right_type == "access") {
+        result = gdpr_handle_access_request(data_subject_id, request_details);
+    } eгер (right_type == "rectification") {
+        result = gdpr_handle_rectification_request(data_subject_id, request_details);
+    } eгер (right_type == "erasure") {
+        result = gdpr_handle_erasure_request(data_subject_id, request_details);
+    } eгер (right_type == "portability") {
+        result = gdpr_handle_portability_request(data_subject_id, request_details);
+    } eгер (right_type == "objection") {
+        result = gdpr_handle_objection_request(data_subject_id, request_details);
+    } eгер (right_type == "restriction") {
+        result = gdpr_handle_restriction_request(data_subject_id, request_details);
+    } else {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "Unknown data subject right: " + right_type);
+    }
+    
+    qaytar result;
+}
+
+// Right to Access
+atqar gdpr_handle_access_request(data_subject_id: jol, request_details: JsonObject) -> JsonObject {
+    jasau result: JsonObject = json_object_create();
+    
+    // Collect all personal data
+    jasau personal_data: JsonObject = gdpr_collect_personal_data(data_subject_id);
+    
+    eгер (personal_data == NULL) {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "No personal data found");
+        qaytar result;
+    }
+    
+    // Create data export
+    jasau data_export: JsonObject = json_object_create();
+    json_object_set_string(data_export, "data_subject_id", data_subject_id);
+    json_object_set_object(data_export, "personal_data", personal_data);
+    json_object_set_number(data_export, "export_timestamp", current_timestamp());
+    json_object_set_string(data_export, "export_format", "json");
+    
+    // Store data export
+    jasau export_stored: aqıqat = gdpr_store_data_export(data_export);
+    
+    eгер (!export_stored) {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "Failed to store data export");
+        qaytar result;
+    }
+    
+    // Send data to data subject
+    jasau data_sent: aqıqat = gdpr_send_data_to_subject(data_subject_id, data_export);
+    
+    eгер (!data_sent) {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "Failed to send data to data subject");
+        qaytar result;
+    }
+    
+    json_object_set_boolean(result, "success", jan);
+    json_object_set_string(result, "message", "Personal data access request completed");
+    json_object_set_string(result, "export_id", data_export.export_id);
+    
+    qaytar result;
+}
+
+// Right to Erasure (Right to be Forgotten)
+atqar gdpr_handle_erasure_request(data_subject_id: jol, request_details: JsonObject) -> JsonObject {
+    jasau result: JsonObject = json_object_create();
+    
+    // Check if erasure is legally permissible
+    jasau erasure_permissible: aqıqat = gdpr_check_erasure_permissibility(data_subject_id);
+    
+    eгер (!erasure_permissible) {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "Data erasure not legally permissible");
+        qaytar result;
+    }
+    
+    // Create erasure record
+    jasau erasure_record: JsonObject = json_object_create();
+    json_object_set_string(erasure_record, "data_subject_id", data_subject_id);
+    json_object_set_number(erasure_record, "erasure_timestamp", current_timestamp());
+    json_object_set_string(erasure_record, "erasure_reason", json_object_get_string(request_details, "reason"));
+    json_object_set_string(erasure_record, "erasure_method", "secure_deletion");
+    
+    // Perform data erasure
+    jasau erasure_completed: aqıqat = gdpr_perform_data_erasure(data_subject_id, erasure_record);
+    
+    eгер (!erasure_completed) {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "Failed to complete data erasure");
+        qaytar result;
+    }
+    
+    // Store erasure record
+    jasau record_stored: aqıqat = gdpr_store_erasure_record(erasure_record);
+    
+    eгер (!record_stored) {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "Failed to store erasure record");
+        qaytar result;
+    }
+    
+    json_object_set_boolean(result, "success", jan);
+    json_object_set_string(result, "message", "Data erasure request completed");
+    json_object_set_string(result, "erasure_id", erasure_record.erasure_id);
+    
+    qaytar result;
+}
+
+// Data Portability
+atqar gdpr_handle_portability_request(data_subject_id: jol, request_details: JsonObject) -> JsonObject {
+    jasau result: JsonObject = json_object_create();
+    
+    // Collect portable data
+    jasau portable_data: JsonObject = gdpr_collect_portable_data(data_subject_id);
+    
+    eгер (portable_data == NULL) {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "No portable data found");
+        qaytar result;
+    }
+    
+    // Create portable data export
+    jasau portability_export: JsonObject = json_object_create();
+    json_object_set_string(portability_export, "data_subject_id", data_subject_id);
+    json_object_set_object(portability_export, "portable_data", portable_data);
+    json_object_set_number(portability_export, "export_timestamp", current_timestamp());
+    json_object_set_string(portability_export, "export_format", "machine_readable");
+    json_object_set_string(portability_export, "export_standard", "json");
+    
+    // Store portability export
+    jasau export_stored: aqıqat = gdpr_store_portability_export(portability_export);
+    
+    eгер (!export_stored) {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "Failed to store portability export");
+        qaytar result;
+    }
+    
+    // Send portable data to data subject
+    jasau data_sent: aqıqat = gdpr_send_portable_data(data_subject_id, portability_export);
+    
+    eгер (!data_sent) {
+        json_object_set_boolean(result, "success", jin);
+        json_object_set_string(result, "error", "Failed to send portable data");
+        qaytar result;
+    }
+    
+    json_object_set_boolean(result, "success", jan);
+    json_object_set_string(result, "message", "Data portability request completed");
+    json_object_set_string(result, "export_id", portability_export.export_id);
+    
+    qaytar result;
+}
+
+// Data Breach Notification
+atqar data_breach_notification_jasau(breach_details: JsonObject) -> aqıqat {
+    // Create breach record
+    jasau breach_record: JsonObject = json_object_create();
+    json_object_set_string(breach_record, "breach_id", uuid_generate());
+    json_object_set_object(breach_record, "breach_details", breach_details);
+    json_object_set_number(breach_record, "breach_timestamp", current_timestamp());
+    json_object_set_string(breach_record, "breach_severity", json_object_get_string(breach_details, "severity"));
+    json_object_set_string(breach_record, "breach_status", "detected");
+    
+    // Store breach record
+    jasau breach_stored: aqıqat = gdpr_store_breach_record(breach_record);
+    
+    eгер (!breach_stored) {
+        korset("❌ Failed to store breach record");
+        qaytar jin;
+    }
+    
+    // Assess breach impact
+    jasau impact_assessment: JsonObject = gdpr_assess_breach_impact(breach_record);
+    
+    // Notify supervisory authority (if required)
+    jasau notification_required: aqıqat = gdpr_is_notification_required(impact_assessment);
+    
+    eгер (notification_required) {
+        jasau authority_notified: aqıqat = gdpr_notify_supervisory_authority(breach_record, impact_assessment);
+        
+        eгер (!authority_notified) {
+            korset("❌ Failed to notify supervisory authority");
+            qaytar jin;
+        }
+    }
+    
+    // Notify data subjects (if required)
+    jasau subjects_notification_required: aqıqat = gdpr_is_subjects_notification_required(impact_assessment);
+    
+    eгер (subjects_notification_required) {
+        jasau subjects_notified: aqıqat = gdpr_notify_data_subjects(breach_record, impact_assessment);
+        
+        eгер (!subjects_notified) {
+            korset("❌ Failed to notify data subjects");
+            qaytar jin;
+        }
+    }
+    
+    qaytar jan;
+}
+
+// Data Processing Records
+atqar data_processing_records_jasau() -> JsonObject {
+    jasau records: JsonObject = json_object_create();
+    
+    // Get all processing activities
+    jasau processing_activities: JsonObject[] = gdpr_get_processing_activities();
+    
+    // Get all data categories
+    jasau data_categories: JsonObject[] = gdpr_get_data_categories();
+    
+    // Get all processing purposes
+    jasau processing_purposes: JsonObject[] = gdpr_get_processing_purposes();
+    
+    // Get all legal bases
+    jasau legal_bases: JsonObject[] = gdpr_get_legal_bases();
+    
+    // Get all data recipients
+    jasau data_recipients: JsonObject[] = gdpr_get_data_recipients();
+    
+    // Get all third countries
+    jasau third_countries: JsonObject[] = gdpr_get_third_countries();
+    
+    // Get all retention periods
+    jasau retention_periods: JsonObject[] = gdpr_get_retention_periods();
+    
+    // Get all security measures
+    jasau security_measures: JsonObject[] = gdpr_get_security_measures();
+    
+    json_object_set_array(records, "processing_activities", processing_activities);
+    json_object_set_array(records, "data_categories", data_categories);
+    json_object_set_array(records, "processing_purposes", processing_purposes);
+    json_object_set_array(records, "legal_bases", legal_bases);
+    json_object_set_array(records, "data_recipients", data_recipients);
+    json_object_set_array(records, "third_countries", third_countries);
+    json_object_set_array(records, "retention_periods", retention_periods);
+    json_object_set_array(records, "security_measures", security_measures);
+    
+    qaytar records;
+}
+
+// KZ Personal Data Law Compliance
+atqar kz_personal_data_compliance_jasau() -> aqıqat {
+    // Configure KZ-specific requirements
+    jasau kz_config: JsonObject = json_object_create();
+    json_object_set_string(kz_config, "data_localization", "enabled");
+    json_object_set_string(kz_config, "local_representative", "required");
+    json_object_set_string(kz_config, "data_processing_consent", "explicit");
+    json_object_set_string(kz_config, "data_subject_rights", "enabled");
+    json_object_set_string(kz_config, "data_breach_notification", "72h");
+    json_object_set_string(kz_config, "data_processing_records", "enabled");
+    
+    // Implement data localization
+    jasau localization_implemented: aqıqat = kz_implement_data_localization(kz_config);
+    
+    eгер (!localization_implemented) {
+        korset("❌ Failed to implement data localization");
+        qaytar jin;
+    }
+    
+    // Implement local representative requirements
+    jasau representative_implemented: aqıqat = kz_implement_local_representative(kz_config);
+    
+    eгер (!representative_implemented) {
+        korset("❌ Failed to implement local representative requirements");
+        qaytar jin;
+    }
+    
+    // Implement KZ-specific consent requirements
+    jasau consent_implemented: aqıqat = kz_implement_consent_requirements(kz_config);
+    
+    eгер (!consent_implemented) {
+        korset("❌ Failed to implement KZ consent requirements");
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Compliance Monitoring
+atqar compliance_monitoring_jasau() -> ComplianceMonitor {
+    jasau monitor: ComplianceMonitor = compliance_monitor_create();
+    
+    monitor.monitor_id = uuid_generate();
+    monitor.status = "active";
+    monitor.created_at = current_timestamp();
+    
+    // Configure compliance checks
+    jasau compliance_checks: JsonObject[] = [
+        json_object_create_with_string("name", "consent_validity"),
+        json_object_create_with_string("name", "data_retention"),
+        json_object_create_with_string("name", "data_minimization"),
+        json_object_create_with_string("name", "purpose_limitation"),
+        json_object_create_with_string("name", "data_accuracy"),
+        json_object_create_with_string("name", "data_security"),
+        json_object_create_with_string("name", "data_portability"),
+        json_object_create_with_string("name", "data_erasure"),
+        json_object_create_with_string("name", "breach_notification")
+    ];
+    
+    monitor.compliance_checks = compliance_checks;
+    
+    // Start compliance monitoring
+    jasau monitoring_started: aqıqat = compliance_monitor_start(monitor);
+    
+    eгер (!monitoring_started) {
+        korset("❌ Failed to start compliance monitoring");
+        qaytar NULL;
+    }
+    
+    qaytar monitor;
+}
+
+// Compliance Reporting
+atqar compliance_reporting_jasau() -> ComplianceReporter {
+    jasau reporter: ComplianceReporter = compliance_reporter_create();
+    
+    reporter.reporter_id = uuid_generate();
+    reporter.status = "active";
+    reporter.created_at = current_timestamp();
+    
+    // Configure reporting
+    jasau reporting_config: JsonObject = json_object_create();
+    json_object_set_string(reporting_config, "reporting_interval", "monthly");
+    json_object_set_string(reporting_config, "reporting_format", "pdf");
+    json_object_set_string(reporting_config, "reporting_recipients", "dpo@shanraq.org,legal@shanraq.org");
+    json_object_set_string(reporting_config, "reporting_automation", "enabled");
+    
+    reporter.config = reporting_config;
+    
+    // Start compliance reporting
+    jasau reporting_started: aqıqat = compliance_reporter_start(reporter);
+    
+    eгер (!reporting_started) {
+        korset("❌ Failed to start compliance reporting");
+        qaytar NULL;
+    }
+    
+    qaytar reporter;
+}

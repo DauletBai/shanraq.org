@@ -1,0 +1,298 @@
+// tls_security.tng - TLS 1.3 and mTLS Security Implementation
+// Advanced transport layer security for financial transactions
+
+// TLS 1.3 Configuration
+atqar tls_1_3_konfig_jasau() -> TLSConfig {
+    jasau config: TLSConfig = tls_config_create();
+    
+    // TLS 1.3 specific settings
+    config.version = "TLSv1.3";
+    config.cipher_suites = [
+        "TLS_AES_256_GCM_SHA384",
+        "TLS_CHACHA20_POLY1305_SHA256",
+        "TLS_AES_128_GCM_SHA256"
+    ];
+    
+    // Perfect Forward Secrecy
+    config.ecdh_curves = [
+        "X25519",
+        "P-256",
+        "P-384",
+        "P-521"
+    ];
+    
+    // Certificate validation
+    config.verify_mode = "VERIFY_PEER";
+    config.verify_depth = 10;
+    
+    // Session resumption
+    config.session_tickets = jan;
+    config.session_cache_size = 1000;
+    
+    // Security headers
+    config.hsts_max_age = 31536000; // 1 year
+    config.include_subdomains = jan;
+    config.preload = jan;
+    
+    qaytar config;
+}
+
+// mTLS (Mutual TLS) Implementation
+atqar mtls_server_jasau(cert_path: jol, key_path: jol, ca_cert_path: jol) -> mTLSServer {
+    jasau server: mTLSServer = mtls_server_create();
+    
+    // Load server certificate
+    jasau server_cert: Certificate = certificate_load_from_file(cert_path);
+    jasau server_key: PrivateKey = private_key_load_from_file(key_path);
+    
+    eгер (server_cert == NULL || server_key == NULL) {
+        korset("❌ Server certificate or key loading failed");
+        qaytar NULL;
+    }
+    
+    // Load CA certificate for client verification
+    jasau ca_cert: Certificate = certificate_load_from_file(ca_cert_path);
+    
+    eгер (ca_cert == NULL) {
+        korset("❌ CA certificate loading failed");
+        qaytar NULL;
+    }
+    
+    // Configure mTLS
+    server.server_cert = server_cert;
+    server.server_key = server_key;
+    server.ca_cert = ca_cert;
+    server.require_client_cert = jan;
+    server.verify_client_cert = jan;
+    
+    // Set TLS 1.3 configuration
+    server.tls_config = tls_1_3_konfig_jasau();
+    
+    qaytar server;
+}
+
+// Client certificate validation
+atqar client_certificate_tekseru(client_cert: Certificate, ca_cert: Certificate) -> aqıqat {
+    // Verify certificate chain
+    jasau chain_valid: aqıqat = certificate_verify_chain(client_cert, ca_cert);
+    
+    eгер (!chain_valid) {
+        korset("❌ Client certificate chain verification failed");
+        qaytar jin;
+    }
+    
+    // Check certificate expiration
+    jasau current_time: san = current_timestamp();
+    jasau not_before: san = certificate_get_not_before(client_cert);
+    jasau not_after: san = certificate_get_not_after(client_cert);
+    
+    eгер (current_time < not_before || current_time > not_after) {
+        korset("❌ Client certificate expired or not yet valid");
+        qaytar jin;
+    }
+    
+    // Check certificate revocation
+    jasau revoked: aqıqat = certificate_check_revocation(client_cert);
+    
+    eгер (revoked) {
+        korset("❌ Client certificate is revoked");
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// TLS connection establishment
+atqar tls_connection_ornatu(server: mTLSServer, client_socket: Socket) -> TLSConnection {
+    jasau connection: TLSConnection = tls_connection_create();
+    
+    // Establish TLS handshake
+    jasau handshake_result: aqıqat = tls_handshake_perform(server, client_socket);
+    
+    eгер (!handshake_result) {
+        korset("❌ TLS handshake failed");
+        tls_connection_close(connection);
+        qaytar NULL;
+    }
+    
+    // Verify client certificate if required
+    eгер (server.require_client_cert) {
+        jasau client_cert: Certificate = tls_get_peer_certificate(connection);
+        
+        eгер (client_cert == NULL) {
+            korset("❌ No client certificate provided");
+            tls_connection_close(connection);
+            qaytar NULL;
+        }
+        
+        jasau cert_valid: aqıqat = client_certificate_tekseru(client_cert, server.ca_cert);
+        
+        eгер (!cert_valid) {
+            korset("❌ Client certificate validation failed");
+            tls_connection_close(connection);
+            qaytar NULL;
+        }
+    }
+    
+    // Set connection parameters
+    connection.server = server;
+    connection.socket = client_socket;
+    connection.established = jan;
+    connection.created_at = current_timestamp();
+    
+    // Log successful connection
+    audit_log_connection_established(connection);
+    
+    qaytar connection;
+}
+
+// Secure data transmission
+atqar tls_data_zhiberu(connection: TLSConnection, data: jol) -> aqıqat {
+    eгер (!connection.established) {
+        korset("❌ TLS connection not established");
+        qaytar jin;
+    }
+    
+    // Encrypt data
+    jasau encrypted_data: jol = tls_encrypt_data(connection, data);
+    
+    eгер (encrypted_data == NULL) {
+        korset("❌ Data encryption failed");
+        qaytar jin;
+    }
+    
+    // Send encrypted data
+    jasau send_result: aqıqat = socket_send(connection.socket, encrypted_data);
+    
+    eгер (!send_result) {
+        korset("❌ Data transmission failed");
+        qaytar jin;
+    }
+    
+    // Log transmission
+    audit_log_data_transmission(connection, data.length);
+    
+    qaytar jan;
+}
+
+// Secure data reception
+atqar tls_data_alu(connection: TLSConnection) -> jol {
+    eгер (!connection.established) {
+        korset("❌ TLS connection not established");
+        qaytar NULL;
+    }
+    
+    // Receive encrypted data
+    jasau encrypted_data: jol = socket_receive(connection.socket);
+    
+    eгер (encrypted_data == NULL) {
+        korset("❌ Data reception failed");
+        qaytar NULL;
+    }
+    
+    // Decrypt data
+    jasau decrypted_data: jol = tls_decrypt_data(connection, encrypted_data);
+    
+    eгер (decrypted_data == NULL) {
+        korset("❌ Data decryption failed");
+        qaytar NULL;
+    }
+    
+    // Log reception
+    audit_log_data_reception(connection, decrypted_data.length);
+    
+    qaytar decrypted_data;
+}
+
+// Connection cleanup
+atqar tls_connection_zhapatu(connection: TLSConnection) {
+    eгер (connection != NULL) {
+        // Log connection closure
+        audit_log_connection_closed(connection);
+        
+        // Close TLS connection
+        tls_connection_close(connection);
+        
+        // Close underlying socket
+        socket_close(connection.socket);
+    }
+}
+
+// Certificate management
+atqar certificate_zhoneltu(cert_path: jol, key_path: jol, common_name: jol, validity_days: san) -> aqıqat {
+    // Generate private key
+    jasau private_key: PrivateKey = private_key_generate_rsa(4096);
+    
+    eгер (private_key == NULL) {
+        korset("❌ Private key generation failed");
+        qaytar jin;
+    }
+    
+    // Create certificate request
+    jasau csr: CertificateRequest = certificate_request_create();
+    certificate_request_set_subject(csr, "CN", common_name);
+    certificate_request_set_subject(csr, "O", "Shanraq.org");
+    certificate_request_set_subject(csr, "OU", "Fintech Division");
+    certificate_request_set_subject(csr, "C", "KZ");
+    
+    // Add extensions
+    certificate_request_add_extension(csr, "keyUsage", "digitalSignature,keyEncipherment");
+    certificate_request_add_extension(csr, "extendedKeyUsage", "serverAuth,clientAuth");
+    certificate_request_add_extension(csr, "subjectAltName", "DNS:" + common_name);
+    
+    // Sign certificate
+    jasau certificate: Certificate = certificate_sign(csr, private_key, validity_days);
+    
+    eгер (certificate == NULL) {
+        korset("❌ Certificate signing failed");
+        qaytar jin;
+    }
+    
+    // Save certificate and key
+    jasau cert_saved: aqıqat = certificate_save_to_file(certificate, cert_path);
+    jasau key_saved: aqıqat = private_key_save_to_file(private_key, key_path);
+    
+    eгер (!cert_saved || !key_saved) {
+        korset("❌ Certificate or key saving failed");
+        qaytar jin;
+    }
+    
+    korset("✅ Certificate and key generated successfully");
+    qaytar jan;
+}
+
+// Security monitoring
+atqar tls_security_monitoring_jasau() -> SecurityMonitor {
+    jasau monitor: SecurityMonitor = security_monitor_create();
+    
+    monitor.tls_connections = 0;
+    monitor.failed_handshakes = 0;
+    monitor.certificate_errors = 0;
+    monitor.data_transmitted = 0;
+    monitor.start_time = current_timestamp();
+    
+    qaytar monitor;
+}
+
+// Security statistics
+atqar tls_security_statistics_alu(monitor: SecurityMonitor) -> JsonObject {
+    jasau stats: JsonObject = json_object_create();
+    
+    jasau uptime: san = current_timestamp() - monitor.start_time;
+    
+    json_object_set_number(stats, "uptime_seconds", uptime);
+    json_object_set_number(stats, "active_connections", monitor.tls_connections);
+    json_object_set_number(stats, "failed_handshakes", monitor.failed_handshakes);
+    json_object_set_number(stats, "certificate_errors", monitor.certificate_errors);
+    json_object_set_number(stats, "data_transmitted_bytes", monitor.data_transmitted);
+    
+    // Calculate rates
+    jasau handshake_success_rate: san = 0;
+    eгер (monitor.tls_connections + monitor.failed_handshakes > 0) {
+        handshake_success_rate = (monitor.tls_connections * 100) / (monitor.tls_connections + monitor.failed_handshakes);
+    }
+    
+    json_object_set_number(stats, "handshake_success_rate_percent", handshake_success_rate);
+    
+    qaytar stats;
+}

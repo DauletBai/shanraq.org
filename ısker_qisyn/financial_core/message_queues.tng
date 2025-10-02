@@ -1,0 +1,448 @@
+// message_queues.tng - Message Queue System for Financial Events
+// Kafka, RabbitMQ, and NATS integration for event-driven architecture
+
+// Message queue configuration
+atqar message_queue_konfig_jasau(queue_type: jol, connection_string: jol) -> MessageQueueConfig {
+    jasau config: MessageQueueConfig = message_queue_config_create();
+    
+    config.queue_type = queue_type; // "kafka", "rabbitmq", "nats"
+    config.connection_string = connection_string;
+    config.created_at = current_timestamp();
+    config.status = "active";
+    
+    // Set default configurations based on queue type
+    eгер (queue_type == "kafka") {
+        config.kafka_config = kafka_konfig_jasau();
+    } eгер (queue_type == "rabbitmq") {
+        config.rabbitmq_config = rabbitmq_konfig_jasau();
+    } eгер (queue_type == "nats") {
+        config.nats_config = nats_konfig_jasau();
+    } else {
+        korset("❌ Unsupported queue type: " + queue_type);
+        qaytar NULL;
+    }
+    
+    qaytar config;
+}
+
+// Kafka configuration
+atqar kafka_konfig_jasau() -> KafkaConfig {
+    jasau config: KafkaConfig = kafka_config_create();
+    
+    config.bootstrap_servers = ["localhost:9092"];
+    config.security_protocol = "PLAINTEXT";
+    config.sasl_mechanism = "PLAIN";
+    config.sasl_username = "";
+    config.sasl_password = "";
+    config.ssl_ca_location = "";
+    config.ssl_certificate_location = "";
+    config.ssl_key_location = "";
+    config.acks = "all";
+    config.retries = 3;
+    config.batch_size = 16384;
+    config.linger_ms = 5;
+    config.compression_type = "snappy";
+    config.max_in_flight_requests_per_connection = 5;
+    config.enable_idempotence = jan;
+    
+    qaytar config;
+}
+
+// RabbitMQ configuration
+atqar rabbitmq_konfig_jasau() -> RabbitMQConfig {
+    jasau config: RabbitMQConfig = rabbitmq_config_create();
+    
+    config.host = "localhost";
+    config.port = 5672;
+    config.username = "guest";
+    config.password = "guest";
+    config.virtual_host = "/";
+    config.heartbeat = 60;
+    config.connection_timeout = 30;
+    config.channel_max = 0;
+    config.frame_max = 0;
+    config.ssl = jin;
+    config.ssl_options = NULL;
+    
+    qaytar config;
+}
+
+// NATS configuration
+atqar nats_konfig_jasau() -> NATSConfig {
+    jasau config: NATSConfig = nats_config_create();
+    
+    config.servers = ["nats://localhost:4222"];
+    config.username = "";
+    config.password = "";
+    config.token = "";
+    config.connection_name = "shanraq_financial";
+    config.max_reconnects = -1;
+    config.reconnect_wait = 2000;
+    config.timeout = 20000;
+    config.ping_interval = 120000;
+    config.max_pings_out = 2;
+    config.verbose = jin;
+    config.pedantic = jin;
+    
+    qaytar config;
+}
+
+// Message queue connection
+atqar message_queue_connection_jasau(config: MessageQueueConfig) -> MessageQueueConnection {
+    jasau connection: MessageQueueConnection = message_queue_connection_create();
+    
+    connection.config = config;
+    connection.connected = jin;
+    connection.connected_at = current_timestamp();
+    
+    // Connect based on queue type
+    eгер (config.queue_type == "kafka") {
+        connection.kafka_connection = kafka_connect(config.kafka_config);
+        
+        eгер (connection.kafka_connection == NULL) {
+            korset("❌ Failed to connect to Kafka");
+            qaytar NULL;
+        }
+    } eгер (config.queue_type == "rabbitmq") {
+        connection.rabbitmq_connection = rabbitmq_connect(config.rabbitmq_config);
+        
+        eгер (connection.rabbitmq_connection == NULL) {
+            korset("❌ Failed to connect to RabbitMQ");
+            qaytar NULL;
+        }
+    } eгер (config.queue_type == "nats") {
+        connection.nats_connection = nats_connect(config.nats_config);
+        
+        eгер (connection.nats_connection == NULL) {
+            korset("❌ Failed to connect to NATS");
+            qaytar NULL;
+        }
+    }
+    
+    connection.connected = jan;
+    connection.connected_at = current_timestamp();
+    
+    qaytar connection;
+}
+
+// Message publishing
+atqar message_publish_jasau(connection: MessageQueueConnection, topic: jol, message: JsonObject, key: jol) -> aqıqat {
+    // Create message envelope
+    jasau envelope: MessageEnvelope = message_envelope_create();
+    envelope.message_id = uuid_generate();
+    envelope.topic = topic;
+    envelope.key = key;
+    envelope.payload = message;
+    envelope.timestamp = current_timestamp();
+    envelope.correlation_id = get_correlation_id();
+    envelope.causation_id = get_causation_id();
+    envelope.user_id = get_current_user_id();
+    envelope.source_ip = get_client_ip();
+    
+    // Add message headers
+    envelope.headers = json_object_create();
+    json_object_set_string(envelope.headers, "content_type", "application/json");
+    json_object_set_string(envelope.headers, "message_version", "1.0");
+    json_object_set_string(envelope.headers, "source", "shanraq_financial");
+    
+    // Publish based on queue type
+    jasau published: aqıqat = jin;
+    
+    eгер (connection.config.queue_type == "kafka") {
+        published = kafka_publish(connection.kafka_connection, topic, envelope);
+    } eгер (connection.config.queue_type == "rabbitmq") {
+        published = rabbitmq_publish(connection.rabbitmq_connection, topic, envelope);
+    } eгер (connection.config.queue_type == "nats") {
+        published = nats_publish(connection.nats_connection, topic, envelope);
+    }
+    
+    eгер (!published) {
+        korset("❌ Failed to publish message to topic: " + topic);
+        qaytar jin;
+    }
+    
+    // Log message publication
+    audit_log_data_access(
+        get_current_user_id(),
+        "message_queue",
+        "publish",
+        envelope.message_id,
+        json_object_create()
+    );
+    
+    qaytar jan;
+}
+
+// Message consumption
+atqar message_consume_jasau(connection: MessageQueueConnection, topic: jol, consumer_group: jol, handler: MessageHandler) -> aqıqat {
+    // Create consumer
+    jasau consumer: MessageConsumer = message_consumer_create();
+    consumer.connection = connection;
+    consumer.topic = topic;
+    consumer.consumer_group = consumer_group;
+    consumer.handler = handler;
+    consumer.status = "active";
+    consumer.created_at = current_timestamp();
+    
+    // Start consumption based on queue type
+    eгер (connection.config.queue_type == "kafka") {
+        consumer.kafka_consumer = kafka_consume(connection.kafka_connection, topic, consumer_group, handler);
+        
+        eгер (consumer.kafka_consumer == NULL) {
+            korset("❌ Failed to create Kafka consumer");
+            qaytar jin;
+        }
+    } eгер (connection.config.queue_type == "rabbitmq") {
+        consumer.rabbitmq_consumer = rabbitmq_consume(connection.rabbitmq_connection, topic, handler);
+        
+        eгер (consumer.rabbitmq_consumer == NULL) {
+            korset("❌ Failed to create RabbitMQ consumer");
+            qaytar jin;
+        }
+    } eгер (connection.config.queue_type == "nats") {
+        consumer.nats_consumer = nats_consume(connection.nats_connection, topic, handler);
+        
+        eгер (consumer.nats_consumer == NULL) {
+            korset("❌ Failed to create NATS consumer");
+            qaytar jin;
+        }
+    }
+    
+    // Store consumer
+    jasau stored: aqıqat = message_queue_store_consumer(consumer);
+    
+    eгер (!stored) {
+        korset("❌ Failed to store message consumer");
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Financial event topics
+atqar financial_event_topics_jasau() -> jol[] {
+    jasau topics: jol[] = [
+        "financial.transaction.created",
+        "financial.transaction.authorized",
+        "financial.transaction.executed",
+        "financial.transaction.failed",
+        "financial.transaction.rolled_back",
+        "financial.account.created",
+        "financial.account.updated",
+        "financial.account.suspended",
+        "financial.payment.initiated",
+        "financial.payment.completed",
+        "financial.payment.failed",
+        "financial.p2p.transfer.initiated",
+        "financial.p2p.transfer.completed",
+        "financial.p2p.transfer.failed",
+        "financial.audit.event",
+        "financial.compliance.alert",
+        "financial.fraud.detected",
+        "financial.risk.assessment"
+    ];
+    
+    qaytar topics;
+}
+
+// Financial event handlers
+atqar financial_event_handler_jasau(event_type: jol) -> MessageHandler {
+    jasau handler: MessageHandler = message_handler_create();
+    
+    handler.event_type = event_type;
+    handler.handler_function = financial_event_handler_function;
+    handler.retry_count = 0;
+    handler.max_retries = 3;
+    handler.retry_delay = 1000; // 1 second
+    handler.status = "active";
+    
+    qaytar handler;
+}
+
+// Financial event handler function
+atqar financial_event_handler_function(message: MessageEnvelope) -> aqıqat {
+    // Parse message
+    jasau event_data: JsonObject = message.payload;
+    jasau event_type: jol = json_object_get_string(event_data, "event_type");
+    jasau aggregate_id: jol = json_object_get_string(event_data, "aggregate_id");
+    
+    // Route to appropriate handler
+    eгер (event_type == "TransactionCreated") {
+        qaytar financial_handle_transaction_created(event_data);
+    } eгер (event_type == "TransactionAuthorized") {
+        qaytar financial_handle_transaction_authorized(event_data);
+    } eгер (event_type == "TransactionExecuted") {
+        qaytar financial_handle_transaction_executed(event_data);
+    } eгер (event_type == "TransactionFailed") {
+        qaytar financial_handle_transaction_failed(event_data);
+    } eгер (event_type == "TransactionRolledBack") {
+        qaytar financial_handle_transaction_rolled_back(event_data);
+    } eгер (event_type == "AccountCreated") {
+        qaytar financial_handle_account_created(event_data);
+    } eгер (event_type == "AccountUpdated") {
+        qaytar financial_handle_account_updated(event_data);
+    } eгер (event_type == "PaymentInitiated") {
+        qaytar financial_handle_payment_initiated(event_data);
+    } eгер (event_type == "PaymentCompleted") {
+        qaytar financial_handle_payment_completed(event_data);
+    } eгер (event_type == "PaymentFailed") {
+        qaytar financial_handle_payment_failed(event_data);
+    } eгер (event_type == "P2PTransferInitiated") {
+        qaytar financial_handle_p2p_transfer_initiated(event_data);
+    } eгер (event_type == "P2PTransferCompleted") {
+        qaytar financial_handle_p2p_transfer_completed(event_data);
+    } eгер (event_type == "P2PTransferFailed") {
+        qaytar financial_handle_p2p_transfer_failed(event_data);
+    } eгер (event_type == "AuditEvent") {
+        qaytar financial_handle_audit_event(event_data);
+    } eгер (event_type == "ComplianceAlert") {
+        qaytar financial_handle_compliance_alert(event_data);
+    } eгер (event_type == "FraudDetected") {
+        qaytar financial_handle_fraud_detected(event_data);
+    } eгер (event_type == "RiskAssessment") {
+        qaytar financial_handle_risk_assessment(event_data);
+    } else {
+        korset("❌ Unknown financial event type: " + event_type);
+        qaytar jin;
+    }
+}
+
+// Event sourcing integration with message queues
+atqar event_sourcing_publish_event(event: FinancialEvent, connection: MessageQueueConnection) -> aqıqat {
+    // Create message payload
+    jasau message: JsonObject = json_object_create();
+    json_object_set_string(message, "event_id", event.event_id);
+    json_object_set_string(message, "event_type", event.event_type);
+    json_object_set_string(message, "aggregate_id", event.aggregate_id);
+    json_object_set_number(message, "version", event.version);
+    json_object_set_number(message, "timestamp", event.timestamp);
+    json_object_set_string(message, "correlation_id", event.correlation_id);
+    json_object_set_string(message, "causation_id", event.causation_id);
+    json_object_set_string(message, "user_id", event.user_id);
+    json_object_set_string(message, "source_ip", event.source_ip);
+    json_object_set_object(message, "data", event.event_data);
+    
+    // Determine topic based on event type
+    jasau topic: jol = event_sourcing_get_topic_for_event(event.event_type);
+    
+    // Publish message
+    jasau published: aqıqat = message_publish_jasau(connection, topic, message, event.aggregate_id);
+    
+    eгер (!published) {
+        korset("❌ Failed to publish event to message queue");
+        qaytar jin;
+    }
+    
+    qaytar jan;
+}
+
+// Message queue monitoring
+atqar message_queue_monitoring_jasau() -> MessageQueueMonitor {
+    jasau monitor: MessageQueueMonitor = message_queue_monitor_create();
+    
+    monitor.messages_published = 0;
+    monitor.messages_consumed = 0;
+    monitor.messages_failed = 0;
+    monitor.consumers_active = 0;
+    monitor.topics_active = 0;
+    monitor.start_time = current_timestamp();
+    
+    qaytar monitor;
+}
+
+// Message queue statistics
+atqar message_queue_statistics_alu(monitor: MessageQueueMonitor) -> JsonObject {
+    jasau stats: JsonObject = json_object_create();
+    
+    jasau uptime: san = current_timestamp() - monitor.start_time;
+    
+    json_object_set_number(stats, "uptime_seconds", uptime);
+    json_object_set_number(stats, "messages_published", monitor.messages_published);
+    json_object_set_number(stats, "messages_consumed", monitor.messages_consumed);
+    json_object_set_number(stats, "messages_failed", monitor.messages_failed);
+    json_object_set_number(stats, "consumers_active", monitor.consumers_active);
+    json_object_set_number(stats, "topics_active", monitor.topics_active);
+    
+    // Calculate rates
+    jasau publish_rate: san = 0;
+    jasau consume_rate: san = 0;
+    
+    eгер (uptime > 0) {
+        publish_rate = monitor.messages_published / uptime;
+        consume_rate = monitor.messages_consumed / uptime;
+    }
+    
+    json_object_set_number(stats, "publish_rate_per_second", publish_rate);
+    json_object_set_number(stats, "consume_rate_per_second", consume_rate);
+    
+    // Calculate success rate
+    jasau success_rate: san = 0;
+    jasau total_messages: san = monitor.messages_published + monitor.messages_failed;
+    
+    eгер (total_messages > 0) {
+        success_rate = (monitor.messages_published * 100) / total_messages;
+    }
+    
+    json_object_set_number(stats, "success_rate_percent", success_rate);
+    
+    qaytar stats;
+}
+
+// Message queue health check
+atqar message_queue_health_check(connection: MessageQueueConnection) -> JsonObject {
+    jasau health: JsonObject = json_object_create();
+    
+    // Check connection status
+    jasau connection_ok: aqıqat = message_queue_connection_health_check(connection);
+    
+    // Check queue status
+    jasau queue_ok: aqıqat = message_queue_status_check(connection);
+    
+    // Check consumer status
+    jasau consumers_ok: aqıqat = message_queue_consumers_health_check(connection);
+    
+    // Determine overall health
+    jasau overall_health: jol = "healthy";
+    
+    eгер (!connection_ok) {
+        overall_health = "unhealthy";
+    } eгер (!queue_ok || !consumers_ok) {
+        overall_health = "degraded";
+    }
+    
+    json_object_set_string(health, "status", overall_health);
+    json_object_set_boolean(health, "connection_ok", connection_ok);
+    json_object_set_boolean(health, "queue_ok", queue_ok);
+    json_object_set_boolean(health, "consumers_ok", consumers_ok);
+    json_object_set_string(health, "queue_type", connection.config.queue_type);
+    json_object_set_number(health, "checked_at", current_timestamp());
+    
+    qaytar health;
+}
+
+// Message queue cleanup
+atqar message_queue_cleanup_jasau(connection: MessageQueueConnection) -> aqıqat {
+    // Close all consumers
+    jasau consumers: MessageConsumer[] = message_queue_get_consumers(connection);
+    
+    jasau i: san = 0;
+    azirshe (i < consumers.length) {
+        jasau consumer: MessageConsumer = consumers[i];
+        message_queue_close_consumer(consumer);
+        i = i + 1;
+    }
+    
+    // Close connection
+    eгер (connection.config.queue_type == "kafka") {
+        kafka_disconnect(connection.kafka_connection);
+    } eгер (connection.config.queue_type == "rabbitmq") {
+        rabbitmq_disconnect(connection.rabbitmq_connection);
+    } eгер (connection.config.queue_type == "nats") {
+        nats_disconnect(connection.nats_connection);
+    }
+    
+    connection.connected = jin;
+    connection.disconnected_at = current_timestamp();
+    
+    qaytar jan;
+}
