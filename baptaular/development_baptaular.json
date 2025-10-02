@@ -13,7 +13,7 @@
       "synchronize": true,
       "logging": true
     },
-    "security": {
+    "qauıpsızdık": {
       "jwt_secret": "dev_secret_key",
       "bcrypt_rounds": 10,
       "session_timeout": 1800
@@ -26,7 +26,7 @@
     "features": {
       "morpheme_cache": true,
       "phoneme_optimizer": true,
-      "archetype_engine": true,
+      "archetype_qozgaltqys": true,
       "simd_processor": false
     },
     "testing": {
@@ -53,7 +53,7 @@
       "password": "tenge_password",
       "ssl": true
     },
-    "security": {
+    "qauıpsızdık": {
       "jwt_secret": "production_secret_key",
       "bcrypt_rounds": 12,
       "session_timeout": 3600
@@ -66,7 +66,7 @@
     "features": {
       "morpheme_cache": true,
       "phoneme_optimizer": true,
-      "archetype_engine": true,
+      "archetype_qozgaltqys": true,
       "simd_processor": true
     },
     "testing": {

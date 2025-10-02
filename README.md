@@ -57,9 +57,9 @@ shanraq.org/
 ├── ⚙️ artjagy/                     # Backend
 │   └── server/                    # Server controllers
 ├── 🔧 framework/                   # Web framework
-│   ├── template/                  # Template engine
-│   ├── ortalya/                   # Middleware
-│   └── kawipsizdik/               # Security
+│   ├── ulgi/                  # Template qozgaltqys
+│   ├── ortalyq/                   # Middleware
+│   └── qauıpsızdık/               # Security
 ├── 💼 ısker_qisyn/                 # Business logic
 │   ├── paydalanu_baskaru/         # User management
 │   ├── mazmun_baskaru/            # Content management

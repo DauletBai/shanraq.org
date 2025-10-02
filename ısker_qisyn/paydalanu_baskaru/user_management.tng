@@ -263,7 +263,7 @@ atqar parol_umitu_jasau(email: jol) -> JsonObject {
     }
     
     // Generate reset token
-    jasau reset_token: jol = security_random_string(32);
+    jasau reset_token: jol = qauıpsızdık_random_string(32);
     jasau reset_expires: san = current_timestamp() + 3600; // 1 hour
     
     // Save reset token
@@ -272,7 +272,7 @@ atqar parol_umitu_jasau(email: jol) -> JsonObject {
     json_object_set_number(reset_data, "expires_at", reset_expires);
     json_object_set_string(reset_data, "user_id", json_object_get_string(user, "id"));
     
-    security_set_password_reset_token(reset_token, reset_data);
+    qauıpsızdık_set_password_reset_token(reset_token, reset_data);
     
     // Send reset email (implementation depends on email service)
     jasau email_sent: aqıqat = email_reset_parol_jiberu(email, reset_token);
@@ -293,7 +293,7 @@ atqar parol_umitu_jasau(email: jol) -> JsonObject {
 
 atqar parol_zhayna_jasau(reset_token: jol, new_password: jol) -> JsonObject {
     // Get reset token data
-    jasau reset_data: JsonObject = security_get_password_reset_token(reset_token);
+    jasau reset_data: JsonObject = qauıpsızdık_get_password_reset_token(reset_token);
     
     eгер (reset_data == NULL) {
         jasau error: JsonObject = json_object_create();
@@ -346,7 +346,7 @@ atqar parol_zhayna_jasau(reset_token: jol, new_password: jol) -> JsonObject {
     }
     
     // Delete reset token
-    security_delete_password_reset_token(reset_token);
+    qauıpsızdık_delete_password_reset_token(reset_token);
     
     jasau result: JsonObject = json_object_create();
     json_object_set_boolean(result, "success", jan);
@@ -420,17 +420,17 @@ atqar email_reset_parol_jiberu(email: jol, reset_token: jol) -> aqıqat {
 }
 
 // Security functions
-atqar security_set_password_reset_token(token: jol, data: JsonObject) {
-    // Implementation depends on security backend
+atqar qauıpsızdık_set_password_reset_token(token: jol, data: JsonObject) {
+    // Implementation depends on qauıpsızdık backend
 }
 
-atqar security_get_password_reset_token(token: jol) -> JsonObject {
-    // Implementation depends on security backend
+atqar qauıpsızdık_get_password_reset_token(token: jol) -> JsonObject {
+    // Implementation depends on qauıpsızdık backend
     qaytar NULL;
 }
 
-atqar security_delete_password_reset_token(token: jol) {
-    // Implementation depends on security backend
+atqar qauıpsızdık_delete_password_reset_token(token: jol) {
+    // Implementation depends on qauıpsızdık backend
 }
 
 // Utility functions

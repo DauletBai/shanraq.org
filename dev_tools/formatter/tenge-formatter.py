@@ -143,7 +143,7 @@ class TengeFormatter:
             'delete': 'zhoyu',
             'check': 'tekseru',
             'optimize': 'opt',
-            'engine': 'eng',
+            'qozgaltqys': 'eng',
             'manager': 'man',
             'function': 'atqar',
             'variable': 'jasau',

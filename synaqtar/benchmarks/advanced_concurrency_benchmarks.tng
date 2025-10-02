@@ -1,0 +1,669 @@
+// advanced_concurrency_benchmarks.tng - Продвинутые concurrency бенчмарки
+// Жетілдірілген concurrency бенчмарктар
+
+import "benchmark_helpers.tng";
+
+// ==================== ПРОДВИНУТЫЕ CONCURRENCY ОПТИМИЗАЦИИ ====================
+
+// Lock-free очереди (MPSC/SPMC) с ring-buffer
+atqar lockfree_queue_benchmark(operations: san, producers: san, consumers: san) -> BenchmarkResult {
+    jasau start_time: san = time_now();
+    
+    // Создание lock-free очереди с cache-line alignment
+    jasau queue: LockFreeQueue = lockfree_queue_jasau(65536); // 64K элементов
+    jasau sequencer: Sequencer = sequencer_jasau(producers + consumers);
+    
+    // Создание producer и consumer потоков
+    jasau producer_threads: Array<Thread> = array_jasau(producers);
+    jasau consumer_threads: Array<Thread> = array_jasau(consumers);
+    
+    jasau total_operations: san = 0;
+    jasau successful_operations: san = 0;
+    jasau failed_operations: san = 0;
+    
+    // Запуск producer потоков
+    for (jasau i: san = 0; i < producers; i++) {
+        producer_threads[i] = spawn_thread(@producer_task, queue, sequencer, operations / producers);
+    }
+    
+    // Запуск consumer потоков
+    for (jasau i: san = 0; i < consumers; i++) {
+        consumer_threads[i] = spawn_thread(@consumer_task, queue, sequencer, operations / consumers);
+    }
+    
+    // Ожидание завершения всех потоков
+    for (jasau i: san = 0; i < producers; i++) {
+        thread_join(producer_threads[i]);
+    }
+    
+    for (jasau i: san = 0; i < consumers; i++) {
+        thread_join(consumer_threads[i]);
+    }
+    
+    jasau execution_time: san = time_now() - start_time;
+    
+    // Освобождение ресурсов
+    lockfree_queue_free(queue);
+    sequencer_free(sequencer);
+    
+    jasau result: BenchmarkResult = benchmark_result_jasau();
+    result.algorithm = "Lock-Free Queue (MPSC/SPMC)";
+    result.execution_time = execution_time;
+    result.operations_count = operations;
+    result.operations_per_second = operations / (execution_time / 1000.0);
+    result.memory_usage = get_memory_usage();
+    result.threading_efficiency = (successful_operations * 100.0) / operations;
+    result.lock_free_efficiency = calculate_lock_free_efficiency(operations, failed_operations);
+    
+    qaytar result;
+}
+
+// Work-stealing с adaptive batching
+atqar work_stealing_benchmark(tasks: san, workers: san) -> BenchmarkResult {
+    jasau start_time: san = time_now();
+    
+    // Создание work-stealing пула
+    jasau work_stealer: WorkStealer = work_stealer_jasau(workers);
+    jasau adaptive_batcher: AdaptiveBatcher = adaptive_batcher_jasau();
+    
+    // Создание задач
+    jasau task_pool: Array<Task> = array_jasau(tasks);
+    for (jasau i: san = 0; i < tasks; i++) {
+        task_pool[i] = create_task(i, @task_worker);
+    }
+    
+    // Распределение задач по воркерам
+    for (jasau i: san = 0; i < tasks; i++) {
+        work_stealer_submit_task(work_stealer, task_pool[i]);
+    }
+    
+    jasau total_execution_time: san = 0;
+    jasau stolen_tasks: san = 0;
+    jasau adaptive_batches: san = 0;
+    
+    // Запуск воркеров
+    jasau worker_threads: Array<Thread> = array_jasau(workers);
+    for (jasau i: san = 0; i < workers; i++) {
+        worker_threads[i] = spawn_thread(@worker_task, work_stealer, adaptive_batcher, i);
+    }
+    
+    // Ожидание завершения
+    for (jasau i: san = 0; i < workers; i++) {
+        thread_join(worker_threads[i]);
+    }
+    
+    jasau execution_time: san = time_now() - start_time;
+    
+    // Освобождение ресурсов
+    work_stealer_free(work_stealer);
+    adaptive_batcher_free(adaptive_batcher);
+    
+    jasau result: BenchmarkResult = benchmark_result_jasau();
+    result.algorithm = "Work-Stealing + Adaptive Batching";
+    result.execution_time = execution_time;
+    result.operations_count = tasks;
+    result.operations_per_second = tasks / (execution_time / 1000.0);
+    result.memory_usage = get_memory_usage();
+    result.work_stealing_efficiency = (stolen_tasks * 100.0) / tasks;
+    result.adaptive_batching_efficiency = (adaptive_batches * 100.0) / tasks;
+    
+    qaytar result;
+}
+
+// Tail-latency guard с p99/p999 метриками
+atqar tail_latency_benchmark(requests: san, duration_ms: san) -> BenchmarkResult {
+    jasau start_time: san = time_now();
+    
+    // Создание системы мониторинга tail-latency
+    jasau latency_monitor: LatencyMonitor = latency_monitor_jasau();
+    jasau gc_monitor: GcMonitor = gc_monitor_jasau();
+    jasau allocator_monitor: AllocatorMonitor = allocator_monitor_jasau();
+    
+    jasau total_requests: san = 0;
+    jasau successful_requests: san = 0;
+    jasau p99_latency: san = 0;
+    jasau p999_latency: san = 0;
+    jasau gc_pauses: san = 0;
+    jasau allocator_pauses: san = 0;
+    
+    jasau end_time: san = start_time + duration_ms;
+    
+    // Основной цикл обработки запросов
+    while (time_now() < end_time) {
+        jasau request_start: san = time_now();
+        
+        // Обработка запроса
+        jasau request_result: san = process_request_with_monitoring(
+            latency_monitor,
+            gc_monitor,
+            allocator_monitor
+        );
+        
+        jasau request_end: san = time_now();
+        jasau request_latency: san = request_end - request_start;
+        
+        total_requests++;
+        eger (request_result == 0) {
+            successful_requests++;
+        }
+        
+        // Обновление метрик latency
+        latency_monitor_update(latency_monitor, request_latency);
+        
+        // Проверка на tail-latency
+        eger (request_latency > p99_latency) {
+            p99_latency = request_latency;
+        }
+        
+        eger (request_latency > p999_latency) {
+            p999_latency = request_latency;
+        }
+        
+        // Мониторинг GC пауз
+        eger (gc_monitor_has_pause(gc_monitor)) {
+            gc_pauses++;
+        }
+        
+        // Мониторинг allocator пауз
+        eger (allocator_monitor_has_pause(allocator_monitor)) {
+            allocator_pauses++;
+        }
+    }
+    
+    jasau execution_time: san = time_now() - start_time;
+    
+    // Расчет финальных метрик
+    jasau p99_percentile: san = latency_monitor_get_percentile(latency_monitor, 99);
+    jasau p999_percentile: san = latency_monitor_get_percentile(latency_monitor, 99.9);
+    jasau avg_latency: san = latency_monitor_get_average(latency_monitor);
+    
+    // Освобождение ресурсов
+    latency_monitor_free(latency_monitor);
+    gc_monitor_free(gc_monitor);
+    allocator_monitor_free(allocator_monitor);
+    
+    jasau result: BenchmarkResult = benchmark_result_jasau();
+    result.algorithm = "Tail-Latency Guard + P99/P999 Monitoring";
+    result.execution_time = execution_time;
+    result.operations_count = total_requests;
+    result.operations_per_second = total_requests / (execution_time / 1000.0);
+    result.memory_usage = get_memory_usage();
+    result.p99_latency = p99_percentile;
+    result.p999_latency = p999_percentile;
+    result.avg_latency = avg_latency;
+    result.gc_pause_count = gc_pauses;
+    result.allocator_pause_count = allocator_pauses;
+    
+    qaytar result;
+}
+
+// ==================== LOCK-FREE СТРУКТУРЫ ====================
+
+// Lock-free очередь с cache-line alignment
+struct LockFreeQueue {
+    buffer: Array<QueueItem>;
+    head: AtomicSan;
+    tail: AtomicSan;
+    mask: san;
+    capacity: san;
+}
+
+struct QueueItem {
+    data: Any;
+    sequence: AtomicSan;
+}
+
+// Sequencer для координации
+struct Sequencer {
+    sequence: AtomicSan;
+    waiters: Array<AtomicSan>;
+    waiter_count: san;
+}
+
+// Work-stealing структуры
+struct WorkStealer {
+    workers: Array<Worker>;
+    worker_count: san;
+    global_queue: LockFreeQueue;
+    stealing_enabled: aqıqat;
+}
+
+struct Worker {
+    local_queue: LockFreeQueue;
+    worker_id: san;
+    stolen_tasks: san;
+    processed_tasks: san;
+}
+
+struct Task {
+    id: san;
+    function: Function;
+    data: Any;
+    priority: san;
+}
+
+// Adaptive batching
+struct AdaptiveBatcher {
+    batch_size: san;
+    min_batch_size: san;
+    max_batch_size: san;
+    adaptive_factor: san;
+    current_load: san;
+}
+
+// Мониторинг latency
+struct LatencyMonitor {
+    latencies: Array<san>;
+    sorted_latencies: Array<san>;
+    count: san;
+    max_count: san;
+}
+
+// Мониторинг GC
+struct GcMonitor {
+    gc_events: Array<GcEvent>;
+    pause_threshold: san;
+    current_pause: san;
+}
+
+struct GcEvent {
+    timestamp: san;
+    duration: san;
+    pause_type: san;
+}
+
+// Мониторинг allocator
+struct AllocatorMonitor {
+    alloc_events: Array<AllocEvent>;
+    pause_threshold: san;
+    current_pause: san;
+}
+
+struct AllocEvent {
+    timestamp: san;
+    duration: san;
+    alloc_size: san;
+}
+
+// ==================== LOCK-FREE ФУНКЦИИ ====================
+
+// Создание lock-free очереди
+atqar lockfree_queue_jasau(capacity: san) -> LockFreeQueue {
+    jasau queue: LockFreeQueue;
+    queue.capacity = capacity;
+    queue.mask = capacity - 1; // Для быстрого модуло
+    queue.buffer = array_jasau(capacity);
+    queue.head = atomic_san_jasau(0);
+    queue.tail = atomic_san_jasau(0);
+    
+    // Инициализация элементов с cache-line alignment
+    for (jasau i: san = 0; i < capacity; i++) {
+        queue.buffer[i].data = NULL;
+        queue.buffer[i].sequence = atomic_san_jasau(i);
+    }
+    
+    qaytar queue;
+}
+
+// Producer task
+atqar producer_task(queue: LockFreeQueue, sequencer: Sequencer, count: san) -> void {
+    for (jasau i: san = 0; i < count; i++) {
+        jasau item: QueueItem;
+        item.data = create_test_data(i);
+        item.sequence = atomic_san_jasau(0);
+        
+        // Lock-free enqueue
+        lockfree_enqueue(queue, item, sequencer);
+    }
+}
+
+// Consumer task
+atqar consumer_task(queue: LockFreeQueue, sequencer: Sequencer, count: san) -> void {
+    for (jasau i: san = 0; i < count; i++) {
+        jasau item: QueueItem = lockfree_dequeue(queue, sequencer);
+        eger (item.data != NULL) {
+            process_test_data(item.data);
+        }
+    }
+}
+
+// Lock-free enqueue
+atqar lockfree_enqueue(queue: LockFreeQueue, item: QueueItem, sequencer: Sequencer) -> aqıqat {
+    jasau pos: san = atomic_san_get(queue.tail);
+    jasau next_pos: san = (pos + 1) & queue.mask;
+    
+    // Проверка на переполнение
+    eger (next_pos == atomic_san_get(queue.head)) {
+        qaytar false; // Очередь полная
+    }
+    
+    // Установка данных
+    queue.buffer[pos].data = item.data;
+    
+    // Атомарное обновление tail
+    atomic_san_set(queue.tail, next_pos);
+    
+    // Обновление sequencer
+    atomic_san_increment(sequencer.sequence);
+    
+    qaytar true;
+}
+
+// Lock-free dequeue
+atqar lockfree_dequeue(queue: LockFreeQueue, sequencer: Sequencer) -> QueueItem {
+    jasau pos: san = atomic_san_get(queue.head);
+    
+    // Проверка на пустоту
+    eger (pos == atomic_san_get(queue.tail)) {
+        jasau empty_item: QueueItem;
+        empty_item.data = NULL;
+        qaytar empty_item;
+    }
+    
+    jasau item: QueueItem = queue.buffer[pos];
+    
+    // Атомарное обновление head
+    atomic_san_set(queue.head, (pos + 1) & queue.mask);
+    
+    qaytar item;
+}
+
+// ==================== WORK-STEALING ФУНКЦИИ ====================
+
+// Создание work-stealer
+atqar work_stealer_jasau(worker_count: san) -> WorkStealer {
+    jasau stealer: WorkStealer;
+    stealer.worker_count = worker_count;
+    stealer.workers = array_jasau(worker_count);
+    stealer.global_queue = lockfree_queue_jasau(10000);
+    stealer.stealing_enabled = true;
+    
+    // Инициализация воркеров
+    for (jasau i: san = 0; i < worker_count; i++) {
+        stealer.workers[i].local_queue = lockfree_queue_jasau(1000);
+        stealer.workers[i].worker_id = i;
+        stealer.workers[i].stolen_tasks = 0;
+        stealer.workers[i].processed_tasks = 0;
+    }
+    
+    qaytar stealer;
+}
+
+// Submit task
+atqar work_stealer_submit_task(stealer: WorkStealer, task: Task) -> void {
+    // Попытка добавить в локальную очередь случайного воркера
+    jasau worker_id: san = random_int(0, stealer.worker_count - 1);
+    jasau worker: Worker = stealer.workers[worker_id];
+    
+    eger (lockfree_enqueue(worker.local_queue, task, NULL)) {
+        // Успешно добавлено в локальную очередь
+    } basqa {
+        // Fallback на глобальную очередь
+        lockfree_enqueue(stealer.global_queue, task, NULL);
+    }
+}
+
+// Worker task
+atqar worker_task(stealer: WorkStealer, batcher: AdaptiveBatcher, worker_id: san) -> void {
+    jasau worker: Worker = stealer.workers[worker_id];
+    jasau batch: Array<Task> = array_jasau(batcher.batch_size);
+    jasau batch_count: san = 0;
+    
+    while (true) {
+        // Попытка получить задачу из локальной очереди
+        jasau task: Task = get_task_from_local_queue(worker);
+        
+        eger (task.id == -1) {
+            // Локальная очередь пуста - попытка украсть задачу
+            task = steal_task_from_other_workers(stealer, worker_id);
+            
+            eger (task.id != -1) {
+                worker.stolen_tasks++;
+            }
+        }
+        
+        eger (task.id != -1) {
+            // Добавление задачи в batch
+            batch[batch_count] = task;
+            batch_count++;
+            
+            // Проверка на заполнение batch
+            eger (batch_count >= batcher.batch_size) {
+                // Обработка batch
+                process_task_batch(batch, batch_count);
+                worker.processed_tasks += batch_count;
+                
+                // Адаптивная настройка размера batch
+                adaptive_batch_adjust(batcher, batch_count);
+                
+                batch_count = 0;
+            }
+        } basqa {
+            // Нет задач - обработка оставшихся в batch
+            eger (batch_count > 0) {
+                process_task_batch(batch, batch_count);
+                worker.processed_tasks += batch_count;
+                batch_count = 0;
+            }
+            
+            // Небольшая пауза перед следующей попыткой
+            sleep_microseconds(1);
+        }
+    }
+}
+
+// Получение задачи из локальной очереди
+atqar get_task_from_local_queue(worker: Worker) -> Task {
+    jasau item: QueueItem = lockfree_dequeue(worker.local_queue, NULL);
+    eger (item.data != NULL) {
+        qaytar item.data;
+    }
+    
+    jasau empty_task: Task;
+    empty_task.id = -1;
+    qaytar empty_task;
+}
+
+// Кража задачи у других воркеров
+atqar steal_task_from_other_workers(stealer: WorkStealer, current_worker_id: san) -> Task {
+    for (jasau i: san = 0; i < stealer.worker_count; i++) {
+        jasau target_worker_id: san = (current_worker_id + i + 1) % stealer.worker_count;
+        jasau target_worker: Worker = stealer.workers[target_worker_id];
+        
+        // Попытка украсть задачу
+        jasau item: QueueItem = lockfree_dequeue(target_worker.local_queue, NULL);
+        eger (item.data != NULL) {
+            qaytar item.data;
+        }
+    }
+    
+    // Попытка получить задачу из глобальной очереди
+    jasau item: QueueItem = lockfree_dequeue(stealer.global_queue, NULL);
+    eger (item.data != NULL) {
+        qaytar item.data;
+    }
+    
+    jasau empty_task: Task;
+    empty_task.id = -1;
+    qaytar empty_task;
+}
+
+// Обработка batch задач
+atqar process_task_batch(batch: Array<Task>, count: san) -> void {
+    for (jasau i: san = 0; i < count; i++) {
+        jasau task: Task = batch[i];
+        task.function(task.data);
+    }
+}
+
+// ==================== ADAPTIVE BATCHING ====================
+
+// Создание adaptive batcher
+atqar adaptive_batcher_jasau() -> AdaptiveBatcher {
+    jasau batcher: AdaptiveBatcher;
+    batcher.batch_size = 10;
+    batcher.min_batch_size = 1;
+    batcher.max_batch_size = 100;
+    batcher.adaptive_factor = 0.1;
+    batcher.current_load = 0;
+    qaytar batcher;
+}
+
+// Адаптивная настройка размера batch
+atqar adaptive_batch_adjust(batcher: AdaptiveBatcher, processed_count: san) -> void {
+    // Расчет текущей нагрузки
+    batcher.current_load = processed_count;
+    
+    // Адаптивная настройка
+    eger (batcher.current_load > batcher.batch_size) {
+        // Увеличиваем размер batch
+        batcher.batch_size = min(
+            batcher.max_batch_size,
+            batcher.batch_size + (batcher.batch_size * batcher.adaptive_factor)
+        );
+    } basqa eger (batcher.current_load < batcher.batch_size / 2) {
+        // Уменьшаем размер batch
+        batcher.batch_size = max(
+            batcher.min_batch_size,
+            batcher.batch_size - (batcher.batch_size * batcher.adaptive_factor)
+        );
+    }
+}
+
+// ==================== LATENCY MONITORING ====================
+
+// Создание latency monitor
+atqar latency_monitor_jasau() -> LatencyMonitor {
+    jasau monitor: LatencyMonitor;
+    monitor.max_count = 100000;
+    monitor.latencies = array_jasau(monitor.max_count);
+    monitor.sorted_latencies = array_jasau(monitor.max_count);
+    monitor.count = 0;
+    qaytar monitor;
+}
+
+// Обновление latency
+atqar latency_monitor_update(monitor: LatencyMonitor, latency: san) -> void {
+    eger (monitor.count < monitor.max_count) {
+        monitor.latencies[monitor.count] = latency;
+        monitor.count++;
+    }
+}
+
+// Получение перцентиля
+atqar latency_monitor_get_percentile(monitor: LatencyMonitor, percentile: san) -> san {
+    // Сортировка latencies
+    array_copy(monitor.latencies, monitor.sorted_latencies, monitor.count);
+    array_sort(monitor.sorted_latencies, monitor.count);
+    
+    jasau index: san = (monitor.count * percentile) / 100;
+    eger (index >= monitor.count) {
+        index = monitor.count - 1;
+    }
+    
+    qaytar monitor.sorted_latencies[index];
+}
+
+// Получение среднего latency
+atqar latency_monitor_get_average(monitor: LatencyMonitor) -> san {
+    jasau sum: san = 0;
+    for (jasau i: san = 0; i < monitor.count; i++) {
+        sum += monitor.latencies[i];
+    }
+    
+    eger (monitor.count > 0) {
+        qaytar sum / monitor.count;
+    }
+    
+    qaytar 0;
+}
+
+// ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
+
+// Создание тестовых данных
+atqar create_test_data(id: san) -> Any {
+    jasau data: TestData;
+    data.id = id;
+    data.value = random_float();
+    data.timestamp = time_now();
+    qaytar data;
+}
+
+// Обработка тестовых данных
+atqar process_test_data(data: Any) -> void {
+    // Симуляция обработки
+    jasau result: san = data.value * 2.0 + 1.0;
+}
+
+// Создание задачи
+atqar create_task(id: san, func: Function) -> Task {
+    jasau task: Task;
+    task.id = id;
+    task.function = func;
+    task.data = create_test_data(id);
+    task.priority = random_int(1, 10);
+    qaytar task;
+}
+
+// Worker task function
+atqar task_worker(data: Any) -> void {
+    process_test_data(data);
+}
+
+// Обработка запроса с мониторингом
+atqar process_request_with_monitoring(
+    latency_monitor: LatencyMonitor,
+    gc_monitor: GcMonitor,
+    allocator_monitor: AllocatorMonitor
+) -> san {
+    // Симуляция обработки запроса
+    jasau processing_time: san = random_int(1, 10);
+    sleep_microseconds(processing_time);
+    
+    // Симуляция случайных ошибок
+    eger (random_float() < 0.01) { // 1% ошибок
+        qaytar -1;
+    }
+    
+    qaytar 0;
+}
+
+// Освобождение ресурсов
+atqar lockfree_queue_free(queue: LockFreeQueue) -> void {
+    array_free(queue.buffer);
+    atomic_san_free(queue.head);
+    atomic_san_free(queue.tail);
+}
+
+atqar sequencer_free(sequencer: Sequencer) -> void {
+    atomic_san_free(sequencer.sequence);
+    for (jasau i: san = 0; i < sequencer.waiter_count; i++) {
+        atomic_san_free(sequencer.waiters[i]);
+    }
+    array_free(sequencer.waiters);
+}
+
+atqar work_stealer_free(stealer: WorkStealer) -> void {
+    for (jasau i: san = 0; i < stealer.worker_count; i++) {
+        lockfree_queue_free(stealer.workers[i].local_queue);
+    }
+    array_free(stealer.workers);
+    lockfree_queue_free(stealer.global_queue);
+}
+
+atqar adaptive_batcher_free(batcher: AdaptiveBatcher) -> void {
+    // Освобождение ресурсов batcher
+}
+
+atqar latency_monitor_free(monitor: LatencyMonitor) -> void {
+    array_free(monitor.latencies);
+    array_free(monitor.sorted_latencies);
+}
+
+atqar gc_monitor_free(monitor: GcMonitor) -> void {
+    array_free(monitor.gc_events);
+}
+
+atqar allocator_monitor_free(monitor: AllocatorMonitor) -> void {
+    array_free(monitor.alloc_events);
+}

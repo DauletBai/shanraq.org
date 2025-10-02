@@ -30,9 +30,9 @@ class TengeCLI:
             },
             "artjagy": {"server": []},
             "framework": {
-                "template": [],
-                "ortalya": [],
-                "kawipsizdik": []
+                "ulgi": [],
+                "ortalyq": [],
+                "qauıpsızdık": []
             },
             "ısker_qisyn": {
                 "paydalanu_baskaru": [],

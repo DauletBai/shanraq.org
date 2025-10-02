@@ -1,4 +1,4 @@
-// template_utils.tng - Shanraq Template Utilities
+// ulgi_utils.tng - Shanraq Template Utilities
 // Шанрак Үлгі Утилиттері / Shanraq Template Utilities
 
 // Utility functions
@@ -144,6 +144,8 @@ atqar string_to_string(value: jol) -> jol {
 atqar array_uzyn_bolu(array: jol[]) -> san {
     qaytar 0; // Placeholder
 }
+
+
 
 
 

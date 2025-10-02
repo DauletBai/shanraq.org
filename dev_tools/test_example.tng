@@ -2,7 +2,7 @@
 // Test file for Tenge VS Code extension
 
 // Импорт модулей
-import "framework/template/template_engine.tng";
+import "framework/ulgi/ulgi_qozgaltqys.tng";
 import "artjagy/server/tenge_server.tng";
 
 // Создание веб-сервера
@@ -12,9 +12,9 @@ atqar web_server_jasau(port: san) -> WebServer {
 }
 
 // Создание шаблона
-atqar template_engine_jasau() -> TemplateEngine {
-    jasau engine: TemplateEngine = template_engine_create();
-    qaytar engine;
+atqar ulgi_qozgaltqys_jasau() -> TemplateEngine {
+    jasau qozgaltqys: TemplateEngine = ulgi_qozgaltqys_create();
+    qaytar qozgaltqys;
 }
 
 // Создание пользователя
@@ -45,7 +45,7 @@ atqar user_parol_tekseru(email: jol, password: jol) -> aqıqat {
 // Основная функция
 atqar main() -> san {
     jasau server: WebServer = web_server_jasau(3000);
-    jasau engine: TemplateEngine = template_engine_jasau();
+    jasau qozgaltqys: TemplateEngine = ulgi_qozgaltqys_jasau();
     
     // Создание пользователя
     jasau user: JsonObject = user_jasau("Алма", "alma@example.com", "password123");
@@ -61,6 +61,7 @@ atqar main() -> san {
     
     qaytar 0;
 }
+
 
 
 

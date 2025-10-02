@@ -36,7 +36,7 @@ atqar tenge_server_jasau(port: san) -> TengeServer {
     server.port = port;
     server.morpheme_cache = morpheme_cache_jasau();
     server.phoneme_optimizer = phoneme_optimizer_jasau();
-    server.archetype_engine = archetype_engine_jasau();
+    server.archetype_qozgaltqys = archetype_qozgaltqys_jasau();
     server.simd_processor = simd_processor_jasau();
     
     // Initialize agglutinative features
@@ -108,12 +108,12 @@ atqar agglutinative_features_konfiguratsiya(server: TengeServer) {
 
 // High-performance request handlers using morphemes
 atqar ana_sahifa_handler(request: TengeRequest, response: TengeResponse) {
-    // Use morpheme-based template rendering
-    jasau template: Template = morpheme_template_alu("ana_sahifa");
+    // Use morpheme-based ulgi rendering
+    jasau ulgi: Template = morpheme_ulgi_alu("ana_sahifa");
     jasau data: JsonObject = morpheme_data_jasau();
     
     // Apply phoneme-based optimization
-    jasau optimized_html: jol = phoneme_optimize_html(template.render(data));
+    jasau optimized_html: jol = phoneme_optimize_html(ulgi.render(data));
     
     // Use archetype-based caching
     archetype_cache_qosu("web", "ana_sahifa", optimized_html);
@@ -125,9 +125,9 @@ atqar blog_sahifa_handler(request: TengeRequest, response: TengeResponse) {
     // Morpheme-based blog data retrieval
     jasau blog_data: JsonObject[] = morpheme_blog_data_alu();
     
-    // Phoneme-optimized template rendering
-    jasau template: Template = phoneme_template_optimize("blog_sahifa");
-    jasau html: jol = template.render_with_data(blog_data);
+    // Phoneme-optimized ulgi rendering
+    jasau ulgi: Template = phoneme_ulgi_optimize("blog_sahifa");
+    jasau html: jol = ulgi.render_with_data(blog_data);
     
     // Archetype-based performance tracking
     archetype_performance_track("web", "blog_sahifa", request.timestamp);
@@ -138,8 +138,8 @@ atqar blog_sahifa_handler(request: TengeRequest, response: TengeResponse) {
 atqar about_sahifa_handler(request: TengeRequest, response: TengeResponse) {
     // Use archetype-based content generation
     jasau content: JsonObject = archetype_content_jasau("about");
-    jasau template: Template = morpheme_template_alu("about_sahifa");
-    jasau html: jol = template.render(content);
+    jasau ulgi: Template = morpheme_ulgi_alu("about_sahifa");
+    jasau html: jol = ulgi.render(content);
     
     response.html_qaytar(html, 200);
 }
@@ -152,8 +152,8 @@ atqar contact_sahifa_handler(request: TengeRequest, response: TengeResponse) {
         morpheme_form_save(form_data);
     }
     
-    jasau template: Template = morpheme_template_alu("contact_sahifa");
-    jasau html: jol = template.render();
+    jasau ulgi: Template = morpheme_ulgi_alu("contact_sahifa");
+    jasau html: jol = ulgi.render();
     
     response.html_qaytar(html, 200);
 }
@@ -188,7 +188,7 @@ atqar api_status_handler(request: TengeRequest, response: TengeResponse) {
     status_data.framework = "Tenge-Web";
     status_data.morpheme_cache = "active";
     status_data.phoneme_optimizer = "enabled";
-    status_data.archetype_engine = "loaded";
+    status_data.archetype_qozgaltqys = "loaded";
     status_data.simd_processor = "enabled";
     
     // Phoneme-optimized response
@@ -262,14 +262,14 @@ atqar morpheme_cache_jasau() -> MorphemeCache {
     qaytar cache;
 }
 
-atqar morpheme_template_alu(template_name: jol) -> Template {
-    // Use archetype-based template retrieval
-    jasau template: Template = archetype_template_alu(template_name);
+atqar morpheme_ulgi_alu(ulgi_name: jol) -> Template {
+    // Use archetype-based ulgi retrieval
+    jasau ulgi: Template = archetype_ulgi_alu(ulgi_name);
     
     // Apply phoneme-based optimization
-    phoneme_template_opt(template);
+    phoneme_ulgi_opt(ulgi);
     
-    qaytar template;
+    qaytar ulgi;
 }
 
 atqar morpheme_data_jasau() -> JsonObject {
@@ -309,15 +309,15 @@ atqar phoneme_optimize_html(html: jol) -> jol {
 }
 
 // Core archetype functions
-atqar archetype_engine_jasau() -> ArchetypeEngine {
-    jasau engine: ArchetypeEngine = ArchetypeEngine();
-    engine.archetype_map = Map();
-    engine.pattern_cache = Map();
-    qaytar engine;
+atqar archetype_qozgaltqys_jasau() -> ArchetypeEngine {
+    jasau qozgaltqys: ArchetypeEngine = ArchetypeEngine();
+    qozgaltqys.archetype_map = Map();
+    qozgaltqys.pattern_cache = Map();
+    qaytar qozgaltqys;
 }
 
 atqar archetype_pattern_qosu(server: TengeServer, archetype_name: jol, pattern: ArchetypePattern) {
-    server.archetype_engine.archetype_map[archetype_name] = pattern;
+    server.archetype_qozgaltqys.archetype_map[archetype_name] = pattern;
 }
 
 atqar web_arhetip_pattern_jasau() -> ArchetypePattern {

@@ -1,5 +1,5 @@
 // Morpheme Engine - Морфемалар жүйесі
-// High-performance morpheme-based processing engine
+// High-performance morpheme-based processing qozgaltqys
 // Uses Kazakh agglutinative features for maximum efficiency
 
 // Morpheme-based request processing
@@ -164,15 +164,15 @@ atqar morpheme_data_opt(data: JsonObject) -> JsonObject {
     qaytar optimized_data;
 }
 
-// Morpheme-based template rendering
-atqar morpheme_template_render(template: Template, data: JsonObject) -> jol {
-    jasau rendered: jol = template.content;
+// Morpheme-based ulgi rendering
+atqar morpheme_ulgi_render(ulgi: Template, data: JsonObject) -> jol {
+    jasau rendered: jol = ulgi.content;
     
-    // Process template using morpheme analysis
-    jasau template_morphemes: Morpheme[] = morpheme_template_analyze(template);
+    // Process ulgi using morpheme analysis
+    jasau ulgi_morphemes: Morpheme[] = morpheme_ulgi_analyze(ulgi);
     
     // Apply morpheme-based variable substitution
-    for (morpheme in template_morphemes) {
+    for (morpheme in ulgi_morphemes) {
         eger (morpheme.type == "variable") {
             jasau value: jol = data[morpheme.variable_name];
             rendered = morpheme_variable_substitute(rendered, morpheme, value);
@@ -229,13 +229,13 @@ atqar morpheme_log(message: jol, level: jol, context: MorphemeContext) {
     morpheme_log_write(log_entry);
 }
 
-// Morpheme-based security
-atqar morpheme_security_tekseru(request: TengeRequest) -> aqıqat {
-    // Analyze request using morpheme security patterns
-    jasau security_morphemes: Morpheme[] = morpheme_security_analyze(request);
+// Morpheme-based qauıpsızdık
+atqar morpheme_qauıpsızdık_tekseru(request: TengeRequest) -> aqıqat {
+    // Analyze request using morpheme qauıpsızdık patterns
+    jasau qauıpsızdık_morphemes: Morpheme[] = morpheme_qauıpsızdık_analyze(request);
     
     // Check for malicious morpheme patterns
-    eger (morpheme_malicious_pattern_tekseru(security_morphemes)) {
+    eger (morpheme_malicious_pattern_tekseru(qauıpsızdık_morphemes)) {
         qaytar jin;
     }
     

@@ -1,54 +1,54 @@
-// template_engine.tng - Tenge Template Engine
+// ulgi_qozgaltqys.tng - Tenge Template Engine
 // Агглютинативтік шаблон движок
 
-atqar template_engine_jasau() -> TemplateEngine {
-    jasau engine: TemplateEngine = template_engine_create();
-    qaytar engine;
+atqar ulgi_qozgaltqys_jasau() -> TemplateEngine {
+    jasau qozgaltqys: TemplateEngine = ulgi_qozgaltqys_create();
+    qaytar qozgaltqys;
 }
 
 // Компоненттерді жүктеу (bolıkter директориясынан)
-atqar template_engine_load_component(component_name: jol) -> jol {
+atqar ulgi_qozgaltqys_load_component(component_name: jol) -> jol {
     jasau component_path: jol = "betjagy/bolıkter/" + component_name + ".html";
     jasau component_content: jol = file_read(component_path);
     qaytar component_content;
 }
 
 // Шаблонды компоненттермен құрастыру
-atqar template_engine_build_template(template: jol, data: JsonObject) -> jol {
-    jasau result: jol = template;
+atqar ulgi_qozgaltqys_build_ulgi(ulgi: jol, data: JsonObject) -> jol {
+    jasau result: jol = ulgi;
     
     // Компоненттерді табу және ауыстыру
-    result = template_engine_process_components(result, data);
+    result = ulgi_qozgaltqys_process_components(result, data);
     
     // Айнымалыларды ауыстыру
-    result = template_engine_replace_variables(result, data);
+    result = ulgi_qozgaltqys_replace_variables(result, data);
     
     // Шартты блоктарды өңдеу
-    result = template_engine_process_conditionals(result, data);
+    result = ulgi_qozgaltqys_process_conditionals(result, data);
     
     // Циклдарды өңдеу
-    result = template_engine_process_loops(result, data);
+    result = ulgi_qozgaltqys_process_loops(result, data);
     
     // Функцияларды шақыру
-    result = template_engine_process_functions(result, data);
+    result = ulgi_qozgaltqys_process_functions(result, data);
     
     qaytar result;
 }
 
 // Компоненттерді өңдеу
-atqar template_engine_process_components(template: jol, data: JsonObject) -> jol {
-    jasau result: jol = template;
+atqar ulgi_qozgaltqys_process_components(ulgi: jol, data: JsonObject) -> jol {
+    jasau result: jol = ulgi;
     jasau i: san = 0;
     
     azirshe (i < result.length - 1) {
         eгер (result[i] == '{' && result[i + 1] == '{' && result[i + 2] == '>') {
             jasau component_start: san = i;
-            jasau component_end: san = template_engine_find_component_end(result, i);
+            jasau component_end: san = ulgi_qozgaltqys_find_component_end(result, i);
             
             eгер (component_end > component_start) {
                 jasau component_call: jol = result.substring(component_start + 3, component_end);
                 jasau component_name: jol = string_trim(component_call);
-                jasau component_content: jol = template_engine_load_component(component_name);
+                jasau component_content: jol = ulgi_qozgaltqys_load_component(component_name);
                 
                 // Компонентті мазмұнымен ауыстыру
                 jasau before: jol = result.substring(0, component_start);
@@ -68,11 +68,11 @@ atqar template_engine_process_components(template: jol, data: JsonObject) -> jol
 }
 
 // Компоненттің соңын табу
-atqar template_engine_find_component_end(template: jol, start: san) -> san {
+atqar ulgi_qozgaltqys_find_component_end(ulgi: jol, start: san) -> san {
     jasau i: san = start + 3; // "{{>" өткізу
     
-    azirshe (i < template.length - 1) {
-        eгер (template[i] == '}' && template[i + 1] == '}') {
+    azirshe (i < ulgi.length - 1) {
+        eгер (ulgi[i] == '}' && ulgi[i + 1] == '}') {
             qaytar i;
         }
         i = i + 1;
@@ -82,23 +82,23 @@ atqar template_engine_find_component_end(template: jol, start: san) -> san {
 }
 
 // Шаблонды рендерлеу (жаңа компоненттермен)
-atqar template_engine_render(engine: TemplateEngine, template: jol, data: JsonObject) -> jol {
-    qaytar template_engine_build_template(template, data);
+atqar ulgi_qozgaltqys_render(qozgaltqys: TemplateEngine, ulgi: jol, data: JsonObject) -> jol {
+    qaytar ulgi_qozgaltqys_build_ulgi(ulgi, data);
 }
 
 // Айнымалыларды ауыстыру
-atqar template_engine_replace_variables(template: jol, data: JsonObject) -> jol {
-    jasau result: jol = template;
+atqar ulgi_qozgaltqys_replace_variables(ulgi: jol, data: JsonObject) -> jol {
+    jasau result: jol = ulgi;
     jasau i: san = 0;
     
     azirshe (i < result.length - 1) {
         eгер (result[i] == '{' && result[i + 1] == '{') {
             jasau variable_start: san = i + 2;
-            jasau variable_end: san = template_engine_find_variable_end(result, variable_start);
+            jasau variable_end: san = ulgi_qozgaltqys_find_variable_end(result, variable_start);
             
             eгер (variable_end > variable_start) {
                 jasau variable_name: jol = result.substring(variable_start, variable_end);
-                jasau variable_value: jol = template_engine_get_variable_value(variable_name, data);
+                jasau variable_value: jol = ulgi_qozgaltqys_get_variable_value(variable_name, data);
                 
                 // Айнымалыны мәнімен ауыстыру
                 jasau before: jol = result.substring(0, i);
@@ -118,11 +118,11 @@ atqar template_engine_replace_variables(template: jol, data: JsonObject) -> jol 
 }
 
 // Айнымалы атының соңын табу
-atqar template_engine_find_variable_end(template: jol, start: san) -> san {
+atqar ulgi_qozgaltqys_find_variable_end(ulgi: jol, start: san) -> san {
     jasau i: san = start;
     
-    azirshe (i < template.length - 1) {
-        eгер (template[i] == '}' && template[i + 1] == '}') {
+    azirshe (i < ulgi.length - 1) {
+        eгер (ulgi[i] == '}' && ulgi[i + 1] == '}') {
             qaytar i;
         }
         i = i + 1;
@@ -132,7 +132,7 @@ atqar template_engine_find_variable_end(template: jol, start: san) -> san {
 }
 
 // Айнымалы мәнін алу
-atqar template_engine_get_variable_value(variable_name: jol, data: JsonObject) -> jol {
+atqar ulgi_qozgaltqys_get_variable_value(variable_name: jol, data: JsonObject) -> jol {
     // Нүкте арқылы кіріктірілген айнымалыларды қолдау
     eгер (variable_name.contains(".")) {
         jasau parts: jol[] = string_split(variable_name, ".");
@@ -154,18 +154,18 @@ atqar template_engine_get_variable_value(variable_name: jol, data: JsonObject) -
 }
 
 // Шартты блоктарды өңдеу
-atqar template_engine_process_conditionals(template: jol, data: JsonObject) -> jol {
-    jasau result: jol = template;
+atqar ulgi_qozgaltqys_process_conditionals(ulgi: jol, data: JsonObject) -> jol {
+    jasau result: jol = ulgi;
     jasau i: san = 0;
     
     azirshe (i < result.length - 2) {
         eгер (result[i] == '{' && result[i + 1] == '%' && result[i + 2] == 'i') {
             jasau conditional_start: san = i;
-            jasau conditional_end: san = template_engine_find_conditional_end(result, i);
+            jasau conditional_end: san = ulgi_qozgaltqys_find_conditional_end(result, i);
             
             eгер (conditional_end > conditional_start) {
                 jasau conditional_block: jol = result.substring(conditional_start, conditional_end);
-                jasau processed_block: jol = template_engine_process_conditional_block(conditional_block, data);
+                jasau processed_block: jol = ulgi_qozgaltqys_process_conditional_block(conditional_block, data);
                 
                 // Шартты блокты өңделген нұсқасымен ауыстыру
                 jasau before: jol = result.substring(0, conditional_start);
@@ -185,15 +185,15 @@ atqar template_engine_process_conditionals(template: jol, data: JsonObject) -> j
 }
 
 // Шартты блоктың соңын табу
-atqar template_engine_find_conditional_end(template: jol, start: san) -> san {
+atqar ulgi_qozgaltqys_find_conditional_end(ulgi: jol, start: san) -> san {
     jasau i: san = start + 3; // "{%i" өткізу
     jasau brace_count: san = 1;
     
-    azirshe (i < template.length - 2 && brace_count > 0) {
-        eгер (template[i] == '{' && template[i + 1] == '%') {
+    azirshe (i < ulgi.length - 2 && brace_count > 0) {
+        eгер (ulgi[i] == '{' && ulgi[i + 1] == '%') {
             brace_count = brace_count + 1;
             i = i + 2;
-        } aitpese eгер (template[i] == '%' && template[i + 1] == '}') {
+        } aitpese eгер (ulgi[i] == '%' && ulgi[i + 1] == '}') {
             brace_count = brace_count - 1;
             i = i + 2;
         } aitpese {
@@ -205,22 +205,22 @@ atqar template_engine_find_conditional_end(template: jol, start: san) -> san {
 }
 
 // Шартты блокты өңдеу
-atqar template_engine_process_conditional_block(block: jol, data: JsonObject) -> jol {
+atqar ulgi_qozgaltqys_process_conditional_block(block: jol, data: JsonObject) -> jol {
     jasau result: jol = "";
     jasau i: san = 3; // "{%i" өткізу
     
     // Шартты табу
     jasau condition_start: san = i;
-    jasau condition_end: san = template_engine_find_condition_end(block, i);
+    jasau condition_end: san = ulgi_qozgaltqys_find_condition_end(block, i);
     
     eгер (condition_end > condition_start) {
         jasau condition: jol = block.substring(condition_start, condition_end);
-        jasau condition_result: aqıqat = template_engine_evaluate_condition(condition, data);
+        jasau condition_result: aqıqat = ulgi_qozgaltqys_evaluate_condition(condition, data);
         
         // Шарт дұрыс болса, блоктың ішіндегі мазмұнды қосу
         eгер (condition_result) {
             jasau content_start: san = condition_end + 1;
-            jasau content_end: san = template_engine_find_block_end(block, content_start);
+            jasau content_end: san = ulgi_qozgaltqys_find_block_end(block, content_start);
             
             eгер (content_end > content_start) {
                 jasau content: jol = block.substring(content_start, content_end);
@@ -233,7 +233,7 @@ atqar template_engine_process_conditional_block(block: jol, data: JsonObject) ->
 }
 
 // Шарттың соңын табу
-atqar template_engine_find_condition_end(block: jol, start: san) -> san {
+atqar ulgi_qozgaltqys_find_condition_end(block: jol, start: san) -> san {
     jasau i: san = start;
     
     azirshe (i < block.length - 1) {
@@ -247,7 +247,7 @@ atqar template_engine_find_condition_end(block: jol, start: san) -> san {
 }
 
 // Шартты бағалау
-atqar template_engine_evaluate_condition(condition: jol, data: JsonObject) -> aqıqat {
+atqar ulgi_qozgaltqys_evaluate_condition(condition: jol, data: JsonObject) -> aqıqat {
     jasau trimmed_condition: jol = string_trim(condition);
     
     // Жай шарттар
@@ -262,7 +262,7 @@ atqar template_engine_evaluate_condition(condition: jol, data: JsonObject) -> aq
     // Айнымалы шарттар
     eгер (trimmed_condition.startsWith("{{") && trimmed_condition.endsWith("}}")) {
         jasau variable_name: jol = trimmed_condition.substring(2, trimmed_condition.length - 2);
-        jasau variable_value: jol = template_engine_get_variable_value(variable_name, data);
+        jasau variable_value: jol = ulgi_qozgaltqys_get_variable_value(variable_name, data);
         
         qaytar variable_value != "" && variable_value != "false" && variable_value != "jin";
     }
@@ -279,10 +279,10 @@ atqar template_engine_evaluate_condition(condition: jol, data: JsonObject) -> aq
             jasau left: jol = string_trim(trimmed_condition.substring(0, operator_pos));
             jasau right: jol = string_trim(trimmed_condition.substring(operator_pos + operator.length));
             
-            jasau left_value: jol = template_engine_get_variable_value(left, data);
-            jasau right_value: jol = template_engine_get_variable_value(right, data);
+            jasau left_value: jol = ulgi_qozgaltqys_get_variable_value(left, data);
+            jasau right_value: jol = ulgi_qozgaltqys_get_variable_value(right, data);
             
-            qaytar template_engine_compare_values(left_value, operator, right_value);
+            qaytar ulgi_qozgaltqys_compare_values(left_value, operator, right_value);
         }
         
         i = i + 1;
@@ -292,7 +292,7 @@ atqar template_engine_evaluate_condition(condition: jol, data: JsonObject) -> aq
 }
 
 // Мәндерді салыстыру
-atqar template_engine_compare_values(left: jol, operator: jol, right: jol) -> aqıqat {
+atqar ulgi_qozgaltqys_compare_values(left: jol, operator: jol, right: jol) -> aqıqat {
     eгер (operator == "==") {
         qaytar left == right;
     } aitpese eгер (operator == "!=") {
@@ -311,7 +311,7 @@ atqar template_engine_compare_values(left: jol, operator: jol, right: jol) -> aq
 }
 
 // Блоктың соңын табу
-atqar template_engine_find_block_end(block: jol, start: san) -> san {
+atqar ulgi_qozgaltqys_find_block_end(block: jol, start: san) -> san {
     jasau i: san = start;
     jasau brace_count: san = 0;
     
@@ -334,18 +334,18 @@ atqar template_engine_find_block_end(block: jol, start: san) -> san {
 }
 
 // Циклдарды өңдеу
-atqar template_engine_process_loops(template: jol, data: JsonObject) -> jol {
-    jasau result: jol = template;
+atqar ulgi_qozgaltqys_process_loops(ulgi: jol, data: JsonObject) -> jol {
+    jasau result: jol = ulgi;
     jasau i: san = 0;
     
     azirshe (i < result.length - 2) {
         eгер (result[i] == '{' && result[i + 1] == '%' && result[i + 2] == 'a') {
             jasau loop_start: san = i;
-            jasau loop_end: san = template_engine_find_loop_end(result, i);
+            jasau loop_end: san = ulgi_qozgaltqys_find_loop_end(result, i);
             
             eгер (loop_end > loop_start) {
                 jasau loop_block: jol = result.substring(loop_start, loop_end);
-                jasau processed_block: jol = template_engine_process_loop_block(loop_block, data);
+                jasau processed_block: jol = ulgi_qozgaltqys_process_loop_block(loop_block, data);
                 
                 // Цикл блокты өңделген нұсқасымен ауыстыру
                 jasau before: jol = result.substring(0, loop_start);
@@ -365,15 +365,15 @@ atqar template_engine_process_loops(template: jol, data: JsonObject) -> jol {
 }
 
 // Цикл блоктың соңын табу
-atqar template_engine_find_loop_end(template: jol, start: san) -> san {
+atqar ulgi_qozgaltqys_find_loop_end(ulgi: jol, start: san) -> san {
     jasau i: san = start + 3; // "{%a" өткізу
     jasau brace_count: san = 1;
     
-    azirshe (i < template.length - 2 && brace_count > 0) {
-        eгер (template[i] == '{' && template[i + 1] == '%') {
+    azirshe (i < ulgi.length - 2 && brace_count > 0) {
+        eгер (ulgi[i] == '{' && ulgi[i + 1] == '%') {
             brace_count = brace_count + 1;
             i = i + 2;
-        } aitpese eгер (template[i] == '%' && template[i + 1] == '}') {
+        } aitpese eгер (ulgi[i] == '%' && ulgi[i + 1] == '}') {
             brace_count = brace_count - 1;
             i = i + 2;
         } aitpese {
@@ -385,17 +385,17 @@ atqar template_engine_find_loop_end(template: jol, start: san) -> san {
 }
 
 // Цикл блокты өңдеу
-atqar template_engine_process_loop_block(block: jol, data: JsonObject) -> jol {
+atqar ulgi_qozgaltqys_process_loop_block(block: jol, data: JsonObject) -> jol {
     jasau result: jol = "";
     jasau i: san = 3; // "{%a" өткізу
     
     // Цикл айнымалысын табу
     jasau variable_start: san = i;
-    jasau variable_end: san = template_engine_find_loop_variable_end(block, i);
+    jasau variable_end: san = ulgi_qozgaltqys_find_loop_variable_end(block, i);
     
     eгер (variable_end > variable_start) {
         jasau loop_variable: jol = block.substring(variable_start, variable_end);
-        jasau array_data: JsonObject = template_engine_get_variable_value(loop_variable, data);
+        jasau array_data: JsonObject = ulgi_qozgaltqys_get_variable_value(loop_variable, data);
         
         // Массив элементтерін өңдеу
         eгер (array_data != NULL) {
@@ -404,10 +404,10 @@ atqar template_engine_process_loop_block(block: jol, data: JsonObject) -> jol {
             
             azirshe (j < array_length) {
                 jasau item: JsonObject = json_object_get_array_item(array_data, j);
-                jasau content: jol = template_engine_extract_loop_content(block, variable_end);
+                jasau content: jol = ulgi_qozgaltqys_extract_loop_content(block, variable_end);
                 
                 // Цикл ішіндегі айнымалыларды ауыстыру
-                jasau processed_content: jol = template_engine_replace_loop_variables(content, item, j);
+                jasau processed_content: jol = ulgi_qozgaltqys_replace_loop_variables(content, item, j);
                 result = result + processed_content;
                 
                 j = j + 1;
@@ -419,7 +419,7 @@ atqar template_engine_process_loop_block(block: jol, data: JsonObject) -> jol {
 }
 
 // Цикл айнымалысының соңын табу
-atqar template_engine_find_loop_variable_end(block: jol, start: san) -> san {
+atqar ulgi_qozgaltqys_find_loop_variable_end(block: jol, start: san) -> san {
     jasau i: san = start;
     
     azirshe (i < block.length - 1) {
@@ -433,9 +433,9 @@ atqar template_engine_find_loop_variable_end(block: jol, start: san) -> san {
 }
 
 // Цикл мазмұнын алу
-atqar template_engine_extract_loop_content(block: jol, variable_end: san) -> jol {
+atqar ulgi_qozgaltqys_extract_loop_content(block: jol, variable_end: san) -> jol {
     jasau content_start: san = variable_end + 2; // "%}" өткізу
-    jasau content_end: san = template_engine_find_loop_content_end(block, content_start);
+    jasau content_end: san = ulgi_qozgaltqys_find_loop_content_end(block, content_start);
     
     eгер (content_end > content_start) {
         qaytar block.substring(content_start, content_end);
@@ -445,7 +445,7 @@ atqar template_engine_extract_loop_content(block: jol, variable_end: san) -> jol
 }
 
 // Цикл мазмұнының соңын табу
-atqar template_engine_find_loop_content_end(block: jol, start: san) -> san {
+atqar ulgi_qozgaltqys_find_loop_content_end(block: jol, start: san) -> san {
     jasau i: san = start;
     jasau brace_count: san = 0;
     
@@ -468,11 +468,11 @@ atqar template_engine_find_loop_content_end(block: jol, start: san) -> san {
 }
 
 // Цикл айнымалыларын ауыстыру
-atqar template_engine_replace_loop_variables(content: jol, item: JsonObject, index: san) -> jol {
+atqar ulgi_qozgaltqys_replace_loop_variables(content: jol, item: JsonObject, index: san) -> jol {
     jasau result: jol = content;
     
     // item айнымалысын ауыстыру
-    result = template_engine_replace_variables(result, item);
+    result = ulgi_qozgaltqys_replace_variables(result, item);
     
     // index айнымалысын ауыстыру
     jasau index_str: jol = int_to_string(index);
@@ -482,18 +482,18 @@ atqar template_engine_replace_loop_variables(content: jol, item: JsonObject, ind
 }
 
 // Функцияларды өңдеу
-atqar template_engine_process_functions(template: jol, data: JsonObject) -> jol {
-    jasau result: jol = template;
+atqar ulgi_qozgaltqys_process_functions(ulgi: jol, data: JsonObject) -> jol {
+    jasau result: jol = ulgi;
     jasau i: san = 0;
     
     azirshe (i < result.length - 1) {
         eгер (result[i] == '{' && result[i + 1] == '{') {
             jasau function_start: san = i;
-            jasau function_end: san = template_engine_find_function_end(result, i);
+            jasau function_end: san = ulgi_qozgaltqys_find_function_end(result, i);
             
             eгер (function_end > function_start) {
                 jasau function_call: jol = result.substring(function_start + 2, function_end);
-                jasau function_result: jol = template_engine_execute_function(function_call, data);
+                jasau function_result: jol = ulgi_qozgaltqys_execute_function(function_call, data);
                 
                 // Функция шақыруды нәтижемен ауыстыру
                 jasau before: jol = result.substring(0, function_start);
@@ -513,11 +513,11 @@ atqar template_engine_process_functions(template: jol, data: JsonObject) -> jol 
 }
 
 // Функцияның соңын табу
-atqar template_engine_find_function_end(template: jol, start: san) -> san {
+atqar ulgi_qozgaltqys_find_function_end(ulgi: jol, start: san) -> san {
     jasau i: san = start + 2; // "{{" өткізу
     
-    azirshe (i < template.length - 1) {
-        eгер (template[i] == '}' && template[i + 1] == '}') {
+    azirshe (i < ulgi.length - 1) {
+        eгер (ulgi[i] == '}' && ulgi[i + 1] == '}') {
             qaytar i;
         }
         i = i + 1;
@@ -527,7 +527,7 @@ atqar template_engine_find_function_end(template: jol, start: san) -> san {
 }
 
 // Функцияны орындау
-atqar template_engine_execute_function(function_call: jol, data: JsonObject) -> jol {
+atqar ulgi_qozgaltqys_execute_function(function_call: jol, data: JsonObject) -> jol {
     jasau trimmed_call: jol = string_trim(function_call);
     
     // Функция атын және аргументтерді алу
@@ -539,13 +539,13 @@ atqar template_engine_execute_function(function_call: jol, data: JsonObject) -> 
         
         // Функцияларды орындау
         eгер (function_name == "upper") {
-            qaytar template_engine_upper_function(arguments, data);
+            qaytar ulgi_qozgaltqys_upper_function(arguments, data);
         } aitpese eгер (function_name == "lower") {
-            qaytar template_engine_lower_function(arguments, data);
+            qaytar ulgi_qozgaltqys_lower_function(arguments, data);
         } aitpese eгер (function_name == "length") {
-            qaytar template_engine_length_function(arguments, data);
+            qaytar ulgi_qozgaltqys_length_function(arguments, data);
         } aitpese eгер (function_name == "format") {
-            qaytar template_engine_format_function(arguments, data);
+            qaytar ulgi_qozgaltqys_format_function(arguments, data);
         }
     }
     
@@ -553,39 +553,39 @@ atqar template_engine_execute_function(function_call: jol, data: JsonObject) -> 
 }
 
 // Upper функциясы
-atqar template_engine_upper_function(arguments: jol, data: JsonObject) -> jol {
+atqar ulgi_qozgaltqys_upper_function(arguments: jol, data: JsonObject) -> jol {
     jasau trimmed_args: jol = string_trim(arguments);
-    jasau value: jol = template_engine_get_variable_value(trimmed_args, data);
+    jasau value: jol = ulgi_qozgaltqys_get_variable_value(trimmed_args, data);
     
     // Жай upper функциясы (C-да toupper қолдану керек)
     qaytar value; // TODO: Реалды upper функциясын іске қосу
 }
 
 // Lower функциясы
-atqar template_engine_lower_function(arguments: jol, data: JsonObject) -> jol {
+atqar ulgi_qozgaltqys_lower_function(arguments: jol, data: JsonObject) -> jol {
     jasau trimmed_args: jol = string_trim(arguments);
-    jasau value: jol = template_engine_get_variable_value(trimmed_args, data);
+    jasau value: jol = ulgi_qozgaltqys_get_variable_value(trimmed_args, data);
     
     // Жай lower функциясы (C-да tolower қолдану керек)
     qaytar value; // TODO: Реалды lower функциясын іске қосу
 }
 
 // Length функциясы
-atqar template_engine_length_function(arguments: jol, data: JsonObject) -> jol {
+atqar ulgi_qozgaltqys_length_function(arguments: jol, data: JsonObject) -> jol {
     jasau trimmed_args: jol = string_trim(arguments);
-    jasau value: jol = template_engine_get_variable_value(trimmed_args, data);
+    jasau value: jol = ulgi_qozgaltqys_get_variable_value(trimmed_args, data);
     
     qaytar int_to_string(value.length);
 }
 
 // Format функциясы
-atqar template_engine_format_function(arguments: jol, data: JsonObject) -> jol {
+atqar ulgi_qozgaltqys_format_function(arguments: jol, data: JsonObject) -> jol {
     jasau trimmed_args: jol = string_trim(arguments);
     jasau parts: jol[] = string_split(trimmed_args, ",");
     
     eгер (parts.length >= 2) {
         jasau format_string: jol = string_trim(parts[0]);
-        jasau value: jol = template_engine_get_variable_value(string_trim(parts[1]), data);
+        jasau value: jol = ulgi_qozgaltqys_get_variable_value(string_trim(parts[1]), data);
         
         // Жай format функциясы (C-да sprintf қолдану керек)
         qaytar format_string; // TODO: Реалды format функциясын іске қосу
@@ -594,10 +594,10 @@ atqar template_engine_format_function(arguments: jol, data: JsonObject) -> jol {
     qaytar "";
 }
 
-// Template engine жасау
-atqar template_engine_create() -> TemplateEngine {
-    jasau engine: TemplateEngine = TemplateEngine();
-    qaytar engine;
+// Template qozgaltqys жасау
+atqar ulgi_qozgaltqys_create() -> TemplateEngine {
+    jasau qozgaltqys: TemplateEngine = TemplateEngine();
+    qaytar qozgaltqys;
 }
 
 // String ауыстыру функциясы

@@ -4,7 +4,7 @@
 ## 🚀 **Реализованные улучшения / Implemented Improvements**
 
 ### ✅ **1. Исправление структуры файлов**
-- `template_server.py` → `synaqtar/demo/`
+- `ulgi_server.py` → `synaqtar/demo/`
 - `demo.html` → `synaqtar/demo/`
 - Создана директория `baptaular/` (вместо `konfig/`)
 
@@ -45,7 +45,7 @@ shanraq.org/
 │   ├── development_baptaular.json
 │   └── README.md
 ├── synaqtar/demo/                      # Демо файлы
-│   ├── template_server.py
+│   ├── ulgi_server.py
 │   └── demo.html
 ├── synaqtar/unit/                      # Unit тесты
 │   ├── user_test.tng

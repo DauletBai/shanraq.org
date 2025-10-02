@@ -1,14 +1,14 @@
-// security.tng - Tenge Security System
-// Agglutinative security framework
+// qauıpsızdık.tng - Tenge Security System
+// Agglutinative qauıpsızdık framework
 
-atqar kawipsizdik_jasau() -> Security {
-    jasau security: Security = security_create();
-    qaytar security;
+atqar qauıpsızdık_jasau() -> Security {
+    jasau qauıpsızdık: Security = qauıpsızdık_create();
+    qaytar qauıpsızdık;
 }
 
 // Password hashing
 atqar parol_hash_jasau(password: jol) -> jol {
-    jasau salt: jol = security_salt_jasau();
+    jasau salt: jol = qauıpsızdık_salt_jasau();
     jasau hashed: jol = bcrypt_hash(password, salt);
     qaytar hashed;
 }
@@ -31,7 +31,7 @@ atqar jwt_token_jasau(user_id: jol, expires_in: san) -> jol {
     jasau header_b64: jol = base64_encode(json_stringify(header));
     jasau payload_b64: jol = base64_encode(json_stringify(payload));
     
-    jasau signature: jol = hmac_sha256(header_b64 + "." + payload_b64, security_get_secret_key());
+    jasau signature: jol = hmac_sha256(header_b64 + "." + payload_b64, qauıpsızdık_get_secret_key());
     
     qaytar header_b64 + "." + payload_b64 + "." + signature;
 }
@@ -48,7 +48,7 @@ atqar jwt_token_decode(token: jol) -> jol {
     jasau signature: jol = parts[2];
     
     // Verify signature
-    jasau expected_signature: jol = hmac_sha256(header_b64 + "." + payload_b64, security_get_secret_key());
+    jasau expected_signature: jol = hmac_sha256(header_b64 + "." + payload_b64, qauıpsızdık_get_secret_key());
     
     eгер (signature != expected_signature) {
         qaytar "";
@@ -200,13 +200,13 @@ atqar xss_tekseru(input: jol) -> aqıqat {
 
 // CSRF protection
 atqar csrf_token_jasau() -> jol {
-    jasau token: jol = security_random_string(32);
-    security_set_csrf_token(token);
+    jasau token: jol = qauıpsızdık_random_string(32);
+    qauıpsızdık_set_csrf_token(token);
     qaytar token;
 }
 
 atqar csrf_token_tekseru(token: jol) -> aqıqat {
-    jasau stored_token: jol = security_get_csrf_token();
+    jasau stored_token: jol = qauıpsızdık_get_csrf_token();
     qaytar token == stored_token;
 }
 
@@ -225,19 +225,19 @@ atqar rate_limit_tekseru(ip: jol, endpoint: jol, max_requests: san, window_secon
 
 // Session management
 atqar session_jasau(user_id: jol) -> jol {
-    jasau session_id: jol = security_random_string(32);
+    jasau session_id: jol = qauıpsızdık_random_string(32);
     jasau session_data: JsonObject = json_object_create();
     
     json_object_set_string(session_data, "user_id", user_id);
     json_object_set_number(session_data, "created_at", current_timestamp());
     json_object_set_number(session_data, "expires_at", current_timestamp() + 3600); // 1 hour
     
-    security_set_session(session_id, session_data);
+    qauıpsızdık_set_session(session_id, session_data);
     qaytar session_id;
 }
 
 atqar session_tekseru(session_id: jol) -> JsonObject {
-    jasau session_data: JsonObject = security_get_session(session_id);
+    jasau session_data: JsonObject = qauıpsızdık_get_session(session_id);
     
     eгер (session_data == NULL) {
         qaytar NULL;
@@ -246,7 +246,7 @@ atqar session_tekseru(session_id: jol) -> JsonObject {
     jasau expires_at: san = json_object_get_number(session_data, "expires_at");
     
     eгер (current_timestamp() > expires_at) {
-        security_delete_session(session_id);
+        qauıpsızdık_delete_session(session_id);
         qaytar NULL;
     }
     
@@ -255,7 +255,7 @@ atqar session_tekseru(session_id: jol) -> JsonObject {
 
 // Encryption and decryption
 atqar encryption_jasau(data: jol, key: jol) -> jol {
-    jasau iv: jol = security_random_string(16);
+    jasau iv: jol = qauıpsızdık_random_string(16);
     jasau encrypted: jol = aes_encrypt(data, key, iv);
     qaytar base64_encode(iv + encrypted);
 }
@@ -268,7 +268,7 @@ atqar decryption_jasau(encrypted_data: jol, key: jol) -> jol {
 }
 
 // Security headers
-atqar security_headers_qosu(response: WebResponse) {
+atqar qauıpsızdık_headers_qosu(response: WebResponse) {
     web_response_set_header(response, "X-Content-Type-Options", "nosniff");
     web_response_set_header(response, "X-Frame-Options", "DENY");
     web_response_set_header(response, "X-XSS-Protection", "1; mode=block");
@@ -278,22 +278,22 @@ atqar security_headers_qosu(response: WebResponse) {
 }
 
 // Security utility functions
-atqar security_create() -> Security {
-    jasau security: Security = Security();
-    security.secret_key = security_get_secret_key();
-    qaytar security;
+atqar qauıpsızdık_create() -> Security {
+    jasau qauıpsızdık: Security = Security();
+    qauıpsızdık.secret_key = qauıpsızdık_get_secret_key();
+    qaytar qauıpsızdık;
 }
 
-atqar security_get_secret_key() -> jol {
+atqar qauıpsızdık_get_secret_key() -> jol {
     // Get from environment variable or config
     qaytar getenv("TENGE_SECRET_KEY");
 }
 
-atqar security_salt_jasau() -> jol {
-    qaytar security_random_string(16);
+atqar qauıpsızdık_salt_jasau() -> jol {
+    qaytar qauıpsızdık_random_string(16);
 }
 
-atqar security_random_string(length: san) -> jol {
+atqar qauıpsızdık_random_string(length: san) -> jol {
     jasau chars: jol = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     jasau result: jol = "";
     jasau i: san = 0;
@@ -323,24 +323,24 @@ atqar cache_set_number(key: jol, value: san, ttl: san) {
 }
 
 // Security session functions
-atqar security_set_session(session_id: jol, data: JsonObject) {
+atqar qauıpsızdık_set_session(session_id: jol, data: JsonObject) {
     // Implementation depends on session backend
 }
 
-atqar security_get_session(session_id: jol) -> JsonObject {
+atqar qauıpsızdık_get_session(session_id: jol) -> JsonObject {
     // Implementation depends on session backend
     qaytar NULL;
 }
 
-atqar security_delete_session(session_id: jol) {
+atqar qauıpsızdık_delete_session(session_id: jol) {
     // Implementation depends on session backend
 }
 
-atqar security_set_csrf_token(token: jol) {
+atqar qauıpsızdık_set_csrf_token(token: jol) {
     // Implementation depends on session backend
 }
 
-atqar security_get_csrf_token() -> jol {
+atqar qauıpsızdık_get_csrf_token() -> jol {
     // Implementation depends on session backend
     qaytar "";
 }

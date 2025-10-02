@@ -93,52 +93,52 @@ betjagy/bolıkter/sidebar.html
 
 ## Жаңа шаблон логикасы / New Template Logic
 
-### template_engine_build_template()
+### ulgi_qozgaltqys_build_ulgi()
 
 Бұл функция шаблонды компоненттермен құрастырады:
 
 ```tenge
-atqar template_engine_build_template(template: jol, data: JsonObject) -> jol {
-    jasau result: jol = template;
+atqar ulgi_qozgaltqys_build_ulgi(ulgi: jol, data: JsonObject) -> jol {
+    jasau result: jol = ulgi;
     
     // Компоненттерді табу және ауыстыру
-    result = template_engine_process_components(result, data);
+    result = ulgi_qozgaltqys_process_components(result, data);
     
     // Айнымалыларды ауыстыру
-    result = template_engine_replace_variables(result, data);
+    result = ulgi_qozgaltqys_replace_variables(result, data);
     
     // Шартты блоктарды өңдеу
-    result = template_engine_process_conditionals(result, data);
+    result = ulgi_qozgaltqys_process_conditionals(result, data);
     
     // Циклдарды өңдеу
-    result = template_engine_process_loops(result, data);
+    result = ulgi_qozgaltqys_process_loops(result, data);
     
     // Функцияларды шақыру
-    result = template_engine_process_functions(result, data);
+    result = ulgi_qozgaltqys_process_functions(result, data);
     
     qaytar result;
 }
 ```
 
-### template_engine_process_components()
+### ulgi_qozgaltqys_process_components()
 
 Компоненттерді тауып ауыстырады:
 
 ```tenge
-atqar template_engine_process_components(template: jol, data: JsonObject) -> jol {
-    jasau result: jol = template;
+atqar ulgi_qozgaltqys_process_components(ulgi: jol, data: JsonObject) -> jol {
+    jasau result: jol = ulgi;
     jasau i: san = 0;
     
     azirshe (i < result.length - 1) {
         eгер (result[i] == '{' && result[i + 1] == '{' && result[i + 2] == '>') {
             // Компонентті табу және ауыстыру
             jasau component_start: san = i;
-            jasau component_end: san = template_engine_find_component_end(result, i);
+            jasau component_end: san = ulgi_qozgaltqys_find_component_end(result, i);
             
             eгер (component_end > component_start) {
                 jasau component_call: jol = result.substring(component_start + 3, component_end);
                 jasau component_name: jol = string_trim(component_call);
-                jasau component_content: jol = template_engine_load_component(component_name);
+                jasau component_content: jol = ulgi_qozgaltqys_load_component(component_name);
                 
                 // Компонентті мазмұнымен ауыстыру
                 jasau before: jol = result.substring(0, component_start);
@@ -234,6 +234,7 @@ atqar template_engine_process_components(template: jol, data: JsonObject) -> jol
 ## Қорытынды / Conclusion
 
 Жаңа компоненттер жүйесі Shanraq Template Engine-ді одан да күшті және икемді етеді. Бұл жүйе арқылы шаблондарды оңай дамытуға және қолдауға болады.
+
 
 
 

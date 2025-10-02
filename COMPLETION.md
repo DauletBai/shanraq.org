@@ -22,9 +22,9 @@
 - ✅ Main Compiler (kompilyator.tng)
 
 ### 2. 🔧 Web Framework (framework/)
-- ✅ Template Engine (template/) - HTML Generation
-- ✅ Middleware (ortalya/) - Request Processing
-- ✅ Security (kawipsizdik/) - Authentication
+- ✅ Template Engine (ulgi/) - HTML Generation
+- ✅ Middleware (ortalyq/) - Request Processing
+- ✅ Security (qauıpsızdık/) - Authentication
 - ✅ JOJJ Interface (jojj/) - CRUD Operations
 
 ### 3. 💼 Business Logic (ısker_qisyn/)

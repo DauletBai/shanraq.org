@@ -1,15 +1,15 @@
-// template_engine_core.tng - Shanraq Template Engine Core
+// ulgi_qozgaltqys_core.tng - Shanraq Template Engine Core
 // Шанрак Үлгі Қозғалтқышының Негізі / Shanraq Template Engine Core
 
 jasau struct TemplateEngine {
     cache: JsonObject;           // Template cache
     helpers: JsonObject;         // Helper functions
-    partials: JsonObject;        // Partial templates
-    layouts: JsonObject;         // Layout templates
+    partials: JsonObject;        // Partial ulgis
+    layouts: JsonObject;         // Layout ulgis
     filters: JsonObject;         // Template filters
-    compilers: JsonObject;       // Compiled templates
-    morpheme_engine: MorphemeEngine;  // For agglutinative features
-    phoneme_engine: PhonemeEngine;    // For optimization
+    compilers: JsonObject;       // Compiled ulgis
+    morpheme_qozgaltqys: MorphemeEngine;  // For agglutinative features
+    phoneme_qozgaltqys: PhonemeEngine;    // For optimization
 }
 
 jasau struct TemplateContext {
@@ -22,97 +22,97 @@ jasau struct TemplateContext {
 }
 
 jasau struct CompiledTemplate {
-    source: jol;                 // Original template
+    source: jol;                 // Original ulgi
     compiled: jol;               // Compiled JavaScript-like code
     dependencies: jol[];        // Template dependencies
     cache_key: jol;             // Cache key
     last_modified: san;         // Last modification time
 }
 
-// Initialize template engine
-atqar template_engine_jasau() -> TemplateEngine {
-    jasau engine: TemplateEngine = TemplateEngine();
-    engine.cache = json_object_create();
-    engine.helpers = json_object_create();
-    engine.partials = json_object_create();
-    engine.layouts = json_object_create();
-    engine.filters = json_object_create();
-    engine.compilers = json_object_create();
-    engine.morpheme_engine = morpheme_engine_jasau();
-    engine.phoneme_engine = phoneme_engine_jasau();
+// Initialize ulgi qozgaltqys
+atqar ulgi_qozgaltqys_jasau() -> TemplateEngine {
+    jasau qozgaltqys: TemplateEngine = TemplateEngine();
+    qozgaltqys.cache = json_object_create();
+    qozgaltqys.helpers = json_object_create();
+    qozgaltqys.partials = json_object_create();
+    qozgaltqys.layouts = json_object_create();
+    qozgaltqys.filters = json_object_create();
+    qozgaltqys.compilers = json_object_create();
+    qozgaltqys.morpheme_qozgaltqys = morpheme_qozgaltqys_jasau();
+    qozgaltqys.phoneme_qozgaltqys = phoneme_qozgaltqys_jasau();
     
     // Register built-in helpers
-    template_helpers_qosu(engine);
+    ulgi_helpers_qosu(qozgaltqys);
     
     // Register built-in filters
-    template_filters_qosu(engine);
+    ulgi_filters_qosu(qozgaltqys);
     
-    qaytar engine;
+    qaytar qozgaltqys;
 }
 
-// Main template rendering function
-atqar template_render(engine: TemplateEngine, template_name: jol, data: JsonObject) -> jol {
+// Main ulgi rendering function
+atqar ulgi_render(qozgaltqys: TemplateEngine, ulgi_name: jol, data: JsonObject) -> jol {
     // Check cache first
-    jasau cache_key: jol = template_name + "_" + json_object_hash(data);
-    eгер (json_object_bar_ma(engine.cache, cache_key)) {
-        jasau cached: CompiledTemplate = json_object_get_object(engine.cache, cache_key);
-        qaytar template_execute_compiled(cached, data);
+    jasau cache_key: jol = ulgi_name + "_" + json_object_hash(data);
+    eгер (json_object_bar_ma(qozgaltqys.cache, cache_key)) {
+        jasau cached: CompiledTemplate = json_object_get_object(qozgaltqys.cache, cache_key);
+        qaytar ulgi_execute_compiled(cached, data);
     }
     
-    // Load template
-    jasau template_source: jol = template_load(engine, template_name);
-    eгер (template_source == "") {
-        qaytar "Template not found: " + template_name;
+    // Load ulgi
+    jasau ulgi_source: jol = ulgi_load(qozgaltqys, ulgi_name);
+    eгер (ulgi_source == "") {
+        qaytar "Template not found: " + ulgi_name;
     }
     
-    // Compile template
-    jasau compiled: CompiledTemplate = template_compile(engine, template_name, template_source);
+    // Compile ulgi
+    jasau compiled: CompiledTemplate = ulgi_compile(qozgaltqys, ulgi_name, ulgi_source);
     
-    // Cache compiled template
-    json_object_set_object(engine.cache, cache_key, compiled);
+    // Cache compiled ulgi
+    json_object_set_object(qozgaltqys.cache, cache_key, compiled);
     
-    // Execute template
-    qaytar template_execute_compiled(compiled, data);
+    // Execute ulgi
+    qaytar ulgi_execute_compiled(compiled, data);
 }
 
-// Load template from file system
-atqar template_load(engine: TemplateEngine, template_name: jol) -> jol {
-    jasau template_path: jol = "betjagy/ulgi/" + template_name + ".tng";
-    jasau content: jol = file_read(template_path);
+// Load ulgi from file system
+atqar ulgi_load(qozgaltqys: TemplateEngine, ulgi_name: jol) -> jol {
+    jasau ulgi_path: jol = "betjagy/ulgi/" + ulgi_name + ".tng";
+    jasau content: jol = file_read(ulgi_path);
     qaytar content;
 }
 
-// Compile template to executable code
-atqar template_compile(engine: TemplateEngine, template_name: jol, source: jol) -> CompiledTemplate {
+// Compile ulgi to executable code
+atqar ulgi_compile(qozgaltqys: TemplateEngine, ulgi_name: jol, source: jol) -> CompiledTemplate {
     jasau compiled: CompiledTemplate = CompiledTemplate();
     compiled.source = source;
     compiled.dependencies = [];
-    compiled.cache_key = template_name + "_" + string_hash(source);
+    compiled.cache_key = ulgi_name + "_" + string_hash(source);
     compiled.last_modified = system_time_millis();
     
-    // Parse template syntax
-    jasau parsed: JsonObject = template_parse(engine, source);
+    // Parse ulgi syntax
+    jasau parsed: JsonObject = ulgi_parse(qozgaltqys, source);
     
     // Generate compiled code
-    compiled.compiled = template_generate_code(engine, parsed);
+    compiled.compiled = ulgi_generate_code(qozgaltqys, parsed);
     
     qaytar compiled;
 }
 
-// Parse template syntax
-atqar template_parse(engine: TemplateEngine, source: jol) -> JsonObject {
+// Parse ulgi syntax
+atqar ulgi_parse(qozgaltqys: TemplateEngine, source: jol) -> JsonObject {
     jasau parsed: JsonObject = json_object_create();
-    jasau tokens: JsonObject[] = template_tokenize(source);
+    jasau tokens: JsonObject[] = ulgi_tokenize(source);
     
     // Parse tokens into AST
-    jasau ast: JsonObject = template_parse_ast(engine, tokens);
+    jasau ast: JsonObject = ulgi_parse_ast(qozgaltqys, tokens);
     json_object_set_object(parsed, "ast", ast);
     
     qaytar parsed;
 }
 
-// Tokenize template source
-atqar template_tokenize(source: jol) -> JsonObject[] {
+// Tokenize ulgi source
+atqar ulgi_tokenize(source: jol) -> JsonObject[] {
     jasau tokens: JsonObject[] = [];
     jasau lines: jol[] = string_split(source, "\n");
     
@@ -128,7 +128,7 @@ atqar template_tokenize(source: jol) -> JsonObject[] {
         }
         
         // Parse different token types
-        jasau token: JsonObject = template_parse_line(trimmed);
+        jasau token: JsonObject = ulgi_parse_line(trimmed);
         eгер (token != NULL) {
             tokens = tokens + [token];
         }
@@ -140,7 +140,7 @@ atqar template_tokenize(source: jol) -> JsonObject[] {
 }
 
 // Parse individual line
-atqar template_parse_line(line: jol) -> JsonObject {
+atqar ulgi_parse_line(line: jol) -> JsonObject {
     jasau token: JsonObject = json_object_create();
     
     // Variable interpolation: {{ variable }}
@@ -187,7 +187,7 @@ atqar template_parse_line(line: jol) -> JsonObject {
 }
 
 // Generate executable code from AST
-atqar template_generate_code(engine: TemplateEngine, parsed: JsonObject) -> jol {
+atqar ulgi_generate_code(qozgaltqys: TemplateEngine, parsed: JsonObject) -> jol {
     jasau ast: JsonObject = json_object_get_object(parsed, "ast");
     jasau code: jol = "jasau result: jol = \"\";\n";
     
@@ -196,7 +196,7 @@ atqar template_generate_code(engine: TemplateEngine, parsed: JsonObject) -> jol 
     san i = 0;
     while (i < array_uzyn_bolu(nodes)) {
         jasau node: JsonObject = nodes[i];
-        jasau node_code: jol = template_generate_node_code(engine, node);
+        jasau node_code: jol = ulgi_generate_node_code(qozgaltqys, node);
         code = code + node_code + "\n";
         i = i + 1;
     }
@@ -206,7 +206,7 @@ atqar template_generate_code(engine: TemplateEngine, parsed: JsonObject) -> jol 
 }
 
 // Generate code for individual node
-atqar template_generate_node_code(engine: TemplateEngine, node: JsonObject) -> jol {
+atqar ulgi_generate_node_code(qozgaltqys: TemplateEngine, node: JsonObject) -> jol {
     jasau type: jol = json_object_get_string(node, "type");
     
     eгер (type == "text") {
@@ -220,7 +220,7 @@ atqar template_generate_node_code(engine: TemplateEngine, node: JsonObject) -> j
     basqa eгер (type == "helper") {
         jasau name: jol = json_object_get_string(node, "name");
         jasau args: jol[] = json_object_get_array_string(node, "args");
-        jasau helper_code: jol = template_generate_helper_code(engine, name, args);
+        jasau helper_code: jol = ulgi_generate_helper_code(qozgaltqys, name, args);
         qaytar helper_code;
     }
     basqa eгер (type == "conditional") {
@@ -239,8 +239,8 @@ atqar template_generate_node_code(engine: TemplateEngine, node: JsonObject) -> j
 }
 
 // Generate helper code
-atqar template_generate_helper_code(engine: TemplateEngine, name: jol, args: jol[]) -> jol {
-    jasau helper_function: Function = json_object_get_function(engine.helpers, name);
+atqar ulgi_generate_helper_code(qozgaltqys: TemplateEngine, name: jol, args: jol[]) -> jol {
+    jasau helper_function: Function = json_object_get_function(qozgaltqys.helpers, name);
     eгер (helper_function != NULL) {
         jasau args_string: jol = string_join(args, ", ");
         qaytar "result = result + " + name + "(" + args_string + ");";
@@ -249,22 +249,22 @@ atqar template_generate_helper_code(engine: TemplateEngine, name: jol, args: jol
     qaytar "result = result + \"[Helper not found: " + name + "]\";";
 }
 
-// Execute compiled template
-atqar template_execute_compiled(compiled: CompiledTemplate, data: JsonObject) -> jol {
+// Execute compiled ulgi
+atqar ulgi_execute_compiled(compiled: CompiledTemplate, data: JsonObject) -> jol {
     // This would execute the compiled JavaScript-like code
     // For now, return a placeholder
-    qaytar "Compiled template executed with data";
+    qaytar "Compiled ulgi executed with data";
 }
 
 // Parse AST from tokens
-atqar template_parse_ast(engine: TemplateEngine, tokens: JsonObject[]) -> JsonObject {
+atqar ulgi_parse_ast(qozgaltqys: TemplateEngine, tokens: JsonObject[]) -> JsonObject {
     jasau ast: JsonObject = json_object_create();
     jasau nodes: JsonObject[] = [];
     
     san i = 0;
     while (i < array_uzyn_bolu(tokens)) {
         jasau token: JsonObject = tokens[i];
-        jasau node: JsonObject = template_create_ast_node(token);
+        jasau node: JsonObject = ulgi_create_ast_node(token);
         nodes = nodes + [node];
         i = i + 1;
     }
@@ -274,7 +274,7 @@ atqar template_parse_ast(engine: TemplateEngine, tokens: JsonObject[]) -> JsonOb
 }
 
 // Create AST node from token
-atqar template_create_ast_node(token: JsonObject) -> JsonObject {
+atqar ulgi_create_ast_node(token: JsonObject) -> JsonObject {
     jasau node: JsonObject = json_object_create();
     jasau type: jol = json_object_get_string(token, "type");
     
@@ -299,6 +299,7 @@ atqar template_create_ast_node(token: JsonObject) -> JsonObject {
     
     qaytar node;
 }
+
 
 
 

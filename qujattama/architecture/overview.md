@@ -25,14 +25,14 @@ Shanraq.org is built on a unique agglutinative architecture that leverages the l
 - **RESTful APIs**: Standard HTTP interfaces
 - **Component-Based Frontend**: Reusable UI components
 - **Database Agnostic**: Support for multiple database backends
-- **Security by Design**: Built-in security features
+- **Security by Design**: Built-in qauıpsızdık features
 
 ## System Architecture / Жүйе Архитектурасы
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    Shanraq.org Architecture                 │
-│                    Шанрак.орг Архитектурасы                │
+│                    Шанырак.орг Архитектурасы                │
 ├─────────────────────────────────────────────────────────────┤
 │  🎨 Frontend Layer (betjagy) / Бет жағы қабаты            │
 │  ├── 📄 Pages (better) / Беттер                           │
@@ -44,8 +44,8 @@ Shanraq.org is built on a unique agglutinative architecture that leverages the l
 ├─────────────────────────────────────────────────────────────┤
 │  🔧 Web Framework Layer (framework) / Веб-фреймворк қабаты│
 │  ├── 🖥️ Server (server) / Сервер                          │
-│  ├── 🔄 Middleware (ortalya) / Орталық                    │
-│  ├── 🔒 Security (kawipsizdik) / Қауіпсіздік              │
+│  ├── 🔄 Middleware (ortalyq) / Орталық                    │
+│  ├── 🔒 Security (qauıpsızdık) / Қауіпсіздік              │
 │  └── 📋 Template Engine / Үлгі қозғалтқышы                │
 ├─────────────────────────────────────────────────────────────┤
 │  💼 Business Logic Layer (ısker_qisyn) / Іскер-логик қабаты│
@@ -153,16 +153,16 @@ Provides web application development capabilities.
   - Middleware support
 - **Functions**: `web_server_create()`, `web_route_qosu()`
 
-#### Middleware (ortalya)
+#### Middleware (ortalyq)
 - **Purpose**: Request processing pipeline
 - **Features**:
   - Authentication
   - Authorization
   - Rate limiting
   - CORS handling
-- **Functions**: `kimdik_middleware_jasau()`, `cors_middleware_jasau()`
+- **Functions**: `kimdik_ortalyq_jasau()`, `cors_ortalyq_jasau()`
 
-#### Security (kawipsizdik)
+#### Security (qauıpsızdık)
 - **Purpose**: Security features and protection
 - **Features**:
   - Password hashing
@@ -178,7 +178,7 @@ Provides web application development capabilities.
   - Conditional rendering
   - Loop processing
   - Function calls
-- **Functions**: `template_engine_render()`, `template_engine_replace_variables()`
+- **Functions**: `ulgi_qozgaltqys_render()`, `ulgi_qozgaltqys_replace_variables()`
 
 ### 4. Business Logic Layer (ısker_qisyn)
 
@@ -367,8 +367,8 @@ Archetypes provide pattern-based development:
 ```tenge
 // Web archetypes
 web_api_endpoint_jasau()     // create API endpoint
-web_middleware_qosu()        // add middleware
-web_template_engin_ishke_engizu() // render template
+web_ortalyq_qosu()        // add ortalyq
+web_ulgi_engin_ishke_engizu() // render ulgi
 
 // Database archetypes
 derekter_model_jasau()     // create database model
@@ -409,14 +409,14 @@ for (int i = 0; i < size; i++) {
 ### 1. Authentication
 
 - **JWT Tokens**: Stateless authentication
-- **Password Hashing**: bcrypt-based password security
+- **Password Hashing**: bcrypt-based password qauıpsızdık
 - **Session Management**: Secure session handling
 
 ### 2. Authorization
 
 - **Role-based Access Control**: User role management
 - **Permission System**: Fine-grained permissions
-- **Resource Protection**: API endpoint security
+- **Resource Protection**: API endpoint qauıpsızdık
 
 ### 3. Input Validation
 
@@ -501,7 +501,7 @@ The architecture is designed to be:
 - **Scalable**: Handle growing user bases
 - **Maintainable**: Easy to understand and modify
 - **Performant**: Fast execution and response times
-- **Secure**: Built-in security features
+- **Secure**: Built-in qauıpsızdık features
 - **Extensible**: Easy to add new features
 
 This foundation enables developers to build sophisticated web applications using natural, agglutinative syntax while maintaining the performance and reliability expected from modern web frameworks.

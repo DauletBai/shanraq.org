@@ -102,7 +102,7 @@ export class TengeLinter {
         }
 
         // Check for Kazakh language compliance
-        const englishWords = line.match(/\b(create|get|add|update|delete|check|optimize|engine|manager)\b/gi);
+        const englishWords = line.match(/\b(create|get|add|update|delete|check|optimize|qozgaltqys|manager)\b/gi);
         if (englishWords) {
             englishWords.forEach(word => {
                 const diagnostic = new vscode.Diagnostic(

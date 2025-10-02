@@ -97,8 +97,8 @@ shanraq.org/
 3. **Configure Repository Settings**:
    - Add repository topics
    - Set up branch protection rules
-   - Configure issue templates
-   - Add pull request templates
+   - Configure issue ulgis
+   - Add pull request ulgis
 
 4. **Share the Repository**:
    - Copy the repository URL

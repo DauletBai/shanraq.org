@@ -118,12 +118,12 @@ atqar api_integration_test() {
     
     korset("✅ Route registration successful");
     
-    // Test middleware registration
-    jasau logging_middleware: Middleware = logging_middleware_jasau();
-    jasau cors_middleware: Middleware = cors_middleware_jasau();
+    // Test ortalyq registration
+    jasau logging_ortalyq: Middleware = logging_ortalyq_jasau();
+    jasau cors_ortalyq: Middleware = cors_ortalyq_jasau();
     
-    web_middleware_qosu(server, logging_middleware);
-    web_middleware_qosu(server, cors_middleware);
+    web_ortalyq_qosu(server, logging_ortalyq);
+    web_ortalyq_qosu(server, cors_ortalyq);
     
     korset("✅ Middleware registration successful");
     
@@ -363,7 +363,7 @@ atqar performance_integration_test() {
 }
 
 // Security integration tests
-atqar kawipsizdik_integration_test() {
+atqar qauıpsızdık_integration_test() {
     korset("=== Kawipsizdik Integration Test ===");
     
     // Test SQL injection protection
@@ -429,7 +429,7 @@ atqar integration_test_ishke_engizu() {
     mazmun_integration_test();
     e_commerce_integration_test();
     performance_integration_test();
-    kawipsizdik_integration_test();
+    qauıpsızdık_integration_test();
     
     korset("=====================================");
     korset("Integration tests completed!");

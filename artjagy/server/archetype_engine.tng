@@ -1,39 +1,39 @@
 // Archetype Engine - Архетиптер жүйесі
-// High-performance archetype-based pattern engine
+// High-performance archetype-based pattern qozgaltqys
 // Uses Kazakh archetype patterns for maximum efficiency
 
-// Archetype-based pattern engine
-atqar archetype_engine_jasau() -> ArchetypeEngine {
-    jasau engine: ArchetypeEngine = ArchetypeEngine();
-    engine.archetype_map = Map();
-    engine.pattern_cache = Map();
-    engine.performance_stats = Map();
+// Archetype-based pattern qozgaltqys
+atqar archetype_qozgaltqys_jasau() -> ArchetypeEngine {
+    jasau qozgaltqys: ArchetypeEngine = ArchetypeEngine();
+    qozgaltqys.archetype_map = Map();
+    qozgaltqys.pattern_cache = Map();
+    qozgaltqys.performance_stats = Map();
     
     // Initialize archetype patterns
-    archetype_patterns_konfiguratsiya(engine);
+    archetype_patterns_konfiguratsiya(qozgaltqys);
     
-    qaytar engine;
+    qaytar qozgaltqys;
 }
 
 // Archetype patterns configuration
-atqar archetype_patterns_konfiguratsiya(engine: ArchetypeEngine) {
+atqar archetype_patterns_konfiguratsiya(qozgaltqys: ArchetypeEngine) {
     // Web archetype patterns
-    archetype_pattern_qosu(engine, "web", web_arhetip_pattern_jasau());
+    archetype_pattern_qosu(qozgaltqys, "web", web_arhetip_pattern_jasau());
     
     // Database archetype patterns
-    archetype_pattern_qosu(engine, "derekter", derekter_arhetip_pattern_jasau());
+    archetype_pattern_qosu(qozgaltqys, "derekter", derekter_arhetip_pattern_jasau());
     
     // Business logic archetype patterns
-    archetype_pattern_qosu(engine, "ısker", isker_arhetip_pattern_jasau());
+    archetype_pattern_qosu(qozgaltqys, "ısker", isker_arhetip_pattern_jasau());
     
     // Analytics archetype patterns
-    archetype_pattern_qosu(engine, "analytics", analytics_arhetip_pattern_jasau());
+    archetype_pattern_qosu(qozgaltqys, "analytics", analytics_arhetip_pattern_jasau());
     
     // Security archetype patterns
-    archetype_pattern_qosu(engine, "kawipsizdik", kawipsizdik_arhetip_pattern_jasau());
+    archetype_pattern_qosu(qozgaltqys, "qauıpsızdık", qauıpsızdık_arhetip_pattern_jasau());
     
     // Performance archetype patterns
-    archetype_pattern_qosu(engine, "onimdilik", onimdilik_arhetip_pattern_jasau());
+    archetype_pattern_qosu(qozgaltqys, "onimdilik", onimdilik_arhetip_pattern_jasau());
 }
 
 // Web archetype pattern
@@ -49,7 +49,7 @@ atqar web_arhetip_pattern_jasau() -> ArchetypePattern {
     pattern.phonemes = ["http", "rest", "api", "html", "css", "js"];
     
     // Web-specific optimizations
-    pattern.optimizations = ["caching", "compression", "routing", "middleware", "templates"];
+    pattern.optimizations = ["caching", "compression", "routing", "ortalyq", "ulgis"];
     
     // Web-specific performance characteristics
     pattern.performance = ArchetypePerformance();
@@ -137,9 +137,9 @@ atqar analytics_arhetip_pattern_jasau() -> ArchetypePattern {
 }
 
 // Security archetype pattern
-atqar kawipsizdik_arhetip_pattern_jasau() -> ArchetypePattern {
+atqar qauıpsızdık_arhetip_pattern_jasau() -> ArchetypePattern {
     jasau pattern: ArchetypePattern = ArchetypePattern();
-    pattern.name = "kawipsizdik";
+    pattern.name = "qauıpsızdık";
     pattern.description = "Қауіпсіздік архетипі";
     
     // Security-specific morphemes
@@ -187,25 +187,25 @@ atqar onimdilik_arhetip_pattern_jasau() -> ArchetypePattern {
 }
 
 // Archetype pattern registration
-atqar archetype_pattern_qosu(engine: ArchetypeEngine, name: jol, pattern: ArchetypePattern) {
-    engine.archetype_map[name] = pattern;
+atqar archetype_pattern_qosu(qozgaltqys: ArchetypeEngine, name: jol, pattern: ArchetypePattern) {
+    qozgaltqys.archetype_map[name] = pattern;
     
     // Initialize pattern cache
-    pattern_cache_konfiguratsiya(engine, pattern);
+    pattern_cache_konfiguratsiya(qozgaltqys, pattern);
     
     // Initialize performance monitoring
-    archetype_performance_monitoring_konfiguratsiya(engine, pattern);
+    archetype_performance_monitoring_konfiguratsiya(qozgaltqys, pattern);
 }
 
 // Pattern cache configuration
-atqar pattern_cache_konfiguratsiya(engine: ArchetypeEngine, pattern: ArchetypePattern) {
+atqar pattern_cache_konfiguratsiya(qozgaltqys: ArchetypeEngine, pattern: ArchetypePattern) {
     jasau cache_config: CacheConfig = CacheConfig();
     cache_config.pattern_name = pattern.name;
     cache_config.cache_size = archetype_cache_size_calculate(pattern);
     cache_config.cache_strategy = archetype_cache_strategy_determine(pattern);
     cache_config.cache_ttl = archetype_cache_ttl_calculate(pattern);
     
-    engine.pattern_cache[pattern.name] = cache_config;
+    qozgaltqys.pattern_cache[pattern.name] = cache_config;
 }
 
 // Archetype cache size calculation
@@ -379,7 +379,7 @@ atqar archetype_optimization_apply(request: TengeRequest, archetype: jol) -> Ten
     jasau optimized_request: TengeRequest = request;
     
     // Get archetype pattern
-    jasau pattern: ArchetypePattern = archetype_engine.archetype_map[archetype];
+    jasau pattern: ArchetypePattern = archetype_qozgaltqys.archetype_map[archetype];
     
     // Apply archetype-specific optimizations
     eger (pattern.optimizations.contains("caching")) {
@@ -405,7 +405,7 @@ atqar archetype_optimization_apply(request: TengeRequest, archetype: jol) -> Ten
 // Archetype cache application
 atqar archetype_cache_apply(request: TengeRequest, archetype: jol) {
     // Get archetype cache configuration
-    jasau cache_config: CacheConfig = archetype_engine.pattern_cache[archetype];
+    jasau cache_config: CacheConfig = archetype_qozgaltqys.pattern_cache[archetype];
     
     // Apply cache configuration
     request.cache_size = cache_config.cache_size;
@@ -414,7 +414,7 @@ atqar archetype_cache_apply(request: TengeRequest, archetype: jol) {
 }
 
 // Archetype performance monitoring
-atqar archetype_performance_monitoring_konfiguratsiya(engine: ArchetypeEngine, pattern: ArchetypePattern) {
+atqar archetype_performance_monitoring_konfiguratsiya(qozgaltqys: ArchetypeEngine, pattern: ArchetypePattern) {
     // Initialize performance monitoring for archetype
     jasau performance_monitor: PerformanceMonitor = PerformanceMonitor();
     performance_monitor.archetype_name = pattern.name;
@@ -426,21 +426,21 @@ atqar archetype_performance_monitoring_konfiguratsiya(engine: ArchetypeEngine, p
     performance_monitor.metrics["error_count"] = 0;
     performance_monitor.metrics["cache_hit_rate"] = 0;
     
-    engine.performance_stats[pattern.name] = performance_monitor;
+    qozgaltqys.performance_stats[pattern.name] = performance_monitor;
 }
 
 // Archetype performance tracking
 atqar archetype_performance_track(archetype: jol, metric: jol, value: san) {
     // Track performance metric for archetype
-    eger (archetype_engine.performance_stats[archetype]) {
-        archetype_engine.performance_stats[archetype].metrics[metric] = value;
+    eger (archetype_qozgaltqys.performance_stats[archetype]) {
+        archetype_qozgaltqys.performance_stats[archetype].metrics[metric] = value;
     }
 }
 
 // Archetype-based error handling
 atqar archetype_error_handle(error: Error, archetype: jol) -> jol {
     // Get archetype pattern for error handling
-    jasau pattern: ArchetypePattern = archetype_engine.archetype_map[archetype];
+    jasau pattern: ArchetypePattern = archetype_qozgaltqys.archetype_map[archetype];
     
     // Generate error response based on archetype
     jasau error_response: jol = archetype_error_response_generate(error, pattern);
@@ -451,7 +451,7 @@ atqar archetype_error_handle(error: Error, archetype: jol) -> jol {
 // Archetype-based logging
 atqar archetype_log(message: jol, level: jol, archetype: jol) {
     // Get archetype pattern for logging
-    jasau pattern: ArchetypePattern = archetype_engine.archetype_map[archetype];
+    jasau pattern: ArchetypePattern = archetype_qozgaltqys.archetype_map[archetype];
     
     // Generate structured log entry
     jasau log_entry: LogEntry = archetype_log_entry_generate(message, level, pattern);

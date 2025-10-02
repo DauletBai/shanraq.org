@@ -88,7 +88,7 @@ demo:
 	@echo "=========================================="
 	@echo "Press Ctrl+C to stop the server"
 	@echo ""
-	python3 synaqtar/demo/template_server.py
+	python3 synaqtar/demo/ulgi_server.py
 
 benchmark:
 	@echo "🚀 Running Shanraq.org benchmark tests..."

@@ -13,7 +13,7 @@
     "password": "",
     "ssl": false
   },
-  "security": {
+  "qauıpsızdık": {
     "jwt_secret": "tenge_web_secret_key",
     "bcrypt_rounds": 12,
     "session_timeout": 3600
@@ -30,7 +30,7 @@
   "features": {
     "morpheme_cache": true,
     "phoneme_optimizer": true,
-    "archetype_engine": true,
+    "archetype_qozgaltqys": true,
     "simd_processor": true
   }
 }

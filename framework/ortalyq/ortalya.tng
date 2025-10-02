@@ -1,29 +1,29 @@
-// middleware.tng - Tenge Middleware System
-// Agglutinative middleware framework
+// ortalyq.tng - Tenge Middleware System
+// Agglutinative ortalyq framework
 
-atqar middleware_jasau() -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    qaytar middleware;
+atqar ortalyq_jasau() -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    qaytar ortalyq;
 }
 
 // Middleware chain management
-atqar middleware_chain_jasau() -> MiddlewareChain {
-    jasau chain: MiddlewareChain = middleware_chain_create();
+atqar ortalyq_chain_jasau() -> MiddlewareChain {
+    jasau chain: MiddlewareChain = ortalyq_chain_create();
     qaytar chain;
 }
 
-// Add middleware to chain
-atqar middleware_chain_qosu(chain: MiddlewareChain, middleware: Middleware) {
-    chain.middlewares = chain.middlewares + [middleware];
+// Add ortalyq to chain
+atqar ortalyq_chain_qosu(chain: MiddlewareChain, ortalyq: Middleware) {
+    chain.ortalyqs = chain.ortalyqs + [ortalyq];
 }
 
-// Execute middleware chain
-atqar middleware_chain_ishke_engizu(chain: MiddlewareChain, request: WebRequest, response: WebResponse) -> aqıqat {
+// Execute ortalyq chain
+atqar ortalyq_chain_ishke_engizu(chain: MiddlewareChain, request: WebRequest, response: WebResponse) -> aqıqat {
     jasau i: san = 0;
     
-    azirshe (i < chain.middlewares.length) {
-        jasau middleware: Middleware = chain.middlewares[i];
-        jasau result: aqıqat = middleware_execute(middleware, request, response);
+    azirshe (i < chain.ortalyqs.length) {
+        jasau ortalyq: Middleware = chain.ortalyqs[i];
+        jasau result: aqıqat = ortalyq_execute(ortalyq, request, response);
         
         eгер (!result) {
             qaytar jin;
@@ -35,15 +35,15 @@ atqar middleware_chain_ishke_engizu(chain: MiddlewareChain, request: WebRequest,
     qaytar jan;
 }
 
-// Logging middleware
-atqar logging_middleware_jasau() -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "logging";
-    middleware.execute = logging_middleware_execute;
-    qaytar middleware;
+// Logging ortalyq
+atqar logging_ortalyq_jasau() -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "logging";
+    ortalyq.execute = logging_ortalyq_execute;
+    qaytar ortalyq;
 }
 
-atqar logging_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+atqar logging_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
     jasau timestamp: jol = current_timestamp();
     jasau method: jol = web_request_get_method(request);
     jasau path: jol = web_request_get_path(request);
@@ -54,15 +54,15 @@ atqar logging_middleware_execute(request: WebRequest, response: WebResponse) -> 
     qaytar jan;
 }
 
-// Authentication middleware
-atqar kimdik_middleware_jasau() -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "kimdik";
-    middleware.execute = kimdik_middleware_execute;
-    qaytar middleware;
+// Authentication ortalyq
+atqar kimdik_ortalyq_jasau() -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "kimdik";
+    ortalyq.execute = kimdik_ortalyq_execute;
+    qaytar ortalyq;
 }
 
-atqar kimdik_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+atqar kimdik_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
     jasau token: jol = web_request_get_header(request, "Authorization");
     
     eгер (token == "") {
@@ -85,16 +85,16 @@ atqar kimdik_middleware_execute(request: WebRequest, response: WebResponse) -> a
     qaytar jan;
 }
 
-// Authorization middleware
-atqar ruqsat_middleware_jasau(required_permission: jol) -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "ruqsat";
-    middleware.execute = ruqsat_middleware_execute;
-    middleware.data = json_object_create_with_string("permission", required_permission);
-    qaytar middleware;
+// Authorization ortalyq
+atqar ruqsat_ortalyq_jasau(required_permission: jol) -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "ruqsat";
+    ortalyq.execute = ruqsat_ortalyq_execute;
+    ortalyq.data = json_object_create_with_string("permission", required_permission);
+    qaytar ortalyq;
 }
 
-atqar ruqsat_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+atqar ruqsat_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
     jasau user_id: jol = web_request_get_user_id(request);
     
     eгер (user_id == "") {
@@ -103,7 +103,7 @@ atqar ruqsat_middleware_execute(request: WebRequest, response: WebResponse) -> a
         qaytar jin;
     }
     
-    jasau required_permission: jol = json_object_get_string(middleware.data, "permission");
+    jasau required_permission: jol = json_object_get_string(ortalyq.data, "permission");
     jasau has_permission: aqıqat = user_ruqsat_tekseru(user_id, required_permission);
     
     eгер (!has_permission) {
@@ -115,24 +115,24 @@ atqar ruqsat_middleware_execute(request: WebRequest, response: WebResponse) -> a
     qaytar jan;
 }
 
-// Rate limiting middleware
-atqar rate_limit_middleware_jasau(max_requests: san, window_seconds: san) -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "rate_limit";
-    middleware.execute = rate_limit_middleware_execute;
+// Rate limiting ortalyq
+atqar rate_limit_ortalyq_jasau(max_requests: san, window_seconds: san) -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "rate_limit";
+    ortalyq.execute = rate_limit_ortalyq_execute;
     
     jasau data: JsonObject = json_object_create();
     json_object_set_number(data, "max_requests", max_requests);
     json_object_set_number(data, "window_seconds", window_seconds);
-    middleware.data = data;
+    ortalyq.data = data;
     
-    qaytar middleware;
+    qaytar ortalyq;
 }
 
-atqar rate_limit_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+atqar rate_limit_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
     jasau ip: jol = web_request_get_ip(request);
-    jasau max_requests: san = json_object_get_number(middleware.data, "max_requests");
-    jasau window_seconds: san = json_object_get_number(middleware.data, "window_seconds");
+    jasau max_requests: san = json_object_get_number(ortalyq.data, "max_requests");
+    jasau window_seconds: san = json_object_get_number(ortalyq.data, "window_seconds");
     
     jasau current_requests: san = rate_limit_get_requests(ip, window_seconds);
     
@@ -147,15 +147,15 @@ atqar rate_limit_middleware_execute(request: WebRequest, response: WebResponse) 
     qaytar jan;
 }
 
-// CORS middleware
-atqar cors_middleware_jasau() -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "cors";
-    middleware.execute = cors_middleware_execute;
-    qaytar middleware;
+// CORS ortalyq
+atqar cors_ortalyq_jasau() -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "cors";
+    ortalyq.execute = cors_ortalyq_execute;
+    qaytar ortalyq;
 }
 
-atqar cors_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+atqar cors_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
     jasau origin: jol = web_request_get_header(request, "Origin");
     
     // Set CORS headers
@@ -173,16 +173,16 @@ atqar cors_middleware_execute(request: WebRequest, response: WebResponse) -> aq�
     qaytar jan;
 }
 
-// Security middleware
-atqar kawipsizdik_middleware_jasau() -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "kawipsizdik";
-    middleware.execute = kawipsizdik_middleware_execute;
-    qaytar middleware;
+// Security ortalyq
+atqar kawipsizdik_ortalyq_jasau() -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "kawipsizdik";
+    ortalyq.execute = kawipsizdik_ortalyq_execute;
+    qaytar ortalyq;
 }
 
-atqar kawipsizdik_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
-    // Set security headers
+atqar kawipsizdik_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    // Set qauıpsızdık headers
     web_response_set_header(response, "X-Content-Type-Options", "nosniff");
     web_response_set_header(response, "X-Frame-Options", "DENY");
     web_response_set_header(response, "X-XSS-Protection", "1; mode=block");
@@ -200,20 +200,20 @@ atqar kawipsizdik_middleware_execute(request: WebRequest, response: WebResponse)
     qaytar jan;
 }
 
-// Validation middleware
-atqar tekseu_middleware_jasau(schema: JsonObject) -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "tekseu";
-    middleware.execute = tekseu_middleware_execute;
-    middleware.data = schema;
-    qaytar middleware;
+// Validation ortalyq
+atqar tekseu_ortalyq_jasau(schema: JsonObject) -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "tekseu";
+    ortalyq.execute = tekseu_ortalyq_execute;
+    ortalyq.data = schema;
+    qaytar ortalyq;
 }
 
-atqar tekseu_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+atqar tekseu_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
     jasau body: jol = web_request_get_body(request);
     jasau data: JsonObject = json_parse_object(body);
     
-    jasau validation_result: JsonObject = json_schema_validate(data, middleware.data);
+    jasau validation_result: JsonObject = json_schema_validate(data, ortalyq.data);
     
     eгер (!json_object_get_boolean(validation_result, "valid")) {
         web_response_set_status(response, 400);
@@ -224,15 +224,15 @@ atqar tekseu_middleware_execute(request: WebRequest, response: WebResponse) -> a
     qaytar jan;
 }
 
-// Compression middleware
-atqar compression_middleware_jasau() -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "compression";
-    middleware.execute = compression_middleware_execute;
-    qaytar middleware;
+// Compression ortalyq
+atqar compression_ortalyq_jasau() -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "compression";
+    ortalyq.execute = compression_ortalyq_execute;
+    qaytar ortalyq;
 }
 
-atqar compression_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+atqar compression_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
     jasau accept_encoding: jol = web_request_get_header(request, "Accept-Encoding");
     
     eгер (accept_encoding.contains("gzip")) {
@@ -246,16 +246,16 @@ atqar compression_middleware_execute(request: WebRequest, response: WebResponse)
     qaytar jan;
 }
 
-// Cache middleware
-atqar cache_middleware_jasau(ttl_seconds: san) -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "cache";
-    middleware.execute = cache_middleware_execute;
-    middleware.data = json_object_create_with_number("ttl", ttl_seconds);
-    qaytar middleware;
+// Cache ortalyq
+atqar cache_ortalyq_jasau(ttl_seconds: san) -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "cache";
+    ortalyq.execute = cache_ortalyq_execute;
+    ortalyq.data = json_object_create_with_number("ttl", ttl_seconds);
+    qaytar ortalyq;
 }
 
-atqar cache_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+atqar cache_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
     jasau cache_key: jol = web_request_get_cache_key(request);
     jasau cached_response: JsonObject = cache_get(cache_key);
     
@@ -266,39 +266,39 @@ atqar cache_middleware_execute(request: WebRequest, response: WebResponse) -> aq
     }
     
     // Set cache headers
-    jasau ttl: san = json_object_get_number(middleware.data, "ttl");
+    jasau ttl: san = json_object_get_number(ortalyq.data, "ttl");
     web_response_set_header(response, "Cache-Control", "public, max-age=" + int_to_string(ttl));
     
     qaytar jan;
 }
 
-// Error handling middleware
-atqar error_handling_middleware_jasau() -> Middleware {
-    jasau middleware: Middleware = middleware_create();
-    middleware.name = "error_handling";
-    middleware.execute = error_handling_middleware_execute;
-    qaytar middleware;
+// Error handling ortalyq
+atqar error_handling_ortalyq_jasau() -> Middleware {
+    jasau ortalyq: Middleware = ortalyq_create();
+    ortalyq.name = "error_handling";
+    ortalyq.execute = error_handling_ortalyq_execute;
+    qaytar ortalyq;
 }
 
-atqar error_handling_middleware_execute(request: WebRequest, response: WebResponse) -> aqıqat {
-    // This middleware should be the last in the chain
+atqar error_handling_ortalyq_execute(request: WebRequest, response: WebResponse) -> aqıqat {
+    // This ortalyq should be the last in the chain
     // It handles any unhandled errors
     
     qaytar jan;
 }
 
 // Middleware factory functions
-atqar middleware_create() -> Middleware {
-    jasau middleware: Middleware = Middleware();
-    middleware.name = "";
-    middleware.execute = NULL;
-    middleware.data = NULL;
-    qaytar middleware;
+atqar ortalyq_create() -> Middleware {
+    jasau ortalyq: Middleware = Middleware();
+    ortalyq.name = "";
+    ortalyq.execute = NULL;
+    ortalyq.data = NULL;
+    qaytar ortalyq;
 }
 
-atqar middleware_chain_create() -> MiddlewareChain {
+atqar ortalyq_chain_create() -> MiddlewareChain {
     jasau chain: MiddlewareChain = MiddlewareChain();
-    chain.middlewares = [];
+    chain.ortalyqs = [];
     qaytar chain;
 }
 

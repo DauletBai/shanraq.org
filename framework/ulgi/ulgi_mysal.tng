@@ -1,24 +1,24 @@
-// template_example.tng - Shanraq Template Engine Usage Example
+// ulgi_example.tng - Shanraq Template Engine Usage Example
 // Шанрак Үлгі Қозғалтқышы Пайдалану Мысалы / Shanraq Template Engine Usage Example
 
-import "framework/template/template_engine_core.tng";
-import "framework/template/template_helpers.tng";
-import "framework/template/template_filters.tng";
-import "framework/template/template_utils.tng";
+import "framework/ulgi/ulgi_qozgaltqys_core.tng";
+import "framework/ulgi/ulgi_helpers.tng";
+import "framework/ulgi/ulgi_filters.tng";
+import "framework/ulgi/ulgi_utils.tng";
 
 atqar main() {
     korset("🚀 Shanraq Template Engine Demo");
     korset("🚀 Шанрак Үлгі Қозғалтқышы Демо");
     korset("=====================================");
 
-    // Initialize template engine
-    jasau template_engine: TemplateEngine = template_engine_jasau();
-    korset("✅ Template engine initialized");
+    // Initialize ulgi qozgaltqys
+    jasau ulgi_qozgaltqys: TemplateEngine = ulgi_qozgaltqys_jasau();
+    korset("✅ Template qozgaltqys initialized");
 
     // Prepare sample data
     jasau data: JsonObject = json_object_create();
     json_object_set_string(data, "title", "Shanraq Template Engine");
-    json_object_set_string(data, "content", "Welcome to the powerful Shanraq template system!");
+    json_object_set_string(data, "content", "Welcome to the powerful Shanraq ulgi system!");
     
     // User data
     jasau user: JsonObject = json_object_create();
@@ -38,7 +38,7 @@ atqar main() {
     
     jasau post2: JsonObject = json_object_create();
     json_object_set_string(post2, "title", "Template Engine Features");
-    json_object_set_string(post2, "content", "Discover the amazing features of our template engine...");
+    json_object_set_string(post2, "content", "Discover the amazing features of our ulgi qozgaltqys...");
     json_object_set_string(post2, "date", "2025-10-02");
     posts = posts + [post2];
     
@@ -204,14 +204,14 @@ atqar main() {
     
     korset("✅ Sample data prepared");
     
-    // Render home page template
-    korset("🔄 Rendering home page template...");
-    jasau home_html: jol = template_render(template_engine, "home_page", data);
+    // Render home page ulgi
+    korset("🔄 Rendering home page ulgi...");
+    jasau home_html: jol = ulgi_render(ulgi_qozgaltqys, "home_page", data);
     korset("✅ Home page rendered successfully");
     
-    // Render blog page template
-    korset("🔄 Rendering blog page template...");
-    jasau blog_html: jol = template_render(template_engine, "blog_page", data);
+    // Render blog page ulgi
+    korset("🔄 Rendering blog page ulgi...");
+    jasau blog_html: jol = ulgi_render(ulgi_qozgaltqys, "blog_page", data);
     korset("✅ Blog page rendered successfully");
     
     // Display results
@@ -221,7 +221,7 @@ atqar main() {
     korset("=====================================");
     korset("🏠 Home Page: " + string_length(home_html) + " characters");
     korset("📝 Blog Page: " + string_length(blog_html) + " characters");
-    korset("✅ Both templates rendered successfully!");
+    korset("✅ Both ulgis rendered successfully!");
     korset("✅ Екі үлгі де сәтті рендерленді!");
     
     korset("=====================================");
@@ -229,6 +229,7 @@ atqar main() {
     korset("🎉 Шанрак Үлгі Қозғалтқышы Демо Аяқталды!");
     korset("=====================================");
 }
+
 
 
 

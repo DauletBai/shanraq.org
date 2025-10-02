@@ -15,11 +15,11 @@ const morgan = require('morgan');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Security middleware
+// Security ortalyq
 app.use(helmet());
 app.use(cors());
 
-// Compression middleware
+// Compression ortalyq
 app.use(compression());
 
 // Rate limiting
@@ -175,7 +175,7 @@ app.get('/api/v1/status', (req, res) => {
     framework: 'Shanraq.org',
     morpheme_cache: 'active',
     phoneme_optimizer: 'enabled',
-    archetype_engine: 'loaded',
+    archetype_qozgaltqys: 'loaded',
     simd_processor: 'enabled'
   });
 });

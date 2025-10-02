@@ -87,9 +87,9 @@ atqar transpiler_generate_headers() -> jol {
     headers = headers + "jol web_post_route_qosu(WebServer server, jol path, Function handler);\n";
     headers = headers + "jol web_put_route_qosu(WebServer server, jol path, Function handler);\n";
     headers = headers + "jol web_delete_route_qosu(WebServer server, jol path, Function handler);\n";
-    headers = headers + "jol web_middleware_qosu(WebServer server, Function middleware);\n";
+    headers = headers + "jol web_ortalyq_qosu(WebServer server, Function ortalyq);\n";
     headers = headers + "jol web_static_qosu(WebServer server, jol path, jol directory);\n";
-    headers = headers + "jol web_cors_middleware_qosu(WebServer server);\n";
+    headers = headers + "jol web_cors_ortalyq_qosu(WebServer server);\n";
     headers = headers + "jol web_request_get_body(WebRequest request);\n";
     headers = headers + "jol web_request_get_query(WebRequest request, jol key);\n";
     headers = headers + "jol web_request_get_param(WebRequest request, jol key);\n";
@@ -99,10 +99,10 @@ atqar transpiler_generate_headers() -> jol {
     headers = headers + "jol web_html_response_qaytar(WebResponse response, jol html, san status);\n";
     headers = headers + "jol web_jwt_token_jasau(jol user_id);\n";
     headers = headers + "jol web_jwt_token_decode(jol token);\n";
-    headers = headers + "jol web_template_engin_ishke_engizu(jol template, JsonObject data);\n";
-    headers = headers + "jol web_logging_middleware(WebRequest request, WebResponse response);\n";
-    headers = headers + "jol web_auth_middleware(WebRequest request, WebResponse response);\n";
-    headers = headers + "jol web_rate_limit_middleware(WebRequest request, WebResponse response);\n";
+    headers = headers + "jol web_ulgi_engin_ishke_engizu(jol ulgi, JsonObject data);\n";
+    headers = headers + "jol web_logging_ortalyq(WebRequest request, WebResponse response);\n";
+    headers = headers + "jol web_auth_ortalyq(WebRequest request, WebResponse response);\n";
+    headers = headers + "jol web_rate_limit_ortalyq(WebRequest request, WebResponse response);\n";
     headers = headers + "jol web_request_simulate(jol method, jol path, JsonObject data);\n";
     headers = headers + "jol model_create(jol name);\n";
     headers = headers + "jol model_add_field(Model model, Field field);\n";

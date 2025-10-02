@@ -15,7 +15,7 @@
     "docs:generate": "jsdoc betjagy/ -d qujattama/api/",
     "start": "node index.js",
     "server": "node artjagy/server/main.js",
-    "demo": "python3 synaqtar/demo/template_server.py",
+    "demo": "python3 synaqtar/demo/ulgi_server.py",
     "benchmark": "cd synaqtar/benchmarks && make benchmark-full",
     "benchmark:financial": "cd synaqtar/benchmarks && make benchmark-financial",
     "benchmark:crud": "cd synaqtar/benchmarks && make benchmark-crud",
@@ -73,7 +73,7 @@
     "compression": "^1.7.0",
     "morgan": "^1.10.0"
   },
-  "engines": {
+  "qozgaltqyss": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
   },

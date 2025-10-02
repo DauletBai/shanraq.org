@@ -3,7 +3,7 @@
 
 ## 🚀 Overview / Шолу
 
-The Shanraq Template Engine is a powerful, agglutinative template system designed specifically for the Shanraq framework. It leverages Kazakh language features like morphemes, phonemes, and archetypes (algasqy) to provide high-performance template rendering.
+The Shanraq Template Engine is a powerful, agglutinative ulgi system designed specifically for the Shanraq framework. It leverages Kazakh language features like morphemes, phonemes, and archetypes (algasqy) to provide high-performance ulgi rendering.
 
 Шанрак Үлгі Қозғалтқышы - бұл Шанрак фреймворгі үшін арнайы жасалған күшті, агглютинативтік үлгі жүйесі. Ол морфема, фонема және архетип сияқты қазақ тілінің ерекшеліктерін пайдаланып, жоғары өнімді үлгі рендерингін қамтамасыз етеді.
 
@@ -11,31 +11,31 @@ The Shanraq Template Engine is a powerful, agglutinative template system designe
 
 ### Core Features / Негізгі Мүмкіндіктер
 - **🔄 Agglutinative Syntax** - Uses Kazakh language patterns
-- **⚡ High Performance** - Compiled templates with caching
+- **⚡ High Performance** - Compiled ulgis with caching
 - **🧩 Morpheme-based Processing** - Dynamic word composition
 - **🎵 Phoneme Optimization** - Sound-based optimizations
-- **🏗️ Archetype Patterns (algasqy)** - Reusable template patterns
+- **🏗️ Archetype Patterns (algasqy)** - Reusable ulgi patterns
 - **🛠️ Helper Functions** - Rich set of built-in helpers
 - **🔧 Filter System** - Data transformation filters
-- **📄 Partial Templates** - Reusable template components
+- **📄 Partial Templates** - Reusable ulgi components
 - **🎨 Layout System** - Master page layouts
 
 ### Shanraq-Specific Features / Шанрак-Арнайы Мүмкіндіктер
 - **🔤 Morpheme Engine Integration** - Dynamic word creation
 - **🎵 Phoneme Engine Integration** - Sound-based optimizations
-- **🏗️ Archetype Engine Integration (algasqy)** - Pattern-based templates
+- **🏗️ Archetype Engine Integration (algasqy)** - Pattern-based ulgis
 - **🇰🇿 Kazakh Language Support** - Native language features
 - **⚡ Performance Optimization** - SIMD and caching support
 
 ## 📁 File Structure / Файл Құрылымы
 
 ```
-framework/template/
-├── template_engine_core.tng      # Core template engine
-├── template_helpers.tng          # Helper functions
-├── template_filters.tng         # Filter functions
-├── template_utils.tng           # Utility functions
-├── template_example.tng         # Usage example
+framework/ulgi/
+├── ulgi_qozgaltqys_core.tng      # Core ulgi qozgaltqys
+├── ulgi_helpers.tng          # Helper functions
+├── ulgi_filters.tng         # Filter functions
+├── ulgi_utils.tng           # Utility functions
+├── ulgi_example.tng         # Usage example
 └── README.md                    # This file
 ```
 
@@ -44,14 +44,14 @@ framework/template/
 ### 1. Initialize Template Engine / Үлгі Қозғалтқышын Инициализациялау
 
 ```tenge
-// Initialize template engine
-jasau template_engine: TemplateEngine = template_engine_jasau();
+// Initialize ulgi qozgaltqys
+jasau ulgi_qozgaltqys: TemplateEngine = ulgi_qozgaltqys_jasau();
 ```
 
 ### 2. Prepare Data / Деректерді Дайындау
 
 ```tenge
-// Prepare template data
+// Prepare ulgi data
 jasau data: JsonObject = json_object_create();
 json_object_set_string(data, "title", "Shanraq Template Engine");
 json_object_set_string(data, "content", "Welcome to Shanraq!");
@@ -60,8 +60,8 @@ json_object_set_string(data, "content", "Welcome to Shanraq!");
 ### 3. Render Template / Үлгіні Рендерлеу
 
 ```tenge
-// Render template
-jasau html: jol = template_render(template_engine, "home_page", data);
+// Render ulgi
+jasau html: jol = ulgi_render(ulgi_qozgaltqys, "home_page", data);
 ```
 
 ## 📝 Template Syntax / Үлгі Синтаксисі
@@ -131,8 +131,8 @@ jasau html: jol = template_render(template_engine, "home_page", data);
 - `for(start, end, step, content)` - For loop
 
 ### Data Helpers / Деректер Көмекшілері
-- `each(array, template)` - Array iteration
-- `with(data, template)` - Context setting
+- `each(array, ulgi)` - Array iteration
+- `with(data, ulgi)` - Context setting
 - `lookup(obj, key)` - Object property access
 
 ### String Helpers / Жол Көмекшілері
@@ -240,9 +240,9 @@ jasau html: jol = template_render(template_engine, "home_page", data);
 
 ### Compilation / Компиляция
 - **Template Compilation** - Templates are compiled to optimized code
-- **Caching** - Compiled templates are cached for performance
+- **Caching** - Compiled ulgis are cached for performance
 - **Dependency Tracking** - Automatic dependency management
-- **Hot Reloading** - Development-time template updates
+- **Hot Reloading** - Development-time ulgi updates
 
 ### Optimization / Оңтайландыру
 - **Morpheme-based Caching** - Cache based on word structure
@@ -255,11 +255,11 @@ jasau html: jol = template_render(template_engine, "home_page", data);
 ### Server Integration / Сервер Интеграциясы
 
 ```tenge
-// Initialize template engine
-jasau template_engine: TemplateEngine = template_engine_jasau();
+// Initialize ulgi qozgaltqys
+jasau ulgi_qozgaltqys: TemplateEngine = ulgi_qozgaltqys_jasau();
 
-// Render template
-jasau html: jol = template_render(template_engine, "home_page", data);
+// Render ulgi
+jasau html: jol = ulgi_render(ulgi_qozgaltqys, "home_page", data);
 
 // Send response
 http_response_send(html);
@@ -268,19 +268,19 @@ http_response_send(html);
 ### Data Binding / Деректер Байланысы
 
 ```tenge
-// Prepare template data
+// Prepare ulgi data
 jasau data: JsonObject = json_object_create();
 json_object_set_string(data, "title", "Shanraq Home");
 json_object_set_string(data, "content", "Welcome to Shanraq!");
 
 // Render with data
-jasau html: jol = template_render(template_engine, "home_page", data);
+jasau html: jol = ulgi_render(ulgi_qozgaltqys, "home_page", data);
 ```
 
 ## 🛠️ Development / Дәуелдер
 
 ### Template Development / Үлгі Дәуелдері
-1. **Create Template** - Write template in `.tng` format
+1. **Create Template** - Write ulgi in `.tng` format
 2. **Test Template** - Use development server
 3. **Optimize Template** - Apply performance optimizations
 4. **Deploy Template** - Production deployment
@@ -297,19 +297,19 @@ jasau html: jol = template_render(template_engine, "home_page", data);
 - **Separation of Concerns** - Keep logic separate from presentation
 - **Reusability** - Create reusable components
 - **Performance** - Optimize for speed
-- **Maintainability** - Keep templates clean and organized
+- **Maintainability** - Keep ulgis clean and organized
 
 ### Code Organization / Код Ұйымдастыру
-- **Modular Structure** - Organize templates logically
+- **Modular Structure** - Organize ulgis logically
 - **Naming Conventions** - Use consistent naming
-- **Documentation** - Document complex templates
-- **Version Control** - Track template changes
+- **Documentation** - Document complex ulgis
+- **Version Control** - Track ulgi changes
 
 ## 🔍 Troubleshooting / Ақауларды Жою
 
 ### Common Issues / Жиі Кездесетін Мәселелер
 - **Template Not Found** - Check file paths
-- **Syntax Errors** - Validate template syntax
+- **Syntax Errors** - Validate ulgi syntax
 - **Performance Issues** - Check caching and optimization
 - **Memory Leaks** - Monitor memory usage
 
@@ -335,8 +335,8 @@ jasau html: jol = template_render(template_engine, "home_page", data);
 
 ## 📚 Documentation / Құжаттама
 
-- [Template Engine Documentation](../qujattama/template-engine.md) - Complete documentation
-- [API Reference](../qujattama/api/template-api.md) - API reference
+- [Template Engine Documentation](../qujattama/ulgi-qozgaltqys.md) - Complete documentation
+- [API Reference](../qujattama/api/ulgi-api.md) - API reference
 - [Examples](../examples/) - Code examples
 - [Tutorials](../tutorials/) - Step-by-step tutorials
 
@@ -354,7 +354,7 @@ This project is licensed under the MIT License - see the [LICENSE](../../LICENSE
 
 ---
 
-**Conclusion / Қорытынды**: The Shanraq Template Engine provides a powerful, agglutinative template system that leverages Kazakh language features for high-performance web development. With its rich feature set, excellent performance, and easy-to-use syntax, it's the perfect choice for building modern web applications with the Shanraq framework.
+**Conclusion / Қорытынды**: The Shanraq Template Engine provides a powerful, agglutinative ulgi system that leverages Kazakh language features for high-performance web development. With its rich feature set, excellent performance, and easy-to-use syntax, it's the perfect choice for building modern web applications with the Shanraq framework.
 
 **Қорытынды**: Шанрак Үлгі Қозғалтқышы қазақ тілінің ерекшеліктерін пайдаланып, жоғары өнімді веб дәуелдері үшін күшті, агглютинативтік үлгі жүйесін қамтамасыз етеді. Оның бай мүмкіндіктері, тамаша өнімділігі және оңай пайдалану синтаксисімен ол Шанрак фреймворгімен заманауи веб қосымшаларын құру үшін тамаша таңдау.
 

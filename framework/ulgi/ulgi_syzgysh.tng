@@ -1,0 +1,168 @@
+// ulgi_filters.tng - Shanraq Template Filters
+// Шанрак Үлгі Сүзгілері / Shanraq Template Filters
+
+// Register ulgi filters
+atqar ulgi_filters_qosu(qozgaltqys: TemplateEngine) {
+    // String filters
+    json_object_set_function(qozgaltqys.filters, "upper", ulgi_filter_upper);
+    json_object_set_function(qozgaltqys.filters, "lower", ulgi_filter_lower);
+    json_object_set_function(qozgaltqys.filters, "capitalize", ulgi_filter_capitalize);
+    json_object_set_function(qozgaltqys.filters, "title", ulgi_filter_title);
+    json_object_set_function(qozgaltqys.filters, "trim", ulgi_filter_trim);
+    json_object_set_function(qozgaltqys.filters, "replace", ulgi_filter_replace);
+    
+    // Number filters
+    json_object_set_function(qozgaltqys.filters, "round", ulgi_filter_round);
+    json_object_set_function(qozgaltqys.filters, "ceil", ulgi_filter_ceil);
+    json_object_set_function(qozgaltqys.filters, "floor", ulgi_filter_floor);
+    json_object_set_function(qozgaltqys.filters, "abs", ulgi_filter_abs);
+    
+    // Array filters
+    json_object_set_function(qozgaltqys.filters, "unique", ulgi_filter_unique);
+    json_object_set_function(qozgaltqys.filters, "sort", ulgi_filter_sort);
+    json_object_set_function(qozgaltqys.filters, "reverse", ulgi_filter_reverse);
+    json_object_set_function(qozgaltqys.filters, "slice", ulgi_filter_slice);
+    
+    // Date filters
+    json_object_set_function(qozgaltqys.filters, "date", ulgi_filter_date);
+    json_object_set_function(qozgaltqys.filters, "time", ulgi_filter_time);
+    json_object_set_function(qozgaltqys.filters, "datetime", ulgi_filter_datetime);
+    
+    // Shanraq-specific filters
+    json_object_set_function(qozgaltqys.filters, "morpheme_analyze", ulgi_filter_morpheme_analyze);
+    json_object_set_function(qozgaltqys.filters, "phoneme_optimize", ulgi_filter_phoneme_optimize);
+    json_object_set_function(qozgaltqys.filters, "archetype_apply", ulgi_filter_archetype_apply);
+}
+
+// String filters
+atqar ulgi_filter_upper(text: jol) -> jol {
+    qaytar string_upper(text);
+}
+
+atqar ulgi_filter_lower(text: jol) -> jol {
+    qaytar string_lower(text);
+}
+
+atqar ulgi_filter_capitalize(text: jol) -> jol {
+    eгер (string_length(text) > 0) {
+        jasau first: jol = string_upper(string_substring(text, 0, 1));
+        jasau rest: jol = string_lower(string_substring(text, 1));
+        qaytar first + rest;
+    }
+    qaytar text;
+}
+
+atqar ulgi_filter_title(text: jol) -> jol {
+    jasau words: jol[] = string_split(text, " ");
+    jasau title_words: jol[] = [];
+    san i = 0;
+    while (i < array_uzyn_bolu(words)) {
+        title_words = title_words + [ulgi_filter_capitalize(words[i])];
+        i = i + 1;
+    }
+    qaytar string_join(title_words, " ");
+}
+
+atqar ulgi_filter_trim(text: jol) -> jol {
+    qaytar string_trim(text);
+}
+
+atqar ulgi_filter_replace(text: jol, search: jol, replace: jol) -> jol {
+    qaytar string_replace(text, search, replace);
+}
+
+// Number filters
+atqar ulgi_filter_round(number: san, decimals: san) -> san {
+    jasau factor: san = 1;
+    san i = 0;
+    while (i < decimals) {
+        factor = factor * 10;
+        i = i + 1;
+    }
+    qaytar (number * factor + 0.5) / factor;
+}
+
+atqar ulgi_filter_ceil(number: san) -> san {
+    qaytar number + 1; // Simplified
+}
+
+atqar ulgi_filter_floor(number: san) -> san {
+    qaytar number; // Simplified
+}
+
+atqar ulgi_filter_abs(number: san) -> san {
+    eгер (number < 0) {
+        qaytar -number;
+    }
+    qaytar number;
+}
+
+// Array filters
+atqar ulgi_filter_unique(array: jol[]) -> jol[] {
+    jasau unique: jol[] = [];
+    san i = 0;
+    while (i < array_uzyn_bolu(array)) {
+        jasau item: jol = array[i];
+        jasau found: aqıqat = aqıqat_ras;
+        san j = 0;
+        while (j < array_uzyn_bolu(unique)) {
+            eгер (unique[j] == item) {
+                found = aqıqat_ras;
+                break;
+            }
+            j = j + 1;
+        }
+        eгер (found == aqıqat_ras) {
+            unique = unique + [item];
+        }
+        i = i + 1;
+    }
+    qaytar unique;
+}
+
+atqar ulgi_filter_sort(array: jol[]) -> jol[] {
+    qaytar ulgi_helper_sort(array);
+}
+
+atqar ulgi_filter_reverse(array: jol[]) -> jol[] {
+    qaytar ulgi_helper_reverse(array);
+}
+
+atqar ulgi_filter_slice(array: jol[], start: san, end: san) -> jol[] {
+    qaytar array_slice(array, start, end);
+}
+
+// Date filters
+atqar ulgi_filter_date(timestamp: san, format: jol) -> jol {
+    qaytar "2025-10-01"; // Placeholder
+}
+
+atqar ulgi_filter_time(timestamp: san) -> jol {
+    qaytar "10:27:59"; // Placeholder
+}
+
+atqar ulgi_filter_datetime(timestamp: san) -> jol {
+    qaytar "2025-10-01 10:27:59"; // Placeholder
+}
+
+// Shanraq-specific filters
+atqar ulgi_filter_morpheme_analyze(qozgaltqys: TemplateEngine, word: jol) -> jol {
+    qaytar morpheme_magynasyn_alu(qozgaltqys.morpheme_qozgaltqys, word);
+}
+
+atqar ulgi_filter_phoneme_optimize(qozgaltqys: TemplateEngine, text: jol) -> jol {
+    qaytar phoneme_negizgi_optim_qoldanu(qozgaltqys.phoneme_qozgaltqys, text);
+}
+
+atqar ulgi_filter_archetype_apply(qozgaltqys: TemplateEngine, name: jol, config: JsonObject) -> JsonObject {
+    qaytar archetype_negizgi_qoldanu(qozgaltqys.archetype_qozgaltqys, name, config);
+}
+
+
+
+
+
+
+
+
+

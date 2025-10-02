@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "server": "node artjagy/server/main.js",
-    "demo": "python3 synaqtar/demo/template_server.py",
+    "demo": "python3 synaqtar/demo/ulgi_server.py",
     "test": "node synaqtar/unit/run_tests.js",
     "test:unit": "node synaqtar/unit/run_tests.js",
     "test:integration": "node synaqtar/integration/run_tests.js",
@@ -46,7 +46,7 @@
     "eslint": "^8.50.0",
     "prettier": "^3.0.0"
   },
-  "engines": {
+  "qozgaltqyss": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
   },

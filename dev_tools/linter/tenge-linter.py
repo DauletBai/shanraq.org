@@ -39,7 +39,7 @@ class TengeLinter:
             'Function', 'Class', 'Struct', 'Interface', 'Enum'
         ]
         self.english_words = [
-            'create', 'get', 'add', 'update', 'delete', 'check', 'optimize', 'engine', 'manager',
+            'create', 'get', 'add', 'update', 'delete', 'check', 'optimize', 'qozgaltqys', 'manager',
             'function', 'variable', 'class', 'method', 'property', 'return', 'if', 'else', 'while',
             'for', 'import', 'export', 'public', 'private', 'static', 'const', 'var', 'let'
         ]

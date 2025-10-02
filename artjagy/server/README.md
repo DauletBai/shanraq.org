@@ -8,9 +8,9 @@ artjagy/server/
 ├── jojj_basqaru.tng              # JOJJ API басқарушылары
 ├── main.js                       # Негізгі сервер файлы
 ├── tenge_server.tng              # Tenge сервер
-├── archetype_engine.tng          # Архетип қозғалтқышы
-├── morpheme_engine.tng           # Морфема қозғалтқышы
-├── phoneme_engine.tng            # Фонема қозғалтқышы
+├── archetype_qozgaltqys.tng          # Архетип қозғалтқышы
+├── morpheme_qozgaltqys.tng           # Морфема қозғалтқышы
+├── phoneme_qozgaltqys.tng            # Фонема қозғалтқышы
 ├── performance_optimization.tng  # Өнімділік оптимизациясы
 ├── simd_processor.tng            # SIMD процессор
 └── README.md                     # Бұл файл
@@ -96,13 +96,13 @@ DELETE /api/v1/sanattar/:id
 ### **tenge_server.tng**
 Shanraq.org негізгі сервері - агглютинативтік ерекшеліктерді пайдаланатын жоғары өнімділікті сервер.
 
-### **archetype_engine.tng**
+### **archetype_qozgaltqys.tng**
 Архетип қозғалтқышы - паттерн-негізделген дамыту жүйесі.
 
-### **morpheme_engine.tng**
+### **morpheme_qozgaltqys.tng**
 Морфема қозғалтқышы - қазақ тілінің морфемаларын өңдейтін қозғалтқыш.
 
-### **phoneme_engine.tng**
+### **phoneme_qozgaltqys.tng**
 Фонема қозғалтқышы - дыбыстық ерекшеліктерді өңдейтін қозғалтқыш.
 
 ### **performance_optimization.tng**
@@ -131,7 +131,7 @@ node artjagy/server/main.js
 ```bash
 npm run demo
 # немесе
-python3 synaqtar/demo/template_server.py
+python3 synaqtar/demo/ulgi_server.py
 ```
 
 ## 📊 **API тестілеу**
@@ -166,7 +166,7 @@ curl http://localhost:8080/api/v1/statistics
     "type": "sqlite",
     "database": "tenge_web.db"
   },
-  "security": {
+  "qauıpsızdık": {
     "jwt_secret": "tenge_web_secret_key",
     "bcrypt_rounds": 12
   }

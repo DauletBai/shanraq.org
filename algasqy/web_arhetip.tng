@@ -40,7 +40,7 @@ atqar web_komponent_arhetip_jasau() -> Archetype {
     jasau archetype: Archetype = archetype_create("web_komponent");
     
     // Component patterns
-    archetype_morpheme_qosu(archetype, "template", "үлгі");
+    archetype_morpheme_qosu(archetype, "ulgi", "үлгі");
     archetype_morpheme_qosu(archetype, "controller", "басқару");
     archetype_morpheme_qosu(archetype, "service", "қызмет");
     archetype_morpheme_qosu(archetype, "model", "модель");

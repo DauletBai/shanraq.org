@@ -90,13 +90,13 @@ json_object_set_string(${1:object_name}, "${2:key}", ${3:value});]]></content>
 </snippet>
 
 <snippet>
-  <content><![CDATA[atqar template_engine_jasau() -> TemplateEngine {
-    jasau engine: TemplateEngine = template_engine_create();
-    qaytar engine;
+  <content><![CDATA[atqar ulgi_qozgaltqys_jasau() -> TemplateEngine {
+    jasau qozgaltqys: TemplateEngine = ulgi_qozgaltqys_create();
+    qaytar qozgaltqys;
 }]]></content>
-  <tabTrigger>template</tabTrigger>
+  <tabTrigger>ulgi</tabTrigger>
   <scope>source.tenge</scope>
-  <description>Create a template engine function</description>
+  <description>Create a ulgi qozgaltqys function</description>
 </snippet>
 
 <snippet>

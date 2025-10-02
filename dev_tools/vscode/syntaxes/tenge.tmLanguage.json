@@ -103,7 +103,7 @@
           ]
         },
         {
-          "name": "string.template.tenge",
+          "name": "string.ulgi.tenge",
           "begin": "`",
           "end": "`",
           "patterns": [

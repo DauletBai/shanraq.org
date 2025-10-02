@@ -157,8 +157,8 @@ function getHoverText(word: string): string | null {
         'JsonObject': 'JSON object type in Tenge language',
         'WebServer': 'Web server type in Tenge language',
         'Component': 'UI component type in Tenge language',
-        'TemplateEngine': 'Template engine type in Tenge language',
-        'ArchetypeEngine': 'Archetype engine type in Tenge language'
+        'TemplateEngine': 'Template qozgaltqys type in Tenge language',
+        'ArchetypeEngine': 'Archetype qozgaltqys type in Tenge language'
     };
     
     return hoverInfo[word] || null;
