@@ -667,3 +667,4 @@ atqar gc_monitor_free(monitor: GcMonitor) -> void {
 atqar allocator_monitor_free(monitor: AllocatorMonitor) -> void {
     array_free(monitor.alloc_events);
 }
+

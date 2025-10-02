@@ -690,3 +690,4 @@ atqar buffer_pool_free(pool: BufferPool) -> void {
     array_free(pool.sizes);
     array_free(pool.available);
 }
+

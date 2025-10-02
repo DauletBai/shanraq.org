@@ -485,3 +485,4 @@ atqar gpu_matrix_free(matrix: GpuMatrix) -> void {
 atqar numa_matrix_free(matrix: NumaMatrix) -> void {
     numa_free(matrix.data, matrix.rows * matrix.cols * sizeof(san));
 }
+

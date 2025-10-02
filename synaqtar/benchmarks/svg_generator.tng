@@ -268,3 +268,4 @@ atqar cos(angle: san) -> san {
 atqar sin(angle: san) -> san {
     qaytar math_sin(angle);
 }
+

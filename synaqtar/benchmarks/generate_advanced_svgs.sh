@@ -278,3 +278,4 @@ echo ""
 echo "🎉 Генерация продвинутых SVG завершена!"
 echo "📁 SVG файлы сохранены в: synaqtar/benchmarks/results/"
 echo "📊 Всего создано: 8 продвинутых SVG файлов"
+
