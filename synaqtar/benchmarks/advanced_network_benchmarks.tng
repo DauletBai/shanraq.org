@@ -642,3 +642,4 @@ atqar small_string_optimizer_free(optimizer: SmallStringOptimizer) -> void {
     array_free(optimizer.string_pool);
 }
 
+

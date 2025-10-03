@@ -1,0 +1,175 @@
+// Financial Core Unit Tests
+// Қаржылық ядро бірлік тесттері
+// Unit tests for financial core functionality
+
+// Test double-entry ledger
+atqar test_double_entry_ledger() -> aqıqat {
+    jasau ledger: DoubleEntryLedger = double_entry_ledger_create();
+    ledger.initialize();
+    
+    // Test account creation
+    eger (!ledger.account_jasau(1, ASSET, decimal128_from_string("1000.00"))) {
+        qaytar jin;
+    }
+    
+    // Test transaction validation
+    jasau entries: Array<LedgerEntry> = array_create();
+    
+    jasau debit_entry: LedgerEntry = ledger_entry_create();
+    debit_entry.account_id = 1;
+    debit_entry.debit_amount = decimal128_from_string("100.00");
+    debit_entry.credit_amount = decimal128_zero();
+    array_append(entries, debit_entry);
+    
+    jasau credit_entry: LedgerEntry = ledger_entry_create();
+    credit_entry.account_id = 2;
+    credit_entry.debit_amount = decimal128_zero();
+    credit_entry.credit_amount = decimal128_from_string("100.00");
+    array_append(entries, credit_entry);
+    
+    eger (!ledger.transaction_tekseru(entries)) {
+        qaytar jin;
+    }
+    
+    qaytar aqıqat;
+}
+
+// Test P2P transfer
+atqar test_p2p_transfer() -> aqıqat {
+    jasau p2p_system: P2PTransferSystem = p2p_transfer_system_create();
+    p2p_system.initialize();
+    
+    jasau request: P2PTransferRequest = p2p_transfer_request_create();
+    request.from_user_id = 1;
+    request.to_user_id = 2;
+    request.amount = decimal128_from_string("100.00");
+    request.description = "Test transfer";
+    
+    jasau response: P2PTransferResponse = p2p_system.transfer_ishke_engizu(request);
+    
+    eger (!response.success) {
+        qaytar jin;
+    }
+    
+    qaytar aqıqat;
+}
+
+// Test event sourcing
+atqar test_event_sourcing() -> aqıqat {
+    jasau event_store: EventStore = event_store_create();
+    event_store.initialize();
+    
+    jasau event: Event = event_create();
+    event.type = TRANSACTION_CREATED;
+    event.data = json_object_create();
+    
+    eger (!event_store.event_qosu(event)) {
+        qaytar jin;
+    }
+    
+    jasau events: Array<Event> = event_store.events_al();
+    eger (array_length(events) != 1) {
+        qaytar jin;
+    }
+    
+    qaytar aqıqat;
+}
+
+// Test message queue
+atqar test_message_queue() -> aqıqat {
+    jasau queue: MessageQueue = message_queue_create();
+    queue.initialize();
+    
+    jasau message: Message = message_create();
+    message.type = TRANSACTION_CREATED;
+    message.data = json_object_create();
+    
+    eger (!queue.message_zhiberu(message)) {
+        qaytar jin;
+    }
+    
+    jasau messages: Array<Message> = queue.messages_al();
+    eger (array_length(messages) != 1) {
+        qaytar jin;
+    }
+    
+    qaytar aqıqat;
+}
+
+// Test idempotency
+atqar test_idempotency() -> aqıqat {
+    jasau middleware: IdempotencyMiddleware = idempotency_middleware_create();
+    middleware.initialize();
+    
+    jasau key: jol = "test_key_123";
+    jasau result: jol = "test_result";
+    
+    eger (!middleware.store_key(key, result)) {
+        qaytar jin;
+    }
+    
+    eger (!middleware.key_exists(key)) {
+        qaytar jin;
+    }
+    
+    jasau stored_result: jol = middleware.get_result(key);
+    eger (stored_result != result) {
+        qaytar jin;
+    }
+    
+    qaytar aqıqat;
+}
+
+// Run all tests
+atqar run_financial_core_tests() -> aqıqat {
+    jasau tests_passed: san = 0;
+    jasau total_tests: san = 5;
+    
+    // Test double-entry ledger
+    eger (test_double_entry_ledger()) {
+        tests_passed++;
+        print("✅ Double-entry ledger test passed");
+    } else {
+        print("❌ Double-entry ledger test failed");
+    }
+    
+    // Test P2P transfer
+    eger (test_p2p_transfer()) {
+        tests_passed++;
+        print("✅ P2P transfer test passed");
+    } else {
+        print("❌ P2P transfer test failed");
+    }
+    
+    // Test event sourcing
+    eger (test_event_sourcing()) {
+        tests_passed++;
+        print("✅ Event sourcing test passed");
+    } else {
+        print("❌ Event sourcing test failed");
+    }
+    
+    // Test message queue
+    eger (test_message_queue()) {
+        tests_passed++;
+        print("✅ Message queue test passed");
+    } else {
+        print("❌ Message queue test failed");
+    }
+    
+    // Test idempotency
+    eger (test_idempotency()) {
+        tests_passed++;
+        print("✅ Idempotency test passed");
+    } else {
+        print("❌ Idempotency test failed");
+    }
+    
+    print("Financial Core Tests: " + tests_passed + "/" + total_tests + " passed");
+    
+    eger (tests_passed == total_tests) {
+        qaytar aqıqat;
+    } else {
+        qaytar jin;
+    }
+}

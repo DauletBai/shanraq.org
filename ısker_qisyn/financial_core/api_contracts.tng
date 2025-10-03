@@ -1,0 +1,276 @@
+// Financial API Contracts
+// Қаржылық API келісімдері
+// OpenAPI/gRPC interfaces for financial operations
+
+// Account API
+struct AccountRequest {
+    account_id: san;
+    account_type: AccountType;
+    initial_balance: Decimal128;
+    currency: jol;
+    owner_id: san;
+}
+
+struct AccountResponse {
+    success: aqıqat;
+    account_id: san;
+    balance: Decimal128;
+    message: jol;
+}
+
+// Transaction API
+struct TransactionRequest {
+    from_account: san;
+    to_account: san;
+    amount: Decimal128;
+    description: jol;
+    reference: jol;
+    idempotency_key: jol;
+}
+
+struct TransactionResponse {
+    success: aqıqat;
+    transaction_id: jol;
+    status: TransactionStatus;
+    message: jol;
+}
+
+// Balance API
+struct BalanceRequest {
+    account_id: san;
+}
+
+struct BalanceResponse {
+    success: aqıqat;
+    account_id: san;
+    balance: Decimal128;
+    currency: jol;
+    last_updated: san;
+}
+
+// Transfer API
+struct TransferRequest {
+    from_account: san;
+    to_account: san;
+    amount: Decimal128;
+    description: jol;
+    idempotency_key: jol;
+}
+
+struct TransferResponse {
+    success: aqıqat;
+    transfer_id: jol;
+    status: TransactionStatus;
+    message: jol;
+}
+
+// Payment API
+struct PaymentRequest {
+    from_account: san;
+    to_account: san;
+    amount: Decimal128;
+    description: jol;
+    payment_method: jol;
+    idempotency_key: jol;
+}
+
+struct PaymentResponse {
+    success: aqıqat;
+    payment_id: jol;
+    status: TransactionStatus;
+    message: jol;
+}
+
+// Financial API implementation
+class FinancialAPI {
+    private ledger: DoubleEntryLedger;
+    private event_store: EventStore;
+    
+    atqar initialize() -> aqıqat {
+        jasau ledger: DoubleEntryLedger = double_entry_ledger_create();
+        jasau event_store: EventStore = event_store_create();
+        
+        ledger.initialize();
+        event_store.initialize();
+        
+        this.ledger = ledger;
+        this.event_store = event_store;
+        
+        qaytar aqıqat;
+    }
+    
+    // Create account
+    atqar account_jasau(request: AccountRequest) -> AccountResponse {
+        jasau response: AccountResponse = account_response_create();
+        
+        eger (this.ledger.account_jasau(
+            request.account_id,
+            request.account_type,
+            request.initial_balance
+        )) {
+            response.success = aqıqat;
+            response.account_id = request.account_id;
+            response.balance = request.initial_balance;
+            response.message = "Account created successfully";
+        } else {
+            response.success = jin;
+            response.message = "Failed to create account";
+        }
+        
+        qaytar response;
+    }
+    
+    // Get account balance
+    atqar balance_al(request: BalanceRequest) -> BalanceResponse {
+        jasau response: BalanceResponse = balance_response_create();
+        
+        jasau balance: AccountBalance = this.ledger.account_balans_al(request.account_id);
+        
+        eger (balance != NULL) {
+            response.success = aqıqat;
+            response.account_id = request.account_id;
+            response.balance = balance.net_balance;
+            response.currency = "KZT";
+            response.last_updated = balance.last_updated;
+        } else {
+            response.success = jin;
+            response.message = "Account not found";
+        }
+        
+        qaytar response;
+    }
+    
+    // Process transfer
+    atqar transfer_ishke_engizu(request: TransferRequest) -> TransferResponse {
+        jasau response: TransferResponse = transfer_response_create();
+        
+        // Check idempotency
+        eger (idempotency_key_exists(request.idempotency_key)) {
+            response.success = aqıqat;
+            response.transfer_id = get_existing_transaction_id(request.idempotency_key);
+            response.status = COMMITTED;
+            response.message = "Transfer already processed";
+            qaytar response;
+        }
+        
+        // Create transaction
+        jasau transaction: Transaction = financial_transaction_jasau(
+            TRANSFER,
+            request.from_account,
+            request.to_account,
+            request.amount,
+            request.description,
+            request.idempotency_key
+        );
+        
+        // Process transaction
+        jasau status: TransactionStatus = this.ledger.transaction_ishke_engizu(transaction);
+        
+        eger (status == COMMITTED) {
+            response.success = aqıqat;
+            response.transfer_id = transaction.id;
+            response.status = COMMITTED;
+            response.message = "Transfer completed successfully";
+            
+            // Store idempotency key
+            store_idempotency_key(request.idempotency_key, transaction.id);
+        } else {
+            response.success = jin;
+            response.status = FAILED;
+            response.message = "Transfer failed";
+        }
+        
+        qaytar response;
+    }
+    
+    // Process payment
+    atqar payment_ishke_engizu(request: PaymentRequest) -> PaymentResponse {
+        jasau response: PaymentResponse = payment_response_create();
+        
+        // Check idempotency
+        eger (idempotency_key_exists(request.idempotency_key)) {
+            response.success = aqıqat;
+            response.payment_id = get_existing_transaction_id(request.idempotency_key);
+            response.status = COMMITTED;
+            response.message = "Payment already processed";
+            qaytar response;
+        }
+        
+        // Create transaction
+        jasau transaction: Transaction = financial_transaction_jasau(
+            PAYMENT,
+            request.from_account,
+            request.to_account,
+            request.amount,
+            request.description,
+            request.idempotency_key
+        );
+        
+        // Process transaction
+        jasau status: TransactionStatus = this.ledger.transaction_ishke_engizu(transaction);
+        
+        eger (status == COMMITTED) {
+            response.success = aqıqat;
+            response.payment_id = transaction.id;
+            response.status = COMMITTED;
+            response.message = "Payment completed successfully";
+            
+            // Store idempotency key
+            store_idempotency_key(request.idempotency_key, transaction.id);
+        } else {
+            response.success = jin;
+            response.status = FAILED;
+            response.message = "Payment failed";
+        }
+        
+        qaytar response;
+    }
+    
+    // Get transaction history
+    atqar transaction_tarih_al(account_id: san, start_date: san, end_date: san) -> Array<Transaction> {
+        qaytar this.ledger.transaction_tarih_al(account_id, start_date, end_date);
+    }
+    
+    // Rollback transaction
+    atqar transaction_kaytar(transaction_id: jol) -> aqıqat {
+        qaytar this.ledger.transaction_kaytar(transaction_id);
+    }
+}
+
+// Idempotency management
+class IdempotencyManager {
+    private keys: Map<jol, jol>;
+    
+    atqar initialize() -> aqıqat {
+        this.keys = map_create();
+        qaytar aqıqat;
+    }
+    
+    atqar key_exists(key: jol) -> aqıqat {
+        qaytar map_contains(this.keys, key);
+    }
+    
+    atqar store_key(key: jol, transaction_id: jol) -> aqıqat {
+        map_set(this.keys, key, transaction_id);
+        qaytar aqıqat;
+    }
+    
+    atqar get_transaction_id(key: jol) -> jol {
+        qaytar map_get(this.keys, key);
+    }
+}
+
+// Global idempotency manager
+jasau idempotency_manager: IdempotencyManager = idempotency_manager_create();
+
+atqar idempotency_key_exists(key: jol) -> aqıqat {
+    qaytar idempotency_manager.key_exists(key);
+}
+
+atqar store_idempotency_key(key: jol, transaction_id: jol) -> aqıqat {
+    qaytar idempotency_manager.store_key(key, transaction_id);
+}
+
+atqar get_existing_transaction_id(key: jol) -> jol {
+    qaytar idempotency_manager.get_transaction_id(key);
+}

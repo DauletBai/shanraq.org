@@ -1,0 +1,310 @@
+// Reconciliation Demo
+// Реконсиляция демо
+// Demonstration of transaction reconciliation
+
+// Demo scenario: Reconcile transactions between systems
+atqar reconciliation_demo() -> aqıqat {
+    print("🚀 Starting Reconciliation Demo");
+    print("================================");
+    
+    // Initialize reconciliation system
+    jasau reconciliation_system: ReconciliationSystem = reconciliation_system_create();
+    reconciliation_system.initialize();
+    
+    // Demo reconciliation period
+    jasau start_date: san = get_timestamp("2025-01-01T00:00:00Z");
+    jasau end_date: san = get_timestamp("2025-01-01T23:59:59Z");
+    
+    print("📅 Reconciliation Period:");
+    print("   Start: " + timestamp_to_string(start_date));
+    print("   End: " + timestamp_to_string(end_date));
+    print("");
+    
+    // Generate demo transactions
+    jasau transactions: Array<Transaction> = generate_demo_transactions();
+    
+    print("📊 Demo Transactions Generated: " + array_length(transactions));
+    print("");
+    
+    // Run reconciliation
+    print("🔄 Running reconciliation...");
+    
+    jasau reconciliation_result: ReconciliationResult = reconciliation_system.reconcile(
+        transactions, start_date, end_date
+    );
+    
+    // Display results
+    print("📈 Reconciliation Results:");
+    print("   Total Transactions: " + reconciliation_result.total_transactions);
+    print("   Matched Transactions: " + reconciliation_result.matched_transactions);
+    print("   Unmatched Transactions: " + reconciliation_result.unmatched_transactions);
+    print("   Match Rate: " + reconciliation_result.match_rate + "%");
+    print("");
+    
+    // Display unmatched transactions
+    eger (reconciliation_result.unmatched_transactions > 0) {
+        print("⚠️  Unmatched Transactions:");
+        jasau unmatched: Array<Transaction> = reconciliation_result.unmatched_list;
+        
+        eger (i = 0; i < array_length(unmatched); i++) {
+            jasau transaction: Transaction = unmatched[i];
+            print("   - Transaction ID: " + transaction.id);
+            print("     Amount: " + transaction.amount + " KZT");
+            print("     Status: " + transaction.status);
+            print("     Reason: " + transaction.reconciliation_reason);
+        }
+    } else {
+        print("✅ All transactions matched successfully!");
+    }
+    
+    print("");
+    print("📊 Reconciliation demo completed!");
+    qaytar aqıqat;
+}
+
+// Demo reconciliation with mismatches
+atqar reconciliation_mismatch_demo() -> aqıqat {
+    print("🚀 Starting Reconciliation Mismatch Demo");
+    print("========================================");
+    
+    jasau reconciliation_system: ReconciliationSystem = reconciliation_system_create();
+    reconciliation_system.initialize();
+    
+    // Generate transactions with intentional mismatches
+    jasau transactions: Array<Transaction> = generate_mismatch_transactions();
+    
+    print("📊 Generated Transactions with Mismatches: " + array_length(transactions));
+    print("");
+    
+    // Run reconciliation
+    jasau start_date: san = get_timestamp("2025-01-01T00:00:00Z");
+    jasau end_date: san = get_timestamp("2025-01-01T23:59:59Z");
+    
+    print("🔄 Running reconciliation with mismatches...");
+    
+    jasau reconciliation_result: ReconciliationResult = reconciliation_system.reconcile(
+        transactions, start_date, end_date
+    );
+    
+    // Display detailed results
+    print("📈 Reconciliation Results:");
+    print("   Total Transactions: " + reconciliation_result.total_transactions);
+    print("   Matched Transactions: " + reconciliation_result.matched_transactions);
+    print("   Unmatched Transactions: " + reconciliation_result.unmatched_transactions);
+    print("   Match Rate: " + reconciliation_result.match_rate + "%");
+    print("");
+    
+    // Display mismatch analysis
+    print("🔍 Mismatch Analysis:");
+    jasau mismatch_types: Map<jol, san> = reconciliation_result.mismatch_types;
+    
+    eger (mismatch_types != NULL) {
+        jasau keys: Array<jol> = map_get_keys(mismatch_types);
+        eger (i = 0; i < array_length(keys); i++) {
+            jasau mismatch_type: jol = keys[i];
+            jasau count: san = map_get(mismatch_types, mismatch_type);
+            print("   - " + mismatch_type + ": " + count + " transactions");
+        }
+    }
+    
+    print("");
+    print("📊 Reconciliation mismatch demo completed!");
+    qaytar aqıqat;
+}
+
+// Demo reconciliation reporting
+atqar reconciliation_reporting_demo() -> aqıqat {
+    print("🚀 Starting Reconciliation Reporting Demo");
+    print("==========================================");
+    
+    jasau reconciliation_system: ReconciliationSystem = reconciliation_system_create();
+    reconciliation_system.initialize();
+    
+    // Generate demo data
+    jasau transactions: Array<Transaction> = generate_demo_transactions();
+    jasau start_date: san = get_timestamp("2025-01-01T00:00:00Z");
+    jasau end_date: san = get_timestamp("2025-01-01T23:59:59Z");
+    
+    print("📊 Generating reconciliation report...");
+    print("   Period: " + timestamp_to_string(start_date) + " to " + timestamp_to_string(end_date));
+    print("   Transactions: " + array_length(transactions));
+    print("");
+    
+    // Run reconciliation
+    jasau reconciliation_result: ReconciliationResult = reconciliation_system.reconcile(
+        transactions, start_date, end_date
+    );
+    
+    // Generate reports
+    print("📄 Generating reconciliation reports...");
+    
+    // CSV report
+    jasau csv_report: jol = reconciliation_system.generate_csv_report(reconciliation_result);
+    print("   ✅ CSV report generated");
+    
+    // JSON report
+    jasau json_report: JsonObject = reconciliation_system.generate_json_report(reconciliation_result);
+    print("   ✅ JSON report generated");
+    
+    // PDF report
+    jasau pdf_report: ByteArray = reconciliation_system.generate_pdf_report(reconciliation_result);
+    print("   ✅ PDF report generated");
+    
+    // Summary report
+    jasau summary_report: ReconciliationSummary = reconciliation_system.generate_summary_report(
+        reconciliation_result
+    );
+    
+    print("");
+    print("📈 Reconciliation Summary:");
+    print("   Total Transactions: " + summary_report.total_transactions);
+    print("   Total Amount: " + summary_report.total_amount + " KZT");
+    print("   Matched Amount: " + summary_report.matched_amount + " KZT");
+    print("   Unmatched Amount: " + summary_report.unmatched_amount + " KZT");
+    print("   Match Rate: " + summary_report.match_rate + "%");
+    print("   Processing Time: " + summary_report.processing_time + " ms");
+    
+    print("");
+    print("📊 Reconciliation reporting demo completed!");
+    qaytar aqıqat;
+}
+
+// Demo automated reconciliation
+atqar automated_reconciliation_demo() -> aqıqat {
+    print("🚀 Starting Automated Reconciliation Demo");
+    print("=====================================");
+    
+    jasau reconciliation_system: ReconciliationSystem = reconciliation_system_create();
+    reconciliation_system.initialize();
+    
+    // Configure automated reconciliation
+    jasau config: ReconciliationConfig = reconciliation_config_create();
+    config.auto_reconcile = aqıqat;
+    config.reconciliation_interval = 3600; // 1 hour
+    config.alert_threshold = 0.95; // 95% match rate
+    config.notification_email = "reconciliation@shanraq.org";
+    
+    print("⚙️  Automated Reconciliation Configuration:");
+    print("   Auto Reconcile: " + config.auto_reconcile);
+    print("   Interval: " + config.reconciliation_interval + " seconds");
+    print("   Alert Threshold: " + config.alert_threshold + "%");
+    print("   Notification Email: " + config.notification_email);
+    print("");
+    
+    // Start automated reconciliation
+    print("🔄 Starting automated reconciliation...");
+    
+    jasau automation_result: AutomationResult = reconciliation_system.start_automated_reconciliation(
+        config
+    );
+    
+    eger (automation_result.success) {
+        print("✅ Automated reconciliation started successfully!");
+        print("🆔 Automation ID: " + automation_result.automation_id);
+        print("⏰ Next Run: " + automation_result.next_run_time);
+    } else {
+        print("❌ Failed to start automated reconciliation!");
+        print("💬 Error: " + automation_result.error_message);
+    }
+    
+    print("");
+    print("📊 Automated reconciliation demo completed!");
+    qaytar aqıqat;
+}
+
+// Helper function to generate demo transactions
+atqar generate_demo_transactions() -> Array<Transaction> {
+    jasau transactions: Array<Transaction> = array_create();
+    
+    // Generate 10 demo transactions
+    eger (i = 0; i < 10; i++) {
+        jasau transaction: Transaction = transaction_create();
+        transaction.id = "TXN" + (i + 1);
+        transaction.amount = decimal128_from_string((100 + i * 50) + ".00");
+        transaction.currency = "KZT";
+        transaction.status = COMMITTED;
+        transaction.timestamp = get_current_timestamp();
+        transaction.description = "Demo transaction " + (i + 1);
+        
+        array_append(transactions, transaction);
+    }
+    
+    qaytar transactions;
+}
+
+// Helper function to generate transactions with mismatches
+atqar generate_mismatch_transactions() -> Array<Transaction> {
+    jasau transactions: Array<Transaction> = array_create();
+    
+    // Generate 5 normal transactions
+    eger (i = 0; i < 5; i++) {
+        jasau transaction: Transaction = transaction_create();
+        transaction.id = "TXN" + (i + 1);
+        transaction.amount = decimal128_from_string((100 + i * 50) + ".00");
+        transaction.currency = "KZT";
+        transaction.status = COMMITTED;
+        transaction.timestamp = get_current_timestamp();
+        transaction.description = "Normal transaction " + (i + 1);
+        
+        array_append(transactions, transaction);
+    }
+    
+    // Generate 3 transactions with mismatches
+    jasau mismatch_transaction1: Transaction = transaction_create();
+    mismatch_transaction1.id = "TXN_MISMATCH_1";
+    mismatch_transaction1.amount = decimal128_from_string("999.99"); // Wrong amount
+    mismatch_transaction1.currency = "KZT";
+    mismatch_transaction1.status = COMMITTED;
+    mismatch_transaction1.timestamp = get_current_timestamp();
+    mismatch_transaction1.description = "Mismatch transaction 1";
+    mismatch_transaction1.reconciliation_reason = "Amount mismatch";
+    array_append(transactions, mismatch_transaction1);
+    
+    jasau mismatch_transaction2: Transaction = transaction_create();
+    mismatch_transaction2.id = "TXN_MISMATCH_2";
+    mismatch_transaction2.amount = decimal128_from_string("500.00");
+    mismatch_transaction2.currency = "KZT";
+    mismatch_transaction2.status = FAILED; // Wrong status
+    mismatch_transaction2.timestamp = get_current_timestamp();
+    mismatch_transaction2.description = "Mismatch transaction 2";
+    mismatch_transaction2.reconciliation_reason = "Status mismatch";
+    array_append(transactions, mismatch_transaction2);
+    
+    jasau mismatch_transaction3: Transaction = transaction_create();
+    mismatch_transaction3.id = "TXN_MISMATCH_3";
+    mismatch_transaction3.amount = decimal128_from_string("750.00");
+    mismatch_transaction3.currency = "USD"; // Wrong currency
+    mismatch_transaction3.status = COMMITTED;
+    mismatch_transaction3.timestamp = get_current_timestamp();
+    mismatch_transaction3.description = "Mismatch transaction 3";
+    mismatch_transaction3.reconciliation_reason = "Currency mismatch";
+    array_append(transactions, mismatch_transaction3);
+    
+    qaytar transactions;
+}
+
+// Main demo function
+atqar main() -> san {
+    print("🎯 Shanraq.org Reconciliation Demo");
+    print("===================================");
+    print("");
+    
+    // Run basic reconciliation demo
+    reconciliation_demo();
+    print("");
+    
+    // Run reconciliation with mismatches demo
+    reconciliation_mismatch_demo();
+    print("");
+    
+    // Run reconciliation reporting demo
+    reconciliation_reporting_demo();
+    print("");
+    
+    // Run automated reconciliation demo
+    automated_reconciliation_demo();
+    print("");
+    
+    print("🎉 All Reconciliation demos completed successfully!");
+    qaytar 0;
+}

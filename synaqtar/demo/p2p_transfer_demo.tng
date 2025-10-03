@@ -1,0 +1,187 @@
+// P2P Transfer Demo
+// P2P аударым демо
+// Demonstration of peer-to-peer money transfers
+
+// Demo scenario: User A sends money to User B
+atqar p2p_transfer_demo() -> aqıqat {
+    print("🚀 Starting P2P Transfer Demo");
+    print("================================");
+    
+    // Initialize P2P transfer system
+    jasau p2p_system: P2PTransferSystem = p2p_transfer_system_create();
+    p2p_system.initialize();
+    
+    // Demo users
+    jasau user_a_id: san = 1001;
+    jasau user_b_id: san = 1002;
+    jasau transfer_amount: Decimal128 = decimal128_from_string("500.00");
+    
+    print("👤 User A ID: " + user_a_id);
+    print("👤 User B ID: " + user_b_id);
+    print("💰 Transfer Amount: " + transfer_amount + " KZT");
+    print("");
+    
+    // Create P2P transfer request
+    jasau request: P2PTransferRequest = p2p_transfer_request_create();
+    request.from_user_id = user_a_id;
+    request.to_user_id = user_b_id;
+    request.amount = transfer_amount;
+    request.description = "Demo P2P transfer";
+    
+    print("📤 Processing P2P transfer...");
+    
+    // Process transfer
+    jasau response: P2PTransferResponse = p2p_system.transfer_ishke_engizu(request);
+    
+    // Display results
+    eger (response.success) {
+        print("✅ Transfer successful!");
+        print("🆔 Transfer ID: " + response.transfer_id);
+        print("💬 Message: " + response.message);
+    } else {
+        print("❌ Transfer failed!");
+        print("💬 Error: " + response.message);
+    }
+    
+    print("");
+    print("📊 Demo completed!");
+    qaytar aqıqat;
+}
+
+// Demo multiple transfers
+atqar multiple_transfers_demo() -> aqıqat {
+    print("🚀 Starting Multiple Transfers Demo");
+    print("====================================");
+    
+    jasau p2p_system: P2PTransferSystem = p2p_transfer_system_create();
+    p2p_system.initialize();
+    
+    // Demo transfer scenarios
+    jasau transfers: Array<P2PTransferRequest> = array_create();
+    
+    // Transfer 1: Small amount
+    jasau transfer1: P2PTransferRequest = p2p_transfer_request_create();
+    transfer1.from_user_id = 1001;
+    transfer1.to_user_id = 1002;
+    transfer1.amount = decimal128_from_string("100.00");
+    transfer1.description = "Small transfer";
+    array_append(transfers, transfer1);
+    
+    // Transfer 2: Medium amount
+    jasau transfer2: P2PTransferRequest = p2p_transfer_request_create();
+    transfer2.from_user_id = 1002;
+    transfer2.to_user_id = 1003;
+    transfer2.amount = decimal128_from_string("500.00");
+    transfer2.description = "Medium transfer";
+    array_append(transfers, transfer2);
+    
+    // Transfer 3: Large amount
+    jasau transfer3: P2PTransferRequest = p2p_transfer_request_create();
+    transfer3.from_user_id = 1003;
+    transfer3.to_user_id = 1001;
+    transfer3.amount = decimal128_from_string("1000.00");
+    transfer3.description = "Large transfer";
+    array_append(transfers, transfer3);
+    
+    // Process all transfers
+    jasau successful_transfers: san = 0;
+    jasau total_transfers: san = array_length(transfers);
+    
+    eger (i = 0; i < array_length(transfers); i++) {
+        jasau transfer: P2PTransferRequest = transfers[i];
+        
+        print("📤 Processing transfer " + (i + 1) + "/" + total_transfers);
+        print("   From: " + transfer.from_user_id);
+        print("   To: " + transfer.to_user_id);
+        print("   Amount: " + transfer.amount + " KZT");
+        
+        jasau response: P2PTransferResponse = p2p_system.transfer_ishke_engizu(transfer);
+        
+        eger (response.success) {
+            successful_transfers++;
+            print("   ✅ Success: " + response.transfer_id);
+        } else {
+            print("   ❌ Failed: " + response.message);
+        }
+        
+        print("");
+    }
+    
+    print("📊 Multiple Transfers Demo Results:");
+    print("   Total Transfers: " + total_transfers);
+    print("   Successful: " + successful_transfers);
+    print("   Failed: " + (total_transfers - successful_transfers));
+    print("   Success Rate: " + ((successful_transfers * 100) / total_transfers) + "%");
+    
+    qaytar aqıqat;
+}
+
+// Demo transfer limits
+atqar transfer_limits_demo() -> aqıqat {
+    print("🚀 Starting Transfer Limits Demo");
+    print("================================");
+    
+    jasau p2p_system: P2PTransferSystem = p2p_transfer_system_create();
+    p2p_system.initialize();
+    
+    jasau user_id: san = 1001;
+    
+    // Get transfer limits
+    jasau limits: P2PTransferLimits = p2p_system.transfer_limits_al(user_id);
+    
+    print("👤 User ID: " + user_id);
+    print("📊 Transfer Limits:");
+    print("   Daily Limit: " + limits.daily_limit + " KZT");
+    print("   Monthly Limit: " + limits.monthly_limit + " KZT");
+    print("   Per Transaction Limit: " + limits.per_transaction_limit + " KZT");
+    print("   Daily Used: " + limits.daily_used + " KZT");
+    print("   Monthly Used: " + limits.monthly_used + " KZT");
+    
+    // Test limit scenarios
+    jasau test_amounts: Array<Decimal128> = array_create();
+    array_append(test_amounts, decimal128_from_string("50.00"));    // Small amount
+    array_append(test_amounts, decimal128_from_string("500.00"));   // Medium amount
+    array_append(test_amounts, decimal128_from_string("5000.00"));  // Large amount
+    array_append(test_amounts, decimal128_from_string("100000.00")); // Very large amount
+    
+    print("");
+    print("🧪 Testing transfer limits:");
+    
+    eger (i = 0; i < array_length(test_amounts); i++) {
+        jasau amount: Decimal128 = test_amounts[i];
+        
+        print("   Testing amount: " + amount + " KZT");
+        
+        eger (p2p_system.transfer_limits_tekseru(user_id, amount)) {
+            print("   ✅ Within limits");
+        } else {
+            print("   ❌ Exceeds limits");
+        }
+    }
+    
+    print("");
+    print("📊 Transfer Limits Demo completed!");
+    qaytar aqıqat;
+}
+
+// Main demo function
+atqar main() -> san {
+    print("🎯 Shanraq.org P2P Transfer Demo");
+    print("=================================");
+    print("");
+    
+    // Run P2P transfer demo
+    p2p_transfer_demo();
+    print("");
+    
+    // Run multiple transfers demo
+    multiple_transfers_demo();
+    print("");
+    
+    // Run transfer limits demo
+    transfer_limits_demo();
+    print("");
+    
+    print("🎉 All P2P Transfer demos completed successfully!");
+    qaytar 0;
+}
