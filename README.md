@@ -4,8 +4,6 @@
   <img src="betjagy/sandyq/brand/shanraq_title.svg" alt="Shanraq.org"/>
 </div>
 
-# Shanraq.org
-
 🚀 **B2B Fintech Platform** - Enterprise-grade financial infrastructure for banks, fintech startups, corporations, and government institutions.
 
 ## 🎯 About the Project
