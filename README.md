@@ -1,6 +1,6 @@
 <div align="center">
   <img src="betjagy/sandyq/brand/logo_red.svg" alt="Tenge Logo" width="64"/>
-  <h1 style="color: red;">Shanraq.org</h1>
+  <h1 style="color: #ff3535;">Shanraq.org</h1>
 </div>
 
 🚀 **B2B Fintech Platform** - Enterprise-grade financial infrastructure for banks, fintech startups, corporations, and government institutions.
