@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="web/static/brand/logo.svg" alt="Shanraq Logo" width="128">
+</p>
+
 # Shanraq.org Framework
 
 Shanraq is a batteries-included Go 1.25.x application framework focused on modern backend practices: typed configuration, PostgreSQL-first data access, structured logging, composable modules, and first-class observability.
@@ -151,6 +155,16 @@ The Web UI module queries the same queue to render status cards and recent jobs.
 ## Templates & Web UI
 
 `web` hosts the renderer, landing carousel, and static bundle. `home.html` delivers a Bootstrap carousel whose copy pulls from the `framework_about` table, while `dashboard.html` powers the operator console. Shared partials such as `partials/queue.html` drive the queue explorer and modal form. Extend by adding new templates in `web/views` (with matching static assets under `web/static`).
+
+## Web Documentation
+
+The framework ships with an embedded handbook at [`/docs`](http://localhost:8080/docs) that summarises everyday workflows:
+
+- **Quick start commands** to run the stack locally or through Docker.
+- **Module catalogue** covering authentication, background jobs, telemetry, and their primary endpoints.
+- **Operator console overview** highlighting landing, console, and Jobs API entry points.
+
+Update `pkg/modules/webui/webui.go` if you need to surface additional modules or custom commands—rendered content lives in `web/views/docs.html`.
 
 ### Customising the landing page copy
 

@@ -56,6 +56,29 @@ func TestRendererLayouts(t *testing.T) {
 	assertContains(t, body, "Queue Explorer")
 	assertContains(t, body, `/static/js/dashboard.js`)
 	assertNotContains(t, body, "No content provided.")
+
+	rec = httptest.NewRecorder()
+	data.PageID = "docs"
+	data.PageTitle = "Framework Documentation"
+	data.Docs = []webui.DocSection{
+		{
+			Title:   "Quick Start",
+			Summary: "Kick off the reference binary.",
+			Items: []webui.DocItem{
+				{Title: "Run", Description: "Start locally", Command: "go run ./cmd/app -config config.yaml"},
+				{Title: "Console", Description: "Open dashboard", Link: "/console"},
+			},
+		},
+	}
+	if err := r.Render(rec, "docs.html", data); err != nil {
+		t.Fatalf("Render(docs) error = %v", err)
+	}
+
+	body = rec.Body.String()
+	assertContains(t, body, "Framework Documentation")
+	assertContains(t, body, "Quick Start")
+	assertContains(t, body, "Start locally")
+	assertContains(t, body, "go run ./cmd/app -config config.yaml")
 }
 
 func assertContains(t *testing.T, haystack, needle string) {

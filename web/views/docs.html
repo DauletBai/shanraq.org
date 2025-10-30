@@ -1,0 +1,49 @@
+{{ define "docs.html" }}
+  {{ template "layout.html" . }}
+{{ end }}
+
+{{ define "docs-content" }}
+<section class="mb-5">
+  <h1 class="display-5 fw-bold mb-3">Framework Documentation</h1>
+  <p class="lead text-muted mb-0">Explore the Shanraq module system, operational tooling, and recommended workflows. Use the sections below to jump directly to commands, endpoints, and dashboards that matter to your team.</p>
+</section>
+
+{{ if .Docs }}
+  <div class="row g-4">
+    {{ range .Docs }}
+    <div class="col-12">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white border-bottom-0">
+          <h2 class="h4 mb-1">{{ .Title }}</h2>
+          <p class="text-muted mb-0">{{ .Summary }}</p>
+        </div>
+        <div class="list-group list-group-flush">
+          {{ range .Items }}
+          <div class="list-group-item">
+            <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+              <div>
+                <h3 class="h6 mb-1">{{ .Title }}</h3>
+                <p class="text-muted mb-2">{{ .Description }}</p>
+                {{ if .Command }}
+                <pre class="code-block mb-0"><code>{{ .Command }}</code></pre>
+                {{ end }}
+              </div>
+              {{ if .Link }}
+              <div class="text-lg-end" style="min-width: 150px;">
+                <a class="btn btn-outline-primary btn-sm" href="{{ .Link }}">Open</a>
+              </div>
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+{{ else }}
+  <div class="alert alert-info">Documentation sections are being assembled. Check back soon.</div>
+{{ end }}
+{{ end }}
+
+{{ define "docs-scripts" }}{{ end }}

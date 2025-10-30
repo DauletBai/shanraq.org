@@ -21,6 +21,8 @@
             {{ template "home-content" . }}
           {{ else if eq .PageID "dashboard" }}
             {{ template "dashboard-content" . }}
+          {{ else if eq .PageID "docs" }}
+            {{ template "docs-content" . }}
           {{ else }}
             {{ block "content" . }}
               <div class="alert alert-warning">No content provided.</div>
@@ -60,6 +62,8 @@
       {{ template "home-scripts" . }}
     {{ else if eq .PageID "dashboard" }}
       {{ template "dashboard-scripts" . }}
+    {{ else if eq .PageID "docs" }}
+      {{ template "docs-scripts" . }}
     {{ else }}
       {{ block "scripts" . }}{{ end }}
     {{ end }}

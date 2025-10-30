@@ -78,6 +78,7 @@ func (m *Module) Routes(r chi.Router) {
 	})
 	r.Get("/", m.handleHome)
 	r.Get("/console", m.handleDashboard)
+	r.Get("/docs", m.handleDocs)
 	r.Get("/partials/dashboard", m.handleDashboardPartial)
 }
 
@@ -182,6 +183,7 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 		SidebarLinks: []SidebarLink{
 			{Label: "Home", Href: "/"},
 			{Label: "Console", Href: "/console"},
+			{Label: "Documentation", Href: "/docs"},
 			{Label: "Jobs API", Href: "/jobs"},
 			{Label: "Health", Href: "/healthz"},
 			{Label: "Readiness", Href: "/readyz"},
@@ -232,6 +234,7 @@ type DashboardData struct {
 	MetricsURL           string
 	JobForm              JobFormDefaults
 	Hero                 *AboutContent
+	Docs                 []DocSection
 }
 
 type HealthIndicator struct {
@@ -260,6 +263,19 @@ type AboutContent struct {
 type SidebarLink struct {
 	Label string
 	Href  string
+}
+
+type DocSection struct {
+	Title   string
+	Summary string
+	Items   []DocItem
+}
+
+type DocItem struct {
+	Title       string
+	Description string
+	Link        string
+	Command     string
 }
 
 func totalJobs(counts map[string]int) int {
@@ -362,3 +378,78 @@ var _ interface {
 	shanraq.RouterModule
 	shanraq.InitializerModule
 } = (*Module)(nil)
+
+func (m *Module) handleDocs(w http.ResponseWriter, r *http.Request) {
+	data := m.buildDashboardData(r.Context())
+	if data == nil {
+		http.Error(w, "failed to build docs", http.StatusInternalServerError)
+		return
+	}
+	data.PageID = "docs"
+	data.PageTitle = "Framework Documentation"
+	data.Docs = []DocSection{
+		{
+			Title:   "Quick Start",
+			Summary: "Bootstrap the reference application and explore core capabilities.",
+			Items: []DocItem{
+				{
+					Title:       "Run Locally",
+					Description: "Launch the development server with hot-reloaded templates and the PostgreSQL-backed queue.",
+					Command:     "go run ./cmd/app -config config.yaml",
+				},
+				{
+					Title:       "Docker Compose",
+					Description: "Build the distroless image and start the application together with PostgreSQL.",
+					Command:     "docker compose up --build",
+				},
+			},
+		},
+		{
+			Title:   "Available Modules",
+			Summary: "Each module follows the shanraq.Module contract and can be composed independently.",
+			Items: []DocItem{
+				{
+					Title:       "Authentication",
+					Description: "JWT-based signup/signin/profile endpoints under /auth.",
+					Link:        "/auth/signup",
+				},
+				{
+					Title:       "Background Jobs",
+					Description: "PostgreSQL-backed queue with retry semantics and operator console.",
+					Link:        "/jobs",
+				},
+				{
+					Title:       "Telemetry & Health",
+					Description: "Prometheus metrics, health, and readiness endpoints.",
+					Link:        "/metrics",
+				},
+			},
+		},
+		{
+			Title:   "Operator Console",
+			Summary: "Navigate the Bootstrap dashboard to monitor system health and manage jobs.",
+			Items: []DocItem{
+				{
+					Title:       "Landing Page",
+					Description: "Marketing-ready carousel with feature highlights and live stats.",
+					Link:        "/",
+				},
+				{
+					Title:       "Console Dashboard",
+					Description: "Queue explorer, job submission modal, and system health cards.",
+					Link:        "/console",
+				},
+				{
+					Title:       "Jobs API",
+					Description: "REST endpoints for enqueueing, retrying, and cancelling jobs.",
+					Link:        "/jobs",
+				},
+			},
+		},
+	}
+
+	if err := m.renderer.Render(w, "docs.html", *data); err != nil {
+		m.rt.Logger.Error("render docs", zap.Error(err))
+		http.Error(w, "template error", http.StatusInternalServerError)
+	}
+}
