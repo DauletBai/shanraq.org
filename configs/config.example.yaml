@@ -1,0 +1,22 @@
+environment: development
+server:
+  address: ":8080"
+  read_timeout: 15s
+  write_timeout: 15s
+  idle_timeout: 60s
+database:
+  url: postgres://postgres:postgres@127.0.0.1:5432/shanraq?sslmode=disable
+  max_conns: 10
+  min_conns: 1
+  max_conn_lifetime: 30m
+  max_conn_idle_time: 5m
+  health_check_period: 30s
+telemetry:
+  enable_metrics: true
+  metrics_path: /metrics
+logging:
+  level: info
+  mode: development
+auth:
+  token_secret: super-secret-key
+  token_ttl: 30m

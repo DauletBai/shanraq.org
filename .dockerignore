@@ -1,0 +1,10 @@
+.git
+.gitignore
+config.yaml
+docker-compose.yml
+Dockerfile
+Makefile
+README.md
+**/*.test
+tmp
+vendor

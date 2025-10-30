@@ -1,0 +1,7 @@
+{{ define "partials/footer" }}
+<footer class="border-top bg-primary py-4 mt-2">
+  <div class="container-lg text-center text-bg-primary opacity-75">
+    &copy; {{ if .CurrentYear }}{{ .CurrentYear }}{{ else }}{{ "2024" }}{{ end }} <a href="#" class="link-light">{{ if .FrameworkName }}{{ .FrameworkName }}{{ else }}Shanraq{{ end }}</a> · Powered by <a href="https://go.dev/" class="link-light">Go</a>.
+  </div>
+</footer>
+{{ end }}

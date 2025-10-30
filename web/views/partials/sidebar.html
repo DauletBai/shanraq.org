@@ -1,0 +1,15 @@
+{{ define "partials/sidebar" }}
+<div class="card border-0 shadow-sm">
+  <div class="card-header bg-white fw-semibold text-uppercase small text-muted">Shortcuts</div>
+  <div class="list-group list-group-flush">
+    {{ range .SidebarLinks }}
+    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{{ .Href }}">
+      <span>{{ .Label }}</span>
+      <span class="text-muted">→</span>
+    </a>
+    {{ else }}
+    <div class="list-group-item text-muted small">No links configured</div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

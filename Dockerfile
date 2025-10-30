@@ -1,65 +1,23 @@
-# Tenge-Web Dockerfile
-# Агглютинативтік веб-қосымша Docker образы
+# syntax=docker/dockerfile:1
 
-# Build stage
-FROM golang:1.21-alpine AS builder
+FROM golang:1.23-bullseye AS builder
+WORKDIR /src
 
-# Жұмыс директориясын орнату
-WORKDIR /app
+ENV GOTOOLCHAIN=auto
 
-# Go модульдерін көшіру
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Tenge компиляторын орнату
-COPY --from=tenge-lang/tenge:latest /bin/tenge /usr/local/bin/tenge
-
-# Кодды көшіру
 COPY . .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /bin/shanraq ./cmd/app
 
-# Tenge коддарын компиляциялау
-RUN tenge compile ./backend/server/main.tng -o ./bin/shanraq-server
-RUN tenge compile ./backend/api/main.tng -o ./bin/tenge-api-server
-RUN tenge compile ./backend/orm/main.tng -o ./bin/tenge-orm
-
-# Go коддарын құрастыру
-RUN go build -o ./bin/shanraq-go ./backend/go/
-
-# Production stage
-FROM alpine:latest
-
-# Жүйе пакеттерін орнату
-RUN apk add --no-cache \
-    ca-certificates \
-    sqlite \
-    nodejs \
-    npm
-
-# Жұмыс директориясын орнату
+FROM gcr.io/distroless/base-debian12:nonroot
 WORKDIR /app
+COPY --from=builder /bin/shanraq /usr/local/bin/shanraq
+COPY configs/config.example.yaml /app/config.yaml
 
-# Бинарлық файлдарды көшіру
-COPY --from=builder /app/bin/ /app/bin/
+ENV SHANRAQ_LOGGING_MODE=production \
+    SHANRAQ_CONFIG=/app/config.yaml
 
-# Frontend құрастыру
-COPY package*.json ./
-RUN npm install
-COPY frontend/ ./frontend/
-RUN npm run build
-
-# Статик файлдарды көшіру
-COPY static/ ./static/
-
-# Конфигурация файлдарын көшіру
-COPY config/ ./config/
-
-# Портты ашу
-EXPOSE 8080
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/api/v1/health || exit 1
-
-# Серверді іске қосу
-CMD ["./bin/shanraq-server"]
-
+ENTRYPOINT ["/usr/local/bin/shanraq"]
+CMD ["-config", "/app/config.yaml"]

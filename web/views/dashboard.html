@@ -1,0 +1,172 @@
+{{ define "dashboard.html" }}
+  {{ template "layout.html" . }}
+{{ end }}
+
+{{ define "dashboard-content" }}
+<div id="dashboard-root" data-reload-after="{{ printf "%.0f" .ReloadAfter.Seconds }}">
+<section class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+  <div>
+    <p class="text-uppercase text-muted fw-semibold small mb-1">Environment</p>
+    <div class="d-flex align-items-center gap-2">
+      <span class="h4 mb-0 text-capitalize">{{ .Environment }}</span>
+      <span class="badge text-bg-secondary">Last update: {{ .LastUpdated.Format "2006-01-02 15:04:05" }}</span>
+    </div>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-outline-primary" href="{{ .JobsAPIURL }}" target="_blank" rel="noopener">Explore Jobs API</a>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#jobCreateModal">Schedule Job</button>
+  </div>
+</section>
+
+<section class="row g-3 mb-4">
+  <div class="col-sm-6 col-lg-3">
+    <div class="card border shadow-sm h-100">
+      <div class="card-body">
+        <p class="text-uppercase text-muted fw-semibold small mb-1">Pending</p>
+        <h2 class="fw-bold mb-0">{{ .JobStats.Pending }}</h2>
+        <span class="text-muted small">Awaiting workers</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="card border shadow-sm h-100">
+      <div class="card-body">
+        <p class="text-uppercase text-muted fw-semibold small mb-1">Running</p>
+        <h2 class="fw-bold text-primary mb-0">{{ .JobStats.Running }}</h2>
+        <span class="text-muted small">{{ .JobStats.Workers }} workers active</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="card border shadow-sm h-100">
+      <div class="card-body">
+        <p class="text-uppercase text-muted fw-semibold small mb-1">Completed</p>
+        <h2 class="fw-bold text-success mb-0">{{ .JobStats.Completed }}</h2>
+        <span class="text-muted small">Total processed: {{ .JobStats.Total }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="card border shadow-sm h-100">
+      <div class="card-body">
+        <p class="text-uppercase text-muted fw-semibold small mb-1">Failed</p>
+        <h2 class="fw-bold text-danger mb-0">{{ .JobStats.Failed }}</h2>
+        <span class="text-muted small">Retry window: {{ .JobStats.Retrying }} queued</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="row g-4 mb-4">
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">System Health</h5>
+        <span class="badge text-bg-light text-muted">Live</span>
+      </div>
+      <div class="list-group list-group-flush">
+        {{ range .Health }}
+        <div class="list-group-item d-flex justify-content-between align-items-start">
+          <div>
+            <div class="fw-semibold">{{ .Name }}</div>
+            <div class="text-muted small">{{ .Description }}</div>
+          </div>
+          <span class="badge text-bg-{{ .Level }}">{{ .Status }}</span>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="mb-0">Recent Jobs</h5>
+          <p class="text-muted small mb-0">Polling every {{ .JobStats.PollInterval }}</p>
+        </div>
+        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#jobCreateModal">New Job</button>
+      </div>
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="text-center">Attempts</th>
+              <th scope="col">Run At</th>
+              <th scope="col">Last Error</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ if .RecentJobs }}
+            {{ range .RecentJobs }}
+            <tr>
+              <td class="fw-medium">{{ .Name }}</td>
+              <td><span class="badge text-bg-{{ statusColor .Status }} text-capitalize">{{ .Status }}</span></td>
+              <td class="text-center">{{ .Attempts }}/{{ .MaxAttempts }}</td>
+              <td>{{ .RunAt.Format "2006-01-02 15:04:05" }}</td>
+              <td class="text-muted small">{{ if .LastError }}{{ .LastError }}{{ else }}—{{ end }}</td>
+            </tr>
+            {{ end }}
+            {{ else }}
+            <tr>
+              <td colspan="5" class="text-center text-muted py-4">
+                Queue is empty. Schedule a job to see it tracked here.
+              </td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="jobCreateModal" tabindex="-1" aria-labelledby="jobCreateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="jobCreateModalLabel">Schedule Background Job</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success d-none" id="jobSuccessAlert">Job has been queued successfully.</div>
+        <div class="alert alert-danger d-none" id="jobErrorAlert"></div>
+        <form id="job-create-form" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="jobName" class="form-label">Job Name</label>
+            <input type="text" class="form-control" id="jobName" name="name" value="{{ .JobForm.Name }}" required>
+            <div class="form-text">Use semantic names that map to registered handlers.</div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="jobRunAt" class="form-label">Run At (UTC)</label>
+              <input type="datetime-local" class="form-control" id="jobRunAt" name="run_at">
+              <div class="form-text">Leave blank to run immediately.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="jobMaxAttempts" class="form-label">Max Attempts</label>
+              <input type="number" class="form-control" id="jobMaxAttempts" name="max_attempts" min="1" value="{{ .JobForm.MaxAttempts }}" required>
+              <div class="form-text">Retries are spaced automatically.</div>
+            </div>
+          </div>
+          <div class="mt-3">
+            <label for="jobPayload" class="form-label">Payload (JSON)</label>
+            <textarea class="form-control font-monospace" id="jobPayload" name="payload" rows="5">{{ .JobForm.Payload }}</textarea>
+            <div class="form-text">Provide a JSON object. Empty object defaults to <code>{}</code>.</div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" form="job-create-form" class="btn btn-primary">Queue Job</button>
+      </div>
+</div>
+  </div>
+  {{ template "queueExplorer" . }}
+</div>
+{{ end }}
+
+{{ define "dashboard-scripts" }}
+<script src="/static/js/dashboard.js" defer></script>
+{{ end }}

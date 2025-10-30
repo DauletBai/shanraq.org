@@ -1,0 +1,86 @@
+.featurette-divider {
+  margin: 5rem 0;
+}
+
+.featurette-heading {
+  letter-spacing: -.05rem;
+}
+
+
+.table thead {
+  background-color: var(--bs-primary);
+  color: var(--bs-white);
+}
+
+.table thead th {
+  border-color: var(--bs-primary);
+}
+
+.card-header {
+  border-bottom: 1px solid var(--bs-border-color);
+  background-color: var(--bs-body-bg);
+}
+
+.alert {
+  border-radius: 0.75rem;
+}
+
+#jobs-console-alert {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.code-block {
+  background-color: #ffffff;
+  color: #1e1e1e;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+  font-family: var(--bs-font-monospace);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.code-block .kw {
+  color: #c678dd;
+}
+
+.code-block .fn {
+  color: #61afef;
+}
+
+.code-block .var {
+  color: #d19a66;
+}
+
+.code-block .num {
+  color: #e5c07b;
+}
+
+.code-block .str {
+  color: #98c379;
+}
+
+.code-block .comment {
+  color: #6a737d;
+  font-style: italic;
+}
+
+.carousel-caption {
+  color: #666666;
+  bottom: 3rem;
+  z-index: 10;
+}
+
+.carousel-item {
+  height: 22rem;
+}
+
+.carousel .carousel-indicators [data-bs-target] {
+  background-color: var(--bs-dark);
+}
+
+.carousel .carousel-control-prev-icon,
+.carousel .carousel-control-next-icon {
+  filter: invert(1) grayscale(100%);
+}

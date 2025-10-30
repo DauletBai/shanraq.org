@@ -1,427 +1,170 @@
-<div align="center">
-  <img src="betjagy/sandyq/brand/logo_red.svg" alt="Tenge Logo" width="64"/>
-  <br>
-  <img src="betjagy/sandyq/brand/shanraq_title.svg" alt="Shanraq.org"/>
-</div>
+# Shanraq.org Framework
 
-🚀 **B2B Fintech Platform** - Enterprise-grade financial infrastructure for banks, fintech startups, corporations, and government institutions.
+Shanraq is a batteries-included Go 1.25.x application framework focused on modern backend practices: typed configuration, PostgreSQL-first data access, structured logging, composable modules, and first-class observability.
 
-## 🎯 About the Project
+## Highlights
 
-Shanraq.org is a **B2B fintech platform** that provides enterprise-grade financial infrastructure to banks, fintech startups, corporations, and government institutions. We offer the core financial technology that powers modern financial services, enabling rapid deployment of payment solutions with built-in compliance and security.
+- **Go 1.25.x ready**: Module targets Go `1.25` with Go toolchain `1.22.3`, so you can build today and upgrade seamlessly.
+- **PostgreSQL via pgxpool**: Sane defaults, lifecycle management, and trace hooks wired into Zap.
+- **Declarative configuration**: Environment-aware configuration loader with `.env` support, file overrides, and typed structs.
+- **Composable modules**: `shanraq.Module` contracts let teams build reusable features that can hook into init/start/routes independently.
+- **Operational insights**: Built-in health, readiness, and Prometheus telemetry modules provide production-grade endpoints out of the box.
+- **Domain modules included**: Authentication endpoints, background job queue/workers, and a Bootstrap 5.3 dashboard ship as ready-to-use modules.
+- **Zero-downtime migrations**: Embedded Goose migrations run on startup, so schema upgrades stay versioned and automated.
 
-**🎯 Mission**: To provide the foundational financial infrastructure that enables banks, fintech companies, and enterprises to build and deploy financial services rapidly and securely.
-
-## 🏢 B2B Positioning
-
-### What We Offer / Что Мы Предлагаем
-- **Financial Infrastructure**: Core payment processing, ledger, and transaction engines
-- **White-Label Solutions**: Branded payment APIs and SDKs for your business
-- **Compliance Ready**: Built-in PCI DSS, ISO 20022/8583, KYC/AML compliance
-- **High Performance**: 200K+ RPS, sub-millisecond latency for critical operations
-- **Rapid Deployment**: Deploy financial services in weeks, not months
-
-### Target Customers / Целевые Клиенты
-- **Banks (Tier 2)**: White-label payment processing solutions
-- **Fintech Startups**: Rapid deployment of payment products  
-- **Corporations**: Internal payment systems and digital wallets
-- **Government**: Social payments, subsidies, digital tenge integration
-- **Marketplaces**: Payment infrastructure for e-commerce platforms
-
-## 📊 Performance Benchmarks
-
-### **Reproducible Performance Results**
-
-**Hardware Specifications:**
-- CPU: Intel Core i7-12700K
-- RAM: 32GB DDR4-3200
-- OS: macOS 14.6.0
-- Compiler: Tenge Compiler v1.0.0
-- Optimization: -O3
-
-**Performance Targets (Realistic):**
-- HTTP Requests: 200K RPS
-- P99 Latency: 2.5ms
-- JSON Parsing: 500K ops/sec
-- Database CRUD: 100K ops/sec
-- Fibonacci(30): 2ms
-- QuickSort(1000): 0.5ms
-- Matrix 100x100: 15ms
-
-### **TechEmpower Comparison**
-Based on [TechEmpower Framework Benchmark Round 23](https://www.techempower.com/benchmarks/#section=data-r23&test=query):
-
-| Framework | Language | Requests/sec | P99 Latency | Shanraq.org Ratio |
-|-----------|----------|--------------|-------------|-------------------|
-| myth | C++ | 1,200,000 | 0.8ms | 16.7% |
-| axum | Rust | 1,000,000 | 1.0ms | 20.0% |
-| Fiber | Go | 800,000 | 1.3ms | 25.0% |
-| **Shanraq.org** | **Tenge** | **200,000** | **2.5ms** | **100.0%** |
-| Express | Node.js | 150,000 | 6.0ms | 133.3% |
-| FastAPI | Python | 80,000 | 12.0ms | 250.0% |
-
-**Assessment:** Competitive with Go frameworks, suitable for fintech applications.
-
-## 💰 Fintech-First Architecture
-
-### **Bank-Level Security**
-- 🔒 **AES-256 Encryption** - Hardware-accelerated data encryption
-- 🛡️ **TLS 1.3 & mTLS** - Military-grade transport security
-- 🔐 **Multi-Factor Authentication** - Advanced authentication systems
-- 🏦 **RBAC/ABAC** - Role and attribute-based access control
-- 📊 **Immutable Audit Logs** - Comprehensive compliance logging
-
-### **Financial Services Core**
-- 💳 **Payment Processing** - Visa, Mastercard, QR, Crypto, KaspiPay
-- 🏦 **Banking Operations** - Account management, transfers, loans
-- 📈 **Investment Services** - Portfolio management, trading
-- 🛡️ **KYC/AML** - Know Your Customer and Anti-Money Laundering
-- 📋 **Regulatory Compliance** - PCI DSS, GDPR, SOX, AML
-
-### **High-Performance Infrastructure**
-- ⚡ **P99 Latency < 1ms** - Ultra-low latency for critical operations
-- 🚀 **100,000+ TPS** - High-throughput transaction processing
-- 🌍 **99.99% Uptime** - Bank-level availability
-- 🔄 **Multi-Region Replication** - Global scalability
-- 🛠️ **Disaster Recovery** - RPO/RTO < 1 minute
-
-## ✨ Key Features
-
-### **Language Innovation**
-- 🔤 **Agglutinative Syntax** - Natural function composition using Kazakh morphemes
-- 🎵 **Phoneme Optimization** - Advanced phonetic processing
-- 🏗️ **Archetype Patterns** - Reusable architectural components
-- ⚡ **SIMD Optimizations** - Vector processing for maximum performance
-
-### **Fintech Capabilities**
-- 💰 **Double-Entry Accounting** - Two-phase commit transactions
-- 📊 **Event Sourcing** - Complete transaction audit trails
-- 🔄 **P2P Transfers** - Peer-to-peer money transfers
-- 🌐 **Payment Gateways** - Multiple payment method integration
-- 📱 **Mobile Wallets** - Digital wallet applications
-
-### **Enterprise Features**
-- 🏢 **Microservices Architecture** - Scalable service-oriented design
-- 🔧 **API-First Design** - RESTful and gRPC interfaces
-- 📊 **Real-time Monitoring** - Prometheus, Grafana, ELK stack
-- 🐳 **Container Ready** - Docker and Kubernetes support
-- ☁️ **Cloud Native** - Multi-cloud deployment capabilities
-
-## 🚀 Quick Start
-
-### 1. Clone the Project
-```bash
-git clone https://github.com/DauletBai/shanraq.org.git
-cd shanraq.org
-```
-
-### 2. Install Dependencies
-```bash
-make install
-```
-
-### 3. Run Demo Server
-```bash
-make demo
-```
-
-### 4. Open in Browser
-```
-🌐 Server: http://localhost:8080
-📄 Home: http://localhost:8080/
-📝 Blog: http://localhost:8080/blog
-👥 About: http://localhost:8080/about
-📞 Contact: http://localhost:8080/contact
-🔧 API: http://localhost:8080/api/v1/health
-```
-
-## 📁 Project Structure
+## Project Layout
 
 ```
-shanraq.org/
-├── 📁 Root Directory (Essential Files Only)
-│   ├── README.md                    # Main documentation
-│   ├── package.json                # Node.js configuration
-│   ├── Makefile                    # Build commands
-│   ├── Dockerfile                  # Docker configuration
-│   └── index.js                    # Application entry point
-├── 🔨 qurastyru/                   # Compiler
-│   ├── lekser/                    # Lexer (tokenizer)
-│   ├── parser/                    # Parser (syntax analysis)
-│   └── transpiler/                # Transpiler (C code generation)
-├── 🎨 betjagy/                     # Frontend
-│   ├── better/                    # Pages (HTML files)
-│   ├── sandyq/                     # Assets (CSS, JS, images)
-│   └── ulgi/                       # Templates
-├── 🏗️ artjagy/                     # Backend
-│   └── server/                    # Server components
-├── 🔧 framework/                   # Core framework
-│   ├── jojj/                      # JOJJ interface
-│   ├── ortalyq/                   # Middleware
-│   ├── qauıpsızdık/               # Security
-│   └── ulgi/                      # Template engine
-├── 💼 ısker_qisyn/                 # Business logic
-│   ├── paydalanu_baskaru/         # User management
-│   ├── mazmun_baskaru/            # Content management
-│   ├── e_commerce/                # E-commerce
-│   ├── financial_core/             # Financial operations
-│   ├── financial_integrations/    # Payment integrations
-│   ├── infrastructure/             # Infrastructure services
-│   ├── compliance/                # Regulatory compliance
-│   └── security/                  # Security services
-├── 🗄️ derekter/                   # Database
-│   ├── orm/                       # ORM
-│   ├── koshiru/                   # Migrations
-│   └── modelder/                  # Models
-├── 🧪 synaqtar/                    # Testing
-│   ├── unit/                      # Unit tests
-│   ├── integration/               # Integration tests
-│   ├── e2e/                       # End-to-end tests
-│   ├── benchmarks/                # Performance benchmarks
-│   └── demo/                      # Demo files
-├── 📚 qujattama/                   # Documentation
-│   ├── api/                       # API documentation
-│   ├── architecture/              # System architecture
-│   ├── compliance/                # Compliance documentation
-│   ├── deployment/                # Deployment guides
-│   ├── investors/                 # Investor materials
-│   ├── reliability/               # Reliability documentation
-│   ├── roadmap/                   # Project roadmap
-│   ├── security/                  # Security documentation
-│   ├── transaction_core/          # Transaction core
-│   ├── user-guide/                # User guides
-│   ├── COMPLETION.md              # Project completion status
-│   ├── PROJECT_SUMMARY.md         # Project summary
-│   └── OPTIMIZATION_GUIDE.md      # Performance optimization guide
-├── ⚙️ baptaular/                   # Configuration
-│   ├── database_baptaular.json    # Database configuration
-│   ├── development_baptaular.json # Development environment
-│   ├── package_optimized.json     # Optimized package configuration
-│   └── server_baptaular.json      # Server configuration
-└── 🛠️ dev_tools/                   # Development Tools
-    ├── cli/                       # Command-line interface
-    ├── formatter/                 # Code formatting
-    ├── linter/                    # Code linting
-    ├── sublime/                   # Sublime Text support
-    └── vscode/                    # Visual Studio Code support
+cmd/app/              # Reference application entry point
+configs/              # Example configuration files
+internal/config       # Configuration loader & validation
+internal/db           # PostgreSQL connection factory & tracing
+internal/httpserver   # Chi-powered HTTP server wrapper
+internal/logging      # Zap logger builder
+pkg/shanraq           # Public runtime & module contracts
+pkg/modules/auth      # Email/password auth REST module
+pkg/modules/jobs      # Postgres-backed job queue & workers
+pkg/modules/migrations  # Embedded Goose migrations
+pkg/modules/webui     # Bootstrap 5.3 dashboard module
+pkg/modules/...       # Additional modules (health, telemetry, etc.)
+web/                  # html/template renderer, landing carousel, static assets
 ```
 
-## 📋 Project Organization
+## Getting Started
 
-The project follows a clean, organized structure:
+1. Install Go >= 1.22.3 (toolchain) and PostgreSQL.
+2. Copy and tweak the sample config (the binary refuses to start without it):
+   ```bash
+   cp configs/config.example.yaml config.yaml
+   ```
+3. (Optional) export env overrides. Every key supports the `SHANRAQ_` prefix (e.g. `SHANRAQ_SERVER_ADDRESS=:9090`).
+4. Run the reference app:
+   ```bash
+   go run ./cmd/app -config config.yaml
+   ```
+5. Visit `http://localhost:8080/` for the landing carousel and queue explorer, `http://localhost:8080/console` for the operator dashboard, plus `http://localhost:8080/healthz`, `http://localhost:8080/readyz`, and `http://localhost:8080/metrics`.
+6. Need to override secrets or DSNs? Use env vars such as `export SHANRAQ_AUTH_TOKEN_SECRET=$(openssl rand -hex 32)` before launching the binary.
 
-- **Root Directory**: Contains only essential files (README.md, package.json, Makefile, Dockerfile, index.js)
-- **Core Directories**: Organized by functionality (algasqy, artjagy, betjagy, derekter, framework, qurastyru, ısker_qisyn)
-- **Documentation**: Centralized in `qujattama/` with organized subdirectories
-- **Configuration**: Centralized in `baptaular/`
-- **Development Tools**: Organized in `dev_tools/`
-- **Testing**: Comprehensive testing in `synaqtar/`
+### Docker Workflow
 
-This structure ensures:
-- ✅ **Clean root directory** with only essential files
-- ✅ **Logical organization** of related components
-- ✅ **Easy navigation** through the project
-- ✅ **Scalable structure** for future growth
-
-## 🔧 Commands
+Prefer containers? The repo ships with a production-style `Dockerfile` and a `docker-compose.yml` suited for local development:
 
 ```bash
-# Get help
-make help
-
-# Build project
-make build
-
-# Run server
-make run
-
-# Run tests
-make test
-
-# Run benchmarks
-make benchmark
-
-# Run demo server
-make demo
-
-# Clean cache and temporary files
-make clean
-
-# Install project
-make install
-
-# Install optimized dependencies
-make install-optimized
+docker compose up --build
 ```
 
-## 📝 Code Examples
+This command launches:
 
-### **Agglutinative Financial Functions**
-```tenge
-// Create high-performance web server
-atqar web_server_jasau(port: san) -> WebServer {
-    jasau server: WebServer = web_server_create(port);
-    qaytar server;
+- `db`: PostgreSQL 16 with a persistent volume.
+- `app`: the Shanraq binary built inside a minimal distroless image, configured via env vars to talk to the `db` service.
+
+Expose ports `8080` (app) and `5432` (Postgres) on your host to interact with the stack just like a native run.
+
+## Configuration Reference
+
+| Key | Description | Default |
+| --- | ----------- | ------- |
+| `environment` | Logical environment label | `development` |
+| `server.address` | HTTP bind address | `:8080` |
+| `server.read_timeout`/`write_timeout`/`idle_timeout` | Server timeouts | `15s/15s/60s` |
+| `database.url` | PostgreSQL DSN (pgx format) | `postgres://postgres:postgres@localhost:5432/shanraq?sslmode=disable` |
+| `database.max_conns` | Max pooled connections | `10` |
+| `telemetry.enable_metrics` | Toggle Prometheus handler | `true` |
+| `telemetry.metrics_path` | Metrics HTTP path | `/metrics` |
+| `logging.level` | Zap level (`debug/info/warn/error`) | `info` |
+| `logging.mode` | `development` or `production` encoder | `production` |
+| `auth.token_secret` | HMAC secret for JWT tokens | `replace-me-now` |
+| `auth.token_ttl` | Token lifetime | `15m` |
+
+Durations accept Go duration syntax (e.g. `30s`, `5m`).
+
+## Building Modules
+
+Create modules by implementing one or more of the optional interfaces:
+
+```go
+type WidgetModule struct{}
+
+func (WidgetModule) Name() string { return "widget" }
+
+func (WidgetModule) Init(ctx context.Context, rt *shanraq.Runtime) error {
+    // One-time setup before HTTP server starts (migrations, caches, ...)
+    return nil
 }
 
-// Secure user authentication
-atqar user_parol_tekseru(email: jol, password: jol) -> aqıqat {
-    jasau user: JsonObject = user_email_boyynsha_tabu(email);
-    eger (user != NULL) {
-        jasau stored_password: jol = json_object_get_string(user, "password");
-        qaytar parol_tekseru(password, stored_password);
-    }
-    qaytar jin;
+func (WidgetModule) Routes(r chi.Router) {
+    r.Get("/widgets", ...)
 }
 
-// High-performance transaction processing
-atqar transaction_opt(transaction: Transaction) -> Transaction {
-    jasau optimized: Transaction = simd_optimize(transaction);
-    qaytar optimized;
-}
-
-// Financial calculation with Decimal128 precision
-atqar financial_hesaplau(amount: Decimal128, rate: Decimal128) -> Decimal128 {
-    jasau result: Decimal128 = decimal128_multiply(amount, rate);
-    qaytar result;
+func (WidgetModule) Start(ctx context.Context, rt *shanraq.Runtime) error {
+    // Long-running workers, schedulers, etc.
+    <-ctx.Done()
+    return ctx.Err()
 }
 ```
 
-## 🌐 API Examples
+Register modules in `cmd/app/main.go` (or your own binary):
 
-### **Health Check**
-```bash
-curl http://localhost:8080/api/v1/health
+```go
+app := shanraq.New(cfg)
+app.Register(widget.New())
+app.Register(telemetry.New())
+app.Register(health.New())
 ```
 
-### **Status**
-```bash
-curl http://localhost:8080/api/v1/status
-```
+The runtime injects a shared `*pgxpool.Pool`, `*zap.Logger`, and `chi.Router` instance, so modules stay cohesive yet decoupled.
 
-### **Financial Operations (JOJJ)**
-```bash
-# Get accounts (Oqu)
-curl http://localhost:8080/api/v1/accounts
+## Testing
 
-# Create transaction (Jasau)
-curl -X POST http://localhost:8080/api/v1/transactions
-
-# Update balance (Janartu)
-curl -X PUT http://localhost:8080/api/v1/accounts/1/balance
-
-# Process payment (Joiu)
-curl -X DELETE http://localhost:8080/api/v1/payments/1
-```
-
-## 🧪 Testing
+The repository ships with a focused configuration test. Run the full suite via:
 
 ```bash
-# Run all tests
-make test
-
-# Unit tests
-make test-unit
-
-# Integration tests
-make test-integration
-
-# End-to-end tests
-make test-e2e
-
-# Run benchmarks
-make benchmark
-
-# Show benchmark results
-make show-benchmark-results
+go test ./...
 ```
 
-## 📊 Performance Benchmarks
+Add module tests close to their packages to keep coverage meaningful.
 
-### **Comprehensive Benchmark Suite**
-- **Algorithm Performance**: Fibonacci, QuickSort, Matrix Multiplication
-- **Database Performance**: CRUD operations, query optimization
-- **Network Performance**: HTTP requests, API responses
-- **Security Performance**: Encryption, authentication, authorization
-- **Financial Performance**: Transaction processing, payment processing
+### Quality & Verification
 
-### **Advanced Optimizations**
-- **SIMD Operations**: Vector processing for maximum performance
-- **Zero-Copy Operations**: Memory-efficient data processing
-- **Lock-Free Algorithms**: High-concurrency data structures
-- **Work-Stealing**: Dynamic load balancing
-- **Tail-Latency Optimization**: P99 < 1ms performance
+- `go test ./...` exercises configuration loading, authentication token helpers, transport utilities, and any additional unit tests you add. UI regressions are covered with renderer tests so the landing carousel, navigation collapse, and syntax-highlighted featurettes stay intact.
+- `make test` is a convenience alias if you prefer the bundled Makefile.
+- When touching templates, run `go test ./web`; the renderer compiles embedded HTML and regression tests confirm the layout renders home and dashboard views with the bundled brand assets.
+- For integration flows (auth + jobs + web UI), start the stack locally (`go run ./cmd/app -config config.yaml`) and walk through: `curl http://localhost:8080/healthz`, create a demo user via `/auth/signup`, enqueue a job via `/jobs`, and confirm the console at `/console` reflects the change.
+- Using Docker? `docker compose logs -f app` streams application logs (including Postgres connection retries) so you can observe startup sequencing.
+## Auth Module
 
-## 🔒 Security & Compliance
+`pkg/modules/auth` exposes `/auth/signup`, `/auth/signin`, and `/auth/profile` JSON endpoints. Passwords are hashed with `bcrypt`, users live in the `auth_users` table, and stateless JWT tokens secure profile access. Configure the secret via `auth.token_secret` or the `SHANRAQ_AUTH_TOKEN_SECRET` env var.
 
-### **Bank-Level Security**
-- **Encryption**: AES-256 at rest, TLS 1.3 in transit
-- **Authentication**: Multi-factor authentication with JWT
-- **Authorization**: Role-based and attribute-based access control
-- **Audit Logging**: Immutable audit trails for compliance
+## Background Jobs
 
-### **Regulatory Compliance**
-- **PCI DSS Level 1**: Payment card industry compliance
-- **GDPR**: European data protection regulation compliance
-- **SOX**: Sarbanes-Oxley compliance for financial reporting
-- **AML**: Anti-Money Laundering compliance procedures
+- `POST /jobs` enqueues work with arbitrary JSON payloads and optional `run_at` timestamps.
+- Workers (configured in `cmd/app/main.go`) poll Postgres, claim jobs with `FOR UPDATE SKIP LOCKED`, and retry automatically.
+- Add business logic via `jobsModule.Handle("job-name", jobs.Handler)`; the example registers `send_welcome_email` using `jobs.LogHandler`.
+- Explore and manage the queue from `/console` or via the JSON API: `GET /jobs?status=pending`, `POST /jobs/{id}/retry`, and `POST /jobs/{id}/cancel`.
 
-## 📚 Documentation
+The Web UI module queries the same queue to render status cards and recent jobs.
 
-- [API Documentation](qujattama/api/)
-- [User Guide](qujattama/user-guide/)
-- [Architecture Overview](qujattama/architecture/)
-- [Security Framework](qujattama/security/)
-- [Compliance Guide](qujattama/compliance/)
-- [Performance Optimization](qujattama/OPTIMIZATION_GUIDE.md)
-- [Project Summary](qujattama/PROJECT_SUMMARY.md)
+## Migrations
 
-## 🎯 Demo Applications
+`pkg/modules/migrations` embeds Goose scripts under `pkg/modules/migrations/sql`. Every boot runs `goose.Up` inside the process, guaranteeing schema parity with binaries. Add migrations by dropping new `*.sql` files following Goose's timestamp naming and `-- +goose Up/Down` directives.
 
-### **Online Store Demo**
-- Complete e-commerce payment flow
-- Multiple payment methods (cards, wallets, QR, crypto)
-- Real-time security monitoring
-- Performance metrics display
+## Templates & Web UI
 
-### **Mobile Wallet Demo**
-- Touch-friendly mobile interface
-- QR code generation and scanning
-- Peer-to-peer money transfers
-- Biometric authentication
+`web` hosts the renderer, landing carousel, and static bundle. `home.html` delivers a Bootstrap carousel whose copy pulls from the `framework_about` table, while `dashboard.html` powers the operator console. Shared partials such as `partials/queue.html` drive the queue explorer and modal form. Extend by adding new templates in `web/views` (with matching static assets under `web/static`).
 
-### **Utility Payments Demo**
-- Multiple utility providers (electricity, water, gas, internet)
-- Secure payment processing
-- Bill history and management
-- Government payments
+### Customising the landing page copy
 
-## 🤝 Contributing
+Edit the `framework_about` table to tailor the carousel headline, subheadline, and feature slides. The most recent row is loaded during startup:
 
-1. Fork the project
-2. Create a new branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Create a Pull Request
+```sql
+INSERT INTO framework_about (headline, subheadline, feature_one, feature_two, feature_three)
+VALUES (
+  'Shanraq Console',
+  'A Go-first framework for resilient backends.',
+  'PostgreSQL-native data layer with migrations built-in.',
+  'Composable module system for HTTP, workers, and observability.',
+  'Cloud-ready tooling: Docker, Prometheus telemetry, structured logging.'
+);
+```
 
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## 📞 Contact
-
-- 🌐 Website: https://shanraq.org
-- 📧 Email: info@shanraq.org
-- 💬 Discord: https://discord.gg/shanraq
-- 🐙 GitHub: https://github.com/DauletBai/shanraq.org
-- 📱 Telegram: https://t.me/shanraq_org
-
-## 🙏 Acknowledgments
-
-Thank you to everyone who has supported the Shanraq.org project!
-
----
-
-**Shanraq.org** - High-performance fintech platform built with the agglutinative power of the Kazakh language! 🚀💰
-
-*Ready for production deployment with bank-level security, compliance, and performance.*
+Restart the app (or apply the insert before boot) and the home carousel will reflect the update automatically.

@@ -1,0 +1,239 @@
+{{ define "home.html" }}
+  {{ template "layout.html" . }}
+{{ end }}
+
+{{ define "home-content" }}
+<div id="home-root" class="pb-5" data-reload-after="{{ printf "%.0f" .ReloadAfter.Seconds }}">
+  <div id="shanraqCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#shanraqCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#shanraqCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#shanraqCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active py-4">
+        <div class="container">
+          <div class="carousel-caption text-start">
+            <h1 class="display-5 mb-3">{{ if .Hero }}{{ .Hero.Headline }}{{ else }}Shanraq Console{{ end }}</h1>
+            <p class="lead mb-4">{{ if .Hero }}{{ .Hero.Subheadline }}{{ else }}A Go-first framework for resilient backend services.{{ end }}</p>
+            <div class="d-inline-flex">
+              <a class="btn btn-primary me-2" href="/console">Launch Console</a>
+              <a class="btn btn-outline-dark" href="/docs">Documentation</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item py-4">
+        <div class="container">
+          <div class="carousel-caption">
+            <h2 class="display-5">{{ if .Hero }}{{ .Hero.FeatureOne }}{{ else }}PostgreSQL-native data layer with migrations built-in.{{ end }}</h2>
+            <p class="lead">Opinionated defaults wire pgx pools, tracing, and migrations directly into your runtime.</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item py-4">
+        <div class="container">
+          <div class="carousel-caption text-end">
+            <h2 class="display-5">{{ if .Hero }}{{ .Hero.FeatureTwo }}{{ else }}Composable module system for HTTP, workers, and observability.{{ end }}</h2>
+            <p class="lead">Plug-and-play modules deliver routing, background jobs, telemetry, and authentication.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#shanraqCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#shanraqCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="card border rounded-3 shadow h-100 text-bg-primary">
+        <div class="card-body">
+          <h5 class="card-title">Observability First</h5>
+          <p class="card-text">Prometheus metrics, health/readiness endpoints, and Zap logging ship out of the box.</p>
+          <a class="btn btn-outline-light" href="/metrics" target="_blank" rel="noopener">Metrics Endpoint</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border rounded-3 bg-primary-subtle shadow h-100">
+        <div class="card-body">
+          <h5 class="card-title">Elastic Workers</h5>
+          <p class="card-text">Queue tasks, retry automatically, and manage workloads from the console.</p>
+          <a class="btn btn-primary" href="#queue-explorer">View Queue</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border rounded-3 shadow h-100">
+        <div class="card-body">
+          <h5 class="card-title">Developer Experience</h5>
+          <p class="card-text">Docker Compose environment, Go 1.23 toolchain, and modular templates accelerate onboarding.</p>
+          <a class="btn btn-primary" href="https://github.com" target="_blank" rel="noopener">Source Repository</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="featurette-divider" />
+  <div class="row featurette align-items-center gy-4">
+    <div class="col-md-6">
+      <h2 class="featurette-heading fw-semibold lh-1">
+        Unified operator cockpit
+        <span class="text-primary d-block fs-4 fw-normal">One pane of glass for Shanraq services.</span>
+      </h2>
+      <p class="lead">Land on a Bootstrap 5 console that surfaces health, queue depth, and worker utilisation the moment the binary boots.</p>
+      <ul class="list-unstyled text-muted">
+        <li class="mb-2">• Live Prometheus, health, and readiness endpoints.</li>
+        <li class="mb-2">• Background job telemetry with PGX tracing baked in.</li>
+        <li>• Realtime reload loop tuned for operations teams.</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <div class="rounded-4 bg-white h-100">
+        <pre class="code-block mb-0 shadow"><code><span class="var">r</span>.<span class="fn">Get</span>(<span class="str">"/"</span>, m.handleHome)
+<span class="var">r</span>.<span class="fn">Get</span>(<span class="str">"/console"</span>, m.handleDashboard)
+<span class="var">r</span>.<span class="fn">Get</span>(<span class="str">"/partials/dashboard"</span>, m.handleDashboardPartial)</code></pre>
+        <p class="text-muted mt-3 mb-0 small">The web UI module registers its Chi routes directly, powering the landing page, operator console, and AJAX partial refresh.</p>
+      </div>
+    </div>
+  </div>
+  <hr class="featurette-divider" />
+  <div class="row featurette align-items-center gy-4">
+    <div class="col-md-6 order-md-2">
+      <h2 class="featurette-heading fw-semibold lh-1">
+        Schema-first migrations
+        <span class="text-primary d-block fs-4 fw-normal">Zero-downtime upgrades with Goose and Atlas.</span>
+      </h2>
+      <p class="lead">Every module ships with versioned SQL, executed safely on startup so your environments stay in sync.</p>
+      <div class="card border shadow">
+        <div class="card-body">
+          <code class="d-block text-wrap">atlas migrate lint --dir file://pkg/modules/migrations/sql</code>
+          <code class="d-block text-wrap">go run ./cmd/app -config config.yaml</code>
+          <p class="text-muted mb-0 small">Lint, apply, and verify without reaching for external tooling.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 order-md-1">
+      <div class="rounded-4 bg-white h-100">
+        <pre class="code-block mb-0 shadow"><code><span class="comment">-- +goose Up</span>
+<span class="kw">CREATE TYPE</span> job_status <span class="kw">AS</span> ENUM (<span class="str">'pending'</span>, <span class="str">'running'</span>, <span class="str">'retry'</span>, <span class="str">'done'</span>, <span class="str">'failed'</span>);
+
+<span class="kw">CREATE TABLE IF NOT EXISTS</span> job_queue (
+    id UUID <span class="kw">PRIMARY KEY</span>,
+    name TEXT <span class="kw">NOT NULL</span>,
+    payload JSONB <span class="kw">NOT NULL DEFAULT</span> <span class="str">'{}'</span>::jsonb,
+    run_at TIMESTAMPTZ <span class="kw">NOT NULL DEFAULT</span> <span class="kw">NOW</span>(),
+    attempts INT <span class="kw">NOT NULL DEFAULT</span> 0,
+    max_attempts INT <span class="kw">NOT NULL DEFAULT</span> 5,
+    status job_status <span class="kw">NOT NULL DEFAULT</span> <span class="str">'pending'</span>,
+    last_error TEXT,
+    created_at TIMESTAMPTZ <span class="kw">NOT NULL DEFAULT</span> <span class="kw">NOW</span>(),
+    updated_at TIMESTAMPTZ <span class="kw">NOT NULL DEFAULT</span> <span class="kw">NOW</span>()
+);</code></pre>
+        <p class="text-muted mt-3 mb-0 small">Embedded Goose migrations keep PostgreSQL schemas reproducible across environments.</p>
+      </div>
+    </div>
+  </div>
+  <hr class="featurette-divider" />
+  <div class="row featurette align-items-center gy-4">
+    <div class="col-md-6">
+      <h2 class="featurette-heading fw-semibold lh-1">
+        Automation-ready workers
+        <span class="text-primary d-block fs-4 fw-normal">From cron jobs to event-driven pipelines.</span>
+      </h2>
+      <p class="lead">Drive resilient background workloads with the built-in queue, PG advisory locks, and module contracts.</p>
+      <p class="text-muted">Register new processors with a few lines of Go and observe them from the console immediately.</p>
+      <pre class="code-block mb-3 shadow"><code><span class="var">jobsModule</span>.<span class="fn">Handle</span>(<span class="str">"send_welcome_email"</span>, jobs.<span class="fn">LogHandler</span>(<span class="str">"email"</span>))</code></pre>
+    </div>
+    <div class="col-md-6">
+      <div class="rounded-4 bg-white h-100">
+        <pre class="code-block mb-0 shadow"><code><span class="kw">const</span> (
+    jobWorkers     = <span class="num">4</span>
+    jobPollSeconds = <span class="num">2</span> * time.Second
+)
+
+<span class="var">jobModule</span> := jobs.<span class="fn">New</span>(
+    jobs.<span class="fn">WithWorkerCount</span>(jobWorkers),
+    jobs.<span class="fn">WithPollInterval</span>(jobPollSeconds),
+)
+<span class="var">jobModule</span>.<span class="fn">Handle</span>(<span class="str">"send_welcome_email"</span>, jobs.<span class="fn">LogHandler</span>(<span class="str">"send_welcome_email"</span>))</code></pre>
+        <p class="text-muted mt-3 mb-0 small">Runtime wiring in <code>cmd/app/main.go</code> pairs worker scheduling defaults with module registration.</p>
+      </div>
+    </div>
+  </div>
+        <hr class="featurette-divider" />
+  {{ template "queueExplorer" . }}
+</div>
+{{ end }}
+
+{{ define "home-scripts" }}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var carouselEl = document.getElementById('shanraqCarousel');
+    if (!carouselEl) {
+      return;
+    }
+
+    var bootstrapCarousel = null;
+    if (window.bootstrap && window.bootstrap.Carousel) {
+      bootstrapCarousel = window.bootstrap.Carousel.getOrCreateInstance(carouselEl, {
+        interval: 6000,
+        ride: true,
+        touch: true,
+        pause: false,
+        wrap: true
+      });
+    }
+
+    var items = carouselEl.querySelectorAll('.carousel-item');
+    var indicators = carouselEl.querySelectorAll('[data-bs-slide-to]');
+    var index = 0;
+
+    function showSlide(next) {
+      if (!items.length) {
+        return;
+      }
+      index = (next + items.length) % items.length;
+      items.forEach(function (item, i) {
+        item.classList.toggle('active', i === index);
+      });
+      indicators.forEach(function (indicator, i) {
+        indicator.classList.toggle('active', i === index);
+        indicator.setAttribute('aria-current', i === index ? 'true' : 'false');
+      });
+    }
+
+    if (!bootstrapCarousel) {
+      showSlide(0);
+      var nextControl = carouselEl.querySelector('[data-bs-slide="next"]');
+      var prevControl = carouselEl.querySelector('[data-bs-slide="prev"]');
+      if (nextControl) {
+        nextControl.addEventListener('click', function (event) {
+          event.preventDefault();
+          showSlide(index + 1);
+        });
+      }
+      if (prevControl) {
+        prevControl.addEventListener('click', function (event) {
+          event.preventDefault();
+          showSlide(index - 1);
+        });
+      }
+      indicators.forEach(function (indicator, i) {
+        indicator.addEventListener('click', function (event) {
+          event.preventDefault();
+          showSlide(i);
+        });
+      });
+      setInterval(function () {
+        showSlide(index + 1);
+      }, 6000);
+    }
+  });
+</script>
+{{ end }}
