@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"crypto/sha256"
+	"embed"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -31,6 +32,16 @@ type Module struct {
 	rt     *shanraq.Runtime
 	store  *Store
 	tokens *TokenService
+	views  *template.Template
+}
+
+//go:embed templates/*.html
+var viewFiles embed.FS
+
+type templateData struct {
+	Token   string
+	Message string
+	Error   string
 }
 
 // New returns a ready-to-register authentication module.
@@ -47,6 +58,11 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
 	m.tokens = NewTokenService(rt.Config.Auth.TokenSecret, rt.Config.Auth.TokenTTL)
+	tmpl, err := template.ParseFS(viewFiles, "templates/*.html")
+	if err != nil {
+		return fmt.Errorf("parse auth templates: %w", err)
+	}
+	m.views = tmpl
 	return nil
 }
 
@@ -214,18 +230,7 @@ func (m *Module) handleSignout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) renderPasswordResetPage(w http.ResponseWriter, _ *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprint(w, `<!doctype html>
-<html lang="en">
-  <head><meta charset="utf-8"><title>Password Reset</title></head>
-  <body style="font-family: sans-serif; max-width: 480px; margin: 3rem auto;">
-    <h2>Request password reset</h2>
-    <form method="post" action="/auth/password/reset">
-      <label>Email<br><input type="email" name="email" required autofocus style="width:100%;padding:0.5rem;" /></label>
-      <div style="margin-top:1rem;"><button type="submit">Send reset link</button></div>
-    </form>
-  </body>
-</html>`)
+	m.renderResetRequestTemplate(w, http.StatusOK, templateData{})
 }
 
 func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Request) {
@@ -240,7 +245,7 @@ func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Reque
 		email = strings.TrimSpace(strings.ToLower(req.Email))
 	} else {
 		if err := r.ParseForm(); err != nil {
-			writeHTMLMessage(w, http.StatusBadRequest, "Password Reset", "Invalid form submission.")
+			m.renderResetRequestTemplate(w, http.StatusBadRequest, templateData{Error: "Invalid form submission."})
 			return
 		}
 		email = strings.TrimSpace(strings.ToLower(r.FormValue("email")))
@@ -250,7 +255,7 @@ func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Reque
 		if isJSON {
 			respond.Error(w, http.StatusBadRequest, errors.New("email required"))
 		} else {
-			writeHTMLMessage(w, http.StatusBadRequest, "Password Reset", "Email is required.")
+			m.renderResetRequestTemplate(w, http.StatusBadRequest, templateData{Error: "Email is required."})
 		}
 		return
 	}
@@ -260,7 +265,7 @@ func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Reque
 
 	user, err := m.store.FindByEmail(ctx, email)
 	if err != nil {
-		respondPasswordResetAck(w, isJSON)
+		m.respondPasswordResetAck(w, isJSON)
 		return
 	}
 
@@ -276,24 +281,12 @@ func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Reque
 	resetLink := fmt.Sprintf("http://localhost:8080/auth/password/confirm?token=%s", token)
 	m.rt.Logger.Info("password reset issued", zap.String("email", user.Email), zap.String("link", resetLink))
 
-	respondPasswordResetAck(w, isJSON)
+	m.respondPasswordResetAck(w, isJSON)
 }
 
 func (m *Module) renderPasswordConfirmPage(w http.ResponseWriter, r *http.Request) {
 	token := strings.TrimSpace(r.URL.Query().Get("token"))
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprintf(w, `<!doctype html>
-<html lang="en">
-  <head><meta charset="utf-8"><title>Set new password</title></head>
-  <body style="font-family: sans-serif; max-width: 480px; margin: 3rem auto;">
-    <h2>Set new password</h2>
-    <form method="post" action="/auth/password/confirm">
-      <input type="hidden" name="token" value="%s" />
-      <label>New password<br><input type="password" name="password" required minlength="8" style="width:100%%;padding:0.5rem;" /></label>
-      <div style="margin-top:1rem;"><button type="submit">Update password</button></div>
-    </form>
-  </body>
-</html>`, template.HTMLEscapeString(token))
+	m.renderResetConfirmTemplate(w, http.StatusOK, templateData{Token: token})
 }
 
 func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Request) {
@@ -306,7 +299,7 @@ func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Reque
 		}
 	} else {
 		if err := r.ParseForm(); err != nil {
-			writeHTMLMessage(w, http.StatusBadRequest, "Password Reset", "Invalid form submission.")
+			m.renderResetConfirmTemplate(w, http.StatusBadRequest, templateData{Error: "Invalid form submission."})
 			return
 		}
 		req.Token = r.FormValue("token")
@@ -319,7 +312,7 @@ func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Reque
 		if isJSON {
 			respond.Error(w, http.StatusBadRequest, errors.New("token and password required"))
 		} else {
-			writeHTMLMessage(w, http.StatusBadRequest, "Password Reset", "Token and password are required.")
+			m.renderResetConfirmTemplate(w, http.StatusBadRequest, templateData{Token: req.Token, Error: "Token and password are required."})
 		}
 		return
 	}
@@ -327,7 +320,7 @@ func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Reque
 		if isJSON {
 			respond.Error(w, http.StatusBadRequest, errors.New("password must be at least 8 characters"))
 		} else {
-			writeHTMLMessage(w, http.StatusBadRequest, "Password Reset", "Password must be at least 8 characters.")
+			m.renderResetConfirmTemplate(w, http.StatusBadRequest, templateData{Token: req.Token, Error: "Password must be at least 8 characters."})
 		}
 		return
 	}
@@ -337,11 +330,11 @@ func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Reque
 
 	reset, err := m.store.GetPasswordReset(ctx, hashToken(req.Token))
 	if err != nil {
-		respondPasswordResetInvalid(w, isJSON)
+		m.respondPasswordResetInvalid(w, isJSON, req.Token)
 		return
 	}
 	if reset.UsedAt != nil || time.Now().After(reset.ExpiresAt) {
-		respondPasswordResetInvalid(w, isJSON)
+		m.respondPasswordResetInvalid(w, isJSON, req.Token)
 		return
 	}
 
@@ -359,9 +352,12 @@ func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Reque
 		respond.Error(w, http.StatusInternalServerError, err)
 		return
 	}
-	_ = m.store.RevokeUserTokens(ctx, userID)
+	if err := m.store.RevokeUserTokens(ctx, userID); err != nil {
+		respond.Error(w, http.StatusInternalServerError, err)
+		return
+	}
 
-	writePasswordResetSuccess(w, isJSON)
+	m.writePasswordResetSuccess(w, isJSON)
 }
 
 func (m *Module) handleProfile(w http.ResponseWriter, r *http.Request) {
@@ -447,42 +443,50 @@ func isJSONRequest(r *http.Request) bool {
 	return strings.Contains(strings.ToLower(r.Header.Get("Content-Type")), "application/json")
 }
 
-func respondPasswordResetAck(w http.ResponseWriter, asJSON bool) {
+func (m *Module) respondPasswordResetAck(w http.ResponseWriter, asJSON bool) {
 	if asJSON {
 		respond.JSON(w, http.StatusOK, map[string]string{"status": "ok"})
 		return
 	}
-	writeHTMLMessage(w, http.StatusOK, "Password Reset", "If the account exists, a reset link has been issued. Please check the application logs for details.")
+	m.renderResetRequestTemplate(w, http.StatusOK, templateData{Message: "If the account exists, a reset link has been issued. Please check the application logs for details."})
 }
 
-func respondPasswordResetInvalid(w http.ResponseWriter, asJSON bool) {
+func (m *Module) respondPasswordResetInvalid(w http.ResponseWriter, asJSON bool, token string) {
 	if asJSON {
 		respond.Error(w, http.StatusBadRequest, errors.New("reset token invalid or expired"))
 		return
 	}
-	writeHTMLMessage(w, http.StatusBadRequest, "Password Reset", "Reset token is invalid or has expired.")
+	m.renderResetConfirmTemplate(w, http.StatusBadRequest, templateData{Token: token, Error: "Reset token is invalid or has expired."})
 }
 
-func writePasswordResetSuccess(w http.ResponseWriter, asJSON bool) {
+func (m *Module) writePasswordResetSuccess(w http.ResponseWriter, asJSON bool) {
 	if asJSON {
 		respond.JSON(w, http.StatusOK, map[string]string{"status": "password_updated"})
 		return
 	}
-	writeHTMLMessage(w, http.StatusOK, "Password Reset", "Password updated. You may now sign in with your new password.")
+	m.renderResetConfirmTemplate(w, http.StatusOK, templateData{Message: "Password updated. You may now sign in with your new password."})
 }
 
-func writeHTMLMessage(w http.ResponseWriter, status int, title, message string) {
+func (m *Module) renderResetRequestTemplate(w http.ResponseWriter, status int, data templateData) {
+	m.renderTemplate(w, status, "reset_request", data)
+}
+
+func (m *Module) renderResetConfirmTemplate(w http.ResponseWriter, status int, data templateData) {
+	m.renderTemplate(w, status, "reset_confirm", data)
+}
+
+func (m *Module) renderTemplate(w http.ResponseWriter, status int, name string, data templateData) {
+	if m.views == nil {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.WriteHeader(status)
+		_, _ = fmt.Fprintf(w, "%s\n%s", name, data.Message)
+		return
+	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(status)
-	fmt.Fprintf(w, `<!doctype html>
-<html lang="en">
-  <head><meta charset="utf-8"><title>%s</title></head>
-  <body style="font-family: sans-serif; max-width: 480px; margin: 3rem auto;">
-    <h2>%s</h2>
-    <p>%s</p>
-    <p><a href="/auth/signin">Return to sign in</a></p>
-  </body>
-</html>`, template.HTMLEscapeString(title), template.HTMLEscapeString(title), template.HTMLEscapeString(message))
+	if err := m.views.ExecuteTemplate(w, name, data); err != nil {
+		http.Error(w, "template rendering error", http.StatusInternalServerError)
+	}
 }
 
 var _ interface {

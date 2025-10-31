@@ -1,0 +1,33 @@
+{{ define "reset_confirm" }}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Create new password</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  </head>
+  <body class="bg-light">
+    <main class="container py-5" style="max-width: 480px;">
+      <h1 class="h3 mb-3">Set a new password</h1>
+      {{ if .Error }}
+      <div class="alert alert-danger" role="alert">{{ .Error }}</div>
+      {{ end }}
+      {{ if .Message }}
+      <div class="alert alert-success" role="alert">{{ .Message }}</div>
+      {{ else }}
+      <form method="post" action="/auth/password/confirm" class="needs-validation" novalidate>
+        <input type="hidden" name="token" value="{{ .Token }}" />
+        <div class="mb-3">
+          <label for="password" class="form-label">New password</label>
+          <input type="password" class="form-control" id="password" name="password" required minlength="8" />
+          <div class="form-text">Minimum 8 characters. Refresh tokens are revoked on success.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update password</button>
+      </form>
+      {{ end }}
+      <p class="mt-4"><a href="/auth/signin">Back to sign in</a></p>
+    </main>
+  </body>
+</html>
+{{ end }}

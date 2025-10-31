@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -28,6 +29,9 @@ func main() {
 	cfg, err := config.Load(configPath)
 	if err != nil {
 		panic(fmt.Errorf("load config: %w", err))
+	}
+	if err := enforceProductionSecrets(cfg); err != nil {
+		panic(err)
 	}
 
 	const (
@@ -68,4 +72,15 @@ func main() {
 	if err := app.Run(ctx); err != nil && !errors.Is(err, context.Canceled) {
 		panic(err)
 	}
+}
+
+func enforceProductionSecrets(cfg config.Config) error {
+	if !strings.EqualFold(cfg.Environment, "production") {
+		return nil
+	}
+	secret := cfg.Auth.TokenSecret
+	if secret == "" || secret == "replace-me-now" || len(secret) < 32 {
+		return fmt.Errorf("insecure auth.token_secret for production environment")
+	}
+	return nil
 }
