@@ -17,14 +17,20 @@ var (
 	ErrEmailExists = errors.New("email already registered")
 	// ErrNotFound signals the requested user does not exist.
 	ErrNotFound = errors.New("user not found")
+	// ErrRefreshNotFound indicates the refresh token does not exist.
+	ErrRefreshNotFound = errors.New("refresh token not found")
+	// ErrPasswordResetNotFound indicates the password reset token does not exist.
+	ErrPasswordResetNotFound = errors.New("password reset token not found")
 )
 
 // User represents a record stored in auth_users.
 type User struct {
-	ID           uuid.UUID
-	Email        string
-	PasswordHash string
-	CreatedAt    time.Time
+	ID                    uuid.UUID
+	Email                 string
+	PasswordHash          string
+	Role                  string
+	PasswordResetRequired bool
+	CreatedAt             time.Time
 }
 
 // Store contains persistence helpers for auth module.
@@ -36,12 +42,15 @@ func NewStore(db *pgxpool.Pool) *Store {
 	return &Store{db: db}
 }
 
-func (s *Store) CreateUser(ctx context.Context, email, hash string) (User, error) {
+func (s *Store) CreateUser(ctx context.Context, email, hash, role string) (User, error) {
 	userID := uuid.New()
+	if role == "" {
+		role = "user"
+	}
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO auth_users (id, email, password_hash)
-		VALUES ($1, $2, $3)
-	`, userID, email, hash)
+		INSERT INTO auth_users (id, email, password_hash, role)
+		VALUES ($1, $2, $3, $4)
+	`, userID, email, hash, role)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.ConstraintName == "auth_users_email_key" {
@@ -54,6 +63,7 @@ func (s *Store) CreateUser(ctx context.Context, email, hash string) (User, error
 		ID:           userID,
 		Email:        email,
 		PasswordHash: hash,
+		Role:         role,
 		CreatedAt:    time.Now(),
 	}, nil
 }
@@ -61,10 +71,10 @@ func (s *Store) CreateUser(ctx context.Context, email, hash string) (User, error
 func (s *Store) FindByEmail(ctx context.Context, email string) (User, error) {
 	var u User
 	err := s.db.QueryRow(ctx, `
-		SELECT id, email, password_hash, created_at
+		SELECT id, email, password_hash, role, password_reset_required, created_at
 		FROM auth_users
 		WHERE email = $1
-	`, email).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.CreatedAt)
+	`, email).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Role, &u.PasswordResetRequired, &u.CreatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return User{}, ErrNotFound
@@ -77,10 +87,10 @@ func (s *Store) FindByEmail(ctx context.Context, email string) (User, error) {
 func (s *Store) GetByID(ctx context.Context, id string) (User, error) {
 	var u User
 	err := s.db.QueryRow(ctx, `
-		SELECT id, email, password_hash, created_at
+		SELECT id, email, password_hash, role, password_reset_required, created_at
 		FROM auth_users
 		WHERE id = $1
-	`, id).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.CreatedAt)
+	`, id).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Role, &u.PasswordResetRequired, &u.CreatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return User{}, ErrNotFound
@@ -88,4 +98,132 @@ func (s *Store) GetByID(ctx context.Context, id string) (User, error) {
 		return User{}, fmt.Errorf("select by id: %w", err)
 	}
 	return u, nil
+}
+
+// RefreshToken represents a persisted refresh token.
+type RefreshToken struct {
+	ID        uuid.UUID
+	UserID    uuid.UUID
+	TokenHash string
+	ExpiresAt time.Time
+	CreatedAt time.Time
+	RevokedAt *time.Time
+}
+
+func (s *Store) InsertRefreshToken(ctx context.Context, userID uuid.UUID, tokenHash string, expiresAt time.Time) (RefreshToken, error) {
+	var rt RefreshToken
+	err := s.db.QueryRow(ctx, `
+		INSERT INTO auth_refresh_tokens (user_id, token_hash, expires_at)
+		VALUES ($1, $2, $3)
+		RETURNING id, user_id, token_hash, expires_at, created_at, revoked_at
+	`, userID, tokenHash, expiresAt).Scan(&rt.ID, &rt.UserID, &rt.TokenHash, &rt.ExpiresAt, &rt.CreatedAt, &rt.RevokedAt)
+	if err != nil {
+		return RefreshToken{}, fmt.Errorf("insert refresh token: %w", err)
+	}
+	return rt, nil
+}
+
+func (s *Store) GetRefreshToken(ctx context.Context, tokenHash string) (RefreshToken, error) {
+	var rt RefreshToken
+	err := s.db.QueryRow(ctx, `
+		SELECT id, user_id, token_hash, expires_at, created_at, revoked_at
+		FROM auth_refresh_tokens
+		WHERE token_hash = $1
+	`, tokenHash).Scan(&rt.ID, &rt.UserID, &rt.TokenHash, &rt.ExpiresAt, &rt.CreatedAt, &rt.RevokedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return RefreshToken{}, ErrRefreshNotFound
+		}
+		return RefreshToken{}, fmt.Errorf("select refresh token: %w", err)
+	}
+	return rt, nil
+}
+
+func (s *Store) RevokeRefreshToken(ctx context.Context, id uuid.UUID) error {
+	_, err := s.db.Exec(ctx, `
+		UPDATE auth_refresh_tokens
+		SET revoked_at = NOW()
+		WHERE id = $1 AND revoked_at IS NULL
+	`, id)
+	if err != nil {
+		return fmt.Errorf("revoke refresh token: %w", err)
+	}
+	return nil
+}
+
+func (s *Store) RevokeUserTokens(ctx context.Context, userID uuid.UUID) error {
+	_, err := s.db.Exec(ctx, `
+		UPDATE auth_refresh_tokens
+		SET revoked_at = NOW()
+		WHERE user_id = $1 AND revoked_at IS NULL
+	`, userID)
+	if err != nil {
+		return fmt.Errorf("revoke user tokens: %w", err)
+	}
+	return nil
+}
+
+// PasswordReset represents a pending password reset token.
+type PasswordReset struct {
+	ID        uuid.UUID
+	UserID    uuid.UUID
+	TokenHash string
+	ExpiresAt time.Time
+	CreatedAt time.Time
+	UsedAt    *time.Time
+}
+
+func (s *Store) CreatePasswordReset(ctx context.Context, userID uuid.UUID, tokenHash string, expiresAt time.Time) (PasswordReset, error) {
+	var pr PasswordReset
+	err := s.db.QueryRow(ctx, `
+		INSERT INTO auth_password_resets (user_id, token_hash, expires_at)
+		VALUES ($1, $2, $3)
+		RETURNING id, user_id, token_hash, expires_at, created_at, used_at
+	`, userID, tokenHash, expiresAt).Scan(&pr.ID, &pr.UserID, &pr.TokenHash, &pr.ExpiresAt, &pr.CreatedAt, &pr.UsedAt)
+	if err != nil {
+		return PasswordReset{}, fmt.Errorf("insert password reset: %w", err)
+	}
+	return pr, nil
+}
+
+func (s *Store) GetPasswordReset(ctx context.Context, tokenHash string) (PasswordReset, error) {
+	var pr PasswordReset
+	err := s.db.QueryRow(ctx, `
+		SELECT id, user_id, token_hash, expires_at, created_at, used_at
+		FROM auth_password_resets
+		WHERE token_hash = $1
+	`, tokenHash).Scan(&pr.ID, &pr.UserID, &pr.TokenHash, &pr.ExpiresAt, &pr.CreatedAt, &pr.UsedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return PasswordReset{}, ErrPasswordResetNotFound
+		}
+		return PasswordReset{}, fmt.Errorf("select password reset: %w", err)
+	}
+	return pr, nil
+}
+
+func (s *Store) MarkPasswordResetUsed(ctx context.Context, id uuid.UUID) error {
+	_, err := s.db.Exec(ctx, `
+		UPDATE auth_password_resets
+		SET used_at = NOW()
+		WHERE id = $1 AND used_at IS NULL
+	`, id)
+	if err != nil {
+		return fmt.Errorf("mark password reset used: %w", err)
+	}
+	return nil
+}
+
+func (s *Store) UpdatePassword(ctx context.Context, userID uuid.UUID, hash string) error {
+	_, err := s.db.Exec(ctx, `
+		UPDATE auth_users
+		SET password_hash = $2,
+		    password_reset_required = FALSE,
+		    updated_at = NOW()
+		WHERE id = $1
+	`, userID, hash)
+	if err != nil {
+		return fmt.Errorf("update user password: %w", err)
+	}
+	return nil
 }

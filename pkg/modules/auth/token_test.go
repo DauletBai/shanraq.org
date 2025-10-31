@@ -9,7 +9,7 @@ import (
 
 func TestTokenServiceGenerateAndParse(t *testing.T) {
 	svc := NewTokenService("secret", time.Minute)
-	user := User{ID: uuid.New(), Email: "alice@example.com"}
+	user := User{ID: uuid.New(), Email: "alice@example.com", Role: "admin"}
 
 	token, err := svc.Generate(user)
 	if err != nil {
@@ -27,11 +27,17 @@ func TestTokenServiceGenerateAndParse(t *testing.T) {
 	if claims.Email != user.Email {
 		t.Fatalf("expected email %s, got %s", user.Email, claims.Email)
 	}
+	if claims.Role != user.Role {
+		t.Fatalf("expected role %s, got %s", user.Role, claims.Role)
+	}
+	if svc.TTL() <= 0 {
+		t.Fatalf("expected TTL to be positive")
+	}
 }
 
 func TestTokenServiceDetectsWrongSecret(t *testing.T) {
 	svc := NewTokenService("secret-a", time.Minute)
-	user := User{ID: uuid.New(), Email: "bob@example.com"}
+	user := User{ID: uuid.New(), Email: "bob@example.com", Role: "user"}
 
 	token, err := svc.Generate(user)
 	if err != nil {

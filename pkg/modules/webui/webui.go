@@ -455,7 +455,7 @@ func (m *Module) handleDocs(w http.ResponseWriter, r *http.Request) {
 			Items: []DocItem{
 				{
 					Title:       "Authentication",
-					Description: "JWT-based signup/signin/profile endpoints under /auth.",
+					Description: "JWT-based signup/signin/profile endpoints under /auth with refresh token rotation and password reset flows.",
 					Link:        "/auth/signup",
 				},
 				{

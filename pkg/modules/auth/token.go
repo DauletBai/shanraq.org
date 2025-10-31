@@ -18,6 +18,7 @@ type TokenService struct {
 type Claims struct {
 	UserID string `json:"uid"`
 	Email  string `json:"email"`
+	Role   string `json:"role"`
 	jwt.RegisteredClaims
 }
 
@@ -35,6 +36,7 @@ func (s *TokenService) Generate(user User) (string, error) {
 	claims := Claims{
 		UserID: user.ID.String(),
 		Email:  user.Email,
+		Role:   user.Role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "shanraq",
 			Subject:   user.ID.String(),
@@ -49,6 +51,10 @@ func (s *TokenService) Generate(user User) (string, error) {
 		return "", fmt.Errorf("sign token: %w", err)
 	}
 	return signed, nil
+}
+
+func (s *TokenService) TTL() time.Duration {
+	return s.ttl
 }
 
 func (s *TokenService) Parse(tokenStr string) (*Claims, error) {

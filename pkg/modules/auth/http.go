@@ -15,6 +15,19 @@ type signinRequest struct {
 	Password string `json:"password"`
 }
 
+type refreshRequest struct {
+	RefreshToken string `json:"refresh_token"`
+}
+
+type passwordResetRequest struct {
+	Email string `json:"email"`
+}
+
+type passwordResetConfirmRequest struct {
+	Token    string `json:"token"`
+	Password string `json:"password"`
+}
+
 func tokenFromHeader(header string) (string, error) {
 	if header == "" {
 		return "", errors.New("missing authorization header")

@@ -137,7 +137,12 @@ Add module tests close to their packages to keep coverage meaningful.
 - Using Docker? `docker compose logs -f app` streams application logs (including Postgres connection retries) so you can observe startup sequencing.
 ## Auth Module
 
-`pkg/modules/auth` exposes `/auth/signup`, `/auth/signin`, and `/auth/profile` JSON endpoints. Passwords are hashed with `bcrypt`, users live in the `auth_users` table, and stateless JWT tokens secure profile access. Configure the secret via `auth.token_secret` or the `SHANRAQ_AUTH_TOKEN_SECRET` env var.
+`pkg/modules/auth` exposes `/auth/signup`, `/auth/signin`, `/auth/refresh`, `/auth/signout`, and `/auth/profile` JSON endpoints. Passwords are hashed with `bcrypt`, users live in the `auth_users` table, and stateless JWT tokens secure profile access. Configure the secret via `auth.token_secret` or the `SHANRAQ_AUTH_TOKEN_SECRET` env var.
+
+- Access tokens embed the user role; seeds create `admin@shanraq.org` / `operator@shanraq.org` demo accounts.
+- Every sign-in issues a refresh token persisted in Postgres; rotate via `/auth/refresh` and revoke with `/auth/signout`.
+- Password reset pages live at `/auth/password/reset` and `/auth/password/confirm`, with tokens stored in `auth_password_resets`.
+- Handlers can call `jobs.InfoFromContext(ctx)` to access worker metadata when enqueuing auth-related background jobs.
 
 ## Background Jobs
 
@@ -151,6 +156,11 @@ The Web UI module queries the same queue to render status cards and recent jobs.
 ## Migrations
 
 `pkg/modules/migrations` embeds Goose scripts under `pkg/modules/migrations/sql`. Every boot runs `goose.Up` inside the process, guaranteeing schema parity with binaries. Add migrations by dropping new `*.sql` files following Goose's timestamp naming and `-- +goose Up/Down` directives.
+
+The seed migration provisions demo content (`framework_about` marketing copy, sample jobs, and admin/operator accounts). Default credentials:
+
+- Email: `admin@shanraq.org`, Password: `admin123`
+- Email: `operator@shanraq.org`, Password: `operator123`
 
 ## Templates & Web UI
 
