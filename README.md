@@ -36,18 +36,17 @@ web/                  # html/template renderer, landing carousel, static assets
 
 ## Getting Started
 
-1. Install Go >= 1.22.3 (toolchain) and PostgreSQL.
-2. Copy and tweak the sample config (the binary refuses to start without it):
-   ```bash
-   cp configs/config.example.yaml config.yaml
-   ```
-3. (Optional) export env overrides. Every key supports the `SHANRAQ_` prefix (e.g. `SHANRAQ_SERVER_ADDRESS=:9090`).
-4. Run the reference app:
-   ```bash
-   go run ./cmd/app -config config.yaml
-   ```
-5. Visit `http://localhost:8080/` for the landing carousel and queue explorer, `http://localhost:8080/console` for the operator dashboard, plus `http://localhost:8080/healthz`, `http://localhost:8080/readyz`, and `http://localhost:8080/metrics`.
-6. Need to override secrets or DSNs? Use env vars such as `export SHANRAQ_AUTH_TOKEN_SECRET=$(openssl rand -hex 32)` before launching the binary.
+Pick the lane that suits your workflow:
+
+- **Native:** install Go ≥ 1.22.3 and PostgreSQL, copy the sample config, then `go run ./cmd/app -config config.yaml`.
+- **Docker:** `docker compose up --build` provisions a distroless image and local Postgres.
+
+Quick steps:
+
+1. `cp configs/config.example.yaml config.yaml`
+2. `export SHANRAQ_AUTH_TOKEN_SECRET=$(openssl rand -hex 32)` (or set in `.env`)
+3. Launch via Go or Docker as above.
+4. Explore `/`, `/console`, `/docs`, `/jobs`, `/metrics`.
 
 ### Docker Workflow
 
@@ -81,6 +80,24 @@ Expose ports `8080` (app) and `5432` (Postgres) on your host to interact with th
 | `auth.token_ttl` | Token lifetime | `15m` |
 
 Durations accept Go duration syntax (e.g. `30s`, `5m`).
+
+### Environment Variables
+
+| Variable | Purpose |
+| -------- | ------- |
+| `SHANRAQ_DATABASE_URL` | Overrides `database.url` with a full pgx DSN. |
+| `SHANRAQ_AUTH_TOKEN_SECRET` | JWT signing key (32+ bytes recommended). |
+| `SHANRAQ_SERVER_ADDRESS` | Bind address for the HTTP server. |
+| `SHANRAQ_TELEMETRY_ENABLE_METRICS` | Toggle Prometheus endpoint (`true`/`false`). |
+| `SHANRAQ_LOGGING_LEVEL` | Set log level (`debug`, `info`, etc.). |
+
+### UI Shortcuts (scan on mobile)
+
+<p>
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=128x128&data=http%3A%2F%2Flocalhost%3A8080%2F" alt="Home QR" style="margin-right: 1rem;"/>
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=128x128&data=http%3A%2F%2Flocalhost%3A8080%2Fconsole" alt="Console QR" style="margin-right: 1rem;"/>
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=128x128&data=http%3A%2F%2Flocalhost%3A8080%2Fdocs" alt="Docs QR"/>
+</p>
 
 ## Building Modules
 
@@ -157,16 +174,17 @@ The Web UI module queries the same queue to render status cards and recent jobs.
 
 `pkg/modules/migrations` embeds Goose scripts under `pkg/modules/migrations/sql`. Every boot runs `goose.Up` inside the process, guaranteeing schema parity with binaries. Add migrations by dropping new `*.sql` files following Goose's timestamp naming and `-- +goose Up/Down` directives.
 
-The seed migration provisions demo content (`framework_about` marketing copy, sample jobs, and admin/operator accounts). Default credentials:
-
-- Email: `admin@shanraq.org`, Password: `admin123`
-- Email: `operator@shanraq.org`, Password: `operator123`
+The seed migration provisions demo content (`framework_about` marketing copy, sample jobs, and admin/operator accounts). Seeded users are marked with `password_reset_required = true`; initiate `/auth/password/reset` to generate a reset link before signing in.
 
 ## Templates & Web UI
 
 `web` hosts the renderer, landing carousel, and static bundle. `home.html` delivers a Bootstrap carousel whose copy pulls from the `framework_about` table, while `dashboard.html` powers the operator console. Shared partials such as `partials/queue.html` drive the queue explorer and modal form. Extend by adding new templates in `web/views` (with matching static assets under `web/static`).
 
 The operator dashboard surfaces throughput for the last hour, live failure ratios, and the next scheduled job so runbooks stay actionable without leaving the browser.
+
+## Deployment Guide
+
+A production-minded playbook lives in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) and is also served in-app at [`/static/docs/deployment.html`](http://localhost:8080/static/docs/deployment.html).
 
 ## Web Documentation
 

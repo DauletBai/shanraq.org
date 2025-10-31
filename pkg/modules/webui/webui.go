@@ -476,6 +476,60 @@ func (m *Module) handleDocs(w http.ResponseWriter, r *http.Request) {
 			},
 		},
 		{
+			Title:   "Configuration",
+			Summary: "Key settings drawn from configs/config.example.yaml and environment overrides.",
+			Items: []DocItem{
+				{
+					Title:       "Server & Telemetry",
+					Description: "HTTP listener, timeouts, and Prometheus toggles.",
+					Command:     "server:\n  address: :8080\ntelemetry:\n  enable_metrics: true\n  metrics_path: /metrics",
+				},
+				{
+					Title:       "Database",
+					Description: "pgx DSN, connection pooling, and health probes.",
+					Command:     "database:\n  url: postgres://postgres:postgres@localhost:5432/shanraq?sslmode=disable\n  max_conns: 10\n  max_conn_idle_time: 5m",
+				},
+				{
+					Title:       "Environment Overrides",
+					Description: "Every field accepts SHANRAQ_* environment variables (e.g. SHANRAQ_SERVER_ADDRESS).",
+					Link:        "https://github.com/DauletBai/shanraq.org/blob/main/README.md#configuration-reference",
+				},
+			},
+		},
+		{
+			Title:   "Database Schema",
+			Summary: "Tables created by embedded Goose migrations (find them under pkg/modules/migrations/sql).",
+			Items: []DocItem{
+				{Title: "auth_users", Description: "Accounts with role metadata and password reset flags."},
+				{Title: "auth_refresh_tokens", Description: "Hashed refresh tokens (revoked when signing out or resetting passwords)."},
+				{Title: "auth_password_resets", Description: "Pending reset tokens with expiry and usage tracking."},
+				{Title: "job_queue", Description: "Background jobs with attempts, status enum, and scheduling."},
+				{Title: "framework_about", Description: "Hero copy for the marketing carousel; latest row wins."},
+				{Title: "Inspect Schema", Description: "Run goose status to confirm migrations.", Command: "goose -dir pkg/modules/migrations/sql postgres \n  $DATABASE_URL status"},
+			},
+		},
+		{
+			Title:   "Developer Guide",
+			Summary: "Integrate additional modules or extend existing ones.",
+			Items: []DocItem{
+				{
+					Title:       "Implement a Module",
+					Description: "Satisfy shanraq.Module, optionally RouterModule / StarterModule.",
+					Command:     "type WidgetModule struct{}\nfunc (WidgetModule) Name() string { return \"widget\" }\nfunc (WidgetModule) Routes(r chi.Router) { r.Get(\"/widgets\", handler) }",
+				},
+				{
+					Title:       "Register",
+					Description: "Add to cmd/app/main.go after New runtime.",
+					Command:     "app := shanraq.New(cfg)\napp.Register(widget.New())",
+				},
+				{
+					Title:       "Deployment Guide",
+					Description: "Production-ready compose, environment hardening, and Helm notes.",
+					Link:        "/static/docs/deployment.html",
+				},
+			},
+		},
+		{
 			Title:   "Operator Console",
 			Summary: "Navigate the Bootstrap dashboard to monitor system health and manage jobs.",
 			Items: []DocItem{

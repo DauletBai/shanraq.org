@@ -9,10 +9,10 @@ VALUES (
 )
 ON CONFLICT DO NOTHING;
 
-INSERT INTO auth_users (id, email, password_hash, role)
+INSERT INTO auth_users (id, email, password_hash, role, password_reset_required)
 VALUES
-    (gen_random_uuid(), 'admin@shanraq.org', crypt('admin123', gen_salt('bf')), 'admin'),
-    (gen_random_uuid(), 'operator@shanraq.org', crypt('operator123', gen_salt('bf')), 'operator')
+    (gen_random_uuid(), 'admin@shanraq.org', '$2a$10$9rh2mzsokAHtKJBw2DIO1.4P2ghZH0RGWvLeMhPw6W2IvKDlvGCZq', 'admin', TRUE),
+    (gen_random_uuid(), 'operator@shanraq.org', '$2a$10$.qzJRMYmQyaGP4a4msVXRObeTRnJLK4POhDI3NMHZqm5p0BRVdxj.', 'operator', TRUE)
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO job_queue (id, name, payload, run_at, max_attempts, status, attempts, updated_at)

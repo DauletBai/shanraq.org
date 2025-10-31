@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Shanraq Deployment Guide</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  </head>
+  <body class="bg-light">
+    <main class="container py-5">
+      <h1 class="mb-4">Deployment Guide</h1>
+      <p class="lead">Production-minded notes for running Shanraq in staging or real environments.</p>
+
+      <section class="mb-5">
+        <h2 class="h4">Docker Compose (production profile)</h2>
+        <p>Use a separate compose file (e.g. <code>docker-compose.prod.yml</code>) with explicit environment variables and volumes.</p>
+<pre class="bg-dark text-white p-3 rounded small"><code>services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: shanraq
+      POSTGRES_USER: shanraq
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      SHANRAQ_DATABASE_URL: ${DATABASE_URL}
+      SHANRAQ_AUTH_TOKEN_SECRET: ${AUTH_SECRET}
+    depends_on:
+      - db
+    command: ["/usr/local/bin/shanraq", "-config", "/app/config.yaml"]
+volumes:
+  db-data:</code></pre>
+        <p>Run with <code>docker compose -f docker-compose.prod.yml --env-file .env.prod up -d</code>. Avoid hard-coding secrets; use your orchestrator or secret manager.</p>
+      </section>
+
+      <section class="mb-5">
+        <h2 class="h4">Kubernetes / Helm</h2>
+        <ol>
+          <li>Containerise via existing <code>Dockerfile</code> (CGO disabled, distroless runtime).</li>
+          <li>Create a <code>ConfigMap</code> for <code>config.yaml</code> and a <code>Secret</code> for sensitive overrides (database DSN, token secrets).</li>
+          <li>Expose two services: application (ClusterIP or LoadBalancer) and PostgreSQL (internal only).</li>
+          <li>Add readiness/liveness probes that hit <code>/readyz</code> and <code>/healthz</code>.</li>
+          <li>Use a HorizontalPodAutoscaler targeting CPU or custom queue metrics.</li>
+        </ol>
+        <p>If you manage many environments, wrap this guidance in a bespoke Helm chart with template-able env vars.</p>
+      </section>
+
+      <section class="mb-5">
+        <h2 class="h4">Operational Checklist</h2>
+        <ul>
+          <li>Rotate <code>auth_refresh_tokens</code> on password changes (<code>/auth/signout</code> is issued automatically).</li>
+          <li>Back up the database regularly (both job_queue and auth tables are critical state).</li>
+          <li>Scrape <code>/metrics</code> with Prometheus; dashboards rely on queue throughput metrics.</li>
+          <li>Use TLS-terminating proxy (Traefik, Nginx, ingress controller) in front of the app service.</li>
+          <li>Set <code>SHANRAQ_AUTH_TOKEN_SECRET</code> to a 32+ byte random string in production.</li>
+        </ul>
+      </section>
+
+      <section class="mb-5">
+        <h2 class="h4">Environment Variables</h2>
+        <p>Minimum set for production:</p>
+        <ul>
+          <li><code>SHANRAQ_DATABASE_URL</code> – PostgreSQL DSN.</li>
+          <li><code>SHANRAQ_AUTH_TOKEN_SECRET</code> – signing key for JWT.</li>
+          <li><code>SHANRAQ_SERVER_ADDRESS</code> – usually <code>:8080</code> inside container.</li>
+          <li><code>SHANRAQ_TELEMETRY_ENABLE_METRICS=false</code> to disable Prometheus if not desired.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="h4">Further Reading</h2>
+        <ul>
+          <li><a href="https://github.com/DauletBai/shanraq.org" target="_blank" rel="noopener">Source repository</a></li>
+          <li><a href="/docs">In-app documentation (/docs)</a></li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

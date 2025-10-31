@@ -5,7 +5,10 @@ CREATE TABLE IF NOT EXISTS auth_users (
     id UUID PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    role TEXT NOT NULL DEFAULT 'user',
+    password_reset_required BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- +goose Down
