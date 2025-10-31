@@ -28,6 +28,15 @@ type Module struct {
 	handlers     map[string]Handler
 }
 
+// JobContext key used for context values.
+type jobContextKey struct{}
+
+// JobContext exposes ambient metadata during job execution.
+type JobContext struct {
+	WorkerIndex int
+	Attempts    int
+}
+
 // Option customizes the jobs module.
 type Option func(*Module)
 
@@ -69,6 +78,13 @@ func (m *Module) Name() string {
 // Handle registers a handler for the named job.
 func (m *Module) Handle(name string, handler Handler) {
 	m.handlers[name] = handler
+}
+
+// HandleFunc registers a handler function without requiring direct runtime access.
+func (m *Module) HandleFunc(name string, fn func(context.Context, Job) error) {
+	m.Handle(name, func(ctx context.Context, _ *shanraq.Runtime, job Job) error {
+		return fn(ctx, job)
+	})
 }
 
 // Init wires runtime dependencies.
@@ -134,15 +150,21 @@ func (m *Module) workerLoop(ctx context.Context, idx int) {
 func (m *Module) processJob(ctx context.Context, job Job, workerIdx int) {
 	handler, ok := m.handlers[job.Name]
 	if !ok {
-		m.rt.Logger.Warn("job handler missing", zap.String("name", job.Name))
-		_ = m.store.MarkFailed(ctx, job.ID, "handler missing")
-		return
-	}
+			m.rt.Logger.Warn("job handler missing", zap.String("name", job.Name))
+			_ = m.store.MarkFailed(ctx, job.ID, "handler missing")
+			return
+		}
 
-	m.rt.Logger.Info("job started", zap.String("job_id", job.ID.String()), zap.Int("worker", workerIdx))
+	input := job
+	m.rt.Logger.Info("job started", zap.String("job_id", job.ID.String()), zap.String("name", job.Name), zap.Int("worker", workerIdx))
 
-	if err := handler(ctx, m.rt, job); err != nil {
-		m.rt.Logger.Warn("job errored", zap.String("job_id", job.ID.String()), zap.Error(err))
+	ctx = context.WithValue(ctx, jobContextKey{}, JobContext{
+		WorkerIndex: workerIdx,
+		Attempts:    job.Attempts,
+	})
+
+	if err := handler(ctx, m.rt, input); err != nil {
+		m.rt.Logger.Warn("job errored", zap.String("job_id", job.ID.String()), zap.String("name", job.Name), zap.Error(err))
 		if job.Attempts >= job.MaxAttempts {
 			_ = m.store.MarkFailed(ctx, job.ID, err.Error())
 			return
@@ -157,7 +179,7 @@ func (m *Module) processJob(ctx context.Context, job Job, workerIdx int) {
 		m.rt.Logger.Error("mark done", zap.Error(err))
 		return
 	}
-	m.rt.Logger.Info("job completed", zap.String("job_id", job.ID.String()))
+	m.rt.Logger.Info("job completed", zap.String("job_id", job.ID.String()), zap.String("name", job.Name))
 }
 
 func (m *Module) handleEnqueue(w http.ResponseWriter, r *http.Request) {
