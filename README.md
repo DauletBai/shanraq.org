@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="web/static/brand/logo_dark.svg" alt="Shanraq Logo" width="96">
+  <img src="web/static/brand/logo_dark.svg" alt="Shanraq Logo" width="64">
 </p>
 
 # Shanraq.org Framework
@@ -32,6 +32,7 @@ pkg/modules/auth      # Email/password auth REST module
 pkg/modules/apikeys   # Tenant API keys and middleware
 pkg/modules/jobs      # Postgres-backed job queue & workers
 pkg/modules/migrations  # Embedded Goose migrations
+pkg/modules/notifier  # SMTP-backed email notifications
 pkg/modules/webui     # Bootstrap 5.3 dashboard module
 pkg/modules/...       # Additional modules (health, telemetry, etc.)
 web/                  # html/template renderer, landing carousel, static assets
@@ -106,6 +107,23 @@ Durations accept Go duration syntax (e.g. `30s`, `5m`).
 | `SHANRAQ_LOGGING_LEVEL` | Set log level (`debug`, `info`, etc.). |
 | `SHANRAQ_LOGGING_MODE` | Overrides encoder (`development` or `production`). |
 | `SHANRAQ_JOBS_WORKERS` | Optional override for worker count when wired in `cmd/app/main.go`. |
+| `SHANRAQ_NOTIFICATIONS_SMTP_HOST` | SMTP host for outbound email (accompanied by `_PORT`, `_USERNAME`, `_PASSWORD`, `_FROM`). |
+
+### Notifications
+
+Configure outbound email via the `notifications.smtp` section:
+
+```yaml
+notifications:
+  smtp:
+    host: smtp.example.com
+    port: 587
+    username: api-key
+    password: super-secret
+    from: no-reply@example.com
+```
+
+Leaving `host` or `from` empty disables e-mail delivery; password reset links continue to be logged to the console for local development.
 
 ### UI Shortcuts (scan on mobile)
 

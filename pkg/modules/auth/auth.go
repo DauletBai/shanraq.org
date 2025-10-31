@@ -19,6 +19,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"shanraq.org/pkg/shanraq"
 	"shanraq.org/pkg/transport/respond"
+	"shanraq.org/pkg/transport/validate"
 )
 
 const (
@@ -32,12 +33,26 @@ type contextKey string
 
 const claimsContextKey contextKey = "shanraq/auth.claims"
 
+type Mailer interface {
+	Send(ctx context.Context, to, subject, body string) error
+}
+
+type Option func(*Module)
+
+func WithMailer(mailer Mailer) Option {
+	return func(m *Module) {
+		m.mailer = mailer
+	}
+}
+
 // Module wires auth routes plus helper services (store + tokens).
 type Module struct {
-	rt     *shanraq.Runtime
-	store  *Store
-	tokens *TokenService
-	views  *template.Template
+	rt        *shanraq.Runtime
+	store     *Store
+	tokens    *TokenService
+	views     *template.Template
+	validator *validate.Validator
+	mailer    Mailer
 }
 
 //go:embed templates/*.html
@@ -54,8 +69,12 @@ type templateData struct {
 }
 
 // New returns a ready-to-register authentication module.
-func New() *Module {
-	return &Module{}
+func New(opts ...Option) *Module {
+	m := &Module{}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
 }
 
 func (m *Module) Name() string {
@@ -75,6 +94,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		return fmt.Errorf("parse auth templates: %w", err)
 	}
 	m.views = tmpl
+	m.validator = validate.New()
 	return nil
 }
 
@@ -104,8 +124,13 @@ func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	req.Email = strings.TrimSpace(strings.ToLower(req.Email))
-	if req.Email == "" || req.Password == "" {
-		respond.Error(w, http.StatusBadRequest, errors.New("email and password required"))
+	fields, err := m.validatePayload(req)
+	if err != nil {
+		respond.Error(w, http.StatusBadRequest, err)
+		return
+	}
+	if len(fields) > 0 {
+		respond.Validation(w, fields)
 		return
 	}
 
@@ -145,8 +170,13 @@ func (m *Module) handleSignin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	req.Email = strings.TrimSpace(strings.ToLower(req.Email))
-	if req.Email == "" || req.Password == "" {
-		respond.Error(w, http.StatusBadRequest, errors.New("email and password required"))
+	fields, err := m.validatePayload(req)
+	if err != nil {
+		respond.Error(w, http.StatusBadRequest, err)
+		return
+	}
+	if len(fields) > 0 {
+		respond.Validation(w, fields)
 		return
 	}
 
@@ -180,8 +210,14 @@ func (m *Module) handleRefresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	token := strings.TrimSpace(req.RefreshToken)
-	if token == "" {
-		respond.Error(w, http.StatusBadRequest, errors.New("refresh token required"))
+	req.RefreshToken = token
+	fields, err := m.validatePayload(req)
+	if err != nil {
+		respond.Error(w, http.StatusBadRequest, err)
+		return
+	}
+	if len(fields) > 0 {
+		respond.Validation(w, fields)
 		return
 	}
 
@@ -230,8 +266,14 @@ func (m *Module) handleSignout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	token := strings.TrimSpace(req.RefreshToken)
-	if token == "" {
-		respond.Error(w, http.StatusBadRequest, errors.New("refresh token required"))
+	req.RefreshToken = token
+	fields, err := m.validatePayload(req)
+	if err != nil {
+		respond.Error(w, http.StatusBadRequest, err)
+		return
+	}
+	if len(fields) > 0 {
+		respond.Validation(w, fields)
 		return
 	}
 
@@ -268,11 +310,25 @@ func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Reque
 		email = strings.TrimSpace(strings.ToLower(r.FormValue("email")))
 	}
 
-	if email == "" {
+	req := passwordResetRequest{Email: email}
+	fields, err := m.validatePayload(req)
+	if err != nil {
+		respond.Error(w, http.StatusBadRequest, err)
+		return
+	}
+	if len(fields) > 0 {
 		if isJSON {
-			respond.Error(w, http.StatusBadRequest, errors.New("email required"))
+			respond.Validation(w, fields)
 		} else {
-			m.renderResetRequestTemplate(w, http.StatusBadRequest, templateData{Error: "Email is required."})
+			var msg string
+			for _, mMsg := range fields {
+				msg = fmt.Sprintf("Email %s.", strings.TrimPrefix(mMsg, "is "))
+				break
+			}
+			if msg == "" {
+				msg = "Invalid email address."
+			}
+			m.renderResetRequestTemplate(w, http.StatusBadRequest, templateData{Error: msg})
 		}
 		return
 	}
@@ -297,6 +353,15 @@ func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Reque
 	}
 	resetLink := fmt.Sprintf("http://localhost:8080/auth/password/confirm?token=%s", token)
 	m.rt.Logger.Info("password reset issued", zap.String("email", user.Email), zap.String("link", resetLink))
+	if err := m.sendPasswordResetEmail(ctx, user.Email, resetLink); err != nil {
+		m.rt.Logger.Error("send password reset email", zap.Error(err))
+		if isJSON {
+			respond.Error(w, http.StatusInternalServerError, errors.New("failed to send password reset email"))
+		} else {
+			m.renderResetRequestTemplate(w, http.StatusInternalServerError, templateData{Error: "Unable to send reset email at this time."})
+		}
+		return
+	}
 
 	m.respondPasswordResetAck(w, isJSON)
 }
@@ -325,19 +390,28 @@ func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Reque
 
 	req.Token = strings.TrimSpace(req.Token)
 	req.Password = strings.TrimSpace(req.Password)
-	if req.Token == "" || req.Password == "" {
-		if isJSON {
-			respond.Error(w, http.StatusBadRequest, errors.New("token and password required"))
-		} else {
-			m.renderResetConfirmTemplate(w, http.StatusBadRequest, templateData{Token: req.Token, Error: "Token and password are required."})
-		}
+	fields, err := m.validatePayload(req)
+	if err != nil {
+		respond.Error(w, http.StatusBadRequest, err)
 		return
 	}
-	if len(req.Password) < 8 {
+	if len(fields) > 0 {
 		if isJSON {
-			respond.Error(w, http.StatusBadRequest, errors.New("password must be at least 8 characters"))
+			respond.Validation(w, fields)
 		} else {
-			m.renderResetConfirmTemplate(w, http.StatusBadRequest, templateData{Token: req.Token, Error: "Password must be at least 8 characters."})
+			var msg string
+			for field, fieldMsg := range fields {
+				label := field
+				if len(label) > 0 {
+					label = strings.ToUpper(label[:1]) + label[1:]
+				}
+				msg = fmt.Sprintf("%s %s.", label, fieldMsg)
+				break
+			}
+			if msg == "" {
+				msg = "Validation failed."
+			}
+			m.renderResetConfirmTemplate(w, http.StatusBadRequest, templateData{Token: req.Token, Error: msg})
 		}
 		return
 	}
@@ -498,6 +572,34 @@ func (m *Module) writePasswordResetSuccess(w http.ResponseWriter, asJSON bool) {
 		return
 	}
 	m.renderResetConfirmTemplate(w, http.StatusOK, templateData{Message: "Password updated. You may now sign in with your new password."})
+}
+
+func (m *Module) validatePayload(payload any) (map[string]string, error) {
+	if m.validator == nil {
+		return nil, nil
+	}
+	if err := m.validator.Struct(payload); err != nil {
+		var verr validate.ValidationError
+		if errors.As(err, &verr) {
+			return verr.Fields, nil
+		}
+		return nil, err
+	}
+	return nil, nil
+}
+
+func (m *Module) sendPasswordResetEmail(ctx context.Context, to, link string) error {
+	if m.mailer == nil {
+		m.rt.Logger.Info("password reset email not sent (mailer disabled)", zap.String("email", to), zap.String("link", link))
+		return nil
+	}
+	subject := "Password reset instructions"
+	body := fmt.Sprintf("You requested a password reset. Use the link below to set a new password:\n\n%s\n\nIf you did not request this change, you can ignore this message.", link)
+	if err := m.mailer.Send(ctx, to, subject, body); err != nil {
+		return err
+	}
+	m.rt.Logger.Info("password reset email sent", zap.String("email", to))
+	return nil
 }
 
 func (m *Module) renderResetRequestTemplate(w http.ResponseWriter, status int, data templateData) {

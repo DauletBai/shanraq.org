@@ -82,14 +82,14 @@ func ensureDatabase(parentCtx context.Context, dsn string) error {
 		return nil
 	}
 
-	ctx, cancel := context.WithTimeout(parentCtx, 5*time.Second)
-	defer cancel()
-
-	if err := pingDatabase(ctx, cfg.ConnConfig); err == nil {
+	if err := waitForDatabase(parentCtx, cfg.ConnConfig, 8); err == nil {
 		return nil
 	} else if !isMissingDatabase(err) {
 		return err
 	}
+
+	ctx, cancel := context.WithTimeout(parentCtx, 5*time.Second)
+	defer cancel()
 
 	adminConf := cfg.ConnConfig.Copy()
 	if adminConf.Database == "" {
@@ -135,4 +135,22 @@ func isDuplicateDatabase(err error) bool {
 		return pgErr.Code == "42P04"
 	}
 	return false
+}
+
+func waitForDatabase(parentCtx context.Context, conf *pgx.ConnConfig, attempts int) error {
+	var err error
+	backoff := time.Second
+	for attempt := 1; attempt <= attempts; attempt++ {
+		ctx, cancel := context.WithTimeout(parentCtx, 5*time.Second)
+		err = pingDatabase(ctx, conf)
+		cancel()
+		if err == nil || isMissingDatabase(err) {
+			return err
+		}
+		time.Sleep(backoff)
+		if backoff < 5*time.Second {
+			backoff *= 2
+		}
+	}
+	return err
 }

@@ -35,10 +35,10 @@ func (j Job) Decode(dest any) error {
 }
 
 type enqueueRequest struct {
-	Name        string         `json:"name"`
+	Name        string         `json:"name" validate:"required"`
 	Payload     map[string]any `json:"payload"`
 	RunAt       *time.Time     `json:"run_at"`
-	MaxAttempts int            `json:"max_attempts"`
+	MaxAttempts int            `json:"max_attempts" validate:"omitempty,min=1,max=25"`
 }
 
 // ListOptions defines optional filters for job queries.

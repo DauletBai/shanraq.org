@@ -25,3 +25,11 @@ func JSON(w http.ResponseWriter, status int, payload any) {
 func Error(w http.ResponseWriter, status int, err error) {
 	JSON(w, status, map[string]string{"error": err.Error()})
 }
+
+// Validation writes validation errors as JSON.
+func Validation(w http.ResponseWriter, fields map[string]string) {
+	JSON(w, http.StatusBadRequest, map[string]any{
+		"error":  "validation failed",
+		"fields": fields,
+	})
+}

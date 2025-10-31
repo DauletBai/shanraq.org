@@ -90,6 +90,7 @@ Refresh tokens are trimmed to the most recent five entries per user. When rotati
 - Keep `auth_roles` in sync with your business requirements; migrations can seed defaults, but production seeds belong in separate change scripts.
 - Audit `auth_api_keys` when rotating credentials; revoke stale keys so per-tenant scopes remain enforced.
 - Remove or rotate the demo operator key (`sk_demo_operator_token`) before exposing the API publicly.
+- Configure SMTP credentials via `notifications.smtp.*` (or `SHANRAQ_NOTIFICATIONS_SMTP_*` env vars) so password resets reach end users.
 - Back up the database — both `job_queue` and `auth_*` tables hold critical state.
 - Scrape `/metrics`; the dashboard displays queue throughput using Prometheus counters.
 - Set `SHANRAQ_AUTH_TOKEN_SECRET` to a 32+ byte random string in all non-local environments.

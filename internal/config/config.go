@@ -11,12 +11,13 @@ import (
 
 // Config is the top-level runtime configuration for the framework runtime.
 type Config struct {
-	Environment string         `mapstructure:"environment"`
-	Server      ServerConfig   `mapstructure:"server"`
-	Database    DatabaseConfig `mapstructure:"database"`
-	Telemetry   Telemetry      `mapstructure:"telemetry"`
-	Logging     Logging        `mapstructure:"logging"`
-	Auth        AuthConfig     `mapstructure:"auth"`
+	Environment   string              `mapstructure:"environment"`
+	Server        ServerConfig        `mapstructure:"server"`
+	Database      DatabaseConfig      `mapstructure:"database"`
+	Telemetry     Telemetry           `mapstructure:"telemetry"`
+	Logging       Logging             `mapstructure:"logging"`
+	Auth          AuthConfig          `mapstructure:"auth"`
+	Notifications NotificationsConfig `mapstructure:"notifications"`
 }
 
 // ServerConfig configures the embedded HTTP server.
@@ -53,6 +54,18 @@ type Logging struct {
 type AuthConfig struct {
 	TokenSecret string        `mapstructure:"token_secret"`
 	TokenTTL    time.Duration `mapstructure:"token_ttl"`
+}
+
+type NotificationsConfig struct {
+	SMTP SMTPConfig `mapstructure:"smtp"`
+}
+
+type SMTPConfig struct {
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
+	Username string `mapstructure:"username"`
+	Password string `mapstructure:"password"`
+	From     string `mapstructure:"from"`
 }
 
 // Load reads configuration by merging defaults, optional file, and env vars.
@@ -104,4 +117,6 @@ func setDefaults(v *viper.Viper) {
 
 	v.SetDefault("auth.token_secret", "replace-me-now")
 	v.SetDefault("auth.token_ttl", "15m")
+
+	v.SetDefault("notifications.smtp.port", 587)
 }

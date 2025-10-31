@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -14,6 +15,7 @@ import (
 	"go.uber.org/zap"
 	"shanraq.org/pkg/shanraq"
 	"shanraq.org/pkg/transport/respond"
+	"shanraq.org/pkg/transport/validate"
 )
 
 // Handler processes a job payload.
@@ -28,6 +30,7 @@ type Module struct {
 	handlers       map[string]Handler
 	tenantResolver TenantResolver
 	httpMiddleware []func(http.Handler) http.Handler
+	validator      *validate.Validator
 }
 
 // JobContext key used for context values.
@@ -113,6 +116,7 @@ func (m *Module) HandleFunc(name string, fn func(context.Context, Job) error) {
 func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
+	m.validator = validate.New()
 	return nil
 }
 
@@ -213,8 +217,14 @@ func (m *Module) handleEnqueue(w http.ResponseWriter, r *http.Request) {
 		respond.Error(w, http.StatusBadRequest, err)
 		return
 	}
-	if req.Name == "" {
-		respond.Error(w, http.StatusBadRequest, errors.New("job name required"))
+	req.Name = strings.TrimSpace(req.Name)
+	fields, err := m.validatePayload(req)
+	if err != nil {
+		respond.Error(w, http.StatusBadRequest, err)
+		return
+	}
+	if len(fields) > 0 {
+		respond.Validation(w, fields)
 		return
 	}
 	if req.Payload == nil {
@@ -328,6 +338,20 @@ func (m *Module) resolveTenant(r *http.Request) (uuid.UUID, bool) {
 		return uuid.Nil, false
 	}
 	return m.tenantResolver(r)
+}
+
+func (m *Module) validatePayload(payload any) (map[string]string, error) {
+	if m.validator == nil {
+		return nil, nil
+	}
+	if err := m.validator.Struct(payload); err != nil {
+		var verr validate.ValidationError
+		if errors.As(err, &verr) {
+			return verr.Fields, nil
+		}
+		return nil, err
+	}
+	return nil, nil
 }
 
 var _ interface {

@@ -20,3 +20,10 @@ logging:
 auth:
   token_secret: super-secret-key
   token_ttl: 30m
+notifications:
+  smtp:
+    host: ""
+    port: 587
+    username: ""
+    password: ""
+    from: ""

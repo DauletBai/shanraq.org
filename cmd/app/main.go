@@ -19,6 +19,7 @@ import (
 	"shanraq.org/pkg/modules/health"
 	"shanraq.org/pkg/modules/jobs"
 	"shanraq.org/pkg/modules/migrations"
+	"shanraq.org/pkg/modules/notifier"
 	"shanraq.org/pkg/modules/telemetry"
 	"shanraq.org/pkg/modules/webui"
 	"shanraq.org/pkg/shanraq"
@@ -44,7 +45,8 @@ func main() {
 
 	tenantResolver := jobs.AuthTenantResolver()
 
-	authModule := auth.New()
+	notifierModule := notifier.New()
+	authModule := auth.New(auth.WithMailer(notifierModule))
 	apiKeyModule := apikeys.New(
 		apikeys.WithHTTPMiddleware(authModule.RequireRoles("user", "operator", "admin")),
 	)
@@ -77,6 +79,7 @@ func main() {
 	app.Register(migrations.New())
 	app.Register(telemetry.New())
 	app.Register(health.New())
+	app.Register(notifierModule)
 	app.Register(authModule)
 	app.Register(apiKeyModule)
 	app.Register(jobModule)

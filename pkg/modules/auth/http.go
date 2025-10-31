@@ -6,26 +6,26 @@ import (
 )
 
 type signupRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" form:"email" validate:"required,email"`
+	Password string `json:"password" form:"password" validate:"required,min=8"`
 }
 
 type signinRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" form:"email" validate:"required,email"`
+	Password string `json:"password" form:"password" validate:"required"`
 }
 
 type refreshRequest struct {
-	RefreshToken string `json:"refresh_token"`
+	RefreshToken string `json:"refresh_token" validate:"required"`
 }
 
 type passwordResetRequest struct {
-	Email string `json:"email"`
+	Email string `json:"email" form:"email" validate:"required,email"`
 }
 
 type passwordResetConfirmRequest struct {
-	Token    string `json:"token"`
-	Password string `json:"password"`
+	Token    string `json:"token" form:"token" validate:"required"`
+	Password string `json:"password" form:"password" validate:"required,min=8"`
 }
 
 func tokenFromHeader(header string) (string, error) {

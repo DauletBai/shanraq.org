@@ -104,6 +104,7 @@ SHANRAQ_SERVER_ADDRESS=:8080
 - **API Keys**: Customer credentials live in `auth_api_keys`. Keys are hashed at rest; expose creation endpoints only behind `auth.RequireRoles`. Demo seeds provision `sk_demo_operator_token` for the operator account—rotate it outside development.
 - **Jobs**: Worker counts live in `cmd/app/main.go`. Expose an environment variable (e.g. `SHANRAQ_JOBS_WORKERS`) if you need runtime overrides.
 - **Web UI**: Carousel and docs pull copy from `framework_about`. Update via SQL seeds or admin tooling.
+- **Notifier**: Configure `notifications.smtp` to enable e-mail (host, port, username, password, from). Leaving host or from empty keeps delivery disabled while still logging reset links.
 
 ## Troubleshooting
 
