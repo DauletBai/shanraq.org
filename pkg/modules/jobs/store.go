@@ -2,6 +2,7 @@ package jobs
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"strconv"
 	"strings"
@@ -21,6 +22,20 @@ func NewStore(db *pgxpool.Pool) *Store {
 	return &Store{db: db}
 }
 
+// MetricsSnapshot captures aggregate queue statistics.
+type MetricsSnapshot struct {
+	Total           int
+	Pending         int
+	Running         int
+	Retry           int
+	Failed          int
+	Done            int
+	DoneLastHour    int
+	FailedLastHour  int
+	NextScheduled   time.Time
+	NextScheduledOk bool
+}
+
 func (s *Store) Enqueue(ctx context.Context, job Job) error {
 	_, err := s.db.Exec(ctx, `
 		INSERT INTO job_queue (id, name, payload, run_at, max_attempts)
@@ -30,6 +45,43 @@ func (s *Store) Enqueue(ctx context.Context, job Job) error {
 		return fmt.Errorf("enqueue job: %w", err)
 	}
 	return nil
+}
+
+// Metrics returns aggregate queue statistics for dashboards.
+func (s *Store) Metrics(ctx context.Context) (MetricsSnapshot, error) {
+	var snap MetricsSnapshot
+	var next sql.NullTime
+	err := s.db.QueryRow(ctx, `
+		SELECT
+			COUNT(*) AS total,
+			COUNT(*) FILTER (WHERE status = 'pending') AS pending,
+			COUNT(*) FILTER (WHERE status = 'running') AS running,
+			COUNT(*) FILTER (WHERE status = 'retry') AS retry,
+			COUNT(*) FILTER (WHERE status = 'failed') AS failed,
+			COUNT(*) FILTER (WHERE status = 'done') AS done,
+			COUNT(*) FILTER (WHERE status = 'done' AND updated_at >= NOW() - INTERVAL '1 hour') AS done_last_hour,
+			COUNT(*) FILTER (WHERE status = 'failed' AND updated_at >= NOW() - INTERVAL '1 hour') AS failed_last_hour,
+			MIN(run_at) FILTER (WHERE status IN ('pending', 'retry')) AS next_scheduled
+		FROM job_queue
+	`).Scan(
+		&snap.Total,
+		&snap.Pending,
+		&snap.Running,
+		&snap.Retry,
+		&snap.Failed,
+		&snap.Done,
+		&snap.DoneLastHour,
+		&snap.FailedLastHour,
+		&next,
+	)
+	if err != nil {
+		return MetricsSnapshot{}, fmt.Errorf("queue metrics: %w", err)
+	}
+	if next.Valid {
+		snap.NextScheduled = next.Time
+		snap.NextScheduledOk = true
+	}
+	return snap, nil
 }
 
 func (s *Store) ClaimNextJob(ctx context.Context) (Job, error) {

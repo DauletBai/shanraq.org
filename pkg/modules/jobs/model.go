@@ -25,6 +25,14 @@ type Job struct {
 	UpdatedAt   time.Time       `json:"updated_at"`
 }
 
+// Decode unmarshals the job payload into the provided destination.
+func (j Job) Decode(dest any) error {
+	if len(j.Payload) == 0 {
+		return errors.New("jobs: empty payload")
+	}
+	return json.Unmarshal(j.Payload, dest)
+}
+
 type enqueueRequest struct {
 	Name        string         `json:"name"`
 	Payload     map[string]any `json:"payload"`

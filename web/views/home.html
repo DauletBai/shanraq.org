@@ -148,7 +148,19 @@
       </h2>
       <p class="lead">Drive resilient background workloads with the built-in queue, PG advisory locks, and module contracts.</p>
       <p class="text-muted">Register new processors with a few lines of Go and observe them from the console immediately.</p>
-      <pre class="code-block mb-3 shadow"><code><span class="var">jobsModule</span>.<span class="fn">Handle</span>(<span class="str">"send_welcome_email"</span>, jobs.<span class="fn">LogHandler</span>(<span class="str">"email"</span>))</code></pre>
+      <pre class="code-block mb-3 shadow"><code><span class="var">jobsModule</span>.<span class="fn">Handle</span>(<span class="str">"send_welcome_email"</span>, func(ctx context.Context, rt *shanraq.Runtime, job jobs.Job) error {
+    <span class="kw">var</span> payload <span class="kw">struct</span> {
+        Email <span class="kw">string</span> `json&#96;:"email"&#96;`
+    }
+    <span class="kw">if</span> err := job.<span class="fn">Decode</span>(&payload); err != <span class="kw">nil</span> {
+        <span class="kw">return</span> err
+    }
+    meta, _ := jobs.<span class="fn">InfoFromContext</span>(ctx)
+    rt.Logger.Info(<span class="str">"dispatch welcome"</span>,
+        zap.String(<span class="str">"email"</span>, payload.Email),
+        zap.Int(<span class="str">"attempt"</span>, meta.Attempts+1))
+    <span class="kw">return</span> <span class="kw">nil</span>
+})</code></pre>
     </div>
     <div class="col-md-6">
       <div class="rounded-4 bg-white h-100">
@@ -161,8 +173,8 @@
     jobs.<span class="fn">WithWorkerCount</span>(jobWorkers),
     jobs.<span class="fn">WithPollInterval</span>(jobPollSeconds),
 )
-<span class="var">jobModule</span>.<span class="fn">Handle</span>(<span class="str">"send_welcome_email"</span>, jobs.<span class="fn">LogHandler</span>(<span class="str">"send_welcome_email"</span>))</code></pre>
-        <p class="text-muted mt-3 mb-0 small">Runtime wiring in <code>cmd/app/main.go</code> pairs worker scheduling defaults with module registration.</p>
+<span class="var">jobModule</span>.<span class="fn">Handle</span>(<span class="str">"send_welcome_email"</span>, welcomeHandler)</code></pre>
+        <p class="text-muted mt-3 mb-0 small">Runtime wiring in <code>cmd/app/main.go</code> pairs worker scheduling defaults with domain-specific handlers.</p>
       </div>
     </div>
   </div>

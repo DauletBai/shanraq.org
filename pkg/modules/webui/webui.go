@@ -135,10 +135,28 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 	ctx, cancel := context.WithTimeout(parent, 2*time.Second)
 	defer cancel()
 
-	counts, err := m.jobsStore.CountByStatus(ctx)
+	metrics, err := m.jobsStore.Metrics(ctx)
 	if err != nil {
-		m.rt.Logger.Warn("job status counts", zap.Error(err))
-		counts = map[string]int{}
+		m.rt.Logger.Warn("job metrics", zap.Error(err))
+	}
+
+	counts := map[string]int{
+		"pending": metrics.Pending,
+		"retry":   metrics.Retry,
+		"running": metrics.Running,
+		"failed":  metrics.Failed,
+		"done":    metrics.Done,
+	}
+	if metrics.Total == 0 {
+		if fallback, err := m.jobsStore.CountByStatus(ctx); err == nil {
+			counts = fallback
+			metrics.Pending = fallback["pending"]
+			metrics.Retry = fallback["retry"]
+			metrics.Running = fallback["running"]
+			metrics.Failed = fallback["failed"]
+			metrics.Done = fallback["done"]
+			metrics.Total = totalJobs(fallback)
+		}
 	}
 
 	recent, err := m.jobsStore.ListRecent(ctx, 8)
@@ -170,6 +188,22 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 		PollInterval: m.pollInterval.String(),
 	}
 
+	var queueOverview QueueOverview
+	windowTotal := metrics.DoneLastHour + metrics.FailedLastHour
+	var failureRate, successRate float64
+	if windowTotal > 0 {
+		failureRate = float64(metrics.FailedLastHour) / float64(windowTotal)
+		successRate = float64(metrics.DoneLastHour) / float64(windowTotal)
+	}
+	queueOverview = QueueOverview{
+		DoneLastHour:       metrics.DoneLastHour,
+		FailedLastHour:     metrics.FailedLastHour,
+		SuccessRate:        successRate,
+		FailureRate:        failureRate,
+		NextScheduled:      metrics.NextScheduled,
+		NextScheduledValid: metrics.NextScheduledOk,
+	}
+
 	return &DashboardData{
 		PageID:               "dashboard",
 		FrameworkName:        frameworkName,
@@ -199,7 +233,8 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 			MaxAttempts: 3,
 			Payload:     "{\n  \"email\": \"demo@shanraq.org\"\n}",
 		},
-		Hero: m.aboutContent,
+		Hero:          m.aboutContent,
+		QueueOverview: queueOverview,
 	}
 }
 
@@ -235,6 +270,7 @@ type DashboardData struct {
 	JobForm              JobFormDefaults
 	Hero                 *AboutContent
 	Docs                 []DocSection
+	QueueOverview        QueueOverview
 }
 
 type HealthIndicator struct {
@@ -276,6 +312,15 @@ type DocItem struct {
 	Description string
 	Link        string
 	Command     string
+}
+
+type QueueOverview struct {
+	DoneLastHour       int
+	FailedLastHour     int
+	SuccessRate        float64
+	FailureRate        float64
+	NextScheduled      time.Time
+	NextScheduledValid bool
 }
 
 func totalJobs(counts map[string]int) int {
@@ -422,6 +467,11 @@ func (m *Module) handleDocs(w http.ResponseWriter, r *http.Request) {
 					Title:       "Telemetry & Health",
 					Description: "Prometheus metrics, health, and readiness endpoints.",
 					Link:        "/metrics",
+				},
+				{
+					Title:       "Job Context Helpers",
+					Description: "Access worker index and attempt metadata via jobs.InfoFromContext(ctx).",
+					Command:     "meta, _ := jobs.InfoFromContext(ctx)",
 				},
 			},
 		},

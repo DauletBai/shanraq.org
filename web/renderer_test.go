@@ -28,7 +28,24 @@ func TestRendererLayouts(t *testing.T) {
 			{Label: "Home", Href: "/"},
 			{Label: "Console", Href: "/console"},
 		},
-		JobStats: webui.JobStats{},
+		JobStats: webui.JobStats{
+			Pending:      2,
+			Running:      1,
+			Completed:    5,
+			Failed:       1,
+			Retrying:     1,
+			Total:        9,
+			Workers:      4,
+			PollInterval: "2s",
+		},
+		QueueOverview: webui.QueueOverview{
+			DoneLastHour:       12,
+			FailedLastHour:     3,
+			SuccessRate:        0.8,
+			FailureRate:        0.2,
+			NextScheduled:      time.Now(),
+			NextScheduledValid: true,
+		},
 	}
 
 	rec := httptest.NewRecorder()
@@ -55,6 +72,8 @@ func TestRendererLayouts(t *testing.T) {
 	assertContains(t, body, `id="dashboard-root"`)
 	assertContains(t, body, "Queue Explorer")
 	assertContains(t, body, `/static/js/dashboard.js`)
+	assertContains(t, body, "Throughput (last hour)")
+	assertContains(t, body, "Failure rate")
 	assertNotContains(t, body, "No content provided.")
 
 	rec = httptest.NewRecorder()

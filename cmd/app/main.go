@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"go.uber.org/zap"
 	"shanraq.org/internal/config"
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/health"
@@ -38,7 +39,20 @@ func main() {
 		jobs.WithWorkerCount(jobWorkers),
 		jobs.WithPollInterval(jobPollSeconds),
 	)
-	jobModule.Handle("send_welcome_email", jobs.LogHandler("send_welcome_email"))
+	jobModule.Handle("send_welcome_email", func(ctx context.Context, rt *shanraq.Runtime, job jobs.Job) error {
+		var payload struct {
+			Email string `json:"email"`
+		}
+		if err := job.Decode(&payload); err != nil {
+			return err
+		}
+		meta, _ := jobs.InfoFromContext(ctx)
+		rt.Logger.Info("send_welcome_email",
+			zap.String("email", payload.Email),
+			zap.Int("attempt", meta.Attempts+1),
+		)
+		return nil
+	})
 
 	app := shanraq.New(cfg)
 	app.Register(migrations.New())

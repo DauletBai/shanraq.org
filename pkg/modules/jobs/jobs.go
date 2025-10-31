@@ -37,6 +37,12 @@ type JobContext struct {
 	Attempts    int
 }
 
+// InfoFromContext extracts metadata about the running job from the context.
+func InfoFromContext(ctx context.Context) (JobContext, bool) {
+	jc, ok := ctx.Value(jobContextKey{}).(JobContext)
+	return jc, ok
+}
+
 // Option customizes the jobs module.
 type Option func(*Module)
 
@@ -150,10 +156,10 @@ func (m *Module) workerLoop(ctx context.Context, idx int) {
 func (m *Module) processJob(ctx context.Context, job Job, workerIdx int) {
 	handler, ok := m.handlers[job.Name]
 	if !ok {
-			m.rt.Logger.Warn("job handler missing", zap.String("name", job.Name))
-			_ = m.store.MarkFailed(ctx, job.ID, "handler missing")
-			return
-		}
+		m.rt.Logger.Warn("job handler missing", zap.String("name", job.Name))
+		_ = m.store.MarkFailed(ctx, job.ID, "handler missing")
+		return
+	}
 
 	input := job
 	m.rt.Logger.Info("job started", zap.String("job_id", job.ID.String()), zap.String("name", job.Name), zap.Int("worker", workerIdx))

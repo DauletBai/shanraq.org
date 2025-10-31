@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="web/static/brand/logo.svg" alt="Shanraq Logo" width="128">
+  <img src="web/static/brand/logo_dark.svg" alt="Shanraq Logo" width="96">
 </p>
 
 # Shanraq.org Framework
@@ -143,7 +143,7 @@ Add module tests close to their packages to keep coverage meaningful.
 
 - `POST /jobs` enqueues work with arbitrary JSON payloads and optional `run_at` timestamps.
 - Workers (configured in `cmd/app/main.go`) poll Postgres, claim jobs with `FOR UPDATE SKIP LOCKED`, and retry automatically.
-- Add business logic via `jobsModule.Handle("job-name", jobs.Handler)`; the example registers `send_welcome_email` using `jobs.LogHandler`.
+- Add business logic via `jobsModule.Handle("job-name", jobs.Handler)`; the reference app wires a `send_welcome_email` handler that decodes payloads, logs attempts, and uses context metadata.
 - Explore and manage the queue from `/console` or via the JSON API: `GET /jobs?status=pending`, `POST /jobs/{id}/retry`, and `POST /jobs/{id}/cancel`.
 
 The Web UI module queries the same queue to render status cards and recent jobs.
@@ -155,6 +155,8 @@ The Web UI module queries the same queue to render status cards and recent jobs.
 ## Templates & Web UI
 
 `web` hosts the renderer, landing carousel, and static bundle. `home.html` delivers a Bootstrap carousel whose copy pulls from the `framework_about` table, while `dashboard.html` powers the operator console. Shared partials such as `partials/queue.html` drive the queue explorer and modal form. Extend by adding new templates in `web/views` (with matching static assets under `web/static`).
+
+The operator dashboard surfaces throughput for the last hour, live failure ratios, and the next scheduled job so runbooks stay actionable without leaving the browser.
 
 ## Web Documentation
 
