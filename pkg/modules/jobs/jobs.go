@@ -21,11 +21,13 @@ type Handler func(context.Context, *shanraq.Runtime, Job) error
 
 // Module adds HTTP endpoints and background workers for the job queue.
 type Module struct {
-	rt           *shanraq.Runtime
-	store        *Store
-	workerCount  int
-	pollInterval time.Duration
-	handlers     map[string]Handler
+	rt             *shanraq.Runtime
+	store          *Store
+	workerCount    int
+	pollInterval   time.Duration
+	handlers       map[string]Handler
+	tenantResolver TenantResolver
+	httpMiddleware []func(http.Handler) http.Handler
 }
 
 // JobContext key used for context values.
@@ -61,6 +63,20 @@ func WithPollInterval(d time.Duration) Option {
 		if d > 0 {
 			m.pollInterval = d
 		}
+	}
+}
+
+// WithTenantResolver attaches a resolver that scopes HTTP operations by user.
+func WithTenantResolver(resolver TenantResolver) Option {
+	return func(m *Module) {
+		m.tenantResolver = resolver
+	}
+}
+
+// WithHTTPMiddleware applies middleware to the /jobs routes.
+func WithHTTPMiddleware(mw ...func(http.Handler) http.Handler) Option {
+	return func(m *Module) {
+		m.httpMiddleware = append(m.httpMiddleware, mw...)
 	}
 }
 
@@ -107,6 +123,9 @@ func (m *Module) Routes(r chi.Router) {
 	}
 
 	r.Route("/jobs", func(r chi.Router) {
+		for _, mw := range m.httpMiddleware {
+			r.Use(mw)
+		}
 		r.Post("/", m.handleEnqueue)
 		r.Get("/", m.handleList)
 		r.Post("/{id}/retry", m.handleRetry)
@@ -175,7 +194,7 @@ func (m *Module) processJob(ctx context.Context, job Job, workerIdx int) {
 			_ = m.store.MarkFailed(ctx, job.ID, err.Error())
 			return
 		}
-		if err := m.store.MarkRetry(ctx, job.ID, err.Error()); err != nil {
+		if err := m.store.MarkRetry(ctx, job.ID, err.Error(), nil); err != nil {
 			m.rt.Logger.Error("mark retry", zap.Error(err))
 		}
 		return
@@ -224,6 +243,9 @@ func (m *Module) handleEnqueue(w http.ResponseWriter, r *http.Request) {
 		RunAt:       runAt,
 		MaxAttempts: maxAttempts,
 	}
+	if tenantID, ok := m.resolveTenant(r); ok {
+		job.UserID = tenantID
+	}
 
 	if err := m.store.Enqueue(r.Context(), job); err != nil {
 		respond.Error(w, http.StatusInternalServerError, err)
@@ -242,10 +264,16 @@ func (m *Module) handleList(w http.ResponseWriter, r *http.Request) {
 	limit, _ := strconv.Atoi(query.Get("limit"))
 	offset, _ := strconv.Atoi(query.Get("offset"))
 
+	var tenantPtr *uuid.UUID
+	if tenantID, ok := m.resolveTenant(r); ok {
+		tenantPtr = &tenantID
+	}
+
 	jobs, err := m.store.List(ctx, ListOptions{
 		Status: status,
 		Limit:  limit,
 		Offset: offset,
+		UserID: tenantPtr,
 	})
 	if err != nil {
 		respond.Error(w, http.StatusInternalServerError, err)
@@ -260,7 +288,11 @@ func (m *Module) handleRetry(w http.ResponseWriter, r *http.Request) {
 		respond.Error(w, http.StatusBadRequest, errors.New("invalid job id"))
 		return
 	}
-	if err := m.store.MarkPending(r.Context(), jobID); err != nil {
+	var tenantPtr *uuid.UUID
+	if tenantID, ok := m.resolveTenant(r); ok {
+		tenantPtr = &tenantID
+	}
+	if err := m.store.MarkPending(r.Context(), jobID, tenantPtr); err != nil {
 		respond.Error(w, http.StatusInternalServerError, err)
 		return
 	}
@@ -280,11 +312,22 @@ func (m *Module) handleCancel(w http.ResponseWriter, r *http.Request) {
 		respond.Error(w, http.StatusBadRequest, err)
 		return
 	}
-	if err := m.store.Cancel(r.Context(), jobID, body.Reason); err != nil {
+	var tenantPtr *uuid.UUID
+	if tenantID, ok := m.resolveTenant(r); ok {
+		tenantPtr = &tenantID
+	}
+	if err := m.store.Cancel(r.Context(), jobID, body.Reason, tenantPtr); err != nil {
 		respond.Error(w, http.StatusInternalServerError, err)
 		return
 	}
 	respond.JSON(w, http.StatusOK, map[string]string{"status": "cancelled"})
+}
+
+func (m *Module) resolveTenant(r *http.Request) (uuid.UUID, bool) {
+	if m.tenantResolver == nil {
+		return uuid.Nil, false
+	}
+	return m.tenantResolver(r)
 }
 
 var _ interface {

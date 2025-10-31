@@ -16,9 +16,10 @@ type TokenService struct {
 
 // Claims wraps jwt.RegisteredClaims for convenience.
 type Claims struct {
-	UserID string `json:"uid"`
-	Email  string `json:"email"`
-	Role   string `json:"role"`
+	UserID      string   `json:"uid"`
+	Email       string   `json:"email"`
+	Roles       []string `json:"roles"`
+	PrimaryRole string   `json:"role,omitempty"`
 	jwt.RegisteredClaims
 }
 
@@ -33,10 +34,12 @@ func NewTokenService(secret string, ttl time.Duration) *TokenService {
 }
 
 func (s *TokenService) Generate(user User) (string, error) {
+	primary, roles := normalizeClaimRoles(user)
 	claims := Claims{
-		UserID: user.ID.String(),
-		Email:  user.Email,
-		Role:   user.Role,
+		UserID:      user.ID.String(),
+		Email:       user.Email,
+		Roles:       roles,
+		PrimaryRole: primary,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "shanraq",
 			Subject:   user.ID.String(),
@@ -68,7 +71,61 @@ func (s *TokenService) Parse(tokenStr string) (*Claims, error) {
 		return nil, fmt.Errorf("parse token: %w", err)
 	}
 	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
+		claims.normalize()
 		return claims, nil
 	}
 	return nil, errors.New("invalid token claims")
+}
+
+func (c *Claims) normalize() {
+	combined := append([]string{c.PrimaryRole}, c.Roles...)
+	combined = sanitizeRoles(combined)
+	if len(combined) == 0 {
+		combined = []string{defaultRoleName}
+	}
+	c.PrimaryRole = combined[0]
+	c.Roles = combined
+}
+
+// HasAnyRole returns true when the claim includes any of the provided roles.
+func (c *Claims) HasAnyRole(roles ...string) bool {
+	if len(roles) == 0 {
+		return true
+	}
+	c.normalize()
+	allowed := sanitizeRoles(roles)
+	if len(allowed) == 0 {
+		return true
+	}
+	allowedSet := make(map[string]struct{}, len(allowed))
+	for _, role := range allowed {
+		allowedSet[role] = struct{}{}
+	}
+	for _, role := range c.Roles {
+		if _, ok := allowedSet[role]; ok {
+			return true
+		}
+	}
+	return false
+}
+
+func normalizeClaimRoles(user User) (string, []string) {
+	combined := append([]string{user.Role}, user.Roles...)
+	combined = append(combined, defaultRoleName)
+	normalized := sanitizeRoles(combined)
+	if len(normalized) == 0 {
+		normalized = []string{defaultRoleName}
+	}
+	return normalized[0], normalized
+}
+
+// ClaimsForUser builds a Claims struct for the provided user without signing a token.
+func ClaimsForUser(user User) *Claims {
+	primary, roles := normalizeClaimRoles(user)
+	return &Claims{
+		UserID:      user.ID.String(),
+		Email:       user.Email,
+		Roles:       roles,
+		PrimaryRole: primary,
+	}
 }

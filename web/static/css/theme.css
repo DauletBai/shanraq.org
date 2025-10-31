@@ -97,16 +97,27 @@ body {
 
 .carousel-item .carousel-caption {
   opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateX(80px);
 }
 
-.carousel-item.active .carousel-caption {
-  opacity: 1;
-  transform: translateX(0);
+.carousel-item.active .carousel-caption,
+.carousel-item-next.carousel-item-start .carousel-caption,
+.carousel-item-prev.carousel-item-start .carousel-caption {
+  animation: carousel-caption-in 0.9s ease forwards;
 }
 
-.carousel-item-start .carousel-caption,
-.carousel-item-prev .carousel-caption {
-  transform: translateX(-60px);
+.carousel-item-prev.carousel-item-end .carousel-caption,
+.carousel-item-next.carousel-item-end .carousel-caption {
+  opacity: 0;
+}
+
+@keyframes carousel-caption-in {
+  0% {
+    opacity: 0;
+    transform: translateX(80px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

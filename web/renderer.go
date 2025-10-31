@@ -67,11 +67,13 @@ func formatPercent(value float64) string {
 	return fmt.Sprintf("%.0f%%", value*100)
 }
 
+var nowFunc = time.Now
+
 func relativeTime(t time.Time) string {
 	if t.IsZero() {
 		return "Not scheduled"
 	}
-	delta := time.Until(t)
+	delta := t.Sub(nowFunc())
 	abs := delta
 	if delta < 0 {
 		abs = -delta
@@ -103,4 +105,13 @@ func relativeTime(t time.Time) string {
 		return phrase + " ago"
 	}
 	return "in " + phrase
+}
+
+// SetNowFunc overrides the source of "current" time. Useful in tests to stabilise relative output.
+func SetNowFunc(fn func() time.Time) {
+	if fn == nil {
+		nowFunc = time.Now
+		return
+	}
+	nowFunc = fn
 }

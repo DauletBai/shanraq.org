@@ -22,10 +22,15 @@ import (
 )
 
 const (
-	refreshTokenTTL  = 30 * 24 * time.Hour
-	passwordResetTTL = time.Hour
-	refreshTokenSize = 48
+	refreshTokenTTL        = 30 * 24 * time.Hour
+	passwordResetTTL       = time.Hour
+	refreshTokenSize       = 48
+	maxActiveRefreshTokens = 5
 )
+
+type contextKey string
+
+const claimsContextKey contextKey = "shanraq/auth.claims"
 
 // Module wires auth routes plus helper services (store + tokens).
 type Module struct {
@@ -39,9 +44,13 @@ type Module struct {
 var viewFiles embed.FS
 
 type templateData struct {
-	Token   string
-	Message string
-	Error   string
+	Token                string
+	Message              string
+	Error                string
+	FrameworkName        string
+	FrameworkDescription string
+	BrandLogoPath        string
+	Year                 int
 }
 
 // New returns a ready-to-register authentication module.
@@ -57,6 +66,9 @@ func (m *Module) Name() string {
 func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
+	if strings.EqualFold(rt.Config.Environment, "production") && isWeakSecret(rt.Config.Auth.TokenSecret) {
+		return fmt.Errorf("auth token secret must be overridden in production")
+	}
 	m.tokens = NewTokenService(rt.Config.Auth.TokenSecret, rt.Config.Auth.TokenTTL)
 	tmpl, err := template.ParseFS(viewFiles, "templates/*.html")
 	if err != nil {
@@ -182,6 +194,11 @@ func (m *Module) handleRefresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if stored.RevokedAt != nil || time.Now().After(stored.ExpiresAt) {
+		if stored.RevokedAt != nil {
+			m.rt.Logger.Warn("refresh token reuse attempt", zap.String("token_id", stored.ID.String()), zap.String("user_id", stored.UserID.String()))
+		} else {
+			m.rt.Logger.Info("refresh token expired", zap.String("token_id", stored.ID.String()), zap.String("user_id", stored.UserID.String()))
+		}
 		respond.Error(w, http.StatusUnauthorized, errors.New("refresh token expired"))
 		return
 	}
@@ -379,6 +396,7 @@ func (m *Module) handleProfile(w http.ResponseWriter, r *http.Request) {
 	respond.JSON(w, http.StatusOK, map[string]any{
 		"id":                      user.ID.String(),
 		"email":                   user.Email,
+		"roles":                   user.Roles,
 		"role":                    user.Role,
 		"password_reset_required": user.PasswordResetRequired,
 	})
@@ -397,6 +415,14 @@ func (m *Module) authenticateRequest(r *http.Request) (*Claims, error) {
 }
 
 func (m *Module) issueTokenPair(ctx context.Context, userID uuid.UUID, user User) (string, string, error) {
+	if len(user.Roles) == 0 {
+		role := strings.TrimSpace(strings.ToLower(user.Role))
+		if role == "" {
+			role = defaultRoleName
+		}
+		user.Role = role
+		user.Roles = []string{role}
+	}
 	accessToken, err := m.tokens.Generate(user)
 	if err != nil {
 		return "", "", err
@@ -407,6 +433,12 @@ func (m *Module) issueTokenPair(ctx context.Context, userID uuid.UUID, user User
 	}
 	if _, err := m.store.InsertRefreshToken(ctx, userID, hashToken(refreshToken), time.Now().Add(refreshTokenTTL)); err != nil {
 		return "", "", err
+	}
+	if err := m.store.DeleteExpiredRefreshTokens(ctx, userID); err != nil {
+		m.rt.Logger.Warn("delete expired refresh tokens", zap.Error(err))
+	}
+	if err := m.store.TrimActiveRefreshTokens(ctx, userID, maxActiveRefreshTokens); err != nil {
+		m.rt.Logger.Warn("trim refresh tokens", zap.Error(err))
 	}
 	return accessToken, refreshToken, nil
 }
@@ -420,6 +452,7 @@ func (m *Module) writeTokenResponse(w http.ResponseWriter, status int, user User
 		"user": map[string]any{
 			"id":                      user.ID.String(),
 			"email":                   user.Email,
+			"roles":                   user.Roles,
 			"role":                    user.Role,
 			"password_reset_required": user.PasswordResetRequired,
 		},
@@ -476,6 +509,7 @@ func (m *Module) renderResetConfirmTemplate(w http.ResponseWriter, status int, d
 }
 
 func (m *Module) renderTemplate(w http.ResponseWriter, status int, name string, data templateData) {
+	data = m.decorateTemplateData(data)
 	if m.views == nil {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(status)
@@ -487,6 +521,85 @@ func (m *Module) renderTemplate(w http.ResponseWriter, status int, name string, 
 	if err := m.views.ExecuteTemplate(w, name, data); err != nil {
 		http.Error(w, "template rendering error", http.StatusInternalServerError)
 	}
+}
+
+func (m *Module) decorateTemplateData(data templateData) templateData {
+	if data.FrameworkName == "" {
+		data.FrameworkName = "Shanraq Framework"
+	}
+	if data.FrameworkDescription == "" {
+		data.FrameworkDescription = "Batteries-included Go platform for resilient services."
+	}
+	if data.BrandLogoPath == "" {
+		data.BrandLogoPath = "/static/brand/logo.svg"
+	}
+	if data.Year == 0 {
+		data.Year = time.Now().Year()
+	}
+	return data
+}
+
+func (m *Module) RequireRoles(roles ...string) func(http.Handler) http.Handler {
+	normalized := sanitizeRoles(roles)
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			claims, ok := ClaimsFromContext(r.Context())
+			if !ok {
+				var err error
+				claims, err = m.authenticateRequest(r)
+				if err != nil {
+					respond.Error(w, http.StatusUnauthorized, err)
+					return
+				}
+			}
+			if len(normalized) > 0 && !claims.HasAnyRole(normalized...) {
+				respond.Error(w, http.StatusForbidden, errors.New("insufficient role to access this resource"))
+				return
+			}
+			nextCtx := ContextWithClaims(r.Context(), claims)
+			next.ServeHTTP(w, r.WithContext(nextCtx))
+		})
+	}
+}
+
+func ClaimsFromContext(ctx context.Context) (*Claims, bool) {
+	claims, ok := ctx.Value(claimsContextKey).(*Claims)
+	return claims, ok
+}
+
+func ContextWithClaims(ctx context.Context, claims *Claims) context.Context {
+	if claims == nil {
+		return ctx
+	}
+	return context.WithValue(ctx, claimsContextKey, claims)
+}
+
+func sanitizeRoles(roles []string) []string {
+	seen := make(map[string]struct{}, len(roles))
+	result := make([]string, 0, len(roles))
+	for _, role := range roles {
+		role = strings.TrimSpace(strings.ToLower(role))
+		if role == "" {
+			continue
+		}
+		if _, ok := seen[role]; ok {
+			continue
+		}
+		seen[role] = struct{}{}
+		result = append(result, role)
+	}
+	return result
+}
+
+func isWeakSecret(secret string) bool {
+	normalized := strings.TrimSpace(strings.ToLower(secret))
+	if len(normalized) < 24 {
+		switch normalized {
+		case "", "replace-me-now", "super-secret-key", "secret", "changeme":
+			return true
+		}
+	}
+	return false
 }
 
 var _ interface {

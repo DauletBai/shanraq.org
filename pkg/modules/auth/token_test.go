@@ -9,7 +9,12 @@ import (
 
 func TestTokenServiceGenerateAndParse(t *testing.T) {
 	svc := NewTokenService("secret", time.Minute)
-	user := User{ID: uuid.New(), Email: "alice@example.com", Role: "admin"}
+	user := User{
+		ID:    uuid.New(),
+		Email: "alice@example.com",
+		Role:  "admin",
+		Roles: []string{"admin", "operator"},
+	}
 
 	token, err := svc.Generate(user)
 	if err != nil {
@@ -27,8 +32,17 @@ func TestTokenServiceGenerateAndParse(t *testing.T) {
 	if claims.Email != user.Email {
 		t.Fatalf("expected email %s, got %s", user.Email, claims.Email)
 	}
-	if claims.Role != user.Role {
-		t.Fatalf("expected role %s, got %s", user.Role, claims.Role)
+	if claims.PrimaryRole != "admin" {
+		t.Fatalf("expected primary role admin, got %s", claims.PrimaryRole)
+	}
+	if !claims.HasAnyRole("admin") {
+		t.Fatal("expected admin role to be present")
+	}
+	if !claims.HasAnyRole("operator") {
+		t.Fatal("expected operator role to be present")
+	}
+	if claims.HasAnyRole("guest") {
+		t.Fatal("did not expect guest role to be present")
 	}
 	if svc.TTL() <= 0 {
 		t.Fatalf("expected TTL to be positive")

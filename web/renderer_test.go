@@ -20,6 +20,8 @@ func TestRendererLayouts(t *testing.T) {
 	}
 
 	fixedTime := time.Date(2025, 10, 31, 9, 0, 0, 0, time.UTC)
+	web.SetNowFunc(func() time.Time { return fixedTime })
+	defer web.SetNowFunc(nil)
 
 	data := webui.DashboardData{
 		FrameworkName:        "Shanraq",

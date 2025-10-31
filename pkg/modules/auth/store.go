@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -11,6 +12,8 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
+
+const defaultRoleName = "user"
 
 var (
 	// ErrEmailExists indicates the email is already registered.
@@ -29,6 +32,7 @@ type User struct {
 	Email                 string
 	PasswordHash          string
 	Role                  string
+	Roles                 []string
 	PasswordResetRequired bool
 	CreatedAt             time.Time
 }
@@ -42,15 +46,31 @@ func NewStore(db *pgxpool.Pool) *Store {
 	return &Store{db: db}
 }
 
-func (s *Store) CreateUser(ctx context.Context, email, hash, role string) (User, error) {
-	userID := uuid.New()
-	if role == "" {
-		role = "user"
+func (s *Store) CreateUser(ctx context.Context, email, hash string, roles ...string) (User, error) {
+	var primaryInput string
+	var extras []string
+	if len(roles) > 0 {
+		primaryInput = roles[0]
+		if len(roles) > 1 {
+			extras = roles[1:]
+		}
 	}
-	_, err := s.db.Exec(ctx, `
+
+	primaryRole, normalizedRoles := normalizeRoleSet(primaryInput, extras...)
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return User{}, fmt.Errorf("begin user tx: %w", err)
+	}
+	defer tx.Rollback(ctx) //nolint:errcheck
+
+	userID := uuid.New()
+	var createdAt time.Time
+	err = tx.QueryRow(ctx, `
 		INSERT INTO auth_users (id, email, password_hash, role)
 		VALUES ($1, $2, $3, $4)
-	`, userID, email, hash, role)
+		RETURNING created_at
+	`, userID, email, hash, primaryRole).Scan(&createdAt)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.ConstraintName == "auth_users_email_key" {
@@ -59,12 +79,33 @@ func (s *Store) CreateUser(ctx context.Context, email, hash, role string) (User,
 		return User{}, fmt.Errorf("insert user: %w", err)
 	}
 
+	roleIDs := make(map[string]uuid.UUID, len(normalizedRoles))
+	for _, roleName := range normalizedRoles {
+		roleID, ensureErr := s.ensureRoleTx(ctx, tx, roleName, "")
+		if ensureErr != nil {
+			return User{}, ensureErr
+		}
+		roleIDs[roleName] = roleID
+	}
+
+	for _, roleName := range normalizedRoles {
+		roleID := roleIDs[roleName]
+		if assignErr := s.assignRoleTx(ctx, tx, userID, roleID); assignErr != nil {
+			return User{}, assignErr
+		}
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return User{}, fmt.Errorf("commit user: %w", err)
+	}
+
 	return User{
 		ID:           userID,
 		Email:        email,
 		PasswordHash: hash,
-		Role:         role,
-		CreatedAt:    time.Now(),
+		Role:         primaryRole,
+		Roles:        normalizedRoles,
+		CreatedAt:    createdAt,
 	}, nil
 }
 
@@ -81,6 +122,10 @@ func (s *Store) FindByEmail(ctx context.Context, email string) (User, error) {
 		}
 		return User{}, fmt.Errorf("select by email: %w", err)
 	}
+
+	if err := s.hydrateUserRoles(ctx, &u); err != nil {
+		return User{}, err
+	}
 	return u, nil
 }
 
@@ -96,6 +141,10 @@ func (s *Store) GetByID(ctx context.Context, id string) (User, error) {
 			return User{}, ErrNotFound
 		}
 		return User{}, fmt.Errorf("select by id: %w", err)
+	}
+
+	if err := s.hydrateUserRoles(ctx, &u); err != nil {
+		return User{}, err
 	}
 	return u, nil
 }
@@ -163,6 +212,37 @@ func (s *Store) RevokeUserTokens(ctx context.Context, userID uuid.UUID) error {
 	return nil
 }
 
+func (s *Store) TrimActiveRefreshTokens(ctx context.Context, userID uuid.UUID, keep int) error {
+	if keep <= 0 {
+		return nil
+	}
+	_, err := s.db.Exec(ctx, `
+		DELETE FROM auth_refresh_tokens
+		WHERE id IN (
+			SELECT id
+			FROM auth_refresh_tokens
+			WHERE user_id = $1 AND revoked_at IS NULL
+			ORDER BY created_at DESC
+			OFFSET $2
+		)
+	`, userID, keep)
+	if err != nil {
+		return fmt.Errorf("trim refresh tokens: %w", err)
+	}
+	return nil
+}
+
+func (s *Store) DeleteExpiredRefreshTokens(ctx context.Context, userID uuid.UUID) error {
+	_, err := s.db.Exec(ctx, `
+		DELETE FROM auth_refresh_tokens
+		WHERE user_id = $1 AND expires_at < NOW()
+	`, userID)
+	if err != nil {
+		return fmt.Errorf("delete expired refresh tokens: %w", err)
+	}
+	return nil
+}
+
 // PasswordReset represents a pending password reset token.
 type PasswordReset struct {
 	ID        uuid.UUID
@@ -226,4 +306,114 @@ func (s *Store) UpdatePassword(ctx context.Context, userID uuid.UUID, hash strin
 		return fmt.Errorf("update user password: %w", err)
 	}
 	return nil
+}
+
+func (s *Store) ensureRoleTx(ctx context.Context, tx pgx.Tx, name, description string) (uuid.UUID, error) {
+	name = strings.TrimSpace(strings.ToLower(name))
+	if name == "" {
+		name = defaultRoleName
+	}
+
+	var roleID uuid.UUID
+	err := tx.QueryRow(ctx, `
+		SELECT id
+		FROM auth_roles
+		WHERE name = $1
+	`, name).Scan(&roleID)
+	if err == nil {
+		return roleID, nil
+	}
+	if !errors.Is(err, pgx.ErrNoRows) {
+		return uuid.Nil, fmt.Errorf("lookup role %s: %w", name, err)
+	}
+
+	err = tx.QueryRow(ctx, `
+		INSERT INTO auth_roles (name, description)
+		VALUES ($1, NULLIF($2, ''))
+		RETURNING id
+	`, name, description).Scan(&roleID)
+	if err != nil {
+		return uuid.Nil, fmt.Errorf("insert role %s: %w", name, err)
+	}
+	return roleID, nil
+}
+
+func (s *Store) assignRoleTx(ctx context.Context, tx pgx.Tx, userID, roleID uuid.UUID) error {
+	_, err := tx.Exec(ctx, `
+		INSERT INTO auth_user_roles (user_id, role_id)
+		VALUES ($1, $2)
+		ON CONFLICT (user_id, role_id) DO NOTHING
+	`, userID, roleID)
+	if err != nil {
+		return fmt.Errorf("assign role: %w", err)
+	}
+	return nil
+}
+
+func (s *Store) hydrateUserRoles(ctx context.Context, u *User) error {
+	roles, err := s.listUserRoles(ctx, u.ID)
+	if err != nil {
+		return err
+	}
+
+	primary, normalized := normalizeRoleSet(u.Role, roles...)
+	u.Role = primary
+	u.Roles = normalized
+	return nil
+}
+
+func (s *Store) listUserRoles(ctx context.Context, userID uuid.UUID) ([]string, error) {
+	rows, err := s.db.Query(ctx, `
+		SELECT r.name
+		FROM auth_roles r
+		INNER JOIN auth_user_roles ur ON ur.role_id = r.id
+		WHERE ur.user_id = $1
+		ORDER BY r.name
+	`, userID)
+	if err != nil {
+		return nil, fmt.Errorf("query user roles: %w", err)
+	}
+	defer rows.Close()
+
+	var roles []string
+	for rows.Next() {
+		var name string
+		if err := rows.Scan(&name); err != nil {
+			return nil, fmt.Errorf("scan user role: %w", err)
+		}
+		roles = append(roles, name)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("iterate user roles: %w", err)
+	}
+	return roles, nil
+}
+
+func normalizeRoleSet(primary string, extras ...string) (string, []string) {
+	seen := make(map[string]struct{})
+	result := make([]string, 0, len(extras)+2)
+
+	add := func(role string) {
+		role = strings.TrimSpace(strings.ToLower(role))
+		if role == "" {
+			return
+		}
+		if _, ok := seen[role]; ok {
+			return
+		}
+		seen[role] = struct{}{}
+		result = append(result, role)
+	}
+
+	add(primary)
+	for _, role := range extras {
+		add(role)
+	}
+	if _, ok := seen[defaultRoleName]; !ok {
+		add(defaultRoleName)
+	}
+	if len(result) == 0 {
+		add(defaultRoleName)
+	}
+	return result[0], result
 }

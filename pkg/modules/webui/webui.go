@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 	"shanraq.org/internal/config"
@@ -20,43 +21,58 @@ import (
 
 // Module renders a Bootstrap-powered dashboard for operators.
 type Module struct {
-	rt           *shanraq.Runtime
-	renderer     *web.Renderer
-	jobsData     jobsDataProvider
-	workers      int
-	pollInterval time.Duration
-	reloadPeriod time.Duration
-	aboutContent *AboutContent
+	rt             *shanraq.Runtime
+	renderer       *web.Renderer
+	jobsData       jobsDataProvider
+	workers        int
+	pollInterval   time.Duration
+	reloadPeriod   time.Duration
+	aboutContent   *AboutContent
+	tenantResolver TenantResolver
 }
 
 type jobsDataProvider interface {
-	Metrics(ctx context.Context) (jobs.MetricsSnapshot, error)
-	CountByStatus(ctx context.Context) (map[string]int, error)
-	ListRecent(ctx context.Context, limit int) ([]jobs.Job, error)
+	Metrics(ctx context.Context, userID *uuid.UUID) (jobs.MetricsSnapshot, error)
+	CountByStatus(ctx context.Context, userID *uuid.UUID) (map[string]int, error)
+	ListRecent(ctx context.Context, limit int, userID *uuid.UUID) ([]jobs.Job, error)
 }
+
+// TenantResolver extracts the logical tenant (user) identifier from an incoming request.
+type TenantResolver func(r *http.Request) (uuid.UUID, bool)
 
 type jobsStoreProvider struct {
 	store *jobs.Store
 }
 
-func (p jobsStoreProvider) Metrics(ctx context.Context) (jobs.MetricsSnapshot, error) {
-	return p.store.Metrics(ctx)
+func (p jobsStoreProvider) Metrics(ctx context.Context, userID *uuid.UUID) (jobs.MetricsSnapshot, error) {
+	return p.store.Metrics(ctx, userID)
 }
 
-func (p jobsStoreProvider) CountByStatus(ctx context.Context) (map[string]int, error) {
-	return p.store.CountByStatus(ctx)
+func (p jobsStoreProvider) CountByStatus(ctx context.Context, userID *uuid.UUID) (map[string]int, error) {
+	return p.store.CountByStatus(ctx, userID)
 }
 
-func (p jobsStoreProvider) ListRecent(ctx context.Context, limit int) ([]jobs.Job, error) {
-	return p.store.ListRecent(ctx, limit)
+func (p jobsStoreProvider) ListRecent(ctx context.Context, limit int, userID *uuid.UUID) ([]jobs.Job, error) {
+	return p.store.ListRecent(ctx, limit, userID)
 }
 
 // New constructs a module with the provided worker metadata (for UI display).
-func New(workers int, pollInterval time.Duration) *Module {
-	return &Module{
+func New(workers int, pollInterval time.Duration, opts ...func(*Module)) *Module {
+	m := &Module{
 		workers:      workers,
 		pollInterval: pollInterval,
 		reloadPeriod: 15 * time.Second,
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// WithTenantResolver allows callers to inject a resolver that scopes job data by user.
+func WithTenantResolver(resolver TenantResolver) func(*Module) {
+	return func(m *Module) {
+		m.tenantResolver = resolver
 	}
 }
 
@@ -106,7 +122,8 @@ func (m *Module) Routes(r chi.Router) {
 }
 
 func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
-	data := m.buildDashboardData(r.Context())
+	tenantID := m.resolveTenantID(r)
+	data := m.buildDashboardData(r.Context(), tenantID)
 	if data == nil {
 		http.Error(w, "failed to build home", http.StatusInternalServerError)
 		return
@@ -122,7 +139,8 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
-	data := m.buildDashboardData(r.Context())
+	tenantID := m.resolveTenantID(r)
+	data := m.buildDashboardData(r.Context(), tenantID)
 	if data == nil {
 		http.Error(w, "failed to build dashboard", http.StatusInternalServerError)
 		return
@@ -136,7 +154,8 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleDashboardPartial(w http.ResponseWriter, r *http.Request) {
-	data := m.buildDashboardData(r.Context())
+	tenantID := m.resolveTenantID(r)
+	data := m.buildDashboardData(r.Context(), tenantID)
 	if data == nil {
 		http.Error(w, "failed to build dashboard", http.StatusInternalServerError)
 		return
@@ -154,13 +173,13 @@ func (m *Module) handleDashboardPartial(w http.ResponseWriter, r *http.Request) 
 	_, _ = w.Write(buf.Bytes())
 }
 
-func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
+func (m *Module) buildDashboardData(parent context.Context, tenantID *uuid.UUID) *DashboardData {
 	ctx, cancel := context.WithTimeout(parent, 2*time.Second)
 	defer cancel()
 
 	metrics := jobs.MetricsSnapshot{}
 	if m.jobsData != nil {
-		if snap, err := m.jobsData.Metrics(ctx); err == nil {
+		if snap, err := m.jobsData.Metrics(ctx, tenantID); err == nil {
 			metrics = snap
 		} else {
 			m.rt.Logger.Warn("job metrics", zap.Error(err))
@@ -175,7 +194,7 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 		"done":    metrics.Done,
 	}
 	if metrics.Total == 0 && m.jobsData != nil {
-		if fallback, err := m.jobsData.CountByStatus(ctx); err == nil {
+		if fallback, err := m.jobsData.CountByStatus(ctx, tenantID); err == nil {
 			counts = fallback
 			metrics.Pending = fallback["pending"]
 			metrics.Retry = fallback["retry"]
@@ -188,7 +207,7 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 
 	recent := []jobs.Job{}
 	if m.jobsData != nil {
-		if list, err := m.jobsData.ListRecent(ctx, 8); err == nil {
+		if list, err := m.jobsData.ListRecent(ctx, 8, tenantID); err == nil {
 			recent = list
 		} else {
 			m.rt.Logger.Warn("recent jobs", zap.Error(err))
@@ -202,30 +221,24 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 	}
 
 	total := totalJobs(counts)
-	pending := counts["pending"]
-	retrying := counts["retry"]
-	running := counts["running"]
-	failed := counts["failed"]
-	completed := counts["done"]
 	jobStats := JobStats{
-		Pending:      pending,
-		Retrying:     retrying,
-		Running:      running,
-		Failed:       failed,
-		Completed:    completed,
+		Pending:      counts["pending"],
+		Retrying:     counts["retry"],
+		Running:      counts["running"],
+		Failed:       counts["failed"],
+		Completed:    counts["done"],
 		Total:        total,
 		Workers:      m.workers,
 		PollInterval: m.pollInterval.String(),
 	}
 
-	var queueOverview QueueOverview
 	windowTotal := metrics.DoneLastHour + metrics.FailedLastHour
 	var failureRate, successRate float64
 	if windowTotal > 0 {
 		failureRate = float64(metrics.FailedLastHour) / float64(windowTotal)
 		successRate = float64(metrics.DoneLastHour) / float64(windowTotal)
 	}
-	queueOverview = QueueOverview{
+	queueOverview := QueueOverview{
 		DoneLastHour:       metrics.DoneLastHour,
 		FailedLastHour:     metrics.FailedLastHour,
 		SuccessRate:        successRate,
@@ -233,6 +246,8 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 		NextScheduled:      metrics.NextScheduled,
 		NextScheduledValid: metrics.NextScheduledOk,
 	}
+
+	sidebarLinks := m.defaultSidebarLinks()
 
 	return &DashboardData{
 		PageID:               "dashboard",
@@ -242,30 +257,38 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 		PageTitle:            "Shanraq Console",
 		CurrentYear:          time.Now().Year(),
 		Environment:          m.rt.Config.Environment,
-		LastUpdated:          time.Now(),
 		ReloadAfter:          m.reloadPeriod,
-		SidebarLinks: []SidebarLink{
-			{Label: "Home", Href: "/"},
-			{Label: "Console", Href: "/console"},
-			{Label: "Documentation", Href: "/docs"},
-			{Label: "Jobs API", Href: "/jobs"},
-			{Label: "Health", Href: "/healthz"},
-			{Label: "Readiness", Href: "/readyz"},
-			{Label: "Metrics", Href: "/metrics"},
-		},
-		JobStats:   jobStats,
-		RecentJobs: recent,
-		Health:     m.healthSnapshot(ctx, counts),
-		JobsAPIURL: "/jobs",
-		MetricsURL: metricsPath(m.rt.Config.Telemetry),
-		JobForm: JobFormDefaults{
-			Name:        "send_welcome_email",
-			MaxAttempts: 3,
-			Payload:     "{\n  \"email\": \"demo@shanraq.org\"\n}",
-		},
-		Hero:          m.aboutContent,
-		QueueOverview: queueOverview,
+		Workers:              m.workers,
+		PollInterval:         m.pollInterval,
+		Counts:               counts,
+		RecentJobs:           recent,
+		JobStats:             jobStats,
+		QueueOverview:        queueOverview,
+		Metrics:              metrics,
+		SidebarLinks:         sidebarLinks,
 	}
+}
+
+func (m *Module) resolveTenantID(r *http.Request) *uuid.UUID {
+	if m.tenantResolver == nil {
+		return nil
+	}
+	if id, ok := m.tenantResolver(r); ok && id != uuid.Nil {
+		return &id
+	}
+	return nil
+}
+
+func (m *Module) defaultSidebarLinks() []SidebarLink {
+	links := []SidebarLink{
+		{Label: "Jobs Console", Href: "/console"},
+		{Label: "Framework Docs", Href: "/docs"},
+		{Label: "Jobs API", Href: "/jobs"},
+	}
+	if m.rt != nil && m.rt.Config.Telemetry.EnableMetrics {
+		links = append(links, SidebarLink{Label: "Metrics", Href: metricsPath(m.rt.Config.Telemetry)})
+	}
+	return links
 }
 
 // JobStats feeds the dashboard hero cards.
@@ -301,6 +324,10 @@ type DashboardData struct {
 	Hero                 *AboutContent
 	Docs                 []DocSection
 	QueueOverview        QueueOverview
+	Counts               map[string]int
+	Metrics              jobs.MetricsSnapshot
+	Workers              int
+	PollInterval         time.Duration
 }
 
 type HealthIndicator struct {
@@ -465,7 +492,8 @@ var _ interface {
 } = (*Module)(nil)
 
 func (m *Module) handleDocs(w http.ResponseWriter, r *http.Request) {
-	data := m.buildDashboardData(r.Context())
+	tenantID := m.resolveTenantID(r)
+	data := m.buildDashboardData(r.Context(), tenantID)
 	if data == nil {
 		http.Error(w, "failed to build docs", http.StatusInternalServerError)
 		return
@@ -497,6 +525,11 @@ func (m *Module) handleDocs(w http.ResponseWriter, r *http.Request) {
 					Title:       "Authentication",
 					Description: "JWT-based signup/signin/profile endpoints under /auth with refresh token rotation and password reset flows.",
 					Link:        "/auth/signup",
+				},
+				{
+					Title:       "API Keys",
+					Description: "Per-tenant credentials issued via /auth/apikeys; pair RequireAPIKey with auth.RequireRoles for hybrid auth flows.",
+					Link:        "/auth/apikeys",
 				},
 				{
 					Title:       "Background Jobs",
@@ -532,7 +565,7 @@ func (m *Module) handleDocs(w http.ResponseWriter, r *http.Request) {
 				{
 					Title:       "Environment Overrides",
 					Description: "Every field accepts SHANRAQ_* environment variables (e.g. SHANRAQ_SERVER_ADDRESS).",
-					Link:        "https://github.com/DauletBai/shanraq.org/blob/main/README.md#configuration-reference",
+					Link:        "https://github.com/DauletBai/shanraq.org/blob/main/docs/CONFIGURATION.md",
 				},
 			},
 		},
@@ -543,6 +576,8 @@ func (m *Module) handleDocs(w http.ResponseWriter, r *http.Request) {
 				{Title: "auth_users", Description: "Accounts with role metadata and password reset flags."},
 				{Title: "auth_refresh_tokens", Description: "Hashed refresh tokens (revoked when signing out or resetting passwords)."},
 				{Title: "auth_password_resets", Description: "Pending reset tokens with expiry and usage tracking."},
+				{Title: "auth_roles", Description: "Catalog of RBAC roles that can be assigned to users."},
+				{Title: "auth_user_roles", Description: "Join table mapping users to one or many roles."},
 				{Title: "job_queue", Description: "Background jobs with attempts, status enum, and scheduling."},
 				{Title: "framework_about", Description: "Hero copy for the marketing carousel; latest row wins."},
 				{Title: "Inspect Schema", Description: "Run goose status to confirm migrations.", Command: "goose -dir pkg/modules/migrations/sql postgres \n  $DATABASE_URL status"},
@@ -561,6 +596,16 @@ func (m *Module) handleDocs(w http.ResponseWriter, r *http.Request) {
 					Title:       "Register",
 					Description: "Add to cmd/app/main.go after New runtime.",
 					Command:     "app := shanraq.New(cfg)\napp.Register(widget.New())",
+				},
+				{
+					Title:       "Protect Routes",
+					Description: "Use RequireRoles middleware from the auth module to guard administrative endpoints.",
+					Command:     "r.Group(func(r chi.Router) {\n  r.Use(authModule.RequireRoles(\"admin\"))\n  r.Get(\"/admin/reports\", handler)\n})",
+				},
+				{
+					Title:       "Access Claims",
+					Description: "Pull JWT claims from the request context for auditing or personalization.",
+					Command:     "if claims, ok := auth.ClaimsFromContext(r.Context()); ok {\n  logger.Info(\"request\", zap.Strings(\"roles\", claims.Roles))\n}",
 				},
 				{
 					Title:       "Deployment Guide",

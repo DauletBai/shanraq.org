@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"shanraq.org/internal/config"
 	"shanraq.org/pkg/modules/jobs"
@@ -21,15 +22,15 @@ type stubJobsProvider struct {
 	recent  []jobs.Job
 }
 
-func (s stubJobsProvider) Metrics(_ context.Context) (jobs.MetricsSnapshot, error) {
+func (s stubJobsProvider) Metrics(_ context.Context, _ *uuid.UUID) (jobs.MetricsSnapshot, error) {
 	return s.metrics, nil
 }
 
-func (s stubJobsProvider) CountByStatus(_ context.Context) (map[string]int, error) {
+func (s stubJobsProvider) CountByStatus(_ context.Context, _ *uuid.UUID) (map[string]int, error) {
 	return s.counts, nil
 }
 
-func (s stubJobsProvider) ListRecent(_ context.Context, _ int) ([]jobs.Job, error) {
+func (s stubJobsProvider) ListRecent(_ context.Context, _ int, _ *uuid.UUID) ([]jobs.Job, error) {
 	return s.recent, nil
 }
 

@@ -1,8 +1,12 @@
 -- +goose Up
 ALTER TABLE auth_users
-    ADD COLUMN role TEXT NOT NULL DEFAULT 'user',
-    ADD COLUMN password_reset_required BOOLEAN NOT NULL DEFAULT FALSE,
-    ADD COLUMN updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
+    ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user';
+
+ALTER TABLE auth_users
+    ADD COLUMN IF NOT EXISTS password_reset_required BOOLEAN NOT NULL DEFAULT FALSE;
+
+ALTER TABLE auth_users
+    ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
 
 CREATE TABLE IF NOT EXISTS auth_refresh_tokens (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

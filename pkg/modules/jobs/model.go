@@ -14,6 +14,7 @@ var ErrNoJobs = errors.New("no jobs available")
 // Job mirrors the job_queue schema.
 type Job struct {
 	ID          uuid.UUID       `json:"id"`
+	UserID      uuid.UUID       `json:"user_id,omitempty"`
 	Name        string          `json:"name"`
 	Payload     json.RawMessage `json:"payload"`
 	RunAt       time.Time       `json:"run_at"`
@@ -45,4 +46,5 @@ type ListOptions struct {
 	Status string
 	Limit  int
 	Offset int
+	UserID *uuid.UUID
 }

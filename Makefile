@@ -11,3 +11,11 @@ test:
 .PHONY: tidy
 tidy:
 	$(GO) mod tidy
+
+.PHONY: smoke
+smoke:
+	./scripts/docker-smoke.sh
+
+.PHONY: snapshots
+snapshots:
+	go generate ./web

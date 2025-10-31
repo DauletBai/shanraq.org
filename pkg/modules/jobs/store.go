@@ -11,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -69,10 +70,14 @@ type MetricsSnapshot struct {
 }
 
 func (s *Store) Enqueue(ctx context.Context, job Job) error {
+	var userID any
+	if job.UserID != uuid.Nil {
+		userID = job.UserID
+	}
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO job_queue (id, name, payload, run_at, max_attempts)
-		VALUES ($1, $2, $3, $4, $5)
-	`, job.ID, job.Name, job.Payload, job.RunAt, job.MaxAttempts)
+		INSERT INTO job_queue (id, user_id, name, payload, run_at, max_attempts)
+		VALUES ($1, $2, $3, $4, $5, $6)
+	`, job.ID, userID, job.Name, job.Payload, job.RunAt, job.MaxAttempts)
 	if err != nil {
 		return fmt.Errorf("enqueue job: %w", err)
 	}
@@ -80,10 +85,10 @@ func (s *Store) Enqueue(ctx context.Context, job Job) error {
 }
 
 // Metrics returns aggregate queue statistics for dashboards.
-func (s *Store) Metrics(ctx context.Context) (MetricsSnapshot, error) {
+func (s *Store) Metrics(ctx context.Context, userID *uuid.UUID) (MetricsSnapshot, error) {
 	var snap MetricsSnapshot
 	var next sql.NullTime
-	err := s.db.QueryRow(ctx, `
+	query := `
 		SELECT
 			COUNT(*) AS total,
 			COUNT(*) FILTER (WHERE status = 'pending') AS pending,
@@ -95,7 +100,14 @@ func (s *Store) Metrics(ctx context.Context) (MetricsSnapshot, error) {
 			COUNT(*) FILTER (WHERE status = 'failed' AND updated_at >= NOW() - INTERVAL '1 hour') AS failed_last_hour,
 			MIN(run_at) FILTER (WHERE status IN ('pending', 'retry')) AS next_scheduled
 		FROM job_queue
-	`).Scan(
+	`
+	args := []any{}
+	if userID != nil && *userID != uuid.Nil {
+		query += " WHERE user_id = $1"
+		args = append(args, *userID)
+	}
+
+	err := s.db.QueryRow(ctx, query, args...).Scan(
 		&snap.Total,
 		&snap.Pending,
 		&snap.Running,
@@ -189,51 +201,60 @@ func (s *Store) MarkFailed(ctx context.Context, id uuid.UUID, reason string) err
 	return nil
 }
 
-func (s *Store) MarkRetry(ctx context.Context, id uuid.UUID, reason string) error {
-	_, err := s.db.Exec(ctx, `
+func (s *Store) MarkRetry(ctx context.Context, id uuid.UUID, reason string, userID *uuid.UUID) error {
+	query := `
 		UPDATE job_queue
 		SET status = 'retry',
 		    last_error = $2,
 		    run_at = NOW() + INTERVAL '15 seconds',
 		    updated_at = NOW()
 		WHERE id = $1
-	`, id, reason)
+	`
+	args := []any{id, reason}
+	query = addUserFilter(query, &args, userID)
+	_, err := s.db.Exec(ctx, query, args...)
 	if err != nil {
 		return fmt.Errorf("mark retry: %w", err)
 	}
 	return nil
 }
 
-func (s *Store) MarkPending(ctx context.Context, id uuid.UUID) error {
-	_, err := s.db.Exec(ctx, `
+func (s *Store) MarkPending(ctx context.Context, id uuid.UUID, userID *uuid.UUID) error {
+	query := `
 		UPDATE job_queue
 		SET status = 'pending',
 		    run_at = NOW(),
 		    updated_at = NOW()
 		WHERE id = $1
-	`, id)
+	`
+	args := []any{id}
+	query = addUserFilter(query, &args, userID)
+	_, err := s.db.Exec(ctx, query, args...)
 	if err != nil {
 		return fmt.Errorf("mark pending: %w", err)
 	}
 	return nil
 }
 
-func (s *Store) Cancel(ctx context.Context, id uuid.UUID, reason string) error {
-	_, err := s.db.Exec(ctx, `
+func (s *Store) Cancel(ctx context.Context, id uuid.UUID, reason string, userID *uuid.UUID) error {
+	query := `
 		UPDATE job_queue
 		SET status = 'failed',
 		    last_error = $2,
 		    updated_at = NOW()
 		WHERE id = $1
-	`, id, reason)
+	`
+	args := []any{id, reason}
+	query = addUserFilter(query, &args, userID)
+	_, err := s.db.Exec(ctx, query, args...)
 	if err != nil {
 		return fmt.Errorf("cancel job: %w", err)
 	}
 	return nil
 }
 
-func (s *Store) ListRecent(ctx context.Context, limit int) ([]Job, error) {
-	return s.List(ctx, ListOptions{Limit: limit})
+func (s *Store) ListRecent(ctx context.Context, limit int, userID *uuid.UUID) ([]Job, error) {
+	return s.List(ctx, ListOptions{Limit: limit, UserID: userID})
 }
 
 func (s *Store) List(ctx context.Context, opts ListOptions) ([]Job, error) {
@@ -247,15 +268,24 @@ func (s *Store) List(ctx context.Context, opts ListOptions) ([]Job, error) {
 	}
 
 	var builder strings.Builder
-	builder.WriteString("SELECT id, name, payload, run_at, attempts, max_attempts, status, last_error, created_at, updated_at FROM job_queue")
+	builder.WriteString("SELECT id, user_id, name, payload, run_at, attempts, max_attempts, status, last_error, created_at, updated_at FROM job_queue")
 
 	args := make([]any, 0, 3)
 	idx := 1
+	conditions := make([]string, 0, 2)
+	if opts.UserID != nil && *opts.UserID != uuid.Nil {
+		conditions = append(conditions, "user_id = $"+strconv.Itoa(idx))
+		args = append(args, *opts.UserID)
+		idx++
+	}
 	if opts.Status != "" {
-		builder.WriteString(" WHERE status = $")
-		builder.WriteString(strconv.Itoa(idx))
+		conditions = append(conditions, "status = $"+strconv.Itoa(idx))
 		args = append(args, opts.Status)
 		idx++
+	}
+	if len(conditions) > 0 {
+		builder.WriteString(" WHERE ")
+		builder.WriteString(strings.Join(conditions, " AND "))
 	}
 
 	builder.WriteString(" ORDER BY created_at DESC LIMIT $")
@@ -284,13 +314,19 @@ func (s *Store) List(ctx context.Context, opts ListOptions) ([]Job, error) {
 	return jobs, rows.Err()
 }
 
-// CountByStatus aggregates jobs by status for dashboards.
-func (s *Store) CountByStatus(ctx context.Context) (map[string]int, error) {
-	rows, err := s.db.Query(ctx, `
+func (s *Store) CountByStatus(ctx context.Context, userID *uuid.UUID) (map[string]int, error) {
+	query := `
 		SELECT status, COUNT(*)
 		FROM job_queue
-		GROUP BY status
-	`)
+	`
+	args := []any{}
+	if userID != nil && *userID != uuid.Nil {
+		query += " WHERE user_id = $1"
+		args = append(args, *userID)
+	}
+	query += " GROUP BY status"
+
+	rows, err := s.db.Query(ctx, query, args...)
 	if err != nil {
 		return nil, fmt.Errorf("count jobs: %w", err)
 	}
@@ -308,14 +344,30 @@ func (s *Store) CountByStatus(ctx context.Context) (map[string]int, error) {
 	return counts, rows.Err()
 }
 
+func addUserFilter(query string, args *[]any, userID *uuid.UUID) string {
+	if userID != nil && *userID != uuid.Nil {
+		idx := len(*args) + 1
+		query += " AND user_id = $" + strconv.Itoa(idx)
+		*args = append(*args, *userID)
+	}
+	return query
+}
+
 func scanJob(row pgx.Row) (Job, error) {
 	var job Job
 	var lastError *string
-	if err := row.Scan(&job.ID, &job.Name, &job.Payload, &job.RunAt, &job.Attempts, &job.MaxAttempts, &job.Status, &lastError, &job.CreatedAt, &job.UpdatedAt); err != nil {
+	var user pgtype.UUID
+	if err := row.Scan(&job.ID, &user, &job.Name, &job.Payload, &job.RunAt, &job.Attempts, &job.MaxAttempts, &job.Status, &lastError, &job.CreatedAt, &job.UpdatedAt); err != nil {
 		if err == pgx.ErrNoRows {
 			return Job{}, err
 		}
 		return Job{}, fmt.Errorf("scan job: %w", err)
+	}
+	if user.Valid {
+		u, err := uuid.FromBytes(user.Bytes[:])
+		if err == nil {
+			job.UserID = u
+		}
 	}
 	job.LastError = lastError
 	return job, nil
