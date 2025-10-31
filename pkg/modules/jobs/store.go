@@ -10,15 +10,47 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+type pgxPool interface {
+	Exec(ctx context.Context, sql string, arguments ...any) (pgconn.CommandTag, error)
+	Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error)
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+	BeginTx(ctx context.Context, txOptions pgx.TxOptions) (pgx.Tx, error)
+}
+
+type poolWrapper struct {
+	*pgxpool.Pool
+}
+
+func (p poolWrapper) Exec(ctx context.Context, sql string, arguments ...any) (pgconn.CommandTag, error) {
+	return p.Pool.Exec(ctx, sql, arguments...)
+}
+
+func (p poolWrapper) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
+	return p.Pool.Query(ctx, sql, args...)
+}
+
+func (p poolWrapper) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
+	return p.Pool.QueryRow(ctx, sql, args...)
+}
+
+func (p poolWrapper) BeginTx(ctx context.Context, txOptions pgx.TxOptions) (pgx.Tx, error) {
+	return p.Pool.BeginTx(ctx, txOptions)
+}
+
 // Store manages DB operations for the job queue.
 type Store struct {
-	db *pgxpool.Pool
+	db pgxPool
 }
 
 func NewStore(db *pgxpool.Pool) *Store {
+	return newStoreWithPool(poolWrapper{db})
+}
+
+func newStoreWithPool(db pgxPool) *Store {
 	return &Store{db: db}
 }
 

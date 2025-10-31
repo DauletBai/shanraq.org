@@ -1,0 +1,172 @@
+
+  
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Framework Documentation</title>
+<meta name="description" content="Modular Go framework">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/css/theme.css">
+<link rel="icon" type="image/svg+xml" href="/static/brand/favicon.svg">
+<link rel="alternate icon" href="/static/brand/favicon.svg">
+<link rel="apple-touch-icon" href="/static/brand/logo.svg">
+
+    
+  </head>
+  <body class="bg-body">
+    
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+  <div class="container-lg">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+      <img src="/static/brand/logo.svg" alt="Shanraq logo" height="32" width="32" class="d-inline-block align-text-top">
+      <span class="fw-semibold">Shanraq</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link " href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/console">Console</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/docs">Docs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/jobs" target="_blank" rel="noopener">Jobs API</a>
+        </li>
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+
+    <main class="container py-4">
+      <div class="row g-4">
+        
+        <div class="col-lg-3">
+          
+<div class="position-sticky" style="top: 6rem;">
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-white fw-semibold text-uppercase small text-muted">Shortcuts</div>
+    <div class="list-group list-group-flush">
+      
+      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="/">
+        <span>Home</span>
+        <span class="text-muted">→</span>
+      </a>
+      
+      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="/console">
+        <span>Console</span>
+        <span class="text-muted">→</span>
+      </a>
+      
+    </div>
+  </div>
+</div>
+
+        </div>
+        <div class="col-lg-9">
+        
+          
+            
+<section class="mb-5">
+  <h1 class="display-5 fw-bold mb-3">Framework Documentation</h1>
+  <p class="lead text-muted mb-0">Explore the Shanraq module system, operational tooling, and recommended workflows. Use the sections below to jump directly to commands, endpoints, and dashboards that matter to your team.</p>
+</section>
+
+
+  <div class="row g-4">
+    
+    <div class="col-12">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white border-bottom-0">
+          <h2 class="h4 mb-1">Quick Start</h2>
+          <p class="text-muted mb-0">Kick off the reference binary.</p>
+        </div>
+        <div class="list-group list-group-flush">
+          
+          <div class="list-group-item">
+            <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+              <div>
+                <h3 class="h6 mb-1">Run</h3>
+                <p class="text-muted mb-2">Start locally</p>
+                
+                <pre class="code-block mb-0"><code>go run ./cmd/app -config config.yaml</code></pre>
+                
+              </div>
+              
+            </div>
+          </div>
+          
+          <div class="list-group-item">
+            <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+              <div>
+                <h3 class="h6 mb-1">Console</h3>
+                <p class="text-muted mb-2">Open dashboard</p>
+                
+              </div>
+              
+              <div class="text-lg-end" style="min-width: 150px;">
+                <a class="btn btn-outline-primary btn-sm" href="/console">Open</a>
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+
+          
+        </div>
+      </div>
+    </main>
+    
+<footer class="border-top bg-primary py-4 mt-2">
+  <div class="container-lg text-center text-bg-primary opacity-75">
+    &copy; 2025 <a href="#" class="link-light">Shanraq</a> · Powered by <a href="https://go.dev/" class="link-light">Go</a>.
+  </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-gO2XcXcXwjlzAIXazhbugzuDUFcPRl1BDpRP70dNDO7xjMnIKPQ4FI/wV5p6vo1z" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var toggler = document.querySelector('.navbar-toggler');
+        var target = document.getElementById('navbarMain');
+        if (!toggler || !target) {
+          return;
+        }
+
+        toggler.addEventListener('click', function (event) {
+          event.preventDefault();
+          var expanded = toggler.getAttribute('aria-expanded') === 'true';
+          toggler.setAttribute('aria-expanded', (!expanded).toString());
+
+          if (window.bootstrap && window.bootstrap.Collapse) {
+            var collapse = window.bootstrap.Collapse.getOrCreateInstance(target, { toggle: false });
+            collapse.toggle();
+            return;
+          }
+
+          var isShown = target.classList.contains('show');
+          target.classList.toggle('show', !isShown);
+          toggler.classList.toggle('collapsed', isShown);
+        });
+      });
+    </script>
+    
+      
+    
+  </body>
+</html>
+

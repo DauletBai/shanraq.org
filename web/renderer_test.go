@@ -2,6 +2,8 @@ package web_test
 
 import (
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -16,6 +18,8 @@ func TestRendererLayouts(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewRenderer() error = %v", err)
 	}
+
+	fixedTime := time.Date(2025, 10, 31, 9, 0, 0, 0, time.UTC)
 
 	data := webui.DashboardData{
 		FrameworkName:        "Shanraq",
@@ -43,9 +47,10 @@ func TestRendererLayouts(t *testing.T) {
 			FailedLastHour:     3,
 			SuccessRate:        0.8,
 			FailureRate:        0.2,
-			NextScheduled:      time.Now(),
+			NextScheduled:      fixedTime.Add(30 * time.Minute),
 			NextScheduledValid: true,
 		},
+		LastUpdated: fixedTime,
 	}
 
 	rec := httptest.NewRecorder()
@@ -61,6 +66,7 @@ func TestRendererLayouts(t *testing.T) {
 	assertContains(t, body, `class="code-block`)
 	assertNotContains(t, body, "No content provided.")
 	assertNotContains(t, body, `/static/js/dashboard.js`)
+	assertSnapshot(t, "home.html", body)
 
 	rec = httptest.NewRecorder()
 	data.PageID = "dashboard"
@@ -75,6 +81,7 @@ func TestRendererLayouts(t *testing.T) {
 	assertContains(t, body, "Throughput (last hour)")
 	assertContains(t, body, "Failure rate")
 	assertNotContains(t, body, "No content provided.")
+	assertSnapshot(t, "dashboard.html", body)
 
 	rec = httptest.NewRecorder()
 	data.PageID = "docs"
@@ -98,6 +105,7 @@ func TestRendererLayouts(t *testing.T) {
 	assertContains(t, body, "Quick Start")
 	assertContains(t, body, "Start locally")
 	assertContains(t, body, "go run ./cmd/app -config config.yaml")
+	assertSnapshot(t, "docs.html", body)
 }
 
 func assertContains(t *testing.T, haystack, needle string) {
@@ -120,4 +128,24 @@ func snippet(s string) string {
 		return s
 	}
 	return s[:max] + "..."
+}
+
+func assertSnapshot(t *testing.T, name, got string) {
+	if os.Getenv("UPDATE_SNAPSHOTS") == "1" {
+		path := filepath.Join("testdata", name)
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatalf("create snapshot dir: %v", err)
+		}
+		if err := os.WriteFile(path, []byte(got), 0o644); err != nil {
+			t.Fatalf("write snapshot: %v", err)
+		}
+	}
+	path := filepath.Join("testdata", name)
+	want, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("read snapshot %s: %v", name, err)
+	}
+	if string(want) != got {
+		t.Fatalf("snapshot mismatch for %s", name)
+	}
 }

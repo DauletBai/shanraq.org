@@ -22,11 +22,33 @@ import (
 type Module struct {
 	rt           *shanraq.Runtime
 	renderer     *web.Renderer
-	jobsStore    *jobs.Store
+	jobsData     jobsDataProvider
 	workers      int
 	pollInterval time.Duration
 	reloadPeriod time.Duration
 	aboutContent *AboutContent
+}
+
+type jobsDataProvider interface {
+	Metrics(ctx context.Context) (jobs.MetricsSnapshot, error)
+	CountByStatus(ctx context.Context) (map[string]int, error)
+	ListRecent(ctx context.Context, limit int) ([]jobs.Job, error)
+}
+
+type jobsStoreProvider struct {
+	store *jobs.Store
+}
+
+func (p jobsStoreProvider) Metrics(ctx context.Context) (jobs.MetricsSnapshot, error) {
+	return p.store.Metrics(ctx)
+}
+
+func (p jobsStoreProvider) CountByStatus(ctx context.Context) (map[string]int, error) {
+	return p.store.CountByStatus(ctx)
+}
+
+func (p jobsStoreProvider) ListRecent(ctx context.Context, limit int) ([]jobs.Job, error) {
+	return p.store.ListRecent(ctx, limit)
 }
 
 // New constructs a module with the provided worker metadata (for UI display).
@@ -50,7 +72,8 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	}
 	m.rt = rt
 	m.renderer = renderer
-	m.jobsStore = jobs.NewStore(rt.DB)
+	store := jobs.NewStore(rt.DB)
+	m.jobsData = jobsStoreProvider{store: store}
 	m.aboutContent = loadAboutContent(rt.DB)
 	if m.aboutContent == nil {
 		m.aboutContent = &AboutContent{
@@ -135,9 +158,13 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 	ctx, cancel := context.WithTimeout(parent, 2*time.Second)
 	defer cancel()
 
-	metrics, err := m.jobsStore.Metrics(ctx)
-	if err != nil {
-		m.rt.Logger.Warn("job metrics", zap.Error(err))
+	metrics := jobs.MetricsSnapshot{}
+	if m.jobsData != nil {
+		if snap, err := m.jobsData.Metrics(ctx); err == nil {
+			metrics = snap
+		} else {
+			m.rt.Logger.Warn("job metrics", zap.Error(err))
+		}
 	}
 
 	counts := map[string]int{
@@ -147,8 +174,8 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 		"failed":  metrics.Failed,
 		"done":    metrics.Done,
 	}
-	if metrics.Total == 0 {
-		if fallback, err := m.jobsStore.CountByStatus(ctx); err == nil {
+	if metrics.Total == 0 && m.jobsData != nil {
+		if fallback, err := m.jobsData.CountByStatus(ctx); err == nil {
 			counts = fallback
 			metrics.Pending = fallback["pending"]
 			metrics.Retry = fallback["retry"]
@@ -159,10 +186,13 @@ func (m *Module) buildDashboardData(parent context.Context) *DashboardData {
 		}
 	}
 
-	recent, err := m.jobsStore.ListRecent(ctx, 8)
-	if err != nil {
-		m.rt.Logger.Warn("recent jobs", zap.Error(err))
-		recent = []jobs.Job{}
+	recent := []jobs.Job{}
+	if m.jobsData != nil {
+		if list, err := m.jobsData.ListRecent(ctx, 8); err == nil {
+			recent = list
+		} else {
+			m.rt.Logger.Warn("recent jobs", zap.Error(err))
+		}
 	}
 
 	frameworkName := "Shanraq"
@@ -362,12 +392,21 @@ func (m *Module) healthSnapshot(ctx context.Context, counts map[string]int) []He
 	indicators := make([]HealthIndicator, 0, 4)
 	status := "Operational"
 	level := "success"
-	stat := m.rt.DB.Stat()
-	description := fmt.Sprintf("%d total · %d idle · %d in-use", stat.TotalConns(), stat.IdleConns(), stat.AcquiredConns())
-	if err := m.rt.DB.Ping(ctx); err != nil {
-		status = "Degraded"
-		level = "danger"
-		description = err.Error()
+	description := "database not configured"
+	if m.rt.DB != nil {
+		stat := m.rt.DB.Stat()
+		description = fmt.Sprintf("%d total · %d idle · %d in-use", stat.TotalConns(), stat.IdleConns(), stat.AcquiredConns())
+		if err := m.rt.DB.Ping(ctx); err != nil {
+			status = "Degraded"
+			level = "danger"
+			description = err.Error()
+		}
+	} else {
+		status = "Unknown"
+		level = "warning"
+	}
+	if description == "" {
+		description = "no statistics available"
 	}
 	indicators = append(indicators, HealthIndicator{
 		Name:        "PostgreSQL",
@@ -391,6 +430,7 @@ func (m *Module) healthSnapshot(ctx context.Context, counts map[string]int) []He
 
 	failed := counts["failed"]
 	if failed > 0 {
+		status = "Degraded"
 		indicators = append(indicators, HealthIndicator{
 			Name:        "Failed Jobs",
 			Status:      fmt.Sprintf("%d pending attention", failed),
