@@ -27,7 +27,14 @@ WHERE jq.user_id IS NULL;
 
 CREATE INDEX IF NOT EXISTS job_queue_user_idx ON job_queue(user_id);
 
+INSERT INTO auth_api_keys (user_id, key_hash, prefix, label)
+SELECT id, '75409192143765d27dfe16765579fb68439a2a6db8b66f3635d4a75d2789fcb8', 'sk_demo_op', 'Operator demo key'
+FROM auth_users
+WHERE email = 'operator@shanraq.org'
+ON CONFLICT DO NOTHING;
+
 -- +goose Down
+DELETE FROM auth_api_keys WHERE prefix = 'sk_demo_op';
 DROP TABLE IF EXISTS auth_api_keys;
 DROP INDEX IF EXISTS job_queue_user_idx;
 ALTER TABLE job_queue DROP COLUMN IF EXISTS user_id;

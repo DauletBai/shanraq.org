@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"strings"
@@ -24,6 +25,8 @@ var (
 	ErrRefreshNotFound = errors.New("refresh token not found")
 	// ErrPasswordResetNotFound indicates the password reset token does not exist.
 	ErrPasswordResetNotFound = errors.New("password reset token not found")
+	// ErrMFATOTPNotFound indicates the user does not yet have a TOTP secret registered.
+	ErrMFATOTPNotFound = errors.New("mfa totp secret not found")
 )
 
 // User represents a record stored in auth_users.
@@ -35,6 +38,18 @@ type User struct {
 	Roles                 []string
 	PasswordResetRequired bool
 	CreatedAt             time.Time
+}
+
+// MFATOTP persists user-specific TOTP secrets.
+type MFATOTP struct {
+	ID          uuid.UUID
+	UserID      uuid.UUID
+	Secret      string
+	Confirmed   bool
+	ConfirmedAt *time.Time
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	URI         string
 }
 
 // Store contains persistence helpers for auth module.
@@ -387,6 +402,65 @@ func (s *Store) listUserRoles(ctx context.Context, userID uuid.UUID) ([]string, 
 		return nil, fmt.Errorf("iterate user roles: %w", err)
 	}
 	return roles, nil
+}
+
+func (s *Store) CreateTOTP(ctx context.Context, userID uuid.UUID, secret string) (MFATOTP, error) {
+	id := uuid.New()
+	if _, err := s.db.Exec(ctx, `
+		INSERT INTO auth_mfa_totp (id, user_id, secret)
+		VALUES ($1, $2, $3)
+		ON CONFLICT (user_id) DO NOTHING
+	`, id, userID, secret); err != nil {
+		return MFATOTP{}, fmt.Errorf("insert totp secret: %w", err)
+	}
+	return s.GetTOTPByUser(ctx, userID)
+}
+
+func (s *Store) GetTOTPByUser(ctx context.Context, userID uuid.UUID) (MFATOTP, error) {
+	return scanMFATOTP(s.db.QueryRow(ctx, `
+		SELECT id, user_id, secret, confirmed_at, created_at, updated_at
+		FROM auth_mfa_totp
+		WHERE user_id = $1
+	`, userID))
+}
+
+func (s *Store) GetTOTPByID(ctx context.Context, id uuid.UUID) (MFATOTP, error) {
+	return scanMFATOTP(s.db.QueryRow(ctx, `
+		SELECT id, user_id, secret, confirmed_at, created_at, updated_at
+		FROM auth_mfa_totp
+		WHERE id = $1
+	`, id))
+}
+
+func (s *Store) MarkTOTPConfirmed(ctx context.Context, id uuid.UUID) error {
+	_, err := s.db.Exec(ctx, `
+		UPDATE auth_mfa_totp
+		SET confirmed_at = NOW(), updated_at = NOW()
+		WHERE id = $1
+	`, id)
+	if err != nil {
+		return fmt.Errorf("mark totp confirmed: %w", err)
+	}
+	return nil
+}
+
+func scanMFATOTP(row pgx.Row) (MFATOTP, error) {
+	var (
+		record      MFATOTP
+		confirmedAt sql.NullTime
+	)
+	if err := row.Scan(&record.ID, &record.UserID, &record.Secret, &confirmedAt, &record.CreatedAt, &record.UpdatedAt); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return MFATOTP{}, ErrMFATOTPNotFound
+		}
+		return MFATOTP{}, fmt.Errorf("scan totp: %w", err)
+	}
+	if confirmedAt.Valid {
+		record.Confirmed = true
+		record.ConfirmedAt = &confirmedAt.Time
+	}
+	record.URI = ""
+	return record, nil
 }
 
 func normalizeRoleSet(primary string, extras ...string) (string, []string) {

@@ -4,11 +4,11 @@
 
 # Shanraq.org Framework
 
-Shanraq is a batteries-included Go 1.25.x application framework focused on modern backend practices: typed configuration, PostgreSQL-first data access, structured logging, composable modules, and first-class observability.
+Shanraq is a batteries-included Go 1.23+ application framework focused on modern backend practices: typed configuration, PostgreSQL-first data access, structured logging, composable modules, and first-class observability.
 
 ## Highlights
 
-- **Go 1.25.x ready**: Module targets Go `1.25` with Go toolchain `1.22.3`, so you can build today and upgrade seamlessly.
+- **Go 1.23+ ready**: Module targets Go `1.23` and pins toolchain `go1.24.1`, so you build on stable releases while staying future-proof.
 - **PostgreSQL via pgxpool**: Sane defaults, lifecycle management, and trace hooks wired into Zap.
 - **Declarative configuration**: Environment-aware configuration loader with `.env` support, file overrides, and typed structs.
 - **Composable modules**: `shanraq.Module` contracts let teams build reusable features that can hook into init/start/routes independently.
@@ -42,7 +42,7 @@ web/                  # html/template renderer, landing carousel, static assets
 
 Pick the lane that suits your workflow:
 
-- **Native:** install Go ≥ 1.22.3 and PostgreSQL, copy the sample config, then `go run ./cmd/app -config config.yaml`.
+- **Native:** install Go ≥ 1.23 (the toolchain directive will fetch `go1.24.1`) and PostgreSQL, copy the sample config, then `go run ./cmd/app -config config.yaml`.
 - **Docker:** `docker compose up --build` provisions a distroless image and local Postgres.
 
 Quick steps:
@@ -88,6 +88,10 @@ Expose ports `8080` (app) and `5432` (Postgres) on your host to interact with th
 | `database.max_conns` | Max pooled connections | `10` |
 | `telemetry.enable_metrics` | Toggle Prometheus handler | `true` |
 | `telemetry.metrics_path` | Metrics HTTP path | `/metrics` |
+| `telemetry.tracing.enabled` | Enable OTLP tracing | `false` |
+| `telemetry.tracing.endpoint` | OTLP collector endpoint | *(empty)* |
+| `telemetry.tracing.sample_ratio` | Sampling fraction (0-1) | `0.1` |
+| `telemetry.tracing.service_name` | OpenTelemetry `service.name` | `shanraq-app` |
 | `logging.level` | Zap level (`debug/info/warn/error`) | `info` |
 | `logging.mode` | `development` or `production` encoder | `production` |
 | `auth.token_secret` | HMAC secret for JWT tokens | `replace-me-now` |
@@ -108,6 +112,8 @@ Durations accept Go duration syntax (e.g. `30s`, `5m`).
 | `SHANRAQ_LOGGING_MODE` | Overrides encoder (`development` or `production`). |
 | `SHANRAQ_JOBS_WORKERS` | Optional override for worker count when wired in `cmd/app/main.go`. |
 | `SHANRAQ_NOTIFICATIONS_SMTP_HOST` | SMTP host for outbound email (accompanied by `_PORT`, `_USERNAME`, `_PASSWORD`, `_FROM`). |
+| `SHANRAQ_AUTH_MFA_TOTP_ENABLED` | Enables TOTP multi-factor authentication. |
+| `SHANRAQ_AUTH_MFA_TOTP_ISSUER` | Overrides the issuer label used in authenticator apps. |
 
 ### Notifications
 
@@ -227,6 +233,7 @@ Add module tests close to their packages to keep coverage meaningful.
 - RBAC lives in `auth_roles` and `auth_user_roles`, and helper middleware `auth.Module.RequireRoles(...)` makes it easy to guard routes.
 - Every sign-in issues a refresh token persisted in Postgres; `/auth/refresh` rotates them, the module trims old tokens automatically, and `/auth/signout` revokes the provided token.
 - Password reset pages live at `/auth/password/reset` and `/auth/password/confirm`, with tokens stored in `auth_password_resets`.
+- Optional TOTP-based MFA can be enabled via `auth.mfa.totp`, prompting users to enrol an authenticator app before tokens are issued.
 - Handlers can call `jobs.InfoFromContext(ctx)` to access worker metadata when enqueuing auth-related background jobs.
 - Use the API key module (below) when you want to distribute scoped credentials to customers or service integrations.
 

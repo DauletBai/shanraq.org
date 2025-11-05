@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"net"
 	"net/http"
 	"strings"
 	"time"
@@ -45,14 +46,39 @@ func WithMailer(mailer Mailer) Option {
 	}
 }
 
+func WithTOTP(issuer string) Option {
+	return func(m *Module) {
+		m.requireTOTP = true
+		m.totpIssuer = issuer
+	}
+}
+
+func WithRateLimiter(limiter RateLimiter) Option {
+	return func(m *Module) {
+		m.rateLimiter = limiter
+	}
+}
+
+func WithMFAProvider(provider MFAProvider) Option {
+	return func(m *Module) {
+		m.mfaProvider = provider
+	}
+}
+
+var errTooManyRequests = errors.New("too many attempts, please try again later")
+
 // Module wires auth routes plus helper services (store + tokens).
 type Module struct {
-	rt        *shanraq.Runtime
-	store     *Store
-	tokens    *TokenService
-	views     *template.Template
-	validator *validate.Validator
-	mailer    Mailer
+	rt          *shanraq.Runtime
+	store       *Store
+	tokens      *TokenService
+	views       *template.Template
+	validator   *validate.Validator
+	mailer      Mailer
+	rateLimiter RateLimiter
+	mfaProvider MFAProvider
+	requireTOTP bool
+	totpIssuer  string
 }
 
 //go:embed templates/*.html
@@ -95,6 +121,16 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	}
 	m.views = tmpl
 	m.validator = validate.New()
+	if m.rateLimiter == nil {
+		m.rateLimiter = newMemoryRateLimiter(defaultRateLimitRules())
+	}
+	if m.mfaProvider == nil && m.requireTOTP {
+		issuer := m.totpIssuer
+		if issuer == "" {
+			issuer = "Shanraq"
+		}
+		m.mfaProvider = NewTOTPProvider(m.store, issuer, m.rt.Logger)
+	}
 	return nil
 }
 
@@ -114,16 +150,28 @@ func (m *Module) Routes(r chi.Router) {
 		r.Post("/password/reset", m.handlePasswordResetRequest)
 		r.Get("/password/confirm", m.renderPasswordConfirmPage)
 		r.Post("/password/confirm", m.handlePasswordResetConfirm)
+		r.Post("/mfa/verify", m.handleMFAVerify)
 	})
 }
 
 func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
+	if !m.enforceRateLimit(r, "signup", true) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
+	}
+
 	var req signupRequest
 	if err := respond.Decode(r, &req); err != nil {
 		respond.Error(w, http.StatusBadRequest, err)
 		return
 	}
 	req.Email = strings.TrimSpace(strings.ToLower(req.Email))
+
+	if !m.enforceRateLimit(r, "signup", false, req.Email) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
+	}
+
 	fields, err := m.validatePayload(req)
 	if err != nil {
 		respond.Error(w, http.StatusBadRequest, err)
@@ -164,12 +212,23 @@ func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleSignin(w http.ResponseWriter, r *http.Request) {
+	if !m.enforceRateLimit(r, "signin", true) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
+	}
+
 	var req signinRequest
 	if err := respond.Decode(r, &req); err != nil {
 		respond.Error(w, http.StatusBadRequest, err)
 		return
 	}
 	req.Email = strings.TrimSpace(strings.ToLower(req.Email))
+
+	if !m.enforceRateLimit(r, "signin", false, req.Email) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
+	}
+
 	fields, err := m.validatePayload(req)
 	if err != nil {
 		respond.Error(w, http.StatusBadRequest, err)
@@ -197,6 +256,36 @@ func (m *Module) handleSignin(w http.ResponseWriter, r *http.Request) {
 	accessToken, refreshToken, err := m.issueTokenPair(ctx, user.ID, user)
 	if err != nil {
 		respond.Error(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if m.mfaProvider != nil {
+		challenge, challengeErr := m.mfaProvider.Challenge(ctx, user)
+		if challengeErr != nil {
+			if m.rt != nil {
+				m.rt.Logger.Error("mfa challenge", zap.Error(challengeErr))
+			}
+			respond.Error(w, http.StatusInternalServerError, errors.New("multi-factor challenge failed"))
+			return
+		}
+		resp := map[string]any{
+			"mfa_required": true,
+			"challenge_id": challenge.ID,
+			"expires_at":   challenge.ExpiresAt,
+			"channel":      challenge.Channel,
+		}
+		if challenge.Secret != "" {
+			resp["totp_secret"] = challenge.Secret
+		}
+		if challenge.URI != "" {
+			resp["totp_uri"] = challenge.URI
+		}
+		if len(challenge.Data) > 0 {
+			for k, v := range challenge.Data {
+				resp[k] = v
+			}
+		}
+		respond.JSON(w, http.StatusAccepted, resp)
 		return
 	}
 
@@ -293,6 +382,11 @@ func (m *Module) renderPasswordResetPage(w http.ResponseWriter, _ *http.Request)
 }
 
 func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Request) {
+	if !m.enforceRateLimit(r, "password_reset", true) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
+	}
+
 	isJSON := isJSONRequest(r)
 	var email string
 	if isJSON {
@@ -308,6 +402,11 @@ func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Reque
 			return
 		}
 		email = strings.TrimSpace(strings.ToLower(r.FormValue("email")))
+	}
+
+	if !m.enforceRateLimit(r, "password_reset", false, email) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
 	}
 
 	req := passwordResetRequest{Email: email}
@@ -372,6 +471,11 @@ func (m *Module) renderPasswordConfirmPage(w http.ResponseWriter, r *http.Reques
 }
 
 func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Request) {
+	if !m.enforceRateLimit(r, "password_reset_confirm", true) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
+	}
+
 	isJSON := isJSONRequest(r)
 	var req passwordResetConfirmRequest
 	if isJSON {
@@ -390,6 +494,12 @@ func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Reque
 
 	req.Token = strings.TrimSpace(req.Token)
 	req.Password = strings.TrimSpace(req.Password)
+
+	if !m.enforceRateLimit(r, "password_reset_confirm", false, req.Token) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
+	}
+
 	fields, err := m.validatePayload(req)
 	if err != nil {
 		respond.Error(w, http.StatusBadRequest, err)
@@ -572,6 +682,116 @@ func (m *Module) writePasswordResetSuccess(w http.ResponseWriter, asJSON bool) {
 		return
 	}
 	m.renderResetConfirmTemplate(w, http.StatusOK, templateData{Message: "Password updated. You may now sign in with your new password."})
+}
+
+func (m *Module) handleMFAVerify(w http.ResponseWriter, r *http.Request) {
+	if m.mfaProvider == nil {
+		respond.Error(w, http.StatusNotFound, errors.New("multi-factor authentication not configured"))
+		return
+	}
+
+	if !m.enforceRateLimit(r, "mfa_verify", true) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
+	}
+
+	var req struct {
+		ChallengeID string `json:"challenge_id"`
+		Code        string `json:"code"`
+	}
+	if err := respond.Decode(r, &req); err != nil {
+		respond.Error(w, http.StatusBadRequest, err)
+		return
+	}
+
+	req.ChallengeID = strings.TrimSpace(req.ChallengeID)
+	req.Code = strings.TrimSpace(req.Code)
+	if req.ChallengeID == "" || req.Code == "" {
+		respond.Error(w, http.StatusBadRequest, errors.New("challenge_id and code are required"))
+		return
+	}
+
+	if !m.enforceRateLimit(r, "mfa_verify", false, req.ChallengeID) {
+		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	defer cancel()
+
+	result, err := m.mfaProvider.Verify(ctx, req.ChallengeID, req.Code)
+	if err != nil {
+		respond.Error(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	user := result.User
+	accessToken, refreshToken, err := m.issueTokenPair(ctx, user.ID, user)
+	if err != nil {
+		respond.Error(w, http.StatusInternalServerError, err)
+		return
+	}
+	if m.rt != nil {
+		m.rt.Logger.Info("user passed MFA", zap.String("email", user.Email))
+	}
+	m.writeTokenResponse(w, http.StatusOK, user, accessToken, refreshToken)
+}
+
+func (m *Module) enforceRateLimit(r *http.Request, action string, includeIP bool, extraKeys ...string) bool {
+	if m.rateLimiter == nil {
+		return true
+	}
+
+	keys := make(map[string]struct{})
+	if includeIP {
+		if ip := clientIdentifier(r); ip != "" {
+			keys[ip] = struct{}{}
+		}
+	}
+
+	for _, key := range extraKeys {
+		key = strings.TrimSpace(strings.ToLower(key))
+		if key == "" {
+			continue
+		}
+		keys[key] = struct{}{}
+	}
+
+	if len(keys) == 0 {
+		return true
+	}
+
+	for key := range keys {
+		if !m.rateLimiter.Allow(action, key) {
+			if m.rt != nil {
+				m.rt.Logger.Warn("auth rate limit exceeded",
+					zap.String("action", action),
+					zap.String("key_hash", hashKey(key)))
+			}
+			return false
+		}
+	}
+	return true
+}
+
+func clientIdentifier(r *http.Request) string {
+	xForwardedFor := strings.TrimSpace(r.Header.Get("X-Forwarded-For"))
+	if xForwardedFor != "" {
+		parts := strings.Split(xForwardedFor, ",")
+		if len(parts) > 0 {
+			return strings.TrimSpace(parts[0])
+		}
+	}
+	host, _, err := net.SplitHostPort(strings.TrimSpace(r.RemoteAddr))
+	if err == nil && host != "" {
+		return host
+	}
+	return strings.TrimSpace(r.RemoteAddr)
+}
+
+func hashKey(key string) string {
+	sum := sha256.Sum256([]byte(key))
+	return fmt.Sprintf("%x", sum[:8])
 }
 
 func (m *Module) validatePayload(payload any) (map[string]string, error) {

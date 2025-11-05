@@ -26,8 +26,8 @@ func New(cfg config.ServerConfig, logger *zap.Logger) *Server {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
-	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+	r.Use(requestLogger(logger))
 
 	return &Server{
 		cfg:    cfg,
@@ -77,4 +77,42 @@ func (s *Server) Shutdown(ctx context.Context) error {
 		return nil
 	}
 	return s.http.Shutdown(ctx)
+}
+
+func requestLogger(logger *zap.Logger) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			start := time.Now()
+			ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
+
+			next.ServeHTTP(ww, r)
+
+			status := ww.Status()
+			if status == 0 {
+				status = http.StatusOK
+			}
+
+			fields := []zap.Field{
+				zap.Int("status", status),
+				zap.String("method", r.Method),
+				zap.String("path", r.URL.Path),
+				zap.Int("bytes", ww.BytesWritten()),
+				zap.Duration("duration", time.Since(start)),
+			}
+
+			if reqID := middleware.GetReqID(r.Context()); reqID != "" {
+				fields = append(fields, zap.String("request_id", reqID))
+			}
+
+			if remote := r.RemoteAddr; remote != "" {
+				fields = append(fields, zap.String("remote_addr", remote))
+			}
+
+			if ua := r.UserAgent(); ua != "" {
+				fields = append(fields, zap.String("user_agent", ua))
+			}
+
+			logger.Info("http request", fields...)
+		})
+	}
 }

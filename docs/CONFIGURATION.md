@@ -60,6 +60,10 @@ auth:
 | --- | ----------- |
 | `telemetry.enable_metrics` | Enables `/metrics` (Prometheus). |
 | `telemetry.metrics_path` | Custom path for the handler. |
+| `telemetry.tracing.enabled` | Enables OpenTelemetry spans via OTLP exporter. |
+| `telemetry.tracing.endpoint` | OTLP HTTP endpoint (e.g. `collector:4318`). |
+| `telemetry.tracing.sample_ratio` | Sampling fraction between 0 and 1. |
+| `telemetry.tracing.service_name` | Overrides the `service.name` resource attribute. |
 
 ### Logging
 
@@ -74,6 +78,8 @@ auth:
 | --- | ----------- | ----- |
 | `auth.token_secret` | HMAC secret for JWT tokens. | Production mode panics when this remains the default. Use a 32+ byte random string. |
 | `auth.token_ttl` | Access token lifetime. | Refresh tokens outlive this (30 days by default). |
+| `auth.mfa.totp.enabled` | Enables TOTP-based MFA challenges during sign-in. | When enabled, users must verify a code from an authenticator app. |
+| `auth.mfa.totp.issuer` | Issuer label displayed inside authenticator apps. | Defaults to `Shanraq`. |
 
 ## Environment Variable Overrides
 
@@ -84,6 +90,8 @@ Every key above may be overridden by prefixing `SHANRAQ_` and using upper snake 
 | `SHANRAQ_SERVER_ADDRESS` | `server.address` |
 | `SHANRAQ_DATABASE_URL` | `database.url` |
 | `SHANRAQ_LOGGING_MODE` | `logging.mode` |
+| `SHANRAQ_AUTH_MFA_TOTP_ENABLED` | `auth.mfa.totp.enabled` |
+| `SHANRAQ_AUTH_MFA_TOTP_ISSUER` | `auth.mfa.totp.issuer` |
 | `SHANRAQ_AUTH_TOKEN_SECRET` | `auth.token_secret` |
 | `SHANRAQ_AUTH_TOKEN_TTL` | `auth.token_ttl` |
 

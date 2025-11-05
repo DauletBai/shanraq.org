@@ -20,6 +20,10 @@ logging:
 auth:
   token_secret: super-secret-key
   token_ttl: 30m
+  mfa:
+    totp:
+      enabled: false
+      issuer: Shanraq Console
 notifications:
   smtp:
     host: ""

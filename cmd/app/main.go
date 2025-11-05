@@ -46,7 +46,11 @@ func main() {
 	tenantResolver := jobs.AuthTenantResolver()
 
 	notifierModule := notifier.New()
-	authModule := auth.New(auth.WithMailer(notifierModule))
+	authOpts := []auth.Option{auth.WithMailer(notifierModule)}
+	if cfg.Auth.MFA.TOTP.Enabled {
+		authOpts = append(authOpts, auth.WithTOTP(cfg.Auth.MFA.TOTP.Issuer))
+	}
+	authModule := auth.New(authOpts...)
 	apiKeyModule := apikeys.New(
 		apikeys.WithHTTPMiddleware(authModule.RequireRoles("user", "operator", "admin")),
 	)

@@ -12,6 +12,10 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 	"shanraq.org/pkg/shanraq"
 	"shanraq.org/pkg/transport/respond"
@@ -31,6 +35,7 @@ type Module struct {
 	tenantResolver TenantResolver
 	httpMiddleware []func(http.Handler) http.Handler
 	validator      *validate.Validator
+	tracer         trace.Tracer
 }
 
 // JobContext key used for context values.
@@ -117,6 +122,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
 	m.validator = validate.New()
+	m.tracer = otel.Tracer("shanraq.org/jobs")
 	return nil
 }
 
@@ -177,38 +183,74 @@ func (m *Module) workerLoop(ctx context.Context, idx int) {
 }
 
 func (m *Module) processJob(ctx context.Context, job Job, workerIdx int) {
+	var span trace.Span
+	if m.tracer != nil {
+		ctx, span = m.tracer.Start(ctx, "jobs.process",
+			trace.WithAttributes(
+				attribute.String("jobs.id", job.ID.String()),
+				attribute.String("jobs.name", job.Name),
+				attribute.Int("jobs.worker_index", workerIdx),
+				attribute.Int("jobs.attempt", job.Attempts+1),
+			),
+		)
+		defer span.End()
+	}
+
 	handler, ok := m.handlers[job.Name]
 	if !ok {
 		m.rt.Logger.Warn("job handler missing", zap.String("name", job.Name))
 		_ = m.store.MarkFailed(ctx, job.ID, "handler missing")
+		if span != nil && span.IsRecording() {
+			span.SetAttributes(attribute.String("jobs.status", "handler_missing"))
+			span.SetStatus(codes.Error, "handler missing")
+		}
 		return
 	}
 
 	input := job
 	m.rt.Logger.Info("job started", zap.String("job_id", job.ID.String()), zap.String("name", job.Name), zap.Int("worker", workerIdx))
 
-	ctx = context.WithValue(ctx, jobContextKey{}, JobContext{
+	ctxWithMeta := context.WithValue(ctx, jobContextKey{}, JobContext{
 		WorkerIndex: workerIdx,
 		Attempts:    job.Attempts,
 	})
 
-	if err := handler(ctx, m.rt, input); err != nil {
+	if err := handler(ctxWithMeta, m.rt, input); err != nil {
 		m.rt.Logger.Warn("job errored", zap.String("job_id", job.ID.String()), zap.String("name", job.Name), zap.Error(err))
+		if span != nil && span.IsRecording() {
+			span.RecordError(err)
+			span.SetAttributes(attribute.String("jobs.status", "error"))
+			span.SetStatus(codes.Error, err.Error())
+		}
 		if job.Attempts >= job.MaxAttempts {
 			_ = m.store.MarkFailed(ctx, job.ID, err.Error())
 			return
 		}
 		if err := m.store.MarkRetry(ctx, job.ID, err.Error(), nil); err != nil {
 			m.rt.Logger.Error("mark retry", zap.Error(err))
+			if span != nil && span.IsRecording() {
+				span.RecordError(err)
+			}
+		} else if span != nil && span.IsRecording() {
+			span.SetAttributes(attribute.String("jobs.status", "retry"))
+			span.SetStatus(codes.Ok, "scheduled retry")
 		}
 		return
 	}
 
 	if err := m.store.MarkDone(ctx, job.ID); err != nil {
 		m.rt.Logger.Error("mark done", zap.Error(err))
+		if span != nil && span.IsRecording() {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, err.Error())
+		}
 		return
 	}
 	m.rt.Logger.Info("job completed", zap.String("job_id", job.ID.String()), zap.String("name", job.Name))
+	if span != nil && span.IsRecording() {
+		span.SetAttributes(attribute.String("jobs.status", "success"))
+		span.SetStatus(codes.Ok, "completed")
+	}
 }
 
 func (m *Module) handleEnqueue(w http.ResponseWriter, r *http.Request) {
