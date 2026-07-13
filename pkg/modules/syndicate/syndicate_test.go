@@ -62,6 +62,97 @@ func TestTelegramDisabledByDefault(t *testing.T) {
 	}
 }
 
+func TestRenderDigest(t *testing.T) {
+	m := testModule()
+	when := time.Date(2026, 7, 13, 10, 0, 0, 0, time.UTC)
+	subject, body := m.renderDigest("ru", []feedEntry{
+		{Slug: "ekonomika", Title: "Экономика 2026", Lang: "ru", Modified: when},
+	}, "tok123")
+	if subject != "Shanraq: обзор недели" {
+		t.Errorf("subject = %q", subject)
+	}
+	for _, want := range []string{"Экономика 2026", "https://shanraq.org/read/ekonomika?lang=ru", "Отписаться", "/unsubscribe?token=tok123"} {
+		if !strings.Contains(body, want) {
+			t.Errorf("body missing %q:\n%s", want, body)
+		}
+	}
+}
+
+type fakeMailer struct{ sent []string }
+
+func (f *fakeMailer) Send(_ context.Context, to, subject, body string) error {
+	f.sent = append(f.sent, to+"|"+subject)
+	return nil
+}
+
+// TestDigestIntegration exercises subscribe → SendDigest → unsubscribe against a
+// real DB with a fake mailer. Skipped unless SHANRAQ_TEST_DB is set.
+func TestDigestIntegration(t *testing.T) {
+	dsn := os.Getenv("SHANRAQ_TEST_DB")
+	if dsn == "" {
+		t.Skip("set SHANRAQ_TEST_DB to run the digest integration test")
+	}
+	ctx := context.Background()
+	pool, err := pgxpool.New(ctx, dsn)
+	if err != nil {
+		t.Fatalf("connect: %v", err)
+	}
+	defer pool.Close()
+
+	// A published article within the last 7 days, and a subscriber.
+	authorID := uuid.New()
+	articleID := uuid.New()
+	email := "digest-" + articleID.String()[:8] + "@t.test"
+	_, _ = pool.Exec(ctx, `INSERT INTO auth_users (id, email, password_hash, role) VALUES ($1,$2,'x','user')`, authorID, "dg-"+authorID.String()+"@t.test")
+	t.Cleanup(func() {
+		_, _ = pool.Exec(ctx, `DELETE FROM auth_users WHERE id=$1`, authorID)
+		_, _ = pool.Exec(ctx, `DELETE FROM subscribers WHERE email=$1`, email)
+	})
+	if _, err := pool.Exec(ctx, `INSERT INTO articles (id, author_id, slug, original_lang, status, published_at) VALUES ($1,$2,$3,'ru','published',NOW())`, articleID, authorID, "dg-"+articleID.String()[:8]); err != nil {
+		t.Fatalf("insert article: %v", err)
+	}
+	if _, err := pool.Exec(ctx, `INSERT INTO article_translations (article_id, lang, title, summary, body_md, source, status) VALUES ($1,'ru','Дайджест тест','Аннотация','Тело','human','ready')`, articleID); err != nil {
+		t.Fatalf("insert translation: %v", err)
+	}
+
+	fm := &fakeMailer{}
+	m := &Module{db: pool, baseURL: "https://shanraq.org", log: zap.NewNop(), mailer: fm, emailEnabled: true}
+
+	if err := m.subscribe(ctx, email, "ru"); err != nil {
+		t.Fatalf("subscribe: %v", err)
+	}
+	sent, err := m.SendDigest(ctx)
+	if err != nil {
+		t.Fatalf("SendDigest: %v", err)
+	}
+	if sent < 1 {
+		t.Fatalf("expected ≥1 sent, got %d", sent)
+	}
+	var found bool
+	for _, s := range fm.sent {
+		if strings.HasPrefix(s, email+"|") {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatalf("digest not sent to %s (sent: %v)", email, fm.sent)
+	}
+
+	// Unsubscribe by token removes the subscriber.
+	var token string
+	if err := pool.QueryRow(ctx, `SELECT unsubscribe_token FROM subscribers WHERE email=$1`, email).Scan(&token); err != nil {
+		t.Fatalf("read token: %v", err)
+	}
+	if _, err := m.unsubscribe(ctx, token); err != nil {
+		t.Fatalf("unsubscribe: %v", err)
+	}
+	var cnt int
+	_ = pool.QueryRow(ctx, `SELECT COUNT(*) FROM subscribers WHERE email=$1`, email).Scan(&cnt)
+	if cnt != 0 {
+		t.Fatalf("subscriber not removed after unsubscribe")
+	}
+}
+
 // TestFetchFeedIntegration checks the RSS query against a real DB (schema from
 // migrations). Skipped unless SHANRAQ_TEST_DB is set.
 func TestFetchFeedIntegration(t *testing.T) {

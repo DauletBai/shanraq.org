@@ -103,9 +103,10 @@ type FeedItem struct {
 // HomePage is the template context for the portal home.
 type HomePage struct {
 	Base
-	Featured *FeedItem
-	Posts    []FeedItem
-	Recent   []FeedItem
+	Featured   *FeedItem
+	Posts      []FeedItem
+	Recent     []FeedItem
+	Subscribed bool
 }
 
 // handleReadRedirect keeps the old /read URL working by sending it home.
@@ -166,6 +167,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	page := HomePage{Base: m.base(r, T(lang, "home.page_title"), lang)}
 	page.Active = active
 	page.ActiveCat = cat
+	page.Subscribed = r.URL.Query().Get("sub") == "ok"
 	if len(items) > 0 {
 		page.Featured = &items[0]
 		page.Posts = items[1:]

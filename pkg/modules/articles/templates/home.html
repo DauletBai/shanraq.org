@@ -60,6 +60,19 @@
         </ul>
       </div>
       {{ end }}
+      <div class="aside__block" style="background:var(--surface)">
+        <h3 class="aside__title">{{ t .Lang "sidebar.subscribe" }}</h3>
+        {{ if .Subscribed }}
+        <p class="aside__text" style="color:var(--teal);font-weight:600">{{ t .Lang "sidebar.subscribed_ok" }}</p>
+        {{ else }}
+        <p class="aside__text" style="margin-bottom:12px">{{ t .Lang "sidebar.subscribe_text" }}</p>
+        <form method="post" action="/subscribe" style="display:flex;gap:8px;flex-wrap:wrap">
+          <input type="hidden" name="lang" value="{{ .Lang }}">
+          <input class="input" type="email" name="email" placeholder="email@…" required style="flex:1;min-width:150px">
+          <button class="btn btn--primary btn--sm" type="submit">{{ t .Lang "sidebar.subscribe_btn" }}</button>
+        </form>
+        {{ end }}
+      </div>
       <div class="aside__block">
         <h3 class="aside__title">{{ t .Lang "sidebar.follow" }}</h3>
         <div class="aside__links">

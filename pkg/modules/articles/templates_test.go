@@ -54,7 +54,8 @@ func TestTemplatesExecute(t *testing.T) {
 			data any
 		}{
 			{"home", HomePage{Base: base, Featured: &item, Posts: []FeedItem{item}, Recent: []FeedItem{item}}},
-			{"home", HomePage{Base: base}}, // empty state
+			{"home", HomePage{Base: base, Featured: &item, Subscribed: true}}, // subscribe success
+			{"home", HomePage{Base: base}},                                    // empty state
 			{"article", ArticlePage{Base: base, Slug: "s", Title: "T", AuthorName: "A",
 				ServedLang: LangRU, Category: "society", Body: RenderMarkdown("# Hi\n\nText"), Published: &now, Views: 1,
 				Translated: true, IsAI: true, AvailableLangs: []string{LangRU},

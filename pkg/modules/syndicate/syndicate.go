@@ -22,20 +22,28 @@ import (
 	"shanraq.org/pkg/shanraq"
 )
 
-// Module implements the RSS route and the Telegram publish job.
-type Module struct {
-	rt         *shanraq.Runtime
-	db         *pgxpool.Pool
-	log        *zap.Logger
-	http       *http.Client
-	baseURL    string
-	tgEnabled  bool
-	tgBotToken string
-	tgChatID   string
+// Mailer sends an email. Satisfied by the notifier module.
+type Mailer interface {
+	Send(ctx context.Context, to, subject, body string) error
 }
 
-// New returns an unconfigured module.
-func New() *Module { return &Module{} }
+// Module implements the RSS route, Telegram publish job, and email digest.
+type Module struct {
+	rt           *shanraq.Runtime
+	db           *pgxpool.Pool
+	log          *zap.Logger
+	http         *http.Client
+	baseURL      string
+	tgEnabled    bool
+	tgBotToken   string
+	tgChatID     string
+	mailer       Mailer
+	emailEnabled bool
+}
+
+// New returns a module. mailer (the notifier) powers the email digest; pass nil
+// to disable email entirely.
+func New(mailer Mailer) *Module { return &Module{mailer: mailer} }
 
 func (m *Module) Name() string { return "syndicate" }
 
@@ -54,20 +62,54 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.tgChatID = strings.TrimSpace(cfg.Telegram.ChatID)
 	m.tgEnabled = cfg.Telegram.Enabled && m.tgBotToken != "" && m.tgChatID != ""
 
+	smtp := rt.Config.Notifications.SMTP
+	m.emailEnabled = m.mailer != nil && strings.TrimSpace(smtp.Host) != "" && strings.TrimSpace(smtp.From) != ""
+
 	if m.tgEnabled {
 		m.log.Info("syndicate telegram enabled", zap.String("chat", m.tgChatID))
 	} else {
 		m.log.Info("syndicate telegram disabled (RSS still active at /feed.xml)")
 	}
+	if m.emailEnabled {
+		m.log.Info("syndicate email digest enabled (weekly)")
+	} else {
+		m.log.Info("syndicate email digest disabled (configure SMTP to enable); subscriptions still stored")
+	}
 	return nil
 }
 
-// Routes exposes the RSS feed.
+// Routes exposes the RSS feed and subscription endpoints.
 func (m *Module) Routes(r chi.Router) {
 	if m.rt == nil {
 		return
 	}
 	r.Get("/feed.xml", m.handleRSS)
+	r.Post("/subscribe", m.handleSubscribe)
+	r.Get("/unsubscribe", m.handleUnsubscribe)
+}
+
+// Start runs the weekly digest scheduler. It checks a few times a day whether a
+// week has elapsed since the last send; the send itself is a no-op without SMTP.
+func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
+	ticker := time.NewTicker(6 * time.Hour)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-ticker.C:
+			if !m.emailEnabled || !m.digestDue(ctx) {
+				continue
+			}
+			sent, err := m.SendDigest(ctx)
+			if err != nil {
+				m.log.Error("weekly digest", zap.Error(err))
+				continue
+			}
+			m.markDigestSent(ctx)
+			m.log.Info("weekly digest sent", zap.Int("recipients", sent))
+		}
+	}
 }
 
 // TelegramEnabled reports whether Telegram auto-posting is configured.
@@ -101,4 +143,5 @@ var _ interface {
 	shanraq.Module
 	shanraq.RouterModule
 	shanraq.InitializerModule
+	shanraq.StarterModule
 } = (*Module)(nil)

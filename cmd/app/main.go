@@ -70,7 +70,7 @@ func main() {
 	aiModule := ai.New()
 	aiModule.RegisterJobs(jobModule)
 
-	syndicateModule := syndicate.New()
+	syndicateModule := syndicate.New(notifierModule)
 	syndicateModule.RegisterJobs(jobModule)
 
 	jobModule.Handle("send_welcome_email", func(ctx context.Context, rt *shanraq.Runtime, job jobs.Job) error {
