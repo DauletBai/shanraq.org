@@ -32,13 +32,21 @@
     {{ end }}
 
     <form class="form" method="post" action="{{ if .IsNew }}/studio/new{{ else }}/studio/a/{{ .ArticleID }}{{ end }}">
-      <div class="field">
-        <label for="original_lang">{{ t .Lang "editor.original_lang" }}</label>
-        <select class="select" id="original_lang" name="original_lang" style="max-width:240px">
-          {{ range langs }}<option value="{{ . }}"{{ if eq . $.OriginalLang }} selected{{ end }}>{{ langName . }}</option>{{ end }}
-        </select>
-        <p class="hint">{{ t .Lang "editor.original_hint" }}</p>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <div class="field">
+          <label for="original_lang">{{ t .Lang "editor.original_lang" }}</label>
+          <select class="select" id="original_lang" name="original_lang" style="max-width:240px">
+            {{ range langs }}<option value="{{ . }}"{{ if eq . $.OriginalLang }} selected{{ end }}>{{ langName . }}</option>{{ end }}
+          </select>
+        </div>
+        <div class="field">
+          <label for="category">{{ t .Lang "editor.category" }}</label>
+          <select class="select" id="category" name="category" style="max-width:240px">
+            {{ range editorCategories }}<option value="{{ . }}"{{ if eq . $.Category }} selected{{ end }}>{{ t $.Lang (printf "cat.%s" .) }}</option>{{ end }}
+          </select>
+        </div>
       </div>
+      <p class="hint" style="margin-top:-6px;margin-bottom:16px">{{ t .Lang "editor.original_hint" }}</p>
 
       <div class="tabs">
         {{ range langs }}<button type="button" class="tab{{ if eq . $.OriginalLang }} is-active{{ end }}" data-tab="{{ . }}">{{ langName . }}</button>{{ end }}

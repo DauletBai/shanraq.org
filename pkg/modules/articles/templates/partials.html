@@ -49,6 +49,14 @@
         <a href="/?lang={{ .Lang }}&sort=top"{{ if eq .Active "top" }} class="is-active"{{ end }}>{{ t .Lang "nav.top" }}</a>
       </div>
     </nav>
+    <nav class="cats">
+      <div class="cats__inner">
+        <a href="/?lang={{ .Lang }}"{{ if eq .ActiveCat "" }} class="is-active"{{ end }}>{{ t .Lang "nav.all" }}</a>
+        {{ range categories }}
+        <a href="/?lang={{ $.Lang }}&cat={{ . }}"{{ if eq . $.ActiveCat }} class="is-active"{{ end }}>{{ t $.Lang (printf "cat.%s" .) }}</a>
+        {{ end }}
+      </div>
+    </nav>
   </div>
 </header>
 {{ end }}

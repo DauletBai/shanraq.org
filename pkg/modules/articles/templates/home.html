@@ -7,7 +7,7 @@
   <div class="layout">
     <div>
       <article class="hero">
-        <span class="kicker">{{ t .Lang "home.featured" }}</span>
+        <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Featured.Category }}">{{ t .Lang (printf "cat.%s" .Featured.Category) }}</a>
         <h1 class="hero__title"><a href="/read/{{ .Featured.Slug }}?lang={{ .Lang }}">{{ .Featured.Title }}</a></h1>
         {{ if .Featured.Summary }}<p class="hero__lead">{{ .Featured.Summary }}</p>{{ end }}
         <div class="byline">
@@ -26,13 +26,13 @@
       <div class="posts">
         {{ range .Posts }}
         <article class="post">
-          <div>
-            <span class="badge-lang">{{ label .ServedLang }}</span>
-            {{ if .IsAI }}<span class="tag tag--ai">{{ t $.Lang "meta.ai" }}</span>{{ end }}
-          </div>
+          <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ t $.Lang (printf "cat.%s" .Category) }}</a>
           <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
           {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
           <div class="post__meta">
+            <span class="badge-lang">{{ label .ServedLang }}</span>
+            {{ if .IsAI }}<span class="tag tag--ai">{{ t $.Lang "meta.ai" }}</span>{{ end }}
+            <span class="dot">·</span>
             <span class="score {{ if gt .Score 0 }}pos{{ else if lt .Score 0 }}neg{{ end }}">▲ {{ .Score }}</span>
             <span class="dot">·</span>
             <span>{{ .AuthorName }}</span>

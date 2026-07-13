@@ -53,11 +53,13 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.validator = validate.New()
 
 	funcs := template.FuncMap{
-		"t":        T,
-		"label":    func(l string) string { return LangLabels[l] },
-		"langName": func(l string) string { return LangNames[l] },
-		"langs":    func() []string { return Langs },
-		"markdown": RenderMarkdown,
+		"t":                T,
+		"label":            func(l string) string { return LangLabels[l] },
+		"langName":         func(l string) string { return LangNames[l] },
+		"langs":            func() []string { return Langs },
+		"categories":       func() []string { return Categories },
+		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
+		"markdown":         RenderMarkdown,
 		"fmtDate": func(t time.Time) string {
 			if t.IsZero() {
 				return "—"

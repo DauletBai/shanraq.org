@@ -14,6 +14,18 @@ var messages = map[string]map[string]string{
 
 	"nav.latest": {"kz": "Соңғы", "ru": "Свежее", "en": "Latest"},
 	"nav.top":    {"kz": "Үздік", "ru": "Популярное", "en": "Top"},
+	"nav.all":    {"kz": "Барлығы", "ru": "Все", "en": "All"},
+
+	"cat.general":    {"kz": "Жалпы", "ru": "Общее", "en": "General"},
+	"cat.society":    {"kz": "Қоғам", "ru": "Общество", "en": "Society"},
+	"cat.politics":   {"kz": "Саясат", "ru": "Политика", "en": "Politics"},
+	"cat.economy":    {"kz": "Экономика", "ru": "Экономика", "en": "Economy"},
+	"cat.culture":    {"kz": "Мәдениет", "ru": "Культура", "en": "Culture"},
+	"cat.technology": {"kz": "Технология", "ru": "Технологии", "en": "Technology"},
+	"cat.opinion":    {"kz": "Пікір", "ru": "Мнение", "en": "Opinion"},
+	"cat.world":      {"kz": "Әлем", "ru": "Мир", "en": "World"},
+
+	"editor.category": {"kz": "Айдар", "ru": "Рубрика", "en": "Category"},
 
 	"home.featured":   {"kz": "Басты тақырып", "ru": "Главное", "en": "Featured"},
 	"home.latest":     {"kz": "Соңғы жарияланымдар", "ru": "Последние публикации", "en": "Latest stories"},

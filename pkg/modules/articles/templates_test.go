@@ -12,11 +12,13 @@ import (
 func buildTemplates(t *testing.T) *template.Template {
 	t.Helper()
 	funcs := template.FuncMap{
-		"t":        T,
-		"label":    func(l string) string { return LangLabels[l] },
-		"langName": func(l string) string { return LangNames[l] },
-		"langs":    func() []string { return Langs },
-		"markdown": RenderMarkdown,
+		"t":                T,
+		"label":            func(l string) string { return LangLabels[l] },
+		"langName":         func(l string) string { return LangNames[l] },
+		"langs":            func() []string { return Langs },
+		"categories":       func() []string { return Categories },
+		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
+		"markdown":         RenderMarkdown,
 		"fmtDate": func(tm time.Time) string {
 			if tm.IsZero() {
 				return "—"
@@ -45,7 +47,7 @@ func TestTemplatesExecute(t *testing.T) {
 	for _, lang := range Langs {
 		base := Base{Title: "T", Lang: lang, Authed: true, ShowLangs: true, Active: "latest", LangLinks: langLinks("/", lang)}
 		item := FeedItem{Slug: "s", Title: "Заголовок", Summary: "Краткое", AuthorName: "Автор",
-			ServedLang: LangRU, Published: &now, Views: 5, Score: 12, AvailableLangs: []string{LangRU, LangKZ}}
+			ServedLang: LangRU, Category: "politics", Published: &now, Views: 5, Score: 12, AvailableLangs: []string{LangRU, LangKZ}}
 
 		cases := []struct {
 			name string
@@ -54,7 +56,7 @@ func TestTemplatesExecute(t *testing.T) {
 			{"home", HomePage{Base: base, Featured: &item, Posts: []FeedItem{item}, Recent: []FeedItem{item}}},
 			{"home", HomePage{Base: base}}, // empty state
 			{"article", ArticlePage{Base: base, Slug: "s", Title: "T", AuthorName: "A",
-				ServedLang: LangRU, Body: RenderMarkdown("# Hi\n\nText"), Published: &now, Views: 1,
+				ServedLang: LangRU, Category: "society", Body: RenderMarkdown("# Hi\n\nText"), Published: &now, Views: 1,
 				Translated: true, IsAI: true, AvailableLangs: []string{LangRU},
 				Score: 3, UserVote: 1, AuthorKarma: 42, CanVote: true}},
 			{"form", FormPage{Base: base, Mode: "login", Email: "a@b.c", Error: "err"}},
@@ -63,8 +65,8 @@ func TestTemplatesExecute(t *testing.T) {
 				TotalArticles: 2, Published: 1, Drafts: 1, TotalViews: 10,
 				ViewsByLang: map[string]int64{LangRU: 7, LangKZ: 3, LangEN: 0},
 			}, Articles: []StudioRow{{ID: "id", Slug: "s", Title: "T", Status: "published", Updated: now, Views: 4, Langs: []string{LangRU}}}}},
-			{"studio_editor", EditorPage{Base: base, IsNew: true, OriginalLang: LangRU, Status: "draft", Fields: emptyFields()}},
-			{"studio_editor", EditorPage{Base: base, IsNew: false, ArticleID: "id", OriginalLang: LangKZ, Status: "published", Fields: emptyFields(), AIEnabled: true, Notice: "N"}},
+			{"studio_editor", EditorPage{Base: base, IsNew: true, OriginalLang: LangRU, Category: "society", Status: "draft", Fields: emptyFields()}},
+			{"studio_editor", EditorPage{Base: base, IsNew: false, ArticleID: "id", OriginalLang: LangKZ, Category: "politics", Status: "published", Fields: emptyFields(), AIEnabled: true, Notice: "N"}},
 		}
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {

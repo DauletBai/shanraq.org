@@ -173,6 +173,19 @@ img { max-width: 100%; height: auto; display: block; }
 .sections a:hover { color: var(--gold-strong); text-decoration: none; }
 .sections a.is-active { color: var(--ink); border-bottom-color: var(--gold); }
 
+/* category chips */
+.cats { border-top: 1px solid var(--line); }
+.cats__inner { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; }
+.cats a {
+  padding: 5px 13px; border-radius: 999px; white-space: nowrap;
+  font-size: 0.78rem; font-weight: 600; color: var(--ink-soft);
+  background: var(--surface-2); border: 1px solid transparent;
+}
+.cats a:hover { color: var(--gold-strong); text-decoration: none; border-color: var(--line-strong); }
+.cats a.is-active { background: var(--gold); color: #fff; }
+:root[data-theme="dark"] .cats a.is-active { color: #13100b; }
+a.kicker:hover { text-decoration: none; color: var(--gold); }
+
 /* ---------- buttons ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
