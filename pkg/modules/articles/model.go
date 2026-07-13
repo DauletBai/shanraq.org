@@ -18,9 +18,9 @@ var Langs = []string{LangKZ, LangRU, LangEN}
 
 // LangLabels maps a language code to its short display label.
 var LangLabels = map[string]string{
-	LangKZ: "ҚАЗ",
-	LangRU: "РУС",
-	LangEN: "ENG",
+	LangKZ: "kz",
+	LangRU: "ru",
+	LangEN: "en",
 }
 
 // LangNames maps a language code to its full native name.

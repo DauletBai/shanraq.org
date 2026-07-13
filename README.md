@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="web/static/brand/shanraq.svg" alt="Shanraq Logo" width="64">
+  <img src="web/static/brand/shanraq.svg" alt="Shanraq Logo" width="128">
 </p>
 
 # Shanraq.org Framework

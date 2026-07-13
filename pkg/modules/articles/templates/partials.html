@@ -17,48 +17,49 @@
 {{ end }}
 
 {{ define "site_header" }}
-<header class="masthead">
-  <div class="container">
-    <div class="masthead__top">
-      <div class="masthead__side masthead__side--left">
-        {{ if .ShowLangs }}
-        <span class="langs">
-          {{ range langs }}<a href="{{ index $.LangLinks . }}"{{ if eq . $.Lang }} class="is-active"{{ end }}>{{ label . }}</a>{{ end }}
-        </span>
-        {{ end }}
-      </div>
-      <a class="wordmark" href="/">
-        <img class="wordmark__mark" src="/static/brand/shanraq.svg" alt="">
-        <span class="wordmark__name">Shanraq</span>
-      </a>
-      <div class="masthead__side masthead__side--right">
-        {{ if .Authed }}
-        <a href="/studio">{{ t .Lang "header.studio" }}</a>
-        <a class="btn btn--primary btn--sm" href="/studio/new">{{ t .Lang "header.write" }}</a>
-        {{ else }}
-        <a href="/studio/login">{{ t .Lang "header.login" }}</a>
-        <a class="btn btn--primary btn--sm" href="/studio/register">{{ t .Lang "header.register" }}</a>
-        {{ end }}
-        <button type="button" class="icon-btn" data-theme-toggle title="{{ t .Lang "header.theme" }}">◐</button>
-      </div>
+<div class="topstrip">
+  <div class="container topstrip__inner">
+    <div class="topstrip__side">
+      {{ if .ShowLangs }}
+      <span class="langs">
+        {{ range langs }}<a href="{{ index $.LangLinks . }}"{{ if eq . $.Lang }} class="is-active"{{ end }}>{{ label . }}</a>{{ end }}
+      </span>
+      {{ end }}
     </div>
-    <p class="masthead__tag">{{ t .Lang "brand.tag" }}</p>
-    <nav class="sections">
+    <a class="wordmark" href="/" title="Shanraq">
+      <img class="wordmark__mark" src="/static/brand/shanraq.svg" alt="Shanraq">
+    </a>
+    <div class="topstrip__side topstrip__side--right">
+      {{ if .Authed }}
+      <a href="/studio">{{ t .Lang "header.studio" }}</a>
+      <a class="btn btn--primary btn--sm" href="/studio/new">{{ t .Lang "header.write" }}</a>
+      {{ else }}
+      <a href="/studio/login">{{ t .Lang "header.login" }}</a>
+      <a class="btn btn--primary btn--sm" href="/studio/register">{{ t .Lang "header.register" }}</a>
+      {{ end }}
+      <button type="button" class="icon-btn" data-theme-toggle title="{{ t .Lang "header.theme" }}">◐</button>
+    </div>
+  </div>
+  <p class="topstrip__tag">{{ t .Lang "brand.tag" }}</p>
+</div>
+<nav class="navbar">
+  <div class="container">
+    <div class="sections">
       <div class="sections__inner">
         <a href="/?lang={{ .Lang }}"{{ if eq .Active "latest" }} class="is-active"{{ end }}>{{ t .Lang "nav.latest" }}</a>
         <a href="/?lang={{ .Lang }}&sort=top"{{ if eq .Active "top" }} class="is-active"{{ end }}>{{ t .Lang "nav.top" }}</a>
       </div>
-    </nav>
-    <nav class="cats">
+    </div>
+    <div class="cats">
       <div class="cats__inner">
         <a href="/?lang={{ .Lang }}"{{ if eq .ActiveCat "" }} class="is-active"{{ end }}>{{ t .Lang "nav.all" }}</a>
         {{ range categories }}
         <a href="/?lang={{ $.Lang }}&cat={{ . }}"{{ if eq . $.ActiveCat }} class="is-active"{{ end }}>{{ t $.Lang (printf "cat.%s" .) }}</a>
         {{ end }}
       </div>
-    </nav>
+    </div>
   </div>
-</header>
+</nav>
 {{ end }}
 
 {{ define "site_footer" }}
