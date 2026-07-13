@@ -2,21 +2,21 @@
    One unified, self-hosted style (no external CDN). Light + dark. */
 
 :root {
-  --paper: #faf6ee;
+  --paper: #ffffff;
   --surface: #ffffff;
-  --surface-2: #f3ebdc;
-  --ink: #1b1712;
-  --ink-soft: #4a433b;
-  --muted: #8a8073;
-  --line: #e6dccb;
-  --line-strong: #d8ccb5;
-  --gold: #a9761a;
-  --gold-strong: #855c12;
-  --teal: #10554f;
-  --clay: #b4482e;
-  --danger: #b4482e;
-  --ok: #10554f;
-  --focus: rgba(169, 118, 26, 0.35);
+  --surface-2: #f5f4f2;
+  --ink: #454545;
+  --ink-soft: #454545;
+  --muted: #8c8c8c;
+  --line: #e8e6e2;
+  --line-strong: #dad7d1;
+  --gold: #d32f2f;         /* brand red — life, community, circulation */
+  --gold-strong: #b71c1c;
+  --teal: #2e7d32;         /* positive: up-votes, karma */
+  --clay: #c62828;         /* negative / danger */
+  --danger: #c62828;
+  --ok: #2e7d32;
+  --focus: rgba(211, 47, 47, 0.3);
 
   --serif: "Georgia", "Noto Serif", "Times New Roman", serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -38,42 +38,42 @@
 }
 
 :root[data-theme="dark"] {
-  --paper: #13100b;
-  --surface: #1b1710;
-  --surface-2: #241f16;
-  --ink: #f1e9da;
-  --ink-soft: #cabfa9;
-  --muted: #93866f;
-  --line: #2b251b;
-  --line-strong: #3a3226;
-  --gold: #e0b65c;
-  --gold-strong: #f0cd82;
-  --teal: #5fb6a9;
-  --clay: #e08066;
-  --danger: #e08066;
-  --ok: #5fb6a9;
-  --focus: rgba(224, 182, 92, 0.35);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 14px 34px rgba(0, 0, 0, 0.4);
+  --paper: #1e1e1e;
+  --surface: #262626;
+  --surface-2: #2e2d2b;
+  --ink: #d8d6d2;
+  --ink-soft: #bebbb6;
+  --muted: #8f8c86;
+  --line: #3a3937;
+  --line-strong: #4a4844;
+  --gold: #ef5350;
+  --gold-strong: #ff7a72;
+  --teal: #66bb6a;
+  --clay: #ef5350;
+  --danger: #ef5350;
+  --ok: #66bb6a;
+  --focus: rgba(239, 83, 80, 0.35);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 14px 34px rgba(0, 0, 0, 0.45);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #13100b;
-    --surface: #1b1710;
-    --surface-2: #241f16;
-    --ink: #f1e9da;
-    --ink-soft: #cabfa9;
-    --muted: #93866f;
-    --line: #2b251b;
-    --line-strong: #3a3226;
-    --gold: #e0b65c;
-    --gold-strong: #f0cd82;
-    --teal: #5fb6a9;
-    --clay: #e08066;
-    --danger: #e08066;
-    --ok: #5fb6a9;
-    --focus: rgba(224, 182, 92, 0.35);
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 14px 34px rgba(0, 0, 0, 0.4);
+    --paper: #1e1e1e;
+    --surface: #262626;
+    --surface-2: #2e2d2b;
+    --ink: #d8d6d2;
+    --ink-soft: #bebbb6;
+    --muted: #8f8c86;
+    --line: #3a3937;
+    --line-strong: #4a4844;
+    --gold: #ef5350;
+    --gold-strong: #ff7a72;
+    --teal: #66bb6a;
+    --clay: #ef5350;
+    --danger: #ef5350;
+    --ok: #66bb6a;
+    --focus: rgba(239, 83, 80, 0.35);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 14px 34px rgba(0, 0, 0, 0.45);
   }
 }
 
@@ -135,7 +135,7 @@ img { max-width: 100%; height: auto; display: block; }
   font-weight: 900;
   font-size: 1.9rem;
   letter-spacing: 0.02em;
-  color: var(--ink);
+  color: var(--gold);
 }
 .masthead__tag {
   text-align: center;
@@ -152,7 +152,7 @@ img { max-width: 100%; height: auto; display: block; }
 .langs a:last-child { border-right: none; }
 .langs a:hover { color: var(--ink); text-decoration: none; }
 .langs a.is-active { background: var(--gold); color: #fff; }
-:root[data-theme="dark"] .langs a.is-active { color: #13100b; }
+:root[data-theme="dark"] .langs a.is-active { color: #fff; }
 
 .icon-btn { border: 1px solid var(--line-strong); background: transparent; color: var(--ink-soft); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1rem; line-height: 1; }
 .icon-btn:hover { background: var(--surface-2); }
@@ -183,7 +183,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .cats a:hover { color: var(--gold-strong); text-decoration: none; border-color: var(--line-strong); }
 .cats a.is-active { background: var(--gold); color: #fff; }
-:root[data-theme="dark"] .cats a.is-active { color: #13100b; }
+:root[data-theme="dark"] .cats a.is-active { color: #fff; }
 a.kicker:hover { text-decoration: none; color: var(--gold); }
 
 /* ---------- buttons ---------- */
@@ -196,10 +196,10 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .btn:hover { text-decoration: none; }
 .btn:active { transform: translateY(1px); }
 .btn--primary { background: var(--gold); color: #fff; }
-:root[data-theme="dark"] .btn--primary { color: #13100b; }
+:root[data-theme="dark"] .btn--primary { color: #fff; }
 .btn--primary:hover { background: var(--gold-strong); }
 .btn--teal { background: var(--teal); color: #fff; }
-:root[data-theme="dark"] .btn--teal { color: #13100b; }
+:root[data-theme="dark"] .btn--teal { color: #fff; }
 .btn--ghost { background: transparent; border-color: var(--line-strong); color: var(--ink); }
 .btn--ghost:hover { background: var(--surface-2); }
 .btn--sm { padding: 6px 12px; font-size: 0.78rem; }

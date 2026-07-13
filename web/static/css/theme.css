@@ -1,3 +1,38 @@
+/* Brand red — align the framework pages with the Shanraq portal (blue -> red). */
+:root,
+[data-bs-theme="light"] {
+  --bs-primary: #d32f2f;
+  --bs-primary-rgb: 211, 47, 47;
+  --bs-primary-text-emphasis: #b71c1c;
+  --bs-primary-bg-subtle: #f9dedd;
+  --bs-primary-border-subtle: #eeacab;
+  --bs-link-color: #d32f2f;
+  --bs-link-color-rgb: 211, 47, 47;
+  --bs-link-hover-color: #b71c1c;
+  --bs-link-hover-color-rgb: 183, 28, 28;
+}
+[data-bs-theme="dark"] {
+  --bs-primary: #ef5350;
+  --bs-primary-rgb: 239, 83, 80;
+  --bs-primary-text-emphasis: #ff8a80;
+  --bs-primary-bg-subtle: #3a1f1e;
+  --bs-primary-border-subtle: #6a2f2d;
+  --bs-link-color: #ef5350;
+  --bs-link-color-rgb: 239, 83, 80;
+  --bs-link-hover-color: #ff7a72;
+}
+.btn-primary {
+  --bs-btn-bg: #d32f2f; --bs-btn-border-color: #d32f2f;
+  --bs-btn-hover-bg: #b71c1c; --bs-btn-hover-border-color: #b71c1c;
+  --bs-btn-active-bg: #b71c1c; --bs-btn-active-border-color: #a31818;
+  --bs-btn-disabled-bg: #d32f2f; --bs-btn-disabled-border-color: #d32f2f;
+}
+.btn-outline-primary {
+  --bs-btn-color: #d32f2f; --bs-btn-border-color: #d32f2f;
+  --bs-btn-hover-bg: #d32f2f; --bs-btn-hover-border-color: #d32f2f;
+  --bs-btn-active-bg: #d32f2f; --bs-btn-active-border-color: #d32f2f;
+}
+
 .featurette-divider {
   margin: 5rem 0;
 }

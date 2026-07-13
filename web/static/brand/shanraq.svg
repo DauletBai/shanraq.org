@@ -25,14 +25,14 @@
   <style>
     .stroke {
       fill: none;
-      stroke: rgba(169, 118, 26, .32);
+      stroke: rgba(211, 47, 47, .3);
       stroke-width: 45;
       stroke-linecap: round;
     }
 
     .flow {
       fill: none;
-      stroke: #c08a1c;
+      stroke: #e53935;
       stroke-width: 30;
       stroke-linecap: round;
       stroke-dasharray: 60;
