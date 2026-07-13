@@ -4,11 +4,11 @@
 
 <h1 align="center">Shanraq.org Framework</h1>
 
-Shanraq is a batteries-included Go 1.23+ application framework focused on modern backend practices: typed configuration, PostgreSQL-first data access, structured logging, composable modules, and first-class observability.
+Shanraq is a batteries-included Go 1.26+ application framework focused on modern backend practices: typed configuration, PostgreSQL-first data access, structured logging, composable modules, and first-class observability.
 
 ## Highlights
 
-- **Go 1.23+ ready**: Module targets Go `1.23` and pins toolchain `go1.24.1`, so you build on stable releases while staying future-proof.
+- **Go 1.26 ready**: Module targets Go `1.26` and pins toolchain `go1.26.5`, so you build on stable releases while staying future-proof.
 - **PostgreSQL via pgxpool**: Sane defaults, lifecycle management, and trace hooks wired into Zap.
 - **Declarative configuration**: Environment-aware configuration loader with `.env` support, file overrides, and typed structs.
 - **Composable modules**: `shanraq.Module` contracts let teams build reusable features that can hook into init/start/routes independently.
@@ -42,7 +42,7 @@ web/                  # html/template renderer, landing carousel, static assets
 
 Pick the lane that suits your workflow:
 
-- **Native:** install Go ≥ 1.23 (the toolchain directive will fetch `go1.24.1`) and PostgreSQL, copy the sample config, then `go run ./cmd/app -config config.yaml`.
+- **Native:** install Go ≥ 1.26 (the toolchain directive will fetch `go1.26.5`) and PostgreSQL, copy the sample config, then `go run ./cmd/app -config config.yaml`.
 - **Docker:** `docker compose up --build` provisions a distroless image and local Postgres.
 
 Quick steps:
