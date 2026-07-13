@@ -337,7 +337,8 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .site-footer .foot-tag { font-family: var(--serif); font-style: italic; }
 
 @media (max-width: 640px) {
-  .topstrip__side a:not(.btn) { display: none; }
+  /* hide only the right-side text links (e.g. Studio); keep the language switch */
+  .topstrip__side--right a:not(.btn) { display: none; }
   .wordmark__mark { width: 52px; height: 52px; }
   .hero__title { font-size: var(--step-3); }
   .article__title { font-size: var(--step-4); }
