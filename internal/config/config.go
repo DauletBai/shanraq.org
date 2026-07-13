@@ -18,6 +18,31 @@ type Config struct {
 	Logging       Logging             `mapstructure:"logging"`
 	Auth          AuthConfig          `mapstructure:"auth"`
 	Notifications NotificationsConfig `mapstructure:"notifications"`
+	AI            AIConfig            `mapstructure:"ai"`
+	Syndicate     SyndicateConfig     `mapstructure:"syndicate"`
+}
+
+// SyndicateConfig controls resilience channels: RSS is always on; Telegram
+// auto-posting activates only when a bot token and chat are configured.
+type SyndicateConfig struct {
+	BaseURL  string         `mapstructure:"base_url"`
+	Telegram TelegramConfig `mapstructure:"telegram"`
+}
+
+type TelegramConfig struct {
+	Enabled  bool   `mapstructure:"enabled"`
+	BotToken string `mapstructure:"bot_token"`
+	ChatID   string `mapstructure:"chat_id"`
+}
+
+// AIConfig controls the optional Claude-backed writing assistant. It stays
+// disabled until an API key is provided, so the app runs with zero AI spend.
+type AIConfig struct {
+	Enabled        bool   `mapstructure:"enabled"`
+	APIKey         string `mapstructure:"api_key"`
+	EditorModel    string `mapstructure:"editor_model"`
+	TranslateModel string `mapstructure:"translate_model"`
+	MaxTokens      int    `mapstructure:"max_tokens"`
 }
 
 // ServerConfig configures the embedded HTTP server.
@@ -148,6 +173,14 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("auth.mfa.totp.issuer", "Shanraq")
 
 	v.SetDefault("notifications.smtp.port", 587)
+
+	v.SetDefault("ai.enabled", false)
+	v.SetDefault("ai.editor_model", "claude-sonnet-5")
+	v.SetDefault("ai.translate_model", "claude-haiku-4-5")
+	v.SetDefault("ai.max_tokens", 4096)
+
+	v.SetDefault("syndicate.base_url", "http://localhost:8080")
+	v.SetDefault("syndicate.telegram.enabled", false)
 }
 
 func validateConfig(cfg Config) error {

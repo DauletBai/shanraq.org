@@ -1,0 +1,74 @@
+{{ define "studio_editor" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <section class="studio">
+    <div class="studio__head">
+      <h1>{{ if .IsNew }}{{ t .Lang "editor.new" }}{{ else }}{{ t .Lang "editor.edit" }}{{ end }}</h1>
+      {{ if not .IsNew }}
+      {{ if eq .Status "published" }}<span class="pill pill--published">{{ t .Lang "studio.st_published" }}</span>{{ else }}<span class="pill pill--draft">{{ t .Lang "studio.st_draft" }}</span>{{ end }}
+      {{ end }}
+    </div>
+
+    {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
+    {{ if .Notice }}<div class="notice" style="margin-bottom:18px">{{ .Notice }}</div>{{ end }}
+
+    {{ if not .IsNew }}
+    <div class="notice ai-bar" style="margin-bottom:18px">
+      <strong>{{ t .Lang "editor.ai_label" }}</strong>
+      {{ if .AIEnabled }}
+      <form method="post" action="/studio/a/{{ .ArticleID }}/improve" style="display:inline">
+        <button class="btn btn--ghost btn--sm" type="submit">✨ {{ t .Lang "editor.ai_improve" }}</button>
+      </form>
+      <form method="post" action="/studio/a/{{ .ArticleID }}/translate" style="display:inline">
+        <button class="btn btn--teal btn--sm" type="submit">🌐 {{ t .Lang "editor.ai_translate" }}</button>
+      </form>
+      <span class="hint">{{ t .Lang "editor.ai_saved_hint" }}</span>
+      {{ else }}
+      <span class="hint">{{ t .Lang "editor.ai_soon" }}</span>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    <form class="form" method="post" action="{{ if .IsNew }}/studio/new{{ else }}/studio/a/{{ .ArticleID }}{{ end }}">
+      <div class="field">
+        <label for="original_lang">{{ t .Lang "editor.original_lang" }}</label>
+        <select class="select" id="original_lang" name="original_lang" style="max-width:240px">
+          {{ range langs }}<option value="{{ . }}"{{ if eq . $.OriginalLang }} selected{{ end }}>{{ langName . }}</option>{{ end }}
+        </select>
+        <p class="hint">{{ t .Lang "editor.original_hint" }}</p>
+      </div>
+
+      <div class="tabs">
+        {{ range langs }}<button type="button" class="tab{{ if eq . $.OriginalLang }} is-active{{ end }}" data-tab="{{ . }}">{{ langName . }}</button>{{ end }}
+      </div>
+
+      {{ range langs }}
+      {{ $f := index $.Fields . }}
+      <div class="tab-panel{{ if eq . $.OriginalLang }} is-active{{ end }}" data-panel="{{ . }}">
+        <div class="field">
+          <label>{{ t $.Lang "editor.f_title" }} ({{ label . }})</label>
+          <input class="input" type="text" name="title_{{ . }}" value="{{ $f.Title }}">
+        </div>
+        <div class="field">
+          <label>{{ t $.Lang "editor.f_summary" }} ({{ label . }})</label>
+          <input class="input" type="text" name="summary_{{ . }}" value="{{ $f.Summary }}">
+        </div>
+        <div class="field">
+          <label>{{ t $.Lang "editor.f_body" }} ({{ label . }})</label>
+          <textarea class="textarea" name="body_{{ . }}">{{ $f.BodyMD }}</textarea>
+          <p class="hint">{{ t $.Lang "editor.markdown_hint" }}</p>
+        </div>
+      </div>
+      {{ end }}
+
+      <div class="form-actions">
+        <button class="btn btn--primary" type="submit">{{ t .Lang "editor.save" }}</button>
+        <a class="btn btn--ghost" href="/studio" style="margin-left:auto">{{ t .Lang "editor.cancel" }}</a>
+      </div>
+    </form>
+  </section>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

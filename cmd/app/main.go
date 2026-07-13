@@ -14,12 +14,15 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"shanraq.org/internal/config"
+	"shanraq.org/pkg/modules/ai"
 	"shanraq.org/pkg/modules/apikeys"
+	"shanraq.org/pkg/modules/articles"
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/health"
 	"shanraq.org/pkg/modules/jobs"
 	"shanraq.org/pkg/modules/migrations"
 	"shanraq.org/pkg/modules/notifier"
+	"shanraq.org/pkg/modules/syndicate"
 	"shanraq.org/pkg/modules/telemetry"
 	"shanraq.org/pkg/modules/webui"
 	"shanraq.org/pkg/shanraq"
@@ -64,6 +67,12 @@ func main() {
 			authModule.RequireRoles("user", "operator", "admin"),
 		),
 	)
+	aiModule := ai.New()
+	aiModule.RegisterJobs(jobModule)
+
+	syndicateModule := syndicate.New()
+	syndicateModule.RegisterJobs(jobModule)
+
 	jobModule.Handle("send_welcome_email", func(ctx context.Context, rt *shanraq.Runtime, job jobs.Job) error {
 		var payload struct {
 			Email string `json:"email"`
@@ -87,6 +96,9 @@ func main() {
 	app.Register(authModule)
 	app.Register(apiKeyModule)
 	app.Register(jobModule)
+	app.Register(aiModule)
+	app.Register(syndicateModule)
+	app.Register(articles.New(authModule, aiModule, syndicateModule))
 	app.Register(webui.New(jobWorkers, jobPollSeconds, webui.WithTenantResolver(func(r *http.Request) (uuid.UUID, bool) {
 		return tenantResolver(r)
 	})))

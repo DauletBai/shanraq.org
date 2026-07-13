@@ -1,0 +1,113 @@
+package articles
+
+// This is the single source of UI strings. The interface renders entirely in
+// the active language — never a mix. Add a key here, use {{ t $.Lang "key" }}
+// in templates. Missing translations fall back to Russian, then to the key.
+var messages = map[string]map[string]string{
+	"brand.tag":       {"kz": "Еркін дауыстар үйі", "ru": "Дом свободных голосов", "en": "A home for free voices"},
+	"header.login":    {"kz": "Кіру", "ru": "Войти", "en": "Sign in"},
+	"header.register": {"kz": "Тіркелу", "ru": "Регистрация", "en": "Sign up"},
+	"header.studio":   {"kz": "Студия", "ru": "Студия", "en": "Studio"},
+	"header.write":    {"kz": "Жазу", "ru": "Написать", "en": "Write"},
+	"header.logout":   {"kz": "Шығу", "ru": "Выйти", "en": "Sign out"},
+	"header.theme":    {"kz": "Тема", "ru": "Тема", "en": "Theme"},
+
+	"nav.latest": {"kz": "Соңғы", "ru": "Свежее", "en": "Latest"},
+	"nav.top":    {"kz": "Үздік", "ru": "Популярное", "en": "Top"},
+
+	"home.featured":   {"kz": "Басты тақырып", "ru": "Главное", "en": "Featured"},
+	"home.latest":     {"kz": "Соңғы жарияланымдар", "ru": "Последние публикации", "en": "Latest stories"},
+	"home.top":        {"kz": "Оқырман таңдауы", "ru": "Выбор читателей", "en": "Readers' choice"},
+	"home.read_more":  {"kz": "Толығырақ", "ru": "Читать далее", "en": "Continue reading"},
+	"home.empty":      {"kz": "Әзірге жарияланым жоқ", "ru": "Пока нет публикаций", "en": "No stories yet"},
+	"home.empty_cta":  {"kz": "Бірінші мақаланы жазу", "ru": "Написать первую статью", "en": "Write the first story"},
+	"home.page_title": {"kz": "Басты бет", "ru": "Главная", "en": "Home"},
+
+	"meta.views": {"kz": "оқылым", "ru": "просмотров", "en": "views"},
+	"meta.ai":    {"kz": "ИИ аудармасы", "ru": "ИИ-перевод", "en": "AI translation"},
+
+	"sidebar.about":       {"kz": "Біз туралы", "ru": "О нас", "en": "About"},
+	"sidebar.about_text":  {"kz": "Shanraq — қарапайым адамдар мен журналистер үш тілде еркін жазатын тәуелсіз алаң.", "ru": "Shanraq — независимая площадка, где обычные люди и журналисты свободно пишут на трёх языках.", "en": "Shanraq is an independent platform where ordinary people and journalists write freely in three languages."},
+	"sidebar.recent":      {"kz": "Соңғы жазбалар", "ru": "Недавние записи", "en": "Recent posts"},
+	"sidebar.follow":      {"kz": "Бізді қадағалаңыз", "ru": "Читайте нас", "en": "Follow us"},
+
+	"article.karma":       {"kz": "карма", "ru": "карма", "en": "karma"},
+	"article.vote_login":  {"kz": "Бағалау үшін кіріңіз", "ru": "Войдите, чтобы оценить", "en": "Sign in to vote"},
+	"article.vote_own":    {"kz": "Өз мақалаңызды бағалай алмайсыз", "ru": "Нельзя оценивать свою статью", "en": "You can't vote on your own story"},
+	"article.translated":  {"kz": "Бұл нұсқа таңдалған тілде әзір жоқ — түпнұсқа тілінде көрсетілді.", "ru": "Эта версия пока недоступна на выбранном языке — показан оригинал.", "en": "This version isn't available in the selected language yet — showing the original."},
+	"article.ai_note":     {"kz": "Мәтін ИИ көмегімен аударылды.", "ru": "Текст переведён с помощью ИИ.", "en": "This text was translated with AI."},
+
+	"form.login_title":    {"kz": "Кіру", "ru": "Вход", "en": "Sign in"},
+	"form.login_sub":      {"kz": "Автор студиясына кіру", "ru": "Вход в студию автора", "en": "Sign in to the author studio"},
+	"form.register_title": {"kz": "Тіркелу", "ru": "Регистрация", "en": "Create account"},
+	"form.register_sub":   {"kz": "Аккаунт ашып, жаза бастаңыз", "ru": "Создайте аккаунт и начните публиковать", "en": "Create an account and start publishing"},
+	"form.email":          {"kz": "Email", "ru": "Email", "en": "Email"},
+	"form.password":       {"kz": "Құпиясөз", "ru": "Пароль", "en": "Password"},
+	"form.password_hint":  {"kz": "Кемінде 8 таңба", "ru": "Минимум 8 символов", "en": "At least 8 characters"},
+	"form.no_account":     {"kz": "Аккаунт жоқ па?", "ru": "Нет аккаунта?", "en": "No account?"},
+	"form.have_account":   {"kz": "Аккаунт бар ма?", "ru": "Уже есть аккаунт?", "en": "Already have an account?"},
+	"form.err_credentials": {"kz": "Қате email немесе құпиясөз", "ru": "Неверный email или пароль", "en": "Wrong email or password"},
+	"form.err_short_pw":   {"kz": "Құпиясөз тым қысқа (кемінде 8 таңба)", "ru": "Пароль слишком короткий (минимум 8)", "en": "Password too short (min 8)"},
+	"form.err_email_taken": {"kz": "Бұл email тіркелген", "ru": "Этот email уже занят", "en": "This email is already registered"},
+	"form.err_generic":    {"kz": "Аккаунт жасалмады", "ru": "Не удалось создать аккаунт", "en": "Could not create account"},
+
+	"studio.title":         {"kz": "Автор студиясы", "ru": "Студия автора", "en": "Author studio"},
+	"studio.new":           {"kz": "Жаңа мақала", "ru": "Новая статья", "en": "New story"},
+	"studio.stat_total":    {"kz": "Барлық мақала", "ru": "Всего статей", "en": "Total stories"},
+	"studio.stat_published": {"kz": "Жарияланған", "ru": "Опубликовано", "en": "Published"},
+	"studio.stat_drafts":   {"kz": "Жоба", "ru": "Черновики", "en": "Drafts"},
+	"studio.stat_views":    {"kz": "Барлық оқылым", "ru": "Всего просмотров", "en": "Total views"},
+	"studio.stat_karma":    {"kz": "Карма", "ru": "Карма", "en": "Karma"},
+	"studio.stat_karma_sub": {"kz": "Оқырман бағасы", "ru": "Оценки читателей", "en": "Reader votes"},
+	"studio.stat_by_lang":  {"kz": "Тіл бойынша", "ru": "По языкам", "en": "By language"},
+	"studio.col_title":     {"kz": "Атауы", "ru": "Название", "en": "Title"},
+	"studio.col_status":    {"kz": "Күй", "ru": "Статус", "en": "Status"},
+	"studio.col_langs":     {"kz": "Тілдер", "ru": "Языки", "en": "Languages"},
+	"studio.col_views":     {"kz": "Оқылым", "ru": "Просмотры", "en": "Views"},
+	"studio.col_updated":   {"kz": "Жаңартылды", "ru": "Обновлено", "en": "Updated"},
+	"studio.st_published":  {"kz": "жарияланған", "ru": "опубликовано", "en": "published"},
+	"studio.st_draft":      {"kz": "жоба", "ru": "черновик", "en": "draft"},
+	"studio.st_archived":   {"kz": "мұрағат", "ru": "архив", "en": "archived"},
+	"studio.open":          {"kz": "Ашу", "ru": "Открыть", "en": "Open"},
+	"studio.hide":          {"kz": "Жасыру", "ru": "Скрыть", "en": "Hide"},
+	"studio.publish":       {"kz": "Жариялау", "ru": "Опубликовать", "en": "Publish"},
+	"studio.empty":         {"kz": "Сізде әзір мақала жоқ", "ru": "У вас пока нет статей", "en": "You have no stories yet"},
+	"studio.untitled":      {"kz": "(атауы жоқ)", "ru": "(без названия)", "en": "(untitled)"},
+
+	"editor.new":            {"kz": "Жаңа мақала", "ru": "Новая статья", "en": "New story"},
+	"editor.edit":           {"kz": "Мақаланы өңдеу", "ru": "Редактирование статьи", "en": "Edit story"},
+	"editor.original_lang":  {"kz": "Түпнұсқа тілі", "ru": "Язык оригинала", "en": "Original language"},
+	"editor.original_hint":  {"kz": "Бір тілде жазыңыз — қалғанын ИИ аударады (Кезең 3).", "ru": "Пишите на одном языке — остальное переведёт ИИ (Этап 3).", "en": "Write in one language — AI translates the rest."},
+	"editor.f_title":        {"kz": "Тақырып", "ru": "Заголовок", "en": "Title"},
+	"editor.f_summary":      {"kz": "Қысқаша сипаттама", "ru": "Краткое описание", "en": "Summary"},
+	"editor.f_body":         {"kz": "Мәтін (Markdown)", "ru": "Текст (Markdown)", "en": "Body (Markdown)"},
+	"editor.markdown_hint":  {"kz": "Markdown қолдау көрсетіледі: **қалың**, *көлбеу*, ## тақырып, > дәйексөз.", "ru": "Поддерживается Markdown: **жирный**, *курсив*, ## заголовки, > цитата.", "en": "Markdown supported: **bold**, *italic*, ## headings, > quote."},
+	"editor.save":           {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
+	"editor.cancel":         {"kz": "Бас тарту", "ru": "Отмена", "en": "Cancel"},
+	"editor.ai_label":       {"kz": "ИИ көмекші:", "ru": "ИИ-ассистент:", "en": "AI assistant:"},
+	"editor.ai_improve":     {"kz": "Мәтінді жақсарту", "ru": "Улучшить текст", "en": "Improve text"},
+	"editor.ai_translate":   {"kz": "3 тілге аудару", "ru": "Перевести на 3 языка", "en": "Translate to 3 languages"},
+	"editor.ai_saved_hint":  {"kz": "Сақталған түпнұсқа мәтінмен жұмыс істейді.", "ru": "Работает с сохранённым текстом оригинала.", "en": "Works with the saved original text."},
+	"editor.ai_soon":        {"kz": "Жақында: ИИ-редактор және KZ↔RU↔EN автоаудармасы.", "ru": "Скоро: ИИ-редактор и автоперевод KZ↔RU↔EN.", "en": "Soon: AI editor and KZ↔RU↔EN auto-translation."},
+	"editor.err_required":   {"kz": "Түпнұсқа тіліндегі тақырып пен мәтін міндетті.", "ru": "Заголовок и текст на языке оригинала обязательны.", "en": "Title and body in the original language are required."},
+	"editor.err_save":       {"kz": "Мақаланы сақтау мүмкін болмады.", "ru": "Не удалось сохранить статью.", "en": "Could not save the story."},
+	"notice.ai_improved":    {"kz": "Мәтін ИИ көмегімен жақсартылды. Тексеріп, қажет болса сақтаңыз.", "ru": "Текст улучшен ИИ. Проверьте и сохраните при необходимости.", "en": "Text improved by AI. Review and save if needed."},
+	"notice.ai_queued":      {"kz": "Басқа тілдерге аударма басталды — бірнеше секундта пайда болады.", "ru": "Перевод на другие языки запущен — версии появятся через несколько секунд.", "en": "Translation to other languages started — versions appear in a few seconds."},
+	"notice.ai_off":         {"kz": "ИИ-ассистент қазір өшірулі (API кілті жоқ).", "ru": "ИИ-ассистент сейчас отключён (не задан API-ключ).", "en": "AI assistant is currently off (no API key)."},
+
+	"footer.tag":    {"kz": "Shanraq — үй, мұнда еркін дауыстар тоғысады.", "ru": "Shanraq — дом, где сходятся свободные голоса.", "en": "Shanraq — a home where free voices meet."},
+	"footer.rights": {"kz": "Барлық құқықтар қорғалған", "ru": "Все права защищены", "en": "All rights reserved"},
+}
+
+// T returns the UI string for key in lang, falling back to Russian then the key.
+func T(lang, key string) string {
+	if m, ok := messages[key]; ok {
+		if v, ok := m[lang]; ok && v != "" {
+			return v
+		}
+		if v, ok := m[LangRU]; ok && v != "" {
+			return v
+		}
+	}
+	return key
+}

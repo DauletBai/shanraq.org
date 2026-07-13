@@ -103,7 +103,7 @@ func TestWebUIRoutes_HomeAndDashboard(t *testing.T) {
 	}{
 		{
 			name:           "home",
-			route:          "/",
+			route:          "/framework",
 			expectStatus:   http.StatusOK,
 			expectContains: `id="home-root"`,
 		},

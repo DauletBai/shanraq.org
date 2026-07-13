@@ -31,3 +31,20 @@ notifications:
     username: ""
     password: ""
     from: ""
+# AI writing assistant (Claude). Stays OFF until enabled AND an API key is set,
+# so the app runs with zero AI spend by default. The key can also come from the
+# ANTHROPIC_API_KEY environment variable instead of api_key here.
+ai:
+  enabled: false
+  api_key: ""              # or export ANTHROPIC_API_KEY
+  editor_model: claude-sonnet-5      # co-editor: quality tone
+  translate_model: claude-haiku-4-5  # bulk KZ/RU/EN translation: cheap
+  max_tokens: 4096
+# Block-resilience channels. RSS (/feed.xml) is always on. Telegram auto-posts
+# an announcement on publish once a bot token + channel are set.
+syndicate:
+  base_url: "http://localhost:8080"   # absolute base for RSS + Telegram links (set your real domain)
+  telegram:
+    enabled: false
+    bot_token: ""          # from @BotFather
+    chat_id: ""            # @your_channel or -100XXXXXXXXXX

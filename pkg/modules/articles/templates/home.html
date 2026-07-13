@@ -1,0 +1,79 @@
+{{ define "home" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  {{ if .Featured }}
+  <div class="layout">
+    <div>
+      <article class="hero">
+        <span class="kicker">{{ t .Lang "home.featured" }}</span>
+        <h1 class="hero__title"><a href="/read/{{ .Featured.Slug }}?lang={{ .Lang }}">{{ .Featured.Title }}</a></h1>
+        {{ if .Featured.Summary }}<p class="hero__lead">{{ .Featured.Summary }}</p>{{ end }}
+        <div class="byline">
+          <span class="author">{{ .Featured.AuthorName }}</span><span class="dot">·</span>
+          <span class="score {{ if gt .Featured.Score 0 }}pos{{ else if lt .Featured.Score 0 }}neg{{ end }}">▲ {{ .Featured.Score }}</span><span class="dot">·</span>
+          <span>{{ .Featured.Views }} {{ t .Lang "meta.views" }}</span><span class="dot">·</span>
+          <span>{{ fmtDatePtr .Featured.Published }}</span>
+        </div>
+      </article>
+
+      <div class="section-head">
+        <h2>{{ if eq .Active "top" }}{{ t .Lang "home.top" }}{{ else }}{{ t .Lang "home.latest" }}{{ end }}</h2>
+      </div>
+
+      {{ if .Posts }}
+      <div class="posts">
+        {{ range .Posts }}
+        <article class="post">
+          <div>
+            <span class="badge-lang">{{ label .ServedLang }}</span>
+            {{ if .IsAI }}<span class="tag tag--ai">{{ t $.Lang "meta.ai" }}</span>{{ end }}
+          </div>
+          <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
+          {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
+          <div class="post__meta">
+            <span class="score {{ if gt .Score 0 }}pos{{ else if lt .Score 0 }}neg{{ end }}">▲ {{ .Score }}</span>
+            <span class="dot">·</span>
+            <span>{{ .AuthorName }}</span>
+            <span class="dot">·</span>
+            <span>{{ fmtDatePtr .Published }}</span>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+      {{ end }}
+    </div>
+
+    <aside class="aside">
+      <div class="aside__block">
+        <h3 class="aside__title">{{ t .Lang "sidebar.about" }}</h3>
+        <p class="aside__text">{{ t .Lang "sidebar.about_text" }}</p>
+      </div>
+      {{ if .Recent }}
+      <div class="aside__block" style="background:var(--surface)">
+        <h3 class="aside__title">{{ t .Lang "sidebar.recent" }}</h3>
+        <ul class="aside__list">
+          {{ range .Recent }}
+          <li><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a><small>{{ fmtDatePtr .Published }}</small></li>
+          {{ end }}
+        </ul>
+      </div>
+      {{ end }}
+      <div class="aside__block">
+        <h3 class="aside__title">{{ t .Lang "sidebar.follow" }}</h3>
+        <div class="aside__links">
+          <a class="btn btn--ghost btn--sm" href="/feed.xml?lang={{ .Lang }}">RSS</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+  {{ else }}
+  <div class="empty">
+    <p style="font-size:1.2rem;margin-bottom:18px">{{ t .Lang "home.empty" }}</p>
+    <a class="btn btn--primary" href="/studio/new">{{ t .Lang "home.empty_cta" }}</a>
+  </div>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}

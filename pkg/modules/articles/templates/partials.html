@@ -1,0 +1,84 @@
+{{ define "site_head" }}
+<!doctype html>
+<html lang="{{ .Lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ .Title }} · Shanraq</title>
+  <link rel="icon" href="/static/brand/shanraq.svg">
+  <link rel="alternate" type="application/rss+xml" title="Shanraq RSS" href="/feed.xml?lang={{ .Lang }}">
+  <link rel="stylesheet" href="/static/css/shanraq.css">
+  <script>
+    (function () {
+      try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+    })();
+  </script>
+</head>
+{{ end }}
+
+{{ define "site_header" }}
+<header class="masthead">
+  <div class="container">
+    <div class="masthead__top">
+      <div class="masthead__side masthead__side--left">
+        {{ if .ShowLangs }}
+        <span class="langs">
+          {{ range langs }}<a href="{{ index $.LangLinks . }}"{{ if eq . $.Lang }} class="is-active"{{ end }}>{{ label . }}</a>{{ end }}
+        </span>
+        {{ end }}
+      </div>
+      <a class="wordmark" href="/">
+        <img class="wordmark__mark" src="/static/brand/shanraq.svg" alt="">
+        <span class="wordmark__name">Shanraq</span>
+      </a>
+      <div class="masthead__side masthead__side--right">
+        {{ if .Authed }}
+        <a href="/studio">{{ t .Lang "header.studio" }}</a>
+        <a class="btn btn--primary btn--sm" href="/studio/new">{{ t .Lang "header.write" }}</a>
+        {{ else }}
+        <a href="/studio/login">{{ t .Lang "header.login" }}</a>
+        <a class="btn btn--primary btn--sm" href="/studio/register">{{ t .Lang "header.register" }}</a>
+        {{ end }}
+        <button type="button" class="icon-btn" data-theme-toggle title="{{ t .Lang "header.theme" }}">◐</button>
+      </div>
+    </div>
+    <p class="masthead__tag">{{ t .Lang "brand.tag" }}</p>
+    <nav class="sections">
+      <div class="sections__inner">
+        <a href="/?lang={{ .Lang }}"{{ if eq .Active "latest" }} class="is-active"{{ end }}>{{ t .Lang "nav.latest" }}</a>
+        <a href="/?lang={{ .Lang }}&sort=top"{{ if eq .Active "top" }} class="is-active"{{ end }}>{{ t .Lang "nav.top" }}</a>
+      </div>
+    </nav>
+  </div>
+</header>
+{{ end }}
+
+{{ define "site_footer" }}
+<footer class="site-footer">
+  <div class="container">
+    <span class="foot-tag">{{ t .Lang "footer.tag" }}</span>
+    <span>© 2026 Shanraq — {{ t .Lang "footer.rights" }}</span>
+  </div>
+</footer>
+<script>
+  (function () {
+    var btn = document.querySelector('[data-theme-toggle]');
+    if (btn) btn.addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('shanraq-theme', next); } catch (e) {}
+    });
+    var tabs = document.querySelectorAll('[data-tab]');
+    if (tabs.length) tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var lang = tab.getAttribute('data-tab');
+        document.querySelectorAll('[data-tab]').forEach(function (t) { t.classList.toggle('is-active', t === tab); });
+        document.querySelectorAll('[data-panel]').forEach(function (p) { p.classList.toggle('is-active', p.getAttribute('data-panel') === lang); });
+      });
+    });
+  })();
+</script>
+</body>
+</html>
+{{ end }}

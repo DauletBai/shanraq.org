@@ -139,7 +139,7 @@ func (s *Store) ClaimNextJob(ctx context.Context) (Job, error) {
 	defer tx.Rollback(ctx)
 
 	job, err := scanJob(tx.QueryRow(ctx, `
-		SELECT id, name, payload, run_at, attempts, max_attempts, status, last_error, created_at, updated_at
+		SELECT id, user_id, name, payload, run_at, attempts, max_attempts, status, last_error, created_at, updated_at
 		FROM job_queue
 		WHERE status IN ('pending', 'retry')
 		  AND run_at <= NOW()

@@ -853,7 +853,7 @@ func (m *Module) decorateTemplateData(data templateData) templateData {
 		data.FrameworkDescription = "Batteries-included Go platform for resilient services."
 	}
 	if data.BrandLogoPath == "" {
-		data.BrandLogoPath = "/static/brand/logo.svg"
+		data.BrandLogoPath = "/static/brand/shanraq.svg"
 	}
 	if data.Year == 0 {
 		data.Year = time.Now().Year()

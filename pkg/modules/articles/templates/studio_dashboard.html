@@ -1,0 +1,88 @@
+{{ define "studio_dashboard" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <section class="studio">
+    <div class="studio__head">
+      <h1>{{ t .Lang "studio.title" }}</h1>
+      <a class="btn btn--primary" href="/studio/new">+ {{ t .Lang "studio.new" }}</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <p class="stat__label">{{ t .Lang "studio.stat_total" }}</p>
+        <p class="stat__value">{{ .Stats.TotalArticles }}</p>
+      </div>
+      <div class="stat">
+        <p class="stat__label">{{ t .Lang "studio.stat_published" }}</p>
+        <p class="stat__value">{{ .Stats.Published }}</p>
+        <p class="stat__sub">{{ t .Lang "studio.stat_drafts" }}: {{ .Stats.Drafts }}</p>
+      </div>
+      <div class="stat">
+        <p class="stat__label">{{ t .Lang "studio.stat_views" }}</p>
+        <p class="stat__value">{{ .Stats.TotalViews }}</p>
+      </div>
+      <div class="stat">
+        <p class="stat__label">{{ t .Lang "studio.stat_karma" }}</p>
+        <p class="stat__value">{{ .Karma }}</p>
+        <p class="stat__sub">{{ t .Lang "studio.stat_karma_sub" }}</p>
+      </div>
+      <div class="stat">
+        <p class="stat__label">{{ t .Lang "studio.stat_by_lang" }}</p>
+        <p class="stat__value" style="font-size:1.2rem">
+          {{ range langs }}<span class="badge-lang">{{ label . }}</span> {{ index $.Stats.ViewsByLang . }}&nbsp;&nbsp;{{ end }}
+        </p>
+      </div>
+    </div>
+
+    {{ if .Articles }}
+    <div class="table-wrap">
+      <table class="list">
+        <thead>
+          <tr>
+            <th>{{ t .Lang "studio.col_title" }}</th>
+            <th>{{ t .Lang "studio.col_status" }}</th>
+            <th>{{ t .Lang "studio.col_langs" }}</th>
+            <th>{{ t .Lang "studio.col_views" }}</th>
+            <th>{{ t .Lang "studio.col_updated" }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .Articles }}
+          <tr>
+            <td class="title"><a href="/studio/a/{{ .ID }}">{{ .Title }}</a></td>
+            <td>
+              {{ if eq .Status "published" }}<span class="pill pill--published">{{ t $.Lang "studio.st_published" }}</span>
+              {{ else if eq .Status "archived" }}<span class="pill pill--archived">{{ t $.Lang "studio.st_archived" }}</span>
+              {{ else }}<span class="pill pill--draft">{{ t $.Lang "studio.st_draft" }}</span>{{ end }}
+            </td>
+            <td>{{ range .Langs }}<span class="tag">{{ label . }}</span> {{ else }}<span class="dot">—</span>{{ end }}</td>
+            <td>{{ .Views }}</td>
+            <td>{{ fmtDate .Updated }}</td>
+            <td>
+              <div style="display:flex;gap:8px">
+                {{ if eq .Status "published" }}
+                <a class="btn btn--ghost btn--sm" href="/read/{{ .Slug }}">{{ t $.Lang "studio.open" }}</a>
+                <form method="post" action="/studio/a/{{ .ID }}/unpublish"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "studio.hide" }}</button></form>
+                {{ else }}
+                <form method="post" action="/studio/a/{{ .ID }}/publish"><button class="btn btn--teal btn--sm" type="submit">{{ t $.Lang "studio.publish" }}</button></form>
+                {{ end }}
+              </div>
+            </td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+    {{ else }}
+    <div class="empty">
+      <p style="margin-bottom:18px">{{ t .Lang "studio.empty" }}</p>
+      <a class="btn btn--primary" href="/studio/new">{{ t .Lang "studio.new" }}</a>
+    </div>
+    {{ end }}
+  </section>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

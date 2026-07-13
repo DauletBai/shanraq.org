@@ -1,0 +1,54 @@
+{{ define "article" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <article class="article">
+    <div class="article__head">
+      <div class="byline">
+        <span class="badge-lang">{{ label .ServedLang }}</span>
+        <span class="dot">·</span>
+        <span class="author">{{ .AuthorName }}</span>
+        <span>({{ t .Lang "article.karma" }}: <b>{{ .AuthorKarma }}</b>)</span>
+        <span class="dot">·</span>
+        <span>{{ fmtDatePtr .Published }}</span>
+        <span class="dot">·</span>
+        <span>{{ .Views }} {{ t .Lang "meta.views" }}</span>
+      </div>
+      <h1 class="article__title">{{ .Title }}</h1>
+      {{ if .Summary }}<p class="article__lead">{{ .Summary }}</p>{{ end }}
+
+      <div style="margin:18px 0 6px">
+        {{ if .CanVote }}
+        <span class="rating">
+          <form method="post" action="/read/{{ .Slug }}/vote">
+            <input type="hidden" name="value" value="1">
+            <button class="rating__btn{{ if gt .UserVote 0 }} is-up{{ end }}" type="submit" title="+1">▲</button>
+          </form>
+          <span class="rating__score{{ if gt .Score 0 }} pos{{ else if lt .Score 0 }} neg{{ end }}">{{ .Score }}</span>
+          <form method="post" action="/read/{{ .Slug }}/vote">
+            <input type="hidden" name="value" value="-1">
+            <button class="rating__btn{{ if lt .UserVote 0 }} is-down{{ end }}" type="submit" title="−1">▼</button>
+          </form>
+        </span>
+        {{ else }}
+        <span class="rating rating--readonly">
+          <span class="rating__score{{ if gt .Score 0 }} pos{{ else if lt .Score 0 }} neg{{ end }}">{{ .Score }}</span>
+          {{ if .IsAuthor }}
+          <span class="hint" style="padding:0 6px">{{ t .Lang "article.vote_own" }}</span>
+          {{ else }}
+          <a class="hint" style="padding:0 6px" href="/studio/login">{{ t .Lang "article.vote_login" }}</a>
+          {{ end }}
+        </span>
+        {{ end }}
+      </div>
+    </div>
+
+    {{ if .Translated }}<p class="notice">{{ t .Lang "article.translated" }}</p>{{ end }}
+    {{ if .IsAI }}<p class="notice">{{ t .Lang "article.ai_note" }}</p>{{ end }}
+
+    <div class="prose">{{ .Body }}</div>
+  </article>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

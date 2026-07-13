@@ -1,0 +1,801 @@
+package articles
+
+import (
+	"errors"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
+	"go.uber.org/zap"
+	"shanraq.org/pkg/modules/ai"
+	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/modules/jobs"
+	"shanraq.org/pkg/modules/ratings"
+)
+
+const langCookieName = "shanraq_lang"
+
+// Base carries fields shared by every page (consumed by the header/footer
+// partials via Go's embedded-field promotion). The whole UI renders in Lang.
+type Base struct {
+	Title     string
+	Lang      string
+	Authed    bool
+	ShowLangs bool
+	Active    string // active section: "latest" | "top" | ""
+	LangLinks map[string]string
+}
+
+// base builds the shared page context. The language switcher points at the
+// current path so switching language re-renders the same page fully localized.
+func (m *Module) base(r *http.Request, title, lang string) Base {
+	_, authed := auth.ClaimsFromContext(r.Context())
+	return Base{
+		Title:     title,
+		Lang:      lang,
+		Authed:    authed,
+		ShowLangs: true,
+		LangLinks: langLinks(r.URL.Path, lang),
+	}
+}
+
+// resolveLang picks the active language from ?lang=, then cookie, then default.
+func (m *Module) resolveLang(w http.ResponseWriter, r *http.Request) string {
+	if q := r.URL.Query().Get("lang"); IsLang(q) {
+		http.SetCookie(w, &http.Cookie{Name: langCookieName, Value: q, Path: "/", MaxAge: 31536000, SameSite: http.SameSiteLaxMode})
+		return q
+	}
+	if c, err := r.Cookie(langCookieName); err == nil && IsLang(c.Value) {
+		return c.Value
+	}
+	return LangRU
+}
+
+func langLinks(base string, current string) map[string]string {
+	out := make(map[string]string, len(Langs))
+	for _, l := range Langs {
+		out[l] = base + "?lang=" + l
+	}
+	_ = current
+	return out
+}
+
+func (m *Module) authorID(r *http.Request) (uuid.UUID, bool) {
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		return uuid.Nil, false
+	}
+	id, err := uuid.Parse(claims.UserID)
+	if err != nil {
+		return uuid.Nil, false
+	}
+	return id, true
+}
+
+// viewerID returns the current user's ID, or uuid.Nil for anonymous readers.
+func (m *Module) viewerID(r *http.Request) uuid.UUID {
+	if id, ok := m.authorID(r); ok {
+		return id
+	}
+	return uuid.Nil
+}
+
+// ---------- public reader ----------
+
+// FeedItem is one card in the feed.
+type FeedItem struct {
+	Slug           string
+	Title          string
+	Summary        string
+	AuthorName     string
+	ServedLang     string
+	Published      *time.Time
+	Views          int64
+	Score          int
+	IsAI           bool
+	AvailableLangs []string
+}
+
+// HomePage is the template context for the portal home.
+type HomePage struct {
+	Base
+	Featured *FeedItem
+	Posts    []FeedItem
+	Recent   []FeedItem
+}
+
+// handleReadRedirect keeps the old /read URL working by sending it home.
+func (m *Module) handleReadRedirect(w http.ResponseWriter, r *http.Request) {
+	target := "/"
+	if q := r.URL.RawQuery; q != "" {
+		target += "?" + q
+	}
+	http.Redirect(w, r, target, http.StatusMovedPermanently)
+}
+
+func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+
+	sort := "recent"
+	active := "latest"
+	if r.URL.Query().Get("sort") == "top" {
+		sort = "top"
+		active = "top"
+	}
+
+	arts, err := m.store.ListPublished(r.Context(), sort, 21, 0)
+	if err != nil {
+		m.rt.Logger.Error("home list", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	items := make([]FeedItem, 0, len(arts))
+	for _, a := range arts {
+		tr, served := a.Translation(lang)
+		if tr == nil {
+			continue
+		}
+		summary := tr.Summary
+		if summary == "" {
+			summary = excerpt(stripMD(tr.BodyMD), 170)
+		}
+		items = append(items, FeedItem{
+			Slug:           a.Slug,
+			Title:          tr.Title,
+			Summary:        summary,
+			AuthorName:     a.AuthorName(),
+			ServedLang:     served,
+			Published:      a.PublishedAt,
+			Views:          a.ViewsCount,
+			Score:          a.Score,
+			IsAI:           tr.Source == "ai",
+			AvailableLangs: a.AvailableLangs(),
+		})
+	}
+
+	page := HomePage{Base: m.base(r, T(lang, "home.page_title"), lang)}
+	page.Active = active
+	if len(items) > 0 {
+		page.Featured = &items[0]
+		page.Posts = items[1:]
+		recentN := len(items)
+		if recentN > 5 {
+			recentN = 5
+		}
+		page.Recent = items[:recentN]
+	}
+	m.render(w, "home", page)
+}
+
+// ArticlePage is the template context for a single article.
+type ArticlePage struct {
+	Base
+	Slug           string
+	Title          string
+	Summary        string
+	AuthorName     string
+	ServedLang     string
+	RequestedLang  string
+	Body           interface{}
+	Published      *time.Time
+	Views          int64
+	IsAI           bool
+	Translated     bool
+	AvailableLangs []string
+
+	Score       int
+	UserVote    int  // -1, 0, +1
+	AuthorKarma int
+	CanVote     bool // logged in and not the author
+	IsAuthor    bool
+}
+
+func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+	lang := m.resolveLang(w, r)
+
+	a, err := m.store.GetPublishedBySlug(r.Context(), slug)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	tr, served := a.Translation(lang)
+	if tr == nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Count the view asynchronously-ish; ignore errors (best effort analytics).
+	if err := m.store.RecordView(r.Context(), a.ID, served); err != nil {
+		m.rt.Logger.Warn("record view", zap.Error(err))
+	}
+
+	page := ArticlePage{Base: m.base(r, tr.Title, lang)}
+	page.Slug = a.Slug
+	page.Title = tr.Title
+	page.Summary = tr.Summary
+	page.AuthorName = a.AuthorName()
+	page.ServedLang = served
+	page.RequestedLang = lang
+	page.Body = RenderMarkdown(tr.BodyMD)
+	page.Published = a.PublishedAt
+	page.Views = a.ViewsCount + 1
+	page.IsAI = tr.Source == "ai"
+	page.Translated = served != lang
+	page.AvailableLangs = a.AvailableLangs()
+
+	viewer := m.viewerID(r)
+	if rating, err := m.ratings.ForArticle(r.Context(), a.ID, viewer); err == nil {
+		page.Score = rating.Score
+		page.UserVote = rating.UserVote
+	} else {
+		m.rt.Logger.Warn("article rating", zap.Error(err))
+	}
+	if karma, err := m.ratings.AuthorKarma(r.Context(), a.AuthorID); err == nil {
+		page.AuthorKarma = karma
+	}
+	page.IsAuthor = viewer != uuid.Nil && viewer == a.AuthorID
+	page.CanVote = viewer != uuid.Nil && !page.IsAuthor
+
+	m.render(w, "article", page)
+}
+
+// handleVote records a reader's up/down vote (toggling off when the same
+// direction is submitted twice), then returns to the article.
+func (m *Module) handleVote(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+	backTo := "/read/" + slug
+
+	voter, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "bad form", http.StatusBadRequest)
+		return
+	}
+	value := ratings.VoteNone
+	switch r.FormValue("value") {
+	case "1", "up":
+		value = ratings.VoteUp
+	case "-1", "down":
+		value = ratings.VoteDown
+	default:
+		http.Redirect(w, r, backTo, http.StatusSeeOther)
+		return
+	}
+
+	a, err := m.store.GetPublishedBySlug(r.Context(), slug)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Clicking the current direction again retracts the vote.
+	if cur, err := m.ratings.ForArticle(r.Context(), a.ID, voter); err == nil && cur.UserVote == value {
+		value = ratings.VoteNone
+	}
+
+	if _, err := m.ratings.Vote(r.Context(), a.ID, voter, a.AuthorID, value); err != nil {
+		if errors.Is(err, ratings.ErrSelfVote) {
+			http.Redirect(w, r, backTo, http.StatusSeeOther)
+			return
+		}
+		m.rt.Logger.Error("vote", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, backTo, http.StatusSeeOther)
+}
+
+// ---------- auth pages ----------
+
+// FormPage backs the login and register screens.
+type FormPage struct {
+	Base
+	Mode  string // login | register
+	Email string
+	Error string
+}
+
+func (m *Module) handleLoginPage(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	m.render(w, "form", FormPage{Base: m.base(r, T(lang, "form.login_title"), lang), Mode: "login"})
+}
+
+func (m *Module) handleRegisterPage(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	m.render(w, "form", FormPage{Base: m.base(r, T(lang, "form.register_title"), lang), Mode: "register"})
+}
+
+func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "bad form", http.StatusBadRequest)
+		return
+	}
+	email := strings.TrimSpace(r.FormValue("email"))
+	password := r.FormValue("password")
+
+	user, token, err := m.auth.LoginPassword(r.Context(), email, password)
+	if err != nil {
+		m.render(w, "form", FormPage{
+			Base:  m.base(r, T(lang, "form.login_title"), lang),
+			Mode:  "login",
+			Email: email,
+			Error: T(lang, "form.err_credentials"),
+		})
+		return
+	}
+	auth.SetSessionCookie(w, r, token, m.auth.SessionTTL())
+	m.rt.Logger.Info("studio login", zap.String("email", user.Email))
+	http.Redirect(w, r, "/studio", http.StatusSeeOther)
+}
+
+func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "bad form", http.StatusBadRequest)
+		return
+	}
+	email := strings.TrimSpace(r.FormValue("email"))
+	password := r.FormValue("password")
+
+	if len(password) < 8 {
+		m.render(w, "form", FormPage{
+			Base:  m.base(r, T(lang, "form.register_title"), lang),
+			Mode:  "register",
+			Email: email,
+			Error: T(lang, "form.err_short_pw"),
+		})
+		return
+	}
+
+	user, token, err := m.auth.RegisterPassword(r.Context(), email, password)
+	if err != nil {
+		msg := T(lang, "form.err_generic")
+		if errors.Is(err, auth.ErrEmailExists) {
+			msg = T(lang, "form.err_email_taken")
+		}
+		m.render(w, "form", FormPage{
+			Base:  m.base(r, T(lang, "form.register_title"), lang),
+			Mode:  "register",
+			Email: email,
+			Error: msg,
+		})
+		return
+	}
+	auth.SetSessionCookie(w, r, token, m.auth.SessionTTL())
+	m.rt.Logger.Info("studio register", zap.String("email", user.Email))
+	http.Redirect(w, r, "/studio", http.StatusSeeOther)
+}
+
+func (m *Module) handleLogout(w http.ResponseWriter, r *http.Request) {
+	auth.ClearSessionCookie(w, r)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+// ---------- studio ----------
+
+// StudioRow is one row in the author's article table.
+type StudioRow struct {
+	ID      string
+	Slug    string
+	Title   string
+	Status  string
+	Updated time.Time
+	Views   int64
+	Langs   []string
+}
+
+// StudioPage is the dashboard context.
+type StudioPage struct {
+	Base
+	Stats    AuthorStats
+	Karma    int
+	Articles []StudioRow
+}
+
+func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+
+	stats, err := m.store.AuthorStats(r.Context(), authorID)
+	if err != nil {
+		m.rt.Logger.Error("author stats", zap.Error(err))
+	}
+	arts, err := m.store.ListByAuthor(r.Context(), authorID)
+	if err != nil {
+		m.rt.Logger.Error("author list", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	lang := m.resolveLang(w, r)
+	rows := make([]StudioRow, 0, len(arts))
+	for _, a := range arts {
+		title := T(lang, "studio.untitled")
+		if tr, _ := a.Translation(a.OriginalLang); tr != nil && tr.Title != "" {
+			title = tr.Title
+		}
+		rows = append(rows, StudioRow{
+			ID:      a.ID.String(),
+			Slug:    a.Slug,
+			Title:   title,
+			Status:  a.Status,
+			Updated: a.UpdatedAt,
+			Views:   a.ViewsCount,
+			Langs:   a.AvailableLangs(),
+		})
+	}
+
+	karma, err := m.ratings.AuthorKarma(r.Context(), authorID)
+	if err != nil {
+		m.rt.Logger.Warn("author karma", zap.Error(err))
+	}
+
+	page := StudioPage{Base: m.base(r, T(lang, "studio.title"), lang)}
+	page.Stats = stats
+	page.Karma = karma
+	page.Articles = rows
+	m.render(w, "studio_dashboard", page)
+}
+
+// TranslationField holds editable fields for one language tab.
+type TranslationField struct {
+	Title   string
+	Summary string
+	BodyMD  string
+	Source  string
+}
+
+// EditorPage backs the trilingual editor.
+type EditorPage struct {
+	Base
+	IsNew        bool
+	ArticleID    string
+	Slug         string
+	Status       string
+	OriginalLang string
+	Fields       map[string]TranslationField
+	Error        string
+	AIEnabled    bool
+	Notice       string
+}
+
+// aiNotice maps an ?ai= redirect flag to a localized message.
+func aiNotice(lang, flag string) string {
+	switch flag {
+	case "improved":
+		return T(lang, "notice.ai_improved")
+	case "queued":
+		return T(lang, "notice.ai_queued")
+	case "off":
+		return T(lang, "notice.ai_off")
+	default:
+		return ""
+	}
+}
+
+func emptyFields() map[string]TranslationField {
+	f := make(map[string]TranslationField, len(Langs))
+	for _, l := range Langs {
+		f[l] = TranslationField{}
+	}
+	return f
+}
+
+func (m *Module) handleEditorNew(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	page := EditorPage{Base: m.base(r, T(lang, "editor.new"), lang)}
+	page.IsNew = true
+	page.OriginalLang = lang
+	page.Status = "draft"
+	page.Fields = emptyFields()
+	page.AIEnabled = m.ai.Enabled()
+	m.render(w, "studio_editor", page)
+}
+
+func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	a, err := m.store.GetByID(r.Context(), id, authorID)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	fields := emptyFields()
+	for _, l := range Langs {
+		if tr, ok := a.Translations[l]; ok {
+			fields[l] = TranslationField{Title: tr.Title, Summary: tr.Summary, BodyMD: tr.BodyMD, Source: tr.Source}
+		}
+	}
+
+	lang := m.resolveLang(w, r)
+	page := EditorPage{Base: m.base(r, T(lang, "editor.edit"), lang)}
+	page.ArticleID = a.ID.String()
+	page.Slug = a.Slug
+	page.Status = a.Status
+	page.OriginalLang = a.OriginalLang
+	page.Fields = fields
+	page.AIEnabled = m.ai.Enabled()
+	page.Notice = aiNotice(lang, r.URL.Query().Get("ai"))
+	m.render(w, "studio_editor", page)
+}
+
+// handleImprove rewrites the original-language body with the AI co-editor and
+// saves the result back to the draft.
+func (m *Module) handleImprove(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	editURL := "/studio/a/" + id.String()
+
+	if !m.ai.Enabled() {
+		http.Redirect(w, r, editURL+"?ai=off", http.StatusSeeOther)
+		return
+	}
+
+	a, err := m.store.GetByID(r.Context(), id, authorID)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	tr, ok := a.Translations[a.OriginalLang]
+	if !ok || tr.BodyMD == "" {
+		http.Redirect(w, r, editURL, http.StatusSeeOther)
+		return
+	}
+
+	improved, err := m.ai.Improve(r.Context(), a.OriginalLang, tr.BodyMD)
+	if err != nil {
+		m.rt.Logger.Error("ai improve", zap.Error(err))
+		http.Redirect(w, r, editURL+"?ai=off", http.StatusSeeOther)
+		return
+	}
+
+	input := []TranslationInput{{
+		Lang:    a.OriginalLang,
+		Title:   tr.Title,
+		Summary: tr.Summary,
+		BodyMD:  improved,
+		Source:  "human",
+	}}
+	if err := m.store.Update(r.Context(), id, authorID, a.OriginalLang, input); err != nil {
+		m.rt.Logger.Error("save improved", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, editURL+"?ai=improved", http.StatusSeeOther)
+}
+
+// handleTranslate enqueues an async AI translation into the other languages.
+func (m *Module) handleTranslate(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	editURL := "/studio/a/" + id.String()
+
+	if !m.ai.Enabled() {
+		http.Redirect(w, r, editURL+"?ai=off", http.StatusSeeOther)
+		return
+	}
+
+	// Ensure the article belongs to this author before enqueuing work for it.
+	if _, err := m.store.GetByID(r.Context(), id, authorID); err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	payload, err := ai.EnqueuePayload(id)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	job := jobs.Job{
+		ID:          uuid.New(),
+		UserID:      authorID,
+		Name:        ai.JobTranslate,
+		Payload:     payload,
+		RunAt:       time.Now(),
+		MaxAttempts: 3,
+	}
+	if err := m.jobs.Enqueue(r.Context(), job); err != nil {
+		m.rt.Logger.Error("enqueue translate", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, editURL+"?ai=queued", http.StatusSeeOther)
+}
+
+// parseEditorForm reads the three-language editor form into translation inputs.
+func parseEditorForm(r *http.Request) (originalLang string, trs []TranslationInput) {
+	originalLang = r.FormValue("original_lang")
+	if !IsLang(originalLang) {
+		originalLang = LangRU
+	}
+	for _, l := range Langs {
+		trs = append(trs, TranslationInput{
+			Lang:    l,
+			Title:   strings.TrimSpace(r.FormValue("title_" + l)),
+			Summary: strings.TrimSpace(r.FormValue("summary_" + l)),
+			BodyMD:  r.FormValue("body_" + l),
+			Source:  "human",
+		})
+	}
+	return originalLang, trs
+}
+
+func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "bad form", http.StatusBadRequest)
+		return
+	}
+	originalLang, trs := parseEditorForm(r)
+
+	lang := m.resolveLang(w, r)
+	orig := findTR(trs, originalLang)
+	if orig.Title == "" || orig.BodyMD == "" {
+		m.reRenderEditor(w, r, true, "", "", originalLang, trs, T(lang, "editor.err_required"))
+		return
+	}
+
+	slug, err := m.uniqueSlug(r, orig.Title)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	id, err := m.store.Create(r.Context(), authorID, slug, originalLang, trs)
+	if err != nil {
+		m.rt.Logger.Error("create article", zap.Error(err))
+		m.reRenderEditor(w, r, true, "", "", originalLang, trs, T(lang, "editor.err_save"))
+		return
+	}
+	http.Redirect(w, r, "/studio/a/"+id.String(), http.StatusSeeOther)
+}
+
+func (m *Module) handleUpdate(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "bad form", http.StatusBadRequest)
+		return
+	}
+	originalLang, trs := parseEditorForm(r)
+
+	if err := m.store.Update(r.Context(), id, authorID, originalLang, trs); err != nil {
+		if errors.Is(err, ErrNotFound) {
+			http.NotFound(w, r)
+			return
+		}
+		m.rt.Logger.Error("update article", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/studio/a/"+id.String(), http.StatusSeeOther)
+}
+
+func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
+	m.transition(w, r, "published", "/studio")
+}
+
+func (m *Module) handleUnpublish(w http.ResponseWriter, r *http.Request) {
+	m.transition(w, r, "draft", "/studio")
+}
+
+func (m *Module) transition(w http.ResponseWriter, r *http.Request, status, redirect string) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if err := m.store.SetStatus(r.Context(), id, authorID, status); err != nil {
+		if errors.Is(err, ErrNotFound) {
+			http.NotFound(w, r)
+			return
+		}
+		m.rt.Logger.Error("transition", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	// On publish, push the article out to external channels (Telegram) for
+	// block-resilience. Best-effort: a syndication failure must not block the
+	// publish itself.
+	if status == "published" {
+		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
+			m.rt.Logger.Warn("enqueue syndication", zap.Error(err))
+		}
+	}
+
+	http.Redirect(w, r, redirect, http.StatusSeeOther)
+}
+
+func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bool, id, slug, originalLang string, trs []TranslationInput, errMsg string) {
+	fields := emptyFields()
+	for _, tr := range trs {
+		fields[tr.Lang] = TranslationField{Title: tr.Title, Summary: tr.Summary, BodyMD: tr.BodyMD, Source: tr.Source}
+	}
+	lang := m.resolveLang(w, r)
+	page := EditorPage{Base: m.base(r, T(lang, "editor.new"), lang)}
+	page.IsNew = isNew
+	page.ArticleID = id
+	page.Slug = slug
+	page.OriginalLang = originalLang
+	page.Status = "draft"
+	page.Fields = fields
+	page.AIEnabled = m.ai.Enabled()
+	page.Error = errMsg
+	m.render(w, "studio_editor", page)
+}
+
+func (m *Module) uniqueSlug(r *http.Request, title string) (string, error) {
+	base := Slugify(title)
+	slug := base
+	exists, err := m.store.SlugExists(r.Context(), slug)
+	if err != nil {
+		return "", err
+	}
+	if exists {
+		slug = base + "-" + uuid.NewString()[:6]
+	}
+	return slug, nil
+}
+
+func findTR(trs []TranslationInput, lang string) TranslationInput {
+	for _, tr := range trs {
+		if tr.Lang == lang {
+			return tr
+		}
+	}
+	return TranslationInput{Lang: lang}
+}

@@ -93,7 +93,7 @@ func TestRoutesHome(t *testing.T) {
 	router := chi.NewRouter()
 	mod.Routes(router)
 
-	req := httptest.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest("GET", "/framework", nil)
 	rec := httptest.NewRecorder()
 	router.ServeHTTP(rec, req)
 

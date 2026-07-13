@@ -1,0 +1,42 @@
+{{ define "form" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="auth-wrap">
+    {{ if eq .Mode "register" }}
+    <h1>{{ t .Lang "form.register_title" }}</h1>
+    <p class="sub">{{ t .Lang "form.register_sub" }}</p>
+    {{ else }}
+    <h1>{{ t .Lang "form.login_title" }}</h1>
+    <p class="sub">{{ t .Lang "form.login_sub" }}</p>
+    {{ end }}
+
+    {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
+
+    <form method="post" action="{{ if eq .Mode "register" }}/studio/register{{ else }}/studio/login{{ end }}">
+      <div class="field">
+        <label for="email">{{ t .Lang "form.email" }}</label>
+        <input class="input" type="email" id="email" name="email" value="{{ .Email }}" required autofocus>
+      </div>
+      <div class="field">
+        <label for="password">{{ t .Lang "form.password" }}</label>
+        <input class="input" type="password" id="password" name="password" required minlength="8">
+        {{ if eq .Mode "register" }}<p class="hint">{{ t .Lang "form.password_hint" }}</p>{{ end }}
+      </div>
+      <button class="btn btn--primary" type="submit" style="width:100%">
+        {{ if eq .Mode "register" }}{{ t .Lang "form.register_title" }}{{ else }}{{ t .Lang "form.login_title" }}{{ end }}
+      </button>
+    </form>
+
+    <p class="hint" style="margin-top:18px;text-align:center">
+      {{ if eq .Mode "register" }}
+      {{ t .Lang "form.have_account" }} <a href="/studio/login">{{ t .Lang "form.login_title" }}</a>
+      {{ else }}
+      {{ t .Lang "form.no_account" }} <a href="/studio/register">{{ t .Lang "form.register_title" }}</a>
+      {{ end }}
+    </p>
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

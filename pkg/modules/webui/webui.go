@@ -110,12 +110,12 @@ func (m *Module) Routes(r chi.Router) {
 	}
 	r.Handle("/static/*", http.StripPrefix("/static/", web.StaticHandler()))
 	r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/static/brand/favicon.svg", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/static/brand/shanraq.svg", http.StatusMovedPermanently)
 	})
 	r.Get("/favicon.svg", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFileFS(w, r, web.StaticFS(), "brand/favicon.svg")
+		http.ServeFileFS(w, r, web.StaticFS(), "brand/shanraq.svg")
 	})
-	r.Get("/", m.handleHome)
+	r.Get("/framework", m.handleHome)
 	r.Get("/console", m.handleDashboard)
 	r.Get("/docs", m.handleDocs)
 	r.Get("/partials/dashboard", m.handleDashboardPartial)

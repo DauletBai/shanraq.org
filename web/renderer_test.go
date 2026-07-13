@@ -63,8 +63,7 @@ func TestRendererLayouts(t *testing.T) {
 
 	body := rec.Body.String()
 	assertContains(t, body, `id="home-root"`)
-	assertContains(t, body, `/static/brand/logo.svg`)
-	assertContains(t, body, `/static/brand/favicon.svg`)
+	assertContains(t, body, `/static/brand/shanraq.svg`)
 	assertContains(t, body, `class="code-block`)
 	assertNotContains(t, body, "No content provided.")
 	assertNotContains(t, body, `/static/js/dashboard.js`)
