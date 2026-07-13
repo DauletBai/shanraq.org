@@ -1,5 +1,5 @@
-# Binary outputs
-shanraq
+# Binary outputs (anchored to repo root so it does not match pkg/shanraq/)
+/shanraq
 *.out
 
 # Configuration overrides
