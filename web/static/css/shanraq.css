@@ -242,7 +242,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 
 /* sidebar */
 .aside { display: flex; flex-direction: column; gap: 26px; }
-@media (min-width: 900px) { .aside { position: sticky; top: 150px; align-self: start; } }
+@media (min-width: 900px) { .aside { position: sticky; top: 92px; align-self: start; } }
 .aside__block { border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; background: var(--surface-2); }
 .aside__title { font-size: var(--step-1); margin-bottom: 8px; }
 .aside__text { color: var(--ink-soft); font-size: var(--step--1); margin: 0; }

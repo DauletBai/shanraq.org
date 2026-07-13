@@ -59,6 +59,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"langs":            func() []string { return Langs },
 		"categories":       func() []string { return Categories },
 		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
+		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(t time.Time) string {
 			if t.IsZero() {

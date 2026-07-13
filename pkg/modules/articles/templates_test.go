@@ -18,6 +18,7 @@ func buildTemplates(t *testing.T) *template.Template {
 		"langs":            func() []string { return Langs },
 		"categories":       func() []string { return Categories },
 		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
+		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(tm time.Time) string {
 			if tm.IsZero() {

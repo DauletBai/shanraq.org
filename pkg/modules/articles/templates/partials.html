@@ -34,13 +34,11 @@
       <a href="/studio">{{ t .Lang "header.studio" }}</a>
       <a class="btn btn--primary btn--sm" href="/studio/new">{{ t .Lang "header.write" }}</a>
       {{ else }}
-      <a href="/studio/login">{{ t .Lang "header.login" }}</a>
-      <a class="btn btn--primary btn--sm" href="/studio/register">{{ t .Lang "header.register" }}</a>
+      <a class="btn btn--primary btn--sm" href="/studio/login">{{ t .Lang "header.login" }}</a>
       {{ end }}
       <button type="button" class="icon-btn" data-theme-toggle title="{{ t .Lang "header.theme" }}">◐</button>
     </div>
   </div>
-  <p class="topstrip__tag">{{ t .Lang "brand.tag" }}</p>
 </div>
 <nav class="navbar">
   <div class="container">
@@ -66,7 +64,7 @@
 <footer class="site-footer">
   <div class="container">
     <span class="foot-tag">{{ t .Lang "footer.tag" }}</span>
-    <span>© 2026 Shanraq — {{ t .Lang "footer.rights" }}</span>
+    <span>© {{ year }} Shanraq — {{ t .Lang "footer.rights" }}</span>
   </div>
 </footer>
 <script>

@@ -2,7 +2,7 @@
   <img src="web/static/brand/shanraq.svg" alt="Shanraq Logo" width="128">
 </p>
 
-# Shanraq.org Framework
+<h1 align="center">Shanraq.org Framework</h1>
 
 Shanraq is a batteries-included Go 1.23+ application framework focused on modern backend practices: typed configuration, PostgreSQL-first data access, structured logging, composable modules, and first-class observability.
 
