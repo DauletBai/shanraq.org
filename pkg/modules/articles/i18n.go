@@ -43,6 +43,8 @@ var messages = map[string]map[string]string{
 	"re.empty":           {"kz": "Әзірге хабарландыру жоқ", "ru": "Пока нет объявлений", "en": "No listings yet"},
 	"re.err_required":    {"kz": "Тақырып пен байланыс міндетті", "ru": "Заголовок и контакт обязательны", "en": "Title and contact are required"},
 	"re.per_month":       {"kz": "/айына", "ru": "/мес", "en": "/mo"},
+	"re.location":        {"kz": "Орналасуы", "ru": "Расположение", "en": "Location"},
+	"re.location_hint":   {"kz": "Елді, одан кейін өңір мен қаланы таңдаңыз.", "ru": "Выберите страну, затем регион, город и т. д.", "en": "Pick a country, then region, city, and so on."},
 	"re.contacts":        {"kz": "Байланыс", "ru": "Контакты", "en": "Contact"},
 	"re.cancel":          {"kz": "Бас тарту", "ru": "Отмена", "en": "Cancel"},
 	"re.adline":          {"kz": "Жылжымайтын мүлік жарнамасы", "ru": "Реклама недвижимости", "en": "Real-estate ads"},

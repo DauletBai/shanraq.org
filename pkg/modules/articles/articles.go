@@ -28,6 +28,7 @@ type Module struct {
 	rt        *shanraq.Runtime
 	store     *Store
 	listings  *ListingStore
+	geo       *GeoStore
 	ratings   *ratings.Store
 	jobs      *jobs.Store
 	auth      *auth.Module
@@ -50,6 +51,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
 	m.listings = NewListingStore(rt.DB)
+	m.geo = NewGeoStore(rt.DB)
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
 	m.validator = validate.New()
@@ -105,6 +107,8 @@ func (m *Module) Routes(r chi.Router) {
 		r.Get("/guide", m.handleStaticPage("guide"))
 		r.Get("/pricing", m.handleStaticPage("pricing"))
 		r.Get("/support", m.handleStaticPage("support"))
+		r.Get("/api/geo/roots", m.handleGeoRoots)
+		r.Get("/api/geo/children", m.handleGeoChildren)
 		r.Get("/listings", m.handleListings)
 		r.Get("/listings/new", m.handleListingNew)
 		r.Post("/listings/new", m.handleListingCreate)

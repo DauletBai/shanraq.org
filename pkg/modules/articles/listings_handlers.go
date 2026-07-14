@@ -80,6 +80,29 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	in := parseListingForm(r)
+
+	// Resolve the selected location node into the denormalized address fields.
+	if in.GeoNodeID != nil {
+		anc, err := m.geo.Ancestry(r.Context(), *in.GeoNodeID, lang)
+		if err != nil || len(anc) == 0 {
+			in.GeoNodeID = nil
+		} else {
+			in.Country, in.Region, in.City, in.Village = "", "", "", ""
+			for _, n := range anc {
+				switch n.Level {
+				case 0:
+					in.Country = n.Name
+				case 1:
+					in.Region = n.Name
+				case 2:
+					in.City = n.Name
+				default:
+					in.Village = n.Name
+				}
+			}
+		}
+	}
+
 	if in.Title == "" || in.Contact == "" {
 		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
 		page.ActiveCat = "realestate"
@@ -128,6 +151,10 @@ func parseListingForm(r *http.Request) ListingInput {
 	price, _ := strconv.ParseInt(digitsOnly(r.FormValue("price")), 10, 64)
 	area, _ := strconv.ParseFloat(strings.Replace(strings.TrimSpace(r.FormValue("area")), ",", ".", 1), 64)
 	rooms, _ := strconv.Atoi(digitsOnly(r.FormValue("rooms")))
+	var geoID *uuid.UUID
+	if gid, err := uuid.Parse(strings.TrimSpace(r.FormValue("geo_node_id"))); err == nil {
+		geoID = &gid
+	}
 	return ListingInput{
 		DealType:     deal,
 		PropertyType: ptype,
@@ -142,6 +169,7 @@ func parseListingForm(r *http.Request) ListingInput {
 		Description:  strings.TrimSpace(r.FormValue("description")),
 		Contact:      strings.TrimSpace(r.FormValue("contact")),
 		Cover:        strings.TrimSpace(r.FormValue("cover_url")),
+		GeoNodeID:    geoID,
 	}
 }
 

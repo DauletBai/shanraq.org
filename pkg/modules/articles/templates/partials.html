@@ -187,6 +187,59 @@
           .catch(function () { if (status) status.textContent = '✕'; });
       });
     });
+    (function () {
+      var box = document.querySelector('[data-geo]');
+      if (!box) return;
+      var lang = box.getAttribute('data-lang') || 'ru';
+      var hidden = document.getElementById('geo_node_id');
+      var LABELS = {
+        country: { kz: 'Ел', ru: 'Страна', en: 'Country' },
+        region: { kz: 'Облыс', ru: 'Область', en: 'Region' },
+        republic: { kz: 'Регион/республика', ru: 'Регион или республика', en: 'Region or republic' },
+        krai: { kz: 'Өлке', ru: 'Край', en: 'Krai' },
+        oblast: { kz: 'Облыс', ru: 'Область', en: 'Oblast' },
+        okrug: { kz: 'Округ', ru: 'Округ', en: 'Okrug' },
+        city: { kz: 'Қала', ru: 'Город', en: 'City' },
+        district: { kz: 'Аудан', ru: 'Район', en: 'District' },
+        village: { kz: 'Елді мекен', ru: 'Село / посёлок', en: 'Locality' }
+      };
+      function label(kind) { var m = LABELS[kind]; return (m && (m[lang] || m.ru)) || '—'; }
+      function addSelect(parentId, level) {
+        var url = parentId
+          ? '/api/geo/children?parent=' + encodeURIComponent(parentId) + '&lang=' + lang
+          : '/api/geo/roots?lang=' + lang;
+        fetch(url, { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (items) {
+          if (!items || !items.length) return;
+          var row = document.createElement('div');
+          row.className = 'geo-row';
+          row.setAttribute('data-level', level);
+          var sel = document.createElement('select');
+          sel.className = 'select';
+          var ph = document.createElement('option');
+          ph.value = '';
+          ph.textContent = '— ' + label(items[0].kind) + ' —';
+          sel.appendChild(ph);
+          items.forEach(function (it) {
+            var o = document.createElement('option');
+            o.value = it.id;
+            o.textContent = it.name;
+            if (it.has_children) o.setAttribute('data-has', '1');
+            sel.appendChild(o);
+          });
+          sel.addEventListener('change', function () {
+            box.querySelectorAll('.geo-row').forEach(function (rw) {
+              if (parseInt(rw.getAttribute('data-level'), 10) > level) rw.parentNode.removeChild(rw);
+            });
+            if (hidden) hidden.value = sel.value;
+            var opt = sel.options[sel.selectedIndex];
+            if (sel.value && opt.getAttribute('data-has')) addSelect(sel.value, level + 1);
+          });
+          row.appendChild(sel);
+          box.appendChild(row);
+        }).catch(function () {});
+      }
+      addSelect(null, 0);
+    })();
     var tabs = document.querySelectorAll('[data-tab]');
     if (tabs.length) tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {

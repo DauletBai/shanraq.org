@@ -477,3 +477,7 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .gallery__item { display: none; }
 .gallery__item.is-active { display: block; }
 .gallery__item img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+
+/* ---- Location cascade (listing form) ---- */
+.geo-cascade { display: flex; flex-direction: column; gap: 10px; }
+.geo-cascade .select { max-width: 340px; }

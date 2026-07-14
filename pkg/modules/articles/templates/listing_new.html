@@ -23,11 +23,11 @@
         </div>
       </div>
 
-      <div class="grid-2">
-        <div class="field"><label>{{ t .Lang "re.country" }}</label><input class="input" name="country" value="{{ .Values.Country }}"></div>
-        <div class="field"><label>{{ t .Lang "re.region" }}</label><input class="input" name="region" value="{{ .Values.Region }}"></div>
-        <div class="field"><label>{{ t .Lang "re.city" }}</label><input class="input" name="city" value="{{ .Values.City }}"></div>
-        <div class="field"><label>{{ t .Lang "re.village" }}</label><input class="input" name="village" value="{{ .Values.Village }}"></div>
+      <div class="field">
+        <label>{{ t .Lang "re.location" }}</label>
+        <div class="geo-cascade" data-geo data-lang="{{ .Lang }}"></div>
+        <input type="hidden" name="geo_node_id" id="geo_node_id">
+        <p class="hint">{{ t .Lang "re.location_hint" }}</p>
       </div>
 
       <div class="grid-3">

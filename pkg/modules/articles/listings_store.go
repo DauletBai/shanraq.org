@@ -24,17 +24,18 @@ type ListingInput struct {
 	Area                               float64
 	Rooms                              int
 	Title, Description, Contact, Cover string
+	GeoNodeID                          *uuid.UUID
 }
 
 func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in ListingInput) (uuid.UUID, error) {
 	var id uuid.UUID
 	err := s.db.QueryRow(ctx, `
 		INSERT INTO listings (author_id, deal_type, property_type, country, region, city, village,
-		                      price, area, rooms, title, description, contact, cover_url, status)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,'published')
+		                      price, area, rooms, title, description, contact, cover_url, geo_node_id, status)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,'published')
 		RETURNING id
 	`, authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.Village,
-		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover).Scan(&id)
+		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.GeoNodeID).Scan(&id)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("create listing: %w", err)
 	}
