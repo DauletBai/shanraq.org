@@ -213,11 +213,20 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .adslide__body { max-width: 62%; }
 .adslide--center .adslide__body { max-width: 74%; }
 .adslide__text { font-family: var(--serif); font-size: var(--step-3); font-weight: 700; line-height: 1.2; margin: 0 0 16px; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35); }
-.adslide .btn--primary { background: #fff; color: var(--gold-strong); }
+/* fixed dark-red label so it stays legible on the white button in any theme */
+.adslide .btn--primary,
+:root[data-theme="dark"] .adslide .btn--primary { background: #fff; color: #b71c1c; }
 .adslide .btn--primary:hover { background: #f1f1f1; }
 .adcarousel__dots { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
 .adcarousel__dots button { width: 9px; height: 9px; border-radius: 50%; border: none; background: rgba(255, 255, 255, 0.5); cursor: pointer; padding: 0; }
 .adcarousel__dots button.is-active { background: #fff; }
+
+/* sidebar variant of the ad carousel */
+.adcarousel--side { height: 280px; margin-bottom: 0; }
+.adcarousel--side .adslide { padding: 22px; }
+.adcarousel--side .adslide__text { font-size: var(--step-1); }
+.adcarousel--side .adslide__body,
+.adcarousel--side .adslide--center .adslide__body { max-width: 100%; }
 
 /* hero (featured) */
 .hero {

@@ -64,14 +64,34 @@
     <h3 class="aside__title">{{ t .Lang "sidebar.about" }}</h3>
     <p class="aside__text">{{ t .Lang "sidebar.about_text" }}</p>
   </div>
-  {{ if .Recent }}
-  <div class="aside__block" style="background:var(--surface)">
-    <h3 class="aside__title">{{ t .Lang "sidebar.recent" }}</h3>
-    <ul class="aside__list">
-      {{ range .Recent }}<li><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a><small>{{ fmtDatePtr .Published }}</small></li>{{ end }}
-    </ul>
+  <div class="adcarousel adcarousel--side" data-carousel>
+    <div class="adslide adslide--left is-active">
+      <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
+      <div class="adslide__body">
+        <p class="adslide__text">{{ t .Lang "ad.placeholder" }}</p>
+        <a class="btn btn--primary btn--sm" href="#">{{ t .Lang "ad.cta" }}</a>
+      </div>
+    </div>
+    <div class="adslide adslide--center">
+      <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
+      <div class="adslide__body">
+        <p class="adslide__text">{{ t .Lang "ad.placeholder" }}</p>
+        <a class="btn btn--primary btn--sm" href="#">{{ t .Lang "ad.cta" }}</a>
+      </div>
+    </div>
+    <div class="adslide adslide--right">
+      <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
+      <div class="adslide__body">
+        <p class="adslide__text">{{ t .Lang "ad.placeholder" }}</p>
+        <a class="btn btn--primary btn--sm" href="#">{{ t .Lang "ad.cta" }}</a>
+      </div>
+    </div>
+    <div class="adcarousel__dots">
+      <button type="button" data-dot="0" class="is-active" aria-label="1"></button>
+      <button type="button" data-dot="1" aria-label="2"></button>
+      <button type="button" data-dot="2" aria-label="3"></button>
+    </div>
   </div>
-  {{ end }}
   <div class="aside__block" style="background:var(--surface)">
     <h3 class="aside__title">{{ t .Lang "sidebar.subscribe" }}</h3>
     {{ if .Subscribed }}
@@ -108,8 +128,7 @@
       document.documentElement.setAttribute('data-theme', next);
       try { localStorage.setItem('shanraq-theme', next); } catch (e) {}
     });
-    var car = document.querySelector('[data-carousel]');
-    if (car) {
+    document.querySelectorAll('[data-carousel]').forEach(function (car) {
       var slides = car.querySelectorAll('.adslide');
       var dots = car.querySelectorAll('[data-dot]');
       var idx = 0, n = slides.length;
@@ -120,7 +139,7 @@
       };
       dots.forEach(function (d) { d.addEventListener('click', function () { show(parseInt(d.getAttribute('data-dot'), 10)); }); });
       if (n > 1) setInterval(function () { show(idx + 1); }, 6000);
-    }
+    });
     var tabs = document.querySelectorAll('[data-tab]');
     if (tabs.length) tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
