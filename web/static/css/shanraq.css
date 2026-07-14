@@ -372,7 +372,13 @@ table.list td.title { white-space: normal; max-width: 380px; }
 /* ---------- footer ---------- */
 .site-footer { border-top: 1px solid var(--line-strong); padding: 34px 0; margin-top: 20px; color: var(--muted); font-size: var(--step--1); background: var(--surface-2); }
 .site-footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
-.site-footer .foot-tag { font-family: var(--serif); font-style: italic; }
+.foot-nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.foot-nav a { color: var(--ink-soft); font-weight: 600; }
+.foot-nav a:hover { color: var(--gold-strong); text-decoration: none; }
+
+/* info pages (about / guide / support) */
+.page { max-width: 760px; margin: 0 auto; padding: 34px 0 70px; }
+.page__title { font-size: var(--step-4); margin-bottom: 22px; line-height: 1.1; }
 
 @media (max-width: 640px) {
   /* hide only the right-side text links (e.g. Studio); keep the language switch */

@@ -1,0 +1,12 @@
+{{ define "page" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="page">
+    <h1 class="page__title">{{ .Title }}</h1>
+    <div class="prose">{{ .Body }}</div>
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

@@ -147,6 +147,13 @@ var messages = map[string]map[string]string{
 
 	"footer.tag":    {"kz": "Shanraq — үй, мұнда еркін дауыстар тоғысады.", "ru": "Shanraq — дом, где сходятся свободные голоса.", "en": "Shanraq — a home where free voices meet."},
 	"footer.rights": {"kz": "Барлық құқықтар қорғалған", "ru": "Все права защищены", "en": "All rights reserved"},
+	"footer.about":   {"kz": "Біз туралы", "ru": "О нас", "en": "About us"},
+	"footer.you":     {"kz": "Сіз туралы", "ru": "О вас", "en": "About you"},
+	"footer.support": {"kz": "Қолдау", "ru": "Поддержка", "en": "Support"},
+
+	"guide.side_title": {"kz": "Мақала не жарнаманы қалай орналастыру керек", "ru": "Как разместить статью или объявление", "en": "How to publish a story or an ad"},
+	"guide.side_text":  {"kz": "Жариялау, құқықтар мен жауапкершілік туралы қысқаша нұсқаулық.", "ru": "Краткий справочник о публикации, правах и ответственности.", "en": "A short guide to publishing, rights and responsibilities."},
+	"common.more":      {"kz": "Толығырақ", "ru": "Подробнее", "en": "Learn more"},
 }
 
 // T returns the UI string for key in lang, falling back to Russian then the key.

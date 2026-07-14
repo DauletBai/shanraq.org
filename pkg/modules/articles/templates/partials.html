@@ -60,10 +60,6 @@
 
 {{ define "sidebar" }}
 <aside class="aside">
-  <div class="aside__block">
-    <h3 class="aside__title">{{ t .Lang "sidebar.about" }}</h3>
-    <p class="aside__text">{{ t .Lang "sidebar.about_text" }}</p>
-  </div>
   <div class="adcarousel adcarousel--side" data-carousel>
     <div class="adslide adslide--left is-active">
       <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
@@ -92,6 +88,11 @@
       <button type="button" data-dot="2" aria-label="3"></button>
     </div>
   </div>
+  <div class="aside__block">
+    <h3 class="aside__title"><a href="/guide">{{ t .Lang "guide.side_title" }}</a></h3>
+    <p class="aside__text">{{ t .Lang "guide.side_text" }}</p>
+    <a class="btn btn--ghost btn--sm" href="/guide" style="margin-top:12px">{{ t .Lang "common.more" }}</a>
+  </div>
   <div class="aside__block" style="background:var(--surface)">
     <h3 class="aside__title">{{ t .Lang "sidebar.subscribe" }}</h3>
     {{ if .Subscribed }}
@@ -115,7 +116,11 @@
 {{ define "site_footer" }}
 <footer class="site-footer">
   <div class="container">
-    <span class="foot-tag">{{ t .Lang "footer.tag" }}</span>
+    <nav class="foot-nav">
+      <a href="/about">{{ t .Lang "footer.about" }}</a>
+      <a href="/guide">{{ t .Lang "footer.you" }}</a>
+      <a href="/support">{{ t .Lang "footer.support" }}</a>
+    </nav>
     <span>© {{ year }} Shanraq — {{ t .Lang "footer.rights" }}</span>
   </div>
 </footer>

@@ -120,6 +120,27 @@ func recentSlice(items []FeedItem, n int) []FeedItem {
 	return items
 }
 
+// StaticPage backs the About / Guide / Support info pages.
+type StaticPage struct {
+	Base
+	Body interface{}
+}
+
+// handleStaticPage renders a localized info page by key.
+func (m *Module) handleStaticPage(key string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		lang := m.resolveLang(w, r)
+		c := staticContent(key, lang)
+		if c.Title == "" {
+			http.NotFound(w, r)
+			return
+		}
+		page := StaticPage{Base: m.base(r, c.Title, lang)}
+		page.Body = RenderMarkdown(c.Body)
+		m.render(w, "page", page)
+	}
+}
+
 // handleReadRedirect keeps the old /read URL working by sending it home.
 func (m *Module) handleReadRedirect(w http.ResponseWriter, r *http.Request) {
 	target := "/"
