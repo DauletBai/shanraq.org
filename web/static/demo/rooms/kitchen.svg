@@ -1,0 +1,22 @@
+<svg width="640" height="400" viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="400" fill="#eaf3ee"/>
+  <rect y="310" width="640" height="90" fill="#d7dbe0"/>
+  <!-- upper cabinets -->
+  <rect x="60" y="70" width="140" height="70" rx="4" fill="#4c6b8a"/>
+  <rect x="210" y="70" width="140" height="70" rx="4" fill="#4c6b8a"/>
+  <rect x="128" y="78" width="6" height="54" fill="#cfe0ef"/>
+  <rect x="278" y="78" width="6" height="54" fill="#cfe0ef"/>
+  <!-- hood + window -->
+  <rect x="420" y="70" width="150" height="120" rx="4" fill="#d6ecf7" stroke="#fff" stroke-width="8"/>
+  <line x1="495" y1="70" x2="495" y2="190" stroke="#fff" stroke-width="6"/>
+  <!-- countertop -->
+  <rect x="50" y="215" width="540" height="20" rx="4" fill="#3b3f45"/>
+  <rect x="50" y="235" width="540" height="80" fill="#5c7fa3"/>
+  <rect x="130" y="248" width="6" height="54" fill="#cfe0ef"/>
+  <rect x="250" y="248" width="6" height="54" fill="#cfe0ef"/>
+  <rect x="470" y="248" width="6" height="54" fill="#cfe0ef"/>
+  <!-- sink + stove -->
+  <rect x="300" y="222" width="70" height="8" rx="4" fill="#9aa7b3"/>
+  <circle cx="420" cy="226" r="7" fill="#9aa7b3"/><circle cx="450" cy="226" r="7" fill="#9aa7b3"/>
+  <rect x="200" y="150" width="70" height="30" rx="6" fill="#90a4ae"/>
+</svg>

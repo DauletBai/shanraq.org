@@ -6,7 +6,18 @@
   <div class="layout">
     <div>
       <article class="article">
-        {{ if .L.CoverURL }}<div class="article__media"><img src="{{ .L.CoverURL }}" alt=""></div>{{ end }}
+        {{ if .L.Images }}
+        <div class="gallery" data-carousel>
+          {{ range $i, $src := .L.Images }}
+          <a class="gallery__item{{ if eq $i 0 }} is-active{{ end }}" href="{{ $src }}" target="_blank" rel="noopener"><img src="{{ $src }}" alt=""></a>
+          {{ end }}
+          {{ if gt (len .L.Images) 1 }}
+          <div class="adcarousel__dots">
+            {{ range $i, $src := .L.Images }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}
+          </div>
+          {{ end }}
+        </div>
+        {{ else if .L.CoverURL }}<div class="article__media"><img src="{{ .L.CoverURL }}" alt=""></div>{{ end }}
         <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>
         <h1 class="article__title">{{ .L.Title }}</h1>
         <p class="listing__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>

@@ -461,3 +461,9 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .uploader { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
 .uploader__btn { cursor: pointer; margin: 0; }
 .uploader__status { font-size: 0.95rem; color: var(--muted); min-width: 1em; }
+
+/* ---- Listing photo gallery (carousel) ---- */
+.gallery { position: relative; border-radius: var(--radius); overflow: hidden; margin-bottom: 22px; background: var(--surface-2); }
+.gallery__item { display: none; }
+.gallery__item.is-active { display: block; }
+.gallery__item img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }

@@ -1,0 +1,19 @@
+<svg width="640" height="400" viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#bfe0ff"/><stop offset="1" stop-color="#e9f5ff"/>
+  </linearGradient></defs>
+  <rect width="640" height="400" fill="url(#sky)"/>
+  <circle cx="540" cy="80" r="34" fill="#ffe082"/>
+  <rect y="300" width="640" height="100" fill="#bfe3a6"/>
+  <rect y="296" width="640" height="8" fill="#a9d68c"/>
+  <!-- house -->
+  <rect x="180" y="170" width="280" height="140" rx="6" fill="#f5efe6"/>
+  <polygon points="165,172 320,96 475,172" fill="#c0392b"/>
+  <rect x="300" y="240" width="46" height="70" rx="4" fill="#7a5230"/>
+  <circle cx="337" cy="276" r="3" fill="#ffd54f"/>
+  <rect x="212" y="196" width="54" height="46" rx="4" fill="#cfe6f5" stroke="#fff" stroke-width="4"/>
+  <rect x="386" y="196" width="54" height="46" rx="4" fill="#cfe6f5" stroke="#fff" stroke-width="4"/>
+  <rect x="400" y="110" width="22" height="44" fill="#8d6e63"/>
+  <rect x="150" y="308" width="360" height="6" fill="#94b877"/>
+  <circle cx="120" cy="250" r="30" fill="#7cb342"/><rect x="115" y="250" width="10" height="60" fill="#8d6e63"/>
+</svg>

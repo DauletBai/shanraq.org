@@ -159,7 +159,7 @@
       try { localStorage.setItem('shanraq-theme', next); } catch (e) {}
     });
     document.querySelectorAll('[data-carousel]').forEach(function (car) {
-      var slides = car.querySelectorAll('.adslide');
+      var slides = car.querySelectorAll('.adslide, .gallery__item');
       var dots = car.querySelectorAll('[data-dot]');
       var idx = 0, n = slides.length;
       var show = function (i) {

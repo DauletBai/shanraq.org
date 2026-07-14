@@ -1,0 +1,21 @@
+<svg width="640" height="400" viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="400" fill="#eef1f5"/>
+  <rect y="300" width="640" height="100" fill="#e0cdb0"/>
+  <rect y="296" width="640" height="6" fill="#cdb794"/>
+  <!-- window -->
+  <rect x="70" y="70" width="150" height="120" rx="4" fill="#d6ecf7" stroke="#fff" stroke-width="8"/>
+  <line x1="145" y1="70" x2="145" y2="190" stroke="#fff" stroke-width="6"/>
+  <!-- picture -->
+  <rect x="430" y="90" width="120" height="80" rx="4" fill="#fff" stroke="#c9a45b" stroke-width="6"/>
+  <polygon points="440,160 480,120 510,150 540,110 540,160" fill="#7cb342"/>
+  <!-- sofa -->
+  <rect x="150" y="230" width="330" height="70" rx="14" fill="#5b7a99"/>
+  <rect x="150" y="200" width="330" height="46" rx="12" fill="#6d8cab"/>
+  <rect x="140" y="210" width="34" height="90" rx="12" fill="#4f6b87"/>
+  <rect x="456" y="210" width="34" height="90" rx="12" fill="#4f6b87"/>
+  <rect x="210" y="212" width="60" height="40" rx="8" fill="#e57373"/>
+  <rect x="360" y="212" width="60" height="40" rx="8" fill="#ffb74d"/>
+  <!-- lamp -->
+  <rect x="560" y="150" width="10" height="150" fill="#8d6e63"/>
+  <polygon points="545,150 585,150 578,120 552,120" fill="#ffe082"/>
+</svg>

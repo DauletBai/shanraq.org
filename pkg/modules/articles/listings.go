@@ -43,6 +43,7 @@ type Listing struct {
 	Description  string
 	Contact      string
 	CoverURL     string
+	Images       []string
 	Status       string
 	CreatedAt    time.Time
 }
