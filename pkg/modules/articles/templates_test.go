@@ -61,7 +61,7 @@ func TestTemplatesExecute(t *testing.T) {
 			{"article", ArticlePage{Base: base, Slug: "s", Title: "T", AuthorName: "A",
 				ServedLang: LangRU, Category: "society", Body: RenderMarkdown("# Hi\n\nText"), Published: &now, Views: 1,
 				Translated: true, IsAI: true, AvailableLangs: []string{LangRU},
-				Score: 3, UserVote: 1, AuthorKarma: 42, CanVote: true}},
+				Score: 3, UserVote: 1, AuthorKarma: 42, CanVote: true, Recent: []FeedItem{item}, Subscribed: false}},
 			{"form", FormPage{Base: base, Mode: "login", Email: "a@b.c", Error: "err"}},
 			{"form", FormPage{Base: base, Mode: "register"}},
 			{"studio_dashboard", StudioPage{Base: base, Karma: 42, Stats: AuthorStats{

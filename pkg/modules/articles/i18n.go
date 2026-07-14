@@ -68,6 +68,10 @@ var messages = map[string]map[string]string{
 	"meta.views": {"kz": "оқылым", "ru": "просмотров", "en": "views"},
 	"meta.ai":    {"kz": "ИИ аудармасы", "ru": "ИИ-перевод", "en": "AI translation"},
 
+	"ad.badge":       {"kz": "Жарнама", "ru": "Реклама", "en": "Ad"},
+	"ad.placeholder": {"kz": "Осында сіздің жарнамаңыз болуы мүмкін", "ru": "Здесь могла бы быть ваша реклама", "en": "Your ad could be here"},
+	"ad.cta":         {"kz": "Жарнама орналастыру", "ru": "Разместить рекламу", "en": "Advertise here"},
+
 	"sidebar.about":       {"kz": "Біз туралы", "ru": "О нас", "en": "About"},
 	"sidebar.about_text":  {"kz": "Shanraq — қарапайым адамдар мен журналистер үш тілде еркін жазатын тәуелсіз алаң.", "ru": "Shanraq — независимая площадка, где обычные люди и журналисты свободно пишут на трёх языках.", "en": "Shanraq is an independent platform where ordinary people and journalists write freely in three languages."},
 	"sidebar.recent":      {"kz": "Соңғы жазбалар", "ru": "Недавние записи", "en": "Recent posts"},

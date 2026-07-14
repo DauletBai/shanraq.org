@@ -3,30 +3,41 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
-  {{ if .Featured }}
   <div class="layout">
     <div>
-      <article class="hero">
-        <a class="hero__media" href="/read/{{ .Featured.Slug }}?lang={{ .Lang }}">
-          {{ if .Featured.CoverURL }}<img src="{{ .Featured.CoverURL }}" alt="">
-          {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
-        </a>
-        <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Featured.Category }}">{{ t .Lang (printf "cat.%s" .Featured.Category) }}</a>
-        <h1 class="hero__title"><a href="/read/{{ .Featured.Slug }}?lang={{ .Lang }}">{{ .Featured.Title }}</a></h1>
-        {{ if .Featured.Summary }}<p class="hero__lead">{{ .Featured.Summary }}</p>{{ end }}
-        <div class="byline">
-          <span class="author">{{ .Featured.AuthorName }}</span><span class="dot">·</span>
-          <span class="score {{ if gt .Featured.Score 0 }}pos{{ else if lt .Featured.Score 0 }}neg{{ end }}">▲ {{ .Featured.Score }}</span><span class="dot">·</span>
-          <span>{{ .Featured.Views }} {{ t .Lang "meta.views" }}</span><span class="dot">·</span>
-          <span>{{ fmtDatePtr .Featured.Published }}</span>
+      <div class="adcarousel" data-carousel>
+        <div class="adslide adslide--left is-active">
+          <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
+          <div class="adslide__body">
+            <p class="adslide__text">{{ t .Lang "ad.placeholder" }}</p>
+            <a class="btn btn--primary btn--sm" href="#">{{ t .Lang "ad.cta" }}</a>
+          </div>
         </div>
-      </article>
-
-      <div class="section-head">
-        <h2>{{ if eq .Active "top" }}{{ t .Lang "home.top" }}{{ else }}{{ t .Lang "home.latest" }}{{ end }}</h2>
+        <div class="adslide adslide--center">
+          <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
+          <div class="adslide__body">
+            <p class="adslide__text">{{ t .Lang "ad.placeholder" }}</p>
+            <a class="btn btn--primary btn--sm" href="#">{{ t .Lang "ad.cta" }}</a>
+          </div>
+        </div>
+        <div class="adslide adslide--right">
+          <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
+          <div class="adslide__body">
+            <p class="adslide__text">{{ t .Lang "ad.placeholder" }}</p>
+            <a class="btn btn--primary btn--sm" href="#">{{ t .Lang "ad.cta" }}</a>
+          </div>
+        </div>
+        <div class="adcarousel__dots">
+          <button type="button" data-dot="0" class="is-active" aria-label="1"></button>
+          <button type="button" data-dot="1" aria-label="2"></button>
+          <button type="button" data-dot="2" aria-label="3"></button>
+        </div>
       </div>
 
       {{ if .Posts }}
+      <div class="section-head">
+        <h2>{{ if eq .Active "top" }}{{ t .Lang "home.top" }}{{ else }}{{ t .Lang "home.latest" }}{{ end }}</h2>
+      </div>
       <div class="posts">
         {{ range .Posts }}
         <article class="post">
@@ -50,51 +61,16 @@
         </article>
         {{ end }}
       </div>
+      {{ else }}
+      <div class="empty">
+        <p style="font-size:1.2rem;margin-bottom:18px">{{ t .Lang "home.empty" }}</p>
+        <a class="btn btn--primary" href="/studio/new">{{ t .Lang "home.empty_cta" }}</a>
+      </div>
       {{ end }}
     </div>
 
-    <aside class="aside">
-      <div class="aside__block">
-        <h3 class="aside__title">{{ t .Lang "sidebar.about" }}</h3>
-        <p class="aside__text">{{ t .Lang "sidebar.about_text" }}</p>
-      </div>
-      {{ if .Recent }}
-      <div class="aside__block" style="background:var(--surface)">
-        <h3 class="aside__title">{{ t .Lang "sidebar.recent" }}</h3>
-        <ul class="aside__list">
-          {{ range .Recent }}
-          <li><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a><small>{{ fmtDatePtr .Published }}</small></li>
-          {{ end }}
-        </ul>
-      </div>
-      {{ end }}
-      <div class="aside__block" style="background:var(--surface)">
-        <h3 class="aside__title">{{ t .Lang "sidebar.subscribe" }}</h3>
-        {{ if .Subscribed }}
-        <p class="aside__text" style="color:var(--teal);font-weight:600">{{ t .Lang "sidebar.subscribed_ok" }}</p>
-        {{ else }}
-        <p class="aside__text" style="margin-bottom:12px">{{ t .Lang "sidebar.subscribe_text" }}</p>
-        <form method="post" action="/subscribe" style="display:flex;gap:8px;flex-wrap:wrap">
-          <input type="hidden" name="lang" value="{{ .Lang }}">
-          <input class="input" type="email" name="email" placeholder="email@…" required style="flex:1;min-width:150px">
-          <button class="btn btn--primary btn--sm" type="submit">{{ t .Lang "sidebar.subscribe_btn" }}</button>
-        </form>
-        {{ end }}
-      </div>
-      <div class="aside__block">
-        <h3 class="aside__title">{{ t .Lang "sidebar.follow" }}</h3>
-        <div class="aside__links">
-          <a class="btn btn--ghost btn--sm" href="/feed.xml?lang={{ .Lang }}">RSS</a>
-        </div>
-      </div>
-    </aside>
+    {{ template "sidebar" . }}
   </div>
-  {{ else }}
-  <div class="empty">
-    <p style="font-size:1.2rem;margin-bottom:18px">{{ t .Lang "home.empty" }}</p>
-    <a class="btn btn--primary" href="/studio/new">{{ t .Lang "home.empty_cta" }}</a>
-  </div>
-  {{ end }}
 </main>
 {{ template "site_footer" . }}
 {{ end }}

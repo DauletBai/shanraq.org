@@ -112,6 +112,14 @@ type HomePage struct {
 	Subscribed bool
 }
 
+// recentSlice returns up to n items for the sidebar "recent" list.
+func recentSlice(items []FeedItem, n int) []FeedItem {
+	if len(items) > n {
+		return items[:n]
+	}
+	return items
+}
+
 // handleReadRedirect keeps the old /read URL working by sending it home.
 func (m *Module) handleReadRedirect(w http.ResponseWriter, r *http.Request) {
 	target := "/"
@@ -179,15 +187,8 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	page.ActiveCat = cat
 	page.ActiveSub = sub
 	page.Subscribed = r.URL.Query().Get("subscribed") == "ok"
-	if len(items) > 0 {
-		page.Featured = &items[0]
-		page.Posts = items[1:]
-		recentN := len(items)
-		if recentN > 5 {
-			recentN = 5
-		}
-		page.Recent = items[:recentN]
-	}
+	page.Posts = items
+	page.Recent = recentSlice(items, 5)
 	m.render(w, "home", page)
 }
 
@@ -215,6 +216,34 @@ type ArticlePage struct {
 	AuthorKarma int
 	CanVote     bool // logged in and not the author
 	IsAuthor    bool
+	Recent      []FeedItem // sidebar
+	Subscribed  bool
+}
+
+// feedItemsFrom maps articles to feed items resolved for lang, skipping any
+// whose slug is in skip.
+func feedItemsFrom(arts []*Article, lang, skip string) []FeedItem {
+	items := make([]FeedItem, 0, len(arts))
+	for _, a := range arts {
+		if a.Slug == skip {
+			continue
+		}
+		tr, served := a.Translation(lang)
+		if tr == nil {
+			continue
+		}
+		summary := tr.Summary
+		if summary == "" {
+			summary = excerpt(stripMD(tr.BodyMD), 170)
+		}
+		items = append(items, FeedItem{
+			Slug: a.Slug, Title: tr.Title, Summary: summary, AuthorName: a.AuthorName(),
+			ServedLang: served, Category: a.Category, Subcategory: a.Subcategory, CoverURL: a.CoverURL,
+			Published: a.PublishedAt, Views: a.ViewsCount, Score: a.Score,
+			IsAI: tr.Source == "ai", AvailableLangs: a.AvailableLangs(),
+		})
+	}
+	return items
 }
 
 func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
@@ -266,6 +295,11 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	}
 	page.IsAuthor = viewer != uuid.Nil && viewer == a.AuthorID
 	page.CanVote = viewer != uuid.Nil && !page.IsAuthor
+
+	// Sidebar "recent" list (exclude the current article).
+	if recentArts, err := m.store.ListPublished(r.Context(), "recent", "", "", 6, 0); err == nil {
+		page.Recent = recentSlice(feedItemsFrom(recentArts, lang, a.Slug), 5)
+	}
 
 	m.render(w, "article", page)
 }

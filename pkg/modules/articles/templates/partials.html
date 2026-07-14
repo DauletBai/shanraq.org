@@ -58,6 +58,40 @@
 </nav>
 {{ end }}
 
+{{ define "sidebar" }}
+<aside class="aside">
+  <div class="aside__block">
+    <h3 class="aside__title">{{ t .Lang "sidebar.about" }}</h3>
+    <p class="aside__text">{{ t .Lang "sidebar.about_text" }}</p>
+  </div>
+  {{ if .Recent }}
+  <div class="aside__block" style="background:var(--surface)">
+    <h3 class="aside__title">{{ t .Lang "sidebar.recent" }}</h3>
+    <ul class="aside__list">
+      {{ range .Recent }}<li><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a><small>{{ fmtDatePtr .Published }}</small></li>{{ end }}
+    </ul>
+  </div>
+  {{ end }}
+  <div class="aside__block" style="background:var(--surface)">
+    <h3 class="aside__title">{{ t .Lang "sidebar.subscribe" }}</h3>
+    {{ if .Subscribed }}
+    <p class="aside__text" style="color:var(--teal);font-weight:600">{{ t .Lang "sidebar.subscribed_ok" }}</p>
+    {{ else }}
+    <p class="aside__text" style="margin-bottom:12px">{{ t .Lang "sidebar.subscribe_text" }}</p>
+    <form method="post" action="/subscribe" style="display:flex;gap:8px;flex-wrap:wrap">
+      <input type="hidden" name="lang" value="{{ .Lang }}">
+      <input class="input" type="email" name="email" placeholder="email@…" required style="flex:1;min-width:150px">
+      <button class="btn btn--primary btn--sm" type="submit">{{ t .Lang "sidebar.subscribe_btn" }}</button>
+    </form>
+    {{ end }}
+  </div>
+  <div class="aside__block">
+    <h3 class="aside__title">{{ t .Lang "sidebar.follow" }}</h3>
+    <div class="aside__links"><a class="btn btn--ghost btn--sm" href="/feed.xml?lang={{ .Lang }}">RSS</a></div>
+  </div>
+</aside>
+{{ end }}
+
 {{ define "site_footer" }}
 <footer class="site-footer">
   <div class="container">
@@ -74,6 +108,19 @@
       document.documentElement.setAttribute('data-theme', next);
       try { localStorage.setItem('shanraq-theme', next); } catch (e) {}
     });
+    var car = document.querySelector('[data-carousel]');
+    if (car) {
+      var slides = car.querySelectorAll('.adslide');
+      var dots = car.querySelectorAll('[data-dot]');
+      var idx = 0, n = slides.length;
+      var show = function (i) {
+        idx = (i + n) % n;
+        slides.forEach(function (s, k) { s.classList.toggle('is-active', k === idx); });
+        dots.forEach(function (d, k) { d.classList.toggle('is-active', k === idx); });
+      };
+      dots.forEach(function (d) { d.addEventListener('click', function () { show(parseInt(d.getAttribute('data-dot'), 10)); }); });
+      if (n > 1) setInterval(function () { show(idx + 1); }, 6000);
+    }
     var tabs = document.querySelectorAll('[data-tab]');
     if (tabs.length) tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
