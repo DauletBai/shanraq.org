@@ -26,6 +26,7 @@ type Base struct {
 	ShowLangs bool
 	Active    string // active section: "latest" | "top" | ""
 	ActiveCat string // active category slug, or "" for All
+	ActiveSub string // active subcategory slug, or ""
 	LangLinks map[string]string
 }
 
@@ -93,6 +94,7 @@ type FeedItem struct {
 	AuthorName     string
 	ServedLang     string
 	Category       string
+	Subcategory    string
 	Published      *time.Time
 	Views          int64
 	Score          int
@@ -131,8 +133,13 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	if c := r.URL.Query().Get("cat"); IsCategory(c) {
 		cat = c
 	}
+	sub := ""
+	if s := r.URL.Query().Get("sub"); IsSubcategory(s) {
+		sub = s
+		cat = SubcategoryParent(s) // a subcategory implies its parent category
+	}
 
-	arts, err := m.store.ListPublished(r.Context(), sort, cat, 21, 0)
+	arts, err := m.store.ListPublished(r.Context(), sort, cat, sub, 21, 0)
 	if err != nil {
 		m.rt.Logger.Error("home list", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
@@ -156,6 +163,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 			AuthorName:     a.AuthorName(),
 			ServedLang:     served,
 			Category:       a.Category,
+			Subcategory:    a.Subcategory,
 			Published:      a.PublishedAt,
 			Views:          a.ViewsCount,
 			Score:          a.Score,
@@ -167,7 +175,8 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	page := HomePage{Base: m.base(r, T(lang, "home.page_title"), lang)}
 	page.Active = active
 	page.ActiveCat = cat
-	page.Subscribed = r.URL.Query().Get("sub") == "ok"
+	page.ActiveSub = sub
+	page.Subscribed = r.URL.Query().Get("subscribed") == "ok"
 	if len(items) > 0 {
 		page.Featured = &items[0]
 		page.Posts = items[1:]
@@ -197,6 +206,7 @@ type ArticlePage struct {
 	AvailableLangs []string
 
 	Category    string
+	Subcategory string
 	Score       int
 	UserVote    int  // -1, 0, +1
 	AuthorKarma int
@@ -227,6 +237,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page := ArticlePage{Base: m.base(r, tr.Title, lang)}
 	page.Slug = a.Slug
 	page.Category = a.Category
+	page.Subcategory = a.Subcategory
 	page.Title = tr.Title
 	page.Summary = tr.Summary
 	page.AuthorName = a.AuthorName()
@@ -477,6 +488,7 @@ type EditorPage struct {
 	Status       string
 	OriginalLang string
 	Category     string
+	Subcategory  string
 	Fields       map[string]TranslationField
 	Error        string
 	AIEnabled    bool
@@ -511,6 +523,7 @@ func (m *Module) handleEditorNew(w http.ResponseWriter, r *http.Request) {
 	page.IsNew = true
 	page.OriginalLang = lang
 	page.Category = "society"
+	page.Subcategory = ""
 	page.Status = "draft"
 	page.Fields = emptyFields()
 	page.AIEnabled = m.ai.Enabled()
@@ -548,6 +561,7 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 	page.Status = a.Status
 	page.OriginalLang = a.OriginalLang
 	page.Category = a.Category
+	page.Subcategory = a.Subcategory
 	page.Fields = fields
 	page.AIEnabled = m.ai.Enabled()
 	page.Notice = aiNotice(lang, r.URL.Query().Get("ai"))
@@ -599,7 +613,7 @@ func (m *Module) handleImprove(w http.ResponseWriter, r *http.Request) {
 		BodyMD:  improved,
 		Source:  "human",
 	}}
-	if err := m.store.Update(r.Context(), id, authorID, a.OriginalLang, a.Category, input); err != nil {
+	if err := m.store.Update(r.Context(), id, authorID, a.OriginalLang, a.Category, a.Subcategory, input); err != nil {
 		m.rt.Logger.Error("save improved", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
@@ -654,12 +668,13 @@ func (m *Module) handleTranslate(w http.ResponseWriter, r *http.Request) {
 }
 
 // parseEditorForm reads the three-language editor form into translation inputs.
-func parseEditorForm(r *http.Request) (originalLang, category string, trs []TranslationInput) {
+func parseEditorForm(r *http.Request) (originalLang, category, subcategory string, trs []TranslationInput) {
 	originalLang = r.FormValue("original_lang")
 	if !IsLang(originalLang) {
 		originalLang = LangRU
 	}
 	category = NormalizeCategory(r.FormValue("category"))
+	subcategory = NormalizeSubcategory(category, r.FormValue("subcategory"))
 	for _, l := range Langs {
 		trs = append(trs, TranslationInput{
 			Lang:    l,
@@ -669,7 +684,7 @@ func parseEditorForm(r *http.Request) (originalLang, category string, trs []Tran
 			Source:  "human",
 		})
 	}
-	return originalLang, category, trs
+	return originalLang, category, subcategory, trs
 }
 
 func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
@@ -682,12 +697,12 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad form", http.StatusBadRequest)
 		return
 	}
-	originalLang, category, trs := parseEditorForm(r)
+	originalLang, category, subcategory, trs := parseEditorForm(r)
 
 	lang := m.resolveLang(w, r)
 	orig := findTR(trs, originalLang)
 	if orig.Title == "" || orig.BodyMD == "" {
-		m.reRenderEditor(w, r, true, "", "", originalLang, category, trs, T(lang, "editor.err_required"))
+		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, trs, T(lang, "editor.err_required"))
 		return
 	}
 
@@ -697,10 +712,10 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := m.store.Create(r.Context(), authorID, slug, originalLang, category, trs)
+	id, err := m.store.Create(r.Context(), authorID, slug, originalLang, category, subcategory, trs)
 	if err != nil {
 		m.rt.Logger.Error("create article", zap.Error(err))
-		m.reRenderEditor(w, r, true, "", "", originalLang, category, trs, T(lang, "editor.err_save"))
+		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, trs, T(lang, "editor.err_save"))
 		return
 	}
 	http.Redirect(w, r, "/studio/a/"+id.String(), http.StatusSeeOther)
@@ -721,9 +736,9 @@ func (m *Module) handleUpdate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad form", http.StatusBadRequest)
 		return
 	}
-	originalLang, category, trs := parseEditorForm(r)
+	originalLang, category, subcategory, trs := parseEditorForm(r)
 
-	if err := m.store.Update(r.Context(), id, authorID, originalLang, category, trs); err != nil {
+	if err := m.store.Update(r.Context(), id, authorID, originalLang, category, subcategory, trs); err != nil {
 		if errors.Is(err, ErrNotFound) {
 			http.NotFound(w, r)
 			return
@@ -776,7 +791,7 @@ func (m *Module) transition(w http.ResponseWriter, r *http.Request, status, redi
 	http.Redirect(w, r, redirect, http.StatusSeeOther)
 }
 
-func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bool, id, slug, originalLang, category string, trs []TranslationInput, errMsg string) {
+func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bool, id, slug, originalLang, category, subcategory string, trs []TranslationInput, errMsg string) {
 	fields := emptyFields()
 	for _, tr := range trs {
 		fields[tr.Lang] = TranslationField{Title: tr.Title, Summary: tr.Summary, BodyMD: tr.BodyMD, Source: tr.Source}
@@ -788,6 +803,7 @@ func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bo
 	page.Slug = slug
 	page.OriginalLang = originalLang
 	page.Category = category
+	page.Subcategory = subcategory
 	page.Status = "draft"
 	page.Fields = fields
 	page.AIEnabled = m.ai.Enabled()

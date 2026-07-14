@@ -45,6 +45,17 @@
             {{ range editorCategories }}<option value="{{ . }}"{{ if eq . $.Category }} selected{{ end }}>{{ t $.Lang (printf "cat.%s" .) }}</option>{{ end }}
           </select>
         </div>
+        <div class="field">
+          <label for="subcategory">{{ t .Lang "editor.subcategory" }}</label>
+          <select class="select" id="subcategory" name="subcategory" style="max-width:240px">
+            <option value="">{{ t .Lang "editor.sub_none" }}</option>
+            {{ range categories }}
+            <optgroup label="{{ t $.Lang (printf "cat.%s" .) }}">
+              {{ range subcats . }}<option value="{{ . }}"{{ if eq . $.Subcategory }} selected{{ end }}>{{ t $.Lang (printf "sub.%s" .) }}</option>{{ end }}
+            </optgroup>
+            {{ end }}
+          </select>
+        </div>
       </div>
       <p class="hint" style="margin-top:-6px;margin-bottom:16px">{{ t .Lang "editor.original_hint" }}</p>
 

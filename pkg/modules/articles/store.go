@@ -43,7 +43,7 @@ type TranslationInput struct {
 
 // Create inserts a new draft article plus any non-empty translations and
 // returns the new article ID.
-func (s *Store) Create(ctx context.Context, authorID uuid.UUID, slug, originalLang, category string, trs []TranslationInput) (uuid.UUID, error) {
+func (s *Store) Create(ctx context.Context, authorID uuid.UUID, slug, originalLang, category, subcategory string, trs []TranslationInput) (uuid.UUID, error) {
 	tx, err := s.db.BeginTx(ctx, pgx.TxOptions{})
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("begin: %w", err)
@@ -52,10 +52,10 @@ func (s *Store) Create(ctx context.Context, authorID uuid.UUID, slug, originalLa
 
 	var id uuid.UUID
 	err = tx.QueryRow(ctx, `
-		INSERT INTO articles (author_id, slug, original_lang, category, status)
-		VALUES ($1, $2, $3, $4, 'draft')
+		INSERT INTO articles (author_id, slug, original_lang, category, subcategory, status)
+		VALUES ($1, $2, $3, $4, $5, 'draft')
 		RETURNING id
-	`, authorID, slug, originalLang, category).Scan(&id)
+	`, authorID, slug, originalLang, category, subcategory).Scan(&id)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("insert article: %w", err)
 	}
@@ -73,7 +73,7 @@ func (s *Store) Create(ctx context.Context, authorID uuid.UUID, slug, originalLa
 }
 
 // Update rewrites an article's translations (author-scoped).
-func (s *Store) Update(ctx context.Context, id, authorID uuid.UUID, originalLang, category string, trs []TranslationInput) error {
+func (s *Store) Update(ctx context.Context, id, authorID uuid.UUID, originalLang, category, subcategory string, trs []TranslationInput) error {
 	tx, err := s.db.BeginTx(ctx, pgx.TxOptions{})
 	if err != nil {
 		return fmt.Errorf("begin: %w", err)
@@ -81,9 +81,9 @@ func (s *Store) Update(ctx context.Context, id, authorID uuid.UUID, originalLang
 	defer tx.Rollback(ctx) //nolint:errcheck
 
 	tag, err := tx.Exec(ctx, `
-		UPDATE articles SET original_lang = $3, category = $4, updated_at = NOW()
+		UPDATE articles SET original_lang = $3, category = $4, subcategory = $5, updated_at = NOW()
 		WHERE id = $1 AND author_id = $2
-	`, id, authorID, originalLang, category)
+	`, id, authorID, originalLang, category, subcategory)
 	if err != nil {
 		return fmt.Errorf("update article: %w", err)
 	}
@@ -159,7 +159,7 @@ func (s *Store) SlugExists(ctx context.Context, slug string) (bool, error) {
 // GetByID loads an article with all translations, scoped to an author.
 func (s *Store) GetByID(ctx context.Context, id, authorID uuid.UUID) (*Article, error) {
 	row := s.db.QueryRow(ctx, `
-		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category,
+		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
 		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -178,7 +178,7 @@ func (s *Store) GetByID(ctx context.Context, id, authorID uuid.UUID) (*Article, 
 // GetPublishedBySlug loads a published article with all translations.
 func (s *Store) GetPublishedBySlug(ctx context.Context, slug string) (*Article, error) {
 	row := s.db.QueryRow(ctx, `
-		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category,
+		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
 		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -197,7 +197,7 @@ func (s *Store) GetPublishedBySlug(ctx context.Context, slug string) (*Article, 
 // ListPublished returns published articles for the feed. sort "top" orders by
 // score (readers' choice); anything else by recency. A non-empty category
 // filters to that rubric.
-func (s *Store) ListPublished(ctx context.Context, sort, category string, limit, offset int) ([]*Article, error) {
+func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory string, limit, offset int) ([]*Article, error) {
 	if limit <= 0 || limit > 60 {
 		limit = 24
 	}
@@ -212,13 +212,17 @@ func (s *Store) ListPublished(ctx context.Context, sort, category string, limit,
 		args = append(args, category)
 		where += fmt.Sprintf(" AND a.category = $%d", len(args))
 	}
+	if subcategory != "" {
+		args = append(args, subcategory)
+		where += fmt.Sprintf(" AND a.subcategory = $%d", len(args))
+	}
 	args = append(args, limit)
 	limIdx := len(args)
 	args = append(args, offset)
 	offIdx := len(args)
 
 	query := fmt.Sprintf(`
-		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category,
+		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
 		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -241,7 +245,7 @@ func (s *Store) ListPublished(ctx context.Context, sort, category string, limit,
 // ListByAuthor returns all of an author's articles, newest first.
 func (s *Store) ListByAuthor(ctx context.Context, authorID uuid.UUID) ([]*Article, error) {
 	rows, err := s.db.Query(ctx, `
-		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category,
+		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
 		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -350,7 +354,7 @@ func (s *Store) attachTranslations(ctx context.Context, arts []*Article) ([]*Art
 
 func scanArticle(row pgx.Row) (*Article, error) {
 	var a Article
-	err := row.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.Slug, &a.OriginalLang, &a.Status, &a.Category,
+	err := row.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.Slug, &a.OriginalLang, &a.Status, &a.Category, &a.Subcategory,
 		&a.CoverURL, &a.Score, &a.ViewsCount, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -367,7 +371,7 @@ func scanArticles(rows pgx.Rows) ([]*Article, error) {
 	var out []*Article
 	for rows.Next() {
 		var a Article
-		err := rows.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.Slug, &a.OriginalLang, &a.Status, &a.Category,
+		err := rows.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.Slug, &a.OriginalLang, &a.Status, &a.Category, &a.Subcategory,
 			&a.CoverURL, &a.Score, &a.ViewsCount, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("scan article row: %w", err)

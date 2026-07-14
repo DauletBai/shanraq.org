@@ -49,6 +49,7 @@ type Article struct {
 	OriginalLang string
 	Status       string
 	Category     string
+	Subcategory  string
 	CoverURL     string
 	Score        int
 	ViewsCount   int64

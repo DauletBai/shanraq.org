@@ -77,7 +77,7 @@ func (m *Module) handleSubscribe(w http.ResponseWriter, r *http.Request) {
 	if err := m.subscribe(r.Context(), email, lang); err != nil {
 		m.log.Warn("subscribe failed", zap.Error(err))
 	}
-	http.Redirect(w, r, back+"&sub=ok", http.StatusSeeOther)
+	http.Redirect(w, r, back+"&subscribed=ok", http.StatusSeeOther)
 }
 
 func (m *Module) handleUnsubscribe(w http.ResponseWriter, r *http.Request) {
