@@ -114,6 +114,30 @@
 </aside>
 {{ end }}
 
+{{ define "re_sidebar" }}
+<aside class="aside">
+  <div class="adline__head">
+    <span class="adline__badge">{{ t .Lang "re.adline" }}</span>
+    <p class="adline__note">{{ t .Lang "re.adline_note" }}</p>
+  </div>
+  <a class="rebanner rebanner--1" href="/pricing">
+    <span class="rebanner__badge">{{ t .Lang "ad.badge" }}</span>
+    <span class="rebanner__title">{{ t .Lang "re.adslot" }}</span>
+    <span class="rebanner__cta">{{ t .Lang "re.adslot_cta" }} →</span>
+  </a>
+  <a class="rebanner rebanner--2" href="/pricing">
+    <span class="rebanner__badge">{{ t .Lang "ad.badge" }}</span>
+    <span class="rebanner__title">{{ t .Lang "re.adslot" }}</span>
+    <span class="rebanner__cta">{{ t .Lang "re.adslot_cta" }} →</span>
+  </a>
+  <a class="rebanner rebanner--3" href="/pricing">
+    <span class="rebanner__badge">{{ t .Lang "ad.badge" }}</span>
+    <span class="rebanner__title">{{ t .Lang "re.adslot" }}</span>
+    <span class="rebanner__cta">{{ t .Lang "re.adslot_cta" }} →</span>
+  </a>
+</aside>
+{{ end }}
+
 {{ define "site_footer" }}
 <footer class="site-footer">
   <div class="container">

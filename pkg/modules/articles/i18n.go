@@ -45,6 +45,10 @@ var messages = map[string]map[string]string{
 	"re.per_month":       {"kz": "/айына", "ru": "/мес", "en": "/mo"},
 	"re.contacts":        {"kz": "Байланыс", "ru": "Контакты", "en": "Contact"},
 	"re.cancel":          {"kz": "Бас тарту", "ru": "Отмена", "en": "Cancel"},
+	"re.adline":          {"kz": "Жылжымайтын мүлік жарнамасы", "ru": "Реклама недвижимости", "en": "Real-estate ads"},
+	"re.adline_note":     {"kz": "Жарнама желісіндегі баннерлер — қосымша ақыға. Шарттар — тарифтерде.", "ru": "Баннеры по рекламной линии — за дополнительную плату. Условия — в тарифах.", "en": "Banners on the ad line are a paid extra. See pricing for terms."},
+	"re.adslot":          {"kz": "Мұнда сіздің жарнамаңыз болуы мүмкін", "ru": "Здесь может быть ваша реклама", "en": "Your ad could be here"},
+	"re.adslot_cta":      {"kz": "Орналастыру", "ru": "Разместить", "en": "Place an ad"},
 
 	"cat.general":    {"kz": "Жалпы", "ru": "Общее", "en": "General"},
 	"cat.sport":      {"kz": "Спорт", "ru": "Спорт", "en": "Sport"},

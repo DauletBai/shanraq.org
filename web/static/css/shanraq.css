@@ -432,3 +432,27 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
   border-radius: 10px;
   background: var(--surface);
 }
+
+/* ---- Listings marketplace: two-column grid + ad line ---- */
+.posts--two { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 28px; }
+@media (max-width: 560px) { .posts--two { grid-template-columns: 1fr; } }
+
+.adline__head { padding-bottom: 4px; }
+.adline__badge { display: inline-block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--muted); }
+.adline__note { font-size: 0.86rem; color: var(--muted); margin-top: 6px; line-height: 1.45; }
+
+.rebanner {
+  display: flex; flex-direction: column; gap: 10px;
+  min-height: 148px; padding: 20px 20px 18px;
+  border-radius: 14px; color: #fff; text-decoration: none;
+  justify-content: space-between;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.rebanner:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18); }
+.rebanner__badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.09em; opacity: 0.85; }
+.rebanner__title { font-family: var(--serif); font-weight: 700; font-size: 1.18rem; line-height: 1.25; }
+.rebanner__cta { align-self: flex-start; padding: 7px 15px; border-radius: 999px; background: rgba(255, 255, 255, 0.22); font-weight: 600; font-size: 0.9rem; }
+.rebanner--1 { background: linear-gradient(135deg, #e53935, #b71c1c); }
+.rebanner--2 { background: linear-gradient(135deg, #3949ab, #1a237e); }
+.rebanner--3 { background: linear-gradient(135deg, #00897b, #00695c); }
