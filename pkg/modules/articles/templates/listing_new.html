@@ -1,0 +1,52 @@
+{{ define "listing_new" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <section class="studio" style="max-width:820px">
+    <div class="studio__head"><h1>{{ t .Lang "re.new_title" }}</h1></div>
+    {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
+
+    <form class="form" method="post" action="/listings/new">
+      <div class="grid-2">
+        <div class="field">
+          <label>{{ t .Lang "re.deal" }}</label>
+          <select class="select" name="deal_type">
+            {{ range dealTypes }}<option value="{{ . }}"{{ if eq . $.Values.DealType }} selected{{ end }}>{{ t $.Lang (printf "re.deal_%s" .) }}</option>{{ end }}
+          </select>
+        </div>
+        <div class="field">
+          <label>{{ t .Lang "re.type" }}</label>
+          <select class="select" name="property_type">
+            {{ range propertyTypes }}<option value="{{ . }}"{{ if eq . $.Values.PropertyType }} selected{{ end }}>{{ t $.Lang (printf "re.type_%s" .) }}</option>{{ end }}
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field"><label>{{ t .Lang "re.country" }}</label><input class="input" name="country" value="{{ .Values.Country }}"></div>
+        <div class="field"><label>{{ t .Lang "re.region" }}</label><input class="input" name="region" value="{{ .Values.Region }}"></div>
+        <div class="field"><label>{{ t .Lang "re.city" }}</label><input class="input" name="city" value="{{ .Values.City }}"></div>
+        <div class="field"><label>{{ t .Lang "re.village" }}</label><input class="input" name="village" value="{{ .Values.Village }}"></div>
+      </div>
+
+      <div class="grid-3">
+        <div class="field"><label>{{ t .Lang "re.price" }}</label><input class="input" type="text" inputmode="numeric" name="price" value="{{ if gt .Values.Price 0 }}{{ .Values.Price }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.area" }}</label><input class="input" name="area" value="{{ if gt .Values.Area 0.0 }}{{ .Values.Area }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.rooms" }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .Values.Rooms 0 }}{{ .Values.Rooms }}{{ end }}"></div>
+      </div>
+
+      <div class="field"><label>{{ t .Lang "re.title" }}</label><input class="input" name="title" value="{{ .Values.Title }}" required></div>
+      <div class="field"><label>{{ t .Lang "re.cover" }}</label><input class="input" type="url" name="cover_url" value="{{ .Values.Cover }}" placeholder="https://…"></div>
+      <div class="field"><label>{{ t .Lang "re.description" }}</label><textarea class="textarea" name="description" style="min-height:180px">{{ .Values.Description }}</textarea></div>
+      <div class="field"><label>{{ t .Lang "re.contact" }}</label><input class="input" name="contact" value="{{ .Values.Contact }}" required></div>
+
+      <div class="form-actions">
+        <button class="btn btn--primary" type="submit">{{ t .Lang "re.submit" }}</button>
+        <a class="btn btn--ghost" href="/listings" style="margin-left:auto">{{ t .Lang "re.cancel" }}</a>
+      </div>
+    </form>
+  </section>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

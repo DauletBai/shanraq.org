@@ -1,0 +1,38 @@
+{{ define "listing_view" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div>
+      <article class="article">
+        {{ if .L.CoverURL }}<div class="article__media"><img src="{{ .L.CoverURL }}" alt=""></div>{{ end }}
+        <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>
+        <h1 class="article__title">{{ .L.Title }}</h1>
+        <p class="listing__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
+
+        <div class="table-wrap">
+          <table class="spec">
+            <tbody>
+              {{ if .L.Country }}<tr><th>{{ t .Lang "re.country" }}</th><td>{{ .L.Country }}</td></tr>{{ end }}
+              {{ if .L.Region }}<tr><th>{{ t .Lang "re.region" }}</th><td>{{ .L.Region }}</td></tr>{{ end }}
+              {{ if .L.City }}<tr><th>{{ t .Lang "re.city" }}</th><td>{{ .L.City }}</td></tr>{{ end }}
+              {{ if .L.Village }}<tr><th>{{ t .Lang "re.village" }}</th><td>{{ .L.Village }}</td></tr>{{ end }}
+              {{ if gt .L.Rooms 0 }}<tr><th>{{ t .Lang "re.rooms" }}</th><td>{{ .L.Rooms }}</td></tr>{{ end }}
+              {{ if gt .L.Area 0.0 }}<tr><th>{{ t .Lang "re.area" }}</th><td>{{ .L.Area }} м²</td></tr>{{ end }}
+            </tbody>
+          </table>
+        </div>
+
+        {{ if .L.Description }}<div class="prose listing__desc">{{ .L.Description }}</div>{{ end }}
+
+        <div class="listing__contact">
+          <strong>{{ t .Lang "re.contacts" }}:</strong> {{ .L.Contact }}
+        </div>
+      </article>
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

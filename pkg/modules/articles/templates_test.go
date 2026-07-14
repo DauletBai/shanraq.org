@@ -19,6 +19,9 @@ func buildTemplates(t *testing.T) *template.Template {
 		"categories":       func() []string { return Categories },
 		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
 		"subcats":          func(cat string) []string { return Subcats(cat) },
+		"dealTypes":        func() []string { return DealTypes },
+		"propertyTypes":    func() []string { return PropertyTypes },
+		"money":            money,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(tm time.Time) string {
@@ -71,6 +74,14 @@ func TestTemplatesExecute(t *testing.T) {
 			}, Articles: []StudioRow{{ID: "id", Slug: "s", Title: "T", Status: "published", Updated: now, Views: 4, Langs: []string{LangRU}}}}},
 			{"studio_editor", EditorPage{Base: base, IsNew: true, OriginalLang: LangRU, Category: "society", Status: "draft", Fields: emptyFields()}},
 			{"studio_editor", EditorPage{Base: base, IsNew: false, ArticleID: "id", OriginalLang: LangKZ, Category: "politics", Status: "published", Fields: emptyFields(), AIEnabled: true, Notice: "N"}},
+			{"listings", ListingsPage{Base: base, ActiveDeal: "sale", ActiveType: "apartment", Listings: []*Listing{{
+				ID: "id", DealType: "sale", PropertyType: "apartment", Country: "Казахстан", Region: "Алматы", City: "Алматы",
+				Price: 25000000, Area: 62.5, Rooms: 2, Title: "2-комн квартира", CoverURL: ""}}}},
+			{"listings", ListingsPage{Base: base}}, // empty state
+			{"listing_new", ListingFormPage{Base: base, Values: ListingInput{DealType: "rent", PropertyType: "house", Country: "Казахстан"}, Error: "err"}},
+			{"listing_view", ListingViewPage{Base: base, L: &Listing{
+				ID: "id", DealType: "rent", PropertyType: "house", Country: "Казахстан", Region: "Астана", City: "Астана", Village: "Тельман",
+				Price: 350000, Area: 120, Rooms: 4, Title: "Дом в аренду", Description: "Line1\nLine2", Contact: "+7 700 000 00 00", CoverURL: "http://x/y.jpg"}}},
 		}
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {

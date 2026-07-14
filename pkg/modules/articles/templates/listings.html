@@ -1,0 +1,55 @@
+{{ define "listings" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="studio__head" style="margin-top:24px">
+    <h1>{{ t .Lang "nav.realestate" }}</h1>
+    {{ if .Authed }}
+    <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
+    {{ else }}
+    <a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>
+    {{ end }}
+  </div>
+
+  <div class="subbar" style="border:none;margin-bottom:6px">
+    <a class="subbar__item{{ if eq .ActiveDeal "" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}{{ if .ActiveType }}&type={{ .ActiveType }}{{ end }}">{{ t .Lang "nav.all" }}</a>
+    {{ range dealTypes }}<a class="subbar__item{{ if eq . $.ActiveDeal }} is-active{{ end }}" href="/listings?lang={{ $.Lang }}&deal={{ . }}{{ if $.ActiveType }}&type={{ $.ActiveType }}{{ end }}">{{ t $.Lang (printf "re.deal_%s" .) }}</a>{{ end }}
+  </div>
+  <div class="subbar" style="border:none;margin-bottom:22px">
+    <a class="subbar__item{{ if eq .ActiveType "" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}{{ if .ActiveDeal }}&deal={{ .ActiveDeal }}{{ end }}">{{ t .Lang "nav.all" }}</a>
+    {{ range propertyTypes }}<a class="subbar__item{{ if eq . $.ActiveType }} is-active{{ end }}" href="/listings?lang={{ $.Lang }}&type={{ . }}{{ if $.ActiveDeal }}&deal={{ $.ActiveDeal }}{{ end }}">{{ t $.Lang (printf "re.type_%s" .) }}</a>{{ end }}
+  </div>
+
+  {{ if .Listings }}
+  <div class="posts">
+    {{ range .Listings }}
+    <article class="post">
+      <a class="post__media" href="/listings/{{ .ID }}">
+        {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
+        {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
+      </a>
+      <span class="kicker">{{ t $.Lang (printf "re.type_%s" .PropertyType) }} · {{ t $.Lang (printf "re.deal_%s" .DealType) }}</span>
+      <h3 class="post__title"><a href="/listings/{{ .ID }}">{{ .Title }}</a></h3>
+      <p class="post__price">{{ money .Price }} ₸{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</p>
+      <div class="post__meta">
+        <span>{{ .Location }}</span>
+        {{ if gt .Rooms 0 }}<span class="dot">·</span><span>{{ .Rooms }} {{ t $.Lang "re.rooms" }}</span>{{ end }}
+        {{ if gt .Area 0.0 }}<span class="dot">·</span><span>{{ .Area }} м²</span>{{ end }}
+      </div>
+    </article>
+    {{ end }}
+  </div>
+  {{ else }}
+  <div class="empty">
+    <p style="margin-bottom:18px">{{ t .Lang "re.empty" }}</p>
+    {{ if .Authed }}
+    <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
+    {{ else }}
+    <a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>
+    {{ end }}
+  </div>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}

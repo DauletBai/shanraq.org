@@ -27,6 +27,7 @@ var templateFiles embed.FS
 type Module struct {
 	rt        *shanraq.Runtime
 	store     *Store
+	listings  *ListingStore
 	ratings   *ratings.Store
 	jobs      *jobs.Store
 	auth      *auth.Module
@@ -48,6 +49,7 @@ func (m *Module) Name() string { return "articles" }
 func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
+	m.listings = NewListingStore(rt.DB)
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
 	m.validator = validate.New()
@@ -60,6 +62,9 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"categories":       func() []string { return Categories },
 		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
 		"subcats":          func(cat string) []string { return Subcats(cat) },
+		"dealTypes":        func() []string { return DealTypes },
+		"propertyTypes":    func() []string { return PropertyTypes },
+		"money":            money,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(t time.Time) string {
@@ -100,6 +105,10 @@ func (m *Module) Routes(r chi.Router) {
 		r.Get("/guide", m.handleStaticPage("guide"))
 		r.Get("/pricing", m.handleStaticPage("pricing"))
 		r.Get("/support", m.handleStaticPage("support"))
+		r.Get("/listings", m.handleListings)
+		r.Get("/listings/new", m.handleListingNew)
+		r.Post("/listings/new", m.handleListingCreate)
+		r.Get("/listings/{id}", m.handleListingView)
 	})
 
 	// Studio auth pages (public).

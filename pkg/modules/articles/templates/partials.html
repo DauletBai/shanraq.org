@@ -47,6 +47,7 @@
       {{ range categories }}
       <a class="menu__item{{ if eq . $.ActiveCat }} is-active{{ end }}" href="/?lang={{ $.Lang }}&cat={{ . }}">{{ t $.Lang (printf "cat.%s" .) }}</a>
       {{ end }}
+      <a class="menu__item{{ if eq .ActiveCat "realestate" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}">{{ t .Lang "nav.realestate" }}</a>
     </div>
     {{ with subcats .ActiveCat }}
     <div class="subbar">

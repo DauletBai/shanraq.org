@@ -399,3 +399,36 @@ table.list td.title { white-space: normal; max-width: 380px; }
   .hero__title { font-size: var(--step-3); }
   .article__title { font-size: var(--step-4); }
 }
+
+/* ---- Real-estate listings ---- */
+.grid-2, .grid-3 { display: grid; gap: 14px 20px; }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+.post__price {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--gold-strong, var(--gold));
+  margin: 2px 0 6px;
+}
+.listing__price {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: var(--step-3);
+  color: var(--gold-strong, var(--gold));
+  margin: 8px 0 18px;
+}
+table.spec { width: 100%; border-collapse: collapse; font-size: 0.98rem; }
+table.spec th, table.spec td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.spec th { width: 38%; color: var(--muted); font-weight: 600; white-space: nowrap; }
+table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; }
+.listing__desc { white-space: pre-wrap; margin: 20px 0; }
+.listing__contact {
+  margin-top: 22px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
