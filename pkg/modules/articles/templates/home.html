@@ -7,6 +7,10 @@
   <div class="layout">
     <div>
       <article class="hero">
+        <a class="hero__media" href="/read/{{ .Featured.Slug }}?lang={{ .Lang }}">
+          {{ if .Featured.CoverURL }}<img src="{{ .Featured.CoverURL }}" alt="">
+          {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
+        </a>
         <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Featured.Category }}">{{ t .Lang (printf "cat.%s" .Featured.Category) }}</a>
         <h1 class="hero__title"><a href="/read/{{ .Featured.Slug }}?lang={{ .Lang }}">{{ .Featured.Title }}</a></h1>
         {{ if .Featured.Summary }}<p class="hero__lead">{{ .Featured.Summary }}</p>{{ end }}
@@ -26,6 +30,10 @@
       <div class="posts">
         {{ range .Posts }}
         <article class="post">
+          <a class="post__media" href="/read/{{ .Slug }}?lang={{ $.Lang }}">
+            {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
+            {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
+          </a>
           <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ t $.Lang (printf "cat.%s" .Category) }}</a>
           <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
           {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}

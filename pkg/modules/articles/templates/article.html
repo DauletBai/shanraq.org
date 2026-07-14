@@ -5,6 +5,7 @@
 <main class="container">
   <article class="article">
     <div class="article__head">
+      {{ if .CoverURL }}<div class="article__media"><img src="{{ .CoverURL }}" alt=""></div>{{ end }}
       <div class="byline">
         <span class="badge-lang">{{ label .ServedLang }}</span>
         <span class="dot">·</span>

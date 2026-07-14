@@ -43,7 +43,7 @@ type TranslationInput struct {
 
 // Create inserts a new draft article plus any non-empty translations and
 // returns the new article ID.
-func (s *Store) Create(ctx context.Context, authorID uuid.UUID, slug, originalLang, category, subcategory string, trs []TranslationInput) (uuid.UUID, error) {
+func (s *Store) Create(ctx context.Context, authorID uuid.UUID, slug, originalLang, category, subcategory, coverURL string, trs []TranslationInput) (uuid.UUID, error) {
 	tx, err := s.db.BeginTx(ctx, pgx.TxOptions{})
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("begin: %w", err)
@@ -52,10 +52,10 @@ func (s *Store) Create(ctx context.Context, authorID uuid.UUID, slug, originalLa
 
 	var id uuid.UUID
 	err = tx.QueryRow(ctx, `
-		INSERT INTO articles (author_id, slug, original_lang, category, subcategory, status)
-		VALUES ($1, $2, $3, $4, $5, 'draft')
+		INSERT INTO articles (author_id, slug, original_lang, category, subcategory, cover_url, status)
+		VALUES ($1, $2, $3, $4, $5, $6, 'draft')
 		RETURNING id
-	`, authorID, slug, originalLang, category, subcategory).Scan(&id)
+	`, authorID, slug, originalLang, category, subcategory, coverURL).Scan(&id)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("insert article: %w", err)
 	}
@@ -73,7 +73,7 @@ func (s *Store) Create(ctx context.Context, authorID uuid.UUID, slug, originalLa
 }
 
 // Update rewrites an article's translations (author-scoped).
-func (s *Store) Update(ctx context.Context, id, authorID uuid.UUID, originalLang, category, subcategory string, trs []TranslationInput) error {
+func (s *Store) Update(ctx context.Context, id, authorID uuid.UUID, originalLang, category, subcategory, coverURL string, trs []TranslationInput) error {
 	tx, err := s.db.BeginTx(ctx, pgx.TxOptions{})
 	if err != nil {
 		return fmt.Errorf("begin: %w", err)
@@ -81,9 +81,9 @@ func (s *Store) Update(ctx context.Context, id, authorID uuid.UUID, originalLang
 	defer tx.Rollback(ctx) //nolint:errcheck
 
 	tag, err := tx.Exec(ctx, `
-		UPDATE articles SET original_lang = $3, category = $4, subcategory = $5, updated_at = NOW()
+		UPDATE articles SET original_lang = $3, category = $4, subcategory = $5, cover_url = $6, updated_at = NOW()
 		WHERE id = $1 AND author_id = $2
-	`, id, authorID, originalLang, category, subcategory)
+	`, id, authorID, originalLang, category, subcategory, coverURL)
 	if err != nil {
 		return fmt.Errorf("update article: %w", err)
 	}

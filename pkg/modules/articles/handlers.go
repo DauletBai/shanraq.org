@@ -95,6 +95,7 @@ type FeedItem struct {
 	ServedLang     string
 	Category       string
 	Subcategory    string
+	CoverURL       string
 	Published      *time.Time
 	Views          int64
 	Score          int
@@ -164,6 +165,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 			ServedLang:     served,
 			Category:       a.Category,
 			Subcategory:    a.Subcategory,
+			CoverURL:       a.CoverURL,
 			Published:      a.PublishedAt,
 			Views:          a.ViewsCount,
 			Score:          a.Score,
@@ -207,6 +209,7 @@ type ArticlePage struct {
 
 	Category    string
 	Subcategory string
+	CoverURL    string
 	Score       int
 	UserVote    int  // -1, 0, +1
 	AuthorKarma int
@@ -238,6 +241,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.Slug = a.Slug
 	page.Category = a.Category
 	page.Subcategory = a.Subcategory
+	page.CoverURL = a.CoverURL
 	page.Title = tr.Title
 	page.Summary = tr.Summary
 	page.AuthorName = a.AuthorName()
@@ -489,6 +493,7 @@ type EditorPage struct {
 	OriginalLang string
 	Category     string
 	Subcategory  string
+	CoverURL     string
 	Fields       map[string]TranslationField
 	Error        string
 	AIEnabled    bool
@@ -562,6 +567,7 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 	page.OriginalLang = a.OriginalLang
 	page.Category = a.Category
 	page.Subcategory = a.Subcategory
+	page.CoverURL = a.CoverURL
 	page.Fields = fields
 	page.AIEnabled = m.ai.Enabled()
 	page.Notice = aiNotice(lang, r.URL.Query().Get("ai"))
@@ -613,7 +619,7 @@ func (m *Module) handleImprove(w http.ResponseWriter, r *http.Request) {
 		BodyMD:  improved,
 		Source:  "human",
 	}}
-	if err := m.store.Update(r.Context(), id, authorID, a.OriginalLang, a.Category, a.Subcategory, input); err != nil {
+	if err := m.store.Update(r.Context(), id, authorID, a.OriginalLang, a.Category, a.Subcategory, a.CoverURL, input); err != nil {
 		m.rt.Logger.Error("save improved", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
@@ -668,13 +674,14 @@ func (m *Module) handleTranslate(w http.ResponseWriter, r *http.Request) {
 }
 
 // parseEditorForm reads the three-language editor form into translation inputs.
-func parseEditorForm(r *http.Request) (originalLang, category, subcategory string, trs []TranslationInput) {
+func parseEditorForm(r *http.Request) (originalLang, category, subcategory, coverURL string, trs []TranslationInput) {
 	originalLang = r.FormValue("original_lang")
 	if !IsLang(originalLang) {
 		originalLang = LangRU
 	}
 	category = NormalizeCategory(r.FormValue("category"))
 	subcategory = NormalizeSubcategory(category, r.FormValue("subcategory"))
+	coverURL = strings.TrimSpace(r.FormValue("cover_url"))
 	for _, l := range Langs {
 		trs = append(trs, TranslationInput{
 			Lang:    l,
@@ -684,7 +691,7 @@ func parseEditorForm(r *http.Request) (originalLang, category, subcategory strin
 			Source:  "human",
 		})
 	}
-	return originalLang, category, subcategory, trs
+	return originalLang, category, subcategory, coverURL, trs
 }
 
 func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
@@ -697,12 +704,12 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad form", http.StatusBadRequest)
 		return
 	}
-	originalLang, category, subcategory, trs := parseEditorForm(r)
+	originalLang, category, subcategory, coverURL, trs := parseEditorForm(r)
 
 	lang := m.resolveLang(w, r)
 	orig := findTR(trs, originalLang)
 	if orig.Title == "" || orig.BodyMD == "" {
-		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, trs, T(lang, "editor.err_required"))
+		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, T(lang, "editor.err_required"))
 		return
 	}
 
@@ -712,10 +719,10 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := m.store.Create(r.Context(), authorID, slug, originalLang, category, subcategory, trs)
+	id, err := m.store.Create(r.Context(), authorID, slug, originalLang, category, subcategory, coverURL, trs)
 	if err != nil {
 		m.rt.Logger.Error("create article", zap.Error(err))
-		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, trs, T(lang, "editor.err_save"))
+		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, T(lang, "editor.err_save"))
 		return
 	}
 	http.Redirect(w, r, "/studio/a/"+id.String(), http.StatusSeeOther)
@@ -736,9 +743,9 @@ func (m *Module) handleUpdate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad form", http.StatusBadRequest)
 		return
 	}
-	originalLang, category, subcategory, trs := parseEditorForm(r)
+	originalLang, category, subcategory, coverURL, trs := parseEditorForm(r)
 
-	if err := m.store.Update(r.Context(), id, authorID, originalLang, category, subcategory, trs); err != nil {
+	if err := m.store.Update(r.Context(), id, authorID, originalLang, category, subcategory, coverURL, trs); err != nil {
 		if errors.Is(err, ErrNotFound) {
 			http.NotFound(w, r)
 			return
@@ -791,7 +798,7 @@ func (m *Module) transition(w http.ResponseWriter, r *http.Request, status, redi
 	http.Redirect(w, r, redirect, http.StatusSeeOther)
 }
 
-func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bool, id, slug, originalLang, category, subcategory string, trs []TranslationInput, errMsg string) {
+func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bool, id, slug, originalLang, category, subcategory, coverURL string, trs []TranslationInput, errMsg string) {
 	fields := emptyFields()
 	for _, tr := range trs {
 		fields[tr.Lang] = TranslationField{Title: tr.Title, Summary: tr.Summary, BodyMD: tr.BodyMD, Source: tr.Source}
@@ -804,6 +811,7 @@ func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bo
 	page.OriginalLang = originalLang
 	page.Category = category
 	page.Subcategory = subcategory
+	page.CoverURL = coverURL
 	page.Status = "draft"
 	page.Fields = fields
 	page.AIEnabled = m.ai.Enabled()

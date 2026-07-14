@@ -59,6 +59,12 @@
       </div>
       <p class="hint" style="margin-top:-6px;margin-bottom:16px">{{ t .Lang "editor.original_hint" }}</p>
 
+      <div class="field">
+        <label for="cover_url">{{ t .Lang "editor.cover" }}</label>
+        <input class="input" type="url" id="cover_url" name="cover_url" value="{{ .CoverURL }}" placeholder="https://…">
+        <p class="hint">{{ t .Lang "editor.cover_hint" }}</p>
+      </div>
+
       <div class="tabs">
         {{ range langs }}<button type="button" class="tab{{ if eq . $.OriginalLang }} is-active{{ end }}" data-tab="{{ . }}">{{ langName . }}</button>{{ end }}
       </div>
