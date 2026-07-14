@@ -50,6 +50,9 @@ var messages = map[string]map[string]string{
 	"re.adslot":          {"kz": "Мұнда сіздің жарнамаңыз болуы мүмкін", "ru": "Здесь может быть ваша реклама", "en": "Your ad could be here"},
 	"re.adslot_cta":      {"kz": "Орналастыру", "ru": "Разместить", "en": "Place an ad"},
 
+	"media.upload":      {"kz": "Фото жүктеу", "ru": "Загрузить фото", "en": "Upload photo"},
+	"media.upload_note": {"kz": "Жүктелген фотоларға автоматты түрде су таңбасы қойылады.", "ru": "На загруженные фото автоматически добавляется водяной знак.", "en": "Uploaded photos automatically get a watermark."},
+
 	"cat.general":    {"kz": "Жалпы", "ru": "Общее", "en": "General"},
 	"cat.sport":      {"kz": "Спорт", "ru": "Спорт", "en": "Sport"},
 	"cat.society":    {"kz": "Қоғам", "ru": "Общество", "en": "Society"},

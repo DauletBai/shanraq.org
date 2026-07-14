@@ -20,6 +20,22 @@ type Config struct {
 	Notifications NotificationsConfig `mapstructure:"notifications"`
 	AI            AIConfig            `mapstructure:"ai"`
 	Syndicate     SyndicateConfig     `mapstructure:"syndicate"`
+	Media         MediaConfig         `mapstructure:"media"`
+}
+
+// MediaConfig controls user media (images today; video via third-party embeds).
+// Storage is pluggable behind a Store interface: "fs" keeps files on local disk
+// under Dir and serves them from PublicPrefix (drop-in S3/MinIO backend is the
+// media-2 step). Every uploaded image is re-encoded — which strips EXIF (incl.
+// GPS) for author safety — resized to MaxDimension, and stamped with the brand
+// watermark in the top-right corner.
+type MediaConfig struct {
+	Backend        string `mapstructure:"backend"`
+	Dir            string `mapstructure:"dir"`
+	PublicPrefix   string `mapstructure:"public_prefix"`
+	MaxUploadBytes int64  `mapstructure:"max_upload_bytes"`
+	MaxDimension   int    `mapstructure:"max_dimension"`
+	Watermark      bool   `mapstructure:"watermark"`
 }
 
 // SyndicateConfig controls resilience channels: RSS is always on; Telegram
@@ -181,6 +197,13 @@ func setDefaults(v *viper.Viper) {
 
 	v.SetDefault("syndicate.base_url", "http://localhost:8080")
 	v.SetDefault("syndicate.telegram.enabled", false)
+
+	v.SetDefault("media.backend", "fs")
+	v.SetDefault("media.dir", "./data/media")
+	v.SetDefault("media.public_prefix", "/media")
+	v.SetDefault("media.max_upload_bytes", 10<<20) // 10 MiB
+	v.SetDefault("media.max_dimension", 2000)
+	v.SetDefault("media.watermark", true)
 }
 
 func validateConfig(cfg Config) error {

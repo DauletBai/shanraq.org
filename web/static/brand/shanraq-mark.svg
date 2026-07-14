@@ -1,0 +1,24 @@
+<!-- Static (non-animated) watermark variant of shanraq.svg. The display logo
+     styles its strokes via CSS classes + keyframes, which a rasterizer can't
+     render and which must not animate on a watermark; this variant inlines the
+     same geometry and colors as presentation attributes. -->
+<svg width="128" height="128" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#ffadad" stroke-opacity="0.5" stroke-width="45">
+      <line x1="76" y1="76" x2="324" y2="324"/>
+      <line x1="137" y1="37" x2="363" y2="263"/>
+      <line x1="37" y1="137" x2="263" y2="363"/>
+      <line x1="76" y1="324" x2="324" y2="76"/>
+      <line x1="137" y1="363" x2="363" y2="137"/>
+      <line x1="37" y1="263" x2="263" y2="37"/>
+    </g>
+    <g stroke="#e53935" stroke-width="30">
+      <line x1="76" y1="76" x2="324" y2="324"/>
+      <line x1="137" y1="37" x2="363" y2="263"/>
+      <line x1="37" y1="137" x2="263" y2="363"/>
+      <line x1="76" y1="324" x2="324" y2="76"/>
+      <line x1="137" y1="363" x2="363" y2="137"/>
+      <line x1="37" y1="263" x2="263" y2="37"/>
+    </g>
+  </g>
+</svg>

@@ -27,3 +27,6 @@ coverage.txt
 # Temporary files
 *.tmp
 *.temp
+
+# Runtime user media (filesystem MediaStore backend)
+/data/

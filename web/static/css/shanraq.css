@@ -456,3 +456,8 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .rebanner--1 { background: linear-gradient(135deg, #e53935, #b71c1c); }
 .rebanner--2 { background: linear-gradient(135deg, #3949ab, #1a237e); }
 .rebanner--3 { background: linear-gradient(135deg, #00897b, #00695c); }
+
+/* ---- Media uploader ---- */
+.uploader { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.uploader__btn { cursor: pointer; margin: 0; }
+.uploader__status { font-size: 0.95rem; color: var(--muted); min-width: 1em; }

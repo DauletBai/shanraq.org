@@ -62,7 +62,11 @@
       <div class="field">
         <label for="cover_url">{{ t .Lang "editor.cover" }}</label>
         <input class="input" type="url" id="cover_url" name="cover_url" value="{{ .CoverURL }}" placeholder="https://…">
-        <p class="hint">{{ t .Lang "editor.cover_hint" }}</p>
+        <div class="uploader">
+          <label class="btn btn--ghost btn--sm uploader__btn">{{ t .Lang "media.upload" }}<input type="file" accept="image/*" data-upload="cover_url" hidden></label>
+          <span class="uploader__status" data-upload-status></span>
+        </div>
+        <p class="hint">{{ t .Lang "editor.cover_hint" }} {{ t .Lang "media.upload_note" }}</p>
       </div>
 
       <div class="tabs">

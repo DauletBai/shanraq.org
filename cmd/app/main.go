@@ -20,6 +20,7 @@ import (
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/health"
 	"shanraq.org/pkg/modules/jobs"
+	"shanraq.org/pkg/modules/media"
 	"shanraq.org/pkg/modules/migrations"
 	"shanraq.org/pkg/modules/notifier"
 	"shanraq.org/pkg/modules/syndicate"
@@ -98,6 +99,7 @@ func main() {
 	app.Register(jobModule)
 	app.Register(aiModule)
 	app.Register(syndicateModule)
+	app.Register(media.New(authModule))
 	app.Register(articles.New(authModule, aiModule, syndicateModule))
 	app.Register(webui.New(jobWorkers, jobPollSeconds, webui.WithTenantResolver(func(r *http.Request) (uuid.UUID, bool) {
 		return tenantResolver(r)

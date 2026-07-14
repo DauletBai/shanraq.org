@@ -37,7 +37,15 @@
       </div>
 
       <div class="field"><label>{{ t .Lang "re.title" }}</label><input class="input" name="title" value="{{ .Values.Title }}" required></div>
-      <div class="field"><label>{{ t .Lang "re.cover" }}</label><input class="input" type="url" name="cover_url" value="{{ .Values.Cover }}" placeholder="https://…"></div>
+      <div class="field">
+        <label>{{ t .Lang "re.cover" }}</label>
+        <input class="input" type="url" name="cover_url" value="{{ .Values.Cover }}" placeholder="https://…">
+        <div class="uploader">
+          <label class="btn btn--ghost btn--sm uploader__btn">{{ t .Lang "media.upload" }}<input type="file" accept="image/*" data-upload="cover_url" hidden></label>
+          <span class="uploader__status" data-upload-status></span>
+        </div>
+        <p class="hint">{{ t .Lang "media.upload_note" }}</p>
+      </div>
       <div class="field"><label>{{ t .Lang "re.description" }}</label><textarea class="textarea" name="description" style="min-height:180px">{{ .Values.Description }}</textarea></div>
       <div class="field"><label>{{ t .Lang "re.contact" }}</label><input class="input" name="contact" value="{{ .Values.Contact }}" required></div>
 
