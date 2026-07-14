@@ -257,6 +257,11 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 }
 .media-ph img { width: 84px; height: 84px; opacity: 0.4; }
 .post__media .media-ph img { width: 56px; height: 56px; }
+/* Single red logo; turn it white on dark theme via filter (no dual image). */
+:root[data-theme="dark"] .media-ph img { filter: brightness(0) invert(1); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .media-ph img { filter: brightness(0) invert(1); }
+}
 .article__media { margin: 0 0 20px; border-radius: var(--radius-sm); overflow: hidden; }
 .article__media img { width: 100%; height: auto; display: block; }
 .hero__title { font-size: var(--step-4); margin: 12px 0 14px; }
