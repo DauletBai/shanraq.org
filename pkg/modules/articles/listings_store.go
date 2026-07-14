@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -57,20 +58,68 @@ func scanListing(row pgx.Row) (*Listing, error) {
 	return &l, nil
 }
 
-// List returns published listings, optionally filtered by deal and property type.
-func (s *ListingStore) List(ctx context.Context, deal, propertyType string, limit int) ([]*Listing, error) {
+// ListingFilter captures the "find real estate" search criteria. Zero-valued
+// fields are ignored.
+type ListingFilter struct {
+	Deal, PropertyType string
+	GeoNodeID          *uuid.UUID // matches this node and its whole subtree
+	RegionText         string     // plain-text region/city match (e.g. from a map click)
+	PriceMin, PriceMax int64
+	RoomsMin           int
+	Query              string // free text over title/description
+	Limit              int
+}
+
+// List returns published listings matching the filter, newest first.
+func (s *ListingStore) List(ctx context.Context, f ListingFilter) ([]*Listing, error) {
+	limit := f.Limit
 	if limit <= 0 || limit > 60 {
 		limit = 30
 	}
 	where := "l.status = 'published'"
 	args := []any{}
-	if isDealType(deal) {
-		args = append(args, deal)
-		where += fmt.Sprintf(" AND l.deal_type = $%d", len(args))
+	add := func(cond string, val any) {
+		args = append(args, val)
+		where += fmt.Sprintf(cond, len(args))
 	}
-	if isPropertyType(propertyType) {
-		args = append(args, propertyType)
-		where += fmt.Sprintf(" AND l.property_type = $%d", len(args))
+	if isDealType(f.Deal) {
+		add(" AND l.deal_type = $%d", f.Deal)
+	}
+	if isPropertyType(f.PropertyType) {
+		add(" AND l.property_type = $%d", f.PropertyType)
+	}
+	if f.GeoNodeID != nil {
+		args = append(args, *f.GeoNodeID)
+		n := len(args)
+		where += fmt.Sprintf(` AND (
+			l.geo_node_id IN (
+				WITH RECURSIVE sub AS (
+					SELECT id FROM geo_nodes WHERE id = $%d
+					UNION ALL SELECT g.id FROM geo_nodes g JOIN sub ON g.parent_id = sub.id
+				) SELECT id FROM sub
+			)
+			OR l.region  = (SELECT name_ru FROM geo_nodes WHERE id = $%d)
+			OR l.city    = (SELECT name_ru FROM geo_nodes WHERE id = $%d)
+			OR l.country = (SELECT name_ru FROM geo_nodes WHERE id = $%d)
+		)`, n, n, n, n)
+	} else if txt := strings.TrimSpace(f.RegionText); txt != "" {
+		args = append(args, txt)
+		n := len(args)
+		where += fmt.Sprintf(" AND (l.region = $%d OR l.city = $%d OR l.country = $%d)", n, n, n)
+	}
+	if f.PriceMin > 0 {
+		add(" AND l.price >= $%d", f.PriceMin)
+	}
+	if f.PriceMax > 0 {
+		add(" AND l.price <= $%d", f.PriceMax)
+	}
+	if f.RoomsMin > 0 {
+		add(" AND l.rooms >= $%d", f.RoomsMin)
+	}
+	if q := strings.TrimSpace(f.Query); q != "" {
+		args = append(args, "%"+q+"%")
+		n := len(args)
+		where += fmt.Sprintf(" AND (l.title ILIKE $%d OR l.description ILIKE $%d)", n, n)
 	}
 	args = append(args, limit)
 	q := fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id

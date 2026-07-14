@@ -481,3 +481,29 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 /* ---- Location cascade (listing form) ---- */
 .geo-cascade { display: flex; flex-direction: column; gap: 10px; }
 .geo-cascade .select { max-width: 340px; }
+
+/* ---- Listings search ("Найти недвижимость") ---- */
+.re-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.re-search { display: none; margin: 4px 0 18px; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.re-search.is-open { display: block; }
+.re-search__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 16px; }
+.re-search__loc { grid-column: span 2; }
+.re-search__actions { display: flex; align-items: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+.re-search__count { color: var(--muted); font-size: 0.92rem; margin-left: auto; }
+@media (max-width: 760px) { .re-search__grid { grid-template-columns: 1fr 1fr; } .re-search__loc { grid-column: span 2; } }
+@media (max-width: 480px) { .re-search__grid { grid-template-columns: 1fr; } .re-search__loc { grid-column: auto; } }
+
+/* ---- Listings map (self-hosted region bubble map) ---- */
+.re-map { display: none; margin: 4px 0 18px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.re-map.is-open { display: block; }
+.re-map__hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 10px; }
+.map-bar { display: flex; gap: 8px; margin-bottom: 10px; }
+.map-tab { padding: 4px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-soft); font-weight: 700; cursor: pointer; font-size: 0.8rem; }
+.map-tab.is-active { background: var(--gold); color: #fff; border-color: var(--gold); }
+.map-holder { width: 100%; overflow-x: auto; }
+.re-map__svg { width: 100%; height: auto; display: block; background: var(--surface-2); border-radius: 12px; }
+.map-bubble { fill: var(--gold); fill-opacity: 0.75; stroke: #fff; stroke-width: 1.5; transition: fill-opacity 0.12s ease; }
+:root[data-theme="dark"] .map-bubble { stroke: rgba(255, 255, 255, 0.4); }
+.map-bubble.is-empty { fill: var(--muted); fill-opacity: 0.22; }
+.map-count { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--sans); pointer-events: none; }
+g[data-region]:hover .map-bubble { fill-opacity: 0.98; }

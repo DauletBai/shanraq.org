@@ -3,10 +3,47 @@ package articles
 import (
 	"encoding/json"
 	"net/http"
+	"sort"
+	"strings"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
+
+// MapStat is one region bubble on the listings map.
+type MapStat struct {
+	Name  string  `json:"name"`
+	Lat   float64 `json:"lat"`
+	Lng   float64 `json:"lng"`
+	Count int     `json:"count"`
+}
+
+// handleListingsMap returns per-region listing counts with coordinates for the
+// requested country, powering the self-hosted bubble map.
+func (m *Module) handleListingsMap(w http.ResponseWriter, r *http.Request) {
+	country := strings.ToUpper(r.URL.Query().Get("country"))
+	if country != "RU" {
+		country = "KZ"
+	}
+	counts, err := m.listings.RegionCounts(r.Context())
+	if err != nil {
+		m.rt.Logger.Error("region counts", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	stats := make([]MapStat, 0, len(regionCentroids))
+	for name, c := range regionCentroids {
+		if c.Country != country {
+			continue
+		}
+		stats = append(stats, MapStat{Name: name, Lat: c.Lat, Lng: c.Lng, Count: counts[name]})
+	}
+	sort.Slice(stats, func(i, j int) bool { return stats[i].Name < stats[j].Name })
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Cache-Control", "public, max-age=120")
+	_ = json.NewEncoder(w).Encode(stats)
+}
 
 // handleGeoRoots returns the countries (top of the location tree) as JSON.
 func (m *Module) handleGeoRoots(w http.ResponseWriter, r *http.Request) {

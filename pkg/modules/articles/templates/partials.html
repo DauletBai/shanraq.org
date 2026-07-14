@@ -187,11 +187,9 @@
           .catch(function () { if (status) status.textContent = '✕'; });
       });
     });
-    (function () {
-      var box = document.querySelector('[data-geo]');
-      if (!box) return;
+    document.querySelectorAll('[data-geo]').forEach(function (box) {
       var lang = box.getAttribute('data-lang') || 'ru';
-      var hidden = document.getElementById('geo_node_id');
+      var hidden = document.getElementById(box.getAttribute('data-geo-target') || 'geo_node_id');
       var LABELS = {
         country: { kz: 'Ел', ru: 'Страна', en: 'Country' },
         region: { kz: 'Облыс', ru: 'Область', en: 'Region' },
@@ -239,7 +237,76 @@
         }).catch(function () {});
       }
       addSelect(null, 0);
-    })();
+    });
+    document.querySelectorAll('[data-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.querySelector(btn.getAttribute('data-toggle'));
+        if (el) el.classList.toggle('is-open');
+      });
+    });
+    document.querySelectorAll('[data-listing-map]').forEach(function (box) {
+      var mode = box.getAttribute('data-map-mode') || 'find';
+      var lang = box.getAttribute('data-lang') || 'ru';
+      var country = 'KZ';
+      var bar = document.createElement('div');
+      bar.className = 'map-bar';
+      ['KZ', 'RU'].forEach(function (c) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'map-tab' + (c === country ? ' is-active' : '');
+        b.textContent = c;
+        b.addEventListener('click', function () {
+          country = c;
+          bar.querySelectorAll('.map-tab').forEach(function (x) { x.classList.toggle('is-active', x === b); });
+          render();
+        });
+        bar.appendChild(b);
+      });
+      var holder = document.createElement('div');
+      holder.className = 'map-holder';
+      box.appendChild(bar);
+      box.appendChild(holder);
+      function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+      function render() {
+        fetch('/api/listings/map?country=' + country, { credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (stats) {
+            if (!stats || !stats.length) { holder.innerHTML = ''; return; }
+            var W = 800, H = 440, pad = 54;
+            var lats = stats.map(function (s) { return s.lat; });
+            var lngs = stats.map(function (s) { return s.lng; });
+            var minLat = Math.min.apply(null, lats), maxLat = Math.max.apply(null, lats);
+            var k = Math.cos((minLat + maxLat) / 2 * Math.PI / 180);
+            var xs = stats.map(function (s) { return s.lng * k; });
+            var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+            function X(lng) { return pad + (lng * k - minX) / ((maxX - minX) || 1) * (W - 2 * pad); }
+            function Y(lat) { return pad + (maxLat - lat) / ((maxLat - minLat) || 1) * (H - 2 * pad); }
+            var maxC = 1;
+            stats.forEach(function (s) { if (s.count > maxC) maxC = s.count; });
+            var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="re-map__svg" xmlns="http://www.w3.org/2000/svg">';
+            stats.slice().sort(function (a, b) { return b.count - a.count; }).forEach(function (s) {
+              var x = X(s.lng).toFixed(1), y = Y(s.lat).toFixed(1);
+              var r = (7 + Math.sqrt(s.count / maxC) * 24).toFixed(1);
+              var cls = 'map-bubble' + (s.count > 0 ? '' : ' is-empty');
+              svg += '<g data-region="' + esc(s.name) + '"><title>' + esc(s.name) + ' — ' + s.count + '</title>';
+              svg += '<circle class="' + cls + '" cx="' + x + '" cy="' + y + '" r="' + r + '"/>';
+              if (s.count > 0) svg += '<text class="map-count" x="' + x + '" y="' + (parseFloat(y) + 4) + '" text-anchor="middle">' + s.count + '</text>';
+              svg += '</g>';
+            });
+            svg += '</svg>';
+            holder.innerHTML = svg;
+            if (mode === 'find') {
+              holder.querySelectorAll('g[data-region]').forEach(function (g) {
+                g.style.cursor = 'pointer';
+                g.addEventListener('click', function () {
+                  location.href = '/listings?lang=' + lang + '&region=' + encodeURIComponent(g.getAttribute('data-region'));
+                });
+              });
+            }
+          }).catch(function () {});
+      }
+      render();
+    });
     var tabs = document.querySelectorAll('[data-tab]');
     if (tabs.length) tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {

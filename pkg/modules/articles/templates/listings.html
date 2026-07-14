@@ -5,11 +5,54 @@
 <main class="container">
   <div class="studio__head" style="margin-top:24px">
     <h1>{{ t .Lang "nav.realestate" }}</h1>
-    {{ if .Authed }}
-    <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
-    {{ else }}
-    <a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>
-    {{ end }}
+    <div class="re-actions">
+      <button type="button" class="btn btn--ghost" data-toggle="#re-search">⌕ {{ t .Lang "re.find" }}</button>
+      <button type="button" class="btn btn--ghost" data-toggle="#re-map">{{ t .Lang "re.map" }}</button>
+      {{ if .Authed }}
+      <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
+      {{ else }}
+      <a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>
+      {{ end }}
+    </div>
+  </div>
+
+  <form id="re-search" class="re-search{{ if .Searching }} is-open{{ end }}" method="get" action="/listings">
+    <input type="hidden" name="lang" value="{{ .Lang }}">
+    <div class="re-search__grid">
+      <div class="field re-search__loc">
+        <label>{{ t .Lang "re.location" }}</label>
+        <div class="geo-cascade" data-geo data-lang="{{ .Lang }}" data-geo-target="search_geo"></div>
+        <input type="hidden" name="geo" id="search_geo" value="{{ .GeoNodeID }}">
+      </div>
+      <div class="field">
+        <label>{{ t .Lang "re.deal" }}</label>
+        <select class="select" name="deal">
+          <option value="">{{ t .Lang "nav.all" }}</option>
+          {{ range dealTypes }}<option value="{{ . }}"{{ if eq . $.ActiveDeal }} selected{{ end }}>{{ t $.Lang (printf "re.deal_%s" .) }}</option>{{ end }}
+        </select>
+      </div>
+      <div class="field">
+        <label>{{ t .Lang "re.type" }}</label>
+        <select class="select" name="type">
+          <option value="">{{ t .Lang "nav.all" }}</option>
+          {{ range propertyTypes }}<option value="{{ . }}"{{ if eq . $.ActiveType }} selected{{ end }}>{{ t $.Lang (printf "re.type_%s" .) }}</option>{{ end }}
+        </select>
+      </div>
+      <div class="field"><label>{{ t .Lang "re.price_from" }}</label><input class="input" type="text" inputmode="numeric" name="pmin" value="{{ if gt .PriceMin 0 }}{{ .PriceMin }}{{ end }}"></div>
+      <div class="field"><label>{{ t .Lang "re.price_to" }}</label><input class="input" type="text" inputmode="numeric" name="pmax" value="{{ if gt .PriceMax 0 }}{{ .PriceMax }}{{ end }}"></div>
+      <div class="field"><label>{{ t .Lang "re.rooms_from" }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .RoomsMin 0 }}{{ .RoomsMin }}{{ end }}"></div>
+      <div class="field"><label>{{ t .Lang "re.query" }}</label><input class="input" type="text" name="q" value="{{ .Query }}"></div>
+    </div>
+    <div class="re-search__actions">
+      <button class="btn btn--primary" type="submit">⌕ {{ t .Lang "re.find" }}</button>
+      <a class="btn btn--ghost" href="/listings?lang={{ .Lang }}">{{ t .Lang "re.reset" }}</a>
+      <span class="re-search__count">{{ t .Lang "re.found" }}: <b>{{ .Count }}</b></span>
+    </div>
+  </form>
+
+  <div id="re-map" class="re-map">
+    <p class="re-map__hint">{{ t .Lang "re.map_hint" }}</p>
+    <div data-listing-map data-map-mode="find" data-lang="{{ .Lang }}"></div>
   </div>
 
   <div class="subbar" style="border:none;margin-bottom:6px">

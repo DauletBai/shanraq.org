@@ -16,6 +16,15 @@ type ListingsPage struct {
 	Listings   []*Listing
 	ActiveDeal string
 	ActiveType string
+	// Search form state (echoed back so the panel stays filled).
+	Query      string
+	PriceMin   int64
+	PriceMax   int64
+	RoomsMin   int
+	RegionText string
+	GeoNodeID  string
+	Searching  bool // any filter beyond deal/type is active → open the panel
+	Count      int
 }
 
 // ListingFormPage backs the submission form.
@@ -34,10 +43,21 @@ type ListingViewPage struct {
 
 func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
-	deal := r.URL.Query().Get("deal")
-	ptype := r.URL.Query().Get("type")
+	q := r.URL.Query()
+	deal := q.Get("deal")
+	ptype := q.Get("type")
 
-	items, err := m.listings.List(r.Context(), deal, ptype, 30)
+	f := ListingFilter{Deal: deal, PropertyType: ptype, Limit: 30}
+	f.PriceMin, _ = strconv.ParseInt(digitsOnly(q.Get("pmin")), 10, 64)
+	f.PriceMax, _ = strconv.ParseInt(digitsOnly(q.Get("pmax")), 10, 64)
+	f.RoomsMin, _ = strconv.Atoi(digitsOnly(q.Get("rooms")))
+	f.Query = strings.TrimSpace(q.Get("q"))
+	f.RegionText = strings.TrimSpace(q.Get("region"))
+	if gid, err := uuid.Parse(strings.TrimSpace(q.Get("geo"))); err == nil {
+		f.GeoNodeID = &gid
+	}
+
+	items, err := m.listings.List(r.Context(), f)
 	if err != nil {
 		m.rt.Logger.Error("listings list", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
@@ -46,12 +66,22 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 	page := ListingsPage{Base: m.base(r, T(lang, "nav.realestate"), lang)}
 	page.ActiveCat = "realestate"
 	page.Listings = items
+	page.Count = len(items)
 	if isDealType(deal) {
 		page.ActiveDeal = deal
 	}
 	if isPropertyType(ptype) {
 		page.ActiveType = ptype
 	}
+	page.Query = f.Query
+	page.PriceMin = f.PriceMin
+	page.PriceMax = f.PriceMax
+	page.RoomsMin = f.RoomsMin
+	page.RegionText = f.RegionText
+	if f.GeoNodeID != nil {
+		page.GeoNodeID = f.GeoNodeID.String()
+	}
+	page.Searching = f.Query != "" || f.PriceMin > 0 || f.PriceMax > 0 || f.RoomsMin > 0 || f.RegionText != "" || f.GeoNodeID != nil
 	m.render(w, "listings", page)
 }
 
