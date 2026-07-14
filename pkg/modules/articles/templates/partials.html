@@ -307,6 +307,24 @@
       }
       render();
     });
+    (function () {
+      var catSel = document.getElementById('category');
+      var subSel = document.querySelector('[data-subcat]');
+      if (!catSel || !subSel) return;
+      function syncSub() {
+        var cat = catSel.value;
+        var curOk = false;
+        subSel.querySelectorAll('option[data-cat]').forEach(function (o) {
+          var match = o.getAttribute('data-cat') === cat;
+          o.hidden = !match;
+          o.disabled = !match;
+          if (match && o.selected) curOk = true;
+        });
+        if (!curOk) subSel.value = '';
+      }
+      catSel.addEventListener('change', syncSub);
+      syncSub();
+    })();
     var tabs = document.querySelectorAll('[data-tab]');
     if (tabs.length) tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {

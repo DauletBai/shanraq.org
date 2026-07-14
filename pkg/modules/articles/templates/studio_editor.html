@@ -47,13 +47,9 @@
         </div>
         <div class="field">
           <label for="subcategory">{{ t .Lang "editor.subcategory" }}</label>
-          <select class="select" id="subcategory" name="subcategory" style="max-width:240px">
+          <select class="select" id="subcategory" name="subcategory" data-subcat style="max-width:240px">
             <option value="">{{ t .Lang "editor.sub_none" }}</option>
-            {{ range categories }}
-            <optgroup label="{{ t $.Lang (printf "cat.%s" .) }}">
-              {{ range subcats . }}<option value="{{ . }}"{{ if eq . $.Subcategory }} selected{{ end }}>{{ t $.Lang (printf "sub.%s" .) }}</option>{{ end }}
-            </optgroup>
-            {{ end }}
+            {{ range categories }}{{ $cat := . }}{{ range subcats . }}<option value="{{ . }}" data-cat="{{ $cat }}"{{ if eq . $.Subcategory }} selected{{ end }}>{{ t $.Lang (printf "sub.%s" .) }}</option>{{ end }}{{ end }}
           </select>
         </div>
       </div>
