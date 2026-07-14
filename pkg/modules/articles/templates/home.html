@@ -43,7 +43,7 @@
         <article class="post">
           <a class="post__media" href="/read/{{ .Slug }}?lang={{ $.Lang }}">
             {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
-            {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
+            {{ else }}<span class="media-ph"><img class="theme-light-only" src="/static/brand/shanraq.svg" alt=""><img class="theme-dark-only" src="/static/brand/shanraq-light.svg" alt=""></span>{{ end }}
           </a>
           <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ t $.Lang (printf "cat.%s" .Category) }}</a>
           <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>

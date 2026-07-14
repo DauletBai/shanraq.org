@@ -16,8 +16,9 @@ const (
 	// watermarkMargin is the inset from the top and right edges, in pixels.
 	watermarkMargin = 12
 	// watermarkAlpha makes the mark semi-transparent (0–255): visible as a
-	// brand stamp but not obscuring the photo underneath.
-	watermarkAlpha = 140
+	// brand stamp but not obscuring the photo underneath. The mark is white, so
+	// it reads on most photos; a touch more opacity keeps it present.
+	watermarkAlpha = 175
 )
 
 // supersample renders the mark at this multiple of the target size, then

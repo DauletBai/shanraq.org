@@ -29,7 +29,7 @@
         <article class="post">
           <a class="post__media" href="/listings/{{ .ID }}">
             {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
-            {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
+            {{ else }}<span class="media-ph"><img class="theme-light-only" src="/static/brand/shanraq.svg" alt=""><img class="theme-dark-only" src="/static/brand/shanraq-light.svg" alt=""></span>{{ end }}
           </a>
           <span class="kicker">{{ t $.Lang (printf "re.type_%s" .PropertyType) }} · {{ t $.Lang (printf "re.deal_%s" .DealType) }}</span>
           <h3 class="post__title"><a href="/listings/{{ .ID }}">{{ .Title }}</a></h3>

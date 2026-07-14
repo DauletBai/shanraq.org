@@ -54,7 +54,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	}
 
 	if m.cfg.Watermark {
-		svg, err := fs.ReadFile(web.StaticFS(), "brand/shanraq-mark.svg")
+		svg, err := fs.ReadFile(web.StaticFS(), "brand/shanraq-mark-light.svg")
 		if err != nil {
 			return fmt.Errorf("media: read brand watermark: %w", err)
 		}

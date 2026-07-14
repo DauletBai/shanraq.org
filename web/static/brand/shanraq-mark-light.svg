@@ -1,0 +1,23 @@
+<!-- Static (non-animated) WHITE watermark variant of the logo, used to stamp
+     uploaded images. Mirrors shanraq-mark.svg geometry with white strokes so
+     the mark reads on photos and matches the dark-theme logo. -->
+<svg width="128" height="128" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="45">
+      <line x1="76" y1="76" x2="324" y2="324"/>
+      <line x1="137" y1="37" x2="363" y2="263"/>
+      <line x1="37" y1="137" x2="263" y2="363"/>
+      <line x1="76" y1="324" x2="324" y2="76"/>
+      <line x1="137" y1="363" x2="363" y2="137"/>
+      <line x1="37" y1="263" x2="263" y2="37"/>
+    </g>
+    <g stroke="#ffffff" stroke-width="30">
+      <line x1="76" y1="76" x2="324" y2="324"/>
+      <line x1="137" y1="37" x2="363" y2="263"/>
+      <line x1="37" y1="137" x2="263" y2="363"/>
+      <line x1="76" y1="324" x2="324" y2="76"/>
+      <line x1="137" y1="363" x2="363" y2="137"/>
+      <line x1="37" y1="263" x2="263" y2="37"/>
+    </g>
+  </g>
+</svg>

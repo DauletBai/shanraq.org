@@ -16,7 +16,7 @@ import (
 
 func brandMark(t *testing.T) *image.RGBA {
 	t.Helper()
-	svg, err := fs.ReadFile(web.StaticFS(), "brand/shanraq-mark.svg")
+	svg, err := fs.ReadFile(web.StaticFS(), "brand/shanraq-mark-light.svg")
 	if err != nil {
 		t.Fatalf("read brand svg: %v", err)
 	}
@@ -27,11 +27,13 @@ func brandMark(t *testing.T) *image.RGBA {
 	return mark
 }
 
-func whitePNG(t *testing.T, w, h int) []byte {
+func solidPNG(t *testing.T, w, h int, c color.RGBA) []byte {
 	t.Helper()
 	img := image.NewRGBA(image.Rect(0, 0, w, h))
-	for i := range img.Pix {
-		img.Pix[i] = 0xff
+	for y := 0; y < h; y++ {
+		for x := 0; x < w; x++ {
+			img.Set(x, y, c)
+		}
 	}
 	var buf bytes.Buffer
 	if err := png.Encode(&buf, img); err != nil {
@@ -43,7 +45,9 @@ func whitePNG(t *testing.T, w, h int) []byte {
 func TestProcessImageResizesAndWatermarks(t *testing.T) {
 	m := &Module{maxDim: 2000, mark: brandMark(t)}
 
-	out, err := m.processImage(whitePNG(t, 3000, 1000))
+	// Dark background so the white watermark stands out as lighter pixels.
+	dark := color.RGBA{R: 40, G: 40, B: 40, A: 255}
+	out, err := m.processImage(solidPNG(t, 3000, 1000, dark))
 	if err != nil {
 		t.Fatalf("process: %v", err)
 	}
@@ -61,13 +65,13 @@ func TestProcessImageResizesAndWatermarks(t *testing.T) {
 		t.Fatalf("output size = %dx%d, want 2000x666", b.Dx(), b.Dy())
 	}
 
-	// The brand mark must appear in the top-right corner: scan that box for a
-	// pixel noticeably darker than the white background.
+	// The white brand mark must appear in the top-right corner: scan that box
+	// for a pixel noticeably lighter than the dark background.
 	found := false
 	for y := watermarkMargin; y < watermarkMargin+watermarkPx; y++ {
 		for x := b.Dx() - watermarkMargin - watermarkPx; x < b.Dx()-watermarkMargin; x++ {
 			r, g, bl, _ := img.At(x, y).RGBA()
-			if r < 55000 || g < 55000 || bl < 55000 {
+			if r > 25000 && g > 25000 && bl > 25000 {
 				found = true
 			}
 		}
@@ -76,10 +80,10 @@ func TestProcessImageResizesAndWatermarks(t *testing.T) {
 		t.Fatal("no watermark pixels found in the top-right corner")
 	}
 
-	// The opposite corner must stay clean (white).
-	rr, gg, bb, _ := img.At(20, b.Dy()-20).RGBA()
-	if rr < 60000 || gg < 60000 || bb < 60000 {
-		t.Fatalf("bottom-left unexpectedly not white: %d,%d,%d", rr, gg, bb)
+	// The opposite corner must stay dark (unstamped).
+	rr, _, _, _ := img.At(20, b.Dy()-20).RGBA()
+	if rr > 20000 {
+		t.Fatalf("bottom-left unexpectedly not dark: %d", rr)
 	}
 }
 
@@ -92,7 +96,7 @@ func TestProcessImageRejectsNonImage(t *testing.T) {
 
 func TestProcessImageWithoutWatermark(t *testing.T) {
 	m := &Module{maxDim: 500} // mark nil
-	out, err := m.processImage(whitePNG(t, 400, 400))
+	out, err := m.processImage(solidPNG(t, 400, 400, color.RGBA{R: 200, G: 200, B: 200, A: 255}))
 	if err != nil {
 		t.Fatalf("process: %v", err)
 	}
@@ -103,7 +107,6 @@ func TestProcessImageWithoutWatermark(t *testing.T) {
 	if img.Bounds().Dx() != 400 { // below maxDim: no upscaling
 		t.Fatalf("width = %d, want 400", img.Bounds().Dx())
 	}
-	_ = color.White
 }
 
 func TestFSStorePutAndURL(t *testing.T) {

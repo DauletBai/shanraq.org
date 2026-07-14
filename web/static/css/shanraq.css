@@ -130,6 +130,16 @@ img { max-width: 100%; height: auto; display: block; }
 .wordmark { display: inline-flex; align-items: center; justify-self: center; }
 .wordmark:hover { text-decoration: none; }
 .wordmark__mark { width: 64px; height: 64px; }
+/* Theme-aware assets: show red logo on light, white on dark — mirrors the theme
+   resolution (explicit data-theme, else OS preference unless forced light). */
+.theme-dark-only { display: none; }
+.theme-light-only { display: inline-block; }
+:root[data-theme="dark"] .theme-light-only { display: none; }
+:root[data-theme="dark"] .theme-dark-only { display: inline-block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-light-only { display: none; }
+  :root:not([data-theme="light"]) .theme-dark-only { display: inline-block; }
+}
 
 /* ---------- sticky menu bar (only this sticks) ---------- */
 .navbar {
