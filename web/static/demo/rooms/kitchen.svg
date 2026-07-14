@@ -20,8 +20,8 @@
   <circle cx="420" cy="226" r="7" fill="#9aa7b3"/><circle cx="450" cy="226" r="7" fill="#9aa7b3"/>
   <rect x="200" y="150" width="70" height="30" rx="6" fill="#90a4ae"/>
   <!-- wm -->
-  <g transform="translate(566,14) scale(0.13)" fill="none" stroke-linecap="round" opacity="0.85">
-    <g stroke="#000000" stroke-opacity="0.28" stroke-width="34" transform="translate(10,10)"><line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/><line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/><line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/></g>
+  <g transform="translate(596,12) scale(0.08)" fill="none" stroke-linecap="round" opacity="0.85">
+    <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="45"><line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/><line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/><line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/></g>
     <g stroke="#ffffff" stroke-width="30"><line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/><line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/><line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/></g>
   </g>
 </svg>
