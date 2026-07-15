@@ -191,6 +191,30 @@ def motif_tennis():
             '<circle cx="690" cy="404" r="20" fill="#ffffff" opacity="0.92"/>')
 
 
+def motif_helix():
+    import math
+    cx, A, y0, y1, n = 600, 50, 252, 476, 44
+    freq = 1.6
+
+    def strand(phase):
+        pts = []
+        for i in range(n + 1):
+            t = i / n
+            y = y0 + (y1 - y0) * t
+            x = cx + A * math.sin(2 * math.pi * freq * t + phase)
+            pts.append(f"{x:.0f},{y:.0f}")
+        return f"<polyline points='{' '.join(pts)}' fill='none' stroke='#ffffff' stroke-width='8' opacity='0.92'/>"
+
+    rungs = ""
+    for i in range(1, 8):
+        t = i / 8.0
+        y = y0 + (y1 - y0) * t
+        x1 = cx + A * math.sin(2 * math.pi * freq * t)
+        x2 = cx + A * math.sin(2 * math.pi * freq * t + math.pi)
+        rungs += f"<line x1='{x1:.0f}' y1='{y:.0f}' x2='{x2:.0f}' y2='{y:.0f}' stroke='#ffffff' stroke-width='6' opacity='0.8'/>"
+    return strand(0) + strand(math.pi) + rungs
+
+
 COVERS = {
     "opinion":  (["#ef8a5a", "#e0653f", "#f2b06a", "#c8492e"], motif_opinion, 11),
     "ai":       (["#4f8fd6", "#3f5fb0", "#6fb3d6", "#2f3f8f"], motif_network, 21),
@@ -211,6 +235,7 @@ COVERS = {
     "robot":    (["#5a6b8a", "#3f4f6f", "#7a8aa8", "#2f3a52"], motif_robot, 171),
     "agriculture": (["#d9a84f", "#c08f3f", "#e6c46a", "#a8752e"], motif_wheat, 181),
     "tennis":   (["#7aa83f", "#5f8f2e", "#a8c46f", "#4a7a20"], motif_tennis, 191),
+    "biotech":  (["#3f9a8a", "#2e7d70", "#6fc0b0", "#25706a"], motif_helix, 201),
 }
 
 
