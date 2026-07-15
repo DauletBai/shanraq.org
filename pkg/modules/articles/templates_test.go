@@ -29,13 +29,13 @@ func buildTemplates(t *testing.T) *template.Template {
 			if tm.IsZero() {
 				return "—"
 			}
-			return tm.Format("02.01.2006")
+			return tm.Format("02.01.06")
 		},
 		"fmtDatePtr": func(tm *time.Time) string {
 			if tm == nil || tm.IsZero() {
 				return "—"
 			}
-			return tm.Format("02.01.2006")
+			return tm.Format("02.01.06")
 		},
 	}
 	tmpl, err := template.New("articles").Funcs(funcs).ParseFS(templateFiles, "templates/*.html")

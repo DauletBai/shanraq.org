@@ -86,13 +86,13 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 			if t.IsZero() {
 				return "—"
 			}
-			return t.Format("02.01.2006")
+			return t.Format("02.01.06")
 		},
 		"fmtDatePtr": func(t *time.Time) string {
 			if t == nil || t.IsZero() {
 				return "—"
 			}
-			return t.Format("02.01.2006")
+			return t.Format("02.01.06")
 		},
 	}
 	tmpl, err := template.New("articles").Funcs(funcs).ParseFS(templateFiles, "templates/*.html")
