@@ -35,6 +35,7 @@ type Module struct {
 	store     *Store
 	listings  *ListingStore
 	geo       *GeoStore
+	comments  *CommentStore
 	ratings   *ratings.Store
 	jobs      *jobs.Store
 	auth      *auth.Module
@@ -60,6 +61,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.store = NewStore(rt.DB)
 	m.listings = NewListingStore(rt.DB)
 	m.geo = NewGeoStore(rt.DB)
+	m.comments = NewCommentStore(rt.DB)
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
 	m.validator = validate.New()
@@ -116,6 +118,7 @@ func (m *Module) Routes(r chi.Router) {
 		r.Get("/read", m.handleReadRedirect)
 		r.Get("/read/{slug}", m.handleArticle)
 		r.Post("/read/{slug}/vote", m.handleVote)
+		r.Post("/read/{slug}/comment", m.handleComment)
 		r.Get("/author/sana", m.handleAuthorSana)
 		r.Get("/about", m.handleStaticPage("about"))
 		r.Get("/guide", m.handleStaticPage("guide"))

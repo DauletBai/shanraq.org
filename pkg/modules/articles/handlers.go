@@ -258,6 +258,7 @@ type ArticlePage struct {
 	IsAuthor    bool
 	Recent      []FeedItem // reserved for sidebar
 	Subscribed  bool
+	Comments    []Comment
 }
 
 func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
@@ -310,12 +311,49 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.IsAuthor = viewer != uuid.Nil && viewer == a.AuthorID
 	page.CanVote = viewer != uuid.Nil && !page.IsAuthor
 
+	if cs, err := m.comments.ListForArticle(r.Context(), a.ID); err == nil {
+		page.Comments = cs
+	} else {
+		m.rt.Logger.Warn("load comments", zap.Error(err))
+	}
+
 	m.applyArticleSEO(&page)
 	m.render(w, "article", page)
 }
 
 // handleVote records a reader's up/down vote (toggling off when the same
 // direction is submitted twice), then returns to the article.
+func (m *Module) handleComment(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+	backTo := "/read/" + slug + "#comments"
+
+	userID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "bad form", http.StatusBadRequest)
+		return
+	}
+	body := strings.TrimSpace(r.FormValue("body"))
+	if body == "" {
+		http.Redirect(w, r, backTo, http.StatusSeeOther)
+		return
+	}
+	a, err := m.store.GetPublishedBySlug(r.Context(), slug)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if err := m.comments.Create(r.Context(), a.ID, userID, body); err != nil {
+		m.rt.Logger.Error("create comment", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, backTo, http.StatusSeeOther)
+}
+
 func (m *Module) handleVote(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 	backTo := "/read/" + slug

@@ -55,6 +55,30 @@
 
         <div class="prose">{{ .Body }}</div>
       </article>
+
+      <section class="comments" id="comments">
+        <h2 class="comments__title">{{ t .Lang "comments.title" }} ({{ len .Comments }})</h2>
+        {{ if .Authed }}
+        <form class="comments__form" method="post" action="/read/{{ .Slug }}/comment">
+          <textarea class="textarea" name="body" rows="3" maxlength="2000" placeholder="{{ t .Lang "comments.placeholder" }}" required></textarea>
+          <div><button class="btn btn--primary" type="submit">{{ t .Lang "comments.submit" }}</button></div>
+        </form>
+        {{ else }}
+        <p class="comments__login"><a href="/studio/login">{{ t .Lang "comments.login" }}</a></p>
+        {{ end }}
+        {{ if .Comments }}
+        <ul class="comments__list">
+          {{ range .Comments }}
+          <li class="comment">
+            <div class="comment__head"><span class="comment__author">{{ .AuthorName }}</span><span class="comment__date">{{ fmtDate .CreatedAt }}</span></div>
+            <p class="comment__body">{{ .Body }}</p>
+          </li>
+          {{ end }}
+        </ul>
+        {{ else }}
+        <p class="comments__empty">{{ t .Lang "comments.empty" }}</p>
+        {{ end }}
+      </section>
     </div>
 
     {{ template "sidebar" . }}

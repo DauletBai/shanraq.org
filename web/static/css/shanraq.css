@@ -572,3 +572,27 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .author-hero__top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .author-hero__role { color: var(--gold-strong); font-weight: 700; margin: 2px 0 8px; }
 .author-hero__bio { color: var(--ink-soft); margin: 0; max-width: 70ch; }
+
+/* ---- Author profile analytics showcase ---- */
+.author-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0; }
+.author-stat { border: 1px solid var(--line); border-radius: 12px; padding: 16px; text-align: center; background: var(--surface); }
+.author-stat b { display: block; font-family: var(--serif); font-size: var(--step-3); color: var(--gold-strong); }
+.author-stat span { font-size: 0.82rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.author-cats { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+.author-cat { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); font-size: 0.85rem; font-weight: 600; color: var(--ink-soft); }
+.author-cat b { color: var(--gold-strong); }
+.author-cat:hover { border-color: var(--gold); text-decoration: none; }
+@media (max-width: 640px) { .author-stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---- Comments ---- */
+.comments { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }
+.comments__title { font-size: var(--step-2); margin-bottom: 16px; }
+.comments__form { margin-bottom: 22px; display: flex; flex-direction: column; gap: 10px; }
+.comments__login { color: var(--muted); }
+.comments__empty { color: var(--muted); font-style: italic; }
+.comments__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.comment { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--surface); }
+.comment__head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.comment__author { font-weight: 700; }
+.comment__date { color: var(--muted); font-size: 0.82rem; }
+.comment__body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }

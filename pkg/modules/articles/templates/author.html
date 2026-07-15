@@ -18,6 +18,18 @@
     </div>
   </section>
 
+  <div class="author-stats">
+    <div class="author-stat"><b>{{ .Count }}</b><span>{{ t .Lang "author.columns" }}</span></div>
+    <div class="author-stat"><b>{{ money .Views }}</b><span>{{ t .Lang "meta.views" }}</span></div>
+    <div class="author-stat"><b>{{ .Score }}</b><span>{{ t .Lang "author.rating" }}</span></div>
+    <div class="author-stat"><b>{{ len .ByCat }}</b><span>{{ t .Lang "author.rubrics" }}</span></div>
+  </div>
+  {{ if .ByCat }}
+  <div class="author-cats">
+    {{ range .ByCat }}<a class="author-cat" href="/?lang={{ $.Lang }}&cat={{ .Slug }}">{{ t $.Lang (printf "cat.%s" .Slug) }} <b>{{ .N }}</b></a>{{ end }}
+  </div>
+  {{ end }}
+
   {{ if .Posts }}
   <div class="posts posts--two">
     {{ range .Posts }}

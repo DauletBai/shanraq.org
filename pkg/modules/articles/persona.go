@@ -2,6 +2,7 @@ package articles
 
 import (
 	"net/http"
+	"sort"
 
 	"go.uber.org/zap"
 )
@@ -24,12 +25,23 @@ func authorDisplay(a *Article) (string, bool) {
 	return a.AuthorName(), false
 }
 
+// CatCount is one rubric's article count for the profile breakdown.
+type CatCount struct {
+	Slug string
+	N    int
+}
+
 // AuthorPage is the template context for an author profile.
 type AuthorPage struct {
 	Base
 	Name  string
 	IsAI  bool
 	Posts []FeedItem
+	// Public analytics showcase.
+	Count int
+	Views int64
+	Score int
+	ByCat []CatCount
 }
 
 // handleAuthorSana renders the AI columnist's profile: a transparent bio plus
@@ -43,6 +55,9 @@ func (m *Module) handleAuthorSana(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	items := make([]FeedItem, 0, len(arts))
+	var views int64
+	var score int
+	catN := map[string]int{}
 	for _, a := range arts {
 		tr, served := a.Translation(lang)
 		if tr == nil {
@@ -59,11 +74,29 @@ func (m *Module) handleAuthorSana(w http.ResponseWriter, r *http.Request) {
 			Published: a.PublishedAt, Views: a.ViewsCount, Score: a.Score,
 			AvailableLangs: a.AvailableLangs(),
 		})
+		views += a.ViewsCount
+		score += a.Score
+		catN[a.Category]++
 	}
+	byCat := make([]CatCount, 0, len(catN))
+	for slug, n := range catN {
+		byCat = append(byCat, CatCount{Slug: slug, N: n})
+	}
+	sort.Slice(byCat, func(i, j int) bool {
+		if byCat[i].N != byCat[j].N {
+			return byCat[i].N > byCat[j].N
+		}
+		return byCat[i].Slug < byCat[j].Slug
+	})
+
 	page := AuthorPage{Base: m.base(r, SanaName, lang)}
 	page.Name = SanaName
 	page.IsAI = true
 	page.Desc = T(lang, "author.sana_bio")
 	page.Posts = items
+	page.Count = len(items)
+	page.Views = views
+	page.Score = score
+	page.ByCat = byCat
 	m.render(w, "author", page)
 }

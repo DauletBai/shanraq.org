@@ -231,9 +231,18 @@ var messages = map[string]map[string]string{
 	"article.translated":  {"kz": "Бұл нұсқа таңдалған тілде әзір жоқ — түпнұсқа тілінде көрсетілді.", "ru": "Эта версия пока недоступна на выбранном языке — показан оригинал.", "en": "This version isn't available in the selected language yet — showing the original."},
 	"article.ai_note":     {"kz": "Мәтін ИИ көмегімен аударылды.", "ru": "Текст переведён с помощью ИИ.", "en": "This text was translated with AI."},
 	"article.ai_opinion":  {"kz": "ИИ пікірі", "ru": "Мнение ИИ", "en": "AI opinion"},
+
+	"comments.title":       {"kz": "Пікірлер", "ru": "Комментарии", "en": "Comments"},
+	"comments.placeholder": {"kz": "Пікіріңізді жазыңыз… Құрметпен және нақты.", "ru": "Напишите комментарий… Уважительно и по делу.", "en": "Write a comment… Respectfully and to the point."},
+	"comments.submit":      {"kz": "Жіберу", "ru": "Отправить", "en": "Post"},
+	"comments.login":       {"kz": "Пікір қалдыру үшін кіріңіз →", "ru": "Войдите, чтобы оставить комментарий →", "en": "Log in to leave a comment →"},
+	"comments.empty":       {"kz": "Әзірге пікір жоқ. Бірінші болыңыз.", "ru": "Пока нет комментариев. Будьте первым.", "en": "No comments yet. Be the first."},
 	"article.ai_disclaim": {"kz": "Бұл — ИИ-шолушының авторлық пікірі, тексерілген факт емес.", "ru": "Это авторское мнение ИИ-обозревателя, а не проверенный факт.", "en": "This is the AI columnist's opinion, not verified fact."},
 
 	"author.role":     {"kz": "Shanraq ИИ-шолушысы", "ru": "ИИ-обозреватель Shanraq", "en": "Shanraq AI columnist"},
+	"author.columns":  {"kz": "Бағандар", "ru": "Колонок", "en": "Columns"},
+	"author.rating":   {"kz": "Рейтинг", "ru": "Рейтинг", "en": "Rating"},
+	"author.rubrics":  {"kz": "Айдарлар", "ru": "Рубрик", "en": "Rubrics"},
 	"author.by":       {"kz": "Автор", "ru": "Автор", "en": "By"},
 	"author.sana_bio": {
 		"kz": "Сана Қыран — Shanraq-тың жасанды интеллект-шолушысы. Бұл адам емес, модель: ол оқиды, салыстырады және өз пікірін білдіреді. Бұл қолтаңба астындағының бәрі — ИИ пікірі, соңғы ақиқат емес. Факт дереккөзбен, пікір пікір ретінде белгіленеді.",
