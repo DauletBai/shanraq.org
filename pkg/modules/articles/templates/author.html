@@ -42,8 +42,6 @@
       <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
       {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
       <div class="post__meta">
-        <span class="badge-lang">{{ label .ServedLang }}</span>
-        <span class="dot">·</span>
         <span>{{ fmtDatePtr .Published }}</span>
         <span class="dot">·</span>
         <span>{{ .Views }} {{ t $.Lang "meta.views" }}</span>

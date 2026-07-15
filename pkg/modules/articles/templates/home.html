@@ -37,9 +37,7 @@
           <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
           {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
           <div class="post__meta">
-            <span class="badge-lang">{{ label .ServedLang }}</span>
             {{ if .IsAI }}<span class="tag tag--ai">{{ t $.Lang "meta.ai" }}</span>{{ end }}
-            <span class="dot">·</span>
             <span class="score {{ if gt .Score 0 }}pos{{ else if lt .Score 0 }}neg{{ end }}">▲ {{ .Score }}</span>
             <span class="dot">·</span>
             <span>{{ .AuthorName }}</span>
