@@ -191,6 +191,37 @@ def motif_tennis():
             '<circle cx="690" cy="404" r="20" fill="#ffffff" opacity="0.92"/>')
 
 
+def motif_arch():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="11" stroke-linecap="round" '
+            'stroke-linejoin="round" opacity="0.92">'
+            '<path d="M528 456 V372 A72 72 0 0 1 672 372 V456"/>'
+            '<path d="M502 456 H698"/>'
+            '<path d="M552 456 V394 M600 456 V360 M648 456 V394"/></g>'
+            '<path d="M586 296 h28 l9 28 h-46 z" fill="#ffffff" opacity="0.92"/>')
+
+
+def motif_key():
+    return ('<g opacity="0.92">'
+            '<circle cx="600" cy="330" r="38" fill="none" stroke="#ffffff" stroke-width="12"/>'
+            '<circle cx="600" cy="330" r="13" fill="none" stroke="#ffffff" stroke-width="9"/>'
+            '<line x1="600" y1="368" x2="600" y2="456" stroke="#ffffff" stroke-width="12" '
+            'stroke-linecap="round"/>'
+            '<line x1="600" y1="456" x2="628" y2="456" stroke="#ffffff" stroke-width="12" '
+            'stroke-linecap="round"/>'
+            '<line x1="600" y1="430" x2="622" y2="430" stroke="#ffffff" stroke-width="12" '
+            'stroke-linecap="round"/></g>')
+
+
+def motif_candle():
+    return ('<path d="M600 298 C 585 316 587 337 600 346 C 613 337 615 316 600 298 Z" '
+            'fill="#ffffff" opacity="0.95"/>'
+            '<line x1="600" y1="346" x2="600" y2="358" stroke="#ffffff" stroke-width="5"/>'
+            '<rect x="576" y="358" width="48" height="100" rx="8" fill="none" '
+            'stroke="#ffffff" stroke-width="11" opacity="0.92"/>'
+            '<line x1="554" y1="458" x2="646" y2="458" stroke="#ffffff" stroke-width="11" '
+            'stroke-linecap="round" opacity="0.92"/>')
+
+
 def motif_laurel():
     return ('<g fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" opacity="0.92">'
             '<path d="M600 482 C 548 452 516 404 522 330"/>'
@@ -283,6 +314,9 @@ COVERS = {
     "athletics":(["#4f9a5a", "#3f8f4f", "#7ac06f", "#2e7d3f"], motif_laurel, 211),
     "charity":  (["#d9607a", "#c04060", "#e68aa0", "#a83f58"], motif_hands, 221),
     "family":   (["#e0975a", "#c77a3f", "#f2b87a", "#a8622e"], motif_family, 231),
+    "architecture": (["#b89a6f", "#9a7f57", "#d0b487", "#7a6240"], motif_arch, 241),
+    "crime":    (["#4f7a9a", "#3f6180", "#6f9ac0", "#2f4f6a"], motif_key, 251),
+    "holidays": (["#9a5a7a", "#7f3f60", "#bd82a0", "#6a2f4f"], motif_candle, 261),
 }
 
 
