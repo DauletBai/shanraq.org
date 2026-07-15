@@ -36,11 +36,13 @@ func NewAdminStore(db *pgxpool.Pool) *AdminStore { return &AdminStore{db: db} }
 type RoleCount struct {
 	Role string
 	N    int
+	Pct  int
 }
 type CatViews struct {
 	Slug  string
 	N     int
 	Views int64
+	Pct   int
 }
 type TopArticle struct {
 	Slug  string
@@ -104,6 +106,15 @@ func (s *AdminStore) Stats(ctx context.Context) (AdminStats, error) {
 		st.UsersByRole = append(st.UsersByRole, rc)
 	}
 	rows.Close()
+	maxRole := 0
+	for _, rc := range st.UsersByRole {
+		if rc.N > maxRole {
+			maxRole = rc.N
+		}
+	}
+	for i := range st.UsersByRole {
+		st.UsersByRole[i].Pct = barPct(int64(st.UsersByRole[i].N), int64(maxRole))
+	}
 
 	rows, err = s.db.Query(ctx, `SELECT category, COUNT(*), COALESCE(SUM(views_count),0)
 		FROM articles WHERE status='published' GROUP BY category ORDER BY 3 DESC`)
@@ -119,6 +130,15 @@ func (s *AdminStore) Stats(ctx context.Context) (AdminStats, error) {
 		st.ByCat = append(st.ByCat, c)
 	}
 	rows.Close()
+	var maxViews int64
+	for _, c := range st.ByCat {
+		if c.Views > maxViews {
+			maxViews = c.Views
+		}
+	}
+	for i := range st.ByCat {
+		st.ByCat[i].Pct = barPct(st.ByCat[i].Views, maxViews)
+	}
 
 	rows, err = s.db.Query(ctx, `SELECT a.slug, COALESCE(t.title,a.slug), a.views_count, a.score
 		FROM articles a
@@ -186,6 +206,8 @@ type AdminPage struct {
 	CanModerate    bool
 	AssignRoles    []string
 	Notice         string
+	Email          string
+	Role           string
 }
 
 func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
@@ -204,6 +226,10 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 	page.CanModerate = canModerate(claims)
 	page.AssignRoles = assignableRoles
 	page.Notice = r.URL.Query().Get("ok")
+	if claims != nil {
+		page.Email = claims.Email
+		page.Role = claims.PrimaryRole
+	}
 	m.render(w, "admin", page)
 }
 
@@ -250,6 +276,19 @@ func (m *Module) handleAdminHideComment(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	http.Redirect(w, r, "/admin?ok=comment_hidden", http.StatusSeeOther)
+}
+
+// barPct scales v against max to a 0..100 width, with a small floor so
+// non-zero bars stay visible.
+func barPct(v, max int64) int {
+	if max <= 0 || v <= 0 {
+		return 0
+	}
+	p := int(v * 100 / max)
+	if p < 4 {
+		p = 4
+	}
+	return p
 }
 
 func contains(ss []string, s string) bool {

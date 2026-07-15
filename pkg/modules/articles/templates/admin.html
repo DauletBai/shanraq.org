@@ -1,76 +1,162 @@
 {{ define "admin" }}
-{{ template "site_head" . }}
-<body>
-{{ template "site_header" . }}
-<main class="container">
-  <div class="studio__head" style="margin-top:24px"><h1>{{ t .Lang "admin.title" }}</h1></div>
-  {{ if .Notice }}<div class="notice" style="margin-bottom:18px">{{ t .Lang (printf "admin.%s" .Notice) }}</div>{{ end }}
+<!doctype html>
+<html lang="{{ .Lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ t .Lang "admin.title" }} · Shanraq</title>
+  <link rel="icon" href="/static/brand/shanraq.svg">
+  <link rel="stylesheet" href="/static/css/shanraq.css">
+  <script>(function () { try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();</script>
+</head>
+<body class="adm-body">
+<div class="adm">
+  <aside class="adm__side">
+    <a class="adm__brand" href="/admin">
+      <img class="adm__mark theme-light-only" src="/static/brand/shanraq.svg" alt="">
+      <img class="adm__mark theme-dark-only" src="/static/brand/shanraq-light.svg" alt="">
+      <span>Shanraq · {{ t .Lang "admin.dashboard" }}</span>
+    </a>
+    <nav class="adm__nav">
+      <a href="#overview" class="adm__navlink is-active" data-nav>▤ {{ t .Lang "admin.overview" }}</a>
+      <a href="#content" class="adm__navlink" data-nav>▦ {{ t .Lang "admin.articles" }}</a>
+      <a href="#users" class="adm__navlink" data-nav>◕ {{ t .Lang "admin.users" }}</a>
+      {{ if .CanModerate }}<a href="#moderation" class="adm__navlink" data-nav>✎ {{ t .Lang "admin.moderation" }}</a>{{ end }}
+      {{ if .CanFinance }}<a href="#finance" class="adm__navlink" data-nav>₸ {{ t .Lang "admin.finance" }}</a>{{ end }}
+    </nav>
+    <div class="adm__side-foot">
+      <button type="button" class="icon-btn" data-theme-toggle title="{{ t .Lang "header.theme" }}">◐</button>
+      <a href="/" class="adm__sidelink">← {{ t .Lang "admin.to_site" }}</a>
+      <a href="/studio/logout" class="adm__sidelink">{{ t .Lang "admin.logout" }}</a>
+    </div>
+  </aside>
 
-  <div class="admin-cards">
-    <div class="admin-card"><b>{{ .Stats.Users }}</b><span>{{ t .Lang "admin.users" }}</span></div>
-    <div class="admin-card"><b>{{ .Stats.Articles }}</b><span>{{ t .Lang "admin.articles" }}</span></div>
-    <div class="admin-card"><b>{{ money .Stats.Views }}</b><span>{{ t .Lang "admin.views" }}</span></div>
-    <div class="admin-card"><b>{{ .Stats.Comments }}</b><span>{{ t .Lang "admin.comments" }}</span></div>
-    <div class="admin-card"><b>{{ .Stats.ListingsActive }}</b><span>{{ t .Lang "admin.listings" }}</span></div>
-  </div>
+  <main class="adm__main">
+    <header class="adm__top">
+      <h1>{{ t .Lang "admin.title" }}</h1>
+      <span class="adm__user">{{ .Email }} · <b>{{ .Role }}</b></span>
+    </header>
+    {{ if .Notice }}<div class="adm-notice">{{ t .Lang (printf "admin.%s" .Notice) }}</div>{{ end }}
 
-  <div class="admin-grid">
-    <section class="admin-panel">
-      <h2>{{ t .Lang "admin.by_rubric" }}</h2>
-      <table class="admin-tbl"><tbody>
-      {{ range .Stats.ByCat }}<tr><td>{{ t $.Lang (printf "cat.%s" .Slug) }}</td><td>{{ .N }}</td><td>{{ money .Views }}</td></tr>{{ end }}
-      </tbody></table>
+    <section id="overview" class="adm-section">
+      <div class="adm-kpis">
+        <div class="adm-kpi"><span class="adm-kpi__ic">◕</span><b>{{ .Stats.Users }}</b><span>{{ t .Lang "admin.users" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">▦</span><b>{{ .Stats.Articles }}</b><span>{{ t .Lang "admin.articles" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◎</span><b>{{ money .Stats.Views }}</b><span>{{ t .Lang "admin.views" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">✎</span><b>{{ .Stats.Comments }}</b><span>{{ t .Lang "admin.comments" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">⌂</span><b>{{ .Stats.ListingsActive }}</b><span>{{ t .Lang "admin.listings" }}</span></div>
+      </div>
     </section>
-    <section class="admin-panel">
-      <h2>{{ t .Lang "admin.by_role" }}</h2>
-      <table class="admin-tbl"><tbody>
-      {{ range .Stats.UsersByRole }}<tr><td>{{ .Role }}</td><td>{{ .N }}</td></tr>{{ end }}
-      </tbody></table>
-      <p class="hint">{{ t .Lang "admin.listings" }}: {{ .Stats.ListingsActive }} {{ t .Lang "admin.active" }} · {{ .Stats.ListingsExpired }} {{ t .Lang "admin.expired" }}</p>
+
+    <section id="content" class="adm-section">
+      <div class="adm-cols">
+        <div class="adm-panel">
+          <h2>{{ t .Lang "admin.by_rubric" }}</h2>
+          <div class="adm-chart">
+            {{ range .Stats.ByCat }}
+            <div class="adm-bar">
+              <a class="adm-bar__label" href="/?cat={{ .Slug }}">{{ t $.Lang (printf "cat.%s" .Slug) }}</a>
+              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ money .Views }}</span>
+            </div>
+            {{ end }}
+          </div>
+        </div>
+        <div class="adm-panel">
+          <h2>{{ t .Lang "admin.top" }}</h2>
+          <table class="adm-tbl">
+            <tbody>
+            {{ range .Stats.TopArticles }}
+            <tr><td><a href="/read/{{ .Slug }}">{{ .Title }}</a></td><td>{{ money .Views }}</td><td class="adm-tbl__score">▲ {{ .Score }}</td></tr>
+            {{ end }}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
-  </div>
 
-  <section class="admin-panel">
-    <h2>{{ t .Lang "admin.top" }}</h2>
-    <table class="admin-tbl"><tbody>
-    {{ range .Stats.TopArticles }}<tr><td><a href="/read/{{ .Slug }}">{{ .Title }}</a></td><td>{{ money .Views }}</td><td>▲ {{ .Score }}</td></tr>{{ end }}
-    </tbody></table>
-  </section>
+    <section id="users" class="adm-section">
+      <div class="adm-cols">
+        <div class="adm-panel">
+          <h2>{{ t .Lang "admin.by_role" }}</h2>
+          <div class="adm-chart">
+            {{ range .Stats.UsersByRole }}
+            <div class="adm-bar">
+              <span class="adm-bar__label">{{ .Role }}</span>
+              <span class="adm-bar__track"><span class="adm-bar__fill adm-bar__fill--teal" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ .N }}</span>
+            </div>
+            {{ end }}
+          </div>
+          <p class="adm-hint">{{ t .Lang "admin.listings" }}: {{ .Stats.ListingsActive }} {{ t .Lang "admin.active" }} · {{ .Stats.ListingsExpired }} {{ t .Lang "admin.expired" }}</p>
+        </div>
+        {{ if .CanManageUsers }}
+        <div class="adm-panel">
+          <h2>{{ t .Lang "admin.assign_role" }}</h2>
+          <form class="adm-roleform" method="post" action="/admin/roles">
+            <input class="input" type="email" name="email" placeholder="{{ t .Lang "admin.email" }}" required>
+            <select class="select" name="role">{{ range .AssignRoles }}<option value="{{ . }}">{{ . }}</option>{{ end }}</select>
+            <button class="btn btn--primary" type="submit">{{ t .Lang "admin.assign" }}</button>
+          </form>
+        </div>
+        {{ end }}
+      </div>
+    </section>
 
-  {{ if .CanManageUsers }}
-  <section class="admin-panel">
-    <h2>{{ t .Lang "admin.assign_role" }}</h2>
-    <form class="admin-roleform" method="post" action="/admin/roles">
-      <input class="input" type="email" name="email" placeholder="{{ t .Lang "admin.email" }}" required>
-      <select class="select" name="role">{{ range .AssignRoles }}<option value="{{ . }}">{{ . }}</option>{{ end }}</select>
-      <button class="btn btn--primary" type="submit">{{ t .Lang "admin.assign" }}</button>
-    </form>
-  </section>
-  {{ end }}
+    {{ if .CanModerate }}
+    <section id="moderation" class="adm-section">
+      <div class="adm-panel">
+        <h2>{{ t .Lang "admin.recent_comm" }}</h2>
+        {{ if .Stats.RecentComments }}
+        <ul class="adm-comments">
+          {{ range .Stats.RecentComments }}
+          <li>
+            <div class="adm-comments__head"><b>{{ .AuthorName }}</b> · <a href="/read/{{ .Slug }}#comments">{{ .Slug }}</a></div>
+            <p>{{ .Body }}</p>
+            <form method="post" action="/admin/comments/{{ .ID }}/hide"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "admin.hide" }}</button></form>
+          </li>
+          {{ end }}
+        </ul>
+        {{ else }}<p class="adm-hint">—</p>{{ end }}
+      </div>
+    </section>
+    {{ end }}
 
-  {{ if .CanModerate }}
-  <section class="admin-panel">
-    <h2>{{ t .Lang "admin.recent_comm" }}</h2>
-    {{ if .Stats.RecentComments }}
-    <ul class="admin-comments">
-      {{ range .Stats.RecentComments }}
-      <li>
-        <div class="admin-comments__head"><b>{{ .AuthorName }}</b> · <a href="/read/{{ .Slug }}#comments">{{ .Slug }}</a></div>
-        <p>{{ .Body }}</p>
-        <form method="post" action="/admin/comments/{{ .ID }}/hide"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "admin.hide" }}</button></form>
-      </li>
-      {{ end }}
-    </ul>
-    {{ else }}<p class="hint">—</p>{{ end }}
-  </section>
-  {{ end }}
+    {{ if .CanFinance }}
+    <section id="finance" class="adm-section">
+      <div class="adm-panel">
+        <h2>{{ t .Lang "admin.finance" }}</h2>
+        <p class="adm-hint">{{ t .Lang "admin.finance_soon" }}</p>
+      </div>
+    </section>
+    {{ end }}
+  </main>
+</div>
 
-  {{ if .CanFinance }}
-  <section class="admin-panel">
-    <h2>{{ t .Lang "admin.finance" }}</h2>
-    <p class="hint">{{ t .Lang "admin.finance_soon" }}</p>
-  </section>
-  {{ end }}
-</main>
-{{ template "site_footer" . }}
+<script>
+  (function () {
+    var btn = document.querySelector('[data-theme-toggle]');
+    if (btn) btn.addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('shanraq-theme', next); } catch (e) {}
+    });
+    var links = document.querySelectorAll('[data-nav]');
+    var sections = [].map.call(links, function (l) { return document.querySelector(l.getAttribute('href')); });
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            var id = '#' + e.target.id;
+            links.forEach(function (l) { l.classList.toggle('is-active', l.getAttribute('href') === id); });
+          }
+        });
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      sections.forEach(function (s) { if (s) obs.observe(s); });
+    }
+  })();
+</script>
+</body>
+</html>
 {{ end }}

@@ -258,6 +258,9 @@ var messages = map[string]map[string]string{
 	"admin.role_set":    {"kz": "Рөл тағайындалды.", "ru": "Роль назначена.", "en": "Role assigned."},
 	"admin.user_missing": {"kz": "Қолданушы табылмады.", "ru": "Пользователь не найден.", "en": "User not found."},
 	"admin.comment_hidden": {"kz": "Пікір жасырылды.", "ru": "Комментарий скрыт.", "en": "Comment hidden."},
+	"admin.to_site":     {"kz": "Сайтқа", "ru": "На сайт", "en": "To site"},
+	"admin.logout":      {"kz": "Шығу", "ru": "Выйти", "en": "Log out"},
+	"admin.dashboard":   {"kz": "Дашборд", "ru": "Дашборд", "en": "Dashboard"},
 
 	"comments.title":       {"kz": "Пікірлер", "ru": "Комментарии", "en": "Comments"},
 	"comments.placeholder": {"kz": "Пікіріңізді жазыңыз… Құрметпен және нақты.", "ru": "Напишите комментарий… Уважительно и по делу.", "en": "Write a comment… Respectfully and to the point."},
