@@ -24,6 +24,7 @@ type Base struct {
 	Title     string
 	Lang      string
 	Authed    bool
+	IsStaff   bool
 	ShowLangs bool
 	Active    string // active section: "latest" | "top" | ""
 	ActiveCat string // active category slug, or "" for All
@@ -42,12 +43,13 @@ type Base struct {
 // base builds the shared page context. The language switcher points at the
 // current path so switching language re-renders the same page fully localized.
 func (m *Module) base(r *http.Request, title, lang string) Base {
-	_, authed := auth.ClaimsFromContext(r.Context())
+	claims, authed := auth.ClaimsFromContext(r.Context())
 	site := strings.TrimRight(m.rt.Config.Syndicate.BaseURL, "/")
 	return Base{
 		Title:     title,
 		Lang:      lang,
 		Authed:    authed,
+		IsStaff:   authed && claims.HasAnyRole(adminRoles...),
 		ShowLangs: true,
 		LangLinks: langLinks(r.URL.Path, lang),
 		SiteURL:   site,

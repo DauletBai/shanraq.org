@@ -1,0 +1,76 @@
+{{ define "admin" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="studio__head" style="margin-top:24px"><h1>{{ t .Lang "admin.title" }}</h1></div>
+  {{ if .Notice }}<div class="notice" style="margin-bottom:18px">{{ t .Lang (printf "admin.%s" .Notice) }}</div>{{ end }}
+
+  <div class="admin-cards">
+    <div class="admin-card"><b>{{ .Stats.Users }}</b><span>{{ t .Lang "admin.users" }}</span></div>
+    <div class="admin-card"><b>{{ .Stats.Articles }}</b><span>{{ t .Lang "admin.articles" }}</span></div>
+    <div class="admin-card"><b>{{ money .Stats.Views }}</b><span>{{ t .Lang "admin.views" }}</span></div>
+    <div class="admin-card"><b>{{ .Stats.Comments }}</b><span>{{ t .Lang "admin.comments" }}</span></div>
+    <div class="admin-card"><b>{{ .Stats.ListingsActive }}</b><span>{{ t .Lang "admin.listings" }}</span></div>
+  </div>
+
+  <div class="admin-grid">
+    <section class="admin-panel">
+      <h2>{{ t .Lang "admin.by_rubric" }}</h2>
+      <table class="admin-tbl"><tbody>
+      {{ range .Stats.ByCat }}<tr><td>{{ t $.Lang (printf "cat.%s" .Slug) }}</td><td>{{ .N }}</td><td>{{ money .Views }}</td></tr>{{ end }}
+      </tbody></table>
+    </section>
+    <section class="admin-panel">
+      <h2>{{ t .Lang "admin.by_role" }}</h2>
+      <table class="admin-tbl"><tbody>
+      {{ range .Stats.UsersByRole }}<tr><td>{{ .Role }}</td><td>{{ .N }}</td></tr>{{ end }}
+      </tbody></table>
+      <p class="hint">{{ t .Lang "admin.listings" }}: {{ .Stats.ListingsActive }} {{ t .Lang "admin.active" }} · {{ .Stats.ListingsExpired }} {{ t .Lang "admin.expired" }}</p>
+    </section>
+  </div>
+
+  <section class="admin-panel">
+    <h2>{{ t .Lang "admin.top" }}</h2>
+    <table class="admin-tbl"><tbody>
+    {{ range .Stats.TopArticles }}<tr><td><a href="/read/{{ .Slug }}">{{ .Title }}</a></td><td>{{ money .Views }}</td><td>▲ {{ .Score }}</td></tr>{{ end }}
+    </tbody></table>
+  </section>
+
+  {{ if .CanManageUsers }}
+  <section class="admin-panel">
+    <h2>{{ t .Lang "admin.assign_role" }}</h2>
+    <form class="admin-roleform" method="post" action="/admin/roles">
+      <input class="input" type="email" name="email" placeholder="{{ t .Lang "admin.email" }}" required>
+      <select class="select" name="role">{{ range .AssignRoles }}<option value="{{ . }}">{{ . }}</option>{{ end }}</select>
+      <button class="btn btn--primary" type="submit">{{ t .Lang "admin.assign" }}</button>
+    </form>
+  </section>
+  {{ end }}
+
+  {{ if .CanModerate }}
+  <section class="admin-panel">
+    <h2>{{ t .Lang "admin.recent_comm" }}</h2>
+    {{ if .Stats.RecentComments }}
+    <ul class="admin-comments">
+      {{ range .Stats.RecentComments }}
+      <li>
+        <div class="admin-comments__head"><b>{{ .AuthorName }}</b> · <a href="/read/{{ .Slug }}#comments">{{ .Slug }}</a></div>
+        <p>{{ .Body }}</p>
+        <form method="post" action="/admin/comments/{{ .ID }}/hide"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "admin.hide" }}</button></form>
+      </li>
+      {{ end }}
+    </ul>
+    {{ else }}<p class="hint">—</p>{{ end }}
+  </section>
+  {{ end }}
+
+  {{ if .CanFinance }}
+  <section class="admin-panel">
+    <h2>{{ t .Lang "admin.finance" }}</h2>
+    <p class="hint">{{ t .Lang "admin.finance_soon" }}</p>
+  </section>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}

@@ -50,6 +50,7 @@
     </a>
     <div class="topstrip__side topstrip__side--right">
       {{ if .Authed }}
+      {{ if .IsStaff }}<a href="/admin">{{ t .Lang "header.admin" }}</a>{{ end }}
       <a href="/studio">{{ t .Lang "header.studio" }}</a>
       <a class="btn btn--primary btn--sm" href="/studio/new">{{ t .Lang "header.write" }}</a>
       {{ else }}
