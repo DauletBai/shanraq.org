@@ -304,7 +304,8 @@ var messages = map[string]map[string]string{
 	"footer.rights": {"kz": "Барлық құқықтар қорғалған", "ru": "Все права защищены", "en": "All rights reserved"},
 	"footer.about":   {"kz": "Біз туралы", "ru": "О нас", "en": "About us"},
 	"footer.you":     {"kz": "Сіз туралы", "ru": "О вас", "en": "About you"},
-	"footer.support": {"kz": "Қолдау", "ru": "Поддержка", "en": "Support"},
+	"footer.support":   {"kz": "Қолдау", "ru": "Поддержка", "en": "Support"},
+	"footer.columnist": {"kz": "Сана Қыран (ИИ)", "ru": "Сана Қыран (ИИ)", "en": "Sana Qyran (AI)"},
 
 	"guide.side_title": {"kz": "Мақала не жарнаманы қалай орналастыру керек", "ru": "Как разместить статью или объявление", "en": "How to publish a story or an ad"},
 	"guide.side_text":  {"kz": "Жариялау, құқықтар мен жауапкершілік туралы қысқаша нұсқаулық.", "ru": "Краткий справочник о публикации, правах и ответственности.", "en": "A short guide to publishing, rights and responsibilities."},
