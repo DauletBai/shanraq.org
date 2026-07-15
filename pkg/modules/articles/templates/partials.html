@@ -5,9 +5,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ .Title }} · Shanraq</title>
+  <meta name="description" content="{{ .Desc }}">
+  <link rel="canonical" href="{{ .SiteURL }}{{ .Path }}?lang={{ .Lang }}">
+  {{ range langs }}<link rel="alternate" hreflang="{{ . }}" href="{{ $.SiteURL }}{{ index $.LangLinks . }}">
+  {{ end }}<link rel="alternate" hreflang="x-default" href="{{ .SiteURL }}{{ index .LangLinks "ru" }}">
+  <meta property="og:site_name" content="Shanraq">
+  <meta property="og:type" content="{{ if .OGType }}{{ .OGType }}{{ else }}website{{ end }}">
+  <meta property="og:title" content="{{ .Title }}">
+  <meta property="og:description" content="{{ .Desc }}">
+  <meta property="og:url" content="{{ .SiteURL }}{{ .Path }}?lang={{ .Lang }}">
+  <meta property="og:image" content="{{ .OGImage }}">
+  <meta property="og:locale" content="{{ ogLocale .Lang }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ .Title }}">
+  <meta name="twitter:description" content="{{ .Desc }}">
+  <meta name="twitter:image" content="{{ .OGImage }}">
   <link rel="icon" href="/static/brand/shanraq.svg">
   <link rel="alternate" type="application/rss+xml" title="Shanraq RSS" href="/feed.xml?lang={{ .Lang }}">
   <link rel="stylesheet" href="/static/css/shanraq.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Shanraq","url":"{{ .SiteURL }}","inLanguage":["kk","ru","en"]}</script>
+  {{ if .JSONLD }}{{ .JSONLD }}
+  {{ end }}
   <script>
     (function () {
       try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}

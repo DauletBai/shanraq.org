@@ -14,6 +14,12 @@ var messages = map[string]map[string]string{
 
 	"nav.latest": {"kz": "Соңғы", "ru": "Свежее", "en": "Latest"},
 	"nav.top":    {"kz": "Үздік", "ru": "Популярное", "en": "Top"},
+	"seo.site_desc": {
+		"kz": "Shanraq — қазақ, орыс және ағылшын тілдеріндегі тәуелсіз жарияланым алаңы: мақалалар, талдау және жылжымайтын мүлік хабарландырулары.",
+		"ru": "Shanraq — независимая площадка публикаций на казахском, русском и английском: статьи, аналитика и объявления о недвижимости.",
+		"en": "Shanraq — an independent publishing platform in Kazakh, Russian and English: articles, analysis, and real-estate listings.",
+	},
+
 	"nav.all":        {"kz": "Барлығы", "ru": "Все", "en": "All"},
 	"nav.realestate": {"kz": "Жылжымайтын мүлік", "ru": "Недвижимость", "en": "Real Estate"},
 

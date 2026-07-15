@@ -22,6 +22,7 @@ func buildTemplates(t *testing.T) *template.Template {
 		"dealTypes":        func() []string { return DealTypes },
 		"propertyTypes":    func() []string { return PropertyTypes },
 		"money":            money,
+		"ogLocale":         ogLocale,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(tm time.Time) string {

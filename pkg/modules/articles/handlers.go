@@ -2,6 +2,7 @@ package articles
 
 import (
 	"errors"
+	"html/template"
 	"net/http"
 	"strings"
 	"time"
@@ -28,18 +29,32 @@ type Base struct {
 	ActiveCat string // active category slug, or "" for All
 	ActiveSub string // active subcategory slug, or ""
 	LangLinks map[string]string
+
+	// SEO fields (populated by base(); pages may override).
+	SiteURL string        // absolute origin, e.g. https://shanraq.org
+	Path    string        // request path, no query
+	Desc    string        // meta description
+	OGImage string        // absolute image URL for social previews
+	OGType  string        // "website" | "article"
+	JSONLD  template.HTML // structured data (schema.org), injected verbatim
 }
 
 // base builds the shared page context. The language switcher points at the
 // current path so switching language re-renders the same page fully localized.
 func (m *Module) base(r *http.Request, title, lang string) Base {
 	_, authed := auth.ClaimsFromContext(r.Context())
+	site := strings.TrimRight(m.rt.Config.Syndicate.BaseURL, "/")
 	return Base{
 		Title:     title,
 		Lang:      lang,
 		Authed:    authed,
 		ShowLangs: true,
 		LangLinks: langLinks(r.URL.Path, lang),
+		SiteURL:   site,
+		Path:      r.URL.Path,
+		Desc:      T(lang, "seo.site_desc"),
+		OGImage:   site + "/static/brand/shanraq.svg",
+		OGType:    "website",
 	}
 }
 
@@ -291,6 +306,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.IsAuthor = viewer != uuid.Nil && viewer == a.AuthorID
 	page.CanVote = viewer != uuid.Nil && !page.IsAuthor
 
+	m.applyArticleSEO(&page)
 	m.render(w, "article", page)
 }
 

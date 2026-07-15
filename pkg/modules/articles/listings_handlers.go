@@ -178,6 +178,7 @@ func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
 	if authorID, ok := m.authorID(r); ok && authorID.String() == l.AuthorID {
 		page.Owner = true
 	}
+	m.applyListingSEO(&page)
 	m.render(w, "listing_view", page)
 }
 

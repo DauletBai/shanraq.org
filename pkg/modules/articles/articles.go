@@ -75,6 +75,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"dealTypes":        func() []string { return DealTypes },
 		"propertyTypes":    func() []string { return PropertyTypes },
 		"money":            money,
+		"ogLocale":         ogLocale,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(t time.Time) string {
@@ -103,6 +104,10 @@ func (m *Module) Routes(r chi.Router) {
 	if m.rt == nil {
 		return
 	}
+
+	// SEO endpoints (no session needed).
+	r.Get("/robots.txt", m.handleRobots)
+	r.Get("/sitemap.xml", m.handleSitemap)
 
 	// Public reader (session loaded softly so the header can show Studio link).
 	r.Group(func(r chi.Router) {
