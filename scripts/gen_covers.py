@@ -112,6 +112,21 @@ def motif_bars():
             '<path d="M500 420 L560 380 L620 350 L720 290"/><path d="M720 290 l-34 4 M720 290 l4 34"/></g>')
 
 
+def motif_orbit():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="9" opacity="0.92">'
+            '<circle cx="600" cy="360" r="26" fill="#ffffff"/>'
+            '<ellipse cx="600" cy="360" rx="150" ry="60"/>'
+            '<ellipse cx="600" cy="360" rx="150" ry="60" transform="rotate(60 600 360)"/>'
+            '<ellipse cx="600" cy="360" rx="150" ry="60" transform="rotate(120 600 360)"/>'
+            '<circle cx="750" cy="360" r="10" fill="#ffffff"/></g>')
+
+
+def motif_heart():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" opacity="0.92">'
+            '<path d="M600 460 C 500 390 470 340 500 300 C 525 268 575 275 600 315 C 625 275 675 268 700 300 C 730 340 700 390 600 460 Z"/>'
+            '<path d="M505 372 h55 l22 -40 l34 78 l22 -38 h60"/></g>')
+
+
 COVERS = {
     "opinion":  (["#ef8a5a", "#e0653f", "#f2b06a", "#c8492e"], motif_opinion, 11),
     "ai":       (["#4f8fd6", "#3f5fb0", "#6fb3d6", "#2f3f8f"], motif_network, 21),
@@ -123,6 +138,8 @@ COVERS = {
     "football": (["#3f9a5a", "#2e7d47", "#6fb87a", "#256b3a"], motif_ball, 81),
     "culture":  (["#8a5aa8", "#6f3f8f", "#a87ac0", "#5a2f7a"], motif_masks, 91),
     "economy":  (["#d99a4f", "#c07f3f", "#e6b86a", "#a8622e"], motif_bars, 101),
+    "space":    (["#3f4f8a", "#2f3a66", "#5f6fa8", "#232a4a"], motif_orbit, 111),
+    "health":   (["#4fa89a", "#3f8f82", "#7ac0b4", "#2e7d70"], motif_heart, 121),
 }
 
 

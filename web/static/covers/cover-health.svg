@@ -1,0 +1,16 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="wc" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.011 0.014" numOctaves="3" seed="121" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="121"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0"/></filter>
+  </defs>
+  <rect width="1200" height="675" fill="#4fa89a"/>
+  <g filter="url(#wc)"><ellipse cx="300" cy="260" rx="360" ry="300" fill="#4fa89a" fill-opacity="0.7"/><ellipse cx="820" cy="360" rx="420" ry="340" fill="#3f8f82" fill-opacity="0.7"/><ellipse cx="560" cy="520" rx="480" ry="300" fill="#7ac0b4" fill-opacity="0.7"/><ellipse cx="980" cy="140" rx="300" ry="260" fill="#2e7d70" fill-opacity="0.7"/></g>
+  <rect width="1200" height="675" fill="#ffffff" filter="url(#grain)"/>
+  <g fill="none" stroke="#ffffff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"><path d="M600 460 C 500 390 470 340 500 300 C 525 268 575 275 600 315 C 625 275 675 268 700 300 C 730 340 700 390 600 460 Z"/><path d="M505 372 h55 l22 -40 l34 78 l22 -38 h60"/></g>
+  <g transform="translate(1108,24) scale(0.16)" fill="none" stroke-linecap="round" opacity="0.9"><g stroke="#ffffff" stroke-opacity="0.5" stroke-width="45"><line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/><line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/><line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/></g><g stroke="#ffffff" stroke-width="30"><line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/><line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/><line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/></g></g>
+</svg>
