@@ -160,6 +160,37 @@ def motif_note():
             '<ellipse cx="668" cy="418" rx="27" ry="18" transform="rotate(-20 668 418)"/></g>')
 
 
+def motif_robot():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" opacity="0.92">'
+            '<rect x="520" y="304" width="160" height="140" rx="20"/>'
+            '<line x1="600" y1="304" x2="600" y2="272"/></g>'
+            '<g fill="#ffffff" opacity="0.92">'
+            '<circle cx="600" cy="262" r="11"/><circle cx="562" cy="360" r="17"/>'
+            '<circle cx="638" cy="360" r="17"/><rect x="560" y="402" width="80" height="12" rx="6"/></g>')
+
+
+def motif_wheat():
+    rows = ""
+    for y in (322, 352, 382, 412):
+        rows += f'<line x1="600" y1="{y}" x2="566" y2="{y-26}"/><line x1="600" y1="{y}" x2="634" y2="{y-26}"/>'
+    return ('<g fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" opacity="0.92">'
+            '<line x1="600" y1="472" x2="600" y2="300"/>'
+            '<line x1="600" y1="300" x2="582" y2="270"/><line x1="600" y1="300" x2="618" y2="270"/>'
+            f'{rows}</g>')
+
+
+def motif_tennis():
+    strings = ""
+    for x in (560, 580, 600):
+        strings += f'<line x1="{x}" y1="278" x2="{x}" y2="402"/>'
+    for y in (312, 340, 368):
+        strings += f'<line x1="522" y1="{y}" x2="638" y2="{y}"/>'
+    return ('<g fill="none" stroke="#ffffff" stroke-width="8" opacity="0.9">'
+            '<ellipse cx="580" cy="340" rx="60" ry="72"/>'
+            f'{strings}<line x1="580" y1="412" x2="580" y2="472" stroke-width="12" stroke-linecap="round"/></g>'
+            '<circle cx="690" cy="404" r="20" fill="#ffffff" opacity="0.92"/>')
+
+
 COVERS = {
     "opinion":  (["#ef8a5a", "#e0653f", "#f2b06a", "#c8492e"], motif_opinion, 11),
     "ai":       (["#4f8fd6", "#3f5fb0", "#6fb3d6", "#2f3f8f"], motif_network, 21),
@@ -177,6 +208,9 @@ COVERS = {
     "ecology":  (["#5aa070", "#3f8f57", "#86c48f", "#2e7d47"], motif_leaf, 141),
     "boxing":   (["#c0563f", "#9a3f2e", "#d9856f", "#7a2e20"], motif_glove, 151),
     "music":    (["#9a5aa8", "#7f3f8f", "#bd82c4", "#6a2f7a"], motif_note, 161),
+    "robot":    (["#5a6b8a", "#3f4f6f", "#7a8aa8", "#2f3a52"], motif_robot, 171),
+    "agriculture": (["#d9a84f", "#c08f3f", "#e6c46a", "#a8752e"], motif_wheat, 181),
+    "tennis":   (["#7aa83f", "#5f8f2e", "#a8c46f", "#4a7a20"], motif_tennis, 191),
 }
 
 
