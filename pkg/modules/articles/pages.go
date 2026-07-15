@@ -139,7 +139,9 @@ An advertiser cabinet for banner ads will come later; revenue will be shared fai
 By publishing, you agree to these rules.`},
 	},
 	"pricing": {
-		"ru": {Title: "Тарифы", Body: `Мы верим, что доступ к информации должен быть бесплатным. Поэтому чтение и подписка не стоят ничего. Платными являются только дополнительные услуги на базе ИИ и продвижение — по прозрачным ценам.
+		"ru": {Title: "Тарифы", Body: `Мы верим, что доступ к информации должен быть бесплатным. Поэтому чтение и подписка не стоят ничего.
+
+> **На время запуска всё бесплатно.** Первые 12 месяцев все функции платформы бесплатны — включая размещение, продление, продвижение и выделение объявлений. Платными остаются только сторонние ИИ-услуги (они несут реальную себестоимость). Цены ниже — это будущие тарифы; мы предупредим минимум за 60 дней до их введения.
 
 ## Бесплатно и навсегда
 - Чтение всех материалов на трёх языках
@@ -168,7 +170,9 @@ By publishing, you agree to these rules.`},
 Баннерная реклама — по модели CPM (оплата за показы). Доход делится: **50% автору материала, 40% платформе, 10% в фонд сообщества.** Кабинет рекламодателя откроется позже.
 
 Все цены указаны в тенге и могут корректироваться. Об изменениях мы сообщаем заранее.`},
-		"kz": {Title: "Тарифтер", Body: `Ақпаратқа қолжетімділік тегін болуы керек деп сенеміз. Сондықтан оқу мен жазылу тегін. Тек ИИ негізіндегі қосымша қызметтер мен жылжыту ақылы — ашық бағамен.
+		"kz": {Title: "Тарифтер", Body: `Ақпаратқа қолжетімділік тегін болуы керек деп сенеміз. Сондықтан оқу мен жазылу тегін.
+
+> **Іске қосу кезінде бәрі тегін.** Алғашқы 12 ай бойы платформаның барлық функциясы тегін — соның ішінде хабарландыру орналастыру, ұзарту, жылжыту және ерекшелеу. Тек сыртқы ИИ-қызметтер ақылы (олардың нақты өзіндік құны бар). Төмендегі бағалар — болашақ тарифтер; оларды енгізуден кемінде 60 күн бұрын ескертеміз.
 
 ## Тегін әрі әрқашан
 - Барлық материалды үш тілде оқу
@@ -197,7 +201,9 @@ By publishing, you agree to these rules.`},
 Баннерлік жарнама — CPM моделі бойынша (көрсетілім үшін төлем). Табыс бөлінісі: **50% материал авторына, 40% платформаға, 10% қоғам қорына.** Жарнама беруші кабинеті кейінірек ашылады.
 
 Барлық баға теңгемен және өзгеруі мүмкін. Өзгерістер туралы алдын ала хабарлаймыз.`},
-		"en": {Title: "Pricing", Body: `We believe access to information should be free. Reading and the newsletter cost nothing. Only optional AI services and promotion are paid — at transparent prices.
+		"en": {Title: "Pricing", Body: `We believe access to information should be free. Reading and the newsletter cost nothing.
+
+> **Everything is free during launch.** For the first 12 months every platform feature is free — including posting, extending, promoting, and highlighting listings. Only third-party AI services are paid (they carry a real cost). The prices below are the future rates; we will give at least 60 days' notice before introducing them.
 
 ## Free forever
 - Reading all content in three languages

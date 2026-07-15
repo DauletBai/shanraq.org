@@ -83,8 +83,14 @@ func TestTemplatesExecute(t *testing.T) {
 				ID: "id", DealType: "rent", PropertyType: "house", Country: "Казахстан", Region: "Астана", City: "Астана", Village: "Тельман",
 				Price: 350000, Area: 120, Rooms: 4, Title: "Дом в аренду", Description: "Line1\nLine2", Contact: "+7 700 000 00 00", CoverURL: "http://x/y.jpg",
 				Images: []string{"/static/demo/rooms/exterior.svg", "/static/demo/rooms/living.svg", "/static/demo/rooms/kitchen.svg"}}}},
-			{"listing_view", ListingViewPage{Base: base, L: &Listing{ // cover-only fallback, no gallery
-				ID: "id", DealType: "sale", PropertyType: "land", Title: "Участок", Contact: "+7 700 000 00 00", CoverURL: "http://x/y.jpg"}}},
+			{"listing_view", ListingViewPage{Base: base, Owner: true, L: &Listing{ // cover-only fallback, owner controls
+				ID: "id", DealType: "sale", PropertyType: "land", Title: "Участок", Contact: "+7 700 000 00 00", CoverURL: "http://x/y.jpg",
+				ExpiresAt: now.Add(72 * time.Hour), PromotedUntil: &now, FeaturedUntil: &now}}},
+			{"listing_my", MyListingsPage{Base: base, Listings: []*Listing{
+				{ID: "id1", Title: "Активное", Price: 12000000, Region: "Алматы", ExpiresAt: now.Add(72 * time.Hour), FeaturedUntil: &now},
+				{ID: "id2", Title: "Истёкшее", Price: 5000000, Region: "Астана", ExpiresAt: now.Add(-24 * time.Hour)},
+			}}},
+			{"listing_my", MyListingsPage{Base: base}}, // empty state
 		}
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {

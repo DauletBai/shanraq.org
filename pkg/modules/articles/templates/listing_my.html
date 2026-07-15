@@ -1,0 +1,44 @@
+{{ define "listing_my" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="studio__head" style="margin-top:24px">
+    <h1>{{ t .Lang "re.my_listings" }}</h1>
+    <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
+  </div>
+  <p class="hint" style="margin:-6px 0 20px">{{ t .Lang "re.free_launch" }}.</p>
+
+  {{ if .Listings }}
+  <div class="mylist">
+    {{ range .Listings }}
+    <div class="mylist__row{{ if .Featured }} is-featured{{ end }}">
+      <div class="mylist__main">
+        <a class="mylist__title" href="/listings/{{ .ID }}">{{ .Title }}</a>
+        <div class="mylist__meta">
+          <span>{{ money .Price }} ₸</span><span class="dot">·</span><span>{{ .Location }}</span>
+          {{ if .Promoted }}<span class="badge-top badge-top--inline">{{ t $.Lang "re.badge_top" }}</span>{{ end }}
+          {{ if .Featured }}<span class="badge-feat">{{ t $.Lang "re.badge_featured" }}</span>{{ end }}
+        </div>
+        <div class="mylist__status{{ if .Expired }} is-expired{{ end }}">
+          {{ if .Expired }}{{ t $.Lang "re.expired" }}
+          {{ else }}{{ t $.Lang "re.active" }} · {{ t $.Lang "re.days_left" }} {{ .DaysLeft }} {{ t $.Lang "re.days" }}{{ end }}
+        </div>
+      </div>
+      <div class="mylist__actions">
+        <form method="post" action="/listings/{{ .ID }}/extend"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.extend" }}</button></form>
+        <form method="post" action="/listings/{{ .ID }}/promote"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.promote" }}</button></form>
+        <form method="post" action="/listings/{{ .ID }}/feature"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.feature" }}</button></form>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  {{ else }}
+  <div class="empty">
+    <p style="margin-bottom:16px">{{ t .Lang "re.my_empty" }}</p>
+    <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
+  </div>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}

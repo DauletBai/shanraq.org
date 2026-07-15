@@ -90,7 +90,7 @@ var regionCentroids = map[string]centroid{
 func (s *ListingStore) RegionCounts(ctx context.Context) (map[string]int, error) {
 	rows, err := s.db.Query(ctx, `
 		SELECT region, COUNT(*) FROM listings
-		WHERE status = 'published' AND region <> ''
+		WHERE status = 'published' AND expires_at > NOW() AND region <> ''
 		GROUP BY region`)
 	if err != nil {
 		return nil, err

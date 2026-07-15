@@ -18,7 +18,17 @@
           {{ end }}
         </div>
         {{ else if .L.CoverURL }}<div class="article__media"><img src="{{ .L.CoverURL }}" alt=""></div>{{ end }}
-        <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>
+        <div class="listing__tags">
+          <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>
+          {{ if .L.Promoted }}<span class="badge-top badge-top--inline">{{ t .Lang "re.badge_top" }}</span>{{ end }}
+          {{ if .L.Featured }}<span class="badge-feat">{{ t .Lang "re.badge_featured" }}</span>{{ end }}
+        </div>
+        {{ if .Owner }}
+        <div class="listing__owner">
+          <span>{{ if .L.Expired }}{{ t .Lang "re.expired" }}{{ else }}{{ t .Lang "re.active" }} · {{ t .Lang "re.days_left" }} {{ .L.DaysLeft }} {{ t .Lang "re.days" }}{{ end }}</span>
+          <a class="btn btn--ghost btn--sm" href="/listings/my">{{ t .Lang "re.manage" }}</a>
+        </div>
+        {{ end }}
         <h1 class="article__title">{{ .L.Title }}</h1>
         <p class="listing__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
 

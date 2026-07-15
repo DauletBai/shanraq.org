@@ -519,3 +519,38 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .map-bubble.is-empty { fill: var(--muted); fill-opacity: 0.22; }
 .map-count { fill: #fff; font-size: 13px; font-weight: 700; font-family: var(--sans); pointer-events: none; }
 g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
+
+/* ---- Listing lifecycle: promotion / highlight / management ---- */
+.post { position: relative; }
+.post--featured { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 12px; }
+.badge-top {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  background: var(--gold); color: #fff; font-size: 0.68rem; font-weight: 800;
+  letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px;
+}
+.badge-top--inline { position: static; }
+.badge-feat {
+  display: inline-block; background: var(--teal); color: #fff; font-size: 0.68rem;
+  font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 999px;
+}
+.listing__tags { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.listing__owner {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  margin: 12px 0; padding: 10px 14px; border: 1px solid var(--line);
+  border-radius: 10px; background: var(--surface); color: var(--muted); font-size: 0.9rem;
+}
+
+.mylist { display: flex; flex-direction: column; gap: 12px; }
+.mylist__row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+  flex-wrap: wrap;
+}
+.mylist__row.is-featured { border-color: var(--gold); }
+.mylist__title { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; }
+.mylist__meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+.mylist__status { font-size: 0.85rem; color: var(--teal); font-weight: 600; margin-top: 4px; }
+.mylist__status.is-expired { color: var(--danger); }
+.mylist__actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.mylist__actions form { margin: 0; }

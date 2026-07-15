@@ -9,6 +9,7 @@
       <button type="button" class="btn btn--ghost" data-toggle="#re-search">⌕ {{ t .Lang "re.find" }}</button>
       <button type="button" class="btn btn--ghost" data-toggle="#re-map">{{ t .Lang "re.map" }}</button>
       {{ if .Authed }}
+      <a class="btn btn--ghost" href="/listings/my">{{ t .Lang "re.my_listings" }}</a>
       <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
       {{ else }}
       <a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>
@@ -69,8 +70,9 @@
       {{ if .Listings }}
       <div class="posts posts--two">
         {{ range .Listings }}
-        <article class="post">
+        <article class="post{{ if .Featured }} post--featured{{ end }}">
           <a class="post__media" href="/listings/{{ .ID }}">
+            {{ if .Promoted }}<span class="badge-top">{{ t $.Lang "re.badge_top" }}</span>{{ end }}
             {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
             {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
           </a>

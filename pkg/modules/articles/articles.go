@@ -24,6 +24,12 @@ var templateFiles embed.FS
 // Module implements the article publishing product surface: a public reader
 // (feed + article pages with a language switcher) and an authenticated author
 // cabinet ("studio") with a dashboard and a trilingual editor.
+// Mailer sends e-mail (satisfied by the notifier module). Used for listing
+// expiry reminders.
+type Mailer interface {
+	Send(ctx context.Context, to, subject, body string) error
+}
+
 type Module struct {
 	rt        *shanraq.Runtime
 	store     *Store
@@ -34,14 +40,16 @@ type Module struct {
 	auth      *auth.Module
 	ai        *ai.Module
 	syndicate *syndicate.Module
+	mailer    Mailer
 	tmpl      *template.Template
 	validator *validate.Validator
 }
 
 // New builds the articles module. It depends on auth (browser sessions), ai
-// (writing assistant), and syndicate (publish → external channels).
-func New(authModule *auth.Module, aiModule *ai.Module, syndicateModule *syndicate.Module) *Module {
-	return &Module{auth: authModule, ai: aiModule, syndicate: syndicateModule}
+// (writing assistant), syndicate (publish → external channels), and a mailer
+// (listing expiry reminders).
+func New(authModule *auth.Module, aiModule *ai.Module, syndicateModule *syndicate.Module, mailer Mailer) *Module {
+	return &Module{auth: authModule, ai: aiModule, syndicate: syndicateModule, mailer: mailer}
 }
 
 func (m *Module) Name() string { return "articles" }
@@ -114,6 +122,10 @@ func (m *Module) Routes(r chi.Router) {
 		r.Get("/listings", m.handleListings)
 		r.Get("/listings/new", m.handleListingNew)
 		r.Post("/listings/new", m.handleListingCreate)
+		r.Get("/listings/my", m.handleMyListings)
+		r.Post("/listings/{id}/extend", m.handleListingExtend)
+		r.Post("/listings/{id}/promote", m.handleListingPromote)
+		r.Post("/listings/{id}/feature", m.handleListingFeature)
 		r.Get("/listings/{id}", m.handleListingView)
 	})
 
@@ -151,4 +163,5 @@ var _ interface {
 	shanraq.Module
 	shanraq.RouterModule
 	shanraq.InitializerModule
+	shanraq.StarterModule
 } = (*Module)(nil)

@@ -1,6 +1,8 @@
 package articles
 
 import (
+	"context"
+	"errors"
 	"net/http"
 	"strconv"
 	"strings"
@@ -38,7 +40,14 @@ type ListingFormPage struct {
 type ListingViewPage struct {
 	Base
 	L          *Listing
+	Owner      bool
 	Subscribed bool
+}
+
+// MyListingsPage backs the author's own-listings management view.
+type MyListingsPage struct {
+	Base
+	Listings []*Listing
 }
 
 func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
@@ -166,7 +175,65 @@ func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
 	page := ListingViewPage{Base: m.base(r, l.Title, lang)}
 	page.ActiveCat = "realestate"
 	page.L = l
+	if authorID, ok := m.authorID(r); ok && authorID.String() == l.AuthorID {
+		page.Owner = true
+	}
 	m.render(w, "listing_view", page)
+}
+
+func (m *Module) handleMyListings(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	items, err := m.listings.MyListings(r.Context(), authorID)
+	if err != nil {
+		m.rt.Logger.Error("my listings", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	page := MyListingsPage{Base: m.base(r, T(lang, "re.my_listings"), lang)}
+	page.ActiveCat = "realestate"
+	page.Listings = items
+	m.render(w, "listing_my", page)
+}
+
+// listingAction runs an owner-only lifecycle mutation and returns to /listings/my.
+func (m *Module) listingAction(w http.ResponseWriter, r *http.Request, fn func(context.Context, uuid.UUID, uuid.UUID) error) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if err := fn(r.Context(), id, authorID); err != nil {
+		if errors.Is(err, ErrNotFound) {
+			http.NotFound(w, r)
+			return
+		}
+		m.rt.Logger.Error("listing action", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/listings/my", http.StatusSeeOther)
+}
+
+func (m *Module) handleListingExtend(w http.ResponseWriter, r *http.Request) {
+	m.listingAction(w, r, m.listings.Extend)
+}
+
+func (m *Module) handleListingPromote(w http.ResponseWriter, r *http.Request) {
+	m.listingAction(w, r, m.listings.Promote)
+}
+
+func (m *Module) handleListingFeature(w http.ResponseWriter, r *http.Request) {
+	m.listingAction(w, r, m.listings.Feature)
 }
 
 func parseListingForm(r *http.Request) ListingInput {

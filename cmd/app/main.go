@@ -100,7 +100,7 @@ func main() {
 	app.Register(aiModule)
 	app.Register(syndicateModule)
 	app.Register(media.New(authModule))
-	app.Register(articles.New(authModule, aiModule, syndicateModule))
+	app.Register(articles.New(authModule, aiModule, syndicateModule, notifierModule))
 	app.Register(webui.New(jobWorkers, jobPollSeconds, webui.WithTenantResolver(func(r *http.Request) (uuid.UUID, bool) {
 		return tenantResolver(r)
 	})))
