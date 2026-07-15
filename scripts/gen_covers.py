@@ -71,6 +71,47 @@ def motif_lamp():
             '<line x1="565" y1="470" x2="635" y2="470"/><line x1="575" y1="500" x2="625" y2="500"/></g>')
 
 
+def motif_scales():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.92">'
+            '<line x1="600" y1="250" x2="600" y2="470"/><line x1="470" y1="290" x2="730" y2="290"/>'
+            '<line x1="470" y1="290" x2="440" y2="360"/><line x1="470" y1="290" x2="500" y2="360"/>'
+            '<path d="M440 360 a30 22 0 0 0 60 0"/>'
+            '<line x1="730" y1="290" x2="700" y2="360"/><line x1="730" y1="290" x2="760" y2="360"/>'
+            '<path d="M700 360 a30 22 0 0 0 60 0"/><line x1="540" y1="470" x2="660" y2="470"/></g>')
+
+
+def motif_ball():
+    import math
+    cx, cy, r = 600, 360, 92
+    pent = []
+    for i in range(5):
+        a = -math.pi / 2 + i * 2 * math.pi / 5
+        pent.append((cx + 34 * math.cos(a), cy + 34 * math.sin(a)))
+    poly = " ".join(f"{x:.0f},{y:.0f}" for x, y in pent)
+    spokes = "".join(f'<line x1="{x:.0f}" y1="{y:.0f}" x2="{cx + (r) * (x - cx) / 34:.0f}" y2="{cy + (r) * (y - cy) / 34:.0f}"/>' for x, y in pent)
+    return (f'<g fill="none" stroke="#ffffff" stroke-width="9" stroke-linejoin="round" opacity="0.92">'
+            f'<circle cx="{cx}" cy="{cy}" r="{r}"/><polygon points="{poly}" fill="#ffffff"/>{spokes}</g>')
+
+
+def motif_masks():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" opacity="0.92">'
+            '<path d="M500 280 q60 -20 120 0 q10 90 -60 150 q-70 -60 -60 -150 z"/>'
+            '<circle cx="540" cy="330" r="6" fill="#ffffff"/><circle cx="580" cy="330" r="6" fill="#ffffff"/>'
+            '<path d="M545 380 q15 15 30 0"/>'
+            '<path d="M640 320 q60 -20 120 0 q10 90 -60 150 q-70 -60 -60 -150 z"/>'
+            '<circle cx="680" cy="370" r="6" fill="#ffffff"/><circle cx="720" cy="370" r="6" fill="#ffffff"/>'
+            '<path d="M685 425 q15 -15 30 0"/></g>')
+
+
+def motif_bars():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.92">'
+            '<line x1="480" y1="470" x2="760" y2="470"/>'
+            '<rect x="510" y="400" width="46" height="70" fill="#ffffff" stroke="none"/>'
+            '<rect x="580" y="360" width="46" height="110" fill="#ffffff" stroke="none"/>'
+            '<rect x="650" y="310" width="46" height="160" fill="#ffffff" stroke="none"/>'
+            '<path d="M500 420 L560 380 L620 350 L720 290"/><path d="M720 290 l-34 4 M720 290 l4 34"/></g>')
+
+
 COVERS = {
     "opinion":  (["#ef8a5a", "#e0653f", "#f2b06a", "#c8492e"], motif_opinion, 11),
     "ai":       (["#4f8fd6", "#3f5fb0", "#6fb3d6", "#2f3f8f"], motif_network, 21),
@@ -78,6 +119,10 @@ COVERS = {
     "language": (["#d97aa0", "#c05680", "#e6a0bd", "#a83f68"], motif_book, 41),
     "world":    (["#4f9fd6", "#3f79b0", "#6fc0d6", "#2f5f9f"], motif_mountains, 51),
     "education":(["#e6a24f", "#d67f3f", "#f2c06a", "#c8622e"], motif_lamp, 61),
+    "politics": (["#5b6b9a", "#3f4f7a", "#7a8ab0", "#2f3a5f"], motif_scales, 71),
+    "football": (["#3f9a5a", "#2e7d47", "#6fb87a", "#256b3a"], motif_ball, 81),
+    "culture":  (["#8a5aa8", "#6f3f8f", "#a87ac0", "#5a2f7a"], motif_masks, 91),
+    "economy":  (["#d99a4f", "#c07f3f", "#e6b86a", "#a8622e"], motif_bars, 101),
 }
 
 
