@@ -83,7 +83,7 @@
         <div class="field">
           <label>{{ t $.Lang "editor.f_body" }} ({{ label . }})</label>
           <textarea class="textarea" name="body_{{ . }}">{{ $f.BodyMD }}</textarea>
-          <p class="hint">{{ t $.Lang "editor.markdown_hint" }}</p>
+          <p class="hint">{{ t $.Lang "editor.markdown_hint" }} <a href="/formatting" target="_blank" rel="noopener">{{ t $.Lang "editor.doc_link" }}</a></p>
         </div>
       </div>
       {{ end }}

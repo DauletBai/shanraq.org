@@ -10,14 +10,14 @@ var Categories = []string{"sport", "society", "politics", "economy", "culture", 
 // Subcategories maps each category to its ordered list of subcategory slugs
 // (the submenu). Slugs are globally unique.
 var Subcategories = map[string][]string{
-	"sport":      {"football", "boxing", "hockey", "athletics"},
-	"society":    {"education", "health", "family"},
-	"politics":   {"elections", "parliament", "regions"},
-	"economy":    {"prices", "business", "energy"},
-	"culture":    {"literature", "cinema", "music"},
-	"technology": {"internet", "ai", "science"},
-	"opinion":    {"column", "debate"},
-	"world":      {"central_asia", "europe", "asia"},
+	"sport":      {"football", "boxing", "hockey", "athletics", "basketball", "tennis", "wrestling", "mma", "chess", "cycling"},
+	"society":    {"education", "health", "family", "religion", "ecology", "migration", "charity", "youth", "crime", "holidays"},
+	"politics":   {"elections", "parliament", "regions", "government", "diplomacy", "law", "defense", "parties", "corruption"},
+	"economy":    {"prices", "business", "energy", "finance", "agriculture", "industry", "trade", "startups", "labor", "banks"},
+	"culture":    {"literature", "cinema", "music", "theatre", "art", "history", "language", "fashion", "architecture", "traditions"},
+	"technology": {"internet", "ai", "science", "gadgets", "space", "software", "cybersecurity", "telecom", "gaming", "autotech"},
+	"opinion":    {"column", "debate", "interview", "analytics", "editorial", "letters", "blogs", "review", "satire"},
+	"world":      {"central_asia", "europe", "asia", "north_america", "south_america", "africa", "oceania", "middle_east", "cis", "russia"},
 }
 
 var validCategories = func() map[string]bool {

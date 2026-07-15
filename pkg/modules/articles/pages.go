@@ -265,6 +265,182 @@ Soon our AI assistant will appear here to answer questions about writing article
 
 We reply calmly and to the point.`},
 	},
+	"formatting": {
+		"ru": {Title: "Как оформлять статью", Body: `Хорошо оформленная статья читается легче и вызывает больше доверия. Текст пишется в формате **Markdown** — это простые значки, которые превращаются в заголовки, списки и выделения. Ничего сложного: ниже все примеры. Слева — как выглядит результат, в рамке — как это написать.
+
+## Заголовки
+Ставьте решётки в начале строки. Чем больше решёток, тем меньше заголовок:
+
+    ## Раздел
+    ### Подраздел
+
+## Жирный и курсив
+Оберните текст звёздочками:
+
+    **жирный текст**
+    *курсив*
+
+## Списки
+Маркированный список — дефис в начале строки; нумерованный — цифра с точкой:
+
+    - первый пункт
+    - второй пункт
+
+    1. первый шаг
+    2. второй шаг
+
+## Ссылки
+Текст ссылки — в квадратных скобках, адрес — в круглых:
+
+    [Читайте наши правила](/guide)
+
+## Изображения
+Так же, как ссылка, но с восклицательным знаком впереди. Лучше загрузить фото кнопкой «Загрузить» — оно автоматически получит водяной знак:
+
+    ![Подпись к фото](https://example.com/photo.jpg)
+
+## Цитаты
+Знак «больше» в начале строки:
+
+    > Мысль, которую вы цитируете.
+
+## Таблицы
+Разделяйте колонки вертикальной чертой, вторая строка — дефисы:
+
+    | Показатель | Значение |
+    |------------|----------|
+    | Население  | 20 млн   |
+
+## Разделитель
+Три дефиса на отдельной строке создают горизонтальную линию между блоками:
+
+    ---
+
+## Советы по оформлению
+- **Один заголовок — одна мысль.** Разбивайте текст на разделы с подзаголовками.
+- **Короткие абзацы.** 2–4 предложения читаются легче, чем сплошная стена текста.
+- **Проверяйте факты** и указывайте источники ссылками.
+- **Добавьте обложку** — статьи с изображением читают чаще.
+- **Используйте ИИ-редактор** (платно), чтобы улучшить стиль и грамотность, и предпросмотр, чтобы увидеть результат перед публикацией.
+
+Не уверены в оформлении? Просто пишите текст как есть — ИИ-редактор поможет привести его в порядок. Остались вопросы? Загляните в [справочник](/guide) или напишите в [поддержку](/support).`},
+		"kz": {Title: "Мақаланы қалай безендіру керек", Body: `Жақсы безендірілген мақала оңай оқылады әрі көбірек сенім тудырады. Мәтін **Markdown** пішімінде жазылады — бұл тақырыпқа, тізімге және ерекшелеуге айналатын қарапайым белгілер. Бәрі оңай: төменде мысалдар берілген. Сол жақта — нәтиже, жақтауда — оны қалай жазу керек.
+
+## Тақырыптар
+Жол басына тор белгісін қойыңыз. Белгі көп болған сайын тақырып кіші болады:
+
+    ## Бөлім
+    ### Ішкі бөлім
+
+## Қалың және көлбеу
+Мәтінді жұлдызшамен қоршаңыз:
+
+    **қалың мәтін**
+    *көлбеу*
+
+## Тізімдер
+Маркерленген тізім — жол басындағы сызықша; нөмірленген — нүктелі сан:
+
+    - бірінші тармақ
+    - екінші тармақ
+
+    1. бірінші қадам
+    2. екінші қадам
+
+## Сілтемелер
+Сілтеме мәтіні — тік жақшада, мекенжай — дөңгелек жақшада:
+
+    [Ережелерімізді оқыңыз](/guide)
+
+## Суреттер
+Сілтеме сияқты, бірақ алдында леп белгісі. Фотоны «Жүктеу» түймесімен жүктеген дұрыс — оған су таңбасы қойылады:
+
+    ![Фото сипаттамасы](https://example.com/photo.jpg)
+
+## Дәйексөздер
+Жол басындағы «үлкен» белгісі:
+
+    > Сіз келтіретін ой.
+
+## Кестелер
+Бағандарды тік сызықпен бөліңіз, екінші жол — сызықшалар:
+
+    | Көрсеткіш | Мәні   |
+    |-----------|--------|
+    | Халық     | 20 млн |
+
+## Бөлгіш
+Жеке жолдағы үш сызықша блоктар арасында көлденең сызық жасайды:
+
+    ---
+
+## Безендіру кеңестері
+- **Бір тақырып — бір ой.** Мәтінді ішкі тақырыптармен бөліңіз.
+- **Қысқа абзацтар.** 2–4 сөйлем тұтас мәтіннен оңай оқылады.
+- **Фактілерді тексеріңіз** және дереккөздерді сілтемемен көрсетіңіз.
+- **Мұқаба қосыңыз** — суреті бар мақалаларды жиі оқиды.
+- **ИИ-редакторды пайдаланыңыз** (ақылы) стиль мен сауаттылықты жақсарту үшін, ал жариялаудан бұрын нәтижені көру үшін алдын ала қарауды қолданыңыз.
+
+Безендіруге сенімді емессіз бе? Мәтінді бар күйінде жазыңыз — ИИ-редактор оны ретке келтіреді. Сұрақтар болса, [анықтамаға](/guide) кіріңіз немесе [қолдау қызметіне](/support) жазыңыз.`},
+		"en": {Title: "How to format an article", Body: `A well-formatted article is easier to read and more trustworthy. Text uses **Markdown** — simple marks that turn into headings, lists, and emphasis. It is easy: examples are below. On the left is the result; in the box is how to write it.
+
+## Headings
+Put hashes at the start of a line. More hashes mean a smaller heading:
+
+    ## Section
+    ### Subsection
+
+## Bold and italic
+Wrap text in asterisks:
+
+    **bold text**
+    *italic*
+
+## Lists
+Bulleted list — a dash at the start of a line; numbered — a digit with a dot:
+
+    - first item
+    - second item
+
+    1. first step
+    2. second step
+
+## Links
+Link text in square brackets, the address in parentheses:
+
+    [Read our rules](/guide)
+
+## Images
+Like a link, but with a leading exclamation mark. Better to upload a photo with the "Upload" button — it gets a watermark automatically:
+
+    ![Photo caption](https://example.com/photo.jpg)
+
+## Quotes
+A "greater than" sign at the start of a line:
+
+    > A thought you are quoting.
+
+## Tables
+Separate columns with a vertical bar; the second row is dashes:
+
+    | Metric     | Value  |
+    |------------|--------|
+    | Population | 20M    |
+
+## Divider
+Three dashes on their own line make a horizontal rule between blocks:
+
+    ---
+
+## Formatting tips
+- **One heading — one idea.** Break text into sections with subheadings.
+- **Short paragraphs.** 2–4 sentences read better than a wall of text.
+- **Check your facts** and cite sources with links.
+- **Add a cover** — articles with an image get read more often.
+- **Use the AI editor** (paid) to improve style and grammar, and the preview to see the result before publishing.
+
+Not sure about formatting? Just write the text as is — the AI editor will tidy it up. Questions? See the [guide](/guide) or write to [support](/support).`},
+	},
 }
 
 // staticContent returns the page for key in lang, falling back to Russian.

@@ -105,6 +105,7 @@ func (m *Module) Routes(r chi.Router) {
 		r.Post("/read/{slug}/vote", m.handleVote)
 		r.Get("/about", m.handleStaticPage("about"))
 		r.Get("/guide", m.handleStaticPage("guide"))
+		r.Get("/formatting", m.handleStaticPage("formatting"))
 		r.Get("/pricing", m.handleStaticPage("pricing"))
 		r.Get("/support", m.handleStaticPage("support"))
 		r.Get("/api/geo/roots", m.handleGeoRoots)
