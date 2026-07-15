@@ -191,6 +191,50 @@ def motif_tennis():
             '<circle cx="690" cy="404" r="20" fill="#ffffff" opacity="0.92"/>')
 
 
+def motif_laurel():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" opacity="0.92">'
+            '<path d="M600 482 C 548 452 516 404 522 330"/>'
+            '<path d="M600 482 C 652 452 684 404 678 330"/></g>'
+            '<g fill="#ffffff" opacity="0.9">'
+            '<ellipse cx="518" cy="352" rx="22" ry="10" transform="rotate(52 518 352)"/>'
+            '<ellipse cx="526" cy="396" rx="22" ry="10" transform="rotate(36 526 396)"/>'
+            '<ellipse cx="548" cy="436" rx="22" ry="10" transform="rotate(20 548 436)"/>'
+            '<ellipse cx="682" cy="352" rx="22" ry="10" transform="rotate(-52 682 352)"/>'
+            '<ellipse cx="674" cy="396" rx="22" ry="10" transform="rotate(-36 674 396)"/>'
+            '<ellipse cx="652" cy="436" rx="22" ry="10" transform="rotate(-20 652 436)"/>'
+            '<circle cx="600" cy="312" r="10"/></g>')
+
+
+def motif_hands():
+    return ('<g opacity="0.92">'
+            '<path d="M600 300 C 560 262 505 275 505 322 C 505 366 560 396 600 424 '
+            'C 640 396 695 366 695 322 C 695 275 640 262 600 300 Z" fill="#ffffff"/>'
+            '<path d="M498 428 C 498 502 702 502 702 428" fill="none" stroke="#ffffff" '
+            'stroke-width="13" stroke-linecap="round"/></g>'
+            '<g stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="0.75">'
+            '<line x1="600" y1="250" x2="600" y2="228"/>'
+            '<line x1="548" y1="264" x2="536" y2="244"/>'
+            '<line x1="652" y1="264" x2="664" y2="244"/></g>')
+
+
+def motif_family():
+    # A Kazakh yurt (kiiz üi): domed roof, shanyraq crown, roof poles (uyq),
+    # lattice wall band and a doorway — the hearth as a symbol of family.
+    return ('<g fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" '
+            'stroke-linejoin="round" opacity="0.92">'
+            '<path d="M508 404 C 512 340 560 306 600 306 C 640 306 688 340 692 404"/>'  # dome
+            '<path d="M508 404 L497 470 M692 404 L703 470"/>'                            # walls
+            '<path d="M508 404 H692 M497 470 H703"/>'                                    # wall band + ground
+            '<path d="M600 306 L520 404 M600 306 L560 404 M600 306 L640 404 '
+            'M600 306 L680 404"/></g>'                                                   # roof poles (uyq)
+            '<g opacity="0.92" stroke="#ffffff" stroke-linecap="round">'
+            '<circle cx="600" cy="300" r="24" fill="none" stroke-width="9"/>'            # shanyraq
+            '<path d="M600 278 V322 M578 300 H622 M584 284 L616 316 M616 284 L584 316" '
+            'stroke-width="5"/></g>'                                                     # crown cross
+            '<path d="M584 470 V436 Q600 424 616 436 V470 Z" fill="#ffffff" '
+            'opacity="0.9"/>')                                                           # doorway
+
+
 def motif_helix():
     import math
     cx, A, y0, y1, n = 600, 50, 252, 476, 44
@@ -236,6 +280,9 @@ COVERS = {
     "agriculture": (["#d9a84f", "#c08f3f", "#e6c46a", "#a8752e"], motif_wheat, 181),
     "tennis":   (["#7aa83f", "#5f8f2e", "#a8c46f", "#4a7a20"], motif_tennis, 191),
     "biotech":  (["#3f9a8a", "#2e7d70", "#6fc0b0", "#25706a"], motif_helix, 201),
+    "athletics":(["#4f9a5a", "#3f8f4f", "#7ac06f", "#2e7d3f"], motif_laurel, 211),
+    "charity":  (["#d9607a", "#c04060", "#e68aa0", "#a83f58"], motif_hands, 221),
+    "family":   (["#e0975a", "#c77a3f", "#f2b87a", "#a8622e"], motif_family, 231),
 }
 
 

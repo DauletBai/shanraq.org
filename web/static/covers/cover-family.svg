@@ -1,0 +1,16 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="wc" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.011 0.014" numOctaves="3" seed="231" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="231"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0"/></filter>
+  </defs>
+  <rect width="1200" height="675" fill="#e0975a"/>
+  <g filter="url(#wc)"><ellipse cx="300" cy="260" rx="360" ry="300" fill="#e0975a" fill-opacity="0.7"/><ellipse cx="820" cy="360" rx="420" ry="340" fill="#c77a3f" fill-opacity="0.7"/><ellipse cx="560" cy="520" rx="480" ry="300" fill="#f2b87a" fill-opacity="0.7"/><ellipse cx="980" cy="140" rx="300" ry="260" fill="#a8622e" fill-opacity="0.7"/></g>
+  <rect width="1200" height="675" fill="#ffffff" filter="url(#grain)"/>
+  <g fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"><path d="M508 404 C 512 340 560 306 600 306 C 640 306 688 340 692 404"/><path d="M508 404 L497 470 M692 404 L703 470"/><path d="M508 404 H692 M497 470 H703"/><path d="M600 306 L520 404 M600 306 L560 404 M600 306 L640 404 M600 306 L680 404"/></g><g opacity="0.92" stroke="#ffffff" stroke-linecap="round"><circle cx="600" cy="300" r="24" fill="none" stroke-width="9"/><path d="M600 278 V322 M578 300 H622 M584 284 L616 316 M616 284 L584 316" stroke-width="5"/></g><path d="M584 470 V436 Q600 424 616 436 V470 Z" fill="#ffffff" opacity="0.9"/>
+  <g transform="translate(1108,24) scale(0.16)" fill="none" stroke-linecap="round" opacity="0.9"><g stroke="#ffffff" stroke-opacity="0.5" stroke-width="45"><line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/><line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/><line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/></g><g stroke="#ffffff" stroke-width="30"><line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/><line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/><line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/></g></g>
+</svg>
