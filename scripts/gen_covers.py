@@ -127,6 +127,21 @@ def motif_heart():
             '<path d="M505 372 h55 l22 -40 l34 78 l22 -38 h60"/></g>')
 
 
+def motif_rook():
+    teeth = "".join(f'<rect x="{x}" y="286" width="15" height="26"/>' for x in (556, 583, 610, 627))
+    return ('<g fill="#ffffff" opacity="0.92">'
+            f'{teeth}'
+            '<rect x="562" y="300" width="76" height="120" rx="4"/>'
+            '<rect x="546" y="420" width="108" height="26" rx="5"/></g>')
+
+
+def motif_leaf():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.92">'
+            '<path d="M600 296 C 516 338 508 432 600 476 C 692 432 684 338 600 296 Z"/>'
+            '<line x1="600" y1="312" x2="600" y2="462"/>'
+            '<path d="M600 356 l-42 -22 M600 400 l-42 -22 M600 356 l42 -22 M600 400 l42 -22"/></g>')
+
+
 COVERS = {
     "opinion":  (["#ef8a5a", "#e0653f", "#f2b06a", "#c8492e"], motif_opinion, 11),
     "ai":       (["#4f8fd6", "#3f5fb0", "#6fb3d6", "#2f3f8f"], motif_network, 21),
@@ -140,6 +155,8 @@ COVERS = {
     "economy":  (["#d99a4f", "#c07f3f", "#e6b86a", "#a8622e"], motif_bars, 101),
     "space":    (["#3f4f8a", "#2f3a66", "#5f6fa8", "#232a4a"], motif_orbit, 111),
     "health":   (["#4fa89a", "#3f8f82", "#7ac0b4", "#2e7d70"], motif_heart, 121),
+    "chess":    (["#8a6f4f", "#6f573f", "#a88f6f", "#5a442e"], motif_rook, 131),
+    "ecology":  (["#5aa070", "#3f8f57", "#86c48f", "#2e7d47"], motif_leaf, 141),
 }
 
 
