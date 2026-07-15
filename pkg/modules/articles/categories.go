@@ -5,19 +5,22 @@ const CategoryGeneral = "general"
 
 // Categories is the ordered list of rubrics shown in the portal menu
 // ("general" is the fallback bucket and is not shown as a menu item).
-var Categories = []string{"sport", "society", "politics", "economy", "culture", "technology", "opinion", "world"}
+var Categories = []string{"sport", "society", "politics", "economy", "culture", "technology", "it", "opinion", "world"}
 
-// Subcategories maps each category to its ordered list of subcategory slugs
-// (the submenu). Slugs are globally unique.
+// Subcategories maps each category to its subcategory slugs. Categories in the
+// top menu are ordered by editorial importance; subcategories within a menu are
+// ordered alphabetically (by their Russian label) so a long list is easy to
+// scan. Slugs are globally unique.
 var Subcategories = map[string][]string{
-	"sport":      {"football", "boxing", "hockey", "athletics", "basketball", "tennis", "wrestling", "mma", "chess", "cycling"},
-	"society":    {"education", "health", "family", "religion", "ecology", "migration", "charity", "youth", "crime", "holidays"},
-	"politics":   {"elections", "parliament", "regions", "government", "diplomacy", "law", "defense", "parties", "corruption"},
-	"economy":    {"prices", "business", "energy", "finance", "agriculture", "industry", "trade", "startups", "labor", "banks"},
-	"culture":    {"literature", "cinema", "music", "theatre", "art", "history", "language", "fashion", "architecture", "traditions"},
-	"technology": {"internet", "ai", "science", "gadgets", "space", "software", "cybersecurity", "telecom", "gaming", "autotech"},
-	"opinion":    {"column", "debate", "interview", "analytics", "editorial", "letters", "blogs", "review", "satire"},
-	"world":      {"central_asia", "europe", "asia", "north_america", "south_america", "africa", "oceania", "middle_east", "cis", "russia"},
+	"sport":      {"basketball", "boxing", "wrestling", "cycling", "athletics", "mma", "tennis", "football", "hockey", "chess"},
+	"society":    {"charity", "health", "crime", "migration", "youth", "education", "holidays", "religion", "family", "ecology"},
+	"politics":   {"elections", "diplomacy", "law", "corruption", "defense", "parliament", "parties", "government", "regions"},
+	"economy":    {"banks", "business", "industry", "labor", "agriculture", "startups", "trade", "finance", "prices", "energy"},
+	"culture":    {"architecture", "art", "history", "cinema", "literature", "fashion", "music", "theatre", "traditions", "language"},
+	"technology": {"aviation", "autotech", "agrotech", "biotech", "space", "machinery", "nanotech", "science", "robotics", "shipbuilding", "telecom", "electronics"},
+	"it":         {"databases", "backend", "webdev", "devops", "ai", "internet", "cybersecurity", "mobile", "cloud", "gamedev", "frontend"},
+	"opinion":    {"analytics", "blogs", "debate", "interview", "column", "review", "letters", "editorial", "satire"},
+	"world":      {"asia", "africa", "middle_east", "europe", "oceania", "russia", "north_america", "cis", "central_asia", "south_america"},
 }
 
 var validCategories = func() map[string]bool {
