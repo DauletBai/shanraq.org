@@ -142,6 +142,24 @@ def motif_leaf():
             '<path d="M600 356 l-42 -22 M600 400 l-42 -22 M600 356 l42 -22 M600 400 l42 -22"/></g>')
 
 
+def motif_glove():
+    return ('<g opacity="0.92">'
+            '<circle cx="600" cy="350" r="70" fill="#ffffff"/>'
+            '<circle cx="528" cy="362" r="26" fill="#ffffff"/>'
+            '<rect x="556" y="406" width="88" height="44" rx="10" fill="#ffffff"/>'
+            '<line x1="580" y1="418" x2="620" y2="418" stroke="#8a4a3a" stroke-width="5"/>'
+            '<line x1="580" y1="436" x2="620" y2="436" stroke="#8a4a3a" stroke-width="5"/></g>')
+
+
+def motif_note():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="11" opacity="0.92">'
+            '<line x1="560" y1="300" x2="560" y2="432"/><line x1="684" y1="280" x2="684" y2="412"/>'
+            '<line x1="560" y1="300" x2="684" y2="280"/></g>'
+            '<g fill="#ffffff" opacity="0.92">'
+            '<ellipse cx="544" cy="438" rx="27" ry="18" transform="rotate(-20 544 438)"/>'
+            '<ellipse cx="668" cy="418" rx="27" ry="18" transform="rotate(-20 668 418)"/></g>')
+
+
 COVERS = {
     "opinion":  (["#ef8a5a", "#e0653f", "#f2b06a", "#c8492e"], motif_opinion, 11),
     "ai":       (["#4f8fd6", "#3f5fb0", "#6fb3d6", "#2f3f8f"], motif_network, 21),
@@ -157,6 +175,8 @@ COVERS = {
     "health":   (["#4fa89a", "#3f8f82", "#7ac0b4", "#2e7d70"], motif_heart, 121),
     "chess":    (["#8a6f4f", "#6f573f", "#a88f6f", "#5a442e"], motif_rook, 131),
     "ecology":  (["#5aa070", "#3f8f57", "#86c48f", "#2e7d47"], motif_leaf, 141),
+    "boxing":   (["#c0563f", "#9a3f2e", "#d9856f", "#7a2e20"], motif_glove, 151),
+    "music":    (["#9a5aa8", "#7f3f8f", "#bd82c4", "#6a2f7a"], motif_note, 161),
 }
 
 
