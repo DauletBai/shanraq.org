@@ -76,6 +76,7 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 	page.ActiveCat = "realestate"
 	page.Listings = items
 	page.Count = len(items)
+	page.SidebarNews = m.latestNews(r, lang, 6)
 	if isDealType(deal) {
 		page.ActiveDeal = deal
 	}
@@ -178,6 +179,7 @@ func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
 	if authorID, ok := m.authorID(r); ok && authorID.String() == l.AuthorID {
 		page.Owner = true
 	}
+	page.SidebarNews = m.latestNews(r, lang, 6)
 	m.applyListingSEO(&page)
 	m.render(w, "listing_view", page)
 }

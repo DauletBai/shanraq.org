@@ -31,6 +31,9 @@ type Base struct {
 	ActiveSub string // active subcategory slug, or ""
 	LangLinks map[string]string
 
+	// SidebarNews feeds the "latest news" carousel in the sidebar.
+	SidebarNews []FeedItem
+
 	// SEO fields (populated by base(); pages may override).
 	SiteURL string        // absolute origin, e.g. https://shanraq.org
 	Path    string        // request path, no query
@@ -70,6 +73,28 @@ func (m *Module) resolveLang(w http.ResponseWriter, r *http.Request) string {
 		return c.Value
 	}
 	return LangRU
+}
+
+// latestNews returns the newest published articles for the sidebar carousel.
+func (m *Module) latestNews(r *http.Request, lang string, n int) []FeedItem {
+	arts, err := m.store.ListPublished(r.Context(), "", "", "", n, 0)
+	if err != nil {
+		m.rt.Logger.Warn("sidebar news", zap.Error(err))
+		return nil
+	}
+	out := make([]FeedItem, 0, len(arts))
+	for _, a := range arts {
+		tr, served := a.Translation(lang)
+		if tr == nil {
+			continue
+		}
+		name, aiAuthor := authorDisplay(a)
+		out = append(out, FeedItem{
+			Slug: a.Slug, Title: tr.Title, AuthorName: name, AIAuthor: aiAuthor,
+			ServedLang: served, Category: a.Category, CoverURL: a.CoverURL,
+		})
+	}
+	return out
 }
 
 func langLinks(base string, current string) map[string]string {
@@ -230,6 +255,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	page.Subscribed = r.URL.Query().Get("subscribed") == "ok"
 	page.Posts = items
 	page.Recent = recentSlice(items, 5)
+	page.SidebarNews = m.latestNews(r, lang, 6)
 	m.render(w, "home", page)
 }
 
@@ -313,6 +339,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.IsAuthor = viewer != uuid.Nil && viewer == a.AuthorID
 	page.CanVote = viewer != uuid.Nil && !page.IsAuthor
 
+	page.SidebarNews = m.latestNews(r, lang, 6)
 	if cs, err := m.comments.ListForArticle(r.Context(), a.ID); err == nil {
 		page.Comments = cs
 	} else {

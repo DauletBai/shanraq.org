@@ -220,6 +220,7 @@ var messages = map[string]map[string]string{
 	"sidebar.about_text":  {"kz": "Shanraq — қарапайым адамдар мен журналистер үш тілде еркін жазатын тәуелсіз алаң.", "ru": "Shanraq — независимая площадка, где обычные люди и журналисты свободно пишут на трёх языках.", "en": "Shanraq is an independent platform where ordinary people and journalists write freely in three languages."},
 	"sidebar.recent":      {"kz": "Соңғы жазбалар", "ru": "Недавние записи", "en": "Recent posts"},
 	"sidebar.follow":      {"kz": "Бізді қадағалаңыз", "ru": "Читайте нас", "en": "Follow us"},
+	"sidebar.read":        {"kz": "Оқу", "ru": "Читать", "en": "Read"},
 	"sidebar.subscribe":      {"kz": "Жазылу", "ru": "Рассылка", "en": "Newsletter"},
 	"sidebar.subscribe_text": {"kz": "Аптасына бір рет үздік материалдар поштаңызға.", "ru": "Раз в неделю лучшее — к вам на почту.", "en": "The best stories to your inbox, weekly."},
 	"sidebar.subscribe_btn":  {"kz": "Жазылу", "ru": "Подписаться", "en": "Subscribe"},

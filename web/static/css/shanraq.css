@@ -676,3 +676,22 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   .adm-cols { grid-template-columns: 1fr; }
   .adm__main { padding: 18px; }
 }
+
+/* ---- Sidebar "latest news" carousel (replaces the old ad slots) ---- */
+.adslide--news { background: linear-gradient(135deg, var(--gold-strong), #7a1414); }
+.adslide--news:hover { text-decoration: none; }
+.adslide--news .adslide__text {
+  font-size: var(--step-1); font-weight: 700; line-height: 1.28; color: #fff;
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.adslide--news .adslide__badge { background: rgba(255, 255, 255, 0.18); }
+
+/* ---- Home hero "latest news" carousel ---- */
+.newshero__slide { background: linear-gradient(135deg, var(--gold-strong), #7a1414); background-size: cover; background-position: center; }
+.newshero__slide:hover { text-decoration: none; }
+.newshero .adslide__badge { background: rgba(255, 255, 255, 0.2); }
+.newshero .adslide__text {
+  font-size: var(--step-3); font-weight: 800; color: #fff; line-height: 1.18;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}

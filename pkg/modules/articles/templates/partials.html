@@ -79,36 +79,28 @@
 </nav>
 {{ end }}
 
+{{ define "newscarousel" }}
+{{ if .SidebarNews }}
+<div class="adcarousel adcarousel--side newscar" data-carousel>
+  {{ range $i, $n := .SidebarNews }}
+  <a class="adslide adslide--news{{ if eq $i 0 }} is-active{{ end }}" href="/read/{{ $n.Slug }}?lang={{ $.Lang }}">
+    <span class="adslide__badge">{{ t $.Lang (printf "cat.%s" $n.Category) }}{{ if $n.AIAuthor }} · {{ t $.Lang "article.ai_opinion" }}{{ end }}</span>
+    <div class="adslide__body">
+      <p class="adslide__text">{{ $n.Title }}</p>
+      <span class="btn btn--primary btn--sm">{{ t $.Lang "sidebar.read" }} →</span>
+    </div>
+  </a>
+  {{ end }}
+  <div class="adcarousel__dots">
+    {{ range $i, $n := .SidebarNews }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}
+  </div>
+</div>
+{{ end }}
+{{ end }}
+
 {{ define "sidebar" }}
 <aside class="aside">
-  <div class="adcarousel adcarousel--side" data-carousel>
-    <div class="adslide adslide--left is-active">
-      <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
-      <div class="adslide__body">
-        <p class="adslide__text">{{ t .Lang "ad.placeholder" }}</p>
-        <a class="btn btn--primary btn--sm" href="#">{{ t .Lang "ad.cta" }}</a>
-      </div>
-    </div>
-    <div class="adslide adslide--center">
-      <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
-      <div class="adslide__body">
-        <p class="adslide__text">{{ t .Lang "ad.placeholder" }}</p>
-        <a class="btn btn--primary btn--sm" href="#">{{ t .Lang "ad.cta" }}</a>
-      </div>
-    </div>
-    <div class="adslide adslide--right">
-      <span class="adslide__badge">{{ t .Lang "ad.badge" }}</span>
-      <div class="adslide__body">
-        <p class="adslide__text">{{ t .Lang "ad.placeholder" }}</p>
-        <a class="btn btn--primary btn--sm" href="#">{{ t .Lang "ad.cta" }}</a>
-      </div>
-    </div>
-    <div class="adcarousel__dots">
-      <button type="button" data-dot="0" class="is-active" aria-label="1"></button>
-      <button type="button" data-dot="1" aria-label="2"></button>
-      <button type="button" data-dot="2" aria-label="3"></button>
-    </div>
-  </div>
+  {{ template "newscarousel" . }}
   <div class="aside__block">
     <h3 class="aside__title"><a href="/guide">{{ t .Lang "guide.side_title" }}</a></h3>
     <p class="aside__text">{{ t .Lang "guide.side_text" }}</p>
@@ -136,25 +128,7 @@
 
 {{ define "re_sidebar" }}
 <aside class="aside">
-  <div class="adline__head">
-    <span class="adline__badge">{{ t .Lang "re.adline" }}</span>
-    <p class="adline__note">{{ t .Lang "re.adline_note" }}</p>
-  </div>
-  <a class="rebanner rebanner--1" href="/pricing">
-    <span class="rebanner__badge">{{ t .Lang "ad.badge" }}</span>
-    <span class="rebanner__title">{{ t .Lang "re.adslot" }}</span>
-    <span class="rebanner__cta">{{ t .Lang "re.adslot_cta" }} →</span>
-  </a>
-  <a class="rebanner rebanner--2" href="/pricing">
-    <span class="rebanner__badge">{{ t .Lang "ad.badge" }}</span>
-    <span class="rebanner__title">{{ t .Lang "re.adslot" }}</span>
-    <span class="rebanner__cta">{{ t .Lang "re.adslot_cta" }} →</span>
-  </a>
-  <a class="rebanner rebanner--3" href="/pricing">
-    <span class="rebanner__badge">{{ t .Lang "ad.badge" }}</span>
-    <span class="rebanner__title">{{ t .Lang "re.adslot" }}</span>
-    <span class="rebanner__cta">{{ t .Lang "re.adslot_cta" }} →</span>
-  </a>
+  {{ template "newscarousel" . }}
 </aside>
 {{ end }}
 
