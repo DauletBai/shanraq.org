@@ -554,3 +554,21 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .mylist__status.is-expired { color: var(--danger); }
 .mylist__actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .mylist__actions form { margin: 0; }
+
+/* ---- AI columnist (Sana Qyran) ---- */
+.ai-badge {
+  display: inline-block; background: var(--gold); color: #fff;
+  font-size: 0.66rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 999px; vertical-align: middle;
+}
+.ai-badge:hover { background: var(--gold-strong); text-decoration: none; }
+.notice--ai { border-left: 3px solid var(--gold); background: var(--surface-2); color: var(--ink-soft); font-style: italic; }
+.author-hero {
+  display: flex; gap: 22px; align-items: flex-start; flex-wrap: wrap;
+  margin: 28px 0 8px; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface);
+}
+.author-hero__mark img { width: 72px; height: 72px; }
+.author-hero__body { flex: 1; min-width: 240px; }
+.author-hero__top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.author-hero__role { color: var(--gold-strong); font-weight: 700; margin: 2px 0 8px; }
+.author-hero__bio { color: var(--ink-soft); margin: 0; max-width: 70ch; }

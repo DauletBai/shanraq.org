@@ -1,0 +1,16 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="wc" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.011 0.014" numOctaves="3" seed="21" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="21"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0"/></filter>
+  </defs>
+  <rect width="1200" height="675" fill="#4f8fd6"/>
+  <g filter="url(#wc)"><ellipse cx="300" cy="260" rx="360" ry="300" fill="#4f8fd6" fill-opacity="0.7"/><ellipse cx="820" cy="360" rx="420" ry="340" fill="#3f5fb0" fill-opacity="0.7"/><ellipse cx="560" cy="520" rx="480" ry="300" fill="#6fb3d6" fill-opacity="0.7"/><ellipse cx="980" cy="140" rx="300" ry="260" fill="#2f3f8f" fill-opacity="0.7"/></g>
+  <rect width="1200" height="675" fill="#ffffff" filter="url(#grain)"/>
+  <g stroke="#ffffff" stroke-width="7" opacity="0.92"><line x1="470" y1="300" x2="650" y2="230"/><line x1="650" y1="230" x2="760" y2="360"/><line x1="760" y1="360" x2="600" y2="430"/><line x1="600" y1="430" x2="500" y2="470"/><line x1="500" y1="470" x2="470" y2="300"/><line x1="470" y1="300" x2="600" y2="430"/><line x1="650" y1="230" x2="600" y2="430"/><circle cx="470" cy="300" r="16" fill="#ffffff"/><circle cx="650" cy="230" r="16" fill="#ffffff"/><circle cx="760" cy="360" r="16" fill="#ffffff"/><circle cx="600" cy="430" r="16" fill="#ffffff"/><circle cx="500" cy="470" r="16" fill="#ffffff"/></g>
+  <g transform="translate(1108,24) scale(0.16)" fill="none" stroke-linecap="round" opacity="0.9"><g stroke="#ffffff" stroke-opacity="0.5" stroke-width="45"><line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/><line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/><line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/></g><g stroke="#ffffff" stroke-width="30"><line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/><line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/><line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/></g></g>
+</svg>

@@ -230,6 +230,16 @@ var messages = map[string]map[string]string{
 	"article.vote_own":    {"kz": "Өз мақалаңызды бағалай алмайсыз", "ru": "Нельзя оценивать свою статью", "en": "You can't vote on your own story"},
 	"article.translated":  {"kz": "Бұл нұсқа таңдалған тілде әзір жоқ — түпнұсқа тілінде көрсетілді.", "ru": "Эта версия пока недоступна на выбранном языке — показан оригинал.", "en": "This version isn't available in the selected language yet — showing the original."},
 	"article.ai_note":     {"kz": "Мәтін ИИ көмегімен аударылды.", "ru": "Текст переведён с помощью ИИ.", "en": "This text was translated with AI."},
+	"article.ai_opinion":  {"kz": "ИИ пікірі", "ru": "Мнение ИИ", "en": "AI opinion"},
+	"article.ai_disclaim": {"kz": "Бұл — ИИ-шолушының авторлық пікірі, тексерілген факт емес.", "ru": "Это авторское мнение ИИ-обозревателя, а не проверенный факт.", "en": "This is the AI columnist's opinion, not verified fact."},
+
+	"author.role":     {"kz": "Shanraq ИИ-шолушысы", "ru": "ИИ-обозреватель Shanraq", "en": "Shanraq AI columnist"},
+	"author.by":       {"kz": "Автор", "ru": "Автор", "en": "By"},
+	"author.sana_bio": {
+		"kz": "Сана Қыран — Shanraq-тың жасанды интеллект-шолушысы. Бұл адам емес, модель: ол оқиды, салыстырады және өз пікірін білдіреді. Бұл қолтаңба астындағының бәрі — ИИ пікірі, соңғы ақиқат емес. Факт дереккөзбен, пікір пікір ретінде белгіленеді.",
+		"ru": "Сана Қыран — искусственный интеллект, обозреватель Shanraq. Это не человек, а модель: она читает, сопоставляет и излагает свою позицию. Всё под этой подписью — мнение ИИ, а не истина в последней инстанции. Факт подкрепляется источником, оценка обозначается как оценка.",
+		"en": "Sana Qyran is Shanraq's AI columnist. Not a person but a model: it reads, compares, and states its view. Everything under this byline is an AI opinion, not final truth. Facts are backed by sources; judgments are marked as judgments.",
+	},
 
 	"form.login_title":    {"kz": "Кіру", "ru": "Вход", "en": "Sign in"},
 	"form.login_sub":      {"kz": "Автор студиясына кіру", "ru": "Вход в студию автора", "en": "Sign in to the author studio"},

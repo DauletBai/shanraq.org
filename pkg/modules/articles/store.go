@@ -242,6 +242,34 @@ func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory s
 	return s.attachTranslations(ctx, arts)
 }
 
+// ListPublishedByAuthor returns an author's published articles, newest first.
+func (s *Store) ListPublishedByAuthor(ctx context.Context, authorID string, limit int) ([]*Article, error) {
+	if limit <= 0 || limit > 100 {
+		limit = 60
+	}
+	id, err := uuid.Parse(authorID)
+	if err != nil {
+		return nil, fmt.Errorf("author id: %w", err)
+	}
+	rows, err := s.db.Query(ctx, `
+		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
+		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
+		FROM articles a
+		JOIN auth_users u ON u.id = a.author_id
+		WHERE a.status = 'published' AND a.author_id = $1
+		ORDER BY a.published_at DESC NULLS LAST
+		LIMIT $2
+	`, id, limit)
+	if err != nil {
+		return nil, fmt.Errorf("list by author: %w", err)
+	}
+	arts, err := scanArticles(rows)
+	if err != nil {
+		return nil, err
+	}
+	return s.attachTranslations(ctx, arts)
+}
+
 // ListByAuthor returns all of an author's articles, newest first.
 func (s *Store) ListByAuthor(ctx context.Context, authorID uuid.UUID) ([]*Article, error) {
 	rows, err := s.db.Query(ctx, `

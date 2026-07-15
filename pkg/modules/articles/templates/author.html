@@ -1,0 +1,45 @@
+{{ define "author" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <section class="author-hero">
+    <span class="author-hero__mark">
+      <img class="theme-light-only" src="/static/brand/shanraq.svg" alt="">
+      <img class="theme-dark-only" src="/static/brand/shanraq-light.svg" alt="">
+    </span>
+    <div class="author-hero__body">
+      <div class="author-hero__top">
+        <h1>{{ .Name }}</h1>
+        {{ if .IsAI }}<span class="ai-badge">{{ t .Lang "article.ai_opinion" }}</span>{{ end }}
+      </div>
+      <p class="author-hero__role">{{ t .Lang "author.role" }}</p>
+      <p class="author-hero__bio">{{ t .Lang "author.sana_bio" }}</p>
+    </div>
+  </section>
+
+  {{ if .Posts }}
+  <div class="posts posts--two">
+    {{ range .Posts }}
+    <article class="post">
+      <a class="post__media" href="/read/{{ .Slug }}?lang={{ $.Lang }}">
+        {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
+        {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
+      </a>
+      <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ t $.Lang (printf "cat.%s" .Category) }}</a>
+      <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
+      {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
+      <div class="post__meta">
+        <span class="badge-lang">{{ label .ServedLang }}</span>
+        <span class="dot">·</span>
+        <span>{{ fmtDatePtr .Published }}</span>
+        <span class="dot">·</span>
+        <span>{{ .Views }} {{ t $.Lang "meta.views" }}</span>
+      </div>
+    </article>
+    {{ end }}
+  </div>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}

@@ -115,6 +115,7 @@ type FeedItem struct {
 	Views          int64
 	Score          int
 	IsAI           bool
+	AIAuthor       bool
 	AvailableLangs []string
 }
 
@@ -201,11 +202,13 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 		if summary == "" {
 			summary = excerpt(stripMD(tr.BodyMD), 170)
 		}
+		authorName, aiAuthor := authorDisplay(a)
 		items = append(items, FeedItem{
 			Slug:           a.Slug,
 			Title:          tr.Title,
 			Summary:        summary,
-			AuthorName:     a.AuthorName(),
+			AuthorName:     authorName,
+			AIAuthor:       aiAuthor,
 			ServedLang:     served,
 			Category:       a.Category,
 			Subcategory:    a.Subcategory,
@@ -241,6 +244,7 @@ type ArticlePage struct {
 	Published      *time.Time
 	Views          int64
 	IsAI           bool
+	AIAuthor       bool
 	Translated     bool
 	AvailableLangs []string
 
@@ -283,7 +287,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.CoverURL = a.CoverURL
 	page.Title = tr.Title
 	page.Summary = tr.Summary
-	page.AuthorName = a.AuthorName()
+	page.AuthorName, page.AIAuthor = authorDisplay(a)
 	page.ServedLang = served
 	page.RequestedLang = lang
 	page.Body = RenderMarkdown(tr.BodyMD)

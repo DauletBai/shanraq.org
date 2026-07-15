@@ -11,7 +11,8 @@
           <div class="byline">
             <span class="badge-lang">{{ label .ServedLang }}</span>
             <span class="dot">·</span>
-            <span class="author">{{ .AuthorName }}</span>
+            <span class="author">{{ if .AIAuthor }}<a href="/author/sana">{{ .AuthorName }}</a>{{ else }}{{ .AuthorName }}{{ end }}</span>
+            {{ if .AIAuthor }}<a class="ai-badge" href="/author/sana">{{ t .Lang "article.ai_opinion" }}</a>{{ end }}
             <span>({{ t .Lang "article.karma" }}: <b>{{ .AuthorKarma }}</b>)</span>
             <span class="dot">·</span>
             <span>{{ fmtDatePtr .Published }}</span>
@@ -21,6 +22,7 @@
           <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="display:inline-block;margin:14px 0 4px">{{ t .Lang (printf "cat.%s" .Category) }}</a>
           <h1 class="article__title">{{ .Title }}</h1>
           {{ if .Summary }}<p class="article__lead">{{ .Summary }}</p>{{ end }}
+          {{ if .AIAuthor }}<p class="notice notice--ai">{{ t .Lang "article.ai_disclaim" }}</p>{{ end }}
 
           <div style="margin:18px 0 6px">
             {{ if .CanVote }}

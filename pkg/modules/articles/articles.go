@@ -116,6 +116,7 @@ func (m *Module) Routes(r chi.Router) {
 		r.Get("/read", m.handleReadRedirect)
 		r.Get("/read/{slug}", m.handleArticle)
 		r.Post("/read/{slug}/vote", m.handleVote)
+		r.Get("/author/sana", m.handleAuthorSana)
 		r.Get("/about", m.handleStaticPage("about"))
 		r.Get("/guide", m.handleStaticPage("guide"))
 		r.Get("/formatting", m.handleStaticPage("formatting"))

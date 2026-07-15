@@ -55,6 +55,7 @@
             <span class="score {{ if gt .Score 0 }}pos{{ else if lt .Score 0 }}neg{{ end }}">▲ {{ .Score }}</span>
             <span class="dot">·</span>
             <span>{{ .AuthorName }}</span>
+            {{ if .AIAuthor }}<span class="tag tag--ai">{{ t $.Lang "article.ai_opinion" }}</span>{{ end }}
             <span class="dot">·</span>
             <span>{{ fmtDatePtr .Published }}</span>
           </div>

@@ -84,7 +84,7 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 
 	now := time.Now()
 	emit("/", now)
-	for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings"} {
+	for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings", "/author/sana"} {
 		emit(p, time.Time{})
 	}
 	for _, c := range Categories {
