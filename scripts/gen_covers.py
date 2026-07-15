@@ -191,6 +191,31 @@ def motif_tennis():
             '<circle cx="690" cy="404" r="20" fill="#ffffff" opacity="0.92"/>')
 
 
+def motif_hanger():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="11" stroke-linecap="round" '
+            'stroke-linejoin="round" opacity="0.92">'
+            '<path d="M600 300 C 600 285 620 285 620 301 C 620 314 600 316 600 332"/>'
+            '<path d="M600 332 L512 400 H688 Z"/></g>')
+
+
+def motif_plane():
+    return ('<g fill="#ffffff" opacity="0.92" stroke="#ffffff" stroke-width="4" '
+            'stroke-linejoin="round">'
+            '<path d="M690 298 L516 380 L600 372 L612 436 Z"/></g>'
+            '<path d="M690 298 L600 372" fill="none" stroke="#cfe6f5" stroke-width="5" '
+            'opacity="0.7"/>')
+
+
+def motif_dove():
+    return ('<g fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" '
+            'opacity="0.92"><path d="M512 394 Q568 334 600 390 Q632 334 688 394"/></g>'
+            '<g fill="#ffffff" opacity="0.82">'
+            '<ellipse cx="586" cy="432" rx="15" ry="6" transform="rotate(32 586 432)"/>'
+            '<ellipse cx="614" cy="432" rx="15" ry="6" transform="rotate(-32 614 432)"/></g>'
+            '<line x1="600" y1="416" x2="600" y2="446" stroke="#ffffff" stroke-width="6" '
+            'stroke-linecap="round" opacity="0.82"/>')
+
+
 def motif_arch():
     return ('<g fill="none" stroke="#ffffff" stroke-width="11" stroke-linecap="round" '
             'stroke-linejoin="round" opacity="0.92">'
@@ -317,6 +342,9 @@ COVERS = {
     "architecture": (["#b89a6f", "#9a7f57", "#d0b487", "#7a6240"], motif_arch, 241),
     "crime":    (["#4f7a9a", "#3f6180", "#6f9ac0", "#2f4f6a"], motif_key, 251),
     "holidays": (["#9a5a7a", "#7f3f60", "#bd82a0", "#6a2f4f"], motif_candle, 261),
+    "fashion":  (["#b0548a", "#8f3f6f", "#c87aa8", "#7a2f5a"], motif_hanger, 271),
+    "aviation": (["#4f9fd6", "#3f7fb8", "#7ac0e0", "#2f6fa8"], motif_plane, 281),
+    "defense":  (["#6a8aa8", "#4f6f8f", "#8fa8c0", "#3f5a7a"], motif_dove, 291),
 }
 
 
