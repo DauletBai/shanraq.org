@@ -63,23 +63,12 @@
 </div>
 <nav class="navbar">
   <div class="container">
-    <div class="navbar__row">
-      <div class="menu">
-        <a class="menu__item{{ if eq .ActiveCat "" }} is-active{{ end }}" href="/?lang={{ .Lang }}">{{ t .Lang "nav.all" }}</a>
-        {{ range categories }}
-        <a class="menu__item{{ if eq . $.ActiveCat }} is-active{{ end }}" href="/?lang={{ $.Lang }}&cat={{ . }}">{{ t $.Lang (printf "cat.%s" .) }}</a>
-        {{ end }}
-        <a class="menu__item{{ if eq .ActiveCat "realestate" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}">{{ t .Lang "nav.realestate" }}</a>
-      </div>
-      <form class="navsearch" method="get" action="/search" role="search">
-        <select name="in" class="navsearch__scope" aria-label="{{ t .Lang "search.scope" }}">
-          <option value="articles"{{ if ne .SearchScope "listings" }} selected{{ end }}>{{ t .Lang "search.in_articles" }}</option>
-          <option value="listings"{{ if eq .SearchScope "listings" }} selected{{ end }}>{{ t .Lang "search.in_listings" }}</option>
-        </select>
-        <input class="navsearch__q" type="search" name="q" value="{{ .SearchQuery }}" placeholder="{{ t .Lang "search.placeholder" }}">
-        <input type="hidden" name="lang" value="{{ .Lang }}">
-        <button class="navsearch__btn" type="submit" aria-label="{{ t .Lang "search.submit" }}">⌕</button>
-      </form>
+    <div class="menu">
+      <a class="menu__item{{ if eq .ActiveCat "" }} is-active{{ end }}" href="/?lang={{ .Lang }}">{{ t .Lang "nav.all" }}</a>
+      {{ range categories }}
+      <a class="menu__item{{ if eq . $.ActiveCat }} is-active{{ end }}" href="/?lang={{ $.Lang }}&cat={{ . }}">{{ t $.Lang (printf "cat.%s" .) }}</a>
+      {{ end }}
+      <a class="menu__item{{ if eq .ActiveCat "realestate" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}">{{ t .Lang "nav.realestate" }}</a>
     </div>
     {{ with subcats .ActiveCat }}
     <div class="subbar">
@@ -114,6 +103,20 @@
 
 {{ define "sidebar" }}
 <aside class="aside">
+  <details class="sidesearch"{{ if .SearchQuery }} open{{ end }}>
+    <summary class="sidesearch__toggle">⌕ {{ t .Lang "search.title" }}</summary>
+    <form class="sidesearch__form" method="get" action="/search" role="search">
+      <select name="in" class="input sidesearch__scope" aria-label="{{ t .Lang "search.scope" }}">
+        <option value="articles"{{ if ne .SearchScope "listings" }} selected{{ end }}>{{ t .Lang "search.in_articles" }}</option>
+        <option value="listings"{{ if eq .SearchScope "listings" }} selected{{ end }}>{{ t .Lang "search.in_listings" }}</option>
+      </select>
+      <div class="sidesearch__go">
+        <input class="input sidesearch__q" type="search" name="q" value="{{ .SearchQuery }}" placeholder="{{ t .Lang "search.placeholder" }}">
+        <button class="btn btn--primary sidesearch__btn" type="submit">{{ t .Lang "search.submit" }}</button>
+      </div>
+      <input type="hidden" name="lang" value="{{ .Lang }}">
+    </form>
+  </details>
   {{ template "newscarousel" . }}
   <div class="aside__block">
     <h3 class="aside__title"><a href="/guide">{{ t .Lang "guide.side_title" }}</a></h3>
