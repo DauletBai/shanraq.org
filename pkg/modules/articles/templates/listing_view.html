@@ -60,6 +60,16 @@
         <div class="listing__contact">
           <strong>{{ t .Lang "re.contacts" }}:</strong> {{ .L.Contact }}
         </div>
+
+        {{ if .Reported }}
+        <p class="notice notice--ok listing__reported">✓ {{ t .Lang "re.report_thanks" }}</p>
+        {{ else if .CanReport }}
+        <form method="post" action="/listings/{{ .L.ID }}/report" class="listing__report">
+          <input type="hidden" name="reason" value="misleading_photos">
+          <button type="submit" class="reportbtn" title="{{ t .Lang "re.report_hint" }}">👎 {{ t .Lang "re.report" }}</button>
+          <span class="hint">{{ t .Lang "re.report_hint" }}</span>
+        </form>
+        {{ end }}
       </article>
     </div>
     {{ template "sidebar" . }}

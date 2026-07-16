@@ -20,10 +20,12 @@
           {{ if .Promoted }}<span class="badge-top badge-top--inline">{{ t $.Lang "re.badge_top" }}</span>{{ end }}
           {{ if .Featured }}<span class="badge-feat">{{ t $.Lang "re.badge_featured" }}</span>{{ end }}
         </div>
-        <div class="mylist__status{{ if .Expired }} is-expired{{ end }}">
-          {{ if .Expired }}{{ t $.Lang "re.expired" }}
+        <div class="mylist__status{{ if or .Expired .Flagged }} is-expired{{ end }}">
+          {{ if .Flagged }}{{ t $.Lang "re.flagged" }}
+          {{ else if .Expired }}{{ t $.Lang "re.expired" }}
           {{ else }}{{ t $.Lang "re.active" }} · {{ t $.Lang "re.days_left" }} {{ .DaysLeft }} {{ t $.Lang "re.days" }}{{ end }}
         </div>
+        {{ if .Flagged }}<p class="notice notice--warn" style="margin:8px 0 0">{{ t $.Lang "re.flagged_note" }}</p>{{ end }}
       </div>
       <div class="mylist__actions">
         <form method="post" action="/listings/{{ .ID }}/extend"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.extend" }}</button></form>

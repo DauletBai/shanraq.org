@@ -27,6 +27,7 @@ type ListingsPage struct {
 	GeoNodeID  string
 	Searching  bool // any filter beyond deal/type is active → open the panel
 	Count      int
+	Reported   string // "hidden" flash after a report auto-hid a listing
 }
 
 // ListingFormPage backs the submission form.
@@ -43,6 +44,8 @@ type ListingViewPage struct {
 	Owner      bool
 	Subscribed bool
 	IsFavorite bool
+	Reported   bool // just submitted a report (thank-you flash)
+	CanReport  bool // logged-in and not the owner
 }
 
 // MyListingsPage backs the author's own-listings management view.
@@ -93,6 +96,7 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 		page.GeoNodeID = f.GeoNodeID.String()
 	}
 	page.Searching = f.Query != "" || f.PriceMin > 0 || f.PriceMax > 0 || f.RoomsMin > 0 || f.RegionText != "" || f.GeoNodeID != nil
+	page.Reported = q.Get("reported")
 	m.render(w, "listings", page)
 }
 
@@ -184,12 +188,67 @@ func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
 	if authorID, ok := m.authorID(r); ok {
 		if authorID.String() == l.AuthorID {
 			page.Owner = true
+		} else {
+			page.CanReport = true
 		}
 		page.IsFavorite = m.favs.IsFavorite(r.Context(), authorID, "listing", id)
 	}
+	page.Reported = r.URL.Query().Get("reported") == "ok"
 	page.SidebarNews = m.latestNews(r, lang, 6)
 	m.applyListingSEO(&page)
 	m.render(w, "listing_view", page)
+}
+
+// handleListingReport records a reader's report of a listing (mainly filtered,
+// dimension-distorting photos), warns the seller, and auto-hides the listing
+// once enough distinct users report it.
+func (m *Module) handleListingReport(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	uid, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	l, err := m.listings.GetByID(r.Context(), id)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if l.AuthorID == uid.String() { // can't report your own listing
+		http.Redirect(w, r, "/listings/"+l.ID+"?lang="+lang, http.StatusSeeOther)
+		return
+	}
+
+	count, hidden, err := m.listings.Report(r.Context(), id, uid, strings.TrimSpace(r.FormValue("reason")))
+	if err != nil {
+		m.rt.Logger.Error("listing report", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	// Warn the seller by email (best-effort): on the first report, and again
+	// when reports cross the threshold and the listing is hidden.
+	if m.mailer != nil && (count == 1 || hidden) {
+		subject := T(lang, "re.report_mail_subject")
+		body := T(lang, "re.report_mail_body")
+		if hidden {
+			body = T(lang, "re.report_mail_hidden")
+		}
+		if err := m.mailer.Send(r.Context(), l.AuthorEmail, subject, body+"\n\n"+l.Title); err != nil {
+			m.rt.Logger.Warn("seller report email", zap.Error(err))
+		}
+	}
+
+	if hidden { // detail page now 404s; land the reporter on the index with a note
+		http.Redirect(w, r, "/listings?lang="+lang+"&reported=hidden", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/listings/"+l.ID+"?lang="+lang+"&reported=ok", http.StatusSeeOther)
 }
 
 func (m *Module) handleMyListings(w http.ResponseWriter, r *http.Request) {

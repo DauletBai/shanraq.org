@@ -163,6 +163,7 @@ func (m *Module) Routes(r chi.Router) {
 		r.Post("/studio/a/{id}/translate", m.handleTranslate)
 		r.Get("/favorites", m.handleFavorites)
 		r.Post("/favorites/{type}/{id}", m.handleFavoriteToggle)
+		r.Post("/listings/{id}/report", m.handleListingReport)
 	})
 
 	// Admin control panel (staff roles only).

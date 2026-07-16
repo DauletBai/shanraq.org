@@ -745,3 +745,17 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   border-left: 3px solid var(--danger); background: color-mix(in srgb, var(--danger) 7%, transparent);
   color: var(--ink-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: var(--step--1); margin-top: 12px; line-height: 1.5;
 }
+
+/* ---- Listing report (misleading photos) ---- */
+.listing__report { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+.reportbtn {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font: inherit;
+  font-size: var(--step--1); font-weight: 600; padding: 6px 13px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-soft);
+}
+.reportbtn:hover { border-color: var(--danger); color: var(--danger); }
+.listing__report .hint { font-size: var(--step--1); }
+.notice--ok {
+  border-left: 3px solid var(--teal); background: color-mix(in srgb, var(--teal) 8%, transparent);
+  color: var(--ink-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: var(--step--1); margin: 16px 0 0;
+}

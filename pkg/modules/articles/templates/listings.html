@@ -3,6 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ if eq .Reported "hidden" }}<p class="notice notice--warn" style="margin-top:20px">{{ t .Lang "re.report_hidden" }}</p>{{ end }}
   <div class="studio__head" style="margin-top:24px">
     <h1>{{ t .Lang "nav.realestate" }}</h1>
     <div class="re-actions">
