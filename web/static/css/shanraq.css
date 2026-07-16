@@ -803,3 +803,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px;
 }
 .amenities__list li::before { content: "✓"; color: var(--teal); font-weight: 700; }
+
+/* ---- Listing per-room breakdown (form + detail) ---- */
+.roomsup { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.roomsup__items { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.roomsup__row { display: grid; grid-template-columns: minmax(120px, 1fr) 90px minmax(120px, 2fr) auto; gap: 8px; align-items: center; }
+.roomsup__row .input { margin: 0; }
+.roomsup__rm { position: static; width: 28px; height: 28px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line-strong); }
+.roomsup__rm:hover { background: var(--gold-strong); color: #fff; border-color: var(--gold-strong); }
+@media (max-width: 560px) { .roomsup__row { grid-template-columns: 1fr 1fr; } .roomsup__note { grid-column: 1 / -1; } }
+.spec__cap { text-align: left; font-family: var(--serif); font-weight: 700; font-size: 1.05rem; color: var(--ink); padding: 14px 0 8px; caption-side: top; }
+.spec--rooms th .hint { font-weight: 400; }

@@ -42,6 +42,36 @@
         <div class="field"><label>{{ t .Lang "re.land_area" }}</label><input class="input" name="land_area" value="{{ if gt .Values.LandArea 0.0 }}{{ .Values.LandArea }}{{ end }}"></div>
       </div>
 
+      <div class="field">
+        <label>{{ t .Lang "re.rooms_detail" }}</label>
+        <div class="roomsup" data-rooms data-max="20">
+          <div class="roomsup__items" data-rooms-items>
+            {{ range .Values.RoomSpecs }}
+            {{ $rt := .Type }}
+            <div class="roomsup__row">
+              <select name="room_type" class="input roomsup__type">
+                {{ range roomTypes }}<option value="{{ . }}"{{ if eq . $rt }} selected{{ end }}>{{ t $.Lang (printf "re.rt_%s" .) }}</option>{{ end }}
+              </select>
+              <input class="input roomsup__area" name="room_area" inputmode="decimal" placeholder="{{ t $.Lang "re.room_area" }}" value="{{ if gt .Area 0.0 }}{{ .Area }}{{ end }}">
+              <input class="input roomsup__note" name="room_note" placeholder="{{ t $.Lang "re.room_note" }}" value="{{ .Note }}">
+              <button type="button" class="galup__rm roomsup__rm" data-rooms-rm aria-label="×">×</button>
+            </div>
+            {{ end }}
+          </div>
+          <button type="button" class="btn btn--ghost btn--sm" data-rooms-add>+ {{ t .Lang "re.add_room" }}</button>
+          <template data-rooms-template>
+            <div class="roomsup__row">
+              <select name="room_type" class="input roomsup__type">
+                {{ range roomTypes }}<option value="{{ . }}">{{ t $.Lang (printf "re.rt_%s" .) }}</option>{{ end }}
+              </select>
+              <input class="input roomsup__area" name="room_area" inputmode="decimal" placeholder="{{ t $.Lang "re.room_area" }}">
+              <input class="input roomsup__note" name="room_note" placeholder="{{ t $.Lang "re.room_note" }}">
+              <button type="button" class="galup__rm roomsup__rm" data-rooms-rm aria-label="×">×</button>
+            </div>
+          </template>
+        </div>
+      </div>
+
       <div class="field"><label>{{ t .Lang "re.title" }}</label><input class="input" name="title" value="{{ .Values.Title }}" required></div>
       <div class="field">
         <label>{{ t .Lang "re.photos" }} <span class="hint">— {{ t .Lang "re.photos_max" }}</span></label>

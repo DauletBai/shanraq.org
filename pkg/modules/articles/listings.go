@@ -41,6 +41,7 @@ type Listing struct {
 	Area          float64
 	LandArea      float64
 	Rooms         int
+	RoomSpecs     []RoomSpec
 	Amenities     []string
 	Title         string
 	Description   string

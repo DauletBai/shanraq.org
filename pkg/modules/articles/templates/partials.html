@@ -207,6 +207,29 @@
       window.addEventListener('resize', check, { passive: true });
       check();
     })();
+    // Repeatable per-room rows for the listing form (up to data-max rooms).
+    document.querySelectorAll('[data-rooms]').forEach(function (box) {
+      var items = box.querySelector('[data-rooms-items]');
+      var addBtn = box.querySelector('[data-rooms-add]');
+      var tpl = box.querySelector('[data-rooms-template]');
+      var max = parseInt(box.getAttribute('data-max'), 10) || 20;
+      function count() { return items.querySelectorAll('.roomsup__row').length; }
+      function refresh() { addBtn.style.display = count() >= max ? 'none' : ''; }
+      if (addBtn && tpl) {
+        addBtn.addEventListener('click', function () {
+          if (count() >= max) return;
+          items.appendChild(tpl.content.cloneNode(true));
+          refresh();
+        });
+      }
+      items.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-rooms-rm]');
+        if (!b) return;
+        var row = b.closest('.roomsup__row');
+        if (row) { row.remove(); refresh(); }
+      });
+      refresh();
+    });
     // Multi-photo gallery uploader for real-estate listings (up to data-max photos).
     document.querySelectorAll('[data-gallery]').forEach(function (gal) {
       var items = gal.querySelector('[data-gallery-items]');

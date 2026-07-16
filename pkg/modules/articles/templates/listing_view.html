@@ -56,6 +56,22 @@
           </table>
         </div>
 
+        {{ if .L.RoomSpecs }}
+        <div class="table-wrap">
+          <table class="spec spec--rooms">
+            <caption class="spec__cap">{{ t .Lang "re.rooms_detail" }}</caption>
+            <tbody>
+              {{ range .L.RoomSpecs }}
+              <tr>
+                <th>{{ t $.Lang (printf "re.rt_%s" .Type) }}{{ if .Note }} <span class="hint">— {{ .Note }}</span>{{ end }}</th>
+                <td>{{ if gt .Area 0.0 }}{{ .Area }} м²{{ end }}</td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+        {{ end }}
+
         {{ if .L.Amenities }}
         <div class="amenities">
           <h3 class="amenities__title">{{ t .Lang "re.amenities" }}</h3>

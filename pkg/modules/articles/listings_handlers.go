@@ -394,6 +394,29 @@ func parseListingForm(r *http.Request) ListingInput {
 			amenities = append(amenities, a)
 		}
 	}
+
+	// Per-room breakdown — parallel arrays room_type / room_area / room_note.
+	var roomSpecs []RoomSpec
+	types := r.Form["room_type"]
+	areas := r.Form["room_area"]
+	notes := r.Form["room_note"]
+	for i, t := range types {
+		if !roomTypeSet[t] || len(roomSpecs) >= maxRoomSpecs {
+			continue
+		}
+		var ar float64
+		if i < len(areas) {
+			ar, _ = strconv.ParseFloat(strings.Replace(strings.TrimSpace(areas[i]), ",", ".", 1), 64)
+		}
+		var note string
+		if i < len(notes) {
+			note = strings.TrimSpace(notes[i])
+		}
+		if ar <= 0 && note == "" { // an empty row — skip
+			continue
+		}
+		roomSpecs = append(roomSpecs, RoomSpec{Type: t, Area: ar, Note: note})
+	}
 	var geoID *uuid.UUID
 	if gid, err := uuid.Parse(strings.TrimSpace(r.FormValue("geo_node_id"))); err == nil {
 		geoID = &gid
@@ -433,6 +456,7 @@ func parseListingForm(r *http.Request) ListingInput {
 		Images:       images,
 		LandArea:     landArea,
 		Amenities:    amenities,
+		RoomSpecs:    roomSpecs,
 		NoFilters:    r.FormValue("no_filters") == "on",
 		GeoNodeID:    geoID,
 	}

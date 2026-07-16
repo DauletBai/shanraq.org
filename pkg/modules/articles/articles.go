@@ -81,6 +81,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"dealTypes":        func() []string { return DealTypes },
 		"propertyTypes":    func() []string { return PropertyTypes },
 		"amenities":        AmenityKeys,
+		"roomTypes":        RoomTypeKeys,
 		"money":            money,
 		"ogLocale":         ogLocale,
 		"year":             func() int { return time.Now().Year() },
