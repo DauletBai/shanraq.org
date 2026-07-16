@@ -25,6 +25,11 @@
         <button class="btn btn--teal btn--sm" type="submit">🌐 {{ t .Lang "editor.ai_translate" }}</button>
       </form>
       <span class="hint">{{ t .Lang "editor.ai_saved_hint" }}</span>
+      <form method="post" action="/studio/a/{{ .ArticleID }}/draft" class="ai-draft">
+        <input class="input input--sm" name="brief" placeholder="{{ t .Lang "editor.ai_draft_ph" }}">
+        <button class="btn btn--ghost btn--sm" type="submit">🖋 {{ t .Lang "editor.ai_draft" }}</button>
+        {{ template "fhelp" (t .Lang "editor.ai_draft_help") }}
+      </form>
       {{ else }}
       <span class="hint">{{ t .Lang "editor.ai_soon" }}</span>
       {{ end }}

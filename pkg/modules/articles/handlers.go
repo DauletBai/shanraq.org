@@ -661,6 +661,12 @@ func aiNotice(lang, flag string) string {
 		return T(lang, "notice.ai_queued")
 	case "off":
 		return T(lang, "notice.ai_off")
+	case "drafted":
+		return T(lang, "notice.ai_drafted")
+	case "draft_skip":
+		return T(lang, "notice.ai_draft_skip")
+	case "draft_empty":
+		return T(lang, "notice.ai_draft_empty")
 	default:
 		return ""
 	}
@@ -777,6 +783,73 @@ func (m *Module) handleImprove(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Redirect(w, r, editURL+"?ai=improved", http.StatusSeeOther)
+}
+
+// handleDraft asks the Sana Qyran columnist to draft an evergreen column body
+// from a short brief and fills it into the empty original-language body. It
+// refuses to overwrite an existing body so the author never loses their work.
+func (m *Module) handleDraft(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	editURL := "/studio/a/" + id.String()
+
+	if !m.ai.Enabled() {
+		http.Redirect(w, r, editURL+"?ai=off", http.StatusSeeOther)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "bad form", http.StatusBadRequest)
+		return
+	}
+	brief := strings.TrimSpace(r.FormValue("brief"))
+
+	a, err := m.store.GetByID(r.Context(), id, authorID)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	tr := a.Translations[a.OriginalLang]
+	if brief == "" {
+		brief = strings.TrimSpace(tr.Title)
+	}
+	if brief == "" {
+		http.Redirect(w, r, editURL+"?ai=draft_empty", http.StatusSeeOther)
+		return
+	}
+	// Never clobber existing writing — draft only into an empty body.
+	if strings.TrimSpace(tr.BodyMD) != "" {
+		http.Redirect(w, r, editURL+"?ai=draft_skip", http.StatusSeeOther)
+		return
+	}
+
+	body, err := m.ai.DraftColumn(r.Context(), a.OriginalLang, brief)
+	if err != nil || strings.TrimSpace(body) == "" {
+		m.rt.Logger.Error("ai draft", zap.Error(err))
+		http.Redirect(w, r, editURL+"?ai=off", http.StatusSeeOther)
+		return
+	}
+
+	input := []TranslationInput{{
+		Lang:    a.OriginalLang,
+		Title:   tr.Title,
+		Summary: tr.Summary,
+		BodyMD:  body,
+		Source:  "ai",
+	}}
+	if err := m.store.Update(r.Context(), id, authorID, a.OriginalLang, a.Category, a.Subcategory, a.CoverURL, input); err != nil {
+		m.rt.Logger.Error("save draft", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, editURL+"?ai=drafted", http.StatusSeeOther)
 }
 
 // handleTranslate enqueues an async AI translation into the other languages.

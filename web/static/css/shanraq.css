@@ -398,6 +398,8 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .tab-panel.is-active { display: block; }
 .form-actions { display: flex; gap: 12px; align-items: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
 .ai-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.ai-draft { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-left: auto; }
+.input--sm { padding: 6px 10px; font-size: var(--step--1); min-width: 200px; }
 
 /* ---------- auth ---------- */
 .auth-wrap { 

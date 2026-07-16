@@ -164,6 +164,7 @@ func (m *Module) Routes(r chi.Router) {
 		r.Post("/studio/a/{id}/publish", m.handlePublish)
 		r.Post("/studio/a/{id}/unpublish", m.handleUnpublish)
 		r.Post("/studio/a/{id}/improve", m.handleImprove)
+		r.Post("/studio/a/{id}/draft", m.handleDraft)
 		r.Post("/studio/a/{id}/translate", m.handleTranslate)
 		r.Get("/favorites", m.handleFavorites)
 		r.Post("/favorites/{type}/{id}", m.handleFavoriteToggle)
