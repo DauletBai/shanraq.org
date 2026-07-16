@@ -31,10 +31,6 @@ type Base struct {
 	ActiveSub string // active subcategory slug, or ""
 	LangLinks map[string]string
 
-	// Header search box state (echoed back on the results page).
-	SearchQuery string
-	SearchScope string // "articles" | "listings"
-
 	// SidebarNews feeds the "latest news" carousel in the sidebar.
 	SidebarNews []FeedItem
 
