@@ -40,7 +40,7 @@ type ListingFormPage struct {
 // ListingViewPage backs a single listing.
 type ListingViewPage struct {
 	Base
-	L          *Listing
+	L             *Listing
 	Owner         bool
 	Subscribed    bool
 	IsFavorite    bool

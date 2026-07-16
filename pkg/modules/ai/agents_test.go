@@ -14,7 +14,9 @@ func TestSupportAnswerDisabled(t *testing.T) {
 }
 
 func TestSupportAnswerReplies(t *testing.T) {
-	fake := &fakeCompleter{reply: func(Request) string { return "  Откройте Студию и нажмите «Новое объявление».  " }}
+	fake := &fakeCompleter{reply: func(Request) string {
+		return "  Откройте Студию и нажмите «Новое объявление».  "
+	}}
 	m := New()
 	m.setCompleter(fake)
 

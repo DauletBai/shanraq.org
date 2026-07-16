@@ -63,7 +63,7 @@ func TestTemplatesExecute(t *testing.T) {
 		}{
 			{"home", HomePage{Base: base, Featured: &item, Posts: []FeedItem{item}, Recent: []FeedItem{item}}},
 			{"home", HomePage{Base: base, Featured: &item, Subscribed: true}}, // subscribe success
-			{"home", HomePage{Base: base}},                                    // empty state
+			{"home", HomePage{Base: base}}, // empty state
 			{"article", ArticlePage{Base: base, Slug: "s", Title: "T", AuthorName: "A",
 				ServedLang: LangRU, Category: "society", Body: RenderMarkdown("# Hi\n\nText"), Published: &now, Views: 1,
 				Translated: true, IsAI: true, AvailableLangs: []string{LangRU},
@@ -115,10 +115,10 @@ func TestTranslationsCoverAllLangs(t *testing.T) {
 
 func TestSlugify(t *testing.T) {
 	cases := map[string]string{
-		"Привет мир":           "privet-mir",
-		"Қазақстан 2026":       "qazaqstan-2026",
-		"Hello, World!":        "hello-world",
-		"   ":                  "article",
+		"Привет мир":     "privet-mir",
+		"Қазақстан 2026": "qazaqstan-2026",
+		"Hello, World!":  "hello-world",
+		"   ":            "article",
 		"Экономика Казахстана": "ekonomika-kazahstana",
 	}
 	for in, want := range cases {

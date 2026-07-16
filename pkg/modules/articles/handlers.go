@@ -277,17 +277,17 @@ type ArticlePage struct {
 	Translated     bool
 	AvailableLangs []string
 
-	Category    string
-	Subcategory string
-	CoverURL    string
-	Score       int
-	UserVote    int  // -1, 0, +1
-	AuthorKarma int
-	CanVote     bool // logged in and not the author
-	IsAuthor    bool
-	Recent      []FeedItem // reserved for sidebar
-	Subscribed  bool
-	Comments    []Comment
+	Category      string
+	Subcategory   string
+	CoverURL      string
+	Score         int
+	UserVote      int // -1, 0, +1
+	AuthorKarma   int
+	CanVote       bool // logged in and not the author
+	IsAuthor      bool
+	Recent        []FeedItem // reserved for sidebar
+	Subscribed    bool
+	Comments      []Comment
 	IsFavorite    bool
 	TOC           []TOCItem
 	ReadingMin    int
