@@ -16,6 +16,7 @@
             <span>{{ fmtDatePtr .Published }}</span>
             <span class="dot">·</span>
             <span>{{ .Views }} {{ t .Lang "meta.views" }}</span>
+            {{ if gt .ReadingMin 0 }}<span class="dot">·</span><span>{{ .ReadingMin }} {{ t .Lang "article.read_min" }}</span>{{ end }}
           </div>
           <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="display:inline-block;margin:14px 0 4px">{{ t .Lang (printf "cat.%s" .Category) }}</a>
           <h1 class="article__title">{{ .Title }}</h1>
@@ -87,7 +88,17 @@
       </section>
     </div>
 
-    {{ template "sidebar" . }}
+    <div class="article-aside">
+      {{ if .TOC }}
+      <nav class="toc-box" aria-label="{{ t .Lang "article.toc" }}">
+        <p class="toc-box__title">{{ t .Lang "article.toc" }}</p>
+        <ol class="toc-box__list">
+          {{ range .TOC }}<li><a href="#{{ .ID }}">{{ .Text }}</a></li>{{ end }}
+        </ol>
+      </nav>
+      {{ end }}
+      {{ template "sidebar" . }}
+    </div>
   </div>
 </main>
 {{ template "site_footer" . }}

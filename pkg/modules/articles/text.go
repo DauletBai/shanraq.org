@@ -2,6 +2,7 @@ package articles
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"strings"
 
@@ -24,6 +25,56 @@ func RenderMarkdown(source string) template.HTML {
 		return template.HTML(template.HTMLEscapeString(source))
 	}
 	return template.HTML(buf.String()) //nolint:gosec // goldmark configured without raw HTML
+}
+
+// TOCItem is one entry in an article's table of contents.
+type TOCItem struct {
+	ID   string
+	Text string
+}
+
+// RenderMarkdownTOC renders Markdown and, in the same pass, extracts a table of
+// contents from the level-2 (##) headings. Each rendered <h2> gets a sequential
+// id ("sec-1", "sec-2", …) so the TOC anchors line up exactly with the body.
+func RenderMarkdownTOC(source string) (template.HTML, []TOCItem) {
+	// Collect ## headings in document order (ignore ### and deeper).
+	var toc []TOCItem
+	for _, line := range strings.Split(source, "\n") {
+		t := strings.TrimSpace(line)
+		if strings.HasPrefix(t, "## ") && !strings.HasPrefix(t, "### ") {
+			text := strings.TrimSpace(strings.TrimPrefix(t, "##"))
+			toc = append(toc, TOCItem{ID: fmt.Sprintf("sec-%d", len(toc)+1), Text: stripInline(text)})
+		}
+	}
+
+	var buf bytes.Buffer
+	if err := md.Convert([]byte(source), &buf); err != nil {
+		return template.HTML(template.HTMLEscapeString(source)), nil //nolint:gosec
+	}
+	out := buf.String()
+	// Inject the sequential ids into the rendered <h2> tags, in order.
+	for _, it := range toc {
+		out = strings.Replace(out, "<h2>", `<h2 id="`+it.ID+`">`, 1)
+	}
+	return template.HTML(out), toc //nolint:gosec // goldmark configured without raw HTML
+}
+
+// stripInline removes inline Markdown emphasis/link markup from a heading so the
+// TOC label reads as plain text.
+func stripInline(s string) string {
+	r := strings.NewReplacer("**", "", "__", "", "*", "", "`", "", "_", "")
+	return strings.TrimSpace(r.Replace(s))
+}
+
+// readingMinutes estimates reading time from the plain-text word count
+// (~180 wpm), with a one-minute floor.
+func readingMinutes(source string) int {
+	words := len(strings.Fields(stripMD(source)))
+	m := (words + 179) / 180
+	if m < 1 {
+		m = 1
+	}
+	return m
 }
 
 // stripMD removes the most common Markdown markup to produce plain text

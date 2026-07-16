@@ -289,6 +289,8 @@ type ArticlePage struct {
 	Subscribed  bool
 	Comments    []Comment
 	IsFavorite  bool
+	TOC         []TOCItem
+	ReadingMin  int
 }
 
 func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
@@ -322,7 +324,8 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.AuthorName, page.AIAuthor = authorDisplay(a)
 	page.ServedLang = served
 	page.RequestedLang = lang
-	page.Body = RenderMarkdown(tr.BodyMD)
+	page.Body, page.TOC = RenderMarkdownTOC(tr.BodyMD)
+	page.ReadingMin = readingMinutes(tr.BodyMD)
 	page.Published = a.PublishedAt
 	page.Views = a.ViewsCount + 1
 	page.IsAI = tr.Source == "ai"

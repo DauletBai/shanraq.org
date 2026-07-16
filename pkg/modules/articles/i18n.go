@@ -240,6 +240,8 @@ var messages = map[string]map[string]string{
 	"sidebar.follow":      {"kz": "Бізді қадағалаңыз", "ru": "Читайте нас", "en": "Follow us"},
 	"sidebar.read":        {"kz": "Оқу", "ru": "Читать", "en": "Read"},
 	"nav.favorites":       {"kz": "Таңдаулылар", "ru": "Избранное", "en": "Saved"},
+	"article.toc":         {"kz": "Мазмұны", "ru": "Содержание", "en": "Contents"},
+	"article.read_min":    {"kz": "мин оқу", "ru": "мин чтения", "en": "min read"},
 	"fav.title":           {"kz": "Таңдаулылар", "ru": "Избранное", "en": "Saved"},
 	"fav.add":             {"kz": "Таңдаулыға", "ru": "В избранное", "en": "Save"},
 	"fav.remove":          {"kz": "Таңдаулыда", "ru": "В избранном", "en": "Saved"},
