@@ -537,6 +537,9 @@ type StudioRow struct {
 	Updated time.Time
 	Views   int64
 	Langs   []string
+	// Reading-depth funnel: reader counts and their share of views (percent).
+	D25, D50, D75, D100 int64
+	P25, P50, P75, P100 int
 }
 
 // StudioPage is the dashboard context.
@@ -565,6 +568,11 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	depth, err := m.store.AuthorReadingDepth(r.Context(), authorID)
+	if err != nil {
+		m.rt.Logger.Warn("author reading depth", zap.Error(err))
+	}
+
 	lang := m.resolveLang(w, r)
 	rows := make([]StudioRow, 0, len(arts))
 	for _, a := range arts {
@@ -572,7 +580,7 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		if tr, _ := a.Translation(a.OriginalLang); tr != nil && tr.Title != "" {
 			title = tr.Title
 		}
-		rows = append(rows, StudioRow{
+		row := StudioRow{
 			ID:      a.ID.String(),
 			Slug:    a.Slug,
 			Title:   title,
@@ -580,7 +588,15 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			Updated: a.UpdatedAt,
 			Views:   a.ViewsCount,
 			Langs:   a.AvailableLangs(),
-		})
+		}
+		if d := depth[row.ID]; d != nil {
+			row.D25, row.D50, row.D75, row.D100 = d[25], d[50], d[75], d[100]
+			row.P25 = pctOf(row.D25, row.Views)
+			row.P50 = pctOf(row.D50, row.Views)
+			row.P75 = pctOf(row.D75, row.Views)
+			row.P100 = pctOf(row.D100, row.Views)
+		}
+		rows = append(rows, row)
 	}
 
 	karma, err := m.ratings.AuthorKarma(r.Context(), authorID)

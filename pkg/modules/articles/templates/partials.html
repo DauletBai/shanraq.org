@@ -186,6 +186,27 @@
           .catch(function () { if (status) status.textContent = '✕'; });
       });
     });
+    // Reading-depth beacon: report 25/50/75/100% scroll milestones once each.
+    (function () {
+      var el = document.querySelector('[data-read-progress]');
+      if (!el || !navigator.sendBeacon) return;
+      var slug = el.getAttribute('data-read-progress');
+      var fired = {};
+      function check() {
+        var top = el.getBoundingClientRect().top + window.scrollY;
+        var h = el.offsetHeight || 1;
+        var pct = ((window.scrollY + window.innerHeight - top) / h) * 100;
+        [25, 50, 75, 100].forEach(function (mark) {
+          if (pct >= mark && !fired[mark]) {
+            fired[mark] = true;
+            try { navigator.sendBeacon('/read/' + encodeURIComponent(slug) + '/progress?d=' + mark); } catch (e) {}
+          }
+        });
+      }
+      window.addEventListener('scroll', check, { passive: true });
+      window.addEventListener('resize', check, { passive: true });
+      check();
+    })();
     // Multi-photo gallery uploader for real-estate listings (up to data-max photos).
     document.querySelectorAll('[data-gallery]').forEach(function (gal) {
       var items = gal.querySelector('[data-gallery-items]');

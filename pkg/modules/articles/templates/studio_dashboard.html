@@ -45,6 +45,7 @@
             <th>{{ t .Lang "studio.col_status" }}</th>
             <th>{{ t .Lang "studio.col_langs" }}</th>
             <th>{{ t .Lang "studio.col_views" }}</th>
+            <th>{{ t .Lang "studio.col_depth" }}</th>
             <th>{{ t .Lang "studio.col_updated" }}</th>
             <th></th>
           </tr>
@@ -60,6 +61,14 @@
             </td>
             <td>{{ range .Langs }}<span class="tag">{{ label . }}</span> {{ else }}<span class="dot">—</span>{{ end }}</td>
             <td>{{ .Views }}</td>
+            <td class="depth">
+              {{ if gt .Views 0 }}
+              <span class="depth-cell" title="25%: {{ .D25 }}">¼<b>{{ .P25 }}%</b></span>
+              <span class="depth-cell" title="50%: {{ .D50 }}">½<b>{{ .P50 }}%</b></span>
+              <span class="depth-cell" title="75%: {{ .D75 }}">¾<b>{{ .P75 }}%</b></span>
+              <span class="depth-cell depth-cell--end" title="100%: {{ .D100 }}">🏁<b>{{ .P100 }}%</b></span>
+              {{ else }}<span class="dot">—</span>{{ end }}
+            </td>
             <td>{{ fmtDate .Updated }}</td>
             <td>
               <div style="display:flex;gap:8px">

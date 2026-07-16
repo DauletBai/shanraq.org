@@ -337,6 +337,7 @@ var messages = map[string]map[string]string{
 	"studio.col_status":    {"kz": "Күй", "ru": "Статус", "en": "Status"},
 	"studio.col_langs":     {"kz": "Тілдер", "ru": "Языки", "en": "Languages"},
 	"studio.col_views":     {"kz": "Оқылым", "ru": "Просмотры", "en": "Views"},
+	"studio.col_depth":     {"kz": "Оқу тереңдігі", "ru": "Дочитывания", "en": "Read depth"},
 	"studio.col_updated":   {"kz": "Жаңартылды", "ru": "Обновлено", "en": "Updated"},
 	"studio.st_published":  {"kz": "жарияланған", "ru": "опубликовано", "en": "published"},
 	"studio.st_draft":      {"kz": "жоба", "ru": "черновик", "en": "draft"},

@@ -781,3 +781,12 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   .toc-box { position: sticky; top: 92px; }
   .article-aside .aside { position: static; top: auto; }
 }
+
+/* ---- Reading-depth funnel (author dashboard) ---- */
+.depth { white-space: nowrap; }
+.depth-cell {
+  display: inline-flex; align-items: baseline; gap: 3px; margin-right: 8px;
+  font-size: 0.7rem; color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.depth-cell b { color: var(--ink); font-weight: 700; font-size: 0.82rem; }
+.depth-cell--end b { color: var(--teal); }
