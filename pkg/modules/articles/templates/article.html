@@ -45,6 +45,14 @@
               {{ end }}
             </span>
             {{ end }}
+            {{ if .Authed }}
+            <form method="post" action="/favorites/article/{{ .ArticleID }}" class="favform">
+              <button type="submit" class="favbtn{{ if .IsFavorite }} is-on{{ end }}" aria-pressed="{{ if .IsFavorite }}true{{ else }}false{{ end }}">
+                <span class="favbtn__heart">{{ if .IsFavorite }}♥{{ else }}♡{{ end }}</span>
+                <span>{{ if .IsFavorite }}{{ t .Lang "fav.remove" }}{{ else }}{{ t .Lang "fav.add" }}{{ end }}</span>
+              </button>
+            </form>
+            {{ end }}
           </div>
         </div>
 

@@ -262,6 +262,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 // ArticlePage is the template context for a single article.
 type ArticlePage struct {
 	Base
+	ArticleID      string
 	Slug           string
 	Title          string
 	Summary        string
@@ -287,6 +288,7 @@ type ArticlePage struct {
 	Recent      []FeedItem // reserved for sidebar
 	Subscribed  bool
 	Comments    []Comment
+	IsFavorite  bool
 }
 
 func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
@@ -310,6 +312,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	page := ArticlePage{Base: m.base(r, tr.Title, lang)}
+	page.ArticleID = a.ID.String()
 	page.Slug = a.Slug
 	page.Category = a.Category
 	page.Subcategory = a.Subcategory
@@ -338,6 +341,9 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	}
 	page.IsAuthor = viewer != uuid.Nil && viewer == a.AuthorID
 	page.CanVote = viewer != uuid.Nil && !page.IsAuthor
+	if viewer != uuid.Nil {
+		page.IsFavorite = m.favs.IsFavorite(r.Context(), viewer, "article", a.ID)
+	}
 
 	page.SidebarNews = m.latestNews(r, lang, 6)
 	if cs, err := m.comments.ListForArticle(r.Context(), a.ID); err == nil {

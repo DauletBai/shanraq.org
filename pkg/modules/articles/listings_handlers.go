@@ -42,6 +42,7 @@ type ListingViewPage struct {
 	L          *Listing
 	Owner      bool
 	Subscribed bool
+	IsFavorite bool
 }
 
 // MyListingsPage backs the author's own-listings management view.
@@ -176,8 +177,11 @@ func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
 	page := ListingViewPage{Base: m.base(r, l.Title, lang)}
 	page.ActiveCat = "realestate"
 	page.L = l
-	if authorID, ok := m.authorID(r); ok && authorID.String() == l.AuthorID {
-		page.Owner = true
+	if authorID, ok := m.authorID(r); ok {
+		if authorID.String() == l.AuthorID {
+			page.Owner = true
+		}
+		page.IsFavorite = m.favs.IsFavorite(r.Context(), authorID, "listing", id)
 	}
 	page.SidebarNews = m.latestNews(r, lang, 6)
 	m.applyListingSEO(&page)

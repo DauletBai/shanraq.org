@@ -36,6 +36,7 @@ type Module struct {
 	listings  *ListingStore
 	geo       *GeoStore
 	comments  *CommentStore
+	favs      *FavoriteStore
 	admin     *AdminStore
 	ratings   *ratings.Store
 	jobs      *jobs.Store
@@ -63,6 +64,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.listings = NewListingStore(rt.DB)
 	m.geo = NewGeoStore(rt.DB)
 	m.comments = NewCommentStore(rt.DB)
+	m.favs = NewFavoriteStore(rt.DB)
 	m.admin = NewAdminStore(rt.DB)
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
@@ -159,6 +161,8 @@ func (m *Module) Routes(r chi.Router) {
 		r.Post("/studio/a/{id}/unpublish", m.handleUnpublish)
 		r.Post("/studio/a/{id}/improve", m.handleImprove)
 		r.Post("/studio/a/{id}/translate", m.handleTranslate)
+		r.Get("/favorites", m.handleFavorites)
+		r.Post("/favorites/{type}/{id}", m.handleFavoriteToggle)
 	})
 
 	// Admin control panel (staff roles only).

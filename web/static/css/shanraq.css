@@ -704,3 +704,25 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
+
+/* ---- Favorites (bookmarks) ---- */
+.favform { display: inline-block; margin: 0; }
+.favbtn {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  font: inherit; font-size: var(--step--1); font-weight: 600;
+  padding: 6px 13px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-soft);
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.favbtn:hover { border-color: var(--gold); color: var(--gold-strong); }
+.favbtn__heart { font-size: 1rem; line-height: 1; color: var(--gold); }
+.favbtn.is-on { border-color: var(--gold); color: var(--gold-strong); background: color-mix(in srgb, var(--gold) 8%, transparent); }
+.article__head .favform { vertical-align: middle; margin-left: 10px; }
+.article__head .rating { vertical-align: middle; }
+.listing__headrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.listing__headrow .listing__price { margin: 0; }
+.fav-group {
+  font-family: var(--serif); font-size: 1.15rem; margin: 26px 0 12px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--line);
+}
+.fav-group:first-of-type { margin-top: 6px; }

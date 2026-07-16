@@ -30,7 +30,17 @@
         </div>
         {{ end }}
         <h1 class="article__title">{{ .L.Title }}</h1>
-        <p class="listing__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
+        <div class="listing__headrow">
+          <p class="listing__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
+          {{ if .Authed }}
+          <form method="post" action="/favorites/listing/{{ .L.ID }}" class="favform">
+            <button type="submit" class="favbtn{{ if .IsFavorite }} is-on{{ end }}" aria-pressed="{{ if .IsFavorite }}true{{ else }}false{{ end }}">
+              <span class="favbtn__heart">{{ if .IsFavorite }}♥{{ else }}♡{{ end }}</span>
+              <span>{{ if .IsFavorite }}{{ t .Lang "fav.remove" }}{{ else }}{{ t .Lang "fav.add" }}{{ end }}</span>
+            </button>
+          </form>
+          {{ end }}
+        </div>
 
         <div class="table-wrap">
           <table class="spec">
