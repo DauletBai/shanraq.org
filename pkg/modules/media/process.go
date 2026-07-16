@@ -20,10 +20,25 @@ import (
 // jpegQuality balances size and fidelity for photographic cover images.
 const jpegQuality = 82
 
+// maxDecodePixels caps the declared pixel count before full decode. A small
+// compressed file can declare enormous dimensions (a decompression bomb) that
+// would allocate gigabytes; reject those from the cheap header first. 50 MP is
+// well above any legitimate phone photo.
+const maxDecodePixels = 50_000_000
+
 // processImage decodes an uploaded image, corrects its size, stamps the brand
 // watermark, and returns re-encoded JPEG bytes. Decoding then re-encoding from
 // raw pixels strips EXIF (including GPS) and any animation frames.
 func (m *Module) processImage(raw []byte) ([]byte, error) {
+	// Header-only check first so a decompression bomb can't force a huge alloc.
+	cfg, _, err := image.DecodeConfig(bytes.NewReader(raw))
+	if err != nil {
+		return nil, fmt.Errorf("decode image config: %w", err)
+	}
+	if int64(cfg.Width)*int64(cfg.Height) > maxDecodePixels {
+		return nil, fmt.Errorf("image too large: %dx%d exceeds %d pixels", cfg.Width, cfg.Height, maxDecodePixels)
+	}
+
 	src, _, err := image.Decode(bytes.NewReader(raw))
 	if err != nil {
 		return nil, fmt.Errorf("decode image: %w", err)
