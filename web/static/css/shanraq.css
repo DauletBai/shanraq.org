@@ -205,7 +205,10 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .btn--sm { padding: 6px 12px; font-size: 0.78rem; }
 
 /* ---------- home layout ---------- */
-.layout { display: grid; grid-template-columns: 1fr; gap: 44px; padding: 34px 0 60px; }
+/* minmax(0,…) lets the content column shrink to the viewport instead of
+   ballooning to the intrinsic width of the inner .posts grid (which would
+   overflow the page horizontally on phones). */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; padding: 34px 0 60px; }
 @media (min-width: 900px) { .layout { grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr); } }
 
 /* ad carousel (replaces the featured hero) */
@@ -288,7 +291,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin: 8px 0 22px;
 }
 .section-head h2 { font-size: var(--step-2); }
-.posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px 34px; }
+.posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 30px 34px; }
 .post {
   display: flex; flex-direction: column; gap: 9px;
   padding-bottom: 24px; border-bottom: 1px solid var(--line);
