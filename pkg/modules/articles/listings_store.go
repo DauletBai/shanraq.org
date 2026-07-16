@@ -29,6 +29,8 @@ type ListingInput struct {
 	Rooms                              int
 	Title, Description, Contact, Cover string
 	Images                             []string
+	LandArea                           float64
+	Amenities                          []string
 	NoFilters                          bool // author attested photos are not filter-distorted
 	GeoNodeID                          *uuid.UUID
 }
@@ -37,11 +39,13 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 	var id uuid.UUID
 	err := s.db.QueryRow(ctx, `
 		INSERT INTO listings (author_id, deal_type, property_type, country, region, city, village,
-		                      price, area, rooms, title, description, contact, cover_url, images, geo_node_id, status, expires_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,'published', NOW() + INTERVAL '14 days')
+		                      price, area, rooms, title, description, contact, cover_url, images, geo_node_id,
+		                      land_area, amenities, status, expires_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,'published', NOW() + INTERVAL '14 days')
 		RETURNING id
 	`, authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.Village,
-		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.Images, in.GeoNodeID).Scan(&id)
+		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.Images, in.GeoNodeID,
+		in.LandArea, in.Amenities).Scan(&id)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("create listing: %w", err)
 	}
@@ -50,14 +54,14 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 
 const listingCols = `l.id, l.author_id, u.email, l.deal_type, l.property_type, l.country, l.region, l.city, l.village,
 	l.price, l.area, l.rooms, l.title, l.description, l.contact, l.cover_url, l.images, l.status, l.created_at,
-	l.expires_at, l.promoted_until, l.featured_until, l.views_count, l.contacts_count`
+	l.expires_at, l.promoted_until, l.featured_until, l.views_count, l.contacts_count, l.land_area, l.amenities`
 
 func scanListing(row pgx.Row) (*Listing, error) {
 	var l Listing
 	var id, authorID uuid.UUID
 	err := row.Scan(&id, &authorID, &l.AuthorEmail, &l.DealType, &l.PropertyType, &l.Country, &l.Region, &l.City, &l.Village,
 		&l.Price, &l.Area, &l.Rooms, &l.Title, &l.Description, &l.Contact, &l.CoverURL, &l.Images, &l.Status, &l.CreatedAt,
-		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.ViewsCount, &l.ContactsCount)
+		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.ViewsCount, &l.ContactsCount, &l.LandArea, &l.Amenities)
 	if err != nil {
 		return nil, err
 	}

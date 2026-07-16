@@ -39,7 +39,9 @@ type Listing struct {
 	Village       string
 	Price         int64
 	Area          float64
+	LandArea      float64
 	Rooms         int
+	Amenities     []string
 	Title         string
 	Description   string
 	Contact       string

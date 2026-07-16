@@ -384,7 +384,16 @@ func parseListingForm(r *http.Request) ListingInput {
 	}
 	price, _ := strconv.ParseInt(digitsOnly(r.FormValue("price")), 10, 64)
 	area, _ := strconv.ParseFloat(strings.Replace(strings.TrimSpace(r.FormValue("area")), ",", ".", 1), 64)
+	landArea, _ := strconv.ParseFloat(strings.Replace(strings.TrimSpace(r.FormValue("land_area")), ",", ".", 1), 64)
 	rooms, _ := strconv.Atoi(digitsOnly(r.FormValue("rooms")))
+
+	// Amenity checkboxes — keep only recognized keys.
+	var amenities []string
+	for _, a := range r.Form["amenity"] {
+		if amenitySet[a] {
+			amenities = append(amenities, a)
+		}
+	}
 	var geoID *uuid.UUID
 	if gid, err := uuid.Parse(strings.TrimSpace(r.FormValue("geo_node_id"))); err == nil {
 		geoID = &gid
@@ -422,6 +431,8 @@ func parseListingForm(r *http.Request) ListingInput {
 		Contact:      strings.TrimSpace(r.FormValue("contact")),
 		Cover:        cover,
 		Images:       images,
+		LandArea:     landArea,
+		Amenities:    amenities,
 		NoFilters:    r.FormValue("no_filters") == "on",
 		GeoNodeID:    geoID,
 	}

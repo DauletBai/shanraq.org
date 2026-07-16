@@ -39,6 +39,7 @@
         <div class="field"><label>{{ t .Lang "re.price" }}</label><input class="input" type="text" inputmode="numeric" name="price" value="{{ if gt .Values.Price 0 }}{{ .Values.Price }}{{ end }}"></div>
         <div class="field"><label>{{ t .Lang "re.area" }}</label><input class="input" name="area" value="{{ if gt .Values.Area 0.0 }}{{ .Values.Area }}{{ end }}"></div>
         <div class="field"><label>{{ t .Lang "re.rooms" }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .Values.Rooms 0 }}{{ .Values.Rooms }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.land_area" }}</label><input class="input" name="land_area" value="{{ if gt .Values.LandArea 0.0 }}{{ .Values.LandArea }}{{ end }}"></div>
       </div>
 
       <div class="field"><label>{{ t .Lang "re.title" }}</label><input class="input" name="title" value="{{ .Values.Title }}" required></div>
@@ -65,6 +66,15 @@
       </div>
       <div class="field"><label>{{ t .Lang "re.description" }}</label><textarea class="textarea" name="description" style="min-height:180px">{{ .Values.Description }}</textarea></div>
       <div class="field"><label>{{ t .Lang "re.contact" }}</label><input class="input" name="contact" value="{{ .Values.Contact }}" required></div>
+
+      <div class="field">
+        <label>{{ t .Lang "re.amenities" }}</label>
+        <div class="amgrid">
+          {{ range amenities }}
+          <label class="amcheck"><input type="checkbox" name="amenity" value="{{ . }}"{{ if $.Values.HasAmenity . }} checked{{ end }}> {{ t $.Lang (printf "re.am_%s" .) }}</label>
+          {{ end }}
+        </div>
+      </div>
 
       <div class="form-actions">
         <button class="btn btn--primary" type="submit">{{ t .Lang "re.submit" }}</button>

@@ -80,6 +80,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"subcats":          func(cat string) []string { return Subcats(cat) },
 		"dealTypes":        func() []string { return DealTypes },
 		"propertyTypes":    func() []string { return PropertyTypes },
+		"amenities":        AmenityKeys,
 		"money":            money,
 		"ogLocale":         ogLocale,
 		"year":             func() int { return time.Now().Year() },

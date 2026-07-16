@@ -51,9 +51,19 @@
               {{ if .L.Village }}<tr><th>{{ t .Lang "re.village" }}</th><td>{{ .L.Village }}</td></tr>{{ end }}
               {{ if gt .L.Rooms 0 }}<tr><th>{{ t .Lang "re.rooms" }}</th><td>{{ .L.Rooms }}</td></tr>{{ end }}
               {{ if gt .L.Area 0.0 }}<tr><th>{{ t .Lang "re.area" }}</th><td>{{ .L.Area }} м²</td></tr>{{ end }}
+              {{ if gt .L.LandArea 0.0 }}<tr><th>{{ t .Lang "re.land_area" }}</th><td>{{ .L.LandArea }} {{ t .Lang "re.ares" }}</td></tr>{{ end }}
             </tbody>
           </table>
         </div>
+
+        {{ if .L.Amenities }}
+        <div class="amenities">
+          <h3 class="amenities__title">{{ t .Lang "re.amenities" }}</h3>
+          <ul class="amenities__list">
+            {{ range amenities }}{{ if $.L.HasAmenity . }}<li>{{ t $.Lang (printf "re.am_%s" .) }}</li>{{ end }}{{ end }}
+          </ul>
+        </div>
+        {{ end }}
 
         {{ if .L.Description }}<div class="prose listing__desc">{{ .L.Description }}</div>{{ end }}
 
