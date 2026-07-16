@@ -58,8 +58,19 @@
         {{ if .L.Description }}<div class="prose listing__desc">{{ .L.Description }}</div>{{ end }}
 
         <div class="listing__contact">
-          <strong>{{ t .Lang "re.contacts" }}:</strong> {{ .L.Contact }}
+          <strong>{{ t .Lang "re.contacts" }}:</strong>
+          {{ if .ShowContact }}
+          <span class="contact-val">{{ .L.Contact }}</span>
+          {{ else }}
+          <span class="contact-val contact-val--masked">{{ .MaskedContact }}</span>
+          <form method="post" action="/listings/{{ .L.ID }}/contact" class="contact-reveal">
+            <button type="submit" class="btn btn--primary btn--sm">📞 {{ t .Lang "re.show_contact" }}</button>
+          </form>
+          {{ end }}
         </div>
+        <p class="listing__stats hint">
+          {{ t .Lang "re.views" }}: {{ .ViewsCount }}{{ if .Owner }} · {{ t .Lang "re.contacts_shown" }}: {{ .L.ContactsCount }}{{ end }}
+        </p>
 
         {{ if .Reported }}
         <p class="notice notice--ok listing__reported">✓ {{ t .Lang "re.report_thanks" }}</p>

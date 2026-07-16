@@ -46,6 +46,8 @@ type Listing struct {
 	CoverURL      string
 	Images        []string
 	Status        string
+	ViewsCount    int
+	ContactsCount int
 	CreatedAt     time.Time
 	ExpiresAt     time.Time
 	PromotedUntil *time.Time

@@ -41,11 +41,14 @@ type ListingFormPage struct {
 type ListingViewPage struct {
 	Base
 	L          *Listing
-	Owner      bool
-	Subscribed bool
-	IsFavorite bool
-	Reported   bool // just submitted a report (thank-you flash)
-	CanReport  bool // logged-in and not the owner
+	Owner         bool
+	Subscribed    bool
+	IsFavorite    bool
+	Reported      bool   // just submitted a report (thank-you flash)
+	CanReport     bool   // logged-in and not the owner
+	ShowContact   bool   // reveal the full seller contact
+	MaskedContact string // partly-hidden contact shown before reveal
+	ViewsCount    int
 }
 
 // MyListingsPage backs the author's own-listings management view.
@@ -171,7 +174,6 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
 	id, err := uuid.Parse(chi.URLParam(r, "id"))
 	if err != nil {
 		http.NotFound(w, r)
@@ -182,21 +184,86 @@ func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
+	// Count a view — but not the owner's own visits.
+	if !m.isListingOwner(r, l) {
+		if err := m.listings.RecordView(r.Context(), id); err == nil {
+			l.ViewsCount++
+		}
+	}
+	m.renderListingView(w, r, l, false)
+}
+
+// handleListingContact reveals the seller's contact and counts the reveal. The
+// full number is only ever rendered in response to this POST, so it stays out
+// of the crawlable page markup.
+func (m *Module) handleListingContact(w http.ResponseWriter, r *http.Request) {
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	l, err := m.listings.GetByID(r.Context(), id)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if !m.isListingOwner(r, l) {
+		if err := m.listings.RecordContact(r.Context(), id); err != nil {
+			m.rt.Logger.Warn("record contact", zap.Error(err))
+		}
+	}
+	m.renderListingView(w, r, l, true)
+}
+
+// isListingOwner reports whether the current session user owns the listing.
+func (m *Module) isListingOwner(r *http.Request, l *Listing) bool {
+	aid, ok := m.authorID(r)
+	return ok && aid.String() == l.AuthorID
+}
+
+// renderListingView builds and renders a listing page. reveal (or ownership)
+// shows the full contact; otherwise it is masked behind a "show contact" button.
+func (m *Module) renderListingView(w http.ResponseWriter, r *http.Request, l *Listing, reveal bool) {
+	lang := m.resolveLang(w, r)
 	page := ListingViewPage{Base: m.base(r, l.Title, lang)}
 	page.ActiveCat = "realestate"
 	page.L = l
+	page.MaskedContact = maskContact(l.Contact)
+	page.ViewsCount = l.ViewsCount
 	if authorID, ok := m.authorID(r); ok {
 		if authorID.String() == l.AuthorID {
 			page.Owner = true
 		} else {
 			page.CanReport = true
 		}
-		page.IsFavorite = m.favs.IsFavorite(r.Context(), authorID, "listing", id)
+		if lid, err := uuid.Parse(l.ID); err == nil {
+			page.IsFavorite = m.favs.IsFavorite(r.Context(), authorID, "listing", lid)
+		}
 	}
+	page.ShowContact = reveal || page.Owner
 	page.Reported = r.URL.Query().Get("reported") == "ok"
 	page.SidebarNews = m.latestNews(r, lang, 6)
 	m.applyListingSEO(&page)
 	m.render(w, "listing_view", page)
+}
+
+// maskContact hides the middle of a phone/handle, keeping a recognizable
+// prefix and suffix (spaces preserved).
+func maskContact(s string) string {
+	s = strings.TrimSpace(s)
+	r := []rune(s)
+	if len(r) <= 6 {
+		return "••••"
+	}
+	out := make([]rune, len(r))
+	for i, c := range r {
+		if i < 5 || i >= len(r)-2 || c == ' ' {
+			out[i] = c
+		} else {
+			out[i] = '•'
+		}
+	}
+	return string(out)
 }
 
 // handleListingReport records a reader's report of a listing (mainly filtered,

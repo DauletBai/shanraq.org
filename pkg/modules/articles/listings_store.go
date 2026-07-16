@@ -50,14 +50,14 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 
 const listingCols = `l.id, l.author_id, u.email, l.deal_type, l.property_type, l.country, l.region, l.city, l.village,
 	l.price, l.area, l.rooms, l.title, l.description, l.contact, l.cover_url, l.images, l.status, l.created_at,
-	l.expires_at, l.promoted_until, l.featured_until`
+	l.expires_at, l.promoted_until, l.featured_until, l.views_count, l.contacts_count`
 
 func scanListing(row pgx.Row) (*Listing, error) {
 	var l Listing
 	var id, authorID uuid.UUID
 	err := row.Scan(&id, &authorID, &l.AuthorEmail, &l.DealType, &l.PropertyType, &l.Country, &l.Region, &l.City, &l.Village,
 		&l.Price, &l.Area, &l.Rooms, &l.Title, &l.Description, &l.Contact, &l.CoverURL, &l.Images, &l.Status, &l.CreatedAt,
-		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil)
+		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.ViewsCount, &l.ContactsCount)
 	if err != nil {
 		return nil, err
 	}

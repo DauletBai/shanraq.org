@@ -759,3 +759,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   border-left: 3px solid var(--teal); background: color-mix(in srgb, var(--teal) 8%, transparent);
   color: var(--ink-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: var(--step--1); margin: 16px 0 0;
 }
+
+/* ---- Listing contact reveal + stats ---- */
+.listing__contact { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.contact-val { font-weight: 600; color: var(--ink); }
+.contact-val--masked { letter-spacing: .04em; color: var(--muted); font-family: var(--mono); }
+.contact-reveal { display: inline-block; margin: 0; }
+.listing__stats { margin: 8px 0 0; font-size: var(--step--1); color: var(--muted); }

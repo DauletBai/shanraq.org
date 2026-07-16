@@ -139,6 +139,7 @@ func (m *Module) Routes(r chi.Router) {
 		r.Post("/listings/{id}/extend", m.handleListingExtend)
 		r.Post("/listings/{id}/promote", m.handleListingPromote)
 		r.Post("/listings/{id}/feature", m.handleListingFeature)
+		r.Post("/listings/{id}/contact", m.handleListingContact)
 		r.Get("/listings/{id}", m.handleListingView)
 	})
 

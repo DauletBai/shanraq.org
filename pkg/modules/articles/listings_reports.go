@@ -15,6 +15,20 @@ const reportAutoHideThreshold = 3
 // enough reports of misleading photos).
 func (l Listing) Flagged() bool { return l.Status == "flagged" }
 
+// RecordView bumps a listing's view counter (best-effort; errors are ignored
+// by callers so a display path never fails on a counter write).
+func (s *ListingStore) RecordView(ctx context.Context, id uuid.UUID) error {
+	_, err := s.db.Exec(ctx, `UPDATE listings SET views_count = views_count + 1 WHERE id = $1`, id)
+	return err
+}
+
+// RecordContact bumps the counter of how many times the seller's contact was
+// revealed on a listing.
+func (s *ListingStore) RecordContact(ctx context.Context, id uuid.UUID) error {
+	_, err := s.db.Exec(ctx, `UPDATE listings SET contacts_count = contacts_count + 1 WHERE id = $1`, id)
+	return err
+}
+
 // Report records one user's report of a listing and, once enough distinct
 // users have reported it, hides the still-published listing for review. It
 // returns the current report count and whether this call just auto-hid it.
