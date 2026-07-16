@@ -57,6 +57,7 @@
       <a href="/favorites">♥ {{ t .Lang "nav.favorites" }}</a>
       <a href="/studio">{{ t .Lang "header.studio" }}</a>
       <a class="btn btn--primary btn--sm" href="/studio/new">{{ t .Lang "header.write" }}</a>
+      <form method="post" action="/studio/logout" style="display:inline"><button type="submit" class="linkbtn">{{ t .Lang "header.logout" }}</button></form>
       {{ else }}
       <a class="btn btn--primary btn--sm" href="/studio/login">{{ t .Lang "header.login" }}</a>
       {{ end }}

@@ -113,6 +113,18 @@ func (m *Module) Routes(r chi.Router) {
 		return
 	}
 
+	// Everything below lives in one inline group so the CSRF guard can be a
+	// group middleware — the shared mux already has routes from other modules,
+	// and chi forbids Use() after routes on the same mux.
+	r.Group(m.browserRoutes)
+}
+
+// browserRoutes registers all reader/studio/admin endpoints under a single
+// group whose first middleware is the same-origin CSRF guard (the session
+// cookie is already SameSite=Lax; this is defense in depth).
+func (m *Module) browserRoutes(r chi.Router) {
+	r.Use(m.verifyOrigin)
+
 	// SEO endpoints (no session needed).
 	r.Get("/robots.txt", m.handleRobots)
 	r.Get("/sitemap.xml", m.handleSitemap)
@@ -151,7 +163,7 @@ func (m *Module) Routes(r chi.Router) {
 	r.Post("/studio/login", m.handleLoginSubmit)
 	r.Get("/studio/register", m.handleRegisterPage)
 	r.Post("/studio/register", m.handleRegisterSubmit)
-	r.Get("/studio/logout", m.handleLogout)
+	r.Post("/studio/logout", m.handleLogout)
 
 	// Studio (authenticated author cabinet).
 	r.Group(func(r chi.Router) {

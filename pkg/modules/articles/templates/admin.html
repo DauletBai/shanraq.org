@@ -27,7 +27,7 @@
     <div class="adm__side-foot">
       <button type="button" class="icon-btn" data-theme-toggle title="{{ t .Lang "header.theme" }}">◐</button>
       <a href="/" class="adm__sidelink">← {{ t .Lang "admin.to_site" }}</a>
-      <a href="/studio/logout" class="adm__sidelink">{{ t .Lang "admin.logout" }}</a>
+      <form method="post" action="/studio/logout" style="display:contents"><button type="submit" class="adm__sidelink" style="background:none;border:none;cursor:pointer;font:inherit;text-align:left">{{ t .Lang "admin.logout" }}</button></form>
     </div>
   </aside>
 
