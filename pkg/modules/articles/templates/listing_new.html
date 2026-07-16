@@ -43,13 +43,25 @@
 
       <div class="field"><label>{{ t .Lang "re.title" }}</label><input class="input" name="title" value="{{ .Values.Title }}" required></div>
       <div class="field">
-        <label>{{ t .Lang "re.cover" }}</label>
-        <input class="input" type="url" name="cover_url" value="{{ .Values.Cover }}" placeholder="https://…">
-        <div class="uploader">
-          <label class="btn btn--ghost btn--sm uploader__btn">{{ t .Lang "media.upload" }}<input type="file" accept="image/*" data-upload="cover_url" hidden></label>
-          <span class="uploader__status" data-upload-status></span>
+        <label>{{ t .Lang "re.photos" }} <span class="hint">— {{ t .Lang "re.photos_max" }}</span></label>
+        <div class="galup" data-gallery data-max="10">
+          <div class="galup__items" data-gallery-items>
+            {{ range .Values.Images }}
+            <div class="galup__item">
+              <img src="{{ . }}" alt="">
+              <input type="hidden" name="image" value="{{ . }}">
+              <button type="button" class="galup__rm" data-gallery-rm aria-label="×">×</button>
+            </div>
+            {{ end }}
+          </div>
+          <label class="btn btn--ghost btn--sm galup__add" data-gallery-add>
+            + {{ t .Lang "re.add_photo" }}
+            <input type="file" accept="image/*" multiple hidden data-gallery-file>
+          </label>
+          <span class="galup__status" data-gallery-status></span>
         </div>
-        <p class="hint">{{ t .Lang "media.upload_note" }}</p>
+        <div class="notice notice--warn">{{ t .Lang "re.filter_warn" }}</div>
+        <label class="checkline"><input type="checkbox" name="no_filters" value="on"{{ if .Values.NoFilters }} checked{{ end }} required> {{ t .Lang "re.filter_confirm" }}</label>
       </div>
       <div class="field"><label>{{ t .Lang "re.description" }}</label><textarea class="textarea" name="description" style="min-height:180px">{{ .Values.Description }}</textarea></div>
       <div class="field"><label>{{ t .Lang "re.contact" }}</label><input class="input" name="contact" value="{{ .Values.Contact }}" required></div>

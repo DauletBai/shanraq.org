@@ -726,3 +726,22 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   padding-bottom: 6px; border-bottom: 1px solid var(--line);
 }
 .fav-group:first-of-type { margin-top: 6px; }
+
+/* ---- Listing photo gallery uploader ---- */
+.galup { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.galup__items { display: flex; flex-wrap: wrap; gap: 10px; }
+.galup__item { position: relative; width: 96px; height: 72px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line-strong); background: var(--surface-2); }
+.galup__item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.galup__rm {
+  position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%;
+  border: none; background: rgba(0,0,0,.6); color: #fff; font-size: 14px; line-height: 1; cursor: pointer; padding: 0;
+}
+.galup__rm:hover { background: var(--gold-strong); }
+.galup__add { white-space: nowrap; }
+.galup__status { font-size: var(--step--1); color: var(--muted); }
+.checkline { display: flex; gap: 9px; align-items: flex-start; margin-top: 10px; font-size: var(--step--1); color: var(--ink-soft); cursor: pointer; line-height: 1.5; }
+.checkline input { margin-top: 3px; flex: none; }
+.notice--warn {
+  border-left: 3px solid var(--danger); background: color-mix(in srgb, var(--danger) 7%, transparent);
+  color: var(--ink-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: var(--step--1); margin-top: 12px; line-height: 1.5;
+}

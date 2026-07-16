@@ -18,6 +18,9 @@ type ListingStore struct {
 func NewListingStore(db *pgxpool.Pool) *ListingStore { return &ListingStore{db: db} }
 
 // ListingInput carries a submitted listing.
+// maxListingPhotos caps how many photos a listing may carry.
+const maxListingPhotos = 10
+
 type ListingInput struct {
 	DealType, PropertyType             string
 	Country, Region, City, Village     string
@@ -25,6 +28,8 @@ type ListingInput struct {
 	Area                               float64
 	Rooms                              int
 	Title, Description, Contact, Cover string
+	Images                             []string
+	NoFilters                          bool // author attested photos are not filter-distorted
 	GeoNodeID                          *uuid.UUID
 }
 
@@ -32,11 +37,11 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 	var id uuid.UUID
 	err := s.db.QueryRow(ctx, `
 		INSERT INTO listings (author_id, deal_type, property_type, country, region, city, village,
-		                      price, area, rooms, title, description, contact, cover_url, geo_node_id, status, expires_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,'published', NOW() + INTERVAL '14 days')
+		                      price, area, rooms, title, description, contact, cover_url, images, geo_node_id, status, expires_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,'published', NOW() + INTERVAL '14 days')
 		RETURNING id
 	`, authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.Village,
-		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.GeoNodeID).Scan(&id)
+		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.Images, in.GeoNodeID).Scan(&id)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("create listing: %w", err)
 	}

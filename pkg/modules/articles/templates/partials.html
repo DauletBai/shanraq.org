@@ -186,6 +186,49 @@
           .catch(function () { if (status) status.textContent = '✕'; });
       });
     });
+    // Multi-photo gallery uploader for real-estate listings (up to data-max photos).
+    document.querySelectorAll('[data-gallery]').forEach(function (gal) {
+      var items = gal.querySelector('[data-gallery-items]');
+      var addBtn = gal.querySelector('[data-gallery-add]');
+      var file = gal.querySelector('[data-gallery-file]');
+      var status = gal.querySelector('[data-gallery-status]');
+      var max = parseInt(gal.getAttribute('data-max'), 10) || 10;
+      function count() { return items.querySelectorAll('.galup__item').length; }
+      function refresh() { addBtn.style.display = count() >= max ? 'none' : ''; }
+      function addItem(url) {
+        var it = document.createElement('div');
+        it.className = 'galup__item';
+        var img = document.createElement('img'); img.src = url; img.alt = '';
+        var inp = document.createElement('input'); inp.type = 'hidden'; inp.name = 'image'; inp.value = url;
+        var rm = document.createElement('button');
+        rm.type = 'button'; rm.className = 'galup__rm'; rm.setAttribute('data-gallery-rm', ''); rm.textContent = '×';
+        it.appendChild(img); it.appendChild(inp); it.appendChild(rm);
+        items.appendChild(it); refresh();
+      }
+      items.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-gallery-rm]');
+        if (!b) return;
+        var it = b.closest('.galup__item');
+        if (it) { it.remove(); refresh(); }
+      });
+      file.addEventListener('change', function () {
+        var chosen = Array.prototype.slice.call(file.files || []);
+        file.value = '';
+        chosen = chosen.slice(0, Math.max(0, max - count()));
+        if (!chosen.length) return;
+        var pending = chosen.length, done = 0;
+        if (status) status.textContent = '⏳ 0/' + pending;
+        chosen.forEach(function (f) {
+          var fd = new FormData(); fd.append('file', f);
+          fetch('/media/upload', { method: 'POST', body: fd, credentials: 'same-origin' })
+            .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+            .then(function (d) { addItem(d.url); })
+            .catch(function () {})
+            .then(function () { done++; if (status) status.textContent = done >= pending ? '' : ('⏳ ' + done + '/' + pending); });
+        });
+      });
+      refresh();
+    });
     document.querySelectorAll('[data-geo]').forEach(function (box) {
       var lang = box.getAttribute('data-lang') || 'ru';
       var hidden = document.getElementById(box.getAttribute('data-geo-target') || 'geo_node_id');

@@ -144,11 +144,15 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if in.Title == "" || in.Contact == "" {
+	if in.Title == "" || in.Contact == "" || !in.NoFilters {
 		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
 		page.ActiveCat = "realestate"
 		page.Values = in
-		page.Error = T(lang, "re.err_required")
+		if !in.NoFilters {
+			page.Error = T(lang, "re.err_no_filters")
+		} else {
+			page.Error = T(lang, "re.err_required")
+		}
 		m.render(w, "listing_new", page)
 		return
 	}
@@ -259,6 +263,24 @@ func parseListingForm(r *http.Request) ListingInput {
 	if gid, err := uuid.Parse(strings.TrimSpace(r.FormValue("geo_node_id"))); err == nil {
 		geoID = &gid
 	}
+
+	// Up to maxListingPhotos photo URLs (each an already-uploaded /media/... path).
+	images := make([]string, 0, maxListingPhotos)
+	for _, u := range r.Form["image"] {
+		u = strings.TrimSpace(u)
+		if u == "" {
+			continue
+		}
+		images = append(images, u)
+		if len(images) >= maxListingPhotos {
+			break
+		}
+	}
+	cover := strings.TrimSpace(r.FormValue("cover_url"))
+	if cover == "" && len(images) > 0 {
+		cover = images[0]
+	}
+
 	return ListingInput{
 		DealType:     deal,
 		PropertyType: ptype,
@@ -272,7 +294,9 @@ func parseListingForm(r *http.Request) ListingInput {
 		Title:        strings.TrimSpace(r.FormValue("title")),
 		Description:  strings.TrimSpace(r.FormValue("description")),
 		Contact:      strings.TrimSpace(r.FormValue("contact")),
-		Cover:        strings.TrimSpace(r.FormValue("cover_url")),
+		Cover:        cover,
+		Images:       images,
+		NoFilters:    r.FormValue("no_filters") == "on",
 		GeoNodeID:    geoID,
 	}
 }
