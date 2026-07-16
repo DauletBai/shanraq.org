@@ -220,8 +220,16 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .adslide--center { align-items: center; text-align: center; background: linear-gradient(120deg, #37474f, #1c262b); }
 .adslide--right { align-items: flex-end; text-align: right; background: linear-gradient(120deg, #2e7d32, #17401b); }
 .adslide__badge {
-  font-size: 0.64rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.22); padding: 3px 10px; border-radius: 999px; margin-bottom: 14px;
+  align-self: flex-start; /* hug the text instead of stretching full width */
+  width: fit-content;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.22); 
+  padding: 3px 10px; 
+  border-radius: 999px; 
+  margin-bottom: 14px;
 }
 .adslide__body { max-width: 62%; }
 .adslide--center .adslide__body { max-width: 74%; }
