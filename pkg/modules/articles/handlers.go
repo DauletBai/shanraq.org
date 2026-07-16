@@ -508,6 +508,18 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	email := strings.TrimSpace(r.FormValue("email"))
 	password := r.FormValue("password")
 
+	// KZ online-platform law: registration cannot complete without explicit
+	// consent to the Terms and Privacy Policy.
+	if r.FormValue("consent") != "on" {
+		m.render(w, "form", FormPage{
+			Base:  m.base(r, T(lang, "form.register_title"), lang),
+			Mode:  "register",
+			Email: email,
+			Error: T(lang, "form.err_consent"),
+		})
+		return
+	}
+
 	if _, ok := auth.NormalizeEmail(email); !ok {
 		m.render(w, "form", FormPage{
 			Base:  m.base(r, T(lang, "form.register_title"), lang),

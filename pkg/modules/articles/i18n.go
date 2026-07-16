@@ -367,6 +367,11 @@ var messages = map[string]map[string]string{
 	"form.err_short_pw":      {"kz": "Құпиясөз тым қысқа (кемінде 8 таңба)", "ru": "Пароль слишком короткий (минимум 8)", "en": "Password too short (min 8)"},
 	"form.err_email_taken":   {"kz": "Бұл email тіркелген", "ru": "Этот email уже занят", "en": "This email is already registered"},
 	"form.err_email_invalid": {"kz": "Жарамды email енгізіңіз", "ru": "Введите корректный email", "en": "Enter a valid email address"},
+	"form.err_consent":       {"kz": "Тіркелу үшін шарттармен келісіңіз", "ru": "Чтобы зарегистрироваться, примите условия", "en": "You must accept the terms to register"},
+	"form.consent_pre":       {"kz": "Мен", "ru": "Я принимаю", "en": "I accept the"},
+	"form.consent_terms":     {"kz": "Пайдаланушы келісімін", "ru": "Пользовательское соглашение", "en": "Terms of Service"},
+	"form.consent_and":       {"kz": "және", "ru": "и", "en": "and"},
+	"form.consent_privacy":   {"kz": "Құпиялылық саясатын қабылдаймын", "ru": "Политику конфиденциальности", "en": "Privacy Policy"},
 	"form.err_generic":       {"kz": "Аккаунт жасалмады", "ru": "Не удалось создать аккаунт", "en": "Could not create account"},
 
 	"studio.title":          {"kz": "Автор студиясы", "ru": "Студия автора", "en": "Author studio"},
@@ -427,6 +432,8 @@ var messages = map[string]map[string]string{
 	"footer.you":       {"kz": "Сіз туралы", "ru": "О вас", "en": "About you"},
 	"footer.support":   {"kz": "Қолдау", "ru": "Поддержка", "en": "Support"},
 	"footer.columnist": {"kz": "Сана Қыран (ИИ)", "ru": "Сана Қыран (ИИ)", "en": "Sana Qyran (AI)"},
+	"footer.privacy":   {"kz": "Құпиялылық", "ru": "Конфиденциальность", "en": "Privacy"},
+	"footer.terms":     {"kz": "Шарттар", "ru": "Условия", "en": "Terms"},
 
 	"guide.side_title": {"kz": "Мақала не жарнаманы қалай орналастыру керек", "ru": "Как разместить статью или объявление", "en": "How to publish a story or an ad"},
 	"guide.side_text":  {"kz": "Жариялау, құқықтар мен жауапкершілік туралы қысқаша нұсқаулық.", "ru": "Краткий справочник о публикации, правах и ответственности.", "en": "A short guide to publishing, rights and responsibilities."},

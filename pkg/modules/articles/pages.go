@@ -447,6 +447,162 @@ Three dashes on their own line make a horizontal rule between blocks:
 
 Not sure about formatting? Just write the text as is — the AI editor will tidy it up. Questions? See the [guide](/guide) or write to [support](/support).`},
 	},
+
+	"privacy": {
+		"ru": {Title: "Политика конфиденциальности", Body: `_Черновик. Документ требует проверки казахстанским юристом перед публичным запуском._
+
+Эта политика описывает, какие данные собирает Shanraq и как мы их используем.
+
+## Какие данные мы собираем
+- **Учётные данные:** адрес электронной почты и защищённый (хешированный) пароль при регистрации.
+- **Контент, который вы создаёте:** статьи, комментарии, объявления, загруженные фотографии.
+- **Контакты в объявлениях:** телефон или email, которые вы указываете сами.
+- **Технические данные:** IP-адрес, тип браузера и журналы доступа — для безопасности и диагностики.
+
+## Как мы используем данные
+Только для работы платформы: аутентификация, публикация вашего контента, модерация, связь покупателя и продавца, защита от мошенничества и злоупотреблений.
+
+## Хранение и защита
+Пароли хранятся только в виде хеша. Мы не продаём ваши персональные данные третьим лицам. Данные хранятся до тех пор, пока существует аккаунт или этого требует закон.
+
+## Ваши права
+Вы можете запросить доступ к своим данным, их исправление или удаление аккаунта. Для этого напишите в [поддержку](/support).
+
+## Жалобы и обращения
+Если вы считаете, что контент нарушает закон или ваши права, отправьте обращение через [поддержку](/support). Мы рассмотрим его и дадим мотивированный ответ в сроки, установленные законодательством Республики Казахстан.
+
+## Правовая основа
+Обработка данных ведётся с учётом законодательства Республики Казахстан, включая закон «Об онлайн-платформах и онлайн-рекламе». Итоговая редакция подлежит проверке юристом.`},
+		"kz": {Title: "Құпиялылық саясаты", Body: `_Жоба. Құжат жария іске қосу алдында қазақстандық заңгердің тексеруін қажет етеді._
+
+Бұл саясат Shanraq қандай деректерді жинайтынын және оларды қалай пайдаланатынын сипаттайды.
+
+## Қандай деректерді жинаймыз
+- **Тіркелгі деректері:** тіркелу кезіндегі электрондық пошта және қорғалған (хештелген) құпиясөз.
+- **Сіз жасаған контент:** мақалалар, пікірлер, хабарландырулар, жүктелген фотосуреттер.
+- **Хабарландырудағы байланыс:** өзіңіз көрсететін телефон немесе email.
+- **Техникалық деректер:** IP-мекенжай, браузер түрі және кіру журналдары — қауіпсіздік пен диагностика үшін.
+
+## Деректерді қалай пайдаланамыз
+Тек платформаның жұмысы үшін: аутентификация, контентіңізді жариялау, модерация, сатып алушы мен сатушыны байланыстыру, алаяқтық пен теріс пайдаланудан қорғау.
+
+## Сақтау және қорғау
+Құпиясөздер тек хеш түрінде сақталады. Біз жеке деректеріңізді үшінші тұлғаларға сатпаймыз. Деректер аккаунт болғанша немесе заң талап еткенше сақталады.
+
+## Сіздің құқықтарыңыз
+Деректеріңізге қол жеткізуді, түзетуді немесе аккаунтты жоюды сұрай аласыз. Ол үшін [қолдау қызметіне](/support) жазыңыз.
+
+## Шағымдар мен өтініштер
+Егер контент заңды не құқығыңызды бұзады деп есептесеңіз, [қолдау](/support) арқылы өтініш жіберіңіз. Оны қарап, Қазақстан Республикасының заңнамасында белгіленген мерзімде дәлелді жауап береміз.
+
+## Құқықтық негіз
+Деректерді өңдеу Қазақстан Республикасының заңнамасын, оның ішінде «Онлайн-платформалар және онлайн-жарнама туралы» заңды ескере отырып жүргізіледі. Түпкі редакцияны заңгер тексеруі тиіс.`},
+		"en": {Title: "Privacy Policy", Body: `_Draft. This document must be reviewed by a Kazakhstani lawyer before public launch._
+
+This policy explains what data Shanraq collects and how we use it.
+
+## What we collect
+- **Account data:** your email address and a hashed password at registration.
+- **Content you create:** articles, comments, listings, uploaded photos.
+- **Listing contacts:** the phone or email you choose to publish.
+- **Technical data:** IP address, browser type, and access logs — for security and diagnostics.
+
+## How we use it
+Only to run the platform: authentication, publishing your content, moderation, connecting buyers and sellers, and protecting against fraud and abuse.
+
+## Storage and protection
+Passwords are stored only as a hash. We do not sell your personal data. Data is kept while your account exists or as the law requires.
+
+## Your rights
+You may request access to your data, correction, or account deletion via [support](/support).
+
+## Complaints
+If you believe content violates the law or your rights, submit a request via [support](/support). We will review it and give a reasoned reply within the timeframes set by the law of the Republic of Kazakhstan.
+
+## Legal basis
+Processing follows the law of the Republic of Kazakhstan, including the law on online platforms and online advertising. The final text is subject to legal review.`},
+	},
+
+	"terms": {
+		"ru": {Title: "Пользовательское соглашение", Body: `_Черновик. Документ требует проверки казахстанским юристом перед публичным запуском._
+
+Используя Shanraq, вы соглашаетесь с этими правилами.
+
+## Аккаунт
+Вы отвечаете за сохранность своего пароля и за действия под своим аккаунтом. Указывайте достоверный email.
+
+## Ваш контент
+Вы сохраняете права на свои статьи и объявления и отвечаете за их содержание. Публикуя контент, вы подтверждаете, что имеете на это право и что он не нарушает закон.
+
+## Что запрещено
+- Обман и мошенничество, в том числе фотографии с фильтрами, искажающими реальные размеры недвижимости.
+- Оскорбления, угрозы, разжигание вражды, публикация чужих персональных данных.
+- Спам и незаконный контент.
+
+## Модерация
+Мы можем скрыть или удалить контент, нарушающий правила, и предупредить или заблокировать нарушителя. Вы можете обжаловать решение через [поддержку](/support).
+
+## Объявления о недвижимости
+Объявление активно ограниченный срок, после чего его можно продлить. Сделка и расчёты — напрямую между покупателем и продавцом; платформа только размещает объявления.
+
+## Ответственность
+Сервис предоставляется «как есть». Мы стремимся к бесперебойной работе, но не гарантируем отсутствие ошибок и перерывов.
+
+## Изменения
+Мы можем обновлять эти правила; существенные изменения будут опубликованы на сайте.`},
+		"kz": {Title: "Пайдаланушы келісімі", Body: `_Жоба. Құжат жария іске қосу алдында қазақстандық заңгердің тексеруін қажет етеді._
+
+Shanraq-ты пайдалана отырып, сіз осы ережелермен келісесіз.
+
+## Аккаунт
+Құпиясөзіңіздің сақталуына және аккаунтыңыз арқылы жасалған әрекеттерге өзіңіз жауаптысыз. Шынайы email көрсетіңіз.
+
+## Сіздің контентіңіз
+Мақалалар мен хабарландыруларға құқығыңыз сақталады және олардың мазмұнына жауаптысыз. Контентті жариялай отырып, оған құқығыңыз бар екенін және ол заңды бұзбайтынын растайсыз.
+
+## Не тыйым салынған
+- Алдау мен алаяқтық, оның ішінде жылжымайтын мүліктің нақты өлшемін бұрмалайтын сүзгілі фотолар.
+- Балағаттау, қорқыту, араздықты қоздыру, бөгде адамның жеке деректерін жариялау.
+- Спам және заңсыз контент.
+
+## Модерация
+Ережені бұзатын контентті жасыруымыз не жоюымыз, бұзушыға ескерту жасауымыз немесе оны бұғаттауымыз мүмкін. Шешімге [қолдау](/support) арқылы шағым жасай аласыз.
+
+## Жылжымайтын мүлік хабарландырулары
+Хабарландыру шектеулі мерзім белсенді болады, кейін оны ұзартуға болады. Мәміле мен есеп айырысу — сатып алушы мен сатушы арасында тікелей; платформа тек хабарландыруды орналастырады.
+
+## Жауапкершілік
+Қызмет «қалай бар, солай» ұсынылады. Үздіксіз жұмысқа ұмтыламыз, бірақ қателер мен үзілістердің болмауына кепілдік бермейміз.
+
+## Өзгерістер
+Бұл ережелерді жаңартуымыз мүмкін; елеулі өзгерістер сайтта жарияланады.`},
+		"en": {Title: "Terms of Service", Body: `_Draft. This document must be reviewed by a Kazakhstani lawyer before public launch._
+
+By using Shanraq you agree to these rules.
+
+## Account
+You are responsible for keeping your password safe and for actions under your account. Provide a valid email.
+
+## Your content
+You keep the rights to your articles and listings and are responsible for their content. By publishing, you confirm you have the right to do so and that it does not break the law.
+
+## Prohibited
+- Deception and fraud, including photos with filters that distort a property's real dimensions.
+- Insults, threats, incitement, or publishing others' personal data.
+- Spam and unlawful content.
+
+## Moderation
+We may hide or remove rule-breaking content and warn or block the offender. You may appeal via [support](/support).
+
+## Real-estate listings
+A listing is active for a limited period and can then be renewed. The deal and payment are directly between buyer and seller; the platform only hosts listings.
+
+## Liability
+The service is provided "as is". We aim for uninterrupted operation but do not guarantee freedom from errors or downtime.
+
+## Changes
+We may update these rules; material changes will be posted on the site.`},
+	},
 }
 
 // staticContent returns the page for key in lang, falling back to Russian.
