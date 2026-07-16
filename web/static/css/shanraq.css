@@ -384,6 +384,13 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .textarea { min-height: 340px; resize: vertical; font-family: var(--mono); font-size: 0.94rem; line-height: 1.6; }
 .input:focus, .textarea:focus, .select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--focus); }
 .hint { font-size: 0.8rem; color: var(--muted); margin-top: 5px; }
+
+/* Field help: a "?" icon that reveals a code-driven tooltip on hover/focus/tap. */
+.fhelp { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; padding: 0; margin-left: 2px; border: 1px solid var(--line-strong); border-radius: 50%; background: none; color: var(--muted); font-size: 11px; font-weight: 700; line-height: 1; cursor: help; vertical-align: middle; }
+.fhelp:hover, .fhelp:focus-visible { color: #fff; background: var(--gold); border-color: var(--gold); outline: none; }
+.fhelp__tip { position: absolute; left: 0; top: calc(100% + 7px); z-index: 20; width: max-content; max-width: 260px; padding: 8px 11px; border-radius: 8px; background: var(--ink); color: #fff; font-size: 0.78rem; font-weight: 400; line-height: 1.45; text-align: left; white-space: normal; box-shadow: 0 6px 20px rgba(0,0,0,.22); opacity: 0; visibility: hidden; transform: translateY(-3px); transition: opacity .12s ease, transform .12s ease; pointer-events: none; }
+.fhelp__tip::before { content: ""; position: absolute; left: 5px; bottom: 100%; border: 5px solid transparent; border-bottom-color: var(--ink); }
+.fhelp:hover .fhelp__tip, .fhelp:focus-visible .fhelp__tip, .fhelp.is-open .fhelp__tip { opacity: 1; visibility: visible; transform: translateY(0); }
 .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line-strong); margin-bottom: 20px; }
 .tab { padding: 9px 18px; border: none; background: none; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .tab.is-active { color: var(--gold-strong); border-bottom-color: var(--gold); }

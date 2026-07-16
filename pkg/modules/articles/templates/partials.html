@@ -1,3 +1,6 @@
+{{/* fhelp renders a "?" icon with a click/hover tooltip. Pass the tip text as . */}}
+{{ define "fhelp" }}<button type="button" class="fhelp" data-fhelp aria-label="?">?<span class="fhelp__tip" role="tooltip">{{ . }}</span></button>{{ end }}
+
 {{ define "site_head" }}
 <!doctype html>
 <html lang="{{ .Lang }}">
@@ -155,6 +158,12 @@
       var next = cur === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       try { localStorage.setItem('shanraq-theme', next); } catch (e) {}
+    });
+    // Field-help tooltips: tap to toggle on touch (hover/focus handled by CSS).
+    document.addEventListener('click', function (e) {
+      var hit = e.target.closest ? e.target.closest('[data-fhelp]') : null;
+      document.querySelectorAll('.fhelp.is-open').forEach(function (o) { if (o !== hit) o.classList.remove('is-open'); });
+      if (hit) { e.preventDefault(); hit.classList.toggle('is-open'); }
     });
     document.querySelectorAll('[data-carousel]').forEach(function (car) {
       var track = car.querySelector('.carousel__track');

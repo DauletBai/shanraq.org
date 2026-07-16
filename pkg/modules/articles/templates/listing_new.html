@@ -36,14 +36,14 @@
       </div>
 
       <div class="grid-3">
-        <div class="field"><label>{{ t .Lang "re.price" }}</label><input class="input" type="text" inputmode="numeric" name="price" value="{{ if gt .Values.Price 0 }}{{ .Values.Price }}{{ end }}"></div>
-        <div class="field"><label>{{ t .Lang "re.area" }}</label><input class="input" name="area" value="{{ if gt .Values.Area 0.0 }}{{ .Values.Area }}{{ end }}"></div>
-        <div class="field"><label>{{ t .Lang "re.rooms" }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .Values.Rooms 0 }}{{ .Values.Rooms }}{{ end }}"></div>
-        <div class="field"><label>{{ t .Lang "re.land_area" }}</label><input class="input" name="land_area" value="{{ if gt .Values.LandArea 0.0 }}{{ .Values.LandArea }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.price" }} {{ template "fhelp" (t .Lang "re.help_price") }}</label><input class="input" type="text" inputmode="numeric" name="price" value="{{ if gt .Values.Price 0 }}{{ .Values.Price }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.area" }} {{ template "fhelp" (t .Lang "re.help_area") }}</label><input class="input" name="area" value="{{ if gt .Values.Area 0.0 }}{{ .Values.Area }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.rooms" }} {{ template "fhelp" (t .Lang "re.help_rooms") }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .Values.Rooms 0 }}{{ .Values.Rooms }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.land_area" }} {{ template "fhelp" (t .Lang "re.help_land_area") }}</label><input class="input" name="land_area" value="{{ if gt .Values.LandArea 0.0 }}{{ .Values.LandArea }}{{ end }}"></div>
       </div>
 
       <div class="field">
-        <label>{{ t .Lang "re.rooms_detail" }}</label>
+        <label>{{ t .Lang "re.rooms_detail" }} {{ template "fhelp" (t .Lang "re.help_rooms_detail") }}</label>
         <div class="roomsup" data-rooms data-max="20">
           <div class="roomsup__items" data-rooms-items>
             {{ range .Values.RoomSpecs }}
@@ -72,9 +72,9 @@
         </div>
       </div>
 
-      <div class="field"><label>{{ t .Lang "re.title" }}</label><input class="input" name="title" value="{{ .Values.Title }}" required></div>
+      <div class="field"><label>{{ t .Lang "re.title" }} {{ template "fhelp" (t .Lang "re.help_title") }}</label><input class="input" name="title" value="{{ .Values.Title }}" required></div>
       <div class="field">
-        <label>{{ t .Lang "re.photos" }} <span class="hint">— {{ t .Lang "re.photos_max" }}</span></label>
+        <label>{{ t .Lang "re.photos" }} <span class="hint">— {{ t .Lang "re.photos_max" }}</span> {{ template "fhelp" (t .Lang "re.help_photos") }}</label>
         <div class="galup" data-gallery data-max="10">
           <div class="galup__items" data-gallery-items>
             {{ range .Values.Images }}
@@ -94,11 +94,11 @@
         <div class="notice notice--warn">{{ t .Lang "re.filter_warn" }}</div>
         <label class="checkline"><input type="checkbox" name="no_filters" value="on"{{ if .Values.NoFilters }} checked{{ end }} required> {{ t .Lang "re.filter_confirm" }}</label>
       </div>
-      <div class="field"><label>{{ t .Lang "re.description" }}</label><textarea class="textarea" name="description" style="min-height:180px">{{ .Values.Description }}</textarea></div>
-      <div class="field"><label>{{ t .Lang "re.contact" }}</label><input class="input" name="contact" value="{{ .Values.Contact }}" required></div>
+      <div class="field"><label>{{ t .Lang "re.description" }} {{ template "fhelp" (t .Lang "re.help_description") }}</label><textarea class="textarea" name="description" style="min-height:180px">{{ .Values.Description }}</textarea></div>
+      <div class="field"><label>{{ t .Lang "re.contact" }} {{ template "fhelp" (t .Lang "re.help_contact") }}</label><input class="input" name="contact" value="{{ .Values.Contact }}" required></div>
 
       <div class="field">
-        <label>{{ t .Lang "re.amenities" }}</label>
+        <label>{{ t .Lang "re.amenities" }} {{ template "fhelp" (t .Lang "re.help_amenities") }}</label>
         <div class="amgrid">
           {{ range amenities }}
           <label class="amcheck"><input type="checkbox" name="amenity" value="{{ . }}"{{ if $.Values.HasAmenity . }} checked{{ end }}> {{ t $.Lang (printf "re.am_%s" .) }}</label>
