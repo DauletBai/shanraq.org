@@ -41,6 +41,14 @@ func Connect(ctx context.Context, cfg config.DatabaseConfig, logger *zap.Logger)
 	for attempt := 1; attempt <= 3; attempt++ {
 		attemptCtx, attemptCancel := context.WithTimeout(deadlineCtx, 10*time.Second)
 		pool, lastErr = pgxpool.NewWithConfig(attemptCtx, pcfg)
+		if lastErr == nil {
+			// NewWithConfig connects lazily; Ping forces a real round-trip so a
+			// down/misconfigured database fails startup instead of looking healthy.
+			if pingErr := pool.Ping(attemptCtx); pingErr != nil {
+				pool.Close()
+				pool, lastErr = nil, fmt.Errorf("ping postgres: %w", pingErr)
+			}
+		}
 		attemptCancel()
 
 		if lastErr == nil {

@@ -27,6 +27,7 @@ func New(cfg config.ServerConfig, logger *zap.Logger) *Server {
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
+	r.Use(securityHeaders)
 	r.Use(requestLogger(logger))
 
 	return &Server{

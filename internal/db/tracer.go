@@ -19,6 +19,11 @@ func NewTracer(logger *zap.Logger) pgx.QueryTracer {
 				fields := make([]zap.Field, 0, len(data)+2)
 				fields = append(fields, zap.String("component", "pgx"))
 				for k, v := range data {
+					// Never log query arguments — they carry PII (emails,
+					// contacts, article/job payloads, password hashes).
+					if k == "args" {
+						continue
+					}
 					fields = append(fields, zap.Any(k, v))
 				}
 
@@ -26,16 +31,18 @@ func NewTracer(logger *zap.Logger) pgx.QueryTracer {
 				case tracelog.LogLevelTrace, tracelog.LogLevelDebug:
 					logger.Debug(msg, fields...)
 				case tracelog.LogLevelInfo:
-					logger.Info(msg, fields...)
+					logger.Debug(msg, fields...)
 				case tracelog.LogLevelWarn:
 					logger.Warn(msg, fields...)
 				case tracelog.LogLevelError:
 					logger.Error(msg, fields...)
 				default:
-					logger.Info(msg, fields...)
+					logger.Debug(msg, fields...)
 				}
 			}),
-			LogLevel: tracelog.LogLevelInfo,
+			// Only surface failed queries by default; successful-query logging
+			// at Info produced huge volumes and leaked argument values.
+			LogLevel: tracelog.LogLevelError,
 		}
 	}
 
