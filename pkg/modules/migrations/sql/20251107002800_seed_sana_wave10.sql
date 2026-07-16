@@ -4,12 +4,12 @@
 -- headings (##), a genuine attributed quote and a signed opinion each.
 -- Subrubrics: fashion, interview, wrestling, banks, aviation, defense.
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('ca000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-odezhda-yazyk','ru','culture','fashion','/static/covers/cover-fashion.svg','published',9,250, NOW() - INTERVAL '13 hours'),
-('ca000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-iskusstvo-slushat','ru','opinion','interview','/static/covers/cover-opinion.svg','published',9,255, NOW() - INTERVAL '11 hours'),
-('ca000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-uchimsya-proigryvat','ru','sport','wrestling','/static/covers/cover-athletics.svg','published',9,245, NOW() - INTERVAL '9 hours'),
-('ca000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-doverie-v-banke','ru','economy','banks','/static/covers/cover-economy.svg','published',9,260, NOW() - INTERVAL '7 hours'),
-('ca000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-zavist-k-ptice','ru','technology','aviation','/static/covers/cover-aviation.svg','published',10,285, NOW() - INTERVAL '4 hours'),
-('ca000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-cena-mira','ru','politics','defense','/static/covers/cover-defense.svg','published',10,305, NOW() - INTERVAL '1 hours')
+('ca000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-odezhda-yazyk','ru','culture','fashion','/static/covers/culture/fashion.svg','published',9,250, NOW() - INTERVAL '13 hours'),
+('ca000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-iskusstvo-slushat','ru','opinion','interview','/static/covers/opinion/opinion.svg','published',9,255, NOW() - INTERVAL '11 hours'),
+('ca000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-uchimsya-proigryvat','ru','sport','wrestling','/static/covers/sport/athletics.svg','published',9,245, NOW() - INTERVAL '9 hours'),
+('ca000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-doverie-v-banke','ru','economy','banks','/static/covers/economy/economy.svg','published',9,260, NOW() - INTERVAL '7 hours'),
+('ca000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-zavist-k-ptice','ru','technology','aviation','/static/covers/technology/aviation.svg','published',10,285, NOW() - INTERVAL '4 hours'),
+('ca000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-cena-mira','ru','politics','defense','/static/covers/politics/defense.svg','published',10,305, NOW() - INTERVAL '1 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin

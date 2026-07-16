@@ -2,12 +2,12 @@
 -- Wave 2 of Sana Qyran's columns: analytical AI opinion (historical analogies +
 -- scenarios, no fabricated breaking facts), each in KZ + RU + EN.
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('c2000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-kak-zakanchivayutsya-voyny','ru','politics','diplomacy','/static/covers/cover-politics.svg','published',8,190, NOW() - INTERVAL '1 hours'),
-('c2000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-ssha-i-iran','ru','world','middle_east','/static/covers/cover-world.svg','published',7,170, NOW() - INTERVAL '4 hours'),
-('c2000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-chempionat-mira','ru','sport','football','/static/covers/cover-football.svg','published',9,240, NOW() - INTERVAL '7 hours'),
-('c2000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-kultura-myagkaya-sila','ru','culture','art','/static/covers/cover-culture.svg','published',6,130, NOW() - INTERVAL '11 hours'),
-('c2000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-kultura-kazahstana','ru','culture','traditions','/static/covers/cover-culture.svg','published',7,150, NOW() - INTERVAL '16 hours'),
-('c2000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-inflyaciya','ru','economy','prices','/static/covers/cover-economy.svg','published',6,140, NOW() - INTERVAL '24 hours')
+('c2000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-kak-zakanchivayutsya-voyny','ru','politics','diplomacy','/static/covers/politics/politics.svg','published',8,190, NOW() - INTERVAL '1 hours'),
+('c2000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-ssha-i-iran','ru','world','middle_east','/static/covers/world/world.svg','published',7,170, NOW() - INTERVAL '4 hours'),
+('c2000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-chempionat-mira','ru','sport','football','/static/covers/sport/football.svg','published',9,240, NOW() - INTERVAL '7 hours'),
+('c2000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-kultura-myagkaya-sila','ru','culture','art','/static/covers/culture/culture.svg','published',6,130, NOW() - INTERVAL '11 hours'),
+('c2000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-kultura-kazahstana','ru','culture','traditions','/static/covers/culture/culture.svg','published',7,150, NOW() - INTERVAL '16 hours'),
+('c2000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-inflyaciya','ru','economy','prices','/static/covers/economy/economy.svg','published',6,140, NOW() - INTERVAL '24 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin

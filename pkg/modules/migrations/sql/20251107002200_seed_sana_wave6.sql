@@ -2,12 +2,12 @@
 -- Wave 6 of Sana Qyran's columns (KZ + RU + EN): "magnet" format — an unusual
 -- angle, two chapters (## headings), and a genuine attributed quote each.
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('c6000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-roboty-uzhe-zdes','ru','technology','robotics','/static/covers/cover-robot.svg','published',9,230, NOW() - INTERVAL '2 hours'),
-('c6000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-istoriyu-pishut-arhivy','ru','culture','history','/static/covers/cover-culture.svg','published',8,200, NOW() - INTERVAL '10 hours'),
-('c6000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-religiya-tehnologiya-doveriya','ru','society','religion','/static/covers/cover-education.svg','published',8,195, NOW() - INTERVAL '17 hours'),
-('c6000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-hleb-vazhnee-nefti','ru','economy','agriculture','/static/covers/cover-agriculture.svg','published',8,190, NOW() - INTERVAL '25 hours'),
-('c6000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-tennis-odinochestvo','ru','sport','tennis','/static/covers/cover-tennis.svg','published',7,165, NOW() - INTERVAL '35 hours'),
-('c6000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-aziya-masterskaya','ru','world','asia','/static/covers/cover-world.svg','published',8,205, NOW() - INTERVAL '47 hours')
+('c6000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-roboty-uzhe-zdes','ru','technology','robotics','/static/covers/technology/robot.svg','published',9,230, NOW() - INTERVAL '2 hours'),
+('c6000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-istoriyu-pishut-arhivy','ru','culture','history','/static/covers/culture/culture.svg','published',8,200, NOW() - INTERVAL '10 hours'),
+('c6000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-religiya-tehnologiya-doveriya','ru','society','religion','/static/covers/society/education.svg','published',8,195, NOW() - INTERVAL '17 hours'),
+('c6000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-hleb-vazhnee-nefti','ru','economy','agriculture','/static/covers/economy/agriculture.svg','published',8,190, NOW() - INTERVAL '25 hours'),
+('c6000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-tennis-odinochestvo','ru','sport','tennis','/static/covers/sport/tennis.svg','published',7,165, NOW() - INTERVAL '35 hours'),
+('c6000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-aziya-masterskaya','ru','world','asia','/static/covers/world/world.svg','published',8,205, NOW() - INTERVAL '47 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin

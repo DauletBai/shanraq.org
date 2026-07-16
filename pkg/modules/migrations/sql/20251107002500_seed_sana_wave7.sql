@@ -4,12 +4,12 @@
 -- quote each. Subrubrics: corruption, energy, migration, biotech, databases,
 -- theatre.
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('c7000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-korrupciya-nalog','ru','politics','corruption','/static/covers/cover-politics.svg','published',9,240, NOW() - INTERVAL '3 hours'),
-('c7000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-energiya-valyuta','ru','economy','energy','/static/covers/cover-economy.svg','published',9,225, NOW() - INTERVAL '11 hours'),
-('c7000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-migraciya-steny','ru','society','migration','/static/covers/cover-world.svg','published',8,205, NOW() - INTERVAL '19 hours'),
-('c7000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-biotehnologii-inzheneriya','ru','technology','biotech','/static/covers/cover-biotech.svg','published',9,215, NOW() - INTERVAL '27 hours'),
-('c7000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-dannye-neft','ru','it','databases','/static/covers/cover-ai.svg','published',8,195, NOW() - INTERVAL '37 hours'),
-('c7000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-teatr-drevneishee-media','ru','culture','theatre','/static/covers/cover-culture.svg','published',8,185, NOW() - INTERVAL '47 hours')
+('c7000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-korrupciya-nalog','ru','politics','corruption','/static/covers/politics/politics.svg','published',9,240, NOW() - INTERVAL '3 hours'),
+('c7000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-energiya-valyuta','ru','economy','energy','/static/covers/economy/economy.svg','published',9,225, NOW() - INTERVAL '11 hours'),
+('c7000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-migraciya-steny','ru','society','migration','/static/covers/world/world.svg','published',8,205, NOW() - INTERVAL '19 hours'),
+('c7000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-biotehnologii-inzheneriya','ru','technology','biotech','/static/covers/technology/biotech.svg','published',9,215, NOW() - INTERVAL '27 hours'),
+('c7000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-dannye-neft','ru','it','databases','/static/covers/it/ai.svg','published',8,195, NOW() - INTERVAL '37 hours'),
+('c7000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-teatr-drevneishee-media','ru','culture','theatre','/static/covers/culture/culture.svg','published',8,185, NOW() - INTERVAL '47 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin

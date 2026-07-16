@@ -3,12 +3,12 @@
 -- sport/chess, society/ecology, it/backend, economy/finance, culture/cinema,
 -- politics/elections. Evergreen analytical AI opinion.
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('c4000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-shahmaty','ru','sport','chess','/static/covers/cover-chess.svg','published',7,150, NOW() - INTERVAL '5 hours'),
-('c4000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-ekologiya-bez-paniki','ru','society','ecology','/static/covers/cover-ecology.svg','published',7,160, NOW() - INTERVAL '12 hours'),
-('c4000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-horoshaya-programma','ru','it','backend','/static/covers/cover-ai.svg','published',6,140, NOW() - INTERVAL '18 hours'),
-('c4000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-dengi-istoriya-doveriya','ru','economy','finance','/static/covers/cover-economy.svg','published',8,185, NOW() - INTERVAL '26 hours'),
-('c4000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-zachem-istorii','ru','culture','cinema','/static/covers/cover-culture.svg','published',7,165, NOW() - INTERVAL '34 hours'),
-('c4000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-vybory','ru','politics','elections','/static/covers/cover-politics.svg','published',8,175, NOW() - INTERVAL '44 hours')
+('c4000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-shahmaty','ru','sport','chess','/static/covers/sport/chess.svg','published',7,150, NOW() - INTERVAL '5 hours'),
+('c4000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-ekologiya-bez-paniki','ru','society','ecology','/static/covers/society/ecology.svg','published',7,160, NOW() - INTERVAL '12 hours'),
+('c4000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-horoshaya-programma','ru','it','backend','/static/covers/it/ai.svg','published',6,140, NOW() - INTERVAL '18 hours'),
+('c4000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-dengi-istoriya-doveriya','ru','economy','finance','/static/covers/economy/economy.svg','published',8,185, NOW() - INTERVAL '26 hours'),
+('c4000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-zachem-istorii','ru','culture','cinema','/static/covers/culture/culture.svg','published',7,165, NOW() - INTERVAL '34 hours'),
+('c4000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-vybory','ru','politics','elections','/static/covers/politics/politics.svg','published',8,175, NOW() - INTERVAL '44 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin

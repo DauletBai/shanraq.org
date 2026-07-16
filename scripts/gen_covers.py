@@ -348,6 +348,22 @@ COVERS = {
 }
 
 
+# Rubric (category) each cover belongs to, so covers are filed under
+# web/static/covers/<category>/<name>.svg instead of one flat directory.
+CAT = {
+    "opinion": "opinion", "ai": "it",
+    "labor": "economy", "language": "culture", "world": "world",
+    "education": "society", "politics": "politics", "football": "sport",
+    "culture": "culture", "economy": "economy", "space": "technology",
+    "health": "society", "chess": "sport", "ecology": "society",
+    "boxing": "sport", "music": "culture", "robot": "technology",
+    "agriculture": "economy", "tennis": "sport", "biotech": "technology",
+    "athletics": "sport", "charity": "society", "family": "society",
+    "architecture": "culture", "crime": "society", "holidays": "society",
+    "fashion": "culture", "aviation": "technology", "defense": "politics",
+}
+
+
 def build(name, colors, motif, seed):
     svg = f'''<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -366,8 +382,10 @@ def build(name, colors, motif, seed):
   {WM}
 </svg>
 '''
-    (OUT / f"cover-{name}.svg").write_text(svg)
-    print("wrote", OUT / f"cover-{name}.svg")
+    d = OUT / CAT[name]
+    d.mkdir(parents=True, exist_ok=True)
+    (d / f"{name}.svg").write_text(svg)
+    print("wrote", d / f"{name}.svg")
 
 
 for name, (colors, motif, seed) in COVERS.items():

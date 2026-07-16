@@ -2,12 +2,12 @@
 -- Wave 3 of Sana Qyran's columns (KZ + RU + EN): technology, IT, society,
 -- politics, economy, world — evergreen analytical AI opinion.
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('c3000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-zachem-kosmos','ru','technology','space','/static/covers/cover-space.svg','published',7,160, NOW() - INTERVAL '3 hours'),
-('c3000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-privatnost-svoboda','ru','it','cybersecurity','/static/covers/cover-ai.svg','published',8,180, NOW() - INTERVAL '9 hours'),
-('c3000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-zdorove-sistema','ru','society','health','/static/covers/cover-health.svg','published',7,150, NOW() - INTERVAL '14 hours'),
-('c3000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-verhovenstvo-prava','ru','politics','law','/static/covers/cover-politics.svg','published',8,175, NOW() - INTERVAL '19 hours'),
-('c3000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-malyy-biznes','ru','economy','business','/static/covers/cover-economy.svg','published',6,140, NOW() - INTERVAL '28 hours'),
-('c3000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-afrika','ru','world','africa','/static/covers/cover-world.svg','published',7,155, NOW() - INTERVAL '40 hours')
+('c3000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-zachem-kosmos','ru','technology','space','/static/covers/technology/space.svg','published',7,160, NOW() - INTERVAL '3 hours'),
+('c3000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-privatnost-svoboda','ru','it','cybersecurity','/static/covers/it/ai.svg','published',8,180, NOW() - INTERVAL '9 hours'),
+('c3000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-zdorove-sistema','ru','society','health','/static/covers/society/health.svg','published',7,150, NOW() - INTERVAL '14 hours'),
+('c3000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-verhovenstvo-prava','ru','politics','law','/static/covers/politics/politics.svg','published',8,175, NOW() - INTERVAL '19 hours'),
+('c3000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-malyy-biznes','ru','economy','business','/static/covers/economy/economy.svg','published',6,140, NOW() - INTERVAL '28 hours'),
+('c3000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-afrika','ru','world','africa','/static/covers/world/world.svg','published',7,155, NOW() - INTERVAL '40 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin

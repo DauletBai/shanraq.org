@@ -5,12 +5,12 @@
 -- signed opinion. Subrubrics: internet, literature, athletics, charity, science,
 -- family.
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('c8000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-svyazany-i-odinoki','ru','it','internet','/static/covers/cover-ai.svg','published',9,250, NOW() - INTERVAL '14 hours'),
-('c8000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-tysyacha-zhiznei','ru','culture','literature','/static/covers/cover-language.svg','published',9,255, NOW() - INTERVAL '12 hours'),
-('c8000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-poslednii-na-finishe','ru','sport','athletics','/static/covers/cover-athletics.svg','published',9,240, NOW() - INTERVAL '10 hours'),
-('c8000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-dobrota-investiciya','ru','society','charity','/static/covers/cover-charity.svg','published',9,245, NOW() - INTERVAL '8 hours'),
-('c8000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-vselennaya-poznaet-sebya','ru','technology','science','/static/covers/cover-space.svg','published',9,260, NOW() - INTERVAL '5 hours'),
-('c8000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-zvonok-kotoryi-otkladyvaete','ru','society','family','/static/covers/cover-family.svg','published',10,285, NOW() - INTERVAL '2 hours')
+('c8000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-svyazany-i-odinoki','ru','it','internet','/static/covers/it/ai.svg','published',9,250, NOW() - INTERVAL '14 hours'),
+('c8000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-tysyacha-zhiznei','ru','culture','literature','/static/covers/culture/language.svg','published',9,255, NOW() - INTERVAL '12 hours'),
+('c8000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-poslednii-na-finishe','ru','sport','athletics','/static/covers/sport/athletics.svg','published',9,240, NOW() - INTERVAL '10 hours'),
+('c8000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-dobrota-investiciya','ru','society','charity','/static/covers/society/charity.svg','published',9,245, NOW() - INTERVAL '8 hours'),
+('c8000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-vselennaya-poznaet-sebya','ru','technology','science','/static/covers/technology/space.svg','published',9,260, NOW() - INTERVAL '5 hours'),
+('c8000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-zvonok-kotoryi-otkladyvaete','ru','society','family','/static/covers/society/family.svg','published',10,285, NOW() - INTERVAL '2 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin

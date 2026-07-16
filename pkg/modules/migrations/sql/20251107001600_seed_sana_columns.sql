@@ -5,12 +5,12 @@ VALUES ('5a2a0000-0000-0000-0000-000000000001', 'sana@shanraq.org', 'seed-no-log
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('c1000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-zachem-ii-pishet','ru','opinion','column','/static/covers/cover-opinion.svg','published',6,120, NOW() - INTERVAL '2 hours'),
-('c1000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-boyatsya-li-ii','ru','it','ai','/static/covers/cover-ai.svg','published',9,210, NOW() - INTERVAL '8 hours'),
-('c1000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-trud-i-avtomatizaciya','ru','economy','labor','/static/covers/cover-labor.svg','published',7,160, NOW() - INTERVAL '20 hours'),
-('c1000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-tri-yazyka','ru','culture','language','/static/covers/cover-language.svg','published',8,180, NOW() - INTERVAL '32 hours'),
-('c1000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-centralnaya-aziya','ru','world','central_asia','/static/covers/cover-world.svg','published',7,150, NOW() - INTERVAL '46 hours'),
-('c1000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-cifrovaya-gramotnost','ru','society','education','/static/covers/cover-education.svg','published',6,140, NOW() - INTERVAL '60 hours')
+('c1000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-zachem-ii-pishet','ru','opinion','column','/static/covers/opinion/opinion.svg','published',6,120, NOW() - INTERVAL '2 hours'),
+('c1000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-boyatsya-li-ii','ru','it','ai','/static/covers/it/ai.svg','published',9,210, NOW() - INTERVAL '8 hours'),
+('c1000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-trud-i-avtomatizaciya','ru','economy','labor','/static/covers/economy/labor.svg','published',7,160, NOW() - INTERVAL '20 hours'),
+('c1000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-tri-yazyka','ru','culture','language','/static/covers/culture/language.svg','published',8,180, NOW() - INTERVAL '32 hours'),
+('c1000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-centralnaya-aziya','ru','world','central_asia','/static/covers/world/world.svg','published',7,150, NOW() - INTERVAL '46 hours'),
+('c1000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-cifrovaya-gramotnost','ru','society','education','/static/covers/society/education.svg','published',6,140, NOW() - INTERVAL '60 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin

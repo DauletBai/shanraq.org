@@ -2,12 +2,12 @@
 -- Wave 5 of Sana Qyran's columns (KZ + RU + EN): sport/boxing, culture/music,
 -- world/europe, economy/trade, society/youth, it/frontend.
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('c5000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-boks','ru','sport','boxing','/static/covers/cover-boxing.svg','published',7,155, NOW() - INTERVAL '6 hours'),
-('c5000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-muzyka','ru','culture','music','/static/covers/cover-music.svg','published',8,170, NOW() - INTERVAL '13 hours'),
-('c5000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-evropa','ru','world','europe','/static/covers/cover-world.svg','published',7,160, NOW() - INTERVAL '21 hours'),
-('c5000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-torgovlya','ru','economy','trade','/static/covers/cover-economy.svg','published',6,145, NOW() - INTERVAL '30 hours'),
-('c5000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-molodezh','ru','society','youth','/static/covers/cover-education.svg','published',8,180, NOW() - INTERVAL '38 hours'),
-('c5000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-interfeys','ru','it','frontend','/static/covers/cover-ai.svg','published',7,150, NOW() - INTERVAL '48 hours')
+('c5000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-boks','ru','sport','boxing','/static/covers/sport/boxing.svg','published',7,155, NOW() - INTERVAL '6 hours'),
+('c5000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-muzyka','ru','culture','music','/static/covers/culture/music.svg','published',8,170, NOW() - INTERVAL '13 hours'),
+('c5000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-evropa','ru','world','europe','/static/covers/world/world.svg','published',7,160, NOW() - INTERVAL '21 hours'),
+('c5000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-torgovlya','ru','economy','trade','/static/covers/economy/economy.svg','published',6,145, NOW() - INTERVAL '30 hours'),
+('c5000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-molodezh','ru','society','youth','/static/covers/society/education.svg','published',8,180, NOW() - INTERVAL '38 hours'),
+('c5000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-interfeys','ru','it','frontend','/static/covers/it/ai.svg','published',7,150, NOW() - INTERVAL '48 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin

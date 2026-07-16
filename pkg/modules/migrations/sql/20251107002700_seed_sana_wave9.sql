@@ -4,12 +4,12 @@
 -- (##), a genuine attributed quote and a signed opinion each. Subrubrics:
 -- startups, architecture, parties, crime, letters, holidays.
 INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status, score, views_count, published_at) VALUES
-('c9000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-pravo-na-proval','ru','economy','startups','/static/covers/cover-education.svg','published',9,255, NOW() - INTERVAL '13 hours'),
-('c9000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-doma-perezhivaut-nas','ru','culture','architecture','/static/covers/cover-architecture.svg','published',9,260, NOW() - INTERVAL '11 hours'),
-('c9000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-sporit-ne-vrag','ru','politics','parties','/static/covers/cover-politics.svg','published',9,250, NOW() - INTERVAL '9 hours'),
-('c9000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-nikto-ne-rozhdaetsya','ru','society','crime','/static/covers/cover-crime.svg','published',9,265, NOW() - INTERVAL '7 hours'),
-('c9000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-pismo-o-vremeni','ru','opinion','letters','/static/covers/cover-opinion.svg','published',10,290, NOW() - INTERVAL '4 hours'),
-('c9000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-pustoi-stul','ru','society','holidays','/static/covers/cover-holidays.svg','published',10,300, NOW() - INTERVAL '1 hours')
+('c9000000-0000-0000-0000-000000000001','5a2a0000-0000-0000-0000-000000000001','sana-pravo-na-proval','ru','economy','startups','/static/covers/society/education.svg','published',9,255, NOW() - INTERVAL '13 hours'),
+('c9000000-0000-0000-0000-000000000002','5a2a0000-0000-0000-0000-000000000001','sana-doma-perezhivaut-nas','ru','culture','architecture','/static/covers/culture/architecture.svg','published',9,260, NOW() - INTERVAL '11 hours'),
+('c9000000-0000-0000-0000-000000000003','5a2a0000-0000-0000-0000-000000000001','sana-sporit-ne-vrag','ru','politics','parties','/static/covers/politics/politics.svg','published',9,250, NOW() - INTERVAL '9 hours'),
+('c9000000-0000-0000-0000-000000000004','5a2a0000-0000-0000-0000-000000000001','sana-nikto-ne-rozhdaetsya','ru','society','crime','/static/covers/society/crime.svg','published',9,265, NOW() - INTERVAL '7 hours'),
+('c9000000-0000-0000-0000-000000000005','5a2a0000-0000-0000-0000-000000000001','sana-pismo-o-vremeni','ru','opinion','letters','/static/covers/opinion/opinion.svg','published',10,290, NOW() - INTERVAL '4 hours'),
+('c9000000-0000-0000-0000-000000000006','5a2a0000-0000-0000-0000-000000000001','sana-pustoi-stul','ru','society','holidays','/static/covers/society/holidays.svg','published',10,300, NOW() - INTERVAL '1 hours')
 ON CONFLICT (id) DO NOTHING;
 
 -- +goose StatementBegin
