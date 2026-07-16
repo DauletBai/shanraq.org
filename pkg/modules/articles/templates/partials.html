@@ -82,6 +82,7 @@
 {{ define "newscarousel" }}
 {{ if .SidebarNews }}
 <div class="adcarousel adcarousel--side newscar" data-carousel>
+  <div class="carousel__track">
   {{ range $i, $n := .SidebarNews }}
   <a class="adslide adslide--news{{ if eq $i 0 }} is-active{{ end }}" href="/read/{{ $n.Slug }}?lang={{ $.Lang }}">
     <span class="adslide__badge">{{ t $.Lang (printf "cat.%s" $n.Category) }}{{ if $n.AIAuthor }} · {{ t $.Lang "article.ai_opinion" }}{{ end }}</span>
@@ -91,6 +92,7 @@
     </div>
   </a>
   {{ end }}
+  </div>
   <div class="adcarousel__dots">
     {{ range $i, $n := .SidebarNews }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}
   </div>
@@ -154,11 +156,13 @@
       try { localStorage.setItem('shanraq-theme', next); } catch (e) {}
     });
     document.querySelectorAll('[data-carousel]').forEach(function (car) {
+      var track = car.querySelector('.carousel__track');
       var slides = car.querySelectorAll('.adslide, .gallery__item');
       var dots = car.querySelectorAll('[data-dot]');
       var idx = 0, n = slides.length;
       var show = function (i) {
         idx = (i + n) % n;
+        if (track) { track.style.transform = 'translateX(-' + (idx * 100) + '%)'; }
         slides.forEach(function (s, k) { s.classList.toggle('is-active', k === idx); });
         dots.forEach(function (d, k) { d.classList.toggle('is-active', k === idx); });
       };

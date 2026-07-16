@@ -7,6 +7,7 @@
     <div>
       {{ if .SidebarNews }}
       <div class="adcarousel newshero" data-carousel>
+        <div class="carousel__track">
         {{ range $i, $n := .SidebarNews }}
         <a class="adslide newshero__slide{{ if eq $i 0 }} is-active{{ end }}" href="/read/{{ $n.Slug }}?lang={{ $.Lang }}"{{ if $n.CoverURL }} style="background-image:linear-gradient(180deg,rgba(20,12,10,0.15),rgba(20,12,10,0.72)),url('{{ $n.CoverURL }}')"{{ end }}>
           <span class="adslide__badge">{{ t $.Lang (printf "cat.%s" $n.Category) }}{{ if $n.AIAuthor }} · {{ t $.Lang "article.ai_opinion" }}{{ end }}</span>
@@ -16,6 +17,7 @@
           </div>
         </a>
         {{ end }}
+        </div>
         <div class="adcarousel__dots">
           {{ range $i, $n := .SidebarNews }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}
         </div>
