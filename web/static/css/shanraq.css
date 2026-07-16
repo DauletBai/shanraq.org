@@ -814,3 +814,33 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 @media (max-width: 560px) { .roomsup__row { grid-template-columns: 1fr 1fr; } .roomsup__note { grid-column: 1 / -1; } }
 .spec__cap { text-align: left; font-family: var(--serif); font-weight: 700; font-size: 1.05rem; color: var(--ink); padding: 14px 0 8px; caption-side: top; }
 .spec--rooms th .hint { font-weight: 400; }
+
+/* ---- Header search + results ---- */
+.navbar__row { display: flex; align-items: center; gap: 16px; }
+.navbar__row .menu { flex: 1 1 auto; min-width: 0; }
+.navsearch { display: none; align-items: center; gap: 0; flex: 0 0 auto; }
+@media (min-width: 820px) { .navsearch { display: flex; } }
+.navsearch__scope {
+  font: inherit; font-size: 0.78rem; font-weight: 600; color: var(--ink-soft); cursor: pointer;
+  border: 1px solid var(--line-strong); border-right: none; background: var(--surface);
+  border-radius: 999px 0 0 999px; padding: 6px 8px 6px 12px; max-width: 130px;
+}
+.navsearch__q {
+  font: inherit; font-size: var(--step--1); border: 1px solid var(--line-strong); border-right: none;
+  background: var(--surface); padding: 6px 10px; width: 160px; color: var(--ink);
+}
+.navsearch__q:focus { outline: none; }
+.navsearch__btn {
+  border: 1px solid var(--gold); background: var(--gold); color: #fff; cursor: pointer;
+  border-radius: 0 999px 999px 0; padding: 6px 13px; font-size: 1rem; line-height: 1;
+}
+.navsearch__btn:hover { background: var(--gold-strong); border-color: var(--gold-strong); }
+.navsearch:focus-within .navsearch__scope,
+.navsearch:focus-within .navsearch__q { border-color: var(--gold); }
+.search-scope { display: inline-flex; gap: 4px; padding: 4px; background: var(--surface-2); border-radius: 999px; margin: 4px 0 18px; }
+.search-scope__tab { padding: 6px 16px; border-radius: 999px; font-size: var(--step--1); font-weight: 600; color: var(--ink-soft); }
+.search-scope__tab:hover { color: var(--gold-strong); text-decoration: none; }
+.search-scope__tab.is-active { background: var(--gold); color: #fff; }
+:root[data-theme="dark"] .search-scope__tab.is-active { color: #fff; }
+.search-meta { color: var(--muted); font-size: var(--step--1); margin: 0 0 16px; }
+.search-meta b { color: var(--ink); }

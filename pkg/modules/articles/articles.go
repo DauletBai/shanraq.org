@@ -122,6 +122,7 @@ func (m *Module) Routes(r chi.Router) {
 		r.Use(m.auth.LoadSession)
 		r.Get("/", m.handleHome)
 		r.Get("/read", m.handleReadRedirect)
+		r.Get("/search", m.handleSearch)
 		r.Get("/read/{slug}", m.handleArticle)
 		r.Post("/read/{slug}/vote", m.handleVote)
 		r.Post("/read/{slug}/comment", m.handleComment)
