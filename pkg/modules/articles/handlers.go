@@ -508,6 +508,15 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	email := strings.TrimSpace(r.FormValue("email"))
 	password := r.FormValue("password")
 
+	if _, ok := auth.NormalizeEmail(email); !ok {
+		m.render(w, "form", FormPage{
+			Base:  m.base(r, T(lang, "form.register_title"), lang),
+			Mode:  "register",
+			Email: email,
+			Error: T(lang, "form.err_email_invalid"),
+		})
+		return
+	}
 	if len(password) < 8 {
 		m.render(w, "form", FormPage{
 			Base:  m.base(r, T(lang, "form.register_title"), lang),
@@ -523,6 +532,8 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 		msg := T(lang, "form.err_generic")
 		if errors.Is(err, auth.ErrEmailExists) {
 			msg = T(lang, "form.err_email_taken")
+		} else if errors.Is(err, auth.ErrInvalidEmail) {
+			msg = T(lang, "form.err_email_invalid")
 		}
 		m.render(w, "form", FormPage{
 			Base:  m.base(r, T(lang, "form.register_title"), lang),

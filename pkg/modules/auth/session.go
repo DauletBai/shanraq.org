@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"net/mail"
 	"strings"
 	"time"
 
@@ -16,6 +17,35 @@ const SessionCookieName = "shanraq_session"
 
 // ErrInvalidCredentials is returned when email/password verification fails.
 var ErrInvalidCredentials = errors.New("invalid credentials")
+
+// ErrInvalidEmail is returned when a registration email is empty or malformed.
+var ErrInvalidEmail = errors.New("invalid email address")
+
+// ErrWeakPassword is returned when a registration password is too short.
+var ErrWeakPassword = errors.New("password too short")
+
+// minPasswordLen is the minimum accepted password length.
+const minPasswordLen = 8
+
+// NormalizeEmail lowercases and trims an email; ok is false when it is empty or
+// not a syntactically valid address.
+func NormalizeEmail(email string) (normalized string, ok bool) {
+	email = strings.TrimSpace(strings.ToLower(email))
+	if email == "" || len(email) > 254 {
+		return "", false
+	}
+	addr, err := mail.ParseAddress(email)
+	if err != nil || addr.Address != email {
+		return "", false
+	}
+	// Require a dotted domain (reject "user@localhost"-style typos on a public site).
+	at := strings.LastIndexByte(email, '@')
+	domain := email[at+1:]
+	if !strings.Contains(domain, ".") || strings.HasPrefix(domain, ".") || strings.HasSuffix(domain, ".") {
+		return "", false
+	}
+	return email, true
+}
 
 // isSecureRequest reports whether the request arrived over TLS (directly or via
 // a trusted proxy), so the Secure cookie flag can be set appropriately.
@@ -132,7 +162,13 @@ func (m *Module) LoginPassword(ctx context.Context, email, password string) (Use
 
 // RegisterPassword creates a new user account and returns a signed access token.
 func (m *Module) RegisterPassword(ctx context.Context, email, password string) (User, string, error) {
-	email = strings.TrimSpace(strings.ToLower(email))
+	email, ok := NormalizeEmail(email)
+	if !ok {
+		return User{}, "", ErrInvalidEmail
+	}
+	if len(password) < minPasswordLen {
+		return User{}, "", ErrWeakPassword
+	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return User{}, "", err

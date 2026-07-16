@@ -83,6 +83,7 @@ type DatabaseConfig struct {
 type Telemetry struct {
 	EnableMetrics bool          `mapstructure:"enable_metrics"`
 	MetricsPath   string        `mapstructure:"metrics_path"`
+	MetricsToken  string        `mapstructure:"metrics_token"`
 	Tracing       TracingConfig `mapstructure:"tracing"`
 }
 
@@ -211,6 +212,13 @@ func validateConfig(cfg Config) error {
 
 	if strings.EqualFold(cfg.Environment, "production") && weakAuthSecret(cfg.Auth.TokenSecret) {
 		problems = append(problems, "auth.token_secret must be at least 32 characters and not use default values in production")
+	}
+
+	// /metrics must not be world-readable in production: require a bearer token
+	// (or disable metrics). See telemetry module for enforcement.
+	if strings.EqualFold(cfg.Environment, "production") && cfg.Telemetry.EnableMetrics &&
+		strings.TrimSpace(cfg.Telemetry.MetricsToken) == "" {
+		problems = append(problems, "telemetry.metrics_token is required in production when telemetry.enable_metrics is true (protects /metrics)")
 	}
 
 	smtp := cfg.Notifications.SMTP

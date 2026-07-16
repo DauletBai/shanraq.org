@@ -2,7 +2,9 @@ package telemetry
 
 import (
 	"context"
+	"crypto/subtle"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -18,6 +20,9 @@ type Module struct {
 	handler          http.Handler
 	metricsPath      string
 	metricsEnabled   bool
+	metricsToken     string
+	environment      string
+	log              *zap.Logger
 	tracingEnabled   bool
 	tracingShutdown  func(context.Context) error
 	serviceName      string
@@ -34,6 +39,8 @@ func (m *Module) Name() string {
 }
 
 func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
+	m.log = rt.Logger
+	m.environment = rt.Config.Environment
 	if rt.Config.Telemetry.EnableMetrics {
 		m.handler = promhttp.Handler()
 		path := rt.Config.Telemetry.MetricsPath
@@ -41,6 +48,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 			path = "/metrics"
 		}
 		m.metricsPath = path
+		m.metricsToken = strings.TrimSpace(rt.Config.Telemetry.MetricsToken)
 		m.metricsEnabled = true
 	}
 
@@ -63,8 +71,34 @@ func (m *Module) Routes(r chi.Router) {
 		m.tracerMiddleware = true
 	}
 	if m.metricsEnabled {
-		r.Handle(m.metricsPath, m.handler)
+		r.Handle(m.metricsPath, m.guardMetrics(m.handler))
 	}
+}
+
+// guardMetrics protects the Prometheus endpoint. With a token configured it
+// requires "Authorization: Bearer <token>" (constant-time compare). Without a
+// token it serves only outside production — production config validation already
+// requires a token when metrics are enabled, so this is a defense-in-depth net.
+func (m *Module) guardMetrics(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if m.metricsToken == "" {
+			if strings.EqualFold(m.environment, "production") {
+				http.NotFound(w, r)
+				return
+			}
+			next.ServeHTTP(w, r)
+			return
+		}
+		const prefix = "Bearer "
+		got := r.Header.Get("Authorization")
+		if len(got) > len(prefix) && strings.EqualFold(got[:len(prefix)], prefix) &&
+			subtle.ConstantTimeCompare([]byte(got[len(prefix):]), []byte(m.metricsToken)) == 1 {
+			next.ServeHTTP(w, r)
+			return
+		}
+		w.Header().Set("WWW-Authenticate", "Bearer")
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+	})
 }
 
 func (m *Module) Start(ctx context.Context, rt *shanraq.Runtime) error {
