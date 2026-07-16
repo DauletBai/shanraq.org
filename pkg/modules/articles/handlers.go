@@ -288,9 +288,10 @@ type ArticlePage struct {
 	Recent      []FeedItem // reserved for sidebar
 	Subscribed  bool
 	Comments    []Comment
-	IsFavorite  bool
-	TOC         []TOCItem
-	ReadingMin  int
+	IsFavorite    bool
+	TOC           []TOCItem
+	ReadingMin    int
+	CommentReview bool // the reader's comment was held for moderation
 }
 
 func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
@@ -348,6 +349,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		page.IsFavorite = m.favs.IsFavorite(r.Context(), viewer, "article", a.ID)
 	}
 
+	page.CommentReview = r.URL.Query().Get("comment") == "review"
 	page.SidebarNews = m.latestNews(r, lang, 6)
 	if cs, err := m.comments.ListForArticle(r.Context(), a.ID); err == nil {
 		page.Comments = cs
@@ -384,10 +386,24 @@ func (m *Module) handleComment(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	if err := m.comments.Create(r.Context(), a.ID, userID, body); err != nil {
+	// AI pre-moderation (no-op when the assistant is off): a flagged comment is
+	// filed as hidden into the same queue human reports feed. On any error we
+	// fail open and publish — the human report button remains the backstop.
+	status := "published"
+	if m.ai != nil && m.ai.Enabled() {
+		if v, err := m.ai.Moderate(r.Context(), "comment", body); err == nil && v.Flagged() {
+			status = "hidden"
+			m.rt.Logger.Info("ai moderator hid comment",
+				zap.String("reason", v.Reason), zap.Float64("confidence", v.Confidence))
+		}
+	}
+	if err := m.comments.CreateWithStatus(r.Context(), a.ID, userID, body, status); err != nil {
 		m.rt.Logger.Error("create comment", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
+	}
+	if status == "hidden" {
+		backTo = "/read/" + slug + "?comment=review#comments"
 	}
 	http.Redirect(w, r, backTo, http.StatusSeeOther)
 }

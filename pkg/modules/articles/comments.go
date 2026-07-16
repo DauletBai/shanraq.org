@@ -27,8 +27,15 @@ type CommentStore struct {
 
 func NewCommentStore(db *pgxpool.Pool) *CommentStore { return &CommentStore{db: db} }
 
-// Create stores a comment. The body is trimmed and length-capped.
+// Create stores a published comment. The body is trimmed and length-capped.
 func (s *CommentStore) Create(ctx context.Context, articleID, userID uuid.UUID, body string) error {
+	return s.CreateWithStatus(ctx, articleID, userID, body, "published")
+}
+
+// CreateWithStatus stores a comment with an explicit moderation status. The AI
+// moderator uses this to file a suspect comment straight into 'hidden', the same
+// queue human reports feed, so a human can confirm or restore it.
+func (s *CommentStore) CreateWithStatus(ctx context.Context, articleID, userID uuid.UUID, body, status string) error {
 	body = strings.TrimSpace(body)
 	if body == "" {
 		return fmt.Errorf("empty comment")
@@ -36,8 +43,11 @@ func (s *CommentStore) Create(ctx context.Context, articleID, userID uuid.UUID, 
 	if len(body) > maxCommentLen {
 		body = body[:maxCommentLen]
 	}
-	_, err := s.db.Exec(ctx, `INSERT INTO comments (article_id, user_id, body) VALUES ($1,$2,$3)`,
-		articleID, userID, body)
+	if status != "hidden" {
+		status = "published"
+	}
+	_, err := s.db.Exec(ctx, `INSERT INTO comments (article_id, user_id, body, status) VALUES ($1,$2,$3,$4)`,
+		articleID, userID, body, status)
 	if err != nil {
 		return fmt.Errorf("create comment: %w", err)
 	}

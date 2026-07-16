@@ -65,6 +65,9 @@
 
       <section class="comments" id="comments">
         <h2 class="comments__title">{{ t .Lang "comments.title" }} ({{ len .Comments }})</h2>
+        {{ if .CommentReview }}
+        <p class="comments__review">{{ t .Lang "comments.review" }}</p>
+        {{ end }}
         {{ if .Authed }}
         <form class="comments__form" method="post" action="/read/{{ .Slug }}/comment">
           <textarea class="textarea" name="body" rows="3" maxlength="2000" placeholder="{{ t .Lang "comments.placeholder" }}" required></textarea>

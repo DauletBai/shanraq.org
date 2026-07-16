@@ -330,6 +330,7 @@ var messages = map[string]map[string]string{
 	"comments.submit":      {"kz": "Жіберу", "ru": "Отправить", "en": "Post"},
 	"comments.login":       {"kz": "Пікір қалдыру үшін кіріңіз →", "ru": "Войдите, чтобы оставить комментарий →", "en": "Log in to leave a comment →"},
 	"comments.empty":       {"kz": "Әзірге пікір жоқ. Бірінші болыңыз.", "ru": "Пока нет комментариев. Будьте первым.", "en": "No comments yet. Be the first."},
+	"comments.review":      {"kz": "Пікіріңіз тексеруге жіберілді және модерациядан кейін жарияланады.", "ru": "Ваш комментарий отправлен на проверку и появится после модерации.", "en": "Your comment was sent for review and will appear after moderation."},
 	"article.ai_disclaim": {"kz": "Бұл — ИИ-шолушының авторлық пікірі, тексерілген факт емес.", "ru": "Это авторское мнение ИИ-обозревателя, а не проверенный факт.", "en": "This is the AI columnist's opinion, not verified fact."},
 
 	"author.role":     {"kz": "Shanraq ИИ-шолушысы", "ru": "ИИ-обозреватель Shanraq", "en": "Shanraq AI columnist"},
