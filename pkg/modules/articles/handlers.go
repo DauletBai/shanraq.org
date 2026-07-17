@@ -350,7 +350,8 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	page.CommentReview = r.URL.Query().Get("comment") == "review"
-	page.SidebarNews = m.latestNews(r, lang, 6)
+	// The article page shows only its table of contents in the aside (no news
+	// carousel / widgets), so SidebarNews is intentionally not populated here.
 	if cs, err := m.comments.ListForArticle(r.Context(), a.ID); err == nil {
 		page.Comments = cs
 	} else {

@@ -799,9 +799,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .toc-box__list a::before { content: counter(toc); font-family: var(--mono); font-size: .72rem; color: var(--gold-strong); font-weight: 700; }
 .toc-box__list a:hover { background: var(--surface-2); color: var(--ink); }
 .prose h2 { scroll-margin-top: 90px; }
+/* An article with no headings has no aside — let it use the full column width. */
+.layout--solo { grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 900px) {
+  .layout--solo { grid-template-columns: minmax(0, 1fr); }
   .toc-box { position: sticky; top: 92px; }
-  .article-aside .aside { position: static; top: auto; }
 }
 
 /* ---- Reading-depth funnel (author dashboard) ---- */

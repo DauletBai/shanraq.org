@@ -3,7 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
-  <div class="layout">
+  <div class="layout{{ if not .TOC }} layout--solo{{ end }}">
     <div>
       <article class="article">
         <div class="article__head">
@@ -91,17 +91,16 @@
       </section>
     </div>
 
-    <div class="article-aside">
-      {{ if .TOC }}
+    {{ if .TOC }}
+    <aside class="article-aside">
       <nav class="toc-box" aria-label="{{ t .Lang "article.toc" }}">
         <p class="toc-box__title">{{ t .Lang "article.toc" }}</p>
         <ol class="toc-box__list">
           {{ range .TOC }}<li><a href="#{{ .ID }}">{{ .Text }}</a></li>{{ end }}
         </ol>
       </nav>
-      {{ end }}
-      {{ template "sidebar" . }}
-    </div>
+    </aside>
+    {{ end }}
   </div>
 </main>
 {{ template "site_footer" . }}
