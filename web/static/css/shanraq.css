@@ -163,8 +163,9 @@ img { max-width: 100%; height: auto; display: block; }
 .langs a.is-active { background: var(--gold); color: #fff; }
 :root[data-theme="dark"] .langs a.is-active { color: #fff; }
 
-.icon-btn { border: 1px solid var(--line-strong); background: transparent; color: var(--ink-soft); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1rem; line-height: 1; }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; flex: none; border: 1px solid var(--line-strong); background: transparent; color: var(--ink-soft); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1rem; line-height: 1; padding: 0; }
 .icon-btn:hover { background: var(--surface-2); }
+a.icon-btn, a.icon-btn:hover { text-decoration: none; color: var(--ink-soft); }
 
 /* main menu (categories) */
 .menu { display: flex; gap: 22px; overflow-x: auto; padding: 0; }
@@ -363,6 +364,11 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .studio { padding: 34px 0 70px; }
 .studio__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; border-bottom: 2px solid var(--ink); padding-bottom: 14px; }
 .studio__head h1 { font-size: var(--step-3); }
+/* Account actions relocated from the header (keeps the header short on phones). */
+.acct-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+.acct-nav__item { padding: 7px 14px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: var(--step--1); font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+.acct-nav__item:hover { border-color: var(--gold); color: var(--gold-strong); text-decoration: none; }
+
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 30px; }
 .stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
 .stat__label { font-size: var(--step--1); color: var(--muted); margin: 0 0 6px; }
@@ -433,8 +439,9 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .page__title { font-size: var(--step-4); margin-bottom: 22px; line-height: 1.1; }
 
 @media (max-width: 640px) {
-  /* hide only the right-side text links (e.g. Studio); keep the language switch */
-  .topstrip__side--right a:not(.btn) { display: none; }
+  /* Hide right-side text links; keep the language switch and the icon-only
+     account entry (the header carries just the account icon + "Sign out"). */
+  .topstrip__side--right a:not(.btn):not(.icon-btn) { display: none; }
   .wordmark__mark { width: 52px; height: 52px; }
   .hero__media { height: 200px; }
   .post__media { height: 160px; }

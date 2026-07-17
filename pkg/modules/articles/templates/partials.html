@@ -53,10 +53,14 @@
     </a>
     <div class="topstrip__side topstrip__side--right">
       {{ if .Authed }}
-      {{ if .IsStaff }}<a href="/admin">{{ t .Lang "header.admin" }}</a>{{ end }}
-      <a href="/favorites">♥ {{ t .Lang "nav.favorites" }}</a>
-      <a href="/studio">{{ t .Lang "header.studio" }}</a>
-      <a class="btn btn--primary btn--sm" href="/studio/new">{{ t .Lang "header.write" }}</a>
+      {{/* Account entry stays an icon so the only text here is "Sign out" —
+           Favorites / Write / My listings / Admin now live on the account page.
+           Inline SVG rather than a glyph: no emoji-font dependency. */}}
+      <a class="icon-btn" href="/studio" title="{{ t .Lang "header.studio" }}" aria-label="{{ t .Lang "header.studio" }}">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+        </svg>
+      </a>
       <form method="post" action="/studio/logout" style="display:inline"><button type="submit" class="linkbtn">{{ t .Lang "header.logout" }}</button></form>
       {{ else }}
       <a class="btn btn--primary btn--sm" href="/studio/login">{{ t .Lang "header.login" }}</a>
