@@ -20,3 +20,17 @@ func TestLoadDefaults(t *testing.T) {
 		t.Fatalf("expected default auth secret")
 	}
 }
+
+func TestMetricsTokenFromEnv(t *testing.T) {
+	// The nested telemetry.metrics_token key must be readable from the
+	// environment (it gates /metrics in production).
+	t.Setenv("SHANRAQ_TELEMETRY_METRICS_TOKEN", "tok-123")
+
+	cfg, err := Load("")
+	if err != nil {
+		t.Fatalf("load: %v", err)
+	}
+	if cfg.Telemetry.MetricsToken != "tok-123" {
+		t.Fatalf("expected metrics_token from env, got %q", cfg.Telemetry.MetricsToken)
+	}
+}

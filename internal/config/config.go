@@ -176,6 +176,10 @@ func setDefaults(v *viper.Viper) {
 
 	v.SetDefault("telemetry.enable_metrics", true)
 	v.SetDefault("telemetry.metrics_path", "/metrics")
+	// Registering the key is required for viper's AutomaticEnv to bind
+	// SHANRAQ_TELEMETRY_METRICS_TOKEN during Unmarshal (nested keys are only
+	// read from the environment once they are known).
+	v.SetDefault("telemetry.metrics_token", "")
 	v.SetDefault("telemetry.tracing.enabled", false)
 	v.SetDefault("telemetry.tracing.endpoint", "")
 	v.SetDefault("telemetry.tracing.sample_ratio", 0.1)

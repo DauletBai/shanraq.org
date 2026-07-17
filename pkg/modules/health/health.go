@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"go.uber.org/zap"
 	"shanraq.org/pkg/shanraq"
 )
 
@@ -51,9 +52,12 @@ func (m *Module) handleReadiness(w http.ResponseWriter, _ *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	if err := m.rt.DB.Ping(ctx); err != nil {
+		// Log the detail; do not leak the raw driver error (host, DSN hints) to
+		// an unauthenticated caller.
+		m.rt.Logger.Warn("readiness check failed", zap.Error(err))
 		writeJSON(w, http.StatusServiceUnavailable, map[string]string{
 			"status": "degraded",
-			"error":  err.Error(),
+			"error":  "database unavailable",
 		})
 		return
 	}

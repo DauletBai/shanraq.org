@@ -244,7 +244,7 @@ Add module tests close to their packages to keep coverage meaningful.
 - Developers manage their keys via the REST API (protected with `auth.RequireRoles`).
 - Integrations authenticate with `X-API-Key` or `Authorization: ApiKey <token>` headers—no JWT required.
 - Combine `RequireAPIKey()` with `auth.RequireRoles(...)` to accept either JWTs or API keys on the same route set.
-- Demo data seeds an operator key (`sk_demo_operator_token`) so the console and API explorer work immediately—rotate it outside local development.
+- In local development you create an API key via the REST API; no key is seeded. (An earlier demo key that shipped in migrations has been revoked and deleted — see migration `20251107004000_revoke_demo_api_key`.)
 
 ## Background Jobs
 
