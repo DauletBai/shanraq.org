@@ -207,7 +207,7 @@ func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	m.rt.Logger.Info("user signed up", zap.String("email", user.Email))
+	m.rt.Logger.Info("user signed up", zap.String("user_id", user.ID.String()))
 	m.writeTokenResponse(w, http.StatusCreated, user, accessToken, refreshToken)
 }
 
@@ -450,8 +450,11 @@ func (m *Module) handlePasswordResetRequest(w http.ResponseWriter, r *http.Reque
 		respond.Error(w, http.StatusInternalServerError, err)
 		return
 	}
-	resetLink := fmt.Sprintf("http://localhost:8080/auth/password/confirm?token=%s", token)
-	m.rt.Logger.Info("password reset issued", zap.String("email", user.Email), zap.String("link", resetLink))
+	base := m.rt.Config.PublicBase()
+	resetLink := fmt.Sprintf("%s/auth/password/confirm?token=%s", base, token)
+	// Never log the token, the full link, or the email — a reader of the logs
+	// could otherwise take over the account. The user id is enough to trace.
+	m.rt.Logger.Info("password reset issued", zap.String("user_id", user.ID.String()))
 	if err := m.sendPasswordResetEmail(ctx, user.Email, resetLink); err != nil {
 		m.rt.Logger.Error("send password reset email", zap.Error(err))
 		if isJSON {
@@ -665,7 +668,7 @@ func (m *Module) respondPasswordResetAck(w http.ResponseWriter, asJSON bool) {
 		respond.JSON(w, http.StatusOK, map[string]string{"status": "ok"})
 		return
 	}
-	m.renderResetRequestTemplate(w, http.StatusOK, templateData{Message: "If the account exists, a reset link has been issued. Please check the application logs for details."})
+	m.renderResetRequestTemplate(w, http.StatusOK, templateData{Message: "If an account exists for that email, a password reset link has been sent. Please check your inbox."})
 }
 
 func (m *Module) respondPasswordResetInvalid(w http.ResponseWriter, asJSON bool, token string) {
@@ -732,7 +735,7 @@ func (m *Module) handleMFAVerify(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if m.rt != nil {
-		m.rt.Logger.Info("user passed MFA", zap.String("email", user.Email))
+		m.rt.Logger.Info("user passed MFA", zap.String("user_id", user.ID.String()))
 	}
 	m.writeTokenResponse(w, http.StatusOK, user, accessToken, refreshToken)
 }
@@ -810,7 +813,14 @@ func (m *Module) validatePayload(payload any) (map[string]string, error) {
 
 func (m *Module) sendPasswordResetEmail(ctx context.Context, to, link string) error {
 	if m.mailer == nil {
-		m.rt.Logger.Info("password reset email not sent (mailer disabled)", zap.String("email", to), zap.String("link", link))
+		// In production a reset the user can never receive is worse than a clear
+		// failure — fail loudly instead of minting an undeliverable token.
+		if strings.EqualFold(m.rt.Config.Environment, "production") {
+			return errors.New("email delivery is not configured")
+		}
+		// Local development only: surface the link so it can be tested. This
+		// branch never runs in production (guarded above).
+		m.rt.Logger.Info("password reset email not sent (mailer disabled); dev-only reset link", zap.String("link", link))
 		return nil
 	}
 	subject := "Password reset instructions"
@@ -818,7 +828,7 @@ func (m *Module) sendPasswordResetEmail(ctx context.Context, to, link string) er
 	if err := m.mailer.Send(ctx, to, subject, body); err != nil {
 		return err
 	}
-	m.rt.Logger.Info("password reset email sent", zap.String("email", to))
+	m.rt.Logger.Info("password reset email sent")
 	return nil
 }
 

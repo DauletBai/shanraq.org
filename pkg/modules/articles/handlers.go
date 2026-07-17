@@ -47,7 +47,7 @@ type Base struct {
 // current path so switching language re-renders the same page fully localized.
 func (m *Module) base(r *http.Request, title, lang string) Base {
 	claims, authed := auth.ClaimsFromContext(r.Context())
-	site := strings.TrimRight(m.rt.Config.Syndicate.BaseURL, "/")
+	site := m.rt.Config.PublicBase()
 	return Base{
 		Title:     title,
 		Lang:      lang,
@@ -496,7 +496,7 @@ func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	auth.SetSessionCookie(w, r, token, m.auth.SessionTTL())
-	m.rt.Logger.Info("studio login", zap.String("email", user.Email))
+	m.rt.Logger.Info("studio login", zap.String("user_id", user.ID.String()))
 	http.Redirect(w, r, "/studio", http.StatusSeeOther)
 }
 
@@ -557,7 +557,7 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	auth.SetSessionCookie(w, r, token, m.auth.SessionTTL())
-	m.rt.Logger.Info("studio register", zap.String("email", user.Email))
+	m.rt.Logger.Info("studio register", zap.String("user_id", user.ID.String()))
 	http.Redirect(w, r, "/studio", http.StatusSeeOther)
 }
 

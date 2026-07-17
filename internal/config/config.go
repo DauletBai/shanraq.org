@@ -12,6 +12,7 @@ import (
 // Config is the top-level runtime configuration for the framework runtime.
 type Config struct {
 	Environment   string              `mapstructure:"environment"`
+	PublicBaseURL string              `mapstructure:"public_base_url"`
 	Server        ServerConfig        `mapstructure:"server"`
 	Database      DatabaseConfig      `mapstructure:"database"`
 	Telemetry     Telemetry           `mapstructure:"telemetry"`
@@ -200,6 +201,7 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("ai.translate_model", "claude-haiku-4-5")
 	v.SetDefault("ai.max_tokens", 4096)
 
+	v.SetDefault("public_base_url", "http://localhost:8080")
 	v.SetDefault("syndicate.base_url", "http://localhost:8080")
 	v.SetDefault("syndicate.telegram.enabled", false)
 
@@ -211,11 +213,31 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("media.watermark", true)
 }
 
+// PublicBase returns the canonical public origin (no trailing slash), used for
+// SEO canonical/hreflang links, RSS/Telegram links, and password-reset links.
+// Syndicate.base_url is a fallback for backward compatibility.
+func (c Config) PublicBase() string {
+	v := strings.TrimRight(strings.TrimSpace(c.PublicBaseURL), "/")
+	if v == "" {
+		v = strings.TrimRight(strings.TrimSpace(c.Syndicate.BaseURL), "/")
+	}
+	return v
+}
+
 func validateConfig(cfg Config) error {
 	var problems []string
 
 	if strings.EqualFold(cfg.Environment, "production") && weakAuthSecret(cfg.Auth.TokenSecret) {
 		problems = append(problems, "auth.token_secret must be at least 32 characters and not use default values in production")
+	}
+
+	// In production the public base URL must be a real HTTPS origin — it ends up
+	// in canonical/hreflang tags, RSS/Telegram links, and password-reset emails.
+	if strings.EqualFold(cfg.Environment, "production") {
+		base := cfg.PublicBase()
+		if !strings.HasPrefix(base, "https://") || strings.Contains(base, "localhost") || strings.Contains(base, "127.0.0.1") {
+			problems = append(problems, "public_base_url must be set to a real https:// origin in production (not localhost)")
+		}
 	}
 
 	// /metrics must not be world-readable in production: require a bearer token

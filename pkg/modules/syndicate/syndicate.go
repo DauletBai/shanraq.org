@@ -54,7 +54,8 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.db = rt.DB
 	m.log = rt.Logger
 	m.http = &http.Client{Timeout: 10 * time.Second}
-	m.baseURL = strings.TrimRight(strings.TrimSpace(cfg.BaseURL), "/")
+	// Prefer the single canonical origin so RSS/Telegram links match the site.
+	m.baseURL = rt.Config.PublicBase()
 	if m.baseURL == "" {
 		m.baseURL = "http://localhost:8080"
 	}

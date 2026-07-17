@@ -1,4 +1,8 @@
 environment: development
+# Canonical public origin (no trailing slash). Used for SEO canonical/hreflang
+# links, RSS/Telegram links, and password-reset emails. In production this MUST
+# be a real https:// origin (not localhost) or startup fails.
+public_base_url: "http://localhost:8080"
 server:
   address: ":8080"
   read_timeout: 15s
