@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -63,6 +64,37 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 		return fmt.Errorf("apply migrations: %w", err)
 	}
 	rt.Logger.Info("migrations applied")
+
+	// Demo fixtures (privileged admin/operator accounts, placeholder listings,
+	// handler-less jobs) are convenient in development but must never exist in
+	// production. The seed SQL can't read the environment, so strip them here
+	// after migrating. Idempotent — safe to run on every production startup.
+	if strings.EqualFold(rt.Config.Environment, "production") {
+		if err := stripDemoFixtures(ctx, sqlDB); err != nil {
+			return fmt.Errorf("strip demo fixtures: %w", err)
+		}
+		rt.Logger.Info("demo fixtures stripped (production)")
+	}
+	return nil
+}
+
+// stripDemoFixtures removes the seeded demo accounts and placeholder content.
+// Deleting the demo users cascades their jobs (job_queue.user_id ON DELETE
+// CASCADE). The Sana Qyran author and its published columns are left intact —
+// they are official starter content, not demo fixtures.
+func stripDemoFixtures(ctx context.Context, db *sql.DB) error {
+	stmts := []string{
+		// Placeholder real-estate listings and their demo seller.
+		`DELETE FROM listings WHERE id::text LIKE 'a0000000-0000-0000-0000-%'`,
+		`DELETE FROM auth_users WHERE id = '11111111-1111-1111-1111-111111111111'`,
+		// Privileged demo accounts (cascades their seeded jobs).
+		`DELETE FROM auth_users WHERE email IN ('admin@shanraq.org', 'operator@shanraq.org')`,
+	}
+	for _, s := range stmts {
+		if _, err := db.ExecContext(ctx, s); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
