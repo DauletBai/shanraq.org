@@ -368,6 +368,7 @@ var messages = map[string]map[string]string{
 	"form.err_email_taken":   {"kz": "Бұл email тіркелген", "ru": "Этот email уже занят", "en": "This email is already registered"},
 	"form.err_email_invalid": {"kz": "Жарамды email енгізіңіз", "ru": "Введите корректный email", "en": "Enter a valid email address"},
 	"form.err_consent":       {"kz": "Тіркелу үшін шарттармен келісіңіз", "ru": "Чтобы зарегистрироваться, примите условия", "en": "You must accept the terms to register"},
+	"form.err_rate_limit":    {"kz": "Тым көп әрекет. Біраздан соң қайталап көріңіз.", "ru": "Слишком много попыток. Попробуйте немного позже.", "en": "Too many attempts. Please try again in a moment."},
 	"form.consent_pre":       {"kz": "Мен", "ru": "Я принимаю", "en": "I accept the"},
 	"form.consent_terms":     {"kz": "Пайдаланушы келісімін", "ru": "Пользовательское соглашение", "en": "Terms of Service"},
 	"form.consent_and":       {"kz": "және", "ru": "и", "en": "and"},

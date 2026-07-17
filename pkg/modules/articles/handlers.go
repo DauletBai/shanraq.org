@@ -485,6 +485,16 @@ func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
 	email := strings.TrimSpace(r.FormValue("email"))
 	password := r.FormValue("password")
 
+	if !m.auth.AllowAuthAttempt(r, "signin", email) {
+		m.render(w, "form", FormPage{
+			Base:  m.base(r, T(lang, "form.login_title"), lang),
+			Mode:  "login",
+			Email: email,
+			Error: T(lang, "form.err_rate_limit"),
+		})
+		return
+	}
+
 	user, token, err := m.auth.LoginPassword(r.Context(), email, password)
 	if err != nil {
 		m.render(w, "form", FormPage{
@@ -508,6 +518,16 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 	email := strings.TrimSpace(r.FormValue("email"))
 	password := r.FormValue("password")
+
+	if !m.auth.AllowAuthAttempt(r, "signup", email) {
+		m.render(w, "form", FormPage{
+			Base:  m.base(r, T(lang, "form.register_title"), lang),
+			Mode:  "register",
+			Email: email,
+			Error: T(lang, "form.err_rate_limit"),
+		})
+		return
+	}
 
 	// KZ online-platform law: registration cannot complete without explicit
 	// consent to the Terms and Privacy Policy.

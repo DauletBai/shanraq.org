@@ -165,6 +165,10 @@ func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
 		respond.Error(w, http.StatusBadRequest, err)
 		return
 	}
+	if !req.Consent {
+		respond.Error(w, http.StatusBadRequest, errors.New("consent to the Terms and Privacy Policy is required"))
+		return
+	}
 	req.Email = strings.TrimSpace(strings.ToLower(req.Email))
 
 	if !m.enforceRateLimit(r, "signup", false, req.Email) {
@@ -738,6 +742,14 @@ func (m *Module) handleMFAVerify(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Info("user passed MFA", zap.String("user_id", user.ID.String()))
 	}
 	m.writeTokenResponse(w, http.StatusOK, user, accessToken, refreshToken)
+}
+
+// AllowAuthAttempt applies the shared auth rate limiter to a browser (cookie)
+// flow so the studio login/register forms get the same protection as the API.
+// action is "signin" or "signup"; email scopes the limit per account. Returns
+// false when the caller should respond 429.
+func (m *Module) AllowAuthAttempt(r *http.Request, action, email string) bool {
+	return m.enforceRateLimit(r, action, true, strings.TrimSpace(strings.ToLower(email)))
 }
 
 func (m *Module) enforceRateLimit(r *http.Request, action string, includeIP bool, extraKeys ...string) bool {

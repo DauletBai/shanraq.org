@@ -8,6 +8,9 @@ import (
 type signupRequest struct {
 	Email    string `json:"email" form:"email" validate:"required,email"`
 	Password string `json:"password" form:"password" validate:"required,min=8"`
+	// Consent to the Terms and Privacy Policy is mandatory (KZ online-platform
+	// law); the API must not be a way around the browser consent checkbox.
+	Consent bool `json:"consent" form:"consent"`
 }
 
 type signinRequest struct {
