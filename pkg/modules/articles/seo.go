@@ -12,6 +12,16 @@ import (
 	"go.uber.org/zap"
 )
 
+// htmlLang maps our internal UI code to the BCP-47 language subtag used in
+// HTML lang / hreflang / schema.org. Kazakh's ISO 639-1 code is "kk"; we keep
+// "kz" internally (routing, ?lang=) but must present "kk" to browsers/crawlers.
+func htmlLang(lang string) string {
+	if lang == LangKZ {
+		return "kk"
+	}
+	return lang
+}
+
 // ogLocale maps a UI language to an Open Graph locale.
 func ogLocale(lang string) string {
 	switch lang {
@@ -73,7 +83,7 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 		b.WriteString(seoURL(site, path, LangRU))
 		b.WriteString("</loc>")
 		for _, l := range Langs {
-			b.WriteString(`<xhtml:link rel="alternate" hreflang="` + l + `" href="` + seoURL(site, path, l) + `"/>`)
+			b.WriteString(`<xhtml:link rel="alternate" hreflang="` + htmlLang(l) + `" href="` + seoURL(site, path, l) + `"/>`)
 		}
 		b.WriteString(`<xhtml:link rel="alternate" hreflang="x-default" href="` + seoURL(site, path, LangRU) + `"/>`)
 		if !mod.IsZero() {
@@ -144,7 +154,7 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 		"@type":            "NewsArticle",
 		"headline":         page.Title,
 		"description":      page.Desc,
-		"inLanguage":       page.ServedLang,
+		"inLanguage":       htmlLang(page.ServedLang),
 		"author":           map[string]any{"@type": "Person", "name": page.AuthorName},
 		"image":            page.OGImage,
 		"mainEntityOfPage": canonical,

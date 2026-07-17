@@ -25,6 +25,7 @@ func buildTemplates(t *testing.T) *template.Template {
 		"roomTypes":        RoomTypeKeys,
 		"money":            money,
 		"ogLocale":         ogLocale,
+		"htmlLang":         htmlLang,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(tm time.Time) string {

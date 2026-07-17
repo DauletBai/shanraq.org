@@ -84,6 +84,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"roomTypes":        RoomTypeKeys,
 		"money":            money,
 		"ogLocale":         ogLocale,
+		"htmlLang":         htmlLang,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(t time.Time) string {

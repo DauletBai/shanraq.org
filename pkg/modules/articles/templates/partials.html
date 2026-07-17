@@ -3,14 +3,14 @@
 
 {{ define "site_head" }}
 <!doctype html>
-<html lang="{{ .Lang }}">
+<html lang="{{ htmlLang .Lang }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ .Title }} · Shanraq</title>
   <meta name="description" content="{{ .Desc }}">
   <link rel="canonical" href="{{ .SiteURL }}{{ .Path }}?lang={{ .Lang }}">
-  {{ range langs }}<link rel="alternate" hreflang="{{ . }}" href="{{ $.SiteURL }}{{ index $.LangLinks . }}">
+  {{ range langs }}<link rel="alternate" hreflang="{{ htmlLang . }}" href="{{ $.SiteURL }}{{ index $.LangLinks . }}">
   {{ end }}<link rel="alternate" hreflang="x-default" href="{{ .SiteURL }}{{ index .LangLinks "ru" }}">
   <meta property="og:site_name" content="Shanraq">
   <meta property="og:type" content="{{ if .OGType }}{{ .OGType }}{{ else }}website{{ end }}">
