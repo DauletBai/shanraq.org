@@ -101,9 +101,13 @@ func main() {
 	app.Register(syndicateModule)
 	app.Register(media.New(authModule))
 	app.Register(articles.New(authModule, aiModule, syndicateModule, notifierModule))
-	app.Register(webui.New(jobWorkers, jobPollSeconds, webui.WithTenantResolver(func(r *http.Request) (uuid.UUID, bool) {
-		return tenantResolver(r)
-	})))
+	app.Register(webui.New(jobWorkers, jobPollSeconds,
+		webui.WithTenantResolver(func(r *http.Request) (uuid.UUID, bool) {
+			return tenantResolver(r)
+		}),
+		// The operator console is staff-only (global job metrics + error text).
+		webui.WithAuthGuard(authModule.RequireSession("/studio/login", "admin", "operator")),
+	))
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()

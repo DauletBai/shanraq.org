@@ -87,6 +87,8 @@ func buildTestWebUIModule(t *testing.T) *Module {
 			},
 		},
 	}
+	// Pass-through guard so the staff-only console routes register in tests.
+	m.authGuard = func(next http.Handler) http.Handler { return next }
 	return m
 }
 

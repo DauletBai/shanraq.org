@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -29,6 +30,7 @@ type Module struct {
 	reloadPeriod   time.Duration
 	aboutContent   *AboutContent
 	tenantResolver TenantResolver
+	authGuard      func(http.Handler) http.Handler
 }
 
 type jobsDataProvider interface {
@@ -76,6 +78,15 @@ func WithTenantResolver(resolver TenantResolver) func(*Module) {
 	}
 }
 
+// WithAuthGuard injects the middleware that protects the operator console
+// (typically auth.RequireSession(loginPath, "admin", "operator")). Without it,
+// the console and its data partial are not registered at all — fail closed.
+func WithAuthGuard(guard func(http.Handler) http.Handler) func(*Module) {
+	return func(m *Module) {
+		m.authGuard = guard
+	}
+}
+
 func (m *Module) Name() string {
 	return "webui"
 }
@@ -115,10 +126,24 @@ func (m *Module) Routes(r chi.Router) {
 	r.Get("/favicon.svg", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFileFS(w, r, web.StaticFS(), "brand/shanraq.svg")
 	})
-	r.Get("/framework", m.handleHome)
-	r.Get("/console", m.handleDashboard)
-	r.Get("/docs", m.handleDocs)
-	r.Get("/partials/dashboard", m.handleDashboardPartial)
+	// The operator console and its data partial expose global job metrics and
+	// error text — staff only. Register them ONLY behind the auth guard; without
+	// a guard, do not expose them at all (fail closed).
+	if m.authGuard != nil {
+		r.Group(func(r chi.Router) {
+			r.Use(m.authGuard)
+			r.Get("/console", m.handleDashboard)
+			r.Get("/partials/dashboard", m.handleDashboardPartial)
+		})
+	} else {
+		m.rt.Logger.Warn("webui console not exposed: no auth guard configured")
+	}
+
+	// The framework/docs marketing pages are dev-only; never in production.
+	if !strings.EqualFold(m.rt.Config.Environment, "production") {
+		r.Get("/framework", m.handleHome)
+		r.Get("/docs", m.handleDocs)
+	}
 }
 
 func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {

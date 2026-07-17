@@ -2,6 +2,7 @@ package webui
 
 import (
 	"context"
+	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
@@ -85,7 +86,26 @@ func newTestModule(t *testing.T) *Module {
 		Logger: zap.NewNop(),
 		Router: chi.NewRouter(),
 	}
+	// Pass-through guard so the console routes register (the guard itself is
+	// exercised by TestConsoleFailsClosedWithoutGuard).
+	mod.authGuard = func(next http.Handler) http.Handler { return next }
 	return mod
+}
+
+func TestConsoleFailsClosedWithoutGuard(t *testing.T) {
+	mod := newTestModule(t)
+	mod.authGuard = nil // no guard configured
+	router := chi.NewRouter()
+	mod.Routes(router)
+
+	for _, path := range []string{"/console", "/partials/dashboard"} {
+		req := httptest.NewRequest("GET", path, nil)
+		rec := httptest.NewRecorder()
+		router.ServeHTTP(rec, req)
+		if rec.Code != 404 {
+			t.Fatalf("%s should not be exposed without a guard, got %d", path, rec.Code)
+		}
+	}
 }
 
 func TestRoutesHome(t *testing.T) {
