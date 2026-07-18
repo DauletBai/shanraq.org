@@ -121,7 +121,8 @@ img { max-width: 100%; height: auto; display: block; }
 .rate__arr.rate--up { color: var(--teal); }
 .rate__arr.rate--down { color: var(--danger); }
 .wx__temp { color: var(--ink); }                              /* temperature digits — black/white */
-.wx__press { color: var(--muted); margin-left: 6px; font-variant-numeric: tabular-nums; } /* atmospheric pressure — secondary */
+.wx__press { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; font-variant-numeric: tabular-nums; } /* atmospheric pressure (barometer icon + value) */
+.wx__pval { color: var(--ink); } /* pressure digits — same bright colour as the temperature */
 .infobar__social { gap: 13px; }
 .infobar__social .soc { display: inline-flex; color: var(--gold-strong); }
 .infobar__social .soc:hover { color: var(--gold); }

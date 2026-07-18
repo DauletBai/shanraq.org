@@ -210,7 +210,7 @@ func (b *InfoBar) refreshWeather(ctx context.Context) {
 	// Show pressure in mm Hg (the unit Kazakhstani forecasts use): hPa × 0.750062.
 	press := ""
 	if doc.Current.Press > 0 {
-		press = fmt.Sprintf("%d мм", int(doc.Current.Press*0.750062+0.5))
+		press = fmt.Sprintf("%d мм рт.ст.", int(doc.Current.Press*0.750062+0.5))
 	}
 	b.mu.Lock()
 	b.weatherIc = weatherIconName(doc.Current.Code)

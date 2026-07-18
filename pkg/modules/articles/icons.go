@@ -79,6 +79,7 @@ var iconPaths = map[string]string{
 	"wx_snow":  `<path d="M7 15a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 15z"/><path d="M8 19h.01M12 20h.01M16 19h.01"/>`,
 	"wx_fog":   `<path d="M7 13a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 13z"/><path d="M5 17h14M7 21h10"/>`,
 	"wx_storm": `<path d="M7 14a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 14z"/><path d="M12 13l-2.2 4H12l-1.4 4"/>`,
+	"wx_press": `<path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l4.5-3.5"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/>`,
 
 	// ---- amenities (real estate) ----
 	"am_air_conditioner": `<rect x="3" y="5" width="18" height="7" rx="1.6"/><path d="M6 9h9"/>` +
