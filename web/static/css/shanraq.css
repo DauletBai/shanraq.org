@@ -919,28 +919,29 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .listing__stats { margin: 8px 0 0; font-size: var(--step--1); color: var(--muted); }
 
 /* ---- Article table of contents ---- */
-/* sidebar ad carousel (demo car placements above the TOC) */
-.adcarousel--ad { height: auto; background: var(--surface); border: 1px solid var(--line); }
+/* sidebar ad carousel (demo car placements above the TOC) — red gradient
+   banner in the brand style, with the car on a framed light photo panel. */
+.adcarousel--ad { height: auto; background: linear-gradient(120deg, #b71c1c, #7a1414); border-color: transparent; }
 .adcarousel--ad .adslide {
   flex-direction: column; justify-content: flex-start; align-items: stretch;
-  text-align: left; padding: 0 0 46px; color: var(--ink); background: var(--surface);
+  text-align: left; padding: 0 0 46px; color: #fff; background: transparent;
 }
 .adcarousel--ad .adslide:hover { text-decoration: none; }
 .ad__label {
   align-self: flex-start; margin: 12px 14px 0; padding: 2px 8px; border-radius: 999px;
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase;
-  color: var(--muted); background: var(--surface-2); border: 1px solid var(--line);
+  color: #fff; background: rgba(255, 255, 255, 0.22);
 }
-.ad__img { display: block; margin: 10px 0 12px; padding: 6px 14px; background: linear-gradient(135deg, #eef2f7, #dbe4ef); }
+.ad__img { display: block; margin: 10px 14px 14px; padding: 6px 14px; border-radius: 10px; background: linear-gradient(135deg, #eef2f7, #dbe4ef); }
 .ad__img img { display: block; width: 100%; }
-.ad__title { padding: 0 16px; font-weight: 700; font-size: var(--step-0); line-height: 1.25; color: var(--ink); }
-.ad__price { padding: 3px 16px 0; color: var(--gold-strong); font-weight: 800; font-size: var(--step-0); font-variant-numeric: tabular-nums; }
-.ad__desc { padding: 5px 16px 0; color: var(--ink-soft); font-size: var(--step--1); line-height: 1.4; }
+.ad__title { padding: 0 16px; font-weight: 700; font-size: var(--step-0); line-height: 1.25; color: #fff; }
+.ad__price { padding: 3px 16px 0; color: #ffdf7e; font-weight: 800; font-size: var(--step-1); font-variant-numeric: tabular-nums; }
+.ad__desc { padding: 5px 16px 0; color: rgba(255, 255, 255, 0.9); font-size: var(--step--1); line-height: 1.4; }
 .ad__cta { align-self: flex-start; margin: 14px 16px 0; }
-.adcarousel--ad .adslide .btn--primary { background: var(--gold); color: #fff; }
-.adcarousel--ad .adslide .btn--primary:hover { background: var(--gold-strong); }
-.adcarousel--ad .adcarousel__dots button { background: var(--line-strong); }
-.adcarousel--ad .adcarousel__dots button.is-active { background: var(--gold); }
+.adcarousel--ad .adslide .btn--primary { background: #fff; color: #b71c1c; }
+.adcarousel--ad .adslide .btn--primary:hover { background: #fff; }
+.adcarousel--ad .adcarousel__dots button { background: rgba(255, 255, 255, 0.5); }
+.adcarousel--ad .adcarousel__dots button.is-active { background: #fff; }
 
 .article-aside { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
 .toc-box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
