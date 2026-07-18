@@ -118,6 +118,14 @@ func roomIcon(roomType string) template.HTML { return icon("room_" + roomType) }
 // amenityIcon returns the icon for an amenity key (e.g. "parking").
 func amenityIcon(key string) template.HTML { return icon("am_" + key) }
 
+// firstStrings returns at most n items of a slice (for a compact icon row).
+func firstStrings(list []string, n int) []string {
+	if len(list) > n {
+		return list[:n]
+	}
+	return list
+}
+
 // catIcon returns the rubric icon for a category key (e.g. "politics"),
 // falling back to the "general" glyph for unknown categories.
 func catIcon(category string) template.HTML {

@@ -82,9 +82,15 @@
           <p class="post__price">{{ money .Price }} ₸{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</p>
           <div class="post__meta">
             <span>{{ .Location }}</span>
-            {{ if gt .Rooms 0 }}<span class="dot">·</span><span>{{ .Rooms }} {{ t $.Lang "re.rooms" }}</span>{{ end }}
+            {{ if gt .Rooms 0 }}<span class="dot">·</span><span class="metaic" title="{{ t $.Lang "re.rooms" }}">{{ icon "room_bedroom" }}{{ .Rooms }}</span>{{ end }}
             {{ if gt .Area 0.0 }}<span class="dot">·</span><span>{{ .Area }} м²</span>{{ end }}
+            {{ if gt .LandArea 0.0 }}<span class="dot">·</span><span>{{ .LandArea }} {{ t $.Lang "re.ares" }}</span>{{ end }}
           </div>
+          {{ if .Amenities }}
+          <div class="post__amen">
+            {{ range firstN .Amenities 6 }}<span class="amic" title="{{ t $.Lang (printf "re.am_%s" .) }}">{{ amenityIcon . }}</span>{{ end }}
+          </div>
+          {{ end }}
         </article>
         {{ end }}
       </div>

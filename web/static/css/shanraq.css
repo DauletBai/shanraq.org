@@ -889,5 +889,8 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* real-estate (shanyrak) marker before a page heading */
 .h1-ic { display: flex; align-items: center; gap: 10px; }
 .h1-ic__mark { display: inline-flex; color: var(--gold-strong); font-size: 1.6rem; }
+/* row of amenity icons on a listing card */
+.post__amen { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 8px; }
+.post__amen .amic { margin: 0; font-size: 1.2rem; }
 .spec--rooms th .hint { font-weight: 400; }
 
