@@ -13,10 +13,10 @@
             {{ if .AIAuthor }}<a class="ai-badge" href="/author/sana">{{ t .Lang "article.ai_opinion" }}</a>{{ end }}
             <span>({{ t .Lang "article.karma" }}: <b>{{ .AuthorKarma }}</b>)</span>
             <span class="dot">·</span>
-            <span>{{ fmtDatePtr .Published }}</span>
+            <span class="metaic">{{ icon "calendar" }}{{ fmtDatePtr .Published }}</span>
             <span class="dot">·</span>
-            <span>{{ .Views }} {{ t .Lang "meta.views" }}</span>
-            {{ if gt .ReadingMin 0 }}<span class="dot">·</span><span>{{ .ReadingMin }} {{ t .Lang "article.read_min" }}</span>{{ end }}
+            <span class="metaic" title="{{ t .Lang "meta.views" }}">{{ icon "eye" }}{{ .Views }}</span>
+            {{ if gt .ReadingMin 0 }}<span class="dot">·</span><span class="metaic">{{ icon "clock" }}{{ .ReadingMin }} {{ t .Lang "article.read_min" }}</span>{{ end }}
           </div>
           <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="display:inline-block;margin:14px 0 4px">{{ t .Lang (printf "cat.%s" .Category) }}</a>
           <h1 class="article__title">{{ .Title }}</h1>
@@ -28,12 +28,12 @@
             <span class="rating">
               <form method="post" action="/read/{{ .Slug }}/vote">
                 <input type="hidden" name="value" value="1">
-                <button class="rating__btn{{ if gt .UserVote 0 }} is-up{{ end }}" type="submit" title="+1">▲</button>
+                <button class="rating__btn{{ if gt .UserVote 0 }} is-up{{ end }}" type="submit" title="+1" aria-label="+1">{{ icon "thumb_up" }}</button>
               </form>
               <span class="rating__score{{ if gt .Score 0 }} pos{{ else if lt .Score 0 }} neg{{ end }}">{{ .Score }}</span>
               <form method="post" action="/read/{{ .Slug }}/vote">
                 <input type="hidden" name="value" value="-1">
-                <button class="rating__btn{{ if lt .UserVote 0 }} is-down{{ end }}" type="submit" title="−1">▼</button>
+                <button class="rating__btn{{ if lt .UserVote 0 }} is-down{{ end }}" type="submit" title="−1" aria-label="−1">{{ icon "thumb_down" }}</button>
               </form>
             </span>
             {{ else }}
@@ -49,7 +49,7 @@
             {{ if .Authed }}
             <form method="post" action="/favorites/article/{{ .ArticleID }}" class="favform">
               <button type="submit" class="favbtn{{ if .IsFavorite }} is-on{{ end }}" aria-pressed="{{ if .IsFavorite }}true{{ else }}false{{ end }}">
-                <span class="favbtn__heart">{{ if .IsFavorite }}♥{{ else }}♡{{ end }}</span>
+                <span class="favbtn__heart">{{ icon "heart" }}</span>
                 <span>{{ if .IsFavorite }}{{ t .Lang "fav.remove" }}{{ else }}{{ t .Lang "fav.add" }}{{ end }}</span>
               </button>
             </form>

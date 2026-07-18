@@ -32,6 +32,17 @@ var iconPaths = map[string]string{
 	"room_other": `<circle cx="5" cy="12" r="1.3" fill="currentColor" stroke="none"/>` +
 		`<circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>` +
 		`<circle cx="19" cy="12" r="1.3" fill="currentColor" stroke="none"/>`,
+
+	// ---- article / meta ----
+	"eye":      `<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>`,
+	"calendar": `<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>`,
+	"clock":    `<circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/>`,
+	"comment":  `<path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>`,
+	"heart":    `<path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/>`,
+	"thumb_up": `<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h10.3a2 2 0 0 0 2-1.7l1.4-9A2 2 0 0 0 18.7 9H14z"/>` +
+		`<path d="M7 22H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h3"/>`,
+	"thumb_down": `<path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H6.7a2 2 0 0 0-2 1.7l-1.4 9A2 2 0 0 0 5.3 15H10z"/>` +
+		`<path d="M17 2h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3"/>`,
 }
 
 // icon returns the inline SVG for a named glyph, or empty if unknown.

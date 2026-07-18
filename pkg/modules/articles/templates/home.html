@@ -40,12 +40,12 @@
           {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
           <div class="post__meta">
             {{ if .IsAI }}<span class="tag tag--ai">{{ t $.Lang "meta.ai" }}</span>{{ end }}
-            <span class="score {{ if gt .Score 0 }}pos{{ else if lt .Score 0 }}neg{{ end }}">▲ {{ .Score }}</span>
+            <span class="score metaic {{ if gt .Score 0 }}pos{{ else if lt .Score 0 }}neg{{ end }}">{{ icon "thumb_up" }}{{ .Score }}</span>
             <span class="dot">·</span>
             <span>{{ .AuthorName }}</span>
             {{ if .AIAuthor }}<span class="tag tag--ai">{{ t $.Lang "article.ai_opinion" }}</span>{{ end }}
             <span class="dot">·</span>
-            <span>{{ fmtDatePtr .Published }}</span>
+            <span class="metaic">{{ icon "calendar" }}{{ fmtDatePtr .Published }}</span>
           </div>
         </article>
         {{ end }}

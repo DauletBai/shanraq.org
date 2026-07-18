@@ -379,8 +379,10 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .rating form { display: inline-flex; margin: 0; }
 .rating__btn { border: none; background: none; cursor: pointer; font-size: 1.05rem; line-height: 1; width: 30px; height: 30px; border-radius: 50%; color: var(--muted); transition: background 0.12s ease, color 0.12s ease; }
 .rating__btn:hover { background: var(--surface-2); color: var(--ink); }
-.rating__btn.is-up { color: var(--teal); background: color-mix(in srgb, var(--teal) 15%, transparent); }
-.rating__btn.is-down { color: var(--clay); background: color-mix(in srgb, var(--clay) 15%, transparent); }
+.rating__btn .ic { font-size: 1.05rem; }
+.rating__btn.is-up, .rating__btn.is-down { background: color-mix(in srgb, var(--gold) 14%, transparent); }
+/* active vote = solid (filled) red thumb; inactive = outline */
+.rating__btn.is-up .ic, .rating__btn.is-down .ic { fill: currentColor; }
 .rating__score { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; min-width: 28px; text-align: center; }
 .rating__score.pos { color: var(--teal); }
 .rating__score.neg { color: var(--clay); }
@@ -765,8 +767,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   transition: border-color .15s ease, color .15s ease, background .15s ease;
 }
 .favbtn:hover { border-color: var(--gold); color: var(--gold-strong); }
-.favbtn__heart { font-size: 1rem; line-height: 1; color: var(--gold); }
+.favbtn__heart { display: inline-flex; font-size: 1.05rem; line-height: 1; }
 .favbtn.is-on { border-color: var(--gold); color: var(--gold-strong); background: color-mix(in srgb, var(--gold) 8%, transparent); }
+.favbtn.is-on .favbtn__heart .ic { fill: currentColor; }
 .article__head .favform { vertical-align: middle; margin-left: 10px; }
 .article__head .rating { vertical-align: middle; }
 .listing__headrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
@@ -865,8 +868,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .roomsup__rm:hover { background: var(--gold-strong); color: #fff; border-color: var(--gold-strong); }
 @media (max-width: 560px) { .roomsup__row { grid-template-columns: 1fr 1fr; } .roomsup__note { grid-column: 1 / -1; } }
 .spec__cap { text-align: left; font-family: var(--serif); font-weight: 700; font-size: 1.05rem; color: var(--ink); padding: 14px 0 8px; caption-side: top; }
-/* Shanraq's own line icons: inherit text color/size, sit on the text baseline. */
-.ic { vertical-align: -0.14em; }
-.roomic { color: var(--gold-strong); font-size: 1.15rem; margin-right: 4px; }
+/* Shanraq's own line icons: brand red, sized to the surrounding text. */
+.ic { color: var(--gold-strong); vertical-align: -0.14em; }
+.roomic { font-size: 1.15rem; margin-right: 4px; }
+/* inline meta icon (views, date, reading time, comments): red glyph + value */
+.metaic { display: inline-flex; align-items: center; gap: 4px; }
+.metaic .ic { font-size: 1.05em; }
 .spec--rooms th .hint { font-weight: 400; }
 
