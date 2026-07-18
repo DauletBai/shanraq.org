@@ -63,7 +63,7 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Desc:      T(lang, "seo.site_desc"),
 		OGImage:   site + "/static/brand/shanraq.svg",
 		OGType:    "website",
-		Info:      m.infobar.Snapshot(time.Now().Format("02.01.2006")),
+		Info:      m.infobar.Snapshot(localizedDate(lang, time.Now())),
 	}
 }
 

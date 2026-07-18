@@ -299,6 +299,7 @@ var messages = map[string]map[string]string{
 	"sidebar.subscribe_text": {"kz": "Аптасына бір рет үздік материалдар поштаңызға.", "ru": "Раз в неделю лучшее — к вам на почту.", "en": "The best stories to your inbox, weekly."},
 	"sidebar.subscribe_btn":  {"kz": "Жазылу", "ru": "Подписаться", "en": "Subscribe"},
 	"sidebar.subscribed_ok":  {"kz": "Рахмет! Сіз жазылдыңыз.", "ru": "Спасибо! Вы подписаны.", "en": "Thanks! You're subscribed."},
+	"wx.pressure_unit":       {"kz": "мм сын.бағ.", "ru": "мм рт.ст.", "en": "mmHg"},
 
 	"article.karma":      {"kz": "карма", "ru": "карма", "en": "karma"},
 	"article.vote_login": {"kz": "Бағалау үшін кіріңіз", "ru": "Войдите, чтобы оценить", "en": "Sign in to vote"},

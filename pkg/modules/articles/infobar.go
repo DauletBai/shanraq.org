@@ -207,16 +207,35 @@ func (b *InfoBar) refreshWeather(ctx context.Context) {
 	if t > 0 {
 		sign = "+"
 	}
-	// Show pressure in mm Hg (the unit Kazakhstani forecasts use): hPa × 0.750062.
+	// Pressure in mm Hg (hPa × 0.750062) — just the number; the template appends
+	// the unit in the active UI language ("мм рт.ст." / "mmHg" / "мм сын.бағ.").
 	press := ""
 	if doc.Current.Press > 0 {
-		press = fmt.Sprintf("%d мм рт.ст.", int(doc.Current.Press*0.750062+0.5))
+		press = fmt.Sprintf("%d", int(doc.Current.Press*0.750062+0.5))
 	}
 	b.mu.Lock()
 	b.weatherIc = weatherIconName(doc.Current.Code)
 	b.weatherTmp = fmt.Sprintf("%s%d°", sign, t)
 	b.weatherPres = press
 	b.mu.Unlock()
+}
+
+// monthNames holds the info-bar month names per UI language. Russian uses the
+// genitive case so "18 июля 2026" reads naturally with the day first.
+var monthNames = map[string][]string{
+	LangRU: {"января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"},
+	LangKZ: {"қаңтар", "ақпан", "наурыз", "сәуір", "мамыр", "маусым", "шілде", "тамыз", "қыркүйек", "қазан", "қараша", "желтоқсан"},
+	LangEN: {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"},
+}
+
+// localizedDate renders a date as "18 июля 2026" with the month spelled out in
+// the active UI language, for the info-bar calendar cell.
+func localizedDate(lang string, t time.Time) string {
+	months, ok := monthNames[lang]
+	if !ok {
+		months = monthNames[LangRU]
+	}
+	return fmt.Sprintf("%d %s %d", t.Day(), months[int(t.Month())-1], t.Year())
 }
 
 // curSymbol maps a currency code to its symbol for the compact bar.

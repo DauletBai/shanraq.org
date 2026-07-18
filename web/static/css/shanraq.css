@@ -139,7 +139,10 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* ---------- top strip (scrolls away on scroll) ---------- */
-.topstrip { border-bottom: 1px solid var(--line); background: var(--paper); }
+.topstrip { 
+  border-bottom: 1px solid var(--line); 
+  background: var(--surface-2); 
+}
 .topstrip__inner {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -400,7 +403,11 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .aside__text { color: var(--ink-soft); font-size: var(--step--1); margin: 0; }
 /* newsletter card — red gradient banner (same as the hero carousel) with an
    attached input-group: the field and button share one rounded white pill. */
-.aside__block--subscribe { background: linear-gradient(120deg, #b71c1c, #7a1414); border-color: transparent; color: #fff; }
+.aside__block--subscribe { 
+  background: linear-gradient(120deg, #d32f2f, #aa0000); 
+  border-color: transparent; 
+  color: #fff; 
+}
 .aside__block--subscribe .aside__title { color: #fff; }
 .aside__block--subscribe .aside__text { color: rgba(255, 255, 255, 0.9); }
 .aside__ok { font-weight: 600; }
