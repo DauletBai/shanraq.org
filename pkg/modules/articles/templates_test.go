@@ -30,6 +30,7 @@ func buildTemplates(t *testing.T) *template.Template {
 		"icon":             icon,
 		"roomIcon":         roomIcon,
 		"amenityIcon":      amenityIcon,
+		"catIcon":          catIcon,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(tm time.Time) string {

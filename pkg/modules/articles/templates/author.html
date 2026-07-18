@@ -38,7 +38,7 @@
         {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
         {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
       </a>
-      <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ t $.Lang (printf "cat.%s" .Category) }}</a>
+      <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ catIcon .Category }}{{ t $.Lang (printf "cat.%s" .Category) }}</a>
       <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
       {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
       <div class="post__meta">

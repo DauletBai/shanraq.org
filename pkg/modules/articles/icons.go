@@ -44,6 +44,28 @@ var iconPaths = map[string]string{
 	"thumb_down": `<path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H6.7a2 2 0 0 0-2 1.7l-1.4 9A2 2 0 0 0 5.3 15H10z"/>` +
 		`<path d="M17 2h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3"/>`,
 
+	// ---- real estate marker (a Kazakh yurt crowned with a shanyrak) ----
+	"re_home": `<path d="M3 20h18"/><path d="M4 20C4 13 7.5 10 12 10s8 3 8 10"/>` +
+		`<path d="M9.5 10.3 12 6l2.5 4.3"/><circle cx="12" cy="6" r="1.4"/>` +
+		`<path d="M10 20v-3.5a2 2 0 0 1 4 0V20"/>`,
+
+	// ---- article rubrics (categories) ----
+	"cat_general": `<path d="M4 5h13a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/>` +
+		`<path d="M18 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2"/><path d="M7 9h7M7 12h7M7 15h4"/>`,
+	"cat_sport": `<path d="M8 4h8v3a4 4 0 0 1-8 0z"/><path d="M8 5H5.5a1.5 1.5 0 0 0 1.6 3M16 5h2.5a1.5 1.5 0 0 1-1.6 3"/>` +
+		`<path d="M12 11v3"/><path d="M9 20h6"/><path d="M10 20l.6-4h2.8l.6 4"/>`,
+	"cat_society": `<circle cx="9" cy="9" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/>` +
+		`<path d="M16 6.5a3 3 0 0 1 0 5.6M20.5 20a5 5 0 0 0-3.2-4.7"/>`,
+	"cat_politics": `<path d="M3 9l9-5 9 5"/><path d="M4 9h16"/><path d="M6 9v9M10 9v9M14 9v9M18 9v9"/><path d="M4 20h16"/>`,
+	"cat_economy":  `<path d="M4 18l5-5 3 3 8-9"/><path d="M16 7h5v5"/>`,
+	"cat_culture": `<path d="M12 3a9 9 0 1 0 1 18c1 0 1.5-.8 1.5-1.7 0-1.3 1-2.3 2.3-2.3H19a3 3 0 0 0 3-3.2A9 9 0 0 0 12 3z"/>` +
+		`<circle cx="8" cy="11" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="11" r="1" fill="currentColor" stroke="none"/>`,
+	"cat_technology": `<rect x="7" y="7" width="10" height="10" rx="1.5"/>` +
+		`<path d="M10 7V4M14 7V4M10 20v-3M14 20v-3M7 10H4M7 14H4M20 10h-3M20 14h-3"/>`,
+	"cat_it":      `<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/>`,
+	"cat_opinion": `<path d="M6 8h4v4c0 2-1.5 3.6-4 4.2V14c1.2-.4 2-1.2 2-2H6z"/><path d="M14 8h4v4c0 2-1.5 3.6-4 4.2V14c1.2-.4 2-1.2 2-2h-2z"/>`,
+	"cat_world":   `<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>`,
+
 	// ---- weather (info bar) ----
 	"wx_sun":   `<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/>`,
 	"wx_cloud": `<path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 18z"/>`,
@@ -92,3 +114,12 @@ func roomIcon(roomType string) template.HTML { return icon("room_" + roomType) }
 
 // amenityIcon returns the icon for an amenity key (e.g. "parking").
 func amenityIcon(key string) template.HTML { return icon("am_" + key) }
+
+// catIcon returns the rubric icon for a category key (e.g. "politics"),
+// falling back to the "general" glyph for unknown categories.
+func catIcon(category string) template.HTML {
+	if _, ok := iconPaths["cat_"+category]; !ok {
+		return icon("cat_general")
+	}
+	return icon("cat_" + category)
+}

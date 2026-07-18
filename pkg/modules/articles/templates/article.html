@@ -18,7 +18,7 @@
             <span class="metaic" title="{{ t .Lang "meta.views" }}">{{ icon "eye" }}{{ .Views }}</span>
             {{ if gt .ReadingMin 0 }}<span class="dot">·</span><span class="metaic">{{ icon "clock" }}{{ .ReadingMin }} {{ t .Lang "article.read_min" }}</span>{{ end }}
           </div>
-          <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="display:inline-block;margin:14px 0 4px">{{ t .Lang (printf "cat.%s" .Category) }}</a>
+          <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="margin:14px 0 4px">{{ catIcon .Category }}{{ t .Lang (printf "cat.%s" .Category) }}</a>
           <h1 class="article__title">{{ .Title }}</h1>
           {{ if .Summary }}<p class="article__lead">{{ .Summary }}</p>{{ end }}
           {{ if .AIAuthor }}<p class="notice notice--ai">{{ t .Lang "article.ai_disclaim" }}</p>{{ end }}

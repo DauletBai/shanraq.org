@@ -879,5 +879,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .metaic .ic { font-size: 1.05em; }
 /* amenity icon in the listing chips and the submission checkboxes */
 .amic { display: inline-flex; font-size: 1.1rem; margin-right: 5px; vertical-align: -0.16em; }
+/* rubric icon inside the category label */
+.kicker { display: inline-flex; align-items: center; gap: 5px; }
+.kicker .ic { font-size: 1.2em; }
+/* real-estate (shanyrak) marker before a page heading */
+.h1-ic { display: flex; align-items: center; gap: 10px; }
+.h1-ic__mark { display: inline-flex; color: var(--gold-strong); font-size: 1.6rem; }
 .spec--rooms th .hint { font-weight: 400; }
 
