@@ -49,13 +49,8 @@ jobs:
       - name: Verify no snapshot drift
         run: git diff --exit-code
 
-  smoke:
-    runs-on: ubuntu-latest
-    needs: unit
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: 'stable'
-      - name: Docker smoke
-        run: SMOKE_APP_PORT=18080 SMOKE_DB_PORT=15432 make smoke
+  # NOTE: the Docker smoke test lives in the dedicated docker-smoke.yml
+  # workflow. It used to be duplicated here as a `smoke` job, but that copy
+  # flaked intermittently (Docker resource contention alongside the other
+  # jobs) and produced false CI failures while docker-smoke.yml stayed green.
+  # Keep Docker smoke in one place only.
