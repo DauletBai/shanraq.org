@@ -1,0 +1,56 @@
+{{ define "verify_author" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <section class="studio" style="max-width:640px">
+    <div class="studio__head"><h1>{{ t .Lang "author.verify_title" }}</h1></div>
+    <p class="hint" style="margin-bottom:18px">{{ t .Lang "author.verify_intro" }}</p>
+
+    {{ if .NeedPublish }}<div class="notice notice--warn">{{ t .Lang "author.need_publish" }}</div>{{ end }}
+    {{ if .Notice }}<div class="alert alert--ok">{{ .Notice }}</div>{{ end }}
+    {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
+
+    {{ if .CanPublish }}
+    <div class="notice notice--ok" style="margin-bottom:22px">✓ {{ t .Lang "author.can_publish" }}</div>
+    {{ end }}
+
+    <!-- Step 1: real name -->
+    <div class="field" style="border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px">
+      <h2 style="font-size:1.1rem;margin:0 0 4px">1. {{ t .Lang "author.name" }}</h2>
+      <p class="hint" style="margin-bottom:12px">{{ t .Lang "author.name_hint" }}</p>
+      <form method="post" action="/studio/author/name" class="form">
+        <div class="grid-2">
+          <div class="field"><label>{{ t .Lang "author.first" }}</label><input class="input" name="first_name" value="{{ .First }}" required></div>
+          <div class="field"><label>{{ t .Lang "author.last" }}</label><input class="input" name="last_name" value="{{ .Last }}" required></div>
+        </div>
+        <div style="margin-top:12px"><button class="btn btn--primary" type="submit">{{ t .Lang "author.save" }}</button></div>
+      </form>
+    </div>
+
+    <!-- Step 2: phone -->
+    <div class="field" style="border:1px solid var(--line);border-radius:12px;padding:18px">
+      <h2 style="font-size:1.1rem;margin:0 0 4px">2. {{ t .Lang "author.phone" }}</h2>
+      {{ if .PhoneVerified }}
+      <div class="notice notice--ok">✓ {{ t .Lang "author.phone_verified" }}</div>
+      {{ else }}
+      <p class="hint" style="margin-bottom:12px">{{ t .Lang "author.phone_hint" }}</p>
+      <form method="post" action="/studio/author/phone" class="form" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+        <div class="field" style="flex:1;min-width:200px"><label>{{ t .Lang "author.phone" }}</label><input class="input" name="phone" inputmode="tel" placeholder="+7 700 000 00 00" required></div>
+        <button class="btn btn--ghost" type="submit">{{ t .Lang "author.send_code" }}</button>
+      </form>
+      {{ if .CodeSent }}
+      <form method="post" action="/studio/author/confirm" class="form" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-top:12px">
+        <div class="field" style="flex:1;min-width:200px"><label>{{ t .Lang "author.code" }}</label><input class="input" name="code" inputmode="numeric" autocomplete="one-time-code" required></div>
+        <button class="btn btn--primary" type="submit">{{ t .Lang "author.confirm" }}</button>
+      </form>
+      <p class="hint" style="margin-top:8px">{{ t .Lang "author.code_sent" }}</p>
+      {{ end }}
+      {{ end }}
+    </div>
+
+    <p style="margin-top:22px"><a class="btn btn--ghost btn--sm" href="/studio">← {{ t .Lang "studio.title" }}</a></p>
+  </section>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

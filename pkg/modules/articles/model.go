@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -45,6 +46,8 @@ type Article struct {
 	ID           uuid.UUID
 	AuthorID     uuid.UUID
 	AuthorEmail  string
+	AuthorFirst  string
+	AuthorLast   string
 	Slug         string
 	OriginalLang string
 	Status       string
@@ -107,8 +110,15 @@ func (t *Translation) hasContent() bool {
 	return t != nil && t.Title != "" && t.BodyMD != ""
 }
 
-// AuthorName returns a human display name derived from the author's email.
+// AuthorName returns the author's real first + last name (the required byline
+// for human authors); it falls back to an email-derived name for legacy rows
+// that predate identity verification.
 func (a *Article) AuthorName() string {
+	first := strings.TrimSpace(a.AuthorFirst)
+	last := strings.TrimSpace(a.AuthorLast)
+	if first != "" || last != "" {
+		return strings.TrimSpace(first + " " + last)
+	}
 	return displayName(a.AuthorEmail)
 }
 

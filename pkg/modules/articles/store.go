@@ -159,7 +159,7 @@ func (s *Store) SlugExists(ctx context.Context, slug string) (bool, error) {
 // GetByID loads an article with all translations, scoped to an author.
 func (s *Store) GetByID(ctx context.Context, id, authorID uuid.UUID) (*Article, error) {
 	row := s.db.QueryRow(ctx, `
-		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
+		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
 		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -178,7 +178,7 @@ func (s *Store) GetByID(ctx context.Context, id, authorID uuid.UUID) (*Article, 
 // GetPublishedBySlug loads a published article with all translations.
 func (s *Store) GetPublishedBySlug(ctx context.Context, slug string) (*Article, error) {
 	row := s.db.QueryRow(ctx, `
-		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
+		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
 		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -222,7 +222,7 @@ func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory s
 	offIdx := len(args)
 
 	query := fmt.Sprintf(`
-		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
+		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
 		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -252,7 +252,7 @@ func (s *Store) ListPublishedByAuthor(ctx context.Context, authorID string, limi
 		return nil, fmt.Errorf("author id: %w", err)
 	}
 	rows, err := s.db.Query(ctx, `
-		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
+		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
 		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -273,7 +273,7 @@ func (s *Store) ListPublishedByAuthor(ctx context.Context, authorID string, limi
 // ListByAuthor returns all of an author's articles, newest first.
 func (s *Store) ListByAuthor(ctx context.Context, authorID uuid.UUID) ([]*Article, error) {
 	rows, err := s.db.Query(ctx, `
-		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
+		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
 		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -382,7 +382,7 @@ func (s *Store) attachTranslations(ctx context.Context, arts []*Article) ([]*Art
 
 func scanArticle(row pgx.Row) (*Article, error) {
 	var a Article
-	err := row.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.Slug, &a.OriginalLang, &a.Status, &a.Category, &a.Subcategory,
+	err := row.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.AuthorFirst, &a.AuthorLast, &a.Slug, &a.OriginalLang, &a.Status, &a.Category, &a.Subcategory,
 		&a.CoverURL, &a.Score, &a.ViewsCount, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -399,7 +399,7 @@ func scanArticles(rows pgx.Rows) ([]*Article, error) {
 	var out []*Article
 	for rows.Next() {
 		var a Article
-		err := rows.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.Slug, &a.OriginalLang, &a.Status, &a.Category, &a.Subcategory,
+		err := rows.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.AuthorFirst, &a.AuthorLast, &a.Slug, &a.OriginalLang, &a.Status, &a.Category, &a.Subcategory,
 			&a.CoverURL, &a.Score, &a.ViewsCount, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("scan article row: %w", err)

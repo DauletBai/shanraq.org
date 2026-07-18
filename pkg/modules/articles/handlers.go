@@ -1043,6 +1043,12 @@ func (m *Module) handleUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
+	// Articles carry a real-name byline: publishing requires a verified author
+	// identity (real name + verified phone).
+	if authorID, ok := m.authorID(r); ok && !m.auth.CanPublish(r.Context(), authorID) {
+		http.Redirect(w, r, "/studio/author?need=publish", http.StatusSeeOther)
+		return
+	}
 	m.transition(w, r, "published", "/studio")
 }
 

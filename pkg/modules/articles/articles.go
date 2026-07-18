@@ -172,6 +172,10 @@ func (m *Module) browserRoutes(r chi.Router) {
 	r.Group(func(r chi.Router) {
 		r.Use(m.auth.RequireSession("/studio/login", "user", "operator", "admin"))
 		r.Get("/studio", m.handleDashboard)
+		r.Get("/studio/author", m.handleAuthorVerifyPage)
+		r.Post("/studio/author/name", m.handleAuthorName)
+		r.Post("/studio/author/phone", m.handleAuthorPhone)
+		r.Post("/studio/author/confirm", m.handleAuthorConfirm)
 		r.Get("/studio/new", m.handleEditorNew)
 		r.Post("/studio/new", m.handleCreate)
 		r.Get("/studio/a/{id}", m.handleEditorEdit)
