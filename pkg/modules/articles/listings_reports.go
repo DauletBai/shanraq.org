@@ -7,9 +7,36 @@ import (
 	"github.com/google/uuid"
 )
 
-// reportAutoHideThreshold is how many distinct users must report a listing
-// before it is auto-hidden for review.
-const reportAutoHideThreshold = 3
+// Auto-hide policy for reported listings. Instead of a flat report count, we
+// judge reports as a share of the audience: a listing seen by few people but
+// reported by a meaningful fraction of them is far more suspicious than one
+// with the same absolute reports spread over a huge audience.
+const (
+	// reportMinReports is a floor: never auto-hide below this many distinct
+	// reports, so a tiny sample (1–2 viewers) can't hide a listing.
+	reportMinReports = 3
+	// reportHidePercent auto-hides once reports reach this share of views.
+	reportHidePercent = 15
+	// reportHardCount always hides at this many reports regardless of share,
+	// to catch abuse on very high-traffic listings.
+	reportHardCount = 12
+)
+
+// shouldAutoHide applies the percentage-of-audience policy.
+func shouldAutoHide(reports, views int) bool {
+	if reports < reportMinReports {
+		return false
+	}
+	if reports >= reportHardCount {
+		return true
+	}
+	// reports / max(views,1) >= reportHidePercent%  (integer-safe form)
+	denom := views
+	if denom < 1 {
+		denom = 1
+	}
+	return reports*100 >= reportHidePercent*denom
+}
 
 // Flagged reports whether a listing was hidden pending review (e.g. after
 // enough reports of misleading photos).
@@ -42,11 +69,15 @@ func (s *ListingStore) Report(ctx context.Context, listingID, reporterID uuid.UU
 		listingID, reporterID, reason); err != nil {
 		return 0, false, fmt.Errorf("insert report: %w", err)
 	}
+	var views int
 	if err = s.db.QueryRow(ctx,
-		`SELECT count(*) FROM listing_reports WHERE listing_id=$1`, listingID).Scan(&count); err != nil {
+		`SELECT
+		    (SELECT count(*) FROM listing_reports WHERE listing_id=$1),
+		    (SELECT COALESCE(views_count, 0) FROM listings WHERE id=$1)`,
+		listingID).Scan(&count, &views); err != nil {
 		return 0, false, fmt.Errorf("count reports: %w", err)
 	}
-	if count >= reportAutoHideThreshold {
+	if shouldAutoHide(count, views) {
 		tag, uerr := s.db.Exec(ctx,
 			`UPDATE listings SET status='flagged' WHERE id=$1 AND status='published'`, listingID)
 		if uerr != nil {
