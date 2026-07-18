@@ -144,13 +144,13 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* ---------- sticky menu bar (only this sticks) ---------- */
-/* Red bar: brand red on light (#d32f2f) and dark (#ef5350) via --gold.
-   Menu/subbar text is white-on-red, so its colors are literal here. */
+/* Red bar: the same brand red (#d32f2f) in both themes; the dark-theme red
+   (#ef5350) came out too light here. Menu/subbar text is white-on-red. */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--gold);
+  background: #d32f2f;
   border-bottom: 1px solid rgba(0, 0, 0, 0.14);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
@@ -185,7 +185,7 @@ a.icon-btn, a.icon-btn:hover { text-decoration: none; color: var(--ink-soft); }
   background: rgba(255, 255, 255, 0.14); border: 1px solid transparent;
 }
 .subbar__item:hover { color: #fff; text-decoration: none; background: rgba(255, 255, 255, 0.26); }
-.subbar__item.is-active { background: #fff; color: var(--gold-strong); }
+.subbar__item.is-active { background: #fff; color: #b71c1c; }
 a.kicker:hover { text-decoration: none; color: var(--gold); }
 
 /* ---------- buttons ---------- */
@@ -427,11 +427,13 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .alert--error { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
 
 /* ---------- footer ---------- */
-.site-footer { border-top: 1px solid var(--line-strong); padding: 34px 0; margin-top: 20px; color: var(--muted); font-size: var(--step--1); background: var(--surface-2); }
+/* Footer: black in both themes, light text tuned for the dark ground. */
+.site-footer { border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 34px 0; margin-top: 20px; color: rgba(255, 255, 255, 0.6); font-size: var(--step--1); background: #131313; }
 .site-footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+.site-footer a { color: rgba(255, 255, 255, 0.82); }
+.site-footer a:hover { color: #ef5350; text-decoration: none; }
 .foot-nav { display: flex; gap: 20px; flex-wrap: wrap; }
-.foot-nav a { color: var(--ink-soft); font-weight: 600; }
-.foot-nav a:hover { color: var(--gold-strong); text-decoration: none; }
+.foot-nav a { font-weight: 600; }
 
 /* info pages (about / guide / support) */
 .page { max-width: 760px; margin: 0 auto; padding: 34px 0 70px; }
