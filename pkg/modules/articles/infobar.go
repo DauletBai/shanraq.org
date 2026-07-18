@@ -37,19 +37,21 @@ type SocialLink struct {
 
 // InfoBarData is the per-request snapshot handed to templates.
 type InfoBarData struct {
-	Today       string
-	WeatherIcon string // icon key, e.g. "wx_sun" ("" when unavailable)
-	WeatherTemp string // e.g. "+25°"
-	Rates       []Rate // empty when unavailable
-	Social      []SocialLink
+	Today        string
+	WeatherIcon  string // icon key, e.g. "wx_sun" ("" when unavailable)
+	WeatherTemp  string // e.g. "+25°"
+	WeatherPress string // atmospheric pressure, e.g. "742 мм" ("" when unavailable)
+	Rates        []Rate // empty when unavailable
+	Social       []SocialLink
 }
 
 // InfoBar fetches and caches the weather and exchange rates in the background.
 type InfoBar struct {
-	mu         sync.RWMutex
-	rates      []Rate
-	weatherIc  string
-	weatherTmp string
+	mu          sync.RWMutex
+	rates       []Rate
+	weatherIc   string
+	weatherTmp  string
+	weatherPres string
 
 	httpc    *http.Client
 	log      *zap.Logger
@@ -88,7 +90,7 @@ func NewInfoBar(log *zap.Logger, social []SocialLink) *InfoBar {
 func (b *InfoBar) Snapshot(today string) InfoBarData {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
-	return InfoBarData{Today: today, WeatherIcon: b.weatherIc, WeatherTemp: b.weatherTmp, Rates: b.rates, Social: b.social}
+	return InfoBarData{Today: today, WeatherIcon: b.weatherIc, WeatherTemp: b.weatherTmp, WeatherPress: b.weatherPres, Rates: b.rates, Social: b.social}
 }
 
 // Run refreshes weather every 30 min and rates every ~6 h until ctx is done.
@@ -183,7 +185,7 @@ func (b *InfoBar) refreshRates(ctx context.Context) {
 
 // refreshWeather pulls the current temperature and condition from open-meteo.
 func (b *InfoBar) refreshWeather(ctx context.Context) {
-	url := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%.4f&longitude=%.4f&current=temperature_2m,weather_code&timezone=auto", b.lat, b.lon)
+	url := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%.4f&longitude=%.4f&current=temperature_2m,weather_code,pressure_msl&timezone=auto", b.lat, b.lon)
 	body, err := b.get(ctx, url)
 	if err != nil {
 		b.log.Warn("infobar weather fetch", zap.Error(err))
@@ -191,8 +193,9 @@ func (b *InfoBar) refreshWeather(ctx context.Context) {
 	}
 	var doc struct {
 		Current struct {
-			Temp float64 `json:"temperature_2m"`
-			Code int     `json:"weather_code"`
+			Temp  float64 `json:"temperature_2m"`
+			Code  int     `json:"weather_code"`
+			Press float64 `json:"pressure_msl"` // hPa
 		} `json:"current"`
 	}
 	if err := json.Unmarshal(body, &doc); err != nil {
@@ -204,9 +207,15 @@ func (b *InfoBar) refreshWeather(ctx context.Context) {
 	if t > 0 {
 		sign = "+"
 	}
+	// Show pressure in mm Hg (the unit Kazakhstani forecasts use): hPa × 0.750062.
+	press := ""
+	if doc.Current.Press > 0 {
+		press = fmt.Sprintf("%d мм", int(doc.Current.Press*0.750062+0.5))
+	}
 	b.mu.Lock()
 	b.weatherIc = weatherIconName(doc.Current.Code)
 	b.weatherTmp = fmt.Sprintf("%s%d°", sign, t)
+	b.weatherPres = press
 	b.mu.Unlock()
 }
 

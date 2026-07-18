@@ -5,7 +5,7 @@
 <main class="container">
   {{ if eq .Reported "hidden" }}<p class="notice notice--warn" style="margin-top:20px">{{ t .Lang "re.report_hidden" }}</p>{{ end }}
   <div class="studio__head" style="margin-top:24px">
-    <h1 class="h1-ic"><span class="h1-ic__mark">{{ icon "re_home" }}</span> {{ t .Lang "nav.realestate" }}</h1>
+    <h1 class="h1-ic"><span class="h1-ic__mark h1-ic__mark--logo"><img class="h1-logo" src="/static/brand/shanraq.svg" alt="" aria-hidden="true"></span> {{ t .Lang "nav.realestate" }}</h1>
     <div class="re-actions">
       <button type="button" class="btn btn--ghost" data-toggle="#re-search">⌕ {{ t .Lang "re.find" }}</button>
       <button type="button" class="btn btn--ghost" data-toggle="#re-map">{{ t .Lang "re.map" }}</button>

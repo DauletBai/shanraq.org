@@ -57,7 +57,7 @@
 <div class="infobar">
   <div class="container infobar__grid">
     <div class="infobar__cell"><span class="metaic">{{ icon "calendar" }}<span class="wx__temp">{{ .Info.Today }}</span></span></div>
-    <div class="infobar__cell">{{ if .Info.WeatherTemp }}<span class="metaic wx">{{ icon .Info.WeatherIcon }}<span class="wx__temp">{{ .Info.WeatherTemp }}</span></span>{{ else }}<span class="infobar__muted">—</span>{{ end }}</div>
+    <div class="infobar__cell">{{ if .Info.WeatherTemp }}<span class="metaic wx">{{ icon .Info.WeatherIcon }}<span class="wx__temp">{{ .Info.WeatherTemp }}</span>{{ if .Info.WeatherPress }}<span class="wx__press">{{ .Info.WeatherPress }}</span>{{ end }}</span>{{ else }}<span class="infobar__muted">—</span>{{ end }}</div>
     <div class="infobar__cell infobar__rates">
       {{ range .Info.Rates }}<span class="rate"><span class="rate__cur">{{ curSymbol .Code }}</span> <span class="rate__num">{{ .Main }}<span class="rate__last">{{ .Last }}</span></span>{{ if eq .Dir "up" }} <span class="rate__arr rate--up">▲</span>{{ else if eq .Dir "down" }} <span class="rate__arr rate--down">▼</span>{{ end }}</span>{{ else }}<span class="infobar__muted">$ € ₽</span>{{ end }}
     </div>
@@ -111,7 +111,7 @@
       {{ range categories }}
       <a class="menu__item{{ if eq . $.ActiveCat }} is-active{{ end }}" href="/?lang={{ $.Lang }}&cat={{ . }}">{{ catIcon . }}{{ t $.Lang (printf "cat.%s" .) }}</a>
       {{ end }}
-      <a class="menu__item{{ if eq .ActiveCat "realestate" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}">{{ icon "re_home" }}{{ t .Lang "nav.realestate" }}</a>
+      <a class="menu__item{{ if eq .ActiveCat "realestate" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}"><img class="menu__logo" src="/static/brand/shanraq-light.svg" alt="" aria-hidden="true">{{ t .Lang "nav.realestate" }}</a>
     </div>
     {{ with subcats .ActiveCat }}
     <div class="subbar">

@@ -121,6 +121,7 @@ img { max-width: 100%; height: auto; display: block; }
 .rate__arr.rate--up { color: var(--teal); }
 .rate__arr.rate--down { color: var(--danger); }
 .wx__temp { color: var(--ink); }                              /* temperature digits — black/white */
+.wx__press { color: var(--muted); margin-left: 6px; font-variant-numeric: tabular-nums; } /* atmospheric pressure — secondary */
 .infobar__social { gap: 13px; }
 .infobar__social .soc { display: inline-flex; color: var(--gold-strong); }
 .infobar__social .soc:hover { color: var(--gold); }
@@ -222,6 +223,9 @@ a.icon-btn, a.icon-btn:hover { text-decoration: none; color: var(--ink-soft); }
 .menu__item .ic, .subbar__item .ic { color: currentColor; font-size: 1.15em; }
 .menu__item:hover { color: #fff; text-decoration: none; }
 .menu__item.is-active { color: #fff; border-bottom-color: #fff; }
+/* the real-estate rubric uses the shanyrak brand mark (white variant) rather
+   than a line icon — the logo already stands for the hearth/home. */
+.menu__logo { height: 1.7em; width: auto; margin-right: 2px; flex: none; }
 
 /* subcategory bar (submenu of the active category) — chips on the red bar */
 .subbar { 
@@ -239,12 +243,19 @@ a.icon-btn, a.icon-btn:hover { text-decoration: none; color: var(--ink-soft); }
   background: var(--surface-2); border: 1px solid var(--line);
 }
 .subbar__item:hover { color: var(--gold-strong); text-decoration: none; border-color: var(--line-strong); }
-.subbar__item.is-active { background: var(--gold); color: #fff; border-color: transparent; }
+.subbar__item.is-active { 
+  background: var(--gold); 
+  color: #fff; 
+  border-color: transparent; 
+}
 /* Navbar context: white chips on the red bar. */
 .navbar .subbar { border-top-color: rgba(255, 255, 255, 0.3); }
 .navbar .subbar__item { color: rgba(255, 255, 255, 0.85); background: rgba(255, 255, 255, 0.14); border-color: transparent; }
 .navbar .subbar__item:hover { color: #fff; background: rgba(255, 255, 255, 0.26); }
-.navbar .subbar__item.is-active { background: #fff; color: #b71c1c; }
+.navbar .subbar__item.is-active { 
+  background: rgba(255, 255, 255, 0.85); 
+  color: #b71c1c; 
+}
 a.kicker:hover { text-decoration: none; color: var(--gold); }
 
 /* ---------- buttons ---------- */
@@ -300,8 +311,11 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .adslide__text { font-family: var(--serif); font-size: var(--step-3); font-weight: 700; line-height: 1.2; margin: 0 0 16px; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35); }
 /* fixed dark-red label so it stays legible on the white button in any theme */
 .adslide .btn--primary,
-:root[data-theme="dark"] .adslide .btn--primary { background: #fff; color: #b71c1c; }
-.adslide .btn--primary:hover { background: #f1f1f1; }
+:root[data-theme="dark"] .adslide .btn--primary { 
+  background: rgba(255, 255, 255, 0.85); 
+  color: #b71c1c; 
+}
+.adslide .btn--primary:hover { background: #fff; }
 .adcarousel__dots { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
 .adcarousel__dots button { width: 9px; height: 9px; border-radius: 50%; border: none; background: rgba(255, 255, 255, 0.5); cursor: pointer; padding: 0; }
 .adcarousel__dots button.is-active { background: #fff; }
@@ -788,7 +802,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 
 /* ---- Sidebar "latest news" carousel (replaces the old ad slots) ---- */
-.adslide--news { background: linear-gradient(135deg, var(--gold-strong), #7a1414); }
+.adslide--news { 
+  background: linear-gradient(135deg, var(--gold), #aa0000); 
+}
 .adslide--news:hover { text-decoration: none; }
 .adslide--news .adslide__text {
   font-size: var(--step-1); font-weight: 700; line-height: 1.28; color: #fff;
@@ -931,6 +947,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* real-estate (shanyrak) marker before a page heading */
 .h1-ic { display: flex; align-items: center; gap: 10px; }
 .h1-ic__mark { display: inline-flex; color: var(--gold-strong); font-size: 1.6rem; }
+/* on the light listings heading, the shanyrak mark (red variant) replaces the icon */
+.h1-ic__mark--logo { align-items: center; }
+.h1-logo { height: 2.1rem; width: auto; display: block; }
 /* row of amenity icons on a listing card */
 .post__amen { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 8px; }
 .post__amen .amic { margin: 0; font-size: 1.2rem; }
