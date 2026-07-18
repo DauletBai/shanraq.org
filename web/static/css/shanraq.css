@@ -874,5 +874,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* inline meta icon (views, date, reading time, comments): red glyph + value */
 .metaic { display: inline-flex; align-items: center; gap: 4px; }
 .metaic .ic { font-size: 1.05em; }
+/* amenity icon in the listing chips and the submission checkboxes */
+.amic { display: inline-flex; font-size: 1.1rem; margin-right: 5px; vertical-align: -0.16em; }
 .spec--rooms th .hint { font-weight: 400; }
 

@@ -76,7 +76,7 @@
         <div class="amenities">
           <h3 class="amenities__title">{{ t .Lang "re.amenities" }}</h3>
           <ul class="amenities__list">
-            {{ range amenities }}{{ if $.L.HasAmenity . }}<li>{{ t $.Lang (printf "re.am_%s" .) }}</li>{{ end }}{{ end }}
+            {{ range amenities }}{{ if $.L.HasAmenity . }}<li><span class="amic">{{ amenityIcon . }}</span> {{ t $.Lang (printf "re.am_%s" .) }}</li>{{ end }}{{ end }}
           </ul>
         </div>
         {{ end }}

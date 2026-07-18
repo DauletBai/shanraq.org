@@ -101,7 +101,7 @@
         <label>{{ t .Lang "re.amenities" }} {{ template "fhelp" (t .Lang "re.help_amenities") }}</label>
         <div class="amgrid">
           {{ range amenities }}
-          <label class="amcheck"><input type="checkbox" name="amenity" value="{{ . }}"{{ if $.Values.HasAmenity . }} checked{{ end }}> {{ t $.Lang (printf "re.am_%s" .) }}</label>
+          <label class="amcheck"><input type="checkbox" name="amenity" value="{{ . }}"{{ if $.Values.HasAmenity . }} checked{{ end }}> <span class="amic">{{ amenityIcon . }}</span> {{ t $.Lang (printf "re.am_%s" .) }}</label>
           {{ end }}
         </div>
       </div>

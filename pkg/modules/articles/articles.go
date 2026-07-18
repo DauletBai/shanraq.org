@@ -90,6 +90,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"curSymbol":        curSymbol,
 		"icon":             icon,
 		"roomIcon":         roomIcon,
+		"amenityIcon":      amenityIcon,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(t time.Time) string {
