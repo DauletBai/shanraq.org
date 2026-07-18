@@ -98,8 +98,7 @@
         <div class="carousel__track">
           {{ range $i, $ad := .Ads }}
           <a class="adslide adslide--ad{{ if eq $i 0 }} is-active{{ end }}" href="{{ $ad.URL }}" rel="nofollow sponsored noopener">
-            <span class="ad__label">{{ t $.Lang "ad.badge" }}</span>
-            <span class="ad__img"><img src="{{ $ad.Image }}" alt="" loading="lazy"></span>
+            <span class="ad__img"><span class="ad__label">{{ t $.Lang "ad.badge" }}</span><img src="{{ $ad.Image }}" alt="" loading="lazy"></span>
             <span class="ad__title">{{ $ad.Title }}</span>
             <span class="ad__price">{{ $ad.Price }}</span>
             <span class="ad__desc">{{ $ad.Desc }}</span>

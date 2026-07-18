@@ -928,11 +928,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 .adcarousel--ad .adslide:hover { text-decoration: none; }
 .ad__label {
-  align-self: flex-start; margin: 12px 14px 0; padding: 2px 8px; border-radius: 999px;
+  position: absolute; top: 9px; left: 9px; z-index: 2; padding: 2px 8px; border-radius: 999px;
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase;
-  color: #fff; background: rgba(255, 255, 255, 0.22);
+  color: #fff; background: rgba(0, 0, 0, 0.5);
 }
-.ad__img { display: block; margin: 10px 14px 14px; padding: 6px 14px; border-radius: 10px; background: linear-gradient(135deg, #eef2f7, #dbe4ef); }
+.ad__img { position: relative; display: block; margin: 12px 14px 14px; padding: 6px 14px; border-radius: 10px; background: linear-gradient(135deg, #eef2f7, #dbe4ef); }
 .ad__img img { display: block; width: 100%; }
 .ad__title { padding: 0 16px; font-weight: 700; font-size: var(--step-0); line-height: 1.25; color: #fff; }
 .ad__price { padding: 3px 16px 0; color: #ffdf7e; font-weight: 800; font-size: var(--step-1); font-variant-numeric: tabular-nums; }
@@ -956,7 +956,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .layout--solo { grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 900px) {
   .layout--solo { grid-template-columns: minmax(0, 1fr); }
-  .toc-box { position: sticky; top: 92px; }
+  /* pin the whole sidebar (ad + TOC) so it stays in view instead of scrolling
+     away with the article body. */
+  .article-aside { position: sticky; top: 92px; align-self: start; }
 }
 
 /* ---- Reading-depth funnel (author dashboard) ---- */
