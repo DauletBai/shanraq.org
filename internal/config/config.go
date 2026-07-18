@@ -22,6 +22,16 @@ type Config struct {
 	AI            AIConfig            `mapstructure:"ai"`
 	Syndicate     SyndicateConfig     `mapstructure:"syndicate"`
 	Media         MediaConfig         `mapstructure:"media"`
+	Social        SocialConfig        `mapstructure:"social"`
+}
+
+// SocialConfig holds public social-profile URLs shown in the top info bar.
+// Empty entries are hidden.
+type SocialConfig struct {
+	Telegram  string `mapstructure:"telegram"`
+	Instagram string `mapstructure:"instagram"`
+	YouTube   string `mapstructure:"youtube"`
+	Facebook  string `mapstructure:"facebook"`
 }
 
 // MediaConfig controls user media (images today; video via third-party embeds).
@@ -211,6 +221,13 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("media.max_upload_bytes", 10<<20) // 10 MiB
 	v.SetDefault("media.max_dimension", 2000)
 	v.SetDefault("media.watermark", true)
+
+	// Registered so viper's AutomaticEnv binds SHANRAQ_SOCIAL_* (nested keys are
+	// only read from the environment once known). Empty = the icon is hidden.
+	v.SetDefault("social.telegram", "")
+	v.SetDefault("social.instagram", "")
+	v.SetDefault("social.youtube", "")
+	v.SetDefault("social.facebook", "")
 }
 
 // PublicBase returns the canonical public origin (no trailing slash), used for

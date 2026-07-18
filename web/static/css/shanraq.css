@@ -106,6 +106,31 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--gold-strong);
 }
 
+/* ---------- info bar (date · weather · rates · social) ---------- */
+.infobar { background: var(--surface-2); border-bottom: 1px solid var(--line); font-size: 0.8rem; color: var(--ink-soft); }
+.infobar__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: center; gap: 10px; padding: 6px 22px; }
+.infobar__cell { display: flex; align-items: center; gap: 8px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.infobar__cell:nth-child(3) { justify-content: center; }
+.infobar__cell:nth-child(4) { justify-content: flex-end; }
+.infobar__ic { font-size: 0.95rem; line-height: 1; }
+.infobar__muted { color: var(--muted); }
+.infobar__rates { gap: 14px; font-variant-numeric: tabular-nums; }
+.infobar__rates .rate { font-weight: 600; }
+.rate--up { color: var(--teal); }
+.rate--down { color: var(--danger); }
+.infobar__social { gap: 13px; }
+.infobar__social .soc { display: inline-flex; color: var(--ink-soft); }
+.infobar__social .soc:hover { color: var(--gold-strong); }
+.infobar__social .soc svg { width: 17px; height: 17px; display: block; }
+@media (max-width: 640px) {
+  /* four cells fold into 2×2 on a vertical phone */
+  .infobar { font-size: 0.72rem; }
+  .infobar__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3px 10px; padding: 5px 16px; }
+  .infobar__cell:nth-child(3) { justify-content: flex-start; }
+  .infobar__cell:nth-child(4) { justify-content: flex-end; }
+  .infobar__rates { gap: 8px; }
+}
+
 /* ---------- top strip (scrolls away on scroll) ---------- */
 .topstrip { border-bottom: 1px solid var(--line); background: var(--paper); }
 .topstrip__inner {

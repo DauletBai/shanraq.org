@@ -46,6 +46,7 @@ type Module struct {
 	mailer    Mailer
 	tmpl      *template.Template
 	validator *validate.Validator
+	infobar   *InfoBar
 }
 
 // New builds the articles module. It depends on auth (browser sessions), ai
@@ -69,6 +70,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
 	m.validator = validate.New()
+	m.infobar = NewInfoBar(rt.Logger, socialLinks(rt.Config.Social))
 
 	funcs := template.FuncMap{
 		"t":                T,
@@ -85,6 +87,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"money":            money,
 		"ogLocale":         ogLocale,
 		"htmlLang":         htmlLang,
+		"curSymbol":        curSymbol,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(t time.Time) string {

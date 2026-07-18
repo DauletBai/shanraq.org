@@ -52,3 +52,13 @@ syndicate:
     enabled: false
     bot_token: ""          # from @BotFather
     chat_id: ""            # @your_channel or -100XXXXXXXXXX
+
+# Public social profiles shown in the top info bar. Empty = the icon is hidden.
+# (Weather is fetched server-side from open-meteo for Almaty; exchange rates
+#  from the National Bank of Kazakhstan feed — both cached, both degrade to a
+#  placeholder if the source is unreachable.)
+social:
+  telegram: ""    # e.g. https://t.me/shanraq
+  instagram: ""
+  youtube: ""
+  facebook: ""

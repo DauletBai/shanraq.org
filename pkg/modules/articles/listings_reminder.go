@@ -17,6 +17,9 @@ const reminderInterval = 6 * time.Hour
 // free window is about to end (within ~2 days).
 func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
 	go m.reminderLoop(ctx)
+	if m.infobar != nil {
+		go m.infobar.Run(ctx) // background weather + exchange-rate refresher
+	}
 	return nil
 }
 

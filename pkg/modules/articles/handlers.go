@@ -34,6 +34,9 @@ type Base struct {
 	// SidebarNews feeds the "latest news" carousel in the sidebar.
 	SidebarNews []FeedItem
 
+	// Info feeds the top info bar (date, weather, rates, social links).
+	Info InfoBarData
+
 	// SEO fields (populated by base(); pages may override).
 	SiteURL string        // absolute origin, e.g. https://shanraq.org
 	Path    string        // request path, no query
@@ -60,6 +63,7 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Desc:      T(lang, "seo.site_desc"),
 		OGImage:   site + "/static/brand/shanraq.svg",
 		OGType:    "website",
+		Info:      m.infobar.Snapshot(time.Now().Format("02.01.06")),
 	}
 }
 
