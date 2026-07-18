@@ -27,7 +27,8 @@ type ListingsPage struct {
 	GeoNodeID  string
 	Searching  bool // any filter beyond deal/type is active → open the panel
 	Count      int
-	Reported   string // "hidden" flash after a report auto-hid a listing
+	Facets     ListingFacets // active-listing counts per deal/type, for filter badges
+	Reported   string        // "hidden" flash after a report auto-hid a listing
 }
 
 // ListingFormPage backs the submission form.
@@ -84,6 +85,11 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 	page.ActiveCat = "realestate"
 	page.Listings = items
 	page.Count = len(items)
+	if facets, ferr := m.listings.Facets(r.Context()); ferr != nil {
+		m.rt.Logger.Warn("listings facets", zap.Error(ferr)) // badges degrade to 0, page still renders
+	} else {
+		page.Facets = facets
+	}
 	page.SidebarNews = m.latestNews(r, lang, 6)
 	if isDealType(deal) {
 		page.ActiveDeal = deal

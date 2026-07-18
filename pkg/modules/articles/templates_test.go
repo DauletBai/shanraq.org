@@ -86,12 +86,14 @@ func TestTemplatesExecute(t *testing.T) {
 			}, Articles: []StudioRow{{ID: "id", Slug: "s", Title: "T", Status: "published", Updated: now, Views: 4, Langs: []string{LangRU}}}}},
 			{"studio_editor", EditorPage{Base: base, IsNew: true, OriginalLang: LangRU, Category: "society", Status: "draft", Fields: emptyFields()}},
 			{"studio_editor", EditorPage{Base: base, IsNew: false, ArticleID: "id", OriginalLang: LangKZ, Category: "politics", Status: "published", Fields: emptyFields(), AIEnabled: true, Notice: "N"}},
-			{"listings", ListingsPage{Base: base, ActiveDeal: "sale", ActiveType: "apartment", Listings: []*Listing{{
-				ID: "id", DealType: "sale", PropertyType: "apartment", Country: "Казахстан", Region: "Алматы", City: "Алматы",
-				Price: 18000000, Area: 72, Rooms: 3, Title: "Демо объявление трехкомнатной квартиры", PromotedUntil: &now,
-				Images:    []string{"/static/demo/rooms/living.svg", "/static/demo/rooms/kitchen.svg", "/static/demo/rooms/bedroom.svg"},
-				Amenities: []string{"furniture", "elevator", "internet"},
-				RoomSpecs: []RoomSpec{{Type: "living", Area: 20}, {Type: "bedroom", Area: 15}, {Type: "bedroom", Area: 12}, {Type: "kitchen", Area: 7}, {Type: "bathroom", Area: 4}}}}}},
+			{"listings", ListingsPage{Base: base, ActiveDeal: "sale", ActiveType: "apartment",
+				Facets: ListingFacets{Total: 6, Deal: map[string]int{"sale": 4, "rent": 2}, Type: map[string]int{"apartment": 2, "house": 1, "land": 1, "commercial": 1, "dacha": 1}},
+				Listings: []*Listing{{
+					ID: "id", DealType: "sale", PropertyType: "apartment", Country: "Казахстан", Region: "Алматы", City: "Алматы",
+					Price: 18000000, Area: 72, Rooms: 3, Title: "Демо объявление трехкомнатной квартиры", PromotedUntil: &now,
+					Images:    []string{"/static/demo/rooms/living.svg", "/static/demo/rooms/kitchen.svg", "/static/demo/rooms/bedroom.svg"},
+					Amenities: []string{"furniture", "elevator", "internet"},
+					RoomSpecs: []RoomSpec{{Type: "living", Area: 20}, {Type: "bedroom", Area: 15}, {Type: "bedroom", Area: 12}, {Type: "kitchen", Area: 7}, {Type: "bathroom", Area: 4}}}}}},
 			{"listings", ListingsPage{Base: base}}, // empty state
 			{"listing_new", ListingFormPage{Base: base, Values: ListingInput{DealType: "rent", PropertyType: "house", Country: "Казахстан"}, Error: "err"}},
 			{"listing_view", ListingViewPage{Base: base, L: &Listing{

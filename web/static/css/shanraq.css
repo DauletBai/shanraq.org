@@ -8,7 +8,7 @@
   --ink: #454545;
   --ink-soft: #454545;
   --muted: #8c8c8c;
-  --line: #e8e6e2;
+  --line: #dddddd;
   --line-strong: #dad7d1;
   --gold: #d32f2f;         /* brand red — life, community, circulation */
   --gold-strong: #b71c1c;
@@ -44,7 +44,7 @@
   --ink: #d8d6d2;
   --ink-soft: #bebbb6;
   --muted: #8f8c86;
-  --line: #3a3937;
+  --line: #454545;
   --line-strong: #4a4844;
   --gold: #ef5350;
   --gold-strong: #ff7a72;
@@ -247,11 +247,20 @@ a.icon-btn, a.icon-btn:hover { text-decoration: none; color: var(--ink-soft); }
   background: var(--surface-2); border: 1px solid var(--line);
 }
 .subbar__item:hover { color: var(--gold-strong); text-decoration: none; border-color: var(--line-strong); }
-.subbar__item.is-active { 
-  background: var(--gold); 
-  color: #fff; 
-  border-color: transparent; 
+.subbar__item.is-active {
+  background: var(--gold);
+  color: #fff;
+  border-color: transparent;
 }
+/* count badge inside a filter chip (real-estate categories) */
+.subbar__badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 17px; height: 17px; padding: 0 5px; border-radius: 999px;
+  background: var(--line); color: var(--ink-soft);
+  font-size: 0.66rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums;
+}
+.subbar__item:hover .subbar__badge { background: var(--line-strong); }
+.subbar__item.is-active .subbar__badge { background: rgba(255, 255, 255, 0.3); color: #fff; }
 /* Navbar context: white chips on the red bar. */
 .navbar .subbar { border-top-color: rgba(255, 255, 255, 0.3); }
 .navbar .subbar__item { color: rgba(255, 255, 255, 0.85); background: rgba(255, 255, 255, 0.14); border-color: transparent; }
@@ -381,8 +390,11 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .section-head h2 { font-size: var(--step-2); }
 .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 30px 34px; }
 .post {
-  display: flex; flex-direction: column; gap: 9px;
-  padding-bottom: 24px; border-bottom: 1px solid var(--line);
+  display: flex; 
+  flex-direction: column; 
+  gap: 9px;
+  padding-bottom: 24px; 
+  border-bottom: 1px solid var(--line);
 }
 .post__title { font-size: var(--step-2); margin: 2px 0; }
 .post__title a { color: var(--ink); }

@@ -58,12 +58,12 @@
   </div>
 
   <div class="subbar" style="border:none;margin-bottom:6px">
-    <a class="subbar__item{{ if eq .ActiveDeal "" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}{{ if .ActiveType }}&type={{ .ActiveType }}{{ end }}">{{ t .Lang "nav.all" }}</a>
-    {{ range dealTypes }}<a class="subbar__item{{ if eq . $.ActiveDeal }} is-active{{ end }}" href="/listings?lang={{ $.Lang }}&deal={{ . }}{{ if $.ActiveType }}&type={{ $.ActiveType }}{{ end }}">{{ t $.Lang (printf "re.deal_%s" .) }}</a>{{ end }}
+    <a class="subbar__item{{ if eq .ActiveDeal "" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}{{ if .ActiveType }}&type={{ .ActiveType }}{{ end }}">{{ t .Lang "nav.all" }}<span class="subbar__badge">{{ .Facets.Total }}</span></a>
+    {{ range dealTypes }}<a class="subbar__item{{ if eq . $.ActiveDeal }} is-active{{ end }}" href="/listings?lang={{ $.Lang }}&deal={{ . }}{{ if $.ActiveType }}&type={{ $.ActiveType }}{{ end }}">{{ t $.Lang (printf "re.deal_%s" .) }}<span class="subbar__badge">{{ index $.Facets.Deal . }}</span></a>{{ end }}
   </div>
   <div class="subbar" style="border:none;margin-bottom:10px">
-    <a class="subbar__item{{ if eq .ActiveType "" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}{{ if .ActiveDeal }}&deal={{ .ActiveDeal }}{{ end }}">{{ t .Lang "nav.all" }}</a>
-    {{ range propertyTypes }}<a class="subbar__item{{ if eq . $.ActiveType }} is-active{{ end }}" href="/listings?lang={{ $.Lang }}&type={{ . }}{{ if $.ActiveDeal }}&deal={{ $.ActiveDeal }}{{ end }}">{{ t $.Lang (printf "re.type_%s" .) }}</a>{{ end }}
+    <a class="subbar__item{{ if eq .ActiveType "" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}{{ if .ActiveDeal }}&deal={{ .ActiveDeal }}{{ end }}">{{ t .Lang "nav.all" }}<span class="subbar__badge">{{ .Facets.Total }}</span></a>
+    {{ range propertyTypes }}<a class="subbar__item{{ if eq . $.ActiveType }} is-active{{ end }}" href="/listings?lang={{ $.Lang }}&type={{ . }}{{ if $.ActiveDeal }}&deal={{ $.ActiveDeal }}{{ end }}">{{ t $.Lang (printf "re.type_%s" .) }}<span class="subbar__badge">{{ index $.Facets.Type . }}</span></a>{{ end }}
   </div>
 
   <div class="layout">

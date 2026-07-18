@@ -244,6 +244,55 @@ func (s *ListingStore) List(ctx context.Context, f ListingFilter) ([]*Listing, e
 	return out, rows.Err()
 }
 
+// ListingFacets holds active-listing counts per deal type and per property
+// type, for the filter badges. Total is the overall active count.
+type ListingFacets struct {
+	Total int
+	Deal  map[string]int
+	Type  map[string]int
+}
+
+// Facets counts currently-active (published, unexpired) listings grouped by
+// deal type and by property type, so the filter chips can show badge counts.
+func (s *ListingStore) Facets(ctx context.Context) (ListingFacets, error) {
+	fc := ListingFacets{Deal: map[string]int{}, Type: map[string]int{}}
+	const active = "status = 'published' AND expires_at > NOW()"
+
+	dealRows, err := s.db.Query(ctx, `SELECT deal_type, count(*) FROM listings WHERE `+active+` GROUP BY deal_type`)
+	if err != nil {
+		return fc, fmt.Errorf("facet deals: %w", err)
+	}
+	for dealRows.Next() {
+		var k string
+		var n int
+		if err := dealRows.Scan(&k, &n); err != nil {
+			dealRows.Close()
+			return fc, err
+		}
+		fc.Deal[k] = n
+		fc.Total += n // each listing has exactly one deal type
+	}
+	dealRows.Close()
+	if err := dealRows.Err(); err != nil {
+		return fc, err
+	}
+
+	typeRows, err := s.db.Query(ctx, `SELECT property_type, count(*) FROM listings WHERE `+active+` GROUP BY property_type`)
+	if err != nil {
+		return fc, fmt.Errorf("facet types: %w", err)
+	}
+	defer typeRows.Close()
+	for typeRows.Next() {
+		var k string
+		var n int
+		if err := typeRows.Scan(&k, &n); err != nil {
+			return fc, err
+		}
+		fc.Type[k] = n
+	}
+	return fc, typeRows.Err()
+}
+
 // GetByID loads a single published listing.
 func (s *ListingStore) GetByID(ctx context.Context, id uuid.UUID) (*Listing, error) {
 	row := s.db.QueryRow(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id
