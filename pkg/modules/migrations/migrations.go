@@ -78,24 +78,18 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	return nil
 }
 
-// stripDemoFixtures removes the seeded demo accounts and placeholder content.
-// Deleting the demo users cascades their jobs (job_queue.user_id ON DELETE
-// CASCADE). The Sana Qyran author and its published columns are left intact —
-// they are official starter content, not demo fixtures.
+// stripDemoFixtures removes only the PRIVILEGED demo accounts from production —
+// admin@/operator@shanraq.org, whose default passwords ship in the repo —
+// cascading their seeded jobs (job_queue.user_id ON DELETE CASCADE).
+//
+// Deliberately KEPT as official showcase/starter content: the Sana Qyran
+// columnist, the "redaksiya" author (a non-privileged, non-loginable account,
+// password_hash 'seed-no-login'), the demo articles, and the six curated demo
+// listings. None of those is a security risk; they populate a fresh install.
 func stripDemoFixtures(ctx context.Context, db *sql.DB) error {
-	stmts := []string{
-		// Placeholder real-estate listings and their demo seller.
-		`DELETE FROM listings WHERE id::text LIKE 'a0000000-0000-0000-0000-%'`,
-		`DELETE FROM auth_users WHERE id = '11111111-1111-1111-1111-111111111111'`,
-		// Privileged demo accounts (cascades their seeded jobs).
-		`DELETE FROM auth_users WHERE email IN ('admin@shanraq.org', 'operator@shanraq.org')`,
-	}
-	for _, s := range stmts {
-		if _, err := db.ExecContext(ctx, s); err != nil {
-			return err
-		}
-	}
-	return nil
+	_, err := db.ExecContext(ctx,
+		`DELETE FROM auth_users WHERE email IN ('admin@shanraq.org', 'operator@shanraq.org')`)
+	return err
 }
 
 var _ interface {
