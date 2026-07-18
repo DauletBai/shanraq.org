@@ -91,16 +91,16 @@
 <nav class="navbar">
   <div class="container">
     <div class="menu">
-      <a class="menu__item{{ if eq .ActiveCat "" }} is-active{{ end }}" href="/?lang={{ .Lang }}">{{ t .Lang "nav.all" }}</a>
+      <a class="menu__item{{ if eq .ActiveCat "" }} is-active{{ end }}" href="/?lang={{ .Lang }}">{{ icon "cat_all" }}{{ t .Lang "nav.all" }}</a>
       {{ range categories }}
-      <a class="menu__item{{ if eq . $.ActiveCat }} is-active{{ end }}" href="/?lang={{ $.Lang }}&cat={{ . }}">{{ t $.Lang (printf "cat.%s" .) }}</a>
+      <a class="menu__item{{ if eq . $.ActiveCat }} is-active{{ end }}" href="/?lang={{ $.Lang }}&cat={{ . }}">{{ catIcon . }}{{ t $.Lang (printf "cat.%s" .) }}</a>
       {{ end }}
-      <a class="menu__item{{ if eq .ActiveCat "realestate" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}">{{ t .Lang "nav.realestate" }}</a>
+      <a class="menu__item{{ if eq .ActiveCat "realestate" }} is-active{{ end }}" href="/listings?lang={{ .Lang }}">{{ icon "re_home" }}{{ t .Lang "nav.realestate" }}</a>
     </div>
     {{ with subcats .ActiveCat }}
     <div class="subbar">
-      <a class="subbar__item{{ if eq $.ActiveSub "" }} is-active{{ end }}" href="/?lang={{ $.Lang }}&cat={{ $.ActiveCat }}">{{ t $.Lang (printf "cat.%s" $.ActiveCat) }}</a>
-      {{ range . }}<a class="subbar__item{{ if eq . $.ActiveSub }} is-active{{ end }}" href="/?lang={{ $.Lang }}&sub={{ . }}">{{ t $.Lang (printf "sub.%s" .) }}</a>{{ end }}
+      <a class="subbar__item{{ if eq $.ActiveSub "" }} is-active{{ end }}" href="/?lang={{ $.Lang }}&cat={{ $.ActiveCat }}">{{ catIcon $.ActiveCat }}{{ t $.Lang (printf "cat.%s" $.ActiveCat) }}</a>
+      {{ range . }}<a class="subbar__item{{ if eq . $.ActiveSub }} is-active{{ end }}" href="/?lang={{ $.Lang }}&sub={{ . }}">{{ icon "subtag" }}{{ t $.Lang (printf "sub.%s" .) }}</a>{{ end }}
     </div>
     {{ end }}
   </div>

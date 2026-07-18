@@ -200,16 +200,20 @@ a.icon-btn, a.icon-btn:hover { text-decoration: none; color: var(--ink-soft); }
 /* main menu (categories) — white text on the red bar */
 .menu { display: flex; gap: 22px; overflow-x: auto; padding: 0; }
 .menu__item {
-  display: inline-block; padding: 12px 0; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px; padding: 12px 0; white-space: nowrap;
   font-size: var(--step--1); font-weight: 600; text-transform: uppercase;
   letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.82); border-bottom: 2px solid transparent;
 }
+/* navbar icons follow the item's text color (white on the red bar, red on the
+   active white subbar chip) — not the global red. */
+.menu__item .ic, .subbar__item .ic { color: currentColor; font-size: 1.15em; }
 .menu__item:hover { color: #fff; text-decoration: none; }
 .menu__item.is-active { color: #fff; border-bottom-color: #fff; }
 
 /* subcategory bar (submenu of the active category) — chips on the red bar */
 .subbar { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; border-top: 1px solid rgba(255, 255, 255, 0.22); }
 .subbar__item {
+  display: inline-flex; align-items: center; gap: 5px;
   padding: 4px 12px; border-radius: 999px; white-space: nowrap;
   font-size: 0.78rem; font-weight: 600; color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.14); border: 1px solid transparent;

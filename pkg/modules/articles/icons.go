@@ -50,6 +50,9 @@ var iconPaths = map[string]string{
 		`<path d="M10 20v-3.5a2 2 0 0 1 4 0V20"/>`,
 
 	// ---- article rubrics (categories) ----
+	"cat_all": `<rect x="4" y="4" width="7" height="7" rx="1.4"/><rect x="13" y="4" width="7" height="7" rx="1.4"/>` +
+		`<rect x="4" y="13" width="7" height="7" rx="1.4"/><rect x="13" y="13" width="7" height="7" rx="1.4"/>`,
+	"subtag": `<path d="M9 4 7.5 20M16.5 4 15 20M4.5 9H20M4 15h15.5"/>`,
 	"cat_general": `<path d="M4 5h13a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/>` +
 		`<path d="M18 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2"/><path d="M7 9h7M7 12h7M7 15h4"/>`,
 	"cat_sport": `<path d="M8 4h8v3a4 4 0 0 1-8 0z"/><path d="M8 5H5.5a1.5 1.5 0 0 0 1.6 3M16 5h2.5a1.5 1.5 0 0 1-1.6 3"/>` +
