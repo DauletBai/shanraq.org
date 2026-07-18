@@ -40,10 +40,10 @@
 {{ define "site_header" }}
 <div class="infobar">
   <div class="container infobar__grid">
-    <div class="infobar__cell"><span class="infobar__ic" aria-hidden="true">🗓</span><span>{{ .Info.Today }}</span></div>
-    <div class="infobar__cell">{{ if .Info.Weather }}<span>{{ .Info.Weather }}</span>{{ else }}<span class="infobar__muted">—</span>{{ end }}</div>
+    <div class="infobar__cell"><span class="metaic">{{ icon "calendar" }}<span class="wx__temp">{{ .Info.Today }}</span></span></div>
+    <div class="infobar__cell">{{ if .Info.WeatherTemp }}<span class="metaic wx">{{ icon .Info.WeatherIcon }}<span class="wx__temp">{{ .Info.WeatherTemp }}</span></span>{{ else }}<span class="infobar__muted">—</span>{{ end }}</div>
     <div class="infobar__cell infobar__rates">
-      {{ range .Info.Rates }}<span class="rate rate--{{ .Dir }}">{{ curSymbol .Code }} {{ .Main }}<span class="rate__last">{{ .Last }}</span>{{ if eq .Dir "up" }} ▲{{ else if eq .Dir "down" }} ▼{{ end }}</span>{{ else }}<span class="infobar__muted">$ € ₽</span>{{ end }}
+      {{ range .Info.Rates }}<span class="rate"><span class="rate__cur">{{ curSymbol .Code }}</span> <span class="rate__num">{{ .Main }}<span class="rate__last">{{ .Last }}</span></span>{{ if eq .Dir "up" }} <span class="rate__arr rate--up">▲</span>{{ else if eq .Dir "down" }} <span class="rate__arr rate--down">▼</span>{{ end }}</span>{{ else }}<span class="infobar__muted">$ € ₽</span>{{ end }}
     </div>
     <div class="infobar__cell infobar__social">
       {{ range .Info.Social }}

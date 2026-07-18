@@ -37,17 +37,19 @@ type SocialLink struct {
 
 // InfoBarData is the per-request snapshot handed to templates.
 type InfoBarData struct {
-	Today   string
-	Weather string // "" when unavailable
-	Rates   []Rate // empty when unavailable
-	Social  []SocialLink
+	Today       string
+	WeatherIcon string // icon key, e.g. "wx_sun" ("" when unavailable)
+	WeatherTemp string // e.g. "+25°"
+	Rates       []Rate // empty when unavailable
+	Social      []SocialLink
 }
 
 // InfoBar fetches and caches the weather and exchange rates in the background.
 type InfoBar struct {
-	mu      sync.RWMutex
-	rates   []Rate
-	weather string
+	mu         sync.RWMutex
+	rates      []Rate
+	weatherIc  string
+	weatherTmp string
 
 	httpc    *http.Client
 	log      *zap.Logger
@@ -86,7 +88,7 @@ func NewInfoBar(log *zap.Logger, social []SocialLink) *InfoBar {
 func (b *InfoBar) Snapshot(today string) InfoBarData {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
-	return InfoBarData{Today: today, Weather: b.weather, Rates: b.rates, Social: b.social}
+	return InfoBarData{Today: today, WeatherIcon: b.weatherIc, WeatherTemp: b.weatherTmp, Rates: b.rates, Social: b.social}
 }
 
 // Run refreshes weather every 30 min and rates every ~6 h until ctx is done.
@@ -202,9 +204,9 @@ func (b *InfoBar) refreshWeather(ctx context.Context) {
 	if t > 0 {
 		sign = "+"
 	}
-	weather := fmt.Sprintf("%s %s%d°", weatherEmoji(doc.Current.Code), sign, t)
 	b.mu.Lock()
-	b.weather = weather
+	b.weatherIc = weatherIconName(doc.Current.Code)
+	b.weatherTmp = fmt.Sprintf("%s%d°", sign, t)
 	b.mu.Unlock()
 }
 
@@ -222,24 +224,24 @@ func curSymbol(code string) string {
 	}
 }
 
-// weatherEmoji maps a WMO weather code to a glyph.
-func weatherEmoji(code int) string {
+// weatherIconName maps a WMO weather code to a Shanraq weather icon key.
+func weatherIconName(code int) string {
 	switch {
 	case code == 0:
-		return "☀"
+		return "wx_sun"
 	case code <= 3:
-		return "⛅"
+		return "wx_cloud"
 	case code == 45 || code == 48:
-		return "🌫"
+		return "wx_fog"
 	case code >= 51 && code <= 67:
-		return "🌧"
+		return "wx_rain"
 	case code >= 71 && code <= 77:
-		return "❄"
+		return "wx_snow"
 	case code >= 80 && code <= 82:
-		return "🌦"
+		return "wx_rain"
 	case code >= 95:
-		return "⛈"
+		return "wx_storm"
 	default:
-		return "🌡"
+		return "wx_cloud"
 	}
 }

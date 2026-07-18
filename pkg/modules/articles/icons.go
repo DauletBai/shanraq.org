@@ -44,6 +44,14 @@ var iconPaths = map[string]string{
 	"thumb_down": `<path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H6.7a2 2 0 0 0-2 1.7l-1.4 9A2 2 0 0 0 5.3 15H10z"/>` +
 		`<path d="M17 2h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3"/>`,
 
+	// ---- weather (info bar) ----
+	"wx_sun":   `<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/>`,
+	"wx_cloud": `<path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 18z"/>`,
+	"wx_rain":  `<path d="M7 15a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 15z"/><path d="M8 18l-1 3M12 18l-1 3M16 18l-1 3"/>`,
+	"wx_snow":  `<path d="M7 15a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 15z"/><path d="M8 19h.01M12 20h.01M16 19h.01"/>`,
+	"wx_fog":   `<path d="M7 13a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 13z"/><path d="M5 17h14M7 21h10"/>`,
+	"wx_storm": `<path d="M7 14a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 14z"/><path d="M12 13l-2.2 4H12l-1.4 4"/>`,
+
 	// ---- amenities (real estate) ----
 	"am_air_conditioner": `<rect x="3" y="5" width="18" height="7" rx="1.6"/><path d="M6 9h9"/>` +
 		`<path d="M7 15.5c1-.3 1-1.2 2-1.5M12 16.5c1-.3 1-1.2 2-1.5M16.5 15.5c1-.3 1-1.2 2-1.5"/>`,

@@ -116,11 +116,14 @@ img { max-width: 100%; height: auto; display: block; }
 .infobar__muted { color: var(--muted); }
 .infobar__rates { gap: 14px; font-variant-numeric: tabular-nums; }
 .infobar__rates .rate { font-weight: 600; }
-.rate--up { color: var(--teal); }
-.rate--down { color: var(--danger); }
+.rate__cur { color: var(--gold-strong); font-weight: 700; }   /* currency symbol — red */
+.rate__num { color: var(--ink); }                             /* digits — black on light, white on dark */
+.rate__arr.rate--up { color: var(--teal); }
+.rate__arr.rate--down { color: var(--danger); }
+.wx__temp { color: var(--ink); }                              /* temperature digits — black/white */
 .infobar__social { gap: 13px; }
-.infobar__social .soc { display: inline-flex; color: var(--ink-soft); }
-.infobar__social .soc:hover { color: var(--gold-strong); }
+.infobar__social .soc { display: inline-flex; color: var(--gold-strong); }
+.infobar__social .soc:hover { color: var(--gold); }
 .infobar__social .soc svg { width: 17px; height: 17px; display: block; }
 @media (max-width: 640px) {
   /* four cells fold into 2×2 on a vertical phone */
