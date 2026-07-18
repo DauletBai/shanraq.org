@@ -1,0 +1,12 @@
+<svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Кроссовер">
+  <ellipse cx="170" cy="166" rx="138" ry="10" fill="#000000" opacity="0.10"/>
+  <path d="M28 128 C28 112 40 108 54 106 L88 102 C92 76 104 62 132 60 L212 60 C242 62 252 78 258 102 L300 108 C316 110 318 116 318 128 L318 140 C318 145 315 148 310 148 L36 148 C31 148 28 145 28 140 Z" fill="#374151"/>
+  <path d="M100 100 C104 82 116 70 134 70 L168 70 L168 100 Z" fill="#dceefa"/>
+  <path d="M176 70 L208 70 C230 72 242 84 250 100 L176 100 Z" fill="#c3e0f0"/>
+  <rect x="169" y="70" width="4" height="30" fill="#2a3340"/>
+  <rect x="40" y="124" width="262" height="9" rx="4" fill="#000000" opacity="0.14"/>
+  <circle cx="96" cy="150" r="28" fill="#242424"/><circle cx="96" cy="150" r="12" fill="#cfcfcf"/>
+  <circle cx="256" cy="150" r="28" fill="#242424"/><circle cx="256" cy="150" r="12" fill="#cfcfcf"/>
+  <rect x="307" y="114" width="12" height="10" rx="3" fill="#ffd54f"/>
+  <rect x="28" y="118" width="8" height="10" rx="3" fill="#ff5a52"/>
+</svg>

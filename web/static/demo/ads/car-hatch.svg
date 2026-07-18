@@ -1,0 +1,11 @@
+<svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Хэтчбек">
+  <ellipse cx="166" cy="164" rx="120" ry="10" fill="#000000" opacity="0.10"/>
+  <path d="M52 130 C52 114 62 110 78 108 L108 104 C116 82 134 72 158 72 L206 72 C226 74 238 86 244 104 C258 108 268 112 272 122 L272 138 C272 143 269 146 264 146 L60 146 C55 146 52 143 52 138 Z" fill="#0d9488"/>
+  <path d="M120 103 C124 88 138 80 158 80 L176 80 L176 103 Z" fill="#dceefa"/>
+  <path d="M182 80 L202 80 C220 82 230 92 236 103 L182 103 Z" fill="#c3e0f0"/>
+  <rect x="177" y="80" width="4" height="23" fill="#0b7a70"/>
+  <circle cx="112" cy="146" r="24" fill="#242424"/><circle cx="112" cy="146" r="11" fill="#cfcfcf"/>
+  <circle cx="240" cy="146" r="24" fill="#242424"/><circle cx="240" cy="146" r="11" fill="#cfcfcf"/>
+  <rect x="262" y="116" width="10" height="9" rx="3" fill="#ffd54f"/>
+  <rect x="52" y="120" width="8" height="9" rx="3" fill="#ff5a52"/>
+</svg>

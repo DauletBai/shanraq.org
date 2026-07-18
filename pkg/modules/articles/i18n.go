@@ -300,6 +300,13 @@ var messages = map[string]map[string]string{
 	"sidebar.subscribe_btn":  {"kz": "Жазылу", "ru": "Подписаться", "en": "Subscribe"},
 	"sidebar.subscribed_ok":  {"kz": "Рахмет! Сіз жазылдыңыз.", "ru": "Спасибо! Вы подписаны.", "en": "Thanks! You're subscribed."},
 	"wx.pressure_unit":       {"kz": "мм сын.бағ.", "ru": "мм рт.ст.", "en": "mmHg"},
+	"ad.learn_more":          {"kz": "Толығырақ", "ru": "Подробнее", "en": "Learn more"},
+	"ad.sedan_title":         {"kz": "Қалалық седан", "ru": "Городской седан", "en": "City sedan"},
+	"ad.sedan_desc":          {"kz": "Үнемді әрі сенімді, күнделікті жүрістерге.", "ru": "Экономичный и надёжный — для ежедневных поездок.", "en": "Economical and reliable — for the daily drive."},
+	"ad.suv_title":           {"kz": "Бизнес-класс седан", "ru": "Седан бизнес-класса", "en": "Business-class sedan"},
+	"ad.suv_desc":            {"kz": "Кеңдік пен мәртебе бір көлікте.", "ru": "Простор и статус в одном автомобиле.", "en": "Space and status in one car."},
+	"ad.hatch_title":         {"kz": "Ықшам көлік", "ru": "Компактный автомобиль", "en": "Compact car"},
+	"ad.hatch_desc":          {"kz": "Қала үшін тамаша: жеңіл әрі икемді.", "ru": "Идеален для города: лёгкий и манёвренный.", "en": "Perfect for the city: light and nimble."},
 
 	"article.karma":      {"kz": "карма", "ru": "карма", "en": "karma"},
 	"article.vote_login": {"kz": "Бағалау үшін кіріңіз", "ru": "Войдите, чтобы оценить", "en": "Sign in to vote"},

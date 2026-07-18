@@ -3,7 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
-  <div class="layout{{ if not .TOC }} layout--solo{{ end }}">
+  <div class="layout{{ if and (not .TOC) (not .Ads) }} layout--solo{{ end }}">
     <div>
       <article class="article">
         <div class="article__head">
@@ -91,14 +91,35 @@
       </section>
     </div>
 
-    {{ if .TOC }}
+    {{ if or .Ads .TOC }}
     <aside class="article-aside">
+      {{ if .Ads }}
+      <div class="adcarousel adcarousel--side adcarousel--ad" data-carousel>
+        <div class="carousel__track">
+          {{ range $i, $ad := .Ads }}
+          <a class="adslide adslide--ad{{ if eq $i 0 }} is-active{{ end }}" href="{{ $ad.URL }}" rel="nofollow sponsored noopener">
+            <span class="ad__label">{{ t $.Lang "ad.badge" }}</span>
+            <span class="ad__img"><img src="{{ $ad.Image }}" alt="" loading="lazy"></span>
+            <span class="ad__title">{{ $ad.Title }}</span>
+            <span class="ad__price">{{ $ad.Price }}</span>
+            <span class="ad__desc">{{ $ad.Desc }}</span>
+            <span class="btn btn--primary btn--sm ad__cta">{{ t $.Lang "ad.learn_more" }} →</span>
+          </a>
+          {{ end }}
+        </div>
+        <div class="adcarousel__dots">
+          {{ range $i, $ad := .Ads }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}
+        </div>
+      </div>
+      {{ end }}
+      {{ if .TOC }}
       <nav class="toc-box" aria-label="{{ t .Lang "article.toc" }}">
         <p class="toc-box__title">{{ t .Lang "article.toc" }}</p>
         <ol class="toc-box__list">
           {{ range .TOC }}<li><a href="#{{ .ID }}">{{ .Text }}</a></li>{{ end }}
         </ol>
       </nav>
+      {{ end }}
     </aside>
     {{ end }}
   </div>

@@ -1,0 +1,12 @@
+<svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Седан">
+  <ellipse cx="170" cy="164" rx="134" ry="10" fill="#000000" opacity="0.10"/>
+  <path d="M30 132 C30 116 42 112 58 110 L96 106 C104 84 124 74 150 74 L214 74 C238 74 250 86 262 106 L300 112 C314 114 316 120 316 130 L316 138 C316 143 313 146 308 146 L38 146 C33 146 30 143 30 138 Z" fill="#2563eb"/>
+  <path d="M108 105 C112 90 128 82 150 82 L174 82 L174 105 Z" fill="#dceefa"/>
+  <path d="M182 82 L208 82 C228 82 240 92 250 105 L182 105 Z" fill="#c3e0f0"/>
+  <rect x="175" y="82" width="4" height="23" fill="#1e56c0"/>
+  <path d="M92 127 L300 127" stroke="#00000018" stroke-width="2"/>
+  <circle cx="98" cy="146" r="25" fill="#242424"/><circle cx="98" cy="146" r="11" fill="#cfcfcf"/>
+  <circle cx="252" cy="146" r="25" fill="#242424"/><circle cx="252" cy="146" r="11" fill="#cfcfcf"/>
+  <rect x="305" y="116" width="12" height="9" rx="3" fill="#ffd54f"/>
+  <rect x="30" y="120" width="8" height="9" rx="3" fill="#ff5a52"/>
+</svg>
