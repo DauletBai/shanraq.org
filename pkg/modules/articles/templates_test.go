@@ -62,7 +62,7 @@ func TestTemplatesExecute(t *testing.T) {
 
 	// Exercise every UI language so a missing translation key surfaces.
 	for _, lang := range Langs {
-		base := Base{Title: "T", Lang: lang, Authed: true, ShowLangs: true, ActiveCat: "sport", ActiveSub: "football", LangLinks: langLinks("/", lang)}
+		base := Base{Title: "T", Lang: lang, Authed: true, ShowLangs: true, ActiveCat: "sport", ActiveSub: "football", LangLinks: langLinks("/", lang), Ads: demoAds(lang)}
 		item := FeedItem{Slug: "s", Title: "Заголовок", Summary: "Краткое", AuthorName: "Автор",
 			ServedLang: LangRU, Category: "politics", Subcategory: "elections", Published: &now, Views: 5, Score: 12, AvailableLangs: []string{LangRU, LangKZ}}
 
@@ -75,7 +75,7 @@ func TestTemplatesExecute(t *testing.T) {
 			{"home", HomePage{Base: base}}, // empty state
 			{"article", ArticlePage{Base: base, Slug: "s", Title: "T", AuthorName: "A",
 				ServedLang: LangRU, Category: "society", Body: RenderMarkdown("# Hi\n\nText"), Published: &now, Views: 1,
-				Translated: true, IsAI: true, AvailableLangs: []string{LangRU}, Ads: demoAds(lang),
+				Translated: true, IsAI: true, AvailableLangs: []string{LangRU},
 				Score: 3, UserVote: 1, AuthorKarma: 42, CanVote: true, Recent: []FeedItem{item}, Subscribed: false}},
 			{"page", StaticPage{Base: base, Body: RenderMarkdown("# Hi\n\nText [guide](/guide)")}},
 			{"form", FormPage{Base: base, Mode: "login", Email: "a@b.c", Error: "err"}},

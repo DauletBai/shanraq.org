@@ -34,6 +34,9 @@ type Base struct {
 	// SidebarNews feeds the "latest news" carousel in the sidebar.
 	SidebarNews []FeedItem
 
+	// Ads feeds the sidebar ad carousel (demo placements for now).
+	Ads []Ad
+
 	// Info feeds the top info bar (date, weather, rates, social links).
 	Info InfoBarData
 
@@ -64,6 +67,7 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		OGImage:   site + "/static/brand/shanraq.svg",
 		OGType:    "website",
 		Info:      m.infobar.Snapshot(localizedDate(lang, time.Now())),
+		Ads:       demoAds(lang),
 	}
 }
 
@@ -296,7 +300,6 @@ type ArticlePage struct {
 	TOC           []TOCItem
 	ReadingMin    int
 	CommentReview bool // the reader's comment was held for moderation
-	Ads           []Ad // sidebar ad carousel (demo placements for now)
 }
 
 func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
@@ -332,7 +335,6 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.RequestedLang = lang
 	page.Body, page.TOC = RenderMarkdownTOC(tr.BodyMD)
 	page.ReadingMin = readingMinutes(tr.BodyMD)
-	page.Ads = demoAds(lang)
 	page.Published = a.PublishedAt
 	page.Views = a.ViewsCount + 1
 	page.IsAI = tr.Source == "ai"

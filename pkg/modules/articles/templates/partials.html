@@ -167,11 +167,31 @@
     </form>
     {{ end }}
   </div>
-  <div class="aside__block">
-    <h3 class="aside__title">{{ t .Lang "sidebar.follow" }}</h3>
-    <div class="aside__links"><a class="btn btn--ghost btn--sm" href="/feed.xml?lang={{ .Lang }}">RSS</a></div>
-  </div>
+  {{ template "sidebar_ad" . }}
 </aside>
+{{ end }}
+
+{{/* sidebar_ad renders the demo ad carousel from .Ads. Shared by the home /
+     listing sidebar and the article aside. */}}
+{{ define "sidebar_ad" }}
+{{ if .Ads }}
+<div class="adcarousel adcarousel--side adcarousel--ad" data-carousel>
+  <div class="carousel__track">
+    {{ range $i, $ad := .Ads }}
+    <a class="adslide adslide--ad{{ if eq $i 0 }} is-active{{ end }}" href="{{ $ad.URL }}" rel="nofollow sponsored noopener">
+      <span class="ad__img"><span class="ad__label">{{ t $.Lang "ad.badge" }}</span><img src="{{ $ad.Image }}" alt="" loading="lazy"></span>
+      <span class="ad__title">{{ $ad.Title }}</span>
+      <span class="ad__price">{{ $ad.Price }}</span>
+      <span class="ad__desc">{{ $ad.Desc }}</span>
+      <span class="btn btn--primary btn--sm ad__cta">{{ t $.Lang "ad.learn_more" }} →</span>
+    </a>
+    {{ end }}
+  </div>
+  <div class="adcarousel__dots">
+    {{ range $i, $ad := .Ads }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}
+  </div>
+</div>
+{{ end }}
 {{ end }}
 
 {{ define "re_sidebar" }}
