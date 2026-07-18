@@ -100,7 +100,7 @@
     {{ with subcats .ActiveCat }}
     <div class="subbar">
       <a class="subbar__item{{ if eq $.ActiveSub "" }} is-active{{ end }}" href="/?lang={{ $.Lang }}&cat={{ $.ActiveCat }}">{{ catIcon $.ActiveCat }}{{ t $.Lang (printf "cat.%s" $.ActiveCat) }}</a>
-      {{ range . }}<a class="subbar__item{{ if eq . $.ActiveSub }} is-active{{ end }}" href="/?lang={{ $.Lang }}&sub={{ . }}">{{ icon "subtag" }}{{ t $.Lang (printf "sub.%s" .) }}</a>{{ end }}
+      {{ range . }}<a class="subbar__item{{ if eq . $.ActiveSub }} is-active{{ end }}" href="/?lang={{ $.Lang }}&sub={{ . }}">{{ t $.Lang (printf "sub.%s" .) }}</a>{{ end }}
     </div>
     {{ end }}
   </div>

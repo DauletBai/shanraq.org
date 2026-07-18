@@ -118,6 +118,27 @@ func roomIcon(roomType string) template.HTML { return icon("room_" + roomType) }
 // amenityIcon returns the icon for an amenity key (e.g. "parking").
 func amenityIcon(key string) template.HTML { return icon("am_" + key) }
 
+// countryFlags holds small COLORED flag SVGs — an intentional exception to the
+// monochrome red set, since a flag is meaningful only in its own colours.
+var countryFlags = map[string]string{
+	"Казахстан": `<rect width="24" height="16" rx="2" fill="#00AFCA"/><circle cx="13" cy="7" r="2.4" fill="#FEC50C"/>` +
+		`<g stroke="#FEC50C" stroke-width=".7" stroke-linecap="round"><path d="M13 3.3v1M13 10.7v-1M8.7 7h1M17.3 7h-1M9.9 3.9l.7.7M16.1 10.1l-.7-.7M16.1 3.9l-.7.7M9.9 10.1l.7-.7"/></g>` +
+		`<path d="M3 2.6v10.8" stroke="#FEC50C" stroke-width=".9"/>`,
+}
+
+// countryFlag returns the colored flag for a country name, or "" if unknown.
+func countryFlag(country string) template.HTML {
+	switch country {
+	case "Kazakhstan", "Қазақстан":
+		country = "Казахстан"
+	}
+	f, ok := countryFlags[country]
+	if !ok || f == "" {
+		return ""
+	}
+	return template.HTML(`<svg class="flag" viewBox="0 0 24 16" width="1.3em" height="0.87em" aria-hidden="true">` + f + `</svg>`)
+}
+
 // firstStrings returns at most n items of a slice (for a compact icon row).
 func firstStrings(list []string, n int) []string {
 	if len(list) > n {

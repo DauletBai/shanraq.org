@@ -72,16 +72,23 @@
       <div class="posts posts--two">
         {{ range .Listings }}
         <article class="post{{ if .Featured }} post--featured{{ end }}">
-          <a class="post__media" href="/listings/{{ .ID }}">
+          <div class="post__media" data-carousel>
             {{ if .Promoted }}<span class="badge-top">{{ t $.Lang "re.badge_top" }}</span>{{ end }}
-            {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
-            {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
-          </a>
+            {{ if .Images }}
+            {{ range $i, $src := .Images }}<span class="gallery__item{{ if eq $i 0 }} is-active{{ end }}"><img src="{{ $src }}" alt=""></span>{{ end }}
+            <a class="post__media-link" href="/listings/{{ .ID }}" aria-label="{{ .Title }}"></a>
+            {{ if gt (len .Images) 1 }}<div class="adcarousel__dots">{{ range $i, $src := .Images }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}</div>{{ end }}
+            {{ else if .CoverURL }}
+            <a class="post__media-link" href="/listings/{{ .ID }}"><img src="{{ .CoverURL }}" alt=""></a>
+            {{ else }}
+            <a class="post__media-link" href="/listings/{{ .ID }}"><span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span></a>
+            {{ end }}
+          </div>
           <span class="kicker">{{ t $.Lang (printf "re.type_%s" .PropertyType) }} · {{ t $.Lang (printf "re.deal_%s" .DealType) }}</span>
           <h3 class="post__title"><a href="/listings/{{ .ID }}">{{ .Title }}</a></h3>
           <p class="post__price">{{ money .Price }} ₸{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</p>
           <div class="post__meta">
-            <span>{{ .Location }}</span>
+            <span class="loc">{{ countryFlag .Country }}{{ if .City }}{{ .City }}{{ else }}{{ .Village }}{{ end }}</span>
             {{ if gt .Rooms 0 }}<span class="dot">·</span><span class="metaic" title="{{ t $.Lang "re.rooms" }}">{{ icon "room_bedroom" }}{{ .Rooms }}</span>{{ end }}
             {{ if gt .Area 0.0 }}<span class="dot">·</span><span>{{ .Area }} м²</span>{{ end }}
             {{ if gt .LandArea 0.0 }}<span class="dot">·</span><span>{{ .LandArea }} {{ t $.Lang "re.ares" }}</span>{{ end }}
