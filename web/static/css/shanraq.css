@@ -398,6 +398,19 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .aside__block { border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; background: var(--surface-2); }
 .aside__title { font-size: var(--step-1); margin-bottom: 8px; }
 .aside__text { color: var(--ink-soft); font-size: var(--step--1); margin: 0; }
+/* newsletter card — red gradient banner (same as the hero carousel) with an
+   attached input-group: the field and button share one rounded white pill. */
+.aside__block--subscribe { background: linear-gradient(120deg, #b71c1c, #7a1414); border-color: transparent; color: #fff; }
+.aside__block--subscribe .aside__title { color: #fff; }
+.aside__block--subscribe .aside__text { color: rgba(255, 255, 255, 0.9); }
+.aside__ok { font-weight: 600; }
+.subgroup { display: flex; align-items: stretch; border-radius: 999px; overflow: hidden; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+.subgroup:focus-within { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45); }
+.subgroup__input { flex: 1 1 auto; min-width: 0; padding: 10px 16px; border: none; background: transparent; color: #1a1a1a; font: inherit; font-size: var(--step--1); }
+.subgroup__input::placeholder { color: #8a8a8a; }
+.subgroup__input:focus { outline: none; }
+.subgroup__btn { flex: none; padding: 10px 18px; border: none; background: #e50000; color: #fff; font: inherit; font-weight: 700; font-size: var(--step--1); cursor: pointer; white-space: nowrap; transition: background 0.15s ease; }
+.subgroup__btn:hover { background: #c00000; }
 .aside__list { list-style: none; margin: 0; padding: 0; }
 .aside__list li { border-top: 1px solid var(--line); padding: 12px 0; }
 .aside__list li:first-child { border-top: none; padding-top: 0; }

@@ -152,16 +152,18 @@
     <p class="aside__text">{{ t .Lang "guide.side_text" }}</p>
     <a class="btn btn--ghost btn--sm" href="/guide" style="margin-top:12px">{{ t .Lang "common.more" }}</a>
   </div>
-  <div class="aside__block" style="background:var(--surface)">
+  <div class="aside__block aside__block--subscribe">
     <h3 class="aside__title">{{ t .Lang "sidebar.subscribe" }}</h3>
     {{ if .Subscribed }}
-    <p class="aside__text" style="color:var(--teal);font-weight:600">{{ t .Lang "sidebar.subscribed_ok" }}</p>
+    <p class="aside__text aside__ok">{{ t .Lang "sidebar.subscribed_ok" }}</p>
     {{ else }}
     <p class="aside__text" style="margin-bottom:12px">{{ t .Lang "sidebar.subscribe_text" }}</p>
-    <form method="post" action="/subscribe" style="display:flex;gap:8px;flex-wrap:wrap">
+    <form method="post" action="/subscribe">
       <input type="hidden" name="lang" value="{{ .Lang }}">
-      <input class="input" type="email" name="email" placeholder="email@…" required style="flex:1;min-width:150px">
-      <button class="btn btn--primary btn--sm" type="submit">{{ t .Lang "sidebar.subscribe_btn" }}</button>
+      <div class="subgroup">
+        <input class="subgroup__input" type="email" name="email" placeholder="email@…" required>
+        <button class="subgroup__btn" type="submit">{{ t .Lang "sidebar.subscribe_btn" }}</button>
+      </div>
     </form>
     {{ end }}
   </div>
