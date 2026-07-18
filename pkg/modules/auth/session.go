@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -26,6 +27,24 @@ var ErrWeakPassword = errors.New("password too short")
 
 // minPasswordLen is the minimum accepted password length.
 const minPasswordLen = 8
+
+// ConsentDocument and ConsentVersion identify the legal documents a user
+// accepts at registration. Bump ConsentVersion when the Terms or Privacy
+// Policy change materially so re-consent can be required later.
+const (
+	ConsentDocument = "terms_privacy"
+	ConsentVersion  = "2026-07-18"
+)
+
+// RecordConsent appends a consent record for a newly registered user. source is
+// "web" or "api"; the client IP is taken from the request. Failure is returned
+// so the caller can decide, but registration should not hard-fail on it.
+func (m *Module) RecordConsent(ctx context.Context, r *http.Request, userID uuid.UUID, source string) error {
+	if m.store == nil {
+		return nil
+	}
+	return m.store.InsertConsent(ctx, userID, ConsentDocument, ConsentVersion, source, clientIdentifier(r))
+}
 
 // NormalizeEmail lowercases and trims an email; ok is false when it is empty or
 // not a syntactically valid address.

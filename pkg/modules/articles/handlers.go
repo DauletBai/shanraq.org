@@ -576,6 +576,10 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+	// Record the consent the checkbox represents (append-only proof).
+	if err := m.auth.RecordConsent(r.Context(), r, user.ID, "web"); err != nil {
+		m.rt.Logger.Error("record consent (web)", zap.String("user_id", user.ID.String()), zap.Error(err))
+	}
 	auth.SetSessionCookie(w, r, token, m.auth.SessionTTL())
 	m.rt.Logger.Info("studio register", zap.String("user_id", user.ID.String()))
 	http.Redirect(w, r, "/studio", http.StatusSeeOther)

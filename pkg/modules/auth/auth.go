@@ -205,6 +205,11 @@ func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Record the consent that gated this signup (append-only proof).
+	if err := m.RecordConsent(ctx, r, user.ID, "api"); err != nil {
+		m.rt.Logger.Error("record consent (api)", zap.String("user_id", user.ID.String()), zap.Error(err))
+	}
+
 	accessToken, refreshToken, err := m.issueTokenPair(ctx, user.ID, user)
 	if err != nil {
 		respond.Error(w, http.StatusInternalServerError, err)

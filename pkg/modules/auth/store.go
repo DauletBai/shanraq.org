@@ -215,6 +215,18 @@ func (s *Store) RevokeRefreshToken(ctx context.Context, id uuid.UUID) error {
 	return nil
 }
 
+// InsertConsent appends one consent record (append-only history).
+func (s *Store) InsertConsent(ctx context.Context, userID uuid.UUID, document, version, source, ip string) error {
+	_, err := s.db.Exec(ctx,
+		`INSERT INTO user_consents (user_id, document, version, source, ip)
+		 VALUES ($1,$2,$3,$4,$5)`,
+		userID, document, version, source, ip)
+	if err != nil {
+		return fmt.Errorf("insert consent: %w", err)
+	}
+	return nil
+}
+
 func (s *Store) RevokeUserTokens(ctx context.Context, userID uuid.UUID) error {
 	_, err := s.db.Exec(ctx, `
 		UPDATE auth_refresh_tokens
