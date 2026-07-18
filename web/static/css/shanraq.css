@@ -129,6 +129,8 @@ img { max-width: 100%; height: auto; display: block; }
   .infobar__cell:nth-child(3) { justify-content: flex-start; }
   .infobar__cell:nth-child(4) { justify-content: flex-end; }
   .infobar__rates { gap: 8px; }
+  /* drop the last digit of each rate on narrow phones to save width */
+  .rate__last { display: none; }
 }
 
 /* ---------- top strip (scrolls away on scroll) ---------- */
@@ -863,5 +865,8 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .roomsup__rm:hover { background: var(--gold-strong); color: #fff; border-color: var(--gold-strong); }
 @media (max-width: 560px) { .roomsup__row { grid-template-columns: 1fr 1fr; } .roomsup__note { grid-column: 1 / -1; } }
 .spec__cap { text-align: left; font-family: var(--serif); font-weight: 700; font-size: 1.05rem; color: var(--ink); padding: 14px 0 8px; caption-side: top; }
+/* Shanraq's own line icons: inherit text color/size, sit on the text baseline. */
+.ic { vertical-align: -0.14em; }
+.roomic { color: var(--gold-strong); font-size: 1.15rem; margin-right: 4px; }
 .spec--rooms th .hint { font-weight: 400; }
 

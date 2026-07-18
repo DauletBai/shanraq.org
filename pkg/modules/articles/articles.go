@@ -88,6 +88,8 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"ogLocale":         ogLocale,
 		"htmlLang":         htmlLang,
 		"curSymbol":        curSymbol,
+		"icon":             icon,
+		"roomIcon":         roomIcon,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(t time.Time) string {

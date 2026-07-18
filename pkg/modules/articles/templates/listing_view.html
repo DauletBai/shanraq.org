@@ -63,7 +63,7 @@
             <tbody>
               {{ range .L.RoomSpecs }}
               <tr>
-                <th>{{ t $.Lang (printf "re.rt_%s" .Type) }}{{ if .Note }} <span class="hint">— {{ .Note }}</span>{{ end }}</th>
+                <th><span class="roomic">{{ roomIcon .Type }}</span> {{ t $.Lang (printf "re.rt_%s" .Type) }}{{ if .Note }} <span class="hint">— {{ .Note }}</span>{{ end }}</th>
                 <td>{{ if gt .Area 0.0 }}{{ .Area }} м²{{ end }}</td>
               </tr>
               {{ end }}

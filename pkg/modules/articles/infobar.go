@@ -20,11 +20,13 @@ import (
 // blocks the browser from calling external APIs, and server-side fetching
 // degrades gracefully (a cell simply hides) if a source is blocked or down.
 
-// Rate is one currency's KZT rate for the info bar.
+// Rate is one currency's KZT rate for the info bar. Main+Last split the value
+// so the last digit can be dropped on narrow phones (Main shown, Last hidden).
 type Rate struct {
-	Code  string // USD / EUR / RUB
-	Value string // e.g. "469.83"
-	Dir   string // "up" | "down" | ""
+	Code string // USD / EUR / RUB
+	Main string // value without its last character, e.g. "469.8"
+	Last string // the last character, e.g. "3"
+	Dir  string // "up" | "down" | ""
 }
 
 // SocialLink is one configured social profile shown in the bar.
@@ -157,7 +159,12 @@ func (b *InfoBar) refreshRates(ctx context.Context) {
 		case "DOWN":
 			dir = "down"
 		}
-		found[code] = Rate{Code: code, Value: strings.TrimSpace(it.Desc), Dir: dir}
+		val := strings.TrimSpace(it.Desc)
+		main, last := val, ""
+		if r := []rune(val); len(r) > 1 {
+			main, last = string(r[:len(r)-1]), string(r[len(r)-1])
+		}
+		found[code] = Rate{Code: code, Main: main, Last: last, Dir: dir}
 	}
 	var rates []Rate
 	for _, c := range order {
