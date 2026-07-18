@@ -144,15 +144,15 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* ---------- sticky menu bar (only this sticks) ---------- */
+/* Red bar: brand red on light (#d32f2f) and dark (#ef5350) via --gold.
+   Menu/subbar text is white-on-red, so its colors are literal here. */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: color-mix(in srgb, var(--surface-2) 94%, transparent);
-  backdrop-filter: saturate(1.3) blur(8px);
-  border-bottom: 1px solid var(--line-strong);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-
+  background: var(--gold);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
 /* language switch */
@@ -167,26 +167,25 @@ img { max-width: 100%; height: auto; display: block; }
 .icon-btn:hover { background: var(--surface-2); }
 a.icon-btn, a.icon-btn:hover { text-decoration: none; color: var(--ink-soft); }
 
-/* main menu (categories) */
+/* main menu (categories) — white text on the red bar */
 .menu { display: flex; gap: 22px; overflow-x: auto; padding: 0; }
 .menu__item {
   display: inline-block; padding: 12px 0; white-space: nowrap;
   font-size: var(--step--1); font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.05em; color: var(--ink-soft); border-bottom: 2px solid transparent;
+  letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.82); border-bottom: 2px solid transparent;
 }
-.menu__item:hover { color: var(--gold-strong); text-decoration: none; }
-.menu__item.is-active { color: var(--gold); border-bottom-color: var(--gold); }
+.menu__item:hover { color: #fff; text-decoration: none; }
+.menu__item.is-active { color: #fff; border-bottom-color: #fff; }
 
-/* subcategory bar (submenu of the active category) */
-.subbar { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; border-top: 1px solid var(--line); }
+/* subcategory bar (submenu of the active category) — chips on the red bar */
+.subbar { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; border-top: 1px solid rgba(255, 255, 255, 0.22); }
 .subbar__item {
   padding: 4px 12px; border-radius: 999px; white-space: nowrap;
-  font-size: 0.78rem; font-weight: 600; color: var(--ink-soft);
-  background: var(--surface-2); border: 1px solid transparent;
+  font-size: 0.78rem; font-weight: 600; color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.14); border: 1px solid transparent;
 }
-.subbar__item:hover { color: var(--gold-strong); text-decoration: none; border-color: var(--line-strong); }
-.subbar__item.is-active { background: var(--gold); color: #fff; }
-:root[data-theme="dark"] .subbar__item.is-active { color: #fff; }
+.subbar__item:hover { color: #fff; text-decoration: none; background: rgba(255, 255, 255, 0.26); }
+.subbar__item.is-active { background: #fff; color: var(--gold-strong); }
 a.kicker:hover { text-decoration: none; color: var(--gold); }
 
 /* ---------- buttons ---------- */
