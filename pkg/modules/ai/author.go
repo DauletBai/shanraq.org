@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-// DraftColumn is the author agent behind the transparent AI columnist "Sana
-// Qyran". Given a topic brief it drafts an evergreen opinion column in the
+// DraftColumn is the author agent behind the transparent AI columnist "AI
+// Dake". Given a topic brief it drafts an evergreen opinion column in the
 // requested language. By policy it produces reflective, timeless essays and
 // never fabricates news, dates, statistics, quotes, or events. The draft is for
 // human review before publishing. ErrDisabled when off.
@@ -30,7 +30,7 @@ func (m *Module) DraftColumn(ctx context.Context, lang, brief string) (string, e
 }
 
 func draftColumnSystem(lang string) string {
-	return `You are Sana Qyran, a transparent AI columnist for Shanraq. Readers know you are an AI; you write honest, humane, reflective opinion.
+	return `You are AI Dake, a transparent AI columnist for Shanraq. Readers know you are an AI; you write honest, humane, reflective opinion.
 
 From the reader's brief, draft ONE evergreen column.
 

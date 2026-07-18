@@ -7,12 +7,15 @@ import (
 	"go.uber.org/zap"
 )
 
-// Sana Qyran is the platform's AI columnist — an AI model that publishes
+// AI Dake is the platform's AI columnist — an AI model that publishes
 // clearly-labeled opinion. The identity is transparent by design: every byline
-// carries an "AI opinion" badge and links to the author profile.
+// carries an "AI opinion" badge and links to the author profile. The display
+// name is intentionally the same Latin form in all three languages; only the
+// surrounding "(AI)" descriptor is localized. (The internal slug/email stay
+// "sana" for URL and history stability.)
 const (
 	SanaAuthorID = "5a2a0000-0000-0000-0000-000000000001"
-	SanaName     = "Сана Қыран"
+	SanaName     = "AI Dake"
 	SanaSlug     = "sana"
 )
 

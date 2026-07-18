@@ -82,7 +82,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 // admin@/operator@shanraq.org, whose default passwords ship in the repo —
 // cascading their seeded jobs (job_queue.user_id ON DELETE CASCADE).
 //
-// Deliberately KEPT as official showcase/starter content: the Sana Qyran
+// Deliberately KEPT as official showcase/starter content: the AI Dake
 // columnist, the "redaksiya" author (a non-privileged, non-loginable account,
 // password_hash 'seed-no-login'), the demo articles, and the six curated demo
 // listings. None of those is a security risk; they populate a fresh install.

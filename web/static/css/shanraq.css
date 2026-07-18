@@ -707,7 +707,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .mylist__actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .mylist__actions form { margin: 0; }
 
-/* ---- AI columnist (Sana Qyran) ---- */
+/* ---- AI columnist (AI Dake) ---- */
 .ai-badge {
   display: inline-block; background: var(--gold); color: #fff;
   font-size: 0.66rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;

@@ -352,9 +352,9 @@ var messages = map[string]map[string]string{
 	"author.rubrics": {"kz": "Айдарлар", "ru": "Рубрик", "en": "Rubrics"},
 	"author.by":      {"kz": "Автор", "ru": "Автор", "en": "By"},
 	"author.sana_bio": {
-		"kz": "Сана Қыран — Shanraq-тың жасанды интеллект-шолушысы. Бұл адам емес, модель: ол оқиды, салыстырады және өз пікірін білдіреді. Бұл қолтаңба астындағының бәрі — ИИ пікірі, соңғы ақиқат емес. Факт дереккөзбен, пікір пікір ретінде белгіленеді.",
-		"ru": "Сана Қыран — искусственный интеллект, обозреватель Shanraq. Это не человек, а модель: она читает, сопоставляет и излагает свою позицию. Всё под этой подписью — мнение ИИ, а не истина в последней инстанции. Факт подкрепляется источником, оценка обозначается как оценка.",
-		"en": "Sana Qyran is Shanraq's AI columnist. Not a person but a model: it reads, compares, and states its view. Everything under this byline is an AI opinion, not final truth. Facts are backed by sources; judgments are marked as judgments.",
+		"kz": "AI Dake — Shanraq-тың жасанды интеллект-шолушысы. Бұл адам емес, модель: ол оқиды, салыстырады және өз пікірін білдіреді. Бұл қолтаңба астындағының бәрі — ЖИ пікірі, соңғы ақиқат емес. Факт дереккөзбен, пікір пікір ретінде белгіленеді.",
+		"ru": "AI Dake — искусственный интеллект, обозреватель Shanraq. Это не человек, а модель: она читает, сопоставляет и излагает свою позицию. Всё под этой подписью — мнение ИИ, а не истина в последней инстанции. Факт подкрепляется источником, оценка обозначается как оценка.",
+		"en": "AI Dake is Shanraq's AI columnist. Not a person but a model: it reads, compares, and states its view. Everything under this byline is an AI opinion, not final truth. Facts are backed by sources; judgments are marked as judgments.",
 	},
 
 	"form.login_title":       {"kz": "Кіру", "ru": "Вход", "en": "Sign in"},
@@ -440,7 +440,7 @@ var messages = map[string]map[string]string{
 	"editor.ai_improve":     {"kz": "Мәтінді жақсарту", "ru": "Улучшить текст", "en": "Improve text"},
 	"editor.ai_translate":   {"kz": "3 тілге аудару", "ru": "Перевести на 3 языка", "en": "Translate to 3 languages"},
 	"editor.ai_saved_hint":  {"kz": "Сақталған түпнұсқа мәтінмен жұмыс істейді.", "ru": "Работает с сохранённым текстом оригинала.", "en": "Works with the saved original text."},
-	"editor.ai_draft":       {"kz": "Sana Qyran-нан жоба", "ru": "Черновик от Sana Qyran", "en": "Draft by Sana Qyran"},
+	"editor.ai_draft":       {"kz": "AI Dake жобасы", "ru": "Черновик от AI Dake", "en": "Draft by AI Dake"},
 	"editor.ai_draft_ph":    {"kz": "Идея немесе тақырып…", "ru": "Идея или тема…", "en": "Idea or topic…"},
 	"editor.ai_draft_help":  {"kz": "Идеядан мәңгілік («evergreen») эссе жобасын жасайды және түпнұсқа тілінің бос мәтініне қояды. Дайын мәтінді ешқашан жоймайды. Жарияламас бұрын өңдеңіз.", "ru": "Создаёт черновик вечнозелёного эссе из идеи и вставляет его в пустой текст языка оригинала. Никогда не затирает готовый текст. Отредактируйте перед публикацией.", "en": "Turns an idea into an evergreen essay draft and fills it into the empty original-language body. Never overwrites existing text. Edit before publishing."},
 	"editor.ai_soon":        {"kz": "Жақында: ИИ-редактор және KZ↔RU↔EN автоаудармасы.", "ru": "Скоро: ИИ-редактор и автоперевод KZ↔RU↔EN.", "en": "Soon: AI editor and KZ↔RU↔EN auto-translation."},
@@ -449,7 +449,7 @@ var messages = map[string]map[string]string{
 	"notice.ai_improved":    {"kz": "Мәтін ИИ көмегімен жақсартылды. Тексеріп, қажет болса сақтаңыз.", "ru": "Текст улучшен ИИ. Проверьте и сохраните при необходимости.", "en": "Text improved by AI. Review and save if needed."},
 	"notice.ai_queued":      {"kz": "Басқа тілдерге аударма басталды — бірнеше секундта пайда болады.", "ru": "Перевод на другие языки запущен — версии появятся через несколько секунд.", "en": "Translation to other languages started — versions appear in a few seconds."},
 	"notice.ai_off":         {"kz": "ИИ-ассистент қазір өшірулі (API кілті жоқ).", "ru": "ИИ-ассистент сейчас отключён (не задан API-ключ).", "en": "AI assistant is currently off (no API key)."},
-	"notice.ai_drafted":     {"kz": "Sana Qyran жоба жазды. Оны өз пікіріңізбен өңдеп, содан кейін жариялаңыз.", "ru": "Sana Qyran написала черновик. Отредактируйте его по-своему и затем публикуйте.", "en": "Sana Qyran wrote a draft. Edit it in your own voice, then publish."},
+	"notice.ai_drafted":     {"kz": "AI Dake жоба жазды. Оны өз пікіріңізбен өңдеп, содан кейін жариялаңыз.", "ru": "AI Dake подготовил черновик. Отредактируйте его по-своему и затем публикуйте.", "en": "AI Dake wrote a draft. Edit it in your own voice, then publish."},
 	"notice.ai_draft_skip":  {"kz": "Мәтін бос емес — жобаны жазу үшін алдымен түпнұсқа мәтінін тазалаңыз.", "ru": "Текст не пуст — чтобы сгенерировать черновик, сначала очистите текст оригинала.", "en": "The body isn't empty — clear the original text first to generate a draft."},
 	"notice.ai_draft_empty": {"kz": "Жоба үшін идея немесе тақырып енгізіңіз.", "ru": "Введите идею или тему для черновика.", "en": "Enter an idea or topic for the draft."},
 
@@ -458,7 +458,7 @@ var messages = map[string]map[string]string{
 	"footer.about":     {"kz": "Біз туралы", "ru": "О нас", "en": "About us"},
 	"footer.you":       {"kz": "Сіз туралы", "ru": "О вас", "en": "About you"},
 	"footer.support":   {"kz": "Қолдау", "ru": "Поддержка", "en": "Support"},
-	"footer.columnist": {"kz": "Сана Қыран (ИИ)", "ru": "Сана Қыран (ИИ)", "en": "Sana Qyran (AI)"},
+	"footer.columnist": {"kz": "AI Dake (ЖИ)", "ru": "AI Dake (ИИ)", "en": "AI Dake (AI)"},
 	"footer.privacy":   {"kz": "Құпиялылық", "ru": "Конфиденциальность", "en": "Privacy"},
 	"footer.terms":     {"kz": "Шарттар", "ru": "Условия", "en": "Terms"},
 

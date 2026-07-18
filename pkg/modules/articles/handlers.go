@@ -849,7 +849,7 @@ func (m *Module) handleImprove(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, editURL+"?ai=improved", http.StatusSeeOther)
 }
 
-// handleDraft asks the Sana Qyran columnist to draft an evergreen column body
+// handleDraft asks the AI Dake columnist to draft an evergreen column body
 // from a short brief and fills it into the empty original-language body. It
 // refuses to overwrite an existing body so the author never loses their work.
 func (m *Module) handleDraft(w http.ResponseWriter, r *http.Request) {
