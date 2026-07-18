@@ -38,11 +38,24 @@ type Mailer interface {
 	Send(ctx context.Context, to, subject, body string) error
 }
 
+// SMSSender delivers a short text message to a phone number. Production wires a
+// real gateway; without one, verification codes are dev-logged (never in prod).
+type SMSSender interface {
+	SendSMS(ctx context.Context, phone, text string) error
+}
+
 type Option func(*Module)
 
 func WithMailer(mailer Mailer) Option {
 	return func(m *Module) {
 		m.mailer = mailer
+	}
+}
+
+// WithSMSSender injects the SMS gateway used for phone verification.
+func WithSMSSender(sender SMSSender) Option {
+	return func(m *Module) {
+		m.sms = sender
 	}
 }
 
@@ -75,6 +88,7 @@ type Module struct {
 	views       *template.Template
 	validator   *validate.Validator
 	mailer      Mailer
+	sms         SMSSender
 	rateLimiter RateLimiter
 	mfaProvider MFAProvider
 	requireTOTP bool

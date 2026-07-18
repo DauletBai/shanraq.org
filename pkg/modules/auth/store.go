@@ -278,6 +278,95 @@ func (s *Store) IsEmailVerified(ctx context.Context, userID uuid.UUID) (bool, er
 	return verified, nil
 }
 
+// SetName stores the author's real first and last name (the article byline).
+func (s *Store) SetName(ctx context.Context, userID uuid.UUID, first, last string) error {
+	_, err := s.db.Exec(ctx,
+		`UPDATE auth_users SET first_name = $2, last_name = $3 WHERE id = $1`,
+		userID, first, last)
+	if err != nil {
+		return fmt.Errorf("set name: %w", err)
+	}
+	return nil
+}
+
+// AuthorIdentity returns the user's name and phone-verification status.
+func (s *Store) AuthorIdentity(ctx context.Context, userID uuid.UUID) (first, last string, phoneVerified bool, err error) {
+	err = s.db.QueryRow(ctx,
+		`SELECT COALESCE(first_name,''), COALESCE(last_name,''), phone_verified_at IS NOT NULL
+		 FROM auth_users WHERE id = $1`, userID).Scan(&first, &last, &phoneVerified)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return "", "", false, nil
+		}
+		return "", "", false, fmt.Errorf("author identity: %w", err)
+	}
+	return first, last, phoneVerified, nil
+}
+
+// CreatePhoneCode stores a hashed one-time SMS code for a user+phone.
+func (s *Store) CreatePhoneCode(ctx context.Context, userID uuid.UUID, phone, codeHash string, expiresAt time.Time) error {
+	_, err := s.db.Exec(ctx,
+		`INSERT INTO phone_verification_codes (user_id, phone, code_hash, expires_at)
+		 VALUES ($1,$2,$3,$4)`,
+		userID, phone, codeHash, expiresAt)
+	if err != nil {
+		return fmt.Errorf("create phone code: %w", err)
+	}
+	return nil
+}
+
+// VerifyPhoneCode checks the newest unused code for the user. On a correct,
+// unexpired, under-attempt-limit match it marks the code used, stores the phone
+// on the account and stamps phone_verified_at — all in one transaction. It
+// returns true on success; false (with nil error) on a wrong/expired code.
+func (s *Store) VerifyPhoneCode(ctx context.Context, userID uuid.UUID, codeHash string, maxAttempts int) (bool, error) {
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return false, fmt.Errorf("begin phone verify: %w", err)
+	}
+	defer tx.Rollback(ctx)
+
+	var (
+		id       uuid.UUID
+		phone    string
+		attempts int
+		expires  time.Time
+		stored   string
+	)
+	err = tx.QueryRow(ctx,
+		`SELECT id, phone, attempts, expires_at, code_hash
+		 FROM phone_verification_codes
+		 WHERE user_id = $1 AND used_at IS NULL
+		 ORDER BY created_at DESC LIMIT 1`, userID).Scan(&id, &phone, &attempts, &expires, &stored)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return false, nil
+		}
+		return false, fmt.Errorf("select phone code: %w", err)
+	}
+	if attempts >= maxAttempts || expires.Before(time.Now()) {
+		return false, nil
+	}
+	if stored != codeHash {
+		_, _ = tx.Exec(ctx, `UPDATE phone_verification_codes SET attempts = attempts + 1 WHERE id = $1`, id)
+		if err = tx.Commit(ctx); err != nil {
+			return false, fmt.Errorf("commit attempt: %w", err)
+		}
+		return false, nil
+	}
+	if _, err = tx.Exec(ctx, `UPDATE phone_verification_codes SET used_at = NOW() WHERE id = $1`, id); err != nil {
+		return false, fmt.Errorf("mark code used: %w", err)
+	}
+	if _, err = tx.Exec(ctx,
+		`UPDATE auth_users SET phone = $2, phone_verified_at = NOW() WHERE id = $1`, userID, phone); err != nil {
+		return false, fmt.Errorf("mark phone verified: %w", err)
+	}
+	if err = tx.Commit(ctx); err != nil {
+		return false, fmt.Errorf("commit phone verify: %w", err)
+	}
+	return true, nil
+}
+
 // InsertConsent appends one consent record (append-only history).
 func (s *Store) InsertConsent(ctx context.Context, userID uuid.UUID, document, version, source, ip string) error {
 	_, err := s.db.Exec(ctx,
