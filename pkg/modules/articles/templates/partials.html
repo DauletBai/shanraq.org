@@ -1,3 +1,19 @@
+{{/* listing_facts renders the flag + area + room summary. Pass (dict "L" listing "Lang" lang).
+     Primary facts first (flag, area, bedrooms, bathrooms, land), then secondary
+     (living / kitchen areas); the row wraps to a second line when it doesn't fit. */}}
+{{ define "listing_facts" }}
+<div class="post__facts">
+  <span class="fact loc">{{ countryFlag .L.Country }}{{ if .L.City }}{{ .L.City }}{{ else }}{{ .L.Village }}{{ end }}</span>
+  {{ if gt .L.Area 0.0 }}<span class="fact" title="{{ t .Lang "re.area" }}">{{ icon "area" }}{{ .L.Area }} м²</span>{{ end }}
+  {{ $bd := .L.RoomCount "bedroom" }}{{ if gt $bd 0 }}<span class="fact" title="{{ t .Lang "re.rt_bedroom" }}">{{ icon "room_bedroom" }}{{ $bd }}</span>{{ end }}
+  {{ $ba := .L.RoomCount "bathroom" }}{{ if gt $ba 0 }}<span class="fact" title="{{ t .Lang "re.rt_bathroom" }}">{{ icon "room_bathroom" }}{{ $ba }}</span>{{ end }}
+  {{ $wc := .L.RoomCount "wc" }}{{ if gt $wc 0 }}<span class="fact" title="{{ t .Lang "re.rt_wc" }}">{{ icon "room_wc" }}{{ $wc }}</span>{{ end }}
+  {{ if gt .L.LandArea 0.0 }}<span class="fact" title="{{ t .Lang "re.land_area" }}">{{ icon "re_home" }}{{ .L.LandArea }} {{ t .Lang "re.ares" }}</span>{{ end }}
+  {{ $lv := .L.RoomArea "living" }}{{ if gt $lv 0.0 }}<span class="fact fact--sec" title="{{ t .Lang "re.rt_living" }}">{{ icon "room_living" }}{{ $lv }} м²</span>{{ end }}
+  {{ $kt := .L.RoomArea "kitchen" }}{{ if gt $kt 0.0 }}<span class="fact fact--sec" title="{{ t .Lang "re.rt_kitchen" }}">{{ icon "room_kitchen" }}{{ $kt }} м²</span>{{ end }}
+</div>
+{{ end }}
+
 {{/* fhelp renders a "?" icon with a click/hover tooltip. Pass the tip text as . */}}
 {{ define "fhelp" }}<button type="button" class="fhelp" data-fhelp aria-label="?">?<span class="fhelp__tip" role="tooltip">{{ . }}</span></button>{{ end }}
 

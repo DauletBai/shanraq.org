@@ -33,6 +33,7 @@ func buildTemplates(t *testing.T) *template.Template {
 		"catIcon":          catIcon,
 		"firstN":           firstStrings,
 		"countryFlag":      countryFlag,
+		"dict":             dict,
 		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
 		"fmtDate": func(tm time.Time) string {
@@ -87,7 +88,10 @@ func TestTemplatesExecute(t *testing.T) {
 			{"studio_editor", EditorPage{Base: base, IsNew: false, ArticleID: "id", OriginalLang: LangKZ, Category: "politics", Status: "published", Fields: emptyFields(), AIEnabled: true, Notice: "N"}},
 			{"listings", ListingsPage{Base: base, ActiveDeal: "sale", ActiveType: "apartment", Listings: []*Listing{{
 				ID: "id", DealType: "sale", PropertyType: "apartment", Country: "Казахстан", Region: "Алматы", City: "Алматы",
-				Price: 25000000, Area: 62.5, Rooms: 2, Title: "2-комн квартира", CoverURL: ""}}}},
+				Price: 18000000, Area: 72, Rooms: 3, Title: "Демо объявление трехкомнатной квартиры", PromotedUntil: &now,
+				Images:    []string{"/static/demo/rooms/living.svg", "/static/demo/rooms/kitchen.svg", "/static/demo/rooms/bedroom.svg"},
+				Amenities: []string{"furniture", "elevator", "internet"},
+				RoomSpecs: []RoomSpec{{Type: "living", Area: 20}, {Type: "bedroom", Area: 15}, {Type: "bedroom", Area: 12}, {Type: "kitchen", Area: 7}, {Type: "bathroom", Area: 4}}}}}},
 			{"listings", ListingsPage{Base: base}}, // empty state
 			{"listing_new", ListingFormPage{Base: base, Values: ListingInput{DealType: "rent", PropertyType: "house", Country: "Казахстан"}, Error: "err"}},
 			{"listing_view", ListingViewPage{Base: base, L: &Listing{

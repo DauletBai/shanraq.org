@@ -42,6 +42,8 @@
           {{ end }}
         </div>
 
+        {{ template "listing_facts" (dict "L" .L "Lang" .Lang) }}
+
         <div class="table-wrap">
           <table class="spec">
             <tbody>

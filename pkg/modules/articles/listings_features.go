@@ -10,6 +10,29 @@ type RoomSpec struct {
 // maxRoomSpecs caps how many rooms a listing may detail.
 const maxRoomSpecs = 20
 
+// RoomArea returns the floor area of the first room of the given type (0 if
+// none) — used to show "зал 20 м²", "кухня 7 м²" in the facts summary.
+func (l Listing) RoomArea(roomType string) float64 {
+	for _, r := range l.RoomSpecs {
+		if r.Type == roomType {
+			return r.Area
+		}
+	}
+	return 0
+}
+
+// RoomCount returns how many rooms of the given type a listing has — used to
+// show "спальни 2", "санузел 1".
+func (l Listing) RoomCount(roomType string) int {
+	n := 0
+	for _, r := range l.RoomSpecs {
+		if r.Type == roomType {
+			n++
+		}
+	}
+	return n
+}
+
 // roomTypeKeys is the ordered set of room kinds offered in the form. Labels
 // live in i18n as "re.rt_<key>".
 var roomTypeKeys = []string{

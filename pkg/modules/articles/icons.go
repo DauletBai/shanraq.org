@@ -33,6 +33,9 @@ var iconPaths = map[string]string{
 		`<circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>` +
 		`<circle cx="19" cy="12" r="1.3" fill="currentColor" stroke="none"/>`,
 
+	// ---- listing facts ----
+	"area": `<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>`,
+
 	// ---- article / meta ----
 	"eye":      `<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>`,
 	"calendar": `<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>`,
@@ -137,6 +140,18 @@ func countryFlag(country string) template.HTML {
 		return ""
 	}
 	return template.HTML(`<svg class="flag" viewBox="0 0 24 16" width="1.3em" height="0.87em" aria-hidden="true">` + f + `</svg>`)
+}
+
+// dict builds a map from alternating key/value pairs, so a template can pass
+// several named values into a sub-template ({{ template "x" (dict "a" 1) }}).
+func dict(pairs ...any) map[string]any {
+	m := make(map[string]any, len(pairs)/2)
+	for i := 0; i+1 < len(pairs); i += 2 {
+		if k, ok := pairs[i].(string); ok {
+			m[k] = pairs[i+1]
+		}
+	}
+	return m
 }
 
 // firstStrings returns at most n items of a slice (for a compact icon row).

@@ -180,9 +180,9 @@ img { max-width: 100%; height: auto; display: block; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: #d32f2f;
+  background: #e50000;
   border-bottom: 1px solid rgba(0, 0, 0, 0.14);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.25);
 }
 
 /* language switch */
@@ -198,11 +198,24 @@ img { max-width: 100%; height: auto; display: block; }
 a.icon-btn, a.icon-btn:hover { text-decoration: none; color: var(--ink-soft); }
 
 /* main menu (categories) — white text on the red bar */
-.menu { display: flex; gap: 22px; overflow-x: auto; padding: 0; }
+.menu { 
+  display: flex; 
+  gap: 10px; 
+  overflow-x: auto; 
+  padding: 0; 
+}
 .menu__item {
-  display: inline-flex; align-items: center; gap: 6px; padding: 12px 0; white-space: nowrap;
-  font-size: var(--step--1); font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.82); border-bottom: 2px solid transparent;
+  display: inline-flex; 
+  align-items: center; 
+  gap: 2px; 
+  padding: 12px 0; 
+  white-space: nowrap;
+  font-size: var(--step--1); 
+  font-weight: 600; 
+  text-transform: uppercase;
+  letter-spacing: 0.05em; 
+  color: rgba(255, 255, 255, 0.85); 
+  border-bottom: 2px solid transparent;
 }
 /* navbar icons follow the item's text color (white on the red bar, red on the
    active white subbar chip) — not the global red. */
@@ -211,15 +224,27 @@ a.icon-btn, a.icon-btn:hover { text-decoration: none; color: var(--ink-soft); }
 .menu__item.is-active { color: #fff; border-bottom-color: #fff; }
 
 /* subcategory bar (submenu of the active category) — chips on the red bar */
-.subbar { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; border-top: 1px solid rgba(255, 255, 255, 0.22); }
+.subbar { 
+  display: flex; 
+  gap: 6px; 
+  overflow-x: auto; 
+  padding: 8px 0; 
+  border-top: 1px solid rgba(255, 255, 255, 0.3); 
+}
+/* Default (on a light page, e.g. the listings filter): dark chip text. */
 .subbar__item {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 4px 12px; border-radius: 999px; white-space: nowrap;
-  font-size: 0.78rem; font-weight: 600; color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.14); border: 1px solid transparent;
+  font-size: 0.78rem; font-weight: 600; color: var(--ink-soft);
+  background: var(--surface-2); border: 1px solid var(--line);
 }
-.subbar__item:hover { color: #fff; text-decoration: none; background: rgba(255, 255, 255, 0.26); }
-.subbar__item.is-active { background: #fff; color: #b71c1c; }
+.subbar__item:hover { color: var(--gold-strong); text-decoration: none; border-color: var(--line-strong); }
+.subbar__item.is-active { background: var(--gold); color: #fff; border-color: transparent; }
+/* Navbar context: white chips on the red bar. */
+.navbar .subbar { border-top-color: rgba(255, 255, 255, 0.3); }
+.navbar .subbar__item { color: rgba(255, 255, 255, 0.85); background: rgba(255, 255, 255, 0.14); border-color: transparent; }
+.navbar .subbar__item:hover { color: #fff; background: rgba(255, 255, 255, 0.26); }
+.navbar .subbar__item.is-active { background: #fff; color: #b71c1c; }
 a.kicker:hover { text-decoration: none; color: var(--gold); }
 
 /* ---------- buttons ---------- */
@@ -607,12 +632,20 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* ---- Listing lifecycle: promotion / highlight / management ---- */
 .post { position: relative; }
 .post--featured { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 12px; }
+/* Corner ribbon: a diagonal banner folded across the top-left corner, text at
+   45°. The card media clips its ends (overflow:hidden). */
 .badge-top {
-  position: absolute; top: 10px; left: 10px; z-index: 2;
-  background: var(--gold); color: #fff; font-size: 0.68rem; font-weight: 800;
-  letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px;
+  position: absolute; top: 15px; left: -36px; z-index: 4;
+  width: 140px; text-align: center;
+  background: var(--gold); color: #fff; font-size: 0.6rem; font-weight: 800;
+  letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 0;
+  transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
-.badge-top--inline { position: static; }
+/* inline variant (e.g. lists) keeps the old pill look */
+.badge-top--inline {
+  position: static; width: auto; transform: none; box-shadow: none;
+  padding: 3px 9px; border-radius: 999px; letter-spacing: 0.06em; font-size: 0.68rem;
+}
 .badge-feat {
   display: inline-block; background: var(--teal); color: #fff; font-size: 0.68rem;
   font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
@@ -901,5 +934,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* row of amenity icons on a listing card */
 .post__amen { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 8px; }
 .post__amen .amic { margin: 0; font-size: 1.2rem; }
+/* facts summary (flag · area · rooms) — wraps to a second row when it overflows */
+.post__facts { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 4px; color: var(--ink-soft); font-size: var(--step--1); }
+.post__facts .fact { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.post__facts .fact .ic { font-size: 1.15em; }
+.post__facts .fact--sec { color: var(--muted); }
 .spec--rooms th .hint { font-weight: 400; }
 
