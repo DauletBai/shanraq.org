@@ -100,6 +100,8 @@
 
         {{ if .Reported }}
         <p class="notice notice--ok listing__reported">✓ {{ t .Lang "re.report_thanks" }}</p>
+        {{ else if .NeedVerify }}
+        <p class="notice notice--warn listing__reported">{{ t .Lang "re.verify_to_report" }}</p>
         {{ else if .CanReport }}
         <form method="post" action="/listings/{{ .L.ID }}/report" class="listing__report">
           <input type="hidden" name="reason" value="misleading_photos">

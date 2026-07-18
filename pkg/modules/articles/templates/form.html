@@ -12,6 +12,7 @@
     <p class="sub">{{ t .Lang "form.login_sub" }}</p>
     {{ end }}
 
+    {{ if .Notice }}<div class="alert alert--ok">{{ .Notice }}</div>{{ end }}
     {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
 
     <form method="post" action="{{ if eq .Mode "register" }}/studio/register{{ else }}/studio/login{{ end }}">

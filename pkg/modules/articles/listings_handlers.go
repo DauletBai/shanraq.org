@@ -45,6 +45,7 @@ type ListingViewPage struct {
 	Subscribed    bool
 	IsFavorite    bool
 	Reported      bool   // just submitted a report (thank-you flash)
+	NeedVerify    bool   // tried to report/act without a verified email
 	CanReport     bool   // logged-in and not the owner
 	ShowContact   bool   // reveal the full seller contact
 	MaskedContact string // partly-hidden contact shown before reveal
@@ -128,6 +129,16 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	in := parseListingForm(r)
+
+	// Posting requires a verified email (blocks throwaway-account spam).
+	if !m.auth.IsEmailVerified(r.Context(), authorID) {
+		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
+		page.ActiveCat = "realestate"
+		page.Values = in
+		page.Error = T(lang, "re.err_verify_email")
+		m.render(w, "listing_new", page)
+		return
+	}
 
 	// Resolve the selected location node into the denormalized address fields.
 	if in.GeoNodeID != nil {
@@ -242,6 +253,7 @@ func (m *Module) renderListingView(w http.ResponseWriter, r *http.Request, l *Li
 	}
 	page.ShowContact = reveal || page.Owner
 	page.Reported = r.URL.Query().Get("reported") == "ok"
+	page.NeedVerify = r.URL.Query().Get("notice") == "verify"
 	page.SidebarNews = m.latestNews(r, lang, 6)
 	m.applyListingSEO(&page)
 	m.render(w, "listing_view", page)
@@ -279,6 +291,11 @@ func (m *Module) handleListingReport(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(chi.URLParam(r, "id"))
 	if err != nil {
 		http.NotFound(w, r)
+		return
+	}
+	// Reporting requires a verified email, so throwaway accounts can't brigade.
+	if !m.auth.IsEmailVerified(r.Context(), uid) {
+		http.Redirect(w, r, "/listings/"+id.String()+"?lang="+lang+"&notice=verify", http.StatusSeeOther)
 		return
 	}
 	l, err := m.listings.GetByID(r.Context(), id)

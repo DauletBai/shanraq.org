@@ -461,14 +461,22 @@ func (m *Module) handleVote(w http.ResponseWriter, r *http.Request) {
 // FormPage backs the login and register screens.
 type FormPage struct {
 	Base
-	Mode  string // login | register
-	Email string
-	Error string
+	Mode   string // login | register
+	Email  string
+	Error  string
+	Notice string
 }
 
 func (m *Module) handleLoginPage(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
-	m.render(w, "form", FormPage{Base: m.base(r, T(lang, "form.login_title"), lang), Mode: "login"})
+	page := FormPage{Base: m.base(r, T(lang, "form.login_title"), lang), Mode: "login"}
+	switch r.URL.Query().Get("verified") {
+	case "ok":
+		page.Notice = T(lang, "form.verified_ok")
+	case "invalid":
+		page.Error = T(lang, "form.verified_invalid")
+	}
+	m.render(w, "form", page)
 }
 
 func (m *Module) handleRegisterPage(w http.ResponseWriter, r *http.Request) {
@@ -579,6 +587,10 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	// Record the consent the checkbox represents (append-only proof).
 	if err := m.auth.RecordConsent(r.Context(), r, user.ID, "web"); err != nil {
 		m.rt.Logger.Error("record consent (web)", zap.String("user_id", user.ID.String()), zap.Error(err))
+	}
+	// Send the email-verification link (best effort).
+	if err := m.auth.IssueEmailVerification(r.Context(), user.ID, user.Email); err != nil {
+		m.rt.Logger.Warn("issue email verification (web)", zap.String("user_id", user.ID.String()), zap.Error(err))
 	}
 	auth.SetSessionCookie(w, r, token, m.auth.SessionTTL())
 	m.rt.Logger.Info("studio register", zap.String("user_id", user.ID.String()))

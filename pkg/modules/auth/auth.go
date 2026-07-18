@@ -151,7 +151,23 @@ func (m *Module) Routes(r chi.Router) {
 		r.Get("/password/confirm", m.renderPasswordConfirmPage)
 		r.Post("/password/confirm", m.handlePasswordResetConfirm)
 		r.Post("/mfa/verify", m.handleMFAVerify)
+		r.Get("/verify", m.handleEmailVerify)
 	})
+}
+
+// handleEmailVerify confirms an email from the link sent at registration.
+func (m *Module) handleEmailVerify(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	defer cancel()
+
+	err := m.VerifyEmail(ctx, r.URL.Query().Get("token"))
+	if err != nil {
+		// Browsers land here from an email link; send them to the studio with a
+		// flag rather than raw JSON.
+		http.Redirect(w, r, "/studio/login?verified=invalid", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/studio/login?verified=ok", http.StatusSeeOther)
 }
 
 func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
@@ -208,6 +224,10 @@ func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
 	// Record the consent that gated this signup (append-only proof).
 	if err := m.RecordConsent(ctx, r, user.ID, "api"); err != nil {
 		m.rt.Logger.Error("record consent (api)", zap.String("user_id", user.ID.String()), zap.Error(err))
+	}
+	// Send the email-verification link (best effort; user can request a resend).
+	if err := m.IssueEmailVerification(ctx, user.ID, user.Email); err != nil {
+		m.rt.Logger.Warn("issue email verification (api)", zap.String("user_id", user.ID.String()), zap.Error(err))
 	}
 
 	accessToken, refreshToken, err := m.issueTokenPair(ctx, user.ID, user)
@@ -829,24 +849,9 @@ func (m *Module) validatePayload(payload any) (map[string]string, error) {
 }
 
 func (m *Module) sendPasswordResetEmail(ctx context.Context, to, link string) error {
-	if m.mailer == nil {
-		// In production a reset the user can never receive is worse than a clear
-		// failure — fail loudly instead of minting an undeliverable token.
-		if strings.EqualFold(m.rt.Config.Environment, "production") {
-			return errors.New("email delivery is not configured")
-		}
-		// Local development only: surface the link so it can be tested. This
-		// branch never runs in production (guarded above).
-		m.rt.Logger.Info("password reset email not sent (mailer disabled); dev-only reset link", zap.String("link", link))
-		return nil
-	}
 	subject := "Password reset instructions"
 	body := fmt.Sprintf("You requested a password reset. Use the link below to set a new password:\n\n%s\n\nIf you did not request this change, you can ignore this message.", link)
-	if err := m.mailer.Send(ctx, to, subject, body); err != nil {
-		return err
-	}
-	m.rt.Logger.Info("password reset email sent")
-	return nil
+	return m.deliverOrDevLink(ctx, to, subject, body, link, "password reset")
 }
 
 func (m *Module) renderResetRequestTemplate(w http.ResponseWriter, status int, data templateData) {

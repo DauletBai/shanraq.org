@@ -25,6 +25,8 @@ var (
 	ErrRefreshNotFound = errors.New("refresh token not found")
 	// ErrPasswordResetNotFound indicates the password reset token does not exist.
 	ErrPasswordResetNotFound = errors.New("password reset token not found")
+	// ErrEmailVerificationInvalid indicates the verification token is unknown, used, or expired.
+	ErrEmailVerificationInvalid = errors.New("email verification token invalid or expired")
 	// ErrMFATOTPNotFound indicates the user does not yet have a TOTP secret registered.
 	ErrMFATOTPNotFound = errors.New("mfa totp secret not found")
 )
@@ -213,6 +215,67 @@ func (s *Store) RevokeRefreshToken(ctx context.Context, id uuid.UUID) error {
 		return fmt.Errorf("revoke refresh token: %w", err)
 	}
 	return nil
+}
+
+// CreateEmailVerification stores a verification token hash for a user.
+func (s *Store) CreateEmailVerification(ctx context.Context, userID uuid.UUID, tokenHash string, expiresAt time.Time) error {
+	_, err := s.db.Exec(ctx,
+		`INSERT INTO email_verification_tokens (user_id, token_hash, expires_at)
+		 VALUES ($1,$2,$3)`,
+		userID, tokenHash, expiresAt)
+	if err != nil {
+		return fmt.Errorf("insert email verification: %w", err)
+	}
+	return nil
+}
+
+// ConsumeEmailVerification validates an unused, unexpired token, marks the user
+// verified and the token used (in one transaction), and returns the user id.
+func (s *Store) ConsumeEmailVerification(ctx context.Context, tokenHash string) (uuid.UUID, error) {
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return uuid.Nil, fmt.Errorf("begin verify tx: %w", err)
+	}
+	defer tx.Rollback(ctx)
+
+	var (
+		id     uuid.UUID
+		userID uuid.UUID
+	)
+	err = tx.QueryRow(ctx,
+		`SELECT id, user_id FROM email_verification_tokens
+		 WHERE token_hash = $1 AND used_at IS NULL AND expires_at > NOW()`,
+		tokenHash).Scan(&id, &userID)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return uuid.Nil, ErrEmailVerificationInvalid
+		}
+		return uuid.Nil, fmt.Errorf("select email verification: %w", err)
+	}
+	if _, err = tx.Exec(ctx, `UPDATE email_verification_tokens SET used_at = NOW() WHERE id = $1`, id); err != nil {
+		return uuid.Nil, fmt.Errorf("mark verification used: %w", err)
+	}
+	if _, err = tx.Exec(ctx, `UPDATE auth_users SET email_verified_at = NOW() WHERE id = $1 AND email_verified_at IS NULL`, userID); err != nil {
+		return uuid.Nil, fmt.Errorf("mark email verified: %w", err)
+	}
+	if err = tx.Commit(ctx); err != nil {
+		return uuid.Nil, fmt.Errorf("commit verify: %w", err)
+	}
+	return userID, nil
+}
+
+// IsEmailVerified reports whether the user's email is verified.
+func (s *Store) IsEmailVerified(ctx context.Context, userID uuid.UUID) (bool, error) {
+	var verified bool
+	err := s.db.QueryRow(ctx,
+		`SELECT email_verified_at IS NOT NULL FROM auth_users WHERE id = $1`, userID).Scan(&verified)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return false, nil
+		}
+		return false, fmt.Errorf("check email verified: %w", err)
+	}
+	return verified, nil
 }
 
 // InsertConsent appends one consent record (append-only history).
