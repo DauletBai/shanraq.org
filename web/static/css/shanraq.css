@@ -38,9 +38,9 @@
 }
 
 :root[data-theme="dark"] {
-  --paper: #1e1e1e;
+  --paper: #2e2e2e;
   --surface: #262626;
-  --surface-2: #2e2d2b;
+  --surface-2: #34332f;
   --ink: #d8d6d2;
   --ink-soft: #bebbb6;
   --muted: #8f8c86;
@@ -58,9 +58,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #1e1e1e;
+    --paper: #2e2e2e;
     --surface: #262626;
-    --surface-2: #2e2d2b;
+    --surface-2: #34332f;
     --ink: #d8d6d2;
     --ink-soft: #bebbb6;
     --muted: #8f8c86;
