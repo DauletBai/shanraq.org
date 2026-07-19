@@ -579,6 +579,11 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .site-footer a:hover { color: #ef5350; text-decoration: none; }
 .foot-nav { display: flex; gap: 20px; flex-wrap: wrap; }
 .foot-nav a { font-weight: 600; }
+/* centered row of social icons on its own line in the footer */
+.foot-social { flex-basis: 100%; display: flex; justify-content: center; gap: 18px; margin-top: 10px; }
+.foot-social .soc { display: inline-flex; color: rgba(255, 255, 255, 0.6); transition: color 0.15s ease; }
+.foot-social .soc:hover { color: #ef5350; }
+.foot-social .soc svg { width: 20px; height: 20px; display: block; }
 
 /* info pages (about / guide / support) */
 .page { max-width: 760px; margin: 0 auto; padding: 34px 0 70px; }

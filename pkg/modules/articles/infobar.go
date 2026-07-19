@@ -59,18 +59,21 @@ type InfoBar struct {
 	social   []SocialLink
 }
 
-// socialLinks turns the configured profile URLs into ordered, non-empty links.
+// socialLinks returns the four social profiles in a fixed order so their icons
+// always render. A profile with no configured URL yet gets a "#" placeholder
+// (shown but non-navigating) until a real URL is filled in.
 func socialLinks(cfg config.SocialConfig) []SocialLink {
-	var out []SocialLink
+	out := make([]SocialLink, 0, 4)
 	for _, s := range []SocialLink{
 		{"telegram", strings.TrimSpace(cfg.Telegram)},
 		{"instagram", strings.TrimSpace(cfg.Instagram)},
 		{"youtube", strings.TrimSpace(cfg.YouTube)},
 		{"facebook", strings.TrimSpace(cfg.Facebook)},
 	} {
-		if s.URL != "" {
-			out = append(out, s)
+		if s.URL == "" {
+			s.URL = "#"
 		}
+		out = append(out, s)
 	}
 	return out
 }
