@@ -684,7 +684,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* ---- Listing lifecycle: promotion / highlight / management ---- */
 .post { position: relative; }
-.post--featured { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 12px; }
+/* Highlighted listing: a soft elevation shadow (replaces the old red outline). */
+.post--featured { border-radius: 12px; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16); }
+:root[data-theme="dark"] .post--featured { box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55); }
 /* Corner ribbon: a diagonal banner folded across the top-left corner, text at
    45°. The card media clips its ends (overflow:hidden). */
 .badge-top {

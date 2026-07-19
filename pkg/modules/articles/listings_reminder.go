@@ -30,6 +30,7 @@ func (m *Module) reminderLoop(ctx context.Context) {
 	case <-time.After(30 * time.Second):
 	}
 	m.sweepReminders(ctx)
+	m.sweepExpired(ctx)
 	t := time.NewTicker(reminderInterval)
 	defer t.Stop()
 	for {
@@ -38,7 +39,21 @@ func (m *Module) reminderLoop(ctx context.Context) {
 			return
 		case <-t.C:
 			m.sweepReminders(ctx)
+			m.sweepExpired(ctx)
 		}
+	}
+}
+
+// sweepExpired permanently deletes listings past their 21-day window and all
+// their data (owners were warned 2 days earlier by sweepReminders).
+func (m *Module) sweepExpired(ctx context.Context) {
+	n, err := m.listings.PurgeExpired(ctx)
+	if err != nil {
+		m.rt.Logger.Error("listing purge sweep", zap.Error(err))
+		return
+	}
+	if n > 0 {
+		m.rt.Logger.Info("purged expired listings", zap.Int64("count", n))
 	}
 }
 

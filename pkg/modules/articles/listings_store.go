@@ -54,7 +54,7 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 		INSERT INTO listings (author_id, deal_type, property_type, country, region, city, village,
 		                      price, area, rooms, title, description, contact, cover_url, images, geo_node_id,
 		                      land_area, amenities, room_specs, status, expires_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19::jsonb,'published', NOW() + INTERVAL '14 days')
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19::jsonb,'published', NOW() + INTERVAL '21 days')
 		RETURNING id
 	`, authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.Village,
 		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.Images, in.GeoNodeID,
@@ -109,7 +109,7 @@ func (s *ListingStore) MyListings(ctx context.Context, authorID uuid.UUID) ([]*L
 // Extend adds 14 days to a listing's life (owner-only). Returns ErrNotFound if
 // the listing does not exist or is not owned by author.
 func (s *ListingStore) Extend(ctx context.Context, id, author uuid.UUID) error {
-	return s.touch(ctx, id, author, "expires_at = GREATEST(expires_at, NOW()) + INTERVAL '14 days', expiry_reminded = false")
+	return s.touch(ctx, id, author, "expires_at = GREATEST(expires_at, NOW()) + INTERVAL '21 days', expiry_reminded = false")
 }
 
 // DueReminders returns active listings expiring within 2 days that have not yet
@@ -291,6 +291,34 @@ func (s *ListingStore) Facets(ctx context.Context) (ListingFacets, error) {
 		fc.Type[k] = n
 	}
 	return fc, typeRows.Err()
+}
+
+// PurgeExpired permanently deletes listings whose 21-day free window has ended,
+// together with their dependent rows (reports, favorites) — enforcing the
+// "then all its data is deleted" policy. Runs from the background sweep, in one
+// transaction so an extend that lands mid-sweep can't orphan dependents.
+func (s *ListingStore) PurgeExpired(ctx context.Context) (int64, error) {
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return 0, err
+	}
+	defer tx.Rollback(ctx)
+
+	const expired = "expires_at < NOW()"
+	if _, err := tx.Exec(ctx, `DELETE FROM listing_reports WHERE listing_id IN (SELECT id FROM listings WHERE `+expired+`)`); err != nil {
+		return 0, fmt.Errorf("purge reports: %w", err)
+	}
+	if _, err := tx.Exec(ctx, `DELETE FROM favorites WHERE item_type = 'listing' AND item_id IN (SELECT id FROM listings WHERE `+expired+`)`); err != nil {
+		return 0, fmt.Errorf("purge favorites: %w", err)
+	}
+	ct, err := tx.Exec(ctx, `DELETE FROM listings WHERE `+expired)
+	if err != nil {
+		return 0, fmt.Errorf("purge listings: %w", err)
+	}
+	if err := tx.Commit(ctx); err != nil {
+		return 0, err
+	}
+	return ct.RowsAffected(), nil
 }
 
 // GetByID loads a single published listing.
