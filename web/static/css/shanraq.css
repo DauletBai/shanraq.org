@@ -395,14 +395,30 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   display: flex; 
   flex-direction: column; 
   gap: 9px;
-  padding-bottom: 24px; 
-  border-bottom: 1px solid var(--line);
+  padding-bottom: 15px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
 }
-.post__title { font-size: var(--step-2); margin: 2px 0; }
+.post__title { 
+  font-size: var(--step-2); 
+  margin: 2px 0;
+  padding: 0 10px;
+}
 .post__title a { color: var(--ink); }
 .post__title a:hover { color: var(--gold-strong); text-decoration: none; }
-.post__excerpt { color: var(--ink-soft); margin: 0; }
-.post__meta { margin-top: auto; display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: var(--step--1); padding-top: 6px; }
+.post__excerpt { 
+  color: var(--ink-soft);
+  padding: 0 10px;
+  margin: 0; 
+}
+.post__meta { 
+  margin-top: auto; 
+  display: flex; 
+  align-items: center; 
+  gap: 9px; color: var(--muted); 
+  font-size: var(--step--1); 
+  padding: 5px 10px; 
+}
 .score { font-weight: 700; }
 .score.pos { color: var(--teal); }
 .score.neg { color: var(--clay); }
@@ -497,7 +513,13 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .stat__value { font-family: var(--serif); font-size: var(--step-3); font-weight: 700; margin: 0; color: var(--gold-strong); }
 .stat__sub { font-size: 0.76rem; color: var(--muted); }
 .badge-lang { font-weight: 700; color: var(--gold-strong); font-size: 0.85em; }
-.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.table-wrap { 
+  overflow-x: auto; 
+  border: 1px solid var(--line); 
+  border-radius: var(--radius); 
+  background: var(--surface);
+  margin: 10px 0;
+}
 table.list { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
 table.list th, table.list td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
 table.list th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); background: var(--surface-2); }
@@ -589,6 +611,7 @@ table.list td.title { white-space: normal; max-width: 380px; }
   font-size: 1.1rem;
   color: var(--gold-strong, var(--gold));
   margin: 2px 0 6px;
+  padding: 0 10px;
 }
 .listing__price {
   font-family: var(--serif);
@@ -685,7 +708,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* ---- Listing lifecycle: promotion / highlight / management ---- */
 .post { position: relative; }
 /* Highlighted listing: a soft elevation shadow (replaces the old red outline). */
-.post--featured { border-radius: 12px; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16); }
+.post--featured { 
+  border-radius: 12px;
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+}
 :root[data-theme="dark"] .post--featured { box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55); }
 /* Corner ribbon: a diagonal banner folded across the top-left corner, text at
    45°. The card media clips its ends (overflow:hidden). */
@@ -1016,7 +1043,15 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .roomsup__rm { position: static; width: 28px; height: 28px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line-strong); }
 .roomsup__rm:hover { background: var(--gold-strong); color: #fff; border-color: var(--gold-strong); }
 @media (max-width: 560px) { .roomsup__row { grid-template-columns: 1fr 1fr; } .roomsup__note { grid-column: 1 / -1; } }
-.spec__cap { text-align: left; font-family: var(--serif); font-weight: 700; font-size: 1.05rem; color: var(--ink); padding: 14px 0 8px; caption-side: top; }
+.spec__cap { 
+  text-align: left; 
+  font-family: var(--serif); 
+  font-weight: 700; 
+  font-size: 1.05rem; 
+  color: var(--ink); 
+  padding: 14px 10px 8px; 
+  caption-side: top; 
+}
 /* Shanraq's own line icons: brand red, sized to the surrounding text. */
 .ic { color: var(--gold-strong); vertical-align: -0.14em; }
 .roomic { font-size: 1.15rem; margin-right: 4px; }
@@ -1026,7 +1061,12 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* amenity icon in the listing chips and the submission checkboxes */
 .amic { display: inline-flex; font-size: 1.1rem; margin-right: 5px; vertical-align: -0.16em; }
 /* rubric icon inside the category label */
-.kicker { display: inline-flex; align-items: center; gap: 5px; }
+.kicker { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 5px;
+  padding: 0 10px;
+}
 .kicker .ic { font-size: 1.2em; }
 /* real-estate (shanyrak) marker before a page heading */
 .h1-ic { display: flex; align-items: center; gap: 10px; }
@@ -1035,10 +1075,25 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .h1-ic__mark--logo { align-items: center; }
 .h1-logo { height: 2.1rem; width: auto; display: block; }
 /* row of amenity icons on a listing card */
-.post__amen { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 8px; }
+.post__amen { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 20px;
+  padding: 0 10px;
+  margin-top: 8px; 
+}
 .post__amen .amic { margin: 0; font-size: 1.2rem; }
 /* facts summary (flag · area · rooms) — wraps to a second row when it overflows */
-.post__facts { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 4px; color: var(--ink-soft); font-size: var(--step--1); }
+.post__facts { 
+  display: flex; 
+  flex-wrap: wrap; 
+  align-items: center; 
+  gap: 6px 14px; 
+  margin-top: 4px; 
+  color: var(--ink-soft); 
+  font-size: var(--step--1);
+  padding: 0 10px;
+}
 .post__facts .fact { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 .post__facts .fact .ic { font-size: 1.15em; }
 .post__facts .fact--sec { color: var(--muted); }
