@@ -1066,8 +1066,15 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/studio/author?need=publish", http.StatusSeeOther)
 		return
 	}
-	// One-time acknowledgment of the documents and tariffs before publishing.
-	if consented, err := m.auth.HasAuthorConsent(r.Context(), authorID); err == nil && !consented {
+	// Acknowledgment of the current documents and tariffs before publishing.
+	// Fail-closed: a DB error must not let an unconsented article through.
+	consented, err := m.auth.HasAuthorConsent(r.Context(), authorID)
+	if err != nil {
+		m.rt.Logger.Error("author consent check", zap.String("user_id", authorID.String()), zap.Error(err))
+		http.Redirect(w, r, "/studio/consent", http.StatusSeeOther)
+		return
+	}
+	if !consented {
 		http.Redirect(w, r, "/studio/consent", http.StatusSeeOther)
 		return
 	}

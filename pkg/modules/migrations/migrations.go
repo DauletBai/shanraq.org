@@ -78,18 +78,33 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	return nil
 }
 
-// stripDemoFixtures removes only the PRIVILEGED demo accounts from production —
-// admin@/operator@shanraq.org, whose default passwords ship in the repo —
-// cascading their seeded jobs (job_queue.user_id ON DELETE CASCADE).
+// stripDemoFixtures sanitizes a production database of seed data that could
+// mislead real users:
+//   - PRIVILEGED demo accounts (admin@/operator@shanraq.org), whose default
+//     passwords ship in the repo (cascades their seeded jobs);
+//   - the DEMO MARKETPLACE listings — they carry fake contact phones and
+//     fake popularity, so a real visitor could call a fictitious number;
+//   - artificial views/score on the seeded articles, so launch metrics are
+//     honest (no fake social proof).
 //
-// Deliberately KEPT as official showcase/starter content: the AI Dake
-// columnist, the "redaksiya" author (a non-privileged, non-loginable account,
-// password_hash 'seed-no-login'), the demo articles, and the six curated demo
-// listings. None of those is a security risk; they populate a fresh install.
+// The AI Dake columns and the non-loginable "redaksiya" author are KEPT as
+// labeled starter content (the columns are clearly marked AI opinion), but with
+// their counters zeroed.
 func stripDemoFixtures(ctx context.Context, db *sql.DB) error {
-	_, err := db.ExecContext(ctx,
-		`DELETE FROM auth_users WHERE email IN ('admin@shanraq.org', 'operator@shanraq.org')`)
-	return err
+	stmts := []string{
+		`DELETE FROM auth_users WHERE email IN ('admin@shanraq.org', 'operator@shanraq.org')`,
+		`DELETE FROM listing_reports WHERE listing_id IN (SELECT id FROM listings WHERE id::text LIKE 'd0000000-%' OR id::text LIKE 'a0000000-%')`,
+		`DELETE FROM favorites WHERE item_type = 'listing' AND (item_id::text LIKE 'd0000000-%' OR item_id::text LIKE 'a0000000-%')`,
+		`DELETE FROM listings WHERE id::text LIKE 'd0000000-%' OR id::text LIKE 'a0000000-%'`,
+		`UPDATE articles SET views_count = 0, score = 0
+		   WHERE author_id IN ('11111111-1111-1111-1111-111111111111','5a2a0000-0000-0000-0000-000000000001')`,
+	}
+	for _, s := range stmts {
+		if _, err := db.ExecContext(ctx, s); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 var _ interface {

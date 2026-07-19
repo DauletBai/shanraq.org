@@ -27,8 +27,13 @@ var ErrInvalidEmail = errors.New("invalid email address")
 // ErrWeakPassword is returned when a registration password is too short.
 var ErrWeakPassword = errors.New("password too short")
 
-// minPasswordLen is the minimum accepted password length.
-const minPasswordLen = 8
+// minPasswordLen / maxPasswordLen bound the password. The max mirrors bcrypt's
+// 72-byte input limit so an over-long password gets a clean validation error
+// instead of a bcrypt error surfacing as a 500.
+const (
+	minPasswordLen = 8
+	maxPasswordLen = 72
+)
 
 // ConsentDocument and ConsentVersion identify the legal documents a user
 // accepts at registration. Bump ConsentVersion when the Terms or Privacy
@@ -52,7 +57,7 @@ func (m *Module) HasAuthorConsent(ctx context.Context, userID uuid.UUID) (bool, 
 	if m.store == nil {
 		return true, nil
 	}
-	return m.store.HasConsent(ctx, userID, AuthorConsentDocument)
+	return m.store.HasConsent(ctx, userID, AuthorConsentDocument, AuthorConsentVersion)
 }
 
 // RecordAuthorConsent appends the author's acknowledgment of the documents and
@@ -277,7 +282,7 @@ func (m *Module) RegisterPassword(ctx context.Context, email, password string) (
 	if !ok {
 		return User{}, "", ErrInvalidEmail
 	}
-	if len(password) < minPasswordLen {
+	if len(password) < minPasswordLen || len(password) > maxPasswordLen {
 		return User{}, "", ErrWeakPassword
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)

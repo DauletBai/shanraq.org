@@ -327,8 +327,9 @@ func (s *ListingStore) PurgeExpired(ctx context.Context) (int64, error) {
 
 // GetByID loads a single published listing.
 func (s *ListingStore) GetByID(ctx context.Context, id uuid.UUID) (*Listing, error) {
+	// Expired listings 404 immediately (not only after the 6h purge sweep).
 	row := s.db.QueryRow(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id
-		WHERE l.id = $1 AND l.status = 'published'`, listingCols), id)
+		WHERE l.id = $1 AND l.status = 'published' AND l.expires_at > NOW()`, listingCols), id)
 	l, err := scanListing(row)
 	if err != nil {
 		if err == pgx.ErrNoRows {

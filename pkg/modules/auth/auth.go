@@ -219,6 +219,10 @@ func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
+	if len(req.Password) > maxPasswordLen {
+		respond.Error(w, http.StatusBadRequest, ErrWeakPassword)
+		return
+	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		respond.Error(w, http.StatusInternalServerError, err)
@@ -586,6 +590,10 @@ func (m *Module) handlePasswordResetConfirm(w http.ResponseWriter, r *http.Reque
 	}
 
 	userID := reset.UserID
+	if len(req.Password) > maxPasswordLen {
+		respond.Error(w, http.StatusBadRequest, ErrWeakPassword)
+		return
+	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		respond.Error(w, http.StatusInternalServerError, err)

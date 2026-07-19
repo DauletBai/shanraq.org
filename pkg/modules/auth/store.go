@@ -367,13 +367,14 @@ func (s *Store) VerifyPhoneCode(ctx context.Context, userID uuid.UUID, codeHash 
 	return true, nil
 }
 
-// HasConsent reports whether the user has at least one consent record for the
-// given document (used to gate publishing on author acknowledgment).
-func (s *Store) HasConsent(ctx context.Context, userID uuid.UUID, document string) (bool, error) {
+// HasConsent reports whether the user accepted the given document at the given
+// version. Checking the version (not just the document) means a materially
+// changed document requires fresh consent.
+func (s *Store) HasConsent(ctx context.Context, userID uuid.UUID, document, version string) (bool, error) {
 	var exists bool
 	err := s.db.QueryRow(ctx,
-		`SELECT EXISTS(SELECT 1 FROM user_consents WHERE user_id=$1 AND document=$2)`,
-		userID, document).Scan(&exists)
+		`SELECT EXISTS(SELECT 1 FROM user_consents WHERE user_id=$1 AND document=$2 AND version=$3)`,
+		userID, document, version).Scan(&exists)
 	if err != nil {
 		return false, fmt.Errorf("has consent: %w", err)
 	}

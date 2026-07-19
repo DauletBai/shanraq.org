@@ -52,7 +52,7 @@ func xmlEscape(s string) string {
 }
 
 func (m *Module) siteURL() string {
-	return strings.TrimRight(m.rt.Config.Syndicate.BaseURL, "/")
+	return strings.TrimRight(m.rt.Config.PublicBase(), "/")
 }
 
 // handleRobots serves robots.txt: crawl everything except the author cabinet,

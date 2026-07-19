@@ -66,7 +66,7 @@ func (m *Module) sweepReminders(ctx context.Context) {
 		m.rt.Logger.Error("listing reminders sweep", zap.Error(err))
 		return
 	}
-	base := strings.TrimRight(m.rt.Config.Syndicate.BaseURL, "/")
+	base := strings.TrimRight(m.rt.Config.PublicBase(), "/")
 	for _, l := range due {
 		subject := "Ваше объявление скоро истекает — Shanraq"
 		body := fmt.Sprintf(

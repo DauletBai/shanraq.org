@@ -459,7 +459,7 @@ var messages = map[string]map[string]string{
 	"author.code_bad":        {"kz": "Код қате немесе мерзімі өткен.", "ru": "Неверный или устаревший код.", "en": "Wrong or expired code."},
 	"author.phone_ok":        {"kz": "Телефон расталды.", "ru": "Телефон подтверждён.", "en": "Phone verified."},
 	"author.phone_verified":  {"kz": "Телефон расталған.", "ru": "Телефон подтверждён.", "en": "Phone is verified."},
-	"author.can_publish":     {"kz": "Сіз расталған автор ретінде мақала жариялай аласыз.", "ru": "Вы подтверждённый автор и можете публиковать статьи.", "en": "You are a verified author and can publish articles."},
+	"author.can_publish":     {"kz": "Телефоныңыз расталды — мақала жариялай аласыз.", "ru": "Телефон подтверждён — вы можете публиковать статьи.", "en": "Your phone is verified — you can publish articles."},
 	"author.err_name":        {"kz": "Аты мен тегін көрсетіңіз.", "ru": "Укажите имя и фамилию.", "en": "Provide first and last name."},
 	"author.err_phone":       {"kz": "Жарамды телефон нөмірін енгізіңіз.", "ru": "Введите корректный номер телефона.", "en": "Enter a valid phone number."},
 	"form.verified_invalid":  {"kz": "Растау сілтемесі жарамсыз немесе мерзімі өткен.", "ru": "Ссылка подтверждения недействительна или устарела.", "en": "The verification link is invalid or has expired."},
