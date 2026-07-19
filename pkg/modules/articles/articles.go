@@ -34,6 +34,7 @@ type Module struct {
 	rt        *shanraq.Runtime
 	store     *Store
 	listings  *ListingStore
+	ads       *AdStore
 	geo       *GeoStore
 	comments  *CommentStore
 	favs      *FavoriteStore
@@ -63,6 +64,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
 	m.listings = NewListingStore(rt.DB)
+	m.ads = NewAdStore(rt.DB)
 	m.geo = NewGeoStore(rt.DB)
 	m.comments = NewCommentStore(rt.DB)
 	m.favs = NewFavoriteStore(rt.DB)
@@ -198,6 +200,10 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/studio/a/{id}/draft", m.handleDraft)
 		r.Post("/studio/a/{id}/translate", m.handleTranslate)
 		r.Get("/favorites", m.handleFavorites)
+		// Advertiser cabinet (Phase 0b MVP — order capture, billing later).
+		r.Get("/advertise", m.handleAdvertise)
+		r.Post("/advertise/company", m.handleAdvertiseCompany)
+		r.Post("/advertise/order", m.handleAdvertiseOrder)
 		r.Post("/favorites/{type}/{id}", m.handleFavoriteToggle)
 		r.Post("/listings/{id}/report", m.handleListingReport)
 	})

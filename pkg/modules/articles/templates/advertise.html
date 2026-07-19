@@ -1,0 +1,129 @@
+{{ define "advertise" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="studio__head" style="margin-top:24px">
+    <h1 class="h1-ic"><span class="h1-ic__mark">{{ icon "megaphone" }}</span> {{ t .Lang "adv.title" }}</h1>
+  </div>
+  <p class="aside__text" style="margin:-6px 0 20px">{{ t .Lang "adv.intro" }}</p>
+
+  {{ if eq .Saved "company" }}<p class="notice">{{ t .Lang "adv.saved_company" }}</p>{{ end }}
+  {{ if eq .Saved "order" }}<p class="notice">{{ t .Lang "adv.saved_order" }}</p>{{ end }}
+  {{ if .Error }}<p class="notice notice--warn">{{ .Error }}</p>{{ end }}
+
+  {{ if not .Advertiser }}
+  <section class="adv-card">
+    <h2 class="adv-card__title">{{ t .Lang "adv.company" }}</h2>
+    <form method="post" action="/advertise/company">
+      <input type="hidden" name="lang" value="{{ .Lang }}">
+      {{ template "adv_company_fields" . }}
+      <button class="btn btn--primary" type="submit">{{ t .Lang "adv.company_save" }}</button>
+    </form>
+  </section>
+  {{ else }}
+  <section class="adv-card">
+    <div class="adv-company">
+      <div>
+        <b>{{ .Advertiser.CompanyName }}</b>{{ if .Advertiser.BIN }} · {{ t .Lang "adv.bin" }} {{ .Advertiser.BIN }}{{ end }}
+        <div class="aside__text">{{ .Advertiser.ContactName }}{{ if .Advertiser.ContactRole }}, {{ .Advertiser.ContactRole }}{{ end }} · {{ .Advertiser.ContactPhone }}</div>
+      </div>
+      <details class="adv-edit">
+        <summary class="btn btn--ghost btn--sm">{{ t .Lang "adv.company_edit" }}</summary>
+        <form method="post" action="/advertise/company" style="margin-top:16px">
+          <input type="hidden" name="lang" value="{{ .Lang }}">
+          {{ template "adv_company_fields" . }}
+          <button class="btn btn--primary" type="submit">{{ t .Lang "adv.company_save" }}</button>
+        </form>
+      </details>
+    </div>
+  </section>
+
+  <section class="adv-card">
+    <h2 class="adv-card__title">{{ t .Lang "adv.new_order" }}</h2>
+    <form method="post" action="/advertise/order">
+      <input type="hidden" name="lang" value="{{ .Lang }}">
+      <div class="adv-grid">
+        <div class="field"><label>{{ t .Lang "adv.ad_title" }} *</label><input class="input" name="title" required></div>
+        <div class="field"><label>{{ t .Lang "adv.ad_url" }} *</label><input class="input" name="target_url" placeholder="https://" required></div>
+        <div class="field"><label>{{ t .Lang "adv.ad_cta" }}</label><input class="input" name="cta"></div>
+        <div class="field"><label>{{ t .Lang "adv.ad_image" }}</label><input class="input" name="image_url" placeholder="https://"></div>
+      </div>
+      <div class="field"><label>{{ t .Lang "adv.ad_body" }}</label><textarea class="textarea" name="body" rows="2"></textarea></div>
+      <div class="adv-grid">
+        <div class="field"><label>{{ t .Lang "adv.placement" }}</label>
+          <select class="select" name="placement">
+            <option value="all">{{ t .Lang "adv.pl_all" }}</option>
+            <option value="articles">{{ t .Lang "adv.pl_articles" }}</option>
+            <option value="listings">{{ t .Lang "adv.pl_listings" }}</option>
+          </select>
+        </div>
+        <div class="field"><label>{{ t .Lang "adv.duration" }}</label>
+          <select class="select" name="duration">
+            <option value="7">{{ t .Lang "adv.days7" }}</option>
+            <option value="30">{{ t .Lang "adv.days30" }}</option>
+          </select>
+        </div>
+        <div class="field"><label>{{ t .Lang "adv.rubric" }}</label>
+          <select class="select" name="rubric">
+            <option value="">{{ t .Lang "adv.rubric_any" }}</option>
+            {{ range categories }}<option value="{{ . }}">{{ t $.Lang (printf "cat.%s" .) }}</option>{{ end }}
+            <option value="realestate">{{ t .Lang "nav.realestate" }}</option>
+          </select>
+        </div>
+        <div class="field"><label>{{ t .Lang "adv.geo" }}</label><input class="input" name="geo_region"></div>
+        <div class="field"><label>{{ t .Lang "adv.payment" }}</label>
+          <select class="select" name="payment_method">
+            <option value="kaspi">{{ t .Lang "adv.pay_kaspi" }}</option>
+            <option value="card">{{ t .Lang "adv.pay_card" }}</option>
+            <option value="invoice">{{ t .Lang "adv.pay_invoice" }}</option>
+          </select>
+        </div>
+      </div>
+      <p class="adv-split">{{ t .Lang "adv.split_note" }}</p>
+      <button class="btn btn--primary" type="submit">{{ t .Lang "adv.order_submit" }}</button>
+    </form>
+  </section>
+
+  <section class="adv-card">
+    <h2 class="adv-card__title">{{ t .Lang "adv.orders" }}</h2>
+    {{ if .Orders }}
+    <div class="table-wrap">
+      <table class="spec"><tbody>
+        {{ range .Orders }}
+        <tr>
+          <td><b>{{ .Title }}</b></td>
+          <td>{{ if eq .Placement "articles" }}{{ t $.Lang "adv.pl_articles" }}{{ else if eq .Placement "listings" }}{{ t $.Lang "adv.pl_listings" }}{{ else }}{{ t $.Lang "adv.pl_all" }}{{ end }}</td>
+          <td>{{ .DurationDays }} {{ t $.Lang "adv.days_short" }}</td>
+          <td>{{ money .Price }} ₸</td>
+          <td><span class="adv-status adv-status--{{ .Status }}">{{ if eq .Status "pending_payment" }}{{ t $.Lang "adv.st_pending" }}{{ else if eq .Status "active" }}{{ t $.Lang "adv.st_active" }}{{ else if eq .Status "paused" }}{{ t $.Lang "adv.st_paused" }}{{ else if eq .Status "finished" }}{{ t $.Lang "adv.st_finished" }}{{ else }}{{ t $.Lang "adv.st_rejected" }}{{ end }}</span></td>
+          <td class="aside__text">{{ .Created }}</td>
+        </tr>
+        {{ end }}
+      </tbody></table>
+    </div>
+    {{ else }}<p class="aside__text">{{ t .Lang "adv.orders_empty" }}</p>{{ end }}
+  </section>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}
+
+{{/* adv_company_fields — the company + contact inputs, prefilled from .Advertiser when present. */}}
+{{ define "adv_company_fields" }}
+<div class="adv-grid">
+  <div class="field"><label>{{ t .Lang "adv.company_name" }} *</label><input class="input" name="company_name" required value="{{ with .Advertiser }}{{ .CompanyName }}{{ end }}"></div>
+  <div class="field"><label>{{ t .Lang "adv.bin" }}</label><input class="input" name="bin" value="{{ with .Advertiser }}{{ .BIN }}{{ end }}"></div>
+  <div class="field"><label>{{ t .Lang "adv.legal_form" }}</label><input class="input" name="legal_form" value="{{ with .Advertiser }}{{ .LegalForm }}{{ end }}"></div>
+  <div class="field"><label>{{ t .Lang "adv.industry" }}</label><input class="input" name="industry" value="{{ with .Advertiser }}{{ .Industry }}{{ end }}"></div>
+  <div class="field"><label>{{ t .Lang "adv.address" }}</label><input class="input" name="address" value="{{ with .Advertiser }}{{ .Address }}{{ end }}"></div>
+  <div class="field"><label>{{ t .Lang "adv.website" }}</label><input class="input" name="website" placeholder="https://" value="{{ with .Advertiser }}{{ .Website }}{{ end }}"></div>
+</div>
+<h3 class="adv-subhead">{{ t .Lang "adv.contact" }}</h3>
+<div class="adv-grid">
+  <div class="field"><label>{{ t .Lang "adv.contact_name" }} *</label><input class="input" name="contact_name" required value="{{ with .Advertiser }}{{ .ContactName }}{{ end }}"></div>
+  <div class="field"><label>{{ t .Lang "adv.contact_role" }}</label><input class="input" name="contact_role" value="{{ with .Advertiser }}{{ .ContactRole }}{{ end }}"></div>
+  <div class="field"><label>{{ t .Lang "adv.contact_phone" }} *</label><input class="input" name="contact_phone" required value="{{ with .Advertiser }}{{ .ContactPhone }}{{ end }}"></div>
+  <div class="field"><label>{{ t .Lang "adv.contact_email" }}</label><input class="input" type="email" name="contact_email" value="{{ with .Advertiser }}{{ .ContactEmail }}{{ end }}"></div>
+</div>
+{{ end }}

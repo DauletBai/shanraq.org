@@ -544,7 +544,7 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .field label { display: block; font-size: var(--step--1); font-weight: 600; margin-bottom: 6px; color: var(--ink-soft); }
 .input, .textarea, .select { 
   width: 100%; 
-  padding: 8px 13px; 
+  padding: 4px 13px; 
   border: 1px solid var(--line-strong); 
   border-radius: var(--radius-sm); 
   background: var(--surface); 
@@ -593,6 +593,19 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .site-footer a:hover { color: #ef5350; text-decoration: none; }
 .foot-nav { display: flex; gap: 20px; flex-wrap: wrap; }
 .foot-nav a { font-weight: 600; }
+/* advertiser cabinet */
+.adv-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; background: var(--surface); margin-bottom: 20px; }
+.adv-card__title { font-size: var(--step-1); margin: 0 0 14px; }
+.adv-subhead { font-size: var(--step-0); margin: 18px 0 8px; }
+.adv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 16px; margin-bottom: 14px; }
+.adv-company { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.adv-edit summary { list-style: none; cursor: pointer; }
+.adv-edit summary::-webkit-details-marker { display: none; }
+.adv-split { color: var(--ink-soft); font-size: var(--step--1); margin: 6px 0 16px; padding: 10px 14px; background: var(--surface-2); border-radius: var(--radius-sm); }
+.adv-status { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: var(--surface-2); color: var(--ink-soft); white-space: nowrap; }
+.adv-status--pending_payment { background: #fff3cd; color: #7a5c00; }
+.adv-status--active { background: #d7f5dd; color: #1a7a34; }
+.adv-status--rejected { background: #fde2e1; color: #b71c1c; }
 /* centered row of social icons on its own line in the footer */
 .foot-social { flex-basis: 100%; display: flex; justify-content: center; gap: 18px; margin-top: 10px; }
 .foot-social .soc { display: inline-flex; color: rgba(255, 255, 255, 0.6); transition: color 0.15s ease; }
@@ -1058,7 +1071,12 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .depth-cell--end b { color: var(--teal); }
 
 /* ---- Listing amenities ---- */
-.amgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 6px 14px; margin-top: 4px; }
+.amgrid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+  gap: 5px 10px; 
+  margin-top: 4px; 
+}
 .amcheck { display: flex; align-items: center; gap: 8px; font-size: var(--step--1); color: var(--ink-soft); cursor: pointer; padding: 4px 0; }
 .amcheck input { flex: none; }
 .amenities { margin-top: 20px; }
