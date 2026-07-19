@@ -1051,13 +1051,66 @@ func (m *Module) handleUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
 	// Articles carry a real-name byline: publishing requires a verified author
 	// identity (real name + verified phone).
-	if authorID, ok := m.authorID(r); ok && !m.auth.CanPublish(r.Context(), authorID) {
+	if !m.auth.CanPublish(r.Context(), authorID) {
 		http.Redirect(w, r, "/studio/author?need=publish", http.StatusSeeOther)
 		return
 	}
+	// One-time acknowledgment of the documents and tariffs before publishing.
+	if consented, err := m.auth.HasAuthorConsent(r.Context(), authorID); err == nil && !consented {
+		http.Redirect(w, r, "/studio/consent", http.StatusSeeOther)
+		return
+	}
 	m.transition(w, r, "published", "/studio")
+}
+
+// ConsentPage backs the one-time author consent gate.
+type ConsentPage struct {
+	Base
+	Error string
+}
+
+// handleConsent shows the author consent gate (documents + tariffs) required
+// once before publishing.
+func (m *Module) handleConsent(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	if consented, err := m.auth.HasAuthorConsent(r.Context(), authorID); err == nil && consented {
+		http.Redirect(w, r, "/studio", http.StatusSeeOther)
+		return
+	}
+	m.render(w, "author_consent", ConsentPage{Base: m.base(r, T(lang, "consent.title"), lang)})
+}
+
+// handleConsentSubmit records the author's acknowledgment, then returns to the
+// studio so they can publish.
+func (m *Module) handleConsentSubmit(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	if r.FormValue("consent") != "on" {
+		m.render(w, "author_consent", ConsentPage{Base: m.base(r, T(lang, "consent.title"), lang), Error: T(lang, "consent.error")})
+		return
+	}
+	if err := m.auth.RecordAuthorConsent(r.Context(), r, authorID, "web"); err != nil {
+		m.rt.Logger.Error("record author consent", zap.String("user_id", authorID.String()), zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/studio", http.StatusSeeOther)
 }
 
 func (m *Module) handleUnpublish(w http.ResponseWriter, r *http.Request) {

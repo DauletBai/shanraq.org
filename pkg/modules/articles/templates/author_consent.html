@@ -1,0 +1,26 @@
+{{ define "author_consent" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div style="max-width:640px;margin:44px auto">
+    <h1 class="article__title" style="margin-bottom:12px">{{ t .Lang "consent.title" }}</h1>
+    <p class="aside__text" style="margin-bottom:16px">{{ t .Lang "consent.intro" }}</p>
+    <ul class="aside__text" style="margin:0 0 20px 20px">
+      <li><a href="/terms?lang={{ .Lang }}" target="_blank" rel="noopener">{{ t .Lang "consent.doc_terms" }}</a></li>
+      <li><a href="/privacy?lang={{ .Lang }}" target="_blank" rel="noopener">{{ t .Lang "consent.doc_privacy" }}</a></li>
+      <li><a href="/pricing?lang={{ .Lang }}" target="_blank" rel="noopener">{{ t .Lang "consent.doc_tariffs" }}</a></li>
+    </ul>
+    {{ if .Error }}<p class="notice notice--warn" style="margin-bottom:16px">{{ .Error }}</p>{{ end }}
+    <form method="post" action="/studio/consent">
+      <input type="hidden" name="lang" value="{{ .Lang }}">
+      <label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:18px;cursor:pointer">
+        <input type="checkbox" name="consent" style="margin-top:4px">
+        <span class="aside__text">{{ t .Lang "consent.checkbox" }}</span>
+      </label>
+      <button class="btn btn--primary" type="submit">{{ t .Lang "consent.submit" }}</button>
+    </form>
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

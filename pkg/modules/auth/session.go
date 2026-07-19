@@ -38,6 +38,32 @@ const (
 	ConsentVersion  = "2026-07-18"
 )
 
+// AuthorConsentDocument/Version identify the author's one-time acknowledgment of
+// the documents AND tariffs, required before publishing. Bump the version when
+// tariffs or author terms change materially to require re-consent.
+const (
+	AuthorConsentDocument = "author_terms_tariffs"
+	AuthorConsentVersion  = "2026-07-19"
+)
+
+// HasAuthorConsent reports whether the user has acknowledged the author
+// documents + tariffs at least once. A nil store (tests) treats it as granted.
+func (m *Module) HasAuthorConsent(ctx context.Context, userID uuid.UUID) (bool, error) {
+	if m.store == nil {
+		return true, nil
+	}
+	return m.store.HasConsent(ctx, userID, AuthorConsentDocument)
+}
+
+// RecordAuthorConsent appends the author's acknowledgment of the documents and
+// tariffs (append-only proof), required once before publishing.
+func (m *Module) RecordAuthorConsent(ctx context.Context, r *http.Request, userID uuid.UUID, source string) error {
+	if m.store == nil {
+		return nil
+	}
+	return m.store.InsertConsent(ctx, userID, AuthorConsentDocument, AuthorConsentVersion, source, clientIdentifier(r))
+}
+
 // RecordConsent appends a consent record for a newly registered user. source is
 // "web" or "api"; the client IP is taken from the request. Failure is returned
 // so the caller can decide, but registration should not hard-fail on it.

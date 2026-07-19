@@ -187,6 +187,8 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/studio/author/phone", m.handleAuthorPhone)
 		r.Post("/studio/author/confirm", m.handleAuthorConfirm)
 		r.Get("/studio/new", m.handleEditorNew)
+		r.Get("/studio/consent", m.handleConsent)
+		r.Post("/studio/consent", m.handleConsentSubmit)
 		r.Post("/studio/new", m.handleCreate)
 		r.Get("/studio/a/{id}", m.handleEditorEdit)
 		r.Post("/studio/a/{id}", m.handleUpdate)
