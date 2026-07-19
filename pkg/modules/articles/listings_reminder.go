@@ -56,9 +56,9 @@ func (m *Module) sweepReminders(ctx context.Context) {
 		subject := "Ваше объявление скоро истекает — Shanraq"
 		body := fmt.Sprintf(
 			"Здравствуйте!\n\nВаше объявление «%s» истекает через %d дн. "+
-				"Чтобы оно осталось в поиске, продлите его (бесплатно на время запуска):\n"+
-				"%s/listings/my\n\nЕсли продлевать не нужно — ничего делать не требуется, "+
-				"объявление просто уйдёт из выдачи.\n\n— Shanraq",
+				"Чтобы оно осталось в поиске, продлите его:\n"+
+				"%s/listings/my\n\nЕсли не продлить, по истечении срока объявление "+
+				"и все его данные будут удалены безвозвратно.\n\n— Shanraq",
 			l.Title, l.DaysLeft(), base,
 		)
 		if err := m.mailer.Send(ctx, l.AuthorEmail, subject, body); err != nil {

@@ -123,7 +123,7 @@ var messages = map[string]map[string]string{
 	"re.feature":             {"kz": "Ерекшелеу (7 күн)", "ru": "Выделить (7 дней)", "en": "Highlight (7 days)"},
 	"re.badge_top":           {"kz": "Топ", "ru": "Топ", "en": "Top"},
 	"re.badge_featured":      {"kz": "Таңдаулы", "ru": "Выделено", "en": "Featured"},
-	"re.free_launch":         {"kz": "Іске қосу кезінде тегін", "ru": "Бесплатно на время запуска", "en": "Free during launch"},
+	"re.listing_policy":      {"kz": "Хабарландыру беру тегін: 21 күн белсенді, содан кейін барлық деректері жойылады. Ұзарту мен жылжыту — ақылы қызметтер.", "ru": "Подача бесплатна: объявление активно 21 день, затем все его данные удаляются. Продление и продвижение — платные услуги.", "en": "Posting is free: a listing is active for 21 days, then all its data is deleted. Extending and promotion are paid services."},
 	"re.manage":              {"kz": "Басқару", "ru": "Управление", "en": "Manage"},
 	"re.find":                {"kz": "Табу", "ru": "Найти", "en": "Find"},
 	"re.reset":               {"kz": "Тазалау", "ru": "Сбросить", "en": "Reset"},

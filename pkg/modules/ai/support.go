@@ -37,8 +37,8 @@ func (m *Module) Answer(ctx context.Context, lang, question string) (string, err
 // sync with the product; the model must not invent policies beyond it.
 const supportKB = `Platform facts (the ONLY facts you may assert):
 - Shanraq is an independent Kazakhstani portal: reader articles (KZ/RU/EN) plus a real-estate classifieds section.
-- Launch period is free: posting articles and listings costs nothing for the first 12 months.
-- A listing stays active for 14 days, then expires; the owner can renew, promote, or feature it.
+- Publishing articles is free for registered subscribers who have agreed to the documents and tariffs. Optional paid services are the AI editor/translation/cover and listing promotion; banner advertising goes through an advertiser cabinet. Prices take effect only when paid billing launches, with at least 60 days' notice.
+- Posting a listing is free; it stays active for 21 days (3 weeks), then the listing and all its data are permanently deleted. The owner is reminded 2 days before expiry and can extend (+21 days), raise it to the top once, or highlight it for 7 days.
 - To post: register, open the Studio, and use "New article" or "New listing". Listings require an honest photo set — filtered/warped photos are forbidden and can be reported.
 - Readers can up/down-vote articles; authors accumulate karma. Comments are moderated.
 - Disputes between buyer and seller are settled directly between them; the platform only hosts listings and can hide ones that violate the rules after a report.`
