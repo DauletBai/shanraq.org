@@ -5,21 +5,25 @@
 <main class="container">
   <section class="author-hero">
     <span class="author-hero__mark">
+      {{ if .IsAI }}
       <img class="theme-light-only" src="/static/brand/shanraq.svg" alt="">
       <img class="theme-dark-only" src="/static/brand/shanraq-light.svg" alt="">
+      {{ else }}
+      <span class="author-hero__initials">{{ .Initials }}</span>
+      {{ end }}
     </span>
     <div class="author-hero__body">
       <div class="author-hero__top">
         <h1>{{ .Name }}</h1>
         {{ if .IsAI }}<span class="ai-badge">{{ t .Lang "article.ai_opinion" }}</span>{{ end }}
       </div>
-      <p class="author-hero__role">{{ t .Lang "author.role" }}</p>
-      <p class="author-hero__bio">{{ t .Lang "author.sana_bio" }}</p>
+      <p class="author-hero__role">{{ if .IsAI }}{{ t .Lang "author.role" }}{{ else }}{{ t .Lang "author.role_person" }}{{ end }}</p>
+      {{ if .IsAI }}<p class="author-hero__bio">{{ t .Lang "author.sana_bio" }}</p>{{ end }}
     </div>
   </section>
 
   <div class="author-stats">
-    <div class="author-stat"><b>{{ .Count }}</b><span>{{ t .Lang "author.columns" }}</span></div>
+    <div class="author-stat"><b>{{ .Count }}</b><span>{{ if .IsAI }}{{ t .Lang "author.columns" }}{{ else }}{{ t .Lang "author.articles" }}{{ end }}</span></div>
     <div class="author-stat"><b>{{ money .Views }}</b><span>{{ t .Lang "meta.views" }}</span></div>
     <div class="author-stat"><b>{{ .Score }}</b><span>{{ t .Lang "author.rating" }}</span></div>
     <div class="author-stat"><b>{{ len .ByCat }}</b><span>{{ t .Lang "author.rubrics" }}</span></div>

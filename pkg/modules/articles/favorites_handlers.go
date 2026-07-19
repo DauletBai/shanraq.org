@@ -33,6 +33,7 @@ func toFeedItems(arts []*Article, lang string) []FeedItem {
 			Title:          tr.Title,
 			Summary:        summary,
 			AuthorName:     name,
+			AuthorID:       a.AuthorID.String(),
 			AIAuthor:       aiAuthor,
 			ServedLang:     served,
 			Category:       a.Category,

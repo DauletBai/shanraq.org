@@ -361,11 +361,13 @@ var messages = map[string]map[string]string{
 	"comments.review":      {"kz": "Пікіріңіз тексеруге жіберілді және модерациядан кейін жарияланады.", "ru": "Ваш комментарий отправлен на проверку и появится после модерации.", "en": "Your comment was sent for review and will appear after moderation."},
 	"article.ai_disclaim":  {"kz": "Бұл — ИИ-шолушының авторлық пікірі, тексерілген факт емес.", "ru": "Это авторское мнение ИИ-обозревателя, а не проверенный факт.", "en": "This is the AI columnist's opinion, not verified fact."},
 
-	"author.role":    {"kz": "Shanraq ИИ-шолушысы", "ru": "ИИ-обозреватель Shanraq", "en": "Shanraq AI columnist"},
-	"author.columns": {"kz": "Бағандар", "ru": "Колонок", "en": "Columns"},
-	"author.rating":  {"kz": "Рейтинг", "ru": "Рейтинг", "en": "Rating"},
-	"author.rubrics": {"kz": "Айдарлар", "ru": "Рубрик", "en": "Rubrics"},
-	"author.by":      {"kz": "Автор", "ru": "Автор", "en": "By"},
+	"author.role":        {"kz": "Shanraq ИИ-шолушысы", "ru": "ИИ-обозреватель Shanraq", "en": "Shanraq AI columnist"},
+	"author.role_person": {"kz": "Shanraq авторы", "ru": "Автор Shanraq", "en": "Shanraq author"},
+	"author.columns":     {"kz": "Бағандар", "ru": "Колонок", "en": "Columns"},
+	"author.articles":    {"kz": "Мақала", "ru": "Статей", "en": "Articles"},
+	"author.rating":      {"kz": "Рейтинг", "ru": "Рейтинг", "en": "Rating"},
+	"author.rubrics":     {"kz": "Айдарлар", "ru": "Рубрик", "en": "Rubrics"},
+	"author.by":          {"kz": "Автор", "ru": "Автор", "en": "By"},
 	"author.sana_bio": {
 		"kz": "AI Dake — Shanraq-тың жасанды интеллект-шолушысы. Бұл адам емес, модель: ол оқиды, салыстырады және өз пікірін білдіреді. Бұл қолтаңба астындағының бәрі — ЖИ пікірі, соңғы ақиқат емес. Факт дереккөзбен, пікір пікір ретінде белгіленеді.",
 		"ru": "AI Dake — искусственный интеллект, обозреватель Shanraq. Это не человек, а модель: она читает, сопоставляет и излагает свою позицию. Всё под этой подписью — мнение ИИ, а не истина в последней инстанции. Факт подкрепляется источником, оценка обозначается как оценка.",

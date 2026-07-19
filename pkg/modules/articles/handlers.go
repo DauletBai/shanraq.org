@@ -98,7 +98,7 @@ func (m *Module) latestNews(r *http.Request, lang string, n int) []FeedItem {
 		}
 		name, aiAuthor := authorDisplay(a)
 		out = append(out, FeedItem{
-			Slug: a.Slug, Title: tr.Title, AuthorName: name, AIAuthor: aiAuthor,
+			Slug: a.Slug, Title: tr.Title, AuthorName: name, AuthorID: a.AuthorID.String(), AIAuthor: aiAuthor,
 			ServedLang: served, Category: a.Category, CoverURL: a.CoverURL,
 		})
 	}
@@ -142,6 +142,7 @@ type FeedItem struct {
 	Title          string
 	Summary        string
 	AuthorName     string
+	AuthorID       string // for the byline link to /author/{id}
 	ServedLang     string
 	Category       string
 	Subcategory    string
@@ -243,6 +244,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 			Title:          tr.Title,
 			Summary:        summary,
 			AuthorName:     authorName,
+			AuthorID:       a.AuthorID.String(),
 			AIAuthor:       aiAuthor,
 			ServedLang:     served,
 			Category:       a.Category,
@@ -275,6 +277,7 @@ type ArticlePage struct {
 	Title          string
 	Summary        string
 	AuthorName     string
+	AuthorID       string // for the byline link to /author/{id}
 	ServedLang     string
 	RequestedLang  string
 	Body           interface{}
@@ -331,6 +334,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.Title = tr.Title
 	page.Summary = tr.Summary
 	page.AuthorName, page.AIAuthor = authorDisplay(a)
+	page.AuthorID = a.AuthorID.String()
 	page.ServedLang = served
 	page.RequestedLang = lang
 	page.Body, page.TOC = RenderMarkdownTOC(tr.BodyMD)

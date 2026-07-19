@@ -3,7 +3,10 @@ package articles
 import (
 	"net/http"
 	"sort"
+	"strings"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
@@ -37,9 +40,10 @@ type CatCount struct {
 // AuthorPage is the template context for an author profile.
 type AuthorPage struct {
 	Base
-	Name  string
-	IsAI  bool
-	Posts []FeedItem
+	Name     string
+	Initials string // avatar fallback for human authors (e.g. "АН")
+	IsAI     bool
+	Posts    []FeedItem
 	// Public analytics showcase.
 	Count int
 	Views int64
@@ -47,16 +51,44 @@ type AuthorPage struct {
 	ByCat []CatCount
 }
 
-// handleAuthorSana renders the AI columnist's profile: a transparent bio plus
-// a grid of published columns (good for readers and for internal SEO links).
-func (m *Module) handleAuthorSana(w http.ResponseWriter, r *http.Request) {
+// handleAuthor renders any author's public profile — name, karma, and a grid of
+// their published articles (good for readers discovering more and for internal
+// SEO links). The AI columnist keeps its friendly slug and richer bio/badge.
+func (m *Module) handleAuthor(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
-	arts, err := m.store.ListPublishedByAuthor(r.Context(), SanaAuthorID, 60)
+	raw := chi.URLParam(r, "id")
+
+	if raw == SanaSlug || raw == SanaAuthorID {
+		m.renderAuthor(w, r, lang, SanaAuthorID, SanaName, true)
+		return
+	}
+	uid, err := uuid.Parse(raw)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	first, last, _ := m.auth.AuthorIdentity(r.Context(), uid)
+	m.renderAuthor(w, r, lang, uid.String(), strings.TrimSpace(first+" "+last), false)
+}
+
+// renderAuthor builds and renders a profile for the given author.
+func (m *Module) renderAuthor(w http.ResponseWriter, r *http.Request, lang, authorID, name string, isAI bool) {
+	arts, err := m.store.ListPublishedByAuthor(r.Context(), authorID, 60)
 	if err != nil {
 		m.rt.Logger.Error("author articles", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
+	// Fall back to the byline of the author's own articles when the identity
+	// lookup gave nothing; a truly unknown/nameless author is a 404.
+	if strings.TrimSpace(name) == "" && len(arts) > 0 {
+		name = arts[0].AuthorName()
+	}
+	if strings.TrimSpace(name) == "" {
+		http.NotFound(w, r)
+		return
+	}
+
 	items := make([]FeedItem, 0, len(arts))
 	var views int64
 	var score int
@@ -72,7 +104,7 @@ func (m *Module) handleAuthorSana(w http.ResponseWriter, r *http.Request) {
 		}
 		items = append(items, FeedItem{
 			Slug: a.Slug, Title: tr.Title, Summary: summary,
-			AuthorName: SanaName, AIAuthor: true, ServedLang: served,
+			AuthorName: name, AuthorID: authorID, AIAuthor: isAI, ServedLang: served,
 			Category: a.Category, Subcategory: a.Subcategory, CoverURL: a.CoverURL,
 			Published: a.PublishedAt, Views: a.ViewsCount, Score: a.Score,
 			AvailableLangs: a.AvailableLangs(),
@@ -92,14 +124,33 @@ func (m *Module) handleAuthorSana(w http.ResponseWriter, r *http.Request) {
 		return byCat[i].Slug < byCat[j].Slug
 	})
 
-	page := AuthorPage{Base: m.base(r, SanaName, lang)}
-	page.Name = SanaName
-	page.IsAI = true
-	page.Desc = T(lang, "author.sana_bio")
+	page := AuthorPage{Base: m.base(r, name, lang)}
+	page.Name = name
+	page.Initials = initials(name)
+	page.IsAI = isAI
+	if isAI {
+		page.Desc = T(lang, "author.sana_bio")
+	}
 	page.Posts = items
 	page.Count = len(items)
 	page.Views = views
 	page.Score = score
 	page.ByCat = byCat
 	m.render(w, "author", page)
+}
+
+// initials returns up to two uppercased leading letters of a name ("Айгерим
+// Нурланова" -> "АН"), used as the avatar fallback for human authors.
+func initials(name string) string {
+	out := ""
+	for i, f := range strings.Fields(name) {
+		if i >= 2 {
+			break
+		}
+		rs := []rune(f)
+		if len(rs) > 0 {
+			out += strings.ToUpper(string(rs[0]))
+		}
+	}
+	return out
 }

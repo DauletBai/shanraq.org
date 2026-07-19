@@ -9,8 +9,8 @@
         <div class="article__head">
           {{ if .CoverURL }}<div class="article__media"><img src="{{ .CoverURL }}" alt=""></div>{{ end }}
           <div class="byline">
-            <span class="author">{{ if .AIAuthor }}<a href="/author/sana">{{ .AuthorName }}</a>{{ else }}{{ .AuthorName }}{{ end }}</span>
-            {{ if .AIAuthor }}<a class="ai-badge" href="/author/sana">{{ t .Lang "article.ai_opinion" }}</a>{{ end }}
+            <span class="author">{{ if .AuthorID }}<a href="/author/{{ .AuthorID }}?lang={{ .Lang }}">{{ .AuthorName }}</a>{{ else }}{{ .AuthorName }}{{ end }}</span>
+            {{ if .AIAuthor }}<a class="ai-badge" href="/author/{{ .AuthorID }}?lang={{ .Lang }}">{{ t .Lang "article.ai_opinion" }}</a>{{ end }}
             <span>({{ t .Lang "article.karma" }}: <b>{{ .AuthorKarma }}</b>)</span>
             <span class="dot">·</span>
             <span class="metaic">{{ icon "calendar" }}{{ fmtDatePtr .Published }}</span>
