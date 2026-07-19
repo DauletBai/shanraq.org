@@ -169,7 +169,8 @@ type ListingFilter struct {
 	RegionText         string     // plain-text region/city match (e.g. from a map click)
 	PriceMin, PriceMax int64
 	RoomsMin           int
-	Query              string // free text over title/description
+	Amenities          []string // listing must have ALL of these (garage, parking, …)
+	Query              string   // free text over title/description
 	Limit              int
 }
 
@@ -218,6 +219,9 @@ func (s *ListingStore) List(ctx context.Context, f ListingFilter) ([]*Listing, e
 	}
 	if f.RoomsMin > 0 {
 		add(" AND l.rooms >= $%d", f.RoomsMin)
+	}
+	if len(f.Amenities) > 0 {
+		add(" AND l.amenities @> $%d::text[]", f.Amenities) // listing has all selected amenities
 	}
 	if q := strings.TrimSpace(f.Query); q != "" {
 		args = append(args, "%"+q+"%")

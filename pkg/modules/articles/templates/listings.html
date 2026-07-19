@@ -45,6 +45,14 @@
       <div class="field"><label>{{ t .Lang "re.rooms_from" }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .RoomsMin 0 }}{{ .RoomsMin }}{{ end }}"></div>
       <div class="field"><label>{{ t .Lang "re.query" }}</label><input class="input" type="text" name="q" value="{{ .Query }}"></div>
     </div>
+    <div class="re-search__amen">
+      <label class="re-search__amen-title">{{ t .Lang "re.amenities" }}</label>
+      <div class="amgrid">
+        {{ range amenities }}
+        <label class="amcheck"><input type="checkbox" name="am" value="{{ . }}"{{ if index $.SelAmenities . }} checked{{ end }}> <span class="amic">{{ amenityIcon . }}</span> {{ t $.Lang (printf "re.am_%s" .) }}</label>
+        {{ end }}
+      </div>
+    </div>
     <div class="re-search__actions">
       <button class="btn btn--primary" type="submit">⌕ {{ t .Lang "re.find" }}</button>
       <a class="btn btn--ghost" href="/listings?lang={{ .Lang }}">{{ t .Lang "re.reset" }}</a>

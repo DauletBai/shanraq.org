@@ -19,16 +19,17 @@ type ListingsPage struct {
 	ActiveDeal string
 	ActiveType string
 	// Search form state (echoed back so the panel stays filled).
-	Query      string
-	PriceMin   int64
-	PriceMax   int64
-	RoomsMin   int
-	RegionText string
-	GeoNodeID  string
-	Searching  bool // any filter beyond deal/type is active → open the panel
-	Count      int
-	Facets     ListingFacets // active-listing counts per deal/type, for filter badges
-	Reported   string        // "hidden" flash after a report auto-hid a listing
+	Query        string
+	PriceMin     int64
+	PriceMax     int64
+	RoomsMin     int
+	RegionText   string
+	GeoNodeID    string
+	SelAmenities map[string]bool // selected amenity filters (for re-checking boxes)
+	Searching    bool            // any filter beyond deal/type is active → open the panel
+	Count        int
+	Facets       ListingFacets // active-listing counts per deal/type, for filter badges
+	Reported     string        // "hidden" flash after a report auto-hid a listing
 }
 
 // ListingFormPage backs the submission form.
@@ -74,6 +75,14 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 	if gid, err := uuid.Parse(strings.TrimSpace(q.Get("geo"))); err == nil {
 		f.GeoNodeID = &gid
 	}
+	// Amenity filters: keep only known keys, de-duplicated.
+	selAmen := map[string]bool{}
+	for _, a := range q["am"] {
+		if amenitySet[a] && !selAmen[a] {
+			selAmen[a] = true
+			f.Amenities = append(f.Amenities, a)
+		}
+	}
 
 	items, err := m.listings.List(r.Context(), f)
 	if err != nil {
@@ -102,10 +111,11 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 	page.PriceMax = f.PriceMax
 	page.RoomsMin = f.RoomsMin
 	page.RegionText = f.RegionText
+	page.SelAmenities = selAmen
 	if f.GeoNodeID != nil {
 		page.GeoNodeID = f.GeoNodeID.String()
 	}
-	page.Searching = f.Query != "" || f.PriceMin > 0 || f.PriceMax > 0 || f.RoomsMin > 0 || f.RegionText != "" || f.GeoNodeID != nil
+	page.Searching = f.Query != "" || f.PriceMin > 0 || f.PriceMax > 0 || f.RoomsMin > 0 || f.RegionText != "" || f.GeoNodeID != nil || len(f.Amenities) > 0
 	page.Reported = q.Get("reported")
 	m.render(w, "listings", page)
 }
