@@ -8,6 +8,17 @@
   </div>
   <p class="aside__text" style="margin:-6px 0 20px">{{ t .Lang "adv.intro" }}</p>
 
+  <section class="adv-card">
+    <h2 class="adv-card__title">{{ t .Lang "adv.tariffs" }}</h2>
+    <div class="table-wrap">
+      <table class="spec"><tbody>
+        <tr><td>{{ t .Lang "adv.tariff_row7" }}</td><td><b>6 900 ₸</b></td></tr>
+        <tr><td>{{ t .Lang "adv.tariff_row30" }}</td><td><b>19 900 ₸</b></td></tr>
+      </tbody></table>
+    </div>
+    <p class="adv-split" style="margin-top:14px">{{ t .Lang "adv.tariff_note" }}</p>
+  </section>
+
   {{ if eq .Saved "company" }}<p class="notice">{{ t .Lang "adv.saved_company" }}</p>{{ end }}
   {{ if eq .Saved "order" }}<p class="notice">{{ t .Lang "adv.saved_order" }}</p>{{ end }}
   {{ if .Error }}<p class="notice notice--warn">{{ .Error }}</p>{{ end }}

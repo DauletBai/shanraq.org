@@ -67,7 +67,7 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 
 const listingCols = `l.id, l.author_id, u.email, l.deal_type, l.property_type, l.country, l.region, l.city, l.village,
 	l.price, l.area, l.rooms, l.title, l.description, l.contact, l.cover_url, l.images, l.status, l.created_at,
-	l.expires_at, l.promoted_until, l.featured_until, l.views_count, l.contacts_count, l.land_area, l.amenities, l.room_specs`
+	l.expires_at, l.promoted_until, l.featured_until, l.banner_until, l.views_count, l.contacts_count, l.land_area, l.amenities, l.room_specs`
 
 func scanListing(row pgx.Row) (*Listing, error) {
 	var l Listing
@@ -75,7 +75,7 @@ func scanListing(row pgx.Row) (*Listing, error) {
 	var roomsRaw []byte
 	err := row.Scan(&id, &authorID, &l.AuthorEmail, &l.DealType, &l.PropertyType, &l.Country, &l.Region, &l.City, &l.Village,
 		&l.Price, &l.Area, &l.Rooms, &l.Title, &l.Description, &l.Contact, &l.CoverURL, &l.Images, &l.Status, &l.CreatedAt,
-		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.ViewsCount, &l.ContactsCount, &l.LandArea, &l.Amenities, &roomsRaw)
+		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.BannerUntil, &l.ViewsCount, &l.ContactsCount, &l.LandArea, &l.Amenities, &roomsRaw)
 	if err != nil {
 		return nil, err
 	}
@@ -148,6 +148,41 @@ func (s *ListingStore) Promote(ctx context.Context, id, author uuid.UUID) error 
 // Feature visually highlights a listing for 7 days (owner-only).
 func (s *ListingStore) Feature(ctx context.Context, id, author uuid.UUID) error {
 	return s.touch(ctx, id, author, "featured_until = GREATEST(COALESCE(featured_until, NOW()), NOW()) + INTERVAL '7 days'")
+}
+
+// Banner buys the sidebar banner slot on the real-estate page for days (1..7).
+// The slot is always on screen while the visitor scrolls, so it costs more than
+// Top/highlight. days is a validated small int, safe to inline.
+func (s *ListingStore) Banner(ctx context.Context, id, author uuid.UUID, days int) error {
+	if days < 1 || days > 7 {
+		days = 1
+	}
+	return s.touch(ctx, id, author,
+		fmt.Sprintf("banner_until = GREATEST(COALESCE(banner_until, NOW()), NOW()) + INTERVAL '%d days'", days))
+}
+
+// BannerListings returns listings currently holding a banner slot (most recently
+// bought first), for the real-estate sidebar.
+func (s *ListingStore) BannerListings(ctx context.Context, limit int) ([]*Listing, error) {
+	if limit <= 0 || limit > 10 {
+		limit = 2
+	}
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id
+		WHERE l.status = 'published' AND l.expires_at > NOW() AND l.banner_until > NOW()
+		ORDER BY l.banner_until DESC LIMIT $1`, listingCols), limit)
+	if err != nil {
+		return nil, fmt.Errorf("banner listings: %w", err)
+	}
+	defer rows.Close()
+	out := []*Listing{}
+	for rows.Next() {
+		l, err := scanListing(rows)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, l)
+	}
+	return out, rows.Err()
 }
 
 func (s *ListingStore) touch(ctx context.Context, id, author uuid.UUID, set string) error {

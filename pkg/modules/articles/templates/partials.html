@@ -185,9 +185,31 @@
 {{ end }}
 {{ end }}
 
+{{/* re_sidebar — two paid real-estate banner slots. The aside is sticky on
+     desktop, so a bought banner stays on screen while the visitor scrolls. */}}
 {{ define "re_sidebar" }}
 <aside class="aside">
-  {{ template "newscarousel" . }}
+  {{ range .BannerAds }}
+  <a class="rebanner" href="/listings/{{ .ID }}?lang={{ $.Lang }}">
+    <span class="rebanner__label">{{ t $.Lang "ad.badge" }}</span>
+    <span class="rebanner__img">
+      {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="" loading="lazy">
+      {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
+    </span>
+    <span class="rebanner__body">
+      <span class="rebanner__title">{{ .Title }}</span>
+      <span class="rebanner__price">{{ money .Price }} ₸{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</span>
+      <span class="rebanner__meta">{{ countryFlag .Country }}{{ if .City }}{{ .City }}{{ else }}{{ .Village }}{{ end }}</span>
+    </span>
+  </a>
+  {{ end }}
+  {{ if lt (len .BannerAds) 2 }}
+  <div class="rebanner rebanner--promo">
+    <span class="rebanner__label">{{ t .Lang "ad.badge" }}</span>
+    <p class="rebanner__promo">{{ t .Lang "re.banner_promo" }}</p>
+    <a class="btn btn--primary btn--sm" href="/listings/my?lang={{ .Lang }}">{{ t .Lang "re.banner_promo_cta" }}</a>
+  </div>
+  {{ end }}
 </aside>
 {{ end }}
 

@@ -19,6 +19,7 @@
           <span>{{ money .Price }} ₸</span><span class="dot">·</span><span>{{ .Location }}</span>
           {{ if .Promoted }}<span class="badge-top badge-top--inline">{{ t $.Lang "re.badge_top" }}</span>{{ end }}
           {{ if .Featured }}<span class="badge-feat">{{ t $.Lang "re.badge_featured" }}</span>{{ end }}
+          {{ if .Banner }}<span class="badge-banner">{{ t $.Lang "re.badge_banner" }}</span>{{ end }}
         </div>
         <div class="mylist__status{{ if or .Expired .Flagged }} is-expired{{ end }}">
           {{ if .Flagged }}{{ t $.Lang "re.flagged" }}
@@ -31,6 +32,12 @@
         <form method="post" action="/listings/{{ .ID }}/extend"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.extend" }}</button></form>
         <form method="post" action="/listings/{{ .ID }}/promote"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.promote" }}</button></form>
         <form method="post" action="/listings/{{ .ID }}/feature"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.feature" }}</button></form>
+        <form method="post" action="/listings/{{ .ID }}/banner" class="mylist__banner">
+          <select class="select select--xs" name="days" aria-label="{{ t $.Lang "re.banner" }}">
+            {{ range bannerDays }}<option value="{{ . }}">{{ . }} {{ t $.Lang "re.banner_days" }} — {{ money (bannerPrice .) }} ₸</option>{{ end }}
+          </select>
+          <button class="btn btn--primary btn--sm" type="submit">{{ t $.Lang "re.banner" }}</button>
+        </form>
       </div>
     </div>
     {{ end }}

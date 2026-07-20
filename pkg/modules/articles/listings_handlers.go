@@ -28,6 +28,7 @@ type ListingsPage struct {
 	SelAmenities map[string]bool // selected amenity filters (for re-checking boxes)
 	Searching    bool            // any filter beyond deal/type is active → open the panel
 	Count        int
+	BannerAds    []*Listing    // paid banner slots shown in the real-estate sidebar
 	Facets       ListingFacets // active-listing counts per deal/type, for filter badges
 	Reported     string        // "hidden" flash after a report auto-hid a listing
 }
@@ -98,6 +99,11 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Warn("listings facets", zap.Error(ferr)) // badges degrade to 0, page still renders
 	} else {
 		page.Facets = facets
+	}
+	if bads, berr := m.listings.BannerListings(r.Context(), 2); berr != nil {
+		m.rt.Logger.Warn("banner listings", zap.Error(berr)) // sidebar falls back to the promo card
+	} else {
+		page.BannerAds = bads
 	}
 	page.SidebarNews = m.latestNews(r, lang, 6)
 	if isDealType(deal) {
@@ -404,6 +410,17 @@ func (m *Module) handleListingPromote(w http.ResponseWriter, r *http.Request) {
 
 func (m *Module) handleListingFeature(w http.ResponseWriter, r *http.Request) {
 	m.listingAction(w, r, m.listings.Feature)
+}
+
+// handleListingBanner buys the sidebar banner slot for 1..7 days.
+func (m *Module) handleListingBanner(w http.ResponseWriter, r *http.Request) {
+	days, _ := strconv.Atoi(digitsOnly(r.FormValue("days")))
+	if days < 1 || days > 7 {
+		days = 1
+	}
+	m.listingAction(w, r, func(ctx context.Context, id, author uuid.UUID) error {
+		return m.listings.Banner(ctx, id, author, days)
+	})
 }
 
 func parseListingForm(r *http.Request) ListingInput {

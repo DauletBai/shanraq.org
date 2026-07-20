@@ -167,6 +167,7 @@ By publishing, you agree to these rules.`},
 | Продление объявления (+21 день) | 499 ₸ |
 | Разовое поднятие в топ | 299 ₸ |
 | Выделение объявления (7 дней) | 499 ₸ |
+| Баннер в разделе недвижимости (1–7 суток) | от 990 ₸ |
 
 ## Реклама для компаний
 Размещение баннеров — через кабинет рекламодателя: вы сами выбираете место, срок и способ оплаты. Доход делится: **50% автору материала, 40% платформе, 10% в фонд сообщества.**
@@ -200,6 +201,7 @@ By publishing, you agree to these rules.`},
 | Хабарландыруды ұзарту (+21 күн) | 499 ₸ |
 | Топқа бір реттік көтеру | 299 ₸ |
 | Хабарландыруды ерекшелеу (7 күн) | 499 ₸ |
+| Жылжымайтын мүлік бөліміндегі баннер (1–7 тәулік) | 990 ₸ бастап |
 
 ## Компанияларға жарнама
 Баннер орналастыру — жарнама беруші кабинеті арқылы: орынды, мерзімді және төлем тәсілін өзіңіз таңдайсыз. Табыс бөлінісі: **50% материал авторына, 40% платформаға, 10% қоғам қорына.**
@@ -233,6 +235,7 @@ Posting a listing is **free**: it stays active for **21 days** (3 weeks), after 
 | Extend a listing (+21 days) | 499 ₸ |
 | One-time raise to top | 299 ₸ |
 | Highlight a listing (7 days) | 499 ₸ |
+| Banner in the real-estate section (1–7 days) | from 990 ₸ |
 
 ## Advertising for businesses
 Banner placement goes through the advertiser cabinet: you choose the slot, duration, and payment method yourself. Revenue is shared: **50% to the author, 40% to the platform, 10% to a community fund.**

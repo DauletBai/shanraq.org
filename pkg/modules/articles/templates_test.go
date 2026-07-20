@@ -23,6 +23,8 @@ func buildTemplates(t *testing.T) *template.Template {
 		"propertyTypes":    func() []string { return PropertyTypes },
 		"amenities":        AmenityKeys,
 		"roomTypes":        RoomTypeKeys,
+		"bannerDays":       BannerDays,
+		"bannerPrice":      BannerPrice,
 		"money":            money,
 		"ogLocale":         ogLocale,
 		"htmlLang":         htmlLang,

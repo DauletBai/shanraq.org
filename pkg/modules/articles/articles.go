@@ -86,6 +86,8 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"propertyTypes":    func() []string { return PropertyTypes },
 		"amenities":        AmenityKeys,
 		"roomTypes":        RoomTypeKeys,
+		"bannerDays":       BannerDays,
+		"bannerPrice":      BannerPrice,
 		"money":            money,
 		"ogLocale":         ogLocale,
 		"htmlLang":         htmlLang,
@@ -169,6 +171,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/listings/{id}/extend", m.handleListingExtend)
 		r.Post("/listings/{id}/promote", m.handleListingPromote)
 		r.Post("/listings/{id}/feature", m.handleListingFeature)
+		r.Post("/listings/{id}/banner", m.handleListingBanner)
 		r.Post("/listings/{id}/contact", m.handleListingContact)
 		r.Get("/listings/{id}", m.handleListingView)
 	})

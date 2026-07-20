@@ -55,6 +55,7 @@ type Listing struct {
 	ExpiresAt     time.Time
 	PromotedUntil *time.Time
 	FeaturedUntil *time.Time
+	BannerUntil   *time.Time
 }
 
 // Expired reports whether the listing's free window has ended.
@@ -74,6 +75,38 @@ func (l Listing) Promoted() bool { return l.PromotedUntil != nil && l.PromotedUn
 
 // Featured reports whether the listing is currently visually highlighted.
 func (l Listing) Featured() bool { return l.FeaturedUntil != nil && l.FeaturedUntil.After(time.Now()) }
+
+// Banner reports whether the listing currently holds a paid sidebar banner slot
+// on the real-estate page.
+func (l Listing) Banner() bool { return l.BannerUntil != nil && l.BannerUntil.After(time.Now()) }
+
+// listingBannerPrice returns the banner price (tenge) for 1..7 days. Priced
+// above Top (299) and highlight (499) since the slot is always on screen, with
+// a volume discount as the period grows.
+func listingBannerPrice(days int) int64 {
+	switch days {
+	case 2:
+		return 1890
+	case 3:
+		return 2690
+	case 4:
+		return 3390
+	case 5:
+		return 3990
+	case 6:
+		return 4490
+	case 7:
+		return 4990
+	default:
+		return 990
+	}
+}
+
+// BannerDays is the selectable banner period (days), for the form.
+func BannerDays() []int { return []int{1, 2, 3, 4, 5, 6, 7} }
+
+// BannerPrice exposes the price to templates.
+func BannerPrice(days int) int64 { return listingBannerPrice(days) }
 
 // Location renders the place parts that are set, most specific first.
 func (l Listing) Location() string {
