@@ -88,6 +88,11 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		"roomTypes":        RoomTypeKeys,
 		"bannerDays":       BannerDays,
 		"bannerPrice":      BannerPrice,
+		"adZones":          AdZones,
+		"adDurations":      AdDurations,
+		"adPrice":          AdPriceOf,
+		"adPriceJSON":      AdPriceJSON,
+		"adSlotCapacity":   AdSlotCapacity,
 		"money":            money,
 		"ogLocale":         ogLocale,
 		"htmlLang":         htmlLang,
@@ -207,6 +212,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/advertise", m.handleAdvertise)
 		r.Post("/advertise/company", m.handleAdvertiseCompany)
 		r.Post("/advertise/order", m.handleAdvertiseOrder)
+		r.Get("/advertise/availability", m.handleAdsAvailability)
 		r.Post("/favorites/{type}/{id}", m.handleFavoriteToggle)
 		r.Post("/listings/{id}/report", m.handleListingReport)
 	})

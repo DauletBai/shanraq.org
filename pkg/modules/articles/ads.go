@@ -1,5 +1,12 @@
 package articles
 
+import (
+	"net/http"
+	"strings"
+
+	"go.uber.org/zap"
+)
+
 // Ad is one creative in the sidebar ad carousel. Demo ads are self-made,
 // clearly-labeled placeholders — no real brand, logo, or photo — so nothing
 // implies a commercial relationship that does not exist. Real ads would later
@@ -24,4 +31,48 @@ func demoAds(lang string) []Ad {
 		{Image: "/static/demo/ads/car-hatch.svg", URL: "#",
 			Title: T(lang, "ad.hatch_title"), Desc: T(lang, "ad.hatch_desc"), Price: "9 890 000 ₸"},
 	}
+}
+
+// adZoneFor maps a request to the inventory zone (and rubric) it belongs to,
+// mirroring the zones sold in the advertiser cabinet.
+func adZoneFor(r *http.Request) (zone, rubric string) {
+	p := r.URL.Path
+	switch {
+	case strings.HasPrefix(p, "/listings"):
+		return "realestate", ""
+	case strings.HasPrefix(p, "/read/"):
+		return "articles", ""
+	case p == "/":
+		if cat := r.URL.Query().Get("cat"); cat != "" && IsCategory(cat) {
+			return "rubric", cat
+		}
+		return "home", ""
+	}
+	return "", ""
+}
+
+// sidebarAds serves the paid placements booked for this page's zone. Demo
+// creatives only fill the slot while nothing is sold for it.
+func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
+	zone, rubric := adZoneFor(r)
+	if zone == "" || m.ads == nil {
+		return demoAds(lang)
+	}
+	orders, err := m.ads.ActiveByZone(r.Context(), zone, rubric, lang, adSlotCapacity)
+	if err != nil {
+		m.rt.Logger.Warn("sidebar ads", zap.Error(err))
+		return demoAds(lang)
+	}
+	if len(orders) == 0 {
+		return demoAds(lang)
+	}
+	out := make([]Ad, 0, len(orders))
+	for _, o := range orders {
+		url := o.TargetURL
+		if url == "" {
+			url = "#"
+		}
+		out = append(out, Ad{Image: o.ImageURL, Title: o.Title, Desc: o.Body, Price: o.CTA, URL: url})
+	}
+	return out
 }

@@ -641,6 +641,53 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .adv-status--pending_payment { background: #fff3cd; color: #7a5c00; }
 .adv-status--active { background: #d7f5dd; color: #1a7a34; }
 .adv-status--rejected { background: #fde2e1; color: #b71c1c; }
+.adv-total { font-size: var(--step-2); font-weight: 800; color: var(--brand); line-height: 1.9; }
+.adv-rates td b { white-space: nowrap; }
+.adv-avail { display: flex; flex-wrap: wrap; gap: 8px; }
+.adv-avail__item {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #d7f5dd;
+  color: #1a7a34;
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+.adv-avail__item.is-full { background: #fde2e1; color: #b71c1c; }
+
+/* booking calendar: which days still have a free slot in the chosen zone */
+.adv-cal {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 16px;
+  background: var(--surface);
+}
+.adv-cal__head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.adv-cal__hint { color: var(--ink-soft); font-size: var(--step--1); }
+.adv-cal__legend { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); font-size: var(--step--1); }
+.adv-cal__dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.adv-cal__dot--free { background: #7fd699; }
+.adv-cal__dot--busy { background: #f0a6a3; margin-left: 10px; }
+.adv-cal__grid { display: flex; flex-direction: column; gap: 12px; }
+.adv-cal__month { font-weight: 700; font-size: var(--step--1); margin-bottom: 6px; }
+.adv-cal__days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.adv-cal__day {
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: 6px 0 4px;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.adv-cal__day small { display: block; font-size: 0.6rem; color: var(--ink-soft); }
+.adv-cal__day.is-free { background: #eaf9ef; border-color: #b9e6c6; }
+.adv-cal__day.is-busy { background: #fdeceb; border-color: #f3c6c4; color: #b71c1c; cursor: not-allowed; }
+.adv-cal__day.is-sel { outline: 2px solid var(--brand); outline-offset: -2px; font-weight: 800; }
+.adv-cal__day.is-range { box-shadow: inset 0 -3px 0 var(--brand); }
+.adv-cal__pad { visibility: hidden; }
 /* centered row of social icons on its own line in the footer */
 .foot-social { flex-basis: 100%; display: flex; justify-content: center; gap: 18px; margin-top: 10px; }
 .foot-social .soc { display: inline-flex; color: rgba(255, 255, 255, 0.6); transition: color 0.15s ease; }

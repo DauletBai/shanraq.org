@@ -8,17 +8,6 @@
   </div>
   <p class="aside__text" style="margin:-6px 0 20px">{{ t .Lang "adv.intro" }}</p>
 
-  <section class="adv-card">
-    <h2 class="adv-card__title">{{ t .Lang "adv.tariffs" }}</h2>
-    <div class="table-wrap">
-      <table class="spec"><tbody>
-        <tr><td>{{ t .Lang "adv.tariff_row7" }}</td><td><b>6 900 ₸</b></td></tr>
-        <tr><td>{{ t .Lang "adv.tariff_row30" }}</td><td><b>19 900 ₸</b></td></tr>
-      </tbody></table>
-    </div>
-    <p class="adv-split" style="margin-top:14px">{{ t .Lang "adv.tariff_note" }}</p>
-  </section>
-
   {{ if eq .Saved "company" }}<p class="notice">{{ t .Lang "adv.saved_company" }}</p>{{ end }}
   {{ if eq .Saved "order" }}<p class="notice">{{ t .Lang "adv.saved_order" }}</p>{{ end }}
   {{ if .Error }}<p class="notice notice--warn">{{ .Error }}</p>{{ end }}
@@ -52,48 +41,115 @@
 
   <section class="adv-card">
     <h2 class="adv-card__title">{{ t .Lang "adv.new_order" }}</h2>
-    <form method="post" action="/advertise/order">
+    <form method="post" action="/advertise/order" data-adform>
       <input type="hidden" name="lang" value="{{ .Lang }}">
+
+      <h3 class="adv-subhead">{{ t .Lang "adv.sec_creative" }}</h3>
       <div class="adv-grid">
-        <div class="field"><label>{{ t .Lang "adv.ad_title" }} *</label><input class="input" name="title" required></div>
-        <div class="field"><label>{{ t .Lang "adv.ad_url" }} *</label><input class="input" name="target_url" placeholder="https://" required></div>
-        <div class="field"><label>{{ t .Lang "adv.ad_cta" }}</label><input class="input" name="cta"></div>
-        <div class="field"><label>{{ t .Lang "adv.ad_image" }}</label><input class="input" name="image_url" placeholder="https://"></div>
+        <div class="field"><label>{{ t .Lang "adv.ad_title" }} * {{ template "fhelp" (t .Lang "adv.h_title") }}</label>
+          <input class="input" name="title" maxlength="60" required></div>
+        <div class="field"><label>{{ t .Lang "adv.ad_url" }} * {{ template "fhelp" (t .Lang "adv.h_url") }}</label>
+          <input class="input" type="url" name="target_url" placeholder="https://" required></div>
+        <div class="field"><label>{{ t .Lang "adv.ad_cta" }} {{ template "fhelp" (t .Lang "adv.h_cta") }}</label>
+          <input class="input" name="cta" maxlength="20"></div>
+        <div class="field"><label>{{ t .Lang "adv.ad_image" }} {{ template "fhelp" (t .Lang "adv.h_image") }}</label>
+          <input class="input" name="image_url" placeholder="https://"></div>
       </div>
-      <div class="field"><label>{{ t .Lang "adv.ad_body" }}</label><textarea class="textarea" name="body" rows="2"></textarea></div>
+      <div class="field"><label>{{ t .Lang "adv.ad_body" }} {{ template "fhelp" (t .Lang "adv.h_body") }}</label>
+        <textarea class="textarea" name="body" rows="2" maxlength="140"></textarea></div>
+
+      <h3 class="adv-subhead">{{ t .Lang "adv.sec_where" }}</h3>
       <div class="adv-grid">
-        <div class="field"><label>{{ t .Lang "adv.placement" }}</label>
-          <select class="select" name="placement">
-            <option value="all">{{ t .Lang "adv.pl_all" }}</option>
-            <option value="articles">{{ t .Lang "adv.pl_articles" }}</option>
-            <option value="listings">{{ t .Lang "adv.pl_listings" }}</option>
+        <div class="field"><label>{{ t .Lang "adv.placement" }} * {{ template "fhelp" (t .Lang "adv.h_zone") }}</label>
+          <select class="select" name="placement" data-ad-zone>
+            {{ range adZones }}<option value="{{ . }}">{{ t $.Lang (printf "adv.zone_%s" .) }}</option>{{ end }}
           </select>
         </div>
-        <div class="field"><label>{{ t .Lang "adv.duration" }}</label>
-          <select class="select" name="duration">
-            <option value="7">{{ t .Lang "adv.days7" }}</option>
-            <option value="30">{{ t .Lang "adv.days30" }}</option>
-          </select>
-        </div>
-        <div class="field"><label>{{ t .Lang "adv.rubric" }}</label>
-          <select class="select" name="rubric">
+        <div class="field"><label>{{ t .Lang "adv.rubric" }} {{ template "fhelp" (t .Lang "adv.h_rubric") }}</label>
+          <select class="select" name="rubric" data-ad-rubric>
             <option value="">{{ t .Lang "adv.rubric_any" }}</option>
             {{ range categories }}<option value="{{ . }}">{{ t $.Lang (printf "cat.%s" .) }}</option>{{ end }}
-            <option value="realestate">{{ t .Lang "nav.realestate" }}</option>
           </select>
         </div>
-        <div class="field"><label>{{ t .Lang "adv.geo" }}</label><input class="input" name="geo_region"></div>
-        <div class="field"><label>{{ t .Lang "adv.payment" }}</label>
-          <select class="select" name="payment_method">
-            <option value="kaspi">{{ t .Lang "adv.pay_kaspi" }}</option>
-            <option value="card">{{ t .Lang "adv.pay_card" }}</option>
-            <option value="invoice">{{ t .Lang "adv.pay_invoice" }}</option>
+        <div class="field"><label>{{ t .Lang "adv.f_lang_label" }} {{ template "fhelp" (t .Lang "adv.h_lang") }}</label>
+          <select class="select" name="target_lang">
+            <option value="">{{ t .Lang "adv.any_lang" }}</option>
+            {{ range langs }}<option value="{{ . }}">{{ langName . }}</option>{{ end }}
           </select>
+        </div>
+        <div class="field"><label>{{ t .Lang "adv.geo" }} {{ template "fhelp" (t .Lang "adv.h_geo") }}</label>
+          <input class="input" name="geo_region"></div>
+      </div>
+
+      <h3 class="adv-subhead">{{ t .Lang "adv.sec_when" }}</h3>
+      <div class="adv-grid">
+        <div class="field"><label>{{ t .Lang "adv.f_start_label" }} * {{ template "fhelp" (t .Lang "adv.h_start") }}</label>
+          <input class="input" type="date" name="starts_at" value="{{ .Today }}" min="{{ .Today }}" data-ad-start required></div>
+        <div class="field"><label>{{ t .Lang "adv.duration" }} * {{ template "fhelp" (t .Lang "adv.h_duration") }}</label>
+          <select class="select" name="duration" data-ad-days>
+            {{ range adDurations }}<option value="{{ . }}">{{ . }} {{ t $.Lang "adv.days_short" }}</option>{{ end }}
+          </select>
+        </div>
+        <div class="field"><label>{{ t .Lang "adv.f_exclusive_label" }} {{ template "fhelp" (t .Lang "adv.h_exclusive") }}</label>
+          <label class="amcheck"><input type="checkbox" name="exclusive" data-ad-excl> <span>+{{ 50 }}%</span></label>
         </div>
       </div>
-      <p class="adv-split">{{ t .Lang "adv.split_note" }}</p>
+
+      <div class="adv-cal" data-ad-cal>
+        <div class="adv-cal__head">
+          <span class="adv-cal__hint">{{ t .Lang "adv.cal_hint" }}</span>
+          <span class="adv-cal__legend">
+            <i class="adv-cal__dot adv-cal__dot--free"></i>{{ t .Lang "adv.cal_free" }}
+            <i class="adv-cal__dot adv-cal__dot--busy"></i>{{ t .Lang "adv.cal_busy" }}
+          </span>
+        </div>
+        <div class="adv-cal__grid" data-ad-cal-grid></div>
+      </div>
+
+      <h3 class="adv-subhead">{{ t .Lang "adv.sec_pay" }}</h3>
+      <div class="adv-grid">
+        <div class="field"><label>{{ t .Lang "adv.payment" }} {{ template "fhelp" (t .Lang "adv.h_pay") }}</label>
+          <select class="select" name="payment_method">
+            <option value="invoice">{{ t .Lang "adv.pay_invoice" }}</option>
+            <option value="kaspi">{{ t .Lang "adv.pay_kaspi" }}</option>
+            <option value="card">{{ t .Lang "adv.pay_card" }}</option>
+          </select>
+        </div>
+        <div class="field"><label>{{ t .Lang "adv.total" }}</label>
+          <div class="adv-total" data-ad-total>—</div>
+        </div>
+      </div>
+
+      <p class="adv-split">{{ t .Lang "adv.split_note" }} {{ t .Lang "adv.slot_note" }}</p>
       <button class="btn btn--primary" type="submit">{{ t .Lang "adv.order_submit" }}</button>
     </form>
+  </section>
+
+  <section class="adv-card">
+    <h2 class="adv-card__title">{{ t .Lang "adv.ratecard" }}</h2>
+    <div class="table-wrap">
+      <table class="spec adv-rates">
+        <thead><tr><th>{{ t .Lang "adv.placement" }}</th>{{ range adDurations }}<th>{{ . }} {{ t $.Lang "adv.days_short" }}</th>{{ end }}</tr></thead>
+        <tbody>
+          {{ range $z := adZones }}
+          <tr><td>{{ t $.Lang (printf "adv.zone_%s" $z) }}</td>
+            {{ range $d := adDurations }}<td><b>{{ money (adPrice $z $d) }} ₸</b></td>{{ end }}
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+    {{ if .Avail }}
+    <h3 class="adv-subhead">{{ t .Lang "adv.avail" }}</h3>
+    <div class="adv-avail">
+      {{ range .Avail }}
+      <span class="adv-avail__item{{ if eq .Free 0 }} is-full{{ end }}">
+        {{ t $.Lang (printf "adv.zone_%s" .Zone) }}: <b>{{ .Free }}</b>/{{ .Cap }} {{ t $.Lang "adv.free_of" }}
+      </span>
+      {{ end }}
+    </div>
+    {{ end }}
+    <p class="adv-split" style="margin-top:14px">{{ t .Lang "adv.tariff_note" }}</p>
   </section>
 
   <section class="adv-card">
@@ -117,6 +173,97 @@
   </section>
   {{ end }}
 </main>
+<script>
+(function () {
+  var form = document.querySelector('[data-adform]');
+  if (!form) return;
+  var zoneEl  = form.querySelector('[data-ad-zone]');
+  var rubEl   = form.querySelector('[data-ad-rubric]');
+  var startEl = form.querySelector('[data-ad-start]');
+  var daysEl  = form.querySelector('[data-ad-days]');
+  var exclEl  = form.querySelector('[data-ad-excl]');
+  var totalEl = form.querySelector('[data-ad-total]');
+  var gridEl  = form.querySelector('[data-ad-cal-grid]');
+  var prices  = {{ adPriceJSON }};
+  var lang    = '{{ .Lang }}';
+  var locale  = lang === 'kz' ? 'kk-KZ' : (lang === 'en' ? 'en-US' : 'ru-RU');
+  var days = [], capacity = {{ adSlotCapacity }};
+
+  function fmt(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0'); }
+
+  function renderTotal() {
+    var z = zoneEl.value, d = daysEl.value;
+    var p = (prices[z] || {})[d];
+    if (!p) { totalEl.textContent = '\u2014'; return; }
+    if (exclEl.checked) p = p + Math.floor(p * 50 / 100);
+    totalEl.textContent = fmt(p) + ' \u20b8';
+  }
+
+  // A booking needs a free slot on EVERY day of its range, so highlight the
+  // whole selected period and warn as soon as one day inside it is full.
+  function selectedRange() {
+    var s = startEl.value; if (!s) return [];
+    var out = [], d = new Date(s + 'T00:00:00'), n = parseInt(daysEl.value, 10) || 1;
+    for (var i = 0; i < n; i++) { out.push(d.toISOString().slice(0, 10)); d.setDate(d.getDate() + 1); }
+    return out;
+  }
+
+  function renderCal() {
+    if (!days.length) { gridEl.innerHTML = ''; return; }
+    var range = selectedRange(), inRange = {};
+    range.forEach(function (x) { inRange[x] = true; });
+    var html = '', month = '', open = false;
+    days.forEach(function (day, idx) {
+      var dt = new Date(day.date + 'T00:00:00');
+      var m = dt.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
+      if (m !== month) {
+        if (open) html += '</div></div>';
+        month = m;
+        html += '<div><div class="adv-cal__month">' + m + '</div><div class="adv-cal__days">';
+        open = true;
+        var pad = (dt.getDay() + 6) % 7; // week starts Monday
+        for (var i = 0; i < pad; i++) html += '<span class="adv-cal__day adv-cal__pad"></span>';
+      }
+      var cls = day.free > 0 ? 'is-free' : 'is-busy';
+      if (day.date === startEl.value) cls += ' is-sel';
+      else if (inRange[day.date]) cls += ' is-range';
+      html += '<button type="button" class="adv-cal__day ' + cls + '" data-date="' + day.date + '"' +
+              (day.free > 0 ? '' : ' disabled') + '>' + dt.getDate() +
+              '<small>' + day.free + '/' + capacity + '</small></button>';
+    });
+    if (open) html += '</div></div>';
+    gridEl.innerHTML = html;
+  }
+
+  function loadAvail() {
+    var url = '/advertise/availability?zone=' + encodeURIComponent(zoneEl.value) +
+              '&rubric=' + encodeURIComponent(rubEl ? rubEl.value : '');
+    fetch(url, { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (!data) return;
+        capacity = data.capacity || capacity;
+        days = data.days || [];
+        renderCal();
+      })
+      .catch(function () {});
+  }
+
+  gridEl.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-date]');
+    if (!b || b.disabled) return;
+    startEl.value = b.getAttribute('data-date');
+    renderCal();
+  });
+
+  [zoneEl, rubEl].forEach(function (el) { if (el) el.addEventListener('change', function () { loadAvail(); renderTotal(); }); });
+  [startEl, daysEl].forEach(function (el) { el.addEventListener('change', function () { renderCal(); renderTotal(); }); });
+  exclEl.addEventListener('change', renderTotal);
+
+  renderTotal();
+  loadAvail();
+})();
+</script>
 {{ template "site_footer" . }}
 {{ end }}
 

@@ -67,7 +67,7 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		OGImage:   site + "/static/brand/shanraq.svg",
 		OGType:    "website",
 		Info:      m.infobar.Snapshot(localizedDate(lang, time.Now())),
-		Ads:       demoAds(lang),
+		Ads:       m.sidebarAds(r, lang),
 	}
 }
 
