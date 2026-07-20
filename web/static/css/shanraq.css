@@ -128,11 +128,14 @@ img { max-width: 100%; height: auto; display: block; }
 .infobar__social .soc:hover { color: var(--gold); }
 .infobar__social .soc svg { width: 17px; height: 17px; display: block; }
 @media (max-width: 640px) {
-  /* four cells fold into 2×2 on a vertical phone */
+  /* On a vertical phone the bar stacks: date and weather share the top row,
+     then the rates and the social icons each take a full row of their own,
+     both flush right so they line up under one another. */
   .infobar { font-size: 0.72rem; }
-  .infobar__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3px 10px; padding: 5px 16px; }
-  .infobar__cell:nth-child(3) { justify-content: flex-start; }
-  .infobar__cell:nth-child(4) { justify-content: flex-end; }
+  .infobar__grid { grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; padding: 5px 16px; }
+  .infobar__cell:nth-child(2) { justify-content: flex-end; }
+  .infobar__cell:nth-child(3),
+  .infobar__cell:nth-child(4) { grid-column: 1 / -1; justify-content: flex-end; }
   .infobar__rates { gap: 8px; }
   /* drop the last digit of each rate on narrow phones to save width */
   .rate__last { display: none; }
@@ -702,6 +705,10 @@ table.list td.title { white-space: normal; max-width: 380px; }
   /* Hide right-side text links; keep the language switch and the icon-only
      account entry (the header carries just the account icon + "Sign out"). */
   .topstrip__side--right a:not(.btn):not(.icon-btn) { display: none; }
+  /* the footer reads as one centred column rather than a ragged left edge */
+  .site-footer { text-align: center; }
+  .site-footer .container { justify-content: center; }
+  .foot-nav { justify-content: center; }
   .wordmark__mark { width: 52px; height: 52px; }
   .hero__media { height: 200px; }
   .post__media { height: 160px; }

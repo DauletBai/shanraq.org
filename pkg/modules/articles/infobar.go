@@ -231,14 +231,27 @@ var monthNames = map[string][]string{
 	LangEN: {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"},
 }
 
-// localizedDate renders a date as "18 июля 2026" with the month spelled out in
-// the active UI language, for the info-bar calendar cell.
+// weekdayNames holds the info-bar weekday names per UI language, indexed by
+// time.Weekday (Sunday = 0).
+var weekdayNames = map[string][]string{
+	LangRU: {"воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"},
+	LangKZ: {"жексенбі", "дүйсенбі", "сейсенбі", "сәрсенбі", "бейсенбі", "жұма", "сенбі"},
+	LangEN: {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"},
+}
+
+// localizedDate renders a date as "воскресенье, 18 июля 2026" — weekday first,
+// the way all three languages read a date aloud — for the info-bar calendar
+// cell.
 func localizedDate(lang string, t time.Time) string {
 	months, ok := monthNames[lang]
 	if !ok {
 		months = monthNames[LangRU]
 	}
-	return fmt.Sprintf("%d %s %d", t.Day(), months[int(t.Month())-1], t.Year())
+	days, ok := weekdayNames[lang]
+	if !ok {
+		days = weekdayNames[LangRU]
+	}
+	return fmt.Sprintf("%s, %d %s %d", days[int(t.Weekday())], t.Day(), months[int(t.Month())-1], t.Year())
 }
 
 // curSymbol maps a currency code to its symbol for the compact bar.
