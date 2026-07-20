@@ -25,8 +25,8 @@ const (
 // authorDisplay returns the byline name and whether the author is the AI
 // columnist (so templates can show the "AI opinion" badge).
 func authorDisplay(a *Article) (string, bool) {
-	if a.AuthorID.String() == SanaAuthorID {
-		return SanaName, true
+	if name, ok := aiAgentAuthors[a.AuthorID.String()]; ok {
+		return name, true
 	}
 	return a.AuthorName(), false
 }

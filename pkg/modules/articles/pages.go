@@ -61,7 +61,7 @@ Shanraq is a home where free voices meet.`},
 ## Недвижимость и объявления
 Наш символ — шаңырақ, а значит, дом. В разделе **«Недвижимость»** можно подать объявление о продаже или аренде: квартиры, дома, земельного участка или коммерческого помещения. Нажмите «Подать объявление», заполните поля (страна, область, город, село, тип, цена, площадь и описание) — и объявление появится в разделе.
 
-Кабинет рекламодателя для баннерной рекламы появится позже: доход будет справедливо делиться между автором материала, платформой и фондом сообщества.
+Доход от рекламы идёт на содержание платформы. Материалы наших ИИ-авторов создаёт сама платформа, поэтому доход от них полностью поступает проекту. Для независимых авторов готовится программа вознаграждения — её условия будут закреплены в письменном договоре, а не обещаны строкой на сайте.
 
 ## Права и ответственность
 - Вы сохраняете авторские права на свои материалы и отвечаете за их содержание.
@@ -92,7 +92,7 @@ Shanraq is a home where free voices meet.`},
 ## Жылжымайтын мүлік және хабарландырулар
 Біздің нышанымыз — шаңырақ, яғни үй. **«Жылжымайтын мүлік»** бөлімінде сату немесе жалға беру туралы хабарландыру беруге болады: пәтер, үй, жер учаскесі немесе коммерциялық орын. «Хабарландыру беру» түймесін басып, өрістерді толтырыңыз (ел, облыс, қала, ауыл, түрі, бағасы, ауданы және сипаттама) — хабарландыру бөлімде пайда болады.
 
-Баннерлік жарнама үшін жарнама беруші кабинеті кейінірек қосылады: табыс автор, платформа және қоғам қоры арасында әділ бөлінеді.
+Жарнама табысы платформаны ұстауға жұмсалады. ЖИ-авторларымыздың материалдарын платформаның өзі жасайды, сондықтан олардан түскен табыс толығымен жобаға түседі. Тәуелсіз авторлар үшін сыйақы бағдарламасы дайындалуда — оның шарттары сайттағы жолмен емес, жазбаша шартта бекітіледі.
 
 ## Құқықтар мен жауапкершілік
 - Материалдарыңызға авторлық құқық сізде қалады, мазмұны үшін өзіңіз жауап бересіз.
@@ -123,7 +123,7 @@ Shanraq is a home where free voices meet.`},
 ## Real estate and listings
 Our symbol is the shanyraq — a home. In the **Real Estate** section you can post a sale or rental listing: apartment, house, land, or commercial space. Click "Post a listing", fill in the fields (country, region, city, village, type, price, area, and description), and it will appear in the section.
 
-An advertiser cabinet for banner ads will come later; revenue will be shared fairly between the author, the platform, and a community fund.
+Ad revenue funds the platform. Material by our AI authors is produced by the platform itself, so revenue from it goes to the project in full. A reward program for independent authors is in preparation; its terms will be set out in a written agreement rather than promised in a line on a web page.
 
 ## Rights and responsibilities
 - You keep the copyright to your work and are responsible for its content.
@@ -170,7 +170,7 @@ By publishing, you agree to these rules.`},
 | Баннер в разделе недвижимости (1–7 суток) | от 990 ₸ |
 
 ## Реклама для компаний
-Размещение баннеров — через кабинет рекламодателя: вы сами выбираете место, срок и способ оплаты. Доход делится: **50% автору материала, 40% платформе, 10% в фонд сообщества.**
+Размещение баннеров — через кабинет рекламодателя: вы сами выбираете место, срок и способ оплаты. Доход от рекламы идёт на содержание платформы. Материалы ИИ-авторов (AI Dake) создаёт сама платформа — доход от них полностью поступает проекту. Программа вознаграждения независимых авторов готовится; её условия будут закреплены в договоре с автором.
 
 Все цены указаны в тенге и могут корректироваться. Об изменениях мы сообщаем заранее.`},
 		"kz": {Title: "Тарифтер", Body: `Ақпаратқа қолжетімділік тегін болуы керек деп сенеміз. Сондықтан оқу мен жазылу тегін.
@@ -204,7 +204,7 @@ By publishing, you agree to these rules.`},
 | Жылжымайтын мүлік бөліміндегі баннер (1–7 тәулік) | 990 ₸ бастап |
 
 ## Компанияларға жарнама
-Баннер орналастыру — жарнама беруші кабинеті арқылы: орынды, мерзімді және төлем тәсілін өзіңіз таңдайсыз. Табыс бөлінісі: **50% материал авторына, 40% платформаға, 10% қоғам қорына.**
+Баннер орналастыру — жарнама беруші кабинеті арқылы: орынды, мерзімді және төлем тәсілін өзіңіз таңдайсыз. Жарнама табысы платформаны ұстауға жұмсалады. ЖИ-авторлардың (AI Dake) материалдарын платформаның өзі жасайды — олардан түскен табыс толығымен жобаға түседі. Тәуелсіз авторларға сыйақы бағдарламасы дайындалуда; оның шарттары автормен жасалатын шартта бекітіледі.
 
 Барлық баға теңгемен және өзгеруі мүмкін. Өзгерістер туралы алдын ала хабарлаймыз.`},
 		"en": {Title: "Pricing", Body: `We believe access to information should be free. Reading and the newsletter cost nothing.
@@ -238,7 +238,7 @@ Posting a listing is **free**: it stays active for **21 days** (3 weeks), after 
 | Banner in the real-estate section (1–7 days) | from 990 ₸ |
 
 ## Advertising for businesses
-Banner placement goes through the advertiser cabinet: you choose the slot, duration, and payment method yourself. Revenue is shared: **50% to the author, 40% to the platform, 10% to a community fund.**
+Banner placement goes through the advertiser cabinet: you choose the slot, duration, and payment method yourself. Ad revenue funds the platform. Material by AI authors (AI Dake) is produced by the platform itself, so revenue from it goes to the project in full. A reward program for independent authors is in preparation; its terms will be set out in the author agreement.
 
 All prices are in tenge and may change. We announce changes in advance.`},
 	},
