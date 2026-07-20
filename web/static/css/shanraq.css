@@ -128,14 +128,15 @@ img { max-width: 100%; height: auto; display: block; }
 .infobar__social .soc:hover { color: var(--gold); }
 .infobar__social .soc svg { width: 17px; height: 17px; display: block; }
 @media (max-width: 640px) {
-  /* On a vertical phone the bar stacks: date and weather share the top row,
-     then the rates and the social icons each take a full row of their own,
-     both flush right so they line up under one another. */
+  /* On a vertical phone the four cells fold into 2×2 column-major: the left
+     column keeps the date over the weather, the right column the rates over
+     the social icons, so each column aligns to its own outer edge. */
   .infobar { font-size: 0.72rem; }
-  .infobar__grid { grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; padding: 5px 16px; }
-  .infobar__cell:nth-child(2) { justify-content: flex-end; }
-  .infobar__cell:nth-child(3),
-  .infobar__cell:nth-child(4) { grid-column: 1 / -1; justify-content: flex-end; }
+  .infobar__grid { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; gap: 3px 10px; padding: 5px 16px; }
+  .infobar__cell:nth-child(1) { grid-area: 1 / 1; }
+  .infobar__cell:nth-child(2) { grid-area: 2 / 1; }
+  .infobar__cell:nth-child(3) { grid-area: 1 / 2; justify-content: flex-end; }
+  .infobar__cell:nth-child(4) { grid-area: 2 / 2; justify-content: flex-end; }
   .infobar__rates { gap: 8px; }
   /* drop the last digit of each rate on narrow phones to save width */
   .rate__last { display: none; }
