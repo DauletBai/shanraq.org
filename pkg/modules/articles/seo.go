@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"go.uber.org/zap"
 )
@@ -130,12 +131,28 @@ func absURL(site, u string) string {
 	return site + u
 }
 
+// clip shortens a string to at most n runes. It counts runes, not bytes:
+// Russian and Kazakh text is two bytes per letter, so a byte slice would cut a
+// letter in half and emit invalid UTF-8 into the meta description. It also
+// backs up to the last space so the description does not end mid-word.
 func clip(s string, n int) string {
 	s = strings.TrimSpace(s)
-	if len(s) <= n {
+	if utf8.RuneCountInString(s) <= n {
 		return s
 	}
-	return strings.TrimSpace(s[:n]) + "…"
+	cut, i := len(s), 0
+	for j := range s { // ranging a string yields rune start offsets
+		if i == n {
+			cut = j
+			break
+		}
+		i++
+	}
+	out := strings.TrimSpace(s[:cut])
+	if sp := strings.LastIndexAny(out, "  "); sp > n/2 {
+		out = strings.TrimSpace(out[:sp])
+	}
+	return out + "…"
 }
 
 // applyArticleSEO fills the page's meta description, social image, and a

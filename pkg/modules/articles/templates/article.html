@@ -21,7 +21,6 @@
           <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="margin:14px 0 4px">{{ catIcon .Category }}{{ t .Lang (printf "cat.%s" .Category) }}</a>
           <h1 class="article__title">{{ .Title }}</h1>
           {{ if .Summary }}<p class="article__lead">{{ .Summary }}</p>{{ end }}
-          {{ if .AIAuthor }}<p class="notice notice--ai">{{ t .Lang "article.ai_disclaim" }}</p>{{ end }}
 
           <div style="margin:18px 0 6px">
             {{ if .CanVote }}

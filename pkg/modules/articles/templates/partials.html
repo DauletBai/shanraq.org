@@ -120,7 +120,7 @@
   <div class="carousel__track">
   {{ range $i, $n := .SidebarNews }}
   <a class="adslide adslide--news{{ if eq $i 0 }} is-active{{ end }}" href="/read/{{ $n.Slug }}?lang={{ $.Lang }}">
-    <span class="adslide__badge">{{ t $.Lang (printf "cat.%s" $n.Category) }}{{ if $n.AIAuthor }} · {{ t $.Lang "article.ai_opinion" }}{{ end }}</span>
+    <span class="adslide__badge">{{ if and $n.AIAuthor (eq $n.Category "opinion") }}{{ t $.Lang "article.ai_opinion" }}{{ else }}{{ t $.Lang (printf "cat.%s" $n.Category) }}{{ if $n.AIAuthor }} · {{ t $.Lang "article.ai_opinion" }}{{ end }}{{ end }}</span>
     <div class="adslide__body">
       <p class="adslide__text">{{ $n.Title }}</p>
       <span class="btn btn--primary btn--sm">{{ t $.Lang "sidebar.read" }} →</span>
