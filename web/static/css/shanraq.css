@@ -849,6 +849,13 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .map-tab { padding: 4px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-soft); font-weight: 700; cursor: pointer; font-size: 0.8rem; }
 .map-tab.is-active { background: var(--gold); color: #fff; border-color: var(--gold); }
 .map-holder { width: 100%; overflow-x: auto; }
+/* Leaflet needs an explicit height; the container is also the scroll-lock
+   surface, so keep it comfortably tall on a phone without eating the page. */
+.map-holder--leaflet { height: 420px; border-radius: 12px; overflow: hidden; z-index: 0; }
+.map-holder--leaflet .leaflet-container { height: 100%; width: 100%; background: var(--surface-2); font: inherit; }
+.map-holder--leaflet .leaflet-popup-content { margin: 10px 12px; line-height: 1.4; }
+.map-holder--leaflet .leaflet-popup-content a { font-weight: 700; }
+@media (max-width: 640px) { .map-holder--leaflet { height: 300px; } }
 .re-map__svg { width: 100%; height: auto; display: block; background: var(--surface-2); border-radius: 12px; }
 .map-bubble { fill: var(--gold); fill-opacity: 0.75; stroke: #fff; stroke-width: 1.5; transition: fill-opacity 0.12s ease; }
 :root[data-theme="dark"] .map-bubble { stroke: rgba(255, 255, 255, 0.4); }

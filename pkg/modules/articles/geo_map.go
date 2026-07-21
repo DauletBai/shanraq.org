@@ -1,6 +1,9 @@
 package articles
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 // centroid is an approximate geographic center (its administrative capital) for
 // a region, used to place a listing-count bubble on the self-hosted map. We
@@ -104,6 +107,64 @@ func (s *ListingStore) RegionCounts(ctx context.Context) (map[string]int, error)
 			return nil, err
 		}
 		out[region] = n
+	}
+	return out, rows.Err()
+}
+
+// ListingPin is one marker on the map. Exact reports whether the author placed
+// the pin themselves; otherwise it sits at the centre of the settlement, which
+// the popup says out loud so nobody reads it as the building's location.
+type ListingPin struct {
+	ID    string  `json:"id"`
+	Title string  `json:"title"`
+	Price int64   `json:"price"`
+	Deal  string  `json:"deal"`
+	Place string  `json:"place"`
+	Lat   float64 `json:"lat"`
+	Lng   float64 `json:"lng"`
+	Exact bool    `json:"exact"`
+}
+
+// ListingPins returns map markers for active listings. A listing with no
+// coordinates of its own falls back to its geo node, so the map is populated
+// from day one instead of waiting for authors to drop pins.
+func (s *ListingStore) ListingPins(ctx context.Context, limit int) ([]ListingPin, error) {
+	if limit <= 0 || limit > 2000 {
+		limit = 500
+	}
+	rows, err := s.db.Query(ctx, `
+		SELECT l.id, l.title, l.price, l.deal_type,
+		       COALESCE(NULLIF(l.city,''), NULLIF(l.village,''), l.region),
+		       COALESCE(l.lat, g.lat, c.lat), COALESCE(l.lng, g.lng, c.lng),
+		       l.lat IS NOT NULL AND l.lng IS NOT NULL
+		  FROM listings l
+		  LEFT JOIN geo_nodes g ON g.id = l.geo_node_id
+		  -- Older listings pre-date the location picker and carry only a city
+		  -- name. Match it back to a settlement; where the name is ambiguous
+		  -- (three villages are called Karabulak) take the largest, which is
+		  -- the one a writer almost certainly meant.
+		  LEFT JOIN LATERAL (
+		      SELECT n.lat, n.lng FROM geo_nodes n
+		       WHERE g.id IS NULL AND n.level IN (1, 2) AND n.lat IS NOT NULL
+		         AND n.name_ru = NULLIF(l.city, '')
+		       ORDER BY n.population DESC NULLS LAST
+		       LIMIT 1
+		  ) c ON TRUE
+		 WHERE l.status = 'published' AND l.expires_at > NOW()
+		   AND COALESCE(l.lat, g.lat, c.lat) IS NOT NULL
+		 ORDER BY l.created_at DESC
+		 LIMIT $1`, limit)
+	if err != nil {
+		return nil, fmt.Errorf("listing pins: %w", err)
+	}
+	defer rows.Close()
+	out := []ListingPin{}
+	for rows.Next() {
+		var p ListingPin
+		if err := rows.Scan(&p.ID, &p.Title, &p.Price, &p.Deal, &p.Place, &p.Lat, &p.Lng, &p.Exact); err != nil {
+			return nil, err
+		}
+		out = append(out, p)
 	}
 	return out, rows.Err()
 }

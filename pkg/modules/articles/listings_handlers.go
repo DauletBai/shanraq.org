@@ -467,6 +467,18 @@ func parseListingForm(r *http.Request) ListingInput {
 		}
 		roomSpecs = append(roomSpecs, RoomSpec{Type: t, Area: ar, Note: note})
 	}
+	// Coordinates come from the author dragging a pin; keep them only if they
+	// are real numbers inside the world's range, so a broken client cannot
+	// write nonsense into the map.
+	var lat, lng *float64
+	if a, err1 := strconv.ParseFloat(strings.TrimSpace(r.FormValue("lat")), 64); err1 == nil {
+		if o, err2 := strconv.ParseFloat(strings.TrimSpace(r.FormValue("lng")), 64); err2 == nil {
+			if a >= -90 && a <= 90 && o >= -180 && o <= 180 {
+				lat, lng = &a, &o
+			}
+		}
+	}
+
 	var geoID *uuid.UUID
 	if gid, err := uuid.Parse(strings.TrimSpace(r.FormValue("geo_node_id"))); err == nil {
 		geoID = &gid
@@ -499,6 +511,8 @@ func parseListingForm(r *http.Request) ListingInput {
 		Microdistrict: clip(strings.TrimSpace(r.FormValue("microdistrict")), 60),
 		Street:        clip(strings.TrimSpace(r.FormValue("street")), 80),
 		House:         clip(strings.TrimSpace(r.FormValue("house")), 20),
+		Lat:           lat,
+		Lng:           lng,
 		Price:         price,
 		Area:          area,
 		Rooms:         rooms,

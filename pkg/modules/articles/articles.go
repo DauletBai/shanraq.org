@@ -169,6 +169,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/api/geo/roots", m.handleGeoRoots)
 		r.Get("/api/geo/children", m.handleGeoChildren)
 		r.Get("/api/listings/map", m.handleListingsMap)
+		r.Get("/api/listings/pins", m.handleListingPins)
 		r.Get("/listings", m.handleListings)
 		r.Get("/listings/new", m.handleListingNew)
 		r.Post("/listings/new", m.handleListingCreate)

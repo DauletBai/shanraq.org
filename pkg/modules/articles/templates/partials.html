@@ -41,6 +41,7 @@
   <meta name="twitter:image" content="{{ .OGImage }}">
   <link rel="icon" href="/static/brand/shanraq.svg">
   <link rel="alternate" type="application/rss+xml" title="Shanraq RSS" href="/feed.xml?lang={{ .Lang }}">
+  <link rel="stylesheet" href="/static/vendor/leaflet.css">
   <link rel="stylesheet" href="/static/css/shanraq.css">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Shanraq","url":"{{ .SiteURL }}","inLanguage":["kk","ru","en"]}</script>
   {{ if .JSONLD }}{{ .JSONLD }}
@@ -241,6 +242,7 @@
     <div class="foot-social">{{ template "social_icons" .Info.Social }}</div>
   </div>
 </footer>
+<script src="/static/vendor/leaflet.js"></script>
 <script>
   (function () {
     var btn = document.querySelector('[data-theme-toggle]');
@@ -417,6 +419,10 @@
             });
             if (hidden) hidden.value = sel.value;
             var opt = sel.options[sel.selectedIndex];
+            var pick = items[sel.selectedIndex - 1];
+            if (pick && pick.lat != null) {
+              document.dispatchEvent(new CustomEvent('shanraq:geo', { detail: { lat: pick.lat, lng: pick.lng } }));
+            }
             if (sel.value && opt.getAttribute('data-has')) addSelect(sel.value, level + 1);
           });
           row.appendChild(sel);
@@ -431,68 +437,115 @@
         if (el) el.classList.toggle('is-open');
       });
     });
+    // Listing map (OpenStreetMap tiles via Leaflet, both served from our own
+    // origin apart from the tiles themselves). Two modes: "find" plots active
+    // listings, "info" lets an author place their own pin.
     document.querySelectorAll('[data-listing-map]').forEach(function (box) {
+      if (typeof L === 'undefined') return;
       var mode = box.getAttribute('data-map-mode') || 'find';
       var lang = box.getAttribute('data-lang') || 'ru';
-      var country = 'KZ';
-      var bar = document.createElement('div');
-      bar.className = 'map-bar';
-      ['KZ', 'RU'].forEach(function (c) {
-        var b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'map-tab' + (c === country ? ' is-active' : '');
-        b.textContent = c;
-        b.addEventListener('click', function () {
-          country = c;
-          bar.querySelectorAll('.map-tab').forEach(function (x) { x.classList.toggle('is-active', x === b); });
-          render();
-        });
-        bar.appendChild(b);
-      });
-      var holder = document.createElement('div');
-      holder.className = 'map-holder';
-      box.appendChild(bar);
-      box.appendChild(holder);
+      var T = {
+        exact: { kz: 'Нақты орны', ru: 'Точное место', en: 'Exact location' },
+        approx: { kz: 'Елді мекеннің ортасы', ru: 'Центр населённого пункта', en: 'Settlement centre' },
+        drag: { kz: 'Белгіні үйіңізге сүйреңіз', ru: 'Перетащите метку на свой дом', en: 'Drag the marker onto your building' },
+        rent: { kz: '/ай', ru: '/мес', en: '/mo' }
+      };
+      function t(k) { return (T[k] && (T[k][lang] || T[k].ru)) || ''; }
+      function money(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0'); }
       function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-      function render() {
-        fetch('/api/listings/map?country=' + country, { credentials: 'same-origin' })
-          .then(function (r) { return r.json(); })
-          .then(function (stats) {
-            if (!stats || !stats.length) { holder.innerHTML = ''; return; }
-            var W = 800, H = 440, pad = 54;
-            var lats = stats.map(function (s) { return s.lat; });
-            var lngs = stats.map(function (s) { return s.lng; });
-            var minLat = Math.min.apply(null, lats), maxLat = Math.max.apply(null, lats);
-            var k = Math.cos((minLat + maxLat) / 2 * Math.PI / 180);
-            var xs = stats.map(function (s) { return s.lng * k; });
-            var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
-            function X(lng) { return pad + (lng * k - minX) / ((maxX - minX) || 1) * (W - 2 * pad); }
-            function Y(lat) { return pad + (maxLat - lat) / ((maxLat - minLat) || 1) * (H - 2 * pad); }
-            var maxC = 1;
-            stats.forEach(function (s) { if (s.count > maxC) maxC = s.count; });
-            var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="re-map__svg" xmlns="http://www.w3.org/2000/svg">';
-            stats.slice().sort(function (a, b) { return b.count - a.count; }).forEach(function (s) {
-              var x = X(s.lng).toFixed(1), y = Y(s.lat).toFixed(1);
-              var r = (7 + Math.sqrt(s.count / maxC) * 24).toFixed(1);
-              var cls = 'map-bubble' + (s.count > 0 ? '' : ' is-empty');
-              svg += '<g data-region="' + esc(s.name) + '"><title>' + esc(s.name) + ' — ' + s.count + '</title>';
-              svg += '<circle class="' + cls + '" cx="' + x + '" cy="' + y + '" r="' + r + '"/>';
-              if (s.count > 0) svg += '<text class="map-count" x="' + x + '" y="' + (parseFloat(y) + 4) + '" text-anchor="middle">' + s.count + '</text>';
-              svg += '</g>';
-            });
-            svg += '</svg>';
-            holder.innerHTML = svg;
-            if (mode === 'find') {
-              holder.querySelectorAll('g[data-region]').forEach(function (g) {
-                g.style.cursor = 'pointer';
-                g.addEventListener('click', function () {
-                  location.href = '/listings?lang=' + lang + '&region=' + encodeURIComponent(g.getAttribute('data-region'));
-                });
-              });
-            }
-          }).catch(function () {});
+
+      var holder = document.createElement('div');
+      holder.className = 'map-holder map-holder--leaflet';
+      box.appendChild(holder);
+
+      // Kazakhstan as a whole, until we know better.
+      var map = L.map(holder, { scrollWheelZoom: false }).setView([48.02, 66.92], 5);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+      // Both maps live inside a collapsed panel, so Leaflet measures a
+      // zero-height box on creation and draws nothing. Re-measure whenever the
+      // container actually gets a size.
+      // fitBounds against a zero-height box lands on an arbitrary patch of
+      // steppe, so remember the extent and frame it once the panel is open.
+      var fitTo = null, framed = false;
+      if (window.ResizeObserver) {
+        new ResizeObserver(function () {
+          if (!holder.clientHeight) return;
+          map.invalidateSize();
+          if (fitTo && !framed) {
+            framed = true;
+            map.fitBounds(fitTo, { padding: [30, 30], maxZoom: 12 });
+          }
+        }).observe(holder);
       }
-      render();
+
+      // A map that only reacts to a deliberate gesture does not hijack the page scroll.
+      map.on('click', function () { map.scrollWheelZoom.enable(); });
+      map.on('mouseout', function () { map.scrollWheelZoom.disable(); });
+
+      if (mode === 'find') {
+        fetch('/api/listings/pins', { credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (pins) {
+            if (!pins || !pins.length) return;
+            var group = [];
+            pins.forEach(function (p) {
+              var m = L.circleMarker([p.lat, p.lng], {
+                radius: p.exact ? 8 : 6,
+                weight: 2,
+                color: p.exact ? '#c62828' : '#8d6e63',
+                fillColor: p.exact ? '#e53935' : '#bcaaa4',
+                fillOpacity: 0.85
+              }).addTo(map);
+              m.bindPopup(
+                '<a href="/listings/' + p.id + '?lang=' + lang + '"><b>' + esc(p.title) + '</b></a><br>' +
+                money(p.price) + ' \u20b8' + (p.deal === 'rent' ? t('rent') : '') + '<br>' +
+                '<small>' + esc(p.place) + ' \u00b7 ' + (p.exact ? t('exact') : t('approx')) + '</small>'
+              );
+              group.push([p.lat, p.lng]);
+            });
+            if (!group.length) return;
+            fitTo = group;
+            if (holder.clientHeight) {
+              framed = true;
+              map.fitBounds(group, { padding: [30, 30], maxZoom: 12 });
+            }
+          })
+          .catch(function () {});
+        return;
+      }
+
+      // "info" mode — the author's own pin, stored with the listing.
+      var latEl = document.getElementById('listing_lat');
+      var lngEl = document.getElementById('listing_lng');
+      var marker = null;
+      function place(lat, lng, zoom) {
+        if (marker) { marker.setLatLng([lat, lng]); }
+        else {
+          marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+          marker.bindTooltip(t('drag'));
+          marker.on('dragend', function () {
+            var c = marker.getLatLng();
+            if (latEl) latEl.value = c.lat.toFixed(6);
+            if (lngEl) lngEl.value = c.lng.toFixed(6);
+          });
+        }
+        map.setView([lat, lng], zoom || map.getZoom());
+        if (latEl) latEl.value = lat.toFixed(6);
+        if (lngEl) lngEl.value = lng.toFixed(6);
+      }
+      map.on('click', function (e) { place(e.latlng.lat, e.latlng.lng); });
+      if (latEl && lngEl && latEl.value && lngEl.value) {
+        place(parseFloat(latEl.value), parseFloat(lngEl.value), 15);
+      }
+      // Picking a settlement in the cascade re-centres the map on it.
+      document.addEventListener('shanraq:geo', function (e) {
+        if (e.detail && e.detail.lat != null && e.detail.lng != null) {
+          place(e.detail.lat, e.detail.lng, 13);
+        }
+      });
     });
     (function () {
       var catSel = document.getElementById('category');

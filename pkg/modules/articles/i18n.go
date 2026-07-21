@@ -138,6 +138,7 @@ var messages = map[string]map[string]string{
 	"re.rooms_from":          {"kz": "Бөлме, бастап", "ru": "Комнат, от", "en": "Rooms, from"},
 	"re.query":               {"kz": "Кілт сөз", "ru": "Ключевое слово", "en": "Keyword"},
 	"re.map":                 {"kz": "Картада", "ru": "На карте", "en": "On the map"},
+	"re.map_pick":            {"kz": "Картадан үйіңізді басыңыз немесе белгіні сүйреңіз. Міндетті емес, бірақ дәл орны бар хабарландыруды жиірек ашады.", "ru": "Нажмите на карте на свой дом или перетащите метку. Необязательно, но объявления с точным местом открывают чаще.", "en": "Click your building on the map or drag the marker. Optional, but listings with an exact spot get opened more often."},
 	"re.map_hint":            {"kz": "Аймақтағы хабарландыру саны. Таңдау үшін басыңыз.", "ru": "Число объявлений по регионам. Нажмите, чтобы выбрать.", "en": "Listings per region. Click to select."},
 	"re.location":            {"kz": "Орналасуы", "ru": "Расположение", "en": "Location"},
 	"re.microdistrict":       {"kz": "Шағын аудан", "ru": "Микрорайон", "en": "Microdistrict"},

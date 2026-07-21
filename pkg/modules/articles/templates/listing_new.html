@@ -38,8 +38,10 @@
         </div>
         <button type="button" class="btn btn--ghost btn--sm" data-toggle="#nl-map" style="margin-top:8px">{{ t .Lang "re.map" }}</button>
         <div id="nl-map" class="re-map">
-          <p class="re-map__hint">{{ t .Lang "re.map_hint" }}</p>
+          <p class="re-map__hint">{{ t .Lang "re.map_pick" }}</p>
           <div data-listing-map data-map-mode="info" data-lang="{{ .Lang }}"></div>
+          <input type="hidden" name="lat" id="listing_lat" value="{{ with .Values.Lat }}{{ . }}{{ end }}">
+          <input type="hidden" name="lng" id="listing_lng" value="{{ with .Values.Lng }}{{ . }}{{ end }}">
         </div>
       </div>
 

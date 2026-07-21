@@ -23,6 +23,10 @@ type GeoNode struct {
 	Kind        string `json:"kind"`
 	Level       int    `json:"level"`
 	HasChildren bool   `json:"has_children"`
+	// Lat/Lng let the listing form centre its map on the selected place.
+	// Districts and countries have none, hence the pointers.
+	Lat *float64 `json:"lat,omitempty"`
+	Lng *float64 `json:"lng,omitempty"`
 }
 
 // geoNameCol maps a UI language to its name column; unknown falls back to ru.
@@ -41,7 +45,8 @@ func (s *GeoStore) query(ctx context.Context, lang, where string, args ...any) (
 	name := fmt.Sprintf("COALESCE(NULLIF(c.%s,''), c.name_ru)", geoNameCol(lang))
 	q := fmt.Sprintf(`
 		SELECT c.id, %s AS name, c.kind, c.level,
-		       EXISTS(SELECT 1 FROM geo_nodes g WHERE g.parent_id = c.id) AS has_children
+		       EXISTS(SELECT 1 FROM geo_nodes g WHERE g.parent_id = c.id) AS has_children,
+		       c.lat, c.lng
 		FROM geo_nodes c
 		WHERE %s
 		ORDER BY c.sort, c.population DESC NULLS LAST, name`, name, where)
@@ -56,7 +61,7 @@ func (s *GeoStore) query(ctx context.Context, lang, where string, args ...any) (
 	for rows.Next() {
 		var n GeoNode
 		var id uuid.UUID
-		if err := rows.Scan(&id, &n.Name, &n.Kind, &n.Level, &n.HasChildren); err != nil {
+		if err := rows.Scan(&id, &n.Name, &n.Kind, &n.Level, &n.HasChildren, &n.Lat, &n.Lng); err != nil {
 			return nil, err
 		}
 		n.ID = id.String()

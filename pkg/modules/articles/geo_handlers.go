@@ -45,6 +45,19 @@ func (m *Module) handleListingsMap(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(stats)
 }
 
+// handleListingPins serves the markers for the Leaflet map.
+func (m *Module) handleListingPins(w http.ResponseWriter, r *http.Request) {
+	pins, err := m.listings.ListingPins(r.Context(), 500)
+	if err != nil {
+		m.rt.Logger.Error("listing pins", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Cache-Control", "public, max-age=60")
+	_ = json.NewEncoder(w).Encode(pins)
+}
+
 // handleGeoRoots returns the countries (top of the location tree) as JSON.
 func (m *Module) handleGeoRoots(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
