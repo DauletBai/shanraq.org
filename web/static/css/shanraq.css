@@ -608,12 +608,26 @@ table.list td.title { white-space: normal; max-width: 380px; }
    corner so it reads as a stamp on the creative rather than as part of it.
    Kept inside the card's rounded clip, hence the offsets rather than 0/0. */
 .rebanner__label {
-  position: absolute; top: 20px; left: -6px; z-index: 2; padding: 2px 8px; border-radius: 999px;
-  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase;
-  color: #fff; background: rgba(0, 0, 0, 0.5);
-  transform: rotate(-45deg); transform-origin: center;
+  position: absolute; 
+  top: 14px; 
+  left: -26px; 
+  z-index: 2; 
+  padding: 3px 25px;
+  font-size: 0.58rem; 
+  font-weight: 700; 
+  letter-spacing: 0.11em; 
+  text-transform: uppercase;
+  color: #fff; 
+  background: rgba(0, 0, 0, 0.5);
+  transform: rotate(-45deg); 
+  transform-origin: center;
 }
-.rebanner__img { display: block; height: 140px; overflow: hidden; background: var(--surface-2); }
+.rebanner__img { 
+  display: block; 
+  height: 180px; 
+  overflow: hidden; 
+  background: var(--surface-2); 
+}
 .rebanner__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .rebanner__body { display: block; padding: 12px 14px 14px; }
 .rebanner__title { display: block; color: var(--ink); font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
@@ -768,9 +782,13 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .adline__note { font-size: 0.86rem; color: var(--muted); margin-top: 6px; line-height: 1.45; }
 
 .rebanner {
-  display: flex; flex-direction: column; gap: 10px;
-  min-height: 148px; padding: 20px 20px 18px;
-  border-radius: 14px; color: #fff; text-decoration: none;
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px;
+  min-height: 148px;
+  border-radius: 14px; 
+  color: #fff; 
+  text-decoration: none;
   justify-content: space-between;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -1111,13 +1129,19 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 .adcarousel--ad .adslide:hover { text-decoration: none; }
 .ad__label {
-  position: absolute; top: 9px; left: 9px; z-index: 2; padding: 2px 8px; border-radius: 999px;
+  position: absolute; 
+  top: 15px; 
+  left: -26px; 
+  z-index: 2; 
+  padding: 3px 15px;
+  border-radius: 999px;
   font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: #fff;
   background: rgba(0, 0, 0, 0.5);
+  transform: rotate(-45deg);
 }
 .ad__img {
   position: relative;

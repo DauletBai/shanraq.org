@@ -51,6 +51,7 @@
               {{ if .L.Region }}<tr><th>{{ t .Lang "re.region" }}</th><td>{{ .L.Region }}</td></tr>{{ end }}
               {{ if .L.City }}<tr><th>{{ t .Lang "re.city" }}</th><td>{{ .L.City }}</td></tr>{{ end }}
               {{ if .L.Village }}<tr><th>{{ t .Lang "re.village" }}</th><td>{{ .L.Village }}</td></tr>{{ end }}
+              {{ with .L.Address }}<tr><th>{{ t $.Lang "re.address" }}</th><td>{{ . }}</td></tr>{{ end }}
               {{ if gt .L.Rooms 0 }}<tr><th>{{ t .Lang "re.rooms" }}</th><td>{{ .L.Rooms }}</td></tr>{{ end }}
               {{ if gt .L.Area 0.0 }}<tr><th>{{ t .Lang "re.area" }}</th><td>{{ .L.Area }} м²</td></tr>{{ end }}
               {{ if gt .L.LandArea 0.0 }}<tr><th>{{ t .Lang "re.land_area" }}</th><td>{{ .L.LandArea }} {{ t .Lang "re.ares" }}</td></tr>{{ end }}

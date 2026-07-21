@@ -1,6 +1,9 @@
 package articles
 
-import "time"
+import (
+	"strings"
+	"time"
+)
 
 // Real-estate taxonomy (property types are the "real estate categories").
 var (
@@ -37,6 +40,11 @@ type Listing struct {
 	Region        string
 	City          string
 	Village       string
+	Microdistrict string
+	Street        string
+	House         string
+	Lat           *float64
+	Lng           *float64
 	Price         int64
 	Area          float64
 	LandArea      float64
@@ -107,6 +115,22 @@ func BannerDays() []int { return []int{1, 2, 3, 4, 5, 6, 7} }
 
 // BannerPrice exposes the price to templates.
 func BannerPrice(days int) int64 { return listingBannerPrice(days) }
+
+// Address renders the street part of a listing — "мкр Самал-2, ул. Абая, 15" —
+// skipping whatever the author left blank. The city and region are rendered
+// separately by Location, so this stays purely the within-city part.
+func (l Listing) Address() string {
+	parts := []string{}
+	for _, p := range []string{l.Microdistrict, l.Street, l.House} {
+		if p = strings.TrimSpace(p); p != "" {
+			parts = append(parts, p)
+		}
+	}
+	return strings.Join(parts, ", ")
+}
+
+// HasPin reports whether the listing carries coordinates for a map marker.
+func (l Listing) HasPin() bool { return l.Lat != nil && l.Lng != nil }
 
 // Location renders the place parts that are set, most specific first.
 func (l Listing) Location() string {

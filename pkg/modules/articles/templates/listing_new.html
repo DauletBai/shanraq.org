@@ -28,6 +28,14 @@
         <div class="geo-cascade" data-geo data-lang="{{ .Lang }}"></div>
         <input type="hidden" name="geo_node_id" id="geo_node_id">
         <p class="hint">{{ t .Lang "re.location_hint" }}</p>
+        <div class="grid-3" style="margin-top:10px">
+          <div class="field"><label>{{ t .Lang "re.microdistrict" }} {{ template "fhelp" (t .Lang "re.help_microdistrict") }}</label>
+            <input class="input" name="microdistrict" maxlength="60" value="{{ .Values.Microdistrict }}"></div>
+          <div class="field"><label>{{ t .Lang "re.street" }} {{ template "fhelp" (t .Lang "re.help_street") }}</label>
+            <input class="input" name="street" maxlength="80" value="{{ .Values.Street }}"></div>
+          <div class="field"><label>{{ t .Lang "re.house" }} {{ template "fhelp" (t .Lang "re.help_house") }}</label>
+            <input class="input" name="house" maxlength="20" value="{{ .Values.House }}"></div>
+        </div>
         <button type="button" class="btn btn--ghost btn--sm" data-toggle="#nl-map" style="margin-top:8px">{{ t .Lang "re.map" }}</button>
         <div id="nl-map" class="re-map">
           <p class="re-map__hint">{{ t .Lang "re.map_hint" }}</p>
