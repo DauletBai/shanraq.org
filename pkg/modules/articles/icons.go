@@ -73,6 +73,12 @@ var iconPaths = map[string]string{
 	"cat_opinion": `<path d="M6 8h4v4c0 2-1.5 3.6-4 4.2V14c1.2-.4 2-1.2 2-2H6z"/><path d="M14 8h4v4c0 2-1.5 3.6-4 4.2V14c1.2-.4 2-1.2 2-2h-2z"/>`,
 	"cat_world":   `<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>`,
 
+	// ---- theme switch ----
+	// The moon shows on the light theme (click to go dark) and the sun on the
+	// dark one, so the icon names the destination rather than the current state.
+	"moon": `<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>`,
+	"sun":  `<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/>`,
+
 	// ---- weather (info bar) ----
 	"wx_sun":   `<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/>`,
 	"wx_cloud": `<path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.3A3.5 3.5 0 0 1 18 18z"/>`,

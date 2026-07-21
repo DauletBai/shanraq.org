@@ -92,7 +92,9 @@
       {{ else }}
       <a class="btn btn--primary btn--sm" href="/studio/login">{{ t .Lang "header.login" }}</a>
       {{ end }}
-      <button type="button" class="icon-btn" data-theme-toggle title="{{ t .Lang "header.theme" }}">◐</button>
+      <button type="button" class="icon-btn icon-btn--theme" data-theme-toggle title="{{ t .Lang "header.theme" }}" aria-label="{{ t .Lang "header.theme" }}">
+        <span class="theme-light-only">{{ icon "moon" }}</span><span class="theme-dark-only">{{ icon "sun" }}</span>
+      </button>
     </div>
   </div>
 </div>
