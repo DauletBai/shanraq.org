@@ -374,6 +374,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 /* card photo carousel: stacked slides, a full-cover link, dots on top */
 .post__media .gallery__item { position: absolute; inset: 0; }
 .post__media .gallery__item img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; }
+/* the card slot has its own fixed height, so no aspect-ratio here */
 .post__media-link { position: absolute; inset: 0; z-index: 2; }
 .post__media .adcarousel__dots { bottom: 10px; z-index: 3; }
 .post__media .badge-top { z-index: 3; }
@@ -815,10 +816,18 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .uploader__status { font-size: 0.95rem; color: var(--muted); min-width: 1em; }
 
 /* ---- Listing photo gallery (carousel) ---- */
-.gallery { position: relative; border-radius: var(--radius); overflow: hidden; margin-bottom: 22px; background: var(--surface-2); }
-.gallery__item { display: none; }
-.gallery__item.is-active { display: block; }
-.gallery__item img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+/* Photo galleries cross-fade between frames rather than cutting. Every frame
+   is absolutely positioned, so the container carries the height itself — the
+   images used to supply it via their own aspect-ratio. */
+.gallery { position: relative; aspect-ratio: 16 / 10; border-radius: var(--radius); overflow: hidden; margin-bottom: 22px; background: var(--surface-2); }
+.gallery__item {
+  position: absolute; inset: 0; display: block;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.gallery__item.is-active { opacity: 1; pointer-events: auto; }
+.gallery__item img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; display: block; }
+@media (prefers-reduced-motion: reduce) { .gallery__item { transition: none; } }
 
 /* ---- Location cascade (listing form) ---- */
 .geo-cascade { display: flex; flex-direction: column; gap: 10px; }
@@ -1145,11 +1154,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adcarousel--ad .adslide:hover { text-decoration: none; }
 .ad__label {
   position: absolute; 
-  top: 15px; 
-  left: -26px; 
+  top: 10px; 
+  left: -22px; 
   z-index: 2; 
   padding: 3px 15px;
-  border-radius: 999px;
   font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.11em;
@@ -1165,6 +1173,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   padding: 6px 14px;
   border-radius: 10px;
   background: linear-gradient(135deg, #eef2f7, #dbe4ef);
+  /* The tilted "Ad" ribbon is positioned past this box's left edge. Without a
+     clip here it hangs outside the slide, and since the slides sit side by side
+     in one track, the next slide's ribbon peeked in on the right. */
+  overflow: hidden;
 }
 .ad__img img { display: block; width: 100%; }
 .ad__title { padding: 0 16px; font-weight: 700; font-size: var(--step-0); line-height: 1.25; color: #fff; }
