@@ -21,6 +21,7 @@ var messages = map[string]map[string]string{
 	},
 
 	"nav.all":        {"kz": "Барлығы", "ru": "Все", "en": "All"},
+	"nav.home":       {"kz": "Басты бет", "ru": "Главная", "en": "Home"},
 	"nav.realestate": {"kz": "Жылжымайтын мүлік", "ru": "Недвижимость", "en": "Real Estate"},
 
 	"re.post":                {"kz": "Хабарландыру беру", "ru": "Подать объявление", "en": "Post a listing"},

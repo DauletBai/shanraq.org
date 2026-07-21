@@ -3,6 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ template "backlink" (dict "Href" "/studio" "Label" (t .Lang "studio.title")) }}
   <section class="studio">
     <div class="studio__head">
       <h1>{{ if .IsNew }}{{ t .Lang "editor.new" }}{{ else }}{{ t .Lang "editor.edit" }}{{ end }}</h1>

@@ -3,6 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ template "backlink" (dict "Href" "/" "Label" (t .Lang "nav.home")) }}
   <div class="studio__head" style="margin-top:24px">
     <h1 class="h1-ic"><span class="h1-ic__mark">{{ icon "megaphone" }}</span> {{ t .Lang "adv.title" }}</h1>
   </div>

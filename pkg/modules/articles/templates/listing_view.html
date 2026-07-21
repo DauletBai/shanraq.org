@@ -3,6 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ template "backlink" (dict "Href" "/listings" "Label" (t .Lang "nav.realestate")) }}
   <div class="layout">
     <div>
       <article class="article">

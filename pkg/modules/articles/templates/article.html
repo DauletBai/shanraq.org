@@ -3,6 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ template "backlink" (dict "Href" (printf "/?lang=%s&cat=%s" .Lang .Category) "Label" (t .Lang (printf "cat.%s" .Category))) }}
   <div class="layout{{ if and (not .TOC) (not .Ads) }} layout--solo{{ end }}">
     <div>
       <article class="article">

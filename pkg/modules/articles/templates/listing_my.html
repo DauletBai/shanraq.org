@@ -3,6 +3,8 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ template "backlink" (dict "Href" "/listings" "Label" (t .Lang "nav.realestate")) }}
+  {{ template "acct_nav" . }}
   <div class="studio__head" style="margin-top:24px">
     <h1>{{ t .Lang "re.my_listings" }}</h1>
     <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>

@@ -3,6 +3,8 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ template "backlink" (dict "Href" "/studio" "Label" (t .Lang "studio.title")) }}
+  {{ template "acct_nav" . }}
   <div class="section-head"><h2>{{ t .Lang "fav.title" }}</h2></div>
 
   {{ if and (not .Articles) (not .Listings) }}

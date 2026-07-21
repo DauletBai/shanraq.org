@@ -3,6 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ template "backlink" (dict "Href" "/studio" "Label" (t .Lang "studio.title")) }}
   <div style="max-width:640px;margin:44px auto">
     <h1 class="article__title" style="margin-bottom:12px">{{ t .Lang "consent.title" }}</h1>
     <p class="aside__text" style="margin-bottom:16px">{{ t .Lang "consent.intro" }}</p>

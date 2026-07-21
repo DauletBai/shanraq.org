@@ -697,6 +697,13 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .pill--review { background: #fff3cd; color: #7a5c00; }
 .pill--needswork { background: #fde2e1; color: #b71c1c; text-decoration: none; }
 .pill--needswork:hover { text-decoration: underline; }
+/* Every deep page names its way out. Browser "back" is not enough: a reader
+   who arrived from a search result or a shared link has no history to return
+   to, and on a phone the gesture is easy to miss. */
+.backlink { margin: 18px 0 0; }
+.backlink a { text-decoration: none; }
+/* the section you are already in should not look like somewhere to go */
+.acct-nav__item.is-active { background: var(--gold); color: #fff; border-color: var(--gold); }
 .adv-total { font-size: var(--step-2); font-weight: 800; color: var(--brand); line-height: 1.9; }
 .adv-rates td b { white-space: nowrap; }
 .adv-avail { display: flex; flex-wrap: wrap; gap: 8px; }

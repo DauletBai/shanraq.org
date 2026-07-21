@@ -3,6 +3,8 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ template "backlink" (dict "Href" "/studio" "Label" (t .Lang "studio.title")) }}
+  {{ template "acct_nav" . }}
   <section class="studio" style="max-width:860px">
     <div class="studio__head"><h1>{{ t .Lang "mod.my_title" }}</h1></div>
     <p class="aside__text" style="margin:-6px 0 18px">{{ t .Lang "mod.my_intro" }}</p>

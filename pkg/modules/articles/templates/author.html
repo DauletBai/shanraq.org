@@ -3,6 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ template "backlink" (dict "Href" "/" "Label" (t .Lang "nav.home")) }}
   <section class="author-hero">
     <span class="author-hero__mark">
       {{ if .IsAI }}
