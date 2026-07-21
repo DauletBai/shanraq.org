@@ -44,7 +44,7 @@ func (s *GeoStore) query(ctx context.Context, lang, where string, args ...any) (
 		       EXISTS(SELECT 1 FROM geo_nodes g WHERE g.parent_id = c.id) AS has_children
 		FROM geo_nodes c
 		WHERE %s
-		ORDER BY c.sort, name`, name, where)
+		ORDER BY c.sort, c.population DESC NULLS LAST, name`, name, where)
 
 	rows, err := s.db.Query(ctx, q, args...)
 	if err != nil {
