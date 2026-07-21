@@ -229,6 +229,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/admin/roles", m.handleAdminAssignRole)
 		r.Post("/admin/comments/{id}/hide", m.handleAdminHideComment)
 		r.Post("/admin/appeals/{id}/resolve", m.handleAdminResolveAppeal)
+		r.Post("/admin/analysis", m.handleAdminColumnBrief)
 	})
 }
 

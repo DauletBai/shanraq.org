@@ -40,6 +40,13 @@ func (m *Module) handleMyModeration(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
+	// A rejection is only actionable if the author can see every rule it
+	// failed, so load the findings alongside each decision.
+	for i := range acts {
+		if fs, err := m.mods.FindingsFor(r.Context(), acts[i].ID); err == nil {
+			acts[i].Findings = fs
+		}
+	}
 	page.Actions = acts
 	m.render(w, "my_moderation", page)
 }
@@ -93,4 +100,30 @@ func (m *Module) handleAdminResolveAppeal(w http.ResponseWriter, r *http.Request
 		return
 	}
 	http.Redirect(w, r, "/admin?ok=appeal_resolved", http.StatusSeeOther)
+}
+
+// handleAdminColumnBrief starts one analysis run on the administrator's
+// command. Nothing schedules this: an unattended nightly sweep spends money
+// whether or not the world produced anything worth writing about.
+func (m *Module) handleAdminColumnBrief(w http.ResponseWriter, r *http.Request) {
+	claims, _ := auth.ClaimsFromContext(r.Context())
+	if !canModerate(claims) {
+		http.Error(w, "forbidden", http.StatusForbidden)
+		return
+	}
+	brief := strings.TrimSpace(r.FormValue("brief"))
+	if brief == "" {
+		http.Redirect(w, r, "/admin?err=brief_empty", http.StatusSeeOther)
+		return
+	}
+	lang := r.FormValue("lang")
+	if !IsLang(lang) {
+		lang = LangRU
+	}
+	if err := m.EnqueueColumnBrief(r.Context(), lang, clip(brief, 1000)); err != nil {
+		m.rt.Logger.Error("enqueue column brief", zap.Error(err))
+		http.Redirect(w, r, "/admin?err=brief", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/admin?ok=brief_queued", http.StatusSeeOther)
 }

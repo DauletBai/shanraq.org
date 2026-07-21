@@ -636,6 +636,9 @@ type StudioPage struct {
 	Stats    AuthorStats
 	Karma    int
 	Articles []StudioRow
+	// Outcome of the last publish attempt, so the author is told what happened
+	// instead of being returned to an unchanged-looking dashboard.
+	Notice string
 }
 
 func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
@@ -693,6 +696,12 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	page := StudioPage{Base: m.base(r, T(lang, "studio.title"), lang)}
+	switch r.URL.Query().Get("ok") {
+	case "published":
+		page.Notice = T(lang, "studio.n_published")
+	case "in_review":
+		page.Notice = T(lang, "studio.n_review")
+	}
 	page.Stats = stats
 	page.Karma = karma
 	page.Articles = rows
@@ -1078,7 +1087,36 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/studio/consent", http.StatusSeeOther)
 		return
 	}
-	m.transition(w, r, "published", "/studio")
+	// Publishing is now a submission, not a switch: the rules check runs first
+	// and the article either goes out or comes back with the rules it failed.
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	lang := m.resolveLang(w, r)
+	published, blocking, err := m.submitForReview(r.Context(), id, authorID, lang)
+	if err != nil {
+		if errors.Is(err, ErrNotFound) {
+			http.NotFound(w, r)
+			return
+		}
+		m.rt.Logger.Error("submit for review", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	switch {
+	case published:
+		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
+			m.rt.Logger.Warn("enqueue publish", zap.Error(err))
+		}
+		http.Redirect(w, r, "/studio?ok=published", http.StatusSeeOther)
+	case blocking > 0:
+		http.Redirect(w, r, "/studio/moderation?ok=returned", http.StatusSeeOther)
+	default:
+		// The checker could not be reached; the article waits for a person.
+		http.Redirect(w, r, "/studio?ok=in_review", http.StatusSeeOther)
+	}
 }
 
 // ConsentPage backs the one-time author consent gate.

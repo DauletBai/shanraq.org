@@ -9,6 +9,8 @@
       <a class="btn btn--primary" href="/studio/new">+ {{ t .Lang "studio.new" }}</a>
     </div>
 
+    {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+
     {{/* Account actions moved off the header so it stays short on phones. */}}
     <nav class="acct-nav">
       <a class="acct-nav__item" href="/studio/author">{{ t .Lang "author.verify_title" }}</a>
@@ -65,6 +67,8 @@
             <td class="title"><a href="/studio/a/{{ .ID }}">{{ .Title }}</a></td>
             <td>
               {{ if eq .Status "published" }}<span class="pill pill--published">{{ t $.Lang "studio.st_published" }}</span>
+              {{ else if eq .Status "review" }}<span class="pill pill--review">{{ t $.Lang "st.review" }}</span>
+              {{ else if eq .Status "needs_work" }}<a class="pill pill--needswork" href="/studio/moderation">{{ t $.Lang "st.needs_work" }}</a>
               {{ else if eq .Status "archived" }}<span class="pill pill--archived">{{ t $.Lang "studio.st_archived" }}</span>
               {{ else }}<span class="pill pill--draft">{{ t $.Lang "studio.st_draft" }}</span>{{ end }}
             </td>

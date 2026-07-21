@@ -31,6 +31,9 @@ type ModAction struct {
 	AppealStatus string // "" when never appealed
 	AppealBody   string
 	Resolution   string
+
+	// Rules this submission failed, loaded on demand.
+	Findings []Finding
 }
 
 // Appealable reports whether the author may still contest this decision. A

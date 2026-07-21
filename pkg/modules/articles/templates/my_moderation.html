@@ -7,6 +7,7 @@
     <div class="studio__head"><h1>{{ t .Lang "mod.my_title" }}</h1></div>
     <p class="aside__text" style="margin:-6px 0 18px">{{ t .Lang "mod.my_intro" }}</p>
 
+    {{ if eq .Saved "returned" }}<p class="notice notice--warn">{{ t .Lang "studio.n_returned" }}</p>{{ end }}
     {{ if eq .Saved "appeal" }}<p class="notice">{{ t .Lang "mod.appeal_sent" }}</p>{{ end }}
     {{ if .Error }}<p class="notice notice--warn">{{ .Error }}</p>{{ end }}
 
@@ -24,6 +25,19 @@
       {{ with .ReasonNote }}<p class="modrow__note"><b>{{ t $.Lang "mod.note" }}:</b> {{ . }}</p>{{ end }}
       <p class="modrow__note"><b>{{ t $.Lang "mod.decided_by" }}:</b>
         {{ if eq .ActorKind "agent" }}{{ t $.Lang "mod.by_agent" }}{{ if .ActorName }} ({{ .ActorName }}){{ end }}{{ else }}{{ t $.Lang "mod.by_human" }}{{ end }}</p>
+
+      {{ if .Findings }}
+      <ul class="findings">
+        {{ range .Findings }}
+        <li class="finding finding--{{ .Severity }}">
+          <b>{{ t $.Lang (printf "rule.%s" .RuleCode) }}</b>
+          <span class="finding__sev">{{ if .Blocking }}{{ t $.Lang "rule.blocking" }}{{ else }}{{ t $.Lang "rule.advice" }}{{ end }}</span>
+          {{ with .Quote }}<blockquote class="finding__quote">{{ . }}</blockquote>{{ end }}
+          {{ with .Note }}<p class="finding__note">{{ . }}</p>{{ end }}
+        </li>
+        {{ end }}
+      </ul>
+      {{ end }}
 
       {{ if .AppealStatus }}
       <p class="notice">{{ t $.Lang (printf "mod.st_%s" .AppealStatus) }}{{ with .Resolution }} — {{ . }}{{ end }}</p>

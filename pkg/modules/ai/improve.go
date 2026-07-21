@@ -44,3 +44,17 @@ Rewrite the user's draft so it reads clearly and professionally, in a respectful
 - Write in ` + name + `.
 - Output ONLY the improved article text — no preamble, no notes, no explanation of your changes.`
 }
+
+// Check runs an arbitrary system+user prompt and returns the raw reply. The
+// articles module uses it for the publication rules check; keeping the prompt
+// on the caller's side means the rules live with the rules, not with the
+// transport.
+func (m *Module) Check(ctx context.Context, system, user string, maxTokens int) (string, error) {
+	if !m.Enabled() {
+		return "", ErrDisabled
+	}
+	if maxTokens <= 0 {
+		maxTokens = 2000
+	}
+	return m.completer.Complete(ctx, Request{System: system, User: user, MaxTokens: maxTokens})
+}
