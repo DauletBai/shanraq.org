@@ -208,6 +208,9 @@ type AdminPage struct {
 	Notice         string
 	Email          string
 	Role           string
+	// Moderation ledger: the work queue first, then the history.
+	Appeals []ModAppeal
+	ModLog  []ModAction
 }
 
 func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
@@ -221,6 +224,18 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 	}
 	page := AdminPage{Base: m.base(r, T(lang, "admin.title"), lang)}
 	page.Stats = stats
+	if canModerate(claims) {
+		if ap, err := m.mods.OpenAppeals(r.Context(), 50); err == nil {
+			page.Appeals = ap
+		} else {
+			m.rt.Logger.Error("open appeals", zap.Error(err))
+		}
+		if lg, err := m.mods.Recent(r.Context(), 40); err == nil {
+			page.ModLog = lg
+		} else {
+			m.rt.Logger.Error("moderation log", zap.Error(err))
+		}
+	}
 	page.CanManageUsers = canManageUsers(claims)
 	page.CanFinance = canViewFinance(claims)
 	page.CanModerate = canModerate(claims)
@@ -275,6 +290,26 @@ func (m *Module) handleAdminHideComment(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
+	// A hidden comment used to disappear with no trace and no way for its
+	// author to learn why. Record the decision so it can be read and contested.
+	reason := strings.TrimSpace(r.FormValue("reason"))
+	if !isModerationReason(reason) {
+		reason = "off_topic"
+	}
+	var subject *uuid.UUID
+	var title string
+	if uid, body, err := m.admin.CommentAuthor(r.Context(), id); err == nil {
+		subject, title = uid, clip(body, 90)
+	}
+	mid, _ := uuid.Parse(claims.Subject)
+	if _, err := m.mods.Log(r.Context(), ModAction{
+		TargetType: "comment", TargetID: id.String(), Title: title,
+		Action: "hide", ReasonCode: reason,
+		ReasonNote: clip(strings.TrimSpace(r.FormValue("note")), 500),
+		ActorKind:  "human",
+	}, subject, &mid); err != nil {
+		m.rt.Logger.Error("log moderation", zap.Error(err))
+	}
 	http.Redirect(w, r, "/admin?ok=comment_hidden", http.StatusSeeOther)
 }
 
@@ -298,4 +333,16 @@ func contains(ss []string, s string) bool {
 		}
 	}
 	return false
+}
+
+// CommentAuthor returns who wrote a comment and its text, so a moderation
+// entry can name the affected author and quote what was hidden.
+func (s *AdminStore) CommentAuthor(ctx context.Context, id uuid.UUID) (*uuid.UUID, string, error) {
+	var uid uuid.UUID
+	var body string
+	if err := s.db.QueryRow(ctx,
+		`SELECT user_id, body FROM comments WHERE id = $1`, id).Scan(&uid, &body); err != nil {
+		return nil, "", err
+	}
+	return &uid, body, nil
 }

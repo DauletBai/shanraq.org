@@ -672,6 +672,19 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .adv-status--pending_payment { background: #fff3cd; color: #7a5c00; }
 .adv-status--active { background: #d7f5dd; color: #1a7a34; }
 .adv-status--rejected { background: #fde2e1; color: #b71c1c; }
+/* moderation ledger: an action's colour says what happened at a glance */
+.adv-status--hide { background: #fde2e1; color: #b71c1c; }
+.adv-status--reject { background: #fde2e1; color: #b71c1c; }
+.adv-status--warn { background: #fff3cd; color: #7a5c00; }
+.adv-status--restore { background: #d7f5dd; color: #1a7a34; }
+.adv-status--approve { background: #d7f5dd; color: #1a7a34; }
+.modrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.modrow--queue { display: block; padding: 14px 0; border-top: 1px solid var(--line); }
+.modrow__type, .modrow__date { color: var(--ink-soft); font-size: var(--step--1); }
+.modrow__title { font-weight: 700; margin: 4px 0; }
+.modrow__reason, .modrow__note { color: var(--ink-soft); font-size: var(--step--1); margin: 2px 0; }
+.modrow__actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+.modrow__actions .input { flex: 1 1 220px; }
 .adv-total { font-size: var(--step-2); font-weight: 800; color: var(--brand); line-height: 1.9; }
 .adv-rates td b { white-space: nowrap; }
 .adv-avail { display: flex; flex-wrap: wrap; gap: 8px; }

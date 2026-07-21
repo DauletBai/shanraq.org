@@ -130,7 +130,52 @@
       </div>
     </section>
     {{ end }}
-  </main>
+  
+{{ if .CanModerate }}
+<section class="adv-card">
+  <h2 class="adv-card__title">{{ t .Lang "mod.queue" }}{{ if .Appeals }} <span class="subbar__badge">{{ len .Appeals }}</span>{{ end }}</h2>
+  {{ if not .Appeals }}<p class="aside__text">{{ t .Lang "mod.queue_none" }}</p>{{ end }}
+  {{ range .Appeals }}
+  <div class="modrow modrow--queue">
+    <div>
+      <span class="adv-status adv-status--{{ .Action }}">{{ t $.Lang (printf "mod.act_%s" .Action) }}</span>
+      <span class="modrow__type">{{ t $.Lang (printf "mod.tt_%s" .TargetType) }}</span>
+      <span class="modrow__date">{{ fmtDate .Created }}</span>
+      <span class="modrow__type">{{ if eq .ActorKind "agent" }}{{ t $.Lang "mod.by_agent" }}{{ else }}{{ t $.Lang "mod.by_human" }}{{ end }}</span>
+    </div>
+    {{ with .Title }}<p class="modrow__title">«{{ . }}»</p>{{ end }}
+    <p class="modrow__reason"><b>{{ t $.Lang "mod.reason" }}:</b> {{ t $.Lang (printf "mr.%s" .ReasonCode) }} · {{ .AuthorMail }}</p>
+    <p class="modrow__note">{{ .Body }}</p>
+    <form method="post" action="/admin/appeals/{{ .ID }}/resolve" class="modrow__actions">
+      <input class="input" name="note" maxlength="1000" placeholder="{{ t $.Lang "mod.note" }}">
+      <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="uphold">{{ t $.Lang "mod.uphold" }}</button>
+      <button class="btn btn--primary btn--sm" type="submit" name="decision" value="overturn">{{ t $.Lang "mod.overturn" }}</button>
+    </form>
+  </div>
+  {{ end }}
+</section>
+
+<section class="adv-card">
+  <h2 class="adv-card__title">{{ t .Lang "mod.log" }}</h2>
+  <div class="table-wrap">
+    <table class="spec">
+      <tbody>
+      {{ range .ModLog }}
+      <tr>
+        <td>{{ fmtDate .Created }}</td>
+        <td><span class="adv-status adv-status--{{ .Action }}">{{ t $.Lang (printf "mod.act_%s" .Action) }}</span></td>
+        <td>{{ t $.Lang (printf "mod.tt_%s" .TargetType) }}{{ with .Title }} · «{{ . }}»{{ end }}</td>
+        <td>{{ t $.Lang (printf "mr.%s" .ReasonCode) }}</td>
+        <td>{{ if eq .ActorKind "agent" }}{{ t $.Lang "mod.by_agent" }}{{ else }}{{ t $.Lang "mod.by_human" }}{{ end }}</td>
+        <td>{{ with .AppealStatus }}{{ t $.Lang (printf "mod.st_%s" .) }}{{ end }}</td>
+      </tr>
+      {{ end }}
+      </tbody>
+    </table>
+  </div>
+</section>
+{{ end }}
+</main>
 </div>
 
 <script>

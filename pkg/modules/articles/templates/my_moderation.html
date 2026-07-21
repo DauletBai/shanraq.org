@@ -1,0 +1,45 @@
+{{ define "my_moderation" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <section class="studio" style="max-width:860px">
+    <div class="studio__head"><h1>{{ t .Lang "mod.my_title" }}</h1></div>
+    <p class="aside__text" style="margin:-6px 0 18px">{{ t .Lang "mod.my_intro" }}</p>
+
+    {{ if eq .Saved "appeal" }}<p class="notice">{{ t .Lang "mod.appeal_sent" }}</p>{{ end }}
+    {{ if .Error }}<p class="notice notice--warn">{{ .Error }}</p>{{ end }}
+
+    {{ if not .Actions }}<p class="aside__text">{{ t .Lang "mod.none" }}</p>{{ end }}
+
+    {{ range .Actions }}
+    <article class="adv-card">
+      <div class="modrow">
+        <span class="adv-status adv-status--{{ .Action }}">{{ t $.Lang (printf "mod.act_%s" .Action) }}</span>
+        <span class="modrow__type">{{ t $.Lang (printf "mod.tt_%s" .TargetType) }}</span>
+        <span class="modrow__date metaic">{{ icon "calendar" }}{{ fmtDate .Created }}</span>
+      </div>
+      {{ with .Title }}<p class="modrow__title">«{{ . }}»</p>{{ end }}
+      <p class="modrow__reason"><b>{{ t $.Lang "mod.reason" }}:</b> {{ t $.Lang (printf "mr.%s" .ReasonCode) }}</p>
+      {{ with .ReasonNote }}<p class="modrow__note"><b>{{ t $.Lang "mod.note" }}:</b> {{ . }}</p>{{ end }}
+      <p class="modrow__note"><b>{{ t $.Lang "mod.decided_by" }}:</b>
+        {{ if eq .ActorKind "agent" }}{{ t $.Lang "mod.by_agent" }}{{ if .ActorName }} ({{ .ActorName }}){{ end }}{{ else }}{{ t $.Lang "mod.by_human" }}{{ end }}</p>
+
+      {{ if .AppealStatus }}
+      <p class="notice">{{ t $.Lang (printf "mod.st_%s" .AppealStatus) }}{{ with .Resolution }} — {{ . }}{{ end }}</p>
+      {{ else if .Appealable }}
+      <details class="adv-edit">
+        <summary class="btn btn--ghost btn--sm">{{ t $.Lang "mod.appeal" }}</summary>
+        <form method="post" action="/studio/moderation/{{ .ID }}/appeal" style="margin-top:12px">
+          <p class="hint">{{ t $.Lang "mod.appeal_hint" }}</p>
+          <textarea class="textarea" name="body" rows="3" maxlength="2000" required></textarea>
+          <button class="btn btn--primary btn--sm" type="submit" style="margin-top:8px">{{ t $.Lang "mod.appeal" }}</button>
+        </form>
+      </details>
+      {{ end }}
+    </article>
+    {{ end }}
+  </section>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

@@ -35,6 +35,7 @@ type Module struct {
 	store     *Store
 	listings  *ListingStore
 	ads       *AdStore
+	mods      *ModStore
 	geo       *GeoStore
 	comments  *CommentStore
 	favs      *FavoriteStore
@@ -65,6 +66,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.store = NewStore(rt.DB)
 	m.listings = NewListingStore(rt.DB)
 	m.ads = NewAdStore(rt.DB)
+	m.mods = NewModStore(rt.DB)
 	m.geo = NewGeoStore(rt.DB)
 	m.comments = NewCommentStore(rt.DB)
 	m.favs = NewFavoriteStore(rt.DB)
@@ -199,6 +201,8 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/studio/author/confirm", m.handleAuthorConfirm)
 		r.Get("/studio/new", m.handleEditorNew)
 		r.Get("/studio/consent", m.handleConsent)
+		r.Get("/studio/moderation", m.handleMyModeration)
+		r.Post("/studio/moderation/{id}/appeal", m.handleFileAppeal)
 		r.Post("/studio/consent", m.handleConsentSubmit)
 		r.Post("/studio/new", m.handleCreate)
 		r.Get("/studio/a/{id}", m.handleEditorEdit)
@@ -224,6 +228,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/admin", m.handleAdmin)
 		r.Post("/admin/roles", m.handleAdminAssignRole)
 		r.Post("/admin/comments/{id}/hide", m.handleAdminHideComment)
+		r.Post("/admin/appeals/{id}/resolve", m.handleAdminResolveAppeal)
 	})
 }
 
