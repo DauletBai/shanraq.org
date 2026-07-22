@@ -617,25 +617,25 @@ table.list td.title { white-space: normal; max-width: 380px; }
    corner so it reads as a stamp on the creative rather than as part of it.
    Kept inside the card's rounded clip, hence the offsets rather than 0/0. */
 .rebanner__label {
-  position: absolute; 
-  top: 14px; 
-  left: -26px; 
-  z-index: 2; 
+  position: absolute;
+  top: 14px;
+  left: -26px;
+  z-index: 2;
   padding: 3px 25px;
-  font-size: 0.58rem; 
-  font-weight: 700; 
-  letter-spacing: 0.11em; 
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: #fff; 
+  color: #fff;
   background: rgba(0, 0, 0, 0.5);
-  transform: rotate(-45deg); 
+  transform: rotate(-45deg);
   transform-origin: center;
 }
-.rebanner__img { 
-  display: block; 
-  height: 180px; 
-  overflow: hidden; 
-  background: var(--surface-2); 
+.rebanner__img {
+  display: block;
+  height: 180px;
+  overflow: hidden;
+  background: var(--surface-2);
 }
 .rebanner__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .rebanner__body { display: block; padding: 12px 14px 14px; }
@@ -701,7 +701,10 @@ table.list td.title { white-space: normal; max-width: 380px; }
    who arrived from a search result or a shared link has no history to return
    to, and on a phone the gesture is easy to miss. */
 .backlink { margin: 18px 0 0; }
-.backlink a { text-decoration: none; }
+.backlink a {
+  text-decoration: none;
+  margin-bottom: 10px;
+}
 /* the section you are already in should not look like somewhere to go */
 .acct-nav__item.is-active { background: var(--gold); color: #fff; border-color: var(--gold); }
 .adv-total { font-size: var(--step-2); font-weight: 800; color: var(--brand); line-height: 1.9; }
@@ -823,12 +826,12 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .adline__note { font-size: 0.86rem; color: var(--muted); margin-top: 6px; line-height: 1.45; }
 
 .rebanner {
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
   gap: 10px;
   min-height: 148px;
-  border-radius: 14px; 
-  color: #fff; 
+  border-radius: 14px;
+  color: #fff;
   text-decoration: none;
   justify-content: space-between;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
@@ -1185,10 +1188,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 .adcarousel--ad .adslide:hover { text-decoration: none; }
 .ad__label {
-  position: absolute; 
-  top: 10px; 
-  left: -22px; 
-  z-index: 2; 
+  position: absolute;
+  top: 10px;
+  left: -22px;
+  z-index: 2;
   padding: 3px 15px;
   font-size: 0.58rem;
   font-weight: 700;

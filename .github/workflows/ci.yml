@@ -26,11 +26,33 @@ jobs:
 
   unit:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: shanraq_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      SHANRAQ_TEST_DB: postgres://postgres:postgres@localhost:5432/shanraq_test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version: 'stable'
+      # Apply the real migration set to the service database so the
+      # integration tests (skipped without SHANRAQ_TEST_DB) actually run.
+      - name: Migrate test database
+        run: go run ./cmd/migrate
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/shanraq_test
       - name: Go test
         run: go test ./...
       - name: Go test (race)

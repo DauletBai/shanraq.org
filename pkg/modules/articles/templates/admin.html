@@ -132,6 +132,30 @@
     {{ end }}
   
 {{ if .CanModerate }}
+
+<section class="adv-card">
+  <h2 class="adv-card__title">{{ t .Lang "aq.title" }}{{ if .Queue }} <span class="subbar__badge">{{ len .Queue }}</span>{{ end }}</h2>
+  <p class="aside__text">{{ t .Lang "aq.hint" }}</p>
+  {{ if not .Queue }}<p class="aside__text">{{ t .Lang "aq.none" }}</p>{{ end }}
+  {{ range .Queue }}
+  <div class="modrow modrow--queue">
+    <div>
+      <span class="pill pill--review">{{ t $.Lang "st.review" }}</span>
+      <span class="modrow__type">{{ t $.Lang (printf "cat.%s" .Category) }}</span>
+      <span class="modrow__date">{{ fmtDate .Submitted }}</span>
+      <span class="modrow__type">{{ .AuthorEmail }}</span>
+    </div>
+    <p class="modrow__title"><a href="/read/{{ .Slug }}?preview=1" target="_blank" rel="noopener">«{{ .Title }}»</a></p>
+    <form method="post" action="/admin/articles/{{ .ID }}/decide" class="modrow__actions">
+      <input class="input" name="note" maxlength="500" placeholder="{{ t $.Lang "aq.note" }}">
+      <button class="btn btn--primary btn--sm" type="submit" name="decision" value="approve">{{ t $.Lang "aq.approve" }}</button>
+      <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="needs_work">{{ t $.Lang "aq.return" }}</button>
+      <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="reject">{{ t $.Lang "aq.reject" }}</button>
+    </form>
+  </div>
+  {{ end }}
+</section>
+
 <section class="adv-card">
   <h2 class="adv-card__title">{{ t .Lang "mod.queue" }}{{ if .Appeals }} <span class="subbar__badge">{{ len .Appeals }}</span>{{ end }}</h2>
   {{ if not .Appeals }}<p class="aside__text">{{ t .Lang "mod.queue_none" }}</p>{{ end }}

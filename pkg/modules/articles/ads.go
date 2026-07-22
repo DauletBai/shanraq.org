@@ -54,17 +54,27 @@ func adZoneFor(r *http.Request) (zone, rubric string) {
 // sidebarAds serves the paid placements booked for this page's zone. Demo
 // creatives only fill the slot while nothing is sold for it.
 func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
+	// In production a slot with nothing sold shows nothing, not placeholder
+	// cars: a demo advert on a live page reads as a real listing that failed
+	// to load, or worse as a commercial relationship that does not exist.
+	demoOK := !strings.EqualFold(m.rt.Config.Environment, "production")
+	fallback := func() []Ad {
+		if demoOK {
+			return demoAds(lang)
+		}
+		return nil
+	}
 	zone, rubric := adZoneFor(r)
 	if zone == "" || m.ads == nil {
-		return demoAds(lang)
+		return fallback()
 	}
 	orders, err := m.ads.ActiveByZone(r.Context(), zone, rubric, lang, adSlotCapacity)
 	if err != nil {
 		m.rt.Logger.Warn("sidebar ads", zap.Error(err))
-		return demoAds(lang)
+		return fallback()
 	}
 	if len(orders) == 0 {
-		return demoAds(lang)
+		return fallback()
 	}
 	out := make([]Ad, 0, len(orders))
 	for _, o := range orders {

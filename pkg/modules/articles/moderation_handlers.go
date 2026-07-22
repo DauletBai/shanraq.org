@@ -127,3 +127,28 @@ func (m *Module) handleAdminColumnBrief(w http.ResponseWriter, r *http.Request) 
 	}
 	http.Redirect(w, r, "/admin?ok=brief_queued", http.StatusSeeOther)
 }
+
+// handleAdminDecideArticle is a moderator clearing a queued article: approve
+// and publish, return for revision, or reject. This is the exit the review
+// found missing — an article held because the checker was unavailable had no
+// way forward.
+func (m *Module) handleAdminDecideArticle(w http.ResponseWriter, r *http.Request) {
+	claims, _ := auth.ClaimsFromContext(r.Context())
+	if !canModerate(claims) {
+		http.Error(w, "forbidden", http.StatusForbidden)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	mid, _ := uuid.Parse(claims.Subject)
+	decision := r.FormValue("decision")
+	if err := m.DecideArticle(r.Context(), id, decision, mid, strings.TrimSpace(r.FormValue("note"))); err != nil {
+		m.rt.Logger.Error("decide article", zap.Error(err))
+		http.Redirect(w, r, "/admin?err=decide", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/admin?ok=decided", http.StatusSeeOther)
+}

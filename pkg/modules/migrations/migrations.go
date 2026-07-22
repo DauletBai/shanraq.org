@@ -195,3 +195,27 @@ func waitForDatabase(parentCtx context.Context, conf *pgx.ConnConfig, attempts i
 	}
 	return err
 }
+
+// Apply runs the embedded migrations against an arbitrary DSN, without a full
+// Runtime. It exists so CI and tooling can migrate a scratch database — the
+// integration tests need one — using exactly the same migration set as the app.
+func Apply(ctx context.Context, dsn string) error {
+	goose.SetLogger(goose.NopLogger())
+	goose.SetBaseFS(embedded)
+	if err := goose.SetDialect("postgres"); err != nil {
+		return fmt.Errorf("set goose dialect: %w", err)
+	}
+	if err := ensureDatabase(ctx, dsn); err != nil {
+		return fmt.Errorf("ensure database: %w", err)
+	}
+	sqlDB, err := sql.Open("pgx", dsn)
+	if err != nil {
+		return fmt.Errorf("open db for migrations: %w", err)
+	}
+	sqlDB.SetMaxOpenConns(1)
+	defer sqlDB.Close()
+	if err := goose.UpContext(ctx, sqlDB, "sql"); err != nil {
+		return fmt.Errorf("apply migrations: %w", err)
+	}
+	return nil
+}

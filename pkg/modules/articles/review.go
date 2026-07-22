@@ -211,14 +211,48 @@ func (m *Module) submitForReview(ctx context.Context, id, author uuid.UUID, lang
 	if blocking > 0 {
 		action, reason, status = "reject", "rules_failed", "needs_work"
 	}
-	if err := m.store.SetStatus(ctx, id, author, status); err != nil {
+	// Status, ledger entry and findings commit as one unit. Before, a status
+	// could move without its record, so an article might go live with nothing
+	// in the log; that is the divergence the review flagged.
+	if err := m.commitReview(ctx, id, author, tr.Title, status, action, reason, findings); err != nil {
 		return false, blocking, err
 	}
-	if _, err := m.rt.DB.Exec(ctx, `UPDATE articles SET reviewed_at = NOW() WHERE id = $1`, id); err != nil {
-		m.rt.Logger.Warn("stamp reviewed_at", zap.Error(err))
-	}
-	m.logReview(ctx, id, author, tr.Title, action, reason, "agent", findings)
 	return blocking == 0, blocking, nil
+}
+
+// commitReview writes the automated decision atomically: article status, the
+// ledger entry, and every finding, in a single transaction.
+func (m *Module) commitReview(ctx context.Context, id, author uuid.UUID, title, status, action, reason string, findings []Finding) error {
+	tx, err := m.rt.DB.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = tx.Rollback(ctx) }()
+
+	pub := "published_at = COALESCE(articles.published_at, NOW()), "
+	if status != "published" {
+		pub = ""
+	}
+	if _, err := tx.Exec(ctx, `UPDATE articles SET status = $2, `+pub+`reviewed_at = NOW(), updated_at = NOW()
+		WHERE id = $1 AND author_id = $3`, id, status, author); err != nil {
+		return fmt.Errorf("commit review: status: %w", err)
+	}
+	var actionID string
+	if err := tx.QueryRow(ctx, `
+		INSERT INTO moderation_actions
+		    (target_type, target_id, subject_id, title, action, reason_code, actor_kind, actor_name)
+		VALUES ('article', $1, $2, $3, $4, $5, 'agent', 'AI Bake') RETURNING id`,
+		id.String(), author, clip(title, 120), action, reason).Scan(&actionID); err != nil {
+		return fmt.Errorf("commit review: log: %w", err)
+	}
+	for _, f := range findings {
+		if _, err := tx.Exec(ctx, `
+			INSERT INTO moderation_findings (action_id, rule_code, severity, quote, note)
+			VALUES ($1,$2,$3,$4,$5)`, actionID, f.RuleCode, f.Severity, f.Quote, f.Note); err != nil {
+			return fmt.Errorf("commit review: finding: %w", err)
+		}
+	}
+	return tx.Commit(ctx)
 }
 
 // logReview writes the decision and its findings to the moderation ledger, so
@@ -288,4 +322,111 @@ func (m *Module) EnqueueColumnBrief(ctx context.Context, lang, brief string) err
 		RunAt:       time.Now(),
 		MaxAttempts: 2,
 	})
+}
+
+// ReviewItem is one article waiting on a human, for the admin queue.
+type ReviewItem struct {
+	ID          string
+	Slug        string
+	Title       string
+	AuthorEmail string
+	Category    string
+	Status      string // review | needs_work
+	Submitted   time.Time
+	Findings    []Finding
+}
+
+// ReviewQueue lists articles a person still has to decide: those held because
+// the checker was unavailable ('review'), and those the checker returned that
+// the author resubmitted. Oldest first, so nothing waits forever.
+func (s *Store) ReviewQueue(ctx context.Context, limit int) ([]ReviewItem, error) {
+	if limit <= 0 || limit > 200 {
+		limit = 100
+	}
+	rows, err := s.db.Query(ctx, `
+		SELECT a.id, a.slug, a.status, COALESCE(a.submitted_at, a.updated_at),
+		       COALESCE(u.email,''), a.category,
+		       COALESCE((SELECT t.title FROM article_translations t
+		                  WHERE t.article_id = a.id AND t.lang = a.original_lang), '')
+		  FROM articles a
+		  LEFT JOIN auth_users u ON u.id = a.author_id
+		 WHERE a.status = 'review'
+		 ORDER BY a.submitted_at ASC NULLS LAST
+		 LIMIT $1`, limit)
+	if err != nil {
+		return nil, fmt.Errorf("review queue: %w", err)
+	}
+	defer rows.Close()
+	out := []ReviewItem{}
+	for rows.Next() {
+		var it ReviewItem
+		if err := rows.Scan(&it.ID, &it.Slug, &it.Status, &it.Submitted,
+			&it.AuthorEmail, &it.Category, &it.Title); err != nil {
+			return nil, err
+		}
+		out = append(out, it)
+	}
+	return out, rows.Err()
+}
+
+// DecideArticle is a human's ruling on a queued article. Status change and
+// ledger entry commit together: the review's central defect was that a status
+// could move without a matching record, so an article might publish with no
+// audit trail. Here they cannot diverge.
+func (m *Module) DecideArticle(ctx context.Context, id uuid.UUID, decision string, moderator uuid.UUID, note string) error {
+	var status, action, reason string
+	switch decision {
+	case "approve":
+		status, action, reason = "published", "approve", "human_approved"
+	case "reject":
+		status, action, reason = "needs_work", "reject", "human_rejected"
+	case "needs_work":
+		status, action, reason = "needs_work", "warn", "human_returned"
+	default:
+		return fmt.Errorf("unknown decision %q", decision)
+	}
+
+	tx, err := m.rt.DB.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = tx.Rollback(ctx) }()
+
+	var author uuid.UUID
+	var title, lang string
+	if err := tx.QueryRow(ctx, `
+		SELECT a.author_id, a.original_lang,
+		       COALESCE((SELECT t.title FROM article_translations t
+		                  WHERE t.article_id = a.id AND t.lang = a.original_lang),'')
+		  FROM articles a WHERE a.id = $1 AND a.status IN ('review','needs_work')`,
+		id).Scan(&author, &lang, &title); err != nil {
+		return fmt.Errorf("decide: load article: %w", err)
+	}
+
+	pub := "published_at = COALESCE(articles.published_at, NOW()), "
+	if status != "published" {
+		pub = ""
+	}
+	if _, err := tx.Exec(ctx, `UPDATE articles SET status = $2, `+pub+`reviewed_at = NOW(), updated_at = NOW()
+		WHERE id = $1`, id, status); err != nil {
+		return fmt.Errorf("decide: set status: %w", err)
+	}
+	if _, err := tx.Exec(ctx, `
+		INSERT INTO moderation_actions
+		    (target_type, target_id, subject_id, title, action, reason_code, reason_note, actor_kind, actor_id, actor_name)
+		VALUES ('article', $1, $2, $3, $4, $5, $6, 'human', $7, '')`,
+		id.String(), author, clip(title, 120), action, reason, clip(note, 500), moderator); err != nil {
+		return fmt.Errorf("decide: log: %w", err)
+	}
+	if err := tx.Commit(ctx); err != nil {
+		return err
+	}
+	// Syndication is a side effect, not part of the decision's integrity, so it
+	// runs after the commit and its failure does not undo the ruling.
+	if status == "published" && m.syndicate != nil {
+		if err := m.syndicate.EnqueuePublish(ctx, m.jobs, id); err != nil {
+			m.rt.Logger.Warn("enqueue publish after decision", zap.Error(err))
+		}
+	}
+	return nil
 }
