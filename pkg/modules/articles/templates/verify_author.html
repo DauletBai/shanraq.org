@@ -35,14 +35,20 @@
       <div class="notice notice--ok">✓ {{ t .Lang "author.phone_verified" }}</div>
       {{ else }}
       <p class="hint" style="margin-bottom:12px">{{ t .Lang "author.phone_hint" }}</p>
-      <form method="post" action="/studio/author/phone" class="form" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
-        <div class="field" style="flex:1;min-width:200px"><label>{{ t .Lang "author.phone" }}</label><input class="input" name="phone" inputmode="tel" placeholder="+7 700 000 00 00" required></div>
-        <button class="btn btn--ghost" type="submit">{{ t .Lang "author.send_code" }}</button>
+      <form method="post" action="/studio/author/phone" class="form">
+        <label class="field__label">{{ t .Lang "author.phone" }}</label>
+        <div class="igroup">
+          <input class="input" name="phone" inputmode="tel" placeholder="+7 700 000 00 00" required>
+          <button class="btn btn--primary" type="submit">{{ t .Lang "author.send_code" }}</button>
+        </div>
       </form>
       {{ if .CodeSent }}
-      <form method="post" action="/studio/author/confirm" class="form" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-top:12px">
-        <div class="field" style="flex:1;min-width:200px"><label>{{ t .Lang "author.code" }}</label><input class="input" name="code" inputmode="numeric" autocomplete="one-time-code" required></div>
-        <button class="btn btn--primary" type="submit">{{ t .Lang "author.confirm" }}</button>
+      <form method="post" action="/studio/author/confirm" class="form" style="margin-top:12px">
+        <label class="field__label">{{ t .Lang "author.code" }}</label>
+        <div class="igroup">
+          <input class="input" name="code" inputmode="numeric" autocomplete="one-time-code" required>
+          <button class="btn btn--primary" type="submit">{{ t .Lang "author.confirm" }}</button>
+        </div>
       </form>
       <p class="hint" style="margin-top:8px">{{ t .Lang "author.code_sent" }}</p>
       {{ end }}

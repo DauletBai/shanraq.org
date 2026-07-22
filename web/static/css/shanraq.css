@@ -564,6 +564,20 @@ table.list td.title { white-space: normal; max-width: 380px; }
   color: var(--ink); font: inherit;
 }
 .textarea { min-height: 340px; resize: vertical; font-family: var(--mono); font-size: 0.94rem; line-height: 1.6; }
+.field__label { display: block; font-weight: 600; margin-bottom: 6px; }
+/* Neutral input-group: a field and its trailing button joined into one control
+   with squared inner corners and a shared edge — for phone+send and link+copy.
+   min-width:0 lets the field shrink so the pair stays on one row on a phone
+   instead of the button dropping below and touching the field. */
+.igroup { display: flex; align-items: stretch; }
+.igroup .input {
+  flex: 1 1 auto; min-width: 0; margin: 0;
+  border-top-right-radius: 0; border-bottom-right-radius: 0;
+}
+.igroup .btn {
+  flex: none; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border: 1px solid var(--gold); border-left: none; white-space: nowrap;
+}
 .input:focus, .textarea:focus, .select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--focus); }
 .hint { font-size: 0.8rem; color: var(--muted); margin-top: 5px; }
 

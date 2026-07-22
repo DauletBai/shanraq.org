@@ -14,9 +14,9 @@
 
     <div class="adv-card">
       <label class="field__label">{{ t .Lang "inv.your_link" }}</label>
-      <div class="inv-link">
+      <div class="igroup">
         <input class="input" id="inv-link" value="{{ .Link }}" readonly onclick="this.select()">
-        <button class="btn btn--primary btn--sm" type="button" data-copy="#inv-link">{{ t .Lang "inv.copy" }}</button>
+        <button class="btn btn--primary" type="button" data-copy="#inv-link">{{ t .Lang "inv.copy" }}</button>
       </div>
       <p class="hint" style="margin-top:8px">{{ t .Lang "inv.how" }}</p>
     </div>
