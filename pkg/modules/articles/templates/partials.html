@@ -278,7 +278,13 @@
     document.addEventListener('click', function (e) {
       var hit = e.target.closest ? e.target.closest('[data-fhelp]') : null;
       document.querySelectorAll('.fhelp.is-open').forEach(function (o) { if (o !== hit) o.classList.remove('is-open'); });
-      if (hit) { e.preventDefault(); hit.classList.toggle('is-open'); }
+      if (hit) {
+        e.preventDefault();
+        // Open leftward if the icon is past the viewport midpoint, so the tip
+        // stays on screen instead of pushing the page sideways.
+        hit.classList.toggle('fhelp--right', hit.getBoundingClientRect().left > window.innerWidth / 2);
+        hit.classList.toggle('is-open');
+      }
     });
     document.querySelectorAll('[data-carousel]').forEach(function (car) {
       var track = car.querySelector('.carousel__track');
