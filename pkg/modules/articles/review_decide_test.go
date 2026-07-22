@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/uuid"
@@ -18,10 +19,7 @@ import (
 // by a moderator, and the status change and the ledger entry must both land, in
 // one transaction. Skipped unless SHANRAQ_TEST_DB points at a migrated database.
 func TestDecideArticleIntegration(t *testing.T) {
-	dsn := os.Getenv("SHANRAQ_TEST_DB")
-	if dsn == "" {
-		t.Skip("set SHANRAQ_TEST_DB to run the review-decision integration test")
-	}
+	dsn := requireTestDB(t)
 	ctx := context.Background()
 	pool, err := pgxpool.New(ctx, dsn)
 	if err != nil {
@@ -87,4 +85,19 @@ func TestDecideArticleIntegration(t *testing.T) {
 		t.Fatalf("want exactly one human approval in the ledger, got %d", logged)
 	}
 	t.Cleanup(func() { _, _ = pool.Exec(ctx, `DELETE FROM moderation_actions WHERE target_id=$1`, article.String()) })
+}
+
+// requireTestDB returns a DSN only if it names a throwaway database. Pointing
+// SHANRAQ_TEST_DB at a real database is how test fixtures once leaked into live
+// data; refuse anything whose db name does not look like a test database.
+func requireTestDB(t *testing.T) string {
+	t.Helper()
+	dsn := os.Getenv("SHANRAQ_TEST_DB")
+	if dsn == "" {
+		t.Skip("set SHANRAQ_TEST_DB to run this integration test")
+	}
+	if !strings.Contains(dsn, "test") {
+		t.Fatalf("SHANRAQ_TEST_DB must name a test database (contain \"test\"); refusing %q to avoid writing into live data", dsn)
+	}
+	return dsn
 }
