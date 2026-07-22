@@ -211,6 +211,9 @@ type AdminPage struct {
 	// Moderation ledger: the work queue first, then the history.
 	Appeals []ModAppeal
 	ModLog  []ModAction
+	Queue   []ReviewItem // articles awaiting a human decision
+	// Growth analytics.
+	Analytics AdminAnalytics
 }
 
 func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
@@ -235,6 +238,16 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		} else {
 			m.rt.Logger.Error("moderation log", zap.Error(err))
 		}
+		if q, err := m.store.ReviewQueue(r.Context(), 100); err == nil {
+			page.Queue = q
+		} else {
+			m.rt.Logger.Error("review queue", zap.Error(err))
+		}
+	}
+	if an, err := m.adminAnalytics(r.Context()); err == nil {
+		page.Analytics = an
+	} else {
+		m.rt.Logger.Error("admin analytics", zap.Error(err))
 	}
 	page.CanManageUsers = canManageUsers(claims)
 	page.CanFinance = canViewFinance(claims)

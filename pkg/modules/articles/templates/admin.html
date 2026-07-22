@@ -20,6 +20,7 @@
     <nav class="adm__nav">
       <a href="#overview" class="adm__navlink is-active" data-nav>▤ {{ t .Lang "admin.overview" }}</a>
       <a href="#content" class="adm__navlink" data-nav>▦ {{ t .Lang "admin.articles" }}</a>
+      <a href="#growth" class="adm__navlink" data-nav>↗ {{ t .Lang "an2.title" }}</a>
       <a href="#users" class="adm__navlink" data-nav>◕ {{ t .Lang "admin.users" }}</a>
       {{ if .CanModerate }}<a href="#moderation" class="adm__navlink" data-nav>✎ {{ t .Lang "admin.moderation" }}</a>{{ end }}
       {{ if .CanFinance }}<a href="#finance" class="adm__navlink" data-nav>₸ {{ t .Lang "admin.finance" }}</a>{{ end }}
@@ -45,6 +46,62 @@
         <div class="adm-kpi"><span class="adm-kpi__ic">◎</span><b>{{ money .Stats.Views }}</b><span>{{ t .Lang "admin.views" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">✎</span><b>{{ .Stats.Comments }}</b><span>{{ t .Lang "admin.comments" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">⌂</span><b>{{ .Stats.ListingsActive }}</b><span>{{ t .Lang "admin.listings" }}</span></div>
+      </div>
+    </section>
+
+    <section id="growth" class="adm-section">
+      <h2 class="adm-section__h">{{ t .Lang "an2.title" }}</h2>
+
+      <div class="adm-kpis">
+        <div class="adm-kpi"><span class="adm-kpi__ic">✉</span><b>{{ .Analytics.Subscribers }}</b><span>{{ t .Lang "an2.subscribers" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◕</span><b>{{ .Analytics.Users }}</b><span>{{ t .Lang "an2.users" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">✍</span><b>{{ .Analytics.Authors }}</b><span>{{ t .Lang "an2.authors" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">⌂</span><b>{{ .Analytics.ActiveListing }}</b><span>{{ t .Lang "an2.listings" }}</span></div>
+      </div>
+
+      <div class="adm-cols">
+        <div class="adm-panel">
+          <h2>{{ t .Lang "an2.referrals" }}</h2>
+          <table class="spec">
+            <tbody>
+              <tr><td>{{ t $.Lang "an2.invited" }}</td><td><b>{{ .Analytics.Invited }}</b></td></tr>
+              <tr><td>{{ t $.Lang "an2.qualified" }}</td><td><b>{{ .Analytics.Qualified }}</b> ({{ .Analytics.ConversionPct }}%)</td></tr>
+              <tr><td>{{ t $.Lang "an2.credit_given" }}</td><td>{{ .Analytics.CreditGiven }}</td></tr>
+              <tr><td>{{ t $.Lang "an2.credit_spent" }}</td><td>{{ .Analytics.CreditSpent }}</td></tr>
+            </tbody>
+          </table>
+          {{ if .Analytics.TopReferrers }}
+          <h2 style="margin-top:16px">{{ t .Lang "an2.top" }}</h2>
+          <table class="spec">
+            <thead><tr><th>{{ t $.Lang "an2.who" }}</th><th>{{ t $.Lang "an2.invited" }}</th><th>{{ t $.Lang "an2.qualified" }}</th></tr></thead>
+            <tbody>
+              {{ range .Analytics.TopReferrers }}<tr><td>{{ .Email }}</td><td>{{ .Invited }}</td><td>{{ .Qualified }}</td></tr>{{ end }}
+            </tbody>
+          </table>
+          {{ end }}
+        </div>
+
+        <div class="adm-panel">
+          <h2>{{ t .Lang "an2.content" }}</h2>
+          <table class="spec">
+            <tbody>
+              <tr><td>{{ t $.Lang "an2.published" }}</td><td><b>{{ .Analytics.Published }}</b></td></tr>
+              <tr><td>{{ t $.Lang "an2.ai_columns" }}</td><td>{{ .Analytics.AIColumns }}</td></tr>
+              <tr><td>{{ t $.Lang "an2.in_review" }}</td><td>{{ .Analytics.InReview }}</td></tr>
+              <tr><td>{{ t $.Lang "an2.needs_work" }}</td><td>{{ .Analytics.NeedsWork }}</td></tr>
+              <tr><td>{{ t $.Lang "an2.drafts" }}</td><td>{{ .Analytics.Drafts }}</td></tr>
+            </tbody>
+          </table>
+          <h2 style="margin-top:16px">{{ t .Lang "an2.engagement" }}</h2>
+          <table class="spec">
+            <tbody>
+              <tr><td>{{ t $.Lang "an2.verified_email" }}</td><td>{{ .Analytics.VerifiedEmail }}</td></tr>
+              <tr><td>{{ t $.Lang "an2.verified_phone" }}</td><td>{{ .Analytics.VerifiedPhone }}</td></tr>
+              <tr><td>{{ t $.Lang "an2.promoted" }}</td><td>{{ .Analytics.Promoted }}</td></tr>
+              <tr><td>{{ t $.Lang "an2.comments" }}</td><td>{{ .Analytics.Comments }}{{ if .Analytics.Hidden }} ({{ t $.Lang "an2.hidden" }}: {{ .Analytics.Hidden }}){{ end }}</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
