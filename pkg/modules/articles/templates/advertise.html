@@ -60,14 +60,27 @@
         <textarea class="textarea" name="body" rows="2" maxlength="140" data-count></textarea>
         <span class="charcount"><span data-count-now>0</span> / <span data-count-max>140</span></span></div>
 
+      <h3 class="adv-subhead">{{ t .Lang "adv.sec_format" }} {{ template "fhelp" (t .Lang "adv.h_format") }}</h3>
+      <div class="fmt-grid">
+        {{ range $i, $f := adFormats }}
+        <label class="fmt">
+          <input type="radio" name="format" value="{{ $f.Code }}" data-fmt {{ if eq $i 0 }}checked{{ end }}>
+          <span class="fmt__box fmt__box--{{ $f.Code }}"></span>
+          <span class="fmt__name">{{ t $.Lang (printf "adv.fmt_%s" $f.Code) }}</span>
+          <span class="fmt__size">{{ $f.Size }}</span>
+          <span class="fmt__slots">{{ if gt $f.Slots 1 }}{{ $f.Slots }} {{ t $.Lang "adv.slots" }}{{ else }}{{ t $.Lang "adv.slot_excl" }}{{ end }}</span>
+        </label>
+        {{ end }}
+      </div>
+
       <h3 class="adv-subhead">{{ t .Lang "adv.sec_where" }} {{ template "fhelp" (t .Lang "adv.h_surfaces") }}</h3>
       <p class="adv-split">{{ t .Lang "adv.surfaces_intro" }}</p>
       <div class="surf-grid">
         {{ range adSurfaces }}
         <label class="surf">
-          <input type="checkbox" name="surface" value="{{ .Code }}" data-surf {{ if eq .Code "home" }}checked{{ end }}>
+          <input type="checkbox" name="surface" value="{{ .Code }}" data-surf data-weight="{{ .Weight }}" {{ if eq .Code "home" }}checked{{ end }}>
           <span class="surf__name">{{ t $.Lang (surfaceLabel .Code) }}</span>
-          <span class="surf__price">{{ money .Price }} ₸</span>
+          <span class="surf__price" data-surf-price>—</span>
         </label>
         {{ end }}
       </div>
@@ -135,13 +148,16 @@
     <h2 class="adv-card__title">{{ t .Lang "adv.ratecard" }}</h2>
     <div class="table-wrap">
       <table class="spec adv-rates">
-        <thead><tr><th>{{ t .Lang "adv.per_surface" }}</th>{{ range adDurations }}<th>{{ . }} {{ t $.Lang "adv.days_short" }}</th>{{ end }}</tr></thead>
+        <thead><tr><th>{{ t .Lang "adv.format_col" }}</th><th>{{ t .Lang "adv.size" }}</th>{{ range adDurations }}<th>{{ . }} {{ t $.Lang "adv.days_short" }}</th>{{ end }}</tr></thead>
         <tbody>
-          <tr><td>{{ t $.Lang "adv.one_surface" }}</td>
-            {{ range $d := adDurations }}<td><b>{{ money (adSurfacePrice $d) }} ₸</b></td>{{ end }}
+          {{ range $f := adFormats }}
+          <tr><td>{{ t $.Lang (printf "adv.fmt_%s" $f.Code) }}</td><td class="aside__text">{{ $f.Size }}</td>
+            {{ range $d := adDurations }}<td><b>{{ money (adSurfaceFmtPrice $f.Code "sport" $d) }} ₸</b></td>{{ end }}
           </tr>
+          {{ end }}
         </tbody>
       </table>
+      <p class="adv-split" style="margin-top:8px">{{ t .Lang "adv.ratecard_note" }}</p>
     </div>
     <p class="adv-split" style="margin-top:12px">{{ t .Lang "adv.discount_note" }}</p>
     {{ if .Avail }}
@@ -165,7 +181,7 @@
         {{ range .Orders }}
         <tr>
           <td><b>{{ .Title }}</b></td>
-          <td>{{ len .Surfaces }} {{ t $.Lang "adv.surfaces_n" }}</td>
+          <td>{{ t $.Lang (printf "adv.fmt_%s" .Format) }}, {{ len .Surfaces }} {{ t $.Lang "adv.surfaces_n" }}</td>
           <td>{{ .DurationDays }} {{ t $.Lang "adv.days_short" }}</td>
           <td>{{ money .Price }} ₸</td>
           <td><span class="adv-status adv-status--{{ .Status }}">{{ if eq .Status "pending_payment" }}{{ t $.Lang "adv.st_pending" }}{{ else if eq .Status "active" }}{{ t $.Lang "adv.st_active" }}{{ else if eq .Status "paused" }}{{ t $.Lang "adv.st_paused" }}{{ else if eq .Status "finished" }}{{ t $.Lang "adv.st_finished" }}{{ else }}{{ t $.Lang "adv.st_rejected" }}{{ end }}</span></td>
@@ -182,44 +198,51 @@
 (function () {
   var form = document.querySelector('[data-adform]');
   if (!form) return;
-  var surfEls   = Array.prototype.slice.call(form.querySelectorAll('[data-surf]'));
-  var startEl   = form.querySelector('[data-ad-start]');
-  var daysEl    = form.querySelector('[data-ad-days]');
-  var exclEl    = form.querySelector('[data-ad-excl]');
-  var totalEl   = form.querySelector('[data-ad-total]');
-  var breakEl   = form.querySelector('[data-ad-breakdown]');
-  var gridEl    = form.querySelector('[data-ad-cal-grid]');
-  var rates     = {{ adRatesJSON }};
-  var lang      = '{{ .Lang }}';
-  var locale    = lang === 'kz' ? 'kk-KZ' : (lang === 'en' ? 'en-US' : 'ru-RU');
-  var T = {
-    surfaces: { kz: 'бет', ru: 'поверхн.', en: 'surfaces' },
-    discount: { kz: 'жеңілдік', ru: 'скидка', en: 'discount' }
-  };
+  var fmtEls  = Array.prototype.slice.call(form.querySelectorAll('[data-fmt]'));
+  var surfEls = Array.prototype.slice.call(form.querySelectorAll('[data-surf]'));
+  var startEl = form.querySelector('[data-ad-start]');
+  var daysEl  = form.querySelector('[data-ad-days]');
+  var exclEl  = form.querySelector('[data-ad-excl]');
+  var totalEl = form.querySelector('[data-ad-total]');
+  var breakEl = form.querySelector('[data-ad-breakdown]');
+  var gridEl  = form.querySelector('[data-ad-cal-grid]');
+  var rates   = {{ adRatesJSON }};
+  var lang    = '{{ .Lang }}';
+  var locale  = lang === 'kz' ? 'kk-KZ' : (lang === 'en' ? 'en-US' : 'ru-RU');
+  var T = { surfaces: { kz: 'бет', ru: 'поверхн.', en: 'surfaces' } };
   function t(k){ return (T[k] && (T[k][lang] || T[k].ru)) || ''; }
-  var days = [], capacity = {{ adSlotCapacity }};
+  var days = [], capacity = 1;
 
   function fmt(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0'); }
-  function selected() { return surfEls.filter(function (c) { return c.checked; }).map(function (c) { return c.value; }); }
+  function currentFormat() { var c = fmtEls.filter(function (e) { return e.checked; })[0]; return c ? c.value : 'rectangle'; }
+  function rate(days) { var f = rates.formatPrice[currentFormat()] || {}; return f[days] || 0; }
+  function selected() { return surfEls.filter(function (c) { return c.checked; }); }
 
-  // Price mirrors the server's AdOrderTotal: per-surface × count, less the
-  // breadth discount, with the exclusive surcharge on top.
+  // Per-surface price = format rate × surface weight/10. Update each tile's
+  // label whenever the format or duration changes.
+  function renderSurfacePrices() {
+    var r = rate(daysEl.value);
+    surfEls.forEach(function (c) {
+      var w = parseInt(c.getAttribute('data-weight'), 10) || 10;
+      var el = c.parentNode.querySelector('[data-surf-price]');
+      if (el) el.textContent = fmt(Math.round(r * w / 10)) + ' \u20b8';
+    });
+  }
+
+  // Total mirrors the server's AdOrderTotal: rate × summed weights, plus the
+  // exclusive surcharge.
   function renderTotal() {
-    var sel = selected(), n = sel.length, d = daysEl.value;
-    var per = (rates.perSurface || {})[d] || 0;
-    var sub = per * n;
-    var pct = n >= rates.surfaceCount ? rates.discountAll : (n * 2 >= rates.surfaceCount ? rates.discountHalf : 0);
-    var total = sub - Math.floor(sub * pct / 100);
+    var sel = selected(), r = rate(daysEl.value), w = 0;
+    sel.forEach(function (c) { w += parseInt(c.getAttribute('data-weight'), 10) || 10; });
+    var total = Math.round(r * w / 10);
     if (exclEl && exclEl.checked) total += Math.floor(total * 50 / 100);
-    totalEl.textContent = n ? (fmt(total) + ' \u20b8') : '\u2014';
-    if (breakEl) {
-      breakEl.textContent = n ? (n + ' ' + t('surfaces') + ' \u00d7 ' + fmt(per) + (pct ? '  \u2212' + pct + '% ' + t('discount') : '')) : '';
-    }
+    totalEl.textContent = sel.length ? (fmt(total) + ' \u20b8') : '\u2014';
+    if (breakEl) breakEl.textContent = sel.length ? (sel.length + ' ' + t('surfaces') + ' \u00d7 ' + fmt(r)) : '';
   }
 
   function selectedRange() {
-    var s = startEl.value; if (!s) return [];
-    var out = [], d = new Date(s + 'T00:00:00'), n = parseInt(daysEl.value, 10) || 1;
+    var sd = startEl.value; if (!sd) return [];
+    var out = [], d = new Date(sd + 'T00:00:00'), n = parseInt(daysEl.value, 10) || 1;
     for (var i = 0; i < n; i++) { out.push(d.toISOString().slice(0, 10)); d.setDate(d.getDate() + 1); }
     return out;
   }
@@ -251,48 +274,38 @@
     gridEl.innerHTML = html;
   }
 
-  // The calendar shows availability across the surfaces currently ticked: a
-  // booking needs a free slot on every one, so the server returns the minimum.
   function loadAvail() {
-    var sel = selected();
+    var sel = selected().map(function (c) { return c.value; });
     if (!sel.length) { days = []; renderCal(); return; }
-    fetch('/advertise/availability?surfaces=' + encodeURIComponent(sel.join(',')),
+    fetch('/advertise/availability?format=' + encodeURIComponent(currentFormat()) +
+          '&surfaces=' + encodeURIComponent(sel.join(',')),
           { headers: { 'Accept': 'application/json' } })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (data) {
-        if (!data) return;
-        capacity = data.capacity || capacity;
-        days = data.days || [];
-        renderCal();
-      })
+      .then(function (data) { if (!data) return; capacity = data.capacity || capacity; days = data.days || []; renderCal(); })
       .catch(function () {});
   }
 
+  function recalc() { renderSurfacePrices(); renderTotal(); loadAvail(); }
+
   gridEl.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-date]');
-    if (!b || b.disabled) return;
-    startEl.value = b.getAttribute('data-date');
-    renderCal();
+    var b = e.target.closest('[data-date]'); if (!b || b.disabled) return;
+    startEl.value = b.getAttribute('data-date'); renderCal();
   });
-
+  fmtEls.forEach(function (c) { c.addEventListener('change', recalc); });
   surfEls.forEach(function (c) { c.addEventListener('change', function () { renderTotal(); loadAvail(); }); });
-  [startEl, daysEl].forEach(function (el) { el.addEventListener('change', function () { renderCal(); renderTotal(); }); });
+  [startEl, daysEl].forEach(function (el) { el.addEventListener('change', function () { renderSurfacePrices(); renderCal(); renderTotal(); }); });
   if (exclEl) exclEl.addEventListener('change', renderTotal);
-
   var allBtn = form.querySelector('[data-surf-all]'), noneBtn = form.querySelector('[data-surf-none]');
   if (allBtn) allBtn.addEventListener('click', function () { surfEls.forEach(function (c) { c.checked = true; }); renderTotal(); loadAvail(); });
   if (noneBtn) noneBtn.addEventListener('click', function () { surfEls.forEach(function (c) { c.checked = false; }); renderTotal(); loadAvail(); });
 
-  // Character counters on any [data-count] field.
   form.querySelectorAll('[data-count]').forEach(function (el) {
-    var wrap = el.parentNode, now = wrap.querySelector('[data-count-now]');
-    if (!now) return;
+    var now = el.parentNode.querySelector('[data-count-now]'); if (!now) return;
     var upd = function () { now.textContent = el.value.length; };
     el.addEventListener('input', upd); upd();
   });
 
-  renderTotal();
-  loadAvail();
+  recalc();
 })();
 </script>
 {{ template "site_footer" . }}

@@ -68,7 +68,7 @@ func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
 	if surface == "" || m.ads == nil {
 		return fallback()
 	}
-	orders, err := m.ads.ActiveBySurface(r.Context(), surface, lang, adSlotCapacity)
+	orders, err := m.ads.ActiveBySurface(r.Context(), surface, lang, 12)
 	if err != nil {
 		m.rt.Logger.Warn("sidebar ads", zap.Error(err))
 		return fallback()

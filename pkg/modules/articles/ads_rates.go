@@ -6,24 +6,21 @@ import (
 	"strings"
 )
 
-// Ad rate card, per-surface model.
+// Ad rate card, format × surface model.
 //
-// A "surface" is one place a banner can appear, and it is the unit of sale. An
-// advertiser picks the surfaces they actually want — a sportswear seller takes
-// the Sport rubric, a bookseller takes Culture — and pays per surface. This is
-// what makes the inventory profitable: the same page set is sold to many
-// contextual advertisers instead of one flat "everywhere" package that locks
-// the whole site for a single low fee.
+// Two dimensions set the price. The BANNER FORMAT is its size and prominence —
+// a top billboard is worth more than a small sidebar rectangle. The SURFACE is
+// where it runs — the home page and the real-estate section carry more traffic
+// than a niche rubric, so they cost more. An advertiser picks one format and
+// the surfaces they want; the price is the format's rate times the sum of the
+// surface weights.
 //
-// Surfaces:
-//
-//	home          — front-page sidebar
-//	realestate    — real-estate section sidebar
-//	articles      — sidebar on every article page
-//	rubric:<cat>  — sidebar on one rubric feed (e.g. rubric:sport)
-//
-// Each surface has adSlotCapacity rotating slots, so up to three advertisers
-// can share a surface for the same dates.
+// The card is sized so that, fully sold, the monthly inventory is about
+// 5 000 000 ₸ — the ceiling the platform is built to grow into, not launch
+// revenue. Most slots sell only as traffic arrives; the card scales to that
+// without another rewrite.
+
+// ---- surfaces ----
 const (
 	surfaceHome       = "home"
 	surfaceRealestate = "realestate"
@@ -31,56 +28,42 @@ const (
 	surfaceRubricPfx  = "rubric:"
 )
 
-// adSurfacePrice is the price of ONE surface for a period, in tenge. Uniform
-// across surfaces so the arithmetic is predictable for the buyer: one surface
-// for 30 days is 4 990 ₸, and each further surface adds the same.
-var adSurfacePrice = map[int]int64{3: 990, 7: 1990, 14: 3490, 30: 4990}
-
-// adDurationDays are the bookable periods (days).
-var adDurationDays = []int{3, 7, 14, 30}
-
-var adDurationSet = func() map[int]bool {
-	m := make(map[int]bool, len(adDurationDays))
-	for _, d := range adDurationDays {
-		m[d] = true
+// adSurfaceWeight10 is the surface's price weight ×10 (to keep integer math).
+// Home and real estate carry the most traffic; the three broad rubrics are
+// mid; niche rubrics are the base.
+func adSurfaceWeight10(code string) int64 {
+	switch code {
+	case surfaceHome, surfaceRealestate:
+		return 20
+	case surfaceArticles,
+		surfaceRubricPfx + "society", surfaceRubricPfx + "politics", surfaceRubricPfx + "economy":
+		return 13
+	default:
+		return 10
 	}
-	return m
-}()
-
-const (
-	// adSlotCapacity is how many advertisers share one surface by rotation.
-	adSlotCapacity = 3
-	// Breadth discount: buying more surfaces earns a discount, but full
-	// coverage by one advertiser stays substantial because it is still charged
-	// per surface. This rewards reach without giving the site away.
-	adDiscountHalfPct = 10 // from half the surfaces up
-	adDiscountAllPct  = 20 // all surfaces
-)
+}
 
 // AdSurface is one bookable place, as shown in the cabinet.
 type AdSurface struct {
-	Code  string `json:"code"`
-	Kind  string `json:"kind"`  // home | realestate | articles | rubric
-	Cat   string `json:"cat"`   // category slug for rubric surfaces, else ""
-	Price int64  `json:"price"` // 30-day price, for the checkbox label
+	Code   string `json:"code"`
+	Kind   string `json:"kind"`
+	Cat    string `json:"cat"`
+	Weight int64  `json:"weight"` // ×10
 }
 
-// AdSurfaces returns every bookable surface, in display order: the fixed
-// placements first, then one per rubric.
+// AdSurfaces returns every bookable surface, fixed placements first then rubrics.
 func AdSurfaces() []AdSurface {
 	out := []AdSurface{
-		{Code: surfaceHome, Kind: "home", Price: adSurfacePrice[30]},
-		{Code: surfaceRealestate, Kind: "realestate", Price: adSurfacePrice[30]},
-		{Code: surfaceArticles, Kind: "articles", Price: adSurfacePrice[30]},
+		{Code: surfaceHome, Kind: "home", Weight: adSurfaceWeight10(surfaceHome)},
+		{Code: surfaceRealestate, Kind: "realestate", Weight: adSurfaceWeight10(surfaceRealestate)},
+		{Code: surfaceArticles, Kind: "articles", Weight: adSurfaceWeight10(surfaceArticles)},
 	}
 	for _, c := range Categories {
-		out = append(out, AdSurface{Code: surfaceRubricPfx + c, Kind: "rubric", Cat: c, Price: adSurfacePrice[30]})
+		code := surfaceRubricPfx + c
+		out = append(out, AdSurface{Code: code, Kind: "rubric", Cat: c, Weight: adSurfaceWeight10(code)})
 	}
 	return out
 }
-
-// adSurfaceCount is the number of surfaces, used for the discount thresholds.
-func adSurfaceCount() int { return 3 + len(Categories) }
 
 var adSurfaceSet = func() map[string]bool {
 	m := map[string]bool{}
@@ -92,62 +75,129 @@ var adSurfaceSet = func() map[string]bool {
 
 func isAdSurface(code string) bool { return adSurfaceSet[code] }
 
+// ---- formats ----
+
+// AdFormat is a banner size/position, the other price dimension.
+type AdFormat struct {
+	Code     string `json:"code"`
+	Size     string `json:"size"`     // e.g. "970×250"
+	Slots    int    `json:"slots"`    // rotation capacity for this format on a surface
+	Price30  int64  `json:"price30"`  // base 30-day price on a ×1.0 surface
+	Vertical bool   `json:"vertical"` // tall (sidebar) vs wide (top)
+}
+
+// adFormatPrice is per-format, per-duration base price on a base (×1.0) surface.
+var adFormatPrice = map[string]map[int]int64{
+	// wide top billboard — the most prominent, one exclusive slot.
+	"horizontal": {3: 18000, 7: 36000, 14: 60000, 30: 90000},
+	// tall sidebar half-page — high impact, one slot.
+	"vertical": {3: 14000, 7: 28000, 14: 47000, 30: 70000},
+	// square — standard, one slot.
+	"square": {3: 9000, 7: 18000, 14: 30000, 30: 45000},
+	// medium rectangle — the workhorse, three rotating slots.
+	"rectangle": {3: 8000, 7: 16000, 14: 27000, 30: 40000},
+}
+
+// adFormatSlots is how many advertisers share a format's position on a surface.
+var adFormatSlots = map[string]int{"horizontal": 1, "vertical": 1, "square": 1, "rectangle": 3}
+
+// AdFormats returns the banner formats in display order (most prominent first).
+func AdFormats() []AdFormat {
+	order := []struct {
+		code, size string
+		vert       bool
+	}{
+		{"horizontal", "970×250", false},
+		{"vertical", "300×600", true},
+		{"square", "300×300", true},
+		{"rectangle", "300×250", true},
+	}
+	out := make([]AdFormat, 0, len(order))
+	for _, f := range order {
+		out = append(out, AdFormat{
+			Code: f.code, Size: f.size, Slots: adFormatSlots[f.code],
+			Price30: adFormatPrice[f.code][30], Vertical: f.vert,
+		})
+	}
+	return out
+}
+
+func isAdFormat(code string) bool { _, ok := adFormatPrice[code]; return ok }
+
+// AdFormatSlots exposes a format's rotation capacity (templates/serving).
+func AdFormatSlots(format string) int {
+	if n, ok := adFormatSlots[format]; ok {
+		return n
+	}
+	return 1
+}
+
+// ---- durations ----
+var adDurationDays = []int{3, 7, 14, 30}
+
+var adDurationSet = func() map[int]bool {
+	m := make(map[int]bool, len(adDurationDays))
+	for _, d := range adDurationDays {
+		m[d] = true
+	}
+	return m
+}()
+
 // AdDurations exposes the periods to templates.
 func AdDurations() []int { return adDurationDays }
 
-// AdSlotCapacity exposes the rotation size to templates.
-func AdSlotCapacity() int { return adSlotCapacity }
+// ---- pricing ----
 
-// adDiscountPct returns the breadth discount for a given number of selected
-// surfaces: full coverage earns the most, half or more earns some, below that
-// none.
-func adDiscountPct(n int) int {
-	total := adSurfaceCount()
-	switch {
-	case n >= total:
-		return adDiscountAllPct
-	case n*2 >= total:
-		return adDiscountHalfPct
-	default:
-		return 0
-	}
-}
-
-// AdOrderPricing is the full breakdown for a set of surfaces over a period,
-// so the buyer sees exactly what they pay for and why.
+// AdOrderPricing is the breakdown for a format over a set of surfaces.
 type AdOrderPricing struct {
-	Surfaces    int   `json:"surfaces"`
-	PerSurface  int64 `json:"per_surface"`
-	Subtotal    int64 `json:"subtotal"`
-	DiscountPct int   `json:"discount_pct"`
-	Discount    int64 `json:"discount"`
-	Total       int64 `json:"total"`
+	Format     string `json:"format"`
+	Surfaces   int    `json:"surfaces"`
+	Weight10   int64  `json:"weight10"`
+	FormatRate int64  `json:"format_rate"`
+	Total      int64  `json:"total"`
 }
 
-// AdOrderTotal prices a selection of surfaces for a period. Unknown surfaces are
-// ignored, and an unknown period falls back to the shortest.
-func AdOrderTotal(surfaces []string, days int) AdOrderPricing {
-	per, ok := adSurfacePrice[days]
+// AdOrderTotal prices a format + surface set for a period. Total is the format's
+// rate for the period times the summed surface weights.
+func AdOrderTotal(format string, surfaces []string, days int) AdOrderPricing {
+	byDur, ok := adFormatPrice[format]
 	if !ok {
-		per = adSurfacePrice[3]
+		byDur = adFormatPrice["rectangle"]
+		format = "rectangle"
 	}
+	rate, ok := byDur[days]
+	if !ok {
+		rate = byDur[3]
+	}
+	var w int64
 	n := 0
 	for _, s := range surfaces {
 		if isAdSurface(s) {
+			w += adSurfaceWeight10(s)
 			n++
 		}
 	}
-	sub := per * int64(n)
-	pct := adDiscountPct(n)
-	disc := sub * int64(pct) / 100
 	return AdOrderPricing{
-		Surfaces: n, PerSurface: per, Subtotal: sub,
-		DiscountPct: pct, Discount: disc, Total: sub - disc,
+		Format: format, Surfaces: n, Weight10: w,
+		FormatRate: rate, Total: rate * w / 10,
 	}
 }
 
-// surfaceLabelKey maps a surface code to its i18n key, so the template can name
-// it: fixed surfaces have their own key, rubric surfaces reuse the cat.* keys.
+// AdSurfaceFormatPrice is the 30-day price of one format on one surface — the
+// per-surface figure shown next to each checkbox, which changes with the format.
+func AdSurfaceFormatPrice(format, surface string, days int) int64 {
+	byDur, ok := adFormatPrice[format]
+	if !ok {
+		return 0
+	}
+	rate := byDur[days]
+	if rate == 0 {
+		rate = byDur[30]
+	}
+	return rate * adSurfaceWeight10(surface) / 10
+}
+
+// surfaceLabelKey maps a surface code to its i18n key.
 func surfaceLabelKey(code string) string {
 	if strings.HasPrefix(code, surfaceRubricPfx) {
 		return "cat." + strings.TrimPrefix(code, surfaceRubricPfx)
@@ -158,14 +208,16 @@ func surfaceLabelKey(code string) string {
 // SurfaceLabelKey is the template helper for the above.
 func SurfaceLabelKey(code string) string { return surfaceLabelKey(code) }
 
-// AdRatesJSON hands the surface price and discount rules to the cabinet JS, so
-// the running total updates as the buyer ticks surfaces without a round trip.
+// AdRatesJSON hands the format prices and surface weights to the cabinet JS so
+// the running total and per-surface prices update without a round trip.
 func AdRatesJSON() template.JS {
+	weights := map[string]int64{}
+	for _, s := range AdSurfaces() {
+		weights[s.Code] = s.Weight
+	}
 	payload := map[string]any{
-		"perSurface":   adSurfacePrice,
-		"surfaceCount": adSurfaceCount(),
-		"discountHalf": adDiscountHalfPct,
-		"discountAll":  adDiscountAllPct,
+		"formatPrice": adFormatPrice,
+		"weights":     weights,
 	}
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -176,12 +228,3 @@ func AdRatesJSON() template.JS {
 
 // adRubricSurface builds the surface code for a category page.
 func adRubricSurface(cat string) string { return surfaceRubricPfx + cat }
-
-// AdSurfacePriceOf is the template helper for the rate card: the price of one
-// surface for a period.
-func AdSurfacePriceOf(days int) int64 {
-	if p, ok := adSurfacePrice[days]; ok {
-		return p
-	}
-	return adSurfacePrice[3]
-}
