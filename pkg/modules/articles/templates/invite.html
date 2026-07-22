@@ -1,0 +1,47 @@
+{{ define "invite" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  {{ template "backlink" (dict "Href" "/studio" "Label" (t .Lang "studio.title")) }}
+  {{ template "acct_nav" . }}
+  <section class="studio" style="max-width:760px">
+    <div class="studio__head"><h1>{{ t .Lang "inv.title" }}</h1></div>
+    <p class="aside__text" style="margin:-6px 0 18px">{{ t .Lang "inv.intro" }}</p>
+
+    {{ if eq .Saved "promoted" }}<p class="notice">{{ t .Lang "inv.n_promoted" }}</p>{{ end }}
+    {{ if .Error }}<p class="notice notice--warn">{{ .Error }}</p>{{ end }}
+
+    <div class="adv-card">
+      <label class="field__label">{{ t .Lang "inv.your_link" }}</label>
+      <div class="inv-link">
+        <input class="input" id="inv-link" value="{{ .Link }}" readonly onclick="this.select()">
+        <button class="btn btn--primary btn--sm" type="button" data-copy="#inv-link">{{ t .Lang "inv.copy" }}</button>
+      </div>
+      <p class="hint" style="margin-top:8px">{{ t .Lang "inv.how" }}</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__num">{{ .Stats.Invited }}</div><div class="stat__lbl">{{ t .Lang "inv.invited" }}</div></div>
+      <div class="stat"><div class="stat__num">{{ .Stats.Qualified }}</div><div class="stat__lbl">{{ t .Lang "inv.qualified" }}</div></div>
+      <div class="stat"><div class="stat__num">{{ .Stats.Credit }}</div><div class="stat__lbl">{{ t .Lang "inv.credit" }}</div></div>
+    </div>
+
+    {{ if gt .Stats.Credit 0 }}
+    <p class="aside__text">{{ t .Lang "inv.spend_hint" }} <a href="/listings/my">{{ t .Lang "re.my_listings" }}</a>.</p>
+    {{ end }}
+  </section>
+</main>
+{{ template "site_footer" . }}
+<script>
+  (function () {
+    var b = document.querySelector('[data-copy]');
+    if (!b) return;
+    b.addEventListener('click', function () {
+      var el = document.querySelector(b.getAttribute('data-copy'));
+      el.select();
+      try { navigator.clipboard.writeText(el.value); } catch (e) { document.execCommand('copy'); }
+    });
+  })();
+</script>
+{{ end }}

@@ -59,6 +59,8 @@ type ListingViewPage struct {
 type MyListingsPage struct {
 	Base
 	Listings []*Listing
+	Credit   int // referral promotion-day credit, enables the free-promote button
+	Saved    string
 }
 
 func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
@@ -202,6 +204,12 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Error("create listing", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
+	}
+	// A real listing is the rewardable action: if this author was invited,
+	// their referrer earns promotion credit now. Best-effort — a reward failure
+	// must not fail the listing.
+	if _, err := m.refs.Qualify(r.Context(), authorID); err != nil {
+		m.rt.Logger.Warn("qualify referral", zap.Error(err))
 	}
 	http.Redirect(w, r, "/listings/"+id.String(), http.StatusSeeOther)
 }
@@ -373,6 +381,10 @@ func (m *Module) handleMyListings(w http.ResponseWriter, r *http.Request) {
 	page := MyListingsPage{Base: m.base(r, T(lang, "re.my_listings"), lang)}
 	page.ActiveCat = "realestate"
 	page.Listings = items
+	page.Saved = r.URL.Query().Get("ok")
+	if c, err := m.refs.Balance(r.Context(), authorID); err == nil {
+		page.Credit = c
+	}
 	m.render(w, "listing_my", page)
 }
 

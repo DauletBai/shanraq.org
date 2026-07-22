@@ -16,6 +16,7 @@
     {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
 
     <form method="post" action="{{ if eq .Mode "register" }}/studio/register{{ else }}/studio/login{{ end }}">
+      {{ if and (eq .Mode "register") .Ref }}<input type="hidden" name="ref" value="{{ .Ref }}">{{ end }}
       <div class="field">
         <label for="email">{{ t .Lang "form.email" }}</label>
         <input class="input" type="email" id="email" name="email" value="{{ .Email }}" required autofocus>

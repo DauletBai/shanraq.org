@@ -477,6 +477,7 @@ type FormPage struct {
 	Email  string
 	Error  string
 	Notice string
+	Ref    string
 }
 
 func (m *Module) handleLoginPage(w http.ResponseWriter, r *http.Request) {
@@ -493,7 +494,11 @@ func (m *Module) handleLoginPage(w http.ResponseWriter, r *http.Request) {
 
 func (m *Module) handleRegisterPage(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
-	m.render(w, "form", FormPage{Base: m.base(r, T(lang, "form.register_title"), lang), Mode: "register"})
+	m.render(w, "form", FormPage{
+		Base: m.base(r, T(lang, "form.register_title"), lang),
+		Mode: "register",
+		Ref:  strings.TrimSpace(r.URL.Query().Get("ref")),
+	})
 }
 
 func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
@@ -603,6 +608,15 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	// Send the email-verification link (best effort).
 	if err := m.auth.IssueEmailVerification(r.Context(), user.ID, user.Email); err != nil {
 		m.rt.Logger.Warn("issue email verification (web)", zap.String("user_id", user.ID.String()), zap.Error(err))
+	}
+	// Referral capture: if the registration carried an invite code, link the
+	// new user to their referrer. Best-effort — a bad code must not fail signup.
+	if code := strings.TrimSpace(r.FormValue("ref")); code != "" {
+		if referrer, ok := m.refs.ReferrerByCode(r.Context(), code); ok {
+			if err := m.refs.RecordReferral(r.Context(), referrer, user.ID); err != nil {
+				m.rt.Logger.Warn("record referral", zap.Error(err))
+			}
+		}
 	}
 	auth.SetSessionCookie(w, r, token, m.auth.SessionTTL())
 	m.rt.Logger.Info("studio register", zap.String("user_id", user.ID.String()))

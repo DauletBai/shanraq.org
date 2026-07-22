@@ -36,6 +36,7 @@ type Module struct {
 	listings  *ListingStore
 	ads       *AdStore
 	mods      *ModStore
+	refs      *ReferralStore
 	geo       *GeoStore
 	comments  *CommentStore
 	favs      *FavoriteStore
@@ -67,6 +68,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.listings = NewListingStore(rt.DB)
 	m.ads = NewAdStore(rt.DB)
 	m.mods = NewModStore(rt.DB)
+	m.refs = NewReferralStore(rt.DB)
 	m.geo = NewGeoStore(rt.DB)
 	m.comments = NewCommentStore(rt.DB)
 	m.favs = NewFavoriteStore(rt.DB)
@@ -178,6 +180,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/listings/my", m.handleMyListings)
 		r.Post("/listings/{id}/extend", m.handleListingExtend)
 		r.Post("/listings/{id}/promote", m.handleListingPromote)
+		r.Post("/listings/{id}/promote-free", m.handleListingPromoteFree)
 		r.Post("/listings/{id}/feature", m.handleListingFeature)
 		r.Post("/listings/{id}/banner", m.handleListingBanner)
 		r.Post("/listings/{id}/contact", m.handleListingContact)
@@ -201,6 +204,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/studio/author/confirm", m.handleAuthorConfirm)
 		r.Get("/studio/new", m.handleEditorNew)
 		r.Get("/studio/consent", m.handleConsent)
+		r.Get("/studio/invite", m.handleInvite)
 		r.Get("/studio/moderation", m.handleMyModeration)
 		r.Post("/studio/moderation/{id}/appeal", m.handleFileAppeal)
 		r.Post("/studio/consent", m.handleConsentSubmit)

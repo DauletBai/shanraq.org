@@ -33,6 +33,7 @@
       <div class="mylist__actions">
         <form method="post" action="/listings/{{ .ID }}/extend"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.extend" }}</button></form>
         <form method="post" action="/listings/{{ .ID }}/promote"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.promote" }}</button></form>
+        {{ if ge $.Credit 3 }}<form method="post" action="/listings/{{ .ID }}/promote-free"><button class="btn btn--teal btn--sm" type="submit">{{ t $.Lang "inv.promote_free" }}</button></form>{{ end }}
         <form method="post" action="/listings/{{ .ID }}/feature"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.feature" }}</button></form>
         <form method="post" action="/listings/{{ .ID }}/banner" class="mylist__banner">
           <select class="select select--xs" name="days" aria-label="{{ t $.Lang "re.banner" }}">
