@@ -57,21 +57,25 @@
           <input class="input" name="image_url" placeholder="https://"></div>
       </div>
       <div class="field"><label>{{ t .Lang "adv.ad_body" }} {{ template "fhelp" (t .Lang "adv.h_body") }}</label>
-        <textarea class="textarea" name="body" rows="2" maxlength="140"></textarea></div>
+        <textarea class="textarea" name="body" rows="2" maxlength="140" data-count></textarea>
+        <span class="charcount"><span data-count-now>0</span> / <span data-count-max>140</span></span></div>
 
-      <h3 class="adv-subhead">{{ t .Lang "adv.sec_where" }}</h3>
-      <div class="adv-grid">
-        <div class="field"><label>{{ t .Lang "adv.placement" }} * {{ template "fhelp" (t .Lang "adv.h_zone") }}</label>
-          <select class="select" name="placement" data-ad-zone>
-            {{ range adZones }}<option value="{{ . }}">{{ t $.Lang (printf "adv.zone_%s" .) }}</option>{{ end }}
-          </select>
-        </div>
-        <div class="field"><label>{{ t .Lang "adv.rubric" }} {{ template "fhelp" (t .Lang "adv.h_rubric") }}</label>
-          <select class="select" name="rubric" data-ad-rubric>
-            <option value="">{{ t .Lang "adv.rubric_any" }}</option>
-            {{ range categories }}<option value="{{ . }}">{{ t $.Lang (printf "cat.%s" .) }}</option>{{ end }}
-          </select>
-        </div>
+      <h3 class="adv-subhead">{{ t .Lang "adv.sec_where" }} {{ template "fhelp" (t .Lang "adv.h_surfaces") }}</h3>
+      <p class="adv-split">{{ t .Lang "adv.surfaces_intro" }}</p>
+      <div class="surf-grid">
+        {{ range adSurfaces }}
+        <label class="surf">
+          <input type="checkbox" name="surface" value="{{ .Code }}" data-surf {{ if eq .Code "home" }}checked{{ end }}>
+          <span class="surf__name">{{ t $.Lang (surfaceLabel .Code) }}</span>
+          <span class="surf__price">{{ money .Price }} ₸</span>
+        </label>
+        {{ end }}
+      </div>
+      <div class="surf-actions">
+        <button type="button" class="btn btn--ghost btn--sm" data-surf-all>{{ t .Lang "adv.surf_all" }}</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-surf-none>{{ t .Lang "adv.surf_none" }}</button>
+      </div>
+      <div class="adv-grid" style="margin-top:14px">
         <div class="field"><label>{{ t .Lang "adv.f_lang_label" }} {{ template "fhelp" (t .Lang "adv.h_lang") }}</label>
           <select class="select" name="target_lang">
             <option value="">{{ t .Lang "adv.any_lang" }}</option>
@@ -118,6 +122,7 @@
         </div>
         <div class="field"><label>{{ t .Lang "adv.total" }}</label>
           <div class="adv-total" data-ad-total>—</div>
+          <span class="charcount" data-ad-breakdown></span>
         </div>
       </div>
 
@@ -130,22 +135,21 @@
     <h2 class="adv-card__title">{{ t .Lang "adv.ratecard" }}</h2>
     <div class="table-wrap">
       <table class="spec adv-rates">
-        <thead><tr><th>{{ t .Lang "adv.placement" }}</th>{{ range adDurations }}<th>{{ . }} {{ t $.Lang "adv.days_short" }}</th>{{ end }}</tr></thead>
+        <thead><tr><th>{{ t .Lang "adv.per_surface" }}</th>{{ range adDurations }}<th>{{ . }} {{ t $.Lang "adv.days_short" }}</th>{{ end }}</tr></thead>
         <tbody>
-          {{ range $z := adZones }}
-          <tr><td>{{ t $.Lang (printf "adv.zone_%s" $z) }}</td>
-            {{ range $d := adDurations }}<td><b>{{ money (adPrice $z $d) }} ₸</b></td>{{ end }}
+          <tr><td>{{ t $.Lang "adv.one_surface" }}</td>
+            {{ range $d := adDurations }}<td><b>{{ money (adSurfacePrice $d) }} ₸</b></td>{{ end }}
           </tr>
-          {{ end }}
         </tbody>
       </table>
     </div>
+    <p class="adv-split" style="margin-top:12px">{{ t .Lang "adv.discount_note" }}</p>
     {{ if .Avail }}
     <h3 class="adv-subhead">{{ t .Lang "adv.avail" }}</h3>
     <div class="adv-avail">
       {{ range .Avail }}
       <span class="adv-avail__item{{ if eq .Free 0 }} is-full{{ end }}">
-        {{ t $.Lang (printf "adv.zone_%s" .Zone) }}: <b>{{ .Free }}</b>/{{ .Cap }} {{ t $.Lang "adv.free_of" }}
+        {{ t $.Lang (surfaceLabel .Code) }}: <b>{{ .Free }}</b>/{{ .Cap }}
       </span>
       {{ end }}
     </div>
@@ -161,7 +165,7 @@
         {{ range .Orders }}
         <tr>
           <td><b>{{ .Title }}</b></td>
-          <td>{{ if eq .Placement "articles" }}{{ t $.Lang "adv.pl_articles" }}{{ else if eq .Placement "listings" }}{{ t $.Lang "adv.pl_listings" }}{{ else }}{{ t $.Lang "adv.pl_all" }}{{ end }}</td>
+          <td>{{ len .Surfaces }} {{ t $.Lang "adv.surfaces_n" }}</td>
           <td>{{ .DurationDays }} {{ t $.Lang "adv.days_short" }}</td>
           <td>{{ money .Price }} ₸</td>
           <td><span class="adv-status adv-status--{{ .Status }}">{{ if eq .Status "pending_payment" }}{{ t $.Lang "adv.st_pending" }}{{ else if eq .Status "active" }}{{ t $.Lang "adv.st_active" }}{{ else if eq .Status "paused" }}{{ t $.Lang "adv.st_paused" }}{{ else if eq .Status "finished" }}{{ t $.Lang "adv.st_finished" }}{{ else }}{{ t $.Lang "adv.st_rejected" }}{{ end }}</span></td>
@@ -178,30 +182,41 @@
 (function () {
   var form = document.querySelector('[data-adform]');
   if (!form) return;
-  var zoneEl  = form.querySelector('[data-ad-zone]');
-  var rubEl   = form.querySelector('[data-ad-rubric]');
-  var startEl = form.querySelector('[data-ad-start]');
-  var daysEl  = form.querySelector('[data-ad-days]');
-  var exclEl  = form.querySelector('[data-ad-excl]');
-  var totalEl = form.querySelector('[data-ad-total]');
-  var gridEl  = form.querySelector('[data-ad-cal-grid]');
-  var prices  = {{ adPriceJSON }};
-  var lang    = '{{ .Lang }}';
-  var locale  = lang === 'kz' ? 'kk-KZ' : (lang === 'en' ? 'en-US' : 'ru-RU');
+  var surfEls   = Array.prototype.slice.call(form.querySelectorAll('[data-surf]'));
+  var startEl   = form.querySelector('[data-ad-start]');
+  var daysEl    = form.querySelector('[data-ad-days]');
+  var exclEl    = form.querySelector('[data-ad-excl]');
+  var totalEl   = form.querySelector('[data-ad-total]');
+  var breakEl   = form.querySelector('[data-ad-breakdown]');
+  var gridEl    = form.querySelector('[data-ad-cal-grid]');
+  var rates     = {{ adRatesJSON }};
+  var lang      = '{{ .Lang }}';
+  var locale    = lang === 'kz' ? 'kk-KZ' : (lang === 'en' ? 'en-US' : 'ru-RU');
+  var T = {
+    surfaces: { kz: 'бет', ru: 'поверхн.', en: 'surfaces' },
+    discount: { kz: 'жеңілдік', ru: 'скидка', en: 'discount' }
+  };
+  function t(k){ return (T[k] && (T[k][lang] || T[k].ru)) || ''; }
   var days = [], capacity = {{ adSlotCapacity }};
 
   function fmt(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0'); }
+  function selected() { return surfEls.filter(function (c) { return c.checked; }).map(function (c) { return c.value; }); }
 
+  // Price mirrors the server's AdOrderTotal: per-surface × count, less the
+  // breadth discount, with the exclusive surcharge on top.
   function renderTotal() {
-    var z = zoneEl.value, d = daysEl.value;
-    var p = (prices[z] || {})[d];
-    if (!p) { totalEl.textContent = '\u2014'; return; }
-    if (exclEl.checked) p = p + Math.floor(p * 50 / 100);
-    totalEl.textContent = fmt(p) + ' \u20b8';
+    var sel = selected(), n = sel.length, d = daysEl.value;
+    var per = (rates.perSurface || {})[d] || 0;
+    var sub = per * n;
+    var pct = n >= rates.surfaceCount ? rates.discountAll : (n * 2 >= rates.surfaceCount ? rates.discountHalf : 0);
+    var total = sub - Math.floor(sub * pct / 100);
+    if (exclEl && exclEl.checked) total += Math.floor(total * 50 / 100);
+    totalEl.textContent = n ? (fmt(total) + ' \u20b8') : '\u2014';
+    if (breakEl) {
+      breakEl.textContent = n ? (n + ' ' + t('surfaces') + ' \u00d7 ' + fmt(per) + (pct ? '  \u2212' + pct + '% ' + t('discount') : '')) : '';
+    }
   }
 
-  // A booking needs a free slot on EVERY day of its range, so highlight the
-  // whole selected period and warn as soon as one day inside it is full.
   function selectedRange() {
     var s = startEl.value; if (!s) return [];
     var out = [], d = new Date(s + 'T00:00:00'), n = parseInt(daysEl.value, 10) || 1;
@@ -214,7 +229,7 @@
     var range = selectedRange(), inRange = {};
     range.forEach(function (x) { inRange[x] = true; });
     var html = '', month = '', open = false;
-    days.forEach(function (day, idx) {
+    days.forEach(function (day) {
       var dt = new Date(day.date + 'T00:00:00');
       var m = dt.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
       if (m !== month) {
@@ -222,7 +237,7 @@
         month = m;
         html += '<div><div class="adv-cal__month">' + m + '</div><div class="adv-cal__days">';
         open = true;
-        var pad = (dt.getDay() + 6) % 7; // week starts Monday
+        var pad = (dt.getDay() + 6) % 7;
         for (var i = 0; i < pad; i++) html += '<span class="adv-cal__day adv-cal__pad"></span>';
       }
       var cls = day.free > 0 ? 'is-free' : 'is-busy';
@@ -236,10 +251,13 @@
     gridEl.innerHTML = html;
   }
 
+  // The calendar shows availability across the surfaces currently ticked: a
+  // booking needs a free slot on every one, so the server returns the minimum.
   function loadAvail() {
-    var url = '/advertise/availability?zone=' + encodeURIComponent(zoneEl.value) +
-              '&rubric=' + encodeURIComponent(rubEl ? rubEl.value : '');
-    fetch(url, { headers: { 'Accept': 'application/json' } })
+    var sel = selected();
+    if (!sel.length) { days = []; renderCal(); return; }
+    fetch('/advertise/availability?surfaces=' + encodeURIComponent(sel.join(',')),
+          { headers: { 'Accept': 'application/json' } })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (data) {
         if (!data) return;
@@ -257,9 +275,21 @@
     renderCal();
   });
 
-  [zoneEl, rubEl].forEach(function (el) { if (el) el.addEventListener('change', function () { loadAvail(); renderTotal(); }); });
+  surfEls.forEach(function (c) { c.addEventListener('change', function () { renderTotal(); loadAvail(); }); });
   [startEl, daysEl].forEach(function (el) { el.addEventListener('change', function () { renderCal(); renderTotal(); }); });
-  exclEl.addEventListener('change', renderTotal);
+  if (exclEl) exclEl.addEventListener('change', renderTotal);
+
+  var allBtn = form.querySelector('[data-surf-all]'), noneBtn = form.querySelector('[data-surf-none]');
+  if (allBtn) allBtn.addEventListener('click', function () { surfEls.forEach(function (c) { c.checked = true; }); renderTotal(); loadAvail(); });
+  if (noneBtn) noneBtn.addEventListener('click', function () { surfEls.forEach(function (c) { c.checked = false; }); renderTotal(); loadAvail(); });
+
+  // Character counters on any [data-count] field.
+  form.querySelectorAll('[data-count]').forEach(function (el) {
+    var wrap = el.parentNode, now = wrap.querySelector('[data-count-now]');
+    if (!now) return;
+    var upd = function () { now.textContent = el.value.length; };
+    el.addEventListener('input', upd); upd();
+  });
 
   renderTotal();
   loadAvail();

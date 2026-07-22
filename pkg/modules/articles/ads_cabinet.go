@@ -41,7 +41,8 @@ type AdOrder struct {
 	ImageURL      string
 	TargetURL     string
 	CTA           string
-	Placement     string // home | rubric | articles | realestate | all
+	Placement     string   // legacy single placement (kept for old rows)
+	Surfaces      []string // the surfaces this order covers (new model)
 	GeoRegion     string
 	Rubric        string
 	Lang          string
@@ -103,13 +104,23 @@ func (s *AdStore) Save(ctx context.Context, ownerID uuid.UUID, a Advertiser) err
 
 // CreateOrder books a new ad placement (pending_payment).
 func (s *AdStore) CreateOrder(ctx context.Context, advertiserID string, o AdOrder) error {
+	// placement carries the first surface for backward compatibility with the
+	// old column's NOT NULL/CHECK; surfaces is the authoritative set.
+	placement := "home"
+	if len(o.Surfaces) > 0 {
+		if strings.HasPrefix(o.Surfaces[0], surfaceRubricPfx) {
+			placement = "rubric"
+		} else {
+			placement = o.Surfaces[0]
+		}
+	}
 	_, err := s.db.Exec(ctx, `
 		INSERT INTO ad_orders (advertiser_id, title, body, image_url, target_url, cta,
-		                       placement, geo_region, rubric, lang, exclusive,
+		                       placement, surfaces, geo_region, lang, exclusive,
 		                       starts_at, ends_at, duration_days, price, payment_method)
 		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::date,$13::date,$14,$15,$16)`,
 		advertiserID, o.Title, o.Body, o.ImageURL, o.TargetURL, o.CTA,
-		o.Placement, o.GeoRegion, o.Rubric, o.Lang, o.Exclusive,
+		placement, o.Surfaces, o.GeoRegion, o.Lang, o.Exclusive,
 		o.StartsAt, o.EndsAt, o.DurationDays, o.Price, o.PaymentMethod)
 	if err != nil {
 		return fmt.Errorf("create ad order: %w", err)
@@ -145,16 +156,15 @@ func (s *AdStore) ListOrders(ctx context.Context, advertiserID string) ([]AdOrde
 // any day in [start,end]. An "all" package occupies a slot in every zone, and an
 // exclusive booking takes the whole rotation. Asking about the "all" package is
 // deliberately conservative: it competes with every zone, so we never oversell.
-func (s *AdStore) SlotsTaken(ctx context.Context, zone, rubric, start, end string) (int, error) {
+func (s *AdStore) SlotsTaken(ctx context.Context, surface, start, end string) (int, error) {
 	var taken int
 	err := s.db.QueryRow(ctx, `
-		SELECT COALESCE(SUM(CASE WHEN exclusive THEN $5 ELSE 1 END), 0)::int
+		SELECT COALESCE(SUM(CASE WHEN exclusive THEN $4 ELSE 1 END), 0)::int
 		FROM ad_orders
 		WHERE status IN ('pending_payment','active')
 		  AND starts_at <= $2::date AND ends_at >= $1::date
-		  AND ( $3 = 'all' OR placement = 'all'
-		        OR (placement = $3 AND ($3 <> 'rubric' OR COALESCE(rubric,'') = $4)) )`,
-		start, end, zone, rubric, adSlotCapacity).Scan(&taken)
+		  AND surfaces @> ARRAY[$3]`,
+		start, end, surface, adSlotCapacity).Scan(&taken)
 	if err != nil {
 		return 0, fmt.Errorf("slots taken: %w", err)
 	}
@@ -169,17 +179,16 @@ type DayFree struct {
 
 // AvailabilityByDay returns, for every day in [from,to], how many rotation
 // slots of the zone are still free — this feeds the booking calendar.
-func (s *AdStore) AvailabilityByDay(ctx context.Context, zone, rubric, from, to string) ([]DayFree, error) {
+func (s *AdStore) AvailabilityByDay(ctx context.Context, surface, from, to string) ([]DayFree, error) {
 	rows, err := s.db.Query(ctx, `
 		SELECT to_char(d, 'YYYY-MM-DD'),
-		       $5 - COALESCE(SUM(CASE WHEN o.exclusive THEN $5 ELSE 1 END), 0)::int AS free
+		       $4 - COALESCE(SUM(CASE WHEN o.exclusive THEN $4 ELSE 1 END), 0)::int AS free
 		FROM generate_series($1::date, $2::date, '1 day') d
 		LEFT JOIN ad_orders o
 		       ON o.status IN ('pending_payment','active')
 		      AND o.starts_at <= d::date AND o.ends_at >= d::date
-		      AND ( $3 = 'all' OR o.placement = 'all'
-		            OR (o.placement = $3 AND ($3 <> 'rubric' OR COALESCE(o.rubric,'') = $4)) )
-		GROUP BY d ORDER BY d`, from, to, zone, rubric, adSlotCapacity)
+		      AND o.surfaces @> ARRAY[$3]
+		GROUP BY d ORDER BY d`, from, to, surface, adSlotCapacity)
 	if err != nil {
 		return nil, fmt.Errorf("availability by day: %w", err)
 	}
@@ -198,8 +207,8 @@ func (s *AdStore) AvailabilityByDay(ctx context.Context, zone, rubric, from, to 
 	return out, rows.Err()
 }
 
-// ActiveByZone returns creatives currently running in a zone, for serving.
-func (s *AdStore) ActiveByZone(ctx context.Context, zone, rubric, lang string, limit int) ([]AdOrder, error) {
+// ActiveBySurface returns creatives currently running on a surface, for serving.
+func (s *AdStore) ActiveBySurface(ctx context.Context, surface, lang string, limit int) ([]AdOrder, error) {
 	if limit <= 0 || limit > 10 {
 		limit = adSlotCapacity
 	}
@@ -208,11 +217,10 @@ func (s *AdStore) ActiveByZone(ctx context.Context, zone, rubric, lang string, l
 		FROM ad_orders
 		WHERE status = 'active'
 		  AND starts_at <= CURRENT_DATE AND ends_at >= CURRENT_DATE
-		  AND ( placement = 'all'
-		        OR (placement = $1 AND ($1 <> 'rubric' OR COALESCE(rubric,'') = $2)) )
-		  AND COALESCE(lang,'') IN ('', $3)
+		  AND surfaces @> ARRAY[$1]
+		  AND COALESCE(lang,'') IN ('', $2)
 		ORDER BY exclusive DESC, created_at DESC
-		LIMIT $4`, zone, rubric, lang, limit)
+		LIMIT $3`, surface, lang, limit)
 	if err != nil {
 		return nil, fmt.Errorf("active ads: %w", err)
 	}
@@ -235,9 +243,10 @@ type AdvertisePage struct {
 	Base
 	Advertiser *Advertiser
 	Orders     []AdOrder
-	Avail      []ZoneAvail // free rotation slots per zone for the previewed period
-	Today      string      // YYYY-MM-DD, min bookable date
-	Saved      string      // "company" | "order" flash
+	Avail      []SurfaceAvail // free rotation slots per surface for the previewed period
+	Today      string         // YYYY-MM-DD, min bookable date
+	Pricing    AdOrderPricing // last computed total (on validation failure)
+	Saved      string         // "company" | "order" flash
 	Error      string
 }
 
@@ -264,7 +273,7 @@ func (m *Module) handleAdvertise(w http.ResponseWriter, r *http.Request) {
 	}
 	today := time.Now().Truncate(24 * time.Hour)
 	page.Today = today.Format("2006-01-02")
-	page.Avail = m.zoneAvailability(r.Context(), page.Today, today.AddDate(0, 0, 6).Format("2006-01-02"))
+	page.Avail = m.surfaceAvailability(r.Context(), page.Today, today.AddDate(0, 0, 29).Format("2006-01-02"))
 	page.Saved = r.URL.Query().Get("saved")
 	m.render(w, "advertise", page)
 }
@@ -324,13 +333,14 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 	if !adDurationSet[days] {
 		days = adDurationDays[0]
 	}
-	zone := r.FormValue("placement")
-	if !adZoneSet[zone] {
-		zone = "articles"
-	}
-	rubric := strings.TrimSpace(r.FormValue("rubric"))
-	if zone != "rubric" || !IsCategory(rubric) {
-		rubric = ""
+	// Selected surfaces (checkboxes). Keep only real ones, de-duplicated.
+	seen := map[string]bool{}
+	var surfaces []string
+	for _, sfc := range r.Form["surface"] {
+		if isAdSurface(sfc) && !seen[sfc] {
+			seen[sfc] = true
+			surfaces = append(surfaces, sfc)
+		}
 	}
 	exclusive := r.FormValue("exclusive") == "on"
 
@@ -345,22 +355,22 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 	}
 	end := start.AddDate(0, 0, days-1)
 
+	pricing := AdOrderTotal(surfaces, days)
 	o := AdOrder{
 		Title:         strings.TrimSpace(r.FormValue("title")),
 		Body:          strings.TrimSpace(r.FormValue("body")),
 		ImageURL:      strings.TrimSpace(r.FormValue("image_url")),
 		TargetURL:     strings.TrimSpace(r.FormValue("target_url")),
 		CTA:           strings.TrimSpace(r.FormValue("cta")),
-		Placement:     zone,
+		Surfaces:      surfaces,
 		GeoRegion:     strings.TrimSpace(r.FormValue("geo_region")),
-		Rubric:        rubric,
 		Lang:          r.FormValue("target_lang"),
 		Exclusive:     exclusive,
 		StartsAt:      start.Format("2006-01-02"),
 		EndsAt:        end.Format("2006-01-02"),
 		DurationDays:  days,
 		PaymentMethod: r.FormValue("payment_method"),
-		Price:         AdPrice(zone, days, exclusive),
+		Price:         pricing.Total,
 	}
 	if !adPayMethods[o.PaymentMethod] {
 		o.PaymentMethod = "kaspi"
@@ -374,8 +384,9 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 		if orders, oerr := m.ads.ListOrders(r.Context(), adv.ID); oerr == nil {
 			page.Orders = orders
 		}
-		page.Avail = m.zoneAvailability(r.Context(), o.StartsAt, o.EndsAt)
+		page.Avail = m.surfaceAvailability(r.Context(), o.StartsAt, o.EndsAt)
 		page.Today = today.Format("2006-01-02")
+		page.Pricing = pricing
 		m.render(w, "advertise", page)
 	}
 
@@ -383,21 +394,28 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 		fail(T(lang, "adv.err_order"))
 		return
 	}
+	if len(surfaces) == 0 {
+		fail(T(lang, "adv.err_no_surface"))
+		return
+	}
 
-	// Auto-check the booking: is the zone's rotation still free for those dates?
+	// Auto-check the booking: every selected surface must still have room for
+	// those dates. A booking needs a slot on each surface it covers.
 	need := 1
 	if exclusive {
 		need = adSlotCapacity
 	}
-	taken, aerr := m.ads.SlotsTaken(r.Context(), zone, rubric, o.StartsAt, o.EndsAt)
-	if aerr != nil {
-		m.rt.Logger.Error("slots taken", zap.Error(aerr))
-		fail(T(lang, "adv.err_order"))
-		return
-	}
-	if taken+need > adSlotCapacity {
-		fail(T(lang, "adv.err_busy"))
-		return
+	for _, sfc := range surfaces {
+		taken, aerr := m.ads.SlotsTaken(r.Context(), sfc, o.StartsAt, o.EndsAt)
+		if aerr != nil {
+			m.rt.Logger.Error("slots taken", zap.Error(aerr))
+			fail(T(lang, "adv.err_order"))
+			return
+		}
+		if taken+need > adSlotCapacity {
+			fail(T(lang, "adv.err_busy"))
+			return
+		}
 	}
 
 	if err := m.ads.CreateOrder(r.Context(), adv.ID, o); err != nil {
@@ -408,25 +426,26 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/advertise?saved=order", http.StatusSeeOther)
 }
 
-// ZoneAvail is a zone's free-slot count for the currently previewed period.
-type ZoneAvail struct {
-	Zone string
+// SurfaceAvail is a surface's free-slot count for the previewed period.
+type SurfaceAvail struct {
+	Code string
 	Free int
 	Cap  int
 }
 
-// zoneAvailability reports free slots per zone for a date range (form preview).
-func (m *Module) zoneAvailability(ctx context.Context, start, end string) []ZoneAvail {
-	out := make([]ZoneAvail, 0, len(adZoneKeys))
-	for _, z := range adZoneKeys {
+// surfaceAvailability reports free slots per surface for a date range.
+func (m *Module) surfaceAvailability(ctx context.Context, start, end string) []SurfaceAvail {
+	all := AdSurfaces()
+	out := make([]SurfaceAvail, 0, len(all))
+	for _, sfc := range all {
 		free := adSlotCapacity
-		if taken, err := m.ads.SlotsTaken(ctx, z, "", start, end); err == nil {
+		if taken, err := m.ads.SlotsTaken(ctx, sfc.Code, start, end); err == nil {
 			free = adSlotCapacity - taken
 			if free < 0 {
 				free = 0
 			}
 		}
-		out = append(out, ZoneAvail{Zone: z, Free: free, Cap: adSlotCapacity})
+		out = append(out, SurfaceAvail{Code: sfc.Code, Free: free, Cap: adSlotCapacity})
 	}
 	return out
 }
@@ -434,13 +453,18 @@ func (m *Module) zoneAvailability(ctx context.Context, start, end string) []Zone
 // handleAdsAvailability feeds the booking calendar: free slots per day for a
 // zone, so the advertiser sees busy and free dates before choosing.
 func (m *Module) handleAdsAvailability(w http.ResponseWriter, r *http.Request) {
-	zone := r.URL.Query().Get("zone")
-	if !adZoneSet[zone] {
-		zone = "articles"
+	// The calendar reflects the surfaces currently ticked: a booking needs a
+	// free slot on EVERY one, so a day's availability is the minimum across
+	// them. With none ticked, fall back to the home surface as a hint.
+	var surfaces []string
+	for _, sfc := range strings.Split(r.URL.Query().Get("surfaces"), ",") {
+		sfc = strings.TrimSpace(sfc)
+		if isAdSurface(sfc) {
+			surfaces = append(surfaces, sfc)
+		}
 	}
-	rubric := strings.TrimSpace(r.URL.Query().Get("rubric"))
-	if zone != "rubric" || !IsCategory(rubric) {
-		rubric = ""
+	if len(surfaces) == 0 {
+		surfaces = []string{surfaceHome}
 	}
 	today := time.Now().Truncate(24 * time.Hour)
 	from := today
@@ -449,15 +473,31 @@ func (m *Module) handleAdsAvailability(w http.ResponseWriter, r *http.Request) {
 	}
 	to := from.AddDate(0, 0, 62) // ~2 months of calendar
 
-	days, err := m.ads.AvailabilityByDay(r.Context(), zone, rubric, from.Format("2006-01-02"), to.Format("2006-01-02"))
-	if err != nil {
-		m.rt.Logger.Error("ads availability", zap.Error(err))
-		http.Error(w, "internal error", http.StatusInternalServerError)
-		return
+	minFree := map[string]int{}
+	order := []string{}
+	for i, sfc := range surfaces {
+		days, err := m.ads.AvailabilityByDay(r.Context(), sfc, from.Format("2006-01-02"), to.Format("2006-01-02"))
+		if err != nil {
+			m.rt.Logger.Error("ads availability", zap.Error(err))
+			http.Error(w, "internal error", http.StatusInternalServerError)
+			return
+		}
+		for _, d := range days {
+			if i == 0 {
+				minFree[d.Date] = d.Free
+				order = append(order, d.Date)
+			} else if d.Free < minFree[d.Date] {
+				minFree[d.Date] = d.Free
+			}
+		}
+	}
+	out := make([]DayFree, 0, len(order))
+	for _, date := range order {
+		out = append(out, DayFree{Date: date, Free: minFree[date]})
 	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	_ = json.NewEncoder(w).Encode(map[string]any{
 		"capacity": adSlotCapacity,
-		"days":     days,
+		"days":     out,
 	})
 }

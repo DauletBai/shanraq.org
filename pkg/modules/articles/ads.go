@@ -33,22 +33,22 @@ func demoAds(lang string) []Ad {
 	}
 }
 
-// adZoneFor maps a request to the inventory zone (and rubric) it belongs to,
-// mirroring the zones sold in the advertiser cabinet.
-func adZoneFor(r *http.Request) (zone, rubric string) {
+// adSurfaceFor maps a request to the surface it belongs to, mirroring the
+// surfaces sold in the advertiser cabinet.
+func adSurfaceFor(r *http.Request) string {
 	p := r.URL.Path
 	switch {
 	case strings.HasPrefix(p, "/listings"):
-		return "realestate", ""
+		return surfaceRealestate
 	case strings.HasPrefix(p, "/read/"):
-		return "articles", ""
+		return surfaceArticles
 	case p == "/":
 		if cat := r.URL.Query().Get("cat"); cat != "" && IsCategory(cat) {
-			return "rubric", cat
+			return adRubricSurface(cat)
 		}
-		return "home", ""
+		return surfaceHome
 	}
-	return "", ""
+	return ""
 }
 
 // sidebarAds serves the paid placements booked for this page's zone. Demo
@@ -64,11 +64,11 @@ func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
 		}
 		return nil
 	}
-	zone, rubric := adZoneFor(r)
-	if zone == "" || m.ads == nil {
+	surface := adSurfaceFor(r)
+	if surface == "" || m.ads == nil {
 		return fallback()
 	}
-	orders, err := m.ads.ActiveByZone(r.Context(), zone, rubric, lang, adSlotCapacity)
+	orders, err := m.ads.ActiveBySurface(r.Context(), surface, lang, adSlotCapacity)
 	if err != nil {
 		m.rt.Logger.Warn("sidebar ads", zap.Error(err))
 		return fallback()

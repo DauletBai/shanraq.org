@@ -563,7 +563,13 @@ table.list td.title { white-space: normal; max-width: 380px; }
   background: var(--surface);
   color: var(--ink); font: inherit;
 }
-.textarea { min-height: 340px; resize: vertical; font-family: var(--mono); font-size: 0.94rem; line-height: 1.6; }
+.textarea { 
+  min-height: 98px; 
+  resize: vertical; 
+  font-family: var(--mono); 
+  font-size: 0.94rem; 
+  line-height: 1.6; 
+}
 .field__label { display: block; font-weight: 600; margin-bottom: 6px; }
 /* Neutral input-group: a field and its trailing button joined into one control
    with squared inner corners and a shared edge — for phone+send and link+copy.
@@ -614,7 +620,14 @@ table.list td.title { white-space: normal; max-width: 380px; }
 
 /* ---------- footer ---------- */
 /* Footer: black in both themes, light text tuned for the dark ground. */
-.site-footer { border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 34px 0; margin-top: 20px; color: rgba(255, 255, 255, 0.6); font-size: var(--step--1); background: #131313; }
+.site-footer { 
+  border-top: 1px solid rgba(255, 255, 255, 0.1); 
+  padding: 32px 0; 
+  margin-top: 10px; 
+  color: rgba(255, 255, 255, 0.6); 
+  font-size: var(--step--1); 
+  background: #444; 
+}
 .site-footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
 .site-footer a { color: rgba(255, 255, 255, 0.82); }
 .site-footer a:hover { color: #ef5350; text-decoration: none; }
@@ -722,6 +735,15 @@ table.list td.title { white-space: normal; max-width: 380px; }
 /* the section you are already in should not look like somewhere to go */
 .acct-nav__item.is-active { background: var(--gold); color: #fff; border-color: var(--gold); }
 .adv-total { font-size: var(--step-2); font-weight: 800; color: var(--brand); line-height: 1.9; }
+/* per-surface picker: a grid of checkable tiles, each showing its own price */
+.surf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 6px 0 10px; }
+.surf { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); cursor: pointer; }
+.surf:has(input:checked) { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 8%, transparent); }
+.surf input { flex: none; }
+.surf__name { flex: 1 1 auto; }
+.surf__price { color: var(--ink-soft); font-size: var(--step--1); font-variant-numeric: tabular-nums; }
+.surf-actions { display: flex; gap: 8px; margin-bottom: 6px; }
+.charcount { display: block; margin-top: 4px; color: var(--ink-soft); font-size: var(--step--1); font-variant-numeric: tabular-nums; }
 .adv-rates td b { white-space: nowrap; }
 .adv-avail { display: flex; flex-wrap: wrap; gap: 8px; }
 .adv-avail__item {
@@ -1059,10 +1081,20 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-section { margin-bottom: 26px; scroll-margin-top: 20px; }
 
 .adm-section__h { font-size: var(--step-1); margin: 0 0 14px; }
-.adm-kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.adm-kpis { 
+  display: grid; 
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 14px;
+  margin-bottom: 15px;
+}
 .adm-kpi { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
 .adm-kpi__ic { font-size: 1.2rem; color: var(--gold); opacity: 0.7; }
-.adm-kpi b { font-family: var(--serif); font-size: var(--step-3); color: var(--ink); line-height: 1.1; }
+.adm-kpi b { 
+  font-family: var(--serif); 
+  font-size: var(--step-3); 
+  color: var(--ink); 
+  line-height: 1.1; 
+}
 .adm-kpi span:last-child { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
 
 .adm-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
@@ -1098,7 +1130,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   .adm__brand { padding: 4px 8px; }
   .adm__nav { flex-direction: row; flex-wrap: wrap; flex: 1 1 100%; order: 3; }
   .adm__side-foot { border-top: none; padding-top: 0; }
-  .adm-kpis { grid-template-columns: repeat(2, 1fr); }
+  .adm-kpis { 
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 15px;
+  }
   .adm-cols { grid-template-columns: 1fr; }
   .adm__main { padding: 18px; }
 }
