@@ -20,6 +20,7 @@ type Config struct {
 	Auth          AuthConfig          `mapstructure:"auth"`
 	Notifications NotificationsConfig `mapstructure:"notifications"`
 	AI            AIConfig            `mapstructure:"ai"`
+	Payments      PaymentsConfig      `mapstructure:"payments"`
 	Syndicate     SyndicateConfig     `mapstructure:"syndicate"`
 	Media         MediaConfig         `mapstructure:"media"`
 	Social        SocialConfig        `mapstructure:"social"`
@@ -121,6 +122,13 @@ type AuthConfig struct {
 
 type MFAConfig struct {
 	TOTP TOTPConfig `mapstructure:"totp"`
+}
+
+// PaymentsConfig selects the payment provider. An empty Provider means payments
+// are disabled — the default. Real credentials (keys, secrets) belong in the
+// provider's own nested config, supplied via env/secret store, never in git.
+type PaymentsConfig struct {
+	Provider string `mapstructure:"provider"`
 }
 
 type TOTPConfig struct {

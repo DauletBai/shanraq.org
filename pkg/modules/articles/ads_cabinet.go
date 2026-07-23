@@ -104,7 +104,7 @@ func (s *AdStore) Save(ctx context.Context, ownerID uuid.UUID, a Advertiser) err
 }
 
 // CreateOrder books a new ad placement (pending_payment).
-func (s *AdStore) CreateOrder(ctx context.Context, advertiserID string, o AdOrder) error {
+func (s *AdStore) CreateOrder(ctx context.Context, advertiserID string, o AdOrder) (uuid.UUID, error) {
 	// placement carries the first surface for backward compatibility with the
 	// old column's NOT NULL/CHECK; surfaces is the authoritative set.
 	placement := "home"
@@ -115,18 +115,20 @@ func (s *AdStore) CreateOrder(ctx context.Context, advertiserID string, o AdOrde
 			placement = o.Surfaces[0]
 		}
 	}
-	_, err := s.db.Exec(ctx, `
+	var id uuid.UUID
+	err := s.db.QueryRow(ctx, `
 		INSERT INTO ad_orders (advertiser_id, title, body, image_url, target_url, cta,
 		                       placement, surfaces, format, geo_region, lang, exclusive,
 		                       starts_at, ends_at, duration_days, price, payment_method)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::date,$14::date,$15,$16,$17)`,
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::date,$14::date,$15,$16,$17)
+		RETURNING id`,
 		advertiserID, o.Title, o.Body, o.ImageURL, o.TargetURL, o.CTA,
 		placement, o.Surfaces, o.Format, o.GeoRegion, o.Lang, o.Exclusive,
-		o.StartsAt, o.EndsAt, o.DurationDays, o.Price, o.PaymentMethod)
+		o.StartsAt, o.EndsAt, o.DurationDays, o.Price, o.PaymentMethod).Scan(&id)
 	if err != nil {
-		return fmt.Errorf("create ad order: %w", err)
+		return uuid.Nil, fmt.Errorf("create ad order: %w", err)
 	}
-	return nil
+	return id, nil
 }
 
 // ListOrders returns an advertiser's orders, newest first.
@@ -427,10 +429,17 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if err := m.ads.CreateOrder(r.Context(), adv.ID, o); err != nil {
+	orderID, err := m.ads.CreateOrder(r.Context(), adv.ID, o)
+	if err != nil {
 		m.rt.Logger.Error("create ad order", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
+	}
+	// Open a pending payment holding the slot for 30 minutes. With no provider
+	// configured this simply records the intent; once a provider is wired, the
+	// cabinet will show its QR and the webhook will activate the order.
+	if _, perr := m.pay.Create(r.Context(), "ad_order", orderID, o.Price, 30); perr != nil {
+		m.rt.Logger.Warn("create payment", zap.Error(perr))
 	}
 	http.Redirect(w, r, "/advertise?saved=order", http.StatusSeeOther)
 }

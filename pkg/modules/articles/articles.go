@@ -37,6 +37,8 @@ type Module struct {
 	ads       *AdStore
 	mods      *ModStore
 	refs      *ReferralStore
+	pay       *PaymentStore
+	payProv   PaymentProvider
 	geo       *GeoStore
 	comments  *CommentStore
 	favs      *FavoriteStore
@@ -69,6 +71,10 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.ads = NewAdStore(rt.DB)
 	m.mods = NewModStore(rt.DB)
 	m.refs = NewReferralStore(rt.DB)
+	m.pay = NewPaymentStore(rt.DB)
+	// Provider stays disabled until one is configured — no credentials in the
+	// repo, same as AI and SMTP. A concrete adapter is registered here later.
+	m.payProv = disabledProvider{}
 	m.geo = NewGeoStore(rt.DB)
 	m.comments = NewCommentStore(rt.DB)
 	m.favs = NewFavoriteStore(rt.DB)
@@ -142,6 +148,9 @@ func (m *Module) Routes(r chi.Router) {
 	// Everything below lives in one inline group so the CSRF guard can be a
 	// group middleware — the shared mux already has routes from other modules,
 	// and chi forbids Use() after routes on the same mux.
+	// Payment provider callbacks are server-to-server; they carry no Origin
+	// header, so they must not go through the CSRF-guarded browser group.
+	r.Post("/pay/webhook/{provider}", m.handlePaymentWebhook)
 	r.Group(m.browserRoutes)
 }
 

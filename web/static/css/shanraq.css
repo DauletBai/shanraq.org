@@ -1045,7 +1045,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .author-hero__body { flex: 1; min-width: 240px; }
 .author-hero__top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .author-hero__role { color: var(--gold-strong); font-weight: 700; margin: 2px 0 8px; }
-.author-hero__bio { color: var(--ink-soft); margin: 0; max-width: 70ch; }
+.author-hero__bio { 
+  color: var(--ink-soft); 
+  margin: 0; 
+}
 
 /* ---- Author profile analytics showcase ---- */
 .author-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0; }

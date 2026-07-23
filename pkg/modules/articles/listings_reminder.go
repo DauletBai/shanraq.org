@@ -17,10 +17,33 @@ const reminderInterval = 6 * time.Hour
 // free window is about to end (within ~2 days).
 func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
 	go m.reminderLoop(ctx)
+	go m.payExpiryLoop(ctx) // release unpaid ad-slot holds
 	if m.infobar != nil {
 		go m.infobar.Run(ctx) // background weather + exchange-rate refresher
 	}
 	return nil
+}
+
+// payExpiryLoop frees ad slots whose 30-minute payment hold lapsed. It runs
+// often because a held slot the buyer abandoned should return to sale quickly.
+func (m *Module) payExpiryLoop(ctx context.Context) {
+	t := time.NewTicker(5 * time.Minute)
+	defer t.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-t.C:
+			if m.pay == nil {
+				continue
+			}
+			if n, err := m.pay.ExpirePending(ctx); err != nil {
+				m.rt.Logger.Warn("expire payment holds", zap.Error(err))
+			} else if n > 0 {
+				m.rt.Logger.Info("released unpaid ad-slot holds", zap.Int("count", n))
+			}
+		}
+	}
 }
 
 func (m *Module) reminderLoop(ctx context.Context) {
