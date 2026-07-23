@@ -23,17 +23,25 @@
   <section class="adv-card" style="max-width:640px">
     <h2 class="adv-card__title">{{ if .Agent }}{{ t .Lang "agent.edit_profile" }}{{ else }}{{ t .Lang "agent.become" }}{{ end }}</h2>
     <form method="post" action="/agent">
-      <div class="field">
-        <label>{{ t .Lang "agent.name" }} * {{ template "fhelp" (t .Lang "agent.h_name") }}</label>
-        <input class="input" name="name" maxlength="80" value="{{ .Draft.Name }}" required>
+      <div class="form-grid form-grid--2">
+        <div class="field">
+          <label>{{ t .Lang "agent.first_name" }} * {{ template "fhelp" (t .Lang "agent.h_name") }}</label>
+          <input class="input" name="first_name" maxlength="60" value="{{ .Draft.FirstName }}" required>
+        </div>
+        <div class="field">
+          <label>{{ t .Lang "agent.last_name" }}</label>
+          <input class="input" name="last_name" maxlength="60" value="{{ .Draft.LastName }}">
+        </div>
       </div>
-      <div class="field">
-        <label>{{ t .Lang "agent.agency" }}</label>
-        <input class="input" name="agency" maxlength="80" value="{{ .Draft.Agency }}">
-      </div>
-      <div class="field">
-        <label>{{ t .Lang "agent.phone" }}</label>
-        <input class="input" name="phone" maxlength="40" value="{{ .Draft.Phone }}">
+      <div class="form-grid form-grid--2">
+        <div class="field">
+          <label>{{ t .Lang "agent.agency" }}</label>
+          <input class="input" name="agency" maxlength="80" value="{{ .Draft.Agency }}">
+        </div>
+        <div class="field">
+          <label>{{ t .Lang "agent.phone" }}</label>
+          <input class="input" name="phone" maxlength="40" value="{{ .Draft.Phone }}">
+        </div>
       </div>
       <div class="field">
         <label>{{ t .Lang "agent.about" }}</label>

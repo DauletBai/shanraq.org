@@ -695,6 +695,10 @@ table.list td.title { white-space: normal; max-width: 380px; }
   gap: 5px 10px;
   margin-bottom: 14px;
 }
+/* Generic two-column form row that collapses to one column on narrow screens. */
+.form-grid { display: grid; gap: 4px 14px; margin-bottom: 6px; }
+.form-grid--2 { grid-template-columns: 1fr 1fr; }
+@media (max-width: 560px) { .form-grid--2 { grid-template-columns: 1fr; } }
 .adv-company { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
 .adv-edit summary { list-style: none; cursor: pointer; }
 .adv-edit summary::-webkit-details-marker { display: none; }
@@ -1126,6 +1130,16 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm__user { color: var(--muted); font-size: 0.9rem; }
 .adm-notice { background: color-mix(in srgb, var(--teal) 14%, var(--paper)); border: 1px solid var(--teal); color: var(--teal); border-radius: 10px; padding: 10px 14px; margin-bottom: 18px; font-weight: 600; }
 .adm-section { margin-bottom: 26px; scroll-margin-top: 20px; }
+
+/* Two-column dashboard: blocks flow into two masonry columns (variable heights,
+   no row gaps). The overview KPI strip spans both columns at the top. */
+.adm-flow { columns: 2; column-gap: 22px; }
+.adm-flow > .adm-section,
+.adm-flow > .adv-card { break-inside: avoid; margin: 0 0 22px; }
+.adm-flow > #overview { column-span: all; }
+/* Inside a half-width masonry column, internal two-column panels stack. */
+.adm-flow .adm-cols { grid-template-columns: 1fr; }
+@media (max-width: 1000px) { .adm-flow { columns: 1; } }
 
 .adm-section__h { font-size: var(--step-1); margin: 0 0 14px; }
 .adm-kpis { 

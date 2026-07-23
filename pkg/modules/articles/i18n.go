@@ -170,6 +170,8 @@ var messages = map[string]map[string]string{
 	"agent.saved":           {"kz": "Профиль сақталды.", "ru": "Профиль сохранён.", "en": "Profile saved."},
 	"agent.err_name":        {"kz": "Атыңызды көрсетіңіз.", "ru": "Укажите имя.", "en": "Please enter your name."},
 	"agent.name":            {"kz": "Аты-жөні", "ru": "Имя", "en": "Name"},
+	"agent.first_name":      {"kz": "Аты", "ru": "Имя", "en": "First name"},
+	"agent.last_name":       {"kz": "Тегі", "ru": "Фамилия", "en": "Last name"},
 	"agent.h_name":          {"kz": "Хабарландыруларда және жеке бетте көрсетіледі.", "ru": "Показывается в объявлениях и на личной странице.", "en": "Shown on your listings and public page."},
 	"agent.agency":          {"kz": "Агенттік (міндетті емес)", "ru": "Агентство (необязательно)", "en": "Agency (optional)"},
 	"agent.phone":           {"kz": "Телефон", "ru": "Телефон", "en": "Phone"},

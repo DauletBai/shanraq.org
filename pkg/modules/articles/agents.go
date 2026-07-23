@@ -12,17 +12,23 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
-	"shanraq.org/pkg/modules/auth"
 )
 
 // Agent is a real-estate agent's public profile. One per user; registration is
 // free and self-serve from the cabinet.
 type Agent struct {
-	UserID string
-	Name   string
-	Agency string
-	Phone  string
-	About  string
+	UserID    string
+	FirstName string
+	LastName  string
+	Name      string // composed display name (first + last), kept for the badge/join
+	Agency    string
+	Phone     string
+	About     string
+}
+
+// composeName builds the display name from first + last.
+func composeName(first, last string) string {
+	return strings.TrimSpace(strings.TrimSpace(first) + " " + strings.TrimSpace(last))
 }
 
 // AgentStore persists real-estate agent profiles.
@@ -35,8 +41,8 @@ func (s *AgentStore) ByUser(ctx context.Context, userID uuid.UUID) (*Agent, erro
 	var a Agent
 	var id uuid.UUID
 	err := s.db.QueryRow(ctx, `
-		SELECT user_id, name, agency, phone, about FROM re_agents WHERE user_id = $1`, userID).
-		Scan(&id, &a.Name, &a.Agency, &a.Phone, &a.About)
+		SELECT user_id, first_name, last_name, name, agency, phone, about FROM re_agents WHERE user_id = $1`, userID).
+		Scan(&id, &a.FirstName, &a.LastName, &a.Name, &a.Agency, &a.Phone, &a.About)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, nil
 	}
@@ -49,13 +55,14 @@ func (s *AgentStore) ByUser(ctx context.Context, userID uuid.UUID) (*Agent, erro
 
 // Save registers or updates the caller's agent profile (one per user).
 func (s *AgentStore) Save(ctx context.Context, userID uuid.UUID, a Agent) error {
+	name := composeName(a.FirstName, a.LastName)
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO re_agents (user_id, name, agency, phone, about)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO re_agents (user_id, first_name, last_name, name, agency, phone, about)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 		ON CONFLICT (user_id) DO UPDATE SET
-			name = EXCLUDED.name, agency = EXCLUDED.agency,
-			phone = EXCLUDED.phone, about = EXCLUDED.about, updated_at = NOW()`,
-		userID, a.Name, a.Agency, a.Phone, a.About)
+			first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, name = EXCLUDED.name,
+			agency = EXCLUDED.agency, phone = EXCLUDED.phone, about = EXCLUDED.about, updated_at = NOW()`,
+		userID, strings.TrimSpace(a.FirstName), strings.TrimSpace(a.LastName), name, a.Agency, a.Phone, a.About)
 	if err != nil {
 		return fmt.Errorf("save agent: %w", err)
 	}
@@ -102,8 +109,6 @@ func (m *Module) handleAgentCabinet(w http.ResponseWriter, r *http.Request) {
 		if items, lerr := m.listings.AgentListings(r.Context(), uid); lerr == nil {
 			page.Count = len(items)
 		}
-	} else if claims, ok := auth.ClaimsFromContext(r.Context()); ok {
-		page.Draft.Name = displayName(claims.Email) // sensible default for the form
 	}
 	m.render(w, "agent_cabinet", page)
 }
@@ -117,12 +122,14 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 	}
 	_ = r.ParseForm()
 	a := Agent{
-		Name:   strings.TrimSpace(r.FormValue("name")),
-		Agency: strings.TrimSpace(r.FormValue("agency")),
-		Phone:  strings.TrimSpace(r.FormValue("phone")),
-		About:  strings.TrimSpace(r.FormValue("about")),
+		FirstName: strings.TrimSpace(r.FormValue("first_name")),
+		LastName:  strings.TrimSpace(r.FormValue("last_name")),
+		Agency:    strings.TrimSpace(r.FormValue("agency")),
+		Phone:     strings.TrimSpace(r.FormValue("phone")),
+		About:     strings.TrimSpace(r.FormValue("about")),
 	}
-	if a.Name == "" {
+	a.Name = composeName(a.FirstName, a.LastName)
+	if a.FirstName == "" {
 		existing, _ := m.reagents.ByUser(r.Context(), uid)
 		page := AgentCabinetPage{Base: m.base(r, T(lang, "agent.title"), lang), Agent: existing, Draft: a, Error: T(lang, "agent.err_name")}
 		page.ActiveCat = "realestate"

@@ -119,12 +119,17 @@ func TestTemplatesExecute(t *testing.T) {
 			{"listing_my", MyListingsPage{Base: base}}, // empty state
 			{"maintenance", MaintenancePage{Lang: lang, Title: "Maintenance", Message: "Back soon"}},
 			{"maintenance", MaintenancePage{Lang: lang, Title: "Maintenance", Message: "Back soon", UntilMilli: now.Add(time.Hour).UnixMilli()}}, // with countdown
-			{"agent_cabinet", AgentCabinetPage{Base: base, Draft: Agent{Name: "Асан"}}},                                                          // registration form
-			{"agent_cabinet", AgentCabinetPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан", Agency: "Дом", Phone: "+7"}, Count: 3, Saved: true}},
-			{"agent_public", AgentPublicPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан", Agency: "Дом", Phone: "+7", About: "Опыт 10 лет"}, Listings: []*Listing{{
-				ID: "id", DealType: "sale", PropertyType: "apartment", Title: "Квартира", Price: 18000000, AgentID: "u1", AgentName: "Асан",
+			{"agent_cabinet", AgentCabinetPage{Base: base, Draft: Agent{FirstName: "Асан", LastName: "Серіков"}}},                                // registration form
+			{"agent_cabinet", AgentCabinetPage{Base: base, Agent: &Agent{UserID: "u1", FirstName: "Асан", LastName: "Серіков", Name: "Асан Серіков", Agency: "Дом", Phone: "+7"}, Draft: Agent{FirstName: "Асан", LastName: "Серіков"}, Count: 3, Saved: true}},
+			{"agent_public", AgentPublicPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан Серіков", Agency: "Дом", Phone: "+7", About: "Опыт 10 лет"}, Listings: []*Listing{{
+				ID: "id", DealType: "sale", PropertyType: "apartment", Title: "Квартира", Price: 18000000, AgentID: "u1", AgentName: "Асан Серіков",
 				Images: []string{"/static/demo/rooms/living.svg"}}}}},
 			{"agent_public", AgentPublicPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан"}}}, // no listings
+			{"admin", AdminPage{Base: base, Email: "a@b.c", Role: "admin", CanManageUsers: true, CanModerate: true, CanFinance: true,
+				AssignRoles: assignableRoles, ServiceStates: []string{svcOn, svcMaintenance, svcOff},
+				Services: []ServiceFlag{{Code: SvcAdOrders, TitleKey: "svc.ad_orders", Status: svcMaintenance}},
+				Site:     ServiceFlag{Code: SvcSite, TitleKey: "svc.site", Status: svcOn},
+				Stats:    AdminStats{Users: 3, Articles: 2}}},
 		}
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {

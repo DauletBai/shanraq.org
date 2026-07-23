@@ -40,6 +40,7 @@
     </header>
     {{ if .Notice }}<div class="adm-notice">{{ t .Lang (printf "admin.%s" .Notice) }}</div>{{ end }}
 
+    <div class="adm-flow">
     <section id="overview" class="adm-section">
       <div class="adm-kpis">
         <div class="adm-kpi"><span class="adm-kpi__ic">◕</span><b>{{ .Stats.Users }}</b><span>{{ t .Lang "admin.users" }}</span></div>
@@ -339,6 +340,7 @@
   </form>
 </section>
 {{ end }}
+    </div>
 </main>
 </div>
 
