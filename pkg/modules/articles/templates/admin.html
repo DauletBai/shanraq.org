@@ -180,12 +180,22 @@
             <label>RU<input class="input input--sm" type="text" name="message_ru" value="{{ .Site.MessageRU }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
             <label>EN<input class="input input--sm" type="text" name="message_en" value="{{ .Site.MessageEN }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
           </div>
+          <div class="adm-site__timer">
+            <label for="site-minutes">{{ t .Lang "svc.duration" }}</label>
+            <select class="select select--sm" id="site-minutes" name="minutes">
+              <option value="30">30 {{ t .Lang "svc.min" }}</option>
+              <option value="60" selected>1 {{ t .Lang "svc.hour" }}</option>
+              <option value="120">2 {{ t .Lang "svc.hour" }}</option>
+              <option value="240">4 {{ t .Lang "svc.hour" }}</option>
+              <option value="0">{{ t .Lang "svc.no_timer" }}</option>
+            </select>
+          </div>
           <div class="adm-site__actions">
             {{ if eq .Site.Status "on" }}
             <button class="btn btn--danger btn--sm" type="submit" name="status" value="maintenance" onclick="return confirm('{{ t .Lang "svc.site_confirm_down" }}')">{{ t .Lang "svc.site_take_down" }}</button>
             {{ else }}
             <button class="btn btn--primary btn--sm" type="submit" name="status" value="on">{{ t .Lang "svc.site_bring_up" }}</button>
-            <button class="btn btn--ghost btn--sm" type="submit" name="status" value="maintenance">{{ t .Lang "svc.save" }}</button>
+            <button class="btn btn--ghost btn--sm" type="submit" name="status" value="maintenance">{{ t .Lang "svc.site_save_timer" }}</button>
             {{ end }}
           </div>
         </form>

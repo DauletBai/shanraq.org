@@ -118,6 +118,7 @@ func TestTemplatesExecute(t *testing.T) {
 			}}},
 			{"listing_my", MyListingsPage{Base: base}}, // empty state
 			{"maintenance", MaintenancePage{Lang: lang, Title: "Maintenance", Message: "Back soon"}},
+			{"maintenance", MaintenancePage{Lang: lang, Title: "Maintenance", Message: "Back soon", UntilMilli: now.Add(time.Hour).UnixMilli()}}, // with countdown
 		}
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {

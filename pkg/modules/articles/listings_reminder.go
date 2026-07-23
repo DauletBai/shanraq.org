@@ -17,7 +17,8 @@ const reminderInterval = 6 * time.Hour
 // free window is about to end (within ~2 days).
 func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
 	go m.reminderLoop(ctx)
-	go m.payExpiryLoop(ctx) // release unpaid ad-slot holds
+	go m.payExpiryLoop(ctx)         // release unpaid ad-slot holds
+	go m.maintenanceExpiryLoop(ctx) // auto-restore the site when its window ends
 	if m.infobar != nil {
 		go m.infobar.Run(ctx) // background weather + exchange-rate refresher
 	}
@@ -41,6 +42,28 @@ func (m *Module) payExpiryLoop(ctx context.Context) {
 				m.rt.Logger.Warn("expire payment holds", zap.Error(err))
 			} else if n > 0 {
 				m.rt.Logger.Info("released unpaid ad-slot holds", zap.Int("count", n))
+			}
+		}
+	}
+}
+
+// maintenanceExpiryLoop brings the site back once a planned maintenance window
+// passes, so it recovers on time even if nobody visits to trigger the guard.
+func (m *Module) maintenanceExpiryLoop(ctx context.Context) {
+	t := time.NewTicker(time.Minute)
+	defer t.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-t.C:
+			if m.flags == nil {
+				continue
+			}
+			if changed, err := m.flags.RestoreExpired(ctx); err != nil {
+				m.rt.Logger.Warn("restore expired service flags", zap.Error(err))
+			} else if changed {
+				m.rt.Logger.Info("site maintenance window ended — restored to service")
 			}
 		}
 	}

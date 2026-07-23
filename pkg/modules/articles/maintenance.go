@@ -11,9 +11,10 @@ import (
 
 // MaintenancePage backs the global maintenance screen.
 type MaintenancePage struct {
-	Lang    string
-	Title   string
-	Message string
+	Lang       string
+	Title      string
+	Message    string
+	UntilMilli int64 // planned end time as epoch ms (0 = open-ended, no countdown)
 }
 
 // maintenanceGuard serves a maintenance page for the whole site when the global
@@ -23,6 +24,15 @@ type MaintenancePage struct {
 func (m *Module) maintenanceGuard(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if m.flags == nil || m.flags.SiteUp() {
+			next.ServeHTTP(w, r)
+			return
+		}
+		// The planned window has passed — bring the site back automatically so a
+		// forgotten switch never leaves it down, and serve this request normally.
+		if m.flags.SiteExpired() {
+			if _, err := m.flags.RestoreExpired(r.Context()); err != nil {
+				m.rt.Logger.Warn("auto-restore site", zap.Error(err))
+			}
 			next.ServeHTTP(w, r)
 			return
 		}
@@ -50,7 +60,7 @@ func isMaintenanceExempt(p string) bool {
 func (m *Module) renderMaintenance(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
 	f := m.flags.SiteFlag()
-	data := MaintenancePage{Lang: lang, Title: T(lang, "svc.site_down_title"), Message: f.Message(lang)}
+	data := MaintenancePage{Lang: lang, Title: T(lang, "svc.site_down_title"), Message: f.Message(lang), UntilMilli: f.UntilUnixMillis()}
 	if data.Message == "" {
 		data.Message = T(lang, "svc.site_down_default")
 	}

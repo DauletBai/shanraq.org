@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -69,6 +70,18 @@ type ServiceFlag struct {
 	MessageKZ string
 	MessageRU string
 	MessageEN string
+	Until     time.Time // planned end of maintenance; zero = open-ended
+}
+
+// HasTimer reports whether a planned end time is set.
+func (f ServiceFlag) HasTimer() bool { return !f.Until.IsZero() }
+
+// UntilUnixMillis is the end time as JS-friendly epoch milliseconds (0 if none).
+func (f ServiceFlag) UntilUnixMillis() int64 {
+	if f.Until.IsZero() {
+		return 0
+	}
+	return f.Until.UnixMilli()
 }
 
 // Available reports whether the service's paid action may run.
@@ -103,7 +116,7 @@ func NewServiceFlags(db *pgxpool.Pool) *ServiceFlags {
 // known services missing from the DB default to 'on'.
 func (s *ServiceFlags) Load(ctx context.Context) error {
 	rows, err := s.db.Query(ctx, `
-		SELECT code, status, message_kz, message_ru, message_en FROM service_flags`)
+		SELECT code, status, message_kz, message_ru, message_en, until FROM service_flags`)
 	if err != nil {
 		return fmt.Errorf("load service flags: %w", err)
 	}
@@ -112,8 +125,12 @@ func (s *ServiceFlags) Load(ctx context.Context) error {
 	loaded := map[string]ServiceFlag{}
 	for rows.Next() {
 		var f ServiceFlag
-		if err := rows.Scan(&f.Code, &f.Status, &f.MessageKZ, &f.MessageRU, &f.MessageEN); err != nil {
+		var until *time.Time
+		if err := rows.Scan(&f.Code, &f.Status, &f.MessageKZ, &f.MessageRU, &f.MessageEN, &until); err != nil {
 			return err
+		}
+		if until != nil {
+			f.Until = *until
 		}
 		loaded[f.Code] = f
 	}
@@ -156,6 +173,13 @@ func (s *ServiceFlags) SiteFlag() ServiceFlag { return s.Flag(SvcSite) }
 // DB hiccup never accidentally takes the whole site down.
 func (s *ServiceFlags) SiteUp() bool { return s.Flag(SvcSite).Status == svcOn }
 
+// SiteExpired reports that the site is down but its planned maintenance window
+// has already passed, so it should be treated as up again.
+func (s *ServiceFlags) SiteExpired() bool {
+	f := s.Flag(SvcSite)
+	return f.Status != svcOn && f.HasTimer() && f.Until.Before(time.Now())
+}
+
 // Available reports whether a service's paid action may run right now.
 func (s *ServiceFlags) Available(code string) bool { return s.Flag(code).Available() }
 
@@ -168,25 +192,48 @@ func (s *ServiceFlags) All() []ServiceFlag {
 	return out
 }
 
-// Set upserts a service's status and localized messages, then refreshes the
-// cache so the change takes effect immediately without a redeploy.
-func (s *ServiceFlags) Set(ctx context.Context, code, status, msgKZ, msgRU, msgEN string, by *uuid.UUID) error {
+// Set upserts a service's status, localized messages and optional maintenance
+// end time, then refreshes the cache so the change takes effect immediately
+// without a redeploy. until is nil for an open-ended state (no countdown), and
+// is always cleared when a service is turned back on.
+func (s *ServiceFlags) Set(ctx context.Context, code, status, msgKZ, msgRU, msgEN string, until *time.Time, by *uuid.UUID) error {
 	if !validServiceCode(code) || !isServiceStatus(status) {
 		return fmt.Errorf("unknown service or status")
 	}
+	if status == svcOn {
+		until = nil // an available service has no maintenance window
+	}
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO service_flags (code, status, message_kz, message_ru, message_en, updated_at, updated_by)
-		VALUES ($1, $2, $3, $4, $5, NOW(), $6)
+		INSERT INTO service_flags (code, status, message_kz, message_ru, message_en, until, updated_at, updated_by)
+		VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7)
 		ON CONFLICT (code) DO UPDATE SET
 			status = EXCLUDED.status,
 			message_kz = EXCLUDED.message_kz,
 			message_ru = EXCLUDED.message_ru,
 			message_en = EXCLUDED.message_en,
+			until = EXCLUDED.until,
 			updated_at = NOW(),
 			updated_by = EXCLUDED.updated_by`,
-		code, status, msgKZ, msgRU, msgEN, by)
+		code, status, msgKZ, msgRU, msgEN, until, by)
 	if err != nil {
 		return fmt.Errorf("set service flag: %w", err)
 	}
 	return s.Load(ctx)
+}
+
+// RestoreExpired brings any timed-down service back to 'on' once its window has
+// passed, clearing the timer. Returns whether anything changed. Runs from the
+// maintenance guard (immediately for a visitor) and a background ticker (so the
+// site recovers even with no traffic).
+func (s *ServiceFlags) RestoreExpired(ctx context.Context) (bool, error) {
+	ct, err := s.db.Exec(ctx, `
+		UPDATE service_flags SET status = 'on', until = NULL, updated_at = NOW()
+		 WHERE status <> 'on' AND until IS NOT NULL AND until < NOW()`)
+	if err != nil {
+		return false, fmt.Errorf("restore expired flags: %w", err)
+	}
+	if ct.RowsAffected() == 0 {
+		return false, nil
+	}
+	return true, s.Load(ctx)
 }

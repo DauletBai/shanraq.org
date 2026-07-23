@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -318,10 +319,19 @@ func (m *Module) handleAdminServiceFlag(w http.ResponseWriter, r *http.Request) 
 			by = &id
 		}
 	}
+	// Optional maintenance window: minutes from now. 0 / empty = open-ended (no
+	// countdown). Only meaningful when the service is not being turned on.
+	var until *time.Time
+	if status != svcOn {
+		if mins, err := strconv.Atoi(strings.TrimSpace(r.FormValue("minutes"))); err == nil && mins > 0 {
+			t := time.Now().Add(time.Duration(mins) * time.Minute)
+			until = &t
+		}
+	}
 	if err := m.flags.Set(r.Context(), code, status,
 		strings.TrimSpace(r.FormValue("message_kz")),
 		strings.TrimSpace(r.FormValue("message_ru")),
-		strings.TrimSpace(r.FormValue("message_en")), by); err != nil {
+		strings.TrimSpace(r.FormValue("message_en")), until, by); err != nil {
 		m.rt.Logger.Error("set service flag", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return

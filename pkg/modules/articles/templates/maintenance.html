@@ -12,11 +12,41 @@
 </head>
 <body class="maint-body">
   <main class="maint">
-    <img class="maint__mark theme-light-only" src="/static/brand/shanraq.svg" alt="Shanraq" width="72" height="72">
-    <img class="maint__mark theme-dark-only" src="/static/brand/shanraq-light.svg" alt="Shanraq" width="72" height="72">
+    <img class="maint__mark theme-light-only" src="/static/brand/shanraq.svg" alt="Shanraq" width="140" height="140">
+    <img class="maint__mark theme-dark-only" src="/static/brand/shanraq-light.svg" alt="Shanraq" width="140" height="140">
     <div class="maint__icon" aria-hidden="true">🛠</div>
     <h1 class="maint__title">{{ .Title }}</h1>
     <p class="maint__msg">{{ .Message }}</p>
+    {{ if .UntilMilli }}
+    <div class="maint__timer" id="maint-timer" data-until="{{ .UntilMilli }}"
+         data-restoring="{{ t .Lang "svc.restoring" }}">
+      <div class="maint__timer-label">{{ t .Lang "svc.back_in" }}</div>
+      <div class="maint__count" id="maint-count">—</div>
+    </div>
+    <script>
+      (function () {
+        var el = document.getElementById('maint-timer');
+        var out = document.getElementById('maint-count');
+        if (!el || !out) return;
+        var until = parseInt(el.getAttribute('data-until'), 10);
+        function pad(n) { return (n < 10 ? '0' : '') + n; }
+        function tick() {
+          var ms = until - Date.now();
+          if (ms <= 0) {
+            out.textContent = el.getAttribute('data-restoring');
+            // The site auto-restores once the window ends; reload to come back.
+            setTimeout(function () { location.reload(); }, 4000);
+            return;
+          }
+          var s = Math.floor(ms / 1000);
+          var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+          out.textContent = (h > 0 ? h + ':' : '') + pad(m) + ':' + pad(sec);
+          setTimeout(tick, 1000);
+        }
+        tick();
+      })();
+    </script>
+    {{ end }}
   </main>
 </body>
 </html>
