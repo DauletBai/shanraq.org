@@ -105,7 +105,7 @@ func scanListing(row pgx.Row) (*Listing, error) {
 
 // MyListings returns all of an author's listings (active or expired), newest first.
 func (s *ListingStore) MyListings(ctx context.Context, authorID uuid.UUID) ([]*Listing, error) {
-	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id AND ra.status = 'verified'
 		WHERE l.author_id = $1 ORDER BY l.created_at DESC`, listingCols), authorID)
 	if err != nil {
 		return nil, fmt.Errorf("my listings: %w", err)
@@ -131,7 +131,7 @@ func (s *ListingStore) Extend(ctx context.Context, id, author uuid.UUID) error {
 // DueReminders returns active listings expiring within 2 days that have not yet
 // been reminded, so the owner can be nudged to extend.
 func (s *ListingStore) DueReminders(ctx context.Context) ([]*Listing, error) {
-	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id AND ra.status = 'verified'
 		WHERE l.status = 'published' AND l.expiry_reminded = false
 		  AND l.expires_at > NOW() AND l.expires_at <= NOW() + INTERVAL '2 days'
 		ORDER BY l.expires_at`, listingCols))
@@ -183,7 +183,7 @@ func (s *ListingStore) BannerListings(ctx context.Context, limit int) ([]*Listin
 	if limit <= 0 || limit > 10 {
 		limit = 2
 	}
-	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id AND ra.status = 'verified'
 		WHERE l.status = 'published' AND l.expires_at > NOW() AND l.banner_until > NOW()
 		ORDER BY l.banner_until DESC LIMIT $1`, listingCols), limit)
 	if err != nil {
@@ -280,7 +280,7 @@ func (s *ListingStore) List(ctx context.Context, f ListingFilter) ([]*Listing, e
 		where += fmt.Sprintf(" AND (l.title ILIKE $%d OR l.description ILIKE $%d)", n, n)
 	}
 	args = append(args, limit)
-	q := fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
+	q := fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id AND ra.status = 'verified'
 		WHERE %s ORDER BY COALESCE(l.promoted_until > NOW(), false) DESC, l.created_at DESC LIMIT $%d`, listingCols, where, len(args))
 
 	rows, err := s.db.Query(ctx, q, args...)
@@ -379,7 +379,7 @@ func (s *ListingStore) PurgeExpired(ctx context.Context) (int64, error) {
 // GetByID loads a single published listing.
 func (s *ListingStore) GetByID(ctx context.Context, id uuid.UUID) (*Listing, error) {
 	// Expired listings 404 immediately (not only after the 6h purge sweep).
-	row := s.db.QueryRow(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
+	row := s.db.QueryRow(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id AND ra.status = 'verified'
 		WHERE l.id = $1 AND l.status = 'published' AND l.expires_at > NOW()`, listingCols), id)
 	l, err := scanListing(row)
 	if err != nil {
@@ -394,7 +394,7 @@ func (s *ListingStore) GetByID(ctx context.Context, id uuid.UUID) (*Listing, err
 // AgentListings returns an agent's active published listings, promoted first
 // then newest — the feed for their public page.
 func (s *ListingStore) AgentListings(ctx context.Context, agentID uuid.UUID) ([]*Listing, error) {
-	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id AND ra.status = 'verified'
 		WHERE l.author_id = $1 AND l.status = 'published' AND l.expires_at > NOW()
 		ORDER BY (l.promoted_until > NOW()) DESC, l.created_at DESC`, listingCols), agentID)
 	if err != nil {

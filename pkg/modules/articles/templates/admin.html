@@ -265,6 +265,30 @@
 
 {{ if .CanModerate }}
 <div class="adm-cards2">
+{{ if .CanManageUsers }}
+<section class="adv-card">
+  <h2 class="adv-card__title">{{ t .Lang "agent.queue_title" }}{{ if .PendingAgents }} <span class="subbar__badge">{{ len .PendingAgents }}</span>{{ end }}</h2>
+  <p class="aside__text">{{ t .Lang "agent.queue_hint" }}</p>
+  {{ if not .PendingAgents }}<p class="aside__text">{{ t .Lang "agent.queue_none" }}</p>{{ end }}
+  {{ range .PendingAgents }}
+  <div class="modrow modrow--queue">
+    <div>
+      <span class="pill pill--review">{{ t $.Lang "agent.st_pending" }}</span>
+      <span class="modrow__type"><b>{{ .Name }}</b></span>
+      {{ if .Agency }}<span class="modrow__type">{{ .Agency }}</span>{{ end }}
+      <span class="modrow__date">{{ .Phone }}</span>
+      <span class="modrow__type">{{ .Email }}</span>
+    </div>
+    {{ with .About }}<p class="modrow__note">{{ . }}</p>{{ end }}
+    <form method="post" action="/admin/agents/{{ .UserID }}/decide" class="modrow__actions">
+      <input class="input" name="reason" maxlength="300" placeholder="{{ t $.Lang "agent.reject_reason" }}">
+      <button class="btn btn--primary btn--sm" type="submit" name="decision" value="verify">{{ t $.Lang "agent.verify" }}</button>
+      <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="reject">{{ t $.Lang "agent.reject" }}</button>
+    </form>
+  </div>
+  {{ end }}
+</section>
+{{ end }}
 <section class="adv-card">
   <h2 class="adv-card__title">{{ t .Lang "aq.title" }}{{ if .Queue }} <span class="subbar__badge">{{ len .Queue }}</span>{{ end }}</h2>
   <p class="aside__text">{{ t .Lang "aq.hint" }}</p>

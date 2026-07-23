@@ -219,6 +219,8 @@ type AdminPage struct {
 	Services      []ServiceFlag
 	ServiceStates []string    // selectable statuses: on | maintenance | off
 	Site          ServiceFlag // the global site switch
+	// Real-estate agents awaiting verification.
+	PendingAgents []Agent
 }
 
 func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
@@ -262,6 +264,11 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		page.Services = m.flags.All()
 		page.ServiceStates = []string{svcOn, svcMaintenance, svcOff}
 		page.Site = m.flags.SiteFlag()
+		if pend, err := m.reagents.Pending(r.Context(), 100); err == nil {
+			page.PendingAgents = pend
+		} else {
+			m.rt.Logger.Error("pending agents", zap.Error(err))
+		}
 	}
 	page.Notice = r.URL.Query().Get("ok")
 	if claims != nil {
@@ -337,6 +344,43 @@ func (m *Module) handleAdminServiceFlag(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	http.Redirect(w, r, "/admin?ok=svc_set", http.StatusSeeOther)
+}
+
+// handleAdminAgentDecide approves or rejects a real-estate agent profile. Only
+// a verified agent gets the public "Agent" badge and page, so this is the trust
+// gate for the whole feature.
+func (m *Module) handleAdminAgentDecide(w http.ResponseWriter, r *http.Request) {
+	claims, _ := auth.ClaimsFromContext(r.Context())
+	if !canManageUsers(claims) {
+		http.Error(w, "forbidden", http.StatusForbidden)
+		return
+	}
+	uid, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	_ = r.ParseForm()
+	status := agentRejected
+	if r.FormValue("decision") == "verify" {
+		status = agentVerified
+	}
+	reason := ""
+	if status == agentRejected {
+		reason = clip(strings.TrimSpace(r.FormValue("reason")), 300)
+	}
+	var reviewer *uuid.UUID
+	if claims != nil {
+		if id, perr := uuid.Parse(claims.Subject); perr == nil {
+			reviewer = &id
+		}
+	}
+	if err := m.reagents.SetStatus(r.Context(), uid, status, reason, reviewer); err != nil {
+		m.rt.Logger.Error("agent decide", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/admin?ok=agent_set", http.StatusSeeOther)
 }
 
 func (m *Module) handleAdminHideComment(w http.ResponseWriter, r *http.Request) {

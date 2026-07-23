@@ -117,6 +117,16 @@ func (m *Module) IsEmailVerified(ctx context.Context, userID uuid.UUID) bool {
 	return err == nil && ok
 }
 
+// IsPhoneVerified reports whether the user has confirmed their phone. On error
+// it returns false so gated actions fail closed.
+func (m *Module) IsPhoneVerified(ctx context.Context, userID uuid.UUID) bool {
+	if m.store == nil {
+		return false
+	}
+	ok, err := m.store.IsPhoneVerified(ctx, userID)
+	return err == nil && ok
+}
+
 func (m *Module) sendVerificationEmail(ctx context.Context, to, link string) error {
 	subject := "Confirm your email"
 	body := fmt.Sprintf("Welcome to Shanraq. Please confirm your email by opening the link below:\n\n%s\n\nIf you did not create an account, you can ignore this message.", link)

@@ -24,6 +24,7 @@ const (
 const (
 	SvcAdOrders     = "ad_orders"     // paid advertising in the advertiser cabinet
 	SvcListingPromo = "listing_promo" // paid promotion/feature/banner for listings
+	SvcAgentReg     = "agent_registration"
 
 	// SvcSite is the global switch: when it is not 'on', the whole site serves a
 	// maintenance page (503) to everyone but staff and the recovery routes. It
@@ -43,6 +44,7 @@ type ServiceDef struct {
 var knownServices = []ServiceDef{
 	{SvcAdOrders, "svc.ad_orders"},
 	{SvcListingPromo, "svc.listing_promo"},
+	{SvcAgentReg, "svc.agent_reg"},
 }
 
 func isKnownService(code string) bool {

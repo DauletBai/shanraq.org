@@ -8,14 +8,21 @@
 
   <div class="studio__head" style="margin-top:24px">
     <h1>{{ t .Lang "agent.title" }}</h1>
-    {{ if .Agent }}<a class="btn btn--ghost" href="/agent/{{ .Agent.UserID }}">{{ t .Lang "agent.view_public" }} →</a>{{ end }}
+    {{ if and .Agent .Agent.Verified }}<a class="btn btn--ghost" href="/agent/{{ .Agent.UserID }}">{{ t .Lang "agent.view_public" }} →</a>{{ end }}
   </div>
 
+  {{ with index .Svc "agent_registration" }}{{ if not .On }}<p class="notice notice--warn" style="margin:0 0 18px">🛠 {{ .Msg }}</p>{{ end }}{{ end }}
   {{ if .Saved }}<p class="notice notice--ok" style="margin:0 0 18px">{{ t .Lang "agent.saved" }}</p>{{ end }}
   {{ if .Error }}<p class="notice notice--warn" style="margin:0 0 18px">{{ .Error }}</p>{{ end }}
 
   {{ if .Agent }}
-  <p class="hint" style="margin:-6px 0 18px">{{ t .Lang "agent.registered_note" }} · {{ t .Lang "agent.listings_count" }}: <b>{{ .Count }}</b></p>
+    {{ if .Agent.Verified }}
+    <p class="notice notice--ok" style="margin:0 0 18px">✓ {{ t .Lang "agent.st_verified" }} · {{ t .Lang "agent.listings_count" }}: <b>{{ .Count }}</b></p>
+    {{ else if eq .Agent.Status "rejected" }}
+    <p class="notice notice--warn" style="margin:0 0 18px">{{ t .Lang "agent.st_rejected" }}{{ if .Agent.Reason }}: {{ .Agent.Reason }}{{ end }}</p>
+    {{ else }}
+    <p class="notice" style="margin:0 0 18px">⏳ {{ t .Lang "agent.st_pending" }}</p>
+    {{ end }}
   {{ else }}
   <p class="hint" style="margin:-6px 0 18px">{{ t .Lang "agent.intro" }}</p>
   {{ end }}

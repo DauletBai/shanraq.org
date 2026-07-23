@@ -120,16 +120,19 @@ func TestTemplatesExecute(t *testing.T) {
 			{"maintenance", MaintenancePage{Lang: lang, Title: "Maintenance", Message: "Back soon"}},
 			{"maintenance", MaintenancePage{Lang: lang, Title: "Maintenance", Message: "Back soon", UntilMilli: now.Add(time.Hour).UnixMilli()}}, // with countdown
 			{"agent_cabinet", AgentCabinetPage{Base: base, Draft: Agent{FirstName: "Асан", LastName: "Серіков"}}},                                // registration form
-			{"agent_cabinet", AgentCabinetPage{Base: base, Agent: &Agent{UserID: "u1", FirstName: "Асан", LastName: "Серіков", Name: "Асан Серіков", Agency: "Дом", Phone: "+7"}, Draft: Agent{FirstName: "Асан", LastName: "Серіков"}, Count: 3, Saved: true}},
-			{"agent_public", AgentPublicPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан Серіков", Agency: "Дом", Phone: "+7", About: "Опыт 10 лет"}, Listings: []*Listing{{
+			{"agent_cabinet", AgentCabinetPage{Base: base, Agent: &Agent{UserID: "u1", FirstName: "Асан", LastName: "Серіков", Name: "Асан Серіков", Agency: "Дом", Phone: "+7", Status: agentVerified}, Draft: Agent{FirstName: "Асан", LastName: "Серіков"}, Count: 3, Saved: true}},
+			{"agent_cabinet", AgentCabinetPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан", Status: agentPending}, Draft: Agent{FirstName: "Асан"}}},                        // pending
+			{"agent_cabinet", AgentCabinetPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан", Status: agentRejected, Reason: "нет данных"}, Draft: Agent{FirstName: "Асан"}}}, // rejected
+			{"agent_public", AgentPublicPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан Серіков", Agency: "Дом", Phone: "+7", About: "Опыт 10 лет", Status: agentVerified}, Listings: []*Listing{{
 				ID: "id", DealType: "sale", PropertyType: "apartment", Title: "Квартира", Price: 18000000, AgentID: "u1", AgentName: "Асан Серіков",
 				Images: []string{"/static/demo/rooms/living.svg"}}}}},
-			{"agent_public", AgentPublicPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан"}}}, // no listings
+			{"agent_public", AgentPublicPage{Base: base, Agent: &Agent{UserID: "u1", Name: "Асан", Status: agentVerified}}}, // no listings
 			{"admin", AdminPage{Base: base, Email: "a@b.c", Role: "admin", CanManageUsers: true, CanModerate: true, CanFinance: true,
 				AssignRoles: assignableRoles, ServiceStates: []string{svcOn, svcMaintenance, svcOff},
-				Services: []ServiceFlag{{Code: SvcAdOrders, TitleKey: "svc.ad_orders", Status: svcMaintenance}},
-				Site:     ServiceFlag{Code: SvcSite, TitleKey: "svc.site", Status: svcOn},
-				Stats:    AdminStats{Users: 3, Articles: 2}}},
+				Services:      []ServiceFlag{{Code: SvcAdOrders, TitleKey: "svc.ad_orders", Status: svcMaintenance}},
+				Site:          ServiceFlag{Code: SvcSite, TitleKey: "svc.site", Status: svcOn},
+				PendingAgents: []Agent{{UserID: "u1", Name: "Асан Серіков", Agency: "Дом", Phone: "+7 700", Email: "a@b.c", Status: agentPending}},
+				Stats:         AdminStats{Users: 3, Articles: 2}}},
 		}
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {

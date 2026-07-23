@@ -161,7 +161,17 @@ var messages = map[string]map[string]string{
 	"agent.nav":             {"kz": "Агент кабинеті", "ru": "Кабинет агента", "en": "Agent cabinet"},
 	"agent.title":           {"kz": "Жылжымайтын мүлік агенті", "ru": "Агент по недвижимости", "en": "Real-estate agent"},
 	"agent.badge":           {"kz": "Агент", "ru": "Агент", "en": "Agent"},
-	"agent.intro":           {"kz": "Агент ретінде тегін тіркеліңіз: хабарландыруларыңызда «Агент» белгісі және барлық хабарландыруларыңызға сілтемесі бар жеке бет пайда болады.", "ru": "Зарегистрируйтесь как агент бесплатно: у ваших объявлений появится значок «Агент» и личная страница со ссылкой на все ваши объявления.", "en": "Register as an agent for free: your listings get an \"Agent\" badge and a personal page linking to all of your listings."},
+	"agent.intro":           {"kz": "Агент ретінде тегін тіркеліңіз. Растау үшін email мен телефон расталған болуы қажет. Өтінім тексеруден өткеннен кейін «Агент» белгісі мен жеке бет пайда болады.", "ru": "Зарегистрируйтесь как агент бесплатно. Нужны подтверждённые email и телефон. После проверки заявки появятся значок «Агент» и личная страница.", "en": "Register as an agent for free. A verified email and phone are required. After your application is approved you get the \"Agent\" badge and a public page."},
+	"agent.err_verify":      {"kz": "Алдымен email мен телефоныңызды растаңыз (кабинет → автор).", "ru": "Сначала подтвердите email и телефон (кабинет → автор).", "en": "Please verify your email and phone first (cabinet → author)."},
+	"agent.st_pending":      {"kz": "Тексеруде", "ru": "На проверке", "en": "Pending review"},
+	"agent.st_verified":     {"kz": "Профиль расталды", "ru": "Профиль подтверждён", "en": "Profile verified"},
+	"agent.st_rejected":     {"kz": "Өтінім қабылданбады", "ru": "Заявка отклонена", "en": "Application rejected"},
+	"agent.queue_title":     {"kz": "Агенттерді тексеру", "ru": "Проверка агентов", "en": "Agent verification"},
+	"agent.queue_hint":      {"kz": "Расталған агент қана «Агент» белгісі мен жеке бетті алады.", "ru": "Только подтверждённый агент получает значок «Агент» и публичную страницу.", "en": "Only a verified agent gets the \"Agent\" badge and a public page."},
+	"agent.queue_none":      {"kz": "Тексеретін өтінім жоқ.", "ru": "Заявок на проверку нет.", "en": "No applications to review."},
+	"agent.verify":          {"kz": "Растау", "ru": "Подтвердить", "en": "Verify"},
+	"agent.reject":          {"kz": "Қабылдамау", "ru": "Отклонить", "en": "Reject"},
+	"agent.reject_reason":   {"kz": "Себебі (қабылдамаса)", "ru": "Причина (при отклонении)", "en": "Reason (if rejecting)"},
 	"agent.become":          {"kz": "Агент болу", "ru": "Стать агентом", "en": "Become an agent"},
 	"agent.register":        {"kz": "Тіркелу", "ru": "Зарегистрироваться", "en": "Register"},
 	"agent.save":            {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
@@ -606,6 +616,7 @@ var messages = map[string]map[string]string{
 	"admin.user_missing":     {"kz": "Қолданушы табылмады.", "ru": "Пользователь не найден.", "en": "User not found."},
 	"admin.comment_hidden":   {"kz": "Пікір жасырылды.", "ru": "Комментарий скрыт.", "en": "Comment hidden."},
 	"admin.svc_set":          {"kz": "Сервис жаңартылды.", "ru": "Сервис обновлён.", "en": "Service updated."},
+	"admin.agent_set":        {"kz": "Агент мәртебесі жаңартылды.", "ru": "Статус агента обновлён.", "en": "Agent status updated."},
 	"admin.svc_bad":          {"kz": "Жарамсыз мән.", "ru": "Некорректное значение.", "en": "Invalid value."},
 
 	// Service switches (maintenance mode).
@@ -619,6 +630,7 @@ var messages = map[string]map[string]string{
 	"svc.save":              {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
 	"svc.ad_orders":         {"kz": "Жарнама төлемі", "ru": "Оплата рекламы", "en": "Paid advertising"},
 	"svc.listing_promo":     {"kz": "Хабарландыруды жылжыту", "ru": "Продвижение объявлений", "en": "Listing promotion"},
+	"svc.agent_reg":         {"kz": "Агент тіркеуі", "ru": "Регистрация агентов", "en": "Agent registration"},
 
 	// Global site switch + maintenance page.
 	"svc.site":              {"kz": "Бүкіл сайт", "ru": "Весь сайт", "en": "Whole site"},

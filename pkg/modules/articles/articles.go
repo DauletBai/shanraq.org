@@ -261,6 +261,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/admin", m.handleAdmin)
 		r.Post("/admin/roles", m.handleAdminAssignRole)
 		r.Post("/admin/services", m.handleAdminServiceFlag)
+		r.Post("/admin/agents/{id}/decide", m.handleAdminAgentDecide)
 		r.Post("/admin/comments/{id}/hide", m.handleAdminHideComment)
 		r.Post("/admin/appeals/{id}/resolve", m.handleAdminResolveAppeal)
 		r.Post("/admin/analysis", m.handleAdminColumnBrief)

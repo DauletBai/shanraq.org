@@ -278,6 +278,20 @@ func (s *Store) IsEmailVerified(ctx context.Context, userID uuid.UUID) (bool, er
 	return verified, nil
 }
 
+// IsPhoneVerified reports whether the user's phone is verified.
+func (s *Store) IsPhoneVerified(ctx context.Context, userID uuid.UUID) (bool, error) {
+	var verified bool
+	err := s.db.QueryRow(ctx,
+		`SELECT phone_verified_at IS NOT NULL FROM auth_users WHERE id = $1`, userID).Scan(&verified)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return false, nil
+		}
+		return false, fmt.Errorf("check phone verified: %w", err)
+	}
+	return verified, nil
+}
+
 // SetName stores the author's real first and last name (the article byline).
 func (s *Store) SetName(ctx context.Context, userID uuid.UUID, first, last string) error {
 	_, err := s.db.Exec(ctx,
