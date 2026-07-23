@@ -650,10 +650,10 @@ table.list td.title { white-space: normal; max-width: 380px; }
    Kept inside the card's rounded clip, hence the offsets rather than 0/0. */
 .rebanner__label {
   position: absolute;
-  top: 14px;
-  left: -26px;
+  top: 10px;
+  left: -22px;
   z-index: 2;
-  padding: 3px 25px;
+  padding: 3px 15px;
   font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.11em;
@@ -661,7 +661,6 @@ table.list td.title { white-space: normal; max-width: 380px; }
   color: #fff;
   background: rgba(0, 0, 0, 0.5);
   transform: rotate(-45deg);
-  transform-origin: center;
 }
 .rebanner__img {
   display: block;
