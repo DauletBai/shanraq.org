@@ -214,6 +214,9 @@ type AdminPage struct {
 	Queue   []ReviewItem // articles awaiting a human decision
 	// Growth analytics.
 	Analytics AdminAnalytics
+	// Operational service switches (maintenance mode per service).
+	Services      []ServiceFlag
+	ServiceStates []string // selectable statuses: on | maintenance | off
 }
 
 func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
@@ -253,6 +256,10 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 	page.CanFinance = canViewFinance(claims)
 	page.CanModerate = canModerate(claims)
 	page.AssignRoles = assignableRoles
+	if canManageUsers(claims) {
+		page.Services = m.flags.All()
+		page.ServiceStates = []string{svcOn, svcMaintenance, svcOff}
+	}
 	page.Notice = r.URL.Query().Get("ok")
 	if claims != nil {
 		page.Email = claims.Email
@@ -285,6 +292,39 @@ func (m *Module) handleAdminAssignRole(w http.ResponseWriter, r *http.Request) {
 		msg = "user_missing"
 	}
 	http.Redirect(w, r, "/admin?ok="+msg, http.StatusSeeOther)
+}
+
+// handleAdminServiceFlag flips a service on / into maintenance / off and stores
+// its localized notice. This is how a service is taken down for maintenance
+// (or held back during the beta) without a redeploy.
+func (m *Module) handleAdminServiceFlag(w http.ResponseWriter, r *http.Request) {
+	claims, _ := auth.ClaimsFromContext(r.Context())
+	if !canManageUsers(claims) {
+		http.Error(w, "forbidden", http.StatusForbidden)
+		return
+	}
+	_ = r.ParseForm()
+	code := strings.TrimSpace(r.FormValue("code"))
+	status := strings.TrimSpace(r.FormValue("status"))
+	if !isKnownService(code) || !isServiceStatus(status) {
+		http.Redirect(w, r, "/admin?ok=svc_bad", http.StatusSeeOther)
+		return
+	}
+	var by *uuid.UUID
+	if claims != nil {
+		if id, err := uuid.Parse(claims.Subject); err == nil {
+			by = &id
+		}
+	}
+	if err := m.flags.Set(r.Context(), code, status,
+		strings.TrimSpace(r.FormValue("message_kz")),
+		strings.TrimSpace(r.FormValue("message_ru")),
+		strings.TrimSpace(r.FormValue("message_en")), by); err != nil {
+		m.rt.Logger.Error("set service flag", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/admin?ok=svc_set", http.StatusSeeOther)
 }
 
 func (m *Module) handleAdminHideComment(w http.ResponseWriter, r *http.Request) {

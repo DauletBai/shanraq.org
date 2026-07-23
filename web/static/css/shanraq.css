@@ -1142,6 +1142,18 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 .adm-roleform { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .adm-roleform .input { flex: 1; min-width: 180px; }
+.adm-svc { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
+.adm-svc__row { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.adm-svc__top { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.adm-svc__name { display: flex; gap: 10px; align-items: center; }
+.adm-svc__state { font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.adm-svc__state--on { color: #0a7d33; border-color: #9bd8b0; background: rgba(16,161,74,0.08); }
+.adm-svc__state--maintenance { color: #9a6a00; border-color: #e6c884; background: rgba(217,164,32,0.10); }
+.adm-svc__state--off { color: #a33; border-color: #e3a7a7; background: rgba(200,60,60,0.08); }
+.adm-svc__msgs { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.adm-svc__msgs label { display: grid; grid-template-columns: 28px 1fr; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+.adm-svc__foot { display: flex; justify-content: flex-end; }
+.input--sm, .select--sm { padding: 6px 10px; font-size: 14px; }
 .adm-comments { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
 .adm-comments li { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
 .adm-comments__head { font-size: 0.85rem; color: var(--muted); margin-bottom: 5px; }

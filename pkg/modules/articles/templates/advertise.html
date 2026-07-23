@@ -42,6 +42,7 @@
 
   <section class="adv-card">
     <h2 class="adv-card__title">{{ t .Lang "adv.new_order" }}</h2>
+    {{ with index .Svc "ad_orders" }}{{ if not .On }}<p class="notice notice--warn" style="margin:0 0 16px">🛠 {{ .Msg }}</p>{{ end }}{{ end }}
     <form method="post" action="/advertise/order" data-adform>
       <input type="hidden" name="lang" value="{{ .Lang }}">
 
@@ -140,7 +141,8 @@
       </div>
 
       <p class="adv-split">{{ t .Lang "adv.split_note" }} {{ t .Lang "adv.slot_note" }}</p>
-      <button class="btn btn--primary" type="submit">{{ t .Lang "adv.order_submit" }}</button>
+      {{ $ord := index .Svc "ad_orders" }}
+      <button class="btn btn--primary" type="submit"{{ if not $ord.On }} disabled{{ end }}>{{ t .Lang "adv.order_submit" }}</button>
     </form>
   </section>
 

@@ -416,16 +416,36 @@ func (m *Module) handleListingExtend(w http.ResponseWriter, r *http.Request) {
 	m.listingAction(w, r, m.listings.Extend)
 }
 
+// serviceGate blocks a paid action when its service is not fully available
+// (maintenance or off), sending the user back where a localized notice explains
+// why. Free actions (extend, referral-funded promotion) never call this.
+func (m *Module) serviceGate(w http.ResponseWriter, r *http.Request, code, back string) bool {
+	if m.flags.Available(code) {
+		return true
+	}
+	http.Redirect(w, r, back, http.StatusSeeOther)
+	return false
+}
+
 func (m *Module) handleListingPromote(w http.ResponseWriter, r *http.Request) {
+	if !m.serviceGate(w, r, SvcListingPromo, "/listings/my") {
+		return
+	}
 	m.listingAction(w, r, m.listings.Promote)
 }
 
 func (m *Module) handleListingFeature(w http.ResponseWriter, r *http.Request) {
+	if !m.serviceGate(w, r, SvcListingPromo, "/listings/my") {
+		return
+	}
 	m.listingAction(w, r, m.listings.Feature)
 }
 
 // handleListingBanner buys the sidebar banner slot for 1..7 days.
 func (m *Module) handleListingBanner(w http.ResponseWriter, r *http.Request) {
+	if !m.serviceGate(w, r, SvcListingPromo, "/listings/my") {
+		return
+	}
 	days, _ := strconv.Atoi(digitsOnly(r.FormValue("days")))
 	if days < 1 || days > 7 {
 		days = 1

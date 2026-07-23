@@ -10,6 +10,7 @@
     <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
   </div>
   <p class="hint" style="margin:-6px 0 20px">{{ t .Lang "re.listing_policy" }}</p>
+  {{ with index .Svc "listing_promo" }}{{ if not .On }}<p class="notice notice--warn" style="margin:0 0 20px">🛠 {{ .Msg }}</p>{{ end }}{{ end }}
 
   {{ if .Listings }}
   <div class="mylist">
@@ -32,8 +33,10 @@
       </div>
       <div class="mylist__actions">
         <form method="post" action="/listings/{{ .ID }}/extend"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.extend" }}</button></form>
-        <form method="post" action="/listings/{{ .ID }}/promote"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.promote" }}</button></form>
         {{ if ge $.Credit 3 }}<form method="post" action="/listings/{{ .ID }}/promote-free"><button class="btn btn--teal btn--sm" type="submit">{{ t $.Lang "inv.promote_free" }}</button></form>{{ end }}
+        {{ $paid := index $.Svc "listing_promo" }}
+        {{ if $paid.On }}
+        <form method="post" action="/listings/{{ .ID }}/promote"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.promote" }}</button></form>
         <form method="post" action="/listings/{{ .ID }}/feature"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.feature" }}</button></form>
         <form method="post" action="/listings/{{ .ID }}/banner" class="mylist__banner">
           <select class="select select--xs" name="days" aria-label="{{ t $.Lang "re.banner" }}">
@@ -41,6 +44,7 @@
           </select>
           <button class="btn btn--primary btn--sm" type="submit">{{ t $.Lang "re.banner" }}</button>
         </form>
+        {{ end }}
       </div>
     </div>
     {{ end }}

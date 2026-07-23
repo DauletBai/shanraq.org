@@ -39,6 +39,7 @@ type Module struct {
 	refs      *ReferralStore
 	pay       *PaymentStore
 	payProv   PaymentProvider
+	flags     *ServiceFlags
 	geo       *GeoStore
 	comments  *CommentStore
 	favs      *FavoriteStore
@@ -64,7 +65,7 @@ func New(authModule *auth.Module, aiModule *ai.Module, syndicateModule *syndicat
 func (m *Module) Name() string { return "articles" }
 
 // Init parses templates and wires the store.
-func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
+func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
 	m.listings = NewListingStore(rt.DB)
@@ -75,6 +76,12 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	// Provider stays disabled until one is configured — no credentials in the
 	// repo, same as AI and SMTP. A concrete adapter is registered here later.
 	m.payProv = disabledProvider{}
+	m.flags = NewServiceFlags(rt.DB)
+	if err := m.flags.Load(ctx); err != nil {
+		// Non-fatal: an unloaded cache defaults every service to available, so
+		// the site still works; log and continue.
+		rt.Logger.Warn("load service flags", zap.Error(err))
+	}
 	m.geo = NewGeoStore(rt.DB)
 	m.comments = NewCommentStore(rt.DB)
 	m.favs = NewFavoriteStore(rt.DB)
@@ -242,6 +249,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Use(m.auth.RequireSession("/studio/login", adminRoles...))
 		r.Get("/admin", m.handleAdmin)
 		r.Post("/admin/roles", m.handleAdminAssignRole)
+		r.Post("/admin/services", m.handleAdminServiceFlag)
 		r.Post("/admin/comments/{id}/hide", m.handleAdminHideComment)
 		r.Post("/admin/appeals/{id}/resolve", m.handleAdminResolveAppeal)
 		r.Post("/admin/analysis", m.handleAdminColumnBrief)

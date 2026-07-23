@@ -47,6 +47,18 @@ type Base struct {
 	OGImage string        // absolute image URL for social previews
 	OGType  string        // "website" | "article"
 	JSONLD  template.HTML // structured data (schema.org), injected verbatim
+
+	// Svc carries the operational state of each toggleable service, already
+	// localized, so any template can show a maintenance notice and hide a paid
+	// action without a funcmap. Keyed by service code (e.g. "listing_promo").
+	Svc map[string]ServiceView
+}
+
+// ServiceView is a service's state as a template sees it: whether its paid
+// action is available, and the localized notice to show when it is not.
+type ServiceView struct {
+	On  bool
+	Msg string
 }
 
 // base builds the shared page context. The language switcher points at the
@@ -68,7 +80,20 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		OGType:    "website",
 		Info:      m.infobar.Snapshot(localizedDate(lang, time.Now())),
 		Ads:       m.sidebarAds(r, lang),
+		Svc:       m.serviceViews(lang),
 	}
+}
+
+// serviceViews snapshots every known service's state, localized for the page.
+func (m *Module) serviceViews(lang string) map[string]ServiceView {
+	if m.flags == nil {
+		return nil
+	}
+	out := make(map[string]ServiceView, len(knownServices))
+	for _, f := range m.flags.All() {
+		out[f.Code] = ServiceView{On: f.Available(), Msg: f.Message(lang)}
+	}
+	return out
 }
 
 // resolveLang picks the active language from ?lang=, then cookie, then default.

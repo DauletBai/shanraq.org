@@ -332,6 +332,12 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/advertise", http.StatusSeeOther) // must register a company first
 		return
 	}
+	// Paid ordering may be in maintenance (e.g. during the beta, before Kaspi
+	// Pay is live). The cabinet page shows the notice; block the booking here.
+	if !m.flags.Available(SvcAdOrders) {
+		http.Redirect(w, r, "/advertise", http.StatusSeeOther)
+		return
+	}
 	_ = r.ParseForm()
 
 	days, _ := strconv.Atoi(digitsOnly(r.FormValue("duration")))
