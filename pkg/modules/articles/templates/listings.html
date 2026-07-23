@@ -79,29 +79,7 @@
       {{ if .Listings }}
       <div class="posts posts--two">
         {{ range .Listings }}
-        <article class="post{{ if .Featured }} post--featured{{ end }}">
-          <div class="post__media" data-carousel>
-            {{ if .Promoted }}<span class="badge-top">{{ t $.Lang "re.badge_top" }}</span>{{ end }}
-            {{ if .Images }}
-            {{ range $i, $src := .Images }}<span class="gallery__item{{ if eq $i 0 }} is-active{{ end }}"><img src="{{ $src }}" alt=""></span>{{ end }}
-            <a class="post__media-link" href="/listings/{{ .ID }}" aria-label="{{ .Title }}"></a>
-            {{ if gt (len .Images) 1 }}<div class="adcarousel__dots">{{ range $i, $src := .Images }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}</div>{{ end }}
-            {{ else if .CoverURL }}
-            <a class="post__media-link" href="/listings/{{ .ID }}"><img src="{{ .CoverURL }}" alt=""></a>
-            {{ else }}
-            <a class="post__media-link" href="/listings/{{ .ID }}"><span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span></a>
-            {{ end }}
-          </div>
-          <span class="kicker">{{ t $.Lang (printf "re.type_%s" .PropertyType) }} · {{ t $.Lang (printf "re.deal_%s" .DealType) }}</span>
-          <h3 class="post__title"><a href="/listings/{{ .ID }}">{{ .Title }}</a></h3>
-          <p class="post__price">{{ money .Price }} ₸{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</p>
-          {{ template "listing_facts" (dict "L" . "Lang" $.Lang) }}
-          {{ if .Amenities }}
-          <div class="post__amen">
-            {{ range firstN .Amenities 6 }}<span class="amic" title="{{ t $.Lang (printf "re.am_%s" .) }}">{{ amenityIcon . }}</span>{{ end }}
-          </div>
-          {{ end }}
-        </article>
+        {{ template "listing_card" (dict "L" . "Lang" $.Lang) }}
         {{ end }}
       </div>
       {{ else }}

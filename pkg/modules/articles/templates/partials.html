@@ -180,6 +180,7 @@
   <a class="acct-nav__item{{ if eq .Path "/studio/invite" }} is-active{{ end }}" href="/studio/invite">{{ t .Lang "inv.title" }}</a>
   <a class="acct-nav__item{{ if eq .Path "/favorites" }} is-active{{ end }}" href="/favorites">♥ {{ t .Lang "nav.favorites" }}</a>
   <a class="acct-nav__item{{ if eq .Path "/listings/my" }} is-active{{ end }}" href="/listings/my">{{ t .Lang "re.my_listings" }}</a>
+  <a class="acct-nav__item{{ if eq .Path "/agent" }} is-active{{ end }}" href="/agent">{{ t .Lang "agent.nav" }}</a>
   <a class="acct-nav__item" href="/listings/new">{{ t .Lang "re.post" }}</a>
   {{ if .IsStaff }}<a class="acct-nav__item" href="/admin">{{ t .Lang "header.admin" }}</a>{{ end }}
 </nav>
@@ -234,6 +235,37 @@
   </div>
   {{ end }}
 </aside>
+{{ end }}
+
+{{/* listing_card renders one real-estate listing card. Takes {L, Lang}. Shared
+     by the listings feed and an agent's public page. If the listing was posted
+     by a registered agent it carries an "Agent" badge linking to that agent. */}}
+{{ define "listing_card" }}
+<article class="post{{ if .L.Featured }} post--featured{{ end }}">
+  <div class="post__media" data-carousel>
+    {{ if .L.Promoted }}<span class="badge-top">{{ t .Lang "re.badge_top" }}</span>{{ end }}
+    {{ if .L.ByAgent }}<a class="agent-badge" href="/agent/{{ .L.AgentID }}" title="{{ .L.AgentName }}">{{ t .Lang "agent.badge" }}</a>{{ end }}
+    {{ if .L.Images }}
+    {{ range $i, $src := .L.Images }}<span class="gallery__item{{ if eq $i 0 }} is-active{{ end }}"><img src="{{ $src }}" alt=""></span>{{ end }}
+    <a class="post__media-link" href="/listings/{{ .L.ID }}" aria-label="{{ .L.Title }}"></a>
+    {{ if gt (len .L.Images) 1 }}<div class="adcarousel__dots">{{ range $i, $src := .L.Images }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}</div>{{ end }}
+    {{ else if .L.CoverURL }}
+    <a class="post__media-link" href="/listings/{{ .L.ID }}"><img src="{{ .L.CoverURL }}" alt=""></a>
+    {{ else }}
+    <a class="post__media-link" href="/listings/{{ .L.ID }}"><span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span></a>
+    {{ end }}
+  </div>
+  <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>
+  <h3 class="post__title"><a href="/listings/{{ .L.ID }}">{{ .L.Title }}</a></h3>
+  <p class="post__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
+  {{ if .L.ByAgent }}<a class="agent-line" href="/agent/{{ .L.AgentID }}">◆ {{ .L.AgentName }}</a>{{ end }}
+  {{ template "listing_facts" (dict "L" .L "Lang" .Lang) }}
+  {{ if .L.Amenities }}
+  <div class="post__amen">
+    {{ range firstN .L.Amenities 6 }}<span class="amic" title="{{ t $.Lang (printf "re.am_%s" .) }}">{{ amenityIcon . }}</span>{{ end }}
+  </div>
+  {{ end }}
+</article>
 {{ end }}
 
 {{/* social_icons renders the social-profile links from a []SocialLink. A "#"

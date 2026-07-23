@@ -1,0 +1,32 @@
+{{ define "agent_public" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  {{ template "backlink" (dict "Href" "/listings" "Label" (t .Lang "nav.realestate")) }}
+
+  <section class="agentcard">
+    <div class="agentcard__avatar" aria-hidden="true">◆</div>
+    <div class="agentcard__body">
+      <span class="agentcard__role">{{ t .Lang "agent.badge" }}</span>
+      <h1 class="agentcard__name">{{ .Agent.Name }}</h1>
+      {{ if .Agent.Agency }}<p class="agentcard__agency">{{ .Agent.Agency }}</p>{{ end }}
+      {{ if .Agent.Phone }}<p class="agentcard__phone">☎ {{ .Agent.Phone }}</p>{{ end }}
+      {{ if .Agent.About }}<p class="agentcard__about">{{ .Agent.About }}</p>{{ end }}
+    </div>
+  </section>
+
+  <h2 class="section-h" style="margin-top:8px">{{ t .Lang "agent.listings_title" }} <span class="subbar__badge">{{ len .Listings }}</span></h2>
+
+  {{ if .Listings }}
+  <div class="posts posts--two">
+    {{ range .Listings }}
+    {{ template "listing_card" (dict "L" . "Lang" $.Lang) }}
+    {{ end }}
+  </div>
+  {{ else }}
+  <div class="empty"><p>{{ t .Lang "agent.no_listings" }}</p></div>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}

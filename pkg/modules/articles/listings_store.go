@@ -72,16 +72,20 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 const listingCols = `l.id, l.author_id, u.email, l.deal_type, l.property_type, l.country, l.region, l.city, l.village,
 	l.microdistrict, l.street, l.house, l.lat, l.lng,
 	l.price, l.area, l.rooms, l.title, l.description, l.contact, l.cover_url, l.images, l.status, l.created_at,
-	l.expires_at, l.promoted_until, l.featured_until, l.banner_until, l.views_count, l.contacts_count, l.land_area, l.amenities, l.room_specs`
+	l.expires_at, l.promoted_until, l.featured_until, l.banner_until, l.views_count, l.contacts_count, l.land_area, l.amenities, l.room_specs,
+	ra.user_id, ra.name`
 
 func scanListing(row pgx.Row) (*Listing, error) {
 	var l Listing
 	var id, authorID uuid.UUID
 	var roomsRaw []byte
+	var agentID *uuid.UUID
+	var agentName *string
 	err := row.Scan(&id, &authorID, &l.AuthorEmail, &l.DealType, &l.PropertyType, &l.Country, &l.Region, &l.City, &l.Village,
 		&l.Microdistrict, &l.Street, &l.House, &l.Lat, &l.Lng,
 		&l.Price, &l.Area, &l.Rooms, &l.Title, &l.Description, &l.Contact, &l.CoverURL, &l.Images, &l.Status, &l.CreatedAt,
-		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.BannerUntil, &l.ViewsCount, &l.ContactsCount, &l.LandArea, &l.Amenities, &roomsRaw)
+		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.BannerUntil, &l.ViewsCount, &l.ContactsCount, &l.LandArea, &l.Amenities, &roomsRaw,
+		&agentID, &agentName)
 	if err != nil {
 		return nil, err
 	}
@@ -90,12 +94,18 @@ func scanListing(row pgx.Row) (*Listing, error) {
 	}
 	l.ID = id.String()
 	l.AuthorID = authorID.String()
+	if agentID != nil {
+		l.AgentID = agentID.String()
+		if agentName != nil {
+			l.AgentName = *agentName
+		}
+	}
 	return &l, nil
 }
 
 // MyListings returns all of an author's listings (active or expired), newest first.
 func (s *ListingStore) MyListings(ctx context.Context, authorID uuid.UUID) ([]*Listing, error) {
-	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
 		WHERE l.author_id = $1 ORDER BY l.created_at DESC`, listingCols), authorID)
 	if err != nil {
 		return nil, fmt.Errorf("my listings: %w", err)
@@ -121,7 +131,7 @@ func (s *ListingStore) Extend(ctx context.Context, id, author uuid.UUID) error {
 // DueReminders returns active listings expiring within 2 days that have not yet
 // been reminded, so the owner can be nudged to extend.
 func (s *ListingStore) DueReminders(ctx context.Context) ([]*Listing, error) {
-	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
 		WHERE l.status = 'published' AND l.expiry_reminded = false
 		  AND l.expires_at > NOW() AND l.expires_at <= NOW() + INTERVAL '2 days'
 		ORDER BY l.expires_at`, listingCols))
@@ -173,7 +183,7 @@ func (s *ListingStore) BannerListings(ctx context.Context, limit int) ([]*Listin
 	if limit <= 0 || limit > 10 {
 		limit = 2
 	}
-	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
 		WHERE l.status = 'published' AND l.expires_at > NOW() AND l.banner_until > NOW()
 		ORDER BY l.banner_until DESC LIMIT $1`, listingCols), limit)
 	if err != nil {
@@ -270,7 +280,7 @@ func (s *ListingStore) List(ctx context.Context, f ListingFilter) ([]*Listing, e
 		where += fmt.Sprintf(" AND (l.title ILIKE $%d OR l.description ILIKE $%d)", n, n)
 	}
 	args = append(args, limit)
-	q := fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id
+	q := fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
 		WHERE %s ORDER BY COALESCE(l.promoted_until > NOW(), false) DESC, l.created_at DESC LIMIT $%d`, listingCols, where, len(args))
 
 	rows, err := s.db.Query(ctx, q, args...)
@@ -369,7 +379,7 @@ func (s *ListingStore) PurgeExpired(ctx context.Context) (int64, error) {
 // GetByID loads a single published listing.
 func (s *ListingStore) GetByID(ctx context.Context, id uuid.UUID) (*Listing, error) {
 	// Expired listings 404 immediately (not only after the 6h purge sweep).
-	row := s.db.QueryRow(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id
+	row := s.db.QueryRow(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
 		WHERE l.id = $1 AND l.status = 'published' AND l.expires_at > NOW()`, listingCols), id)
 	l, err := scanListing(row)
 	if err != nil {
@@ -379,4 +389,25 @@ func (s *ListingStore) GetByID(ctx context.Context, id uuid.UUID) (*Listing, err
 		return nil, err
 	}
 	return l, nil
+}
+
+// AgentListings returns an agent's active published listings, promoted first
+// then newest — the feed for their public page.
+func (s *ListingStore) AgentListings(ctx context.Context, agentID uuid.UUID) ([]*Listing, error) {
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`SELECT %s FROM listings l JOIN auth_users u ON u.id = l.author_id LEFT JOIN re_agents ra ON ra.user_id = l.author_id
+		WHERE l.author_id = $1 AND l.status = 'published' AND l.expires_at > NOW()
+		ORDER BY (l.promoted_until > NOW()) DESC, l.created_at DESC`, listingCols), agentID)
+	if err != nil {
+		return nil, fmt.Errorf("agent listings: %w", err)
+	}
+	defer rows.Close()
+	var out []*Listing
+	for rows.Next() {
+		l, err := scanListing(rows)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, l)
+	}
+	return out, rows.Err()
 }

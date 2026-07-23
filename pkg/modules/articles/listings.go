@@ -64,7 +64,15 @@ type Listing struct {
 	PromotedUntil *time.Time
 	FeaturedUntil *time.Time
 	BannerUntil   *time.Time
+	// Agent attribution: set when the listing's owner is a registered
+	// real-estate agent, so cards and the listing page can badge it and link to
+	// the agent's public page.
+	AgentID   string
+	AgentName string
 }
+
+// ByAgent reports whether this listing was posted by a registered agent.
+func (l Listing) ByAgent() bool { return l.AgentID != "" }
 
 // Expired reports whether the listing's free window has ended.
 func (l Listing) Expired() bool { return l.ExpiresAt.Before(time.Now()) }

@@ -1,0 +1,47 @@
+{{ define "agent_cabinet" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  {{ template "backlink" (dict "Href" "/listings" "Label" (t .Lang "nav.realestate")) }}
+  {{ template "acct_nav" . }}
+
+  <div class="studio__head" style="margin-top:24px">
+    <h1>{{ t .Lang "agent.title" }}</h1>
+    {{ if .Agent }}<a class="btn btn--ghost" href="/agent/{{ .Agent.UserID }}">{{ t .Lang "agent.view_public" }} →</a>{{ end }}
+  </div>
+
+  {{ if .Saved }}<p class="notice notice--ok" style="margin:0 0 18px">{{ t .Lang "agent.saved" }}</p>{{ end }}
+  {{ if .Error }}<p class="notice notice--warn" style="margin:0 0 18px">{{ .Error }}</p>{{ end }}
+
+  {{ if .Agent }}
+  <p class="hint" style="margin:-6px 0 18px">{{ t .Lang "agent.registered_note" }} · {{ t .Lang "agent.listings_count" }}: <b>{{ .Count }}</b></p>
+  {{ else }}
+  <p class="hint" style="margin:-6px 0 18px">{{ t .Lang "agent.intro" }}</p>
+  {{ end }}
+
+  <section class="adv-card" style="max-width:640px">
+    <h2 class="adv-card__title">{{ if .Agent }}{{ t .Lang "agent.edit_profile" }}{{ else }}{{ t .Lang "agent.become" }}{{ end }}</h2>
+    <form method="post" action="/agent">
+      <div class="field">
+        <label>{{ t .Lang "agent.name" }} * {{ template "fhelp" (t .Lang "agent.h_name") }}</label>
+        <input class="input" name="name" maxlength="80" value="{{ .Draft.Name }}" required>
+      </div>
+      <div class="field">
+        <label>{{ t .Lang "agent.agency" }}</label>
+        <input class="input" name="agency" maxlength="80" value="{{ .Draft.Agency }}">
+      </div>
+      <div class="field">
+        <label>{{ t .Lang "agent.phone" }}</label>
+        <input class="input" name="phone" maxlength="40" value="{{ .Draft.Phone }}">
+      </div>
+      <div class="field">
+        <label>{{ t .Lang "agent.about" }}</label>
+        <textarea class="input" name="about" rows="4" maxlength="600">{{ .Draft.About }}</textarea>
+      </div>
+      <button class="btn btn--primary" type="submit">{{ if .Agent }}{{ t .Lang "agent.save" }}{{ else }}{{ t .Lang "agent.register" }}{{ end }}</button>
+    </form>
+  </section>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

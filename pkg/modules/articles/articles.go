@@ -37,6 +37,7 @@ type Module struct {
 	ads       *AdStore
 	mods      *ModStore
 	refs      *ReferralStore
+	reagents  *AgentStore
 	pay       *PaymentStore
 	payProv   PaymentProvider
 	flags     *ServiceFlags
@@ -72,6 +73,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.ads = NewAdStore(rt.DB)
 	m.mods = NewModStore(rt.DB)
 	m.refs = NewReferralStore(rt.DB)
+	m.reagents = NewAgentStore(rt.DB)
 	m.pay = NewPaymentStore(rt.DB)
 	// Provider stays disabled until one is configured — no credentials in the
 	// repo, same as AI and SMTP. A concrete adapter is registered here later.
@@ -209,6 +211,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/listings/{id}/banner", m.handleListingBanner)
 		r.Post("/listings/{id}/contact", m.handleListingContact)
 		r.Get("/listings/{id}", m.handleListingView)
+		r.Get("/agent/{id}", m.handleAgentPublic)
 	})
 
 	// Studio auth pages (public).
@@ -242,6 +245,8 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/studio/a/{id}/translate", m.handleTranslate)
 		r.Get("/favorites", m.handleFavorites)
 		// Advertiser cabinet (Phase 0b MVP — order capture, billing later).
+		r.Get("/agent", m.handleAgentCabinet)
+		r.Post("/agent", m.handleAgentSave)
 		r.Get("/advertise", m.handleAdvertise)
 		r.Post("/advertise/company", m.handleAdvertiseCompany)
 		r.Post("/advertise/order", m.handleAdvertiseOrder)

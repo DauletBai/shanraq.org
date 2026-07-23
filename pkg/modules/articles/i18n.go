@@ -157,6 +157,28 @@ var messages = map[string]map[string]string{
 	"re.adslot":              {"kz": "Мұнда сіздің жарнамаңыз болуы мүмкін", "ru": "Здесь может быть ваша реклама", "en": "Your ad could be here"},
 	"re.adslot_cta":          {"kz": "Орналастыру", "ru": "Разместить", "en": "Place an ad"},
 
+	// Real-estate agents.
+	"agent.nav":             {"kz": "Агент кабинеті", "ru": "Кабинет агента", "en": "Agent cabinet"},
+	"agent.title":           {"kz": "Жылжымайтын мүлік агенті", "ru": "Агент по недвижимости", "en": "Real-estate agent"},
+	"agent.badge":           {"kz": "Агент", "ru": "Агент", "en": "Agent"},
+	"agent.intro":           {"kz": "Агент ретінде тегін тіркеліңіз: хабарландыруларыңызда «Агент» белгісі және барлық хабарландыруларыңызға сілтемесі бар жеке бет пайда болады.", "ru": "Зарегистрируйтесь как агент бесплатно: у ваших объявлений появится значок «Агент» и личная страница со ссылкой на все ваши объявления.", "en": "Register as an agent for free: your listings get an \"Agent\" badge and a personal page linking to all of your listings."},
+	"agent.become":          {"kz": "Агент болу", "ru": "Стать агентом", "en": "Become an agent"},
+	"agent.register":        {"kz": "Тіркелу", "ru": "Зарегистрироваться", "en": "Register"},
+	"agent.save":            {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
+	"agent.edit_profile":    {"kz": "Профильді өңдеу", "ru": "Редактировать профиль", "en": "Edit profile"},
+	"agent.registered_note": {"kz": "Сіз агент ретінде тіркелдіңіз.", "ru": "Вы зарегистрированы как агент.", "en": "You are registered as an agent."},
+	"agent.saved":           {"kz": "Профиль сақталды.", "ru": "Профиль сохранён.", "en": "Profile saved."},
+	"agent.err_name":        {"kz": "Атыңызды көрсетіңіз.", "ru": "Укажите имя.", "en": "Please enter your name."},
+	"agent.name":            {"kz": "Аты-жөні", "ru": "Имя", "en": "Name"},
+	"agent.h_name":          {"kz": "Хабарландыруларда және жеке бетте көрсетіледі.", "ru": "Показывается в объявлениях и на личной странице.", "en": "Shown on your listings and public page."},
+	"agent.agency":          {"kz": "Агенттік (міндетті емес)", "ru": "Агентство (необязательно)", "en": "Agency (optional)"},
+	"agent.phone":           {"kz": "Телефон", "ru": "Телефон", "en": "Phone"},
+	"agent.about":           {"kz": "Өзіңіз туралы", "ru": "О себе", "en": "About you"},
+	"agent.view_public":     {"kz": "Жеке бетті ашу", "ru": "Открыть личную страницу", "en": "View public page"},
+	"agent.listings_count":  {"kz": "Белсенді хабарландырулар", "ru": "Активных объявлений", "en": "Active listings"},
+	"agent.listings_title":  {"kz": "Агенттің хабарландырулары", "ru": "Объявления агента", "en": "Agent's listings"},
+	"agent.no_listings":     {"kz": "Әзірге белсенді хабарландырулар жоқ.", "ru": "Пока нет активных объявлений.", "en": "No active listings yet."},
+
 	"media.upload":      {"kz": "Фото жүктеу", "ru": "Загрузить фото", "en": "Upload photo"},
 	"media.upload_note": {"kz": "Жүктелген фотоларға автоматты түрде су таңбасы қойылады.", "ru": "На загруженные фото автоматически добавляется водяной знак.", "en": "Uploaded photos automatically get a watermark."},
 

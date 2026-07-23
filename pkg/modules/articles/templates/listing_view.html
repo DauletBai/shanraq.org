@@ -23,6 +23,7 @@
           <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>
           {{ if .L.Promoted }}<span class="badge-top badge-top--inline">{{ t .Lang "re.badge_top" }}</span>{{ end }}
           {{ if .L.Featured }}<span class="badge-feat">{{ t .Lang "re.badge_featured" }}</span>{{ end }}
+          {{ if .L.ByAgent }}<a class="badge-agent" href="/agent/{{ .L.AgentID }}">◆ {{ t .Lang "agent.badge" }}: {{ .L.AgentName }}</a>{{ end }}
         </div>
         {{ if .Owner }}
         <div class="listing__owner">
