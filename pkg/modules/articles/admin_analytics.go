@@ -14,6 +14,7 @@ type AdminAnalytics struct {
 	VerifiedEmail int
 	VerifiedPhone int
 	Authors       int // users who can publish (real name + verified phone)
+	Agents        int // registered real-estate agents
 
 	// Content.
 	Published int
@@ -62,6 +63,8 @@ func (m *Module) adminAnalytics(ctx context.Context) (AdminAnalytics, error) {
 	db := m.rt.DB
 
 	_ = db.QueryRow(ctx, `SELECT COUNT(*) FROM subscribers`).Scan(&a.Subscribers)
+
+	_ = db.QueryRow(ctx, `SELECT COUNT(*) FROM re_agents`).Scan(&a.Agents)
 
 	_ = db.QueryRow(ctx, `
 		SELECT COUNT(*),
