@@ -51,30 +51,21 @@ func adSurfaceFor(r *http.Request) string {
 	return ""
 }
 
-// sidebarAds serves the paid placements booked for this page's zone. Demo
-// creatives only fill the slot while nothing is sold for it.
+// sidebarAds serves the paid placements booked for this page's zone. A slot
+// with nothing sold shows nothing at all — no placeholder creatives, so the
+// sidebar carries no ad banner until a real ad is bought and served.
 func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
-	// In production a slot with nothing sold shows nothing, not placeholder
-	// cars: a demo advert on a live page reads as a real listing that failed
-	// to load, or worse as a commercial relationship that does not exist.
-	demoOK := !strings.EqualFold(m.rt.Config.Environment, "production")
-	fallback := func() []Ad {
-		if demoOK {
-			return demoAds(lang)
-		}
-		return nil
-	}
 	surface := adSurfaceFor(r)
 	if surface == "" || m.ads == nil {
-		return fallback()
+		return nil
 	}
 	orders, err := m.ads.ActiveBySurface(r.Context(), surface, lang, 12)
 	if err != nil {
 		m.rt.Logger.Warn("sidebar ads", zap.Error(err))
-		return fallback()
+		return nil
 	}
 	if len(orders) == 0 {
-		return fallback()
+		return nil
 	}
 	out := make([]Ad, 0, len(orders))
 	for _, o := range orders {
