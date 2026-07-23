@@ -1145,6 +1145,12 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 @media (max-width: 1000px) { .adm-flow { columns: 1; } }
 @media (max-width: 768px) { .adm-flow > #growth .adm-cols { grid-template-columns: 1fr; } }
 
+/* The moderation cards (queue, appeals, log, analysis) get their own isolated
+   two-column masonry so they split evenly instead of stacking in one column. */
+.adm-cards2 { columns: 2; column-gap: 22px; }
+.adm-cards2 > .adv-card { break-inside: avoid; margin: 0 0 22px; }
+@media (max-width: 1000px) { .adm-cards2 { columns: 1; } }
+
 .adm-section__h { font-size: var(--step-1); margin: 0 0 14px; }
 .adm-kpis { 
   display: grid; 

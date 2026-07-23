@@ -261,9 +261,10 @@
       </div>
     </section>
     {{ end }}
-  
-{{ if .CanModerate }}
+    </div>{{/* /.adm-flow */}}
 
+{{ if .CanModerate }}
+<div class="adm-cards2">
 <section class="adv-card">
   <h2 class="adv-card__title">{{ t .Lang "aq.title" }}{{ if .Queue }} <span class="subbar__badge">{{ len .Queue }}</span>{{ end }}</h2>
   <p class="aside__text">{{ t .Lang "aq.hint" }}</p>
@@ -340,8 +341,8 @@
     <button class="btn btn--primary btn--sm" type="submit">{{ t .Lang "an.run" }}</button>
   </form>
 </section>
+</div>{{/* /.adm-cards2 */}}
 {{ end }}
-    </div>
 </main>
 </div>
 
