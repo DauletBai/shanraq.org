@@ -6,6 +6,26 @@ import (
 	"testing"
 )
 
+// TestValidServiceCode guards the admin toggle's accept-list: the global site
+// switch must be a valid code even though it is not in the paid-services
+// registry (a mismatch here once made "take site down" return "invalid value").
+func TestValidServiceCode(t *testing.T) {
+	if !validServiceCode(SvcSite) {
+		t.Fatal("site must be a valid togglable code")
+	}
+	if isKnownService(SvcSite) {
+		t.Fatal("site must NOT be in the paid-services registry")
+	}
+	for _, c := range []string{SvcAdOrders, SvcListingPromo} {
+		if !validServiceCode(c) {
+			t.Errorf("%s should be valid", c)
+		}
+	}
+	if validServiceCode("nope") {
+		t.Error("unknown code should be rejected")
+	}
+}
+
 func TestIsMaintenanceExempt(t *testing.T) {
 	exempt := []string{"/studio/login", "/studio/logout", "/admin", "/admin/services", "/admin/roles"}
 	for _, p := range exempt {

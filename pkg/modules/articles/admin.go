@@ -308,7 +308,7 @@ func (m *Module) handleAdminServiceFlag(w http.ResponseWriter, r *http.Request) 
 	_ = r.ParseForm()
 	code := strings.TrimSpace(r.FormValue("code"))
 	status := strings.TrimSpace(r.FormValue("status"))
-	if !isKnownService(code) || !isServiceStatus(status) {
+	if !validServiceCode(code) || !isServiceStatus(status) {
 		http.Redirect(w, r, "/admin?ok=svc_bad", http.StatusSeeOther)
 		return
 	}
