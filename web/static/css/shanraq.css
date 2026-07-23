@@ -1197,6 +1197,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-svc__state { font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
 .adm-svc__state--on { color: #0a7d33; border-color: #9bd8b0; background: rgba(16,161,74,0.08); }
 .adm-svc__state--maintenance { color: #9a6a00; border-color: #e6c884; background: rgba(217,164,32,0.10); }
+.adm-svc__state--invite_only { color: #3949ab; border-color: #b9c0e8; background: rgba(57,73,171,0.08); }
 .adm-svc__state--off { color: #a33; border-color: #e3a7a7; background: rgba(200,60,60,0.08); }
 .adm-svc__msgs { display: grid; grid-template-columns: 1fr; gap: 8px; }
 .adm-svc__msgs label { display: grid; grid-template-columns: 28px 1fr; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }

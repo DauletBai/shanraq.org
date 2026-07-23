@@ -262,7 +262,7 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 	page.AssignRoles = assignableRoles
 	if canManageUsers(claims) {
 		page.Services = m.flags.All()
-		page.ServiceStates = []string{svcOn, svcMaintenance, svcOff}
+		page.ServiceStates = []string{svcOn, svcInviteOnly, svcMaintenance, svcOff}
 		page.Site = m.flags.SiteFlag()
 		if pend, err := m.reagents.Pending(r.Context(), 100); err == nil {
 			page.PendingAgents = pend

@@ -214,9 +214,9 @@
                 <b>{{ t $.Lang .TitleKey }}</b>
                 <span class="adm-svc__state adm-svc__state--{{ .Status }}">{{ t $.Lang (printf "svc.state_%s" .Status) }}</span>
               </div>
+              {{ $cur := .Status }}{{ $inv := .Invitable }}
               <select class="select select--sm" name="status" aria-label="{{ t $.Lang "svc.state" }}">
-                {{ $cur := .Status }}
-                {{ range $.ServiceStates }}<option value="{{ . }}"{{ if eq . $cur }} selected{{ end }}>{{ t $.Lang (printf "svc.state_%s" .) }}</option>{{ end }}
+                {{ range $.ServiceStates }}{{ if or (ne . "invite_only") $inv }}<option value="{{ . }}"{{ if eq . $cur }} selected{{ end }}>{{ t $.Lang (printf "svc.state_%s" .) }}</option>{{ end }}{{ end }}
               </select>
             </div>
             <div class="adm-svc__msgs">

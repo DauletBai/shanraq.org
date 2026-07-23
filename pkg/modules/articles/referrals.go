@@ -93,6 +93,18 @@ func (s *ReferralStore) RecordReferral(ctx context.Context, referrer, referred u
 	return nil
 }
 
+// IsReferred reports whether a user joined through someone's invite link. It is
+// the "invited" signal for invite_only mode: a beta tester who registered via an
+// admin's invite is referred, so they may create content while the public cannot.
+func (s *ReferralStore) IsReferred(ctx context.Context, userID uuid.UUID) bool {
+	var exists bool
+	if err := s.db.QueryRow(ctx,
+		`SELECT EXISTS(SELECT 1 FROM referrals WHERE referred_id = $1)`, userID).Scan(&exists); err != nil {
+		return false
+	}
+	return exists
+}
+
 // Qualify is called when a user does the rewardable action (posts a real
 // listing). If that user was referred and the referral is still pending, it
 // flips to qualified and grants the referrer their credit — both in one

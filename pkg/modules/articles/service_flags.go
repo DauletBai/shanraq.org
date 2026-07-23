@@ -14,6 +14,7 @@ import (
 // (visible but its paid action is disabled behind an apology), or off (hidden).
 const (
 	svcOn          = "on"
+	svcInviteOnly  = "invite_only" // available only to staff + invited (referred) users
 	svcMaintenance = "maintenance"
 	svcOff         = "off"
 )
@@ -25,6 +26,14 @@ const (
 	SvcAdOrders     = "ad_orders"     // paid advertising in the advertiser cabinet
 	SvcListingPromo = "listing_promo" // paid promotion/feature/banner for listings
 	SvcAgentReg     = "agent_registration"
+
+	// Free-function gates (on | invite_only | maintenance | off) — the staged
+	// launch controls: open reading/indexing to all while keeping user content
+	// creation invite-only or closed during the beta.
+	SvcRegistration  = "registration"
+	SvcArticleSubmit = "article_submission"
+	SvcListingSubmit = "listing_submission"
+	SvcComments      = "comments"
 
 	// SvcSite is the global switch: when it is not 'on', the whole site serves a
 	// maintenance page (503) to everyone but staff and the recovery routes. It
@@ -42,9 +51,23 @@ type ServiceDef struct {
 // knownServices is the ordered set shown in the admin panel. Adding a service
 // is one line here plus wiring its enforcement point.
 var knownServices = []ServiceDef{
-	{SvcAdOrders, "svc.ad_orders"},
-	{SvcListingPromo, "svc.listing_promo"},
+	{SvcRegistration, "svc.registration"},
+	{SvcArticleSubmit, "svc.article_submit"},
+	{SvcListingSubmit, "svc.listing_submit"},
+	{SvcComments, "svc.comments"},
 	{SvcAgentReg, "svc.agent_reg"},
+	{SvcListingPromo, "svc.listing_promo"},
+	{SvcAdOrders, "svc.ad_orders"},
+}
+
+// invitable is true for services that support the invite_only mode (free
+// functions). Paid services use only on/maintenance/off.
+func invitable(code string) bool {
+	switch code {
+	case SvcRegistration, SvcArticleSubmit, SvcListingSubmit, SvcComments, SvcAgentReg:
+		return true
+	}
+	return false
 }
 
 func isKnownService(code string) bool {
@@ -61,7 +84,7 @@ func isKnownService(code string) bool {
 func validServiceCode(code string) bool { return isKnownService(code) || code == SvcSite }
 
 func isServiceStatus(s string) bool {
-	return s == svcOn || s == svcMaintenance || s == svcOff
+	return s == svcOn || s == svcInviteOnly || s == svcMaintenance || s == svcOff
 }
 
 // ServiceFlag is one service's current state with its localized messages.
@@ -74,6 +97,10 @@ type ServiceFlag struct {
 	MessageEN string
 	Until     time.Time // planned end of maintenance; zero = open-ended
 }
+
+// Invitable reports whether this service supports the invite_only mode, so the
+// admin panel only offers it where it applies.
+func (f ServiceFlag) Invitable() bool { return invitable(f.Code) }
 
 // HasTimer reports whether a planned end time is set.
 func (f ServiceFlag) HasTimer() bool { return !f.Until.IsZero() }
@@ -201,6 +228,9 @@ func (s *ServiceFlags) All() []ServiceFlag {
 func (s *ServiceFlags) Set(ctx context.Context, code, status, msgKZ, msgRU, msgEN string, until *time.Time, by *uuid.UUID) error {
 	if !validServiceCode(code) || !isServiceStatus(status) {
 		return fmt.Errorf("unknown service or status")
+	}
+	if status == svcInviteOnly && !invitable(code) {
+		return fmt.Errorf("service %q does not support invite_only", code)
 	}
 	if status == svcOn {
 		until = nil // an available service has no maintenance window

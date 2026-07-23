@@ -14,6 +14,7 @@
 
     {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
     {{ if .Notice }}<div class="notice" style="margin-bottom:18px">{{ .Notice }}</div>{{ end }}
+    {{ if .IsNew }}{{ with index .Svc "article_submission" }}{{ if not .On }}<div class="alert alert--error">🛠 {{ .Msg }}</div>{{ end }}{{ end }}{{ end }}
 
     {{ if not .IsNew }}
     <div class="notice ai-bar" style="margin-bottom:18px">

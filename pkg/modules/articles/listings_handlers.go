@@ -154,6 +154,16 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 
 	in := parseListingForm(r)
 
+	// Listing submission gate (staged launch): open / invite-only / closed.
+	if ok, msg := m.gateReason(r, SvcListingSubmit, lang); !ok {
+		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
+		page.ActiveCat = "realestate"
+		page.Values = in
+		page.Error = msg
+		m.render(w, "listing_new", page)
+		return
+	}
+
 	// Posting requires a verified email (blocks throwaway-account spam).
 	if !m.auth.IsEmailVerified(r.Context(), authorID) {
 		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}

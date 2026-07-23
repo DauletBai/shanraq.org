@@ -84,20 +84,80 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		OGType:    "website",
 		Info:      m.infobar.Snapshot(localizedDate(lang, time.Now())),
 		Ads:       m.sidebarAds(r, lang),
-		Svc:       m.serviceViews(lang),
+		Svc:       m.serviceViews(r, lang),
 	}
 }
 
-// serviceViews snapshots every known service's state, localized for the page.
-func (m *Module) serviceViews(lang string) map[string]ServiceView {
+// serviceViews snapshots every known service's state for THIS viewer, localized.
+// For invite_only, On is true when the viewer is invited, so an invited tester
+// sees no banner and keeps the action while the public sees "by invitation".
+func (m *Module) serviceViews(r *http.Request, lang string) map[string]ServiceView {
 	if m.flags == nil {
 		return nil
 	}
+	invited, invitedComputed := false, false
 	out := make(map[string]ServiceView, len(knownServices))
 	for _, f := range m.flags.All() {
-		out[f.Code] = ServiceView{On: f.Available(), Msg: f.Message(lang)}
+		on := f.Available()
+		msg := f.Message(lang)
+		switch f.Status {
+		case svcInviteOnly:
+			if !invitedComputed {
+				invited, invitedComputed = m.isInvited(r), true
+			}
+			if invited {
+				on = true
+			} else if msg == "" {
+				msg = T(lang, "svc.invite_note")
+			}
+		default:
+			if !on && msg == "" {
+				msg = T(lang, "svc.closed_note")
+			}
+		}
+		out[f.Code] = ServiceView{On: on, Msg: msg}
 	}
 	return out
+}
+
+// isInvited reports whether the current viewer may use invite_only functions:
+// staff always, plus any user who joined through an invite link.
+func (m *Module) isInvited(r *http.Request) bool {
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		return false
+	}
+	if claims.HasAnyRole(adminRoles...) {
+		return true
+	}
+	if id, ok := m.authorID(r); ok {
+		return m.refs.IsReferred(r.Context(), id)
+	}
+	return false
+}
+
+// gateReason decides whether the viewer may perform a flagged free action and,
+// when not, returns the localized notice explaining why (by-invitation vs
+// temporarily-closed).
+func (m *Module) gateReason(r *http.Request, code, lang string) (allowed bool, msg string) {
+	f := m.flags.Flag(code)
+	switch f.Status {
+	case svcOn:
+		return true, ""
+	case svcInviteOnly:
+		if m.isInvited(r) {
+			return true, ""
+		}
+		if s := f.Message(lang); s != "" {
+			return false, s
+		}
+		return false, T(lang, "svc.invite_note")
+	default: // maintenance | off
+		if s := f.Message(lang); s != "" {
+			return false, s
+		}
+		return false, T(lang, "svc.closed_note")
+	}
 }
 
 // resolveLang picks the active language from ?lang=, then cookie, then default.
@@ -462,6 +522,12 @@ func (m *Module) handleComment(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, backTo, http.StatusSeeOther)
 		return
 	}
+	// Comments gate (staged launch). The form is hidden when closed; this is the
+	// backstop for a direct POST.
+	if ok, _ := m.gateReason(r, SvcComments, m.resolveLang(w, r)); !ok {
+		http.Redirect(w, r, backTo, http.StatusSeeOther)
+		return
+	}
 	a, err := m.store.GetPublishedBySlug(r.Context(), slug)
 	if err != nil {
 		http.NotFound(w, r)
@@ -611,6 +677,30 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 	email := strings.TrimSpace(r.FormValue("email"))
 	password := r.FormValue("password")
+
+	// Registration gate (staged launch): open, invite-only (needs a valid invite
+	// code), or closed for maintenance.
+	regFail := func(msg string) {
+		m.render(w, "form", FormPage{
+			Base: m.base(r, T(lang, "form.register_title"), lang), Mode: "register", Email: email, Error: msg,
+		})
+	}
+	switch m.flags.Flag(SvcRegistration).Status {
+	case svcOn:
+		// open to everyone
+	case svcInviteOnly:
+		if _, ok := m.refs.ReferrerByCode(r.Context(), strings.TrimSpace(r.FormValue("ref"))); !ok {
+			regFail(T(lang, "form.err_invite_only"))
+			return
+		}
+	default: // maintenance | off
+		msg := m.flags.Flag(SvcRegistration).Message(lang)
+		if msg == "" {
+			msg = T(lang, "svc.closed_note")
+		}
+		regFail(msg)
+		return
+	}
 
 	if !m.auth.AllowAuthAttempt(r, "signup", email) {
 		m.render(w, "form", FormPage{
@@ -1095,6 +1185,11 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 	originalLang, category, subcategory, coverURL, trs := parseEditorForm(r)
 
 	lang := m.resolveLang(w, r)
+	// Article submission gate (staged launch): open / invite-only / closed.
+	if ok, msg := m.gateReason(r, SvcArticleSubmit, lang); !ok {
+		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, msg)
+		return
+	}
 	orig := findTR(trs, originalLang)
 	if orig.Title == "" || orig.BodyMD == "" {
 		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, T(lang, "editor.err_required"))

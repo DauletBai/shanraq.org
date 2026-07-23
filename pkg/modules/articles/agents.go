@@ -179,8 +179,8 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
 		return
 	}
-	// Registration can be paused (invite-only beta) from the admin panel.
-	if !m.flags.Available(SvcAgentReg) {
+	// Agent registration gate (open / invite-only / closed) from the admin panel.
+	if ok, _ := m.gateReason(r, SvcAgentReg, lang); !ok {
 		http.Redirect(w, r, "/agent", http.StatusSeeOther)
 		return
 	}

@@ -68,7 +68,10 @@
         {{ if .CommentReview }}
         <p class="comments__review">{{ t .Lang "comments.review" }}</p>
         {{ end }}
-        {{ if .Authed }}
+        {{ $comm := index .Svc "comments" }}
+        {{ if not $comm.On }}
+        <p class="comments__review">{{ $comm.Msg }}</p>
+        {{ else if .Authed }}
         <form class="comments__form" method="post" action="/read/{{ .Slug }}/comment">
           <textarea class="textarea" name="body" rows="3" maxlength="2000" placeholder="{{ t .Lang "comments.placeholder" }}" required></textarea>
           <div><button class="btn btn--primary" type="submit">{{ t .Lang "comments.submit" }}</button></div>

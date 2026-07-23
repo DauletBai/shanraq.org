@@ -14,6 +14,7 @@
 
     {{ if .Notice }}<div class="alert alert--ok">{{ .Notice }}</div>{{ end }}
     {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
+    {{ if and (eq .Mode "register") (not .Ref) }}{{ with index .Svc "registration" }}{{ if not .On }}<div class="alert alert--error">{{ .Msg }}</div>{{ end }}{{ end }}{{ end }}
 
     <form method="post" action="{{ if eq .Mode "register" }}/studio/register{{ else }}/studio/login{{ end }}">
       {{ if and (eq .Mode "register") .Ref }}<input type="hidden" name="ref" value="{{ .Ref }}">{{ end }}

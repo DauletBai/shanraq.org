@@ -121,6 +121,24 @@ func TestServiceFlagsIntegration(t *testing.T) {
 		t.Fatalf("expected error for bad status")
 	}
 
+	// invite_only is allowed on a free function but rejected on a paid one.
+	if err := flags.Set(ctx, SvcRegistration, svcInviteOnly, "", "", "", nil, nil); err != nil {
+		t.Fatalf("registration invite_only should be allowed: %v", err)
+	}
+	if flags.Flag(SvcRegistration).Status != svcInviteOnly {
+		t.Fatalf("registration should be invite_only")
+	}
+	if !flags.Flag(SvcRegistration).Invitable() {
+		t.Fatalf("registration must be invitable")
+	}
+	if err := flags.Set(ctx, SvcAdOrders, svcInviteOnly, "", "", "", nil, nil); err == nil {
+		t.Fatalf("invite_only must be rejected on a paid service")
+	}
+	// Reset registration to on so re-runs start clean.
+	if err := flags.Set(ctx, SvcRegistration, svcOn, "", "", "", nil, nil); err != nil {
+		t.Fatalf("reset registration: %v", err)
+	}
+
 	// Restore the beta seed state so re-runs start clean.
 	if err := flags.Set(ctx, SvcAdOrders, svcMaintenance,
 		"Жарнама төлемі уақытша қолжетімсіз.",
