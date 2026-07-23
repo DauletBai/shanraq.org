@@ -25,14 +25,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ .Title }} · Shanraq</title>
   <meta name="description" content="{{ .Desc }}">
-  <link rel="canonical" href="{{ .SiteURL }}{{ .Path }}?lang={{ .Lang }}">
+  <link rel="canonical" href="{{ .SiteURL }}{{ if .CanonURL }}{{ .CanonURL }}{{ else }}{{ .Path }}?lang={{ .Lang }}{{ end }}">
   {{ range langs }}<link rel="alternate" hreflang="{{ htmlLang . }}" href="{{ $.SiteURL }}{{ index $.LangLinks . }}">
   {{ end }}<link rel="alternate" hreflang="x-default" href="{{ .SiteURL }}{{ index .LangLinks "ru" }}">
   <meta property="og:site_name" content="Shanraq">
   <meta property="og:type" content="{{ if .OGType }}{{ .OGType }}{{ else }}website{{ end }}">
   <meta property="og:title" content="{{ .Title }}">
   <meta property="og:description" content="{{ .Desc }}">
-  <meta property="og:url" content="{{ .SiteURL }}{{ .Path }}?lang={{ .Lang }}">
+  <meta property="og:url" content="{{ .SiteURL }}{{ if .CanonURL }}{{ .CanonURL }}{{ else }}{{ .Path }}?lang={{ .Lang }}{{ end }}">
   <meta property="og:image" content="{{ .OGImage }}">
   <meta property="og:locale" content="{{ ogLocale .Lang }}">
   <meta name="twitter:card" content="summary_large_image">

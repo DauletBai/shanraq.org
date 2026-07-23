@@ -71,7 +71,7 @@ func TestTemplatesExecute(t *testing.T) {
 
 	// Exercise every UI language so a missing translation key surfaces.
 	for _, lang := range Langs {
-		base := Base{Title: "T", Lang: lang, Authed: true, ShowLangs: true, ActiveCat: "sport", ActiveSub: "football", LangLinks: langLinks("/", lang), Ads: demoAds(lang)}
+		base := Base{Title: "T", Lang: lang, Authed: true, ShowLangs: true, ActiveCat: "sport", ActiveSub: "football", LangLinks: langLinks("/", "cat=sport"), Ads: demoAds(lang)}
 		item := FeedItem{Slug: "s", Title: "Заголовок", Summary: "Краткое", AuthorName: "Автор",
 			ServedLang: LangRU, Category: "politics", Subcategory: "elections", Published: &now, Views: 5, Score: 12, AvailableLangs: []string{LangRU, LangKZ}}
 

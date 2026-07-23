@@ -4,6 +4,7 @@ import (
 	"errors"
 	"html/template"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -41,8 +42,10 @@ type Base struct {
 	Info InfoBarData
 
 	// SEO fields (populated by base(); pages may override).
-	SiteURL string        // absolute origin, e.g. https://shanraq.org
-	Path    string        // request path, no query
+	SiteURL  string // absolute origin, e.g. https://shanraq.org
+	Path     string // request path, no query (used for nav active state)
+	CanonURL string // relative canonical path+query for THIS language,
+	//                        including only whitelisted indexable filters
 	Desc    string        // meta description
 	OGImage string        // absolute image URL for social previews
 	OGType  string        // "website" | "article"
@@ -72,9 +75,10 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Authed:    authed,
 		IsStaff:   authed && claims.HasAnyRole(adminRoles...),
 		ShowLangs: true,
-		LangLinks: langLinks(r.URL.Path, lang),
+		LangLinks: langLinks(r.URL.Path, seoFilterQuery(r)),
 		SiteURL:   site,
 		Path:      r.URL.Path,
+		CanonURL:  canonURL(r.URL.Path, seoFilterQuery(r), lang),
 		Desc:      T(lang, "seo.site_desc"),
 		OGImage:   site + "/static/brand/shanraq.svg",
 		OGType:    "website",
@@ -130,12 +134,51 @@ func (m *Module) latestNews(r *http.Request, lang string, n int) []FeedItem {
 	return out
 }
 
-func langLinks(base string, current string) map[string]string {
+// seoFilterQuery returns the indexable filters for the request as a stable,
+// ordered query string (no lang), whitelisted per page. Only these filters
+// survive into canonical/hreflang URLs, so arbitrary query combinations (search,
+// paging, sort) never spawn duplicate indexable pages.
+func seoFilterQuery(r *http.Request) string {
+	q := r.URL.Query()
+	var parts []string
+	switch r.URL.Path {
+	case "/":
+		if c := q.Get("cat"); IsCategory(c) {
+			parts = append(parts, "cat="+url.QueryEscape(c))
+			// A subcategory is only meaningful under its category.
+			if s := q.Get("sub"); IsSubcategory(s) {
+				parts = append(parts, "sub="+url.QueryEscape(s))
+			}
+		}
+	case "/listings":
+		if d := q.Get("deal"); isDealType(d) {
+			parts = append(parts, "deal="+url.QueryEscape(d))
+		}
+		if t := q.Get("type"); isPropertyType(t) {
+			parts = append(parts, "type="+url.QueryEscape(t))
+		}
+	}
+	return strings.Join(parts, "&")
+}
+
+// canonURL builds the canonical relative URL for a page in one language,
+// preserving the whitelisted filters so /?cat=sport canonicalizes to itself
+// (with its category), not to a bare "/".
+func canonURL(path, filters, lang string) string {
+	q := "lang=" + lang
+	if filters != "" {
+		q = filters + "&" + q
+	}
+	return path + "?" + q
+}
+
+// langLinks builds the per-language alternates for the current page, carrying
+// the same whitelisted filters so switching language keeps the category/filter.
+func langLinks(base, filters string) map[string]string {
 	out := make(map[string]string, len(Langs))
 	for _, l := range Langs {
-		out[l] = base + "?lang=" + l
+		out[l] = canonURL(base, filters, l)
 	}
-	_ = current
 	return out
 }
 
