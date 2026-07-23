@@ -166,6 +166,12 @@ func (m *Module) Routes(r chi.Router) {
 // cookie is already SameSite=Lax; this is defense in depth).
 func (m *Module) browserRoutes(r chi.Router) {
 	r.Use(m.verifyOrigin)
+	// Soft-load the session so the maintenance guard can recognize staff and let
+	// them through a global takedown; it never blocks a request on its own.
+	r.Use(m.auth.LoadSession)
+	// Global maintenance switch: when the site is down, everything below serves
+	// a 503 maintenance page except staff and the admin/login recovery routes.
+	r.Use(m.maintenanceGuard)
 
 	// SEO endpoints (no session needed).
 	r.Get("/robots.txt", m.handleRobots)

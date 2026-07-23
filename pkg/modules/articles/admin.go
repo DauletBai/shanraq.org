@@ -216,7 +216,8 @@ type AdminPage struct {
 	Analytics AdminAnalytics
 	// Operational service switches (maintenance mode per service).
 	Services      []ServiceFlag
-	ServiceStates []string // selectable statuses: on | maintenance | off
+	ServiceStates []string    // selectable statuses: on | maintenance | off
+	Site          ServiceFlag // the global site switch
 }
 
 func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
@@ -259,6 +260,7 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 	if canManageUsers(claims) {
 		page.Services = m.flags.All()
 		page.ServiceStates = []string{svcOn, svcMaintenance, svcOff}
+		page.Site = m.flags.SiteFlag()
 	}
 	page.Notice = r.URL.Query().Get("ok")
 	if claims != nil {

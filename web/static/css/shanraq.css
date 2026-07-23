@@ -307,6 +307,8 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 :root[data-theme="dark"] .btn--teal { color: #fff; }
 .btn--ghost { background: transparent; border-color: var(--line-strong); color: var(--ink); }
 .btn--ghost:hover { background: var(--surface-2); }
+.btn--danger { background: #c0392b; color: #fff; border-color: #c0392b; }
+.btn--danger:hover { background: #a5281c; }
 .btn--sm { padding: 6px 12px; font-size: 0.78rem; }
 
 /* ---------- home layout ---------- */
@@ -1154,6 +1156,19 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-svc__msgs label { display: grid; grid-template-columns: 28px 1fr; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
 .adm-svc__foot { display: flex; justify-content: flex-end; }
 .input--sm, .select--sm { padding: 6px 10px; font-size: 14px; }
+.adm-site { margin-bottom: 16px; border-width: 2px; }
+.adm-site--maintenance, .adm-site--off { border-color: #e3a7a7; background: rgba(200,60,60,0.05); }
+.adm-site__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.adm-site__head > div { display: flex; align-items: center; gap: 12px; }
+.adm-site__actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 10px; }
+
+/* Global maintenance page */
+.maint-body { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); color: var(--ink); margin: 0; }
+.maint { max-width: 520px; padding: 40px 24px; text-align: center; }
+.maint__mark { width: 72px; height: 72px; margin-bottom: 8px; }
+.maint__icon { font-size: 40px; margin: 8px 0 4px; }
+.maint__title { font-size: 26px; margin: 8px 0 12px; }
+.maint__msg { color: var(--muted); font-size: 16px; line-height: 1.6; }
 .adm-comments { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
 .adm-comments li { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
 .adm-comments__head { font-size: 0.85rem; color: var(--muted); margin-bottom: 5px; }

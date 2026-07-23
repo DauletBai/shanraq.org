@@ -163,6 +163,33 @@
 
     {{ if .CanManageUsers }}
     <section id="services" class="adm-section">
+      <div class="adm-panel adm-site adm-site--{{ .Site.Status }}">
+        <div class="adm-site__head">
+          <div>
+            <h2 style="margin:0">{{ t .Lang "svc.site" }}</h2>
+            <span class="adm-svc__state adm-svc__state--{{ if eq .Site.Status "on" }}on{{ else }}off{{ end }}">
+              {{ if eq .Site.Status "on" }}{{ t .Lang "svc.site_up" }}{{ else }}{{ t .Lang "svc.site_maint" }}{{ end }}
+            </span>
+          </div>
+        </div>
+        <p class="adm-hint" style="margin-top:6px">{{ t .Lang "svc.site_hint" }}</p>
+        <form class="adm-svc__row" method="post" action="/admin/services" style="border:none;padding:0">
+          <input type="hidden" name="code" value="site">
+          <div class="adm-svc__msgs">
+            <label>KZ<input class="input input--sm" type="text" name="message_kz" value="{{ .Site.MessageKZ }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
+            <label>RU<input class="input input--sm" type="text" name="message_ru" value="{{ .Site.MessageRU }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
+            <label>EN<input class="input input--sm" type="text" name="message_en" value="{{ .Site.MessageEN }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
+          </div>
+          <div class="adm-site__actions">
+            {{ if eq .Site.Status "on" }}
+            <button class="btn btn--danger btn--sm" type="submit" name="status" value="maintenance" onclick="return confirm('{{ t .Lang "svc.site_confirm_down" }}')">{{ t .Lang "svc.site_take_down" }}</button>
+            {{ else }}
+            <button class="btn btn--primary btn--sm" type="submit" name="status" value="on">{{ t .Lang "svc.site_bring_up" }}</button>
+            <button class="btn btn--ghost btn--sm" type="submit" name="status" value="maintenance">{{ t .Lang "svc.save" }}</button>
+            {{ end }}
+          </div>
+        </form>
+      </div>
       <div class="adm-panel">
         <h2>{{ t .Lang "svc.title" }}</h2>
         <p class="adm-hint" style="margin-top:-4px">{{ t .Lang "svc.hint" }}</p>

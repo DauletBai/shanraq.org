@@ -594,6 +594,17 @@ var messages = map[string]map[string]string{
 	"svc.save":              {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
 	"svc.ad_orders":         {"kz": "Жарнама төлемі", "ru": "Оплата рекламы", "en": "Paid advertising"},
 	"svc.listing_promo":     {"kz": "Хабарландыруды жылжыту", "ru": "Продвижение объявлений", "en": "Listing promotion"},
+
+	// Global site switch + maintenance page.
+	"svc.site":              {"kz": "Бүкіл сайт", "ru": "Весь сайт", "en": "Whole site"},
+	"svc.site_hint":         {"kz": "Күрделі өзгерістер немесе түнгі қайта жүктеу кезінде бүкіл сайтты техжұмыстарға қоюға болады. Қызметкерлер мен әкімшілік панелі қолжетімді болып қалады.", "ru": "На время серьёзных изменений или ночной перезагрузки можно поставить весь сайт на техработы. Сотрудники и админ-панель остаются доступны.", "en": "For major changes or a nightly reload you can put the whole site into maintenance. Staff and the admin panel stay accessible."},
+	"svc.site_up":           {"kz": "Сайт жұмыс істеп тұр", "ru": "Сайт работает", "en": "Site is up"},
+	"svc.site_maint":        {"kz": "Техжұмыстар", "ru": "На техработах", "en": "In maintenance"},
+	"svc.site_take_down":    {"kz": "Сайтты техжұмыстарға қою", "ru": "Поставить сайт на техработы", "en": "Take site down"},
+	"svc.site_bring_up":     {"kz": "Сайтты қайта қосу", "ru": "Вернуть сайт в работу", "en": "Bring site back up"},
+	"svc.site_confirm_down": {"kz": "Бүкіл сайт қолданушылар үшін жабылады. Жалғастырасыз ба?", "ru": "Весь сайт станет недоступен для пользователей. Продолжить?", "en": "The whole site will be unavailable to users. Continue?"},
+	"svc.site_down_title":   {"kz": "Техникалық жұмыстар", "ru": "Технические работы", "en": "Under maintenance"},
+	"svc.site_down_default": {"kz": "Сайтта техникалық жұмыстар жүріп жатыр. Жақын арада қайта ораламыз.", "ru": "На сайте идут технические работы. Мы скоро вернёмся.", "en": "The site is undergoing maintenance. We will be back shortly."},
 	"admin.to_site":         {"kz": "Сайтқа", "ru": "На сайт", "en": "To site"},
 	"admin.logout":          {"kz": "Шығу", "ru": "Выйти", "en": "Log out"},
 	"admin.dashboard":       {"kz": "Дашборд", "ru": "Дашборд", "en": "Dashboard"},

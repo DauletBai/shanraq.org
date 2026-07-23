@@ -1,0 +1,23 @@
+{{ define "maintenance" }}
+<!doctype html>
+<html lang="{{ .Lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>{{ .Title }} · Shanraq</title>
+  <link rel="icon" href="/static/brand/shanraq.svg">
+  <link rel="stylesheet" href="/static/css/shanraq.css">
+  <script>(function () { try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();</script>
+</head>
+<body class="maint-body">
+  <main class="maint">
+    <img class="maint__mark theme-light-only" src="/static/brand/shanraq.svg" alt="Shanraq" width="72" height="72">
+    <img class="maint__mark theme-dark-only" src="/static/brand/shanraq-light.svg" alt="Shanraq" width="72" height="72">
+    <div class="maint__icon" aria-hidden="true">🛠</div>
+    <h1 class="maint__title">{{ .Title }}</h1>
+    <p class="maint__msg">{{ .Message }}</p>
+  </main>
+</body>
+</html>
+{{ end }}

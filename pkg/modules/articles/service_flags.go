@@ -23,6 +23,12 @@ const (
 const (
 	SvcAdOrders     = "ad_orders"     // paid advertising in the advertiser cabinet
 	SvcListingPromo = "listing_promo" // paid promotion/feature/banner for listings
+
+	// SvcSite is the global switch: when it is not 'on', the whole site serves a
+	// maintenance page (503) to everyone but staff and the recovery routes. It
+	// is not a per-feature paid service, so it is kept out of knownServices and
+	// handled by its own middleware and admin control.
+	SvcSite = "site"
 )
 
 // ServiceDef names a service and its i18n label key for the admin panel.
@@ -46,6 +52,10 @@ func isKnownService(code string) bool {
 	}
 	return false
 }
+
+// validServiceCode covers every togglable code, including the global site
+// switch which is not a per-feature paid service.
+func validServiceCode(code string) bool { return isKnownService(code) || code == SvcSite }
 
 func isServiceStatus(s string) bool {
 	return s == svcOn || s == svcMaintenance || s == svcOff
@@ -132,8 +142,19 @@ func (s *ServiceFlags) Flag(code string) ServiceFlag {
 			break
 		}
 	}
+	if code == SvcSite {
+		f.TitleKey = "svc.site"
+	}
 	return f
 }
+
+// SiteFlag returns the global site switch (defaults to available).
+func (s *ServiceFlags) SiteFlag() ServiceFlag { return s.Flag(SvcSite) }
+
+// SiteUp reports whether the site is serving normally (not in global
+// maintenance). An unloaded/missing flag defaults to up, so a cold start or a
+// DB hiccup never accidentally takes the whole site down.
+func (s *ServiceFlags) SiteUp() bool { return s.Flag(SvcSite).Status == svcOn }
 
 // Available reports whether a service's paid action may run right now.
 func (s *ServiceFlags) Available(code string) bool { return s.Flag(code).Available() }
@@ -150,7 +171,7 @@ func (s *ServiceFlags) All() []ServiceFlag {
 // Set upserts a service's status and localized messages, then refreshes the
 // cache so the change takes effect immediately without a redeploy.
 func (s *ServiceFlags) Set(ctx context.Context, code, status, msgKZ, msgRU, msgEN string, by *uuid.UUID) error {
-	if !isKnownService(code) || !isServiceStatus(status) {
+	if !validServiceCode(code) || !isServiceStatus(status) {
 		return fmt.Errorf("unknown service or status")
 	}
 	_, err := s.db.Exec(ctx, `

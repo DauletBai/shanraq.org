@@ -117,6 +117,7 @@ func TestTemplatesExecute(t *testing.T) {
 				{ID: "id2", Title: "Истёкшее", Price: 5000000, Region: "Астана", ExpiresAt: now.Add(-24 * time.Hour)},
 			}}},
 			{"listing_my", MyListingsPage{Base: base}}, // empty state
+			{"maintenance", MaintenancePage{Lang: lang, Title: "Maintenance", Message: "Back soon"}},
 		}
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {
