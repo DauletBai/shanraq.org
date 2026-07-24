@@ -318,6 +318,22 @@
         hit.classList.toggle('is-open');
       }
     });
+    // Language tabs (article editor): show the panel for the clicked tab and
+    // hide the others. Each language has its own fields, so switching never
+    // touches another language's text.
+    document.querySelectorAll('.tabs').forEach(function (bar) {
+      var tabs = bar.querySelectorAll('[data-tab]');
+      var scope = bar.parentNode;
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var name = tab.getAttribute('data-tab');
+          tabs.forEach(function (t) { t.classList.toggle('is-active', t === tab); });
+          scope.querySelectorAll('[data-panel]').forEach(function (p) {
+            p.classList.toggle('is-active', p.getAttribute('data-panel') === name);
+          });
+        });
+      });
+    });
     document.querySelectorAll('[data-carousel]').forEach(function (car) {
       var track = car.querySelector('.carousel__track');
       var slides = car.querySelectorAll('.adslide, .gallery__item');
