@@ -1133,17 +1133,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* Two-column dashboard: blocks flow into two masonry columns (variable heights,
    no row gaps). The overview KPI strip spans both columns at the top. */
-.adm-flow { columns: 2; column-gap: 22px; }
-.adm-flow > .adm-section,
-.adm-flow > .adv-card { break-inside: avoid; margin: 0 0 22px; }
-.adm-flow > #overview,
-.adm-flow > #growth { column-span: all; }
-/* A full-width growth band keeps its own two-column panels side by side. */
-.adm-flow > #growth .adm-cols { grid-template-columns: 1fr 1fr; }
-/* Inside a half-width masonry column, internal two-column panels stack. */
-.adm-flow .adm-cols { grid-template-columns: 1fr; }
-@media (max-width: 1000px) { .adm-flow { columns: 1; } }
-@media (max-width: 768px) { .adm-flow > #growth .adm-cols { grid-template-columns: 1fr; } }
+/* Dashboard layout: full-width thematic bands stacked in reading order, each
+   with its own internal grid. A page-wide masonry balanced by height instead of
+   by meaning, which left one column empty whenever a section grew; sections that
+   own their grid can never do that. */
+.adm-flow > .adm-section { margin: 0 0 22px; }
 
 /* The moderation cards (queue, appeals, log, analysis) get their own isolated
    two-column masonry so they split evenly instead of stacking in one column. */
@@ -1190,8 +1184,16 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 .adm-roleform { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .adm-roleform .input { flex: 1; min-width: 180px; }
-.adm-svc { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
+/* Service switches flow across the full width — auto-fill keeps the row packed
+   whatever the count, so adding a service never creates a tall lonely column. */
+.adm-svc { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-top: 12px; align-items: start; }
 .adm-svc__row { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+/* The trilingual notice is secondary: collapsed by default to keep cards short. */
+.adm-svc__more > summary { cursor: pointer; font-size: 12px; color: var(--muted); list-style: none; }
+.adm-svc__more > summary::-webkit-details-marker { display: none; }
+.adm-svc__more > summary::before { content: "▸ "; }
+.adm-svc__more[open] > summary::before { content: "▾ "; }
+.adm-svc__more[open] > summary { margin-bottom: 8px; }
 .adm-svc__top { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
 .adm-svc__name { display: flex; gap: 10px; align-items: center; }
 .adm-svc__state { font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }

@@ -314,6 +314,42 @@ func (s *Store) SetName(ctx context.Context, userID uuid.UUID, first, last, midd
 }
 
 // AuthorIdentity returns the user's name and phone-verification status.
+// SetPrimaryRole promotes (or demotes) an existing account by e-mail, updating
+// both the primary role column and the role join table so the change is visible
+// wherever roles are read. Returns false when no such account exists.
+func (s *Store) SetPrimaryRole(ctx context.Context, email, role string) (bool, error) {
+	primary, normalized := normalizeRoleSet(role)
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return false, fmt.Errorf("begin role tx: %w", err)
+	}
+	defer tx.Rollback(ctx) //nolint:errcheck
+
+	var userID uuid.UUID
+	err = tx.QueryRow(ctx,
+		`UPDATE auth_users SET role = $2 WHERE lower(email) = lower($1) RETURNING id`,
+		email, primary).Scan(&userID)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return false, nil
+	}
+	if err != nil {
+		return false, fmt.Errorf("set role: %w", err)
+	}
+	for _, name := range normalized {
+		roleID, ensureErr := s.ensureRoleTx(ctx, tx, name, "")
+		if ensureErr != nil {
+			return false, ensureErr
+		}
+		if assignErr := s.assignRoleTx(ctx, tx, userID, roleID); assignErr != nil {
+			return false, assignErr
+		}
+	}
+	if err := tx.Commit(ctx); err != nil {
+		return false, fmt.Errorf("commit role: %w", err)
+	}
+	return true, nil
+}
+
 // MiddleName returns the user's patronymic (empty if unset).
 func (s *Store) MiddleName(ctx context.Context, userID uuid.UUID) (string, error) {
 	var middle string

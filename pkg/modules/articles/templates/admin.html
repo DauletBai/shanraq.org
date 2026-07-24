@@ -19,8 +19,8 @@
     </a>
     <nav class="adm__nav">
       <a href="#overview" class="adm__navlink is-active" data-nav>▤ {{ t .Lang "admin.overview" }}</a>
-      <a href="#content" class="adm__navlink" data-nav>▦ {{ t .Lang "admin.articles" }}</a>
       <a href="#growth" class="adm__navlink" data-nav>↗ {{ t .Lang "an2.title" }}</a>
+      <a href="#content" class="adm__navlink" data-nav>▦ {{ t .Lang "admin.articles" }}</a>
       <a href="#users" class="adm__navlink" data-nav>◕ {{ t .Lang "admin.users" }}</a>
       {{ if .CanManageUsers }}<a href="#services" class="adm__navlink" data-nav>⚙ {{ t .Lang "svc.title" }}</a>{{ end }}
       {{ if .CanModerate }}<a href="#moderation" class="adm__navlink" data-nav>✎ {{ t .Lang "admin.moderation" }}</a>{{ end }}
@@ -219,11 +219,14 @@
                 {{ range $.ServiceStates }}{{ if or (ne . "invite_only") $inv }}<option value="{{ . }}"{{ if eq . $cur }} selected{{ end }}>{{ t $.Lang (printf "svc.state_%s" .) }}</option>{{ end }}{{ end }}
               </select>
             </div>
-            <div class="adm-svc__msgs">
-              <label>KZ<input class="input input--sm" type="text" name="message_kz" value="{{ .MessageKZ }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
-              <label>RU<input class="input input--sm" type="text" name="message_ru" value="{{ .MessageRU }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
-              <label>EN<input class="input input--sm" type="text" name="message_en" value="{{ .MessageEN }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
-            </div>
+            <details class="adm-svc__more">
+              <summary>{{ t $.Lang "svc.msg_ph" }}</summary>
+              <div class="adm-svc__msgs">
+                <label>KZ<input class="input input--sm" type="text" name="message_kz" value="{{ .MessageKZ }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
+                <label>RU<input class="input input--sm" type="text" name="message_ru" value="{{ .MessageRU }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
+                <label>EN<input class="input input--sm" type="text" name="message_en" value="{{ .MessageEN }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
+              </div>
+            </details>
             <div class="adm-svc__foot">
               <button class="btn btn--primary btn--sm" type="submit">{{ t $.Lang "svc.save" }}</button>
             </div>
@@ -253,14 +256,6 @@
     </section>
     {{ end }}
 
-    {{ if .CanFinance }}
-    <section id="finance" class="adm-section">
-      <div class="adm-panel">
-        <h2>{{ t .Lang "admin.finance" }}</h2>
-        <p class="adm-hint">{{ t .Lang "admin.finance_soon" }}</p>
-      </div>
-    </section>
-    {{ end }}
     </div>{{/* /.adm-flow */}}
 
 {{ if .CanModerate }}
@@ -366,6 +361,15 @@
   </form>
 </section>
 </div>{{/* /.adm-cards2 */}}
+{{ end }}
+
+{{ if .CanFinance }}
+<section id="finance" class="adm-section">
+  <div class="adm-panel">
+    <h2>{{ t .Lang "admin.finance" }}</h2>
+    <p class="adm-hint">{{ t .Lang "admin.finance_soon" }}</p>
+  </div>
+</section>
 {{ end }}
 </main>
 </div>
