@@ -72,8 +72,10 @@
         <p class="hint">{{ t .Lang "editor.cover_hint" }} {{ t .Lang "media.upload_note" }}</p>
       </div>
 
-      <div class="tabs">
-        {{ range langs }}<button type="button" class="tab{{ if eq . $.OriginalLang }} is-active{{ end }}" data-tab="{{ . }}">{{ langName . }}</button>{{ end }}
+      <h3 class="editor-langs__h">{{ t .Lang "editor.by_language" }}</h3>
+      <p class="hint" style="margin:2px 0 8px">{{ t .Lang "editor.by_language_hint" }}</p>
+      <div class="tabs" role="tablist">
+        {{ range langs }}<button type="button" role="tab" class="tab{{ if eq . $.OriginalLang }} is-active{{ end }}" data-tab="{{ . }}">{{ langName . }}</button>{{ end }}
       </div>
 
       {{ range langs }}

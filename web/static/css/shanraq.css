@@ -598,6 +598,7 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .fhelp--right .fhelp__tip { left: auto; right: 0; }
 .fhelp--right .fhelp__tip::before { left: auto; right: 5px; }
 .fhelp:hover .fhelp__tip, .fhelp:focus-visible .fhelp__tip, .fhelp.is-open .fhelp__tip { opacity: 1; visibility: visible; transform: translateY(0); }
+.editor-langs__h { font-size: var(--step-0); margin: 18px 0 0; }
 .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line-strong); margin-bottom: 20px; }
 .tab { padding: 9px 18px; border: none; background: none; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .tab.is-active { color: var(--gold-strong); border-bottom-color: var(--gold); }
