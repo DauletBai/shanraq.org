@@ -13,6 +13,7 @@ type VerifyAuthorPage struct {
 	Base
 	First         string
 	Last          string
+	Middle        string
 	PhoneVerified bool
 	CanPublish    bool
 	CodeSent      bool
@@ -28,6 +29,7 @@ func (m *Module) renderVerifyAuthor(w http.ResponseWriter, r *http.Request, p Ve
 	if ok {
 		first, last, verified := m.auth.AuthorIdentity(r.Context(), uid)
 		p.First, p.Last, p.PhoneVerified = first, last, verified
+		p.Middle = m.auth.MiddleName(r.Context(), uid)
 		p.CanPublish = m.auth.CanPublish(r.Context(), uid)
 	}
 	q := r.URL.Query()
@@ -57,7 +59,7 @@ func (m *Module) handleAuthorName(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_ = r.ParseForm()
-	if err := m.auth.SetAuthorName(r.Context(), uid, r.FormValue("first_name"), r.FormValue("last_name")); err != nil {
+	if err := m.auth.SetAuthorName(r.Context(), uid, r.FormValue("first_name"), r.FormValue("last_name"), r.FormValue("middle_name")); err != nil {
 		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Error: T(m.resolveLang(w, r), "author.err_name")})
 		return
 	}

@@ -286,20 +286,32 @@ func (m *Module) LoginPassword(ctx context.Context, email, password string) (Use
 	return user, token, nil
 }
 
-// RegisterPassword creates a new user account and returns a signed access token.
-func (m *Module) RegisterPassword(ctx context.Context, email, password string) (User, string, error) {
+// RegisterPassword creates a new user account with their real name and returns
+// a signed access token. Every field is validated here as well as in the form
+// handler, so the rules hold no matter which caller registers a user.
+func (m *Module) RegisterPassword(ctx context.Context, email, password, first, last, middle string) (User, string, error) {
 	email, ok := NormalizeEmail(email)
 	if !ok {
 		return User{}, "", ErrInvalidEmail
 	}
-	if len(password) < minPasswordLen || len(password) > maxPasswordLen {
+	if err := ValidatePassword(password); err != nil {
 		return User{}, "", ErrWeakPassword
+	}
+	first, last, middle = NormalizePersonName(first), NormalizePersonName(last), NormalizePersonName(middle)
+	if err := ValidatePersonName(first); err != nil {
+		return User{}, "", err
+	}
+	if err := ValidatePersonName(last); err != nil {
+		return User{}, "", err
+	}
+	if err := ValidateOptionalPersonName(middle); err != nil {
+		return User{}, "", err
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return User{}, "", err
 	}
-	user, err := m.store.CreateUser(ctx, email, string(hash), defaultRoleName)
+	user, err := m.store.CreateUserNamed(ctx, email, string(hash), first, last, middle, defaultRoleName)
 	if err != nil {
 		return User{}, "", err
 	}

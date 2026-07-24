@@ -63,7 +63,16 @@ func NewStore(db *pgxpool.Pool) *Store {
 	return &Store{db: db}
 }
 
+// CreateUser creates an account with no name set (kept for callers that do not
+// collect names, e.g. seeding).
 func (s *Store) CreateUser(ctx context.Context, email, hash string, roles ...string) (User, error) {
+	return s.CreateUserNamed(ctx, email, hash, "", "", "", roles...)
+}
+
+// CreateUserNamed creates an account together with its real name, in the same
+// transaction as the role assignment, so a registration is atomic: there is no
+// window where a user exists without the name they registered with.
+func (s *Store) CreateUserNamed(ctx context.Context, email, hash, first, last, middle string, roles ...string) (User, error) {
 	var primaryInput string
 	var extras []string
 	if len(roles) > 0 {
@@ -84,10 +93,10 @@ func (s *Store) CreateUser(ctx context.Context, email, hash string, roles ...str
 	userID := uuid.New()
 	var createdAt time.Time
 	err = tx.QueryRow(ctx, `
-		INSERT INTO auth_users (id, email, password_hash, role)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO auth_users (id, email, password_hash, role, first_name, last_name, middle_name)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 		RETURNING created_at
-	`, userID, email, hash, primaryRole).Scan(&createdAt)
+	`, userID, email, hash, primaryRole, first, last, middle).Scan(&createdAt)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.ConstraintName == "auth_users_email_key" {
@@ -292,11 +301,12 @@ func (s *Store) IsPhoneVerified(ctx context.Context, userID uuid.UUID) (bool, er
 	return verified, nil
 }
 
-// SetName stores the author's real first and last name (the article byline).
-func (s *Store) SetName(ctx context.Context, userID uuid.UUID, first, last string) error {
+// SetName stores the user's real name: first and last (the article byline) plus
+// the optional patronymic used for "Фамилия И.О." attribution.
+func (s *Store) SetName(ctx context.Context, userID uuid.UUID, first, last, middle string) error {
 	_, err := s.db.Exec(ctx,
-		`UPDATE auth_users SET first_name = $2, last_name = $3 WHERE id = $1`,
-		userID, first, last)
+		`UPDATE auth_users SET first_name = $2, last_name = $3, middle_name = $4 WHERE id = $1`,
+		userID, first, last, middle)
 	if err != nil {
 		return fmt.Errorf("set name: %w", err)
 	}
@@ -304,6 +314,20 @@ func (s *Store) SetName(ctx context.Context, userID uuid.UUID, first, last strin
 }
 
 // AuthorIdentity returns the user's name and phone-verification status.
+// MiddleName returns the user's patronymic (empty if unset).
+func (s *Store) MiddleName(ctx context.Context, userID uuid.UUID) (string, error) {
+	var middle string
+	err := s.db.QueryRow(ctx,
+		`SELECT COALESCE(middle_name,'') FROM auth_users WHERE id = $1`, userID).Scan(&middle)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return "", nil
+		}
+		return "", fmt.Errorf("middle name: %w", err)
+	}
+	return middle, nil
+}
+
 func (s *Store) AuthorIdentity(ctx context.Context, userID uuid.UUID) (first, last string, phoneVerified bool, err error) {
 	err = s.db.QueryRow(ctx,
 		`SELECT COALESCE(first_name,''), COALESCE(last_name,''), phone_verified_at IS NOT NULL

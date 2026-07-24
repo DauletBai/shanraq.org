@@ -609,6 +609,9 @@ type FormPage struct {
 	Base
 	Mode   string // login | register
 	Email  string
+	First  string // given name (register)
+	Last   string // family name (register)
+	Middle string // patronymic, optional (register)
 	Error  string
 	Notice string
 	Ref    string
@@ -677,19 +680,23 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 	email := strings.TrimSpace(r.FormValue("email"))
 	password := r.FormValue("password")
+	first := auth.NormalizePersonName(r.FormValue("first_name"))
+	last := auth.NormalizePersonName(r.FormValue("last_name"))
+	middle := auth.NormalizePersonName(r.FormValue("middle_name"))
+	ref := strings.TrimSpace(r.FormValue("ref"))
 
-	// Registration gate (staged launch): open, invite-only (needs a valid invite
-	// code), or closed for maintenance.
+	// One re-render path: whatever fails, the user gets their input back.
 	regFail := func(msg string) {
 		m.render(w, "form", FormPage{
-			Base: m.base(r, T(lang, "form.register_title"), lang), Mode: "register", Email: email, Error: msg,
+			Base: m.base(r, T(lang, "form.register_title"), lang), Mode: "register",
+			Email: email, First: first, Last: last, Middle: middle, Ref: ref, Error: msg,
 		})
 	}
 	switch m.flags.Flag(SvcRegistration).Status {
 	case svcOn:
 		// open to everyone
 	case svcInviteOnly:
-		if _, ok := m.refs.ReferrerByCode(r.Context(), strings.TrimSpace(r.FormValue("ref"))); !ok {
+		if _, ok := m.refs.ReferrerByCode(r.Context(), ref); !ok {
 			regFail(T(lang, "form.err_invite_only"))
 			return
 		}
@@ -725,25 +732,29 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if _, ok := auth.NormalizeEmail(email); !ok {
-		m.render(w, "form", FormPage{
-			Base:  m.base(r, T(lang, "form.register_title"), lang),
-			Mode:  "register",
-			Email: email,
-			Error: T(lang, "form.err_email_invalid"),
-		})
+		regFail(T(lang, "form.err_email_invalid"))
 		return
 	}
-	if len(password) < 8 {
-		m.render(w, "form", FormPage{
-			Base:  m.base(r, T(lang, "form.register_title"), lang),
-			Mode:  "register",
-			Email: email,
-			Error: T(lang, "form.err_short_pw"),
-		})
+	if err := auth.ValidatePassword(password); err != nil {
+		regFail(T(lang, "form.err_password_rule"))
+		return
+	}
+	// Real name is required for everyone — readers, authors and agents alike —
+	// so attribution on comments and articles is a person, not an e-mail.
+	if err := auth.ValidatePersonName(first); err != nil {
+		regFail(T(lang, "form.err_first_name"))
+		return
+	}
+	if err := auth.ValidatePersonName(last); err != nil {
+		regFail(T(lang, "form.err_last_name"))
+		return
+	}
+	if err := auth.ValidateOptionalPersonName(middle); err != nil {
+		regFail(T(lang, "form.err_middle_name"))
 		return
 	}
 
-	user, token, err := m.auth.RegisterPassword(r.Context(), email, password)
+	user, token, err := m.auth.RegisterPassword(r.Context(), email, password, first, last, middle)
 	if err != nil {
 		msg := T(lang, "form.err_generic")
 		if errors.Is(err, auth.ErrEmailExists) {
@@ -751,12 +762,7 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 		} else if errors.Is(err, auth.ErrInvalidEmail) {
 			msg = T(lang, "form.err_email_invalid")
 		}
-		m.render(w, "form", FormPage{
-			Base:  m.base(r, T(lang, "form.register_title"), lang),
-			Mode:  "register",
-			Email: email,
-			Error: msg,
-		})
+		regFail(msg)
 		return
 	}
 	// Record the consent the checkbox represents (append-only proof).

@@ -105,6 +105,18 @@ func (m *Module) AuthorIdentity(ctx context.Context, userID uuid.UUID) (first, l
 	return f, l, v
 }
 
+// MiddleName returns the user's patronymic, or "" if unset or unavailable.
+func (m *Module) MiddleName(ctx context.Context, userID uuid.UUID) string {
+	if m.store == nil {
+		return ""
+	}
+	middle, err := m.store.MiddleName(ctx, userID)
+	if err != nil {
+		return ""
+	}
+	return middle
+}
+
 // CanPublish reports whether the user is a verified author (real name + phone).
 func (m *Module) CanPublish(ctx context.Context, userID uuid.UUID) bool {
 	f, l, v := m.AuthorIdentity(ctx, userID)
@@ -112,13 +124,19 @@ func (m *Module) CanPublish(ctx context.Context, userID uuid.UUID) bool {
 }
 
 // SetAuthorName stores the real first/last name shown as the article byline.
-func (m *Module) SetAuthorName(ctx context.Context, userID uuid.UUID, first, last string) error {
-	first = strings.TrimSpace(first)
-	last = strings.TrimSpace(last)
-	if first == "" || last == "" {
-		return errors.New("first and last name are required")
+func (m *Module) SetAuthorName(ctx context.Context, userID uuid.UUID, first, last, middle string) error {
+	first, last, middle = NormalizePersonName(first), NormalizePersonName(last), NormalizePersonName(middle)
+	// The same rule as registration: letters only, capitalized.
+	if err := ValidatePersonName(first); err != nil {
+		return err
 	}
-	return m.store.SetName(ctx, userID, first, last)
+	if err := ValidatePersonName(last); err != nil {
+		return err
+	}
+	if err := ValidateOptionalPersonName(middle); err != nil {
+		return err
+	}
+	return m.store.SetName(ctx, userID, first, last, middle)
 }
 
 func (m *Module) deliverSMSOrDevLog(ctx context.Context, phone, text, code string) error {

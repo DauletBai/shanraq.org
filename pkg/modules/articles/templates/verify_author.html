@@ -21,8 +21,13 @@
       <p class="hint" style="margin-bottom:12px">{{ t .Lang "author.name_hint" }}</p>
       <form method="post" action="/studio/author/name" class="form">
         <div class="grid-2">
-          <div class="field"><label>{{ t .Lang "author.first" }}</label><input class="input" name="first_name" value="{{ .First }}" required></div>
-          <div class="field"><label>{{ t .Lang "author.last" }}</label><input class="input" name="last_name" value="{{ .Last }}" required></div>
+          <div class="field"><label>{{ t .Lang "author.last" }}</label><input class="input" name="last_name" value="{{ .Last }}" maxlength="40" required></div>
+          <div class="field"><label>{{ t .Lang "author.first" }}</label><input class="input" name="first_name" value="{{ .First }}" maxlength="40" required></div>
+        </div>
+        <div class="field" style="margin-top:8px">
+          <label>{{ t .Lang "form.middle_name" }}</label>
+          <input class="input" name="middle_name" value="{{ .Middle }}" maxlength="40">
+          <p class="hint">{{ t .Lang "form.name_hint" }}</p>
         </div>
         <div style="margin-top:12px"><button class="btn btn--primary" type="submit">{{ t .Lang "author.save" }}</button></div>
       </form>

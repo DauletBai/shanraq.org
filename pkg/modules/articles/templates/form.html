@@ -18,9 +18,26 @@
 
     <form method="post" action="{{ if eq .Mode "register" }}/studio/register{{ else }}/studio/login{{ end }}">
       {{ if and (eq .Mode "register") .Ref }}<input type="hidden" name="ref" value="{{ .Ref }}">{{ end }}
+      {{ if eq .Mode "register" }}
+      <div class="form-grid form-grid--2">
+        <div class="field">
+          <label for="last_name">{{ t .Lang "form.last_name" }} *</label>
+          <input class="input" id="last_name" name="last_name" value="{{ .Last }}" maxlength="40" required autofocus>
+        </div>
+        <div class="field">
+          <label for="first_name">{{ t .Lang "form.first_name" }} *</label>
+          <input class="input" id="first_name" name="first_name" value="{{ .First }}" maxlength="40" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="middle_name">{{ t .Lang "form.middle_name" }}</label>
+        <input class="input" id="middle_name" name="middle_name" value="{{ .Middle }}" maxlength="40">
+        <p class="hint">{{ t .Lang "form.name_hint" }}</p>
+      </div>
+      {{ end }}
       <div class="field">
         <label for="email">{{ t .Lang "form.email" }}</label>
-        <input class="input" type="email" id="email" name="email" value="{{ .Email }}" required autofocus>
+        <input class="input" type="email" id="email" name="email" value="{{ .Email }}" required{{ if ne .Mode "register" }} autofocus{{ end }}>
       </div>
       <div class="field">
         <label for="password">{{ t .Lang "form.password" }}</label>

@@ -158,7 +158,7 @@ func (s *AdminStore) Stats(ctx context.Context) (AdminStats, error) {
 	}
 	rows.Close()
 
-	rows, err = s.db.Query(ctx, `SELECT c.id, u.email, c.body, a.slug, c.created_at
+	rows, err = s.db.Query(ctx, `SELECT c.id, u.email, u.first_name, u.last_name, u.middle_name, c.body, a.slug, c.created_at
 		FROM comments c JOIN auth_users u ON u.id=c.user_id JOIN articles a ON a.id=c.article_id
 		WHERE c.status='published' ORDER BY c.created_at DESC LIMIT 15`)
 	if err != nil {
@@ -167,13 +167,13 @@ func (s *AdminStore) Stats(ctx context.Context) (AdminStats, error) {
 	for rows.Next() {
 		var c AdminComment
 		var id uuid.UUID
-		var email string
-		if err := rows.Scan(&id, &email, &c.Body, &c.Slug, &c.CreatedAt); err != nil {
+		var email, first, last, middle string
+		if err := rows.Scan(&id, &email, &first, &last, &middle, &c.Body, &c.Slug, &c.CreatedAt); err != nil {
 			rows.Close()
 			return st, err
 		}
 		c.ID = id.String()
-		c.AuthorName = displayName(email)
+		c.AuthorName = auth.ShortName(first, last, middle, email)
 		st.RecentComments = append(st.RecentComments, c)
 	}
 	rows.Close()

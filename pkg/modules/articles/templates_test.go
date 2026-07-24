@@ -89,6 +89,7 @@ func TestTemplatesExecute(t *testing.T) {
 			{"page", StaticPage{Base: base, Body: RenderMarkdown("# Hi\n\nText [guide](/guide)")}},
 			{"form", FormPage{Base: base, Mode: "login", Email: "a@b.c", Error: "err"}},
 			{"form", FormPage{Base: base, Mode: "register"}},
+			{"form", FormPage{Base: base, Mode: "register", Email: "a@b.c", Last: "Баймурза", First: "Даулет", Middle: "Абаевич", Ref: "abc23", Error: "err"}},
 			{"studio_dashboard", StudioPage{Base: base, Karma: 42, Stats: AuthorStats{
 				TotalArticles: 2, Published: 1, Drafts: 1, TotalViews: 10,
 				ViewsByLang: map[string]int64{LangRU: 7, LangKZ: 3, LangEN: 0},
