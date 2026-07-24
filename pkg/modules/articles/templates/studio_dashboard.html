@@ -80,6 +80,7 @@
             <td>{{ fmtDate .Updated }}</td>
             <td>
               <div style="display:flex;gap:8px">
+                <a class="btn btn--ghost btn--sm" href="/studio/a/{{ .ID }}" title="{{ t $.Lang "studio.edit" }}">✏️ {{ t $.Lang "studio.edit" }}</a>
                 {{ if eq .Status "published" }}
                 <a class="btn btn--ghost btn--sm" href="/read/{{ .Slug }}">{{ t $.Lang "studio.open" }}</a>
                 <form method="post" action="/studio/a/{{ .ID }}/unpublish"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "studio.hide" }}</button></form>

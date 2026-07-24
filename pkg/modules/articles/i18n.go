@@ -752,6 +752,7 @@ var messages = map[string]map[string]string{
 	"studio.st_published":   {"kz": "жарияланған", "ru": "опубликовано", "en": "published"},
 	"studio.st_draft":       {"kz": "жоба", "ru": "черновик", "en": "draft"},
 	"studio.st_archived":    {"kz": "мұрағат", "ru": "архив", "en": "archived"},
+	"studio.edit":           {"kz": "Өңдеу", "ru": "Редактировать", "en": "Edit"},
 	"studio.open":           {"kz": "Ашу", "ru": "Открыть", "en": "Open"},
 	"studio.hide":           {"kz": "Жасыру", "ru": "Скрыть", "en": "Hide"},
 	"studio.publish":        {"kz": "Жариялау", "ru": "Опубликовать", "en": "Publish"},
