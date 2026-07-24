@@ -20,3 +20,33 @@ func TestClipKeepsUTF8Valid(t *testing.T) {
 		t.Fatal("short string must pass through unchanged")
 	}
 }
+
+func TestSanitizeCoverURL(t *testing.T) {
+	keep := []string{
+		"/media/82/8248e565.jpg",
+		"/static/covers/economy.jpeg",
+		"https://example.com/a.png",
+		"http://localhost:8080/media/x.jpg",
+	}
+	for _, v := range keep {
+		if got := sanitizeCoverURL(v); got != v {
+			t.Errorf("sanitizeCoverURL(%q) = %q, want kept", v, got)
+		}
+	}
+	drop := []string{
+		"javascript:alert(1)",
+		"data:image/png;base64,AAAA",
+		"ftp://host/x.jpg",
+		"../../etc/passwd",
+		"media/x.jpg", // missing leading slash
+		"random text",
+	}
+	for _, v := range drop {
+		if got := sanitizeCoverURL(v); got != "" {
+			t.Errorf("sanitizeCoverURL(%q) = %q, want dropped", v, got)
+		}
+	}
+	if sanitizeCoverURL("  /media/x.jpg  ") != "/media/x.jpg" {
+		t.Error("should trim surrounding whitespace")
+	}
+}

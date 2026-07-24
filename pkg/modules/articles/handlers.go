@@ -1157,6 +1157,23 @@ func (m *Module) handleTranslate(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, editURL+"?ai=queued", http.StatusSeeOther)
 }
 
+// sanitizeCoverURL keeps a cover reference only when it is a safe image
+// location: an app-relative upload path (/media/… or /static/…) or an http(s)
+// URL. Anything else — including javascript:/data: schemes — is dropped, so the
+// value can be placed in an <img src> without becoming an injection vector.
+func sanitizeCoverURL(v string) string {
+	v = strings.TrimSpace(v)
+	switch {
+	case v == "":
+		return ""
+	case strings.HasPrefix(v, "/media/") || strings.HasPrefix(v, "/static/"):
+		return v
+	case strings.HasPrefix(v, "https://") || strings.HasPrefix(v, "http://"):
+		return v
+	}
+	return ""
+}
+
 // parseEditorForm reads the three-language editor form into translation inputs.
 func parseEditorForm(r *http.Request) (originalLang, category, subcategory, coverURL string, trs []TranslationInput) {
 	originalLang = r.FormValue("original_lang")
@@ -1165,7 +1182,7 @@ func parseEditorForm(r *http.Request) (originalLang, category, subcategory, cove
 	}
 	category = NormalizeCategory(r.FormValue("category"))
 	subcategory = NormalizeSubcategory(category, r.FormValue("subcategory"))
-	coverURL = strings.TrimSpace(r.FormValue("cover_url"))
+	coverURL = sanitizeCoverURL(r.FormValue("cover_url"))
 	for _, l := range Langs {
 		trs = append(trs, TranslationInput{
 			Lang:    l,

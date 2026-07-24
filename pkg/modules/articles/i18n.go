@@ -209,6 +209,7 @@ var messages = map[string]map[string]string{
 	"editor.category":    {"kz": "Айдар", "ru": "Рубрика", "en": "Category"},
 	"editor.subcategory": {"kz": "Ішкі айдар", "ru": "Подрубрика", "en": "Subcategory"},
 	"editor.cover":       {"kz": "Мұқаба суреті (URL)", "ru": "Обложка (URL)", "en": "Cover image (URL)"},
+	"editor.cover_or":    {"kz": "немесе", "ru": "или", "en": "or"},
 	"editor.cover_hint":  {"kz": "Суретке сілтеме. Бос болса — логотип плейсхолдері.", "ru": "Ссылка на изображение. Пусто — плейсхолдер с логотипом.", "en": "Image URL. Empty shows a logo placeholder."},
 	"editor.sub_none":    {"kz": "— жоқ —", "ru": "— нет —", "en": "— none —"},
 
