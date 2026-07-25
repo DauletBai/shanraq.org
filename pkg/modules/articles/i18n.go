@@ -549,6 +549,7 @@ var messages = map[string]map[string]string{
 	"ag.title":               {"kz": "Аудитория және қонақтар", "ru": "Аудитория и гости", "en": "Audience & guests"},
 	"ag.note":                {"kz": "Тек жиынтық сандар: жеке келушілер тіркелмейді, профильдеу жоқ.", "ru": "Только сводные числа: отдельные посетители не отслеживаются, профилирования нет.", "en": "Aggregate counts only: no individual visitors are tracked, no profiling."},
 	"ag.views_day":           {"kz": "Бүгін", "ru": "Сегодня", "en": "Today"},
+	"ag.views_week":          {"kz": "Осы аптада", "ru": "За неделю", "en": "This week"},
 	"ag.views_month":         {"kz": "Осы айда", "ru": "За месяц", "en": "This month"},
 	"ag.views_year":          {"kz": "Осы жылы", "ru": "За год", "en": "This year"},
 	"ag.guests":              {"kz": "қонақтар", "ru": "гости", "en": "guests"},

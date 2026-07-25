@@ -262,8 +262,9 @@
       <h2 class="adm-section__h">{{ t .Lang "ag.title" }}</h2>
       <p class="adm-hint">{{ t .Lang "ag.note" }}</p>
       {{ if .Guests.HasData }}
-      <div class="adm-kpis">
+      <div class="adm-kpis adm-kpis--fill">
         <div class="adm-kpi"><span class="adm-kpi__ic">☀</span><b>{{ money .Guests.Day.Total }}</b><span>{{ t .Lang "ag.views_day" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◔</span><b>{{ money .Guests.Week.Total }}</b><span>{{ t .Lang "ag.views_week" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">◑</span><b>{{ money .Guests.Month.Total }}</b><span>{{ t .Lang "ag.views_month" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">◯</span><b>{{ money .Guests.Year.Total }}</b><span>{{ t .Lang "ag.views_year" }}</span></div>
       </div>

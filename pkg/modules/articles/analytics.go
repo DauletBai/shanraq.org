@@ -212,6 +212,7 @@ type GuestTrendDay struct {
 // admin dashboard.
 type GuestAnalytics struct {
 	Day       Audience // views today
+	Week      Audience // views this calendar week (Mon–today)
 	Month     Audience // views this calendar month
 	Year      Audience // views this calendar year
 	Pages     []GuestPageRow
@@ -233,12 +234,14 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		SELECT
 		  COALESCE(SUM(n) FILTER (WHERE day = CURRENT_DATE AND is_guest), 0),
 		  COALESCE(SUM(n) FILTER (WHERE day = CURRENT_DATE AND NOT is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('week', CURRENT_DATE)::date AND is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('week', CURRENT_DATE)::date AND NOT is_guest), 0),
 		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('month', CURRENT_DATE)::date AND is_guest), 0),
 		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('month', CURRENT_DATE)::date AND NOT is_guest), 0),
 		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('year', CURRENT_DATE)::date AND is_guest), 0),
 		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('year', CURRENT_DATE)::date AND NOT is_guest), 0)
 		FROM analytics_daily WHERE kind = 'page'`).
-		Scan(&g.Day.Guest, &g.Day.Registered, &g.Month.Guest, &g.Month.Registered, &g.Year.Guest, &g.Year.Registered)
+		Scan(&g.Day.Guest, &g.Day.Registered, &g.Week.Guest, &g.Week.Registered, &g.Month.Guest, &g.Month.Registered, &g.Year.Guest, &g.Year.Registered)
 
 	// Pages, last 30 days.
 	if rows, err := db.Query(ctx, `
