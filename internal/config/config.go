@@ -24,10 +24,25 @@ type Config struct {
 	Syndicate     SyndicateConfig     `mapstructure:"syndicate"`
 	Media         MediaConfig         `mapstructure:"media"`
 	Social        SocialConfig        `mapstructure:"social"`
+	Operator      OperatorConfig      `mapstructure:"operator"`
 }
 
 // SocialConfig holds public social-profile URLs shown in the top info bar.
 // Empty entries are hidden.
+// OperatorConfig identifies the legal operator (the LLP) shown in the legal
+// documents. It lives in config — NOT committed to git — so the BIN and
+// registered address are not published to the public repository, while the live
+// site still discloses them as the law requires.
+type OperatorConfig struct {
+	LegalName   string `mapstructure:"legal_name"`
+	LegalNameEN string `mapstructure:"legal_name_en"`
+	BIN         string `mapstructure:"bin"`
+	Address     string `mapstructure:"address"`
+	AddressEN   string `mapstructure:"address_en"`
+	Email       string `mapstructure:"email"`
+	Phone       string `mapstructure:"phone"`
+}
+
 type SocialConfig struct {
 	Telegram  string `mapstructure:"telegram"`
 	Instagram string `mapstructure:"instagram"`

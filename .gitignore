@@ -30,3 +30,7 @@ coverage.txt
 
 # Runtime user media (filesystem MediaStore backend)
 /data/
+
+# Local config with real operator/secret values (never commit)
+config.local.yaml
+configs/config.local.yaml

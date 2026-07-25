@@ -67,3 +67,16 @@ social:
   instagram: ""
   youtube: ""
   facebook: ""
+
+# Legal operator shown in the Privacy Policy, Terms and Support pages.
+# Leave BLANK here — the real BIN and registered address must NOT be committed
+# to a public repository. Put the real values in a non-committed config (e.g.
+# configs/config.local.yaml, which is git-ignored) and run with -config that file.
+operator:
+  legal_name: ""       # e.g. ТОО «Казна Технолоджис»
+  legal_name_en: ""    # e.g. Qazna Technologies LLP
+  bin: ""              # business identification number
+  address: ""          # registered address (RU/KZ)
+  address_en: ""       # registered address (EN, optional)
+  email: ""            # operator contact, e.g. support@shanraq.org
+  phone: ""            # optional

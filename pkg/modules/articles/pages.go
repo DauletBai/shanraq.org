@@ -254,7 +254,10 @@ All prices are in tenge and may change. We announce changes in advance.`},
 - Узнайте больше [о нас](/about).
 - Напишите нам, если не нашли ответ.
 
-Мы отвечаем спокойно и по существу.`},
+Мы отвечаем спокойно и по существу.
+
+## Оператор платформы
+{{operator_block}}`},
 		"kz": {Title: "Қолдау", Body: `Платформаның жұмысына қатысты кез келген сұрақты шешуге көмектесеміз.
 
 ## ИИ негізіндегі көмекші
@@ -266,7 +269,10 @@ All prices are in tenge and may change. We announce changes in advance.`},
 - [Біз туралы](/about) көбірек біліңіз.
 - Жауап таппасаңыз, бізге жазыңыз.
 
-Біз сабырмен әрі нақты жауап береміз.`},
+Біз сабырмен әрі нақты жауап береміз.
+
+## Платформа операторы
+{{operator_block}}`},
 		"en": {Title: "Support", Body: `We will help you with any question about how the platform works.
 
 ## AI-powered assistant
@@ -278,7 +284,10 @@ Soon our AI assistant will appear here to answer questions about writing article
 - Learn more [about us](/about).
 - Write to us if you did not find an answer.
 
-We reply calmly and to the point.`},
+We reply calmly and to the point.
+
+## Platform operator
+{{operator_block}}`},
 	},
 	"formatting": {
 		"ru": {Title: "Как оформлять статью", Body: `Хорошо оформленная статья читается легче и вызывает больше доверия. Текст пишется в формате **Markdown** — это простые значки, которые превращаются в заголовки, списки и выделения. Ничего сложного: ниже все примеры. Слева — как выглядит результат, в рамке — как это написать.
@@ -458,12 +467,12 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 	},
 
 	"privacy": {
-		"ru": {Title: "Политика конфиденциальности", Body: `_Проект. Документ требует проверки лицензированным юристом Республики Казахстан перед публикацией как обязательного. Редакция от 18.07.2026._
+		"ru": {Title: "Политика конфиденциальности", Body: `_Редакция от 25.07.2026._
 
 Политика описывает, какие данные собирает Shanraq и как мы с ними обращаемся, в соответствии с законодательством Республики Казахстан.
 
 ## 1. Общие положения
-Оператором персональных данных является владелец платформы Shanraq. Обработка ведётся в соответствии с Законом РК «О персональных данных и их защите», Законом РК «Об онлайн-платформах и онлайн-рекламе» и иным применимым законодательством. Политика доступна до завершения регистрации; регистрируясь, вы даёте согласие на обработку данных на изложенных условиях.
+Оператором персональных данных является {{operator_block}} Обработка ведётся в соответствии с Законом РК «О персональных данных и их защите», Законом РК «Об онлайн-платформах и онлайн-рекламе» и иным применимым законодательством. Политика доступна до завершения регистрации; регистрируясь, вы даёте согласие на обработку данных на изложенных условиях.
 
 ## 2. Какие данные мы собираем
 - **Учётные данные:** адрес электронной почты; для авторов — номер мобильного телефона (для подтверждения личности) и имя с фамилией (подпись под статьями).
@@ -507,12 +516,12 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 
 ## 12. Контакты и регулятор
 По вопросам обработки данных обращайтесь через [страницу поддержки](/support). Уполномоченный орган в сфере защиты персональных данных — Министерство цифрового развития, инноваций и аэрокосмической промышленности Республики Казахстан.`},
-		"kz": {Title: "Құпиялылық саясаты", Body: `_Жоба. Құжат міндетті түрде жарияланғанға дейін Қазақстан Республикасының лицензиясы бар заңгердің тексеруін талап етеді. 18.07.2026 жағдайындағы редакция._
+		"kz": {Title: "Құпиялылық саясаты", Body: `_25.07.2026 жағдайындағы редакция._
 
 Бұл саясат Shanraq қандай деректерді жинайтынын және біз олармен қалай жұмыс істейтінімізді Қазақстан Республикасының заңнамасына сәйкес сипаттайды.
 
 ## 1. Жалпы ережелер
-Дербес деректердің операторы — Shanraq платформасының иесі. Өңдеу ҚР «Дербес деректер және оларды қорғау туралы» Заңына, ҚР «Онлайн-платформалар және онлайн-жарнама туралы» Заңына және өзге де қолданылатын заңнамаға сәйкес жүргізіледі. Саясат тіркелу аяқталғанға дейін қолжетімді; тіркеле отырып, сіз деректерді осы шарттарда өңдеуге келісім бересіз.
+Дербес деректердің операторы — {{operator_block}} Өңдеу ҚР «Дербес деректер және оларды қорғау туралы» Заңына, ҚР «Онлайн-платформалар және онлайн-жарнама туралы» Заңына және өзге де қолданылатын заңнамаға сәйкес жүргізіледі. Саясат тіркелу аяқталғанға дейін қолжетімді; тіркеле отырып, сіз деректерді осы шарттарда өңдеуге келісім бересіз.
 
 ## 2. Біз қандай деректерді жинаймыз
 - **Есептік деректер:** электрондық пошта мекенжайы; авторлар үшін — ұялы телефон нөмірі (жеке басты растау үшін) және аты-жөні (мақалалардың астындағы қолтаңба).
@@ -556,12 +565,12 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 
 ## 12. Байланыстар және реттеуші
 Деректерді өңдеу мәселелері бойынша [қолдау көрсету беті](/support) арқылы хабарласыңыз. Дербес деректерді қорғау саласындағы уәкілетті орган — Қазақстан Республикасының Цифрлық даму, инновациялар және аэроғарыш өнеркәсібі министрлігі.`},
-		"en": {Title: "Privacy Policy", Body: `_Draft. This document must be reviewed by a licensed lawyer of the Republic of Kazakhstan before it is published as binding. Revision of 18.07.2026._
+		"en": {Title: "Privacy Policy", Body: `_Revision of 25.07.2026._
 
 This Policy describes what data Shanraq collects and how we handle it, in accordance with the legislation of the Republic of Kazakhstan.
 
 ## 1. General Provisions
-The operator of personal data is the owner of the Shanraq platform. Processing is carried out in accordance with the Law of the Republic of Kazakhstan "On Personal Data and Its Protection", the Law of the Republic of Kazakhstan "On Online Platforms and Online Advertising", and other applicable legislation. The Policy is available before registration is completed; by registering, you consent to the processing of data on the conditions set out herein.
+The operator of personal data is {{operator_block}} Processing is carried out in accordance with the Law of the Republic of Kazakhstan "On Personal Data and Its Protection", the Law of the Republic of Kazakhstan "On Online Platforms and Online Advertising", and other applicable legislation. The Policy is available before registration is completed; by registering, you consent to the processing of data on the conditions set out herein.
 
 ## 2. What Data We Collect
 - **Account data:** email address; for authors — a mobile phone number (to verify identity) and a first and last name (the byline on articles).
@@ -607,12 +616,12 @@ The Policy may be updated; material changes are published on the Platform with t
 For questions about data processing, contact us through the [support page](/support). The authorized body in the field of personal data protection is the Ministry of Digital Development, Innovations and Aerospace Industry of the Republic of Kazakhstan.`},
 	},
 	"terms": {
-		"ru": {Title: "Пользовательское соглашение", Body: `_Проект. Документ требует проверки лицензированным юристом Республики Казахстан перед публикацией как обязательного. Редакция от 18.07.2026._
+		"ru": {Title: "Пользовательское соглашение", Body: `_Редакция от 25.07.2026._
 
 Используя платформу Shanraq, вы принимаете настоящее Пользовательское соглашение (далее — «Соглашение») и [Политику конфиденциальности](/privacy).
 
 ## 1. Общие положения
-Соглашение регулирует отношения между владельцем платформы Shanraq (далее — «Платформа», «мы») и любым пользователем (далее — «Пользователь», «вы»). Платформа — интернет-ресурс, на котором пользователи публикуют статьи и размещают объявления о недвижимости на казахском, русском и английском языках. Соглашение и краткое изложение основных условий доступны на трёх языках; при расхождении толкования приоритет имеет версия на казахском языке.
+Соглашение регулирует отношения между владельцем платформы Shanraq (далее — «Платформа», «мы») и любым пользователем (далее — «Пользователь», «вы»). Оператор Платформы — {{operator_block}} Платформа — интернет-ресурс, на котором пользователи публикуют статьи и размещают объявления о недвижимости на казахском, русском и английском языках. Соглашение и краткое изложение основных условий доступны на трёх языках; при расхождении толкования приоритет имеет версия на казахском языке.
 
 ## 2. Термины
 - **Пользователь** — физическое лицо, использующее Платформу.
@@ -659,12 +668,12 @@ For questions about data processing, contact us through the [support page](/supp
 
 ## 15. Изменения условий
 Мы можем обновлять Соглашение; существенные изменения публикуются на Платформе, при необходимости запрашивается повторное согласие. Продолжение использования после изменений означает их принятие.`},
-		"kz": {Title: "Пайдаланушы келісімі", Body: `_Жоба. Құжат міндетті түрде жарияланғанға дейін Қазақстан Республикасының лицензиясы бар заңгердің тексеруін талап етеді. 18.07.2026 жағдайындағы редакция._
+		"kz": {Title: "Пайдаланушы келісімі", Body: `_25.07.2026 жағдайындағы редакция._
 
 Shanraq платформасын пайдалана отырып, сіз осы Пайдаланушы келісімін (бұдан әрі — «Келісім») және [Құпиялылық саясатын](/privacy) қабылдайсыз.
 
 ## 1. Жалпы ережелер
-Келісім Shanraq платформасының иесі (бұдан әрі — «Платформа», «біз») мен кез келген пайдаланушы (бұдан әрі — «Пайдаланушы», «сіз») арасындағы қатынастарды реттейді. Платформа — пайдаланушылар қазақ, орыс және ағылшын тілдерінде мақалалар жариялап, жылжымайтын мүлік туралы хабарландырулар орналастыратын интернет-ресурс. Келісім мен негізгі шарттардың қысқаша мазмұны үш тілде қолжетімді; түсіндіру кезінде алшақтық туындаса, қазақ тіліндегі нұсқаға басымдық беріледі.
+Келісім Shanraq платформасының иесі (бұдан әрі — «Платформа», «біз») мен кез келген пайдаланушы (бұдан әрі — «Пайдаланушы», «сіз») арасындағы қатынастарды реттейді. Платформаның операторы — {{operator_block}} Платформа — пайдаланушылар қазақ, орыс және ағылшын тілдерінде мақалалар жариялап, жылжымайтын мүлік туралы хабарландырулар орналастыратын интернет-ресурс. Келісім мен негізгі шарттардың қысқаша мазмұны үш тілде қолжетімді; түсіндіру кезінде алшақтық туындаса, қазақ тіліндегі нұсқаға басымдық беріледі.
 
 ## 2. Терминдер
 - **Пайдаланушы** — Платформаны пайдаланатын жеке тұлға.
@@ -711,12 +720,12 @@ Shanraq платформасын пайдалана отырып, сіз осы 
 
 ## 15. Шарттарды өзгерту
 Біз Келісімді жаңарта аламыз; елеулі өзгерістер Платформада жарияланады, қажет болса қайта келісім сұралады. Өзгерістерден кейін пайдалануды жалғастыру оларды қабылдауды білдіреді.`},
-		"en": {Title: "Terms of Use", Body: `_Draft. This document must be reviewed by a licensed lawyer of the Republic of Kazakhstan before it is published as binding. Revision of 18.07.2026._
+		"en": {Title: "Terms of Use", Body: `_Revision of 25.07.2026._
 
 By using the Shanraq platform, you accept this Terms of Use (hereinafter the "Terms") and the [Privacy Policy](/privacy).
 
 ## 1. General Provisions
-The Terms govern the relationship between the owner of the Shanraq platform (hereinafter the "Platform", "we") and any user (hereinafter the "User", "you"). The Platform is an online resource on which users publish articles and post real estate listings in Kazakh, Russian, and English. The Terms and a summary of the key conditions are available in all three languages; in the event of a discrepancy in interpretation, the Kazakh-language version prevails.
+The Terms govern the relationship between the owner of the Shanraq platform (hereinafter the "Platform", "we") and any user (hereinafter the "User", "you"). The operator of the Platform is {{operator_block}} The Platform is an online resource on which users publish articles and post real estate listings in Kazakh, Russian, and English. The Terms and a summary of the key conditions are available in all three languages; in the event of a discrepancy in interpretation, the Kazakh-language version prevails.
 
 ## 2. Definitions
 - **User** — a natural person who uses the Platform.

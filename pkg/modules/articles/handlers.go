@@ -316,7 +316,7 @@ func (m *Module) handleStaticPage(key string) http.HandlerFunc {
 			return
 		}
 		page := StaticPage{Base: m.base(r, c.Title, lang)}
-		page.Body = RenderMarkdown(c.Body)
+		page.Body = RenderMarkdown(applyOperator(c.Body, m.rt.Config.Operator, lang))
 		m.render(w, "page", page)
 	}
 }

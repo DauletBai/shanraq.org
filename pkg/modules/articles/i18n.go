@@ -764,7 +764,7 @@ var messages = map[string]map[string]string{
 	"editor.original_lang":    {"kz": "Түпнұсқа тілі", "ru": "Язык оригинала", "en": "Original language"},
 	"editor.by_language":      {"kz": "Мақала мәтіні тілдер бойынша", "ru": "Текст статьи по языкам", "en": "Article text by language"},
 	"editor.by_language_hint": {"kz": "Әр тілде тақырып пен мәтінді толтыру үшін қойындыларды ауыстырыңыз. Бұл — үш емес, бір мақала.", "ru": "Переключайте вкладки, чтобы заполнить заголовок и текст на каждом языке. Это одна статья, а не три.", "en": "Switch tabs to fill the title and text in each language. This is one article, not three."},
-	"editor.original_hint":    {"kz": "Бір тілде жазыңыз — қалғанын ИИ аударады (Кезең 3).", "ru": "Пишите на одном языке — остальное переведёт ИИ (Этап 3).", "en": "Write in one language — AI translates the rest."},
+	"editor.original_hint":    {"kz": "Бір тілде жазыңыз — қалғанын ИИ аударады.", "ru": "Пишите на одном языке — остальное переведёт ИИ.", "en": "Write in one language — AI translates the rest."},
 	"editor.f_title":          {"kz": "Тақырып", "ru": "Заголовок", "en": "Title"},
 	"editor.f_summary":        {"kz": "Қысқаша сипаттама", "ru": "Краткое описание", "en": "Summary"},
 	"editor.f_body":           {"kz": "Мәтін (Markdown)", "ru": "Текст (Markdown)", "en": "Body (Markdown)"},
