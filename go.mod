@@ -7,7 +7,7 @@ toolchain go1.26.5
 require (
 	github.com/anthropics/anthropic-sdk-go v1.57.0
 	github.com/exaring/otelpgx v0.5.1
-	github.com/go-chi/chi/v5 v5.1.0
+	github.com/go-chi/chi/v5 v5.3.1
 	github.com/go-playground/validator/v10 v10.15.5
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.6.0
