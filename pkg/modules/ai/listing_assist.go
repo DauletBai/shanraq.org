@@ -10,17 +10,18 @@ import (
 // honest description in the seller's language for them to edit before posting.
 // It never invents features that are not in the facts. ErrDisabled when off.
 func (m *Module) DescribeListing(ctx context.Context, lang, facts string) (string, error) {
-	if !m.Enabled() {
+	c, model, tok := m.editorClient()
+	if c == nil {
 		return "", ErrDisabled
 	}
 	if strings.TrimSpace(facts) == "" {
 		return "", nil
 	}
-	out, err := m.completer.Complete(ctx, Request{
-		Model:     m.editorModel,
+	out, err := c.Complete(ctx, Request{
+		Model:     model,
 		System:    describeListingSystem(lang),
 		User:      facts,
-		MaxTokens: m.maxTokens,
+		MaxTokens: tok,
 	})
 	if err != nil {
 		return "", err

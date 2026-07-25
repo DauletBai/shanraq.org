@@ -15,17 +15,18 @@ var improveLangName = map[string]string{
 // professional journalistic tone, preserving meaning and Markdown. It returns
 // the improved text. ErrDisabled is returned when the assistant is off.
 func (m *Module) Improve(ctx context.Context, lang, draft string) (string, error) {
-	if !m.Enabled() {
+	c, model, tok := m.editorClient()
+	if c == nil {
 		return "", ErrDisabled
 	}
 	if strings.TrimSpace(draft) == "" {
 		return draft, nil
 	}
-	return m.completer.Complete(ctx, Request{
-		Model:     m.editorModel,
+	return c.Complete(ctx, Request{
+		Model:     model,
 		System:    improveSystem(lang),
 		User:      draft,
-		MaxTokens: m.maxTokens,
+		MaxTokens: tok,
 	})
 }
 
@@ -50,11 +51,12 @@ Rewrite the user's draft so it reads clearly and professionally, in a respectful
 // on the caller's side means the rules live with the rules, not with the
 // transport.
 func (m *Module) Check(ctx context.Context, system, user string, maxTokens int) (string, error) {
-	if !m.Enabled() {
+	c, model, _ := m.editorClient()
+	if c == nil {
 		return "", ErrDisabled
 	}
 	if maxTokens <= 0 {
 		maxTokens = 2000
 	}
-	return m.completer.Complete(ctx, Request{System: system, User: user, MaxTokens: maxTokens})
+	return c.Complete(ctx, Request{Model: model, System: system, User: user, MaxTokens: maxTokens})
 }

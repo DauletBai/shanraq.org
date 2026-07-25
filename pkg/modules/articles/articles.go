@@ -45,6 +45,7 @@ type Module struct {
 	comments  *CommentStore
 	favs      *FavoriteStore
 	admin     *AdminStore
+	metrics   *Metrics
 	ratings   *ratings.Store
 	jobs      *jobs.Store
 	auth      *auth.Module
@@ -88,6 +89,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.comments = NewCommentStore(rt.DB)
 	m.favs = NewFavoriteStore(rt.DB)
 	m.admin = NewAdminStore(rt.DB)
+	m.metrics = NewMetrics(rt.DB, rt.Logger)
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
 	m.validator = validate.New()
@@ -182,6 +184,10 @@ func (m *Module) browserRoutes(r chi.Router) {
 	// Public reader (session loaded softly so the header can show Studio link).
 	r.Group(func(r chi.Router) {
 		r.Use(m.auth.LoadSession)
+		// Aggregate audience counters (guest vs registered). Placed after the
+		// soft session load so it can tell the two apart; records nothing else.
+		r.Use(m.trackTraffic)
+		r.Post("/api/track", m.handleTrack)
 		r.Get("/", m.handleHome)
 		r.Get("/read", m.handleReadRedirect)
 		r.Get("/read/{slug}", m.handleArticle)
@@ -261,6 +267,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/admin", m.handleAdmin)
 		r.Post("/admin/roles", m.handleAdminAssignRole)
 		r.Post("/admin/services", m.handleAdminServiceFlag)
+		r.Post("/admin/ai", m.handleAdminAI)
 		r.Post("/admin/agents/{id}/decide", m.handleAdminAgentDecide)
 		r.Post("/admin/comments/{id}/hide", m.handleAdminHideComment)
 		r.Post("/admin/appeals/{id}/resolve", m.handleAdminResolveAppeal)

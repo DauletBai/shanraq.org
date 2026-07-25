@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/modules/ai"
 	"shanraq.org/pkg/modules/auth"
 )
 
@@ -215,6 +216,10 @@ type AdminPage struct {
 	Queue   []ReviewItem // articles awaiting a human decision
 	// Growth analytics.
 	Analytics AdminAnalytics
+	// Aggregate audience (guest vs registered) traffic.
+	Guests GuestAnalytics
+	// AI model configuration (provider/model switch).
+	AI ai.AdminView
 	// Operational service switches (maintenance mode per service).
 	Services      []ServiceFlag
 	ServiceStates []string    // selectable statuses: on | maintenance | off
@@ -256,6 +261,7 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 	} else {
 		m.rt.Logger.Error("admin analytics", zap.Error(err))
 	}
+	page.Guests = m.guestAnalytics(r.Context(), lang)
 	page.CanManageUsers = canManageUsers(claims)
 	page.CanFinance = canViewFinance(claims)
 	page.CanModerate = canModerate(claims)
@@ -264,6 +270,9 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		page.Services = m.flags.All()
 		page.ServiceStates = []string{svcOn, svcInviteOnly, svcMaintenance, svcOff}
 		page.Site = m.flags.SiteFlag()
+		if m.ai != nil {
+			page.AI = m.ai.AdminView()
+		}
 		if pend, err := m.reagents.Pending(r.Context(), 100); err == nil {
 			page.PendingAgents = pend
 		} else {
@@ -344,6 +353,42 @@ func (m *Module) handleAdminServiceFlag(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	http.Redirect(w, r, "/admin?ok=svc_set", http.StatusSeeOther)
+}
+
+// handleAdminAI switches the active AI provider and models from the admin
+// panel. The secret API keys are never touched here — they live in the server
+// config; this only records which provider/model to use, taking effect at once.
+func (m *Module) handleAdminAI(w http.ResponseWriter, r *http.Request) {
+	claims, _ := auth.ClaimsFromContext(r.Context())
+	if !canManageUsers(claims) {
+		http.Error(w, "forbidden", http.StatusForbidden)
+		return
+	}
+	if m.ai == nil {
+		http.Redirect(w, r, "/admin?ok=ai_bad", http.StatusSeeOther)
+		return
+	}
+	_ = r.ParseForm()
+	maxTok, _ := strconv.Atoi(strings.TrimSpace(r.FormValue("max_tokens")))
+	in := ai.AISettings{
+		Enabled:        r.FormValue("enabled") == "on",
+		Provider:       strings.TrimSpace(r.FormValue("provider")),
+		EditorModel:    strings.TrimSpace(r.FormValue("editor_model")),
+		TranslateModel: strings.TrimSpace(r.FormValue("translate_model")),
+		MaxTokens:      maxTok,
+	}
+	var by *uuid.UUID
+	if claims != nil {
+		if id, err := uuid.Parse(claims.Subject); err == nil {
+			by = &id
+		}
+	}
+	if err := m.ai.UpdateSettings(r.Context(), in, by); err != nil {
+		m.rt.Logger.Warn("update ai settings", zap.Error(err))
+		http.Redirect(w, r, "/admin?ok=ai_bad", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/admin?ok=ai_set", http.StatusSeeOther)
 }
 
 // handleAdminAgentDecide approves or rejects a real-estate agent profile. Only

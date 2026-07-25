@@ -22,6 +22,8 @@
       <a href="#growth" class="adm__navlink" data-nav>↗ {{ t .Lang "an2.title" }}</a>
       <a href="#content" class="adm__navlink" data-nav>▦ {{ t .Lang "admin.articles" }}</a>
       <a href="#users" class="adm__navlink" data-nav>◕ {{ t .Lang "admin.users" }}</a>
+      <a href="#guests" class="adm__navlink" data-nav>◔ {{ t .Lang "ag.title" }}</a>
+      {{ if .CanManageUsers }}<a href="#ai" class="adm__navlink" data-nav>✦ {{ t .Lang "aic.title" }}</a>{{ end }}
       {{ if .CanManageUsers }}<a href="#services" class="adm__navlink" data-nav>⚙ {{ t .Lang "svc.title" }}</a>{{ end }}
       {{ if .CanModerate }}<a href="#moderation" class="adm__navlink" data-nav>✎ {{ t .Lang "admin.moderation" }}</a>{{ end }}
       {{ if .CanFinance }}<a href="#finance" class="adm__navlink" data-nav>₸ {{ t .Lang "admin.finance" }}</a>{{ end }}
@@ -252,6 +254,115 @@
           {{ end }}
         </ul>
         {{ else }}<p class="adm-hint">—</p>{{ end }}
+      </div>
+    </section>
+    {{ end }}
+
+    <section id="guests" class="adm-section">
+      <h2 class="adm-section__h">{{ t .Lang "ag.title" }}</h2>
+      <p class="adm-hint">{{ t .Lang "ag.note" }}</p>
+      {{ if .Guests.HasData }}
+      <div class="adm-kpis">
+        <div class="adm-kpi"><span class="adm-kpi__ic">☀</span><b>{{ money .Guests.Day.Total }}</b><span>{{ t .Lang "ag.views_day" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◑</span><b>{{ money .Guests.Month.Total }}</b><span>{{ t .Lang "ag.views_month" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◯</span><b>{{ money .Guests.Year.Total }}</b><span>{{ t .Lang "ag.views_year" }}</span></div>
+      </div>
+      <div class="adm-cols">
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.pages" }}</h2>
+          <div class="adm-chart">
+            {{ range .Guests.Pages }}
+            <div class="adm-bar">
+              <span class="adm-bar__label">{{ .Title }}</span>
+              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ money .A.Total }}</span>
+            </div>
+            {{ end }}
+          </div>
+          <table class="spec" style="margin-top:12px">
+            <thead><tr><th></th><th>{{ t $.Lang "ag.guests" }}</th><th>{{ t $.Lang "ag.registered" }}</th></tr></thead>
+            <tbody>
+              {{ range .Guests.Pages }}
+              <tr><td>{{ .Title }}</td><td><b>{{ money .A.Guest }}</b></td><td>{{ money .A.Registered }}</td></tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.clicks" }}</h2>
+          {{ if .Guests.Clicks }}
+          <table class="spec">
+            <thead><tr><th></th><th>{{ t $.Lang "ag.guests" }}</th><th>{{ t $.Lang "ag.registered" }}</th></tr></thead>
+            <tbody>
+              {{ range .Guests.Clicks }}
+              <tr><td>{{ .Title }}</td><td><b>{{ money .A.Guest }}</b></td><td>{{ money .A.Registered }}</td></tr>
+              {{ end }}
+            </tbody>
+          </table>
+          {{ else }}<p class="adm-hint">—</p>{{ end }}
+          <h2 style="margin-top:16px">{{ t .Lang "ag.trend" }}</h2>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:56px;margin-top:8px" aria-hidden="true">
+            {{ range .Guests.Trend }}
+            <span title="{{ .Label }}: {{ .N }}" style="flex:1 1 0;background:#14b8a6;border-radius:2px 2px 0 0;opacity:.85;min-height:2px;height:{{ if .Pct }}{{ .Pct }}{{ else }}2{{ end }}%"></span>
+            {{ end }}
+          </div>
+          {{ if .Guests.Trend }}
+          <div class="adm-hint" style="display:flex;justify-content:space-between;margin-top:4px">
+            <span>{{ .Guests.TrendFrom }}</span>
+            <span>{{ .Guests.TrendTo }}</span>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+      {{ else }}
+      <p class="adm-hint">{{ t .Lang "ag.empty" }}</p>
+      {{ end }}
+    </section>
+
+    {{ if .CanManageUsers }}
+    <section id="ai" class="adm-section">
+      <h2 class="adm-section__h">{{ t .Lang "aic.title" }}</h2>
+      <p class="adm-hint">{{ t .Lang "aic.note" }}</p>
+      <div class="adm-panel">
+        <form method="post" action="/admin/ai">
+          <label style="display:flex;align-items:center;gap:8px;font-weight:600">
+            <input type="checkbox" name="enabled" {{ if .AI.Enabled }}checked{{ end }}>
+            <span>{{ t .Lang "aic.enabled" }}</span>
+          </label>
+
+          <fieldset style="border:0;padding:0;margin:14px 0">
+            <legend style="font-weight:600;margin-bottom:6px">{{ t .Lang "aic.provider" }}</legend>
+            {{ range .AI.Providers }}
+            <label style="display:flex;align-items:center;gap:10px;padding:6px 0">
+              <input type="radio" name="provider" value="{{ .Code }}" {{ if .IsActive }}checked{{ end }}>
+              <b style="min-width:160px">{{ .Label }}</b>
+              {{ if .HasKey }}
+              <span style="font-size:12px;color:#0f766e;background:rgba(20,184,166,.15);padding:2px 8px;border-radius:999px">✓ {{ t $.Lang "aic.key_ok" }}</span>
+              {{ else }}
+              <span style="font-size:12px;color:#b91c1c;background:rgba(239,68,68,.12);padding:2px 8px;border-radius:999px">✗ {{ t $.Lang "aic.key_missing" }}</span>
+              {{ end }}
+            </label>
+            {{ end }}
+          </fieldset>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <label style="display:block">{{ t .Lang "aic.editor" }}
+              <input class="input" name="editor_model" value="{{ .AI.EditorModel }}" maxlength="80" required>
+            </label>
+            <label style="display:block">{{ t .Lang "aic.translate" }}
+              <input class="input" name="translate_model" value="{{ .AI.TranslateModel }}" maxlength="80" required>
+            </label>
+          </div>
+          <label style="display:block;margin-top:12px;max-width:220px">{{ t .Lang "aic.max_tokens" }}
+            <input class="input" type="number" name="max_tokens" min="256" max="32000" value="{{ .AI.MaxTokens }}">
+          </label>
+
+          {{ if and .AI.Enabled (not .AI.ActiveHasKey) }}
+          <p class="adm-notice" style="margin-top:12px">{{ t .Lang "aic.no_key_warn" }}</p>
+          {{ end }}
+
+          <button class="btn btn--primary" type="submit" style="margin-top:14px">{{ t .Lang "aic.save" }}</button>
+        </form>
       </div>
     </section>
     {{ end }}

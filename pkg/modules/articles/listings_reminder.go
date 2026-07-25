@@ -19,6 +19,7 @@ func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
 	go m.reminderLoop(ctx)
 	go m.payExpiryLoop(ctx)         // release unpaid ad-slot holds
 	go m.maintenanceExpiryLoop(ctx) // auto-restore the site when its window ends
+	go m.metricsFlushLoop(ctx)      // persist buffered audience counters
 	if m.infobar != nil {
 		go m.infobar.Run(ctx) // background weather + exchange-rate refresher
 	}

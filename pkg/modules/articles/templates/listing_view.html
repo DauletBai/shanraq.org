@@ -95,7 +95,7 @@
           {{ else }}
           <span class="contact-val contact-val--masked">{{ .MaskedContact }}</span>
           <form method="post" action="/listings/{{ .L.ID }}/contact" class="contact-reveal">
-            <button type="submit" class="btn btn--primary btn--sm">📞 {{ t .Lang "re.show_contact" }}</button>
+            <button type="submit" class="btn btn--primary btn--sm" data-track="show_contact">📞 {{ t .Lang "re.show_contact" }}</button>
           </form>
           {{ end }}
         </div>

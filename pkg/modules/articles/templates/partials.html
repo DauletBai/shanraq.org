@@ -90,7 +90,7 @@
       </a>
       <form method="post" action="/studio/logout" style="display:inline"><button type="submit" class="linkbtn">{{ t .Lang "header.logout" }}</button></form>
       {{ else }}
-      <a class="btn btn--primary btn--sm" href="/studio/login">{{ t .Lang "header.login" }}</a>
+      <a class="btn btn--primary btn--sm" href="/studio/login" data-track="login_cta">{{ t .Lang "header.login" }}</a>
       {{ end }}
       <button type="button" class="icon-btn icon-btn--theme" data-theme-toggle title="{{ t .Lang "header.theme" }}" aria-label="{{ t .Lang "header.theme" }}">
         <span class="theme-light-only">{{ icon "moon" }}</span><span class="theme-dark-only">{{ icon "sun" }}</span>
@@ -181,7 +181,7 @@
   <a class="acct-nav__item{{ if eq .Path "/favorites" }} is-active{{ end }}" href="/favorites">♥ {{ t .Lang "nav.favorites" }}</a>
   <a class="acct-nav__item{{ if eq .Path "/listings/my" }} is-active{{ end }}" href="/listings/my">{{ t .Lang "re.my_listings" }}</a>
   <a class="acct-nav__item{{ if eq .Path "/agent" }} is-active{{ end }}" href="/agent">{{ t .Lang "agent.nav" }}</a>
-  <a class="acct-nav__item" href="/listings/new">{{ t .Lang "re.post" }}</a>
+  <a class="acct-nav__item" href="/listings/new" data-track="post_listing">{{ t .Lang "re.post" }}</a>
   {{ if .IsStaff }}<a class="acct-nav__item" href="/admin">{{ t .Lang "header.admin" }}</a>{{ end }}
 </nav>
 {{ end }}
@@ -368,6 +368,17 @@
       window.addEventListener('scroll', check, { passive: true });
       window.addEventListener('resize', check, { passive: true });
       check();
+    })();
+    // Aggregate click counters: any element with data-track fires a fire-and-
+    // forget beacon with just the event name (no visitor identity is sent).
+    (function () {
+      if (!navigator.sendBeacon) return;
+      document.addEventListener('click', function (ev) {
+        var el = ev.target.closest ? ev.target.closest('[data-track]') : null;
+        if (!el) return;
+        var name = el.getAttribute('data-track');
+        if (name) { try { navigator.sendBeacon('/api/track?e=' + encodeURIComponent(name)); } catch (e) {} }
+      }, true);
     })();
     // Repeatable per-room rows for the listing form (up to data-max rooms).
     document.querySelectorAll('[data-rooms]').forEach(function (box) {

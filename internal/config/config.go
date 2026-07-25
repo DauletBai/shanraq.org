@@ -78,14 +78,35 @@ type TelegramConfig struct {
 	ChatID   string `mapstructure:"chat_id"`
 }
 
-// AIConfig controls the optional Claude-backed writing assistant. It stays
-// disabled until an API key is provided, so the app runs with zero AI spend.
+// AIConfig controls the optional AI writing assistant. It stays disabled until
+// a key is provided, so the app runs with zero AI spend. The active provider
+// and model are chosen at runtime from the admin panel (stored in the DB); the
+// secret API keys, however, live ONLY here (config/env), never in the DB or
+// git — one key per provider, so switching provider never means editing code.
 type AIConfig struct {
 	Enabled        bool   `mapstructure:"enabled"`
-	APIKey         string `mapstructure:"api_key"`
+	Provider       string `mapstructure:"provider"` // default active provider: anthropic|openai|kimi
+	APIKey         string `mapstructure:"api_key"`  // legacy: Anthropic key (still honored)
 	EditorModel    string `mapstructure:"editor_model"`
 	TranslateModel string `mapstructure:"translate_model"`
 	MaxTokens      int    `mapstructure:"max_tokens"`
+	// Providers holds the per-provider credentials. A provider with no key is
+	// simply unavailable in the admin panel (shown as "no key").
+	Providers AIProvidersConfig `mapstructure:"providers"`
+}
+
+// AIProvidersConfig groups the credentials for each supported LLM backend.
+type AIProvidersConfig struct {
+	Anthropic AIProviderCreds `mapstructure:"anthropic"`
+	OpenAI    AIProviderCreds `mapstructure:"openai"`
+	Kimi      AIProviderCreds `mapstructure:"kimi"`
+}
+
+// AIProviderCreds is one backend's API key and optional base URL override
+// (for self-hosted gateways or regional endpoints).
+type AIProviderCreds struct {
+	APIKey  string `mapstructure:"api_key"`
+	BaseURL string `mapstructure:"base_url"`
 }
 
 // ServerConfig configures the embedded HTTP server.

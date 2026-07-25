@@ -95,21 +95,25 @@ func (m *Module) handleTranslateJob(ctx context.Context, _ *shanraq.Runtime, job
 // translateContent translates title, summary, and body from one language to
 // another. Empty fields are skipped.
 func (m *Module) translateContent(ctx context.Context, from, to string, src content) (content, error) {
+	c, model, tok := m.translateClient()
+	if c == nil {
+		return content{}, ErrDisabled
+	}
 	system := translateSystem(from, to)
 	var out content
 	var err error
 
 	if src.Title != "" {
-		if out.Title, err = m.completer.Complete(ctx, Request{Model: m.translateModel, System: system, User: src.Title, MaxTokens: 512}); err != nil {
+		if out.Title, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Title, MaxTokens: 512}); err != nil {
 			return content{}, err
 		}
 	}
 	if src.Summary != "" {
-		if out.Summary, err = m.completer.Complete(ctx, Request{Model: m.translateModel, System: system, User: src.Summary, MaxTokens: 1024}); err != nil {
+		if out.Summary, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Summary, MaxTokens: 1024}); err != nil {
 			return content{}, err
 		}
 	}
-	if out.Body, err = m.completer.Complete(ctx, Request{Model: m.translateModel, System: system, User: src.Body, MaxTokens: m.maxTokens}); err != nil {
+	if out.Body, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Body, MaxTokens: tok}); err != nil {
 		return content{}, err
 	}
 	return out, nil

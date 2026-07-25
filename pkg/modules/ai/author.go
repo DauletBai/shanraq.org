@@ -11,17 +11,18 @@ import (
 // never fabricates news, dates, statistics, quotes, or events. The draft is for
 // human review before publishing. ErrDisabled when off.
 func (m *Module) DraftColumn(ctx context.Context, lang, brief string) (string, error) {
-	if !m.Enabled() {
+	c, model, tok := m.editorClient()
+	if c == nil {
 		return "", ErrDisabled
 	}
 	if strings.TrimSpace(brief) == "" {
 		return "", nil
 	}
-	out, err := m.completer.Complete(ctx, Request{
-		Model:     m.editorModel,
+	out, err := c.Complete(ctx, Request{
+		Model:     model,
 		System:    draftColumnSystem(lang),
 		User:      brief,
-		MaxTokens: m.maxTokens,
+		MaxTokens: tok,
 	})
 	if err != nil {
 		return "", err

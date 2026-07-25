@@ -22,14 +22,15 @@ func (v ModerationVerdict) Flagged() bool { return v.Action == "flag" }
 // criticism and strong opinions are allowed. ErrDisabled is returned when the
 // assistant is off (no API key) — callers then fall back to human moderation.
 func (m *Module) Moderate(ctx context.Context, kind, text string) (ModerationVerdict, error) {
-	if !m.Enabled() {
+	c, model := m.moderateClient()
+	if c == nil {
 		return ModerationVerdict{}, ErrDisabled
 	}
 	if strings.TrimSpace(text) == "" {
 		return ModerationVerdict{Action: "allow"}, nil
 	}
-	raw, err := m.completer.Complete(ctx, Request{
-		Model:     m.moderateModel(),
+	raw, err := c.Complete(ctx, Request{
+		Model:     model,
 		System:    moderateSystem(kind),
 		User:      text,
 		MaxTokens: 256,
@@ -38,14 +39,6 @@ func (m *Module) Moderate(ctx context.Context, kind, text string) (ModerationVer
 		return ModerationVerdict{}, err
 	}
 	return parseModerationVerdict(raw)
-}
-
-// moderateModel picks the cheap/fast tier for moderation (Haiku by default).
-func (m *Module) moderateModel() string {
-	if strings.TrimSpace(m.translateModel) != "" {
-		return m.translateModel
-	}
-	return "claude-haiku-4-5"
 }
 
 // parseModerationVerdict extracts the verdict JSON, tolerating code fences or

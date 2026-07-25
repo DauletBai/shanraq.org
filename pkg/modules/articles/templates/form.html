@@ -59,7 +59,7 @@
       {{ if eq .Mode "register" }}
       {{ t .Lang "form.have_account" }} <a href="/studio/login">{{ t .Lang "form.login_title" }}</a>
       {{ else }}
-      {{ t .Lang "form.no_account" }} <a href="/studio/register">{{ t .Lang "form.register_title" }}</a>
+      {{ t .Lang "form.no_account" }} <a href="/studio/register" data-track="register_cta">{{ t .Lang "form.register_title" }}</a>
       {{ end }}
     </p>
   </div>

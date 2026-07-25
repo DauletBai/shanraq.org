@@ -10,17 +10,18 @@ import (
 // grounded in a fixed knowledge base, in the visitor's own language. Escalation
 // to a human is signalled to the caller by an empty reply. ErrDisabled when off.
 func (m *Module) Answer(ctx context.Context, lang, question string) (string, error) {
-	if !m.Enabled() {
+	c, model, tok := m.editorClient()
+	if c == nil {
 		return "", ErrDisabled
 	}
 	if strings.TrimSpace(question) == "" {
 		return "", nil
 	}
-	out, err := m.completer.Complete(ctx, Request{
-		Model:     m.editorModel,
+	out, err := c.Complete(ctx, Request{
+		Model:     model,
 		System:    supportSystem(lang),
 		User:      question,
-		MaxTokens: m.maxTokens,
+		MaxTokens: tok,
 	})
 	if err != nil {
 		return "", err
