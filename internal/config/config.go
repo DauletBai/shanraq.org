@@ -79,6 +79,13 @@ type ServerConfig struct {
 	ReadTimeout  time.Duration `mapstructure:"read_timeout"`
 	WriteTimeout time.Duration `mapstructure:"write_timeout"`
 	IdleTimeout  time.Duration `mapstructure:"idle_timeout"`
+	// TrustedProxies lists the CIDRs (or bare IPs) of reverse proxies whose
+	// X-Forwarded-For / X-Real-IP headers may be believed. Empty (the default)
+	// means forwarded headers are never trusted and the client IP is the real
+	// TCP peer — so an attacker cannot spoof their IP to dodge rate limits.
+	// In production set this to the proxy's address (e.g. 127.0.0.1/32 for a
+	// same-host Caddy, or the Docker network CIDR).
+	TrustedProxies []string `mapstructure:"trusted_proxies"`
 }
 
 // DatabaseConfig configures the PostgreSQL pool.

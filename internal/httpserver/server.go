@@ -25,7 +25,10 @@ type Server struct {
 func New(cfg config.ServerConfig, logger *zap.Logger) *Server {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
+	// Resolve the client IP ourselves: forwarded headers are believed only from
+	// configured trusted proxies, so a client cannot spoof its IP to dodge rate
+	// limits. Replaces chi's middleware.RealIP, which trusts any X-Forwarded-For.
+	r.Use(trustedRealIP(cfg.TrustedProxies))
 	r.Use(middleware.Recoverer)
 	r.Use(securityHeaders)
 	r.Use(requestLogger(logger))

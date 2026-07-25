@@ -8,6 +8,11 @@ server:
   read_timeout: 15s
   write_timeout: 15s
   idle_timeout: 60s
+  # Reverse proxies whose X-Forwarded-For / X-Real-IP may be trusted. Empty =
+  # never trust forwarded headers (the client IP is the TCP peer), so nobody can
+  # spoof their IP to dodge rate limits. In production set this to the proxy's
+  # address, e.g. ["127.0.0.1/32"] for a same-host Caddy or the Docker net CIDR.
+  trusted_proxies: []
 database:
   url: postgres://postgres:postgres@127.0.0.1:5432/shanraq?sslmode=disable
   max_conns: 10

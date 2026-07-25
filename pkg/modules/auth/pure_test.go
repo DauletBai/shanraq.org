@@ -61,17 +61,17 @@ func TestIsJSONRequest(t *testing.T) {
 }
 
 func TestClientIdentifier(t *testing.T) {
-	// RemoteAddr host is used when there is no forwarded header.
 	r := httptest.NewRequest("GET", "/", nil)
 	r.RemoteAddr = "203.0.113.9:5555"
 	if got := clientIdentifier(r); got != "203.0.113.9" {
 		t.Errorf("clientIdentifier(RemoteAddr) = %q, want 203.0.113.9", got)
 	}
-	// The first X-Forwarded-For hop wins when present (documents current
-	// behavior — this header must only be trusted behind a sanitising proxy).
+	// A client-supplied X-Forwarded-For is IGNORED here: the trusted-proxy
+	// middleware upstream is the only thing allowed to rewrite RemoteAddr, so a
+	// spoofed header cannot change the rate-limit key.
 	r.Header.Set("X-Forwarded-For", "198.51.100.7, 10.0.0.1")
-	if got := clientIdentifier(r); got != "198.51.100.7" {
-		t.Errorf("clientIdentifier(XFF) = %q, want 198.51.100.7", got)
+	if got := clientIdentifier(r); got != "203.0.113.9" {
+		t.Errorf("clientIdentifier must ignore XFF, got %q", got)
 	}
 }
 

@@ -836,14 +836,12 @@ func (m *Module) enforceRateLimit(r *http.Request, action string, includeIP bool
 	return true
 }
 
+// clientIdentifier returns the caller's IP for rate limiting. It relies on
+// r.RemoteAddr, which the server's trusted-proxy middleware has already set to
+// the real client IP (believing X-Forwarded-For only from trusted proxies).
+// Re-parsing forwarded headers here would reopen the spoofing hole, so it does
+// not.
 func clientIdentifier(r *http.Request) string {
-	xForwardedFor := strings.TrimSpace(r.Header.Get("X-Forwarded-For"))
-	if xForwardedFor != "" {
-		parts := strings.Split(xForwardedFor, ",")
-		if len(parts) > 0 {
-			return strings.TrimSpace(parts[0])
-		}
-	}
 	host, _, err := net.SplitHostPort(strings.TrimSpace(r.RemoteAddr))
 	if err == nil && host != "" {
 		return host
