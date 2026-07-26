@@ -1,10 +1,9 @@
 # Caddy reverse proxy with automatic HTTPS (Let's Encrypt).
-# DOMAIN and ACME_EMAIL come from the environment (docker-compose.prod.yml → .env).
+# DOMAIN comes from the environment (docker-compose.prod.yml → .env).
 # DNS for DOMAIN must point at this server, and ports 80/443 must be open.
-{
-	email {$ACME_EMAIL}
-}
-
+#
+# An ACME contact email is optional; Caddy still obtains and auto-renews certs
+# without one. To set it, add a global block:  {  email you@example.com  }
 {$DOMAIN} {
 	encode zstd gzip
 	reverse_proxy app:8080

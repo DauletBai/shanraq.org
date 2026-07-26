@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/mail"
 	"net/smtp"
 	"strings"
 
@@ -71,6 +72,8 @@ func (s *smtpSender) Send(ctx context.Context, to, subject, body string) error {
 	}
 
 	addr := fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port)
+	// The From header keeps any display name ("Shanraq <no-reply@…>"), but the
+	// SMTP envelope sender (MAIL FROM) must be a bare address.
 	msg := buildMessage(s.cfg.From, to, subject, body)
 
 	var auth smtp.Auth
@@ -78,7 +81,16 @@ func (s *smtpSender) Send(ctx context.Context, to, subject, body string) error {
 		auth = smtp.PlainAuth("", s.cfg.Username, s.cfg.Password, s.cfg.Host)
 	}
 
-	return smtp.SendMail(addr, auth, s.cfg.From, []string{to}, msg)
+	return smtp.SendMail(addr, auth, envelopeSender(s.cfg.From), []string{to}, msg)
+}
+
+// envelopeSender extracts the bare e-mail address from a possibly display-named
+// From value ("Name <addr>" → "addr"), for use as the SMTP MAIL FROM.
+func envelopeSender(from string) string {
+	if a, err := mail.ParseAddress(from); err == nil {
+		return a.Address
+	}
+	return strings.TrimSpace(from)
 }
 
 func buildMessage(from, to, subject, body string) []byte {

@@ -79,9 +79,13 @@ func retryable(err error) bool {
 		return true
 	}
 
+	// A net.Error that reports itself timeout/temporary is retryable. But many
+	// transient failures (notably "connection refused" while Postgres is still
+	// starting) satisfy net.Error with both flags false — so DON'T return here on
+	// false; fall through to the string check below.
 	var netErr net.Error
-	if errors.As(err, &netErr) {
-		return netErr.Timeout() || netErr.Temporary()
+	if errors.As(err, &netErr) && (netErr.Timeout() || netErr.Temporary()) {
+		return true
 	}
 
 	msg := strings.ToLower(err.Error())
