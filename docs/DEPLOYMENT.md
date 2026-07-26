@@ -65,6 +65,56 @@ Refresh tokens are trimmed to the most recent five entries per user. When rotati
 2. Invalidate outstanding tokens via `UPDATE auth_refresh_tokens SET revoked_at = NOW();`.
 3. Prompt operators to sign in again.
 
+## Migrating existing data (database + media)
+
+Two things hold state and BOTH must move together — the database stores an
+avatar's URL, but the actual photo lives on disk in the media directory:
+
+- **Postgres database** — accounts, articles, listings, author bios, the
+  `avatar_url` column, etc.
+- **Media directory** (`media.dir`, default `./data/media`) — uploaded files:
+  **avatars** and article/listing images.
+
+Use the helper scripts. `pg_dump`/`pg_restore` must match the server major
+version (Postgres 16); the scripts auto-detect a Homebrew `postgresql@16`, or
+set `PG_BIN=/path/to/pg16/bin`.
+
+**On the source machine** — create a snapshot (two files: `db.dump` +
+`media.tar.gz`):
+
+```bash
+SHANRAQ_DATABASE_URL=postgres://postgres:pass@127.0.0.1:5432/shanraq \
+SHANRAQ_MEDIA_DIR=./data/media \
+scripts/data-snapshot.sh ./snapshot
+```
+
+**Copy both files** to the target server (they contain personal data — never
+commit them, transfer over SSH):
+
+```bash
+scp -r ./snapshot user@your-server:/opt/shanraq/snapshot
+```
+
+**On the target server** — create an EMPTY database (do NOT run
+`cmd/migrate` first; the dump already carries the schema at HEAD), then restore:
+
+```bash
+createdb -U postgres shanraq   # empty target DB
+SHANRAQ_DATABASE_URL=postgres://postgres:pass@127.0.0.1:5432/shanraq \
+SHANRAQ_MEDIA_PARENT=./data \
+scripts/data-restore.sh ./snapshot
+```
+
+`SHANRAQ_MEDIA_PARENT` is the parent of the media dir (the archive holds a
+top-level `media/`), so it must match the target's `media.dir` (default
+`./data/media` → parent `./data`). Start the app; goose reports no pending
+migrations.
+
+> **After a restore onto a public server:** reset the passwords of the seeded
+> staff accounts (`admin@`, `operator@`, …) — the dump carries their existing
+> hashes. Use `adminctl` or a password-reset. Your own account, its trilingual
+> bio, and your avatar come across intact.
+
 ## Kubernetes / Helm basics
 
 1. Build the provided `Dockerfile` (CGO disabled, uses distroless base).
