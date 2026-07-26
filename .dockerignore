@@ -2,9 +2,18 @@
 .gitignore
 config.yaml
 docker-compose.yml
+docker-compose.prod.yml
+Caddyfile
 Dockerfile
 Makefile
 README.md
 **/*.test
 tmp
 vendor
+
+# Never copy secrets or user data into any build layer.
+.env
+.env.*
+configs/config.local.yaml
+data
+scripts
