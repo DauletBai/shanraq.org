@@ -16,7 +16,9 @@ type ProfilePage struct {
 	Email         string
 	FirstName     string
 	LastName      string
-	Bio           string
+	BioKZ         string
+	BioRU         string
+	BioEN         string
 	CanPublish    bool // leadership: publish without email/phone verification
 	PhoneVerified bool
 	EmailVerified bool
@@ -36,7 +38,8 @@ func (m *Module) handleProfile(w http.ResponseWriter, r *http.Request) {
 
 	page.FirstName, page.LastName, page.PhoneVerified = m.auth.AuthorIdentity(r.Context(), authorID)
 	page.EmailVerified = m.auth.IsEmailVerified(r.Context(), authorID)
-	page.Bio = m.auth.AuthorCard(r.Context(), authorID).Bio
+	card := m.auth.AuthorCard(r.Context(), authorID)
+	page.BioKZ, page.BioRU, page.BioEN = card.BioKZ, card.BioRU, card.BioEN
 	if claims, ok := auth.ClaimsFromContext(r.Context()); ok {
 		page.Email = claims.Email
 		page.CanPublish = canAuthorAsStaff(claims)
@@ -95,9 +98,11 @@ func (m *Module) handleBioSave(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_ = r.ParseForm()
-	bio := clip(strings.TrimSpace(r.FormValue("bio")), 600)
-	if err := m.auth.SetBio(r.Context(), authorID, bio); err != nil {
-		m.rt.Logger.Error("set bio", zap.Error(err))
+	kz := clip(strings.TrimSpace(r.FormValue("bio_kz")), 600)
+	ru := clip(strings.TrimSpace(r.FormValue("bio_ru")), 600)
+	en := clip(strings.TrimSpace(r.FormValue("bio_en")), 600)
+	if err := m.auth.SetBios(r.Context(), authorID, kz, ru, en); err != nil {
+		m.rt.Logger.Error("set bios", zap.Error(err))
 		http.Redirect(w, r, "/studio/profile?ok=bio_bad", http.StatusSeeOther)
 		return
 	}

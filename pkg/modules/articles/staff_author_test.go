@@ -69,8 +69,10 @@ func TestBioAndAuthorPageTeamBadge(t *testing.T) {
 	app.makeStaff(email, "admin")
 	cookie := app.login(email, pass)
 
-	bio := "Основатель и CEO проекта Shanraq."
-	w := app.do(http.MethodPost, "/studio/bio", url.Values{"bio": {bio}}, withCookie(cookie))
+	bioRU := "Основатель и CEO проекта Shanraq."
+	bioKZ := "Shanraq жобасының негізін қалаушы."
+	w := app.do(http.MethodPost, "/studio/bio",
+		url.Values{"bio_ru": {bioRU}, "bio_kz": {bioKZ}}, withCookie(cookie))
 	if w.Code != http.StatusSeeOther || !strings.Contains(w.Header().Get("Location"), "bio_set") {
 		t.Fatalf("bio save: code=%d loc=%s", w.Code, w.Header().Get("Location"))
 	}
@@ -79,15 +81,22 @@ func TestBioAndAuthorPageTeamBadge(t *testing.T) {
 	id, _ := app.seedArticle(uid, "draft")
 	_ = app.do(http.MethodPost, "/studio/a/"+id.String()+"/publish", nil, withCookie(cookie))
 
-	w = app.do(http.MethodGet, "/author/"+uid.String(), nil)
+	// Russian author page shows the RU bio + the team badge.
+	w = app.do(http.MethodGet, "/author/"+uid.String(), url.Values{"lang": {"ru"}})
 	if w.Code != http.StatusOK {
 		t.Fatalf("author page = %d", w.Code)
 	}
 	body := w.Body.String()
-	if !strings.Contains(body, bio) {
-		t.Error("author page should show the bio")
+	if !strings.Contains(body, bioRU) {
+		t.Error("RU author page should show the RU bio")
 	}
 	if !strings.Contains(body, "team-badge") {
 		t.Error("author page should show the team badge for a staff author")
+	}
+
+	// Kazakh author page shows the KZ bio (localization works).
+	w = app.do(http.MethodGet, "/author/"+uid.String(), url.Values{"lang": {"kz"}})
+	if !strings.Contains(w.Body.String(), bioKZ) {
+		t.Error("KZ author page should show the KZ bio")
 	}
 }

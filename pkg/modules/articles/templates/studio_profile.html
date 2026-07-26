@@ -28,7 +28,12 @@
         <h2>{{ t .Lang "prof.bio" }}</h2>
         <p class="hint">{{ t .Lang "prof.bio_note" }}</p>
         <form method="post" action="/studio/bio">
-          <textarea class="input" name="bio" rows="4" maxlength="600" placeholder="{{ t .Lang "prof.bio_ph" }}">{{ .Bio }}</textarea>
+          <label class="prof-biolang"><span class="badge-lang">{{ label "ru" }}</span> {{ langName "ru" }}</label>
+          <textarea class="input" name="bio_ru" rows="3" maxlength="600" placeholder="{{ t .Lang "prof.bio_ph" }}">{{ .BioRU }}</textarea>
+          <label class="prof-biolang"><span class="badge-lang">{{ label "kz" }}</span> {{ langName "kz" }}</label>
+          <textarea class="input" name="bio_kz" rows="3" maxlength="600">{{ .BioKZ }}</textarea>
+          <label class="prof-biolang"><span class="badge-lang">{{ label "en" }}</span> {{ langName "en" }}</label>
+          <textarea class="input" name="bio_en" rows="3" maxlength="600">{{ .BioEN }}</textarea>
           <button class="btn btn--primary btn--sm" type="submit" style="margin-top:10px">{{ t .Lang "prof.bio_save" }}</button>
         </form>
       </div>

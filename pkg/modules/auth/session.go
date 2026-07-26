@@ -147,12 +147,12 @@ func (m *Module) SetAvatar(ctx context.Context, userID uuid.UUID, url string) er
 	return m.store.SetAvatar(ctx, userID, url)
 }
 
-// SetBio stores (empty clears) the user's public author bio.
-func (m *Module) SetBio(ctx context.Context, userID uuid.UUID, bio string) error {
+// SetBios stores the user's public author bio in KZ/RU/EN (any may be empty).
+func (m *Module) SetBios(ctx context.Context, userID uuid.UUID, kz, ru, en string) error {
 	if m.store == nil {
 		return fmt.Errorf("auth store unavailable")
 	}
-	return m.store.SetBio(ctx, userID, bio)
+	return m.store.SetBios(ctx, userID, kz, ru, en)
 }
 
 // AuthorCard returns a user's public author-page identity (name, bio, avatar,

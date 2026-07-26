@@ -71,7 +71,7 @@ func (m *Module) handleAuthor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	c := m.auth.AuthorCard(r.Context(), uid)
-	card := authCard{Bio: strings.TrimSpace(c.Bio), AvatarURL: c.AvatarURL, IsTeam: isTeamRole(c.Role)}
+	card := authCard{Bio: strings.TrimSpace(c.LocalizedBio(lang)), AvatarURL: c.AvatarURL, IsTeam: isTeamRole(c.Role)}
 	m.renderAuthor(w, r, lang, uid.String(), strings.TrimSpace(c.First+" "+c.Last), false, card)
 }
 

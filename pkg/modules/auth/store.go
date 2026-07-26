@@ -335,29 +335,53 @@ func (s *Store) Avatar(ctx context.Context, userID uuid.UUID) (string, error) {
 	return url, nil
 }
 
-// SetBio stores (empty clears) the user's public author bio.
-func (s *Store) SetBio(ctx context.Context, userID uuid.UUID, bio string) error {
+// SetBios stores the user's public author bio in all three languages (any of
+// them may be empty).
+func (s *Store) SetBios(ctx context.Context, userID uuid.UUID, kz, ru, en string) error {
 	if _, err := s.db.Exec(ctx,
-		`UPDATE auth_users SET bio = $2, updated_at = NOW() WHERE id = $1`, userID, bio); err != nil {
-		return fmt.Errorf("set bio: %w", err)
+		`UPDATE auth_users SET bio_kz = $2, bio_ru = $3, bio_en = $4, updated_at = NOW() WHERE id = $1`,
+		userID, kz, ru, en); err != nil {
+		return fmt.Errorf("set bios: %w", err)
 	}
 	return nil
 }
 
 // AuthorCard is a user's public author-page identity in one row.
 type AuthorCard struct {
-	First, Last string
-	Bio         string
-	AvatarURL   string
-	Role        string
+	First, Last         string
+	BioKZ, BioRU, BioEN string
+	AvatarURL           string
+	Role                string
+}
+
+// LocalizedBio returns the bio in the requested language, falling back to
+// Russian and then to any non-empty version (mirrors the site's text fallback).
+func (c AuthorCard) LocalizedBio(lang string) string {
+	switch lang {
+	case "kz":
+		if c.BioKZ != "" {
+			return c.BioKZ
+		}
+	case "en":
+		if c.BioEN != "" {
+			return c.BioEN
+		}
+	}
+	if c.BioRU != "" {
+		return c.BioRU
+	}
+	if c.BioKZ != "" {
+		return c.BioKZ
+	}
+	return c.BioEN
 }
 
 // AuthorCard fetches the public profile fields for an author page.
 func (s *Store) AuthorCard(ctx context.Context, userID uuid.UUID) (AuthorCard, error) {
 	var c AuthorCard
 	err := s.db.QueryRow(ctx,
-		`SELECT first_name, last_name, bio, avatar_url, role FROM auth_users WHERE id = $1`, userID).
-		Scan(&c.First, &c.Last, &c.Bio, &c.AvatarURL, &c.Role)
+		`SELECT first_name, last_name, bio_kz, bio_ru, bio_en, avatar_url, role FROM auth_users WHERE id = $1`, userID).
+		Scan(&c.First, &c.Last, &c.BioKZ, &c.BioRU, &c.BioEN, &c.AvatarURL, &c.Role)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return AuthorCard{}, nil

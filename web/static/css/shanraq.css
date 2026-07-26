@@ -679,6 +679,8 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .prof-ava__img--empty { display: flex; align-items: center; justify-content: center; background: rgba(127,127,127,.12); font-size: 2.6rem; }
 .prof-ava__actions { display: flex; flex-direction: column; gap: 10px; }
 .prof-ava__form { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.prof-biolang { display: block; margin: 12px 0 4px; font-size: 0.85rem; font-weight: 600; color: var(--ink-soft, inherit); }
+.prof-biolang:first-of-type { margin-top: 6px; }
 .prof-del { display: block; max-width: 320px; margin: 6px 0 14px; }
 .prof-del span { display: block; margin-bottom: 4px; font-weight: 600; }
 
