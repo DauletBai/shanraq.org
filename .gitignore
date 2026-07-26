@@ -34,3 +34,4 @@ coverage.txt
 # Local config with real operator/secret values (never commit)
 config.local.yaml
 configs/config.local.yaml
+!.env.example

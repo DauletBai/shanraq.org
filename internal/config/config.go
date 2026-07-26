@@ -255,7 +255,14 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("auth.mfa.totp.enabled", false)
 	v.SetDefault("auth.mfa.totp.issuer", "Shanraq")
 
+	// Registered so viper's AutomaticEnv binds SHANRAQ_NOTIFICATIONS_SMTP_*
+	// during Unmarshal — SMTP credentials come from the environment (.env), never
+	// from a committed config file.
+	v.SetDefault("notifications.smtp.host", "")
 	v.SetDefault("notifications.smtp.port", 587)
+	v.SetDefault("notifications.smtp.username", "")
+	v.SetDefault("notifications.smtp.password", "")
+	v.SetDefault("notifications.smtp.from", "")
 
 	v.SetDefault("ai.enabled", false)
 	v.SetDefault("ai.editor_model", "claude-sonnet-5")
@@ -272,6 +279,17 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("media.max_upload_bytes", 10<<20) // 10 MiB
 	v.SetDefault("media.max_dimension", 2000)
 	v.SetDefault("media.watermark", true)
+
+	// Registered so viper's AutomaticEnv binds SHANRAQ_OPERATOR_* from the
+	// environment — the legal operator's BIN/address are disclosed on the live
+	// site but must never live in a committed config file (they come from .env).
+	v.SetDefault("operator.legal_name", "")
+	v.SetDefault("operator.legal_name_en", "")
+	v.SetDefault("operator.bin", "")
+	v.SetDefault("operator.address", "")
+	v.SetDefault("operator.address_en", "")
+	v.SetDefault("operator.email", "")
+	v.SetDefault("operator.phone", "")
 
 	// Registered so viper's AutomaticEnv binds SHANRAQ_SOCIAL_* (nested keys are
 	// only read from the environment once known). Empty = the icon is hidden.

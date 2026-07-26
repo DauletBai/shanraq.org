@@ -2,49 +2,51 @@
 
 This guide mirrors the in-app deployment page that ships at `/static/docs/deployment.html`, but it is versioned alongside the codebase for easy diffing. Read it together with the [Configuration Guide](CONFIGURATION.md) when tailoring `config.yaml` and environment variables.
 
-## Docker Compose (production profile)
+## Quick start on a VPS (Docker Compose + automatic HTTPS)
 
-Create a dedicated compose file (for example `docker-compose.prod.yml`) so you can tune restart policies, secrets, and volumes separately from developer defaults:
-
-```yaml
-services:
-  db:
-    image: postgres:16
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: shanraq
-      POSTGRES_USER: shanraq
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - db-data:/var/lib/postgresql/data
-  app:
-    build: .
-    restart: unless-stopped
-    environment:
-      SHANRAQ_DATABASE_URL: ${DATABASE_URL}
-      SHANRAQ_AUTH_TOKEN_SECRET: ${AUTH_SECRET}
-      SHANRAQ_AUTH_TOKEN_TTL: 45m
-      SHANRAQ_SERVER_ADDRESS: 0.0.0.0:8080
-    depends_on:
-      - db
-    command: ["/usr/local/bin/shanraq", "-config", "/app/config.yaml"]
-volumes:
-  db-data:
-```
-
-Run with:
+The repo ships a ready production stack — `docker-compose.prod.yml` (Postgres +
+app + Caddy), `configs/config.prod.yaml` (non-secret settings), `Caddyfile`
+(automatic Let's Encrypt HTTPS), and `.env.example`. It needs a host with Docker
+and root (a VPS/VDS), a domain, and ports 80/443 open.
 
 ```bash
-docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
+# 1. Point your domain's DNS A-record at the server.
+# 2. Configure secrets:
+cp .env.example .env
+#    edit .env: POSTGRES_PASSWORD, DOMAIN, SHANRAQ_PUBLIC_BASE_URL (https://your-domain),
+#    SHANRAQ_AUTH_TOKEN_SECRET (≥32 random chars), SHANRAQ_TELEMETRY_METRICS_TOKEN,
+#    operator BIN/address, and optionally SMTP / ANTHROPIC_API_KEY.
+# 3. Launch — Caddy fetches a TLS cert automatically:
+docker compose -f docker-compose.prod.yml up -d --build
 ```
 
-Recommendations:
+The app runs its migrations on first boot (which also seed the demo content and
+staff accounts). The database port is not published — only Caddy is exposed.
+Secrets live only in `.env` (git-ignored); `config.prod.yaml` holds no secrets.
+`environment=production` makes the app refuse to start with a default/weak token
+secret or a non-HTTPS `public_base_url`.
 
-- store credentials in your orchestrator or `.env.prod`
-- point `SHANRAQ_DATABASE_URL` at a managed Postgres instance when leaving local development
-- add `logging.mode: production` in `config.yaml`
-- seed or migrate the database before scaling replicas: `docker compose run --rm app /usr/local/bin/shanraq -config /app/config.yaml` (the process runs migrations on startup and then exits when interrupted)
-- rotate `SHANRAQ_AUTH_TOKEN_SECRET` when moving between environments; the runtime refuses to start with default secrets while `environment=production`.
+### Bringing your existing data (bio, avatar, seeded articles)
+
+To carry over data from another machine instead of starting fresh, restore a
+snapshot *before* the app first touches the database (see
+[Migrating existing data](#migrating-existing-data-database--media) below):
+
+```bash
+docker compose -f docker-compose.prod.yml up -d db          # Postgres only
+# create the schema+data from your dump into the running db container, then:
+docker compose -f docker-compose.prod.yml up -d             # app + caddy
+```
+
+### If your host has no Docker/root (shared hosting)
+
+Build a static Linux binary and run it behind the host's own TLS/proxy, pointing
+`SHANRAQ_DATABASE_URL` at their managed Postgres 16 and passing the same
+`SHANRAQ_*` environment variables:
+
+```bash
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o shanraq ./cmd/app
+```
 
 ## Role & Secret Management
 

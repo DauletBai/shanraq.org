@@ -1,0 +1,66 @@
+# Production stack: Postgres + app + Caddy (automatic HTTPS).
+#
+#   cp .env.example .env      # then fill in the secrets
+#   docker compose -f docker-compose.prod.yml up -d --build
+#
+# Secrets come from .env (never committed). The database port is NOT published;
+# only Caddy is exposed (80/443). Fixed subnet so the app can trust Caddy's
+# forwarded client IPs (see server.trusted_proxies in configs/config.prod.yaml).
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: shanraq
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: shanraq
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shanraq"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # No published ports: reachable only on the internal network.
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: [.env]            # app settings + provider API keys (SHANRAQ_*, ANTHROPIC_API_KEY…)
+    environment:
+      # Built from the compose secret so the DSN password is never duplicated.
+      SHANRAQ_DATABASE_URL: postgres://shanraq:${POSTGRES_PASSWORD}@db:5432/shanraq?sslmode=disable
+    volumes:
+      - ./configs/config.prod.yaml:/app/config.yaml:ro
+      - media-data:/app/data    # uploaded media (avatars, images) persists here
+    restart: unless-stopped
+    # No published ports: only Caddy talks to the app.
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [app]
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN (your-domain.kz) in .env}
+      ACME_EMAIL: ${ACME_EMAIL:-}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data        # TLS certificates (Let's Encrypt) persist here
+      - caddy-config:/config
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+volumes:
+  db-data:
+  media-data:
+  caddy-data:
+  caddy-config:
