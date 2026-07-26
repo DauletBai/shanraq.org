@@ -8,7 +8,7 @@
   <section class="studio">
     <div class="studio__head">
       <h1>{{ t .Lang "studio.title" }}</h1>
-      {{ if svcOff .Svc "article_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "article_submission" }}" aria-disabled="true">+ {{ t .Lang "studio.new" }}</span>{{ else }}<a class="btn btn--primary" href="/studio/new">+ {{ t .Lang "studio.new" }}</a>{{ end }}
+      {{ if and (svcOff .Svc "article_submission") (not .CanAuthor) }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "article_submission" }}" aria-disabled="true">+ {{ t .Lang "studio.new" }}</span>{{ else }}<a class="btn btn--primary" href="/studio/new">+ {{ t .Lang "studio.new" }}</a>{{ end }}
     </div>
 
     {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
@@ -95,7 +95,7 @@
     {{ else }}
     <div class="empty">
       <p style="margin-bottom:18px">{{ t .Lang "studio.empty" }}</p>
-      {{ if svcOff .Svc "article_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "article_submission" }}" aria-disabled="true">{{ t .Lang "studio.new" }}</span>{{ else }}<a class="btn btn--primary" href="/studio/new">{{ t .Lang "studio.new" }}</a>{{ end }}
+      {{ if and (svcOff .Svc "article_submission") (not .CanAuthor) }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "article_submission" }}" aria-disabled="true">{{ t .Lang "studio.new" }}</span>{{ else }}<a class="btn btn--primary" href="/studio/new">{{ t .Lang "studio.new" }}</a>{{ end }}
     </div>
     {{ end }}
   </section>

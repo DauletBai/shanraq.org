@@ -335,6 +335,38 @@ func (s *Store) Avatar(ctx context.Context, userID uuid.UUID) (string, error) {
 	return url, nil
 }
 
+// SetBio stores (empty clears) the user's public author bio.
+func (s *Store) SetBio(ctx context.Context, userID uuid.UUID, bio string) error {
+	if _, err := s.db.Exec(ctx,
+		`UPDATE auth_users SET bio = $2, updated_at = NOW() WHERE id = $1`, userID, bio); err != nil {
+		return fmt.Errorf("set bio: %w", err)
+	}
+	return nil
+}
+
+// AuthorCard is a user's public author-page identity in one row.
+type AuthorCard struct {
+	First, Last string
+	Bio         string
+	AvatarURL   string
+	Role        string
+}
+
+// AuthorCard fetches the public profile fields for an author page.
+func (s *Store) AuthorCard(ctx context.Context, userID uuid.UUID) (AuthorCard, error) {
+	var c AuthorCard
+	err := s.db.QueryRow(ctx,
+		`SELECT first_name, last_name, bio, avatar_url, role FROM auth_users WHERE id = $1`, userID).
+		Scan(&c.First, &c.Last, &c.Bio, &c.AvatarURL, &c.Role)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return AuthorCard{}, nil
+		}
+		return AuthorCard{}, fmt.Errorf("author card: %w", err)
+	}
+	return c, nil
+}
+
 // DeleteAccount permanently removes a user and, by ON DELETE CASCADE, all of
 // their content (articles, listings, comments, votes, favorites, referrals,
 // consents, tokens…). This is the user's own right-to-erasure action; it is

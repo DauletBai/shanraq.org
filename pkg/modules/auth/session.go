@@ -147,6 +147,27 @@ func (m *Module) SetAvatar(ctx context.Context, userID uuid.UUID, url string) er
 	return m.store.SetAvatar(ctx, userID, url)
 }
 
+// SetBio stores (empty clears) the user's public author bio.
+func (m *Module) SetBio(ctx context.Context, userID uuid.UUID, bio string) error {
+	if m.store == nil {
+		return fmt.Errorf("auth store unavailable")
+	}
+	return m.store.SetBio(ctx, userID, bio)
+}
+
+// AuthorCard returns a user's public author-page identity (name, bio, avatar,
+// role). Errors yield a zero card so the caller can still render a bare page.
+func (m *Module) AuthorCard(ctx context.Context, userID uuid.UUID) AuthorCard {
+	if m.store == nil {
+		return AuthorCard{}
+	}
+	c, err := m.store.AuthorCard(ctx, userID)
+	if err != nil {
+		return AuthorCard{}
+	}
+	return c
+}
+
 // DeleteAccount permanently erases the user and all their content (cascade).
 func (m *Module) DeleteAccount(ctx context.Context, userID uuid.UUID) error {
 	if m.store == nil {

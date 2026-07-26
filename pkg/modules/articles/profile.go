@@ -16,6 +16,8 @@ type ProfilePage struct {
 	Email         string
 	FirstName     string
 	LastName      string
+	Bio           string
+	CanPublish    bool // leadership: publish without email/phone verification
 	PhoneVerified bool
 	EmailVerified bool
 	Notice        string
@@ -34,8 +36,10 @@ func (m *Module) handleProfile(w http.ResponseWriter, r *http.Request) {
 
 	page.FirstName, page.LastName, page.PhoneVerified = m.auth.AuthorIdentity(r.Context(), authorID)
 	page.EmailVerified = m.auth.IsEmailVerified(r.Context(), authorID)
+	page.Bio = m.auth.AuthorCard(r.Context(), authorID).Bio
 	if claims, ok := auth.ClaimsFromContext(r.Context()); ok {
 		page.Email = claims.Email
+		page.CanPublish = canAuthorAsStaff(claims)
 	}
 	m.render(w, "studio_profile", page)
 }
@@ -81,6 +85,23 @@ func (m *Module) handleAvatarUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Redirect(w, r, "/studio/profile?ok=avatar_set", http.StatusSeeOther)
+}
+
+// handleBioSave stores the user's public author bio (shown on their author page).
+func (m *Module) handleBioSave(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	_ = r.ParseForm()
+	bio := clip(strings.TrimSpace(r.FormValue("bio")), 600)
+	if err := m.auth.SetBio(r.Context(), authorID, bio); err != nil {
+		m.rt.Logger.Error("set bio", zap.Error(err))
+		http.Redirect(w, r, "/studio/profile?ok=bio_bad", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/studio/profile?ok=bio_set", http.StatusSeeOther)
 }
 
 // handleAvatarDelete removes the user's avatar (reverting to the default).

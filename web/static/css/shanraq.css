@@ -1112,6 +1112,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   margin: 28px 0 8px; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface);
 }
 .author-hero__mark img { width: 72px; height: 72px; }
+/* real author photo (when set): same footprint as the initials circle */
+.author-hero__photo { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
+/* project leadership badge next to the author name */
+.team-badge {
+  display: inline-block; background: var(--ink, #1a1a1a); color: #fff;
+  font-size: 0.66rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 999px; vertical-align: middle;
+}
 /* human-author avatar fallback: initials in a brand-tinted circle */
 .author-hero__initials {
   display: inline-flex; align-items: center; justify-content: center;

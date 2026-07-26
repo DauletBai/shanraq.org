@@ -40,10 +40,13 @@ type CatCount struct {
 // AuthorPage is the template context for an author profile.
 type AuthorPage struct {
 	Base
-	Name     string
-	Initials string // avatar fallback for human authors (e.g. "АН")
-	IsAI     bool
-	Posts    []FeedItem
+	Name      string
+	Initials  string // avatar fallback for human authors (e.g. "АН")
+	AvatarURL string // real photo, when the author has set one
+	Bio       string // public bio shown under the name
+	IsTeam    bool   // project leadership (CEO/directors) — shows a team badge
+	IsAI      bool
+	Posts     []FeedItem
 	// Public analytics showcase.
 	Count int
 	Views int64
@@ -59,7 +62,7 @@ func (m *Module) handleAuthor(w http.ResponseWriter, r *http.Request) {
 	raw := chi.URLParam(r, "id")
 
 	if raw == SanaSlug || raw == SanaAuthorID {
-		m.renderAuthor(w, r, lang, SanaAuthorID, SanaName, true)
+		m.renderAuthor(w, r, lang, SanaAuthorID, SanaName, true, authCard{})
 		return
 	}
 	uid, err := uuid.Parse(raw)
@@ -67,12 +70,24 @@ func (m *Module) handleAuthor(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	first, last, _ := m.auth.AuthorIdentity(r.Context(), uid)
-	m.renderAuthor(w, r, lang, uid.String(), strings.TrimSpace(first+" "+last), false)
+	c := m.auth.AuthorCard(r.Context(), uid)
+	card := authCard{Bio: strings.TrimSpace(c.Bio), AvatarURL: c.AvatarURL, IsTeam: isTeamRole(c.Role)}
+	m.renderAuthor(w, r, lang, uid.String(), strings.TrimSpace(c.First+" "+c.Last), false, card)
 }
 
+// authCard carries the extra profile fields a human author page shows.
+type authCard struct {
+	Bio       string
+	AvatarURL string
+	IsTeam    bool
+}
+
+// isTeamRole reports whether a role belongs to project leadership shown with a
+// "team" badge on the author page.
+func isTeamRole(role string) bool { return role == "admin" || role == "director" }
+
 // renderAuthor builds and renders a profile for the given author.
-func (m *Module) renderAuthor(w http.ResponseWriter, r *http.Request, lang, authorID, name string, isAI bool) {
+func (m *Module) renderAuthor(w http.ResponseWriter, r *http.Request, lang, authorID, name string, isAI bool, card authCard) {
 	arts, err := m.store.ListPublishedByAuthor(r.Context(), authorID, 60)
 	if err != nil {
 		m.rt.Logger.Error("author articles", zap.Error(err))
@@ -127,9 +142,14 @@ func (m *Module) renderAuthor(w http.ResponseWriter, r *http.Request, lang, auth
 	page := AuthorPage{Base: m.base(r, name, lang)}
 	page.Name = name
 	page.Initials = initials(name)
+	page.AvatarURL = card.AvatarURL
+	page.Bio = card.Bio
+	page.IsTeam = card.IsTeam
 	page.IsAI = isAI
 	if isAI {
 		page.Desc = T(lang, "author.sana_bio")
+	} else if card.Bio != "" {
+		page.Desc = clip(card.Bio, 200)
 	}
 	page.Posts = items
 	page.Count = len(items)

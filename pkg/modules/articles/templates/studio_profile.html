@@ -25,12 +25,22 @@
       </div>
 
       <div class="cab-card">
+        <h2>{{ t .Lang "prof.bio" }}</h2>
+        <p class="hint">{{ t .Lang "prof.bio_note" }}</p>
+        <form method="post" action="/studio/bio">
+          <textarea class="input" name="bio" rows="4" maxlength="600" placeholder="{{ t .Lang "prof.bio_ph" }}">{{ .Bio }}</textarea>
+          <button class="btn btn--primary btn--sm" type="submit" style="margin-top:10px">{{ t .Lang "prof.bio_save" }}</button>
+        </form>
+      </div>
+
+      <div class="cab-card">
         <h2>{{ t .Lang "prof.identity" }}</h2>
+        {{ if .CanPublish }}<p class="notice">{{ t .Lang "prof.can_publish" }}</p>{{ end }}
         <table class="spec">
           <tbody>
             <tr><td>{{ t .Lang "prof.name" }}</td><td>{{ .FirstName }} {{ .LastName }}</td></tr>
             <tr><td>Email</td><td>{{ .Email }}{{ if .EmailVerified }} <span class="pill pill--published">✓</span>{{ end }}</td></tr>
-            <tr><td>{{ t .Lang "prof.author_status" }}</td><td>{{ if .PhoneVerified }}<span class="pill pill--published">{{ t .Lang "prof.author_yes" }}</span>{{ else }}<a href="/studio/author">{{ t .Lang "prof.author_no" }}</a>{{ end }}</td></tr>
+            <tr><td>{{ t .Lang "prof.author_status" }}</td><td>{{ if or .PhoneVerified .CanPublish }}<span class="pill pill--published">{{ t .Lang "prof.author_yes" }}</span>{{ else }}<a href="/studio/author">{{ t .Lang "prof.author_no" }}</a>{{ end }}</td></tr>
           </tbody>
         </table>
       </div>

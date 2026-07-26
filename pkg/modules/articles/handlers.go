@@ -26,6 +26,7 @@ type Base struct {
 	Lang      string
 	Authed    bool
 	IsStaff   bool
+	CanAuthor bool   // leadership who may publish without email/phone verification
 	Avatar    string // current user's avatar URL ("" = none), for the header/cabinet
 	ShowLangs bool
 	Active    string // active section: "latest" | "top" | ""
@@ -102,6 +103,7 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Lang:      lang,
 		Authed:    authed,
 		IsStaff:   authed && claims.HasAnyRole(adminRoles...),
+		CanAuthor: canAuthorAsStaff(claims),
 		Avatar:    avatar,
 		ShowLangs: true,
 		LangLinks: langLinks(r.URL.Path, seoFilterQuery(r)),
@@ -1238,9 +1240,13 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 
 	lang := m.resolveLang(w, r)
 	// Article submission gate (staged launch): open / invite-only / closed.
-	if ok, msg := m.gateReason(r, SvcArticleSubmit, lang); !ok {
-		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, msg)
-		return
+	// Leadership (the CEO/directors) bypass it so they can write during the beta.
+	claims, _ := auth.ClaimsFromContext(r.Context())
+	if !canAuthorAsStaff(claims) {
+		if ok, msg := m.gateReason(r, SvcArticleSubmit, lang); !ok {
+			m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, msg)
+			return
+		}
 	}
 	orig := findTR(trs, originalLang)
 	if orig.Title == "" || orig.BodyMD == "" {
@@ -1298,23 +1304,30 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
 		return
 	}
-	// Articles carry a real-name byline: publishing requires a verified author
-	// identity (real name + verified phone).
-	if !m.auth.CanPublish(r.Context(), authorID) {
-		http.Redirect(w, r, "/studio/author?need=publish", http.StatusSeeOther)
-		return
-	}
-	// Acknowledgment of the current documents and tariffs before publishing.
-	// Fail-closed: a DB error must not let an unconsented article through.
-	consented, err := m.auth.HasAuthorConsent(r.Context(), authorID)
-	if err != nil {
-		m.rt.Logger.Error("author consent check", zap.String("user_id", authorID.String()), zap.Error(err))
-		http.Redirect(w, r, "/studio/consent", http.StatusSeeOther)
-		return
-	}
-	if !consented {
-		http.Redirect(w, r, "/studio/consent", http.StatusSeeOther)
-		return
+	// Leadership (the CEO/directors) publish under their own name without
+	// email/phone verification or the consent step — their staff account already
+	// establishes identity and they own the documents. Everyone else must have a
+	// verified real-name identity and have accepted the current documents.
+	claims, _ := auth.ClaimsFromContext(r.Context())
+	if !canAuthorAsStaff(claims) {
+		// Articles carry a real-name byline: publishing requires a verified author
+		// identity (real name + verified phone).
+		if !m.auth.CanPublish(r.Context(), authorID) {
+			http.Redirect(w, r, "/studio/author?need=publish", http.StatusSeeOther)
+			return
+		}
+		// Acknowledgment of the current documents and tariffs before publishing.
+		// Fail-closed: a DB error must not let an unconsented article through.
+		consented, err := m.auth.HasAuthorConsent(r.Context(), authorID)
+		if err != nil {
+			m.rt.Logger.Error("author consent check", zap.String("user_id", authorID.String()), zap.Error(err))
+			http.Redirect(w, r, "/studio/consent", http.StatusSeeOther)
+			return
+		}
+		if !consented {
+			http.Redirect(w, r, "/studio/consent", http.StatusSeeOther)
+			return
+		}
 	}
 	// Publishing is now a submission, not a switch: the rules check runs first
 	// and the article either goes out or comes back with the rules it failed.
@@ -1324,6 +1337,28 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	lang := m.resolveLang(w, r)
+
+	// Leadership publishes immediately — no review queue. They are the editorial
+	// authority, so their piece goes live at once (logged as a staff publish).
+	if canAuthorAsStaff(claims) {
+		title := ""
+		if a, e := m.store.GetByID(r.Context(), id, authorID); e == nil {
+			if tr, _ := a.Translation(lang); tr != nil {
+				title = tr.Title
+			}
+		}
+		if err := m.commitReview(r.Context(), id, authorID, title, "published", "approve", "rules_ok", nil); err != nil {
+			m.rt.Logger.Error("staff publish", zap.Error(err))
+			http.Error(w, "internal error", http.StatusInternalServerError)
+			return
+		}
+		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
+			m.rt.Logger.Warn("enqueue publish", zap.Error(err))
+		}
+		http.Redirect(w, r, "/studio?ok=published", http.StatusSeeOther)
+		return
+	}
+
 	published, blocking, err := m.submitForReview(r.Context(), id, authorID, lang)
 	if err != nil {
 		if errors.Is(err, ErrNotFound) {

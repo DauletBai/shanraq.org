@@ -23,6 +23,12 @@ var adminRoles = []string{"admin", "director", "manager", "editor"}
 var assignableRoles = []string{"director", "manager", "editor", "user"}
 
 func canManageUsers(c *auth.Claims) bool { return c != nil && c.HasAnyRole("admin", "director") }
+
+// canAuthorAsStaff reports whether the viewer is project leadership (the CEO /
+// directors) who may author and publish articles under their own name WITHOUT
+// email/phone verification and regardless of the staged-launch submission gate.
+// Their identity is already established by their staff account.
+func canAuthorAsStaff(c *auth.Claims) bool { return c != nil && c.HasAnyRole("admin", "director") }
 func canViewFinance(c *auth.Claims) bool {
 	return c != nil && c.HasAnyRole("admin", "director", "manager")
 }

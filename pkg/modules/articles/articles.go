@@ -186,6 +186,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Use(m.auth.RequireSession("/studio/login", "user", "operator", "admin"))
 		r.Get("/studio", m.handleDashboard)
 		r.Get("/studio/profile", m.handleProfile)
+		r.Post("/studio/bio", m.handleBioSave)
 		r.Post("/studio/avatar", m.handleAvatarUpload)
 		r.Post("/studio/avatar/delete", m.handleAvatarDelete)
 		r.Post("/studio/delete", m.handleDeleteAccount)
