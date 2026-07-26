@@ -359,7 +359,7 @@ var messages = map[string]map[string]string{
 	"consent.error":          {"kz": "Жариялау үшін келісіміңізді растаңыз.", "ru": "Чтобы публиковать, подтвердите согласие.", "en": "You must confirm your agreement to publish."},
 	"consent.submit":         {"kz": "Келісемін — жалғастыру", "ru": "Согласен — продолжить", "en": "I agree — continue"},
 	"ad.learn_more":          {"kz": "Толығырақ", "ru": "Подробнее", "en": "Learn more"},
-	"adv.nav":                {"kz": "Бизнеске жарнама", "ru": "Реклама для бизнеса", "en": "Advertise"},
+	"adv.nav":                {"kz": "Жарнама", "ru": "Реклама", "en": "Advertise"},
 	"adv.title":              {"kz": "Жарнама беруші кабинеті", "ru": "Кабинет рекламодателя", "en": "Advertiser cabinet"},
 	"adv.intro":              {"kz": "Компанияңызды тіркеп, жарнама орналастыруға өтінім жасаңыз. Төлем Kaspi қосылғаннан кейін іске қосылады — қазір өтінім сақталады.", "ru": "Зарегистрируйте компанию и создайте заявку на размещение. Оплата включится после подключения Kaspi — сейчас заявка сохраняется.", "en": "Register your company and create a placement request. Billing starts once Kaspi is connected — for now the request is saved."},
 	"adv.saved_company":      {"kz": "Компания сақталды.", "ru": "Компания сохранена.", "en": "Company saved."},

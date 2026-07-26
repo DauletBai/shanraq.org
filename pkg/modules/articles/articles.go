@@ -5,7 +5,6 @@ import (
 	"embed"
 	"html/template"
 	"net/http"
-	"time"
 
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
@@ -95,54 +94,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.validator = validate.New()
 	m.infobar = NewInfoBar(rt.Logger, socialLinks(rt.Config.Social))
 
-	funcs := template.FuncMap{
-		"t":                 T,
-		"label":             func(l string) string { return LangLabels[l] },
-		"langName":          func(l string) string { return LangNames[l] },
-		"langs":             func() []string { return Langs },
-		"categories":        func() []string { return Categories },
-		"editorCategories":  func() []string { return append([]string{CategoryGeneral}, Categories...) },
-		"subcats":           func(cat string) []string { return Subcats(cat) },
-		"dealTypes":         func() []string { return DealTypes },
-		"propertyTypes":     func() []string { return PropertyTypes },
-		"amenities":         AmenityKeys,
-		"roomTypes":         RoomTypeKeys,
-		"bannerDays":        BannerDays,
-		"bannerPrice":       BannerPrice,
-		"adSurfaces":        AdSurfaces,
-		"adDurations":       AdDurations,
-		"adFormats":         AdFormats,
-		"adSurfaceFmtPrice": AdSurfaceFormatPrice,
-		"adRatesJSON":       AdRatesJSON,
-		"surfaceLabel":      SurfaceLabelKey,
-		"adFormatSlots":     AdFormatSlots,
-		"money":             money,
-		"ogLocale":          ogLocale,
-		"htmlLang":          htmlLang,
-		"curSymbol":         curSymbol,
-		"icon":              icon,
-		"roomIcon":          roomIcon,
-		"amenityIcon":       amenityIcon,
-		"catIcon":           catIcon,
-		"firstN":            firstStrings,
-		"countryFlag":       countryFlag,
-		"dict":              dict,
-		"year":              func() int { return time.Now().Year() },
-		"markdown":          RenderMarkdown,
-		"fmtDate": func(t time.Time) string {
-			if t.IsZero() {
-				return "—"
-			}
-			return t.Format("02.01.06")
-		},
-		"fmtDatePtr": func(t *time.Time) string {
-			if t == nil || t.IsZero() {
-				return "—"
-			}
-			return t.Format("02.01.06")
-		},
-	}
-	tmpl, err := template.New("articles").Funcs(funcs).ParseFS(templateFiles, "templates/*.html")
+	tmpl, err := template.New("articles").Funcs(templateFuncs()).ParseFS(templateFiles, "templates/*.html")
 	if err != nil {
 		return err
 	}

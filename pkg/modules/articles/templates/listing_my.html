@@ -7,7 +7,7 @@
   {{ template "acct_nav" . }}
   <div class="studio__head" style="margin-top:24px">
     <h1>{{ t .Lang "re.my_listings" }}</h1>
-    <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
+    {{ if svcOff .Svc "listing_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "listing_submission" }}" aria-disabled="true">+ {{ t .Lang "re.post" }}</span>{{ else }}<a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>{{ end }}
   </div>
   <p class="hint" style="margin:-6px 0 20px">{{ t .Lang "re.listing_policy" }}</p>
   {{ with index .Svc "listing_promo" }}{{ if not .On }}<p class="notice notice--warn" style="margin:0 0 20px">🛠 {{ .Msg }}</p>{{ end }}{{ end }}
@@ -52,7 +52,7 @@
   {{ else }}
   <div class="empty">
     <p style="margin-bottom:16px">{{ t .Lang "re.my_empty" }}</p>
-    <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
+    {{ if svcOff .Svc "listing_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "listing_submission" }}" aria-disabled="true">+ {{ t .Lang "re.post" }}</span>{{ else }}<a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>{{ end }}
   </div>
   {{ end }}
 </main>

@@ -181,7 +181,7 @@
   <a class="acct-nav__item{{ if eq .Path "/favorites" }} is-active{{ end }}" href="/favorites">♥ {{ t .Lang "nav.favorites" }}</a>
   <a class="acct-nav__item{{ if eq .Path "/listings/my" }} is-active{{ end }}" href="/listings/my">{{ t .Lang "re.my_listings" }}</a>
   <a class="acct-nav__item{{ if eq .Path "/agent" }} is-active{{ end }}" href="/agent">{{ t .Lang "agent.nav" }}</a>
-  <a class="acct-nav__item" href="/listings/new" data-track="post_listing">{{ t .Lang "re.post" }}</a>
+  {{ if svcOff .Svc "listing_submission" }}<span class="acct-nav__item is-disabled" title="{{ svcMsg .Svc "listing_submission" }}" aria-disabled="true">{{ t .Lang "re.post" }}</span>{{ else }}<a class="acct-nav__item" href="/listings/new" data-track="post_listing">{{ t .Lang "re.post" }}</a>{{ end }}
   {{ if .IsStaff }}<a class="acct-nav__item" href="/admin">{{ t .Lang "header.admin" }}</a>{{ end }}
 </nav>
 {{ end }}
@@ -288,7 +288,7 @@
       <a href="/about">{{ t .Lang "footer.about" }}</a>
       <a href="/guide">{{ t .Lang "footer.you" }}</a>
       <a href="/support">{{ t .Lang "footer.support" }}</a>
-      <a href="/advertise">{{ t .Lang "adv.nav" }}</a>
+      {{ if svcOff .Svc "ad_orders" }}<span class="is-disabled" title="{{ svcMsg .Svc "ad_orders" }}" aria-disabled="true">{{ t .Lang "adv.nav" }}</span>{{ else }}<a href="/advertise">{{ t .Lang "adv.nav" }}</a>{{ end }}
       <a href="/privacy">{{ t .Lang "footer.privacy" }}</a>
       <a href="/terms">{{ t .Lang "footer.terms" }}</a>
     </nav>

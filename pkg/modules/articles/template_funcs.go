@@ -1,0 +1,61 @@
+package articles
+
+import (
+	"html/template"
+	"time"
+)
+
+// templateFuncs is the single source of the template function map. Both the
+// live module (Init) and the template tests use it, so a new helper can never
+// be available in one place and missing in the other.
+func templateFuncs() template.FuncMap {
+	return template.FuncMap{
+		"t":                 T,
+		"svcOff":            serviceLinkOff, // is a service's entry link disabled?
+		"svcMsg":            serviceLinkMsg, // its localized "unavailable" tooltip
+		"label":             func(l string) string { return LangLabels[l] },
+		"langName":          func(l string) string { return LangNames[l] },
+		"langs":             func() []string { return Langs },
+		"categories":        func() []string { return Categories },
+		"editorCategories":  func() []string { return append([]string{CategoryGeneral}, Categories...) },
+		"subcats":           func(cat string) []string { return Subcats(cat) },
+		"dealTypes":         func() []string { return DealTypes },
+		"propertyTypes":     func() []string { return PropertyTypes },
+		"amenities":         AmenityKeys,
+		"roomTypes":         RoomTypeKeys,
+		"bannerDays":        BannerDays,
+		"bannerPrice":       BannerPrice,
+		"adSurfaces":        AdSurfaces,
+		"adDurations":       AdDurations,
+		"adFormats":         AdFormats,
+		"adSurfaceFmtPrice": AdSurfaceFormatPrice,
+		"adRatesJSON":       AdRatesJSON,
+		"surfaceLabel":      SurfaceLabelKey,
+		"adFormatSlots":     AdFormatSlots,
+		"money":             money,
+		"ogLocale":          ogLocale,
+		"htmlLang":          htmlLang,
+		"curSymbol":         curSymbol,
+		"icon":              icon,
+		"roomIcon":          roomIcon,
+		"amenityIcon":       amenityIcon,
+		"catIcon":           catIcon,
+		"firstN":            firstStrings,
+		"countryFlag":       countryFlag,
+		"dict":              dict,
+		"year":              func() int { return time.Now().Year() },
+		"markdown":          RenderMarkdown,
+		"fmtDate": func(t time.Time) string {
+			if t.IsZero() {
+				return "—"
+			}
+			return t.Format("02.01.06")
+		},
+		"fmtDatePtr": func(t *time.Time) string {
+			if t == nil || t.IsZero() {
+				return "—"
+			}
+			return t.Format("02.01.06")
+		},
+	}
+}

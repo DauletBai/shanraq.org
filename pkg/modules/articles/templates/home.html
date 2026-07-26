@@ -53,7 +53,7 @@
       {{ else }}
       <div class="empty">
         <p style="font-size:1.2rem;margin-bottom:18px">{{ t .Lang "home.empty" }}</p>
-        <a class="btn btn--primary" href="/studio/new" data-track="write_article">{{ t .Lang "home.empty_cta" }}</a>
+        {{ if svcOff .Svc "article_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "article_submission" }}" aria-disabled="true">{{ t .Lang "home.empty_cta" }}</span>{{ else }}<a class="btn btn--primary" href="/studio/new" data-track="write_article">{{ t .Lang "home.empty_cta" }}</a>{{ end }}
       </div>
       {{ end }}
     </div>

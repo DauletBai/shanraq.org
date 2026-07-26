@@ -64,6 +64,27 @@ type ServiceView struct {
 	Msg string
 }
 
+// serviceLinkOff reports whether a service's entry point should be disabled in
+// the UI. An unknown/unconfigured code is treated as available, so a missing
+// flag never hides a link. Exposed to templates as "svcOff": it greys out
+// links/buttons that lead to a service the admin turned off or set to maintenance.
+func serviceLinkOff(svc map[string]ServiceView, code string) bool {
+	if v, ok := svc[code]; ok {
+		return !v.On
+	}
+	return false
+}
+
+// serviceLinkMsg returns the localized "temporarily unavailable / by invitation"
+// notice for a service, for use as a tooltip on the disabled entry point.
+// Exposed to templates as "svcMsg".
+func serviceLinkMsg(svc map[string]ServiceView, code string) string {
+	if v, ok := svc[code]; ok {
+		return v.Msg
+	}
+	return ""
+}
+
 // base builds the shared page context. The language switcher points at the
 // current path so switching language re-renders the same page fully localized.
 func (m *Module) base(r *http.Request, title, lang string) Base {

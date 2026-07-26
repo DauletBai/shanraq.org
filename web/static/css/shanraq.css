@@ -639,6 +639,17 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .site-footer a:hover { color: #ef5350; text-decoration: none; }
 .foot-nav { display: flex; gap: 20px; flex-wrap: wrap; }
 .foot-nav a { font-weight: 600; }
+
+/* Disabled entry point: a link/button to a service the admin turned off. Rendered
+   as a <span> (no href, so it can't navigate); the title shows why it's off. */
+.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: none;
+  pointer-events: auto; /* keep the hover tooltip working */
+  filter: grayscale(0.4);
+}
+.is-disabled::after { content: " 🛠"; font-size: 0.85em; }
 /* real-estate sidebar banners (paid listing slots, sticky with .aside) */
 .rebanner {
   display: block; border: 1px solid var(--line); border-radius: var(--radius);

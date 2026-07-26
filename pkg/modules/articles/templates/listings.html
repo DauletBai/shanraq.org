@@ -11,9 +11,9 @@
       <button type="button" class="btn btn--ghost" data-toggle="#re-map">{{ t .Lang "re.map" }}</button>
       {{ if .Authed }}
       <a class="btn btn--ghost" href="/listings/my">{{ t .Lang "re.my_listings" }}</a>
-      <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
+      {{ if svcOff .Svc "listing_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "listing_submission" }}" aria-disabled="true">+ {{ t .Lang "re.post" }}</span>{{ else }}<a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>{{ end }}
       {{ else }}
-      <a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>
+      {{ if svcOff .Svc "listing_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "listing_submission" }}" aria-disabled="true">+ {{ t .Lang "re.post" }}</span>{{ else }}<a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>{{ end }}
       {{ end }}
     </div>
   </div>
@@ -85,10 +85,9 @@
       {{ else }}
       <div class="empty">
         <p style="margin-bottom:18px">{{ t .Lang "re.empty" }}</p>
-        {{ if .Authed }}
-        <a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
-        {{ else }}
-        <a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>
+        {{ if svcOff .Svc "listing_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "listing_submission" }}" aria-disabled="true">+ {{ t .Lang "re.post" }}</span>
+        {{ else if .Authed }}<a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
+        {{ else }}<a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>
         {{ end }}
       </div>
       {{ end }}
