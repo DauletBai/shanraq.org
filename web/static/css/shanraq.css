@@ -656,8 +656,15 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .cabinet__content { min-width: 0; }
 .cab-side { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 88px; }
 .cab-side__me {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper);
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 8px;
+  padding: 16px;
+  margin-top: 20px;
+  border: 1px solid var(--line); 
+  border-radius: 14px; 
+  background: var(--paper);
 }
 .cab-side__ava { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
 .cab-side__ava--empty { display: flex; align-items: center; justify-content: center; background: rgba(127,127,127,.12); font-size: 2.4rem; }
