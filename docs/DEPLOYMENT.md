@@ -117,6 +117,66 @@ migrations.
 > hashes. Use `adminctl` or a password-reset. Your own account, its trilingual
 > bio, and your avatar come across intact.
 
+## Automated backups (encrypted, off-site)
+
+`scripts/backup.sh` produces one archive per run — a `pg_dump` of the database
+plus a tar of the uploaded media (avatars/images) — with SHA-256 checksums,
+optional `age` encryption, local retention, and an optional off-site upload. It
+exits non-zero on any failure so the scheduler can alert. `deploy/` ships a
+systemd service + daily timer.
+
+One-time setup on the server:
+
+```bash
+# 1. Tooling
+apt-get install -y age            # or: https://github.com/FiloSottile/age
+#    rclone for the object store:  https://rclone.org/install/
+
+# 2. Encryption key — generate ONCE, keep the PRIVATE key OFF the server
+#    (you need it to DECRYPT; the server only needs the public recipient).
+age-keygen -o shanraq-backup-key.txt      # prints "Public key: age1..."
+#    copy shanraq-backup-key.txt somewhere safe & private, then delete it here.
+
+# 3. Object storage (PS.kz Object Storage is S3-compatible) — configure a remote:
+rclone config      # new remote "ps": type=s3, provider=Other, your endpoint + keys
+
+# 4. Backup env (root-only)
+cat >/opt/shanraq/.env.backup <<'EOF'
+BACKUP_COMPOSE_FILE=/opt/shanraq/docker-compose.prod.yml   # dump via the db container
+BACKUP_MEDIA_VOLUME=shanraq_media-data                     # `docker volume ls` to confirm
+BACKUP_DIR=/opt/shanraq/backups
+BACKUP_RETENTION=7
+BACKUP_AGE_RECIPIENT=age1xxxxxxxx...                       # the PUBLIC key from step 2
+BACKUP_UPLOAD_CMD=rclone copy {file} ps:shanraq-backups/
+EOF
+chmod 600 /opt/shanraq/.env.backup
+
+# 5. Schedule it
+cp deploy/shanraq-backup.{service,timer} /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable --now shanraq-backup.timer
+systemctl start shanraq-backup.service        # run one now; check `journalctl -u shanraq-backup`
+```
+
+Cron alternative (instead of the timer):
+
+```cron
+30 2 * * * cd /opt/shanraq && set -a && . ./.env.backup && ./scripts/backup.sh >> /var/log/shanraq-backup.log 2>&1
+```
+
+**Restore** an encrypted archive (do a restore drill periodically!):
+
+```bash
+age -d -i shanraq-backup-key.txt shanraq-backup-YYYYMMDD-...tar.gz.age > snap.tar.gz
+mkdir snap && tar xzf snap.tar.gz -C snap        # → db.dump, media.tar.gz, SHA256SUMS
+( cd snap && sha256sum -c SHA256SUMS )           # verify integrity
+# then restore into an EMPTY target as in "Migrating existing data" above
+SHANRAQ_DATABASE_URL=... SHANRAQ_MEDIA_PARENT=./data scripts/data-restore.sh snap
+```
+
+> Without `BACKUP_AGE_RECIPIENT` the archive is NOT encrypted — fine for a local
+> copy, but never ship an unencrypted dump off-site (it contains personal data).
+
 ## Kubernetes / Helm basics
 
 1. Build the provided `Dockerfile` (CGO disabled, uses distroless base).

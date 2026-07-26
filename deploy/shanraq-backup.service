@@ -1,0 +1,12 @@
+[Unit]
+Description=Shanraq encrypted backup (Postgres + media)
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/shanraq
+# Holds SHANRAQ_DATABASE_URL / BACKUP_* (age recipient, upload command, …).
+# Keep it root-only:  chmod 600 /opt/shanraq/.env.backup
+EnvironmentFile=/opt/shanraq/.env.backup
+ExecStart=/opt/shanraq/scripts/backup.sh

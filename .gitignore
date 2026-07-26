@@ -35,3 +35,6 @@ coverage.txt
 config.local.yaml
 configs/config.local.yaml
 !.env.example
+
+# Local backup archives (contain data — never commit)
+/backups/
