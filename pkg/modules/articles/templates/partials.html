@@ -170,23 +170,33 @@
 {{/* backlink: one way out of every deep page. Takes Href and Label, so the
      link names where it goes rather than relying on browser history — a user
      who arrived from a search result has no history to go back to. */}}
-{{/* acct_nav: the cabinet's own navigation. It used to exist only on the
-     dashboard, so moving between sections meant going back first. */}}
-{{ define "acct_nav" }}
-<nav class="acct-nav">
-  <a class="acct-nav__item{{ if eq .Path "/studio" }} is-active{{ end }}" href="/studio">{{ t .Lang "studio.title" }}</a>
-  <a class="acct-nav__item{{ if eq .Path "/studio/author" }} is-active{{ end }}" href="/studio/author">{{ t .Lang "author.verify_title" }}</a>
-  <a class="acct-nav__item{{ if eq .Path "/studio/moderation" }} is-active{{ end }}" href="/studio/moderation">{{ t .Lang "mod.my_title" }}</a>
-  <a class="acct-nav__item{{ if eq .Path "/studio/invite" }} is-active{{ end }}" href="/studio/invite">{{ t .Lang "inv.title" }}</a>
-  <a class="acct-nav__item{{ if eq .Path "/favorites" }} is-active{{ end }}" href="/favorites">♥ {{ t .Lang "nav.favorites" }}</a>
-  <a class="acct-nav__item{{ if eq .Path "/listings/my" }} is-active{{ end }}" href="/listings/my">{{ t .Lang "re.my_listings" }}</a>
-  <a class="acct-nav__item{{ if eq .Path "/agent" }} is-active{{ end }}" href="/agent">{{ t .Lang "agent.nav" }}</a>
-  {{ if svcOff .Svc "listing_submission" }}<span class="acct-nav__item is-disabled" title="{{ svcMsg .Svc "listing_submission" }}" aria-disabled="true">{{ t .Lang "re.post" }}</span>{{ else }}<a class="acct-nav__item" href="/listings/new" data-track="post_listing">{{ t .Lang "re.post" }}</a>{{ end }}
-  {{ if .IsStaff }}<a class="acct-nav__item" href="/admin">{{ t .Lang "header.admin" }}</a>{{ end }}
-</nav>
-{{ end }}
-
 {{ define "backlink" }}<p class="backlink"><a class="btn btn--ghost btn--sm" href="{{ .Href }}">← {{ .Label }}</a></p>{{ end }}
+
+{{/* Vertical cabinet sidebar: avatar + all user functions. Used by every
+     authenticated cabinet page via the .cabinet two-column layout. */}}
+{{ define "cabinet_side" }}
+<aside class="cab-side">
+  <div class="cab-side__me">
+    {{ if .Avatar }}<img class="cab-side__ava" src="{{ .Avatar }}" alt="">{{ else }}<span class="cab-side__ava cab-side__ava--empty">🙂</span>{{ end }}
+    <a class="cab-side__editava" href="/studio/profile">{{ t .Lang "prof.avatar_change" }}</a>
+  </div>
+  <nav class="cab-side__nav">
+    <a class="cab-side__link{{ if eq .Path "/studio" }} is-active{{ end }}" href="/studio">▤ {{ t .Lang "studio.title" }}</a>
+    <a class="cab-side__link{{ if eq .Path "/studio/profile" }} is-active{{ end }}" href="/studio/profile">◔ {{ t .Lang "prof.title" }}</a>
+    <a class="cab-side__link{{ if eq .Path "/studio/author" }} is-active{{ end }}" href="/studio/author">✍ {{ t .Lang "author.verify_title" }}</a>
+    <a class="cab-side__link{{ if eq .Path "/listings/my" }} is-active{{ end }}" href="/listings/my">⌂ {{ t .Lang "re.my_listings" }}</a>
+    <a class="cab-side__link{{ if eq .Path "/favorites" }} is-active{{ end }}" href="/favorites">♥ {{ t .Lang "nav.favorites" }}</a>
+    <a class="cab-side__link{{ if eq .Path "/studio/moderation" }} is-active{{ end }}" href="/studio/moderation">✎ {{ t .Lang "mod.my_title" }}</a>
+    <a class="cab-side__link{{ if eq .Path "/studio/invite" }} is-active{{ end }}" href="/studio/invite">✉ {{ t .Lang "inv.title" }}</a>
+    <a class="cab-side__link{{ if eq .Path "/agent" }} is-active{{ end }}" href="/agent">◈ {{ t .Lang "agent.nav" }}</a>
+    {{ if .IsStaff }}<a class="cab-side__link" href="/admin">⚙ {{ t .Lang "header.admin" }}</a>{{ end }}
+  </nav>
+  <div class="cab-side__foot">
+    <a class="cab-side__back" href="/">← {{ t .Lang "admin.to_site" }}</a>
+    <form method="post" action="/studio/logout" style="display:contents"><button type="submit" class="cab-side__logout">{{ t .Lang "header.logout" }}</button></form>
+  </div>
+</aside>
+{{ end }}
 
 {{ define "sidebar_ad" }}
 {{ if .Ads }}

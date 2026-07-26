@@ -56,6 +56,56 @@ func (m *Module) processImage(raw []byte) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
+// avatarDim is the square side length (px) for a stored profile avatar.
+const avatarDim = 512
+
+// processAvatar decodes an uploaded image, center-crops it to a square, scales
+// it to avatarDim, and re-encodes as JPEG. Unlike processImage it does NOT stamp
+// the brand watermark — an avatar is a personal photo, not shared content.
+// Re-encoding from raw pixels strips EXIF/GPS the same way.
+func (m *Module) processAvatar(raw []byte) ([]byte, error) {
+	cfg, _, err := image.DecodeConfig(bytes.NewReader(raw))
+	if err != nil {
+		return nil, fmt.Errorf("decode image config: %w", err)
+	}
+	if int64(cfg.Width)*int64(cfg.Height) > maxDecodePixels {
+		return nil, fmt.Errorf("image too large: %dx%d exceeds %d pixels", cfg.Width, cfg.Height, maxDecodePixels)
+	}
+	src, _, err := image.Decode(bytes.NewReader(raw))
+	if err != nil {
+		return nil, fmt.Errorf("decode image: %w", err)
+	}
+	img := squareCrop(src, avatarDim)
+
+	var buf bytes.Buffer
+	if err := jpeg.Encode(&buf, img, &jpeg.Options{Quality: jpegQuality}); err != nil {
+		return nil, fmt.Errorf("encode jpeg: %w", err)
+	}
+	return buf.Bytes(), nil
+}
+
+// squareCrop center-crops src to its largest centred square and scales that to
+// a dim×dim RGBA on an opaque white base (so transparent PNGs stay clean).
+func squareCrop(src image.Image, dim int) *image.RGBA {
+	b := src.Bounds()
+	w, h := b.Dx(), b.Dy()
+	side := w
+	if h < side {
+		side = h
+	}
+	if side < 1 {
+		side = 1
+	}
+	ox := b.Min.X + (w-side)/2
+	oy := b.Min.Y + (h-side)/2
+	crop := image.Rect(ox, oy, ox+side, oy+side)
+
+	dst := image.NewRGBA(image.Rect(0, 0, dim, dim))
+	xdraw.Draw(dst, dst.Bounds(), image.NewUniform(color.White), image.Point{}, xdraw.Src)
+	xdraw.CatmullRom.Scale(dst, dst.Bounds(), src, crop, xdraw.Over, nil)
+	return dst
+}
+
 // flattenAndResize composes src onto an opaque white canvas (so transparent
 // PNGs don't turn black in JPEG) and scales it down so neither side exceeds max.
 // The result is always an *image.RGBA anchored at (0,0).

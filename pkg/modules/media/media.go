@@ -133,6 +133,32 @@ func (m *Module) handleUpload(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(uploadResponse{URL: m.store.URL(key), Key: key})
 }
 
+// ProcessAndSaveAvatar decodes a raw uploaded image, center-crops it to a
+// square (no watermark), stores it, and returns the public URL. Other modules
+// (the studio cabinet) call this to let a user set their profile photo.
+func (m *Module) ProcessAndSaveAvatar(ctx context.Context, raw []byte) (string, error) {
+	data, err := m.processAvatar(raw)
+	if err != nil {
+		return "", err
+	}
+	sum := sha256.Sum256(data)
+	h := hex.EncodeToString(sum[:])
+	key := "avatar/" + h[:2] + "/" + h + ".jpg"
+	if err := m.store.Put(ctx, key, data, "image/jpeg"); err != nil {
+		return "", fmt.Errorf("store avatar: %w", err)
+	}
+	return m.store.URL(key), nil
+}
+
+// MaxUploadBytes is the configured upload size cap (for callers that read the
+// multipart body themselves, like the avatar endpoint), with a sane default.
+func (m *Module) MaxUploadBytes() int64 {
+	if m.cfg.MaxUploadBytes > 0 {
+		return m.cfg.MaxUploadBytes
+	}
+	return 10 << 20
+}
+
 func writeJSONError(w http.ResponseWriter, code int, msg string) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(code)

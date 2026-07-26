@@ -313,6 +313,43 @@ func (s *Store) SetName(ctx context.Context, userID uuid.UUID, first, last, midd
 	return nil
 }
 
+// SetAvatar stores (or, with an empty url, clears) the user's profile avatar.
+func (s *Store) SetAvatar(ctx context.Context, userID uuid.UUID, url string) error {
+	if _, err := s.db.Exec(ctx,
+		`UPDATE auth_users SET avatar_url = $2, updated_at = NOW() WHERE id = $1`, userID, url); err != nil {
+		return fmt.Errorf("set avatar: %w", err)
+	}
+	return nil
+}
+
+// Avatar returns the user's avatar URL, or "" if none / unknown.
+func (s *Store) Avatar(ctx context.Context, userID uuid.UUID) (string, error) {
+	var url string
+	err := s.db.QueryRow(ctx, `SELECT avatar_url FROM auth_users WHERE id = $1`, userID).Scan(&url)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return "", nil
+		}
+		return "", fmt.Errorf("get avatar: %w", err)
+	}
+	return url, nil
+}
+
+// DeleteAccount permanently removes a user and, by ON DELETE CASCADE, all of
+// their content (articles, listings, comments, votes, favorites, referrals,
+// consents, tokens…). This is the user's own right-to-erasure action; it is
+// irreversible. Moderation-log entries are preserved (their actor is set NULL).
+func (s *Store) DeleteAccount(ctx context.Context, userID uuid.UUID) error {
+	ct, err := s.db.Exec(ctx, `DELETE FROM auth_users WHERE id = $1`, userID)
+	if err != nil {
+		return fmt.Errorf("delete account: %w", err)
+	}
+	if ct.RowsAffected() == 0 {
+		return fmt.Errorf("delete account: user not found")
+	}
+	return nil
+}
+
 // AuthorIdentity returns the user's name and phone-verification status.
 // SetPrimaryRole promotes (or demotes) an existing account by e-mail, updating
 // both the primary role column and the role join table so the change is visible

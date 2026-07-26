@@ -11,6 +11,7 @@ import (
 	"shanraq.org/pkg/modules/ai"
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/jobs"
+	"shanraq.org/pkg/modules/media"
 	"shanraq.org/pkg/modules/ratings"
 	"shanraq.org/pkg/modules/syndicate"
 	"shanraq.org/pkg/shanraq"
@@ -50,6 +51,7 @@ type Module struct {
 	auth      *auth.Module
 	ai        *ai.Module
 	syndicate *syndicate.Module
+	media     *media.Module
 	mailer    Mailer
 	tmpl      *template.Template
 	validator *validate.Validator
@@ -59,8 +61,8 @@ type Module struct {
 // New builds the articles module. It depends on auth (browser sessions), ai
 // (writing assistant), syndicate (publish → external channels), and a mailer
 // (listing expiry reminders).
-func New(authModule *auth.Module, aiModule *ai.Module, syndicateModule *syndicate.Module, mailer Mailer) *Module {
-	return &Module{auth: authModule, ai: aiModule, syndicate: syndicateModule, mailer: mailer}
+func New(authModule *auth.Module, aiModule *ai.Module, syndicateModule *syndicate.Module, mediaModule *media.Module, mailer Mailer) *Module {
+	return &Module{auth: authModule, ai: aiModule, syndicate: syndicateModule, media: mediaModule, mailer: mailer}
 }
 
 func (m *Module) Name() string { return "articles" }
@@ -183,6 +185,10 @@ func (m *Module) browserRoutes(r chi.Router) {
 	r.Group(func(r chi.Router) {
 		r.Use(m.auth.RequireSession("/studio/login", "user", "operator", "admin"))
 		r.Get("/studio", m.handleDashboard)
+		r.Get("/studio/profile", m.handleProfile)
+		r.Post("/studio/avatar", m.handleAvatarUpload)
+		r.Post("/studio/avatar/delete", m.handleAvatarDelete)
+		r.Post("/studio/delete", m.handleDeleteAccount)
 		r.Get("/studio/author", m.handleAuthorVerifyPage)
 		r.Post("/studio/author/name", m.handleAuthorName)
 		r.Post("/studio/author/phone", m.handleAuthorPhone)

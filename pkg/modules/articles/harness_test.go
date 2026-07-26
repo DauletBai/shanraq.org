@@ -16,6 +16,7 @@ import (
 	"shanraq.org/internal/config"
 	"shanraq.org/pkg/modules/ai"
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/modules/media"
 	"shanraq.org/pkg/modules/notifier"
 	"shanraq.org/pkg/modules/syndicate"
 	"shanraq.org/pkg/shanraq"
@@ -52,6 +53,10 @@ func newTestApp(t *testing.T) *testApp {
 			TokenSecret: "test-token-secret-that-is-long-enough-1234567890",
 			TokenTTL:    time.Hour,
 		},
+		Media: config.MediaConfig{
+			Backend: "fs", Dir: t.TempDir(), PublicPrefix: "media",
+			MaxDimension: 1600, MaxUploadBytes: 10 << 20,
+		},
 	}
 	rt := &shanraq.Runtime{Config: cfg, Logger: zap.NewNop(), DB: pool, Router: chi.NewRouter()}
 
@@ -59,14 +64,16 @@ func newTestApp(t *testing.T) *testApp {
 	authM := auth.New(auth.WithMailer(mailer))
 	aiM := ai.New()
 	synM := syndicate.New(mailer)
-	arts := New(authM, aiM, synM, mailer)
+	mediaM := media.New(authM)
+	arts := New(authM, aiM, synM, mediaM, mailer)
 
-	for _, m := range []shanraq.InitializerModule{authM, aiM, synM, arts} {
+	for _, m := range []shanraq.InitializerModule{authM, aiM, synM, mediaM, arts} {
 		if err := m.Init(ctx, rt); err != nil {
 			t.Fatalf("%s init: %v", m.Name(), err)
 		}
 	}
 	authM.Routes(rt.Router)
+	mediaM.Routes(rt.Router)
 	arts.Routes(rt.Router)
 
 	app := &testApp{t: t, router: rt.Router, pool: pool, auth: authM, origin: testOrigin}

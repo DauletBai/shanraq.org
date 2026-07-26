@@ -26,6 +26,7 @@ type Base struct {
 	Lang      string
 	Authed    bool
 	IsStaff   bool
+	Avatar    string // current user's avatar URL ("" = none), for the header/cabinet
 	ShowLangs bool
 	Active    string // active section: "latest" | "top" | ""
 	ActiveCat string // active category slug, or "" for All
@@ -90,11 +91,18 @@ func serviceLinkMsg(svc map[string]ServiceView, code string) string {
 func (m *Module) base(r *http.Request, title, lang string) Base {
 	claims, authed := auth.ClaimsFromContext(r.Context())
 	site := m.rt.Config.PublicBase()
+	avatar := ""
+	if authed && claims != nil {
+		if id, err := uuid.Parse(claims.Subject); err == nil {
+			avatar = m.auth.Avatar(r.Context(), id)
+		}
+	}
 	return Base{
 		Title:     title,
 		Lang:      lang,
 		Authed:    authed,
 		IsStaff:   authed && claims.HasAnyRole(adminRoles...),
+		Avatar:    avatar,
 		ShowLangs: true,
 		LangLinks: langLinks(r.URL.Path, seoFilterQuery(r)),
 		SiteURL:   site,

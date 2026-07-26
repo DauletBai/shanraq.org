@@ -2,8 +2,9 @@
 {{ template "site_head" . }}
 <body>
 {{ template "site_header" . }}
-<main class="container">
-  {{ template "backlink" (dict "Href" "/" "Label" (t .Lang "nav.home")) }}
+<main class="container cabinet">
+  {{ template "cabinet_side" . }}
+  <div class="cabinet__content">
   <section class="studio">
     <div class="studio__head">
       <h1>{{ t .Lang "studio.title" }}</h1>
@@ -11,9 +12,6 @@
     </div>
 
     {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
-
-    {{/* Account actions moved off the header so it stays short on phones. */}}
-    {{ template "acct_nav" . }}
 
     <div class="stats">
       <div class="stat">
@@ -101,6 +99,7 @@
     </div>
     {{ end }}
   </section>
+  </div>
 </main>
 {{ template "site_footer" . }}
 {{ end }}

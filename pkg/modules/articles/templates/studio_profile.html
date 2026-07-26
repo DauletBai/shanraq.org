@@ -1,0 +1,53 @@
+{{ define "studio_profile" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container cabinet">
+  {{ template "cabinet_side" . }}
+  <div class="cabinet__content">
+    <section class="studio">
+      <div class="studio__head"><h1>{{ t .Lang "prof.title" }}</h1></div>
+      {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+
+      <div class="cab-card">
+        <h2>{{ t .Lang "prof.avatar" }}</h2>
+        <p class="hint">{{ t .Lang "prof.avatar_note" }}</p>
+        <div class="prof-ava">
+          {{ if .Avatar }}<img class="prof-ava__img" src="{{ .Avatar }}" alt="">{{ else }}<span class="prof-ava__img prof-ava__img--empty">🙂</span>{{ end }}
+          <div class="prof-ava__actions">
+            <form method="post" action="/studio/avatar" enctype="multipart/form-data" class="prof-ava__form">
+              <input class="input" type="file" name="avatar" accept="image/jpeg,image/png,image/webp" required>
+              <button class="btn btn--primary btn--sm" type="submit">{{ t .Lang "prof.avatar_upload" }}</button>
+            </form>
+            {{ if .Avatar }}<form method="post" action="/studio/avatar/delete"><button class="btn btn--ghost btn--sm" type="submit">{{ t .Lang "prof.avatar_remove" }}</button></form>{{ end }}
+          </div>
+        </div>
+      </div>
+
+      <div class="cab-card">
+        <h2>{{ t .Lang "prof.identity" }}</h2>
+        <table class="spec">
+          <tbody>
+            <tr><td>{{ t .Lang "prof.name" }}</td><td>{{ .FirstName }} {{ .LastName }}</td></tr>
+            <tr><td>Email</td><td>{{ .Email }}{{ if .EmailVerified }} <span class="pill pill--published">✓</span>{{ end }}</td></tr>
+            <tr><td>{{ t .Lang "prof.author_status" }}</td><td>{{ if .PhoneVerified }}<span class="pill pill--published">{{ t .Lang "prof.author_yes" }}</span>{{ else }}<a href="/studio/author">{{ t .Lang "prof.author_no" }}</a>{{ end }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cab-card cab-card--danger">
+        <h2>{{ t .Lang "prof.danger" }}</h2>
+        <p class="hint">{{ t .Lang "prof.delete_note" }}</p>
+        <form method="post" action="/studio/delete" onsubmit="return confirm('{{ t .Lang "prof.delete_confirm_js" }}')">
+          <label class="prof-del">
+            <span>{{ t .Lang "prof.delete_password" }}</span>
+            <input class="input" type="password" name="password" required autocomplete="current-password">
+          </label>
+          <button class="btn btn--danger" type="submit">{{ t .Lang "prof.delete_btn" }}</button>
+        </form>
+      </div>
+    </section>
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

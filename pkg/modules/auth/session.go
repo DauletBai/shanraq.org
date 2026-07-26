@@ -127,6 +127,47 @@ func (m *Module) IsPhoneVerified(ctx context.Context, userID uuid.UUID) bool {
 	return err == nil && ok
 }
 
+// Avatar returns the user's profile avatar URL ("" if none).
+func (m *Module) Avatar(ctx context.Context, userID uuid.UUID) string {
+	if m.store == nil {
+		return ""
+	}
+	url, err := m.store.Avatar(ctx, userID)
+	if err != nil {
+		return ""
+	}
+	return url
+}
+
+// SetAvatar stores (empty clears) the user's avatar URL.
+func (m *Module) SetAvatar(ctx context.Context, userID uuid.UUID, url string) error {
+	if m.store == nil {
+		return fmt.Errorf("auth store unavailable")
+	}
+	return m.store.SetAvatar(ctx, userID, url)
+}
+
+// DeleteAccount permanently erases the user and all their content (cascade).
+func (m *Module) DeleteAccount(ctx context.Context, userID uuid.UUID) error {
+	if m.store == nil {
+		return fmt.Errorf("auth store unavailable")
+	}
+	return m.store.DeleteAccount(ctx, userID)
+}
+
+// CheckPassword verifies a user's password, used to confirm destructive actions
+// like account deletion. Returns false on any error (fail closed).
+func (m *Module) CheckPassword(ctx context.Context, userID uuid.UUID, password string) bool {
+	if m.store == nil || strings.TrimSpace(password) == "" {
+		return false
+	}
+	u, err := m.store.GetByID(ctx, userID.String())
+	if err != nil || u.PasswordHash == "" {
+		return false
+	}
+	return bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(password)) == nil
+}
+
 func (m *Module) sendVerificationEmail(ctx context.Context, to, link string) error {
 	subject := "Confirm your email"
 	body := fmt.Sprintf("Welcome to Shanraq. Please confirm your email by opening the link below:\n\n%s\n\nIf you did not create an account, you can ignore this message.", link)
