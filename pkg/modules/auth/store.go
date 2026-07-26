@@ -135,6 +135,31 @@ func (s *Store) CreateUserNamed(ctx context.Context, email, hash, first, last, m
 	}, nil
 }
 
+// HasAnyStaffAdmin reports whether at least one admin/director account exists.
+// Used to decide whether the first-run bootstrap admin should be created.
+func (s *Store) HasAnyStaffAdmin(ctx context.Context) (bool, error) {
+	var n int
+	if err := s.db.QueryRow(ctx,
+		`SELECT COUNT(*) FROM auth_users WHERE role IN ('admin','director')`).Scan(&n); err != nil {
+		return false, fmt.Errorf("count admins: %w", err)
+	}
+	return n > 0, nil
+}
+
+// CreateVerifiedAdmin creates an admin account with its email already marked
+// verified — for the first-run bootstrap, where there is no inbox to confirm.
+func (s *Store) CreateVerifiedAdmin(ctx context.Context, email, hash, first, last string) (uuid.UUID, error) {
+	u, err := s.CreateUserNamed(ctx, email, hash, first, last, "", "admin")
+	if err != nil {
+		return uuid.Nil, err
+	}
+	if _, err := s.db.Exec(ctx,
+		`UPDATE auth_users SET email_verified_at = NOW() WHERE id = $1`, u.ID); err != nil {
+		return u.ID, fmt.Errorf("mark bootstrap admin verified: %w", err)
+	}
+	return u.ID, nil
+}
+
 func (s *Store) FindByEmail(ctx context.Context, email string) (User, error) {
 	var u User
 	err := s.db.QueryRow(ctx, `

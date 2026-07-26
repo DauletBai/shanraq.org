@@ -86,8 +86,8 @@ social:
 # to a public repository. Put the real values in a non-committed config (e.g.
 # configs/config.local.yaml, which is git-ignored) and run with -config that file.
 operator:
-  legal_name: ""       # e.g. ТОО «Казна Технолоджис»
-  legal_name_en: ""    # e.g. Qazna Technologies LLP
+  legal_name: ""       # e.g. ТОО «Ваша Компания»
+  legal_name_en: ""    # e.g. Your Company LLP
   bin: ""              # business identification number
   address: ""          # registered address (RU/KZ)
   address_en: ""       # registered address (EN, optional)

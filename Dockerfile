@@ -9,7 +9,13 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /bin/shanraq ./cmd/app
+# TARGETOS/TARGETARCH are provided by BuildKit (default to the build host, or set
+# via `docker build --platform linux/amd64`). This keeps the image arch and the
+# binary arch consistent — a plain `docker build` on an ARM Mac no longer bakes an
+# amd64 binary into an arm64 image.
+ARG TARGETOS=linux
+ARG TARGETARCH=amd64
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o /bin/shanraq ./cmd/app
 
 # Pre-create the media directory here (the distroless runtime has no shell to
 # mkdir at start) so it can be COPYed in with the nonroot owner below.

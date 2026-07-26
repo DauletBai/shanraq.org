@@ -25,6 +25,18 @@ type Config struct {
 	Media         MediaConfig         `mapstructure:"media"`
 	Social        SocialConfig        `mapstructure:"social"`
 	Operator      OperatorConfig      `mapstructure:"operator"`
+	Bootstrap     BootstrapConfig     `mapstructure:"bootstrap"`
+}
+
+// BootstrapConfig seeds the first administrator on a fresh server. When no admin
+// exists yet and admin_email/admin_password are set (via env, never committed),
+// the app creates that account once on startup with a pre-verified email. Values
+// live only in the environment; clear them after the first successful start.
+type BootstrapConfig struct {
+	AdminEmail    string `mapstructure:"admin_email"`
+	AdminPassword string `mapstructure:"admin_password"`
+	AdminFirst    string `mapstructure:"admin_first"`
+	AdminLast     string `mapstructure:"admin_last"`
 }
 
 // SocialConfig holds public social-profile URLs shown in the top info bar.
@@ -291,6 +303,12 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("operator.email", "")
 	v.SetDefault("operator.phone", "")
 
+	// Registered so SHANRAQ_BOOTSTRAP_ADMIN_* bind from the environment.
+	v.SetDefault("bootstrap.admin_email", "")
+	v.SetDefault("bootstrap.admin_password", "")
+	v.SetDefault("bootstrap.admin_first", "")
+	v.SetDefault("bootstrap.admin_last", "")
+
 	// Registered so viper's AutomaticEnv binds SHANRAQ_SOCIAL_* (nested keys are
 	// only read from the environment once known). Empty = the icon is hidden.
 	v.SetDefault("social.telegram", "")
@@ -331,6 +349,29 @@ func validateConfig(cfg Config) error {
 	if strings.EqualFold(cfg.Environment, "production") && cfg.Telemetry.EnableMetrics &&
 		strings.TrimSpace(cfg.Telemetry.MetricsToken) == "" {
 		problems = append(problems, "telemetry.metrics_token is required in production when telemetry.enable_metrics is true (protects /metrics)")
+	}
+
+	// The legal operator must be disclosed on a public production site (KZ law on
+	// personal data / online platforms). Require the identifying fields; they
+	// come from the environment, never a committed file.
+	if strings.EqualFold(cfg.Environment, "production") {
+		op := cfg.Operator
+		var missing []string
+		if strings.TrimSpace(op.LegalName) == "" {
+			missing = append(missing, "legal_name")
+		}
+		if strings.TrimSpace(op.BIN) == "" {
+			missing = append(missing, "bin")
+		}
+		if strings.TrimSpace(op.Address) == "" {
+			missing = append(missing, "address")
+		}
+		if strings.TrimSpace(op.Email) == "" {
+			missing = append(missing, "email")
+		}
+		if len(missing) > 0 {
+			problems = append(problems, "operator "+strings.Join(missing, ", ")+" required in production (legal operator disclosure)")
+		}
 	}
 
 	smtp := cfg.Notifications.SMTP

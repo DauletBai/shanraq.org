@@ -122,7 +122,7 @@ func (m *Module) Name() string {
 }
 
 // Init prepares dependencies shared across handlers.
-func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
+func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
 	if strings.EqualFold(rt.Config.Environment, "production") && isWeakSecret(rt.Config.Auth.TokenSecret) {
@@ -145,7 +145,50 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 		}
 		m.mfaProvider = NewTOTPProvider(m.store, issuer, m.rt.Logger)
 	}
+	m.ensureBootstrapAdmin(ctx)
 	return nil
+}
+
+// ensureBootstrapAdmin creates the first administrator on a fresh server from
+// SHANRAQ_BOOTSTRAP_ADMIN_* when no admin exists yet. It is idempotent (skips
+// once any admin exists) and never logs the password. Failures are logged, not
+// fatal, so a misconfigured bootstrap never blocks startup.
+func (m *Module) ensureBootstrapAdmin(ctx context.Context) {
+	bc := m.rt.Config.Bootstrap
+	email := strings.TrimSpace(bc.AdminEmail)
+	if email == "" || strings.TrimSpace(bc.AdminPassword) == "" {
+		return // nothing to bootstrap
+	}
+	has, err := m.store.HasAnyStaffAdmin(ctx)
+	if err != nil {
+		m.rt.Logger.Warn("bootstrap admin: could not check for existing admins", zap.Error(err))
+		return
+	}
+	if has {
+		return // never override an existing admin set
+	}
+	if len(bc.AdminPassword) < 8 {
+		m.rt.Logger.Error("bootstrap admin skipped: password must be at least 8 characters")
+		return
+	}
+	hash, err := bcrypt.GenerateFromPassword([]byte(bc.AdminPassword), bcrypt.DefaultCost)
+	if err != nil {
+		m.rt.Logger.Error("bootstrap admin: hash password", zap.Error(err))
+		return
+	}
+	first := strings.TrimSpace(bc.AdminFirst)
+	if first == "" {
+		first = "Admin"
+	}
+	if _, err := m.store.CreateVerifiedAdmin(ctx, email, string(hash), first, strings.TrimSpace(bc.AdminLast)); err != nil {
+		if errors.Is(err, ErrEmailExists) {
+			m.rt.Logger.Warn("bootstrap admin: email already registered (not an admin) — skipped", zap.String("email", email))
+			return
+		}
+		m.rt.Logger.Error("bootstrap admin: create", zap.Error(err))
+		return
+	}
+	m.rt.Logger.Info("bootstrap admin created (email pre-verified) — remove SHANRAQ_BOOTSTRAP_ADMIN_* now", zap.String("email", email))
 }
 
 // Routes registers auth endpoints into the shared router.

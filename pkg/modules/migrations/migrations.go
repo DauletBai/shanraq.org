@@ -74,8 +74,30 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 			return fmt.Errorf("strip demo fixtures: %w", err)
 		}
 		rt.Logger.Info("demo fixtures stripped (production)")
+		if err := seedClosedBeta(ctx, sqlDB); err != nil {
+			return fmt.Errorf("seed closed beta: %w", err)
+		}
+		rt.Logger.Info("closed-beta service flags seeded (production)")
 	}
 	return nil
+}
+
+// seedClosedBeta closes public sign-up and user content submission on a fresh
+// production database, so a server is never briefly open to the world before the
+// operator configures it. Uses ON CONFLICT DO NOTHING: it only sets the initial
+// state and never overrides a choice the admin later makes in the panel.
+//   - registration: off        (no public sign-up)
+//   - article/listing/agent submission, comments: invite_only (staff + invited)
+func seedClosedBeta(ctx context.Context, db *sql.DB) error {
+	_, err := db.ExecContext(ctx, `
+		INSERT INTO service_flags (code, status, updated_at) VALUES
+			('registration',       'off',         NOW()),
+			('article_submission', 'invite_only', NOW()),
+			('listing_submission', 'invite_only', NOW()),
+			('agent_registration', 'invite_only', NOW()),
+			('comments',           'invite_only', NOW())
+		ON CONFLICT (code) DO NOTHING`)
+	return err
 }
 
 // stripDemoFixtures sanitizes a production database of seed data that could
