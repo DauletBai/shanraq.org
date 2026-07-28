@@ -144,11 +144,16 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
 	authorID, ok := m.authorID(r)
 	if !ok {
-		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		// Session expired (or never authenticated) — explain why on the login
+		// page instead of a silent bounce that drops the filled form.
+		http.Redirect(w, r, "/studio/login?reason=session_expired", http.StatusSeeOther)
 		return
 	}
 	if err := r.ParseForm(); err != nil {
-		http.Error(w, "bad form", http.StatusBadRequest)
+		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
+		page.ActiveCat = "realestate"
+		page.Error = T(lang, "re.err_bad_form")
+		m.render(w, "listing_new", page)
 		return
 	}
 
@@ -212,7 +217,13 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 	id, err := m.listings.Create(r.Context(), authorID, in)
 	if err != nil {
 		m.rt.Logger.Error("create listing", zap.Error(err))
-		http.Error(w, "internal error", http.StatusInternalServerError)
+		// Re-render the form with everything the user typed so a transient save
+		// error never costs them their work; tell them plainly what happened.
+		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
+		page.ActiveCat = "realestate"
+		page.Values = in
+		page.Error = T(lang, "re.err_save_failed")
+		m.render(w, "listing_new", page)
 		return
 	}
 	// A real listing is the rewardable action: if this author was invited,

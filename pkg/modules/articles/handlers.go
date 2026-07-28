@@ -657,6 +657,11 @@ func (m *Module) handleLoginPage(w http.ResponseWriter, r *http.Request) {
 	case "invalid":
 		page.Error = T(lang, "form.verified_invalid")
 	}
+	// A protected action (e.g. publishing a listing) bounced here because the
+	// session had lapsed — say so, so the user understands the failure.
+	if r.URL.Query().Get("reason") == "session_expired" {
+		page.Notice = T(lang, "form.session_expired")
+	}
 	m.render(w, "form", page)
 }
 

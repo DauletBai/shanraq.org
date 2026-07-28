@@ -130,6 +130,33 @@ func TestListingCreateNeedsVerifiedEmail(t *testing.T) {
 	}
 }
 
+// A lapsed session must not silently drop the filled form: publishing bounces
+// to the login page with a reason the page can explain.
+func TestListingCreateExpiredSessionRedirectsWithReason(t *testing.T) {
+	app := newTestApp(t)
+	w := app.do(http.MethodPost, "/listings/new", url.Values{
+		"deal_type": {"sale"}, "property_type": {"apartment"},
+		"title": {"Тест"}, "contact": {"+7 700"},
+	})
+	if w.Code != http.StatusSeeOther {
+		t.Fatalf("unauth listing create = %d, want 303", w.Code)
+	}
+	if loc := w.Header().Get("Location"); loc != "/studio/login?reason=session_expired" {
+		t.Errorf("redirect = %q, want /studio/login?reason=session_expired", loc)
+	}
+}
+
+func TestLoginPageShowsSessionExpiredReason(t *testing.T) {
+	app := newTestApp(t)
+	w := app.do(http.MethodGet, "/studio/login?reason=session_expired", nil)
+	if w.Code != http.StatusOK {
+		t.Fatalf("login page = %d, want 200", w.Code)
+	}
+	if !strings.Contains(w.Body.String(), "alert--ok") {
+		t.Error("expected a session-expired notice on the login page")
+	}
+}
+
 // ---- payment webhook fails closed ----
 
 func TestPaymentWebhookDisabled(t *testing.T) {
