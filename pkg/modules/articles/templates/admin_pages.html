@@ -1,0 +1,23 @@
+{{ define "admin_pages" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container" style="max-width:900px;padding-top:24px">
+  <p style="margin-bottom:12px"><a href="/admin">← {{ t .Lang "pages.back_admin" }}</a></p>
+  <h1>{{ t .Lang "pages.title" }}</h1>
+  <p class="hint" style="margin-bottom:18px">{{ t .Lang "pages.intro" }}</p>
+  <div class="cab-card">
+    <table class="list" style="width:100%">
+      <tbody>
+        {{ range .Items }}
+        <tr>
+          <td><b>{{ .Name }}</b> <span class="hint">/{{ .Key }}</span></td>
+          <td style="text-align:right"><a class="btn btn--ghost btn--sm" href="/admin/pages/{{ .Key }}">✏️ {{ t $.Lang "pages.edit" }}</a></td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

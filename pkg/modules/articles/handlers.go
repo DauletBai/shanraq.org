@@ -341,13 +341,15 @@ type StaticPage struct {
 func (m *Module) handleStaticPage(key string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		lang := m.resolveLang(w, r)
-		c := staticContent(key, lang)
-		if c.Title == "" {
+		// Effective content: the admin-editable DB override, falling back to the
+		// built-in default so a page never blanks out.
+		title, body := m.pageContent(r.Context(), key, lang)
+		if title == "" {
 			http.NotFound(w, r)
 			return
 		}
-		page := StaticPage{Base: m.base(r, c.Title, lang)}
-		page.Body = RenderMarkdown(applyOperator(c.Body, m.rt.Config.Operator, lang))
+		page := StaticPage{Base: m.base(r, title, lang)}
+		page.Body = RenderMarkdown(applyOperator(body, m.rt.Config.Operator, lang))
 		m.render(w, "page", page)
 	}
 }

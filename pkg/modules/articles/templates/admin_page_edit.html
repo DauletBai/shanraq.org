@@ -1,0 +1,30 @@
+{{ define "admin_page_edit" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container" style="max-width:900px;padding-top:24px">
+  <p style="margin-bottom:12px"><a href="/admin/pages">← {{ t .Lang "pages.back_list" }}</a></p>
+  <h1>{{ t .Lang "pages.edit_title" }}: {{ .Name }}</h1>
+  {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+  {{ if .LastEdited }}<p class="hint">{{ t $.Lang "pages.last_edited" }}: {{ .LastEdited }}{{ with .LastEditor }} · {{ . }}{{ end }}</p>{{ end }}
+  <p class="hint" style="margin-bottom:16px">{{ t .Lang "pages.md_hint" }} <a href="/formatting" target="_blank">{{ t .Lang "pages.md_help" }}</a></p>
+  <form method="post" action="/admin/pages/{{ .Key }}">
+    {{ range .Langs }}
+    <div class="cab-card">
+      <h2 style="margin-top:0">{{ .Label }}</h2>
+      <label style="display:block">{{ t $.Lang "pages.field_title" }}
+        <input class="input" type="text" name="title_{{ .Code }}" value="{{ .Title }}">
+      </label>
+      <label style="display:block;margin-top:12px">{{ t $.Lang "pages.field_body" }}
+        <textarea class="input" name="body_{{ .Code }}" rows="18" style="font-family:ui-monospace,Menlo,monospace;line-height:1.5">{{ .Body }}</textarea>
+      </label>
+    </div>
+    {{ end }}
+    <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
+      <button class="btn btn--primary" type="submit">{{ t .Lang "pages.save" }}</button>
+      <a class="btn btn--ghost" href="/{{ .Key }}" target="_blank">{{ t .Lang "pages.preview" }}</a>
+    </div>
+  </form>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

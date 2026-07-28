@@ -87,6 +87,12 @@ func TestTemplatesExecute(t *testing.T) {
 				Site:          ServiceFlag{Code: SvcSite, TitleKey: "svc.site", Status: svcOn},
 				PendingAgents: []Agent{{UserID: "u1", Name: "Асан Серіков", Agency: "Дом", Phone: "+7 700", Email: "a@b.c", Status: agentPending}},
 				Stats:         AdminStats{Users: 3, Articles: 2}}},
+			{"admin_pages", adminPagesList{Base: base, Items: []adminPageItem{{Key: "privacy", Name: "Конфиденциальность"}, {Key: "terms", Name: "Условия"}}}},
+			{"admin_page_edit", adminPageEditView{Base: base, Key: "privacy", Name: "Конфиденциальность", Notice: "N", LastEdited: "2026-07-28 10:00", LastEditor: "a@b.c", Langs: []adminPageLangView{
+				{Code: "kz", Label: "Қазақша", Title: "T", Body: "# Hi"},
+				{Code: "ru", Label: "Русский", Title: "T", Body: "# Hi"},
+				{Code: "en", Label: "English", Title: "T", Body: "# Hi"},
+			}}},
 		}
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {

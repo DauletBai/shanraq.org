@@ -45,6 +45,7 @@ type Module struct {
 	comments  *CommentStore
 	favs      *FavoriteStore
 	admin     *AdminStore
+	content   *ContentStore
 	metrics   *Metrics
 	ratings   *ratings.Store
 	jobs      *jobs.Store
@@ -90,6 +91,10 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.comments = NewCommentStore(rt.DB)
 	m.favs = NewFavoriteStore(rt.DB)
 	m.admin = NewAdminStore(rt.DB)
+	m.content = NewContentStore(rt.DB)
+	// Fill the editable-pages table from the built-in defaults on first boot;
+	// idempotent and best-effort, so it never blocks startup.
+	m.seedContentPages(ctx)
 	m.metrics = NewMetrics(rt.DB, rt.Logger)
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
@@ -232,6 +237,9 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/admin/appeals/{id}/resolve", m.handleAdminResolveAppeal)
 		r.Post("/admin/analysis", m.handleAdminColumnBrief)
 		r.Post("/admin/articles/{id}/decide", m.handleAdminDecideArticle)
+		r.Get("/admin/pages", m.handleAdminPages)
+		r.Get("/admin/pages/{key}", m.handleAdminPageEdit)
+		r.Post("/admin/pages/{key}", m.handleAdminPageSave)
 	})
 }
 
