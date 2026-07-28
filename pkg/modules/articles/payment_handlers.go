@@ -12,7 +12,7 @@ import (
 // (signature, source) and only a verified success flips the payment to paid,
 // which activates the order — idempotently, so a retried callback is safe.
 func (m *Module) handlePaymentWebhook(w http.ResponseWriter, r *http.Request) {
-	res, err := m.payProv.HandleWebhook(r)
+	res, err := m.paymentProvider().HandleWebhook(r)
 	if err != nil {
 		if errors.Is(err, ErrPaymentsDisabled) {
 			// No provider configured — nothing legitimately calls this yet.

@@ -665,6 +665,19 @@ var messages = map[string]map[string]string{
 	"admin.svc_bad":        {"kz": "Жарамсыз мән.", "ru": "Некорректное значение.", "en": "Invalid value."},
 	"admin.ai_set":         {"kz": "ЖИ параметрлері сақталды.", "ru": "Настройки ИИ сохранены.", "en": "AI settings saved."},
 	"admin.ai_bad":         {"kz": "ЖИ параметрлерін сақтау мүмкін болмады.", "ru": "Не удалось сохранить настройки ИИ.", "en": "Could not save AI settings."},
+	"admin.pay_set":        {"kz": "Төлем параметрлері сақталды.", "ru": "Настройки платежей сохранены.", "en": "Payment settings saved."},
+	"admin.pay_bad":        {"kz": "Төлем параметрлерін сақтау мүмкін болмады.", "ru": "Не удалось сохранить настройки платежей.", "en": "Could not save payment settings."},
+
+	// Payment acquirer switch (admin panel).
+	"pay.nav":           {"kz": "Төлемдер", "ru": "Платежи", "en": "Payments"},
+	"pay.title":         {"kz": "Төлемдер (эквайринг)", "ru": "Платежи (эквайринг)", "en": "Payments (acquiring)"},
+	"pay.note":          {"kz": "Белсенді төлем провайдерін осы жерден қосыңыз/өшіріңіз. Құпия кілттер серверлік конфигте сақталады — мұнда тек таңдау мен қосу/өшіру.", "ru": "Подключайте/отключайте активного платёжного провайдера здесь. Секретные ключи хранятся в конфиге сервера — здесь только выбор и вкл/выкл.", "en": "Connect or disconnect the active payment provider here. Secret keys live in the server config — this is only the choice and the on/off."},
+	"pay.enabled":       {"kz": "Төлемдер қосулы", "ru": "Платежи включены", "en": "Payments enabled"},
+	"pay.provider":      {"kz": "Провайдер", "ru": "Провайдер", "en": "Provider"},
+	"pay.ready":         {"kz": "адаптер дайын", "ru": "адаптер готов", "en": "adapter ready"},
+	"pay.notready":      {"kz": "адаптер әлі жоқ", "ru": "адаптер не подключён", "en": "adapter not connected"},
+	"pay.notready_warn": {"kz": "Таңдалған провайдердің адаптері әлі жоқ — төлемдер нақты жүрмейді. Адаптер қосылған кезде осы қосқыш оны іске қосады.", "ru": "У выбранного провайдера ещё нет адаптера — платежи фактически не пойдут. Когда адаптер будет подключён, этот тумблер его и включит.", "en": "The selected provider has no adapter yet — payments won't actually run. Once the adapter is added, this switch turns it on."},
+	"pay.save":          {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
 
 	// Service switches (maintenance mode).
 	"svc.title":             {"kz": "Сервистер", "ru": "Сервисы", "en": "Services"},

@@ -226,6 +226,8 @@ type AdminPage struct {
 	Guests GuestAnalytics
 	// AI model configuration (provider/model switch).
 	AI ai.AdminView
+	// Payment acquirer configuration (provider on/off/switch).
+	Payments paymentsAdminView
 	// Operational service switches (maintenance mode per service).
 	Services      []ServiceFlag
 	ServiceStates []string    // selectable statuses: on | maintenance | off
@@ -279,6 +281,7 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		if m.ai != nil {
 			page.AI = m.ai.AdminView()
 		}
+		page.Payments = m.paymentsAdminView()
 		if pend, err := m.reagents.Pending(r.Context(), 100); err == nil {
 			page.PendingAgents = pend
 		} else {

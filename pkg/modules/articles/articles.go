@@ -31,32 +31,32 @@ type Mailer interface {
 }
 
 type Module struct {
-	rt        *shanraq.Runtime
-	store     *Store
-	listings  *ListingStore
-	ads       *AdStore
-	mods      *ModStore
-	refs      *ReferralStore
-	reagents  *AgentStore
-	pay       *PaymentStore
-	payProv   PaymentProvider
-	flags     *ServiceFlags
-	geo       *GeoStore
-	comments  *CommentStore
-	favs      *FavoriteStore
-	admin     *AdminStore
-	content   *ContentStore
-	metrics   *Metrics
-	ratings   *ratings.Store
-	jobs      *jobs.Store
-	auth      *auth.Module
-	ai        *ai.Module
-	syndicate *syndicate.Module
-	media     *media.Module
-	mailer    Mailer
-	tmpl      *template.Template
-	validator *validate.Validator
-	infobar   *InfoBar
+	rt          *shanraq.Runtime
+	store       *Store
+	listings    *ListingStore
+	ads         *AdStore
+	mods        *ModStore
+	refs        *ReferralStore
+	reagents    *AgentStore
+	pay         *PaymentStore
+	paySettings *PaymentSettingsStore
+	flags       *ServiceFlags
+	geo         *GeoStore
+	comments    *CommentStore
+	favs        *FavoriteStore
+	admin       *AdminStore
+	content     *ContentStore
+	metrics     *Metrics
+	ratings     *ratings.Store
+	jobs        *jobs.Store
+	auth        *auth.Module
+	ai          *ai.Module
+	syndicate   *syndicate.Module
+	media       *media.Module
+	mailer      Mailer
+	tmpl        *template.Template
+	validator   *validate.Validator
+	infobar     *InfoBar
 }
 
 // New builds the articles module. It depends on auth (browser sessions), ai
@@ -78,9 +78,14 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.refs = NewReferralStore(rt.DB)
 	m.reagents = NewAgentStore(rt.DB)
 	m.pay = NewPaymentStore(rt.DB)
-	// Provider stays disabled until one is configured — no credentials in the
-	// repo, same as AI and SMTP. A concrete adapter is registered here later.
-	m.payProv = disabledProvider{}
+	// Which acquirer is live (and whether payments are on) is a runtime choice in
+	// the admin panel — secrets stay in config. Defaults come from config so a
+	// fresh DB has a starting point; the effective provider is built per request
+	// from these settings (m.paymentProvider), disabled until an adapter lands.
+	m.paySettings = NewPaymentSettingsStore(rt.DB, PaymentSettings{Provider: rt.Config.Payments.Provider})
+	if _, err := m.paySettings.Load(ctx); err != nil {
+		rt.Logger.Warn("load payment settings", zap.Error(err))
+	}
 	m.flags = NewServiceFlags(rt.DB)
 	if err := m.flags.Load(ctx); err != nil {
 		// Non-fatal: an unloaded cache defaults every service to available, so
@@ -240,6 +245,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/admin/pages", m.handleAdminPages)
 		r.Get("/admin/pages/{key}", m.handleAdminPageEdit)
 		r.Post("/admin/pages/{key}", m.handleAdminPageSave)
+		r.Post("/admin/payments", m.handleAdminPayments)
 	})
 }
 
