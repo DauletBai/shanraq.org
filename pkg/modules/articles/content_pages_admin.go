@@ -150,12 +150,10 @@ func (m *Module) handleAdminPageSave(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	for _, lv := range langs {
-		if err := m.content.Upsert(r.Context(), key, lv.Code, lv.Title, lv.Body, editor); err != nil {
-			m.rt.Logger.Error("save content page", zap.String("key", key), zap.String("lang", lv.Code), zap.Error(err))
-			http.Error(w, "internal error", http.StatusInternalServerError)
-			return
-		}
+	if err := m.content.UpsertMany(r.Context(), key, langs, editor); err != nil {
+		m.rt.Logger.Error("save content page", zap.String("key", key), zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
 	}
 	m.rt.Logger.Info("content page edited", zap.String("key", key), zap.String("editor", editor.String()))
 	http.Redirect(w, r, "/admin/pages/"+key+"?ok=1", http.StatusSeeOther)

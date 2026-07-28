@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strings"
 	"time"
 
@@ -49,6 +50,27 @@ func (s *ContentStore) Upsert(ctx context.Context, key, lang, title, body string
 		       updated_at=NOW(), updated_by=EXCLUDED.updated_by`,
 		key, lang, title, body, editor)
 	return err
+}
+
+// UpsertMany writes every language of a page in one transaction, so a mid-batch
+// failure never leaves the languages inconsistent (some new, some old).
+func (s *ContentStore) UpsertMany(ctx context.Context, key string, langs []adminPageLangView, editor uuid.UUID) error {
+	tx, err := s.db.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		return fmt.Errorf("begin content_pages tx: %w", err)
+	}
+	defer tx.Rollback(ctx)
+	for _, l := range langs {
+		if _, err := tx.Exec(ctx,
+			`INSERT INTO content_pages (page_key, lang, title, body_md, updated_at, updated_by)
+			 VALUES ($1,$2,$3,$4,NOW(),$5)
+			 ON CONFLICT (page_key, lang) DO UPDATE
+			   SET title=EXCLUDED.title, body_md=EXCLUDED.body_md, updated_at=NOW(), updated_by=EXCLUDED.updated_by`,
+			key, l.Code, l.Title, l.Body, editor); err != nil {
+			return fmt.Errorf("save content page %s/%s: %w", key, l.Code, err)
+		}
+	}
+	return tx.Commit(ctx)
 }
 
 // seed inserts a default row only when absent, so first boot fills the table

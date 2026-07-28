@@ -7,6 +7,7 @@ import (
 	"sync/atomic"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -158,10 +159,16 @@ func (s *TariffStore) refresh(ctx context.Context) error {
 	return nil
 }
 
-// SaveMany validates and upserts a batch of tariffs, then refreshes the cache so
-// the new prices take effect at once. Unknown keys are ignored; values are
-// clamped (>= 0, and >= 1 for durations/weights).
+// SaveMany validates and upserts a batch of tariffs in a single transaction, so
+// a mid-batch failure leaves NO partial price change, then refreshes the cache
+// only after the commit. Unknown keys are ignored; values are clamped (>= 0,
+// >= 1 for durations/weights, and <= maxTariffValue).
 func (s *TariffStore) SaveMany(ctx context.Context, values map[string]int64, by *uuid.UUID) error {
+	tx, err := s.db.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		return fmt.Errorf("begin tariffs tx: %w", err)
+	}
+	defer tx.Rollback(ctx)
 	for key, value := range values {
 		if !isTariffKey(key) {
 			continue
@@ -172,18 +179,20 @@ func (s *TariffStore) SaveMany(ctx context.Context, values map[string]int64, by 
 		if tariffMinOne(key) && value < 1 {
 			value = 1
 		}
-		// Upper clamp: prices/weights are now operator-editable ints, so cap them
-		// well below anything that could overflow int64 in rate×weight math while
-		// staying far above any real tariff.
 		if value > maxTariffValue {
 			value = maxTariffValue
 		}
-		if _, err := s.db.Exec(ctx, `
+		if _, err := tx.Exec(ctx, `
 			INSERT INTO tariffs (key, value, updated_at, updated_by) VALUES ($1,$2,NOW(),$3)
 			ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW(), updated_by = EXCLUDED.updated_by`,
 			key, value, by); err != nil {
 			return fmt.Errorf("save tariff %s: %w", key, err)
 		}
 	}
+	if err := tx.Commit(ctx); err != nil {
+		return fmt.Errorf("commit tariffs: %w", err)
+	}
+	// Cache is refreshed only after a successful commit, so a rollback can never
+	// leave the running prices out of sync with the table.
 	return s.refresh(ctx)
 }

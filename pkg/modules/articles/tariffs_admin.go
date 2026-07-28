@@ -33,6 +33,7 @@ type tariffField struct {
 type tariffsAdminView struct {
 	Base
 	Notice    string
+	Error     string
 	AdDays    []int
 	AdFormats []tariffAdRow
 	Weights   []tariffField
@@ -84,6 +85,9 @@ func (m *Module) handleAdminTariffs(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Query().Get("ok") == "1" {
 		view.Notice = T(lang, "tar.saved")
 	}
+	if r.URL.Query().Get("err") == "1" {
+		view.Error = T(lang, "tar.err")
+	}
 	m.render(w, "admin_tariffs", view)
 }
 
@@ -94,10 +98,13 @@ func (m *Module) handleAdminTariffsSave(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	if m.tariffs == nil {
-		http.Redirect(w, r, "/admin/tariffs", http.StatusSeeOther)
+		http.Redirect(w, r, "/admin/tariffs?err=1", http.StatusSeeOther)
 		return
 	}
-	_ = r.ParseForm()
+	if err := r.ParseForm(); err != nil {
+		http.Redirect(w, r, "/admin/tariffs?err=1", http.StatusSeeOther)
+		return
+	}
 	values := make(map[string]int64, len(tariffDefs))
 	for _, d := range tariffDefs {
 		raw := strings.TrimSpace(r.FormValue(d.key))
@@ -106,7 +113,10 @@ func (m *Module) handleAdminTariffsSave(w http.ResponseWriter, r *http.Request) 
 		}
 		n, err := strconv.ParseInt(raw, 10, 64)
 		if err != nil {
-			continue // ignore a non-numeric field rather than fail the whole save
+			// Reject the whole save on a bad number rather than silently drop the
+			// field and report success.
+			http.Redirect(w, r, "/admin/tariffs?err=1", http.StatusSeeOther)
+			return
 		}
 		values[d.key] = n
 	}
@@ -118,6 +128,8 @@ func (m *Module) handleAdminTariffsSave(w http.ResponseWriter, r *http.Request) 
 	}
 	if err := m.tariffs.SaveMany(r.Context(), values, by); err != nil {
 		m.rt.Logger.Warn("save tariffs", zap.Error(err))
+		http.Redirect(w, r, "/admin/tariffs?err=1", http.StatusSeeOther)
+		return
 	}
 	m.rt.Logger.Info("tariffs updated", zap.Int("fields", len(values)))
 	http.Redirect(w, r, "/admin/tariffs?ok=1", http.StatusSeeOther)

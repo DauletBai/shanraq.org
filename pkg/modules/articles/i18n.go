@@ -685,6 +685,7 @@ var messages = map[string]map[string]string{
 	"tar.intro":        {"kz": "Жарнама мен хабарландыру бағаларын және мерзімдерін осы жерден өзгертіңіз — кодқа тимей. Бос мән қалдырса, ендірілген әдепкі мән қолданылады.", "ru": "Меняйте цены и сроки рекламы и объявлений здесь — без правки кода. Пустое поле оставляет встроенное значение по умолчанию.", "en": "Change ad and listing prices and durations here — no code edit. A blank field keeps the built-in default."},
 	"tar.back_admin":   {"kz": "Әкімшілік панеліне", "ru": "В админпанель", "en": "Back to admin"},
 	"tar.saved":        {"kz": "Тарифтер сақталды.", "ru": "Тарифы сохранены.", "en": "Tariffs saved."},
+	"tar.err":          {"kz": "Тарифтерді сақтау мүмкін болмады — ешбір баға өзгерген жоқ. Мәндерді тексеріп, қайталаңыз.", "ru": "Не удалось сохранить тарифы — ни одна цена не изменена. Проверьте значения и повторите.", "en": "Could not save tariffs — no price was changed. Check the values and try again."},
 	"tar.save":         {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
 	"tar.days":         {"kz": "күн", "ru": "дн", "en": "days"},
 	"tar.ad_card":      {"kz": "Жарнама прайсы (формат × мерзім), ₸", "ru": "Рекламный прайс (формат × срок), ₸", "en": "Ad rate card (format × period), ₸"},

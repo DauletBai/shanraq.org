@@ -7,6 +7,7 @@
   <h1>{{ t .Lang "tar.title" }}</h1>
   <p class="hint">{{ t .Lang "tar.intro" }}</p>
   {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+  {{ with .Error }}<p class="alert alert--error">{{ . }}</p>{{ end }}
 
   <form method="post" action="/admin/tariffs">
 

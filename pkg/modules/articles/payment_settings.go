@@ -210,7 +210,12 @@ func (m *Module) handleAdminPayments(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin?ok=pay_bad", http.StatusSeeOther)
 		return
 	}
-	_ = r.ParseForm()
+	if err := r.ParseForm(); err != nil {
+		// A truncated/corrupt POST must not be read as "enabled=false" and quietly
+		// switch payments off.
+		http.Redirect(w, r, "/admin?ok=pay_bad", http.StatusSeeOther)
+		return
+	}
 	in := PaymentSettings{
 		Enabled:  r.FormValue("enabled") == "on",
 		Provider: strings.TrimSpace(r.FormValue("provider")),
