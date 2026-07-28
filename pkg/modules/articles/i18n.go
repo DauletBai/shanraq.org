@@ -814,7 +814,7 @@ var messages = map[string]map[string]string{
 	"author.err_name":        {"kz": "Аты мен тегін көрсетіңіз.", "ru": "Укажите имя и фамилию.", "en": "Provide first and last name."},
 	"author.err_phone":       {"kz": "Жарамды телефон нөмірін енгізіңіз.", "ru": "Введите корректный номер телефона.", "en": "Enter a valid phone number."},
 	"form.verified_invalid":  {"kz": "Растау сілтемесі жарамсыз немесе мерзімі өткен.", "ru": "Ссылка подтверждения недействительна или устарела.", "en": "The verification link is invalid or has expired."},
-	"form.session_expired":   {"kz": "Сессияңыздың мерзімі бітті (пішін тым ұзақ ашық тұрды). Қайта кіріп, хабарландыруды қайтадан жариялаңыз.", "ru": "Сессия истекла (форма была открыта слишком долго). Войдите снова и опубликуйте объявление заново.", "en": "Your session expired (the form was open too long). Please sign in again and re-publish your listing."},
+	"form.session_expired":   {"kz": "Сессияңыздың мерзімі бітті (бет тым ұзақ ашық тұрды). Қайта кіріп, әрекетті қайталаңыз.", "ru": "Сессия истекла (страница была открыта слишком долго). Войдите снова и повторите действие.", "en": "Your session expired (the page was open too long). Please sign in again and repeat the action."},
 
 	// Admin editor for info & legal pages (Privacy, Terms, Pricing, …).
 	"pages.nav":            {"kz": "Беттер мен саясаттар", "ru": "Страницы и политики", "en": "Pages & policies"},
@@ -832,6 +832,7 @@ var messages = map[string]map[string]string{
 	"pages.md_help":        {"kz": "Пішімдеу нұсқаулығы", "ru": "Как форматировать", "en": "Formatting guide"},
 	"pages.last_edited":    {"kz": "Соңғы өзгеріс", "ru": "Последнее изменение", "en": "Last edited"},
 	"pages.preview":        {"kz": "Алдын ала қарау", "ru": "Предпросмотр", "en": "Preview"},
+	"pages.err_required":   {"kz": "Әр тілде тақырып та, мәтін де толтырылуы тиіс — бет бос сақталмайды.", "ru": "Заголовок и текст обязательны для каждого языка — пустую страницу сохранить нельзя.", "en": "Title and body are required for every language — a page can't be saved blank."},
 	"form.consent_pre":     {"kz": "Мен", "ru": "Я принимаю", "en": "I accept the"},
 	"form.consent_terms":   {"kz": "Пайдаланушы келісімін", "ru": "Пользовательское соглашение", "en": "Terms of Service"},
 	"form.consent_and":     {"kz": "және", "ru": "и", "en": "and"},

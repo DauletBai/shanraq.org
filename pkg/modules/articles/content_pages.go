@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -103,7 +104,10 @@ func (m *Module) seedContentPages(ctx context.Context) {
 // (key, lang), so a missing or empty row never blanks a page.
 func (m *Module) pageContent(ctx context.Context, key, lang string) (title, body string) {
 	if m.content != nil {
-		if t, b, ok, err := m.content.Get(ctx, key, lang); err == nil && ok && t != "" {
+		// Use the stored page only when BOTH title and body are present — a row
+		// with an empty field would otherwise render a legal page as a bare
+		// heading with no text. A blank field falls back to the built-in default.
+		if t, b, ok, err := m.content.Get(ctx, key, lang); err == nil && ok && t != "" && strings.TrimSpace(b) != "" {
 			return t, b
 		}
 	}

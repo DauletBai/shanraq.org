@@ -16,6 +16,11 @@ import (
 // operator's value from a cached snapshot or falls back to the built-in default,
 // so a missing row (or an unloaded cache) never breaks pricing.
 
+// maxTariffValue caps any editable tariff. Real prices are ≤ ~90 000 and
+// weights ≤ ~20, so 10 000 000 is generous headroom yet keeps rate×weight far
+// inside int64.
+const maxTariffValue = 10_000_000
+
 type tariffDef struct {
 	key    string
 	def    int64
@@ -166,6 +171,12 @@ func (s *TariffStore) SaveMany(ctx context.Context, values map[string]int64, by 
 		}
 		if tariffMinOne(key) && value < 1 {
 			value = 1
+		}
+		// Upper clamp: prices/weights are now operator-editable ints, so cap them
+		// well below anything that could overflow int64 in rate×weight math while
+		// staying far above any real tariff.
+		if value > maxTariffValue {
+			value = maxTariffValue
 		}
 		if _, err := s.db.Exec(ctx, `
 			INSERT INTO tariffs (key, value, updated_at, updated_by) VALUES ($1,$2,NOW(),$3)

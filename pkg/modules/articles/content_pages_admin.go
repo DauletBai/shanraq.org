@@ -26,6 +26,7 @@ type adminPageEditView struct {
 	Key        string
 	Name       string
 	Notice     string
+	Error      string
 	LastEdited string
 	LastEditor string
 	Langs      []adminPageLangView
@@ -120,11 +121,38 @@ func (m *Module) handleAdminPageSave(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad form", http.StatusBadRequest)
 		return
 	}
+	lang := m.resolveLang(w, r)
+	// Collect every language first so validation can reject the whole save: a
+	// missing title or body must never overwrite a live legal page with a blank.
+	langs := make([]adminPageLangView, 0, len(pageEditLangs))
+	valid := true
 	for _, l := range pageEditLangs {
-		title := strings.TrimSpace(r.FormValue("title_" + l.Code))
-		body := r.FormValue("body_" + l.Code)
-		if err := m.content.Upsert(r.Context(), key, l.Code, title, body, editor); err != nil {
-			m.rt.Logger.Error("save content page", zap.String("key", key), zap.String("lang", l.Code), zap.Error(err))
+		lv := adminPageLangView{
+			Code:  l.Code,
+			Label: l.Label,
+			Title: strings.TrimSpace(r.FormValue("title_" + l.Code)),
+			Body:  r.FormValue("body_" + l.Code),
+		}
+		if lv.Title == "" || strings.TrimSpace(lv.Body) == "" {
+			valid = false
+		}
+		langs = append(langs, lv)
+	}
+	if !valid {
+		// Re-render with what the operator typed plus an error — nothing is lost
+		// and a blank page can't be saved.
+		m.render(w, "admin_page_edit", adminPageEditView{
+			Base:  m.base(r, T(lang, "pages.edit_title"), lang),
+			Key:   key,
+			Name:  m.editablePageName(r, key, lang),
+			Error: T(lang, "pages.err_required"),
+			Langs: langs,
+		})
+		return
+	}
+	for _, lv := range langs {
+		if err := m.content.Upsert(r.Context(), key, lv.Code, lv.Title, lv.Body, editor); err != nil {
+			m.rt.Logger.Error("save content page", zap.String("key", key), zap.String("lang", lv.Code), zap.Error(err))
 			http.Error(w, "internal error", http.StatusInternalServerError)
 			return
 		}

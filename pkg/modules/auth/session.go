@@ -315,7 +315,10 @@ func (m *Module) RequireSession(loginPath string, roles ...string) func(http.Han
 				claims, ok = m.claimsFromCookie(r)
 			}
 			if !ok {
-				http.Redirect(w, r, loginPath, http.StatusSeeOther)
+				// Session lapsed (or never signed in): flag why so a long compose
+				// that outlives the token bounces to login with an explanation
+				// instead of silently, matching the listing-form fix.
+				http.Redirect(w, r, loginPath+"?reason=session_expired", http.StatusSeeOther)
 				return
 			}
 			if len(normalized) > 0 && !claims.HasAnyRole(normalized...) {
