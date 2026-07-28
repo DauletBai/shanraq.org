@@ -94,6 +94,12 @@ func TestTemplatesExecute(t *testing.T) {
 				{Code: "ru", Label: "Русский", Title: "T", Body: "# Hi"},
 				{Code: "en", Label: "English", Title: "T", Body: "# Hi"},
 			}}},
+			{"admin_tariffs", tariffsAdminView{Base: base, Notice: "N", AdDays: []int{3, 7, 14, 30},
+				AdFormats: []tariffAdRow{{Label: "970×250", Cells: []tariffCell{{"ad.horizontal.3", 18000}, {"ad.horizontal.7", 36000}, {"ad.horizontal.14", 60000}, {"ad.horizontal.30", 90000}}}},
+				Weights:   []tariffField{{"weight.high", "High", 20}},
+				Banner:    []tariffField{{"banner.1", "1", 990}},
+				Services:  []tariffField{{"promote.price", "Top", 299}},
+				Durations: []tariffField{{"listing.free_days", "Free", 21}}}},
 		}
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {

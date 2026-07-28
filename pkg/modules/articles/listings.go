@@ -99,24 +99,7 @@ func (l Listing) Banner() bool { return l.BannerUntil != nil && l.BannerUntil.Af
 // listingBannerPrice returns the banner price (tenge) for 1..7 days. Priced
 // above Top (299) and highlight (499) since the slot is always on screen, with
 // a volume discount as the period grows.
-func listingBannerPrice(days int) int64 {
-	switch days {
-	case 2:
-		return 1890
-	case 3:
-		return 2690
-	case 4:
-		return 3390
-	case 5:
-		return 3990
-	case 6:
-		return 4490
-	case 7:
-		return 4990
-	default:
-		return 990
-	}
-}
+func listingBannerPrice(days int) int64 { return bannerPriceVal(days) }
 
 // BannerDays is the selectable banner period (days), for the form.
 func BannerDays() []int { return []int{1, 2, 3, 4, 5, 6, 7} }

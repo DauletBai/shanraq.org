@@ -34,12 +34,12 @@ const (
 func adSurfaceWeight10(code string) int64 {
 	switch code {
 	case surfaceHome, surfaceRealestate:
-		return 20
+		return surfaceWeightVal("high")
 	case surfaceArticles,
 		surfaceRubricPfx + "society", surfaceRubricPfx + "politics", surfaceRubricPfx + "economy":
-		return 13
+		return surfaceWeightVal("mid")
 	default:
-		return 10
+		return surfaceWeightVal("base")
 	}
 }
 
@@ -86,17 +86,17 @@ type AdFormat struct {
 	Vertical bool   `json:"vertical"` // tall (sidebar) vs wide (top)
 }
 
-// adFormatPrice is per-format, per-duration base price on a base (×1.0) surface.
-var adFormatPrice = map[string]map[int]int64{
-	// wide top billboard — the most prominent, one exclusive slot.
-	"horizontal": {3: 18000, 7: 36000, 14: 60000, 30: 90000},
-	// tall sidebar half-page — high impact, one slot.
-	"vertical": {3: 14000, 7: 28000, 14: 47000, 30: 70000},
-	// square — standard, one slot.
-	"square": {3: 9000, 7: 18000, 14: 30000, 30: 45000},
-	// medium rectangle — the workhorse, three rotating slots.
-	"rectangle": {3: 8000, 7: 16000, 14: 27000, 30: 40000},
-}
+// adFormatCodes lists the banner formats in canonical order. The per-format,
+// per-duration base prices are editable tariffs (keyed ad.<format>.<days>).
+var adFormatCodes = []string{"horizontal", "vertical", "square", "rectangle"}
+
+var adFormatSet = func() map[string]bool {
+	m := make(map[string]bool, len(adFormatCodes))
+	for _, c := range adFormatCodes {
+		m[c] = true
+	}
+	return m
+}()
 
 // adFormatSlots is how many advertisers share a format's position on a surface.
 var adFormatSlots = map[string]int{"horizontal": 1, "vertical": 1, "square": 1, "rectangle": 3}
@@ -116,13 +116,13 @@ func AdFormats() []AdFormat {
 	for _, f := range order {
 		out = append(out, AdFormat{
 			Code: f.code, Size: f.size, Slots: adFormatSlots[f.code],
-			Price30: adFormatPrice[f.code][30], Vertical: f.vert,
+			Price30: adFormatPriceVal(f.code, 30), Vertical: f.vert,
 		})
 	}
 	return out
 }
 
-func isAdFormat(code string) bool { _, ok := adFormatPrice[code]; return ok }
+func isAdFormat(code string) bool { return adFormatSet[code] }
 
 // AdFormatSlots exposes a format's rotation capacity (templates/serving).
 func AdFormatSlots(format string) int {
@@ -160,15 +160,13 @@ type AdOrderPricing struct {
 // AdOrderTotal prices a format + surface set for a period. Total is the format's
 // rate for the period times the summed surface weights.
 func AdOrderTotal(format string, surfaces []string, days int) AdOrderPricing {
-	byDur, ok := adFormatPrice[format]
-	if !ok {
-		byDur = adFormatPrice["rectangle"]
+	if !isAdFormat(format) {
 		format = "rectangle"
 	}
-	rate, ok := byDur[days]
-	if !ok {
-		rate = byDur[3]
+	if !adDurationSet[days] {
+		days = 3
 	}
+	rate := adFormatPriceVal(format, days)
 	var w int64
 	n := 0
 	for _, s := range surfaces {
@@ -186,15 +184,13 @@ func AdOrderTotal(format string, surfaces []string, days int) AdOrderPricing {
 // AdSurfaceFormatPrice is the 30-day price of one format on one surface — the
 // per-surface figure shown next to each checkbox, which changes with the format.
 func AdSurfaceFormatPrice(format, surface string, days int) int64 {
-	byDur, ok := adFormatPrice[format]
-	if !ok {
+	if !isAdFormat(format) {
 		return 0
 	}
-	rate := byDur[days]
-	if rate == 0 {
-		rate = byDur[30]
+	if !adDurationSet[days] {
+		days = 30
 	}
-	return rate * adSurfaceWeight10(surface) / 10
+	return adFormatPriceVal(format, days) * adSurfaceWeight10(surface) / 10
 }
 
 // surfaceLabelKey maps a surface code to its i18n key.
@@ -215,8 +211,16 @@ func AdRatesJSON() template.JS {
 	for _, s := range AdSurfaces() {
 		weights[s.Code] = s.Weight
 	}
+	formatPrice := map[string]map[int]int64{}
+	for _, f := range adFormatCodes {
+		fp := make(map[int]int64, len(adDurationDays))
+		for _, d := range adDurationDays {
+			fp[d] = adFormatPriceVal(f, d)
+		}
+		formatPrice[f] = fp
+	}
 	payload := map[string]any{
-		"formatPrice": adFormatPrice,
+		"formatPrice": formatPrice,
 		"weights":     weights,
 	}
 	b, err := json.Marshal(payload)

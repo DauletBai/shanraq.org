@@ -52,14 +52,14 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 		in.Amenities = []string{}
 	}
 	var id uuid.UUID
-	err = s.db.QueryRow(ctx, `
+	err = s.db.QueryRow(ctx, fmt.Sprintf(`
 		INSERT INTO listings (author_id, deal_type, property_type, country, region, city, village,
 		                      microdistrict, street, house, lat, lng,
 		                      price, area, rooms, title, description, contact, cover_url, images, geo_node_id,
 		                      land_area, amenities, room_specs, status, expires_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24::jsonb,'published', NOW() + INTERVAL '21 days')
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24::jsonb,'published', NOW() + INTERVAL '%d days')
 		RETURNING id
-	`, authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.Village,
+	`, freeDaysVal()), authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.Village,
 		in.Microdistrict, in.Street, in.House, in.Lat, in.Lng,
 		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.Images, in.GeoNodeID,
 		in.LandArea, in.Amenities, string(rooms)).Scan(&id)
@@ -122,10 +122,11 @@ func (s *ListingStore) MyListings(ctx context.Context, authorID uuid.UUID) ([]*L
 	return out, rows.Err()
 }
 
-// Extend adds 14 days to a listing's life (owner-only). Returns ErrNotFound if
-// the listing does not exist or is not owned by author.
+// Extend adds another free window to a listing's life (owner-only). Returns
+// ErrNotFound if the listing does not exist or is not owned by author.
 func (s *ListingStore) Extend(ctx context.Context, id, author uuid.UUID) error {
-	return s.touch(ctx, id, author, "expires_at = GREATEST(expires_at, NOW()) + INTERVAL '21 days', expiry_reminded = false")
+	return s.touch(ctx, id, author,
+		fmt.Sprintf("expires_at = GREATEST(expires_at, NOW()) + INTERVAL '%d days', expiry_reminded = false", freeDaysVal()))
 }
 
 // DueReminders returns active listings expiring within 2 days that have not yet
@@ -156,14 +157,17 @@ func (s *ListingStore) MarkReminded(ctx context.Context, id string) error {
 	return err
 }
 
-// Promote boosts a listing to the top of its section for 7 days (owner-only).
+// Promote boosts a listing to the top of its section for the promote window
+// (owner-only).
 func (s *ListingStore) Promote(ctx context.Context, id, author uuid.UUID) error {
-	return s.touch(ctx, id, author, "promoted_until = GREATEST(COALESCE(promoted_until, NOW()), NOW()) + INTERVAL '7 days'")
+	return s.touch(ctx, id, author,
+		fmt.Sprintf("promoted_until = GREATEST(COALESCE(promoted_until, NOW()), NOW()) + INTERVAL '%d days'", promoteDaysVal()))
 }
 
-// Feature visually highlights a listing for 7 days (owner-only).
+// Feature visually highlights a listing for the feature window (owner-only).
 func (s *ListingStore) Feature(ctx context.Context, id, author uuid.UUID) error {
-	return s.touch(ctx, id, author, "featured_until = GREATEST(COALESCE(featured_until, NOW()), NOW()) + INTERVAL '7 days'")
+	return s.touch(ctx, id, author,
+		fmt.Sprintf("featured_until = GREATEST(COALESCE(featured_until, NOW()), NOW()) + INTERVAL '%d days'", featureDaysVal()))
 }
 
 // Banner buys the sidebar banner slot on the real-estate page for days (1..7).

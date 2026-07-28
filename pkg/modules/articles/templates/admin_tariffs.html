@@ -1,0 +1,70 @@
+{{ define "admin_tariffs" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container" style="max-width:960px;padding-top:24px">
+  <p style="margin-bottom:12px"><a href="/admin">← {{ t .Lang "tar.back_admin" }}</a></p>
+  <h1>{{ t .Lang "tar.title" }}</h1>
+  <p class="hint">{{ t .Lang "tar.intro" }}</p>
+  {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+
+  <form method="post" action="/admin/tariffs">
+
+    <div class="cab-card">
+      <h2 style="margin-top:0">{{ t .Lang "tar.ad_card" }}</h2>
+      <p class="hint">{{ t .Lang "tar.ad_card_hint" }}</p>
+      <div style="overflow-x:auto">
+        <table class="list" style="width:100%">
+          <thead><tr><th></th>{{ range .AdDays }}<th style="text-align:left">{{ . }} {{ t $.Lang "tar.days" }}</th>{{ end }}</tr></thead>
+          <tbody>
+            {{ range .AdFormats }}
+            <tr>
+              <td><b>{{ .Label }}</b></td>
+              {{ range .Cells }}<td><input class="input input--sm" type="number" min="0" name="{{ .Key }}" value="{{ .Value }}" style="width:104px"></td>{{ end }}
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="cab-card">
+      <h2 style="margin-top:0">{{ t .Lang "tar.weights" }}</h2>
+      <p class="hint">{{ t .Lang "tar.weights_hint" }}</p>
+      {{ range .Weights }}
+      <label style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="min-width:300px">{{ .Label }}</span>
+        <input class="input input--sm" type="number" min="1" name="{{ .Key }}" value="{{ .Value }}" style="width:104px"></label>
+      {{ end }}
+    </div>
+
+    <div class="cab-card">
+      <h2 style="margin-top:0">{{ t .Lang "tar.banner" }}</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:14px">
+        {{ range .Banner }}
+        <label style="display:flex;flex-direction:column;font-size:13px;gap:4px">{{ .Label }} {{ t $.Lang "tar.days" }}
+          <input class="input input--sm" type="number" min="0" name="{{ .Key }}" value="{{ .Value }}" style="width:96px"></label>
+        {{ end }}
+      </div>
+    </div>
+
+    <div class="cab-card">
+      <h2 style="margin-top:0">{{ t .Lang "tar.services" }}</h2>
+      {{ range .Services }}
+      <label style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="min-width:300px">{{ .Label }}</span>
+        <input class="input input--sm" type="number" min="0" name="{{ .Key }}" value="{{ .Value }}" style="width:104px"> ₸</label>
+      {{ end }}
+    </div>
+
+    <div class="cab-card">
+      <h2 style="margin-top:0">{{ t .Lang "tar.durations" }}</h2>
+      {{ range .Durations }}
+      <label style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="min-width:300px">{{ .Label }}</span>
+        <input class="input input--sm" type="number" min="1" name="{{ .Key }}" value="{{ .Value }}" style="width:104px"></label>
+      {{ end }}
+    </div>
+
+    <button class="btn btn--primary" type="submit" style="margin-top:8px">{{ t .Lang "tar.save" }}</button>
+  </form>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

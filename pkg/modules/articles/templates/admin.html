@@ -27,6 +27,7 @@
       {{ if .CanManageUsers }}<a href="#payments" class="adm__navlink" data-nav>💳 {{ t .Lang "pay.nav" }}</a>{{ end }}
       {{ if .CanManageUsers }}<a href="#services" class="adm__navlink" data-nav>⚙ {{ t .Lang "svc.title" }}</a>{{ end }}
       {{ if .CanManageUsers }}<a href="/admin/pages" class="adm__navlink">📄 {{ t .Lang "pages.nav" }}</a>{{ end }}
+      {{ if .CanManageUsers }}<a href="/admin/tariffs" class="adm__navlink">₸ {{ t .Lang "tar.nav" }}</a>{{ end }}
       {{ if .CanModerate }}<a href="#moderation" class="adm__navlink" data-nav>✎ {{ t .Lang "admin.moderation" }}</a>{{ end }}
       {{ if .CanFinance }}<a href="#finance" class="adm__navlink" data-nav>₸ {{ t .Lang "admin.finance" }}</a>{{ end }}
     </nav>

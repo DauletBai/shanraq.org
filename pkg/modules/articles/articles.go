@@ -46,6 +46,7 @@ type Module struct {
 	favs        *FavoriteStore
 	admin       *AdminStore
 	content     *ContentStore
+	tariffs     *TariffStore
 	metrics     *Metrics
 	ratings     *ratings.Store
 	jobs        *jobs.Store
@@ -100,6 +101,12 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	// Fill the editable-pages table from the built-in defaults on first boot;
 	// idempotent and best-effort, so it never blocks startup.
 	m.seedContentPages(ctx)
+	m.tariffs = NewTariffStore(rt.DB)
+	// Seed the rate card from the built-in defaults and load it into the cache;
+	// best-effort, so a failure just serves the built-in prices.
+	if err := m.tariffs.Load(ctx); err != nil {
+		rt.Logger.Warn("load tariffs", zap.Error(err))
+	}
 	m.metrics = NewMetrics(rt.DB, rt.Logger)
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
@@ -246,6 +253,8 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/admin/pages/{key}", m.handleAdminPageEdit)
 		r.Post("/admin/pages/{key}", m.handleAdminPageSave)
 		r.Post("/admin/payments", m.handleAdminPayments)
+		r.Get("/admin/tariffs", m.handleAdminTariffs)
+		r.Post("/admin/tariffs", m.handleAdminTariffsSave)
 	})
 }
 
