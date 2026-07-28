@@ -643,13 +643,17 @@ table.list td.title { white-space: normal; max-width: 380px; }
 /* Disabled entry point: a link/button to a service the admin turned off. Rendered
    as a <span> (no href, so it can't navigate); the title shows why it's off. */
 .is-disabled {
-  opacity: 0.5;
+  opacity: 0.8;
   cursor: not-allowed;
   text-decoration: none;
   pointer-events: auto; /* keep the hover tooltip working */
-  filter: grayscale(0.4);
+  filter: grayscale(0.6);
 }
-.is-disabled::after { content: " 🛠"; font-size: 0.85em; }
+.is-disabled::after { 
+  content: " 🛠";
+  color: #fff;
+  font-size: 0.85em; 
+}
 
 /* ---- User cabinet: two-column layout with a sidebar ---- */
 .cabinet { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 28px; align-items: start; }
