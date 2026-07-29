@@ -396,8 +396,25 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .media-ph img { filter: brightness(0) invert(1); }
 }
-.article__media { margin: 0 0 20px; border-radius: var(--radius-sm); overflow: hidden; }
+.article__media { margin: 0 0 20px; border-radius: var(--radius-sm); overflow: hidden; position: relative; }
 .article__media img { width: 100%; height: auto; display: block; }
+
+/* ---- Brand watermark: the shanyrak mark, top-right, over every article cover
+   and every real-estate photo. A render-time overlay (not baked into the file),
+   so it appears on all covers — uploaded, demo, AI-column, or external URL.
+   The SVG already carries ~50% transparency; the drop-shadow keeps it legible
+   on both light and dark images. Avatars are unaffected (different class). ---- */
+.post__media::after, .article__media::after, .gallery::after {
+  content: "";
+  position: absolute; top: 8px; right: 8px;
+  width: 42px; height: 42px;
+  background: url("/static/brand/shanraq-mark-light.svg") center / contain no-repeat;
+  opacity: .9;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .4));
+  pointer-events: none;
+  z-index: 4;
+}
+.article__media::after, .gallery::after { width: 56px; height: 56px; top: 12px; right: 12px; }
 .hero__title { font-size: var(--step-4); margin: 12px 0 14px; }
 .hero__title a { color: var(--ink); }
 .hero__title a:hover { color: var(--gold-strong); text-decoration: none; }
