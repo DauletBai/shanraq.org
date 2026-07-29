@@ -322,7 +322,7 @@ var messages = map[string]map[string]string{
 	"home.read_more":  {"kz": "Толығырақ", "ru": "Читать далее", "en": "Continue reading"},
 	"home.empty":      {"kz": "Әзірге жарияланым жоқ", "ru": "Пока нет публикаций", "en": "No stories yet"},
 	"home.empty_cta":  {"kz": "Бірінші мақаланы жазу", "ru": "Написать первую статью", "en": "Write the first story"},
-	"home.page_title": {"kz": "Басты бет", "ru": "Главная", "en": "Home"},
+	"home.page_title": {"kz": "Еркін үш тілді жарияланымдар алаңы", "ru": "Свободная трёхъязычная площадка публикаций", "en": "A free trilingual publishing platform"},
 
 	"meta.views": {"kz": "оқылым", "ru": "просмотров", "en": "views"},
 	"meta.ai":    {"kz": "ИИ аудармасы", "ru": "ИИ-перевод", "en": "AI translation"},

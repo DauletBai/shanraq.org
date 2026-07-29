@@ -111,7 +111,7 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Path:      r.URL.Path,
 		CanonURL:  canonURL(r.URL.Path, seoFilterQuery(r), lang),
 		Desc:      T(lang, "seo.site_desc"),
-		OGImage:   site + "/static/brand/shanraq.svg",
+		OGImage:   site + "/static/brand/og-cover.png",
 		OGType:    "website",
 		Info:      m.infobar.Snapshot(localizedDate(lang, time.Now())),
 		Ads:       m.sidebarAds(r, lang),
