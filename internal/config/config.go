@@ -284,6 +284,11 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("public_base_url", "http://localhost:8080")
 	v.SetDefault("syndicate.base_url", "http://localhost:8080")
 	v.SetDefault("syndicate.telegram.enabled", false)
+	// Registered so the secret token / channel bind from env (SHANRAQ_SYNDICATE_
+	// TELEGRAM_BOT_TOKEN / _CHAT_ID) — a nested key without a default is invisible
+	// to viper's env lookup, and the token must never sit in the committed config.
+	v.SetDefault("syndicate.telegram.bot_token", "")
+	v.SetDefault("syndicate.telegram.chat_id", "")
 
 	v.SetDefault("media.backend", "fs")
 	v.SetDefault("media.dir", "./data/media")
