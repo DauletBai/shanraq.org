@@ -407,14 +407,13 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .post__media::after, .article__media::after, .gallery::after {
   content: "";
   position: absolute; top: 8px; right: 8px;
-  width: 42px; height: 42px;
+  width: 21px; height: 21px;
   background: url("/static/brand/shanraq-mark-light.svg") center / contain no-repeat;
-  opacity: .9;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .4));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .4));
   pointer-events: none;
   z-index: 4;
 }
-.article__media::after, .gallery::after { width: 56px; height: 56px; top: 12px; right: 12px; }
+.article__media::after, .gallery::after { width: 28px; height: 28px; top: 12px; right: 12px; }
 .hero__title { font-size: var(--step-4); margin: 12px 0 14px; }
 .hero__title a { color: var(--ink); }
 .hero__title a:hover { color: var(--gold-strong); text-decoration: none; }
