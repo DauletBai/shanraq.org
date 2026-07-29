@@ -45,3 +45,7 @@ media:
 
 ai:
   enabled: false                # turn on from the admin panel once a key is set
+
+# Public social links shown in the header info-bar and footer. Non-secret URLs.
+social:
+  telegram: "https://t.me/shanraq_org"   # our auto-post channel (@shanraq_org)
