@@ -9,6 +9,58 @@ import (
 	"shanraq.org/pkg/shanraq"
 )
 
+func TestBotLabel(t *testing.T) {
+	bots := map[string]string{
+		"Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)": "google",
+		"Mozilla/5.0 (compatible; YandexBot/3.0)":                                  "yandex",
+		"Mozilla/5.0 (compatible; bingbot/2.0)":                                    "bing",
+		"facebookexternalhit/1.1":                                                  "facebook",
+		"TelegramBot (like TwitterBot)":                                            "telegram",
+		"Mozilla/5.0 (compatible; AhrefsBot/7.0)":                                  "seo",
+		"Mozilla/5.0 (compatible; GPTBot/1.0)":                                     "ai",
+		"ClaudeBot/1.0":                                                            "ai",
+		"curl/8.4.0":                                                               "other",
+		"python-requests/2.31":                                                     "other",
+		"":                                                                         "other",
+	}
+	for ua, want := range bots {
+		if got := botLabel(ua); got != want {
+			t.Errorf("botLabel(%q) = %q, want %q", ua, got, want)
+		}
+	}
+	// Real browsers must never be flagged as bots.
+	humans := []string{
+		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36",
+		"Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Version/17.0 Mobile/15E148 Safari/604.1",
+	}
+	for _, ua := range humans {
+		if got := botLabel(ua); got != "" {
+			t.Errorf("botLabel(%q) = %q, want human (empty)", ua, got)
+		}
+	}
+}
+
+func TestTrafficSource(t *testing.T) {
+	const host = "shanraq.org"
+	cases := map[string]string{
+		"":                                  "direct",
+		"https://shanraq.org/read/x":        "direct", // internal navigation
+		"https://www.shanraq.org/":          "direct",
+		"https://www.google.com/search?q=x": "google",
+		"https://yandex.kz/":                "yandex",
+		"https://t.me/shanraq_org":          "telegram",
+		"https://l.facebook.com/l.php?u=x":  "facebook",
+		"https://lnkd.in/abc":               "linkedin",
+		"https://x.com/user":                "twitter",
+		"https://example.com/blog":          "other",
+	}
+	for ref, want := range cases {
+		if got := trafficSource(ref, host); got != want {
+			t.Errorf("trafficSource(%q) = %q, want %q", ref, got, want)
+		}
+	}
+}
+
 func TestPageKind(t *testing.T) {
 	cases := map[string]string{
 		"/":                   "home",

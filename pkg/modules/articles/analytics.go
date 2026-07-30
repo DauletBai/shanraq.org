@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"net/http"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -60,9 +61,91 @@ var trackedEvents = map[string]bool{
 }
 
 const (
-	metricPage  = "page"
-	metricClick = "click"
+	metricPage   = "page"
+	metricClick  = "click"
+	metricBot    = "bot"    // crawler/preview-bot page hit, by family
+	metricSource = "source" // where a human visit came from, by referrer
 )
+
+// botLabel classifies a User-Agent as a crawler/bot and returns its family
+// ("google", "yandex", "facebook", …), or "" for an ordinary human browser.
+// The UA string is read and immediately discarded — nothing is stored, so this
+// keeps the aggregate-only, no-profiling promise. Kept pure for testing.
+func botLabel(ua string) string {
+	u := strings.ToLower(ua)
+	switch {
+	case strings.TrimSpace(u) == "":
+		return "other" // no UA at all → a script/bot, never a real browser
+	case strings.Contains(u, "googlebot"), strings.Contains(u, "google-inspectiontool"), strings.Contains(u, "storebot-google"), strings.Contains(u, "apis-google"):
+		return "google"
+	case strings.Contains(u, "yandex"):
+		return "yandex"
+	case strings.Contains(u, "bingbot"), strings.Contains(u, "bingpreview"), strings.Contains(u, "msnbot"):
+		return "bing"
+	case strings.Contains(u, "facebookexternalhit"), strings.Contains(u, "facebot"), strings.Contains(u, "meta-external"):
+		return "facebook"
+	case strings.Contains(u, "telegrambot"), strings.Contains(u, "telegram"):
+		return "telegram"
+	case strings.Contains(u, "whatsapp"):
+		return "whatsapp"
+	case strings.Contains(u, "twitterbot"):
+		return "twitter"
+	case strings.Contains(u, "applebot"):
+		return "apple"
+	case strings.Contains(u, "ahrefsbot"), strings.Contains(u, "semrushbot"), strings.Contains(u, "mj12bot"), strings.Contains(u, "dotbot"), strings.Contains(u, "petalbot"), strings.Contains(u, "dataforseo"), strings.Contains(u, "blexbot"):
+		return "seo"
+	case strings.Contains(u, "gptbot"), strings.Contains(u, "oai-searchbot"), strings.Contains(u, "chatgpt"), strings.Contains(u, "claudebot"), strings.Contains(u, "anthropic"), strings.Contains(u, "ccbot"), strings.Contains(u, "perplexity"), strings.Contains(u, "bytespider"), strings.Contains(u, "amazonbot"):
+		return "ai"
+	case strings.Contains(u, "bot"), strings.Contains(u, "crawler"), strings.Contains(u, "spider"), strings.Contains(u, "slurp"),
+		strings.Contains(u, "curl"), strings.Contains(u, "wget"), strings.Contains(u, "python"), strings.Contains(u, "go-http"),
+		strings.Contains(u, "java/"), strings.Contains(u, "okhttp"), strings.Contains(u, "headless"), strings.Contains(u, "phantom"):
+		return "other"
+	}
+	return ""
+}
+
+// trafficSource classifies where a human visit came from, using only the
+// Referer host (no query, no path, nothing stored). Empty and same-site
+// referrers are "direct". Kept pure for testing.
+func trafficSource(referer, host string) string {
+	if strings.TrimSpace(referer) == "" {
+		return "direct"
+	}
+	u, err := url.Parse(referer)
+	if err != nil || u.Host == "" {
+		return "direct"
+	}
+	h := strings.TrimPrefix(strings.ToLower(u.Host), "www.")
+	host = strings.TrimPrefix(strings.ToLower(host), "www.")
+	if h == host || strings.HasSuffix(h, "shanraq.org") {
+		return "direct" // internal navigation, not an external source
+	}
+	switch {
+	case strings.Contains(h, "google"):
+		return "google"
+	case strings.Contains(h, "yandex"):
+		return "yandex"
+	case h == "t.me", strings.Contains(h, "telegram"):
+		return "telegram"
+	case strings.Contains(h, "facebook"), h == "fb.com", strings.Contains(h, "fb.me"), strings.Contains(h, "lm.facebook"):
+		return "facebook"
+	case strings.Contains(h, "instagram"):
+		return "instagram"
+	case strings.Contains(h, "linkedin"), h == "lnkd.in":
+		return "linkedin"
+	case strings.Contains(h, "twitter"), h == "x.com", h == "t.co":
+		return "twitter"
+	case strings.Contains(h, "youtube"), h == "youtu.be":
+		return "youtube"
+	case strings.Contains(h, "whatsapp"):
+		return "whatsapp"
+	case strings.Contains(h, "bing"):
+		return "bing"
+	case strings.Contains(h, "duckduckgo"):
+		return "duckduckgo"
+	}
+	return "other"
+}
 
 // metricKey identifies one counter bucket.
 type metricKey struct {
@@ -139,8 +222,15 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			if kind := pageKind(r.URL.Path); kind != "" {
-				_, ok := auth.ClaimsFromContext(r.Context())
-				m.metrics.inc(metricPage, kind, !ok)
+				if bot := botLabel(r.Header.Get("User-Agent")); bot != "" {
+					// Crawlers are counted apart so they never inflate the real
+					// human audience — that was the whole point.
+					m.metrics.inc(metricBot, bot, true)
+				} else {
+					_, ok := auth.ClaimsFromContext(r.Context())
+					m.metrics.inc(metricPage, kind, !ok)
+					m.metrics.inc(metricSource, trafficSource(r.Header.Get("Referer"), r.Host), !ok)
+				}
 			}
 		}
 		next.ServeHTTP(w, r)
@@ -151,7 +241,7 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 // fire-and-forget and always answers 204, even for unknown events.
 func (m *Module) handleTrack(w http.ResponseWriter, r *http.Request) {
 	e := strings.TrimSpace(r.URL.Query().Get("e"))
-	if trackedEvents[e] {
+	if trackedEvents[e] && botLabel(r.Header.Get("User-Agent")) == "" {
 		_, ok := auth.ClaimsFromContext(r.Context())
 		m.metrics.inc(metricClick, e, !ok)
 	}
@@ -201,6 +291,15 @@ type GuestClickRow struct {
 	A     Audience
 }
 
+// GuestSimpleRow is one labeled aggregate over the window — a traffic source or
+// a bot family — carrying a single count (no guest/registered split).
+type GuestSimpleRow struct {
+	Name  string
+	Title string
+	N     int64
+	Pct   int
+}
+
 // GuestTrendDay is one day in the 14-day guest-views sparkline.
 type GuestTrendDay struct {
 	Label string
@@ -217,6 +316,8 @@ type GuestAnalytics struct {
 	Year      Audience // views this calendar year
 	Pages     []GuestPageRow
 	Clicks    []GuestClickRow
+	Sources   []GuestSimpleRow // human visits by referrer (30 days)
+	Bots      []GuestSimpleRow // crawler hits by family (30 days)
 	Trend     []GuestTrendDay
 	TrendFrom string // first day label in the trend (oldest)
 	TrendTo   string // last day label in the trend (today)
@@ -298,6 +399,10 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		m.rt.Logger.Warn("guest analytics clicks", zap.Error(err))
 	}
 
+	// Traffic sources and bots, last 30 days.
+	g.Sources = m.simpleRows(ctx, metricSource, "ag.source.", lang)
+	g.Bots = m.simpleRows(ctx, metricBot, "ag.bot.", lang)
+
 	// 14-day guest-views sparkline, gaps filled with zero.
 	g.Trend = m.guestTrend(ctx)
 	if len(g.Trend) > 0 {
@@ -305,7 +410,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		g.TrendTo = g.Trend[len(g.Trend)-1].Label
 	}
 
-	g.HasData = g.Year.Total() > 0 || len(g.Pages) > 0
+	g.HasData = g.Year.Total() > 0 || len(g.Pages) > 0 || len(g.Bots) > 0
 	return g
 }
 
@@ -340,6 +445,48 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 			max = n
 		}
 		out = append(out, GuestTrendDay{Label: d.Format("02.01"), N: n})
+	}
+	for i := range out {
+		out[i].Pct = barPct(out[i].N, max)
+	}
+	return out
+}
+
+// simpleRows loads a 30-day aggregate for a single-count metric kind (bots or
+// sources), grouped by label, busiest first, with bar percentages and localized
+// titles. Unknown labels fall back to the raw name.
+func (m *Module) simpleRows(ctx context.Context, kind, i18nPrefix, lang string) []GuestSimpleRow {
+	rows, err := m.rt.DB.Query(ctx, `
+		SELECT label, COALESCE(SUM(n), 0)
+		FROM analytics_daily
+		WHERE kind = $1 AND day >= CURRENT_DATE - INTERVAL '30 days'
+		GROUP BY label`, kind)
+	if err != nil {
+		m.rt.Logger.Warn("guest analytics "+kind, zap.Error(err))
+		return nil
+	}
+	defer rows.Close()
+
+	var out []GuestSimpleRow
+	var max int64
+	for rows.Next() {
+		var r GuestSimpleRow
+		if err := rows.Scan(&r.Name, &r.N); err != nil {
+			continue
+		}
+		r.Title = T(lang, i18nPrefix+r.Name)
+		if strings.HasPrefix(r.Title, i18nPrefix) {
+			r.Title = r.Name
+		}
+		out = append(out, r)
+		if r.N > max {
+			max = r.N
+		}
+	}
+	for i := 1; i < len(out); i++ { // busiest first (tiny list, insertion sort)
+		for j := i; j > 0 && out[j].N > out[j-1].N; j-- {
+			out[j], out[j-1] = out[j-1], out[j]
+		}
 	}
 	for i := range out {
 		out[i].Pct = barPct(out[i].N, max)
