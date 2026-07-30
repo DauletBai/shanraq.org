@@ -60,7 +60,8 @@ func (m *Module) siteURL() string {
 // and point crawlers at the sitemap.
 func (m *Module) handleRobots(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	fmt.Fprintf(w, "User-agent: *\nAllow: /\nDisallow: /studio\nDisallow: /studio/\n\nSitemap: %s/sitemap.xml\n", m.siteURL())
+	site := m.siteURL()
+	fmt.Fprintf(w, "User-agent: *\nAllow: /\nDisallow: /studio\nDisallow: /studio/\n\nSitemap: %s/sitemap.xml\nSitemap: %s/sitemap-listings.xml\n", site, site)
 }
 
 func seoURL(site, path, lang string) string {
@@ -71,14 +72,14 @@ func seoURL(site, path, lang string) string {
 	return xmlEscape(site + path + sep + "lang=" + lang)
 }
 
-// handleSitemap emits a trilingual sitemap: every page lists its language
-// variants as hreflang alternates so search engines index all three.
-func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
+// sitemapDoc wraps a caller-supplied body in the <urlset> envelope. The emit
+// closure writes one <url> per page with its three language variants as
+// hreflang alternates, so every sitemap we serve shares identical formatting.
+func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) []byte {
 	site := m.siteURL()
 	var b strings.Builder
 	b.WriteString(`<?xml version="1.0" encoding="UTF-8"?>` + "\n")
 	b.WriteString(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">` + "\n")
-
 	emit := func(path string, mod time.Time) {
 		b.WriteString("<url><loc>")
 		b.WriteString(seoURL(site, path, LangRU))
@@ -92,33 +93,50 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 		}
 		b.WriteString("</url>\n")
 	}
-
-	now := time.Now()
-	emit("/", now)
-	for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings", "/author/sana"} {
-		emit(p, time.Time{})
-	}
-	for _, c := range Categories {
-		emit("/?cat="+c, time.Time{})
-	}
-	if arts, err := m.store.SitemapArticles(r.Context()); err != nil {
-		m.rt.Logger.Error("sitemap articles", zap.Error(err))
-	} else {
-		for _, a := range arts {
-			emit("/read/"+a.Slug, a.Updated)
-		}
-	}
-	if lst, err := m.listings.SitemapListings(r.Context()); err != nil {
-		m.rt.Logger.Error("sitemap listings", zap.Error(err))
-	} else {
-		for _, l := range lst {
-			emit("/listings/"+l.Slug, l.Updated)
-		}
-	}
-
+	build(emit)
 	b.WriteString("</urlset>\n")
+	return []byte(b.String())
+}
+
+// handleSitemap emits the main trilingual sitemap: home, static pages, category
+// feeds and articles. Real-estate listings live in their own sitemap
+// (handleSitemapListings) so Search Console tracks the classifieds separately.
+func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
+	doc := m.sitemapDoc(func(emit func(path string, mod time.Time)) {
+		emit("/", time.Now())
+		for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings", "/author/sana"} {
+			emit(p, time.Time{})
+		}
+		for _, c := range Categories {
+			emit("/?cat="+c, time.Time{})
+		}
+		if arts, err := m.store.SitemapArticles(r.Context()); err != nil {
+			m.rt.Logger.Error("sitemap articles", zap.Error(err))
+		} else {
+			for _, a := range arts {
+				emit("/read/"+a.Slug, a.Updated)
+			}
+		}
+	})
 	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
-	_, _ = w.Write([]byte(b.String()))
+	_, _ = w.Write(doc)
+}
+
+// handleSitemapListings emits a sitemap of only real-estate listing detail
+// pages, so the classifieds can be submitted and tracked as their own section
+// in Google Search Console, separate from editorial content.
+func (m *Module) handleSitemapListings(w http.ResponseWriter, r *http.Request) {
+	doc := m.sitemapDoc(func(emit func(path string, mod time.Time)) {
+		if lst, err := m.listings.SitemapListings(r.Context()); err != nil {
+			m.rt.Logger.Error("sitemap listings", zap.Error(err))
+		} else {
+			for _, l := range lst {
+				emit("/listings/"+l.Slug, l.Updated)
+			}
+		}
+	})
+	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+	_, _ = w.Write(doc)
 }
 
 func absURL(site, u string) string {

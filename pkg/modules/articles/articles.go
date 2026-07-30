@@ -151,6 +151,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 	// SEO endpoints (no session needed).
 	r.Get("/robots.txt", m.handleRobots)
 	r.Get("/sitemap.xml", m.handleSitemap)
+	r.Get("/sitemap-listings.xml", m.handleSitemapListings)
 
 	// Public reader (session loaded softly so the header can show Studio link).
 	r.Group(func(r chi.Router) {
