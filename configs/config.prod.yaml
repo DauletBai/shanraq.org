@@ -49,3 +49,4 @@ ai:
 # Public social links shown in the header info-bar and footer. Non-secret URLs.
 social:
   telegram: "https://t.me/shanraq_org"   # our auto-post channel (@shanraq_org)
+  facebook: "https://www.facebook.com/profile.php?id=61592467086570"   # brand page (swap for /shanraqorg once the username is set)
