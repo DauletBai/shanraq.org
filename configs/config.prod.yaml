@@ -50,3 +50,4 @@ ai:
 social:
   telegram: "https://t.me/shanraq_org"   # our auto-post channel (@shanraq_org)
   facebook: "https://www.facebook.com/profile.php?id=61592467086570"   # brand page (swap for /shanraqorg once the username is set)
+  github: "https://github.com/DauletBai/shanraq.org"   # footer only (not shown in the header)

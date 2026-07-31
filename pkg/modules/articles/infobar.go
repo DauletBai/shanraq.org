@@ -43,6 +43,7 @@ type InfoBarData struct {
 	WeatherPress string // atmospheric pressure, e.g. "742 мм" ("" when unavailable)
 	Rates        []Rate // empty when unavailable
 	Social       []SocialLink
+	GitHub       string // repository URL, rendered in the footer only ("" hides it)
 }
 
 // InfoBar fetches and caches the weather and exchange rates in the background.
@@ -57,6 +58,7 @@ type InfoBar struct {
 	log      *zap.Logger
 	lat, lon float64
 	social   []SocialLink
+	github   string
 }
 
 // socialLinks returns the four social profiles in a fixed order so their icons
@@ -79,13 +81,14 @@ func socialLinks(cfg config.SocialConfig) []SocialLink {
 }
 
 // NewInfoBar builds the provider. Weather defaults to Almaty.
-func NewInfoBar(log *zap.Logger, social []SocialLink) *InfoBar {
+func NewInfoBar(log *zap.Logger, social []SocialLink, github string) *InfoBar {
 	return &InfoBar{
 		httpc:  &http.Client{Timeout: 6 * time.Second},
 		log:    log,
 		lat:    43.2389,
 		lon:    76.8897,
 		social: social,
+		github: strings.TrimSpace(github),
 	}
 }
 
@@ -93,7 +96,7 @@ func NewInfoBar(log *zap.Logger, social []SocialLink) *InfoBar {
 func (b *InfoBar) Snapshot(today string) InfoBarData {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
-	return InfoBarData{Today: today, WeatherIcon: b.weatherIc, WeatherTemp: b.weatherTmp, WeatherPress: b.weatherPres, Rates: b.rates, Social: b.social}
+	return InfoBarData{Today: today, WeatherIcon: b.weatherIc, WeatherTemp: b.weatherTmp, WeatherPress: b.weatherPres, Rates: b.rates, Social: b.social, GitHub: b.github}
 }
 
 // Run refreshes weather every 30 min and rates every ~6 h until ctx is done.

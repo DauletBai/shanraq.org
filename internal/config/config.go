@@ -60,6 +60,7 @@ type SocialConfig struct {
 	Instagram string `mapstructure:"instagram"`
 	YouTube   string `mapstructure:"youtube"`
 	Facebook  string `mapstructure:"facebook"`
+	GitHub    string `mapstructure:"github"` // shown in the footer only
 }
 
 // MediaConfig controls user media (images today; video via third-party embeds).
@@ -320,6 +321,7 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("social.instagram", "")
 	v.SetDefault("social.youtube", "")
 	v.SetDefault("social.facebook", "")
+	v.SetDefault("social.github", "")
 }
 
 // PublicBase returns the canonical public origin (no trailing slash), used for

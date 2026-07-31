@@ -111,7 +111,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
 	m.validator = validate.New()
-	m.infobar = NewInfoBar(rt.Logger, socialLinks(rt.Config.Social))
+	m.infobar = NewInfoBar(rt.Logger, socialLinks(rt.Config.Social), rt.Config.Social.GitHub)
 
 	tmpl, err := template.New("articles").Funcs(templateFuncs()).ParseFS(templateFiles, "templates/*.html")
 	if err != nil {
