@@ -85,11 +85,19 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 		b.WriteString(seoURL(site, path, LangRU))
 		b.WriteString("</loc>")
 		for _, l := range Langs {
-			b.WriteString(`<xhtml:link rel="alternate" hreflang="` + htmlLang(l) + `" href="` + seoURL(site, path, l) + `"/>`)
+			b.WriteString(`<xhtml:link rel="alternate" hreflang="`)
+			b.WriteString(htmlLang(l))
+			b.WriteString(`" href="`)
+			b.WriteString(seoURL(site, path, l))
+			b.WriteString(`"/>`)
 		}
-		b.WriteString(`<xhtml:link rel="alternate" hreflang="x-default" href="` + seoURL(site, path, LangRU) + `"/>`)
+		b.WriteString(`<xhtml:link rel="alternate" hreflang="x-default" href="`)
+		b.WriteString(seoURL(site, path, LangRU))
+		b.WriteString(`"/>`)
 		if !mod.IsZero() {
-			b.WriteString("<lastmod>" + mod.UTC().Format("2006-01-02") + "</lastmod>")
+			b.WriteString("<lastmod>")
+			b.WriteString(mod.UTC().Format("2006-01-02"))
+			b.WriteString("</lastmod>")
 		}
 		b.WriteString("</url>\n")
 	}
