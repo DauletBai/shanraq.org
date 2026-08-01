@@ -56,6 +56,7 @@ type Listing struct {
 	Contact       string
 	CoverURL      string
 	Images        []string
+	Documents     []string
 	Status        string
 	ViewsCount    int
 	ContactsCount int

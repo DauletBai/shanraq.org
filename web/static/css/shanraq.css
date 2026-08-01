@@ -1387,6 +1387,13 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .galup__items { display: flex; flex-wrap: wrap; gap: 10px; }
 .galup__item { position: relative; width: 96px; height: 72px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line-strong); background: var(--surface-2); }
 .galup__item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.galup__doc { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; font-weight: 700; font-size: 13px; letter-spacing: 1px; color: var(--brand, #e53935); text-decoration: none; background: var(--surface-2); }
+/* Documents / floor plans on the listing page */
+.listing-docs { margin: 18px 0; }
+.listing-docs__grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.listing-docs__item { display: block; width: 110px; height: 84px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line-strong); background: var(--surface-2); text-decoration: none; }
+.listing-docs__item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.listing-docs__pdf { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; font-weight: 700; letter-spacing: 1px; color: var(--brand, #e53935); }
 .galup__rm {
   position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%;
   border: none; background: rgba(0,0,0,.6); color: #fff; font-size: 14px; line-height: 1; cursor: pointer; padding: 0;

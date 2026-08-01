@@ -21,6 +21,7 @@ func NewListingStore(db *pgxpool.Pool) *ListingStore { return &ListingStore{db: 
 // ListingInput carries a submitted listing.
 // maxListingPhotos caps how many photos a listing may carry.
 const maxListingPhotos = 10
+const maxListingDocs = 10
 
 type ListingInput struct {
 	DealType, PropertyType             string
@@ -32,6 +33,7 @@ type ListingInput struct {
 	Rooms                              int
 	Title, Description, Contact, Cover string
 	Images                             []string
+	Documents                          []string
 	LandArea                           float64
 	Amenities                          []string
 	RoomSpecs                          []RoomSpec
@@ -48,6 +50,9 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 	if in.Images == nil {
 		in.Images = []string{}
 	}
+	if in.Documents == nil {
+		in.Documents = []string{}
+	}
 	if in.Amenities == nil {
 		in.Amenities = []string{}
 	}
@@ -56,13 +61,13 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 		INSERT INTO listings (author_id, deal_type, property_type, country, region, city, village,
 		                      microdistrict, street, house, lat, lng,
 		                      price, area, rooms, title, description, contact, cover_url, images, geo_node_id,
-		                      land_area, amenities, room_specs, status, expires_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24::jsonb,'published', NOW() + INTERVAL '%d days')
+		                      land_area, amenities, room_specs, documents, status, expires_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24::jsonb,$25,'published', NOW() + INTERVAL '%d days')
 		RETURNING id
 	`, freeDaysVal()), authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.Village,
 		in.Microdistrict, in.Street, in.House, in.Lat, in.Lng,
 		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.Images, in.GeoNodeID,
-		in.LandArea, in.Amenities, string(rooms)).Scan(&id)
+		in.LandArea, in.Amenities, string(rooms), in.Documents).Scan(&id)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("create listing: %w", err)
 	}
@@ -71,7 +76,7 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 
 const listingCols = `l.id, l.author_id, u.email, l.deal_type, l.property_type, l.country, l.region, l.city, l.village,
 	l.microdistrict, l.street, l.house, l.lat, l.lng,
-	l.price, l.area, l.rooms, l.title, l.description, l.contact, l.cover_url, l.images, l.status, l.created_at,
+	l.price, l.area, l.rooms, l.title, l.description, l.contact, l.cover_url, l.images, l.documents, l.status, l.created_at,
 	l.expires_at, l.promoted_until, l.featured_until, l.banner_until, l.views_count, l.contacts_count, l.land_area, l.amenities, l.room_specs,
 	ra.user_id, ra.name`
 
@@ -83,7 +88,7 @@ func scanListing(row pgx.Row) (*Listing, error) {
 	var agentName *string
 	err := row.Scan(&id, &authorID, &l.AuthorEmail, &l.DealType, &l.PropertyType, &l.Country, &l.Region, &l.City, &l.Village,
 		&l.Microdistrict, &l.Street, &l.House, &l.Lat, &l.Lng,
-		&l.Price, &l.Area, &l.Rooms, &l.Title, &l.Description, &l.Contact, &l.CoverURL, &l.Images, &l.Status, &l.CreatedAt,
+		&l.Price, &l.Area, &l.Rooms, &l.Title, &l.Description, &l.Contact, &l.CoverURL, &l.Images, &l.Documents, &l.Status, &l.CreatedAt,
 		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.BannerUntil, &l.ViewsCount, &l.ContactsCount, &l.LandArea, &l.Amenities, &roomsRaw,
 		&agentID, &agentName)
 	if err != nil {

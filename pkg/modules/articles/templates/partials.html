@@ -420,16 +420,25 @@
       var file = gal.querySelector('[data-gallery-file]');
       var status = gal.querySelector('[data-gallery-status]');
       var max = parseInt(gal.getAttribute('data-max'), 10) || 10;
+      var uploadUrl = gal.getAttribute('data-upload-url') || '/media/upload';
+      var fieldName = gal.getAttribute('data-field') || 'image';
       function count() { return items.querySelectorAll('.galup__item').length; }
       function refresh() { addBtn.style.display = count() >= max ? 'none' : ''; }
       function addItem(url) {
         var it = document.createElement('div');
         it.className = 'galup__item';
-        var img = document.createElement('img'); img.src = url; img.alt = '';
-        var inp = document.createElement('input'); inp.type = 'hidden'; inp.name = 'image'; inp.value = url;
+        var prev;
+        if (/\.pdf($|\?)/i.test(url)) {
+          prev = document.createElement('a');
+          prev.href = url; prev.target = '_blank'; prev.rel = 'noopener';
+          prev.className = 'galup__doc'; prev.textContent = 'PDF';
+        } else {
+          prev = document.createElement('img'); prev.src = url; prev.alt = '';
+        }
+        var inp = document.createElement('input'); inp.type = 'hidden'; inp.name = fieldName; inp.value = url;
         var rm = document.createElement('button');
         rm.type = 'button'; rm.className = 'galup__rm'; rm.setAttribute('data-gallery-rm', ''); rm.textContent = '×';
-        it.appendChild(img); it.appendChild(inp); it.appendChild(rm);
+        it.appendChild(prev); it.appendChild(inp); it.appendChild(rm);
         items.appendChild(it); refresh();
       }
       items.addEventListener('click', function (e) {
@@ -447,7 +456,7 @@
         if (status) status.textContent = '⏳ 0/' + pending;
         chosen.forEach(function (f) {
           var fd = new FormData(); fd.append('file', f);
-          fetch('/media/upload', { method: 'POST', body: fd, credentials: 'same-origin' })
+          fetch(uploadUrl, { method: 'POST', body: fd, credentials: 'same-origin' })
             .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
             .then(function (d) { addItem(d.url); })
             .catch(function () {})

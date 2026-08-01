@@ -106,6 +106,25 @@
         <div class="notice notice--warn">{{ t .Lang "re.filter_warn" }}</div>
         <label class="checkline"><input type="checkbox" name="no_filters" value="on"{{ if .Values.NoFilters }} checked{{ end }} required> {{ t .Lang "re.filter_confirm" }}</label>
       </div>
+      <div class="field">
+        <label>{{ t .Lang "re.documents" }} <span class="hint">— {{ t .Lang "re.documents_help" }}</span></label>
+        <div class="galup" data-gallery data-max="10" data-upload-url="/media/upload-doc" data-field="document">
+          <div class="galup__items" data-gallery-items>
+            {{ range .Values.Documents }}
+            <div class="galup__item">
+              <a class="galup__doc" href="{{ . }}" target="_blank" rel="noopener">DOC</a>
+              <input type="hidden" name="document" value="{{ . }}">
+              <button type="button" class="galup__rm" data-gallery-rm aria-label="×">×</button>
+            </div>
+            {{ end }}
+          </div>
+          <label class="btn btn--ghost btn--sm galup__add" data-gallery-add>
+            + {{ t .Lang "re.add_doc" }}
+            <input type="file" accept="application/pdf,image/*" multiple hidden data-gallery-file>
+          </label>
+          <span class="galup__status" data-gallery-status></span>
+        </div>
+      </div>
       <div class="field"><label>{{ t .Lang "re.description" }} {{ template "fhelp" (t .Lang "re.help_description") }}</label><textarea class="textarea" name="description" style="min-height:180px">{{ .Values.Description }}</textarea></div>
       <div class="field"><label>{{ t .Lang "re.contact" }} {{ template "fhelp" (t .Lang "re.help_contact") }}</label><input class="input" name="contact" value="{{ .Values.Contact }}" required></div>
 

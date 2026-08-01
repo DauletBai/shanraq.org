@@ -87,6 +87,18 @@
         {{ end }}
 
         {{ if .L.Description }}<div class="prose listing__desc">{{ .L.Description }}</div>{{ end }}
+        {{ if .L.Documents }}
+        <div class="listing-docs">
+          <h3 class="amenities__title">{{ t .Lang "re.documents" }}</h3>
+          <div class="listing-docs__grid">
+            {{ range .L.Documents }}
+            <a class="listing-docs__item" href="{{ . }}" target="_blank" rel="noopener">
+              {{ if hasSuffix . ".pdf" }}<span class="listing-docs__pdf">PDF</span>{{ else }}<img src="{{ . }}" alt="">{{ end }}
+            </a>
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
 
         <div class="listing__contact">
           <strong>{{ t .Lang "re.contacts" }}:</strong>

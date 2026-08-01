@@ -75,6 +75,7 @@ func (m *Module) Routes(r chi.Router) {
 	r.Group(func(r chi.Router) {
 		r.Use(m.auth.LoadSession)
 		r.Post("/media/upload", m.handleUpload)
+		r.Post("/media/upload-doc", m.handleUploadDoc)
 	})
 }
 
@@ -129,6 +130,63 @@ func (m *Module) handleUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	_ = json.NewEncoder(w).Encode(uploadResponse{URL: m.store.URL(key), Key: key})
+}
+
+// handleUploadDoc accepts a listing document — a PDF (floor plan, technical
+// passport, contract) stored as-is, or an image plan/scheme that goes through
+// the normal image pipeline. Same auth and size limits as image upload.
+func (m *Module) handleUploadDoc(w http.ResponseWriter, r *http.Request) {
+	if _, ok := auth.ClaimsFromContext(r.Context()); !ok {
+		writeJSONError(w, http.StatusUnauthorized, "authentication required")
+		return
+	}
+	limit := m.cfg.MaxUploadBytes
+	if limit <= 0 {
+		limit = 10 << 20
+	}
+	r.Body = http.MaxBytesReader(w, r.Body, limit)
+	if err := r.ParseMultipartForm(limit); err != nil {
+		writeJSONError(w, http.StatusRequestEntityTooLarge, "file too large")
+		return
+	}
+	file, _, err := r.FormFile("file")
+	if err != nil {
+		writeJSONError(w, http.StatusBadRequest, "missing file")
+		return
+	}
+	defer file.Close()
+	raw, err := io.ReadAll(file)
+	if err != nil {
+		writeJSONError(w, http.StatusBadRequest, "cannot read file")
+		return
+	}
+
+	// A PDF is stored verbatim; anything else is treated as an image plan and
+	// runs through the same processing as listing photos.
+	var (
+		data        = raw
+		contentType = "application/pdf"
+		ext         = ".pdf"
+	)
+	if len(raw) < 5 || string(raw[:5]) != "%PDF-" {
+		img, perr := m.processImage(raw)
+		if perr != nil {
+			writeJSONError(w, http.StatusUnsupportedMediaType, "unsupported file (PDF, JPG or PNG)")
+			return
+		}
+		data, contentType, ext = img, "image/jpeg", ".jpg"
+	}
+
+	sum := sha256.Sum256(data)
+	h := hex.EncodeToString(sum[:])
+	key := h[:2] + "/" + h + ext
+	if err := m.store.Put(r.Context(), key, data, contentType); err != nil {
+		m.logger.Error("media put doc", zap.Error(err))
+		writeJSONError(w, http.StatusInternalServerError, "storage error")
+		return
+	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	_ = json.NewEncoder(w).Encode(uploadResponse{URL: m.store.URL(key), Key: key})
 }

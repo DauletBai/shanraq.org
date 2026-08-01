@@ -554,6 +554,20 @@ func parseListingForm(r *http.Request) ListingInput {
 		cover = images[0]
 	}
 
+	// Up to maxListingDocs document URLs (PDF plans/passports or image schemes,
+	// already uploaded via /media/upload-doc).
+	documents := make([]string, 0, maxListingDocs)
+	for _, u := range r.Form["document"] {
+		u = strings.TrimSpace(u)
+		if u == "" {
+			continue
+		}
+		documents = append(documents, u)
+		if len(documents) >= maxListingDocs {
+			break
+		}
+	}
+
 	return ListingInput{
 		DealType:      deal,
 		PropertyType:  ptype,
@@ -574,6 +588,7 @@ func parseListingForm(r *http.Request) ListingInput {
 		Contact:       strings.TrimSpace(r.FormValue("contact")),
 		Cover:         cover,
 		Images:        images,
+		Documents:     documents,
 		LandArea:      landArea,
 		Amenities:     amenities,
 		RoomSpecs:     roomSpecs,

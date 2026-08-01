@@ -6,12 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-08-01
+
 ### Added
+- Listing documents: agents can attach PDF plans/passports/contracts and image
+  schemes to a listing (`/media/upload-doc`), shown in a "Documents / floor plan"
+  block on the listing page.
 - Traffic-source analytics (referrer → Google/Yandex/Telegram/Facebook/direct/…).
 - Separate bot vs human classification so audience counts reflect real people.
 - Dedicated real-estate sitemap (`/sitemap-listings.xml`) for Search Console.
 - Branded PNG Open Graph card and descriptive homepage title for link previews.
 - Brand watermark overlay on article covers and listing photos.
+- GitHub icon in the footer; Telegram and Facebook social links from config.
 
 ### Changed
 - Telegram bot token / chat id now bind from environment (secret never in config).

@@ -2,6 +2,7 @@ package articles
 
 import (
 	"html/template"
+	"strings"
 	"time"
 )
 
@@ -33,6 +34,7 @@ func templateFuncs() template.FuncMap {
 		"surfaceLabel":      SurfaceLabelKey,
 		"adFormatSlots":     AdFormatSlots,
 		"money":             money,
+		"hasSuffix":         strings.HasSuffix,
 		"ogLocale":          ogLocale,
 		"htmlLang":          htmlLang,
 		"curSymbol":         curSymbol,
