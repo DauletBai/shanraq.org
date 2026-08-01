@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] — 2026-08-01
+
+### Changed
+- Listing form: each language tab's placeholders now read in that tab's own
+  language (Russian tab in Russian, Kazakh in Kazakh, English in English),
+  regardless of the interface language — so the hint matches the content asked for.
+
 ## [0.3.0] — 2026-08-01
 
 ### Added

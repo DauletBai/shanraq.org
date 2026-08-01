@@ -93,16 +93,16 @@
           <button type="button" role="tab" class="tab" data-tab="en">{{ langName "en" }}</button>
         </div>
         <div class="tab-panel is-active" data-panel="ru">
-          <input class="input" name="title_ru" placeholder="{{ t .Lang "re.title" }} (RU) *" value="{{ .Values.TitleRu }}" required>
-          <textarea class="textarea" name="description_ru" placeholder="{{ t .Lang "re.description" }} (RU)" style="min-height:120px;margin-top:8px">{{ .Values.DescriptionRu }}</textarea>
+          <input class="input" name="title_ru" placeholder="{{ t "ru" "re.title" }} *" value="{{ .Values.TitleRu }}" required>
+          <textarea class="textarea" name="description_ru" placeholder="{{ t "ru" "re.description" }}" style="min-height:120px;margin-top:8px">{{ .Values.DescriptionRu }}</textarea>
         </div>
         <div class="tab-panel" data-panel="kz">
-          <input class="input" name="title_kz" placeholder="{{ t .Lang "re.title" }} (KZ) *" value="{{ .Values.TitleKz }}">
-          <textarea class="textarea" name="description_kz" placeholder="{{ t .Lang "re.description" }} (KZ)" style="min-height:120px;margin-top:8px">{{ .Values.DescriptionKz }}</textarea>
+          <input class="input" name="title_kz" placeholder="{{ t "kz" "re.title" }} *" value="{{ .Values.TitleKz }}">
+          <textarea class="textarea" name="description_kz" placeholder="{{ t "kz" "re.description" }}" style="min-height:120px;margin-top:8px">{{ .Values.DescriptionKz }}</textarea>
         </div>
         <div class="tab-panel" data-panel="en">
-          <input class="input" name="title_en" placeholder="{{ t .Lang "re.title" }} (EN) *" value="{{ .Values.TitleEn }}">
-          <textarea class="textarea" name="description_en" placeholder="{{ t .Lang "re.description" }} (EN)" style="min-height:120px;margin-top:8px">{{ .Values.DescriptionEn }}</textarea>
+          <input class="input" name="title_en" placeholder="{{ t "en" "re.title" }} *" value="{{ .Values.TitleEn }}">
+          <textarea class="textarea" name="description_en" placeholder="{{ t "en" "re.description" }}" style="min-height:120px;margin-top:8px">{{ .Values.DescriptionEn }}</textarea>
         </div>
       </div>
       <div class="field">
