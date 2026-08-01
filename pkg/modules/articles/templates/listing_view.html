@@ -31,7 +31,7 @@
           <a class="btn btn--ghost btn--sm" href="/listings/my">{{ t .Lang "re.manage" }}</a>
         </div>
         {{ end }}
-        <h1 class="article__title">{{ .L.Title }}</h1>
+        <h1 class="article__title">{{ .L.TitleIn .Lang }}</h1>
         <div class="listing__headrow">
           <p class="listing__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
           {{ if .Authed }}
@@ -86,7 +86,7 @@
         </div>
         {{ end }}
 
-        {{ if .L.Description }}<div class="prose listing__desc">{{ .L.Description }}</div>{{ end }}
+        {{ with .L.DescriptionIn .Lang }}<div class="prose listing__desc">{{ . }}</div>{{ end }}
         {{ if .L.Documents }}
         <div class="listing-docs">
           <h3 class="amenities__title">{{ t .Lang "re.documents" }}</h3>

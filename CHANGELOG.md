@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-08-01
+
+### Added
+- Trilingual listings (KZ/RU/EN) — the flagship, mandatory feature: title and
+  description in all three languages via a tabbed form; each reader sees the
+  listing in their language with fallback. Script sanity on submit — English
+  must be Latin, Russian Cyrillic, Kazakh either (Cyrillic or the new Latin).
+
 ## [0.2.0] — 2026-08-01
 
 ### Added

@@ -50,7 +50,7 @@
         {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
       </a>
       <span class="kicker">{{ t $.Lang (printf "re.type_%s" .PropertyType) }} · {{ t $.Lang (printf "re.deal_%s" .DealType) }}</span>
-      <h3 class="post__title"><a href="/listings/{{ .ID }}">{{ .Title }}</a></h3>
+      <h3 class="post__title"><a href="/listings/{{ .ID }}">{{ .TitleIn $.Lang }}</a></h3>
       <p class="post__price">{{ money .Price }} ₸{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</p>
       <div class="post__meta">
         <span>{{ .Location }}</span>

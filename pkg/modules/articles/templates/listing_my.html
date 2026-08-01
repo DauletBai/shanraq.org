@@ -17,7 +17,7 @@
     {{ range .Listings }}
     <div class="mylist__row{{ if .Featured }} is-featured{{ end }}">
       <div class="mylist__main">
-        <a class="mylist__title" href="/listings/{{ .ID }}">{{ .Title }}</a>
+        <a class="mylist__title" href="/listings/{{ .ID }}">{{ .TitleIn $.Lang }}</a>
         <div class="mylist__meta">
           <span>{{ money .Price }} ₸</span><span class="dot">·</span><span>{{ .Location }}</span>
           {{ if .Promoted }}<span class="badge-top badge-top--inline">{{ t $.Lang "re.badge_top" }}</span>{{ end }}

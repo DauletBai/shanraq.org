@@ -257,7 +257,7 @@
     {{ if .L.ByAgent }}<a class="agent-badge" href="/agent/{{ .L.AgentID }}" title="{{ .L.AgentName }}">{{ t .Lang "agent.badge" }}</a>{{ end }}
     {{ if .L.Images }}
     {{ range $i, $src := .L.Images }}<span class="gallery__item{{ if eq $i 0 }} is-active{{ end }}"><img src="{{ $src }}" alt=""></span>{{ end }}
-    <a class="post__media-link" href="/listings/{{ .L.ID }}" aria-label="{{ .L.Title }}"></a>
+    <a class="post__media-link" href="/listings/{{ .L.ID }}" aria-label="{{ .L.TitleIn .Lang }}"></a>
     {{ if gt (len .L.Images) 1 }}<div class="adcarousel__dots">{{ range $i, $src := .L.Images }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}</div>{{ end }}
     {{ else if .L.CoverURL }}
     <a class="post__media-link" href="/listings/{{ .L.ID }}"><img src="{{ .L.CoverURL }}" alt=""></a>
@@ -266,7 +266,7 @@
     {{ end }}
   </div>
   <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>
-  <h3 class="post__title"><a href="/listings/{{ .L.ID }}">{{ .L.Title }}</a></h3>
+  <h3 class="post__title"><a href="/listings/{{ .L.ID }}">{{ .L.TitleIn .Lang }}</a></h3>
   <p class="post__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
   {{ if .L.ByAgent }}<a class="agent-line" href="/agent/{{ .L.AgentID }}">◆ {{ .L.AgentName }}</a>{{ end }}
   {{ template "listing_facts" (dict "L" .L "Lang" .Lang) }}

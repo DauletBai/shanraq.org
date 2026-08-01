@@ -201,7 +201,7 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if in.Title == "" || in.Contact == "" || !in.NoFilters {
+	if in.TitleKz == "" || in.TitleRu == "" || in.TitleEn == "" || in.Contact == "" || !in.NoFilters {
 		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
 		page.ActiveCat = "realestate"
 		page.Values = in
@@ -210,6 +210,18 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		} else {
 			page.Error = T(lang, "re.err_required")
 		}
+		m.render(w, "listing_new", page)
+		return
+	}
+	// Language sanity: English must be Latin (no Cyrillic), Russian must be
+	// Cyrillic, and Kazakh may be either — Kazakh is transitioning from Cyrillic
+	// to a Latin alphabet, so both scripts are valid. This catches the common
+	// mistake of pasting one language into every tab.
+	if !isLatinText(in.TitleEn) || !isCyrillicText(in.TitleRu) || !hasLetters(in.TitleKz) {
+		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
+		page.ActiveCat = "realestate"
+		page.Values = in
+		page.Error = T(lang, "re.err_lang_script")
 		m.render(w, "listing_new", page)
 		return
 	}
@@ -287,7 +299,7 @@ func (m *Module) isListingOwner(r *http.Request, l *Listing) bool {
 // shows the full contact; otherwise it is masked behind a "show contact" button.
 func (m *Module) renderListingView(w http.ResponseWriter, r *http.Request, l *Listing, reveal bool) {
 	lang := m.resolveLang(w, r)
-	page := ListingViewPage{Base: m.base(r, l.Title, lang)}
+	page := ListingViewPage{Base: m.base(r, l.TitleIn(lang), lang)}
 	page.ActiveCat = "realestate"
 	page.L = l
 	page.MaskedContact = maskContact(l.Contact)
@@ -583,8 +595,14 @@ func parseListingForm(r *http.Request) ListingInput {
 		Price:         price,
 		Area:          area,
 		Rooms:         rooms,
-		Title:         strings.TrimSpace(r.FormValue("title")),
-		Description:   strings.TrimSpace(r.FormValue("description")),
+		Title:         strings.TrimSpace(r.FormValue("title_ru")), // base/fallback
+		Description:   strings.TrimSpace(r.FormValue("description_ru")),
+		TitleKz:       strings.TrimSpace(r.FormValue("title_kz")),
+		TitleRu:       strings.TrimSpace(r.FormValue("title_ru")),
+		TitleEn:       strings.TrimSpace(r.FormValue("title_en")),
+		DescriptionKz: strings.TrimSpace(r.FormValue("description_kz")),
+		DescriptionRu: strings.TrimSpace(r.FormValue("description_ru")),
+		DescriptionEn: strings.TrimSpace(r.FormValue("description_en")),
 		Contact:       strings.TrimSpace(r.FormValue("contact")),
 		Cover:         cover,
 		Images:        images,
@@ -595,6 +613,44 @@ func parseListingForm(r *http.Request) ListingInput {
 		NoFilters:     r.FormValue("no_filters") == "on",
 		GeoNodeID:     geoID,
 	}
+}
+
+// isLatinText reports whether s carries Latin letters and no Cyrillic — used to
+// keep the English tab from holding Russian/Kazakh text.
+func isLatinText(s string) bool {
+	hasLatin := false
+	for _, r := range s {
+		if r >= 0x0400 && r <= 0x04FF { // any Cyrillic letter disqualifies
+			return false
+		}
+		if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') {
+			hasLatin = true
+		}
+	}
+	return hasLatin
+}
+
+// isCyrillicText reports whether s carries at least one Cyrillic letter — used
+// to keep the Kazakh/Russian tabs from holding Latin (English/transliterated)
+// text.
+func isCyrillicText(s string) bool {
+	for _, r := range s {
+		if r >= 0x0400 && r <= 0x04FF {
+			return true
+		}
+	}
+	return false
+}
+
+// hasLetters reports whether s carries at least one Cyrillic or Latin letter —
+// used for the Kazakh tab, which may be written in either script.
+func hasLetters(s string) bool {
+	for _, r := range s {
+		if (r >= 0x0400 && r <= 0x04FF) || (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') {
+			return true
+		}
+	}
+	return false
 }
 
 func digitsOnly(s string) string {

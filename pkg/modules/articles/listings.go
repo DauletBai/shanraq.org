@@ -51,8 +51,14 @@ type Listing struct {
 	Rooms         int
 	RoomSpecs     []RoomSpec
 	Amenities     []string
-	Title         string
+	Title         string // base/fallback (usually RU)
 	Description   string
+	TitleKz       string
+	TitleRu       string
+	TitleEn       string
+	DescriptionKz string
+	DescriptionRu string
+	DescriptionEn string
 	Contact       string
 	CoverURL      string
 	Images        []string
@@ -70,6 +76,48 @@ type Listing struct {
 	// the agent's public page.
 	AgentID   string
 	AgentName string
+}
+
+// TitleIn returns the title in the requested language, falling back to RU, then
+// any non-empty language, then the base title — so a card never shows blank.
+func (l Listing) TitleIn(lang string) string {
+	switch lang {
+	case LangKZ:
+		if l.TitleKz != "" {
+			return l.TitleKz
+		}
+	case LangEN:
+		if l.TitleEn != "" {
+			return l.TitleEn
+		}
+	}
+	for _, c := range []string{l.TitleRu, l.TitleKz, l.TitleEn, l.Title} {
+		if c != "" {
+			return c
+		}
+	}
+	return l.Title
+}
+
+// DescriptionIn returns the description in the requested language, with the same
+// fallback chain as TitleIn.
+func (l Listing) DescriptionIn(lang string) string {
+	switch lang {
+	case LangKZ:
+		if l.DescriptionKz != "" {
+			return l.DescriptionKz
+		}
+	case LangEN:
+		if l.DescriptionEn != "" {
+			return l.DescriptionEn
+		}
+	}
+	for _, c := range []string{l.DescriptionRu, l.DescriptionKz, l.DescriptionEn, l.Description} {
+		if c != "" {
+			return c
+		}
+	}
+	return l.Description
 }
 
 // ByAgent reports whether this listing was posted by a registered agent.

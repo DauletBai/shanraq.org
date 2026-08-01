@@ -84,7 +84,27 @@
         </div>
       </div>
 
-      <div class="field"><label>{{ t .Lang "re.title" }} {{ template "fhelp" (t .Lang "re.help_title") }}</label><input class="input" name="title" value="{{ .Values.Title }}" required></div>
+      <div class="field">
+        <label>{{ t .Lang "re.title" }} / {{ t .Lang "re.description" }} {{ template "fhelp" (t .Lang "re.help_title") }}</label>
+        <p class="hint" style="margin-top:-4px">{{ t .Lang "re.trilingual_hint" }}</p>
+        <div class="tabs" role="tablist">
+          <button type="button" role="tab" class="tab is-active" data-tab="ru">{{ langName "ru" }}</button>
+          <button type="button" role="tab" class="tab" data-tab="kz">{{ langName "kz" }}</button>
+          <button type="button" role="tab" class="tab" data-tab="en">{{ langName "en" }}</button>
+        </div>
+        <div class="tab-panel is-active" data-panel="ru">
+          <input class="input" name="title_ru" placeholder="{{ t .Lang "re.title" }} (RU) *" value="{{ .Values.TitleRu }}" required>
+          <textarea class="textarea" name="description_ru" placeholder="{{ t .Lang "re.description" }} (RU)" style="min-height:120px;margin-top:8px">{{ .Values.DescriptionRu }}</textarea>
+        </div>
+        <div class="tab-panel" data-panel="kz">
+          <input class="input" name="title_kz" placeholder="{{ t .Lang "re.title" }} (KZ) *" value="{{ .Values.TitleKz }}">
+          <textarea class="textarea" name="description_kz" placeholder="{{ t .Lang "re.description" }} (KZ)" style="min-height:120px;margin-top:8px">{{ .Values.DescriptionKz }}</textarea>
+        </div>
+        <div class="tab-panel" data-panel="en">
+          <input class="input" name="title_en" placeholder="{{ t .Lang "re.title" }} (EN) *" value="{{ .Values.TitleEn }}">
+          <textarea class="textarea" name="description_en" placeholder="{{ t .Lang "re.description" }} (EN)" style="min-height:120px;margin-top:8px">{{ .Values.DescriptionEn }}</textarea>
+        </div>
+      </div>
       <div class="field">
         <label>{{ t .Lang "re.photos" }} <span class="hint">— {{ t .Lang "re.photos_max" }}</span> {{ template "fhelp" (t .Lang "re.help_photos") }}</label>
         <div class="galup" data-gallery data-max="10">
@@ -125,7 +145,6 @@
           <span class="galup__status" data-gallery-status></span>
         </div>
       </div>
-      <div class="field"><label>{{ t .Lang "re.description" }} {{ template "fhelp" (t .Lang "re.help_description") }}</label><textarea class="textarea" name="description" style="min-height:180px">{{ .Values.Description }}</textarea></div>
       <div class="field"><label>{{ t .Lang "re.contact" }} {{ template "fhelp" (t .Lang "re.help_contact") }}</label><input class="input" name="contact" value="{{ .Values.Contact }}" required></div>
 
       <div class="field">

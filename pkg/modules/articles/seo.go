@@ -220,9 +220,9 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 func (m *Module) applyListingSEO(page *ListingViewPage) {
 	l := page.L
 	page.OGType = "article"
-	desc := l.Description
+	desc := l.DescriptionIn(page.Lang)
 	if desc == "" {
-		desc = l.Title + " — " + l.Location()
+		desc = l.TitleIn(page.Lang) + " — " + l.Location()
 	}
 	page.Desc = clip(desc, 200)
 	img := ""
@@ -237,7 +237,7 @@ func (m *Module) applyListingSEO(page *ListingViewPage) {
 	ld := map[string]any{
 		"@context":    "https://schema.org",
 		"@type":       "Product",
-		"name":        l.Title,
+		"name":        l.TitleIn(page.Lang),
 		"description": page.Desc,
 		"image":       page.OGImage,
 		"category":    T(page.Lang, "re.type_"+l.PropertyType),
