@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] — 2026-08-01
+
+### Fixed
+- Info-bar exchange rates could stay blank for up to 6 hours after a single
+  transient fetch failure at boot. The National Bank fetch now retries with a
+  short backoff, the HTTP timeout is more forgiving (10s), and empty rates are
+  re-fetched on the 30-minute tick instead of only every 6 hours.
+
 ## [0.4.0] — 2026-08-01
 
 ### Added

@@ -83,7 +83,7 @@ func socialLinks(cfg config.SocialConfig) []SocialLink {
 // NewInfoBar builds the provider. Weather defaults to Almaty.
 func NewInfoBar(log *zap.Logger, social []SocialLink, github string) *InfoBar {
 	return &InfoBar{
-		httpc:  &http.Client{Timeout: 6 * time.Second},
+		httpc:  &http.Client{Timeout: 10 * time.Second},
 		log:    log,
 		lat:    43.2389,
 		lon:    76.8897,
@@ -112,7 +112,10 @@ func (b *InfoBar) Run(ctx context.Context) {
 			return
 		case <-tick.C:
 			b.refreshWeather(ctx)
-			if n++; n%12 == 0 {
+			// Rates refresh every ~6 h (n%12), but if a transient failure left
+			// them empty, retry on every 30-min tick so they recover in minutes
+			// rather than staying blank for the full 6-h cycle.
+			if n++; n%12 == 0 || b.ratesEmpty() {
 				b.refreshRates(ctx)
 			}
 		}
@@ -136,9 +139,32 @@ func (b *InfoBar) get(ctx context.Context, url string) ([]byte, error) {
 	return io.ReadAll(io.LimitReader(resp.Body, 1<<20))
 }
 
-// refreshRates pulls USD/EUR/RUB from the National Bank of Kazakhstan feed.
+// ratesEmpty reports whether no exchange rates are currently cached (e.g. after
+// a failed fetch), so the Run loop can retry sooner instead of waiting 6 h.
+func (b *InfoBar) ratesEmpty() bool {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+	return len(b.rates) == 0
+}
+
+// refreshRates pulls USD/EUR/RUB from the National Bank of Kazakhstan feed. The
+// fetch is retried a few times with a short backoff so a transient network blip
+// (a single slow response at boot) doesn't leave the bar without rates.
 func (b *InfoBar) refreshRates(ctx context.Context) {
-	body, err := b.get(ctx, "https://nationalbank.kz/rss/rates_all.xml")
+	var body []byte
+	var err error
+	for attempt := 0; attempt < 3; attempt++ {
+		if attempt > 0 {
+			select {
+			case <-ctx.Done():
+				return
+			case <-time.After(time.Duration(attempt) * time.Second):
+			}
+		}
+		if body, err = b.get(ctx, "https://nationalbank.kz/rss/rates_all.xml"); err == nil {
+			break
+		}
+	}
 	if err != nil {
 		b.log.Warn("infobar rates fetch", zap.Error(err))
 		return
