@@ -7,6 +7,8 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
+
+	"shanraq.org/pkg/modules/sms"
 )
 
 // Config is the top-level runtime configuration for the framework runtime.
@@ -26,6 +28,7 @@ type Config struct {
 	Social        SocialConfig        `mapstructure:"social"`
 	Operator      OperatorConfig      `mapstructure:"operator"`
 	Bootstrap     BootstrapConfig     `mapstructure:"bootstrap"`
+	SMS           sms.Config          `mapstructure:"sms"`
 }
 
 // BootstrapConfig seeds the first administrator on a fresh server. When no admin
@@ -308,6 +311,16 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("operator.address_en", "")
 	v.SetDefault("operator.email", "")
 	v.SetDefault("operator.phone", "")
+
+	// Registered so viper's AutomaticEnv binds SHANRAQ_SMS_* from the environment.
+	// Empty provider = SMS disabled (verification codes are dev-logged, never
+	// sent); credentials must never sit in the committed config.
+	v.SetDefault("sms.provider", "") // "" | mobizon | smsc
+	v.SetDefault("sms.from", "")
+	v.SetDefault("sms.api_key", "")  // mobizon
+	v.SetDefault("sms.login", "")    // smsc
+	v.SetDefault("sms.password", "") // smsc
+	v.SetDefault("sms.base_url", "")
 
 	// Registered so SHANRAQ_BOOTSTRAP_ADMIN_* bind from the environment.
 	v.SetDefault("bootstrap.admin_email", "")

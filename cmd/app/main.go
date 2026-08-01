@@ -23,6 +23,7 @@ import (
 	"shanraq.org/pkg/modules/media"
 	"shanraq.org/pkg/modules/migrations"
 	"shanraq.org/pkg/modules/notifier"
+	"shanraq.org/pkg/modules/sms"
 	"shanraq.org/pkg/modules/syndicate"
 	"shanraq.org/pkg/modules/telemetry"
 	"shanraq.org/pkg/modules/webui"
@@ -53,6 +54,14 @@ func main() {
 	authOpts := []auth.Option{auth.WithMailer(notifierModule)}
 	if cfg.Auth.MFA.TOTP.Enabled {
 		authOpts = append(authOpts, auth.WithTOTP(cfg.Auth.MFA.TOTP.Issuer))
+	}
+	// Wire the SMS gateway used for phone verification. With no provider set the
+	// client is nil and codes are dev-logged (never sent); a named-but-misconfigured
+	// provider fails fast so a broken production deploy is caught at boot.
+	if smsClient, on, err := sms.New(cfg.SMS); err != nil {
+		panic(fmt.Errorf("configure sms: %w", err))
+	} else if on {
+		authOpts = append(authOpts, auth.WithSMSSender(smsClient))
 	}
 	authModule := auth.New(authOpts...)
 	apiKeyModule := apikeys.New(

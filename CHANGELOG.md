@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-08-01
+
+### Added
+- SMS phone verification for agents/authors: a provider-agnostic SMS gateway
+  (`pkg/modules/sms`) with Mobizon.kz and SMSC.kz backends, chosen by config
+  (`SHANRAQ_SMS_PROVIDER` + credentials). The verification flow already existed
+  (code mint, hash, rate-limit, confirm); this wires real delivery. With no
+  provider set, SMS stays off and codes are dev-logged — switching provider is a
+  single environment variable, so onboarding friction with one aggregator never
+  blocks the platform.
+
 ## [0.3.1] — 2026-08-01
 
 ### Changed
