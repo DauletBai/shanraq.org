@@ -56,12 +56,21 @@ func (m *Module) siteURL() string {
 	return strings.TrimRight(m.rt.Config.PublicBase(), "/")
 }
 
-// handleRobots serves robots.txt: crawl everything except the author cabinet,
-// and point crawlers at the sitemap.
+// handleRobots serves robots.txt: search engines crawl everything except the
+// author cabinet; commercial SEO scanners (which crawl heavily and return
+// nothing to us) are turned away; the sitemaps are advertised. AI crawlers are
+// left allowed on purpose — being cited in AI answers is a discovery channel.
 func (m *Module) handleRobots(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	site := m.siteURL()
-	fmt.Fprintf(w, "User-agent: *\nAllow: /\nDisallow: /studio\nDisallow: /studio/\n\nSitemap: %s/sitemap.xml\nSitemap: %s/sitemap-listings.xml\n", site, site)
+	// Commercial SEO scanners: pure parasites (feed third-party SEO databases,
+	// send us no traffic) and the heaviest crawlers we see — refuse them.
+	seoBots := []string{"AhrefsBot", "SemrushBot", "MJ12bot", "DotBot", "BLEXBot", "DataForSeoBot", "PetalBot", "MegaIndex"}
+	fmt.Fprint(w, "User-agent: *\nAllow: /\nDisallow: /studio\nDisallow: /studio/\n\n")
+	for _, b := range seoBots {
+		fmt.Fprintf(w, "User-agent: %s\nDisallow: /\n\n", b)
+	}
+	fmt.Fprintf(w, "Sitemap: %s/sitemap.xml\nSitemap: %s/sitemap-listings.xml\n", site, site)
 }
 
 func seoURL(site, path, lang string) string {

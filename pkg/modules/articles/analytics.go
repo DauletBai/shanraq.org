@@ -147,6 +147,35 @@ func trafficSource(referer, host string) string {
 	return "other"
 }
 
+// utmSource maps an explicit ?utm_source= tag to one of our known source
+// labels, so a link shared with ?utm_source=telegram is attributed even when the
+// browser strips the Referer (messengers, in-app browsers). Unknown values
+// return "" so the caller falls back to referrer-based classification. The
+// closed mapping keeps arbitrary strings out of the counter table.
+func utmSource(v string) string {
+	switch strings.ToLower(strings.TrimSpace(v)) {
+	case "instagram", "ig":
+		return "instagram"
+	case "telegram", "tg":
+		return "telegram"
+	case "facebook", "fb", "meta":
+		return "facebook"
+	case "youtube", "yt":
+		return "youtube"
+	case "google":
+		return "google"
+	case "yandex":
+		return "yandex"
+	case "twitter", "x":
+		return "twitter"
+	case "linkedin":
+		return "linkedin"
+	case "whatsapp", "wa":
+		return "whatsapp"
+	}
+	return ""
+}
+
 // metricKey identifies one counter bucket.
 type metricKey struct {
 	kind  string
@@ -229,7 +258,13 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 				} else {
 					_, ok := auth.ClaimsFromContext(r.Context())
 					m.metrics.inc(metricPage, kind, !ok)
-					m.metrics.inc(metricSource, trafficSource(r.Header.Get("Referer"), r.Host), !ok)
+					// Prefer an explicit utm_source (survives the referrer being
+					// stripped by messengers/apps); fall back to the Referer host.
+					src := utmSource(r.URL.Query().Get("utm_source"))
+					if src == "" {
+						src = trafficSource(r.Header.Get("Referer"), r.Host)
+					}
+					m.metrics.inc(metricSource, src, !ok)
 				}
 			}
 		}

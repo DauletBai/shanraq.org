@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.2] — 2026-08-02
+
+### Added
+- UTM attribution: traffic analytics now reads `?utm_source=` first (mapped to a
+  known source label) and falls back to the Referer host. Links shared with
+  `?utm_source=telegram` / `instagram` / etc. are attributed correctly even when
+  the browser strips the referrer (messengers, in-app browsers) — no third-party
+  service required.
+
+### Changed
+- robots.txt now turns away commercial SEO scanners (Ahrefs, Semrush, MJ12, Dot,
+  BLEX, DataForSeo, Petal, MegaIndex) — the heaviest crawlers that return no
+  value. Search engines and AI crawlers stay allowed (AI-answer discovery is a
+  channel worth keeping).
+
 ## [0.6.1] — 2026-08-02
 
 ### Fixed
