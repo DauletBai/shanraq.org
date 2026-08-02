@@ -33,7 +33,7 @@
         {{ end }}
         <h1 class="article__title">{{ .L.TitleIn .Lang }}</h1>
         <div class="listing__headrow">
-          <p class="listing__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
+          <p class="listing__price">{{ money .L.Price }} {{ .L.CurrencySymbol }}{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
           {{ if .Authed }}
           <form method="post" action="/favorites/listing/{{ .L.ID }}" class="favform">
             <button type="submit" class="favbtn{{ if .IsFavorite }} is-on{{ end }}" aria-pressed="{{ if .IsFavorite }}true{{ else }}false{{ end }}">

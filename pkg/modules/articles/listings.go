@@ -46,6 +46,7 @@ type Listing struct {
 	Lat           *float64
 	Lng           *float64
 	Price         int64
+	Currency      string // "KZT" | "RUB" — display currency, derived from country
 	Area          float64
 	LandArea      float64
 	Rooms         int
@@ -80,6 +81,15 @@ type Listing struct {
 
 // TitleIn returns the title in the requested language, falling back to RU, then
 // any non-empty language, then the base title — so a card never shows blank.
+// CurrencySymbol returns the price symbol for the listing's currency: the ruble
+// for Russian listings, the tenge otherwise (the default).
+func (l Listing) CurrencySymbol() string {
+	if l.Currency == "RUB" {
+		return "₽"
+	}
+	return "₸"
+}
+
 func (l Listing) TitleIn(lang string) string {
 	switch lang {
 	case LangKZ:

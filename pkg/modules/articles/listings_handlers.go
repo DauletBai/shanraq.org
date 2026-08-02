@@ -179,7 +179,9 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Resolve the selected location node into the denormalized address fields.
+	// Resolve the selected location node into the denormalized address fields,
+	// and capture its country code (drives currency and the Kazakh-title rule).
+	countryCode := ""
 	if in.GeoNodeID != nil {
 		anc, err := m.geo.Ancestry(r.Context(), *in.GeoNodeID, lang)
 		if err != nil || len(anc) == 0 {
@@ -187,6 +189,9 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		} else {
 			in.Country, in.Region, in.City, in.Village = "", "", "", ""
 			for _, n := range anc {
+				if n.Country != "" {
+					countryCode = n.Country
+				}
 				switch n.Level {
 				case 0:
 					in.Country = n.Name
@@ -200,8 +205,16 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+	// Currency follows the location: rubles for Russia, tenge otherwise.
+	in.Currency = "KZT"
+	if countryCode == "RU" {
+		in.Currency = "RUB"
+	}
 
-	if in.TitleKz == "" || in.TitleRu == "" || in.TitleEn == "" || in.Contact == "" || !in.NoFilters {
+	// Kazakh title is mandatory (the flagship trilingual rule) — except for
+	// Russian listings, where only Russian and English are required.
+	kzRequired := countryCode != "RU"
+	if (kzRequired && in.TitleKz == "") || in.TitleRu == "" || in.TitleEn == "" || in.Contact == "" || !in.NoFilters {
 		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
 		page.ActiveCat = "realestate"
 		page.Values = in
@@ -217,7 +230,7 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 	// Cyrillic, and Kazakh may be either — Kazakh is transitioning from Cyrillic
 	// to a Latin alphabet, so both scripts are valid. This catches the common
 	// mistake of pasting one language into every tab.
-	if !isLatinText(in.TitleEn) || !isCyrillicText(in.TitleRu) || !hasLetters(in.TitleKz) {
+	if !isLatinText(in.TitleEn) || !isCyrillicText(in.TitleRu) || (in.TitleKz != "" && !hasLetters(in.TitleKz)) {
 		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
 		page.ActiveCat = "realestate"
 		page.Values = in

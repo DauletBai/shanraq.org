@@ -51,7 +51,7 @@
       </a>
       <span class="kicker">{{ t $.Lang (printf "re.type_%s" .PropertyType) }} · {{ t $.Lang (printf "re.deal_%s" .DealType) }}</span>
       <h3 class="post__title"><a href="/listings/{{ .ID }}">{{ .TitleIn $.Lang }}</a></h3>
-      <p class="post__price">{{ money .Price }} ₸{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</p>
+      <p class="post__price">{{ money .Price }} {{ .CurrencySymbol }}{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</p>
       <div class="post__meta">
         <span>{{ .Location }}</span>
         {{ if gt .Rooms 0 }}<span class="dot">·</span><span>{{ .Rooms }} {{ t $.Lang "re.rooms" }}</span>{{ end }}

@@ -22,6 +22,7 @@ type GeoNode struct {
 	Name        string `json:"name"`
 	Kind        string `json:"kind"`
 	Level       int    `json:"level"`
+	Country     string `json:"country"` // ISO code (KZ/RU) — drives the listing currency
 	HasChildren bool   `json:"has_children"`
 	// Lat/Lng let the listing form centre its map on the selected place.
 	// Districts and countries have none, hence the pointers.
@@ -86,12 +87,12 @@ func (s *GeoStore) Ancestry(ctx context.Context, node uuid.UUID, lang string) ([
 	name := fmt.Sprintf("COALESCE(NULLIF(n.%s,''), n.name_ru)", geoNameCol(lang))
 	q := fmt.Sprintf(`
 		WITH RECURSIVE up AS (
-			SELECT id, parent_id, level, kind, %s AS name FROM geo_nodes n WHERE id = $1
+			SELECT id, parent_id, level, kind, country, %s AS name FROM geo_nodes n WHERE id = $1
 			UNION ALL
-			SELECT n.id, n.parent_id, n.level, n.kind, %s FROM geo_nodes n
+			SELECT n.id, n.parent_id, n.level, n.kind, n.country, %s FROM geo_nodes n
 			JOIN up ON n.id = up.parent_id
 		)
-		SELECT id, name, kind, level FROM up ORDER BY level`, name, name)
+		SELECT id, name, kind, level, country FROM up ORDER BY level`, name, name)
 
 	rows, err := s.db.Query(ctx, q, node)
 	if err != nil {
@@ -102,7 +103,7 @@ func (s *GeoStore) Ancestry(ctx context.Context, node uuid.UUID, lang string) ([
 	for rows.Next() {
 		var n GeoNode
 		var id uuid.UUID
-		if err := rows.Scan(&id, &n.Name, &n.Kind, &n.Level); err != nil {
+		if err := rows.Scan(&id, &n.Name, &n.Kind, &n.Level, &n.Country); err != nil {
 			return nil, err
 		}
 		n.ID = id.String()

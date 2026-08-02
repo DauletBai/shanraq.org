@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-08-02
+
+### Added
+- Listings for property in Russia, not just Kazakhstan. The location cascade
+  already carried both countries; now each listing also carries its own currency
+  — tenge (₸) for Kazakh addresses, ruble (₽) for Russian ones — chosen
+  automatically from the selected location and shown on cards, the listing page,
+  "my listings", favorites and JSON-LD. Posting needs only a verified email (no
+  phone/SMS), so Russian users can list right away.
+
+### Changed
+- The mandatory Kazakh title is waived for Russian listings: when the location is
+  in Russia, only Russian and English titles are required (Kazakh optional). The
+  price-field label no longer bakes in ₸, since the currency now follows country.
+
 ## [0.4.1] — 2026-08-01
 
 ### Fixed

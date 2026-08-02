@@ -19,7 +19,7 @@
       <div class="mylist__main">
         <a class="mylist__title" href="/listings/{{ .ID }}">{{ .TitleIn $.Lang }}</a>
         <div class="mylist__meta">
-          <span>{{ money .Price }} ₸</span><span class="dot">·</span><span>{{ .Location }}</span>
+          <span>{{ money .Price }} {{ .CurrencySymbol }}</span><span class="dot">·</span><span>{{ .Location }}</span>
           {{ if .Promoted }}<span class="badge-top badge-top--inline">{{ t $.Lang "re.badge_top" }}</span>{{ end }}
           {{ if .Featured }}<span class="badge-feat">{{ t $.Lang "re.badge_featured" }}</span>{{ end }}
           {{ if .Banner }}<span class="badge-banner">{{ t $.Lang "re.badge_banner" }}</span>{{ end }}

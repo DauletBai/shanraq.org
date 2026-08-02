@@ -39,7 +39,7 @@ var messages = map[string]map[string]string{
 	"re.region":              {"kz": "Облыс", "ru": "Область", "en": "Region"},
 	"re.city":                {"kz": "Қала", "ru": "Город", "en": "City"},
 	"re.village":             {"kz": "Ауыл", "ru": "Село", "en": "Village"},
-	"re.price":               {"kz": "Бағасы (₸)", "ru": "Цена (₸)", "en": "Price (₸)"},
+	"re.price":               {"kz": "Бағасы", "ru": "Цена", "en": "Price"},
 	"re.area":                {"kz": "Ауданы (м²)", "ru": "Площадь (м²)", "en": "Area (m²)"},
 	"re.rooms":               {"kz": "Бөлме саны", "ru": "Комнат", "en": "Rooms"},
 	"re.land_area":           {"kz": "Жер учаскесі (сотық)", "ru": "Участок (соток)", "en": "Land plot (ares)"},

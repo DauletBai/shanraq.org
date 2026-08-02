@@ -232,7 +232,7 @@
     </span>
     <span class="rebanner__body">
       <span class="rebanner__title">{{ .Title }}</span>
-      <span class="rebanner__price">{{ money .Price }} ₸{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</span>
+      <span class="rebanner__price">{{ money .Price }} {{ .CurrencySymbol }}{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</span>
       <span class="rebanner__meta">{{ countryFlag .Country }}{{ if .City }}{{ .City }}{{ else }}{{ .Village }}{{ end }}</span>
     </span>
   </a>
@@ -267,7 +267,7 @@
   </div>
   <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>
   <h3 class="post__title"><a href="/listings/{{ .L.ID }}">{{ .L.TitleIn .Lang }}</a></h3>
-  <p class="post__price">{{ money .L.Price }} ₸{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
+  <p class="post__price">{{ money .L.Price }} {{ .L.CurrencySymbol }}{{ if eq .L.DealType "rent" }} {{ t .Lang "re.per_month" }}{{ end }}</p>
   {{ if .L.ByAgent }}<a class="agent-line" href="/agent/{{ .L.AgentID }}">◆ {{ .L.AgentName }}</a>{{ end }}
   {{ template "listing_facts" (dict "L" .L "Lang" .Lang) }}
   {{ if .L.Amenities }}

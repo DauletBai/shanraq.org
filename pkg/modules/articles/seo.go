@@ -234,6 +234,10 @@ func (m *Module) applyListingSEO(page *ListingViewPage) {
 	if a := absURL(page.SiteURL, img); a != "" {
 		page.OGImage = a
 	}
+	priceCurrency := l.Currency
+	if priceCurrency == "" {
+		priceCurrency = "KZT"
+	}
 	ld := map[string]any{
 		"@context":    "https://schema.org",
 		"@type":       "Product",
@@ -244,7 +248,7 @@ func (m *Module) applyListingSEO(page *ListingViewPage) {
 		"offers": map[string]any{
 			"@type":         "Offer",
 			"price":         l.Price,
-			"priceCurrency": "KZT",
+			"priceCurrency": priceCurrency,
 			"availability":  "https://schema.org/InStock",
 			"url":           page.SiteURL + page.Path + "?lang=" + page.Lang,
 		},
