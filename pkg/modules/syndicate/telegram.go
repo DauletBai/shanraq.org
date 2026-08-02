@@ -46,7 +46,9 @@ func (m *Module) handleTelegramJob(ctx context.Context, _ *shanraq.Runtime, job 
 	if err != nil {
 		return err
 	}
-	text := buildTelegramMessage(title, summary, m.articleURL(slug, lang))
+	// Tag the auto-posted link so visits from the channel are attributed to
+	// Telegram in analytics even when the messenger strips the referrer.
+	text := buildTelegramMessage(title, summary, m.articleURL(slug, lang)+"&utm_source=telegram")
 	if err := m.sendTelegram(ctx, text); err != nil {
 		return err
 	}

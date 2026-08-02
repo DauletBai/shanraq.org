@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.3] — 2026-08-02
+
+### Changed
+- Telegram auto-posts now tag the article link with `?utm_source=telegram`, so
+  visits from the channel are attributed to Telegram in analytics instead of
+  falling into "Direct" (the messenger strips the referrer). No manual work per
+  post.
+
 ## [0.6.2] — 2026-08-02
 
 ### Added
