@@ -311,9 +311,9 @@ type GuestTrendDay struct {
 // admin dashboard.
 type GuestAnalytics struct {
 	Day       Audience // views today
-	Week      Audience // views this calendar week (Mon–today)
-	Month     Audience // views this calendar month
-	Year      Audience // views this calendar year
+	Week      Audience // views in the last 7 days
+	Month     Audience // views in the last 30 days
+	Year      Audience // views in the last 365 days
 	Pages     []GuestPageRow
 	Clicks    []GuestClickRow
 	Sources   []GuestSimpleRow // human visits by referrer (30 days)
@@ -331,16 +331,20 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	var g GuestAnalytics
 	db := m.rt.DB
 
+	// Rolling windows (last N days), not calendar weeks/months, so the tiles
+	// always nest: today ≤ 7 days ≤ 30 days ≤ 365 days. Calendar windows made the
+	// current week exceed the month-to-date at the start of a month, which reads
+	// as a bug even though it was arithmetically correct.
 	_ = db.QueryRow(ctx, `
 		SELECT
 		  COALESCE(SUM(n) FILTER (WHERE day = CURRENT_DATE AND is_guest), 0),
 		  COALESCE(SUM(n) FILTER (WHERE day = CURRENT_DATE AND NOT is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('week', CURRENT_DATE)::date AND is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('week', CURRENT_DATE)::date AND NOT is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('month', CURRENT_DATE)::date AND is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('month', CURRENT_DATE)::date AND NOT is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('year', CURRENT_DATE)::date AND is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= date_trunc('year', CURRENT_DATE)::date AND NOT is_guest), 0)
+		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '6 days' AND is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '6 days' AND NOT is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '29 days' AND is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '29 days' AND NOT is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '364 days' AND is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '364 days' AND NOT is_guest), 0)
 		FROM analytics_daily WHERE kind = 'page'`).
 		Scan(&g.Day.Guest, &g.Day.Registered, &g.Week.Guest, &g.Week.Registered, &g.Month.Guest, &g.Month.Registered, &g.Year.Guest, &g.Year.Registered)
 

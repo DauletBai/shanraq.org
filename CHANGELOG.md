@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] — 2026-08-02
+
+### Fixed
+- Field-help tooltip was unreadable on the dark theme (white text on the light
+  tooltip background). Dark theme now uses dark text; light theme keeps its dark
+  tooltip with white text.
+- Audience tiles used calendar windows, so at the start of a month the "week"
+  count could exceed the "month" count (the current week reached back into the
+  previous month). The tiles now use rolling windows — today, last 7, 30 and 365
+  days — so they always nest: today ≤ week ≤ month ≤ year.
+
 ## [0.6.0] — 2026-08-02
 
 ### Added
