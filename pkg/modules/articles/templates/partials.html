@@ -536,6 +536,33 @@
         if (tip) tip.textContent = ru ? help.getAttribute('data-rub') : help.getAttribute('data-kzt');
       }
     });
+    // Forward geocoding: assemble the address the author entered (cascade + fine
+    // fields) and drop a precise pin via the map's shanraq:geo channel.
+    document.querySelectorAll('[data-geocode-btn]').forEach(function (btn) {
+      var status = document.querySelector('[data-geocode-status]');
+      btn.addEventListener('click', function () {
+        var parts = [];
+        document.querySelectorAll('[data-geo] .geo-row select').forEach(function (s) {
+          if (s.value && s.selectedIndex > 0) parts.push(s.options[s.selectedIndex].textContent);
+        });
+        ['f_microdistrict', 'f_street', 'f_house'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el && el.value.trim()) parts.push(el.value.trim());
+        });
+        var q = parts.join(', ');
+        if (q.length < 3) return;
+        if (status) status.textContent = btn.getAttribute('data-searching') || '';
+        fetch('/api/geocode?q=' + encodeURIComponent(q), { credentials: 'same-origin' })
+          .then(function (r) { return r.json(); }).then(function (d) {
+            if (d && d.lat != null && d.lng != null) {
+              if (status) status.textContent = '';
+              document.dispatchEvent(new CustomEvent('shanraq:geo', { detail: { lat: d.lat, lng: d.lng, zoom: 17 } }));
+            } else if (status) {
+              status.textContent = btn.getAttribute('data-none') || '';
+            }
+          }).catch(function () { if (status) status.textContent = btn.getAttribute('data-none') || ''; });
+      });
+    });
     document.querySelectorAll('[data-toggle]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var el = document.querySelector(btn.getAttribute('data-toggle'));
@@ -626,6 +653,19 @@
       var latEl = document.getElementById('listing_lat');
       var lngEl = document.getElementById('listing_lng');
       var marker = null;
+      // Reverse-geocode a DELIBERATELY placed pin (click or drag) into the fine
+      // address fields, filling only what the geocoder actually returns so a
+      // value the author already typed is never cleared.
+      function reverseFill(lat, lng) {
+        fetch('/api/geocode/reverse?lat=' + lat + '&lng=' + lng, { credentials: 'same-origin' })
+          .then(function (r) { return r.json(); }).then(function (a) {
+            if (!a) return;
+            var s = document.getElementById('f_street'), h = document.getElementById('f_house'), md = document.getElementById('f_microdistrict');
+            if (s && a.street) s.value = a.street;
+            if (h && a.house) h.value = a.house;
+            if (md && a.microdistrict) md.value = a.microdistrict;
+          }).catch(function () {});
+      }
       function place(lat, lng, zoom) {
         if (marker) { marker.setLatLng([lat, lng]); }
         else {
@@ -635,20 +675,26 @@
             var c = marker.getLatLng();
             if (latEl) latEl.value = c.lat.toFixed(6);
             if (lngEl) lngEl.value = c.lng.toFixed(6);
+            reverseFill(c.lat.toFixed(6), c.lng.toFixed(6));
           });
         }
         map.setView([lat, lng], zoom || map.getZoom());
         if (latEl) latEl.value = lat.toFixed(6);
         if (lngEl) lngEl.value = lng.toFixed(6);
       }
-      map.on('click', function (e) { place(e.latlng.lat, e.latlng.lng); });
+      map.on('click', function (e) {
+        place(e.latlng.lat, e.latlng.lng);
+        reverseFill(e.latlng.lat.toFixed(6), e.latlng.lng.toFixed(6));
+      });
       if (latEl && lngEl && latEl.value && lngEl.value) {
         place(parseFloat(latEl.value), parseFloat(lngEl.value), 15);
       }
-      // Picking a settlement in the cascade re-centres the map on it.
+      // Re-centre and drop the pin on a settlement pick from the cascade or a
+      // forward-geocoded address; honour an optional zoom (programmatic — no
+      // reverse-fill, so it never overwrites what the author typed).
       document.addEventListener('shanraq:geo', function (e) {
         if (e.detail && e.detail.lat != null && e.detail.lng != null) {
-          place(e.detail.lat, e.detail.lng, 13);
+          place(e.detail.lat, e.detail.lng, e.detail.zoom || 13);
         }
       });
     });

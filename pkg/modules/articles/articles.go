@@ -176,6 +176,8 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/terms", m.handleStaticPage("terms"))
 		r.Get("/api/geo/roots", m.handleGeoRoots)
 		r.Get("/api/geo/children", m.handleGeoChildren)
+		r.Get("/api/geocode", m.handleGeocode)
+		r.Get("/api/geocode/reverse", m.handleGeocodeReverse)
 		r.Get("/api/listings/map", m.handleListingsMap)
 		r.Get("/api/listings/pins", m.handleListingPins)
 		r.Get("/listings", m.handleListings)

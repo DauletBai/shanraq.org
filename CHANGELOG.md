@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-08-02
+
+### Added
+- Address ↔ map sync on the listing form. A new "Find on the map by address"
+  button geocodes the entered address (cascade + street/house) and drops a
+  precise pin; placing or dragging the pin reverse-geocodes it and fills in the
+  street, house number and microdistrict — filling only what the geocoder
+  returns, never clearing what the author typed. Geocoding is proxied
+  server-side over OpenStreetMap Nominatim (the browser CSP blocks direct calls)
+  with an in-memory cache; the country/region/city cascade stays manual by
+  design (it is bound to the platform's own geo database).
+
 ## [0.5.1] — 2026-08-02
 
 ### Changed
