@@ -513,6 +513,9 @@
             if (pick && pick.lat != null) {
               document.dispatchEvent(new CustomEvent('shanraq:geo', { detail: { lat: pick.lat, lng: pick.lng } }));
             }
+            if (level === 0) {
+              document.dispatchEvent(new CustomEvent('shanraq:geocountry', { detail: { country: (pick && pick.country) || '' } }));
+            }
             if (sel.value && opt.getAttribute('data-has')) addSelect(sel.value, level + 1);
           });
           row.appendChild(sel);
@@ -520,6 +523,18 @@
         }).catch(function () {});
       }
       addSelect(null, 0);
+    });
+    // A listing's currency follows its country: switch the price hint and the
+    // ₸/₽ chip when the author picks Russia vs Kazakhstan in the location cascade.
+    document.addEventListener('shanraq:geocountry', function (e) {
+      var ru = e.detail && e.detail.country === 'RU';
+      var chip = document.querySelector('[data-price-cur]');
+      if (chip) chip.textContent = ru ? '₽' : '₸';
+      var help = document.querySelector('[data-price-help]');
+      if (help) {
+        var tip = help.querySelector('.fhelp__tip');
+        if (tip) tip.textContent = ru ? help.getAttribute('data-rub') : help.getAttribute('data-kzt');
+      }
     });
     document.querySelectorAll('[data-toggle]').forEach(function (btn) {
       btn.addEventListener('click', function () {

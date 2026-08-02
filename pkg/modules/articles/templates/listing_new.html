@@ -48,7 +48,7 @@
       </div>
 
       <div class="grid-3">
-        <div class="field"><label>{{ t .Lang "re.price" }} {{ template "fhelp" (t .Lang "re.help_price") }}</label><input class="input" type="text" inputmode="numeric" name="price" value="{{ if gt .Values.Price 0 }}{{ .Values.Price }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.price" }} <span data-price-cur class="hint">₸</span> <span data-price-help data-kzt="{{ t .Lang "re.help_price" }}" data-rub="{{ t .Lang "re.help_price_rub" }}">{{ template "fhelp" (t .Lang "re.help_price") }}</span></label><input class="input" type="text" inputmode="numeric" name="price" value="{{ if gt .Values.Price 0 }}{{ .Values.Price }}{{ end }}"></div>
         <div class="field"><label>{{ t .Lang "re.area" }} {{ template "fhelp" (t .Lang "re.help_area") }}</label><input class="input" name="area" value="{{ if gt .Values.Area 0.0 }}{{ .Values.Area }}{{ end }}"></div>
         <div class="field"><label>{{ t .Lang "re.rooms" }} {{ template "fhelp" (t .Lang "re.help_rooms") }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .Values.Rooms 0 }}{{ .Values.Rooms }}{{ end }}"></div>
         <div class="field"><label>{{ t .Lang "re.land_area" }} {{ template "fhelp" (t .Lang "re.help_land_area") }}</label><input class="input" name="land_area" value="{{ if gt .Values.LandArea 0.0 }}{{ .Values.LandArea }}{{ end }}"></div>

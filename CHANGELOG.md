@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1] — 2026-08-02
+
+### Changed
+- Listing form now reflects the currency before submit: picking Russia in the
+  location cascade flips the price hint to rubles and shows a ₽ chip next to the
+  price, while Kazakhstan shows ₸. The geo API now returns each node's country so
+  the form can react to it. (The stored currency was already correct in 0.5.0;
+  this removes the confusing "in tenge" hint for Russian listings.)
+
 ## [0.5.0] — 2026-08-02
 
 ### Added

@@ -45,7 +45,7 @@ func geoNameCol(lang string) string {
 func (s *GeoStore) query(ctx context.Context, lang, where string, args ...any) ([]GeoNode, error) {
 	name := fmt.Sprintf("COALESCE(NULLIF(c.%s,''), c.name_ru)", geoNameCol(lang))
 	q := fmt.Sprintf(`
-		SELECT c.id, %s AS name, c.kind, c.level,
+		SELECT c.id, %s AS name, c.kind, c.level, c.country,
 		       EXISTS(SELECT 1 FROM geo_nodes g WHERE g.parent_id = c.id) AS has_children,
 		       c.lat, c.lng
 		FROM geo_nodes c
@@ -62,7 +62,7 @@ func (s *GeoStore) query(ctx context.Context, lang, where string, args ...any) (
 	for rows.Next() {
 		var n GeoNode
 		var id uuid.UUID
-		if err := rows.Scan(&id, &n.Name, &n.Kind, &n.Level, &n.HasChildren, &n.Lat, &n.Lng); err != nil {
+		if err := rows.Scan(&id, &n.Name, &n.Kind, &n.Level, &n.Country, &n.HasChildren, &n.Lat, &n.Lng); err != nil {
 			return nil, err
 		}
 		n.ID = id.String()
