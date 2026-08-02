@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.4] — 2026-08-02
+
+### Changed
+- Commercial SEO scanners (already turned away in robots.txt) are no longer
+  recorded in analytics at all — they neither count as guests nor clutter the
+  bot panel. Existing historical rows are cleared. Yandex source detection now
+  also catches the short domain `ya.ru`.
+
 ## [0.6.3] — 2026-08-02
 
 ### Changed

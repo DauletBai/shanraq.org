@@ -123,7 +123,7 @@ func trafficSource(referer, host string) string {
 	switch {
 	case strings.Contains(h, "google"):
 		return "google"
-	case strings.Contains(h, "yandex"):
+	case strings.Contains(h, "yandex"), h == "ya.ru":
 		return "yandex"
 	case h == "t.me", strings.Contains(h, "telegram"):
 		return "telegram"
@@ -251,11 +251,17 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			if kind := pageKind(r.URL.Path); kind != "" {
-				if bot := botLabel(r.Header.Get("User-Agent")); bot != "" {
-					// Crawlers are counted apart so they never inflate the real
-					// human audience — that was the whole point.
+				bot := botLabel(r.Header.Get("User-Agent"))
+				switch {
+				case bot == "seo":
+					// Commercial SEO scanners are turned away in robots.txt and
+					// excluded from analytics entirely, so they neither count as
+					// guests nor clutter the bot panel.
+				case bot != "":
+					// Other crawlers are counted apart so they never inflate the
+					// real human audience — that was the whole point.
 					m.metrics.inc(metricBot, bot, true)
-				} else {
+				default:
 					_, ok := auth.ClaimsFromContext(r.Context())
 					m.metrics.inc(metricPage, kind, !ok)
 					// Prefer an explicit utm_source (survives the referrer being
