@@ -69,7 +69,22 @@ const (
 	metricOS      = "os"      // android / ios / windows / macos / linux
 	metricBrowser = "browser" // chrome / safari / firefox / edge / …
 	metricCountry = "country" // visitor country by IP (ISO code), IP not stored
+	metricLang    = "lang"    // reading language of the served page (kz/ru/en)
+	metricGeoLang = "geolang" // country|lang cross, e.g. "US|en", "datacenter|ru"
 )
+
+// readingLang reports the language a page is served in, for analytics. It mirrors
+// resolveLang's precedence (query, then cookie, then the RU default) but has no
+// cookie side effect, so it is safe to call from the tracking middleware.
+func readingLang(r *http.Request) string {
+	if q := r.URL.Query().Get("lang"); IsLang(q) {
+		return q
+	}
+	if c, err := r.Cookie(langCookieName); err == nil && IsLang(c.Value) {
+		return c.Value
+	}
+	return LangRU
+}
 
 // botLabel classifies a User-Agent as a crawler/bot and returns its family
 // ("google", "yandex", "facebook", …), or "" for an ordinary human browser.
@@ -354,12 +369,19 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 					m.metrics.inc(metricDevice, deviceClass(ua), guest)
 					m.metrics.inc(metricOS, osFamily(ua), guest)
 					m.metrics.inc(metricBrowser, browserFamily(ua), guest)
+					// Reading language of the served page — the signal a VPN cannot
+					// mask, so it distinguishes real foreign readers (English) from
+					// curious locals or VPN traffic from censored countries.
+					lng := readingLang(r)
+					m.metrics.inc(metricLang, lng, guest)
 					// Visitor country (nil geoip → no-op). The IP is resolved to a
 					// coarse label — an ISO country code, or "datacenter" for
 					// hosting/cloud/VPN networks — and discarded. Nothing per-visitor
-					// is stored.
+					// is stored. The country|lang cross tells, e.g., whether the
+					// masked VPN visitors read Russian (locals/Russia) or English.
 					if c := m.geoip.geoLabel(clientIP(r)); c != "" {
 						m.metrics.inc(metricCountry, c, guest)
+						m.metrics.inc(metricGeoLang, c+"|"+lng, guest)
 					}
 				}
 			}
@@ -453,6 +475,8 @@ type GuestAnalytics struct {
 	OS        []GuestSimpleRow // operating-system mix (30 days)
 	Browsers  []GuestSimpleRow // browser mix (30 days)
 	Countries []GuestSimpleRow // visitor country by IP (30 days)
+	Langs     []GuestSimpleRow // reading-language mix kz/ru/en (30 days)
+	EnglishBy []GuestSimpleRow // where English-reading visits come from (30 days)
 	Trend     []GuestTrendDay
 	TrendFrom string // first day label in the trend (oldest)
 	TrendTo   string // last day label in the trend (today)
@@ -545,6 +569,8 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	g.OS = m.simpleRows(ctx, metricOS, "ag.os.", lang)
 	g.Browsers = m.simpleRows(ctx, metricBrowser, "ag.browser.", lang)
 	g.Countries = m.simpleRows(ctx, metricCountry, "ag.country.", lang)
+	g.Langs = m.simpleRows(ctx, metricLang, "ag.lang.", lang)
+	g.EnglishBy = m.englishByGeo(ctx, lang)
 
 	// 14-day guest-views sparkline, gaps filled with zero.
 	g.Trend = m.guestTrend(ctx)
@@ -619,6 +645,52 @@ func (m *Module) simpleRows(ctx context.Context, kind, i18nPrefix, lang string) 
 		}
 		r.Title = T(lang, i18nPrefix+r.Name)
 		if strings.HasPrefix(r.Title, i18nPrefix) {
+			r.Title = r.Name
+		}
+		out = append(out, r)
+		if r.N > max {
+			max = r.N
+		}
+	}
+	for i := 1; i < len(out); i++ { // busiest first (tiny list, insertion sort)
+		for j := i; j > 0 && out[j].N > out[j-1].N; j-- {
+			out[j], out[j-1] = out[j-1], out[j]
+		}
+	}
+	for i := range out {
+		out[i].Pct = barPct(out[i].N, max)
+	}
+	return out
+}
+
+// englishByGeo returns where English-reading visits came from over the last 30
+// days — each origin bucket (a country code, or "datacenter" for hosting/VPN)
+// with its English read count, busiest first. This is the sharpest answer to
+// "are my English readers genuine foreigners?": English from a residential
+// foreign country is a real foreign reader; English from KZ is a curious local;
+// English from datacenter/VPN is masked traffic (e.g. a reader in a censored
+// country on a VPN). It reads the country|lang cross counted in trackTraffic.
+func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow {
+	rows, err := m.rt.DB.Query(ctx, `
+		SELECT split_part(label, '|', 1) AS geo, COALESCE(SUM(n), 0)
+		FROM analytics_daily
+		WHERE kind = $1 AND label LIKE '%|en' AND day >= CURRENT_DATE - INTERVAL '30 days'
+		GROUP BY geo`, metricGeoLang)
+	if err != nil {
+		m.rt.Logger.Warn("guest analytics english-by-geo", zap.Error(err))
+		return nil
+	}
+	defer rows.Close()
+
+	var out []GuestSimpleRow
+	var max int64
+	for rows.Next() {
+		var r GuestSimpleRow
+		if err := rows.Scan(&r.Name, &r.N); err != nil {
+			continue
+		}
+		r.Title = T(lang, "ag.country."+r.Name)
+		if strings.HasPrefix(r.Title, "ag.country.") {
 			r.Title = r.Name
 		}
 		out = append(out, r)

@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-08-03
+
+### Added
+- Audience analytics now tracks the **reading language** (Kazakh / Russian /
+  English) and crosses it with visitor origin, to answer whether the English
+  audience is genuine foreign readers or something else. Two new 30-day panels:
+  "Reading language" (the overall kk/ru/en mix) and "English readers — origin"
+  (where the English-version visits come from). The origin panel is the sharp
+  signal a VPN cannot mask: English from a real foreign country is a genuine
+  foreigner; English from Kazakhstan is a curious local; English from
+  "Data center / VPN" is masked traffic — e.g. a reader on a VPN from a country
+  with a restricted internet (Russia, China, Iran). Aggregate-only as always.
+
 ## [0.9.0] — 2026-08-03
 
 ### Added

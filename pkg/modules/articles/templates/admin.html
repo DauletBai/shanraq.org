@@ -410,6 +410,38 @@
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
       </div>
+
+      <div class="adm-cols">
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.langs" }}</h2>
+          {{ if .Guests.Langs }}
+          <div class="adm-chart">
+            {{ range .Guests.Langs }}
+            <div class="adm-bar">
+              <span class="adm-bar__label">{{ .Title }}</span>
+              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ money .N }}</span>
+            </div>
+            {{ end }}
+          </div>
+          {{ else }}<p class="adm-hint">—</p>{{ end }}
+        </div>
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.english_by" }}</h2>
+          <p class="adm-hint">{{ t .Lang "ag.english_note" }}</p>
+          {{ if .Guests.EnglishBy }}
+          <div class="adm-chart">
+            {{ range .Guests.EnglishBy }}
+            <div class="adm-bar">
+              <span class="adm-bar__label">{{ .Title }}</span>
+              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ money .N }}</span>
+            </div>
+            {{ end }}
+          </div>
+          {{ else }}<p class="adm-hint">—</p>{{ end }}
+        </div>
+      </div>
       {{ else }}
       <p class="adm-hint">{{ t .Lang "ag.empty" }}</p>
       {{ end }}
