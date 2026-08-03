@@ -321,6 +321,7 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("sms.login", "")    // smsc
 	v.SetDefault("sms.password", "") // smsc
 	v.SetDefault("sms.base_url", "")
+	v.SetDefault("sms.channel", "") // "" (SMS) | telegram — deliver codes via Telegram
 
 	// Registered so SHANRAQ_BOOTSTRAP_ADMIN_* bind from the environment.
 	v.SetDefault("bootstrap.admin_email", "")

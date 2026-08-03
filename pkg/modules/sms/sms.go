@@ -26,6 +26,10 @@ type Config struct {
 	Login    string `mapstructure:"login"`    // smsc
 	Password string `mapstructure:"password"` // smsc
 	BaseURL  string `mapstructure:"base_url"` // optional override (tests / custom host)
+	// Channel routes the message off the default SMS rail (smsc only): "telegram"
+	// delivers verification codes through Telegram (tg=1) — no operator sender
+	// name, far cheaper. Empty = plain SMS.
+	Channel string `mapstructure:"channel"` // "" | "telegram"
 }
 
 // Client sends SMS via the configured provider. Its SendSMS method satisfies the
@@ -140,6 +144,9 @@ func (c *Client) sendSMSC(ctx context.Context, to, text string) error {
 	q.Set("mes", text)
 	q.Set("fmt", "3") // JSON response
 	q.Set("charset", "utf-8")
+	if strings.EqualFold(c.cfg.Channel, "telegram") || strings.EqualFold(c.cfg.Channel, "tg") {
+		q.Set("tg", "1") // deliver the code via Telegram instead of SMS (no sender name, cheaper)
+	}
 	if c.cfg.From != "" {
 		q.Set("sender", c.cfg.From)
 	}
