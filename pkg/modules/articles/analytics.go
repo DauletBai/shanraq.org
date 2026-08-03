@@ -477,6 +477,7 @@ type GuestAnalytics struct {
 	Countries []GuestSimpleRow // visitor country by IP (30 days)
 	Langs     []GuestSimpleRow // reading-language mix kz/ru/en (30 days)
 	EnglishBy []GuestSimpleRow // where English-reading visits come from (30 days)
+	VPNLangs  []GuestSimpleRow // reading language within the ЦОД/VPN bucket (30 days)
 	Trend     []GuestTrendDay
 	TrendFrom string // first day label in the trend (oldest)
 	TrendTo   string // last day label in the trend (today)
@@ -571,6 +572,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	g.Countries = m.simpleRows(ctx, metricCountry, "ag.country.", lang)
 	g.Langs = m.simpleRows(ctx, metricLang, "ag.lang.", lang)
 	g.EnglishBy = m.englishByGeo(ctx, lang)
+	g.VPNLangs = m.langOfGeo(ctx, datacenterLabel, lang)
 
 	// 14-day guest-views sparkline, gaps filled with zero.
 	g.Trend = m.guestTrend(ctx)
@@ -691,6 +693,51 @@ func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow
 		}
 		r.Title = T(lang, "ag.country."+r.Name)
 		if strings.HasPrefix(r.Title, "ag.country.") {
+			r.Title = r.Name
+		}
+		out = append(out, r)
+		if r.N > max {
+			max = r.N
+		}
+	}
+	for i := 1; i < len(out); i++ { // busiest first (tiny list, insertion sort)
+		for j := i; j > 0 && out[j].N > out[j-1].N; j-- {
+			out[j], out[j-1] = out[j-1], out[j]
+		}
+	}
+	for i := range out {
+		out[i].Pct = barPct(out[i].N, max)
+	}
+	return out
+}
+
+// langOfGeo returns the reading-language split (kk/ru/en) for a single origin
+// bucket (e.g. "datacenter") over the last 30 days. For the masked VPN bucket
+// this is the key discriminator: Russian implies Russia/CIS (Russian speakers on
+// an always-on VPN), while English implies genuine international readers — China,
+// Iran, the West — who bridge through English rather than Russian. It reads the
+// country|lang cross counted in trackTraffic.
+func (m *Module) langOfGeo(ctx context.Context, geo, lang string) []GuestSimpleRow {
+	rows, err := m.rt.DB.Query(ctx, `
+		SELECT split_part(label, '|', 2) AS lng, COALESCE(SUM(n), 0)
+		FROM analytics_daily
+		WHERE kind = $1 AND label LIKE $2 AND day >= CURRENT_DATE - INTERVAL '30 days'
+		GROUP BY lng`, metricGeoLang, geo+"|%")
+	if err != nil {
+		m.rt.Logger.Warn("guest analytics lang-of-geo", zap.Error(err))
+		return nil
+	}
+	defer rows.Close()
+
+	var out []GuestSimpleRow
+	var max int64
+	for rows.Next() {
+		var r GuestSimpleRow
+		if err := rows.Scan(&r.Name, &r.N); err != nil {
+			continue
+		}
+		r.Title = T(lang, "ag.lang."+r.Name)
+		if strings.HasPrefix(r.Title, "ag.lang.") {
 			r.Title = r.Name
 		}
 		out = append(out, r)

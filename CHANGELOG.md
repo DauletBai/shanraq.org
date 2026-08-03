@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1] — 2026-08-03
+
+### Added
+- A "Data center / VPN — reading language" panel that splits the masked VPN
+  bucket by language, because that split identifies who is behind the VPN:
+  Russian ≈ Russia/CIS, while English ≈ genuine international readers (China,
+  Iran, the West) who bridge through English rather than Russian.
+
+### Changed
+- Reworded the "English readers — origin" note: English from the Data center /
+  VPN bucket is now described as *most likely genuine foreigners* (China, Iran,
+  the West), not vaguely "masked" — they read English precisely because they
+  don't read Russian.
+
 ## [0.10.0] — 2026-08-03
 
 ### Added
