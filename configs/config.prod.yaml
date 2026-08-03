@@ -60,3 +60,7 @@ social:
 # stored. If the file is absent the country panel simply stays empty.
 analytics:
   geoip_db: /app/geoip/country.mmdb
+  # Optional ASN database (DB-IP ASN Lite): visits from hosting/cloud/VPN networks
+  # are shown as "ЦОД / VPN" instead of a country, so the country rows are real
+  # readers, not US-hosted bots/VPN exits. Absent file → filter simply off.
+  geoip_asn_db: /app/geoip/asn.mmdb

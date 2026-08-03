@@ -35,9 +35,11 @@ services:
     volumes:
       - ./configs/config.prod.yaml:/app/config.yaml:ro
       - media-data:/app/data    # uploaded media (avatars, images) persists here
-      # GeoIP country database for visitor-country analytics (DB-IP Lite, refreshed
-      # monthly on the host). Read-only; the app degrades gracefully if it is absent.
+      # GeoIP databases for visitor-country analytics (DB-IP Lite, refreshed
+      # monthly on the host). Read-only; the app degrades gracefully if absent.
+      # country.mmdb → country per IP; asn.mmdb → flags hosting/cloud/VPN traffic.
       - ./data/dbip-country.mmdb:/app/geoip/country.mmdb:ro
+      - ./data/dbip-asn.mmdb:/app/geoip/asn.mmdb:ro
     restart: unless-stopped
     # No published ports: only Caddy talks to the app.
 

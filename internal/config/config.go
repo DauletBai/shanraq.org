@@ -34,10 +34,14 @@ type Config struct {
 
 // AnalyticsConfig tunes the aggregate audience analytics. GeoIPDB is the path to
 // a MaxMind-format country database (DB-IP Lite) used to bucket visits by
-// country — empty disables the country panel. Only the country code is read from
-// a visitor's IP; the IP itself is never stored.
+// country — empty disables the country panel. GeoIPASNDB is an optional ASN
+// database (DB-IP ASN Lite): when set, visits from hosting/cloud/VPN networks are
+// bucketed as "datacenter" instead of a country, so the country rows reflect real
+// readers rather than US-hosted infrastructure. Only the country code (or the
+// datacenter flag) is read from a visitor's IP; the IP itself is never stored.
 type AnalyticsConfig struct {
-	GeoIPDB string `mapstructure:"geoip_db"`
+	GeoIPDB    string `mapstructure:"geoip_db"`
+	GeoIPASNDB string `mapstructure:"geoip_asn_db"`
 }
 
 // BootstrapConfig seeds the first administrator on a fresh server. When no admin
@@ -335,6 +339,9 @@ func setDefaults(v *viper.Viper) {
 	// Path to the DB-IP Lite country database for visitor-country analytics.
 	// Empty = country panel off. Bound as SHANRAQ_ANALYTICS_GEOIP_DB.
 	v.SetDefault("analytics.geoip_db", "")
+	// Optional ASN database (DB-IP ASN Lite): hosting/cloud/VPN IPs are counted
+	// as "datacenter" instead of a country. Bound as SHANRAQ_ANALYTICS_GEOIP_ASN_DB.
+	v.SetDefault("analytics.geoip_asn_db", "")
 
 	// Registered so SHANRAQ_BOOTSTRAP_ADMIN_* bind from the environment.
 	v.SetDefault("bootstrap.admin_email", "")

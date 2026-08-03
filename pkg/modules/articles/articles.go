@@ -110,10 +110,14 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	}
 	m.metrics = NewMetrics(rt.DB, rt.Logger)
 	// Optional GeoIP: buckets visits by country so the audience panel can tell
-	// domestic (KZ) readers from genuine foreign ones. Off when no DB is set.
-	m.geoip = openGeoIP(rt.Config.Analytics.GeoIPDB)
+	// domestic (KZ) readers from genuine foreign ones. The optional ASN database
+	// separates hosting/cloud/VPN traffic ("datacenter") from real readers. Off
+	// when no country DB is set.
+	m.geoip = openGeoIP(rt.Config.Analytics.GeoIPDB, rt.Config.Analytics.GeoIPASNDB)
 	if m.geoip != nil {
-		rt.Logger.Info("country analytics enabled", zap.String("geoip_db", rt.Config.Analytics.GeoIPDB))
+		rt.Logger.Info("country analytics enabled",
+			zap.String("geoip_db", rt.Config.Analytics.GeoIPDB),
+			zap.Bool("datacenter_filter", m.geoip.hasASN()))
 	}
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)

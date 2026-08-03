@@ -3,6 +3,7 @@ package articles
 import (
 	"net"
 	"net/http"
+	"strings"
 	"testing"
 )
 
@@ -69,11 +70,32 @@ func TestClientIP(t *testing.T) {
 	}
 }
 
-// country() on a nil *geoIP must be a safe no-op returning "".
+// country()/geoLabel()/isDatacenter() on a nil *geoIP must be safe no-ops.
 func TestNilGeoIP(t *testing.T) {
 	var g *geoIP
-	if got := g.country(parseMaybe("8.8.8.8")); got != "" {
+	ip := parseMaybe("8.8.8.8")
+	if got := g.country(ip); got != "" {
 		t.Errorf("nil geoIP.country = %q, want empty", got)
 	}
+	if got := g.geoLabel(ip); got != "" {
+		t.Errorf("nil geoIP.geoLabel = %q, want empty", got)
+	}
+	if g.isDatacenter(ip) {
+		t.Error("nil geoIP.isDatacenter = true, want false")
+	}
+	if g.hasASN() {
+		t.Error("nil geoIP.hasASN = true, want false")
+	}
 	g.close() // must not panic
+}
+
+func TestDatacenterOrgsNonEmpty(t *testing.T) {
+	if len(datacenterOrgs) == 0 {
+		t.Fatal("datacenterOrgs must not be empty")
+	}
+	for _, kw := range datacenterOrgs {
+		if kw != strings.ToLower(kw) {
+			t.Errorf("datacenter keyword %q must be lowercase (matched against a lowercased org)", kw)
+		}
+	}
 }

@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] — 2026-08-03
+
+### Added
+- The country panel now separates **hosting/cloud/VPN traffic from real
+  readers**. An optional ASN database (DB-IP ASN Lite) flags visits from cloud
+  networks (AWS, Google, Azure, Cloudflare, OVH, Hetzner, VPN exits, …) and
+  buckets them as "ЦОД / VPN" instead of a country — so the geographic rows
+  reflect actual eyeballs, not US-hosted infrastructure that otherwise dominates
+  by IP. Only the coarse label is counted; the IP is still discarded. Optional
+  and graceful: without the ASN file every IP is bucketed by country as before.
+
+### Changed
+- Bot detection now also recognises common scraper/library agents (Scrapy,
+  axios, node-fetch, Guzzle, aiohttp, Postman, …), so fewer automated hits leak
+  into the human audience counts.
+
 ## [0.8.0] — 2026-08-03
 
 ### Added

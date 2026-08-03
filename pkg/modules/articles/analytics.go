@@ -102,7 +102,10 @@ func botLabel(ua string) string {
 		return "ai"
 	case strings.Contains(u, "bot"), strings.Contains(u, "crawler"), strings.Contains(u, "spider"), strings.Contains(u, "slurp"),
 		strings.Contains(u, "curl"), strings.Contains(u, "wget"), strings.Contains(u, "python"), strings.Contains(u, "go-http"),
-		strings.Contains(u, "java/"), strings.Contains(u, "okhttp"), strings.Contains(u, "headless"), strings.Contains(u, "phantom"):
+		strings.Contains(u, "java/"), strings.Contains(u, "okhttp"), strings.Contains(u, "headless"), strings.Contains(u, "phantom"),
+		strings.Contains(u, "scrapy"), strings.Contains(u, "axios"), strings.Contains(u, "node-fetch"), strings.Contains(u, "guzzle"),
+		strings.Contains(u, "libwww"), strings.Contains(u, "httpclient"), strings.Contains(u, "http-client"), strings.Contains(u, "postman"),
+		strings.Contains(u, "insomnia"), strings.Contains(u, "dart:io"), strings.Contains(u, "aiohttp"):
 		return "other"
 	}
 	return ""
@@ -352,8 +355,10 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 					m.metrics.inc(metricOS, osFamily(ua), guest)
 					m.metrics.inc(metricBrowser, browserFamily(ua), guest)
 					// Visitor country (nil geoip → no-op). The IP is resolved to a
-					// coarse country code and discarded — nothing per-visitor stored.
-					if c := m.geoip.country(clientIP(r)); c != "" {
+					// coarse label — an ISO country code, or "datacenter" for
+					// hosting/cloud/VPN networks — and discarded. Nothing per-visitor
+					// is stored.
+					if c := m.geoip.geoLabel(clientIP(r)); c != "" {
 						m.metrics.inc(metricCountry, c, guest)
 					}
 				}
