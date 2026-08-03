@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.5] — 2026-08-02
+
+### Changed
+- Dependency maintenance (Dependabot): bumped the Go dependency group (pgx,
+  viper, zap, prometheus client, jwt, golang.org/x/crypto, goose, validator,
+  anthropic-sdk and others — all minor/patch) and CI GitHub Actions
+  (checkout@v7, setup-go@v7, docker/setup-buildx-action@v4). Build and full
+  test suite green.
+
 ## [0.6.4] — 2026-08-02
 
 ### Changed
