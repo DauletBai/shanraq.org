@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version: 'stable'
       - name: gofmt
@@ -44,7 +44,7 @@ jobs:
       SHANRAQ_TEST_DB: postgres://postgres:postgres@localhost:5432/shanraq_test
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version: 'stable'
       # Apply the real migration set to the service database so the
@@ -63,7 +63,7 @@ jobs:
     needs: unit
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version: 'stable'
       - name: Refresh template snapshots
