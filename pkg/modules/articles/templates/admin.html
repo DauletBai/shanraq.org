@@ -394,7 +394,21 @@
           </div>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
-        <div class="adm-panel"></div>
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.countries" }}</h2>
+          <p class="adm-hint">{{ t .Lang "ag.countries_note" }}</p>
+          {{ if .Guests.Countries }}
+          <div class="adm-chart">
+            {{ range .Guests.Countries }}
+            <div class="adm-bar">
+              <span class="adm-bar__label">{{ .Title }}</span>
+              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ money .N }}</span>
+            </div>
+            {{ end }}
+          </div>
+          {{ else }}<p class="adm-hint">—</p>{{ end }}
+        </div>
       </div>
       {{ else }}
       <p class="adm-hint">{{ t .Lang "ag.empty" }}</p>

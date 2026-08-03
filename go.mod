@@ -13,6 +13,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.10.0
 	github.com/joho/godotenv v1.5.1
+	github.com/oschwald/maxminddb-golang v1.13.1
 	github.com/pashagolub/pgxmock/v4 v4.9.0
 	github.com/pquerna/otp v1.5.0
 	github.com/pressly/goose/v3 v3.27.3

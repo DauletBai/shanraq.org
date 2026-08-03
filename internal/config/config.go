@@ -29,6 +29,15 @@ type Config struct {
 	Operator      OperatorConfig      `mapstructure:"operator"`
 	Bootstrap     BootstrapConfig     `mapstructure:"bootstrap"`
 	SMS           sms.Config          `mapstructure:"sms"`
+	Analytics     AnalyticsConfig     `mapstructure:"analytics"`
+}
+
+// AnalyticsConfig tunes the aggregate audience analytics. GeoIPDB is the path to
+// a MaxMind-format country database (DB-IP Lite) used to bucket visits by
+// country — empty disables the country panel. Only the country code is read from
+// a visitor's IP; the IP itself is never stored.
+type AnalyticsConfig struct {
+	GeoIPDB string `mapstructure:"geoip_db"`
 }
 
 // BootstrapConfig seeds the first administrator on a fresh server. When no admin
@@ -322,6 +331,10 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("sms.password", "") // smsc
 	v.SetDefault("sms.base_url", "")
 	v.SetDefault("sms.channel", "") // "" (SMS) | telegram — deliver codes via Telegram
+
+	// Path to the DB-IP Lite country database for visitor-country analytics.
+	// Empty = country panel off. Bound as SHANRAQ_ANALYTICS_GEOIP_DB.
+	v.SetDefault("analytics.geoip_db", "")
 
 	// Registered so SHANRAQ_BOOTSTRAP_ADMIN_* bind from the environment.
 	v.SetDefault("bootstrap.admin_email", "")

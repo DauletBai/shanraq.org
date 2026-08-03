@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] — 2026-08-03
+
+### Added
+- Audience analytics now shows a **visitor-country** panel (30-day) so the team
+  can tell domestic (Kazakhstan) readers from a genuine foreign audience — the
+  English content shared on LinkedIn draws both, and by-language view counts
+  alone couldn't say which. Countries are resolved from the visitor IP with a
+  local DB-IP Lite database (bind-mounted read-only, refreshed monthly on the
+  host); only the coarse country code is counted and the IP is immediately
+  discarded, exactly like the User-Agent in the device/OS panels — no
+  per-visitor profiling. The feature is optional: with no database present the
+  panel simply stays empty and nothing else changes.
+
 ## [0.7.2] — 2026-08-03
 
 ### Changed

@@ -48,6 +48,7 @@ type Module struct {
 	content     *ContentStore
 	tariffs     *TariffStore
 	metrics     *Metrics
+	geoip       *geoIP
 	ratings     *ratings.Store
 	jobs        *jobs.Store
 	auth        *auth.Module
@@ -108,6 +109,12 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 		rt.Logger.Warn("load tariffs", zap.Error(err))
 	}
 	m.metrics = NewMetrics(rt.DB, rt.Logger)
+	// Optional GeoIP: buckets visits by country so the audience panel can tell
+	// domestic (KZ) readers from genuine foreign ones. Off when no DB is set.
+	m.geoip = openGeoIP(rt.Config.Analytics.GeoIPDB)
+	if m.geoip != nil {
+		rt.Logger.Info("country analytics enabled", zap.String("geoip_db", rt.Config.Analytics.GeoIPDB))
+	}
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)
 	m.validator = validate.New()

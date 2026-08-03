@@ -68,6 +68,7 @@ const (
 	metricDevice  = "device"  // mobile / tablet / desktop
 	metricOS      = "os"      // android / ios / windows / macos / linux
 	metricBrowser = "browser" // chrome / safari / firefox / edge / …
+	metricCountry = "country" // visitor country by IP (ISO code), IP not stored
 )
 
 // botLabel classifies a User-Agent as a crawler/bot and returns its family
@@ -350,6 +351,11 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 					m.metrics.inc(metricDevice, deviceClass(ua), guest)
 					m.metrics.inc(metricOS, osFamily(ua), guest)
 					m.metrics.inc(metricBrowser, browserFamily(ua), guest)
+					// Visitor country (nil geoip → no-op). The IP is resolved to a
+					// coarse country code and discarded — nothing per-visitor stored.
+					if c := m.geoip.country(clientIP(r)); c != "" {
+						m.metrics.inc(metricCountry, c, guest)
+					}
 				}
 			}
 		}
@@ -441,6 +447,7 @@ type GuestAnalytics struct {
 	Devices   []GuestSimpleRow // mobile / tablet / desktop (30 days)
 	OS        []GuestSimpleRow // operating-system mix (30 days)
 	Browsers  []GuestSimpleRow // browser mix (30 days)
+	Countries []GuestSimpleRow // visitor country by IP (30 days)
 	Trend     []GuestTrendDay
 	TrendFrom string // first day label in the trend (oldest)
 	TrendTo   string // last day label in the trend (today)
@@ -532,6 +539,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	g.Devices = m.simpleRows(ctx, metricDevice, "ag.device.", lang)
 	g.OS = m.simpleRows(ctx, metricOS, "ag.os.", lang)
 	g.Browsers = m.simpleRows(ctx, metricBrowser, "ag.browser.", lang)
+	g.Countries = m.simpleRows(ctx, metricCountry, "ag.country.", lang)
 
 	// 14-day guest-views sparkline, gaps filled with zero.
 	g.Trend = m.guestTrend(ctx)

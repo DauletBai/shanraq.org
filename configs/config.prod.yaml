@@ -52,3 +52,11 @@ social:
   instagram: "https://instagram.com/shanraq_org"   # @shanraq_org
   facebook: "https://www.facebook.com/profile.php?id=61592467086570"   # brand page (swap for /shanraqorg once the username is set)
   github: "https://github.com/DauletBai/shanraq.org"   # footer only (not shown in the header)
+
+# Aggregate audience analytics. geoip_db points to a MaxMind-format country
+# database (DB-IP Lite, bind-mounted read-only by docker-compose) used to bucket
+# visits by country — to tell domestic (KZ) readers from genuine foreign ones.
+# Only the country code is read from a visitor's IP; the IP itself is never
+# stored. If the file is absent the country panel simply stays empty.
+analytics:
+  geoip_db: /app/geoip/country.mmdb
