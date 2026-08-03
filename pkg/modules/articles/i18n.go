@@ -579,7 +579,7 @@ var messages = map[string]map[string]string{
 	"ag.os_panel":          {"kz": "Операциялық жүйе (30 күн)", "ru": "ОС (30 дней)", "en": "OS (30 days)"},
 	"ag.browsers":          {"kz": "Браузерлер (30 күн)", "ru": "Браузеры (30 дней)", "en": "Browsers (30 days)"},
 	"ag.countries":         {"kz": "Елдер (30 күн)", "ru": "Страны (30 дней)", "en": "Countries (30 days)"},
-	"ag.countries_note":    {"kz": "Оқырмандар қай елден. Отандық (Қазақстан) және шынайы шетелдік аудиторияны ажыратуға көмектеседі.", "ru": "Из каких стран читатели — чтобы отличить отечественную (Казахстан) аудиторию от настоящей зарубежной.", "en": "Which countries readers come from — to tell the domestic (Kazakhstan) audience from a genuine foreign one."},
+	"ag.countries_note":    {"kz": "Оқырмандар қай елден. «ЦОД / VPN» — хостинг/VPN арқылы кірген, елі жасырын: боттар да, VPN арқылы кірген тірі оқырмандар да (бәлкім, бір бөлігі Ресейден).", "ru": "Из каких стран читатели. «ЦОД / VPN» — заходы через хостинг/VPN, страна скрыта: это и боты, и живые читатели через VPN (вероятно, часть — из России).", "en": "Where readers come from. “Data center / VPN” = visits via hosting/VPN with the country masked — a mix of bots and real people on a VPN (likely some from Russia)."},
 	"ag.device.mobile":     {"kz": "Смартфон", "ru": "Смартфон", "en": "Mobile"},
 	"ag.device.tablet":     {"kz": "Планшет", "ru": "Планшет", "en": "Tablet"},
 	"ag.device.desktop":    {"kz": "Компьютер", "ru": "Компьютер / ноутбук", "en": "Desktop"},
@@ -651,9 +651,12 @@ var messages = map[string]map[string]string{
 	"ag.country.AM": {"kz": "Армения", "ru": "Армения", "en": "Armenia"},
 	"ag.country.HK": {"kz": "Гонконг", "ru": "Гонконг", "en": "Hong Kong"},
 	"ag.country.SG": {"kz": "Сингапур", "ru": "Сингапур", "en": "Singapore"},
-	// Hosting/cloud/VPN networks — not attributable to a reader's real country,
-	// so they are shown apart from the geographic rows rather than inflating them.
-	"ag.country.datacenter":  {"kz": "ЦОД / VPN (боттар)", "ru": "ЦОД / VPN (боты)", "en": "Data center / VPN (bots)"},
+	// Hosting/cloud/VPN networks — the visitor's real country is masked, so these
+	// are shown apart from the geographic rows rather than inflating them. NOT
+	// labelled "bots": the bucket is a mix of crawlers AND real people behind an
+	// always-on VPN (likely many from Russia, where VPN use is widespread while
+	// Kazakhstan's internet is open).
+	"ag.country.datacenter":  {"kz": "ЦОД / VPN", "ru": "ЦОД / VPN", "en": "Data center / VPN"},
 	"ag.page.home":           {"kz": "Басты бет", "ru": "Главная", "en": "Home"},
 	"ag.page.article":        {"kz": "Мақалалар", "ru": "Статьи", "en": "Articles"},
 	"ag.page.listings":       {"kz": "Хабарландырулар тізімі", "ru": "Список объявлений", "en": "Listings"},
