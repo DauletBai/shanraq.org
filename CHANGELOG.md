@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-08-03
+
+### Added
+- Audience analytics now shows the **device, OS and browser mix** (mobile /
+  tablet / desktop; Android / iOS / Windows / macOS / Linux; Chrome / Safari /
+  Firefox / Edge / …) as aggregate 30-day panels — coarse, no per-visitor
+  profiling. The User-Agent is classified and discarded, like the bot check.
+
+### Changed
+- The team's own visits no longer count as audience: page views from a logged-in
+  admin/operator are skipped, so the owner's constant browsing stops inflating
+  the guest and "Direct" counts.
+
 ## [0.6.5] — 2026-08-02
 
 ### Changed

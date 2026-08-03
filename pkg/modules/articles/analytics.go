@@ -61,10 +61,13 @@ var trackedEvents = map[string]bool{
 }
 
 const (
-	metricPage   = "page"
-	metricClick  = "click"
-	metricBot    = "bot"    // crawler/preview-bot page hit, by family
-	metricSource = "source" // where a human visit came from, by referrer
+	metricPage    = "page"
+	metricClick   = "click"
+	metricBot     = "bot"     // crawler/preview-bot page hit, by family
+	metricSource  = "source"  // where a human visit came from, by referrer
+	metricDevice  = "device"  // mobile / tablet / desktop
+	metricOS      = "os"      // android / ios / windows / macos / linux
+	metricBrowser = "browser" // chrome / safari / firefox / edge / …
 )
 
 // botLabel classifies a User-Agent as a crawler/bot and returns its family
@@ -176,6 +179,72 @@ func utmSource(v string) string {
 	return ""
 }
 
+// deviceClass buckets a User-Agent into mobile / tablet / desktop. Coarse and
+// pure — an aggregate device mix, never a per-visitor fingerprint. The UA is
+// read and discarded, keeping the no-profiling promise.
+func deviceClass(ua string) string {
+	u := strings.ToLower(ua)
+	switch {
+	case strings.TrimSpace(u) == "":
+		return "other"
+	case strings.Contains(u, "ipad"), strings.Contains(u, "tablet"),
+		strings.Contains(u, "android") && !strings.Contains(u, "mobile"):
+		return "tablet"
+	case strings.Contains(u, "mobile"), strings.Contains(u, "iphone"),
+		strings.Contains(u, "ipod"), strings.Contains(u, "android"):
+		return "mobile"
+	default:
+		return "desktop"
+	}
+}
+
+// osFamily classifies the operating system. iOS is checked before macOS because
+// the iPhone/iPad UA also contains "Mac OS X".
+func osFamily(ua string) string {
+	u := strings.ToLower(ua)
+	switch {
+	case strings.Contains(u, "android"):
+		return "android"
+	case strings.Contains(u, "iphone"), strings.Contains(u, "ipad"), strings.Contains(u, "ipod"):
+		return "ios"
+	case strings.Contains(u, "windows"):
+		return "windows"
+	case strings.Contains(u, "mac os x"), strings.Contains(u, "macintosh"):
+		return "macos"
+	case strings.Contains(u, "cros"):
+		return "chromeos"
+	case strings.Contains(u, "linux"):
+		return "linux"
+	default:
+		return "other"
+	}
+}
+
+// browserFamily classifies the browser. Order matters: Edge/Opera/Samsung/Yandex
+// UAs all contain "Chrome", and Chrome's UA contains "Safari", so the more
+// specific tokens are checked first.
+func browserFamily(ua string) string {
+	u := strings.ToLower(ua)
+	switch {
+	case strings.Contains(u, "edg"):
+		return "edge"
+	case strings.Contains(u, "opr"), strings.Contains(u, "opera"):
+		return "opera"
+	case strings.Contains(u, "samsungbrowser"):
+		return "samsung"
+	case strings.Contains(u, "yabrowser"):
+		return "yandex"
+	case strings.Contains(u, "firefox"), strings.Contains(u, "fxios"):
+		return "firefox"
+	case strings.Contains(u, "crios"), strings.Contains(u, "chrome"):
+		return "chrome"
+	case strings.Contains(u, "safari"):
+		return "safari"
+	default:
+		return "other"
+	}
+}
+
 // metricKey identifies one counter bucket.
 type metricKey struct {
 	kind  string
@@ -251,7 +320,8 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			if kind := pageKind(r.URL.Path); kind != "" {
-				bot := botLabel(r.Header.Get("User-Agent"))
+				ua := r.Header.Get("User-Agent")
+				bot := botLabel(ua)
 				switch {
 				case bot == "seo":
 					// Commercial SEO scanners are turned away in robots.txt and
@@ -262,15 +332,24 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 					// real human audience — that was the whole point.
 					m.metrics.inc(metricBot, bot, true)
 				default:
-					_, ok := auth.ClaimsFromContext(r.Context())
-					m.metrics.inc(metricPage, kind, !ok)
+					claims, ok := auth.ClaimsFromContext(r.Context())
+					// The team's own browsing is not "audience": skip staff so
+					// admin/operator visits don't inflate the guest/Direct counts.
+					if ok && claims.HasAnyRole("admin", "operator") {
+						break
+					}
+					guest := !ok
+					m.metrics.inc(metricPage, kind, guest)
 					// Prefer an explicit utm_source (survives the referrer being
 					// stripped by messengers/apps); fall back to the Referer host.
 					src := utmSource(r.URL.Query().Get("utm_source"))
 					if src == "" {
 						src = trafficSource(r.Header.Get("Referer"), r.Host)
 					}
-					m.metrics.inc(metricSource, src, !ok)
+					m.metrics.inc(metricSource, src, guest)
+					m.metrics.inc(metricDevice, deviceClass(ua), guest)
+					m.metrics.inc(metricOS, osFamily(ua), guest)
+					m.metrics.inc(metricBrowser, browserFamily(ua), guest)
 				}
 			}
 		}
@@ -359,6 +438,9 @@ type GuestAnalytics struct {
 	Clicks    []GuestClickRow
 	Sources   []GuestSimpleRow // human visits by referrer (30 days)
 	Bots      []GuestSimpleRow // crawler hits by family (30 days)
+	Devices   []GuestSimpleRow // mobile / tablet / desktop (30 days)
+	OS        []GuestSimpleRow // operating-system mix (30 days)
+	Browsers  []GuestSimpleRow // browser mix (30 days)
 	Trend     []GuestTrendDay
 	TrendFrom string // first day label in the trend (oldest)
 	TrendTo   string // last day label in the trend (today)
@@ -447,6 +529,9 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	// Traffic sources and bots, last 30 days.
 	g.Sources = m.simpleRows(ctx, metricSource, "ag.source.", lang)
 	g.Bots = m.simpleRows(ctx, metricBot, "ag.bot.", lang)
+	g.Devices = m.simpleRows(ctx, metricDevice, "ag.device.", lang)
+	g.OS = m.simpleRows(ctx, metricOS, "ag.os.", lang)
+	g.Browsers = m.simpleRows(ctx, metricBrowser, "ag.browser.", lang)
 
 	// 14-day guest-views sparkline, gaps filled with zero.
 	g.Trend = m.guestTrend(ctx)

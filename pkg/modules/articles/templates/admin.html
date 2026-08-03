@@ -349,6 +349,53 @@
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
       </div>
+      <div class="adm-cols">
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.devices" }}</h2>
+          {{ if .Guests.Devices }}
+          <div class="adm-chart">
+            {{ range .Guests.Devices }}
+            <div class="adm-bar">
+              <span class="adm-bar__label">{{ .Title }}</span>
+              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ money .N }}</span>
+            </div>
+            {{ end }}
+          </div>
+          {{ else }}<p class="adm-hint">—</p>{{ end }}
+        </div>
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.os_panel" }}</h2>
+          {{ if .Guests.OS }}
+          <div class="adm-chart">
+            {{ range .Guests.OS }}
+            <div class="adm-bar">
+              <span class="adm-bar__label">{{ .Title }}</span>
+              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ money .N }}</span>
+            </div>
+            {{ end }}
+          </div>
+          {{ else }}<p class="adm-hint">—</p>{{ end }}
+        </div>
+      </div>
+      <div class="adm-cols">
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.browsers" }}</h2>
+          {{ if .Guests.Browsers }}
+          <div class="adm-chart">
+            {{ range .Guests.Browsers }}
+            <div class="adm-bar">
+              <span class="adm-bar__label">{{ .Title }}</span>
+              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ money .N }}</span>
+            </div>
+            {{ end }}
+          </div>
+          {{ else }}<p class="adm-hint">—</p>{{ end }}
+        </div>
+        <div class="adm-panel"></div>
+      </div>
       {{ else }}
       <p class="adm-hint">{{ t .Lang "ag.empty" }}</p>
       {{ end }}
