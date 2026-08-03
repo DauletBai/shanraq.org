@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.2] — 2026-08-03
+
+### Changed
+- The author phone-verification form now states the one-time code arrives **via
+  Telegram** (with a nudge to have Telegram on that number), so a user without
+  Telegram isn't sent down a dead end. Labels updated from "SMS" to "Telegram".
+
 ## [0.7.1] — 2026-08-03
 
 ### Added
