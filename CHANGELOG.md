@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- A "follow us" card in the article aside, under the table of contents. The
+  aside is sticky on desktop, so the ask now travels with the reader for the
+  whole piece instead of waiting at the bottom, where only those who finish ever
+  see it. Only configured profiles are listed — a `#` placeholder (YouTube today)
+  would be a dead click on a card whose single job is to be clicked. Clicks
+  report an aggregate `follow_social` event to the existing counter, so the card
+  can be judged on numbers rather than on taste.
+
+### Added
 - Article cards now carry the view counter, which until now only existed on the
   article page itself: `👍 1 · 👁 115 · D. Baimurza · 04.08.26`. Counters above
   999 collapse to a localized short form — `1,2 мың` / `1,2 тыс.` / `1.2k`,

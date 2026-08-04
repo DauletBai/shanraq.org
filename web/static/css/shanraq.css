@@ -1496,6 +1496,21 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .toc-box__list a { display: flex; gap: 9px; align-items: baseline; color: var(--ink-soft); font-size: .9rem; padding: 5px 7px; border-radius: 6px; text-decoration: none; line-height: 1.35; }
 .toc-box__list a::before { content: counter(toc); font-family: var(--mono); font-size: .72rem; color: var(--gold-strong); font-weight: 700; }
 .toc-box__list a:hover { background: var(--surface-2); color: var(--ink); }
+/* Follow card — deliberately built from the same box, padding and label style as
+   the contents above it, so the two read as one sticky column rather than as a
+   banner bolted onto the article. */
+.follow { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+.follow__title { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 0 0 8px; }
+.follow__text { font-size: .88rem; line-height: 1.45; color: var(--ink-soft); margin: 0 0 14px; }
+.follow__icons { display: flex; flex-wrap: wrap; gap: 10px; }
+.follow__icons .soc {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-soft);
+  transition: color .15s ease, border-color .15s ease, transform .15s ease;
+}
+.follow__icons .soc svg { width: 19px; height: 19px; display: block; }
+.follow__icons .soc:hover { color: var(--gold-strong); border-color: var(--gold-strong); transform: translateY(-2px); }
 .prose h2 { scroll-margin-top: 90px; }
 /* An article with no headings has no aside — let it use the full column width. */
 .layout--solo { grid-template-columns: minmax(0, 1fr); }

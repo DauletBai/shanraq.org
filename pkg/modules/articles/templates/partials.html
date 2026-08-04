@@ -40,6 +40,23 @@
 </div>
 {{ end }}
 
+{{/* follow_card — the "follow us" block under the article's table of contents.
+     The aside is sticky on desktop, so the ask travels with the reader for the
+     whole piece instead of waiting at the bottom, where only finishers see it.
+     Only configured profiles are listed: a "#" placeholder would be a dead click
+     on a card whose single job is to be clicked. The wrapper carries data-track,
+     so any icon inside reports one aggregate "follow_social" event — the beacon
+     reads the nearest [data-track] ancestor. */}}
+{{ define "follow_card" }}
+{{ with liveSocial .Info.Social }}
+<div class="follow">
+  <p class="follow__title">{{ t $.Lang "follow.title" }}</p>
+  <p class="follow__text">{{ t $.Lang "follow.text" }}</p>
+  <div class="follow__icons" data-track="follow_social">{{ template "social_icons" . }}</div>
+</div>
+{{ end }}
+{{ end }}
+
 {{/* fhelp renders a "?" icon with a click/hover tooltip. Pass the tip text as . */}}
 {{ define "fhelp" }}<button type="button" class="fhelp" data-fhelp aria-label="?">?<span class="fhelp__tip" role="tooltip">{{ . }}</span></button>{{ end }}
 

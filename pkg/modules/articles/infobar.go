@@ -35,6 +35,19 @@ type SocialLink struct {
 	URL  string
 }
 
+// liveSocial keeps only the profiles that actually lead somewhere. A "#" entry
+// is a placeholder for a network we have not opened yet — acceptable as a hint
+// in the header strip, never on a card whose entire purpose is to be clicked.
+func liveSocial(links []SocialLink) []SocialLink {
+	out := make([]SocialLink, 0, len(links))
+	for _, l := range links {
+		if l.URL != "" && l.URL != "#" {
+			out = append(out, l)
+		}
+	}
+	return out
+}
+
 // InfoBarData is the per-request snapshot handed to templates.
 type InfoBarData struct {
 	Today        string

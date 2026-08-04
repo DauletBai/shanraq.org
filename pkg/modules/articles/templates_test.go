@@ -161,6 +161,22 @@ func TestCompactNum(t *testing.T) {
 	}
 }
 
+func TestLiveSocial(t *testing.T) {
+	in := []SocialLink{
+		{Name: "telegram", URL: "https://t.me/shanraq_org"},
+		{Name: "youtube", URL: "#"}, // not opened yet — must not become a dead click
+		{Name: "facebook", URL: ""},
+		{Name: "instagram", URL: "https://instagram.com/shanraq_org"},
+	}
+	got := liveSocial(in)
+	if len(got) != 2 || got[0].Name != "telegram" || got[1].Name != "instagram" {
+		t.Errorf("liveSocial() = %+v, want telegram + instagram only", got)
+	}
+	if n := len(liveSocial(nil)); n != 0 {
+		t.Errorf("liveSocial(nil) returned %d links, want 0", n)
+	}
+}
+
 func TestSlugify(t *testing.T) {
 	cases := map[string]string{
 		"Привет мир":     "privet-mir",

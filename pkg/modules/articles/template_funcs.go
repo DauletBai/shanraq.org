@@ -46,6 +46,7 @@ func templateFuncs() template.FuncMap {
 		"catIcon":           catIcon,
 		"firstN":            firstStrings,
 		"countryFlag":       countryFlag,
+		"liveSocial":        liveSocial, // social profiles that aren't "#" placeholders
 		"dict":              dict,
 		"year":              func() int { return time.Now().Year() },
 		"markdown":          RenderMarkdown,

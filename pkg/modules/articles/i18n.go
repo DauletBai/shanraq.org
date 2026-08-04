@@ -333,6 +333,13 @@ var messages = map[string]map[string]string{
 	"home.empty_cta":  {"kz": "Бірінші мақаланы жазу", "ru": "Написать первую статью", "en": "Write the first story"},
 	"home.page_title": {"kz": "Еркін үш тілді жарияланымдар алаңы", "ru": "Свободная трёхъязычная площадка публикаций", "en": "A free trilingual publishing platform"},
 
+	"follow.title": {"kz": "Жаңа талдаулар", "ru": "Новые разборы", "en": "New analysis"},
+	"follow.text": {
+		"kz": "Әрбір жаңа талдау арналарымызда шығады. Кейін іздеп жүрмеу үшін жазылыңыз.",
+		"ru": "Каждый новый разбор выходит в наших каналах. Подпишитесь, чтобы не искать его потом.",
+		"en": "Every new piece goes out through our channels. Follow so you don't have to look for it later.",
+	},
+
 	"meta.views": {"kz": "оқылым", "ru": "просмотров", "en": "views"},
 	"meta.ai":    {"kz": "ИИ аудармасы", "ru": "ИИ-перевод", "en": "AI translation"},
 
@@ -682,6 +689,7 @@ var messages = map[string]map[string]string{
 	"ag.click.login_cta":     {"kz": "Кіру түймесі", "ru": "Кнопка входа", "en": "Sign-in button"},
 	"ag.click.post_listing":  {"kz": "Хабарландыру беру", "ru": "Подать объявление", "en": "Post a listing"},
 	"ag.click.write_article": {"kz": "Мақала жазу", "ru": "Написать статью", "en": "Write an article"},
+	"ag.click.follow_social": {"kz": "Әлеуметтік желіге жазылу", "ru": "Подписка в соцсетях", "en": "Follow on social"},
 
 	// AI model settings (admin).
 	"aic.title":            {"kz": "ЖИ моделі (API)", "ru": "Модель ИИ (API)", "en": "AI model (API)"},

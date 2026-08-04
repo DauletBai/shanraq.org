@@ -58,6 +58,7 @@ var trackedEvents = map[string]bool{
 	"login_cta":     true, // clicked a sign-in call to action
 	"post_listing":  true, // clicked "post a listing"
 	"write_article": true, // clicked "write"
+	"follow_social": true, // clicked a social profile in the article-aside follow card
 }
 
 const (
