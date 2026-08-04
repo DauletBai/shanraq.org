@@ -34,6 +34,8 @@ func templateFuncs() template.FuncMap {
 		"surfaceLabel":      SurfaceLabelKey,
 		"adFormatSlots":     AdFormatSlots,
 		"money":             money,
+		"compactNum":        compactNum, // 1234 → "1,2 тыс." for tight meta rows
+		"shortAuthor":       shortAuthor,
 		"hasSuffix":         strings.HasSuffix,
 		"ogLocale":          ogLocale,
 		"htmlLang":          htmlLang,

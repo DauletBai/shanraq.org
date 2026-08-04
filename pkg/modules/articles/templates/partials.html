@@ -14,6 +14,32 @@
 </div>
 {{ end }}
 
+{{/* post_meta renders the footer row of an article card: rating, views, byline,
+     date. Shared by the home feed, favourites and an author's page so the same
+     card can't drift into three dialects. Pass (dict "P" item "Lang" lang), and
+     add "NoByline" true on an author's own page, where repeating their name on
+     every card says nothing.
+
+     The byline is abbreviated (shortAuthor) and the counter compacted
+     (compactNum) because all four facts have to share one line inside a
+     two-column card — a long "Daulet Baimurza" costs more width than the views
+     it would push out. */}}
+{{ define "post_meta" }}
+<div class="post__meta">
+  {{ if .P.IsAI }}<span class="tag tag--ai">{{ t .Lang "meta.ai" }}</span>{{ end }}
+  <span class="score metaic {{ if gt .P.Score 0 }}pos{{ else if lt .P.Score 0 }}neg{{ end }}" title="{{ t .Lang "author.rating" }}">{{ icon "thumb_up" }}{{ .P.Score }}</span>
+  <span class="dot">·</span>
+  <span class="metaic" title="{{ t .Lang "meta.views" }}">{{ icon "eye" }}{{ compactNum .Lang .P.Views }}</span>
+  {{ if not .NoByline }}
+  <span class="dot">·</span>
+  <span class="post__by" title="{{ .P.AuthorName }}">{{ if .P.AuthorID }}<a class="byline-link" href="/author/{{ .P.AuthorID }}?lang={{ .Lang }}">{{ shortAuthor .P.AuthorName }}</a>{{ else }}{{ shortAuthor .P.AuthorName }}{{ end }}</span>
+  {{ if .P.AIAuthor }}<span class="tag tag--ai">{{ t .Lang "article.ai_opinion" }}</span>{{ end }}
+  {{ end }}
+  <span class="dot">·</span>
+  <span class="metaic">{{ icon "calendar" }}{{ fmtDatePtr .P.Published }}</span>
+</div>
+{{ end }}
+
 {{/* fhelp renders a "?" icon with a click/hover tooltip. Pass the tip text as . */}}
 {{ define "fhelp" }}<button type="button" class="fhelp" data-fhelp aria-label="?">?<span class="fhelp__tip" role="tooltip">{{ . }}</span></button>{{ end }}
 

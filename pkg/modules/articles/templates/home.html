@@ -38,15 +38,7 @@
           <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ catIcon .Category }}{{ t $.Lang (printf "cat.%s" .Category) }}</a>
           <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
           {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
-          <div class="post__meta">
-            {{ if .IsAI }}<span class="tag tag--ai">{{ t $.Lang "meta.ai" }}</span>{{ end }}
-            <span class="score metaic {{ if gt .Score 0 }}pos{{ else if lt .Score 0 }}neg{{ end }}">{{ icon "thumb_up" }}{{ .Score }}</span>
-            <span class="dot">·</span>
-            <span>{{ if .AuthorID }}<a class="byline-link" href="/author/{{ .AuthorID }}?lang={{ $.Lang }}">{{ .AuthorName }}</a>{{ else }}{{ .AuthorName }}{{ end }}</span>
-            {{ if .AIAuthor }}<span class="tag tag--ai">{{ t $.Lang "article.ai_opinion" }}</span>{{ end }}
-            <span class="dot">·</span>
-            <span class="metaic">{{ icon "calendar" }}{{ fmtDatePtr .Published }}</span>
-          </div>
+          {{ template "post_meta" (dict "P" . "Lang" $.Lang) }}
         </article>
         {{ end }}
       </div>

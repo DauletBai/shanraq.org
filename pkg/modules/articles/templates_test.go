@@ -119,6 +119,48 @@ func TestTranslationsCoverAllLangs(t *testing.T) {
 	}
 }
 
+func TestShortAuthor(t *testing.T) {
+	cases := map[string]string{
+		"Daulet Baimurza":       "D. Baimurza",
+		"Даулет Баймурза":       "Д. Баймурза",
+		"Иван Петрович Сидоров": "И. П. Сидоров",
+		"AI Dake": "A. Dake",
+		"Сана":    "Сана", // one word — nothing to abbreviate
+		"  Айгерим  Нурланова   ": "А. Нурланова",
+		"": "",
+	}
+	for in, want := range cases {
+		if got := shortAuthor(in); got != want {
+			t.Errorf("shortAuthor(%q) = %q, want %q", in, got, want)
+		}
+	}
+}
+
+func TestCompactNum(t *testing.T) {
+	cases := []struct {
+		lang string
+		n    int64
+		want string
+	}{
+		{LangRU, 0, "0"},
+		{LangRU, 115, "115"},
+		{LangRU, 999, "999"},
+		{LangRU, 1000, "1 тыс."},
+		{LangRU, 1999, "1,9 тыс."}, // truncated, never rounded up
+		{LangRU, 12345, "12 тыс."},
+		{LangRU, 999999, "999 тыс."},
+		{LangRU, 2_500_000, "2,5 млн"},
+		{LangKZ, 1500, "1,5 мың"},
+		{LangEN, 1500, "1.5k"},
+		{LangEN, 3_000_000, "3M"},
+	}
+	for _, c := range cases {
+		if got := compactNum(c.lang, c.n); got != c.want {
+			t.Errorf("compactNum(%q, %d) = %q, want %q", c.lang, c.n, got, c.want)
+		}
+	}
+}
+
 func TestSlugify(t *testing.T) {
 	cases := map[string]string{
 		"Привет мир":     "privet-mir",

@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Article cards now carry the view counter, which until now only existed on the
+  article page itself: `👍 1 · 👁 115 · D. Baimurza · 04.08.26`. Counters above
+  999 collapse to a localized short form — `1,2 мың` / `1,2 тыс.` / `1.2k`,
+  truncated rather than rounded so a card never claims more views than there
+  were.
+
+### Changed
+- Bylines on cards are abbreviated to initial + family name ("Daulet Baimurza"
+  → "D. Baimurza"). The given name is the part that gets cut — the byline
+  convention everywhere space is tight — freeing the width the counter needed.
+- The card footer (rating, views, byline, date) now comes from one shared
+  `post_meta` partial instead of three near-copies in home / favourites /
+  author templates, which had already drifted (favourites still drew the rating
+  as a bare "▲").
+
 ## [0.10.2] — 2026-08-04
 
 ### Changed

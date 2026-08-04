@@ -336,6 +336,10 @@ var messages = map[string]map[string]string{
 	"meta.views": {"kz": "оқылым", "ru": "просмотров", "en": "views"},
 	"meta.ai":    {"kz": "ИИ аудармасы", "ru": "ИИ-перевод", "en": "AI translation"},
 
+	// Short units for compacted counters ("1,2 мың" / "1.2k"), see compactNum.
+	"num.thousand": {"kz": "мың", "ru": "тыс.", "en": "k"},
+	"num.million":  {"kz": "млн", "ru": "млн", "en": "M"},
+
 	"ad.badge":       {"kz": "Жарнама", "ru": "Реклама", "en": "Ad"},
 	"ad.placeholder": {"kz": "Осында сіздің жарнамаңыз болуы мүмкін", "ru": "Здесь могла бы быть ваша реклама", "en": "Your ad could be here"},
 	"ad.cta":         {"kz": "Жарнама орналастыру", "ru": "Разместить рекламу", "en": "Advertise here"},

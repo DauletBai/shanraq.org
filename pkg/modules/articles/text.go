@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"strconv"
 	"strings"
 
 	"github.com/yuin/goldmark"
@@ -131,6 +132,60 @@ func displayName(email string) string {
 		return "Автор"
 	}
 	return strings.Join(fields, " ")
+}
+
+// shortAuthor compresses a byline to initial + family name ("Daulet Baimurza"
+// → "D. Baimurza") so the card's meta row has room for the view counter. The
+// given name is what gets abbreviated — that is the convention everywhere a
+// byline has to fit (news credits, academic citations, wire services), and the
+// family name is the half readers actually recognise and search for. A
+// single-word name (a persona, an email-derived fallback) is left alone. The
+// initial is glued to the surname with a non-breaking space so "D." can never
+// end up alone at the end of a line.
+func shortAuthor(name string) string {
+	fields := strings.Fields(name)
+	if len(fields) < 2 {
+		return strings.TrimSpace(name)
+	}
+	var b strings.Builder
+	for _, f := range fields[:len(fields)-1] {
+		r := []rune(f)
+		b.WriteString(strings.ToUpper(string(r[0])))
+		b.WriteString(". ")
+	}
+	b.WriteString(fields[len(fields)-1])
+	return b.String()
+}
+
+// compactNum shortens a counter that has to live in a tight meta row: under a
+// thousand it prints in full, above that it collapses to a localized short form
+// (1,2 мың / 1,2 тыс. / 1.2k). One decimal is kept below ten so 1500 doesn't
+// flatten to a bare "1 тыс.", and the value is truncated rather than rounded —
+// a counter should never claim more views than there were.
+func compactNum(lang string, n int64) string {
+	if n < 1000 {
+		return strconv.FormatInt(n, 10)
+	}
+	unit, div := "num.thousand", int64(1000)
+	if n >= 1_000_000 {
+		unit, div = "num.million", 1_000_000
+	}
+	whole := n / div
+	num := strconv.FormatInt(whole, 10)
+	if tenth := (n % div) * 10 / div; whole < 10 && tenth > 0 {
+		sep := ","
+		if lang == LangEN {
+			sep = "."
+		}
+		num += sep + strconv.FormatInt(tenth, 10)
+	}
+	// "1.2k" is set solid in English; the Cyrillic word forms take a
+	// non-breaking space, which also keeps number and unit on one line.
+	gap := " "
+	if lang == LangEN {
+		gap = ""
+	}
+	return num + gap + T(lang, unit)
 }
 
 // translitMap transliterates Kazakh + Russian Cyrillic to latin for slugs.
