@@ -306,7 +306,16 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .btn--teal { background: var(--teal); color: #fff; }
 :root[data-theme="dark"] .btn--teal { color: #fff; }
 .btn--ghost { background: transparent; border-color: var(--line-strong); color: var(--ink); }
-.btn--ghost:hover { background: var(--surface-2); }
+/* Ghost hover only nudged the background one shade, which on a card that is
+   already surface-2 amounted to no feedback at all. The border and label now
+   take the accent colour, the same signal links give. */
+.btn--ghost:hover { background: var(--surface-2); border-color: var(--gold-strong); color: var(--gold-strong); }
+/* Outline: the call-to-action twin of the primary button — brand red at rest,
+   filled on hover. Kept separate from --ghost because ghost carries "cancel"
+   and "back" beside a primary button across the forms and admin, where a second
+   red button would compete for the same click. */
+.btn--outline { background: transparent; border-color: var(--gold); color: var(--gold); }
+.btn--outline:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
 .btn--danger { background: #c0392b; color: #fff; border-color: #c0392b; }
 .btn--danger:hover { background: #a5281c; }
 .btn--sm { padding: 6px 12px; font-size: 0.78rem; }
