@@ -333,7 +333,7 @@ var messages = map[string]map[string]string{
 	"home.empty_cta":  {"kz": "Бірінші мақаланы жазу", "ru": "Написать первую статью", "en": "Write the first story"},
 	"home.page_title": {"kz": "Еркін үш тілді жарияланымдар алаңы", "ru": "Свободная трёхъязычная площадка публикаций", "en": "A free trilingual publishing platform"},
 
-	"follow.title": {"kz": "Жаңа талдаулар", "ru": "Новые разборы", "en": "New analysis"},
+	"follow.title": {"kz": "Жаңа талдаулар, күн сайын", "ru": "Новые разборы, ежедневно", "en": "New analysis, daily"},
 	"follow.text": {
 		"kz": "Әрбір жаңа талдау арналарымызда шығады. Кейін іздеп жүрмеу үшін жазылыңыз.",
 		"ru": "Каждый новый разбор выходит в наших каналах. Подпишитесь, чтобы не искать его потом.",

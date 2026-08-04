@@ -1490,7 +1490,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 .article-aside { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
 .toc-box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
-.toc-box__title { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 0 0 10px; }
+/* Sidebar eyebrow labels. At .7rem in muted grey they read as chrome and got
+   skipped entirely; brand red at .8rem makes each card announce itself without
+   competing with the article's own headings. */
+.toc-box__title,
+.follow__title { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-strong); font-weight: 700; margin: 0 0 10px; }
 .toc-box__list { list-style: none; margin: 0; padding: 0; counter-reset: toc; display: grid; gap: 3px; }
 .toc-box__list li { counter-increment: toc; }
 .toc-box__list a { display: flex; gap: 9px; align-items: baseline; color: var(--ink-soft); font-size: .9rem; padding: 5px 7px; border-radius: 6px; text-decoration: none; line-height: 1.35; }
@@ -1500,7 +1504,6 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    the contents above it, so the two read as one sticky column rather than as a
    banner bolted onto the article. */
 .follow { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
-.follow__title { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 0 0 8px; }
 .follow__text { font-size: .88rem; line-height: 1.45; color: var(--ink-soft); margin: 0 0 14px; }
 .follow__icons { display: flex; flex-wrap: wrap; gap: 10px; }
 .follow__icons .soc {
@@ -1514,7 +1517,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* Accent variant for the home sidebar, where this card took over from the red
    newsletter block and has to keep that column's one point of colour. */
 .follow--accent { background: linear-gradient(120deg, #ef5350, #aa0000); border-color: transparent; padding: 20px; }
-.follow--accent .follow__title { color: rgba(255, 255, 255, 0.8); }
+.follow--accent .follow__title { color: rgba(255, 255, 255, 0.88); }
 .follow--accent .follow__text { color: rgba(255, 255, 255, 0.92); }
 .follow--accent .follow__icons .soc { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.38); color: #fff; }
 .follow--accent .follow__icons .soc:hover { background: #fff; border-color: #fff; color: #aa0000; }
