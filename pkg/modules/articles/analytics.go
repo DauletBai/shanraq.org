@@ -332,12 +332,52 @@ func (mt *Metrics) Flush(ctx context.Context) {
 	}
 }
 
+// analyticsOptOutCookie marks a browser whose traffic must never be counted —
+// the team's own devices. It is a persistent flag, so it keeps excluding the
+// device even after the owner logs out (e.g. switching from the admin account to
+// a test account to like an article), which a role/identity check alone misses.
+const analyticsOptOutCookie = "shanraq_notrack"
+
+// excluded reports whether this request's traffic must be left out of analytics
+// — the team's own browsing. It returns true when the opt-out cookie is present,
+// or when the signed-in user is staff (admin/operator) or one of the configured
+// excluded emails (e.g. the owner's test account); in the latter cases it also
+// stamps the persistent cookie (when w != nil) so the device stays excluded once
+// it logs out. Kept separate so both the page tracker and the click beacon share
+// one rule.
+func (m *Module) excluded(w http.ResponseWriter, r *http.Request) bool {
+	if c, err := r.Cookie(analyticsOptOutCookie); err == nil && c.Value == "1" {
+		return true
+	}
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		return false
+	}
+	if claims.HasAnyRole("admin", "operator") || m.excludeEmails[strings.ToLower(strings.TrimSpace(claims.Email))] {
+		if w != nil {
+			http.SetCookie(w, &http.Cookie{
+				Name: analyticsOptOutCookie, Value: "1", Path: "/",
+				MaxAge: 60 * 60 * 24 * 365, SameSite: http.SameSiteLaxMode,
+			})
+		}
+		return true
+	}
+	return false
+}
+
 // trackTraffic counts one page view per GET of a countable page. It reads the
 // (soft-loaded) session only to tell guests from signed-in users — nothing
 // about who they are is recorded.
 func (m *Module) trackTraffic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
+			// The team's own devices never count as audience — skip early (and
+			// stamp the opt-out cookie) so they don't inflate guest/Direct counts,
+			// even while logged out on a test account.
+			if m.excluded(w, r) {
+				next.ServeHTTP(w, r)
+				return
+			}
 			if kind := pageKind(r.URL.Path); kind != "" {
 				ua := r.Header.Get("User-Agent")
 				bot := botLabel(ua)
@@ -351,12 +391,7 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 					// real human audience — that was the whole point.
 					m.metrics.inc(metricBot, bot, true)
 				default:
-					claims, ok := auth.ClaimsFromContext(r.Context())
-					// The team's own browsing is not "audience": skip staff so
-					// admin/operator visits don't inflate the guest/Direct counts.
-					if ok && claims.HasAnyRole("admin", "operator") {
-						break
-					}
+					_, ok := auth.ClaimsFromContext(r.Context())
 					guest := !ok
 					m.metrics.inc(metricPage, kind, guest)
 					// Prefer an explicit utm_source (survives the referrer being
@@ -394,7 +429,9 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 // fire-and-forget and always answers 204, even for unknown events.
 func (m *Module) handleTrack(w http.ResponseWriter, r *http.Request) {
 	e := strings.TrimSpace(r.URL.Query().Get("e"))
-	if trackedEvents[e] && botLabel(r.Header.Get("User-Agent")) == "" {
+	// Skip the team's own clicks (opt-out cookie / staff / excluded email) so the
+	// owner's own login/like round-trips at publish time don't inflate the panel.
+	if trackedEvents[e] && botLabel(r.Header.Get("User-Agent")) == "" && !m.excluded(nil, r) {
 		_, ok := auth.ClaimsFromContext(r.Context())
 		m.metrics.inc(metricClick, e, !ok)
 	}

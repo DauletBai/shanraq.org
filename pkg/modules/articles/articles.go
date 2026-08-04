@@ -5,6 +5,7 @@ import (
 	"embed"
 	"html/template"
 	"net/http"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
@@ -31,34 +32,35 @@ type Mailer interface {
 }
 
 type Module struct {
-	rt          *shanraq.Runtime
-	store       *Store
-	listings    *ListingStore
-	ads         *AdStore
-	mods        *ModStore
-	refs        *ReferralStore
-	reagents    *AgentStore
-	pay         *PaymentStore
-	paySettings *PaymentSettingsStore
-	flags       *ServiceFlags
-	geo         *GeoStore
-	comments    *CommentStore
-	favs        *FavoriteStore
-	admin       *AdminStore
-	content     *ContentStore
-	tariffs     *TariffStore
-	metrics     *Metrics
-	geoip       *geoIP
-	ratings     *ratings.Store
-	jobs        *jobs.Store
-	auth        *auth.Module
-	ai          *ai.Module
-	syndicate   *syndicate.Module
-	media       *media.Module
-	mailer      Mailer
-	tmpl        *template.Template
-	validator   *validate.Validator
-	infobar     *InfoBar
+	rt            *shanraq.Runtime
+	store         *Store
+	listings      *ListingStore
+	ads           *AdStore
+	mods          *ModStore
+	refs          *ReferralStore
+	reagents      *AgentStore
+	pay           *PaymentStore
+	paySettings   *PaymentSettingsStore
+	flags         *ServiceFlags
+	geo           *GeoStore
+	comments      *CommentStore
+	favs          *FavoriteStore
+	admin         *AdminStore
+	content       *ContentStore
+	tariffs       *TariffStore
+	metrics       *Metrics
+	geoip         *geoIP
+	excludeEmails map[string]bool
+	ratings       *ratings.Store
+	jobs          *jobs.Store
+	auth          *auth.Module
+	ai            *ai.Module
+	syndicate     *syndicate.Module
+	media         *media.Module
+	mailer        Mailer
+	tmpl          *template.Template
+	validator     *validate.Validator
+	infobar       *InfoBar
 }
 
 // New builds the articles module. It depends on auth (browser sessions), ai
@@ -118,6 +120,14 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 		rt.Logger.Info("country analytics enabled",
 			zap.String("geoip_db", rt.Config.Analytics.GeoIPDB),
 			zap.Bool("datacenter_filter", m.geoip.hasASN()))
+	}
+	// Emails whose traffic is excluded from analytics (the owner's test account,
+	// etc.) — staff roles are excluded automatically. Comma-separated, from env.
+	m.excludeEmails = map[string]bool{}
+	for _, e := range strings.Split(rt.Config.Analytics.ExcludeEmails, ",") {
+		if e = strings.ToLower(strings.TrimSpace(e)); e != "" {
+			m.excludeEmails[e] = true
+		}
 	}
 	m.ratings = ratings.NewStore(rt.DB)
 	m.jobs = jobs.NewStore(rt.DB)

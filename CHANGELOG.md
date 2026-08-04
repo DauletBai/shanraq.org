@@ -6,7 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.10.1] — 2026-08-03
+## [0.10.2] — 2026-08-04
+
+### Changed
+- The team's own browsing no longer pollutes analytics. Staff (admin/operator)
+  visits were already skipped, but the owner's publish routine — logging into the
+  admin account, then a test account to like the new article — still generated
+  guest page views and login clicks while logged out. A device is now flagged
+  with a persistent opt-out cookie the moment it loads a page as staff (or as a
+  configured `SHANRAQ_ANALYTICS_EXCLUDE_EMAILS` address), so it stays out of the
+  counts even after logging out or switching accounts. Click events honour the
+  same rule.
 
 ### Added
 - A "Data center / VPN — reading language" panel that splits the masked VPN

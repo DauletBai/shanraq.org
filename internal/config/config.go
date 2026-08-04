@@ -42,6 +42,10 @@ type Config struct {
 type AnalyticsConfig struct {
 	GeoIPDB    string `mapstructure:"geoip_db"`
 	GeoIPASNDB string `mapstructure:"geoip_asn_db"`
+	// ExcludeEmails is a comma-separated list of user emails whose traffic is left
+	// out of analytics (e.g. the owner's own test account). Staff (admin/operator)
+	// are excluded automatically. Bound as SHANRAQ_ANALYTICS_EXCLUDE_EMAILS.
+	ExcludeEmails string `mapstructure:"exclude_emails"`
 }
 
 // BootstrapConfig seeds the first administrator on a fresh server. When no admin
@@ -342,6 +346,8 @@ func setDefaults(v *viper.Viper) {
 	// Optional ASN database (DB-IP ASN Lite): hosting/cloud/VPN IPs are counted
 	// as "datacenter" instead of a country. Bound as SHANRAQ_ANALYTICS_GEOIP_ASN_DB.
 	v.SetDefault("analytics.geoip_asn_db", "")
+	// Emails whose traffic is excluded from analytics (owner's test account, …).
+	v.SetDefault("analytics.exclude_emails", "")
 
 	// Registered so SHANRAQ_BOOTSTRAP_ADMIN_* bind from the environment.
 	v.SetDefault("bootstrap.admin_email", "")
