@@ -105,7 +105,7 @@
         </ol>
       </nav>
       {{ end }}
-      {{ template "follow_card" . }}
+      {{ template "follow_card" (dict "Info" .Info "Lang" .Lang) }}
     </aside>
     {{ end }}
   </div>

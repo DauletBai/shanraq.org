@@ -1511,6 +1511,13 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 .follow__icons .soc svg { width: 19px; height: 19px; display: block; }
 .follow__icons .soc:hover { color: var(--gold-strong); border-color: var(--gold-strong); transform: translateY(-2px); }
+/* Accent variant for the home sidebar, where this card took over from the red
+   newsletter block and has to keep that column's one point of colour. */
+.follow--accent { background: linear-gradient(120deg, #ef5350, #aa0000); border-color: transparent; padding: 20px; }
+.follow--accent .follow__title { color: rgba(255, 255, 255, 0.8); }
+.follow--accent .follow__text { color: rgba(255, 255, 255, 0.92); }
+.follow--accent .follow__icons .soc { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.38); color: #fff; }
+.follow--accent .follow__icons .soc:hover { background: #fff; border-color: #fff; color: #aa0000; }
 .prose h2 { scroll-margin-top: 90px; }
 /* An article with no headings has no aside — let it use the full column width. */
 .layout--solo { grid-template-columns: minmax(0, 1fr); }

@@ -46,10 +46,15 @@
      Only configured profiles are listed: a "#" placeholder would be a dead click
      on a card whose single job is to be clicked. The wrapper carries data-track,
      so any icon inside reports one aggregate "follow_social" event — the beacon
-     reads the nearest [data-track] ancestor. */}}
+     reads the nearest [data-track] ancestor.
+
+     Takes (dict "Info" .Info "Lang" .Lang), plus "Accent" true on the home
+     sidebar: there the card replaced the old red newsletter block and has to
+     hold the same visual anchor in a browsing context, while the article-aside
+     copy stays quiet beside the contents in a reading one. */}}
 {{ define "follow_card" }}
 {{ with liveSocial .Info.Social }}
-<div class="follow">
+<div class="follow{{ if $.Accent }} follow--accent{{ end }}">
   <p class="follow__title">{{ t $.Lang "follow.title" }}</p>
   <p class="follow__text">{{ t $.Lang "follow.text" }}</p>
   <div class="follow__icons" data-track="follow_social">{{ template "social_icons" . }}</div>
@@ -189,21 +194,13 @@
     <p class="aside__text">{{ t .Lang "guide.side_text" }}</p>
     <a class="btn btn--ghost btn--sm" href="/guide" style="margin-top:12px">{{ t .Lang "common.more" }}</a>
   </div>
-  <div class="aside__block aside__block--subscribe">
-    <h3 class="aside__title">{{ t .Lang "sidebar.subscribe" }}</h3>
-    {{ if .Subscribed }}
-    <p class="aside__text aside__ok">{{ t .Lang "sidebar.subscribed_ok" }}</p>
-    {{ else }}
-    <p class="aside__text" style="margin-bottom:12px">{{ t .Lang "sidebar.subscribe_text" }}</p>
-    <form method="post" action="/subscribe">
-      <input type="hidden" name="lang" value="{{ .Lang }}">
-      <div class="subgroup">
-        <input class="subgroup__input" type="email" name="email" placeholder="email@…" required>
-        <button class="subgroup__btn" type="submit">{{ t .Lang "sidebar.subscribe_btn" }}</button>
-      </div>
-    </form>
-    {{ end }}
-  </div>
+  {{/* The email newsletter form used to sit here. It worked — addresses were
+       stored and the weekly digest ran — but it never sent a confirmation, so
+       subscribing felt broken, and in practice it collected nothing. The social
+       card converts far better because the payoff is immediate. The /subscribe
+       route, the subscribers table and the digest job are all left intact, so
+       this is a UI decision that can be reversed by restoring the block. */}}
+  {{ template "follow_card" (dict "Info" .Info "Lang" .Lang "Accent" true) }}
   {{ template "sidebar_ad" . }}
 </aside>
 {{ end }}

@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   report an aggregate `follow_social` event to the existing counter, so the card
   can be judged on numbers rather than on taste.
 
+### Changed
+- The home sidebar's email newsletter block is replaced by the same follow card
+  (accent variant, keeping that column's one point of colour). The form was not
+  broken — addresses were stored and the weekly digest ran — but it never sent a
+  confirmation, so subscribing felt like nothing happened, and in a week it
+  collected no one. The `/subscribe` route, the `subscribers` table and the
+  digest job are deliberately left intact: this is a UI decision, reversible by
+  restoring the block.
+
 ### Added
 - Article cards now carry the view counter, which until now only existed on the
   article page itself: `👍 1 · 👁 115 · D. Baimurza · 04.08.26`. Counters above
