@@ -738,6 +738,18 @@
         }
       });
     });
+    // The lease-contract upload only makes sense for a rental, so it follows the
+    // deal-type selector instead of sitting there confusing sellers.
+    (function () {
+      var deal = document.querySelector('select[name="deal_type"]');
+      var rentOnly = document.querySelectorAll('[data-rent-only]');
+      if (!deal || !rentOnly.length) return;
+      function sync() {
+        rentOnly.forEach(function (el) { el.hidden = deal.value !== 'rent'; });
+      }
+      deal.addEventListener('change', sync);
+      sync();
+    })();
     (function () {
       var catSel = document.getElementById('category');
       var subSel = document.querySelector('[data-subcat]');

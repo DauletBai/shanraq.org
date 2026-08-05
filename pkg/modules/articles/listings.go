@@ -64,6 +64,10 @@ type Listing struct {
 	CoverURL      string
 	Images        []string
 	Documents     []string
+	// ContractURL is the lease the landlord will sign, published up front. Rent
+	// only — see migration 20251107009600 for why sales carry title papers in
+	// Documents instead.
+	ContractURL   string
 	Status        string
 	ViewsCount    int
 	ContactsCount int

@@ -593,6 +593,14 @@ func parseListingForm(r *http.Request) ListingInput {
 		}
 	}
 
+	// The lease the landlord is ready to sign — one file, and only for rent. A
+	// sale contract is notarial and settled at the deal, so a published draft
+	// would inform nobody; a buyer's papers belong in `documents` above.
+	contract := ""
+	if deal == "rent" {
+		contract = strings.TrimSpace(r.FormValue("contract"))
+	}
+
 	return ListingInput{
 		DealType:      deal,
 		PropertyType:  ptype,
@@ -620,6 +628,7 @@ func parseListingForm(r *http.Request) ListingInput {
 		Cover:         cover,
 		Images:        images,
 		Documents:     documents,
+		ContractURL:   contract,
 		LandArea:      landArea,
 		Amenities:     amenities,
 		RoomSpecs:     roomSpecs,

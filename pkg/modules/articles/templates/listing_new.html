@@ -147,6 +147,30 @@
           <span class="galup__status" data-gallery-status></span>
         </div>
       </div>
+      {{/* Rent only: the lease the landlord will sign. A sale contract is
+           notarial and negotiated at the deal, so a published draft would tell a
+           buyer nothing — their papers go in the documents block above. Hidden
+           for sale by the [data-rent-only] toggle; the handler drops the value
+           for sale anyway, so a stale field can never leak into a sale listing. */}}
+      <div class="field" data-rent-only{{ if ne .Values.DealType "rent" }} hidden{{ end }}>
+        <label>{{ t .Lang "re.contract" }} <span class="hint">— {{ t .Lang "re.contract_help" }}</span></label>
+        <div class="galup" data-gallery data-max="1" data-upload-url="/media/upload-doc" data-field="contract">
+          <div class="galup__items" data-gallery-items>
+            {{ if .Values.ContractURL }}
+            <div class="galup__item">
+              <a class="galup__doc" href="{{ .Values.ContractURL }}" target="_blank" rel="noopener">DOC</a>
+              <input type="hidden" name="contract" value="{{ .Values.ContractURL }}">
+              <button type="button" class="galup__rm" data-gallery-rm aria-label="×">×</button>
+            </div>
+            {{ end }}
+          </div>
+          <label class="btn btn--outline btn--sm galup__add" data-gallery-add>
+            + {{ t .Lang "re.add_contract" }}
+            <input type="file" accept="application/pdf,image/*" hidden data-gallery-file>
+          </label>
+          <span class="galup__status" data-gallery-status></span>
+        </div>
+      </div>
       <div class="field"><label>{{ t .Lang "re.contact" }} {{ template "fhelp" (t .Lang "re.help_contact") }}</label><input class="input" name="contact" value="{{ .Values.Contact }}" required></div>
 
       <div class="field">

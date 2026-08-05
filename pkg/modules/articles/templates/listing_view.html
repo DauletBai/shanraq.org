@@ -100,6 +100,18 @@
         </div>
         {{ end }}
 
+        {{/* The lease sits directly above the phone number on purpose: the point
+             is that a renter reads the terms before spending a call on a flat
+             whose deposit or minimum term rules them out. */}}
+        {{ if .L.ContractURL }}
+        <a class="contract-cta" href="{{ .L.ContractURL }}" target="_blank" rel="noopener" data-track="view_contract">
+          <span class="contract-cta__ic">{{ icon "doc" }}</span>
+          <span class="contract-cta__body">
+            <span class="contract-cta__title">{{ t .Lang "re.contract" }}</span>
+            <span class="contract-cta__note">{{ t .Lang "re.contract_cta" }}</span>
+          </span>
+        </a>
+        {{ end }}
         <div class="listing__contact">
           <strong>{{ t .Lang "re.contacts" }}:</strong>
           {{ if .ShowContact }}

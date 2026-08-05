@@ -59,6 +59,7 @@ var trackedEvents = map[string]bool{
 	"post_listing":  true, // clicked "post a listing"
 	"write_article": true, // clicked "write"
 	"follow_social": true, // clicked a social profile in the article-aside follow card
+	"view_contract": true, // opened a listing's published lease contract
 }
 
 const (
