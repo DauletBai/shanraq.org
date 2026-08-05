@@ -46,6 +46,27 @@ Shanraq is a home where free voices meet.`},
 	"guide": {
 		"ru": {Title: "Как публиковать статьи и размещать объявления", Body: `Здесь описано, как пользоваться платформой, что бесплатно, что платно, а также ваши права и ответственность.
 
+## Аккаунт один, а ролей несколько
+Регистрация на Shanraq одна для всех — отдельных форм для читателей, риелторов и компаний нет. Роль это свойство вашего аккаунта, и её можно добавить в любой момент, не заводя вторую учётную запись.
+
+- **Читатель.** Комментарии, оценки статей и избранное — доступны сразу после регистрации.
+- **Собственник жилья.** Чтобы продать или сдать своё жильё, ничего дополнительно включать не нужно: подтвердите почту и телефон и нажмите «Подать объявление». Это бесплатно.
+- **Риелтор, агентство или застройщик.** Откройте раздел **Агент** в личном кабинете. Профиль проходит проверку модератором, после чего на всех ваших объявлениях появляется бейдж, а объекты собираются на одной публичной странице.
+- **Автор.** Публикация статей открывается после подтверждения личности в разделе **Автор**.
+
+## Кабинет агента: риелтор, агентство, застройщик
+В профиле выбирается тип — от него зависит подпись на публичной странице и то, какие поля обязательны.
+
+| Тип | Кому подходит | Что нужно указать |
+|---|---|---|
+| Частный риелтор | Работаете сами на себя | Имя, телефон, о себе |
+| Агентство | Компания, продающая чужие объекты | Дополнительно: название организации и БИН |
+| Застройщик | Строительная компания, продающая свои новостройки | Дополнительно: название организации и БИН |
+
+**Про БИН.** Двенадцать цифр. Модератор сверяет номер с открытым реестром — именно поэтому бейджу можно доверять. Частному риелтору БИН не нужен: он отвечает своим именем.
+
+**Проверка.** Профиль подаётся со статусом «на проверке». Требуются подтверждённые почта и телефон — это тот же порог, что и для публикации статей. Если профиль отклонён, вы увидите причину и сможете исправить данные и подать снова.
+
 ## Как написать статью
 1. Зарегистрируйтесь и войдите в **Студию автора**.
 2. Нажмите «Написать» и создайте статью на одном из трёх языков.
@@ -77,6 +98,27 @@ Shanraq is a home where free voices meet.`},
 Публикуя материал, вы соглашаетесь с этими правилами.`},
 		"kz": {Title: "Мақала мен хабарландыруды қалай жариялау керек", Body: `Мұнда платформаны қалай пайдалану керектігі, не тегін, не ақылы екені, сондай-ақ сіздің құқықтарыңыз бен жауапкершілігіңіз сипатталған.
 
+## Аккаунт біреу, ал рөл бірнешеу
+Shanraq-та тіркелу бәріне ортақ — оқырманға, риелторға және компанияға бөлек форма жоқ. Рөл — аккаунттың қасиеті, оны кез келген уақытта қосуға болады, екінші тіркелгі ашудың қажеті жоқ.
+
+- **Оқырман.** Пікір, баға және таңдаулылар — тіркелген бойда қолжетімді.
+- **Тұрғын үй иесі.** Өз үйіңізді сату немесе жалға беру үшін ештеңе қосудың қажеті жоқ: поштаңыз бен телефоныңызды растап, «Хабарландыру беру» түймесін басыңыз. Бұл тегін.
+- **Риелтор, агенттік немесе құрылыс компаниясы.** Жеке кабинеттегі **Агент** бөлімін ашыңыз. Профильді модератор тексереді, содан кейін барлық хабарландыруларыңызда белгі пайда болады, ал нысандарыңыз бір жария бетке жиналады.
+- **Автор.** Мақала жариялау **Автор** бөлімінде жеке басты растағаннан кейін ашылады.
+
+## Агент кабинеті: риелтор, агенттік, құрылыс компаниясы
+Профильде түрі таңдалады — жария беттегі жазу және қандай өрістер міндетті екені соған байланысты.
+
+| Түрі | Кімге қолайлы | Не көрсету керек |
+|---|---|---|
+| Жеке риелтор | Өз бетіңізше жұмыс істейсіз | Аты-жөні, телефон, өзіңіз туралы |
+| Агенттік | Басқаның нысанын сататын компания | Қосымша: ұйым атауы және БСН |
+| Құрылыс компаниясы | Өз жаңа құрылысын сататын компания | Қосымша: ұйым атауы және БСН |
+
+**БСН туралы.** Он екі сан. Модератор нөмірді ашық тізілім бойынша тексереді — сондықтан белгіге сенуге болады. Жеке риелторға БСН қажет емес: ол өз атымен жауап береді.
+
+**Тексеру.** Профиль «тексеруде» мәртебесімен беріледі. Расталған пошта мен телефон қажет — бұл мақала жариялаумен бірдей талап. Профиль қабылданбаса, себебін көресіз, деректерді түзетіп қайта бере аласыз.
+
 ## Мақаланы қалай жазу керек
 1. Тіркеліп, **Автор студиясына** кіріңіз.
 2. «Жазу» түймесін басып, үш тілдің бірінде мақала жасаңыз.
@@ -107,6 +149,27 @@ Shanraq is a home where free voices meet.`},
 
 Материал жариялау арқылы сіз осы ережелермен келісесіз.`},
 		"en": {Title: "How to publish articles and post listings", Body: `This page explains how to use the platform, what is free, what is paid, and your rights and responsibilities.
+
+## One account, several roles
+Shanraq has a single registration for everyone — there are no separate forms for readers, realtors and companies. A role is an attribute of your account and can be added at any time, without creating a second login.
+
+- **Reader.** Comments, ratings and favourites — available the moment you register.
+- **Home owner.** Selling or renting out your own home needs nothing extra: verify your email and phone, then click "Post a listing". It is free.
+- **Realtor, agency or developer.** Open the **Agent** section in your cabinet. The profile is reviewed by a moderator, after which every listing of yours carries a badge and your properties are collected on one public page.
+- **Author.** Publishing articles unlocks after identity verification in the **Author** section.
+
+## The agent cabinet: realtor, agency, developer
+The profile carries a kind, which decides the label on your public page and which fields are required.
+
+| Kind | Who it fits | What to provide |
+|---|---|---|
+| Private realtor | You work for yourself | Name, phone, about you |
+| Agency | A company selling other people's property | Plus: organisation name and BIN |
+| Developer | A construction company selling its own new builds | Plus: organisation name and BIN |
+
+**About the BIN.** Twelve digits. A moderator checks the number against the public register — which is what makes the badge worth trusting. A private realtor needs no BIN: they answer under their own name.
+
+**Review.** A profile is submitted with the status "under review". A verified email and phone are required — the same bar as publishing articles. If a profile is rejected you will see the reason and can correct the details and submit again.
 
 ## How to write an article
 1. Sign up and open the **Author Studio**.

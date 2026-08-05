@@ -162,6 +162,45 @@ func TestCompactNum(t *testing.T) {
 	}
 }
 
+func TestAgentKind(t *testing.T) {
+	// An unknown or empty kind must fall back to the least-privileged shape, so
+	// a bad value can never grant a company badge.
+	for _, in := range []string{"", "company", "COMPANY", "администратор"} {
+		if got := NormalizeAgentKind(in); got != "private" {
+			t.Errorf("NormalizeAgentKind(%q) = %q, want private", in, got)
+		}
+	}
+	for _, k := range agentKinds {
+		if NormalizeAgentKind(k) != k {
+			t.Errorf("NormalizeAgentKind(%q) changed a valid kind", k)
+		}
+		if key := (Agent{Kind: k}).KindLabelKey(); messages[key] == nil {
+			t.Errorf("kind %q has no translation key %q", k, key)
+		}
+	}
+	if !(Agent{Kind: "agency"}).IsCompany() || !(Agent{Kind: "developer"}).IsCompany() {
+		t.Error("agency and developer must count as companies")
+	}
+	if (Agent{Kind: "private"}).IsCompany() {
+		t.Error("a private realtor is not a company")
+	}
+	// A profile written before the kind column existed still renders a label.
+	if key := (Agent{}).KindLabelKey(); messages[key] == nil {
+		t.Errorf("empty kind produced unusable key %q", key)
+	}
+}
+
+func TestValidBIN(t *testing.T) {
+	if !validBIN("123456789012") {
+		t.Error("12 digits must be accepted")
+	}
+	for _, bad := range []string{"", "12345678901", "1234567890123", "12345678901a", "1234 5678 9012"} {
+		if validBIN(bad) {
+			t.Errorf("validBIN(%q) = true, want false", bad)
+		}
+	}
+}
+
 func TestLiveSocial(t *testing.T) {
 	in := []SocialLink{
 		{Name: "telegram", URL: "https://t.me/shanraq_org"},

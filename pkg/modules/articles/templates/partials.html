@@ -738,6 +738,23 @@
         }
       });
     });
+    // A БИН belongs to a legal entity, so the field follows the profile kind and
+    // the "Agency" label becomes a required "Organisation name" for a company.
+    (function () {
+      var kind = document.querySelector('[data-agent-kind]');
+      var only = document.querySelectorAll('[data-company-only]');
+      var label = document.querySelector('[data-company-label]');
+      if (!kind) return;
+      var asCompany = label && label.getAttribute('data-company-text');
+      var asAgency = label && label.getAttribute('data-agency-text');
+      function sync() {
+        var company = kind.value === 'agency' || kind.value === 'developer';
+        only.forEach(function (el) { el.hidden = !company; });
+        if (label && asCompany && asAgency) label.textContent = company ? asCompany + ' *' : asAgency;
+      }
+      kind.addEventListener('change', sync);
+      sync();
+    })();
     // The lease-contract upload only makes sense for a rental, so it follows the
     // deal-type selector instead of sitting there confusing sellers.
     (function () {

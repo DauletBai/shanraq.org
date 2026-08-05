@@ -23,10 +23,12 @@
         <div class="field">
           <label for="last_name">{{ t .Lang "form.last_name" }} *</label>
           <input class="input" id="last_name" name="last_name" value="{{ .Last }}" maxlength="40" required autofocus>
+          <p class="hint">{{ t .Lang "form.last_name_hint" }}</p>
         </div>
         <div class="field">
           <label for="first_name">{{ t .Lang "form.first_name" }} *</label>
           <input class="input" id="first_name" name="first_name" value="{{ .First }}" maxlength="40" required>
+          <p class="hint">{{ t .Lang "form.first_name_hint" }}</p>
         </div>
       </div>
       <div class="field">
@@ -38,6 +40,7 @@
       <div class="field">
         <label for="email">{{ t .Lang "form.email" }}</label>
         <input class="input" type="email" id="email" name="email" value="{{ .Email }}" required{{ if ne .Mode "register" }} autofocus{{ end }}>
+        {{ if eq .Mode "register" }}<p class="hint">{{ t .Lang "form.email_hint" }}</p>{{ end }}
       </div>
       <div class="field">
         <label for="password">{{ t .Lang "form.password" }}</label>
@@ -53,7 +56,26 @@
       <button class="btn btn--primary" type="submit" style="width:100%;margin-top:16px">
         {{ if eq .Mode "register" }}{{ t .Lang "form.register_title" }}{{ else }}{{ t .Lang "form.login_title" }}{{ end }}
       </button>
+      {{ if eq .Mode "register" }}<p class="hint" style="text-align:center;margin-top:8px">{{ t .Lang "form.submit_hint" }}</p>{{ end }}
     </form>
+
+    {{/* Everyone gets the same account — a role is an attribute of it, not a
+         different kind of signup. Splitting registration into tabs would force a
+         choice before anyone has seen the site, and an agent still needs a human
+         moderator afterwards, so a tab could not finish the job anyway. What was
+         actually missing is this: saying out loud that the roles exist. */}}
+    {{ if eq .Mode "register" }}
+    <div class="roles">
+      <p class="roles__title">{{ t .Lang "form.roles_title" }}</p>
+      <ul class="roles__list">
+        <li><b>{{ t .Lang "form.role_reader" }}</b> — {{ t .Lang "form.role_reader_desc" }}</li>
+        <li><b>{{ t .Lang "form.role_seller" }}</b> — {{ t .Lang "form.role_seller_desc" }}</li>
+        <li><b>{{ t .Lang "form.role_agent" }}</b> — {{ t .Lang "form.role_agent_desc" }}</li>
+        <li><b>{{ t .Lang "form.role_author" }}</b> — {{ t .Lang "form.role_author_desc" }}</li>
+      </ul>
+      <p class="roles__note">{{ t .Lang "form.roles_note" }} <a href="/guide">{{ t .Lang "common.more" }} →</a></p>
+    </div>
+    {{ end }}
 
     <p class="hint" style="margin-top:18px;text-align:center">
       {{ if eq .Mode "register" }}

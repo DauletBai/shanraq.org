@@ -30,6 +30,18 @@
   <section class="adv-card" style="max-width:640px">
     <h2 class="adv-card__title">{{ if .Agent }}{{ t .Lang "agent.edit_profile" }}{{ else }}{{ t .Lang "agent.become" }}{{ end }}</h2>
     <form method="post" action="/agent">
+      {{/* The kind drives the badge, the public-page label and whether a БИН is
+           required. It leads the form because everything below reads differently
+           depending on the answer. */}}
+      <div class="field">
+        <label>{{ t .Lang "agent.kind" }} *</label>
+        <select class="select" name="kind" data-agent-kind>
+          <option value="private"{{ if eq .Draft.Kind "private" }} selected{{ end }}>{{ t .Lang "agent.kind_private" }}</option>
+          <option value="agency"{{ if eq .Draft.Kind "agency" }} selected{{ end }}>{{ t .Lang "agent.kind_agency" }}</option>
+          <option value="developer"{{ if eq .Draft.Kind "developer" }} selected{{ end }}>{{ t .Lang "agent.kind_developer" }}</option>
+        </select>
+        <p class="hint">{{ t .Lang "agent.kind_help" }}</p>
+      </div>
       <div class="form-grid form-grid--2">
         <div class="field">
           <label>{{ t .Lang "agent.first_name" }} * {{ template "fhelp" (t .Lang "agent.h_name") }}</label>
@@ -42,17 +54,28 @@
       </div>
       <div class="form-grid form-grid--2">
         <div class="field">
-          <label>{{ t .Lang "agent.agency" }}</label>
+          <label data-company-label data-company-text="{{ t .Lang "agent.company" }}" data-agency-text="{{ t .Lang "agent.agency" }}">{{ if .Draft.IsCompany }}{{ t .Lang "agent.company" }} *{{ else }}{{ t .Lang "agent.agency" }}{{ end }}</label>
           <input class="input" name="agency" maxlength="80" value="{{ .Draft.Agency }}">
+          <p class="hint">{{ t .Lang "agent.company_help" }}</p>
         </div>
         <div class="field">
           <label>{{ t .Lang "agent.phone" }}</label>
           <input class="input" name="phone" maxlength="40" value="{{ .Draft.Phone }}">
+          <p class="hint">{{ t .Lang "agent.phone_help" }}</p>
         </div>
+      </div>
+      {{/* Only a legal entity has a БИН, so the field follows the kind selector.
+           The server clears it for a private realtor regardless, so a value left
+           behind by switching kinds can never reach a moderator. */}}
+      <div class="field" data-company-only{{ if not .Draft.IsCompany }} hidden{{ end }}>
+        <label>{{ t .Lang "agent.bin" }} *</label>
+        <input class="input" name="bin" maxlength="12" inputmode="numeric" pattern="[0-9]{12}" value="{{ .Draft.BIN }}">
+        <p class="hint">{{ t .Lang "agent.bin_help" }}</p>
       </div>
       <div class="field">
         <label>{{ t .Lang "agent.about" }}</label>
         <textarea class="input" name="about" rows="4" maxlength="600">{{ .Draft.About }}</textarea>
+        <p class="hint">{{ t .Lang "agent.about_help" }}</p>
       </div>
       <button class="btn btn--primary" type="submit">{{ if .Agent }}{{ t .Lang "agent.save" }}{{ else }}{{ t .Lang "agent.register" }}{{ end }}</button>
     </form>

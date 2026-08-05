@@ -24,6 +24,8 @@ type Agent struct {
 	Agency    string
 	Phone     string
 	About     string
+	Kind      string // private | agency | developer — see agentKinds
+	BIN       string // БИН/ИИН of the legal entity (agency and developer only)
 	Status    string // pending | verified | rejected
 	Reason    string // rejection reason, shown to the agent
 	Email     string // owner email, for the admin queue
@@ -31,6 +33,41 @@ type Agent struct {
 
 // Verified reports whether the profile has been approved by an admin.
 func (a Agent) Verified() bool { return a.Status == agentVerified }
+
+// agentKinds are the three shapes a professional profile can take. They share
+// one table, one moderation queue and one public page, because all three need
+// exactly the same things from us — a verified badge, a public page, listings
+// attributed to them. Only the label, the expected fields and the badge wording
+// differ, which is far less than a second entity would cost to maintain.
+var agentKinds = []string{"private", "agency", "developer"}
+
+// IsAgentKind reports whether s is a known profile kind.
+func IsAgentKind(s string) bool {
+	for _, k := range agentKinds {
+		if k == s {
+			return true
+		}
+	}
+	return false
+}
+
+// NormalizeAgentKind falls back to the private realtor — the shape that claims
+// least — so an unrecognised value can never quietly grant a company badge.
+func NormalizeAgentKind(s string) string {
+	if IsAgentKind(s) {
+		return s
+	}
+	return "private"
+}
+
+// IsCompany reports whether the profile stands for a legal entity rather than
+// an individual, which is when a БИН is expected.
+func (a Agent) IsCompany() bool { return a.Kind == "agency" || a.Kind == "developer" }
+
+// KindLabelKey is the i18n key for this profile's kind, normalised so a profile
+// written before the kind column existed still renders a label instead of a raw
+// key.
+func (a Agent) KindLabelKey() string { return "agent.kind_" + NormalizeAgentKind(a.Kind) }
 
 const (
 	agentPending  = "pending"
@@ -40,6 +77,22 @@ const (
 
 func isAgentStatus(s string) bool {
 	return s == agentPending || s == agentVerified || s == agentRejected
+}
+
+// validBIN checks the shape of a Kazakhstan БИН/ИИН: exactly 12 digits. This is
+// a format check, not a registry lookup — the real verification is a moderator
+// comparing the number against the public register before granting the badge.
+func validBIN(s string) bool {
+	s = strings.TrimSpace(s)
+	if len(s) != 12 {
+		return false
+	}
+	for _, r := range s {
+		if r < '0' || r > '9' {
+			return false
+		}
+	}
+	return true
 }
 
 // composeName builds the display name from first + last.
@@ -57,9 +110,9 @@ func (s *AgentStore) ByUser(ctx context.Context, userID uuid.UUID) (*Agent, erro
 	var a Agent
 	var id uuid.UUID
 	err := s.db.QueryRow(ctx, `
-		SELECT user_id, first_name, last_name, name, agency, phone, about, status, reject_reason
+		SELECT user_id, first_name, last_name, name, agency, phone, about, status, reject_reason, kind, bin
 		FROM re_agents WHERE user_id = $1`, userID).
-		Scan(&id, &a.FirstName, &a.LastName, &a.Name, &a.Agency, &a.Phone, &a.About, &a.Status, &a.Reason)
+		Scan(&id, &a.FirstName, &a.LastName, &a.Name, &a.Agency, &a.Phone, &a.About, &a.Status, &a.Reason, &a.Kind, &a.BIN)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, nil
 	}
@@ -77,7 +130,7 @@ func (s *AgentStore) Pending(ctx context.Context, limit int) ([]Agent, error) {
 		limit = 100
 	}
 	rows, err := s.db.Query(ctx, `
-		SELECT a.user_id, a.first_name, a.last_name, a.name, a.agency, a.phone, a.about, a.status, COALESCE(u.email,'')
+		SELECT a.user_id, a.first_name, a.last_name, a.name, a.agency, a.phone, a.about, a.status, COALESCE(u.email,''), a.kind, a.bin
 		FROM re_agents a JOIN auth_users u ON u.id = a.user_id
 		WHERE a.status = 'pending'
 		ORDER BY a.created_at ASC LIMIT $1`, limit)
@@ -89,7 +142,7 @@ func (s *AgentStore) Pending(ctx context.Context, limit int) ([]Agent, error) {
 	for rows.Next() {
 		var a Agent
 		var id uuid.UUID
-		if err := rows.Scan(&id, &a.FirstName, &a.LastName, &a.Name, &a.Agency, &a.Phone, &a.About, &a.Status, &a.Email); err != nil {
+		if err := rows.Scan(&id, &a.FirstName, &a.LastName, &a.Name, &a.Agency, &a.Phone, &a.About, &a.Status, &a.Email, &a.Kind, &a.BIN); err != nil {
 			return nil, err
 		}
 		a.UserID = id.String()
@@ -116,12 +169,14 @@ func (s *AgentStore) SetStatus(ctx context.Context, userID uuid.UUID, status, re
 func (s *AgentStore) Save(ctx context.Context, userID uuid.UUID, a Agent) error {
 	name := composeName(a.FirstName, a.LastName)
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO re_agents (user_id, first_name, last_name, name, agency, phone, about)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		INSERT INTO re_agents (user_id, first_name, last_name, name, agency, phone, about, kind, bin)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 		ON CONFLICT (user_id) DO UPDATE SET
 			first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, name = EXCLUDED.name,
-			agency = EXCLUDED.agency, phone = EXCLUDED.phone, about = EXCLUDED.about, updated_at = NOW()`,
-		userID, strings.TrimSpace(a.FirstName), strings.TrimSpace(a.LastName), name, a.Agency, a.Phone, a.About)
+			agency = EXCLUDED.agency, phone = EXCLUDED.phone, about = EXCLUDED.about,
+			kind = EXCLUDED.kind, bin = EXCLUDED.bin, updated_at = NOW()`,
+		userID, strings.TrimSpace(a.FirstName), strings.TrimSpace(a.LastName), name, a.Agency, a.Phone, a.About,
+		NormalizeAgentKind(a.Kind), strings.TrimSpace(a.BIN))
 	if err != nil {
 		return fmt.Errorf("save agent: %w", err)
 	}
@@ -191,8 +246,16 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 		Agency:    strings.TrimSpace(r.FormValue("agency")),
 		Phone:     strings.TrimSpace(r.FormValue("phone")),
 		About:     strings.TrimSpace(r.FormValue("about")),
+		Kind:      NormalizeAgentKind(r.FormValue("kind")),
+		BIN:       strings.TrimSpace(r.FormValue("bin")),
 	}
 	a.Name = composeName(a.FirstName, a.LastName)
+	// A БИН only means something for a legal entity; carrying one over from a
+	// kind the user switched away from would send the moderator a number that
+	// belongs to nobody on this profile.
+	if !a.IsCompany() {
+		a.BIN = ""
+	}
 
 	fail := func(msg string) {
 		existing, _ := m.reagents.ByUser(r.Context(), uid)
@@ -203,6 +266,19 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 	if a.FirstName == "" {
 		fail(T(lang, "agent.err_name"))
 		return
+	}
+	// A company claims a brand, so it must name the entity and give the БИН a
+	// moderator can check against the public register before the badge is
+	// granted. A private realtor answers with their own name and needs neither.
+	if a.IsCompany() {
+		if a.Agency == "" {
+			fail(T(lang, "agent.err_company"))
+			return
+		}
+		if !validBIN(a.BIN) {
+			fail(T(lang, "agent.err_bin"))
+			return
+		}
 	}
 	// An agent is a trust signal, so the bar is a verified email AND phone — the
 	// same identity proof the platform already requires to post and to author.

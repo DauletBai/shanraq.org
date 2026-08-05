@@ -8,7 +8,10 @@
   <section class="agentcard">
     <div class="agentcard__avatar" aria-hidden="true">◆</div>
     <div class="agentcard__body">
-      <span class="agentcard__role">{{ t .Lang "agent.badge" }}</span>
+      {{/* Say which kind of professional this is: "Agent" alone tells a visitor
+           nothing about whether they are dealing with an individual, an agency
+           or the company that built the block. */}}
+      <span class="agentcard__role">{{ t .Lang .Agent.KindLabelKey }}</span>
       <h1 class="agentcard__name">{{ .Agent.Name }}</h1>
       {{ if .Agent.Agency }}<p class="agentcard__agency">{{ .Agent.Agency }}</p>{{ end }}
       {{ if .Agent.Phone }}<p class="agentcard__phone">☎ {{ .Agent.Phone }}</p>{{ end }}

@@ -562,7 +562,12 @@
     <div>
       <span class="pill pill--review">{{ t $.Lang "agent.st_pending" }}</span>
       <span class="modrow__type"><b>{{ .Name }}</b></span>
+      {{/* The kind and БИН decide what the moderator is actually approving: a
+           person vouching for themselves, or a brand that must match the public
+           register. Without them the queue looks identical for both. */}}
+      <span class="pill">{{ t $.Lang .KindLabelKey }}</span>
       {{ if .Agency }}<span class="modrow__type">{{ .Agency }}</span>{{ end }}
+      {{ if .BIN }}<span class="modrow__type">{{ t $.Lang "agent.bin" }}: {{ .BIN }}</span>{{ end }}
       <span class="modrow__date">{{ .Phone }}</span>
       <span class="modrow__type">{{ .Email }}</span>
     </div>

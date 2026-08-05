@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Agent profiles now carry a kind — private realtor, agency or developer — plus
+  a БИН for the two company kinds. A construction company previously had nowhere
+  to register: it had to pose as an agent and type its name into a free-text
+  "Agency" box. All three share one table, one moderation queue and one public
+  page, because all three need the same things from us; only the label, the
+  required fields and the badge wording differ. The moderation queue shows the
+  kind and БИН, so a moderator can see whether they are approving a person
+  vouching for themselves or a brand that must match the public register.
+- A "what you can do once registered" block under the signup form, naming the
+  four roles and where each is switched on. The registration page previously
+  said nothing about who the site is for, so an agency landing on it had no way
+  to discover the agent cabinet exists.
+- Field-level hints across registration and the agent cabinet, and a guide
+  section ("One account, several roles") in all three languages.
+
+### Changed
+- Registration deliberately stays a single form rather than gaining per-role
+  tabs. A role is an attribute of an account, not a different kind of account:
+  tabs would force a choice before anyone has seen the site, would strand a
+  reader who later decides to sell, and could not finish the job anyway, since
+  an agent still needs a human moderator afterwards.
+
+### Added
 - A "follow us" card in the article aside, under the table of contents. The
   aside is sticky on desktop, so the ask now travels with the reader for the
   whole piece instead of waiting at the bottom, where only those who finish ever

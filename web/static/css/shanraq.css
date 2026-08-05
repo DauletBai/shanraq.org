@@ -1448,6 +1448,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    rather than a plain link because it competes with the "show contact" button
    for the same moment of attention, and reading the terms first is the outcome
    worth encouraging. */
+/* "What you can do once registered" — the roles explainer under the signup form.
+   Quiet on purpose: it informs the minority who need it without distracting the
+   majority who just want an account. */
+.roles { margin-top: 20px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-2); }
+.roles__title { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-strong); font-weight: 700; margin: 0 0 10px; }
+.roles__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: var(--step--1); color: var(--ink-soft); line-height: 1.45; }
+.roles__list b { color: var(--ink); }
+.roles__note { margin: 12px 0 0; font-size: var(--step--1); color: var(--muted); }
 .contract-cta {
   display: flex; align-items: center; gap: 12px;
   margin-top: 22px; padding: 13px 16px;
