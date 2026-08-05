@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- A "Delete" button in the author studio, for drafts. A false start or a
+  duplicate left behind by a lost session had no way out of the table at all.
+  Published articles deliberately do not offer it: they carry views, votes,
+  comments, an RSS entry and a Telegram post, and somewhere a reader may already
+  hold the link — so the way out is one step longer, unpublish then delete, which
+  is the pause such a decision deserves. The action is confirmed in the browser,
+  scoped to the owner in SQL, and runs in a transaction that also sweeps the two
+  tables keyed by article id without a foreign key (the reading-depth funnel and
+  favourites). The moderation ledger is left intact: it is an append-only record
+  and an author must not be able to erase it.
+
+### Added
 - Agent profiles now carry a kind — private realtor, agency or developer — plus
   a БИН for the two company kinds. A construction company previously had nowhere
   to register: it had to pose as an agent and type its name into a free-text

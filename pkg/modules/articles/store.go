@@ -149,6 +149,50 @@ func (s *Store) SetStatus(ctx context.Context, id, authorID uuid.UUID, status st
 	return nil
 }
 
+// DeleteDraft removes an author's own article, but only while it is a draft.
+//
+// A published piece is deliberately out of reach: it has views, votes, comments,
+// an RSS entry and a Telegram post behind it, and somewhere a reader may already
+// have the link. Losing all of that to one mis-click is not a trade worth
+// offering. The way out exists and is one step longer — unpublish, then delete —
+// which is exactly the pause such a decision deserves.
+//
+// Returns ErrNotFound when the article does not exist, belongs to someone else,
+// or is still published; the caller cannot tell these apart, which is also what
+// stops the endpoint from confirming that a stranger's article ID is real.
+func (s *Store) DeleteDraft(ctx context.Context, id, authorID uuid.UUID) error {
+	tx, err := s.db.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		return fmt.Errorf("delete draft: %w", err)
+	}
+	defer func() { _ = tx.Rollback(ctx) }()
+
+	tag, err := tx.Exec(ctx, `
+		DELETE FROM articles
+		WHERE id = $1 AND author_id = $2 AND status = 'draft'
+	`, id, authorID)
+	if err != nil {
+		return fmt.Errorf("delete draft: %w", err)
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	// Translations, ratings and comments carry ON DELETE CASCADE and are gone
+	// already. These two are keyed by article id without a foreign key — the
+	// funnel because it is a plain counter table, favourites because they are
+	// polymorphic over articles and listings — so they have to be swept by hand
+	// or they linger as rows pointing at nothing.
+	if _, err := tx.Exec(ctx, `DELETE FROM reading_depth WHERE article_id = $1`, id); err != nil {
+		return fmt.Errorf("delete draft depth: %w", err)
+	}
+	if _, err := tx.Exec(ctx, `DELETE FROM favorites WHERE item_type = 'article' AND item_id = $1`, id); err != nil {
+		return fmt.Errorf("delete draft favorites: %w", err)
+	}
+	// The moderation ledger is deliberately left intact: it is an append-only
+	// record of decisions, and an author must not be able to erase it.
+	return tx.Commit(ctx)
+}
+
 // SlugExists reports whether a slug is already taken.
 func (s *Store) SlugExists(ctx context.Context, slug string) (bool, error) {
 	var exists bool

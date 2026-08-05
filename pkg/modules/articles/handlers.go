@@ -918,6 +918,11 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	case "in_review":
 		page.Notice = T(lang, "studio.n_review")
 	}
+	// A deleted draft leaves no trace in the table, so say so explicitly —
+	// otherwise the author cannot tell a successful delete from a silent failure.
+	if r.URL.Query().Get("deleted") == "1" {
+		page.Notice = T(lang, "studio.deleted_ok")
+	}
 	page.Stats = stats
 	page.Karma = karma
 	page.Articles = rows
@@ -1435,6 +1440,33 @@ func (m *Module) handleConsentSubmit(w http.ResponseWriter, r *http.Request) {
 
 func (m *Module) handleUnpublish(w http.ResponseWriter, r *http.Request) {
 	m.transition(w, r, "draft", "/studio")
+}
+
+// handleDeleteDraft removes an abandoned draft — the false start, the duplicate
+// left behind by a lost session. Drafts only: see Store.DeleteDraft for why a
+// published article has to be unpublished first.
+func (m *Module) handleDeleteDraft(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if err := m.store.DeleteDraft(r.Context(), id, authorID); err != nil {
+		if errors.Is(err, ErrNotFound) {
+			http.NotFound(w, r)
+			return
+		}
+		m.rt.Logger.Error("delete draft", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	m.rt.Logger.Info("draft deleted", zap.String("article_id", id.String()))
+	http.Redirect(w, r, "/studio?deleted=1", http.StatusSeeOther)
 }
 
 func (m *Module) transition(w http.ResponseWriter, r *http.Request, status, redirect string) {

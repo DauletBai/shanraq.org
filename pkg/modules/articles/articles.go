@@ -246,6 +246,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/studio/a/{id}", m.handleUpdate)
 		r.Post("/studio/a/{id}/publish", m.handlePublish)
 		r.Post("/studio/a/{id}/unpublish", m.handleUnpublish)
+		r.Post("/studio/a/{id}/delete", m.handleDeleteDraft)
 		r.Post("/studio/a/{id}/improve", m.handleImprove)
 		r.Post("/studio/a/{id}/draft", m.handleDraft)
 		r.Post("/studio/a/{id}/translate", m.handleTranslate)

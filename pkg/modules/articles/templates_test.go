@@ -3,6 +3,7 @@ package articles
 import (
 	"html/template"
 	"io"
+	"strings"
 	"testing"
 	"time"
 )
@@ -159,6 +160,31 @@ func TestCompactNum(t *testing.T) {
 		if got := compactNum(c.lang, c.n); got != c.want {
 			t.Errorf("compactNum(%q, %d) = %q, want %q", c.lang, c.n, got, c.want)
 		}
+	}
+}
+
+func TestStudioDeleteIsDraftOnly(t *testing.T) {
+	tmpl := buildTemplates(t)
+	now := time.Now()
+	var sb strings.Builder
+	page := StudioPage{Base: Base{Lang: "ru", Title: "T"}, Articles: []StudioRow{
+		{ID: "d1", Slug: "s1", Title: "Черновик", Status: "draft", Updated: now, Langs: []string{LangRU}},
+		{ID: "p1", Slug: "s2", Title: "Опубликована", Status: "published", Updated: now, Langs: []string{LangRU}},
+	}}
+	if err := tmpl.ExecuteTemplate(&sb, "studio_dashboard", page); err != nil {
+		t.Fatal(err)
+	}
+	out := sb.String()
+	if !strings.Contains(out, `action="/studio/a/d1/delete"`) {
+		t.Error("a draft must offer delete")
+	}
+	// A published article carries views, votes, comments and a shared link;
+	// deleting it must cost an extra deliberate step (unpublish first).
+	if strings.Contains(out, `action="/studio/a/p1/delete"`) {
+		t.Error("a published article must not offer delete")
+	}
+	if !strings.Contains(out, "onsubmit=\"return confirm(") {
+		t.Error("delete must sit behind a confirmation")
 	}
 }
 

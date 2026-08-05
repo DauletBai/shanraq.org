@@ -84,6 +84,12 @@
                 <form method="post" action="/studio/a/{{ .ID }}/unpublish"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "studio.hide" }}</button></form>
                 {{ else }}
                 <form method="post" action="/studio/a/{{ .ID }}/publish"><button class="btn btn--teal btn--sm" type="submit">{{ t $.Lang "studio.publish" }}</button></form>
+                {{/* Drafts only. A published article is unpublished first — the
+                     extra step is the pause a decision with views, votes and
+                     comments behind it deserves. */}}
+                <form method="post" action="/studio/a/{{ .ID }}/delete" onsubmit="return confirm('{{ t $.Lang "studio.delete_confirm" }}')">
+                  <button class="btn btn--danger btn--sm" type="submit" title="{{ t $.Lang "studio.delete_hint" }}">{{ t $.Lang "studio.delete" }}</button>
+                </form>
                 {{ end }}
               </div>
             </td>

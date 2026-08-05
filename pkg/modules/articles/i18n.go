@@ -1078,8 +1078,24 @@ var messages = map[string]map[string]string{
 	"studio.open":            {"kz": "Ашу", "ru": "Открыть", "en": "Open"},
 	"studio.hide":            {"kz": "Жасыру", "ru": "Скрыть", "en": "Hide"},
 	"studio.publish":         {"kz": "Жариялау", "ru": "Опубликовать", "en": "Publish"},
-	"studio.empty":           {"kz": "Сізде әзір мақала жоқ", "ru": "У вас пока нет статей", "en": "You have no stories yet"},
-	"studio.untitled":        {"kz": "(атауы жоқ)", "ru": "(без названия)", "en": "(untitled)"},
+	"studio.delete":          {"kz": "Жою", "ru": "Удалить", "en": "Delete"},
+	"studio.delete_hint": {
+		"kz": "Тек жобаны жоюға болады. Жарияланғанды алдымен жасыру керек.",
+		"ru": "Удалить можно только черновик. Опубликованную статью сначала нужно скрыть.",
+		"en": "Only a draft can be deleted. A published article must be hidden first.",
+	},
+	"studio.delete_confirm": {
+		"kz": "Жобаны біржола жою керек пе? Бұл әрекетті кері қайтару мүмкін емес.",
+		"ru": "Удалить черновик навсегда? Это действие нельзя отменить.",
+		"en": "Delete this draft permanently? This cannot be undone.",
+	},
+	"studio.deleted_ok": {
+		"kz": "Жоба жойылды.",
+		"ru": "Черновик удалён.",
+		"en": "The draft has been deleted.",
+	},
+	"studio.empty":    {"kz": "Сізде әзір мақала жоқ", "ru": "У вас пока нет статей", "en": "You have no stories yet"},
+	"studio.untitled": {"kz": "(атауы жоқ)", "ru": "(без названия)", "en": "(untitled)"},
 
 	"editor.new":              {"kz": "Жаңа мақала", "ru": "Новая статья", "en": "New story"},
 	"editor.edit":             {"kz": "Мақаланы өңдеу", "ru": "Редактирование статьи", "en": "Edit story"},
