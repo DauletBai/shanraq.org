@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"errors"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -501,6 +502,45 @@ func (m *Module) handleListingBanner(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// maxArea caps a single area field. The largest apartments and houses in the
+// country are far below this; anything above it is a typo or an attempt to game
+// the sort order, and both should be refused rather than stored.
+const maxArea = 100000.0
+
+// parseArea reads a "123,4" or "123.4" area field into a sane number.
+//
+// strconv.ParseFloat accepts "NaN", "Inf" and "-1" quite happily, and the old
+// code discarded the error, so those landed in the database and then in the
+// filters — where NaN compares false against everything and quietly removes a
+// listing from every search. Out-of-range values become zero, which the form
+// already treats as "not specified".
+// mediaPath keeps only URLs that point at our own uploads.
+//
+// The form fields carry paths returned by /media/upload, but nothing stopped a
+// hand-made POST from putting any absolute URL there — the comment promised
+// "/media/..." while the code accepted whatever arrived. That let a listing
+// embed a remote image, which loads from a third-party server on every view: a
+// tracking pixel for anyone who opens the listing, and a link that can be
+// swapped for something else after moderation has passed.
+func mediaPath(raw string) (string, bool) {
+	u := strings.TrimSpace(raw)
+	// Reject anything with a scheme or host, and any traversal attempt, before
+	// the prefix test — "/media/../etc" starts with /media/ too.
+	if u == "" || !strings.HasPrefix(u, "/media/") || strings.Contains(u, "..") ||
+		strings.Contains(u, "//") || strings.ContainsAny(u, " \t\r\n\\") {
+		return "", false
+	}
+	return u, true
+}
+
+func parseArea(raw string) float64 {
+	v, err := strconv.ParseFloat(strings.Replace(strings.TrimSpace(raw), ",", ".", 1), 64)
+	if err != nil || math.IsNaN(v) || math.IsInf(v, 0) || v < 0 || v > maxArea {
+		return 0
+	}
+	return v
+}
+
 func parseListingForm(r *http.Request) ListingInput {
 	deal := r.FormValue("deal_type")
 	if !isDealType(deal) {
@@ -511,8 +551,8 @@ func parseListingForm(r *http.Request) ListingInput {
 		ptype = "apartment"
 	}
 	price, _ := strconv.ParseInt(digitsOnly(r.FormValue("price")), 10, 64)
-	area, _ := strconv.ParseFloat(strings.Replace(strings.TrimSpace(r.FormValue("area")), ",", ".", 1), 64)
-	landArea, _ := strconv.ParseFloat(strings.Replace(strings.TrimSpace(r.FormValue("land_area")), ",", ".", 1), 64)
+	area := parseArea(r.FormValue("area"))
+	landArea := parseArea(r.FormValue("land_area"))
 	rooms, _ := strconv.Atoi(digitsOnly(r.FormValue("rooms")))
 
 	// Amenity checkboxes — keep only recognized keys.
@@ -534,7 +574,7 @@ func parseListingForm(r *http.Request) ListingInput {
 		}
 		var ar float64
 		if i < len(areas) {
-			ar, _ = strconv.ParseFloat(strings.Replace(strings.TrimSpace(areas[i]), ",", ".", 1), 64)
+			ar = parseArea(areas[i])
 		}
 		var note string
 		if i < len(notes) {
@@ -564,9 +604,9 @@ func parseListingForm(r *http.Request) ListingInput {
 
 	// Up to maxListingPhotos photo URLs (each an already-uploaded /media/... path).
 	images := make([]string, 0, maxListingPhotos)
-	for _, u := range r.Form["image"] {
-		u = strings.TrimSpace(u)
-		if u == "" {
+	for _, raw := range r.Form["image"] {
+		u, ok := mediaPath(raw)
+		if !ok {
 			continue
 		}
 		images = append(images, u)
@@ -574,7 +614,7 @@ func parseListingForm(r *http.Request) ListingInput {
 			break
 		}
 	}
-	cover := strings.TrimSpace(r.FormValue("cover_url"))
+	cover, _ := mediaPath(r.FormValue("cover_url"))
 	if cover == "" && len(images) > 0 {
 		cover = images[0]
 	}
@@ -582,9 +622,9 @@ func parseListingForm(r *http.Request) ListingInput {
 	// Up to maxListingDocs document URLs (PDF plans/passports or image schemes,
 	// already uploaded via /media/upload-doc).
 	documents := make([]string, 0, maxListingDocs)
-	for _, u := range r.Form["document"] {
-		u = strings.TrimSpace(u)
-		if u == "" {
+	for _, raw := range r.Form["document"] {
+		u, ok := mediaPath(raw)
+		if !ok {
 			continue
 		}
 		documents = append(documents, u)
@@ -598,7 +638,7 @@ func parseListingForm(r *http.Request) ListingInput {
 	// would inform nobody; a buyer's papers belong in `documents` above.
 	contract := ""
 	if deal == "rent" {
-		contract = strings.TrimSpace(r.FormValue("contract"))
+		contract, _ = mediaPath(r.FormValue("contract"))
 	}
 
 	return ListingInput{

@@ -8,6 +8,7 @@ import (
 	"shanraq.org/internal/db"
 	"shanraq.org/internal/httpserver"
 	"shanraq.org/internal/logging"
+	"shanraq.org/pkg/transport/respond"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -82,6 +83,13 @@ func (a *Application) Run(ctx context.Context) error {
 		Logger: logger,
 		DB:     pool,
 		Router: server.Router(),
+	}
+
+	// 5xx responses hide their cause from the caller (it tends to be raw driver
+	// or SQL text). Point the masking helper at the real logger so the detail
+	// still lands somewhere we can read it.
+	respond.LogInternal = func(status int, err error) {
+		logger.Error("internal response", zap.Int("status", status), zap.Error(err))
 	}
 
 	for _, mod := range a.modules {

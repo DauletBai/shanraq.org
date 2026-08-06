@@ -300,9 +300,9 @@
     <a class="post__media-link" href="/listings/{{ .L.ID }}" aria-label="{{ .L.TitleIn .Lang }}"></a>
     {{ if gt (len .L.Images) 1 }}<div class="adcarousel__dots">{{ range $i, $src := .L.Images }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}</div>{{ end }}
     {{ else if .L.CoverURL }}
-    <a class="post__media-link" href="/listings/{{ .L.ID }}"><img src="{{ .L.CoverURL }}" alt=""></a>
+    <a class="post__media-link" href="/listings/{{ .L.ID }}" aria-label="{{ .L.TitleIn .Lang }}" tabindex="-1"><img src="{{ .L.CoverURL }}" alt="" loading="lazy" decoding="async"></a>
     {{ else }}
-    <a class="post__media-link" href="/listings/{{ .L.ID }}"><span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span></a>
+    <a class="post__media-link" href="/listings/{{ .L.ID }}" aria-label="{{ .L.TitleIn .Lang }}" tabindex="-1"><span class="media-ph"><img src="/static/brand/shanraq.svg" alt="" loading="lazy" decoding="async"></span></a>
     {{ end }}
   </div>
   <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>

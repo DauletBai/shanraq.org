@@ -353,3 +353,44 @@ func TestComposeNameAndStatus(t *testing.T) {
 		t.Error("Agent.Verified")
 	}
 }
+
+// ParseFloat is happy to return NaN, ±Inf and negatives, and the old code threw
+// the error away — so those reached the database and then the filters, where a
+// NaN compares false against everything and silently removes a listing from
+// every search.
+func TestParseArea(t *testing.T) {
+	ok := map[string]float64{"72": 72, "72,5": 72.5, "72.5": 72.5, " 100 ": 100, "0": 0}
+	for in, want := range ok {
+		if got := parseArea(in); got != want {
+			t.Errorf("parseArea(%q) = %v, want %v", in, got, want)
+		}
+	}
+	for _, bad := range []string{"NaN", "nan", "Inf", "-Inf", "+Inf", "-1", "-0.5", "1e308", "999999999", "", "abc", "12abc"} {
+		if got := parseArea(bad); got != 0 {
+			t.Errorf("parseArea(%q) = %v, want 0", bad, got)
+		}
+	}
+}
+
+// The form fields carry paths returned by our own uploader, but a hand-made
+// POST could put any absolute URL there — a remote image is a tracking pixel
+// that fires for every visitor, and its target can be swapped after moderation.
+func TestMediaPath(t *testing.T) {
+	for _, good := range []string{"/media/2026/08/a.jpg", "/media/plan.pdf"} {
+		if got, ok := mediaPath(good); !ok || got != good {
+			t.Errorf("mediaPath(%q) = %q,%v — want it kept", good, got, ok)
+		}
+	}
+	bad := []string{
+		"https://evil.example/pixel.gif", "http://evil.example/x.png",
+		"//evil.example/x.png", "/media//evil.example/x.png",
+		"/media/../../etc/passwd", "/static/brand/shanraq.svg",
+		"javascript:alert(1)", "data:image/png;base64,AAAA",
+		"", "   ", "/media/a b.jpg", "/media/a\nb.jpg",
+	}
+	for _, u := range bad {
+		if got, ok := mediaPath(u); ok {
+			t.Errorf("mediaPath(%q) accepted as %q", u, got)
+		}
+	}
+}

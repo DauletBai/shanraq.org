@@ -6,6 +6,22 @@
 # without one. To set it, add a global block:  {  email you@example.com  }
 {$DOMAIN} {
 	encode zstd gzip
+
+	# Static assets and uploads were served with no caching headers at all, so
+	# every visit re-fetched the CSS, the fonts and every cover image — and the
+	# browser still felt free to show a stale copy from its heuristic cache, so
+	# we paid for the traffic without getting the reliability.
+	#
+	# Uploads are content addressed by path and never rewritten in place, so they
+	# can be cached hard. CSS and JS can be edited, so they get a day plus
+	# revalidation: a redeploy is picked up within a day, or immediately on a
+	# reload, without a byte moving in between.
+	@uploads path /media/*
+	header @uploads Cache-Control "public, max-age=31536000, immutable"
+
+	@assets path /static/*
+	header @assets Cache-Control "public, max-age=86400, must-revalidate"
+
 	reverse_proxy app:8080
 }
 

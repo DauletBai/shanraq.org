@@ -19,9 +19,9 @@
   <div class="posts">
     {{ range .Articles }}
     <article class="post">
-      <a class="post__media" href="/read/{{ .Slug }}?lang={{ $.Lang }}">
-        {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
-        {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
+      <a class="post__media" href="/read/{{ .Slug }}?lang={{ $.Lang }}" aria-label="{{ .Title }}" tabindex="-1">
+        {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="" loading="lazy" decoding="async">
+        {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt="" loading="lazy" decoding="async"></span>{{ end }}
       </a>
       <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ catIcon .Category }}{{ t $.Lang (printf "cat.%s" .Category) }}</a>
       <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
@@ -37,10 +37,10 @@
   <div class="posts posts--two">
     {{ range .Listings }}
     <article class="post{{ if .Featured }} post--featured{{ end }}">
-      <a class="post__media" href="/listings/{{ .ID }}">
+      <a class="post__media" href="/listings/{{ .ID }}" aria-label="{{ .TitleIn $.Lang }}" tabindex="-1">
         {{ if .Promoted }}<span class="badge-top">{{ t $.Lang "re.badge_top" }}</span>{{ end }}
-        {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="">
-        {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt=""></span>{{ end }}
+        {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="" loading="lazy" decoding="async">
+        {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt="" loading="lazy" decoding="async"></span>{{ end }}
       </a>
       <span class="kicker">{{ t $.Lang (printf "re.type_%s" .PropertyType) }} · {{ t $.Lang (printf "re.deal_%s" .DealType) }}</span>
       <h3 class="post__title"><a href="/listings/{{ .ID }}">{{ .TitleIn $.Lang }}</a></h3>

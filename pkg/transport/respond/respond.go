@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -33,8 +34,35 @@ func JSON(w http.ResponseWriter, status int, payload any) {
 	_ = json.NewEncoder(w).Encode(payload)
 }
 
-// Error sends {"error": "..."} JSON response.
+// internalMessage is what a caller is told when something broke on our side.
+// Deliberately fixed and uninformative: the caller can do nothing with the
+// detail, and an attacker can do quite a lot.
+const internalMessage = "internal error"
+
+// LogInternal receives every error that Error hides from the client, so masking
+// the response does not also mask the failure. The application points this at
+// the real logger during boot; until then it writes to the standard logger, so
+// a fault is never silently swallowed. Set once at startup, never concurrently.
+var LogInternal = func(status int, err error) {
+	log.Printf("respond: %d %v", status, err)
+}
+
+// Error sends {"error": "..."} as JSON.
+//
+// A 4xx carries its text through: those errors exist to tell the caller what
+// was wrong with their request. A 5xx does not. err.Error() at that level is
+// whatever the database, the driver or a third-party client produced, and it
+// has a habit of containing SQL fragments, column names and connection strings
+// — handed to anyone who can make a request fail. The detail goes to the log;
+// the caller gets one fixed sentence.
 func Error(w http.ResponseWriter, status int, err error) {
+	if status >= http.StatusInternalServerError {
+		if LogInternal != nil {
+			LogInternal(status, err)
+		}
+		JSON(w, status, map[string]string{"error": internalMessage})
+		return
+	}
 	JSON(w, status, map[string]string{"error": err.Error()})
 }
 
