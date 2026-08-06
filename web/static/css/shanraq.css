@@ -565,6 +565,19 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .stat__value { font-family: var(--serif); font-size: var(--step-3); font-weight: 700; margin: 0; color: var(--gold-strong); }
 .stat__sub { font-size: 0.76rem; color: var(--muted); }
 .badge-lang { font-weight: 700; color: var(--gold-strong); font-size: 0.85em; }
+/* Просмотры по языкам: одна колонка, строка на язык. Код языка тёмный, число
+   красное — код здесь подпись, а считываться должна цифра. Ширина кода
+   фиксирована, поэтому числа выстраиваются по левому краю ровным столбцом. */
+.stat__langs { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 4px; }
+.stat__langs li { display: flex; align-items: baseline; gap: 10px; }
+.stat__langs-code {
+  min-width: 2.1em; color: var(--ink); font-weight: 700;
+  font-size: var(--step--1); text-transform: lowercase;
+}
+.stat__langs b {
+  font-family: var(--serif); font-weight: 700;
+  font-size: var(--step-1); color: var(--gold-strong);
+}
 .table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
