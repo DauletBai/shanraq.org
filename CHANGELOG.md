@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+- The JSON signup endpoint now honours the registration service flag. The
+  browser form has always checked it — offering an invite code while the beta is
+  closed, demanding a real first and last name, recording the consent — while
+  `POST /auth/signup` checked none of that and returned tokens. Closing
+  registration in the admin panel therefore shut the site to visitors and left
+  it open to anyone who could spell JSON. The auth module gained an optional
+  signup gate, wired in `main.go` to the same flag; the API has no invite-code
+  field, so anything short of a fully open registration is refused there.
+- The jobs API is staff-only again. It was reachable by role `user`, and any
+  registered reader could mint an API key, so a reader could enqueue arbitrary
+  jobs: `ai_translate` rewrites the translations of any article id it is handed
+  and spends the AI budget doing it, `syndicate_telegram` re-posts to the
+  channel. Enqueue now requires operator or admin.
+
+Both were found by an external audit; both are covered by regression tests.
+
 ### Added
 - A "Delete" button in the author studio, for drafts. A false start or a
   duplicate left behind by a lost session had no way out of the table at all.

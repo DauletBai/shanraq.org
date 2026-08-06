@@ -63,6 +63,17 @@ func main() {
 	} else if on {
 		authOpts = append(authOpts, auth.WithSMSSender(smsClient))
 	}
+	// The JSON signup endpoint must obey the same registration switch as the
+	// browser form. The articles module owns the service flags and is built
+	// further down, so the gate is a closure resolved at request time rather
+	// than at construction: by the time anyone can POST, both modules exist.
+	var articlesModule *articles.Module
+	authOpts = append(authOpts, auth.WithSignupGate(func() error {
+		if articlesModule == nil {
+			return nil
+		}
+		return articlesModule.RegistrationGate()
+	}))
 	authModule := auth.New(authOpts...)
 	apiKeyModule := apikeys.New(
 		apikeys.WithHTTPMiddleware(authModule.RequireRoles("user", "operator", "admin")),
@@ -72,9 +83,15 @@ func main() {
 		jobs.WithWorkerCount(jobWorkers),
 		jobs.WithPollInterval(jobPollSeconds),
 		jobs.WithTenantResolver(tenantResolver),
+		// Staff only. Enqueue takes an arbitrary job name and payload, and among
+		// the registered handlers are ones that spend money and touch other
+		// people's content: ai_translate rewrites the translations of any
+		// article id it is given, syndicate_telegram re-posts to the channel.
+		// A plain reader could mint an API key and drive both, so the role list
+		// no longer includes "user".
 		jobs.WithHTTPMiddleware(
 			apiKeyModule.RequireAPIKey(),
-			authModule.RequireRoles("user", "operator", "admin"),
+			authModule.RequireRoles("operator", "admin"),
 		),
 	)
 	aiModule := ai.New()
@@ -110,7 +127,8 @@ func main() {
 	app.Register(syndicateModule)
 	mediaModule := media.New(authModule)
 	app.Register(mediaModule)
-	app.Register(articles.New(authModule, aiModule, syndicateModule, mediaModule, notifierModule))
+	articlesModule = articles.New(authModule, aiModule, syndicateModule, mediaModule, notifierModule)
+	app.Register(articlesModule)
 	app.Register(webui.New(jobWorkers, jobPollSeconds,
 		webui.WithTenantResolver(func(r *http.Request) (uuid.UUID, bool) {
 			return tenantResolver(r)

@@ -2,6 +2,7 @@ package articles
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -268,4 +269,34 @@ func (s *ServiceFlags) RestoreExpired(ctx context.Context) (bool, error) {
 		return false, nil
 	}
 	return true, s.Load(ctx)
+}
+
+// RegistrationGate reports whether a new account may be created right now, for
+// callers outside this module — specifically the JSON signup endpoint in the
+// auth module, which has no view of service flags of its own.
+//
+// The browser form offers an invite code, so it can still let referred users in
+// while the beta is closed. The API has no such field, so anything other than a
+// fully open registration is a refusal there: better to turn away an invited
+// user with a clear message than to leave the one unlocked door in the wall.
+func (s *ServiceFlags) RegistrationGate() error {
+	f := s.Flag(SvcRegistration)
+	if f.Status == svcOn {
+		return nil
+	}
+	if msg := f.Message(LangRU); msg != "" {
+		return errors.New(msg)
+	}
+	return errors.New("registration is currently closed")
+}
+
+// RegistrationGate exposes the registration switch to the application wiring,
+// so the auth module's JSON signup can be held to the same rule as the browser
+// form. Before Init the flags are not loaded yet and nothing is serving, so an
+// unconfigured module reports no objection.
+func (m *Module) RegistrationGate() error {
+	if m == nil || m.flags == nil {
+		return nil
+	}
+	return m.flags.RegistrationGate()
 }

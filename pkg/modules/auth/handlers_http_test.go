@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -117,5 +118,40 @@ func TestAuthProfileRequiresAuth(t *testing.T) {
 	app.router.ServeHTTP(w, r)
 	if w.Code != http.StatusUnauthorized {
 		t.Errorf("profile without auth = %d, want 401", w.Code)
+	}
+}
+
+// The JSON signup used to be the one door with no lock on it: the browser form
+// honours the registration service flag, while POST /auth/signup created an
+// account and handed back tokens regardless. Closing registration in the admin
+// panel therefore shut the site to visitors and left it open to anyone who
+// could spell JSON.
+func TestSignupObeysGate(t *testing.T) {
+	app := newAuthTestApp(t)
+
+	blocked := errors.New("registration is currently closed")
+	app.mod.signupGate = func() error { return blocked }
+
+	w := app.post("/auth/signup", `{"email":"gated@t.test","password":"Parol12345","consent":true}`)
+	if w.Code != http.StatusForbidden {
+		t.Fatalf("signup with a closed gate = %d, want 403 (%s)", w.Code, w.Body.String())
+	}
+
+	// And the account must not exist: a refusal that still writes a row is worse
+	// than no refusal at all, because it hides the breach.
+	var n int
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT count(*) FROM auth_users WHERE lower(email)='gated@t.test'`).Scan(&n); err != nil {
+		t.Fatalf("count: %v", err)
+	}
+	if n != 0 {
+		t.Errorf("a blocked signup created %d user(s), want 0", n)
+	}
+
+	// With the gate open the endpoint works as before.
+	app.mod.signupGate = func() error { return nil }
+	app.emails = append(app.emails, "ungated@t.test")
+	if w := app.post("/auth/signup", `{"email":"ungated@t.test","password":"Parol12345","consent":true}`); w.Code != http.StatusOK && w.Code != http.StatusCreated {
+		t.Errorf("signup with an open gate = %d, want 2xx (%s)", w.Code, w.Body.String())
 	}
 }

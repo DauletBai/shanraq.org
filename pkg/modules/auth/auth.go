@@ -93,6 +93,23 @@ type Module struct {
 	mfaProvider MFAProvider
 	requireTOTP bool
 	totpIssuer  string
+	signupGate  func() error
+}
+
+// WithSignupGate lets the host application decide whether the JSON signup
+// endpoint may create an account at all.
+//
+// This exists because the API route used to be the one door with no lock on it:
+// the browser form checks the registration service flag, demands an invite code
+// while the beta is closed, requires a real first and last name and records the
+// consent — POST /auth/signup checked none of that and handed back tokens. With
+// registration closed in the admin panel, the site stayed shut to visitors and
+// open to anyone who could spell JSON.
+//
+// A nil gate keeps the old behaviour, so the module stays usable standalone; the
+// application wires the real check in main.go.
+func WithSignupGate(gate func() error) Option {
+	return func(m *Module) { m.signupGate = gate }
 }
 
 //go:embed templates/*.html
@@ -228,6 +245,14 @@ func (m *Module) handleEmailVerify(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
+	// The same gate the browser form goes through. Checked before anything else
+	// so a closed registration cannot be probed for existing e-mails either.
+	if m.signupGate != nil {
+		if err := m.signupGate(); err != nil {
+			respond.Error(w, http.StatusForbidden, err)
+			return
+		}
+	}
 	if !m.enforceRateLimit(r, "signup", true) {
 		respond.Error(w, http.StatusTooManyRequests, errTooManyRequests)
 		return

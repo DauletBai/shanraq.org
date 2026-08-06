@@ -147,3 +147,28 @@ func TestServiceFlagsIntegration(t *testing.T) {
 		t.Fatalf("restore seed: %v", err)
 	}
 }
+
+// The JSON signup endpoint has no invite-code field, so anything short of a
+// fully open registration must be a refusal there — otherwise closing the beta
+// in the admin panel leaves the API wide open.
+func TestRegistrationGate(t *testing.T) {
+	flags := NewServiceFlags(nil)
+	if err := flags.RegistrationGate(); err != nil {
+		t.Errorf("an unset flag defaults to open, got %v", err)
+	}
+	for _, st := range []string{svcOff, svcInviteOnly, svcMaintenance} {
+		flags.cache = map[string]ServiceFlag{SvcRegistration: {Code: SvcRegistration, Status: st}}
+		if err := flags.RegistrationGate(); err == nil {
+			t.Errorf("status %q must close the API signup", st)
+		}
+	}
+	flags.cache = map[string]ServiceFlag{SvcRegistration: {Code: SvcRegistration, Status: svcOn}}
+	if err := flags.RegistrationGate(); err != nil {
+		t.Errorf("status on must allow signup, got %v", err)
+	}
+	// A nil module must not panic in the wiring closure before Init.
+	var m *Module
+	if err := m.RegistrationGate(); err != nil {
+		t.Errorf("nil module = %v, want nil", err)
+	}
+}
