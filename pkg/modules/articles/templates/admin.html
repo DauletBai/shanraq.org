@@ -335,20 +335,6 @@
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
         <div class="adm-panel">
-          <h2>{{ t .Lang "ag.bots" }}</h2>
-          <p class="adm-hint" style="margin-top:-6px">{{ t .Lang "ag.bots_note" }}</p>
-          {{ if .Guests.Bots }}
-          <table class="spec">
-            <thead><tr><th></th><th>{{ t $.Lang "ag.hits" }}</th></tr></thead>
-            <tbody>
-              {{ range .Guests.Bots }}
-              <tr><td>{{ .Title }}</td><td><b>{{ money .N }}</b></td></tr>
-              {{ end }}
-            </tbody>
-          </table>
-          {{ else }}<p class="adm-hint">—</p>{{ end }}
-        </div>
-        <div class="adm-panel">
           <h2>{{ t .Lang "ag.devices" }}</h2>
           {{ if .Guests.Devices }}
           <div class="adm-chart">
@@ -403,6 +389,20 @@
             </div>
             {{ end }}
           </div>
+          {{ else }}<p class="adm-hint">—</p>{{ end }}
+        </div>
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.bots" }}</h2>
+          <p class="adm-hint" style="margin-top:-6px">{{ t .Lang "ag.bots_note" }}</p>
+          {{ if .Guests.Bots }}
+          <table class="spec">
+            <thead><tr><th></th><th>{{ t $.Lang "ag.hits" }}</th></tr></thead>
+            <tbody>
+              {{ range .Guests.Bots }}
+              <tr><td>{{ .Title }}</td><td><b>{{ money .N }}</b></td></tr>
+              {{ end }}
+            </tbody>
+          </table>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
         <div class="adm-panel">
