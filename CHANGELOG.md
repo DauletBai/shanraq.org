@@ -6,6 +6,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `stripMD` mangled HTML instead of removing it: `<script>alert(1)</script>`
+  became `<scriptalert(1)</script`, which then went into card excerpts and the
+  page's meta description. Never an XSS — the templates escape it — but rubbish
+  where a summary belongs, and it took a test to notice.
+
+### Tests
+- Security invariants are now pinned by tests, chosen for what a regression
+  would cost rather than for the coverage figure. The headline one: markdown
+  from any author or commenter must never render a live tag. goldmark runs
+  without `WithUnsafe`, but that flag is one word long and looks harmless —
+  somebody will eventually reach for it to embed a video, and stored XSS ships
+  the same day.
+  Also covered: email normalisation as account identity (two spellings must not
+  become two accounts, two mailboxes must not become one), the password floor,
+  real-name validation, that a commenter's label can never fall back to their
+  e-mail address, contact masking, the staged-launch gates and the global site
+  switch failing open, category slugs being a closed set, slugs staying URL-safe,
+  and that a 5xx never carries its cause to the client while still reaching the
+  log.
+
 ### Security
 - The JSON signup endpoint now honours the registration service flag. The
   browser form has always checked it — offering an invite code while the beta is

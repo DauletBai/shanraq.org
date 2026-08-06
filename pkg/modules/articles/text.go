@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -80,10 +81,19 @@ func readingMinutes(source string) int {
 
 // stripMD removes the most common Markdown markup to produce plain text
 // suitable for a feed summary.
+// htmlTag matches a complete tag, so an author who pasted HTML gets it removed
+// rather than mangled. The old code only dropped the ">" of each tag, turning
+// "<script>alert(1)</script>" into "<scriptalert(1)</script" — which then went
+// into card excerpts and, worse, into the meta description of the page. Never an
+// XSS (templates escape it), but it is rubbish where a summary should be.
+var htmlTag = regexp.MustCompile(`(?s)<[^>]*>`)
+
 func stripMD(s string) string {
+	s = htmlTag.ReplaceAllString(s, " ")
 	repl := strings.NewReplacer(
 		"#", "", "*", "", "_", "", "`", "", ">", "", "~", "",
 		"![", "", "](", " ", "]", "", "[", "",
+		"<", "", // a stray "<" that was not part of a tag
 	)
 	var b strings.Builder
 	for _, line := range strings.Split(s, "\n") {
@@ -94,7 +104,8 @@ func stripMD(s string) string {
 		b.WriteString(repl.Replace(line))
 		b.WriteByte(' ')
 	}
-	return strings.TrimSpace(b.String())
+	// Tag removal leaves runs of spaces where the markup used to be.
+	return strings.Join(strings.Fields(b.String()), " ")
 }
 
 // excerpt trims text to a plain-text summary of at most n runes.
