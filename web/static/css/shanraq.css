@@ -1276,6 +1276,26 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* Stacked column-rows within a section must breathe: any .adm-cols following
    another gets vertical separation, so adding more rows never sticks again. */
 .adm-cols + .adm-cols { margin-top: 18px; }
+/* Гостевая аналитика: девять карточек, в каждой не больше двух колонок цифр,
+   поэтому в треть ширины они помещаются целиком и складываются в ровные 3×3
+   без пустого добора. */
+.adm-cols--3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1400px) { .adm-cols--3 { grid-template-columns: 1fr 1fr; } }
+
+/* Списки, которые растут вместе с данными, не должны растягивать карточку:
+   иначе одна колонка со временем уезжает вниз на несколько экранов, а рядом
+   остаётся пустота. Высота фиксируется, лишнее прокручивается внутри.
+   Значения подобраны так, чтобы было видно 3–4 записи — достаточно, чтобы
+   понять, есть ли новое, и не потерять остальную панель из виду. */
+.adm-scroll { max-height: 320px; overflow-y: auto; overscroll-behavior: contain; }
+.adm-scroll--tall { max-height: 420px; }
+/* Отступ под полосу прокрутки, чтобы она не наезжала на текст. */
+.adm-scroll { padding-right: 6px; }
+.adm-scroll::-webkit-scrollbar { width: 8px; }
+.adm-scroll::-webkit-scrollbar-track { background: transparent; }
+.adm-scroll::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
+.adm-scroll::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+.adm-scroll { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
 .adm-panel { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
 .adm-panel h2 { font-size: var(--step-1); margin-bottom: 14px; }
 .adm-hint { color: var(--muted); font-size: 0.85rem; margin: 12px 0 0; }

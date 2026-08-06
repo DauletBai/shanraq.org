@@ -3,6 +3,7 @@ package articles
 import (
 	"html/template"
 	"io"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
@@ -160,6 +161,57 @@ func TestCompactNum(t *testing.T) {
 		if got := compactNum(c.lang, c.n); got != c.want {
 			t.Errorf("compactNum(%q, %d) = %q, want %q", c.lang, c.n, got, c.want)
 		}
+	}
+}
+
+// The admin panel's lists grow forever as data accumulates. Left unbounded they
+// stretch their card until one column runs several screens past the other, so
+// every growing list must scroll inside a fixed height instead.
+func TestAdminGrowingListsScroll(t *testing.T) {
+	tmpl := buildTemplates(t)
+	now := time.Now()
+	rows := []GuestSimpleRow{{Title: "Прямые", N: 1345, Pct: 100}, {Title: "Facebook", N: 62, Pct: 5}}
+	var cs []AdminComment
+	var ml []ModAction
+	for i := 0; i < 40; i++ {
+		cs = append(cs, AdminComment{ID: "c", AuthorName: "A", Body: "текст", Slug: "s", CreatedAt: now})
+		ml = append(ml, ModAction{Created: now, Action: "hide", TargetType: "comment", ReasonCode: "spam", ActorKind: "human"})
+	}
+	page := AdminPage{Base: Base{Lang: LangRU, Title: "T"}, Email: "a@b.c", Role: "admin",
+		CanManageUsers: true, CanModerate: true, CanFinance: true,
+		AssignRoles: assignableRoles, ServiceStates: []string{svcOn},
+		Stats:  AdminStats{Users: 3, Articles: 2, RecentComments: cs},
+		ModLog: ml,
+		Guests: GuestAnalytics{HasData: true, Sources: rows, Bots: rows, Devices: rows, OS: rows,
+			Browsers: rows, Countries: rows, Langs: rows, EnglishBy: rows, VPNLangs: rows},
+	}
+	var sb strings.Builder
+	if err := tmpl.ExecuteTemplate(&sb, "admin", page); err != nil {
+		t.Fatal(err)
+	}
+	out := sb.String()
+
+	if !strings.Contains(out, `class="adm-comments adm-scroll"`) {
+		t.Error("recent comments must scroll")
+	}
+	if !strings.Contains(out, `class="table-wrap adm-scroll adm-scroll--tall"`) {
+		t.Error("the moderation log must scroll")
+	}
+	if n := strings.Count(out, "adm-scroll"); n < 5 {
+		t.Errorf("scrollable blocks: %d, want at least 5 (comments, log, three queues)", n)
+	}
+
+	// All nine guest-analytics panels must sit in ONE grid, otherwise they cannot
+	// line up as 3×3 and the layout falls back to stacked pairs.
+	g := regexp.MustCompile(`(?s)<div class="adm-cols adm-cols--3">(.*?)\n      </div>`).FindStringSubmatch(out)
+	if g == nil {
+		t.Fatal("three-column analytics grid not rendered")
+	}
+	if n := strings.Count(g[1], `<div class="adm-panel">`); n != 9 {
+		t.Errorf("panels inside the grid: %d, want 9", n)
+	}
+	if strings.Contains(g[1], `<div class="adm-panel"></div>`) {
+		t.Error("the empty filler panel should be gone — nine cells fill 3×3 exactly")
 	}
 }
 

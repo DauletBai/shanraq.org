@@ -247,7 +247,7 @@
       <div class="adm-panel">
         <h2>{{ t .Lang "admin.recent_comm" }}</h2>
         {{ if .Stats.RecentComments }}
-        <ul class="adm-comments">
+        <ul class="adm-comments adm-scroll">
           {{ range .Stats.RecentComments }}
           <li>
             <div class="adm-comments__head"><b>{{ .AuthorName }}</b> · <a href="/read/{{ .Slug }}#comments">{{ .Slug }}</a></div>
@@ -318,7 +318,7 @@
           {{ end }}
         </div>
       </div>
-      <div class="adm-cols">
+      <div class="adm-cols adm-cols--3">
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.sources" }}</h2>
           <p class="adm-hint" style="margin-top:-6px">{{ t .Lang "ag.sources_note" }}</p>
@@ -348,8 +348,6 @@
           </table>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
-      </div>
-      <div class="adm-cols">
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.devices" }}</h2>
           {{ if .Guests.Devices }}
@@ -378,8 +376,6 @@
           </div>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
-      </div>
-      <div class="adm-cols">
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.browsers" }}</h2>
           {{ if .Guests.Browsers }}
@@ -409,9 +405,6 @@
           </div>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
-      </div>
-
-      <div class="adm-cols">
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.langs" }}</h2>
           {{ if .Guests.Langs }}
@@ -441,9 +434,6 @@
           </div>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
-      </div>
-
-      <div class="adm-cols">
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.vpn_langs" }}</h2>
           <p class="adm-hint">{{ t .Lang "ag.vpn_langs_note" }}</p>
@@ -459,7 +449,6 @@
           </div>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
-        <div class="adm-panel"></div>
       </div>
       {{ else }}
       <p class="adm-hint">{{ t .Lang "ag.empty" }}</p>
@@ -557,7 +546,8 @@
   <h2 class="adv-card__title">{{ t .Lang "agent.queue_title" }}{{ if .PendingAgents }} <span class="subbar__badge">{{ len .PendingAgents }}</span>{{ end }}</h2>
   <p class="aside__text">{{ t .Lang "agent.queue_hint" }}</p>
   {{ if not .PendingAgents }}<p class="aside__text">{{ t .Lang "agent.queue_none" }}</p>{{ end }}
-  {{ range .PendingAgents }}
+    <div class="adm-scroll adm-scroll--tall">
+{{ range .PendingAgents }}
   <div class="modrow modrow--queue">
     <div>
       <span class="pill pill--review">{{ t $.Lang "agent.st_pending" }}</span>
@@ -567,6 +557,7 @@
            register. Without them the queue looks identical for both. */}}
       <span class="pill">{{ t $.Lang .KindLabelKey }}</span>
       {{ if .Agency }}<span class="modrow__type">{{ .Agency }}</span>{{ end }}
+  </div>
       {{ if .BIN }}<span class="modrow__type">{{ t $.Lang "agent.bin" }}: {{ .BIN }}</span>{{ end }}
       <span class="modrow__date">{{ .Phone }}</span>
       <span class="modrow__type">{{ .Email }}</span>
@@ -585,7 +576,8 @@
   <h2 class="adv-card__title">{{ t .Lang "aq.title" }}{{ if .Queue }} <span class="subbar__badge">{{ len .Queue }}</span>{{ end }}</h2>
   <p class="aside__text">{{ t .Lang "aq.hint" }}</p>
   {{ if not .Queue }}<p class="aside__text">{{ t .Lang "aq.none" }}</p>{{ end }}
-  {{ range .Queue }}
+    <div class="adm-scroll adm-scroll--tall">
+{{ range .Queue }}
   <div class="modrow modrow--queue">
     <div>
       <span class="pill pill--review">{{ t $.Lang "st.review" }}</span>
@@ -602,12 +594,14 @@
     </form>
   </div>
   {{ end }}
+  </div>
 </section>
 
 <section class="adv-card">
   <h2 class="adv-card__title">{{ t .Lang "mod.queue" }}{{ if .Appeals }} <span class="subbar__badge">{{ len .Appeals }}</span>{{ end }}</h2>
   {{ if not .Appeals }}<p class="aside__text">{{ t .Lang "mod.queue_none" }}</p>{{ end }}
-  {{ range .Appeals }}
+    <div class="adm-scroll adm-scroll--tall">
+{{ range .Appeals }}
   <div class="modrow modrow--queue">
     <div>
       <span class="adv-status adv-status--{{ .Action }}">{{ t $.Lang (printf "mod.act_%s" .Action) }}</span>
@@ -616,6 +610,7 @@
       <span class="modrow__type">{{ if eq .ActorKind "agent" }}{{ t $.Lang "mod.by_agent" }}{{ else }}{{ t $.Lang "mod.by_human" }}{{ end }}</span>
     </div>
     {{ with .Title }}<p class="modrow__title">«{{ . }}»</p>{{ end }}
+  </div>
     <p class="modrow__reason"><b>{{ t $.Lang "mod.reason" }}:</b> {{ t $.Lang (printf "mr.%s" .ReasonCode) }} · {{ .AuthorMail }}</p>
     <p class="modrow__note">{{ .Body }}</p>
     <form method="post" action="/admin/appeals/{{ .ID }}/resolve" class="modrow__actions">
@@ -629,7 +624,7 @@
 
 <section class="adv-card">
   <h2 class="adv-card__title">{{ t .Lang "mod.log" }}</h2>
-  <div class="table-wrap">
+  <div class="table-wrap adm-scroll adm-scroll--tall">
     <table class="spec">
       <tbody>
       {{ range .ModLog }}
