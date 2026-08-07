@@ -82,7 +82,7 @@ func TestAuthSignupFlow(t *testing.T) {
 	}
 	// A valid signup succeeds and returns a token.
 	app.emails = append(app.emails, "api-ok@t.test")
-	w := app.post("/auth/signup", `{"email":"api-ok@t.test","password":"Parol12345","consent":true}`)
+	w := app.post("/auth/signup", `{"email":"api-ok@t.test","password":"Parol12345","consent":true,"first_name":"Даулет","last_name":"Баймурза"}`)
 	if w.Code != http.StatusOK && w.Code != http.StatusCreated {
 		t.Fatalf("valid signup = %d, want 2xx (%s)", w.Code, w.Body.String())
 	}
@@ -132,7 +132,7 @@ func TestSignupObeysGate(t *testing.T) {
 	blocked := errors.New("registration is currently closed")
 	app.mod.signupGate = func() error { return blocked }
 
-	w := app.post("/auth/signup", `{"email":"gated@t.test","password":"Parol12345","consent":true}`)
+	w := app.post("/auth/signup", `{"email":"gated@t.test","password":"Parol12345","consent":true,"first_name":"Даулет","last_name":"Баймурза"}`)
 	if w.Code != http.StatusForbidden {
 		t.Fatalf("signup with a closed gate = %d, want 403 (%s)", w.Code, w.Body.String())
 	}
@@ -151,7 +151,48 @@ func TestSignupObeysGate(t *testing.T) {
 	// With the gate open the endpoint works as before.
 	app.mod.signupGate = func() error { return nil }
 	app.emails = append(app.emails, "ungated@t.test")
-	if w := app.post("/auth/signup", `{"email":"ungated@t.test","password":"Parol12345","consent":true}`); w.Code != http.StatusOK && w.Code != http.StatusCreated {
+	if w := app.post("/auth/signup", `{"email":"ungated@t.test","password":"Parol12345","consent":true,"first_name":"Даулет","last_name":"Баймурза"}`); w.Code != http.StatusOK && w.Code != http.StatusCreated {
 		t.Errorf("signup with an open gate = %d, want 2xx (%s)", w.Code, w.Body.String())
+	}
+}
+
+// The browser form demands a real first and last name because every article,
+// listing and comment on the site is signed by a person. The JSON endpoint used
+// to skip that check, quietly making the rule optional for anyone who preferred
+// JSON to the form.
+//
+// Signup is rate limited to a burst of three, so this stays at two requests and
+// proves only that the endpoint enforces the rule and stores the result. The
+// full table of what counts as a name lives in TestValidatePersonNameRejectsNonNames.
+func TestSignupRequiresRealName(t *testing.T) {
+	app := newAuthTestApp(t)
+
+	if w := app.post("/auth/signup", `{"email":"noname@t.test","password":"Parol12345","consent":true}`); w.Code != http.StatusBadRequest {
+		t.Errorf("a nameless signup = %d, want 400 (%s)", w.Code, w.Body.String())
+	}
+	var n int
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT count(*) FROM auth_users WHERE lower(email)='noname@t.test'`).Scan(&n); err != nil {
+		t.Fatalf("count: %v", err)
+	}
+	if n != 0 {
+		t.Errorf("a rejected signup created %d account(s), want 0", n)
+	}
+
+	// A named payload works, and the name actually lands in the row — a rule that
+	// only rejects would pass the check above while storing nothing useful.
+	app.emails = append(app.emails, "named@t.test")
+	w := app.post("/auth/signup", `{"email":"named@t.test","password":"Parol12345","consent":true,"first_name":"Даулет","last_name":"Баймурза","middle_name":"Абаевич"}`)
+	if w.Code != http.StatusOK && w.Code != http.StatusCreated {
+		t.Fatalf("a named signup = %d, want 2xx (%s)", w.Code, w.Body.String())
+	}
+	var first, last string
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT COALESCE(first_name,''), COALESCE(last_name,'') FROM auth_users WHERE lower(email)='named@t.test'`).
+		Scan(&first, &last); err != nil {
+		t.Fatalf("read back: %v", err)
+	}
+	if first != "Даулет" || last != "Баймурза" {
+		t.Errorf("name stored as %q %q, want Даулет Баймурза", first, last)
 	}
 }
