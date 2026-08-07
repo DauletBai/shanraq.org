@@ -344,6 +344,20 @@ func TestShareRowLinks(t *testing.T) {
 	if !strings.Contains(out, "%26") {
 		t.Error("title ampersand was not percent-encoded")
 	}
+	// Every channel must tag its own link. Messengers strip the Referer, so an
+	// untagged share arrives as "direct" and the panel cannot tell which channel
+	// actually works — the one question worth asking at this stage.
+	for _, src := range []string{"whatsapp", "telegram", "facebook", "linkedin"} {
+		if !strings.Contains(out, "utm_source%3d"+src) {
+			t.Errorf("share link for %s carries no utm_source", src)
+		}
+	}
+	// data-url is an ordinary attribute, not a URL query, so it is HTML-escaped
+	// rather than percent-encoded. It feeds the copy button and the OS share
+	// sheet, where the destination is unknown — hence the honest "share" label.
+	if !strings.Contains(out, "utm_source=share") {
+		t.Error("copy/native share URL carries no utm_source")
+	}
 	// No Instagram button: Instagram has no web share endpoint, so one could
 	// only pretend to work. See the comment on the partial.
 	if strings.Contains(strings.ToLower(out), "instagram") {
@@ -417,5 +431,30 @@ func TestListingShowsShare(t *testing.T) {
 	}
 	if !strings.Contains(out, "shanraq.org%2flistings%2fabc%3flang%3dru") {
 		t.Error("listing share row did not receive the absolute canonical URL")
+	}
+}
+
+// TestWithUTM covers the join, which is the only place this can go wrong: an
+// article URL always carries ?lang=, so a "?" would produce a second query
+// string and the tag would be silently dropped by the browser.
+func TestWithUTM(t *testing.T) {
+	cases := []struct{ in, src, want string }{
+		{"https://shanraq.org/read/x?lang=ru", "whatsapp",
+			"https://shanraq.org/read/x?lang=ru&utm_source=whatsapp&utm_medium=share"},
+		{"https://shanraq.org/read/x", "telegram",
+			"https://shanraq.org/read/x?utm_source=telegram&utm_medium=share"},
+		{"https://shanraq.org/read/x?lang=ru", "", "https://shanraq.org/read/x?lang=ru"},
+		{"", "whatsapp", ""},
+	}
+	for _, c := range cases {
+		if got := withUTM(c.in, c.src); got != c.want {
+			t.Errorf("withUTM(%q, %q) = %q, want %q", c.in, c.src, got, c.want)
+		}
+	}
+	// The label has to survive the round trip, or the tag is decoration.
+	for _, src := range []string{"whatsapp", "telegram", "facebook", "linkedin", "share"} {
+		if got := utmSource(src); got != src {
+			t.Errorf("utmSource(%q) = %q — share links would not be attributed", src, got)
+		}
 	}
 }

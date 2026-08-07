@@ -232,6 +232,10 @@ func utmSource(v string) string {
 		return "linkedin"
 	case "whatsapp", "wa":
 		return "whatsapp"
+	case "share", "copy":
+		// Copied link or the OS share sheet: we know the reader passed it on,
+		// not where to. Honest label beats guessing at "copy".
+		return "share"
 	}
 	return ""
 }
@@ -852,4 +856,23 @@ func sortClickRows(rs []GuestClickRow) {
 			rs[j], rs[j-1] = rs[j-1], rs[j]
 		}
 	}
+}
+
+// withUTM tags a share link with its channel, so a reader who passes an article
+// on through WhatsApp arrives as WhatsApp rather than as "direct".
+//
+// This is not decoration. Messengers and in-app browsers strip the Referer, so
+// without the tag every shared link lands in the direct bucket and the panel
+// cannot tell a channel that works from one that does not — which is the whole
+// question at this stage. utmSource maps the value back to a known label; a
+// source it does not recognise is ignored rather than stored.
+func withUTM(rawURL, source string) string {
+	if rawURL == "" || source == "" {
+		return rawURL
+	}
+	sep := "?"
+	if strings.Contains(rawURL, "?") {
+		sep = "&"
+	}
+	return rawURL + sep + "utm_source=" + url.QueryEscape(source) + "&utm_medium=share"
 }
