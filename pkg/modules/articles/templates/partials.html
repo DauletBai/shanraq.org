@@ -74,8 +74,9 @@
   <title>{{ .Title }} · Shanraq</title>
   <meta name="description" content="{{ .Desc }}">
   {{/* Discover and image search only show a large preview when this is present;
-       without it a 1200px cover is served as a thumbnail. */}}
-  <meta name="robots" content="max-image-preview:large">
+       without it a 1200px cover is served as a thumbnail. "follow" is kept on
+       noindexed pages so their internal links still lead the crawler onward. */}}
+  <meta name="robots" content="{{ if .NoIndex }}noindex, follow, {{ end }}max-image-preview:large">
   <link rel="canonical" href="{{ .SiteURL }}{{ if .CanonURL }}{{ .CanonURL }}{{ else }}{{ .Path }}?lang={{ .Lang }}{{ end }}">
   {{ range langs }}<link rel="alternate" hreflang="{{ htmlLang . }}" href="{{ $.SiteURL }}{{ index $.LangLinks . }}">
   {{ end }}<link rel="alternate" hreflang="x-default" href="{{ .SiteURL }}{{ index .LangLinks "ru" }}">

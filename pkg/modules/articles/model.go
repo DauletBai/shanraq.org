@@ -59,6 +59,11 @@ type Article struct {
 	PublishedAt  *time.Time
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
+	// Indexable lets search engines index this article. False puts it behind a
+	// noindex tag and out of the sitemap without unpublishing it — the page
+	// stays readable and linkable. Used to keep 90 unread AI columns from
+	// dragging the site's quality signal down while organic search is starting.
+	Indexable bool
 
 	// Translations keyed by language code, populated on demand.
 	Translations map[string]*Translation

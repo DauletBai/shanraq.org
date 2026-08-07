@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"net/http"
+	"strings"
 	"testing"
 )
 
@@ -92,5 +93,48 @@ func TestFinishRateIgnoresViewCount(t *testing.T) {
 		if got := pctOf(c.d100, c.d25); got != c.want {
 			t.Errorf("%s: finish rate = %d%%, want %d%%", c.name, got, c.want)
 		}
+	}
+}
+
+// TestNonIndexableArticleIsHiddenFromSearchOnly pins the treatment chosen for
+// the 90 unread AI columns: keep them readable, keep them out of the index.
+//
+// Deleting them was the alternative, and it is worse — 90 URLs start returning
+// 404, nothing can be undone, and a column that turns out to be good is gone.
+// A flag costs one boolean to reverse.
+func TestNonIndexableArticleIsHiddenFromSearchOnly(t *testing.T) {
+	app := newTestApp(t)
+	author := app.createUser("noindex@example.com", "Sup3r-Secret-Pass!")
+	id, slug := app.seedArticle(author, "published")
+
+	const browser = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
+		"(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+
+	// Indexable by default: a new article must never be born invisible.
+	w := app.do(http.MethodGet, "/read/"+slug, nil, withHeader("User-Agent", browser))
+	if body := w.Body.String(); strings.Contains(body, "noindex") {
+		t.Error("a freshly published article must be indexable by default")
+	}
+	sm := app.do(http.MethodGet, "/sitemap.xml", nil)
+	if !strings.Contains(sm.Body.String(), slug) {
+		t.Error("published article is missing from the sitemap")
+	}
+
+	app.exec(`UPDATE articles SET indexable = FALSE WHERE id = $1`, id)
+
+	w = app.do(http.MethodGet, "/read/"+slug, nil, withHeader("User-Agent", browser))
+	if w.Code != http.StatusOK {
+		t.Fatalf("non-indexable article returns %d — it must stay readable, not 404", w.Code)
+	}
+	body := w.Body.String()
+	if !strings.Contains(body, "noindex, follow") {
+		t.Error("non-indexable article is missing its noindex directive")
+	}
+	if !strings.Contains(body, "Тест заголовок") {
+		t.Error("non-indexable article should still render its content")
+	}
+	sm = app.do(http.MethodGet, "/sitemap.xml", nil)
+	if strings.Contains(sm.Body.String(), slug) {
+		t.Error("non-indexable article must not be advertised in the sitemap")
 	}
 }

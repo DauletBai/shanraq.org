@@ -52,6 +52,9 @@ type Base struct {
 	OGImage string        // absolute image URL for social previews
 	OGType  string        // "website" | "article"
 	JSONLD  template.HTML // structured data (schema.org), injected verbatim
+	// NoIndex asks search engines to keep this page out of their index while
+	// still following its links. Set for articles flagged non-indexable.
+	NoIndex bool
 
 	// Svc carries the operational state of each toggleable service, already
 	// localized, so any template can show a maintenance notice and hide a paid
@@ -550,6 +553,10 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	} else {
 		m.rt.Logger.Warn("load comments", zap.Error(err))
 	}
+
+	// Non-indexable articles still render in full — they are only kept out of
+	// search, not out of the site. See migration 20251107009900.
+	page.NoIndex = !a.Indexable
 
 	m.applyArticleSEO(&page)
 	m.render(w, "article", page)

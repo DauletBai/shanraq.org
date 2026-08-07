@@ -57,7 +57,7 @@ func (s *FavoriteStore) IsFavorite(ctx context.Context, userID uuid.UUID, itemTy
 func (s *Store) ListFavorited(ctx context.Context, userID uuid.UUID) ([]*Article, error) {
 	rows, err := s.db.Query(ctx, `
 		SELECT a.id, a.author_id, u.email, a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
+		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM favorites f
 		JOIN articles a  ON a.id = f.item_id
 		JOIN auth_users u ON u.id = a.author_id

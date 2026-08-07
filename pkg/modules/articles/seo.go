@@ -281,7 +281,7 @@ type SitemapItem struct {
 // SitemapArticles returns published article slugs with their last update.
 func (s *Store) SitemapArticles(ctx context.Context) ([]SitemapItem, error) {
 	rows, err := s.db.Query(ctx, `SELECT slug, updated_at FROM articles
-		WHERE status = 'published' ORDER BY updated_at DESC LIMIT 5000`)
+		WHERE status = 'published' AND indexable ORDER BY updated_at DESC LIMIT 5000`)
 	if err != nil {
 		return nil, err
 	}

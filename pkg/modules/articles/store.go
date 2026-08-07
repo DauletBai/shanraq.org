@@ -204,7 +204,7 @@ func (s *Store) SlugExists(ctx context.Context, slug string) (bool, error) {
 func (s *Store) GetByID(ctx context.Context, id, authorID uuid.UUID) (*Article, error) {
 	row := s.db.QueryRow(ctx, `
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
+		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE a.id = $1 AND a.author_id = $2
@@ -223,7 +223,7 @@ func (s *Store) GetByID(ctx context.Context, id, authorID uuid.UUID) (*Article, 
 func (s *Store) GetPublishedBySlug(ctx context.Context, slug string) (*Article, error) {
 	row := s.db.QueryRow(ctx, `
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
+		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE a.slug = $1 AND a.status = 'published'
@@ -267,7 +267,7 @@ func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory s
 
 	query := fmt.Sprintf(`
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
+		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE %s
@@ -297,7 +297,7 @@ func (s *Store) ListPublishedByAuthor(ctx context.Context, authorID string, limi
 	}
 	rows, err := s.db.Query(ctx, `
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
+		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE a.status = 'published' AND a.author_id = $1
@@ -318,7 +318,7 @@ func (s *Store) ListPublishedByAuthor(ctx context.Context, authorID string, limi
 func (s *Store) ListByAuthor(ctx context.Context, authorID uuid.UUID) ([]*Article, error) {
 	rows, err := s.db.Query(ctx, `
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at
+		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE a.author_id = $1
@@ -427,7 +427,7 @@ func (s *Store) attachTranslations(ctx context.Context, arts []*Article) ([]*Art
 func scanArticle(row pgx.Row) (*Article, error) {
 	var a Article
 	err := row.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.AuthorFirst, &a.AuthorLast, &a.Slug, &a.OriginalLang, &a.Status, &a.Category, &a.Subcategory,
-		&a.CoverURL, &a.Score, &a.ViewsCount, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
+		&a.CoverURL, &a.Score, &a.ViewsCount, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt, &a.Indexable)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, ErrNotFound
@@ -444,7 +444,7 @@ func scanArticles(rows pgx.Rows) ([]*Article, error) {
 	for rows.Next() {
 		var a Article
 		err := rows.Scan(&a.ID, &a.AuthorID, &a.AuthorEmail, &a.AuthorFirst, &a.AuthorLast, &a.Slug, &a.OriginalLang, &a.Status, &a.Category, &a.Subcategory,
-			&a.CoverURL, &a.Score, &a.ViewsCount, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
+			&a.CoverURL, &a.Score, &a.ViewsCount, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt, &a.Indexable)
 		if err != nil {
 			return nil, fmt.Errorf("scan article row: %w", err)
 		}
