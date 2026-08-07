@@ -64,6 +64,10 @@
         {{ if .IsAI }}<p class="notice">{{ t .Lang "article.ai_note" }}</p>{{ end }}
 
         <div class="prose" data-read-progress="{{ .Slug }}">{{ .Body }}</div>
+
+        {{/* The second share row is the one that earns its keep: the reader has
+             finished and is deciding whether the piece was worth passing on. */}}
+        {{ template "share_row" (dict "Lang" .Lang "Title" .Title "Foot" true "URL" (printf "%s%s" .SiteURL .CanonURL)) }}
       </article>
 
       <section class="comments" id="comments">

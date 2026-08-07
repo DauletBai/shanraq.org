@@ -347,8 +347,8 @@
      other installed app — is one tap away. It stays hidden where the browser
      has no navigator.share (most desktops), so nothing dead is ever shown. */}}
 {{ define "share_row" }}
-<div class="share" data-share data-url="{{ .URL }}" data-title="{{ .Title }}" data-copied="{{ t .Lang "share.copied" }}">
-  <span class="share__label">{{ icon "share" }}{{ t .Lang "share.title" }}</span>
+<div class="share{{ if .Foot }} share--foot{{ end }}" data-share data-url="{{ .URL }}" data-title="{{ .Title }}" data-copied="{{ t .Lang "share.copied" }}">
+  <span class="share__label">{{ icon "share" }}{{ if .Foot }}{{ t .Lang "share.foot" }}{{ else }}{{ t .Lang "share.title" }}{{ end }}</span>
 
   <a class="share__btn share__btn--wa" target="_blank" rel="noopener"
      href="https://wa.me/?text={{ printf "%s — %s" .Title .URL }}"

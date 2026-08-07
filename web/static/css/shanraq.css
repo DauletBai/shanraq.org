@@ -1462,9 +1462,17 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .share__btn--in:hover { border-color: #0A66C2; color: #08529c; background: color-mix(in srgb, #0A66C2 10%, transparent); }
 .share__btn--native:hover, .share__btn--copy:hover { border-color: var(--gold); color: var(--gold-strong); }
 .share__toast { font-size: var(--step--1); color: var(--teal); font-weight: 600; }
+/* End-of-article variant: its own band under the text, so it reads as an
+   invitation rather than as another control in the byline. */
+.share--foot {
+  display: flex; margin: 34px 0 0; padding: 20px 0 4px; width: 100%;
+  border-top: 1px solid var(--line);
+}
+.share--foot .share__label { margin-right: 8px; color: var(--ink-soft); }
 @media (max-width: 560px) {
   .share { margin-left: 0; margin-top: 10px; width: 100%; }
   .share__label { width: 100%; margin-bottom: 2px; }
+  .share--foot { margin-top: 26px; }
 }
 .listing__headrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
 .listing__headrow .listing__price { margin: 0; }

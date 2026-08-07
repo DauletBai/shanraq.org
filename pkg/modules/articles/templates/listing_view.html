@@ -42,6 +42,9 @@
             </button>
           </form>
           {{ end }}
+          {{/* A listing is shared far more often than an article — people send
+               flats to family before they call. Guests included. */}}
+          {{ template "share_row" (dict "Lang" .Lang "Title" (.L.TitleIn .Lang) "URL" (printf "%s%s" .SiteURL .CanonURL)) }}
         </div>
 
         {{ template "listing_facts" (dict "L" .L "Lang" .Lang) }}

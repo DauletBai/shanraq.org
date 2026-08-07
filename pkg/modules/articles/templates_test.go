@@ -381,4 +381,41 @@ func TestArticleShowsShareToGuests(t *testing.T) {
 	if strings.Contains(out, "favbtn") {
 		t.Error("favourites button must stay hidden from guests")
 	}
+	// Two rows: one in the byline, one under the text for the reader who just
+	// finished. The second is the one that actually gets used.
+	// Count the row opener, not "data-share": that prefix also matches the
+	// per-button hooks and the footer script's selectors.
+	if n := strings.Count(out, "data-share data-url="); n != 2 {
+		t.Errorf("article has %d share rows, want 2 (byline + end of text)", n)
+	}
+	if !strings.Contains(out, "share--foot") {
+		t.Error("end-of-article share row is missing its foot variant")
+	}
+	if !strings.Contains(out, T(LangRU, "share.foot")) {
+		t.Error("end-of-article row should carry the pass-it-on label, not the plain one")
+	}
+}
+
+// TestListingShowsShare guards sharing on listings, where it matters most:
+// people send a flat to family long before they call the number.
+func TestListingShowsShare(t *testing.T) {
+	tmpl := buildTemplates(t)
+	page := ListingViewPage{
+		Base: Base{Title: "T", Lang: LangRU, Authed: false,
+			SiteURL: "https://shanraq.org", CanonURL: "/listings/abc?lang=ru"},
+		L: &Listing{ID: "abc", DealType: "rent", PropertyType: "house",
+			Country: "Казахстан", City: "Астана", Price: 350000, Area: 120, Rooms: 4,
+			Title: "Дом в аренду", Contact: "+7 700 000 00 00"},
+	}
+	var b strings.Builder
+	if err := tmpl.ExecuteTemplate(&b, "listing_view", page); err != nil {
+		t.Fatalf("execute listing_view: %v", err)
+	}
+	out := b.String()
+	if !strings.Contains(out, "data-share") {
+		t.Fatal("listing page has no share row")
+	}
+	if !strings.Contains(out, "shanraq.org%2flistings%2fabc%3flang%3dru") {
+		t.Error("listing share row did not receive the absolute canonical URL")
+	}
 }

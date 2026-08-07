@@ -407,6 +407,7 @@ var messages = map[string]map[string]string{
 	"article.toc":            {"kz": "Мазмұны", "ru": "Содержание", "en": "Contents"},
 	"article.read_min":       {"kz": "мин оқу", "ru": "мин чтения", "en": "min read"},
 	"share.title":            {"kz": "Бөлісу", "ru": "Поделиться", "en": "Share"},
+	"share.foot":             {"kz": "Мақала пайдалы болса — бөлісіңіз", "ru": "Если статья была полезной — поделитесь", "en": "If this was worth your time, pass it on"},
 	"share.whatsapp":         {"kz": "WhatsApp-та бөлісу", "ru": "Поделиться в WhatsApp", "en": "Share on WhatsApp"},
 	"share.telegram":         {"kz": "Telegram-да бөлісу", "ru": "Поделиться в Telegram", "en": "Share on Telegram"},
 	"share.facebook":         {"kz": "Facebook-та бөлісу", "ru": "Поделиться в Facebook", "en": "Share on Facebook"},
