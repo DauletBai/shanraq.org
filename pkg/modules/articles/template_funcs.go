@@ -46,6 +46,7 @@ func templateFuncs() template.FuncMap {
 		"catIcon":           catIcon,
 		"firstN":            firstStrings,
 		"countryFlag":       countryFlag,
+		"countryFlagEmoji":  countryFlagEmoji,
 		"liveSocial":        liveSocial, // social profiles that aren't "#" placeholders
 		"withUTM":           withUTM,
 		"dict":              dict,

@@ -1661,6 +1661,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   font-size: 0.72rem; font-weight: 700; font-variant-numeric: tabular-nums;
   color: var(--teal); background: color-mix(in srgb, var(--teal) 12%, transparent);
 }
+/* Too few readers to draw a conclusion from — shown, but not as a verdict. */
+.depth-rate--few { color: var(--muted); background: var(--surface-2); font-weight: 600; }
+.adm-flag { margin-right: 7px; font-size: 0.95rem; line-height: 1; }
 
 /* ---- Listing amenities ---- */
 .amgrid {

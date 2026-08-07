@@ -83,7 +83,12 @@
               <span class="depth-cell" title="{{ t $.Lang "studio.depth_50" }} · {{ .P50 }}% {{ t $.Lang "studio.depth_of_views" }}">½<b>{{ .D50 }}</b></span>
               <span class="depth-cell" title="{{ t $.Lang "studio.depth_75" }} · {{ .P75 }}% {{ t $.Lang "studio.depth_of_views" }}">¾<b>{{ .D75 }}</b></span>
               <span class="depth-cell depth-cell--end" title="{{ t $.Lang "studio.depth_100" }} · {{ .P100 }}% {{ t $.Lang "studio.depth_of_views" }}">🏁<b>{{ .D100 }}</b></span>
-              <span class="depth-rate" title="{{ t $.Lang "studio.depth_rate" }}">{{ .PFinish }}%</span>
+              {{/* Below a handful of readers the rate is noise dressed as a
+                   verdict: two readers who both finished print "100%". Show the
+                   count instead and say why, in the same spirit as refusing to
+                   call San Marino the world's most sporting nation. */}}
+              {{ if ge .D25 5 }}<span class="depth-rate" title="{{ t $.Lang "studio.depth_rate" }}">{{ .PFinish }}%</span>
+              {{ else }}<span class="depth-rate depth-rate--few" title="{{ t $.Lang "studio.depth_few" }}">—</span>{{ end }}
               {{ else }}<span class="dot">—</span>{{ end }}
             </td>
             <td>{{ fmtDate .Updated }}</td>

@@ -1,6 +1,9 @@
 package articles
 
-import "html/template"
+import (
+	"html/template"
+	"strings"
+)
 
 // Shanraq's own line-icon set — drawn in-house in one consistent style so we
 // don't depend on a third-party pack. Every glyph is a 24×24 viewBox, no fill,
@@ -184,3 +187,34 @@ func catIcon(category string) template.HTML {
 	}
 	return icon("cat_" + category)
 }
+
+// countryFlagEmoji turns a two-letter ISO country code into its flag, by the
+// Unicode rule that a flag IS its country code written in regional-indicator
+// letters. Derived, not looked up: every country the analytics can ever report
+// gets a flag, with no table to maintain and no country silently missing one.
+//
+// The datacenter/VPN bucket has no country by definition, so it gets a cloud —
+// it is hosting, not a place. Anything that is not exactly two ASCII letters
+// gets nothing rather than a mystery glyph.
+//
+// Caveat worth knowing: Windows renders these as the two letters instead of a
+// flag. That degrades to the country code, which is still the right answer.
+func countryFlagEmoji(code string) string {
+	if code == datacenterLabel {
+		return "☁️"
+	}
+	if len(code) != 2 {
+		return ""
+	}
+	var out []rune
+	for _, c := range strings.ToUpper(code) {
+		if c < 'A' || c > 'Z' {
+			return ""
+		}
+		out = append(out, regionalIndicatorA+(c-'A'))
+	}
+	return string(out)
+}
+
+// regionalIndicatorA is U+1F1E6 REGIONAL INDICATOR SYMBOL LETTER A.
+const regionalIndicatorA = '\U0001F1E6'

@@ -383,7 +383,7 @@
           <div class="adm-chart">
             {{ range .Guests.Countries }}
             <div class="adm-bar">
-              <span class="adm-bar__label">{{ .Title }}</span>
+              <span class="adm-bar__label"><span class="adm-flag">{{ countryFlagEmoji .Name }}</span>{{ .Title }}</span>
               <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
               <span class="adm-bar__val">{{ money .N }}</span>
             </div>

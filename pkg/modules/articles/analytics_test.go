@@ -2,6 +2,7 @@ package articles
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -239,5 +240,38 @@ func TestMetricsFlushAndGuestAnalytics(t *testing.T) {
 	}
 	if g.Trend[13].N != 6 { // today's guest page views
 		t.Errorf("trend today guest = %d, want 6", g.Trend[13].N)
+	}
+}
+
+// TestCountryFlagEmoji covers the derivation, not a table: every country the
+// geoip can report has to get a flag without anyone adding it by hand, which is
+// the entire reason the code derives one from the ISO letters.
+func TestCountryFlagEmoji(t *testing.T) {
+	cases := map[string]string{
+		"KZ":         "\U0001F1F0\U0001F1FF",
+		"NL":         "\U0001F1F3\U0001F1F1",
+		"US":         "\U0001F1FA\U0001F1F8",
+		"gb":         "\U0001F1EC\U0001F1E7", // case-insensitive
+		"datacenter": "☁️",                   // hosting is not a place
+		"":           "",
+		"K":          "",
+		"KAZ":        "",
+		"K1":         "", // digits are not regional indicators
+	}
+	for in, want := range cases {
+		if got := countryFlagEmoji(in); got != want {
+			t.Errorf("countryFlagEmoji(%q) = %q, want %q", in, got, want)
+		}
+	}
+
+	// Every label the live site has actually recorded must render something, or
+	// the panel shows a ragged column of half-flagged rows.
+	for _, code := range []string{"AU", "CN", "ES", "GB", "HU", "ID", "KZ", "NL", "RU", "SE", "US", "datacenter"} {
+		if countryFlagEmoji(code) == "" {
+			t.Errorf("no flag for %q, which the live analytics does report", code)
+		}
+		if name := T(LangRU, "ag.country."+code); strings.HasPrefix(name, "ag.country.") {
+			t.Errorf("no Russian name for %q — it would render as a bare ISO code", code)
+		}
 	}
 }
