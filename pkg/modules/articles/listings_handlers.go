@@ -272,8 +272,10 @@ func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	// Count a view — but not the owner's own visits.
-	if !m.isListingOwner(r, l) {
+	// Count a view — but not the owner's own visits, and not a crawler's: a
+	// seller reads this number as interest in their flat, so it has to mean
+	// people. See the same guard on articles in handlers.go.
+	if !m.isListingOwner(r, l) && botLabel(r.UserAgent()) == "" {
 		if err := m.listings.RecordView(r.Context(), id); err == nil {
 			l.ViewsCount++
 		}

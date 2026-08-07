@@ -1654,6 +1654,13 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 .depth-cell b { color: var(--ink); font-weight: 700; font-size: 0.82rem; }
 .depth-cell--end b { color: var(--teal); }
+/* Finish rate — the one figure here that no counting quirk can distort, so it
+   is the one allowed to look like a verdict. */
+.depth-rate {
+  display: inline-block; padding: 1px 7px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; font-variant-numeric: tabular-nums;
+  color: var(--teal); background: color-mix(in srgb, var(--teal) 12%, transparent);
+}
 
 /* ---- Listing amenities ---- */
 .amgrid {

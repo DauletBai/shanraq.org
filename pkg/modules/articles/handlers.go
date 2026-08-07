@@ -483,8 +483,20 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Count the view asynchronously-ish; ignore errors (best effort analytics).
-	if err := m.store.RecordView(r.Context(), a.ID, served); err != nil {
-		m.rt.Logger.Warn("record view", zap.Error(err))
+	//
+	// Crawlers are skipped, and that is not a detail. They used to be counted:
+	// two thirds of every "views" number on the dashboard were Googlebot, the
+	// Facebook link scraper and AI crawlers. That inflated the counter itself,
+	// and — worse — it was the denominator of the reading-depth funnel, whose
+	// numerator only a real browser can produce (the beacon needs JavaScript).
+	// So genuine 23% read-through was reported as 2%, and an author reads that
+	// as "nobody finishes my articles". Crawler traffic is not lost: the
+	// analytics panel counts it under "bots".
+	counted := botLabel(r.UserAgent()) == ""
+	if counted {
+		if err := m.store.RecordView(r.Context(), a.ID, served); err != nil {
+			m.rt.Logger.Warn("record view", zap.Error(err))
+		}
 	}
 
 	page := ArticlePage{Base: m.base(r, tr.Title, lang)}
@@ -506,7 +518,10 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		u := a.UpdatedAt
 		page.Updated = &u
 	}
-	page.Views = a.ViewsCount + 1
+	page.Views = a.ViewsCount
+	if counted {
+		page.Views++ // the row was just bumped; show the reader their own visit
+	}
 	page.IsAI = tr.Source == "ai"
 	page.Translated = served != lang
 	page.AvailableLangs = a.AvailableLangs()
@@ -849,6 +864,11 @@ type StudioRow struct {
 	// Reading-depth funnel: reader counts and their share of views (percent).
 	D25, D50, D75, D100 int64
 	P25, P50, P75, P100 int
+	// PFinish is what share of the readers who STARTED the article finished it.
+	// Unlike the percentages above it has no view count in the denominator, so
+	// it stays honest whatever the view counter is doing — and it answers the
+	// question an author actually has: was the piece worth staying with?
+	PFinish int
 }
 
 // StudioPage is the dashboard context.
@@ -907,6 +927,7 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			row.P50 = pctOf(row.D50, row.Views)
 			row.P75 = pctOf(row.D75, row.Views)
 			row.P100 = pctOf(row.D100, row.Views)
+			row.PFinish = pctOf(row.D100, row.D25)
 		}
 		rows = append(rows, row)
 	}
