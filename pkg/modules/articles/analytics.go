@@ -171,6 +171,42 @@ func trafficSource(referer, host string) string {
 	return "other"
 }
 
+// arrivalSource reports the channel a visit ARRIVED through, and whether this
+// page view is an arrival at all.
+//
+// The distinction is the whole point. A source counter that fires on every page
+// view measures reading depth, not acquisition: internal navigation sends a
+// same-host referrer, trafficSource files that under "direct", and a reader who
+// came from Facebook and then opened four more pages is recorded as Facebook 1,
+// Direct 4. Do that across a month and the panel shows a direct-traffic
+// majority that is really the site's own menu.
+//
+// So: an explicit utm_source is always an arrival (campaigns are tagged on the
+// entry link). An external referrer is an arrival. No referrer at all is an
+// arrival — with strict-origin-when-cross-origin, same-site navigation always
+// carries one, so an empty Referer means a typed URL, a bookmark or an app that
+// strips it. A same-host referrer is not an arrival, and is the case that was
+// poisoning the numbers.
+func arrivalSource(r *http.Request) (string, bool) {
+	if src := utmSource(r.URL.Query().Get("utm_source")); src != "" {
+		return src, true
+	}
+	ref := strings.TrimSpace(r.Header.Get("Referer"))
+	if ref == "" {
+		return "direct", true
+	}
+	u, err := url.Parse(ref)
+	if err != nil || u.Host == "" {
+		return "direct", true
+	}
+	h := strings.TrimPrefix(strings.ToLower(u.Host), "www.")
+	host := strings.TrimPrefix(strings.ToLower(r.Host), "www.")
+	if h == host || strings.HasSuffix(h, "shanraq.org") {
+		return "", false // internal navigation — not an arrival
+	}
+	return trafficSource(ref, r.Host), true
+}
+
 // utmSource maps an explicit ?utm_source= tag to one of our known source
 // labels, so a link shared with ?utm_source=telegram is attributed even when the
 // browser strips the Referer (messengers, in-app browsers). Unknown values
@@ -398,11 +434,16 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 					m.metrics.inc(metricPage, kind, guest)
 					// Prefer an explicit utm_source (survives the referrer being
 					// stripped by messengers/apps); fall back to the Referer host.
-					src := utmSource(r.URL.Query().Get("utm_source"))
-					if src == "" {
-						src = trafficSource(r.Header.Get("Referer"), r.Host)
+					// Only an ARRIVAL counts as a source. Every page view used to
+					// increment this, and internal navigation carries a same-host
+					// referrer, which trafficSource classifies as "direct" — so a
+					// reader who came from Facebook and opened four more pages
+					// scored Facebook 1, Direct 4. The panel then reported a
+					// direct-traffic majority that was really our own menu, and
+					// the acquisition channels were unreadable.
+					if src, ok := arrivalSource(r); ok {
+						m.metrics.inc(metricSource, src, guest)
 					}
-					m.metrics.inc(metricSource, src, guest)
 					m.metrics.inc(metricDevice, deviceClass(ua), guest)
 					m.metrics.inc(metricOS, osFamily(ua), guest)
 					m.metrics.inc(metricBrowser, browserFamily(ua), guest)

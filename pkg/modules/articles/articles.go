@@ -182,6 +182,11 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Use(m.trackTraffic)
 		r.Post("/api/track", m.handleTrack)
 		r.Get("/", m.handleHome)
+		// Uptime monitors and HTTP clients probe with HEAD, and chi answers 405
+		// unless the method is registered. Go's ResponseWriter discards the body
+		// for a HEAD automatically, so reusing the GET handler returns exactly
+		// the right headers and nothing else.
+		r.Head("/", m.handleHome)
 		r.Get("/read", m.handleReadRedirect)
 		r.Get("/read/{slug}", m.handleArticle)
 		r.Post("/read/{slug}/vote", m.handleVote)

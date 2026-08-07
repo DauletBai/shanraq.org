@@ -8,7 +8,7 @@
     <div>
       <article class="article">
         <div class="article__head">
-          {{ if .CoverURL }}<div class="article__media"><img src="{{ .CoverURL }}" alt=""></div>{{ end }}
+          {{ if .CoverURL }}<div class="article__media"><img src="{{ .CoverURL }}" alt="{{ .Title }}" decoding="async"></div>{{ end }}
           <div class="byline">
             <span class="author">{{ if .AuthorID }}<a href="/author/{{ .AuthorID }}?lang={{ .Lang }}">{{ .AuthorName }}</a>{{ else }}{{ .AuthorName }}{{ end }}</span>
             {{ if .AIAuthor }}<a class="ai-badge" href="/author/{{ .AuthorID }}?lang={{ .Lang }}">{{ t .Lang "article.ai_opinion" }}</a>{{ end }}

@@ -443,6 +443,7 @@ type ArticlePage struct {
 	RequestedLang  string
 	Body           interface{}
 	Published      *time.Time
+	Updated        *time.Time // last edit, for dateModified in the article JSON-LD
 	Views          int64
 	IsAI           bool
 	AIAuthor       bool
@@ -501,6 +502,10 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.Body, page.TOC = RenderMarkdownTOC(tr.BodyMD)
 	page.ReadingMin = readingMinutes(tr.BodyMD)
 	page.Published = a.PublishedAt
+	if !a.UpdatedAt.IsZero() {
+		u := a.UpdatedAt
+		page.Updated = &u
+	}
 	page.Views = a.ViewsCount + 1
 	page.IsAI = tr.Source == "ai"
 	page.Translated = served != lang

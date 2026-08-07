@@ -37,6 +37,18 @@
     }
   };
 
+  // Everything below is written into innerHTML, and job fields come from
+  // whoever enqueued the job. Restricting the queue to staff lowered the odds
+  // but did not make operator input trustworthy: one compromised staff key is
+  // enough, and the console runs with staff privileges.
+  const esc = (v) =>
+    String(v == null ? '' : v)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
   const renderJobs = (jobs) => {
     const table = document.querySelector('#jobs-console-table tbody');
     if (!table) return;
@@ -47,22 +59,22 @@
 
     const rows = jobs
       .map((job) => {
-        const attempts = `${job.attempts}/${job.max_attempts}`;
+        const attempts = `${esc(job.attempts)}/${esc(job.max_attempts)}`;
         const runAt = new Date(job.run_at).toLocaleString();
         const actions = [];
         if (['failed', 'retry'].includes(job.status)) {
-          actions.push(`<button type="button" class="btn btn-sm btn-outline-primary jobs-action" data-action="retry" data-id="${job.id}">Retry</button>`);
+          actions.push(`<button type="button" class="btn btn-sm btn-outline-primary jobs-action" data-action="retry" data-id="${esc(job.id)}">Retry</button>`);
         }
         if (['pending', 'retry', 'running'].includes(job.status)) {
-          actions.push(`<button type="button" class="btn btn-sm btn-outline-danger jobs-action" data-action="cancel" data-id="${job.id}">Cancel</button>`);
+          actions.push(`<button type="button" class="btn btn-sm btn-outline-danger jobs-action" data-action="cancel" data-id="${esc(job.id)}">Cancel</button>`);
         }
         const actionsHtml = actions.length ? actions.join(' ') : '<span class="text-muted small">—</span>';
         return `
           <tr>
-            <td class="fw-medium">${job.name}</td>
-            <td><span class="badge text-bg-${statusColor(job.status)} text-capitalize">${job.status}</span></td>
+            <td class="fw-medium">${esc(job.name)}</td>
+            <td><span class="badge text-bg-${esc(statusColor(job.status))} text-capitalize">${esc(job.status)}</span></td>
             <td>${attempts}</td>
-            <td>${runAt}</td>
+            <td>${esc(runAt)}</td>
             <td>${actionsHtml}</td>
           </tr>`;
       })
@@ -76,6 +88,11 @@
       const params = new URLSearchParams();
       if (status) params.set('status', status);
       params.set('limit', '50');
+      // KNOWN GAP: /jobs authenticates by Bearer token, not by the session
+      // cookie this page carries, so every call here returns 401 and the queue
+      // explorer stays empty. Fixing it properly means issuing a short-lived
+      // token to the console — deliberately not bolted on here. Until then the
+      // failure is at least reported instead of looking like "no jobs".
       const response = await fetch(`/jobs?${params.toString()}`);
       if (!response.ok) {
         throw new Error(`Jobs request failed: ${response.status}`);

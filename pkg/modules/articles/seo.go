@@ -207,7 +207,7 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 		"headline":         page.Title,
 		"description":      page.Desc,
 		"inLanguage":       htmlLang(page.ServedLang),
-		"author":           map[string]any{"@type": "Person", "name": page.AuthorName},
+		"author":           authorLD(page),
 		"image":            page.OGImage,
 		"mainEntityOfPage": canonical,
 		"publisher": map[string]any{
@@ -220,6 +220,13 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 	}
 	if page.Published != nil {
 		ld["datePublished"] = page.Published.UTC().Format(time.RFC3339)
+		// Without dateModified an updated article looks as old as the day it was
+		// published, and freshness is one of the few levers a small publisher has.
+		mod := page.Published
+		if page.Updated != nil && page.Updated.After(*page.Published) {
+			mod = page.Updated
+		}
+		ld["dateModified"] = mod.UTC().Format(time.RFC3339)
 	}
 	page.JSONLD = jsonLD(ld)
 }
@@ -307,4 +314,15 @@ func (s *ListingStore) SitemapListings(ctx context.Context) ([]SitemapItem, erro
 		out = append(out, it)
 	}
 	return out, rows.Err()
+}
+
+// authorLD builds the author block. The url matters: it is what lets a search
+// engine tie a person's articles together instead of treating every piece as
+// written by a stranger with the same name.
+func authorLD(page *ArticlePage) map[string]any {
+	a := map[string]any{"@type": "Person", "name": page.AuthorName}
+	if page.AuthorID != "" {
+		a["url"] = page.SiteURL + "/author/" + page.AuthorID
+	}
+	return a
 }

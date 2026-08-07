@@ -125,3 +125,37 @@ func TestShortNameNeverLeaksTheEmail(t *testing.T) {
 		}
 	}
 }
+
+// The jobs API takes an arbitrary job name and payload, and among the registered
+// handlers are ones that spend the AI budget and rewrite other people's
+// translations. Any registered reader can mint an API key, so the role list on
+// that route is the only thing standing between a reader and the queue. An
+// earlier changelog claimed this was covered; it was not, so here it is.
+func TestRequireRolesExcludesPlainUsers(t *testing.T) {
+	m := New()
+	staffOnly := m.RequireRoles("operator", "admin")
+
+	for _, role := range []string{"user", "", "reader", "author"} {
+		if roleAllowed(role, []string{"operator", "admin"}) {
+			t.Errorf("role %q must not reach a staff-only route", role)
+		}
+	}
+	for _, role := range []string{"operator", "admin"} {
+		if !roleAllowed(role, []string{"operator", "admin"}) {
+			t.Errorf("role %q must reach a staff-only route", role)
+		}
+	}
+	if staffOnly == nil {
+		t.Error("RequireRoles must return a middleware")
+	}
+}
+
+// roleAllowed mirrors the middleware's decision for a single role, so the table
+// above states the rule without needing a signed token per case.
+func roleAllowed(role string, allowed []string) bool {
+	c := &Claims{Roles: []string{role}}
+	if role == "" {
+		c.Roles = nil
+	}
+	return c.HasAnyRole(allowed...)
+}

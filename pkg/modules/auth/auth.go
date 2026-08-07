@@ -291,13 +291,33 @@ func (m *Module) handleSignup(w http.ResponseWriter, r *http.Request) {
 		respond.Error(w, http.StatusBadRequest, ErrWeakPassword)
 		return
 	}
+	// The same name rules as the browser form. Attribution is the whole model
+	// here: an account without a real name cannot sign an article, a listing or
+	// a comment, and letting the API create one made the rule optional for
+	// anyone who preferred JSON to the form.
+	first := NormalizePersonName(req.FirstName)
+	last := NormalizePersonName(req.LastName)
+	middle := NormalizePersonName(req.MiddleName)
+	if err := ValidatePersonName(first); err != nil {
+		respond.Error(w, http.StatusBadRequest, errors.New("first_name: a real given name is required"))
+		return
+	}
+	if err := ValidatePersonName(last); err != nil {
+		respond.Error(w, http.StatusBadRequest, errors.New("last_name: a real family name is required"))
+		return
+	}
+	if err := ValidateOptionalPersonName(middle); err != nil {
+		respond.Error(w, http.StatusBadRequest, errors.New("middle_name: not a valid name"))
+		return
+	}
+
 	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		respond.Error(w, http.StatusInternalServerError, err)
 		return
 	}
 
-	user, err := m.store.CreateUser(ctx, req.Email, string(hash), "user")
+	user, err := m.store.CreateUserNamed(ctx, req.Email, string(hash), first, last, middle, "user")
 	if err != nil {
 		if errors.Is(err, ErrEmailExists) {
 			respond.Error(w, http.StatusConflict, err)
