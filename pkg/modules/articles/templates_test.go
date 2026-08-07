@@ -309,3 +309,76 @@ func TestSlugify(t *testing.T) {
 		}
 	}
 }
+
+// TestShareRowLinks pins the sharing block, which is easy to break silently:
+// a share link that is double-escaped still renders fine and only fails in the
+// target app, where nobody on the team would notice.
+func TestShareRowLinks(t *testing.T) {
+	tmpl := buildTemplates(t)
+
+	const url = "https://shanraq.org/read/ne-ta-tablica?lang=ru"
+	var b strings.Builder
+	if err := tmpl.ExecuteTemplate(&b, "share_row", map[string]any{
+		"Lang": LangRU, "Title": "Не та таблица & спорт", "URL": url,
+	}); err != nil {
+		t.Fatalf("execute share_row: %v", err)
+	}
+	out := b.String()
+
+	// The article URL must reach every target exactly once-escaped. "%2520" is
+	// the signature of double escaping (a space encoded, then the % encoded).
+	if strings.Contains(out, "%2520") || strings.Contains(out, "%253A") || strings.Contains(out, "%253a") {
+		t.Error("share URLs are double-escaped")
+	}
+	const escaped = "https%3a%2f%2fshanraq.org%2fread%2fne-ta-tablica%3flang%3dru"
+	for _, host := range []string{"wa.me", "t.me/share/url", "facebook.com/sharer", "linkedin.com/sharing"} {
+		if !strings.Contains(out, host) {
+			t.Errorf("share row is missing %s", host)
+		}
+	}
+	if n := strings.Count(out, escaped); n != 4 {
+		t.Errorf("escaped article URL appears %d times, want 4 (one per network)", n)
+	}
+	// The ampersand in the title must be encoded, never emitted raw into the
+	// query, or Telegram would drop everything after it.
+	if !strings.Contains(out, "%26") {
+		t.Error("title ampersand was not percent-encoded")
+	}
+	// No Instagram button: Instagram has no web share endpoint, so one could
+	// only pretend to work. See the comment on the partial.
+	if strings.Contains(strings.ToLower(out), "instagram") {
+		t.Error("share row must not offer Instagram — there is no web share endpoint for it")
+	}
+	// The OS share sheet button ships hidden and is revealed by JS only where
+	// navigator.share exists.
+	if !strings.Contains(out, "data-share-native") || !strings.Contains(out, "hidden") {
+		t.Error("native share button must render hidden by default")
+	}
+}
+
+// TestArticleShowsShareToGuests guards the point of the feature: the reader most
+// likely to pass an article on is the one who is not logged in.
+func TestArticleShowsShareToGuests(t *testing.T) {
+	tmpl := buildTemplates(t)
+	now := time.Now()
+	page := ArticlePage{
+		Base: Base{Title: "T", Lang: LangRU, Authed: false,
+			SiteURL: "https://shanraq.org", CanonURL: "/read/s?lang=ru"},
+		Slug: "s", Title: "T", AuthorName: "A", Category: "sport",
+		Published: &now, Body: template.HTML("<p>x</p>"),
+	}
+	var b strings.Builder
+	if err := tmpl.ExecuteTemplate(&b, "article", page); err != nil {
+		t.Fatalf("execute article: %v", err)
+	}
+	out := b.String()
+	if !strings.Contains(out, `data-share`) {
+		t.Fatal("guest article page has no share row")
+	}
+	if !strings.Contains(out, "shanraq.org%2fread%2fs%3flang%3dru") {
+		t.Error("share row did not receive the absolute canonical article URL")
+	}
+	if strings.Contains(out, "favbtn") {
+		t.Error("favourites button must stay hidden from guests")
+	}
+}

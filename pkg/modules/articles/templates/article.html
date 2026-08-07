@@ -54,6 +54,9 @@
               </button>
             </form>
             {{ end }}
+            {{/* Sharing is for everyone — a guest who wants to pass the piece on
+                 is exactly the reader we most want to keep. */}}
+            {{ template "share_row" (dict "Lang" .Lang "Title" .Title "URL" (printf "%s%s" .SiteURL .CanonURL)) }}
           </div>
         </div>
 

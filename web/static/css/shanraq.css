@@ -1435,6 +1435,37 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .favbtn.is-on .favbtn__heart .ic { fill: currentColor; }
 .article__head .favform { vertical-align: middle; margin-left: 10px; }
 .article__head .rating { vertical-align: middle; }
+
+/* ---- Share row ---- */
+.share { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; vertical-align: middle; margin-left: 10px; }
+.share__label {
+  display: inline-flex; align-items: center; gap: 6px; margin-right: 2px;
+  font-size: var(--step--1); font-weight: 600; color: var(--muted);
+}
+.share__btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; padding: 0; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-soft);
+  transition: border-color .15s ease, color .15s ease, background .15s ease, transform .12s ease;
+}
+/* Must outrank the display rule above, or the [hidden] attribute does nothing
+   and the OS-share button shows on desktops that cannot open a share sheet. */
+.share__btn[hidden], .share__toast[hidden] { display: none; }
+.share__btn svg { width: 17px; height: 17px; }
+.share__btn .ic { font-size: 1.02rem; }
+.share__btn:hover { transform: translateY(-1px); text-decoration: none; }
+/* Brand colour only on hover: at rest the row stays in the site's own palette
+   so six logos don't out-shout the headline. */
+.share__btn--wa:hover { border-color: #25D366; color: #1da851; background: color-mix(in srgb, #25D366 10%, transparent); }
+.share__btn--tg:hover { border-color: #229ED9; color: #1b81b0; background: color-mix(in srgb, #229ED9 10%, transparent); }
+.share__btn--fb:hover { border-color: #1877F2; color: #1462c6; background: color-mix(in srgb, #1877F2 10%, transparent); }
+.share__btn--in:hover { border-color: #0A66C2; color: #08529c; background: color-mix(in srgb, #0A66C2 10%, transparent); }
+.share__btn--native:hover, .share__btn--copy:hover { border-color: var(--gold); color: var(--gold-strong); }
+.share__toast { font-size: var(--step--1); color: var(--teal); font-weight: 600; }
+@media (max-width: 560px) {
+  .share { margin-left: 0; margin-top: 10px; width: 100%; }
+  .share__label { width: 100%; margin-bottom: 2px; }
+}
 .listing__headrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
 .listing__headrow .listing__price { margin: 0; }
 .fav-group {
