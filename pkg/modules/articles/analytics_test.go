@@ -4,9 +4,11 @@ import (
 	"context"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
+	"shanraq.org/internal/config"
 	"shanraq.org/pkg/shanraq"
 )
 
@@ -304,5 +306,36 @@ func TestGoogleIsNotOneThing(t *testing.T) {
 		if name := T(LangRU, "ag.source."+src); strings.HasPrefix(name, "ag.source.") {
 			t.Errorf("no Russian label for source %q", src)
 		}
+	}
+}
+
+// TestSitemapListsEveryLanguage pins Google's sitemap requirement for
+// multilingual sites: a separate <url> element per language version, each
+// listing every alternate including itself. We used to emit only the Russian
+// <loc>, so the Kazakh and English versions of every article were never
+// actually submitted for crawling — two thirds of a trilingual catalogue.
+func TestSitemapListsEveryLanguage(t *testing.T) {
+	mod := &Module{rt: &shanraq.Runtime{Config: config.Config{PublicBaseURL: "https://shanraq.org"}}}
+	doc := mod.sitemapDoc(func(emit func(string, time.Time)) {
+		emit("/read/example", time.Time{})
+	})
+	x := string(doc)
+
+	for _, lang := range Langs {
+		loc := "<loc>https://shanraq.org/read/example?lang=" + lang + "</loc>"
+		if !strings.Contains(x, loc) {
+			t.Errorf("sitemap has no <loc> for %s — that version is never submitted", lang)
+		}
+	}
+	if n := strings.Count(x, "<url>"); n != len(Langs) {
+		t.Errorf("sitemap emitted %d <url> elements for one page, want %d (one per language)", n, len(Langs))
+	}
+	// Reciprocity: each entry must name all three languages plus x-default, or
+	// Google is entitled to ignore the annotations entirely.
+	if n := strings.Count(x, `hreflang="kk"`); n != len(Langs) {
+		t.Errorf("kk alternate appears %d times, want %d (once in each entry)", n, len(Langs))
+	}
+	if n := strings.Count(x, `hreflang="x-default"`); n != len(Langs) {
+		t.Errorf("x-default appears %d times, want %d", n, len(Langs))
 	}
 }

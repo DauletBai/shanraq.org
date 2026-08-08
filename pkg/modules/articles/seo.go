@@ -87,33 +87,45 @@ func seoURL(site, path, lang string) string {
 }
 
 // sitemapDoc wraps a caller-supplied body in the <urlset> envelope. The emit
-// closure writes one <url> per page with its three language variants as
-// hreflang alternates, so every sitemap we serve shares identical formatting.
+// closure writes ONE <url> PER LANGUAGE, each carrying the full set of hreflang
+// alternates including itself, so every sitemap we serve shares identical
+// formatting.
+//
+// One entry per language, not one entry per page with alternates hanging off
+// it: Google's specification is explicit that you "create a separate <url>
+// element for each URL" and that each must list "every alternate version of the
+// page, including itself". We used to emit only the Russian <loc>, which left
+// the Kazakh and English versions never actually submitted for crawling — on a
+// trilingual site that is two thirds of the catalogue relying on being noticed
+// sideways. The self-reference also satisfies the reciprocity rule; without it
+// Google is entitled to ignore the annotations altogether.
 func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) []byte {
 	site := m.siteURL()
 	var b strings.Builder
 	b.WriteString(`<?xml version="1.0" encoding="UTF-8"?>` + "\n")
 	b.WriteString(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">` + "\n")
 	emit := func(path string, mod time.Time) {
-		b.WriteString("<url><loc>")
-		b.WriteString(seoURL(site, path, LangRU))
-		b.WriteString("</loc>")
-		for _, l := range Langs {
-			b.WriteString(`<xhtml:link rel="alternate" hreflang="`)
-			b.WriteString(htmlLang(l))
-			b.WriteString(`" href="`)
-			b.WriteString(seoURL(site, path, l))
+		for _, self := range Langs {
+			b.WriteString("<url><loc>")
+			b.WriteString(seoURL(site, path, self))
+			b.WriteString("</loc>")
+			for _, l := range Langs {
+				b.WriteString(`<xhtml:link rel="alternate" hreflang="`)
+				b.WriteString(htmlLang(l))
+				b.WriteString(`" href="`)
+				b.WriteString(seoURL(site, path, l))
+				b.WriteString(`"/>`)
+			}
+			b.WriteString(`<xhtml:link rel="alternate" hreflang="x-default" href="`)
+			b.WriteString(seoURL(site, path, LangRU))
 			b.WriteString(`"/>`)
+			if !mod.IsZero() {
+				b.WriteString("<lastmod>")
+				b.WriteString(mod.UTC().Format("2006-01-02"))
+				b.WriteString("</lastmod>")
+			}
+			b.WriteString("</url>\n")
 		}
-		b.WriteString(`<xhtml:link rel="alternate" hreflang="x-default" href="`)
-		b.WriteString(seoURL(site, path, LangRU))
-		b.WriteString(`"/>`)
-		if !mod.IsZero() {
-			b.WriteString("<lastmod>")
-			b.WriteString(mod.UTC().Format("2006-01-02"))
-			b.WriteString("</lastmod>")
-		}
-		b.WriteString("</url>\n")
 	}
 	build(emit)
 	b.WriteString("</urlset>\n")
