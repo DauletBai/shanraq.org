@@ -639,6 +639,7 @@ var messages = map[string]map[string]string{
 	"ag.empty":             {"kz": "Дерек әлі жиналған жоқ.", "ru": "Данных пока нет.", "en": "No data yet."},
 	"ag.sources":           {"kz": "Дереккөздер (30 күн)", "ru": "Источники (30 дней)", "en": "Sources (30 days)"},
 	"ag.sources_note":      {"kz": "Тірі қонақтар қайдан келді.", "ru": "Откуда пришли живые гости.", "en": "Where human visits came from."},
+	"ag.sources_since":     {"kz": "Бұл көрсеткіш қате есептелген еді, сондықтан нөлден басталды —", "ru": "Этот показатель считался неверно, поэтому начат с нуля —", "en": "This metric was computed wrongly and restarts from zero —"},
 	"ag.bots":              {"kz": "Боттар (30 күн)", "ru": "Боты (30 дней)", "en": "Bots (30 days)"},
 	"ag.bots_note":         {"kz": "Іздеу және алдыналу боттары — қонақтар қатарына кірмейді.", "ru": "Поисковые и превью-боты — не входят в число гостей.", "en": "Crawlers & preview bots — excluded from the guest counts."},
 	"ag.hits":              {"kz": "Кірулер", "ru": "Обращения", "en": "Hits"},

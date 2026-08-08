@@ -321,7 +321,12 @@
       <div class="adm-cols adm-cols--3">
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.sources" }}</h2>
-          <p class="adm-hint" style="margin-top:-6px">{{ t .Lang "ag.sources_note" }}</p>
+          {{/* Only this metric was reset — it was the only one ever computed
+               wrongly. Every other panel here covers the site's whole history,
+               so the difference has to be stated rather than left to be
+               discovered by someone comparing totals. */}}
+          <p class="adm-hint" style="margin-top:-6px">{{ t .Lang "ag.sources_note" }}
+            <br><span class="adm-hint--since">{{ t .Lang "ag.sources_since" }} {{ .SourcesSince }}</span></p>
           {{ if .Guests.Sources }}
           <div class="adm-chart">
             {{ range .Guests.Sources }}

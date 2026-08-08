@@ -224,6 +224,10 @@ type AdminPage struct {
 	Analytics AdminAnalytics
 	// Aggregate audience (guest vs registered) traffic.
 	Guests GuestAnalytics
+	// SourcesSince is the date the traffic-source counters restart from. Only
+	// that one metric was reset; the other nine cover the site's whole history,
+	// so the panel has to say which is which.
+	SourcesSince string
 	// AI model configuration (provider/model switch).
 	AI ai.AdminView
 	// Payment acquirer configuration (provider on/off/switch).
@@ -270,6 +274,7 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Error("admin analytics", zap.Error(err))
 	}
 	page.Guests = m.guestAnalytics(r.Context(), lang)
+	page.SourcesSince = analyticsSince
 	page.CanManageUsers = canManageUsers(claims)
 	page.CanFinance = canViewFinance(claims)
 	page.CanModerate = canModerate(claims)
