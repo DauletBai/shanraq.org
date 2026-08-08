@@ -50,7 +50,11 @@
       <div class="adm-kpis">
         <div class="adm-kpi"><span class="adm-kpi__ic">◕</span><b>{{ .Stats.Users }}</b><span>{{ t .Lang "admin.users" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">▦</span><b>{{ .Stats.Articles }}</b><span>{{ t .Lang "admin.articles" }}</span></div>
-        <div class="adm-kpi"><span class="adm-kpi__ic">◎</span><b>{{ money .Stats.Views }}</b><span>{{ t .Lang "admin.views" }}</span></div>
+        {{/* This counter restarted on the day crawler hits were removed from it, so it
+     is small on purpose. The guest panel's "Articles" figure covers the site's
+     whole history and will be much larger — saying so here stops the two being
+     read as a contradiction. */}}
+        <div class="adm-kpi" title="{{ t .Lang "admin.views_since" }} {{ .SourcesSince }}"><span class="adm-kpi__ic">◎</span><b>{{ money .Stats.Views }}</b><span>{{ t .Lang "admin.views" }} <i class="adm-kpi__since">{{ t .Lang "admin.since_short" }} {{ .SourcesSince }}</i></span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">✎</span><b>{{ .Stats.Comments }}</b><span>{{ t .Lang "admin.comments" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">⌂</span><b>{{ .Stats.ListingsActive }}</b><span>{{ t .Lang "admin.listings" }}</span></div>
       </div>
