@@ -1025,6 +1025,7 @@ var messages = map[string]map[string]string{
 	"form.no_account":        {"kz": "Аккаунт жоқ па?", "ru": "Нет аккаунта?", "en": "No account?"},
 	"form.have_account":      {"kz": "Аккаунт бар ма?", "ru": "Уже есть аккаунт?", "en": "Already have an account?"},
 	"form.err_credentials":   {"kz": "Қате email немесе құпиясөз", "ru": "Неверный email или пароль", "en": "Wrong email or password"},
+	"form.err_mfa_web":       {"kz": "Екі факторлы қорғаныс қосулы, ал бұл форма растау кодын сұрай алмайды. Кіру API арқылы жүреді.", "ru": "Включена двухфакторная защита, а эта форма не умеет запрашивать код подтверждения. Вход выполняется через API.", "en": "Two-factor protection is on and this form cannot ask for a code. Sign in through the API."},
 	"form.err_short_pw":      {"kz": "Құпиясөз тым қысқа (кемінде 8 таңба)", "ru": "Пароль слишком короткий (минимум 8)", "en": "Password too short (min 8)"},
 	"form.err_email_taken":   {"kz": "Бұл email тіркелген", "ru": "Этот email уже занят", "en": "This email is already registered"},
 	"form.err_email_invalid": {"kz": "Жарамды email енгізіңіз", "ru": "Введите корректный email", "en": "Enter a valid email address"},

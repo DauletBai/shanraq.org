@@ -3,8 +3,11 @@ package articles
 import (
 	"context"
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
+
+	"shanraq.org/pkg/modules/auth"
 )
 
 // TestCrawlersDoNotCountAsViews pins the fix for the defect that made the whole
@@ -136,5 +139,50 @@ func TestNonIndexableArticleIsHiddenFromSearchOnly(t *testing.T) {
 	sm = app.do(http.MethodGet, "/sitemap.xml", nil)
 	if strings.Contains(sm.Body.String(), slug) {
 		t.Error("non-indexable article must not be advertised in the sitemap")
+	}
+}
+
+// TestWebLoginRefusesWhenMFAIsOn pins the fail-closed behaviour of the browser
+// login form. The form has no challenge step, so with a second factor
+// configured it must refuse rather than hand out a session that skipped it.
+//
+// Today TOTP is off in production, so this path is dormant — which is exactly
+// why it needs a test. The bug it guards against is silent: switching MFA on
+// would have left every browser login working, second factor and all, ignored.
+func TestWebLoginRefusesWhenMFAIsOn(t *testing.T) {
+	app := newTestApp(t, auth.WithTOTP("Shanraq Test"))
+	const email, pass = "mfaweb@example.com", "Sup3r-Secret-Pass!"
+	app.createUser(email, pass)
+
+	form := url.Values{"email": {email}, "password": {pass}}
+	w := app.do(http.MethodPost, "/studio/login", form)
+
+	if c := w.Result().Cookies(); len(c) > 0 {
+		for _, ck := range c {
+			if ck.Value != "" && strings.Contains(ck.Name, "session") {
+				t.Fatalf("a session cookie %q was issued despite MFA being configured", ck.Name)
+			}
+		}
+	}
+	if loc := w.Header().Get("Location"); loc == "/studio" {
+		t.Fatal("login redirected into the studio, so the second factor was skipped")
+	}
+	if !strings.Contains(w.Body.String(), T(LangRU, "form.err_mfa_web")) {
+		t.Error("the reader is not told why the login was refused")
+	}
+}
+
+// TestWebLoginWorksWithoutMFA is the other half: the guard must not break the
+// ordinary login, which is how the site is actually configured today.
+func TestWebLoginWorksWithoutMFA(t *testing.T) {
+	app := newTestApp(t)
+	const email, pass = "nomfaweb@example.com", "Sup3r-Secret-Pass!"
+	app.createUser(email, pass)
+
+	form := url.Values{"email": {email}, "password": {pass}}
+	w := app.do(http.MethodPost, "/studio/login", form)
+
+	if loc := w.Header().Get("Location"); loc != "/studio" {
+		t.Fatalf("login redirected to %q, want /studio", loc)
 	}
 }

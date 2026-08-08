@@ -394,3 +394,13 @@ func (m *Module) SessionTTL() time.Duration {
 	}
 	return m.tokens.TTL()
 }
+
+// MFAEnabled reports whether a second factor is configured. Callers that issue
+// a session outside handleSignin — the browser login form is the only one —
+// must consult this and refuse, because they cannot present a challenge.
+//
+// Silence here was the bug: the web form called LoginPassword and set the
+// cookie straight away, so the day someone switched TOTP on, every browser
+// login would have kept working and quietly skipped the second factor. A
+// second factor that the main entrance ignores is not a second factor.
+func (m *Module) MFAEnabled() bool { return m.mfaProvider != nil }

@@ -37,7 +37,10 @@ type testApp struct {
 
 const testOrigin = "http://localhost:8080"
 
-func newTestApp(t *testing.T) *testApp {
+// newTestApp builds the app. Extra auth options let a test stand the module up
+// in a configuration production does not currently use — MFA is the case that
+// matters, since its whole risk is what happens the day it is switched on.
+func newTestApp(t *testing.T, authOpts ...auth.Option) *testApp {
 	t.Helper()
 	dsn := requireTestDB(t)
 	ctx := context.Background()
@@ -61,7 +64,7 @@ func newTestApp(t *testing.T) *testApp {
 	rt := &shanraq.Runtime{Config: cfg, Logger: zap.NewNop(), DB: pool, Router: chi.NewRouter()}
 
 	mailer := notifier.New()
-	authM := auth.New(auth.WithMailer(mailer))
+	authM := auth.New(append([]auth.Option{auth.WithMailer(mailer)}, authOpts...)...)
 	aiM := ai.New()
 	synM := syndicate.New(mailer)
 	mediaM := media.New(authM)

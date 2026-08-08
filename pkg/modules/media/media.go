@@ -10,6 +10,7 @@ import (
 	"io"
 	"io/fs"
 	"net/http"
+	"net/url"
 
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
@@ -74,8 +75,42 @@ func (m *Module) Routes(r chi.Router) {
 	}
 	r.Group(func(r chi.Router) {
 		r.Use(m.auth.LoadSession)
+		r.Use(sameOriginOnly)
 		r.Post("/media/upload", m.handleUpload)
 		r.Post("/media/upload-doc", m.handleUploadDoc)
+	})
+}
+
+// sameOriginOnly rejects cross-origin uploads. These two endpoints authenticate
+// by session cookie, which makes them the browser surface, and the browser
+// surface is where CSRF lives: without this, a form on any other site could
+// spend a logged-in author's storage quota with a file of the attacker's
+// choosing, and land it under our domain to be served back to readers.
+//
+// The cookie is SameSite=Lax, so a cross-site POST does not carry it and the
+// attack already fails — this is the same second, explicit layer the articles
+// module has had (see its verifyOrigin). Media was simply the one cookie-authed
+// surface left without it, and an inconsistency in a defence is how the defence
+// gets lost during the next refactor.
+func sameOriginOnly(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		host := r.Host
+		ok := false
+		if o := r.Header.Get("Origin"); o != "" && o != "null" {
+			if u, err := url.Parse(o); err == nil {
+				ok = u.Host == host
+			}
+		} else if ref := r.Header.Get("Referer"); ref != "" {
+			// No Origin (older clients): fall back to the Referer host.
+			if u, err := url.Parse(ref); err == nil {
+				ok = u.Host == host
+			}
+		}
+		if !ok {
+			writeJSONError(w, http.StatusForbidden, "cross-origin request blocked")
+			return
+		}
+		next.ServeHTTP(w, r)
 	})
 }
 

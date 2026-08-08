@@ -722,6 +722,22 @@ func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// A second factor the main entrance ignores is not a second factor. This
+	// form has no challenge step, so when MFA is configured it must refuse
+	// rather than hand out a session that skipped it. Today TOTP is off and
+	// nobody sees this; the check exists so that turning it on cannot silently
+	// leave the browser door open. Checked before the password so a closed door
+	// cannot be used to probe which e-mails exist.
+	if m.auth.MFAEnabled() {
+		m.render(w, "form", FormPage{
+			Base:  m.base(r, T(lang, "form.login_title"), lang),
+			Mode:  "login",
+			Email: email,
+			Error: T(lang, "form.err_mfa_web"),
+		})
+		return
+	}
+
 	user, token, err := m.auth.LoginPassword(r.Context(), email, password)
 	if err != nil {
 		m.render(w, "form", FormPage{
