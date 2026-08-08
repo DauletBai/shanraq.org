@@ -66,7 +66,12 @@ func (m *Module) handleRobots(w http.ResponseWriter, _ *http.Request) {
 	// Commercial SEO scanners: pure parasites (feed third-party SEO databases,
 	// send us no traffic) and the heaviest crawlers we see — refuse them.
 	seoBots := []string{"AhrefsBot", "SemrushBot", "MJ12bot", "DotBot", "BLEXBot", "DataForSeoBot", "PetalBot", "MegaIndex"}
-	fmt.Fprint(w, "User-agent: *\nAllow: /\nDisallow: /studio\nDisallow: /studio/\n\n")
+	// /jobs and /admin answer crawlers with 401 and 303 — nothing to index, and
+	// Search Console's crawl report showed Googlebot spending requests on them.
+	// On a site Google visits about ten times a day, that is worth reclaiming.
+	fmt.Fprint(w, "User-agent: *\nAllow: /\n"+
+		"Disallow: /studio\nDisallow: /studio/\n"+
+		"Disallow: /admin\nDisallow: /jobs\nDisallow: /api/\n\n")
 	for _, b := range seoBots {
 		fmt.Fprintf(w, "User-agent: %s\nDisallow: /\n\n", b)
 	}
