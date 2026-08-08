@@ -46,6 +46,11 @@
     </div>
 
     {{ if .Articles }}
+    {{/* Both counters were reset to zero on the same day, after crawler hits
+         were found in the view counts. Saying so stops a small number reading
+         as a collapse — and stops the next person wondering why the two columns
+         cover different periods. They do not. */}}
+    <p class="studio__since">{{ t .Lang "studio.since" }} {{ .Since }}</p>
     <div class="table-wrap">
       <table class="list">
         <thead>

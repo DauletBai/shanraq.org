@@ -894,11 +894,19 @@ type StudioRow struct {
 	PFinish int
 }
 
+// analyticsSince is the day the view and reading-depth counters were reset to
+// zero together, after crawler hits were found in the view counts. Shown in the
+// studio so nobody reads a small number as a collapse in readership — and so the
+// next person to look does not have to reconstruct why the history is short.
+const analyticsSince = "08.08.2026"
+
 // StudioPage is the dashboard context.
 type StudioPage struct {
 	Base
-	Stats    AuthorStats
-	Karma    int
+	Stats AuthorStats
+	Karma int
+	// Since is the date the counters start from, shown above the table.
+	Since    string
 	Articles []StudioRow
 	// Outcome of the last publish attempt, so the author is told what happened
 	// instead of being returned to an unchanged-looking dashboard.
@@ -960,7 +968,10 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Warn("author karma", zap.Error(err))
 	}
 
-	page := StudioPage{Base: m.base(r, T(lang, "studio.title"), lang)}
+	page := StudioPage{
+		Base:  m.base(r, T(lang, "studio.title"), lang),
+		Since: analyticsSince,
+	}
 	switch r.URL.Query().Get("ok") {
 	case "published":
 		page.Notice = T(lang, "studio.n_published")

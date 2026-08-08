@@ -1646,6 +1646,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   .article-aside { position: sticky; top: 92px; align-self: start; }
 }
 
+.studio__since { margin: 0 0 10px; font-size: var(--step--1); color: var(--muted); }
 /* ---- Reading-depth funnel (author dashboard) ---- */
 .depth { white-space: nowrap; }
 .depth-cell {

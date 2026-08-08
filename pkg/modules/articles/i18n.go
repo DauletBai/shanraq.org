@@ -1125,6 +1125,7 @@ var messages = map[string]map[string]string{
 	"studio.col_langs":       {"kz": "Тілдер", "ru": "Языки", "en": "Languages"},
 	"studio.col_views":       {"kz": "Оқылым", "ru": "Просмотры", "en": "Views"},
 	"studio.col_depth":       {"kz": "Оқу тереңдігі", "ru": "Дочитывания", "en": "Read depth"},
+	"studio.since":           {"kz": "Қаралымдар мен оқу тереңдігі нөлден саналады, есеп басталған күн —", "ru": "Просмотры и дочитывания считаются с нуля, отсчёт ведётся с", "en": "Views and read depth both count from zero, starting"},
 	"studio.depth_25":        {"kz": "Оқи бастады (ширегіне жетті)", "ru": "Начали читать (дошли до четверти)", "en": "Started reading (reached a quarter)"},
 	"studio.depth_50":        {"kz": "Жартысына жетті", "ru": "Дошли до середины", "en": "Reached halfway"},
 	"studio.depth_75":        {"kz": "Төрттен үшіне жетті", "ru": "Дошли до трёх четвертей", "en": "Reached three quarters"},
