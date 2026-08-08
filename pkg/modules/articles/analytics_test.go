@@ -275,3 +275,34 @@ func TestCountryFlagEmoji(t *testing.T) {
 		}
 	}
 }
+
+// TestGoogleIsNotOneThing pins the split that mattered: the panel used to file
+// every host containing "google" as organic search, so a link opened from Gmail
+// counted as SEO working. It reported 20 Google visits in a month while Search
+// Console counted one click in three.
+func TestGoogleIsNotOneThing(t *testing.T) {
+	cases := map[string]string{
+		"https://www.google.com/":             "google",
+		"https://google.kz/search?q=x":        "google",
+		"https://google.com.tr/":              "google",
+		"https://news.google.com/":            "google",
+		"https://mail.google.com/mail/u/0/":   "email",
+		"https://translate.google.com/":       "translate",
+		"https://shanraq-org.translate.goog/": "translate",
+		"https://docs.google.com/document/d":  "other",
+		"https://drive.google.com/file/d/1":   "other",
+		"https://lh3.googleusercontent.com/":  "other",
+	}
+	for ref, want := range cases {
+		if got := trafficSource(ref, "shanraq.org"); got != want {
+			t.Errorf("trafficSource(%q) = %q, want %q", ref, got, want)
+		}
+	}
+	// Every bucket the classifier can emit needs a label, or the panel prints
+	// the raw key at the reader.
+	for _, src := range []string{"google", "email", "translate", "share", "other"} {
+		if name := T(LangRU, "ag.source."+src); strings.HasPrefix(name, "ag.source.") {
+			t.Errorf("no Russian label for source %q", src)
+		}
+	}
+}

@@ -145,8 +145,19 @@ func trafficSource(referer, host string) string {
 		return "direct" // internal navigation, not an external source
 	}
 	switch {
+	// Google is a dozen products, and only one of them is the search engine.
+	// Lumping them together told us the site had 20 search visits in a month
+	// while Search Console counted one click in three — the panel was quietly
+	// filing Gmail and Translate as organic search, which is the difference
+	// between "SEO is starting to work" and "it has not started".
+	case strings.HasPrefix(h, "mail.google."):
+		return "email"
+	case strings.HasPrefix(h, "translate.google."), strings.HasSuffix(h, ".translate.goog"):
+		return "translate"
+	case h == "google" || strings.HasPrefix(h, "google."), strings.HasPrefix(h, "news.google."):
+		return "google" // the search engine (and Google News), on any TLD
 	case strings.Contains(h, "google"):
-		return "google"
+		return "other" // docs, drive, groups, googleusercontent — not search
 	case strings.Contains(h, "yandex"), h == "ya.ru":
 		return "yandex"
 	case h == "t.me", strings.Contains(h, "telegram"):
