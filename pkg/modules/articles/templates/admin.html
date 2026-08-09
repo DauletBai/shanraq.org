@@ -212,8 +212,7 @@
         </form>
       </div>
       <div class="adm-panel">
-        <h2>{{ t .Lang "svc.title" }}</h2>
-        <p class="adm-hint" style="margin-top:-4px">{{ t .Lang "svc.hint" }}</p>
+        <h2>{{ t .Lang "svc.title" }} {{ template "fhelp" (t .Lang "svc.hint") }}</h2>
         <div class="adm-svc">
           {{ range .Services }}
           <form class="adm-svc__row" method="post" action="/admin/services">
@@ -324,15 +323,14 @@
       </div>
       <div class="adm-cols adm-cols--3">
         <div class="adm-panel">
-          <h2>{{ t .Lang "ag.sources" }}</h2>
+          <h2>{{ t .Lang "ag.sources" }} {{ template "fhelp" (t .Lang "ag.sources_note") }}</h2>
           {{/* Only this metric was reset — it was the only one ever computed
                wrongly. Every other panel here covers the site's whole history,
                so the difference has to be stated rather than left to be
                discovered by someone comparing totals. */}}
-          <p class="adm-hint" style="margin-top:-6px">{{ t .Lang "ag.sources_note" }}
-            <br><span class="adm-hint--since">{{ t .Lang "ag.sources_since" }} {{ .SourcesSince }}</span></p>
+          <p class="adm-hint adm-hint--since" style="margin-top:-6px">{{ t .Lang "ag.sources_since" }} {{ .SourcesSince }}</p>
           {{ if .Guests.Sources }}
-          <div class="adm-chart">
+          <div class="adm-chart adm-scroll adm-scroll--chart">
             {{ range .Guests.Sources }}
             <div class="adm-bar">
               <span class="adm-bar__label">{{ .Title }}</span>
@@ -346,7 +344,7 @@
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.devices" }}</h2>
           {{ if .Guests.Devices }}
-          <div class="adm-chart">
+          <div class="adm-chart adm-scroll adm-scroll--chart">
             {{ range .Guests.Devices }}
             <div class="adm-bar">
               <span class="adm-bar__label">{{ .Title }}</span>
@@ -360,7 +358,7 @@
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.os_panel" }}</h2>
           {{ if .Guests.OS }}
-          <div class="adm-chart">
+          <div class="adm-chart adm-scroll adm-scroll--chart">
             {{ range .Guests.OS }}
             <div class="adm-bar">
               <span class="adm-bar__label">{{ .Title }}</span>
@@ -374,7 +372,7 @@
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.browsers" }}</h2>
           {{ if .Guests.Browsers }}
-          <div class="adm-chart">
+          <div class="adm-chart adm-scroll adm-scroll--chart">
             {{ range .Guests.Browsers }}
             <div class="adm-bar">
               <span class="adm-bar__label">{{ .Title }}</span>
@@ -386,10 +384,9 @@
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
         <div class="adm-panel">
-          <h2>{{ t .Lang "ag.countries" }}</h2>
-          <p class="adm-hint">{{ t .Lang "ag.countries_note" }}</p>
+          <h2>{{ t .Lang "ag.countries" }} {{ template "fhelp" (t .Lang "ag.countries_note") }}</h2>
           {{ if .Guests.Countries }}
-          <div class="adm-chart">
+          <div class="adm-chart adm-scroll adm-scroll--chart">
             {{ range .Guests.Countries }}
             <div class="adm-bar">
               <span class="adm-bar__label"><span class="adm-flag">{{ countryFlagEmoji .Name }}</span>{{ .Title }}</span>
@@ -401,23 +398,22 @@
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
         <div class="adm-panel">
-          <h2>{{ t .Lang "ag.bots" }}</h2>
-          <p class="adm-hint" style="margin-top:-6px">{{ t .Lang "ag.bots_note" }}</p>
+          <h2>{{ t .Lang "ag.bots" }} {{ template "fhelp" (t .Lang "ag.bots_note") }}</h2>
           {{ if .Guests.Bots }}
-          <table class="spec">
+          <div class="adm-scroll adm-scroll--chart"><table class="spec spec--sticky">
             <thead><tr><th></th><th>{{ t $.Lang "ag.hits" }}</th></tr></thead>
             <tbody>
               {{ range .Guests.Bots }}
               <tr><td>{{ .Title }}</td><td><b>{{ money .N }}</b></td></tr>
               {{ end }}
             </tbody>
-          </table>
+          </table></div>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.langs" }}</h2>
           {{ if .Guests.Langs }}
-          <div class="adm-chart">
+          <div class="adm-chart adm-scroll adm-scroll--chart">
             {{ range .Guests.Langs }}
             <div class="adm-bar">
               <span class="adm-bar__label">{{ .Title }}</span>
@@ -429,10 +425,9 @@
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
         <div class="adm-panel">
-          <h2>{{ t .Lang "ag.english_by" }}</h2>
-          <p class="adm-hint">{{ t .Lang "ag.english_note" }}</p>
+          <h2>{{ t .Lang "ag.english_by" }} {{ template "fhelp" (t .Lang "ag.english_note") }}</h2>
           {{ if .Guests.EnglishBy }}
-          <div class="adm-chart">
+          <div class="adm-chart adm-scroll adm-scroll--chart">
             {{ range .Guests.EnglishBy }}
             <div class="adm-bar">
               <span class="adm-bar__label">{{ .Title }}</span>
@@ -444,10 +439,9 @@
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
         <div class="adm-panel">
-          <h2>{{ t .Lang "ag.vpn_langs" }}</h2>
-          <p class="adm-hint">{{ t .Lang "ag.vpn_langs_note" }}</p>
+          <h2>{{ t .Lang "ag.vpn_langs" }} {{ template "fhelp" (t .Lang "ag.vpn_langs_note") }}</h2>
           {{ if .Guests.VPNLangs }}
-          <div class="adm-chart">
+          <div class="adm-chart adm-scroll adm-scroll--chart">
             {{ range .Guests.VPNLangs }}
             <div class="adm-bar">
               <span class="adm-bar__label">{{ .Title }}</span>

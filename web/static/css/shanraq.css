@@ -1322,6 +1322,17 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    понять, есть ли новое, и не потерять остальную панель из виду. */
 .adm-scroll { max-height: 320px; overflow-y: auto; overscroll-behavior: contain; }
 .adm-scroll--tall { max-height: 420px; }
+/* Analytics cards sit three to a row and a grid row is as tall as its tallest
+   card. Countries gains a new entry every few days, so it stretched its row and
+   left growing white space under both neighbours. One shared cap — about nine
+   rows — keeps the row a fixed height however much data any card collects.
+   Browsers, bots and sources grow the same way, just more slowly. */
+.adm-scroll--chart { max-height: 270px; }
+/* A capped table would otherwise scroll its own header out of sight. */
+.spec--sticky thead th {
+  position: sticky; top: 0; z-index: 1;
+  background: var(--paper);
+}
 /* Отступ под полосу прокрутки, чтобы она не наезжала на текст. */
 .adm-scroll { padding-right: 6px; }
 .adm-scroll::-webkit-scrollbar { width: 8px; }
