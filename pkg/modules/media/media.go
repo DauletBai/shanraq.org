@@ -127,7 +127,7 @@ func (m *Module) handleUpload(w http.ResponseWriter, r *http.Request) {
 
 	limit := m.cfg.MaxUploadBytes
 	if limit <= 0 {
-		limit = 10 << 20
+		limit = 25 << 20
 	}
 	r.Body = http.MaxBytesReader(w, r.Body, limit)
 	if err := r.ParseMultipartForm(limit); err != nil {
@@ -179,7 +179,7 @@ func (m *Module) handleUploadDoc(w http.ResponseWriter, r *http.Request) {
 	}
 	limit := m.cfg.MaxUploadBytes
 	if limit <= 0 {
-		limit = 10 << 20
+		limit = 25 << 20
 	}
 	r.Body = http.MaxBytesReader(w, r.Body, limit)
 	if err := r.ParseMultipartForm(limit); err != nil {

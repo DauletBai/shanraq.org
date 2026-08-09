@@ -314,7 +314,7 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("media.backend", "fs")
 	v.SetDefault("media.dir", "./data/media")
 	v.SetDefault("media.public_prefix", "/media")
-	v.SetDefault("media.max_upload_bytes", 10<<20) // 10 MiB
+	v.SetDefault("media.max_upload_bytes", 25<<20) // 25 MiB — a 48MP phone JPEG clears 10
 	v.SetDefault("media.max_dimension", 2000)
 	v.SetDefault("media.watermark", true)
 

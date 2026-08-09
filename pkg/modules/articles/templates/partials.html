@@ -3,7 +3,7 @@
      (living / kitchen areas); the row wraps to a second line when it doesn't fit. */}}
 {{ define "listing_facts" }}
 <div class="post__facts">
-  <span class="fact loc">{{ countryFlag .L.Country }}{{ if .L.City }}{{ .L.City }}{{ else }}{{ .L.Village }}{{ end }}</span>
+  <span class="fact loc">{{ countryFlag .L.Country }}{{ if .L.City }}{{ .L.City }}{{ else }}{{ .L.District }}{{ end }}</span>
   {{ if gt .L.Area 0.0 }}<span class="fact" title="{{ t .Lang "re.area" }}">{{ icon "area" }}{{ .L.Area }} м²</span>{{ end }}
   {{ $bd := .L.RoomCount "bedroom" }}{{ if gt $bd 0 }}<span class="fact" title="{{ t .Lang "re.rt_bedroom" }}">{{ icon "room_bedroom" }}{{ $bd }}</span>{{ end }}
   {{ $ba := .L.RoomCount "bathroom" }}{{ if gt $ba 0 }}<span class="fact" title="{{ t .Lang "re.rt_bathroom" }}">{{ icon "room_bathroom" }}{{ $ba }}</span>{{ end }}
@@ -277,7 +277,7 @@
     <span class="rebanner__body">
       <span class="rebanner__title">{{ .Title }}</span>
       <span class="rebanner__price">{{ money .Price }} {{ .CurrencySymbol }}{{ if eq .DealType "rent" }} {{ t $.Lang "re.per_month" }}{{ end }}</span>
-      <span class="rebanner__meta">{{ countryFlag .Country }}{{ if .City }}{{ .City }}{{ else }}{{ .Village }}{{ end }}</span>
+      <span class="rebanner__meta">{{ countryFlag .Country }}{{ if .City }}{{ .City }}{{ else }}{{ .District }}{{ end }}</span>
     </span>
   </a>
   {{ end }}
@@ -473,8 +473,38 @@
         slides.forEach(function (s, k) { s.classList.toggle('is-active', k === idx); });
         dots.forEach(function (d, k) { d.classList.toggle('is-active', k === idx); });
       };
-      dots.forEach(function (d) { d.addEventListener('click', function () { show(parseInt(d.getAttribute('data-dot'), 10)); }); });
-      if (n > 1) setInterval(function () { show(idx + 1); }, 6000);
+      if (n < 2) return;
+
+      // Auto-advance is for a carousel nobody is touching. The moment someone
+      // steers it themselves, the timer stops for good: a gallery that yanks
+      // itself to the next photo six seconds after you chose one is the reason
+      // the photos felt unturnable.
+      var timer = setInterval(function () { show(idx + 1); }, 6000);
+      function manual(i) { clearInterval(timer); show(i); }
+
+      dots.forEach(function (d) {
+        d.addEventListener('click', function () { manual(parseInt(d.getAttribute('data-dot'), 10)); });
+      });
+
+      // Swipe. Each slide is a link to the full-size photo, so a drag must not
+      // also open it — hence the suppressed click after a real horizontal move.
+      var x0 = null, y0 = null, swiped = false;
+      car.addEventListener('touchstart', function (e) {
+        var t = e.changedTouches[0];
+        x0 = t.clientX; y0 = t.clientY; swiped = false;
+      }, { passive: true });
+      car.addEventListener('touchend', function (e) {
+        if (x0 === null) return;
+        var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+        x0 = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+          swiped = true;
+          manual(idx + (dx < 0 ? 1 : -1));
+        }
+      }, { passive: true });
+      car.addEventListener('click', function (e) {
+        if (swiped) { e.preventDefault(); e.stopPropagation(); swiped = false; }
+      }, true);
     });
     document.querySelectorAll('[data-upload]').forEach(function (inp) {
       inp.addEventListener('change', function () {
@@ -588,21 +618,74 @@
         var it = b.closest('.galup__item');
         if (it) { it.remove(); refresh(); }
       });
+      // Shrink a photo before sending it. A phone camera produces 10–15 MB per
+      // shot; the server stores nothing larger than 2000px anyway, so uploading
+      // the original only burns the author's mobile data and risks the size
+      // limit. Ten photos went up at once and seven came back 413 — the author
+      // saw three and no explanation. Documents and PDFs are sent untouched:
+      // re-encoding a scan of a title deed would damage the evidence.
+      var MAXPX = 2000;
+      function shrink(f) {
+        if (!/^image\//.test(f.type) || /svg/.test(f.type) || fieldName !== 'image') {
+          return Promise.resolve(f);
+        }
+        return new Promise(function (resolve) {
+          var url = URL.createObjectURL(f);
+          var img = new Image();
+          img.onload = function () {
+            URL.revokeObjectURL(url);
+            var w = img.naturalWidth, h = img.naturalHeight;
+            var k = Math.min(1, MAXPX / Math.max(w, h));
+            if (k >= 1 && f.size <= 4 * 1024 * 1024) { resolve(f); return; }
+            var c = document.createElement('canvas');
+            c.width = Math.round(w * k); c.height = Math.round(h * k);
+            try {
+              c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+            } catch (e) { resolve(f); return; }
+            c.toBlob(function (b) {
+              // Keep the original if re-encoding somehow made it bigger.
+              resolve(b && b.size < f.size ? new File([b], f.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' }) : f);
+            }, 'image/jpeg', 0.85);
+          };
+          img.onerror = function () { URL.revokeObjectURL(url); resolve(f); };
+          img.src = url;
+        });
+      }
       file.addEventListener('change', function () {
         var chosen = Array.prototype.slice.call(file.files || []);
         file.value = '';
-        chosen = chosen.slice(0, Math.max(0, max - count()));
-        if (!chosen.length) return;
-        var pending = chosen.length, done = 0;
-        if (status) status.textContent = '⏳ 0/' + pending;
-        chosen.forEach(function (f) {
-          var fd = new FormData(); fd.append('file', f);
-          fetch(uploadUrl, { method: 'POST', body: fd, credentials: 'same-origin' })
-            .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-            .then(function (d) { addItem(d.url); })
-            .catch(function () {})
-            .then(function () { done++; if (status) status.textContent = done >= pending ? '' : ('⏳ ' + done + '/' + pending); });
-        });
+        var room = Math.max(0, max - count());
+        var overflow = Math.max(0, chosen.length - room);
+        chosen = chosen.slice(0, room);
+        if (!chosen.length) {
+          if (status) status.textContent = '⚠️ ' + (gal.getAttribute('data-msg-full') || '');
+          return;
+        }
+        var total = chosen.length, done = 0, failed = 0;
+        function report() {
+          if (!status) return;
+          if (done < total) { status.textContent = '⏳ ' + done + '/' + total; return; }
+          // Say what happened. Swallowing the failures is why ten photos became
+          // three with no error anywhere on the page.
+          var msg = '';
+          if (failed) msg = '⚠️ ' + (gal.getAttribute('data-msg-failed') || '').replace('{n}', failed);
+          if (overflow) msg += (msg ? ' ' : '⚠️ ') + (gal.getAttribute('data-msg-over') || '').replace('{n}', overflow);
+          status.textContent = msg;
+        }
+        report();
+        // One at a time: ten parallel uploads on a phone share one narrow uplink
+        // and each takes ten times as long, which is how they hit the deadline.
+        (function next(i) {
+          if (i >= chosen.length) return;
+          shrink(chosen[i]).then(function (f) {
+            var fd = new FormData(); fd.append('file', f);
+            return fetch(uploadUrl, { method: 'POST', body: fd, credentials: 'same-origin' })
+              .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+              .then(function (d) { addItem(d.url); });
+          }).catch(function () { failed++; }).then(function () {
+            done++; report(); next(i + 1);
+          });
+        })(0);
       });
       refresh();
     });

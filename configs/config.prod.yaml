@@ -36,7 +36,7 @@ media:
   backend: fs
   dir: /app/data/media          # mounted as a Docker volume (persists uploads)
   public_prefix: /media
-  max_upload_bytes: 10485760
+  max_upload_bytes: 26214400
   max_dimension: 2000
   watermark: false   # brand mark is applied as a CSS overlay at render (covers
                      # every cover/photo, incl. demo & external), so baking it

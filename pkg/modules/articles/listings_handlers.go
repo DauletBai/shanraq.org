@@ -193,20 +193,24 @@ func (m *Module) resolveListingLocation(r *http.Request, in *ListingInput, lang 
 		return ""
 	}
 	countryCode := ""
-	in.Country, in.Region, in.City, in.Village = "", "", "", ""
+	in.Country, in.Region, in.City, in.District = "", "", "", ""
 	for _, n := range anc {
 		if n.Country != "" {
 			countryCode = n.Country
 		}
-		switch n.Level {
-		case 0:
+		// By kind, never by depth. Depth assumes every country nests the same
+		// number of times, and none do: a federal city (Москва, Санкт-Петербург,
+		// Алматы, Астана, Шымкент) sits exactly where an oblast sits, so depth
+		// labelled the city an oblast and its district a city.
+		switch n.Kind {
+		case "country":
 			in.Country = n.Name
-		case 1:
+		case "region", "oblast", "krai", "republic", "okrug":
 			in.Region = n.Name
-		case 2:
+		case "city", "town", "village":
 			in.City = n.Name
-		default:
-			in.Village = n.Name
+		case "district":
+			in.District = n.Name
 		}
 	}
 	return countryCode
@@ -377,7 +381,7 @@ func (m *Module) ownedListing(w http.ResponseWriter, r *http.Request) (*Listing,
 func listingToInput(l *Listing) ListingInput {
 	in := ListingInput{
 		DealType: l.DealType, PropertyType: l.PropertyType,
-		Country: l.Country, Region: l.Region, City: l.City, Village: l.Village,
+		Country: l.Country, Region: l.Region, City: l.City, District: l.District,
 		Microdistrict: l.Microdistrict, Street: l.Street, House: l.House,
 		Lat: l.Lat, Lng: l.Lng,
 		Price: l.Price, Currency: l.Currency, Area: l.Area, Rooms: l.Rooms,
@@ -784,7 +788,7 @@ func parseListingForm(r *http.Request) ListingInput {
 		Country:       strings.TrimSpace(r.FormValue("country")),
 		Region:        strings.TrimSpace(r.FormValue("region")),
 		City:          strings.TrimSpace(r.FormValue("city")),
-		Village:       strings.TrimSpace(r.FormValue("village")),
+		District:      strings.TrimSpace(r.FormValue("district")),
 		Microdistrict: clip(strings.TrimSpace(r.FormValue("microdistrict")), 60),
 		Street:        clip(strings.TrimSpace(r.FormValue("street")), 80),
 		House:         clip(strings.TrimSpace(r.FormValue("house")), 20),

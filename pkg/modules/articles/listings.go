@@ -39,7 +39,7 @@ type Listing struct {
 	Country       string
 	Region        string
 	City          string
-	Village       string
+	District      string
 	Microdistrict string
 	Street        string
 	House         string
@@ -194,7 +194,7 @@ func (l Listing) HasPin() bool { return l.Lat != nil && l.Lng != nil }
 // Location renders the place parts that are set, most specific first.
 func (l Listing) Location() string {
 	parts := []string{}
-	for _, p := range []string{l.Village, l.City, l.Region, l.Country} {
+	for _, p := range []string{l.District, l.City, l.Region, l.Country} {
 		if p != "" {
 			parts = append(parts, p)
 		}

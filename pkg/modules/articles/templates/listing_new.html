@@ -124,7 +124,7 @@
       </div>
       <div class="field">
         <label>{{ t .Lang "re.photos" }} <span class="hint">— {{ t .Lang "re.photos_max" }}</span> {{ template "fhelp" (t .Lang "re.help_photos") }}</label>
-        <div class="galup" data-gallery data-max="10">
+        <div class="galup" data-gallery data-max="10" data-msg-failed="{{ t $.Lang "re.up_failed" }}" data-msg-over="{{ t $.Lang "re.up_over" }}" data-msg-full="{{ t $.Lang "re.up_full" }}">
           <div class="galup__items" data-gallery-items>
             {{ range .Values.Images }}
             <div class="galup__item">
@@ -145,7 +145,7 @@
       </div>
       <div class="field">
         <label>{{ t .Lang "re.documents" }} <span class="hint">— {{ t .Lang "re.documents_help" }}</span></label>
-        <div class="galup" data-gallery data-max="10" data-upload-url="/media/upload-doc" data-field="document">
+        <div class="galup" data-gallery data-max="10" data-msg-failed="{{ t $.Lang "re.up_failed" }}" data-msg-over="{{ t $.Lang "re.up_over" }}" data-msg-full="{{ t $.Lang "re.up_full" }}" data-upload-url="/media/upload-doc" data-field="document">
           <div class="galup__items" data-gallery-items>
             {{ range .Values.Documents }}
             <div class="galup__item">
@@ -169,7 +169,7 @@
            for sale anyway, so a stale field can never leak into a sale listing. */}}
       <div class="field" data-rent-only{{ if ne .Values.DealType "rent" }} hidden{{ end }}>
         <label>{{ t .Lang "re.contract" }} <span class="hint">— {{ t .Lang "re.contract_help" }}</span></label>
-        <div class="galup" data-gallery data-max="1" data-upload-url="/media/upload-doc" data-field="contract">
+        <div class="galup" data-gallery data-max="1" data-msg-failed="{{ t $.Lang "re.up_failed" }}" data-msg-over="{{ t $.Lang "re.up_over" }}" data-msg-full="{{ t $.Lang "re.up_full" }}" data-upload-url="/media/upload-doc" data-field="contract">
           <div class="galup__items" data-gallery-items>
             {{ if .Values.ContractURL }}
             <div class="galup__item">

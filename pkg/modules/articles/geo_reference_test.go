@@ -2,6 +2,7 @@ package articles
 
 import (
 	"context"
+	"net/http"
 	"testing"
 )
 
@@ -53,6 +54,60 @@ func TestGeoReferenceCoversCityDistricts(t *testing.T) {
 		if !found {
 			t.Errorf("%s is missing %q", c.city, c.example)
 		}
+	}
+}
+
+// Address fields are filled from a node's kind, never its depth, because the
+// tree is not the same shape everywhere. A federal city sits exactly where an
+// oblast sits, and filling by depth published "Область: Санкт-Петербург, Город:
+// Петродворцовый" — an oblast that does not exist and a district called a city.
+// The two shapes are pinned here side by side.
+func TestListingAddressFollowsNodeKind(t *testing.T) {
+	app := newTestApp(t)
+	app.createUser("addr@t.test", "Parol12345")
+	app.exec(`UPDATE auth_users SET email_verified_at = now() WHERE lower(email) = 'addr@t.test'`)
+	cookie := app.login("addr@t.test", "Parol12345")
+
+	cases := []struct {
+		name                            string
+		node                            string // name_ru of the leaf the author picks
+		country, region, city, district string
+	}{
+		// A federal city has no oblast above it — the region row must stay empty
+		// rather than borrow the city's name.
+		{"федеральный город", "Петродворцовый", "Россия", "", "Санкт-Петербург", "Петродворцовый"},
+		// An ordinary region nests one level deeper and fills all four.
+		{"обычная область", "Заельцовский", "Россия", "Новосибирская область", "Новосибирск", "Заельцовский"},
+		// The same two shapes exist at home and must behave identically.
+		{"Алматы", "Медеу", "Казахстан", "", "Алматы", "Медеу"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			var node string
+			if err := app.pool.QueryRow(context.Background(),
+				`SELECT id FROM geo_nodes WHERE name_ru = $1 AND kind = 'district' LIMIT 1`, c.node).Scan(&node); err != nil {
+				t.Fatalf("%s not in the reference: %v", c.node, err)
+			}
+			title := "Квартира " + c.node
+			form := listingForm(node)
+			form.Set("title_ru", title)
+			if w := app.do(http.MethodPost, "/listings/new", form, withCookie(cookie)); w.Code != http.StatusSeeOther {
+				t.Fatalf("post = %d (%s)", w.Code, w.Body.String())
+			}
+			var country, region, city, district string
+			if err := app.pool.QueryRow(context.Background(),
+				`SELECT country, region, city, district FROM listings WHERE title_ru = $1`, title).
+				Scan(&country, &region, &city, &district); err != nil {
+				t.Fatal(err)
+			}
+			got := []string{country, region, city, district}
+			want := []string{c.country, c.region, c.city, c.district}
+			for i, label := range []string{"страна", "область", "город", "район"} {
+				if got[i] != want[i] {
+					t.Errorf("%s = %q, want %q", label, got[i], want[i])
+				}
+			}
+		})
 	}
 }
 

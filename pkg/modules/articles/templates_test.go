@@ -62,7 +62,7 @@ func TestTemplatesExecute(t *testing.T) {
 			{"listings", ListingsPage{Base: base}}, // empty state
 			{"listing_new", ListingFormPage{Base: base, Values: ListingInput{DealType: "rent", PropertyType: "house", Country: "Казахстан"}, Error: "err"}},
 			{"listing_view", ListingViewPage{Base: base, L: &Listing{
-				ID: "id", DealType: "rent", PropertyType: "house", Country: "Казахстан", Region: "Астана", City: "Астана", Village: "Тельман",
+				ID: "id", DealType: "rent", PropertyType: "house", Country: "Казахстан", Region: "Астана", City: "Астана", District: "Тельман",
 				Price: 350000, Area: 120, Rooms: 4, Title: "Дом в аренду", Description: "Line1\nLine2", Contact: "+7 700 000 00 00", CoverURL: "http://x/y.jpg",
 				Documents: []string{"/media/plan.pdf"}, ContractURL: "/media/lease.pdf",
 				Images: []string{"/static/demo/rooms/exterior.svg", "/static/demo/rooms/living.svg", "/static/demo/rooms/kitchen.svg"}}}},
