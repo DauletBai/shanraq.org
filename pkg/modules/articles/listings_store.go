@@ -108,6 +108,7 @@ const listingCols = `l.id, l.author_id, u.email, l.deal_type, l.property_type, l
 	l.title_kz, l.title_ru, l.title_en, l.description_kz, l.description_ru, l.description_en, l.currency, l.status, l.created_at,
 	l.expires_at, l.promoted_until, l.featured_until, l.banner_until, l.views_count, l.contacts_count, l.land_area, l.amenities, l.room_specs,
 	l.geo_node_id, l.updated_at,
+	(SELECT count(*) FROM listing_reports rp WHERE rp.listing_id = l.id),
 	ra.user_id, ra.name`
 
 func scanListing(row pgx.Row) (*Listing, error) {
@@ -122,7 +123,7 @@ func scanListing(row pgx.Row) (*Listing, error) {
 		&l.Price, &l.Area, &l.Rooms, &l.Title, &l.Description, &l.Contact, &l.CoverURL, &l.Images, &l.Documents, &l.ContractURL,
 		&l.TitleKz, &l.TitleRu, &l.TitleEn, &l.DescriptionKz, &l.DescriptionRu, &l.DescriptionEn, &l.Currency, &l.Status, &l.CreatedAt,
 		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.BannerUntil, &l.ViewsCount, &l.ContactsCount, &l.LandArea, &l.Amenities, &roomsRaw,
-		&geoNode, &l.UpdatedAt,
+		&geoNode, &l.UpdatedAt, &l.Reports,
 		&agentID, &agentName)
 	if err != nil {
 		return nil, err

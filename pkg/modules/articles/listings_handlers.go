@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"errors"
+	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -524,6 +525,41 @@ func maskContact(s string) string {
 // handleListingReport records a reader's report of a listing (mainly filtered,
 // dimension-distorting photos), warns the seller, and auto-hides the listing
 // once enough distinct users report it.
+// reportEmail composes the warning sent to a seller whose listing was reported.
+//
+// Trilingual, and not by oversight. The message used to be rendered in the
+// REPORTER's interface language, which is nobody's business but the reporter's:
+// a Kazakh seller reported by an English-reading visitor received an English
+// warning about their own listing. Accounts carry no language preference, so
+// the honest answer on a trilingual site is to say it in all three.
+//
+// It also names the consequence and links to the listing. A warning that does
+// not say "this can be hidden" and does not show the way to fix it is a notice,
+// not a warning.
+func (m *Module) reportEmail(l *Listing, count int, hidden bool) (subject, body string) {
+	base := strings.TrimRight(m.rt.Config.PublicBase(), "/")
+	link := base + "/listings/" + l.ID
+	key := "re.report_mail_body"
+	subjectKey := "re.report_mail_subject"
+	if hidden {
+		key = "re.report_mail_hidden"
+		subjectKey = "re.report_mail_subject_hidden"
+	}
+	subject = T(LangRU, subjectKey) + " · " + T(LangKZ, subjectKey) + " · " + T(LangEN, subjectKey)
+
+	var b strings.Builder
+	b.WriteString(l.TitleIn(LangRU) + "\n" + link + "\n")
+	for _, lang := range []string{LangRU, LangKZ, LangEN} {
+		b.WriteString("\n— — —\n\n" + T(lang, key) + "\n")
+		if !hidden {
+			b.WriteString(fmt.Sprintf(T(lang, "re.report_mail_count"), count, reportMinReports) + "\n")
+		}
+		b.WriteString(T(lang, "re.report_mail_fix") + "\n" + base + "/listings/" + l.ID + "/edit\n")
+	}
+	b.WriteString("\n— Shanraq")
+	return subject, b.String()
+}
+
 func (m *Module) handleListingReport(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
 	uid, ok := m.authorID(r)
@@ -559,14 +595,11 @@ func (m *Module) handleListingReport(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Warn the seller by email (best-effort): on the first report, and again
-	// when reports cross the threshold and the listing is hidden.
+	// when reports cross the threshold and the listing is hidden. Twice at most,
+	// so a determined reporter cannot turn the warning into a way to spam them.
 	if m.mailer != nil && (count == 1 || hidden) {
-		subject := T(lang, "re.report_mail_subject")
-		body := T(lang, "re.report_mail_body")
-		if hidden {
-			body = T(lang, "re.report_mail_hidden")
-		}
-		if err := m.mailer.Send(r.Context(), l.AuthorEmail, subject, body+"\n\n"+l.Title); err != nil {
+		subject, body := m.reportEmail(l, count, hidden)
+		if err := m.mailer.Send(r.Context(), l.AuthorEmail, subject, body); err != nil {
 			m.rt.Logger.Warn("seller report email", zap.Error(err))
 		}
 	}

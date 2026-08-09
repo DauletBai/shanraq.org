@@ -67,9 +67,13 @@ type Listing struct {
 	// ContractURL is the lease the landlord will sign, published up front. Rent
 	// only — see migration 20251107009600 for why sales carry title papers in
 	// Documents instead.
-	ContractURL   string
-	Status        string
-	ViewsCount    int
+	ContractURL string
+	Status      string
+	ViewsCount  int
+	// Reports is how many distinct people have reported this listing. Shown to
+	// its owner before the auto-hide threshold, so the warning arrives while
+	// there is still time to fix the photos.
+	Reports       int
 	ContactsCount int
 	CreatedAt     time.Time
 	UpdatedAt     time.Time

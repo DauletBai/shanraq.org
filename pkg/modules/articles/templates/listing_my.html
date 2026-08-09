@@ -30,7 +30,10 @@
           {{ else if .Expired }}{{ t $.Lang "re.expired" }}
           {{ else }}{{ t $.Lang "re.active" }} · {{ t $.Lang "re.days_left" }} {{ .DaysLeft }} {{ t $.Lang "re.days" }}{{ end }}
         </div>
-        {{ if .Flagged }}<p class="notice notice--warn" style="margin:8px 0 0">{{ t $.Lang "re.flagged_note" }}</p>{{ end }}
+        {{ if .Flagged }}<p class="notice notice--warn" style="margin:8px 0 0">{{ t $.Lang "re.flagged_note" }}</p>
+        {{/* Before the threshold the owner used to see nothing at all: the first
+             reports arrived silently and the listing simply vanished later. */}}
+        {{ else if gt .Reports 0 }}<p class="notice notice--warn" style="margin:8px 0 0">{{ printf (t $.Lang "re.reports_warn") .Reports reportHideAt }}</p>{{ end }}
       </div>
       <div class="mylist__actions">
         {{/* Edit and delete come first: fixing a wrong price is the thing an

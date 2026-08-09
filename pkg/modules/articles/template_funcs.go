@@ -11,20 +11,23 @@ import (
 // be available in one place and missing in the other.
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
-		"t":                 T,
-		"svcOff":            serviceLinkOff, // is a service's entry link disabled?
-		"svcMsg":            serviceLinkMsg, // its localized "unavailable" tooltip
-		"label":             func(l string) string { return LangLabels[l] },
-		"langName":          func(l string) string { return LangNames[l] },
-		"langs":             func() []string { return Langs },
-		"categories":        func() []string { return Categories },
-		"editorCategories":  func() []string { return append([]string{CategoryGeneral}, Categories...) },
-		"subcats":           func(cat string) []string { return Subcats(cat) },
-		"dealTypes":         func() []string { return DealTypes },
-		"propertyTypes":     func() []string { return PropertyTypes },
-		"amenities":         AmenityKeys,
-		"roomTypes":         RoomTypeKeys,
-		"bannerDays":        BannerDays,
+		"t":                T,
+		"svcOff":           serviceLinkOff, // is a service's entry link disabled?
+		"svcMsg":           serviceLinkMsg, // its localized "unavailable" tooltip
+		"label":            func(l string) string { return LangLabels[l] },
+		"langName":         func(l string) string { return LangNames[l] },
+		"langs":            func() []string { return Langs },
+		"categories":       func() []string { return Categories },
+		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
+		"subcats":          func(cat string) []string { return Subcats(cat) },
+		"dealTypes":        func() []string { return DealTypes },
+		"propertyTypes":    func() []string { return PropertyTypes },
+		"amenities":        AmenityKeys,
+		"roomTypes":        RoomTypeKeys,
+		"bannerDays":       BannerDays,
+		// The report count that hides a listing, so the seller's warning quotes
+		// the real threshold instead of a number typed into a translation.
+		"reportHideAt":      func() int { return reportMinReports },
 		"bannerPrice":       BannerPrice,
 		"adSurfaces":        AdSurfaces,
 		"adDurations":       AdDurations,
