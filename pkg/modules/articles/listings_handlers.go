@@ -39,6 +39,9 @@ type ListingFormPage struct {
 	Base
 	Values ListingInput
 	Error  string
+	// EditID is set when the form is editing an existing listing rather than
+	// creating one; it switches the action URL and the submit label.
+	EditID string
 }
 
 // ListingViewPage backs a single listing.
@@ -78,6 +81,9 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 	f.RegionText = strings.TrimSpace(q.Get("region"))
 	if gid, err := uuid.Parse(strings.TrimSpace(q.Get("geo"))); err == nil {
 		f.GeoNodeID = &gid
+		// A price range is read in the currency of the place being searched, so
+		// the country filter decides which listings the range can even match.
+		f.Currency = listingCurrency("", m.geoCountry(r, gid))
 	}
 	// Amenity filters: keep only known keys, de-duplicated.
 	selAmen := map[string]bool{}
@@ -141,6 +147,102 @@ func (m *Module) handleListingNew(w http.ResponseWriter, r *http.Request) {
 	m.render(w, "listing_new", page)
 }
 
+// listingFormFail re-renders the submission form with everything the author
+// typed and a message naming what to fix. Every rejection goes through here, so
+// no path can quietly drop a field on the way back — which is how the location,
+// and with it the currency, used to disappear between two submits.
+func (m *Module) listingFormFail(w http.ResponseWriter, r *http.Request, lang, editID string, in ListingInput, msg string) {
+	title := "re.new_title"
+	if editID != "" {
+		title = "re.edit_title"
+	}
+	page := ListingFormPage{Base: m.base(r, T(lang, title), lang)}
+	page.ActiveCat = "realestate"
+	page.Values = in
+	page.EditID = editID
+	page.Error = msg
+	m.render(w, "listing_new", page)
+}
+
+// geoCountry returns the ISO country code a location node sits under, or "" if
+// it cannot be resolved.
+func (m *Module) geoCountry(r *http.Request, node uuid.UUID) string {
+	anc, err := m.geo.Ancestry(r.Context(), node, LangRU)
+	if err != nil {
+		return ""
+	}
+	for _, n := range anc {
+		if n.Country != "" {
+			return n.Country
+		}
+	}
+	return ""
+}
+
+// resolveListingLocation rewrites the denormalized address fields from the
+// location the author picked and returns its ISO country code. A node that no
+// longer resolves is cleared rather than half-applied, so the caller's
+// "location is required" check catches it.
+func (m *Module) resolveListingLocation(r *http.Request, in *ListingInput, lang string) string {
+	if in.GeoNodeID == nil {
+		return ""
+	}
+	anc, err := m.geo.Ancestry(r.Context(), *in.GeoNodeID, lang)
+	if err != nil || len(anc) == 0 {
+		in.GeoNodeID = nil
+		return ""
+	}
+	countryCode := ""
+	in.Country, in.Region, in.City, in.Village = "", "", "", ""
+	for _, n := range anc {
+		if n.Country != "" {
+			countryCode = n.Country
+		}
+		switch n.Level {
+		case 0:
+			in.Country = n.Name
+		case 1:
+			in.Region = n.Name
+		case 2:
+			in.City = n.Name
+		default:
+			in.Village = n.Name
+		}
+	}
+	return countryCode
+}
+
+// validateListing returns the localized message for the first problem with a
+// submission, or "" when it is good to save. Shared by create and edit so an
+// edited listing can never be saved in a state a new one would be refused in.
+func validateListing(in ListingInput, countryCode, lang string) string {
+	// The location is required, and the price is why. A listing with no country
+	// has no currency to follow, so the price silently defaults to tenge — which
+	// is how a Moscow rent ended up priced in the wrong money. Demanding the
+	// address closes that hole at the source, and a property advertisement
+	// without one was never worth publishing anyway.
+	if in.GeoNodeID == nil {
+		return T(lang, "re.err_location_required")
+	}
+	if !in.NoFilters {
+		return T(lang, "re.err_no_filters")
+	}
+	// Kazakh title is mandatory (the flagship trilingual rule) — except for
+	// Russian listings, where only Russian and English are required.
+	kzRequired := countryCode != "RU" && in.Currency != "RUB"
+	if (kzRequired && in.TitleKz == "") || in.TitleRu == "" || in.TitleEn == "" || in.Contact == "" {
+		return T(lang, "re.err_required")
+	}
+	// Language sanity: English must be Latin (no Cyrillic), Russian must be
+	// Cyrillic, and Kazakh may be either — Kazakh is transitioning from Cyrillic
+	// to a Latin alphabet, so both scripts are valid. This catches the common
+	// mistake of pasting one language into every tab.
+	if !isLatinText(in.TitleEn) || !isCyrillicText(in.TitleRu) || (in.TitleKz != "" && !hasLetters(in.TitleKz)) {
+		return T(lang, "re.err_lang_script")
+	}
+	return ""
+}
+
 func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
 	authorID, ok := m.authorID(r)
@@ -151,10 +253,7 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := r.ParseForm(); err != nil {
-		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
-		page.ActiveCat = "realestate"
-		page.Error = T(lang, "re.err_bad_form")
-		m.render(w, "listing_new", page)
+		m.listingFormFail(w, r, lang, "", ListingInput{}, T(lang, "re.err_bad_form"))
 		return
 	}
 
@@ -162,81 +261,19 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 
 	// Listing submission gate (staged launch): open / invite-only / closed.
 	if ok, msg := m.gateReason(r, SvcListingSubmit, lang); !ok {
-		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
-		page.ActiveCat = "realestate"
-		page.Values = in
-		page.Error = msg
-		m.render(w, "listing_new", page)
+		m.listingFormFail(w, r, lang, "", in, msg)
 		return
 	}
-
 	// Posting requires a verified email (blocks throwaway-account spam).
 	if !m.auth.IsEmailVerified(r.Context(), authorID) {
-		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
-		page.ActiveCat = "realestate"
-		page.Values = in
-		page.Error = T(lang, "re.err_verify_email")
-		m.render(w, "listing_new", page)
+		m.listingFormFail(w, r, lang, "", in, T(lang, "re.err_verify_email"))
 		return
 	}
 
-	// Resolve the selected location node into the denormalized address fields,
-	// and capture its country code (drives currency and the Kazakh-title rule).
-	countryCode := ""
-	if in.GeoNodeID != nil {
-		anc, err := m.geo.Ancestry(r.Context(), *in.GeoNodeID, lang)
-		if err != nil || len(anc) == 0 {
-			in.GeoNodeID = nil
-		} else {
-			in.Country, in.Region, in.City, in.Village = "", "", "", ""
-			for _, n := range anc {
-				if n.Country != "" {
-					countryCode = n.Country
-				}
-				switch n.Level {
-				case 0:
-					in.Country = n.Name
-				case 1:
-					in.Region = n.Name
-				case 2:
-					in.City = n.Name
-				default:
-					in.Village = n.Name
-				}
-			}
-		}
-	}
-	// Currency follows the location: rubles for Russia, tenge otherwise.
-	in.Currency = "KZT"
-	if countryCode == "RU" {
-		in.Currency = "RUB"
-	}
-
-	// Kazakh title is mandatory (the flagship trilingual rule) — except for
-	// Russian listings, where only Russian and English are required.
-	kzRequired := countryCode != "RU"
-	if (kzRequired && in.TitleKz == "") || in.TitleRu == "" || in.TitleEn == "" || in.Contact == "" || !in.NoFilters {
-		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
-		page.ActiveCat = "realestate"
-		page.Values = in
-		if !in.NoFilters {
-			page.Error = T(lang, "re.err_no_filters")
-		} else {
-			page.Error = T(lang, "re.err_required")
-		}
-		m.render(w, "listing_new", page)
-		return
-	}
-	// Language sanity: English must be Latin (no Cyrillic), Russian must be
-	// Cyrillic, and Kazakh may be either — Kazakh is transitioning from Cyrillic
-	// to a Latin alphabet, so both scripts are valid. This catches the common
-	// mistake of pasting one language into every tab.
-	if !isLatinText(in.TitleEn) || !isCyrillicText(in.TitleRu) || (in.TitleKz != "" && !hasLetters(in.TitleKz)) {
-		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
-		page.ActiveCat = "realestate"
-		page.Values = in
-		page.Error = T(lang, "re.err_lang_script")
-		m.render(w, "listing_new", page)
+	countryCode := m.resolveListingLocation(r, &in, lang)
+	in.Currency = listingCurrency(in.Currency, countryCode)
+	if msg := validateListing(in, countryCode, lang); msg != "" {
+		m.listingFormFail(w, r, lang, "", in, msg)
 		return
 	}
 
@@ -245,11 +282,7 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Error("create listing", zap.Error(err))
 		// Re-render the form with everything the user typed so a transient save
 		// error never costs them their work; tell them plainly what happened.
-		page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
-		page.ActiveCat = "realestate"
-		page.Values = in
-		page.Error = T(lang, "re.err_save_failed")
-		m.render(w, "listing_new", page)
+		m.listingFormFail(w, r, lang, "", in, T(lang, "re.err_save_failed"))
 		return
 	}
 	// A real listing is the rewardable action: if this author was invited,
@@ -259,6 +292,108 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Warn("qualify referral", zap.Error(err))
 	}
 	http.Redirect(w, r, "/listings/"+id.String(), http.StatusSeeOther)
+}
+
+// handleListingEdit shows the submission form filled with an existing listing.
+// Scoped to the owner: another account's id is a 404, not a peek at the form.
+func (m *Module) handleListingEdit(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	l, _, ok := m.ownedListing(w, r)
+	if !ok {
+		return
+	}
+	page := ListingFormPage{Base: m.base(r, T(lang, "re.edit_title"), lang)}
+	page.ActiveCat = "realestate"
+	page.Values = listingToInput(l)
+	page.EditID = l.ID
+	m.render(w, "listing_new", page)
+}
+
+// handleListingUpdate saves an edit. It runs the identical validation as a new
+// submission, so a listing cannot be edited into a state it could not be posted
+// in — an edited price still has to carry the currency of a real country.
+func (m *Module) handleListingUpdate(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	l, authorID, ok := m.ownedListing(w, r)
+	if !ok {
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		m.listingFormFail(w, r, lang, l.ID, listingToInput(l), T(lang, "re.err_bad_form"))
+		return
+	}
+	in := parseListingForm(r)
+	countryCode := m.resolveListingLocation(r, &in, lang)
+	in.Currency = listingCurrency(in.Currency, countryCode)
+	if msg := validateListing(in, countryCode, lang); msg != "" {
+		m.listingFormFail(w, r, lang, l.ID, in, msg)
+		return
+	}
+	id, err := uuid.Parse(l.ID)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if err := m.listings.Update(r.Context(), id, authorID, in); err != nil {
+		if errors.Is(err, ErrNotFound) {
+			http.NotFound(w, r)
+			return
+		}
+		m.rt.Logger.Error("update listing", zap.Error(err))
+		m.listingFormFail(w, r, lang, l.ID, in, T(lang, "re.err_save_failed"))
+		return
+	}
+	http.Redirect(w, r, "/listings/"+l.ID, http.StatusSeeOther)
+}
+
+// handleListingDelete removes the author's own listing for good.
+func (m *Module) handleListingDelete(w http.ResponseWriter, r *http.Request) {
+	m.listingAction(w, r, m.listings.Delete)
+}
+
+// ownedListing loads the listing named in the URL and confirms the caller owns
+// it, writing the redirect or 404 itself when they do not.
+func (m *Module) ownedListing(w http.ResponseWriter, r *http.Request) (*Listing, uuid.UUID, bool) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login?reason=session_expired", http.StatusSeeOther)
+		return nil, uuid.Nil, false
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return nil, uuid.Nil, false
+	}
+	l, err := m.listings.GetByID(r.Context(), id)
+	if err != nil || l.AuthorID != authorID.String() {
+		http.NotFound(w, r)
+		return nil, uuid.Nil, false
+	}
+	return l, authorID, true
+}
+
+// listingToInput turns a stored listing back into form values, so the edit form
+// opens showing what is actually published rather than a blank slate.
+func listingToInput(l *Listing) ListingInput {
+	in := ListingInput{
+		DealType: l.DealType, PropertyType: l.PropertyType,
+		Country: l.Country, Region: l.Region, City: l.City, Village: l.Village,
+		Microdistrict: l.Microdistrict, Street: l.Street, House: l.House,
+		Lat: l.Lat, Lng: l.Lng,
+		Price: l.Price, Currency: l.Currency, Area: l.Area, Rooms: l.Rooms,
+		Title: l.Title, Description: l.Description, Contact: l.Contact, Cover: l.CoverURL,
+		TitleKz: l.TitleKz, TitleRu: l.TitleRu, TitleEn: l.TitleEn,
+		DescriptionKz: l.DescriptionKz, DescriptionRu: l.DescriptionRu, DescriptionEn: l.DescriptionEn,
+		Images: l.Images, Documents: l.Documents, ContractURL: l.ContractURL,
+		LandArea: l.LandArea, Amenities: l.Amenities, RoomSpecs: l.RoomSpecs,
+		// Already attested once when the listing was posted; re-ticking the box
+		// on every price fix would be a ritual, not a check.
+		NoFilters: true,
+	}
+	if id, err := uuid.Parse(l.GeoNodeID); err == nil {
+		in.GeoNodeID = &id
+	}
+	return in
 }
 
 func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
@@ -676,7 +811,29 @@ func parseListingForm(r *http.Request) ListingInput {
 		RoomSpecs:     roomSpecs,
 		NoFilters:     r.FormValue("no_filters") == "on",
 		GeoNodeID:     geoID,
+		Currency:      strings.ToUpper(strings.TrimSpace(r.FormValue("currency"))),
 	}
+}
+
+// listingCurrencies are the currencies a listing may be priced in. Anything
+// outside this set is not a currency this site knows how to display.
+var listingCurrencies = map[string]bool{"KZT": true, "RUB": true}
+
+// listingCurrency decides what a price is denominated in.
+//
+// The author's explicit choice wins, because it is the symbol printed next to
+// the price box while they type: a server that silently overrules what they can
+// see is exactly how a ruble price ends up stored as tenge. The country is the
+// fallback for a submission that carries no choice at all — an old cached form,
+// or a browser with JavaScript off — and the tenge is the last resort.
+func listingCurrency(picked, countryCode string) string {
+	if c := strings.ToUpper(strings.TrimSpace(picked)); listingCurrencies[c] {
+		return c
+	}
+	if countryCode == "RU" {
+		return "RUB"
+	}
+	return "KZT"
 }
 
 // isLatinText reports whether s carries Latin letters and no Cyrillic — used to

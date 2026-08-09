@@ -72,7 +72,12 @@ type Listing struct {
 	ViewsCount    int
 	ContactsCount int
 	CreatedAt     time.Time
+	UpdatedAt     time.Time
 	ExpiresAt     time.Time
+	// GeoNodeID is the location the author picked in the cascade. Carried on the
+	// listing so the edit form can restore that choice instead of making the
+	// author re-pick their own address.
+	GeoNodeID     string
 	PromotedUntil *time.Time
 	FeaturedUntil *time.Time
 	BannerUntil   *time.Time

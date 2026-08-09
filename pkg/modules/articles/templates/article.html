@@ -90,7 +90,13 @@
         <ul class="comments__list">
           {{ range .Comments }}
           <li class="comment">
-            <div class="comment__head"><span class="comment__author">{{ .AuthorName }}</span><span class="comment__date">{{ fmtDate .CreatedAt }}</span></div>
+            <div class="comment__head"><span class="comment__author">{{ .AuthorName }}</span><span class="comment__date">{{ fmtDate .CreatedAt }}</span>
+              {{ if .Mine }}
+              <form method="post" action="/read/{{ $.Slug }}/comment/{{ .ID }}/delete" class="comment__del" onsubmit="return confirm('{{ t $.Lang "comments.delete_confirm" }}')">
+                <button type="submit" class="comment__delbtn" title="{{ t $.Lang "comments.delete" }}">{{ t $.Lang "comments.delete" }}</button>
+              </form>
+              {{ end }}
+            </div>
             <p class="comment__body">{{ .Body }}</p>
           </li>
           {{ end }}

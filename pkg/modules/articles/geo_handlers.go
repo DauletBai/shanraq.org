@@ -87,6 +87,25 @@ func (m *Module) handleGeoChildren(w http.ResponseWriter, r *http.Request) {
 	writeGeoJSON(w, nodes)
 }
 
+// handleGeoPath returns the root-to-node path for ?node=<uuid>, so the location
+// picker can rebuild a selection the author has already made — after a form
+// bounces off validation, or when they open a listing to edit it.
+func (m *Module) handleGeoPath(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	id, err := uuid.Parse(r.URL.Query().Get("node"))
+	if err != nil {
+		http.Error(w, "bad node id", http.StatusBadRequest)
+		return
+	}
+	nodes, err := m.geo.Ancestry(r.Context(), id, lang)
+	if err != nil {
+		m.rt.Logger.Error("geo path", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	writeGeoJSON(w, nodes)
+}
+
 func writeGeoJSON(w http.ResponseWriter, nodes []GeoNode) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Cache-Control", "public, max-age=3600")

@@ -28,6 +28,12 @@
         {{ if .Owner }}
         <div class="listing__owner">
           <span>{{ if .L.Expired }}{{ t .Lang "re.expired" }}{{ else }}{{ t .Lang "re.active" }} · {{ t .Lang "re.days_left" }} {{ .L.DaysLeft }} {{ t .Lang "re.days" }}{{ end }}</span>
+          {{/* An owner spots a mistake while looking at the published page, so
+               the fix belongs here and not only in the cabinet. */}}
+          <a class="btn btn--ghost btn--sm" href="/listings/{{ .L.ID }}/edit" title="{{ t .Lang "re.edit_hint" }}">✏️ {{ t .Lang "re.edit" }}</a>
+          <form method="post" action="/listings/{{ .L.ID }}/delete" onsubmit="return confirm('{{ t .Lang "re.delete_confirm" }}')">
+            <button class="btn btn--danger btn--sm" type="submit" title="{{ t .Lang "re.delete_hint" }}">{{ t .Lang "re.delete" }}</button>
+          </form>
           <a class="btn btn--ghost btn--sm" href="/listings/my">{{ t .Lang "re.manage" }}</a>
         </div>
         {{ end }}

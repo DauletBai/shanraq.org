@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"strings"
@@ -81,6 +82,45 @@ func TestCommentFlow(t *testing.T) {
 	// Anonymous comment attempt is redirected to login.
 	if w := app.do(http.MethodPost, "/read/"+slug+"/comment", url.Values{"body": {"x"}}); w.Code != http.StatusSeeOther {
 		t.Errorf("anon comment = %d, want 303 (login)", w.Code)
+	}
+}
+
+// A comment is published under the writer's real name. Until this existed the
+// only way to unsay one was to write to an administrator — and the delete has to
+// be theirs alone, or one reader could erase another's words.
+func TestCommentDeleteIsOwnerOnly(t *testing.T) {
+	app := newTestApp(t)
+	author := app.createUser("cdauthor@t.test", "Parol12345")
+	articleID, slug := app.seedArticle(author, "published")
+
+	app.createUser("mine@t.test", "Parol12345")
+	mine := app.login("mine@t.test", "Parol12345")
+	if w := app.do(http.MethodPost, "/read/"+slug+"/comment",
+		url.Values{"body": {"Сказал и передумал."}}, withCookie(mine)); w.Code != http.StatusSeeOther {
+		t.Fatalf("post comment = %d", w.Code)
+	}
+	var id string
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT id FROM comments WHERE article_id = $1`, articleID).Scan(&id); err != nil {
+		t.Fatal(err)
+	}
+
+	// A stranger must not be able to delete it, even knowing the id.
+	app.createUser("notmine@t.test", "Parol12345")
+	other := app.login("notmine@t.test", "Parol12345")
+	if w := app.do(http.MethodPost, "/read/"+slug+"/comment/"+id+"/delete", url.Values{}, withCookie(other)); w.Code != http.StatusNotFound {
+		t.Errorf("a stranger deleting a comment = %d, want 404", w.Code)
+	}
+	if w := app.do(http.MethodGet, "/read/"+slug, nil); !strings.Contains(w.Body.String(), "Сказал и передумал") {
+		t.Fatal("the comment was destroyed by someone who did not write it")
+	}
+
+	// Its author can.
+	if w := app.do(http.MethodPost, "/read/"+slug+"/comment/"+id+"/delete", url.Values{}, withCookie(mine)); w.Code != http.StatusSeeOther {
+		t.Fatalf("the author deleting their own comment = %d, want 303", w.Code)
+	}
+	if w := app.do(http.MethodGet, "/read/"+slug, nil); strings.Contains(w.Body.String(), "Сказал и передумал") {
+		t.Error("the comment is still on the page after its author deleted it")
 	}
 }
 

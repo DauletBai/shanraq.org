@@ -548,7 +548,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.CommentReview = r.URL.Query().Get("comment") == "review"
 	// The article page shows only its table of contents in the aside (no news
 	// carousel / widgets), so SidebarNews is intentionally not populated here.
-	if cs, err := m.comments.ListForArticle(r.Context(), a.ID); err == nil {
+	if cs, err := m.comments.ListForArticle(r.Context(), a.ID, viewer); err == nil {
 		page.Comments = cs
 	} else {
 		m.rt.Logger.Warn("load comments", zap.Error(err))
@@ -564,6 +564,33 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 
 // handleVote records a reader's up/down vote (toggling off when the same
 // direction is submitted twice), then returns to the article.
+// handleCommentDelete lets a reader take back their own comment. Until now the
+// only way to unsay something published under your real name was to write to an
+// administrator, which is not a feature — it is a missing one.
+func (m *Module) handleCommentDelete(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+	userID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if err := m.comments.Delete(r.Context(), id, userID); err != nil {
+		if errors.Is(err, ErrNotFound) {
+			http.NotFound(w, r)
+			return
+		}
+		m.rt.Logger.Error("delete comment", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/read/"+slug+"#comments", http.StatusSeeOther)
+}
+
 func (m *Module) handleComment(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 	backTo := "/read/" + slug + "#comments"

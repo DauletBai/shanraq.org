@@ -19,6 +19,8 @@ type Comment struct {
 	AuthorName string
 	Body       string
 	CreatedAt  time.Time
+	// Mine marks a comment written by the reader currently viewing the page.
+	Mine bool
 }
 
 // CommentStore persists reader comments.
@@ -55,13 +57,31 @@ func (s *CommentStore) CreateWithStatus(ctx context.Context, articleID, userID u
 	return nil
 }
 
+// Delete removes a reader's own comment. Scoped to user_id in the statement, so
+// someone else's id deletes nothing. A comment is published under the author's
+// real name, which is precisely why they must be able to take it back without
+// asking an administrator.
+func (s *CommentStore) Delete(ctx context.Context, id, userID uuid.UUID) error {
+	ct, err := s.db.Exec(ctx, `DELETE FROM comments WHERE id = $1 AND user_id = $2`, id, userID)
+	if err != nil {
+		return fmt.Errorf("delete comment: %w", err)
+	}
+	if ct.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	return nil
+}
+
 // ListForArticle returns published comments oldest first, with the author name.
-func (s *CommentStore) ListForArticle(ctx context.Context, articleID uuid.UUID) ([]Comment, error) {
+// viewer marks which of them belong to the reader looking at the page, so the
+// template can offer them a delete button; pass uuid.Nil for a guest.
+func (s *CommentStore) ListForArticle(ctx context.Context, articleID, viewer uuid.UUID) ([]Comment, error) {
 	rows, err := s.db.Query(ctx, `
-		SELECT c.id, u.email, u.first_name, u.last_name, u.middle_name, c.body, c.created_at
+		SELECT c.id, u.email, u.first_name, u.last_name, u.middle_name, c.body, c.created_at,
+		       c.user_id = $2 AS mine
 		FROM comments c JOIN auth_users u ON u.id = c.user_id
 		WHERE c.article_id = $1 AND c.status = 'published'
-		ORDER BY c.created_at`, articleID)
+		ORDER BY c.created_at`, articleID, viewer)
 	if err != nil {
 		return nil, fmt.Errorf("list comments: %w", err)
 	}
@@ -71,7 +91,7 @@ func (s *CommentStore) ListForArticle(ctx context.Context, articleID uuid.UUID) 
 		var c Comment
 		var id uuid.UUID
 		var email, first, last, middle string
-		if err := rows.Scan(&id, &email, &first, &last, &middle, &c.Body, &c.CreatedAt); err != nil {
+		if err := rows.Scan(&id, &email, &first, &last, &middle, &c.Body, &c.CreatedAt, &c.Mine); err != nil {
 			return nil, err
 		}
 		c.ID = id.String()

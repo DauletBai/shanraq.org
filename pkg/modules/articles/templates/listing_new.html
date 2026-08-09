@@ -5,11 +5,14 @@
 <main class="container">
   {{ template "backlink" (dict "Href" "/listings" "Label" (t .Lang "nav.realestate")) }}
   <section class="studio" style="max-width:820px">
-    <div class="studio__head"><h1>{{ t .Lang "re.new_title" }}</h1></div>
-    {{ with index .Svc "listing_submission" }}{{ if not .On }}<div class="alert alert--error">🛠 {{ .Msg }}</div>{{ end }}{{ end }}
+    <div class="studio__head"><h1>{{ if .EditID }}{{ t .Lang "re.edit_title" }}{{ else }}{{ t .Lang "re.new_title" }}{{ end }}</h1></div>
+    {{/* The submission gate stops new listings, not repairs to a published one:
+         an owner correcting a wrong price during maintenance is exactly what
+         should still work. */}}
+    {{ if not .EditID }}{{ with index .Svc "listing_submission" }}{{ if not .On }}<div class="alert alert--error">🛠 {{ .Msg }}</div>{{ end }}{{ end }}{{ end }}
     {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
 
-    <form class="form" method="post" action="/listings/new">
+    <form class="form" method="post" action="{{ if .EditID }}/listings/{{ .EditID }}/edit{{ else }}/listings/new{{ end }}">
       <div class="grid-2">
         <div class="field">
           <label>{{ t .Lang "re.deal" }}</label>
@@ -27,8 +30,12 @@
 
       <div class="field">
         <label>{{ t .Lang "re.location" }}</label>
-        <div class="geo-cascade" data-geo data-lang="{{ .Lang }}"></div>
-        <input type="hidden" name="geo_node_id" id="geo_node_id">
+        {{/* data-geo-selected restores the author's choice when the form comes
+             back from a validation error. Without it the cascade rebuilt itself
+             empty, the country was lost, and the next submit priced a Russian
+             flat in tenge. */}}
+        <div class="geo-cascade" data-geo data-lang="{{ .Lang }}" data-geo-selected="{{ .Values.GeoNodeIDStr }}"></div>
+        <input type="hidden" name="geo_node_id" id="geo_node_id" value="{{ .Values.GeoNodeIDStr }}">
         <p class="hint">{{ t .Lang "re.location_hint" }}</p>
         <div class="grid-3" style="margin-top:10px">
           <div class="field"><label>{{ t .Lang "re.microdistrict" }} {{ template "fhelp" (t .Lang "re.help_microdistrict") }}</label>
@@ -50,7 +57,15 @@
       </div>
 
       <div class="grid-3">
-        <div class="field"><label>{{ t .Lang "re.price" }} <span data-price-cur class="hint">₸</span> <span data-price-help data-kzt="{{ t .Lang "re.help_price" }}" data-rub="{{ t .Lang "re.help_price_rub" }}">{{ template "fhelp" (t .Lang "re.help_price") }}</span></label><input class="input" type="text" inputmode="numeric" name="price" value="{{ if gt .Values.Price 0 }}{{ .Values.Price }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.price" }} <span data-price-cur class="hint">{{ if eq .Values.CurrencyOr "RUB" }}₽{{ else }}₸{{ end }}</span> <span data-price-help data-kzt="{{ t .Lang "re.help_price" }}" data-rub="{{ t .Lang "re.help_price_rub" }}">{{ if eq .Values.CurrencyOr "RUB" }}{{ template "fhelp" (t .Lang "re.help_price_rub") }}{{ else }}{{ template "fhelp" (t .Lang "re.help_price") }}{{ end }}</span></label><input class="input" type="text" inputmode="numeric" name="price" value="{{ if gt .Values.Price 0 }}{{ .Values.Price }}{{ end }}"></div>
+        {{/* The currency is visible and editable rather than inferred in silence:
+             what the author sees beside the price box is what gets stored. */}}
+        <div class="field"><label>{{ t .Lang "re.currency" }} {{ template "fhelp" (t .Lang "re.help_currency") }}</label>
+          <select class="select" name="currency" id="listing_currency">
+            <option value="KZT"{{ if eq .Values.CurrencyOr "KZT" }} selected{{ end }}>₸ KZT</option>
+            <option value="RUB"{{ if eq .Values.CurrencyOr "RUB" }} selected{{ end }}>₽ RUB</option>
+          </select>
+        </div>
         <div class="field"><label>{{ t .Lang "re.area" }} {{ template "fhelp" (t .Lang "re.help_area") }}</label><input class="input" name="area" value="{{ if gt .Values.Area 0.0 }}{{ .Values.Area }}{{ end }}"></div>
         <div class="field"><label>{{ t .Lang "re.rooms" }} {{ template "fhelp" (t .Lang "re.help_rooms") }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .Values.Rooms 0 }}{{ .Values.Rooms }}{{ end }}"></div>
         <div class="field"><label>{{ t .Lang "re.land_area" }} {{ template "fhelp" (t .Lang "re.help_land_area") }}</label><input class="input" name="land_area" value="{{ if gt .Values.LandArea 0.0 }}{{ .Values.LandArea }}{{ end }}"></div>
@@ -183,8 +198,8 @@
       </div>
 
       <div class="form-actions">
-        <button class="btn btn--primary" type="submit">{{ t .Lang "re.submit" }}</button>
-        <a class="btn btn--ghost" href="/listings" style="margin-left:auto">{{ t .Lang "re.cancel" }}</a>
+        <button class="btn btn--primary" type="submit">{{ if .EditID }}{{ t .Lang "re.save" }}{{ else }}{{ t .Lang "re.submit" }}{{ end }}</button>
+        <a class="btn btn--ghost" href="{{ if .EditID }}/listings/{{ .EditID }}{{ else }}/listings{{ end }}" style="margin-left:auto">{{ t .Lang "re.cancel" }}</a>
       </div>
     </form>
   </section>

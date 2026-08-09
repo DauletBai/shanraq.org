@@ -45,6 +45,25 @@ type ListingInput struct {
 	GeoNodeID                                   *uuid.UUID
 }
 
+// GeoNodeIDStr renders the chosen location for the form's hidden field: the
+// bare uuid, or empty when nothing is chosen. Without it a re-rendered form
+// drops the author's location and the price silently reverts to tenge.
+func (in ListingInput) GeoNodeIDStr() string {
+	if in.GeoNodeID == nil {
+		return ""
+	}
+	return in.GeoNodeID.String()
+}
+
+// CurrencyOr returns the currency to preselect in the form, defaulting to the
+// tenge so the price box is never labelled with a blank symbol.
+func (in ListingInput) CurrencyOr() string {
+	if listingCurrencies[in.Currency] {
+		return in.Currency
+	}
+	return "KZT"
+}
+
 func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in ListingInput) (uuid.UUID, error) {
 	rooms, err := json.Marshal(in.RoomSpecs)
 	if err != nil || in.RoomSpecs == nil {
@@ -88,6 +107,7 @@ const listingCols = `l.id, l.author_id, u.email, l.deal_type, l.property_type, l
 	l.price, l.area, l.rooms, l.title, l.description, l.contact, l.cover_url, l.images, l.documents, l.contract_url,
 	l.title_kz, l.title_ru, l.title_en, l.description_kz, l.description_ru, l.description_en, l.currency, l.status, l.created_at,
 	l.expires_at, l.promoted_until, l.featured_until, l.banner_until, l.views_count, l.contacts_count, l.land_area, l.amenities, l.room_specs,
+	l.geo_node_id, l.updated_at,
 	ra.user_id, ra.name`
 
 func scanListing(row pgx.Row) (*Listing, error) {
@@ -96,14 +116,19 @@ func scanListing(row pgx.Row) (*Listing, error) {
 	var roomsRaw []byte
 	var agentID *uuid.UUID
 	var agentName *string
+	var geoNode *uuid.UUID
 	err := row.Scan(&id, &authorID, &l.AuthorEmail, &l.DealType, &l.PropertyType, &l.Country, &l.Region, &l.City, &l.Village,
 		&l.Microdistrict, &l.Street, &l.House, &l.Lat, &l.Lng,
 		&l.Price, &l.Area, &l.Rooms, &l.Title, &l.Description, &l.Contact, &l.CoverURL, &l.Images, &l.Documents, &l.ContractURL,
 		&l.TitleKz, &l.TitleRu, &l.TitleEn, &l.DescriptionKz, &l.DescriptionRu, &l.DescriptionEn, &l.Currency, &l.Status, &l.CreatedAt,
 		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.BannerUntil, &l.ViewsCount, &l.ContactsCount, &l.LandArea, &l.Amenities, &roomsRaw,
+		&geoNode, &l.UpdatedAt,
 		&agentID, &agentName)
 	if err != nil {
 		return nil, err
+	}
+	if geoNode != nil {
+		l.GeoNodeID = geoNode.String()
 	}
 	if len(roomsRaw) > 0 {
 		_ = json.Unmarshal(roomsRaw, &l.RoomSpecs) // tolerate malformed JSON → empty
@@ -117,6 +142,84 @@ func scanListing(row pgx.Row) (*Listing, error) {
 		}
 	}
 	return &l, nil
+}
+
+// Update rewrites an author's own listing in place. Everything the form can set
+// is rewritten, including the currency and the denormalized address, so a fixed
+// listing looks exactly like a freshly posted one. Deliberately untouched: the
+// id and the paid state (promotion, featuring, banner, expiry) — editing the
+// text must never quietly buy or burn a paid slot, and must not reset the clock.
+func (s *ListingStore) Update(ctx context.Context, id, authorID uuid.UUID, in ListingInput) error {
+	rooms, err := json.Marshal(in.RoomSpecs)
+	if err != nil || in.RoomSpecs == nil {
+		rooms = []byte("[]")
+	}
+	if in.Images == nil {
+		in.Images = []string{}
+	}
+	if in.Documents == nil {
+		in.Documents = []string{}
+	}
+	if in.Amenities == nil {
+		in.Amenities = []string{}
+	}
+	if in.Currency == "" {
+		in.Currency = "KZT"
+	}
+	ct, err := s.db.Exec(ctx, `
+		UPDATE listings SET
+			deal_type = $3, property_type = $4,
+			country = $5, region = $6, city = $7, village = $8,
+			microdistrict = $9, street = $10, house = $11, lat = $12, lng = $13,
+			price = $14, area = $15, rooms = $16, title = $17, description = $18,
+			contact = $19, cover_url = $20, images = $21, geo_node_id = $22,
+			land_area = $23, amenities = $24, room_specs = $25::jsonb,
+			documents = $26, contract_url = $27,
+			title_kz = $28, title_ru = $29, title_en = $30,
+			description_kz = $31, description_ru = $32, description_en = $33,
+			currency = $34, updated_at = now()
+		WHERE id = $1 AND author_id = $2
+	`, id, authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.Village,
+		in.Microdistrict, in.Street, in.House, in.Lat, in.Lng,
+		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.Images, in.GeoNodeID,
+		in.LandArea, in.Amenities, string(rooms), in.Documents, in.ContractURL,
+		in.TitleKz, in.TitleRu, in.TitleEn, in.DescriptionKz, in.DescriptionRu, in.DescriptionEn, in.Currency)
+	if err != nil {
+		return fmt.Errorf("update listing: %w", err)
+	}
+	if ct.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	return nil
+}
+
+// Delete removes an author's own listing for good. Scoped to author_id in the
+// statement itself, so a guessed id belonging to someone else deletes nothing
+// rather than relying on a check the caller might forget.
+func (s *ListingStore) Delete(ctx context.Context, id, authorID uuid.UUID) error {
+	tx, err := s.db.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		return fmt.Errorf("delete listing: %w", err)
+	}
+	defer func() { _ = tx.Rollback(ctx) }()
+
+	ct, err := tx.Exec(ctx, `DELETE FROM listings WHERE id = $1 AND author_id = $2`, id, authorID)
+	if err != nil {
+		return fmt.Errorf("delete listing: %w", err)
+	}
+	if ct.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	// Neither table carries a foreign key to listings — favourites are
+	// polymorphic over articles and listings, and reports were built without
+	// one — so both have to be swept by hand or they linger pointing at nothing.
+	if _, err := tx.Exec(ctx, `DELETE FROM favorites WHERE item_type = 'listing' AND item_id = $1`, id); err != nil {
+		return fmt.Errorf("delete listing favorites: %w", err)
+	}
+	if _, err := tx.Exec(ctx, `DELETE FROM listing_reports WHERE listing_id = $1`, id); err != nil {
+		return fmt.Errorf("delete listing reports: %w", err)
+	}
+	return tx.Commit(ctx)
 }
 
 // MyListings returns all of an author's listings (active or expired), newest first.
@@ -239,10 +342,13 @@ type ListingFilter struct {
 	GeoNodeID          *uuid.UUID // matches this node and its whole subtree
 	RegionText         string     // plain-text region/city match (e.g. from a map click)
 	PriceMin, PriceMax int64
-	RoomsMin           int
-	Amenities          []string // listing must have ALL of these (garage, parking, …)
-	Query              string   // free text over title/description
-	Limit              int
+	// Currency scopes a price range to one currency. Follows the country the
+	// searcher filtered by; the tenge when they named no country.
+	Currency  string
+	RoomsMin  int
+	Amenities []string // listing must have ALL of these (garage, parking, …)
+	Query     string   // free text over title/description
+	Limit     int
 }
 
 // List returns published listings matching the filter, newest first.
@@ -281,6 +387,17 @@ func (s *ListingStore) List(ctx context.Context, f ListingFilter) ([]*Listing, e
 		args = append(args, txt)
 		n := len(args)
 		where += fmt.Sprintf(" AND (l.region = $%d OR l.city = $%d OR l.country = $%d)", n, n, n)
+	}
+	// A price range only means something inside one currency: "up to 20 000 000"
+	// asked in tenge must not drag in a listing priced at 20 000 000 rubles,
+	// which is a different amount of money by a factor of five. So a price bound
+	// carries its currency with it.
+	if f.PriceMin > 0 || f.PriceMax > 0 {
+		cur := f.Currency
+		if !listingCurrencies[cur] {
+			cur = "KZT"
+		}
+		add(" AND l.currency = $%d", cur)
 	}
 	if f.PriceMin > 0 {
 		add(" AND l.price >= $%d", f.PriceMin)

@@ -6,7 +6,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Listings can be edited and deleted by their owner, from the cabinet and from
+  the listing page itself. Until now a mistake in a published advert could only
+  be waited out: there was no edit and no delete, only "extend" and the paid
+  promotion buttons. Editing runs the same validation as posting, so a listing
+  cannot be edited into a state it could not have been posted in; the id, the
+  expiry clock and any paid promotion are deliberately left alone.
+- The price now carries a visible currency selector, set automatically from the
+  country and changeable by hand. The location became a required field, because
+  it is what makes the currency knowable at all.
+- Readers can delete their own comments. A comment is published under a real
+  name; the only previous way to take one back was to ask an administrator.
+- 314 intra-city districts added to the location reference — see Fixed.
+
 ### Fixed
+- A price entered against a Russian address was stored in tenge. The currency
+  was derived correctly, but the submission form dropped the chosen location
+  whenever it bounced off validation: the hidden geo field was rendered without
+  its value and the cascade rebuilt itself empty. The author fixed whatever was
+  flagged, submitted again with no country attached, and the price fell back to
+  the default currency. With the country gone the form also began demanding a
+  Kazakh title that a Russian listing does not need, making a second bounce
+  likely. The form now carries the location back, and the location is required.
+- Price filters compared amounts across currencies: a listing at 90 000 ₽ and
+  one at 90 000 ₸ matched the same range, five times apart in real money. A
+  price range is now scoped to one currency, following the country filtered on.
+- The location reference was missing most intra-city districts. Saint Petersburg
+  had nine of eighteen (Петродворцовый among the absent), Moscow ten of twelve,
+  and every Russian city outside the two federal ones had none at all, so a flat
+  in Novosibirsk could be placed no more precisely than "Novosibirsk". Added for
+  the cities that have official divisions — inventing districts for a city that
+  has none would be worse than leaving it blank. Karaganda and Aktobe gained
+  theirs too; Kazakhstan's million-plus cities were already complete.
 - `stripMD` mangled HTML instead of removing it: `<script>alert(1)</script>`
   became `<scriptalert(1)</script`, which then went into card excerpts and the
   page's meta description. Never an XSS — the templates escape it — but rubbish

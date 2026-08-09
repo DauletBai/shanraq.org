@@ -1228,6 +1228,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .comment__head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
 .comment__author { font-weight: 700; }
 .comment__date { color: var(--muted); font-size: 0.82rem; }
+/* Delete-my-own-comment: quiet until hovered, so it never competes with the
+   comment itself, but always present for the person who wrote it. */
+.comment__del { margin-left: auto; }
+.comment__delbtn {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--muted); font: inherit; font-size: 0.82rem; text-decoration: underline;
+}
+.comment__delbtn:hover, .comment__delbtn:focus-visible { color: var(--brand); }
 .comment__body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 
 /* ================= Admin dashboard (standalone layout) ================= */

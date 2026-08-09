@@ -622,6 +622,10 @@
         village: { kz: 'Елді мекен', ru: 'Село / посёлок', en: 'Locality' }
       };
       function label(kind) { var m = LABELS[kind]; return (m && (m[lang] || m.ru)) || '—'; }
+      // Path from the root down to the pre-selected node, so a form that bounced
+      // off validation — or an edit form — rebuilds the author's own choice
+      // instead of presenting them an empty picker and losing their country.
+      var restore = [];
       function addSelect(parentId, level) {
         var url = parentId
           ? '/api/geo/children?parent=' + encodeURIComponent(parentId) + '&lang=' + lang
@@ -654,29 +658,65 @@
             if (pick && pick.lat != null) {
               document.dispatchEvent(new CustomEvent('shanraq:geo', { detail: { lat: pick.lat, lng: pick.lng } }));
             }
-            if (level === 0) {
+            // Only a real pick may rewrite the currency. Replaying a saved
+            // choice must not overrule a currency the author set by hand.
+            if (level === 0 && !replaying) {
               document.dispatchEvent(new CustomEvent('shanraq:geocountry', { detail: { country: (pick && pick.country) || '' } }));
             }
             if (sel.value && opt.getAttribute('data-has')) addSelect(sel.value, level + 1);
           });
           row.appendChild(sel);
           box.appendChild(row);
+
+          var want = restore[level];
+          if (want) {
+            sel.value = want;
+            if (sel.value === want) sel.dispatchEvent(new Event('change'));
+            if (level >= restore.length - 1) replaying = false;
+          }
         }).catch(function () {});
       }
-      addSelect(null, 0);
+
+      var replaying = false;
+      var selected = box.getAttribute('data-geo-selected');
+      if (selected) {
+        replaying = true;
+        fetch('/api/geo/path?node=' + encodeURIComponent(selected) + '&lang=' + lang, { credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (path) {
+            restore = (path || []).map(function (n) { return n.id; });
+            addSelect(null, 0);
+          })
+          .catch(function () { replaying = false; addSelect(null, 0); });
+      } else {
+        addSelect(null, 0);
+      }
     });
     // A listing's currency follows its country: switch the price hint and the
     // ₸/₽ chip when the author picks Russia vs Kazakhstan in the location cascade.
-    document.addEventListener('shanraq:geocountry', function (e) {
-      var ru = e.detail && e.detail.country === 'RU';
-      var chip = document.querySelector('[data-price-cur]');
-      if (chip) chip.textContent = ru ? '₽' : '₸';
-      var help = document.querySelector('[data-price-help]');
-      if (help) {
-        var tip = help.querySelector('.fhelp__tip');
-        if (tip) tip.textContent = ru ? help.getAttribute('data-rub') : help.getAttribute('data-kzt');
+    // One source of truth: the currency the author can see in the select. The
+    // country sets it, the chip and the price hint follow it. Nothing infers a
+    // currency silently — that is how a ruble price was stored as tenge.
+    (function () {
+      var cur = document.getElementById('listing_currency');
+      function paint() {
+        var ru = cur ? cur.value === 'RUB' : false;
+        var chip = document.querySelector('[data-price-cur]');
+        if (chip) chip.textContent = ru ? '₽' : '₸';
+        var help = document.querySelector('[data-price-help]');
+        if (help) {
+          var tip = help.querySelector('.fhelp__tip');
+          if (tip) tip.textContent = ru ? help.getAttribute('data-rub') : help.getAttribute('data-kzt');
+        }
       }
-    });
+      if (cur) cur.addEventListener('change', paint);
+      document.addEventListener('shanraq:geocountry', function (e) {
+        if (!cur) return;
+        cur.value = (e.detail && e.detail.country === 'RU') ? 'RUB' : 'KZT';
+        paint();
+      });
+      paint();
+    })();
     // Forward geocoding: assemble the address the author entered (cascade + fine
     // fields) and drop a precise pin via the map's shanraq:geo channel.
     document.querySelectorAll('[data-geocode-btn]').forEach(function (btn) {

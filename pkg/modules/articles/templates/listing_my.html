@@ -20,6 +20,7 @@
         <a class="mylist__title" href="/listings/{{ .ID }}">{{ .TitleIn $.Lang }}</a>
         <div class="mylist__meta">
           <span>{{ money .Price }} {{ .CurrencySymbol }}</span><span class="dot">·</span><span>{{ .Location }}</span>
+          {{ if .UpdatedAt.After .CreatedAt }}<span class="dot">·</span><span>{{ t $.Lang "re.updated" }} {{ fmtDate .UpdatedAt }}</span>{{ end }}
           {{ if .Promoted }}<span class="badge-top badge-top--inline">{{ t $.Lang "re.badge_top" }}</span>{{ end }}
           {{ if .Featured }}<span class="badge-feat">{{ t $.Lang "re.badge_featured" }}</span>{{ end }}
           {{ if .Banner }}<span class="badge-banner">{{ t $.Lang "re.badge_banner" }}</span>{{ end }}
@@ -32,6 +33,13 @@
         {{ if .Flagged }}<p class="notice notice--warn" style="margin:8px 0 0">{{ t $.Lang "re.flagged_note" }}</p>{{ end }}
       </div>
       <div class="mylist__actions">
+        {{/* Edit and delete come first: fixing a wrong price is the thing an
+             owner actually needs, and until now the only way out of a mistake
+             was to wait for the listing to expire. */}}
+        <a class="btn btn--ghost btn--sm" href="/listings/{{ .ID }}/edit" title="{{ t $.Lang "re.edit_hint" }}">✏️ {{ t $.Lang "re.edit" }}</a>
+        <form method="post" action="/listings/{{ .ID }}/delete" onsubmit="return confirm('{{ t $.Lang "re.delete_confirm" }}')">
+          <button class="btn btn--danger btn--sm" type="submit" title="{{ t $.Lang "re.delete_hint" }}">{{ t $.Lang "re.delete" }}</button>
+        </form>
         <form method="post" action="/listings/{{ .ID }}/extend"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.extend" }}</button></form>
         {{ if ge $.Credit 3 }}<form method="post" action="/listings/{{ .ID }}/promote-free"><button class="btn btn--teal btn--sm" type="submit">{{ t $.Lang "inv.promote_free" }}</button></form>{{ end }}
         {{ $paid := index $.Svc "listing_promo" }}
