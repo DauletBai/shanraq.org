@@ -1235,7 +1235,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   background: none; border: 0; padding: 0; cursor: pointer;
   color: var(--muted); font: inherit; font-size: 0.82rem; text-decoration: underline;
 }
-.comment__delbtn:hover, .comment__delbtn:focus-visible { color: var(--brand); }
+.comment__delbtn:hover, .comment__delbtn:focus-visible { color: var(--gold); }
 .comment__body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 
 /* ================= Admin dashboard (standalone layout) ================= */
@@ -1483,6 +1483,15 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   .share--foot { margin-top: 26px; }
 }
 .listing__headrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+/* Brand-red rule between the share row and the facts strip. Those two sat flush
+   against each other and read as one crowded block; the line separates the
+   things you do with a listing from the facts about it. Inset 10px on each side
+   to line up with the facts strip's own padding. */
+.listing__rule {
+  height: 2px; border: 0; border-radius: 1px;
+  background: var(--gold);
+  margin: 18px 10px;
+}
 .listing__headrow .listing__price { margin: 0; }
 .fav-group {
   font-family: var(--serif); font-size: 1.15rem; margin: 26px 0 12px;

@@ -53,6 +53,7 @@
           {{ template "share_row" (dict "Lang" .Lang "Title" (.L.TitleIn .Lang) "URL" (printf "%s%s" .SiteURL .CanonURL)) }}
         </div>
 
+        <hr class="listing__rule">
         {{ template "listing_facts" (dict "L" .L "Lang" .Lang) }}
 
         <div class="table-wrap">
