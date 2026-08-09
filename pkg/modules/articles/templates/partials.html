@@ -886,25 +886,52 @@
           .then(function (r) { return r.json(); })
           .then(function (pins) {
             if (!pins || !pins.length) return;
-            var group = [];
+            // One bubble per place, sized by how many listings are there \u2014
+            // which is what the caption above the map promises. Colour used to
+            // encode something else entirely (red for an author-placed pin,
+            // grey-brown for a settlement centre), so the same city read as two
+            // different kinds of place depending on how carefully its sellers
+            // had filled the form. Every bubble is brand red now; only the size
+            // carries meaning, and the popup still says which positions are
+            // exact.
+            var places = {}, order = [];
             pins.forEach(function (p) {
-              var m = L.circleMarker([p.lat, p.lng], {
-                radius: p.exact ? 8 : 6,
-                weight: 2,
-                color: p.exact ? '#c62828' : '#8d6e63',
-                fillColor: p.exact ? '#e53935' : '#bcaaa4',
-                fillOpacity: 0.85
+              var key = p.place || (p.lat.toFixed(2) + ',' + p.lng.toFixed(2));
+              if (!places[key]) { places[key] = { items: [], lat: 0, lng: 0 }; order.push(key); }
+              var g = places[key];
+              g.items.push(p);
+              g.lat += p.lat; g.lng += p.lng;
+            });
+            var group = [];
+            order.forEach(function (key) {
+              var g = places[key], n = g.items.length;
+              var lat = g.lat / n, lng = g.lng / n;
+              // Area, not radius, tracks the count: doubling the listings should
+              // look twice as big, and a radius that grows linearly does not.
+              var r = Math.min(26, Math.round(7 + 5 * Math.sqrt(n - 1)));
+              var m = L.circleMarker([lat, lng], {
+                radius: r, weight: 2,
+                color: '#c62828', fillColor: '#e53935', fillOpacity: 0.85
               }).addTo(map);
-              m.bindPopup(
-                '<a href="/listings/' + p.id + '?lang=' + lang + '"><b>' + esc(p.title) + '</b></a><br>' +
-                money(p.price) + ' ' + (p.cur === 'RUB' ? '\u20bd' : '\u20b8') + (p.deal === 'rent' ? t('rent') : '') + '<br>' +
-                '<small>' + esc(p.place) + ' \u00b7 ' + (p.exact ? t('exact') : t('approx')) + '</small>'
-              );
+
+              var head = '<b>' + esc(key) + '</b>';
+              if (n > 1) head += ' \u00b7 ' + n;
+              var body = g.items.slice(0, 6).map(function (p) {
+                return '<a href="/listings/' + p.id + '?lang=' + lang + '">' + esc(p.title) + '</a> \u2014 ' +
+                  money(p.price) + ' ' + (p.cur === 'RUB' ? '\u20bd' : '\u20b8') + (p.deal === 'rent' ? t('rent') : '');
+              }).join('<br>');
+              var tail = n > 6 ? '<br><small>+' + (n - 6) + '</small>' : '';
+              // Only claim an exact position when every listing in the bubble
+              // has one; a mixed group is honestly described by the weaker of
+              // the two, not the flattering one.
+              var allExact = g.items.every(function (p) { return p.exact; });
+              var note = '<small>' + (allExact ? t('exact') : t('approx')) + '</small>';
+              m.bindPopup(head + '<br>' + body + tail + '<br>' + note);
               // Hover to read it, click to keep it open. A marker you have to
               // click before it tells you anything makes scanning a map of
               // flats slower than scrolling the list it came from.
               m.on('mouseover', function () { m.openPopup(); });
-              group.push([p.lat, p.lng]);
+              group.push([lat, lng]);
             });
             if (!group.length) return;
             fitTo = group;
