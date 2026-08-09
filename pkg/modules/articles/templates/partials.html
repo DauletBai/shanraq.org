@@ -923,8 +923,14 @@
             order.forEach(function (key) {
               var g = places[key], n = g.items.length;
               var lat = g.lat / n, lng = g.lng / n;
+              // Size and colour say the same thing twice, on purpose: the
+              // colour reads at a glance across the whole map, the size still
+              // separates two neighbouring places whose shades are close.
+              // Square root, so doubling the listings doubles the area rather
+              // than the width — a linear radius exaggerates a big city into
+              // swallowing its neighbours.
               var m = L.circleMarker([lat, lng], {
-                radius: 9, weight: 2,
+                radius: Math.min(22, Math.round(8 + 4 * Math.sqrt(n - 1))), weight: 2,
                 color: heat(n, true), fillColor: heat(n, false), fillOpacity: 0.9
               }).addTo(map);
 
