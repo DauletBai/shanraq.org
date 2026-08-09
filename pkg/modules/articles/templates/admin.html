@@ -179,7 +179,7 @@
         <h2>{{ t .Lang "admin.users_title" }} {{ template "fhelp" (t .Lang "admin.users_note") }}</h2>
         <form class="adm-usersearch" method="get" action="/admin">
           <input class="input" type="search" name="uq" value="{{ .UserSearch }}" placeholder="{{ t .Lang "admin.users_search" }}">
-          <button class="btn btn--ghost btn--sm" type="submit">{{ t .Lang "admin.users_find" }}</button>
+          <button class="btn btn--primary" type="submit">{{ t .Lang "admin.users_find" }}</button>
         </form>
         {{ if .Users }}
         <div class="table-wrap adm-scroll adm-scroll--tall">
@@ -219,7 +219,7 @@
                 <td class="adm-users__act" title="{{ t $.Lang "admin.u_activity" }}">{{ .Articles }} / {{ .Listings }} / {{ .Comments }}</td>
                 <td>
                   <details class="adm-users__edit">
-                    <summary class="btn btn--ghost btn--sm">✏️ {{ t $.Lang "admin.u_edit" }}</summary>
+                    <summary class="btn btn--ghost btn--sm">{{ t $.Lang "admin.u_edit" }}</summary>
                     <form method="post" action="/admin/users/{{ .ID }}" class="adm-users__form">
                       <input type="hidden" name="q" value="{{ $.UserSearch }}">
                       <label>{{ t $.Lang "admin.u_last" }}<input class="input input--sm" name="last_name" value="{{ .Last }}" required></label>

@@ -1330,13 +1330,34 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-scroll--chart { max-height: 270px; }
 /* Account register: a wide table whose last column opens an edit form in place,
    so correcting a name never costs a page load and never loses the search. */
-.adm-usersearch { display: flex; gap: 8px; margin: 0 0 14px; }
-.adm-usersearch .input { max-width: 340px; }
-.adm-users { font-size: 0.9rem; }
-.adm-users td { vertical-align: top; }
+
+/* Search field and its button are one control, joined in the middle and rounded
+   only on the outer edges. */
+.adm-usersearch { display: flex; margin: 0 0 16px; max-width: 480px; }
+.adm-usersearch .input {
+  flex: 1;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  border-right: 0;
+}
+.adm-usersearch .btn {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  white-space: nowrap;
+}
+
+/* .spec is a two-column key/value table: its `th` is pinned to 38% of the
+   width. Seven columns each claiming 38% is what crushed the register — the
+   activity counts wrapped one digit per line. Here the columns size to their
+   own content and the padding tightens, which is what gives them room. */
+.adm-users { font-size: 0.88rem; }
+.adm-users th, .adm-users td { width: auto; padding: 9px 8px; vertical-align: top; }
+.adm-users th:first-child, .adm-users td:first-child { padding-left: 2px; }
+.adm-users td.adm-users__act { white-space: nowrap; color: var(--muted); }
 .adm-users__now { color: var(--muted); font-size: 0.8rem; }
-.adm-users__act { white-space: nowrap; color: var(--muted); }
-.adm-inline { display: flex; align-items: center; gap: 6px; }
+/* Role: the select and its apply button share a column too narrow to hold them
+   side by side, so they stack — and stacked, they need a gap or the button
+   reads as glued to the field above it. */
+.adm-inline { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.adm-inline .select { margin: 0; min-width: 92px; }
 .adm-users__edit summary { list-style: none; cursor: pointer; display: inline-flex; }
 .adm-users__edit summary::-webkit-details-marker { display: none; }
 .adm-users__form { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; min-width: 240px; }
