@@ -21,6 +21,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 314 intra-city districts added to the location reference — see Fixed.
 
 ### Fixed
+- Address rows named the wrong things: a Saint Petersburg listing published as
+  "Область: Санкт-Петербург, Город: Петродворцовый" — an oblast that does not
+  exist and a district called a city. The fields were filled by a location
+  node's depth in the tree, which assumes every country nests the same number of
+  times; a federal city sits exactly where an oblast sits, so Moscow, Almaty,
+  Astana and Shymkent were wrong the same way. Fields now follow the node's kind,
+  the `village` column is renamed `district`, and existing listings were
+  re-derived. Nothing here was ever typed by hand — country, region, city and
+  district come only from the reference; the free-text fields are microdistrict,
+  street and house, which no reference can enumerate.
+- Seven of ten uploaded photos disappeared: a modern phone shoots 10–15 MB per
+  frame against a 10 MB limit, and all ten uploads were fired at once to share
+  one mobile uplink. Photos are now shrunk to 2000px in the browser before
+  sending (the server stored nothing larger anyway), uploaded one at a time, and
+  the limit is raised to 25 MB. Documents and PDFs are sent untouched — the
+  re-encode would damage a scan of a title deed. Failures are now reported: the
+  handler ended in an empty `catch`, so seven of them produced no message at all.
+- Listing photos could not be swiped. The gallery had dots and a six-second
+  timer with no way to stop it, so choosing a photo lasted six seconds. Swipe
+  added, and any manual choice now ends the auto-advance.
 - A price entered against a Russian address was stored in tenge. The currency
   was derived correctly, but the submission form dropped the chosen location
   whenever it bounced off validation: the hidden geo field was rendered without
