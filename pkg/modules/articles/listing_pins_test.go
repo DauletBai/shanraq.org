@@ -68,3 +68,43 @@ func TestListingPinsReachTheMapFromADistrict(t *testing.T) {
 		t.Errorf("pin currency = %q, want KZT — the popup prints the symbol from it", found.Cur)
 	}
 }
+
+// Not a single Russian settlement had coordinates — 0 of 159 — so the map could
+// never place a Russian listing however complete its address. Kazakhstan was
+// covered and Russia was not, which is the kind of gap that only shows up when
+// somebody actually posts from the other country.
+func TestEverySettlementCanAnchorAMarker(t *testing.T) {
+	app := newTestApp(t)
+	for _, country := range []string{"RU", "KZ"} {
+		var missing int
+		var examples []string
+		rows, err := app.pool.Query(context.Background(), `
+			SELECT name_ru FROM geo_nodes
+			WHERE country = $1 AND kind IN ('city', 'town', 'village') AND lat IS NULL
+			ORDER BY name_ru LIMIT 5`, country)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for rows.Next() {
+			var n string
+			if err := rows.Scan(&n); err != nil {
+				t.Fatal(err)
+			}
+			examples = append(examples, n)
+		}
+		rows.Close()
+		if err := app.pool.QueryRow(context.Background(), `
+			SELECT count(*) FROM geo_nodes
+			WHERE country = $1 AND kind IN ('city', 'town', 'village') AND lat IS NULL`,
+			country).Scan(&missing); err != nil {
+			t.Fatal(err)
+		}
+		// A handful of tiny Kazakh localities have never had coordinates; the
+		// budget keeps the check honest without pretending the gap is zero.
+		limit := map[string]int{"RU": 0, "KZ": 5}[country]
+		if missing > limit {
+			t.Errorf("%s: %d settlements cannot anchor a marker (want ≤%d), e.g. %v",
+				country, missing, limit, examples)
+		}
+	}
+}
