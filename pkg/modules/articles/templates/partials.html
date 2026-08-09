@@ -894,6 +894,23 @@
             // had filled the form. Every bubble is brand red now; only the size
             // carries meaning, and the popup still says which positions are
             // exact.
+            // Depth of red carries the count; every bubble is the same size and
+            // the same colour family. Colour used to encode something else
+            // entirely — red for an author-placed pin, grey-brown for a
+            // settlement centre — so Kazakhstan read as red and Russia as grey,
+            // which said nothing about either place, only about how carefully
+            // their sellers had filled the form.
+            //
+            // Logarithmic, saturating at a dozen: the interesting difference is
+            // between one listing and five, not between forty and fifty, and a
+            // linear ramp would leave every real city looking identical.
+            function heat(n, edge) {
+                var t = Math.min(1, Math.log(n) / Math.log(12));
+                var from = edge ? [229, 115, 115] : [255, 205, 210]; // light
+                var to = edge ? [127, 0, 0] : [183, 28, 28];         // deep
+                var c = from.map(function (v, i) { return Math.round(v + (to[i] - v) * t); });
+                return 'rgb(' + c.join(',') + ')';
+            }
             var places = {}, order = [];
             pins.forEach(function (p) {
               var key = p.place || (p.lat.toFixed(2) + ',' + p.lng.toFixed(2));
@@ -906,12 +923,9 @@
             order.forEach(function (key) {
               var g = places[key], n = g.items.length;
               var lat = g.lat / n, lng = g.lng / n;
-              // Area, not radius, tracks the count: doubling the listings should
-              // look twice as big, and a radius that grows linearly does not.
-              var r = Math.min(26, Math.round(7 + 5 * Math.sqrt(n - 1)));
               var m = L.circleMarker([lat, lng], {
-                radius: r, weight: 2,
-                color: '#c62828', fillColor: '#e53935', fillOpacity: 0.85
+                radius: 9, weight: 2,
+                color: heat(n, true), fillColor: heat(n, false), fillOpacity: 0.9
               }).addTo(map);
 
               var head = '<b>' + esc(key) + '</b>';
