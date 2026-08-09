@@ -216,6 +216,29 @@ func (m *Module) resolveListingLocation(r *http.Request, in *ListingInput, lang 
 	return countryCode
 }
 
+// placeOnMap gives a listing coordinates from the address the author already
+// typed, when they did not drop a pin themselves. The map used to stay empty
+// while every listing carried a full street address, because plotting a marker
+// required opening a collapsed panel and dragging — a step almost nobody takes,
+// and one that asks a second time for something already written down.
+//
+// Best-effort: a geocoder miss or timeout leaves Lat/Lng nil and the listing
+// still appears on the map at its settlement centre. Never fails the save.
+func (m *Module) placeOnMap(r *http.Request, in *ListingInput, lang string) {
+	if in.Lat != nil && in.Lng != nil {
+		return // the author placed it themselves; their pin wins
+	}
+	if in.Street == "" && in.Microdistrict == "" {
+		return // nothing finer than the settlement — the centroid is honest here
+	}
+	lat, lng, ok := lookupAddress(r.Context(), lang,
+		in.Country, in.Region, in.City, in.Microdistrict, in.Street, in.House)
+	if !ok {
+		return
+	}
+	in.Lat, in.Lng = &lat, &lng
+}
+
 // validateListing returns the localized message for the first problem with a
 // submission, or "" when it is good to save. Shared by create and edit so an
 // edited listing can never be saved in a state a new one would be refused in.
@@ -280,6 +303,7 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		m.listingFormFail(w, r, lang, "", in, msg)
 		return
 	}
+	m.placeOnMap(r, &in, lang)
 
 	id, err := m.listings.Create(r.Context(), authorID, in)
 	if err != nil {
@@ -333,6 +357,7 @@ func (m *Module) handleListingUpdate(w http.ResponseWriter, r *http.Request) {
 		m.listingFormFail(w, r, lang, l.ID, in, msg)
 		return
 	}
+	m.placeOnMap(r, &in, lang)
 	id, err := uuid.Parse(l.ID)
 	if err != nil {
 		http.NotFound(w, r)

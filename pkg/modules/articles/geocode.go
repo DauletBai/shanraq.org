@@ -106,6 +106,44 @@ func (m *Module) handleGeocode(w http.ResponseWriter, r *http.Request) {
 	writeJSONObj(w, map[string]any{"lat": lat, "lng": lng, "label": res[0].Name})
 }
 
+// lookupAddress resolves a written address to coordinates. Used when a listing
+// is saved: the author has already typed a street and a house number, so asking
+// them to also open the map and drag a pin is asking twice for the same fact —
+// and almost nobody does it, which is why the map sat empty while listings had
+// full addresses. Best-effort by design: a miss leaves the listing to fall back
+// on its settlement centre, never blocks the save.
+func lookupAddress(ctx context.Context, lang string, parts ...string) (float64, float64, bool) {
+	q := []string{}
+	for _, p := range parts {
+		if p = strings.TrimSpace(p); p != "" {
+			q = append(q, p)
+		}
+	}
+	query := strings.Join(q, ", ")
+	if len(query) < 8 {
+		return 0, 0, false
+	}
+	endpoint := "https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=" +
+		url.QueryEscape(lang) + "&q=" + url.QueryEscape(query)
+	body, err := geocoder.get(ctx, endpoint)
+	if err != nil {
+		return 0, 0, false
+	}
+	var res []struct {
+		Lat string `json:"lat"`
+		Lon string `json:"lon"`
+	}
+	if err := json.Unmarshal(body, &res); err != nil || len(res) == 0 {
+		return 0, 0, false
+	}
+	lat, err1 := strconv.ParseFloat(res[0].Lat, 64)
+	lng, err2 := strconv.ParseFloat(res[0].Lon, 64)
+	if err1 != nil || err2 != nil || (lat == 0 && lng == 0) {
+		return 0, 0, false
+	}
+	return lat, lng, true
+}
+
 // handleGeocodeReverse turns a pin's coordinates (?lat=&lng=) into the fine
 // address fields (street, house, microdistrict) the author can keep or edit.
 func (m *Module) handleGeocodeReverse(w http.ResponseWriter, r *http.Request) {

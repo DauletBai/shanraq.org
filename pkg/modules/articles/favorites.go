@@ -75,9 +75,14 @@ func (s *Store) ListFavorited(ctx context.Context, userID uuid.UUID) ([]*Article
 
 // ListFavorited returns the user's bookmarked published listings, newest saved first.
 func (s *ListingStore) ListFavorited(ctx context.Context, userID uuid.UUID) ([]*Listing, error) {
+	// The agent-badge columns live in listingCols, so every query that uses it
+	// must join re_agents. This one did not, so it failed on every call — the
+	// handler logged the error and rendered an empty page, which reads as "the
+	// save button does nothing" even though the bookmark was stored correctly.
 	q := fmt.Sprintf(`SELECT %s FROM favorites f
 		JOIN listings l   ON l.id = f.item_id
 		JOIN auth_users u ON u.id = l.author_id
+		LEFT JOIN re_agents ra ON ra.user_id = l.author_id AND ra.status = 'verified'
 		WHERE f.user_id = $1 AND f.item_type = 'listing' AND l.status = 'published'
 		ORDER BY f.created_at DESC`, listingCols)
 	rows, err := s.db.Query(ctx, q, userID)

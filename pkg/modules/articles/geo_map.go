@@ -119,6 +119,7 @@ type ListingPin struct {
 	Title string  `json:"title"`
 	Price int64   `json:"price"`
 	Deal  string  `json:"deal"`
+	Cur   string  `json:"cur"`
 	Place string  `json:"place"`
 	Lat   float64 `json:"lat"`
 	Lng   float64 `json:"lng"`
@@ -132,20 +133,35 @@ func (s *ListingStore) ListingPins(ctx context.Context, limit int) ([]ListingPin
 	if limit <= 0 || limit > 2000 {
 		limit = 500
 	}
+	// Only settlements carry coordinates in the reference — no district does, and
+	// no region. A listing pinned to Медеу or Петродворцовый therefore has to
+	// climb to the nearest ancestor that has any, or it silently never appears.
 	rows, err := s.db.Query(ctx, `
-		SELECT l.id, l.title, l.price, l.deal_type,
-		       COALESCE(NULLIF(l.city,''), NULLIF(l.village,''), l.region),
+		WITH RECURSIVE anc AS (
+		    SELECT l.id AS listing_id, g.parent_id, g.lat, g.lng, 0 AS up
+		      FROM listings l JOIN geo_nodes g ON g.id = l.geo_node_id
+		    UNION ALL
+		    SELECT a.listing_id, p.parent_id, p.lat, p.lng, a.up + 1
+		      FROM anc a JOIN geo_nodes p ON p.id = a.parent_id
+		     WHERE a.lat IS NULL
+		), node_pos AS (
+		    SELECT DISTINCT ON (listing_id) listing_id, lat, lng
+		      FROM anc WHERE lat IS NOT NULL
+		     ORDER BY listing_id, up
+		)
+		SELECT l.id, l.title, l.price, l.deal_type, l.currency,
+		       COALESCE(NULLIF(l.city,''), NULLIF(l.district,''), l.region),
 		       COALESCE(l.lat, g.lat, c.lat), COALESCE(l.lng, g.lng, c.lng),
 		       l.lat IS NOT NULL AND l.lng IS NOT NULL
 		  FROM listings l
-		  LEFT JOIN geo_nodes g ON g.id = l.geo_node_id
+		  LEFT JOIN node_pos g ON g.listing_id = l.id
 		  -- Older listings pre-date the location picker and carry only a city
 		  -- name. Match it back to a settlement; where the name is ambiguous
 		  -- (three villages are called Karabulak) take the largest, which is
 		  -- the one a writer almost certainly meant.
 		  LEFT JOIN LATERAL (
 		      SELECT n.lat, n.lng FROM geo_nodes n
-		       WHERE g.id IS NULL AND n.level IN (1, 2) AND n.lat IS NOT NULL
+		       WHERE g.listing_id IS NULL AND n.lat IS NOT NULL
 		         AND n.name_ru = NULLIF(l.city, '')
 		       ORDER BY n.population DESC NULLS LAST
 		       LIMIT 1
@@ -161,7 +177,7 @@ func (s *ListingStore) ListingPins(ctx context.Context, limit int) ([]ListingPin
 	out := []ListingPin{}
 	for rows.Next() {
 		var p ListingPin
-		if err := rows.Scan(&p.ID, &p.Title, &p.Price, &p.Deal, &p.Place, &p.Lat, &p.Lng, &p.Exact); err != nil {
+		if err := rows.Scan(&p.ID, &p.Title, &p.Price, &p.Deal, &p.Cur, &p.Place, &p.Lat, &p.Lng, &p.Exact); err != nil {
 			return nil, err
 		}
 		out = append(out, p)

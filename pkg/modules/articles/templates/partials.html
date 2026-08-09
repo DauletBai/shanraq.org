@@ -897,9 +897,13 @@
               }).addTo(map);
               m.bindPopup(
                 '<a href="/listings/' + p.id + '?lang=' + lang + '"><b>' + esc(p.title) + '</b></a><br>' +
-                money(p.price) + ' \u20b8' + (p.deal === 'rent' ? t('rent') : '') + '<br>' +
+                money(p.price) + ' ' + (p.cur === 'RUB' ? '\u20bd' : '\u20b8') + (p.deal === 'rent' ? t('rent') : '') + '<br>' +
                 '<small>' + esc(p.place) + ' \u00b7 ' + (p.exact ? t('exact') : t('approx')) + '</small>'
               );
+              // Hover to read it, click to keep it open. A marker you have to
+              // click before it tells you anything makes scanning a map of
+              // flats slower than scrolling the list it came from.
+              m.on('mouseover', function () { m.openPopup(); });
               group.push([p.lat, p.lng]);
             });
             if (!group.length) return;
