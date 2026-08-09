@@ -940,7 +940,7 @@ var messages = map[string]map[string]string{
 	"admin.u_email":        {"kz": "Email", "ru": "Email", "en": "Email"},
 	"admin.u_country":      {"kz": "Ел", "ru": "Страна", "en": "Country"},
 	"admin.u_role":         {"kz": "Рөл", "ru": "Роль", "en": "Role"},
-	"admin.u_registered":   {"kz": "Тіркелген", "ru": "Регистрация", "en": "Registered"},
+	"admin.u_registered":   {"kz": "Күні", "ru": "Дата", "en": "Date"},
 	"admin.u_activity":     {"kz": "Мақала / хабарландыру / пікір", "ru": "Статьи / объявления / комментарии", "en": "Articles / listings / comments"},
 	"admin.u_verified":     {"kz": "Email расталған", "ru": "Email подтверждён", "en": "Email verified"},
 	"admin.u_edit":         {"kz": "Өңдеу", "ru": "Редактировать", "en": "Edit"},

@@ -1349,8 +1349,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    activity counts wrapped one digit per line. Here the columns size to their
    own content and the padding tightens, which is what gives them room. */
 .adm-users { font-size: 0.88rem; }
-.adm-users th, .adm-users td { width: auto; padding: 9px 8px; vertical-align: top; }
-.adm-users th:first-child, .adm-users td:first-child { padding-left: 2px; }
+.adm-users th, .adm-users td { width: auto; padding: 9px 5px; vertical-align: top; }
+/* The first column sat flush against the table's edge; 6px lifts it off. */
+.adm-users th:first-child, .adm-users td:first-child { padding-left: 6px; }
 .adm-users td.adm-users__act { white-space: nowrap; color: var(--muted); }
 .adm-users__now { color: var(--muted); font-size: 0.8rem; }
 /* Role: the select and its apply button share a column too narrow to hold them

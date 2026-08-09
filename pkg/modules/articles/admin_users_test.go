@@ -10,6 +10,22 @@ import (
 	"github.com/google/uuid"
 )
 
+// between returns the markup from the first occurrence of start up to the next
+// end, or "" when the pair is not there. Lets a test assert about one table on
+// a page that holds a dozen of them.
+func between(s, start, end string) string {
+	i := strings.Index(s, start)
+	if i < 0 {
+		return ""
+	}
+	rest := s[i:]
+	j := strings.Index(rest, end)
+	if j < 0 {
+		return ""
+	}
+	return rest[:j]
+}
+
 // adminSession promotes an account and returns its session cookie and id.
 func adminSession(t *testing.T, app *testApp, email string) (*http.Cookie, uuid.UUID) {
 	t.Helper()
@@ -33,10 +49,19 @@ func TestAdminSeesEveryUser(t *testing.T) {
 		t.Fatalf("admin page = %d", w.Code)
 	}
 	body := w.Body.String()
-	for _, want := range []string{"reader@t.test", "Иванова", "Мария", "KZ"} {
+	// Country is shown as flag + ISO code, never a spelled-out country name: the
+	// column has to stay narrow, and the code is what is actually stored.
+	for _, want := range []string{"reader@t.test", "Иванова", "Мария", "🇰🇿 KZ"} {
 		if !strings.Contains(body, want) {
 			t.Errorf("the register does not show %q", want)
 		}
+	}
+	// Scoped to the register's own markup: the page elsewhere lists listings and
+	// audience panels that legitimately spell country names out.
+	if table := between(body, `class="spec spec--sticky adm-users"`, "</table>"); table == "" {
+		t.Error("the register table is not on the page")
+	} else if strings.Contains(table, "Казахстан") {
+		t.Error("the country column spelled the country out instead of showing its code")
 	}
 
 	// Search narrows it, and a non-match drops the row.
