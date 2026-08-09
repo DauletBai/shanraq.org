@@ -2,6 +2,7 @@ package articles
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -213,9 +214,13 @@ type AdminPage struct {
 	CanFinance     bool
 	CanModerate    bool
 	AssignRoles    []string
-	Notice         string
-	Email          string
-	Role           string
+	// Users is the account register: who is registered, what they have posted,
+	// and the controls to correct or remove them.
+	Users      []auth.AdminUser
+	UserSearch string
+	Notice     string
+	Email      string
+	Role       string
 	// Moderation ledger: the work queue first, then the history.
 	Appeals []ModAppeal
 	ModLog  []ModAction
@@ -280,6 +285,14 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 	page.CanModerate = canModerate(claims)
 	page.AssignRoles = assignableRoles
 	if canManageUsers(claims) {
+		// The account register. Loaded only for those allowed to act on it —
+		// names and addresses are not something the rest of the panel needs.
+		page.UserSearch = strings.TrimSpace(r.URL.Query().Get("uq"))
+		if users, err := m.users.ListUsers(r.Context(), page.UserSearch, 200); err == nil {
+			page.Users = users
+		} else {
+			m.rt.Logger.Error("list users", zap.Error(err))
+		}
 		page.Services = m.flags.All()
 		page.ServiceStates = []string{svcOn, svcInviteOnly, svcMaintenance, svcOff}
 		page.Site = m.flags.SiteFlag()
@@ -314,15 +327,37 @@ func (m *Module) handleAdminAssignRole(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin", http.StatusSeeOther)
 		return
 	}
-	n, err := m.admin.AssignRole(r.Context(), email, role)
-	if err != nil {
-		m.rt.Logger.Error("assign role", zap.Error(err))
-		http.Error(w, "internal error", http.StatusInternalServerError)
+	// Through the auth store, not a bare UPDATE on the column: a role lives in
+	// two places, auth_users.role and the auth_user_roles join, and writing only
+	// the column left a demoted account still holding its old role wherever
+	// authorization reads the join — a demotion that did not demote.
+	// Normalized first: the old query matched lower(email), and FindByEmail
+	// compares the column exactly, so skipping this would quietly stop finding
+	// anyone who typed their address with a capital letter.
+	normalized, ok := auth.NormalizeEmail(email)
+	if !ok {
+		http.Redirect(w, r, "/admin?ok=user_missing#users", http.StatusSeeOther)
 		return
 	}
 	msg := "role_set"
-	if n == 0 {
+	target, err := m.users.FindByEmail(r.Context(), normalized)
+	switch {
+	case errors.Is(err, auth.ErrNotFound):
 		msg = "user_missing"
+	case err != nil:
+		m.rt.Logger.Error("assign role: find user", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	default:
+		if err := m.users.SetRoleByID(r.Context(), target.ID, role); err != nil {
+			if errors.Is(err, auth.ErrLastAdmin) {
+				msg = "user_last_admin"
+			} else {
+				m.rt.Logger.Error("assign role", zap.Error(err))
+				http.Error(w, "internal error", http.StatusInternalServerError)
+				return
+			}
+		}
 	}
 	http.Redirect(w, r, "/admin?ok="+msg, http.StatusSeeOther)
 }

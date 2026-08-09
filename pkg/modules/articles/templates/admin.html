@@ -170,6 +170,84 @@
         </div>
         {{ end }}
       </div>
+
+      {{ if .CanManageUsers }}
+      {{/* The register itself. The two cards above count accounts by role; they
+           cannot tell you who anyone is, which is no basis for acting on a
+           complaint about a person. */}}
+      <div class="adm-panel" style="margin-top:18px">
+        <h2>{{ t .Lang "admin.users_title" }} {{ template "fhelp" (t .Lang "admin.users_note") }}</h2>
+        <form class="adm-usersearch" method="get" action="/admin">
+          <input class="input" type="search" name="uq" value="{{ .UserSearch }}" placeholder="{{ t .Lang "admin.users_search" }}">
+          <button class="btn btn--ghost btn--sm" type="submit">{{ t .Lang "admin.users_find" }}</button>
+        </form>
+        {{ if .Users }}
+        <div class="table-wrap adm-scroll adm-scroll--tall">
+          <table class="spec spec--sticky adm-users">
+            <thead>
+              <tr>
+                <th>{{ t .Lang "admin.u_name" }}</th>
+                <th>{{ t .Lang "admin.u_email" }}</th>
+                <th>{{ t .Lang "admin.u_country" }}</th>
+                <th>{{ t .Lang "admin.u_role" }}</th>
+                <th>{{ t .Lang "admin.u_registered" }}</th>
+                <th title="{{ t .Lang "admin.u_activity" }}">📝</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{ range .Users }}
+              <tr>
+                <td>
+                  <b>{{ if .FullName }}{{ .FullName }}{{ else }}<span class="dot">—</span>{{ end }}</b>
+                  {{ if not .Verified }}<span class="pill pill--draft">{{ t $.Lang "admin.u_verified" }}: —</span>{{ end }}
+                  {{ if .IsLastRoot }}<span class="pill pill--review">{{ t $.Lang "admin.u_last_admin" }}</span>{{ end }}
+                </td>
+                <td>{{ .Email }}</td>
+                <td>{{ if .Country }}{{ countryFlagEmoji .Country }} {{ .Country }}{{ else }}<span class="dot" title="{{ t $.Lang "admin.u_unknown" }}">—</span>{{ end }}</td>
+                <td>
+                  {{ $u := . }}
+                  <form method="post" action="/admin/users/{{ .ID }}/role" class="adm-inline">
+                    <input type="hidden" name="q" value="{{ $.UserSearch }}">
+                    <select class="select select--xs" name="role">
+                      {{ range $.AssignRoles }}<option value="{{ . }}"{{ if eq . $u.Role }} selected{{ end }}>{{ . }}</option>{{ end }}
+                    </select>
+                    <button class="btn btn--ghost btn--sm" type="submit" title="{{ t $.Lang "admin.assign" }}">→</button>
+                  </form>
+                </td>
+                <td>{{ fmtDate .CreatedAt }}</td>
+                <td class="adm-users__act" title="{{ t $.Lang "admin.u_activity" }}">{{ .Articles }} / {{ .Listings }} / {{ .Comments }}</td>
+                <td>
+                  <details class="adm-users__edit">
+                    <summary class="btn btn--ghost btn--sm">✏️ {{ t $.Lang "admin.u_edit" }}</summary>
+                    <form method="post" action="/admin/users/{{ .ID }}" class="adm-users__form">
+                      <input type="hidden" name="q" value="{{ $.UserSearch }}">
+                      <label>{{ t $.Lang "admin.u_last" }}<input class="input input--sm" name="last_name" value="{{ .Last }}" required></label>
+                      <label>{{ t $.Lang "admin.u_first" }}<input class="input input--sm" name="first_name" value="{{ .First }}" required></label>
+                      <label>{{ t $.Lang "admin.u_middle" }}<input class="input input--sm" name="middle_name" value="{{ .Middle }}"></label>
+                      <label class="checkline"><input type="checkbox" name="verified"{{ if .Verified }} checked{{ end }}> {{ t $.Lang "admin.u_verified" }}</label>
+                      <p class="hint">{{ t $.Lang "admin.u_email_locked" }}</p>
+                      <div class="adm-users__btns">
+                        <button class="btn btn--primary btn--sm" type="submit">{{ t $.Lang "admin.u_save" }}</button>
+                      </div>
+                    </form>
+                    {{ if not .IsLastRoot }}
+                    <form method="post" action="/admin/users/{{ .ID }}/delete" class="adm-users__form"
+                          onsubmit="return confirm('{{ t $.Lang "admin.u_delete_confirm" }}')">
+                      <input type="hidden" name="q" value="{{ $.UserSearch }}">
+                      <button class="btn btn--danger btn--sm" type="submit">{{ t $.Lang "admin.u_delete" }}</button>
+                    </form>
+                    {{ end }}
+                  </details>
+                </td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+        {{ else }}<p class="adm-hint">{{ t .Lang "admin.users_empty" }}</p>{{ end }}
+      </div>
+      {{ end }}
     </section>
 
     {{ if .CanManageUsers }}

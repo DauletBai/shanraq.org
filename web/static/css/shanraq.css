@@ -1328,6 +1328,21 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    rows — keeps the row a fixed height however much data any card collects.
    Browsers, bots and sources grow the same way, just more slowly. */
 .adm-scroll--chart { max-height: 270px; }
+/* Account register: a wide table whose last column opens an edit form in place,
+   so correcting a name never costs a page load and never loses the search. */
+.adm-usersearch { display: flex; gap: 8px; margin: 0 0 14px; }
+.adm-usersearch .input { max-width: 340px; }
+.adm-users { font-size: 0.9rem; }
+.adm-users td { vertical-align: top; }
+.adm-users__now { color: var(--muted); font-size: 0.8rem; }
+.adm-users__act { white-space: nowrap; color: var(--muted); }
+.adm-inline { display: flex; align-items: center; gap: 6px; }
+.adm-users__edit summary { list-style: none; cursor: pointer; display: inline-flex; }
+.adm-users__edit summary::-webkit-details-marker { display: none; }
+.adm-users__form { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; min-width: 240px; }
+.adm-users__form label { display: flex; flex-direction: column; gap: 3px; font-size: 0.82rem; color: var(--muted); }
+.adm-users__form .checkline { flex-direction: row; align-items: center; gap: 7px; }
+.adm-users__btns { display: flex; gap: 8px; }
 /* A capped table would otherwise scroll its own header out of sight. */
 .spec--sticky thead th {
   position: sticky; top: 0; z-index: 1;

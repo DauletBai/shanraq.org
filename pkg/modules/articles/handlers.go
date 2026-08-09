@@ -873,6 +873,17 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 		regFail(msg)
 		return
 	}
+	// Where this account registered from, resolved once from the request IP.
+	// The admin register needs a country beside each name, and this is the only
+	// moment it can be known without following anyone around: no per-visit
+	// history is kept, and an unresolvable address simply leaves it blank.
+	if m.geoip != nil {
+		if cc := m.geoip.country(clientIP(r)); cc != "" {
+			if err := m.users.SetSignupCountry(r.Context(), user.ID, cc); err != nil {
+				m.rt.Logger.Warn("signup country", zap.Error(err))
+			}
+		}
+	}
 	// Record the consent the checkbox represents (append-only proof).
 	if err := m.auth.RecordConsent(r.Context(), r, user.ID, "web"); err != nil {
 		m.rt.Logger.Error("record consent (web)", zap.String("user_id", user.ID.String()), zap.Error(err))

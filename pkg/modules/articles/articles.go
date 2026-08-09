@@ -46,6 +46,7 @@ type Module struct {
 	comments      *CommentStore
 	favs          *FavoriteStore
 	admin         *AdminStore
+	users         *auth.Store // account administration (list / edit / delete)
 	content       *ContentStore
 	tariffs       *TariffStore
 	metrics       *Metrics
@@ -100,6 +101,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.comments = NewCommentStore(rt.DB)
 	m.favs = NewFavoriteStore(rt.DB)
 	m.admin = NewAdminStore(rt.DB)
+	m.users = auth.NewStore(rt.DB)
 	m.content = NewContentStore(rt.DB)
 	// Fill the editable-pages table from the built-in defaults on first boot;
 	// idempotent and best-effort, so it never blocks startup.
@@ -277,6 +279,9 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Use(m.auth.RequireSession("/studio/login", adminRoles...))
 		r.Get("/admin", m.handleAdmin)
 		r.Post("/admin/roles", m.handleAdminAssignRole)
+		r.Post("/admin/users/{id}", m.handleAdminUserUpdate)
+		r.Post("/admin/users/{id}/role", m.handleAdminUserRole)
+		r.Post("/admin/users/{id}/delete", m.handleAdminUserDelete)
 		r.Post("/admin/services", m.handleAdminServiceFlag)
 		r.Post("/admin/ai", m.handleAdminAI)
 		r.Post("/admin/agents/{id}/decide", m.handleAdminAgentDecide)
