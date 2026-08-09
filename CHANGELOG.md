@@ -21,6 +21,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 314 intra-city districts added to the location reference — see Fixed.
 
 ### Fixed
+- Saved listings never appeared under Favourites. The query selected the
+  agent-badge columns without joining the agent table, so it failed on every
+  call; the handler logged the error and rendered an empty page, which reads as
+  "the save button does nothing" although the bookmark was stored correctly.
+- The listings map was empty. Three causes stacked: the pin query still named a
+  renamed column and answered 500; no district in the reference carries
+  coordinates, so a flat in Медеу or Петродворцовый had nothing to plot; and no
+  Russian settlement had coordinates at all — 0 of 159, against 182 of 187 in
+  Kazakhstan. Pins now climb to the nearest ancestor with a position, and the
+  159 Russian city centres were added.
+- A listing with a street and house number now geocodes on save and gets an
+  exact marker. Plotting one previously meant opening a collapsed panel and
+  dragging a pin — asking a second time for an address already typed, which is
+  why a site full of complete addresses had an empty map. Best-effort; a miss
+  falls back to the settlement centre and never blocks the save.
+- Map popups print the listing's own currency instead of a hardcoded tenge, and
+  open on hover rather than costing a click each.
 - Address rows named the wrong things: a Saint Petersburg listing published as
   "Область: Санкт-Петербург, Город: Петродворцовый" — an oblast that does not
   exist and a district called a city. The fields were filled by a location
