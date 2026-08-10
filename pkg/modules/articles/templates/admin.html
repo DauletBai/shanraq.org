@@ -549,6 +549,10 @@
     </section>
 
     {{ if .CanManageUsers }}
+    {{/* Side by side. Each of these holds a checkbox, a short radio list and a
+         couple of fields, and each was taking a full screen width to say it —
+         two long strips of mostly empty card. */}}
+    <div class="adm-cols adm-cols--settings">
     <section id="ai" class="adm-section">
       <h2 class="adm-section__h">{{ t .Lang "aic.title" }}</h2>
       <p class="adm-hint">{{ t .Lang "aic.note" }}</p>
@@ -574,7 +578,7 @@
             {{ end }}
           </fieldset>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="adm-pair">
             <label style="display:block">{{ t .Lang "aic.editor" }}
               <input class="input" name="editor_model" value="{{ .AI.EditorModel }}" maxlength="80" required>
             </label>
@@ -628,6 +632,7 @@
         </form>
       </div>
     </section>
+    </div>
     {{ end }}
 
     </div>{{/* /.adm-flow */}}

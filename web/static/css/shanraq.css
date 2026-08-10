@@ -1366,6 +1366,18 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    поэтому в треть ширины они помещаются целиком и складываются в ровные 3×3
    без пустого добора. */
 .adm-cols--3 { grid-template-columns: repeat(3, 1fr); }
+/* The AI and payments settings side by side. Each carries a switch, a short
+   radio list and a field or two; full width left both as long strips of empty
+   card. Their own bottom margin would show as a ragged gap inside a grid row,
+   so it goes — the grid's gap already spaces them. */
+.adm-cols--settings > .adm-section { margin-bottom: 0; }
+/* Two fields across a card. Was an inline style, which no media query could
+   reach — so in a half-width column the pair had no way to collapse. */
+.adm-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 1500px) { .adm-pair { grid-template-columns: 1fr; } }
+/* Below this the two settings cards stop being cards and start being columns
+   of squeezed text, so they stack. */
+@media (max-width: 1100px) { .adm-cols--settings { grid-template-columns: 1fr; } }
 @media (max-width: 1400px) { .adm-cols--3 { grid-template-columns: 1fr 1fr; } }
 
 /* Списки, которые растут вместе с данными, не должны растягивать карточку:
