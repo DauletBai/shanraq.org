@@ -468,9 +468,57 @@ var messages = map[string]map[string]string{
 	"num.thousand": {"kz": "мың", "ru": "тыс.", "en": "k"},
 	"num.million":  {"kz": "млн", "ru": "млн", "en": "M"},
 
-	"ad.badge":       {"kz": "Жарнама", "ru": "Реклама", "en": "Ad"},
-	"ad.placeholder": {"kz": "Осында сіздің жарнамаңыз болуы мүмкін", "ru": "Здесь могла бы быть ваша реклама", "en": "Your ad could be here"},
-	"ad.cta":         {"kz": "Жарнама орналастыру", "ru": "Разместить рекламу", "en": "Advertise here"},
+	"ad.badge": {"kz": "Жарнама", "ru": "Реклама", "en": "Ad"},
+	// An unsold slot is not an advertisement, and labelling it one would be the
+	// single dishonest thing on an otherwise honest placeholder.
+	"ad.free_badge": {"kz": "Орын бос", "ru": "Место свободно", "en": "Space open"},
+
+	// House slides for the sidebar slot. Every claim is verifiable: the aside is
+	// sticky and never overlays the text, no third-party ad network is loaded
+	// anywhere on the site, and /advertise carries a real rate card with a live
+	// availability calendar. No audience figures — most recorded traffic is
+	// crawlers and datacenter addresses, so any number here would flatter.
+	"house.free_title": {"kz": "Осы жерде сіздің жарнамаңыз болуы мүмкін", "ru": "Здесь может быть ваша реклама", "en": "Your ad could be here"},
+	"house.free_desc": {
+		"kz": "Бұл орын бос. Дәл қазір көріп тұрған формат — сатылатын форматтардың бірі.",
+		"ru": "Это место свободно. Формат, который вы сейчас видите, — один из тех, что можно занять.",
+		"en": "This space is unsold. The format you are looking at is one of the ones on offer.",
+	},
+	"house.free_cta": {"kz": "Шарттар мен бағалар", "ru": "Условия и цены", "en": "Terms and prices"},
+
+	"house.beside_title": {"kz": "Мәтіннің қасында, үстінде емес", "ru": "Рядом с текстом, а не поверх него", "en": "Beside the text, never over it"},
+	"house.beside_desc": {
+		"kz": "Қалқымалы терезе жоқ, оқуға кедергі жоқ. Баннер бағанда тұрады және оқу барысында экранда қалады.",
+		"ru": "Ни всплывающих окон, ни перекрытий. Баннер стоит в колонке и остаётся на экране, пока читают.",
+		"en": "No pop-ups, no overlays. The banner sits in the column and stays on screen while people read.",
+	},
+	"house.beside_cta": {"kz": "Форматтар", "ru": "Форматы", "en": "Formats"},
+
+	"house.notrack_title": {"kz": "Бақылаусыз және бөгде cookie-сіз", "ru": "Без слежки и сторонних cookie", "en": "No tracking, no third-party cookies"},
+	"house.notrack_desc": {
+		"kz": "Біз оқырман деректерін жарнама желілеріне бермейміз: сайтта бөгде жарнама скрипттері жоқ.",
+		"ru": "Мы не передаём данные читателей рекламным сетям — сторонних рекламных скриптов на сайте нет.",
+		"en": "We hand no reader data to ad networks — the site loads no third-party ad scripts at all.",
+	},
+	"house.notrack_cta": {"kz": "Құпиялылық саясаты", "ru": "Политика приватности", "en": "Privacy policy"},
+
+	"house.price_title": {"kz": "Ашық баға, делдалсыз", "ru": "Открытый прайс, без посредников", "en": "Open rate card, no middlemen"},
+	"house.price_desc": {
+		"kz": "Баға тек орын мен мерзімге байланысты. Күнтізбеде қай күндер бос екенін өзіңіз көресіз.",
+		"ru": "Цена зависит только от места и срока. В календаре сразу видно, какие даты свободны.",
+		"en": "Price depends on the slot and the period, nothing else. The calendar shows which dates are free.",
+	},
+	"house.price_cta": {"kz": "Күнтізбені ашу", "ru": "Открыть календарь", "en": "Open the calendar"},
+
+	"house.realty_title": {"kz": "Агенттіктер мен құрылысшыларға", "ru": "Агентствам и застройщикам", "en": "For agencies and developers"},
+	"house.realty_desc": {
+		"kz": "Хабарландырулар бөлімінің қасында — адамдар пәтерді дәл қазір іздеп отырған жерде.",
+		"ru": "Рядом с разделом объявлений — там, где квартиру ищут прямо сейчас.",
+		"en": "Next to the listings section — where somebody is looking for a flat right now.",
+	},
+	"house.realty_cta": {"kz": "Орын брондау", "ru": "Забронировать место", "en": "Book a slot"},
+	"ad.placeholder":   {"kz": "Осында сіздің жарнамаңыз болуы мүмкін", "ru": "Здесь могла бы быть ваша реклама", "en": "Your ad could be here"},
+	"ad.cta":           {"kz": "Жарнама орналастыру", "ru": "Разместить рекламу", "en": "Advertise here"},
 
 	"sidebar.about":          {"kz": "Біз туралы", "ru": "О нас", "en": "About"},
 	"sidebar.about_text":     {"kz": "Shanraq — қарапайым адамдар мен журналистер үш тілде еркін жазатын тәуелсіз алаң.", "ru": "Shanraq — независимая площадка, где обычные люди и журналисты свободно пишут на трёх языках.", "en": "Shanraq is an independent platform where ordinary people and journalists write freely in three languages."},

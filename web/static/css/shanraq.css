@@ -367,6 +367,43 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .adcarousel__dots button.is-active { background: #fff; }
 
 /* sidebar variant of the ad carousel */
+/* The advertising slot. 300px on purpose: the hero carousel across the page is
+   300px, and the two sit on the same top line, so any other value reads as a
+   misalignment rather than a choice. */
+.adslot { height: 300px; margin-bottom: 22px; }
+.adslot__slide {
+  padding: 26px 24px; justify-content: flex-end; gap: 10px;
+  background: linear-gradient(150deg, #b71c1c 0%, #8e1616 55%, #5f0f0f 100%);
+}
+/* House slides are the site talking about itself, so they take the quieter
+   graphite rather than the brand red a paying advertiser gets. */
+.adslot__slide--house {
+  background: linear-gradient(150deg, #2f3336 0%, #23272a 55%, #17191b 100%);
+}
+.adslot__slide:hover { text-decoration: none; }
+.adslot__title { font-family: var(--serif); font-size: var(--step-1); font-weight: 800; line-height: 1.2; }
+.adslot__desc { font-size: 0.9rem; line-height: 1.5; color: rgba(255, 255, 255, 0.82); }
+.adslot__cta { align-self: flex-start; margin-top: 4px; }
+.adslot__slide--house .adslot__cta { background: #fff; color: #1a1a1a; }
+.adslot__slide--house .adslot__cta:hover { background: rgba(255, 255, 255, 0.86); }
+.adslot__img { position: absolute; inset: 0; z-index: 0; }
+.adslot__img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.38; }
+.adslot__body { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 10px; }
+
+/* Corner ribbon. Advertising has to be recognisable as advertising, so the mark
+   is part of the frame rather than a caption that a long headline can push out
+   of sight. Rotated across the top-left corner, clipped by the carousel's own
+   overflow. */
+.adslot__ribbon {
+  position: absolute; z-index: 2; top: 18px; left: -42px; width: 160px;
+  transform: rotate(-45deg);
+  background: #fff; color: #1a1a1a;
+  font-size: 0.66rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase;
+  text-align: center; padding: 5px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+.adslot__ribbon--free { background: var(--gold); color: #fff; }
+
 .adcarousel--side { height: 280px; margin-bottom: 0; }
 .adcarousel--side .adslide { padding: 22px; }
 .adcarousel--side .adslide__text { font-size: var(--step-1); }

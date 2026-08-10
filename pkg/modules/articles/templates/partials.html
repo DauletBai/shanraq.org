@@ -169,30 +169,9 @@
 </nav>
 {{ end }}
 
-{{ define "newscarousel" }}
-{{ if .SidebarNews }}
-<div class="adcarousel adcarousel--side newscar" data-carousel>
-  <div class="carousel__track">
-  {{ range $i, $n := .SidebarNews }}
-  <a class="adslide adslide--news{{ if eq $i 0 }} is-active{{ end }}" href="/read/{{ $n.Slug }}?lang={{ $.Lang }}">
-    <span class="adslide__badge">{{ if and $n.AIAuthor (eq $n.Category "opinion") }}{{ t $.Lang "article.ai_opinion" }}{{ else }}{{ t $.Lang (printf "cat.%s" $n.Category) }}{{ if $n.AIAuthor }} · {{ t $.Lang "article.ai_opinion" }}{{ end }}{{ end }}</span>
-    <div class="adslide__body">
-      <p class="adslide__text">{{ $n.Title }}</p>
-      <span class="btn btn--primary btn--sm">{{ t $.Lang "sidebar.read" }} →</span>
-    </div>
-  </a>
-  {{ end }}
-  </div>
-  <div class="adcarousel__dots">
-    {{ range $i, $n := .SidebarNews }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}
-  </div>
-</div>
-{{ end }}
-{{ end }}
-
 {{ define "sidebar" }}
 <aside class="aside">
-  {{ template "newscarousel" . }}
+  {{ template "sidebar_ad" . }}
   <div class="aside__block">
     <h3 class="aside__title"><a href="/guide">{{ t .Lang "guide.side_title" }}</a></h3>
     <p class="aside__text">{{ t .Lang "guide.side_text" }}</p>
@@ -242,23 +221,39 @@
 </aside>
 {{ end }}
 
+{{/* sidebar_ad — the advertising slot. It replaced a second carousel that
+     repeated, word for word, the headlines already running across the top of
+     the same page: two carousels, one story, half the sidebar spent saying it
+     twice.
+
+     Paid placements fill it when any are running; otherwise the same carousel
+     runs house slides that sell the slot itself. Either way the corner ribbon
+     says which it is — "Реклама" over a paid banner, "Место свободно" over an
+     unsold one. Marking is not decoration: advertising has to be recognisable
+     as advertising, and an unsold slot labelled "advertisement" would be the
+     one lie on an otherwise honest page. */}}
 {{ define "sidebar_ad" }}
 {{ if .Ads }}
-<div class="adcarousel adcarousel--side adcarousel--ad" data-carousel>
+<div class="adcarousel adslot" data-carousel>
   <div class="carousel__track">
     {{ range $i, $ad := .Ads }}
-    <a class="adslide adslide--ad{{ if eq $i 0 }} is-active{{ end }}" href="{{ $ad.URL }}" rel="nofollow sponsored noopener">
-      <span class="ad__img"><span class="ad__label">{{ t $.Lang "ad.badge" }}</span><img src="{{ $ad.Image }}" alt="" loading="lazy"></span>
-      <span class="ad__title">{{ $ad.Title }}</span>
-      <span class="ad__price">{{ $ad.Price }}</span>
-      <span class="ad__desc">{{ $ad.Desc }}</span>
-      <span class="btn btn--primary btn--sm ad__cta">{{ t $.Lang "ad.learn_more" }} →</span>
+    <a class="adslide adslot__slide{{ if $ad.House }} adslot__slide--house{{ end }}{{ if eq $i 0 }} is-active{{ end }}"
+       href="{{ $ad.URL }}"{{ if not $ad.House }} rel="nofollow sponsored noopener" target="_blank"{{ end }}>
+      <span class="adslot__ribbon{{ if $ad.House }} adslot__ribbon--free{{ end }}">{{ if $ad.House }}{{ t $.Lang "ad.free_badge" }}{{ else }}{{ t $.Lang "ad.badge" }}{{ end }}</span>
+      {{ if and $ad.Image (not $ad.House) }}<span class="adslot__img"><img src="{{ $ad.Image }}" alt="" loading="lazy"></span>{{ end }}
+      <span class="adslot__body">
+        <span class="adslot__title">{{ $ad.Title }}</span>
+        <span class="adslot__desc">{{ $ad.Desc }}</span>
+        <span class="btn btn--primary btn--sm adslot__cta">{{ $ad.Price }} →</span>
+      </span>
     </a>
     {{ end }}
   </div>
+  {{ if gt (len .Ads) 1 }}
   <div class="adcarousel__dots">
     {{ range $i, $ad := .Ads }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ $i }}"></button>{{ end }}
   </div>
+  {{ end }}
 </div>
 {{ end }}
 {{ end }}
