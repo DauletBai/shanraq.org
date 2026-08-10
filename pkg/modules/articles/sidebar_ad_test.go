@@ -17,8 +17,11 @@ func TestHomeSidebarCarriesTheAdSlotNotACopyOfTheHero(t *testing.T) {
 
 	body := app.do(http.MethodGet, "/", nil).Body.String()
 
-	if !strings.Contains(body, `class="adcarousel adslot"`) {
-		t.Fatal("the sidebar has no advertising slot")
+	// Exactly one. A second call sat at the foot of the sidebar and had rendered
+	// nothing for as long as the slot returned nil on an unsold surface; the
+	// moment it stopped doing that, the page carried two.
+	if n := strings.Count(body, `class="adcarousel adslot"`); n != 1 {
+		t.Fatalf("the page has %d advertising slots, want exactly 1", n)
 	}
 	if strings.Contains(body, "adslide--news") {
 		t.Error("the duplicate news carousel is still in the sidebar")

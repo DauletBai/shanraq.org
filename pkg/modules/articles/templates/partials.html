@@ -184,12 +184,9 @@
        route, the subscribers table and the digest job are all left intact, so
        this is a UI decision that can be reversed by restoring the block. */}}
   {{ template "follow_card" (dict "Info" .Info "Lang" .Lang "Accent" true) }}
-  {{ template "sidebar_ad" . }}
 </aside>
 {{ end }}
 
-{{/* sidebar_ad renders the demo ad carousel from .Ads. Shared by the home /
-     listing sidebar and the article aside. */}}
 {{/* backlink: one way out of every deep page. Takes Href and Label, so the
      link names where it goes rather than relying on browser history — a user
      who arrived from a search result has no history to go back to. */}}
