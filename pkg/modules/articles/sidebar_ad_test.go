@@ -30,12 +30,10 @@ func TestHomeSidebarCarriesTheAdSlotNotACopyOfTheHero(t *testing.T) {
 	if n := strings.Count(body, "newshero__slide"); n == 0 {
 		t.Error("the hero carousel disappeared along with the duplicate")
 	}
-	// Unsold slots must not pose as sold ones.
-	if !strings.Contains(body, "Место свободно") {
-		t.Error("an unsold slot does not say so")
-	}
-	if strings.Contains(body, `adslot__ribbon">Реклама`) {
-		t.Error("an unsold slot is labelled as an advertisement")
+	// Marked as advertising. A house slide advertises the slot rather than a
+	// customer, but it is still advertising and still has to say so.
+	if !strings.Contains(body, `adslot__ribbon adslot__ribbon--house">Реклама`) {
+		t.Error("the slot carries no advertising mark")
 	}
 	// House slides point inward, so they must not be marked as paid outbound
 	// links: rel="sponsored" on our own /advertise page would be a lie to

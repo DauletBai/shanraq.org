@@ -469,10 +469,6 @@ var messages = map[string]map[string]string{
 	"num.million":  {"kz": "млн", "ru": "млн", "en": "M"},
 
 	"ad.badge": {"kz": "Жарнама", "ru": "Реклама", "en": "Ad"},
-	// An unsold slot is not an advertisement, and labelling it one would be the
-	// single dishonest thing on an otherwise honest placeholder.
-	"ad.free_badge": {"kz": "Орын бос", "ru": "Место свободно", "en": "Space open"},
-
 	// House slides for the sidebar slot. Every claim is verifiable: the aside is
 	// sticky and never overlays the text, no third-party ad network is loaded
 	// anywhere on the site, and /advertise carries a real rate card with a live

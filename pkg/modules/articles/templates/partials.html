@@ -224,11 +224,10 @@
      twice.
 
      Paid placements fill it when any are running; otherwise the same carousel
-     runs house slides that sell the slot itself. Either way the corner ribbon
-     says which it is — "Реклама" over a paid banner, "Место свободно" over an
-     unsold one. Marking is not decoration: advertising has to be recognisable
-     as advertising, and an unsold slot labelled "advertisement" would be the
-     one lie on an otherwise honest page. */}}
+     runs house slides that sell the slot itself. Both are marked "Реклама" on
+     the corner ribbon — a house slide is still advertising, it just advertises
+     the slot. Marking is not decoration: advertising has to be recognisable as
+     advertising, and one short word is the only thing that fits a ribbon. */}}
 {{ define "sidebar_ad" }}
 {{ if .Ads }}
 <div class="adcarousel adslot" data-carousel>
@@ -236,12 +235,12 @@
     {{ range $i, $ad := .Ads }}
     <a class="adslide adslot__slide{{ if $ad.House }} adslot__slide--house{{ end }}{{ if eq $i 0 }} is-active{{ end }}"
        href="{{ $ad.URL }}"{{ if not $ad.House }} rel="nofollow sponsored noopener" target="_blank"{{ end }}>
-      <span class="adslot__ribbon{{ if $ad.House }} adslot__ribbon--free{{ end }}">{{ if $ad.House }}{{ t $.Lang "ad.free_badge" }}{{ else }}{{ t $.Lang "ad.badge" }}{{ end }}</span>
+      <span class="adslot__ribbon{{ if $ad.House }} adslot__ribbon--house{{ end }}">{{ t $.Lang "ad.badge" }}</span>
       {{ if and $ad.Image (not $ad.House) }}<span class="adslot__img"><img src="{{ $ad.Image }}" alt="" loading="lazy"></span>{{ end }}
       <span class="adslot__body">
         <span class="adslot__title">{{ $ad.Title }}</span>
         <span class="adslot__desc">{{ $ad.Desc }}</span>
-        <span class="btn btn--primary btn--sm adslot__cta">{{ $ad.Price }} →</span>
+        <span class="adslot__cta">{{ $ad.Price }} →</span>
       </span>
     </a>
     {{ end }}

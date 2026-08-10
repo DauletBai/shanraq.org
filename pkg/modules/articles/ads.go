@@ -18,9 +18,9 @@ type Ad struct {
 	Desc  string
 	URL   string // click target
 	// House marks a slide that advertises the slot itself rather than a paying
-	// customer. The corner ribbon says "this space is free" instead of
-	// "advertisement", because calling an unsold slot an advertisement would be
-	// the one dishonest thing in an otherwise honest placeholder.
+	// customer. Both kinds carry the "Реклама" ribbon — a house slide is still
+	// advertising — but a house slide takes the quieter graphite panel and keeps
+	// rel="sponsored" off a link that points back into our own site.
 	House bool
 }
 
