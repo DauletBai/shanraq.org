@@ -570,9 +570,9 @@
               <input type="radio" name="provider" value="{{ .Code }}" {{ if .IsActive }}checked{{ end }}>
               <b style="min-width:160px">{{ .Label }}</b>
               {{ if .HasKey }}
-              <span style="font-size:12px;color:#0f766e;background:rgba(20,184,166,.15);padding:2px 8px;border-radius:999px">✓ {{ t $.Lang "aic.key_ok" }}</span>
+              <span class="adm-flag adm-flag--ok">✓ {{ t $.Lang "aic.key_ok" }}</span>
               {{ else }}
-              <span style="font-size:12px;color:#b91c1c;background:rgba(239,68,68,.12);padding:2px 8px;border-radius:999px">✗ {{ t $.Lang "aic.key_missing" }}</span>
+              <span class="adm-flag adm-flag--off">✗ {{ t $.Lang "aic.key_missing" }}</span>
               {{ end }}
             </label>
             {{ end }}
@@ -616,9 +616,9 @@
               <input type="radio" name="provider" value="{{ .Code }}" {{ if .IsActive }}checked{{ end }}>
               <b style="min-width:160px">{{ .Label }}</b>
               {{ if .Implemented }}
-              <span style="font-size:12px;color:#0f766e;background:rgba(20,184,166,.15);padding:2px 8px;border-radius:999px">✓ {{ t $.Lang "pay.ready" }}</span>
+              <span class="adm-flag adm-flag--ok">✓ {{ t $.Lang "pay.ready" }}</span>
               {{ else }}
-              <span style="font-size:12px;color:#b45309;background:rgba(245,158,11,.15);padding:2px 8px;border-radius:999px">🛠 {{ t $.Lang "pay.notready" }}</span>
+              <span class="adm-flag adm-flag--warn">🛠 {{ t $.Lang "pay.notready" }}</span>
               {{ end }}
             </label>
             {{ end }}

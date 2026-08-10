@@ -31,6 +31,24 @@
   --step-5: 3.4rem;
 
   --radius: 12px;
+
+  /* Status pills — "Включён", "По приглашению", "ключ не задан". Tinted rather
+     than solid, which means the text colour has to carry the contrast on its
+     own. Each rule used to hardcode its own dark green or amber, so the dark
+     theme never reached them and the badges came out as murky smudges. One set
+     of tokens, one definition per theme. */
+  --st-ok: #0a7d33;
+  --st-ok-bg: rgba(16, 161, 74, 0.08);
+  --st-ok-line: #9bd8b0;
+  --st-warn: #9a6a00;
+  --st-warn-bg: rgba(217, 164, 32, 0.10);
+  --st-warn-line: #e6c884;
+  --st-info: #3949ab;
+  --st-info-bg: rgba(57, 73, 171, 0.08);
+  --st-info-line: #b9c0e8;
+  --st-off: #a33333;
+  --st-off-bg: rgba(200, 60, 60, 0.08);
+  --st-off-line: #e3a7a7;
   --radius-sm: 8px;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   --maxw: 1180px;
@@ -54,6 +72,21 @@
   --ok: #66bb6a;
   --focus: rgba(239, 83, 80, 0.35);
   --shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 14px 34px rgba(0, 0, 0, 0.45);
+
+  /* Light enough to read on the dark panel: every one of these clears 6:1
+     against #2e2e2e, where the light-theme values sat near 2:1. */
+  --st-ok: #7ddc94;
+  --st-ok-bg: rgba(125, 220, 148, 0.14);
+  --st-ok-line: rgba(125, 220, 148, 0.42);
+  --st-warn: #f0c674;
+  --st-warn-bg: rgba(240, 198, 116, 0.14);
+  --st-warn-line: rgba(240, 198, 116, 0.42);
+  --st-info: #9db3ff;
+  --st-info-bg: rgba(157, 179, 255, 0.14);
+  --st-info-line: rgba(157, 179, 255, 0.42);
+  --st-off: #ff8a80;
+  --st-off-bg: rgba(255, 138, 128, 0.14);
+  --st-off-line: rgba(255, 138, 128, 0.42);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -73,6 +106,21 @@
     --danger: #ef5350;
     --ok: #66bb6a;
     --focus: rgba(239, 83, 80, 0.35);
+    /* Light enough to read on the dark panel: every one of these clears 6:1
+       against #2e2e2e, where the light-theme values sat near 2:1. */
+    --st-ok: #7ddc94;
+    --st-ok-bg: rgba(125, 220, 148, 0.14);
+    --st-ok-line: rgba(125, 220, 148, 0.42);
+    --st-warn: #f0c674;
+    --st-warn-bg: rgba(240, 198, 116, 0.14);
+    --st-warn-line: rgba(240, 198, 116, 0.42);
+    --st-info: #9db3ff;
+    --st-info-bg: rgba(157, 179, 255, 0.14);
+    --st-info-line: rgba(157, 179, 255, 0.42);
+    --st-off: #ff8a80;
+    --st-off-bg: rgba(255, 138, 128, 0.14);
+    --st-off-line: rgba(255, 138, 128, 0.42);
+
     --shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 14px 34px rgba(0, 0, 0, 0.45);
   }
 }
@@ -791,7 +839,7 @@ table.list td.title { white-space: normal; max-width: 380px; }
 
 .cab-card { border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; background: var(--paper); margin-bottom: 18px; }
 .cab-card h2 { margin: 0 0 6px; font-size: var(--step-1); }
-.cab-card--danger { border-color: #e5b4b1; background: rgba(220,53,53,.04); }
+.cab-card--danger { border-color: var(--st-off-line); background: var(--st-off-bg); }
 
 .prof-ava { display: flex; align-items: center; gap: 18px; margin-top: 12px; flex-wrap: wrap; }
 .prof-ava__img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
@@ -901,8 +949,10 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .finding__quote { margin: 6px 0; padding: 6px 12px; background: var(--surface-2); border-radius: var(--radius-sm); color: var(--ink-soft); font-size: var(--step--1); }
 .finding__note { margin: 4px 0 0; font-size: var(--step--1); }
 /* the two statuses an author now meets between draft and published */
-.pill--review { background: #fff3cd; color: #7a5c00; }
-.pill--needswork { background: #fde2e1; color: #b71c1c; text-decoration: none; }
+/* Were solid #fff3cd and #fde2e1 — pale blocks that stayed pale on a dark page
+   and glared out of it. Tinted like every other status pill now. */
+.pill--review { background: var(--st-warn-bg); color: var(--st-warn); }
+.pill--needswork { background: var(--st-off-bg); color: var(--st-off); text-decoration: none; }
 .pill--needswork:hover { text-decoration: underline; }
 /* Every deep page names its way out. Browser "back" is not enough: a reader
    who arrived from a search result or a shared link has no history to return
@@ -1475,17 +1525,26 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-svc__more[open] > summary { margin-bottom: 8px; }
 .adm-svc__top { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
 .adm-svc__name { display: flex; gap: 10px; align-items: center; }
+/* Small status flag beside a provider name: "ключ задан", "адаптер не
+   подключён". These were inline styles on the elements themselves, which no
+   dark-theme rule could override — the whole reason they were unreadable. */
+.adm-flag {
+  font-size: 12px; padding: 2px 8px; border-radius: 999px; white-space: nowrap;
+}
+.adm-flag--ok { color: var(--st-ok); background: var(--st-ok-bg); }
+.adm-flag--off { color: var(--st-off); background: var(--st-off-bg); }
+.adm-flag--warn { color: var(--st-warn); background: var(--st-warn-bg); }
 .adm-svc__state { font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
-.adm-svc__state--on { color: #0a7d33; border-color: #9bd8b0; background: rgba(16,161,74,0.08); }
-.adm-svc__state--maintenance { color: #9a6a00; border-color: #e6c884; background: rgba(217,164,32,0.10); }
-.adm-svc__state--invite_only { color: #3949ab; border-color: #b9c0e8; background: rgba(57,73,171,0.08); }
-.adm-svc__state--off { color: #a33; border-color: #e3a7a7; background: rgba(200,60,60,0.08); }
+.adm-svc__state--on { color: var(--st-ok); border-color: var(--st-ok-line); background: var(--st-ok-bg); }
+.adm-svc__state--maintenance { color: var(--st-warn); border-color: var(--st-warn-line); background: var(--st-warn-bg); }
+.adm-svc__state--invite_only { color: var(--st-info); border-color: var(--st-info-line); background: var(--st-info-bg); }
+.adm-svc__state--off { color: var(--st-off); border-color: var(--st-off-line); background: var(--st-off-bg); }
 .adm-svc__msgs { display: grid; grid-template-columns: 1fr; gap: 8px; }
 .adm-svc__msgs label { display: grid; grid-template-columns: 28px 1fr; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
 .adm-svc__foot { display: flex; justify-content: flex-end; }
 .input--sm, .select--sm { padding: 6px 10px; font-size: 14px; }
 .adm-site { margin-bottom: 16px; border-width: 2px; }
-.adm-site--maintenance, .adm-site--off { border-color: #e3a7a7; background: rgba(200,60,60,0.05); }
+.adm-site--maintenance, .adm-site--off { border-color: var(--st-off-line); background: var(--st-off-bg); }
 .adm-site__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .adm-site__head > div { display: flex; align-items: center; gap: 12px; }
 .adm-site__timer { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--muted); }

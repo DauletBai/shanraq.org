@@ -464,3 +464,25 @@ func TestWithUTM(t *testing.T) {
 		}
 	}
 }
+
+// Status badges must take their colour from a theme token, never from an inline
+// style. An inline colour is the one place a dark-theme rule cannot reach, and
+// the four that had one rendered at 1.8–2.9:1 against the dark panel — "По
+// приглашению" was effectively invisible. This catches the next one.
+func TestAdminStatusBadgesAreThemeable(t *testing.T) {
+	tmpl := buildTemplates(t)
+	var sb strings.Builder
+	page := AdminPage{
+		Base:           Base{Lang: "ru", Title: "T"},
+		CanManageUsers: true,
+		Services:       []ServiceFlag{{Code: "listing_promo", Status: svcInviteOnly}},
+		Site:           ServiceFlag{Code: "site", Status: svcOn},
+	}
+	if err := tmpl.ExecuteTemplate(&sb, "admin", page); err != nil {
+		t.Fatalf("render admin: %v", err)
+	}
+	out := sb.String()
+	if m := regexp.MustCompile(`style="[^"]*color:\s*#[0-9a-fA-F]{3,6}`).FindString(out); m != "" {
+		t.Errorf("a status colour is written inline, where no theme can override it: %s", m)
+	}
+}
