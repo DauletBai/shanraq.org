@@ -203,7 +203,13 @@ func TestAdminGrowingListsScroll(t *testing.T) {
 
 	// All nine guest-analytics panels must sit in ONE grid, otherwise they cannot
 	// line up as 3×3 and the layout falls back to stacked pairs.
-	g := regexp.MustCompile(`(?s)<div class="adm-cols adm-cols--3">(.*?)\n      </div>`).FindStringSubmatch(out)
+	//
+	// Anchored to the guests section on purpose. Matching the first
+	// three-column grid on the page was a locator that broke the moment another
+	// section grew a third column — it did, and this test failed for a layout
+	// change three sections away that had nothing to do with it.
+	guests := out[strings.Index(out, `<section id="guests"`):]
+	g := regexp.MustCompile(`(?s)<div class="adm-cols adm-cols--3">(.*?)\n      </div>`).FindStringSubmatch(guests)
 	if g == nil {
 		t.Fatal("three-column analytics grid not rendered")
 	}
