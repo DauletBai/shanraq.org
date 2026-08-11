@@ -1560,6 +1560,40 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-bar__fill--teal { background: var(--teal); }
 .adm-bar__val { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 48px; text-align: right; }
 
+/* Bar-inside-the-row table: the label and its bar stack in the first cell so
+   one table carries both the shape of the distribution and its exact numbers.
+   Replaces a chart followed by a table of the same figures. */
+.adm-mixed td:first-child { width: 45%; min-width: 110px; }
+.adm-mixed__label { display: block; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+.adm-mixed td:first-child .adm-bar__track { display: block; height: 7px; }
+.adm-mixed__n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Guest-views chart. A bare sparkline only says "taller than yesterday"; the
+   axes let a bar be read as a number. The bars are scaled to the rounded axis
+   top (see niceAxisMax), which is what keeps them aligned with the gridlines. */
+.spark { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 8px; margin-top: 4px; }
+.spark__y {
+  grid-column: 1; grid-row: 1;
+  display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end;
+  font-size: .7rem; color: var(--muted); font-variant-numeric: tabular-nums;
+}
+/* The labels mark the lines, so shift them half a line-height up to sit on one. */
+.spark__y span { transform: translateY(-.42em); }
+.spark__y span:last-child { transform: translateY(.05em); }
+.spark__plot { grid-column: 2; grid-row: 1; position: relative; height: 120px; }
+.spark__grid { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; }
+.spark__grid i { display: block; border-top: 1px dashed var(--line); }
+.spark__bars { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: 3px; }
+.spark__bar { flex: 1 1 0; min-width: 0; background: var(--teal); border-radius: 2px 2px 0 0; opacity: .85; min-height: 2px; }
+.spark__bar:hover { opacity: 1; }
+.spark__x {
+  grid-column: 2; grid-row: 2;
+  display: flex; gap: 3px; margin-top: 6px;
+  font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums;
+}
+/* One slot per bar, so a printed date sits under the day it belongs to. */
+.spark__x span { flex: 1 1 0; min-width: 0; text-align: center; }
+
 .adm-tbl { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
 .adm-tbl td { padding: 8px 8px; border-bottom: 1px solid var(--line); }
 .adm-tbl td:nth-child(2) { text-align: right; color: var(--muted); white-space: nowrap; }

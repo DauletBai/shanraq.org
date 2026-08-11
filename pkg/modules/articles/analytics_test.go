@@ -339,3 +339,34 @@ func TestSitemapListsEveryLanguage(t *testing.T) {
 		t.Errorf("x-default appears %d times, want %d", n, len(Langs))
 	}
 }
+
+// The Y axis has to read as a scale, not as "whatever the busiest day was".
+func TestNiceAxisMax(t *testing.T) {
+	cases := []struct{ in, want int64 }{
+		{0, 1}, {1, 1}, {7, 8}, {41, 50}, {100, 100}, {114, 200}, {291, 300}, {1_040, 2_000},
+	}
+	for _, c := range cases {
+		if got := niceAxisMax(c.in); got != c.want {
+			t.Errorf("niceAxisMax(%d) = %d, want %d", c.in, got, c.want)
+		}
+	}
+	// The rounded top is never below the real peak, or a bar would overflow.
+	for n := int64(1); n < 3000; n += 7 {
+		if got := niceAxisMax(n); got < n {
+			t.Fatalf("niceAxisMax(%d) = %d, below the peak", n, got)
+		}
+	}
+}
+
+func TestAxisTicks(t *testing.T) {
+	got := axisTicks(291)
+	want := []int64{300, 150, 0}
+	if len(got) != len(want) {
+		t.Fatalf("axisTicks = %v", got)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("axisTicks = %v, want %v", got, want)
+		}
+	}
+}

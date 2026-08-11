@@ -548,11 +548,14 @@ type GuestSimpleRow struct {
 	Pct   int
 }
 
-// GuestTrendDay is one day in the 14-day guest-views sparkline.
+// GuestTrendDay is one day in the 14-day guest-views chart.
 type GuestTrendDay struct {
 	Label string
 	N     int64
 	Pct   int
+	// Tick marks this day's label for the X axis. Fourteen dates cannot be
+	// printed side by side in a third of a row, so only every third is drawn.
+	Tick bool
 }
 
 // GuestAnalytics is the aggregate audience block shown at the bottom of the
@@ -576,7 +579,11 @@ type GuestAnalytics struct {
 	Trend     []GuestTrendDay
 	TrendFrom string // first day label in the trend (oldest)
 	TrendTo   string // last day label in the trend (today)
-	HasData   bool
+	// Y-axis ticks, top value first. Bar heights are a percentage of the first
+	// one, so a bar's height can be read back as a number instead of only being
+	// comparable to its neighbours.
+	TrendTicks []int64
+	HasData    bool
 }
 
 // guestAnalytics assembles the audience dashboard. Titles are localized here so
@@ -674,6 +681,13 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	if len(g.Trend) > 0 {
 		g.TrendFrom = g.Trend[0].Label
 		g.TrendTo = g.Trend[len(g.Trend)-1].Label
+		var peak int64
+		for _, d := range g.Trend {
+			if d.N > peak {
+				peak = d.N
+			}
+		}
+		g.TrendTicks = axisTicks(peak)
 	}
 
 	g.HasData = g.Year.Total() > 0 || len(g.Pages) > 0 || len(g.Bots) > 0
@@ -712,10 +726,42 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 		}
 		out = append(out, GuestTrendDay{Label: d.Format("02.01"), N: n})
 	}
+	// Scale to the rounded axis top, not to the tallest bar: otherwise the peak
+	// always touches the frame and the gridlines sit at meaningless values.
+	top := niceAxisMax(max)
 	for i := range out {
-		out[i].Pct = barPct(out[i].N, max)
+		out[i].Pct = barPct(out[i].N, top)
+		// Anchor the ticks to the last day so "today" is always labelled, and
+		// step back by three from there.
+		out[i].Tick = i%3 == (len(out)-1)%3
 	}
 	return out
+}
+
+// niceAxisMax rounds a maximum up to a value a person would pick for a gridline
+// — 50, 100, 300, 500 — so the axis reads as a scale instead of as whatever the
+// busiest day happened to be.
+func niceAxisMax(n int64) int64 {
+	if n <= 0 {
+		return 1
+	}
+	step := int64(1)
+	for step*10 <= n {
+		step *= 10
+	}
+	for _, m := range []int64{1, 2, 3, 4, 5, 6, 8} {
+		if n <= step*m {
+			return step * m
+		}
+	}
+	return step * 10
+}
+
+// axisTicks returns the Y-axis labels, top first: the rounded maximum, its
+// midpoint and zero.
+func axisTicks(max int64) []int64 {
+	top := niceAxisMax(max)
+	return []int64{top, top / 2, 0}
 }
 
 // simpleRows loads a 30-day aggregate for a single-count metric kind (bots or

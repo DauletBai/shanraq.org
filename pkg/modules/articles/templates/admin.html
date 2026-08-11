@@ -364,23 +364,30 @@
         <div class="adm-kpi"><span class="adm-kpi__ic">◑</span><b>{{ money .Guests.Month.Total }}</b><span>{{ t .Lang "ag.views_month" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">◯</span><b>{{ money .Guests.Year.Total }}</b><span>{{ t .Lang "ag.views_year" }}</span></div>
       </div>
-      <div class="adm-cols">
+      {{/* Three panels, not two: pages, clicks and the trend are three separate
+           questions, and the old pairing left the chart floating under the
+           clicks table with half a card of empty space beneath it.
+
+           The pages panel used to draw a bar chart and then repeat the very
+           same numbers as a table underneath — 1223 above, 1184 + 39 below.
+           One table with the bar inside the row says it once, and that is what
+           makes three panels of comparable height fit in a row at all. */}}
+      <div class="adm-cols adm-cols--3">
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.pages" }}</h2>
-          <div class="adm-chart">
-            {{ range .Guests.Pages }}
-            <div class="adm-bar">
-              <span class="adm-bar__label">{{ .Title }}</span>
-              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
-              <span class="adm-bar__val">{{ money .A.Total }}</span>
-            </div>
-            {{ end }}
-          </div>
-          <table class="spec" style="margin-top:12px">
-            <thead><tr><th></th><th>{{ t $.Lang "ag.guests" }}</th><th>{{ t $.Lang "ag.registered" }}</th></tr></thead>
+          <table class="spec adm-mixed">
+            <thead><tr><th></th><th>{{ t $.Lang "ag.total" }}</th><th>{{ t $.Lang "ag.guests" }}</th><th>{{ t $.Lang "ag.registered" }}</th></tr></thead>
             <tbody>
               {{ range .Guests.Pages }}
-              <tr><td>{{ .Title }}</td><td><b>{{ money .A.Guest }}</b></td><td>{{ money .A.Registered }}</td></tr>
+              <tr>
+                <td>
+                  <span class="adm-mixed__label">{{ .Title }}</span>
+                  <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+                </td>
+                <td class="adm-mixed__n"><b>{{ money .A.Total }}</b></td>
+                <td class="adm-mixed__n">{{ money .A.Guest }}</td>
+                <td class="adm-mixed__n">{{ money .A.Registered }}</td>
+              </tr>
               {{ end }}
             </tbody>
           </table>
@@ -397,21 +404,33 @@
             </tbody>
           </table>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
-          <h2 style="margin-top:16px">{{ t .Lang "ag.trend" }}</h2>
-          <div style="display:flex;align-items:flex-end;gap:3px;height:56px;margin-top:8px" aria-hidden="true">
-            {{ range .Guests.Trend }}
-            <span title="{{ .Label }}: {{ .N }}" style="flex:1 1 0;background:#14b8a6;border-radius:2px 2px 0 0;opacity:.85;min-height:2px;height:{{ if .Pct }}{{ .Pct }}{{ else }}2{{ end }}%"></span>
-            {{ end }}
-          </div>
+        </div>
+        <div class="adm-panel">
+          <h2>{{ t .Lang "ag.trend" }}</h2>
           {{ if .Guests.Trend }}
-          <div class="adm-hint" style="display:flex;justify-content:space-between;margin-top:4px">
-            <span>{{ .Guests.TrendFrom }}</span>
-            <span>{{ .Guests.TrendTo }}</span>
+          {{/* Scale and dates, so a bar can be read as a number rather than
+               only compared to the bar beside it. Bars are drawn against the
+               rounded axis top, which is why they line up with the grid. */}}
+          <div class="spark">
+            <div class="spark__y">
+              {{ range .Guests.TrendTicks }}<span>{{ money . }}</span>{{ end }}
+            </div>
+            <div class="spark__plot">
+              <div class="spark__grid" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div class="spark__bars">
+                {{ range .Guests.Trend }}
+                <span class="spark__bar" title="{{ .Label }}: {{ money .N }}" style="height:{{ if .Pct }}{{ .Pct }}{{ else }}1{{ end }}%"></span>
+                {{ end }}
+              </div>
+            </div>
+            <div class="spark__x">
+              {{ range .Guests.Trend }}<span>{{ if .Tick }}{{ .Label }}{{ end }}</span>{{ end }}
+            </div>
           </div>
-          {{ end }}
+          {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
       </div>
-      <div class="adm-cols adm-cols--3">
+      <div class="adm-cols adm-cols--3 adm-cols--mix">
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.sources" }} {{ template "fhelp" (t .Lang "ag.sources_note") }}</h2>
           {{/* Only this metric was reset — it was the only one ever computed

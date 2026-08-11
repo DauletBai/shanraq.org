@@ -204,12 +204,11 @@ func TestAdminGrowingListsScroll(t *testing.T) {
 	// All nine guest-analytics panels must sit in ONE grid, otherwise they cannot
 	// line up as 3×3 and the layout falls back to stacked pairs.
 	//
-	// Anchored to the guests section on purpose. Matching the first
-	// three-column grid on the page was a locator that broke the moment another
-	// section grew a third column — it did, and this test failed for a layout
-	// change three sections away that had nothing to do with it.
+	// Anchored to the mix grid by its own class, not by position. Matching the
+	// first three-column grid in the section was a locator that broke the moment
+	// a neighbour became three columns too — that has now happened twice.
 	guests := out[strings.Index(out, `<section id="guests"`):]
-	g := regexp.MustCompile(`(?s)<div class="adm-cols adm-cols--3">(.*?)\n      </div>`).FindStringSubmatch(guests)
+	g := regexp.MustCompile(`(?s)<div class="adm-cols adm-cols--3 adm-cols--mix">(.*?)\n      </div>`).FindStringSubmatch(guests)
 	if g == nil {
 		t.Fatal("three-column analytics grid not rendered")
 	}
@@ -484,5 +483,53 @@ func TestAdminStatusBadgesAreThemeable(t *testing.T) {
 	out := sb.String()
 	if m := regexp.MustCompile(`style="[^"]*color:\s*#[0-9a-fA-F]{3,6}`).FindString(out); m != "" {
 		t.Errorf("a status colour is written inline, where no theme can override it: %s", m)
+	}
+}
+
+// The pages / clicks / trend row: three panels of one subject each, the pages
+// figures said once rather than as a chart plus a table of the same numbers,
+// and a chart with a readable scale.
+func TestAdminGuestPanelsSplitInThree(t *testing.T) {
+	tmpl := buildTemplates(t)
+	rows := []GuestSimpleRow{{Title: "Статьи", N: 1223, Pct: 100}, {Title: "Главная", N: 1044, Pct: 85}}
+	pages := []GuestPageRow{
+		{Title: "Статьи", Pct: 100, A: Audience{Guest: 1184, Registered: 39}},
+		{Title: "Главная", Pct: 85, A: Audience{Guest: 984, Registered: 60}},
+	}
+	clicks := []GuestClickRow{{Title: "Кнопка входа", A: Audience{Guest: 37}}}
+	page := AdminPage{Base: Base{Lang: LangRU, Title: "T"}, Email: "a@b.c", Role: "admin",
+		AssignRoles: assignableRoles, ServiceStates: []string{svcOn},
+		Stats: AdminStats{Users: 1},
+		Guests: GuestAnalytics{HasData: true, Pages: pages, Clicks: clicks,
+			Sources: rows, Bots: rows, Devices: rows, OS: rows, Browsers: rows,
+			Countries: rows, Langs: rows, EnglishBy: rows, VPNLangs: rows,
+			Trend:      []GuestTrendDay{{Label: "29.07", N: 114, Pct: 38}, {Label: "11.08", N: 291, Pct: 97, Tick: true}},
+			TrendTicks: []int64{300, 150, 0}},
+	}
+	var sb strings.Builder
+	if err := tmpl.ExecuteTemplate(&sb, "admin", page); err != nil {
+		t.Fatal(err)
+	}
+	out := sb.String()
+	guests := out[strings.Index(out, `<section id="guests"`):]
+	g := regexp.MustCompile(`(?s)<div class="adm-cols adm-cols--3">(.*?)\n      </div>\n      <div class="adm-cols`).FindStringSubmatch(guests)
+	if g == nil {
+		t.Fatal("the pages/clicks/trend grid is not rendered")
+	}
+	if n := strings.Count(g[1], `<div class="adm-panel">`); n != 3 {
+		t.Errorf("panels in the row: %d, want 3", n)
+	}
+	// The duplicated bar chart above the table is gone: one table carries both.
+	if strings.Contains(g[1], `<div class="adm-chart">`) {
+		t.Error("the pages panel still repeats its numbers as a separate chart")
+	}
+	if !strings.Contains(g[1], `class="spec adm-mixed"`) {
+		t.Error("the pages table should carry its bars inline")
+	}
+	// Axes, or a bar can only be compared, never read.
+	for _, want := range []string{`class="spark__y"`, `class="spark__x"`, `class="spark__grid"`} {
+		if !strings.Contains(g[1], want) {
+			t.Errorf("the trend chart is missing %s", want)
+		}
 	}
 }
