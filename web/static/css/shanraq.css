@@ -1573,20 +1573,19 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-mixed__n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* Guest-views chart. A bare sparkline only says "taller than yesterday"; the
-   axes let a bar be read as a number. The bars are scaled to the rounded axis
-   top (see niceAxisMax), which is what keeps them aligned with the gridlines. */
-.spark { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 8px; margin-top: 4px; }
+   axes let a bar be read as a number. Bars are scaled to the axis top (see
+   axisTicks), which is what keeps them aligned with the gridlines. */
+.spark { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: minmax(90px, 1fr) auto; gap: 0 8px; margin-top: 4px; flex: 1 1 auto; min-height: 0; }
+/* Labels are positioned from the bottom at the same percentage as their line,
+   so the axis stays correct for any number of ticks the data produces. */
 .spark__y {
-  grid-column: 1; grid-row: 1;
-  display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end;
+  grid-column: 1; grid-row: 1; position: relative; min-width: 24px;
   font-size: .7rem; color: var(--muted); font-variant-numeric: tabular-nums;
 }
-/* The labels mark the lines, so shift them half a line-height up to sit on one. */
-.spark__y span { transform: translateY(-.42em); }
-.spark__y span:last-child { transform: translateY(.05em); }
-.spark__plot { grid-column: 2; grid-row: 1; position: relative; height: 120px; }
-.spark__grid { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; }
-.spark__grid i { display: block; border-top: 1px dashed var(--line); }
+.spark__y span { position: absolute; right: 0; transform: translateY(50%); line-height: 1; white-space: nowrap; }
+.spark__plot { grid-column: 2; grid-row: 1; position: relative; }
+.spark__grid { position: absolute; inset: 0; }
+.spark__grid i { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--line); }
 .spark__bars { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: 3px; }
 .spark__bar { flex: 1 1 0; min-width: 0; background: var(--teal); border-radius: 2px 2px 0 0; opacity: .85; min-height: 2px; }
 .spark__bar:hover { opacity: 1; }
@@ -1595,8 +1594,22 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   display: flex; gap: 3px; margin-top: 6px;
   font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums;
 }
-/* One slot per bar, so a printed date sits under the day it belongs to. */
+/* One slot per bar, so a printed date sits under the day it belongs to. The
+   last day is always labelled and its slot is one bar wide, so centring it
+   would push the date past the card's padding — pin it to the right edge. */
 .spark__x span { flex: 1 1 0; min-width: 0; text-align: center; white-space: nowrap; }
+.spark__x span:last-child { text-align: right; }
+.spark__x span:first-child { text-align: left; }
+
+/* A panel whose content should reach the bottom of its grid row instead of
+   leaving the rest of the card empty — the chart grows to fill the height the
+   tallest neighbour sets. */
+.adm-panel--fill { display: flex; flex-direction: column; }
+
+/* Wide tables inside a third-width card scroll sideways rather than spilling
+   past the card's edge. */
+.adm-xscroll { overflow-x: auto; overscroll-behavior-x: contain; }
+.adm-xscroll > table { min-width: 260px; }
 
 .adm-tbl { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
 .adm-tbl td { padding: 8px 8px; border-bottom: 1px solid var(--line); }

@@ -375,6 +375,9 @@
       <div class="adm-cols adm-cols--3">
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.pages" }}</h2>
+          {{/* Four columns in a third of a row: on a narrow screen the numbers
+               have to scroll sideways rather than run out past the card. */}}
+          <div class="adm-xscroll">
           <table class="spec adm-mixed">
             <thead><tr><th></th><th>{{ t $.Lang "ag.total" }}</th><th>{{ t $.Lang "ag.guests" }}</th><th title="{{ t $.Lang "ag.registered" }}">{{ t $.Lang "ag.registered_short" }}</th></tr></thead>
             <tbody>
@@ -391,6 +394,7 @@
               {{ end }}
             </tbody>
           </table>
+          </div>
         </div>
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.clicks" }}</h2>
@@ -405,18 +409,24 @@
           </table>
           {{ else }}<p class="adm-hint">—</p>{{ end }}
         </div>
-        <div class="adm-panel">
+        <div class="adm-panel adm-panel--fill">
           <h2>{{ t .Lang "ag.trend" }}</h2>
           {{ if .Guests.Trend }}
           {{/* Scale and dates, so a bar can be read as a number rather than
                only compared to the bar beside it. Bars are drawn against the
-               rounded axis top, which is why they line up with the grid. */}}
+               axis top, which is why they line up with the grid.
+
+               Labels and gridlines are both placed from the bottom at the same
+               percentage, so a label always sits on its own line however many
+               ticks the data asks for. */}}
           <div class="spark">
-            <div class="spark__y">
-              {{ range .Guests.TrendTicks }}<span>{{ money . }}</span>{{ end }}
+            <div class="spark__y" aria-hidden="true">
+              {{ range .Guests.TrendTicks }}<span style="bottom:{{ .Pct }}%">{{ money .N }}</span>{{ end }}
             </div>
             <div class="spark__plot">
-              <div class="spark__grid" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div class="spark__grid" aria-hidden="true">
+                {{ range .Guests.TrendTicks }}<i style="bottom:{{ .Pct }}%"></i>{{ end }}
+              </div>
               <div class="spark__bars">
                 {{ range .Guests.Trend }}
                 <span class="spark__bar" title="{{ .Label }}: {{ money .N }}" style="height:{{ if .Pct }}{{ .Pct }}{{ else }}1{{ end }}%"></span>

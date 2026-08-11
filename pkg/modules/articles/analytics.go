@@ -582,7 +582,7 @@ type GuestAnalytics struct {
 	// Y-axis ticks, top value first. Bar heights are a percentage of the first
 	// one, so a bar's height can be read back as a number instead of only being
 	// comparable to its neighbours.
-	TrendTicks []int64
+	TrendTicks []AxisTick
 	HasData    bool
 }
 
@@ -726,9 +726,12 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 		}
 		out = append(out, GuestTrendDay{Label: d.Format("02.01"), N: n})
 	}
-	// Scale to the rounded axis top, not to the tallest bar: otherwise the peak
-	// always touches the frame and the gridlines sit at meaningless values.
-	top := niceAxisMax(max)
+	// Scale to the axis top, not to the tallest bar: otherwise the peak always
+	// touches the frame and the gridlines sit at meaningless values.
+	top := max
+	if ticks := axisTicks(max); len(ticks) > 0 {
+		top = ticks[0].N
+	}
 	for i := range out {
 		out[i].Pct = barPct(out[i].N, top)
 		// Anchor the ticks to the last day so "today" is always labelled, and
@@ -738,30 +741,53 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 	return out
 }
 
-// niceAxisMax rounds a maximum up to a value a person would pick for a gridline
-// — 50, 100, 300, 500 — so the axis reads as a scale instead of as whatever the
-// busiest day happened to be.
-func niceAxisMax(n int64) int64 {
-	if n <= 0 {
-		return 1
-	}
-	step := int64(1)
-	for step*10 <= n {
-		step *= 10
-	}
-	for _, m := range []int64{1, 2, 3, 4, 5, 6, 8} {
-		if n <= step*m {
-			return step * m
-		}
-	}
-	return step * 10
+// AxisTick is one Y-axis gridline: the value printed beside it and its height
+// as a percentage of the axis, so the label and the line can be placed from the
+// bottom at exactly the same offset.
+type AxisTick struct {
+	N   int64
+	Pct int
 }
 
-// axisTicks returns the Y-axis labels, top first: the rounded maximum, its
-// midpoint and zero.
-func axisTicks(max int64) []int64 {
-	top := niceAxisMax(max)
-	return []int64{top, top / 2, 0}
+// axisIntervals is how many bands the Y axis is cut into before rounding. Five
+// is the usual compromise: enough lines to read a bar off the grid, few enough
+// that the labels do not crowd.
+const axisIntervals = 5
+
+// niceStep rounds a raw interval up to a value people count in — 1, 2, 2.5 or 5
+// times a power of ten. Dropping 2.5 makes the ladder jump straight from 2 to 5,
+// which for a peak of 1040 would put the top of the axis at 1500 and leave the
+// chart mostly empty.
+func niceStep(raw float64) int64 {
+	if raw <= 1 {
+		return 1
+	}
+	pow := int64(1)
+	for float64(pow)*10 <= raw {
+		pow *= 10
+	}
+	for _, m := range []float64{1, 2, 2.5, 5, 10} {
+		if step := float64(pow) * m; step >= raw {
+			return int64(step)
+		}
+	}
+	return pow * 10
+}
+
+// axisTicks builds the Y axis from the data: a step the readings actually need,
+// and a top that is the first multiple of that step at or above the busiest day.
+// The scale therefore moves with the traffic instead of sitting on fixed marks.
+func axisTicks(max int64) []AxisTick {
+	if max <= 0 {
+		return []AxisTick{{N: 1, Pct: 100}, {N: 0, Pct: 0}}
+	}
+	step := niceStep(float64(max) / axisIntervals)
+	top := ((max + step - 1) / step) * step
+	out := make([]AxisTick, 0, top/step+1)
+	for v := top; v >= 0; v -= step {
+		out = append(out, AxisTick{N: v, Pct: int(v * 100 / top)})
+	}
+	return out
 }
 
 // simpleRows loads a 30-day aggregate for a single-count metric kind (bots or

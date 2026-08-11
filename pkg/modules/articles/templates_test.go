@@ -504,7 +504,7 @@ func TestAdminGuestPanelsSplitInThree(t *testing.T) {
 			Sources: rows, Bots: rows, Devices: rows, OS: rows, Browsers: rows,
 			Countries: rows, Langs: rows, EnglishBy: rows, VPNLangs: rows,
 			Trend:      []GuestTrendDay{{Label: "29.07", N: 114, Pct: 38}, {Label: "11.08", N: 291, Pct: 97, Tick: true}},
-			TrendTicks: []int64{300, 150, 0}},
+			TrendTicks: []AxisTick{{N: 300, Pct: 100}, {N: 150, Pct: 50}, {N: 0, Pct: 0}}},
 	}
 	var sb strings.Builder
 	if err := tmpl.ExecuteTemplate(&sb, "admin", page); err != nil {
@@ -516,7 +516,7 @@ func TestAdminGuestPanelsSplitInThree(t *testing.T) {
 	if g == nil {
 		t.Fatal("the pages/clicks/trend grid is not rendered")
 	}
-	if n := strings.Count(g[1], `<div class="adm-panel">`); n != 3 {
+	if n := strings.Count(g[1], `<div class="adm-panel`); n != 3 {
 		t.Errorf("panels in the row: %d, want 3", n)
 	}
 	// The duplicated bar chart above the table is gone: one table carries both.
@@ -539,5 +539,19 @@ func TestAdminGuestPanelsSplitInThree(t *testing.T) {
 		if !strings.Contains(g[1], want) {
 			t.Errorf("the trend chart is missing %s", want)
 		}
+	}
+	// Four numeric columns in a third of a row must scroll, not spill.
+	if !strings.Contains(g[1], `class="adm-xscroll"`) {
+		t.Error("the pages table is not in a horizontal scroller")
+	}
+	// The chart fills the height its tallest neighbour sets instead of leaving
+	// the bottom of the card empty.
+	if !strings.Contains(g[1], `class="adm-panel adm-panel--fill"`) {
+		t.Error("the trend panel should stretch to the height of the row")
+	}
+	// Gridline and label share one offset, so a label always sits on its line.
+	if !strings.Contains(g[1], `<i style="bottom:100%"></i>`) ||
+		!strings.Contains(g[1], `<span style="bottom:100%">300</span>`) {
+		t.Error("ticks should place the label and its gridline at the same offset")
 	}
 }

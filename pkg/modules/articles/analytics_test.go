@@ -340,33 +340,66 @@ func TestSitemapListsEveryLanguage(t *testing.T) {
 	}
 }
 
-// The Y axis has to read as a scale, not as "whatever the busiest day was".
-func TestNiceAxisMax(t *testing.T) {
-	cases := []struct{ in, want int64 }{
-		{0, 1}, {1, 1}, {7, 8}, {41, 50}, {100, 100}, {114, 200}, {291, 300}, {1_040, 2_000},
+// The Y axis is built from the data: a step people count in, and a top that is
+// the first multiple of it at or above the busiest day.
+func TestAxisTicks(t *testing.T) {
+	cases := []struct {
+		peak int64
+		want []int64
+	}{
+		{414, []int64{500, 400, 300, 200, 100, 0}},
+		{291, []int64{300, 200, 100, 0}},
+		{41, []int64{50, 40, 30, 20, 10, 0}},
+		{7, []int64{8, 6, 4, 2, 0}},
+		{1040, []int64{1250, 1000, 750, 500, 250, 0}},
 	}
 	for _, c := range cases {
-		if got := niceAxisMax(c.in); got != c.want {
-			t.Errorf("niceAxisMax(%d) = %d, want %d", c.in, got, c.want)
+		got := axisTicks(c.peak)
+		var vals []int64
+		for _, tk := range got {
+			vals = append(vals, tk.N)
 		}
-	}
-	// The rounded top is never below the real peak, or a bar would overflow.
-	for n := int64(1); n < 3000; n += 7 {
-		if got := niceAxisMax(n); got < n {
-			t.Fatalf("niceAxisMax(%d) = %d, below the peak", n, got)
+		if len(vals) != len(c.want) {
+			t.Errorf("axisTicks(%d) = %v, want %v", c.peak, vals, c.want)
+			continue
+		}
+		for i := range c.want {
+			if vals[i] != c.want[i] {
+				t.Errorf("axisTicks(%d) = %v, want %v", c.peak, vals, c.want)
+				break
+			}
 		}
 	}
 }
 
-func TestAxisTicks(t *testing.T) {
-	got := axisTicks(291)
-	want := []int64{300, 150, 0}
-	if len(got) != len(want) {
-		t.Fatalf("axisTicks = %v", got)
+// Whatever the data, the axis must contain it and stay readable.
+func TestAxisTicksAlwaysCoverThePeak(t *testing.T) {
+	for peak := int64(0); peak < 5000; peak += 13 {
+		ticks := axisTicks(peak)
+		if len(ticks) < 2 {
+			t.Fatalf("peak %d produced %d ticks", peak, len(ticks))
+		}
+		if ticks[0].N < peak {
+			t.Fatalf("peak %d overflows the axis top %d", peak, ticks[0].N)
+		}
+		if ticks[len(ticks)-1].N != 0 {
+			t.Fatalf("peak %d: axis does not reach zero (%v)", peak, ticks[len(ticks)-1].N)
+		}
+		if ticks[0].Pct != 100 || ticks[len(ticks)-1].Pct != 0 {
+			t.Fatalf("peak %d: ends at %d%%..%d%%", peak, ticks[len(ticks)-1].Pct, ticks[0].Pct)
+		}
+		if len(ticks) > 9 {
+			t.Fatalf("peak %d: %d gridlines is too crowded", peak, len(ticks))
+		}
 	}
-	for i := range want {
-		if got[i] != want[i] {
-			t.Fatalf("axisTicks = %v, want %v", got, want)
+}
+
+// Headroom above the peak must stay modest, or the chart reads as half empty.
+func TestAxisTopHugsTheData(t *testing.T) {
+	for peak := int64(20); peak < 5000; peak += 7 {
+		top := axisTicks(peak)[0].N
+		if float64(top) > float64(peak)*1.5 {
+			t.Fatalf("peak %d got an axis top of %d — too much empty space", peak, top)
 		}
 	}
 }
