@@ -1463,14 +1463,18 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    поэтому она заголовок, а не сноска. */
 .adm-kpi span:last-child { font-size: 0.78rem; color: var(--ink-soft); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
 
-.adm-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+/* minmax(0, 1fr), not 1fr: a plain 1fr floors at min-content, so one long
+   unbreakable word in a header ("зарегистрированные") widened its own column
+   and squeezed the last one down to a strip. Zero-floored tracks stay equal
+   and the text wraps instead. */
+.adm-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 /* Stacked column-rows within a section must breathe: any .adm-cols following
    another gets vertical separation, so adding more rows never sticks again. */
 .adm-cols + .adm-cols { margin-top: 18px; }
 /* Гостевая аналитика: девять карточек, в каждой не больше двух колонок цифр,
    поэтому в треть ширины они помещаются целиком и складываются в ровные 3×3
    без пустого добора. */
-.adm-cols--3 { grid-template-columns: repeat(3, 1fr); }
+.adm-cols--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 /* The AI and payments settings side by side. Each carries a switch, a short
    radio list and a field or two; full width left both as long strips of empty
    card. Their own bottom margin would show as a ragged gap inside a grid row,
@@ -1592,7 +1596,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums;
 }
 /* One slot per bar, so a printed date sits under the day it belongs to. */
-.spark__x span { flex: 1 1 0; min-width: 0; text-align: center; }
+.spark__x span { flex: 1 1 0; min-width: 0; text-align: center; white-space: nowrap; }
 
 .adm-tbl { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
 .adm-tbl td { padding: 8px 8px; border-bottom: 1px solid var(--line); }

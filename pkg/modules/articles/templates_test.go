@@ -526,6 +526,14 @@ func TestAdminGuestPanelsSplitInThree(t *testing.T) {
 	if !strings.Contains(g[1], `class="spec adm-mixed"`) {
 		t.Error("the pages table should carry its bars inline")
 	}
+	// The long header set its own column's width and starved the neighbour, so
+	// the numeric columns carry a short label with the full word as a tooltip.
+	if strings.Contains(g[1], `<th>зарегистрированные</th>`) {
+		t.Error("the numeric column still uses the unbreakable full-length header")
+	}
+	if !strings.Contains(g[1], `<th title="зарегистрированные">зарег.</th>`) {
+		t.Error("the short header should keep the full word as its title")
+	}
 	// Axes, or a bar can only be compared, never read.
 	for _, want := range []string{`class="spark__y"`, `class="spark__x"`, `class="spark__grid"`} {
 		if !strings.Contains(g[1], want) {

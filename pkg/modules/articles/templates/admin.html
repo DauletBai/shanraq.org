@@ -376,7 +376,7 @@
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.pages" }}</h2>
           <table class="spec adm-mixed">
-            <thead><tr><th></th><th>{{ t $.Lang "ag.total" }}</th><th>{{ t $.Lang "ag.guests" }}</th><th>{{ t $.Lang "ag.registered" }}</th></tr></thead>
+            <thead><tr><th></th><th>{{ t $.Lang "ag.total" }}</th><th>{{ t $.Lang "ag.guests" }}</th><th title="{{ t $.Lang "ag.registered" }}">{{ t $.Lang "ag.registered_short" }}</th></tr></thead>
             <tbody>
               {{ range .Guests.Pages }}
               <tr>
@@ -396,7 +396,7 @@
           <h2>{{ t .Lang "ag.clicks" }}</h2>
           {{ if .Guests.Clicks }}
           <table class="spec">
-            <thead><tr><th></th><th>{{ t $.Lang "ag.guests" }}</th><th>{{ t $.Lang "ag.registered" }}</th></tr></thead>
+            <thead><tr><th></th><th>{{ t $.Lang "ag.guests" }}</th><th title="{{ t $.Lang "ag.registered" }}">{{ t $.Lang "ag.registered_short" }}</th></tr></thead>
             <tbody>
               {{ range .Guests.Clicks }}
               <tr><td>{{ .Title }}</td><td><b>{{ money .A.Guest }}</b></td><td>{{ money .A.Registered }}</td></tr>

@@ -755,13 +755,17 @@ var messages = map[string]map[string]string{
 	"an2.hidden":             {"kz": "жасырылған", "ru": "скрыто", "en": "hidden"},
 
 	// Guest / audience analytics (aggregate, no profiling).
-	"ag.title":             {"kz": "Аудитория және қонақтар", "ru": "Аудитория и гости", "en": "Audience & guests"},
-	"ag.note":              {"kz": "Тек жиынтық сандар: жеке келушілер тіркелмейді, профильдеу жоқ.", "ru": "Только сводные числа: отдельные посетители не отслеживаются, профилирования нет.", "en": "Aggregate counts only: no individual visitors are tracked, no profiling."},
-	"ag.views_day":         {"kz": "Бүгін", "ru": "Сегодня", "en": "Today"},
-	"ag.views_week":        {"kz": "Осы аптада", "ru": "За неделю", "en": "This week"},
-	"ag.views_month":       {"kz": "Осы айда", "ru": "За месяц", "en": "This month"},
-	"ag.views_year":        {"kz": "Осы жылы", "ru": "За год", "en": "This year"},
-	"ag.guests":            {"kz": "қонақтар", "ru": "гости", "en": "guests"},
+	"ag.title":       {"kz": "Аудитория және қонақтар", "ru": "Аудитория и гости", "en": "Audience & guests"},
+	"ag.note":        {"kz": "Тек жиынтық сандар: жеке келушілер тіркелмейді, профильдеу жоқ.", "ru": "Только сводные числа: отдельные посетители не отслеживаются, профилирования нет.", "en": "Aggregate counts only: no individual visitors are tracked, no profiling."},
+	"ag.views_day":   {"kz": "Бүгін", "ru": "Сегодня", "en": "Today"},
+	"ag.views_week":  {"kz": "Осы аптада", "ru": "За неделю", "en": "This week"},
+	"ag.views_month": {"kz": "Осы айда", "ru": "За месяц", "en": "This month"},
+	"ag.views_year":  {"kz": "Осы жылы", "ru": "За год", "en": "This year"},
+	"ag.guests":      {"kz": "қонақтар", "ru": "гости", "en": "guests"},
+	// Short header for the numeric columns. The full word is eighteen letters
+	// and has no break opportunity, so it set the width of its own column and
+	// starved the neighbouring card; the full form stays as the cell's title.
+	"ag.registered_short":  {"kz": "тірк.", "ru": "зарег.", "en": "signed in"},
 	"ag.registered":        {"kz": "тіркелгендер", "ru": "зарегистрированные", "en": "registered"},
 	"ag.total":             {"kz": "барлығы", "ru": "всего", "en": "total"},
 	"ag.pages":             {"kz": "Беттер (30 күн)", "ru": "Страницы (30 дней)", "en": "Pages (30 days)"},
