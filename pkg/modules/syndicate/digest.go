@@ -329,7 +329,10 @@ func (m *Module) renderNotice(w http.ResponseWriter, p noticePage) {
 	p.HTMLLang = htmlLang(p.Lang)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("X-Robots-Tag", "noindex")
-	if err := noticeTmpl.Execute(w, p); err != nil {
+	// ExecuteTemplate by file name, not Execute: ParseFS names each template
+	// after its file, so the root "notice" template is empty and Execute on it
+	// would render a blank page.
+	if err := noticeTmpl.ExecuteTemplate(w, "notice.html", p); err != nil {
 		m.log.Warn("notice render", zap.Error(err))
 	}
 }

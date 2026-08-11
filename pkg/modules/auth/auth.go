@@ -21,6 +21,7 @@ import (
 	"shanraq.org/pkg/shanraq"
 	"shanraq.org/pkg/transport/respond"
 	"shanraq.org/pkg/transport/validate"
+	"shanraq.org/web"
 )
 
 const (
@@ -146,7 +147,8 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 		return fmt.Errorf("auth token secret must be overridden in production")
 	}
 	m.tokens = NewTokenService(rt.Config.Auth.TokenSecret, rt.Config.Auth.TokenTTL)
-	tmpl, err := template.ParseFS(viewFiles, "templates/*.html")
+	tmpl, err := template.New("auth").Funcs(template.FuncMap{"asset": web.AssetURL}).
+		ParseFS(viewFiles, "templates/*.html")
 	if err != nil {
 		return fmt.Errorf("parse auth templates: %w", err)
 	}

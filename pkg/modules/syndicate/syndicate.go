@@ -22,6 +22,7 @@ import (
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/jobs"
 	"shanraq.org/pkg/shanraq"
+	"shanraq.org/web"
 )
 
 // Mailer sends an email. Satisfied by the notifier module.
@@ -36,7 +37,9 @@ type Mailer interface {
 //go:embed templates/*.html
 var noticeFS embed.FS
 
-var noticeTmpl = template.Must(template.ParseFS(noticeFS, "templates/notice.html"))
+var noticeTmpl = template.Must(template.New("notice").
+	Funcs(template.FuncMap{"asset": web.AssetURL}).
+	ParseFS(noticeFS, "templates/notice.html"))
 
 // Module implements the RSS route, Telegram publish job, and email digest.
 type Module struct {
