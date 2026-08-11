@@ -556,7 +556,7 @@ func (m *Module) reportEmail(l *Listing, count int, hidden bool) (subject, body 
 		}
 		b.WriteString(T(lang, "re.report_mail_fix") + "\n" + base + "/listings/" + l.ID + "/edit\n")
 	}
-	b.WriteString("\n— Shanraq")
+	b.WriteString("\n— Shanraq.org")
 	return subject, b.String()
 }
 

@@ -77,7 +77,7 @@ func (m *Module) StartPhoneVerification(ctx context.Context, userID uuid.UUID, p
 	if err := m.store.CreatePhoneCode(ctx, userID, norm, hashToken(code), time.Now().Add(phoneCodeTTL)); err != nil {
 		return err
 	}
-	text := "Shanraq: код подтверждения / verification code: " + code
+	text := "Shanraq.org: код подтверждения / verification code: " + code
 	return m.deliverSMSOrDevLog(ctx, norm, text, code)
 }
 

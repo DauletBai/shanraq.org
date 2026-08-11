@@ -9,7 +9,7 @@ type staticPageContent struct {
 // staticPages holds the About / Guide / Support / Pricing pages in every UI language.
 var staticPages = map[string]map[string]staticPageContent{
 	"about": {
-		"ru": {Title: "О нас", Body: `Shanraq — независимая площадка, где любой человек может писать и публиковать статьи на казахском, русском и английском языках. Мы верим, что доступ к информации и право высказываться — основа развития общества.
+		"ru": {Title: "О нас", Body: `Shanraq.org — независимая площадка, где любой человек может писать и публиковать статьи на казахском, русском и английском языках. Мы верим, что доступ к информации и право высказываться — основа развития общества.
 
 ## Наша миссия
 Дать голос не только профессиональным журналистам, но и обычным людям: врачам, учителям, предпринимателям, студентам. ИИ-помощник помогает превратить мысль в понятную и профессиональную статью, а автоматический перевод делает её доступной на трёх языках.
@@ -19,8 +19,8 @@ var staticPages = map[string]map[string]staticPageContent{
 - **Уважение.** Профессиональный тон вместо оскорблений.
 - **Открытость.** Прозрачные правила и устойчивость к произвольным блокировкам.
 
-Shanraq — это дом, где сходятся свободные голоса.`},
-		"kz": {Title: "Біз туралы", Body: `Shanraq — кез келген адам қазақ, орыс және ағылшын тілдерінде мақала жазып, жариялай алатын тәуелсіз алаң. Ақпаратқа қолжетімділік пен пікір білдіру құқығы қоғам дамуының негізі деп сенеміз.
+Shanraq.org — это дом, где сходятся свободные голоса.`},
+		"kz": {Title: "Біз туралы", Body: `Shanraq.org — кез келген адам қазақ, орыс және ағылшын тілдерінде мақала жазып, жариялай алатын тәуелсіз алаң. Ақпаратқа қолжетімділік пен пікір білдіру құқығы қоғам дамуының негізі деп сенеміз.
 
 ## Біздің миссиямыз
 Кәсіби журналистерге ғана емес, қарапайым адамдарға — дәрігерлерге, мұғалімдерге, кәсіпкерлерге, студенттерге — дауыс беру. ИИ көмекші ойды түсінікті әрі кәсіби мақалаға айналдыруға көмектеседі, ал автоматты аударма оны үш тілде қолжетімді етеді.
@@ -30,8 +30,8 @@ Shanraq — это дом, где сходятся свободные голос
 - **Құрмет.** Балағаттың орнына кәсіби тон.
 - **Ашықтық.** Мөлдір ережелер және еркін блоктауға төзімділік.
 
-Shanraq — еркін дауыстар тоғысатын үй.`},
-		"en": {Title: "About us", Body: `Shanraq is an independent platform where anyone can write and publish articles in Kazakh, Russian, and English. We believe that access to information and the right to speak are the foundation of a thriving society.
+Shanraq.org — еркін дауыстар тоғысатын үй.`},
+		"en": {Title: "About us", Body: `Shanraq.org is an independent platform where anyone can write and publish articles in Kazakh, Russian, and English. We believe that access to information and the right to speak are the foundation of a thriving society.
 
 ## Our mission
 To give a voice not only to professional journalists but to ordinary people — doctors, teachers, entrepreneurs, students. An AI assistant helps turn a thought into a clear, professional article, and automatic translation makes it available in three languages.
@@ -41,13 +41,13 @@ To give a voice not only to professional journalists but to ordinary people — 
 - **Respect.** A professional tone instead of insults.
 - **Openness.** Transparent rules and resilience to arbitrary blocking.
 
-Shanraq is a home where free voices meet.`},
+Shanraq.org is a home where free voices meet.`},
 	},
 	"guide": {
 		"ru": {Title: "Как публиковать статьи и размещать объявления", Body: `Здесь описано, как пользоваться платформой, что бесплатно, что платно, а также ваши права и ответственность.
 
 ## Аккаунт один, а ролей несколько
-Регистрация на Shanraq одна для всех — отдельных форм для читателей, риелторов и компаний нет. Роль это свойство вашего аккаунта, и её можно добавить в любой момент, не заводя вторую учётную запись.
+Регистрация на Shanraq.org одна для всех — отдельных форм для читателей, риелторов и компаний нет. Роль это свойство вашего аккаунта, и её можно добавить в любой момент, не заводя вторую учётную запись.
 
 - **Читатель.** Комментарии, оценки статей и избранное — доступны сразу после регистрации.
 - **Собственник жилья.** Чтобы продать или сдать своё жильё, ничего дополнительно включать не нужно: подтвердите почту и телефон и нажмите «Подать объявление». Это бесплатно.
@@ -99,7 +99,7 @@ Shanraq is a home where free voices meet.`},
 		"kz": {Title: "Мақала мен хабарландыруды қалай жариялау керек", Body: `Мұнда платформаны қалай пайдалану керектігі, не тегін, не ақылы екені, сондай-ақ сіздің құқықтарыңыз бен жауапкершілігіңіз сипатталған.
 
 ## Аккаунт біреу, ал рөл бірнешеу
-Shanraq-та тіркелу бәріне ортақ — оқырманға, риелторға және компанияға бөлек форма жоқ. Рөл — аккаунттың қасиеті, оны кез келген уақытта қосуға болады, екінші тіркелгі ашудың қажеті жоқ.
+Shanraq.org-та тіркелу бәріне ортақ — оқырманға, риелторға және компанияға бөлек форма жоқ. Рөл — аккаунттың қасиеті, оны кез келген уақытта қосуға болады, екінші тіркелгі ашудың қажеті жоқ.
 
 - **Оқырман.** Пікір, баға және таңдаулылар — тіркелген бойда қолжетімді.
 - **Тұрғын үй иесі.** Өз үйіңізді сату немесе жалға беру үшін ештеңе қосудың қажеті жоқ: поштаңыз бен телефоныңызды растап, «Хабарландыру беру» түймесін басыңыз. Бұл тегін.
@@ -151,7 +151,7 @@ Shanraq-та тіркелу бәріне ортақ — оқырманға, ри
 		"en": {Title: "How to publish articles and post listings", Body: `This page explains how to use the platform, what is free, what is paid, and your rights and responsibilities.
 
 ## One account, several roles
-Shanraq has a single registration for everyone — there are no separate forms for readers, realtors and companies. A role is an attribute of your account and can be added at any time, without creating a second login.
+Shanraq.org has a single registration for everyone — there are no separate forms for readers, realtors and companies. A role is an attribute of your account and can be added at any time, without creating a second login.
 
 - **Reader.** Comments, ratings and favourites — available the moment you register.
 - **Home owner.** Selling or renting out your own home needs nothing extra: verify your email and phone, then click "Post a listing". It is free.
@@ -532,7 +532,7 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 	"privacy": {
 		"ru": {Title: "Политика конфиденциальности", Body: `_Редакция от 25.07.2026._
 
-Политика описывает, какие данные собирает Shanraq и как мы с ними обращаемся, в соответствии с законодательством Республики Казахстан.
+Политика описывает, какие данные собирает Shanraq.org и как мы с ними обращаемся, в соответствии с законодательством Республики Казахстан.
 
 ## 1. Общие положения
 Оператором персональных данных является {{operator_block}} Обработка ведётся в соответствии с Законом РК «О персональных данных и их защите», Законом РК «Об онлайн-платформах и онлайн-рекламе» и иным применимым законодательством. Политика доступна до завершения регистрации; регистрируясь, вы даёте согласие на обработку данных на изложенных условиях.
@@ -581,7 +581,7 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 По вопросам обработки данных обращайтесь через [страницу поддержки](/support). Уполномоченный орган в сфере защиты персональных данных — Министерство цифрового развития, инноваций и аэрокосмической промышленности Республики Казахстан.`},
 		"kz": {Title: "Құпиялылық саясаты", Body: `_25.07.2026 жағдайындағы редакция._
 
-Бұл саясат Shanraq қандай деректерді жинайтынын және біз олармен қалай жұмыс істейтінімізді Қазақстан Республикасының заңнамасына сәйкес сипаттайды.
+Бұл саясат Shanraq.org қандай деректерді жинайтынын және біз олармен қалай жұмыс істейтінімізді Қазақстан Республикасының заңнамасына сәйкес сипаттайды.
 
 ## 1. Жалпы ережелер
 Дербес деректердің операторы — {{operator_block}} Өңдеу ҚР «Дербес деректер және оларды қорғау туралы» Заңына, ҚР «Онлайн-платформалар және онлайн-жарнама туралы» Заңына және өзге де қолданылатын заңнамаға сәйкес жүргізіледі. Саясат тіркелу аяқталғанға дейін қолжетімді; тіркеле отырып, сіз деректерді осы шарттарда өңдеуге келісім бересіз.
@@ -630,7 +630,7 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 Деректерді өңдеу мәселелері бойынша [қолдау көрсету беті](/support) арқылы хабарласыңыз. Дербес деректерді қорғау саласындағы уәкілетті орган — Қазақстан Республикасының Цифрлық даму, инновациялар және аэроғарыш өнеркәсібі министрлігі.`},
 		"en": {Title: "Privacy Policy", Body: `_Revision of 25.07.2026._
 
-This Policy describes what data Shanraq collects and how we handle it, in accordance with the legislation of the Republic of Kazakhstan.
+This Policy describes what data Shanraq.org collects and how we handle it, in accordance with the legislation of the Republic of Kazakhstan.
 
 ## 1. General Provisions
 The operator of personal data is {{operator_block}} Processing is carried out in accordance with the Law of the Republic of Kazakhstan "On Personal Data and Its Protection", the Law of the Republic of Kazakhstan "On Online Platforms and Online Advertising", and other applicable legislation. The Policy is available before registration is completed; by registering, you consent to the processing of data on the conditions set out herein.
@@ -681,10 +681,10 @@ For questions about data processing, contact us through the [support page](/supp
 	"terms": {
 		"ru": {Title: "Пользовательское соглашение", Body: `_Редакция от 25.07.2026._
 
-Используя платформу Shanraq, вы принимаете настоящее Пользовательское соглашение (далее — «Соглашение») и [Политику конфиденциальности](/privacy).
+Используя платформу Shanraq.org, вы принимаете настоящее Пользовательское соглашение (далее — «Соглашение») и [Политику конфиденциальности](/privacy).
 
 ## 1. Общие положения
-Соглашение регулирует отношения между владельцем платформы Shanraq (далее — «Платформа», «мы») и любым пользователем (далее — «Пользователь», «вы»). Оператор Платформы — {{operator_block}} Платформа — интернет-ресурс, на котором пользователи публикуют статьи и размещают объявления о недвижимости на казахском, русском и английском языках. Соглашение и краткое изложение основных условий доступны на трёх языках; при расхождении толкования приоритет имеет версия на казахском языке.
+Соглашение регулирует отношения между владельцем платформы Shanraq.org (далее — «Платформа», «мы») и любым пользователем (далее — «Пользователь», «вы»). Оператор Платформы — {{operator_block}} Платформа — интернет-ресурс, на котором пользователи публикуют статьи и размещают объявления о недвижимости на казахском, русском и английском языках. Соглашение и краткое изложение основных условий доступны на трёх языках; при расхождении толкования приоритет имеет версия на казахском языке.
 
 ## 2. Термины
 - **Пользователь** — физическое лицо, использующее Платформу.
@@ -733,10 +733,10 @@ For questions about data processing, contact us through the [support page](/supp
 Мы можем обновлять Соглашение; существенные изменения публикуются на Платформе, при необходимости запрашивается повторное согласие. Продолжение использования после изменений означает их принятие.`},
 		"kz": {Title: "Пайдаланушы келісімі", Body: `_25.07.2026 жағдайындағы редакция._
 
-Shanraq платформасын пайдалана отырып, сіз осы Пайдаланушы келісімін (бұдан әрі — «Келісім») және [Құпиялылық саясатын](/privacy) қабылдайсыз.
+Shanraq.org платформасын пайдалана отырып, сіз осы Пайдаланушы келісімін (бұдан әрі — «Келісім») және [Құпиялылық саясатын](/privacy) қабылдайсыз.
 
 ## 1. Жалпы ережелер
-Келісім Shanraq платформасының иесі (бұдан әрі — «Платформа», «біз») мен кез келген пайдаланушы (бұдан әрі — «Пайдаланушы», «сіз») арасындағы қатынастарды реттейді. Платформаның операторы — {{operator_block}} Платформа — пайдаланушылар қазақ, орыс және ағылшын тілдерінде мақалалар жариялап, жылжымайтын мүлік туралы хабарландырулар орналастыратын интернет-ресурс. Келісім мен негізгі шарттардың қысқаша мазмұны үш тілде қолжетімді; түсіндіру кезінде алшақтық туындаса, қазақ тіліндегі нұсқаға басымдық беріледі.
+Келісім Shanraq.org платформасының иесі (бұдан әрі — «Платформа», «біз») мен кез келген пайдаланушы (бұдан әрі — «Пайдаланушы», «сіз») арасындағы қатынастарды реттейді. Платформаның операторы — {{operator_block}} Платформа — пайдаланушылар қазақ, орыс және ағылшын тілдерінде мақалалар жариялап, жылжымайтын мүлік туралы хабарландырулар орналастыратын интернет-ресурс. Келісім мен негізгі шарттардың қысқаша мазмұны үш тілде қолжетімді; түсіндіру кезінде алшақтық туындаса, қазақ тіліндегі нұсқаға басымдық беріледі.
 
 ## 2. Терминдер
 - **Пайдаланушы** — Платформаны пайдаланатын жеке тұлға.
@@ -785,10 +785,10 @@ Shanraq платформасын пайдалана отырып, сіз осы 
 Біз Келісімді жаңарта аламыз; елеулі өзгерістер Платформада жарияланады, қажет болса қайта келісім сұралады. Өзгерістерден кейін пайдалануды жалғастыру оларды қабылдауды білдіреді.`},
 		"en": {Title: "Terms of Use", Body: `_Revision of 25.07.2026._
 
-By using the Shanraq platform, you accept this Terms of Use (hereinafter the "Terms") and the [Privacy Policy](/privacy).
+By using the Shanraq.org platform, you accept this Terms of Use (hereinafter the "Terms") and the [Privacy Policy](/privacy).
 
 ## 1. General Provisions
-The Terms govern the relationship between the owner of the Shanraq platform (hereinafter the "Platform", "we") and any user (hereinafter the "User", "you"). The operator of the Platform is {{operator_block}} The Platform is an online resource on which users publish articles and post real estate listings in Kazakh, Russian, and English. The Terms and a summary of the key conditions are available in all three languages; in the event of a discrepancy in interpretation, the Kazakh-language version prevails.
+The Terms govern the relationship between the owner of the Shanraq.org platform (hereinafter the "Platform", "we") and any user (hereinafter the "User", "you"). The operator of the Platform is {{operator_block}} The Platform is an online resource on which users publish articles and post real estate listings in Kazakh, Russian, and English. The Terms and a summary of the key conditions are available in all three languages; in the event of a discrepancy in interpretation, the Kazakh-language version prevails.
 
 ## 2. Definitions
 - **User** — a natural person who uses the Platform.

@@ -191,7 +191,7 @@ func (m *Module) CheckPassword(ctx context.Context, userID uuid.UUID, password s
 
 func (m *Module) sendVerificationEmail(ctx context.Context, to, link string) error {
 	subject := "Confirm your email"
-	body := fmt.Sprintf("Welcome to Shanraq. Please confirm your email by opening the link below:\n\n%s\n\nIf you did not create an account, you can ignore this message.", link)
+	body := fmt.Sprintf("Welcome to Shanraq.org. Please confirm your email by opening the link below:\n\n%s\n\nIf you did not create an account, you can ignore this message.", link)
 	return m.deliverOrDevLink(ctx, to, subject, body, link, "email verification")
 }
 

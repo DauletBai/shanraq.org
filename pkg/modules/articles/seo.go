@@ -228,7 +228,7 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 		"image":            page.OGImage,
 		"mainEntityOfPage": canonical,
 		"publisher": map[string]any{
-			"@type": "Organization", "name": "Shanraq",
+			"@type": "Organization", "name": "Shanraq.org",
 			"logo": map[string]any{"@type": "ImageObject", "url": page.SiteURL + "/static/brand/shanraq.svg"},
 		},
 	}

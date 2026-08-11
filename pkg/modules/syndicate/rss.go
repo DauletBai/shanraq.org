@@ -77,7 +77,7 @@ func (m *Module) renderRSS(lang string, entries []feedEntry) ([]byte, error) {
 	feed := rssFeed{
 		Version: "2.0",
 		Channel: rssChannel{
-			Title:       "Shanraq — үй, мұнда еркін дауыстар тоғысады",
+			Title:       "Shanraq.org — үй, мұнда еркін дауыстар тоғысады",
 			Link:        m.baseURL + "/read?lang=" + lang,
 			Description: "Аналитика, ой-пікірлер және оқиғалар үш тілде. Аналитика, мнения и истории на трёх языках.",
 			Language:    lang,

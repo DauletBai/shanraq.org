@@ -30,11 +30,11 @@ func operatorName(op config.OperatorConfig, lang string) string {
 	}
 	switch lang {
 	case LangKZ:
-		return "Shanraq платформасының иесі"
+		return "Shanraq.org платформасының иесі"
 	case LangEN:
-		return "the owner of the Shanraq platform"
+		return "the owner of the Shanraq.org platform"
 	default:
-		return "владелец платформы Shanraq"
+		return "владелец платформы Shanraq.org"
 	}
 }
 

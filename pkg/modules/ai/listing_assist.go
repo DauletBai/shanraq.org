@@ -30,7 +30,7 @@ func (m *Module) DescribeListing(ctx context.Context, lang, facts string) (strin
 }
 
 func describeListingSystem(lang string) string {
-	return `You help a seller write the description for a real-estate listing on Shanraq, an independent Kazakhstani classifieds platform.
+	return `You help a seller write the description for a real-estate listing on Shanraq.org, an independent Kazakhstani classifieds platform.
 
 You are given the property's structured facts (deal type, property type, area, rooms, location, price, amenities). Write a clear, honest, easy-to-read description a buyer would trust.
 
