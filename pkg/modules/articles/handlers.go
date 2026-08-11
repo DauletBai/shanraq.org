@@ -43,6 +43,12 @@ type Base struct {
 	// Info feeds the top info bar (date, weather, rates, social links).
 	Info InfoBarData
 
+	// Newsletter form feedback, set from ?subscribed= after the POST redirect.
+	// It lives on Base rather than one page's context because the form sits in
+	// the follow card, which the home sidebar and every article aside share.
+	SubMsg string
+	SubBad bool // the message is a failure, not a confirmation
+
 	// SEO fields (populated by base(); pages may override).
 	SiteURL  string // absolute origin, e.g. https://shanraq.org
 	Path     string // request path, no query (used for nav active state)
@@ -101,9 +107,12 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 			avatar = m.auth.Avatar(r.Context(), id)
 		}
 	}
+	subMsg, subBad := subscribeFeedback(r, lang)
 	return Base{
 		Title:     title,
 		Lang:      lang,
+		SubMsg:    subMsg,
+		SubBad:    subBad,
 		Authed:    authed,
 		IsStaff:   authed && claims.HasAnyRole(adminRoles...),
 		CanAuthor: canAuthorAsStaff(claims),
@@ -120,6 +129,22 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Ads:       m.sidebarAds(r, lang),
 		Svc:       m.serviceViews(r, lang),
 	}
+}
+
+// subscribeFeedback turns the ?subscribed= marker left by the syndicate module's
+// redirect into a line under the newsletter form. "pending" is the success path:
+// the address is stored but silent until the reader opens the confirmation link,
+// so the copy has to send them to their inbox rather than say "subscribed".
+func subscribeFeedback(r *http.Request, lang string) (string, bool) {
+	switch r.URL.Query().Get("subscribed") {
+	case "pending":
+		return T(lang, "sidebar.subscribe_pending"), false
+	case "bad":
+		return T(lang, "sidebar.subscribe_bad"), true
+	case "err":
+		return T(lang, "sidebar.subscribe_err"), true
+	}
+	return "", false
 }
 
 // serviceViews snapshots every known service's state for THIS viewer, localized.

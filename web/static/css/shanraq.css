@@ -594,13 +594,22 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .aside__block--subscribe .aside__title { color: #fff; }
 .aside__block--subscribe .aside__text { color: rgba(255, 255, 255, 0.9); }
 .aside__ok { font-weight: 600; }
-.subgroup { display: flex; align-items: stretch; border-radius: 999px; overflow: hidden; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
-.subgroup:focus-within { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45); }
-.subgroup__input { flex: 1 1 auto; min-width: 0; padding: 10px 16px; border: none; background: transparent; color: #1a1a1a; font: inherit; font-size: var(--step--1); }
-.subgroup__input::placeholder { color: #8a8a8a; }
+/* Email pill: one field and its button fused into a single control, so the ask
+   reads as one thing and costs one row of a narrow sidebar. Themed by default;
+   the white treatment below is only for the red accent card. */
+.subgroup { display: flex; align-items: stretch; border-radius: 999px; overflow: hidden; background: var(--surface-2); border: 1px solid var(--line); }
+.subgroup:focus-within { border-color: var(--gold-strong); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold-strong) 25%, transparent); }
+.subgroup__input { flex: 1 1 auto; min-width: 0; padding: 9px 15px; border: none; background: transparent; color: var(--ink); font: inherit; font-size: var(--step--1); }
+.subgroup__input::placeholder { color: var(--muted); }
 .subgroup__input:focus { outline: none; }
-.subgroup__btn { flex: none; padding: 10px 18px; border: none; background: #e50000; color: #fff; font: inherit; font-weight: 700; font-size: var(--step--1); cursor: pointer; white-space: nowrap; transition: background 0.15s ease; }
+.subgroup__btn { flex: none; padding: 9px 17px; border: none; background: #e50000; color: #fff; font: inherit; font-weight: 700; font-size: var(--step--1); cursor: pointer; white-space: nowrap; transition: background 0.15s ease; }
 .subgroup__btn:hover { background: #c00000; }
+/* On the gradient the pill has to supply its own ground: a translucent field
+   would take the red through the text and drop it under the contrast floor. */
+.follow--accent .subgroup { background: #fff; border-color: transparent; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+.follow--accent .subgroup:focus-within { border-color: transparent; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55); }
+.follow--accent .subgroup__input { color: #1a1a1a; }
+.follow--accent .subgroup__input::placeholder { color: #8a8a8a; }
 .aside__list { list-style: none; margin: 0; padding: 0; }
 .aside__list li { border-top: 1px solid var(--line); padding: 12px 0; }
 .aside__list li:first-child { border-top: none; padding-top: 0; }
@@ -779,6 +788,52 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .auth-wrap p.sub { color: var(--muted); margin: 0 0 22px; font-size: var(--step--1); }
 .alert { padding: 11px 14px; border-radius: var(--radius-sm); font-size: var(--step--1); margin-bottom: 16px; }
 .alert--error { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
+
+/* ---------- newsletter landing pages ---------- */
+/* Confirm-your-subscription and unsubscribe. These render without the site
+   header, so the mark carries the identity: a reader arriving from an inbox
+   days later, often on a phone, has to recognise whose list this is before
+   reading a word. Centred, because there is nothing else on the page to align
+   to — and wider than the auth box, since these pages explain rather than
+   collect. */
+.notice {
+  max-width: 520px;
+  margin: 56px auto;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 34px 32px 30px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.notice__brand { display: inline-block; line-height: 0; margin-bottom: 18px; }
+.notice__brand img { width: 76px; height: 76px; }
+.notice__title { font-size: var(--step-2); margin: 0 0 10px; line-height: 1.25; }
+.notice__lead { color: var(--ink-soft); margin: 0 0 4px; font-size: var(--step--1); line-height: 1.5; }
+.notice__addr { font-family: var(--mono); font-size: var(--step--1); color: var(--ink); margin: 12px 0 0; word-break: break-all; }
+/* The points explain what the reader keeps or loses. Left-aligned inside the
+   centred card: centred body text is where a bulleted list stops being
+   scannable. */
+.notice__points {
+  list-style: none; margin: 22px 0 0; padding: 0;
+  text-align: left; display: grid; gap: 9px;
+}
+.notice__points li {
+  position: relative; padding-left: 20px;
+  font-size: var(--step--1); line-height: 1.5; color: var(--ink-soft);
+}
+.notice__points li::before {
+  content: ""; position: absolute; left: 4px; top: .62em;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--gold-strong);
+}
+.notice__actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 26px; }
+.notice__actions form { display: contents; }
+.notice__actions .btn { flex: 1 1 auto; min-width: 150px; justify-content: center; }
+.notice__foot { margin: 20px 0 0; font-size: .8rem; line-height: 1.45; color: var(--muted); }
+@media (max-width: 560px) {
+  .notice { margin: 28px auto; padding: 26px 20px 24px; }
+  .notice__actions .btn { flex: 1 1 100%; }
+}
 
 /* ---------- footer ---------- */
 /* Footer: black in both themes, light text tuned for the dark ground. */
@@ -1828,6 +1883,20 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .follow--accent .follow__text { color: rgba(255, 255, 255, 0.92); }
 .follow--accent .follow__icons .soc { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.38); color: #fff; }
 .follow--accent .follow__icons .soc:hover { background: #fff; border-color: #fff; color: #aa0000; }
+/* Newsletter row inside the follow card. The hairline above it separates the
+   one-click channels from the one that asks the reader to type, without making
+   this a second card: the rule is the divider, the gap does the rest. */
+.follow__mail { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.follow__icons + .follow__mail { margin-top: 14px; }
+.follow__mailtext { font-size: .82rem; line-height: 1.4; color: var(--ink-soft); margin: 0 0 10px; }
+.follow__note { font-size: .82rem; line-height: 1.4; margin: 0 0 10px; color: var(--teal); font-weight: 600; }
+.follow__note--bad { color: var(--danger); }
+.follow--accent .follow__mail { border-top-color: rgba(255, 255, 255, 0.3); }
+.follow--accent .follow__mailtext { color: rgba(255, 255, 255, 0.92); }
+/* On the red card the status line has no accessible colour of its own — white
+   on that gradient is the only thing that stays readable in both themes. */
+.follow--accent .follow__note,
+.follow--accent .follow__note--bad { color: #fff; }
 .prose h2 { scroll-margin-top: 90px; }
 /* An article with no headings has no aside — let it use the full column width. */
 .layout--solo { grid-template-columns: minmax(0, 1fr); }

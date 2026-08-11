@@ -10,6 +10,8 @@ package syndicate
 
 import (
 	"context"
+	"embed"
+	"html/template"
 	"net/http"
 	"strings"
 	"time"
@@ -26,6 +28,15 @@ import (
 type Mailer interface {
 	Send(ctx context.Context, to, subject, body string) error
 }
+
+// The subscription landing pages live here rather than in the articles module
+// so the dependency graph stays acyclic. Parsed once at startup: a template
+// error is a build-time mistake, not a runtime one.
+//
+//go:embed templates/*.html
+var noticeFS embed.FS
+
+var noticeTmpl = template.Must(template.ParseFS(noticeFS, "templates/notice.html"))
 
 // Module implements the RSS route, Telegram publish job, and email digest.
 type Module struct {
@@ -86,7 +97,10 @@ func (m *Module) Routes(r chi.Router) {
 	}
 	r.Get("/feed.xml", m.handleRSS)
 	r.Post("/subscribe", m.handleSubscribe)
-	r.Get("/unsubscribe", m.handleUnsubscribe)
+	r.Get("/subscribe/confirm", m.handleConfirm)
+	// GET only asks; POST performs. See handleUnsubscribePage for why.
+	r.Get("/unsubscribe", m.handleUnsubscribePage)
+	r.Post("/unsubscribe", m.handleUnsubscribe)
 }
 
 // Start runs the weekly digest scheduler. It checks a few times a day whether a

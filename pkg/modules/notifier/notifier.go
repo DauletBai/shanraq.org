@@ -4,8 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mime"
 	"net/mail"
 	"net/smtp"
+	"sort"
 	"strings"
 
 	"go.uber.org/zap"
@@ -16,6 +18,15 @@ import (
 // Mailer sends e-mail notifications.
 type Mailer interface {
 	Send(ctx context.Context, to, subject, body string) error
+}
+
+// HeaderMailer is the optional extension of Mailer for senders that need extra
+// RFC 5322 headers — currently only the digest, which must carry
+// List-Unsubscribe to stay out of Gmail's spam folder. Callers type-assert for
+// it and fall back to plain Send, so the interface stays one method wide for
+// every other caller.
+type HeaderMailer interface {
+	SendWithHeaders(ctx context.Context, to, subject, body string, headers map[string]string) error
 }
 
 // Module wires an SMTP-backed mailer based on configuration.
@@ -55,6 +66,15 @@ func (m *Module) Send(ctx context.Context, to, subject, body string) error {
 	return m.sender.Send(ctx, to, subject, body)
 }
 
+// SendWithHeaders satisfies HeaderMailer, forwarding to the SMTP sender.
+func (m *Module) SendWithHeaders(ctx context.Context, to, subject, body string, headers map[string]string) error {
+	s, ok := m.sender.(HeaderMailer)
+	if !ok {
+		return m.Send(ctx, to, subject, body)
+	}
+	return s.SendWithHeaders(ctx, to, subject, body, headers)
+}
+
 var _ interface {
 	shanraq.Module
 	shanraq.InitializerModule
@@ -65,6 +85,10 @@ type smtpSender struct {
 }
 
 func (s *smtpSender) Send(ctx context.Context, to, subject, body string) error {
+	return s.SendWithHeaders(ctx, to, subject, body, nil)
+}
+
+func (s *smtpSender) SendWithHeaders(ctx context.Context, to, subject, body string, extra map[string]string) error {
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
@@ -72,9 +96,9 @@ func (s *smtpSender) Send(ctx context.Context, to, subject, body string) error {
 	}
 
 	addr := fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port)
-	// The From header keeps any display name ("Shanraq <no-reply@…>"), but the
-	// SMTP envelope sender (MAIL FROM) must be a bare address.
-	msg := buildMessage(s.cfg.From, to, subject, body)
+	// The From header keeps any display name ("Shanraq.org <no-reply@…>"), but
+	// the SMTP envelope sender (MAIL FROM) must be a bare address.
+	msg := buildMessage(s.cfg.From, to, subject, body, extra)
 
 	var auth smtp.Auth
 	if s.cfg.Username != "" {
@@ -93,13 +117,31 @@ func envelopeSender(from string) string {
 	return strings.TrimSpace(from)
 }
 
-func buildMessage(from, to, subject, body string) []byte {
+func buildMessage(from, to, subject, body string, extra map[string]string) []byte {
 	headers := []string{
 		fmt.Sprintf("From: %s", from),
-		fmt.Sprintf("To: %s", to),
-		fmt.Sprintf("Subject: %s", subject),
+		fmt.Sprintf("To: %s", scrubHeader(to)),
+		// Non-ASCII subjects ("Shanraq.org: обзор недели") are not legal raw in
+		// a header. Q-encoding them is what the spec asks for, and it also
+		// makes header injection through a subject impossible.
+		fmt.Sprintf("Subject: %s", mime.QEncoding.Encode("utf-8", subject)),
 		"MIME-Version: 1.0",
 		"Content-Type: text/plain; charset=\"utf-8\"",
 	}
+	// Sorted so the message is byte-identical for the same input — otherwise
+	// map order would make the output untestable.
+	keys := make([]string, 0, len(extra))
+	for k := range extra {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		headers = append(headers, fmt.Sprintf("%s: %s", scrubHeader(k), scrubHeader(extra[k])))
+	}
 	return []byte(strings.Join(headers, "\r\n") + "\r\n\r\n" + body + "\r\n")
+}
+
+// scrubHeader strips CR/LF so a header value can never start a new header.
+func scrubHeader(v string) string {
+	return strings.NewReplacer("\r", "", "\n", "").Replace(v)
 }

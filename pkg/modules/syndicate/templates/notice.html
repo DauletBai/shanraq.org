@@ -1,0 +1,58 @@
+{{/* notice.html — the standalone pages the newsletter links land on: confirm
+     your subscription, really unsubscribe?, and the two "done" screens.
+
+     These are rendered by syndicate rather than by the articles module so the
+     dependency graph stays acyclic (articles -> syndicate). That means no site
+     header or footer here, so the page has to carry its own identity: the
+     shanyraq mark up top tells a reader arriving from an inbox — days after
+     they signed up, possibly on a phone — whose list this is before they read
+     a word. Everything else is the ordinary site stylesheet.
+
+     noindex because a page keyed by a private token has nothing to offer a
+     search engine and should never surface in results. */}}
+<!doctype html>
+<html lang="{{ .HTMLLang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ .Title }} · Shanraq.org</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/static/brand/shanraq.svg">
+  <link rel="stylesheet" href="/static/css/shanraq.css">
+  <script>
+    (function () {
+      try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+<main class="container">
+  <div class="notice">
+    <a class="notice__brand" href="/?lang={{ .Lang }}" aria-label="Shanraq.org">
+      <img class="theme-light-only" src="/static/brand/shanraq.svg" alt="Shanraq.org" width="76" height="76">
+      <img class="theme-dark-only" src="/static/brand/shanraq-light.svg" alt="Shanraq.org" width="76" height="76">
+    </a>
+    <h1 class="notice__title">{{ .Title }}</h1>
+    <p class="notice__lead">{{ .Lead }}</p>
+    {{ if .Email }}<p class="notice__addr">{{ .Email }}</p>{{ end }}
+    {{ if .Points }}
+    <ul class="notice__points">
+      {{ range .Points }}<li>{{ . }}</li>{{ end }}
+    </ul>
+    {{ end }}
+    <div class="notice__actions">
+      {{/* The destructive action is a POST, never a link: mail scanners and
+           link prefetchers follow every URL in a message, and a GET that
+           deletes would unsubscribe people who never clicked anything. */}}
+      {{ if .ConfirmPost }}
+      <form method="post" action="{{ .ConfirmPost }}">
+        <button class="btn btn--primary" type="submit">{{ .ConfirmLabel }}</button>
+      </form>
+      {{ end }}
+      <a class="btn {{ if .ConfirmPost }}btn--outline{{ else }}btn--primary{{ end }}" href="{{ .CancelHref }}">{{ .CancelLabel }}</a>
+    </div>
+    {{ if .Foot }}<p class="notice__foot">{{ .Foot }}</p>{{ end }}
+  </div>
+</main>
+</body>
+</html>

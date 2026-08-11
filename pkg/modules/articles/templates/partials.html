@@ -48,18 +48,39 @@
      so any icon inside reports one aggregate "follow_social" event — the beacon
      reads the nearest [data-track] ancestor.
 
-     Takes (dict "Info" .Info "Lang" .Lang), plus "Accent" true on the home
-     sidebar: there the card replaced the old red newsletter block and has to
-     hold the same visual anchor in a browsing context, while the article-aside
-     copy stays quiet beside the contents in a reading one. */}}
+     Below the icons sits the email form, not a card of its own: one "stay in
+     touch" block, its two ways in ordered by what they cost the reader — a
+     single click first, typing an address second. Email earns its place here
+     because it is the one channel a block cannot reach; the letter is already
+     in the inbox.
+
+     The social icons are conditional but the form is not, so a site with no
+     configured profiles still offers a way to follow.
+
+     Takes (dict "Info" .Info "Lang" .Lang "Back" .Path "SubMsg" .SubMsg
+     "SubBad" .SubBad), plus "Accent" true on the home sidebar: there the card
+     holds the visual anchor in a browsing context, while the article-aside copy
+     stays quiet beside the contents in a reading one. */}}
 {{ define "follow_card" }}
-{{ with liveSocial .Info.Social }}
-<div class="follow{{ if $.Accent }} follow--accent{{ end }}">
-  <p class="follow__title">{{ t $.Lang "follow.title" }}</p>
-  <p class="follow__text">{{ t $.Lang "follow.text" }}</p>
+<div class="follow{{ if .Accent }} follow--accent{{ end }}">
+  <p class="follow__title">{{ t .Lang "follow.title" }}</p>
+  <p class="follow__text">{{ t .Lang "follow.text" }}</p>
+  {{ with liveSocial .Info.Social }}
   <div class="follow__icons" data-track="follow_social">{{ template "social_icons" . }}</div>
+  {{ end }}
+  <div class="follow__mail">
+    <p class="follow__mailtext">{{ t .Lang "sidebar.subscribe_text" }}</p>
+    {{ if .SubMsg }}<p class="follow__note{{ if .SubBad }} follow__note--bad{{ end }}">{{ .SubMsg }}</p>{{ end }}
+    {{/* "back" returns the reader to the page they subscribed from; the handler
+         accepts same-site paths only, so it cannot become an open redirect. */}}
+    <form class="subgroup" method="post" action="/subscribe" data-track="subscribe_email">
+      <input type="hidden" name="lang" value="{{ .Lang }}">
+      <input type="hidden" name="back" value="{{ .Back }}">
+      <input class="subgroup__input" type="email" name="email" placeholder="email@…" required aria-label="Email">
+      <button class="subgroup__btn" type="submit">{{ t .Lang "sidebar.subscribe_btn" }}</button>
+    </form>
+  </div>
 </div>
-{{ end }}
 {{ end }}
 
 {{/* fhelp renders a "?" icon with a click/hover tooltip. Pass the tip text as . */}}
@@ -71,7 +92,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ .Title }} · Shanraq</title>
+  <title>{{ .Title }} · Shanraq.org</title>
   <meta name="description" content="{{ .Desc }}">
   {{/* Discover and image search only show a large preview when this is present;
        without it a 1200px cover is served as a thumbnail. "follow" is kept on
@@ -80,7 +101,7 @@
   <link rel="canonical" href="{{ .SiteURL }}{{ if .CanonURL }}{{ .CanonURL }}{{ else }}{{ .Path }}?lang={{ .Lang }}{{ end }}">
   {{ range langs }}<link rel="alternate" hreflang="{{ htmlLang . }}" href="{{ $.SiteURL }}{{ index $.LangLinks . }}">
   {{ end }}<link rel="alternate" hreflang="x-default" href="{{ .SiteURL }}{{ index .LangLinks "ru" }}">
-  <meta property="og:site_name" content="Shanraq">
+  <meta property="og:site_name" content="Shanraq.org">
   <meta property="og:type" content="{{ if .OGType }}{{ .OGType }}{{ else }}website{{ end }}">
   <meta property="og:title" content="{{ .Title }}">
   <meta property="og:description" content="{{ .Desc }}">
@@ -92,10 +113,10 @@
   <meta name="twitter:description" content="{{ .Desc }}">
   <meta name="twitter:image" content="{{ .OGImage }}">
   <link rel="icon" href="/static/brand/shanraq.svg">
-  <link rel="alternate" type="application/rss+xml" title="Shanraq RSS" href="/feed.xml?lang={{ .Lang }}">
+  <link rel="alternate" type="application/rss+xml" title="Shanraq.org RSS" href="/feed.xml?lang={{ .Lang }}">
   <link rel="stylesheet" href="/static/vendor/leaflet.css">
   <link rel="stylesheet" href="/static/css/shanraq.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Shanraq","url":"{{ .SiteURL }}","inLanguage":["kk","ru","en"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Shanraq.org","url":"{{ .SiteURL }}","inLanguage":["kk","ru","en"]}</script>
   {{ if .JSONLD }}{{ .JSONLD }}
   {{ end }}
   <script>
@@ -126,9 +147,9 @@
       </span>
       {{ end }}
     </div>
-    <a class="wordmark" href="/" title="Shanraq">
-      <img class="wordmark__mark theme-light-only" src="/static/brand/shanraq.svg" alt="Shanraq">
-      <img class="wordmark__mark theme-dark-only" src="/static/brand/shanraq-light.svg" alt="Shanraq">
+    <a class="wordmark" href="/" title="Shanraq.org">
+      <img class="wordmark__mark theme-light-only" src="/static/brand/shanraq.svg" alt="Shanraq.org">
+      <img class="wordmark__mark theme-dark-only" src="/static/brand/shanraq-light.svg" alt="Shanraq.org">
     </a>
     <div class="topstrip__side topstrip__side--right">
       {{ if .Authed }}
@@ -177,13 +198,11 @@
     <p class="aside__text">{{ t .Lang "guide.side_text" }}</p>
     <a class="btn btn--outline btn--sm" href="/guide" style="margin-top:12px">{{ t .Lang "common.more" }}</a>
   </div>
-  {{/* The email newsletter form used to sit here. It worked — addresses were
-       stored and the weekly digest ran — but it never sent a confirmation, so
-       subscribing felt broken, and in practice it collected nothing. The social
-       card converts far better because the payoff is immediate. The /subscribe
-       route, the subscribers table and the digest job are all left intact, so
-       this is a UI decision that can be reversed by restoring the block. */}}
-  {{ template "follow_card" (dict "Info" .Info "Lang" .Lang "Accent" true) }}
+  {{/* The newsletter once stood here as a card of its own and collected nothing:
+       it never sent a confirmation, so subscribing gave no sign it had worked.
+       It now lives inside the follow card, under the icons, and confirms by
+       email — see follow_card above. */}}
+  {{ template "follow_card"(dict "Info" .Info "Lang" .Lang "Accent" true "Back" .Path "SubMsg" .SubMsg "SubBad" .SubBad) }}
 </aside>
 {{ end }}
 
@@ -387,7 +406,7 @@
       <a href="/privacy">{{ t .Lang "footer.privacy" }}</a>
       <a href="/terms">{{ t .Lang "footer.terms" }}</a>
     </nav>
-    <span>© {{ year }} <a href="/">Shanraq</a> — {{ t .Lang "footer.rights" }}</span>
+    <span>© {{ year }} <a href="/">Shanraq.org</a> — {{ t .Lang "footer.rights" }}</span>
     <div class="foot-social">{{ template "social_icons" .Info.Social }}{{ if ne .Info.GitHub "" }}<a class="soc" href="{{ .Info.GitHub }}" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6 0-.3 0-1.1 0-2-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2 0 1.6 0 2.9 0 3.3 0 .3.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg></a>{{ end }}</div>
   </div>
 </footer>
