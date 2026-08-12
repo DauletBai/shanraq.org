@@ -3,6 +3,14 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{/* The page had no <h1>: its visible title is the wordmark, and that is an
+       image. Hidden rather than drawn, because the alternative is redesigning
+       the masthead to satisfy a crawler. Category feeds are their own indexable
+       URLs, so each names its own subject. */}}
+  <h1 class="visually-hidden">
+    {{- if .ActiveCat }}{{ printf (t .Lang "home.h1_cat") (t .Lang (printf "cat.%s" .ActiveCat)) }}
+    {{- else }}{{ t .Lang "home.h1" }}{{ end -}}
+  </h1>
   <div class="layout">
     <div>
       {{ if .SidebarNews }}

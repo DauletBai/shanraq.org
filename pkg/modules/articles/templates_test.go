@@ -634,3 +634,43 @@ func TestAdminNavAnchorsExist(t *testing.T) {
 		}
 	}
 }
+
+// The home page had no <h1> at all: its visible title is the wordmark, which is
+// an image. Category feeds are separate indexable URLs, so each names its own
+// subject rather than all ten repeating one line.
+func TestHomeHasExactlyOneH1(t *testing.T) {
+	tmpl := buildTemplates(t)
+	render := func(cat string) string {
+		t.Helper()
+		base := Base{Title: "T", Lang: LangRU, ShowLangs: true, ActiveCat: cat, LangLinks: langLinks("/", "")}
+		var sb strings.Builder
+		if err := tmpl.ExecuteTemplate(&sb, "home", HomePage{Base: base}); err != nil {
+			t.Fatal(err)
+		}
+		return sb.String()
+	}
+
+	plain := render("")
+	if n := strings.Count(plain, "<h1"); n != 1 {
+		t.Fatalf("home has %d <h1> elements, want exactly 1", n)
+	}
+	if !strings.Contains(plain, `<h1 class="visually-hidden">`) {
+		t.Error("the heading should be present to crawlers and readers, not drawn")
+	}
+	if !strings.Contains(plain, "Shanraq.org") {
+		t.Error("the heading does not name the publication")
+	}
+
+	// A category feed must not repeat the site-wide heading.
+	world := render("world")
+	if strings.Count(world, "<h1") != 1 {
+		t.Fatal("a category feed should still have exactly one <h1>")
+	}
+	if !strings.Contains(world, T(LangRU, "cat.world")) {
+		t.Errorf("the category feed's heading does not name the category: %s",
+			regexp.MustCompile(`(?s)<h1.*?</h1>`).FindString(world))
+	}
+	if strings.Contains(world, T(LangRU, "home.h1")) {
+		t.Error("the category feed repeats the site-wide heading")
+	}
+}

@@ -446,12 +446,16 @@ var messages = map[string]map[string]string{
 	"sub.cis":           {"kz": "ТМД", "ru": "СНГ", "en": "CIS"},
 	"sub.russia":        {"kz": "Ресей", "ru": "Россия", "en": "Russia"},
 
-	"home.featured":   {"kz": "Басты тақырып", "ru": "Главное", "en": "Featured"},
-	"home.latest":     {"kz": "Соңғы жарияланымдар", "ru": "Последние публикации", "en": "Latest stories"},
-	"home.top":        {"kz": "Оқырман таңдауы", "ru": "Выбор читателей", "en": "Readers' choice"},
-	"home.read_more":  {"kz": "Толығырақ", "ru": "Читать далее", "en": "Continue reading"},
-	"home.empty":      {"kz": "Әзірге жарияланым жоқ", "ru": "Пока нет публикаций", "en": "No stories yet"},
-	"home.empty_cta":  {"kz": "Бірінші мақаланы жазу", "ru": "Написать первую статью", "en": "Write the first story"},
+	"home.featured":  {"kz": "Басты тақырып", "ru": "Главное", "en": "Featured"},
+	"home.latest":    {"kz": "Соңғы жарияланымдар", "ru": "Последние публикации", "en": "Latest stories"},
+	"home.top":       {"kz": "Оқырман таңдауы", "ru": "Выбор читателей", "en": "Readers' choice"},
+	"home.read_more": {"kz": "Толығырақ", "ru": "Читать далее", "en": "Continue reading"},
+	"home.empty":     {"kz": "Әзірге жарияланым жоқ", "ru": "Пока нет публикаций", "en": "No stories yet"},
+	"home.empty_cta": {"kz": "Бірінші мақаланы жазу", "ru": "Написать первую статью", "en": "Write the first story"},
+	// The home page heading. Category feeds are separate indexable URLs, so
+	// they name their own subject instead of all ten repeating one line.
+	"home.h1":         {"kz": "Shanraq.org — тәуелсіз талдаулар: Қазақстан, экономика, әлем", "ru": "Shanraq.org — независимые разборы: Казахстан, экономика, мир", "en": "Shanraq.org — independent analysis: Kazakhstan, economy, world"},
+	"home.h1_cat":     {"kz": "%s — Shanraq.org талдаулары", "ru": "%s — разборы Shanraq.org", "en": "%s — analysis on Shanraq.org"},
 	"home.page_title": {"kz": "Еркін үш тілді жарияланымдар алаңы", "ru": "Свободная трёхъязычная площадка публикаций", "en": "A free trilingual publishing platform"},
 
 	"follow.title": {"kz": "Жаңа талдаулар, күн сайын", "ru": "Новые разборы, ежедневно", "en": "New analysis, daily"},
