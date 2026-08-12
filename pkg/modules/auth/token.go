@@ -20,6 +20,11 @@ type Claims struct {
 	Email       string   `json:"email"`
 	Roles       []string `json:"roles"`
 	PrimaryRole string   `json:"role,omitempty"`
+	// AuthVersion is the account's revocation counter as it stood when this
+	// token was issued. A privileged request compares it against the stored one;
+	// a mismatch means the account was demoted, deleted or had its password
+	// changed since, and the token is spent.
+	AuthVersion int `json:"av,omitempty"`
 	jwt.RegisteredClaims
 }
 
@@ -40,6 +45,7 @@ func (s *TokenService) Generate(user User) (string, error) {
 		Email:       user.Email,
 		Roles:       roles,
 		PrimaryRole: primary,
+		AuthVersion: user.AuthVersion,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "shanraq",
 			Subject:   user.ID.String(),
@@ -127,5 +133,6 @@ func ClaimsForUser(user User) *Claims {
 		Email:       user.Email,
 		Roles:       roles,
 		PrimaryRole: primary,
+		AuthVersion: user.AuthVersion,
 	}
 }

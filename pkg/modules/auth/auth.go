@@ -1016,9 +1016,17 @@ func (m *Module) RequireRoles(roles ...string) func(http.Handler) http.Handler {
 					return
 				}
 			}
-			if len(normalized) > 0 && !claims.HasAnyRole(normalized...) {
-				respond.Error(w, http.StatusForbidden, errors.New("insufficient role to access this resource"))
-				return
+			if len(normalized) > 0 {
+				if !claims.HasAnyRole(normalized...) {
+					respond.Error(w, http.StatusForbidden, errors.New("insufficient role to access this resource"))
+					return
+				}
+				// The role in the token is only a claim about the past. Before
+				// acting on it, confirm the account still backs it.
+				if !m.tokenStillValid(r.Context(), claims) {
+					respond.Error(w, http.StatusUnauthorized, ErrTokenRevoked)
+					return
+				}
 			}
 			nextCtx := ContextWithClaims(r.Context(), claims)
 			next.ServeHTTP(w, r.WithContext(nextCtx))

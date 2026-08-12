@@ -321,9 +321,19 @@ func (m *Module) RequireSession(loginPath string, roles ...string) func(http.Han
 				http.Redirect(w, r, loginPath+"?reason=session_expired", http.StatusSeeOther)
 				return
 			}
-			if len(normalized) > 0 && !claims.HasAnyRole(normalized...) {
-				http.Redirect(w, r, loginPath, http.StatusSeeOther)
-				return
+			if len(normalized) > 0 {
+				if !claims.HasAnyRole(normalized...) {
+					http.Redirect(w, r, loginPath, http.StatusSeeOther)
+					return
+				}
+				// Same check as the API guard: a cookie minted before a demotion
+				// still carries the old role, and there is no session row to
+				// delete, so the account itself has to be asked.
+				if !m.tokenStillValid(r.Context(), claims) {
+					ClearSessionCookie(w, r)
+					http.Redirect(w, r, loginPath+"?reason=session_expired", http.StatusSeeOther)
+					return
+				}
 			}
 			next.ServeHTTP(w, r.WithContext(ContextWithClaims(r.Context(), claims)))
 		})

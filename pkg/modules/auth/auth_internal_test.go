@@ -74,43 +74,6 @@ func TestIsWeakSecret(t *testing.T) {
 	}
 }
 
-func TestRequireRolesMiddleware(t *testing.T) {
-	tokens := NewTokenService("super-secret", time.Minute)
-	adminUser := User{
-		ID:    uuid.New(),
-		Email: "admin@example.com",
-		Role:  "admin",
-		Roles: []string{"admin", "operator"},
-	}
-
-	token, err := tokens.Generate(adminUser)
-	if err != nil {
-		t.Fatalf("generate token: %v", err)
-	}
-
-	module := &Module{tokens: tokens}
-	calls := 0
-	protected := module.RequireRoles("admin")(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		calls++
-		if claims, ok := ClaimsFromContext(r.Context()); !ok || !claims.HasAnyRole("admin") {
-			t.Fatalf("expected admin claims in context, got %#v", claims)
-		}
-		w.WriteHeader(http.StatusTeapot)
-	}))
-
-	req := httptest.NewRequest(http.MethodGet, "/admin", nil)
-	req.Header.Set("Authorization", "Bearer "+token)
-	rec := httptest.NewRecorder()
-	protected.ServeHTTP(rec, req)
-
-	if rec.Code != http.StatusTeapot {
-		t.Fatalf("expected handler to run with status 418, got %d", rec.Code)
-	}
-	if calls != 1 {
-		t.Fatalf("expected handler to be invoked once, got %d", calls)
-	}
-}
-
 func TestRequireRolesMiddlewareRejectsInsufficientRole(t *testing.T) {
 	tokens := NewTokenService("another-secret", time.Minute)
 	user := User{

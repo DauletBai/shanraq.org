@@ -39,7 +39,11 @@ type User struct {
 	Role                  string
 	Roles                 []string
 	PasswordResetRequired bool
-	CreatedAt             time.Time
+	// AuthVersion is stamped into every token this user is issued. Bumping it
+	// retires all of them at once — the only revocation mechanism there is,
+	// since the session cookie is itself the credential.
+	AuthVersion int
+	CreatedAt   time.Time
 }
 
 // MFATOTP persists user-specific TOTP secrets.
@@ -163,10 +167,10 @@ func (s *Store) CreateVerifiedAdmin(ctx context.Context, email, hash, first, las
 func (s *Store) FindByEmail(ctx context.Context, email string) (User, error) {
 	var u User
 	err := s.db.QueryRow(ctx, `
-		SELECT id, email, password_hash, role, password_reset_required, created_at
+		SELECT id, email, password_hash, role, password_reset_required, auth_version, created_at
 		FROM auth_users
 		WHERE email = $1
-	`, email).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Role, &u.PasswordResetRequired, &u.CreatedAt)
+	`, email).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Role, &u.PasswordResetRequired, &u.AuthVersion, &u.CreatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return User{}, ErrNotFound
@@ -183,10 +187,10 @@ func (s *Store) FindByEmail(ctx context.Context, email string) (User, error) {
 func (s *Store) GetByID(ctx context.Context, id string) (User, error) {
 	var u User
 	err := s.db.QueryRow(ctx, `
-		SELECT id, email, password_hash, role, password_reset_required, created_at
+		SELECT id, email, password_hash, role, password_reset_required, auth_version, created_at
 		FROM auth_users
 		WHERE id = $1
-	`, id).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Role, &u.PasswordResetRequired, &u.CreatedAt)
+	`, id).Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Role, &u.PasswordResetRequired, &u.AuthVersion, &u.CreatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return User{}, ErrNotFound
@@ -680,10 +684,14 @@ func (s *Store) MarkPasswordResetUsed(ctx context.Context, id uuid.UUID) error {
 }
 
 func (s *Store) UpdatePassword(ctx context.Context, userID uuid.UUID, hash string) error {
+	// Bumping auth_version here is the point of a password change after a
+	// compromise: it signs out whoever else was holding a token for this
+	// account, including on devices we cannot reach.
 	_, err := s.db.Exec(ctx, `
 		UPDATE auth_users
 		SET password_hash = $2,
 		    password_reset_required = FALSE,
+		    auth_version = auth_version + 1,
 		    updated_at = NOW()
 		WHERE id = $1
 	`, userID, hash)

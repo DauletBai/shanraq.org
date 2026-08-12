@@ -178,21 +178,42 @@ func (s *Store) UpdateUserByAdmin(ctx context.Context, id uuid.UUID, first, last
 	return nil
 }
 
+// adminGuardLock is an arbitrary but fixed key. Every transaction that could
+// change the number of administrators takes it, so the count and the change
+// that depends on it cannot interleave with another one.
+const adminGuardLock = 4823710055
+
+// lockAdminGuard serialises administrator-count changes for this transaction.
+// The lock is released when the transaction ends, however it ends.
+func lockAdminGuard(ctx context.Context, tx pgx.Tx) error {
+	if _, err := tx.Exec(ctx, `SELECT pg_advisory_xact_lock($1)`, int64(adminGuardLock)); err != nil {
+		return fmt.Errorf("lock admin guard: %w", err)
+	}
+	return nil
+}
+
+// countRootAdminsTx counts administrators inside a transaction, so the answer
+// still holds when it is acted upon.
+func (s *Store) countRootAdminsTx(ctx context.Context, tx pgx.Tx) (int, error) {
+	var n int
+	if err := tx.QueryRow(ctx,
+		`SELECT count(*) FROM auth_users WHERE role = ANY($1)`, rootRoles).Scan(&n); err != nil {
+		return 0, fmt.Errorf("count admins: %w", err)
+	}
+	return n, nil
+}
+
 // SetRoleByID changes an account's role, refusing to demote the last
 // administrator.
+//
+// The count and the demotion happen in one transaction behind an advisory lock.
+// Read separately, as they were, two concurrent demotions each saw two
+// administrators, each concluded it was safe to proceed, and the site was left
+// with none.
 func (s *Store) SetRoleByID(ctx context.Context, id uuid.UUID, role string) error {
 	current, err := s.GetAdminUser(ctx, id)
 	if err != nil {
 		return err
-	}
-	if isRootRole(current.Role) && !isRootRole(role) {
-		n, cerr := s.countRootAdmins(ctx)
-		if cerr != nil {
-			return cerr
-		}
-		if n <= 1 {
-			return ErrLastAdmin
-		}
 	}
 	primary, normalized := normalizeRoleSet(role)
 	tx, err := s.db.Begin(ctx)
@@ -201,7 +222,23 @@ func (s *Store) SetRoleByID(ctx context.Context, id uuid.UUID, role string) erro
 	}
 	defer tx.Rollback(ctx) //nolint:errcheck
 
-	if _, err := tx.Exec(ctx, `UPDATE auth_users SET role = $2, updated_at = now() WHERE id = $1`, id, primary); err != nil {
+	if isRootRole(current.Role) && !isRootRole(role) {
+		if lockErr := lockAdminGuard(ctx, tx); lockErr != nil {
+			return lockErr
+		}
+		n, cerr := s.countRootAdminsTx(ctx, tx)
+		if cerr != nil {
+			return cerr
+		}
+		if n <= 1 {
+			return ErrLastAdmin
+		}
+	}
+
+	// A role change is exactly the event every issued token must stop surviving.
+	if _, err := tx.Exec(ctx,
+		`UPDATE auth_users SET role = $2, auth_version = auth_version + 1, updated_at = now() WHERE id = $1`,
+		id, primary); err != nil {
 		return fmt.Errorf("set role: %w", err)
 	}
 	// The join table is the other half of the truth; leaving it stale would let
@@ -229,8 +266,20 @@ func (s *Store) DeleteUserByAdmin(ctx context.Context, id uuid.UUID) error {
 	if err != nil {
 		return err
 	}
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return fmt.Errorf("begin delete tx: %w", err)
+	}
+	defer tx.Rollback(ctx) //nolint:errcheck
+
+	// Same guard as the demotion path, and for the same reason: two concurrent
+	// deletions would otherwise each see a spare administrator that the other
+	// was already removing.
 	if isRootRole(u.Role) {
-		n, cerr := s.countRootAdmins(ctx)
+		if lockErr := lockAdminGuard(ctx, tx); lockErr != nil {
+			return lockErr
+		}
+		n, cerr := s.countRootAdminsTx(ctx, tx)
 		if cerr != nil {
 			return cerr
 		}
@@ -238,7 +287,14 @@ func (s *Store) DeleteUserByAdmin(ctx context.Context, id uuid.UUID) error {
 			return ErrLastAdmin
 		}
 	}
-	return s.DeleteAccount(ctx, id)
+	ct, err := tx.Exec(ctx, `DELETE FROM auth_users WHERE id = $1`, id)
+	if err != nil {
+		return fmt.Errorf("delete account: %w", err)
+	}
+	if ct.RowsAffected() == 0 {
+		return ErrUserNotFound
+	}
+	return tx.Commit(ctx)
 }
 
 // SetSignupCountry records where an account registered from. Best-effort: an
