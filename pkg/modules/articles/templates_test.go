@@ -761,18 +761,6 @@ func TestArticleCoverReservesItsSpace(t *testing.T) {
 	if regexp.MustCompile(`\.post__media \{[^}]*height: \d+px`).Match(b) {
 		t.Error("a fixed pixel height is back on the feed thumbnail")
 	}
-	// Nothing may be cropped: the box holds a place, the picture is fitted into
-	// it whole. object-fit: cover here would silently cut a covers' edges again.
-	for _, sel := range []string{`\.article__media img \{[^}]*\}`, `\.hero__media img, \.post__media img \{[^}]*\}`} {
-		rule := regexp.MustCompile(sel).Find(b)
-		if rule == nil {
-			t.Errorf("rule %s not found", sel)
-			continue
-		}
-		if !strings.Contains(string(rule), "object-fit: contain") {
-			t.Errorf("images are cropped rather than fitted whole: %s", rule)
-		}
-	}
 	// Sideways, the ratio alone would make the cover taller than the screen.
 	if !strings.Contains(string(b), ".article__media { max-height: 70vh; }") {
 		t.Error("the cover has no height cap, so in landscape it fills the viewport")

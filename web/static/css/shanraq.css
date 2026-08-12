@@ -491,7 +491,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .post__media { aspect-ratio: 16 / 9; border-radius: var(--radius-sm); margin-bottom: 2px; position: relative; }
 /* card photo carousel: stacked slides, a full-cover link, dots on top */
 .post__media .gallery__item { position: absolute; inset: 0; }
-.post__media .gallery__item img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: contain; }
+.post__media .gallery__item img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; }
 /* the card slot has its own fixed height, so no aspect-ratio here */
 .post__media-link { position: absolute; inset: 0; z-index: 2; }
 .post__media .adcarousel__dots { bottom: 10px; z-index: 3; }
@@ -499,8 +499,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 /* flag + city in the card meta */
 .loc { display: inline-flex; align-items: center; gap: 6px; }
 .flag { border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.08); flex: none; }
-.post__media { background: var(--surface-2); }
-.hero__media img, .post__media img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.hero__media img, .post__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .media-ph {
   width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, var(--surface-2), color-mix(in srgb, var(--gold) 12%, var(--surface-2)));
@@ -518,12 +517,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
    CLS. Covers on this site are 16:9; an odd one is cropped rather than
    allowed to resize the page under someone already reading it. */
 .article__media { margin: 0 0 20px; border-radius: var(--radius-sm); overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
-/* contain, not cover: the whole picture is shown, never a crop of it. The box
-   keeps a reserved 16:9 so the text below does not jump when the image
-   arrives, and covers are generated 16:9, so in practice the picture fills
-   it exactly. An odd-shaped one is matted rather than cut. */
-.article__media { background: var(--surface-2); }
-.article__media img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.article__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 /* A phone held sideways is ~800px wide and 390px tall, so the ratio alone would
    make the cover 450px — taller than the screen, and the reader would open an
    article to a full page of picture. The cap is on every size, but only
