@@ -744,9 +744,22 @@ func TestArticleCoverReservesItsSpace(t *testing.T) {
 		t.Errorf("the cover box has no reserved ratio: %s", rule)
 	}
 
-	// A phone gets a taller box: 16:9 across a 346px column is a 195px strip.
-	if !regexp.MustCompile(`@media \(max-width: 640px\) \{\s*\.article__media \{[^}]*aspect-ratio: 3 / 2`).Match(b) {
-		t.Error("phones do not get the taller cover ratio")
+	// Feed thumbnails carried a fixed pixel height, so the box changed shape with
+	// the viewport while the picture did not — a phone cut 18% off the top and
+	// bottom, a desktop card cut the sides.
+	// The selector appears more than once, so check every rule, not the first.
+	rules := regexp.MustCompile(`\.post__media \{[^}]*\}`).FindAll(b, -1)
+	sized := false
+	for _, r := range rules {
+		if strings.Contains(string(r), "aspect-ratio") {
+			sized = true
+		}
+	}
+	if !sized {
+		t.Errorf("no .post__media rule sizes the thumbnail by ratio (found %d rules)", len(rules))
+	}
+	if regexp.MustCompile(`\.post__media \{[^}]*height: \d+px`).Match(b) {
+		t.Error("a fixed pixel height is back on the feed thumbnail")
 	}
 	// Sideways, the ratio alone would make the cover taller than the screen.
 	if !strings.Contains(string(b), ".article__media { max-height: 70vh; }") {
