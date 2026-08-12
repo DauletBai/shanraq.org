@@ -19,19 +19,36 @@
       <img class="adm__mark theme-dark-only" src="/static/brand/shanraq-light.svg" alt="">
       <span>{{ t .Lang "admin.dashboard" }}</span>
     </a>
+    {{/* The order here MUST match the order the sections appear in the document:
+         the highlight follows scroll position, so a nav that disagrees with the
+         page sends the marker jumping up and back down. Group labels are only
+         rendered when something under them is visible to this role. */}}
     <nav class="adm__nav">
       <a href="#overview" class="adm__navlink is-active" data-nav>▤ {{ t .Lang "admin.overview" }}</a>
+
+      <span class="adm__navgroup">{{ t .Lang "admin.grp_analytics" }}</span>
       <a href="#growth" class="adm__navlink" data-nav>↗ {{ t .Lang "an2.title" }}</a>
-      <a href="#content" class="adm__navlink" data-nav>▦ {{ t .Lang "admin.articles" }}</a>
-      <a href="#users" class="adm__navlink" data-nav>◕ {{ t .Lang "admin.users" }}</a>
       <a href="#guests" class="adm__navlink" data-nav>◔ {{ t .Lang "ag.title" }}</a>
-      {{ if .CanManageUsers }}<a href="#ai" class="adm__navlink" data-nav>✦ {{ t .Lang "aic.title" }}</a>{{ end }}
-      {{ if .CanManageUsers }}<a href="#payments" class="adm__navlink" data-nav>💳 {{ t .Lang "pay.nav" }}</a>{{ end }}
-      {{ if .CanManageUsers }}<a href="#services" class="adm__navlink" data-nav>⚙ {{ t .Lang "svc.title" }}</a>{{ end }}
-      {{ if .CanManageUsers }}<a href="/admin/pages" class="adm__navlink">📄 {{ t .Lang "pages.nav" }}</a>{{ end }}
-      {{ if .CanManageUsers }}<a href="/admin/tariffs" class="adm__navlink">₸ {{ t .Lang "tar.nav" }}</a>{{ end }}
+
+      <span class="adm__navgroup">{{ t .Lang "admin.grp_content" }}</span>
+      <a href="#content" class="adm__navlink" data-nav>▦ {{ t .Lang "admin.articles" }}</a>
       {{ if .CanModerate }}<a href="#moderation" class="adm__navlink" data-nav>✎ {{ t .Lang "admin.moderation" }}</a>{{ end }}
+
+      <span class="adm__navgroup">{{ t .Lang "admin.grp_people" }}</span>
+      <a href="#users" class="adm__navlink" data-nav>◕ {{ t .Lang "admin.users" }}</a>
+
+      {{ if or .CanFinance .CanManageUsers }}
+      <span class="adm__navgroup">{{ t .Lang "admin.grp_money" }}</span>
       {{ if .CanFinance }}<a href="#finance" class="adm__navlink" data-nav>₸ {{ t .Lang "admin.finance" }}</a>{{ end }}
+      {{ if .CanManageUsers }}<a href="/admin/tariffs" class="adm__navlink">₸ {{ t .Lang "tar.nav" }}</a>{{ end }}
+      {{ end }}
+
+      {{ if .CanManageUsers }}
+      <span class="adm__navgroup">{{ t .Lang "admin.grp_settings" }}</span>
+      <a href="#services" class="adm__navlink" data-nav>⚙ {{ t .Lang "svc.title" }}</a>
+      <a href="#settings" class="adm__navlink" data-nav>✦ {{ t .Lang "admin.grp_settings_pair" }}</a>
+      <a href="/admin/pages" class="adm__navlink">📄 {{ t .Lang "pages.nav" }}</a>
+      {{ end }}
     </nav>
     <div class="adm__side-foot">
       <button type="button" class="icon-btn" data-theme-toggle title="{{ t .Lang "header.theme" }}">◐</button>
@@ -125,236 +142,6 @@
         </div>
       </div>
     </section>
-
-    <section id="content" class="adm-section">
-      <div class="adm-cols">
-        <div class="adm-panel">
-          <h2>{{ t .Lang "admin.by_rubric" }}</h2>
-          <div class="adm-chart adm-scroll adm-scroll--chart">
-            {{ range .Stats.ByCat }}
-            <div class="adm-bar">
-              <a class="adm-bar__label" href="/?cat={{ .Slug }}">{{ t $.Lang (printf "cat.%s" .Slug) }}</a>
-              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
-              <span class="adm-bar__val">{{ money .Views }}</span>
-            </div>
-            {{ end }}
-          </div>
-        </div>
-        <div class="adm-panel">
-          <h2>{{ t .Lang "admin.top" }}</h2>
-          {{/* Ten headlines, several of them wrapping to two lines, made this
-               card half again as tall as the rubric chart beside it. Both are
-               capped to the same height now, so the row ends level. */}}
-          <div class="adm-scroll adm-scroll--chart">
-          <table class="adm-tbl">
-            <tbody>
-            {{ range .Stats.TopArticles }}
-            <tr><td><a href="/read/{{ .Slug }}">{{ .Title }}</a></td><td>{{ money .Views }}</td><td class="adm-tbl__score">▲ {{ .Score }}</td></tr>
-            {{ end }}
-            </tbody>
-          </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="users" class="adm-section">
-      <div class="adm-cols">
-        <div class="adm-panel">
-          <h2>{{ t .Lang "admin.by_role" }}</h2>
-          <div class="adm-chart">
-            {{ range .Stats.UsersByRole }}
-            <div class="adm-bar">
-              <span class="adm-bar__label">{{ .Role }}</span>
-              <span class="adm-bar__track"><span class="adm-bar__fill adm-bar__fill--teal" style="width:{{ .Pct }}%"></span></span>
-              <span class="adm-bar__val">{{ .N }}</span>
-            </div>
-            {{ end }}
-          </div>
-          <p class="adm-hint">{{ t .Lang "admin.listings" }}: {{ .Stats.ListingsActive }} {{ t .Lang "admin.active" }} · {{ .Stats.ListingsExpired }} {{ t .Lang "admin.expired" }}</p>
-        </div>
-        {{ if .CanManageUsers }}
-        <div class="adm-panel">
-          <h2>{{ t .Lang "admin.assign_role" }}</h2>
-          <form class="adm-roleform" method="post" action="/admin/roles">
-            <input class="input" type="email" name="email" placeholder="{{ t .Lang "admin.email" }}" required>
-            <select class="select" name="role">{{ range .AssignRoles }}<option value="{{ . }}">{{ . }}</option>{{ end }}</select>
-            <button class="btn btn--primary" type="submit">{{ t .Lang "admin.assign" }}</button>
-          </form>
-        </div>
-        {{ end }}
-      </div>
-
-      {{ if .CanManageUsers }}
-      {{/* The register itself. The two cards above count accounts by role; they
-           cannot tell you who anyone is, which is no basis for acting on a
-           complaint about a person. */}}
-      <div class="adm-panel" style="margin-top:18px">
-        <h2>{{ t .Lang "admin.users_title" }} {{ template "fhelp" (t .Lang "admin.users_note") }}</h2>
-        <form class="adm-usersearch" method="get" action="/admin">
-          <input class="input" type="search" name="uq" value="{{ .UserSearch }}" placeholder="{{ t .Lang "admin.users_search" }}">
-          <button class="btn btn--primary" type="submit">{{ t .Lang "admin.users_find" }}</button>
-        </form>
-        {{ if .Users }}
-        <div class="table-wrap adm-scroll adm-scroll--tall">
-          <table class="spec spec--sticky adm-users">
-            <thead>
-              <tr>
-                <th>{{ t .Lang "admin.u_name" }}</th>
-                <th>{{ t .Lang "admin.u_email" }}</th>
-                <th>{{ t .Lang "admin.u_country" }}</th>
-                <th>{{ t .Lang "admin.u_role" }}</th>
-                <th>{{ t .Lang "admin.u_registered" }}</th>
-                <th title="{{ t .Lang "admin.u_activity" }}">📝</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {{ range .Users }}
-              <tr>
-                <td>
-                  <b>{{ if .FullName }}{{ .FullName }}{{ else }}<span class="dot">—</span>{{ end }}</b>
-                  {{ if not .Verified }}<span class="pill pill--draft">{{ t $.Lang "admin.u_verified" }}: —</span>{{ end }}
-                  {{ if .IsLastRoot }}<span class="pill pill--review">{{ t $.Lang "admin.u_last_admin" }}</span>{{ end }}
-                </td>
-                <td>{{ .Email }}</td>
-                <td>{{ if .Country }}{{ countryFlagEmoji .Country }} {{ .Country }}{{ else }}<span class="dot" title="{{ t $.Lang "admin.u_unknown" }}">—</span>{{ end }}</td>
-                <td>
-                  {{ $u := . }}
-                  <form method="post" action="/admin/users/{{ .ID }}/role" class="adm-inline">
-                    <input type="hidden" name="q" value="{{ $.UserSearch }}">
-                    <select class="select select--xs" name="role">
-                      {{ range $.AssignRoles }}<option value="{{ . }}"{{ if eq . $u.Role }} selected{{ end }}>{{ . }}</option>{{ end }}
-                    </select>
-                    <button class="btn btn--ghost btn--sm" type="submit" title="{{ t $.Lang "admin.assign" }}">→</button>
-                  </form>
-                </td>
-                <td>{{ fmtDate .CreatedAt }}</td>
-                <td class="adm-users__act" title="{{ t $.Lang "admin.u_activity" }}">{{ .Articles }} / {{ .Listings }} / {{ .Comments }}</td>
-                <td>
-                  <details class="adm-users__edit">
-                    <summary class="btn btn--ghost btn--sm">{{ t $.Lang "admin.u_edit" }}</summary>
-                    <form method="post" action="/admin/users/{{ .ID }}" class="adm-users__form">
-                      <input type="hidden" name="q" value="{{ $.UserSearch }}">
-                      <label>{{ t $.Lang "admin.u_last" }}<input class="input input--sm" name="last_name" value="{{ .Last }}" required></label>
-                      <label>{{ t $.Lang "admin.u_first" }}<input class="input input--sm" name="first_name" value="{{ .First }}" required></label>
-                      <label>{{ t $.Lang "admin.u_middle" }}<input class="input input--sm" name="middle_name" value="{{ .Middle }}"></label>
-                      <label class="checkline"><input type="checkbox" name="verified"{{ if .Verified }} checked{{ end }}> {{ t $.Lang "admin.u_verified" }}</label>
-                      <p class="hint">{{ t $.Lang "admin.u_email_locked" }}</p>
-                      <div class="adm-users__btns">
-                        <button class="btn btn--primary btn--sm" type="submit">{{ t $.Lang "admin.u_save" }}</button>
-                      </div>
-                    </form>
-                    {{ if not .IsLastRoot }}
-                    <form method="post" action="/admin/users/{{ .ID }}/delete" class="adm-users__form"
-                          onsubmit="return confirm('{{ t $.Lang "admin.u_delete_confirm" }}')">
-                      <input type="hidden" name="q" value="{{ $.UserSearch }}">
-                      <button class="btn btn--danger btn--sm" type="submit">{{ t $.Lang "admin.u_delete" }}</button>
-                    </form>
-                    {{ end }}
-                  </details>
-                </td>
-              </tr>
-              {{ end }}
-            </tbody>
-          </table>
-        </div>
-        {{ else }}<p class="adm-hint">{{ t .Lang "admin.users_empty" }}</p>{{ end }}
-      </div>
-      {{ end }}
-    </section>
-
-    {{ if .CanManageUsers }}
-    <section id="services" class="adm-section">
-      <div class="adm-panel adm-site adm-site--{{ .Site.Status }}">
-        <div class="adm-site__head">
-          <div>
-            <h2 style="margin:0">{{ t .Lang "svc.site" }}</h2>
-            <span class="adm-svc__state adm-svc__state--{{ if eq .Site.Status "on" }}on{{ else }}off{{ end }}">
-              {{ if eq .Site.Status "on" }}{{ t .Lang "svc.site_up" }}{{ else }}{{ t .Lang "svc.site_maint" }}{{ end }}
-            </span>
-          </div>
-        </div>
-        <p class="adm-hint" style="margin-top:6px">{{ t .Lang "svc.site_hint" }}</p>
-        <form class="adm-svc__row" method="post" action="/admin/services" style="border:none;padding:0">
-          <input type="hidden" name="code" value="site">
-          <div class="adm-svc__msgs">
-            <label>KZ<input class="input input--sm" type="text" name="message_kz" value="{{ .Site.MessageKZ }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
-            <label>RU<input class="input input--sm" type="text" name="message_ru" value="{{ .Site.MessageRU }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
-            <label>EN<input class="input input--sm" type="text" name="message_en" value="{{ .Site.MessageEN }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
-          </div>
-          <div class="adm-site__timer">
-            <label for="site-minutes">{{ t .Lang "svc.duration" }}</label>
-            <select class="select select--sm" id="site-minutes" name="minutes">
-              <option value="30">30 {{ t .Lang "svc.min" }}</option>
-              <option value="60" selected>1 {{ t .Lang "svc.hour" }}</option>
-              <option value="120">2 {{ t .Lang "svc.hour" }}</option>
-              <option value="240">4 {{ t .Lang "svc.hour" }}</option>
-              <option value="0">{{ t .Lang "svc.no_timer" }}</option>
-            </select>
-          </div>
-          <div class="adm-site__actions">
-            {{ if eq .Site.Status "on" }}
-            <button class="btn btn--danger btn--sm" type="submit" name="status" value="maintenance" onclick="return confirm('{{ t .Lang "svc.site_confirm_down" }}')">{{ t .Lang "svc.site_take_down" }}</button>
-            {{ else }}
-            <button class="btn btn--primary btn--sm" type="submit" name="status" value="on">{{ t .Lang "svc.site_bring_up" }}</button>
-            <button class="btn btn--ghost btn--sm" type="submit" name="status" value="maintenance">{{ t .Lang "svc.site_save_timer" }}</button>
-            {{ end }}
-          </div>
-        </form>
-      </div>
-      <div class="adm-panel">
-        <h2>{{ t .Lang "svc.title" }} {{ template "fhelp" (t .Lang "svc.hint") }}</h2>
-        <div class="adm-svc">
-          {{ range .Services }}
-          <form class="adm-svc__row" method="post" action="/admin/services">
-            <input type="hidden" name="code" value="{{ .Code }}">
-            <div class="adm-svc__top">
-              <div class="adm-svc__name">
-                <b>{{ t $.Lang .TitleKey }}</b>
-                <span class="adm-svc__state adm-svc__state--{{ .Status }}">{{ t $.Lang (printf "svc.state_%s" .Status) }}</span>
-              </div>
-              {{ $cur := .Status }}{{ $inv := .Invitable }}
-              <select class="select select--sm" name="status" aria-label="{{ t $.Lang "svc.state" }}">
-                {{ range $.ServiceStates }}{{ if or (ne . "invite_only") $inv }}<option value="{{ . }}"{{ if eq . $cur }} selected{{ end }}>{{ t $.Lang (printf "svc.state_%s" .) }}</option>{{ end }}{{ end }}
-              </select>
-            </div>
-            <details class="adm-svc__more">
-              <summary>{{ t $.Lang "svc.msg_ph" }}</summary>
-              <div class="adm-svc__msgs">
-                <label>KZ<input class="input input--sm" type="text" name="message_kz" value="{{ .MessageKZ }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
-                <label>RU<input class="input input--sm" type="text" name="message_ru" value="{{ .MessageRU }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
-                <label>EN<input class="input input--sm" type="text" name="message_en" value="{{ .MessageEN }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
-              </div>
-            </details>
-            <div class="adm-svc__foot">
-              <button class="btn btn--primary btn--sm" type="submit">{{ t $.Lang "svc.save" }}</button>
-            </div>
-          </form>
-          {{ end }}
-        </div>
-      </div>
-    </section>
-    {{ end }}
-
-    {{ if .CanModerate }}
-    <section id="moderation" class="adm-section">
-      <div class="adm-panel">
-        <h2>{{ t .Lang "admin.recent_comm" }}</h2>
-        {{ if .Stats.RecentComments }}
-        <ul class="adm-comments adm-scroll">
-          {{ range .Stats.RecentComments }}
-          <li>
-            <div class="adm-comments__head"><b>{{ .AuthorName }}</b> · <a href="/read/{{ .Slug }}#comments">{{ .Slug }}</a></div>
-            <p>{{ .Body }}</p>
-            <form method="post" action="/admin/comments/{{ .ID }}/hide"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "admin.hide" }}</button></form>
-          </li>
-          {{ end }}
-        </ul>
-        {{ else }}<p class="adm-hint">—</p>{{ end }}
-      </div>
-    </section>
-    {{ end }}
 
     <section id="guests" class="adm-section">
       <h2 class="adm-section__h">{{ t .Lang "ag.title" }}</h2>
@@ -579,11 +366,364 @@
       {{ end }}
     </section>
 
+    <section id="content" class="adm-section">
+      <div class="adm-cols">
+        <div class="adm-panel">
+          <h2>{{ t .Lang "admin.by_rubric" }}</h2>
+          <div class="adm-chart adm-scroll adm-scroll--chart">
+            {{ range .Stats.ByCat }}
+            <div class="adm-bar">
+              <a class="adm-bar__label" href="/?cat={{ .Slug }}">{{ t $.Lang (printf "cat.%s" .Slug) }}</a>
+              <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ money .Views }}</span>
+            </div>
+            {{ end }}
+          </div>
+        </div>
+        <div class="adm-panel">
+          <h2>{{ t .Lang "admin.top" }}</h2>
+          {{/* Ten headlines, several of them wrapping to two lines, made this
+               card half again as tall as the rubric chart beside it. Both are
+               capped to the same height now, so the row ends level. */}}
+          <div class="adm-scroll adm-scroll--chart">
+          <table class="adm-tbl">
+            <tbody>
+            {{ range .Stats.TopArticles }}
+            <tr><td><a href="/read/{{ .Slug }}">{{ .Title }}</a></td><td>{{ money .Views }}</td><td class="adm-tbl__score">▲ {{ .Score }}</td></tr>
+            {{ end }}
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {{ if .CanModerate }}
+    <section id="moderation" class="adm-section">
+      <div class="adm-panel">
+        <h2>{{ t .Lang "admin.recent_comm" }}</h2>
+        {{ if .Stats.RecentComments }}
+        <ul class="adm-comments adm-scroll">
+          {{ range .Stats.RecentComments }}
+          <li>
+            <div class="adm-comments__head"><b>{{ .AuthorName }}</b> · <a href="/read/{{ .Slug }}#comments">{{ .Slug }}</a></div>
+            <p>{{ .Body }}</p>
+            <form method="post" action="/admin/comments/{{ .ID }}/hide"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "admin.hide" }}</button></form>
+          </li>
+          {{ end }}
+        </ul>
+        {{ else }}<p class="adm-hint">—</p>{{ end }}
+      </div>
+
+    <div class="adm-cards2">
+    {{ if .CanManageUsers }}
+    <section class="adv-card">
+      <h2 class="adv-card__title">{{ t .Lang "agent.queue_title" }}{{ if .PendingAgents }} <span class="subbar__badge">{{ len .PendingAgents }}</span>{{ end }}</h2>
+      <p class="aside__text">{{ t .Lang "agent.queue_hint" }}</p>
+      {{ if not .PendingAgents }}<p class="aside__text">{{ t .Lang "agent.queue_none" }}</p>{{ end }}
+        <div class="adm-scroll adm-scroll--tall">
+    {{ range .PendingAgents }}
+      <div class="modrow modrow--queue">
+        <div>
+          <span class="pill pill--review">{{ t $.Lang "agent.st_pending" }}</span>
+          <span class="modrow__type"><b>{{ .Name }}</b></span>
+          {{/* The kind and БИН decide what the moderator is actually approving: a
+               person vouching for themselves, or a brand that must match the public
+               register. Without them the queue looks identical for both. */}}
+          <span class="pill">{{ t $.Lang .KindLabelKey }}</span>
+          {{ if .Agency }}<span class="modrow__type">{{ .Agency }}</span>{{ end }}
+      </div>
+          {{ if .BIN }}<span class="modrow__type">{{ t $.Lang "agent.bin" }}: {{ .BIN }}</span>{{ end }}
+          <span class="modrow__date">{{ .Phone }}</span>
+          <span class="modrow__type">{{ .Email }}</span>
+        </div>
+        {{ with .About }}<p class="modrow__note">{{ . }}</p>{{ end }}
+        <form method="post" action="/admin/agents/{{ .UserID }}/decide" class="modrow__actions">
+          <input class="input" name="reason" maxlength="300" placeholder="{{ t $.Lang "agent.reject_reason" }}">
+          <button class="btn btn--primary btn--sm" type="submit" name="decision" value="verify">{{ t $.Lang "agent.verify" }}</button>
+          <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="reject">{{ t $.Lang "agent.reject" }}</button>
+        </form>
+      </div>
+      {{ end }}
+    </section>
+    {{ end }}
+    <section class="adv-card">
+      <h2 class="adv-card__title">{{ t .Lang "aq.title" }}{{ if .Queue }} <span class="subbar__badge">{{ len .Queue }}</span>{{ end }}</h2>
+      <p class="aside__text">{{ t .Lang "aq.hint" }}</p>
+      {{ if not .Queue }}<p class="aside__text">{{ t .Lang "aq.none" }}</p>{{ end }}
+        <div class="adm-scroll adm-scroll--tall">
+    {{ range .Queue }}
+      <div class="modrow modrow--queue">
+        <div>
+          <span class="pill pill--review">{{ t $.Lang "st.review" }}</span>
+          <span class="modrow__type">{{ t $.Lang (printf "cat.%s" .Category) }}</span>
+          <span class="modrow__date">{{ fmtDate .Submitted }}</span>
+          <span class="modrow__type">{{ .AuthorEmail }}</span>
+        </div>
+        <p class="modrow__title"><a href="/read/{{ .Slug }}?preview=1" target="_blank" rel="noopener">«{{ .Title }}»</a></p>
+        <form method="post" action="/admin/articles/{{ .ID }}/decide" class="modrow__actions">
+          <input class="input" name="note" maxlength="500" placeholder="{{ t $.Lang "aq.note" }}">
+          <button class="btn btn--primary btn--sm" type="submit" name="decision" value="approve">{{ t $.Lang "aq.approve" }}</button>
+          <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="needs_work">{{ t $.Lang "aq.return" }}</button>
+          <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="reject">{{ t $.Lang "aq.reject" }}</button>
+        </form>
+      </div>
+      {{ end }}
+      </div>
+    </section>
+
+    <section class="adv-card">
+      <h2 class="adv-card__title">{{ t .Lang "mod.queue" }}{{ if .Appeals }} <span class="subbar__badge">{{ len .Appeals }}</span>{{ end }}</h2>
+      {{ if not .Appeals }}<p class="aside__text">{{ t .Lang "mod.queue_none" }}</p>{{ end }}
+        <div class="adm-scroll adm-scroll--tall">
+    {{ range .Appeals }}
+      <div class="modrow modrow--queue">
+        <div>
+          <span class="adv-status adv-status--{{ .Action }}">{{ t $.Lang (printf "mod.act_%s" .Action) }}</span>
+          <span class="modrow__type">{{ t $.Lang (printf "mod.tt_%s" .TargetType) }}</span>
+          <span class="modrow__date">{{ fmtDate .Created }}</span>
+          <span class="modrow__type">{{ if eq .ActorKind "agent" }}{{ t $.Lang "mod.by_agent" }}{{ else }}{{ t $.Lang "mod.by_human" }}{{ end }}</span>
+        </div>
+        {{ with .Title }}<p class="modrow__title">«{{ . }}»</p>{{ end }}
+      </div>
+        <p class="modrow__reason"><b>{{ t $.Lang "mod.reason" }}:</b> {{ t $.Lang (printf "mr.%s" .ReasonCode) }} · {{ .AuthorMail }}</p>
+        <p class="modrow__note">{{ .Body }}</p>
+        <form method="post" action="/admin/appeals/{{ .ID }}/resolve" class="modrow__actions">
+          <input class="input" name="note" maxlength="1000" placeholder="{{ t $.Lang "mod.note" }}">
+          <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="uphold">{{ t $.Lang "mod.uphold" }}</button>
+          <button class="btn btn--primary btn--sm" type="submit" name="decision" value="overturn">{{ t $.Lang "mod.overturn" }}</button>
+        </form>
+      </div>
+      {{ end }}
+    </section>
+
+    <section class="adv-card">
+      <h2 class="adv-card__title">{{ t .Lang "mod.log" }}</h2>
+      <div class="table-wrap adm-scroll adm-scroll--tall">
+        <table class="spec">
+          <tbody>
+          {{ range .ModLog }}
+          <tr>
+            <td>{{ fmtDate .Created }}</td>
+            <td><span class="adv-status adv-status--{{ .Action }}">{{ t $.Lang (printf "mod.act_%s" .Action) }}</span></td>
+            <td>{{ t $.Lang (printf "mod.tt_%s" .TargetType) }}{{ with .Title }} · «{{ . }}»{{ end }}</td>
+            <td>{{ t $.Lang (printf "mr.%s" .ReasonCode) }}</td>
+            <td>{{ if eq .ActorKind "agent" }}{{ t $.Lang "mod.by_agent" }}{{ else }}{{ t $.Lang "mod.by_human" }}{{ end }}</td>
+            <td>{{ with .AppealStatus }}{{ t $.Lang (printf "mod.st_%s" .) }}{{ end }}</td>
+          </tr>
+          {{ end }}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="adv-card">
+      <h2 class="adv-card__title">{{ t .Lang "an.title" }}</h2>
+      <p class="aside__text">{{ t .Lang "an.hint" }}</p>
+      <form method="post" action="/admin/analysis" class="modrow__actions" style="margin-top:12px">
+        <input class="input" name="brief" maxlength="1000" placeholder="{{ t .Lang "an.brief" }}" required>
+        <select class="select select--xs" name="lang">
+          {{ range langs }}<option value="{{ . }}">{{ langName . }}</option>{{ end }}
+        </select>
+        <button class="btn btn--primary btn--sm" type="submit">{{ t .Lang "an.run" }}</button>
+      </form>
+    </section>
+    </div>{{/* /.adm-cards2 */}}
+    </section>
+    {{ end }}
+
+    <section id="users" class="adm-section">
+      <div class="adm-cols">
+        <div class="adm-panel">
+          <h2>{{ t .Lang "admin.by_role" }}</h2>
+          <div class="adm-chart">
+            {{ range .Stats.UsersByRole }}
+            <div class="adm-bar">
+              <span class="adm-bar__label">{{ .Role }}</span>
+              <span class="adm-bar__track"><span class="adm-bar__fill adm-bar__fill--teal" style="width:{{ .Pct }}%"></span></span>
+              <span class="adm-bar__val">{{ .N }}</span>
+            </div>
+            {{ end }}
+          </div>
+          <p class="adm-hint">{{ t .Lang "admin.listings" }}: {{ .Stats.ListingsActive }} {{ t .Lang "admin.active" }} · {{ .Stats.ListingsExpired }} {{ t .Lang "admin.expired" }}</p>
+        </div>
+        {{ if .CanManageUsers }}
+        <div class="adm-panel">
+          <h2>{{ t .Lang "admin.assign_role" }}</h2>
+          <form class="adm-roleform" method="post" action="/admin/roles">
+            <input class="input" type="email" name="email" placeholder="{{ t .Lang "admin.email" }}" required>
+            <select class="select" name="role">{{ range .AssignRoles }}<option value="{{ . }}">{{ . }}</option>{{ end }}</select>
+            <button class="btn btn--primary" type="submit">{{ t .Lang "admin.assign" }}</button>
+          </form>
+        </div>
+        {{ end }}
+      </div>
+
+      {{ if .CanManageUsers }}
+      {{/* The register itself. The two cards above count accounts by role; they
+           cannot tell you who anyone is, which is no basis for acting on a
+           complaint about a person. */}}
+      <div class="adm-panel" style="margin-top:18px">
+        <h2>{{ t .Lang "admin.users_title" }} {{ template "fhelp" (t .Lang "admin.users_note") }}</h2>
+        <form class="adm-usersearch" method="get" action="/admin">
+          <input class="input" type="search" name="uq" value="{{ .UserSearch }}" placeholder="{{ t .Lang "admin.users_search" }}">
+          <button class="btn btn--primary" type="submit">{{ t .Lang "admin.users_find" }}</button>
+        </form>
+        {{ if .Users }}
+        <div class="table-wrap adm-scroll adm-scroll--tall">
+          <table class="spec spec--sticky adm-users">
+            <thead>
+              <tr>
+                <th>{{ t .Lang "admin.u_name" }}</th>
+                <th>{{ t .Lang "admin.u_email" }}</th>
+                <th>{{ t .Lang "admin.u_country" }}</th>
+                <th>{{ t .Lang "admin.u_role" }}</th>
+                <th>{{ t .Lang "admin.u_registered" }}</th>
+                <th title="{{ t .Lang "admin.u_activity" }}">📝</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{ range .Users }}
+              <tr>
+                <td>
+                  <b>{{ if .FullName }}{{ .FullName }}{{ else }}<span class="dot">—</span>{{ end }}</b>
+                  {{ if not .Verified }}<span class="pill pill--draft">{{ t $.Lang "admin.u_verified" }}: —</span>{{ end }}
+                  {{ if .IsLastRoot }}<span class="pill pill--review">{{ t $.Lang "admin.u_last_admin" }}</span>{{ end }}
+                </td>
+                <td>{{ .Email }}</td>
+                <td>{{ if .Country }}{{ countryFlagEmoji .Country }} {{ .Country }}{{ else }}<span class="dot" title="{{ t $.Lang "admin.u_unknown" }}">—</span>{{ end }}</td>
+                <td>
+                  {{ $u := . }}
+                  <form method="post" action="/admin/users/{{ .ID }}/role" class="adm-inline">
+                    <input type="hidden" name="q" value="{{ $.UserSearch }}">
+                    <select class="select select--xs" name="role">
+                      {{ range $.AssignRoles }}<option value="{{ . }}"{{ if eq . $u.Role }} selected{{ end }}>{{ . }}</option>{{ end }}
+                    </select>
+                    <button class="btn btn--ghost btn--sm" type="submit" title="{{ t $.Lang "admin.assign" }}">→</button>
+                  </form>
+                </td>
+                <td>{{ fmtDate .CreatedAt }}</td>
+                <td class="adm-users__act" title="{{ t $.Lang "admin.u_activity" }}">{{ .Articles }} / {{ .Listings }} / {{ .Comments }}</td>
+                <td>
+                  <details class="adm-users__edit">
+                    <summary class="btn btn--ghost btn--sm">{{ t $.Lang "admin.u_edit" }}</summary>
+                    <form method="post" action="/admin/users/{{ .ID }}" class="adm-users__form">
+                      <input type="hidden" name="q" value="{{ $.UserSearch }}">
+                      <label>{{ t $.Lang "admin.u_last" }}<input class="input input--sm" name="last_name" value="{{ .Last }}" required></label>
+                      <label>{{ t $.Lang "admin.u_first" }}<input class="input input--sm" name="first_name" value="{{ .First }}" required></label>
+                      <label>{{ t $.Lang "admin.u_middle" }}<input class="input input--sm" name="middle_name" value="{{ .Middle }}"></label>
+                      <label class="checkline"><input type="checkbox" name="verified"{{ if .Verified }} checked{{ end }}> {{ t $.Lang "admin.u_verified" }}</label>
+                      <p class="hint">{{ t $.Lang "admin.u_email_locked" }}</p>
+                      <div class="adm-users__btns">
+                        <button class="btn btn--primary btn--sm" type="submit">{{ t $.Lang "admin.u_save" }}</button>
+                      </div>
+                    </form>
+                    {{ if not .IsLastRoot }}
+                    <form method="post" action="/admin/users/{{ .ID }}/delete" class="adm-users__form"
+                          onsubmit="return confirm('{{ t $.Lang "admin.u_delete_confirm" }}')">
+                      <input type="hidden" name="q" value="{{ $.UserSearch }}">
+                      <button class="btn btn--danger btn--sm" type="submit">{{ t $.Lang "admin.u_delete" }}</button>
+                    </form>
+                    {{ end }}
+                  </details>
+                </td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+        {{ else }}<p class="adm-hint">{{ t .Lang "admin.users_empty" }}</p>{{ end }}
+      </div>
+      {{ end }}
+    </section>
+
+    {{ if .CanFinance }}
+    <section id="finance" class="adm-section">
+      <div class="adm-panel">
+        <h2>{{ t .Lang "admin.finance" }}</h2>
+        <p class="adm-hint">{{ t .Lang "admin.finance_soon" }}</p>
+      </div>
+    </section>
+    {{ end }}
+
+    {{ if .CanManageUsers }}
+    <section id="services" class="adm-section">
+      <div class="adm-panel adm-site adm-site--{{ .Site.Status }}">
+        <div class="adm-site__head">
+          <div>
+            <h2 style="margin:0">{{ t .Lang "svc.site" }}</h2>
+            <span class="adm-svc__state adm-svc__state--{{ if eq .Site.Status "on" }}on{{ else }}off{{ end }}">
+              {{ if eq .Site.Status "on" }}{{ t .Lang "svc.site_up" }}{{ else }}{{ t .Lang "svc.site_maint" }}{{ end }}
+            </span>
+          </div>
+        </div>
+        <p class="adm-hint" style="margin-top:6px">{{ t .Lang "svc.site_hint" }}</p>
+        <form class="adm-svc__row" method="post" action="/admin/services" style="border:none;padding:0">
+          <input type="hidden" name="code" value="site">
+          <div class="adm-svc__msgs">
+            <label>KZ<input class="input input--sm" type="text" name="message_kz" value="{{ .Site.MessageKZ }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
+            <label>RU<input class="input input--sm" type="text" name="message_ru" value="{{ .Site.MessageRU }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
+            <label>EN<input class="input input--sm" type="text" name="message_en" value="{{ .Site.MessageEN }}" placeholder="{{ t .Lang "svc.msg_ph" }}"></label>
+          </div>
+          <div class="adm-site__timer">
+            <label for="site-minutes">{{ t .Lang "svc.duration" }}</label>
+            <select class="select select--sm" id="site-minutes" name="minutes">
+              <option value="30">30 {{ t .Lang "svc.min" }}</option>
+              <option value="60" selected>1 {{ t .Lang "svc.hour" }}</option>
+              <option value="120">2 {{ t .Lang "svc.hour" }}</option>
+              <option value="240">4 {{ t .Lang "svc.hour" }}</option>
+              <option value="0">{{ t .Lang "svc.no_timer" }}</option>
+            </select>
+          </div>
+          <div class="adm-site__actions">
+            {{ if eq .Site.Status "on" }}
+            <button class="btn btn--danger btn--sm" type="submit" name="status" value="maintenance" onclick="return confirm('{{ t .Lang "svc.site_confirm_down" }}')">{{ t .Lang "svc.site_take_down" }}</button>
+            {{ else }}
+            <button class="btn btn--primary btn--sm" type="submit" name="status" value="on">{{ t .Lang "svc.site_bring_up" }}</button>
+            <button class="btn btn--ghost btn--sm" type="submit" name="status" value="maintenance">{{ t .Lang "svc.site_save_timer" }}</button>
+            {{ end }}
+          </div>
+        </form>
+      </div>
+      <div class="adm-panel">
+        <h2>{{ t .Lang "svc.title" }} {{ template "fhelp" (t .Lang "svc.hint") }}</h2>
+        <div class="adm-svc">
+          {{ range .Services }}
+          <form class="adm-svc__row" method="post" action="/admin/services">
+            <input type="hidden" name="code" value="{{ .Code }}">
+            <div class="adm-svc__top">
+              <div class="adm-svc__name">
+                <b>{{ t $.Lang .TitleKey }}</b>
+                <span class="adm-svc__state adm-svc__state--{{ .Status }}">{{ t $.Lang (printf "svc.state_%s" .Status) }}</span>
+              </div>
+              {{ $cur := .Status }}{{ $inv := .Invitable }}
+              <select class="select select--sm" name="status" aria-label="{{ t $.Lang "svc.state" }}">
+                {{ range $.ServiceStates }}{{ if or (ne . "invite_only") $inv }}<option value="{{ . }}"{{ if eq . $cur }} selected{{ end }}>{{ t $.Lang (printf "svc.state_%s" .) }}</option>{{ end }}{{ end }}
+              </select>
+            </div>
+            <details class="adm-svc__more">
+              <summary>{{ t $.Lang "svc.msg_ph" }}</summary>
+              <div class="adm-svc__msgs">
+                <label>KZ<input class="input input--sm" type="text" name="message_kz" value="{{ .MessageKZ }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
+                <label>RU<input class="input input--sm" type="text" name="message_ru" value="{{ .MessageRU }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
+                <label>EN<input class="input input--sm" type="text" name="message_en" value="{{ .MessageEN }}" placeholder="{{ t $.Lang "svc.msg_ph" }}"></label>
+              </div>
+            </details>
+            <div class="adm-svc__foot">
+              <button class="btn btn--primary btn--sm" type="submit">{{ t $.Lang "svc.save" }}</button>
+            </div>
+          </form>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+    {{ end }}
+
     {{ if .CanManageUsers }}
     {{/* Side by side. Each of these holds a checkbox, a short radio list and a
          couple of fields, and each was taking a full screen width to say it —
          two long strips of mostly empty card. */}}
-    <div class="adm-cols adm-cols--settings">
+    <div class="adm-cols adm-cols--settings" id="settings">
     <section id="ai" class="adm-section">
       <h2 class="adm-section__h">{{ t .Lang "aic.title" }}</h2>
       <p class="adm-hint">{{ t .Lang "aic.note" }}</p>
@@ -668,130 +808,6 @@
 
     </div>{{/* /.adm-flow */}}
 
-{{ if .CanModerate }}
-<div class="adm-cards2">
-{{ if .CanManageUsers }}
-<section class="adv-card">
-  <h2 class="adv-card__title">{{ t .Lang "agent.queue_title" }}{{ if .PendingAgents }} <span class="subbar__badge">{{ len .PendingAgents }}</span>{{ end }}</h2>
-  <p class="aside__text">{{ t .Lang "agent.queue_hint" }}</p>
-  {{ if not .PendingAgents }}<p class="aside__text">{{ t .Lang "agent.queue_none" }}</p>{{ end }}
-    <div class="adm-scroll adm-scroll--tall">
-{{ range .PendingAgents }}
-  <div class="modrow modrow--queue">
-    <div>
-      <span class="pill pill--review">{{ t $.Lang "agent.st_pending" }}</span>
-      <span class="modrow__type"><b>{{ .Name }}</b></span>
-      {{/* The kind and БИН decide what the moderator is actually approving: a
-           person vouching for themselves, or a brand that must match the public
-           register. Without them the queue looks identical for both. */}}
-      <span class="pill">{{ t $.Lang .KindLabelKey }}</span>
-      {{ if .Agency }}<span class="modrow__type">{{ .Agency }}</span>{{ end }}
-  </div>
-      {{ if .BIN }}<span class="modrow__type">{{ t $.Lang "agent.bin" }}: {{ .BIN }}</span>{{ end }}
-      <span class="modrow__date">{{ .Phone }}</span>
-      <span class="modrow__type">{{ .Email }}</span>
-    </div>
-    {{ with .About }}<p class="modrow__note">{{ . }}</p>{{ end }}
-    <form method="post" action="/admin/agents/{{ .UserID }}/decide" class="modrow__actions">
-      <input class="input" name="reason" maxlength="300" placeholder="{{ t $.Lang "agent.reject_reason" }}">
-      <button class="btn btn--primary btn--sm" type="submit" name="decision" value="verify">{{ t $.Lang "agent.verify" }}</button>
-      <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="reject">{{ t $.Lang "agent.reject" }}</button>
-    </form>
-  </div>
-  {{ end }}
-</section>
-{{ end }}
-<section class="adv-card">
-  <h2 class="adv-card__title">{{ t .Lang "aq.title" }}{{ if .Queue }} <span class="subbar__badge">{{ len .Queue }}</span>{{ end }}</h2>
-  <p class="aside__text">{{ t .Lang "aq.hint" }}</p>
-  {{ if not .Queue }}<p class="aside__text">{{ t .Lang "aq.none" }}</p>{{ end }}
-    <div class="adm-scroll adm-scroll--tall">
-{{ range .Queue }}
-  <div class="modrow modrow--queue">
-    <div>
-      <span class="pill pill--review">{{ t $.Lang "st.review" }}</span>
-      <span class="modrow__type">{{ t $.Lang (printf "cat.%s" .Category) }}</span>
-      <span class="modrow__date">{{ fmtDate .Submitted }}</span>
-      <span class="modrow__type">{{ .AuthorEmail }}</span>
-    </div>
-    <p class="modrow__title"><a href="/read/{{ .Slug }}?preview=1" target="_blank" rel="noopener">«{{ .Title }}»</a></p>
-    <form method="post" action="/admin/articles/{{ .ID }}/decide" class="modrow__actions">
-      <input class="input" name="note" maxlength="500" placeholder="{{ t $.Lang "aq.note" }}">
-      <button class="btn btn--primary btn--sm" type="submit" name="decision" value="approve">{{ t $.Lang "aq.approve" }}</button>
-      <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="needs_work">{{ t $.Lang "aq.return" }}</button>
-      <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="reject">{{ t $.Lang "aq.reject" }}</button>
-    </form>
-  </div>
-  {{ end }}
-  </div>
-</section>
-
-<section class="adv-card">
-  <h2 class="adv-card__title">{{ t .Lang "mod.queue" }}{{ if .Appeals }} <span class="subbar__badge">{{ len .Appeals }}</span>{{ end }}</h2>
-  {{ if not .Appeals }}<p class="aside__text">{{ t .Lang "mod.queue_none" }}</p>{{ end }}
-    <div class="adm-scroll adm-scroll--tall">
-{{ range .Appeals }}
-  <div class="modrow modrow--queue">
-    <div>
-      <span class="adv-status adv-status--{{ .Action }}">{{ t $.Lang (printf "mod.act_%s" .Action) }}</span>
-      <span class="modrow__type">{{ t $.Lang (printf "mod.tt_%s" .TargetType) }}</span>
-      <span class="modrow__date">{{ fmtDate .Created }}</span>
-      <span class="modrow__type">{{ if eq .ActorKind "agent" }}{{ t $.Lang "mod.by_agent" }}{{ else }}{{ t $.Lang "mod.by_human" }}{{ end }}</span>
-    </div>
-    {{ with .Title }}<p class="modrow__title">«{{ . }}»</p>{{ end }}
-  </div>
-    <p class="modrow__reason"><b>{{ t $.Lang "mod.reason" }}:</b> {{ t $.Lang (printf "mr.%s" .ReasonCode) }} · {{ .AuthorMail }}</p>
-    <p class="modrow__note">{{ .Body }}</p>
-    <form method="post" action="/admin/appeals/{{ .ID }}/resolve" class="modrow__actions">
-      <input class="input" name="note" maxlength="1000" placeholder="{{ t $.Lang "mod.note" }}">
-      <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="uphold">{{ t $.Lang "mod.uphold" }}</button>
-      <button class="btn btn--primary btn--sm" type="submit" name="decision" value="overturn">{{ t $.Lang "mod.overturn" }}</button>
-    </form>
-  </div>
-  {{ end }}
-</section>
-
-<section class="adv-card">
-  <h2 class="adv-card__title">{{ t .Lang "mod.log" }}</h2>
-  <div class="table-wrap adm-scroll adm-scroll--tall">
-    <table class="spec">
-      <tbody>
-      {{ range .ModLog }}
-      <tr>
-        <td>{{ fmtDate .Created }}</td>
-        <td><span class="adv-status adv-status--{{ .Action }}">{{ t $.Lang (printf "mod.act_%s" .Action) }}</span></td>
-        <td>{{ t $.Lang (printf "mod.tt_%s" .TargetType) }}{{ with .Title }} · «{{ . }}»{{ end }}</td>
-        <td>{{ t $.Lang (printf "mr.%s" .ReasonCode) }}</td>
-        <td>{{ if eq .ActorKind "agent" }}{{ t $.Lang "mod.by_agent" }}{{ else }}{{ t $.Lang "mod.by_human" }}{{ end }}</td>
-        <td>{{ with .AppealStatus }}{{ t $.Lang (printf "mod.st_%s" .) }}{{ end }}</td>
-      </tr>
-      {{ end }}
-      </tbody>
-    </table>
-  </div>
-</section>
-<section class="adv-card">
-  <h2 class="adv-card__title">{{ t .Lang "an.title" }}</h2>
-  <p class="aside__text">{{ t .Lang "an.hint" }}</p>
-  <form method="post" action="/admin/analysis" class="modrow__actions" style="margin-top:12px">
-    <input class="input" name="brief" maxlength="1000" placeholder="{{ t .Lang "an.brief" }}" required>
-    <select class="select select--xs" name="lang">
-      {{ range langs }}<option value="{{ . }}">{{ langName . }}</option>{{ end }}
-    </select>
-    <button class="btn btn--primary btn--sm" type="submit">{{ t .Lang "an.run" }}</button>
-  </form>
-</section>
-</div>{{/* /.adm-cards2 */}}
-{{ end }}
-
-{{ if .CanFinance }}
-<section id="finance" class="adm-section">
-  <div class="adm-panel">
-    <h2>{{ t .Lang "admin.finance" }}</h2>
-    <p class="adm-hint">{{ t .Lang "admin.finance_soon" }}</p>
-  </div>
-</section>
-{{ end }}
 </main>
 </div>
 
@@ -804,19 +820,43 @@
       document.documentElement.setAttribute('data-theme', next);
       try { localStorage.setItem('shanraq-theme', next); } catch (e) {}
     });
-    var links = document.querySelectorAll('[data-nav]');
-    var sections = [].map.call(links, function (l) { return document.querySelector(l.getAttribute('href')); });
-    if ('IntersectionObserver' in window) {
-      var obs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            var id = '#' + e.target.id;
-            links.forEach(function (l) { l.classList.toggle('is-active', l.getAttribute('href') === id); });
-          }
-        });
-      }, { rootMargin: '-45% 0px -50% 0px' });
-      sections.forEach(function (s) { if (s) obs.observe(s); });
+    // Which nav item is current is decided by measuring, not by waiting for an
+    // intersection callback. The observer this replaces watched a thin band in
+    // the middle of the viewport, which had two faults: the first section sits
+    // above that band at rest and so could never light up, and when two
+    // sections were in the band at once whichever callback ran last won.
+    var items = [].slice.call(document.querySelectorAll('[data-nav]')).map(function (l) {
+      return { link: l, el: document.querySelector(l.getAttribute('href')) };
+    }).filter(function (i) { return i.el; });
+    if (!items.length) { return; }
+
+    function sync() {
+      // A section becomes current once its top passes a line a third of the way
+      // down the viewport, and stays current until the next one reaches it.
+      var line = window.innerHeight / 3;
+      var current = 0;
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].el.getBoundingClientRect().top <= line) { current = i; }
+      }
+      // The last sections can be too short to ever reach the line, so the foot
+      // of the page belongs to the final one by definition.
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+        current = items.length - 1;
+      }
+      for (var j = 0; j < items.length; j++) {
+        items[j].link.classList.toggle('is-active', j === current);
+      }
     }
+
+    var queued = false;
+    function onScroll() {
+      if (queued) { return; }
+      queued = true;
+      window.requestAnimationFrame(function () { queued = false; sync(); });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    sync();
   })();
 </script>
 </body>

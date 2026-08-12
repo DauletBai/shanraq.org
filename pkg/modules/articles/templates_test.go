@@ -555,3 +555,82 @@ func TestAdminGuestPanelsSplitInThree(t *testing.T) {
 		t.Error("ticks should place the label and its gridline at the same offset")
 	}
 }
+
+// The sidebar highlight follows scroll position, so a nav whose order disagrees
+// with the document sends the marker jumping up and back down as you scroll.
+// They drifted apart once already — from the fifth item on — and nothing caught
+// it.
+// renderAdminFull renders the admin page for a root user, so every
+// permission-gated section is present.
+func renderAdminFull(t *testing.T) string {
+	t.Helper()
+	tmpl := buildTemplates(t)
+	rows := []GuestSimpleRow{{Title: "Прямые", N: 10, Pct: 100}}
+	page := AdminPage{Base: Base{Lang: LangRU, Title: "T"}, Email: "a@b.c", Role: "admin",
+		CanManageUsers: true, CanModerate: true, CanFinance: true,
+		AssignRoles: assignableRoles, ServiceStates: []string{svcOn},
+		Site:  ServiceFlag{Code: SvcSite, TitleKey: "svc.site", Status: svcOn},
+		Stats: AdminStats{Users: 1},
+		Guests: GuestAnalytics{HasData: true, Sources: rows, Bots: rows, Devices: rows,
+			OS: rows, Browsers: rows, Countries: rows, Langs: rows, EnglishBy: rows, VPNLangs: rows},
+	}
+	var sb strings.Builder
+	if err := tmpl.ExecuteTemplate(&sb, "admin", page); err != nil {
+		t.Fatal(err)
+	}
+	return sb.String()
+}
+
+func TestAdminNavMatchesSectionOrder(t *testing.T) {
+	out := renderAdminFull(t)
+
+	navRe := regexp.MustCompile(`href="#([a-z]+)"[^>]*data-nav`)
+	var nav []string
+	for _, m := range navRe.FindAllStringSubmatch(out, -1) {
+		nav = append(nav, m[1])
+	}
+	secRe := regexp.MustCompile(`<(?:section|div)[^>]*id="([a-z]+)"[^>]*class="adm-section"|<div class="adm-cols adm-cols--settings" id="([a-z]+)"`)
+	var doc []string
+	for _, m := range secRe.FindAllStringSubmatch(out, -1) {
+		id := m[1]
+		if id == "" {
+			id = m[2]
+		}
+		doc = append(doc, id)
+	}
+	// Only the anchors the nav points at matter; ai and payments sit side by side
+	// inside #settings and share one entry precisely because they share a height.
+	want := map[string]bool{}
+	for _, n := range nav {
+		want[n] = true
+	}
+	var filtered []string
+	for _, d := range doc {
+		if want[d] {
+			filtered = append(filtered, d)
+		}
+	}
+
+	if len(nav) == 0 || len(filtered) == 0 {
+		t.Fatalf("found %d nav entries and %d sections — the locator is broken", len(nav), len(filtered))
+	}
+	if len(nav) != len(filtered) {
+		t.Fatalf("nav has %v but the page has %v — every entry must have a section and vice versa", nav, filtered)
+	}
+	for i := range nav {
+		if nav[i] != filtered[i] {
+			t.Fatalf("order diverges at position %d: nav %v, page %v", i+1, nav, filtered)
+		}
+	}
+}
+
+// A nav entry pointing at nothing can never light up — that is how "Обзор" spent
+// months looking broken.
+func TestAdminNavAnchorsExist(t *testing.T) {
+	out := renderAdminFull(t)
+	for _, m := range regexp.MustCompile(`href="#([a-z]+)"[^>]*data-nav`).FindAllStringSubmatch(out, -1) {
+		if !strings.Contains(out, `id="`+m[1]+`"`) {
+			t.Errorf("nav points at #%s but no element carries that id", m[1])
+		}
+	}
+}

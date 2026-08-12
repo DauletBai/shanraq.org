@@ -1011,9 +1011,17 @@ var messages = map[string]map[string]string{
 	"admin.assign":         {"kz": "Тағайындау", "ru": "Назначить", "en": "Assign"},
 	"admin.finance":        {"kz": "Қаржы", "ru": "Финансы", "en": "Finance"},
 	"admin.finance_soon":   {"kz": "Kaspi қосылғаннан кейін қолжетімді болады.", "ru": "Появится после подключения Kaspi.", "en": "Available after Kaspi is connected."},
-	"admin.moderation":     {"kz": "Модерация", "ru": "Модерация", "en": "Moderation"},
-	"admin.hide":           {"kz": "Жасыру", "ru": "Скрыть", "en": "Hide"},
-	"admin.role_set":       {"kz": "Рөл тағайындалды.", "ru": "Роль назначена.", "en": "Role assigned."},
+	// Sidebar group labels. They exist so related sections read as a block; the
+	// nav order must stay identical to the order the sections appear in the page.
+	"admin.grp_analytics":     {"kz": "Аналитика", "ru": "Аналитика", "en": "Analytics"},
+	"admin.grp_content":       {"kz": "Мазмұн", "ru": "Контент", "en": "Content"},
+	"admin.grp_people":        {"kz": "Адамдар", "ru": "Люди", "en": "People"},
+	"admin.grp_money":         {"kz": "Ақша", "ru": "Деньги", "en": "Money"},
+	"admin.grp_settings":      {"kz": "Баптаулар", "ru": "Настройки", "en": "Settings"},
+	"admin.grp_settings_pair": {"kz": "ЖИ және төлемдер", "ru": "ИИ и платежи", "en": "AI and payments"},
+	"admin.moderation":        {"kz": "Модерация", "ru": "Модерация", "en": "Moderation"},
+	"admin.hide":              {"kz": "Жасыру", "ru": "Скрыть", "en": "Hide"},
+	"admin.role_set":          {"kz": "Рөл тағайындалды.", "ru": "Роль назначена.", "en": "Role assigned."},
 
 	// Account register.
 	"admin.users_title":    {"kz": "Тіркелген қолданушылар", "ru": "Зарегистрированные пользователи", "en": "Registered users"},

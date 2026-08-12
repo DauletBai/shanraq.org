@@ -1417,6 +1417,15 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm__navlink.is-active { background: var(--gold); color: #fff; }
 :root[data-theme="dark"] .adm__navlink.is-active { color: #fff; }
 .adm__side-foot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: 14px; border-top: 1px solid var(--line); }
+/* Group label in the admin sidebar. Not a link and not clickable: it names the
+   block of sections beneath it, so it has to read as chrome rather than as a
+   navigation item one could miss. */
+.adm__navgroup {
+  display: block; margin: 14px 0 4px; padding: 0 10px;
+  font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); font-weight: 700;
+}
+.adm__nav > .adm__navgroup:first-child { margin-top: 6px; }
 .adm__sidelink { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
 .adm__sidelink:hover { color: var(--gold-strong); text-decoration: none; }
 
