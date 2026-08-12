@@ -1412,7 +1412,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm__brand:hover { text-decoration: none; }
 .adm__mark { width: 34px; height: 34px; }
 .adm__nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-.adm__navlink { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--ink-soft); font-weight: 600; font-size: 0.95rem; }
+/* Tight rows: the group labels added height to the column, and on a laptop
+   the nav has to stay in view without its own scrollbar. */
+.adm__navlink { display: flex; align-items: center; gap: 10px; padding: 5px 12px; border-radius: 10px; color: var(--ink-soft); font-weight: 600; font-size: 0.95rem; }
 .adm__navlink:hover { background: var(--surface-2); text-decoration: none; color: var(--ink); }
 .adm__navlink.is-active { background: var(--gold); color: #fff; }
 :root[data-theme="dark"] .adm__navlink.is-active { color: #fff; }
