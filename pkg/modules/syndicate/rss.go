@@ -10,6 +10,10 @@ import (
 
 var rssLangs = map[string]bool{"kz": true, "ru": true, "en": true}
 
+// rssLangOrder is the same set in a fixed order, for places that must emit
+// every language deterministically rather than test one for membership.
+var rssLangOrder = []string{"kz", "ru", "en"}
+
 type rssFeed struct {
 	XMLName xml.Name   `xml:"rss"`
 	Version string     `xml:"version,attr"`

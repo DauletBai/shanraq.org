@@ -101,8 +101,11 @@ type MediaConfig struct {
 // SyndicateConfig controls resilience channels: RSS is always on; Telegram
 // auto-posting activates only when a bot token and chat are configured.
 type SyndicateConfig struct {
-	BaseURL  string         `mapstructure:"base_url"`
-	Telegram TelegramConfig `mapstructure:"telegram"`
+	BaseURL string `mapstructure:"base_url"`
+	// IndexNowKey authorises instant submission of new URLs to Bing and Yandex.
+	// Any 8-128 hex characters; empty disables the feature.
+	IndexNowKey string         `mapstructure:"indexnow_key"`
+	Telegram    TelegramConfig `mapstructure:"telegram"`
 }
 
 type TelegramConfig struct {

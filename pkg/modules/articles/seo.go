@@ -75,7 +75,7 @@ func (m *Module) handleRobots(w http.ResponseWriter, _ *http.Request) {
 	for _, b := range seoBots {
 		fmt.Fprintf(w, "User-agent: %s\nDisallow: /\n\n", b)
 	}
-	fmt.Fprintf(w, "Sitemap: %s/sitemap.xml\nSitemap: %s/sitemap-listings.xml\n", site, site)
+	fmt.Fprintf(w, "Sitemap: %s/sitemap.xml\nSitemap: %s/sitemap-listings.xml\nSitemap: %s/sitemap-news.xml\n", site, site, site)
 }
 
 func seoURL(site, path, lang string) string {
@@ -154,6 +154,38 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 	})
 	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
 	_, _ = w.Write(doc)
+}
+
+// handleSitemapNews emits the Google News sitemap: only articles published in
+// the last 48 hours, in the language each was written in.
+//
+// A separate format because it answers a different question. The main sitemap
+// says "these pages exist"; the news sitemap says "this went up in the last two
+// days", which is the window Google News and Discover read. Google requires
+// entries be dropped after 48 hours, so this file is usually short and often
+// empty — an empty <urlset> is valid and is the correct answer on a quiet day.
+func (m *Module) handleSitemapNews(w http.ResponseWriter, r *http.Request) {
+	site := m.siteURL()
+	var b strings.Builder
+	b.WriteString(`<?xml version="1.0" encoding="UTF-8"?>` + "\n")
+	b.WriteString(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" ` +
+		`xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">` + "\n")
+	if arts, err := m.store.NewsSitemapArticles(r.Context()); err != nil {
+		m.rt.Logger.Error("news sitemap", zap.Error(err))
+	} else {
+		for _, a := range arts {
+			b.WriteString("<url><loc>")
+			b.WriteString(seoURL(site, "/read/"+a.Slug, a.Lang))
+			b.WriteString("</loc><news:news><news:publication><news:name>Shanraq.org</news:name>")
+			b.WriteString("<news:language>" + htmlLang(a.Lang) + "</news:language></news:publication>")
+			b.WriteString("<news:publication_date>" + a.Published.UTC().Format(time.RFC3339) + "</news:publication_date>")
+			b.WriteString("<news:title>" + xmlEscape(a.Title) + "</news:title>")
+			b.WriteString("</news:news></url>\n")
+		}
+	}
+	b.WriteString("</urlset>\n")
+	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+	_, _ = w.Write([]byte(b.String()))
 }
 
 // handleSitemapListings emits a sitemap of only real-estate listing detail
@@ -245,7 +277,42 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 		}
 		ld["dateModified"] = mod.UTC().Format(time.RFC3339)
 	}
-	page.JSONLD = jsonLD(ld)
+	// Two blocks in one array: schema.org allows it and Google reads it. The
+	// breadcrumb is what puts a "Shanraq.org › Мир › Европа" trail under the
+	// result instead of a bare URL.
+	page.JSONLD = jsonLD([]any{ld, breadcrumbLD(page)})
+}
+
+// breadcrumbLD builds the trail shown under a search result: site → category →
+// subcategory → this article. Only the levels that exist are emitted, so an
+// article filed without a subcategory produces a three-step trail rather than
+// one with a hole in it.
+func breadcrumbLD(page *ArticlePage) map[string]any {
+	items := []map[string]any{{
+		"@type": "ListItem", "position": 1,
+		"name": "Shanraq.org", "item": page.SiteURL + "/?lang=" + page.Lang,
+	}}
+	if page.Category != "" {
+		items = append(items, map[string]any{
+			"@type": "ListItem", "position": len(items) + 1,
+			"name": T(page.Lang, "cat."+page.Category),
+			"item": page.SiteURL + "/?cat=" + page.Category + "&lang=" + page.Lang,
+		})
+	}
+	if page.Subcategory != "" {
+		items = append(items, map[string]any{
+			"@type": "ListItem", "position": len(items) + 1,
+			"name": T(page.Lang, "sub."+page.Subcategory),
+			"item": page.SiteURL + "/?sub=" + page.Subcategory + "&lang=" + page.Lang,
+		})
+	}
+	// The last crumb is the page itself and carries no link, per Google's guidance.
+	items = append(items, map[string]any{
+		"@type": "ListItem", "position": len(items) + 1, "name": page.Title,
+	})
+	return map[string]any{
+		"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": items,
+	}
 }
 
 // applyListingSEO fills meta description, social image, and a Product JSON-LD
@@ -293,6 +360,45 @@ func (m *Module) applyListingSEO(page *ListingViewPage) {
 type SitemapItem struct {
 	Slug    string
 	Updated time.Time
+}
+
+// NewsItem is one entry in the Google News sitemap: the article in the language
+// it was written in, with the title and date that format requires.
+type NewsItem struct {
+	Slug      string
+	Lang      string
+	Title     string
+	Published time.Time
+}
+
+// NewsSitemapArticles returns articles published in the last 48 hours — the
+// window Google News accepts — in their original language, with that language's
+// title. Non-indexable articles are excluded on the same grounds as everywhere
+// else: a page kept out of the index has no business being pushed as news.
+func (s *Store) NewsSitemapArticles(ctx context.Context) ([]NewsItem, error) {
+	rows, err := s.db.Query(ctx, `
+		SELECT a.slug, a.original_lang, t.title, a.published_at
+		  FROM articles a
+		  JOIN article_translations t
+		    ON t.article_id = a.id AND t.lang = a.original_lang AND t.title <> ''
+		 WHERE a.status = 'published' AND a.indexable
+		   AND a.published_at IS NOT NULL
+		   AND a.published_at >= NOW() - INTERVAL '48 hours'
+		 ORDER BY a.published_at DESC
+		 LIMIT 1000`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := []NewsItem{}
+	for rows.Next() {
+		var it NewsItem
+		if err := rows.Scan(&it.Slug, &it.Lang, &it.Title, &it.Published); err != nil {
+			return nil, err
+		}
+		out = append(out, it)
+	}
+	return out, rows.Err()
 }
 
 // SitemapArticles returns published article slugs with their last update.

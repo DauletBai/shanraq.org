@@ -25,12 +25,18 @@ type Server struct {
 func New(cfg config.ServerConfig, logger *zap.Logger) *Server {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
+	// chi matches on the exact method, so a route registered with Get() answers
+	// HEAD with 405. Crawlers, link-preview scrapers, uptime checks and sitemap
+	// fetchers all probe with HEAD; every one of them was being turned away from
+	// everything except the home page.
+	r.Use(middleware.GetHead)
 	// Resolve the client IP ourselves: forwarded headers are believed only from
 	// configured trusted proxies, so a client cannot spoof its IP to dodge rate
 	// limits. Replaces chi's middleware.RealIP, which trusts any X-Forwarded-For.
 	r.Use(trustedRealIP(cfg.TrustedProxies))
 	r.Use(middleware.Recoverer)
 	r.Use(securityHeaders)
+	r.Use(conditionalGet)
 	r.Use(requestLogger(logger))
 
 	return &Server{

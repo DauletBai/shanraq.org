@@ -175,6 +175,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 	r.Get("/robots.txt", m.handleRobots)
 	r.Get("/sitemap.xml", m.handleSitemap)
 	r.Get("/sitemap-listings.xml", m.handleSitemapListings)
+	r.Get("/sitemap-news.xml", m.handleSitemapNews)
 
 	// Public reader (session loaded softly so the header can show Studio link).
 	r.Group(func(r chi.Router) {

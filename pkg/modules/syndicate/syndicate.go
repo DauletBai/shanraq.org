@@ -53,6 +53,7 @@ type Module struct {
 	tgChatID     string
 	mailer       Mailer
 	emailEnabled bool
+	indexNowKey  string
 }
 
 // New returns a module. mailer (the notifier) powers the email digest; pass nil
@@ -80,6 +81,15 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	smtp := rt.Config.Notifications.SMTP
 	m.emailEnabled = m.mailer != nil && strings.TrimSpace(smtp.Host) != "" && strings.TrimSpace(smtp.From) != ""
 
+	if key, ok := normalizeIndexNowKey(cfg.IndexNowKey); !ok {
+		m.log.Warn("indexnow key rejected: needs 8-128 hex characters or dashes")
+	} else if key != "" {
+		m.indexNowKey = key
+		m.log.Info("indexnow enabled", zap.String("key_url", m.baseURL+indexNowKeyPath))
+	} else {
+		m.log.Info("indexnow disabled (set syndicate.indexnow_key to notify Bing and Yandex on publish)")
+	}
+
 	if m.tgEnabled {
 		m.log.Info("syndicate telegram enabled", zap.String("chat", m.tgChatID))
 	} else {
@@ -99,6 +109,7 @@ func (m *Module) Routes(r chi.Router) {
 		return
 	}
 	r.Get("/feed.xml", m.handleRSS)
+	r.Get(indexNowKeyPath, m.handleIndexNowKey)
 	r.Post("/subscribe", m.handleSubscribe)
 	r.Get("/subscribe/confirm", m.handleConfirm)
 	// GET only asks; POST performs. See handleUnsubscribePage for why.
@@ -141,6 +152,17 @@ func (m *Module) RegisterJobs(j *jobs.Module) {
 // EnqueuePublish schedules a Telegram announcement for a newly published
 // article. It is a no-op when Telegram is not configured.
 func (m *Module) EnqueuePublish(ctx context.Context, store *jobs.Store, articleID uuid.UUID) error {
+	// Every publish path funnels through here, so IndexNow rides along and no
+	// caller has to remember it. Independent of Telegram: a site with no channel
+	// configured still wants search engines told. Guarded on the key so an
+	// unconfigured site does not pay for a lookup it will not use.
+	if m.indexNowKey != "" {
+		if slug, err := m.articleSlug(ctx, articleID); err != nil {
+			m.log.Warn("indexnow slug lookup", zap.Error(err))
+		} else {
+			m.submitIndexNow(slug)
+		}
+	}
 	if !m.tgEnabled || store == nil {
 		return nil
 	}

@@ -66,6 +66,9 @@ ai:
 # an announcement on publish once a bot token + channel are set.
 syndicate:
   base_url: "http://localhost:8080"   # absolute base for RSS + Telegram links (set your real domain)
+  # Instant submission of new URLs to Bing and Yandex on publish. Any 8-128
+  # hex characters; generate with: openssl rand -hex 16. Empty disables it.
+  indexnow_key: ""
   telegram:
     enabled: false
     bot_token: ""          # from @BotFather

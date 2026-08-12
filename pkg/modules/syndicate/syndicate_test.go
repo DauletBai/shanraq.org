@@ -2,6 +2,7 @@ package syndicate
 
 import (
 	"context"
+	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
@@ -371,4 +372,61 @@ func TestRenderNoticePages(t *testing.T) {
 			t.Error("unknown lang should fall back to ru")
 		}
 	})
+}
+
+// A malformed key must be refused rather than sent and silently rejected by the
+// endpoint, and an absent one must read as "disabled", not as an error.
+func TestNormalizeIndexNowKey(t *testing.T) {
+	cases := []struct {
+		in      string
+		want    string
+		wantOK  bool
+		comment string
+	}{
+		{"", "", true, "unset means disabled, not broken"},
+		{"   ", "", true, "whitespace only is also unset"},
+		{"a1b2c3d4", "a1b2c3d4", true, "minimum length"},
+		{"  a1b2c3d4  ", "a1b2c3d4", true, "trimmed"},
+		{"A1B2C3D4-e5f6", "A1B2C3D4-e5f6", true, "uppercase hex and dashes allowed"},
+		{"short", "", false, "under eight characters"},
+		{"zzzzzzzz", "", false, "not hex"},
+		{"a1b2c3d4 e5", "", false, "spaces inside"},
+		{strings.Repeat("a", 129), "", false, "over the limit"},
+	}
+	for _, c := range cases {
+		got, ok := normalizeIndexNowKey(c.in)
+		if got != c.want || ok != c.wantOK {
+			t.Errorf("normalizeIndexNowKey(%q) = %q,%v — want %q,%v (%s)", c.in, got, ok, c.want, c.wantOK, c.comment)
+		}
+	}
+}
+
+// The key file proves domain ownership; without it every submission is refused.
+func TestIndexNowKeyEndpoint(t *testing.T) {
+	m := &Module{log: zap.NewNop(), indexNowKey: "a1b2c3d4e5f6"}
+	w := httptest.NewRecorder()
+	m.handleIndexNowKey(w, httptest.NewRequest(http.MethodGet, indexNowKeyPath, nil))
+	if w.Code != http.StatusOK || w.Body.String() != "a1b2c3d4e5f6" {
+		t.Errorf("key file = %d %q", w.Code, w.Body.String())
+	}
+
+	off := &Module{log: zap.NewNop()}
+	w = httptest.NewRecorder()
+	off.handleIndexNowKey(w, httptest.NewRequest(http.MethodGet, indexNowKeyPath, nil))
+	if w.Code != http.StatusNotFound {
+		t.Errorf("unconfigured key file = %d, want 404", w.Code)
+	}
+}
+
+// All three languages go out per publish: submitting only Russian would leave
+// two thirds of the catalogue waiting to be crawled.
+func TestIndexNowCoversEveryLanguage(t *testing.T) {
+	if len(rssLangOrder) != len(rssLangs) {
+		t.Fatalf("rssLangOrder has %d entries, rssLangs %d", len(rssLangOrder), len(rssLangs))
+	}
+	for _, l := range rssLangOrder {
+		if !rssLangs[l] {
+			t.Errorf("%q is not a feed language", l)
+		}
+	}
 }

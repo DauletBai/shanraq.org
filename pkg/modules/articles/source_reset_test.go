@@ -24,6 +24,14 @@ func TestSourceResetSparesEveryOtherMetric(t *testing.T) {
 		metricPage, metricClick, metricBot, metricSource, metricDevice,
 		metricOS, metricBrowser, metricCountry, metricLang, metricGeoLang,
 	}
+	// The legacy table has no unique key, so the archive INSERT below appends
+	// rather than upserting. Without this the probe rows survive the run and the
+	// next one against the same database reads 14 where it expects 7 — the test
+	// passes once on a fresh database and fails ever after.
+	t.Cleanup(func() {
+		app.exec(`DELETE FROM analytics_daily WHERE label = 'probe'`)
+		app.exec(`DELETE FROM analytics_daily_legacy WHERE label = 'probe'`)
+	})
 	for _, k := range kinds {
 		app.exec(`INSERT INTO analytics_daily (day, kind, label, is_guest, n)
 		          VALUES (CURRENT_DATE - 5, $1, 'probe', TRUE, 7)
