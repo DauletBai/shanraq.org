@@ -506,8 +506,13 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .media-ph img { filter: brightness(0) invert(1); }
 }
-.article__media { margin: 0 0 20px; border-radius: var(--radius-sm); overflow: hidden; position: relative; }
-.article__media img { width: 100%; height: auto; display: block; }
+/* The cover box is sized before the image arrives. With height:auto the
+   browser learned the height only on load and shoved the heading down by
+   about 230px — that shift was effectively the whole of the article page's
+   CLS. Covers on this site are 16:9; an odd one is cropped rather than
+   allowed to resize the page under someone already reading it. */
+.article__media { margin: 0 0 20px; border-radius: var(--radius-sm); overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
+.article__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ---- Brand watermark: the shanyrak mark, top-right, over every article cover
    and every real-estate photo. A render-time overlay (not baked into the file),

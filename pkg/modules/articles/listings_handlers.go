@@ -133,6 +133,8 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 	}
 	page.Searching = f.Query != "" || f.PriceMin > 0 || f.PriceMax > 0 || f.RoomsMin > 0 || f.RegionText != "" || f.GeoNodeID != nil || len(f.Amenities) > 0
 	page.Reported = q.Get("reported")
+	// Both of these draw a map, so they are the only pages that pay for Leaflet.
+	page.NeedsMap = true
 	m.render(w, "listings", page)
 }
 
@@ -145,6 +147,8 @@ func (m *Module) handleListingNew(w http.ResponseWriter, r *http.Request) {
 	page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
 	page.ActiveCat = "realestate"
 	page.Values = ListingInput{DealType: "sale", PropertyType: "apartment", Country: countryDefault(lang)}
+	// Both of these draw a map, so they are the only pages that pay for Leaflet.
+	page.NeedsMap = true
 	m.render(w, "listing_new", page)
 }
 
@@ -162,6 +166,8 @@ func (m *Module) listingFormFail(w http.ResponseWriter, r *http.Request, lang, e
 	page.Values = in
 	page.EditID = editID
 	page.Error = msg
+	// Both of these draw a map, so they are the only pages that pay for Leaflet.
+	page.NeedsMap = true
 	m.render(w, "listing_new", page)
 }
 
@@ -335,6 +341,8 @@ func (m *Module) handleListingEdit(w http.ResponseWriter, r *http.Request) {
 	page.ActiveCat = "realestate"
 	page.Values = listingToInput(l)
 	page.EditID = l.ID
+	// Both of these draw a map, so they are the only pages that pay for Leaflet.
+	page.NeedsMap = true
 	m.render(w, "listing_new", page)
 }
 

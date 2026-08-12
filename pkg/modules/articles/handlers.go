@@ -43,6 +43,11 @@ type Base struct {
 	// Info feeds the top info bar (date, weather, rates, social links).
 	Info InfoBarData
 
+	// NeedsMap loads Leaflet. Only the two pages that draw one set it: the
+	// library and its stylesheet are ~270 KB and were being fetched on every
+	// page of the site, including the home feed, which has no map.
+	NeedsMap bool
+
 	// Newsletter form feedback, set from ?subscribed= after the POST redirect.
 	// It lives on Base rather than one page's context because the form sits in
 	// the follow card, which the home sidebar and every article aside share.

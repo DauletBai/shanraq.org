@@ -7,6 +7,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"shanraq.org/web"
 )
 
 // buildTemplates mirrors Module.Init template wiring so we can validate the
@@ -672,5 +674,73 @@ func TestHomeHasExactlyOneH1(t *testing.T) {
 	}
 	if strings.Contains(world, T(LangRU, "home.h1")) {
 		t.Error("the category feed repeats the site-wide heading")
+	}
+}
+
+// Leaflet and its stylesheet are about 270 KB and were loaded on every page of
+// the site, including the home feed, which has no map. Only the two pages that
+// draw one should pay for it.
+func TestLeafletOnlyWhereThereIsAMap(t *testing.T) {
+	tmpl := buildTemplates(t)
+	base := Base{Title: "T", Lang: LangRU, ShowLangs: true, LangLinks: langLinks("/", "")}
+	render := func(name string, data any) string {
+		t.Helper()
+		var sb strings.Builder
+		if err := tmpl.ExecuteTemplate(&sb, name, data); err != nil {
+			t.Fatal(err)
+		}
+		return sb.String()
+	}
+
+	for _, c := range []struct {
+		name string
+		data any
+	}{
+		{"home", HomePage{Base: base}},
+		{"article", ArticlePage{Base: base, Slug: "s", Title: "T", ServedLang: LangRU}},
+		{"page", StaticPage{Base: base}},
+	} {
+		out := render(c.name, c.data)
+		// What matters is the fetch, not the word: the shared map-init script
+		// mentions a Leaflet class name and already no-ops without the library.
+		if strings.Contains(out, "leaflet.js") || strings.Contains(out, "leaflet.css") {
+			t.Errorf("%s loads Leaflet but draws no map", c.name)
+		}
+	}
+
+	mapped := base
+	mapped.NeedsMap = true
+	for _, c := range []struct {
+		name string
+		data any
+	}{
+		{"listings", ListingsPage{Base: mapped}},
+		{"listing_new", ListingFormPage{Base: mapped, Values: ListingInput{DealType: "sale", PropertyType: "apartment"}}},
+	} {
+		out := render(c.name, c.data)
+		if !strings.Contains(out, "leaflet.js") || !strings.Contains(out, "leaflet.css") {
+			t.Errorf("%s draws a map but is missing Leaflet", c.name)
+		}
+	}
+}
+
+// The cover's box has to be reserved before the image arrives, or the heading
+// below it jumps down on load — that shift was the article page's whole CLS.
+func TestArticleCoverReservesItsSpace(t *testing.T) {
+	css, err := web.StaticFS().Open("css/shanraq.css")
+	if err != nil {
+		t.Fatalf("open stylesheet: %v", err)
+	}
+	defer css.Close()
+	b, err := io.ReadAll(css)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rule := regexp.MustCompile(`\.article__media \{[^}]*\}`).Find(b)
+	if rule == nil {
+		t.Fatal(".article__media rule not found")
+	}
+	if !strings.Contains(string(rule), "aspect-ratio") {
+		t.Errorf("the cover box has no reserved ratio: %s", rule)
 	}
 }
