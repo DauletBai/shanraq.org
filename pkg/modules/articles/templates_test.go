@@ -743,4 +743,13 @@ func TestArticleCoverReservesItsSpace(t *testing.T) {
 	if !strings.Contains(string(rule), "aspect-ratio") {
 		t.Errorf("the cover box has no reserved ratio: %s", rule)
 	}
+
+	// A phone gets a taller box: 16:9 across a 346px column is a 195px strip.
+	if !regexp.MustCompile(`@media \(max-width: 640px\) \{\s*\.article__media \{[^}]*aspect-ratio: 3 / 2`).Match(b) {
+		t.Error("phones do not get the taller cover ratio")
+	}
+	// Sideways, the ratio alone would make the cover taller than the screen.
+	if !strings.Contains(string(b), ".article__media { max-height: 70vh; }") {
+		t.Error("the cover has no height cap, so in landscape it fills the viewport")
+	}
 }
