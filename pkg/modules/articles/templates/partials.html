@@ -112,7 +112,9 @@
   <meta name="twitter:title" content="{{ .Title }}">
   <meta name="twitter:description" content="{{ .Desc }}">
   <meta name="twitter:image" content="{{ .OGImage }}">
-  <link rel="icon" href="/static/brand/shanraq.svg">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/svg+xml" href="{{ asset "/static/brand/shanraq.svg" }}">
+  <link rel="apple-touch-icon" href="/static/brand/apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Shanraq.org RSS" href="/feed.xml?lang={{ .Lang }}">
   <link rel="stylesheet" href="{{ asset "/static/vendor/leaflet.css" }}">
   <link rel="stylesheet" href="{{ asset "/static/css/shanraq.css" }}">

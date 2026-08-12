@@ -120,8 +120,11 @@ func (m *Module) Routes(r chi.Router) {
 		return
 	}
 	r.Handle("/static/*", http.StripPrefix("/static/", web.StaticHandler()))
+	// A real file, not a redirect to the SVG. Yandex reported "favicon not
+	// found" for months: its icon fetcher wants an image at the conventional
+	// path, and following a 301 to an SVG is not something every crawler does.
 	r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/static/brand/shanraq.svg", http.StatusMovedPermanently)
+		http.ServeFileFS(w, r, web.StaticFS(), "brand/favicon.ico")
 	})
 	r.Get("/favicon.svg", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFileFS(w, r, web.StaticFS(), "brand/shanraq.svg")
