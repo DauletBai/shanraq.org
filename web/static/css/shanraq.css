@@ -1616,7 +1616,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    themed — a Chrome mark that changed hue in dark mode would stop being one.
    The slot is reserved whether or not a row has a mark, so "Direct" and
    "Other" line up with the rest instead of sitting flush left. */
-.brandico { width: 16px; height: 16px; flex: none; border-radius: 3px; }
+.brandico { width: 16px; height: 16px; flex: none; }
+/* Apple, X and Tux are black, and Linux yellow is too pale for a light card.
+   Those marks are drawn in currentColor and get their ink from here instead. */
+.brandico--ink { color: #1d1d1f; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .brandico--ink { color: #d8d4cc; }
+}
+:root[data-theme="dark"] .brandico--ink { color: #d8d4cc; }
 .adm table.spec td .brandico { vertical-align: -3px; margin-right: 7px; }
 .adm-bar__label:hover { color: var(--gold-strong); }
 .adm-bar__track { height: 10px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }

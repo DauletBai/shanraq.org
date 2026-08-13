@@ -22,11 +22,13 @@ func TestEveryAnalyticsBrandHasAMark(t *testing.T) {
 			t.Errorf("%q has no brand mark", b)
 			continue
 		}
-		if !strings.HasPrefix(icon, `<svg class="brandico"`) || !strings.HasSuffix(icon, "</svg>") {
+		if !strings.HasPrefix(icon, `<svg class="brandico`) || !strings.HasSuffix(icon, "</svg>") {
 			t.Errorf("%q produced something that is not a complete svg: %s", b, icon)
 		}
-		if !strings.Contains(icon, "fill=\"#") {
-			t.Errorf("%q has no brand colour", b)
+		// Either the brand's own hex, or currentColor for the marks whose real
+		// colour is near-black — those carry the themed class instead.
+		if !strings.Contains(icon, `fill="#`) && !strings.Contains(icon, "brandico--ink") {
+			t.Errorf("%q is neither in its brand colour nor themed ink", b)
 		}
 	}
 }
@@ -44,8 +46,36 @@ func TestNonBrandRowsHaveNoMark(t *testing.T) {
 // A black dot tells the reader nothing; every mark carries a glyph or a shape.
 func TestMarksAreNotBareDiscs(t *testing.T) {
 	for slug, mark := range brandMarks {
-		if strings.Count(mark, "<") == 1 && strings.Contains(mark, "<circle") {
+		if strings.Count(mark.body, "<") == 1 && strings.Contains(mark.body, "<circle") {
 			t.Errorf("%q is a bare coloured circle with nothing on it", slug)
+		}
+	}
+}
+
+// A mark drawn on the 24×24 grid inside a 16×16 viewBox would render as a
+// quarter of the logo, cropped to the top-left corner. Since the two grids are
+// mixed here on purpose, check every mark declares the grid it was drawn on.
+func TestMarkGridMatchesArtwork(t *testing.T) {
+	for slug, mark := range brandMarks {
+		fetched := strings.Contains(mark.body, `<path fill=`)
+		switch {
+		case fetched && mark.box != "0 0 24 24":
+			t.Errorf("%q is vendored artwork but declares viewBox %q", slug, mark.box)
+		case !fetched && mark.box != "0 0 16 16":
+			t.Errorf("%q is drawn here but declares viewBox %q", slug, mark.box)
+		}
+	}
+}
+
+// An ink mark that also carries a hex would ignore the theme and disappear on
+// the half of it the hex was not chosen for.
+func TestInkMarksCarryNoHex(t *testing.T) {
+	for slug, mark := range brandMarks {
+		if mark.ink && strings.Contains(mark.body, `fill="#`) {
+			t.Errorf("%q is themed ink yet hard-codes a colour", slug)
+		}
+		if !mark.ink && strings.Contains(mark.body, "currentColor") {
+			t.Errorf("%q draws in currentColor without asking for the ink class", slug)
 		}
 	}
 }
