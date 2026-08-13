@@ -19,25 +19,25 @@
       {{ $code := .Code }}
       <fieldset class="pform__lang">
         <legend>{{ .Label }}</legend>
-        <label>{{ t $.Lang "pred.f_statement" }}
+        <label>{{ t $.Lang "pred.f_statement" }} <span class="hint">— {{ t $.Lang "pred.h_statement" }}</span>
           <textarea class="input" name="statement_{{ $code }}" rows="2">{{ if $.Editing }}{{ index $.Editing.Statement $code }}{{ end }}</textarea>
         </label>
-        <label>{{ t $.Lang "pred.f_verdict" }}
+        <label>{{ t $.Lang "pred.f_verdict" }} <span class="hint">— {{ t $.Lang "pred.h_verdict" }}</span>
           <textarea class="input" name="verdict_{{ $code }}" rows="2">{{ if $.Editing }}{{ index $.Editing.Verdict $code }}{{ end }}</textarea>
         </label>
       </fieldset>
       {{ end }}
 
       <div class="pform__grid">
-        <label>{{ t .Lang "pred.f_made" }}
+        <label>{{ t .Lang "pred.f_made" }} <span class="hint">— {{ t .Lang "pred.h_made" }}</span>
           <input class="input" type="date" name="made_on"
                  value="{{ if .Editing }}{{ .Editing.MadeOn.Format "2006-01-02" }}{{ end }}">
         </label>
-        <label>{{ t .Lang "pred.f_horizon" }}
+        <label>{{ t .Lang "pred.f_horizon" }} <span class="hint">— {{ t .Lang "pred.h_horizon" }}</span>
           <input class="input" type="date" name="horizon"
                  value="{{ if and .Editing .Editing.Horizon }}{{ .Editing.Horizon.Format "2006-01-02" }}{{ end }}">
         </label>
-        <label>{{ t .Lang "pred.f_status" }}
+        <label>{{ t .Lang "pred.f_status" }} <span class="hint">— {{ t .Lang "pred.h_status" }}</span>
           <select class="input" name="status">
             {{ $cur := "open" }}{{ if .Editing }}{{ $cur = .Editing.Status }}{{ end }}
             {{ range .Statuses }}
@@ -45,11 +45,11 @@
             {{ end }}
           </select>
         </label>
-        <label>{{ t .Lang "pred.f_resolved" }}
+        <label>{{ t .Lang "pred.f_resolved" }} <span class="hint">— {{ t .Lang "pred.h_resolved" }}</span>
           <input class="input" type="date" name="resolved_on"
                  value="{{ if and .Editing .Editing.ResolvedOn }}{{ .Editing.ResolvedOn.Format "2006-01-02" }}{{ end }}">
         </label>
-        <label>{{ t .Lang "pred.f_article" }}
+        <label>{{ t .Lang "pred.f_article" }} <span class="hint">— {{ t .Lang "pred.h_article" }}</span>
           <select class="input" name="article">
             <option value="">—</option>
             {{ $sel := "" }}{{ if .Editing }}{{ $sel = .Editing.ArticleSlug }}{{ end }}
@@ -58,7 +58,7 @@
             {{ end }}
           </select>
         </label>
-        <label>{{ t .Lang "pred.f_source" }}
+        <label>{{ t .Lang "pred.f_source" }} <span class="hint">— {{ t .Lang "pred.h_source" }}</span>
           <input class="input" type="url" name="source_url" placeholder="https://…"
                  value="{{ if .Editing }}{{ .Editing.SourceURL }}{{ end }}">
         </label>
@@ -76,19 +76,32 @@
       <span class="hint">— {{ t .Lang "pred.accuracy" }} {{ .Score.Accuracy }}%,
         {{ .Score.Resolved }}/{{ .Score.Total }}</span></h2>
     {{ if not .Items }}<p class="hint">{{ t .Lang "pred.empty" }}</p>{{ end }}
+    {{/* Five named columns rather than one crowded cell: a ledger whose rows
+         cannot be scanned by date or status is a list, not a ledger. */}}
+    <div class="tscroll">
     <table class="list spec" style="width:100%">
+      <thead>
+        <tr>
+          <th style="width:1%">{{ t .Lang "pred.f_status" }}</th>
+          <th>{{ t .Lang "pred.f_statement" }}</th>
+          <th style="width:1%;white-space:nowrap">{{ t .Lang "pred.f_made" }}</th>
+          <th style="width:1%;white-space:nowrap">{{ t .Lang "pred.f_horizon" }}</th>
+          <th style="width:1%;text-align:right">{{ t .Lang "pred.col_actions" }}</th>
+        </tr>
+      </thead>
       <tbody>
         {{ range .Items }}
         <tr>
-          <td>
+          <td style="white-space:nowrap">
             <span class="pbadge pbadge--{{ .Status }}">{{ t $.Lang (printf "pred.st_%s" .Status) }}</span>
             {{/* An open forecast past its own deadline is the one way a ledger
                  like this gets quietly gamed, so it is flagged where it is
                  managed rather than only where it is read. */}}
             {{ if .Overdue }}<span class="pbadge pbadge--due">{{ t $.Lang "pred.overdue" }}</span>{{ end }}
-            {{ .StatementIn $.Lang }}
-            <span class="hint">— {{ fmtDate .MadeOn }}{{ if .Horizon }} → {{ fmtDatePtr .Horizon }}{{ end }}</span>
           </td>
+          <td>{{ .StatementIn $.Lang }}</td>
+          <td style="white-space:nowrap">{{ fmtDate .MadeOn }}</td>
+          <td style="white-space:nowrap">{{ if .Horizon }}{{ fmtDatePtr .Horizon }}{{ else }}—{{ end }}</td>
           <td style="text-align:right;white-space:nowrap">
             <a class="btn btn--ghost btn--sm" href="/admin/predictions/{{ .ID }}">{{ t $.Lang "pred.edit" }}</a>
             <form method="post" action="/admin/predictions/{{ .ID }}/delete" style="display:inline"
@@ -100,6 +113,7 @@
         {{ end }}
       </tbody>
     </table>
+    </div>
   </div>
 </main>
 {{ template "site_footer" . }}

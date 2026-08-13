@@ -487,6 +487,10 @@ type ArticlePage struct {
 	// articles we do not offer as a source. See citeLine.
 	CiteLine string
 
+	// Predictions are the forecasts made in this piece, with what became of
+	// them. Empty for the articles that made none, which is most of them.
+	Predictions []*Prediction
+
 	Category      string
 	Subcategory   string
 	CoverURL      string
@@ -591,6 +595,12 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	// Non-indexable articles still render in full — they are only kept out of
 	// search, not out of the site. See migration 20251107009900.
 	page.NoIndex = !a.Indexable
+	if preds, err := m.predictions.ForArticle(r.Context(), page.Lang, a.ID); err == nil {
+		page.Predictions = preds
+	} else {
+		m.rt.Logger.Warn("article predictions", zap.Error(err))
+	}
+
 	// Only the human-written articles offer a citation: the whole point of the
 	// block is to make our name easy to credit, and the AI columns are the one
 	// thing we do not want credited to it.

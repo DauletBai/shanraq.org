@@ -332,3 +332,42 @@ func TestEmptyLedgerClaimsNoScore(t *testing.T) {
 		t.Error("an empty ledger does not say that nothing has been judged")
 	}
 }
+
+// The ledger's real entry point. A page linked only from the footer is a page
+// nobody opens; the reader who has just finished the argument is the one who
+// wants to know whether its author has been right before.
+func TestArticleShowsItsOwnForecasts(t *testing.T) {
+	app := newTestApp(t)
+	author := app.createUser("pred-art@example.com", "Sup3r-Secret-Pass!")
+	id, slug := app.seedCitable(author)
+
+	store := NewPredictionStore(app.pool)
+	pid, err := store.Save(context.Background(), uuid.Nil, PredictionInput{
+		ArticleID: &id,
+		MadeOn:    time.Now().AddDate(0, -3, 0),
+		Status:    PredHit,
+		Statement: map[string]string{LangRU: "Дефицит бюджета превысит план"},
+		Verdict:   map[string]string{LangRU: "Превысил на 1,2 трлн."},
+	})
+	if err != nil {
+		t.Fatalf("save: %v", err)
+	}
+	t.Cleanup(func() { _ = store.Delete(context.Background(), pid) })
+
+	body := app.do(http.MethodGet, "/read/"+slug, nil).Body.String()
+	if !strings.Contains(body, "Дефицит бюджета превысит план") {
+		t.Error("the article does not show the forecast it made")
+	}
+	if !strings.Contains(body, "Превысил на 1,2 трлн.") {
+		t.Error("the outcome is missing, so the block only makes a claim")
+	}
+	if !strings.Contains(body, `href="/predictions`) {
+		t.Error("the block does not lead to the ledger, which is the point of it")
+	}
+
+	// An article that forecast nothing must not grow an empty box.
+	_, plain := app.seedCitable(author)
+	if b := app.do(http.MethodGet, "/read/"+plain, nil).Body.String(); strings.Contains(b, `class="apred"`) {
+		t.Error("an article with no forecasts rendered the forecasts block")
+	}
+}

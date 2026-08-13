@@ -754,15 +754,70 @@ var messages = map[string]map[string]string{
 		"ru": "Здесь прогнозы добавляются и потом оцениваются. Публичная страница:",
 		"en": "Add forecasts here and judge them later. The public page:",
 	},
-	"pred.admin_view":     {"kz": "/predictions", "ru": "/predictions", "en": "/predictions"},
-	"pred.ledger":         {"kz": "Тізілім", "ru": "Реестр", "en": "Ledger"},
-	"pred.new":            {"kz": "Жаңа болжам", "ru": "Новый прогноз", "en": "New forecast"},
-	"pred.edit":           {"kz": "Өңдеу", "ru": "Изменить", "en": "Edit"},
-	"pred.delete":         {"kz": "Жою", "ru": "Удалить", "en": "Delete"},
-	"pred.cancel":         {"kz": "Болдырмау", "ru": "Отмена", "en": "Cancel"},
-	"pred.save":           {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
-	"pred.saved":          {"kz": "Сақталды.", "ru": "Сохранено.", "en": "Saved."},
-	"pred.deleted":        {"kz": "Жойылды.", "ru": "Удалено.", "en": "Deleted."},
+	"pred.admin_view": {"kz": "/predictions", "ru": "/predictions", "en": "/predictions"},
+	"pred.ledger":     {"kz": "Тізілім", "ru": "Реестр", "en": "Ledger"},
+	"pred.new":        {"kz": "Жаңа болжам", "ru": "Новый прогноз", "en": "New forecast"},
+	"pred.edit":       {"kz": "Өңдеу", "ru": "Изменить", "en": "Edit"},
+	"pred.delete":     {"kz": "Жою", "ru": "Удалить", "en": "Delete"},
+	"pred.cancel":     {"kz": "Болдырмау", "ru": "Отмена", "en": "Cancel"},
+	"pred.save":       {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
+	"pred.saved":      {"kz": "Сақталды.", "ru": "Сохранено.", "en": "Saved."},
+	"pred.deleted":    {"kz": "Жойылды.", "ru": "Удалено.", "en": "Deleted."},
+	// Field hints. Written as instructions rather than labels because the one
+	// thing that makes this ledger worth anything is that each entry be
+	// checkable, and "things will be hard" is not checkable.
+	"pred.h_statement": {
+		"kz": "бір тексерілетін тұжырым: «қиын болады» емес, «мөлшерлеме жыл соңына дейін 14%-дан төмендемейді»",
+		"ru": "одно проверяемое утверждение: не «будет тяжело», а «ставка не опустится ниже 14% до конца года»",
+		"en": "one checkable claim: not \"it will be hard\" but \"the rate will not fall below 14% this year\"",
+	},
+	"pred.h_verdict": {
+		"kz": "кейін, мерзім жеткенде толтырылады",
+		"ru": "заполняется потом, когда срок пришёл — одно-два предложения",
+		"en": "filled in later, when the date arrives — a sentence or two",
+	},
+	"pred.h_made": {
+		"kz": "ескі болжам үшін — мақаланың нақты күні, бүгінгі емес",
+		"ru": "для старого прогноза — настоящая дата статьи, а не сегодня",
+		"en": "for an old forecast, the article's real date, not today",
+	},
+	"pred.h_horizon": {
+		"kz": "қашан бағалау әділ болады; бос қалдыруға болады",
+		"ru": "когда станет честно судить; можно оставить пустым",
+		"en": "when it becomes fair to judge; may be left empty",
+	},
+	"pred.h_status": {
+		"kz": "әлі бағаланбаса — «Ашық»",
+		"ru": "пока не оценивали — «Открыт»",
+		"en": "leave as \"Open\" until it is judged",
+	},
+	"pred.h_resolved": {
+		"kz": "бос қалдырсаңыз — бүгінгі күн қойылады",
+		"ru": "оставьте пустым — проставится сегодняшняя",
+		"en": "leave empty and today's date is used",
+	},
+	"pred.h_article": {
+		"kz": "міндетті емес; болжам сол мақаланың астында көрінеді",
+		"ru": "необязательно; прогноз появится под этой статьёй",
+		"en": "optional; the forecast then appears under that article",
+	},
+	"pred.h_source": {
+		"kz": "нәтижені растаған есеп немесе жаңалық",
+		"ru": "отчёт или новость, подтвердившая исход",
+		"en": "the report or filing that settled it",
+	},
+	"pred.col_actions": {"kz": "Әрекеттер", "ru": "Действия", "en": "Actions"},
+	"pred.in_article": {
+		"kz": "Осы мақаладағы болжамдар",
+		"ru": "Прогнозы из этой статьи",
+		"en": "Forecasts made in this article",
+	},
+	"pred.see_all": {
+		"kz": "Барлық болжамдар тізілімі",
+		"ru": "Весь реестр прогнозов",
+		"en": "The whole prediction ledger",
+	},
+
 	"pred.f_statement":    {"kz": "Болжам", "ru": "Прогноз", "en": "Statement"},
 	"pred.f_verdict":      {"kz": "Не болды", "ru": "Что произошло", "en": "What happened"},
 	"pred.f_made":         {"kz": "Жасалған күні", "ru": "Дата прогноза", "en": "Made on"},
@@ -774,7 +829,14 @@ var messages = map[string]map[string]string{
 	"pred.err_empty":      {"kz": "Болжам мәтіні кемінде бір тілде болуы керек.", "ru": "Нужен текст прогноза хотя бы на одном языке.", "en": "A forecast needs a statement in at least one language."},
 	"pred.delete_confirm": {"kz": "Жоясыз ба? Қате болжамды жою тізілімнің мәнін жоғалтады.", "ru": "Удалить? Удаление несбывшегося прогноза лишает реестр смысла.", "en": "Delete? Removing a missed forecast is what empties this ledger of meaning."},
 
-	"cite.title":  {"kz": "Дәйексөз келтіру", "ru": "Как цитировать", "en": "How to cite"},
+	"cite.title": {"kz": "Дәйексөз келтіру", "ru": "Как цитировать", "en": "How to cite"},
+	// Says who the block is for. It sits right under the share row, and without
+	// this line the two read as the same request worded twice.
+	"cite.for": {
+		"kz": "Осы материалға өз мақалаңызда, жұмысыңызда немесе жазбаңызда сілтеме жасасаңыз — дайын жол:",
+		"ru": "Если ссылаетесь на этот материал в своей статье, работе или посте — готовая строка источника:",
+		"en": "If you are referring to this piece in your own article, paper or post, here is a ready-made reference:",
+	},
 	"cite.copy":   {"kz": "Көшіру", "ru": "Скопировать", "en": "Copy"},
 	"cite.copied": {"kz": "Көшірілді", "ru": "Скопировано", "en": "Copied"},
 

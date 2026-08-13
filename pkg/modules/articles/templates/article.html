@@ -69,12 +69,36 @@
              finished and is deciding whether the piece was worth passing on. */}}
         {{ template "share_row" (dict "Lang" .Lang "Title" .Title "Foot" true "URL" (printf "%s%s" .SiteURL .CanonURL)) }}
 
+        {{/* The forecasts this piece made, with what has become of them. This is
+             the ledger's real entry point: a reader who has just finished the
+             argument is the one person who wants to know whether its author has
+             been right before. */}}
+        {{ if .Predictions }}
+        <aside class="apred">
+          <h2 class="apred__h">{{ t .Lang "pred.in_article" }}</h2>
+          <ul class="apred__list">
+            {{ range .Predictions }}
+            <li class="apred__item apred__item--{{ .Status }}">
+              <span class="pbadge pbadge--{{ .Status }}">{{ t $.Lang (printf "pred.st_%s" .Status) }}</span>
+              <span class="apred__stmt">{{ .StatementIn $.Lang }}</span>
+              {{ with .VerdictIn $.Lang }}<span class="apred__verdict">{{ . }}</span>{{ end }}
+            </li>
+            {{ end }}
+          </ul>
+          <p class="apred__all"><a href="/predictions?lang={{ .Lang }}">{{ t .Lang "pred.see_all" }} →</a></p>
+        </aside>
+        {{ end }}
+
         {{/* A finished reference, so crediting us costs one click rather than
              a minute of assembling one from the page. Only on the articles we
              stand behind — CiteLine is empty on the rest. */}}
         {{ if .CiteLine }}
         <aside class="cite">
           <h2 class="cite__h">{{ t .Lang "cite.title" }}</h2>
+          {{/* Says who the block is for. Without it the reader has just been
+               asked to share the piece and reads this as the same request
+               worded twice, which is how it looked before. */}}
+          <p class="cite__for">{{ t .Lang "cite.for" }}</p>
           <p class="cite__line" id="cite-line">{{ .CiteLine }}</p>
           <button type="button" class="cite__copy" data-copy="#cite-line"
                   data-done="{{ t .Lang "cite.copied" }}">{{ t .Lang "cite.copy" }}</button>

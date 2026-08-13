@@ -180,6 +180,7 @@ func (m *Module) handleLLMS(w http.ResponseWriter, r *http.Request) {
 
 	b.WriteString("## Разделы / Sections\n\n")
 	b.WriteString("- [Объявления о недвижимости / Real-estate listings](" + site + "/listings)\n")
+	b.WriteString("- [Реестр прогнозов: что мы предсказали и что сбылось / Prediction ledger: every forecast we made, judged in public](" + site + "/predictions)\n")
 	b.WriteString("- [Об издании / About](" + site + "/about)\n")
 	b.WriteString("- [RSS](" + site + "/rss.xml)\n")
 	b.WriteString("- [Sitemap](" + site + "/sitemap.xml)\n")
