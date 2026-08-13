@@ -773,6 +773,33 @@ func TestArticleCoverReservesItsSpace(t *testing.T) {
 	if regexp.MustCompile(`\.post__media \{[^}]*height: \d+px`).Match(b) {
 		t.Error("a fixed pixel height is back on the feed thumbnail")
 	}
+
+	// The home carousel had the same fault and it was the most visible one: a
+	// fixed 300px box against a 728px column is 2.43:1, so 27% of every 16:9
+	// cover was cut off the top and bottom, and on a phone the 210px box was
+	// 1.50:1 and cut the sides instead.
+	hero := regexp.MustCompile(`\.adcarousel \{[^}]*\}`).Find(b)
+	if hero == nil {
+		t.Fatal(".adcarousel rule not found")
+	}
+	if !strings.Contains(string(hero), "aspect-ratio: 16 / 9") {
+		t.Errorf("the carousel is not 16:9: %s", hero)
+	}
+	if regexp.MustCompile(`\.adcarousel \{[^}]*height: \d+px`).Match(b) {
+		t.Error("a fixed pixel height is back on the carousel; it overrides the ratio")
+	}
+	// A 16:9 box on a 360px phone is 178px tall. The headline has to be sized
+	// against the box, or it spills straight out of the bottom of it.
+	text := regexp.MustCompile(`\.newshero \.adslide__text \{[^}]*\}`).Find(b)
+	if text == nil {
+		t.Fatal(".newshero .adslide__text rule not found")
+	}
+	if !strings.Contains(string(text), "cqw") {
+		t.Errorf("the hero headline is not sized against its own box: %s", text)
+	}
+	if !regexp.MustCompile(`\.newshero \{[^}]*container-type`).Match(b) {
+		t.Error("the hero declares no container, so its cqw sizes resolve against nothing")
+	}
 	// Sideways, the ratio alone would make the cover taller than the screen.
 	if !strings.Contains(string(b), ".article__media { max-height: 70vh; }") {
 		t.Error("the cover has no height cap, so in landscape it fills the viewport")

@@ -376,7 +376,12 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 @media (min-width: 900px) { .layout { grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr); } }
 
 /* ad carousel (replaces the featured hero) */
-.adcarousel { position: relative; height: 300px; border-radius: var(--radius); overflow: hidden; margin-bottom: 34px; }
+/* Sized by ratio, not by a pixel height. Covers are 16:9; a fixed height made
+   the box a different shape at every width, so the same picture was cropped
+   27% off the top and bottom on a desktop and 18% off the sides on a phone.
+   The variants below (.adslot, --side) set an explicit height and keep it: a
+   definite height wins over aspect-ratio, which is what those slots want. */
+.adcarousel { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; margin-bottom: 34px; }
 /* Slides live in a horizontal track that slides right-to-left between them. */
 .carousel__track { display: flex; height: 100%; transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform; }
 .adslide {
@@ -1218,7 +1223,10 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
   .foot-nav { justify-content: center; }
   .wordmark__mark { width: 52px; height: 52px; }
   .hero__media { height: 200px; }
-  .adcarousel { height: 210px; }
+  /* Only the sidebar advert keeps a fixed height on a phone — it carries a
+     title and two lines of copy, not a photograph, so a ratio buys it nothing.
+     The news hero stays 16:9 at every width. */
+  .adslot { height: 210px; }
   .adslide { padding: 22px; }
   .adslide__text { font-size: var(--step-2); }
   .adslide__body, .adslide--center .adslide__body { max-width: 84%; }
@@ -1849,13 +1857,30 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 
 /* ---- Home hero "latest news" carousel ---- */
-.newshero__slide { background: linear-gradient(135deg, var(--gold-strong), #7a1414); background-size: cover; background-position: center; }
+/* The box is 16:9 at every width, so the type is sized against the box rather
+   than against the viewport: the headline then covers the same share of the
+   picture on a 360px phone as on a desktop, which is what "the same carousel
+   everywhere" has to mean. It is also load-bearing — a 16:9 box on a 360px
+   phone is only 178px tall, and a fixed 2rem headline would spill out of it. */
+.newshero { container-type: inline-size; }
+.newshero__slide {
+  background: linear-gradient(135deg, var(--gold-strong), #7a1414);
+  background-size: cover; background-position: center;
+  padding: clamp(14px, 4.4cqw, 34px);
+}
 .newshero__slide:hover { text-decoration: none; }
-.newshero .adslide__badge { background: rgba(255, 255, 255, 0.2); }
+.newshero .adslide__badge { background: rgba(255, 255, 255, 0.2); font-size: clamp(0.6rem, 1.5cqw, 0.72rem); }
 .newshero .adslide__text {
-  font-size: var(--step-3); font-weight: 800; color: #fff; line-height: 1.18;
+  font-size: clamp(1rem, 4.4cqw, 2rem); font-weight: 800; color: #fff; line-height: 1.18;
+  margin-bottom: clamp(8px, 2.2cqw, 16px);
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+/* Below the two-column breakpoint the hero spans the full width, so the
+   headline may use it; at 62% it wrapped to three short lines and clipped. */
+@container (max-width: 560px) {
+  .newshero .adslide__body, .newshero .adslide--center .adslide__body { max-width: 100%; }
+  .newshero .adslide__text { -webkit-line-clamp: 2; }
 }
 
 /* ---- Favorites (bookmarks) ---- */
