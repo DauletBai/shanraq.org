@@ -313,3 +313,22 @@ func TestPredictionAdminWritesAndSettles(t *testing.T) {
 		t.Error("the verdict is not shown to the reader")
 	}
 }
+
+// An empty ledger showing "0% accuracy" would be the page libelling itself:
+// nothing judged is not the same as never being right.
+func TestEmptyLedgerClaimsNoScore(t *testing.T) {
+	app := newTestApp(t)
+	// The ledger is shared, so this only means anything on an empty one.
+	if sc, err := NewPredictionStore(app.pool).Score(context.Background()); err != nil {
+		t.Fatalf("score: %v", err)
+	} else if sc.Resolved() > 0 {
+		t.Skip("the ledger already has judged forecasts")
+	}
+	body := app.do(http.MethodGet, "/predictions", nil).Body.String()
+	if strings.Contains(body, `pscore__pct">0%`) {
+		t.Error("an empty ledger reports 0% accuracy, which reads as never being right")
+	}
+	if !strings.Contains(body, "pscore__pct--none") {
+		t.Error("an empty ledger does not say that nothing has been judged")
+	}
+}

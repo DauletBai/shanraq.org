@@ -10,9 +10,16 @@
        evidence for that claim, and a reader who only sees the number has still
        seen the thing that matters: it can go down. */}}
   <div class="pscore">
+    {{/* Nothing judged yet is not the same as never being right. An empty
+         ledger showing 0% would be the page libelling itself. */}}
     <div class="pscore__big">
-      <span class="pscore__pct">{{ .Score.Accuracy }}%</span>
-      <span class="pscore__cap">{{ t .Lang "pred.accuracy" }}</span>
+      {{ if .Score.Resolved }}
+        <span class="pscore__pct">{{ .Score.Accuracy }}%</span>
+        <span class="pscore__cap">{{ t .Lang "pred.accuracy" }}</span>
+      {{ else }}
+        <span class="pscore__pct pscore__pct--none">—</span>
+        <span class="pscore__cap">{{ t .Lang "pred.no_score" }}</span>
+      {{ end }}
     </div>
     <ul class="pscore__list">
       <li><b>{{ .Score.Hit }}</b> <span>{{ t .Lang "pred.hit" }}</span></li>

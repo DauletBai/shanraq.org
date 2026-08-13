@@ -725,6 +725,7 @@ var messages = map[string]map[string]string{
 			"counts as a half. Open forecasts are not counted.",
 	},
 	"pred.accuracy":      {"kz": "дәлдік", "ru": "точность", "en": "accuracy"},
+	"pred.no_score":      {"kz": "бағаланған болжам жоқ", "ru": "оценённых прогнозов нет", "en": "nothing judged yet"},
 	"pred.hit":           {"kz": "сәйкес келді", "ru": "сбылось", "en": "hit"},
 	"pred.partial":       {"kz": "жартылай", "ru": "частично", "en": "partial"},
 	"pred.miss":          {"kz": "келмеді", "ru": "не сбылось", "en": "missed"},
