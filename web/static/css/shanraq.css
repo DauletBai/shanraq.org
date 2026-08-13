@@ -1610,7 +1610,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 .adm-chart { display: flex; flex-direction: column; gap: 9px; }
 .adm-bar { display: grid; grid-template-columns: 120px 1fr auto; align-items: center; gap: 10px; font-size: 0.9rem; }
-.adm-bar__label { color: var(--ink-soft); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.adm-bar__label { display: flex; align-items: center; gap: 7px; color: var(--ink-soft); font-weight: 600; white-space: nowrap; overflow: hidden; }
+.adm-bar__label > span, .adm-bar__label { min-width: 0; }
+/* Brand marks carry the brands' own colours, so they are deliberately not
+   themed — a Chrome mark that changed hue in dark mode would stop being one.
+   The slot is reserved whether or not a row has a mark, so "Direct" and
+   "Other" line up with the rest instead of sitting flush left. */
+.brandico { width: 16px; height: 16px; flex: none; border-radius: 3px; }
+.adm table.spec td .brandico { vertical-align: -3px; margin-right: 7px; }
 .adm-bar__label:hover { color: var(--gold-strong); }
 .adm-bar__track { height: 10px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
 .adm-bar__fill { display: block; height: 100%; background: var(--gold); border-radius: 999px; }

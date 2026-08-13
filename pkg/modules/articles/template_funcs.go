@@ -17,7 +17,9 @@ func templateFuncs() template.FuncMap {
 		// Every stylesheet and script must go through this: a bare path keeps
 		// serving from cache for a day after a deploy, so new markup lands on
 		// old CSS. See web.AssetURL.
-		"asset":            web.AssetURL,
+		"asset": web.AssetURL,
+		// Brand mark for an analytics row, "" for rows that name no brand.
+		"brandicon":        brandIcon,
 		"svcOff":           serviceLinkOff, // is a service's entry link disabled?
 		"svcMsg":           serviceLinkMsg, // its localized "unavailable" tooltip
 		"label":            func(l string) string { return LangLabels[l] },
