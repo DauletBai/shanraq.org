@@ -143,25 +143,23 @@ func (g *geoIP) isDatacenter(ip net.IP) bool {
 	return false
 }
 
-// clientIP extracts the origin client's IP from the proxy headers Caddy sets in
-// front of the app (X-Forwarded-For, then X-Real-IP), falling back to the
-// connection's own RemoteAddr. Loopback and private addresses return nil so
-// internal traffic is never miscounted as a country.
+// clientIP returns the visitor's address, taken from RemoteAddr — which the
+// server's trusted-proxy middleware has already rewritten wherever that could
+// be done safely. Loopback and private addresses return nil, so internal
+// traffic is never counted as a country.
+//
+// Reading the forwarded headers here as well was a hole, and a live one. This
+// function used to take the FIRST public address out of X-Forwarded-For, and
+// Caddy appends to that header rather than replacing it: a visitor who sent
+// "X-Forwarded-For: 8.8.8.8" arrived as "8.8.8.8, <their real address>" and was
+// counted as a reader in the United States. Anyone could colour the country
+// panel and slip past the datacenter filter with one header.
+//
+// The middleware walks the same chain from the right and stops at the first
+// address no trusted proxy vouches for. That end of the chain is written by our
+// own proxy and cannot be forged, which is why the answer belongs there and not
+// here. See internal/httpserver/realip.go.
 func clientIP(r *http.Request) net.IP {
-	// X-Forwarded-For is "client, proxy1, proxy2 …" — the first entry is the
-	// origin client; take the first public address in the chain.
-	if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
-		for _, part := range strings.Split(xff, ",") {
-			if ip := net.ParseIP(strings.TrimSpace(part)); isPublicIP(ip) {
-				return ip
-			}
-		}
-	}
-	if xr := strings.TrimSpace(r.Header.Get("X-Real-IP")); xr != "" {
-		if ip := net.ParseIP(xr); isPublicIP(ip) {
-			return ip
-		}
-	}
 	host := r.RemoteAddr
 	if h, _, err := net.SplitHostPort(host); err == nil {
 		host = h

@@ -17,6 +17,44 @@ server:
   # here (it is not a secret).
   trusted_proxies: ["172.28.0.0/16"]
 
+  # When Cloudflare proxying is switched on (orange cloud), its edge becomes
+  # the hop in front of Caddy and its ranges have to be trusted too, or the
+  # right-hand end of X-Forwarded-For is Cloudflare's own address and every
+  # reader is counted as arriving from the nearest Cloudflare city.
+  #
+  # DO NOT uncomment this on its own. Trusting these ranges while the origin
+  # is still reachable directly opens the spoofing hole it is meant to close:
+  # anyone may put their own site behind Cloudflare and reach us from one of
+  # these addresses, and we would then believe the forwarded header they sent
+  # with it. The two steps go together — trust the ranges AND firewall the
+  # origin so nothing but Cloudflare can reach it.
+  #
+  # Fetched 2026-08-13 from https://www.cloudflare.com/ips-v4 and ips-v6.
+  # Cloudflare changes these; re-fetch before enabling.
+  # trusted_proxies: ["172.28.0.0/16",
+  #   "173.245.48.0/20",
+  #   "103.21.244.0/22",
+  #   "103.22.200.0/22",
+  #   "103.31.4.0/22",
+  #   "141.101.64.0/18",
+  #   "108.162.192.0/18",
+  #   "190.93.240.0/20",
+  #   "188.114.96.0/20",
+  #   "197.234.240.0/22",
+  #   "198.41.128.0/17",
+  #   "162.158.0.0/15",
+  #   "104.16.0.0/13",
+  #   "104.24.0.0/14",
+  #   "172.64.0.0/13",
+  #   "131.0.72.0/22",
+  #   "2400:cb00::/32",
+  #   "2606:4700::/32",
+  #   "2803:f800::/32",
+  #   "2405:b500::/32",
+  #   "2405:8100::/32",
+  #   "2a06:98c0::/29",
+  #   "2c0f:f248::/32"]
+
 database:
   max_conns: 20
   min_conns: 2

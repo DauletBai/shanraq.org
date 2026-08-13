@@ -3,6 +3,7 @@ package articles
 import (
 	"net"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 )
@@ -32,6 +33,9 @@ func TestIsPublicIP(t *testing.T) {
 	}
 }
 
+// clientIP reads only RemoteAddr now. The headers in these cases are exactly
+// the ones a visitor can set on the way in, and none of them may move the
+// answer: the trusted-proxy middleware upstream has already decided it.
 func TestClientIP(t *testing.T) {
 	tests := []struct {
 		name       string
@@ -39,12 +43,19 @@ func TestClientIP(t *testing.T) {
 		remote     string
 		want       string // "" means nil expected
 	}{
-		{"xff first public", "203.0.113.9, 10.0.0.1", "", "10.0.0.1:1234", "203.0.113.9"},
-		{"xff skips private", "10.0.0.1, 203.0.113.9", "", "10.0.0.1:1234", "203.0.113.9"},
-		{"xreal fallback", "", "198.51.100.7", "10.0.0.1:1234", "198.51.100.7"},
-		{"remoteaddr fallback", "", "", "8.8.4.4:5555", "8.8.4.4"},
-		{"all private → nil", "10.0.0.1", "192.168.0.1", "127.0.0.1:80", ""},
-		{"remoteaddr no port", "", "", "8.8.4.4", "8.8.4.4"},
+		{"resolved address is used", "", "", "203.0.113.9:1234", "203.0.113.9"},
+		{"no port", "", "", "8.8.4.4", "8.8.4.4"},
+		{"private peer → nil", "", "", "127.0.0.1:80", ""},
+		{"docker peer → nil", "", "", "172.28.0.5:1234", ""},
+
+		// The hole this replaced. Caddy APPENDS to X-Forwarded-For rather than
+		// replacing it, so a visitor who sent "8.8.8.8" arrived as
+		// "8.8.8.8, <their real address>" and the old code took the first entry.
+		// One header and they were a reader in the United States, inside the
+		// datacenter filter as well.
+		{"forged xff is ignored", "8.8.8.8, 203.0.113.9", "", "203.0.113.9:1234", "203.0.113.9"},
+		{"forged x-real-ip is ignored", "", "8.8.8.8", "203.0.113.9:1234", "203.0.113.9"},
+		{"forged headers cannot invent a country", "8.8.8.8", "1.1.1.1", "127.0.0.1:80", ""},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -67,6 +78,21 @@ func TestClientIP(t *testing.T) {
 				t.Errorf("clientIP = %v, want %s", got, tc.want)
 			}
 		})
+	}
+}
+
+// The country panel and the datacenter filter must read the same address the
+// rate limiter does. Two readers of the client address is how the two drifted
+// apart in the first place.
+func TestClientIPMatchesTheResolvedAddress(t *testing.T) {
+	r, _ := http.NewRequest(http.MethodGet, "/", nil)
+	r.Header.Set("X-Forwarded-For", "8.8.8.8")
+	r.RemoteAddr = "203.0.113.9:1234"
+	if got := clientIP(r); got == nil || got.String() != "203.0.113.9" {
+		t.Errorf("clientIP = %v, want the resolved 203.0.113.9", got)
+	}
+	if strings.Contains(clientIPSource(), "Header") {
+		t.Error("clientIP reads a request header again; the resolution belongs upstream")
 	}
 }
 
@@ -98,4 +124,24 @@ func TestDatacenterOrgsNonEmpty(t *testing.T) {
 			t.Errorf("datacenter keyword %q must be lowercase (matched against a lowercased org)", kw)
 		}
 	}
+}
+
+// clientIPSource returns the body of clientIP as text, so the test above can
+// assert that it reads no headers — a property no amount of table-driven cases
+// can pin down, because a new header would simply not be in the table.
+func clientIPSource() string {
+	b, err := os.ReadFile("geoip.go")
+	if err != nil {
+		return ""
+	}
+	src := string(b)
+	i := strings.Index(src, "func clientIP(r *http.Request) net.IP {")
+	if i < 0 {
+		return ""
+	}
+	rest := src[i:]
+	if j := strings.Index(rest, "\n}\n"); j >= 0 {
+		return rest[:j]
+	}
+	return rest
 }

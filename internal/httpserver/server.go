@@ -33,7 +33,22 @@ func New(cfg config.ServerConfig, logger *zap.Logger) *Server {
 	// Resolve the client IP ourselves: forwarded headers are believed only from
 	// configured trusted proxies, so a client cannot spoof its IP to dodge rate
 	// limits. Replaces chi's middleware.RealIP, which trusts any X-Forwarded-For.
+	//
+	// This is the ONLY place the client's address is decided. Everything
+	// downstream — rate limiting, the country panel, the datacenter filter —
+	// reads r.RemoteAddr and must not look at the headers again: a second reader
+	// that parses X-Forwarded-For itself will take the client's own end of the
+	// chain, which is the forgeable one.
 	r.Use(trustedRealIP(cfg.TrustedProxies))
+	// An empty list behind a reverse proxy means every request appears to come
+	// from the proxy: one address for the whole world, so rate limits collapse
+	// onto a single bucket and the country panel goes blank. This deployment
+	// always has Caddy in front, so silence here is a misconfiguration worth
+	// saying out loud rather than discovering in the analytics.
+	if len(cfg.TrustedProxies) == 0 && logger != nil {
+		logger.Warn("no trusted proxies configured: client addresses will be the proxy's own, " +
+			"and forwarded headers are ignored (set server.trusted_proxies)")
+	}
 	r.Use(middleware.Recoverer)
 	r.Use(securityHeaders)
 	r.Use(conditionalGet)
