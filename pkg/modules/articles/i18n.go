@@ -783,7 +783,6 @@ var messages = map[string]map[string]string{
 	"admin.views_since":    {"kz": "Санағыштан краулерлер алынып тасталған күннен бері саналады. «Қонақтар» панеліндегі «Мақалалар» саны сайттың бүкіл тарихын қамтиды, сондықтан ол әлдеқайда үлкен.", "ru": "Считается со дня, когда из счётчика убрали краулеров. Число «Статьи» в панели гостей охватывает всю историю сайта, поэтому оно намного больше.", "en": "Counted from the day crawlers were removed from it. The guest panel's \"Articles\" figure covers the whole history of the site, so it is much larger."},
 	"ag.bots":              {"kz": "Боттар (30 күн)", "ru": "Боты (30 дней)", "en": "Bots (30 days)"},
 	"ag.bots_note":         {"kz": "Іздеу және алдыналу боттары — қонақтар қатарына кірмейді.", "ru": "Поисковые и превью-боты — не входят в число гостей.", "en": "Crawlers & preview bots — excluded from the guest counts."},
-	"ag.hits":              {"kz": "Кірулер", "ru": "Обращения", "en": "Hits"},
 	"ag.devices":           {"kz": "Құрылғылар (30 күн)", "ru": "Устройства (30 дней)", "en": "Devices (30 days)"},
 	"ag.os_panel":          {"kz": "Операциялық жүйе (30 күн)", "ru": "ОС (30 дней)", "en": "OS (30 days)"},
 	"ag.browsers":          {"kz": "Браузерлер (30 күн)", "ru": "Браузеры (30 дней)", "en": "Browsers (30 days)"},

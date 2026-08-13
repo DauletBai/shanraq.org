@@ -308,8 +308,9 @@
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.bots" }} {{ template "fhelp" (t .Lang "ag.bots_note") }}</h2>
           {{ if .Guests.Bots }}
-          <div class="adm-scroll adm-scroll--chart"><table class="spec spec--sticky">
-            <thead><tr><th></th><th>{{ t $.Lang "ag.hits" }}</th></tr></thead>
+          {{/* No header row: every card here is a name and a number, and the
+               column says nothing the figures do not. */}}
+          <div class="adm-scroll adm-scroll--chart"><table class="spec">
             <tbody>
               {{ range .Guests.Bots }}
               <tr><td>{{ .Title }}</td><td><b>{{ money .N }}</b></td></tr>
