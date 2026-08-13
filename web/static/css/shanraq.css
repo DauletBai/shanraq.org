@@ -1170,7 +1170,10 @@ table.spec th, table.spec td { text-align: left; padding: 9px 12px; border-botto
 /* Denser rows in the admin panel, where a card holds a dozen of them and
    the screen is a laptop. Scoped: the same table shows a listing's facts to
    readers, and that page is not short of room. */
-.adm table.spec th, .adm table.spec td { padding: 5px 12px; }
+/* 3px, not 5: at 5 a table row was 36px against the 32px of the bar rows in
+   the cards beside it, so the same 270px box showed seven of one and eight
+   of the other. At 3 the two row heights match and so do the counts. */
+.adm table.spec th, .adm table.spec td { padding: 3px 12px; }
 table.spec th { width: 38%; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
 table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; }
 .listing__desc { white-space: pre-wrap; margin: 20px 0; }
