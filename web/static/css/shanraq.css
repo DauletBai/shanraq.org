@@ -844,6 +844,15 @@ table.list td.title { white-space: normal; max-width: 380px; }
 .fhelp__tip::before { content: ""; position: absolute; left: 5px; bottom: 100%; border: 5px solid transparent; border-bottom-color: var(--ink); }
 .fhelp--right .fhelp__tip { left: auto; right: 0; }
 .fhelp--right .fhelp__tip::before { left: auto; right: 5px; }
+/* tipbtn borrows the bubble without the question-mark chip: a control that
+   looks like the real one and explains on click why it will not act. */
+.tipbtn { position: relative; }
+.tipbtn:hover .fhelp__tip, .tipbtn:focus-visible .fhelp__tip, .tipbtn.is-open .fhelp__tip { opacity: 1; visibility: visible; transform: translateY(0); }
+.tipbtn.fhelp--right .fhelp__tip { left: auto; right: 0; }
+.tipbtn.fhelp--right .fhelp__tip::before { left: auto; right: 5px; }
+/* The author's own thumbs are inert, and say so on hover before the click. */
+button.tipbtn { cursor: not-allowed; }
+a.tipbtn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
 .fhelp:hover .fhelp__tip, .fhelp:focus-visible .fhelp__tip, .fhelp.is-open .fhelp__tip { opacity: 1; visibility: visible; transform: translateY(0); }
 /* On dark theme --ink flips to a light grey, so the tooltip background is light;
    force dark text on it (light theme keeps the dark bg + white text). */

@@ -6,38 +6,203 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] — 2026-08-13
+
 ### Added
+
+- The prediction ledger at `/predictions`. Every forecast the site makes is
+  recorded with the date it was made and later judged in public — hit, partial
+  or miss — with the misses staying on the page. An analyst never seen to be
+  wrong is not accurate, only unaudited; a score that can go down is the one
+  claim to credibility that cannot be faked. Partial counts as half so the
+  number flatters neither direction, open forecasts are excluded from it, and
+  the admin flags anything past its own deadline, because never judging
+  anything is how a ledger like this gets quietly gamed. An article that made
+  forecasts now shows them underneath itself, with what became of each.
+
+- `/llms.txt`: a map of the site for a model deciding what to read, listing
+  only the human-written articles, with the citation format and a request not
+  to quote the machine-written columns.
+
+- Every citable article carries a finished reference with a copy button —
+  author, title, Shanraq.org, date in words, absolute URL. Attribution follows
+  the path of least resistance: a reader handed a ready string pastes it, and a
+  pasted string is a link.
+
+- IndexNow: the key is served at `/indexnow.txt` and publishing pings the
+  endpoint, so a new article is announced instead of waited for. YandexBot
+  fetched the key file within the day — verified by double reverse DNS — while
+  Yandex Webmaster's own page checker was still answering "service
+  unavailable".
+
+- A Google News sitemap (`/sitemap-news.xml`), BreadcrumbList structured data
+  on article pages, and `middleware.GetHead` so a HEAD probe is answered rather
+  than met with 405.
+
+- Conditional GET for HTML: pages carry an ETag and answer `If-None-Match`
+  with 304. A crawler that visits ten times a day now downloads the page only
+  when it changed.
+
+- Static asset URLs carry a content hash (`?v=…`). Assets are served with a
+  day of cache, so before this a deploy could land new markup on a returning
+  visitor's old stylesheet — which is exactly what happened once, and read as a
+  rendering bug rather than a caching one.
+
+- An account register in the admin panel: who is registered, with the means to
+  act on it. Analytics gained per-brand marks, a scale on the trend chart, and
+  tooltips in place of the paragraphs that used to sit under each card.
+
+- The newsletter is back, under the social buttons rather than as a card of its
+  own, now with double opt-in and one-click unsubscribe (RFC 8058).
+
 - Listings can be edited and deleted by their owner, from the cabinet and from
   the listing page itself. Until now a mistake in a published advert could only
   be waited out: there was no edit and no delete, only "extend" and the paid
   promotion buttons. Editing runs the same validation as posting, so a listing
   cannot be edited into a state it could not have been posted in; the id, the
   expiry clock and any paid promotion are deliberately left alone.
+
 - The price now carries a visible currency selector, set automatically from the
   country and changeable by hand. The location became a required field, because
   it is what makes the currency knowable at all.
+
 - Readers can delete their own comments. A comment is published under a real
   name; the only previous way to take one back was to ask an administrator.
+
 - 314 intra-city districts added to the location reference — see Fixed.
 
+- A "Delete" button in the author studio, for drafts. A false start or a
+  duplicate left behind by a lost session had no way out of the table at all.
+  Published articles deliberately do not offer it: they carry views, votes,
+  comments, an RSS entry and a Telegram post, and somewhere a reader may already
+  hold the link — so the way out is one step longer, unpublish then delete, which
+  is the pause such a decision deserves. The action is confirmed in the browser,
+  scoped to the owner in SQL, and runs in a transaction that also sweeps the two
+  tables keyed by article id without a foreign key (the reading-depth funnel and
+  favourites). The moderation ledger is left intact: it is an append-only record
+  and an author must not be able to erase it.
+
+- Agent profiles now carry a kind — private realtor, agency or developer — plus
+  a БИН for the two company kinds. A construction company previously had nowhere
+  to register: it had to pose as an agent and type its name into a free-text
+  "Agency" box. All three share one table, one moderation queue and one public
+  page, because all three need the same things from us; only the label, the
+  required fields and the badge wording differ. The moderation queue shows the
+  kind and БИН, so a moderator can see whether they are approving a person
+  vouching for themselves or a brand that must match the public register.
+
+- A "what you can do once registered" block under the signup form, naming the
+  four roles and where each is switched on. The registration page previously
+  said nothing about who the site is for, so an agency landing on it had no way
+  to discover the agent cabinet exists.
+
+- Field-level hints across registration and the agent cabinet, and a guide
+  section ("One account, several roles") in all three languages.
+
+- A "follow us" card in the article aside, under the table of contents. The
+  aside is sticky on desktop, so the ask now travels with the reader for the
+  whole piece instead of waiting at the bottom, where only those who finish ever
+  see it. Only configured profiles are listed — a `#` placeholder (YouTube today)
+  would be a dead click on a card whose single job is to be clicked. Clicks
+  report an aggregate `follow_social` event to the existing counter, so the card
+  can be judged on numbers rather than on taste.
+
+- Article cards now carry the view counter, which until now only existed on the
+  article page itself: `👍 1 · 👁 115 · D. Baimurza · 04.08.26`. Counters above
+  999 collapse to a localized short form — `1,2 мың` / `1,2 тыс.` / `1.2k`,
+  truncated rather than rounded so a card never claims more views than there
+  were.
+
+### Changed
+
+- The 90 machine-written columns, already out of the search index, are now also
+  out of reach of AI crawlers: a named group in `robots.txt` built from the same
+  `indexable` flag, plus `X-Robots-Tag: noindex, follow, noai, noimageai`.
+  `noindex` is a search directive and nothing more, so the assistants had gone
+  on reading them and could have quoted machine opinion back with this site's
+  name attached — in a medium where nothing can be retracted. The badge that
+  warns a human reader does not survive into a retrieved chunk. Reversing it is
+  one boolean, the same one that governs search.
+
+- Analytics rows carry the companies' own logos, taken from the CC0 Simple
+  Icons set with each brand's official guidelines cited above the path.
+  Vendored rather than linked, because the CSP blocks a CDN and a logo that
+  fails to load is worse than none. Yandex, Bing, Edge and Windows keep drawn
+  marks: their owners had them pulled from every open set.
+
+- Admin sections are ordered to match the sidebar, which had been claiming an
+  order the page did not follow, and the scroll-spy no longer jumps.
+
+- The rating row is the same shape for everyone. The author of a piece, and
+  every signed-out reader, used to get a sentence where the buttons go, which
+  wrapped the row onto two lines; the explanation now appears on the click.
+
+- Covers are sized by aspect ratio rather than a fixed pixel height, and the
+  space is reserved before the image arrives so the heading no longer jumps.
+
+- Registration deliberately stays a single form rather than gaining per-role
+  tabs. A role is an attribute of an account, not a different kind of account:
+  tabs would force a choice before anyone has seen the site, would strand a
+  reader who later decides to sell, and could not finish the job anyway, since
+  an agent still needs a human moderator afterwards.
+
+- The home sidebar's email newsletter block is replaced by the same follow card
+  (accent variant, keeping that column's one point of colour). The form was not
+  broken — addresses were stored and the weekly digest ran — but it never sent a
+  confirmation, so subscribing felt like nothing happened, and in a week it
+  collected no one. The `/subscribe` route, the `subscribers` table and the
+  digest job are deliberately left intact: this is a UI decision, reversible by
+  restoring the block.
+
+- Bylines on cards are abbreviated to initial + family name ("Daulet Baimurza"
+  → "D. Baimurza"). The given name is the part that gets cut — the byline
+  convention everywhere space is tight — freeing the width the counter needed.
+
+- The card footer (rating, views, byline, date) now comes from one shared
+  `post_meta` partial instead of three near-copies in home / favourites /
+  author templates, which had already drifted (favourites still drew the rating
+  as a bare "▲").
+
 ### Fixed
+
+- `SHANRAQ_SYNDICATE_INDEXNOW_KEY` was ignored: viper's `AutomaticEnv` only
+  binds keys it already knows, and the key had no default registered. The same
+  trap had been documented for the metrics token and stepped in again anyway.
+
+- `/favicon.ico` redirected to the SVG, which several crawlers do not follow.
+
+- Googlebot was spending its budget on `/jobs` and `/admin`, which answer 401
+  and 303. On a site it visits about ten times a day that is worth reclaiming.
+
+- The Kazakh and English versions of every article were never actually
+  submitted for crawling: the sitemap emitted only the Russian `<loc>`, which on
+  a trilingual site is two thirds of the catalogue relying on being noticed
+  sideways.
+
+- Crawlers were being counted as readers, and Google Search traffic could not
+  be told apart from Gmail.
+
 - Saved listings never appeared under Favourites. The query selected the
   agent-badge columns without joining the agent table, so it failed on every
   call; the handler logged the error and rendered an empty page, which reads as
   "the save button does nothing" although the bookmark was stored correctly.
+
 - The listings map was empty. Three causes stacked: the pin query still named a
   renamed column and answered 500; no district in the reference carries
   coordinates, so a flat in Медеу or Петродворцовый had nothing to plot; and no
   Russian settlement had coordinates at all — 0 of 159, against 182 of 187 in
   Kazakhstan. Pins now climb to the nearest ancestor with a position, and the
   159 Russian city centres were added.
+
 - A listing with a street and house number now geocodes on save and gets an
   exact marker. Plotting one previously meant opening a collapsed panel and
   dragging a pin — asking a second time for an address already typed, which is
   why a site full of complete addresses had an empty map. Best-effort; a miss
   falls back to the settlement centre and never blocks the save.
+
 - Map popups print the listing's own currency instead of a hardcoded tenge, and
   open on hover rather than costing a click each.
+
 - Address rows named the wrong things: a Saint Petersburg listing published as
   "Область: Санкт-Петербург, Город: Петродворцовый" — an oblast that does not
   exist and a district called a city. The fields were filled by a location
@@ -48,6 +213,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   re-derived. Nothing here was ever typed by hand — country, region, city and
   district come only from the reference; the free-text fields are microdistrict,
   street and house, which no reference can enumerate.
+
 - Seven of ten uploaded photos disappeared: a modern phone shoots 10–15 MB per
   frame against a 10 MB limit, and all ten uploads were fired at once to share
   one mobile uplink. Photos are now shrunk to 2000px in the browser before
@@ -55,9 +221,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the limit is raised to 25 MB. Documents and PDFs are sent untouched — the
   re-encode would damage a scan of a title deed. Failures are now reported: the
   handler ended in an empty `catch`, so seven of them produced no message at all.
+
 - Listing photos could not be swiped. The gallery had dots and a six-second
   timer with no way to stop it, so choosing a photo lasted six seconds. Swipe
   added, and any manual choice now ends the auto-advance.
+
 - A price entered against a Russian address was stored in tenge. The currency
   was derived correctly, but the submission form dropped the chosen location
   whenever it bounced off validation: the hidden geo field was rendered without
@@ -66,9 +234,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the default currency. With the country gone the form also began demanding a
   Kazakh title that a Russian listing does not need, making a second bounce
   likely. The form now carries the location back, and the location is required.
+
 - Price filters compared amounts across currencies: a listing at 90 000 ₽ and
   one at 90 000 ₸ matched the same range, five times apart in real money. A
   price range is now scoped to one currency, following the country filtered on.
+
 - The location reference was missing most intra-city districts. Saint Petersburg
   had nine of eighteen (Петродворцовый among the absent), Moscow ten of twelve,
   and every Russian city outside the two federal ones had none at all, so a flat
@@ -76,12 +246,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the cities that have official divisions — inventing districts for a city that
   has none would be worse than leaving it blank. Karaganda and Aktobe gained
   theirs too; Kazakhstan's million-plus cities were already complete.
+
 - `stripMD` mangled HTML instead of removing it: `<script>alert(1)</script>`
   became `<scriptalert(1)</script`, which then went into card excerpts and the
   page's meta description. Never an XSS — the templates escape it — but rubbish
   where a summary belongs, and it took a test to notice.
 
+### Security
+
+- A signed-out account's tokens stopped being honoured. Sessions are stateless
+  JWTs with no session table, so until now a token stayed valid for its full
+  lifetime after a role change, a password reset or a deletion — and production
+  was issuing two-hour tokens. Accounts carry an `auth_version` that a demotion
+  or a reset increments, and a token that cannot be confirmed against it is
+  refused rather than accepted.
+
+- The last administrator can no longer be demoted or deleted by two concurrent
+  requests. The check and the write were separate statements, so two demotions
+  arriving together each saw two admins and both went through, locking everyone
+  out. Both paths now take a Postgres advisory lock and count inside the
+  transaction. Proved against the old code first: 0 of 2 demotions were refused,
+  where exactly 1 should have been.
+
+- The JSON signup endpoint now honours the registration service flag. The
+  browser form has always checked it — offering an invite code while the beta is
+  closed, demanding a real first and last name, recording the consent — while
+  `POST /auth/signup` checked none of that and returned tokens. Closing
+  registration in the admin panel therefore shut the site to visitors and left
+  it open to anyone who could spell JSON. The auth module gained an optional
+  signup gate, wired in `main.go` to the same flag; the API has no invite-code
+  field, so anything short of a fully open registration is refused there.
+
+- The jobs API is staff-only again. It was reachable by role `user`, and any
+  registered reader could mint an API key, so a reader could enqueue arbitrary
+  jobs: `ai_translate` rewrites the translations of any article id it is handed
+  and spends the AI budget doing it, `syndicate_telegram` re-posts to the
+  channel. Enqueue now requires operator or admin.
+
+Both were found by an external audit; both are covered by regression tests.
+
 ### Tests
+
+- The integration suite had been skipping silently for lack of
+  `SHANRAQ_TEST_DB` — the new tests were passing against deliberately broken
+  code, which is how it was noticed. Four of the AI-channel tests were then run
+  against the un-fixed code to confirm they fail.
+
 - Security invariants are now pinned by tests, chosen for what a regression
   would cost rather than for the coverage figure. The headline one: markdown
   from any author or commenter must never render a live tag. goldmark runs
@@ -95,92 +305,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   switch failing open, category slugs being a closed set, slugs staying URL-safe,
   and that a 5xx never carries its cause to the client while still reaching the
   log.
-
-### Security
-- The JSON signup endpoint now honours the registration service flag. The
-  browser form has always checked it — offering an invite code while the beta is
-  closed, demanding a real first and last name, recording the consent — while
-  `POST /auth/signup` checked none of that and returned tokens. Closing
-  registration in the admin panel therefore shut the site to visitors and left
-  it open to anyone who could spell JSON. The auth module gained an optional
-  signup gate, wired in `main.go` to the same flag; the API has no invite-code
-  field, so anything short of a fully open registration is refused there.
-- The jobs API is staff-only again. It was reachable by role `user`, and any
-  registered reader could mint an API key, so a reader could enqueue arbitrary
-  jobs: `ai_translate` rewrites the translations of any article id it is handed
-  and spends the AI budget doing it, `syndicate_telegram` re-posts to the
-  channel. Enqueue now requires operator or admin.
-
-Both were found by an external audit; both are covered by regression tests.
-
-### Added
-- A "Delete" button in the author studio, for drafts. A false start or a
-  duplicate left behind by a lost session had no way out of the table at all.
-  Published articles deliberately do not offer it: they carry views, votes,
-  comments, an RSS entry and a Telegram post, and somewhere a reader may already
-  hold the link — so the way out is one step longer, unpublish then delete, which
-  is the pause such a decision deserves. The action is confirmed in the browser,
-  scoped to the owner in SQL, and runs in a transaction that also sweeps the two
-  tables keyed by article id without a foreign key (the reading-depth funnel and
-  favourites). The moderation ledger is left intact: it is an append-only record
-  and an author must not be able to erase it.
-
-### Added
-- Agent profiles now carry a kind — private realtor, agency or developer — plus
-  a БИН for the two company kinds. A construction company previously had nowhere
-  to register: it had to pose as an agent and type its name into a free-text
-  "Agency" box. All three share one table, one moderation queue and one public
-  page, because all three need the same things from us; only the label, the
-  required fields and the badge wording differ. The moderation queue shows the
-  kind and БИН, so a moderator can see whether they are approving a person
-  vouching for themselves or a brand that must match the public register.
-- A "what you can do once registered" block under the signup form, naming the
-  four roles and where each is switched on. The registration page previously
-  said nothing about who the site is for, so an agency landing on it had no way
-  to discover the agent cabinet exists.
-- Field-level hints across registration and the agent cabinet, and a guide
-  section ("One account, several roles") in all three languages.
-
-### Changed
-- Registration deliberately stays a single form rather than gaining per-role
-  tabs. A role is an attribute of an account, not a different kind of account:
-  tabs would force a choice before anyone has seen the site, would strand a
-  reader who later decides to sell, and could not finish the job anyway, since
-  an agent still needs a human moderator afterwards.
-
-### Added
-- A "follow us" card in the article aside, under the table of contents. The
-  aside is sticky on desktop, so the ask now travels with the reader for the
-  whole piece instead of waiting at the bottom, where only those who finish ever
-  see it. Only configured profiles are listed — a `#` placeholder (YouTube today)
-  would be a dead click on a card whose single job is to be clicked. Clicks
-  report an aggregate `follow_social` event to the existing counter, so the card
-  can be judged on numbers rather than on taste.
-
-### Changed
-- The home sidebar's email newsletter block is replaced by the same follow card
-  (accent variant, keeping that column's one point of colour). The form was not
-  broken — addresses were stored and the weekly digest ran — but it never sent a
-  confirmation, so subscribing felt like nothing happened, and in a week it
-  collected no one. The `/subscribe` route, the `subscribers` table and the
-  digest job are deliberately left intact: this is a UI decision, reversible by
-  restoring the block.
-
-### Added
-- Article cards now carry the view counter, which until now only existed on the
-  article page itself: `👍 1 · 👁 115 · D. Baimurza · 04.08.26`. Counters above
-  999 collapse to a localized short form — `1,2 мың` / `1,2 тыс.` / `1.2k`,
-  truncated rather than rounded so a card never claims more views than there
-  were.
-
-### Changed
-- Bylines on cards are abbreviated to initial + family name ("Daulet Baimurza"
-  → "D. Baimurza"). The given name is the part that gets cut — the byline
-  convention everywhere space is tight — freeing the width the counter needed.
-- The card footer (rating, views, byline, date) now comes from one shared
-  `post_meta` partial instead of three near-copies in home / favourites /
-  author templates, which had already drifted (favourites still drew the rating
-  as a bare "▲").
 
 ## [0.10.2] — 2026-08-04
 
@@ -431,5 +555,26 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/DauletBai/shanraq.org/compare/v0.10.2...v0.11.0
+[0.10.2]: https://github.com/DauletBai/shanraq.org/compare/v0.10.0...v0.10.2
+[0.10.0]: https://github.com/DauletBai/shanraq.org/compare/v0.9.0...v0.10.0
+[0.9.0]: https://github.com/DauletBai/shanraq.org/compare/v0.8.0...v0.9.0
+[0.8.0]: https://github.com/DauletBai/shanraq.org/compare/v0.7.2...v0.8.0
+[0.7.2]: https://github.com/DauletBai/shanraq.org/compare/v0.7.1...v0.7.2
+[0.7.1]: https://github.com/DauletBai/shanraq.org/compare/v0.7.0...v0.7.1
+[0.7.0]: https://github.com/DauletBai/shanraq.org/compare/v0.6.5...v0.7.0
+[0.6.5]: https://github.com/DauletBai/shanraq.org/compare/v0.6.4...v0.6.5
+[0.6.4]: https://github.com/DauletBai/shanraq.org/compare/v0.6.3...v0.6.4
+[0.6.3]: https://github.com/DauletBai/shanraq.org/compare/v0.6.2...v0.6.3
+[0.6.2]: https://github.com/DauletBai/shanraq.org/compare/v0.6.1...v0.6.2
+[0.6.1]: https://github.com/DauletBai/shanraq.org/compare/v0.6.0...v0.6.1
+[0.6.0]: https://github.com/DauletBai/shanraq.org/compare/v0.5.1...v0.6.0
+[0.5.1]: https://github.com/DauletBai/shanraq.org/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/DauletBai/shanraq.org/compare/v0.4.1...v0.5.0
+[0.4.1]: https://github.com/DauletBai/shanraq.org/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/DauletBai/shanraq.org/compare/v0.3.1...v0.4.0
+[0.3.1]: https://github.com/DauletBai/shanraq.org/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/DauletBai/shanraq.org/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/DauletBai/shanraq.org/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/DauletBai/shanraq.org/releases/tag/v0.1.0

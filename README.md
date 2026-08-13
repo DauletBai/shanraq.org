@@ -38,6 +38,8 @@ The name refers to the *shanyrak* — the crown of the Kazakh yurt — the livin
 - 📣 **Block-resilient syndication** — RSS always on; automatic Telegram posting on publish.
 - 🖼️ **Media pipeline** — upload, EXIF-strip, brand-watermark; pluggable storage (filesystem now, S3/MinIO ready).
 - ⭐ **Ratings & author karma** — weighted voting with anti-brigading.
+- ◎ **Prediction ledger** — every forecast recorded with its date and judged in public at `/predictions`, misses included; the score is allowed to go down.
+- 🔎 **Built to be cited** — sitemaps, IndexNow, conditional GET, a ready-made reference under every article, and an `llms.txt` that offers assistants only the human-written work.
 - 🔗 **Referral loop** — invite links, attribution, and promotion-credit rewards.
 - 🛠️ **Operator admin panel** — edit legal/info pages, tariffs, service flags, payment provider, and AI settings without a redeploy.
 - 📊 **Privacy-respecting analytics** — aggregate-only audience metrics; bots separated from humans; traffic sources; **no per-visitor profiling**.
@@ -96,6 +98,7 @@ reference, module guides, and deployment runbook.
 
 - [Deployment guide](docs/DEPLOYMENT.md) — VPS, Docker, backups, data migration.
 - [Configuration reference](docs/CONFIGURATION.md) — every `SHANRAQ_*` setting.
+- [Editorial & crawling policy](docs/EDITORIAL-POLICY.md) — who writes what, and which crawlers may read it.
 - In-app docs at `/docs` on a running instance.
 
 ## Security
@@ -108,6 +111,11 @@ git-ignored. To report a vulnerability, see **[SECURITY.md](SECURITY.md)**
 
 Live in **closed beta** at [shanraq.org](https://shanraq.org). Releases follow
 [Semantic Versioning](https://semver.org); see **[CHANGELOG.md](CHANGELOG.md)**.
+
+Cutting a release is one command — pushing an annotated `vX.Y.Z` tag. The
+`Release` workflow then publishes the GitHub Release with the notes taken from
+the matching CHANGELOG section, and fails loudly if that section is missing, so
+a tag can never ship without its notes.
 
 ## License
 

@@ -37,12 +37,23 @@
               </form>
             </span>
             {{ else }}
+            {{/* Same two thumbs and the same width as for a reader who may
+                 vote. A sentence of explanation printed here instead pushed
+                 the buttons after it onto a second line, which is a lot of
+                 layout to spend on a rule that only matters at the moment
+                 somebody tries to break it. So it is said on the click. */}}
+            {{ $why := t .Lang "article.vote_own" }}
             <span class="rating rating--readonly">
+              {{ if .IsAuthor }}
+              <button type="button" class="rating__btn tipbtn" data-fhelp aria-label="{{ $why }}">{{ icon "thumb_up" }}<span class="fhelp__tip" role="tooltip">{{ $why }}</span></button>
+              {{ else }}
+              <a class="rating__btn tipbtn" href="/studio/login" aria-label="{{ t .Lang "article.vote_login" }}">{{ icon "thumb_up" }}<span class="fhelp__tip" role="tooltip">{{ t .Lang "article.vote_login" }}</span></a>
+              {{ end }}
               <span class="rating__score{{ if gt .Score 0 }} pos{{ else if lt .Score 0 }} neg{{ end }}">{{ .Score }}</span>
               {{ if .IsAuthor }}
-              <span class="hint" style="padding:0 6px">{{ t .Lang "article.vote_own" }}</span>
+              <button type="button" class="rating__btn tipbtn" data-fhelp aria-label="{{ $why }}">{{ icon "thumb_down" }}<span class="fhelp__tip" role="tooltip">{{ $why }}</span></button>
               {{ else }}
-              <a class="hint" style="padding:0 6px" href="/studio/login">{{ t .Lang "article.vote_login" }}</a>
+              <a class="rating__btn tipbtn" href="/studio/login" aria-label="{{ t .Lang "article.vote_login" }}">{{ icon "thumb_down" }}<span class="fhelp__tip" role="tooltip">{{ t .Lang "article.vote_login" }}</span></a>
               {{ end }}
             </span>
             {{ end }}

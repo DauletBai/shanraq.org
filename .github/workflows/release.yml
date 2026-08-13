@@ -1,0 +1,48 @@
+# Publishes a GitHub Release whenever a version tag is pushed, with the notes
+# taken from the matching CHANGELOG section.
+#
+# It exists because the manual step is the one that gets skipped. The project
+# had 23 tags and no published release: from the outside that reads as a repo
+# nobody maintains, while in fact it ships most days. Tagging is now the only
+# thing a human has to remember.
+name: Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Extract the notes for this version
+        id: notes
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          # Everything between this version's heading and the next one.
+          awk -v v="$version" '
+            $0 ~ "^## \\[" v "\\]" { found = 1; next }
+            found && /^## \[/       { exit }
+            found                   { print }
+          ' CHANGELOG.md > notes.md
+          if [ ! -s notes.md ]; then
+            echo "CHANGELOG.md has no section for $version — refusing to publish empty notes." >&2
+            exit 1
+          fi
+          echo "Notes: $(wc -l < notes.md) lines"
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file notes.md \
+            --verify-tag

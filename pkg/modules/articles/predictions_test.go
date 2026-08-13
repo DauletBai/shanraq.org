@@ -371,3 +371,32 @@ func TestArticleShowsItsOwnForecasts(t *testing.T) {
 		t.Error("an article with no forecasts rendered the forecasts block")
 	}
 }
+
+// The rating row must be the same shape for everyone. A sentence printed in
+// place of the buttons wrapped the row onto two lines for the author of the
+// piece and for every signed-out reader — which is most of them.
+func TestRatingRowKeepsItsShapeForEveryone(t *testing.T) {
+	app := newTestApp(t)
+	author := app.createUser("rate-shape@example.com", "Sup3r-Secret-Pass!")
+	_, slug := app.seedCitable(author)
+
+	for _, c := range []struct {
+		who  string
+		opts []reqOpt
+	}{
+		{"guest", nil},
+		{"author", []reqOpt{withCookie(app.login("rate-shape@example.com", "Sup3r-Secret-Pass!"))}},
+	} {
+		body := app.do(http.MethodGet, "/read/"+slug, nil, c.opts...).Body.String()
+		if n := strings.Count(body, "rating__btn"); n < 2 {
+			t.Errorf("%s sees %d rating buttons, want the same two everyone else sees", c.who, n)
+		}
+		// The explanation belongs in the tooltip, not in the row.
+		if strings.Contains(body, `class="hint" style="padding:0 6px"`) {
+			t.Errorf("%s still gets the sentence that pushed the row onto two lines", c.who)
+		}
+		if !strings.Contains(body, "fhelp__tip") {
+			t.Errorf("%s gets no explanation at all", c.who)
+		}
+	}
+}
