@@ -483,6 +483,10 @@ type ArticlePage struct {
 	Translated     bool
 	AvailableLangs []string
 
+	// CiteLine is the ready-made reference a reader can copy, empty on the
+	// articles we do not offer as a source. See citeLine.
+	CiteLine string
+
 	Category      string
 	Subcategory   string
 	CoverURL      string
@@ -587,6 +591,20 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	// Non-indexable articles still render in full — they are only kept out of
 	// search, not out of the site. See migration 20251107009900.
 	page.NoIndex = !a.Indexable
+	// Only the human-written articles offer a citation: the whole point of the
+	// block is to make our name easy to credit, and the AI columns are the one
+	// thing we do not want credited to it.
+	if !page.NoIndex {
+		page.CiteLine = citeLine(page.Lang, page.AuthorName, page.Title,
+			page.SiteURL, "/read/"+page.Slug, page.Published)
+	}
+	if page.NoIndex {
+		// The meta tag in the template speaks to search engines. This header also
+		// reaches the AI crawlers, which do not parse a robots meta at all, and it
+		// arrives on a HEAD request where there is no body to read. robots.txt
+		// says the same thing a third time; between them one of the three lands.
+		w.Header().Set("X-Robots-Tag", aiRobotsTag)
+	}
 
 	m.applyArticleSEO(&page)
 	m.render(w, "article", page)

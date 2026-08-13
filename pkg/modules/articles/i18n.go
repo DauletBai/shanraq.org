@@ -699,6 +699,84 @@ var messages = map[string]map[string]string{
 	"article.ai_note":    {"kz": "Мәтін ИИ көмегімен аударылды.", "ru": "Текст переведён с помощью ИИ.", "en": "This text was translated with AI."},
 	"article.ai_opinion": {"kz": "ИИ пікірі", "ru": "Мнение ИИ", "en": "AI opinion"},
 
+	// The prediction ledger. The wording carries the whole idea, so it is written
+	// out rather than summarised: the promise is that misses stay on the page.
+	"pred.title": {
+		"kz": "Болжамдар тізілімі",
+		"ru": "Реестр прогнозов",
+		"en": "The prediction ledger",
+	},
+	"pred.lead": {
+		"kz": "Осы сайтта айтылған әрбір болжам — жасалған күнімен бірге осында. " +
+			"Кейін әрқайсысы ашық түрде бағаланады: сәйкес келді, жартылай, келмеді. " +
+			"Қателер өшірілмейді.",
+		"ru": "Каждый прогноз, сделанный на этом сайте, записан здесь вместе с датой. " +
+			"Потом каждый публично оценивается: сбылось, частично, не сбылось. " +
+			"Ошибки не удаляются.",
+		"en": "Every forecast made on this site is recorded here with the date it was " +
+			"made, and later judged in public: hit, partial, miss. The misses stay.",
+	},
+	"pred.method": {
+		"kz": "Дәлдік — бағаланған болжамдардың үлесі; жартылай сәйкестік жарты есептеледі. " +
+			"Ашық болжамдар есепке кірмейді.",
+		"ru": "Точность — доля сбывшегося среди уже оценённых прогнозов; частичное " +
+			"попадание считается за половину. Открытые прогнозы в расчёт не входят.",
+		"en": "Accuracy is the share of judged forecasts that came true; a partial hit " +
+			"counts as a half. Open forecasts are not counted.",
+	},
+	"pred.accuracy":      {"kz": "дәлдік", "ru": "точность", "en": "accuracy"},
+	"pred.hit":           {"kz": "сәйкес келді", "ru": "сбылось", "en": "hit"},
+	"pred.partial":       {"kz": "жартылай", "ru": "частично", "en": "partial"},
+	"pred.miss":          {"kz": "келмеді", "ru": "не сбылось", "en": "missed"},
+	"pred.open":          {"kz": "ашық", "ru": "открыто", "en": "open"},
+	"pred.st_open":       {"kz": "Ашық", "ru": "Открыт", "en": "Open"},
+	"pred.st_hit":        {"kz": "Сәйкес келді", "ru": "Сбылось", "en": "Hit"},
+	"pred.st_miss":       {"kz": "Келмеді", "ru": "Не сбылось", "en": "Missed"},
+	"pred.st_partial":    {"kz": "Жартылай", "ru": "Частично", "en": "Partial"},
+	"pred.h_open":        {"kz": "Әлі ашық", "ru": "Ещё открыты", "en": "Still open"},
+	"pred.h_done":        {"kz": "Бағаланғандар", "ru": "Уже оценённые", "en": "Already judged"},
+	"pred.made":          {"kz": "жасалды", "ru": "сделан", "en": "made"},
+	"pred.by":            {"kz": "мерзімі", "ru": "срок", "en": "due"},
+	"pred.what_happened": {"kz": "Не болды:", "ru": "Что произошло:", "en": "What happened:"},
+	"pred.from_article":  {"kz": "Мақаладан", "ru": "Из статьи", "en": "From the article"},
+	"pred.evidence":      {"kz": "Дереккөз", "ru": "Подтверждение", "en": "Evidence"},
+	"pred.empty": {
+		"kz": "Тізілім әзірге бос.",
+		"ru": "В реестре пока ничего нет.",
+		"en": "The ledger is empty so far.",
+	},
+	"pred.overdue": {"kz": "мерзімі өтті", "ru": "просрочен", "en": "overdue"},
+
+	"pred.admin_title": {"kz": "Болжамдар", "ru": "Прогнозы", "en": "Predictions"},
+	"pred.admin_intro": {
+		"kz": "Болжамдарды осында қосып, кейін бағалаңыз. Ашық бет:",
+		"ru": "Здесь прогнозы добавляются и потом оцениваются. Публичная страница:",
+		"en": "Add forecasts here and judge them later. The public page:",
+	},
+	"pred.admin_view":     {"kz": "/predictions", "ru": "/predictions", "en": "/predictions"},
+	"pred.ledger":         {"kz": "Тізілім", "ru": "Реестр", "en": "Ledger"},
+	"pred.new":            {"kz": "Жаңа болжам", "ru": "Новый прогноз", "en": "New forecast"},
+	"pred.edit":           {"kz": "Өңдеу", "ru": "Изменить", "en": "Edit"},
+	"pred.delete":         {"kz": "Жою", "ru": "Удалить", "en": "Delete"},
+	"pred.cancel":         {"kz": "Болдырмау", "ru": "Отмена", "en": "Cancel"},
+	"pred.save":           {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
+	"pred.saved":          {"kz": "Сақталды.", "ru": "Сохранено.", "en": "Saved."},
+	"pred.deleted":        {"kz": "Жойылды.", "ru": "Удалено.", "en": "Deleted."},
+	"pred.f_statement":    {"kz": "Болжам", "ru": "Прогноз", "en": "Statement"},
+	"pred.f_verdict":      {"kz": "Не болды", "ru": "Что произошло", "en": "What happened"},
+	"pred.f_made":         {"kz": "Жасалған күні", "ru": "Дата прогноза", "en": "Made on"},
+	"pred.f_horizon":      {"kz": "Мерзімі", "ru": "Срок", "en": "Due by"},
+	"pred.f_status":       {"kz": "Күйі", "ru": "Статус", "en": "Status"},
+	"pred.f_resolved":     {"kz": "Бағаланған күні", "ru": "Дата оценки", "en": "Judged on"},
+	"pred.f_article":      {"kz": "Мақала", "ru": "Статья", "en": "Article"},
+	"pred.f_source":       {"kz": "Дереккөз сілтемесі", "ru": "Ссылка-подтверждение", "en": "Evidence link"},
+	"pred.err_empty":      {"kz": "Болжам мәтіні кемінде бір тілде болуы керек.", "ru": "Нужен текст прогноза хотя бы на одном языке.", "en": "A forecast needs a statement in at least one language."},
+	"pred.delete_confirm": {"kz": "Жоясыз ба? Қате болжамды жою тізілімнің мәнін жоғалтады.", "ru": "Удалить? Удаление несбывшегося прогноза лишает реестр смысла.", "en": "Delete? Removing a missed forecast is what empties this ledger of meaning."},
+
+	"cite.title":  {"kz": "Дәйексөз келтіру", "ru": "Как цитировать", "en": "How to cite"},
+	"cite.copy":   {"kz": "Көшіру", "ru": "Скопировать", "en": "Copy"},
+	"cite.copied": {"kz": "Көшірілді", "ru": "Скопировано", "en": "Copied"},
+
 	"header.admin": {"kz": "Әкімшілік", "ru": "Админка", "en": "Admin"},
 
 	"studio.n_published":     {"kz": "Мақала тексеруден өтті және жарияланды.", "ru": "Статья прошла проверку и опубликована.", "en": "The article passed the check and has been published."},

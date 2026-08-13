@@ -48,6 +48,7 @@ type Module struct {
 	admin         *AdminStore
 	users         *auth.Store // account administration (list / edit / delete)
 	content       *ContentStore
+	predictions   *PredictionStore
 	tariffs       *TariffStore
 	metrics       *Metrics
 	geoip         *geoIP
@@ -103,6 +104,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.admin = NewAdminStore(rt.DB)
 	m.users = auth.NewStore(rt.DB)
 	m.content = NewContentStore(rt.DB)
+	m.predictions = NewPredictionStore(rt.DB)
 	// Fill the editable-pages table from the built-in defaults on first boot;
 	// idempotent and best-effort, so it never blocks startup.
 	m.seedContentPages(ctx)
@@ -173,6 +175,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 
 	// SEO endpoints (no session needed).
 	r.Get("/robots.txt", m.handleRobots)
+	r.Get("/llms.txt", m.handleLLMS)
 	r.Get("/sitemap.xml", m.handleSitemap)
 	r.Get("/sitemap-listings.xml", m.handleSitemapListings)
 	r.Get("/sitemap-news.xml", m.handleSitemapNews)
@@ -197,6 +200,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/read/{slug}/comment/{id}/delete", m.handleCommentDelete)
 		r.Post("/read/{slug}/progress", m.handleReadProgress)
 		r.Get("/author/{id}", m.handleAuthor)
+		r.Get("/predictions", m.handlePredictions)
 		r.Get("/about", m.handleStaticPage("about"))
 		r.Get("/guide", m.handleStaticPage("guide"))
 		r.Get("/formatting", m.handleStaticPage("formatting"))
@@ -290,6 +294,10 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/admin/appeals/{id}/resolve", m.handleAdminResolveAppeal)
 		r.Post("/admin/analysis", m.handleAdminColumnBrief)
 		r.Post("/admin/articles/{id}/decide", m.handleAdminDecideArticle)
+		r.Get("/admin/predictions", m.handleAdminPredictions)
+		r.Get("/admin/predictions/{id}", m.handleAdminPredictions)
+		r.Post("/admin/predictions", m.handleAdminPredictionSave)
+		r.Post("/admin/predictions/{id}/delete", m.handleAdminPredictionDelete)
 		r.Get("/admin/pages", m.handleAdminPages)
 		r.Get("/admin/pages/{key}", m.handleAdminPageEdit)
 		r.Post("/admin/pages/{key}", m.handleAdminPageSave)

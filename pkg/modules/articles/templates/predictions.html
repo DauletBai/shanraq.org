@@ -1,0 +1,68 @@
+{{ define "predictions" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container pred" style="max-width:840px;padding-top:24px">
+  <h1 class="pred__h1">{{ t .Lang "pred.title" }}</h1>
+  <p class="pred__lead">{{ t .Lang "pred.lead" }}</p>
+
+  {{/* The scoreboard leads because it is the claim. Everything below it is the
+       evidence for that claim, and a reader who only sees the number has still
+       seen the thing that matters: it can go down. */}}
+  <div class="pscore">
+    <div class="pscore__big">
+      <span class="pscore__pct">{{ .Score.Accuracy }}%</span>
+      <span class="pscore__cap">{{ t .Lang "pred.accuracy" }}</span>
+    </div>
+    <ul class="pscore__list">
+      <li><b>{{ .Score.Hit }}</b> <span>{{ t .Lang "pred.hit" }}</span></li>
+      <li><b>{{ .Score.Partial }}</b> <span>{{ t .Lang "pred.partial" }}</span></li>
+      <li><b>{{ .Score.Miss }}</b> <span>{{ t .Lang "pred.miss" }}</span></li>
+      <li><b>{{ .Score.Open }}</b> <span>{{ t .Lang "pred.open" }}</span></li>
+    </ul>
+  </div>
+  <p class="pred__method">{{ t .Lang "pred.method" }}</p>
+
+  {{ if and (not .Open) (not .Done) }}
+    <p class="hint pred__empty">{{ t .Lang "pred.empty" }}</p>
+  {{ end }}
+
+  {{ if .Open }}
+  <h2 class="pred__h2">{{ t .Lang "pred.h_open" }}</h2>
+  <ol class="plist">
+    {{ range .Open }}{{ template "pred_row" (dict "P" . "Lang" $.Lang) }}{{ end }}
+  </ol>
+  {{ end }}
+
+  {{ if .Done }}
+  <h2 class="pred__h2">{{ t .Lang "pred.h_done" }}</h2>
+  <ol class="plist">
+    {{ range .Done }}{{ template "pred_row" (dict "P" . "Lang" $.Lang) }}{{ end }}
+  </ol>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}
+
+{{/* One entry. The date it was made is printed as prominently as the verdict:
+     a forecast is only worth anything if you can see how long ago it was made,
+     and hiding that date is how a ledger flatters itself. */}}
+{{ define "pred_row" }}
+{{ $p := .P }}
+<li class="pcard pcard--{{ $p.Status }}">
+  <div class="pcard__top">
+    <span class="pbadge pbadge--{{ $p.Status }}">{{ t .Lang (printf "pred.st_%s" $p.Status) }}</span>
+    <span class="pcard__when">{{ t .Lang "pred.made" }} {{ fmtDate $p.MadeOn }}</span>
+    {{ if $p.Horizon }}<span class="pcard__when">· {{ t .Lang "pred.by" }} {{ fmtDatePtr $p.Horizon }}</span>{{ end }}
+  </div>
+  <p class="pcard__stmt">{{ $p.StatementIn .Lang }}</p>
+  {{ with $p.VerdictIn .Lang }}
+  <p class="pcard__verdict"><b>{{ t $.Lang "pred.what_happened" }}</b> {{ . }}</p>
+  {{ end }}
+  <p class="pcard__meta">
+    {{ if $p.ArticleSlug }}<a href="/read/{{ $p.ArticleSlug }}?lang={{ .Lang }}">{{ t .Lang "pred.from_article" }}{{ with $p.ArticleTitle }}: {{ . }}{{ end }}</a>{{ end }}
+    {{ if and $p.ArticleSlug $p.SourceURL }} · {{ end }}
+    {{ with $p.SourceURL }}<a href="{{ . }}" rel="nofollow noopener" target="_blank">{{ t $.Lang "pred.evidence" }}</a>{{ end }}
+  </p>
+</li>
+{{ end }}

@@ -58,9 +58,14 @@ func (m *Module) siteURL() string {
 
 // handleRobots serves robots.txt: search engines crawl everything except the
 // author cabinet; commercial SEO scanners (which crawl heavily and return
-// nothing to us) are turned away; the sitemaps are advertised. AI crawlers are
-// left allowed on purpose — being cited in AI answers is a discovery channel.
-func (m *Module) handleRobots(w http.ResponseWriter, _ *http.Request) {
+// nothing to us) are turned away; the sitemaps are advertised.
+//
+// AI crawlers get a group of their own, welcome everywhere except the columns
+// written by a model — see aiRobotsGroup. Being quoted in an AI answer is a
+// real discovery channel; being quoted out of a machine-written column would
+// put our name behind a machine's opinion, which is the one thing this site
+// says it does not do.
+func (m *Module) handleRobots(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	site := m.siteURL()
 	// Commercial SEO scanners: pure parasites (feed third-party SEO databases,
@@ -75,6 +80,20 @@ func (m *Module) handleRobots(w http.ResponseWriter, _ *http.Request) {
 	for _, b := range seoBots {
 		fmt.Fprintf(w, "User-agent: %s\nDisallow: /\n\n", b)
 	}
+	// Read from the same indexable flag that took these out of the search index,
+	// so the two can never drift apart.
+	//
+	// A failed query closes /read entirely rather than emitting a short list.
+	// The two mistakes are not equal: hiding the human articles from assistants
+	// for one crawl costs a little reach and is undone by the next fetch, while
+	// exposing one machine-written column puts our name behind a machine's
+	// opinion inside a system with no retraction.
+	blocked, err := m.store.NonIndexableSlugs(r.Context())
+	if err != nil {
+		m.rt.Logger.Error("robots: non-indexable slugs, closing /read to AI crawlers", zap.Error(err))
+		blocked = nil
+	}
+	m.aiRobotsGroup(w, blocked, err != nil)
 	fmt.Fprintf(w, "Sitemap: %s/sitemap.xml\nSitemap: %s/sitemap-listings.xml\nSitemap: %s/sitemap-news.xml\n", site, site, site)
 }
 
@@ -138,7 +157,7 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 	doc := m.sitemapDoc(func(emit func(path string, mod time.Time)) {
 		emit("/", time.Now())
-		for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings", "/author/sana"} {
+		for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings", "/predictions", "/author/sana"} {
 			emit(p, time.Time{})
 		}
 		for _, c := range Categories {

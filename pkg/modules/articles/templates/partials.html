@@ -402,6 +402,7 @@
   <div class="container">
     <nav class="foot-nav">
       <a href="/about">{{ t .Lang "footer.about" }}</a>
+      <a href="/predictions">{{ t .Lang "pred.title" }}</a>
       <a href="/guide">{{ t .Lang "footer.you" }}</a>
       <a href="/support">{{ t .Lang "footer.support" }}</a>
       {{ if svcOff .Svc "ad_orders" }}<span class="is-disabled" title="{{ svcMsg .Svc "ad_orders" }}" aria-disabled="true">{{ t .Lang "adv.nav" }}</span>{{ else }}<a href="/advertise">{{ t .Lang "adv.nav" }}</a>{{ end }}
@@ -433,6 +434,31 @@
         hit.classList.toggle('fhelp--right', hit.getBoundingClientRect().left > window.innerWidth / 2);
         hit.classList.toggle('is-open');
       }
+    });
+    // Copy-to-clipboard for the citation line. Falls back to selecting the text
+    // when the clipboard is unavailable (older browsers, and any page not on
+    // https), so the button still leaves the reader one keystroke from a copy
+    // instead of doing nothing at all.
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('[data-copy]') : null;
+      if (!btn) return;
+      var src = document.querySelector(btn.getAttribute('data-copy'));
+      if (!src) return;
+      var text = src.textContent.trim();
+      var done = function () {
+        var was = btn.textContent;
+        btn.textContent = btn.getAttribute('data-done') || was;
+        btn.classList.add('is-done');
+        setTimeout(function () { btn.textContent = was; btn.classList.remove('is-done'); }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {});
+        return;
+      }
+      var sel = window.getSelection(), range = document.createRange();
+      range.selectNodeContents(src);
+      sel.removeAllRanges();
+      sel.addRange(range);
     });
     // Share row. The "share via…" button only exists where the browser can
     // actually open the OS share sheet — on desktop it stays hidden rather

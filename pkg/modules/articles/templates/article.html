@@ -68,6 +68,18 @@
         {{/* The second share row is the one that earns its keep: the reader has
              finished and is deciding whether the piece was worth passing on. */}}
         {{ template "share_row" (dict "Lang" .Lang "Title" .Title "Foot" true "URL" (printf "%s%s" .SiteURL .CanonURL)) }}
+
+        {{/* A finished reference, so crediting us costs one click rather than
+             a minute of assembling one from the page. Only on the articles we
+             stand behind — CiteLine is empty on the rest. */}}
+        {{ if .CiteLine }}
+        <aside class="cite">
+          <h2 class="cite__h">{{ t .Lang "cite.title" }}</h2>
+          <p class="cite__line" id="cite-line">{{ .CiteLine }}</p>
+          <button type="button" class="cite__copy" data-copy="#cite-line"
+                  data-done="{{ t .Lang "cite.copied" }}">{{ t .Lang "cite.copy" }}</button>
+        </aside>
+        {{ end }}
       </article>
 
       <section class="comments" id="comments">
