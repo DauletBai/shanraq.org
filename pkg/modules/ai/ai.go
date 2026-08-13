@@ -203,6 +203,11 @@ type ProviderStatus struct {
 	Label    string
 	HasKey   bool
 	IsActive bool
+	// Models this provider should be driven with. Empty when they are not known
+	// here; the form then clears the fields rather than leaving another
+	// provider's identifiers in place, which is what it used to do.
+	Editor    string
+	Translate string
 }
 
 // AdminView is the current AI configuration for the admin panel.
@@ -231,10 +236,12 @@ func (m *Module) AdminView() AdminView {
 	}
 	for _, p := range providerCatalog {
 		ps := ProviderStatus{
-			Code:     p.Code,
-			Label:    p.Label,
-			HasKey:   m.keyPresent[p.Code],
-			IsActive: p.Code == st.Provider,
+			Code:      p.Code,
+			Label:     p.Label,
+			HasKey:    m.keyPresent[p.Code],
+			IsActive:  p.Code == st.Provider,
+			Editor:    p.Editor,
+			Translate: p.Translate,
 		}
 		v.Providers = append(v.Providers, ps)
 		if ps.IsActive {

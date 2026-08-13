@@ -18,17 +18,26 @@ const (
 	ProviderKimi      = "kimi"
 )
 
-// ProviderDef names a selectable backend for the admin panel.
+// ProviderDef names a selectable backend for the admin panel, with the model
+// identifiers to offer when an administrator switches to it.
+//
+// Editor/Translate may be empty. A model id is a string the provider's API
+// accepts and nothing else validates, so guessing one means the switch appears
+// to work and then every call fails at run time. Where the right identifiers
+// are not known here, the form clears the fields instead and asks for them —
+// which is honest about who knows the answer.
 type ProviderDef struct {
-	Code  string
-	Label string
+	Code      string
+	Label     string
+	Editor    string
+	Translate string
 }
 
 // providerCatalog is the ordered set of backends shown in the admin panel.
 var providerCatalog = []ProviderDef{
-	{ProviderAnthropic, "Claude (Anthropic)"},
-	{ProviderOpenAI, "ChatGPT (OpenAI)"},
-	{ProviderKimi, "Kimi K3 (Moonshot)"},
+	{ProviderAnthropic, "Claude (Anthropic)", "claude-sonnet-5", "claude-haiku-4-5"},
+	{ProviderOpenAI, "ChatGPT (OpenAI)", "", ""},
+	{ProviderKimi, "Kimi K3 (Moonshot)", "", ""},
 }
 
 // isProvider reports whether code is a known provider.

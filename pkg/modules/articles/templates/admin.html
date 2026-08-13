@@ -738,9 +738,10 @@
           <fieldset style="border:0;padding:0;margin:14px 0">
             <legend style="font-weight:600;margin-bottom:6px">{{ t .Lang "aic.provider" }}</legend>
             {{ range .AI.Providers }}
-            <label style="display:flex;align-items:center;gap:10px;padding:6px 0">
-              <input type="radio" name="provider" value="{{ .Code }}" {{ if .IsActive }}checked{{ end }}>
-              <b style="min-width:160px">{{ .Label }}</b>
+            <label class="adm-choice">
+              <input type="radio" name="provider" value="{{ .Code }}" {{ if .IsActive }}checked{{ end }}
+                     data-editor-model="{{ .Editor }}" data-translate-model="{{ .Translate }}">
+              <b class="adm-choice__name">{{ .Label }}</b>
               {{ if .HasKey }}
               <span class="adm-flag adm-flag--ok">✓ {{ t $.Lang "aic.key_ok" }}</span>
               {{ else }}
@@ -750,12 +751,14 @@
             {{ end }}
           </fieldset>
 
-          <div class="adm-pair">
+          <div class="adm-pair" data-ai-models>
             <label style="display:block">{{ t .Lang "aic.editor" }}
-              <input class="input" name="editor_model" value="{{ .AI.EditorModel }}" maxlength="80" required>
+              <input class="input" name="editor_model" value="{{ .AI.EditorModel }}" maxlength="80" required
+                     placeholder="{{ t .Lang "aic.model_placeholder" }}">
             </label>
             <label style="display:block">{{ t .Lang "aic.translate" }}
-              <input class="input" name="translate_model" value="{{ .AI.TranslateModel }}" maxlength="80" required>
+              <input class="input" name="translate_model" value="{{ .AI.TranslateModel }}" maxlength="80" required
+                     placeholder="{{ t .Lang "aic.model_placeholder" }}">
             </label>
           </div>
           <label style="display:block;margin-top:12px;max-width:220px">{{ t .Lang "aic.max_tokens" }}
@@ -784,9 +787,9 @@
           <fieldset style="border:0;padding:0;margin:14px 0">
             <legend style="font-weight:600;margin-bottom:6px">{{ t .Lang "pay.provider" }}</legend>
             {{ range .Payments.Providers }}
-            <label style="display:flex;align-items:center;gap:10px;padding:6px 0">
+            <label class="adm-choice">
               <input type="radio" name="provider" value="{{ .Code }}" {{ if .IsActive }}checked{{ end }}>
-              <b style="min-width:160px">{{ .Label }}</b>
+              <b class="adm-choice__name">{{ .Label }}</b>
               {{ if .Implemented }}
               <span class="adm-flag adm-flag--ok">✓ {{ t $.Lang "pay.ready" }}</span>
               {{ else }}
@@ -826,6 +829,28 @@
     // the middle of the viewport, which had two faults: the first section sits
     // above that band at rest and so could never light up, and when two
     // sections were in the band at once whichever callback ran last won.
+    // Switching provider left the previous one's model names in the fields, so
+    // saving after a switch wrote, say, claude-sonnet-5 into an OpenAI config —
+    // valid-looking and wrong. Each radio carries the models its provider should
+    // be driven with; where none are known the fields are cleared instead, and
+    // the placeholder asks for them rather than pretending.
+    (function () {
+      var pair = document.querySelector('[data-ai-models]');
+      if (!pair) { return; }
+      var editor = pair.querySelector('[name="editor_model"]');
+      var translate = pair.querySelector('[name="translate_model"]');
+      if (!editor || !translate) { return; }
+
+      document.querySelectorAll('input[name="provider"][data-editor-model]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+          if (!radio.checked) { return; }
+          editor.value = radio.getAttribute('data-editor-model') || '';
+          translate.value = radio.getAttribute('data-translate-model') || '';
+          if (!editor.value) { editor.focus(); }
+        });
+      });
+    })();
+
     var items = [].slice.call(document.querySelectorAll('[data-nav]')).map(function (l) {
       return { link: l, el: document.querySelector(l.getAttribute('href')) };
     }).filter(function (i) { return i.el; });

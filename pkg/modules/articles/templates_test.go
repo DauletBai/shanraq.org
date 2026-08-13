@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"shanraq.org/pkg/modules/ai"
 	"shanraq.org/web"
 )
 
@@ -573,6 +574,17 @@ func renderAdminFull(t *testing.T) string {
 		AssignRoles: assignableRoles, ServiceStates: []string{svcOn},
 		Site:  ServiceFlag{Code: SvcSite, TitleKey: "svc.site", Status: svcOn},
 		Stats: AdminStats{Users: 1},
+		// The settings cards render nothing without these, and the tests below
+		// depend on the provider rows actually being there.
+		AI: ai.AdminView{Enabled: true, Provider: "anthropic",
+			EditorModel: "claude-sonnet-5", TranslateModel: "claude-haiku-4-5", MaxTokens: 4096,
+			Providers: []ai.ProviderStatus{
+				{Code: "anthropic", Label: "Claude (Anthropic)", IsActive: true,
+					Editor: "claude-sonnet-5", Translate: "claude-haiku-4-5"},
+				{Code: "openai", Label: "ChatGPT (OpenAI)"},
+			}},
+		Payments: paymentsAdminView{Enabled: true, Provider: PayProviderKaspi,
+			Providers: []paymentProviderStatus{{Code: PayProviderKaspi, Label: "Kaspi Pay", IsActive: true}}},
 		Guests: GuestAnalytics{HasData: true, Sources: rows, Bots: rows, Devices: rows,
 			OS: rows, Browsers: rows, Countries: rows, Langs: rows, EnglishBy: rows, VPNLangs: rows},
 	}
@@ -764,5 +776,35 @@ func TestArticleCoverReservesItsSpace(t *testing.T) {
 	// Sideways, the ratio alone would make the cover taller than the screen.
 	if !strings.Contains(string(b), ".article__media { max-height: 70vh; }") {
 		t.Error("the cover has no height cap, so in landscape it fills the viewport")
+	}
+}
+
+// The provider rows carried an inline min-width that could not fit a phone, and
+// the model fields kept the previous provider's names after a switch.
+func TestAISettingsCardFitsAndFollowsProvider(t *testing.T) {
+	out := renderAdminFull(t)
+	settings := out[strings.Index(out, `id="settings"`):]
+
+	// Nothing in a provider row may be pinned to a width the card cannot give it.
+	if strings.Contains(settings, "min-width:160px") {
+		t.Error("a provider name is still pinned to 160px inline and will overflow a phone")
+	}
+	if n := strings.Count(settings, `class="adm-choice"`); n < 2 {
+		t.Errorf("provider rows are not using the wrapping class (found %d)", n)
+	}
+
+	// Each radio has to carry what its provider should be driven with, or the
+	// form cannot correct the fields when the choice changes.
+	if !strings.Contains(settings, `data-editor-model="claude-sonnet-5"`) ||
+		!strings.Contains(settings, `data-translate-model="claude-haiku-4-5"`) {
+		t.Error("the Anthropic radio does not carry its models")
+	}
+	// Providers whose ids we do not know carry empty ones on purpose: the script
+	// then clears the fields instead of leaving another provider's names.
+	if !strings.Contains(settings, `data-editor-model=""`) {
+		t.Error("a provider with unknown models should carry an empty attribute, not be omitted")
+	}
+	if !strings.Contains(settings, "data-ai-models") {
+		t.Error("the model fields are not marked for the script to find")
 	}
 }

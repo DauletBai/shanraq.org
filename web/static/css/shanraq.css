@@ -1521,7 +1521,19 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* Two fields across a card. Was an inline style, which no media query could
    reach — so in a half-width column the pair had no way to collapse. */
 .adm-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 1500px) { .adm-pair { grid-template-columns: 1fr; } }
+/* 1500px put the pair one-per-line on every laptop. The two settings cards
+   stop sharing a row at 1100px, and below that each has the full width, so
+   the fields fit side by side well under the old threshold. */
+@media (max-width: 760px) { .adm-pair { grid-template-columns: 1fr; } }
+@media (min-width: 1101px) and (max-width: 1400px) { .adm-pair { grid-template-columns: 1fr; } }
+
+/* A provider row: radio, name, key badge. The name carried min-width:160px
+   inline, and with the badge beside it the row could not fit a phone — it
+   simply ran past the right edge of the card. It wraps now, and the name
+   takes a minimum only where there is room for one. */
+.adm-choice { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; padding: 6px 0; }
+.adm-choice__name { min-width: 0; }
+@media (min-width: 560px) { .adm-choice__name { min-width: 160px; } }
 /* Below this the two settings cards stop being cards and start being columns
    of squeezed text, so they stack. */
 @media (max-width: 1100px) { .adm-cols--settings { grid-template-columns: 1fr; } }
