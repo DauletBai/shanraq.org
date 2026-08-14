@@ -815,6 +815,16 @@ func TestArticleCoverReservesItsSpace(t *testing.T) {
 			t.Errorf("the admin spacing token %s is gone", tok)
 		}
 	}
+	// The card rule is the more specific of the two, so a `margin` shorthand here
+	// silently beats the section's flow rule and the cards go back to touching —
+	// which is exactly what happened. Only the bottom margin is the card's to
+	// reset; the top belongs to the flow.
+	if card := regexp.MustCompile(`\.adm \.adm-panel,[^{]*\{[^}]*\}`).Find(b); card == nil {
+		t.Error("the shared admin card rule is gone")
+	} else if regexp.MustCompile(`[;{]\s*margin\s*:`).Match(card) {
+		t.Errorf("the card rule uses the margin shorthand; it will cancel the section flow: %s", card)
+	}
+
 	// Newspaper flow is what put cards in one row at different heights.
 	if regexp.MustCompile(`\.adm-cards2 \{[^}]*(?:^|[^-\w])columns\s*:`).Match(b) {
 		t.Error(".adm-cards2 is laid out with columns again; its cards will not line up")

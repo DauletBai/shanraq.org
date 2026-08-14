@@ -1546,9 +1546,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 :root[data-theme="dark"] .adm { --adm-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3); }
 
-/* One card, whatever it is called. Margin is zeroed on purpose: spacing between
-   cards comes from the grid gap and nowhere else, which is what stops it
-   drifting card by card. */
+/* One card, whatever it is called.
+
+   Only the BOTTOM margin is reset, and the distinction matters: .adv-card and
+   .cab-card carry a margin-bottom of their own, while the top margin belongs to
+   the section's flow rule below. Writing the `margin` shorthand here instead
+   zeroed both — and since this selector is the more specific of the two, it won
+   the cascade and the flow rule never applied. That is what put the cards back
+   against each other after they had just been separated. */
 .adm .adm-panel,
 .adm .adm-kpi,
 .adm .adv-card,
@@ -1558,7 +1563,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   border-radius: var(--adm-r);
   padding: var(--adm-pad);
   box-shadow: var(--adm-shadow);
-  margin: 0;
+  margin-bottom: 0;
 }
 
 .adm__side {
