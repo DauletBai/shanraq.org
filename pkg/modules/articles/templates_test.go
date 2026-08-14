@@ -801,17 +801,23 @@ func TestArticleCoverReservesItsSpace(t *testing.T) {
 		t.Error("the hero declares no container, so its cqw sizes resolve against nothing")
 	}
 
-	// A section's blocks are spaced by their container's gap, which stops at the
-	// container's edge — so a block placed directly after one sits flush against
-	// it. "Последние комментарии" was touching the two cards below it, and the
-	// account register carried a hand-written margin-top for the same reason.
-	for _, pair := range []string{
-		`\.adm-panel \+ \.adm-cards2`,
-		`\.adm-cols \+ \.adm-panel`,
-	} {
-		if !regexp.MustCompile(pair).Match(b) {
-			t.Errorf("no rule separates %s; those blocks will touch", pair)
+	// Blocks stacked inside a section are separated by one flow rule rather than
+	// by a list of pairs. The list was the bug: it had to be extended every time
+	// a new block was put next to an old one, and it was not — which is how
+	// "Последние комментарии" came to sit flush against the cards below it.
+	if !regexp.MustCompile(`\.adm-section > \* \+ \* \{[^}]*margin-top`).Match(b) {
+		t.Error("nothing separates stacked blocks inside an admin section")
+	}
+	// One set of numbers decides admin spacing. A literal px in a gap or a card
+	// padding is how the last set drifted apart into 16/18/20/22.
+	for _, tok := range []string{"--adm-gap:", "--adm-pad:", "--adm-sec:", "--adm-shadow:"} {
+		if !strings.Contains(string(b), tok) {
+			t.Errorf("the admin spacing token %s is gone", tok)
 		}
+	}
+	// Newspaper flow is what put cards in one row at different heights.
+	if regexp.MustCompile(`\.adm-cards2 \{[^}]*(?:^|[^-\w])columns\s*:`).Match(b) {
+		t.Error(".adm-cards2 is laid out with columns again; its cards will not line up")
 	}
 	// Sideways, the ratio alone would make the cover taller than the screen.
 	if !strings.Contains(string(b), ".article__media { max-height: 70vh; }") {

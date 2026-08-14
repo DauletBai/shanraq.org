@@ -919,7 +919,6 @@ var messages = map[string]map[string]string{
 	"ag.empty":             {"kz": "Дерек әлі жиналған жоқ.", "ru": "Данных пока нет.", "en": "No data yet."},
 	"ag.sources":           {"kz": "Дереккөздер (30 күн)", "ru": "Источники (30 дней)", "en": "Sources (30 days)"},
 	"ag.sources_note":      {"kz": "Тірі қонақтар қайдан келді.", "ru": "Откуда пришли живые гости.", "en": "Where human visits came from."},
-	"ag.sources_since":     {"kz": "Бұл көрсеткіш қате есептелген еді, сондықтан нөлден басталды —", "ru": "Этот показатель считался неверно, поэтому начат с нуля —", "en": "This metric was computed wrongly and restarts from zero —"},
 	"admin.since_short":    {"kz": "бастап", "ru": "с", "en": "since"},
 	"admin.views_since":    {"kz": "Санағыштан краулерлер алынып тасталған күннен бері саналады. «Қонақтар» панеліндегі «Мақалалар» саны сайттың бүкіл тарихын қамтиды, сондықтан ол әлдеқайда үлкен.", "ru": "Считается со дня, когда из счётчика убрали краулеров. Число «Статьи» в панели гостей охватывает всю историю сайта, поэтому оно намного больше.", "en": "Counted from the day crawlers were removed from it. The guest panel's \"Articles\" figure covers the whole history of the site, so it is much larger."},
 	"ag.bots":              {"kz": "Боттар (30 күн)", "ru": "Боты (30 дней)", "en": "Bots (30 days)"},

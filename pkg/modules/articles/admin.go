@@ -229,9 +229,10 @@ type AdminPage struct {
 	Analytics AdminAnalytics
 	// Aggregate audience (guest vs registered) traffic.
 	Guests GuestAnalytics
-	// SourcesSince is the date the traffic-source counters restart from. Only
-	// that one metric was reset; the other nine cover the site's whole history,
-	// so the panel has to say which is which.
+	// SourcesSince is the day the view counter restarts from, shown under the
+	// "Views" tile. That counter really was reset — crawler hits were taken out
+	// of it — while the guest panel's article figure covers the whole history,
+	// and without the date the two read as a contradiction.
 	SourcesSince string
 	// AI model configuration (provider/model switch).
 	AI ai.AdminView

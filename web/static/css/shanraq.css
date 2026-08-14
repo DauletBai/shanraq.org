@@ -1521,7 +1521,45 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* ================= Admin dashboard (standalone layout) ================= */
 .adm-body { margin: 0; background: var(--surface-2); }
-.adm { display: flex; min-height: 100vh; }
+/* ── Admin spacing standard ────────────────────────────────────────────────
+   Every card in the admin had grown its own numbers: padding 16/18, 18/20,
+   20/22 and 22; gaps 12, 14, 18 and 22; sections 26; and .adm-cards2 laid out
+   with `columns`, which is newspaper flow — the reason cards in one row sat at
+   different heights. Four tokens now decide all of it, so a new panel inherits
+   the rhythm instead of inventing one.
+
+   Scoped to .adm on purpose: .adv-card and .cab-card also dress the public
+   advertise, invite and cabinet pages, and those are not ours to restyle. */
+.adm {
+  display: flex;
+  min-height: 100vh;
+  --adm-gap: 18px;       /* between cards — across a row and down a column */
+  --adm-gap-in: 12px;    /* inside a card: paired fields and tight rows */
+  --adm-sec: 30px;       /* between sections, deliberately larger than a card gap */
+  --adm-pad: 18px 20px;
+  --adm-r: 14px;
+  --adm-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+/* A shadow tuned for white paper disappears on a dark one; lift it instead. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .adm { --adm-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3); }
+}
+:root[data-theme="dark"] .adm { --adm-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3); }
+
+/* One card, whatever it is called. Margin is zeroed on purpose: spacing between
+   cards comes from the grid gap and nowhere else, which is what stops it
+   drifting card by card. */
+.adm .adm-panel,
+.adm .adm-kpi,
+.adm .adv-card,
+.adm .cab-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--adm-r);
+  padding: var(--adm-pad);
+  box-shadow: var(--adm-shadow);
+  margin: 0;
+}
 
 .adm__side {
   width: 248px; flex-shrink: 0; position: sticky; top: 0; align-self: flex-start;
@@ -1556,7 +1594,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm__top h1 { font-size: var(--step-3); }
 .adm__user { color: var(--muted); font-size: 0.9rem; }
 .adm-notice { background: color-mix(in srgb, var(--teal) 14%, var(--paper)); border: 1px solid var(--teal); color: var(--teal); border-radius: 10px; padding: 10px 14px; margin-bottom: 18px; font-weight: 600; }
-.adm-section { margin-bottom: 26px; scroll-margin-top: 20px; }
+.adm-section { margin-bottom: var(--adm-sec); scroll-margin-top: 20px; }
+/* Anything stacked inside a section is separated by the same one gap. This
+   replaces a list of pairs that had to be extended every time a new block
+   was added next to an old one — which is how two of them ended up touching. */
+.adm-section > * + * { margin-top: var(--adm-gap); }
 
 /* Two-column dashboard: blocks flow into two masonry columns (variable heights,
    no row gaps). The overview KPI strip spans both columns at the top. */
@@ -1568,31 +1610,22 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* The moderation cards (queue, appeals, log, analysis) get their own isolated
    two-column masonry so they split evenly instead of stacking in one column. */
-.adm-cards2 { columns: 2; column-gap: 22px; }
-.adm-cards2 > .adv-card { break-inside: avoid; margin: 0 0 22px; }
+.adm-cards2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--adm-gap); }
 /* Blocks inside a section are spaced by their container's own gap, and that
    gap stops at the container's edge — so a block standing directly after one
    lands flush against it. That is why "Последние комментарии" was touching the
    two cards below it, and why the account register had a hand-written
    margin-top. Each pair borrows the gap of the block it sits against, so the
    rhythm of the section stays the one its grids already set. */
-.adm-cols + .adm-panel { margin-top: 18px; }
-.adm-panel + .adm-panel { margin-top: 18px; }
-.adm-panel + .adm-cards2,
-.adm-cols + .adm-cards2 { margin-top: 22px; }
-@media (max-width: 1000px) { .adm-cards2 { columns: 1; } }
+@media (max-width: 1000px) { .adm-cards2 { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .adm-cols, .adm-cols--3 { grid-template-columns: 1fr; } }
 
-.adm-section__h { font-size: var(--step-1); margin: 0 0 14px; }
-.adm-kpis {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 14px;
-  margin-bottom: 15px;
-}
+.adm-section__h { font-size: var(--step-1); margin: 0; }
+.adm-kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--adm-gap); }
 /* Fill the whole row regardless of card count (no empty space on wide screens):
    cards stretch to equal widths and wrap on narrow screens. */
 .adm-kpis--fill { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
-.adm-kpi { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.adm-kpi { display: flex; flex-direction: column; gap: 2px; }
 .adm-kpi__ic { font-size: 1.2rem; color: var(--gold); opacity: 0.7; }
 .adm-kpi b { 
   font-family: var(--serif); 
@@ -1608,10 +1641,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    unbreakable word in a header ("зарегистрированные") widened its own column
    and squeezed the last one down to a strip. Zero-floored tracks stay equal
    and the text wraps instead. */
-.adm-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.adm-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--adm-gap); }
 /* Stacked column-rows within a section must breathe: any .adm-cols following
    another gets vertical separation, so adding more rows never sticks again. */
-.adm-cols + .adm-cols { margin-top: 18px; }
 /* Гостевая аналитика: девять карточек, в каждой не больше двух колонок цифр,
    поэтому в треть ширины они помещаются целиком и складываются в ровные 3×3
    без пустого добора. */
@@ -1623,7 +1655,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-cols--settings > .adm-section { margin-bottom: 0; }
 /* Two fields across a card. Was an inline style, which no media query could
    reach — so in a half-width column the pair had no way to collapse. */
-.adm-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.adm-pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--adm-gap-in); }
 /* 1500px put the pair one-per-line on every laptop. The two settings cards
    stop sharing a row at 1100px, and below that each has the full width, so
    the fields fit side by side well under the old threshold. */
@@ -1647,7 +1679,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    остаётся пустота. Высота фиксируется, лишнее прокручивается внутри.
    Значения подобраны так, чтобы было видно 3–4 записи — достаточно, чтобы
    понять, есть ли новое, и не потерять остальную панель из виду. */
+/* Grid rows make every card in a line the height of its tallest neighbour, so
+   a card whose list is longer must scroll inside itself rather than stretch the
+   row. The scroll area takes whatever height the row hands it — min-height:0 is
+   what lets a flex child shrink below its content instead of overflowing. */
 .adm-scroll { max-height: 320px; overflow-y: auto; overscroll-behavior: contain; }
+.adm .adm-panel { display: flex; flex-direction: column; }
+.adm .adm-panel > .adm-scroll,
+.adm .adm-panel > .adm-chart { flex: 1 1 auto; min-height: 0; }
 .adm-scroll--tall { max-height: 420px; }
 /* Analytics cards sit three to a row and a grid row is as tall as its tallest
    card. Countries gains a new entry every few days, so it stretched its row and
@@ -1704,7 +1743,6 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-scroll::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
 .adm-scroll::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 .adm-scroll { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
-.adm-panel { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
 .adm-panel h2 { font-size: var(--step-1); margin-bottom: 14px; }
 .adm-hint { color: var(--muted); font-size: 0.85rem; margin: 12px 0 0; }
 
@@ -2143,7 +2181,6 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 
 .studio__since { margin: 0 0 10px; font-size: var(--step--1); color: var(--muted); }
-.adm-hint--since { color: var(--gold-strong); }
 .adm-kpi__since { font-style: normal; opacity: .65; font-size: .85em; white-space: nowrap; }
 /* ---- Reading-depth funnel (author dashboard) ---- */
 .depth { white-space: nowrap; }
