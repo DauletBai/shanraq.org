@@ -564,7 +564,7 @@
       {{/* The register itself. The two cards above count accounts by role; they
            cannot tell you who anyone is, which is no basis for acting on a
            complaint about a person. */}}
-      <div class="adm-panel" style="margin-top:18px">
+      <div class="adm-panel">
         <h2>{{ t .Lang "admin.users_title" }} {{ template "fhelp" (t .Lang "admin.users_note") }}</h2>
         <form class="adm-usersearch" method="get" action="/admin">
           <input class="input" type="search" name="uq" value="{{ .UserSearch }}" placeholder="{{ t .Lang "admin.users_search" }}">

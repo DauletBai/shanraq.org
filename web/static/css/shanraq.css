@@ -1570,6 +1570,16 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    two-column masonry so they split evenly instead of stacking in one column. */
 .adm-cards2 { columns: 2; column-gap: 22px; }
 .adm-cards2 > .adv-card { break-inside: avoid; margin: 0 0 22px; }
+/* Blocks inside a section are spaced by their container's own gap, and that
+   gap stops at the container's edge — so a block standing directly after one
+   lands flush against it. That is why "Последние комментарии" was touching the
+   two cards below it, and why the account register had a hand-written
+   margin-top. Each pair borrows the gap of the block it sits against, so the
+   rhythm of the section stays the one its grids already set. */
+.adm-cols + .adm-panel { margin-top: 18px; }
+.adm-panel + .adm-panel { margin-top: 18px; }
+.adm-panel + .adm-cards2,
+.adm-cols + .adm-cards2 { margin-top: 22px; }
 @media (max-width: 1000px) { .adm-cards2 { columns: 1; } }
 
 .adm-section__h { font-size: var(--step-1); margin: 0 0 14px; }

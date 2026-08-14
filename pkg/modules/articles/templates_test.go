@@ -800,6 +800,19 @@ func TestArticleCoverReservesItsSpace(t *testing.T) {
 	if !regexp.MustCompile(`\.newshero \{[^}]*container-type`).Match(b) {
 		t.Error("the hero declares no container, so its cqw sizes resolve against nothing")
 	}
+
+	// A section's blocks are spaced by their container's gap, which stops at the
+	// container's edge — so a block placed directly after one sits flush against
+	// it. "Последние комментарии" was touching the two cards below it, and the
+	// account register carried a hand-written margin-top for the same reason.
+	for _, pair := range []string{
+		`\.adm-panel \+ \.adm-cards2`,
+		`\.adm-cols \+ \.adm-panel`,
+	} {
+		if !regexp.MustCompile(pair).Match(b) {
+			t.Errorf("no rule separates %s; those blocks will touch", pair)
+		}
+	}
 	// Sideways, the ratio alone would make the cover taller than the screen.
 	if !strings.Contains(string(b), ".article__media { max-height: 70vh; }") {
 		t.Error("the cover has no height cap, so in landscape it fills the viewport")
@@ -833,5 +846,28 @@ func TestAISettingsCardFitsAndFollowsProvider(t *testing.T) {
 	}
 	if !strings.Contains(settings, "data-ai-models") {
 		t.Error("the model fields are not marked for the script to find")
+	}
+}
+
+// A panel patched with an inline margin is the shape of this bug: it fixes the
+// one instance somebody noticed and leaves the next to be found by eye. The
+// account register carried exactly that, and "Последние комментарии" — which
+// nobody had patched — sat flush against the cards below it. Spacing between
+// panels belongs in the stylesheet, where one rule covers every pair.
+//
+// Deliberately narrow: the template carries other inline margins for one-off
+// nudges inside panels, and rewriting those is not this test's business.
+func TestAdminPanelsCarryNoInlineMargins(t *testing.T) {
+	f, err := templateFiles.Open("templates/admin.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	b, err := io.ReadAll(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if m := regexp.MustCompile(`class="adm-panel[^"]*"[^>]*style="[^"]*margin`).FindAll(b, -1); m != nil {
+		t.Errorf("a panel is spaced by an inline margin again: %s", m)
 	}
 }
