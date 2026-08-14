@@ -5,6 +5,16 @@ on:
     branches: [ main ]
   pull_request:
 
+# go.mod is the single place the Go version is decided. actions/setup-go
+# defaults to GOTOOLCHAIN=local, which makes the runner's own Go win and the
+# `toolchain` line in go.mod be ignored — so a security release could be
+# pinned in go.mod, pass locally, and CI would go on building the vulnerable
+# one. That is exactly what happened with go1.26.6: govulncheck stayed red
+# after the bump, reporting traces from 1.26.5. `auto` lets Go fetch whatever
+# go.mod asks for.
+env:
+  GOTOOLCHAIN: auto
+
 jobs:
   checks:
     runs-on: ubuntu-latest
