@@ -116,6 +116,52 @@ need, so the two jobs are one job. Not built yet.
 The DNS move is the one that changed the shape of the problem: repointing the
 domain at another host is now minutes of work and needs nobody's permission.
 
+## Deferred: Cloudflare proxying
+
+Postponed on 14 August 2026 — the owner's call, and a defensible one: at a few
+hundred readers a week the proxy buys little and costs operational complexity.
+Revisit when organic growth or revenue makes the site worth attacking or
+blocking. Nothing is half-applied; every record is `DNS only` and the origin is
+reachable exactly as before.
+
+Two things were established while preparing it, and are worth keeping so nobody
+has to derive them again.
+
+**The origin is ready for `Full (strict)`.** Checked 14 August: addressed by IP
+with the right SNI it answers 200 with a valid Let's Encrypt chain (verify
+result 0), `www` likewise, HTTP/2 on. No Origin CA certificate is needed.
+
+**`ufw` will not do the job.** Docker publishes 80 and 443 through its own
+netfilter path, so `ufw` rules never see that traffic and a "block everything
+but Cloudflare" written there would appear to work and do nothing. The rules
+belong in the `DOCKER-USER` chain, which is currently empty, and must be made
+persistent — they do not survive a reboot on their own.
+
+The order, when the time comes. Each step depends on the one before it:
+
+1. SSL/TLS → **Full (strict)**. Before anything else: proxying while the mode is
+   `Flexible` puts Cloudflare on HTTP to an origin that redirects to HTTPS, and
+   the site dies in a redirect loop immediately.
+2. Proxy **only** the apex and `www`. `mail` stays grey forever — Cloudflare
+   does not proxy SMTP, and an orange cloud there points MX at HTTP addresses.
+3. Verify from outside that the origin address is no longer visible and that
+   client addresses still resolve correctly.
+4. Apex SPF: `+a` → `ip4:85.202.192.61`. Not urgent — mail leaves through
+   Resend, whose envelope sender is on `send.shanraq.org` and whose alignment
+   comes from the `resend._domainkey` signature, so `+a` carries no weight
+   today. But once the A record is Cloudflare's, `+a` hands every Cloudflare
+   address permission to send as this domain.
+5. Uncomment Cloudflare's ranges in `configs/config.prod.yaml` **and** firewall
+   the origin in the same change. Either alone is worse than neither: trusting
+   those ranges while the origin is directly reachable is the spoofing hole the
+   firewall exists to close.
+
+**Always Online is weaker than it sounds.** It serves from the Internet Archive,
+only when Cloudflare cannot reach the origin at all, and only for pages the
+archive happened to crawl — which on a young site may be a handful. It is worth
+switching on because it is free, but it is not an answer to an outage. The full
+archive staying readable is the static mirror's job, and that job is still open.
+
 ## What is worth doing next, in order
 
 1. **A copy that leaves the machine.** Everything else is second.
