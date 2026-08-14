@@ -2,6 +2,9 @@
    One unified, self-hosted style (no external CDN). Light + dark. */
 
 :root {
+  /* One card shadow for the whole site: the admin panels and the article cards
+     on the home page are the same object to a reader, and were not to the CSS. */
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --paper: #ffffff;
   --surface: #ffffff;
   --surface-2: #f5f4f2;
@@ -567,6 +570,9 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   padding-bottom: 15px;
   border-radius: 12px;
   border: 1px solid var(--line);
+  /* Same lift as the admin panels — to a reader an article card and a dashboard
+     card are the same object, and they should not sit on different planes. */
+  box-shadow: var(--card-shadow);
 }
 .post__title {
   font-size: var(--step-2);
@@ -1538,13 +1544,13 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   --adm-sec: 30px;       /* between sections, deliberately larger than a card gap */
   --adm-pad: 18px 20px;
   --adm-r: 14px;
-  --adm-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --adm-shadow: var(--card-shadow);
 }
 /* A shadow tuned for white paper disappears on a dark one; lift it instead. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .adm { --adm-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3); }
+  :root:not([data-theme="light"]) { --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3); }
 }
-:root[data-theme="dark"] .adm { --adm-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3); }
+:root[data-theme="dark"] { --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3); }
 
 /* One card, whatever it is called.
 
@@ -1615,13 +1621,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* The moderation cards (queue, appeals, log, analysis) get their own isolated
    two-column masonry so they split evenly instead of stacking in one column. */
-.adm-cards2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--adm-gap); }
+.adm-cards2 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--adm-gap); }
 /* Blocks inside a section are spaced by their container's own gap, and that
    gap stops at the container's edge — so a block standing directly after one
    lands flush against it. That is why "Последние комментарии" was touching the
    two cards below it, and why the account register had a hand-written
    margin-top. Each pair borrows the gap of the block it sits against, so the
    rhythm of the section stays the one its grids already set. */
+@media (max-width: 1400px) { .adm-cards2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 1000px) { .adm-cards2 { grid-template-columns: 1fr; } }
 @media (max-width: 760px) { .adm-cols, .adm-cols--3 { grid-template-columns: 1fr; } }
 
