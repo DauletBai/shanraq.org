@@ -98,6 +98,7 @@ reference, module guides, and deployment runbook.
 
 - [Deployment guide](docs/DEPLOYMENT.md) — VPS, Docker, backups, data migration.
 - [Configuration reference](docs/CONFIGURATION.md) — every `SHANRAQ_*` setting.
+- [Backups & resilience](docs/BACKUPS.md) — what runs, how to restore, and which single points of failure are still open.
 - [Editorial & crawling policy](docs/EDITORIAL-POLICY.md) — who writes what, and which crawlers may read it.
 - In-app docs at `/docs` on a running instance.
 

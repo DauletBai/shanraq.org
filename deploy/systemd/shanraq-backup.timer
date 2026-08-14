@@ -1,0 +1,13 @@
+[Unit]
+Description=Shanraq: run the backup daily
+
+[Timer]
+# 02:30 UTC = 07:30 Astana — after the quiet hours, before the working day.
+OnCalendar=*-*-* 02:30:00
+# A machine that was down at 02:30 still gets its backup when it comes back;
+# yesterday proved that is not hypothetical.
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

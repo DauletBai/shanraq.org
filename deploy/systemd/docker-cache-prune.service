@@ -1,0 +1,12 @@
+[Unit]
+Description=Shanraq: drop Docker build cache older than three days
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+# Every deploy leaves its layers behind. Left alone they reached 60 GB on an
+# 80 GB disk in a single day of work, which would have stopped the next build
+# and then stopped Postgres writing — a worse outage than the one that made us
+# look. Pure cache: removing it costs one slower build.
+ExecStart=/usr/bin/docker builder prune -f --filter until=72h

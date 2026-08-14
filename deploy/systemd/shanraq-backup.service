@@ -1,0 +1,14 @@
+[Unit]
+Description=Shanraq: encrypted backup of the database and uploaded media
+Documentation=file:///opt/shanraq/scripts/backup.sh
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/shanraq
+EnvironmentFile=/opt/shanraq/.env
+ExecStart=/opt/shanraq/scripts/backup.sh
+# The script exits non-zero on any failure, so a failed run is visible in
+# systemctl status rather than silently producing nothing.
+TimeoutStartSec=1800
