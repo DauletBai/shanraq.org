@@ -927,3 +927,28 @@ func TestRealEstateBannerIsSizedByRatio(t *testing.T) {
 		t.Errorf("the banner caption is not sized against its own card: %s", body)
 	}
 }
+
+// Every photograph on the site is 16:9 — article covers, the home carousel, the
+// paid banner. The listing gallery was 16:10 and so cropped its photos by a
+// different amount than everything around it.
+func TestEveryPhotoBoxIsSixteenNine(t *testing.T) {
+	css, err := web.StaticFS().Open("css/shanraq.css")
+	if err != nil {
+		t.Fatalf("open stylesheet: %v", err)
+	}
+	defer css.Close()
+	b, err := io.ReadAll(css)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, sel := range []string{`\.gallery`, `\.post__media`, `\.article__media`, `\.adcarousel`, `\.rebanner`} {
+		rule := regexp.MustCompile(`(?s)(?m)^` + sel + ` \{.*?\}`).Find(b)
+		if rule == nil {
+			t.Errorf("%s rule not found", sel)
+			continue
+		}
+		if !strings.Contains(string(rule), "aspect-ratio: 16 / 9") {
+			t.Errorf("%s is not 16:9: %s", sel, rule)
+		}
+	}
+}

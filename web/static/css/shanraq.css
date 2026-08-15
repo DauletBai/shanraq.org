@@ -1083,6 +1083,20 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
 .rebanner__price { display: block; color: #ffd7a1; font-weight: 800; font-size: clamp(0.95rem, 5cqw, 1.2rem); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5); }
 .rebanner__meta { display: flex; align-items: center; gap: 5px; margin-top: 3px; color: rgba(255, 255, 255, 0.85); font-size: clamp(0.8rem, 4.2cqw, 1.02rem); }
 .rebanner--promo { justify-content: center; align-items: center; text-align: center; padding: 18px 16px; border-style: dashed; }
+/* The mark fills the space the text and button leave and no more. Measured:
+   the slot has 44 to 73px spare depending on width, so 10% of the card with a
+   floor and a ceiling lands inside it everywhere it is shown.
+
+   Below a 310px card the spare drops to 16px — a mark that size is a smudge,
+   so it is dropped instead. It is decorative and already hidden from screen
+   readers; hiding it when there is no room is the same decision, not a
+   compromise. */
+.rebanner__mark { display: block; width: clamp(30px, 10cqw, 46px); height: auto; margin: 0 auto clamp(7px, 2.4cqw, 10px); opacity: 0.55; }
+@container (max-width: 310px) { .rebanner__mark { display: none; } }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .rebanner__mark { filter: brightness(0) invert(1); opacity: 0.45; }
+}
+:root[data-theme="dark"] .rebanner__mark { filter: brightness(0) invert(1); opacity: 0.45; }
 .rebanner__promo { color: var(--ink-soft); font-size: clamp(0.86rem, 4.4cqw, 1.02rem); line-height: 1.45; margin: 0 0 clamp(8px, 3cqw, 12px); }
 .badge-banner { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.68rem; font-weight: 700; background: var(--gold); color: #fff; }
 .mylist__banner { display: flex; gap: 6px; align-items: center; }
@@ -1321,7 +1335,10 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 /* Photo galleries cross-fade between frames rather than cutting. Every frame
    is absolutely positioned, so the container carries the height itself — the
    images used to supply it via their own aspect-ratio. */
-.gallery { position: relative; aspect-ratio: 16 / 10; border-radius: var(--radius); overflow: hidden; margin-bottom: 22px; background: var(--surface-2); }
+/* 16:9 like every other picture on the site — article covers, the home
+   carousel, the paid banner. A listing photo is a photograph too, and there
+   was no reason for it to be the one shape that differed. */
+.gallery { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; margin-bottom: 22px; background: var(--surface-2); }
 .gallery__item {
   position: absolute; inset: 0; display: block;
   opacity: 0; pointer-events: none;
