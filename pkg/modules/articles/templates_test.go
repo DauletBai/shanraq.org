@@ -887,3 +887,40 @@ func TestAdminPanelsCarryNoInlineMargins(t *testing.T) {
 		t.Errorf("a panel is spaced by an inline margin again: %s", m)
 	}
 }
+
+// The paid banner in the real-estate sidebar. A fixed pixel height made its box
+// a different shape at every sidebar width, so the same photo was cropped by a
+// different amount each time — the fault already fixed on article covers and on
+// the home carousel, left behind here.
+func TestRealEstateBannerIsSizedByRatio(t *testing.T) {
+	css, err := web.StaticFS().Open("css/shanraq.css")
+	if err != nil {
+		t.Fatalf("open stylesheet: %v", err)
+	}
+	defer css.Close()
+	b, err := io.ReadAll(css)
+	if err != nil {
+		t.Fatal(err)
+	}
+	img := regexp.MustCompile(`(?s)\.rebanner__img \{.*?\}`).Find(b)
+	if img == nil {
+		t.Fatal(".rebanner__img rule not found")
+	}
+	if !strings.Contains(string(img), "aspect-ratio") {
+		t.Errorf("the banner cover has no reserved ratio: %s", img)
+	}
+	if regexp.MustCompile(`height: \d+px`).Match(img) {
+		t.Errorf("a fixed pixel height is back on the banner cover: %s", img)
+	}
+	// A paid placement that looks like the page around it is one nobody
+	// registers as a placement.
+	card := regexp.MustCompile(`(?s)(?m)^\.rebanner \{.*?\}`).Find(b)
+	if card == nil {
+		t.Fatal(".rebanner rule not found")
+	}
+	for _, want := range []string{"var(--surface-2)", "box-shadow: var(--card-shadow)"} {
+		if !strings.Contains(string(card), want) {
+			t.Errorf("the banner card is missing %s: %s", want, card)
+		}
+	}
+}
