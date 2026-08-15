@@ -888,10 +888,10 @@ func TestAdminPanelsCarryNoInlineMargins(t *testing.T) {
 	}
 }
 
-// The paid banner in the real-estate sidebar. A fixed pixel height made its box
-// a different shape at every sidebar width, so the same photo was cropped by a
-// different amount each time — the fault already fixed on article covers and on
-// the home carousel, left behind here.
+// The paid banner in the real-estate sidebar. The ratio belongs to the CARD,
+// not to the picture inside it: the promo variant that shows when nothing is
+// sold has no image at all, so sizing the image left the two variants of one
+// slot as different rectangles — which is what the ratio was meant to prevent.
 func TestRealEstateBannerIsSizedByRatio(t *testing.T) {
 	css, err := web.StaticFS().Open("css/shanraq.css")
 	if err != nil {
@@ -902,25 +902,28 @@ func TestRealEstateBannerIsSizedByRatio(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	img := regexp.MustCompile(`(?s)\.rebanner__img \{.*?\}`).Find(b)
-	if img == nil {
-		t.Fatal(".rebanner__img rule not found")
-	}
-	if !strings.Contains(string(img), "aspect-ratio") {
-		t.Errorf("the banner cover has no reserved ratio: %s", img)
-	}
-	if regexp.MustCompile(`height: \d+px`).Match(img) {
-		t.Errorf("a fixed pixel height is back on the banner cover: %s", img)
-	}
-	// A paid placement that looks like the page around it is one nobody
-	// registers as a placement.
 	card := regexp.MustCompile(`(?s)(?m)^\.rebanner \{.*?\}`).Find(b)
 	if card == nil {
 		t.Fatal(".rebanner rule not found")
 	}
-	for _, want := range []string{"var(--surface-2)", "box-shadow: var(--card-shadow)"} {
+	for _, want := range []string{
+		"aspect-ratio: 16 / 9", // the slot is one shape whether or not it is sold
+		"var(--surface-2)",     // and a placement that looks like the page is not one
+		"box-shadow: var(--card-shadow)",
+		"container-type", // the caption scales with the card, not the viewport
+	} {
 		if !strings.Contains(string(card), want) {
 			t.Errorf("the banner card is missing %s: %s", want, card)
 		}
+	}
+	if regexp.MustCompile(`height: \d+px`).Match(card) {
+		t.Errorf("a fixed pixel height is back on the banner: %s", card)
+	}
+	// The caption sits over the photo, so it needs the card's own width to size
+	// against — between 900px and 1180px the sidebar is narrow and a fixed size
+	// left a 36px sliver of picture under the text.
+	body := regexp.MustCompile(`(?s)\.rebanner__body \{.*?\}`).Find(b)
+	if body == nil || !strings.Contains(string(body), "cqw") {
+		t.Errorf("the banner caption is not sized against its own card: %s", body)
 	}
 }
