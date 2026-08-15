@@ -919,6 +919,18 @@ func TestRealEstateBannerIsSizedByRatio(t *testing.T) {
 	if regexp.MustCompile(`height: \d+px`).Match(card) {
 		t.Errorf("a fixed pixel height is back on the banner: %s", card)
 	}
+	// The mark in the empty slot must survive a landscape phone. There the layout
+	// is already two columns and the sidebar is about 289px, which as a hard 16:9
+	// box left no room for it — so it used to be hidden, and hidden is exactly
+	// how the owner found it.
+	if regexp.MustCompile(`@container[^{]*\{\s*\.rebanner__mark \{[^}]*display:\s*none`).Match(b) {
+		t.Error("the slot's mark is hidden again at some width; let the card grow instead")
+	}
+	promo := regexp.MustCompile(`(?s)\.rebanner--promo \{.*?\}`).Find(b)
+	if promo == nil || !strings.Contains(string(promo), "min-height") {
+		t.Errorf("the promo variant has no floor, so its content will be clipped: %s", promo)
+	}
+
 	// The caption sits over the photo, so it needs the card's own width to size
 	// against — between 900px and 1180px the sidebar is narrow and a fixed size
 	// left a 36px sliver of picture under the text.

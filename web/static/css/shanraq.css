@@ -605,7 +605,11 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .tag--ai { background: color-mix(in srgb, var(--teal) 16%, transparent); color: var(--teal); }
 
 /* sidebar */
-.aside { display: flex; flex-direction: column; gap: 26px; }
+.aside { display: flex; flex-direction: column; gap: 26px;
+  /* The promo variant derives its own minimum height from this width; an
+     element cannot query itself, so the container sits one level up. */
+  container-type: inline-size;
+}
 @media (min-width: 900px) { .aside { position: sticky; top: 92px; align-self: start; } }
 .aside__block { border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; background: var(--surface-2); }
 .aside__title { font-size: var(--step-1); margin-bottom: 8px; }
@@ -1082,7 +1086,16 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
 }
 .rebanner__price { display: block; color: #ffd7a1; font-weight: 800; font-size: clamp(0.95rem, 5cqw, 1.2rem); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5); }
 .rebanner__meta { display: flex; align-items: center; gap: 5px; margin-top: 3px; color: rgba(255, 255, 255, 0.85); font-size: clamp(0.8rem, 4.2cqw, 1.02rem); }
-.rebanner--promo { justify-content: center; align-items: center; text-align: center; padding: 18px 16px; border-style: dashed; }
+/* 16:9 as a floor rather than a ceiling. As a hard box this variant had no
+   room for the mark on a landscape phone — the sidebar there is about 289px —
+   so the mark was dropped instead. Letting the card gain a few pixels when the
+   copy needs them costs nothing and keeps the mark everywhere. */
+.rebanner--promo {
+  aspect-ratio: auto; min-height: 56.25cqw; overflow: visible;
+  justify-content: center; align-items: center; text-align: center;
+  padding: clamp(13px, 4.4cqw, 18px) clamp(12px, 4.4cqw, 16px);
+  border-style: dashed;
+}
 /* The mark fills the space the text and button leave and no more. Measured:
    the slot has 44 to 73px spare depending on width, so 10% of the card with a
    floor and a ceiling lands inside it everywhere it is shown.
@@ -1091,8 +1104,7 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
    so it is dropped instead. It is decorative and already hidden from screen
    readers; hiding it when there is no room is the same decision, not a
    compromise. */
-.rebanner__mark { display: block; width: clamp(30px, 10cqw, 46px); height: auto; margin: 0 auto clamp(7px, 2.4cqw, 10px); opacity: 0.55; }
-@container (max-width: 310px) { .rebanner__mark { display: none; } }
+.rebanner__mark { display: block; width: clamp(24px, 9cqw, 46px); height: auto; margin: 0 auto clamp(7px, 2.4cqw, 10px); opacity: 0.55; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .rebanner__mark { filter: brightness(0) invert(1); opacity: 0.45; }
 }
