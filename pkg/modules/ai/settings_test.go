@@ -1,6 +1,9 @@
 package ai
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestNormalizeSettings(t *testing.T) {
 	base := AISettings{Provider: ProviderOpenAI, EditorModel: "gpt-5", TranslateModel: "gpt-5-mini", MaxTokens: 4096}
@@ -73,5 +76,37 @@ func TestClientsNilWhenDisabled(t *testing.T) {
 	}
 	if c, _ := m.moderateClient(); c != nil {
 		t.Error("moderateClient should be nil when disabled")
+	}
+}
+
+// Every provider in the picker must carry the models to drive it with. An empty
+// pair is not a neutral default: the admin switches provider, the fields clear,
+// and whatever is typed in by hand is a guess that saves without complaint and
+// fails at the first call.
+func TestEveryProviderNamesItsModels(t *testing.T) {
+	if len(providerCatalog) == 0 {
+		t.Fatal("the provider catalog is empty")
+	}
+	for _, p := range providerCatalog {
+		if p.Editor == "" || p.Translate == "" {
+			t.Errorf("%s (%s) names no models: editor=%q translate=%q",
+				p.Label, p.Code, p.Editor, p.Translate)
+		}
+		if p.Editor == p.Translate {
+			t.Errorf("%s uses one model for both roles; the split exists because "+
+				"translation runs three times per article and editing once", p.Code)
+		}
+	}
+}
+
+// The moonshot-v1 series is switched off on 31 August 2026. It is the obvious
+// pick for a cheap translation model and would work for a fortnight.
+func TestNoRetiredModels(t *testing.T) {
+	for _, p := range providerCatalog {
+		for _, m := range []string{p.Editor, p.Translate} {
+			if strings.HasPrefix(m, "moonshot-v1") {
+				t.Errorf("%s uses %q, which is being retired on 2026-08-31", p.Code, m)
+			}
+		}
 	}
 }

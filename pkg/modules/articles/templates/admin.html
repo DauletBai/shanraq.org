@@ -747,19 +747,23 @@
             {{ end }}
           </fieldset>
 
-          <div class="adm-pair" data-ai-models>
-            <label style="display:block">{{ t .Lang "aic.editor" }}
+          {{/* The three settings that describe one call, on one line. The token
+               cap deliberately does NOT change with the provider: it is the
+               operator's choice and every backend here accepts it, so rewriting
+               it on a switch would quietly discard a number somebody set. */}}
+          <div class="adm-trio" data-ai-models>
+            <label>{{ t .Lang "aic.editor" }}
               <input class="input" name="editor_model" value="{{ .AI.EditorModel }}" maxlength="80" required
                      placeholder="{{ t .Lang "aic.model_placeholder" }}">
             </label>
-            <label style="display:block">{{ t .Lang "aic.translate" }}
+            <label>{{ t .Lang "aic.translate" }}
               <input class="input" name="translate_model" value="{{ .AI.TranslateModel }}" maxlength="80" required
                      placeholder="{{ t .Lang "aic.model_placeholder" }}">
             </label>
+            <label>{{ t .Lang "aic.max_tokens" }}
+              <input class="input" type="number" name="max_tokens" min="256" max="32000" value="{{ .AI.MaxTokens }}">
+            </label>
           </div>
-          <label style="display:block;margin-top:12px;max-width:220px">{{ t .Lang "aic.max_tokens" }}
-            <input class="input" type="number" name="max_tokens" min="256" max="32000" value="{{ .AI.MaxTokens }}">
-          </label>
 
           {{ if and .AI.Enabled (not .AI.ActiveHasKey) }}
           <p class="adm-notice" style="margin-top:12px">{{ t .Lang "aic.no_key_warn" }}</p>

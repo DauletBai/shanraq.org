@@ -1668,6 +1668,13 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* Two fields across a card. Was an inline style, which no media query could
    reach — so in a half-width column the pair had no way to collapse. */
 .adm-pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--adm-gap-in); }
+/* Three settings that describe a single call, kept on one line so they read as
+   one decision rather than three. Collapses to one column where three would
+   squeeze the model ids into ellipses. */
+.adm-trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--adm-gap-in); }
+.adm-trio > label { display: block; font-size: var(--step--1); color: var(--ink-soft); }
+@media (max-width: 1400px) { .adm-trio { grid-template-columns: 1fr; } }
+@media (min-width: 1600px) { .adm-trio { grid-template-columns: 2fr 2fr 1fr; } }
 /* 1500px put the pair one-per-line on every laptop. The two settings cards
    stop sharing a row at 1100px, and below that each has the full width, so
    the fields fit side by side well under the old threshold. */

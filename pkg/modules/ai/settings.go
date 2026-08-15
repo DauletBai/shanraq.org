@@ -34,10 +34,25 @@ type ProviderDef struct {
 }
 
 // providerCatalog is the ordered set of backends shown in the admin panel.
+//
+// The pairing is the same everywhere: the stronger model edits, the cheaper one
+// translates. Editing is one pass over a piece a person will publish under
+// their name; translation is three passes over the same text and is where the
+// bill is actually run up.
+//
+// Identifiers checked against each provider's own documentation on 2026-08-16.
+// They are the one thing here that cannot be reasoned out — a wrong id looks
+// valid, saves without complaint, and fails at the first call.
 var providerCatalog = []ProviderDef{
 	{ProviderAnthropic, "Claude (Anthropic)", "claude-sonnet-5", "claude-haiku-4-5"},
-	{ProviderOpenAI, "ChatGPT (OpenAI)", "", ""},
-	{ProviderKimi, "Kimi K3 (Moonshot)", "", ""},
+	// Sol is the frontier model, Luna the cost-optimised one — $0.20/$1.20 per
+	// MTok against $5/$30, which is the whole reason to split the two roles.
+	{ProviderOpenAI, "ChatGPT (OpenAI)", "gpt-5.6-sol", "gpt-5.6-luna"},
+	// K3 is the flagship, with a 1M-token context. K2.6 for translation rather
+	// than the obvious-looking alternatives: the -code-highspeed variant is a
+	// coding model, and the whole moonshot-v1 series is being switched off on
+	// 31 August 2026 — putting it here would work for two weeks.
+	{ProviderKimi, "Kimi K3 (Moonshot)", "kimi-k3", "kimi-k2.6"},
 }
 
 // isProvider reports whether code is a known provider.
