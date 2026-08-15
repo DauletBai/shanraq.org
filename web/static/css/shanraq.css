@@ -606,9 +606,6 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 
 /* sidebar */
 .aside { display: flex; flex-direction: column; gap: 26px;
-  /* The promo variant derives its own minimum height from this width; an
-     element cannot query itself, so the container sits one level up. */
-  container-type: inline-size;
 }
 @media (min-width: 900px) { .aside { position: sticky; top: 92px; align-self: start; } }
 .aside__block { border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; background: var(--surface-2); }
@@ -1045,9 +1042,16 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
    16:9 belongs to the CARD, not to the picture inside it. Putting it on the
    image left the promo variant — which has no image at all — the shape of its
    own text, so the two variants of the same slot were different rectangles. */
+/* Paid slot, built like an article card: a 16:9 picture with its caption
+   underneath. surface-2 and a shadow lift it off the column — a banner that
+   looks like the page around it is one nobody registers as a banner.
+
+   The ratio belongs to the picture, not to the card. Putting it on the card
+   forced the caption on top of the photograph and left the unsold variant
+   fighting its own copy for room; split in two, both faces of the slot are the
+   same object and neither is cramped. */
 .rebanner {
-  position: relative; display: flex; flex-direction: column;
-  aspect-ratio: 16 / 9;
+  position: relative; display: block;
   container-type: inline-size;
   border: 1px solid var(--line); border-radius: var(--radius);
   background: var(--surface-2); overflow: hidden; margin-bottom: 16px;
@@ -1072,30 +1076,25 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
   background: rgba(0, 0, 0, 0.5);
   transform: rotate(-45deg);
 }
-.rebanner__img { position: absolute; inset: 0; overflow: hidden; background: var(--surface); }
-.rebanner__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.rebanner__body {
-  position: relative; margin-top: auto; color: #fff;
-  padding: clamp(9px, 3.4cqw, 14px) clamp(11px, 4cqw, 16px) clamp(10px, 3.6cqw, 15px);
-  background: linear-gradient(180deg, rgba(20, 12, 10, 0) 0%, rgba(20, 12, 10, 0.55) 38%, rgba(20, 12, 10, 0.86) 100%);
-}
+.rebanner__img { display: grid; place-items: center; aspect-ratio: 16 / 9; overflow: hidden; background: var(--surface); }
+.rebanner__img > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rebanner__img > .media-ph { width: 100%; height: 100%; }
+/* Two classes, so this beats `.rebanner__img > img` above — otherwise the mark
+   is stretched to fill the box like a photograph. */
+.rebanner__img .rebanner__mark { width: 34%; max-width: 132px; height: auto; object-fit: contain; }
+.rebanner__body { display: block; padding: clamp(11px, 3.6cqw, 15px) clamp(12px, 4cqw, 16px) clamp(12px, 4cqw, 16px); }
 .rebanner__title {
-  color: #fff; font-weight: 700; line-height: 1.25; margin-bottom: 3px;
-  font-size: clamp(0.95rem, 5cqw, 1.2rem); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  color: var(--ink); font-weight: 700; line-height: 1.25; margin-bottom: 3px;
+  font-size: clamp(0.95rem, 5cqw, 1.2rem);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.rebanner__price { display: block; color: #ffd7a1; font-weight: 800; font-size: clamp(0.95rem, 5cqw, 1.2rem); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5); }
-.rebanner__meta { display: flex; align-items: center; gap: 5px; margin-top: 3px; color: rgba(255, 255, 255, 0.85); font-size: clamp(0.8rem, 4.2cqw, 1.02rem); }
+.rebanner__price { display: block; color: var(--gold-strong); font-weight: 800; font-size: clamp(0.95rem, 5cqw, 1.2rem); }
+.rebanner__meta { display: flex; align-items: center; gap: 5px; margin-top: 3px; color: var(--ink-soft); font-size: clamp(0.8rem, 4.2cqw, 1.02rem); }
 /* 16:9 as a floor rather than a ceiling. As a hard box this variant had no
    room for the mark on a landscape phone — the sidebar there is about 289px —
    so the mark was dropped instead. Letting the card gain a few pixels when the
    copy needs them costs nothing and keeps the mark everywhere. */
-.rebanner--promo {
-  aspect-ratio: auto; min-height: 56.25cqw; overflow: visible;
-  justify-content: center; align-items: center; text-align: center;
-  padding: clamp(13px, 4.4cqw, 18px) clamp(12px, 4.4cqw, 16px);
-  border-style: dashed;
-}
+.rebanner--promo { border-style: dashed; text-align: center; }
 /* The mark fills the space the text and button leave and no more. Measured:
    the slot has 44 to 73px spare depending on width, so 10% of the card with a
    floor and a ceiling lands inside it everywhere it is shown.
@@ -1104,12 +1103,12 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
    so it is dropped instead. It is decorative and already hidden from screen
    readers; hiding it when there is no room is the same decision, not a
    compromise. */
-.rebanner__mark { display: block; width: clamp(24px, 9cqw, 46px); height: auto; margin: 0 auto clamp(7px, 2.4cqw, 10px); opacity: 0.55; }
+.rebanner__mark { display: block; opacity: 0.5; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .rebanner__mark { filter: brightness(0) invert(1); opacity: 0.45; }
 }
 :root[data-theme="dark"] .rebanner__mark { filter: brightness(0) invert(1); opacity: 0.45; }
-.rebanner__promo { color: var(--ink-soft); font-size: clamp(0.86rem, 4.4cqw, 1.02rem); line-height: 1.45; margin: 0 0 clamp(8px, 3cqw, 12px); }
+.rebanner__promo { color: var(--ink-soft); font-size: clamp(0.86rem, 4.4cqw, 1.02rem); line-height: 1.45; margin: 0 0 clamp(9px, 3cqw, 13px); }
 .badge-banner { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.68rem; font-weight: 700; background: var(--gold); color: #fff; }
 .mylist__banner { display: flex; gap: 6px; align-items: center; }
 .select--xs { padding: 5px 8px; font-size: 0.78rem; width: auto; }

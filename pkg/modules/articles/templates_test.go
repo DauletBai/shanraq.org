@@ -888,10 +888,11 @@ func TestAdminPanelsCarryNoInlineMargins(t *testing.T) {
 	}
 }
 
-// The paid banner in the real-estate sidebar. The ratio belongs to the CARD,
-// not to the picture inside it: the promo variant that shows when nothing is
-// sold has no image at all, so sizing the image left the two variants of one
-// slot as different rectangles — which is what the ratio was meant to prevent.
+// The paid banner in the real-estate sidebar is built like an article card: a
+// 16:9 picture with its caption underneath. The ratio belongs to the picture,
+// not to the card — as a card ratio it forced the caption over the photograph
+// and left the unsold variant fighting its own copy for room, which is how the
+// brand mark came to be hidden on a landscape phone.
 func TestRealEstateBannerIsSizedByRatio(t *testing.T) {
 	css, err := web.StaticFS().Open("css/shanraq.css")
 	if err != nil {
@@ -902,41 +903,37 @@ func TestRealEstateBannerIsSizedByRatio(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	img := regexp.MustCompile(`(?s)(?m)^\.rebanner__img \{.*?\}`).Find(b)
+	if img == nil {
+		t.Fatal(".rebanner__img rule not found")
+	}
+	if !strings.Contains(string(img), "aspect-ratio: 16 / 9") {
+		t.Errorf("the banner picture is not 16:9: %s", img)
+	}
+	if regexp.MustCompile(`height: \d+px`).Match(img) {
+		t.Errorf("a fixed pixel height is back on the banner picture: %s", img)
+	}
+
 	card := regexp.MustCompile(`(?s)(?m)^\.rebanner \{.*?\}`).Find(b)
 	if card == nil {
 		t.Fatal(".rebanner rule not found")
 	}
-	for _, want := range []string{
-		"aspect-ratio: 16 / 9", // the slot is one shape whether or not it is sold
-		"var(--surface-2)",     // and a placement that looks like the page is not one
-		"box-shadow: var(--card-shadow)",
-		"container-type", // the caption scales with the card, not the viewport
-	} {
+	for _, want := range []string{"var(--surface-2)", "box-shadow: var(--card-shadow)", "container-type"} {
 		if !strings.Contains(string(card), want) {
 			t.Errorf("the banner card is missing %s: %s", want, card)
 		}
 	}
-	if regexp.MustCompile(`height: \d+px`).Match(card) {
-		t.Errorf("a fixed pixel height is back on the banner: %s", card)
-	}
-	// The mark in the empty slot must survive a landscape phone. There the layout
-	// is already two columns and the sidebar is about 289px, which as a hard 16:9
-	// box left no room for it — so it used to be hidden, and hidden is exactly
-	// how the owner found it.
-	if regexp.MustCompile(`@container[^{]*\{\s*\.rebanner__mark \{[^}]*display:\s*none`).Match(b) {
-		t.Error("the slot's mark is hidden again at some width; let the card grow instead")
-	}
-	promo := regexp.MustCompile(`(?s)\.rebanner--promo \{.*?\}`).Find(b)
-	if promo == nil || !strings.Contains(string(promo), "min-height") {
-		t.Errorf("the promo variant has no floor, so its content will be clipped: %s", promo)
-	}
 
-	// The caption sits over the photo, so it needs the card's own width to size
-	// against — between 900px and 1180px the sidebar is narrow and a fixed size
-	// left a 36px sliver of picture under the text.
-	body := regexp.MustCompile(`(?s)\.rebanner__body \{.*?\}`).Find(b)
-	if body == nil || !strings.Contains(string(body), "cqw") {
-		t.Errorf("the banner caption is not sized against its own card: %s", body)
+	// The mark must survive a landscape phone, where the layout is already two
+	// columns and the sidebar is about 289px. It was hidden there once, and
+	// hidden is how the owner found it.
+	if regexp.MustCompile(`@container[^{]*\{\s*\.rebanner__mark \{[^}]*display:\s*none`).Match(b) {
+		t.Error("the slot's mark is hidden again at some width")
+	}
+	// `.rebanner__img > img` sets width and height to 100%; the mark needs a
+	// selector that outranks it or it is stretched to fill like a photograph.
+	if !regexp.MustCompile(`\.rebanner__img \.rebanner__mark \{`).Match(b) {
+		t.Error("the mark has no rule specific enough to beat the photo sizing; it will be stretched")
 	}
 }
 
@@ -953,7 +950,7 @@ func TestEveryPhotoBoxIsSixteenNine(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, sel := range []string{`\.gallery`, `\.post__media`, `\.article__media`, `\.adcarousel`, `\.rebanner`} {
+	for _, sel := range []string{`\.gallery`, `\.post__media`, `\.article__media`, `\.adcarousel`, `\.rebanner__img`} {
 		rule := regexp.MustCompile(`(?s)(?m)^` + sel + ` \{.*?\}`).Find(b)
 		if rule == nil {
 			t.Errorf("%s rule not found", sel)

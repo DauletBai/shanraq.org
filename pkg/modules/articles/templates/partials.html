@@ -294,14 +294,18 @@
   </a>
   {{ end }}
   {{ if lt (len .BannerAds) 2 }}
+  {{/* Same two parts as a sold banner — a 16:9 picture and a caption under it —
+       so the slot is the same object whether or not anybody has bought it. The
+       mark stands in for the photograph; it is decorative, hence aria-hidden. */}}
   <div class="rebanner rebanner--promo">
     <span class="rebanner__label">{{ t .Lang "ad.badge" }}</span>
-    {{/* The empty slot shows the mark rather than a blank box: it reads as a
-         place that belongs to somebody and is currently free, which is what is
-         being sold here. Decorative, so it is hidden from screen readers. */}}
-    <img class="rebanner__mark" src="{{ asset "/static/brand/shanraq.svg" }}" alt="" aria-hidden="true">
-    <p class="rebanner__promo">{{ t .Lang "re.banner_promo" }}</p>
-    <a class="btn btn--primary btn--sm" href="/listings/my?lang={{ .Lang }}">{{ t .Lang "re.banner_promo_cta" }}</a>
+    <span class="rebanner__img">
+      <img class="rebanner__mark" src="{{ asset "/static/brand/shanraq.svg" }}" alt="" aria-hidden="true">
+    </span>
+    <span class="rebanner__body">
+      <p class="rebanner__promo">{{ t .Lang "re.banner_promo" }}</p>
+      <a class="btn btn--primary btn--sm" href="/listings/my?lang={{ .Lang }}">{{ t .Lang "re.banner_promo_cta" }}</a>
+    </span>
   </div>
   {{ end }}
 </aside>
