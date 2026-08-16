@@ -793,11 +793,17 @@ func axisTicks(max int64) []AxisTick {
 // simpleRows loads a 30-day aggregate for a single-count metric kind (bots or
 // sources), grouped by label, busiest first, with bar percentages and localized
 // titles. Unknown labels fall back to the raw name.
+// Guest traffic only, like the trend chart beside these panels. Without the
+// filter "Откуда пришли живые гости" counted signed-in traffic as well: one
+// family iPhone testing listings over a VPN put Norway at 58 and Austria at 37,
+// of which 50 and 34 were that phone — foreign readership that did not exist.
+// The tiles above carry the signed-in share as their own line; these panels
+// answer a different question, and it is about the audience.
 func (m *Module) simpleRows(ctx context.Context, kind, i18nPrefix, lang string) []GuestSimpleRow {
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT label, COALESCE(SUM(n), 0)
 		FROM analytics_daily
-		WHERE kind = $1 AND day >= CURRENT_DATE - INTERVAL '30 days'
+		WHERE kind = $1 AND is_guest AND day >= CURRENT_DATE - INTERVAL '30 days'
 		GROUP BY label`, kind)
 	if err != nil {
 		m.rt.Logger.Warn("guest analytics "+kind, zap.Error(err))
@@ -843,7 +849,7 @@ func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT split_part(label, '|', 1) AS geo, COALESCE(SUM(n), 0)
 		FROM analytics_daily
-		WHERE kind = $1 AND label LIKE '%|en' AND day >= CURRENT_DATE - INTERVAL '30 days'
+		WHERE kind = $1 AND is_guest AND label LIKE '%|en' AND day >= CURRENT_DATE - INTERVAL '30 days'
 		GROUP BY geo`, metricGeoLang)
 	if err != nil {
 		m.rt.Logger.Warn("guest analytics english-by-geo", zap.Error(err))
@@ -888,7 +894,7 @@ func (m *Module) langOfGeo(ctx context.Context, geo, lang string) []GuestSimpleR
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT split_part(label, '|', 2) AS lng, COALESCE(SUM(n), 0)
 		FROM analytics_daily
-		WHERE kind = $1 AND label LIKE $2 AND day >= CURRENT_DATE - INTERVAL '30 days'
+		WHERE kind = $1 AND is_guest AND label LIKE $2 AND day >= CURRENT_DATE - INTERVAL '30 days'
 		GROUP BY lng`, metricGeoLang, geo+"|%")
 	if err != nil {
 		m.rt.Logger.Warn("guest analytics lang-of-geo", zap.Error(err))
