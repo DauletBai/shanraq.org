@@ -101,7 +101,7 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
-	page := ListingsPage{Base: m.base(r, T(lang, "nav.realestate"), lang)}
+	page := ListingsPage{Base: m.base(r, T(lang, "re.heading"), lang)}
 	page.ActiveCat = "realestate"
 	page.Listings = items
 	page.Count = len(items)

@@ -22,8 +22,9 @@ var messages = map[string]map[string]string{
 
 	"nav.all":        {"kz": "Барлығы", "ru": "Все", "en": "All"},
 	"nav.home":       {"kz": "Басты бет", "ru": "Главная", "en": "Home"},
-	"nav.realestate": {"kz": "Жылжымайтын мүлік", "ru": "Недвижимость", "en": "Real Estate"},
+	"nav.realestate": {"kz": "Мүлік", "ru": "Недвижимость", "en": "Real Estate"},
 
+	"re.heading":    {"kz": "Жылжымайтын мүлік", "ru": "Недвижимость", "en": "Real Estate"},
 	"re.post":       {"kz": "Хабарландыру беру", "ru": "Подать объявление", "en": "Post a listing"},
 	"re.new_title":  {"kz": "Жаңа хабарландыру", "ru": "Новое объявление", "en": "New listing"},
 	"re.edit_title": {"kz": "Хабарландыруды өңдеу", "ru": "Редактирование объявления", "en": "Edit listing"},
@@ -541,7 +542,7 @@ var messages = map[string]map[string]string{
 	"fav.add":                {"kz": "Таңдаулыға", "ru": "В избранное", "en": "Save"},
 	"fav.remove":             {"kz": "Таңдаулыда", "ru": "В избранном", "en": "Saved"},
 	"fav.articles":           {"kz": "Мақалалар", "ru": "Статьи", "en": "Articles"},
-	"fav.listings":           {"kz": "Жылжымайтын мүлік", "ru": "Недвижимость", "en": "Real estate"},
+	"fav.listings":           {"kz": "Мүлік", "ru": "Недвижимость", "en": "Real estate"},
 	"fav.empty_articles":     {"kz": "Сақталған мақалалар әзірге жоқ.", "ru": "Пока нет сохранённых статей.", "en": "No saved articles yet."},
 	"fav.empty_listings":     {"kz": "Сақталған хабарландырулар әзірге жоқ.", "ru": "Пока нет сохранённых объявлений.", "en": "No saved listings yet."},
 	"fav.empty":              {"kz": "Мақала не хабарландыруда жүрегін басып, осында сақтаңыз.", "ru": "Нажимайте сердечко на статьях и объявлениях — они появятся здесь.", "en": "Tap the heart on articles and listings — they'll show up here."},
