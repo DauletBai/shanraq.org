@@ -2246,6 +2246,20 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 .studio__since { margin: 0 0 10px; font-size: var(--step--1); color: var(--muted); }
 .adm-kpi__since { font-style: normal; opacity: .65; font-size: .85em; white-space: nowrap; }
+/* Карточка называет сумму, а график под ней считает только гостей — без этой
+   строки 110 и 76 на одной странице читаются как противоречие. Слова взяты те
+   же, что в таблице «Страницы» ниже, чтобы словарь на странице был один.
+   Заглавные буквы и разрядка достаются от подписи-заголовка; здесь они лишние. */
+.adm-kpi__split {
+  display: block;
+  margin-top: 3px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: .85em;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: .65;
+}
 /* ---- Reading-depth funnel (author dashboard) ---- */
 .depth { white-space: nowrap; }
 .depth-cell {

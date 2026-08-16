@@ -149,10 +149,10 @@
       <p class="adm-hint">{{ t .Lang "ag.note" }}</p>
       {{ if .Guests.HasData }}
       <div class="adm-kpis adm-kpis--fill">
-        <div class="adm-kpi"><span class="adm-kpi__ic">☀</span><b>{{ money .Guests.Day.Total }}</b><span>{{ t .Lang "ag.views_day" }}</span></div>
-        <div class="adm-kpi"><span class="adm-kpi__ic">◔</span><b>{{ money .Guests.Week.Total }}</b><span>{{ t .Lang "ag.views_week" }}</span></div>
-        <div class="adm-kpi"><span class="adm-kpi__ic">◑</span><b>{{ money .Guests.Month.Total }}</b><span>{{ t .Lang "ag.views_month" }}</span></div>
-        <div class="adm-kpi"><span class="adm-kpi__ic">◯</span><b>{{ money .Guests.Year.Total }}</b><span>{{ t .Lang "ag.views_year" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">☀</span><b>{{ money .Guests.Day.Total }}</b><span>{{ t .Lang "ag.views_day" }} <i class="adm-kpi__split">{{ money .Guests.Day.Guest }} {{ t .Lang "ag.guests" }} · {{ money .Guests.Day.Registered }} {{ t .Lang "ag.registered_short" }}</i></span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◔</span><b>{{ money .Guests.Week.Total }}</b><span>{{ t .Lang "ag.views_week" }} <i class="adm-kpi__split">{{ money .Guests.Week.Guest }} {{ t .Lang "ag.guests" }} · {{ money .Guests.Week.Registered }} {{ t .Lang "ag.registered_short" }}</i></span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◑</span><b>{{ money .Guests.Month.Total }}</b><span>{{ t .Lang "ag.views_month" }} <i class="adm-kpi__split">{{ money .Guests.Month.Guest }} {{ t .Lang "ag.guests" }} · {{ money .Guests.Month.Registered }} {{ t .Lang "ag.registered_short" }}</i></span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◯</span><b>{{ money .Guests.Year.Total }}</b><span>{{ t .Lang "ag.views_year" }} <i class="adm-kpi__split">{{ money .Guests.Year.Guest }} {{ t .Lang "ag.guests" }} · {{ money .Guests.Year.Registered }} {{ t .Lang "ag.registered_short" }}</i></span></div>
       </div>
       {{/* Three panels, not two: pages, clicks and the trend are three separate
            questions, and the old pairing left the chart floating under the
