@@ -866,7 +866,7 @@
           .then(function (r) { return r.json(); }).then(function (d) {
             if (d && d.lat != null && d.lng != null) {
               if (status) status.textContent = '';
-              document.dispatchEvent(new CustomEvent('shanraq:geo', { detail: { lat: d.lat, lng: d.lng, zoom: 17 } }));
+              document.dispatchEvent(new CustomEvent('shanraq:geo', { detail: { lat: d.lat, lng: d.lng, zoom: 17, precise: true } }));
             } else if (status) {
               status.textContent = btn.getAttribute('data-none') || '';
             }
@@ -957,6 +957,39 @@
                 var c = from.map(function (v, i) { return Math.round(v + (to[i] - v) * t); });
                 return 'rgb(' + c.join(',') + ')';
             }
+            // Two renderings of the same pins, swapped by zoom.
+            //
+            // Far out, one bubble per place sized by count: forty cities cannot
+            // be four hundred pins and still mean anything. Close in, the
+            // listings themselves — a lone bubble at the average of two
+            // addresses marks a spot where nothing is for sale, and hides the
+            // fact that there are two.
+            //
+            // Only the first rendering used to exist, at every zoom. A second
+            // listing in a city therefore grew the bubble and then vanished
+            // inside it, which is exactly how the bug was reported.
+            var clustered = L.layerGroup(), detailed = L.layerGroup();
+            var DETAIL_ZOOM = 12;
+
+            function popupFor(items, title) {
+              var n = items.length;
+              var head = '<b>' + esc(title) + '</b>' + (n > 1 ? ' · ' + n : '');
+              var body = items.slice(0, 6).map(function (p) {
+                return '<a href="/listings/' + p.id + '?lang=' + lang + '">' + esc(p.title) + '</a> — ' +
+                  money(p.price) + ' ' + (p.cur === 'RUB' ? '₽' : '₸') + (p.deal === 'rent' ? t('rent') : '');
+              }).join('<br>');
+              var tail = n > 6 ? '<br><small>+' + (n - 6) + '</small>' : '';
+              // Only claim an exact position when every listing here has one; a
+              // mixed group is honestly described by the weaker of the two, not
+              // the flattering one.
+              var exact = items.every(function (p) { return p.exact; });
+              return head + '<br>' + body + tail + '<br><small>' + (exact ? t('exact') : t('approx')) + '</small>';
+            }
+            // Hover to read it, click to keep it open. A marker you have to
+            // click before it tells you anything makes scanning a map of flats
+            // slower than scrolling the list it came from.
+            function hover(m) { m.on('mouseover', function () { m.openPopup(); }); return m; }
+
             var places = {}, order = [];
             pins.forEach(function (p) {
               var key = p.place || (p.lat.toFixed(2) + ',' + p.lng.toFixed(2));
@@ -975,30 +1008,53 @@
               // Square root, so doubling the listings doubles the area rather
               // than the width — a linear radius exaggerates a big city into
               // swallowing its neighbours.
-              var m = L.circleMarker([lat, lng], {
+              hover(L.circleMarker([lat, lng], {
                 radius: Math.min(22, Math.round(8 + 4 * Math.sqrt(n - 1))), weight: 2,
                 color: heat(n, true), fillColor: heat(n, false), fillOpacity: 0.9
-              }).addTo(map);
-
-              var head = '<b>' + esc(key) + '</b>';
-              if (n > 1) head += ' \u00b7 ' + n;
-              var body = g.items.slice(0, 6).map(function (p) {
-                return '<a href="/listings/' + p.id + '?lang=' + lang + '">' + esc(p.title) + '</a> \u2014 ' +
-                  money(p.price) + ' ' + (p.cur === 'RUB' ? '\u20bd' : '\u20b8') + (p.deal === 'rent' ? t('rent') : '');
-              }).join('<br>');
-              var tail = n > 6 ? '<br><small>+' + (n - 6) + '</small>' : '';
-              // Only claim an exact position when every listing in the bubble
-              // has one; a mixed group is honestly described by the weaker of
-              // the two, not the flattering one.
-              var allExact = g.items.every(function (p) { return p.exact; });
-              var note = '<small>' + (allExact ? t('exact') : t('approx')) + '</small>';
-              m.bindPopup(head + '<br>' + body + tail + '<br>' + note);
-              // Hover to read it, click to keep it open. A marker you have to
-              // click before it tells you anything makes scanning a map of
-              // flats slower than scrolling the list it came from.
-              m.on('mouseover', function () { m.openPopup(); });
+              }).bindPopup(popupFor(g.items, key))).addTo(clustered);
               group.push([lat, lng]);
             });
+
+            // Listings that share a position — two flats in one building, or
+            // several that never got finer than their settlement's centre —
+            // would stack into one marker and reproduce the very bug this
+            // rendering exists to fix. Fan them onto a small ring instead, so
+            // the count stays visible even where the precision is not.
+            var at = {}, spots = [];
+            pins.forEach(function (p) {
+              var k = p.lat.toFixed(5) + ',' + p.lng.toFixed(5);
+              if (!at[k]) { at[k] = []; spots.push(k); }
+              at[k].push(p);
+            });
+            spots.forEach(function (k) {
+              var same = at[k], m = same.length;
+              same.forEach(function (p, i) {
+                var lat = p.lat, lng = p.lng;
+                if (m > 1) {
+                  var a = (2 * Math.PI * i) / m, r = 0.00025; // about 28 m
+                  // Longitude degrees shrink towards the poles; without the
+                  // cosine the ring would be an ellipse squashed flat.
+                  lat += r * Math.cos(a);
+                  lng += r * Math.sin(a) / Math.max(0.2, Math.cos(p.lat * Math.PI / 180));
+                }
+                hover(L.circleMarker([lat, lng], {
+                  radius: 8, weight: 2,
+                  color: heat(1, true), fillColor: heat(1, false), fillOpacity: 0.9
+                }).bindPopup(popupFor([p], p.place || p.title))).addTo(detailed);
+              });
+            });
+
+            function syncDetail() {
+              var detail = map.getZoom() >= DETAIL_ZOOM;
+              if (map.hasLayer(clustered) === detail) {
+                if (detail) { map.removeLayer(clustered); } else { clustered.addTo(map); }
+              }
+              if (map.hasLayer(detailed) !== detail) {
+                if (detail) { detailed.addTo(map); } else { map.removeLayer(detailed); }
+              }
+            }
+            map.on('zoomend', syncDetail);
+            syncDetail();
             if (!group.length) return;
             fitTo = group;
             if (holder.clientHeight) {
@@ -1027,7 +1083,14 @@
             if (md && a.microdistrict) md.value = a.microdistrict;
           }).catch(function () {});
       }
-      function place(lat, lng, zoom) {
+      // stamp=false re-centres the map and offers the draggable marker without
+      // writing anything into the listing. Choosing "Санкт-Петербург" from the
+      // cascade used to store the city's own centre as the listing's
+      // coordinates, so the listing then reported an exact position ten
+      // kilometres from its address — and the popup called it "Точное место".
+      // A settlement pick now clears them instead, and the map falls back to
+      // the settlement centre, which it labels honestly.
+      function place(lat, lng, zoom, stamp) {
         if (marker) { marker.setLatLng([lat, lng]); }
         else {
           marker = L.marker([lat, lng], { draggable: true }).addTo(map);
@@ -1040,6 +1103,13 @@
           });
         }
         map.setView([lat, lng], zoom || map.getZoom());
+        if (stamp === false) {
+          // Changing the settlement invalidates any earlier pin, including one
+          // the author placed by hand: it belonged to the other town.
+          if (latEl) latEl.value = '';
+          if (lngEl) lngEl.value = '';
+          return;
+        }
         if (latEl) latEl.value = lat.toFixed(6);
         if (lngEl) lngEl.value = lng.toFixed(6);
       }
@@ -1055,7 +1125,7 @@
       // reverse-fill, so it never overwrites what the author typed).
       document.addEventListener('shanraq:geo', function (e) {
         if (e.detail && e.detail.lat != null && e.detail.lng != null) {
-          place(e.detail.lat, e.detail.lng, e.detail.zoom || 13);
+          place(e.detail.lat, e.detail.lng, e.detail.zoom || 13, e.detail.precise === true);
         }
       });
     });

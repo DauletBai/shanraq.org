@@ -71,6 +71,49 @@ func (g *geoCoder) get(ctx context.Context, endpoint string) ([]byte, error) {
 	return body, nil
 }
 
+// streetRank is Nominatim's address rank for a street. Its scale runs from a
+// country at 4 through a city at 16 and a suburb at 20 to a building at 30, so
+// 26 is the coarsest answer that still names a street rather than a district.
+//
+// Nothing checked the granularity before, so any answer became the listing's
+// own coordinates and therefore an "exact" pin. A query that degrades to a city
+// or a suburb — an address with no street, or a street the data does not carry —
+// would put a building-level claim on a district centroid.
+//
+// This is hardening, not the cause of a known incident: the misspelled
+// "Проспект Будёного" that prompted the search returns nothing at all from
+// Nominatim rather than falling back to the city. That listing got its city
+// coordinates from the settlement picker instead (see place() in partials.html).
+//
+// Refusing a coarse answer costs nothing: the listing falls back to its
+// settlement centre, which the map then labels as a settlement centre.
+const streetRank = 26
+
+// geocodeHit is one Nominatim jsonv2 result. jsonv2 is what carries place_rank;
+// the plain json format does not, which is why nothing could be checked before.
+type geocodeHit struct {
+	Lat         string `json:"lat"`
+	Lon         string `json:"lon"`
+	Name        string `json:"display_name"`
+	PlaceRank   int    `json:"place_rank"`
+	AddressType string `json:"addresstype"`
+}
+
+// precise reports whether the hit is fine-grained enough to stand as a pin on a
+// building, and parses it. A zero rank means the geocoder did not say, and an
+// unlabelled answer is not evidence of precision.
+func (h geocodeHit) precise() (float64, float64, bool) {
+	if h.PlaceRank < streetRank {
+		return 0, 0, false
+	}
+	lat, err1 := strconv.ParseFloat(h.Lat, 64)
+	lng, err2 := strconv.ParseFloat(h.Lon, 64)
+	if err1 != nil || err2 != nil || (lat == 0 && lng == 0) {
+		return 0, 0, false
+	}
+	return lat, lng, true
+}
+
 // handleGeocode forwards an address string to coordinates (?q=...). Login-only,
 // so the endpoint isn't a free public geocoder.
 func (m *Module) handleGeocode(w http.ResponseWriter, r *http.Request) {
@@ -84,7 +127,7 @@ func (m *Module) handleGeocode(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	lang := m.resolveLang(w, r)
-	endpoint := "https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=" +
+	endpoint := "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=" +
 		url.QueryEscape(lang) + "&q=" + url.QueryEscape(q)
 	body, err := geocoder.get(r.Context(), endpoint)
 	if err != nil {
@@ -92,17 +135,18 @@ func (m *Module) handleGeocode(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "geocode failed", http.StatusBadGateway)
 		return
 	}
-	var res []struct {
-		Lat  string `json:"lat"`
-		Lon  string `json:"lon"`
-		Name string `json:"display_name"`
-	}
+	var res []geocodeHit
 	if err := json.Unmarshal(body, &res); err != nil || len(res) == 0 {
 		writeJSONObj(w, map[string]any{}) // empty → "not found", the JS keeps the map as-is
 		return
 	}
-	lat, _ := strconv.ParseFloat(res[0].Lat, 64)
-	lng, _ := strconv.ParseFloat(res[0].Lon, 64)
+	lat, lng, ok := res[0].precise()
+	if !ok {
+		// A city-shaped answer to a street-shaped question is a miss, not a
+		// result. Saying so leaves the map where the author put it.
+		writeJSONObj(w, map[string]any{"coarse": res[0].AddressType})
+		return
+	}
 	writeJSONObj(w, map[string]any{"lat": lat, "lng": lng, "label": res[0].Name})
 }
 
@@ -123,25 +167,17 @@ func lookupAddress(ctx context.Context, lang string, parts ...string) (float64, 
 	if len(query) < 8 {
 		return 0, 0, false
 	}
-	endpoint := "https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=" +
+	endpoint := "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=" +
 		url.QueryEscape(lang) + "&q=" + url.QueryEscape(query)
 	body, err := geocoder.get(ctx, endpoint)
 	if err != nil {
 		return 0, 0, false
 	}
-	var res []struct {
-		Lat string `json:"lat"`
-		Lon string `json:"lon"`
-	}
+	var res []geocodeHit
 	if err := json.Unmarshal(body, &res); err != nil || len(res) == 0 {
 		return 0, 0, false
 	}
-	lat, err1 := strconv.ParseFloat(res[0].Lat, 64)
-	lng, err2 := strconv.ParseFloat(res[0].Lon, 64)
-	if err1 != nil || err2 != nil || (lat == 0 && lng == 0) {
-		return 0, 0, false
-	}
-	return lat, lng, true
+	return res[0].precise()
 }
 
 // handleGeocodeReverse turns a pin's coordinates (?lat=&lng=) into the fine
