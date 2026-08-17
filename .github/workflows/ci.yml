@@ -65,10 +65,35 @@ jobs:
         run: go run ./cmd/migrate
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/shanraq_test
+      # The failure is written into the job summary, not only the log. Logs on
+      # this repository need a signed-in browser, so a red run said nothing more
+      # than "exit code 1" to anyone reading the notification e-mail — twice this
+      # week a flake cost an afternoon of guessing because the name of the
+      # failing test was unreachable. The summary is public.
       - name: Go test
-        run: go test ./...
+        run: |
+          set -o pipefail
+          go test ./... 2>&1 | tee /tmp/test.log && exit 0
+          {
+            echo "### Failing tests"
+            echo
+            echo '```'
+            grep -E '^(--- FAIL|FAIL|panic:)|\.go:[0-9]+:' /tmp/test.log | head -60
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
       - name: Go test (race)
-        run: go test -race ./...
+        run: |
+          set -o pipefail
+          go test -race ./... 2>&1 | tee /tmp/race.log && exit 0
+          {
+            echo "### Failing tests (race)"
+            echo
+            echo '```'
+            grep -E '^(--- FAIL|FAIL|panic:|WARNING: DATA RACE)|\.go:[0-9]+:' /tmp/race.log | head -60
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
 
   snapshots:
     runs-on: ubuntu-latest
