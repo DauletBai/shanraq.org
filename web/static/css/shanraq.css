@@ -1401,11 +1401,32 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .map-holder { width: 100%; overflow-x: auto; }
 /* Leaflet needs an explicit height; the container is also the scroll-lock
    surface, so keep it comfortably tall on a phone without eating the page. */
-.map-holder--leaflet { height: 420px; border-radius: 12px; overflow: hidden; z-index: 0; }
+/* The height follows the viewport instead of a fixed number. On a phone the map
+   IS the screen for as long as it is open, and 300px of it was less than a
+   third — the reader saw a letterbox and had to pan for everything.
+   svh rather than vh: vh on mobile measures the viewport as if the browser
+   chrome were hidden, so a vh-sized map is taller than the space it actually
+   gets and its bottom controls hide under the address bar. The vh line stays
+   first as the fallback for browsers without svh. */
+.map-holder--leaflet {
+  height: clamp(360px, 52vh, 720px);
+  height: clamp(360px, 52svh, 720px);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 0;
+}
 .map-holder--leaflet .leaflet-container { height: 100%; width: 100%; background: var(--surface-2); font: inherit; }
 .map-holder--leaflet .leaflet-popup-content { margin: 10px 12px; line-height: 1.4; }
 .map-holder--leaflet .leaflet-popup-content a { font-weight: 700; }
-@media (max-width: 640px) { .map-holder--leaflet { height: 300px; } }
+/* Portrait phone: the map takes most of the screen, which is the only size at
+   which a map of a city is legible on a small display. Landscape gets more
+   still, because there is nothing else competing for the height. */
+@media (max-width: 640px) and (orientation: portrait) {
+  .map-holder--leaflet { height: 70vh; height: 70svh; }
+}
+@media (max-width: 900px) and (orientation: landscape) {
+  .map-holder--leaflet { height: 78vh; height: 78svh; }
+}
 .re-map__svg { width: 100%; height: auto; display: block; background: var(--surface-2); border-radius: 12px; }
 .map-bubble { fill: var(--gold); fill-opacity: 0.75; stroke: #fff; stroke-width: 1.5; transition: fill-opacity 0.12s ease; }
 :root[data-theme="dark"] .map-bubble { stroke: rgba(255, 255, 255, 0.4); }
