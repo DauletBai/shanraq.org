@@ -69,6 +69,14 @@
         <div class="field"><label>{{ t .Lang "re.area" }} {{ template "fhelp" (t .Lang "re.help_area") }}</label><input class="input" name="area" value="{{ if gt .Values.Area 0.0 }}{{ .Values.Area }}{{ end }}"></div>
         <div class="field"><label>{{ t .Lang "re.rooms" }} {{ template "fhelp" (t .Lang "re.help_rooms") }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .Values.Rooms 0 }}{{ .Values.Rooms }}{{ end }}"></div>
         <div class="field"><label>{{ t .Lang "re.land_area" }} {{ template "fhelp" (t .Lang "re.help_land_area") }}</label><input class="input" name="land_area" value="{{ if gt .Values.LandArea 0.0 }}{{ .Values.LandArea }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.build_year" }} {{ template "fhelp" (t .Lang "re.help_build_year") }}</label><input class="input" type="text" inputmode="numeric" name="build_year" value="{{ if gt .Values.BuildYear 0 }}{{ .Values.BuildYear }}{{ end }}"></div>
+        <div class="field"><label>{{ t .Lang "re.wall_material" }} {{ template "fhelp" (t .Lang "re.help_wall_material") }}</label>
+          <select class="input" name="wall_material">
+            <option value="">{{ t .Lang "re.not_stated" }}</option>
+            {{ range wallMaterials }}<option value="{{ . }}"{{ if eq $.Values.WallMaterial . }} selected{{ end }}>{{ t $.Lang (wallKey .) }}</option>{{ end }}
+          </select>
+        </div>
+        <div class="field"><label>{{ t .Lang "re.ceiling_height" }} {{ template "fhelp" (t .Lang "re.help_ceiling_height") }}</label><input class="input" name="ceiling_height" inputmode="decimal" value="{{ if gt .Values.CeilingHeight 0.0 }}{{ .Values.CeilingHeight }}{{ end }}"></div>
       </div>
 
       <div class="field">

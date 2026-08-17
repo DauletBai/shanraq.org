@@ -39,6 +39,9 @@ type ListingInput struct {
 	Documents                                   []string
 	ContractURL                                 string
 	LandArea                                    float64
+	BuildYear                                   int
+	WallMaterial                                string
+	CeilingHeight                               float64
 	Amenities                                   []string
 	RoomSpecs                                   []RoomSpec
 	NoFilters                                   bool // author attested photos are not filter-distorted
@@ -88,13 +91,15 @@ func (s *ListingStore) Create(ctx context.Context, authorID uuid.UUID, in Listin
 		                      microdistrict, street, house, lat, lng,
 		                      price, area, rooms, title, description, contact, cover_url, images, geo_node_id,
 		                      land_area, amenities, room_specs, documents, contract_url,
+		                      build_year, wall_material, ceiling_height,
 		                      title_kz, title_ru, title_en, description_kz, description_ru, description_en, currency, status, expires_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24::jsonb,$25,$26,$27,$28,$29,$30,$31,$32,$33,'published', NOW() + INTERVAL '%d days')
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24::jsonb,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,'published', NOW() + INTERVAL '%d days')
 		RETURNING id
 	`, freeDaysVal()), authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.District,
 		in.Microdistrict, in.Street, in.House, in.Lat, in.Lng,
 		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.Images, in.GeoNodeID,
 		in.LandArea, in.Amenities, string(rooms), in.Documents, in.ContractURL,
+		in.BuildYear, in.WallMaterial, in.CeilingHeight,
 		in.TitleKz, in.TitleRu, in.TitleEn, in.DescriptionKz, in.DescriptionRu, in.DescriptionEn, in.Currency).Scan(&id)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("create listing: %w", err)
@@ -107,6 +112,7 @@ const listingCols = `l.id, l.author_id, u.email, l.deal_type, l.property_type, l
 	l.price, l.area, l.rooms, l.title, l.description, l.contact, l.cover_url, l.images, l.documents, l.contract_url,
 	l.title_kz, l.title_ru, l.title_en, l.description_kz, l.description_ru, l.description_en, l.currency, l.status, l.created_at,
 	l.expires_at, l.promoted_until, l.featured_until, l.banner_until, l.views_count, l.contacts_count, l.land_area, l.amenities, l.room_specs,
+	l.build_year, l.wall_material, l.ceiling_height,
 	l.geo_node_id, l.updated_at,
 	(SELECT count(*) FROM listing_reports rp WHERE rp.listing_id = l.id),
 	ra.user_id, ra.name`
@@ -123,6 +129,7 @@ func scanListing(row pgx.Row) (*Listing, error) {
 		&l.Price, &l.Area, &l.Rooms, &l.Title, &l.Description, &l.Contact, &l.CoverURL, &l.Images, &l.Documents, &l.ContractURL,
 		&l.TitleKz, &l.TitleRu, &l.TitleEn, &l.DescriptionKz, &l.DescriptionRu, &l.DescriptionEn, &l.Currency, &l.Status, &l.CreatedAt,
 		&l.ExpiresAt, &l.PromotedUntil, &l.FeaturedUntil, &l.BannerUntil, &l.ViewsCount, &l.ContactsCount, &l.LandArea, &l.Amenities, &roomsRaw,
+		&l.BuildYear, &l.WallMaterial, &l.CeilingHeight,
 		&geoNode, &l.UpdatedAt, &l.Reports,
 		&agentID, &agentName)
 	if err != nil {
@@ -178,13 +185,16 @@ func (s *ListingStore) Update(ctx context.Context, id, authorID uuid.UUID, in Li
 			documents = $26, contract_url = $27,
 			title_kz = $28, title_ru = $29, title_en = $30,
 			description_kz = $31, description_ru = $32, description_en = $33,
-			currency = $34, updated_at = now()
+			currency = $34,
+			build_year = $35, wall_material = $36, ceiling_height = $37,
+			updated_at = now()
 		WHERE id = $1 AND author_id = $2
 	`, id, authorID, in.DealType, in.PropertyType, in.Country, in.Region, in.City, in.District,
 		in.Microdistrict, in.Street, in.House, in.Lat, in.Lng,
 		in.Price, in.Area, in.Rooms, in.Title, in.Description, in.Contact, in.Cover, in.Images, in.GeoNodeID,
 		in.LandArea, in.Amenities, string(rooms), in.Documents, in.ContractURL,
-		in.TitleKz, in.TitleRu, in.TitleEn, in.DescriptionKz, in.DescriptionRu, in.DescriptionEn, in.Currency)
+		in.TitleKz, in.TitleRu, in.TitleEn, in.DescriptionKz, in.DescriptionRu, in.DescriptionEn, in.Currency,
+		in.BuildYear, in.WallMaterial, in.CeilingHeight)
 	if err != nil {
 		return fmt.Errorf("update listing: %w", err)
 	}

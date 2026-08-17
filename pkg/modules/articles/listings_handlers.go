@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
@@ -424,6 +425,7 @@ func listingToInput(l *Listing) ListingInput {
 		DescriptionKz: l.DescriptionKz, DescriptionRu: l.DescriptionRu, DescriptionEn: l.DescriptionEn,
 		Images: l.Images, Documents: l.Documents, ContractURL: l.ContractURL,
 		LandArea: l.LandArea, Amenities: l.Amenities, RoomSpecs: l.RoomSpecs,
+		BuildYear: l.BuildYear, WallMaterial: l.WallMaterial, CeilingHeight: l.CeilingHeight,
 		// Already attested once when the listing was posted; re-ticking the box
 		// on every price fix would be a ritual, not a check.
 		NoFilters: true,
@@ -748,6 +750,28 @@ func parseArea(raw string) float64 {
 	return v
 }
 
+// parseBuildYear accepts a plausible construction year and treats anything else
+// as "not stated". The upper bound runs ahead of today because a flat in an
+// unfinished building is advertised with the year it will be finished.
+func parseBuildYear(raw string) int {
+	v, err := strconv.Atoi(digitsOnly(raw))
+	if err != nil || v < buildYearFloor || v > time.Now().Year()+5 {
+		return 0
+	}
+	return v
+}
+
+// parseCeiling reads a ceiling height in metres. Out-of-range values are
+// dropped rather than clamped: silently turning a typo into a plausible number
+// would publish a measurement nobody made.
+func parseCeiling(raw string) float64 {
+	v := parseArea(raw)
+	if v < 1.5 || v > 10 {
+		return 0
+	}
+	return v
+}
+
 func parseListingForm(r *http.Request) ListingInput {
 	deal := r.FormValue("deal_type")
 	if !isDealType(deal) {
@@ -761,6 +785,12 @@ func parseListingForm(r *http.Request) ListingInput {
 	area := parseArea(r.FormValue("area"))
 	landArea := parseArea(r.FormValue("land_area"))
 	rooms, _ := strconv.Atoi(digitsOnly(r.FormValue("rooms")))
+	buildYear := parseBuildYear(r.FormValue("build_year"))
+	ceiling := parseCeiling(r.FormValue("ceiling_height"))
+	wall := strings.TrimSpace(r.FormValue("wall_material"))
+	if !isWallMaterial(wall) {
+		wall = ""
+	}
 
 	// Amenity checkboxes — keep only recognized keys.
 	var amenities []string
@@ -877,6 +907,9 @@ func parseListingForm(r *http.Request) ListingInput {
 		Documents:     documents,
 		ContractURL:   contract,
 		LandArea:      landArea,
+		BuildYear:     buildYear,
+		WallMaterial:  wall,
+		CeilingHeight: ceiling,
 		Amenities:     amenities,
 		RoomSpecs:     roomSpecs,
 		NoFilters:     r.FormValue("no_filters") == "on",

@@ -9,6 +9,12 @@ import (
 var (
 	DealTypes     = []string{"sale", "rent"}
 	PropertyTypes = []string{"apartment", "house", "land", "commercial", "dacha"}
+
+	// WallMaterials is what a building is made of, in the vocabulary Kazakhstani
+	// sellers already use elsewhere — including каркасно-камышитовый, which is
+	// specific to the housing stock here and whose absence would read as
+	// ignorance of the market.
+	WallMaterials = []string{"monolith", "brick", "panel", "block", "wood", "frame_reed", "other"}
 )
 
 func isDealType(s string) bool {
@@ -49,6 +55,9 @@ type Listing struct {
 	Currency      string // "KZT" | "RUB" — display currency, derived from country
 	Area          float64
 	LandArea      float64
+	BuildYear     int     // 0 = not stated
+	WallMaterial  string  // one of WallMaterials, or "" when not stated
+	CeilingHeight float64 // metres, 0 = not stated
 	Rooms         int
 	RoomSpecs     []RoomSpec
 	Amenities     []string
@@ -212,3 +221,20 @@ func (l Listing) Location() string {
 	}
 	return out
 }
+
+// buildYearFloor is older than any dwelling that could plausibly be advertised
+// here; the ceiling is a few years ahead, because a flat in an unfinished
+// building is sold with the year it will be finished.
+const buildYearFloor = 1850
+
+func isWallMaterial(s string) bool {
+	for _, m := range WallMaterials {
+		if m == s {
+			return true
+		}
+	}
+	return false
+}
+
+// WallMaterialKey is the i18n key for a stored material value.
+func WallMaterialKey(m string) string { return "re.wall." + m }

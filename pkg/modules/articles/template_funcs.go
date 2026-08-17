@@ -26,6 +26,8 @@ func templateFuncs() template.FuncMap {
 		"langName":         func(l string) string { return LangNames[l] },
 		"langs":            func() []string { return Langs },
 		"categories":       func() []string { return Categories },
+		"wallMaterials":    func() []string { return WallMaterials },
+		"wallKey":          WallMaterialKey,
 		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
 		"subcats":          func(cat string) []string { return Subcats(cat) },
 		"dealTypes":        func() []string { return DealTypes },

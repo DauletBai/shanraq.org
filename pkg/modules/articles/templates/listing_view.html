@@ -67,6 +67,9 @@
               {{ if gt .L.Rooms 0 }}<tr><th>{{ t .Lang "re.rooms" }}</th><td>{{ .L.Rooms }}</td></tr>{{ end }}
               {{ if gt .L.Area 0.0 }}<tr><th>{{ t .Lang "re.area" }}</th><td>{{ .L.Area }} м²</td></tr>{{ end }}
               {{ if gt .L.LandArea 0.0 }}<tr><th>{{ t .Lang "re.land_area" }}</th><td>{{ .L.LandArea }} {{ t .Lang "re.ares" }}</td></tr>{{ end }}
+              {{ if gt .L.BuildYear 0 }}<tr><th>{{ t .Lang "re.build_year" }}</th><td>{{ .L.BuildYear }}</td></tr>{{ end }}
+              {{ if .L.WallMaterial }}<tr><th>{{ t .Lang "re.wall_material" }}</th><td>{{ t .Lang (wallKey .L.WallMaterial) }}</td></tr>{{ end }}
+              {{ if gt .L.CeilingHeight 0.0 }}<tr><th>{{ t .Lang "re.ceiling_height" }}</th><td>{{ .L.CeilingHeight }} {{ t .Lang "re.metres" }}</td></tr>{{ end }}
             </tbody>
           </table>
         </div>
