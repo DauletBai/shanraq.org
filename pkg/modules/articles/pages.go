@@ -77,12 +77,45 @@ Shanraq.org is a home where free voices meet.`},
 ## Что бесплатно, а что платно
 **Бесплатно и навсегда:** чтение всех материалов, подписка на рассылку, регистрация, ручная публикация статей (в том числе на трёх языках, если вы переводите сами), оценки, комментарии и карма.
 
-**Платные услуги** — это дополнительные возможности на базе ИИ и продвижение: улучшение статьи ИИ-редактором, автоматический перевод на три языка, генерация обложки, а также размещение и продвижение объявлений о недвижимости. Актуальные цены — на странице [Тарифы](/pricing).
+**Платные услуги** — это дополнительные возможности на базе ИИ и продвижение: улучшение статьи ИИ-редактором, автоматический перевод на три языка, генерация обложки, а также продвижение объявлений о недвижимости. Само объявление разместить бесплатно. Актуальные цены — на странице [Тарифы](/pricing).
 
 ## Недвижимость и объявления
-Наш символ — шаңырақ, а значит, дом. В разделе **«Недвижимость»** можно подать объявление о продаже или аренде: квартиры, дома, земельного участка или коммерческого помещения. Нажмите «Подать объявление», заполните поля (страна, область, город, село, тип, цена, площадь и описание) — и объявление появится в разделе.
+Наш символ — шаңырақ, а значит, дом. В разделе **«Недвижимость»** можно подать объявление о продаже или аренде: квартиры, дома, земельного участка или коммерческого помещения.
+
+**Подача объявления бесплатна.** Объявление живёт 21 день, за два дня до окончания мы напомним. Платить нужно только за продвижение, если вы сами этого захотите.
+
+### Как подать за пять минут
+1. Нажмите **«Подать объявление»**.
+2. Выберите страну, область и город. От страны зависит валюта цены, поэтому начните с неё.
+3. Впишите адрес: микрорайон (если есть), улицу и номер дома. Номер квартиры указывать не нужно — он не публикуется.
+4. Укажите тип, цену, площадь и напишите описание.
+5. Добавьте фотографии — объявления с фотографиями открывают в разы чаще, чем без них.
+
+### Чтобы метка встала на ваш дом
+Покупатели смотрят на карту и ищут по районам. Если метка стоит не там, ваше объявление не попадётся тем, кто ищет жильё именно в вашем дворе. Три шага, чтобы этого не случилось.
+
+**1. Напишите адрес полностью и без опечаток.** Улицу пишите без слова «улица»: «Абая», «Достык». Номер дома — с корпусом, если он есть: «15», «15А», «15/2». Одна лишняя или пропущенная буква — и адрес не найдётся: «Будённого» и «Будёного» для карты разные вещи.
+
+**2. Откройте «На карте», нажмите «Найти по адресу на карте» и посмотрите, куда встала метка.** Она должна оказаться на вашем доме.
+
+**3. Метка в центре города означает, что адрес не распознан.** Мы не угадываем: если точного дома не нашлось, метка честно ставится в середину населённого пункта. Проверьте написание улицы, исправьте опечатку и нажмите поиск ещё раз.
+
+**Если написано верно, а метка всё равно не на месте — просто перетащите её на свой дом.** Метка, поставленную вами, система считает точной и никогда не перебивает автоматической. Заодно улица и номер дома подставятся сами.
+
+Проверить себя можно по подписи в окошке метки на карте: **«Точное место»** — координаты ваши и всё в порядке; **«Центр населённого пункта»** — адрес не распознан, метка стоит приблизительно.
+
+### Что дальше
+- **Продление.** Объявление можно продлить ещё на 21 день из раздела «Мои объявления».
+- **Поднятие и выделение.** Платные и необязательные: поднятие возвращает объявление наверх списка, выделение подсвечивает его на неделю.
+- **Правки.** Цену, описание и фотографии можно менять в любой момент, объявление при этом не теряет срок.
+- **Контакты.** Показываются те, что вы указали в объявлении. Номер квартиры и точный адрес внутри дома не публикуются никогда.
 
 Доход от рекламы идёт на содержание платформы. Материалы наших ИИ-авторов создаёт сама платформа, поэтому доход от них полностью поступает проекту. Для независимых авторов готовится программа вознаграждения — её условия будут закреплены в письменном договоре, а не обещаны строкой на сайте.
+
+## Приглашения: как продвигать объявления бесплатно
+В [«Пригласить друзей»](/studio/invite) у вас есть личная ссылка. Когда человек, зарегистрировавшийся по ней, разместит **реальное объявление**, вам начисляются **3 дня продвижения «топ»** — того самого, которое иначе стоит денег.
+
+Никаких выплат и никаких условий мелким шрифтом: награда приходит за настоящее объявление, а не за регистрацию, и потратить её можно на любое своё объявление. Сколько людей пришло, сколько из них разместили объявление и сколько дней у вас накопилось — видно там же.
 
 ## Права и ответственность
 - Вы сохраняете авторские права на свои материалы и отвечаете за их содержание.
@@ -129,12 +162,45 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 ## Не тегін, не ақылы
 **Тегін әрі әрқашан:** барлық материалды оқу, жаңалық таратылымына жазылу, тіркелу, мақаланы қолмен жариялау (өзіңіз аударсаңыз, үш тілде де), бағалау, пікір және карма.
 
-**Ақылы қызметтер** — ИИ негізіндегі қосымша мүмкіндіктер мен жылжыту: мәтінді ИИ-редактормен жақсарту, үш тілге автоаудару, мұқаба жасау, сондай-ақ жылжымайтын мүлік хабарландыруын орналастыру мен жылжыту. Ағымдағы бағалар — [Тарифтер](/pricing) бетінде.
+**Ақылы қызметтер** — ИИ негізіндегі қосымша мүмкіндіктер мен жылжыту: мәтінді ИИ-редактормен жақсарту, үш тілге автоаудару, мұқаба жасау, сондай-ақ жылжымайтын мүлік хабарландыруын жылжыту. Хабарландырудың өзін беру тегін. Ағымдағы бағалар — [Тарифтер](/pricing) бетінде.
 
 ## Жылжымайтын мүлік және хабарландырулар
-Біздің нышанымыз — шаңырақ, яғни үй. **«Жылжымайтын мүлік»** бөлімінде сату немесе жалға беру туралы хабарландыру беруге болады: пәтер, үй, жер учаскесі немесе коммерциялық орын. «Хабарландыру беру» түймесін басып, өрістерді толтырыңыз (ел, облыс, қала, ауыл, түрі, бағасы, ауданы және сипаттама) — хабарландыру бөлімде пайда болады.
+Біздің нышанымыз — шаңырақ, яғни үй. **«Жылжымайтын мүлік»** бөлімінде сату немесе жалға беру туралы хабарландыру беруге болады: пәтер, үй, жер учаскесі немесе коммерциялық орын.
+
+**Хабарландыру беру тегін.** Ол 21 күн тұрады, мерзімі аяқталардан екі күн бұрын еске саламыз. Ақы тек жылжыту үшін және тек өзіңіз қаласаңыз төленеді.
+
+### Бес минутта қалай беруге болады
+1. **«Хабарландыру беру»** түймесін басыңыз.
+2. Елді, облысты және қаланы таңдаңыз. Баға валютасы елге байланысты, сондықтан содан бастаңыз.
+3. Мекенжайды жазыңыз: шағын аудан (бар болса), көше және үй нөмірі. Пәтер нөмірін жазудың қажеті жоқ — ол жарияланбайды.
+4. Түрін, бағасын, ауданын көрсетіп, сипаттама жазыңыз.
+5. Фотосурет қосыңыз — суреті бар хабарландыруды әлдеқайда жиі ашады.
+
+### Белгі үйіңізге дәл қойылуы үшін
+Сатып алушылар картаға қарайды және аудан бойынша іздейді. Белгі басқа жерде тұрса, дәл сіздің ауладан пәтер іздеп жүрген адам хабарландыруыңызды көрмейді. Мұны болдырмаудың үш қадамы бар.
+
+**1. Мекенжайды толық әрі қатесіз жазыңыз.** Көшені «көше» сөзінсіз жазыңыз: «Абай», «Достық». Үй нөмірін корпусымен көрсетіңіз: «15», «15А», «15/2». Бір әріп артық не кем болса, мекенжай табылмайды: карта үшін «Будённого» мен «Будёного» — екі бөлек нәрсе.
+
+**2. «Картада» бөлімін ашып, «Мекенжай бойынша картадан табу» түймесін басыңыз да, белгінің қайда тұрғанын қараңыз.** Ол сіздің үйіңізде тұруы керек.
+
+**3. Белгі қала ортасында тұрса, бұл мекенжайдың танылмағанын білдіреді.** Біз болжамаймыз: нақты үй табылмаса, белгі елді мекеннің ортасына қойылады. Көше атауының жазылуын тексеріп, қатені түзеп, іздеуді қайта басыңыз.
+
+**Жазылуы дұрыс болса да белгі орнында тұрмаса — оны жай ғана өз үйіңізге сүйреп апарыңыз.** Өзіңіз қойған белгіні жүйе дәл деп санайды және оны автоматты белгі ешқашан ауыстырмайды. Сонымен бірге көше мен үй нөмірі өздігінен толтырылады.
+
+Өзіңізді картадағы белгінің терезесіндегі жазу арқылы тексере аласыз: **«Нақты орны»** — координаттар сіздікі, бәрі дұрыс; **«Елді мекеннің ортасы»** — мекенжай танылмаған, белгі шамамен тұр.
+
+### Әрі қарай не бар
+- **Ұзарту.** Хабарландыруды «Менің хабарландыруларым» бөлімінен тағы 21 күнге ұзартуға болады.
+- **Көтеру мен ерекшелеу.** Ақылы әрі міндетті емес: көтеру хабарландыруды тізімнің басына қайтарады, ерекшелеу оны бір апта бойы бөліп көрсетеді.
+- **Түзету.** Бағаны, сипаттаманы және суреттерді кез келген уақытта өзгертуге болады, мерзім бұзылмайды.
+- **Байланыс.** Хабарландыруда өзіңіз көрсеткен деректер шығады. Пәтер нөмірі мен үй ішіндегі нақты мекенжай ешқашан жарияланбайды.
 
 Жарнама табысы платформаны ұстауға жұмсалады. ЖИ-авторларымыздың материалдарын платформаның өзі жасайды, сондықтан олардан түскен табыс толығымен жобаға түседі. Тәуелсіз авторлар үшін сыйақы бағдарламасы дайындалуда — оның шарттары сайттағы жолмен емес, жазбаша шартта бекітіледі.
+
+## Шақыру: хабарландыруды тегін қалай жылжытуға болады
+[«Достарды шақыру»](/studio/invite) бөлімінде сіздің жеке сілтемеңіз бар. Сол сілтеме арқылы тіркелген адам **нақты хабарландыру** берсе, сізге **3 күндік «топ» жарнамасы** беріледі — әдетте ақылы болатын дәл сол қызмет.
+
+Ешқандай төлем де, ұсақ әріппен жазылған шарт та жоқ: сыйақы тіркелгені үшін емес, шынайы хабарландыру бергені үшін келеді, ал жұмсауға өзіңіздің кез келген хабарландыруыңызды таңдай аласыз. Қанша адам келгені, олардың қаншасы хабарландыру бергені және сізде қанша күн жиналғаны сол жерде көрінеді.
 
 ## Құқықтар мен жауапкершілік
 - Материалдарыңызға авторлық құқық сізде қалады, мазмұны үшін өзіңіз жауап бересіз.
@@ -181,12 +247,45 @@ The profile carries a kind, which decides the label on your public page and whic
 ## What is free and what is paid
 **Free forever:** reading all content, the newsletter, registration, publishing articles manually (including in three languages if you translate them yourself), votes, comments, and karma.
 
-**Paid services** are the optional AI features and promotion: improving an article with the AI editor, automatic translation into three languages, cover generation, and posting or promoting real-estate listings. Current prices are on the [Pricing](/pricing) page.
+**Paid services** are the optional AI features and promotion: improving an article with the AI editor, automatic translation into three languages, cover generation, and promoting real-estate listings. Posting one is free. Current prices are on the [Pricing](/pricing) page.
 
 ## Real estate and listings
-Our symbol is the shanyraq — a home. In the **Real Estate** section you can post a sale or rental listing: apartment, house, land, or commercial space. Click "Post a listing", fill in the fields (country, region, city, village, type, price, area, and description), and it will appear in the section.
+Our symbol is the shanyraq — a home. In the **Real Estate** section you can post a sale or rental listing: apartment, house, land, or commercial space.
+
+**Posting is free.** A listing stays up for 21 days, and we remind you two days before it expires. You pay only for promotion, and only if you want it.
+
+### Posting in five minutes
+1. Press **Post a listing**.
+2. Choose the country, region, and city. The country sets the price currency, so start there.
+3. Enter the address: microdistrict if there is one, street, and house number. Leave out the flat number — it is never published.
+4. Give the type, price, area, and a description.
+5. Add photographs. Listings with photographs are opened many times more often than those without.
+
+### Getting the marker onto your building
+Buyers look at the map and search by neighbourhood. A marker in the wrong place means your listing never reaches the person looking for a home on your street. Three steps to avoid that.
+
+**1. Write the address in full, and spell it correctly.** Street name without the word "street": "Abaya", "Dostyk". House number with the block if there is one: "15", "15A", "15/2". One letter too many or too few and the address is not found — to a map, "Budyonnogo" and "Budyonogo" are different places.
+
+**2. Open "On the map", press "Find on the map by address", and look at where the marker lands.** It should sit on your building.
+
+**3. A marker in the middle of town means the address was not recognised.** We do not guess: when the exact building cannot be found, the marker is honestly placed at the centre of the settlement. Check the street spelling, fix the typo, and search again.
+
+**If the spelling is right and the marker is still wrong, simply drag it onto your building.** A marker you place yourself is treated as exact and is never overwritten by the automatic one. The street and house number fill themselves in as a bonus.
+
+You can check yourself by the line in the marker's popup: **"Exact location"** means the coordinates are yours and all is well; **"Settlement centre"** means the address was not recognised and the marker is approximate.
+
+### After that
+- **Renewal.** A listing can be renewed for another 21 days from "My listings".
+- **Bump and highlight.** Paid and optional: a bump returns the listing to the top of the list, a highlight makes it stand out for a week.
+- **Edits.** Price, description, and photographs can be changed at any time without losing the remaining days.
+- **Contacts.** Whatever you entered in the listing is shown. The flat number and the exact address inside the building are never published.
 
 Ad revenue funds the platform. Material by our AI authors is produced by the platform itself, so revenue from it goes to the project in full. A reward program for independent authors is in preparation; its terms will be set out in a written agreement rather than promised in a line on a web page.
+
+## Invitations: promoting a listing for nothing
+[Invite friends](/studio/invite) gives you a personal link. When someone who signs up through it posts a **genuine listing**, you receive **3 days of "top" promotion** — the same promotion that otherwise costs money.
+
+No payments and no small print: the reward comes for a real listing rather than for a signup, and you can spend it on any listing of your own. How many people came, how many of them posted, and how many days you have banked are all on the same page.
 
 ## Rights and responsibilities
 - You keep the copyright to your work and are responsible for its content.
