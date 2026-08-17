@@ -2,6 +2,7 @@ package articles
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -103,5 +104,41 @@ func TestBuildYearWindow(t *testing.T) {
 		if got := parseBuildYear(tc.in); got != tc.want {
 			t.Errorf("parseBuildYear(%q) = %d, want %d", tc.in, got, tc.want)
 		}
+	}
+}
+
+// The cap and the label the seller reads come from one constant. They used to
+// be two numbers — the const said ten and a translated string said ten — and
+// nothing would have caught them drifting apart.
+func TestPhotoCapMatchesWhatTheFormPromises(t *testing.T) {
+	app := newTestApp(t)
+	app.createUser("photos@t.test", "Parol12345")
+	app.exec(`UPDATE auth_users SET email_verified_at = now() WHERE lower(email) = 'photos@t.test'`)
+	cookie := app.login("photos@t.test", "Parol12345")
+
+	form := app.do(http.MethodGet, "/listings/new", nil, withCookie(cookie)).Body.String()
+	promise := fmt.Sprintf(T(LangRU, "re.photos_max"), maxListingPhotos)
+	if !strings.Contains(form, promise) {
+		t.Errorf("the form does not promise %q", promise)
+	}
+	if strings.Contains(form, "%d") {
+		t.Error("the label still carries an unrendered placeholder")
+	}
+
+	// Five more than allowed: the extra ones are dropped, the listing still saves.
+	f := listingForm(ruNodeID(t, app))
+	for i := 0; i < maxListingPhotos+5; i++ {
+		f.Add("image", fmt.Sprintf("/media/p%02d.jpg", i))
+	}
+	if w := app.do(http.MethodPost, "/listings/new", f, withCookie(cookie)); w.Code != http.StatusSeeOther {
+		t.Fatalf("listing must save, got %d (%s)", w.Code, w.Body.String())
+	}
+	var n int
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT cardinality(images) FROM listings WHERE title_ru = $1`, "Квартира в аренду").Scan(&n); err != nil {
+		t.Fatalf("listing not stored: %v", err)
+	}
+	if n != maxListingPhotos {
+		t.Errorf("stored %d photos, want the cap of %d", n, maxListingPhotos)
 	}
 }

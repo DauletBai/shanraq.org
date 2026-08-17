@@ -141,7 +141,7 @@ var messages = map[string]map[string]string{
 		"en": "Choose the location: the country decides the price currency.",
 	},
 	"re.photos":         {"kz": "Фотосуреттер", "ru": "Фотографии", "en": "Photos"},
-	"re.photos_max":     {"kz": "10 фотоға дейін", "ru": "до 10 фото", "en": "up to 10 photos"},
+	"re.photos_max":     {"kz": "%d фотоға дейін", "ru": "до %d фото", "en": "up to %d photos"},
 	"re.add_photo":      {"kz": "Фото қосу", "ru": "Добавить фото", "en": "Add photo"},
 	"re.documents":      {"kz": "Құжаттар / жоспар", "ru": "Документы / планировка", "en": "Documents / floor plan"},
 	"re.documents_help": {"kz": "PDF немесе сурет (жоспар, техпаспорт)", "ru": "PDF или изображение (план, техпаспорт)", "en": "PDF or image (plan, passport)"},

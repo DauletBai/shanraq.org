@@ -131,7 +131,7 @@
         </div>
       </div>
       <div class="field">
-        <label>{{ t .Lang "re.photos" }} <span class="hint">— {{ t .Lang "re.photos_max" }}</span> {{ template "fhelp" (t .Lang "re.help_photos") }}</label>
+        <label>{{ t .Lang "re.photos" }} <span class="hint">— {{ printf (t .Lang "re.photos_max") maxPhotos }}</span> {{ template "fhelp" (t .Lang "re.help_photos") }}</label>
         <div class="galup" data-gallery data-max="10" data-msg-failed="{{ t $.Lang "re.up_failed" }}" data-msg-over="{{ t $.Lang "re.up_over" }}" data-msg-full="{{ t $.Lang "re.up_full" }}">
           <div class="galup__items" data-gallery-items>
             {{ range .Values.Images }}
