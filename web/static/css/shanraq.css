@@ -1428,6 +1428,52 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
   .map-holder--leaflet { height: 78vh; height: 78svh; }
 }
 .re-map__svg { width: 100%; height: auto; display: block; background: var(--surface-2); border-radius: 12px; }
+/* ---- Map markers: a price, not a dot ----
+   A dot says "something is here"; a price says whether it is worth a tap. This
+   is the one thing every leading property map has in common, and it turns the
+   map from a locator into a way of scanning the market.
+   The pill is anchored bottom-centre with a tail, so it points at the building
+   rather than hovering beside it. iconSize is [0,0] on purpose: the width comes
+   from the text, and translate does the anchoring, so a long price and a short
+   one both sit over their own address. */
+.mappin { background: none; border: 0; }
+.mappin__txt {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 7px));
+  display: inline-block;
+  white-space: nowrap;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #fff;
+  font: 700 0.78rem/1.2 var(--sans);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
+}
+.mappin__txt::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--gold);
+}
+.leaflet-marker-icon.mappin:hover .mappin__txt,
+.mappin__txt:hover { background: var(--ink); }
+.mappin__txt:hover::after { border-top-color: var(--ink); }
+
+/* The popup is a card, so the reader decides from the map instead of opening
+   the listing to find out. */
+.mapcard-pop .leaflet-popup-content { margin: 0; }
+.mapcard-pop .leaflet-popup-content-wrapper { padding: 0; overflow: hidden; border-radius: 12px; }
+.mapcard { display: block; text-decoration: none; color: inherit; }
+.mapcard__img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.mapcard__body { display: block; padding: 9px 12px 11px; }
+.mapcard__price { display: block; font-size: 1rem; color: var(--ink); }
+.mapcard__title { display: block; margin-top: 2px; font-weight: 600; }
+.mapcard__meta { display: block; margin-top: 2px; color: var(--ink-soft); font-size: 0.85rem; }
+.mapcard__note { display: block; margin-top: 4px; color: var(--muted); font-size: 0.76rem; }
+
 .map-bubble { fill: var(--gold); fill-opacity: 0.75; stroke: #fff; stroke-width: 1.5; transition: fill-opacity 0.12s ease; }
 :root[data-theme="dark"] .map-bubble { stroke: rgba(255, 255, 255, 0.4); }
 .map-bubble.is-empty { fill: var(--muted); fill-opacity: 0.22; }

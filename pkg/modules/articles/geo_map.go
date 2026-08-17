@@ -124,6 +124,11 @@ type ListingPin struct {
 	Lat   float64 `json:"lat"`
 	Lng   float64 `json:"lng"`
 	Exact bool    `json:"exact"`
+	// Cover lets the map show a card rather than a line of text. Every leading
+	// property map does this: a thumbnail is what makes a marker worth tapping.
+	Cover string  `json:"cover"`
+	Rooms int     `json:"rooms"`
+	Area  float64 `json:"area"`
 }
 
 // ListingPins returns map markers for active listings. A listing with no
@@ -150,6 +155,7 @@ func (s *ListingStore) ListingPins(ctx context.Context, limit int) ([]ListingPin
 		     ORDER BY listing_id, up
 		)
 		SELECT l.id, l.title, l.price, l.deal_type, l.currency,
+		       COALESCE(l.cover_url,''), l.rooms, l.area,
 		       COALESCE(NULLIF(l.city,''), NULLIF(l.district,''), l.region),
 		       COALESCE(l.lat, g.lat, c.lat), COALESCE(l.lng, g.lng, c.lng),
 		       l.lat IS NOT NULL AND l.lng IS NOT NULL
@@ -177,7 +183,8 @@ func (s *ListingStore) ListingPins(ctx context.Context, limit int) ([]ListingPin
 	out := []ListingPin{}
 	for rows.Next() {
 		var p ListingPin
-		if err := rows.Scan(&p.ID, &p.Title, &p.Price, &p.Deal, &p.Cur, &p.Place, &p.Lat, &p.Lng, &p.Exact); err != nil {
+		if err := rows.Scan(&p.ID, &p.Title, &p.Price, &p.Deal, &p.Cur, &p.Cover, &p.Rooms, &p.Area,
+			&p.Place, &p.Lat, &p.Lng, &p.Exact); err != nil {
 			return nil, err
 		}
 		out = append(out, p)

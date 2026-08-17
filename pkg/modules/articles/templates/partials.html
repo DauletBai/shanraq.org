@@ -902,10 +902,22 @@
         exact: { kz: 'Нақты орны', ru: 'Точное место', en: 'Exact location' },
         approx: { kz: 'Елді мекеннің ортасы', ru: 'Центр населённого пункта', en: 'Settlement centre' },
         drag: { kz: 'Белгіні үйіңізге сүйреңіз', ru: 'Перетащите метку на свой дом', en: 'Drag the marker onto your building' },
-        rent: { kz: '/ай', ru: '/мес', en: '/mo' }
+        rent: { kz: '/ай', ru: '/мес', en: '/mo' },
+        mln: { kz: 'млн', ru: 'млн', en: 'M' },
+        ths: { kz: 'мың', ru: 'тыс', en: 'K' },
+        rooms: { kz: 'бөлме', ru: 'комн.', en: 'rooms' }
       };
       function t(k) { return (T[k] && (T[k][lang] || T[k].ru)) || ''; }
       function money(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0'); }
+      // A marker has room for a glance, not for a figure: 25 млн reads at map
+      // scale where 25 000 000 does not. Every leading property map abbreviates
+      // here and spells the number out in the card.
+      function shortMoney(n) {
+        if (n >= 1e6) { var v = n / 1e6; return (v >= 10 ? Math.round(v) : (Math.round(v * 10) / 10)) + ' ' + t('mln'); }
+        if (n >= 1e4) { return Math.round(n / 1e3) + ' ' + t('ths'); }
+        return money(n);
+      }
+      function cur(p) { return p.cur === 'RUB' ? '\u20bd' : '\u20b8'; }
       function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
       var holder = document.createElement('div');
@@ -1006,6 +1018,26 @@
             // slower than scrolling the list it came from.
             function hover(m) { m.on('mouseover', function () { m.openPopup(); }); return m; }
 
+            // One listing gets a card: photograph, price, size. A thumbnail is
+            // what makes a marker worth tapping, and it is what every leading
+            // property map puts behind one.
+            function cardFor(p) {
+              var img = p.cover
+                ? '<img class="mapcard__img" src="' + esc(p.cover) + '" alt="" loading="lazy">'
+                : '';
+              var meta = [];
+              if (p.rooms > 0) meta.push(p.rooms + ' ' + t('rooms'));
+              if (p.area > 0) meta.push(p.area + ' \u043c\u00b2');
+              return '<a class="mapcard" href="/listings/' + p.id + '?lang=' + lang + '">' + img +
+                '<span class="mapcard__body">' +
+                  '<b class="mapcard__price">' + money(p.price) + ' ' + cur(p) +
+                    (p.deal === 'rent' ? t('rent') : '') + '</b>' +
+                  '<span class="mapcard__title">' + esc(p.title) + '</span>' +
+                  (meta.length ? '<span class="mapcard__meta">' + meta.join(' \u00b7 ') + '</span>' : '') +
+                  '<span class="mapcard__note">' + (p.exact ? t('exact') : t('approx')) + '</span>' +
+                '</span></a>';
+            }
+
             pins.forEach(function (p) { group.push([p.lat, p.lng]); });
 
             var places = {}, order = [];
@@ -1063,10 +1095,14 @@
                   lat += r * Math.cos(a);
                   lng += r * Math.sin(a) / Math.max(0.2, Math.cos(p.lat * Math.PI / 180));
                 }
-                hover(L.circleMarker([lat, lng], {
-                  radius: 8, weight: 2,
-                  color: heat(1, true), fillColor: heat(1, false), fillOpacity: 0.9
-                }).bindPopup(popupFor([p], p.place || p.title))).addTo(detailed);
+                hover(L.marker([lat, lng], {
+                  icon: L.divIcon({
+                    className: 'mappin',
+                    html: '<span class="mappin__txt">' + esc(shortMoney(p.price) + ' ' + cur(p)) + '</span>',
+                    iconSize: [0, 0], iconAnchor: [0, 0]
+                  }),
+                  riseOnHover: true
+                }).bindPopup(cardFor(p), { minWidth: 240, className: 'mapcard-pop' })).addTo(detailed);
               });
             });
 
