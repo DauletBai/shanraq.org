@@ -115,6 +115,8 @@
   <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="icon" type="image/svg+xml" href="{{ asset "/static/brand/shanraq.svg" }}">
   <link rel="apple-touch-icon" href="/static/brand/apple-touch-icon.png">
+  <link rel="manifest" href="{{ asset "/static/manifest.webmanifest" }}">
+  <meta name="theme-color" content="#e53935">
   <link rel="alternate" type="application/rss+xml" title="Shanraq.org RSS" href="/feed.xml?lang={{ .Lang }}">
   {{ if .NeedsMap }}<link rel="stylesheet" href="{{ asset "/static/vendor/leaflet.css" }}">{{ end }}
   <link rel="stylesheet" href="{{ asset "/static/css/shanraq.css" }}">
@@ -422,6 +424,16 @@
   </div>
 </footer>
 {{ if .NeedsMap }}<script src="{{ asset "/static/vendor/leaflet.js" }}"></script>{{ end }}
+<script>
+  // Installable site: the worker only caches /static/*, so the worst a
+  // failed registration costs is the install prompt, never the page.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/sw.js").catch(function () {});
+    });
+  }
+</script>
+
 <script>
   (function () {
     var btn = document.querySelector('[data-theme-toggle]');

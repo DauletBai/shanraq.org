@@ -1,0 +1,15 @@
+<svg width="512" height="512" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#ffffff"/>
+  <g style="transform: scale(0.85); transform-origin: 200px 200px;">
+    <g fill="none" stroke="#ffadad" stroke-opacity="0.5" stroke-width="45" stroke-linecap="round">
+      <line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/>
+      <line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/>
+      <line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/>
+    </g>
+    <g fill="none" stroke="#e53935" stroke-width="30" stroke-linecap="round">
+      <line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/>
+      <line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/>
+      <line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/>
+    </g>
+  </g>
+</svg>

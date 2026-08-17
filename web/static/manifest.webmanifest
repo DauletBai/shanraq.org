@@ -1,0 +1,21 @@
+{
+  "name": "Shanraq.org",
+  "short_name": "Shanraq",
+  "description": "Тәуелсіз басылым және жылжымайтын мүлік хабарландырулары / Независимое издание и объявления о недвижимости / Independent publishing and real-estate listings",
+  "lang": "ru",
+  "start_url": "/?src=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e53935",
+  "icons": [
+    { "src": "/static/brand/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/static/brand/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/static/brand/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/static/brand/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "shortcuts": [
+    { "name": "Недвижимость", "url": "/listings" },
+    { "name": "Подать объявление", "url": "/listings/new" }
+  ]
+}

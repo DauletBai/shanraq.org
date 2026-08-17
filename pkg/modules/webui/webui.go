@@ -129,6 +129,14 @@ func (m *Module) Routes(r chi.Router) {
 	r.Get("/favicon.svg", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFileFS(w, r, web.StaticFS(), "brand/shanraq.svg")
 	})
+	// The service worker must answer at the root: its scope is its own
+	// directory, so one served from /static/ would control /static/ and nothing
+	// else. No-cache because a stale worker outlives the deploy that replaced it.
+	r.Get("/sw.js", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+		http.ServeFileFS(w, r, web.StaticFS(), "sw.js")
+	})
 	// The operator console and its data partial expose global job metrics and
 	// error text — staff only. Register them ONLY behind the auth guard; without
 	// a guard, do not expose them at all (fail closed).
