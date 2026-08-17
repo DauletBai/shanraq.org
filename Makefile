@@ -4,6 +4,13 @@ GO ?= go
 run:
 	$(GO) run ./cmd/app -config configs/config.example.yaml
 
+# -p 1: the packages share one database. Run in parallel, as `go test` does by
+# default, the articles harness creates an administrator while the auth package
+# is counting them, and the last-admin guard tests see three where they staged
+# two — sometimes refusing nothing, sometimes refusing a demotion that was
+# legitimate. Both were reproduced locally at roughly one run in six, which is
+# the rate CI was failing at. Serial packages cost a couple of seconds.
+#
 # Every database-backed test skips itself when SHANRAQ_TEST_DB is unset, and a
 # skip is invisible behind a `| tail -3`. That is not a hypothetical: on
 # 16 August 2026 six local runs in a row were reported as passing while every
@@ -13,20 +20,20 @@ run:
 # green" mean the same thing.
 .PHONY: test
 test: require-test-db
-	$(GO) test ./...
-	$(GO) test -race ./...
+	$(GO) test -p 1 ./...
+	$(GO) test -race -p 1 ./...
 
 # The plain pass alone, for a tight edit-run loop. Still refuses to run blind.
 .PHONY: test-quick
 test-quick: require-test-db
-	$(GO) test ./...
+	$(GO) test -p 1 ./...
 
 # Deliberately without a database, framed so it cannot be mistaken for a full
 # run. Useful when the change genuinely touches no storage.
 .PHONY: test-nodb
 test-nodb:
 	@echo "── no database: integration tests will SKIP, this is not the full suite ──"
-	@SHANRAQ_TEST_DB= $(GO) test ./...
+	@SHANRAQ_TEST_DB= $(GO) test -p 1 ./...
 	@echo "── finished WITHOUT the integration tests ──"
 
 .PHONY: require-test-db

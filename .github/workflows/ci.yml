@@ -73,7 +73,7 @@ jobs:
       - name: Go test
         run: |
           set -o pipefail
-          go test ./... 2>&1 | tee /tmp/test.log && exit 0
+          go test -p 1 ./... 2>&1 | tee /tmp/test.log && exit 0
           {
             echo "### Failing tests"
             echo
@@ -85,7 +85,7 @@ jobs:
       - name: Go test (race)
         run: |
           set -o pipefail
-          go test -race ./... 2>&1 | tee /tmp/race.log && exit 0
+          go test -race -p 1 ./... 2>&1 | tee /tmp/race.log && exit 0
           {
             echo "### Failing tests (race)"
             echo
