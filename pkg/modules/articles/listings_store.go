@@ -21,14 +21,17 @@ func NewListingStore(db *pgxpool.Pool) *ListingStore { return &ListingStore{db: 
 // ListingInput carries a submitted listing.
 // maxListingPhotos caps how many photos a listing may carry. Ten was a toy
 // number next to the market: listings on Krisha, the competitor sellers here
-// compare us with, routinely carry 15 to 34, and its own limit is higher still.
-// Forty covers every room, the kitchen, the bathroom, the entrance, the view,
-// the building and a floor plan with room to spare.
+// compare us with, routinely carry 15 to 34.
 //
-// The cost is bounded and measured, not guessed: after our resize, watermarking
-// and re-encode a photo averages 165 KB in production, so forty of them is
-// about 6.6 MB per listing and a thousand listings is under 7 GB.
-const maxListingPhotos = 40
+// Twenty is a deliberate choice rather than a match. It covers every room, the
+// kitchen, the bathroom, the entrance, the view and the building, and past
+// roughly that many a buyer stops swiping — the photos after it cost storage
+// and earn no attention. Measured cost: a processed photo averages 165 KB in
+// production, so twenty is about 3.3 MB per listing.
+//
+// The seller-facing label is generated from this constant, so raising it is a
+// one-line change that cannot leave the promise behind.
+const maxListingPhotos = 20
 const maxListingDocs = 10
 
 type ListingInput struct {
