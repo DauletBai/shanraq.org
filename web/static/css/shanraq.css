@@ -1394,6 +1394,11 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 /* ---- Listings map (self-hosted region bubble map) ---- */
 .re-map { display: none; margin: 4px 0 18px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
 .re-map.is-open { display: block; }
+/* The browsing map gets the full width: a 16px frame on each side is 32px the
+   map does not have on a phone, and the panel around it framed nothing the
+   reader needed. The posting form keeps its frame — there the panel groups the
+   address hint and the search button with the map, which is a real grouping. */
+.re-map--full { padding: 0; border: 0; background: none; }
 .re-map__hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 10px; }
 .map-bar { display: flex; gap: 8px; margin-bottom: 10px; }
 .map-tab { padding: 4px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-soft); font-weight: 700; cursor: pointer; font-size: 0.8rem; }

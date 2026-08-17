@@ -247,7 +247,6 @@ var messages = map[string]map[string]string{
 	"re.geocode_find":       {"kz": "Мекенжай бойынша картадан табу", "ru": "Найти по адресу на карте", "en": "Find on the map by address"},
 	"re.geocoding":          {"kz": "Ізделуде…", "ru": "Ищем…", "en": "Searching…"},
 	"re.geocode_none":       {"kz": "Мекенжай табылмады — белгіні қолмен қойыңыз.", "ru": "Адрес не найден — поставьте точку вручную.", "en": "Address not found — place the pin manually."},
-	"re.map_hint":           {"kz": "Аймақтағы хабарландыру саны. Таңдау үшін басыңыз.", "ru": "Число объявлений по регионам. Нажмите, чтобы выбрать.", "en": "Listings per region. Click to select."},
 	"re.location":           {"kz": "Орналасуы", "ru": "Расположение", "en": "Location"},
 	"re.microdistrict":      {"kz": "Шағын аудан", "ru": "Микрорайон", "en": "Microdistrict"},
 	"re.street":             {"kz": "Көше", "ru": "Улица", "en": "Street"},

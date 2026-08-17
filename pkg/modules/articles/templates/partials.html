@@ -993,11 +993,13 @@
             // listing in a city therefore grew the bubble and then vanished
             // inside it, which is exactly how the bug was reported.
             var clustered = L.layerGroup(), detailed = L.layerGroup(), group = [];
-            // 10, not 12. The split used to happen only at city zoom, by which
-            // point the reader had usually zoomed past it — the pins then landed
-            // outside the viewport and had to be hunted by panning. At 10 the
-            // bubble opens while the whole city is still on screen.
-            var DETAIL_ZOOM = 10;
+            // 8, so the bubble opens as soon as a region fills the screen —
+            // measured on a phone, a city view still sat under one bubble at 10.
+            // Clustering exists to stop markers overlapping, not to hide them:
+            // with a fixed threshold the honest setting is the lowest zoom at
+            // which prices still read. If listings ever reach the hundreds this
+            // wants replacing by distance-based grouping rather than retuning.
+            var DETAIL_ZOOM = 8;
 
             function popupFor(items, title) {
               var n = items.length;
