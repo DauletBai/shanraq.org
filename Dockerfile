@@ -16,6 +16,9 @@ COPY . .
 ARG TARGETOS=linux
 ARG TARGETARCH=amd64
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o /bin/shanraq ./cmd/app
+# The content exporter ships in the same image so it can be run against the
+# live database without a toolchain on the host: docker compose exec app export
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o /bin/export ./cmd/export
 
 # Pre-create the media directory here (the distroless runtime has no shell to
 # mkdir at start) so it can be COPYed in with the nonroot owner below.
@@ -24,6 +27,7 @@ RUN mkdir -p /app/data/media
 FROM gcr.io/distroless/base-debian12:nonroot
 WORKDIR /app
 COPY --from=builder /bin/shanraq /usr/local/bin/shanraq
+COPY --from=builder /bin/export /usr/local/bin/export
 COPY configs/config.example.yaml /app/config.yaml
 # Writable media tree owned by the nonroot user (uid/gid 65532 in distroless).
 COPY --from=builder --chown=65532:65532 /app/data /app/data
