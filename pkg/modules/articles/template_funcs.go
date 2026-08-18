@@ -28,6 +28,7 @@ func templateFuncs() template.FuncMap {
 		"categories":       func() []string { return Categories },
 		"wallMaterials":    func() []string { return WallMaterials },
 		"maxPhotos":        func() int { return maxListingPhotos },
+		"maxDocs":          func() int { return maxListingDocs },
 		"wallKey":          WallMaterialKey,
 		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
 		"subcats":          func(cat string) []string { return Subcats(cat) },

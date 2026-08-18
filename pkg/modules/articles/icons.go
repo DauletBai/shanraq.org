@@ -144,13 +144,24 @@ var countryFlags = map[string]string{
 	"Казахстан": `<rect width="24" height="16" rx="2" fill="#00AFCA"/><circle cx="13" cy="7" r="2.4" fill="#FEC50C"/>` +
 		`<g stroke="#FEC50C" stroke-width=".7" stroke-linecap="round"><path d="M13 3.3v1M13 10.7v-1M8.7 7h1M17.3 7h-1M9.9 3.9l.7.7M16.1 10.1l-.7-.7M16.1 3.9l-.7.7M9.9 10.1l.7-.7"/></g>` +
 		`<path d="M3 2.6v10.8" stroke="#FEC50C" stroke-width=".9"/>`,
+	"Россия": `<rect width="24" height="16" rx="2" fill="#fff"/>` +
+		`<path d="M0 5.33h24v5.34H0z" fill="#0039A6"/>` +
+		`<path d="M0 10.67h24V14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2z" fill="#D52B1E"/>`,
+}
+
+// countryAliases maps every name a country is stored under to the key the flag
+// table uses. The cascade writes the country in the language the author was
+// reading, so the same place arrives as Россия, Ресей or Russia — and a lookup
+// on the Russian name alone found nothing for two of the three.
+var countryAliases = map[string]string{
+	"Kazakhstan": "Казахстан", "Қазақстан": "Казахстан",
+	"Russia": "Россия", "Ресей": "Россия",
 }
 
 // countryFlag returns the colored flag for a country name, or "" if unknown.
 func countryFlag(country string) template.HTML {
-	switch country {
-	case "Kazakhstan", "Қазақстан":
-		country = "Казахстан"
+	if canonical, ok := countryAliases[country]; ok {
+		country = canonical
 	}
 	f, ok := countryFlags[country]
 	if !ok || f == "" {

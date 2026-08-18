@@ -648,7 +648,10 @@
       var addBtn = gal.querySelector('[data-gallery-add]');
       var file = gal.querySelector('[data-gallery-file]');
       var status = gal.querySelector('[data-gallery-status]');
-      var max = parseInt(gal.getAttribute('data-max'), 10) || 10;
+      // Fail safe rather than generous: the attribute is always rendered from
+      // the server constant, so a missing one means something is wrong, and
+      // one file is a better guess than a number that will drift out of date.
+      var max = parseInt(gal.getAttribute('data-max'), 10) || 1;
       var uploadUrl = gal.getAttribute('data-upload-url') || '/media/upload';
       var fieldName = gal.getAttribute('data-field') || 'image';
       function count() { return items.querySelectorAll('.galup__item').length; }

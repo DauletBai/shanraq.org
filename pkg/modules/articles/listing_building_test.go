@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -140,5 +141,51 @@ func TestPhotoCapMatchesWhatTheFormPromises(t *testing.T) {
 	}
 	if n != maxListingPhotos {
 		t.Errorf("stored %d photos, want the cap of %d", n, maxListingPhotos)
+	}
+}
+
+// The cap lives in one constant, and the browser has to hear about it too. The
+// server was raised to twenty while the uploader kept data-max="10", so a
+// seller was stopped at ten by a widget while the form promised twenty and the
+// handler would have accepted them. The earlier test checked the handler and
+// the label and missed the only thing the seller actually touches.
+func TestUploaderHonoursTheSameCap(t *testing.T) {
+	app := newTestApp(t)
+	app.createUser("upcap@t.test", "Parol12345")
+	app.exec(`UPDATE auth_users SET email_verified_at = now() WHERE lower(email) = 'upcap@t.test'`)
+	cookie := app.login("upcap@t.test", "Parol12345")
+
+	body := app.do(http.MethodGet, "/listings/new", nil, withCookie(cookie)).Body.String()
+
+	// Only the file uploaders, in page order: photos, documents, contract. The
+	// room-breakdown widget carries a data-max of its own and must not be
+	// mistaken for one of them just because the numbers happen to agree.
+	found := regexp.MustCompile(`data-gallery data-max="(\d+)"`).FindAllStringSubmatch(body, -1)
+	want := []int{maxListingPhotos, maxListingDocs, 1}
+	if len(found) != len(want) {
+		t.Fatalf("found %d file uploaders, want %d", len(found), len(want))
+	}
+	for i, m := range found {
+		got, _ := strconv.Atoi(m[1])
+		if got != want[i] {
+			t.Errorf("uploader %d allows %d files, want %d", i+1, got, want[i])
+		}
+	}
+}
+
+// A listing in Russia showed no flag: the table held Kazakhstan and nothing
+// else, so every Russian address rendered a blank where the flag belongs. The
+// cascade also stores the country in whichever language the author was reading,
+// so all three spellings have to resolve.
+func TestEveryCountryWeServeHasAFlag(t *testing.T) {
+	for _, name := range []string{"Казахстан", "Қазақстан", "Kazakhstan", "Россия", "Ресей", "Russia"} {
+		if got := string(countryFlag(name)); got == "" {
+			t.Errorf("countryFlag(%q) is empty — a listing there shows no flag", name)
+		} else if !strings.Contains(got, "<svg") {
+			t.Errorf("countryFlag(%q) = %q, want an svg", name, got)
+		}
+	}
+	if countryFlag("Атлантида") != "" {
+		t.Error("an unknown country must render nothing rather than a wrong flag")
 	}
 }
