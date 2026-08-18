@@ -43,6 +43,10 @@ STAMP="$(date -u +%Y%m%d-%H%M%S)"
 WORK="$OUT_DIR/.work-$STAMP"
 
 mkdir -p "$WORK"
+# The image runs as distroless nonroot (65532). The bind mount arrives owned by
+# root, so without this the exporter finds a directory it cannot write into and
+# fails after doing all of the reading.
+chown 65532:65532 "$WORK"
 trap 'rm -rf "$WORK"' EXIT
 
 [[ -n "${POSTGRES_PASSWORD:-}" ]] || fail "POSTGRES_PASSWORD is not set in .env"
