@@ -93,12 +93,13 @@
               <span class="pbadge pbadge--{{ .Status }}">{{ t $.Lang (printf "pred.st_%s" .Status) }}</span>
               <span class="apred__stmt">{{ .StatementIn $.Lang }}</span>
               {{ with .VerdictIn $.Lang }}<span class="apred__verdict">{{ . }}</span>{{ end }}
-              {{/* The date it was made, and only that. A verdict with no age
-                   behind it says nothing — but the due date belongs in the ledger,
-                   one click away: here it wrapped the line and pushed the badge
-                   away from the claim for no reading anyone does on this page. */}}
+              {{/* The bare date, no label. Beside a status badge and a link into
+                   the ledger there is nothing else a date here could mean, and the
+                   word cost a line-wrap that pushed the badge off the claim. The
+                   ledger row still spells it out; this is the glance, not the
+                   record. */}}
               <span class="apred__when">
-                {{ t $.Lang "pred.made" }} {{ fmtDate .MadeOn }}
+                {{ fmtDate .MadeOn }}
                 · <a href="/predictions?lang={{ $.Lang }}#p-{{ .ID }}">{{ t $.Lang "pred.in_ledger" }}</a>
               </span>
             </li>
