@@ -1,0 +1,12 @@
+[Unit]
+Description=Content-only export to off-site storage
+Documentation=file:///opt/shanraq/docs/BACKUPS.md
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/shanraq
+ExecStart=/opt/shanraq/scripts/content-export.sh
+# Not EnvironmentFile: the script reads the handful of keys it needs itself,
+# because .env holds values with spaces that a parser would have to guess at.

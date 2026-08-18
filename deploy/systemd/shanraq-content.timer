@@ -1,0 +1,13 @@
+[Unit]
+Description=Daily content export, half an hour after the encrypted backup
+Documentation=file:///opt/shanraq/docs/BACKUPS.md
+
+[Timer]
+# 03:00 UTC, 08:00 Astana — after shanraq-backup at 02:30, so the two never
+# compete for the database or the disk.
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

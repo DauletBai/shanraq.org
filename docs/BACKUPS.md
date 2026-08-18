@@ -70,9 +70,50 @@ tar xzf backup.tar.gz && shasum -a 256 -c SHA256SUMS
 pg_restore -d <scratch-db> --no-owner db.dump
 ```
 
+## The gap, and what now covers half of it
+
+Since 18 August a second timer sends the published content to Cloudflare R2:
+`shanraq-content.timer`, daily at 03:00 UTC, half an hour after the encrypted
+backup so the two never compete for the database.
+
+`scripts/content-export.sh` runs the exporter that ships inside the app image
+and uploads the archive with rclone. What travels: 108 published articles with
+all 324 translations, the prediction ledger, the 21 editable pages, and the 18
+cover images that were uploaded rather than committed — those exist on this disk
+and nowhere else, while the other ninety live under `/static/covers` in the
+repository and are already off-site on GitHub.
+
+What does not travel is a list rather than a filter, so a table added next year
+cannot leak into it by being forgotten: accounts, sessions, listings (sellers'
+telephone numbers), comments, votes, moderation, analytics, payments. Bylines
+are included because a mirror without them is not the same publication, and the
+export refuses to run when it meets an author it does not know.
+
+The archive is not encrypted, deliberately: everything in it is already public
+at shanraq.org, and an unencrypted copy is one a mirror can serve and a stranger
+can restore without holding our key. It is about 6.3 MB, against R2's 10 GB free
+allowance.
+
+Two things were learned setting it up and are worth not rediscovering:
+
+**The R2 hostname resolves to IPv6 first.** The API token is restricted to this
+server's IPv4, so every request was refused with 403 until rclone was pinned
+with `--bind 85.202.192.61`. The alternative is to add the v6 address to the
+token's allow-list; pinning keeps the list at one address.
+
+**Listing buckets is denied by design.** The token carries Object Read & Write
+on one bucket, which does not include the account-level operation of listing
+buckets. `rclone lsd r2:` failing is correct; `rclone ls r2:shanraq-content/`
+is the check that means something.
+
+Verified on 18 August by the only test that counts: the uploaded archive was
+downloaded back from R2, its SHA-256 compared against the copy on the server,
+extracted, and its manifest read — 108 articles, 3 predictions, 21 pages, 18
+covers.
+
 ## The gap that is still open
 
-**Every copy is on the machine it protects.** Today's backups defend against
+**The full backup is still on the machine it protects.** Today's backups defend against
 the likely losses — a bad migration, a mistaken `DELETE`, a corrupted table.
 They do not defend against losing the machine, which is the failure the outage
 was rehearsing.
