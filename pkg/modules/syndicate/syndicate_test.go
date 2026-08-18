@@ -323,7 +323,7 @@ func TestRenderNoticePages(t *testing.T) {
 		})
 		body := w.Body.String()
 		for _, want := range []string{
-			`class="notice__brand"`,
+			`class="notice-page__brand"`,
 			`/static/brand/shanraq.svg`,       // light-theme mark
 			`/static/brand/shanraq-light.svg`, // dark-theme mark
 			`Shanraq.org`,

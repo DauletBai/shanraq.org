@@ -7,7 +7,7 @@
   <h1>{{ t .Lang "pred.admin_title" }}</h1>
   <p class="hint" style="margin-bottom:18px">{{ t .Lang "pred.admin_intro" }}
     <a href="/predictions" target="_blank">{{ t .Lang "pred.admin_view" }}</a></p>
-  {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+  {{ with .Notice }}{{ template "saved" . }}{{ end }}
   {{ with .Error }}<p class="alert alert--error">{{ . }}</p>{{ end }}
 
   <div class="cab-card">

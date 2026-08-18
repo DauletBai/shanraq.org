@@ -84,6 +84,11 @@
 {{ end }}
 
 {{/* fhelp renders a "?" icon with a click/hover tooltip. Pass the tip text as . */}}
+{{/* One definition for every "saved" message: slim, green, the width of its
+     column, and dismissible. A confirmation that cannot be closed keeps
+     claiming a save that happened a quarter of an hour ago. */}}
+{{ define "saved" }}<p class="notice notice--ok notice--x">{{ . }}<button type="button" class="notice__x" data-dismiss aria-label="×">×</button></p>{{ end }}
+
 {{ define "fhelp" }}<button type="button" class="fhelp" data-fhelp aria-label="?">?<span class="fhelp__tip" role="tooltip">{{ . }}</span></button>{{ end }}
 
 {{ define "site_head" }}
@@ -897,6 +902,14 @@
     // Listing map (OpenStreetMap tiles via Leaflet, both served from our own
     // origin apart from the tiles themselves). Two modes: "find" plots active
     // listings, "info" lets an author place their own pin.
+    // Dismissible notices: one listener for the page, so a message added later
+    // closes too.
+    document.addEventListener('click', function (e) {
+      var x = e.target.closest && e.target.closest('[data-dismiss]');
+      if (!x) return;
+      var box = x.closest('.notice');
+      if (box) box.remove();
+    });
     document.querySelectorAll('[data-listing-map]').forEach(function (box) {
       if (typeof L === 'undefined') return;
       var mode = box.getAttribute('data-map-mode') || 'find';

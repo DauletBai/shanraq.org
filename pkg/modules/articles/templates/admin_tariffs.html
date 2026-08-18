@@ -6,7 +6,7 @@
   <p style="margin-bottom:12px"><a href="/admin">← {{ t .Lang "tar.back_admin" }}</a></p>
   <h1>{{ t .Lang "tar.title" }}</h1>
   <p class="hint">{{ t .Lang "tar.intro" }}</p>
-  {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+  {{ with .Notice }}{{ template "saved" . }}{{ end }}
   {{ with .Error }}<p class="alert alert--error">{{ . }}</p>{{ end }}
 
   <form method="post" action="/admin/tariffs">

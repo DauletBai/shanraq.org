@@ -5,7 +5,7 @@
 <main class="container" style="max-width:900px;padding-top:24px">
   <p style="margin-bottom:12px"><a href="/admin/pages">← {{ t .Lang "pages.back_list" }}</a></p>
   <h1>{{ t .Lang "pages.edit_title" }}: {{ .Name }}</h1>
-  {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+  {{ with .Notice }}{{ template "saved" . }}{{ end }}
   {{ with .Error }}<p class="alert alert--error">{{ . }}</p>{{ end }}
   {{ if .LastEdited }}<p class="hint">{{ t $.Lang "pages.last_edited" }}: {{ .LastEdited }}{{ with .LastEditor }} · {{ . }}{{ end }}</p>{{ end }}
   <p class="hint" style="margin-bottom:16px">{{ t .Lang "pages.md_hint" }} <a href="/formatting" target="_blank">{{ t .Lang "pages.md_help" }}</a></p>

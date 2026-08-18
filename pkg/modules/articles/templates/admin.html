@@ -145,8 +145,7 @@
     </section>
 
     <section id="guests" class="adm-section">
-      <h2 class="adm-section__h">{{ t .Lang "ag.title" }}</h2>
-      <p class="adm-hint">{{ t .Lang "ag.note" }}</p>
+      <h2 class="adm-section__h">{{ t .Lang "ag.title" }} {{ template "fhelp" (t .Lang "ag.note") }}</h2>
       {{ if .Guests.HasData }}
       <div class="adm-kpis adm-kpis--fill">
         <div class="adm-kpi"><span class="adm-kpi__ic">☀</span><b>{{ money .Guests.Day.Total }}</b><span>{{ t .Lang "ag.views_day" }}</span></div>
@@ -648,13 +647,12 @@
       <div class="adm-panel adm-site adm-site--{{ .Site.Status }}">
         <div class="adm-site__head">
           <div>
-            <h2 style="margin:0">{{ t .Lang "svc.site" }}</h2>
+            <h2 style="margin:0">{{ t .Lang "svc.site" }} {{ template "fhelp" (t .Lang "svc.site_hint") }}</h2>
             <span class="adm-svc__state adm-svc__state--{{ if eq .Site.Status "on" }}on{{ else }}off{{ end }}">
               {{ if eq .Site.Status "on" }}{{ t .Lang "svc.site_up" }}{{ else }}{{ t .Lang "svc.site_maint" }}{{ end }}
             </span>
           </div>
         </div>
-        <p class="adm-hint" style="margin-top:6px">{{ t .Lang "svc.site_hint" }}</p>
         <form class="adm-svc__row" method="post" action="/admin/services" style="border:none;padding:0">
           <input type="hidden" name="code" value="site">
           <div class="adm-svc__msgs">
@@ -722,8 +720,7 @@
          two long strips of mostly empty card. */}}
     <div class="adm-cols adm-cols--settings" id="settings">
     <section id="ai" class="adm-section">
-      <h2 class="adm-section__h">{{ t .Lang "aic.title" }}</h2>
-      <p class="adm-hint">{{ t .Lang "aic.note" }}</p>
+      <h2 class="adm-section__h">{{ t .Lang "aic.title" }} {{ template "fhelp" (t .Lang "aic.note") }}</h2>
       <div class="adm-panel">
         <form method="post" action="/admin/ai">
           <label style="display:flex;align-items:center;gap:8px;font-weight:600">
@@ -775,8 +772,7 @@
     </section>
 
     <section id="payments" class="adm-section">
-      <h2 class="adm-section__h">{{ t .Lang "pay.title" }}</h2>
-      <p class="adm-hint">{{ t .Lang "pay.note" }}</p>
+      <h2 class="adm-section__h">{{ t .Lang "pay.title" }} {{ template "fhelp" (t .Lang "pay.note") }}</h2>
       <div class="adm-panel">
         <form method="post" action="/admin/payments">
           <label style="display:flex;align-items:center;gap:8px;font-weight:600">

@@ -7,7 +7,7 @@
   <div class="cabinet__content">
     <section class="studio">
       <div class="studio__head"><h1>{{ t .Lang "prof.title" }}</h1></div>
-      {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+      {{ with .Notice }}{{ template "saved" . }}{{ end }}
 
       <div class="cab-card">
         <h2>{{ t .Lang "prof.avatar" }}</h2>

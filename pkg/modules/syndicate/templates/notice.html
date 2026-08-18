@@ -29,20 +29,20 @@
 </head>
 <body>
 <main class="container">
-  <div class="notice">
-    <a class="notice__brand" href="/?lang={{ .Lang }}" aria-label="Shanraq.org">
+  <div class="notice-page">
+    <a class="notice-page__brand" href="/?lang={{ .Lang }}" aria-label="Shanraq.org">
       <img class="theme-light-only" src="/static/brand/shanraq.svg" alt="Shanraq.org" width="76" height="76">
       <img class="theme-dark-only" src="/static/brand/shanraq-light.svg" alt="Shanraq.org" width="76" height="76">
     </a>
-    <h1 class="notice__title">{{ .Title }}</h1>
-    <p class="notice__lead">{{ .Lead }}</p>
-    {{ if .Email }}<p class="notice__addr">{{ .Email }}</p>{{ end }}
+    <h1 class="notice-page__title">{{ .Title }}</h1>
+    <p class="notice-page__lead">{{ .Lead }}</p>
+    {{ if .Email }}<p class="notice-page__addr">{{ .Email }}</p>{{ end }}
     {{ if .Points }}
-    <ul class="notice__points">
+    <ul class="notice-page__points">
       {{ range .Points }}<li>{{ . }}</li>{{ end }}
     </ul>
     {{ end }}
-    <div class="notice__actions">
+    <div class="notice-page__actions">
       {{/* The destructive action is a POST, never a link: mail scanners and
            link prefetchers follow every URL in a message, and a GET that
            deletes would unsubscribe people who never clicked anything. */}}
@@ -53,7 +53,7 @@
       {{ end }}
       <a class="btn {{ if .ConfirmPost }}btn--outline{{ else }}btn--primary{{ end }}" href="{{ .CancelHref }}">{{ .CancelLabel }}</a>
     </div>
-    {{ if .Foot }}<p class="notice__foot">{{ .Foot }}</p>{{ end }}
+    {{ if .Foot }}<p class="notice-page__foot">{{ .Foot }}</p>{{ end }}
   </div>
 </main>
 </body>

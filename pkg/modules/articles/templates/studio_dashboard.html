@@ -11,7 +11,7 @@
       {{ if and (svcOff .Svc "article_submission") (not .CanAuthor) }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "article_submission" }}" aria-disabled="true">+ {{ t .Lang "studio.new" }}</span>{{ else }}<a class="btn btn--primary" href="/studio/new">+ {{ t .Lang "studio.new" }}</a>{{ end }}
     </div>
 
-    {{ with .Notice }}<p class="notice">{{ . }}</p>{{ end }}
+    {{ with .Notice }}{{ template "saved" . }}{{ end }}
 
     <div class="stats">
       <div class="stat">
