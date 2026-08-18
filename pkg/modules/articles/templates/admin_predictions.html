@@ -19,25 +19,25 @@
       {{ $code := .Code }}
       <fieldset class="pform__lang">
         <legend>{{ .Label }}</legend>
-        <label>{{ t $.Lang "pred.f_statement" }} <span class="hint">— {{ t $.Lang "pred.h_statement" }}</span>
+        <label>{{ t $.Lang "pred.f_statement" }} {{ template "fhelp" (t $.Lang "pred.h_statement") }}
           <textarea class="input" name="statement_{{ $code }}" rows="2">{{ if $.Editing }}{{ index $.Editing.Statement $code }}{{ end }}</textarea>
         </label>
-        <label>{{ t $.Lang "pred.f_verdict" }} <span class="hint">— {{ t $.Lang "pred.h_verdict" }}</span>
+        <label>{{ t $.Lang "pred.f_verdict" }} {{ template "fhelp" (t $.Lang "pred.h_verdict") }}
           <textarea class="input" name="verdict_{{ $code }}" rows="2">{{ if $.Editing }}{{ index $.Editing.Verdict $code }}{{ end }}</textarea>
         </label>
       </fieldset>
       {{ end }}
 
       <div class="pform__grid">
-        <label>{{ t .Lang "pred.f_made" }} <span class="hint">— {{ t .Lang "pred.h_made" }}</span>
+        <label>{{ t .Lang "pred.f_made" }} {{ template "fhelp" (t .Lang "pred.h_made") }}
           <input class="input" type="date" name="made_on"
                  value="{{ if .Editing }}{{ .Editing.MadeOn.Format "2006-01-02" }}{{ end }}">
         </label>
-        <label>{{ t .Lang "pred.f_horizon" }} <span class="hint">— {{ t .Lang "pred.h_horizon" }}</span>
+        <label>{{ t .Lang "pred.f_horizon" }} {{ template "fhelp" (t .Lang "pred.h_horizon") }}
           <input class="input" type="date" name="horizon"
                  value="{{ if and .Editing .Editing.Horizon }}{{ .Editing.Horizon.Format "2006-01-02" }}{{ end }}">
         </label>
-        <label>{{ t .Lang "pred.f_status" }} <span class="hint">— {{ t .Lang "pred.h_status" }}</span>
+        <label>{{ t .Lang "pred.f_status" }} {{ template "fhelp" (t .Lang "pred.h_status") }}
           <select class="input" name="status">
             {{ $cur := "open" }}{{ if .Editing }}{{ $cur = .Editing.Status }}{{ end }}
             {{ range .Statuses }}
@@ -45,11 +45,11 @@
             {{ end }}
           </select>
         </label>
-        <label>{{ t .Lang "pred.f_resolved" }} <span class="hint">— {{ t .Lang "pred.h_resolved" }}</span>
+        <label>{{ t .Lang "pred.f_resolved" }} {{ template "fhelp" (t .Lang "pred.h_resolved") }}
           <input class="input" type="date" name="resolved_on"
                  value="{{ if and .Editing .Editing.ResolvedOn }}{{ .Editing.ResolvedOn.Format "2006-01-02" }}{{ end }}">
         </label>
-        <label>{{ t .Lang "pred.f_article" }} <span class="hint">— {{ t .Lang "pred.h_article" }}</span>
+        <label>{{ t .Lang "pred.f_article" }} {{ template "fhelp" (t .Lang "pred.h_article") }}
           <select class="input" name="article">
             <option value="">—</option>
             {{ $sel := "" }}{{ if .Editing }}{{ $sel = .Editing.ArticleSlug }}{{ end }}
@@ -58,7 +58,7 @@
             {{ end }}
           </select>
         </label>
-        <label>{{ t .Lang "pred.f_source" }} <span class="hint">— {{ t .Lang "pred.h_source" }}</span>
+        <label>{{ t .Lang "pred.f_source" }} {{ template "fhelp" (t .Lang "pred.h_source") }}
           <input class="input" type="url" name="source_url" placeholder="https://…"
                  value="{{ if .Editing }}{{ .Editing.SourceURL }}{{ end }}">
         </label>

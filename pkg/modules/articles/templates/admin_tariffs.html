@@ -12,8 +12,7 @@
   <form method="post" action="/admin/tariffs">
 
     <div class="cab-card">
-      <h2 style="margin-top:0">{{ t .Lang "tar.ad_card" }}</h2>
-      <p class="hint">{{ t .Lang "tar.ad_card_hint" }}</p>
+      <h2 style="margin-top:0">{{ t .Lang "tar.ad_card" }} {{ template "fhelp" (t .Lang "tar.ad_card_hint") }}</h2>
       <div style="overflow-x:auto">
         <table class="list" style="width:100%">
           <thead><tr><th></th>{{ range .AdDays }}<th style="text-align:left">{{ . }} {{ t $.Lang "tar.days" }}</th>{{ end }}</tr></thead>
@@ -30,8 +29,7 @@
     </div>
 
     <div class="cab-card">
-      <h2 style="margin-top:0">{{ t .Lang "tar.weights" }}</h2>
-      <p class="hint">{{ t .Lang "tar.weights_hint" }}</p>
+      <h2 style="margin-top:0">{{ t .Lang "tar.weights" }} {{ template "fhelp" (t .Lang "tar.weights_hint") }}</h2>
       {{ range .Weights }}
       <label style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="min-width:300px">{{ .Label }}</span>
         <input class="input input--sm" type="number" min="1" name="{{ .Key }}" value="{{ .Value }}" style="width:104px"></label>

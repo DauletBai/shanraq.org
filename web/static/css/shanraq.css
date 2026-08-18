@@ -2165,8 +2165,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .checkline { display: flex; gap: 9px; align-items: flex-start; margin-top: 10px; font-size: var(--step--1); color: var(--ink-soft); cursor: pointer; line-height: 1.5; }
 .checkline input { margin-top: 3px; flex: none; }
 .notice--warn {
-  border-left: 3px solid var(--danger); background: color-mix(in srgb, var(--danger) 7%, transparent);
-  color: var(--ink-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: var(--step--1); margin-top: 12px; line-height: 1.5;
+  /* The stripe is drawn inside the border, not instead of it: as a
+     3px border-left it replaced the 1px edge and stuck out past the
+     rounded corners, sitting outside the box it belongs to. */
+  box-shadow: inset 3px 0 0 var(--danger); background: color-mix(in srgb, var(--danger) 7%, transparent);
+  color: var(--ink-soft); padding: 10px 14px; border-radius: 8px; font-size: var(--step--1); margin-top: 12px; line-height: 1.5;
 }
 
 /* ---- Listing report (misleading photos) ---- */
@@ -2181,7 +2184,17 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* A "saved" message is the width of its column and one line tall — it confirms,
    it does not announce. The close button sits inside the padding so the text
    never runs under it. */
-.notice--x { position: relative; display: block; padding-right: 38px; margin: 0 0 16px; }
+/* Two classes, so this wins over .notice--ok whatever the order in the file:
+   as a single class it lost the margin fight and the bar sat glued to the card
+   below it. No stripe here either — on a one-line bar the tint, the border and
+   a stripe are three signals saying the same thing once too often. */
+.notice.notice--x {
+  position: relative;
+  display: block;
+  padding-right: 38px;
+  margin: 0 0 18px;
+  box-shadow: none;
+}
 .notice__x {
   position: absolute;
   top: 50%;
@@ -2208,8 +2221,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 
 .notice--ok {
-  border-left: 3px solid var(--teal); background: color-mix(in srgb, var(--teal) 8%, transparent);
-  color: var(--ink-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: var(--step--1); margin: 16px 0 0;
+  /* The stripe is drawn inside the border, not instead of it: as a
+     3px border-left it replaced the 1px edge and stuck out past the
+     rounded corners, sitting outside the box it belongs to. */
+  box-shadow: inset 3px 0 0 var(--teal); background: color-mix(in srgb, var(--teal) 8%, transparent);
+  color: var(--ink-soft); padding: 10px 14px; border-radius: 8px; font-size: var(--step--1); margin: 16px 0 0;
 }
 
 /* ---- Listing contact reveal + stats ---- */
