@@ -28,10 +28,17 @@ APP_DIR=/opt/shanraq
 COMPOSE_FILE=docker-compose.prod.yml
 cd "$APP_DIR"
 
-# shellcheck disable=SC1091
-set -a; [[ -f .env ]] && . ./.env; set +a
-OUT_DIR="${CONTENT_DIR:-$APP_DIR/exports}"
-RETENTION="${CONTENT_RETENTION:-7}"
+# Read the file, never execute it. .env is written for docker compose and for
+# systemd's EnvironmentFile, both of which parse it; a shell sources it, and one
+# unquoted value with spaces in it — SHANRAQ_OPERATOR_LEGAL_NAME=«Казна
+# Технолоджис» — is then a command that does not exist.
+envval() {
+  sed -n "s/^$1=//p" .env | head -1 | sed -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'\$/\1/"
+}
+POSTGRES_PASSWORD="$(envval POSTGRES_PASSWORD)"
+OUT_DIR="$(envval CONTENT_DIR)"; OUT_DIR="${OUT_DIR:-$APP_DIR/exports}"
+RETENTION="$(envval CONTENT_RETENTION)"; RETENTION="${RETENTION:-7}"
+CONTENT_UPLOAD_CMD="$(envval CONTENT_UPLOAD_CMD)"
 STAMP="$(date -u +%Y%m%d-%H%M%S)"
 WORK="$OUT_DIR/.work-$STAMP"
 
