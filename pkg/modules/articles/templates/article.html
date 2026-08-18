@@ -93,12 +93,12 @@
               <span class="pbadge pbadge--{{ .Status }}">{{ t $.Lang (printf "pred.st_%s" .Status) }}</span>
               <span class="apred__stmt">{{ .StatementIn $.Lang }}</span>
               {{ with .VerdictIn $.Lang }}<span class="apred__verdict">{{ . }}</span>{{ end }}
-              {{/* The dates are the point of this block. A reader arriving in 2031
-                   has to see the claim was written in 2026 and judged against 2032;
-                   a verdict with no age behind it says nothing about whether anyone
-                   read the map correctly. */}}
+              {{/* The date it was made, and only that. A verdict with no age
+                   behind it says nothing — but the due date belongs in the ledger,
+                   one click away: here it wrapped the line and pushed the badge
+                   away from the claim for no reading anyone does on this page. */}}
               <span class="apred__when">
-                {{ t $.Lang "pred.made" }} {{ fmtDate .MadeOn }}{{ if .Horizon }} · {{ t $.Lang "pred.by" }} {{ fmtDatePtr .Horizon }}{{ end }}
+                {{ t $.Lang "pred.made" }} {{ fmtDate .MadeOn }}
                 · <a href="/predictions?lang={{ $.Lang }}#p-{{ .ID }}">{{ t $.Lang "pred.in_ledger" }}</a>
               </span>
             </li>
