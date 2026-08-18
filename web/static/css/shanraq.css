@@ -726,6 +726,15 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .apred__item { display: grid; grid-template-columns: auto 1fr; gap: 4px 9px; align-items: baseline; }
 .apred__stmt { line-height: 1.5; }
 .apred__verdict { grid-column: 2; color: var(--muted); font-size: var(--step--1); line-height: 1.5; }
+/* The date line under each forecast. Quiet, because the claim is the point —
+   but present, because a badge reading "open" in 2031 has to say how long it
+   has been open. */
+.apred__when { display: block; margin-top: 5px; color: var(--muted); font-size: 0.8rem; }
+.apred__when a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+.apred__when a:hover { color: var(--gold); }
+.apred__score { color: var(--muted); font-size: 0.85rem; }
+/* The anchor lands the reader on the row, not under the sticky header. */
+.pcard { scroll-margin-top: 90px; }
 .apred__all { margin: 11px 0 0; font-size: var(--step--1); }
 
 .pform__lang { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0 0 12px; }

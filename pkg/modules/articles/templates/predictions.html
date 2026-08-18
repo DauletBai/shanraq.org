@@ -56,7 +56,7 @@
      and hiding that date is how a ledger flatters itself. */}}
 {{ define "pred_row" }}
 {{ $p := .P }}
-<li class="pcard pcard--{{ $p.Status }}">
+<li class="pcard pcard--{{ $p.Status }}" id="p-{{ $p.ID }}">
   <div class="pcard__top">
     <span class="pbadge pbadge--{{ $p.Status }}">{{ t .Lang (printf "pred.st_%s" $p.Status) }}</span>
     <span class="pcard__when">{{ t .Lang "pred.made" }} {{ fmtDate $p.MadeOn }}</span>

@@ -753,6 +753,7 @@ var messages = map[string]map[string]string{
 	"pred.h_done":        {"kz": "Бағаланғандар", "ru": "Уже оценённые", "en": "Already judged"},
 	"pred.made":          {"kz": "жасалды", "ru": "сделан", "en": "made"},
 	"pred.by":            {"kz": "мерзімі", "ru": "срок", "en": "due"},
+	"pred.in_ledger":     {"kz": "тізілімде", "ru": "в реестре", "en": "in the ledger"},
 	"pred.what_happened": {"kz": "Не болды:", "ru": "Что произошло:", "en": "What happened:"},
 	"pred.from_article":  {"kz": "Мақаладан", "ru": "Из статьи", "en": "From the article"},
 	"pred.evidence":      {"kz": "Дереккөз", "ru": "Подтверждение", "en": "Evidence"},

@@ -490,6 +490,7 @@ type ArticlePage struct {
 	// Predictions are the forecasts made in this piece, with what became of
 	// them. Empty for the articles that made none, which is most of them.
 	Predictions []*Prediction
+	PredScore   PredictionScore
 
 	Category      string
 	Subcategory   string
@@ -597,6 +598,13 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.NoIndex = !a.Indexable
 	if preds, err := m.predictions.ForArticle(r.Context(), page.Lang, a.ID); err == nil {
 		page.Predictions = preds
+		// The ledger's running accuracy travels with the block: "open" means
+		// more when the reader can see how the resolved ones turned out.
+		if len(preds) > 0 {
+			if sc, serr := m.predictions.Score(r.Context()); serr == nil {
+				page.PredScore = sc
+			}
+		}
 	} else {
 		m.rt.Logger.Warn("article predictions", zap.Error(err))
 	}
