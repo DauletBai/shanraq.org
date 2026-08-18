@@ -180,6 +180,11 @@ func (m *Module) browserRoutes(r chi.Router) {
 	r.Get("/sitemap-listings.xml", m.handleSitemapListings)
 	r.Get("/sitemap-news.xml", m.handleSitemapNews)
 
+	// Printed-campaign short links (/q/rd …). No session and no tracking of
+	// their own: the hop is invisible to pageKind, so the arrival is counted
+	// once, on the page it lands on, under the campaign's own label.
+	r.Get("/q/{code}", m.handlePosterLink)
+
 	// Public reader (session loaded softly so the header can show Studio link).
 	r.Group(func(r chi.Router) {
 		r.Use(m.auth.LoadSession)

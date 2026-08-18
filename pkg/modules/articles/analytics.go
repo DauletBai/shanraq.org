@@ -247,8 +247,16 @@ func utmSource(v string) string {
 		// Copied link or the OS share sheet: we know the reader passed it on,
 		// not where to. Honest label beats guessing at "copy".
 		return "share"
+	case "qr":
+		// A QR that is not one of the printed city campaigns — a business
+		// card, a slide, a sticker. Worth separating from "direct": a scan is
+		// someone standing in front of something we made, which is a different
+		// event from a bookmark even though neither carries a referrer.
+		return "qr"
 	}
-	return ""
+	// Printed campaigns own the rest of the QR labels. posterTargets is the
+	// only place they can come from, so the set stays closed.
+	return posterSource(strings.ToLower(strings.TrimSpace(v)))
 }
 
 // deviceClass buckets a User-Agent into mobile / tablet / desktop. Coarse and

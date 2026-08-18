@@ -768,6 +768,28 @@ type FormPage struct {
 	Error  string
 	Notice string
 	Ref    string
+	Next   string // where to go after a successful login/registration
+}
+
+// safeNext returns a post-login destination taken from the request, or "" if it
+// is anything other than a path on this site.
+//
+// Only a single leading slash passes. "//evil.example" is a protocol-relative
+// URL that browsers follow off-site, and a login page that forwards to an
+// attacker-chosen address after authenticating is a phishing primitive — the
+// victim sees our domain, our form, our certificate, and lands somewhere else
+// already trusting the page. Backslashes and CR/LF are refused for the same
+// family of reasons: some clients normalise "\\" to "/", and a newline in a
+// Location header splits the response.
+func safeNext(v string) string {
+	v = strings.TrimSpace(v)
+	if v == "" || !strings.HasPrefix(v, "/") || strings.HasPrefix(v, "//") {
+		return ""
+	}
+	if strings.ContainsAny(v, "\\\r\n") {
+		return ""
+	}
+	return v
 }
 
 func (m *Module) handleLoginPage(w http.ResponseWriter, r *http.Request) {
@@ -784,6 +806,14 @@ func (m *Module) handleLoginPage(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Query().Get("reason") == "session_expired" {
 		page.Notice = T(lang, "form.session_expired")
 	}
+	// Arriving here on the way to somewhere else — a printed QR code aimed at
+	// the posting form is the case this was built for. Carry the destination
+	// through the form, and say why the account is being asked for at all: a
+	// stranger who scanned a poster about free listings has no reason to guess.
+	page.Next = safeNext(r.URL.Query().Get("next"))
+	if page.Next == "/listings/new" && page.Notice == "" {
+		page.Notice = T(lang, "form.next_listing")
+	}
 	m.render(w, "form", page)
 }
 
@@ -793,6 +823,7 @@ func (m *Module) handleRegisterPage(w http.ResponseWriter, r *http.Request) {
 		Base: m.base(r, T(lang, "form.register_title"), lang),
 		Mode: "register",
 		Ref:  strings.TrimSpace(r.URL.Query().Get("ref")),
+		Next: safeNext(r.URL.Query().Get("next")),
 	})
 }
 
@@ -838,12 +869,13 @@ func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
 			Mode:  "login",
 			Email: email,
 			Error: T(lang, "form.err_credentials"),
+			Next:  safeNext(r.FormValue("next")),
 		})
 		return
 	}
 	auth.SetSessionCookie(w, r, token, m.auth.SessionTTL())
 	m.rt.Logger.Info("studio login", zap.String("user_id", user.ID.String()))
-	http.Redirect(w, r, "/studio", http.StatusSeeOther)
+	http.Redirect(w, r, afterAuth(r), http.StatusSeeOther)
 }
 
 func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
@@ -969,7 +1001,21 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 	auth.SetSessionCookie(w, r, token, m.auth.SessionTTL())
 	m.rt.Logger.Info("studio register", zap.String("user_id", user.ID.String()))
-	http.Redirect(w, r, "/studio", http.StatusSeeOther)
+	http.Redirect(w, r, afterAuth(r), http.StatusSeeOther)
+}
+
+// afterAuth is where a fresh session lands: the destination the user was
+// heading for before the login wall, or the studio when there was none.
+//
+// Without this every route through the wall ended at /studio, which is the
+// article studio — so someone who scanned a poster offering a free property
+// listing finished registration staring at a publishing dashboard, with the
+// thing they came to do nowhere in sight.
+func afterAuth(r *http.Request) string {
+	if n := safeNext(r.FormValue("next")); n != "" {
+		return n
+	}
+	return "/studio"
 }
 
 func (m *Module) handleLogout(w http.ResponseWriter, r *http.Request) {

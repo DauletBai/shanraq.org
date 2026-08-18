@@ -142,7 +142,10 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 func (m *Module) handleListingNew(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
 	if _, ok := m.authorID(r); !ok {
-		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		// Carry the destination, so the account that gets created here finishes
+		// on the listing form the visitor was reaching for — not in the article
+		// studio, which is where every bounced route used to land.
+		http.Redirect(w, r, "/studio/login?next=/listings/new", http.StatusSeeOther)
 		return
 	}
 	page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}

@@ -18,6 +18,7 @@
 
     <form method="post" action="{{ if eq .Mode "register" }}/studio/register{{ else }}/studio/login{{ end }}">
       {{ if and (eq .Mode "register") .Ref }}<input type="hidden" name="ref" value="{{ .Ref }}">{{ end }}
+      {{ if .Next }}<input type="hidden" name="next" value="{{ .Next }}">{{ end }}
       {{ if eq .Mode "register" }}
       <div class="form-grid form-grid--2">
         <div class="field">
@@ -79,9 +80,9 @@
 
     <p class="hint" style="margin-top:18px;text-align:center">
       {{ if eq .Mode "register" }}
-      {{ t .Lang "form.have_account" }} <a href="/studio/login">{{ t .Lang "form.login_title" }}</a>
+      {{ t .Lang "form.have_account" }} <a href="/studio/login{{ if .Next }}?next={{ .Next }}{{ end }}">{{ t .Lang "form.login_title" }}</a>
       {{ else }}
-      {{ t .Lang "form.no_account" }} <a href="/studio/register" data-track="register_cta">{{ t .Lang "form.register_title" }}</a>
+      {{ t .Lang "form.no_account" }} <a href="/studio/register{{ if .Next }}?next={{ .Next }}{{ end }}" data-track="register_cta">{{ t .Lang "form.register_title" }}</a>
       {{ end }}
     </p>
   </div>
