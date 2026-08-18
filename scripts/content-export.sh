@@ -8,9 +8,12 @@
 # the editable pages. It may live anywhere, which is the whole point: the one
 # copy that survives losing the machine, the provider, or the country.
 #
-# Cover images are not in here on purpose. They live under /static/covers in the
-# repository, so GitHub already holds them off-site; copying them again would
-# double the size to no end.
+# Cover images: the uploaded ones are in here, the repository ones are not.
+# Ninety of the hundred and eight articles point at /static/covers, which ships
+# in the source tree and is therefore already off-site on GitHub. The other
+# eighteen were uploaded and exist on this disk and nowhere else — those are
+# copied. Only files a published article points at: the same volume holds
+# avatars, and those belong to people.
 #
 # Environment (from /opt/shanraq/.env):
 #   CONTENT_DIR          where archives are written            [/opt/shanraq/exports]
@@ -43,7 +46,8 @@ DSN="postgres://shanraq:${POSTGRES_PASSWORD}@db:5432/shanraq?sslmode=disable"
 log "exporting content"
 docker compose -f "$COMPOSE_FILE" run --rm --no-deps \
   -v "$WORK:/out" \
-  -e DATABASE_URL="$DSN" -e EXPORT_DIR=/out \
+  -v shanraq_media-data:/media-src:ro \
+  -e DATABASE_URL="$DSN" -e EXPORT_DIR=/out -e MEDIA_ROOT=/media-src \
   --entrypoint /usr/local/bin/export app || fail "export failed"
 
 [[ -s "$WORK/articles.json" ]] || fail "export produced no articles.json"

@@ -29,13 +29,22 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
+
+// uploadedCover is the exact shape the media store writes: two hex characters
+// of the digest as a directory, then the full digest and an image extension.
+// Matching it rather than trusting the column is what makes copying safe — a
+// cover_url of "/media/../../etc/passwd" cannot satisfy this pattern, and the
+// value comes from a database row rather than from this program.
+var uploadedCover = regexp.MustCompile(`^/media/[0-9a-f]{2}/[0-9a-f]{64}\.(jpg|jpeg|png|webp)$`)
 
 // knownAuthors are the bylines the export may carry abroad: the platform's own
 // AI columnist and the owner. Anyone else is a third party whose name is not
@@ -86,8 +95,55 @@ type manifest struct {
 	Articles    int       `json:"articles"`
 	Predictions int       `json:"predictions"`
 	Pages       int       `json:"pages"`
+	Covers      int       `json:"covers_copied"`
+	CoversLost  int       `json:"covers_missing"`
 	Contains    string    `json:"contains"`
 	Excludes    string    `json:"excludes"`
+}
+
+// copyCovers copies the cover images that exist only on this machine. Ninety of
+// the hundred and eight live under /static in the repository and are already off
+// site on GitHub; the other eighteen were uploaded and exist nowhere else, so a
+// mirror without them shows broken pictures and losing the disk loses them for
+// good.
+//
+// Only files a published article points at are copied. The same volume holds
+// avatars, which belong to people and stay where they are — which is why this
+// walks the article list instead of the directory.
+func copyCovers(arts []article, root, dst string) (copied, missing int) {
+	for _, a := range arts {
+		if !uploadedCover.MatchString(a.CoverURL) {
+			continue
+		}
+		rel := a.CoverURL[1:] // strip the leading slash; the volume mirrors the URL
+		if err := copyFile(filepath.Join(root, rel), filepath.Join(dst, rel)); err != nil {
+			log.Printf("cover for %s: %v", a.Slug, err)
+			missing++
+			continue
+		}
+		copied++
+	}
+	return copied, missing
+}
+
+func copyFile(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+	if err := os.MkdirAll(filepath.Dir(dst), 0o755); err != nil {
+		return err
+	}
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	if _, err := io.Copy(out, in); err != nil {
+		return err
+	}
+	return out.Close()
 }
 
 func main() {
@@ -125,6 +181,14 @@ func main() {
 		log.Fatalf("pages: %v", err)
 	}
 
+	var covers, coversLost int
+	if root := os.Getenv("MEDIA_ROOT"); root != "" {
+		covers, coversLost = copyCovers(arts, root, dir)
+		log.Printf("covers: %d copied, %d missing", covers, coversLost)
+	} else {
+		log.Print("MEDIA_ROOT is not set — uploaded covers are NOT in this export")
+	}
+
 	for name, v := range map[string]any{
 		"articles.json":    arts,
 		"predictions.json": preds,
@@ -134,7 +198,9 @@ func main() {
 			Articles:    len(arts),
 			Predictions: len(preds),
 			Pages:       len(pages),
-			Contains:    "published articles with translations, the prediction ledger, editable pages",
+			Covers:      covers,
+			CoversLost:  coversLost,
+			Contains:    "published articles with translations, the prediction ledger, editable pages, uploaded cover images",
 			Excludes:    "accounts, sessions, listings, comments, votes, moderation, analytics, payments — everything carrying personal data",
 		},
 	} {
