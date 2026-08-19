@@ -1353,7 +1353,7 @@ var messages = map[string]map[string]string{
 	"form.password":        {"kz": "Құпиясөз", "ru": "Пароль", "en": "Password"},
 	"form.password_hint":   {"kz": "Кемінде 8 таңба, әріп пен сан болуы қажет", "ru": "Минимум 8 символов, буквы и цифры", "en": "At least 8 characters, letters and digits"},
 	"form.last_name_hint":  {"kz": "Нақты тегіңіз — жарияланымдар мен хабарландыруларда осы көрсетіледі.", "ru": "Настоящая фамилия — она будет стоять под вашими публикациями и объявлениями.", "en": "Your real family name — it will appear under your posts and listings."},
-	"form.first_name_hint": {"kz": "Пікірлерде бас әрпімен қысқарады: «Д. Баймурза».", "ru": "В подписях сокращается до буквы: «Д. Баймурза».", "en": "Shortened to an initial in bylines: \"D. Baimurza\"."},
+	"form.first_name_hint": {"kz": "Пікірлерде бас әрпімен қысқарады: «А. Тегі».", "ru": "В подписях сокращается до буквы: «И. Фамилия».", "en": "Shortened to an initial in bylines: \"F. Surname\"."},
 	"form.email_hint":      {"kz": "Кіру осы пошта арқылы. Растау хаты келеді — ол хабарландыру беру үшін қажет.", "ru": "По нему вход. На него придёт письмо-подтверждение — без него нельзя подать объявление.", "en": "You sign in with it. A confirmation letter is sent there — listings need a verified address."},
 	"form.submit_hint":     {"kz": "Тіркелу тегін. Кейін кабинеттен агент немесе автор бола аласыз.", "ru": "Регистрация бесплатна. Роль агента или автора добавляется позже из кабинета.", "en": "Registration is free. The agent or author role is added later from your cabinet."},
 
