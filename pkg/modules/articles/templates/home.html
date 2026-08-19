@@ -50,6 +50,15 @@
         </article>
         {{ end }}
       </div>
+      {{ if or .PrevURL .NextURL }}
+      {{/* Real links, not a script: a crawler follows an <a> and a reader
+           without JavaScript still reaches page two. */}}
+      <nav class="pager" aria-label="{{ t .Lang "nav.pages" }}">
+        {{ if .PrevURL }}<a class="btn btn--ghost" href="{{ .PrevURL }}" rel="prev">← {{ t .Lang "nav.newer" }}</a>{{ else }}<span></span>{{ end }}
+        <span class="pager__at">{{ printf (t .Lang "nav.page_n") .Page }}</span>
+        {{ if .NextURL }}<a class="btn btn--ghost" href="{{ .NextURL }}" rel="next">{{ t .Lang "nav.older" }} →</a>{{ else }}<span></span>{{ end }}
+      </nav>
+      {{ end }}
       {{ else }}
       <div class="empty">
         <p style="font-size:1.2rem;margin-bottom:18px">{{ t .Lang "home.empty" }}</p>

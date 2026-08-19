@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -274,6 +275,16 @@ func seoFilterQuery(r *http.Request) string {
 				parts = append(parts, "sub="+url.QueryEscape(s))
 			}
 		}
+		// Page two holds different articles from page one and has to say so;
+		// canonicalising it to "/" tells a crawler the two are the same page and
+		// that everything past the first twenty-one can be ignored. The "top"
+		// ordering is left out on purpose: it is the same corpus in another
+		// order, and it already points at the default view.
+		if q.Get("sort") != "top" {
+			if n := pageParam(r); n > 1 {
+				parts = append(parts, "page="+strconv.Itoa(n))
+			}
+		}
 	case "/listings":
 		if d := q.Get("deal"); isDealType(d) {
 			parts = append(parts, "deal="+url.QueryEscape(d))
@@ -354,6 +365,51 @@ type HomePage struct {
 	Posts      []FeedItem
 	Recent     []FeedItem
 	Subscribed bool
+
+	// The feed shows 21 articles and there are several times that many. Until
+	// now the rest were reachable only by search, a category filter that also
+	// stopped at 21, or a direct link — a hundred pages with no path to them
+	// from the site, which is also how a crawler decides they do not matter.
+	Page    int
+	PrevURL string // empty on the first page
+	NextURL string // empty on the last
+}
+
+// homePageSize is how many articles one page of the feed holds.
+const homePageSize = 21
+
+// pageParam reads ?page=, clamping to a sane range. Anything unreadable is
+// page 1: a bad page number is a reason to show the feed, not an error.
+func pageParam(r *http.Request) int {
+	n, err := strconv.Atoi(r.URL.Query().Get("page"))
+	if err != nil || n < 1 {
+		return 1
+	}
+	if n > 1000 {
+		return 1000
+	}
+	return n
+}
+
+// feedURL builds a link to another page of the same feed, keeping whatever the
+// reader is currently filtering and sorting by.
+func feedURL(r *http.Request, lang string, page int) string {
+	q := url.Values{}
+	q.Set("lang", lang)
+	src := r.URL.Query()
+	if c := src.Get("cat"); IsCategory(c) {
+		q.Set("cat", c)
+		if sub := src.Get("sub"); IsSubcategory(sub) {
+			q.Set("sub", sub)
+		}
+	}
+	if src.Get("sort") == "top" {
+		q.Set("sort", "top")
+	}
+	if page > 1 {
+		q.Set("page", strconv.Itoa(page))
+	}
+	return "/?" + q.Encode()
 }
 
 // recentSlice returns up to n items for the sidebar "recent" list.
@@ -415,11 +471,19 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 		cat = SubcategoryParent(s) // a subcategory implies its parent category
 	}
 
-	arts, err := m.store.ListPublished(r.Context(), sort, cat, sub, 21, 0)
+	pageNo := pageParam(r)
+	// One more than the page holds: if it comes back, there is a next page.
+	// Cheaper than a COUNT(*) over the published set on every home request.
+	arts, err := m.store.ListPublished(r.Context(), sort, cat, sub,
+		homePageSize+1, (pageNo-1)*homePageSize)
 	if err != nil {
 		m.rt.Logger.Error("home list", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
+	}
+	hasNext := len(arts) > homePageSize
+	if hasNext {
+		arts = arts[:homePageSize]
 	}
 
 	items := make([]FeedItem, 0, len(arts))
@@ -459,6 +523,15 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	page.Subscribed = r.URL.Query().Get("subscribed") == "ok"
 	page.Posts = items
 	page.Recent = recentSlice(items, 5)
+	page.Page = pageNo
+	if pageNo > 1 {
+		page.PrevURL = feedURL(r, lang, pageNo-1)
+	}
+	// A translation the reader's language is missing drops the article from
+	// items, so a full page can render short — but the next page still exists.
+	if hasNext {
+		page.NextURL = feedURL(r, lang, pageNo+1)
+	}
 	page.SidebarNews = m.latestNews(r, lang, 6)
 	m.render(w, "home", page)
 }
