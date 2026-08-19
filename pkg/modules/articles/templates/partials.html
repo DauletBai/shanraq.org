@@ -910,6 +910,57 @@
       var box = x.closest('.notice');
       if (box) box.remove();
     });
+    // The map on one listing's own page. It is a strip until the pointer comes
+    // to rest on it (see .lmap in the stylesheet), and full height from the
+    // start on a touch screen, where there is no hover to grow it with.
+    document.querySelectorAll('[data-lmap]').forEach(function (box) {
+      if (typeof L === 'undefined') return;
+      var holder = box.querySelector('.lmap__canvas');
+      var lat = parseFloat(box.getAttribute('data-lat'));
+      var lng = parseFloat(box.getAttribute('data-lng'));
+      if (!holder || isNaN(lat) || isNaN(lng)) return;
+      var exact = box.getAttribute('data-exact') === '1';
+
+      // Straight down to the building when the listing carries its own
+      // coordinates, and no closer than the district when it does not: zooming
+      // to a street the pin cannot vouch for would dress a guess as an address.
+      var map = L.map(holder, { scrollWheelZoom: false })
+                 .setView([lat, lng], exact ? 17 : 13);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+
+      if (exact) {
+        // Leaflet's own marker is a PNG this site does not vendor, so the
+        // marker is drawn in markup like every other one here.
+        L.marker([lat, lng], {
+          icon: L.divIcon({ className: '', html: '<span class="lpin"></span>',
+                            iconSize: [20, 20], iconAnchor: [10, 10] })
+        }).addTo(map);
+      } else {
+        // The listing gave a settlement, so the map shows a settlement. A
+        // sharp dot here would claim a precision nobody entered.
+        L.circle([lat, lng], {
+          radius: 900, color: '#e53935', weight: 1,
+          fillColor: '#e53935', fillOpacity: 0.12
+        }).addTo(map);
+      }
+
+      // Growing on hover changes the height behind Leaflet's back, and a map
+      // that is not told re-uses the size it was born at: half the panel stays
+      // blank grey. invalidateSize keeps the centre, so the pin does not drift.
+      if (window.ResizeObserver) {
+        new ResizeObserver(function () {
+          if (holder.clientHeight) map.invalidateSize();
+        }).observe(holder);
+      }
+
+      // The page keeps its scroll until the reader deliberately clicks in.
+      map.on('click', function () { map.scrollWheelZoom.enable(); });
+      map.on('mouseout', function () { map.scrollWheelZoom.disable(); });
+    });
+
     document.querySelectorAll('[data-listing-map]').forEach(function (box) {
       if (typeof L === 'undefined') return;
       var mode = box.getAttribute('data-map-mode') || 'find';

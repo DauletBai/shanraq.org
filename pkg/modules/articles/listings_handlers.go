@@ -59,6 +59,10 @@ type ListingViewPage struct {
 	ShowContact   bool   // reveal the full seller contact
 	MaskedContact string // partly-hidden contact shown before reveal
 	ViewsCount    int
+	// Pin is where this listing sits on a map, or nil when nothing could be
+	// resolved. Nil means the page draws no map at all — a marker in roughly
+	// the right country is worse than none on the page of a specific flat.
+	Pin *ListingPin
 }
 
 // MyListingsPage backs the author's own-listings management view.
@@ -512,6 +516,14 @@ func (m *Module) renderListingView(w http.ResponseWriter, r *http.Request, l *Li
 	page.Reported = r.URL.Query().Get("reported") == "ok"
 	page.NeedVerify = r.URL.Query().Get("notice") == "verify"
 	page.SidebarNews = m.latestNews(r, lang, 6)
+	// A buyer's second question, after the photographs, is always where it is.
+	// Leaflet is only loaded when there is actually a position to show.
+	if lid, err := uuid.Parse(l.ID); err == nil {
+		if pin, ok := m.listings.ListingPinByID(r.Context(), lid); ok {
+			page.Pin = &pin
+			page.NeedsMap = true
+		}
+	}
 	m.applyListingSEO(&page)
 	m.render(w, "listing_view", page)
 }

@@ -2483,3 +2483,50 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .post__facts .fact--sec { color: var(--muted); }
 .spec--rooms th .hint { font-weight: 400; }
 
+
+/* ── Map on a listing's own page ─────────────────────────────────────────────
+   Collapsed it is a strip: enough to place the flat in its neighbourhood
+   without pushing the description and the price below the fold. Hovered it
+   grows to a map that can actually be read.
+
+   On a touch screen there is no hover to give, so the strip would be a dead
+   end — there it opens at full height from the start. That is what the
+   (hover:hover) and (pointer:fine) guard buys: the collapse exists only where
+   the gesture that undoes it exists. */
+.lmap {
+  margin: 14px 0 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.lmap__canvas { height: 320px; }
+.lmap__bar {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px;
+  padding: 9px 12px;
+  border-top: 1px solid var(--line);
+  font-size: .86rem;
+}
+.lmap__title { font-weight: 600; }
+.lmap__place { color: var(--muted); }
+.lmap__note  { color: var(--gold-strong); }
+.lmap__hint  { margin-left: auto; color: var(--muted); display: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .lmap__canvas { height: 148px; transition: height .28s ease; }
+  .lmap:hover .lmap__canvas,
+  .lmap:focus-within .lmap__canvas { height: 430px; }
+  .lmap__hint { display: inline; }
+  .lmap:hover .lmap__hint { visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lmap__canvas { transition: none; }
+}
+
+/* The listing's own marker. Leaflet's default icon is a PNG we do not vendor,
+   so every marker on this site is drawn in markup — see .mappin. */
+.lpin {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--gold); border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--gold), 0 2px 6px rgba(0,0,0,.35);
+}

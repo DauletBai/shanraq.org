@@ -19,6 +19,21 @@
           {{ end }}
         </div>
         {{ else if .L.CoverURL }}<div class="article__media"><img src="{{ .L.CoverURL }}" alt=""></div>{{ end }}
+        {{/* Where it is, straight after the photographs — that is the order a
+             buyer asks in. Drawn only when a position was actually resolved. */}}
+        {{ if .Pin }}
+        <section class="lmap" data-lmap
+                 data-lat="{{ .Pin.Lat }}" data-lng="{{ .Pin.Lng }}"
+                 data-exact="{{ if .Pin.Exact }}1{{ else }}0{{ end }}">
+          <div class="lmap__canvas"></div>
+          <div class="lmap__bar">
+            <b class="lmap__title">{{ t .Lang "re.map_here" }}</b>
+            {{ if .Pin.Exact }}<span class="lmap__place">{{ .Pin.Place }}</span>
+            {{ else }}<span class="lmap__note">{{ t .Lang "re.map_approx" }}</span>{{ end }}
+            <span class="lmap__hint">{{ t .Lang "re.map_expand" }}</span>
+          </div>
+        </section>
+        {{ end }}
         <div class="listing__tags">
           <span class="kicker">{{ t .Lang (printf "re.type_%s" .L.PropertyType) }} · {{ t .Lang (printf "re.deal_%s" .L.DealType) }}</span>
           {{ if .L.Promoted }}<span class="badge-top badge-top--inline">{{ t .Lang "re.badge_top" }}</span>{{ end }}
