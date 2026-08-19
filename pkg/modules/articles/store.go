@@ -245,9 +245,14 @@ func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory s
 	if limit <= 0 || limit > 60 {
 		limit = 24
 	}
-	orderBy := "a.published_at DESC NULLS LAST"
+	// The id is a tiebreaker, not decoration. Articles published in the same
+	// batch share a published_at to the microsecond, and rows tied under
+	// ORDER BY have no defined order between one query and the next — so paging
+	// by OFFSET could show an article on two pages and never show another at
+	// all. Nobody noticed while the feed was a single page.
+	orderBy := "a.published_at DESC NULLS LAST, a.id DESC"
 	if sort == "top" {
-		orderBy = "a.score DESC, a.published_at DESC NULLS LAST"
+		orderBy = "a.score DESC, a.published_at DESC NULLS LAST, a.id DESC"
 	}
 
 	where := "a.status = 'published'"

@@ -148,6 +148,7 @@ var messages = map[string]map[string]string{
 	"nav.newer":         {"kz": "Жаңарақ", "ru": "Новее", "en": "Newer"},
 	"nav.older":         {"kz": "Ескілеу", "ru": "Старее", "en": "Older"},
 	"nav.page_n":        {"kz": "%d-бет", "ru": "Страница %d", "en": "Page %d"},
+	"home.no_more":      {"kz": "Бұл жерде басқа мақала жоқ.", "ru": "Дальше статей нет.", "en": "There are no more articles here."},
 	"re.add_photo":      {"kz": "Фото қосу", "ru": "Добавить фото", "en": "Add photo"},
 	"re.documents":      {"kz": "Құжаттар / жоспар", "ru": "Документы / планировка", "en": "Documents / floor plan"},
 	"re.documents_help": {"kz": "PDF немесе сурет (жоспар, техпаспорт)", "ru": "PDF или изображение (план, техпаспорт)", "en": "PDF or image (plan, passport)"},

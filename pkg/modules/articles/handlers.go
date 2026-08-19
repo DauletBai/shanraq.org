@@ -526,6 +526,12 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	page.Page = pageNo
 	if pageNo > 1 {
 		page.PrevURL = feedURL(r, lang, pageNo-1)
+		// A page past the end is a real URL a crawler can reach — from a link
+		// that was valid when the archive was longer, or from a guess. It must
+		// not join the index as an empty page claiming to be about the site.
+		if len(items) == 0 {
+			page.NoIndex = true
+		}
 	}
 	// A translation the reader's language is missing drops the article from
 	// items, so a full page can render short — but the next page still exists.

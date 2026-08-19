@@ -50,20 +50,31 @@
         </article>
         {{ end }}
       </div>
+      {{ else if gt .Page 1 }}
+      {{/* Past the end of the archive — reachable from a link that was valid
+           when it was longer. Say so, and leave the way back below; inviting
+           someone to write an article because they walked off the end of page
+           nine is answering a question they did not ask. */}}
+      <div class="empty">
+        <p style="font-size:1.2rem">{{ t .Lang "home.no_more" }}</p>
+      </div>
+      {{ else }}
+      <div class="empty">
+        <p style="font-size:1.2rem;margin-bottom:18px">{{ t .Lang "home.empty" }}</p>
+        {{ if and (svcOff .Svc "article_submission") (not .CanAuthor) }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "article_submission" }}" aria-disabled="true">{{ t .Lang "home.empty_cta" }}</span>{{ else }}<a class="btn btn--primary" href="/studio/new" data-track="write_article">{{ t .Lang "home.empty_cta" }}</a>{{ end }}
+      </div>
+      {{ end }}
+
       {{ if or .PrevURL .NextURL }}
-      {{/* Real links, not a script: a crawler follows an <a> and a reader
+      {{/* Outside the feed branch on purpose: an empty page still needs the
+           link back, which is exactly the page where being stranded is worst.
+           Real links, not a script — a crawler follows an <a> and a reader
            without JavaScript still reaches page two. */}}
       <nav class="pager" aria-label="{{ t .Lang "nav.pages" }}">
         {{ if .PrevURL }}<a class="btn btn--ghost" href="{{ .PrevURL }}" rel="prev">← {{ t .Lang "nav.newer" }}</a>{{ else }}<span></span>{{ end }}
         <span class="pager__at">{{ printf (t .Lang "nav.page_n") .Page }}</span>
         {{ if .NextURL }}<a class="btn btn--ghost" href="{{ .NextURL }}" rel="next">{{ t .Lang "nav.older" }} →</a>{{ else }}<span></span>{{ end }}
       </nav>
-      {{ end }}
-      {{ else }}
-      <div class="empty">
-        <p style="font-size:1.2rem;margin-bottom:18px">{{ t .Lang "home.empty" }}</p>
-        {{ if and (svcOff .Svc "article_submission") (not .CanAuthor) }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "article_submission" }}" aria-disabled="true">{{ t .Lang "home.empty_cta" }}</span>{{ else }}<a class="btn btn--primary" href="/studio/new" data-track="write_article">{{ t .Lang "home.empty_cta" }}</a>{{ end }}
-      </div>
       {{ end }}
     </div>
 
