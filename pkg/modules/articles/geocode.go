@@ -3,13 +3,16 @@ package articles
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"go.uber.org/zap"
@@ -25,6 +28,13 @@ type geoCoder struct {
 	http  *http.Client
 	mu    sync.Mutex
 	cache map[string]geoCacheEntry
+
+	// paceMu is held across the wait, not just around the bookkeeping, so two
+	// callers cannot both look at the same idle second and both decide it is
+	// theirs. queued counts who is waiting behind it.
+	paceMu sync.Mutex
+	lastAt time.Time
+	queued atomic.Int32
 }
 
 type geoCacheEntry struct {
@@ -32,11 +42,88 @@ type geoCacheEntry struct {
 	at   time.Time
 }
 
-const geoCacheTTL = 6 * time.Hour
+const (
+	geoCacheTTL = 6 * time.Hour
+
+	// Nominatim's usage policy is one request per second for the whole
+	// application, not per user: the limit belongs here, at the one place every
+	// lookup leaves the process through, and not on the handlers.
+	geoMinInterval = time.Second
+
+	// Past this many callers waiting their turn, the queue is longer than
+	// anyone will sit through — refuse quickly instead of promising a lookup
+	// eight seconds from now.
+	geoMaxQueued = 8
+
+	// The cache was unbounded and never dropped an expired key, so a long
+	// uptime with varied queries grew it without limit. Sweeping on write keeps
+	// it a cache rather than a log of everything ever asked.
+	geoCacheMax = 4096
+)
+
+// errGeoBusy is returned when the outbound queue is full: the caller should get
+// a "try again", not a lookup that arrives after they have given up.
+var errGeoBusy = errors.New("geocoder busy")
 
 var geocoder = &geoCoder{
 	http:  &http.Client{Timeout: 8 * time.Second},
 	cache: map[string]geoCacheEntry{},
+}
+
+// wait spaces outbound calls at least geoMinInterval apart, across every
+// handler and every user.
+func (g *geoCoder) wait(ctx context.Context) error {
+	if g.queued.Add(1) > geoMaxQueued {
+		g.queued.Add(-1)
+		return errGeoBusy
+	}
+	defer g.queued.Add(-1)
+
+	g.paceMu.Lock()
+	defer g.paceMu.Unlock()
+	if d := time.Until(g.lastAt.Add(geoMinInterval)); d > 0 {
+		timer := time.NewTimer(d)
+		defer timer.Stop()
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-timer.C:
+		}
+	}
+	g.lastAt = time.Now()
+	return nil
+}
+
+// store caches one answer and keeps the cache bounded. Expired entries go
+// first; if the map is still full after that, the oldest quarter goes too, so a
+// burst of unique queries cannot pin the eviction cost on every later write.
+func (g *geoCoder) store(endpoint string, body []byte) {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	g.cache[endpoint] = geoCacheEntry{body: body, at: time.Now()}
+	if len(g.cache) <= geoCacheMax {
+		return
+	}
+	now := time.Now()
+	for k, e := range g.cache {
+		if now.Sub(e.at) >= geoCacheTTL {
+			delete(g.cache, k)
+		}
+	}
+	if len(g.cache) <= geoCacheMax {
+		return
+	}
+	ages := make([]time.Time, 0, len(g.cache))
+	for _, e := range g.cache {
+		ages = append(ages, e.at)
+	}
+	sort.Slice(ages, func(i, j int) bool { return ages[i].Before(ages[j]) })
+	cutoff := ages[len(ages)/4]
+	for k, e := range g.cache {
+		if e.at.Before(cutoff) {
+			delete(g.cache, k)
+		}
+	}
 }
 
 func (g *geoCoder) get(ctx context.Context, endpoint string) ([]byte, error) {
@@ -48,6 +135,9 @@ func (g *geoCoder) get(ctx context.Context, endpoint string) ([]byte, error) {
 	}
 	g.mu.Unlock()
 
+	if err := g.wait(ctx); err != nil {
+		return nil, err
+	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
 	if err != nil {
 		return nil, err
@@ -65,9 +155,7 @@ func (g *geoCoder) get(ctx context.Context, endpoint string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	g.mu.Lock()
-	g.cache[endpoint] = geoCacheEntry{body: body, at: time.Now()}
-	g.mu.Unlock()
+	g.store(endpoint, body)
 	return body, nil
 }
 
@@ -131,6 +219,13 @@ func (m *Module) handleGeocode(w http.ResponseWriter, r *http.Request) {
 		url.QueryEscape(lang) + "&q=" + url.QueryEscape(q)
 	body, err := geocoder.get(r.Context(), endpoint)
 	if err != nil {
+		if errors.Is(err, errGeoBusy) {
+			// Our own queue is full, not the geocoder's fault: say "come back",
+			// which is what the form's retry actually needs to hear.
+			w.Header().Set("Retry-After", "2")
+			http.Error(w, "geocoder busy", http.StatusServiceUnavailable)
+			return
+		}
 		m.rt.Logger.Warn("geocode forward", zap.Error(err))
 		http.Error(w, "geocode failed", http.StatusBadGateway)
 		return
@@ -198,6 +293,13 @@ func (m *Module) handleGeocodeReverse(w http.ResponseWriter, r *http.Request) {
 		url.QueryEscape(lang) + "&lat=" + url.QueryEscape(lat) + "&lon=" + url.QueryEscape(lng)
 	body, err := geocoder.get(r.Context(), endpoint)
 	if err != nil {
+		if errors.Is(err, errGeoBusy) {
+			// Our own queue is full, not the geocoder's fault: say "come back",
+			// which is what the form's retry actually needs to hear.
+			w.Header().Set("Retry-After", "2")
+			http.Error(w, "geocoder busy", http.StatusServiceUnavailable)
+			return
+		}
 		m.rt.Logger.Warn("geocode reverse", zap.Error(err))
 		http.Error(w, "geocode failed", http.StatusBadGateway)
 		return
