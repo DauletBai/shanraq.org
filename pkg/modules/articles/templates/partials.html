@@ -432,9 +432,7 @@
         <h2 class="foot-h" id="foot-about">{{ t .Lang "footer.col_about" }}</h2>
         <ul class="foot-list">
           <li><a href="/about">{{ t .Lang "footer.about" }}</a></li>
-          <li><a href="/guide">{{ t .Lang "footer.you" }}</a></li>
           <li><a href="/predictions">{{ t .Lang "pred.title" }}</a></li>
-          <li><a href="/support">{{ t .Lang "footer.support" }}</a></li>
           <li><a href="/privacy">{{ t .Lang "footer.privacy" }}</a></li>
           <li><a href="/terms">{{ t .Lang "footer.terms" }}</a></li>
         </ul>
@@ -454,12 +452,26 @@
         </ul>
       </div>
 
-      {{/* 4 — the slot. It carries a real placement when one is booked and
+      {{/* 4 — everything that teaches the site: how to publish and how to post,
+           how the text is formatted, what costs money, and where to ask when
+           the page did not answer. Split out of "О нас" because a reader
+           looking for instructions is not looking for who we are. */}}
+      <nav class="foot-col" aria-labelledby="foot-you">
+        <h2 class="foot-h" id="foot-you">{{ t .Lang "footer.col_you" }}</h2>
+        <ul class="foot-list">
+          <li><a href="/guide">{{ t .Lang "footer.guide" }}</a></li>
+          <li><a href="/formatting">{{ t .Lang "footer.formatting" }}</a></li>
+          <li><a href="/pricing">{{ t .Lang "footer.pricing" }}</a></li>
+          <li><a href="/support">{{ t .Lang "footer.support" }}</a></li>
+        </ul>
+      </nav>
+
+      {{/* 5 — the slot. It carries a real placement when one is booked and
            sells itself when none is, and either way it wears the "Реклама"
            ribbon: a house slide is still advertising, it just advertises the
            slot. When ad orders are switched off the card stops being a link,
            because an offer that leads to a closed door is worse than none. */}}
-      <div class="foot-col" aria-labelledby="foot-ad">
+      <div class="foot-col foot-col--ad" aria-labelledby="foot-ad">
         <h2 class="foot-h" id="foot-ad">{{ t .Lang "footer.col_ad" }}</h2>
         {{ if .Ads }}{{ with index .Ads 0 }}
         <a class="foot-ad{{ if .House }} foot-ad--house{{ end }}" href="{{ .URL }}"{{ if not .House }} rel="nofollow sponsored noopener" target="_blank"{{ end }}>
@@ -486,7 +498,7 @@
     </div>
 
     <div class="foot-bottom">
-      <p class="foot-copy">© {{ year }} <a href="/">Shanraq.org</a> — {{ t .Lang "footer.rights" }}</p>
+      <p class="foot-copy">© {{ year }} <a href="/">Shanraq.org</a> · {{ t .Lang "footer.rights" }}</p>
     </div>
   </div>
 </footer>

@@ -2544,9 +2544,13 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   display: block;
 }
 .foot-grid {
+  /* The older mobile rule centres everything inside .site-footer below 640px.
+     That was right for a single wrapping row and wrong for columns, so the
+     grid states its own alignment instead of the old rule being removed. */
+  text-align: left;
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
-  gap: 34px 40px;
+  grid-template-columns: 1.45fr 1fr 1fr 1fr 1.25fr;
+  gap: 34px 34px;
   align-items: start;
 }
 .foot-col { min-width: 0; }
@@ -2632,10 +2636,17 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .foot-bottom { padding-top: 20px; }
 .foot-copy { margin: 0; text-align: center; }
 
-@media (max-width: 900px) {
-  .foot-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+@media (max-width: 1180px) {
+  .foot-grid { grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
+  .foot-col--brand { grid-column: 1 / -1; }
 }
-@media (max-width: 560px) {
-  .foot-grid { grid-template-columns: 1fr; gap: 26px; }
+/* Two columns on a phone, never one: a single stack turns four short lists
+   into a page of scrolling, and the lists are short enough to sit side by
+   side. The mark and the slot are the exceptions — one carries a sentence, the
+   other a banner, and both read badly at half a phone's width. */
+@media (max-width: 620px) {
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 26px 22px; }
+  .foot-col--brand,
+  .foot-col--ad { grid-column: 1 / -1; }
   .foot-mission { max-width: none; }
 }
