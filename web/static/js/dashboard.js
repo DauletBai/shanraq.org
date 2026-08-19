@@ -88,12 +88,14 @@
       const params = new URLSearchParams();
       if (status) params.set('status', status);
       params.set('limit', '50');
-      // KNOWN GAP: /jobs authenticates by Bearer token, not by the session
-      // cookie this page carries, so every call here returns 401 and the queue
-      // explorer stays empty. Fixing it properly means issuing a short-lived
-      // token to the console — deliberately not bolted on here. Until then the
-      // failure is at least reported instead of looking like "no jobs".
-      const response = await fetch(`/jobs?${params.toString()}`);
+      // /console/jobs is the same queue behind the credential this page has:
+      // the session cookie. /jobs itself authenticates by API key and bearer
+      // token, which a browser page carries neither of, so every call used to
+      // come back 401 and the explorer showed an error where the queue should
+      // be. Same-origin only, staff roles only — see WithConsoleMiddleware.
+      const response = await fetch(`/console/jobs?${params.toString()}`, {
+        headers: { Accept: 'application/json' },
+      });
       if (!response.ok) {
         throw new Error(`Jobs request failed: ${response.status}`);
       }
@@ -108,7 +110,7 @@
 
   const postJobAction = async (id, action) => {
     try {
-      const endpoint = action === 'retry' ? `/jobs/${id}/retry` : `/jobs/${id}/cancel`;
+      const endpoint = action === 'retry' ? `/console/jobs/${id}/retry` : `/console/jobs/${id}/cancel`;
       const body = action === 'cancel' ? JSON.stringify({ reason: 'Cancelled via console' }) : undefined;
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -221,7 +223,7 @@
       }
 
       try {
-        const response = await fetch('/jobs', {
+        const response = await fetch('/console/jobs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

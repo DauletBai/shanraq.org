@@ -34,8 +34,11 @@ type Module struct {
 	handlers       map[string]Handler
 	tenantResolver TenantResolver
 	httpMiddleware []func(http.Handler) http.Handler
-	validator      *validate.Validator
-	tracer         trace.Tracer
+	// consoleMiddleware guards the browser-facing mount of the same endpoints;
+	// empty means the console mount is not registered at all.
+	consoleMiddleware []func(http.Handler) http.Handler
+	validator         *validate.Validator
+	tracer            trace.Tracer
 }
 
 // JobContext key used for context values.
@@ -85,6 +88,22 @@ func WithTenantResolver(resolver TenantResolver) Option {
 func WithHTTPMiddleware(mw ...func(http.Handler) http.Handler) Option {
 	return func(m *Module) {
 		m.httpMiddleware = append(m.httpMiddleware, mw...)
+	}
+}
+
+// WithConsoleMiddleware guards a second mount of the same endpoints for the
+// operator console at /console/jobs.
+//
+// /jobs authenticates by API key and bearer token. The console is a page in a
+// browser carrying a session cookie and neither of those, so every call it made
+// came back 401 and the queue explorer showed an error where the queue should
+// be. The endpoints were never the problem; the credentials were. Rather than
+// teach the API about cookies — which would put a CSRF surface on a programmatic
+// endpoint — the console gets its own door, and the caller decides what stands
+// at it. Leave it unset and the door does not exist.
+func WithConsoleMiddleware(mw ...func(http.Handler) http.Handler) Option {
+	return func(m *Module) {
+		m.consoleMiddleware = append(m.consoleMiddleware, mw...)
 	}
 }
 
@@ -141,6 +160,21 @@ func (m *Module) Routes(r chi.Router) {
 		r.Post("/{id}/retry", m.handleRetry)
 		r.Post("/{id}/cancel", m.handleCancel)
 	})
+
+	// The same handlers, behind whatever the caller put in front of the console.
+	// Registered only when a guard exists: an unguarded queue would let anyone
+	// enqueue work that spends money.
+	if len(m.consoleMiddleware) > 0 {
+		r.Route("/console/jobs", func(r chi.Router) {
+			for _, mw := range m.consoleMiddleware {
+				r.Use(mw)
+			}
+			r.Post("/", m.handleEnqueue)
+			r.Get("/", m.handleList)
+			r.Post("/{id}/retry", m.handleRetry)
+			r.Post("/{id}/cancel", m.handleCancel)
+		})
+	}
 }
 
 // Start launches worker goroutines consuming jobs until ctx cancels.

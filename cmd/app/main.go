@@ -93,6 +93,17 @@ func main() {
 			apiKeyModule.RequireAPIKey(),
 			authModule.RequireRoles("operator", "admin"),
 		),
+		// The operator console reaches the same queue with the credential a
+		// browser actually has. LoadSession turns the cookie into claims, which
+		// RequireRoles then holds to the same staff roles and to the same check
+		// that the account still backs them; SameOriginOnly is there because a
+		// cookie-authed POST is a CSRF surface and retry/cancel/enqueue are
+		// POSTs.
+		jobs.WithConsoleMiddleware(
+			authModule.LoadSession,
+			auth.SameOriginOnly,
+			authModule.RequireRoles("operator", "admin"),
+		),
 	)
 	aiModule := ai.New()
 	aiModule.RegisterJobs(jobModule)
