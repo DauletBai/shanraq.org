@@ -22,31 +22,34 @@
     <input type="hidden" name="lang" value="{{ .Lang }}">
     <div class="re-search__grid">
       <div class="field re-search__loc">
-        <label>{{ t .Lang "re.location" }}</label>
-        <div class="geo-cascade" data-geo data-lang="{{ .Lang }}" data-geo-target="search_geo"></div>
+        {{/* A label needs a control to point at, and the location picker is a
+             JS widget of several selects rather than one field — so this names
+             the group instead of pretending to label a single input. */}}
+        <span class="field__label" id="f_geo_label">{{ t .Lang "re.location" }}</span>
+        <div class="geo-cascade" role="group" aria-labelledby="f_geo_label" data-geo data-lang="{{ .Lang }}" data-geo-target="search_geo"></div>
         <input type="hidden" name="geo" id="search_geo" value="{{ .GeoNodeID }}">
       </div>
       <div class="field">
-        <label>{{ t .Lang "re.deal" }}</label>
-        <select class="select" name="deal">
+        <label for="f_deal">{{ t .Lang "re.deal" }}</label>
+        <select class="select" id="f_deal" name="deal">
           <option value="">{{ t .Lang "nav.all" }}</option>
           {{ range dealTypes }}<option value="{{ . }}"{{ if eq . $.ActiveDeal }} selected{{ end }}>{{ t $.Lang (printf "re.deal_%s" .) }}</option>{{ end }}
         </select>
       </div>
       <div class="field">
-        <label>{{ t .Lang "re.type" }}</label>
-        <select class="select" name="type">
+        <label for="f_type">{{ t .Lang "re.type" }}</label>
+        <select class="select" id="f_type" name="type">
           <option value="">{{ t .Lang "nav.all" }}</option>
           {{ range propertyTypes }}<option value="{{ . }}"{{ if eq . $.ActiveType }} selected{{ end }}>{{ t $.Lang (printf "re.type_%s" .) }}</option>{{ end }}
         </select>
       </div>
-      <div class="field"><label>{{ t .Lang "re.price_from" }}</label><input class="input" type="text" inputmode="numeric" name="pmin" value="{{ if gt .PriceMin 0 }}{{ .PriceMin }}{{ end }}"></div>
-      <div class="field"><label>{{ t .Lang "re.price_to" }}</label><input class="input" type="text" inputmode="numeric" name="pmax" value="{{ if gt .PriceMax 0 }}{{ .PriceMax }}{{ end }}"></div>
-      <div class="field"><label>{{ t .Lang "re.rooms_from" }}</label><input class="input" type="text" inputmode="numeric" name="rooms" value="{{ if gt .RoomsMin 0 }}{{ .RoomsMin }}{{ end }}"></div>
-      <div class="field"><label>{{ t .Lang "re.query" }}</label><input class="input" type="text" name="q" value="{{ .Query }}"></div>
+      <div class="field"><label for="f_pmin">{{ t .Lang "re.price_from" }}</label><input class="input" id="f_pmin" type="text" inputmode="numeric" name="pmin" value="{{ if gt .PriceMin 0 }}{{ .PriceMin }}{{ end }}"></div>
+      <div class="field"><label for="f_pmax">{{ t .Lang "re.price_to" }}</label><input class="input" id="f_pmax" type="text" inputmode="numeric" name="pmax" value="{{ if gt .PriceMax 0 }}{{ .PriceMax }}{{ end }}"></div>
+      <div class="field"><label for="f_rooms">{{ t .Lang "re.rooms_from" }}</label><input class="input" id="f_rooms" type="text" inputmode="numeric" name="rooms" value="{{ if gt .RoomsMin 0 }}{{ .RoomsMin }}{{ end }}"></div>
+      <div class="field"><label for="f_q">{{ t .Lang "re.query" }}</label><input class="input" id="f_q" type="text" name="q" value="{{ .Query }}"></div>
     </div>
     <div class="re-search__amen">
-      <label class="re-search__amen-title">{{ t .Lang "re.amenities" }}</label>
+      <span class="re-search__amen-title">{{ t .Lang "re.amenities" }}</span>
       <div class="amgrid">
         {{ range amenities }}
         <label class="amcheck"><input type="checkbox" name="am" value="{{ . }}"{{ if index $.SelAmenities . }} checked{{ end }}> <span class="amic">{{ amenityIcon . }}</span> {{ t $.Lang (printf "re.am_%s" .) }}</label>

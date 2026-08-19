@@ -49,24 +49,27 @@ func templateFuncs() template.FuncMap {
 		"surfaceLabel":      SurfaceLabelKey,
 		"adFormatSlots":     AdFormatSlots,
 		"money":             money,
-		"compactNum":        compactNum, // 1234 → "1,2 тыс." for tight meta rows
-		"shortAuthor":       shortAuthor,
-		"hasSuffix":         strings.HasSuffix,
-		"ogLocale":          ogLocale,
-		"htmlLang":          htmlLang,
-		"curSymbol":         curSymbol,
-		"icon":              icon,
-		"roomIcon":          roomIcon,
-		"amenityIcon":       amenityIcon,
-		"catIcon":           catIcon,
-		"firstN":            firstStrings,
-		"countryFlag":       countryFlag,
-		"countryFlagEmoji":  countryFlagEmoji,
-		"liveSocial":        liveSocial, // social profiles that aren't "#" placeholders
-		"withUTM":           withUTM,
-		"dict":              dict,
-		"year":              func() int { return time.Now().Year() },
-		"markdown":          RenderMarkdown,
+		// Templates count from zero and people count from one; screen-reader
+		// labels are read by people.
+		"inc":              func(i int) int { return i + 1 },
+		"compactNum":       compactNum, // 1234 → "1,2 тыс." for tight meta rows
+		"shortAuthor":      shortAuthor,
+		"hasSuffix":        strings.HasSuffix,
+		"ogLocale":         ogLocale,
+		"htmlLang":         htmlLang,
+		"curSymbol":        curSymbol,
+		"icon":             icon,
+		"roomIcon":         roomIcon,
+		"amenityIcon":      amenityIcon,
+		"catIcon":          catIcon,
+		"firstN":           firstStrings,
+		"countryFlag":      countryFlag,
+		"countryFlagEmoji": countryFlagEmoji,
+		"liveSocial":       liveSocial, // social profiles that aren't "#" placeholders
+		"withUTM":          withUTM,
+		"dict":             dict,
+		"year":             func() int { return time.Now().Year() },
+		"markdown":         RenderMarkdown,
 		"fmtDate": func(t time.Time) string {
 			if t.IsZero() {
 				return "—"

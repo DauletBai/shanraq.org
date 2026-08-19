@@ -825,7 +825,9 @@ table.list td.title { white-space: normal; max-width: 380px; }
 /* ---------- forms ---------- */
 .form { max-width: 820px; margin: 0 auto; }
 .field { margin-bottom: 5px; }
-.field label { display: block; font-size: var(--step--1); font-weight: 600; margin-bottom: 6px; color: var(--ink-soft); }
+/* Some fields are labelled by a <span> rather than a <label>: a widget made of
+   several controls has nothing for a single label to point at. Same look. */
+.field label, .field > .field__label { display: block; font-size: var(--step--1); font-weight: 600; margin-bottom: 6px; color: var(--ink-soft); }
 .input, .textarea, .select {
   width: 100%;
   padding: 4px 13px;

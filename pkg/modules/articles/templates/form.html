@@ -23,25 +23,25 @@
       <div class="form-grid form-grid--2">
         <div class="field">
           <label for="last_name">{{ t .Lang "form.last_name" }} * {{ template "fhelp" (t .Lang "form.last_name_hint") }}</label>
-          <input class="input" id="last_name" name="last_name" value="{{ .Last }}" maxlength="40" required autofocus>
+          <input class="input" id="last_name" name="last_name" value="{{ .Last }}" maxlength="40" autocomplete="family-name" required autofocus>
         </div>
         <div class="field">
           <label for="first_name">{{ t .Lang "form.first_name" }} * {{ template "fhelp" (t .Lang "form.first_name_hint") }}</label>
-          <input class="input" id="first_name" name="first_name" value="{{ .First }}" maxlength="40" required>
+          <input class="input" id="first_name" name="first_name" value="{{ .First }}" maxlength="40" autocomplete="given-name" required>
         </div>
       </div>
       <div class="field">
         <label for="middle_name">{{ t .Lang "form.middle_name" }} {{ template "fhelp" (t .Lang "form.name_hint") }}</label>
-        <input class="input" id="middle_name" name="middle_name" value="{{ .Middle }}" maxlength="40">
+        <input class="input" id="middle_name" name="middle_name" value="{{ .Middle }}" maxlength="40" autocomplete="additional-name">
       </div>
       {{ end }}
       <div class="field">
         <label for="email">{{ t .Lang "form.email" }}{{ if eq .Mode "register" }} {{ template "fhelp" (t .Lang "form.email_hint") }}{{ end }}</label>
-        <input class="input" type="email" id="email" name="email" value="{{ .Email }}" required{{ if ne .Mode "register" }} autofocus{{ end }}>
+        <input class="input" type="email" id="email" name="email" value="{{ .Email }}" autocomplete="email" required{{ if ne .Mode "register" }} autofocus{{ end }}>
       </div>
       <div class="field">
         <label for="password">{{ t .Lang "form.password" }}{{ if eq .Mode "register" }} {{ template "fhelp" (t .Lang "form.password_hint") }}{{ end }}</label>
-        <input class="input" type="password" id="password" name="password" required minlength="8">
+        <input class="input" type="password" id="password" name="password" autocomplete="{{ if eq .Mode "register" }}new-password{{ else }}current-password{{ end }}" required minlength="8">
       </div>
       {{ if eq .Mode "register" }}
       <label class="checkline">

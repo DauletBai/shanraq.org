@@ -142,6 +142,7 @@ var messages = map[string]map[string]string{
 	},
 	"re.photos":         {"kz": "Фотосуреттер", "ru": "Фотографии", "en": "Photos"},
 	"re.photos_max":     {"kz": "%d фотоға дейін", "ru": "до %d фото", "en": "up to %d photos"},
+	"re.photo_n":        {"kz": "%d-фото", "ru": "Фото %d", "en": "Photo %d"},
 	"re.add_photo":      {"kz": "Фото қосу", "ru": "Добавить фото", "en": "Add photo"},
 	"re.documents":      {"kz": "Құжаттар / жоспар", "ru": "Документы / планировка", "en": "Documents / floor plan"},
 	"re.documents_help": {"kz": "PDF немесе сурет (жоспар, техпаспорт)", "ru": "PDF или изображение (план, техпаспорт)", "en": "PDF or image (plan, passport)"},
