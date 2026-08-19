@@ -64,6 +64,18 @@ tidy:
 smoke:
 	./scripts/docker-smoke.sh
 
+# A backup nobody has restored is a hope. Run this after every schema change,
+# on the machine that holds the age private key.
+#   make restore-test ARCHIVE=~/backups/shanraq-backup-20260819-023000Z.tar.gz.age
+.PHONY: restore-test
+restore-test:
+	@if [ -z "$(ARCHIVE)" ]; then \
+	  echo "usage: make restore-test ARCHIVE=<path to shanraq-backup-*.tar.gz[.age]>"; \
+	  echo "       BACKUP_AGE_IDENTITY must point at the age private key for .age archives"; \
+	  exit 1; \
+	fi
+	./scripts/backup-restore-test.sh "$(ARCHIVE)"
+
 .PHONY: snapshots
 snapshots:
 	go generate ./web

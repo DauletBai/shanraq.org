@@ -61,14 +61,31 @@ exactly 108 × 3 languages — 6 users, 4 listings, 21 comments, goose at
 `20251108001300`. Identical to production. The scratch database was dropped and
 the decrypted copies deleted; they hold personal data and must not linger.
 
-Repeat this after any change to the schema or the backup script. The command
-that matters:
+Repeat this after any change to the schema or the backup script. Since 19 August
+it is one command rather than five remembered ones — `scripts/backup-restore-test.sh`,
+run on the machine that holds the private key, because the key is deliberately
+not on the server:
 
 ```sh
-age -d -i <private-key> -o backup.tar.gz shanraq-backup-*.age
-tar xzf backup.tar.gz && shasum -a 256 -c SHA256SUMS
-pg_restore -d <scratch-db> --no-owner db.dump
+BACKUP_AGE_IDENTITY=~/keys/shanraq-backup.age-key \
+  make restore-test ARCHIVE=~/backups/shanraq-backup-20260819-023000Z.tar.gz.age
 ```
+
+It decrypts, verifies `SHA256SUMS`, restores into a scratch database with
+`--exit-on-error`, prints what came back, and drops the scratch database and the
+decrypted copies however it ends — including the failure paths, which is when
+personal data is easiest to leave lying around.
+
+It fails, loudly and non-zero, on a damaged archive, a wrong key, a partial
+restore, a schema of fewer than twenty tables, an empty `auth_users`, no
+published articles, missing migration history, or restored data holding **no
+administrator** — a restore that has to be repaired by hand before the site can
+be run is not a restore.
+
+One thing it learned the hard way and now handles: on a machine with both
+Postgres 14 and 16 installed, `pg_restore` from `PATH` is the older one, and it
+rejects a version-16 dump with a file-header error that reads exactly like
+corruption. The script picks the matching tools the way `backup.sh` does.
 
 ## The gap, and what now covers half of it
 
@@ -126,6 +143,25 @@ BACKUP_UPLOAD_CMD=<command that ships {file} off the box>
 
 `{file}` is replaced with the archive path; a non-zero exit fails the whole run
 loudly instead of leaving a silent gap.
+
+Until then every run says so in its log, because a gap that nothing mentions is
+one you stop seeing:
+
+```
+WARNING: no BACKUP_UPLOAD_CMD — this archive stays on the machine it is
+         protecting, so it survives a bad migration but not a lost host
+```
+
+And once the destination is configured, set `BACKUP_REQUIRE_OFFSITE=1` beside
+it. A hand-edited `.env` is how a working off-site copy quietly turns back into
+a backup sitting on the machine it protects; with that flag the run fails
+instead.
+
+**There is still no external uptime check.** `/healthz` and `/readyz` answer
+correctly, and nothing outside the server asks them — so the first notice of an
+outage is somebody opening the site. That wants a third-party prober and a
+Telegram alert, and it wants to live somewhere the server cannot take down with
+it.
 
 ### Where the copies may legally live
 

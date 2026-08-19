@@ -16,6 +16,8 @@
 #   BACKUP_RETENTION       how many archives to keep locally   [7]
 #   BACKUP_AGE_RECIPIENT   age public key → encrypt the archive  [none = plaintext]
 #   BACKUP_UPLOAD_CMD      off-site command; {file} is replaced with the archive path
+#   BACKUP_REQUIRE_OFFSITE set to 1 once a destination exists: a missing
+#                          BACKUP_UPLOAD_CMD then fails the run instead of warning
 #   PG_BIN                 dir holding a pg_dump matching the server (Postgres 16)
 #
 set -euo pipefail
@@ -80,6 +82,14 @@ if [[ -n "${BACKUP_UPLOAD_CMD:-}" ]]; then
   cmd="${BACKUP_UPLOAD_CMD//\{file\}/$ARCHIVE}"
   log "off-site upload: $cmd"
   eval "$cmd" || fail "off-site upload failed"
+elif [[ "${BACKUP_REQUIRE_OFFSITE:-0}" == "1" ]]; then
+  # Once a destination exists, its disappearance must stop the run. A .env
+  # rewritten by hand is exactly how a working off-site copy quietly becomes a
+  # backup sitting on the machine it protects.
+  fail "BACKUP_REQUIRE_OFFSITE=1 but BACKUP_UPLOAD_CMD is not set"
+else
+  log "WARNING: no BACKUP_UPLOAD_CMD — this archive stays on the machine it is"
+  log "         protecting, so it survives a bad migration but not a lost host"
 fi
 
 # ---- retention: keep the newest N, prune older ----
