@@ -1565,7 +1565,7 @@ var messages = map[string]map[string]string{
 	"footer.formatting": {"kz": "Мәтінді ресімдеу", "ru": "Оформление текста", "en": "Text formatting"},
 	"footer.pricing":    {"kz": "Тарифтер", "ru": "Тарифы", "en": "Pricing"},
 	"footer.col_ad":     {"kz": "Жарнама", "ru": "Реклама", "en": "Advertising"},
-	"footer.tag":        {"kz": "Shanraq.org — үй, мұнда еркін дауыстар тоғысады.", "ru": "Shanraq.org — дом, где сходятся свободные голоса.", "en": "Shanraq.org — a home where free voices meet."},
+	"footer.tag":        {"kz": "Еркін ақпарат, талдаулар және тексерілетін болжамдар.", "ru": "Свободная информация, разборы и проверяемые прогнозы.", "en": "Free information, analysis, and forecasts you can check."},
 	"footer.rights":     {"kz": "Барлық құқықтар қорғалған", "ru": "Все права защищены", "en": "All rights reserved"},
 	"footer.about":      {"kz": "Біз туралы", "ru": "О нас", "en": "About us"},
 	"footer.you":        {"kz": "Сіз туралы", "ru": "О вас", "en": "About you"},
