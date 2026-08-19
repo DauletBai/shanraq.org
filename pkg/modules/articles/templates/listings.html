@@ -79,6 +79,11 @@
   <div class="layout">
     <div>
       {{ if .Listings }}
+      {{/* The cards are h3s. Without this the page went h1 → h3, which reads to
+           a screen reader as a missing level rather than as a tighter design —
+           the agent page, showing the same cards, has named its results all
+           along. Hidden visually: the h1 and the filter bar already say it. */}}
+      <h2 class="visually-hidden">{{ t .Lang "re.results" }}</h2>
       <div class="posts posts--two">
         {{ range .Listings }}
         {{ template "listing_card" (dict "L" . "Lang" $.Lang) }}

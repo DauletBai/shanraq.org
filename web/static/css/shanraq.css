@@ -10,7 +10,10 @@
   --surface-2: #f5f4f2;
   --ink: #454545;
   --ink-soft: #454545;
-  --muted: #8c8c8c;
+  /* #8c8c8c reached 3.1:1 on the tinted surface and 3.4:1 on white — under
+     the 4.5:1 that body text owes a reader. "Muted" is a relationship to --ink,
+     not a fixed grey, and this still reads as clearly secondary beside it. */
+  --muted: #6e6e6e;
   --line: #dddddd;
   --line-strong: #dad7d1;
   --gold: #d32f2f;         /* brand red — life, community, circulation */
@@ -20,6 +23,13 @@
   --danger: #c62828;
   --ok: #2e7d32;
   --focus: rgba(211, 47, 47, 0.3);
+
+  /* The label on a solid accent fill — a primary button, an active tab, a
+     badge. It is a token because the answer flips with the theme: the light
+     theme's accents are dark enough to carry white text, and the dark theme's
+     are light-toned, where white text falls to 3.5:1 on red and 2.4:1 on green.
+     Light-on-dark and dark-on-light are the same decision made twice. */
+  --on-accent: #ffffff;
 
   --serif: "Georgia", "Noto Serif", "Times New Roman", serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -43,7 +53,7 @@
   --st-ok: #0a7d33;
   --st-ok-bg: rgba(16, 161, 74, 0.08);
   --st-ok-line: #9bd8b0;
-  --st-warn: #9a6a00;
+  --st-warn: #8f6200;   /* 4.3:1 on the tinted surface was just under AA */
   --st-warn-bg: rgba(217, 164, 32, 0.10);
   --st-warn-line: #e6c884;
   --st-info: #3949ab;
@@ -64,16 +74,22 @@
   --surface-2: #34332f;
   --ink: #d8d6d2;
   --ink-soft: #bebbb6;
-  --muted: #8f8c86;
+  /* Every accent below is a step lighter than it was. On the dark surfaces the
+     old values sat between 3.6:1 and 4.3:1 as text — legible enough to pass
+     unnoticed by anyone who could already read them, and under AA for everyone
+     else. The reds now clear 5:1 on the darkest panel and the grey 4.8:1. */
+  --muted: #a3a099;
   --line: #454545;
   --line-strong: #4a4844;
-  --gold: #ef5350;
-  --gold-strong: #ff7a72;
+  --gold: #ff7a72;
+  --gold-strong: #ff9a92;
   --teal: #66bb6a;
-  --clay: #ef5350;
-  --danger: #ef5350;
+  --clay: #ff7a72;
+  --danger: #ff7a72;
   --ok: #66bb6a;
-  --focus: rgba(239, 83, 80, 0.35);
+  --focus: rgba(255, 122, 114, 0.35);
+  /* Light-toned fills take a dark label; white on them is 3.5:1 and worse. */
+  --on-accent: #1c1a17;
   --shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 14px 34px rgba(0, 0, 0, 0.45);
 
   /* Light enough to read on the dark panel: every one of these clears 6:1
@@ -176,7 +192,8 @@ img { max-width: 100%; height: auto; display: block; }
 .wx__press { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; font-variant-numeric: tabular-nums; } /* atmospheric pressure (barometer icon + value) */
 .wx__pval { color: var(--ink); } /* pressure digits — same bright colour as the temperature */
 .infobar__social { gap: 13px; }
-.infobar__social .soc { display: inline-flex; color: var(--gold-strong); }
+/* An icon link's target is the link, not the glyph: 17px of it was 17px to hit. */
+.infobar__social .soc { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 24px; color: var(--gold-strong); }
 .infobar__social .soc:hover { color: var(--gold); }
 .infobar__social .soc svg { width: 17px; height: 17px; display: block; }
 @media (max-width: 640px) {
@@ -251,8 +268,8 @@ img { max-width: 100%; height: auto; display: block; }
 .langs a { padding: 2px 8px; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.02em; color: var(--muted); border-right: 1px solid var(--line); text-transform: lowercase; }
 .langs a:last-child { border-right: none; }
 .langs a:hover { color: var(--ink); text-decoration: none; }
-.langs a.is-active { background: var(--gold); color: #fff; }
-:root[data-theme="dark"] .langs a.is-active { color: #fff; }
+.langs a.is-active { background: var(--gold); color: var(--on-accent); }
+:root[data-theme="dark"] .langs a.is-active { color: var(--on-accent); }
 
 .icon-btn { display: inline-flex; align-items: center; justify-content: center; flex: none; border: 1px solid var(--line-strong); background: transparent; color: var(--ink-soft); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1rem; line-height: 1; padding: 0; }
 .icon-btn:hover { background: var(--surface-2); }
@@ -351,11 +368,11 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 }
 .btn:hover { text-decoration: none; }
 .btn:active { transform: translateY(1px); }
-.btn--primary { background: var(--gold); color: #fff; }
-:root[data-theme="dark"] .btn--primary { color: #fff; }
+.btn--primary { background: var(--gold); color: var(--on-accent); }
+:root[data-theme="dark"] .btn--primary { color: var(--on-accent); }
 .btn--primary:hover { background: var(--gold-strong); }
-.btn--teal { background: var(--teal); color: #fff; }
-:root[data-theme="dark"] .btn--teal { color: #fff; }
+.btn--teal { background: var(--teal); color: var(--on-accent); }
+:root[data-theme="dark"] .btn--teal { color: var(--on-accent); }
 .btn--ghost { background: transparent; border-color: var(--line-strong); color: var(--ink); }
 /* Ghost hover only nudged the background one shade, which on a card that is
    already surface-2 amounted to no feedback at all. The border and label now
@@ -366,7 +383,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
    and "back" beside a primary button across the forms and admin, where a second
    red button would compete for the same click. */
 .btn--outline { background: transparent; border-color: var(--gold); color: var(--gold); }
-.btn--outline:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+.btn--outline:hover { background: var(--gold); border-color: var(--gold); color: var(--on-accent); }
 .btn--danger { background: #c0392b; color: #fff; border-color: #c0392b; }
 .btn--danger:hover { background: #a5281c; }
 .btn--sm { padding: 6px 12px; font-size: 0.78rem; }
@@ -418,9 +435,15 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 .adslide .btn--primary:hover { background: #fff; }
-.adcarousel__dots { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
-.adcarousel__dots button { width: 9px; height: 9px; border-radius: 50%; border: none; background: rgba(255, 255, 255, 0.5); cursor: pointer; padding: 0; }
-.adcarousel__dots button.is-active { background: #fff; }
+/* The dot is 9px because that is how big a dot should look. The target is
+   24px because that is how big a target has to be for a thumb (WCAG 2.2 SC
+   2.5.8) — so the button is the target and the dot is drawn inside it. A
+   listing may carry fifteen photos, and fifteen 24px targets are wider than a
+   phone, hence the wrap. */
+.adcarousel__dots { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; max-width: calc(100% - 16px); gap: 0; z-index: 3; }
+.adcarousel__dots button { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: none; background: none; cursor: pointer; padding: 0; }
+.adcarousel__dots button::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transition: background 0.15s ease; }
+.adcarousel__dots button.is-active::before { background: #fff; }
 
 /* sidebar variant of the ad carousel */
 /* The advertising slot. 300px on purpose: the hero carousel across the page is
@@ -474,7 +497,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   text-align: center; padding: 5px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
 }
-.adslot__ribbon--house { background: var(--gold); color: #fff; }
+.adslot__ribbon--house { background: var(--gold); color: var(--on-accent); }
 
 .adcarousel--side { height: 280px; margin-bottom: 0; }
 .adcarousel--side .adslide { padding: 22px; }
@@ -502,7 +525,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .post__media .gallery__item img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; }
 /* the card slot has its own fixed height, so no aspect-ratio here */
 .post__media-link { position: absolute; inset: 0; z-index: 2; }
-.post__media .adcarousel__dots { bottom: 10px; z-index: 3; }
+.post__media .adcarousel__dots { bottom: 2px; z-index: 3; }
 .post__media .badge-top { z-index: 3; }
 /* flag + city in the card meta */
 .loc { display: inline-flex; align-items: center; gap: 6px; }
@@ -667,7 +690,18 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .prose pre code { background: none; padding: 0; }
 .prose img { border-radius: var(--radius-sm); margin: 1.5em 0; }
 .prose ul, .prose ol { padding-left: 1.3em; }
-.prose table { width: 100%; border-collapse: collapse; margin: 1.4em 0; font-size: 0.96em; display: block; overflow-x: auto; }
+/* The table used to scroll itself by being display:block, which costs it its
+   table semantics and leaves a scroll region no keyboard can reach. The scroll
+   is the wrapper's job now (see wrapTables); the table is a table again. */
+.prose table { width: 100%; border-collapse: collapse; margin: 1.4em 0; font-size: 0.96em; }
+.tscroll--prose { margin: 1.4em 0; }
+/* Two classes, so this wins over the .tscroll table rule further down, which
+   forces 620px on the admin's ledger and would force a phone to scroll a
+   two-column table sideways. Here the table fills the wrapper and grows past it
+   only when its own content is wider — the behaviour display:block had, without
+   costing the element its semantics. */
+.tscroll.tscroll--prose table { width: auto; min-width: 100%; margin: 0; }
+.tscroll:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .prose th, .prose td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); }
 .prose th { background: var(--surface-2); font-weight: 700; }
 .prose tr:last-child td { border-bottom: none; }
@@ -862,7 +896,7 @@ table.list td.title { white-space: normal; max-width: 380px; }
 
 /* Field help: a "?" icon that reveals a code-driven tooltip on hover/focus/tap. */
 .fhelp { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; padding: 0; margin-left: 2px; border: 1px solid var(--line-strong); border-radius: 50%; background: none; color: var(--muted); font-size: 11px; font-weight: 700; line-height: 1; cursor: help; vertical-align: middle; }
-.fhelp:hover, .fhelp:focus-visible { color: #fff; background: var(--gold); border-color: var(--gold); outline: none; }
+.fhelp:hover, .fhelp:focus-visible { color: var(--on-accent); background: var(--gold); border-color: var(--gold); outline: none; }
 /* Above the mark, not below it. Dropping downwards put the tip straight over
    the input the label belongs to: readable, but it covered the very field
    the reader was about to fill, and it read as though the input had summoned
@@ -1026,7 +1060,7 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
 .cab-side__nav { display: flex; flex-direction: column; gap: 2px; }
 .cab-side__link { padding: 9px 12px; border-radius: 9px; color: inherit; text-decoration: none; white-space: nowrap; }
 .cab-side__link:hover { background: rgba(127,127,127,.10); }
-.cab-side__link.is-active { background: var(--gold); color: #fff; font-weight: 600; }
+.cab-side__link.is-active { background: var(--gold); color: var(--on-accent); font-weight: 600; }
 .cab-side__foot { display: flex; flex-direction: column; gap: 4px; padding-top: 10px; border-top: 1px solid var(--line); }
 .cab-side__back { padding: 9px 12px; }
 .cab-side__logout { background: none; border: none; text-align: left; padding: 9px 12px; cursor: pointer; color: inherit; font: inherit; }
@@ -1130,7 +1164,7 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
 }
 :root[data-theme="dark"] .rebanner__mark { filter: brightness(0) invert(1); opacity: 0.45; }
 .rebanner__promo { color: var(--ink-soft); font-size: clamp(0.86rem, 4.4cqw, 1.02rem); line-height: 1.45; margin: 0 0 clamp(9px, 3cqw, 13px); }
-.badge-banner { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.68rem; font-weight: 700; background: var(--gold); color: #fff; }
+.badge-banner { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.68rem; font-weight: 700; background: var(--gold); color: var(--on-accent); }
 .mylist__banner { display: flex; gap: 6px; align-items: center; }
 .select--xs { padding: 5px 8px; font-size: 0.78rem; width: auto; }
 
@@ -1198,7 +1232,7 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
   margin-bottom: 10px;
 }
 /* the section you are already in should not look like somewhere to go */
-.acct-nav__item.is-active { background: var(--gold); color: #fff; border-color: var(--gold); }
+.acct-nav__item.is-active { background: var(--gold); color: var(--on-accent); border-color: var(--gold); }
 .adv-total { font-size: var(--step-2); font-weight: 800; color: var(--brand); line-height: 1.9; }
 /* per-surface picker: a grid of checkable tiles, each showing its own price */
 .surf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; margin: 6px 0 10px; }
@@ -1274,7 +1308,7 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
 .adv-cal__pad { visibility: hidden; }
 /* centered row of social icons on its own line in the footer */
 .foot-social { flex-basis: 100%; display: flex; justify-content: center; gap: 18px; margin-top: 10px; }
-.foot-social .soc { display: inline-flex; color: rgba(255, 255, 255, 0.6); transition: color 0.15s ease; }
+.foot-social .soc { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 24px; color: rgba(255, 255, 255, 0.6); transition: color 0.15s ease; }
 .foot-social .soc:hover { color: #ef5350; }
 .foot-social .soc svg { width: 20px; height: 20px; display: block; }
 
@@ -1423,7 +1457,7 @@ table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: none; 
 .re-map__hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 10px; }
 .map-bar { display: flex; gap: 8px; margin-bottom: 10px; }
 .map-tab { padding: 4px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-soft); font-weight: 700; cursor: pointer; font-size: 0.8rem; }
-.map-tab.is-active { background: var(--gold); color: #fff; border-color: var(--gold); }
+.map-tab.is-active { background: var(--gold); color: var(--on-accent); border-color: var(--gold); }
 .map-holder { width: 100%; overflow-x: auto; }
 /* Leaflet needs an explicit height; the container is also the scroll-lock
    surface, so keep it comfortably tall on a phone without eating the page. */
@@ -1520,7 +1554,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .badge-top {
   position: absolute; top: 15px; left: -36px; z-index: 4;
   width: 140px; text-align: center;
-  background: var(--gold); color: #fff; font-size: 0.6rem; font-weight: 800;
+  background: var(--gold); color: var(--on-accent); font-size: 0.6rem; font-weight: 800;
   letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 0;
   transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
@@ -1530,7 +1564,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   padding: 3px 9px; border-radius: 999px; letter-spacing: 0.06em; font-size: 0.68rem;
 }
 .badge-feat {
-  display: inline-block; background: var(--teal); color: #fff; font-size: 0.68rem;
+  display: inline-block; background: var(--teal); color: var(--on-accent); font-size: 0.68rem;
   font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
   padding: 3px 9px; border-radius: 999px;
 }
@@ -1594,7 +1628,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* ---- AI columnist (AI Dake) ---- */
 .ai-badge {
-  display: inline-block; background: var(--gold); color: #fff;
+  display: inline-block; background: var(--gold); color: var(--on-accent);
   font-size: 0.66rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
   padding: 2px 8px; border-radius: 999px; vertical-align: middle;
 }
@@ -1617,7 +1651,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .author-hero__initials {
   display: inline-flex; align-items: center; justify-content: center;
   width: 72px; height: 72px; border-radius: 50%;
-  background: var(--gold); color: #fff; font-weight: 800; font-size: 1.7rem; letter-spacing: 0.02em;
+  background: var(--gold); color: var(--on-accent); font-weight: 800; font-size: 1.7rem; letter-spacing: 0.02em;
 }
 /* author byline link inside feed cards — inherits colour, underlines on hover */
 .byline-link { color: inherit; text-decoration: none; }
@@ -1723,8 +1757,8 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    the nav has to stay in view without its own scrollbar. */
 .adm__navlink { display: flex; align-items: center; gap: 10px; padding: 5px 12px; border-radius: 10px; color: var(--ink-soft); font-weight: 600; font-size: 0.95rem; }
 .adm__navlink:hover { background: var(--surface-2); text-decoration: none; color: var(--ink); }
-.adm__navlink.is-active { background: var(--gold); color: #fff; }
-:root[data-theme="dark"] .adm__navlink.is-active { color: #fff; }
+.adm__navlink.is-active { background: var(--gold); color: var(--on-accent); }
+:root[data-theme="dark"] .adm__navlink.is-active { color: var(--on-accent); }
 .adm__side-foot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: 14px; border-top: 1px solid var(--line); }
 /* Group label in the admin sidebar. Not a link and not clickable: it names the
    block of sections beneath it, so it has to read as chrome rather than as a
@@ -2322,8 +2356,8 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .ad__cta { align-self: flex-start; margin: 14px 16px 0; }
 .adcarousel--ad .adslide .btn--primary { background: #fff; color: #b71c1c; }
 .adcarousel--ad .adslide .btn--primary:hover { background: #fff; }
-.adcarousel--ad .adcarousel__dots button { background: rgba(255, 255, 255, 0.5); }
-.adcarousel--ad .adcarousel__dots button.is-active { background: #fff; }
+.adcarousel--ad .adcarousel__dots button::before { background: rgba(255, 255, 255, 0.5); }
+.adcarousel--ad .adcarousel__dots button.is-active::before { background: #fff; }
 
 .article-aside { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
 .toc-box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
@@ -2427,7 +2461,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .roomsup__row { display: grid; grid-template-columns: minmax(120px, 1fr) 90px minmax(120px, 2fr) auto; gap: 8px; align-items: center; }
 .roomsup__row .input { margin: 0; }
 .roomsup__rm { position: static; width: 28px; height: 28px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line-strong); }
-.roomsup__rm:hover { background: var(--gold-strong); color: #fff; border-color: var(--gold-strong); }
+.roomsup__rm:hover { background: var(--gold-strong); color: var(--on-accent); border-color: var(--gold-strong); }
 @media (max-width: 560px) { .roomsup__row { grid-template-columns: 1fr 1fr; } .roomsup__note { grid-column: 1 / -1; } }
 .spec__cap {
   text-align: left;

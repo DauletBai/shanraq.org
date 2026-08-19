@@ -20,13 +20,43 @@ var md = goldmark.New(
 	goldmark.WithRendererOptions(gmhtml.WithHardWraps()),
 )
 
+// tableOpen matches the opening tag goldmark emits for a GFM table, and
+// emptyHeader an unlabelled header cell — the corner cell a Markdown table
+// leaves blank when its first column is the row label.
+var (
+	tableOpen   = regexp.MustCompile(`<table>`)
+	emptyHeader = regexp.MustCompile(`<th[^>]*>\s*</th>`)
+)
+
+// wrapTables makes a rendered table survive a narrow screen without losing what
+// it is.
+//
+// The stylesheet used to scroll the table by making it display:block. That
+// works visually and costs the element its table semantics — rows and headers
+// stop being announced as a table — and it leaves a scrollable region that no
+// keyboard can reach, because a div that scrolls is only scrollable by someone
+// holding a mouse. The scroll belongs to a focusable wrapper; the table stays a
+// table.
+//
+// An empty header cell becomes a data cell in the same pass: a <th> with
+// nothing in it labels nothing, and a screen reader reads the blank as the
+// heading of every cell beneath it.
+func wrapTables(html string) string {
+	if !strings.Contains(html, "<table>") {
+		return html
+	}
+	html = emptyHeader.ReplaceAllString(html, "<td></td>")
+	html = tableOpen.ReplaceAllString(html, `<div class="tscroll tscroll--prose" tabindex="0"><table>`)
+	return strings.ReplaceAll(html, "</table>", "</table></div>")
+}
+
 // RenderMarkdown converts Markdown to sanitized HTML for templates.
 func RenderMarkdown(source string) template.HTML {
 	var buf bytes.Buffer
 	if err := md.Convert([]byte(source), &buf); err != nil {
 		return template.HTML(template.HTMLEscapeString(source))
 	}
-	return template.HTML(buf.String()) //nolint:gosec // goldmark configured without raw HTML
+	return template.HTML(wrapTables(buf.String())) //nolint:gosec // goldmark configured without raw HTML
 }
 
 // TOCItem is one entry in an article's table of contents.
@@ -58,7 +88,7 @@ func RenderMarkdownTOC(source string) (template.HTML, []TOCItem) {
 	for _, it := range toc {
 		out = strings.Replace(out, "<h2>", `<h2 id="`+it.ID+`">`, 1)
 	}
-	return template.HTML(out), toc //nolint:gosec // goldmark configured without raw HTML
+	return template.HTML(wrapTables(out)), toc //nolint:gosec // goldmark configured without raw HTML
 }
 
 // stripInline removes inline Markdown emphasis/link markup from a heading so the
