@@ -2591,7 +2591,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   background: rgba(0, 0, 0, 0.22);
 }
 .foot-ad:hover { border-color: rgba(255, 255, 255, 0.32); }
-.foot-ad.is-disabled { opacity: 0.62; cursor: default; }
+/* Waiting rather than broken: the card keeps its ribbon at full strength — the
+   slot is still marked as advertising — and only the body settles back. */
+.foot-ad--off { cursor: default; }
+.foot-ad--off .foot-ad__title { color: rgba(255, 255, 255, 0.78); }
 /* The sidebar's ribbon, scaled to a smaller card. Same component, so the word
    "Реклама" looks the same wherever it marks a placement. The card's top
    padding is what keeps the title clear of the corner band. */

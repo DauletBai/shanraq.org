@@ -481,9 +481,13 @@
           <span class="foot-ad__cta">{{ if .Price }}{{ .Price }}{{ else }}{{ t $.Lang "ad.learn_more" }}{{ end }} →</span>
         </a>
         {{ end }}{{ else if svcOff .Svc "ad_orders" }}
-        <div class="foot-ad foot-ad--house is-disabled" title="{{ svcMsg .Svc "ad_orders" }}" aria-disabled="true">
+        {{/* Not .is-disabled: that class is written for an inline link and
+             appends " 🛠" after the word, which on a card lands on a line of
+             its own like debris. The card says why in a sentence instead. */}}
+        <div class="foot-ad foot-ad--house foot-ad--off" aria-disabled="true">
           <span class="adslot__ribbon adslot__ribbon--house">{{ t .Lang "ad.badge" }}</span>
           <span class="foot-ad__title">{{ t .Lang "ad.placeholder" }}</span>
+          <span class="foot-ad__desc">{{ svcMsg .Svc "ad_orders" }}</span>
         </div>
         {{ else }}
         <a class="foot-ad foot-ad--house" href="/advertise">
