@@ -2532,3 +2532,110 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   box-shadow: 0 0 0 2px #fff, 0 2px 6px rgb(0 0 0 / 0.35);
 }
 .mappin--this .mappin__txt::after { border-top-color: var(--ink); }
+
+/* ── Footer grid ─────────────────────────────────────────────────────────────
+   Four columns: who we are, where to read the rules, where to follow, and the
+   slot. The copyright sits under all of them, centred, because it belongs to
+   the whole page rather than to any column.
+
+   This overrides the older flex row above; the .foot-nav and .foot-social
+   rules from that layout are left in place rather than removed. */
+.site-footer .container {
+  display: block;
+}
+.foot-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+  gap: 34px 40px;
+  align-items: start;
+}
+.foot-col { min-width: 0; }
+
+.foot-logo { display: inline-block; line-height: 0; }
+.foot-logo img { width: 64px; height: 64px; display: block; }
+.foot-mission {
+  margin: 14px 0 0;
+  max-width: 30ch;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.foot-h {
+  margin: 0 0 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.foot-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.foot-list a { display: inline-block; }
+
+/* An icon alone asks the reader to recognise a logo before they know where it
+   leads, so every channel is named as well as drawn. */
+.foot-soc a { display: inline-flex; align-items: center; gap: 9px; }
+.foot-soc svg { width: 18px; height: 18px; flex: none; }
+.foot-soc__name { text-transform: capitalize; }
+
+.foot-ad {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding: 16px 16px 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.22);
+}
+.foot-ad:hover { border-color: rgba(255, 255, 255, 0.32); }
+.foot-ad.is-disabled { opacity: 0.62; cursor: default; }
+/* The sidebar's ribbon, scaled to a smaller card. Same component, so the word
+   "Реклама" looks the same wherever it marks a placement. The card's top
+   padding is what keeps the title clear of the corner band. */
+/* Mirrored into the right corner. On the sidebar card the ribbon lies over an
+   image and nothing has to make way for it; here the card is text from its top
+   left corner down, and the band's tail reaches below the first line. Moving it
+   to the other corner leaves the reading edge clear and costs only the padding
+   on the title's right. Same component, same word, same colours. */
+.foot-ad .adslot__ribbon {
+  top: 11px; left: auto; right: -32px; width: 104px;
+  transform: rotate(45deg);
+  font-size: 0.55rem; letter-spacing: 0.07em; padding: 3px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.foot-ad__title {
+  display: block;
+  padding-right: 38px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.35;
+}
+.foot-ad__desc {
+  display: block;
+  margin-top: 6px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+}
+.foot-ad__cta {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #ef5350;
+}
+
+/* Two parts with a hairline between them: the menu above, the line the reader
+   under it. The rule lives on the menu block rather than on the copyright, so
+   the two halves can be spaced independently of where the line falls. */
+.foot-top {
+  padding-bottom: 26px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.foot-bottom { padding-top: 20px; }
+.foot-copy { margin: 0; text-align: center; }
+
+@media (max-width: 900px) {
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+}
+@media (max-width: 560px) {
+  .foot-grid { grid-template-columns: 1fr; gap: 26px; }
+  .foot-mission { max-width: none; }
+}

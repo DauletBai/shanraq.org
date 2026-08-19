@@ -415,17 +415,79 @@
 {{ define "site_footer" }}
 <footer class="site-footer">
   <div class="container">
-    <nav class="foot-nav">
-      <a href="/about">{{ t .Lang "footer.about" }}</a>
-      <a href="/predictions">{{ t .Lang "pred.title" }}</a>
-      <a href="/guide">{{ t .Lang "footer.you" }}</a>
-      <a href="/support">{{ t .Lang "footer.support" }}</a>
-      {{ if svcOff .Svc "ad_orders" }}<span class="is-disabled" title="{{ svcMsg .Svc "ad_orders" }}" aria-disabled="true">{{ t .Lang "adv.nav" }}</span>{{ else }}<a href="/advertise">{{ t .Lang "adv.nav" }}</a>{{ end }}
-      <a href="/privacy">{{ t .Lang "footer.privacy" }}</a>
-      <a href="/terms">{{ t .Lang "footer.terms" }}</a>
-    </nav>
-    <span>© {{ year }} <a href="/">Shanraq.org</a> — {{ t .Lang "footer.rights" }}</span>
-    <div class="foot-social">{{ template "social_icons" .Info.Social }}{{ if ne .Info.GitHub "" }}<a class="soc" href="{{ .Info.GitHub }}" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6 0-.3 0-1.1 0-2-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2 0 1.6 0 2.9 0 3.3 0 .3.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg></a>{{ end }}</div>
+    <div class="foot-top">
+      <div class="foot-grid">
+
+      {{/* 1 — who this is. The light mark, because the footer ground is dark. */}}
+      <div class="foot-col foot-col--brand">
+        <a class="foot-logo" href="/" aria-label="Shanraq.org">
+          <img src="{{ asset "/static/brand/shanraq-light.svg" }}" alt="Shanraq.org" width="64" height="64">
+        </a>
+        <p class="foot-mission">{{ t .Lang "footer.tag" }}</p>
+      </div>
+
+      {{/* 2 — the pages a reader goes looking for on purpose: what we are, how
+           to use it, and the two documents they are entitled to find. */}}
+      <nav class="foot-col" aria-labelledby="foot-about">
+        <h2 class="foot-h" id="foot-about">{{ t .Lang "footer.col_about" }}</h2>
+        <ul class="foot-list">
+          <li><a href="/about">{{ t .Lang "footer.about" }}</a></li>
+          <li><a href="/guide">{{ t .Lang "footer.you" }}</a></li>
+          <li><a href="/predictions">{{ t .Lang "pred.title" }}</a></li>
+          <li><a href="/support">{{ t .Lang "footer.support" }}</a></li>
+          <li><a href="/privacy">{{ t .Lang "footer.privacy" }}</a></li>
+          <li><a href="/terms">{{ t .Lang "footer.terms" }}</a></li>
+        </ul>
+      </nav>
+
+      {{/* 3 — the channels. Named as well as drawn: an icon alone asks the
+           reader to recognise a logo before they know where it leads. */}}
+      <div class="foot-col" aria-labelledby="foot-follow">
+        <h2 class="foot-h" id="foot-follow">{{ t .Lang "footer.col_follow" }}</h2>
+        <ul class="foot-list foot-soc">
+          {{ range liveSocial .Info.Social }}
+          <li><a href="{{ .URL }}" target="_blank" rel="noopener">{{ brandicon .Name }}<span class="foot-soc__name">{{ .Name }}</span></a></li>
+          {{ end }}
+          {{ if ne .Info.GitHub "" }}
+          <li><a href="{{ .Info.GitHub }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6 0-.3 0-1.1 0-2-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2 0 1.6 0 2.9 0 3.3 0 .3.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg><span class="foot-soc__name">GitHub</span></a></li>
+          {{ end }}
+        </ul>
+      </div>
+
+      {{/* 4 — the slot. It carries a real placement when one is booked and
+           sells itself when none is, and either way it wears the "Реклама"
+           ribbon: a house slide is still advertising, it just advertises the
+           slot. When ad orders are switched off the card stops being a link,
+           because an offer that leads to a closed door is worse than none. */}}
+      <div class="foot-col" aria-labelledby="foot-ad">
+        <h2 class="foot-h" id="foot-ad">{{ t .Lang "footer.col_ad" }}</h2>
+        {{ if .Ads }}{{ with index .Ads 0 }}
+        <a class="foot-ad{{ if .House }} foot-ad--house{{ end }}" href="{{ .URL }}"{{ if not .House }} rel="nofollow sponsored noopener" target="_blank"{{ end }}>
+          <span class="adslot__ribbon{{ if .House }} adslot__ribbon--house{{ end }}">{{ t $.Lang "ad.badge" }}</span>
+          <span class="foot-ad__title">{{ .Title }}</span>
+          {{ if .Desc }}<span class="foot-ad__desc">{{ .Desc }}</span>{{ end }}
+          <span class="foot-ad__cta">{{ if .Price }}{{ .Price }}{{ else }}{{ t $.Lang "ad.learn_more" }}{{ end }} →</span>
+        </a>
+        {{ end }}{{ else if svcOff .Svc "ad_orders" }}
+        <div class="foot-ad foot-ad--house is-disabled" title="{{ svcMsg .Svc "ad_orders" }}" aria-disabled="true">
+          <span class="adslot__ribbon adslot__ribbon--house">{{ t .Lang "ad.badge" }}</span>
+          <span class="foot-ad__title">{{ t .Lang "ad.placeholder" }}</span>
+        </div>
+        {{ else }}
+        <a class="foot-ad foot-ad--house" href="/advertise">
+          <span class="adslot__ribbon adslot__ribbon--house">{{ t .Lang "ad.badge" }}</span>
+          <span class="foot-ad__title">{{ t .Lang "ad.placeholder" }}</span>
+          <span class="foot-ad__cta">{{ t .Lang "ad.cta" }} →</span>
+        </a>
+        {{ end }}
+      </div>
+
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <p class="foot-copy">© {{ year }} <a href="/">Shanraq.org</a> — {{ t .Lang "footer.rights" }}</p>
+    </div>
   </div>
 </footer>
 {{ if .NeedsMap }}<script src="{{ asset "/static/vendor/leaflet.js" }}"></script>{{ end }}
