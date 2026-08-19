@@ -96,6 +96,22 @@ type MediaConfig struct {
 	MaxUploadBytes int64  `mapstructure:"max_upload_bytes"`
 	MaxDimension   int    `mapstructure:"max_dimension"`
 	Watermark      bool   `mapstructure:"watermark"`
+
+	// MaxUploadBytes bounds one request; these three bound the disk. Without
+	// them a caller who is allowed to upload once is allowed to upload until
+	// the volume is full, which on a single VPS takes the site down with it.
+	//
+	// QuotaBytes is what one account may hold. MaxTotalBytes is what the whole
+	// store may hold, a floor under the service when many accounts are each
+	// within their own quota. Zero disables either check.
+	//
+	// OrphanGraceHours is how long an upload nothing references is kept before
+	// the sweep collects it: long enough that a listing form left open over
+	// lunch still finds its photos, short enough that abandoned drafts do not
+	// accumulate forever.
+	QuotaBytes       int64 `mapstructure:"quota_bytes"`
+	MaxTotalBytes    int64 `mapstructure:"max_total_bytes"`
+	OrphanGraceHours int   `mapstructure:"orphan_grace_hours"`
 }
 
 // SyndicateConfig controls resilience channels: RSS is always on; Telegram
@@ -323,6 +339,9 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("media.max_upload_bytes", 25<<20) // 25 MiB — a 48MP phone JPEG clears 10
 	v.SetDefault("media.max_dimension", 2000)
 	v.SetDefault("media.watermark", true)
+	v.SetDefault("media.quota_bytes", 512<<20)    // 512 MiB ≈ 70 listings' worth of photos
+	v.SetDefault("media.max_total_bytes", 20<<30) // 20 GiB across every account
+	v.SetDefault("media.orphan_grace_hours", 24)  // an abandoned form keeps its photos a day
 
 	// Registered so viper's AutomaticEnv binds SHANRAQ_OPERATOR_* from the
 	// environment — the legal operator's BIN/address are disclosed on the live

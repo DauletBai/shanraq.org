@@ -6,6 +6,8 @@ import (
 	"image"
 	"image/color"
 	"testing"
+
+	"github.com/google/uuid"
 )
 
 func TestProcessAvatarSquare(t *testing.T) {
@@ -39,7 +41,7 @@ func TestProcessAndSaveAvatarStoresAndReturnsURL(t *testing.T) {
 	}
 	m := &Module{store: store}
 	raw := solidPNG(t, 100, 100, color.RGBA{200, 100, 50, 255})
-	url, err := m.ProcessAndSaveAvatar(context.Background(), raw)
+	url, err := m.ProcessAndSaveAvatar(context.Background(), uuid.New(), raw)
 	if err != nil {
 		t.Fatalf("ProcessAndSaveAvatar: %v", err)
 	}

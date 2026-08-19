@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"image"
 	"io"
@@ -13,6 +14,7 @@ import (
 	"net/url"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"shanraq.org/internal/config"
 	"shanraq.org/pkg/modules/auth"
@@ -27,6 +29,7 @@ type Module struct {
 	auth   *auth.Module
 	cfg    config.MediaConfig
 	store  Store
+	ledger *ledger
 	mark   *image.RGBA
 	maxDim int
 	logger *zap.Logger
@@ -42,6 +45,9 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.cfg = rt.Config.Media
 	m.logger = rt.Logger
 	m.maxDim = m.cfg.MaxDimension
+	if rt.DB != nil {
+		m.ledger = &ledger{db: rt.DB}
+	}
 
 	switch m.cfg.Backend {
 	case "", "fs":
@@ -122,22 +128,99 @@ func sameOriginOnly(next http.Handler) http.Handler {
 // The cookie is a JWT with no session row to delete, so a deleted or suspended
 // account kept uploading until its token expired — two hours of writes from
 // someone the site no longer knows.
-func (m *Module) allowUpload(w http.ResponseWriter, r *http.Request) bool {
+func (m *Module) allowUpload(w http.ResponseWriter, r *http.Request) (uuid.UUID, bool) {
 	claims, ok := auth.ClaimsFromContext(r.Context())
 	if !ok {
 		writeJSONError(w, http.StatusUnauthorized, "authentication required")
-		return false
+		return uuid.Nil, false
 	}
 	if !m.auth.SessionStillValid(r.Context(), claims) {
 		writeJSONError(w, http.StatusUnauthorized, "authentication required")
-		return false
+		return uuid.Nil, false
+	}
+	owner, err := uuid.Parse(claims.Subject)
+	if err != nil {
+		writeJSONError(w, http.StatusUnauthorized, "authentication required")
+		return uuid.Nil, false
 	}
 	if !m.auth.AllowUpload(r, claims.Subject) {
 		w.Header().Set("Retry-After", "60")
 		writeJSONError(w, http.StatusTooManyRequests, "too many uploads; try again shortly")
-		return false
+		return uuid.Nil, false
 	}
-	return true
+	return owner, true
+}
+
+// reserve decides whether these bytes may be stored. It is checked before the
+// write and recorded after it, which leaves a window where two simultaneous
+// uploads can both be admitted: a quota is a bound on how much an account can
+// accumulate, not a ledger that has to balance to the byte, and the upload rate
+// limiter caps how far past it a burst can get.
+func (m *Module) reserve(ctx context.Context, owner uuid.UUID, key string, size int64) error {
+	if m.ledger == nil {
+		return nil // no database wired (tests, and the fs-only smoke image)
+	}
+	// Storing what you already have costs nothing and must not be charged.
+	if held, err := m.ledger.held(ctx, owner, key); err != nil {
+		return err
+	} else if held {
+		return nil
+	}
+	if quota := m.cfg.QuotaBytes; quota > 0 {
+		used, err := m.ledger.usage(ctx, owner)
+		if err != nil {
+			return err
+		}
+		if used+size > quota {
+			return ErrQuotaExceeded
+		}
+	}
+	if cap := m.cfg.MaxTotalBytes; cap > 0 {
+		// An object already on disk under someone else's name adds no bytes.
+		known, err := m.ledger.known(ctx, key)
+		if err != nil {
+			return err
+		}
+		if !known {
+			total, err := m.ledger.total(ctx)
+			if err != nil {
+				return err
+			}
+			if total+size > cap {
+				return ErrStoreFull
+			}
+		}
+	}
+	return nil
+}
+
+// keep files the stored object against its owner. A failure here is logged and
+// swallowed: the bytes are already on disk and the reader's page must not break
+// because the accounting row did not land. The sweep sees an untracked file as
+// one it does not own, and leaves it alone.
+func (m *Module) keep(ctx context.Context, owner uuid.UUID, key string, size int64, contentType string) {
+	if m.ledger == nil {
+		return
+	}
+	if err := m.ledger.record(ctx, key, size, contentType, owner); err != nil {
+		m.logger.Warn("media ledger record", zap.Error(err), zap.String("key", key))
+	}
+}
+
+// refuse maps a storage refusal onto a status. Being over quota is the caller's
+// problem to fix by deleting something; the store being full is ours, and
+// saying so plainly beats a generic error that reads like a bug.
+func (m *Module) refuse(w http.ResponseWriter, err error) {
+	switch {
+	case errors.Is(err, ErrQuotaExceeded):
+		writeJSONError(w, http.StatusRequestEntityTooLarge, "storage quota reached; delete some files first")
+	case errors.Is(err, ErrStoreFull):
+		m.logger.Error("media store is full")
+		writeJSONError(w, http.StatusInsufficientStorage, "storage is full; the site operator has been alerted")
+	default:
+		m.logger.Error("media reserve", zap.Error(err))
+		writeJSONError(w, http.StatusInternalServerError, "storage error")
+	}
 }
 
 type uploadResponse struct {
@@ -146,7 +229,8 @@ type uploadResponse struct {
 }
 
 func (m *Module) handleUpload(w http.ResponseWriter, r *http.Request) {
-	if !m.allowUpload(w, r) {
+	owner, ok := m.allowUpload(w, r)
+	if !ok {
 		return
 	}
 
@@ -184,11 +268,16 @@ func (m *Module) handleUpload(w http.ResponseWriter, r *http.Request) {
 	h := hex.EncodeToString(sum[:])
 	key := h[:2] + "/" + h + ".jpg"
 
+	if err := m.reserve(r.Context(), owner, key, int64(len(data))); err != nil {
+		m.refuse(w, err)
+		return
+	}
 	if err := m.store.Put(r.Context(), key, data, "image/jpeg"); err != nil {
 		m.logger.Error("media put", zap.Error(err))
 		writeJSONError(w, http.StatusInternalServerError, "storage error")
 		return
 	}
+	m.keep(r.Context(), owner, key, int64(len(data)), "image/jpeg")
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	_ = json.NewEncoder(w).Encode(uploadResponse{URL: m.store.URL(key), Key: key})
@@ -198,7 +287,8 @@ func (m *Module) handleUpload(w http.ResponseWriter, r *http.Request) {
 // passport, contract) stored as-is, or an image plan/scheme that goes through
 // the normal image pipeline. Same auth and size limits as image upload.
 func (m *Module) handleUploadDoc(w http.ResponseWriter, r *http.Request) {
-	if !m.allowUpload(w, r) {
+	owner, ok := m.allowUpload(w, r)
+	if !ok {
 		return
 	}
 	limit := m.cfg.MaxUploadBytes
@@ -241,11 +331,16 @@ func (m *Module) handleUploadDoc(w http.ResponseWriter, r *http.Request) {
 	sum := sha256.Sum256(data)
 	h := hex.EncodeToString(sum[:])
 	key := h[:2] + "/" + h + ext
+	if err := m.reserve(r.Context(), owner, key, int64(len(data))); err != nil {
+		m.refuse(w, err)
+		return
+	}
 	if err := m.store.Put(r.Context(), key, data, contentType); err != nil {
 		m.logger.Error("media put doc", zap.Error(err))
 		writeJSONError(w, http.StatusInternalServerError, "storage error")
 		return
 	}
+	m.keep(r.Context(), owner, key, int64(len(data)), contentType)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	_ = json.NewEncoder(w).Encode(uploadResponse{URL: m.store.URL(key), Key: key})
 }
@@ -253,7 +348,7 @@ func (m *Module) handleUploadDoc(w http.ResponseWriter, r *http.Request) {
 // ProcessAndSaveAvatar decodes a raw uploaded image, center-crops it to a
 // square (no watermark), stores it, and returns the public URL. Other modules
 // (the studio cabinet) call this to let a user set their profile photo.
-func (m *Module) ProcessAndSaveAvatar(ctx context.Context, raw []byte) (string, error) {
+func (m *Module) ProcessAndSaveAvatar(ctx context.Context, owner uuid.UUID, raw []byte) (string, error) {
 	data, err := m.processAvatar(raw)
 	if err != nil {
 		return "", err
@@ -261,9 +356,13 @@ func (m *Module) ProcessAndSaveAvatar(ctx context.Context, raw []byte) (string, 
 	sum := sha256.Sum256(data)
 	h := hex.EncodeToString(sum[:])
 	key := "avatar/" + h[:2] + "/" + h + ".jpg"
+	if err := m.reserve(ctx, owner, key, int64(len(data))); err != nil {
+		return "", err
+	}
 	if err := m.store.Put(ctx, key, data, "image/jpeg"); err != nil {
 		return "", fmt.Errorf("store avatar: %w", err)
 	}
+	m.keep(ctx, owner, key, int64(len(data)), "image/jpeg")
 	return m.store.URL(key), nil
 }
 
@@ -286,4 +385,5 @@ var _ interface {
 	shanraq.Module
 	shanraq.RouterModule
 	shanraq.InitializerModule
+	shanraq.StarterModule
 } = (*Module)(nil)

@@ -8,6 +8,7 @@ import (
 
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/modules/media"
 )
 
 // ProfilePage backs the cabinet profile/settings screen: avatar, identity, and
@@ -77,8 +78,15 @@ func (m *Module) handleAvatarUpload(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/studio/profile?ok=avatar_bad", http.StatusSeeOther)
 		return
 	}
-	url, err := m.media.ProcessAndSaveAvatar(r.Context(), raw)
+	url, err := m.media.ProcessAndSaveAvatar(r.Context(), authorID, raw)
 	if err != nil {
+		// Being out of room is not a broken file, and telling someone their
+		// photo is unreadable when it is their quota that is full sends them to
+		// re-export it forever.
+		if errors.Is(err, media.ErrQuotaExceeded) || errors.Is(err, media.ErrStoreFull) {
+			http.Redirect(w, r, "/studio/profile?ok=avatar_quota", http.StatusSeeOther)
+			return
+		}
 		m.rt.Logger.Warn("avatar process", zap.Error(err))
 		http.Redirect(w, r, "/studio/profile?ok=avatar_bad", http.StatusSeeOther)
 		return

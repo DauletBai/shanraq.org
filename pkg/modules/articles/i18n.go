@@ -1478,6 +1478,7 @@ var messages = map[string]map[string]string{
 	"prof.avatar_cleared":    {"kz": "Фото жойылды.", "ru": "Фото удалено.", "en": "Photo removed."},
 	"prof.avatar_bad":        {"kz": "Суретті жүктеу мүмкін болмады.", "ru": "Не удалось загрузить изображение.", "en": "Could not upload the image."},
 	"prof.avatar_big":        {"kz": "Файл тым үлкен.", "ru": "Файл слишком большой.", "en": "The file is too large."},
+	"prof.avatar_quota":      {"kz": "Сақтау орны толды. Жаңа сурет жүктер алдында бұрынғы файлдарды өшіріңіз.", "ru": "Место для файлов закончилось. Удалите старые файлы, прежде чем загружать новые.", "en": "You are out of storage. Delete some files before uploading more."},
 	"prof.del_badpass":       {"kz": "Құпия сөз қате.", "ru": "Неверный пароль.", "en": "Incorrect password."},
 	"prof.del_failed":        {"kz": "Аккаунтты жою мүмкін болмады.", "ru": "Не удалось удалить аккаунт.", "en": "Could not delete the account."},
 	"prof.del_lastadmin":     {"kz": "Сіз — сайттың жалғыз әкімшісісіз. Аккаунтты жою үшін алдымен басқа әкімшіні тағайындаңыз.", "ru": "Вы — единственный администратор сайта. Чтобы удалить аккаунт, сначала назначьте другого администратора.", "en": "You are the site's only administrator. Appoint another one before deleting this account."},
