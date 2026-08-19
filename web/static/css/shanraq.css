@@ -2494,7 +2494,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    (hover:hover) and (pointer:fine) guard buys: the collapse exists only where
    the gesture that undoes it exists. */
 .lmap {
-  margin: 14px 0 0;
+  margin: 14px 0 18px;
   border: 1px solid var(--line);
   border-radius: 12px;
   overflow: hidden;
@@ -2521,16 +2521,4 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lmap__canvas { transition: none; }
-}
-
-/* The listing's own marker. Leaflet's default icon is a PNG we do not vendor,
-   so every marker on this site is drawn in markup — see .mappin. */
-.lpin {
-  /* Leaflet wraps divIcon html in a div, so this span is inline unless told
-     otherwise — and width/height do nothing to an inline box, which left the
-     marker as a squashed ring instead of a dot. */
-  display: block;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--gold); border: 3px solid #fff;
-  box-shadow: 0 0 0 2px var(--gold), 0 2px 6px rgba(0,0,0,.35);
 }

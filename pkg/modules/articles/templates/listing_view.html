@@ -22,8 +22,9 @@
         {{/* Where it is, straight after the photographs — that is the order a
              buyer asks in. Drawn only when a position was actually resolved. */}}
         {{ if .Pin }}
-        <section class="lmap" data-lmap
+        <section class="lmap" data-lmap data-lang="{{ .Lang }}"
                  data-lat="{{ .Pin.Lat }}" data-lng="{{ .Pin.Lng }}"
+                 data-price="{{ .Pin.Price }}" data-cur="{{ .Pin.Cur }}"
                  data-exact="{{ if .Pin.Exact }}1{{ else }}0{{ end }}">
           <div class="lmap__canvas"></div>
           <div class="lmap__bar">

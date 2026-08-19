@@ -910,61 +910,12 @@
       var box = x.closest('.notice');
       if (box) box.remove();
     });
-    // The map on one listing's own page. It is a strip until the pointer comes
-    // to rest on it (see .lmap in the stylesheet), and full height from the
-    // start on a touch screen, where there is no hover to grow it with.
-    document.querySelectorAll('[data-lmap]').forEach(function (box) {
-      if (typeof L === 'undefined') return;
-      var holder = box.querySelector('.lmap__canvas');
-      var lat = parseFloat(box.getAttribute('data-lat'));
-      var lng = parseFloat(box.getAttribute('data-lng'));
-      if (!holder || isNaN(lat) || isNaN(lng)) return;
-      var exact = box.getAttribute('data-exact') === '1';
-
-      // Straight down to the building when the listing carries its own
-      // coordinates, and no closer than the district when it does not: zooming
-      // to a street the pin cannot vouch for would dress a guess as an address.
-      var map = L.map(holder, { scrollWheelZoom: false })
-                 .setView([lat, lng], exact ? 17 : 13);
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(map);
-
-      if (exact) {
-        // Leaflet's own marker is a PNG this site does not vendor, so the
-        // marker is drawn in markup like every other one here.
-        L.marker([lat, lng], {
-          icon: L.divIcon({ className: '', html: '<span class="lpin"></span>',
-                            iconSize: [20, 20], iconAnchor: [10, 10] })
-        }).addTo(map);
-      } else {
-        // The listing gave a settlement, so the map shows a settlement. A
-        // sharp dot here would claim a precision nobody entered.
-        L.circle([lat, lng], {
-          radius: 900, color: '#e53935', weight: 1,
-          fillColor: '#e53935', fillOpacity: 0.12
-        }).addTo(map);
-      }
-
-      // Growing on hover changes the height behind Leaflet's back, and a map
-      // that is not told re-uses the size it was born at: half the panel stays
-      // blank grey. invalidateSize keeps the centre, so the pin does not drift.
-      if (window.ResizeObserver) {
-        new ResizeObserver(function () {
-          if (holder.clientHeight) map.invalidateSize();
-        }).observe(holder);
-      }
-
-      // The page keeps its scroll until the reader deliberately clicks in.
-      map.on('click', function () { map.scrollWheelZoom.enable(); });
-      map.on('mouseout', function () { map.scrollWheelZoom.disable(); });
-    });
-
-    document.querySelectorAll('[data-listing-map]').forEach(function (box) {
-      if (typeof L === 'undefined') return;
-      var mode = box.getAttribute('data-map-mode') || 'find';
-      var lang = box.getAttribute('data-lang') || 'ru';
+    // Money, abbreviations and the price pill live here rather than inside one
+    // map, because a listing has to look like the same object on every map it
+    // appears on. A reader who taps a 25 млн pill in the results and lands on
+    // the advert should meet that same pill, not a lookalike that happens to
+    // agree today and drifts the next time one of the two is edited.
+    function mapFmt(lang) {
       var T = {
         exact: { kz: 'Нақты орны', ru: 'Точное место', en: 'Exact location' },
         approx: { kz: 'Елді мекеннің ортасы', ru: 'Центр населённого пункта', en: 'Settlement centre' },
@@ -986,6 +937,74 @@
       }
       function cur(p) { return p.cur === 'RUB' ? '\u20bd' : '\u20b8'; }
       function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+      // The one price pill. Both maps call this; neither builds its own.
+      function priceIcon(price, currency) {
+        return L.divIcon({
+          className: 'mappin',
+          html: '<span class="mappin__txt">' + esc(shortMoney(price) + ' ' + cur({ cur: currency })) + '</span>',
+          iconSize: [0, 0], iconAnchor: [0, 0]
+        });
+      }
+      return { t: t, money: money, shortMoney: shortMoney, cur: cur, esc: esc, priceIcon: priceIcon };
+    }
+
+    // The map on one listing's own page. It is a strip until the pointer comes
+    // to rest on it (see .lmap in the stylesheet), and full height from the
+    // start on a touch screen, where there is no hover to grow it with.
+    document.querySelectorAll('[data-lmap]').forEach(function (box) {
+      if (typeof L === 'undefined') return;
+      var holder = box.querySelector('.lmap__canvas');
+      var lat = parseFloat(box.getAttribute('data-lat'));
+      var lng = parseFloat(box.getAttribute('data-lng'));
+      if (!holder || isNaN(lat) || isNaN(lng)) return;
+      var exact = box.getAttribute('data-exact') === '1';
+
+      // Straight down to the building when the listing carries its own
+      // coordinates, and no closer than the district when it does not: zooming
+      // to a street the pin cannot vouch for would dress a guess as an address.
+      var map = L.map(holder, { scrollWheelZoom: false })
+                 .setView([lat, lng], exact ? 17 : 13);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+
+      // The same price pill the reader just clicked in the results. A listing
+      // is one object and looks like one object on every map it appears on.
+      if (!exact) {
+        // Only the ground under it changes: no address was given, so the circle
+        // says the position is a settlement, not a building. The pill stays.
+        L.circle([lat, lng], {
+          radius: 900, color: '#e53935', weight: 1,
+          fillColor: '#e53935', fillOpacity: 0.12
+        }).addTo(map);
+      }
+      L.marker([lat, lng], {
+        icon: mapFmt(box.getAttribute('data-lang') || 'ru')
+                .priceIcon(parseInt(box.getAttribute('data-price'), 10) || 0,
+                           box.getAttribute('data-cur') || 'KZT')
+      }).addTo(map);
+
+      // Growing on hover changes the height behind Leaflet's back, and a map
+      // that is not told re-uses the size it was born at: half the panel stays
+      // blank grey. invalidateSize keeps the centre, so the pin does not drift.
+      if (window.ResizeObserver) {
+        new ResizeObserver(function () {
+          if (holder.clientHeight) map.invalidateSize();
+        }).observe(holder);
+      }
+
+      // The page keeps its scroll until the reader deliberately clicks in.
+      map.on('click', function () { map.scrollWheelZoom.enable(); });
+      map.on('mouseout', function () { map.scrollWheelZoom.disable(); });
+    });
+
+    document.querySelectorAll('[data-listing-map]').forEach(function (box) {
+      if (typeof L === 'undefined') return;
+      var mode = box.getAttribute('data-map-mode') || 'find';
+      var lang = box.getAttribute('data-lang') || 'ru';
+      var F = mapFmt(lang);
+      var t = F.t, money = F.money, shortMoney = F.shortMoney, cur = F.cur, esc = F.esc;
 
       var holder = document.createElement('div');
       holder.className = 'map-holder map-holder--leaflet';
@@ -1165,11 +1184,7 @@
                   lng += r * Math.sin(a) / Math.max(0.2, Math.cos(p.lat * Math.PI / 180));
                 }
                 hover(L.marker([lat, lng], {
-                  icon: L.divIcon({
-                    className: 'mappin',
-                    html: '<span class="mappin__txt">' + esc(shortMoney(p.price) + ' ' + cur(p)) + '</span>',
-                    iconSize: [0, 0], iconAnchor: [0, 0]
-                  }),
+                  icon: F.priceIcon(p.price, p.cur),
                   riseOnHover: true
                 }).bindPopup(cardFor(p), { minWidth: 240, className: 'mapcard-pop' })).addTo(detailed);
               });
