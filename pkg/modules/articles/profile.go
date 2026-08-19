@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"errors"
 	"io"
 	"net/http"
 	"strings"
@@ -138,6 +139,14 @@ func (m *Module) handleDeleteAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := m.auth.DeleteAccount(r.Context(), authorID); err != nil {
+		// The site must not be left without anyone who can administer it, and
+		// deleting your own account is the one route to that state the console's
+		// own guard never sees. Say why, rather than reporting a generic failure
+		// the administrator would reasonably read as a bug.
+		if errors.Is(err, auth.ErrLastAdmin) {
+			http.Redirect(w, r, "/studio/profile?ok=del_lastadmin", http.StatusSeeOther)
+			return
+		}
 		m.rt.Logger.Error("delete account", zap.Error(err))
 		http.Redirect(w, r, "/studio/profile?ok=del_failed", http.StatusSeeOther)
 		return

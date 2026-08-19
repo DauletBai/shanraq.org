@@ -1479,6 +1479,7 @@ var messages = map[string]map[string]string{
 	"prof.avatar_big":        {"kz": "Файл тым үлкен.", "ru": "Файл слишком большой.", "en": "The file is too large."},
 	"prof.del_badpass":       {"kz": "Құпия сөз қате.", "ru": "Неверный пароль.", "en": "Incorrect password."},
 	"prof.del_failed":        {"kz": "Аккаунтты жою мүмкін болмады.", "ru": "Не удалось удалить аккаунт.", "en": "Could not delete the account."},
+	"prof.del_lastadmin":     {"kz": "Сіз — сайттың жалғыз әкімшісісіз. Аккаунтты жою үшін алдымен басқа әкімшіні тағайындаңыз.", "ru": "Вы — единственный администратор сайта. Чтобы удалить аккаунт, сначала назначьте другого администратора.", "en": "You are the site's only administrator. Appoint another one before deleting this account."},
 	"studio.stat_total":      {"kz": "Барлық мақала", "ru": "Всего статей", "en": "Total stories"},
 	"studio.stat_published":  {"kz": "Жарияланған", "ru": "Опубликовано", "en": "Published"},
 	"studio.stat_drafts":     {"kz": "Жоба", "ru": "Черновики", "en": "Drafts"},

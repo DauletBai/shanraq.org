@@ -245,3 +245,132 @@ func TestLastAdminSurvivesConcurrentDemotion(t *testing.T) {
 		_, _ = pool.Exec(ctx, `DELETE FROM auth_users WHERE id = ANY($1)`, []uuid.UUID{a.ID, b.ID})
 	}
 }
+
+// The hole the audit found: the console refuses to delete the last
+// administrator, but the administrator could delete *themselves* from
+// /studio/delete, which went straight to an unconditional DELETE. One
+// administrator, one right-to-erasure click, and nobody left who can administer
+// the site — a state no console action can undo.
+func TestLastAdminCannotDeleteThemselves(t *testing.T) {
+	pool := revocationPool(t)
+	store := NewStore(pool)
+	ctx := context.Background()
+
+	a := seedUser(t, pool, "admin")
+	parkOtherAdmins(t, pool, a.ID)
+
+	err := store.DeleteAccount(ctx, a.ID)
+	if !errors.Is(err, ErrLastAdmin) {
+		t.Fatalf("self-delete of the last administrator returned %v, want ErrLastAdmin", err)
+	}
+
+	var left int
+	if err := pool.QueryRow(ctx,
+		`SELECT count(*) FROM auth_users WHERE role = ANY($1)`, rootRoles).Scan(&left); err != nil {
+		t.Fatalf("recount: %v", err)
+	}
+	if left != 1 {
+		t.Fatalf("left %d administrators, want 1", left)
+	}
+
+	// An ordinary account still deletes: the guard must not turn erasure off for
+	// everyone to protect one case.
+	u := seedUser(t, pool, "user")
+	if err := store.DeleteAccount(ctx, u.ID); err != nil {
+		t.Fatalf("ordinary account could not delete itself: %v", err)
+	}
+}
+
+// Self-deletion and demotion are two doors onto the same invariant, so the race
+// has to be tested across them, not only within each. Every pairing of the two
+// must leave exactly one administrator standing.
+func TestLastAdminSurvivesConcurrentRemoval(t *testing.T) {
+	pool := revocationPool(t)
+	store := NewStore(pool)
+	ctx := context.Background()
+
+	remove := map[string]func(uuid.UUID) error{
+		"delete": func(id uuid.UUID) error { return store.DeleteAccount(ctx, id) },
+		"demote": func(id uuid.UUID) error { return store.SetRoleByID(ctx, id, "user") },
+	}
+	pairs := [][2]string{{"delete", "delete"}, {"delete", "demote"}, {"demote", "delete"}}
+
+	for _, pair := range pairs {
+		for attempt := 0; attempt < 6; attempt++ {
+			a := seedUser(t, pool, "admin")
+			b := seedUser(t, pool, "admin")
+			parkOtherAdmins(t, pool, a.ID, b.ID)
+
+			start := make(chan struct{})
+			errs := make(chan error, 2)
+			for i, id := range []uuid.UUID{a.ID, b.ID} {
+				act := remove[pair[i]]
+				go func(id uuid.UUID) {
+					<-start
+					errs <- act(id)
+				}(id)
+			}
+			close(start)
+
+			refused := 0
+			for i := 0; i < 2; i++ {
+				switch err := <-errs; {
+				case err == nil:
+				case errors.Is(err, ErrLastAdmin):
+					refused++
+				default:
+					t.Fatalf("%v attempt %d: unexpected error: %v", pair, attempt, err)
+				}
+			}
+			if refused != 1 {
+				t.Fatalf("%v attempt %d: %d of 2 removals refused, want exactly 1", pair, attempt, refused)
+			}
+
+			var left int
+			if err := pool.QueryRow(ctx,
+				`SELECT count(*) FROM auth_users WHERE role = ANY($1)`, rootRoles).Scan(&left); err != nil {
+				t.Fatalf("recount: %v", err)
+			}
+			if left != 1 {
+				t.Fatalf("%v attempt %d left %d administrators, want 1", pair, attempt, left)
+			}
+
+			_, _ = pool.Exec(ctx, `DELETE FROM auth_users WHERE id = ANY($1)`, []uuid.UUID{a.ID, b.ID})
+		}
+	}
+}
+
+// adminctl is the third door onto the same change. A guard the web console
+// enforces and the command line does not is a guard with a way around it.
+func TestSetPrimaryRoleKeepsTheLastAdmin(t *testing.T) {
+	pool := revocationPool(t)
+	store := NewStore(pool)
+	ctx := context.Background()
+
+	a := seedUser(t, pool, "admin")
+	parkOtherAdmins(t, pool, a.ID)
+
+	found, err := store.SetPrimaryRole(ctx, a.Email, "user")
+	if !errors.Is(err, ErrLastAdmin) {
+		t.Fatalf("adminctl demotion of the last administrator returned (%v, %v), want ErrLastAdmin", found, err)
+	}
+
+	// Promotion is never the dangerous direction, and it must still bump
+	// auth_version so a token issued under the old role stops being honoured.
+	u := seedUser(t, pool, "user")
+	if _, err := store.SetPrimaryRole(ctx, u.Email, "admin"); err != nil {
+		t.Fatalf("promote: %v", err)
+	}
+	var role string
+	var version int
+	if err := pool.QueryRow(ctx,
+		`SELECT role, auth_version FROM auth_users WHERE id = $1`, u.ID).Scan(&role, &version); err != nil {
+		t.Fatalf("read back: %v", err)
+	}
+	if role != "admin" {
+		t.Fatalf("role is %q, want admin", role)
+	}
+	if version <= u.AuthVersion {
+		t.Fatalf("auth_version stayed at %d: tokens issued under the old role still pass", version)
+	}
+}

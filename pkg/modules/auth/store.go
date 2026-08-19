@@ -424,21 +424,60 @@ func (s *Store) AuthorCard(ctx context.Context, userID uuid.UUID) (AuthorCard, e
 // their content (articles, listings, comments, votes, favorites, referrals,
 // consents, tokens…). This is the user's own right-to-erasure action; it is
 // irreversible. Moderation-log entries are preserved (their actor is set NULL).
+//
+// Erasure is a right, but it is not a way around the last-administrator
+// invariant. The admin console refuses to delete or demote the last root
+// account; self-service deletion has to refuse it too, or that account simply
+// leaves by the other door and the site is left with nobody who can administer
+// it. The role is read inside the transaction, behind the same advisory lock
+// the console takes, because a role read before the lock can already be stale
+// by the time it is acted on.
 func (s *Store) DeleteAccount(ctx context.Context, userID uuid.UUID) error {
-	ct, err := s.db.Exec(ctx, `DELETE FROM auth_users WHERE id = $1`, userID)
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return fmt.Errorf("begin delete tx: %w", err)
+	}
+	defer tx.Rollback(ctx) //nolint:errcheck
+
+	if lockErr := lockAdminGuard(ctx, tx); lockErr != nil {
+		return lockErr
+	}
+	var role string
+	err = tx.QueryRow(ctx, `SELECT role FROM auth_users WHERE id = $1`, userID).Scan(&role)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return fmt.Errorf("delete account: user not found")
+	}
+	if err != nil {
+		return fmt.Errorf("delete account: %w", err)
+	}
+	if isRootRole(role) {
+		n, cerr := s.countRootAdminsTx(ctx, tx)
+		if cerr != nil {
+			return cerr
+		}
+		if n <= 1 {
+			return ErrLastAdmin
+		}
+	}
+	ct, err := tx.Exec(ctx, `DELETE FROM auth_users WHERE id = $1`, userID)
 	if err != nil {
 		return fmt.Errorf("delete account: %w", err)
 	}
 	if ct.RowsAffected() == 0 {
 		return fmt.Errorf("delete account: user not found")
 	}
-	return nil
+	return tx.Commit(ctx)
 }
 
 // AuthorIdentity returns the user's name and phone-verification status.
 // SetPrimaryRole promotes (or demotes) an existing account by e-mail, updating
 // both the primary role column and the role join table so the change is visible
 // wherever roles are read. Returns false when no such account exists.
+//
+// This is the command-line door onto the same change the admin console makes,
+// so it answers to the same two rules: it cannot remove the last administrator,
+// and it bumps auth_version so tokens issued under the old role stop being
+// honoured. A guard only the console enforces is a guard with a way around it.
 func (s *Store) SetPrimaryRole(ctx context.Context, email, role string) (bool, error) {
 	primary, normalized := normalizeRoleSet(role)
 	tx, err := s.db.Begin(ctx)
@@ -447,15 +486,35 @@ func (s *Store) SetPrimaryRole(ctx context.Context, email, role string) (bool, e
 	}
 	defer tx.Rollback(ctx) //nolint:errcheck
 
+	if lockErr := lockAdminGuard(ctx, tx); lockErr != nil {
+		return false, lockErr
+	}
 	var userID uuid.UUID
+	var current string
 	err = tx.QueryRow(ctx,
-		`UPDATE auth_users SET role = $2 WHERE lower(email) = lower($1) RETURNING id`,
-		email, primary).Scan(&userID)
+		`SELECT id, role FROM auth_users WHERE lower(email) = lower($1)`, email).Scan(&userID, &current)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return false, nil
 	}
 	if err != nil {
+		return false, fmt.Errorf("read role: %w", err)
+	}
+	if isRootRole(current) && !isRootRole(primary) {
+		n, cerr := s.countRootAdminsTx(ctx, tx)
+		if cerr != nil {
+			return false, cerr
+		}
+		if n <= 1 {
+			return false, ErrLastAdmin
+		}
+	}
+	if _, err := tx.Exec(ctx,
+		`UPDATE auth_users SET role = $2, auth_version = auth_version + 1, updated_at = now() WHERE id = $1`,
+		userID, primary); err != nil {
 		return false, fmt.Errorf("set role: %w", err)
+	}
+	if _, err := tx.Exec(ctx, `DELETE FROM auth_user_roles WHERE user_id = $1`, userID); err != nil {
+		return false, fmt.Errorf("clear roles: %w", err)
 	}
 	for _, name := range normalized {
 		roleID, ensureErr := s.ensureRoleTx(ctx, tx, name, "")

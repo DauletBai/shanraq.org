@@ -210,11 +210,14 @@ func (s *Store) countRootAdminsTx(ctx context.Context, tx pgx.Tx) (int, error) {
 // Read separately, as they were, two concurrent demotions each saw two
 // administrators, each concluded it was safe to proceed, and the site was left
 // with none.
+//
+// The lock is taken for every role change, not only for the ones that look like
+// demotions, because whether this *is* a demotion is itself decided by reading
+// the current role — and that read, taken before the lock as it once was, can be
+// stale by the time it is acted on. A promotion racing a demotion could make the
+// demoter believe it was touching an ordinary account. Inside the lock the role
+// is re-read, so the decision and the change cannot come apart.
 func (s *Store) SetRoleByID(ctx context.Context, id uuid.UUID, role string) error {
-	current, err := s.GetAdminUser(ctx, id)
-	if err != nil {
-		return err
-	}
 	primary, normalized := normalizeRoleSet(role)
 	tx, err := s.db.Begin(ctx)
 	if err != nil {
@@ -222,10 +225,18 @@ func (s *Store) SetRoleByID(ctx context.Context, id uuid.UUID, role string) erro
 	}
 	defer tx.Rollback(ctx) //nolint:errcheck
 
-	if isRootRole(current.Role) && !isRootRole(role) {
-		if lockErr := lockAdminGuard(ctx, tx); lockErr != nil {
-			return lockErr
+	if lockErr := lockAdminGuard(ctx, tx); lockErr != nil {
+		return lockErr
+	}
+	var current string
+	if err := tx.QueryRow(ctx, `SELECT role FROM auth_users WHERE id = $1`, id).Scan(&current); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return ErrUserNotFound
 		}
+		return fmt.Errorf("read role: %w", err)
+	}
+
+	if isRootRole(current) && !isRootRole(primary) {
 		n, cerr := s.countRootAdminsTx(ctx, tx)
 		if cerr != nil {
 			return cerr
@@ -262,10 +273,6 @@ func (s *Store) SetRoleByID(ctx context.Context, id uuid.UUID, role string) erro
 // Refuses to delete the last administrator; the caller separately refuses to
 // let an administrator delete themselves.
 func (s *Store) DeleteUserByAdmin(ctx context.Context, id uuid.UUID) error {
-	u, err := s.GetAdminUser(ctx, id)
-	if err != nil {
-		return err
-	}
 	tx, err := s.db.Begin(ctx)
 	if err != nil {
 		return fmt.Errorf("begin delete tx: %w", err)
@@ -274,11 +281,19 @@ func (s *Store) DeleteUserByAdmin(ctx context.Context, id uuid.UUID) error {
 
 	// Same guard as the demotion path, and for the same reason: two concurrent
 	// deletions would otherwise each see a spare administrator that the other
-	// was already removing.
-	if isRootRole(u.Role) {
-		if lockErr := lockAdminGuard(ctx, tx); lockErr != nil {
-			return lockErr
+	// was already removing. The role is read under the lock, not before it, so
+	// a promotion landing in between cannot hide an administrator from the count.
+	if lockErr := lockAdminGuard(ctx, tx); lockErr != nil {
+		return lockErr
+	}
+	var role string
+	if err := tx.QueryRow(ctx, `SELECT role FROM auth_users WHERE id = $1`, id).Scan(&role); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return ErrUserNotFound
 		}
+		return fmt.Errorf("read role: %w", err)
+	}
+	if isRootRole(role) {
 		n, cerr := s.countRootAdminsTx(ctx, tx)
 		if cerr != nil {
 			return cerr
