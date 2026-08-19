@@ -2522,3 +2522,13 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 @media (prefers-reduced-motion: reduce) {
   .lmap__canvas { transition: none; }
 }
+
+/* The advert being read, among its neighbours. Same pill — same shape, same
+   size, same price — darkened so the reader can find their own flat in the
+   crowd at a glance. A different marker shape here would undo the recognition
+   the shared pill exists to give. */
+.mappin--this .mappin__txt {
+  background: var(--ink);
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgb(0 0 0 / 0.35);
+}
+.mappin--this .mappin__txt::after { border-top-color: var(--ink); }

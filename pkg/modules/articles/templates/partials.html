@@ -937,15 +937,63 @@
       }
       function cur(p) { return p.cur === 'RUB' ? '\u20bd' : '\u20b8'; }
       function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+      // The popup card: the same object shows the same card whichever map the
+      // reader met it on.
+      function cardFor(p) {
+        var img = p.cover
+          ? '<img class="mapcard__img" src="' + esc(p.cover) + '" alt="" loading="lazy">'
+          : '';
+        var meta = [];
+        if (p.rooms > 0) meta.push(p.rooms + ' ' + t('rooms'));
+        if (p.area > 0) meta.push(p.area + ' \u043c\u00b2');
+        return '<a class="mapcard" href="/listings/' + p.id + '?lang=' + lang + '">' + img +
+          '<span class="mapcard__body">' +
+            '<b class="mapcard__price">' + money(p.price) + ' ' + cur(p) +
+              (p.deal === 'rent' ? t('rent') : '') + '</b>' +
+            '<span class="mapcard__title">' + esc(p.title) + '</span>' +
+            (meta.length ? '<span class="mapcard__meta">' + meta.join(' \u00b7 ') + '</span>' : '') +
+            '<span class="mapcard__note">' + (p.exact ? t('exact') : t('approx')) + '</span>' +
+          '</span></a>';
+      }
+
+      // Listings that share a position — two flats in one building, or several
+      // that never got finer than their settlement's centre — stack into one
+      // marker and hide each other. Fan them onto a small ring instead, so the
+      // count stays visible even where the precision is not.
+      function spread(pins) {
+        var at = {}, spots = [], out = [];
+        pins.forEach(function (p) {
+          var k = p.lat.toFixed(5) + ',' + p.lng.toFixed(5);
+          if (!at[k]) { at[k] = []; spots.push(k); }
+          at[k].push(p);
+        });
+        spots.forEach(function (k) {
+          var same = at[k], m = same.length;
+          same.forEach(function (p, i) {
+            var lat = p.lat, lng = p.lng;
+            if (m > 1) {
+              var a = (2 * Math.PI * i) / m, r = 0.00025; // about 28 m
+              // Longitude degrees shrink towards the poles; without the cosine
+              // the ring would be an ellipse squashed flat.
+              lat += r * Math.cos(a);
+              lng += r * Math.sin(a) / Math.max(0.2, Math.cos(p.lat * Math.PI / 180));
+            }
+            out.push({ p: p, lat: lat, lng: lng });
+          });
+        });
+        return out;
+      }
+
       // The one price pill. Both maps call this; neither builds its own.
-      function priceIcon(price, currency) {
+      function priceIcon(price, currency, self) {
         return L.divIcon({
-          className: 'mappin',
+          className: 'mappin' + (self ? ' mappin--this' : ''),
           html: '<span class="mappin__txt">' + esc(shortMoney(price) + ' ' + cur({ cur: currency })) + '</span>',
           iconSize: [0, 0], iconAnchor: [0, 0]
         });
       }
-      return { t: t, money: money, shortMoney: shortMoney, cur: cur, esc: esc, priceIcon: priceIcon };
+      return { t: t, money: money, shortMoney: shortMoney, cur: cur, esc: esc,
+               priceIcon: priceIcon, cardFor: cardFor, spread: spread };
     }
 
     // The map on one listing's own page. It is a strip until the pointer comes
@@ -969,8 +1017,9 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
 
-      // The same price pill the reader just clicked in the results. A listing
-      // is one object and looks like one object on every map it appears on.
+      var F = mapFmt(box.getAttribute('data-lang') || 'ru');
+      var selfId = box.getAttribute('data-id');
+
       if (!exact) {
         // Only the ground under it changes: no address was given, so the circle
         // says the position is a settlement, not a building. The pill stays.
@@ -979,11 +1028,30 @@
           fillColor: '#e53935', fillOpacity: 0.12
         }).addTo(map);
       }
+      // The same price pill the reader just clicked in the results. A listing
+      // is one object and looks like one object on every map it appears on;
+      // the only difference here is that this one is the advert being read, so
+      // it is darkened and lifted above its neighbours.
       L.marker([lat, lng], {
-        icon: mapFmt(box.getAttribute('data-lang') || 'ru')
-                .priceIcon(parseInt(box.getAttribute('data-price'), 10) || 0,
-                           box.getAttribute('data-cur') || 'KZT')
+        icon: F.priceIcon(parseInt(box.getAttribute('data-price'), 10) || 0,
+                          box.getAttribute('data-cur') || 'KZT', true),
+        zIndexOffset: 1000
       }).addTo(map);
+
+      // And everything else that is for sale nearby. Someone deciding on a flat
+      // is comparing it with the street, so the neighbours belong on this map
+      // too — leaving the page to see them is the trip this map exists to save.
+      fetch('/api/listings/pins', { credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (pins) {
+          F.spread(pins || []).forEach(function (s) {
+            if (s.p.id === selfId) return; // ours is already placed, and highlighted
+            L.marker([s.lat, s.lng], { icon: F.priceIcon(s.p.price, s.p.cur), riseOnHover: true })
+              .bindPopup(F.cardFor(s.p), { minWidth: 240, className: 'mapcard-pop' })
+              .addTo(map);
+          });
+        })
+        .catch(function () {}); // no neighbours is not a reason to lose the pin
 
       // Growing on hover changes the height behind Leaflet's back, and a map
       // that is not told re-uses the size it was born at: half the panel stays
@@ -1109,23 +1177,6 @@
             // One listing gets a card: photograph, price, size. A thumbnail is
             // what makes a marker worth tapping, and it is what every leading
             // property map puts behind one.
-            function cardFor(p) {
-              var img = p.cover
-                ? '<img class="mapcard__img" src="' + esc(p.cover) + '" alt="" loading="lazy">'
-                : '';
-              var meta = [];
-              if (p.rooms > 0) meta.push(p.rooms + ' ' + t('rooms'));
-              if (p.area > 0) meta.push(p.area + ' \u043c\u00b2');
-              return '<a class="mapcard" href="/listings/' + p.id + '?lang=' + lang + '">' + img +
-                '<span class="mapcard__body">' +
-                  '<b class="mapcard__price">' + money(p.price) + ' ' + cur(p) +
-                    (p.deal === 'rent' ? t('rent') : '') + '</b>' +
-                  '<span class="mapcard__title">' + esc(p.title) + '</span>' +
-                  (meta.length ? '<span class="mapcard__meta">' + meta.join(' \u00b7 ') + '</span>' : '') +
-                  '<span class="mapcard__note">' + (p.exact ? t('exact') : t('approx')) + '</span>' +
-                '</span></a>';
-            }
-
             pins.forEach(function (p) { group.push([p.lat, p.lng]); });
 
             var places = {}, order = [];
@@ -1161,33 +1212,11 @@
               }
             });
 
-            // Listings that share a position — two flats in one building, or
-            // several that never got finer than their settlement's centre —
-            // would stack into one marker and reproduce the very bug this
-            // rendering exists to fix. Fan them onto a small ring instead, so
-            // the count stays visible even where the precision is not.
-            var at = {}, spots = [];
-            pins.forEach(function (p) {
-              var k = p.lat.toFixed(5) + ',' + p.lng.toFixed(5);
-              if (!at[k]) { at[k] = []; spots.push(k); }
-              at[k].push(p);
-            });
-            spots.forEach(function (k) {
-              var same = at[k], m = same.length;
-              same.forEach(function (p, i) {
-                var lat = p.lat, lng = p.lng;
-                if (m > 1) {
-                  var a = (2 * Math.PI * i) / m, r = 0.00025; // about 28 m
-                  // Longitude degrees shrink towards the poles; without the
-                  // cosine the ring would be an ellipse squashed flat.
-                  lat += r * Math.cos(a);
-                  lng += r * Math.sin(a) / Math.max(0.2, Math.cos(p.lat * Math.PI / 180));
-                }
-                hover(L.marker([lat, lng], {
-                  icon: F.priceIcon(p.price, p.cur),
-                  riseOnHover: true
-                }).bindPopup(cardFor(p), { minWidth: 240, className: 'mapcard-pop' })).addTo(detailed);
-              });
+            F.spread(pins).forEach(function (s) {
+              hover(L.marker([s.lat, s.lng], {
+                icon: F.priceIcon(s.p.price, s.p.cur),
+                riseOnHover: true
+              }).bindPopup(F.cardFor(s.p), { minWidth: 240, className: 'mapcard-pop' })).addTo(detailed);
             });
 
             function syncDetail() {
