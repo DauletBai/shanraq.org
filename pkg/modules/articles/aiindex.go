@@ -182,7 +182,9 @@ func (m *Module) handleLLMS(w http.ResponseWriter, r *http.Request) {
 	b.WriteString("- [Объявления о недвижимости / Real-estate listings](" + site + "/listings)\n")
 	b.WriteString("- [Реестр прогнозов: что мы предсказали и что сбылось / Prediction ledger: every forecast we made, judged in public](" + site + "/predictions)\n")
 	b.WriteString("- [Об издании / About](" + site + "/about)\n")
-	b.WriteString("- [RSS](" + site + "/rss.xml)\n")
+	// The feed lives at /feed.xml; /rss.xml has never existed, so this line was
+	// handing every crawler that reads llms.txt a 404.
+	b.WriteString("- [RSS](" + site + "/feed.xml)\n")
 	b.WriteString("- [Sitemap](" + site + "/sitemap.xml)\n")
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
