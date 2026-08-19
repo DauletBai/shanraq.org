@@ -114,14 +114,39 @@ func sameOriginOnly(next http.Handler) http.Handler {
 	})
 }
 
+// allowUpload is the gate both upload endpoints share. A valid signature is not
+// enough here: these two routes are the only ones a session can use to spend
+// something we cannot get back, so they ask whether the account still exists
+// and still holds the session it claims, and how recently it last asked.
+//
+// The cookie is a JWT with no session row to delete, so a deleted or suspended
+// account kept uploading until its token expired — two hours of writes from
+// someone the site no longer knows.
+func (m *Module) allowUpload(w http.ResponseWriter, r *http.Request) bool {
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok {
+		writeJSONError(w, http.StatusUnauthorized, "authentication required")
+		return false
+	}
+	if !m.auth.SessionStillValid(r.Context(), claims) {
+		writeJSONError(w, http.StatusUnauthorized, "authentication required")
+		return false
+	}
+	if !m.auth.AllowUpload(r, claims.Subject) {
+		w.Header().Set("Retry-After", "60")
+		writeJSONError(w, http.StatusTooManyRequests, "too many uploads; try again shortly")
+		return false
+	}
+	return true
+}
+
 type uploadResponse struct {
 	URL string `json:"url"`
 	Key string `json:"key"`
 }
 
 func (m *Module) handleUpload(w http.ResponseWriter, r *http.Request) {
-	if _, ok := auth.ClaimsFromContext(r.Context()); !ok {
-		writeJSONError(w, http.StatusUnauthorized, "authentication required")
+	if !m.allowUpload(w, r) {
 		return
 	}
 
@@ -173,8 +198,7 @@ func (m *Module) handleUpload(w http.ResponseWriter, r *http.Request) {
 // passport, contract) stored as-is, or an image plan/scheme that goes through
 // the normal image pipeline. Same auth and size limits as image upload.
 func (m *Module) handleUploadDoc(w http.ResponseWriter, r *http.Request) {
-	if _, ok := auth.ClaimsFromContext(r.Context()); !ok {
-		writeJSONError(w, http.StatusUnauthorized, "authentication required")
+	if !m.allowUpload(w, r) {
 		return
 	}
 	limit := m.cfg.MaxUploadBytes

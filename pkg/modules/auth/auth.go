@@ -889,6 +889,13 @@ func (m *Module) AllowAuthAttempt(r *http.Request, action, email string) bool {
 	return m.enforceRateLimit(r, action, true, strings.TrimSpace(strings.ToLower(email)))
 }
 
+// AllowUpload rate-limits the media endpoints per account and per address.
+// Uploading is the one unauthenticated-by-role action that costs us something
+// irreversible — disk — so it is the one that must not be free to repeat.
+func (m *Module) AllowUpload(r *http.Request, userID string) bool {
+	return m.enforceRateLimit(r, "media_upload", true, userID)
+}
+
 func (m *Module) enforceRateLimit(r *http.Request, action string, includeIP bool, extraKeys ...string) bool {
 	if m.rateLimiter == nil {
 		return true

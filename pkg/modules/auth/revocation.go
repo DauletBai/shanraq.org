@@ -36,6 +36,18 @@ func (s *Store) authVersionOf(ctx context.Context, id uuid.UUID) (int, bool) {
 	return v, true
 }
 
+// SessionStillValid is the same question tokenStillValid answers, asked from
+// outside this package.
+//
+// RequireSession only reaches that check on its role branch, so a cookie-authed
+// surface that needs no particular role never gets it: an account deleted an
+// hour ago still passed, on the strength of a signature that had not expired.
+// Reading the site that way is deliberate and cheap. Spending our disk is not,
+// which is why the upload endpoints ask.
+func (m *Module) SessionStillValid(ctx context.Context, claims *Claims) bool {
+	return m.tokenStillValid(ctx, claims)
+}
+
 // tokenStillValid reports whether claims still speak for their account.
 //
 // Only privileged requests pay for this. Reading the site is authorised by the

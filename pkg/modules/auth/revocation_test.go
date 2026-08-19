@@ -374,3 +374,61 @@ func TestSetPrimaryRoleKeepsTheLastAdmin(t *testing.T) {
 		t.Fatalf("auth_version stayed at %d: tokens issued under the old role still pass", version)
 	}
 }
+
+// The upload endpoints authenticate by cookie but require no particular role,
+// so they never reached RequireSession's role branch — the one place the
+// account is actually consulted. A deleted account's cookie kept working there
+// for the rest of the token's life: two hours of writes to our disk from
+// someone the site no longer knows.
+func TestSessionStillValidFollowsTheAccount(t *testing.T) {
+	pool := revocationPool(t)
+	store := NewStore(pool)
+	tokens := NewTokenService("test-token-secret-that-is-long-enough-1234567890", time.Hour)
+	mod := &Module{tokens: tokens, store: store}
+	ctx := context.Background()
+
+	u := seedUser(t, pool, "user")
+	token, err := tokens.Generate(u)
+	if err != nil {
+		t.Fatalf("generate: %v", err)
+	}
+	claims, err := tokens.Parse(token)
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+	if !mod.SessionStillValid(ctx, claims) {
+		t.Fatal("a live account's session was refused")
+	}
+
+	if err := store.DeleteAccount(ctx, u.ID); err != nil {
+		t.Fatalf("delete: %v", err)
+	}
+	if mod.SessionStillValid(ctx, claims) {
+		t.Fatal("a deleted account's session still passed: uploads would keep being accepted")
+	}
+}
+
+// The upload limiter has to clear one listing form in a single burst — fifteen
+// photos and a document — while still refusing a script that keeps going.
+func TestUploadRateLimitClearsAFormAndThenBites(t *testing.T) {
+	mod := &Module{rateLimiter: newMemoryRateLimiter(defaultRateLimitRules())}
+	req := httptest.NewRequest(http.MethodPost, "/media/upload", nil)
+	req.RemoteAddr = "203.0.113.9:1234"
+	user := uuid.NewString()
+
+	for i := 0; i < 16; i++ {
+		if !mod.AllowUpload(req, user) {
+			t.Fatalf("upload %d of a single listing form was refused", i+1)
+		}
+	}
+	refused := false
+	for i := 0; i < 40; i++ {
+		if !mod.AllowUpload(req, user) {
+			refused = true
+			break
+		}
+	}
+	if !refused {
+		t.Fatal("the limiter never bit: a script could fill the disk at request speed")
+	}
+}
