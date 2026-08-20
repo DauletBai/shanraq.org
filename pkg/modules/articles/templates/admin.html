@@ -725,6 +725,14 @@
             <span>{{ t .Lang "aic.review_check" }} {{ template "fhelp" (t .Lang "aic.review_check_note") }}</span>
           </label>
 
+          {{/* Off since the arithmetic was done: the pipeline works, and an
+               author's own model still does the same job in a minute against
+               this one's eight, in a language they can read back. */}}
+          <label style="display:flex;align-items:center;gap:8px;margin-top:10px">
+            <input type="checkbox" name="auto_translate" {{ if .AI.AutoTranslate }}checked{{ end }}>
+            <span>{{ t .Lang "aic.auto_translate" }} {{ template "fhelp" (t .Lang "aic.auto_translate_note") }}</span>
+          </label>
+
           <fieldset style="border:0;padding:0;margin:14px 0">
             <legend style="font-weight:600;margin-bottom:6px">{{ t .Lang "aic.provider" }}</legend>
             {{ range .AI.Providers }}

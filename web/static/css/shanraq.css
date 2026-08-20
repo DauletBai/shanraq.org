@@ -1720,6 +1720,29 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .comment__delbtn:hover, .comment__delbtn:focus-visible { color: var(--gold); }
 .comment__body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 
+/* Readers judge comments as they judge articles, in a smaller hand: the widget
+   sits under the text and must not outweigh it. */
+.rating--sm { margin-top: 10px; padding: 2px 4px; gap: 4px; }
+.rating--sm .rating__btn { width: 26px; height: 26px; font-size: 0.9rem; }
+.rating--sm .rating__btn .ic { font-size: 0.9rem; }
+.rating--sm .rating__score { font-size: 0.92rem; min-width: 24px; }
+
+/* A comment voted far down is folded away behind its own summary line, and one
+   click opens it. Folded, not deleted: the reader who wants to judge for
+   themselves can, and nobody had to decide on their behalf. */
+.comment--folded { border-style: dashed; background: none; }
+.comment__fold > :not(summary) { margin-top: 10px; }
+.comment__foldline {
+  cursor: pointer; color: var(--muted); font-size: 0.9rem;
+  list-style: none; display: flex; align-items: center; gap: 8px;
+  min-height: 24px;
+}
+.comment__foldline::-webkit-details-marker { display: none; }
+.comment__foldline::before { content: "▸"; font-size: 0.8rem; }
+.comment__fold[open] > .comment__foldline::before { content: "▾"; }
+.comment__foldline:hover { color: var(--ink); }
+.comment__foldscore { font-weight: 700; color: var(--clay); }
+
 /* ================= Admin dashboard (standalone layout) ================= */
 .adm-body { margin: 0; background: var(--surface-2); }
 /* ── Admin spacing standard ────────────────────────────────────────────────

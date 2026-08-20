@@ -789,24 +789,13 @@ func (m *Module) handleComment(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	// AI pre-moderation (no-op when the assistant is off): a flagged comment is
-	// filed as hidden into the same queue human reports feed. On any error we
-	// fail open and publish — the human report button remains the backstop.
-	status := "published"
-	if m.ai != nil && m.ai.Enabled() {
-		if v, err := m.ai.Moderate(r.Context(), "comment", body); err == nil && v.Flagged() {
-			status = "hidden"
-			m.rt.Logger.Info("ai moderator hid comment",
-				zap.String("reason", v.Reason), zap.Float64("confidence", v.Confidence))
-		}
-	}
-	if err := m.comments.CreateWithStatus(r.Context(), a.ID, userID, body, status); err != nil {
+	// A comment is published as written. It used to pass a model first, which
+	// decided whether anyone would see it; readers decide that now, by voting,
+	// and a comment voted far enough down folds away instead of vanishing.
+	if err := m.comments.Create(r.Context(), a.ID, userID, body); err != nil {
 		m.rt.Logger.Error("create comment", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
-	}
-	if status == "hidden" {
-		backTo = "/read/" + slug + "?comment=review#comments"
 	}
 	http.Redirect(w, r, backTo, http.StatusSeeOther)
 }
@@ -852,6 +841,58 @@ func (m *Module) handleVote(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		m.rt.Logger.Error("vote", zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, backTo, http.StatusSeeOther)
+}
+
+// handleCommentVote records a reader's up or down vote on a comment.
+//
+// The same rules as voting on an article: one vote per reader, weighted by the
+// voter's own karma, and clicking the same arrow twice takes the vote back.
+// What it replaces is a model that read every comment and decided whether it
+// could be seen at all.
+func (m *Module) handleCommentVote(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+	backTo := "/read/" + slug + "#comments"
+
+	voter, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "bad form", http.StatusBadRequest)
+		return
+	}
+	var value int
+	switch r.FormValue("value") {
+	case "1", "up":
+		value = ratings.VoteUp
+	case "-1", "down":
+		value = ratings.VoteDown
+	default:
+		http.Redirect(w, r, backTo, http.StatusSeeOther)
+		return
+	}
+	// Clicking the current direction again retracts the vote.
+	if cur, err := m.ratings.CommentVote(r.Context(), id, voter); err == nil && cur == value {
+		value = ratings.VoteNone
+	}
+
+	if _, err := m.ratings.VoteComment(r.Context(), id, voter, value); err != nil {
+		switch {
+		case errors.Is(err, ratings.ErrOwnComment), errors.Is(err, ratings.ErrNotFound):
+			http.Redirect(w, r, backTo, http.StatusSeeOther)
+			return
+		}
+		m.rt.Logger.Error("vote comment", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
@@ -1266,6 +1307,12 @@ type EditorPage struct {
 	AIEnabled    bool
 	Notice       string
 
+	// CanTranslate is whether the site offers to translate this article. It is
+	// separate from AIEnabled because the assistant stayed on for moderation
+	// while automatic translation was switched off: authors have models of
+	// their own and translate in a minute what this took eight to do.
+	CanTranslate bool
+
 	// TargetLangs are the languages this article would be translated into —
 	// every language except the original. The button used to promise "three
 	// languages", which is one more than it does: the original is already
@@ -1385,6 +1432,7 @@ func (m *Module) handleEditorNew(w http.ResponseWriter, r *http.Request) {
 	page.Status = "draft"
 	page.Fields = emptyFields()
 	page.AIEnabled = m.ai.Enabled()
+	page.CanTranslate = m.ai.AutoTranslateEnabled()
 	m.render(w, "studio_editor", page)
 }
 
@@ -1462,6 +1510,7 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 	page.CoverURL = a.CoverURL
 	page.Fields = fields
 	page.AIEnabled = m.ai.Enabled()
+	page.CanTranslate = m.ai.AutoTranslateEnabled()
 	page.Notice = aiNotice(lang, r.URL.Query().Get("ai"))
 	m.render(w, "studio_editor", page)
 }
@@ -1480,7 +1529,7 @@ func (m *Module) handleTranslate(w http.ResponseWriter, r *http.Request) {
 	}
 	editURL := "/studio/a/" + id.String()
 
-	if !m.ai.Enabled() {
+	if !m.ai.AutoTranslateEnabled() {
 		http.Redirect(w, r, editURL+"?ai=off", http.StatusSeeOther)
 		return
 	}
@@ -1863,6 +1912,7 @@ func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bo
 	page.Status = "draft"
 	page.Fields = fields
 	page.AIEnabled = m.ai.Enabled()
+	page.CanTranslate = m.ai.AutoTranslateEnabled()
 	page.Error = errMsg
 	m.render(w, "studio_editor", page)
 }

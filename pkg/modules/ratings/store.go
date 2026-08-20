@@ -14,6 +14,9 @@ import (
 // ErrSelfVote is returned when an author tries to vote on their own article.
 var ErrSelfVote = errors.New("cannot vote on your own article")
 
+// ErrNotFound is returned when the thing being voted on does not exist.
+var ErrNotFound = errors.New("not found")
+
 type pgxPool interface {
 	Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error)
 	Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error)
@@ -143,4 +146,96 @@ func (s *Store) AuthorKarma(ctx context.Context, authorID uuid.UUID) (int, error
 		return 0, fmt.Errorf("author karma: %w", err)
 	}
 	return karma, nil
+}
+
+// ErrOwnComment is returned when a reader tries to vote on their own comment.
+var ErrOwnComment = errors.New("cannot vote on your own comment")
+
+// VoteComment records, changes, or retracts a reader's vote on a comment and
+// returns the comment's new score.
+//
+// The same machinery as article voting, and deliberately so: one vote per
+// reader, weighted by the voter's own karma so that a fresh account cannot bury
+// a comment and a crowd of fresh accounts cannot either. What it does not do is
+// touch anyone's karma. An author's reputation is built from their articles;
+// letting comment votes into it would turn every argument in a thread into a
+// standing on the author's record, which is a different product from the one
+// this is.
+func (s *Store) VoteComment(ctx context.Context, commentID, voterID uuid.UUID, value int) (int, error) {
+	if value != VoteUp && value != VoteDown && value != VoteNone {
+		return 0, fmt.Errorf("invalid vote value %d", value)
+	}
+
+	tx, err := s.db.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		return 0, fmt.Errorf("begin: %w", err)
+	}
+	defer tx.Rollback(ctx) //nolint:errcheck
+
+	// Whose comment it is decides whether this is allowed at all, and it is
+	// read inside the transaction so the answer cannot change under us.
+	var owner uuid.UUID
+	if err := tx.QueryRow(ctx, `SELECT user_id FROM comments WHERE id = $1`, commentID).Scan(&owner); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return 0, ErrNotFound
+		}
+		return 0, fmt.Errorf("comment owner: %w", err)
+	}
+	if owner == voterID {
+		return 0, ErrOwnComment
+	}
+
+	if value == VoteNone {
+		if _, err := tx.Exec(ctx,
+			`DELETE FROM comment_votes WHERE comment_id = $1 AND user_id = $2`, commentID, voterID); err != nil {
+			return 0, fmt.Errorf("delete comment vote: %w", err)
+		}
+	} else {
+		var voterKarma int
+		err := tx.QueryRow(ctx,
+			`SELECT COALESCE(karma, 0) FROM author_reputation WHERE user_id = $1`, voterID).Scan(&voterKarma)
+		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+			return 0, fmt.Errorf("voter karma: %w", err)
+		}
+		if _, err := tx.Exec(ctx, `
+			INSERT INTO comment_votes (comment_id, user_id, value, weight)
+			VALUES ($1, $2, $3, $4)
+			ON CONFLICT (comment_id, user_id) DO UPDATE SET
+				value = EXCLUDED.value,
+				weight = EXCLUDED.weight,
+				updated_at = NOW()
+		`, commentID, voterID, value, Weight(voterKarma)); err != nil {
+			return 0, fmt.Errorf("upsert comment vote: %w", err)
+		}
+	}
+
+	var score int
+	if err := tx.QueryRow(ctx, `
+		UPDATE comments
+		SET score = COALESCE((SELECT SUM(value * weight) FROM comment_votes WHERE comment_id = $1), 0)
+		WHERE id = $1
+		RETURNING score
+	`, commentID).Scan(&score); err != nil {
+		return 0, fmt.Errorf("recompute comment score: %w", err)
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return 0, fmt.Errorf("commit: %w", err)
+	}
+	return score, nil
+}
+
+// CommentVote returns what a reader voted on one comment (0 when they have not).
+func (s *Store) CommentVote(ctx context.Context, commentID, viewerID uuid.UUID) (int, error) {
+	var v int
+	err := s.db.QueryRow(ctx,
+		`SELECT value FROM comment_votes WHERE comment_id = $1 AND user_id = $2`,
+		commentID, viewerID).Scan(&v)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return 0, nil
+		}
+		return 0, fmt.Errorf("comment vote: %w", err)
+	}
+	return v, nil
 }

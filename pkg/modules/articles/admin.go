@@ -423,6 +423,7 @@ func (m *Module) handleAdminAI(w http.ResponseWriter, r *http.Request) {
 	in := ai.AISettings{
 		Enabled:        r.FormValue("enabled") == "on",
 		ReviewCheck:    r.FormValue("review_check") == "on",
+		AutoTranslate:  r.FormValue("auto_translate") == "on",
 		ModerateModel:  strings.TrimSpace(r.FormValue("moderate_model")),
 		Provider:       strings.TrimSpace(r.FormValue("provider")),
 		TranslateModel: strings.TrimSpace(r.FormValue("translate_model")),

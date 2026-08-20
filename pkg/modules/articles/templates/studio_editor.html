@@ -19,7 +19,7 @@
     {{ if not .IsNew }}
     <div class="notice ai-bar" style="margin-bottom:18px">
       <strong>{{ t .Lang "editor.ai_label" }}</strong>
-      {{ if .AIEnabled }}
+      {{ if .CanTranslate }}
       <form method="post" action="/studio/a/{{ .ArticleID }}/translate" style="display:inline">
         <button class="btn btn--teal btn--sm" type="submit">🌐 {{ t .Lang "editor.ai_translate" }}</button>
       </form>
@@ -43,9 +43,18 @@
         {{ end }}
       </div>
 
+      {{ else }}
+      {{/* Translation is the author's own job now, and saying so is more use
+           than a greyed-out button. The check below still runs on whatever
+           they paste in. */}}
+      <span class="hint">{{ printf (t .Lang "editor.ai_self_translate") (langList .TargetLangs) }}</span>
+      {{ end }}
+
       {{/* What the platform checked so the author does not have to know the
-           language: numbers, links, headings, tables, length. Silence here
-           means nothing mechanical is broken — it says nothing about meaning. */}}
+           language: numbers, links, headings, tables, length. Shown whoever
+           wrote the translation — a version pasted from the author's own model
+           is exactly as worth counting. Silence here means nothing mechanical
+           is broken; it says nothing about meaning. */}}
       {{ if .TranslationIssues }}
       {{ range $lang, $issues := .TranslationIssues }}
       <p class="alert alert--error ai-bar__state">
@@ -54,9 +63,6 @@
         {{ t $.Lang "tcheck.hint" }}
       </p>
       {{ end }}
-      {{ end }}
-      {{ else }}
-      <span class="hint">{{ t .Lang "editor.ai_soon" }}</span>
       {{ end }}
     </div>
     {{ end }}

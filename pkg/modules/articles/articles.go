@@ -204,6 +204,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		// and same-origin-checked with the rest of the browser surface.
 		r.Post("/read/{slug}/report", m.handleArticleReport)
 		r.Post("/read/{slug}/vote", m.handleVote)
+		r.Post("/read/{slug}/comment/{id}/vote", m.handleCommentVote)
 		r.Post("/read/{slug}/comment", m.handleComment)
 		r.Post("/read/{slug}/comment/{id}/delete", m.handleCommentDelete)
 		r.Post("/read/{slug}/progress", m.handleReadProgress)

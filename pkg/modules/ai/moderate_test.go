@@ -2,6 +2,7 @@ package ai
 
 import (
 	"context"
+	"strings"
 	"testing"
 )
 
@@ -75,5 +76,63 @@ func TestParseModerationVerdictNormalizesUnknownAction(t *testing.T) {
 	}
 	if v.Action != "allow" || v.Reason != "" {
 		t.Fatalf("unknown action should normalize to allow, got %+v", v)
+	}
+}
+
+// Скрытая реклама — отдельное правило, а не разновидность спама: спам виден
+// сразу, а отзыв, написанный ради продажи, выглядит как мнение читателя. Ради
+// него код правила и появился.
+func TestModeratePromptCoversEveryPublishedRule(t *testing.T) {
+	sys := moderateSystem("comment")
+	for _, code := range []string{
+		"spam", "scam", "hidden_ad", "prohibited_goods", "abuse",
+		"hatred", "defamation", "personal_data", "adult", "illegal",
+	} {
+		if !strings.Contains(sys, code+":") {
+			t.Errorf("правило %q не описано в промпте", code)
+		}
+	}
+	// Объявления добавляют своё правило поверх общих.
+	if !strings.Contains(moderateSystem("listing"), "misleading:") {
+		t.Error("для объявлений нет правила о недостоверных данных")
+	}
+	if strings.Contains(moderateSystem("comment"), "misleading:") {
+		t.Error("правило для объявлений попало в промпт для комментариев")
+	}
+}
+
+// Перекос в сторону разрешения — не небрежность, а позиция площадки, и он
+// должен быть в промпте написан, а не подразумеваться.
+func TestModeratePromptProtectsCriticism(t *testing.T) {
+	sys := moderateSystem("comment")
+	for _, phrase := range []string{
+		"over-blocking is worse than under-blocking",
+		"however harsh or blunt",
+		"When unsure, allow",
+	} {
+		if !strings.Contains(sys, phrase) {
+			t.Errorf("в промпте нет защиты критики: %q", phrase)
+		}
+	}
+}
+
+// Скрытая причина — это не причина. Площадка обещает обжалование, а обжаловать
+// «модели не понравилось» нельзя.
+func TestModerationVerdictCarriesTheRule(t *testing.T) {
+	v, err := parseModerationVerdict(
+		`{"action":"flag","rule":"hidden_ad","reason":"скрытая реклама клиники","confidence":0.8}`)
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+	if v.Rule != "hidden_ad" {
+		t.Errorf("код правила потерян: %+v", v)
+	}
+	// А на «разрешено» — ничего лишнего.
+	v, err = parseModerationVerdict(`{"action":"allow","rule":"spam","reason":"на всякий случай"}`)
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+	if v.Rule != "" || v.Reason != "" {
+		t.Errorf("разрешённый текст унёс с собой причину: %+v", v)
 	}
 }

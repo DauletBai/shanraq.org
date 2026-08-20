@@ -162,6 +162,18 @@ func (m *Module) ReviewCheckEnabled() bool {
 	return m.settings.Get().ReviewCheck
 }
 
+// AutoTranslateEnabled reports whether the site translates articles for their
+// authors. Off since the day the arithmetic was done: the rebuilt pipeline
+// works — verified batches, every paragraph accounted for, every figure
+// checked — and still takes eight minutes and twenty requests to do what an
+// author's own model does in one, in a language they can read back.
+func (m *Module) AutoTranslateEnabled() bool {
+	if m == nil || !m.Enabled() {
+		return false
+	}
+	return m.settings.Get().AutoTranslate
+}
+
 // translateClient returns the active completer and the translation model.
 func (m *Module) translateClient() (Completer, string, int) {
 	m.mu.RLock()
@@ -219,6 +231,7 @@ type ProviderStatus struct {
 type AdminView struct {
 	Enabled        bool
 	ReviewCheck    bool
+	AutoTranslate  bool
 	Provider       string
 	ModerateModel  string
 	TranslateModel string
@@ -236,6 +249,7 @@ func (m *Module) AdminView() AdminView {
 	v := AdminView{
 		Enabled:        st.Enabled,
 		ReviewCheck:    st.ReviewCheck,
+		AutoTranslate:  st.AutoTranslate,
 		Provider:       st.Provider,
 		ModerateModel:  st.ModerateModel,
 		TranslateModel: st.TranslateModel,

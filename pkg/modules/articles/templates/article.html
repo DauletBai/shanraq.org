@@ -170,7 +170,15 @@
         {{ if .Comments }}
         <ul class="comments__list">
           {{ range .Comments }}
-          <li class="comment">
+          {{/* A comment readers have voted far down is folded, not removed:
+               the summary line carries its score and opens it on click. Being
+               unpopular is not the same as being unpublishable, and the reader
+               who wants to judge for themselves is one click away. */}}
+          <li class="comment{{ if .Collapsed }} comment--folded{{ end }}">
+            {{ if .Collapsed }}
+            <details class="comment__fold">
+              <summary class="comment__foldline">{{ t $.Lang "comments.folded" }} <span class="comment__foldscore">{{ .Score }}</span></summary>
+            {{ end }}
             <div class="comment__head"><span class="comment__author">{{ .AuthorName }}</span><span class="comment__date">{{ fmtDate .CreatedAt }}</span>
               {{ if .Mine }}
               <form method="post" action="/read/{{ $.Slug }}/comment/{{ .ID }}/delete" class="comment__del" onsubmit="return confirm('{{ t $.Lang "comments.delete_confirm" }}')">
@@ -179,6 +187,40 @@
               {{ end }}
             </div>
             <p class="comment__body">{{ .Body }}</p>
+
+            {{/* Readers judge comments the way they judge articles. Same two
+                 thumbs, same width in every state, so a thread does not shift
+                 about as scores change. */}}
+            {{ if and $.Authed (not .Mine) }}
+            <span class="rating rating--sm">
+              <form method="post" action="/read/{{ $.Slug }}/comment/{{ .ID }}/vote">
+                <input type="hidden" name="value" value="1">
+                <button class="rating__btn{{ if gt .UserVote 0 }} is-up{{ end }}" type="submit" title="+1" aria-label="+1">{{ icon "thumb_up" }}</button>
+              </form>
+              <span class="rating__score{{ if gt .Score 0 }} pos{{ else if lt .Score 0 }} neg{{ end }}">{{ .Score }}</span>
+              <form method="post" action="/read/{{ $.Slug }}/comment/{{ .ID }}/vote">
+                <input type="hidden" name="value" value="-1">
+                <button class="rating__btn{{ if lt .UserVote 0 }} is-down{{ end }}" type="submit" title="−1" aria-label="−1">{{ icon "thumb_down" }}</button>
+              </form>
+            </span>
+            {{ else }}
+            {{ $why := t $.Lang "comments.vote_own" }}
+            {{ if not $.Authed }}{{ $why = t $.Lang "comments.vote_login" }}{{ end }}
+            <span class="rating rating--sm rating--readonly">
+              {{ if $.Authed }}
+              <button type="button" class="rating__btn tipbtn" data-fhelp aria-label="{{ $why }}">{{ icon "thumb_up" }}<span class="fhelp__tip" role="tooltip">{{ $why }}</span></button>
+              {{ else }}
+              <a class="rating__btn tipbtn" href="/studio/login" aria-label="{{ $why }}">{{ icon "thumb_up" }}<span class="fhelp__tip" role="tooltip">{{ $why }}</span></a>
+              {{ end }}
+              <span class="rating__score{{ if gt .Score 0 }} pos{{ else if lt .Score 0 }} neg{{ end }}">{{ .Score }}</span>
+              {{ if $.Authed }}
+              <button type="button" class="rating__btn tipbtn" data-fhelp aria-label="{{ $why }}">{{ icon "thumb_down" }}<span class="fhelp__tip" role="tooltip">{{ $why }}</span></button>
+              {{ else }}
+              <a class="rating__btn tipbtn" href="/studio/login" aria-label="{{ $why }}">{{ icon "thumb_down" }}<span class="fhelp__tip" role="tooltip">{{ $why }}</span></a>
+              {{ end }}
+            </span>
+            {{ end }}
+            {{ if .Collapsed }}</details>{{ end }}
           </li>
           {{ end }}
         </ul>

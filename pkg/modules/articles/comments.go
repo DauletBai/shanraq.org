@@ -13,6 +13,17 @@ import (
 
 const maxCommentLen = 2000
 
+// commentCollapseScore is the score at or below which a comment is folded away.
+//
+// Folded, not removed: one line stands in its place and one click opens it.
+// Being voted down is a statement about how a comment was received, and hiding
+// it outright would make that statement into a verdict — which is what the
+// model used to do here, and the reason it no longer does.
+//
+// Five is roughly five readers with no reputation of their own, or two who have
+// earned some. Below that a comment has to have genuinely lost the room.
+const commentCollapseScore = -5
+
 // Comment is one reader comment on an article.
 type Comment struct {
 	ID         string
@@ -21,7 +32,16 @@ type Comment struct {
 	CreatedAt  time.Time
 	// Mine marks a comment written by the reader currently viewing the page.
 	Mine bool
+
+	// Score is the weighted sum of readers' votes, and UserVote is what the
+	// reader looking at the page voted (-1, 0 or +1).
+	Score    int
+	UserVote int
 }
+
+// Collapsed reports whether readers have voted this comment far enough down to
+// be folded away behind a single line.
+func (c Comment) Collapsed() bool { return c.Score <= commentCollapseScore }
 
 // CommentStore persists reader comments.
 type CommentStore struct {
@@ -35,9 +55,11 @@ func (s *CommentStore) Create(ctx context.Context, articleID, userID uuid.UUID, 
 	return s.CreateWithStatus(ctx, articleID, userID, body, "published")
 }
 
-// CreateWithStatus stores a comment with an explicit moderation status. The AI
-// moderator uses this to file a suspect comment straight into 'hidden', the same
-// queue human reports feed, so a human can confirm or restore it.
+// CreateWithStatus stores a comment with an explicit moderation status.
+// 'hidden' is what a human moderator sets when a comment has to come down; it
+// is no longer set on the way in. A model used to make that call for every
+// comment before anyone saw it — readers now make it by voting, and a comment
+// they bury is folded rather than hidden.
 func (s *CommentStore) CreateWithStatus(ctx context.Context, articleID, userID uuid.UUID, body, status string) error {
 	body = strings.TrimSpace(body)
 	if body == "" {
@@ -78,8 +100,10 @@ func (s *CommentStore) Delete(ctx context.Context, id, userID uuid.UUID) error {
 func (s *CommentStore) ListForArticle(ctx context.Context, articleID, viewer uuid.UUID) ([]Comment, error) {
 	rows, err := s.db.Query(ctx, `
 		SELECT c.id, u.email, u.first_name, u.last_name, u.middle_name, c.body, c.created_at,
-		       c.user_id = $2 AS mine
-		FROM comments c JOIN auth_users u ON u.id = c.user_id
+		       c.user_id = $2 AS mine, c.score, COALESCE(v.value, 0)
+		FROM comments c
+		JOIN auth_users u ON u.id = c.user_id
+		LEFT JOIN comment_votes v ON v.comment_id = c.id AND v.user_id = $2
 		WHERE c.article_id = $1 AND c.status = 'published'
 		ORDER BY c.created_at`, articleID, viewer)
 	if err != nil {
@@ -91,7 +115,8 @@ func (s *CommentStore) ListForArticle(ctx context.Context, articleID, viewer uui
 		var c Comment
 		var id uuid.UUID
 		var email, first, last, middle string
-		if err := rows.Scan(&id, &email, &first, &last, &middle, &c.Body, &c.CreatedAt, &c.Mine); err != nil {
+		if err := rows.Scan(&id, &email, &first, &last, &middle, &c.Body, &c.CreatedAt,
+			&c.Mine, &c.Score, &c.UserVote); err != nil {
 			return nil, err
 		}
 		c.ID = id.String()
