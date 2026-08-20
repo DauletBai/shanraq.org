@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestOpenAICompleterRoundTrip(t *testing.T) {
@@ -189,5 +190,57 @@ func TestTruncatedRepliesFailInsteadOfBeingSaved(t *testing.T) {
 				t.Errorf("partial text was handed back anyway: %q", out)
 			}
 		})
+	}
+}
+
+// The first article translation asked for nine thousand tokens and the client
+// hung up at two minutes while the model was still writing. A flat timeout is
+// the same mistake as a flat token cap: fine for a headline, fatal for an
+// article.
+func TestRequestTimeoutScalesWithTheAnswer(t *testing.T) {
+	cases := []struct {
+		name      string
+		maxTokens int
+		want      time.Duration
+	}{
+		{"заголовок получает минимум", 512, 124 * time.Second},
+		{"статье хватает на длинный ответ", 9517, 724 * time.Second},
+		{"потолок не превышается", 100000, 15 * time.Minute},
+		{"нулевой запрос не даёт нулевого срока", 0, 90 * time.Second},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if got := requestTimeout(c.maxTokens); got != c.want {
+				t.Errorf("requestTimeout(%d) = %v, ожидалось %v", c.maxTokens, got, c.want)
+			}
+		})
+	}
+	// Короткий вызов не должен получать столько же времени, сколько статья:
+	// зависший запрос обязан отваливаться быстро.
+	if requestTimeout(512) >= requestTimeout(9517) {
+		t.Error("короткий запрос ждёт не меньше длинного — срок не зависит от объёма")
+	}
+}
+
+// The request has to honour the caller's context, not just the client's own
+// ceiling — otherwise a shutdown or a cancelled job leaves calls hanging.
+func TestCompleteHonoursTheCallerDeadline(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		time.Sleep(2 * time.Second) // дольше, чем срок вызывающей стороны
+		_, _ = w.Write([]byte(`{"choices":[{"message":{"content":"ok"}}]}`))
+	}))
+	defer srv.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 80*time.Millisecond)
+	defer cancel()
+
+	start := time.Now()
+	_, err := newOpenAICompleter("sk-test", srv.URL).
+		Complete(ctx, Request{Model: "kimi-k2.6", User: "hi", MaxTokens: 512})
+	if err == nil {
+		t.Fatal("вызов пережил отменённый контекст")
+	}
+	if elapsed := time.Since(start); elapsed > time.Second {
+		t.Errorf("возврат занял %v — контекст вызывающей стороны не соблюдён", elapsed)
 	}
 }

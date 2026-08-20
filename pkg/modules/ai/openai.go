@@ -29,7 +29,9 @@ func newOpenAICompleter(apiKey, baseURL string) *openaiCompleter {
 	return &openaiCompleter{
 		apiKey:  apiKey,
 		baseURL: strings.TrimRight(baseURL, "/"),
-		http:    &http.Client{Timeout: 120 * time.Second},
+		// A ceiling, not the working limit: each request sets its own deadline
+		// from how much text it asked for (see requestTimeout).
+		http: &http.Client{Timeout: 20 * time.Minute},
 	}
 }
 
@@ -92,11 +94,31 @@ type openaiResponse struct {
 	} `json:"error"`
 }
 
+// requestTimeout gives a request as long as its answer plausibly needs.
+//
+// A flat two-minute timeout was fine while everything asked for was a headline
+// or a JSON verdict. The first full-length article translation asked for nine
+// thousand tokens, and the client hung up at 120 seconds while the model was
+// still writing — the job failed, retried, and failed again the same way.
+//
+// Generation runs on the order of tens of tokens a second, so the allowance
+// scales with the tokens requested, with a floor for short calls and a ceiling
+// so a stuck request cannot hold a worker forever.
+func requestTimeout(maxTokens int) time.Duration {
+	d := 90*time.Second + time.Duration(maxTokens/15)*time.Second
+	if d > 15*time.Minute {
+		d = 15 * time.Minute
+	}
+	return d
+}
+
 func (c *openaiCompleter) Complete(ctx context.Context, req Request) (string, error) {
 	maxTokens := req.MaxTokens
 	if maxTokens <= 0 {
 		maxTokens = 4096
 	}
+	ctx, cancel := context.WithTimeout(ctx, requestTimeout(maxTokens))
+	defer cancel()
 
 	msgs := make([]openaiMessage, 0, 2)
 	if strings.TrimSpace(req.System) != "" {
