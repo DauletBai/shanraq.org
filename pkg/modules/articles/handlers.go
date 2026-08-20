@@ -1431,9 +1431,18 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 			// times its original length with the model's own prompt echoed into
 			// it, and a body-only check would have called that clean.
 			var found []TranslationIssue
-			found = append(found, compareTranslation(orig.BodyMD, tr.BodyMD)...)
-			found = append(found, compareTranslation(orig.Summary, tr.Summary)...)
-			found = append(found, compareTranslation(orig.Title, tr.Title)...)
+			for _, part := range []struct {
+				field, src, dst string
+			}{
+				{"title", orig.Title, tr.Title},
+				{"summary", orig.Summary, tr.Summary},
+				{"body", orig.BodyMD, tr.BodyMD},
+			} {
+				for _, issue := range compareTranslation(part.src, part.dst) {
+					issue.Field = part.field
+					found = append(found, issue)
+				}
+			}
 			if len(found) > 0 {
 				issues[l] = found
 			}

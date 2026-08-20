@@ -50,7 +50,7 @@
       {{ range $lang, $issues := .TranslationIssues }}
       <p class="alert alert--error ai-bar__state">
         <strong>{{ index (langNames) $lang }}:</strong>
-        {{ range $issues }}{{ printf (t $.Lang (printf "tcheck.%s" .Key)) .Have .Want }} {{ end }}
+        {{ range $issues }}<br>{{ t $.Lang (printf "tfield.%s" .Field) }}: {{ if .Detail }}{{ printf (t $.Lang "tcheck.numbers") .Detail }}{{ else }}{{ printf (t $.Lang (printf "tcheck.%s" .Key)) .Have .Want }}{{ end }}{{ end }}<br>
         {{ t $.Lang "tcheck.hint" }}
       </p>
       {{ end }}
