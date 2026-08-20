@@ -1569,6 +1569,7 @@ var messages = map[string]map[string]string{
 	"tcheck.links":            {"kz": "сілтемелер: %d, түпнұсқада %d.", "ru": "ссылок: %d вместо %d.", "en": "links: %d instead of %d."},
 	"tcheck.table_rows":       {"kz": "кесте жолдары: %d, түпнұсқада %d.", "ru": "строк таблиц: %d вместо %d.", "en": "table rows: %d instead of %d."},
 	"tcheck.numbers":          {"kz": "аудармада мына сандар жоқ: %s.", "ru": "в переводе нет чисел: %s.", "en": "these numbers are missing from the translation: %s."},
+	"tcheck.invented":         {"kz": "түпнұсқада жоқ сандар аудармада пайда болды: %s.", "ru": "в переводе появились числа, которых нет в оригинале: %s.", "en": "the translation states numbers the original does not contain: %s."},
 	"tfield.title":            {"kz": "тақырып", "ru": "заголовок", "en": "headline"},
 	"tfield.summary":          {"kz": "қысқаша сипаттама", "ru": "краткое описание", "en": "summary"},
 	"tfield.body":             {"kz": "мәтін", "ru": "текст", "en": "body"},

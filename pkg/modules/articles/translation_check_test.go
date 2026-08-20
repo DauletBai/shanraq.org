@@ -150,3 +150,43 @@ func TestTranslationCheckQuotesNumbersAsWrittenAndCapsTheList(t *testing.T) {
 		t.Errorf("обрезанный перечень не помечен многоточием: %q", detail)
 	}
 }
+
+// Пропажа и выдумка — не одно и то же. Потерянное предложение оставляет дыру,
+// которую читатель может заметить; выдуманное число читается как факт и цитируется
+// как факт. Обе версии статьи про корь превратили «сорок триллионов» в «сорок три»
+// — в тексте, где в списке источников стояло сорок.
+func TestTranslationCheckCatchesInventedNumbers(t *testing.T) {
+	got := compareTranslation(
+		"Государственный долг США перешёл отметку в сорок триллионов долларов.",
+		"АҚШ мемлекеттік қарызы 43 триллион доллар шекарасын асты.")
+	var detail string
+	for _, i := range got {
+		if i.Key == "invented" {
+			detail = i.Detail
+		}
+	}
+	if !strings.Contains(detail, "43") {
+		t.Fatalf("выдуманное число не найдено, получено %+v", got)
+	}
+}
+
+// Встречная проверка не должна ругаться на честный перевод — иначе она разделит
+// судьбу первой версии, на которую перестали смотреть.
+func TestInventedNumbersStayQuietOnHonestTranslations(t *testing.T) {
+	cases := []struct{ name, src, dst string }{
+		{"те же числа, другая запись", "Было 28 147 случаев и 98,5% охвата.",
+			"There were 28,147 cases and 98.5% coverage."},
+		{"масштабное слово раскрыто", "123 тысячи случаев.", "123,000 cases."},
+		{"перевод пишет меньше чисел", "В 2023 году было 15 111 случаев.",
+			"Fifteen thousand cases that year."},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			for _, i := range compareTranslation(c.src, c.dst) {
+				if i.Key == "invented" {
+					t.Errorf("ложная тревога: %q", i.Detail)
+				}
+			}
+		})
+	}
+}

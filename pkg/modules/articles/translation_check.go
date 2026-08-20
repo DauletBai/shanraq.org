@@ -53,16 +53,15 @@ type TranslationIssue struct {
 // The order is kept for the same reason: the author reads top to bottom, and a
 // list that follows the text is a list they can walk.
 //
-// Numbers under three digits are left out entirely. They are the ones a good
-// translator rewrites — "$40 триллионов" becomes "the forty-trillion-dollar
-// mark", "один больной" becomes "a single case" — and a rule that cannot tell
-// that apart from damage will fire on every honest translation.
-func numbersIn(s string) ([]string, map[string]string) {
+// Numbers shorter than min digits are left out. Going missing and appearing
+// from nowhere are not equally suspicious, so the two directions use different
+// floors — see compareTranslation.
+func numbersIn(s string, min int) ([]string, map[string]string) {
 	var order []string
 	digits := map[string]string{}
 	for _, m := range numberToken.FindAllString(s, -1) {
 		d := notDigit.ReplaceAllString(m, "")
-		if len(d) < 3 {
+		if len(d) < min {
 			continue
 		}
 		if _, seen := digits[d]; !seen {
@@ -122,10 +121,15 @@ func compareTranslation(src, dst string) []TranslationIssue {
 	// And the numbers are named. "Some numbers do not match (68 / 68)" tells
 	// nobody anything; "20 940, 14 380 are missing" is checked in five seconds
 	// by someone who does not read the language.
-	order, want := numbersIn(src)
-	_, have := numbersIn(dst)
+	// Going missing is checked from three digits up. Shorter numbers are the
+	// ones a good translator rewrites — "$40 триллионов" becomes "the
+	// forty-trillion-dollar mark", "один больной" becomes "a single case" — and
+	// a rule that cannot tell that apart from damage fires on every honest
+	// translation.
+	srcOrder, want := numbersIn(src, 3)
+	_, have := numbersIn(dst, 3)
 	var missing []string
-	for _, digits := range order {
+	for _, digits := range srcOrder {
 		if !survives(digits, have) {
 			missing = append(missing, want[digits])
 		}
@@ -138,6 +142,31 @@ func compareTranslation(src, dst string) []TranslationIssue {
 			missing = append(missing[:5:5], "…")
 		}
 		out = append(out, TranslationIssue{Key: "numbers", Detail: strings.Join(missing, ", ")})
+	}
+
+	// And the other direction: a number the translation states that the original
+	// never did. This is the graver fault of the two — a lost sentence leaves a
+	// gap a reader may notice, an invented figure reads as fact and is quoted as
+	// one. It happened on the article that prompted these checks: "сорок
+	// триллионов" came back as "43 триллион", twice, in a text whose own source
+	// list said forty.
+	//
+	// Checked from two digits up, where losses are checked from three: a
+	// translator has good reason to spell a small number out, and none to
+	// produce one the original does not contain.
+	dstOrder, got := numbersIn(dst, 2)
+	_, base := numbersIn(src, 2)
+	var invented []string
+	for _, digits := range dstOrder {
+		if !survives(digits, base) {
+			invented = append(invented, got[digits])
+		}
+	}
+	if len(invented) > 0 {
+		if len(invented) > 5 {
+			invented = append(invented[:5:5], "…")
+		}
+		out = append(out, TranslationIssue{Key: "invented", Detail: strings.Join(invented, ", ")})
 	}
 
 	// Length is the coarse net that catches a truncated or abandoned pass.
