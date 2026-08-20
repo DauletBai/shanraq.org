@@ -55,7 +55,17 @@ func templateFuncs() template.FuncMap {
 		// The reader's report names one of the site's published rules — the same
 		// list the checker used — so a report is a claim about a rule, not a
 		// second opinion about the topic.
-		"reviewRules":      func() []string { return ReviewRules },
+		"reviewRules": func() []string { return ReviewRules },
+		// The tabs and the translate button must name languages the same way,
+		// or the reader has to work out that "3 языка" and "Қазақша" are about
+		// the same thing.
+		"langList": func(ls []string) string {
+			out := make([]string, 0, len(ls))
+			for _, l := range ls {
+				out = append(out, LangLabels[l])
+			}
+			return strings.Join(out, ", ")
+		},
 		"compactNum":       compactNum, // 1234 → "1,2 тыс." for tight meta rows
 		"shortAuthor":      shortAuthor,
 		"hasSuffix":        strings.HasSuffix,

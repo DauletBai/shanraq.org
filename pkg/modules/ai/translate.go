@@ -104,20 +104,52 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 	var err error
 
 	if src.Title != "" {
-		if out.Title, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Title, MaxTokens: 512}); err != nil {
+		if out.Title, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Title,
+			MaxTokens: translationBudget(src.Title, 512)}); err != nil {
 			return content{}, err
 		}
 	}
 	if src.Summary != "" {
-		if out.Summary, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Summary, MaxTokens: 1024}); err != nil {
+		if out.Summary, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Summary,
+			MaxTokens: translationBudget(src.Summary, 1024)}); err != nil {
 			return content{}, err
 		}
 	}
-	if out.Body, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Body, MaxTokens: tok}); err != nil {
+	if out.Body, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Body,
+		MaxTokens: translationBudget(src.Body, tok)}); err != nil {
 		return content{}, err
 	}
 	return out, nil
 }
+
+// translationBudget sizes the output cap to the text being translated.
+//
+// A translation is about as long as its source, so a fixed ceiling is the wrong
+// shape: it is wasteful for a headline and fatal for an article. The configured
+// max_tokens — 4096 by default — cut off the first long piece this site tried to
+// translate, and the job failed three times with nothing to show the author.
+//
+// Cyrillic runs roughly two characters to the token, and a Kazakh rendering of
+// a Russian text can come out longer, so the estimate is halved characters with
+// half again on top. The floor keeps short texts from getting an absurdly small
+// allowance; the ceiling is there because a cap is still a cap.
+//
+// Nothing is spent by asking for headroom: max_tokens is a limit, not a
+// reservation, and billing follows the tokens actually produced.
+func translationBudget(src string, floor int) int {
+	est := len([]rune(src)) / 2 * 3 / 2
+	if est < floor {
+		est = floor
+	}
+	if est > maxTranslationTokens {
+		est = maxTranslationTokens
+	}
+	return est
+}
+
+// maxTranslationTokens bounds a single translation call. Beyond this a text
+// should be split rather than asked for in one breath.
+const maxTranslationTokens = 16000
 
 func translateSystem(from, to string) string {
 	// "Preserve the Markdown formatting exactly" read, to a model not given room

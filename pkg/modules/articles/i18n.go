@@ -1561,12 +1561,16 @@ var messages = map[string]map[string]string{
 	"editor.save":             {"kz": "Сақтау", "ru": "Сохранить", "en": "Save"},
 	"editor.cancel":           {"kz": "Бас тарту", "ru": "Отмена", "en": "Cancel"},
 	"editor.ai_label":         {"kz": "ИИ көмекші:", "ru": "ИИ-ассистент:", "en": "AI assistant:"},
-	"editor.ai_translate":     {"kz": "3 тілге аудару", "ru": "Перевести на 3 языка", "en": "Translate to 3 languages"},
+	"editor.ai_translate":     {"kz": "Басқа тілдерге аудару", "ru": "Перевести на другие языки", "en": "Translate to the other languages"},
+	"editor.ai_targets":       {"kz": "Аударылады: %s.", "ru": "Переведёт на: %s.", "en": "Translates into: %s."},
+	"editor.ai_running":       {"kz": "Аударма орындалуда. Бір минуттан кейін бетті жаңартыңыз — ұзын мақала бірнеше минут алуы мүмкін.", "ru": "Перевод выполняется. Обновите страницу через минуту — длинная статья может занять несколько минут.", "en": "Translation is running. Refresh in a minute — a long article can take several."},
+	"editor.ai_done":          {"kz": "Аударма дайын. Егер қойындылар бос болса, бетті жаңартыңыз.", "ru": "Перевод готов. Если вкладки пусты — обновите страницу.", "en": "Translation finished. Refresh the page if the tabs still look empty."},
+	"editor.ai_failed":        {"kz": "Аударма орындалмады. Қайталап көріңіз; қате қайталанса — мәтін тым ұзын болуы мүмкін.", "ru": "Перевод не удался. Попробуйте ещё раз; если ошибка повторяется — возможно, текст слишком длинный.", "en": "The translation failed. Try again; if it keeps failing the text may be too long."},
 	"editor.ai_saved_hint":    {"kz": "Сақталған түпнұсқа мәтінмен жұмыс істейді.", "ru": "Работает с сохранённым текстом оригинала.", "en": "Works with the saved original text."},
 	"editor.ai_soon":          {"kz": "Жақында: ИИ-редактор және KZ↔RU↔EN автоаудармасы.", "ru": "Скоро: ИИ-редактор и автоперевод KZ↔RU↔EN.", "en": "Soon: AI editor and KZ↔RU↔EN auto-translation."},
 	"editor.err_required":     {"kz": "Түпнұсқа тіліндегі тақырып пен мәтін міндетті.", "ru": "Заголовок и текст на языке оригинала обязательны.", "en": "Title and body in the original language are required."},
 	"editor.err_save":         {"kz": "Мақаланы сақтау мүмкін болмады.", "ru": "Не удалось сохранить статью.", "en": "Could not save the story."},
-	"notice.ai_queued":        {"kz": "Басқа тілдерге аударма басталды — бірнеше секундта пайда болады.", "ru": "Перевод на другие языки запущен — версии появятся через несколько секунд.", "en": "Translation to other languages started — versions appear in a few seconds."},
+	"notice.ai_queued":        {"kz": "Аударма басталды. Ол фонда орындалады: бір-екі минуттан кейін бетті жаңартыңыз. Нәтижесі осы жерде көрінеді.", "ru": "Перевод запущен. Он выполняется в фоне: обновите страницу через минуту-другую. Результат появится здесь же.", "en": "Translation started. It runs in the background: refresh the page in a minute or two. The result will appear here."},
 	"notice.ai_off":           {"kz": "ИИ-ассистент қазір өшірулі (API кілті жоқ).", "ru": "ИИ-ассистент сейчас отключён (не задан API-ключ).", "en": "AI assistant is currently off (no API key)."},
 
 	// Column headings in the footer grid.

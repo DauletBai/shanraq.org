@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"context"
 	"errors"
 	"html/template"
 	"net/http"
@@ -1264,6 +1265,59 @@ type EditorPage struct {
 	Error        string
 	AIEnabled    bool
 	Notice       string
+
+	// TargetLangs are the languages this article would be translated into —
+	// every language except the original. The button used to promise "three
+	// languages", which is one more than it does: the original is already
+	// written.
+	TargetLangs []string
+
+	// TranslateState is what happened to the last translation run: "running",
+	// "done", "failed" or empty when none was ever started. Without it the
+	// author clicks the button, sees "started", and then sits in front of empty
+	// tabs with no way to learn that the job failed three times.
+	TranslateState string
+	TranslateError string
+}
+
+// otherLangs lists every language except the original, in the site's order.
+func otherLangs(original string) []string {
+	out := make([]string, 0, len(Langs)-1)
+	for _, l := range Langs {
+		if l != original {
+			out = append(out, l)
+		}
+	}
+	return out
+}
+
+// translationRun reports how the most recent translation of this article ended.
+// Best-effort: the editor renders with or without it.
+func (m *Module) translationRun(ctx context.Context, articleID string) (state, msg string) {
+	if m.rt == nil || m.rt.DB == nil {
+		return "", ""
+	}
+	var status string
+	var lastErr *string
+	err := m.rt.DB.QueryRow(ctx, `
+		SELECT status::text, last_error FROM job_queue
+		 WHERE name = $1 AND payload->>'article_id' = $2
+		 ORDER BY created_at DESC LIMIT 1`, ai.JobTranslate, articleID).Scan(&status, &lastErr)
+	if err != nil {
+		return "", ""
+	}
+	switch status {
+	case "pending", "running", "retry":
+		return "running", ""
+	case "done":
+		return "done", ""
+	case "failed":
+		if lastErr != nil {
+			return "failed", *lastErr
+		}
+		return "failed", ""
+	}
+	return "", ""
 }
 
 // aiNotice maps an ?ai= redirect flag to a localized message.
@@ -1293,6 +1347,7 @@ func (m *Module) handleEditorNew(w http.ResponseWriter, r *http.Request) {
 	page := EditorPage{Base: m.base(r, T(lang, "editor.new"), lang)}
 	page.IsNew = true
 	page.OriginalLang = lang
+	page.TargetLangs = otherLangs(lang)
 	page.Category = "society"
 	page.Subcategory = ""
 	page.Status = "draft"
@@ -1331,6 +1386,8 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 	page.Slug = a.Slug
 	page.Status = a.Status
 	page.OriginalLang = a.OriginalLang
+	page.TargetLangs = otherLangs(a.OriginalLang)
+	page.TranslateState, page.TranslateError = m.translationRun(r.Context(), a.ID.String())
 	page.Category = a.Category
 	page.Subcategory = a.Subcategory
 	page.CoverURL = a.CoverURL
@@ -1730,6 +1787,7 @@ func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bo
 	page.ArticleID = id
 	page.Slug = slug
 	page.OriginalLang = originalLang
+	page.TargetLangs = otherLangs(originalLang)
 	page.Category = category
 	page.Subcategory = subcategory
 	page.CoverURL = coverURL
