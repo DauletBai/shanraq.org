@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -22,6 +23,16 @@ type openaiCompleter struct {
 	apiKey  string
 	baseURL string // e.g. https://api.openai.com/v1
 	http    *http.Client
+
+	// Pacing learned from refusals. The account this runs against allows three
+	// requests a minute, and the provider's own Retry-After says one second —
+	// which is true of the moment and false of the window, so following it
+	// burns every attempt inside twenty seconds. Rather than trust the header
+	// or hard-code a number that would be wrong for a better account, the
+	// client starts unpaced and slows down when it is told to.
+	mu      sync.Mutex
+	spacing time.Duration
+	next    time.Time
 }
 
 func newOpenAICompleter(apiKey, baseURL string) *openaiCompleter {
@@ -139,29 +150,77 @@ func requestTimeout(maxTokens int) time.Duration {
 // being asked to wait.
 const rateLimitAttempts = 6
 
+// rateLimitStep is how much a refusal slows the client down, and the floor for
+// how long it waits before trying again. It is a fifth of a minute because the
+// limits that bite here are per-minute request counts.
+const rateLimitStep = 12 * time.Second
+
 func (c *openaiCompleter) Complete(ctx context.Context, req Request) (string, error) {
-	var err error
-	var out string
-	backoff := 5 * time.Second
 	for attempt := 1; ; attempt++ {
-		out, err = c.complete(ctx, req)
+		if err := c.waitTurn(ctx); err != nil {
+			return "", err
+		}
+		out, err := c.complete(ctx, req)
 		var limited rateLimited
-		if !errors.As(err, &limited) || attempt == rateLimitAttempts {
+		if !errors.As(err, &limited) {
 			return out, err
 		}
-		wait := limited.retryAfter
-		if wait <= 0 {
-			wait = backoff
+		if attempt == rateLimitAttempts {
+			return "", err
 		}
+		wait := c.slowDown(limited.retryAfter)
 		select {
 		case <-ctx.Done():
 			return "", ctx.Err()
 		case <-time.After(wait):
 		}
-		if backoff < 60*time.Second {
-			backoff *= 2
-		}
 	}
+}
+
+// waitTurn holds the request until the pace allows it. Requests are serialised
+// deliberately: the same account that caps requests per minute caps concurrency
+// at one, and two callers racing only produces refusals.
+func (c *openaiCompleter) waitTurn(ctx context.Context) error {
+	c.mu.Lock()
+	spacing := c.spacing
+	if spacing == 0 {
+		c.mu.Unlock()
+		return nil
+	}
+	now := time.Now()
+	wait := time.Duration(0)
+	if c.next.After(now) {
+		wait = c.next.Sub(now)
+	}
+	c.next = now.Add(wait + spacing)
+	c.mu.Unlock()
+
+	if wait <= 0 {
+		return nil
+	}
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-time.After(wait):
+		return nil
+	}
+}
+
+// slowDown widens the pace after a refusal and says how long to wait now.
+func (c *openaiCompleter) slowDown(retryAfter time.Duration) time.Duration {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if c.spacing < rateLimitStep {
+		c.spacing = rateLimitStep
+	} else if c.spacing < time.Minute {
+		c.spacing += rateLimitStep
+	}
+	wait := c.spacing
+	if retryAfter > wait {
+		wait = retryAfter
+	}
+	c.next = time.Now().Add(wait + c.spacing)
+	return wait
 }
 
 // rateLimited marks a refusal that will pass on its own.

@@ -151,56 +151,184 @@ func hasLetters(s string) bool {
 	return strings.IndexFunc(s, unicode.IsLetter) >= 0
 }
 
-// translateBody translates an article one paragraph at a time.
+// Sizes of one translation request.
 //
-// It used to go in a single request, and that was the cause of the worst fault
-// this pipeline has produced: asked for thirteen thousand characters in one
-// breath, the model quietly returned fewer paragraphs than it was given. Three
-// runs of the same article came back with 71, 70 and 68 of its 71 paragraphs,
-// and the same sentence — Tajikistan reporting zero cases — went missing in all
-// three. Nothing in the output said anything was gone.
+// The first version of this sent one paragraph per request, which was right
+// about the fault and wrong about the cost. The account it runs against allows
+// three requests a minute and five hundred thousand tokens a minute: the scarce
+// thing is requests, not words. Seventy-one paragraphs meant seventy-one
+// requests and twenty-four minutes of waiting per language, and the run died on
+// rate limiting after three of them.
 //
-// Paragraph by paragraph, the count cannot drift: every block is asked for and
-// every answer is put back where it came from. The same model, given the same
-// article this way, returned all 71 with the lost sentence intact.
+// So paragraphs travel in batches — large enough that an article is a handful
+// of requests, small enough to stay well inside the length where the model
+// starts dropping things. The guarantee does not come from the size, it comes
+// from counting what came back.
+const (
+	batchChars  = 3000
+	batchBlocks = 20
+)
+
+// translateBody translates an article in batches of paragraphs, and refuses any
+// batch that comes back the wrong shape.
 //
-// It costs more requests and a few seconds; it buys a structural guarantee in
-// place of a hope.
+// Sending the whole body in one request was the cause of the worst fault this
+// pipeline has produced: asked for thirteen thousand characters in one breath,
+// the model quietly returned fewer paragraphs than it was given. Three runs of
+// the same article came back with 71, 70 and 68 of its 71, and the same
+// sentence — Tajikistan reporting zero cases — was gone from all three. Nothing
+// in the output said anything was missing.
+//
+// Nothing here trusts the model to keep the shape. Every batch is counted on
+// the way back, and a batch that returns the wrong number of paragraphs is
+// asked for again and then split in half, down to a single paragraph if that is
+// what it takes. Loss cannot pass silently, whatever the batch size.
 func (m *Module) translateBody(ctx context.Context, c Completer, model string, tok int,
 	system, from, to, body string) (string, error) {
 	blocks := blockSplit.Split(strings.TrimSpace(body), -1)
-	out := make([]string, len(blocks))
+	var out []string
 	var glossary string
+	requests := 0
 
-	for i, b := range blocks {
-		if !hasLetters(b) {
-			out[i] = b
+	for start := 0; start < len(blocks); {
+		end := batchEnd(blocks, start)
+		batch := blocks[start:end]
+
+		// A table rule and a horizontal rule have nothing to translate.
+		if !hasLetters(strings.Join(batch, "\n")) {
+			out = append(out, batch...)
+			start = end
 			continue
 		}
-		// Every block after the first is shown the wording already chosen, so a
-		// term settled in paragraph one is the term used in paragraph forty.
-		user := b
-		framed := false
-		if glossary != "" {
-			user = withGlossary(glossary, b, langFullName[to])
-			framed = true
-		}
-		got, err := m.translateChecked(ctx, c, model, system, b, user, tok, framed)
+		got, n, err := m.translateBatch(ctx, c, model, tok, system, to, batch, glossary)
+		requests += n
 		if err != nil {
-			return "", fmt.Errorf("paragraph %d of %d: %w", i+1, len(blocks), err)
+			return "", fmt.Errorf("paragraphs %d-%d of %d: %w", start+1, end, len(blocks), err)
 		}
-		out[i] = got
+		out = append(out, got...)
 		if glossary == "" {
-			glossary = excerptForContext(strings.Join(out[:i+1], "\n\n"))
+			glossary = excerptForContext(strings.Join(out, "\n\n"))
 		}
+		start = end
 	}
-	m.log.Info("translated by paragraph", zap.String("from", from), zap.String("to", to),
-		zap.Int("paragraphs", len(blocks)))
+	m.log.Info("translated in batches", zap.String("from", from), zap.String("to", to),
+		zap.Int("paragraphs", len(blocks)), zap.Int("requests", requests))
 	return strings.Join(out, "\n\n"), nil
 }
 
-// translateAttempts is how many times one paragraph may be asked for before the
-// translation is abandoned.
+// batchEnd picks how many paragraphs go into the next request: as many as fit
+// the size, and never fewer than one.
+func batchEnd(blocks []string, start int) int {
+	size := 0
+	for i := start; i < len(blocks); i++ {
+		if i > start && (size+len(blocks[i]) > batchChars || i-start >= batchBlocks) {
+			return i
+		}
+		size += len(blocks[i])
+	}
+	return len(blocks)
+}
+
+// translateBatch translates a run of paragraphs and returns exactly as many as
+// it was given, or an error. It also reports how many requests it took, which
+// is the number that decides how long an author waits.
+//
+// A batch that comes back the wrong shape, or with its figures altered, is
+// asked for again with the fault named. If it still will not come out right the
+// batch is halved and each half tried on its own: whatever the model chokes on
+// is usually one paragraph, and splitting isolates it instead of failing the
+// article.
+func (m *Module) translateBatch(ctx context.Context, c Completer, model string, tok int,
+	system, to string, blocks []string, glossary string) ([]string, int, error) {
+	source := strings.Join(blocks, "\n\n")
+	requests := 0
+	prompt := source
+	framed := false
+	if glossary != "" {
+		prompt = withGlossary(glossary, source, langFullName[to])
+		framed = true
+	}
+
+	var lastErr error
+	for attempt := 1; attempt <= batchAttempts; attempt++ {
+		got, err := c.Complete(ctx, Request{Model: model, System: system, User: prompt,
+			MaxTokens: translationBudget(source, tok)})
+		requests++
+		if err != nil {
+			return nil, requests, err
+		}
+		if framed {
+			got = afterMarker(got)
+		}
+		parts := blockSplit.Split(strings.TrimSpace(got), -1)
+
+		if len(parts) != len(blocks) {
+			lastErr = fmt.Errorf("asked for %d paragraphs, got %d back", len(blocks), len(parts))
+			m.log.Warn("translation changed the number of paragraphs; asking again",
+				zap.Int("attempt", attempt), zap.Int("want", len(blocks)), zap.Int("got", len(parts)))
+			prompt = withInstruction(shapeCorrection(len(blocks)), source)
+			framed = true
+			continue
+		}
+		if diff := CompareNumbers(source, got); !diff.Empty() {
+			lastErr = fmt.Errorf("the figures changed (missing %s; invented %s)",
+				orNone(CapList(diff.Missing, 5)), orNone(CapList(diff.Invented, 5)))
+			m.log.Warn("translation changed the numbers; asking again",
+				zap.Int("attempt", attempt),
+				zap.String("missing", CapList(diff.Missing, 5)),
+				zap.String("invented", CapList(diff.Invented, 5)))
+			prompt = withInstruction(numberCorrection(diff), source)
+			framed = true
+			continue
+		}
+		return parts, requests, nil
+	}
+
+	// Halving isolates the paragraph at fault instead of losing the article to
+	// it. A single paragraph that still will not translate correctly is a real
+	// failure and travels up.
+	if len(blocks) > 1 {
+		half := len(blocks) / 2
+		left, n, err := m.translateBatch(ctx, c, model, tok, system, to, blocks[:half], glossary)
+		requests += n
+		if err != nil {
+			return nil, requests, err
+		}
+		right, n, err := m.translateBatch(ctx, c, model, tok, system, to, blocks[half:], glossary)
+		requests += n
+		if err != nil {
+			return nil, requests, err
+		}
+		return append(left, right...), requests, nil
+	}
+	return nil, requests, lastErr
+}
+
+// shapeCorrection tells the next attempt how many paragraphs it must return.
+func shapeCorrection(want int) string {
+	return fmt.Sprintf("Your previous attempt returned the wrong number of paragraphs. "+
+		"The text has exactly %d paragraphs separated by blank lines. Return exactly %d, "+
+		"in the same order, separated by blank lines. Do not merge, split, add or drop any.", want, want)
+}
+
+// withInstruction puts a correction in front of the text it is about, behind
+// the same marker the glossary uses.
+//
+// The first version simply appended the correction to the text, and the text is
+// Markdown: separated by a blank line, an instruction becomes one more
+// paragraph of the article. It would be translated along with the rest and it
+// would throw off the very count it was sent to fix. Instructions belong in
+// front of the marker, where the prompt already says nothing is to be
+// translated, and the answer is cut on the marker as always.
+func withInstruction(instruction, text string) string {
+	return instruction + "\n\n---" + translateMarker + "---\n\n" + text
+}
+
+// batchAttempts is how many times a batch is asked for before it is split.
+const batchAttempts = 3
+
+// translateAttempts is how many times a headline or summary may be asked for
+// before the translation is abandoned.
 //
 // Asked four times to translate a single sentence containing "сорок
 // триллионов", kimi-k2.6 answered 40, 43, 40, 43. On a coin toss like that one
@@ -243,7 +371,7 @@ func (m *Module) translateChecked(ctx context.Context, c Completer, model, syste
 			zap.Int("attempt", attempt),
 			zap.String("missing", CapList(diff.Missing, 5)),
 			zap.String("invented", CapList(diff.Invented, 5)))
-		prompt = user + numberCorrection(diff)
+		prompt = withInstruction(numberCorrection(diff), user)
 	}
 	return "", fmt.Errorf("the translation kept changing the figures after %d attempts (missing %s; invented %s)",
 		translateAttempts, orNone(CapList(last.Missing, 5)), orNone(CapList(last.Invented, 5)))
@@ -254,7 +382,7 @@ func (m *Module) translateChecked(ctx context.Context, c Completer, model, syste
 // something to work with.
 func numberCorrection(d NumberDiff) string {
 	var b strings.Builder
-	b.WriteString("\n\n---\nYour previous attempt altered the figures, which is not allowed. ")
+	b.WriteString("Your previous attempt altered the figures, which is not allowed. ")
 	if len(d.Missing) > 0 {
 		b.WriteString("These numbers are in the text and must appear in your translation: ")
 		b.WriteString(CapList(d.Missing, 8))

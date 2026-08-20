@@ -47,22 +47,23 @@ func TestTranslateContent(t *testing.T) {
 		!strings.Contains(out.Body, "Тело") {
 		t.Fatalf("unexpected output: %+v", out)
 	}
-	// Two paragraphs of body, then the headline and the summary.
-	if len(fake.calls) != 4 {
-		t.Fatalf("expected 4 completion calls (2 paragraphs, title, summary), got %d", len(fake.calls))
+	// The body is small enough to travel in one request; then the headline and
+	// the summary.
+	if len(fake.calls) != 3 {
+		t.Fatalf("expected 3 completion calls (body, title, summary), got %d", len(fake.calls))
 	}
 	// The body keeps its shape: as many paragraphs out as went in.
 	if got := len(blockSplit.Split(out.Body, -1)); got != 2 {
 		t.Errorf("body came back as %d paragraphs, want 2: %q", got, out.Body)
 	}
 
-	// The first paragraph goes unframed: it is the text that settles which
-	// words this article uses.
+	// The first batch goes unframed: it is the text that settles which words
+	// this article uses.
 	if strings.Contains(fake.calls[0].User, translateMarker) {
-		t.Error("the first paragraph was wrapped in context it does not need")
+		t.Error("the first batch was wrapped in context it does not need")
 	}
-	if !strings.Contains(fake.calls[0].User, "Тело") {
-		t.Errorf("the first call was not the opening paragraph: %q", fake.calls[0].User)
+	if !strings.Contains(fake.calls[0].User, "Тело") || !strings.Contains(fake.calls[0].User, "текст") {
+		t.Errorf("the first call did not carry the whole batch: %q", fake.calls[0].User)
 	}
 
 	// Everything after it is shown the wording already chosen, so a term
@@ -99,7 +100,9 @@ func TestTranslateContent(t *testing.T) {
 // nothing about it. Paragraph by paragraph the count cannot drift — every block
 // is asked for and every answer is put back where it came from.
 func TestBodyKeepsEveryParagraph(t *testing.T) {
-	fake := &fakeCompleter{reply: func(r Request) string { return "аударма" }}
+	fake := &fakeCompleter{reply: func(r Request) string {
+		return echoShape(r.User, "аударма")
+	}}
 	m := New()
 	m.setCompleter(fake)
 
@@ -118,24 +121,63 @@ func TestBodyKeepsEveryParagraph(t *testing.T) {
 	}
 }
 
-// A table rule and a horizontal rule have nothing to translate. Sending them to
-// a model is a request that can only do harm, and it is one request per rule.
-func TestBlocksWithoutWordsAreNotSent(t *testing.T) {
-	fake := &fakeCompleter{reply: func(Request) string { return "аударма" }}
+// A batch of nothing but rules — a table separator, a horizontal rule — has
+// nothing to translate, and sending it is a request that can only do harm. On
+// an account capped at three requests a minute, it is also a fifth of a minute
+// of the author's time.
+func TestBatchesWithoutWordsAreNotSent(t *testing.T) {
+	fake := &fakeCompleter{reply: func(r Request) string { return echoShape(r.User, "аударма") }}
 	m := New()
 	m.setCompleter(fake)
 
+	// A batch is capped at batchBlocks, so twenty rules fill one on their own.
+	rules := strings.Repeat("|---|---|\n\n", batchBlocks)
 	out, err := m.translateContent(context.Background(), "ru", "kz", content{
-		Body: "Текст\n\n|---|---|\n\n---\n\nЕщё текст",
+		Body: rules + "Текст, который надо перевести.",
 	})
 	if err != nil {
 		t.Fatalf("translateContent: %v", err)
 	}
-	if len(fake.calls) != 2 {
-		t.Errorf("expected 2 calls for the 2 blocks with words, got %d", len(fake.calls))
+	if len(fake.calls) != 1 {
+		t.Errorf("expected 1 call for the one batch with words, got %d", len(fake.calls))
 	}
-	if !strings.Contains(out.Body, "|---|---|") || !strings.Contains(out.Body, "\n---\n") {
+	if strings.Count(out.Body, "|---|---|") != batchBlocks {
 		t.Errorf("the rules did not come through unchanged: %q", out.Body)
+	}
+}
+
+// The fault this pipeline exists to prevent, at batch scale: the model returns
+// fewer paragraphs than it was given. Nothing may trust it not to — the count
+// is taken on the way back, the batch is asked for again, and then split, down
+// to a single paragraph if that is what it takes.
+func TestABatchThatLosesAParagraphIsRetriedThenSplit(t *testing.T) {
+	// Swallows the last paragraph whenever it is given more than one.
+	fake := &fakeCompleter{reply: func(r Request) string {
+		parts := blockSplit.Split(strings.TrimSpace(r.User), -1)
+		if len(parts) > 1 {
+			parts = parts[:len(parts)-1]
+		}
+		out := make([]string, len(parts))
+		for i := range parts {
+			out[i] = "аударма"
+		}
+		return strings.Join(out, "\n\n")
+	}}
+	m := New()
+	m.setCompleter(fake)
+
+	src := []string{"Первый абзац.", "Второй абзац.", "Третий абзац.", "Четвёртый абзац."}
+	out, err := m.translateContent(context.Background(), "ru", "kz", content{
+		Body: strings.Join(src, "\n\n"),
+	})
+	if err != nil {
+		t.Fatalf("translateContent: %v", err)
+	}
+	if got := len(blockSplit.Split(out.Body, -1)); got != len(src) {
+		t.Fatalf("%d paragraphs in, %d out: %q", len(src), got, out.Body)
+	}
+	if len(fake.calls) <= batchAttempts {
+		t.Errorf("the batch was never split: %d calls", len(fake.calls))
 	}
 }
 
@@ -159,8 +201,8 @@ func TestTranslationThatChangesNumbersIsRefused(t *testing.T) {
 	if !strings.Contains(err.Error(), "43") {
 		t.Errorf("the error does not name the offending figure: %v", err)
 	}
-	if len(fake.calls) != translateAttempts {
-		t.Errorf("expected %d attempts, got %d", translateAttempts, len(fake.calls))
+	if len(fake.calls) != batchAttempts {
+		t.Errorf("expected %d attempts, got %d", batchAttempts, len(fake.calls))
 	}
 	// Every retry after the first must say what went wrong; a blind retry only
 	// re-rolls the same dice.
@@ -212,4 +254,21 @@ func TestTranslateContentSkipsEmptyFields(t *testing.T) {
 	if len(fake.calls) != 1 {
 		t.Fatalf("expected 1 call (body only), got %d", len(fake.calls))
 	}
+}
+
+// echoShape returns as many paragraphs as it was given, which is what an honest
+// translation does and what the pipeline checks for.
+func echoShape(user, word string) string {
+	src := user
+	if i := strings.LastIndex(user, translateMarker); i >= 0 {
+		if nl := strings.IndexByte(user[i:], '\n'); nl >= 0 {
+			src = user[i+nl+1:]
+		}
+	}
+	parts := blockSplit.Split(strings.TrimSpace(src), -1)
+	out := make([]string, len(parts))
+	for i := range parts {
+		out[i] = word
+	}
+	return strings.Join(out, "\n\n")
 }
