@@ -83,7 +83,7 @@ func assertTranslation(t *testing.T, ctx context.Context, pool *pgxpool.Pool, ar
 		t.Errorf("%s source = %q, want %q", lang, source, wantSource)
 	}
 	// The stub echoes whatever it was sent, and a short field now travels with
-	// the article's opening in front of it as context. So the check is in two
+	// the finished translation in front of it. So the check is in two
 	// parts: the stub ran (its marker is at the front), and the field itself is
 	// what sat at the end of the prompt to be translated.
 	if wantSource == "ai" && !strings.HasPrefix(title, "TRANSLATED:") {

@@ -51,25 +51,33 @@ func TestTranslateContent(t *testing.T) {
 		t.Fatalf("expected 3 completion calls (title, summary, body), got %d", len(fake.calls))
 	}
 
-	// The short fields carry the article's opening as context — alone they are
-	// ambiguous, and "корь" once came back as rubella in a summary whose body
-	// said measles throughout. The contract: the context comes first, the field
-	// to translate comes last, and the boundary is spelled out.
+	// The body is translated first and unframed: it is the text that settles
+	// which words this article uses.
+	if strings.Contains(fake.calls[0].User, "TRANSLATE ONLY WHAT FOLLOWS") {
+		t.Error("the body was wrapped in context it does not need")
+	}
+	if !strings.Contains(fake.calls[0].User, "Тело") {
+		t.Errorf("the first call was not the body: %q", fake.calls[0].User)
+	}
+
+	// The headline and the summary follow, each shown the finished translation
+	// so a term chosen once is used everywhere. Showing them the Russian source
+	// did not help: the question is not what the article is about, but which
+	// word to use in the target language — and that word is now already chosen.
 	for i, want := range []string{"Заголовок", "Кратко"} {
-		u := fake.calls[i].User
-		if !strings.Contains(u, "Тело") {
-			t.Errorf("call %d was sent without the article's context: %q", i, u)
+		u := fake.calls[i+1].User
+		if !strings.Contains(u, "already translated into") {
+			t.Errorf("call %d was not given the finished translation to match: %q", i+1, u)
+		}
+		if !strings.Contains(u, out.Body[:20]) {
+			t.Errorf("call %d does not carry the translated body: %q", i+1, u)
 		}
 		if !strings.Contains(u, "TRANSLATE ONLY WHAT FOLLOWS") {
-			t.Errorf("call %d does not mark which part to translate", i)
+			t.Errorf("call %d does not mark which part to translate", i+1)
 		}
 		if !strings.HasSuffix(strings.TrimSpace(u), want) {
-			t.Errorf("call %d does not end with the field itself: %q", i, u)
+			t.Errorf("call %d does not end with the field itself: %q", i+1, u)
 		}
-	}
-	// The body is long enough to speak for itself and is sent unframed.
-	if strings.Contains(fake.calls[2].User, "TRANSLATE ONLY WHAT FOLLOWS") {
-		t.Error("the body was wrapped in context it does not need")
 	}
 	// The system prompt must name both source and target languages.
 	sys := fake.calls[0].System

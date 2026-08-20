@@ -104,25 +104,14 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 	var out content
 	var err error
 
-	// A headline and a summary are translated on their own, and alone they are
-	// ambiguous: "корь" came back as "қызамық" — rubella — in the summary of an
-	// article whose body said "қызылша" throughout, because the body had twelve
-	// thousand characters of context and the summary had four hundred. Give the
-	// short fields the opening of the article to read, and mark plainly which
-	// part is to be translated.
-	ctxHead := excerptForContext(src.Body)
-	if src.Title != "" {
-		if out.Title, err = c.Complete(ctx, Request{Model: model, System: system,
-			User: withContext(ctxHead, src.Title), MaxTokens: translationBudget(src.Title, 512)}); err != nil {
-			return content{}, err
-		}
-	}
-	if src.Summary != "" {
-		if out.Summary, err = c.Complete(ctx, Request{Model: model, System: system,
-			User: withContext(ctxHead, src.Summary), MaxTokens: translationBudget(src.Summary, 1024)}); err != nil {
-			return content{}, err
-		}
-	}
+	// The body goes first, and everything else is translated against it.
+	//
+	// A headline and a summary are ambiguous on their own: "корь" came back as
+	// "қызамық" — rubella — in the summary of an article whose body said
+	// "қызылша" throughout. Showing them the Russian source as context did not
+	// help, because the question is not what the article is about but which
+	// word to use in the target language. Showing them the finished translation
+	// does: the term has already been chosen, and it is right there to copy.
 	if out.Body, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Body,
 		MaxTokens: translationBudget(src.Body, tok)}); err != nil {
 		return content{}, err
@@ -134,6 +123,22 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 	} else {
 		m.log.Warn("translation changed the number of links; URLs left as the model wrote them",
 			zap.String("from", from), zap.String("to", to))
+	}
+
+	glossary := excerptForContext(out.Body)
+	if src.Title != "" {
+		if out.Title, err = c.Complete(ctx, Request{Model: model, System: system,
+			User:      withGlossary(glossary, src.Title, langFullName[to]),
+			MaxTokens: translationBudget(src.Title, 512)}); err != nil {
+			return content{}, err
+		}
+	}
+	if src.Summary != "" {
+		if out.Summary, err = c.Complete(ctx, Request{Model: model, System: system,
+			User:      withGlossary(glossary, src.Summary, langFullName[to]),
+			MaxTokens: translationBudget(src.Summary, 1024)}); err != nil {
+			return content{}, err
+		}
 	}
 	return out, nil
 }
@@ -148,15 +153,18 @@ func excerptForContext(body string) string {
 	return strings.TrimSpace(string(r))
 }
 
-// withContext frames a short field so the model reads the article for meaning
-// but renders only the field. The marker is spelled out because a model given
-// two texts will otherwise translate both.
-func withContext(ctxHead, field string) string {
-	if ctxHead == "" {
+// withGlossary frames a short field against the already-translated article, so
+// the wording chosen there is the wording used here.
+//
+// The marker is spelled out because a model handed two texts will otherwise
+// translate both.
+func withGlossary(translated, field, targetName string) string {
+	if translated == "" {
 		return field
 	}
-	return "Context — the article this belongs to (do NOT translate this part):\n\n" +
-		ctxHead + "\n\n---TRANSLATE ONLY WHAT FOLLOWS---\n\n" + field
+	return "The same article, already translated into " + targetName +
+		". Use exactly its terminology and wording — do NOT translate this part:\n\n" +
+		translated + "\n\n---TRANSLATE ONLY WHAT FOLLOWS, matching the terminology above---\n\n" + field
 }
 
 // mdLinkTarget matches the URL inside a Markdown link.
