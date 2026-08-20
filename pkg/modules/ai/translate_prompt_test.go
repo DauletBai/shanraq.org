@@ -109,3 +109,43 @@ func TestLinkTargetsAreRestoredFromTheSource(t *testing.T) {
 		t.Error("текст без ссылок не должен считаться сбоем")
 	}
 }
+
+// Told to use the glossary but not translate it, the model translated it,
+// echoed the marker, and appended the answer — a 461-character summary came
+// back as 1,275 with the real translation at the end. The instruction is not
+// enforceable; the cut is.
+func TestOnlyWhatFollowsTheMarkerIsKept(t *testing.T) {
+	cases := []struct{ name, reply, want string }{
+		{
+			"модель вернула весь промпт",
+			"Аударылған контекст мәтіні.\n\n---TRANSLATE ONLY WHAT FOLLOWS, matching the terminology above---\n\nНағыз аударма.",
+			"Нағыз аударма.",
+		},
+		{
+			"маркер переформатирован",
+			"контекст\nTRANSLATE ONLY WHAT FOLLOWS\nответ",
+			"ответ",
+		},
+		{
+			"послушная модель — ответ не трогаем",
+			"Просто перевод без всякого маркера.",
+			"Просто перевод без всякого маркера.",
+		},
+		{
+			"маркер встречается дважды — берём последний",
+			"a TRANSLATE ONLY WHAT FOLLOWS\nb\nTRANSLATE ONLY WHAT FOLLOWS\nитог",
+			"итог",
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if got := afterMarker(c.reply); got != c.want {
+				t.Errorf("afterMarker() = %q, ожидалось %q", got, c.want)
+			}
+		})
+	}
+	// Промпт и резак должны договориться об одной и той же строке.
+	if !strings.Contains(withGlossary("глоссарий", "поле", "Kazakh"), translateMarker) {
+		t.Error("промпт не содержит маркера, по которому режет afterMarker")
+	}
+}

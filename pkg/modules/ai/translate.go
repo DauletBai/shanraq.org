@@ -132,6 +132,7 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 			MaxTokens: translationBudget(src.Title, 512)}); err != nil {
 			return content{}, err
 		}
+		out.Title = afterMarker(out.Title)
 	}
 	if src.Summary != "" {
 		if out.Summary, err = c.Complete(ctx, Request{Model: model, System: system,
@@ -139,6 +140,7 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 			MaxTokens: translationBudget(src.Summary, 1024)}); err != nil {
 			return content{}, err
 		}
+		out.Summary = afterMarker(out.Summary)
 	}
 	return out, nil
 }
@@ -153,18 +155,40 @@ func excerptForContext(body string) string {
 	return strings.TrimSpace(string(r))
 }
 
+// translateMarker separates the glossary from the field to be translated. It is
+// a constant because two things must agree on it: the prompt that writes it and
+// the code that cuts on it.
+const translateMarker = "TRANSLATE ONLY WHAT FOLLOWS"
+
 // withGlossary frames a short field against the already-translated article, so
 // the wording chosen there is the wording used here.
-//
-// The marker is spelled out because a model handed two texts will otherwise
-// translate both.
 func withGlossary(translated, field, targetName string) string {
 	if translated == "" {
 		return field
 	}
 	return "The same article, already translated into " + targetName +
 		". Use exactly its terminology and wording — do NOT translate this part:\n\n" +
-		translated + "\n\n---TRANSLATE ONLY WHAT FOLLOWS, matching the terminology above---\n\n" + field
+		translated + "\n\n---" + translateMarker + ", matching the terminology above---\n\n" + field
+}
+
+// afterMarker keeps only what the model wrote after the marker.
+//
+// The instruction not to translate the glossary is an instruction, and a model
+// handed two texts translated both — returning the context, the marker line,
+// and only then the answer. The summary of an article came out as 1,275
+// characters against an original of 461, with the real translation buried at
+// the end. Asking more politely is not a fix; cutting on the marker is.
+func afterMarker(reply string) string {
+	i := strings.LastIndex(reply, translateMarker)
+	if i < 0 {
+		return reply
+	}
+	rest := reply[i+len(translateMarker):]
+	// Step over the tail of the marker line, whatever the model made of it.
+	if nl := strings.IndexByte(rest, '\n'); nl >= 0 {
+		rest = rest[nl+1:]
+	}
+	return strings.TrimSpace(rest)
 }
 
 // mdLinkTarget matches the URL inside a Markdown link.

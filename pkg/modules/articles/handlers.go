@@ -1423,10 +1423,19 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 	if orig, ok := a.Translations[a.OriginalLang]; ok {
 		issues := map[string][]TranslationIssue{}
 		for _, l := range otherLangs(a.OriginalLang) {
-			if tr, ok := a.Translations[l]; ok {
-				if found := compareTranslation(orig.BodyMD, tr.BodyMD); len(found) > 0 {
-					issues[l] = found
-				}
+			tr, ok := a.Translations[l]
+			if !ok {
+				continue
+			}
+			// All three fields, not just the body: a summary came back three
+			// times its original length with the model's own prompt echoed into
+			// it, and a body-only check would have called that clean.
+			var found []TranslationIssue
+			found = append(found, compareTranslation(orig.BodyMD, tr.BodyMD)...)
+			found = append(found, compareTranslation(orig.Summary, tr.Summary)...)
+			found = append(found, compareTranslation(orig.Title, tr.Title)...)
+			if len(found) > 0 {
+				issues[l] = found
 			}
 		}
 		if len(issues) > 0 {
