@@ -3,6 +3,8 @@ package articles
 import (
 	"regexp"
 	"strings"
+
+	"shanraq.org/pkg/modules/ai"
 )
 
 // Mechanical comparison of a translation against its original.
@@ -24,12 +26,7 @@ var (
 	mdHeading  = regexp.MustCompile(`(?m)^#{2,6}\s`)
 	mdLink     = regexp.MustCompile(`\]\(https?://`)
 	mdTableRow = regexp.MustCompile(`(?m)^\s*\|`)
-	// A separator only joins digits when it groups exactly three of them.
-	// The first version treated any comma or space between digits as a
-	// thousands mark, so "99% in 2019, 99% in 2022" became the single number
-	// 201999 — and every English translation was reported as damaged.
-	numberToken = regexp.MustCompile(`\d{1,3}(?:[\s,.\x{00a0} ]\d{3})+|\d+(?:[.,]\d+)?`)
-	notDigit    = regexp.MustCompile(`\D`)
+	blockSplit = regexp.MustCompile(`\n\s*\n`)
 )
 
 // TranslationIssue is one discrepancy, ready for the editor to show.
@@ -39,59 +36,6 @@ type TranslationIssue struct {
 	Have   int
 	Want   int
 	Detail string // the numbers themselves, when that is what is wrong
-}
-
-// numbersIn returns the numbers of a text in the order they appear, each as the
-// text wrote it, along with the set of their digits.
-//
-// Separators are deliberately discarded from the set: a translation is expected
-// to write 2 101 as 2,101 and 98,5% as 98.5% — that is correct localisation,
-// not damage. What must not change is which digits are there.
-//
-// The written form is kept because that is what the author will search for. A
-// warning naming "14380" sends them hunting through a text that says "14 380".
-// The order is kept for the same reason: the author reads top to bottom, and a
-// list that follows the text is a list they can walk.
-//
-// Numbers shorter than min digits are left out. Going missing and appearing
-// from nowhere are not equally suspicious, so the two directions use different
-// floors — see compareTranslation.
-func numbersIn(s string, min int) ([]string, map[string]string) {
-	var order []string
-	digits := map[string]string{}
-	for _, m := range numberToken.FindAllString(s, -1) {
-		d := notDigit.ReplaceAllString(m, "")
-		if len(d) < min {
-			continue
-		}
-		if _, seen := digits[d]; !seen {
-			digits[d] = m
-			order = append(order, d)
-		}
-	}
-	return order, digits
-}
-
-// survives reports whether a source number can be found in the translation,
-// allowing for the one rewrite that changes the digits legitimately: a scale
-// word traded for zeros. "123 тысячи" and "123,000" are the same number, and so
-// are "40 миллионов" and "40,000,000".
-//
-// Only whole groups of three zeros count, which is what keeps this from
-// swallowing real damage: 20 940 mistyped as 2 094 differs by one zero, not by
-// a scale word, and is still reported.
-func survives(digits string, have map[string]string) bool {
-	for _, zeros := range []string{"", "000", "000000", "000000000", "000000000000"} {
-		if _, ok := have[digits+zeros]; ok {
-			return true
-		}
-		if trimmed := strings.TrimSuffix(digits, zeros); zeros != "" && trimmed != digits && len(trimmed) >= 3 {
-			if _, ok := have[trimmed]; ok {
-				return true
-			}
-		}
-	}
-	return false
 }
 
 // compareTranslation lists what the translation lost or gained.
@@ -112,61 +56,23 @@ func compareTranslation(src, dst string) []TranslationIssue {
 
 	// Numbers are the check that matters most: a changed figure is a factual
 	// error, and the one kind of error a reader of the translation would never
-	// suspect.
-	// Only numbers absent from the translation altogether are reported. A figure
-	// used four times in Russian and three times in Kazakh is a difference of
-	// phrasing, not of fact, and flagging it taught the author to ignore the
-	// warnings — which is worse than not checking.
+	// suspect. The comparison itself lives in the ai module, because the
+	// translator enforces the same rule when it decides whether to ask for a
+	// paragraph again — the warning shown here and the rule applied there must
+	// be the same rule.
 	//
-	// And the numbers are named. "Some numbers do not match (68 / 68)" tells
-	// nobody anything; "20 940, 14 380 are missing" is checked in five seconds
-	// by someone who does not read the language.
-	// Going missing is checked from three digits up. Shorter numbers are the
-	// ones a good translator rewrites — "$40 триллионов" becomes "the
-	// forty-trillion-dollar mark", "один больной" becomes "a single case" — and
-	// a rule that cannot tell that apart from damage fires on every honest
-	// translation.
-	srcOrder, want := numbersIn(src, 3)
-	_, have := numbersIn(dst, 3)
-	var missing []string
-	for _, digits := range srcOrder {
-		if !survives(digits, have) {
-			missing = append(missing, want[digits])
-		}
+	// Paragraph by paragraph whenever the two texts have the same shape, which
+	// since translation runs a paragraph at a time is nearly always. Comparing
+	// whole texts hides exactly the fault that prompted this: the article that
+	// came back saying "43 триллион" where the original said forty passed a
+	// whole-text check clean, because 43 appeared elsewhere in the piece — in
+	// "сорок три тысячи заболевших", four paragraphs down.
+	diff := comparePiecewise(src, dst)
+	if len(diff.Missing) > 0 {
+		out = append(out, TranslationIssue{Key: "numbers", Detail: ai.CapList(diff.Missing, 5)})
 	}
-	if len(missing) > 0 {
-		// The list follows the text, and stops while it is still readable: a
-		// dropped paragraph takes dozens of figures with it, and a warning
-		// naming all of them is a warning nobody reads.
-		if len(missing) > 5 {
-			missing = append(missing[:5:5], "…")
-		}
-		out = append(out, TranslationIssue{Key: "numbers", Detail: strings.Join(missing, ", ")})
-	}
-
-	// And the other direction: a number the translation states that the original
-	// never did. This is the graver fault of the two — a lost sentence leaves a
-	// gap a reader may notice, an invented figure reads as fact and is quoted as
-	// one. It happened on the article that prompted these checks: "сорок
-	// триллионов" came back as "43 триллион", twice, in a text whose own source
-	// list said forty.
-	//
-	// Checked from two digits up, where losses are checked from three: a
-	// translator has good reason to spell a small number out, and none to
-	// produce one the original does not contain.
-	dstOrder, got := numbersIn(dst, 2)
-	_, base := numbersIn(src, 2)
-	var invented []string
-	for _, digits := range dstOrder {
-		if !survives(digits, base) {
-			invented = append(invented, got[digits])
-		}
-	}
-	if len(invented) > 0 {
-		if len(invented) > 5 {
-			invented = append(invented[:5:5], "…")
-		}
-		out = append(out, TranslationIssue{Key: "invented", Detail: strings.Join(invented, ", ")})
+	if len(diff.Invented) > 0 {
+		out = append(out, TranslationIssue{Key: "invented", Detail: ai.CapList(diff.Invented, 5)})
 	}
 
 	// Length is the coarse net that catches a truncated or abandoned pass.
@@ -175,4 +81,79 @@ func compareTranslation(src, dst string) []TranslationIssue {
 		out = append(out, TranslationIssue{Key: "length", Have: dl, Want: sl})
 	}
 	return out
+}
+
+// comparePiecewise compares the figures paragraph against paragraph when the
+// two texts still line up, and as whole texts when they do not.
+//
+// Lining up is what makes the check precise: a figure is then judged against
+// the sentence it belongs to rather than against everything the article
+// happens to mention. When the shapes differ the translation has already lost
+// or gained a paragraph, and pairing them by position would report every
+// paragraph after the first difference — so it falls back, and the length
+// check is what speaks up.
+func comparePiecewise(src, dst string) ai.NumberDiff {
+	a := blockSplit.Split(strings.TrimSpace(src), -1)
+	b := blockSplit.Split(strings.TrimSpace(dst), -1)
+	if len(a) < 2 || !sameShape(a, b) {
+		return ai.CompareNumbers(src, dst)
+	}
+	var out ai.NumberDiff
+	touched := 0
+	for i := range a {
+		d := ai.CompareNumbers(a[i], b[i])
+		if !d.Empty() {
+			touched++
+		}
+		out.Missing = append(out.Missing, d.Missing...)
+		out.Invented = append(out.Invented, d.Invented...)
+	}
+	// Matching kinds is a good test of alignment, not a perfect one: a text of
+	// nothing but paragraphs keeps its shape however far it has shifted. So the
+	// count of objections is the second guard. Real damage is a figure or two;
+	// when a third of the paragraphs disagree, what is wrong is the pairing.
+	if touched >= 3 && touched*3 > len(a) {
+		return ai.CompareNumbers(src, dst)
+	}
+	return out
+}
+
+// sameShape reports whether two texts are built of the same run of blocks, so
+// that the nth paragraph of one answers the nth paragraph of the other. It is
+// the first of two alignment guards; the second is in comparePiecewise.
+//
+// An equal count is not enough. A translation that dropped one sentence and
+// split another adds up to the same total while everything after the first
+// change sits against the wrong original — and the article that prompted these
+// checks did exactly that, so pairing by position reported half the piece.
+// Comparing the kinds catches it: heading, table row and paragraph fall in a
+// particular order, and a shifted text stops matching that order almost at
+// once.
+func sameShape(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if blockKind(a[i]) != blockKind(b[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func blockKind(b string) byte {
+	switch t := strings.TrimSpace(b); {
+	case t == "":
+		return ' '
+	case strings.HasPrefix(t, "#"):
+		return 'H'
+	case strings.HasPrefix(t, "|"):
+		return 'T'
+	case strings.HasPrefix(t, ">"):
+		return 'Q'
+	case strings.HasPrefix(t, "-"), strings.HasPrefix(t, "*"):
+		return 'L'
+	default:
+		return 'P'
+	}
 }

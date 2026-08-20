@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -127,7 +129,52 @@ func requestTimeout(maxTokens int) time.Duration {
 	return d
 }
 
+// rateLimitAttempts is how many times a request refused for rate limiting is
+// tried again.
+//
+// Translating by paragraph turned one request per article into seventy, and the
+// provider noticed: a run of a single article hit "429 Too Many Requests"
+// repeatedly, and an unretried 429 fails the whole translation over a queue
+// that would have cleared in ten seconds. Waiting is the correct response to
+// being asked to wait.
+const rateLimitAttempts = 6
+
 func (c *openaiCompleter) Complete(ctx context.Context, req Request) (string, error) {
+	var err error
+	var out string
+	backoff := 5 * time.Second
+	for attempt := 1; ; attempt++ {
+		out, err = c.complete(ctx, req)
+		var limited rateLimited
+		if !errors.As(err, &limited) || attempt == rateLimitAttempts {
+			return out, err
+		}
+		wait := limited.retryAfter
+		if wait <= 0 {
+			wait = backoff
+		}
+		select {
+		case <-ctx.Done():
+			return "", ctx.Err()
+		case <-time.After(wait):
+		}
+		if backoff < 60*time.Second {
+			backoff *= 2
+		}
+	}
+}
+
+// rateLimited marks a refusal that will pass on its own.
+type rateLimited struct {
+	retryAfter time.Duration
+	body       string
+}
+
+func (e rateLimited) Error() string {
+	return "openai: rate limited (" + strings.TrimSpace(e.body) + ")"
+}
+
+func (c *openaiCompleter) complete(ctx context.Context, req Request) (string, error) {
 	maxTokens := req.MaxTokens
 	if maxTokens <= 0 {
 		maxTokens = 4096
@@ -165,6 +212,15 @@ func (c *openaiCompleter) Complete(ctx context.Context, req Request) (string, er
 	raw, err := io.ReadAll(io.LimitReader(resp.Body, 4<<20))
 	if err != nil {
 		return "", fmt.Errorf("openai read: %w", err)
+	}
+	if resp.StatusCode == http.StatusTooManyRequests {
+		var after time.Duration
+		if v := resp.Header.Get("Retry-After"); v != "" {
+			if secs, convErr := strconv.Atoi(strings.TrimSpace(v)); convErr == nil && secs > 0 {
+				after = time.Duration(secs) * time.Second
+			}
+		}
+		return "", rateLimited{retryAfter: after, body: string(raw)}
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return "", fmt.Errorf("openai status %d: %s", resp.StatusCode, strings.TrimSpace(string(raw)))

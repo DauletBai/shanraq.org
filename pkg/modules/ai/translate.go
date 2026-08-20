@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"unicode"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -112,8 +113,7 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 	// help, because the question is not what the article is about but which
 	// word to use in the target language. Showing them the finished translation
 	// does: the term has already been chosen, and it is right there to copy.
-	if out.Body, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Body,
-		MaxTokens: translationBudget(src.Body, tok)}); err != nil {
+	if out.Body, err = m.translateBody(ctx, c, model, tok, system, from, to, src.Body); err != nil {
 		return content{}, err
 	}
 	// The one thing a reader cannot verify and the model got wrong: where the
@@ -127,22 +127,153 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 
 	glossary := excerptForContext(out.Body)
 	if src.Title != "" {
-		if out.Title, err = c.Complete(ctx, Request{Model: model, System: system,
-			User:      withGlossary(glossary, src.Title, langFullName[to]),
-			MaxTokens: translationBudget(src.Title, 512)}); err != nil {
+		if out.Title, err = m.translateChecked(ctx, c, model, system, src.Title,
+			withGlossary(glossary, src.Title, langFullName[to]), 512, true); err != nil {
 			return content{}, err
 		}
-		out.Title = afterMarker(out.Title)
 	}
 	if src.Summary != "" {
-		if out.Summary, err = c.Complete(ctx, Request{Model: model, System: system,
-			User:      withGlossary(glossary, src.Summary, langFullName[to]),
-			MaxTokens: translationBudget(src.Summary, 1024)}); err != nil {
+		if out.Summary, err = m.translateChecked(ctx, c, model, system, src.Summary,
+			withGlossary(glossary, src.Summary, langFullName[to]), 1024, true); err != nil {
 			return content{}, err
 		}
-		out.Summary = afterMarker(out.Summary)
 	}
 	return out, nil
+}
+
+// blockSplit finds the blank lines that separate one Markdown block from the next.
+var blockSplit = regexp.MustCompile(`\n\s*\n`)
+
+// hasLetters reports whether a block contains anything to translate. A table
+// rule — |---|---|---| — and a horizontal rule do not, and sending them to a
+// model is a request that can only do harm.
+func hasLetters(s string) bool {
+	return strings.IndexFunc(s, unicode.IsLetter) >= 0
+}
+
+// translateBody translates an article one paragraph at a time.
+//
+// It used to go in a single request, and that was the cause of the worst fault
+// this pipeline has produced: asked for thirteen thousand characters in one
+// breath, the model quietly returned fewer paragraphs than it was given. Three
+// runs of the same article came back with 71, 70 and 68 of its 71 paragraphs,
+// and the same sentence — Tajikistan reporting zero cases — went missing in all
+// three. Nothing in the output said anything was gone.
+//
+// Paragraph by paragraph, the count cannot drift: every block is asked for and
+// every answer is put back where it came from. The same model, given the same
+// article this way, returned all 71 with the lost sentence intact.
+//
+// It costs more requests and a few seconds; it buys a structural guarantee in
+// place of a hope.
+func (m *Module) translateBody(ctx context.Context, c Completer, model string, tok int,
+	system, from, to, body string) (string, error) {
+	blocks := blockSplit.Split(strings.TrimSpace(body), -1)
+	out := make([]string, len(blocks))
+	var glossary string
+
+	for i, b := range blocks {
+		if !hasLetters(b) {
+			out[i] = b
+			continue
+		}
+		// Every block after the first is shown the wording already chosen, so a
+		// term settled in paragraph one is the term used in paragraph forty.
+		user := b
+		framed := false
+		if glossary != "" {
+			user = withGlossary(glossary, b, langFullName[to])
+			framed = true
+		}
+		got, err := m.translateChecked(ctx, c, model, system, b, user, tok, framed)
+		if err != nil {
+			return "", fmt.Errorf("paragraph %d of %d: %w", i+1, len(blocks), err)
+		}
+		out[i] = got
+		if glossary == "" {
+			glossary = excerptForContext(strings.Join(out[:i+1], "\n\n"))
+		}
+	}
+	m.log.Info("translated by paragraph", zap.String("from", from), zap.String("to", to),
+		zap.Int("paragraphs", len(blocks)))
+	return strings.Join(out, "\n\n"), nil
+}
+
+// translateAttempts is how many times one paragraph may be asked for before the
+// translation is abandoned.
+//
+// Asked four times to translate a single sentence containing "сорок
+// триллионов", kimi-k2.6 answered 40, 43, 40, 43. On a coin toss like that one
+// retry leaves a quarter of the cases wrong and three leave an eighth, so the
+// count is set where the arithmetic stops mattering — and each retry is told
+// which figure it got wrong, which a blind retry cannot use.
+const translateAttempts = 4
+
+// translateChecked translates one piece of text and refuses to return a version
+// that changed its numbers.
+//
+// A wrong figure is the one fault that survives every kind of review: it reads
+// as fact, it is quoted as fact, and a reader of the translation has nothing to
+// compare it against. The author cannot catch it either — the whole reason this
+// site translates for them is that they do not read the language.
+//
+// So it is not reported, it is refused. If the figures still do not match after
+// the last attempt the error travels up and the language is not saved at all:
+// a missing translation is a problem the author can see, and a translation that
+// says forty-three trillion where the world said forty is one they cannot.
+func (m *Module) translateChecked(ctx context.Context, c Completer, model, system,
+	source, user string, floor int, framed bool) (string, error) {
+	var last NumberDiff
+	prompt := user
+	for attempt := 1; attempt <= translateAttempts; attempt++ {
+		got, err := c.Complete(ctx, Request{Model: model, System: system, User: prompt,
+			MaxTokens: translationBudget(source, floor)})
+		if err != nil {
+			return "", err
+		}
+		if framed {
+			got = afterMarker(got)
+		}
+		diff := CompareNumbers(source, got)
+		if diff.Empty() {
+			return got, nil
+		}
+		last = diff
+		m.log.Warn("translation changed the numbers; asking again",
+			zap.Int("attempt", attempt),
+			zap.String("missing", CapList(diff.Missing, 5)),
+			zap.String("invented", CapList(diff.Invented, 5)))
+		prompt = user + numberCorrection(diff)
+	}
+	return "", fmt.Errorf("the translation kept changing the figures after %d attempts (missing %s; invented %s)",
+		translateAttempts, orNone(CapList(last.Missing, 5)), orNone(CapList(last.Invented, 5)))
+}
+
+// numberCorrection tells the next attempt exactly what the last one got wrong.
+// A blind retry re-rolls the same dice; a retry that names the figure has
+// something to work with.
+func numberCorrection(d NumberDiff) string {
+	var b strings.Builder
+	b.WriteString("\n\n---\nYour previous attempt altered the figures, which is not allowed. ")
+	if len(d.Missing) > 0 {
+		b.WriteString("These numbers are in the text and must appear in your translation: ")
+		b.WriteString(CapList(d.Missing, 8))
+		b.WriteString(". ")
+	}
+	if len(d.Invented) > 0 {
+		b.WriteString("These numbers are NOT in the text and must not appear: ")
+		b.WriteString(CapList(d.Invented, 8))
+		b.WriteString(". ")
+	}
+	b.WriteString("Copy every digit exactly as written. Translate the text again.")
+	return b.String()
+}
+
+func orNone(s string) string {
+	if s == "" {
+		return "none"
+	}
+	return s
 }
 
 // excerptForContext takes the opening of an article, enough to fix the subject
