@@ -120,10 +120,23 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 }
 
 func translateSystem(from, to string) string {
+	// "Preserve the Markdown formatting exactly" read, to a model not given room
+	// to think it over, as "leave everything inside the markup alone" — and a
+	// link came back with its label still in the source language, sitting in the
+	// middle of a translated sentence. The rule now separates the two things
+	// that got conflated: the markup and the URLs are structure and are kept
+	// byte for byte; the words a reader sees, wherever they sit, are prose and
+	// are translated.
 	return fmt.Sprintf(`You are a professional translator for an independent journalism platform.
 Translate the user's text from %s into %s.
 Rules:
-- Preserve the meaning, tone, and any Markdown formatting exactly.
+- Translate ALL text a reader sees, including link labels, headings, list items,
+  table cells, blockquotes, and image alt text. A word inside [brackets] is prose
+  and must be translated like any other.
+- Keep the Markdown structure byte for byte: the markup characters themselves,
+  the URLs inside (parentheses), and anything in code blocks or `+"`inline code`"+`.
+- Preserve the meaning and tone. Write natural, idiomatic %[2]s — a stiff literal
+  rendering is a worse translation than a fluent one.
 - Keep proper nouns and technical terms accurate; localize idioms naturally.
 - Do NOT add commentary, notes, or explanations.
 - Output ONLY the translated text, nothing else.`, langFullName[from], langFullName[to])
