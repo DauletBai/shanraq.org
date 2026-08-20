@@ -76,3 +76,36 @@ func TestTranslationBudgetFollowsTheText(t *testing.T) {
 		t.Error("оценка зависит от алфавита — значит, считает байты, а не символы")
 	}
 }
+
+// One of nine URLs came back swapped in the first real translation: the WHO
+// fact sheet pointed at a Bangladeshi newspaper. A prompt cannot guarantee
+// this and a reader cannot check it, so the code does.
+func TestLinkTargetsAreRestoredFromTheSource(t *testing.T) {
+	src := "См. [ВОЗ](https://who.int/measles) и [газету](https://tbsnews.net/story)."
+	bad := "Қараңыз: [ДДҰ](https://tbsnews.net/story) және [газет](https://tbsnews.net/story)."
+
+	got, ok := restoreLinkTargets(src, bad)
+	if !ok {
+		t.Fatal("восстановление не сработало на совпадающем числе ссылок")
+	}
+	if !strings.Contains(got, "[ДДҰ](https://who.int/measles)") {
+		t.Errorf("первая ссылка не восстановлена:\n%s", got)
+	}
+	if !strings.Contains(got, "[газет](https://tbsnews.net/story)") {
+		t.Errorf("вторая ссылка испорчена:\n%s", got)
+	}
+	// Подписи — работа переводчика, их трогать нельзя.
+	if strings.Contains(got, "ВОЗ") {
+		t.Error("восстановление URL затронуло текст подписи")
+	}
+
+	// Если модель потеряла или добавила ссылку, позиционное сопоставление
+	// начнёт врать — тогда лучше не трогать вовсе.
+	if _, ok := restoreLinkTargets(src, "Только [одна](https://example.com/x)."); ok {
+		t.Error("при несовпадении числа ссылок восстановление должно отказываться")
+	}
+	// Текст без ссылок — не ошибка.
+	if _, ok := restoreLinkTargets("без ссылок", "сілтемесіз"); !ok {
+		t.Error("текст без ссылок не должен считаться сбоем")
+	}
+}

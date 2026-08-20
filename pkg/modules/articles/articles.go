@@ -273,6 +273,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/studio/a/{id}/unpublish", m.handleUnpublish)
 		r.Post("/studio/a/{id}/delete", m.handleDeleteDraft)
 		r.Post("/studio/a/{id}/translate", m.handleTranslate)
+		r.Get("/studio/a/{id}/translate/status", m.handleTranslateStatus)
 		r.Get("/favorites", m.handleFavorites)
 		// Advertiser cabinet (Phase 0b MVP — order capture, billing later).
 		r.Get("/agent", m.handleAgentCabinet)

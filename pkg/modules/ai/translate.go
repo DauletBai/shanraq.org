@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/google/uuid"
@@ -103,15 +104,22 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 	var out content
 	var err error
 
+	// A headline and a summary are translated on their own, and alone they are
+	// ambiguous: "корь" came back as "қызамық" — rubella — in the summary of an
+	// article whose body said "қызылша" throughout, because the body had twelve
+	// thousand characters of context and the summary had four hundred. Give the
+	// short fields the opening of the article to read, and mark plainly which
+	// part is to be translated.
+	ctxHead := excerptForContext(src.Body)
 	if src.Title != "" {
-		if out.Title, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Title,
-			MaxTokens: translationBudget(src.Title, 512)}); err != nil {
+		if out.Title, err = c.Complete(ctx, Request{Model: model, System: system,
+			User: withContext(ctxHead, src.Title), MaxTokens: translationBudget(src.Title, 512)}); err != nil {
 			return content{}, err
 		}
 	}
 	if src.Summary != "" {
-		if out.Summary, err = c.Complete(ctx, Request{Model: model, System: system, User: src.Summary,
-			MaxTokens: translationBudget(src.Summary, 1024)}); err != nil {
+		if out.Summary, err = c.Complete(ctx, Request{Model: model, System: system,
+			User: withContext(ctxHead, src.Summary), MaxTokens: translationBudget(src.Summary, 1024)}); err != nil {
 			return content{}, err
 		}
 	}
@@ -119,7 +127,64 @@ func (m *Module) translateContent(ctx context.Context, from, to string, src cont
 		MaxTokens: translationBudget(src.Body, tok)}); err != nil {
 		return content{}, err
 	}
+	// The one thing a reader cannot verify and the model got wrong: where the
+	// links point.
+	if restored, ok := restoreLinkTargets(src.Body, out.Body); ok {
+		out.Body = restored
+	} else {
+		m.log.Warn("translation changed the number of links; URLs left as the model wrote them",
+			zap.String("from", from), zap.String("to", to))
+	}
 	return out, nil
+}
+
+// excerptForContext takes the opening of an article, enough to fix the subject
+// and its terminology without paying for the whole text on every short field.
+func excerptForContext(body string) string {
+	r := []rune(body)
+	if len(r) > 700 {
+		r = r[:700]
+	}
+	return strings.TrimSpace(string(r))
+}
+
+// withContext frames a short field so the model reads the article for meaning
+// but renders only the field. The marker is spelled out because a model given
+// two texts will otherwise translate both.
+func withContext(ctxHead, field string) string {
+	if ctxHead == "" {
+		return field
+	}
+	return "Context — the article this belongs to (do NOT translate this part):\n\n" +
+		ctxHead + "\n\n---TRANSLATE ONLY WHAT FOLLOWS---\n\n" + field
+}
+
+// mdLinkTarget matches the URL inside a Markdown link.
+var mdLinkTarget = regexp.MustCompile(`\]\((https?://[^)\s]+)\)`)
+
+// restoreLinkTargets puts the original URLs back into a translation.
+//
+// The prompt tells the model to keep URLs byte for byte, and it mostly does —
+// but on the first long article one of nine came back swapped: the WHO fact
+// sheet pointed at a Bangladeshi newspaper. A prompt cannot guarantee this and
+// a reader cannot check it, so the guarantee is made here instead.
+//
+// Links are restored by position: the nth link of the translation gets the nth
+// URL of the source. If the counts differ the translation has changed the
+// document's shape, and guessing which link is which would be worse than
+// leaving it — the caller logs that and moves on.
+func restoreLinkTargets(src, translated string) (string, bool) {
+	want := mdLinkTarget.FindAllStringSubmatch(src, -1)
+	if len(want) == 0 || len(want) != len(mdLinkTarget.FindAllString(translated, -1)) {
+		return translated, len(want) == 0
+	}
+	i := 0
+	out := mdLinkTarget.ReplaceAllStringFunc(translated, func(string) string {
+		u := want[i][1]
+		i++
+		return "](" + u + ")"
+	})
+	return out, true
 }
 
 // translationBudget sizes the output cap to the text being translated.

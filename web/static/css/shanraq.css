@@ -1024,6 +1024,13 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
 .reportbox__form .hint { margin: 8px 0 12px; }
 .reported-note { display: inline-block; margin-top: 4px; }
 
+/* The hourglass turns while a translation runs: a page that shows nothing for
+   several minutes is indistinguishable from a page that has forgotten. */
+.hourglass { display: inline-block; animation: hourglass-turn 3s ease-in-out infinite; }
+@keyframes hourglass-turn { 0%, 40% { transform: rotate(0deg); } 50%, 90% { transform: rotate(180deg); } 100% { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .hourglass { animation: none; } }
+.ai-bar__state { margin-top: 10px; }
+
 /* ---------- footer ---------- */
 /* Footer: black in both themes, light text tuned for the dark ground. */
 .site-footer { 

@@ -3,6 +3,7 @@ package ai
 import (
 	"context"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/uuid"
@@ -54,8 +55,8 @@ func TestTranslateJobIntegration(t *testing.T) {
 	}
 
 	// KZ and EN AI versions must now exist; RU original stays human & untouched.
-	assertTranslation(t, ctx, pool, articleID, "kz", "ai", "TRANSLATED:Заголовок")
-	assertTranslation(t, ctx, pool, articleID, "en", "ai", "TRANSLATED:Заголовок")
+	assertTranslation(t, ctx, pool, articleID, "kz", "ai", "Заголовок")
+	assertTranslation(t, ctx, pool, articleID, "en", "ai", "Заголовок")
 	assertTranslation(t, ctx, pool, articleID, "ru", "human", "Заголовок")
 
 	// Now add a HUMAN Kazakh version and re-run: it must NOT be overwritten.
@@ -81,7 +82,14 @@ func assertTranslation(t *testing.T, ctx context.Context, pool *pgxpool.Pool, ar
 	if source != wantSource {
 		t.Errorf("%s source = %q, want %q", lang, source, wantSource)
 	}
-	if title != wantTitle {
-		t.Errorf("%s title = %q, want %q", lang, title, wantTitle)
+	// The stub echoes whatever it was sent, and a short field now travels with
+	// the article's opening in front of it as context. So the check is in two
+	// parts: the stub ran (its marker is at the front), and the field itself is
+	// what sat at the end of the prompt to be translated.
+	if wantSource == "ai" && !strings.HasPrefix(title, "TRANSLATED:") {
+		t.Errorf("%s title never went through the translator: %q", lang, title)
+	}
+	if !strings.HasSuffix(title, wantTitle) {
+		t.Errorf("%s title = %q, want it to end with %q", lang, title, wantTitle)
 	}
 }

@@ -30,13 +30,18 @@
       {{/* The outcome of the last run. Without it the author clicks, reads
            "started", and then waits in front of empty tabs with no way to find
            out that the job failed. */}}
-      {{ if eq .TranslateState "running" }}
-      <p class="hint ai-bar__state">⏳ {{ t .Lang "editor.ai_running" }}</p>
-      {{ else if eq .TranslateState "failed" }}
-      <p class="alert alert--error ai-bar__state">{{ t .Lang "editor.ai_failed" }}{{ if .TranslateError }} <span class="hint">({{ .TranslateError }})</span>{{ end }}</p>
-      {{ else if eq .TranslateState "done" }}
-      <p class="hint ai-bar__state">✓ {{ t .Lang "editor.ai_done" }}</p>
-      {{ end }}
+      <div class="ai-bar__state" data-translate-status="/studio/a/{{ .ArticleID }}/translate/status"
+           data-state="{{ .TranslateState }}"
+           data-done="{{ t .Lang "editor.ai_done" }}"
+           data-failed="{{ t .Lang "editor.ai_failed" }}">
+        {{ if eq .TranslateState "running" }}
+        <p class="hint"><span class="hourglass" aria-hidden="true">⏳</span> {{ t .Lang "editor.ai_running" }}</p>
+        {{ else if eq .TranslateState "failed" }}
+        <p class="alert alert--error">{{ t .Lang "editor.ai_failed" }}{{ if .TranslateError }} <span class="hint">({{ .TranslateError }})</span>{{ end }}</p>
+        {{ else if eq .TranslateState "done" }}
+        <p class="hint">✓ {{ t .Lang "editor.ai_done" }}</p>
+        {{ end }}
+      </div>
       {{ else }}
       <span class="hint">{{ t .Lang "editor.ai_soon" }}</span>
       {{ end }}
@@ -111,3 +116,45 @@
 </main>
 {{ template "site_footer" . }}
 {{ end }}
+
+<script>
+  // While a translation runs the author has nothing to look at and no way to
+  // learn that it finished — the first long article failed three times in
+  // silence. The hourglass turns so the page is visibly alive, and the state is
+  // polled so the news arrives without anyone guessing when to press reload.
+  (function () {
+    var box = document.querySelector('[data-translate-status]');
+    if (!box || box.getAttribute('data-state') !== 'running') { return; }
+
+    var url = box.getAttribute('data-translate-status');
+    var tries = 0;
+
+    function render(html, cls) {
+      box.innerHTML = '<p class="' + cls + '">' + html + '</p>';
+    }
+
+    function poll() {
+      // Give up after roughly a quarter of an hour: that is the ceiling on a
+      // single translation call, so anything longer is not going to arrive.
+      if (++tries > 300) { return; }
+      fetch(url, { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d) { return setTimeout(poll, 3000); }
+          if (d.state === 'running' || d.state === '') { return setTimeout(poll, 3000); }
+          if (d.state === 'done') {
+            render('\u2713 ' + box.getAttribute('data-done'), 'hint');
+            // The tabs are filled in the page the server renders, so the news
+            // and the text arrive together rather than one without the other.
+            setTimeout(function () { window.location.reload(); }, 1200);
+            return;
+          }
+          var msg = box.getAttribute('data-failed');
+          if (d.error) { msg += ' <span class="hint">(' + d.error.replace(/[<&]/g, '') + ')</span>'; }
+          render(msg, 'alert alert--error');
+        })
+        .catch(function () { setTimeout(poll, 5000); });
+    }
+    setTimeout(poll, 2500);
+  })();
+</script>

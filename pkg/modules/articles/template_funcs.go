@@ -62,7 +62,7 @@ func templateFuncs() template.FuncMap {
 		"langList": func(ls []string) string {
 			out := make([]string, 0, len(ls))
 			for _, l := range ls {
-				out = append(out, LangLabels[l])
+				out = append(out, LangNames[l])
 			}
 			return strings.Join(out, ", ")
 		},

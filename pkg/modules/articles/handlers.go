@@ -1280,6 +1280,32 @@ type EditorPage struct {
 	TranslateError string
 }
 
+// handleTranslateStatus answers the editor's poll: is the translation still
+// running, did it finish, did it fail.
+//
+// Without it the author has no way to learn that anything happened. The button
+// said "a few seconds", the tabs stayed empty, and the only record of three
+// failures was in a log the author cannot read.
+func (m *Module) handleTranslateStatus(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Error(w, "auth required", http.StatusUnauthorized)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	// The state of someone else's article is none of this caller's business.
+	if _, err := m.store.GetByID(r.Context(), id, authorID); err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	state, msg := m.translationRun(r.Context(), id.String())
+	writeJSONObj(w, map[string]any{"state": state, "error": msg})
+}
+
 // otherLangs lists every language except the original, in the site's order.
 func otherLangs(original string) []string {
 	out := make([]string, 0, len(Langs)-1)
@@ -1388,6 +1414,12 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 	page.OriginalLang = a.OriginalLang
 	page.TargetLangs = otherLangs(a.OriginalLang)
 	page.TranslateState, page.TranslateError = m.translationRun(r.Context(), a.ID.String())
+	// "Started, refresh in a minute" and "finished" were shown side by side:
+	// the first comes from the redirect that is still in the address bar, the
+	// second from the state. Once the state can speak for itself, it does.
+	if page.TranslateState != "" && page.TranslateState != "running" {
+		page.Notice = ""
+	}
 	page.Category = a.Category
 	page.Subcategory = a.Subcategory
 	page.CoverURL = a.CoverURL
