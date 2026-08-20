@@ -1695,7 +1695,7 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 	// When the checker is enabled the old route stands: an administrator who
 	// turns it on has chosen pre-moderation, and an outage must not quietly
 	// downgrade that choice to open publishing.
-	if m.ai == nil || !m.ai.Enabled() {
+	if m.ai == nil || !m.ai.ReviewCheckEnabled() {
 		if err := m.publishNow(r.Context(), id, authorID); err != nil {
 			if errors.Is(err, ErrNotFound) {
 				// Either not theirs, or readers have hidden it — the one state

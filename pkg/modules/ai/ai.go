@@ -153,6 +153,17 @@ func (m *Module) Enabled() bool {
 	return m.enabled && m.completer != nil
 }
 
+// ReviewCheckEnabled reports whether an article is read by the model before it
+// is published. This is the gate, and it is deliberately not the same question
+// as whether AI is available at all: the translation and the writing assistant
+// can run without anything standing between an author and the reader.
+func (m *Module) ReviewCheckEnabled() bool {
+	if m == nil || !m.Enabled() {
+		return false
+	}
+	return m.settings.Get().ReviewCheck
+}
+
 // editorClient returns the active completer and the editor model. The completer
 // is nil when AI is disabled, so callers guard with a single check instead of a
 // separate Enabled() call (which would race with an admin change).
@@ -213,6 +224,7 @@ type ProviderStatus struct {
 // AdminView is the current AI configuration for the admin panel.
 type AdminView struct {
 	Enabled        bool
+	ReviewCheck    bool
 	Provider       string
 	EditorModel    string
 	TranslateModel string
@@ -229,6 +241,7 @@ func (m *Module) AdminView() AdminView {
 	}
 	v := AdminView{
 		Enabled:        st.Enabled,
+		ReviewCheck:    st.ReviewCheck,
 		Provider:       st.Provider,
 		EditorModel:    st.EditorModel,
 		TranslateModel: st.TranslateModel,

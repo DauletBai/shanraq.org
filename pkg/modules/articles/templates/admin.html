@@ -728,6 +728,14 @@
             <span>{{ t .Lang "aic.enabled" }}</span>
           </label>
 
+          {{/* The gate, kept apart from the switch above: translation and the
+               writing assistant are services, this one decides whether anything
+               stands between an author and the reader. */}}
+          <label style="display:flex;align-items:center;gap:8px;margin-top:10px">
+            <input type="checkbox" name="review_check" {{ if .AI.ReviewCheck }}checked{{ end }}>
+            <span>{{ t .Lang "aic.review_check" }} {{ template "fhelp" (t .Lang "aic.review_check_note") }}</span>
+          </label>
+
           <fieldset style="border:0;padding:0;margin:14px 0">
             <legend style="font-weight:600;margin-bottom:6px">{{ t .Lang "aic.provider" }}</legend>
             {{ range .AI.Providers }}

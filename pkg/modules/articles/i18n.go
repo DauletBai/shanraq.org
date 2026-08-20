@@ -160,6 +160,9 @@ var messages = map[string]map[string]string{
 	"article.report_thanks": {"kz": "Рақмет, шағым тіркелді.", "ru": "Спасибо, жалоба учтена.", "en": "Thanks — your report was recorded."},
 	"article.report_hidden": {"kz": "Мақала оқырман шағымдары бойынша тексеруге жасырылды.", "ru": "Статья скрыта на проверку по жалобам читателей.", "en": "The article was hidden for review after reader reports."},
 	"article.report_verify": {"kz": "Шағым жіберу үшін email-ды растаңыз.", "ru": "Чтобы отправить жалобу, подтвердите email.", "en": "Verify your email to send a report."},
+
+	"aic.review_check":      {"kz": "Жариялау алдында ИИ тексеруі", "ru": "Проверка ИИ перед публикацией", "en": "AI check before publication"},
+	"aic.review_check_note": {"kz": "Өшірулі болса, автор бірден жариялайды, ал мақаланы оқырмандар модерациялайды. Қосулы болса, әр мақаланы алдымен модель оқиды және бұзушылық тапса қайтарады. Аударма мен көмекші бұған тәуелсіз.", "ru": "Выключено — автор публикует сразу, статью модерируют читатели. Включено — каждую статью сначала читает модель и возвращает при нарушении. Перевод и помощник от этого не зависят.", "en": "Off: the author publishes at once and readers moderate. On: the model reads every article first and returns it on a violation. Translation and the assistant are unaffected."},
 	"re.add_photo":          {"kz": "Фото қосу", "ru": "Добавить фото", "en": "Add photo"},
 	"re.documents":          {"kz": "Құжаттар / жоспар", "ru": "Документы / планировка", "en": "Documents / floor plan"},
 	"re.documents_help":     {"kz": "PDF немесе сурет (жоспар, техпаспорт)", "ru": "PDF или изображение (план, техпаспорт)", "en": "PDF or image (plan, passport)"},

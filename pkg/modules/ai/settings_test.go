@@ -1,6 +1,7 @@
 package ai
 
 import (
+	"context"
 	"strings"
 	"testing"
 )
@@ -110,3 +111,44 @@ func TestNoRetiredModels(t *testing.T) {
 		}
 	}
 }
+
+// The gate and the assistant are different questions, and the switch that
+// governs them used to be one: turning the pre-publication check off to let
+// authors publish also turned off the trilingual translation that makes this a
+// trilingual publication, and turning translation back on reinstated the gate.
+func TestReviewCheckIsSeparateFromTheAssistant(t *testing.T) {
+	cases := []struct {
+		name                  string
+		enabled, reviewCheck  bool
+		wantAssistant, wantOn bool
+	}{
+		{"everything off", false, false, false, false},
+		{"assistant on, no gate", true, false, true, false},
+		{"assistant on, gate on", true, true, true, true},
+		// The gate cannot stand without the model that mans it: asking for a
+		// check from a disabled assistant would hold every article for a
+		// checker that is never going to run.
+		{"gate on, assistant off", false, true, false, false},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			m := &Module{settings: NewSettings(nil, AISettings{
+				Enabled: c.enabled, ReviewCheck: c.reviewCheck,
+			})}
+			m.enabled = c.enabled
+			m.completer = stubCompleter{} // a configured provider
+			if got := m.Enabled(); got != c.wantAssistant {
+				t.Errorf("Enabled() = %v, want %v", got, c.wantAssistant)
+			}
+			if got := m.ReviewCheckEnabled(); got != c.wantOn {
+				t.Errorf("ReviewCheckEnabled() = %v, want %v", got, c.wantOn)
+			}
+		})
+	}
+}
+
+// stubCompleter stands in for a configured provider: the switches under test
+// are about policy, not about whether a request would succeed.
+type stubCompleter struct{}
+
+func (stubCompleter) Complete(context.Context, Request) (string, error) { return "", nil }

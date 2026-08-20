@@ -422,6 +422,7 @@ func (m *Module) handleAdminAI(w http.ResponseWriter, r *http.Request) {
 	maxTok, _ := strconv.Atoi(strings.TrimSpace(r.FormValue("max_tokens")))
 	in := ai.AISettings{
 		Enabled:        r.FormValue("enabled") == "on",
+		ReviewCheck:    r.FormValue("review_check") == "on",
 		Provider:       strings.TrimSpace(r.FormValue("provider")),
 		EditorModel:    strings.TrimSpace(r.FormValue("editor_model")),
 		TranslateModel: strings.TrimSpace(r.FormValue("translate_model")),
