@@ -139,6 +139,7 @@ func main() {
 	mediaModule := media.New(authModule)
 	app.Register(mediaModule)
 	articlesModule = articles.New(authModule, aiModule, syndicateModule, mediaModule, notifierModule)
+	articlesModule.RegisterJobs(jobModule)
 	app.Register(articlesModule)
 	app.Register(webui.New(jobWorkers, jobPollSeconds,
 		webui.WithTenantResolver(func(r *http.Request) (uuid.UUID, bool) {

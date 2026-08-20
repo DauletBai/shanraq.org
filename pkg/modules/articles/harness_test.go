@@ -31,9 +31,14 @@ type testApp struct {
 	router chi.Router
 	pool   *pgxpool.Pool
 	auth   *auth.Module
+	arts   *Module
 	origin string
 	emails []string // created accounts, deleted on cleanup (cascade)
 }
+
+// module exposes the articles module itself, for the handful of tests that
+// exercise something reached from a background job rather than a request.
+func (a *testApp) module() *Module { return a.arts }
 
 const testOrigin = "http://localhost:8080"
 
@@ -79,7 +84,7 @@ func newTestApp(t *testing.T, authOpts ...auth.Option) *testApp {
 	mediaM.Routes(rt.Router)
 	arts.Routes(rt.Router)
 
-	app := &testApp{t: t, router: rt.Router, pool: pool, auth: authM, origin: testOrigin}
+	app := &testApp{t: t, router: rt.Router, pool: pool, auth: authM, arts: arts, origin: testOrigin}
 	t.Cleanup(app.cleanup)
 	return app
 }

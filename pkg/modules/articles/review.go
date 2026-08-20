@@ -85,7 +85,16 @@ func reviewPrompt(lang, title, summary, body string) string {
 	b.WriteString(lang)
 	b.WriteString("), addressed to the author, saying what to change.\n\n")
 	b.WriteString("Do not invent problems. An article that breaks no rule must return an empty findings array. ")
-	b.WriteString("Disagreeing with the author's opinion is not a rule violation — this platform publishes opinion.\n\n")
+	b.WriteString("Disagreeing with the author's opinion is not a rule violation — this platform publishes opinion.\n")
+	// Tested against a real piece: the checker read the headline "Корь провела
+	// ревизию отчётности Казахстана" as title_mismatch because measles cannot
+	// literally audit anything. This publication writes headlines like that on
+	// purpose, and a checker that objects to metaphor would object to most of
+	// what it is given. The question is whether the body bears out the claim,
+	// not whether the words are literal.
+	b.WriteString("A figurative or metaphorical headline is not title_mismatch: judge whether the body supports ")
+	b.WriteString("what the headline claims, not whether it is worded literally. ")
+	b.WriteString("A step of reasoning drawn from figures already sourced in the text is not unsourced_claim.\n\n")
 	b.WriteString("Return exactly: {\"findings\":[{\"rule\":\"...\",\"severity\":\"block|warn\",\"quote\":\"...\",\"note\":\"...\"}]}\n\n")
 	b.WriteString("TITLE: ")
 	b.WriteString(title)

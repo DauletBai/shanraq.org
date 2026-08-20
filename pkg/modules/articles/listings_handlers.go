@@ -334,6 +334,9 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 	if _, err := m.refs.Qualify(r.Context(), authorID); err != nil {
 		m.rt.Logger.Warn("qualify referral", zap.Error(err))
 	}
+	// Screening happens a moment later, not now: the author gets their listing
+	// immediately, and a model reads it in the background.
+	m.enqueueListingScreening(r.Context(), id, authorID)
 	http.Redirect(w, r, "/listings/"+id.String(), http.StatusSeeOther)
 }
 
@@ -389,6 +392,9 @@ func (m *Module) handleListingUpdate(w http.ResponseWriter, r *http.Request) {
 		m.listingFormFail(w, r, lang, l.ID, in, T(lang, "re.err_save_failed"))
 		return
 	}
+	// An edit is screened like a first posting. Otherwise the way past the
+	// check is to post something plain and rewrite it afterwards.
+	m.enqueueListingScreening(r.Context(), id, authorID)
 	http.Redirect(w, r, "/listings/"+l.ID, http.StatusSeeOther)
 }
 
