@@ -21,7 +21,7 @@ const (
 // ProviderDef names a selectable backend for the admin panel, with the model
 // identifiers to offer when an administrator switches to it.
 //
-// Editor/Translate may be empty. A model id is a string the provider's API
+// Translate may be empty. A model id is a string the provider's API
 // accepts and nothing else validates, so guessing one means the switch appears
 // to work and then every call fails at run time. Where the right identifiers
 // are not known here, the form clears the fields instead and asks for them —
@@ -29,30 +29,25 @@ const (
 type ProviderDef struct {
 	Code      string
 	Label     string
-	Editor    string
 	Translate string
 }
 
 // providerCatalog is the ordered set of backends shown in the admin panel.
 //
-// The pairing is the same everywhere: the stronger model edits, the cheaper one
-// translates. Editing is one pass over a piece a person will publish under
-// their name; translation is three passes over the same text and is where the
-// bill is actually run up.
+// One model per provider now: the site translates and moderates, and both are
+// cheap-tier jobs. The stronger model each of these offers is not listed
+// because nothing here writes any more.
 //
 // Identifiers checked against each provider's own documentation on 2026-08-16.
 // They are the one thing here that cannot be reasoned out — a wrong id looks
 // valid, saves without complaint, and fails at the first call.
 var providerCatalog = []ProviderDef{
-	{ProviderAnthropic, "Claude (Anthropic)", "claude-sonnet-5", "claude-haiku-4-5"},
-	// Sol is the frontier model, Luna the cost-optimised one — $0.20/$1.20 per
-	// MTok against $5/$30, which is the whole reason to split the two roles.
-	{ProviderOpenAI, "ChatGPT (OpenAI)", "gpt-5.6-sol", "gpt-5.6-luna"},
-	// K3 is the flagship, with a 1M-token context. K2.6 for translation rather
-	// than the obvious-looking alternatives: the -code-highspeed variant is a
-	// coding model, and the whole moonshot-v1 series is being switched off on
-	// 31 August 2026 — putting it here would work for two weeks.
-	{ProviderKimi, "Kimi K3 (Moonshot)", "kimi-k3", "kimi-k2.6"},
+	{ProviderAnthropic, "Claude (Anthropic)", "claude-haiku-4-5"},
+	{ProviderOpenAI, "ChatGPT (OpenAI)", "gpt-5.6-luna"},
+	// K2.6 rather than the obvious-looking alternatives: the -code-highspeed
+	// variant is a coding model, and the whole moonshot-v1 series is switched
+	// off on 31 August 2026 — putting it here would work for two weeks.
+	{ProviderKimi, "Kimi (Moonshot)", "kimi-k2.6"},
 }
 
 // isProvider reports whether code is a known provider.
@@ -69,7 +64,6 @@ func isProvider(code string) bool {
 type AISettings struct {
 	Enabled        bool
 	Provider       string
-	EditorModel    string
 	TranslateModel string
 	MaxTokens      int
 
@@ -86,10 +80,8 @@ type AISettings struct {
 	// cheap-tier job, and the right default for what is a classification with a
 	// short JSON answer.
 	//
-	// It is separate from EditorModel because that one writes: a column, or an
-	// improvement to an author's draft. Paying frontier prices to classify, and
-	// writing columns with the cheap model, are the two mistakes one shared
-	// setting forces you to choose between.
+	// It is separate from the translation model so the two can diverge: one
+	// call scales with every article published, the other with every language.
 	ModerateModel string
 }
 
@@ -113,9 +105,9 @@ func NewSettings(db *pgxpool.Pool, defaults AISettings) *Settings {
 func (s *Settings) Load(ctx context.Context) (AISettings, error) {
 	var st AISettings
 	err := s.db.QueryRow(ctx, `
-		SELECT enabled, provider, editor_model, translate_model, max_tokens, review_check, moderate_model
+		SELECT enabled, provider, translate_model, max_tokens, review_check, moderate_model
 		FROM ai_settings WHERE id = 1`).
-		Scan(&st.Enabled, &st.Provider, &st.EditorModel, &st.TranslateModel, &st.MaxTokens,
+		Scan(&st.Enabled, &st.Provider, &st.TranslateModel, &st.MaxTokens,
 			&st.ReviewCheck, &st.ModerateModel)
 	if err == pgx.ErrNoRows {
 		s.mu.RLock()
@@ -144,10 +136,10 @@ func (s *Settings) Get() AISettings {
 
 func (s *Settings) insert(ctx context.Context, st AISettings) error {
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO ai_settings (id, enabled, provider, editor_model, translate_model, max_tokens, review_check, moderate_model)
-		VALUES (1, $1, $2, $3, $4, $5, $6, $7)
+		INSERT INTO ai_settings (id, enabled, provider, translate_model, max_tokens, review_check, moderate_model)
+		VALUES (1, $1, $2, $3, $4, $5, $6)
 		ON CONFLICT (id) DO NOTHING`,
-		st.Enabled, st.Provider, st.EditorModel, st.TranslateModel, st.MaxTokens, st.ReviewCheck, st.ModerateModel)
+		st.Enabled, st.Provider, st.TranslateModel, st.MaxTokens, st.ReviewCheck, st.ModerateModel)
 	if err != nil {
 		return fmt.Errorf("seed ai settings: %w", err)
 	}
@@ -159,15 +151,14 @@ func (s *Settings) insert(ctx context.Context, st AISettings) error {
 // can be tested without a database.
 func normalizeSettings(st AISettings) (AISettings, error) {
 	st.Provider = strings.TrimSpace(st.Provider)
-	st.EditorModel = strings.TrimSpace(st.EditorModel)
 	st.TranslateModel = strings.TrimSpace(st.TranslateModel)
 	// Empty is allowed and meaningful: it means "the translation model".
 	st.ModerateModel = strings.TrimSpace(st.ModerateModel)
 	if !isProvider(st.Provider) {
 		return st, fmt.Errorf("unknown provider %q", st.Provider)
 	}
-	if st.EditorModel == "" || st.TranslateModel == "" {
-		return st, fmt.Errorf("editor and translate models are required")
+	if st.TranslateModel == "" {
+		return st, fmt.Errorf("a translation model is required")
 	}
 	if st.MaxTokens < 256 {
 		st.MaxTokens = 256
@@ -184,19 +175,18 @@ func (s *Settings) Save(ctx context.Context, st AISettings, by *uuid.UUID) error
 		return err
 	}
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO ai_settings (id, enabled, provider, editor_model, translate_model, max_tokens, review_check, moderate_model, updated_at, updated_by)
-		VALUES (1, $1, $2, $3, $4, $5, $6, $7, NOW(), $8)
+		INSERT INTO ai_settings (id, enabled, provider, translate_model, max_tokens, review_check, moderate_model, updated_at, updated_by)
+		VALUES (1, $1, $2, $3, $4, $5, $6, NOW(), $7)
 		ON CONFLICT (id) DO UPDATE SET
 			enabled = EXCLUDED.enabled,
 			provider = EXCLUDED.provider,
-			editor_model = EXCLUDED.editor_model,
 			translate_model = EXCLUDED.translate_model,
 			max_tokens = EXCLUDED.max_tokens,
 			review_check = EXCLUDED.review_check,
 			moderate_model = EXCLUDED.moderate_model,
 			updated_at = NOW(),
 			updated_by = EXCLUDED.updated_by`,
-		st.Enabled, st.Provider, st.EditorModel, st.TranslateModel, st.MaxTokens, st.ReviewCheck,
+		st.Enabled, st.Provider, st.TranslateModel, st.MaxTokens, st.ReviewCheck,
 		st.ModerateModel, by)
 	if err != nil {
 		return fmt.Errorf("save ai settings: %w", err)

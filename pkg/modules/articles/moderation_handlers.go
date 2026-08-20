@@ -105,32 +105,6 @@ func (m *Module) handleAdminResolveAppeal(w http.ResponseWriter, r *http.Request
 	http.Redirect(w, r, "/admin?ok=appeal_resolved", http.StatusSeeOther)
 }
 
-// handleAdminColumnBrief starts one analysis run on the administrator's
-// command. Nothing schedules this: an unattended nightly sweep spends money
-// whether or not the world produced anything worth writing about.
-func (m *Module) handleAdminColumnBrief(w http.ResponseWriter, r *http.Request) {
-	claims, _ := auth.ClaimsFromContext(r.Context())
-	if !canModerate(claims) {
-		http.Error(w, "forbidden", http.StatusForbidden)
-		return
-	}
-	brief := strings.TrimSpace(r.FormValue("brief"))
-	if brief == "" {
-		http.Redirect(w, r, "/admin?err=brief_empty", http.StatusSeeOther)
-		return
-	}
-	lang := r.FormValue("lang")
-	if !IsLang(lang) {
-		lang = LangRU
-	}
-	if err := m.EnqueueColumnBrief(r.Context(), lang, clip(brief, 1000)); err != nil {
-		m.rt.Logger.Error("enqueue column brief", zap.Error(err))
-		http.Redirect(w, r, "/admin?err=brief", http.StatusSeeOther)
-		return
-	}
-	http.Redirect(w, r, "/admin?ok=brief_queued", http.StatusSeeOther)
-}
-
 // handleAdminDecideArticle is a moderator clearing a queued article: approve
 // and publish, return for revision, or reject. This is the exit the review
 // found missing — an article held because the checker was unavailable had no

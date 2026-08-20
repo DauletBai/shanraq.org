@@ -139,7 +139,6 @@ type AIConfig struct {
 	Enabled        bool   `mapstructure:"enabled"`
 	Provider       string `mapstructure:"provider"` // default active provider: anthropic|openai|kimi
 	APIKey         string `mapstructure:"api_key"`  // legacy: Anthropic key (still honored)
-	EditorModel    string `mapstructure:"editor_model"`
 	TranslateModel string `mapstructure:"translate_model"`
 	MaxTokens      int    `mapstructure:"max_tokens"`
 	// Providers holds the per-provider credentials. A provider with no key is
@@ -317,7 +316,6 @@ func setDefaults(v *viper.Viper) {
 	v.SetDefault("notifications.smtp.from", "")
 
 	v.SetDefault("ai.enabled", false)
-	v.SetDefault("ai.editor_model", "claude-sonnet-5")
 	v.SetDefault("ai.translate_model", "claude-haiku-4-5")
 	v.SetDefault("ai.max_tokens", 4096)
 

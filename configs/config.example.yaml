@@ -50,7 +50,6 @@ ai:
   enabled: false
   provider: anthropic                # default active provider: anthropic|openai|kimi
   api_key: ""                        # legacy Anthropic key (or export ANTHROPIC_API_KEY)
-  editor_model: claude-sonnet-5      # co-editor: quality tone
   translate_model: claude-haiku-4-5  # bulk KZ/RU/EN translation: cheap
   max_tokens: 4096
   providers:                         # per-provider secret keys (never committed)

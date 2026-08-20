@@ -512,17 +512,6 @@
         </table>
       </div>
     </section>
-    <section class="adv-card">
-      <h2 class="adv-card__title">{{ t .Lang "an.title" }}</h2>
-      <p class="aside__text">{{ t .Lang "an.hint" }}</p>
-      <form method="post" action="/admin/analysis" class="modrow__actions" style="margin-top:12px">
-        <input class="input" name="brief" maxlength="1000" placeholder="{{ t .Lang "an.brief" }}" required>
-        <select class="select select--xs" name="lang">
-          {{ range langs }}<option value="{{ . }}">{{ langName . }}</option>{{ end }}
-        </select>
-        <button class="btn btn--primary btn--sm" type="submit">{{ t .Lang "an.run" }}</button>
-      </form>
-    </section>
     </div>{{/* /.adm-cards2 */}}
     </section>
     {{ end }}
@@ -741,7 +730,7 @@
             {{ range .AI.Providers }}
             <label class="adm-choice">
               <input type="radio" name="provider" value="{{ .Code }}" {{ if .IsActive }}checked{{ end }}
-                     data-editor-model="{{ .Editor }}" data-translate-model="{{ .Translate }}">
+                     data-translate-model="{{ .Translate }}">
               <b class="adm-choice__name">{{ .Label }}</b>
               {{ if .HasKey }}
               <span class="adm-flag adm-flag--ok">✓ {{ t $.Lang "aic.key_ok" }}</span>
@@ -757,10 +746,6 @@
                operator's choice and every backend here accepts it, so rewriting
                it on a switch would quietly discard a number somebody set. */}}
           <div class="adm-trio" data-ai-models>
-            <label>{{ t .Lang "aic.editor" }}
-              <input class="input" name="editor_model" value="{{ .AI.EditorModel }}" maxlength="80" required
-                     placeholder="{{ t .Lang "aic.model_placeholder" }}">
-            </label>
             <label>{{ t .Lang "aic.translate" }}
               <input class="input" name="translate_model" value="{{ .AI.TranslateModel }}" maxlength="80" required
                      placeholder="{{ t .Lang "aic.model_placeholder" }}">
@@ -847,16 +832,14 @@
     (function () {
       var pair = document.querySelector('[data-ai-models]');
       if (!pair) { return; }
-      var editor = pair.querySelector('[name="editor_model"]');
       var translate = pair.querySelector('[name="translate_model"]');
-      if (!editor || !translate) { return; }
+      if (!translate) { return; }
 
-      document.querySelectorAll('input[name="provider"][data-editor-model]').forEach(function (radio) {
+      document.querySelectorAll('input[name="provider"][data-translate-model]').forEach(function (radio) {
         radio.addEventListener('change', function () {
           if (!radio.checked) { return; }
-          editor.value = radio.getAttribute('data-editor-model') || '';
           translate.value = radio.getAttribute('data-translate-model') || '';
-          if (!editor.value) { editor.focus(); }
+          if (!translate.value) { translate.focus(); }
         });
       });
     })();

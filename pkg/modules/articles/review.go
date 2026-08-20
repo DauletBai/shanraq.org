@@ -9,8 +9,6 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-
-	"shanraq.org/pkg/modules/jobs"
 )
 
 // ReviewRules are the publication rules an article is checked against. The
@@ -340,31 +338,6 @@ func (s *Store) ForReview(ctx context.Context, id uuid.UUID, lang string) (Artic
 		return a, t, fmt.Errorf("load for review: %w", err)
 	}
 	return a, t, nil
-}
-
-// JobColumnBrief is the on-demand analysis job. There is deliberately no
-// schedule behind it: a nightly sweep costs money whether or not anything
-// happened, so the run is started by the administrator and only then.
-const JobColumnBrief = "articles.column_brief"
-
-// EnqueueColumnBrief asks the columnist agent for an analysis of a given
-// topic. Queued rather than run inline, because an LLM call does not belong in
-// an HTTP handler.
-func (m *Module) EnqueueColumnBrief(ctx context.Context, lang, brief string) error {
-	if m.jobs == nil {
-		return fmt.Errorf("job queue unavailable")
-	}
-	payload, err := json.Marshal(map[string]string{"lang": lang, "brief": brief})
-	if err != nil {
-		return err
-	}
-	return m.jobs.Enqueue(ctx, jobs.Job{
-		ID:          uuid.New(),
-		Name:        JobColumnBrief,
-		Payload:     payload,
-		RunAt:       time.Now(),
-		MaxAttempts: 2,
-	})
 }
 
 // ReviewItem is one article waiting on a human, for the admin queue.

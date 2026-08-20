@@ -60,7 +60,6 @@ type Module struct {
 	mu             sync.RWMutex
 	completer      Completer
 	enabled        bool
-	editorModel    string
 	moderateModel  string
 	translateModel string
 	maxTokens      int
@@ -104,7 +103,6 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	defaults := AISettings{
 		Enabled:        cfg.Enabled,
 		Provider:       orDefault(cfg.Provider, ProviderAnthropic),
-		EditorModel:    orDefault(cfg.EditorModel, "claude-sonnet-5"),
 		TranslateModel: orDefault(cfg.TranslateModel, "claude-haiku-4-5"),
 		MaxTokens:      cfg.MaxTokens,
 	}
@@ -124,7 +122,6 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	if m.Enabled() {
 		m.log.Info("ai assistant enabled",
 			zap.String("provider", st.Provider),
-			zap.String("editor_model", st.EditorModel),
 			zap.String("translate_model", st.TranslateModel))
 	} else {
 		m.log.Info("ai assistant disabled (enable it and set a provider key to activate)")
@@ -136,7 +133,6 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 func (m *Module) applySettings(st AISettings) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	m.editorModel = st.EditorModel
 	m.moderateModel = st.ModerateModel
 	m.translateModel = st.TranslateModel
 	m.maxTokens = st.MaxTokens
@@ -164,18 +160,6 @@ func (m *Module) ReviewCheckEnabled() bool {
 		return false
 	}
 	return m.settings.Get().ReviewCheck
-}
-
-// editorClient returns the active completer and the editor model. The completer
-// is nil when AI is disabled, so callers guard with a single check instead of a
-// separate Enabled() call (which would race with an admin change).
-func (m *Module) editorClient() (Completer, string, int) {
-	m.mu.RLock()
-	defer m.mu.RUnlock()
-	if !m.enabled {
-		return nil, "", 0
-	}
-	return m.completer, m.editorModel, m.maxTokens
 }
 
 // translateClient returns the active completer and the translation model.
@@ -228,7 +212,6 @@ type ProviderStatus struct {
 	// Models this provider should be driven with. Empty when they are not known
 	// here; the form then clears the fields rather than leaving another
 	// provider's identifiers in place, which is what it used to do.
-	Editor    string
 	Translate string
 }
 
@@ -237,7 +220,6 @@ type AdminView struct {
 	Enabled        bool
 	ReviewCheck    bool
 	Provider       string
-	EditorModel    string
 	ModerateModel  string
 	TranslateModel string
 	MaxTokens      int
@@ -255,7 +237,6 @@ func (m *Module) AdminView() AdminView {
 		Enabled:        st.Enabled,
 		ReviewCheck:    st.ReviewCheck,
 		Provider:       st.Provider,
-		EditorModel:    st.EditorModel,
 		ModerateModel:  st.ModerateModel,
 		TranslateModel: st.TranslateModel,
 		MaxTokens:      st.MaxTokens,
@@ -266,7 +247,6 @@ func (m *Module) AdminView() AdminView {
 			Label:     p.Label,
 			HasKey:    m.keyPresent[p.Code],
 			IsActive:  p.Code == st.Provider,
-			Editor:    p.Editor,
 			Translate: p.Translate,
 		}
 		v.Providers = append(v.Providers, ps)
@@ -298,9 +278,6 @@ func (m *Module) setCompleter(c Completer) {
 	m.mu.Lock()
 	m.completer = c
 	m.enabled = true
-	if m.editorModel == "" {
-		m.editorModel = "test-editor"
-	}
 	if m.translateModel == "" {
 		m.translateModel = "test-translate"
 	}

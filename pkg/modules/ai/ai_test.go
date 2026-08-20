@@ -25,7 +25,7 @@ func TestModuleDisabledByDefault(t *testing.T) {
 	if m.Enabled() {
 		t.Fatal("module should be disabled before Init/config")
 	}
-	if _, err := m.Improve(context.Background(), "ru", "текст"); err != ErrDisabled {
+	if _, err := m.Check(context.Background(), "sys", "текст", 100); err != ErrDisabled {
 		t.Fatalf("expected ErrDisabled, got %v", err)
 	}
 }
@@ -73,26 +73,5 @@ func TestTranslateContentSkipsEmptyFields(t *testing.T) {
 	}
 	if len(fake.calls) != 1 {
 		t.Fatalf("expected 1 call (body only), got %d", len(fake.calls))
-	}
-}
-
-func TestImproveUsesEditorModel(t *testing.T) {
-	fake := &fakeCompleter{reply: func(r Request) string { return "improved" }}
-	m := New()
-	m.setCompleter(fake)
-	m.editorModel = "claude-sonnet-5"
-
-	got, err := m.Improve(context.Background(), "ru", "черновик")
-	if err != nil {
-		t.Fatalf("Improve: %v", err)
-	}
-	if got != "improved" {
-		t.Fatalf("unexpected: %q", got)
-	}
-	if fake.calls[0].Model != "claude-sonnet-5" {
-		t.Fatalf("improve should use editor model, got %q", fake.calls[0].Model)
-	}
-	if !strings.Contains(fake.calls[0].System, "Russian") {
-		t.Fatalf("improve system prompt should target Russian: %q", fake.calls[0].System)
 	}
 }

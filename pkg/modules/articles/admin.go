@@ -425,7 +425,6 @@ func (m *Module) handleAdminAI(w http.ResponseWriter, r *http.Request) {
 		ReviewCheck:    r.FormValue("review_check") == "on",
 		ModerateModel:  strings.TrimSpace(r.FormValue("moderate_model")),
 		Provider:       strings.TrimSpace(r.FormValue("provider")),
-		EditorModel:    strings.TrimSpace(r.FormValue("editor_model")),
 		TranslateModel: strings.TrimSpace(r.FormValue("translate_model")),
 		MaxTokens:      maxTok,
 	}

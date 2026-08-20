@@ -71,7 +71,7 @@ Shanraq.org is a home where free voices meet.`},
 1. Зарегистрируйтесь и войдите в **Студию автора**.
 2. Нажмите «Написать» и создайте статью на одном из трёх языков.
 3. Выберите рубрику и подрубрику, при желании добавьте обложку.
-4. Используйте ИИ-помощник, чтобы улучшить текст, и автоперевод, чтобы опубликовать статью сразу на казахском, русском и английском.
+4. Текст пишете вы — редактировать за вас платформа не берётся. Автоперевод публикует статью сразу на казахском, русском и английском, сохраняя вашу разметку.
 5. Сохраните и нажмите «Опубликовать».
 
 ## Что бесплатно, а что платно
@@ -156,7 +156,7 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 1. Тіркеліп, **Автор студиясына** кіріңіз.
 2. «Жазу» түймесін басып, үш тілдің бірінде мақала жасаңыз.
 3. Айдар мен ішкі айдарды таңдап, қаласаңыз мұқаба қосыңыз.
-4. Мәтінді жақсарту үшін ИИ көмекшіні, мақаланы бірден қазақ, орыс, ағылшын тілдерінде жариялау үшін автоаударманы қолданыңыз.
+4. Мәтінді өзіңіз жазасыз — платформа сіздің орныңызға өңдемейді. Автоаударма мақалды бірден қазақ, орыс және ағылшын тілдерінде жариялайды, белгілеуіңізді сақтап.
 5. Сақтап, «Жариялау» түймесін басыңыз.
 
 ## Не тегін, не ақылы
@@ -241,7 +241,7 @@ The profile carries a kind, which decides the label on your public page and whic
 1. Sign up and open the **Author Studio**.
 2. Click "Write" and create an article in one of the three languages.
 3. Choose a category and subcategory, and add a cover image if you like.
-4. Use the AI assistant to improve the text and auto-translation to publish in Kazakh, Russian, and English at once.
+4. The text is yours to write — the platform does not edit it for you. Auto-translation publishes the article in Kazakh, Russian, and English at once, keeping your formatting.
 5. Save and click "Publish".
 
 ## What is free and what is paid

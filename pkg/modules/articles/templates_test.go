@@ -577,10 +577,10 @@ func renderAdminFull(t *testing.T) string {
 		// The settings cards render nothing without these, and the tests below
 		// depend on the provider rows actually being there.
 		AI: ai.AdminView{Enabled: true, Provider: "anthropic",
-			EditorModel: "claude-sonnet-5", TranslateModel: "claude-haiku-4-5", MaxTokens: 4096,
+			TranslateModel: "claude-haiku-4-5", MaxTokens: 4096,
 			Providers: []ai.ProviderStatus{
 				{Code: "anthropic", Label: "Claude (Anthropic)", IsActive: true,
-					Editor: "claude-sonnet-5", Translate: "claude-haiku-4-5"},
+					Translate: "claude-haiku-4-5"},
 				{Code: "openai", Label: "ChatGPT (OpenAI)"},
 			}},
 		Payments: paymentsAdminView{Enabled: true, Provider: PayProviderKaspi,
@@ -850,15 +850,14 @@ func TestAISettingsCardFitsAndFollowsProvider(t *testing.T) {
 	}
 
 	// Each radio has to carry what its provider should be driven with, or the
-	// form cannot correct the fields when the choice changes.
-	if !strings.Contains(settings, `data-editor-model="claude-sonnet-5"`) ||
-		!strings.Contains(settings, `data-translate-model="claude-haiku-4-5"`) {
-		t.Error("the Anthropic radio does not carry its models")
+	// form cannot correct the field when the choice changes.
+	if !strings.Contains(settings, `data-translate-model="claude-haiku-4-5"`) {
+		t.Error("the Anthropic radio does not carry its model")
 	}
-	// Providers whose ids we do not know carry empty ones on purpose: the script
-	// then clears the fields instead of leaving another provider's names.
-	if !strings.Contains(settings, `data-editor-model=""`) {
-		t.Error("a provider with unknown models should carry an empty attribute, not be omitted")
+	// Providers whose ids we do not know carry an empty one on purpose: the
+	// script then clears the field instead of leaving another provider's name.
+	if !strings.Contains(settings, `data-translate-model=""`) {
+		t.Error("a provider with an unknown model should carry an empty attribute, not be omitted")
 	}
 	if !strings.Contains(settings, "data-ai-models") {
 		t.Error("the model fields are not marked for the script to find")

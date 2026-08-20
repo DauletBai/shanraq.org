@@ -10,7 +10,7 @@ import (
 // honest description in the seller's language for them to edit before posting.
 // It never invents features that are not in the facts. ErrDisabled when off.
 func (m *Module) DescribeListing(ctx context.Context, lang, facts string) (string, error) {
-	c, model, tok := m.editorClient()
+	c, model, tok := m.translateClient()
 	if c == nil {
 		return "", ErrDisabled
 	}

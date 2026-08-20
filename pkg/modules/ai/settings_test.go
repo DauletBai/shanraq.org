@@ -7,33 +7,39 @@ import (
 )
 
 func TestNormalizeSettings(t *testing.T) {
-	base := AISettings{Provider: ProviderOpenAI, EditorModel: "gpt-5", TranslateModel: "gpt-5-mini", MaxTokens: 4096}
+	base := AISettings{Provider: ProviderOpenAI, TranslateModel: "gpt-5-mini", MaxTokens: 4096}
 
 	if _, err := normalizeSettings(base); err != nil {
 		t.Fatalf("valid settings rejected: %v", err)
 	}
 
-	if _, err := normalizeSettings(AISettings{Provider: "grok", EditorModel: "x", TranslateModel: "y", MaxTokens: 1000}); err == nil {
+	if _, err := normalizeSettings(AISettings{Provider: "grok", TranslateModel: "y", MaxTokens: 1000}); err == nil {
 		t.Error("unknown provider should be rejected")
 	}
 
-	if _, err := normalizeSettings(AISettings{Provider: ProviderAnthropic, EditorModel: "", TranslateModel: "y", MaxTokens: 1000}); err == nil {
-		t.Error("empty editor model should be rejected")
+	if _, err := normalizeSettings(AISettings{Provider: ProviderAnthropic, TranslateModel: "", MaxTokens: 1000}); err == nil {
+		t.Error("empty translation model should be rejected")
+	}
+
+	// The moderation model may be empty: that means "the translation model".
+	if _, err := normalizeSettings(AISettings{Provider: ProviderAnthropic, TranslateModel: "y",
+		ModerateModel: "", MaxTokens: 1000}); err != nil {
+		t.Errorf("an empty moderation model is allowed and means the translation model: %v", err)
 	}
 
 	// Clamp low and high.
-	lo, err := normalizeSettings(AISettings{Provider: ProviderKimi, EditorModel: "a", TranslateModel: "b", MaxTokens: 10})
+	lo, err := normalizeSettings(AISettings{Provider: ProviderKimi, TranslateModel: "b", MaxTokens: 10})
 	if err != nil || lo.MaxTokens != 256 {
 		t.Errorf("max_tokens floor: got %d err %v, want 256", lo.MaxTokens, err)
 	}
-	hi, err := normalizeSettings(AISettings{Provider: ProviderKimi, EditorModel: "a", TranslateModel: "b", MaxTokens: 999999})
+	hi, err := normalizeSettings(AISettings{Provider: ProviderKimi, TranslateModel: "b", MaxTokens: 999999})
 	if err != nil || hi.MaxTokens != 32000 {
 		t.Errorf("max_tokens ceiling: got %d err %v, want 32000", hi.MaxTokens, err)
 	}
 
 	// Whitespace is trimmed.
-	got, err := normalizeSettings(AISettings{Provider: "  openai  ", EditorModel: "  gpt-5  ", TranslateModel: " m ", MaxTokens: 500})
-	if err != nil || got.Provider != "openai" || got.EditorModel != "gpt-5" || got.TranslateModel != "m" {
+	got, err := normalizeSettings(AISettings{Provider: "  openai  ", TranslateModel: " m ", MaxTokens: 500})
+	if err != nil || got.Provider != "openai" || got.TranslateModel != "m" {
 		t.Errorf("trim: got %+v err %v", got, err)
 	}
 }
@@ -42,7 +48,7 @@ func TestAdminViewReflectsKeysAndActive(t *testing.T) {
 	m := &Module{
 		providers:  map[string]Completer{ProviderAnthropic: nil, ProviderOpenAI: nil},
 		keyPresent: map[string]bool{ProviderAnthropic: true, ProviderOpenAI: true},
-		settings:   &Settings{cur: AISettings{Enabled: true, Provider: ProviderOpenAI, EditorModel: "gpt-5", TranslateModel: "gpt-5-mini", MaxTokens: 2048}},
+		settings:   &Settings{cur: AISettings{Enabled: true, Provider: ProviderOpenAI, TranslateModel: "gpt-5-mini", MaxTokens: 2048}},
 	}
 	v := m.AdminView()
 
@@ -69,9 +75,6 @@ func TestAdminViewReflectsKeysAndActive(t *testing.T) {
 
 func TestClientsNilWhenDisabled(t *testing.T) {
 	m := &Module{} // nothing enabled
-	if c, _, _ := m.editorClient(); c != nil {
-		t.Error("editorClient should be nil when disabled")
-	}
 	if c, _, _ := m.translateClient(); c != nil {
 		t.Error("translateClient should be nil when disabled")
 	}
@@ -80,8 +83,8 @@ func TestClientsNilWhenDisabled(t *testing.T) {
 	}
 }
 
-// Every provider in the picker must carry the models to drive it with. An empty
-// pair is not a neutral default: the admin switches provider, the fields clear,
+// Every provider in the picker must carry the model to drive it with. An empty
+// field is not a neutral default: the admin switches provider, the field clears,
 // and whatever is typed in by hand is a guess that saves without complaint and
 // fails at the first call.
 func TestEveryProviderNamesItsModels(t *testing.T) {
@@ -89,13 +92,8 @@ func TestEveryProviderNamesItsModels(t *testing.T) {
 		t.Fatal("the provider catalog is empty")
 	}
 	for _, p := range providerCatalog {
-		if p.Editor == "" || p.Translate == "" {
-			t.Errorf("%s (%s) names no models: editor=%q translate=%q",
-				p.Label, p.Code, p.Editor, p.Translate)
-		}
-		if p.Editor == p.Translate {
-			t.Errorf("%s uses one model for both roles; the split exists because "+
-				"translation runs three times per article and editing once", p.Code)
+		if p.Translate == "" {
+			t.Errorf("%s (%s) names no model", p.Label, p.Code)
 		}
 	}
 }
@@ -104,7 +102,7 @@ func TestEveryProviderNamesItsModels(t *testing.T) {
 // pick for a cheap translation model and would work for a fortnight.
 func TestNoRetiredModels(t *testing.T) {
 	for _, p := range providerCatalog {
-		for _, m := range []string{p.Editor, p.Translate} {
+		for _, m := range []string{p.Translate} {
 			if strings.HasPrefix(m, "moonshot-v1") {
 				t.Errorf("%s uses %q, which is being retired on 2026-08-31", p.Code, m)
 			}
@@ -174,16 +172,10 @@ func TestModerationModelFallsBackToTheCheapTier(t *testing.T) {
 				completer:      stubCompleter{},
 				translateModel: c.translate,
 				moderateModel:  c.moderate,
-				editorModel:    "kimi-k3",
 			}
 			_, got := m.moderateClient()
 			if got != c.wantModerat {
 				t.Errorf("moderateClient model = %q, want %q", got, c.wantModerat)
-			}
-			// Whatever moderation uses, it must never silently become the
-			// writing model — that is the bill this split exists to avoid.
-			if c.moderate == "" && got == m.editorModel && m.editorModel != c.translate {
-				t.Errorf("moderation fell through to the editor model %q", got)
 			}
 		})
 	}

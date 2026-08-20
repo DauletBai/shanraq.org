@@ -10,7 +10,7 @@ import (
 // grounded in a fixed knowledge base, in the visitor's own language. Escalation
 // to a human is signalled to the caller by an empty reply. ErrDisabled when off.
 func (m *Module) Answer(ctx context.Context, lang, question string) (string, error) {
-	c, model, tok := m.editorClient()
+	c, model, tok := m.translateClient()
 	if c == nil {
 		return "", ErrDisabled
 	}

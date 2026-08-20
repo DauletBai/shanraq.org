@@ -76,31 +76,3 @@ func TestDescribeListingEmptySkips(t *testing.T) {
 		t.Fatalf("empty facts must not call the model")
 	}
 }
-
-func TestDraftColumnEvergreenPolicy(t *testing.T) {
-	fake := &fakeCompleter{reply: func(Request) string { return "## О доверии\n\nтекст" }}
-	m := New()
-	m.setCompleter(fake)
-
-	got, err := m.DraftColumn(context.Background(), "ru", "о доверии между людьми")
-	if err != nil {
-		t.Fatalf("DraftColumn: %v", err)
-	}
-	if !strings.Contains(got, "## О доверии") {
-		t.Fatalf("unexpected draft: %q", got)
-	}
-	sys := fake.calls[0].System
-	if !strings.Contains(sys, "EVERGREEN ONLY") || !strings.Contains(sys, "NEVER fabricate") {
-		t.Fatalf("author prompt must enforce evergreen + no-fabrication policy: %q", sys)
-	}
-	if fake.calls[0].Model != m.editorModel {
-		t.Fatalf("column drafting should use the editor model, got %q", fake.calls[0].Model)
-	}
-}
-
-func TestDraftColumnDisabled(t *testing.T) {
-	m := New()
-	if _, err := m.DraftColumn(context.Background(), "ru", "тема"); err != ErrDisabled {
-		t.Fatalf("expected ErrDisabled, got %v", err)
-	}
-}

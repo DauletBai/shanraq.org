@@ -272,8 +272,6 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/studio/a/{id}/publish", m.handlePublish)
 		r.Post("/studio/a/{id}/unpublish", m.handleUnpublish)
 		r.Post("/studio/a/{id}/delete", m.handleDeleteDraft)
-		r.Post("/studio/a/{id}/improve", m.handleImprove)
-		r.Post("/studio/a/{id}/draft", m.handleDraft)
 		r.Post("/studio/a/{id}/translate", m.handleTranslate)
 		r.Get("/favorites", m.handleFavorites)
 		// Advertiser cabinet (Phase 0b MVP — order capture, billing later).
@@ -300,7 +298,6 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/admin/agents/{id}/decide", m.handleAdminAgentDecide)
 		r.Post("/admin/comments/{id}/hide", m.handleAdminHideComment)
 		r.Post("/admin/appeals/{id}/resolve", m.handleAdminResolveAppeal)
-		r.Post("/admin/analysis", m.handleAdminColumnBrief)
 		r.Post("/admin/articles/{id}/decide", m.handleAdminDecideArticle)
 		r.Get("/admin/predictions", m.handleAdminPredictions)
 		r.Get("/admin/predictions/{id}", m.handleAdminPredictions)
