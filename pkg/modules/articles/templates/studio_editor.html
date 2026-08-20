@@ -42,6 +42,19 @@
         <p class="hint">✓ {{ t .Lang "editor.ai_done" }}</p>
         {{ end }}
       </div>
+
+      {{/* What the platform checked so the author does not have to know the
+           language: numbers, links, headings, tables, length. Silence here
+           means nothing mechanical is broken — it says nothing about meaning. */}}
+      {{ if .TranslationIssues }}
+      {{ range $lang, $issues := .TranslationIssues }}
+      <p class="alert alert--error ai-bar__state">
+        <strong>{{ index (langNames) $lang }}:</strong>
+        {{ range $issues }}{{ printf (t $.Lang (printf "tcheck.%s" .Key)) .Have .Want }} {{ end }}
+        {{ t $.Lang "tcheck.hint" }}
+      </p>
+      {{ end }}
+      {{ end }}
       {{ else }}
       <span class="hint">{{ t .Lang "editor.ai_soon" }}</span>
       {{ end }}

@@ -59,6 +59,7 @@ func templateFuncs() template.FuncMap {
 		// The tabs and the translate button must name languages the same way,
 		// or the reader has to work out that "3 языка" and "Қазақша" are about
 		// the same thing.
+		"langNames": func() map[string]string { return LangNames },
 		"langList": func(ls []string) string {
 			out := make([]string, 0, len(ls))
 			for _, l := range ls {

@@ -27,14 +27,14 @@ The name refers to the *shanyrak* — the crown of the Kazakh yurt — the livin
 
 - **Resilience over dependence.** Content is pushed to Telegram and RSS automatically on publish, so the audience stays reachable even if the website is unavailable.
 - **One roof, not five apps.** News, real estate, and (next) autos and a marketplace live in a single product instead of scattered across separate sites and apps.
-- **AI that removes drudgery.** Optional Claude-powered translation and editing turn one journalist's work into a trilingual, SEO-ready, auto-distributed publication.
+- **AI that removes drudgery, not judgement.** Optional machine translation turns one journalist's work into a trilingual, SEO-ready, auto-distributed publication. The platform does not write or edit for the author: the text is theirs, and so is the byline.
 - **Built for a small, open economy.** Trilingual (kk/ru/en) with per-language SEO (hreflang, sitemaps, structured data), data stored in-country, self-hostable on a single VPS.
 
 ## Features
 
 - 📰 **Trilingual publishing** — one article, three language variants; per-language `hreflang`, sitemaps and JSON-LD.
 - 🏠 **Real-estate classifieds** — listings with photos, geo, amenities, promotion/feature tariffs, and a dedicated listings sitemap.
-- 🤖 **AI co-editor & auto-translation** — provider-agnostic (Claude by default), off unless a key is set.
+- 🤖 **AI translation & moderation** — provider-agnostic (Claude, ChatGPT or Kimi), off unless a key is set. Translation keeps the author's Markdown and links; the platform then compares the result against the original and reports anything mechanically lost, so an author can check a language they do not read.
 - 📣 **Block-resilient syndication** — RSS always on; automatic Telegram posting on publish.
 - 🖼️ **Media pipeline** — upload, EXIF-strip, brand-watermark; pluggable storage (filesystem now, S3/MinIO ready).
 - ⭐ **Ratings & author karma** — weighted voting with anti-brigading.

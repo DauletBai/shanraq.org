@@ -244,3 +244,20 @@ func TestCompleteHonoursTheCallerDeadline(t *testing.T) {
 		t.Errorf("возврат занял %v — контекст вызывающей стороны не соблюдён", elapsed)
 	}
 }
+
+// K3 always reasons and cannot be switched off, but it takes a depth dial that
+// K2.6 does not. Its default is "max" — three and a half thousand tokens of
+// deliberation over one sentence — and translation is not what that is for.
+func TestOnlyK3GetsTheEffortDial(t *testing.T) {
+	for model, want := range map[string]string{
+		"kimi-k3":        "low",
+		"KIMI-K3":        "low",
+		"kimi-k2.6":      "", // не поддерживает поле — отправка была бы ошибкой
+		"kimi-k2.7-code": "",
+		"gpt-5.6-luna":   "",
+	} {
+		if got := lowEffort(model); got != want {
+			t.Errorf("lowEffort(%q) = %q, ожидалось %q", model, got, want)
+		}
+	}
+}

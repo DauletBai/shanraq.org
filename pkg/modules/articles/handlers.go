@@ -1278,6 +1278,12 @@ type EditorPage struct {
 	// tabs with no way to learn that the job failed three times.
 	TranslateState string
 	TranslateError string
+
+	// TranslationIssues lists, per language, what the translation lost against
+	// the original — counted, not read. An author who does not know the target
+	// language cannot check the meaning, but they can be told that a number
+	// went missing or a link disappeared.
+	TranslationIssues map[string][]TranslationIssue
 }
 
 // handleTranslateStatus answers the editor's poll: is the translation still
@@ -1414,6 +1420,19 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 	page.OriginalLang = a.OriginalLang
 	page.TargetLangs = otherLangs(a.OriginalLang)
 	page.TranslateState, page.TranslateError = m.translationRun(r.Context(), a.ID.String())
+	if orig, ok := a.Translations[a.OriginalLang]; ok {
+		issues := map[string][]TranslationIssue{}
+		for _, l := range otherLangs(a.OriginalLang) {
+			if tr, ok := a.Translations[l]; ok {
+				if found := compareTranslation(orig.BodyMD, tr.BodyMD); len(found) > 0 {
+					issues[l] = found
+				}
+			}
+		}
+		if len(issues) > 0 {
+			page.TranslationIssues = issues
+		}
+	}
 	// "Started, refresh in a minute" and "finished" were shown side by side:
 	// the first comes from the redirect that is still in the address bar, the
 	// second from the state. Once the state can speak for itself, it does.

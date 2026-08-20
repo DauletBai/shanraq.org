@@ -45,6 +45,21 @@ type openaiRequest struct {
 	MaxTokens int             `json:"max_tokens,omitempty"`
 	Messages  []openaiMessage `json:"messages"`
 	Thinking  *thinkingParam  `json:"thinking,omitempty"`
+	// Effort is Kimi K3's depth dial. K3 always reasons and cannot be told to
+	// stop, but it can be told how hard — and translation and moderation are not
+	// what deep reasoning is for. Only K3 accepts the field.
+	Effort string `json:"reasoning_effort,omitempty"`
+}
+
+// lowEffort asks K3 to think briefly. Its default is "max", which on a
+// one-sentence job spent three and a half thousand tokens deliberating over
+// word choice. Models that do not take the parameter get an empty string and
+// the field is omitted.
+func lowEffort(model string) string {
+	if strings.HasPrefix(strings.ToLower(strings.TrimSpace(model)), "kimi-k3") {
+		return "low"
+	}
+	return ""
 }
 
 // thinkingParam switches off a Kimi model's deliberation.
@@ -127,7 +142,8 @@ func (c *openaiCompleter) Complete(ctx context.Context, req Request) (string, er
 	msgs = append(msgs, openaiMessage{Role: "user", Content: req.User})
 
 	body, err := json.Marshal(openaiRequest{
-		Model: req.Model, MaxTokens: maxTokens, Messages: msgs, Thinking: noThinking(req.Model),
+		Model: req.Model, MaxTokens: maxTokens, Messages: msgs,
+		Thinking: noThinking(req.Model), Effort: lowEffort(req.Model),
 	})
 	if err != nil {
 		return "", fmt.Errorf("openai encode: %w", err)

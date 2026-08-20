@@ -114,6 +114,51 @@ SHANRAQ_SERVER_ADDRESS=:8080
 - **Web UI**: Carousel and docs pull copy from `framework_about`. Update via SQL seeds or admin tooling.
 - **Notifier**: Configure `notifications.smtp` to enable e-mail (host, port, username, password, from). Leaving host or from empty keeps delivery disabled while still logging reset links.
 
+## AI: translation and moderation
+
+The site uses a model for two jobs and no others. It translates a saved article
+into the other two languages, and it screens comments and — when asked to —
+articles before publication. It does not write for an author and does not edit
+their text: that was removed deliberately, along with its setting.
+
+Provider keys live in the environment or `ai.providers.*` and never in the
+database. Everything else is switched from the admin panel without a redeploy.
+
+| Setting | What it decides |
+|---|---|
+| **ИИ включён** | Whether the model is used at all. Off, translation and comment screening simply do not run. |
+| **Проверка ИИ перед публикацией** | Whether an article is read by the model before it goes live. Off by default: the author publishes, readers moderate. |
+| **Модель-перевод** | The model that translates. |
+| **Модель-модерация** | The model that screens. Empty means "the translation model" — both are cheap-tier classification work. |
+| **Максимум токенов** | A floor, not the working limit: a translation sizes its own allowance from the length of the text. |
+
+### Choosing a model
+
+Anything the provider offers can be typed in, but three things are worth knowing.
+
+Kimi's `kimi-k2.6` deliberates by default, and that deliberation is billed as
+output and counted against the token limit — measured at 3,459 reasoning tokens
+for one sentence of translation. The code switches it off for the models that
+document a switch.
+
+`kimi-k3` cannot be switched off; it can only be told how hard to think, and its
+default is "max". The code asks it for "low", which on the same test spent five
+reasoning tokens and took the same seven seconds as k2.6 — while rendering the
+Kazakh noticeably better. It costs roughly four times as much per output token,
+which at this site's volume is about a dollar a month.
+
+`moonshot-v1` is retired on 31 August 2026 and should not be selected.
+
+### What the platform guarantees, and what it does not
+
+URLs are restored from the original after translation, by position: a model that
+rewrites a link cannot corrupt one. Numbers, links, headings and table rows are
+counted on both sides and any difference is shown to the author in the editor.
+
+None of that checks meaning. A fluent translation that says the wrong thing
+passes every check, which is why the guide tells authors not to save a language
+they cannot read — an unsaved translation keeps its "translated with AI" mark.
+
 ## Troubleshooting
 
 - Cannot connect to Postgres? Set `database.url` to `postgres://...@127.0.0.1/...` instead of `localhost` if the resolver blocks IPv6.
