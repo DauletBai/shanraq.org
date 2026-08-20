@@ -59,6 +59,18 @@ func TestTranslateJobIntegration(t *testing.T) {
 	assertTranslation(t, ctx, pool, articleID, "en", "ai", "Заголовок")
 	assertTranslation(t, ctx, pool, articleID, "ru", "human", "Заголовок")
 
+	// The body is sent unframed, so it still carries the stub's marker — the
+	// evidence that a translation happened rather than a copy.
+	var kzBody string
+	if err := pool.QueryRow(ctx,
+		`SELECT body_md FROM article_translations WHERE article_id=$1 AND lang='kz'`,
+		articleID).Scan(&kzBody); err != nil {
+		t.Fatalf("read kz body: %v", err)
+	}
+	if !strings.HasPrefix(kzBody, "TRANSLATED:") {
+		t.Errorf("kz body never went through the translator: %q", kzBody)
+	}
+
 	// Now add a HUMAN Kazakh version and re-run: it must NOT be overwritten.
 	if _, err := pool.Exec(ctx, `
 		INSERT INTO article_translations (article_id, lang, title, summary, body_md, source, status)
@@ -82,14 +94,11 @@ func assertTranslation(t *testing.T, ctx context.Context, pool *pgxpool.Pool, ar
 	if source != wantSource {
 		t.Errorf("%s source = %q, want %q", lang, source, wantSource)
 	}
-	// The stub echoes whatever it was sent, and a short field now travels with
-	// the finished translation in front of it. So the check is in two
-	// parts: the stub ran (its marker is at the front), and the field itself is
-	// what sat at the end of the prompt to be translated.
-	if wantSource == "ai" && !strings.HasPrefix(title, "TRANSLATED:") {
-		t.Errorf("%s title never went through the translator: %q", lang, title)
-	}
-	if !strings.HasSuffix(title, wantTitle) {
-		t.Errorf("%s title = %q, want it to end with %q", lang, title, wantTitle)
+	// The headline travels with the finished translation in front of it and is
+	// cut back at the marker, so what should be stored is the field and nothing
+	// else — not the glossary, not the stub's own prefix, which sat ahead of
+	// both. That the job ran at all is what `source` records.
+	if title != wantTitle {
+		t.Errorf("%s title = %q, want exactly %q", lang, title, wantTitle)
 	}
 }
