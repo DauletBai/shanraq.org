@@ -1014,6 +1014,16 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
 .pager > :last-child { justify-self: end; }
 .pager__at { color: var(--muted); font-size: var(--step--1); }
 
+/* The report control is folded away: available to the reader who needs it,
+   never an invitation to the reader who does not. */
+.reportbox { margin-top: 4px; }
+.reportbox__toggle { cursor: pointer; font-size: var(--step--1); color: var(--muted); list-style: none; }
+.reportbox__toggle::-webkit-details-marker { display: none; }
+.reportbox__toggle:hover, .reportbox[open] .reportbox__toggle { color: var(--ink-soft); }
+.reportbox__form { margin-top: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); max-width: 420px; }
+.reportbox__form .hint { margin: 8px 0 12px; }
+.reported-note { display: inline-block; margin-top: 4px; }
+
 /* ---------- footer ---------- */
 /* Footer: black in both themes, light text tuned for the dark ground. */
 .site-footer { 

@@ -3,6 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ if .Notice }}{{ template "saved" .Notice }}{{ end }}
   {{/* The page had no <h1>: its visible title is the wordmark, and that is an
        image. Hidden rather than drawn, because the alternative is redesigning
        the masthead to satisfy a crawler. Category feeds are their own indexable

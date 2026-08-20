@@ -373,6 +373,11 @@ type HomePage struct {
 	Page    int
 	PrevURL string // empty on the first page
 	NextURL string // empty on the last
+
+	// Notice is where a reader lands after their report hid an article: the
+	// piece itself is no longer readable, so the acknowledgement has to appear
+	// somewhere they can still see it.
+	Notice string
 }
 
 // homePageSize is how many articles one page of the feed holds.
@@ -521,6 +526,9 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	page.ActiveCat = cat
 	page.ActiveSub = sub
 	page.Subscribed = r.URL.Query().Get("subscribed") == "ok"
+	if r.URL.Query().Get("reported") == "hidden" {
+		page.Notice = T(lang, "article.report_hidden")
+	}
 	page.Posts = items
 	page.Recent = recentSlice(items, 5)
 	page.Page = pageNo
@@ -571,18 +579,25 @@ type ArticlePage struct {
 	Predictions []*Prediction
 	PredScore   PredictionScore
 
-	Category      string
-	Subcategory   string
-	CoverURL      string
-	Score         int
-	UserVote      int // -1, 0, +1
-	AuthorKarma   int
-	CanVote       bool // logged in and not the author
-	IsAuthor      bool
-	Recent        []FeedItem // reserved for sidebar
-	Subscribed    bool
-	Comments      []Comment
-	IsFavorite    bool
+	Category    string
+	Subcategory string
+	CoverURL    string
+	Score       int
+	UserVote    int // -1, 0, +1
+	AuthorKarma int
+	CanVote     bool // logged in and not the author
+	IsAuthor    bool
+	Recent      []FeedItem // reserved for sidebar
+	Subscribed  bool
+	Comments    []Comment
+	IsFavorite  bool
+	// CanReport is false for a guest and for the author: a guest has no standing
+	// to weigh, and reporting your own article is not a thing.
+	CanReport bool
+	Reported  bool
+	// Notice is the one-line feedback after an action on this page — a report
+	// accepted, or the verified-email bar explaining why it was not.
+	Notice        string
 	TOC           []TOCItem
 	ReadingMin    int
 	CommentReview bool // the reader's comment was held for moderation
@@ -659,10 +674,18 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	}
 	page.IsAuthor = viewer != uuid.Nil && viewer == a.AuthorID
 	page.CanVote = viewer != uuid.Nil && !page.IsAuthor
+	page.CanReport = page.CanVote
 	if viewer != uuid.Nil {
 		page.IsFavorite = m.favs.IsFavorite(r.Context(), viewer, "article", a.ID)
+		page.Reported = m.store.HasReportedArticle(r.Context(), a.ID, viewer)
 	}
 
+	switch {
+	case r.URL.Query().Get("reported") == "ok":
+		page.Notice = T(lang, "article.report_thanks")
+	case r.URL.Query().Get("notice") == "verify":
+		page.Notice = T(lang, "article.report_verify")
+	}
 	page.CommentReview = r.URL.Query().Get("comment") == "review"
 	// The article page shows only its table of contents in the aside (no news
 	// carousel / widgets), so SidebarNews is intentionally not populated here.
@@ -1640,7 +1663,9 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
 
 	// Leadership publishes immediately — no review queue. They are the editorial
-	// authority, so their piece goes live at once (logged as a staff publish).
+	// authority, so their piece goes live at once, logged as a staff publish
+	// under their own name rather than the checker's, which is what the ledger
+	// used to say.
 	if canAuthorAsStaff(claims) {
 		title := ""
 		if a, e := m.store.GetByID(r.Context(), id, authorID); e == nil {
@@ -1648,8 +1673,37 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 				title = tr.Title
 			}
 		}
-		if err := m.commitReview(r.Context(), id, authorID, title, "published", "approve", "rules_ok", nil); err != nil {
+		first, last, _ := m.auth.AuthorIdentity(r.Context(), authorID)
+		if err := m.commitReview(r.Context(), id, authorID, title, "published", "approve", "rules_ok",
+			humanActor(authorID, strings.TrimSpace(first+" "+last)), nil); err != nil {
 			m.rt.Logger.Error("staff publish", zap.Error(err))
+			http.Error(w, "internal error", http.StatusInternalServerError)
+			return
+		}
+		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
+			m.rt.Logger.Warn("enqueue publish", zap.Error(err))
+		}
+		http.Redirect(w, r, "/studio?ok=published", http.StatusSeeOther)
+		return
+	}
+
+	// Reader moderation: with the pre-publication checker off, the author's
+	// publish button publishes. Nobody stands between the author and the reader,
+	// which is the whole point — and the reason the reporting path below has to
+	// work, because it is now the only thing that does.
+	//
+	// When the checker is enabled the old route stands: an administrator who
+	// turns it on has chosen pre-moderation, and an outage must not quietly
+	// downgrade that choice to open publishing.
+	if m.ai == nil || !m.ai.Enabled() {
+		if err := m.publishNow(r.Context(), id, authorID); err != nil {
+			if errors.Is(err, ErrNotFound) {
+				// Either not theirs, or readers have hidden it — the one state
+				// the author cannot clear by pressing publish again.
+				http.Redirect(w, r, "/studio/moderation?err=hidden", http.StatusSeeOther)
+				return
+			}
+			m.rt.Logger.Error("publish", zap.Error(err))
 			http.Error(w, "internal error", http.StatusInternalServerError)
 			return
 		}

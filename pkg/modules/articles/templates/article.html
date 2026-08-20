@@ -3,6 +3,7 @@
 <body>
 {{ template "site_header" . }}
 <main class="container">
+  {{ if .Notice }}{{ template "saved" .Notice }}{{ end }}
   {{ template "backlink" (dict "Href" (printf "/?lang=%s&cat=%s" .Lang .Category) "Label" (t .Lang (printf "cat.%s" .Category))) }}
   <div class="layout{{ if and (not .TOC) (not .Ads) (not (liveSocial .Info.Social)) }} layout--solo{{ end }}">
     <div>
@@ -68,6 +69,30 @@
             {{/* Sharing is for everyone — a guest who wants to pass the piece on
                  is exactly the reader we most want to keep. */}}
             {{ template "share_row" (dict "Lang" .Lang "Title" .Title "URL" (printf "%s%s" .SiteURL .CanonURL)) }}
+
+            {{/* A report is not a downvote and does not sit beside one. It names
+                 a rule from the site's own published list, it is folded away so
+                 it is available without being an invitation, and it counts once
+                 per reader. */}}
+            {{ if .CanReport }}
+            {{ if .Reported }}
+            <span class="hint reported-note">✓ {{ t .Lang "article.report_done" }}</span>
+            {{ else }}
+            <details class="reportbox">
+              <summary class="reportbox__toggle">{{ t .Lang "article.report" }}</summary>
+              <form method="post" action="/read/{{ .Slug }}/report" class="reportbox__form">
+                <div class="field">
+                  <label for="report_reason">{{ t .Lang "article.report_reason" }}</label>
+                  <select class="select" id="report_reason" name="reason" required>
+                    {{ range reviewRules }}<option value="{{ . }}">{{ t $.Lang (printf "rule.%s" .) }}</option>{{ end }}
+                  </select>
+                </div>
+                <p class="hint">{{ t .Lang "article.report_hint" }}</p>
+                <button type="submit" class="btn btn--ghost">{{ t .Lang "article.report_send" }}</button>
+              </form>
+            </details>
+            {{ end }}
+            {{ end }}
           </div>
         </div>
 

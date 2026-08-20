@@ -214,15 +214,57 @@ func (m *Module) submitForReview(ctx context.Context, id, author uuid.UUID, lang
 	// Status, ledger entry and findings commit as one unit. Before, a status
 	// could move without its record, so an article might go live with nothing
 	// in the log; that is the divergence the review flagged.
-	if err := m.commitReview(ctx, id, author, tr.Title, status, action, reason, findings); err != nil {
+	if err := m.commitReview(ctx, id, author, tr.Title, status, action, reason, agentActor("AI Bake"), findings); err != nil {
 		return false, blocking, err
 	}
 	return blocking == 0, blocking, nil
 }
 
-// commitReview writes the automated decision atomically: article status, the
-// ledger entry, and every finding, in a single transaction.
-func (m *Module) commitReview(ctx context.Context, id, author uuid.UUID, title, status, action, reason string, findings []Finding) error {
+// actor identifies who made a moderation decision, for the ledger. The schema
+// insists an agent decision and a human decision are never presented as the
+// same thing, and until now commitReview stamped every row 'agent'/'AI Bake' —
+// including a director's own publish, which the ledger then attributed to a
+// checker that had not run.
+type actor struct {
+	kind string // 'agent' | 'human' | 'readers'
+	id   *uuid.UUID
+	name string
+}
+
+func agentActor(name string) actor            { return actor{kind: "agent", name: name} }
+func humanActor(id uuid.UUID, n string) actor { return actor{kind: "human", id: &id, name: n} }
+
+// publishNow puts an article live without a pre-publication decision, which is
+// what reader moderation means: the author answers for the text, readers judge
+// it afterwards, and the platform steps in when they do.
+//
+// No ledger row is written. The ledger records moderation decisions, and at
+// publication under this regime there is none — inventing an "approve" here
+// would fill every author's moderation page with decisions nobody made and
+// devalue the entries that are real.
+//
+// An article readers have already hidden cannot be re-published this way: that
+// is the one status the author may not clear on their own, or a hide would last
+// exactly as long as it takes to press the button again.
+func (m *Module) publishNow(ctx context.Context, id, author uuid.UUID) error {
+	ct, err := m.rt.DB.Exec(ctx, `
+		UPDATE articles
+		   SET status = 'published',
+		       published_at = COALESCE(published_at, NOW()),
+		       updated_at = NOW()
+		 WHERE id = $1 AND author_id = $2 AND status <> 'flagged'`, id, author)
+	if err != nil {
+		return fmt.Errorf("publish: %w", err)
+	}
+	if ct.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	return nil
+}
+
+// commitReview writes the decision atomically: article status, the ledger
+// entry, and every finding, in a single transaction.
+func (m *Module) commitReview(ctx context.Context, id, author uuid.UUID, title, status, action, reason string, by actor, findings []Finding) error {
 	tx, err := m.rt.DB.Begin(ctx)
 	if err != nil {
 		return err
@@ -240,9 +282,10 @@ func (m *Module) commitReview(ctx context.Context, id, author uuid.UUID, title, 
 	var actionID string
 	if err := tx.QueryRow(ctx, `
 		INSERT INTO moderation_actions
-		    (target_type, target_id, subject_id, title, action, reason_code, actor_kind, actor_name)
-		VALUES ('article', $1, $2, $3, $4, $5, 'agent', 'AI Bake') RETURNING id`,
-		id.String(), author, clip(title, 120), action, reason).Scan(&actionID); err != nil {
+		    (target_type, target_id, subject_id, title, action, reason_code, actor_kind, actor_id, actor_name)
+		VALUES ('article', $1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+		id.String(), author, clip(title, 120), action, reason,
+		by.kind, by.id, by.name).Scan(&actionID); err != nil {
 		return fmt.Errorf("commit review: log: %w", err)
 	}
 	for _, f := range findings {
@@ -382,6 +425,12 @@ func (m *Module) DecideArticle(ctx context.Context, id uuid.UUID, decision strin
 		status, action, reason = "needs_work", "reject", "human_rejected"
 	case "needs_work":
 		status, action, reason = "needs_work", "warn", "human_returned"
+	case "hide":
+		// Under reader moderation nothing is checked before publication, so
+		// staff need a way to take a live article down at once rather than
+		// waiting for enough readers to report it. Unlawful material cannot sit
+		// there accruing an audience until a threshold is met.
+		status, action, reason = "flagged", "hide", "human_hidden"
 	default:
 		return fmt.Errorf("unknown decision %q", decision)
 	}
@@ -393,14 +442,19 @@ func (m *Module) DecideArticle(ctx context.Context, id uuid.UUID, decision strin
 	defer func() { _ = tx.Rollback(ctx) }()
 
 	var author uuid.UUID
-	var title, lang string
+	var title, lang, was string
 	if err := tx.QueryRow(ctx, `
-		SELECT a.author_id, a.original_lang,
+		SELECT a.author_id, a.original_lang, a.status,
 		       COALESCE((SELECT t.title FROM article_translations t
 		                  WHERE t.article_id = a.id AND t.lang = a.original_lang),'')
-		  FROM articles a WHERE a.id = $1 AND a.status IN ('review','needs_work')`,
-		id).Scan(&author, &lang, &title); err != nil {
+		  FROM articles a WHERE a.id = $1 AND a.status IN ('review','needs_work','flagged','published')`,
+		id).Scan(&author, &lang, &was, &title); err != nil {
 		return fmt.Errorf("decide: load article: %w", err)
+	}
+	// Putting a reader-hidden article back is overruling the readers, and the
+	// ledger should say so rather than record it as an ordinary approval.
+	if was == "flagged" && status == "published" {
+		reason = "readers_overruled"
 	}
 
 	pub := "published_at = COALESCE(articles.published_at, NOW()), "
@@ -410,6 +464,16 @@ func (m *Module) DecideArticle(ctx context.Context, id uuid.UUID, decision strin
 	if _, err := tx.Exec(ctx, `UPDATE articles SET status = $2, `+pub+`reviewed_at = NOW(), updated_at = NOW()
 		WHERE id = $1`, id, status); err != nil {
 		return fmt.Errorf("decide: set status: %w", err)
+	}
+	// The reports that hid it were wrong, and saying so is what stops the same
+	// group hiding it again the moment it comes back — and what makes a false
+	// report cost its author standing.
+	if was == "flagged" && status == "published" {
+		if _, err := tx.Exec(ctx,
+			`UPDATE article_reports SET dismissed = TRUE WHERE article_id = $1 AND NOT dismissed`,
+			id); err != nil {
+			return fmt.Errorf("decide: dismiss reports: %w", err)
+		}
 	}
 	if _, err := tx.Exec(ctx, `
 		INSERT INTO moderation_actions

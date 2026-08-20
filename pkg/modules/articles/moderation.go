@@ -223,9 +223,32 @@ func (s *ModStore) Resolve(ctx context.Context, appealID, moderator uuid.UUID, u
 			targetType, targetID, subject, title, note, moderator); err != nil {
 			return err
 		}
+		// An overturned appeal has to actually undo the thing it overturned.
+		// Only comments were being restored: an author whose article or listing
+		// was hidden could win the appeal, see the decision reversed in the
+		// ledger, and find their piece still hidden.
 		switch targetType {
 		case "comment":
 			if _, err := tx.Exec(ctx, `UPDATE comments SET status = 'published' WHERE id = $1::uuid`, targetID); err != nil {
+				return err
+			}
+		case "article":
+			if _, err := tx.Exec(ctx,
+				`UPDATE articles SET status = 'published', updated_at = NOW()
+				  WHERE id = $1::uuid AND status = 'flagged'`, targetID); err != nil {
+				return err
+			}
+			// The reports that hid it are dismissed, which costs the readers who
+			// filed them standing on their next one.
+			if _, err := tx.Exec(ctx,
+				`UPDATE article_reports SET dismissed = TRUE
+				  WHERE article_id = $1::uuid AND NOT dismissed`, targetID); err != nil {
+				return err
+			}
+		case "listing":
+			if _, err := tx.Exec(ctx,
+				`UPDATE listings SET status = 'published' WHERE id = $1::uuid AND status = 'flagged'`,
+				targetID); err != nil {
 				return err
 			}
 		}

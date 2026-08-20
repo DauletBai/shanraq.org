@@ -200,6 +200,9 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Head("/", m.handleHome)
 		r.Get("/read", m.handleReadRedirect)
 		r.Get("/read/{slug}", m.handleArticle)
+		// The reader's half of moderation. A POST because it changes something,
+		// and same-origin-checked with the rest of the browser surface.
+		r.Post("/read/{slug}/report", m.handleArticleReport)
 		r.Post("/read/{slug}/vote", m.handleVote)
 		r.Post("/read/{slug}/comment", m.handleComment)
 		r.Post("/read/{slug}/comment/{id}/delete", m.handleCommentDelete)

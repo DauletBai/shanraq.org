@@ -51,7 +51,11 @@ func templateFuncs() template.FuncMap {
 		"money":             money,
 		// Templates count from zero and people count from one; screen-reader
 		// labels are read by people.
-		"inc":              func(i int) int { return i + 1 },
+		"inc": func(i int) int { return i + 1 },
+		// The reader's report names one of the site's published rules — the same
+		// list the checker used — so a report is a claim about a rule, not a
+		// second opinion about the topic.
+		"reviewRules":      func() []string { return ReviewRules },
 		"compactNum":       compactNum, // 1234 → "1,2 тыс." for tight meta rows
 		"shortAuthor":      shortAuthor,
 		"hasSuffix":        strings.HasSuffix,
