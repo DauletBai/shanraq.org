@@ -1859,10 +1859,12 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* Three settings that describe a single call, kept on one line so they read as
    one decision rather than three. Collapses to one column where three would
    squeeze the model ids into ellipses. */
-.adm-trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--adm-gap-in); }
+/* Four fields now: three model identifiers and the token cap. auto-fit keeps
+   them on one row where there is room and wraps them where there is not,
+   without a breakpoint per column count. */
+.adm-trio { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--adm-gap-in); }
 .adm-trio > label { display: block; font-size: var(--step--1); color: var(--ink-soft); }
-@media (max-width: 1400px) { .adm-trio { grid-template-columns: 1fr; } }
-@media (min-width: 1600px) { .adm-trio { grid-template-columns: 2fr 2fr 1fr; } }
+@media (max-width: 640px) { .adm-trio { grid-template-columns: 1fr; } }
 /* 1500px put the pair one-per-line on every laptop. The two settings cards
    stop sharing a row at 1100px, and below that each has the full width, so
    the fields fit side by side well under the old threshold. */

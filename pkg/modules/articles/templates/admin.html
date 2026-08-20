@@ -765,6 +765,12 @@
               <input class="input" name="translate_model" value="{{ .AI.TranslateModel }}" maxlength="80" required
                      placeholder="{{ t .Lang "aic.model_placeholder" }}">
             </label>
+            {{/* Not required: empty means the translation model, which is the
+                 right default for a classifier and the cheapest one available. */}}
+            <label>{{ t .Lang "aic.moderate" }} {{ template "fhelp" (t .Lang "aic.moderate_note") }}
+              <input class="input" name="moderate_model" value="{{ .AI.ModerateModel }}" maxlength="80"
+                     placeholder="{{ t .Lang "aic.moderate_placeholder" }}">
+            </label>
             <label>{{ t .Lang "aic.max_tokens" }}
               <input class="input" type="number" name="max_tokens" min="256" max="32000" value="{{ .AI.MaxTokens }}">
             </label>

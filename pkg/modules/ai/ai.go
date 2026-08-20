@@ -61,6 +61,7 @@ type Module struct {
 	completer      Completer
 	enabled        bool
 	editorModel    string
+	moderateModel  string
 	translateModel string
 	maxTokens      int
 }
@@ -136,6 +137,7 @@ func (m *Module) applySettings(st AISettings) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.editorModel = st.EditorModel
+	m.moderateModel = st.ModerateModel
 	m.translateModel = st.TranslateModel
 	m.maxTokens = st.MaxTokens
 	if m.maxTokens <= 0 {
@@ -187,14 +189,23 @@ func (m *Module) translateClient() (Completer, string, int) {
 }
 
 // moderateClient returns the active completer and the model used for the cheap
-// moderation tier (the translation model, or a Haiku fallback).
+// moderation tier — comment and listing screening, and the publication rules
+// check.
+//
+// The operator can name a model for it. Unset, it stays on the translation
+// model, which is the other cheap-tier job: all of these are classifications
+// answering in a line of JSON, not pieces of writing, and none of them should
+// be paying for the model that drafts a column.
 func (m *Module) moderateClient() (Completer, string) {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 	if !m.enabled {
 		return nil, ""
 	}
-	model := m.translateModel
+	model := strings.TrimSpace(m.moderateModel)
+	if model == "" {
+		model = m.translateModel
+	}
 	if strings.TrimSpace(model) == "" {
 		model = "claude-haiku-4-5"
 	}
@@ -227,6 +238,7 @@ type AdminView struct {
 	ReviewCheck    bool
 	Provider       string
 	EditorModel    string
+	ModerateModel  string
 	TranslateModel string
 	MaxTokens      int
 	Providers      []ProviderStatus
@@ -244,6 +256,7 @@ func (m *Module) AdminView() AdminView {
 		ReviewCheck:    st.ReviewCheck,
 		Provider:       st.Provider,
 		EditorModel:    st.EditorModel,
+		ModerateModel:  st.ModerateModel,
 		TranslateModel: st.TranslateModel,
 		MaxTokens:      st.MaxTokens,
 	}

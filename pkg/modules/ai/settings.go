@@ -80,6 +80,17 @@ type AISettings struct {
 	// the third. Off by default: the author answers for the text and readers
 	// moderate it afterwards.
 	ReviewCheck bool
+
+	// ModerateModel is the model that reads an article before publication when
+	// ReviewCheck is on. Empty means the translation model — the other
+	// cheap-tier job, and the right default for what is a classification with a
+	// short JSON answer.
+	//
+	// It is separate from EditorModel because that one writes: a column, or an
+	// improvement to an author's draft. Paying frontier prices to classify, and
+	// writing columns with the cheap model, are the two mistakes one shared
+	// setting forces you to choose between.
+	ModerateModel string
 }
 
 // Settings persists the active model configuration in a single DB row and
@@ -102,9 +113,10 @@ func NewSettings(db *pgxpool.Pool, defaults AISettings) *Settings {
 func (s *Settings) Load(ctx context.Context) (AISettings, error) {
 	var st AISettings
 	err := s.db.QueryRow(ctx, `
-		SELECT enabled, provider, editor_model, translate_model, max_tokens, review_check
+		SELECT enabled, provider, editor_model, translate_model, max_tokens, review_check, moderate_model
 		FROM ai_settings WHERE id = 1`).
-		Scan(&st.Enabled, &st.Provider, &st.EditorModel, &st.TranslateModel, &st.MaxTokens, &st.ReviewCheck)
+		Scan(&st.Enabled, &st.Provider, &st.EditorModel, &st.TranslateModel, &st.MaxTokens,
+			&st.ReviewCheck, &st.ModerateModel)
 	if err == pgx.ErrNoRows {
 		s.mu.RLock()
 		seed := s.cur
@@ -132,10 +144,10 @@ func (s *Settings) Get() AISettings {
 
 func (s *Settings) insert(ctx context.Context, st AISettings) error {
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO ai_settings (id, enabled, provider, editor_model, translate_model, max_tokens, review_check)
-		VALUES (1, $1, $2, $3, $4, $5, $6)
+		INSERT INTO ai_settings (id, enabled, provider, editor_model, translate_model, max_tokens, review_check, moderate_model)
+		VALUES (1, $1, $2, $3, $4, $5, $6, $7)
 		ON CONFLICT (id) DO NOTHING`,
-		st.Enabled, st.Provider, st.EditorModel, st.TranslateModel, st.MaxTokens, st.ReviewCheck)
+		st.Enabled, st.Provider, st.EditorModel, st.TranslateModel, st.MaxTokens, st.ReviewCheck, st.ModerateModel)
 	if err != nil {
 		return fmt.Errorf("seed ai settings: %w", err)
 	}
@@ -149,6 +161,8 @@ func normalizeSettings(st AISettings) (AISettings, error) {
 	st.Provider = strings.TrimSpace(st.Provider)
 	st.EditorModel = strings.TrimSpace(st.EditorModel)
 	st.TranslateModel = strings.TrimSpace(st.TranslateModel)
+	// Empty is allowed and meaningful: it means "the translation model".
+	st.ModerateModel = strings.TrimSpace(st.ModerateModel)
 	if !isProvider(st.Provider) {
 		return st, fmt.Errorf("unknown provider %q", st.Provider)
 	}
@@ -170,8 +184,8 @@ func (s *Settings) Save(ctx context.Context, st AISettings, by *uuid.UUID) error
 		return err
 	}
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO ai_settings (id, enabled, provider, editor_model, translate_model, max_tokens, review_check, updated_at, updated_by)
-		VALUES (1, $1, $2, $3, $4, $5, $6, NOW(), $7)
+		INSERT INTO ai_settings (id, enabled, provider, editor_model, translate_model, max_tokens, review_check, moderate_model, updated_at, updated_by)
+		VALUES (1, $1, $2, $3, $4, $5, $6, $7, NOW(), $8)
 		ON CONFLICT (id) DO UPDATE SET
 			enabled = EXCLUDED.enabled,
 			provider = EXCLUDED.provider,
@@ -179,9 +193,11 @@ func (s *Settings) Save(ctx context.Context, st AISettings, by *uuid.UUID) error
 			translate_model = EXCLUDED.translate_model,
 			max_tokens = EXCLUDED.max_tokens,
 			review_check = EXCLUDED.review_check,
+			moderate_model = EXCLUDED.moderate_model,
 			updated_at = NOW(),
 			updated_by = EXCLUDED.updated_by`,
-		st.Enabled, st.Provider, st.EditorModel, st.TranslateModel, st.MaxTokens, st.ReviewCheck, by)
+		st.Enabled, st.Provider, st.EditorModel, st.TranslateModel, st.MaxTokens, st.ReviewCheck,
+		st.ModerateModel, by)
 	if err != nil {
 		return fmt.Errorf("save ai settings: %w", err)
 	}

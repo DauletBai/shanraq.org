@@ -51,7 +51,10 @@ Rewrite the user's draft so it reads clearly and professionally, in a respectful
 // on the caller's side means the rules live with the rules, not with the
 // transport.
 func (m *Module) Check(ctx context.Context, system, user string, maxTokens int) (string, error) {
-	c, model, _ := m.editorClient()
+	// The rules check is the same kind of call as comment screening: a short
+	// verdict, run on everything. It belongs on the moderation tier, not on the
+	// model that writes columns.
+	c, model := m.moderateClient()
 	if c == nil {
 		return "", ErrDisabled
 	}

@@ -1124,12 +1124,15 @@ var messages = map[string]map[string]string{
 	"ag.click.view_contract": {"kz": "Жалдау шартын ашу", "ru": "Открытие договора аренды", "en": "Opened lease contract"},
 
 	// AI model settings (admin).
-	"aic.title":     {"kz": "ЖИ моделі (API)", "ru": "Модель ИИ (API)", "en": "AI model (API)"},
-	"aic.note":      {"kz": "Провайдер мен модельді осы жерден ауыстырыңыз — кодты өзгертпей. API кілттері сервер конфигінде сақталады, дерекқорда емес.", "ru": "Переключайте провайдера и модель здесь — без изменения кода. API-ключи хранятся в конфиге сервера, не в базе.", "en": "Switch provider and model here — no code changes. API keys live in the server config, not the database."},
-	"aic.enabled":   {"kz": "ЖИ қосулы", "ru": "ИИ включён", "en": "AI enabled"},
-	"aic.provider":  {"kz": "Провайдер", "ru": "Провайдер", "en": "Provider"},
-	"aic.editor":    {"kz": "Редактор моделі", "ru": "Модель-редактор", "en": "Editor model"},
-	"aic.translate": {"kz": "Аударма моделі", "ru": "Модель-перевод", "en": "Translate model"},
+	"aic.title":                {"kz": "ЖИ моделі (API)", "ru": "Модель ИИ (API)", "en": "AI model (API)"},
+	"aic.note":                 {"kz": "Провайдер мен модельді осы жерден ауыстырыңыз — кодты өзгертпей. API кілттері сервер конфигінде сақталады, дерекқорда емес.", "ru": "Переключайте провайдера и модель здесь — без изменения кода. API-ключи хранятся в конфиге сервера, не в базе.", "en": "Switch provider and model here — no code changes. API keys live in the server config, not the database."},
+	"aic.enabled":              {"kz": "ЖИ қосулы", "ru": "ИИ включён", "en": "AI enabled"},
+	"aic.provider":             {"kz": "Провайдер", "ru": "Провайдер", "en": "Provider"},
+	"aic.editor":               {"kz": "Редактор моделі", "ru": "Модель-редактор", "en": "Editor model"},
+	"aic.translate":            {"kz": "Аударма моделі", "ru": "Модель-перевод", "en": "Translate model"},
+	"aic.moderate":             {"kz": "Модерация моделі", "ru": "Модель-модерация", "en": "Moderation model"},
+	"aic.moderate_note":        {"kz": "Мақаланы жариялау алдында тексеру, пікірлер мен хабарландыруларды сүзу. Бұл — қысқа JSON жауабы бар жіктеу, әр материалға жүреді, сондықтан ең арзан модель жеткілікті. Бос қалдырсаңыз — аударма моделі қолданылады.", "ru": "Проверка статьи перед публикацией, фильтрация комментариев и объявлений. Это классификация с коротким JSON-ответом, идёт на каждом материале — достаточно самой дешёвой модели. Оставьте пустым — возьмётся модель-перевод.", "en": "The pre-publication check, plus comment and listing screening. A classification answering in a line of JSON, run on everything — the cheapest model is enough. Leave empty to use the translation model."},
+	"aic.moderate_placeholder": {"kz": "бос — аударма моделі", "ru": "пусто — как у перевода", "en": "empty — same as translate"},
 	// Shown when a provider ships no known model id: the administrator has to
 	// supply one, and saying so beats leaving another provider's name in place.
 	"aic.model_placeholder": {"kz": "провайдердің моделін енгізіңіз", "ru": "укажите модель провайдера", "en": "enter the provider's model id"},

@@ -152,3 +152,39 @@ func TestReviewCheckIsSeparateFromTheAssistant(t *testing.T) {
 type stubCompleter struct{}
 
 func (stubCompleter) Complete(context.Context, Request) (string, error) { return "", nil }
+
+// The check that reads every article and the model that drafts a column are
+// different jobs with different bills. One setting for both forces a choice
+// between paying frontier prices to classify and writing columns with the
+// cheap model.
+func TestModerationModelFallsBackToTheCheapTier(t *testing.T) {
+	cases := []struct {
+		name                             string
+		translate, moderate, wantModerat string
+	}{
+		{"unset follows translation", "kimi-k2.6", "", "kimi-k2.6"},
+		{"named model wins", "kimi-k2.6", "kimi-k3", "kimi-k3"},
+		{"blank is not a model", "claude-haiku-4-5", "   ", "claude-haiku-4-5"},
+		{"nothing configured at all", "", "", "claude-haiku-4-5"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			m := &Module{
+				enabled:        true,
+				completer:      stubCompleter{},
+				translateModel: c.translate,
+				moderateModel:  c.moderate,
+				editorModel:    "kimi-k3",
+			}
+			_, got := m.moderateClient()
+			if got != c.wantModerat {
+				t.Errorf("moderateClient model = %q, want %q", got, c.wantModerat)
+			}
+			// Whatever moderation uses, it must never silently become the
+			// writing model — that is the bill this split exists to avoid.
+			if c.moderate == "" && got == m.editorModel && m.editorModel != c.translate {
+				t.Errorf("moderation fell through to the editor model %q", got)
+			}
+		})
+	}
+}
