@@ -42,12 +42,51 @@ type openaiRequest struct {
 	Model     string          `json:"model"`
 	MaxTokens int             `json:"max_tokens,omitempty"`
 	Messages  []openaiMessage `json:"messages"`
+	Thinking  *thinkingParam  `json:"thinking,omitempty"`
+}
+
+// thinkingParam switches off a Kimi model's deliberation.
+type thinkingParam struct {
+	Type string `json:"type"`
+}
+
+// noThinking returns the parameter that turns deliberation off, for models that
+// both support switching it off and have no use for it here.
+//
+// Kimi's k2.x models think by default, and reasoning is billed as output and
+// counted against max_tokens. Measured on a one-sentence translation: 3,459
+// reasoning tokens against 35 tokens of answer. Two consequences, and the
+// second is worse than the first.
+//
+// The bill: a hundredfold on every call, for jobs — translating a sentence,
+// returning a JSON verdict — where there is nothing to deliberate about.
+//
+// The correctness: reasoning shares the max_tokens budget with the answer, and
+// a title is translated with a cap of 512. Thinking would have consumed the
+// whole allowance and left an empty or truncated title, which the caller would
+// then have saved as the translation.
+//
+// Only the models that document a disable switch get one. kimi-k3 always thinks
+// and the docs say not to send the parameter; kimi-k2.7-code errors on it.
+func noThinking(model string) *thinkingParam {
+	m := strings.ToLower(strings.TrimSpace(model))
+	if strings.HasPrefix(m, "kimi-k2.6") || strings.HasPrefix(m, "kimi-k2.5") {
+		return &thinkingParam{Type: "disabled"}
+	}
+	return nil
 }
 
 type openaiResponse struct {
 	Choices []struct {
-		Message openaiMessage `json:"message"`
+		Message      openaiMessage `json:"message"`
+		FinishReason string        `json:"finish_reason"`
 	} `json:"choices"`
+	Usage struct {
+		CompletionTokens int `json:"completion_tokens"`
+		Details          struct {
+			ReasoningTokens int `json:"reasoning_tokens"`
+		} `json:"completion_tokens_details"`
+	} `json:"usage"`
 	Error *struct {
 		Message string `json:"message"`
 	} `json:"error"`
@@ -65,7 +104,9 @@ func (c *openaiCompleter) Complete(ctx context.Context, req Request) (string, er
 	}
 	msgs = append(msgs, openaiMessage{Role: "user", Content: req.User})
 
-	body, err := json.Marshal(openaiRequest{Model: req.Model, MaxTokens: maxTokens, Messages: msgs})
+	body, err := json.Marshal(openaiRequest{
+		Model: req.Model, MaxTokens: maxTokens, Messages: msgs, Thinking: noThinking(req.Model),
+	})
 	if err != nil {
 		return "", fmt.Errorf("openai encode: %w", err)
 	}
@@ -101,5 +142,20 @@ func (c *openaiCompleter) Complete(ctx context.Context, req Request) (string, er
 	if len(out.Choices) == 0 {
 		return "", fmt.Errorf("openai: empty response")
 	}
-	return strings.TrimSpace(out.Choices[0].Message.Content), nil
+	choice := out.Choices[0]
+	text := strings.TrimSpace(choice.Message.Content)
+
+	// A truncated answer is worse than none: the caller would save half a
+	// translation as the translation. Fail instead, and say what ran out —
+	// a reasoning model can spend the whole allowance before writing a word.
+	if choice.FinishReason == "length" {
+		if r := out.Usage.Details.ReasoningTokens; r > 0 {
+			return "", fmt.Errorf("openai: hit the %d-token cap with %d of them spent on reasoning", maxTokens, r)
+		}
+		return "", fmt.Errorf("openai: hit the %d-token cap before finishing", maxTokens)
+	}
+	if text == "" {
+		return "", fmt.Errorf("openai: the reply had no content")
+	}
+	return text, nil
 }

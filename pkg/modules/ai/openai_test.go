@@ -93,3 +93,101 @@ func TestFirstNonEmptyAndEnvKey(t *testing.T) {
 		t.Errorf("envKey missing = %q, want empty", got)
 	}
 }
+
+// Kimi's k2.x models deliberate by default, and the reasoning is billed as
+// output and counted against max_tokens. A one-sentence translation measured
+// 3,459 reasoning tokens against 35 of answer — a hundredfold on the bill, and,
+// because a title is translated with a 512-token cap, an empty title saved as
+// the translation.
+func TestKimiThinkingIsSwitchedOffWhereItCanBe(t *testing.T) {
+	cases := []struct {
+		model string
+		want  string // "" = the parameter must not be sent at all
+	}{
+		{"kimi-k2.6", "disabled"},
+		{"kimi-k2.5", "disabled"},
+		{"KIMI-K2.6", "disabled"}, // the operator types it by hand
+		{"  kimi-k2.6  ", "disabled"},
+		// Always thinks, and the documentation says not to send the parameter.
+		{"kimi-k3", ""},
+		// Errors when asked to stop thinking.
+		{"kimi-k2.7-code", ""},
+		{"kimi-k2.7-code-highspeed", ""},
+		// Not Kimi at all: the field is not part of the OpenAI API.
+		{"gpt-5.6-luna", ""},
+		{"claude-haiku-4-5", ""},
+	}
+	for _, c := range cases {
+		t.Run(c.model, func(t *testing.T) {
+			var sent openaiRequest
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				body, _ := io.ReadAll(r.Body)
+				_ = json.Unmarshal(body, &sent)
+				// Also assert the raw shape: an empty struct would serialise as
+				// {"type":""} and be read as a request to think.
+				if c.want == "" && strings.Contains(string(body), `"thinking"`) {
+					t.Errorf("thinking was sent to %s: %s", c.model, body)
+				}
+				_, _ = w.Write([]byte(`{"choices":[{"message":{"content":"ok"},"finish_reason":"stop"}]}`))
+			}))
+			defer srv.Close()
+
+			c2 := newOpenAICompleter("sk-test", srv.URL)
+			if _, err := c2.Complete(context.Background(), Request{Model: c.model, User: "hi"}); err != nil {
+				t.Fatalf("Complete: %v", err)
+			}
+			got := ""
+			if sent.Thinking != nil {
+				got = sent.Thinking.Type
+			}
+			if got != c.want {
+				t.Errorf("thinking = %q, want %q", got, c.want)
+			}
+		})
+	}
+}
+
+// Half a translation saved as the translation is worse than a failed job: the
+// job retries, the bad text does not announce itself.
+func TestTruncatedRepliesFailInsteadOfBeingSaved(t *testing.T) {
+	cases := []struct {
+		name, body, wantErr string
+	}{
+		{
+			"nothing left after reasoning",
+			`{"choices":[{"message":{"content":""},"finish_reason":"length"}],
+			  "usage":{"completion_tokens":512,"completion_tokens_details":{"reasoning_tokens":512}}}`,
+			"spent on reasoning",
+		},
+		{
+			"cut off mid-answer",
+			`{"choices":[{"message":{"content":"Тақыр"},"finish_reason":"length"}]}`,
+			"before finishing",
+		},
+		{
+			"answered nothing at all",
+			`{"choices":[{"message":{"content":"   "},"finish_reason":"stop"}]}`,
+			"no content",
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+				_, _ = w.Write([]byte(c.body))
+			}))
+			defer srv.Close()
+
+			out, err := newOpenAICompleter("sk-test", srv.URL).
+				Complete(context.Background(), Request{Model: "kimi-k2.6", User: "hi", MaxTokens: 512})
+			if err == nil {
+				t.Fatalf("a truncated reply was returned as an answer: %q", out)
+			}
+			if !strings.Contains(err.Error(), c.wantErr) {
+				t.Errorf("error %q does not mention %q", err, c.wantErr)
+			}
+			if out != "" {
+				t.Errorf("partial text was handed back anyway: %q", out)
+			}
+		})
+	}
+}
