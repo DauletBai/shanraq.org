@@ -1712,11 +1712,22 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .related__h a:hover { color: var(--gold); }
 .related__excerpt { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
 
-/* Счётчик в подвале: он должен быть виден — этого требует смысл независимого
-   замера, — но не спорить с копирайтом рядом. Приглушён, проявляется наведением. */
-.foot-counter { margin: 10px 0 0; line-height: 0; }
-.foot-counter img { opacity: 0.55; transition: opacity 0.15s ease; border-radius: 3px; }
-.foot-counter a:hover img, .foot-counter a:focus-visible img { opacity: 1; }
+/* Счётчик в подвале. Он должен быть виден — в этом весь смысл независимого
+   замера, — но не выпирать белой плашкой из тёмного подвала.
+
+   ZERO.kz отдаёт кнопку только светлой: одиннадцать вариантов параметра t
+   отличаются цветом кольца, а фон у всех белый. Тёмной у них нет. Поэтому
+   перекрашиваем на своей стороне: invert делает плашку тёмной, а цифры
+   светлыми, и следом hue-rotate возвращает красное кольцо, которое инверсия
+   увела в бирюзу. Картинка остаётся их, ссылка и подсчёт — тоже. */
+.foot-counter { margin: 12px 0 0; line-height: 0; text-align: center; }
+.foot-counter img {
+  filter: invert(1) hue-rotate(180deg);
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+  border-radius: 3px;
+}
+.foot-counter a:hover img, .foot-counter a:focus-visible img { opacity: 0.9; }
 
 .comments { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }
 .comments__title { font-size: var(--step-2); margin-bottom: 16px; }
