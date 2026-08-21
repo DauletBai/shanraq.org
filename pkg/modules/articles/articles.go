@@ -99,6 +99,13 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 		rt.Logger.Warn("load service flags", zap.Error(err))
 	}
 	m.geo = NewGeoStore(rt.DB)
+	// Every place needs an address before any of them can have a page. Runs
+	// once: after the first boot there is nothing left without a slug.
+	if n, err := m.geo.EnsureSlugs(ctx); err != nil {
+		rt.Logger.Error("geo slugs", zap.Error(err))
+	} else if n > 0 {
+		rt.Logger.Info("named places for their pages", zap.Int("slugs", n))
+	}
 	m.comments = NewCommentStore(rt.DB)
 	m.favs = NewFavoriteStore(rt.DB)
 	m.admin = NewAdminStore(rt.DB)
@@ -200,6 +207,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Head("/", m.handleHome)
 		r.Get("/read", m.handleReadRedirect)
 		r.Get("/read/{slug}", m.handleArticle)
+		r.Get("/place/{slug}", m.handlePlace)
 		// The reader's half of moderation. A POST because it changes something,
 		// and same-origin-checked with the rest of the browser surface.
 		r.Post("/read/{slug}/report", m.handleArticleReport)

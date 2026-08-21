@@ -1719,6 +1719,17 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 @media (max-width: 640px) { .author-stats { grid-template-columns: repeat(2, 1fr); } }
 
 /* ---- Comments ---- */
+/* Страница места: путь наверх, подзаголовок и перечень мест внутри. */
+.place-up { margin: 0 0 6px; font-size: 0.86rem; color: var(--muted); }
+.place-up a { color: var(--muted); text-decoration: none; }
+.place-up a:hover { color: var(--gold); }
+.place-lead { color: var(--ink-soft); margin: -6px 0 20px; }
+.place-kids { margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); }
+.place-kids__title { font-size: var(--step-1); margin-bottom: 10px; }
+.place-kids__list { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; }
+.place-kids__list a { color: var(--ink-soft); text-decoration: none; font-size: 0.92rem; }
+.place-kids__list a:hover { color: var(--gold); }
+
 /* Куда идти дальше. Ставится перед комментариями: сначала читателю предлагают
    продолжить чтение, и только потом — высказаться. */
 .related { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }

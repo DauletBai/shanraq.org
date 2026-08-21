@@ -20,7 +20,10 @@ func NewGeoStore(db *pgxpool.Pool) *GeoStore { return &GeoStore{db: db} }
 
 // GeoNode is one location in the tree, localized to a requested language.
 type GeoNode struct {
-	ID          string `json:"id"`
+	ID string `json:"id"`
+	// Slug is the place's address: /place/kachar. Kept beside the id because
+	// every link to a place is built from it and a uuid in a URL is a cipher.
+	Slug        string `json:"slug"`
 	Name        string `json:"name"`
 	Kind        string `json:"kind"`
 	Level       int    `json:"level"`
@@ -47,7 +50,7 @@ func geoNameCol(lang string) string {
 func (s *GeoStore) query(ctx context.Context, lang, where string, args ...any) ([]GeoNode, error) {
 	name := fmt.Sprintf("COALESCE(NULLIF(c.%s,''), c.name_ru)", geoNameCol(lang))
 	q := fmt.Sprintf(`
-		SELECT c.id, %s AS name, c.kind, c.level, c.country,
+		SELECT c.id, COALESCE(c.slug, '') AS slug, %s AS name, c.kind, c.level, c.country,
 		       EXISTS(SELECT 1 FROM geo_nodes g WHERE g.parent_id = c.id) AS has_children,
 		       c.lat, c.lng
 		FROM geo_nodes c
@@ -64,7 +67,7 @@ func (s *GeoStore) query(ctx context.Context, lang, where string, args ...any) (
 	for rows.Next() {
 		var n GeoNode
 		var id uuid.UUID
-		if err := rows.Scan(&id, &n.Name, &n.Kind, &n.Level, &n.Country, &n.HasChildren, &n.Lat, &n.Lng); err != nil {
+		if err := rows.Scan(&id, &n.Slug, &n.Name, &n.Kind, &n.Level, &n.Country, &n.HasChildren, &n.Lat, &n.Lng); err != nil {
 			return nil, err
 		}
 		n.ID = id.String()
@@ -171,4 +174,86 @@ func (s *GeoStore) PlaceLabel(ctx context.Context, node uuid.UUID, lang string) 
 		return self + ", " + chain[len(chain)-2].Name, nil
 	}
 	return self, nil
+}
+
+// EnsureSlugs gives every place in the reference a URL-safe name, once.
+//
+// The reference ships with a "code" column, but it is not one thing: Kachar
+// carries kz-kostanay-kachar while Kostanay oblast carries g65, and /place/g65
+// is a cipher rather than an address. Slugs are transliterated from the Russian
+// name instead — which cannot be done in SQL, because "ж" becomes "zh" and
+// translate() only substitutes one character for one character.
+//
+// Names collide: Almaty is a city and two city districts. A collision takes the
+// parent's name in front of it, and if that still collides, a number. Runs at
+// boot, does nothing when every node already has one.
+func (s *GeoStore) EnsureSlugs(ctx context.Context) (int, error) {
+	rows, err := s.db.Query(ctx, `
+		SELECT c.id, c.name_ru, COALESCE(p.name_ru, '')
+		FROM geo_nodes c
+		LEFT JOIN geo_nodes p ON p.id = c.parent_id
+		WHERE c.slug IS NULL OR c.slug = ''
+		ORDER BY c.level, c.sort`)
+	if err != nil {
+		return 0, fmt.Errorf("geo slugs: %w", err)
+	}
+	type pending struct {
+		id           uuid.UUID
+		name, parent string
+	}
+	var todo []pending
+	for rows.Next() {
+		var p pending
+		if err := rows.Scan(&p.id, &p.name, &p.parent); err != nil {
+			rows.Close()
+			return 0, err
+		}
+		todo = append(todo, p)
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return 0, err
+	}
+
+	taken := map[string]bool{}
+	used, err := s.db.Query(ctx, `SELECT slug FROM geo_nodes WHERE slug IS NOT NULL AND slug <> ''`)
+	if err != nil {
+		return 0, fmt.Errorf("geo slugs in use: %w", err)
+	}
+	for used.Next() {
+		var sl string
+		if err := used.Scan(&sl); err == nil {
+			taken[sl] = true
+		}
+	}
+	used.Close()
+
+	n := 0
+	for _, p := range todo {
+		slug := Slugify(p.name)
+		if taken[slug] && p.parent != "" {
+			slug = Slugify(p.parent + " " + p.name)
+		}
+		for i := 2; taken[slug]; i++ {
+			slug = fmt.Sprintf("%s-%d", Slugify(p.name), i)
+		}
+		if _, err := s.db.Exec(ctx, `UPDATE geo_nodes SET slug = $2 WHERE id = $1`, p.id, slug); err != nil {
+			return n, fmt.Errorf("write geo slug: %w", err)
+		}
+		taken[slug] = true
+		n++
+	}
+	return n, nil
+}
+
+// BySlug resolves a place page's address back to the place.
+func (s *GeoStore) BySlug(ctx context.Context, slug, lang string) (*GeoNode, error) {
+	nodes, err := s.query(ctx, lang, "c.slug = $1", slug)
+	if err != nil {
+		return nil, err
+	}
+	if len(nodes) == 0 {
+		return nil, nil
+	}
+	return &nodes[0], nil
 }

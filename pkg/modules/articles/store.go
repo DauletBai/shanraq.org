@@ -532,3 +532,97 @@ func (s *Store) CategoryFreshness(ctx context.Context) (map[string]time.Time, er
 	}
 	return out, rows.Err()
 }
+
+// ListForPlace returns published articles tied to a place or to anywhere
+// inside it, newest first.
+//
+// Downwards, not upwards: the page for Kostanay oblast carries what was
+// published for Kachar and for Rudny, because a section for the oblast is
+// about the oblast and everything in it. The reverse would be wrong — a page
+// for Kachar filled with oblast-wide notices would bury the two that are
+// actually about Kachar.
+//
+// Non-indexable articles are excluded for the same reason they are excluded
+// everywhere else: a place page is a page we want found, and it should carry
+// what a person came for.
+func (s *Store) ListForPlace(ctx context.Context, place uuid.UUID, limit, offset int) ([]*Article, error) {
+	if limit <= 0 || limit > 60 {
+		limit = 24
+	}
+	rows, err := s.db.Query(ctx, `
+		WITH RECURSIVE sub AS (
+			SELECT id FROM geo_nodes WHERE id = $1
+			UNION ALL
+			SELECT g.id FROM geo_nodes g JOIN sub ON g.parent_id = sub.id
+		)
+		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug,
+		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, a.views_count,
+		       a.published_at, a.created_at, a.updated_at, a.indexable
+		FROM articles a
+		JOIN auth_users u ON u.id = a.author_id
+		WHERE a.status = 'published' AND a.indexable AND a.geo_node_id IN (SELECT id FROM sub)
+		ORDER BY a.published_at DESC NULLS LAST, a.id DESC
+		LIMIT $2 OFFSET $3
+	`, place, limit, offset)
+	if err != nil {
+		return nil, fmt.Errorf("list for place: %w", err)
+	}
+	arts, err := scanArticles(rows)
+	if err != nil {
+		return nil, err
+	}
+	return s.attachTranslations(ctx, arts)
+}
+
+// PlacesWithArticles lists the places that actually have something published,
+// so the sitemap and the place index carry pages with content rather than
+// eight hundred empty ones.
+func (s *Store) PlacesWithArticles(ctx context.Context) ([]string, error) {
+	rows, err := s.db.Query(ctx, `
+		WITH RECURSIVE up AS (
+			SELECT DISTINCT g.id, g.parent_id, g.slug
+			FROM articles a JOIN geo_nodes g ON g.id = a.geo_node_id
+			WHERE a.status = 'published' AND a.indexable
+			UNION
+			SELECT p.id, p.parent_id, p.slug FROM geo_nodes p JOIN up ON p.id = up.parent_id
+		)
+		SELECT slug FROM up WHERE slug IS NOT NULL AND slug <> '' ORDER BY slug`)
+	if err != nil {
+		return nil, fmt.Errorf("places with articles: %w", err)
+	}
+	defer rows.Close()
+	var out []string
+	for rows.Next() {
+		var s string
+		if err := rows.Scan(&s); err != nil {
+			return nil, err
+		}
+		out = append(out, s)
+	}
+	return out, rows.Err()
+}
+
+// SetArticlePlace ties an article to a place, or unties it when node is nil.
+// Scoped to the author in the statement, so another account's id changes
+// nothing.
+func (s *Store) SetArticlePlace(ctx context.Context, id, author uuid.UUID, node *uuid.UUID) error {
+	_, err := s.db.Exec(ctx,
+		`UPDATE articles SET geo_node_id = $3, updated_at = NOW() WHERE id = $1 AND author_id = $2`,
+		id, author, node)
+	if err != nil {
+		return fmt.Errorf("set article place: %w", err)
+	}
+	return nil
+}
+
+// ArticlePlace returns the place an article was published for, if any.
+func (s *Store) ArticlePlace(ctx context.Context, id uuid.UUID) (*uuid.UUID, error) {
+	var node *uuid.UUID
+	if err := s.db.QueryRow(ctx, `SELECT geo_node_id FROM articles WHERE id = $1`, id).Scan(&node); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("article place: %w", err)
+	}
+	return node, nil
+}

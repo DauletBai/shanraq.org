@@ -1343,6 +1343,9 @@ type EditorPage struct {
 	AIEnabled    bool
 	Notice       string
 
+	// PlaceID is the place this article was published for, empty for "everyone".
+	PlaceID string
+
 	// CanTranslate is whether the site offers to translate this article. It is
 	// separate from AIEnabled because the assistant stayed on for moderation
 	// while automatic translation was switched off: authors have models of
@@ -1547,6 +1550,9 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 	page.Fields = fields
 	page.AIEnabled = m.ai.Enabled()
 	page.CanTranslate = m.ai.AutoTranslateEnabled()
+	if node, err := m.store.ArticlePlace(r.Context(), a.ID); err == nil && node != nil {
+		page.PlaceID = node.String()
+	}
 	page.Notice = aiNotice(lang, r.URL.Query().Get("ai"))
 	m.render(w, "studio_editor", page)
 }
@@ -1635,6 +1641,21 @@ func parseEditorForm(r *http.Request) (originalLang, category, subcategory, cove
 	return originalLang, category, subcategory, coverURL, trs
 }
 
+// formPlace reads the place chosen in the editor. An unparseable value is
+// treated as "no place" rather than as an error: a bad hidden field must not
+// cost an author their text.
+func formPlace(r *http.Request) *uuid.UUID {
+	raw := strings.TrimSpace(r.FormValue("geo_node_id"))
+	if raw == "" {
+		return nil
+	}
+	id, err := uuid.Parse(raw)
+	if err != nil {
+		return nil
+	}
+	return &id
+}
+
 func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 	authorID, ok := m.authorID(r)
 	if !ok {
@@ -1675,6 +1696,9 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, T(lang, "editor.err_save"))
 		return
 	}
+	if err := m.store.SetArticlePlace(r.Context(), id, authorID, formPlace(r)); err != nil {
+		m.rt.Logger.Warn("set place on create", zap.Error(err))
+	}
 	http.Redirect(w, r, "/studio/a/"+id.String(), http.StatusSeeOther)
 }
 
@@ -1695,6 +1719,9 @@ func (m *Module) handleUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 	originalLang, category, subcategory, coverURL, trs := parseEditorForm(r)
 
+	if err := m.store.SetArticlePlace(r.Context(), id, authorID, formPlace(r)); err != nil {
+		m.rt.Logger.Warn("set place on update", zap.Error(err))
+	}
 	if err := m.store.Update(r.Context(), id, authorID, originalLang, category, subcategory, coverURL, trs); err != nil {
 		if errors.Is(err, ErrNotFound) {
 			http.NotFound(w, r)

@@ -1,0 +1,72 @@
+{{ define "place" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div class="layout__main">
+
+      {{/* Путь наверх. Читатель, попавший сюда из поиска по «Качар», должен за
+           один клик увидеть, что есть и область — и наоборот. */}}
+      {{ if .Ancestors }}
+      <nav class="place-up" aria-label="{{ t .Lang "place.up" }}">
+        {{ range .Ancestors }}<a href="/place/{{ .Slug }}?lang={{ $.Lang }}" data-place-crumb>{{ .Name }}</a> · {{ end }}
+      </nav>
+      {{ end }}
+
+      <div class="section-head">
+        <h1>{{ .PlaceName }}</h1>
+      </div>
+      <p class="place-lead">{{ printf (t .Lang "place.lead") .PlaceName }}</p>
+
+      {{ if .Posts }}
+      <div class="posts">
+        {{ range .Posts }}
+        <article class="post">
+          <a class="post__media" href="/read/{{ .Slug }}?lang={{ $.Lang }}" aria-label="{{ .Title }}" tabindex="-1">
+            {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="" loading="lazy" decoding="async">
+            {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt="" loading="lazy" decoding="async"></span>{{ end }}
+          </a>
+          <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ catIcon .Category }}{{ t $.Lang (printf "cat.%s" .Category) }}</a>
+          <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
+          {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
+          {{ template "post_meta" (dict "P" . "Lang" $.Lang) }}
+        </article>
+        {{ end }}
+      </div>
+      {{ else }}
+      {{/* Пусто — обычное состояние места, о котором ещё никто не писал. Это не
+           ошибка и не повод извиняться: страница существует, чтобы было куда
+           опубликовать первым. */}}
+      <div class="empty">
+        <p style="font-size:1.2rem;margin-bottom:18px">{{ printf (t .Lang "place.empty") .PlaceName }}</p>
+        <a class="btn btn--primary" href="/studio/new">{{ t .Lang "place.empty_cta" }}</a>
+      </div>
+      {{ end }}
+
+      {{ if or .PrevURL .NextURL }}
+      <nav class="pager" aria-label="{{ t .Lang "nav.pages" }}">
+        {{ if .PrevURL }}<a class="btn btn--ghost" href="{{ .PrevURL }}" rel="prev">← {{ t .Lang "nav.newer" }}</a>{{ else }}<span></span>{{ end }}
+        <span class="pager__at">{{ printf (t .Lang "nav.page_n") .Page }}</span>
+        {{ if .NextURL }}<a class="btn btn--ghost" href="{{ .NextURL }}" rel="next">{{ t .Lang "nav.older" }} →</a>{{ else }}<span></span>{{ end }}
+      </nav>
+      {{ end }}
+
+      {{/* Места внутри этого. Это и навигация для читателя, и то, по чему
+           поисковик доходит до посёлка, на который иначе не ведёт ни одна
+           ссылка. */}}
+      {{ if .Children }}
+      <section class="place-kids" aria-labelledby="place-kids-h">
+        <h2 class="place-kids__title" id="place-kids-h">{{ t .Lang "place.inside" }}</h2>
+        <p class="place-kids__list">
+          {{ range .Children }}<a href="/place/{{ .Slug }}?lang={{ $.Lang }}" data-place-child>{{ .Name }}</a>{{ end }}
+        </p>
+      </section>
+      {{ end }}
+
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

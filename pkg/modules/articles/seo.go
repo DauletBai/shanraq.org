@@ -167,6 +167,18 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 		for _, c := range Categories {
 			emit("/?cat="+c, fresh[c])
 		}
+		// Pages of places that actually have something published. Eight hundred
+		// empty ones would be eight hundred thin pages offered to a crawler
+		// that visits us twenty times a day; the ones with articles are worth
+		// its time. Ancestors are included, so the oblast page is offered even
+		// when only its village has been written about.
+		if places, perr := m.store.PlacesWithArticles(r.Context()); perr != nil {
+			m.rt.Logger.Warn("sitemap places", zap.Error(perr))
+		} else {
+			for _, slug := range places {
+				emit("/place/"+slug, time.Time{})
+			}
+		}
 		if arts, err := m.store.SitemapArticles(r.Context()); err != nil {
 			m.rt.Logger.Error("sitemap articles", zap.Error(err))
 		} else {
