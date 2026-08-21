@@ -604,10 +604,28 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 }
 .post__title a { color: var(--ink); }
 .post__title a:hover { color: var(--gold-strong); text-decoration: none; }
+/* Описание в карточке обрезается по строкам, а не по доверию к автору.
+   Раньше выжимка из текста резалась до 170 знаков, а написанное автором
+   описание вставлялось целиком — и разброс выходил от 174 до 460 знаков.
+   Мета карточки прижата книзу (margin-top: auto), поэтому короткое описание
+   оставляло над ней дыру, а длинное растягивало карточку. Четыре строки —
+   ровно столько, сколько занимает выжимка на 170 знаков, то есть обе ветки
+   теперь дают одну высоту.
+
+   Обрезается только показ. Полное описание остаётся в мета-теге страницы и
+   лидом на самой статье, где место есть. */
 .post__excerpt {
   color: var(--ink-soft);
   padding: 0 10px;
   margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* Заголовок — три строки. Обрезать его хуже, чем описание, поэтому запас
+   больше: под лимит попадают только самые длинные, а карточки перестают
+   разъезжаться по высоте текста. */
+.post__title {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
 .post__meta {
   margin-top: auto;
