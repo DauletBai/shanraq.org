@@ -185,3 +185,32 @@ func TestSitemapCarriesPlacesThatHaveArticles(t *testing.T) {
 		t.Error("области над этим местом нет в списке для sitemap")
 	}
 }
+
+// Путь наверх должен вести наверх. Ancestry писалась для объявлений, где нужны
+// только названия, и вернувшись на страницу места без адреса рисовала
+// «Костанайская область» ссылкой на /place/ — то есть в никуда.
+func TestTheWayUpActuallyLeadsSomewhere(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	kacharID, _ := place(t, app, "Качар")
+	_, oblastSlug := place(t, app, "Костанайская область")
+
+	chain, err := NewGeoStore(app.pool).Ancestry(context.Background(), kacharID, "ru")
+	if err != nil {
+		t.Fatalf("Ancestry: %v", err)
+	}
+	for _, n := range chain {
+		if n.Slug == "" {
+			t.Errorf("у предка %q нет адреса", n.Name)
+		}
+	}
+
+	body := app.do(http.MethodGet, "/place/kachar", nil).Body.String()
+	if strings.Contains(body, `href="/place/?`) {
+		t.Error("хлебная крошка ведёт в никуда")
+	}
+	if !strings.Contains(body, "/place/"+oblastSlug) {
+		t.Error("со страницы посёлка нельзя подняться в область")
+	}
+}

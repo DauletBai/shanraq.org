@@ -87,17 +87,20 @@ func (s *GeoStore) Children(ctx context.Context, parent uuid.UUID, lang string) 
 }
 
 // Ancestry returns the path from the root down to node (inclusive), localized.
-// Used to fill a listing's denormalized country/region/city/village fields.
+// Used to fill a listing's denormalized country/region/city/village fields, and
+// to draw the way back up from a place page — which is why the slug comes along:
+// a breadcrumb without it renders a name that links to /place/.
 func (s *GeoStore) Ancestry(ctx context.Context, node uuid.UUID, lang string) ([]GeoNode, error) {
 	name := fmt.Sprintf("COALESCE(NULLIF(n.%s,''), n.name_ru)", geoNameCol(lang))
 	q := fmt.Sprintf(`
 		WITH RECURSIVE up AS (
-			SELECT id, parent_id, level, kind, country, %s AS name FROM geo_nodes n WHERE id = $1
+			SELECT id, parent_id, level, kind, country, COALESCE(slug,'') AS slug, %s AS name
+			  FROM geo_nodes n WHERE id = $1
 			UNION ALL
-			SELECT n.id, n.parent_id, n.level, n.kind, n.country, %s FROM geo_nodes n
-			JOIN up ON n.id = up.parent_id
+			SELECT n.id, n.parent_id, n.level, n.kind, n.country, COALESCE(n.slug,''), %s
+			  FROM geo_nodes n JOIN up ON n.id = up.parent_id
 		)
-		SELECT id, name, kind, level, country FROM up ORDER BY level`, name, name)
+		SELECT id, slug, name, kind, level, country FROM up ORDER BY level`, name, name)
 
 	rows, err := s.db.Query(ctx, q, node)
 	if err != nil {
@@ -108,7 +111,7 @@ func (s *GeoStore) Ancestry(ctx context.Context, node uuid.UUID, lang string) ([
 	for rows.Next() {
 		var n GeoNode
 		var id uuid.UUID
-		if err := rows.Scan(&id, &n.Name, &n.Kind, &n.Level, &n.Country); err != nil {
+		if err := rows.Scan(&id, &n.Slug, &n.Name, &n.Kind, &n.Level, &n.Country); err != nil {
 			return nil, err
 		}
 		n.ID = id.String()
