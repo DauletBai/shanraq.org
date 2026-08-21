@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/media"
@@ -25,6 +26,12 @@ type ProfilePage struct {
 	PhoneVerified bool
 	EmailVerified bool
 	Notice        string
+
+	// PlaceID and PlaceLabel are where the reader says they live. Empty means
+	// they never said, and then everything is shown to them — which is what
+	// the site did before places existed.
+	PlaceID    string
+	PlaceLabel string
 }
 
 // handleProfile renders the user's profile & settings page.
@@ -45,6 +52,14 @@ func (m *Module) handleProfile(w http.ResponseWriter, r *http.Request) {
 	if claims, ok := auth.ClaimsFromContext(r.Context()); ok {
 		page.Email = claims.Email
 		page.CanPublish = canAuthorAsStaff(claims)
+	}
+	if node, err := m.geo.UserPlace(r.Context(), authorID); err != nil {
+		m.rt.Logger.Warn("read user place", zap.Error(err))
+	} else if node != nil {
+		page.PlaceID = node.String()
+		if label, lerr := m.geo.PlaceLabel(r.Context(), *node, lang); lerr == nil {
+			page.PlaceLabel = label
+		}
 	}
 	m.render(w, "studio_profile", page)
 }
@@ -173,4 +188,38 @@ func noticeText(lang, code string) string {
 		return "" // unknown code
 	}
 	return msg
+}
+
+// handleProfilePlace saves where the reader says they live, or clears it when
+// they empty the field.
+//
+// A place chosen at registration and then unchangeable would be a trap: people
+// move, and somebody who picked the wrong line in a hurry must be able to fix
+// it without writing to support.
+func (m *Module) handleProfilePlace(w http.ResponseWriter, r *http.Request) {
+	authorID, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "bad form", http.StatusBadRequest)
+		return
+	}
+	raw := strings.TrimSpace(r.FormValue("geo_node_id"))
+	var node *uuid.UUID
+	if raw != "" {
+		id, err := uuid.Parse(raw)
+		if err != nil {
+			http.Redirect(w, r, "/studio/profile?ok=place_bad", http.StatusSeeOther)
+			return
+		}
+		node = &id
+	}
+	if err := m.geo.SetUserPlace(r.Context(), authorID, node); err != nil {
+		m.rt.Logger.Error("save user place", zap.Error(err))
+		http.Redirect(w, r, "/studio/profile?ok=place_bad", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/studio/profile?ok=place_saved", http.StatusSeeOther)
 }

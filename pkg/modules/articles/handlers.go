@@ -932,6 +932,11 @@ type FormPage struct {
 	Notice string
 	Ref    string
 	Next   string // where to go after a successful login/registration
+
+	// PlaceID keeps the chosen location when the form comes back with an
+	// error, so a rejected password does not also cost the reader their
+	// place selection.
+	PlaceID string
 }
 
 // safeNext returns a post-login destination taken from the request, or "" if it
@@ -1055,10 +1060,12 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	ref := strings.TrimSpace(r.FormValue("ref"))
 
 	// One re-render path: whatever fails, the user gets their input back.
+	place := strings.TrimSpace(r.FormValue("geo_node_id"))
 	regFail := func(msg string) {
 		m.render(w, "form", FormPage{
 			Base: m.base(r, T(lang, "form.register_title"), lang), Mode: "register",
 			Email: email, First: first, Last: last, Middle: middle, Ref: ref, Error: msg,
+			PlaceID: place,
 		})
 	}
 	switch m.flags.Flag(SvcRegistration).Status {
@@ -1124,6 +1131,16 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, token, err := m.auth.RegisterPassword(r.Context(), email, password, first, last, middle)
+	if err == nil && place != "" {
+		// Best-effort: a place that will not parse or will not save must never
+		// cost somebody the account they have just created. They can set it
+		// again from the profile, and until they do they simply see everything.
+		if id, perr := uuid.Parse(place); perr == nil {
+			if serr := m.geo.SetUserPlace(r.Context(), user.ID, &id); serr != nil {
+				m.rt.Logger.Warn("save place on register", zap.Error(serr))
+			}
+		}
+	}
 	if err != nil {
 		msg := T(lang, "form.err_generic")
 		if errors.Is(err, auth.ErrEmailExists) {

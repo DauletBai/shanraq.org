@@ -2,9 +2,11 @@ package articles
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -110,4 +112,63 @@ func (s *GeoStore) Ancestry(ctx context.Context, node uuid.UUID, lang string) ([
 		out = append(out, n)
 	}
 	return out, rows.Err()
+}
+
+// SetUserPlace remembers where a reader says they live, or forgets it when the
+// node is nil.
+//
+// One node, not a set of columns: the ancestry of that node gives the district,
+// the region and the country, and four separate fields would eventually
+// disagree with one another — a city from one region stored beside another.
+func (s *GeoStore) SetUserPlace(ctx context.Context, userID uuid.UUID, node *uuid.UUID) error {
+	if node == nil {
+		if _, err := s.db.Exec(ctx, `DELETE FROM user_places WHERE user_id = $1`, userID); err != nil {
+			return fmt.Errorf("clear user place: %w", err)
+		}
+		return nil
+	}
+	_, err := s.db.Exec(ctx, `
+		INSERT INTO user_places (user_id, geo_node_id)
+		VALUES ($1, $2)
+		ON CONFLICT (user_id) DO UPDATE SET geo_node_id = EXCLUDED.geo_node_id, updated_at = NOW()
+	`, userID, *node)
+	if err != nil {
+		return fmt.Errorf("set user place: %w", err)
+	}
+	return nil
+}
+
+// UserPlace returns where a reader said they live, or nil if they never said.
+// A reader without a place is not a problem to be fixed: it means everything is
+// shown to them, which is what the site did before places existed.
+func (s *GeoStore) UserPlace(ctx context.Context, userID uuid.UUID) (*uuid.UUID, error) {
+	var id uuid.UUID
+	err := s.db.QueryRow(ctx, `SELECT geo_node_id FROM user_places WHERE user_id = $1`, userID).Scan(&id)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("user place: %w", err)
+	}
+	return &id, nil
+}
+
+// PlaceLabel renders a reader's place the way it should be shown back to them:
+// the place itself, then the region it sits in, so "Качар" reads as "Качар,
+// Костанайская область" and cannot be confused with a namesake.
+func (s *GeoStore) PlaceLabel(ctx context.Context, node uuid.UUID, lang string) (string, error) {
+	chain, err := s.Ancestry(ctx, node, lang)
+	if err != nil {
+		return "", err
+	}
+	if len(chain) == 0 {
+		return "", nil
+	}
+	// Ancestry runs country → … → node; the label reads the other way, and the
+	// country is dropped: a reader in Kazakhstan does not need telling.
+	self := chain[len(chain)-1].Name
+	if len(chain) >= 3 {
+		return self + ", " + chain[len(chain)-2].Name, nil
+	}
+	return self, nil
 }

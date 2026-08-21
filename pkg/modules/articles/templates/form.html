@@ -35,6 +35,24 @@
         <input class="input" id="middle_name" name="middle_name" value="{{ .Middle }}" maxlength="40" autocomplete="additional-name">
       </div>
       {{ end }}
+      {{ if eq .Mode "register" }}
+      {{/* Где живёт читатель. Спрашиваем здесь, потому что позже спросить уже
+           негде: человек приходит читать, а не заполнять профиль.
+
+           Не обязательное поле. Регистрация — узкое место, и требование
+           выбрать посёлок до создания аккаунта стоит дороже, чем даёт: кто не
+           выберет, будет видеть всё, ровно как раньше. Поменять можно в
+           профиле в один клик.
+
+           Виджет тот же, что в форме подачи объявления: он сам ходит за
+           деревом в /api/geo/*, а сюда кладёт только выбранный узел. */}}
+      <div class="field">
+        <label>{{ t .Lang "form.place" }} {{ template "fhelp" (t .Lang "form.place_hint") }}</label>
+        <div class="geo-cascade" data-geo data-lang="{{ .Lang }}" data-geo-selected="{{ .PlaceID }}"></div>
+        <input type="hidden" name="geo_node_id" value="{{ .PlaceID }}">
+        <p class="hint">{{ t .Lang "form.place_note" }}</p>
+      </div>
+      {{ end }}
       <div class="field">
         <label for="email">{{ t .Lang "form.email" }}{{ if eq .Mode "register" }} {{ template "fhelp" (t .Lang "form.email_hint") }}{{ end }}</label>
         <input class="input" type="email" id="email" name="email" value="{{ .Email }}" autocomplete="email" required{{ if ne .Mode "register" }} autofocus{{ end }}>
