@@ -1716,18 +1716,27 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    замера, — но не выпирать белой плашкой из тёмного подвала.
 
    ZERO.kz отдаёт кнопку только светлой: одиннадцать вариантов параметра t
-   отличаются цветом кольца, а фон у всех белый. Тёмной у них нет. Поэтому
-   перекрашиваем на своей стороне: invert делает плашку тёмной, а цифры
-   светлыми, и следом hue-rotate возвращает красное кольцо, которое инверсия
-   увела в бирюзу. Картинка остаётся их, ссылка и подсчёт — тоже. */
+   отличаются цветом кольца, а фон у всех белый. Тёмной у них нет.
+
+   Поэтому три шага. invert делает плашку чёрной, а цифры белыми; hue-rotate
+   возвращает красное кольцо, которое инверсия увела в бирюзу; а screen гасит
+   чёрное о фон — при подложке #444 чёрный пиксель даёт ровно #444, то есть
+   исчезает, а белый остаётся белым. С прозрачностью 0.6 цифры получаются
+   (180,180,180) — это и есть rgba(255,255,255,0.6) поверх #444, цвет
+   остального текста подвала. Картинка остаётся их, ссылка и подсчёт — тоже.
+
+   Центрируется полями, а не выравниванием текста: строка 163 задаёт всем
+   картинкам display:block, а блочную картинку text-align не двигает. */
 .foot-counter { margin: 12px 0 0; line-height: 0; text-align: center; }
+.foot-counter a { display: inline-block; }
 .foot-counter img {
+  margin: 0 auto;
   filter: invert(1) hue-rotate(180deg);
-  opacity: 0.5;
+  mix-blend-mode: screen;
+  opacity: 0.6;
   transition: opacity 0.15s ease;
-  border-radius: 3px;
 }
-.foot-counter a:hover img, .foot-counter a:focus-visible img { opacity: 0.9; }
+.foot-counter a:hover img, .foot-counter a:focus-visible img { opacity: 1; }
 
 .comments { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }
 .comments__title { font-size: var(--step-2); margin-bottom: 16px; }
