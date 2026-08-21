@@ -11,7 +11,17 @@
         <div class="article__head">
           {{ if .CoverURL }}<div class="article__media"><img src="{{ .CoverURL }}" alt="{{ .Title }}" decoding="async"></div>{{ end }}
           <div class="byline">
+            {{/* Подпись организации, если аккаунт её подтвердил. Человек
+                 остаётся ниже: за текстом должен стоять кто-то конкретный,
+                 иначе спрашивать будет не с кого. Непроверенная заявка сюда
+                 не попадает — OrgName у неё пуст. */}}
+            {{ if .OrgName }}
+            <span class="author author--org">{{ .OrgName }}</span>
+            <span class="org-badge{{ if .OrgOfficial }} org-badge--official{{ end }}">{{ t .Lang .OrgKind }}</span>
+            <span class="author author--via">{{ t .Lang "article.published_by" }} {{ if .AuthorID }}<a href="/author/{{ .AuthorID }}?lang={{ .Lang }}">{{ .AuthorName }}</a>{{ else }}{{ .AuthorName }}{{ end }}</span>
+            {{ else }}
             <span class="author">{{ if .AuthorID }}<a href="/author/{{ .AuthorID }}?lang={{ .Lang }}">{{ .AuthorName }}</a>{{ else }}{{ .AuthorName }}{{ end }}</span>
+            {{ end }}
             {{ if .AIAuthor }}<a class="ai-badge" href="/author/{{ .AuthorID }}?lang={{ .Lang }}">{{ t .Lang "article.ai_opinion" }}</a>{{ end }}
             <span>({{ t .Lang "article.karma" }}: <b>{{ .AuthorKarma }}</b>)</span>
             <span class="dot">·</span>

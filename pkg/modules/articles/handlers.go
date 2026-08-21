@@ -563,21 +563,28 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 // ArticlePage is the template context for a single article.
 type ArticlePage struct {
 	Base
-	ArticleID      string
-	Slug           string
-	Title          string
-	Summary        string
-	AuthorName     string
-	AuthorID       string // for the byline link to /author/{id}
-	ServedLang     string
-	RequestedLang  string
-	Body           interface{}
-	Published      *time.Time
-	Updated        *time.Time // last edit, for dateModified in the article JSON-LD
-	Views          int64
-	IsAI           bool
-	AIAuthor       bool
-	Translated     bool
+	ArticleID     string
+	Slug          string
+	Title         string
+	Summary       string
+	AuthorName    string
+	AuthorID      string // for the byline link to /author/{id}
+	ServedLang    string
+	RequestedLang string
+	Body          interface{}
+	Published     *time.Time
+	Updated       *time.Time // last edit, for dateModified in the article JSON-LD
+	Views         int64
+	IsAI          bool
+	AIAuthor      bool
+	Translated    bool
+
+	// OrgName, OrgKind and OrgOfficial describe the organisation this was
+	// published on behalf of, when the account has a verified one. Empty
+	// otherwise, and empty is the only thing an unverified application shows.
+	OrgName        string
+	OrgKind        string
+	OrgOfficial    bool
 	AvailableLangs []string
 
 	// CiteLine is the ready-made reference a reader can copy, empty on the
@@ -713,6 +720,13 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	// Non-indexable articles still render in full — they are only kept out of
 	// search, not out of the site. See migration 20251107009900.
 	page.NoIndex = !a.Indexable
+	// A verified organisation replaces the byline; the person stays underneath,
+	// because somebody has to be answerable for the text.
+	if org, err := m.orgs.VerifiedByUser(r.Context(), a.AuthorID); err == nil && org != nil {
+		page.OrgName = org.Name
+		page.OrgKind = org.KindLabelKey()
+		page.OrgOfficial = org.Official()
+	}
 	if rel, err := m.store.RelatedPublished(r.Context(), a.ID, a.Category, a.Subcategory, 4); err == nil {
 		page.Related = feedItems(rel, page.Lang)
 	} else {
@@ -1656,6 +1670,28 @@ func formPlace(r *http.Request) *uuid.UUID {
 	return &id
 }
 
+// placeAllowed refuses a place outside a verified organisation's territory.
+//
+// The rule only bites for organisations: a private author writes about wherever
+// they like. An akimat of Kostanay publishing for Almaty is either a mistake or
+// an abuse, and without this the verified badge becomes a pass to the whole
+// country.
+func (m *Module) placeAllowed(r *http.Request, author uuid.UUID, place *uuid.UUID) bool {
+	if place == nil {
+		return true
+	}
+	org, err := m.orgs.VerifiedByUser(r.Context(), author)
+	if err != nil || org == nil {
+		return true
+	}
+	ok, err := m.orgs.MayPublishFor(r.Context(), org, place)
+	if err != nil {
+		m.rt.Logger.Warn("org territory check", zap.Error(err))
+		return true
+	}
+	return ok
+}
+
 func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 	authorID, ok := m.authorID(r)
 	if !ok {
@@ -1696,8 +1732,10 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, T(lang, "editor.err_save"))
 		return
 	}
-	if err := m.store.SetArticlePlace(r.Context(), id, authorID, formPlace(r)); err != nil {
-		m.rt.Logger.Warn("set place on create", zap.Error(err))
+	if place := formPlace(r); m.placeAllowed(r, authorID, place) {
+		if err := m.store.SetArticlePlace(r.Context(), id, authorID, place); err != nil {
+			m.rt.Logger.Warn("set place on create", zap.Error(err))
+		}
 	}
 	http.Redirect(w, r, "/studio/a/"+id.String(), http.StatusSeeOther)
 }
@@ -1719,8 +1757,10 @@ func (m *Module) handleUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 	originalLang, category, subcategory, coverURL, trs := parseEditorForm(r)
 
-	if err := m.store.SetArticlePlace(r.Context(), id, authorID, formPlace(r)); err != nil {
-		m.rt.Logger.Warn("set place on update", zap.Error(err))
+	if place := formPlace(r); m.placeAllowed(r, authorID, place) {
+		if err := m.store.SetArticlePlace(r.Context(), id, authorID, place); err != nil {
+			m.rt.Logger.Warn("set place on update", zap.Error(err))
+		}
 	}
 	if err := m.store.Update(r.Context(), id, authorID, originalLang, category, subcategory, coverURL, trs); err != nil {
 		if errors.Is(err, ErrNotFound) {

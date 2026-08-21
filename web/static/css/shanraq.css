@@ -1719,6 +1719,22 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 @media (max-width: 640px) { .author-stats { grid-template-columns: repeat(2, 1fr); } }
 
 /* ---- Comments ---- */
+/* Подпись организации. Название крупнее человека под ним: читатель сначала
+   должен понять, кто сообщает, и только потом — кто именно нажал кнопку.
+   У государственного органа значок заметнее: сообщение акимата читается
+   иначе, чем объявление компании. */
+.author--org { font-weight: 700; }
+.author--via { color: var(--muted); font-size: 0.86rem; }
+.org-badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px;
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.02em;
+  background: var(--surface-2); color: var(--muted); border: 1px solid var(--line);
+}
+.org-badge--official {
+  background: color-mix(in srgb, var(--teal) 16%, transparent);
+  color: var(--teal); border-color: color-mix(in srgb, var(--teal) 40%, transparent);
+}
+
 /* Страница места: путь наверх, подзаголовок и перечень мест внутри. */
 .place-up { margin: 0 0 6px; font-size: 0.86rem; color: var(--muted); }
 .place-up a { color: var(--muted); text-decoration: none; }

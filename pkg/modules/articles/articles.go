@@ -39,6 +39,7 @@ type Module struct {
 	mods          *ModStore
 	refs          *ReferralStore
 	reagents      *AgentStore
+	orgs          *OrgStore
 	pay           *PaymentStore
 	paySettings   *PaymentSettingsStore
 	flags         *ServiceFlags
@@ -99,6 +100,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 		rt.Logger.Warn("load service flags", zap.Error(err))
 	}
 	m.geo = NewGeoStore(rt.DB)
+	m.orgs = NewOrgStore(rt.DB)
 	// Every place needs an address before any of them can have a page. Runs
 	// once: after the first boot there is nothing left without a slug.
 	if n, err := m.geo.EnsureSlugs(ctx); err != nil {
@@ -261,6 +263,8 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Use(m.auth.RequireSession("/studio/login", "user", "operator", "admin"))
 		r.Get("/studio", m.handleDashboard)
 		r.Get("/studio/profile", m.handleProfile)
+		r.Get("/studio/org", m.handleOrgCabinet)
+		r.Post("/studio/org", m.handleOrgApply)
 		r.Post("/studio/place", m.handleProfilePlace)
 		r.Post("/studio/bio", m.handleBioSave)
 		r.Post("/studio/avatar", m.handleAvatarUpload)
@@ -307,6 +311,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/admin/services", m.handleAdminServiceFlag)
 		r.Post("/admin/ai", m.handleAdminAI)
 		r.Post("/admin/agents/{id}/decide", m.handleAdminAgentDecide)
+		r.Post("/admin/orgs/{id}/decide", m.handleOrgDecide)
 		r.Post("/admin/comments/{id}/hide", m.handleAdminHideComment)
 		r.Post("/admin/appeals/{id}/resolve", m.handleAdminResolveAppeal)
 		r.Post("/admin/articles/{id}/decide", m.handleAdminDecideArticle)

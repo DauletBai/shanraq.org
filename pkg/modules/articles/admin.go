@@ -244,6 +244,7 @@ type AdminPage struct {
 	Site          ServiceFlag // the global site switch
 	// Real-estate agents awaiting verification.
 	PendingAgents []Agent
+	PendingOrgs   []OrgAuthor
 }
 
 func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
@@ -305,6 +306,11 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 			page.PendingAgents = pend
 		} else {
 			m.rt.Logger.Error("pending agents", zap.Error(err))
+		}
+		if pend, err := m.orgs.Pending(r.Context(), 100); err == nil {
+			page.PendingOrgs = pend
+		} else {
+			m.rt.Logger.Error("pending orgs", zap.Error(err))
 		}
 	}
 	page.Notice = r.URL.Query().Get("ok")

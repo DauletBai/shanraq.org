@@ -1,0 +1,72 @@
+{{ define "studio_org" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container cabinet">
+  {{ template "cabinet_side" . }}
+  <div class="cabinet__content">
+  <section class="studio" style="max-width:760px">
+    <div class="studio__head"><h1>{{ t .Lang "org.title" }}</h1></div>
+    <p class="aside__text" style="margin:-6px 0 18px">{{ t .Lang "org.intro" }}</p>
+
+    {{ if .Notice }}{{ template "saved" .Notice }}{{ end }}
+    {{ if .Error }}<p class="notice notice--warn">{{ .Error }}</p>{{ end }}
+
+    {{/* Состояние заявки. Непроверенная организация не показывается нигде,
+         кроме этой страницы, поэтому автору важно видеть, на каком она шаге. */}}
+    {{ with .Org }}
+    {{ if eq .Status "verified" }}
+    <p class="notice notice--ok">{{ t $.Lang "org.st_verified" }}: <b>{{ .Name }}</b></p>
+    {{ else if eq .Status "pending" }}
+    <p class="notice">{{ t $.Lang "org.st_pending" }}</p>
+    {{ else if eq .Status "rejected" }}
+    <p class="notice notice--warn">{{ t $.Lang "org.st_rejected" }}{{ if .Reason }}: {{ .Reason }}{{ end }}</p>
+    {{ end }}
+    {{ end }}
+
+    <form class="form" method="post" action="/studio/org">
+      <div class="field">
+        <label for="org_name">{{ t .Lang "org.name" }} * {{ template "fhelp" (t .Lang "org.name_hint") }}</label>
+        <input class="input" id="org_name" name="name" maxlength="120" required
+               value="{{ with .Org }}{{ .Name }}{{ end }}" placeholder="{{ t .Lang "org.name_ph" }}">
+      </div>
+
+      <div class="field">
+        <label for="org_kind">{{ t .Lang "org.kind" }} {{ template "fhelp" (t .Lang "org.kind_hint") }}</label>
+        <select class="select" id="org_kind" name="kind" style="max-width:280px">
+          {{ $cur := "" }}{{ with .Org }}{{ $cur = .Kind }}{{ end }}
+          {{ range .Kinds }}<option value="{{ . }}"{{ if eq . $cur }} selected{{ end }}>{{ t $.Lang (printf "org.kind_%s" .) }}</option>{{ end }}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="org_bin">{{ t .Lang "org.bin" }} {{ template "fhelp" (t .Lang "org.bin_hint") }}</label>
+        <input class="input" id="org_bin" name="bin" maxlength="12" inputmode="numeric" style="max-width:220px"
+               value="{{ with .Org }}{{ .BIN }}{{ end }}">
+      </div>
+
+      <div class="field">
+        <label>{{ t .Lang "org.place" }} {{ template "fhelp" (t .Lang "org.place_hint") }}</label>
+        <div class="geo-cascade" data-geo data-lang="{{ .Lang }}" data-geo-selected="{{ .PlaceID }}"></div>
+        <input type="hidden" name="geo_node_id" value="{{ .PlaceID }}">
+      </div>
+
+      <div class="field">
+        <label for="org_contact">{{ t .Lang "org.contact" }} {{ template "fhelp" (t .Lang "org.contact_hint") }}</label>
+        <input class="input" id="org_contact" name="contact" maxlength="200"
+               value="{{ with .Org }}{{ .Contact }}{{ end }}">
+      </div>
+
+      <div class="field">
+        <label for="org_about">{{ t .Lang "org.about" }}</label>
+        <textarea class="input" id="org_about" name="about" rows="3" maxlength="600">{{ with .Org }}{{ .About }}{{ end }}</textarea>
+      </div>
+
+      <button class="btn btn--primary" type="submit">{{ t .Lang "org.submit" }}</button>
+      <p class="hint" style="margin-top:8px">{{ t .Lang "org.submit_hint" }}</p>
+    </form>
+  </section>
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

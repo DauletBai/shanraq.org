@@ -414,7 +414,31 @@
     <div class="adm-cards2">
     {{ if .CanManageUsers }}
     <section class="adv-card">
-      <h2 class="adv-card__title">{{ t .Lang "agent.queue_title" }}{{ if .PendingAgents }} <span class="subbar__badge">{{ len .PendingAgents }}</span>{{ end }}</h2>
+      <h2 class="adv-card__title">{{ t .Lang "agent.queue_title" }}{{/* Заявки организаций. Решение здесь — вся суть функции: до него имя
+     организации не показывается нигде, а после него подписывает статьи. */}}
+{{ if .PendingOrgs }}
+<div class="adm-card">
+  <h2>{{ t .Lang "org.queue" }}</h2>
+  {{ range .PendingOrgs }}
+  <div class="adm-row">
+    <div>
+      <b>{{ .Name }}</b> · {{ t $.Lang (printf "org.kind_%s" .Kind) }}
+      {{ if .BIN }}· {{ t $.Lang "org.bin" }} {{ .BIN }}{{ end }}
+      {{ if .PlaceName }}· {{ .PlaceName }}{{ end }}
+      <div class="hint">{{ t $.Lang "org.applicant" }}: {{ .OwnerName }} ({{ .Email }}){{ if .Contact }} · {{ .Contact }}{{ end }}</div>
+      {{ if .About }}<div class="hint">{{ .About }}</div>{{ end }}
+    </div>
+    <form method="post" action="/admin/orgs/{{ .UserID }}/decide" class="adm-actions">
+      <input class="input input--sm" type="text" name="reason" placeholder="{{ t $.Lang "org.reject_reason" }}" maxlength="300">
+      <button class="btn btn--primary btn--sm" type="submit" name="decision" value="verify">{{ t $.Lang "org.verify" }}</button>
+      <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="reject">{{ t $.Lang "org.reject" }}</button>
+    </form>
+  </div>
+  {{ end }}
+</div>
+{{ end }}
+
+{{ if .PendingAgents }} <span class="subbar__badge">{{ len .PendingAgents }}</span>{{ end }}</h2>
       <p class="aside__text">{{ t .Lang "agent.queue_hint" }}</p>
       {{ if not .PendingAgents }}<p class="aside__text">{{ t .Lang "agent.queue_none" }}</p>{{ end }}
         <div class="adm-scroll adm-scroll--tall">
