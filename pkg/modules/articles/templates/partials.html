@@ -507,6 +507,25 @@
 
     <div class="foot-bottom">
       <p class="foot-copy">© {{ year }} <a href="/">Shanraq.org</a> · {{ t .Lang "footer.rights" }}</p>
+      {{/* An independent count of this site's traffic.
+
+           We sell advertising, and until now the only figure an advertiser
+           could be shown was the one we produce ourselves — a number made by
+           the party it flatters and checked by nobody, which is precisely the
+           arrangement this site published an article about. This one is
+           counted by somebody else.
+
+           The pixel, not the script ZERO.kz hands out. Their code loads
+           JavaScript from c.zero.kz, which our Content-Security-Policy
+           forbids: script-src is 'self', and widening it would let another
+           company run code on every page we serve. The image is already
+           allowed by img-src and counts the same page views without granting
+           anybody anything. */}}
+      <p class="foot-counter">
+        <a href="https://zero.kz/?s=75643" target="_blank" rel="noopener nofollow" aria-label="ZERO.kz">
+          <img src="https://c.zero.kz/z.png?u=75643" width="88" height="31" alt="ZERO.kz" loading="lazy" decoding="async">
+        </a>
+      </p>
     </div>
   </div>
 </footer>

@@ -674,7 +674,7 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 Мы применяем организационные и технические меры защиты (хеширование паролей, ограничение доступа, защита от подделки запросов, заголовки безопасности, ограничение частоты попыток входа). При выявлении несанкционированного доступа к персональным данным мы уведомляем уполномоченный орган в срок, установленный законом (по общему правилу — в течение одного рабочего дня).
 
 ## 9. Cookie и аналитика
-Мы используем технически необходимые cookie (например, для сессии входа) и, при наличии, минимальную аналитику для улучшения сервиса. Таргетированная реклама на основе расы, национальности, политических взглядов, биометрических данных или данных о здоровье не ведётся.
+Мы используем технически необходимые cookie (например, для сессии входа) и, при наличии, минимальную аналитику для улучшения сервиса. В подвале сайта установлен счётчик посещаемости ZERO.kz: он считает просмотры страниц независимо от нас, чтобы цифры посещаемости, которые мы показываем рекламодателям, не были посчитаны только нами самими. Таргетированная реклама на основе расы, национальности, политических взглядов, биометрических данных или данных о здоровье не ведётся.
 
 ## 10. Обработка с помощью ИИ
 Для модерации, автоматического перевода и помощи в оформлении применяются ИИ-агенты; они обрабатывают контент в объёме, необходимом для этих задач. Материалы ИИ-обозревателя явно маркируются. Мы не принимаем значимых для пользователя решений исключительно автоматически без возможности обращения к человеку.
@@ -723,7 +723,7 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 Біз қорғаудың ұйымдастырушылық және техникалық шараларын қолданамыз (құпия сөздерді хештеу, қолжетімділікті шектеу, сұрауларды жалғандаудан қорғау, қауіпсіздік тақырыпаттары, кіру әрекеттерінің жиілігін шектеу). Дербес деректерге рұқсатсыз қол жеткізу анықталған кезде біз уәкілетті органды заңда белгіленген мерзімде (жалпы ереже бойынша — бір жұмыс күні ішінде) хабардар етеміз.
 
 ## 9. Cookie және аналитика
-Біз техникалық тұрғыдан қажетті cookie файлдарын (мысалы, кіру сессиясы үшін) және бар болса, сервисті жақсарту үшін ең аз аналитиканы қолданамыз. Нәсіл, ұлт, саяси көзқарас, биометриялық деректер немесе денсаулық туралы деректер негізінде мақсатты жарнама жүргізілмейді.
+Біз техникалық тұрғыдан қажетті cookie файлдарын (мысалы, кіру сессиясы үшін) және бар болса, сервисті жақсарту үшін ең аз аналитиканы қолданамыз. Сайттың төменгі бөлігінде ZERO.kz келушілер санағышы орнатылған: ол бет қаралымдарын бізден тәуелсіз санайды, сондықтан жарнама берушілерге көрсететін сандарымызды тек өзіміз санаған болып шықпаймыз. Нәсіл, ұлт, саяси көзқарас, биометриялық деректер немесе денсаулық туралы деректер негізінде мақсатты жарнама жүргізілмейді.
 
 ## 10. ЖИ көмегімен өңдеу
 Модерация, автоматты аудару және безендіруге көмек үшін ЖИ-агенттер қолданылады; олар контентті осы міндеттер үшін қажетті көлемде өңдейді. ЖИ-шолушының материалдары айқын белгіленеді. Біз пайдаланушы үшін маңызды шешімдерді адамға жүгіну мүмкіндігінсіз тек автоматты түрде қабылдамаймыз.
@@ -772,7 +772,7 @@ Send requests through the [support page](/support).
 We apply organizational and technical protection measures (password hashing, access restriction, protection against request forgery, security headers, rate limiting of login attempts). If unauthorized access to personal data is detected, we notify the authorized body within the period established by law (as a general rule, within one business day).
 
 ## 9. Cookies and Analytics
-We use technically necessary cookies (for example, for the login session) and, where present, minimal analytics to improve the service. We do not conduct targeted advertising based on race, ethnicity, political views, biometric data, or health data.
+We use technically necessary cookies (for example, for the login session) and, where present, minimal analytics to improve the service. A ZERO.kz visitor counter runs in the site footer: it counts page views independently of us, so that the traffic figures we show advertisers are not figures only we have counted. We do not conduct targeted advertising based on race, ethnicity, political views, biometric data, or health data.
 
 ## 10. Processing with the Help of AI
 AI agents are used for moderation, automatic translation, and formatting assistance; they process content to the extent necessary for these tasks. Materials of the AI columnist are clearly marked. We do not make decisions of significance to the user solely automatically, without the possibility of recourse to a human.

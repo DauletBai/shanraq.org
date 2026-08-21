@@ -1712,6 +1712,12 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .related__h a:hover { color: var(--gold); }
 .related__excerpt { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
 
+/* Счётчик в подвале: он должен быть виден — этого требует смысл независимого
+   замера, — но не спорить с копирайтом рядом. Приглушён, проявляется наведением. */
+.foot-counter { margin: 10px 0 0; line-height: 0; }
+.foot-counter img { opacity: 0.55; transition: opacity 0.15s ease; border-radius: 3px; }
+.foot-counter a:hover img, .foot-counter a:focus-visible img { opacity: 1; }
+
 .comments { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }
 .comments__title { font-size: var(--step-2); margin-bottom: 16px; }
 .comments__form { margin-bottom: 22px; display: flex; flex-direction: column; gap: 10px; }
