@@ -86,7 +86,7 @@ func (m *Module) handlePlace(w http.ResponseWriter, r *http.Request) {
 	page.PlaceName = node.Name
 	page.Kind = node.Kind
 	page.Slug = slug
-	page.Posts = feedItems(arts, lang)
+	page.Posts = m.withOrgs(r.Context(), arts, feedItems(arts, lang))
 	page.Page = pageNo
 
 	if label, err := m.geo.PlaceLabel(r.Context(), id, lang); err == nil {

@@ -357,6 +357,39 @@ type FeedItem struct {
 	IsAI           bool
 	AIAuthor       bool
 	AvailableLangs []string
+
+	// OrgName is the verified organisation this was published on behalf of.
+	// A card shows it instead of the person: on a place page the reader is
+	// looking for the akimat and the utility, and "А. Смағұлова" hides exactly
+	// the fact the whole feature exists to show. The person is still named in
+	// full on the article itself.
+	OrgName string
+}
+
+// withOrgs fills in the organisation behind each card, in one query for the
+// whole feed rather than one per card.
+func (m *Module) withOrgs(ctx context.Context, arts []*Article, items []FeedItem) []FeedItem {
+	if m.orgs == nil || len(items) == 0 {
+		return items
+	}
+	ids := make([]uuid.UUID, 0, len(arts))
+	for _, a := range arts {
+		ids = append(ids, a.AuthorID)
+	}
+	names, err := m.orgs.VerifiedNames(ctx, ids)
+	if err != nil || len(names) == 0 {
+		return items
+	}
+	for i := range items {
+		id, err := uuid.Parse(items[i].AuthorID)
+		if err != nil {
+			continue
+		}
+		if name := names[id]; name != "" {
+			items[i].OrgName = name
+		}
+	}
+	return items
 }
 
 // feedItems turns articles into the cards a template renders, in the reader's
@@ -529,7 +562,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 		arts = arts[:homePageSize]
 	}
 
-	items := feedItems(arts, lang)
+	items := m.withOrgs(r.Context(), arts, feedItems(arts, lang))
 
 	page := HomePage{Base: m.base(r, T(lang, "home.page_title"), lang)}
 	page.Active = active
@@ -728,7 +761,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		page.OrgOfficial = org.Official()
 	}
 	if rel, err := m.store.RelatedPublished(r.Context(), a.ID, a.Category, a.Subcategory, 4); err == nil {
-		page.Related = feedItems(rel, page.Lang)
+		page.Related = m.withOrgs(r.Context(), rel, feedItems(rel, page.Lang))
 	} else {
 		m.rt.Logger.Warn("related articles", zap.Error(err))
 	}

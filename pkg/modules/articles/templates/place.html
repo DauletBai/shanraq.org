@@ -10,7 +10,7 @@
            один клик увидеть, что есть и область — и наоборот. */}}
       {{ if .Ancestors }}
       <nav class="place-up" aria-label="{{ t .Lang "place.up" }}">
-        {{ range .Ancestors }}<a href="/place/{{ .Slug }}?lang={{ $.Lang }}" data-place-crumb>{{ .Name }}</a> · {{ end }}
+        {{ range $i, $a := .Ancestors }}{{ if $i }} · {{ end }}<a href="/place/{{ $a.Slug }}?lang={{ $.Lang }}" data-place-crumb>{{ $a.Name }}</a>{{ end }}
       </nav>
       {{ end }}
 

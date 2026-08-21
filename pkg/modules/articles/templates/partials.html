@@ -32,7 +32,7 @@
   <span class="metaic" title="{{ t .Lang "meta.views" }}">{{ icon "eye" }}{{ compactNum .Lang .P.Views }}</span>
   {{ if not .NoByline }}
   <span class="dot">·</span>
-  <span class="post__by" title="{{ .P.AuthorName }}">{{ if .P.AuthorID }}<a class="byline-link" href="/author/{{ .P.AuthorID }}?lang={{ .Lang }}">{{ shortAuthor .P.AuthorName }}</a>{{ else }}{{ shortAuthor .P.AuthorName }}{{ end }}</span>
+  <span class="post__by" title="{{ if .P.OrgName }}{{ .P.OrgName }} · {{ end }}{{ .P.AuthorName }}">{{ if .P.AuthorID }}<a class="byline-link" href="/author/{{ .P.AuthorID }}?lang={{ .Lang }}">{{ if .P.OrgName }}{{ .P.OrgName }}{{ else }}{{ shortAuthor .P.AuthorName }}{{ end }}</a>{{ else }}{{ if .P.OrgName }}{{ .P.OrgName }}{{ else }}{{ shortAuthor .P.AuthorName }}{{ end }}{{ end }}</span>
   {{ if .P.AIAuthor }}<span class="tag tag--ai">{{ t .Lang "article.ai_opinion" }}</span>{{ end }}
   {{ end }}
   <span class="dot">·</span>

@@ -214,3 +214,55 @@ func TestTheWayUpActuallyLeadsSomewhere(t *testing.T) {
 		t.Error("со страницы посёлка нельзя подняться в область")
 	}
 }
+
+// Карточка в ленте должна называть организацию. Страница места существует ради
+// сообщений ЖКХ и акимата; карточка, подписанная «А. Смағұлова», прячет ровно
+// то, ради чего заведены организации-авторы.
+func TestAFeedCardNamesTheOrganisation(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	authorID := app.createUser("orgfeed@example.com", "Parol123!")
+	kacharID, kacharSlug := place(t, app, "Качар")
+	ctx := context.Background()
+
+	store := NewOrgStore(app.pool)
+	if err := store.Apply(ctx, authorID, OrgAuthor{Name: "КСК «Качарец»", Kind: "utility"}); err != nil {
+		t.Fatalf("Apply: %v", err)
+	}
+	if err := store.SetStatus(ctx, authorID, orgVerified, "", nil); err != nil {
+		t.Fatalf("SetStatus: %v", err)
+	}
+
+	id, _ := app.seedArticle(authorID, "published")
+	app.exec(`UPDATE articles SET geo_node_id = $2, published_at = NOW() WHERE id = $1`, id, kacharID)
+
+	body := app.do(http.MethodGet, "/place/"+kacharSlug, nil).Body.String()
+	if !strings.Contains(body, "КСК «Качарец»") {
+		t.Error("карточка в ленте места не называет организацию")
+	}
+
+	// И один запрос на всю ленту, а не по одному на карточку.
+	names, err := store.VerifiedNames(ctx, []uuid.UUID{authorID})
+	if err != nil || names[authorID] != "КСК «Качарец»" {
+		t.Errorf("пакетный поиск не нашёл организацию: %v, %v", names, err)
+	}
+}
+
+// Разделитель стоит между звеньями, а не после последнего.
+func TestBreadcrumbHasNoTrailingSeparator(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	place(t, app, "Качар")
+	body := app.do(http.MethodGet, "/place/kachar", nil).Body.String()
+	i := strings.Index(body, "place-up")
+	if i < 0 {
+		t.Fatal("на странице нет пути наверх")
+	}
+	nav := body[i:]
+	nav = nav[:strings.Index(nav, "</nav>")]
+	if strings.Contains(nav[strings.LastIndex(nav, "</a>"):], "·") {
+		t.Errorf("после последнего звена висит разделитель: %q", nav[strings.LastIndex(nav, "</a>"):])
+	}
+}

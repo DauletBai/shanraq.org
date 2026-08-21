@@ -141,6 +141,35 @@ func (s *OrgStore) VerifiedByUser(ctx context.Context, userID uuid.UUID) (*OrgAu
 	return o, nil
 }
 
+// VerifiedNames returns the verified organisation name for each of the given
+// authors, skipping those who have none.
+//
+// A feed asks about twenty-one authors at once. Asking one query per card would
+// be twenty-one round trips to spell a name that is usually absent, so the
+// lookup happens once and the caller reads a map.
+func (s *OrgStore) VerifiedNames(ctx context.Context, users []uuid.UUID) (map[uuid.UUID]string, error) {
+	out := map[uuid.UUID]string{}
+	if len(users) == 0 {
+		return out, nil
+	}
+	rows, err := s.db.Query(ctx, `
+		SELECT user_id, name FROM org_authors
+		WHERE status = $1 AND user_id = ANY($2)`, orgVerified, users)
+	if err != nil {
+		return nil, fmt.Errorf("org names: %w", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var id uuid.UUID
+		var name string
+		if err := rows.Scan(&id, &name); err != nil {
+			return nil, err
+		}
+		out[id] = name
+	}
+	return out, rows.Err()
+}
+
 // Pending lists applications waiting for a moderator.
 func (s *OrgStore) Pending(ctx context.Context, limit int) ([]OrgAuthor, error) {
 	if limit <= 0 || limit > 200 {
