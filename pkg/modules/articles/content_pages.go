@@ -73,12 +73,27 @@ func (s *ContentStore) UpsertMany(ctx context.Context, key string, langs []admin
 	return tx.Commit(ctx)
 }
 
-// seed inserts a default row only when absent, so first boot fills the table
-// from the built-in pages without ever clobbering a later edit.
+// seed fills a page from the built-in default, and keeps it in step with the
+// code for as long as no human has touched it.
+//
+// Insert-only was wrong in a way that took a while to show. The table is seeded
+// on first boot, and from then on the built-in text is dead weight: correcting
+// a policy in the source changed nothing on the site, because the row from the
+// first boot went on being served. Documents that promise a feature the product
+// no longer has are worse than no documents.
+//
+// A hand-edited row is still untouchable. seed leaves updated_by NULL and every
+// edit through the admin panel stamps it, so the column already says which
+// rows are the code's to maintain.
 func (s *ContentStore) seed(ctx context.Context, key, lang, title, body string) error {
 	_, err := s.db.Exec(ctx,
 		`INSERT INTO content_pages (page_key, lang, title, body_md)
-		 VALUES ($1,$2,$3,$4) ON CONFLICT (page_key, lang) DO NOTHING`,
+		 VALUES ($1,$2,$3,$4)
+		 ON CONFLICT (page_key, lang) DO UPDATE
+		   SET title = EXCLUDED.title, body_md = EXCLUDED.body_md, updated_at = NOW()
+		 WHERE content_pages.updated_by IS NULL
+		   AND (content_pages.title <> EXCLUDED.title
+		        OR content_pages.body_md <> EXCLUDED.body_md)`,
 		key, lang, title, body)
 	return err
 }
