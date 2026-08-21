@@ -12,7 +12,7 @@ var staticPages = map[string]map[string]staticPageContent{
 		"ru": {Title: "О нас", Body: `Shanraq.org — независимая площадка, где любой человек может писать и публиковать статьи на казахском, русском и английском языках. Мы верим, что доступ к информации и право высказываться — основа развития общества.
 
 ## Наша миссия
-Дать голос не только профессиональным журналистам, но и обычным людям: врачам, учителям, предпринимателям, студентам. ИИ-помощник помогает превратить мысль в понятную и профессиональную статью, а автоматический перевод делает её доступной на трёх языках.
+Дать голос не только профессиональным журналистам, но и обычным людям: врачам, учителям, предпринимателям, студентам. Автор сам пишет версии на казахском, русском и английском — так текст остаётся его, а не машинным пересказом. Платформа при этом механически сверяет версии между собой: числа, ссылки, заголовки и абзацы должны совпадать, и о расхождении она предупреждает.
 
 ## Наши принципы
 - **Проверяемость.** Мы за факты, которые можно проверить, а не за громкие лозунги.
@@ -23,7 +23,7 @@ Shanraq.org — это дом, где сходятся свободные гол
 		"kz": {Title: "Біз туралы", Body: `Shanraq.org — кез келген адам қазақ, орыс және ағылшын тілдерінде мақала жазып, жариялай алатын тәуелсіз алаң. Ақпаратқа қолжетімділік пен пікір білдіру құқығы қоғам дамуының негізі деп сенеміз.
 
 ## Біздің миссиямыз
-Кәсіби журналистерге ғана емес, қарапайым адамдарға — дәрігерлерге, мұғалімдерге, кәсіпкерлерге, студенттерге — дауыс беру. ИИ көмекші ойды түсінікті әрі кәсіби мақалаға айналдыруға көмектеседі, ал автоматты аударма оны үш тілде қолжетімді етеді.
+Кәсіби журналистерге ғана емес, қарапайым адамдарға — дәрігерлерге, мұғалімдерге, кәсіпкерлерге, студенттерге — дауыс беру. Автор қазақ, орыс және ағылшын тіліндегі нұсқаларды өзі жазады — сонда мәтін машина баяндамасы емес, өзінікі болып қалады. Платформа нұсқаларды механикалық түрде салыстырады: сандар, сілтемелер, тақырыптар мен абзацтар сәйкес келуге тиіс, айырма болса ескертеді.
 
 ## Біздің ұстанымдарымыз
 - **Тексерілетіндік.** Айқайлаған ұрандар емес, тексеруге болатын фактілер.
@@ -34,7 +34,7 @@ Shanraq.org — еркін дауыстар тоғысатын үй.`},
 		"en": {Title: "About us", Body: `Shanraq.org is an independent platform where anyone can write and publish articles in Kazakh, Russian, and English. We believe that access to information and the right to speak are the foundation of a thriving society.
 
 ## Our mission
-To give a voice not only to professional journalists but to ordinary people — doctors, teachers, entrepreneurs, students. An AI assistant helps turn a thought into a clear, professional article, and automatic translation makes it available in three languages.
+To give a voice not only to professional journalists but to ordinary people — doctors, teachers, entrepreneurs, students. Authors write the Kazakh, Russian and English versions themselves, so the text stays theirs rather than becoming a machine's paraphrase. The platform compares the versions mechanically: numbers, links, headings and paragraphs must match, and it warns when they do not.
 
 ## Our principles
 - **Verifiability.** We stand for facts that can be checked, not loud slogans.
@@ -53,6 +53,51 @@ Shanraq.org is a home where free voices meet.`},
 - **Собственник жилья.** Чтобы продать или сдать своё жильё, ничего дополнительно включать не нужно: подтвердите почту и телефон и нажмите «Подать объявление». Это бесплатно.
 - **Риелтор, агентство или застройщик.** Откройте раздел **Агент** в личном кабинете. Профиль проходит проверку модератором, после чего на всех ваших объявлениях появляется бейдж, а объекты собираются на одной публичной странице.
 - **Автор.** Публикация статей открывается после подтверждения личности в разделе **Автор**.
+- **Организация.** Акимат, ЖКХ, ТОО, школа или поликлиника могут публиковать под своим названием — после того как заявку посмотрел человек. Раздел **Организация** в кабинете.
+
+## Где вы живёте
+При регистрации есть поле «Где вы живёте»: страна, область, город или посёлок. Оно необязательное, и его можно заполнить или очистить позже в профиле.
+
+![Поле «Где вы живёте» с подсказкой](/static/guide/guide-place-field.png)
+
+Это выбор из справочника, а не определение вашего положения: мы не пользуемся GPS и не вычисляем город по адресу в сети. Ваше место никому не показывается — ни в комментариях, ни в профиле, ни в объявлениях.
+
+Нужно оно ради одного: чтобы до вас доходило местное — объявление ЖКХ о пуске тепла, сообщение акимата, предупреждение ТЭЦ об отключении. Переехали — поменяйте в профиле.
+
+## Комментарии и оценки
+Комментировать может любой, кто зарегистрирован и подтвердил почту.
+
+**Оценивают комментарии читатели, а не машина.** У каждого комментария есть плюс и минус; вес вашего голоса растёт вместе с кармой, поэтому свежие аккаунты не решают исход спора. Свой комментарий оценить нельзя.
+
+**Комментарий, набравший достаточно минусов, сворачивается в одну строку** — и остаётся: любой может нажать и раскрыть его. Мы ничего не стираем за то, что оно кому-то не понравилось.
+
+![Комментарии с оценками; последний свёрнут читателями](/static/guide/guide-comments.png)
+
+ИИ комментарии не читает и не скрывает — здесь решают только люди.
+
+## Публикация от имени организации
+Акимат, ЖКХ или КСК, ТОО, школа, поликлиника, общественная организация могут публиковать под своим названием. Это тот случай, когда важно не кто нажал кнопку, а от чьего имени сказано.
+
+**Как это устроено.** Заявку подаёт человек — в кабинете, раздел **«Организация»**. Он указывает название, вид, БИН, территорию и контакт, по которому его можно проверить.
+
+![Заявка организации: название, вид, БИН, территория](/static/guide/guide-org-cabinet.png)
+
+**Пока заявку не подтвердил человек, название не показывается нигде.** До проверки ваши статьи подписываются вашим именем, как обычно. Если вы измените название, подтверждение сбросится: изменённое имя ещё никто не смотрел.
+
+**Автор никуда не девается.** Под материалом стоят оба имени: организация и человек, который её опубликовал. Так и должно быть — за текстом всегда стоит кто-то, кому можно задать вопрос.
+
+![Подпись: организация, вид и человек, который опубликовал](/static/guide/guide-org-byline.png)
+
+**Территория.** Организация публикует для своей территории и того, что внутри неё: акимат области — для посёлка в этой области, но не для соседней. Организация без указанной территории не ограничена; такую заявку модератор смотрит отдельно.
+
+**БИН.** Двенадцать цифр, сверяется с открытым реестром — именно поэтому названию можно верить. Подавать заявку от имени организации, к которой вы не имеете отношения, запрещено, а подтверждение может быть отозвано.
+
+## Страницы мест
+У каждого места есть своя страница и свой адрес — **shanraq.org/place/kachar**, **shanraq.org/place/kostanaiskaya-oblast**. На ней собрано всё, что опубликовано для этого места и для всего, что внутри него.
+
+Страница области несёт материалы своих посёлков, а страница посёлка — только свои: иначе то немногое, что написано про Качар, утонуло бы в областных сообщениях.
+
+Пустая страница места — обычное дело, а не ошибка. Она существует для того, чтобы было куда опубликовать первым.
 
 ## Кабинет агента: риелтор, агентство, застройщик
 В профиле выбирается тип — от него зависит подпись на публичной странице и то, какие поля обязательны.
@@ -71,15 +116,32 @@ Shanraq.org is a home where free voices meet.`},
 1. Зарегистрируйтесь и войдите в **Студию автора**.
 2. Нажмите «Написать» и создайте статью на одном из трёх языков.
 3. Выберите рубрику и подрубрику, при желании добавьте обложку.
-4. Текст пишете вы — редактировать за вас платформа не берётся. Автоперевод переводит сохранённую статью на два других языка, сохраняя вашу разметку и ссылки.
-5. **Проверьте перевод — часть проверки не требует знания языка.** Платформа сама сличает перевод с оригиналом и показывает расхождения: пропавшую ссылку, потерянный заголовок, съеденную строку таблицы, изменившееся число. Если она молчит, механических поломок нет.
-6. **Но за смысл отвечает человек.** Машина не увидит, что термин переведён неверно или фраза звучит нелепо — а это случается. Если языка вы не знаете и содержание проверить не можете, **не сохраняйте эту вкладку**: тогда под переводом останется пометка «Текст переведён с помощью ИИ», и читатель будет знать, с чем имеет дело. Сохранённый перевод считается написанным вами, и подпись под ним — ваша.
-7. Нажмите «Опубликовать».
+4. **Если материал местный — укажите место.** Об этом ниже, в разделе «Статья для места».
+5. **Напишите описание на десять строк карточки.** Об этом тоже ниже, в разделе «Описание статьи».
+6. **Версии на других языках пишете вы сами.** Автоматический перевод отключён: он оказался медленнее, дороже и хуже того, что у автора уже есть под рукой. Переводите чем вам удобно, вставляйте результат во вкладку нужного языка и **читайте перевод перед сохранением** — подпись под ним ваша.
+7. **Платформа сверит версии между собой.** Это часть проверки, которая не требует знания языка: она сличает числа, ссылки, заголовки и количество абзацев и показывает расхождения — пропавшую ссылку, потерянный заголовок, съеденную строку таблицы, изменившееся число. Если она молчит, механических поломок нет. За смысл по-прежнему отвечает человек: машина не увидит, что термин переведён неверно.
+8. Нажмите «Опубликовать».
+
+### Описание статьи
+Описание — это то, что читатель видит на карточке в ленте, и почти всегда единственное, по чему он решает, открывать ли статью.
+
+**Оно должно заполнять десять строк карточки — это примерно 500 знаков.** Короткое описание оставляет под карточкой пустоту и ничего не обещает; длинное обрывается на полуслове. Десять строк — это место, где помещается, о чём материал, откуда взяты данные и что читатель узнает такого, чего не знал.
+
+Не пересказывайте первый абзац. Опишите, что внутри: какие цифры, за какие годы, чем это кончилось.
+
+![Карточка статьи с описанием на десять строк](/static/guide/guide-place-page.png)
+
+### Статья для места
+Если материал касается конкретного посёлка, города или области — укажите место в редакторе. Материал попадёт на страницу этого места и на страницы всех мест над ним: написанное для Качара видно и на странице Костанайской области.
+
+![Выбор места в редакторе статьи](/static/guide/guide-editor-place.png)
+
+Место указывать не обязательно. Разбор мировой экономики ни к какому посёлку не относится, и приписывать его к своему городу не нужно: это то же самое, что ключевые слова не по теме.
 
 ## Что бесплатно, а что платно
 **Бесплатно и навсегда:** чтение всех материалов, подписка на рассылку, регистрация, ручная публикация статей (в том числе на трёх языках, если вы переводите сами), оценки, комментарии и карма.
 
-**Платные услуги** — это дополнительные возможности на базе ИИ и продвижение: автоматический перевод на другие языки, а также продвижение объявлений о недвижимости. Само объявление разместить бесплатно. Актуальные цены — на странице [Тарифы](/pricing).
+**Платные услуги** — это продвижение объявлений о недвижимости: поднятие и выделение. Само объявление разместить бесплатно. Актуальные цены — на странице [Тарифы](/pricing).
 
 ## Недвижимость и объявления
 Наш символ — шаңырақ, а значит, дом. В разделе **«Недвижимость»** можно подать объявление о продаже или аренде: квартиры, дома, земельного участка или коммерческого помещения.
@@ -122,13 +184,14 @@ Shanraq.org is a home where free voices meet.`},
 ## Права и ответственность
 - Вы сохраняете авторские права на свои материалы и отвечаете за их содержание.
 - **Публикуйте только достоверную информацию.** За клевету, заведомо ложную информацию, разжигание межнациональной розни, вражды и другой противоправный контент автор несёт уголовную ответственность по законам Республики Казахстан.
-- **Оскорбительные и незаконные материалы, неуважительный тон** модерируются нашими читателями (пользователями) и нашей моделью ИИ; такие материалы понижаются в выдаче, скрываются или удаляются.
+- **Комментарии оценивают читатели, а не машина.** Заминусованный комментарий сворачивается в одну строку, но не удаляется. Статьи и объявления проверяет ИИ — и по каждому замечанию называет правило и цитату из вашего текста.
 - Не публикуйте чужие тексты и изображения без разрешения, не нарушайте авторские права.
 - Уважайте частную жизнь: не раскрывайте персональные данные других людей без их согласия.
 - Запрещены спам, мошенничество, реклама запрещённых товаров и услуг.
 - Материалы 18+ и любой контент, вредящий детям, недопустимы.
 - При нарушении правил мы вправе скрыть материал, ограничить или заблокировать аккаунт. Решение можно оспорить через раздел [Поддержка](/support).
-- ИИ-инструменты помогают писать в уважительном тоне и подсказывают, где нужен источник, но окончательная ответственность за текст — на авторе.
+- ИИ-инструменты подсказывают, где нужен источник, но окончательная ответственность за текст — на авторе.
+- **Ничего не исчезает бесследно.** Решения модерации записываются: что проверялось, какое правило сработало, какая цитата его вызвала. Оценки комментариев сохраняются. Прогнозы ИИ-обозревателя лежат в [реестре](/predictions) вместе с датой и потом сверяются с тем, что произошло. Спор о модерации решается по записи, а не по памяти сторон.
 
 Публикуя материал, вы соглашаетесь с этими правилами.`},
 		"kz": {Title: "Мақала мен хабарландыруды қалай жариялау керек", Body: `Мұнда платформаны қалай пайдалану керектігі, не тегін, не ақылы екені, сондай-ақ сіздің құқықтарыңыз бен жауапкершілігіңіз сипатталған.
@@ -140,6 +203,51 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 - **Тұрғын үй иесі.** Өз үйіңізді сату немесе жалға беру үшін ештеңе қосудың қажеті жоқ: поштаңыз бен телефоныңызды растап, «Хабарландыру беру» түймесін басыңыз. Бұл тегін.
 - **Риелтор, агенттік немесе құрылыс компаниясы.** Жеке кабинеттегі **Агент** бөлімін ашыңыз. Профильді модератор тексереді, содан кейін барлық хабарландыруларыңызда белгі пайда болады, ал нысандарыңыз бір жария бетке жиналады.
 - **Автор.** Мақала жариялау **Автор** бөлімінде жеке басты растағаннан кейін ашылады.
+- **Ұйым.** Әкімдік, ТКШ, ЖШС, мектеп немесе емхана өз атауымен жариялай алады — өтінішті адам қарағаннан кейін. Кабинеттегі **«Ұйым»** бөлімі.
+
+## Сіз қайда тұрасыз
+Тіркелу кезінде «Сіз қайда тұрасыз» өрісі бар: ел, облыс, қала немесе кент. Ол міндетті емес, кейін профильде толтыруға да, тазалауға да болады.
+
+![«Сіз қайда тұрасыз» өрісі және оның түсіндірмесі](/static/guide/guide-place-field.png)
+
+Бұл — анықтамалықтан таңдау, орналасқан жеріңізді анықтау емес: біз GPS қолданбаймыз және желідегі мекенжайыңыз бойынша қалаңызды есептемейміз. Орныңыз ешкімге көрсетілмейді — пікірде де, профильде де, хабарландыруда да.
+
+Ол бір мақсат үшін керек: жергілікті нәрсе сізге жетуі үшін — ТКШ-ның жылу беру туралы хабарландыруы, әкімдіктің хабарламасы, ЖЭО-ның сөндіру туралы ескертуі. Көшіп кетсеңіз — профильде ауыстырыңыз.
+
+## Пікірлер мен бағалар
+Тіркелген әрі поштасын растаған кез келген адам пікір жаза алады.
+
+**Пікірлерді машина емес, оқырмандар бағалайды.** Әр пікірде плюс пен минус бар; дауысыңыздың салмағы кармамен бірге өседі, сондықтан жаңа аккаунттар дауды шешпейді. Өз пікіріңізді бағалай алмайсыз.
+
+**Жеткілікті минус жинаған пікір бір жолға жиналады** — әрі қалады: кез келген адам басып, оны аша алады. Біреуге ұнамағаны үшін біз ештеңе өшірмейміз.
+
+![Бағалары бар пікірлер; соңғысын оқырмандар жинап тастаған](/static/guide/guide-comments.png)
+
+ЖИ пікірлерді оқымайды және жасырмайды — мұнда тек адамдар шешеді.
+
+## Ұйым атынан жариялау
+Әкімдік, ТКШ немесе ПИК, ЖШС, мектеп, емхана, қоғамдық ұйым өз атауымен жариялай алады. Бұл — түймені кім басқаны емес, кімнің атынан айтылғаны маңызды жағдай.
+
+**Қалай жұмыс істейді.** Өтінішті адам береді — кабинеттегі **«Ұйым»** бөлімінде. Ол атауын, түрін, БСН-ін, аумағын және өзін тексеруге болатын байланысты көрсетеді.
+
+![Ұйым өтініші: атауы, түрі, БСН, аумағы](/static/guide/guide-org-cabinet.png)
+
+**Өтінішті адам растағанға дейін атау еш жерде көрсетілмейді.** Оған дейін мақалаларыңыз әдеттегідей өз атыңызбен шығады. Атауды өзгертсеңіз, растау жойылады: өзгертілген атауды әлі ешкім қараған жоқ.
+
+**Автор еш жаққа жоғалмайды.** Материалдың астында екі есім тұрады: ұйым және оны жариялаған адам. Солай болуға тиіс — мәтіннің артында әрқашан сұрақ қоюға болатын біреу тұрады.
+
+![Қолтаңба: ұйым, түрі және оны жариялаған адам](/static/guide/guide-org-byline.png)
+
+**Аумақ.** Ұйым өз аумағы және оның ішіндегі жерлер үшін жариялайды: облыс әкімдігі сол облыстағы кент үшін, бірақ көрші облыс үшін емес. Аумағы көрсетілмеген ұйым шектелмейді; ондай өтінішті модератор бөлек қарайды.
+
+**БСН.** Он екі сан, ашық тізілім бойынша тексеріледі — атауға сенуге болатыны сондықтан. Өзіңіз қатысы жоқ ұйымның атынан өтініш беруге тыйым салынады, растау кері қайтарылуы мүмкін.
+
+## Орын беттері
+Әр орынның өз беті және өз мекенжайы бар — **shanraq.org/place/kachar**, **shanraq.org/place/kostanaiskaya-oblast**. Онда сол орын үшін және оның ішіндегінің бәрі үшін жарияланғанның бәрі жиналады.
+
+Облыстың беті өз кенттерінің материалдарын алып жүреді, ал кенттің беті тек өзінікін: әйтпесе Качар туралы жазылған азғантай нәрсе облыстық хабарламалардың астында қалар еді.
+
+Бос орын беті — қате емес, әдеттегі жағдай. Ол бірінші болып жариялайтын жер болуы үшін бар.
 
 ## Агент кабинеті: риелтор, агенттік, құрылыс компаниясы
 Профильде түрі таңдалады — жария беттегі жазу және қандай өрістер міндетті екені соған байланысты.
@@ -158,15 +266,32 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 1. Тіркеліп, **Автор студиясына** кіріңіз.
 2. «Жазу» түймесін басып, үш тілдің бірінде мақала жасаңыз.
 3. Айдар мен ішкі айдарды таңдап, қаласаңыз мұқаба қосыңыз.
-4. Мәтінді өзіңіз жазасыз — платформа сіздің орныңызға өңдемейді. Автоаударма сақталған мақаланы қалған екі тілге аударады, белгілеуіңіз бен сілтемелеріңізді сақтайды.
-5. **Аударманы тексеріңіз — тексерудің бір бөлігі тілді білуді қажет етпейді.** Платформа аударманы түпнұсқамен өзі салыстырып, айырмашылықтарды көрсетеді: жоғалған сілтемені, түсіп қалған тақырыпты, кесте жолын, өзгерген санды. Ол үндемесе, механикалық бұзылу жоқ.
-6. **Бірақ мағына үшін адам жауап береді.** Машина терминнің қате аударылғанын немесе сөйлемнің оғаш шыққанын көрмейді — ал бұл болады. Тілді білмесеңіз және мазмұнды тексере алмасаңыз, **бұл қойындыны сақтамаңыз**: сонда аударманың астында «Мәтін ЖИ көмегімен аударылды» деген белгі қалады және оқырман немен ісі бар екенін біледі. Сақталған аударма сіз жазған болып саналады, астындағы қолтаңба — сіздікі.
-5. Сақтап, «Жариялау» түймесін басыңыз.
+4. **Материал жергілікті болса — орнын көрсетіңіз.** Бұл туралы төменде, «Орынға арналған мақала» бөлімінде.
+5. **Сипаттаманы карточканың он жолын толтыратындай жазыңыз.** Бұл да төменде, «Мақала сипаттамасы» бөлімінде.
+6. **Басқа тілдегі нұсқаларды өзіңіз жазасыз.** Автоматты аударма өшірілген: ол автордың қолындағыдан баяу, қымбат әрі нашар болып шықты. Өзіңізге ыңғайлы құралмен аударып, нәтижені керекті тілдің қойындысына қойыңыз және **сақтар алдында оқып шығыңыз** — астындағы қолтаңба сіздікі.
+7. **Платформа нұсқаларды өзі салыстырады.** Тексерудің бұл бөлігі тілді білуді қажет етпейді: ол сандарды, сілтемелерді, тақырыптар мен абзац санын салыстырып, айырмашылықтарды көрсетеді — жоғалған сілтемені, түсіп қалған тақырыпты, кесте жолын, өзгерген санды. Үндемесе, механикалық бұзылу жоқ. Мағына үшін бәрібір адам жауап береді: машина терминнің қате аударылғанын көрмейді.
+8. Сақтап, «Жариялау» түймесін басыңыз.
+
+### Мақала сипаттамасы
+Сипаттама — оқырман лентадағы карточкадан көретін нәрсе, әрі мақаланы ашу-ашпауды дәл соған қарап шешеді.
+
+**Ол карточканың он жолын толтыруға тиіс — шамамен 500 таңба.** Қысқа сипаттама карточканың астын бос қалдырады және ештеңе уәде етпейді; тым ұзыны сөздің ортасынан үзіледі. Он жол — материалдың не туралы екені, деректердің қайдан алынғаны және оқырманның не білетіні сыятын орын.
+
+Бірінші абзацты қайталап айтпаңыз. Ішінде не бар екенін жазыңыз: қандай сандар, қай жылдарға, немен бітті.
+
+![Он жолдық сипаттамасы бар мақала карточкасы](/static/guide/guide-place-page.png)
+
+### Орынға арналған мақала
+Материал нақты кентке, қалаға немесе облысқа қатысты болса — редакторда орнын көрсетіңіз. Материал сол орынның бетіне және оның үстіндегі барлық орындардың бетіне түседі: Качар үшін жазылған нәрсе Қостанай облысының бетінен де көрінеді.
+
+![Мақала редакторындағы орынды таңдау](/static/guide/guide-editor-place.png)
+
+Орын көрсету міндетті емес. Әлем экономикасының талдауы ешқандай кентке қатысты емес, оны өз қалаңызға таңу — тақырыпқа қатысы жоқ кілт сөздермен бірдей.
 
 ## Не тегін, не ақылы
-**Тегін әрі әрқашан:** барлық материалды оқу, жаңалық таратылымына жазылу, тіркелу, мақаланы қолмен жариялау (өзіңіз аударсаңыз, үш тілде де), бағалау, пікір және карма.
+**Тегін әрі әрқашан:** барлық материалды оқу, жаңалық таратылымына жазылу, тіркелу, мақаланы жариялау (өзіңіз аударсаңыз, үш тілде де), бағалау, пікір және карма.
 
-**Ақылы қызметтер** — ИИ негізіндегі қосымша мүмкіндіктер мен жылжыту: мәтінді ИИ-редактормен жақсарту, үш тілге автоаудару, мұқаба жасау, сондай-ақ жылжымайтын мүлік хабарландыруын жылжыту. Хабарландырудың өзін беру тегін. Ағымдағы бағалар — [Тарифтер](/pricing) бетінде.
+**Ақылы қызметтер** — жылжымайтын мүлік хабарландыруын жылжыту: көтеру және ерекшелеу. Хабарландырудың өзін беру тегін. Ағымдағы бағалар — [Тарифтер](/pricing) бетінде.
 
 ## Жылжымайтын мүлік және хабарландырулар
 Біздің нышанымыз — шаңырақ, яғни үй. **«Жылжымайтын мүлік»** бөлімінде сату немесе жалға беру туралы хабарландыру беруге болады: пәтер, үй, жер учаскесі немесе коммерциялық орын.
@@ -209,13 +334,14 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 ## Құқықтар мен жауапкершілік
 - Материалдарыңызға авторлық құқық сізде қалады, мазмұны үшін өзіңіз жауап бересіз.
 - **Тек нақты ақпарат жариялаңыз.** Жала, көрінеу жалған ақпарат, ұлтаралық араздық пен өшпенділікті қоздыру және өзге де құқыққа қайшы мазмұн үшін автор Қазақстан Республикасының заңдары бойынша қылмыстық жауаптылықта болады.
-- **Балағат әрі заңсыз материалдар, құрметсіз тон** оқырмандар (пайдаланушылар) мен біздің ИИ моделіміз арқылы модерацияланады; ондай материалдар төмендетіледі, жасырылады немесе жойылады.
+- **Пікірлерді машина емес, оқырмандар бағалайды.** Минус жинаған пікір бір жолға жиналады, бірақ жойылмайды. Мақалалар мен хабарландыруларды ЖИ тексереді — әр ескертпе бойынша ереженің атауын атап, өз мәтініңізден дәйексөз келтіреді.
 - Бөтен мәтін мен суретті рұқсатсыз жарияламаңыз, авторлық құқықты бұзбаңыз.
 - Жеке өмірді құрметтеңіз: басқалардың дербес деректерін келісімінсіз ашпаңыз.
 - Спам, алаяқтық, тыйым салынған тауар мен қызмет жарнамасына тыйым салынады.
 - 18+ материал және балаларға зиян келтіретін кез келген мазмұн жол берілмейді.
 - Ереже бұзылса, материалды жасыруға, аккаунтты шектеуге не бұғаттауға құқылымыз. Шешімге [Қолдау](/support) бөлімі арқылы шағымдана аласыз.
-- ИИ құралдары құрметті тонмен жазуға көмектеседі әрі дереккөз қажет жерді ескертеді, бірақ мәтін үшін түпкілікті жауапкершілік авторда.
+- ЖИ құралдары дереккөз қажет жерді ескертеді, бірақ мәтін үшін түпкілікті жауапкершілік авторда.
+- **Ешнәрсе іссіз жоғалмайды.** Модерация шешімдері жазылады: не тексерілді, қай ереже іске қосылды, оны қандай дәйексөз тудырды. Пікірлердің бағасы сақталады. ЖИ-шолушының болжамдары күнімен бірге [тізілімде](/predictions) жатады және кейін болғанмен салыстырылады. Модерация туралы дау тараптардың есінде қалғанымен емес, жазбамен шешіледі.
 
 Материал жариялау арқылы сіз осы ережелермен келісесіз.`},
 		"en": {Title: "How to publish articles and post listings", Body: `This page explains how to use the platform, what is free, what is paid, and your rights and responsibilities.
@@ -227,6 +353,51 @@ Shanraq.org has a single registration for everyone — there are no separate for
 - **Home owner.** Selling or renting out your own home needs nothing extra: verify your email and phone, then click "Post a listing". It is free.
 - **Realtor, agency or developer.** Open the **Agent** section in your cabinet. The profile is reviewed by a moderator, after which every listing of yours carries a badge and your properties are collected on one public page.
 - **Author.** Publishing articles unlocks after identity verification in the **Author** section.
+- **Organisation.** An akimat, a housing utility, a company, a school, or a clinic can publish under its own name — once a person has reviewed the application. The **Organisation** section of your cabinet.
+
+## Where you live
+Registration has a "Where do you live" field: country, region, city, or town. It is optional, and you can fill it in or clear it later in your profile.
+
+![The "Where do you live" field with its hint](/static/guide/guide-place-field.png)
+
+It is a choice from a reference list, not a determination of your location: we do not use GPS and do not work your city out from your network address. Your place is shown to nobody — not in comments, not on your profile, not in listings.
+
+It exists for one reason: so that local things reach you — a utility's notice that the heating is going on, a message from the local administration, a warning from the heating plant about a shutdown. If you move, change it in your profile.
+
+## Comments and ratings
+Anyone registered with a verified email can comment.
+
+**Comments are rated by readers, not by a machine.** Every comment has an up and a down; the weight of your vote grows with your karma, so fresh accounts do not decide an argument. You cannot rate your own comment.
+
+**A comment with enough downvotes folds to a single line** — and stays: anyone can click and unfold it. We do not erase something because it displeased people.
+
+![Comments with their ratings; the last one folded by readers](/static/guide/guide-comments.png)
+
+AI neither reads nor hides comments — here it is people who decide.
+
+## Publishing on behalf of an organisation
+An akimat, a housing utility, a company, a school, a clinic, or a public organisation can publish under its own name. This is the case where what matters is not who pressed the button but on whose behalf a thing was said.
+
+**How it works.** A person applies, in the cabinet under **Organisation**. They give the name, the kind, the business identification number, the territory, and a contact by which they can be checked.
+
+![An organisation's application: name, kind, BIN, territory](/static/guide/guide-org-cabinet.png)
+
+**Until a person has verified the application, the name is shown nowhere.** Until then your articles carry your own name, as usual. If you change the name, the verification is cleared: nobody has looked at the changed name yet.
+
+**The author does not disappear.** Both names stand under the material: the organisation, and the person who published it. That is as it should be — behind a text there is always somebody you can ask.
+
+![The byline: organisation, kind, and the person who published](/static/guide/guide-org-byline.png)
+
+**Territory.** An organisation publishes for its own territory and for what lies inside it: a regional akimat for a town in that region, but not for the next region. An organisation with no stated territory is not restricted; a moderator reviews such an application separately.
+
+**The BIN.** Twelve digits, checked against the public register — which is what makes the name worth trusting. Applying on behalf of an organisation you have no connection to is prohibited, and a verification can be withdrawn.
+
+## Place pages
+Every place has its own page and its own address — **shanraq.org/place/kachar**, **shanraq.org/place/kostanaiskaya-oblast**. It holds everything published for that place and for everything inside it.
+
+A region's page carries the material of its towns; a town's page carries only its own — otherwise the little that is written about Kachar would drown in regional announcements.
+
+An empty place page is normal, not an error. It exists so that there is somewhere to be the first to publish.
 
 ## The agent cabinet: realtor, agency, developer
 The profile carries a kind, which decides the label on your public page and which fields are required.
@@ -245,15 +416,32 @@ The profile carries a kind, which decides the label on your public page and whic
 1. Sign up and open the **Author Studio**.
 2. Click "Write" and create an article in one of the three languages.
 3. Choose a category and subcategory, and add a cover image if you like.
-4. The text is yours to write — the platform does not edit it for you. Auto-translation renders the saved article into the other two languages, keeping your formatting and your links.
-5. **Check the translation — part of that needs no knowledge of the language.** The platform compares the translation against the original and reports what differs: a missing link, a lost heading, a swallowed table row, a changed number. If it says nothing, nothing mechanical is broken.
-6. **Meaning, though, is a person's job.** A machine will not notice that a term is wrong or a sentence reads absurdly, and that happens. If you do not know the language and cannot judge the content, **do not save that tab**: the "translated with AI" note then stays under it and the reader knows what they are reading. A saved translation counts as written by you, and the byline under it is yours.
-5. Save and click "Publish".
+4. **If the material is local, give it a place.** See "An article for a place" below.
+5. **Write a summary that fills ten lines of the card.** See "The summary" below.
+6. **The other language versions are yours to write.** Automatic translation is switched off: it turned out slower, costlier, and worse than what an author already has to hand. Translate with whatever you use, paste the result into the tab for that language, and **read it before saving** — the byline under it is yours.
+7. **The platform compares the versions for you.** This is the part of checking that needs no knowledge of the language: it matches numbers, links, headings, and the number of paragraphs, and reports what differs — a missing link, a lost heading, a swallowed table row, a changed number. If it says nothing, nothing mechanical is broken. Meaning is still a person's job: a machine will not notice that a term is wrong.
+8. Save and click "Publish".
+
+### The summary
+The summary is what a reader sees on the card in the feed, and almost always the only thing they use to decide whether to open the article.
+
+**It should fill ten lines of the card — roughly 500 characters.** A short summary leaves the card half empty and promises nothing; an over-long one is cut off mid-word. Ten lines is room enough to say what the material is about, where the figures come from, and what the reader will learn that they did not know.
+
+Do not retell the opening paragraph. Say what is inside: which numbers, for which years, and how it turned out.
+
+![An article card with a ten-line summary](/static/guide/guide-place-page.png)
+
+### An article for a place
+If the material concerns a particular town, city, or region, give it a place in the editor. It then appears on that place's page and on the pages of every place above it: something written for Kachar shows up on the Kostanay region's page too.
+
+![Choosing a place in the article editor](/static/guide/guide-editor-place.png)
+
+A place is not required. An analysis of the world economy belongs to no town, and attaching it to your own is the same thing as off-topic keywords.
 
 ## What is free and what is paid
-**Free forever:** reading all content, the newsletter, registration, publishing articles manually (including in three languages if you translate them yourself), votes, comments, and karma.
+**Free forever:** reading all content, the newsletter, registration, publishing articles (including in three languages, which you translate yourself), votes, comments, and karma.
 
-**Paid services** are the optional AI features and promotion: improving an article with the AI editor, automatic translation into three languages, cover generation, and promoting real-estate listings. Posting one is free. Current prices are on the [Pricing](/pricing) page.
+**Paid services** are the promotion of real-estate listings: a bump and a highlight. Posting a listing is free. Current prices are on the [Pricing](/pricing) page.
 
 ## Real estate and listings
 Our symbol is the shanyraq — a home. In the **Real Estate** section you can post a sale or rental listing: apartment, house, land, or commercial space.
@@ -296,13 +484,14 @@ No payments and no small print: the reward comes for a real listing rather than 
 ## Rights and responsibilities
 - You keep the copyright to your work and are responsible for its content.
 - **Publish only accurate information.** For defamation, knowingly false information, incitement of ethnic hatred or hostility, and other unlawful content, the author bears criminal liability under the laws of the Republic of Kazakhstan.
-- **Abusive and unlawful material and a disrespectful tone** are moderated by our readers (users) and our AI model; such material is down-ranked, hidden, or removed.
+- **Comments are rated by readers, not by a machine.** A downvoted comment folds to a single line but is not deleted. Articles and listings are screened by AI — and for every finding it names the rule and quotes your own text.
 - Do not publish others' texts or images without permission; do not infringe copyright.
 - Respect privacy: do not disclose other people's personal data without consent.
 - Spam, fraud, and advertising of prohibited goods and services are forbidden.
 - Adult (18+) material and any content harmful to children are not allowed.
 - If the rules are broken, we may hide the material or restrict or block the account. You can appeal via [Support](/support).
-- AI tools help you write in a respectful tone and flag where a source is needed, but final responsibility for the text lies with the author.
+- AI tools flag where a source is needed, but final responsibility for the text lies with the author.
+- **Nothing disappears without trace.** Moderation decisions are recorded: what was checked, which rule fired, which quote triggered it. Comment votes are kept. The AI columnist's predictions sit in the [ledger](/predictions) with their date and are later checked against what happened. A dispute about moderation is settled by the record, not by what the parties remember.
 
 By publishing, you agree to these rules.`},
 	},
@@ -321,11 +510,12 @@ By publishing, you agree to these rules.`},
 | Услуга | Цена |
 | --- | --- |
 | ИИ-редактор (улучшить статью) | 199 ₸ / статья |
-| Автоперевод KZ ↔ RU ↔ EN | 149 ₸ / статья |
 | ИИ-обложка | 99 ₸ / изображение |
-| Пакет «Автор Про» (до 15 ИИ-статей + переводы + 30 обложек в месяц) | 2 490 ₸ / мес |
+| Пакет «Автор Про» (до 15 ИИ-статей + 30 обложек в месяц) | 2 490 ₸ / мес |
 
 Публикация статьи бесплатна. Платите только за ИИ-улучшения, которыми пользуетесь; цены рассчитаны от нашей себестоимости плюс небольшая наценка.
+
+Это список планируемых услуг: в интерфейсе их пока нет. **Автоперевода в нём нет и не будет** — он оказался медленнее, дороже и хуже того, что у автора уже есть под рукой, и мы от него отказались. Перевод на три языка делает автор, и это бесплатно.
 
 ## Услуги для недвижимости
 Подача объявления **бесплатна**: оно активно **21 день** (3 недели), после чего все его данные удаляются. Об окончании срока напоминаем за 2 дня.
@@ -355,11 +545,12 @@ By publishing, you agree to these rules.`},
 | Қызмет | Бағасы |
 | --- | --- |
 | ИИ-редактор (мақаланы жақсарту) | 199 ₸ / мақала |
-| Автоаударма KZ ↔ RU ↔ EN | 149 ₸ / мақала |
 | ИИ-мұқаба | 99 ₸ / сурет |
-| «Автор Про» пакеті (айына 15 ИИ-мақала + аударма + 30 мұқаба) | 2 490 ₸ / ай |
+| «Автор Про» пакеті (айына 15 ИИ-мақала + 30 мұқаба) | 2 490 ₸ / ай |
 
 Мақала жариялау тегін. Тек пайдаланған ИИ-жақсартулар үшін төлейсіз.
+
+Бұл — жоспарланған қызметтер тізімі: интерфейсте олар әзірге жоқ. **Автоматты аударма онда жоқ және болмайды** — ол автордың қолындағыдан баяу, қымбат әрі нашар болып шықты, біз одан бас тарттық. Үш тілге аударманы автор жасайды, ол тегін.
 
 ## Жылжымайтын мүлік қызметтері
 Хабарландыру беру **тегін**: ол **21 күн** (3 апта) белсенді, содан кейін оның барлық деректері жойылады. Мерзімнің аяқталуы туралы 2 күн бұрын ескертеміз.
@@ -389,11 +580,12 @@ By publishing, you agree to these rules.`},
 | Service | Price |
 | --- | --- |
 | AI editor (improve a story) | 199 ₸ / story |
-| Auto-translation KZ ↔ RU ↔ EN | 149 ₸ / story |
 | AI cover image | 99 ₸ / image |
-| "Author Pro" bundle (up to 15 AI stories + translations + 30 covers per month) | 2,490 ₸ / mo |
+| "Author Pro" bundle (up to 15 AI stories + 30 covers per month) | 2,490 ₸ / mo |
 
 Publishing an article is free. You pay only for the AI enhancements you use.
+
+This is a list of planned services: they are not in the interface yet. **Automatic translation is not on it and will not be** — it turned out slower, costlier, and worse than what an author already has to hand, and we withdrew it. The author does the translation into three languages, and that is free.
 
 ## Real-estate services
 Posting a listing is **free**: it stays active for **21 days** (3 weeks), after which all its data is deleted. We remind you 2 days before it expires.
@@ -513,9 +705,10 @@ We reply calmly and to the point.
 - **Короткие абзацы.** 2–4 предложения читаются легче, чем сплошная стена текста.
 - **Проверяйте факты** и указывайте источники ссылками.
 - **Добавьте обложку** — статьи с изображением читают чаще.
-- **Используйте ИИ-редактор** (платно), чтобы улучшить стиль и грамотность, и предпросмотр, чтобы увидеть результат перед публикацией.
+- **Напишите описание на десять строк карточки** — примерно 500 знаков. Это единственное, по чему читатель в ленте решает, открывать ли статью.
+- **Пользуйтесь предпросмотром**, чтобы увидеть результат перед публикацией.
 
-Не уверены в оформлении? Просто пишите текст как есть — ИИ-редактор поможет привести его в порядок. Остались вопросы? Загляните в [справочник](/guide) или напишите в [поддержку](/support).`},
+Не уверены в оформлении? Просто пишите текст как есть: без единого значка Markdown получится обычная статья с абзацами, и это нормально. Остались вопросы? Загляните в [справочник](/guide) или напишите в [поддержку](/support).`},
 		"kz": {Title: "Мақаланы қалай безендіру керек", Body: `Жақсы безендірілген мақала оңай оқылады әрі көбірек сенім тудырады. Мәтін **Markdown** пішімінде жазылады — бұл тақырыпқа, тізімге және ерекшелеуге айналатын қарапайым белгілер. Бәрі оңай: төменде мысалдар берілген. Сол жақта — нәтиже, жақтауда — оны қалай жазу керек.
 
 ## Тақырыптар
@@ -571,9 +764,10 @@ We reply calmly and to the point.
 - **Қысқа абзацтар.** 2–4 сөйлем тұтас мәтіннен оңай оқылады.
 - **Фактілерді тексеріңіз** және дереккөздерді сілтемемен көрсетіңіз.
 - **Мұқаба қосыңыз** — суреті бар мақалаларды жиі оқиды.
-- **ИИ-редакторды пайдаланыңыз** (ақылы) стиль мен сауаттылықты жақсарту үшін, ал жариялаудан бұрын нәтижені көру үшін алдын ала қарауды қолданыңыз.
+- **Сипаттаманы карточканың он жолына жазыңыз** — шамамен 500 таңба. Оқырман лентада мақаланы ашу-ашпауды тек соған қарап шешеді.
+- **Алдын ала қарауды пайдаланыңыз**, жариялаудан бұрын нәтижені көру үшін.
 
-Безендіруге сенімді емессіз бе? Мәтінді бар күйінде жазыңыз — ИИ-редактор оны ретке келтіреді. Сұрақтар болса, [анықтамаға](/guide) кіріңіз немесе [қолдау қызметіне](/support) жазыңыз.`},
+Безендіруге сенімді емессіз бе? Мәтінді бар күйінде жазыңыз: бірде-бір Markdown белгісінсіз де абзацтары бар кәдімгі мақала шығады, бұл қалыпты жағдай. Сұрақтар болса, [анықтамаға](/guide) кіріңіз немесе [қолдау қызметіне](/support) жазыңыз.`},
 		"en": {Title: "How to format an article", Body: `A well-formatted article is easier to read and more trustworthy. Text uses **Markdown** — simple marks that turn into headings, lists, and emphasis. It is easy: examples are below. On the left is the result; in the box is how to write it.
 
 ## Headings
@@ -629,9 +823,10 @@ Three dashes on their own line make a horizontal rule between blocks:
 - **Short paragraphs.** 2–4 sentences read better than a wall of text.
 - **Check your facts** and cite sources with links.
 - **Add a cover** — articles with an image get read more often.
-- **Use the AI editor** (paid) to improve style and grammar, and the preview to see the result before publishing.
+- **Write a summary that fills ten lines of the card** — roughly 500 characters. It is the only thing a reader in the feed uses to decide whether to open the article.
+- **Use the preview** to see the result before publishing.
 
-Not sure about formatting? Just write the text as is — the AI editor will tidy it up. Questions? See the [guide](/guide) or write to [support](/support).`},
+Not sure about formatting? Just write the text as is: without a single Markdown mark you still get an ordinary article with paragraphs, and that is fine. Questions? See the [guide](/guide) or write to [support](/support).`},
 	},
 
 	"privacy": {
@@ -645,13 +840,15 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 ## 2. Какие данные мы собираем
 - **Учётные данные:** адрес электронной почты; для авторов — номер мобильного телефона (для подтверждения личности) и имя с фамилией (подпись под статьями).
 - **Контент:** статьи, комментарии, объявления, загруженные изображения.
+- **Место:** область, город или посёлок, которые вы выбираете сами из справочника. Это выбор из списка, а не определение вашего положения: мы не пользуемся GPS и не вычисляем координаты по IP. Место нужно, чтобы показывать вам местные сообщения, и его можно сменить или очистить в профиле.
+- **Данные организации** (если вы подаёте заявку на публикацию от её имени): название, вид, БИН, сайт и территория. Название подтверждённой организации показывается публично рядом с вашим именем.
 - **Контакты в объявлениях:** телефон или email, которые вы указываете сами.
 - **Технические данные:** IP-адрес, тип устройства и браузера, журналы доступа — для безопасности и диагностики.
 
 Загружаемые изображения повторно кодируются, что удаляет метаданные EXIF (включая геолокацию) для вашей безопасности.
 
 ## 3. Цели обработки
-Данные используются только для работы Платформы: аутентификация и защита учётной записи; идентификация авторов; публикация и перевод контента; модерация и борьба с мошенничеством; связь покупателя и продавца; ответы на обращения; исполнение требований закона.
+Данные используются только для работы Платформы: аутентификация и защита учётной записи; идентификация авторов; публикация контента на трёх языках; показ материалов вашего места; модерация и борьба с мошенничеством; связь покупателя и продавца; ответы на обращения; исполнение требований закона.
 
 ## 4. Правовое основание и согласие
 Основанием обработки является ваше согласие, а также исполнение договора (Соглашения) и требований закона. Согласие фиксируется при регистрации с указанием оператора, перечня данных, целей, срока и условий передачи; мы храним запись о согласии (документ, версия, время, канал). Вы можете отозвать согласие; отзыв рассматривается в срок, установленный законом (по общему правилу — в течение 15 рабочих дней), если это не противоречит закону.
@@ -677,7 +874,7 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 Мы используем технически необходимые cookie (например, для сессии входа) и, при наличии, минимальную аналитику для улучшения сервиса. В подвале сайта установлен счётчик посещаемости ZERO.kz: он считает просмотры страниц независимо от нас, чтобы цифры посещаемости, которые мы показываем рекламодателям, не были посчитаны только нами самими. Таргетированная реклама на основе расы, национальности, политических взглядов, биометрических данных или данных о здоровье не ведётся.
 
 ## 10. Обработка с помощью ИИ
-Для модерации, автоматического перевода и помощи в оформлении применяются ИИ-агенты; они обрабатывают контент в объёме, необходимом для этих задач. Материалы ИИ-обозревателя явно маркируются. Мы не принимаем значимых для пользователя решений исключительно автоматически без возможности обращения к человеку.
+ИИ применяется для проверки объявлений и статей на нарушения правил; он обрабатывает только текст материала в объёме, необходимом для этой задачи. Комментарии ИИ не читает — их оценивают читатели. Автоматический перевод отключён: версии на трёх языках пишет автор. Материалы ИИ-обозревателя явно маркируются и закрыты от поисковых систем. Мы не принимаем значимых для пользователя решений исключительно автоматически без возможности обращения к человеку.
 
 ## 11. Изменения политики
 Политика может обновляться; существенные изменения публикуются на Платформе с указанием даты редакции. При необходимости запрашивается новое согласие.
@@ -694,13 +891,15 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 ## 2. Біз қандай деректерді жинаймыз
 - **Есептік деректер:** электрондық пошта мекенжайы; авторлар үшін — ұялы телефон нөмірі (жеке басты растау үшін) және аты-жөні (мақалалардың астындағы қолтаңба).
 - **Контент:** мақалалар, пікірлер, хабарландырулар, жүктелген суреттер.
+- **Орын:** анықтамалықтан өзіңіз таңдайтын облыс, қала немесе кент. Бұл — тізімнен таңдау, орналасқан жеріңізді анықтау емес: біз GPS қолданбаймыз және IP бойынша координат есептемейміз. Орын сізге жергілікті хабарламаларды көрсету үшін керек, оны профильде ауыстыруға немесе тазалауға болады.
+- **Ұйым деректері** (оның атынан жариялауға өтініш берсеңіз): атауы, түрі, БСН, сайты және аумағы. Расталған ұйымның атауы сіздің атыңыздың қасында жария көрсетіледі.
 - **Хабарландырулардағы байланыстар:** сіз өзіңіз көрсететін телефон немесе email.
 - **Техникалық деректер:** IP-мекенжай, құрылғы мен браузердің түрі, қолжетімділік журналдары — қауіпсіздік пен диагностика үшін.
 
 Жүктелетін суреттер қайта кодталады, бұл сіздің қауіпсіздігіңіз үшін EXIF метадеректерін (соның ішінде геолокацияны) жояды.
 
 ## 3. Өңдеу мақсаттары
-Деректер тек Платформаның жұмысы үшін пайдаланылады: аутентификация және есептік жазбаны қорғау; авторларды сәйкестендіру; контентті жариялау және аудару; модерация және алаяқтыққа қарсы күрес; сатып алушы мен сатушыны байланыстыру; өтініштерге жауап беру; заң талаптарын орындау.
+Деректер тек Платформаның жұмысы үшін пайдаланылады: аутентификация және есептік жазбаны қорғау; авторларды сәйкестендіру; контентті үш тілде жариялау; орныңыздың материалдарын көрсету; модерация және алаяқтыққа қарсы күрес; сатып алушы мен сатушыны байланыстыру; өтініштерге жауап беру; заң талаптарын орындау.
 
 ## 4. Құқықтық негіз және келісім
 Өңдеудің негізі — сіздің келісіміңіз, сондай-ақ шартты (Келісімді) және заң талаптарын орындау. Келісім тіркелу кезінде операторды, деректер тізбесін, мақсаттарды, мерзімін және беру шарттарын көрсете отырып тіркеледі; біз келісім туралы жазбаны (құжат, нұсқа, уақыт, арна) сақтаймыз. Сіз келісімді кері қайтара аласыз; кері қайтарып алу заңда белгіленген мерзімде (жалпы ереже бойынша — 15 жұмыс күні ішінде), егер бұл заңға қайшы келмесе, қаралады.
@@ -726,7 +925,7 @@ Not sure about formatting? Just write the text as is — the AI editor will tidy
 Біз техникалық тұрғыдан қажетті cookie файлдарын (мысалы, кіру сессиясы үшін) және бар болса, сервисті жақсарту үшін ең аз аналитиканы қолданамыз. Сайттың төменгі бөлігінде ZERO.kz келушілер санағышы орнатылған: ол бет қаралымдарын бізден тәуелсіз санайды, сондықтан жарнама берушілерге көрсететін сандарымызды тек өзіміз санаған болып шықпаймыз. Нәсіл, ұлт, саяси көзқарас, биометриялық деректер немесе денсаулық туралы деректер негізінде мақсатты жарнама жүргізілмейді.
 
 ## 10. ЖИ көмегімен өңдеу
-Модерация, автоматты аудару және безендіруге көмек үшін ЖИ-агенттер қолданылады; олар контентті осы міндеттер үшін қажетті көлемде өңдейді. ЖИ-шолушының материалдары айқын белгіленеді. Біз пайдаланушы үшін маңызды шешімдерді адамға жүгіну мүмкіндігінсіз тек автоматты түрде қабылдамаймыз.
+ЖИ хабарландырулар мен мақалаларды ережелердің бұзылуына тексеру үшін қолданылады; ол материал мәтінін ғана осы міндетке қажетті көлемде өңдейді. Пікірлерді ЖИ оқымайды — оларды оқырмандар бағалайды. Автоматты аударма өшірілген: үш тілдегі нұсқаны автор жазады. ЖИ-шолушының материалдары айқын белгіленеді және іздеу жүйелерінен жабық. Біз пайдаланушы үшін маңызды шешімдерді адамға жүгіну мүмкіндігінсіз тек автоматты түрде қабылдамаймыз.
 
 ## 11. Саясатты өзгерту
 Саясат жаңартылуы мүмкін; елеулі өзгерістер редакция күнін көрсете отырып Платформада жарияланады. Қажет болса, жаңа келісім сұралады.
@@ -743,13 +942,15 @@ The operator of personal data is {{operator_block}} Processing is carried out in
 ## 2. What Data We Collect
 - **Account data:** email address; for authors — a mobile phone number (to verify identity) and a first and last name (the byline on articles).
 - **Content:** articles, comments, listings, uploaded images.
+- **Place:** the region, city, or town you choose yourself from a reference list. It is a choice from a list, not a determination of your location: we do not use GPS and do not derive coordinates from your IP. The place is used to show you local messages, and you can change or clear it in your profile.
+- **Organisation data** (if you apply to publish on its behalf): name, kind, business identification number, website, and territory. The name of a verified organisation is shown publicly next to your own.
 - **Contacts in listings:** a phone number or email that you provide yourself.
 - **Technical data:** IP address, device and browser type, access logs — for security and diagnostics.
 
 Uploaded images are re-encoded, which removes EXIF metadata (including geolocation) for your safety.
 
 ## 3. Purposes of Processing
-Data is used only for the operation of the Platform: authentication and account protection; identification of authors; publication and translation of content; moderation and fraud prevention; connecting buyer and seller; responding to requests; and complying with legal requirements.
+Data is used only for the operation of the Platform: authentication and account protection; identification of authors; publication of content in three languages; showing material for your place; moderation and fraud prevention; connecting buyer and seller; responding to requests; and complying with legal requirements.
 
 ## 4. Legal Basis and Consent
 The basis for processing is your consent, as well as the performance of a contract (the Terms) and legal requirements. Consent is recorded at registration, specifying the operator, the list of data, the purposes, the term, and the conditions of transfer; we retain a record of consent (document, version, time, channel). You may withdraw consent; a withdrawal is reviewed within the period established by law (as a general rule, within 15 business days), unless this is contrary to the law.
@@ -775,7 +976,7 @@ We apply organizational and technical protection measures (password hashing, acc
 We use technically necessary cookies (for example, for the login session) and, where present, minimal analytics to improve the service. A ZERO.kz visitor counter runs in the site footer: it counts page views independently of us, so that the traffic figures we show advertisers are not figures only we have counted. We do not conduct targeted advertising based on race, ethnicity, political views, biometric data, or health data.
 
 ## 10. Processing with the Help of AI
-AI agents are used for moderation, automatic translation, and formatting assistance; they process content to the extent necessary for these tasks. Materials of the AI columnist are clearly marked. We do not make decisions of significance to the user solely automatically, without the possibility of recourse to a human.
+AI is used to screen listings and articles for rule violations; it processes only the text of the material, to the extent necessary for that task. AI does not read comments — readers rate them. Automatic translation is switched off: the author writes the versions in all three languages. Materials of the AI columnist are clearly marked and closed to search engines. We do not make decisions of significance to the user solely automatically, without the possibility of recourse to a human.
 
 ## 11. Changes to the Policy
 The Policy may be updated; material changes are published on the Platform with the date of the revision indicated. Where necessary, new consent is requested.
@@ -796,7 +997,7 @@ For questions about data processing, contact us through the [support page](/supp
 - **Автор** — Пользователь, публикующий статьи под своим настоящим именем.
 - **Объявление** — размещённое Пользователем предложение о недвижимости.
 - **Контент** — тексты, изображения, комментарии и иные материалы Пользователя.
-- **ИИ-агенты** — автоматизированные помощники Платформы (модерация, консультирование, перевод, помощь в оформлении).
+- **ИИ-агенты** — автоматизированные помощники Платформы: проверка статей и объявлений на нарушения правил, ответы на вопросы о правилах, ИИ-обозреватель.
 
 ## 3. Регистрация и учётная запись
 Для части действий требуется учётная запись. Вы обязаны указывать достоверные данные и отвечаете за сохранность пароля и за все действия под своей учётной записью. Платформа подтверждает адрес электронной почты при регистрации. Действия, которыми легко злоупотребить (публикация объявления, жалоба), доступны только после подтверждения адреса электронной почты.
@@ -804,37 +1005,58 @@ For questions about data processing, contact us through the [support page](/supp
 ## 4. Настоящее имя автора
 Статьи публикуются под настоящими именем и фамилией автора. Использование псевдонимов, кличек и никнеймов для авторства статей запрещено — это обеспечивает ответственность за публикуемое и соответствует требованиям законодательства РК об идентификации пользователей и об ответственности за контент. Чтобы стать автором, достаточно один раз подтвердить личность через номер мобильного телефона (код по SMS) и указать имя и фамилию — они станут подписью под статьями; номер телефона не публикуется. Исключение — прозрачный ИИ-обозреватель «AI Dake», чьи материалы явно помечены как мнение искусственного интеллекта.
 
-## 5. Публикация статей
+## 5. Публикация от имени организации
+Акимат, ЖКХ, ТОО, школа, поликлиника или общественная организация могут публиковать под своим названием. Заявку подаёт человек: он указывает название, вид, БИН и территорию организации, и остаётся автором — под материалом стоят оба имени, организация и человек, который её опубликовал.
+
+Название организации не показывается нигде, пока заявку не подтвердил человек из Платформы. Правка названия сбрасывает подтверждение: изменённое имя ещё никто не смотрел. Подавать заявку от имени организации, к которой вы не имеете отношения, запрещено; подтверждение может быть отозвано в любой момент.
+
+Организация публикует для своей территории и того, что внутри неё: акимат области может опубликовать для посёлка в этой области, но не для другой области. Организация без указанной территории не ограничена — так выглядит республиканское ведомство, и такую заявку человек рассматривает отдельно.
+
+## 6. Публикация статей
 Автор отвечает за достоверность и законность своих материалов. Запрещены заведомо ложная информация, призывы к насилию, разжигание розни, клевета и оскорбления, распространение чужих персональных данных без согласия. Факты следует по возможности подтверждать источниками; материалы-мнения должны быть обозначены как мнение. Публикуя материал, автор подтверждает, что имеет на это право и не нарушает прав третьих лиц.
 
-## 6. Объявления о недвижимости
+Версии на казахском, русском и английском пишет сам автор — автоматический перевод на Платформе отключён. Платформа механически сверяет версии между собой: числа, ссылки, заголовки и число абзацев должны совпадать. Расхождение показывается автору как предупреждение, а не как запрет: решение остаётся за ним.
+
+Материалу можно указать место — область, город или посёлок. Тогда он попадает на страницу этого места и на страницы всех мест над ним. Указывать место, к которому материал отношения не имеет, запрещено — это то же самое, что ключевые слова не по теме.
+
+## 7. Объявления о недвижимости
 Объявление активно ограниченный срок, после чего его можно продлить, продвинуть или выделить. Фотографии должны быть настоящими; запрещены фильтры, искажающие реальные размеры помещения, — это считается введением покупателя в заблуждение. Сделка и расчёты происходят напрямую между покупателем и продавцом; Платформа только размещает объявления и не является стороной сделки. Контактные данные продавца показываются по действию пользователя и защищены от массового сбора.
 
-## 7. Запрещённый контент и поведение
+## 8. Запрещённый контент и поведение
 Запрещены: спам и мошенничество; оскорбления, угрозы, травля, разжигание вражды; публикация персональных данных других лиц без согласия; контент, нарушающий законодательство РК или права третьих лиц; попытки обойти защитные механизмы Платформы; накрутка жалоб и голосов.
 
-## 8. Модерация и роль ИИ-агентов
-Платформа использует ИИ-агентов вместе с проверкой человеком, что делает поддержку и модерацию быстрее и доступнее. Модератор проверяет комментарии, статьи и объявления на спам, оскорбления, обман и нарушения; подозрительное скрывается до проверки человеком. Консультант отвечает на вопросы о правилах и при выходе за рамки передаёт человеку. Помощник по объявлениям и редактор помогают оформить материал, не выдумывая фактов. Решения ИИ можно обжаловать; итоговую ответственность за модерацию несёт Платформа, автоматическая публикация сомнительных утверждений не допускается.
+## 9. Модерация и роль ИИ-агентов
+Модерация устроена по-разному для разных материалов, и мы называем это прямо.
 
-## 9. Жалобы и обжалование
+**Комментарии модерируют читатели.** Каждый зарегистрированный читатель ставит комментарию плюс или минус; вес голоса растёт с кармой, поэтому свежие аккаунты не решают исход. Комментарий, набравший достаточно минусов, сворачивается за одну строку — но не удаляется: любой может его раскрыть. ИИ комментарии не читает и не скрывает.
+
+**Объявления проверяет ИИ, и объясняет каждое замечание.** Проверка ищет недостоверные данные (площадь, цена или адрес, противоречащие описанию), мошенничество, скрытую рекламу, запрещённые товары и чужие персональные данные. Проверка идёт после публикации, в фоне: объявление появляется сразу. По каждому замечанию автор получает название правила, точную цитату из своего текста и указание, что исправить. Серьёзное нарушение убирает объявление из поиска до решения человека; остальное остаётся замечанием.
+
+**Статьи проходят проверку перед публикацией.** Она ищет клевету, разжигание вражды, чужие персональные данные, скрытую рекламу, плагиат и утверждения без источника. Замечания приходят с цитатой и пояснением. Если проверка недоступна, статья ждёт человека, а не публикуется без проверки.
+
+**Решение ИИ можно обжаловать**, и обжалование рассматривает человек. Итоговую ответственность за модерацию несёт Платформа.
+
+## 10. Жалобы и обжалование
 Если контент нарушает закон или ваши права, отправьте обращение через [страницу поддержки](/support). Мы регистрируем обращение, рассматриваем его и даём мотивированный ответ в сроки, установленные законодательством РК. Автор скрытого или удалённого материала вправе подать апелляцию; решение по ней принимает человек.
 
-## 10. Интеллектуальная собственность
-Права на свои статьи, фотографии и объявления сохраняются за автором. Размещая контент, вы предоставляете Платформе неисключительную безвозмездную лицензию на его хранение, показ, автоматический перевод на три языка и продвижение в рамках работы сервиса. Товарные знаки и оформление Платформы принадлежат её владельцу.
+На Платформе ничего не исчезает бесследно. Каждое решение модерации записывается в журнал: что проверялось, какое правило сработало, какая цитата его вызвала и кто принял решение — машина или человек. Оценки комментариев сохраняются как есть: сильно заминусованный комментарий сворачивается, но не удаляется, и любой читатель может его раскрыть. Прогнозы ИИ-обозревателя хранятся вместе с датой и позже сверяются с тем, что произошло на самом деле. Эти записи существуют для того, чтобы спор о модерации решался по документу, а не по памяти сторон.
 
-## 11. Тарифы и платные услуги
+## 11. Интеллектуальная собственность
+Права на свои статьи, фотографии и объявления сохраняются за автором. Размещая контент, вы предоставляете Платформе неисключительную безвозмездную лицензию на его хранение, показ на трёх языках и продвижение в рамках работы сервиса. Товарные знаки и оформление Платформы принадлежат её владельцу.
+
+## 12. Тарифы и платные услуги
 В период запуска публикация статей и объявлений бесплатна. О введении платных услуг мы уведомляем заранее; действующие цены публикуются на Платформе.
 
-## 12. Ответственность и отказ от гарантий
+## 13. Ответственность и отказ от гарантий
 Сервис предоставляется «как есть». Мы стремимся к бесперебойной работе, но не гарантируем отсутствие ошибок и перерывов. Платформа не отвечает за достоверность пользовательского контента и за действия пользователей в сделках; ответственность несёт лицо, разместившее контент, в пределах, допускаемых законодательством РК.
 
-## 13. Приостановка и прекращение
+## 14. Приостановка и прекращение
 Мы можем ограничить, приостановить или прекратить доступ при нарушении Соглашения или закона, по возможности уведомив пользователя. Вы можете в любой момент прекратить использование и запросить удаление учётной записи.
 
-## 14. Применимое право и споры
+## 15. Применимое право и споры
 К Соглашению применяется право Республики Казахстан. Споры разрешаются путём переговоров, а при недостижении согласия — в судах РК по установленной подсудности.
 
-## 15. Изменения условий
+## 16. Изменения условий
 Мы можем обновлять Соглашение; существенные изменения публикуются на Платформе, при необходимости запрашивается повторное согласие. Продолжение использования после изменений означает их принятие.`},
 		"kz": {Title: "Пайдаланушы келісімі", Body: `_25.07.2026 жағдайындағы редакция._
 
@@ -848,7 +1070,7 @@ Shanraq.org платформасын пайдалана отырып, сіз о�
 - **Автор** — мақалаларды өзінің шын атымен жариялайтын Пайдаланушы.
 - **Хабарландыру** — Пайдаланушы орналастырған жылжымайтын мүлік туралы ұсыныс.
 - **Контент** — Пайдаланушының мәтіндері, суреттері, пікірлері және өзге де материалдары.
-- **ЖИ-агенттер** — Платформаның автоматтандырылған көмекшілері (модерация, кеңес беру, аудару, безендіруге көмек).
+- **ЖИ-агенттер** — Платформаның автоматтандырылған көмекшілері: мақалалар мен хабарландыруларды ережелердің бұзылуына тексеру, ережелер туралы сұрақтарға жауап беру, ЖИ-шолушы.
 
 ## 3. Тіркелу және есептік жазба
 Кейбір әрекеттер үшін есептік жазба қажет. Сіз дұрыс деректерді көрсетуге міндеттісіз әрі құпия сөздің сақталуы мен өз есептік жазбаңыз арқылы жасалған барлық әрекеттер үшін жауап бересіз. Платформа тіркелу кезінде электрондық пошта мекенжайын растайды. Теріс пайдалануға оңай ұшырайтын әрекеттер (хабарландыру жариялау, шағым беру) тек электрондық пошта мекенжайы расталғаннан кейін ғана қолжетімді болады.
@@ -856,37 +1078,58 @@ Shanraq.org платформасын пайдалана отырып, сіз о�
 ## 4. Автордың шын аты
 Мақалалар автордың шын аты-жөнімен жарияланады. Мақала авторлығы үшін бүркеншік аттарды, лақап аттар мен никнеймдерді пайдалануға тыйым салынады — бұл жарияланғанға деген жауапкершілікті қамтамасыз етеді әрі ҚР заңнамасының пайдаланушыларды сәйкестендіру мен контентке жауапкершілік туралы талаптарына сай келеді. Автор болу үшін ұялы телефон нөмірі арқылы (SMS-код) бір рет жеке басты растап, аты-жөнін көрсету жеткілікті — олар мақалалардың астындағы қолтаңба болады; телефон нөмірі жарияланбайды. Ерекшелік — материалдары жасанды интеллектінің пікірі ретінде айқын белгіленетін ашық ЖИ-шолушы «AI Dake».
 
-## 5. Мақалаларды жариялау
+## 5. Ұйым атынан жариялау
+Әкімдік, ТКШ, ЖШС, мектеп, емхана немесе қоғамдық ұйым өз атауымен жариялай алады. Өтінішті адам береді: ол ұйымның атауын, түрін, БСН-ін және аумағын көрсетеді әрі автор болып қалады — материалдың астында екі есім тұрады: ұйым және оны жариялаған адам.
+
+Ұйым атауы Платформа адамы өтінішті растағанға дейін еш жерде көрсетілмейді. Атауды өзгерту растауды жояды: өзгертілген атауды әлі ешкім қараған жоқ. Өзіңіз қатысы жоқ ұйымның атынан өтініш беруге тыйым салынады; растау кез келген сәтте кері қайтарылуы мүмкін.
+
+Ұйым өз аумағы және оның ішіндегі жерлер үшін жариялайды: облыс әкімдігі сол облыстағы кент үшін жариялай алады, бірақ басқа облыс үшін емес. Аумағы көрсетілмеген ұйым шектелмейді — республикалық ведомство осылай көрінеді, ондай өтінішті адам бөлек қарайды.
+
+## 6. Мақалаларды жариялау
 Автор өз материалдарының дұрыстығы мен заңдылығы үшін жауап береді. Көрінеу жалған ақпаратқа, зорлық-зомбылыққа шақыруға, араздықты қоздыруға, жалаға және қорлауға, өзгенің дербес деректерін келісімсіз таратуға тыйым салынады. Фактілерді мүмкіндігінше дереккөздермен растаған жөн; пікір-материалдар пікір ретінде белгіленуі тиіс. Материалды жариялай отырып, автор бұған құқығы бар екенін және үшінші тұлғалардың құқықтарын бұзбайтынын растайды.
 
-## 6. Жылжымайтын мүлік туралы хабарландырулар
+Қазақ, орыс және ағылшын тіліндегі нұсқаларды автордың өзі жазады — Платформада автоматты аударма өшірілген. Платформа нұсқаларды механикалық түрде салыстырады: сандар, сілтемелер, тақырыптар және абзац саны сәйкес келуге тиіс. Айырма авторға тыйым емес, ескерту ретінде көрсетіледі: шешім оның өзінде.
+
+Материалға орын — облыс, қала немесе кент — көрсетуге болады. Сонда ол сол орынның және оның үстіндегі барлық орындардың бетіне түседі. Материалға қатысы жоқ орынды көрсетуге тыйым салынады — бұл тақырыпқа қатысы жоқ кілт сөздермен бірдей.
+
+## 7. Жылжымайтын мүлік туралы хабарландырулар
 Хабарландыру шектеулі мерзім бойы белсенді болады, содан кейін оны ұзартуға, ілгерілетуге немесе ерекшелеуге болады. Фотосуреттер шынайы болуы тиіс; бөлменің нақты өлшемдерін бұрмалайтын сүзгілерге тыйым салынады — бұл сатып алушыны шатастыру болып саналады. Мәміле мен есеп айырысу сатып алушы мен сатушы арасында тікелей жүзеге асырылады; Платформа тек хабарландыруларды орналастырады және мәміленің тарапы болып табылмайды. Сатушының байланыс деректері пайдаланушының әрекеті бойынша көрсетіледі әрі жаппай жинаудан қорғалған.
 
-## 7. Тыйым салынған контент пен әрекет
+## 8. Тыйым салынған контент пен әрекет
 Мыналарға тыйым салынады: спам мен алаяқтық; қорлау, қоқан-лоққы, қудалау, өшпенділікті қоздыру; басқа тұлғалардың дербес деректерін келісімсіз жариялау; ҚР заңнамасын немесе үшінші тұлғалардың құқықтарын бұзатын контент; Платформаның қорғау тетіктерін айналып өтуге әрекет ету; шағымдар мен дауыстарды жасанды түрде көбейту.
 
-## 8. Модерация және ЖИ-агенттердің рөлі
-Платформа ЖИ-агенттерді адамның тексеруімен бірге қолданады, бұл қолдау мен модерацияны жылдамырақ әрі қолжетімдірек етеді. Модератор пікірлерді, мақалалар мен хабарландыруларды спамға, қорлауға, алдауға және бұзушылықтарға тексереді; күдікті материал адам тексергенге дейін жасырылады. Кеңесші ережелер туралы сұрақтарға жауап береді және шектен шыққан жағдайда мәселені адамға береді. Хабарландыру көмекшісі мен редактор материалды безендіруге көмектеседі, бірақ факт ойлап таппайды. ЖИ шешімдеріне шағым беруге болады; модерация үшін түпкілікті жауапкершілікті Платформа көтереді, күмәнді тұжырымдарды автоматты түрде жариялауға жол берілмейді.
+## 9. Модерация және ЖИ-агенттердің рөлі
+Модерация әртүрлі материал үшін әртүрлі құрылған, біз оны ашық айтамыз.
 
-## 9. Шағымдар мен шағымдану
+**Пікірлерді оқырмандар модерациялайды.** Тіркелген әр оқырман пікірге плюс не минус қояды; дауыс салмағы кармамен бірге өседі, сондықтан жаңа аккаунттар нәтижені шешпейді. Жеткілікті минус жинаған пікір бір жолға жиналады — бірақ жойылмайды: кез келген адам оны аша алады. ЖИ пікірлерді оқымайды және жасырмайды.
+
+**Хабарландыруларды ЖИ тексереді және әр ескертпені түсіндіреді.** Тексеру дұрыс емес деректерді (сипаттамаға қайшы аудан, баға немесе мекенжай), алаяқтықты, жасырын жарнаманы, тыйым салынған тауарларды және бөгде дербес деректерді іздейді. Тексеру жарияланғаннан кейін, фонда жүреді: хабарландыру бірден шығады. Әр ескертпе бойынша автор ереженің атауын, өз мәтінінен нақты дәйексөзді және нені түзету керектігін алады. Ауыр бұзушылық хабарландыруды адам шешкенге дейін іздеуден алып тастайды; қалғаны ескертпе болып қалады.
+
+**Мақалалар жарияланар алдында тексеруден өтеді.** Ол жалаға жабуды, өшпенділік қоздыруды, бөгде дербес деректерді, жасырын жарнаманы, плагиатты және дереккөзсіз тұжырымдарды іздейді. Ескертпелер дәйексөзбен әрі түсіндірмемен келеді. Тексеру қолжетімсіз болса, мақала тексерусіз жарияланбай, адамды күтеді.
+
+**ЖИ шешіміне шағым беруге болады**, шағымды адам қарайды. Модерация үшін түпкілікті жауапкершілікті Платформа көтереді.
+
+## 10. Шағымдар мен шағымдану
 Егер контент заңды немесе сіздің құқықтарыңызды бұзса, [қолдау көрсету бетінен](/support) өтініш жіберіңіз. Біз өтінішті тіркейміз, оны қараймыз және ҚР заңнамасында белгіленген мерзімде дәлелді жауап береміз. Жасырылған немесе жойылған материалдың авторы апелляция беруге құқылы; ол бойынша шешімді адам қабылдайды.
 
-## 10. Зияткерлік меншік
-Өз мақалаларына, фотосуреттеріне және хабарландыруларына деген құқықтар автордың өзінде сақталады. Контентті орналастыра отырып, сіз Платформаға оны сақтауға, көрсетуге, үш тілге автоматты түрде аударуға және сервистің жұмысы аясында ілгерілетуге айрықша емес, өтеусіз лицензия бересіз. Платформаның тауар белгілері мен безендірілуі оның иесіне тиесілі.
+Платформада ешнәрсе іссіз жоғалмайды. Модерацияның әр шешімі журналға жазылады: не тексерілді, қай ереже іске қосылды, оны қандай дәйексөз тудырды және шешімді кім қабылдады — машина ма, адам ба. Пікірлердің бағасы сол күйінде сақталады: көп минус жинаған пікір жиналады, бірақ жойылмайды, оны кез келген оқырман аша алады. ЖИ-шолушының болжамдары күнімен бірге сақталады және кейін шын болғанмен салыстырылады. Бұл жазбалар модерация туралы дау тараптардың есінде қалғанымен емес, құжатпен шешілуі үшін бар.
 
-## 11. Тарифтер мен ақылы қызметтер
+## 11. Зияткерлік меншік
+Өз мақалаларына, фотосуреттеріне және хабарландыруларына деген құқықтар автордың өзінде сақталады. Контентті орналастыра отырып, сіз Платформаға оны сақтауға, үш тілде көрсетуге және сервистің жұмысы аясында ілгерілетуге айрықша емес, өтеусіз лицензия бересіз. Платформаның тауар белгілері мен безендірілуі оның иесіне тиесілі.
+
+## 12. Тарифтер мен ақылы қызметтер
 Іске қосу кезеңінде мақалалар мен хабарландыруларды жариялау тегін. Ақылы қызметтердің енгізілуі туралы біз алдын ала хабарлаймыз; қолданыстағы бағалар Платформада жарияланады.
 
-## 12. Жауапкершілік және кепілдіктерден бас тарту
+## 13. Жауапкершілік және кепілдіктерден бас тарту
 Сервис «сол қалпында» ұсынылады. Біз үздіксіз жұмысқа ұмтыламыз, бірақ қателер мен үзілістердің болмауына кепілдік бермейміз. Платформа пайдаланушы контентінің дұрыстығы үшін және пайдаланушылардың мәмілелердегі әрекеттері үшін жауап бермейді; жауапкершілікті контентті орналастырған тұлға ҚР заңнамасында жол берілген шектерде көтереді.
 
-## 13. Тоқтата тұру және тоқтату
+## 14. Тоқтата тұру және тоқтату
 Біз Келісім немесе заң бұзылған жағдайда, мүмкіндігінше пайдаланушыны хабардар ете отырып, қолжетімділікті шектей, тоқтата тұра немесе тоқтата аламыз. Сіз кез келген уақытта пайдалануды тоқтатып, есептік жазбаны жоюды сұрай аласыз.
 
-## 14. Қолданылатын құқық және даулар
+## 15. Қолданылатын құқық және даулар
 Келісімге Қазақстан Республикасының құқығы қолданылады. Даулар келіссөздер жолымен, ал келісімге қол жеткізілмеген жағдайда — белгіленген соттылық бойынша ҚР соттарында шешіледі.
 
-## 15. Шарттарды өзгерту
+## 16. Шарттарды өзгерту
 Біз Келісімді жаңарта аламыз; елеулі өзгерістер Платформада жарияланады, қажет болса қайта келісім сұралады. Өзгерістерден кейін пайдалануды жалғастыру оларды қабылдауды білдіреді.`},
 		"en": {Title: "Terms of Use", Body: `_Revision of 25.07.2026._
 
@@ -900,7 +1143,7 @@ The Terms govern the relationship between the owner of the Shanraq.org platform 
 - **Author** — a User who publishes articles under their real name.
 - **Listing** — a real estate offer posted by a User.
 - **Content** — texts, images, comments, and other materials of a User.
-- **AI agents** — the Platform's automated assistants (moderation, consulting, translation, formatting assistance).
+- **AI agents** — the Platform's automated assistants: screening articles and listings for rule violations, answering questions about the rules, the AI columnist.
 
 ## 3. Registration and Account
 Some actions require an account. You must provide accurate information and are responsible for keeping your password secure and for all activity under your account. The Platform verifies the email address at registration. Actions that are easy to abuse (posting a listing, filing a complaint) are available only after the email address has been verified.
@@ -908,37 +1151,58 @@ Some actions require an account. You must provide accurate information and are r
 ## 4. The Author's Real Name
 Articles are published under the author's real first and last name. The use of pseudonyms, aliases, and nicknames for authorship of articles is prohibited — this ensures accountability for what is published and complies with the requirements of the legislation of the Republic of Kazakhstan on user identification and liability for content. To become an author, it is sufficient to verify your identity once via a mobile phone number (SMS code) and provide your first and last name — these become the byline on your articles; the phone number is not published. An exception is the transparent AI columnist "AI Dake", whose materials are clearly marked as the opinion of an artificial intelligence.
 
-## 5. Publishing Articles
+## 5. Publishing on Behalf of an Organisation
+An akimat, a housing utility, a company, a school, a clinic, or a public organisation may publish under its own name. The application is made by a person: they state the organisation's name, kind, business identification number, and territory, and they remain the author — both names stand under the material, the organisation and the person who published it.
+
+The organisation's name is shown nowhere until a person at the Platform has verified the application. Editing the name clears the verification: nobody has yet looked at the changed name. Applying on behalf of an organisation you have no connection to is prohibited; verification may be withdrawn at any time.
+
+An organisation publishes for its own territory and for what lies inside it: a regional akimat may publish for a town within that region, but not for another region. An organisation with no stated territory is not restricted — that is what a national body looks like, and such an application is reviewed separately by a person.
+
+## 6. Publishing Articles
 The author is responsible for the accuracy and lawfulness of their materials. Knowingly false information, calls to violence, incitement of hatred, defamation and insults, and the dissemination of other persons' personal data without consent are prohibited. Facts should be supported by sources where possible; opinion materials must be marked as opinion. By publishing material, the author confirms that they have the right to do so and that they do not infringe the rights of third parties.
 
-## 6. Real Estate Listings
+The Kazakh, Russian, and English versions are written by the author — automatic translation on the Platform is switched off. The Platform compares the versions mechanically: numbers, links, headings, and the number of paragraphs must match. A discrepancy is shown to the author as a warning, not a prohibition: the decision remains theirs.
+
+Material may be given a place — a region, a city, or a town. It then appears on that place's page and on the pages of every place above it. Assigning a place the material has nothing to do with is prohibited — it is the same thing as off-topic keywords.
+
+## 7. Real Estate Listings
 A listing is active for a limited period, after which it can be renewed, promoted, or featured. Photographs must be genuine; filters that distort the real dimensions of the premises are prohibited, as this is regarded as misleading the buyer. The transaction and settlements take place directly between the buyer and the seller; the Platform only hosts listings and is not a party to the transaction. The seller's contact details are shown upon a user action and are protected against mass harvesting.
 
-## 7. Prohibited Content and Conduct
+## 8. Prohibited Content and Conduct
 The following are prohibited: spam and fraud; insults, threats, harassment, incitement of enmity; publication of other persons' personal data without consent; content that violates the legislation of the Republic of Kazakhstan or the rights of third parties; attempts to circumvent the Platform's protective mechanisms; and the manipulation of complaints and votes.
 
-## 8. Moderation and the Role of AI Agents
-The Platform uses AI agents together with human review, which makes support and moderation faster and more accessible. The moderator checks comments, articles, and listings for spam, insults, deception, and violations; suspicious material is hidden pending human review. The consultant answers questions about the rules and, when a matter goes beyond its scope, refers it to a human. The listing assistant and the editor help format material without inventing facts. AI decisions may be appealed; ultimate responsibility for moderation rests with the Platform, and the automatic publication of questionable statements is not permitted.
+## 9. Moderation and the Role of AI Agents
+Moderation works differently for different material, and we say so plainly.
 
-## 9. Complaints and Appeals
+**Comments are moderated by readers.** Every registered reader can vote a comment up or down; a vote's weight grows with karma, so fresh accounts do not decide the outcome. A comment with enough downvotes folds to a single line — but is not deleted: anyone can unfold it. AI neither reads nor hides comments.
+
+**Listings are screened by AI, and every finding is explained.** The screening looks for false data (an area, price, or address contradicting the description), fraud, hidden advertising, prohibited goods, and other people's personal data. It runs after publication, in the background: the listing appears at once. For each finding the author receives the name of the rule, the exact quote from their own text, and what to correct. A serious violation removes the listing from search until a human decides; the rest remains a note.
+
+**Articles are screened before publication.** The screening looks for defamation, incitement of hatred, other people's personal data, hidden advertising, plagiarism, and claims without a source. Findings come with a quote and an explanation. If the screening is unavailable, the article waits for a human rather than being published unchecked.
+
+**An AI decision may be appealed**, and the appeal is reviewed by a human. Ultimate responsibility for moderation rests with the Platform.
+
+## 10. Complaints and Appeals
 If content violates the law or your rights, submit a request through the [support page](/support). We register the request, review it, and provide a reasoned response within the time limits established by the legislation of the Republic of Kazakhstan. The author of hidden or removed material has the right to file an appeal; the decision on it is made by a human.
 
-## 10. Intellectual Property
-Rights to your articles, photographs, and listings remain with the author. By posting content, you grant the Platform a non-exclusive, royalty-free license to store, display, automatically translate into the three languages, and promote it within the operation of the service. The Platform's trademarks and design belong to its owner.
+Nothing on the Platform disappears without trace. Every moderation decision is written to a ledger: what was checked, which rule fired, which quote triggered it, and who decided — machine or human. Comment votes are kept as they are: a heavily downvoted comment folds but is not deleted, and any reader can unfold it. The AI columnist's predictions are stored with their date and later checked against what actually happened. These records exist so that a dispute about moderation is settled by the document rather than by what the parties remember.
 
-## 11. Fees and Paid Services
+## 11. Intellectual Property
+Rights to your articles, photographs, and listings remain with the author. By posting content, you grant the Platform a non-exclusive, royalty-free license to store, display in the three languages, and promote it within the operation of the service. The Platform's trademarks and design belong to its owner.
+
+## 12. Fees and Paid Services
 During the launch period, publishing articles and listings is free. We will give advance notice of the introduction of paid services; the current prices are published on the Platform.
 
-## 12. Liability and Disclaimer of Warranties
+## 13. Liability and Disclaimer of Warranties
 The service is provided "as is". We strive for uninterrupted operation but do not guarantee the absence of errors and interruptions. The Platform is not responsible for the accuracy of user content or for users' actions in transactions; liability rests with the person who posted the content, to the extent permitted by the legislation of the Republic of Kazakhstan.
 
-## 13. Suspension and Termination
+## 14. Suspension and Termination
 We may restrict, suspend, or terminate access in the event of a violation of the Terms or the law, notifying the user where possible. You may cease use at any time and request deletion of your account.
 
-## 14. Governing Law and Disputes
+## 15. Governing Law and Disputes
 The law of the Republic of Kazakhstan applies to the Terms. Disputes are resolved through negotiation, and, failing agreement, in the courts of the Republic of Kazakhstan under the established jurisdiction.
 
-## 15. Changes to the Terms
+## 16. Changes to the Terms
 We may update the Terms; material changes are published on the Platform, and renewed consent is requested where necessary. Continued use after changes constitutes acceptance of them.`},
 	},
 }

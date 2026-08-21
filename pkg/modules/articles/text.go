@@ -26,7 +26,18 @@ var md = goldmark.New(
 var (
 	tableOpen   = regexp.MustCompile(`<table>`)
 	emptyHeader = regexp.MustCompile(`<th[^>]*>\s*</th>`)
+	bareImage   = regexp.MustCompile(`<img `)
 )
+
+// deferImages keeps a page with several screenshots from paying for all of them
+// before the first paragraph is readable. Goldmark emits a bare <img>; every
+// other image on this site is already lazy, and a guide page carries six.
+func deferImages(html string) string {
+	if !strings.Contains(html, "<img ") {
+		return html
+	}
+	return bareImage.ReplaceAllString(html, `<img loading="lazy" decoding="async" `)
+}
 
 // wrapTables makes a rendered table survive a narrow screen without losing what
 // it is.
@@ -56,7 +67,7 @@ func RenderMarkdown(source string) template.HTML {
 	if err := md.Convert([]byte(source), &buf); err != nil {
 		return template.HTML(template.HTMLEscapeString(source))
 	}
-	return template.HTML(wrapTables(buf.String())) //nolint:gosec // goldmark configured without raw HTML
+	return template.HTML(deferImages(wrapTables(buf.String()))) //nolint:gosec // goldmark configured without raw HTML
 }
 
 // TOCItem is one entry in an article's table of contents.
@@ -88,7 +99,7 @@ func RenderMarkdownTOC(source string) (template.HTML, []TOCItem) {
 	for _, it := range toc {
 		out = strings.Replace(out, "<h2>", `<h2 id="`+it.ID+`">`, 1)
 	}
-	return template.HTML(wrapTables(out)), toc //nolint:gosec // goldmark configured without raw HTML
+	return template.HTML(deferImages(wrapTables(out))), toc //nolint:gosec // goldmark configured without raw HTML
 }
 
 // stripInline removes inline Markdown emphasis/link markup from a heading so the
