@@ -1347,6 +1347,7 @@ var messages = map[string]map[string]string{
 	"admin.logout":          {"kz": "Шығу", "ru": "Выйти", "en": "Log out"},
 	"admin.dashboard":       {"kz": "Дашборд", "ru": "Дашборд", "en": "Dashboard"},
 
+	"article.related":      {"kz": "Тағы оқыңыз", "ru": "Читайте также", "en": "Read next"},
 	"comments.title":       {"kz": "Пікірлер", "ru": "Комментарии", "en": "Comments"},
 	"comments.placeholder": {"kz": "Пікіріңізді жазыңыз… Құрметпен және нақты.", "ru": "Напишите комментарий… Уважительно и по делу.", "en": "Write a comment… Respectfully and to the point."},
 	"comments.submit":      {"kz": "Жіберу", "ru": "Отправить", "en": "Post"},

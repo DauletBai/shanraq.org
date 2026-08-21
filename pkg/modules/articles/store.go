@@ -459,3 +459,76 @@ func scanArticles(rows pgx.Rows) ([]*Article, error) {
 	}
 	return out, rows.Err()
 }
+
+// RelatedPublished returns a handful of other articles to offer at the end of
+// one, nearest first: same subcategory, then same category, then simply recent.
+//
+// An article page used to link to no other article at all. The site's whole
+// link graph ran from the home page outwards and stopped: a reader who finished
+// a piece had nowhere to go, and every article was a leaf with nothing pointing
+// out of it — which is also how a crawler decides a page sits at the edge of a
+// site rather than inside it.
+//
+// Only indexable articles are offered. The machine-written columns are open to
+// readers who choose them and closed to search engines; putting them under a
+// human piece would push a machine's opinion at somebody who did not ask for
+// it, and spend a crawler's visit on a page that cannot be indexed anyway.
+func (s *Store) RelatedPublished(ctx context.Context, exclude uuid.UUID, category, subcategory string, limit int) ([]*Article, error) {
+	if limit <= 0 || limit > 12 {
+		limit = 4
+	}
+	rows, err := s.db.Query(ctx, `
+		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug,
+		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, a.views_count,
+		       a.published_at, a.created_at, a.updated_at, a.indexable
+		FROM articles a
+		JOIN auth_users u ON u.id = a.author_id
+		WHERE a.status = 'published' AND a.indexable AND a.id <> $1
+		ORDER BY
+			(a.subcategory = $2 AND $2 <> '') DESC,
+			(a.category = $3) DESC,
+			a.published_at DESC NULLS LAST,
+			a.id DESC
+		LIMIT $4
+	`, exclude, subcategory, category, limit)
+	if err != nil {
+		return nil, fmt.Errorf("related published: %w", err)
+	}
+	arts, err := scanArticles(rows)
+	if err != nil {
+		return nil, err
+	}
+	return s.attachTranslations(ctx, arts)
+}
+
+// CategoryFreshness returns, per category, when its newest article appeared.
+//
+// It feeds <lastmod> on the category feeds in the sitemap. Those pages are real
+// hubs — they change whenever a piece lands in the section — and a crawler that
+// knows the date has a reason to come back for it. The static pages get no date
+// on purpose: /about and /terms do not change, and inventing a modification
+// date for them would teach Google that our dates mean nothing, which costs
+// more than the entries are worth.
+func (s *Store) CategoryFreshness(ctx context.Context) (map[string]time.Time, error) {
+	rows, err := s.db.Query(ctx, `
+		SELECT category, MAX(published_at)
+		FROM articles
+		WHERE status = 'published' AND indexable AND published_at IS NOT NULL
+		GROUP BY category`)
+	if err != nil {
+		return nil, fmt.Errorf("category freshness: %w", err)
+	}
+	defer rows.Close()
+	out := map[string]time.Time{}
+	for rows.Next() {
+		var cat string
+		var at *time.Time
+		if err := rows.Scan(&cat, &at); err != nil {
+			return nil, err
+		}
+		if at != nil {
+			out[cat] = *at
+		}
+	}
+	return out, rows.Err()
+}

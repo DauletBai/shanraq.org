@@ -1699,6 +1699,19 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 @media (max-width: 640px) { .author-stats { grid-template-columns: repeat(2, 1fr); } }
 
 /* ---- Comments ---- */
+/* Куда идти дальше. Ставится перед комментариями: сначала читателю предлагают
+   продолжить чтение, и только потом — высказаться. */
+.related { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }
+.related__title { font-size: var(--step-2); margin-bottom: 16px; }
+.related__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.related__item { min-width: 0; }
+.related__kicker { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); text-decoration: none; }
+.related__kicker:hover { color: var(--gold); }
+.related__h { font-size: 1.05rem; line-height: 1.3; margin: 6px 0; }
+.related__h a { text-decoration: none; color: inherit; }
+.related__h a:hover { color: var(--gold); }
+.related__excerpt { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+
 .comments { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }
 .comments__title { font-size: var(--step-2); margin-bottom: 16px; }
 .comments__form { margin-bottom: 22px; display: flex; flex-direction: column; gap: 10px; }

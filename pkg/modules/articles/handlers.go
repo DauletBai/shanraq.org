@@ -359,6 +359,43 @@ type FeedItem struct {
 	AvailableLangs []string
 }
 
+// feedItems turns articles into the cards a template renders, in the reader's
+// language. Extracted when the article page needed the same cards for its
+// "read next" block: one shape of card, built one way, so the two lists cannot
+// drift apart.
+func feedItems(arts []*Article, lang string) []FeedItem {
+	items := make([]FeedItem, 0, len(arts))
+	for _, a := range arts {
+		tr, served := a.Translation(lang)
+		if tr == nil {
+			continue
+		}
+		summary := tr.Summary
+		if summary == "" {
+			summary = excerpt(stripMD(tr.BodyMD), 170)
+		}
+		authorName, aiAuthor := authorDisplay(a)
+		items = append(items, FeedItem{
+			Slug:           a.Slug,
+			Title:          tr.Title,
+			Summary:        summary,
+			AuthorName:     authorName,
+			AuthorID:       a.AuthorID.String(),
+			AIAuthor:       aiAuthor,
+			ServedLang:     served,
+			Category:       a.Category,
+			Subcategory:    a.Subcategory,
+			CoverURL:       a.CoverURL,
+			Published:      a.PublishedAt,
+			Views:          a.ViewsCount,
+			Score:          a.Score,
+			IsAI:           tr.Source == "ai",
+			AvailableLangs: a.AvailableLangs(),
+		})
+	}
+	return items
+}
+
 // HomePage is the template context for the portal home.
 type HomePage struct {
 	Base
@@ -492,35 +529,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 		arts = arts[:homePageSize]
 	}
 
-	items := make([]FeedItem, 0, len(arts))
-	for _, a := range arts {
-		tr, served := a.Translation(lang)
-		if tr == nil {
-			continue
-		}
-		summary := tr.Summary
-		if summary == "" {
-			summary = excerpt(stripMD(tr.BodyMD), 170)
-		}
-		authorName, aiAuthor := authorDisplay(a)
-		items = append(items, FeedItem{
-			Slug:           a.Slug,
-			Title:          tr.Title,
-			Summary:        summary,
-			AuthorName:     authorName,
-			AuthorID:       a.AuthorID.String(),
-			AIAuthor:       aiAuthor,
-			ServedLang:     served,
-			Category:       a.Category,
-			Subcategory:    a.Subcategory,
-			CoverURL:       a.CoverURL,
-			Published:      a.PublishedAt,
-			Views:          a.ViewsCount,
-			Score:          a.Score,
-			IsAI:           tr.Source == "ai",
-			AvailableLangs: a.AvailableLangs(),
-		})
-	}
+	items := feedItems(arts, lang)
 
 	page := HomePage{Base: m.base(r, T(lang, "home.page_title"), lang)}
 	page.Active = active
@@ -574,6 +583,11 @@ type ArticlePage struct {
 	// CiteLine is the ready-made reference a reader can copy, empty on the
 	// articles we do not offer as a source. See citeLine.
 	CiteLine string
+
+	// Related are the pieces offered at the end of this one. Until they
+	// existed a reader who finished an article had nowhere to go, and the
+	// article itself was a leaf with no link pointing out of it.
+	Related []FeedItem
 
 	// Predictions are the forecasts made in this piece, with what became of
 	// them. Empty for the articles that made none, which is most of them.
@@ -699,6 +713,11 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	// Non-indexable articles still render in full — they are only kept out of
 	// search, not out of the site. See migration 20251107009900.
 	page.NoIndex = !a.Indexable
+	if rel, err := m.store.RelatedPublished(r.Context(), a.ID, a.Category, a.Subcategory, 4); err == nil {
+		page.Related = feedItems(rel, page.Lang)
+	} else {
+		m.rt.Logger.Warn("related articles", zap.Error(err))
+	}
 	if preds, err := m.predictions.ForArticle(r.Context(), page.Lang, a.ID); err == nil {
 		page.Predictions = preds
 		// The ledger's running accuracy travels with the block: "open" means

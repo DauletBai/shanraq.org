@@ -160,8 +160,12 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 		for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings", "/predictions", "/author/sana"} {
 			emit(p, time.Time{})
 		}
+		fresh, ferr := m.store.CategoryFreshness(r.Context())
+		if ferr != nil {
+			m.rt.Logger.Warn("sitemap category freshness", zap.Error(ferr))
+		}
 		for _, c := range Categories {
-			emit("/?cat="+c, time.Time{})
+			emit("/?cat="+c, fresh[c])
 		}
 		if arts, err := m.store.SitemapArticles(r.Context()); err != nil {
 			m.rt.Logger.Error("sitemap articles", zap.Error(err))

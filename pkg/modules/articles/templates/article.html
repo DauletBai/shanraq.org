@@ -151,6 +151,27 @@
         {{ end }}
       </article>
 
+      {{/* Where to go next. An article used to end at its last paragraph: the
+           reader who finished it had nowhere to turn, and the page itself was
+           a leaf with no link pointing out of it. Nearest first — same
+           subcategory, then same section, then simply recent. Only the human
+           articles are offered; the machine columns are open to whoever
+           chooses them and are not pushed at anybody. */}}
+      {{ if .Related }}
+      <section class="related" aria-labelledby="related-h">
+        <h2 class="related__title" id="related-h">{{ t .Lang "article.related" }}</h2>
+        <div class="related__list">
+          {{ range .Related }}
+          <article class="related__item">
+            <a class="related__kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ catIcon .Category }}{{ t $.Lang (printf "cat.%s" .Category) }}</a>
+            <h3 class="related__h"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
+            {{ if .Summary }}<p class="related__excerpt">{{ .Summary }}</p>{{ end }}
+          </article>
+          {{ end }}
+        </div>
+      </section>
+      {{ end }}
+
       <section class="comments" id="comments">
         <h2 class="comments__title">{{ t .Lang "comments.title" }} ({{ len .Comments }})</h2>
         {{ if .CommentReview }}
