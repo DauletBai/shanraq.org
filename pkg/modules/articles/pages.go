@@ -119,7 +119,7 @@ Shanraq.org is a home where free voices meet.`},
 2. Нажмите «Написать» и создайте статью на одном из трёх языков.
 3. Выберите рубрику и подрубрику, при желании добавьте обложку.
 4. **Если материал местный — укажите место.** Об этом ниже, в разделе «Статья для места».
-5. **Напишите описание на десять строк карточки.** Об этом тоже ниже, в разделе «Описание статьи».
+5. **Напишите описание на восемь строк карточки.** Об этом тоже ниже, в разделе «Описание статьи».
 6. **Версии на других языках пишете вы сами.** Переведите чем вам удобно, вставьте результат во вкладку нужного языка и прочитайте перед сохранением: подпись под переводом ваша.
 7. **Платформа сверит версии между собой.** Это часть проверки, которая не требует знания языка: она сличает числа, ссылки, заголовки и количество абзацев и показывает расхождения — пропавшую ссылку, потерянный заголовок, съеденную строку таблицы, изменившееся число. Если она молчит, механических поломок нет. За смысл по-прежнему отвечает человек: машина не увидит, что термин переведён неверно.
 8. Нажмите «Опубликовать».
@@ -127,11 +127,11 @@ Shanraq.org is a home where free voices meet.`},
 ### Описание статьи
 Описание — это то, что читатель видит на карточке в ленте, и почти всегда единственное, по чему он решает, открывать ли статью.
 
-**Оно должно заполнять десять строк карточки — это около 350 знаков; по-английски помещается до 420.** Короткое оставляет под карточкой пустоту, слишком длинное обрывается на полуслове. В десять строк помещается главное: о чём материал, откуда взяты цифры и что из них следует.
+**Оно должно заполнять восемь строк карточки — это около 290 знаков; по-казахски 280, по-английски 335.** Короткое оставляет под карточкой пустоту, слишком длинное обрывается на полуслове. В восемь строк помещается главное: о чём материал, откуда взяты цифры и что из них следует.
 
 Не пересказывайте первый абзац. Опишите, что внутри: какие цифры, за какие годы, чем это кончилось.
 
-![Карточка статьи с описанием на десять строк](/static/guide/guide-place-page.png)
+![Карточка статьи с описанием на восемь строк](/static/guide/guide-place-page.png)
 
 ### Статья для места
 Если материал касается конкретного посёлка, города или области — укажите место в редакторе.
@@ -277,7 +277,7 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 2. «Жазу» түймесін басып, үш тілдің бірінде мақала жасаңыз.
 3. Айдар мен ішкі айдарды таңдап, қаласаңыз мұқаба қосыңыз.
 4. **Материал жергілікті болса — орнын көрсетіңіз.** Бұл туралы төменде, «Орынға арналған мақала» бөлімінде.
-5. **Сипаттаманы карточканың он жолын толтыратындай жазыңыз.** Бұл да төменде, «Мақала сипаттамасы» бөлімінде.
+5. **Сипаттаманы карточканың сегіз жолын толтыратындай жазыңыз.** Бұл да төменде, «Мақала сипаттамасы» бөлімінде.
 6. **Басқа тілдегі нұсқаларды өзіңіз жазасыз.** Өзіңізге ыңғайлы құралмен аударып, нәтижені керекті тілдің қойындысына қойыңыз және сақтар алдында оқып шығыңыз: аударманың астындағы қолтаңба сіздікі.
 7. **Платформа нұсқаларды өзі салыстырады.** Тексерудің бұл бөлігі тілді білуді қажет етпейді: ол сандарды, сілтемелерді, тақырыптар мен абзац санын салыстырып, айырмашылықтарды көрсетеді — жоғалған сілтемені, түсіп қалған тақырыпты, кесте жолын, өзгерген санды. Үндемесе, механикалық бұзылу жоқ. Мағына үшін бәрібір адам жауап береді: машина терминнің қате аударылғанын көрмейді.
 8. Сақтап, «Жариялау» түймесін басыңыз.
@@ -285,11 +285,11 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 ### Мақала сипаттамасы
 Сипаттама — оқырман лентадағы карточкадан көретін нәрсе, әрі мақаланы ашу-ашпауды дәл соған қарап шешеді.
 
-**Ол карточканың он жолын толтыруға тиіс — бұл шамамен 350 таңба; ағылшыншада 420-ға дейін сыяды.** Қысқасы карточканың астын бос қалдырады, тым ұзыны сөздің ортасынан үзіледі. Он жолға ең қажеттісі сыяды: материал не туралы, сандар қайдан алынған және одан не шығады.
+**Ол карточканың сегіз жолын толтыруға тиіс — бұл шамамен 280 таңба; орысшада 290, ағылшыншада 335.** Қысқасы карточканың астын бос қалдырады, тым ұзыны сөздің ортасынан үзіледі. Сегіз жолға ең қажеттісі сыяды: материал не туралы, сандар қайдан алынған және одан не шығады.
 
 Бірінші абзацты қайталап айтпаңыз. Ішінде не бар екенін жазыңыз: қандай сандар, қай жылдарға, немен бітті.
 
-![Он жолдық сипаттамасы бар мақала карточкасы](/static/guide/guide-place-page.png)
+![Сегіз жолдық сипаттамасы бар мақала карточкасы](/static/guide/guide-place-page.png)
 
 ### Орынға арналған мақала
 Материал нақты кентке, қалаға немесе облысқа қатысты болса — редакторда орнын көрсетіңіз.
@@ -435,7 +435,7 @@ The profile carries a kind, which decides the label on your public page and whic
 2. Click "Write" and create an article in one of the three languages.
 3. Choose a category and subcategory, and add a cover image if you like.
 4. **If the material is local, give it a place.** See "An article for a place" below.
-5. **Write a summary that fills ten lines of the card.** See "The summary" below.
+5. **Write a summary that fills eight lines of the card.** See "The summary" below.
 6. **The other language versions are yours to write.** Translate with whatever you use, paste the result into the tab for that language, and read it before saving: the byline under the translation is yours.
 7. **The platform compares the versions for you.** This is the part of checking that needs no knowledge of the language: it matches numbers, links, headings, and the number of paragraphs, and reports what differs — a missing link, a lost heading, a swallowed table row, a changed number. If it says nothing, nothing mechanical is broken. Meaning is still a person's job: a machine will not notice that a term is wrong.
 8. Save and click "Publish".
@@ -443,11 +443,11 @@ The profile carries a kind, which decides the label on your public page and whic
 ### The summary
 The summary is what a reader sees on the card in the feed, and almost always the only thing they use to decide whether to open the article.
 
-**It should fill ten lines of the card — about 420 characters in English, and around 350 in Kazakh and Russian.** Too short leaves the card half empty; too long is cut off mid-word. Ten lines hold what matters: what the material is about, where the figures come from, and what follows from them.
+**It should fill eight lines of the card — about 335 characters in English, 290 in Russian and 280 in Kazakh.** Too short leaves the card half empty; too long is cut off mid-word. Eight lines hold what matters: what the material is about, where the figures come from, and what follows from them.
 
 Do not retell the opening paragraph. Say what is inside: which numbers, for which years, and how it turned out.
 
-![An article card with a ten-line summary](/static/guide/guide-place-page.png)
+![An article card with an eight-line summary](/static/guide/guide-place-page.png)
 
 ### An article for a place
 If the material concerns a particular town, city, or region, give it a place in the editor.
@@ -723,7 +723,7 @@ We reply calmly and to the point.
 - **Короткие абзацы.** 2–4 предложения читаются легче, чем сплошная стена текста.
 - **Проверяйте факты** и указывайте источники ссылками.
 - **Добавьте обложку** — статьи с изображением читают чаще.
-- **Напишите описание на десять строк карточки** — около 350 знаков, по-английски до 420. Это единственное, по чему читатель в ленте решает, открывать ли статью.
+- **Напишите описание на восемь строк карточки** — около 290 знаков, по-казахски 280, по-английски 335. Это единственное, по чему читатель в ленте решает, открывать ли статью.
 - **Пользуйтесь предпросмотром**, чтобы увидеть результат перед публикацией.
 
 Не уверены в оформлении? Просто пишите текст как есть: без единого значка Markdown получится обычная статья с абзацами, и это нормально. Остались вопросы? Загляните в [справочник](/guide) или напишите в [поддержку](/support).`},
@@ -782,7 +782,7 @@ We reply calmly and to the point.
 - **Қысқа абзацтар.** 2–4 сөйлем тұтас мәтіннен оңай оқылады.
 - **Фактілерді тексеріңіз** және дереккөздерді сілтемемен көрсетіңіз.
 - **Мұқаба қосыңыз** — суреті бар мақалаларды жиі оқиды.
-- **Сипаттаманы карточканың он жолына жазыңыз** — шамамен 350 таңба, ағылшыншада 420-ға дейін. Оқырман лентада мақаланы ашу-ашпауды тек соған қарап шешеді.
+- **Сипаттаманы карточканың сегіз жолына жазыңыз** — шамамен 280 таңба, орысшада 290, ағылшыншада 335. Оқырман лентада мақаланы ашу-ашпауды тек соған қарап шешеді.
 - **Алдын ала қарауды пайдаланыңыз**, жариялаудан бұрын нәтижені көру үшін.
 
 Безендіруге сенімді емессіз бе? Мәтінді бар күйінде жазыңыз: бірде-бір Markdown белгісінсіз де абзацтары бар кәдімгі мақала шығады, бұл қалыпты жағдай. Сұрақтар болса, [анықтамаға](/guide) кіріңіз немесе [қолдау қызметіне](/support) жазыңыз.`},
@@ -841,7 +841,7 @@ Three dashes on their own line make a horizontal rule between blocks:
 - **Short paragraphs.** 2–4 sentences read better than a wall of text.
 - **Check your facts** and cite sources with links.
 - **Add a cover** — articles with an image get read more often.
-- **Write a summary that fills ten lines of the card** — about 420 characters in English, around 350 in Kazakh and Russian. It is the only thing a reader in the feed uses to decide whether to open the article.
+- **Write a summary that fills eight lines of the card** — about 335 characters in English, 290 in Russian, 280 in Kazakh. It is the only thing a reader in the feed uses to decide whether to open the article.
 - **Use the preview** to see the result before publishing.
 
 Not sure about formatting? Just write the text as is: without a single Markdown mark you still get an ordinary article with paragraphs, and that is fine. Questions? See the [guide](/guide) or write to [support](/support).`},

@@ -604,7 +604,10 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 }
 .post__title a { color: var(--ink); }
 .post__title a:hover { color: var(--gold-strong); text-decoration: none; }
-/* Потолок описания в карточке — десять строк.
+/* Потолок описания в карточке — восемь строк.
+   Десять делали карточку выше, чем нужно: лента на главной растягивалась, и
+   в первый экран помещалось меньше материалов. Восемь строк — 292 знака
+   по-русски, 281 по-казахски, 339 по-английски (замер на ширине 344 px).
    Раньше потолка не было вовсе: выжимка из текста резалась до 170 знаков, а
    написанное автором описание вставлялось целиком, и разброс выходил от 174
    до 460 знаков. Мета карточки прижата книзу (margin-top: auto), поэтому
@@ -620,7 +623,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   color: var(--ink-soft);
   padding: 0 10px;
   margin: 0;
-  display: -webkit-box; -webkit-line-clamp: 10; -webkit-box-orient: vertical; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden;
 }
 
 /* Заголовок — три строки. Обрезать его хуже, чем описание, поэтому запас
