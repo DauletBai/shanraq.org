@@ -407,19 +407,29 @@ type NewsItem struct {
 }
 
 // NewsSitemapArticles returns articles published in the last 48 hours — the
-// window Google News accepts — in their original language, with that language's
-// title. Non-indexable articles are excluded on the same grounds as everywhere
-// else: a page kept out of the index has no business being pushed as news.
+// window Google News accepts — one entry per finished language version, each
+// with that version's own title.
+//
+// One row per translation, not one per article. The site publishes the same
+// piece in Kazakh, Russian and English at three addresses, and listing only the
+// original left two thirds of everything we write outside the window entirely.
+//
+// A version counts as finished when it has a title and a body: an empty tab is
+// an intention, and an intention announced as news is a page a reader opens for
+// nothing. Non-indexable articles are excluded on the same grounds as
+// everywhere else — a page kept out of the index has no business being pushed
+// as news.
 func (s *Store) NewsSitemapArticles(ctx context.Context) ([]NewsItem, error) {
 	rows, err := s.db.Query(ctx, `
-		SELECT a.slug, a.original_lang, t.title, a.published_at
+		SELECT a.slug, t.lang, t.title, a.published_at
 		  FROM articles a
-		  JOIN article_translations t
-		    ON t.article_id = a.id AND t.lang = a.original_lang AND t.title <> ''
+		  JOIN article_translations t ON t.article_id = a.id
 		 WHERE a.status = 'published' AND a.indexable
 		   AND a.published_at IS NOT NULL
 		   AND a.published_at >= NOW() - INTERVAL '48 hours'
-		 ORDER BY a.published_at DESC
+		   AND t.title <> '' AND t.body_md <> ''
+		   AND (t.status = 'ready' OR t.lang = a.original_lang)
+		 ORDER BY a.published_at DESC, t.lang
 		 LIMIT 1000`)
 	if err != nil {
 		return nil, err
