@@ -145,7 +145,7 @@ var messages = map[string]map[string]string{
 	"re.photo_n":         {"kz": "%d-фото", "ru": "Фото %d", "en": "Photo %d"},
 	"re.results":         {"kz": "Іздеу нәтижелері", "ru": "Результаты поиска", "en": "Search results"},
 	"place.title_suffix": {"kz": "материалдар мен хабарландырулар", "ru": "материалы и объявления", "en": "articles and listings"},
-	"place.lead":         {"kz": "%s үшін жарияланғандардың бәрі — осы жердегі және оның ішіндегі елді мекендердегі.", "ru": "Всё, что опубликовано для места «%s» и для населённых пунктов внутри него.", "en": "Everything published for %s and for the places inside it."},
+	"place.lead":         {"kz": "%s тұрғындарына арналғанның бәрі: осы жер үшін жарияланғандар және бүкіл облыс пен ел үшін жарияланғандар.", "ru": "Всё, что адресовано месту «%s»: опубликованное для него и то, что написано для всей области и страны.", "en": "Everything addressed to %s: what was published for it, and what was written for the whole region and country."},
 	"place.up":           {"kz": "Жоғары қарай", "ru": "Вверх по карте", "en": "Up the map"},
 	"place.inside":       {"kz": "Ішіндегі жерлер", "ru": "Места внутри", "en": "Places inside"},
 	"place.empty":        {"kz": "«%s» үшін әзірге ешкім ештеңе жарияламаған.", "ru": "Для места «%s» пока никто ничего не опубликовал.", "en": "Nobody has published anything for %s yet."},

@@ -58,10 +58,11 @@ func TestEveryPlaceHasAReadableAddress(t *testing.T) {
 	}
 }
 
-// Лента места смотрит вниз, а не вверх: страница области несёт написанное для
-// посёлков внутри неё. Обратное было бы неверно — страница Качара, забитая
-// областными сообщениями, похоронила бы то немногое, что про сам Качар.
-func TestPlaceFeedLooksDownwardsNotUpwards(t *testing.T) {
+// Лента места смотрит вверх, а не вниз. Место, которое выбрал автор, — это
+// адресат: объявление для Качара написано качарцам, и на странице области оно
+// попало бы к сотне тысяч человек, которым не предназначалось. Наоборот —
+// можно: областное сообщение адресовано и жителям Качара.
+func TestPlaceFeedCarriesWhatIsAddressedToThePlace(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
 
@@ -74,30 +75,31 @@ func TestPlaceFeedLooksDownwardsNotUpwards(t *testing.T) {
 	forKachar, kacharArticle := app.seedArticle(authorID, "published")
 	app.exec(`UPDATE articles SET geo_node_id = $2, published_at = NOW() WHERE id = $1`, forKachar, kacharID)
 
-	// Страница области несёт обе.
-	w := app.do(http.MethodGet, "/place/"+oblastSlug, nil)
-	if w.Code != http.StatusOK {
-		t.Fatalf("страница области: %d", w.Code)
-	}
-	body := w.Body.String()
-	if !strings.Contains(body, kacharArticle) {
-		t.Error("страница области не показывает материал посёлка внутри неё")
-	}
-	if !strings.Contains(body, oblastArticle) {
-		t.Error("страница области не показывает свой же материал")
-	}
-
-	// Страница посёлка несёт только своё.
-	w = app.do(http.MethodGet, "/place/"+kacharSlug, nil)
+	// Страница посёлка несёт своё и адресованное всей области.
+	w := app.do(http.MethodGet, "/place/"+kacharSlug, nil)
 	if w.Code != http.StatusOK {
 		t.Fatalf("страница посёлка: %d", w.Code)
 	}
-	body = w.Body.String()
+	body := w.Body.String()
 	if !strings.Contains(body, kacharArticle) {
 		t.Error("страница посёлка не показывает свой материал")
 	}
-	if strings.Contains(body, oblastArticle) {
-		t.Error("страница посёлка засыпана областными материалами")
+	if !strings.Contains(body, oblastArticle) {
+		t.Error("страница посёлка не показывает областное сообщение, адресованное и ей")
+	}
+
+	// Страница области несёт только адресованное области, но не то, что
+	// написано для одного посёлка внутри неё.
+	w = app.do(http.MethodGet, "/place/"+oblastSlug, nil)
+	if w.Code != http.StatusOK {
+		t.Fatalf("страница области: %d", w.Code)
+	}
+	body = w.Body.String()
+	if !strings.Contains(body, oblastArticle) {
+		t.Error("страница области не показывает свой же материал")
+	}
+	if strings.Contains(body, kacharArticle) {
+		t.Error("написанное для одного посёлка попало на страницу всей области")
 	}
 }
 
@@ -152,10 +154,11 @@ func TestAuthorPicksThePlaceAndItSticks(t *testing.T) {
 	}
 }
 
-// В sitemap попадают места, о которых есть что читать, — вместе с их
-// родителями, чтобы страница области предлагалась поисковику даже когда
-// написано пока только про посёлок.
-func TestSitemapCarriesPlacesThatHaveArticles(t *testing.T) {
+// В sitemap попадают места, для которых что-то написано, — и только они.
+// Областное сообщение видно и на странице каждого посёлка внутри области, но
+// предлагать поисковику тридцать страниц с одной и той же статьёй значит
+// тридцать раз показать пустоту, а не расширить охват.
+func TestSitemapCarriesOnlyPlacesSomethingWasWrittenFor(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
 
@@ -181,8 +184,8 @@ func TestSitemapCarriesPlacesThatHaveArticles(t *testing.T) {
 	if !has(kacharSlug) {
 		t.Error("места со статьёй нет в списке для sitemap")
 	}
-	if !has(oblastSlug) {
-		t.Error("области над этим местом нет в списке для sitemap")
+	if has(oblastSlug) {
+		t.Error("область без собственных материалов попала в sitemap")
 	}
 }
 
@@ -264,5 +267,115 @@ func TestBreadcrumbHasNoTrailingSeparator(t *testing.T) {
 	nav = nav[:strings.Index(nav, "</nav>")]
 	if strings.Contains(nav[strings.LastIndex(nav, "</a>"):], "·") {
 		t.Errorf("после последнего звена висит разделитель: %q", nav[strings.LastIndex(nav, "</a>"):])
+	}
+}
+
+// Матрица видимости в общей ленте. Место, которое поставил автор, — это круг
+// читателей: качарское объявление об отключении света жителю Алматы не новость,
+// а мусор в ленте, и гостю, о котором мы ничего не знаем, — тоже.
+func TestTheFeedCarriesOnlyWhatIsAddressedToTheReader(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	ctx := context.Background()
+	store := NewStore(app.pool)
+	geo := NewGeoStore(app.pool)
+
+	kacharID, _ := place(t, app, "Качар")
+	oblastID, _ := place(t, app, "Костанайская область")
+	almatyID, _ := place(t, app, "Алматы")
+
+	author := app.createUser("feedscope@example.com", "Parol123!")
+	mark := func(status string, node *uuid.UUID) string {
+		id, slug := app.seedArticle(author, status)
+		app.exec(`UPDATE articles SET geo_node_id = $2, published_at = NOW() WHERE id = $1`, id, node)
+		return slug
+	}
+	forEveryone := mark("published", nil)
+	forKachar := mark("published", &kacharID)
+	forOblast := mark("published", &oblastID)
+	forAlmaty := mark("published", &almatyID)
+
+	sees := func(addressed []uuid.UUID) map[string]bool {
+		arts, err := store.ListPublished(ctx, "", "", "", 60, 0, addressed)
+		if err != nil {
+			t.Fatalf("ListPublished: %v", err)
+		}
+		out := map[string]bool{}
+		for _, a := range arts {
+			out[a.Slug] = true
+		}
+		return out
+	}
+	check := func(who string, got map[string]bool, want map[string]bool) {
+		t.Helper()
+		for slug, expected := range want {
+			if got[slug] != expected {
+				verb := "не увидел"
+				if !expected {
+					verb = "увидел лишнее:"
+				}
+				t.Errorf("%s %s %s", who, verb, slug)
+			}
+		}
+	}
+
+	// Гость и всякий, кто не назвал места, видит только общее.
+	check("гость", sees(nil), map[string]bool{
+		forEveryone: true, forKachar: false, forOblast: false, forAlmaty: false,
+	})
+
+	// Житель Качара: своё, областное, общее — но не чужой город.
+	kacharReader, err := geo.AddressedTo(ctx, kacharID)
+	if err != nil {
+		t.Fatalf("AddressedTo: %v", err)
+	}
+	check("житель Качара", sees(kacharReader), map[string]bool{
+		forEveryone: true, forKachar: true, forOblast: true, forAlmaty: false,
+	})
+
+	// Житель областного центра — не житель Качара: качарское его не касается.
+	oblastReader, err := geo.AddressedTo(ctx, oblastID)
+	if err != nil {
+		t.Fatalf("AddressedTo: %v", err)
+	}
+	check("житель области вне Качара", sees(oblastReader), map[string]bool{
+		forEveryone: true, forOblast: true, forKachar: false, forAlmaty: false,
+	})
+
+	// Житель Алматы: своё и общее.
+	almatyReader, err := geo.AddressedTo(ctx, almatyID)
+	if err != nil {
+		t.Fatalf("AddressedTo: %v", err)
+	}
+	check("житель Алматы", sees(almatyReader), map[string]bool{
+		forEveryone: true, forAlmaty: true, forKachar: false, forOblast: false,
+	})
+}
+
+// То же правило — на самой странице: гость на главной не должен видеть местное.
+func TestAGuestOnTheHomePageSeesNoLocalNotices(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	kacharID, _ := place(t, app, "Качар")
+	author := app.createUser("feedguest@example.com", "Parol123!")
+
+	localID, localSlug := app.seedArticle(author, "published")
+	app.exec(`UPDATE articles SET geo_node_id = $2, published_at = NOW() WHERE id = $1`, localID, kacharID)
+	commonID, commonSlug := app.seedArticle(author, "published")
+	app.exec(`UPDATE articles SET published_at = NOW() WHERE id = $1`, commonID)
+
+	body := app.do(http.MethodGet, "/", nil).Body.String()
+	if !strings.Contains(body, commonSlug) {
+		t.Error("гость не увидел материал, написанный для всех")
+	}
+	if strings.Contains(body, localSlug) {
+		t.Error("местное объявление попало в ленту гостя")
+	}
+
+	// А на своей странице места оно есть — там его и ищут.
+	place := app.do(http.MethodGet, "/place/kachar", nil).Body.String()
+	if !strings.Contains(place, localSlug) {
+		t.Error("местное объявление пропало и со страницы места")
 	}
 }

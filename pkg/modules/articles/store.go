@@ -238,10 +238,25 @@ func (s *Store) GetPublishedBySlug(ctx context.Context, slug string) (*Article, 
 	return art, nil
 }
 
+// placeClause narrows a feed to what its reader is addressed by: material with
+// no place at all, plus material written for the places that contain them.
+//
+// A reader who never said where they live — every guest among them — is
+// addressed by nothing, and sees only the material that was written for
+// everyone. A power cut in one town is not news to somebody a thousand
+// kilometres away; it is clutter, and it pushes down what they came for.
+func placeClause(args *[]any, addressed []uuid.UUID) string {
+	if len(addressed) == 0 {
+		return " AND a.geo_node_id IS NULL"
+	}
+	*args = append(*args, addressed)
+	return fmt.Sprintf(" AND (a.geo_node_id IS NULL OR a.geo_node_id = ANY($%d))", len(*args))
+}
+
 // ListPublished returns published articles for the feed. sort "top" orders by
 // score (readers' choice); anything else by recency. A non-empty category
 // filters to that rubric.
-func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory string, limit, offset int) ([]*Article, error) {
+func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory string, limit, offset int, addressed []uuid.UUID) ([]*Article, error) {
 	if limit <= 0 || limit > 60 {
 		limit = 24
 	}
@@ -255,8 +270,8 @@ func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory s
 		orderBy = "a.score DESC, a.published_at DESC NULLS LAST, a.id DESC"
 	}
 
-	where := "a.status = 'published'"
 	args := []any{}
+	where := "a.status = 'published'" + placeClause(&args, addressed)
 	if category != "" {
 		args = append(args, category)
 		where += fmt.Sprintf(" AND a.category = $%d", len(args))
@@ -473,24 +488,25 @@ func scanArticles(rows pgx.Rows) ([]*Article, error) {
 // readers who choose them and closed to search engines; putting them under a
 // human piece would push a machine's opinion at somebody who did not ask for
 // it, and spend a crawler's visit on a page that cannot be indexed anyway.
-func (s *Store) RelatedPublished(ctx context.Context, exclude uuid.UUID, category, subcategory string, limit int) ([]*Article, error) {
+func (s *Store) RelatedPublished(ctx context.Context, exclude uuid.UUID, category, subcategory string, limit int, addressed []uuid.UUID) ([]*Article, error) {
 	if limit <= 0 || limit > 12 {
 		limit = 4
 	}
-	rows, err := s.db.Query(ctx, `
+	args := []any{exclude, subcategory, category, limit}
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug,
 		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, a.views_count,
 		       a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
-		WHERE a.status = 'published' AND a.indexable AND a.id <> $1
+		WHERE a.status = 'published' AND a.indexable AND a.id <> $1%s
 		ORDER BY
 			(a.subcategory = $2 AND $2 <> '') DESC,
 			(a.category = $3) DESC,
 			a.published_at DESC NULLS LAST,
 			a.id DESC
 		LIMIT $4
-	`, exclude, subcategory, category, limit)
+	`, placeClause(&args, addressed)), args...)
 	if err != nil {
 		return nil, fmt.Errorf("related published: %w", err)
 	}
@@ -533,14 +549,14 @@ func (s *Store) CategoryFreshness(ctx context.Context) (map[string]time.Time, er
 	return out, rows.Err()
 }
 
-// ListForPlace returns published articles tied to a place or to anywhere
-// inside it, newest first.
+// ListForPlace returns the published articles addressed to a place — the ones
+// tied to it, and the ones tied to any place that contains it — newest first.
 //
-// Downwards, not upwards: the page for Kostanay oblast carries what was
-// published for Kachar and for Rudny, because a section for the oblast is
-// about the oblast and everything in it. The reverse would be wrong — a page
-// for Kachar filled with oblast-wide notices would bury the two that are
-// actually about Kachar.
+// Upwards, not downwards. The place an author picks is the audience they wrote
+// for: a notice for Kachar is meant for Kachar, and putting it on the oblast
+// page would hand it to a hundred thousand people who were never its readers.
+// An oblast-wide announcement, on the other hand, is addressed to everyone in
+// the oblast, Kachar included, so it belongs on Kachar's page too.
 //
 // Non-indexable articles are excluded for the same reason they are excluded
 // everywhere else: a place page is a page we want found, and it should carry
@@ -550,17 +566,17 @@ func (s *Store) ListForPlace(ctx context.Context, place uuid.UUID, limit, offset
 		limit = 24
 	}
 	rows, err := s.db.Query(ctx, `
-		WITH RECURSIVE sub AS (
-			SELECT id FROM geo_nodes WHERE id = $1
+		WITH RECURSIVE up AS (
+			SELECT id, parent_id FROM geo_nodes WHERE id = $1
 			UNION ALL
-			SELECT g.id FROM geo_nodes g JOIN sub ON g.parent_id = sub.id
+			SELECT g.id, g.parent_id FROM geo_nodes g JOIN up ON g.id = up.parent_id
 		)
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug,
 		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, a.views_count,
 		       a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
-		WHERE a.status = 'published' AND a.indexable AND a.geo_node_id IN (SELECT id FROM sub)
+		WHERE a.status = 'published' AND a.indexable AND a.geo_node_id IN (SELECT id FROM up)
 		ORDER BY a.published_at DESC NULLS LAST, a.id DESC
 		LIMIT $2 OFFSET $3
 	`, place, limit, offset)
@@ -574,19 +590,20 @@ func (s *Store) ListForPlace(ctx context.Context, place uuid.UUID, limit, offset
 	return s.attachTranslations(ctx, arts)
 }
 
-// PlacesWithArticles lists the places that actually have something published,
-// so the sitemap and the place index carry pages with content rather than
-// eight hundred empty ones.
+// PlacesWithArticles lists the places something was published for, so the
+// sitemap and the place index carry pages with content rather than eight
+// hundred empty ones.
+//
+// Only the place the author chose. A region's article also shows on the page of
+// every town inside that region, but offering thirty pages that each carry the
+// same single article is thin content thirty times over, not reach.
 func (s *Store) PlacesWithArticles(ctx context.Context) ([]string, error) {
 	rows, err := s.db.Query(ctx, `
-		WITH RECURSIVE up AS (
-			SELECT DISTINCT g.id, g.parent_id, g.slug
-			FROM articles a JOIN geo_nodes g ON g.id = a.geo_node_id
-			WHERE a.status = 'published' AND a.indexable
-			UNION
-			SELECT p.id, p.parent_id, p.slug FROM geo_nodes p JOIN up ON p.id = up.parent_id
-		)
-		SELECT slug FROM up WHERE slug IS NOT NULL AND slug <> '' ORDER BY slug`)
+		SELECT DISTINCT g.slug
+		FROM articles a JOIN geo_nodes g ON g.id = a.geo_node_id
+		WHERE a.status = 'published' AND a.indexable
+		  AND g.slug IS NOT NULL AND g.slug <> ''
+		ORDER BY g.slug`)
 	if err != nil {
 		return nil, fmt.Errorf("places with articles: %w", err)
 	}

@@ -11,6 +11,7 @@ package syndicate
 import (
 	"context"
 	"embed"
+	"fmt"
 	"html/template"
 	"net/http"
 	"strings"
@@ -144,6 +145,18 @@ func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
 // TelegramEnabled reports whether Telegram auto-posting is configured.
 func (m *Module) TelegramEnabled() bool { return m.tgEnabled }
 
+// articleHasPlace reports whether an article was addressed to one place rather
+// than to everyone.
+func (m *Module) articleHasPlace(ctx context.Context, id uuid.UUID) (bool, error) {
+	var has bool
+	err := m.db.QueryRow(ctx,
+		`SELECT geo_node_id IS NOT NULL FROM articles WHERE id = $1`, id).Scan(&has)
+	if err != nil {
+		return false, fmt.Errorf("article place: %w", err)
+	}
+	return has, nil
+}
+
 // RegisterJobs attaches the Telegram publish handler to the queue.
 func (m *Module) RegisterJobs(j *jobs.Module) {
 	j.Handle(JobTelegram, m.handleTelegramJob)
@@ -164,6 +177,13 @@ func (m *Module) EnqueuePublish(ctx context.Context, store *jobs.Store, articleI
 		}
 	}
 	if !m.tgEnabled || store == nil {
+		return nil
+	}
+	// A channel has one audience: everybody subscribed to it. Material written
+	// for one town is not written for them, so it stays on its place page.
+	if local, err := m.articleHasPlace(ctx, articleID); err != nil {
+		m.log.Warn("place lookup before telegram", zap.Error(err))
+	} else if local {
 		return nil
 	}
 	payload, err := TelegramPayload(articleID)

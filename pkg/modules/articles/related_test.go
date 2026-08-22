@@ -72,7 +72,7 @@ func TestRelatedNeverOffersMachineColumns(t *testing.T) {
 	app.exec(`UPDATE articles SET indexable = false WHERE id = $1`, machineID)
 
 	rel, err := NewStore(app.pool).RelatedPublished(
-		context.Background(), humanID, "economy", "", 10)
+		context.Background(), humanID, "economy", "", 10, nil)
 	if err != nil {
 		t.Fatalf("RelatedPublished: %v", err)
 	}
@@ -107,7 +107,7 @@ func TestRelatedPutsTheNearestFirst(t *testing.T) {
 	app.exec(`UPDATE articles SET category='economy', subcategory='banks' WHERE id=$1`, nearID)
 
 	rel, err := NewStore(app.pool).RelatedPublished(
-		context.Background(), baseID, "economy", "banks", 4)
+		context.Background(), baseID, "economy", "banks", 4, nil)
 	if err != nil {
 		t.Fatalf("RelatedPublished: %v", err)
 	}

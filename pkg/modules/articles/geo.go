@@ -120,6 +120,36 @@ func (s *GeoStore) Ancestry(ctx context.Context, node uuid.UUID, lang string) ([
 	return out, rows.Err()
 }
 
+// AddressedTo returns the places whose material reaches a reader who lives in
+// node: the node itself and everything that contains it.
+//
+// A notice for Kachar is written for Kachar. An announcement for the oblast is
+// written for everybody in the oblast, Kachar included. So a reader in Kachar is
+// addressed by Kachar, by the oblast, and by the country — and by nothing below
+// or beside them.
+func (s *GeoStore) AddressedTo(ctx context.Context, node uuid.UUID) ([]uuid.UUID, error) {
+	rows, err := s.db.Query(ctx, `
+		WITH RECURSIVE up AS (
+			SELECT id, parent_id FROM geo_nodes WHERE id = $1
+			UNION ALL
+			SELECT g.id, g.parent_id FROM geo_nodes g JOIN up ON g.id = up.parent_id
+		)
+		SELECT id FROM up`, node)
+	if err != nil {
+		return nil, fmt.Errorf("addressed to: %w", err)
+	}
+	defer rows.Close()
+	out := []uuid.UUID{}
+	for rows.Next() {
+		var id uuid.UUID
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+		out = append(out, id)
+	}
+	return out, rows.Err()
+}
+
 // SetUserPlace remembers where a reader says they live, or forgets it when the
 // node is nil.
 //

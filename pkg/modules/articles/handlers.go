@@ -238,9 +238,31 @@ func (m *Module) resolveLang(w http.ResponseWriter, r *http.Request) string {
 	return LangRU
 }
 
+// addressedTo returns the places whose material this reader should be shown:
+// the place they gave in their profile and everything that contains it.
+//
+// Empty for a guest and for anybody who never filled the field in, and then the
+// feeds carry only material written for everyone.
+func (m *Module) addressedTo(r *http.Request) []uuid.UUID {
+	id, ok := m.authorID(r)
+	if !ok || m.geo == nil {
+		return nil
+	}
+	place, err := m.geo.UserPlace(r.Context(), id)
+	if err != nil || place == nil {
+		return nil
+	}
+	places, err := m.geo.AddressedTo(r.Context(), *place)
+	if err != nil {
+		m.rt.Logger.Warn("addressed places", zap.Error(err))
+		return nil
+	}
+	return places
+}
+
 // latestNews returns the newest published articles for the sidebar carousel.
 func (m *Module) latestNews(r *http.Request, lang string, n int) []FeedItem {
-	arts, err := m.store.ListPublished(r.Context(), "", "", "", n, 0)
+	arts, err := m.store.ListPublished(r.Context(), "", "", "", n, 0, m.addressedTo(r))
 	if err != nil {
 		m.rt.Logger.Warn("sidebar news", zap.Error(err))
 		return nil
@@ -551,7 +573,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	// One more than the page holds: if it comes back, there is a next page.
 	// Cheaper than a COUNT(*) over the published set on every home request.
 	arts, err := m.store.ListPublished(r.Context(), sort, cat, sub,
-		homePageSize+1, (pageNo-1)*homePageSize)
+		homePageSize+1, (pageNo-1)*homePageSize, m.addressedTo(r))
 	if err != nil {
 		m.rt.Logger.Error("home list", zap.Error(err))
 		http.Error(w, "internal error", http.StatusInternalServerError)
@@ -760,7 +782,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		page.OrgKind = org.KindLabelKey()
 		page.OrgOfficial = org.Official()
 	}
-	if rel, err := m.store.RelatedPublished(r.Context(), a.ID, a.Category, a.Subcategory, 4); err == nil {
+	if rel, err := m.store.RelatedPublished(r.Context(), a.ID, a.Category, a.Subcategory, 4, m.addressedTo(r)); err == nil {
 		page.Related = m.withOrgs(r.Context(), rel, feedItems(rel, page.Lang))
 	} else {
 		m.rt.Logger.Warn("related articles", zap.Error(err))
@@ -1181,7 +1203,8 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	if err == nil && place != "" {
 		// Best-effort: a place that will not parse or will not save must never
 		// cost somebody the account they have just created. They can set it
-		// again from the profile, and until they do they simply see everything.
+		// again from the profile, and until they do their feed carries only
+		// what was written for everyone.
 		if id, perr := uuid.Parse(place); perr == nil {
 			if serr := m.geo.SetUserPlace(r.Context(), user.ID, &id); serr != nil {
 				m.rt.Logger.Warn("save place on register", zap.Error(serr))

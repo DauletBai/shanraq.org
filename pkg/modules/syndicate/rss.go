@@ -116,7 +116,7 @@ func (m *Module) fetchFeed(ctx context.Context, lang string, limit int) ([]feedE
 		     ON torig.article_id = a.id AND torig.lang = a.original_lang
 		LEFT JOIN article_translations tl
 		     ON tl.article_id = a.id AND tl.lang = $1 AND tl.title <> '' AND tl.body_md <> ''
-		WHERE a.status = 'published'
+		WHERE a.status = 'published' AND a.geo_node_id IS NULL
 		ORDER BY a.published_at DESC NULLS LAST
 		LIMIT $2
 	`, lang, limit)
