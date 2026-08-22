@@ -233,15 +233,31 @@ func TestMetricsFlushAndGuestAnalytics(t *testing.T) {
 	if len(g.Clicks) != 1 || g.Clicks[0].Name != "show_contact" || g.Clicks[0].A.Guest != 1 {
 		t.Errorf("clicks = %+v, want one show_contact guest=1", g.Clicks)
 	}
-	// Trend is always a continuous 14-day window, today last.
-	if len(g.Trend) != 14 {
-		t.Errorf("trend length = %d, want 14", len(g.Trend))
+	// Trend is a continuous window ending today, with no gaps: a day nobody
+	// visited has to appear as a zero-height bar, not disappear and shift the
+	// dates under every other bar.
+	if len(g.Trend) != guestTrendDays {
+		t.Errorf("trend length = %d, want %d", len(g.Trend), guestTrendDays)
 	}
 	if g.TrendTo == "" || g.TrendFrom == "" {
 		t.Error("trend endpoints should be set")
 	}
-	if g.Trend[13].N != 6 { // today's guest page views
-		t.Errorf("trend today guest = %d, want 6", g.Trend[13].N)
+	if last := g.Trend[len(g.Trend)-1]; last.N != 6 { // today's guest page views
+		t.Errorf("trend today guest = %d, want 6", last.N)
+	}
+	// The last day is always labelled, and the axis carries a handful of dates
+	// rather than one under every bar.
+	if !g.Trend[len(g.Trend)-1].Tick {
+		t.Error("the most recent day is not labelled on the axis")
+	}
+	ticks := 0
+	for _, d := range g.Trend {
+		if d.Tick {
+			ticks++
+		}
+	}
+	if ticks < 4 || ticks > 7 {
+		t.Errorf("dates on the axis = %d, want about %d", ticks, guestTrendLabels)
 	}
 }
 

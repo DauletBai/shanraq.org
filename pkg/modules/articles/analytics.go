@@ -556,7 +556,14 @@ type GuestSimpleRow struct {
 	Pct   int
 }
 
-// GuestTrendDay is one day in the 14-day guest-views chart.
+// guestTrendDays is how far back the guest-views chart looks, and
+// guestTrendLabels roughly how many dates it prints along the bottom.
+const (
+	guestTrendDays   = 30
+	guestTrendLabels = 5
+)
+
+// GuestTrendDay is one day in the 30-day guest-views chart.
 type GuestTrendDay struct {
 	Label string
 	N     int64
@@ -709,8 +716,8 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 	if rows, err := m.rt.DB.Query(ctx, `
 		SELECT day, COALESCE(SUM(n) FILTER (WHERE is_guest), 0)
 		FROM analytics_daily
-		WHERE kind = 'page' AND day >= CURRENT_DATE - INTERVAL '13 days'
-		GROUP BY day`); err == nil {
+		WHERE kind = 'page' AND day >= CURRENT_DATE - make_interval(days => $1)
+		GROUP BY day`, guestTrendDays-1); err == nil {
 		for rows.Next() {
 			var d time.Time
 			var n int64
@@ -724,9 +731,9 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 	}
 
 	today := time.Now()
-	out := make([]GuestTrendDay, 0, 14)
+	out := make([]GuestTrendDay, 0, guestTrendDays)
 	var max int64
-	for i := 13; i >= 0; i-- {
+	for i := guestTrendDays - 1; i >= 0; i-- {
 		d := today.AddDate(0, 0, -i)
 		n := counts[d.Format("2006-01-02")]
 		if n > max {
@@ -740,11 +747,18 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 	if ticks := axisTicks(max); len(ticks) > 0 {
 		top = ticks[0].N
 	}
+	// About five dates along the axis, whatever the window: printing every
+	// third day was readable over two weeks and would crowd the card over a
+	// month.
+	step := (len(out) + guestTrendLabels - 1) / guestTrendLabels
+	if step < 1 {
+		step = 1
+	}
 	for i := range out {
 		out[i].Pct = barPct(out[i].N, top)
 		// Anchor the ticks to the last day so "today" is always labelled, and
-		// step back by three from there.
-		out[i].Tick = i%3 == (len(out)-1)%3
+		// step back from there.
+		out[i].Tick = i%step == (len(out)-1)%step
 	}
 	return out
 }

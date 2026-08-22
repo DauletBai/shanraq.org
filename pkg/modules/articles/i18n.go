@@ -972,7 +972,7 @@ var messages = map[string]map[string]string{
 	"ag.total":            {"kz": "барлығы", "ru": "всего", "en": "total"},
 	"ag.pages":            {"kz": "Беттер (30 күн)", "ru": "Страницы (30 дней)", "en": "Pages (30 days)"},
 	"ag.clicks":           {"kz": "Клик оқиғалары (30 күн)", "ru": "Клики (30 дней)", "en": "Clicks (30 days)"},
-	"ag.trend":            {"kz": "Қонақтар қарауы, 14 күн", "ru": "Просмотры гостей, 14 дней", "en": "Guest views, 14 days"},
+	"ag.trend":            {"kz": "Қонақтар қарауы, 30 күн", "ru": "Просмотры гостей, 30 дней", "en": "Guest views, 30 days"},
 	"ag.empty":            {"kz": "Дерек әлі жиналған жоқ.", "ru": "Данных пока нет.", "en": "No data yet."},
 	"ag.sources":          {"kz": "Дереккөздер (30 күн)", "ru": "Источники (30 дней)", "en": "Sources (30 days)"},
 	"ag.sources_note":     {"kz": "Тірі қонақтар қайдан келді.", "ru": "Откуда пришли живые гости.", "en": "Where human visits came from."},
