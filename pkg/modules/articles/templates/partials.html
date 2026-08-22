@@ -520,10 +520,20 @@
            forbids: script-src is 'self', and widening it would let another
            company run code on every page we serve. The image is already
            allowed by img-src and counts the same page views without granting
-           anybody anything. */}}
+           anybody anything.
+
+           Not lazy, and this is the whole point of it. Every other image here
+           waits for the reader to scroll near it, which for something sitting
+           in the footer means it is fetched only by people who read to the
+           bottom. Measured: opening the home page requested nothing; scrolling
+           to the footer requested the pixel. A counter that fires on the last
+           screen counts readers who finished, not visits — and the figure we
+           would be showing an advertiser would be a small fraction of the
+           truth. decoding stays async: that defers turning the bytes into
+           pixels, not asking for them. */}}
       <p class="foot-counter">
         <a href="https://zero.kz/?s=75643" target="_blank" rel="noopener nofollow" aria-label="ZERO.kz">
-          <img src="https://c.zero.kz/z.png?u=75643" width="88" height="31" alt="ZERO.kz" loading="lazy" decoding="async">
+          <img src="https://c.zero.kz/z.png?u=75643" width="88" height="31" alt="ZERO.kz" decoding="async">
         </a>
       </p>
     </div>

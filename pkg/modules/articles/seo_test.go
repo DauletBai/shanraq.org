@@ -104,3 +104,32 @@ func TestNewsSitemapCarriesEveryFinishedLanguage(t *testing.T) {
 		t.Error("статья старше двух суток попала в новостную карту")
 	}
 }
+
+// Счётчик ZERO.kz должен запрашиваться при открытии страницы, а не при
+// прокрутке до подвала.
+//
+// Он стоит внизу, и с loading="lazy" браузер забирал картинку только у тех,
+// кто дочитал до конца: 22.08.2026 замер показал, что открытие главной не
+// запрашивает ничего, а прокрутка до подвала — запрашивает. Счётчик при этом
+// считал не посещения, а дочитавших, и цифра, которую мы показали бы
+// рекламодателю, была бы малой долей правды.
+func TestTheVisitorCounterIsFetchedOnOpeningNotOnScrolling(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	body := app.do(http.MethodGet, "/", nil).Body.String()
+	i := strings.Index(body, "c.zero.kz")
+	if i < 0 {
+		t.Fatal("счётчика нет на странице")
+	}
+	start := strings.LastIndex(body[:i], "<img")
+	tag := body[start : start+strings.Index(body[start:], ">")+1]
+	if strings.Contains(tag, "loading=\"lazy\"") {
+		t.Errorf("счётчик отложен до прокрутки: %s", tag)
+	}
+	// decoding="async" остаётся: он откладывает превращение байтов в пиксели,
+	// а не сам запрос.
+	if !strings.Contains(tag, "decoding=\"async\"") {
+		t.Errorf("у счётчика пропала асинхронная декодировка: %s", tag)
+	}
+}
