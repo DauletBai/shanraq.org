@@ -127,7 +127,7 @@ Shanraq.org is a home where free voices meet.`},
 ### Описание статьи
 Описание — это то, что читатель видит на карточке в ленте, и почти всегда единственное, по чему он решает, открывать ли статью.
 
-**Оно должно заполнять десять строк карточки — около 500 знаков.** Короткое оставляет под карточкой пустоту, слишком длинное обрывается на полуслове. В десять строк помещается главное: о чём материал, откуда взяты цифры и что из них следует.
+**Оно должно заполнять десять строк карточки — это около 350 знаков; по-английски помещается до 420.** Короткое оставляет под карточкой пустоту, слишком длинное обрывается на полуслове. В десять строк помещается главное: о чём материал, откуда взяты цифры и что из них следует.
 
 Не пересказывайте первый абзац. Опишите, что внутри: какие цифры, за какие годы, чем это кончилось.
 
@@ -285,7 +285,7 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 ### Мақала сипаттамасы
 Сипаттама — оқырман лентадағы карточкадан көретін нәрсе, әрі мақаланы ашу-ашпауды дәл соған қарап шешеді.
 
-**Ол карточканың он жолын толтыруға тиіс — шамамен 500 таңба.** Қысқасы карточканың астын бос қалдырады, тым ұзыны сөздің ортасынан үзіледі. Он жолға ең қажеттісі сыяды: материал не туралы, сандар қайдан алынған және одан не шығады.
+**Ол карточканың он жолын толтыруға тиіс — бұл шамамен 350 таңба; ағылшыншада 420-ға дейін сыяды.** Қысқасы карточканың астын бос қалдырады, тым ұзыны сөздің ортасынан үзіледі. Он жолға ең қажеттісі сыяды: материал не туралы, сандар қайдан алынған және одан не шығады.
 
 Бірінші абзацты қайталап айтпаңыз. Ішінде не бар екенін жазыңыз: қандай сандар, қай жылдарға, немен бітті.
 
@@ -443,7 +443,7 @@ The profile carries a kind, which decides the label on your public page and whic
 ### The summary
 The summary is what a reader sees on the card in the feed, and almost always the only thing they use to decide whether to open the article.
 
-**It should fill ten lines of the card — about 500 characters.** Too short leaves the card half empty; too long is cut off mid-word. Ten lines hold what matters: what the material is about, where the figures come from, and what follows from them.
+**It should fill ten lines of the card — about 420 characters in English, and around 350 in Kazakh and Russian.** Too short leaves the card half empty; too long is cut off mid-word. Ten lines hold what matters: what the material is about, where the figures come from, and what follows from them.
 
 Do not retell the opening paragraph. Say what is inside: which numbers, for which years, and how it turned out.
 
@@ -723,7 +723,7 @@ We reply calmly and to the point.
 - **Короткие абзацы.** 2–4 предложения читаются легче, чем сплошная стена текста.
 - **Проверяйте факты** и указывайте источники ссылками.
 - **Добавьте обложку** — статьи с изображением читают чаще.
-- **Напишите описание на десять строк карточки** — примерно 500 знаков. Это единственное, по чему читатель в ленте решает, открывать ли статью.
+- **Напишите описание на десять строк карточки** — около 350 знаков, по-английски до 420. Это единственное, по чему читатель в ленте решает, открывать ли статью.
 - **Пользуйтесь предпросмотром**, чтобы увидеть результат перед публикацией.
 
 Не уверены в оформлении? Просто пишите текст как есть: без единого значка Markdown получится обычная статья с абзацами, и это нормально. Остались вопросы? Загляните в [справочник](/guide) или напишите в [поддержку](/support).`},
@@ -782,7 +782,7 @@ We reply calmly and to the point.
 - **Қысқа абзацтар.** 2–4 сөйлем тұтас мәтіннен оңай оқылады.
 - **Фактілерді тексеріңіз** және дереккөздерді сілтемемен көрсетіңіз.
 - **Мұқаба қосыңыз** — суреті бар мақалаларды жиі оқиды.
-- **Сипаттаманы карточканың он жолына жазыңыз** — шамамен 500 таңба. Оқырман лентада мақаланы ашу-ашпауды тек соған қарап шешеді.
+- **Сипаттаманы карточканың он жолына жазыңыз** — шамамен 350 таңба, ағылшыншада 420-ға дейін. Оқырман лентада мақаланы ашу-ашпауды тек соған қарап шешеді.
 - **Алдын ала қарауды пайдаланыңыз**, жариялаудан бұрын нәтижені көру үшін.
 
 Безендіруге сенімді емессіз бе? Мәтінді бар күйінде жазыңыз: бірде-бір Markdown белгісінсіз де абзацтары бар кәдімгі мақала шығады, бұл қалыпты жағдай. Сұрақтар болса, [анықтамаға](/guide) кіріңіз немесе [қолдау қызметіне](/support) жазыңыз.`},
@@ -841,7 +841,7 @@ Three dashes on their own line make a horizontal rule between blocks:
 - **Short paragraphs.** 2–4 sentences read better than a wall of text.
 - **Check your facts** and cite sources with links.
 - **Add a cover** — articles with an image get read more often.
-- **Write a summary that fills ten lines of the card** — roughly 500 characters. It is the only thing a reader in the feed uses to decide whether to open the article.
+- **Write a summary that fills ten lines of the card** — about 420 characters in English, around 350 in Kazakh and Russian. It is the only thing a reader in the feed uses to decide whether to open the article.
 - **Use the preview** to see the result before publishing.
 
 Not sure about formatting? Just write the text as is: without a single Markdown mark you still get an ordinary article with paragraphs, and that is fine. Questions? See the [guide](/guide) or write to [support](/support).`},
