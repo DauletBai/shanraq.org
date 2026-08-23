@@ -64,7 +64,7 @@ func New(mailer Mailer) *Module { return &Module{mailer: mailer} }
 func (m *Module) Name() string { return "syndicate" }
 
 // Init reads config and prepares the HTTP client for Telegram.
-func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
+func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	cfg := rt.Config.Syndicate
 	m.rt = rt
 	m.db = rt.DB
@@ -82,13 +82,21 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	smtp := rt.Config.Notifications.SMTP
 	m.emailEnabled = m.mailer != nil && strings.TrimSpace(smtp.Host) != "" && strings.TrimSpace(smtp.From) != ""
 
+	// Ключ из конфига имеет приоритет — им можно продолжить работу с уже
+	// подтверждённым ключом. Если его нет, сайт выписывает ключ себе сам:
+	// IndexNow — единственный канал, который сообщает Bing и Яндексу о новой
+	// странице сразу, а не когда те соберутся зайти, и оставлять его
+	// выключенным из-за незаполненной строки настроек нечего.
 	if key, ok := normalizeIndexNowKey(cfg.IndexNowKey); !ok {
 		m.log.Warn("indexnow key rejected: needs 8-128 hex characters or dashes")
 	} else if key != "" {
 		m.indexNowKey = key
 		m.log.Info("indexnow enabled", zap.String("key_url", m.baseURL+indexNowKeyPath))
+	} else if key, err := m.ensureIndexNowKey(ctx); err != nil {
+		m.log.Warn("indexnow key could not be issued", zap.Error(err))
 	} else {
-		m.log.Info("indexnow disabled (set syndicate.indexnow_key to notify Bing and Yandex on publish)")
+		m.indexNowKey = key
+		m.log.Info("indexnow enabled (key issued by the site)", zap.String("key_url", m.baseURL+indexNowKeyPath))
 	}
 
 	if m.tgEnabled {

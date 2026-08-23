@@ -284,3 +284,115 @@ func TestTheEndOfTheSourcesWindowIsRecognised(t *testing.T) {
 		t.Errorf("цепочка в %d дней перешагнула день с курсами", run)
 	}
 }
+
+// Названия банк пишет прописными, а аббревиатуры в них нельзя опускать в
+// строчные: «ДОЛЛАР США» должен стать «Доллар США», а не «Доллар сша».
+func TestTheBanksShoutingNamesAreCalmedDown(t *testing.T) {
+	for in, want := range map[string]string{
+		"ДОЛЛАР США":       "Доллар США",
+		"ЕВРО":             "Евро",
+		"РОССИЙСКИЙ РУБЛЬ": "Российский рубль",
+		"ДИРХАМ ОАЭ":       "Дирхам ОАЭ",
+		"СДР":              "СДР",
+		"":                 "",
+	} {
+		if got := fxTidyName(in); got != want {
+			t.Errorf("%q превратилось в %q, а ожидалось %q", in, got, want)
+		}
+	}
+}
+
+// У курса каждой валюты свой адрес. Свернуть их в один значит, что человек,
+// ищущий курс рубля, нашу страницу курса рубля не найдёт: поисковик знает
+// только тот адрес, который сайт объявил своим.
+func TestEachCurrencyIsItsOwnPage(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	seedFx(app)
+	app.exec(`INSERT INTO fx_rates (day, code, value, quant, name)
+		SELECT g::date, 'EUR', 520, 1, 'ЕВРО'
+		  FROM generate_series(CURRENT_DATE - 30, CURRENT_DATE, interval '1 day') g
+		ON CONFLICT (day, code) DO NOTHING`)
+
+	w := app.do(http.MethodGet, "/rates?c=EUR&p=year", nil)
+	if w.Code != http.StatusOK {
+		t.Fatalf("страница евро отдала %d", w.Code)
+	}
+	body := w.Body.String()
+	if !strings.Contains(body, `href="/rates?c=EUR&amp;lang=ru"`) {
+		t.Error("canonical евро не указывает на собственный адрес валюты")
+	}
+	// Период в canonical не входит: это тот же курс на другую глубину.
+	if strings.Contains(body, "c=EUR&amp;p=year&amp;lang=ru") {
+		t.Error("период попал в canonical и размножил страницу на четыре копии")
+	}
+	if !strings.Contains(body, "EUR — курс к тенге") {
+		t.Error("у страницы евро общий заголовок вместо собственного")
+	}
+	if !strings.Contains(body, "Евро (EUR)") {
+		t.Error("в описании страницы нет названия валюты")
+	}
+
+	// Доллар — это и есть /rates, второй адрес ему не нужен.
+	w = app.do(http.MethodGet, "/rates?c=USD", nil)
+	if b := w.Body.String(); strings.Contains(b, `href="/rates?c=USD&amp;lang=ru"`) {
+		t.Error("доллар получил отдельный адрес, хотя он и есть страница курсов")
+	}
+}
+
+// Страница, которой нет в карте сайта, для поисковика не существует.
+func TestEveryCurrencyIsOfferedInTheSitemap(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	seedFx(app)
+	app.exec(`INSERT INTO fx_rates (day, code, value, quant, name)
+		SELECT g::date, 'EUR', 520, 1, 'ЕВРО'
+		  FROM generate_series(CURRENT_DATE - 3, CURRENT_DATE, interval '1 day') g
+		ON CONFLICT (day, code) DO NOTHING`)
+
+	w := app.do(http.MethodGet, "/sitemap.xml", nil)
+	if w.Code != http.StatusOK {
+		t.Fatalf("карта сайта отдала %d", w.Code)
+	}
+	body := w.Body.String()
+	if !strings.Contains(body, "/rates?c=EUR&amp;lang=ru") {
+		t.Error("курса евро нет в карте сайта")
+	}
+	if !strings.Contains(body, "/rates?lang=ru") {
+		t.Error("самой страницы курсов нет в карте сайта")
+	}
+	// Доллар не должен предлагаться дважды — своим адресом и как /rates.
+	if strings.Contains(body, "/rates?c=USD") {
+		t.Error("доллар предложен вторым адресом — это дубль страницы курсов")
+	}
+}
+
+// Постоянные страницы должны уходить в IndexNow на всех трёх языках и ровно
+// теми адресами, которые сайт объявляет своими: заявка на чужой адрес
+// поисковику ничего не даёт.
+func TestPermanentPagesAreAnnouncedInEveryLanguage(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	urls := app.module().pageURLs([]string{"/rates", "/analytics"})
+	if len(urls) != 2*len(Langs) {
+		t.Fatalf("адресов %d, а страниц две на %d языка", len(urls), len(Langs))
+	}
+	for _, want := range []string{"/rates?lang=ru", "/rates?lang=kz", "/rates?lang=en", "/analytics?lang=ru"} {
+		found := false
+		for _, u := range urls {
+			if strings.HasSuffix(u, want) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Errorf("в заявке нет адреса %s", want)
+		}
+	}
+	for _, u := range urls {
+		if !strings.HasPrefix(u, "http") {
+			t.Errorf("адрес %q не абсолютный — IndexNow такой отвергнет", u)
+		}
+	}
+}

@@ -151,14 +151,37 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 	return []byte(b.String())
 }
 
+// publicPages — постоянные страницы сайта, кроме главной. Список один на карту
+// сайта и на заявки в IndexNow: страница, о которой знает только один из них,
+// либо не индексируется, либо предлагается поисковику дважды.
+var publicPages = []string{
+	"/about", "/guide", "/formatting", "/pricing", "/support",
+	"/listings", "/predictions", "/analytics", "/rates", "/author/sana",
+}
+
 // handleSitemap emits the main trilingual sitemap: home, static pages, category
 // feeds and articles. Real-estate listings live in their own sitemap
 // (handleSitemapListings) so Search Console tracks the classifieds separately.
 func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 	doc := m.sitemapDoc(func(emit func(path string, mod time.Time)) {
 		emit("/", time.Now())
-		for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings", "/predictions", "/analytics", "/rates", "/author/sana"} {
+		for _, p := range publicPages {
 			emit(p, time.Time{})
+		}
+		// Курс каждой валюты — отдельная страница с собственной историей, и
+		// предлагать её надо отдельно: человек ищет курс рубля, а не «курсы
+		// валют». Доллар не повторяем — он и есть страница /rates.
+		if m.fx != nil {
+			if curs, cerr := m.fx.Currencies(r.Context()); cerr != nil {
+				m.rt.Logger.Warn("sitemap currencies", zap.Error(cerr))
+			} else {
+				for _, c := range curs {
+					if c.Code == fxDefaultCode {
+						continue
+					}
+					emit("/rates?c="+c.Code, time.Time{})
+				}
+			}
 		}
 		fresh, ferr := m.store.CategoryFreshness(r.Context())
 		if ferr != nil {

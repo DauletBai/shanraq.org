@@ -24,6 +24,7 @@ func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
 		go m.infobar.Run(ctx) // background weather + exchange-rate refresher
 	}
 	go m.RunFxArchivist(ctx) // собственный архив курсов: дневной и месячный
+	go m.runIndexNow(ctx)    // заявки поисковикам на постоянные страницы
 	return nil
 }
 

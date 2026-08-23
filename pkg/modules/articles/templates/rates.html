@@ -18,7 +18,7 @@
         <label class="fx-pick__lab" for="fx-c">{{ t .Lang "fx.currency" }}</label>
         <select class="fx-pick__sel" id="fx-c" name="c">
           {{ range .Currencies }}
-          <option value="{{ .Code }}"{{ if eq .Code $.Code }} selected{{ end }}>{{ .Code }}{{ if .Name }} — {{ .Name }}{{ end }}</option>
+          <option value="{{ .Code }}"{{ if eq .Code $.Code }} selected{{ end }}>{{ .Code }}{{ if .Label }} — {{ .Label }}{{ end }}</option>
           {{ end }}
         </select>
         <button class="btn btn--sm" type="submit">{{ t .Lang "fx.show" }}</button>

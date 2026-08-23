@@ -27,6 +27,8 @@ import (
 const (
 	indexNowEndpoint = "https://api.indexnow.org/indexnow"
 	indexNowKeyPath  = "/indexnow.txt"
+	// indexNowBatch — предел адресов в одной заявке по протоколу.
+	indexNowBatch = 10000
 )
 
 // handleIndexNowKey serves the ownership key as plain text. Without it every
@@ -41,22 +43,38 @@ func (m *Module) handleIndexNowKey(w http.ResponseWriter, r *http.Request) {
 }
 
 // submitIndexNow pushes one article's three language URLs to IndexNow.
-//
-// Fire-and-forget on purpose: search engines must never be able to slow down or
-// fail a publish. It runs detached with its own timeout, and a failure is
-// logged and dropped — the sitemap remains the reliable path, this is only the
-// fast one.
 func (m *Module) submitIndexNow(slug string) {
-	if m.indexNowKey == "" || slug == "" {
+	if slug == "" {
+		return
+	}
+	urls := make([]string, 0, len(rssLangOrder))
+	for _, lang := range rssLangOrder {
+		urls = append(urls, m.articleURL(slug, lang))
+	}
+	m.SubmitURLs(urls, slug)
+}
+
+// SubmitURLs сообщает поисковикам об изменившихся адресах. Годится для любой
+// страницы сайта, не только для статьи: карты сайта ждут обхода, а это —
+// единственный способ сказать сразу.
+//
+// Отправка отвязана от вызывающего намеренно: поисковик не должен уметь ни
+// замедлить публикацию, ни уронить её. Ошибка пишется в журнал и забывается —
+// надёжный путь по-прежнему карта сайта, этот только быстрый.
+func (m *Module) SubmitURLs(urls []string, label string) {
+	if m.indexNowKey == "" || len(urls) == 0 {
 		return
 	}
 	host := m.baseURL
 	if u, err := url.Parse(m.baseURL); err == nil && u.Host != "" {
 		host = u.Host
 	}
-	urls := make([]string, 0, len(rssLangOrder))
-	for _, lang := range rssLangOrder {
-		urls = append(urls, m.articleURL(slug, lang))
+	// За раз протокол принимает не больше десяти тысяч адресов; столько у нас
+	// не наберётся, но резать список всё равно надо там, где это видно.
+	if len(urls) > indexNowBatch {
+		m.log.Warn("indexnow batch trimmed", zap.String("label", label),
+			zap.Int("urls", len(urls)), zap.Int("kept", indexNowBatch))
+		urls = urls[:indexNowBatch]
 	}
 	body, err := json.Marshal(map[string]any{
 		"host":        host,
@@ -70,7 +88,7 @@ func (m *Module) submitIndexNow(slug string) {
 	}
 
 	go func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 		defer cancel()
 		req, err := http.NewRequestWithContext(ctx, http.MethodPost, indexNowEndpoint, bytes.NewReader(body))
 		if err != nil {
@@ -80,17 +98,17 @@ func (m *Module) submitIndexNow(slug string) {
 		req.Header.Set("Content-Type", "application/json; charset=utf-8")
 		resp, err := m.http.Do(req)
 		if err != nil {
-			m.log.Warn("indexnow submit", zap.String("slug", slug), zap.Error(err))
+			m.log.Warn("indexnow submit", zap.String("label", label), zap.Error(err))
 			return
 		}
 		defer resp.Body.Close()
 		// 200 accepted, 202 accepted but key still being validated. Anything else
 		// is worth seeing in the log: 403 means the key file is unreachable.
 		if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusAccepted {
-			m.log.Warn("indexnow rejected", zap.String("slug", slug), zap.Int("status", resp.StatusCode))
+			m.log.Warn("indexnow rejected", zap.String("label", label), zap.Int("status", resp.StatusCode))
 			return
 		}
-		m.log.Info("indexnow submitted", zap.String("slug", slug), zap.Int("urls", len(urls)))
+		m.log.Info("indexnow submitted", zap.String("label", label), zap.Int("urls", len(urls)))
 	}()
 }
 

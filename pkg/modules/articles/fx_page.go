@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 )
 
 // Страница разбора курса валют.
@@ -123,9 +124,54 @@ func (m *Module) handleRates(w http.ResponseWriter, r *http.Request) {
 		m.fillRates(ctx, &page, lang)
 	}
 
+	// У каждой валюты свой адрес, свой заголовок и своё описание. Свернуть их
+	// в одну страницу значило бы, что человек, ищущий курс рубля, не найдёт
+	// нашу страницу курса рубля: поисковик знает только тот адрес, который мы
+	// объявили своим. Период в canonical не входит — это один и тот же курс,
+	// показанный на разную глубину.
 	page.Base = m.base(r, T(lang, "fx.title"), lang)
 	page.Desc = T(lang, "fx.desc")
+	if page.Code != fxDefaultCode {
+		filter := "c=" + page.Code
+		page.Base.CanonURL = canonURL("/rates", filter, lang)
+		page.Base.LangLinks = langLinks("/rates", filter)
+		page.Base.Title = fmt.Sprintf(T(lang, "fx.title_cur"), page.Code)
+		page.Desc = fmt.Sprintf(T(lang, "fx.desc_cur"), fxSubject(page.Name, page.Code, lang))
+	}
 	m.render(w, "rates", page)
+}
+
+// fxSubject — как назвать валюту в описании страницы. Название приходит от
+// банка прописными и только по-русски, поэтому на двух других языках остаётся
+// код: выдуманный перевод хуже честного «USD».
+func fxSubject(name, code, lang string) string {
+	if lang != LangRU {
+		return code
+	}
+	n := fxTidyName(name)
+	if n == "" {
+		return code
+	}
+	return n + " (" + code + ")"
+}
+
+// fxTidyName приводит название банка к обычному виду: «ДОЛЛАР США» → «Доллар
+// США». Слова длиннее трёх букв пишутся строчными, короткие остаются как есть —
+// это аббревиатуры вроде США, ОАЭ и СДР, и «сша» из них получаться не должно.
+func fxTidyName(name string) string {
+	words := strings.Fields(strings.TrimSpace(name))
+	for i, w := range words {
+		if len([]rune(w)) > 3 {
+			words[i] = strings.ToLower(w)
+		}
+	}
+	out := strings.Join(words, " ")
+	r := []rune(out)
+	if len(r) == 0 {
+		return ""
+	}
+	r[0] = unicode.ToUpper(r[0])
+	return string(r)
 }
 
 // fillRates собирает ряд и все числа к нему.
