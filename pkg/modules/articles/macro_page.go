@@ -92,6 +92,11 @@ type MacroBlock struct {
 	NowDollars string
 }
 
+// ready сообщает, собран ли раздел целиком.
+func (b MacroBlock) ready() bool {
+	return b.Has && b.Cmp.A != "" && b.CoverLast != "" && b.Res.A != "" && b.CPILast != ""
+}
+
 // buildMacro собирает раздел. Любая недостающая часть просто не показывается:
 // половина разбора полезнее пустой страницы.
 func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
@@ -621,10 +626,11 @@ func (m *Module) macroCached(ctx context.Context, lang string) MacroBlock {
 	}
 
 	built := m.buildMacro(ctx, lang)
-	if !built.Has {
-		// Пустой раздел не запоминаем: сразу после разворачивания ряды ещё
-		// загружаются, и час держать «данных нет» значит час не показывать
-		// раздел, который уже готов.
+	if !built.ready() {
+		// Неполный раздел не запоминаем. Сразу после разворачивания ряды
+		// приходят один за другим — денежная масса, потом резервы, потом
+		// инфляция, — и запомнить состояние между ними значит на час показать
+		// половину разбора, хотя вторая половина уже в базе.
 		return built
 	}
 	macroCache.mu.Lock()
