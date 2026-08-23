@@ -96,6 +96,7 @@ type FxPage struct {
 	Monthly    bool
 	DeepSince  string
 	DailySince string
+	Macro      MacroBlock
 }
 
 // handleRates отдаёт страницу разбора курса.
@@ -123,6 +124,7 @@ func (m *Module) handleRates(w http.ResponseWriter, r *http.Request) {
 	if m.fx != nil {
 		m.fillRates(ctx, &page, lang)
 	}
+	page.Macro = m.macroCached(ctx, lang)
 
 	// У каждой валюты свой адрес, свой заголовок и своё описание. Свернуть их
 	// в одну страницу значило бы, что человек, ищущий курс рубля, не найдёт

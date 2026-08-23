@@ -2958,11 +2958,20 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .fx-line .spark__y span { transform: translateY(-50%); }
 .fx-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .fx-svg__line { fill: none; stroke: var(--gold-strong); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+/* Вторая линия сравнения: другой цвет и штрих, чтобы её было видно и на
+   чёрно-белой печати, и тому, кто цвета различает хуже. */
+.fx-svg__line--b { stroke: var(--teal); stroke-dasharray: 6 4; }
+.fx-key { display: inline-flex; align-items: center; gap: 5px; margin-right: 14px; }
+.fx-key::before { content: ""; width: 16px; height: 3px; border-radius: 2px; background: var(--gold-strong); }
+.fx-key--b::before { background: var(--teal); }
+/* Подзаголовок раздела внутри страницы: тоньше главного, но с той же линией. */
+.section-head--sub { margin-top: 26px; }
+.section-head--sub h2 { font-family: var(--serif); font-size: 1.5rem; line-height: 1.2; margin: 0; }
 .fx-svg__area { fill: var(--gold-strong); opacity: .10; stroke: none; }
 /* Подписи оси значений выставлены абсолютно и потому не занимают ширины сами:
    курсу в четыре-пять знаков её надо отвести явно, иначе подпись обрезается
    слева и «478,79» превращается в «8,79». */
-.fx-line .spark__y { width: 4.4em; }
+.fx-line .spark__y { width: 5.4em; }
 
 /* Подписи оси времени стоят там, где стоит их точка, а не через равные
    промежутки: в месяцах разное число дней, и равномерная раскладка развела бы
@@ -2990,4 +2999,12 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   .fx-line__x span { font-size: .6rem; }
   .fx-line__x--days span { display: none; }
   .fx-line__x--days span:nth-child(3n+1) { display: block; }
+}
+
+/* Канал, которого пока нет: тот же ряд, но без ссылки и приглушённый — место
+   занято, а вести в пустоту нечем. */
+.foot-soc__soon { display: flex; align-items: center; gap: 8px; opacity: .55; cursor: default; }
+.foot-soc__badge {
+  font-size: .68rem; text-transform: lowercase; letter-spacing: .02em;
+  padding: 1px 7px; border: 1px solid currentColor; border-radius: 999px; opacity: .8;
 }

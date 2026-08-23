@@ -52,6 +52,7 @@ type Module struct {
 	predictions   *PredictionStore
 	tariffs       *TariffStore
 	fx            *FxStore
+	macro         *MacroStore
 	metrics       *Metrics
 	geoip         *geoIP
 	excludeEmails map[string]bool
@@ -120,6 +121,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.seedContentPages(ctx)
 	m.tariffs = NewTariffStore(rt.DB)
 	m.fx = NewFxStore(rt.DB)
+	m.macro = NewMacroStore(rt.DB)
 	// Seed the rate card from the built-in defaults and load it into the cache;
 	// best-effort, so a failure just serves the built-in prices.
 	if err := m.tariffs.Load(ctx); err != nil {

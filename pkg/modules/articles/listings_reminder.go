@@ -25,6 +25,7 @@ func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
 	}
 	go m.RunFxArchivist(ctx) // собственный архив курсов: дневной и месячный
 	go m.runIndexNow(ctx)    // заявки поисковикам на постоянные страницы
+	go m.RunMacro(ctx)       // денежная масса, резервы, инфляция
 	return nil
 }
 

@@ -47,31 +47,7 @@
         <div class="chart">
           <h2 class="chart__h">{{ t .Lang "fx.chart" }} · {{ .Code }}</h2>
           <div class="chart__body">
-            <div class="spark fx-line">
-              <div class="spark__y" aria-hidden="true">
-                {{ range .Chart.Y }}<span style="top:{{ .Pos }}%">{{ .Label }}</span>{{ end }}
-              </div>
-              <div class="spark__plot">
-                {{/* Вертикальные засечки повторяют подписи под графиком:
-                     первое число месяца, январь, начало года — по ним глаз
-                     находит место, а не считает деления. */}}
-                <div class="spark__grid" aria-hidden="true">
-                  {{ range .Chart.Y }}<i style="top:{{ .Pos }}%"></i>{{ end }}
-                  {{ range .Chart.X }}{{ if .Grid }}<i class="fx-vgrid" style="left:{{ .Pos }}%"></i>{{ end }}{{ end }}
-                </div>
-                {{/* preserveAspectRatio="none" растягивает картинку по рамке,
-                     а non-scaling-stroke не даёт растянуться перу: линия всюду
-                     одной толщины, как бы ни менялась ширина окна. */}}
-                <svg class="fx-svg" viewBox="0 0 {{ .Chart.Width }} {{ .Chart.Height }}" preserveAspectRatio="none" role="img"
-                     aria-label="{{ .Code }}: {{ .Min }} — {{ .Max }}">
-                  <path class="fx-svg__area" d="{{ .Chart.Area }}"/>
-                  <path class="fx-svg__line" d="{{ .Chart.Line }}" vector-effect="non-scaling-stroke"/>
-                </svg>
-              </div>
-              <div class="spark__x fx-line__x{{ if eq .Period "month" }} fx-line__x--days{{ end }}">
-                {{ range .Chart.X }}{{ if .Label }}<span style="left:{{ .Pos }}%">{{ .Label }}</span>{{ end }}{{ end }}
-              </div>
-            </div>
+            {{ template "fx_line" (dict "C" .Chart "Cls" "fx-svg__line") }}
           </div>
           {{ if .Monthly }}<p class="chart__note">{{ t .Lang "fx.monthly" }}</p>{{ end }}
         </div>
@@ -111,10 +87,129 @@
       <p class="chart__note">{{ t .Lang "fx.empty" }}</p>
       {{ end }}
 
+      {{ if .Macro.Has }}
+      {{/* Разбор не пишется руками: все числа ниже посчитаны из рядов, которые
+           Нацбанк и Всемирный банк публикуют сами. Поэтому раздел не устаревает
+           и не требует статьи — он пересчитывается вместе с источником. */}}
+      <div class="section-head section-head--sub"><h2>{{ t .Lang "fx.macro_h" }}</h2></div>
+      <p class="place-lead">{{ t .Lang "fx.macro_lead" }}</p>
+
+      <div class="charts">
+        <div class="chart">
+          <h3 class="chart__h">{{ t .Lang "fx.money_h" }}</h3>
+          <div class="chart__body">{{ template "fx_line" (dict "C" .Macro.M3 "Cls" "fx-svg__line") }}</div>
+          <p class="chart__note">{{ printf (t .Lang "fx.money_note") .Macro.M3Month .Macro.M3Last .Macro.M3Year }} {{ t .Lang "fx.axis_trn" }}</p>
+        </div>
+      </div>
+
+      {{ if .Macro.Cmp.A }}
+      <div class="charts">
+        <div class="chart">
+          <h3 class="chart__h">{{ t .Lang "fx.cmp_h" }}</h3>
+          <div class="chart__body">{{ template "fx_two" .Macro.Cmp }}</div>
+          <p class="chart__note">
+            <span class="fx-key fx-key--a">{{ t .Lang "fx.col_money" }}</span>
+            <span class="fx-key fx-key--b">{{ t .Lang "fx.col_rate" }}</span>
+          </p>
+          <p class="chart__note">{{ printf (t .Lang "fx.cmp_note") .Macro.CmpFrom .Macro.MoneyMul .Macro.RateMul }} {{ t .Lang "fx.axis_log" }}</p>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ if .Macro.CoverLast }}
+      <div class="charts">
+        <div class="chart">
+          <h3 class="chart__h">{{ t .Lang "fx.cover_h" }}</h3>
+          <div class="chart__body">{{ template "fx_line" (dict "C" .Macro.Cover "Cls" "fx-svg__line") }}</div>
+          <p class="chart__note">{{ printf (t .Lang "fx.cover_note") .Macro.CoverMonth .Macro.CoverLast .Macro.RateAt }}</p>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ if .Macro.Res.A }}
+      <div class="charts">
+        <div class="chart">
+          <h3 class="chart__h">{{ t .Lang "fx.res_h" }}</h3>
+          <div class="chart__body">{{ template "fx_two" .Macro.Res }}</div>
+          <p class="chart__note">
+            <span class="fx-key fx-key--a">{{ t .Lang "fx.res_key_a" }}</span>
+            <span class="fx-key fx-key--b">{{ t .Lang "fx.col_fund" }}</span>
+          </p>
+          <p class="chart__note">{{ printf (t .Lang "fx.res_note") .Macro.ResLast .Macro.FundLast .Macro.ResMonth }} {{ t .Lang "fx.axis_bln" }}</p>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ if .Macro.CPILast }}
+      <div class="charts">
+        <div class="chart">
+          <h3 class="chart__h">{{ t .Lang "fx.cpi_h" }}</h3>
+          <div class="chart__body">{{ template "fx_line" (dict "C" .Macro.CPI "Cls" "fx-svg__line") }}</div>
+          <p class="chart__note">{{ printf (t .Lang "fx.cpi_note") .Macro.CPIYear .Macro.CPILast }}</p>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ if .Macro.Erode }}
+      <div class="chart">
+        <h3 class="chart__h">{{ t .Lang "fx.erode_h" }}</h3>
+        <p class="chart__note">{{ t .Lang "fx.erode_note" }}</p>
+        <div class="fx-years__wrap">
+          <table class="fx-years">
+            <thead><tr>
+              <th>{{ t .Lang "fx.erode_year" }}</th>
+              <th>{{ t .Lang "fx.erode_kept" }}</th>
+              <th>{{ t .Lang "fx.erode_then" }}</th>
+              <th>{{ t .Lang "fx.erode_now" }}</th>
+            </tr></thead>
+            <tbody>
+              {{ range .Macro.Erode }}
+              <tr><td>{{ .Year }}</td><td>{{ .Kept }} ₸</td><td>{{ .Then }} $</td><td>{{ .Now }} $</td></tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ if .Macro.Years }}
+      <div class="chart">
+        <h3 class="chart__h">{{ t .Lang "fx.years_h" }}</h3>
+        <p class="chart__note">{{ t .Lang "fx.years_note" }}</p>
+        <div class="fx-years__wrap">
+          <table class="fx-years">
+            <thead><tr>
+              <th>{{ t .Lang "fx.year" }}</th>
+              <th>{{ t .Lang "fx.col_cpi" }}</th>
+              <th>{{ t .Lang "fx.col_money" }}</th>
+              <th>{{ t .Lang "fx.col_rate" }}</th>
+              <th>{{ t .Lang "fx.col_fund" }}</th>
+            </tr></thead>
+            <tbody>
+              {{ range .Macro.Years }}
+              <tr>
+                <td>{{ .Year }}</td>
+                <td>{{ .CPI }}</td>
+                <td>{{ .Money }}</td>
+                <td>{{ .Rate }}</td>
+                <td class="{{ if .FundDown }}fx-down{{ end }}">{{ .Fund }}</td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {{ end }}
+      {{ end }}
+
       <div class="chart">
         <h2 class="chart__h">{{ t .Lang "fx.sources" }}</h2>
         <p class="chart__note">{{ t .Lang "fx.src_nbk" }}</p>
         <p class="chart__note">{{ t .Lang "fx.src_bis" }}</p>
+        {{ if .Macro.Has }}
+        <p class="chart__note">{{ t .Lang "fx.src_nbk_stat" }}</p>
+        <p class="chart__note">{{ t .Lang "fx.src_wb" }}</p>
+        {{ end }}
         {{ if .Since }}<p class="chart__note">{{ .Code }}: {{ printf (t .Lang "fx.since") .Since }}</p>{{ end }}
       </div>
 
@@ -123,4 +218,52 @@
   </div>
 </main>
 {{ template "site_footer" . }}
+{{ end }}
+
+{{/* Одна линия в рамке с осями. Вынесено отдельно, потому что на странице их
+     теперь пять и различаются они только данными. */}}
+{{ define "fx_line" }}
+{{ with .C }}
+<div class="spark fx-line">
+  <div class="spark__y" aria-hidden="true">
+    {{ range .Y }}<span style="top:{{ .Pos }}%">{{ .Label }}</span>{{ end }}
+  </div>
+  <div class="spark__plot">
+    <div class="spark__grid" aria-hidden="true">
+      {{ range .Y }}<i style="top:{{ .Pos }}%"></i>{{ end }}
+      {{ range .X }}{{ if .Grid }}<i class="fx-vgrid" style="left:{{ .Pos }}%"></i>{{ end }}{{ end }}
+    </div>
+    <svg class="fx-svg" viewBox="0 0 {{ .Width }} {{ .Height }}" preserveAspectRatio="none" aria-hidden="true">
+      <path class="fx-svg__area" d="{{ .Area }}"/>
+      <path class="fx-svg__line" d="{{ .Line }}" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+  <div class="spark__x fx-line__x">
+    {{ range .X }}{{ if .Label }}<span style="left:{{ .Pos }}%">{{ .Label }}</span>{{ end }}{{ end }}
+  </div>
+</div>
+{{ end }}
+{{ end }}
+
+{{/* Две линии в одной рамке: сравнение имеет смысл только на общей шкале. */}}
+{{ define "fx_two" }}
+<div class="spark fx-line">
+  <div class="spark__y" aria-hidden="true">
+    {{ range .Y }}<span style="top:{{ .Pos }}%">{{ .Label }}</span>{{ end }}
+  </div>
+  <div class="spark__plot">
+    <div class="spark__grid" aria-hidden="true">
+      {{ range .Y }}<i style="top:{{ .Pos }}%"></i>{{ end }}
+      {{ range .X }}{{ if .Grid }}<i class="fx-vgrid" style="left:{{ .Pos }}%"></i>{{ end }}{{ end }}
+    </div>
+    <svg class="fx-svg" viewBox="0 0 {{ .Width }} {{ .Height }}" preserveAspectRatio="none" aria-hidden="true">
+      <path class="fx-svg__area" d="{{ .Area }}"/>
+      <path class="fx-svg__line" d="{{ .A }}" vector-effect="non-scaling-stroke"/>
+      <path class="fx-svg__line fx-svg__line--b" d="{{ .B }}" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+  <div class="spark__x fx-line__x">
+    {{ range .X }}{{ if .Label }}<span style="left:{{ .Pos }}%">{{ .Label }}</span>{{ end }}{{ end }}
+  </div>
+</div>
 {{ end }}
