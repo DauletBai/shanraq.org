@@ -51,6 +51,7 @@ type Module struct {
 	content       *ContentStore
 	predictions   *PredictionStore
 	tariffs       *TariffStore
+	fx            *FxStore
 	metrics       *Metrics
 	geoip         *geoIP
 	excludeEmails map[string]bool
@@ -118,6 +119,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	// idempotent and best-effort, so it never blocks startup.
 	m.seedContentPages(ctx)
 	m.tariffs = NewTariffStore(rt.DB)
+	m.fx = NewFxStore(rt.DB)
 	// Seed the rate card from the built-in defaults and load it into the cache;
 	// best-effort, so a failure just serves the built-in prices.
 	if err := m.tariffs.Load(ctx); err != nil {
@@ -221,6 +223,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/author/{id}", m.handleAuthor)
 		r.Get("/predictions", m.handlePredictions)
 		r.Get("/analytics", m.handlePublicStats)
+		r.Get("/rates", m.handleRates)
 		r.Get("/about", m.handleStaticPage("about"))
 		r.Get("/guide", m.handleStaticPage("guide"))
 		r.Get("/formatting", m.handleStaticPage("formatting"))

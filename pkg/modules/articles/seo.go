@@ -157,7 +157,7 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 	doc := m.sitemapDoc(func(emit func(path string, mod time.Time)) {
 		emit("/", time.Now())
-		for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings", "/predictions", "/analytics", "/author/sana"} {
+		for _, p := range []string{"/about", "/guide", "/formatting", "/pricing", "/support", "/listings", "/predictions", "/analytics", "/rates", "/author/sana"} {
 			emit(p, time.Time{})
 		}
 		fresh, ferr := m.store.CategoryFreshness(r.Context())

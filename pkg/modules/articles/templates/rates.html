@@ -1,0 +1,126 @@
+{{ define "rates" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div class="layout__main">
+
+      <div class="section-head"><h1>{{ t .Lang "fx.title" }}</h1></div>
+      <p class="place-lead">{{ t .Lang "fx.lead" }}</p>
+
+      {{/* Выбор без единой строки скрипта: период — обычные ссылки, валюта —
+           форма с кнопкой. Страница остаётся живой там, где скрипты не
+           выполняются, и каждый выбор получает собственный адрес, на который
+           можно сослаться. */}}
+      <form class="fx-pick" method="get" action="/rates">
+        <input type="hidden" name="p" value="{{ .Period }}">
+        <label class="fx-pick__lab" for="fx-c">{{ t .Lang "fx.currency" }}</label>
+        <select class="fx-pick__sel" id="fx-c" name="c">
+          {{ range .Currencies }}
+          <option value="{{ .Code }}"{{ if eq .Code $.Code }} selected{{ end }}>{{ .Code }}{{ if .Name }} — {{ .Name }}{{ end }}</option>
+          {{ end }}
+        </select>
+        <button class="btn btn--sm" type="submit">{{ t .Lang "fx.show" }}</button>
+      </form>
+
+      <nav class="fx-tabs" aria-label="{{ t .Lang "fx.chart" }}">
+        <a class="fx-tab{{ if eq .Period "month" }} is-on{{ end }}" href="/rates?c={{ .Code }}&amp;p=month">{{ t .Lang "fx.p_month" }}</a>
+        <a class="fx-tab{{ if eq .Period "year" }} is-on{{ end }}" href="/rates?c={{ .Code }}&amp;p=year">{{ t .Lang "fx.p_year" }}</a>
+        <a class="fx-tab{{ if eq .Period "five" }} is-on{{ end }}" href="/rates?c={{ .Code }}&amp;p=five">{{ t .Lang "fx.p_five" }}</a>
+        <a class="fx-tab{{ if eq .Period "all" }} is-on{{ end }}" href="/rates?c={{ .Code }}&amp;p=all">{{ t .Lang "fx.p_all" }}</a>
+      </nav>
+
+      {{ if .HasData }}
+
+      {{/* Крупная строка ответа: человек, зашедший узнать курс, не должен
+           искать его среди плиток. */}}
+      <p class="fx-now">
+        <b>{{ if gt .Quant 1 }}{{ .Quant }} {{ end }}{{ .Code }}</b>
+        <span class="fx-now__eq">=</span>
+        <b class="fx-now__v">{{ .Last }} ₸</b>
+        <span class="fx-now__d{{ if .Up }} is-up{{ else if .Down }} is-down{{ end }}">{{ .Diff }}{{ if .Pct }} · {{ .Pct }}{{ end }}</span>
+        <span class="fx-now__day">{{ .LastDay }}</span>
+      </p>
+
+      <div class="charts">
+        <div class="chart">
+          <h2 class="chart__h">{{ t .Lang "fx.chart" }} · {{ .Code }}</h2>
+          <div class="chart__body">
+            <div class="spark fx-line">
+              <div class="spark__y" aria-hidden="true">
+                {{ range .Chart.Y }}<span style="top:{{ .Pos }}%">{{ .Label }}</span>{{ end }}
+              </div>
+              <div class="spark__plot">
+                {{/* Вертикальные засечки повторяют подписи под графиком:
+                     первое число месяца, январь, начало года — по ним глаз
+                     находит место, а не считает деления. */}}
+                <div class="spark__grid" aria-hidden="true">
+                  {{ range .Chart.Y }}<i style="top:{{ .Pos }}%"></i>{{ end }}
+                  {{ range .Chart.X }}{{ if .Grid }}<i class="fx-vgrid" style="left:{{ .Pos }}%"></i>{{ end }}{{ end }}
+                </div>
+                {{/* preserveAspectRatio="none" растягивает картинку по рамке,
+                     а non-scaling-stroke не даёт растянуться перу: линия всюду
+                     одной толщины, как бы ни менялась ширина окна. */}}
+                <svg class="fx-svg" viewBox="0 0 {{ .Chart.Width }} {{ .Chart.Height }}" preserveAspectRatio="none" role="img"
+                     aria-label="{{ .Code }}: {{ .Min }} — {{ .Max }}">
+                  <path class="fx-svg__area" d="{{ .Chart.Area }}"/>
+                  <path class="fx-svg__line" d="{{ .Chart.Line }}" vector-effect="non-scaling-stroke"/>
+                </svg>
+              </div>
+              <div class="spark__x fx-line__x{{ if eq .Period "month" }} fx-line__x--days{{ end }}">
+                {{ range .Chart.X }}{{ if .Label }}<span style="left:{{ .Pos }}%">{{ .Label }}</span>{{ end }}{{ end }}
+              </div>
+            </div>
+          </div>
+          {{ if .Monthly }}<p class="chart__note">{{ t .Lang "fx.monthly" }}</p>{{ end }}
+        </div>
+      </div>
+
+      <div class="stat-tiles">
+        <div class="stat-tile"><b>{{ .Last }}</b><span>{{ t .Lang "fx.now" }}</span></div>
+        <div class="stat-tile"><b class="{{ if .Up }}fx-up{{ else if .Down }}fx-down{{ end }}">{{ .Diff }}</b><span>{{ t .Lang "fx.change" }}{{ if .Pct }} · {{ .Pct }}{{ end }}</span></div>
+        <div class="stat-tile"><b>{{ .Min }}</b><span>{{ t .Lang "fx.min" }} · {{ .MinDay }}</span></div>
+        <div class="stat-tile"><b>{{ .Max }}</b><span>{{ t .Lang "fx.max" }} · {{ .MaxDay }}</span></div>
+        <div class="stat-tile"><b>{{ .Avg }}</b><span>{{ t .Lang "fx.avg" }}</span></div>
+        <div class="stat-tile"><b>{{ .Spread }}</b><span>{{ t .Lang "fx.spread" }}</span></div>
+      </div>
+
+      {{ if .Years }}
+      <div class="chart" style="aspect-ratio:auto; min-height:0">
+        <h2 class="chart__h">{{ t .Lang "fx.years" }}</h2>
+        <div class="fx-years__wrap">
+          <table class="fx-years">
+            <thead><tr><th>{{ t .Lang "fx.year" }}</th><th>{{ t .Lang "fx.close" }}</th><th>{{ t .Lang "fx.diff" }}</th><th>%</th></tr></thead>
+            <tbody>
+              {{ range .Years }}
+              <tr>
+                <td>{{ .Year }}</td>
+                <td>{{ .Close }}</td>
+                <td class="{{ if .Up }}fx-up{{ else if .Down }}fx-down{{ end }}">{{ .Diff }}</td>
+                <td class="{{ if .Up }}fx-up{{ else if .Down }}fx-down{{ end }}">{{ .Pct }}</td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ else }}
+      <p class="chart__note">{{ t .Lang "fx.empty" }}</p>
+      {{ end }}
+
+      <div class="chart" style="aspect-ratio:auto; min-height:0">
+        <h2 class="chart__h">{{ t .Lang "fx.sources" }}</h2>
+        <p class="chart__note">{{ t .Lang "fx.src_nbk" }}</p>
+        <p class="chart__note">{{ t .Lang "fx.src_bis" }}</p>
+        {{ if .Since }}<p class="chart__note">{{ .Code }}: {{ printf (t .Lang "fx.since") .Since }}</p>{{ end }}
+      </div>
+
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

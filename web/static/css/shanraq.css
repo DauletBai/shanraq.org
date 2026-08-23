@@ -183,7 +183,10 @@ img { max-width: 100%; height: auto; display: block; }
 .infobar__ic { font-size: 0.95rem; line-height: 1; }
 .infobar__muted { color: var(--muted); }
 .infobar__rates { gap: 14px; font-variant-numeric: tabular-nums; }
-.infobar__rates .rate { font-weight: 600; }
+.infobar__rates .rate { font-weight: 600; text-decoration: none; border-radius: 4px; padding: 0 2px; }
+.infobar__rates .rate:hover .rate__num,
+.infobar__rates .rate:focus-visible .rate__num { text-decoration: underline; }
+.infobar__rates .infobar__muted { text-decoration: none; }
 .rate__cur { color: var(--gold-strong); font-weight: 700; }   /* currency symbol — red */
 .rate__num { color: var(--ink); }                             /* digits — black on light, white on dark */
 .rate__arr.rate--up { color: var(--teal); }
@@ -2037,7 +2040,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .charts { display: grid; gap: 18px; grid-template-columns: 1fr; margin-bottom: 18px; }
 .chart {
   display: flex; flex-direction: column;
-  aspect-ratio: 16 / 9; min-height: 250px;
+  /* min-width/max-width обязательны: при aspect-ratio браузер вправе вывести
+     ширину из высоты, и на узком экране min-height в 250px раздувал карточку
+     до 444px — шире самого экрана, так что правый край графика обрезался. */
+  aspect-ratio: 16 / 9; min-height: 250px; min-width: 0; max-width: 100%;
   padding: 14px 16px;
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm);
 }
@@ -2890,4 +2896,78 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
      mark and its line stay a cell like every other column. */
   .foot-col--ad { grid-column: 1 / -1; }
   .foot-logo img { width: 52px; height: 52px; }
+}
+
+/* Страница разбора курса валют.
+   ------------------------------------------------------------------ */
+
+/* Выбор валюты и периода. Обе строки — обычные ссылки и форма: страница
+   работает и там, где скрипты не выполняются, а каждый выбор адресуем. */
+.fx-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 10px; }
+.fx-pick__lab { font-size: .82rem; color: var(--muted); }
+.fx-pick__sel {
+  flex: 1 1 220px; max-width: 340px; min-width: 0;
+  padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--card); color: var(--ink); font-size: .9rem;
+}
+.fx-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.fx-tab {
+  padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px;
+  font-size: .85rem; text-decoration: none; color: var(--ink); background: var(--card);
+}
+.fx-tab:hover { border-color: var(--gold-strong); }
+.fx-tab.is-on { background: var(--gold-strong); border-color: var(--gold-strong); color: #fff; font-weight: 600; }
+
+/* Крупный ответ на вопрос, с которым сюда пришли. */
+.fx-now { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin: 0 0 14px; font-size: 1.05rem; }
+.fx-now__eq { color: var(--muted); }
+.fx-now__v { font-size: 1.5rem; letter-spacing: -.01em; }
+.fx-now__d { font-size: .92rem; color: var(--muted); }
+.fx-now__d.is-up { color: var(--danger); }
+.fx-now__d.is-down { color: var(--teal); }
+.fx-now__day { font-size: .8rem; color: var(--muted); margin-left: auto; }
+
+/* Рост курса чужой валюты — это ослабление тенге, поэтому вверх здесь красный,
+   а вниз зелёный. Так же, как в строке курсов в шапке. */
+.fx-up { color: var(--danger); }
+.fx-down { color: var(--teal); }
+
+.fx-line .spark__plot { overflow: hidden; border-radius: 6px; }
+/* Засечки у линии считаются сверху вниз, поэтому и смещение половиной строки
+   идёт вверх, а не вниз, как у столбиков. */
+.fx-line .spark__y span { transform: translateY(-50%); }
+.fx-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.fx-svg__line { fill: none; stroke: var(--gold-strong); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.fx-svg__area { fill: var(--gold-strong); opacity: .10; stroke: none; }
+/* Подписи оси значений выставлены абсолютно и потому не занимают ширины сами:
+   курсу в четыре-пять знаков её надо отвести явно, иначе подпись обрезается
+   слева и «478,79» превращается в «8,79». */
+.fx-line .spark__y { width: 4.4em; }
+
+/* Подписи оси времени стоят там, где стоит их точка, а не через равные
+   промежутки: в месяцах разное число дней, и равномерная раскладка развела бы
+   подпись и засечку, к которой она относится. */
+.fx-line__x { position: relative; display: block; height: 1.15em; overflow: hidden; }
+.fx-line__x span { position: absolute; flex: none; transform: translateX(-50%); white-space: nowrap; font-size: .66rem; }
+.fx-line__x span:first-child { transform: none; }
+.fx-line__x span:last-child { transform: translateX(-100%); }
+.spark__grid i.fx-vgrid { top: 0; bottom: 0; left: auto; right: auto; border-top: 0; border-left: 1px dashed var(--line); }
+
+/* Годовая таблица: на длинных периодах она не влезает в узкий экран, поэтому
+   едет вбок сама, не растягивая страницу. */
+.fx-years__wrap { overflow-x: auto; }
+.fx-years { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.fx-years th, .fx-years td { padding: 6px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); }
+.fx-years th:first-child, .fx-years td:first-child { text-align: left; }
+.fx-years th { font-weight: 600; color: var(--muted); font-size: .8rem; }
+.fx-years tbody tr:last-child td { border-bottom: 0; }
+
+@media (max-width: 560px) {
+  .fx-now__day { margin-left: 0; width: 100%; }
+  /* Тридцать одно число в строку шириной с ладонь не помещается: на месячной
+     оси оставляем каждое третье. Прочие периоды подписаны редко и так, их
+     прореживать нечем. */
+  .fx-line__x span { font-size: .6rem; }
+  .fx-line__x--days span { display: none; }
+  .fx-line__x--days span:nth-child(3n+1) { display: block; }
 }

@@ -142,7 +142,9 @@
     <div class="infobar__cell"><span class="metaic">{{ icon "calendar" }}<span class="wx__temp">{{ .Info.Today }}</span></span></div>
     <div class="infobar__cell">{{ if .Info.WeatherTemp }}<span class="metaic wx">{{ icon .Info.WeatherIcon }}<span class="wx__temp">{{ .Info.WeatherTemp }}</span>{{ if .Info.WeatherPress }}<span class="wx__press">{{ icon "wx_press" }}<span class="wx__pval">{{ .Info.WeatherPress }} {{ t .Lang "wx.pressure_unit" }}</span></span>{{ end }}</span>{{ else }}<span class="infobar__muted">—</span>{{ end }}</div>
     <div class="infobar__cell infobar__rates">
-      {{ range .Info.Rates }}<span class="rate"><span class="rate__cur">{{ curSymbol .Code }}</span> <span class="rate__num">{{ .Main }}<span class="rate__last">{{ .Last }}</span></span>{{ if eq .Dir "up" }} <span class="rate__arr rate--up">▲</span>{{ else if eq .Dir "down" }} <span class="rate__arr rate--down">▼</span>{{ end }}</span>{{ else }}<span class="infobar__muted">$ € ₽</span>{{ end }}
+      {{/* Каждый курс ведёт в историю именно этой валюты: человек нажимает
+           на доллар, потому что хочет знать про доллар. */}}
+      {{ range .Info.Rates }}<a class="rate" href="/rates?c={{ .Code }}" title="{{ t $.Lang "fx.link" }}: {{ .Code }}"><span class="rate__cur">{{ curSymbol .Code }}</span> <span class="rate__num">{{ .Main }}<span class="rate__last">{{ .Last }}</span></span>{{ if eq .Dir "up" }} <span class="rate__arr rate--up">▲</span>{{ else if eq .Dir "down" }} <span class="rate__arr rate--down">▼</span>{{ end }}</a>{{ else }}<a class="infobar__muted" href="/rates">$ € ₽</a>{{ end }}
     </div>
     <div class="infobar__cell infobar__social">{{ template "social_icons" .Info.Social }}</div>
   </div>
