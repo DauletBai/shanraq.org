@@ -2025,6 +2025,58 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    rows — keeps the row a fixed height however much data any card collects.
    Browsers, bots and sources grow the same way, just more slowly. */
 .adm-scroll--chart { max-height: 270px; }
+/* Публичная страница аналитики.
+   Каждый график — прямоугольник 16:9, а не карточка по высоте содержимого:
+   так лента графиков читается как один инструмент, а не как набор плиток
+   разной величины. Что не поместилось — прокручивается внутри рамки, поэтому
+   новая страна или новый браузер не растягивают страницу. */
+/* Один график в ряд. Два помещались по ширине, но подписи вроде
+   «Информационные страницы» и «iOS (iPhone/iPad)» приходилось переносить на
+   вторую строку или обрывать. График, который надо расшифровывать, хуже
+   графика, который занимает больше места. */
+.charts { display: grid; gap: 18px; grid-template-columns: 1fr; margin-bottom: 18px; }
+.chart {
+  display: flex; flex-direction: column;
+  aspect-ratio: 16 / 9; min-height: 250px;
+  padding: 14px 16px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm);
+}
+.chart__h { margin: 0; font-family: var(--serif); font-size: 1.02rem; line-height: 1.25; }
+.chart__note { margin: 4px 0 0; font-size: .76rem; color: var(--muted); line-height: 1.4; }
+.chart__body {
+  flex: 1 1 auto; min-height: 0; margin-top: 10px;
+  display: flex; flex-direction: column; gap: 9px;
+  overflow-y: auto; overscroll-behavior: contain; padding-right: 6px;
+}
+.chart__body::-webkit-scrollbar { width: 8px; }
+.chart__body::-webkit-scrollbar-track { background: transparent; }
+.chart__body::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
+.chart__body { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+/* Столбиковый график тянется на всю высоту рамки, а не на высоту своих данных. */
+.chart__body > .spark { flex: 1 1 auto; min-height: 0; }
+/* Подпись под каждым столбиком — это тридцать чисел в ряд, поэтому шрифт
+   мельче обычной оси, а последний слот не прижимается вправо: он такой же
+   день, как остальные. */
+.spark__x--days { font-size: .62rem; }
+.spark__x--days span:last-child { text-align: center; }
+/* Подпись строки в админке рассчитана на узкую колонку в треть ряда. Здесь
+   график шире, а названия длиннее — «Информационные страницы», «iOS
+   (iPhone/iPad)» — поэтому под подпись отдаётся больше места и она переносится
+   на вторую строку вместо того, чтобы обрываться на полуслове. */
+.chart .adm-bar { grid-template-columns: minmax(0, 240px) minmax(0, 1fr) auto; font-size: .88rem; }
+.chart .adm-bar__label { white-space: nowrap; }
+/* Нарисованный флаг шире эмодзи, и без общей ширины строка с ним съезжает
+   вправо относительно соседних. Слот один на всех, флаг внутри центрируется. */
+.chart .adm-flag { flex: none; width: 1.35em; display: inline-flex; justify-content: center; }
+.chart .adm-flag .flag { display: block; }
+
+/* Сводка числами над графиками: те же плитки, что в админке, но в один ряд с
+   переносом, потому что читателю их показывают все сразу. */
+.stat-tiles { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 18px; }
+.stat-tile { padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.stat-tile b { display: block; font-family: var(--serif); font-size: 1.5rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat-tile span { display: block; margin-top: 3px; font-size: .78rem; color: var(--muted); line-height: 1.35; }
+
 /* Account register: a wide table whose last column opens an edit form in place,
    so correcting a name never costs a page load and never loses the search. */
 

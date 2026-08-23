@@ -1,0 +1,144 @@
+{{ define "stats" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div class="layout__main">
+
+      <div class="section-head"><h1>{{ t .Lang "stats.title" }}</h1></div>
+      <p class="place-lead">{{ t .Lang "stats.lead" }}</p>
+
+      {{/* Метод раньше чисел: цифра без определения — это ровно то, с чем
+           спорят наши же статьи. */}}
+      <div class="chart" style="aspect-ratio:auto; min-height:0">
+        <h2 class="chart__h">{{ t .Lang "stats.method" }}</h2>
+        <p class="chart__note">{{ t .Lang "stats.method_note" }}</p>
+        <p class="chart__note">{{ printf (t .Lang "stats.since") .Since }} · {{ printf (t .Lang "stats.updated") .Updated }}</p>
+      </div>
+
+      {{ if .Guests.HasData }}
+
+      <div class="stat-tiles">
+        <div class="stat-tile"><b>{{ money .Guests.Month.Total }}</b><span>{{ t .Lang "stats.views_30" }}</span></div>
+        <div class="stat-tile"><b>{{ money .Guests.Month.Guest }}</b><span>{{ t .Lang "stats.guests_30" }}</span></div>
+        <div class="stat-tile"><b>{{ money .Guests.Month.Registered }}</b><span>{{ t .Lang "stats.registered_30" }}</span></div>
+        <div class="stat-tile"><b>{{ money .Articles }}</b><span>{{ t .Lang "stats.articles" }}</span></div>
+        <div class="stat-tile"><b>{{ money .Listings }}</b><span>{{ t .Lang "stats.listings" }}</span></div>
+        <div class="stat-tile"><b>{{ money .Subscribers }}</b><span>{{ t .Lang "stats.subscribers" }}</span></div>
+        <div class="stat-tile"><b>{{ money .Authors }}</b><span>{{ t .Lang "stats.authors" }}</span></div>
+        <div class="stat-tile"><b>{{ money .Comments }}</b><span>{{ t .Lang "stats.comments" }}</span></div>
+      </div>
+
+      {{/* График по дням идёт на всю ширину: у него ось времени, и делить её
+           пополам значит читать месяц в два приёма. */}}
+      <div class="charts">
+        <div class="chart">
+          <h2 class="chart__h">{{ t .Lang "ag.trend" }}</h2>
+          <div class="chart__body">
+            {{ if .Guests.Trend }}
+            <div class="spark">
+              <div class="spark__y" aria-hidden="true">
+                {{ range .Guests.TrendTicks }}<span style="bottom:{{ .Pct }}%">{{ money .N }}</span>{{ end }}
+              </div>
+              <div class="spark__plot">
+                <div class="spark__grid" aria-hidden="true">
+                  {{ range .Guests.TrendTicks }}<i style="bottom:{{ .Pct }}%"></i>{{ end }}
+                </div>
+                <div class="spark__bars">
+                  {{ range .Guests.Trend }}
+                  <span class="spark__bar" title="{{ .Label }}: {{ money .N }}" style="height:{{ if .Pct }}{{ .Pct }}{{ else }}1{{ end }}%"></span>
+                  {{ end }}
+                </div>
+              </div>
+              {{/* Полная ширина позволяет подписать каждый столбик числом
+                   месяца: так видно и день, и место, где месяц сменился. */}}
+              <div class="spark__x spark__x--days">
+                {{ range .Guests.Trend }}<span>{{ .Day }}</span>{{ end }}
+              </div>
+            </div>
+            {{ else }}<p class="chart__note">—</p>{{ end }}
+          </div>
+        </div>
+      </div>
+
+      <div class="charts">
+        {{ template "chart_pages" (dict "T" (t .Lang "stats.pages") "Rows" .Guests.Pages) }}
+        {{ template "chart_countries" (dict "T" (t .Lang "ag.countries") "Rows" .Guests.Countries) }}
+        {{ template "chart_rows" (dict "T" (t .Lang "ag.langs") "Rows" .Guests.Langs) }}
+        {{ template "chart_rows" (dict "T" (t .Lang "ag.sources") "Rows" .Guests.Sources) }}
+        {{ template "chart_rows" (dict "T" (t .Lang "ag.devices") "Rows" .Guests.Devices) }}
+        {{ template "chart_rows" (dict "T" (t .Lang "ag.os_panel") "Rows" .Guests.OS) }}
+        {{ template "chart_rows" (dict "T" (t .Lang "ag.browsers") "Rows" .Guests.Browsers) }}
+        {{ template "chart_rows" (dict "T" (t .Lang "ag.bots") "Rows" .Guests.Bots "Note" (t .Lang "stats.bots_note")) }}
+      </div>
+
+      {{ else }}
+      <div class="empty"><p style="font-size:1.2rem">{{ t .Lang "stats.empty" }}</p></div>
+      {{ end }}
+
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}
+
+{{/* Один срез с одиночным счётчиком. Полоса — доля от самой большой строки,
+     чтобы сравнивать глазом, а не считать. */}}
+{{ define "chart_rows" }}
+<div class="chart">
+  <h2 class="chart__h">{{ .T }}</h2>
+  {{ if .Note }}<p class="chart__note">{{ .Note }}</p>{{ end }}
+  <div class="chart__body">
+    {{ if .Rows }}
+    {{ range .Rows }}
+    <div class="adm-bar">
+      <span class="adm-bar__label" title="{{ .Title }}">{{ brandicon .Name }}{{ .Title }}</span>
+      <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+      <span class="adm-bar__val">{{ money .N }}</span>
+    </div>
+    {{ end }}
+    {{ else }}<p class="chart__note">—</p>{{ end }}
+  </div>
+</div>
+{{ end }}
+
+{{/* Типы страниц несут разделение на гостей и зарегистрированных, поэтому у
+     них своя строка. */}}
+{{ define "chart_pages" }}
+<div class="chart">
+  <h2 class="chart__h">{{ .T }}</h2>
+  <div class="chart__body">
+    {{ if .Rows }}
+    {{ range .Rows }}
+    <div class="adm-bar">
+      <span class="adm-bar__label" title="{{ .Title }}">{{ .Title }}</span>
+      <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+      <span class="adm-bar__val">{{ money .A.Total }}</span>
+    </div>
+    {{ end }}
+    {{ else }}<p class="chart__note">—</p>{{ end }}
+  </div>
+</div>
+{{ end }}
+
+{{/* Страны — с флагами: нарисованным там, где он есть, эмодзи в остальных
+     случаях. Флаг здесь не украшение: он даёт узнать строку раньше, чем
+     прочитать её. */}}
+{{ define "chart_countries" }}
+<div class="chart">
+  <h2 class="chart__h">{{ .T }}</h2>
+  <div class="chart__body">
+    {{ if .Rows }}
+    {{ range .Rows }}
+    <div class="adm-bar">
+      <span class="adm-bar__label" title="{{ .Title }}"><span class="adm-flag">{{ countryMark .Name .Title }}</span>{{ .Title }}</span>
+      <span class="adm-bar__track"><span class="adm-bar__fill" style="width:{{ .Pct }}%"></span></span>
+      <span class="adm-bar__val">{{ money .N }}</span>
+    </div>
+    {{ end }}
+    {{ else }}<p class="chart__note">—</p>{{ end }}
+  </div>
+</div>
+{{ end }}

@@ -568,8 +568,12 @@ type GuestTrendDay struct {
 	Label string
 	N     int64
 	Pct   int
-	// Tick marks this day's label for the X axis. Fourteen dates cannot be
-	// printed side by side in a third of a row, so only every third is drawn.
+	// Day is the day of the month. A full-width chart has room to number every
+	// bar, which reads faster than a date and shows where the month turns over.
+	Day int
+	// Tick marks this day's label for the X axis. Thirty dates cannot be
+	// printed side by side in a third of a row, so a narrow chart draws only
+	// every few of them.
 	Tick bool
 }
 
@@ -739,7 +743,7 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 		if n > max {
 			max = n
 		}
-		out = append(out, GuestTrendDay{Label: d.Format("02.01"), N: n})
+		out = append(out, GuestTrendDay{Label: d.Format("02.01"), Day: d.Day(), N: n})
 	}
 	// Scale to the axis top, not to the tallest bar: otherwise the peak always
 	// touches the frame and the gridlines sit at meaningless values.

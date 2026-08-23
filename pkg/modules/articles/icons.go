@@ -158,6 +158,21 @@ var countryAliases = map[string]string{
 	"Russia": "Россия", "Ресей": "Россия",
 }
 
+// countryMark draws the flag beside a country in the public statistics: the
+// drawn one where we have it, an emoji flag otherwise.
+//
+// The emoji is the only way to cover ninety-odd countries without hand-drawing
+// ninety-odd flags, but it renders on Windows as two letters instead of a flag.
+// The two countries this audience actually looks for are drawn as SVG, so they
+// keep their colours on every machine; the long tail degrades to a code, which
+// is still the right answer.
+func countryMark(code, title string) template.HTML {
+	if svg := countryFlag(title); svg != "" {
+		return svg
+	}
+	return template.HTML(template.HTMLEscapeString(countryFlagEmoji(code)))
+}
+
 // countryFlag returns the colored flag for a country name, or "" if unknown.
 func countryFlag(country string) template.HTML {
 	if canonical, ok := countryAliases[country]; ok {
