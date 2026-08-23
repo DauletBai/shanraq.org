@@ -2038,12 +2038,22 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    вторую строку или обрывать. График, который надо расшифровывать, хуже
    графика, который занимает больше места. */
 .charts { display: grid; gap: 18px; grid-template-columns: 1fr; margin-bottom: 18px; }
+.charts > .chart { margin-bottom: 0; }
 .chart {
   display: flex; flex-direction: column;
-  /* min-width/max-width обязательны: при aspect-ratio браузер вправе вывести
-     ширину из высоты, и на узком экране min-height в 250px раздувал карточку
-     до 444px — шире самого экрана, так что правый край графика обрезался. */
-  aspect-ratio: 16 / 9; min-height: 250px; min-width: 0; max-width: 100%;
+  /* Отступ снизу нужен одиночным карточкам — тем, что стоят вне сетки: без
+     него карточка садится вплотную к следующему блоку. Внутри .charts
+     промежутки задаёт gap, и там margin только сбил бы его. */
+  margin-bottom: 18px;
+  box-shadow: var(--card-shadow);
+  /* Высота — по содержимому, но не выше 16:9 собственной ширины. Жёсткое
+     соотношение растягивало карточку с тремя строками на всю рамку, и под
+     данными оставалось поле пустоты в пол-экрана; потолок оставляет 16:9 там,
+     где данных много, и убирает пустоту там, где их мало.
+     Ширину карточка берёт у сетки: container-type: inline-size отвязывает её
+     от содержимого и заодно позволяет потомкам мерить её в cqw. */
+  container-type: inline-size;
+  min-width: 0; max-width: 100%;
   padding: 14px 16px;
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm);
 }
@@ -2058,8 +2068,18 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .chart__body::-webkit-scrollbar-track { background: transparent; }
 .chart__body::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
 .chart__body { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
-/* Столбиковый график тянется на всю высоту рамки, а не на высоту своих данных. */
-.chart__body > .spark { flex: 1 1 auto; min-height: 0; }
+/* Потолок в 16:9 держится на теле карточки: заголовок с примечанием занимают
+   немного, и остаток как раз даёт карточке нужную пропорцию. Что не влезло —
+   уезжает в прокрутку, как и раньше.
+   На ширине телефона 16:9 это 195 пикселей, и график в них перестаёт
+   читаться, поэтому там побеждает нижний предел, а не потолок: иначе тело
+   карточки оказывалось ниже собственного графика и карточка со сплошной
+   линией получала бессмысленную вертикальную прокрутку. */
+.chart__body { max-height: max(50cqw, 190px); }
+/* У графика нет собственной высоты — столбики и линия меряются в процентах от
+   рамки. Поэтому её надо назначить: те же 16:9, но не ниже читаемого предела
+   на узком экране. */
+.chart__body > .spark { flex: 1 1 auto; height: max(50cqw, 170px); }
 /* Подпись под каждым столбиком — это тридцать чисел в ряд, поэтому шрифт
    мельче обычной оси, а последний слот не прижимается вправо: он такой же
    день, как остальные. */
@@ -2079,7 +2099,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* Сводка числами над графиками: те же плитки, что в админке, но в один ряд с
    переносом, потому что читателю их показывают все сразу. */
 .stat-tiles { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 18px; }
-.stat-tile { padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.stat-tile { padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: var(--card-shadow); }
 .stat-tile b { display: block; font-family: var(--serif); font-size: 1.5rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .stat-tile span { display: block; margin-top: 3px; font-size: .78rem; color: var(--muted); line-height: 1.35; }
 

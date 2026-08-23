@@ -11,7 +11,7 @@
 
       {{/* Метод раньше чисел: цифра без определения — это ровно то, с чем
            спорят наши же статьи. */}}
-      <div class="chart" style="aspect-ratio:auto; min-height:0">
+      <div class="chart">
         <h2 class="chart__h">{{ t .Lang "stats.method" }}</h2>
         <p class="chart__note">{{ t .Lang "stats.method_note" }}</p>
         <p class="chart__note">{{ printf (t .Lang "stats.since") .Since }} · {{ printf (t .Lang "stats.updated") .Updated }}</p>

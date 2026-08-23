@@ -87,7 +87,7 @@
       </div>
 
       {{ if .Years }}
-      <div class="chart" style="aspect-ratio:auto; min-height:0">
+      <div class="chart">
         <h2 class="chart__h">{{ t .Lang "fx.years" }}</h2>
         <div class="fx-years__wrap">
           <table class="fx-years">
@@ -111,7 +111,7 @@
       <p class="chart__note">{{ t .Lang "fx.empty" }}</p>
       {{ end }}
 
-      <div class="chart" style="aspect-ratio:auto; min-height:0">
+      <div class="chart">
         <h2 class="chart__h">{{ t .Lang "fx.sources" }}</h2>
         <p class="chart__note">{{ t .Lang "fx.src_nbk" }}</p>
         <p class="chart__note">{{ t .Lang "fx.src_bis" }}</p>

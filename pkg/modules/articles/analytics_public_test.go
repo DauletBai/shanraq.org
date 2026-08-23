@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"html/template"
 	"net/http"
 	"strings"
 	"testing"
@@ -91,7 +92,10 @@ func TestTheAudiencePageSpeaksAllThreeLanguages(t *testing.T) {
 		if w.Code != http.StatusOK {
 			t.Fatalf("язык %s: %d", lang, w.Code)
 		}
-		if want := T(lang, "stats.lead"); !strings.Contains(w.Body.String(), want) {
+		// Сравниваем с экранированным видом: апостроф, амперсанд и плюс в
+		// разметке выглядят не так, как в словаре, и дословный поиск нашёл бы
+		// не отсутствие перевода, а обычную работу шаблонизатора.
+		if want := template.HTMLEscapeString(T(lang, "stats.lead")); !strings.Contains(w.Body.String(), want) {
 			t.Errorf("язык %s: нет вводной строки на этом языке", lang)
 		}
 	}
