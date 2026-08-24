@@ -9,40 +9,41 @@ import (
 	"go.uber.org/zap"
 )
 
-// Догрузка курсов.
+// Backfilling the rates.
 //
-// Нацбанк отдаёт курс за конкретный день и держит около пяти лет назад; за
-// более ранние даты приходит пустой документ. Поэтому архив собираем сами:
-// один день за раз, не спеша, пока не упрёмся в край чужого окна, а дальше
-// каждый час забираем сегодняшний.
+// The National Bank serves one specific day's rate and holds about five years
+// back; for earlier dates an empty document arrives. So we build the archive
+// ourselves: one day at a time, unhurried, until we hit the edge of somebody
+// else's window, and after that we fetch today's every hour.
 //
-// Медленно — намеренно. Полная история это около двух тысяч запросов, и
-// выпустить их залпом значило бы устроить чужому серверу маленький штурм ради
-// страницы, которая никуда не торопится.
+// Slowly, on purpose. The full history is about two thousand requests, and firing
+// them in a volley would mean staging a small assault on someone else's server for
+// the sake of a page that is in no hurry at all.
 
 const (
-	// fxStep — пауза между запросами при догрузке.
+	// fxStep is the pause between requests while backfilling.
 	fxStep = 2 * time.Second
-	// fxIdle — как часто проверять, не появился ли новый день, когда догружать
-	// уже нечего.
+	// fxIdle is how often to check whether a new day has appeared once there is
+	// nothing left to backfill.
 	fxIdle = time.Hour
-	// fxEmptyRun — сколько подряд пустых дней считать краем окна источника.
-	// Праздничная неделя даёт до девяти, поэтому порог заметно выше.
+	// fxEmptyRun is how many consecutive empty days count as the source's window
+	// edge. A holiday week gives up to nine, so the threshold sits well above.
 	fxEmptyRun = 21
 )
 
-// fxFloor — глубина, ниже которой мы не спрашиваем. Банк начинает молчать
-// примерно на середине 2021 года; год запаса стоит одного лишнего дня опроса.
+// fxFloor is the depth below which we do not ask. The bank falls silent around
+// the middle of 2021; a year of margin costs one extra day of probing.
 var fxFloor = time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 
-// RunFxArchivist ведёт архив курсов до отмены контекста.
+// RunFxArchivist keeps the rate archive until the context is cancelled.
 func (m *Module) RunFxArchivist(ctx context.Context) {
 	if m.fx == nil {
 		return
 	}
-	// Глубину подтягиваем сразу после первого же дня — он подсказывает, какие
-	// валюты нам нужны, — и дальше раз в час. Ждать конца дневной догрузки
-	// нельзя: она идёт больше часа, и всё это время «весь период» был бы пуст.
+	// The deep archive is pulled right after the first day — that day tells us
+	// which currencies we need — and once an hour after that. Waiting for the
+	// daily backfill to finish is not an option: it runs for over an hour, and
+	// "all time" would be empty for the whole of it.
 	var nextDeep time.Time
 	for {
 		done, err := m.fxOnce(ctx)
@@ -67,7 +68,7 @@ func (m *Module) RunFxArchivist(ctx context.Context) {
 	}
 }
 
-// fxHistory подтягивает месячную глубину, если её ещё нет или она отстала.
+// fxHistory pulls the monthly depth when it is missing or has fallen behind.
 func (m *Module) fxHistory(ctx context.Context) error {
 	fresh, err := m.fx.MonthlyFresh(ctx)
 	if err != nil || fresh {
@@ -84,22 +85,23 @@ func (m *Module) fxHistory(ctx context.Context) error {
 	return nil
 }
 
-// fxOnce обрабатывает один день. Возвращает true, когда догружать больше
-// нечего.
+// fxOnce handles one day. It returns true once there is nothing left to
+// backfill.
 func (m *Module) fxOnce(ctx context.Context) (bool, error) {
 	day, ok, err := m.fx.NextToProbe(ctx, fxFloor)
 	if err != nil || !ok {
 		return true, err
 	}
-	// Дошли до края: ниже источник молчит, и дальше идти незачем.
+	// We have reached the edge: below this the source is silent, and there is no
+	// point going further.
 	if run, err := m.fx.EmptyRunBelow(ctx, day); err == nil && run >= fxEmptyRun {
 		return true, nil
 	}
 
 	rates, err := m.fetchFxDay(ctx, day)
 	if err != nil {
-		// Сетевая ошибка — не ответ источника. День не помечаем, попробуем
-		// снова: пометить его пустым значило бы потерять день навсегда.
+		// A network error is not the source's answer. The day is left unmarked so
+		// it will be tried again: marking it empty would lose the day for good.
 		return false, err
 	}
 	if err := m.fx.Save(ctx, rates); err != nil {
@@ -108,7 +110,7 @@ func (m *Module) fxOnce(ctx context.Context) (bool, error) {
 	return false, m.fx.MarkProbed(ctx, day, len(rates))
 }
 
-// fetchFxDay забирает и разбирает курсы за день.
+// fetchFxDay fetches and parses one day's rates.
 func (m *Module) fetchFxDay(ctx context.Context, day time.Time) ([]FxRate, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fxRatesURL(day), nil)
 	if err != nil {

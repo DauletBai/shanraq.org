@@ -15,49 +15,51 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// Глубокий архив курсов.
+// The deep rate archive.
 //
-// Нацбанк отдаёт дневной курс примерно на пять лет назад, и это окно едет
-// вперёд: то, что он показывал в прошлом году, сегодня уже недоступно. Значит
-// вся история тенге до 2021 года у него не спрашивается вовсе.
+// The National Bank serves daily rates about five years back, and that window
+// moves forward: what it showed last year is already out of reach today. So the
+// whole history of the tenge before 2021 cannot be asked of it at all.
 //
-// Её отдаёт Банк международных расчётов: месячный ряд курсов к доллару, для
-// тенге — с ноября 1993 года, с месяца, когда тенге появился. Прямых курсов к
-// тенге там нет, но они и не нужны: обе валюты меряются одним долларом, и
-// тенге за единицу валюты X это (тенге за доллар) / (X за доллар).
+// The Bank for International Settlements serves it: a monthly series of rates
+// against the dollar, for the tenge from November 1993 — the month the tenge
+// appeared. There are no direct rates against the tenge there, and none are
+// needed: both currencies are measured in the same dollar, and tenge per unit of
+// currency X is (tenge per dollar) / (X per dollar).
 //
-// Месяц вместо дня здесь не потеря, а выигрыш. Тридцать два года дневных точек
-// это двенадцать тысяч засечек на одной линии — каша, в которой ничего не
-// разобрать. Месячных — четыре сотни, и на них видно ровно то, ради чего в
-// такую глубину лезут: девальвации, переход к плавающему курсу, длинные волны.
+// A month instead of a day is a gain here, not a loss. Thirty-two years of daily
+// points is twelve thousand marks on one line — a mush in which nothing can be
+// made out. Monthly there are four hundred, and they show exactly what people go
+// this deep for: devaluations, the move to a floating rate, the long waves.
 
-// bisSeriesURL собирает адрес месячного ряда «конец периода» для наших валют.
-// Конец периода, а не среднее: он стыкуется с дневным рядом Нацбанка — это
-// курс конкретного дня, а не выдуманное среднее, которого не было ни в один
-// день месяца.
+// bisSeriesURL builds the address of the "end of period" monthly series for our
+// currencies. End of period, not the average: it joins onto the National Bank's
+// daily series, being one specific day's rate rather than an invented average that
+// held on no day of the month.
 func bisSeriesURL(codes []string) string {
 	return "https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.." +
 		strings.Join(codes, "+") + ".E?format=csv"
 }
 
-// bisBase — валюта, в которой BIS меряет все остальные.
+// bisBase is the currency BIS measures all the others in.
 const bisBase = "USD"
 
-// bisAnchor — код тенге в том же ряду. Через него считается кросс-курс.
+// bisAnchor is the tenge's code in the same series. The cross rate is computed
+// through it.
 const bisAnchor = "KZT"
 
-// FxMonth — одна месячная точка: тенге за единицу валюты.
+// FxMonth is one monthly point: tenge per unit of currency.
 type FxMonth struct {
 	Month time.Time
 	Code  string
 	Value float64
 }
 
-// parseBISMonthly разбирает выгрузку BIS в кросс-курсы к тенге.
+// parseBISMonthly parses the BIS export into cross rates against the tenge.
 //
-// Месяцы, где нет курса самого тенге, пропускаются целиком: без него кросс-курс
-// не из чего считать. Доллар — особый случай: он и есть база ряда, его курс к
-// тенге берётся напрямую.
+// Months with no rate for the tenge itself are skipped whole: without it there is
+// nothing to compute a cross rate from. The dollar is the special case: it is the
+// series' base, and its rate against the tenge is taken directly.
 func parseBISMonthly(r io.Reader) ([]FxMonth, error) {
 	cr := csv.NewReader(r)
 	cr.FieldsPerRecord = -1
@@ -74,7 +76,7 @@ func parseBISMonthly(r io.Reader) ([]FxMonth, error) {
 		return nil, fmt.Errorf("выгрузка BIS без нужных колонок")
 	}
 
-	// период -> валюта -> курс к доллару
+	// period -> currency -> rate against the dollar
 	byMonth := map[string]map[string]float64{}
 	for {
 		rec, err := cr.Read()
@@ -87,9 +89,9 @@ func parseBISMonthly(r io.Reader) ([]FxMonth, error) {
 		if len(rec) <= iVal || len(rec) <= iCur || len(rec) <= iPer {
 			continue
 		}
-		// «NaN» в выгрузке означает «за этот месяц курса нет», но ParseFloat
-		// разбирает его без ошибки и возвращает NaN, а тот не меньше и не
-		// больше нуля — простая проверка на положительность его пропускает.
+		// "NaN" in the export means "no rate for this month", but ParseFloat
+		// reads it without error and returns NaN, which is neither less than nor
+		// greater than zero — a plain positivity check lets it through.
 		v, err := strconv.ParseFloat(strings.TrimSpace(rec[iVal]), 64)
 		if err != nil || math.IsNaN(v) || math.IsInf(v, 0) || v <= 0 {
 			continue
@@ -116,9 +118,9 @@ func parseBISMonthly(r io.Reader) ([]FxMonth, error) {
 		if err != nil {
 			continue
 		}
-		// Доллар — сама база ряда, его курс к тенге и есть строка тенге.
-		// Брать его из отдельной строки «доллар к доллару» было бы лишним
-		// звеном, которого может не оказаться.
+		// The dollar is the series' own base, so its rate against the tenge is
+		// the tenge row. Taking it from a separate "dollar against dollar" row
+		// would add a link that may not be there.
 		out = append(out, FxMonth{Month: month, Code: bisBase, Value: kzt})
 		for code, per := range m {
 			if code == bisAnchor || code == bisBase || per <= 0 {
@@ -136,7 +138,7 @@ func parseBISMonthly(r io.Reader) ([]FxMonth, error) {
 	return out, nil
 }
 
-// SaveMonthly кладёт месячный архив.
+// SaveMonthly writes the monthly archive.
 func (s *FxStore) SaveMonthly(ctx context.Context, rows []FxMonth) error {
 	if len(rows) == 0 {
 		return nil
@@ -158,8 +160,9 @@ func (s *FxStore) SaveMonthly(ctx context.Context, rows []FxMonth) error {
 	return nil
 }
 
-// MonthlyFresh сообщает, свежий ли месячный архив. BIS отстаёт примерно на два
-// месяца, поэтому свежим считаем архив, добравшийся до позапрошлого месяца.
+// MonthlyFresh reports whether the monthly archive is current. BIS lags by about
+// two months, so an archive that has reached the month before last counts as
+// fresh.
 func (s *FxStore) MonthlyFresh(ctx context.Context) (bool, error) {
 	var last *time.Time
 	if err := s.db.QueryRow(ctx, `SELECT max(month) FROM fx_monthly`).Scan(&last); err != nil {
@@ -171,19 +174,20 @@ func (s *FxStore) MonthlyFresh(ctx context.Context) (bool, error) {
 	return !last.Before(monthStart(time.Now().UTC().AddDate(0, -3, 0))), nil
 }
 
-// monthStart сдвигает дату на первое число её месяца.
+// monthStart moves a date to the first of its month.
 func monthStart(t time.Time) time.Time {
 	return time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, time.UTC)
 }
 
-// fetchBISMonthly забирает и разбирает выгрузку.
+// fetchBISMonthly fetches and parses the export.
 func (m *Module) fetchBISMonthly(ctx context.Context) ([]FxMonth, error) {
 	codes, err := m.fx.KnownCodes(ctx)
 	if err != nil {
 		return nil, err
 	}
 	if len(codes) == 0 {
-		// Дневной архив ещё пуст — какие валюты нам нужны, пока неизвестно.
+		// The daily archive is still empty, so which currencies we need is not
+		// known yet.
 		return nil, nil
 	}
 	if !contains(codes, bisAnchor) {

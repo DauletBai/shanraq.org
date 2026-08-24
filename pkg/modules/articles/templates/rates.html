@@ -9,10 +9,9 @@
       <div class="section-head"><h1>{{ t .Lang "fx.title" }}</h1></div>
       <p class="place-lead">{{ t .Lang "fx.lead" }}</p>
 
-      {{/* Выбор без единой строки скрипта: период — обычные ссылки, валюта —
-           форма с кнопкой. Страница остаётся живой там, где скрипты не
-           выполняются, и каждый выбор получает собственный адрес, на который
-           можно сослаться. */}}
+      {{/* Selection without a line of script: the period is plain links, the
+           currency a form with a button. The page stays alive where scripts do
+           not run, and every choice gets an address of its own to link to. */}}
       <form class="fx-pick" method="get" action="/rates">
         <input type="hidden" name="p" value="{{ .Period }}">
         <label class="fx-pick__lab" for="fx-c">{{ t .Lang "fx.currency" }}</label>
@@ -33,8 +32,8 @@
 
       {{ if .HasData }}
 
-      {{/* Крупная строка ответа: человек, зашедший узнать курс, не должен
-           искать его среди плиток. */}}
+      {{/* The answer, set large: someone who came to learn the rate should not
+           have to hunt for it among the tiles. */}}
       <p class="fx-now">
         <b>{{ if gt .Quant 1 }}{{ .Quant }} {{ end }}{{ .Code }}</b>
         <span class="fx-now__eq">=</span>
@@ -88,11 +87,63 @@
       {{ end }}
 
       {{ if .Macro.Has }}
-      {{/* Разбор не пишется руками: все числа ниже посчитаны из рядов, которые
-           Нацбанк и Всемирный банк публикуют сами. Поэтому раздел не устаревает
-           и не требует статьи — он пересчитывается вместе с источником. */}}
+      {{/* Nothing below is written by hand: every figure is computed from series
+           the National Bank and the World Bank publish themselves, so the section
+           never goes stale — it is recomputed along with its sources. */}}
       <div class="section-head section-head--sub"><h2>{{ t .Lang "fx.macro_h" }}</h2></div>
       <p class="place-lead">{{ t .Lang "fx.macro_lead" }}</p>
+
+      {{/* First, the four figures that have someone in charge of them. The series
+           below measure consequences; the rate and the target are set by someone,
+           and the analysis starts with who. */}}
+      {{ if .Macro.Now.Base }}
+      <div class="chart">
+        <h3 class="chart__h">{{ t .Lang "fx.now_h" }}</h3>
+        <div class="stat-tiles stat-tiles--flush">
+          <div class="stat-tile"><b>{{ .Macro.Now.Base }}</b><span>{{ t .Lang "fx.now_base" }}{{ if .Macro.Now.Decision }} · {{ printf (t .Lang "fx.now_since") .Macro.Now.Decision }}{{ end }}</span></div>
+          {{ if .Macro.Now.CPI }}<div class="stat-tile"><b>{{ .Macro.Now.CPI }}</b><span>{{ t .Lang "fx.now_cpi" }}</span></div>{{ end }}
+          {{ if .Macro.Now.Target }}<div class="stat-tile"><b>{{ .Macro.Now.Target }}</b><span>{{ t .Lang "fx.now_target" }}</span></div>{{ end }}
+          {{ if .Macro.Now.Real }}<div class="stat-tile"><b class="{{ if .Macro.Now.RealPos }}fx-down{{ else }}fx-up{{ end }}">{{ .Macro.Now.Real }}</b><span>{{ t .Lang "fx.now_real" }}</span></div>{{ end }}
+          {{ if .Macro.Now.Gap }}<div class="stat-tile"><b class="{{ if .Macro.Now.GapPos }}fx-up{{ else }}fx-down{{ end }}">{{ .Macro.Now.Gap }}</b><span>{{ t .Lang "fx.now_gap" }}</span></div>{{ end }}
+          {{ if .Macro.Now.Tonia }}<div class="stat-tile"><b>{{ .Macro.Now.Tonia }}</b><span>{{ t .Lang "fx.now_tonia" }}</span></div>{{ end }}
+        </div>
+        {{ if .Macro.Now.Day }}<p class="chart__note">{{ printf (t .Lang "fx.now_note") .Macro.Now.Day }}</p>{{ end }}
+      </div>
+      {{ end }}
+
+      {{/* The rules by which one follows from the other. The figures in them are
+           not examples: each is substituted from the latest publication and
+           carries its source. */}}
+      {{ if .Macro.Formulas }}
+      <div class="section-head section-head--sub"><h3 class="mform__head">{{ t .Lang "fx.formulas_h" }}</h3></div>
+      <p class="chart__note chart__note--lead">{{ t .Lang "fx.formulas_lead" }}</p>
+      <div class="charts charts--two">
+        {{ range .Macro.Formulas }}
+        <div class="chart">
+          <h3 class="chart__h">{{ t $.Lang (printf "fx.f_%s_h" .ID) }}</h3>
+          <div class="chart__body">
+            <div class="mform">
+              <p class="mform__sym">{{ .Symbols }}</p>
+              <p class="mform__fill">{{ .Filled }}</p>
+              <p class="mform__why">{{ t $.Lang (printf "fx.f_%s_note" .ID) }}</p>
+              {{ if .Note }}<p class="mform__out">{{ .Note }}</p>{{ end }}
+              <h4 class="mform__th">{{ t $.Lang "fx.f_terms" }}</h4>
+              <dl class="mterms">
+                {{ range .Terms }}
+                <dt class="mterms__sym">{{ .Sym }}</dt>
+                <dd class="mterms__def">
+                  <span class="mterms__name">{{ .Name }}</span>
+                  <b class="mterms__val">{{ .Value }}</b>
+                  {{ if .Src }}<span class="mterms__src">{{ .Src }}</span>{{ end }}
+                </dd>
+                {{ end }}
+              </dl>
+            </div>
+          </div>
+        </div>
+        {{ end }}
+      </div>
+      {{ end }}
 
       <div class="charts">
         <div class="chart">
@@ -150,6 +201,20 @@
       </div>
       {{ end }}
 
+      {{ if .Macro.RateCPI.A }}
+      <div class="charts">
+        <div class="chart">
+          <h3 class="chart__h">{{ t .Lang "fx.rate_h" }}</h3>
+          <div class="chart__body">{{ template "fx_two" .Macro.RateCPI }}</div>
+          <p class="chart__note">
+            <span class="fx-key fx-key--a">{{ t .Lang "fx.rate_key_a" }}</span>
+            <span class="fx-key fx-key--b">{{ t .Lang "fx.col_cpi" }}</span>
+          </p>
+          <p class="chart__note">{{ printf (t .Lang "fx.rate_note") .Macro.RateCPIFrom }} {{ t .Lang "fx.axis_log" }}</p>
+        </div>
+      </div>
+      {{ end }}
+
       {{ if .Macro.Erode }}
       <div class="chart">
         <h3 class="chart__h">{{ t .Lang "fx.erode_h" }}</h3>
@@ -176,7 +241,7 @@
       <div class="chart">
         <h3 class="chart__h">{{ t .Lang "fx.years_h" }}</h3>
         <p class="chart__note">{{ t .Lang "fx.years_note" }}</p>
-        <div class="fx-years__wrap">
+        <div class="fx-years__wrap fx-years__wrap--cap">
           <table class="fx-years">
             <thead><tr>
               <th>{{ t .Lang "fx.year" }}</th>
@@ -208,7 +273,10 @@
         <p class="chart__note">{{ t .Lang "fx.src_bis" }}</p>
         {{ if .Macro.Has }}
         <p class="chart__note">{{ t .Lang "fx.src_nbk_stat" }}</p>
+        {{ if .Macro.Now.Base }}<p class="chart__note">{{ t .Lang "fx.src_nbk_rate" }}</p>{{ end }}
+        {{ if .Macro.Now.CPI }}<p class="chart__note">{{ t .Lang "fx.src_nbk_panel" }}</p>{{ end }}
         <p class="chart__note">{{ t .Lang "fx.src_wb" }}</p>
+        {{ if .Macro.Formulas }}<p class="chart__note">{{ t .Lang "fx.src_wb_gdp" }}</p>{{ end }}
         {{ end }}
         {{ if .Since }}<p class="chart__note">{{ .Code }}: {{ printf (t .Lang "fx.since") .Since }}</p>{{ end }}
       </div>
@@ -217,18 +285,150 @@
     {{ template "sidebar" . }}
   </div>
 </main>
+<script>
+// Chart readouts. A line shows the shape; the figures under the cursor are what
+// the reader actually came for, and estimating them against the axis ticks is
+// measuring by eye over a number we already hold.
+//
+// Everything shown here was formatted on the server, so a thousands separator in
+// the readout matches the one in the table below it. This code only decides which
+// point is being pointed at.
+(function () {
+  var plots = document.querySelectorAll('.spark__plot[data-fx]');
+  if (!plots.length) return;
+
+  Array.prototype.forEach.call(plots, function (plot) {
+    var data;
+    try { data = JSON.parse(plot.getAttribute('data-fx')); } catch (e) { return; }
+    if (!data || !data.l || !data.l.length || !data.s || !data.s.length) return;
+    var n = data.l.length;
+    if (n < 2) return;
+
+    var guide = document.createElement('i');
+    guide.className = 'fxcur';
+    guide.setAttribute('aria-hidden', 'true');
+    plot.appendChild(guide);
+
+    var dots = data.s.map(function (s, i) {
+      var d = document.createElement('i');
+      d.className = 'fxdot' + (i ? ' fxdot--b' : '');
+      d.setAttribute('aria-hidden', 'true');
+      plot.appendChild(d);
+      return d;
+    });
+
+    // role=status so a screen reader announces the point the keyboard lands on;
+    // without it the arrow keys would move a cursor nobody can hear.
+    var tip = document.createElement('div');
+    tip.className = 'fxtip';
+    tip.setAttribute('role', 'status');
+    tip.setAttribute('aria-live', 'polite');
+    plot.appendChild(tip);
+
+    var shown = -1;
+
+    function row(name, value) {
+      var wrap = document.createElement('span');
+      wrap.className = 'fxtip__row';
+      if (name) {
+        var nm = document.createElement('span');
+        nm.className = 'fxtip__n';
+        nm.textContent = name;
+        wrap.appendChild(nm);
+      }
+      var v = document.createElement('b');
+      v.className = 'fxtip__v';
+      v.textContent = value;
+      wrap.appendChild(v);
+      return wrap;
+    }
+
+    function show(i) {
+      i = Math.max(0, Math.min(n - 1, i));
+      if (i === shown) return;
+      shown = i;
+      var x = (i / (n - 1)) * 100;
+      guide.style.left = x + '%';
+
+      while (tip.firstChild) tip.removeChild(tip.firstChild);
+      var head = document.createElement('b');
+      head.className = 'fxtip__x';
+      head.textContent = data.l[i];
+      tip.appendChild(head);
+
+      data.s.forEach(function (s, k) {
+        var y = s.y[i];
+        if (y === null || y === undefined) {
+          dots[k].style.display = 'none';
+          return;
+        }
+        dots[k].style.display = '';
+        dots[k].style.left = x + '%';
+        dots[k].style.top = y + '%';
+        tip.appendChild(row(s.n, s.v[i]));
+      });
+
+      // The readout stays inside its own frame: at the edges it would otherwise
+      // hang over the axis labels, and on a phone off the screen entirely.
+      tip.style.left = Math.max(14, Math.min(86, x)) + '%';
+      plot.classList.add('is-hover');
+    }
+
+    function hide() {
+      shown = -1;
+      plot.classList.remove('is-hover');
+    }
+
+    function indexAt(clientX) {
+      var r = plot.getBoundingClientRect();
+      if (r.width <= 0) return 0;
+      return Math.round(((clientX - r.left) / r.width) * (n - 1));
+    }
+
+    plot.addEventListener('mousemove', function (e) { show(indexAt(e.clientX)); });
+    plot.addEventListener('mouseleave', hide);
+
+    // On a touch screen the readout answers a tap and then holds still. Tracking
+    // the finger would mean fighting the page's own scrolling for every drag
+    // that happens to start on a chart.
+    plot.addEventListener('touchstart', function (e) {
+      if (e.touches && e.touches.length) show(indexAt(e.touches[0].clientX));
+    }, { passive: true });
+
+    plot.addEventListener('focus', function () { show(shown < 0 ? n - 1 : shown); });
+    plot.addEventListener('blur', hide);
+    plot.addEventListener('keydown', function (e) {
+      var step = e.shiftKey ? 10 : 1;
+      var at = shown < 0 ? n - 1 : shown;
+      switch (e.key) {
+        case 'ArrowLeft': show(at - step); break;
+        case 'ArrowRight': show(at + step); break;
+        case 'Home': show(0); break;
+        case 'End': show(n - 1); break;
+        case 'Escape': hide(); return;
+        default: return;
+      }
+      e.preventDefault();
+    });
+  });
+})();
+</script>
 {{ template "site_footer" . }}
 {{ end }}
 
-{{/* Одна линия в рамке с осями. Вынесено отдельно, потому что на странице их
-     теперь пять и различаются они только данными. */}}
+{{/* One line in a frame with axes. Split out because the page now holds five of
+     them and they differ only in their data.
+
+     data-fx carries the readout: point labels, and each series' position and
+     formatted value. tabindex makes the frame reachable from the keyboard, so
+     the figures are available without a pointer. */}}
 {{ define "fx_line" }}
 {{ with .C }}
 <div class="spark fx-line">
   <div class="spark__y" aria-hidden="true">
     {{ range .Y }}<span style="top:{{ .Pos }}%">{{ .Label }}</span>{{ end }}
   </div>
-  <div class="spark__plot">
+  <div class="spark__plot"{{ if .Hover }} data-fx="{{ .Hover }}" tabindex="0"{{ end }}>
     <div class="spark__grid" aria-hidden="true">
       {{ range .Y }}<i style="top:{{ .Pos }}%"></i>{{ end }}
       {{ range .X }}{{ if .Grid }}<i class="fx-vgrid" style="left:{{ .Pos }}%"></i>{{ end }}{{ end }}
@@ -245,13 +445,13 @@
 {{ end }}
 {{ end }}
 
-{{/* Две линии в одной рамке: сравнение имеет смысл только на общей шкале. */}}
+{{/* Two lines in one frame: a comparison only means anything on a shared scale. */}}
 {{ define "fx_two" }}
 <div class="spark fx-line">
   <div class="spark__y" aria-hidden="true">
     {{ range .Y }}<span style="top:{{ .Pos }}%">{{ .Label }}</span>{{ end }}
   </div>
-  <div class="spark__plot">
+  <div class="spark__plot"{{ if .Hover }} data-fx="{{ .Hover }}" tabindex="0"{{ end }}>
     <div class="spark__grid" aria-hidden="true">
       {{ range .Y }}<i style="top:{{ .Pos }}%"></i>{{ end }}
       {{ range .X }}{{ if .Grid }}<i class="fx-vgrid" style="left:{{ .Pos }}%"></i>{{ end }}{{ end }}

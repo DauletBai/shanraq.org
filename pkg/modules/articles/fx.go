@@ -12,19 +12,20 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// Курсы валют: хранилище, загрузка из Нацбанка и ряды для страницы разбора.
+// Exchange rates: the store, the fetch from the National Bank, and the series the
+// rates page draws.
 //
-// Источник — тот же, что и у строки курсов в шапке, но за произвольную дату:
-// nationalbank.kz/rss/get_rates.cfm?fdate=ДД.ММ.ГГГГ. Ответ за 2020 год и
-// раньше пустой, поэтому глубина чужого архива — около пяти лет, и она едет
-// вперёд. Наша задача — успевать забирать.
+// The source is the same one the header ticker uses, but for an arbitrary date:
+// nationalbank.kz/rss/get_rates.cfm?fdate=DD.MM.YYYY. The answer for 2020 and
+// earlier is empty, so somebody else's archive is about five years deep and that
+// window moves forward. Our job is to keep up with it.
 
-// fxRatesURL возвращает адрес официальных курсов на конкретный день.
+// fxRatesURL returns the address of the official rates for one day.
 func fxRatesURL(d time.Time) string {
 	return "https://nationalbank.kz/rss/get_rates.cfm?fdate=" + d.Format("02.01.2006")
 }
 
-// FxRate — один курс за один день.
+// FxRate is one rate for one day.
 type FxRate struct {
 	Day   time.Time
 	Code  string
@@ -33,8 +34,9 @@ type FxRate struct {
 	Name  string
 }
 
-// parseFxRates разбирает ответ банка. Пустой список — это не ошибка: за
-// выходные и за даты вне окна банк отвечает документом без единой валюты.
+// parseFxRates parses the bank's answer. An empty list is not an error: for
+// weekends and for dates outside the window the bank answers with a document
+// holding no currencies at all.
 func parseFxRates(body []byte, day time.Time) ([]FxRate, error) {
 	var doc struct {
 		Items []struct {
@@ -69,15 +71,15 @@ func parseFxRates(body []byte, day time.Time) ([]FxRate, error) {
 	return out, nil
 }
 
-// FxStore хранит курсы и отдаёт ряды.
+// FxStore keeps the rates and serves the series.
 type FxStore struct{ db *pgxpool.Pool }
 
-// NewFxStore строит хранилище над общим пулом.
+// NewFxStore builds the store over the shared pool.
 func NewFxStore(db *pgxpool.Pool) *FxStore { return &FxStore{db: db} }
 
-// Save кладёт день целиком. Повторный вызов за ту же дату обновляет значения:
-// банк изредка уточняет курс задним числом, и спорить с источником не наше
-// дело.
+// Save writes a whole day. Calling it again for the same date updates the values:
+// the bank occasionally restates a rate after the fact, and arguing with the
+// source is not our business.
 func (s *FxStore) Save(ctx context.Context, rates []FxRate) error {
 	if len(rates) == 0 {
 		return nil
@@ -100,25 +102,27 @@ func (s *FxStore) Save(ctx context.Context, rates []FxRate) error {
 	return nil
 }
 
-// Has сообщает, есть ли у нас хоть один курс за этот день. Догрузка спрашивает
-// это перед тем, как идти в сеть.
+// Has reports whether we hold any rate at all for this day. The backfill asks
+// before it goes to the network.
 func (s *FxStore) Has(ctx context.Context, day time.Time) (bool, error) {
 	var n int
 	err := s.db.QueryRow(ctx, `SELECT count(*) FROM fx_rates WHERE day = $1`, day).Scan(&n)
 	return n > 0, err
 }
 
-// FxPoint — точка ряда.
+// FxPoint is one point of a series.
 type FxPoint struct {
 	Day   time.Time
 	Value float64
 }
 
-// Series отдаёт дневной ряд по валюте от from до сегодня, по возрастанию даты.
+// Series serves a currency's daily series from `from` to today, ascending by
+// date.
 //
-// Значение приводится к одной единице валюты. Банк публикует иены сотнями, а
-// вьетнамские донги тысячами, и эта кратность за годы менялась; хранится она
-// как есть, а сравнивать между собой можно только приведённое.
+// The value is normalised to one unit of the currency. The bank publishes yen in
+// hundreds and Vietnamese dong in thousands, and that multiple has changed over
+// the years; it is stored as it came, and only the normalised values can be
+// compared with one another.
 func (s *FxStore) Series(ctx context.Context, code string, from time.Time) ([]FxPoint, error) {
 	rows, err := s.db.Query(ctx, `
 		SELECT day, value / quant FROM fx_rates
@@ -139,18 +143,19 @@ func (s *FxStore) Series(ctx context.Context, code string, from time.Time) ([]Fx
 	return out, rows.Err()
 }
 
-// SeriesMonthly отдаёт месячный ряд на всю доступную глубину: архив BIS с
-// ноября 1993 года, а поверх него — последний день каждого месяца из нашего
-// дневного архива за те месяцы, до которых BIS ещё не дошёл. Стык честный:
-// обе половины это курс конкретного дня, а не среднее по месяцу.
+// SeriesMonthly serves a monthly series to the full available depth: the BIS
+// archive from November 1993, and over it the last day of each month from our own
+// daily archive for the months BIS has not reached yet. The join is honest: both
+// halves are one specific day's rate, not a monthly average.
 //
-// Точка датируется тем днём, курс которого показывает: последним днём месяца,
-// а для текущего, ещё не закрытого месяца — сегодняшним. Датировать её первым
-// числом было бы неправдой на подписи оси.
+// A point is dated by the day whose rate it shows: the last day of the month, and
+// for the current, unclosed month, today. Dating it the first of the month would
+// be a falsehood on the axis label.
 func (s *FxStore) SeriesMonthly(ctx context.Context, code string, from time.Time) ([]FxPoint, error) {
-	// Псевдоним намеренно не day: в ORDER BY имя выходной колонки перекрывает
-	// одноимённую колонку таблицы, и «последний день месяца» превращался в
-	// сортировку по началу месяца, то есть в случайную строку из тридцати.
+	// The alias is deliberately not `day`: in ORDER BY an output column's name
+	// shadows the table column of the same name, and "the last day of the month"
+	// turned into a sort by the month's start — that is, a random row out of
+	// thirty.
 	rows, err := s.db.Query(ctx, `
 		WITH deep AS (
 			SELECT (month + INTERVAL '1 month - 1 day')::date AS d, value AS v
@@ -187,7 +192,7 @@ func (s *FxStore) SeriesMonthly(ctx context.Context, code string, from time.Time
 	return out, rows.Err()
 }
 
-// FxCurrency — валюта в списке выбора.
+// FxCurrency is one currency in the picker.
 type FxCurrency struct {
 	Code  string
 	Name  string
@@ -196,13 +201,14 @@ type FxCurrency struct {
 	Since time.Time
 }
 
-// Label — название для списка. Банк пишет их прописными, а строка из капса
-// посреди обычного текста читается как крик.
+// Label is the name for the picker. The bank writes them in capitals, and a line
+// of caps in the middle of ordinary text reads as shouting.
 func (c FxCurrency) Label() string { return fxTidyName(c.Name) }
 
-// Currencies перечисляет валюты для выбора: код, название, привычную
-// кратность и глубину истории. Порядок — от самых спрашиваемых к остальным,
-// дальше по алфавиту: доллар с евро листать никто не должен.
+// Currencies lists the currencies to choose from: code, name, the familiar
+// multiple and the depth of history. The order runs from the most asked-for to the
+// rest and then alphabetically: nobody should have to scroll past the dollar and
+// the euro.
 func (s *FxStore) Currencies(ctx context.Context) ([]FxCurrency, error) {
 	rows, err := s.db.Query(ctx, `
 		SELECT r.code,
@@ -246,10 +252,10 @@ func (s *FxStore) Currencies(ctx context.Context) ([]FxCurrency, error) {
 	return out, nil
 }
 
-// fxPopular — валюты, которые спрашивают чаще всего, в порядке спроса.
+// fxPopular are the currencies asked for most often, in order of demand.
 var fxPopular = []string{"USD", "EUR", "RUB", "CNY", "GBP", "TRY", "KGS", "UZS", "AED"}
 
-// fxRank ставит ходовые валюты в начало списка.
+// fxRank puts the currencies in demand at the head of the list.
 func fxRank(code string) int {
 	for i, c := range fxPopular {
 		if c == code {
@@ -259,7 +265,7 @@ func fxRank(code string) int {
 	return len(fxPopular)
 }
 
-// Earliest — первый день, за который у нас есть хоть что-то.
+// Earliest is the first day we hold anything at all for.
 func (s *FxStore) Earliest(ctx context.Context) (time.Time, error) {
 	var d *time.Time
 	if err := s.db.QueryRow(ctx, `SELECT min(day) FROM fx_rates`).Scan(&d); err != nil {
@@ -271,7 +277,7 @@ func (s *FxStore) Earliest(ctx context.Context) (time.Time, error) {
 	return *d, nil
 }
 
-// MarkProbed запоминает, что за этот день мы банк уже спрашивали.
+// MarkProbed records that we have already asked the bank about this day.
 func (s *FxStore) MarkProbed(ctx context.Context, day time.Time, found int) error {
 	_, err := s.db.Exec(ctx, `
 		INSERT INTO fx_probed (day, found, probed_at) VALUES ($1,$2,now())
@@ -279,13 +285,13 @@ func (s *FxStore) MarkProbed(ctx context.Context, day time.Time, found int) erro
 	return err
 }
 
-// NextToProbe возвращает ближайший неопрошенный день, двигаясь от сегодня в
-// прошлое, но не глубже floor. Пустой результат означает, что догружать нечего.
+// NextToProbe returns the nearest unprobed day, walking back from today but no
+// deeper than floor. An empty result means there is nothing left to backfill.
 func (s *FxStore) NextToProbe(ctx context.Context, floor time.Time) (time.Time, bool, error) {
-	// max, а не ORDER BY … LIMIT 1: когда опрашивать нечего, выборка со
-	// строками вернула бы «нет строк», то есть ошибку, и догрузка каждый час
-	// жаловалась бы в журнал на то, что она закончила работу. Агрегат в этом
-	// случае честно отдаёт одну строку с NULL.
+	// max, not ORDER BY … LIMIT 1: with nothing left to probe, a row query would
+	// return "no rows" — that is, an error — and the backfill would complain to
+	// the log every hour about having finished its work. An aggregate honestly
+	// returns one row holding NULL.
 	var d *time.Time
 	err := s.db.QueryRow(ctx, `
 		SELECT max(g)::date FROM generate_series($1::date, CURRENT_DATE, interval '1 day') g
@@ -296,9 +302,9 @@ func (s *FxStore) NextToProbe(ctx context.Context, floor time.Time) (time.Time, 
 	return *d, true, nil
 }
 
-// EmptyRunBelow считает, сколько подряд идущих опрошенных дней ниже day не дали
-// ни одного курса. Длинная цепочка означает, что мы дошли до края чужого окна:
-// дальше банк молчит, и стучаться туда бессмысленно.
+// EmptyRunBelow counts how many consecutive probed days below `day` yielded no
+// rate at all. A long run means we have reached the edge of somebody else's
+// window: past it the bank is silent, and knocking there is pointless.
 func (s *FxStore) EmptyRunBelow(ctx context.Context, day time.Time) (int, error) {
 	var n int
 	err := s.db.QueryRow(ctx, `
@@ -313,7 +319,7 @@ func (s *FxStore) EmptyRunBelow(ctx context.Context, day time.Time) (int, error)
 	return n, err
 }
 
-// KnownCodes перечисляет валюты, которые встречались в дневном архиве.
+// KnownCodes lists the currencies that have appeared in the daily archive.
 func (s *FxStore) KnownCodes(ctx context.Context) ([]string, error) {
 	rows, err := s.db.Query(ctx, `SELECT DISTINCT code FROM fx_rates ORDER BY code`)
 	if err != nil {

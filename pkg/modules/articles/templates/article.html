@@ -111,6 +111,13 @@
 
         <div class="prose" data-read-progress="{{ .Slug }}">{{ .Body }}</div>
 
+        {{/* Proof-reading, offered where the reader has just finished the text and
+             still has the sentence in front of them. A quiet line rather than a
+             button: it is an invitation to help, not a call to action. */}}
+        <p class="typo-line">
+          <a class="typo-line__link" href="/read/{{ .Slug }}/typo?lang={{ .Lang }}">{{ icon "pencil" }}{{ t .Lang "corr.link" }}</a>
+        </p>
+
         {{/* The second share row is the one that earns its keep: the reader has
              finished and is deciding whether the piece was worth passing on. */}}
         {{ template "share_row" (dict "Lang" .Lang "Title" .Title "Foot" true "URL" (printf "%s%s" .SiteURL .CanonURL)) }}

@@ -12,17 +12,18 @@ import (
 	"strings"
 )
 
-// Чтение xlsx без сторонней библиотеки.
+// Reading xlsx without a third-party library.
 //
-// Нацбанк отдаёт статистику единственным машинным способом — кнопкой «Экспорт»,
-// то есть книгой Excel. Ради неё тянуть в проект стороннюю библиотеку не
-// стоило: нам нужны только значения ячеек, а книга — это zip с несколькими
-// файлами XML, и всё нужное разбирается стандартной библиотекой.
+// The National Bank serves its statistics by exactly one machine-readable route —
+// the "Export" button, which is an Excel workbook. Pulling a library into the
+// project for it was not worth it: all we need are cell values, and a workbook is
+// a zip holding a few XML files, every part of which the standard library
+// parses.
 
-// xlsxSheet — лист как таблица строк: строка → колонка (A, B, …) → значение.
+// xlsxSheet is a sheet as a table of rows: row → column (A, B, …) → value.
 type xlsxSheet []map[string]string
 
-// readXLSX разбирает первый лист книги.
+// readXLSX parses a workbook's first sheet.
 func readXLSX(data []byte) (xlsxSheet, error) {
 	zr, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
 	if err != nil {
@@ -73,8 +74,8 @@ func readXLSX(data []byte) (xlsxSheet, error) {
 			v := c.Value
 			switch c.Type {
 			case "s":
-				// Ссылка в общий словарь строк: Excel не хранит один и тот же
-				// текст дважды.
+				// A reference into the shared string table: Excel does not store
+				// the same text twice.
 				if i, err := strconv.Atoi(v); err == nil && i >= 0 && i < len(shared) {
 					v = shared[i]
 				}
@@ -88,7 +89,7 @@ func readXLSX(data []byte) (xlsxSheet, error) {
 	return out, nil
 }
 
-// xlsxShared читает общий словарь строк книги.
+// xlsxShared reads a workbook's shared string table.
 func xlsxShared(zr *zip.Reader) ([]string, error) {
 	raw, err := xlsxFile(zr, "xl/sharedStrings.xml")
 	if err != nil {
@@ -114,7 +115,7 @@ func xlsxShared(zr *zip.Reader) ([]string, error) {
 	return out, nil
 }
 
-// xlsxFile достаёт один файл из книги.
+// xlsxFile takes one file out of the workbook.
 func xlsxFile(zr *zip.Reader, name string) ([]byte, error) {
 	for _, f := range zr.File {
 		if f.Name != name {
@@ -130,15 +131,15 @@ func xlsxFile(zr *zip.Reader, name string) ([]byte, error) {
 	return nil, fmt.Errorf("в книге нет %s", name)
 }
 
-// xlsxColRe выделяет буквенную часть адреса ячейки: из «BC12» — «BC».
+// xlsxColRe picks the letter part out of a cell address: "BC" from "BC12".
 var xlsxColRe = regexp.MustCompile(`^[A-Z]+`)
 
-// xlsxCol возвращает букву колонки из адреса ячейки.
+// xlsxCol returns the column letter from a cell address.
 func xlsxCol(ref string) string { return xlsxColRe.FindString(ref) }
 
-// xlsxColNum переводит букву колонки в номер: A → 1, Z → 26, AA → 27. Нужен
-// для сортировки: в книге Нацбанка месяцы идут по колонкам, и «AA» без этого
-// встаёт между «A» и «B».
+// xlsxColNum turns a column letter into a number: A → 1, Z → 26, AA → 27. Needed
+// for sorting: in the National Bank's workbook months run across the columns, and
+// without this "AA" lands between "A" and "B".
 func xlsxColNum(col string) int {
 	n := 0
 	for _, r := range col {

@@ -5,24 +5,23 @@ import (
 	"fmt"
 	"math"
 	"sort"
-	"strings"
 	"sync"
 	"time"
 )
 
-// Раздел «Как формируется курс тенге и инфляция».
+// The section "How the tenge rate and inflation are formed".
 //
-// Страница не пишется — она считается. Нацбанк раз в месяц публикует, сколько
-// в стране тенге и сколько долларов в золотовалютных резервах; Всемирный банк
-// раз в год — инфляцию. Всё, что здесь делается, это кладёт одно рядом с
-// другим: количество денег, количество валюты, за которую эти деньги можно
-// обменять, и курс, который из этого соотношения выходит.
+// The page is not written, it is computed. Once a month the National Bank
+// publishes how many tenge exist and how many dollars sit in the reserves; once a
+// year the World Bank publishes inflation. All that happens here is laying one
+// beside the other: the quantity of money, the quantity of currency it can be
+// exchanged for, and the rate that follows from the ratio.
 //
-// Никаких утверждений о намерениях: показаны ряды и их сопоставление, а вывод
-// из них читатель делает сам. Цифра, за которой стоит источник, убеждает
-// сильнее любого эпитета.
+// No claims about anyone's intentions: the series are shown and set against each
+// other, and the reader draws the conclusion. A figure with a source behind it
+// persuades better than any adjective.
 
-// MacroChart — две линии в одной системе координат.
+// MacroChart is two lines in one coordinate system.
 type MacroChart struct {
 	A      string
 	B      string
@@ -31,33 +30,35 @@ type MacroChart struct {
 	X      []FxAxis
 	Width  int
 	Height int
-	// Log отмечает логарифмическую шкалу — читателю об этом надо сказать.
+	// Log marks a logarithmic scale — the reader has to be told.
 	Log bool
+	// Hover carries the readout data for the frame, as ready JSON.
+	Hover string
 }
 
-// MacroYear — строка годовой сводки.
+// MacroYear is one row of the annual summary.
 type MacroYear struct {
 	Year  int
 	CPI   string
 	Money string
 	Rate  string
 	Fund  string
-	// FundDown отмечает год, когда Национальный фонд уменьшился.
+	// FundDown marks a year in which the National Fund shrank.
 	FundDown bool
 }
 
-// MacroErode — во что превратилась тысяча тенге того года.
+// MacroErode is what a thousand tenge of a given year turned into.
 type MacroErode struct {
 	Year int
-	// Kept — сколько сегодняшних тенге стоит та тысяча по покупательной
-	// способности.
+	// Kept is what that thousand is worth in today's tenge by purchasing
+	// power.
 	Kept string
-	// Then и Now — сколько долларов давали за тысячу тенге тогда и сейчас.
+	// Then and Now are the dollars a thousand tenge bought then and buys now.
 	Then string
 	Now  string
 }
 
-// MacroBlock — весь раздел целиком.
+// MacroBlock is the whole section.
 type MacroBlock struct {
 	Has bool
 
@@ -88,17 +89,29 @@ type MacroBlock struct {
 
 	Years []MacroYear
 	Erode []MacroErode
-	// NowDollars — сколько долларов дают за тысячу тенге сегодня.
+	// NowDollars is the dollars a thousand tenge buys today.
 	NowDollars string
+
+	// Now is the National Bank's indicator panel: rate, inflation, target,
+	// TONIA.
+	Now MacroNow
+	// Formulas are the rules by which prices and the rate follow from those
+	// quantities.
+	Formulas []MacroFormula
+
+	// RateCPI puts the Bank's rate and annual inflation on one scale.
+	RateCPI     MacroChart
+	RateCPIFrom string
+	RateSince   string
 }
 
-// ready сообщает, собран ли раздел целиком.
+// ready reports whether the section was assembled in full.
 func (b MacroBlock) ready() bool {
 	return b.Has && b.Cmp.A != "" && b.CoverLast != "" && b.Res.A != "" && b.CPILast != ""
 }
 
-// buildMacro собирает раздел. Любая недостающая часть просто не показывается:
-// половина разбора полезнее пустой страницы.
+// buildMacro assembles the section. Any missing part is simply not shown: half an
+// analysis is more use than an empty page.
 func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 	var b MacroBlock
 	if m.macro == nil || m.fx == nil {
@@ -115,31 +128,38 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 	}
 	b.Has = true
 
-	// 1. Сколько тенге в стране.
-	b.M3 = fxBuildChart(macroScaled(m3, 1e6), "all", lang) // триллионы тенге
+	// 1. How many tenge exist.
+	// The frame is scaled to trillions, but a readout on January 1994 must not
+	// say "0.0 trn ₸": each point names its own magnitude, so the early years
+	// read in billions and millions.
+	b.M3 = fxBuildChartWith(macroScaled(m3, 1e6), "all", lang, fxChartOpts{
+		Unit: "₸", Format: func(v float64) string { return macroTenge(v*1e6, lang) },
+	}) // trillions of tenge
 	last := m3[len(m3)-1]
-	b.M3Last = macroTenge(last.Value)
+	b.M3Last = macroTenge(last.Value, lang)
 	b.M3Month = macroMonth(last.Period, lang)
 	if prev, ok := macroAt(m3, last.Period.AddDate(-1, 0, 0)); ok && prev > 0 {
 		d := (last.Value/prev - 1) * 100
 		b.M3Year, b.M3Up = fxPct(d), d > 0
 	}
 
-	// 2. Денежная масса и курс доллара на одной шкале. Обе линии приведены к
-	//    ста в первый общий месяц: у одной единица измерения — тенге, у другой
-	//    тенге за доллар, и сравнивать их можно только в разах.
+	// 2. Money supply and the dollar rate on one scale. Both lines are indexed to
+	//    a hundred in their first shared month: one is measured in tenge and the
+	//    other in tenge per dollar, and they can only be compared as multiples.
 	if len(rate) > 24 {
 		b.Cmp, b.CmpFrom = macroCompare(m3, rate, lang)
 		b.MoneyMul = macroTimes(m3, lang)
 		b.RateMul = macroTimes(rate, lang)
 	}
 
-	// 3. Сколько тенге приходится на доллар золотовалютных резервов. Это не
-	//    курс и не прогноз: это отношение двух опубликованных чисел.
+	// 3. How many tenge there are per dollar of reserves. Not a rate and not a
+	//    forecast: the ratio of two published figures.
 	if len(res) > 24 {
 		cover := macroCover(m3, res)
 		if len(cover) > 24 {
-			b.Cover = fxBuildChart(cover, "all", lang)
+			b.Cover = fxBuildChartWith(cover, "all", lang, fxChartOpts{
+				Unit: T(lang, "fx.u_kzt_usd"),
+			})
 			c := cover[len(cover)-1]
 			b.CoverLast, b.CoverMonth = fxNum(c.Value), macroMonth(c.Day, lang)
 			if v, ok := macroRateAt(rate, c.Day); ok {
@@ -148,33 +168,73 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 		}
 	}
 
-	// 4. Золотовалютные резервы и Национальный фонд.
+	// 4. Reserves and the National Fund.
 	if len(res) > 24 && len(fund) > 24 {
-		b.Res = macroTwoLines(macroScaled(res, 1e3), macroScaled(fund, 1e3), lang, false) // млрд долларов
-		b.ResLast = macroDollars(res[len(res)-1].Value)
-		b.FundLast = macroDollars(fund[len(fund)-1].Value)
+		dollars := func(v float64) string { return macroDollars(v*1e3, lang) }
+		b.Res = macroTwoLinesWith(macroScaled(res, 1e3), macroScaled(fund, 1e3), lang, false,
+			fxChartOpts{Name: T(lang, "fx.res_key_a"), Unit: "$", Format: dollars},
+			fxChartOpts{Name: T(lang, "fx.col_fund"), Unit: "$", Format: dollars},
+		) // billions of dollars
+		b.ResLast = macroDollars(res[len(res)-1].Value, lang)
+		b.FundLast = macroDollars(fund[len(fund)-1].Value, lang)
 		b.ResMonth = macroMonth(res[len(res)-1].Period, lang)
 	}
 
-	// 5. Инфляция по годам.
+	// 5. Inflation by year.
 	if len(cpi) > 5 {
-		b.CPI = fxBuildChart(macroPoints(cpi), "all", lang)
+		b.CPI = fxBuildChartWith(macroPoints(cpi), "all", lang, fxChartOpts{
+			Annual: true, Unit: "%",
+		})
 		c := cpi[len(cpi)-1]
 		b.CPILast, b.CPIYear = fxPct(c.Value), fmt.Sprintf("%d", c.Period.Year())
 	}
 
 	b.Years = macroYears(cpi, m3, rate, fund)
 	b.Erode, b.NowDollars = macroErosion(cpi, rate)
+
+	// 6. The decision everything follows from: the National Bank's rate. It is
+	//    the one quantity in this analysis with a day, a signature and a minute
+	//    of the meeting; the other series only measure what happened after it.
+	refi, _ := m.macro.Series(ctx, MacroRefiRate)
+	baseRate, _ := m.macro.Series(ctx, MacroBaseRate)
+	policy := macroPolicyRate(refi, baseRate)
+	if len(policy) > 0 {
+		b.RateSince = fmt.Sprintf("%d", policy[0].Day.Year())
+	}
+	if len(policy) > 4 && len(cpi) > 4 {
+		ra, rb := macroAlignYears(macroRateByYear(policy), cpi)
+		if len(ra) > 4 {
+			// Logarithmic scale: in 1994 inflation ran into thousands of
+			// percent, and on a linear scale today's two-digit figures would lie
+			// in a single line along the bottom.
+			b.RateCPI = macroTwoLinesWith(ra, rb, lang, true,
+				fxChartOpts{Name: T(lang, "fx.rate_key_a"), Unit: "%", Annual: true},
+				fxChartOpts{Name: T(lang, "fx.col_cpi"), Unit: "%", Annual: true},
+			)
+			b.RateCPIFrom = fmt.Sprintf("%d", ra[0].Day.Year())
+		}
+	}
+
+	cpiNow, _ := m.macro.Series(ctx, MacroCPINow)
+	cpiTarget, _ := m.macro.Series(ctx, MacroCPITarget)
+	tonia, _ := m.macro.Series(ctx, MacroTonia)
+	gdp, _ := m.macro.Series(ctx, MacroGDP)
+	in := macroFormulaInput{
+		lang: lang, m3: m3, res: res, gdp: gdp,
+		rate: policy, cpiNow: cpiNow, cpiTarget: cpiTarget, fxRate: rate,
+	}
+	b.Now = buildNow(in, tonia)
+	b.Formulas = buildFormulas(in)
 	return b
 }
 
-// macroErosion считает, во что превратилась тысяча тенге разных лет.
+// macroErosion works out what a thousand tenge of various years turned into.
 //
-// Две меры сразу, потому что они отвечают на разные вопросы. Покупательная
-// способность — сколько сегодняшних тенге нужно, чтобы купить то же самое:
-// накопленная инфляция за годы. Доллары — сколько валюты давали за ту же
-// тысячу тогда и дают сейчас. Первое про цены внутри страны, второе про то,
-// чего стоят эти цены снаружи.
+// Two measures at once, because they answer different questions. Purchasing power
+// is how many of today's tenge are needed to buy the same thing: inflation
+// accumulated over the years. Dollars are what that same thousand bought in
+// currency then and buys now. The first is about prices inside the country, the
+// second about what those prices are worth outside it.
 func macroErosion(cpi []MacroPoint, rate []FxPoint) ([]MacroErode, string) {
 	if len(cpi) < 5 || len(rate) < 12 {
 		return nil, ""
@@ -200,7 +260,8 @@ func macroErosion(cpi []MacroPoint, rate []FxPoint) ([]MacroErode, string) {
 		if y >= last.Day.Year() {
 			continue
 		}
-		// Накопленный рост цен от начала года y до последнего года с данными.
+		// Price growth accumulated from the start of year y to the last year with
+		// data.
 		growth := 1.0
 		ok := true
 		for yy := y; yy < last.Day.Year(); yy++ {
@@ -225,7 +286,12 @@ func macroErosion(cpi []MacroPoint, rate []FxPoint) ([]MacroErode, string) {
 	return out, fxFormat(1000/nowRate, 2)
 }
 
-// macroPoints переводит макроряд в точки графика.
+// macroOne prints a value to one decimal place. Trillions of tenge and billions
+// of dollars carry no meaning past the first: "55.8" is the figure a reader
+// repeats, "55.83" is two digits of noise in every readout.
+func macroOne(v float64) string { return fxFormat(v, 1) }
+
+// macroPoints turns a macro series into chart points.
 func macroPoints(pts []MacroPoint) []FxPoint {
 	out := make([]FxPoint, 0, len(pts))
 	for _, p := range pts {
@@ -234,7 +300,7 @@ func macroPoints(pts []MacroPoint) []FxPoint {
 	return out
 }
 
-// macroAt возвращает значение ряда за конкретный месяц.
+// macroAt returns a series' value for one specific month.
 func macroAt(pts []MacroPoint, when time.Time) (float64, bool) {
 	for _, p := range pts {
 		if p.Period.Equal(when) {
@@ -244,7 +310,8 @@ func macroAt(pts []MacroPoint, when time.Time) (float64, bool) {
 	return 0, false
 }
 
-// macroRateAt возвращает курс за месяц точки, беря ближайший не позже него.
+// macroRateAt returns the rate for a point's month, taking the nearest one no
+// later than it.
 func macroRateAt(rate []FxPoint, when time.Time) (float64, bool) {
 	var v float64
 	var ok bool
@@ -257,9 +324,9 @@ func macroRateAt(rate []FxPoint, when time.Time) (float64, bool) {
 	return v, ok
 }
 
-// macroCover считает, сколько тенге приходится на доллар золотовалютных
-// резервов: денежная масса в миллионах тенге, делённая на резервы в миллионах
-// долларов, даёт тенге за доллар.
+// macroCover works out the tenge per dollar of reserves: money supply in
+// millions of tenge divided by reserves in millions of dollars gives tenge per
+// dollar.
 func macroCover(m3 []MacroPoint, res []MacroPoint) []FxPoint {
 	byMonth := make(map[string]float64, len(res))
 	for _, r := range res {
@@ -276,8 +343,8 @@ func macroCover(m3 []MacroPoint, res []MacroPoint) []FxPoint {
 	return out
 }
 
-// macroTimes — во сколько раз ряд вырос от первого значения к последнему,
-// вместе со словом «раз» в нужной форме.
+// macroTimes is how many times over a series grew from its first value to its
+// last, together with the word "times" in the right form.
 func macroTimes[T any](pts []T, lang string) string {
 	first, last, ok := macroEnds(pts)
 	if !ok || first <= 0 {
@@ -286,7 +353,8 @@ func macroTimes[T any](pts []T, lang string) string {
 	return macroMul(last/first, lang)
 }
 
-// macroEnds достаёт первое и последнее значение ряда любого из наших видов.
+// macroEnds takes the first and last value out of a series of either of our
+// kinds.
 func macroEnds[T any](pts []T) (float64, float64, bool) {
 	if len(pts) < 2 {
 		return 0, 0, false
@@ -305,12 +373,12 @@ func macroEnds[T any](pts []T) (float64, float64, bool) {
 	return f, l, ok1 && ok2
 }
 
-// macroMul печатает кратность вместе со словом: «6 776 раз», «2,4 раза».
+// macroMul prints a multiple together with its word: "6 776 times", "2.4 times".
 //
-// Слово приходится склонять: по-русски после 2, 3 и 4 — «раза», после
-// остальных — «раз», а дробное число всегда берёт «раза». Без этого в тексте
-// появляется «в 97,2 раз», и читатель спотыкается о фразу вместо того, чтобы
-// смотреть на число.
+// The word has to be declined: in Russian 2, 3 and 4 take "раза", the rest take
+// "раз", and a fractional number always takes "раза". Without this the text says
+// "в 97,2 раз", and the reader trips over the phrase instead of looking at the
+// number.
 func macroMul(x float64, lang string) string {
 	whole := x >= 10
 	n := fxFormat(x, 1)
@@ -329,7 +397,7 @@ func macroMul(x float64, lang string) string {
 	return n + " " + ruTimesWord(int64(math.Round(x)))
 }
 
-// ruTimesWord выбирает форму слова «раз» для целого числа.
+// ruTimesWord picks the form of the Russian word "раз" for a whole number.
 func ruTimesWord(n int64) string {
 	if n < 0 {
 		n = -n
@@ -344,7 +412,8 @@ func ruTimesWord(n int64) string {
 	return "раз"
 }
 
-// macroCompare строит две линии, приведённые к ста в первый общий месяц.
+// macroCompare builds two lines indexed to a hundred in their first shared
+// month.
 func macroCompare(m3 []MacroPoint, rate []FxPoint, lang string) (MacroChart, string) {
 	a := macroPoints(m3)
 	from := a[0].Day
@@ -356,12 +425,15 @@ func macroCompare(m3 []MacroPoint, rate []FxPoint, lang string) (MacroChart, str
 	if len(a) < 2 || len(b) < 2 {
 		return MacroChart{}, ""
 	}
-	return macroTwoLines(macroIndex(a), macroIndex(b), lang, true), macroMonthIn(from, lang)
+	return macroTwoLinesWith(macroIndex(a), macroIndex(b), lang, true,
+		fxChartOpts{Name: T(lang, "fx.col_money"), Format: macroOne},
+		fxChartOpts{Name: T(lang, "fx.col_rate"), Format: macroOne},
+	), macroMonthIn(from, lang)
 }
 
-// macroScaled переводит ряд в удобные единицы: миллионы тенге в триллионы,
-// миллионы долларов в миллиарды. Ось с подписью «60 000 000» не читается и не
-// помещается — а это те же 60 триллионов.
+// macroScaled converts a series into convenient units: millions of tenge into
+// trillions, millions of dollars into billions. An axis labelled "60 000 000"
+// neither reads nor fits — and it is the same 60 trillion.
 func macroScaled(pts []MacroPoint, div float64) []FxPoint {
 	out := make([]FxPoint, 0, len(pts))
 	for _, p := range pts {
@@ -370,7 +442,7 @@ func macroScaled(pts []MacroPoint, div float64) []FxPoint {
 	return out
 }
 
-// macroSince отбрасывает всё раньше указанного месяца.
+// macroSince drops everything earlier than the given month.
 func macroSince(pts []FxPoint, from time.Time) []FxPoint {
 	out := make([]FxPoint, 0, len(pts))
 	for _, p := range pts {
@@ -382,7 +454,7 @@ func macroSince(pts []FxPoint, from time.Time) []FxPoint {
 	return out
 }
 
-// macroIndex приводит ряд к ста в первой точке.
+// macroIndex indexes a series to a hundred at its first point.
 func macroIndex(pts []FxPoint) []FxPoint {
 	if len(pts) == 0 || pts[0].Value == 0 {
 		return pts
@@ -395,27 +467,45 @@ func macroIndex(pts []FxPoint) []FxPoint {
 	return out
 }
 
-// macroTwoLines рисует два ряда в одной системе координат.
+// macroTwoLines draws two series in one coordinate system.
 //
-// log включает логарифмическую шкалу. Она нужна там, где ряды разошлись на
-// порядки: денежная масса выросла в шесть с лишним тысяч раз, курс — в сотню,
-// и на обычной шкале вторая линия ложится на ноль, будто курс не менялся
-// вовсе. Логарифм показывает не разницу величин, а разницу темпов — то, ради
-// чего два ряда и кладут рядом.
+// log switches on a logarithmic scale. It is needed where the series have parted
+// by orders of magnitude: money supply grew more than six thousand times, the
+// rate about a hundred, and on a linear scale the second line lies flat on zero
+// as though the rate had never moved. A logarithm shows not the difference in
+// size but the difference in pace — which is the whole reason two series are put
+// side by side.
+//
+// Both series are laid on one shared time axis rather than side by side by point
+// number. Where a series has no value for a period its line breaks, instead of
+// being stretched across the full width: reserves run from 1993 and the National
+// Fund from 2001, and stretching drew the Fund seven years before it existed.
 func macroTwoLines(a, b []FxPoint, lang string, log bool) MacroChart {
+	return macroTwoLinesWith(a, b, lang, log, fxChartOpts{}, fxChartOpts{})
+}
+
+// macroTwoLinesWith is the same with labels for the readout.
+func macroTwoLinesWith(a, b []FxPoint, lang string, log bool, oa, ob fxChartOpts) MacroChart {
 	const w, h = 1000.0, 360.0
 	if len(a) < 2 || len(b) < 2 {
 		return MacroChart{}
 	}
-	a, b = fxThin(a, fxMaxPoints), fxThin(b, fxMaxPoints)
+	grid, av, bv, ah, bh := macroGrid(a, b)
+	grid, av, bv, ah, bh = macroThinGrid(grid, av, bv, ah, bh, fxMaxPoints)
+	if len(grid) < 2 {
+		return MacroChart{}
+	}
 
 	lo, hi := math.Inf(1), math.Inf(-1)
-	for _, set := range [][]FxPoint{a, b} {
-		for _, p := range set {
-			if log && p.Value <= 0 {
+	for i := range grid {
+		for _, set := range []struct {
+			v  float64
+			ok bool
+		}{{av[i], ah[i]}, {bv[i], bh[i]}} {
+			if !set.ok || (log && set.v <= 0) {
 				continue
 			}
-			lo, hi = math.Min(lo, p.Value), math.Max(hi, p.Value)
+			lo, hi = math.Min(lo, set.v), math.Max(hi, set.v)
 		}
 	}
 	if math.IsInf(lo, 1) || math.IsInf(hi, -1) {
@@ -445,42 +535,55 @@ func macroTwoLines(a, b []FxPoint, lang string, log bool) MacroChart {
 		}
 	}
 
-	path := func(pts []FxPoint) string {
-		var s strings.Builder
-		for i, p := range pts {
-			if i > 0 {
-				s.WriteByte(' ')
-			}
-			if i == 0 {
-				s.WriteByte('M')
-			} else {
-				s.WriteByte('L')
-			}
-			fmt.Fprintf(&s, "%.1f %.1f", w*float64(i)/float64(len(pts)-1), at(p.Value))
-		}
-		return s.String()
-	}
-
-	pa := path(a)
-	// Заливку под первой линией на логарифмической шкале не рисуем: площадь
-	// под логарифмом ничего не означает, а глаз читает её как объём.
+	pa := macroPath(av, ah, at, w)
+	// No fill under the first line on a logarithmic scale: the area under a
+	// logarithm means nothing, while the eye reads it as a volume.
 	area := ""
-	if !log {
+	if !log && pa != "" {
 		area = pa + fmt.Sprintf(" L%.1f %.1f L0 %.1f Z", w, h, h)
 	}
+
+	mode := oa.label("all")
+	if ob.Annual {
+		mode = fxLabelYear
+	}
+	hover := FxHover{L: fxPointLabels(grid, mode, lang)}
+	for _, set := range []struct {
+		vals []float64
+		has  []bool
+		o    fxChartOpts
+	}{{av, ah, oa}, {bv, bh, ob}} {
+		format := set.o.Format
+		if format == nil {
+			format = fxNum
+		}
+		ser := FxHoverSeries{N: set.o.Name}
+		for i, v := range set.vals {
+			if !set.has[i] {
+				ser.Y = append(ser.Y, nil)
+				ser.V = append(ser.V, "")
+				continue
+			}
+			ser.Y = append(ser.Y, hoverPct(at(v)/h*100))
+			ser.V = append(ser.V, fxUnit(format(v), set.o.Unit))
+		}
+		hover.S = append(hover.S, ser)
+	}
+
 	return MacroChart{
-		A: pa, B: path(b),
+		A: pa, B: macroPath(bv, bh, at, w),
 		Area:  area,
 		Y:     ticks,
-		X:     fxAxis(a, "all", lang),
+		X:     fxAxis(grid, "all", lang),
 		Width: int(w), Height: int(h),
-		Log: log,
+		Log:   log,
+		Hover: hoverJSON(hover),
 	}
 }
 
-// macroYears сводит инфляцию, прирост денежной массы и изменение курса в одну
-// таблицу по годам. Три числа в строке отвечают на вопрос, ради которого сюда
-// приходят: что происходило с деньгами и что — с ценами.
+// macroYears brings inflation, money growth and the change in the rate into one
+// table by year. Three figures in a row answer the question people come here for:
+// what was happening to money, and what to prices.
 func macroYears(cpi, m3 []MacroPoint, rate []FxPoint, fund []MacroPoint) []MacroYear {
 	byYear := map[int]*MacroYear{}
 	get := func(y int) *MacroYear {
@@ -498,8 +601,8 @@ func macroYears(cpi, m3 []MacroPoint, rate []FxPoint, fund []MacroPoint) []Macro
 	for y, d := range macroYearChange(rate) {
 		get(y).Rate = fxPct(d)
 	}
-	// Национальный фонд — единственная строка, где падение важнее роста:
-	// уменьшение значит, что из него взяли больше, чем в него положили.
+	// The National Fund is the one row where a fall matters more than a rise: a
+	// decrease means more was taken out of it than was put in.
 	for y, d := range macroYearChange(macroPoints(fund)) {
 		r := get(y)
 		r.Fund, r.FundDown = fxPct(d), d < 0
@@ -516,7 +619,7 @@ func macroYears(cpi, m3 []MacroPoint, rate []FxPoint, fund []MacroPoint) []Macro
 	return out
 }
 
-// macroYearChange считает изменение ряда от декабря к декабрю, в процентах.
+// macroYearChange computes a series' December-to-December change, in percent.
 func macroYearChange(pts []FxPoint) map[int]float64 {
 	last := map[int]float64{}
 	years := []int{}
@@ -538,28 +641,32 @@ func macroYearChange(pts []FxPoint) map[int]float64 {
 	return out
 }
 
-// macroTenge печатает сумму в тенге, приходящую в миллионах.
-func macroTenge(millions float64) string {
+// macroTenge prints a tenge sum that arrives in millions, choosing the magnitude
+// word that keeps the figure short.
+//
+// The word is translated. It used to be hard-coded Russian, which put "55,8 трлн"
+// into the middle of an English sentence on the English page.
+func macroTenge(millions float64, lang string) string {
 	switch {
 	case millions >= 1e6:
-		return fxFormat(millions/1e6, 1) + " трлн"
+		return fxFormat(millions/1e6, 1) + " " + T(lang, "fx.mag_trn")
 	case millions >= 1e3:
-		return fxFormat(millions/1e3, 1) + " млрд"
+		return fxFormat(millions/1e3, 1) + " " + T(lang, "fx.mag_bln")
 	default:
-		return fxFormat(millions, 0) + " млн"
+		return fxFormat(millions, 0) + " " + T(lang, "fx.mag_mln")
 	}
 }
 
-// macroDollars печатает сумму в долларах, приходящую в миллионах.
-func macroDollars(millions float64) string {
+// macroDollars prints a dollar sum that arrives in millions.
+func macroDollars(millions float64, lang string) string {
 	if millions >= 1e3 {
-		return fxFormat(millions/1e3, 1) + " млрд"
+		return fxFormat(millions/1e3, 1) + " " + T(lang, "fx.mag_bln")
 	}
-	return fxFormat(millions, 0) + " млн"
+	return fxFormat(millions, 0) + " " + T(lang, "fx.mag_mln")
 }
 
-// macroMonth печатает месяц словом и годом. В подписи под графиком уместно
-// сокращение, а в предложении — нет: «на июл 2026» читается как опечатка.
+// macroMonth prints a month by name with its year. An abbreviation suits a label
+// under a chart but not a sentence: "as of Jul 2026" reads like a typo.
 func macroMonth(t time.Time, lang string) string {
 	if t.IsZero() {
 		return ""
@@ -567,9 +674,9 @@ func macroMonth(t time.Time, lang string) string {
 	return fxMonthFull(t.Month(), lang) + " " + fmt.Sprintf("%d", t.Year())
 }
 
-// macroMonthIn печатает месяц в той форме, которая нужна после предлога «в».
-// По-русски это предложный падеж: «в январе», а не «в январь». Остальным двум
-// языкам склонение здесь не требуется.
+// macroMonthIn prints a month in the form needed after the preposition "in". In
+// Russian that is the prepositional case: "в январе", not "в январь". The other
+// two languages need no declension here.
 func macroMonthIn(t time.Time, lang string) string {
 	if t.IsZero() {
 		return ""
@@ -582,7 +689,7 @@ func macroMonthIn(t time.Time, lang string) string {
 	return prep[int(t.Month())-1] + " " + fmt.Sprintf("%d", t.Year())
 }
 
-// fxMonthFull — полное название месяца на языке читателя.
+// fxMonthFull is a month's full name in the reader's language.
 func fxMonthFull(m time.Month, lang string) string {
 	names := map[string][12]string{
 		LangKZ: {"қаңтар", "ақпан", "наурыз", "сәуір", "мамыр", "маусым",
@@ -599,23 +706,23 @@ func fxMonthFull(m time.Month, lang string) string {
 	return row[int(m)-1]
 }
 
-// Кеш раздела.
+// Caching the section.
 //
-// Раздел одинаков для всех сорока восьми валют и всех периодов, а его данные
-// меняются раз в месяц. Считать его на каждый заход значило бы гонять шесть
-// запросов и строить пять графиков ради картинки, которая всё равно та же.
+// The section is identical for all forty-eight currencies and every period, and
+// its data changes once a month. Building it on every visit would mean six queries
+// and five charts for a picture that is the same either way.
 
-// macroTTL — сколько живёт собранный раздел.
+// macroTTL is how long an assembled section lives.
 const macroTTL = time.Hour
 
-// macroCache хранит собранный раздел по языкам.
+// macroCache holds the assembled section per language.
 var macroCache = struct {
 	mu   sync.Mutex
 	at   time.Time
 	byLg map[string]MacroBlock
 }{byLg: map[string]MacroBlock{}}
 
-// macroCached отдаёт раздел, пересобирая его не чаще раза в час.
+// macroCached serves the section, rebuilding it at most once an hour.
 func (m *Module) macroCached(ctx context.Context, lang string) MacroBlock {
 	macroCache.mu.Lock()
 	fresh := time.Since(macroCache.at) < macroTTL
@@ -627,17 +734,17 @@ func (m *Module) macroCached(ctx context.Context, lang string) MacroBlock {
 
 	built := m.buildMacro(ctx, lang)
 	if !built.ready() {
-		// Неполный раздел не запоминаем. Сразу после разворачивания ряды
-		// приходят один за другим — денежная масса, потом резервы, потом
-		// инфляция, — и запомнить состояние между ними значит на час показать
-		// половину разбора, хотя вторая половина уже в базе.
+		// An incomplete section is not cached. Right after a deployment the
+		// series arrive one after another — money supply, then reserves, then
+		// inflation — and caching the state between them means showing half an
+		// analysis for an hour while the other half is already in the database.
 		return built
 	}
 	macroCache.mu.Lock()
 	if !fresh {
-		// Устаревший набор сбрасывается целиком: держать один язык из старого
-		// часа рядом с другим из нового значит показать на одной странице два
-		// разных месяца.
+		// A stale set is dropped whole: keeping one language from the old hour
+		// beside another from the new one means showing two different months on
+		// the same page.
 		macroCache.byLg = map[string]MacroBlock{}
 		macroCache.at = time.Now()
 	}

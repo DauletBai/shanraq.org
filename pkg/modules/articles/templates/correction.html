@@ -1,0 +1,94 @@
+{{ define "correction" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div class="layout__main">
+
+      <div class="section-head"><h1>{{ t .Lang "corr.title" }}</h1></div>
+      {{/* The article is named, not asked for: the reader arrived from it, and a
+           field for something we already know is a field that can be got wrong. */}}
+      <p class="place-lead">{{ printf (t .Lang "corr.lead") .Title }}
+        <a class="corr-back" href="/read/{{ .Slug }}?lang={{ .Lang }}">{{ t .Lang "corr.back" }}</a>
+      </p>
+
+      {{/* A guest sees the form, not a wall. Someone who has just spotted a typo
+           should be able to read what is being asked before deciding whether it
+           is worth an account; sending is what needs one, and the POST says so. */}}
+      {{ if and (not .Authed) (not .Done) }}
+      <p class="corr-note">{{ t .Lang "corr.login_note" }}
+        <a href="/studio/login">{{ t .Lang "header.login" }}</a>
+      </p>
+      {{ end }}
+
+      {{ if .Done }}
+
+      {{/* The outcome, on the page they submitted from. */}}
+      <div class="chart corr-out corr-out--{{ .Status }}">
+        <h2 class="chart__h">{{ t .Lang (printf "corr.h_%s" .Status) }}</h2>
+        {{ if eq .Status "applied" }}
+          {{ if .Fixed }}
+          <p class="corr-diff">
+            <s class="corr-diff__was">{{ .WordWas }}</s>
+            <span class="corr-diff__arrow" aria-hidden="true">→</span>
+            <b class="corr-diff__now">{{ .Fixed }}</b>
+          </p>
+          {{ end }}
+          <p class="chart__note">{{ t .Lang "corr.applied_note" }}</p>
+        {{ else }}
+          {{ if .Reason }}<p class="corr-reason">{{ .Reason }}</p>{{ end }}
+          <p class="chart__note">{{ t .Lang (printf "corr.n_%s" .Status) }}</p>
+        {{ end }}
+        <div class="corr-out__acts">
+          <a class="btn" href="/read/{{ .Slug }}?lang={{ .Lang }}">{{ t .Lang "corr.to_article" }}</a>
+          <a class="btn btn--ghost" href="/read/{{ .Slug }}/typo?lang={{ .Lang }}">{{ t .Lang "corr.again" }}</a>
+        </div>
+      </div>
+
+      {{ else }}
+
+      <form class="chart corr-form" method="post" action="/read/{{ .Slug }}/typo?lang={{ .Lang }}">
+        {{ if .Err }}<p class="corr-err">{{ t .Lang .Err }}</p>{{ end }}
+
+        {{/* Chapter first, because it is what narrows the search: the same word
+             can sit in five sections of a long piece. The article's own headings
+             are offered as a list, so the field is usually one click. */}}
+        <div class="field">
+          <label for="corr-chapter">{{ t .Lang "corr.f_chapter" }} {{ template "fhelp" (t .Lang "corr.h_chapter") }}</label>
+          <input class="input" id="corr-chapter" name="chapter" list="corr-chapters"
+                 maxlength="200" autocomplete="off"
+                 placeholder="{{ t .Lang "corr.p_chapter" }}" value="{{ .Chapter }}">
+          {{ if .Chapters }}
+          <datalist id="corr-chapters">
+            {{ range .Chapters }}<option value="{{ .Text }}"></option>{{ end }}
+          </datalist>
+          {{ end }}
+        </div>
+
+        <div class="field">
+          <label for="corr-sentence">{{ t .Lang "corr.f_sentence" }} * {{ template "fhelp" (t .Lang "corr.h_sentence") }}</label>
+          <textarea class="input corr-sentence" id="corr-sentence" name="sentence" rows="3"
+                    maxlength="600" required
+                    placeholder="{{ t .Lang "corr.p_sentence" }}">{{ .Sentence }}</textarea>
+        </div>
+
+        <div class="field">
+          <label for="corr-word">{{ t .Lang "corr.f_word" }} * {{ template "fhelp" (t .Lang "corr.h_word") }}</label>
+          <input class="input corr-word" id="corr-word" name="word" maxlength="48" required
+                 autocomplete="off" spellcheck="false"
+                 placeholder="{{ t .Lang "corr.p_word" }}" value="{{ .Word }}">
+        </div>
+
+        <p class="chart__note">{{ t .Lang "corr.how" }}</p>
+        <button class="btn" type="submit">{{ t .Lang "corr.send" }}</button>
+      </form>
+
+      {{ end }}
+
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

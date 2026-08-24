@@ -5,33 +5,34 @@ import (
 	"time"
 )
 
-// Заявки поисковикам на постоянные страницы.
+// Telling search engines about the standing pages.
 //
-// Карта сайта — это приглашение зайти когда-нибудь; IndexNow говорит Bing,
-// Яндексу и остальным, кто его поддерживает, прямо сейчас. Статьи уходили туда
-// с самой публикации, а постоянные страницы — «Аналитика», «Курсы валют»,
-// правила, тарифы — не уходили никогда: их никто не «публикует», и повода
-// отправить заявку не возникало.
+// A sitemap is an invitation to come by some day; IndexNow tells Bing, Yandex and
+// everyone else who supports it right now. Articles have been going there since
+// publication, but the standing pages — "Analytics", "Exchange rates", the rules,
+// the tariffs — never went at all: nobody "publishes" them, so no occasion to send
+// a submission ever arose.
 //
-// Поэтому поводы назначены здесь. После запуска сайт объявляет весь свой
-// постоянный состав: разворачивание меняет разметку и тексты, и это ровно тот
-// случай, когда поисковику стоит зайти заново. Дальше раз в сутки уходят те
-// страницы, содержимое которых меняется каждый день само.
+// So the occasions are appointed here. After a start-up the site declares its whole
+// standing set: a deployment changes the markup and the texts, and that is exactly
+// when a search engine should come back. After that, once a day, the pages whose
+// content changes daily on its own are submitted.
 
 const (
-	// indexNowSettle — пауза после запуска. Заявка ссылается на файл ключа на
-	// нашем же домене, и отправлять её раньше, чем сайт начал отвечать,
-	// значит получить отказ.
+	// indexNowSettle is the pause after start-up. The submission points at a key
+	// file on our own domain, and sending it before the site answers at all means
+	// being refused.
 	indexNowSettle = 2 * time.Minute
-	// indexNowEvery — как часто объявлять ежедневно меняющиеся страницы.
+	// indexNowEvery is how often to announce the pages that change daily.
 	indexNowEvery = 24 * time.Hour
 )
 
-// indexNowDaily — страницы, которые меняются каждый день сами по себе: лента
-// главной, курс валют и счётчики аудитории.
+// indexNowDaily are the pages that change every day by themselves: the front
+// page's feed, the exchange rates and the audience counters.
 var indexNowDaily = []string{"/", "/rates", "/analytics"}
 
-// runIndexNow объявляет постоянные страницы сайта до отмены контекста.
+// runIndexNow announces the site's standing pages until the context is
+// cancelled.
 func (m *Module) runIndexNow(ctx context.Context) {
 	if m.syndicate == nil {
 		return
@@ -57,9 +58,9 @@ func (m *Module) runIndexNow(ctx context.Context) {
 	}
 }
 
-// pageURLs разворачивает пути в полные адреса на всех трёх языках — ровно те,
-// что стоят в карте сайта и в canonical. Заявка на адрес, которого сайт не
-// объявляет своим, поисковику ничего не даёт.
+// pageURLs expands paths into full addresses in all three languages — exactly the
+// ones the sitemap and the canonical carry. A submission for an address the site
+// does not declare as its own gives a search engine nothing.
 func (m *Module) pageURLs(paths []string) []string {
 	site := m.rt.Config.PublicBase()
 	out := make([]string, 0, len(paths)*len(Langs))

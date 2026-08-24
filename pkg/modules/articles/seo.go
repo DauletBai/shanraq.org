@@ -151,9 +151,9 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 	return []byte(b.String())
 }
 
-// publicPages — постоянные страницы сайта, кроме главной. Список один на карту
-// сайта и на заявки в IndexNow: страница, о которой знает только один из них,
-// либо не индексируется, либо предлагается поисковику дважды.
+// publicPages are the site's standing pages, the front page aside. One list
+// serves both the sitemap and the IndexNow submissions: a page only one of them
+// knows about either goes unindexed or gets offered to a search engine twice.
 var publicPages = []string{
 	"/about", "/guide", "/formatting", "/pricing", "/support",
 	"/listings", "/predictions", "/analytics", "/rates", "/author/sana",
@@ -168,9 +168,9 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 		for _, p := range publicPages {
 			emit(p, time.Time{})
 		}
-		// Курс каждой валюты — отдельная страница с собственной историей, и
-		// предлагать её надо отдельно: человек ищет курс рубля, а не «курсы
-		// валют». Доллар не повторяем — он и есть страница /rates.
+		// Each currency's rate is a page of its own with its own history, and has
+		// to be offered separately: people search for the rouble rate, not for
+		// "exchange rates". The dollar is not repeated — it is the /rates page.
 		if m.fx != nil {
 			if curs, cerr := m.fx.Currencies(r.Context()); cerr != nil {
 				m.rt.Logger.Warn("sitemap currencies", zap.Error(cerr))

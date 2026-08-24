@@ -46,7 +46,9 @@ var iconPaths = map[string]string{
 	"clock":     `<circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/>`,
 	"comment":   `<path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>`,
 	"doc":       `<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>`,
-	"heart":     `<path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/>`,
+	// A pencil, for the line that invites a reader to report a typo.
+	"pencil": `<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>`,
+	"heart":  `<path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/>`,
 	// "share" opens the device's own share sheet; "link" copies the address.
 	"share": `<circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/>` +
 		`<path d="M8.4 13.4l7.2 4.2M15.6 6.4 8.4 10.6"/>`,

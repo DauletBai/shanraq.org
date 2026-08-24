@@ -53,6 +53,7 @@ type Module struct {
 	tariffs       *TariffStore
 	fx            *FxStore
 	macro         *MacroStore
+	corrections   *CorrectionStore
 	metrics       *Metrics
 	geoip         *geoIP
 	excludeEmails map[string]bool
@@ -122,6 +123,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.tariffs = NewTariffStore(rt.DB)
 	m.fx = NewFxStore(rt.DB)
 	m.macro = NewMacroStore(rt.DB)
+	m.corrections = NewCorrectionStore(rt.DB)
 	// Seed the rate card from the built-in defaults and load it into the cache;
 	// best-effort, so a failure just serves the built-in prices.
 	if err := m.tariffs.Load(ctx); err != nil {
@@ -217,6 +219,10 @@ func (m *Module) browserRoutes(r chi.Router) {
 		// The reader's half of moderation. A POST because it changes something,
 		// and same-origin-checked with the rest of the browser surface.
 		r.Post("/read/{slug}/report", m.handleArticleReport)
+		// Proof-reading. A GET so the form has an address a reader can be sent
+		// to, a POST because it changes the article.
+		r.Get("/read/{slug}/typo", m.handleCorrectionForm)
+		r.Post("/read/{slug}/typo", m.handleCorrectionSubmit)
 		r.Post("/read/{slug}/vote", m.handleVote)
 		r.Post("/read/{slug}/comment/{id}/vote", m.handleCommentVote)
 		r.Post("/read/{slug}/comment", m.handleComment)

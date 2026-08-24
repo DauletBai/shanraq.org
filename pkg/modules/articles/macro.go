@@ -16,30 +16,30 @@ import (
 	"go.uber.org/zap"
 )
 
-// Ряды, из которых складываются курс и инфляция.
+// The series the exchange rate and inflation are made of.
 //
-// Курс тенге — не погода, он не «случается». С одной стороны стоит количество
-// тенге, с другой — количество долларов, которыми страна располагает. Обе
-// величины Нацбанк публикует сам, помесячно и с 1994 года; всё, что делает эта
-// часть, — забирает их и кладёт рядом, чтобы одно можно было увидеть на фоне
-// другого.
+// The tenge rate is not weather; it does not "happen". On one side stands the
+// quantity of tenge, on the other the quantity of dollars the country holds. The
+// National Bank publishes both itself, monthly and back to 1994; all this part
+// does is fetch them and lay them side by side so that one can be seen against
+// the other.
 //
-// Машинный доступ у Нацбанка ровно один: кнопка «Экспорт» на странице
-// статистики, то есть книга Excel по адресу с суффиксом /excel. Ни ленты, ни
-// API у него нет.
+// Machine access amounts to exactly one thing: the "Export" button on the
+// statistics page, which is an Excel workbook at the same address with an /excel
+// suffix. There is no feed and no API.
 
 const (
-	// MacroM3 — широкая денежная масса, млн тенге.
+	// MacroM3 is broad money, millions of tenge.
 	MacroM3 = "m3"
-	// MacroM0 — наличные деньги в обращении, млн тенге.
+	// MacroM0 is cash in circulation, millions of tenge.
 	MacroM0 = "m0"
-	// MacroBase — денежная база, млн тенге.
+	// MacroBase is the monetary base, millions of tenge.
 	MacroBase = "base_money"
-	// MacroReserves — валовые международные резервы, млн долларов.
+	// MacroReserves is gross international reserves, millions of dollars.
 	MacroReserves = "reserves"
-	// MacroFund — валютные активы Национального фонда, млн долларов.
+	// MacroFund is the National Fund's currency assets, millions of dollars.
 	MacroFund = "nat_fund"
-	// MacroCPI — годовая инфляция, проценты.
+	// MacroCPI is annual inflation, percent.
 	MacroCPI = "cpi"
 )
 
@@ -48,27 +48,27 @@ const (
 		"denezhnaya-baza-i-agregaty-shirokoy-denezhnoy-massy/excel"
 	nbkReservesURL = "https://nationalbank.kz/ru/international-reserve-and-asset/" +
 		"mezhdunarodnye-rezervy-i-aktivy-nacionalnogo-fonda-rk/excel"
-	// Инфляцию Нацбанк машинно не отдаёт: у него это документы, а не ряд.
-	// Всемирный банк отдаёт её годовым рядом с 1994 года — с первого полного
-	// года тенге.
+	// The National Bank does not serve inflation by machine: for it these are
+	// documents, not a series. The World Bank serves it as an annual series from
+	// 1994 — the tenge's first full year.
 	worldBankCPIURL = "https://api.worldbank.org/v2/country/KAZ/indicator/" +
 		"FP.CPI.TOTL.ZG?format=json&per_page=200"
 )
 
-// MacroPoint — точка ряда.
+// MacroPoint is one point of a series.
 type MacroPoint struct {
 	Period time.Time
 	Value  float64
 }
 
-// MacroStore хранит ряды и отдаёт их.
+// MacroStore keeps the series and serves them.
 type MacroStore struct{ db *pgxpool.Pool }
 
-// NewMacroStore строит хранилище над общим пулом.
+// NewMacroStore builds the store over the shared pool.
 func NewMacroStore(db *pgxpool.Pool) *MacroStore { return &MacroStore{db: db} }
 
-// Save кладёт ряд целиком, перезаписывая пересчитанные значения: статистику
-// уточняют задним числом, и спорить с источником не наше дело.
+// Save writes a whole series, overwriting revised values: statistics are
+// restated after the fact, and arguing with the source is not our business.
 func (s *MacroStore) Save(ctx context.Context, code string, pts []MacroPoint) error {
 	if len(pts) == 0 {
 		return nil
@@ -90,7 +90,7 @@ func (s *MacroStore) Save(ctx context.Context, code string, pts []MacroPoint) er
 	return nil
 }
 
-// Series отдаёт ряд по возрастанию периода.
+// Series returns a series ascending by period.
 func (s *MacroStore) Series(ctx context.Context, code string) ([]MacroPoint, error) {
 	rows, err := s.db.Query(ctx,
 		`SELECT period, value FROM macro_series WHERE code = $1 ORDER BY period`, code)
@@ -109,7 +109,7 @@ func (s *MacroStore) Series(ctx context.Context, code string) ([]MacroPoint, err
 	return out, rows.Err()
 }
 
-// Latest — последний период, за который есть значение.
+// Latest is the most recent period that has a value.
 func (s *MacroStore) Latest(ctx context.Context, code string) (time.Time, error) {
 	var d *time.Time
 	if err := s.db.QueryRow(ctx,
@@ -122,11 +122,11 @@ func (s *MacroStore) Latest(ctx context.Context, code string) (time.Time, error)
 	return *d, nil
 }
 
-// parseNBKMonth разбирает подпись месяца Нацбанка: « 07.26» → июль 2026.
+// parseNBKMonth reads a National Bank month label: " 07.26" → July 2026.
 //
-// Год двузначный, и век приходится угадывать. Граница проведена по появлению
-// тенге: всё, что меньше 90, — двухтысячные, остальное — девяностые. Ряд
-// начинается в 1994 году, так что ошибиться негде.
+// The year is two digits, so the century has to be guessed. The boundary is drawn
+// at the tenge's appearance: anything under 90 is the 2000s, the rest the 1990s.
+// The series starts in 1994, so there is nowhere to go wrong.
 func parseNBKMonth(s string) (time.Time, bool) {
 	s = strings.TrimSpace(s)
 	mm, yy, ok := strings.Cut(s, ".")
@@ -149,9 +149,9 @@ func parseNBKMonth(s string) (time.Time, bool) {
 	return time.Date(y, time.Month(m), 1, 0, 0, 0, 0, time.UTC), true
 }
 
-// parseNBKMoney разбирает книгу денежных агрегатов. Месяцы идут по колонкам,
-// показатели — по строкам, поэтому колонки сперва размечаются датами, а потом
-// каждая нужная строка читается вдоль них.
+// parseNBKMoney parses the monetary aggregates workbook. Months run across the
+// columns and indicators down the rows, so the columns are dated first and then
+// each row of interest is read along them.
 func parseNBKMoney(data []byte) (map[string][]MacroPoint, error) {
 	sheet, err := readXLSX(data)
 	if err != nil {
@@ -162,8 +162,9 @@ func parseNBKMoney(data []byte) (map[string][]MacroPoint, error) {
 		return nil, fmt.Errorf("в книге денежных агрегатов размечено %d месяцев", len(cols))
 	}
 
-	// Нужные строки узнаём по началу названия: Нацбанк нумерует показатели, и
-	// номер вместе с названием держится годами, а порядок строк — нет.
+	// Rows of interest are recognised by the start of their name: the Bank
+	// numbers its indicators, and the number together with the name holds for
+	// years, while the order of the rows does not.
 	want := map[string]string{
 		"1. денежная база": MacroBase,
 		"2. m0":            MacroM0,
@@ -198,13 +199,13 @@ func parseNBKMoney(data []byte) (map[string][]MacroPoint, error) {
 	return out, nil
 }
 
-// macroCol — колонка книги и месяц, который она обозначает.
+// macroCol is a workbook column and the month it stands for.
 type macroCol struct {
 	col   string
 	month time.Time
 }
 
-// macroMonthColumns находит строку-шапку с месяцами и размечает по ней колонки.
+// macroMonthColumns finds the header row of months and dates the columns by it.
 func macroMonthColumns(sheet xlsxSheet) ([]macroCol, int) {
 	best, bestRow := []macroCol{}, -1
 	for i, row := range sheet {
@@ -230,19 +231,20 @@ func macroMonthColumns(sheet xlsxSheet) ([]macroCol, int) {
 	return best, bestRow
 }
 
-// parseNBKReserves разбирает книгу международных резервов.
+// parseNBKReserves parses the international reserves workbook.
 //
-// Здесь месяцы идут по строкам, а показатели по колонкам, и у каждого
-// показателя три колонки: объём и два изменения в процентах. Колонки ищутся по
-// названию показателя, а не по счёту: считать позиции значило бы записать
-// чистые резервы как активы Нацфонда, стоит источнику добавить один столбец.
+// Here months run down the rows and indicators across the columns, and each
+// indicator has three columns: the volume and two percentage changes. Columns are
+// found by the indicator's name rather than by counting: counting positions would
+// record net reserves as National Fund assets the moment the source adds a
+// column.
 func parseNBKReserves(data []byte) (map[string][]MacroPoint, error) {
 	sheet, err := readXLSX(data)
 	if err != nil {
 		return nil, err
 	}
 
-	// Название показателя стоит строкой выше слова «объем» и в той же колонке.
+	// The indicator's name sits one row above the word "объем", same column.
 	want := map[string]string{
 		"валовые международные резервы":       MacroReserves,
 		"валютные активы национального фонда": MacroFund,
@@ -288,7 +290,7 @@ func parseNBKReserves(data []byte) (map[string][]MacroPoint, error) {
 	return out, nil
 }
 
-// parseWorldBankCPI разбирает годовую инфляцию из ответа Всемирного банка.
+// parseWorldBankCPI parses annual inflation out of the World Bank's answer.
 func parseWorldBankCPI(body []byte) ([]MacroPoint, error) {
 	var doc []json.RawMessage
 	if err := json.Unmarshal(body, &doc); err != nil || len(doc) < 2 {
@@ -319,7 +321,7 @@ func parseWorldBankCPI(body []byte) ([]MacroPoint, error) {
 	return out, nil
 }
 
-// macroFetch забирает документ целиком.
+// macroFetch fetches a whole document.
 func macroFetch(ctx context.Context, url string) ([]byte, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
@@ -337,16 +339,16 @@ func macroFetch(ctx context.Context, url string) ([]byte, error) {
 	return io.ReadAll(io.LimitReader(resp.Body, 64<<20))
 }
 
-// Обновление рядов.
+// Refreshing the series.
 //
-// Нацбанк публикует денежные агрегаты и резервы раз в месяц, Всемирный банк
-// инфляцию — раз в год. Ходить за ними чаще, чем раз в сутки, незачем, а реже
-// нельзя: день выхода заранее неизвестен.
+// The National Bank publishes monetary aggregates and reserves monthly, the World
+// Bank inflation yearly. There is no point going for them more than once a day,
+// and no way to go less often: the day of publication is not known in advance.
 
-// macroEvery — как часто проверять, не вышли ли новые данные.
+// macroEvery is how often to check whether new data has appeared.
 const macroEvery = 24 * time.Hour
 
-// RunMacro поддерживает ряды в свежем виде до отмены контекста.
+// RunMacro keeps the series fresh until the context is cancelled.
 func (m *Module) RunMacro(ctx context.Context) {
 	if m.macro == nil {
 		return
@@ -363,8 +365,8 @@ func (m *Module) RunMacro(ctx context.Context) {
 	}
 }
 
-// refreshMacro забирает все ряды. Источники независимы: молчание одного не
-// должно оставлять страницу без остальных.
+// refreshMacro fetches every series. The sources are independent: one going
+// silent must not leave the page without the others.
 func (m *Module) refreshMacro(ctx context.Context) error {
 	var failed []string
 
@@ -399,6 +401,9 @@ func (m *Module) refreshMacro(ctx context.Context) error {
 	} else if err := m.macro.Save(ctx, MacroCPI, pts); err != nil {
 		failed = append(failed, err.Error())
 	}
+
+	// The National Bank's rate and today's indicator panel.
+	failed = append(failed, m.refreshRates(ctx, time.Now().UTC().Truncate(24*time.Hour))...)
 
 	if len(failed) > 0 {
 		return fmt.Errorf("%s", strings.Join(failed, "; "))
