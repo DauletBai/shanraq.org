@@ -44,12 +44,15 @@ var noticeTmpl = template.Must(template.New("notice").
 
 // Module implements the RSS route, Telegram publish job, and email digest.
 type Module struct {
-	rt           *shanraq.Runtime
-	db           *pgxpool.Pool
-	log          *zap.Logger
-	http         *http.Client
-	baseURL      string
-	tgEnabled    bool
+	rt        *shanraq.Runtime
+	db        *pgxpool.Pool
+	log       *zap.Logger
+	http      *http.Client
+	baseURL   string
+	tgEnabled bool
+	// tgBotEnabled is the bot half, which needs only a token: it can serve
+	// subscribers their own places even when no channel is configured.
+	tgBotEnabled bool
 	tgBotToken   string
 	tgChatID     string
 	mailer       Mailer
@@ -78,6 +81,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.tgBotToken = strings.TrimSpace(cfg.Telegram.BotToken)
 	m.tgChatID = strings.TrimSpace(cfg.Telegram.ChatID)
 	m.tgEnabled = cfg.Telegram.Enabled && m.tgBotToken != "" && m.tgChatID != ""
+	m.tgBotEnabled = cfg.Telegram.Enabled && m.tgBotToken != ""
 
 	smtp := rt.Config.Notifications.SMTP
 	m.emailEnabled = m.mailer != nil && strings.TrimSpace(smtp.Host) != "" && strings.TrimSpace(smtp.From) != ""
@@ -101,7 +105,11 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 
 	if m.tgEnabled {
 		m.log.Info("syndicate telegram enabled", zap.String("chat", m.tgChatID))
-	} else {
+	}
+	if m.tgBotEnabled {
+		m.log.Info("syndicate telegram bot enabled (per-subscriber places)")
+	}
+	if !m.tgEnabled {
 		m.log.Info("syndicate telegram disabled (RSS still active at /feed.xml)")
 	}
 	if m.emailEnabled {
@@ -129,6 +137,10 @@ func (m *Module) Routes(r chi.Router) {
 // Start runs the weekly digest scheduler. It checks a few times a day whether a
 // week has elapsed since the last send; the send itself is a no-op without SMTP.
 func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
+	// The bot polls in its own goroutine: it blocks for the length of the long
+	// poll and must not hold up the digest schedule.
+	go m.RunTelegramBot(ctx)
+
 	ticker := time.NewTicker(6 * time.Hour)
 	defer ticker.Stop()
 	for {

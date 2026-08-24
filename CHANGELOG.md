@@ -6,6 +6,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] — 2026-08-24
+
+### Added
+
+- Телеграм-бот с географией подписчика. Человек один раз говорит боту, где
+  живёт, и получает материалы, написанные для его места, — те, что другим не
+  уходят. Выбор места кнопками: сначала область, потом город или посёлок;
+  можно взять область целиком. Команды **/start**, **/place**, **/stop**,
+  меню на трёх языках.
+
+  Правило доставки то же, что в ленте сайта: материал для области доходит до
+  всех, кто внутри неё, включая города и посёлки; материал для посёлка — только
+  до этого посёлка. Проверено тестом на живом справочнике мест.
+
+  Место называет сам подписчик. Мы его не вычисляем — ни по номеру, ни по языку
+  интерфейса — и никому не показываем.
+
+### Changed
+
+- В канал уходят только материалы для всей страны. Раньше туда падала каждая
+  опубликованная статья, включая адресные: отключение воды в одном посёлке
+  прилетало всем подписчикам по стране. Канал в Telegram шлёт одно сообщение
+  всем одинаково и о читателе не знает ничего, поэтому показывать разным людям
+  разное он не может — адресные материалы переехали в бота, который шлёт
+  каждому отдельно.
+
+
 ## [0.13.1] — 2026-08-24
 
 ### Changed
@@ -667,7 +694,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.13.1...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.14.0...HEAD
+[0.14.0]: https://github.com/DauletBai/shanraq.org/compare/v0.13.1...v0.14.0
 [0.13.1]: https://github.com/DauletBai/shanraq.org/compare/v0.13.0...v0.13.1
 [0.13.0]: https://github.com/DauletBai/shanraq.org/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/DauletBai/shanraq.org/compare/v0.11.0...v0.12.0

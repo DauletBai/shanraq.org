@@ -64,6 +64,23 @@ Shanraq.org is a home where free voices meet.`},
 
 Место нужно затем, чтобы до вас доходило местное: объявление ЖКХ о пуске тепла, сообщение акимата, предупреждение ТЭЦ об отключении воды. Переехали — поменяйте в профиле.
 
+## Телеграм: канал и бот — это разные вещи
+В телеграме у нас два адреса, и они возят разное.
+
+**Канал [@shanraq_org](https://t.me/shanraq_org)** — материалы для всей страны. Канал устроен так, что одно сообщение уходит всем подписчикам одинаково: он ничего не знает о том, кто его читает, и показать разным людям разное не может. Поэтому в канал идёт только то, что написано для всех.
+
+**Бот** — местное. Вы один раз говорите ему, где живёте, и дальше получаете материалы, написанные для вашего места, — те, что другим не уходят. Отключение воды в Качаре приходит качарцам, а не всему Казахстану.
+
+Как подключиться: напишите боту **/start** и выберите место кнопками — сначала область, потом город или посёлок. Можно выбрать и область целиком, если хотите знать обо всём, что в ней происходит.
+
+- **/place** — сменить место, если переехали
+- **/stop** — перестать получать сообщения
+- **/start** — вернуться
+
+Правило доставки то же, что и на сайте: материал для области доходит до всех, кто внутри неё, включая города и посёлки; материал для посёлка — только до этого посёлка. Костанайская статья не приходит в Качар, качарская не уходит в Костанай.
+
+Место боту вы называете сами. Мы его не вычисляем — ни по номеру телефона, ни по языку в настройках, ни как-то ещё, и никому не показываем.
+
 ## Комментарии и оценки
 Комментировать может любой, кто зарегистрирован и подтвердил почту.
 
@@ -222,6 +239,23 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 
 Орын жергілікті хабар сізге жетуі үшін керек: ТКШ-ның жылу беру туралы хабарландыруы, әкімдіктің хабарламасы, ЖЭО-ның су өшіру туралы ескертуі. Көшіп кетсеңіз — профильде ауыстырыңыз.
 
+## Телеграм: арна мен бот — екі бөлек нәрсе
+Телеграмда бізде екі мекенжай бар, әрқайсысы бөлек нәрсе жеткізеді.
+
+**Арна [@shanraq_org](https://t.me/shanraq_org)** — бүкіл елге арналған материалдар. Арна былай жасалған: бір хабарлама барлық жазылушыға бірдей кетеді, ол өзін кімнің оқитынын білмейді және әртүрлі адамға әртүрлі нәрсе көрсете алмайды. Сондықтан арнаға тек барлығына жазылған нәрсе барады.
+
+**Бот** — жергілікті хабар. Сіз оған қай жерде тұратыныңызды бір рет айтасыз, әрі қарай өз жеріңізге жазылған материалдарды аласыз — басқаларға кетпейтіндерін. Качардағы су ақауы қачарлықтарға келеді, бүкіл Қазақстанға емес.
+
+Қалай қосылу керек: ботқа **/start** деп жазып, орынды түймелермен таңдаңыз — алдымен облыс, содан кейін қала не кент. Облыстың бәрін де таңдауға болады, егер ондағы бүкіл жаңалықты білгіңіз келсе.
+
+- **/place** — көшіп келсеңіз, орынды ауыстыру
+- **/stop** — хабарлама алуды тоқтату
+- **/start** — қайта оралу
+
+Жеткізу ережесі сайттағымен бірдей: облысқа арналған материал оның ішіндегілердің бәріне, соның ішінде қалалар мен кенттерге жетеді; кентке арналған материал — тек сол кентке. Қостанай мақаласы Качарға келмейді, качар мақаласы Қостанайға кетпейді.
+
+Орынды ботқа өзіңіз айтасыз. Біз оны есептеп шығармаймыз — телефон нөмірі бойынша да, баптаудағы тіл бойынша да, басқа жолмен де, — және ешкімге көрсетпейміз.
+
 ## Пікірлер мен бағалар
 Тіркелген әрі поштасын растаған кез келген адам пікір жаза алады.
 
@@ -379,6 +413,23 @@ Registration has a "Where do you live" field: country, region, city, or town. It
 It is a choice from a reference list, not a determination of your location: we do not use GPS and do not work your city out from your network address. Your place is shown to nobody — not in comments, not on your profile, not in listings.
 
 The place is there so that local things reach you: a utility's notice that the heating is going on, a message from the local administration, a warning from the heating plant about a water shutdown. If you move, change it in your profile.
+
+## Telegram: the channel and the bot are different things
+We have two addresses on Telegram, and they carry different things.
+
+**The channel [@shanraq_org](https://t.me/shanraq_org)** carries material written for the whole country. A channel sends one identical message to every subscriber: it knows nothing about who is reading it and cannot show two people different things. So only what is written for everyone goes there.
+
+**The bot** carries local material. You tell it once where you live, and from then on you receive what was written for your place — the things nobody else gets. A water cut in Kachar reaches people in Kachar, not the whole of Kazakhstan.
+
+To connect, send the bot **/start** and pick your place with the buttons: the region first, then the city or village. You can also take a whole region, if you want everything happening in it.
+
+- **/place** — change your place if you move
+- **/stop** — stop receiving messages
+- **/start** — come back
+
+The delivery rule is the site's: material for a region reaches everyone inside it, cities and villages included; material for a village reaches that village alone. A Kostanay piece does not arrive in Kachar, and a Kachar piece does not go to Kostanay.
+
+You tell the bot your place yourself. We do not work it out — not from your phone number, not from your interface language, not by any other means — and we show it to nobody.
 
 ## Comments and ratings
 Anyone registered with a verified email can comment.
