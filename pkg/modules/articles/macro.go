@@ -138,6 +138,20 @@ func parseNBKMonth(s string) (time.Time, bool) {
 	if err1 != nil || err2 != nil || m < 1 || m > 12 {
 		return time.Time{}, false
 	}
+	// A one-digit year is a two-digit year whose trailing zero was lost. The
+	// bank writes "10.10" for October 2010, the workbook stores that cell as
+	// the number 10.1, and what reaches us is "10.1" — which read literally is
+	// October 2001. The same happens to every year ending in a zero: 2000,
+	// 2010, 2020. Leading zeros survive (May 2003 stays "5.03"), because a
+	// number only drops zeros after its last significant digit, so a single
+	// digit can only ever be the tens.
+	//
+	// Left unhandled this was not a gap but a forgery: the 2010 and 2020 rows
+	// overwrote 2001 and 2002 in place, and the reserves chart showed the
+	// country holding twelve times its actual currency in the autumn of 2001.
+	if len(strings.TrimSpace(yy)) == 1 && y >= 0 && y <= 9 {
+		y *= 10
+	}
 	if y < 90 {
 		y += 2000
 	} else if y < 100 {

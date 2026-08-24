@@ -62,11 +62,23 @@ type MacroErode struct {
 type MacroBlock struct {
 	Has bool
 
-	M3      FxChart
+	// M3 carries two lines: the base money the National Bank issues itself and
+	// the broad money the banking system ends up with. One line answered "how
+	// much" and left "why" to the reader; two answer both, because the gap
+	// between them is exactly the part banks add by lending.
+	M3      MacroChart
 	M3Last  string
 	M3Month string
 	M3Year  string
 	M3Up    bool
+	// BaseLast is the monetary base — the tenge the Bank itself put into
+	// circulation. BaseYear is its growth over the year.
+	BaseLast string
+	BaseYear string
+	BaseUp   bool
+	// Mult is M3 divided by the base: how many tenge of broad money stand on
+	// each tenge the Bank issued.
+	Mult string
 
 	Cmp      MacroChart
 	CmpFrom  string
@@ -83,7 +95,6 @@ type MacroBlock struct {
 	FundLast string
 	ResMonth string
 
-	CPI     FxChart
 	CPILast string
 	CPIYear string
 
@@ -119,6 +130,7 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 	}
 
 	m3, _ := m.macro.Series(ctx, MacroM3)
+	baseMoney, _ := m.macro.Series(ctx, MacroBase)
 	res, _ := m.macro.Series(ctx, MacroReserves)
 	fund, _ := m.macro.Series(ctx, MacroFund)
 	cpi, _ := m.macro.Series(ctx, MacroCPI)
@@ -128,19 +140,42 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 	}
 	b.Has = true
 
-	// 1. How many tenge exist.
+	// 1. How many tenge exist, and where they came from.
+	//
+	// Broad money on its own says how much and stays silent on why. The
+	// monetary base beside it says why: it is the tenge the National Bank
+	// issued itself, and everything above that line is what banks built on top
+	// of it by lending. The two together name the author of the growth without
+	// a word of commentary.
+	//
 	// The frame is scaled to trillions, but a readout on January 1994 must not
 	// say "0.0 trn ₸": each point names its own magnitude, so the early years
 	// read in billions and millions.
-	b.M3 = fxBuildChartWith(macroScaled(m3, 1e6), "all", lang, fxChartOpts{
-		Unit: "₸", Format: func(v float64) string { return macroTenge(v*1e6, lang) },
-	}) // trillions of tenge
+	tenge := func(v float64) string { return macroTenge(v*1e6, lang) }
+	b.M3 = macroTwoLinesWith(macroScaled(m3, 1e6), macroScaled(baseMoney, 1e6), lang, true,
+		fxChartOpts{Name: T(lang, "fx.col_money"), Unit: "₸", Format: tenge,
+			AxisFormat: func(v float64) string { return macroTengeRound(v*1e6, lang) }},
+		fxChartOpts{Name: T(lang, "fx.col_base"), Unit: "₸", Format: tenge},
+	) // trillions of tenge
 	last := m3[len(m3)-1]
 	b.M3Last = macroTenge(last.Value, lang)
 	b.M3Month = macroMonth(last.Period, lang)
 	if prev, ok := macroAt(m3, last.Period.AddDate(-1, 0, 0)); ok && prev > 0 {
 		d := (last.Value/prev - 1) * 100
 		b.M3Year, b.M3Up = fxPct(d), d > 0
+	}
+	if bl, ok := macroLastPoint(baseMoney); ok && bl.Value > 0 {
+		b.BaseLast = macroTenge(bl.Value, lang)
+		if prev, ok := macroAt(baseMoney, bl.Period.AddDate(-1, 0, 0)); ok && prev > 0 {
+			d := (bl.Value/prev - 1) * 100
+			b.BaseYear, b.BaseUp = fxPct(d), d > 0
+		}
+		// The multiplier is taken for the same month as M3, never for the
+		// latest of each: the two series can be published a month apart, and
+		// dividing across that gap would invent a jump that never happened.
+		if bv, ok := macroAt(baseMoney, last.Period); ok && bv > 0 {
+			b.Mult = fxFormat(last.Value/bv, 2)
+		}
 	}
 
 	// 2. Money supply and the dollar rate on one scale. Both lines are indexed to
@@ -180,11 +215,11 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 		b.ResMonth = macroMonth(res[len(res)-1].Period, lang)
 	}
 
-	// 5. Inflation by year.
+	// 5. Inflation by year. The standalone frame is gone — a single line of
+	//    annual percentages said nothing the rate chart below does not say
+	//    better, and it said it beside the rate rather than against it. The
+	//    figures stay: the rate chart and the formulas both need them.
 	if len(cpi) > 5 {
-		b.CPI = fxBuildChartWith(macroPoints(cpi), "all", lang, fxChartOpts{
-			Annual: true, Unit: "%",
-		})
 		c := cpi[len(cpi)-1]
 		b.CPILast, b.CPIYear = fxPct(c.Value), fmt.Sprintf("%d", c.Period.Year())
 	}
@@ -208,7 +243,8 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 			// percent, and on a linear scale today's two-digit figures would lie
 			// in a single line along the bottom.
 			b.RateCPI = macroTwoLinesWith(ra, rb, lang, true,
-				fxChartOpts{Name: T(lang, "fx.rate_key_a"), Unit: "%", Annual: true},
+				fxChartOpts{Name: T(lang, "fx.rate_key_a"), Unit: "%", Annual: true,
+					AxisFormat: func(v float64) string { return fxFormat(v, 0) + " %" }},
 				fxChartOpts{Name: T(lang, "fx.col_cpi"), Unit: "%", Annual: true},
 			)
 			b.RateCPIFrom = fmt.Sprintf("%d", ra[0].Day.Year())
@@ -220,7 +256,7 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 	tonia, _ := m.macro.Series(ctx, MacroTonia)
 	gdp, _ := m.macro.Series(ctx, MacroGDP)
 	in := macroFormulaInput{
-		lang: lang, m3: m3, res: res, gdp: gdp,
+		lang: lang, m3: m3, base: baseMoney, res: res, gdp: gdp,
 		rate: policy, cpiNow: cpiNow, cpiTarget: cpiTarget, fxRate: rate,
 	}
 	b.Now = buildNow(in, tonia)
@@ -522,9 +558,27 @@ func macroTwoLinesWith(a, b []FxPoint, lang string, log bool, oa, ob fxChartOpts
 			}
 			return h - h*(math.Log10(v)-loE)/(hiE-loE)
 		}
+		// Below one, a whole-number label prints "0" — and a logarithmic axis
+		// reading 100 / 10 / 1 / 0 / 0 / 0 is worse than no axis at all. Each
+		// decade gets exactly the digits it needs, and a series that knows how
+		// to name its own magnitude ("40,2 млрд") labels the axis that way
+		// instead, so the ticks and the readouts speak the same units.
+		label := func(v, e float64) string {
+			if oa.AxisFormat != nil {
+				return oa.AxisFormat(v)
+			}
+			if oa.Format != nil {
+				return oa.Format(v)
+			}
+			digits := 0
+			if e < 0 {
+				digits = int(-e)
+			}
+			return fxFormat(v, digits)
+		}
 		for e := hiE; e >= loE-0.5; e-- {
 			v := math.Pow(10, e)
-			ticks = append(ticks, FxTick{Label: fxFormat(v, 0), Pos: (hiE - e) / (hiE - loE) * 100})
+			ticks = append(ticks, FxTick{Label: label(v, e), Pos: (hiE - e) / (hiE - loE) * 100})
 		}
 	} else {
 		var step float64
@@ -646,6 +700,20 @@ func macroYearChange(pts []FxPoint) map[int]float64 {
 //
 // The word is translated. It used to be hard-coded Russian, which put "55,8 трлн"
 // into the middle of an English sentence on the English page.
+// macroTengeRound is macroTenge without the fraction, for axis ticks: the tick
+// stands on an exact power of ten, and "100,0 трлн" spends three characters
+// saying nothing while the label runs out of gutter and gets clipped.
+func macroTengeRound(millions float64, lang string) string {
+	switch {
+	case millions >= 1e6:
+		return fxFormat(millions/1e6, 0) + " " + T(lang, "fx.mag_trn")
+	case millions >= 1e3:
+		return fxFormat(millions/1e3, 0) + " " + T(lang, "fx.mag_bln")
+	default:
+		return fxFormat(millions, 0) + " " + T(lang, "fx.mag_mln")
+	}
+}
+
 func macroTenge(millions float64, lang string) string {
 	switch {
 	case millions >= 1e6:

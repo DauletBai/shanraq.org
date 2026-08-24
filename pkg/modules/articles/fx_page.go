@@ -257,6 +257,11 @@ type fxChartOpts struct {
 	Annual bool
 	// Format prints the value; empty means print it as an exchange rate.
 	Format func(float64) string
+	// AxisFormat prints an axis tick. Ticks sit on exact powers of ten, so the
+	// fractional part a readout needs is three characters of noise here — and
+	// the axis gutter is the one place on the page where characters are
+	// genuinely scarce. Empty falls back to Format.
+	AxisFormat func(float64) string
 }
 
 // label resolves how much of the date a point should show.

@@ -2972,7 +2972,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* The value axis labels are positioned absolutely and so take no width of their
    own: a rate of four or five digits needs it allotted explicitly, or the label is
    cut on the left and "478,79" becomes "8,79". */
-.fx-line .spark__y { width: 5.4em; }
+.fx-line .spark__y { width: 6.2em; }
 
 /* Time axis labels stand where their point stands, not at even intervals: months
    hold different numbers of days, and an even layout would separate a label from
@@ -3102,6 +3102,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* The formulas go two to a row where there is width for it: each is short, and in
    a single column they would stretch the page fourfold. */
 .charts--two { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+/* Формул нечётное число, и последняя оставалась одна в ряду с пустой половиной
+   рядом. Растянутая на обе колонки, она закрывает ряд целиком: у карточки с
+   формулой нет высоты, которую надо беречь, а дыра в сетке видна сразу. */
+.charts--two > .chart:last-child:nth-child(odd) { grid-column: 1 / -1; }
 /* These cards alone know no 16:9 ceiling. In the others what lies below the
    ceiling is more of the same series, and the scroll honestly hides it; here what
    lay below was the key to the symbols — the one thing the card is opened for. Its
@@ -3109,6 +3113,24 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    lines of key, so it has nowhere to grow. */
 .charts--two .chart__body { max-height: none; overflow: visible; padding-right: 0; }
 .chart__note--lead { font-size: .84rem; margin: 0 0 12px; }
+
+/* Вывод под графиком ставки. Выделен полосой и подложкой, потому что это не
+   примечание к картинке, а то, ради чего картинка нарисована: набранный
+   восьмым кеглем серым в ряду прочих подписей, он тонул среди них.
+   Кегль крупнее подписей, но мельче основного текста статьи — врезка внутри
+   карточки, а не вторая статья. */
+.mverdict {
+  margin-top: 12px; padding: 12px 14px;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--surface-2);
+}
+.mverdict__h {
+  margin: 0 0 6px; font-family: var(--serif); font-size: .98rem; line-height: 1.25;
+  color: var(--gold-strong);
+}
+.mverdict__p { margin: 0; font-size: .86rem; line-height: 1.55; }
+.mverdict__p + .mverdict__p { margin-top: 7px; }
 
 .mform { display: flex; flex-direction: column; gap: 8px; }
 /* The rule itself: in letters, large and spaced, because it is read as a line

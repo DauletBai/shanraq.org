@@ -194,6 +194,7 @@ type macroFormulaInput struct {
 	lang string
 
 	m3        []MacroPoint
+	base      []MacroPoint
 	res       []MacroPoint
 	gdp       []MacroPoint
 	rate      []FxPoint
@@ -236,6 +237,11 @@ func buildNow(in macroFormulaInput, tonia []MacroPoint) MacroNow {
 func buildFormulas(in macroFormulaInput) []MacroFormula {
 	lang := in.lang
 	out := []MacroFormula{}
+	// The base comes first: it is the only step in the chain the National Bank
+	// performs directly, and every rule after it operates on its result.
+	if f, ok := formulaBase(in); ok {
+		out = append(out, f)
+	}
 	if f, ok := formulaExchange(in); ok {
 		out = append(out, f)
 	}
@@ -250,6 +256,55 @@ func buildFormulas(in macroFormulaInput) []MacroFormula {
 	}
 	_ = lang
 	return out
+}
+
+// formulaBase splits the money supply into the part the National Bank issued
+// itself and the part banks built on top of it.
+//
+// M3 = B × m is an identity, not a model: the multiplier is defined as their
+// ratio, so nothing here is assumed. That is exactly why it belongs on this
+// page — it names the author of each half of the money supply without a single
+// contestable step. The base is an act of the National Bank. The multiplier is
+// what banks do with that base, under the reserve rules and the rate the same
+// Bank sets.
+func formulaBase(in macroFormulaInput) (MacroFormula, bool) {
+	lang := in.lang
+	m3, ok := macroLastPoint(in.m3)
+	if !ok {
+		return MacroFormula{}, false
+	}
+	// Both figures must be for the same month: the two series are published
+	// separately and can be a month apart.
+	base, ok := macroAt(in.base, m3.Period)
+	if !ok || base <= 0 {
+		return MacroFormula{}, false
+	}
+	mult := m3.Value / base
+
+	f := MacroFormula{
+		ID:      "base",
+		Symbols: "M3 = B × m",
+		Filled: fmt.Sprintf("%s = %s × %s",
+			macroTenge(m3.Value, lang), macroTenge(base, lang), fxFormat(mult, 2)),
+		Out: macroTenge(base, lang),
+		Terms: []MacroTerm{
+			{Sym: "B", Name: T(lang, "fx.t_base"), Value: macroTenge(base, lang) + " ₸",
+				Src: macroSource(lang, "fx.s_m3", m3.Period)},
+			{Sym: "m", Name: T(lang, "fx.t_mult"), Value: fxFormat(mult, 2)},
+			{Sym: "M3", Name: T(lang, "fx.t_m3"), Value: macroTenge(m3.Value, lang) + " ₸",
+				Src: macroSource(lang, "fx.s_m3", m3.Period)},
+		},
+	}
+	// The year's growth of each half turns the identity into an answer: it
+	// shows which of the two actually moved.
+	if pm, ok1 := macroAt(in.m3, m3.Period.AddDate(-1, 0, 0)); ok1 && pm > 0 {
+		if pb, ok2 := macroAt(in.base, m3.Period.AddDate(-1, 0, 0)); ok2 && pb > 0 {
+			f.Note = fmt.Sprintf(T(lang, "fx.f_base_cmp"),
+				macroTenge(base, lang), macroTenge(m3.Value, lang),
+				fxPct((base/pb-1)*100), fxPct((m3.Value/pm-1)*100))
+		}
+	}
+	return f, true
 }
 
 // formulaExchange is the equation of exchange, out of which inflation comes.

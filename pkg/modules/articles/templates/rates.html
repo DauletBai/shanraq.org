@@ -148,8 +148,12 @@
       <div class="charts">
         <div class="chart">
           <h3 class="chart__h">{{ t .Lang "fx.money_h" }}</h3>
-          <div class="chart__body">{{ template "fx_line" (dict "C" .Macro.M3 "Cls" "fx-svg__line") }}</div>
-          <p class="chart__note">{{ printf (t .Lang "fx.money_note") .Macro.M3Month .Macro.M3Last .Macro.M3Year }} {{ t .Lang "fx.axis_trn" }}</p>
+          <div class="chart__body">{{ template "fx_two" .Macro.M3 }}</div>
+          <p class="chart__note">
+            <span class="fx-key fx-key--a">{{ t .Lang "fx.col_money" }}</span>
+            <span class="fx-key fx-key--b">{{ t .Lang "fx.col_base" }}</span>
+          </p>
+          <p class="chart__note">{{ printf (t .Lang "fx.money_note") .Macro.M3Month .Macro.M3Last .Macro.M3Year .Macro.BaseLast .Macro.BaseYear .Macro.Mult }} {{ t .Lang "fx.axis_log_m3" }}</p>
         </div>
       </div>
 
@@ -191,16 +195,6 @@
       </div>
       {{ end }}
 
-      {{ if .Macro.CPILast }}
-      <div class="charts">
-        <div class="chart">
-          <h3 class="chart__h">{{ t .Lang "fx.cpi_h" }}</h3>
-          <div class="chart__body">{{ template "fx_line" (dict "C" .Macro.CPI "Cls" "fx-svg__line") }}</div>
-          <p class="chart__note">{{ printf (t .Lang "fx.cpi_note") .Macro.CPIYear .Macro.CPILast }}</p>
-        </div>
-      </div>
-      {{ end }}
-
       {{ if .Macro.RateCPI.A }}
       <div class="charts">
         <div class="chart">
@@ -210,7 +204,16 @@
             <span class="fx-key fx-key--a">{{ t .Lang "fx.rate_key_a" }}</span>
             <span class="fx-key fx-key--b">{{ t .Lang "fx.col_cpi" }}</span>
           </p>
-          <p class="chart__note">{{ printf (t .Lang "fx.rate_note") .Macro.RateCPIFrom }} {{ t .Lang "fx.axis_log" }}</p>
+          <p class="chart__note">{{ printf (t .Lang "fx.rate_note") .Macro.RateCPIFrom }} {{ t .Lang "fx.axis_log_rate" }}</p>
+          {{/* Вывод из графика, а не мнение о нём: обе линии — величины
+               одного учреждения, и порядок между ними виден на самой картинке.
+               Врезка выделена, потому что ради этого вывода страница и
+               собирается, а внизу карточки он читался бы как сноска. */}}
+          <aside class="mverdict">
+            <h4 class="mverdict__h">{{ t .Lang "fx.rate_verdict_h" }}</h4>
+            <p class="mverdict__p">{{ t .Lang "fx.rate_verdict_1" }}</p>
+            <p class="mverdict__p">{{ t .Lang "fx.rate_verdict_2" }}</p>
+          </aside>
         </div>
       </div>
       {{ end }}

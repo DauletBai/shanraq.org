@@ -114,6 +114,31 @@ func TestTwoDigitYearsLandInTheRightCentury(t *testing.T) {
 	}
 }
 
+// A year ending in a zero reaches us with that zero missing, because the workbook
+// stores the label as a number: the bank writes 10.10 for October 2010 and the
+// cell arrives as "10.1". Read literally that is October 2001 — and since rows are
+// saved by (code, period), the 2010 figures did not merely land in the wrong place,
+// they overwrote the real 2001 ones. For three months of 2001 the page claimed the
+// country held twelve times the reserves it actually had, sourced and footnoted.
+func TestYearsMissingTheirTrailingZero(t *testing.T) {
+	for in, want := range map[string]string{
+		"10.1":  "2010-10", // 10.10 — октябрь 2010
+		"12.2":  "2020-12", // 12.20 — декабрь 2020
+		"1.0":   "2000-01", // 01.00 — январь 2000
+		"5.03":  "2003-05", // ведущий ноль не теряется: 2003, а не 2030
+		"08.01": "2001-08", // настоящий 2001 год остаётся собой
+	} {
+		got, ok := parseNBKMonth(in)
+		if !ok {
+			t.Errorf("%q не разобрано", in)
+			continue
+		}
+		if got.Format("2006-01") != want {
+			t.Errorf("%q → %s, ожидалось %s", in, got.Format("2006-01"), want)
+		}
+	}
+}
+
 // In the monetary aggregates workbook months run across the columns and indicators
 // down the rows, and the rows of interest are recognised by number plus name
 // rather than by counting: the source has changed the row order, never the numbers.
