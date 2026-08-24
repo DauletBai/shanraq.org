@@ -718,6 +718,15 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
    page: our interfaces have a light background, and without a border the image
    merges into whatever it sits on. */
 .prose img { border-radius: var(--radius-sm); margin: 1.5em 0; border: 1px solid var(--line); background: var(--surface-2); }
+/* Снимок карточки статьи снят втрое крупнее, чем показывается: иначе текст в
+   нём мылится на плотном экране. В натуральную пиксельную ширину он занимал бы
+   всю колонку и выглядел бы вдвое больше настоящей карточки — то есть перестал
+   бы читаться как карточка в ленте. Поэтому ему задана та ширина, которая у
+   карточки есть на самом деле.
+   По центру, потому что изображение в треть колонки, прижатое влево, читается
+   как ошибка вёрстки, а не как решение. Привязка по имени файла: снимок здесь
+   один такой, а заводить класс негде — разметка приходит из markdown. */
+.prose img[src*="guide-place-page"] { max-width: 392px; display: block; margin: 1.5em auto; }
 .prose ul, .prose ol { padding-left: 1.3em; }
 /* The table used to scroll itself by being display:block, which costs it its
    table semantics and leaves a scroll region no keyboard can reach. The scroll
