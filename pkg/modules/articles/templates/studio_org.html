@@ -12,8 +12,8 @@
     {{ if .Notice }}{{ template "saved" .Notice }}{{ end }}
     {{ if .Error }}<p class="notice notice--warn">{{ .Error }}</p>{{ end }}
 
-    {{/* Состояние заявки. Непроверенная организация не показывается нигде,
-         кроме этой страницы, поэтому автору важно видеть, на каком она шаге. */}}
+    {{/* The application's state. An unverified organisation is shown nowhere but
+         this page, so the author needs to see which step it is at. */}}
     {{ with .Org }}
     {{ if eq .Status "verified" }}
     <p class="notice notice--ok">{{ t $.Lang "org.st_verified" }}: <b>{{ .Name }}</b></p>

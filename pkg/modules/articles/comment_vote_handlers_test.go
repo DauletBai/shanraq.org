@@ -10,10 +10,9 @@ import (
 	"github.com/google/uuid"
 )
 
-// Голосование за комментарии целиком, через настоящие HTTP-запросы: раньше на
-// этом месте стояла модель, которая читала каждый комментарий и решала, увидит
-// его кто-нибудь или нет. Теперь решают читатели, и проверять надо именно то,
-// что они могут сделать руками.
+// Comment voting end to end, over real HTTP requests: what used to stand here was
+// a model that read every comment and decided whether anyone would see it. Readers
+// decide now, and what has to be tested is exactly what they can do by hand.
 func TestCommentVotingEndToEnd(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -23,7 +22,7 @@ func TestCommentVotingEndToEnd(t *testing.T) {
 
 	articleID, slug := app.seedArticle(authorID, "published")
 
-	// Комментарий пишет автор статьи — голосовать за него он не сможет.
+	// The article's author writes the comment — so they will not be able to vote on it.
 	authorCookie := app.login("comauthor@example.com", "Parol123!")
 	if w := app.do(http.MethodPost, "/read/"+slug+"/comment",
 		url.Values{"body": {"Мой комментарий"}}, withCookie(authorCookie)); w.Code != http.StatusSeeOther {
@@ -54,31 +53,31 @@ func TestCommentVotingEndToEnd(t *testing.T) {
 		return score()
 	}
 
-	// Новый комментарий начинается с нуля.
+	// A new comment starts at zero.
 	if got := score(); got != 0 {
 		t.Errorf("новый комментарий имеет счёт %d, а должен ноль", got)
 	}
 
-	// Свой комментарий не оценивают. Запрос не падает — он просто ничего не меняет.
+	// You do not rate your own comment. The request does not fail — it simply changes nothing.
 	if got := vote(authorCookie, "1"); got != 0 {
 		t.Errorf("автор проголосовал за свой комментарий: счёт %d", got)
 	}
 
 	readerCookie := app.login("comreader@example.com", "Parol123!")
 
-	// Плюс от читателя без кармы весит единицу.
+	// An upvote from a reader with no karma weighs one.
 	if got := vote(readerCookie, "1"); got != 1 {
 		t.Errorf("после плюса счёт %d, ожидался 1", got)
 	}
-	// Повторный клик по той же стрелке снимает голос.
+	// Clicking the same arrow again withdraws the vote.
 	if got := vote(readerCookie, "1"); got != 0 {
 		t.Errorf("повторный плюс не снял голос: счёт %d", got)
 	}
-	// Минус.
+	// A downvote.
 	if got := vote(readerCookie, "-1"); got != -1 {
 		t.Errorf("после минуса счёт %d, ожидался -1", got)
 	}
-	// Смена мнения заменяет голос, а не добавляет второй.
+	// Changing your mind replaces the vote rather than adding a second one.
 	if got := vote(readerCookie, "1"); got != 1 {
 		t.Errorf("смена голоса дала %d, ожидался 1", got)
 	}
@@ -91,7 +90,7 @@ func TestCommentVotingEndToEnd(t *testing.T) {
 		t.Errorf("у одного читателя %d голосов вместо одного", votes)
 	}
 
-	// Гость голосовать не может — его отправляют на вход.
+	// A guest cannot vote — they are sent to the login page.
 	w := app.do(http.MethodPost, "/read/"+slug+"/comment/"+commentID.String()+"/vote",
 		url.Values{"value": {"1"}})
 	if w.Code != http.StatusSeeOther || w.Header().Get("Location") != "/studio/login" {
@@ -99,8 +98,8 @@ func TestCommentVotingEndToEnd(t *testing.T) {
 	}
 }
 
-// Заминусованный комментарий сворачивается, но не исчезает: строка с оценкой
-// остаётся на странице, и раскрыть её может любой.
+// A downvoted comment folds away but does not disappear: the row with its score
+// stays on the page, and anyone can unfold it.
 func TestBuriedCommentIsFoldedNotRemoved(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -123,7 +122,7 @@ func TestBuriedCommentIsFoldedNotRemoved(t *testing.T) {
 	if !strings.Contains(body, "comment--folded") {
 		t.Error("заминусованный комментарий не свёрнут")
 	}
-	// Свёрнут — значит спрятан за строкой, а не удалён со страницы.
+	// Folded means hidden behind a row, not removed from the page.
 	if !strings.Contains(body, "Непопулярное мнение") {
 		t.Error("текст свёрнутого комментария пропал со страницы")
 	}

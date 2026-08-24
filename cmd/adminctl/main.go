@@ -7,7 +7,7 @@
 // over SSH, or `docker compose exec` — the same shape as Django's
 // createsuperuser or Rails' rails console.
 //
-//	DATABASE_URL=postgres://... adminctl create  -email you@example.com -first Имя -last Фамилия
+//	DATABASE_URL=postgres://... adminctl create  -email you@example.com -first Firstname -last Lastname
 //	DATABASE_URL=postgres://... adminctl promote -email you@example.com [-role admin]
 //	DATABASE_URL=postgres://... adminctl list
 //

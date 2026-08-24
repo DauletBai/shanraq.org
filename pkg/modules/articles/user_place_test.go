@@ -10,8 +10,9 @@ import (
 	"github.com/google/uuid"
 )
 
-// kacharID возвращает узел справочника для посёлка Качар — тот самый пример,
-// ради которого всё затевалось: председатель ЖКХ публикует для своего посёлка.
+// kacharID returns the reference node for the settlement of Kachar — the very
+// example this was all built for: a housing service chair publishing for their own
+// settlement.
 func kacharID(t *testing.T, app *testApp) uuid.UUID {
 	t.Helper()
 	var id uuid.UUID
@@ -22,8 +23,9 @@ func kacharID(t *testing.T, app *testApp) uuid.UUID {
 	return id
 }
 
-// Место — одно поле, а не четыре. Республику и область из него выводит дерево,
-// и они не могут разойтись с городом, как разошлись бы четыре отдельные колонки.
+// The place is one field, not four. The republic and the region are derived from it
+// by the tree, and they cannot drift apart from the city as four separate columns
+// would.
 func TestUserPlaceIsOneNodeAndItsAncestryGivesTheRest(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -54,7 +56,7 @@ func TestUserPlaceIsOneNodeAndItsAncestryGivesTheRest(t *testing.T) {
 		t.Errorf("цепочка кончается не выбранным местом: %+v", chain[len(chain)-1])
 	}
 
-	// Подпись читателю: место и область, чтобы тёзку нельзя было спутать.
+	// The reader's own label: the place and its region, so a namesake cannot be confused with it.
 	label, err := geo.PlaceLabel(context.Background(), node, LangRU)
 	if err != nil {
 		t.Fatalf("PlaceLabel: %v", err)
@@ -64,8 +66,8 @@ func TestUserPlaceIsOneNodeAndItsAncestryGivesTheRest(t *testing.T) {
 	}
 }
 
-// Место выбрано в спешке или человек переехал — он должен поправить сам, без
-// письма в поддержку. И должен уметь стереть его совсем.
+// The place was chosen in haste, or the person has moved — they must be able to fix
+// it themselves, without writing to support. And to erase it altogether.
 func TestReaderCanChangeAndClearTheirPlace(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -85,7 +87,7 @@ func TestReaderCanChangeAndClearTheirPlace(t *testing.T) {
 		t.Error("профиль не показывает выбранное место")
 	}
 
-	// Пустое значение стирает выбор, а не ломает форму.
+	// An empty value erases the choice rather than breaking the form.
 	if w := app.do(http.MethodPost, "/studio/place",
 		url.Values{"geo_node_id": {""}}, withCookie(cookie)); w.Code != http.StatusSeeOther {
 		t.Fatalf("очистка места: %d", w.Code)
@@ -101,7 +103,7 @@ func TestReaderCanChangeAndClearTheirPlace(t *testing.T) {
 	}
 }
 
-// Мусор в поле не должен ни падать, ни молча сохраняться.
+// Rubbish in the field must neither crash nor be quietly saved.
 func TestBadPlaceIsRefusedWithoutBreakingTheProfile(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -119,9 +121,9 @@ func TestBadPlaceIsRefusedWithoutBreakingTheProfile(t *testing.T) {
 	}
 }
 
-// Поле необязательное, и это принципиально: регистрация — узкое место, и
-// требование выбрать посёлок до создания аккаунта стоило бы дороже, чем даёт.
-// Кто не выбрал — видит всё, ровно как до появления мест.
+// The field is optional, and that is a point of principle: registration is the
+// bottleneck, and demanding a settlement before an account exists would cost more
+// than it gives. Whoever chose none sees everything, exactly as before places existed.
 func TestRegistrationWorksWithoutAPlace(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -145,8 +147,8 @@ func TestRegistrationWorksWithoutAPlace(t *testing.T) {
 	}
 }
 
-// Каждое поле формы обязано объяснять, зачем оно. Место — тем более: человек
-// сообщает, где живёт, и вправе знать, что с этим будет.
+// Every field on the form has to explain why it is there. The place all the more so:
+// a person is telling us where they live and is entitled to know what becomes of it.
 func TestPlaceFieldExplainsItself(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()

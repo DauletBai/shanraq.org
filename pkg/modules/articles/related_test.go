@@ -7,9 +7,9 @@ import (
 	"testing"
 )
 
-// До этого блока страница статьи не ссылалась ни на одну другую статью. Вся
-// ссылочная схема сайта шла с главной наружу и обрывалась: дочитавшему читателю
-// некуда было идти, а каждая статья была листом, из которого не ведёт ничего.
+// Before this block an article page linked to no other article at all. The site's
+// whole link structure ran outward from the front page and stopped dead: a reader
+// who finished had nowhere to go, and every article was a leaf leading nowhere.
 func TestArticleOffersSomewhereToGoNext(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -18,8 +18,8 @@ func TestArticleOffersSomewhereToGoNext(t *testing.T) {
 	id, slug := app.seedArticle(authorID, "published")
 	app.exec(`UPDATE articles SET published_at = NOW() - interval '1 hour' WHERE id = $1`, id)
 
-	// Свежее опубликованного — иначе предложены будут чужие статьи, которых в
-	// общей тестовой базе всегда хватает.
+	// Newer than the published one — otherwise other articles get suggested, and the
+	// shared test database always holds plenty of those.
 	var others []string
 	for i := 0; i < 3; i++ {
 		oid, s := app.seedArticle(authorID, "published")
@@ -37,8 +37,8 @@ func TestArticleOffersSomewhereToGoNext(t *testing.T) {
 	if i < 0 {
 		t.Fatal("блока «читайте также» на странице нет")
 	}
-	// Судим только по самому блоку: ниже на странице есть форма комментариев,
-	// которая ссылается на текущую статью, и по всей странице проверять нельзя.
+	// Judge by the block alone: further down the page there is a comment form that
+	// links to the current article, so the whole page cannot be checked.
 	block := body[i:]
 	if end := strings.Index(block, "</section>"); end > 0 {
 		block = block[:end]
@@ -58,10 +58,10 @@ func TestArticleOffersSomewhereToGoNext(t *testing.T) {
 	}
 }
 
-// Машинные колонки открыты тому, кто их выбрал, и закрыты поисковикам. Подсунуть
-// их под человеческой статьёй — значит навязать читателю мнение машины, о котором
-// он не просил, и потратить визит робота на страницу, которую всё равно нельзя
-// проиндексировать.
+// Machine columns are open to whoever chose them and closed to search engines.
+// Slipping them under a human article means forcing a machine's opinion on a reader
+// who did not ask for it, and spending a robot's visit on a page that cannot be
+// indexed anyway.
 func TestRelatedNeverOffersMachineColumns(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -90,8 +90,8 @@ func TestRelatedNeverOffersMachineColumns(t *testing.T) {
 	_ = humanSlug
 }
 
-// Ближайшее — первым: сначала та же подрубрика, потом та же рубрика, потом
-// просто свежее. Иначе «читайте также» превращается в случайную выдачу.
+// Nearest first: the same subsection, then the same section, then simply the
+// newest. Otherwise "read also" turns into a random draw.
 func TestRelatedPutsTheNearestFirst(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -120,9 +120,9 @@ func TestRelatedPutsTheNearestFirst(t *testing.T) {
 	_ = farSlug
 }
 
-// Дата в sitemap должна быть настоящей. Ленты рубрик её имеют — они меняются,
-// когда в раздел выходит статья; служебные страницы не имеют, и выдуманная
-// дата там научила бы Google, что наши даты ничего не значат.
+// The date in a sitemap has to be a real one. Section feeds have one — they change
+// when an article lands in the section; service pages do not, and an invented date
+// there would teach Google that our dates mean nothing.
 func TestCategoryFreshnessComesFromRealArticles(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -138,7 +138,7 @@ func TestCategoryFreshnessComesFromRealArticles(t *testing.T) {
 	if fresh["economy"].IsZero() {
 		t.Error("у рубрики с опубликованной статьёй нет даты")
 	}
-	// Закрытая от индексации статья дату не двигает: её нет в sitemap.
+	// An article closed to indexing does not move the date: it is not in the sitemap.
 	hidden, _ := app.seedArticle(authorID, "published")
 	app.exec(`UPDATE articles SET category='sport', indexable=false, published_at=NOW() WHERE id=$1`, hidden)
 	fresh2, err := NewStore(app.pool).CategoryFreshness(context.Background())

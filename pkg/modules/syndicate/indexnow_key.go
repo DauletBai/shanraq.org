@@ -7,21 +7,21 @@ import (
 	"fmt"
 )
 
-// Ключ IndexNow сайт выписывает себе сам.
+// The site issues its own IndexNow key.
 //
-// Протокол доказывает владение доменом просто: тот же ключ лежит файлом на
-// сайте, и заявка ссылается на этот файл. Секрета в нём нет — есть требование
-// постоянства: сменившийся ключ делает недействительным уже отданный файл, и
-// все заявки начинают отвергаться.
+// The protocol proves domain ownership simply: the same key sits as a file on the
+// site, and a submission points at that file. There is no secret in it — there is a
+// requirement of permanence: a changed key invalidates the file already served, and
+// every submission starts being rejected.
 //
-// Поэтому ключ не берётся из конфига и не выдумывается заново при запуске: он
-// выписывается один раз и хранится в базе. Настройка руками не нужна, а значит
-// нельзя и забыть её сделать — до сих пор IndexNow молчал ровно поэтому.
+// So the key is neither taken from the config nor invented afresh at start-up: it is
+// issued once and kept in the database. No manual setting is needed, which means it
+// cannot be forgotten either — that is exactly why IndexNow had been silent.
 
-// indexNowSetting — имя строки в app_settings.
+// indexNowSetting is the row's name in app_settings.
 const indexNowSetting = "indexnow_key"
 
-// ensureIndexNowKey возвращает ключ сайта, выписывая его при первом обращении.
+// ensureIndexNowKey returns the site's key, issuing it on first use.
 func (m *Module) ensureIndexNowKey(ctx context.Context) (string, error) {
 	var key string
 	err := m.db.QueryRow(ctx,
@@ -30,8 +30,8 @@ func (m *Module) ensureIndexNowKey(ctx context.Context) (string, error) {
 		if k, ok := normalizeIndexNowKey(key); ok && k != "" {
 			return k, nil
 		}
-		// Строка есть, но негодная — перевыписываем: молчащий IndexNow хуже
-		// смены ключа, которую всё равно никто ещё не подтвердил.
+		// The row exists but is unusable — reissue: a silent IndexNow is worse than a key
+		// change nobody had confirmed anyway.
 	}
 
 	buf := make([]byte, 16)

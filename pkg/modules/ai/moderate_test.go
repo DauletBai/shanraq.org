@@ -79,9 +79,9 @@ func TestParseModerationVerdictNormalizesUnknownAction(t *testing.T) {
 	}
 }
 
-// Скрытая реклама — отдельное правило, а не разновидность спама: спам виден
-// сразу, а отзыв, написанный ради продажи, выглядит как мнение читателя. Ради
-// него код правила и появился.
+// Covert advertising is a rule of its own, not a variety of spam: spam is visible
+// at once, whereas a review written to sell reads like a reader's opinion. The rule
+// code exists for its sake.
 func TestModeratePromptCoversEveryPublishedRule(t *testing.T) {
 	sys := moderateSystem("comment")
 	for _, code := range []string{
@@ -92,7 +92,7 @@ func TestModeratePromptCoversEveryPublishedRule(t *testing.T) {
 			t.Errorf("правило %q не описано в промпте", code)
 		}
 	}
-	// Объявления добавляют своё правило поверх общих.
+	// Listings add a rule of their own on top of the general ones.
 	if !strings.Contains(moderateSystem("listing"), "misleading:") {
 		t.Error("для объявлений нет правила о недостоверных данных")
 	}
@@ -101,8 +101,8 @@ func TestModeratePromptCoversEveryPublishedRule(t *testing.T) {
 	}
 }
 
-// Перекос в сторону разрешения — не небрежность, а позиция площадки, и он
-// должен быть в промпте написан, а не подразумеваться.
+// The bias towards allowing is not carelessness but the platform's position, and it
+// has to be written into the prompt rather than implied.
 func TestModeratePromptProtectsCriticism(t *testing.T) {
 	sys := moderateSystem("comment")
 	for _, phrase := range []string{
@@ -116,8 +116,8 @@ func TestModeratePromptProtectsCriticism(t *testing.T) {
 	}
 }
 
-// Скрытая причина — это не причина. Площадка обещает обжалование, а обжаловать
-// «модели не понравилось» нельзя.
+// A hidden reason is no reason. The platform promises an appeal, and there is no
+// appealing against "the model did not like it".
 func TestModerationVerdictCarriesTheRule(t *testing.T) {
 	v, err := parseModerationVerdict(
 		`{"action":"flag","rule":"hidden_ad","reason":"скрытая реклама клиники","confidence":0.8}`)
@@ -127,7 +127,7 @@ func TestModerationVerdictCarriesTheRule(t *testing.T) {
 	if v.Rule != "hidden_ad" {
 		t.Errorf("код правила потерян: %+v", v)
 	}
-	// А на «разрешено» — ничего лишнего.
+	// And on "allow" — nothing surplus.
 	v, err = parseModerationVerdict(`{"action":"allow","rule":"spam","reason":"на всякий случай"}`)
 	if err != nil {
 		t.Fatalf("parse: %v", err)

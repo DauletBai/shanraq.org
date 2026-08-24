@@ -91,10 +91,10 @@
       </div>
       <p class="hint" style="margin-top:-6px;margin-bottom:16px">{{ t .Lang "editor.original_hint" }}</p>
 
-      {{/* Место статьи. Пусто значит «для всех» — так ведут себя все статьи,
-           написанные до появления этого поля, и так по умолчанию ведёт себя
-           новая. Заполненное место даёт статье страницу: материал для Качара
-           встанет в ленту Качара и в ленту Костанайской области. */}}
+      {{/* The article's place. Empty means "for everyone" — how every article
+           written before this field existed behaves, and how a new one behaves by
+           default. A filled place gives the article a page: a piece for Kachar
+           lands in Kachar's feed and in the Kostanay region's. */}}
       <div class="field">
         <label>{{ t .Lang "editor.place" }} {{ template "fhelp" (t .Lang "editor.place_hint") }}</label>
         <div class="geo-cascade" data-geo data-lang="{{ .Lang }}" data-geo-selected="{{ .PlaceID }}"></div>

@@ -82,11 +82,11 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	smtp := rt.Config.Notifications.SMTP
 	m.emailEnabled = m.mailer != nil && strings.TrimSpace(smtp.Host) != "" && strings.TrimSpace(smtp.From) != ""
 
-	// Ключ из конфига имеет приоритет — им можно продолжить работу с уже
-	// подтверждённым ключом. Если его нет, сайт выписывает ключ себе сам:
-	// IndexNow — единственный канал, который сообщает Bing и Яндексу о новой
-	// странице сразу, а не когда те соберутся зайти, и оставлять его
-	// выключенным из-за незаполненной строки настроек нечего.
+	// A key from the config takes precedence — it lets work continue with an already
+	// confirmed key. Failing that, the site issues one itself: IndexNow is the only
+	// channel that tells Bing and Yandex about a new page at once rather than whenever
+	// they get round to visiting, and there is no sense leaving it switched off because
+	// a settings line was left blank.
 	if key, ok := normalizeIndexNowKey(cfg.IndexNowKey); !ok {
 		m.log.Warn("indexnow key rejected: needs 8-128 hex characters or dashes")
 	} else if key != "" {

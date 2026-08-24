@@ -19,8 +19,8 @@ func TestWeight(t *testing.T) {
 	}
 }
 
-// Голос за комментарий взвешивается так же, как голос за статью: свежий аккаунт
-// весит единицу, и толпа свежих аккаунтов не хоронит комментарий.
+// A vote on a comment is weighted the same way as a vote on an article: a fresh
+// account weighs one, and a crowd of fresh accounts does not bury a comment.
 func TestCommentVotesUseTheSameWeighting(t *testing.T) {
 	if Weight(0) != 1 {
 		t.Errorf("новый читатель весит %d, а должен единицу", Weight(0))
@@ -31,7 +31,7 @@ func TestCommentVotesUseTheSameWeighting(t *testing.T) {
 	if Weight(1000) != maxWeight {
 		t.Errorf("вес не ограничен сверху: %d", Weight(1000))
 	}
-	// Пять минусов от новичков — ровно порог сворачивания в модуле articles.
+	// Five downvotes from newcomers — exactly the folding threshold in the articles module.
 	if 5*Weight(0) < 5 {
 		t.Error("пять голосов новичков не набирают порога сворачивания")
 	}

@@ -1,29 +1,32 @@
 -- +goose Up
--- Организация как автор: ЖКХ «Качарец», ТОО «Водоканал», акимат города.
+-- An organisation as author: the "Kacharets" housing service, "Vodokanal" LLP, a
+-- city mayor's office.
 --
--- Организация — не аккаунт, а право аккаунта. За публикацией остаётся человек:
--- у нас правило, что у каждого настоящее имя, чтобы за текстом стоял кто-то
--- конкретный, и общий логин на отдел это правило отменяет — потом не найти,
--- кто писал. Сотрудники меняются, аккаунт живёт дольше человека, а за
--- сообщением акимата по закону стоит ответственное лицо, а не логин.
+-- An organisation is not an account but a right an account holds. A person stays
+-- behind every publication: our rule is that everyone uses their real name so that
+-- somebody specific stands behind a text, and a shared departmental login cancels
+-- that rule — afterwards there is no finding who wrote it. Staff change, an account
+-- outlives a person, and by law a responsible individual stands behind a mayoral
+-- office's message, not a login.
 --
--- Поэтому: в подписи стоит организация, в журнале модерации — Иванов И.И.
+-- Hence: the byline shows the organisation, the moderation log shows the person.
 --
--- Проверка обязательна и составляет саму суть. Название, которое можно вписать
--- самому, превращает площадку в машину для выдачи себя за акимат, а одна
--- поддельная публикация от его имени стоит дороже, чем польза от сотни
--- настоящих. Пока status не 'verified', название не показывается нигде.
+-- Verification is mandatory and it is the whole substance of this. A name anyone can
+-- type in turns the platform into a machine for impersonating a mayor's office, and
+-- one forged publication in its name costs more than the good of a hundred genuine
+-- ones. Until status is 'verified' the name is shown nowhere.
 --
--- Форма повторяет re_agents намеренно: там уже работают БИН, очередь модерации
--- и значок проверки, и вторая сущность с теми же потребностями стоила бы
--- дороже, чем общая.
+-- The shape deliberately mirrors re_agents: the business number, the moderation
+-- queue and the verified badge already work there, and a second entity with the same
+-- needs would cost more than a shared one.
 CREATE TABLE IF NOT EXISTS org_authors (
     user_id UUID PRIMARY KEY REFERENCES auth_users(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     kind TEXT NOT NULL,
     bin TEXT NOT NULL DEFAULT '',
-    -- Территория организации. Акимат Костаная публикует для Костаная и того,
-    -- что внутри; иначе проверенный значок становится пропуском на всю страну.
+    -- The organisation's territory. The Kostanay mayor's office publishes for
+    -- Kostanay and what lies inside it; otherwise a verified badge becomes a pass
+    -- to the whole country.
     geo_node_id UUID REFERENCES geo_nodes(id) ON DELETE SET NULL,
     about TEXT NOT NULL DEFAULT '',
     contact TEXT NOT NULL DEFAULT '',

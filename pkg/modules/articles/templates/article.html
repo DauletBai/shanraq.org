@@ -11,10 +11,11 @@
         <div class="article__head">
           {{ if .CoverURL }}<div class="article__media"><img src="{{ .CoverURL }}" alt="{{ .Title }}" decoding="async"></div>{{ end }}
           <div class="byline">
-            {{/* Подпись организации, если аккаунт её подтвердил. Человек
-                 остаётся ниже: за текстом должен стоять кто-то конкретный,
-                 иначе спрашивать будет не с кого. Непроверенная заявка сюда
-                 не попадает — OrgName у неё пуст. */}}
+            {{/* The organisation's byline, if the account has had one confirmed.
+                 The person stays below it: somebody specific has to stand
+                 behind a text, or there is nobody to answer for it. An
+                 unverified application never reaches here — its OrgName is
+                 empty. */}}
             {{ if .OrgName }}
             <span class="author author--org">{{ .OrgName }}</span>
             <span class="org-badge{{ if .OrgOfficial }} org-badge--official{{ end }}">{{ t .Lang .OrgKind }}</span>

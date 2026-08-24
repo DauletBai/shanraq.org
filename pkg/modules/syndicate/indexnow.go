@@ -27,7 +27,7 @@ import (
 const (
 	indexNowEndpoint = "https://api.indexnow.org/indexnow"
 	indexNowKeyPath  = "/indexnow.txt"
-	// indexNowBatch — предел адресов в одной заявке по протоколу.
+	// indexNowBatch is the protocol's limit on addresses in one submission.
 	indexNowBatch = 10000
 )
 
@@ -54,13 +54,13 @@ func (m *Module) submitIndexNow(slug string) {
 	m.SubmitURLs(urls, slug)
 }
 
-// SubmitURLs сообщает поисковикам об изменившихся адресах. Годится для любой
-// страницы сайта, не только для статьи: карты сайта ждут обхода, а это —
-// единственный способ сказать сразу.
+// SubmitURLs tells search engines about changed addresses. It suits any page of the
+// site, not only an article: sitemaps wait to be crawled, and this is the only way
+// to say so at once.
 //
-// Отправка отвязана от вызывающего намеренно: поисковик не должен уметь ни
-// замедлить публикацию, ни уронить её. Ошибка пишется в журнал и забывается —
-// надёжный путь по-прежнему карта сайта, этот только быстрый.
+// The send is deliberately detached from the caller: a search engine must be able
+// neither to slow a publication down nor to bring it down. An error is logged and
+// forgotten — the reliable route is still the sitemap, this one is only the fast one.
 func (m *Module) SubmitURLs(urls []string, label string) {
 	if m.indexNowKey == "" || len(urls) == 0 {
 		return
@@ -69,8 +69,8 @@ func (m *Module) SubmitURLs(urls []string, label string) {
 	if u, err := url.Parse(m.baseURL); err == nil && u.Host != "" {
 		host = u.Host
 	}
-	// За раз протокол принимает не больше десяти тысяч адресов; столько у нас
-	// не наберётся, но резать список всё равно надо там, где это видно.
+	// The protocol accepts no more than ten thousand addresses at a time; we will never
+	// have that many, but the list still has to be cut where it can be seen.
 	if len(urls) > indexNowBatch {
 		m.log.Warn("indexnow batch trimmed", zap.String("label", label),
 			zap.Int("urls", len(urls)), zap.Int("kept", indexNowBatch))

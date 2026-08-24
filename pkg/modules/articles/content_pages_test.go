@@ -33,16 +33,16 @@ func TestIsEditablePage(t *testing.T) {
 	}
 }
 
-// Правка документа в коде должна доходить до сайта. Страницы засеиваются в базу
-// на первом запуске, и при вставке «только если нет» дальнейшие правки в коде
-// на сайт не попадали никогда: посетитель годами читал текст первого запуска.
+// An edit to a document in the code has to reach the site. The pages are seeded into
+// the database on first start, and with an insert-only-if-absent later edits in the
+// code never reached the site: a visitor read the first start's text for years.
 func TestCorrectingADocumentInCodeReachesTheSite(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
 	ctx := context.Background()
 	store := NewContentStore(app.pool)
-	// Тестовая база живёт между прогонами: строка, оставшаяся с прошлого раза,
-	// прошла бы этот тест и без исправления.
+	// The test database lives between runs: a row left over from last time would pass
+	// this test even without the fix.
 	app.exec(`DELETE FROM content_pages WHERE page_key = 'guide-refresh-probe'`)
 
 	if err := store.seed(ctx, "guide-refresh-probe", "ru", "Руководство", "Старый текст"); err != nil {
@@ -60,8 +60,8 @@ func TestCorrectingADocumentInCodeReachesTheSite(t *testing.T) {
 	}
 }
 
-// А правку человека посев не трогает: иначе перезапуск стирал бы работу
-// редактора, и админка превратилась бы в ловушку.
+// And the seeding does not touch a person's edit: otherwise a restart would erase an
+// editor's work, and the admin panel would become a trap.
 func TestSeedingNeverOverwritesAHumanEdit(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()

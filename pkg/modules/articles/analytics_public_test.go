@@ -8,9 +8,9 @@ import (
 	"time"
 )
 
-// seedAudience кладёт минимум, при котором страница показывает графики, а не
-// «данных пока нет». Без этого тест проверял бы только пустую ветку — и
-// проходил на чужих строках, оставшихся в базе от других тестов.
+// seedAudience lays down the minimum at which the page shows charts rather than
+// "no data yet". Without it the test would only exercise the empty branch — and
+// would pass on other tests' leftover rows in the database.
 func seedAudience(app *testApp) {
 	app.exec(`INSERT INTO analytics_daily (day, kind, label, is_guest, n) VALUES
 		(CURRENT_DATE, 'page', 'article', true, 12),
@@ -24,16 +24,16 @@ func seedAudience(app *testApp) {
 		(CURRENT_DATE, 'source', 'direct', true, 14),
 		(CURRENT_DATE, 'bot', 'google', true, 40)
 		ON CONFLICT DO NOTHING`)
-	// Кеш живёт час и общий на весь процесс, поэтому между тестами его надо
-	// сбрасывать: иначе страница покажет числа предыдущей базы.
+	// The cache lives an hour and is shared across the process, so it has to be
+	// dropped between tests: otherwise the page shows the previous database's numbers.
 	publicStats.mu.Lock()
 	publicStats.byLg = map[string]PublicStats{}
 	publicStats.at = time.Time{}
 	publicStats.mu.Unlock()
 }
 
-// Страница аналитики публичная: она существует ровно затем, чтобы её видел
-// посторонний. Если она потребует входа, смысла в ней нет.
+// The analytics page is public: it exists precisely so that a stranger can see it.
+// If it demands a login, there is no point to it.
 func TestTheAudiencePageIsOpenToEveryone(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -47,21 +47,21 @@ func TestTheAudiencePageIsOpenToEveryone(t *testing.T) {
 	if !strings.Contains(body, T(LangRU, "stats.title")) {
 		t.Error("на странице нет её собственного заголовка")
 	}
-	// Метод объявляется на самой странице: число без определения — это то, с
-	// чем спорят наши же статьи.
+	// The method is stated on the page itself: a number without a definition is the
+	// very thing our own articles argue with.
 	if !strings.Contains(body, T(LangRU, "stats.method")) {
 		t.Error("на странице не сказано, как мы считаем")
 	}
-	// Краулеры показаны отдельно, а не подмешаны к людям: их больше, и
-	// смешение завысило бы посещаемость вдвое.
+	// Crawlers are shown separately rather than blended in with people: there are more
+	// of them, and mixing the two would double the reported audience.
 	if !strings.Contains(body, T(LangRU, "stats.bots_note")) {
 		t.Error("нет оговорки о том, что краулеры не входят в число людей")
 	}
 }
 
-// Ни одна строка страницы не должна указывать на человека. Мы не пишем
-// конкретные адреса — только тип страницы, — и страница не должна пересекать
-// страну ни с чем.
+// Not one line of the page may point at a person. We do not write specific
+// addresses — only the kind of page — and the page must not cross the country with
+// anything.
 func TestTheAudiencePageNamesNoReaderAndNoArticle(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -80,8 +80,8 @@ func TestTheAudiencePageNamesNoReaderAndNoArticle(t *testing.T) {
 	}
 }
 
-// Страница обязана открываться на всех трёх языках: она часть издания, а не
-// служебная выгрузка.
+// The page has to open in all three languages: it is part of the publication, not
+// an internal export.
 func TestTheAudiencePageSpeaksAllThreeLanguages(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -92,9 +92,9 @@ func TestTheAudiencePageSpeaksAllThreeLanguages(t *testing.T) {
 		if w.Code != http.StatusOK {
 			t.Fatalf("язык %s: %d", lang, w.Code)
 		}
-		// Сравниваем с экранированным видом: апостроф, амперсанд и плюс в
-		// разметке выглядят не так, как в словаре, и дословный поиск нашёл бы
-		// не отсутствие перевода, а обычную работу шаблонизатора.
+		// The comparison is against the escaped form: an apostrophe, an ampersand and a
+		// plus look different in markup than in the dictionary, and a literal search would
+		// find not a missing translation but the template engine doing its job.
 		if want := template.HTMLEscapeString(T(lang, "stats.lead")); !strings.Contains(w.Body.String(), want) {
 			t.Errorf("язык %s: нет вводной строки на этом языке", lang)
 		}

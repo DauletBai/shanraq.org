@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// place возвращает узел справочника и его адрес.
+// place returns a reference node and its address.
 func place(t *testing.T, app *testApp, name string) (uuid.UUID, string) {
 	t.Helper()
 	var id uuid.UUID
@@ -26,9 +26,10 @@ func place(t *testing.T, app *testApp, name string) (uuid.UUID, string) {
 	return id, slug
 }
 
-// Каждому месту нужен адрес, иначе страницы у него быть не может. Справочник
-// приходит с колонкой code, но она неоднородна: у Качара kz-kostanay-kachar, у
-// Костанайской области g65, и /place/g65 — шифр, а не адрес.
+// Every place needs an address, or it can have no page. The reference arrives
+// with a code column, but that column is not uniform: Kachar has
+// kz-kostanay-kachar, the Kostanay region has g65, and /place/g65 is a cipher,
+// not an address.
 func TestEveryPlaceHasAReadableAddress(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -47,7 +48,7 @@ func TestEveryPlaceHasAReadableAddress(t *testing.T) {
 		t.Errorf("адрес Качара %q, ожидался kachar", slug)
 	}
 
-	// Тёзки разводятся, а не затирают друг друга: Алматы — и город, и районы.
+	// Namesakes are separated rather than overwriting each other: Almaty is both a city and its districts.
 	var dupes int
 	if err := app.pool.QueryRow(context.Background(),
 		`SELECT count(*) FROM (SELECT slug FROM geo_nodes GROUP BY slug HAVING count(*) > 1) d`).Scan(&dupes); err != nil {
@@ -58,10 +59,10 @@ func TestEveryPlaceHasAReadableAddress(t *testing.T) {
 	}
 }
 
-// Лента места смотрит вверх, а не вниз. Место, которое выбрал автор, — это
-// адресат: объявление для Качара написано качарцам, и на странице области оно
-// попало бы к сотне тысяч человек, которым не предназначалось. Наоборот —
-// можно: областное сообщение адресовано и жителям Качара.
+// A place's feed looks upward, not down. The place an author chose is the
+// addressee: a notice for Kachar is written for the people of Kachar, and on the
+// region's page it would reach a hundred thousand it was not meant for. The other
+// way round is fine: a regional message is addressed to Kachar's residents too.
 func TestPlaceFeedCarriesWhatIsAddressedToThePlace(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -75,7 +76,7 @@ func TestPlaceFeedCarriesWhatIsAddressedToThePlace(t *testing.T) {
 	forKachar, kacharArticle := app.seedArticle(authorID, "published")
 	app.exec(`UPDATE articles SET geo_node_id = $2, published_at = NOW() WHERE id = $1`, forKachar, kacharID)
 
-	// Страница посёлка несёт своё и адресованное всей области.
+	// A settlement's page carries its own and what is addressed to the whole region.
 	w := app.do(http.MethodGet, "/place/"+kacharSlug, nil)
 	if w.Code != http.StatusOK {
 		t.Fatalf("страница посёлка: %d", w.Code)
@@ -88,8 +89,8 @@ func TestPlaceFeedCarriesWhatIsAddressedToThePlace(t *testing.T) {
 		t.Error("страница посёлка не показывает областное сообщение, адресованное и ей")
 	}
 
-	// Страница области несёт только адресованное области, но не то, что
-	// написано для одного посёлка внутри неё.
+	// A region's page carries only what is addressed to the region, and not what was
+	// written for one settlement inside it.
 	w = app.do(http.MethodGet, "/place/"+oblastSlug, nil)
 	if w.Code != http.StatusOK {
 		t.Fatalf("страница области: %d", w.Code)
@@ -103,8 +104,8 @@ func TestPlaceFeedCarriesWhatIsAddressedToThePlace(t *testing.T) {
 	}
 }
 
-// Пустое место — обычное состояние, а не ошибка: страница существует, чтобы
-// было куда опубликовать первым.
+// An empty place is the ordinary state, not an error: the page exists so that
+// there is somewhere for the first person to publish.
 func TestEmptyPlaceStillHasAPage(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -122,7 +123,7 @@ func TestEmptyPlaceStillHasAPage(t *testing.T) {
 	}
 }
 
-// Автор указывает место при публикации, и оно переживает правку статьи.
+// The author sets the place on publication, and it survives an edit of the article.
 func TestAuthorPicksThePlaceAndItSticks(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -147,17 +148,17 @@ func TestAuthorPicksThePlaceAndItSticks(t *testing.T) {
 		t.Fatalf("место статьи не сохранилось: %v, %v", got, err)
 	}
 
-	// И возвращается в форму, чтобы правка не стирала выбор.
+	// And it comes back into the form, so an edit does not erase the choice.
 	page := app.do(http.MethodGet, "/studio/a/"+id.String(), nil, withCookie(cookie))
 	if !strings.Contains(page.Body.String(), kacharID.String()) {
 		t.Error("редактор не вернул выбранное место в форму")
 	}
 }
 
-// В sitemap попадают места, для которых что-то написано, — и только они.
-// Областное сообщение видно и на странице каждого посёлка внутри области, но
-// предлагать поисковику тридцать страниц с одной и той же статьёй значит
-// тридцать раз показать пустоту, а не расширить охват.
+// The sitemap holds the places something has been written for, and only those. A
+// regional message shows on every settlement page inside the region, but offering
+// a search engine thirty pages carrying the same article means showing an
+// emptiness thirty times, not widening the reach.
 func TestSitemapCarriesOnlyPlacesSomethingWasWrittenFor(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -189,9 +190,9 @@ func TestSitemapCarriesOnlyPlacesSomethingWasWrittenFor(t *testing.T) {
 	}
 }
 
-// Путь наверх должен вести наверх. Ancestry писалась для объявлений, где нужны
-// только названия, и вернувшись на страницу места без адреса рисовала
-// «Костанайская область» ссылкой на /place/ — то есть в никуда.
+// The path upward has to lead upward. Ancestry was written for listings, which
+// need only the names, and coming back to a place page without addresses it drew
+// "Kostanay region" as a link to /place/ — that is, to nowhere.
 func TestTheWayUpActuallyLeadsSomewhere(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -218,9 +219,9 @@ func TestTheWayUpActuallyLeadsSomewhere(t *testing.T) {
 	}
 }
 
-// Карточка в ленте должна называть организацию. Страница места существует ради
-// сообщений ЖКХ и акимата; карточка, подписанная «А. Смағұлова», прячет ровно
-// то, ради чего заведены организации-авторы.
+// A card in the feed has to name the organisation. A place page exists for
+// notices from the utilities and the mayor's office; a card signed "A. Smagulova"
+// hides the very thing organisation authors were created for.
 func TestAFeedCardNamesTheOrganisation(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -245,14 +246,14 @@ func TestAFeedCardNamesTheOrganisation(t *testing.T) {
 		t.Error("карточка в ленте места не называет организацию")
 	}
 
-	// И один запрос на всю ленту, а не по одному на карточку.
+	// And one query for the whole feed, not one per card.
 	names, err := store.VerifiedNames(ctx, []uuid.UUID{authorID})
 	if err != nil || names[authorID] != "КСК «Качарец»" {
 		t.Errorf("пакетный поиск не нашёл организацию: %v, %v", names, err)
 	}
 }
 
-// Разделитель стоит между звеньями, а не после последнего.
+// The separator goes between the links, not after the last one.
 func TestBreadcrumbHasNoTrailingSeparator(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -270,9 +271,9 @@ func TestBreadcrumbHasNoTrailingSeparator(t *testing.T) {
 	}
 }
 
-// Матрица видимости в общей ленте. Место, которое поставил автор, — это круг
-// читателей: качарское объявление об отключении света жителю Алматы не новость,
-// а мусор в ленте, и гостю, о котором мы ничего не знаем, — тоже.
+// The visibility matrix for the common feed. The place an author set is a circle
+// of readers: a Kachar notice about a power cut is not news to someone in Almaty
+// but litter in their feed — and the same for a guest we know nothing about.
 func TestTheFeedCarriesOnlyWhatIsAddressedToTheReader(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -319,12 +320,12 @@ func TestTheFeedCarriesOnlyWhatIsAddressedToTheReader(t *testing.T) {
 		}
 	}
 
-	// Гость и всякий, кто не назвал места, видит только общее.
+	// A guest, and anyone who named no place, sees only the general.
 	check("гость", sees(nil), map[string]bool{
 		forEveryone: true, forKachar: false, forOblast: false, forAlmaty: false,
 	})
 
-	// Житель Качара: своё, областное, общее — но не чужой город.
+	// A Kachar resident: their own, the region's, the general — but not another town's.
 	kacharReader, err := geo.AddressedTo(ctx, kacharID)
 	if err != nil {
 		t.Fatalf("AddressedTo: %v", err)
@@ -333,7 +334,7 @@ func TestTheFeedCarriesOnlyWhatIsAddressedToTheReader(t *testing.T) {
 		forEveryone: true, forKachar: true, forOblast: true, forAlmaty: false,
 	})
 
-	// Житель областного центра — не житель Качара: качарское его не касается.
+	// A resident of the regional centre is not a Kachar resident: Kachar's does not concern them.
 	oblastReader, err := geo.AddressedTo(ctx, oblastID)
 	if err != nil {
 		t.Fatalf("AddressedTo: %v", err)
@@ -342,7 +343,7 @@ func TestTheFeedCarriesOnlyWhatIsAddressedToTheReader(t *testing.T) {
 		forEveryone: true, forOblast: true, forKachar: false, forAlmaty: false,
 	})
 
-	// Житель Алматы: своё и общее.
+	// An Almaty resident: their own and the general.
 	almatyReader, err := geo.AddressedTo(ctx, almatyID)
 	if err != nil {
 		t.Fatalf("AddressedTo: %v", err)
@@ -352,7 +353,7 @@ func TestTheFeedCarriesOnlyWhatIsAddressedToTheReader(t *testing.T) {
 	})
 }
 
-// То же правило — на самой странице: гость на главной не должен видеть местное.
+// The same rule on the page itself: a guest on the front page must not see the local.
 func TestAGuestOnTheHomePageSeesNoLocalNotices(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -373,7 +374,7 @@ func TestAGuestOnTheHomePageSeesNoLocalNotices(t *testing.T) {
 		t.Error("местное объявление попало в ленту гостя")
 	}
 
-	// А на своей странице места оно есть — там его и ищут.
+	// And on its own place page it is there — which is where people look for it.
 	place := app.do(http.MethodGet, "/place/kachar", nil).Body.String()
 	if !strings.Contains(place, localSlug) {
 		t.Error("местное объявление пропало и со страницы места")

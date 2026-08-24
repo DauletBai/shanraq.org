@@ -6,8 +6,8 @@
   <div class="layout">
     <div class="layout__main">
 
-      {{/* Путь наверх. Читатель, попавший сюда из поиска по «Качар», должен за
-           один клик увидеть, что есть и область — и наоборот. */}}
+      {{/* The path upward. A reader who arrived here from a search for "Качар"
+           should see in one click that the region exists too — and the reverse. */}}
       {{ if .Ancestors }}
       <nav class="place-up" aria-label="{{ t .Lang "place.up" }}">
         {{ range $i, $a := .Ancestors }}{{ if $i }} · {{ end }}<a href="/place/{{ $a.Slug }}?lang={{ $.Lang }}" data-place-crumb>{{ $a.Name }}</a>{{ end }}
@@ -35,9 +35,9 @@
         {{ end }}
       </div>
       {{ else }}
-      {{/* Пусто — обычное состояние места, о котором ещё никто не писал. Это не
-           ошибка и не повод извиняться: страница существует, чтобы было куда
-           опубликовать первым. */}}
+      {{/* Empty is the ordinary state of a place nobody has written about yet.
+           That is neither an error nor a reason to apologise: the page exists so
+           that there is somewhere for the first person to publish. */}}
       <div class="empty">
         <p style="font-size:1.2rem;margin-bottom:18px">{{ printf (t .Lang "place.empty") .PlaceName }}</p>
         <a class="btn btn--primary" href="/studio/new">{{ t .Lang "place.empty_cta" }}</a>
@@ -52,9 +52,9 @@
       </nav>
       {{ end }}
 
-      {{/* Места внутри этого. Это и навигация для читателя, и то, по чему
-           поисковик доходит до посёлка, на который иначе не ведёт ни одна
-           ссылка. */}}
+      {{/* The places inside this one. Navigation for the reader, and also how a
+           search engine reaches a settlement that otherwise has not a single link
+           pointing at it. */}}
       {{ if .Children }}
       <section class="place-kids" aria-labelledby="place-kids-h">
         <h2 class="place-kids__title" id="place-kids-h">{{ t .Lang "place.inside" }}</h2>

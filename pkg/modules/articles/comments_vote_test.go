@@ -2,9 +2,9 @@ package articles
 
 import "testing"
 
-// Свёрнутый — не то же самое, что скрытый. Заминусованный комментарий остаётся
-// на странице за одной строкой, и любой читатель может его раскрыть. Раньше на
-// этом месте стояла модель, которая решала, увидит его кто-нибудь или нет.
+// Folded is not the same as hidden. A downvoted comment stays on the page behind a
+// single row, and any reader can unfold it. What used to stand here was a model that
+// decided whether anyone would see it.
 func TestCommentFoldsOnlyWhenReadersBuryIt(t *testing.T) {
 	cases := []struct {
 		score int
@@ -24,8 +24,8 @@ func TestCommentFoldsOnlyWhenReadersBuryIt(t *testing.T) {
 	}
 }
 
-// Порог не должен уехать в ноль незаметно: комментарий, свёрнутый первым же
-// минусом, — это не читательская модерация, а глушилка.
+// The threshold must not slip to zero unnoticed: a comment folded by the very first
+// downvote is not reader moderation, it is a silencer.
 func TestFoldThresholdLeavesRoomForDisagreement(t *testing.T) {
 	if commentCollapseScore > -3 {
 		t.Errorf("порог %d слишком мягкий: одиночное несогласие прячет комментарий", commentCollapseScore)

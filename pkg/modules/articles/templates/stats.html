@@ -9,8 +9,8 @@
       <div class="section-head"><h1>{{ t .Lang "stats.title" }}</h1></div>
       <p class="place-lead">{{ t .Lang "stats.lead" }}</p>
 
-      {{/* Метод раньше чисел: цифра без определения — это ровно то, с чем
-           спорят наши же статьи. */}}
+      {{/* The method before the figures: a number without a definition is exactly
+           what our own articles argue with. */}}
       <div class="chart">
         <h2 class="chart__h">{{ t .Lang "stats.method" }}</h2>
         <p class="chart__note">{{ t .Lang "stats.method_note" }}</p>
@@ -30,8 +30,8 @@
         <div class="stat-tile"><b>{{ money .Comments }}</b><span>{{ t .Lang "stats.comments" }}</span></div>
       </div>
 
-      {{/* График по дням идёт на всю ширину: у него ось времени, и делить её
-           пополам значит читать месяц в два приёма. */}}
+      {{/* The daily chart runs full width: it has a time axis, and halving that
+           means reading a month in two goes. */}}
       <div class="charts">
         <div class="chart">
           <h2 class="chart__h">{{ t .Lang "ag.trend" }}</h2>
@@ -51,8 +51,8 @@
                   {{ end }}
                 </div>
               </div>
-              {{/* Полная ширина позволяет подписать каждый столбик числом
-                   месяца: так видно и день, и место, где месяц сменился. */}}
+              {{/* The full width allows every bar to carry its day of the
+                   month: that shows both the day and where the month turned. */}}
               <div class="spark__x spark__x--days">
                 {{ range .Guests.Trend }}<span>{{ .Day }}</span>{{ end }}
               </div>
@@ -84,8 +84,8 @@
 {{ template "site_footer" . }}
 {{ end }}
 
-{{/* Один срез с одиночным счётчиком. Полоса — доля от самой большой строки,
-     чтобы сравнивать глазом, а не считать. */}}
+{{/* One breakdown with a single counter. The bar is a share of the largest row,
+     so it can be compared by eye rather than computed. */}}
 {{ define "chart_rows" }}
 <div class="chart">
   <h2 class="chart__h">{{ .T }}</h2>
@@ -104,8 +104,8 @@
 </div>
 {{ end }}
 
-{{/* Типы страниц несут разделение на гостей и зарегистрированных, поэтому у
-     них своя строка. */}}
+{{/* Page kinds carry the split between guests and registered readers, so they
+     get a row of their own. */}}
 {{ define "chart_pages" }}
 <div class="chart">
   <h2 class="chart__h">{{ .T }}</h2>
@@ -123,9 +123,9 @@
 </div>
 {{ end }}
 
-{{/* Страны — с флагами: нарисованным там, где он есть, эмодзи в остальных
-     случаях. Флаг здесь не украшение: он даёт узнать строку раньше, чем
-     прочитать её. */}}
+{{/* Countries carry flags: a drawn one where we have it, an emoji otherwise. The
+     flag is not decoration here: it lets a row be recognised before it is
+     read. */}}
 {{ define "chart_countries" }}
 <div class="chart">
   <h2 class="chart__h">{{ .T }}</h2>

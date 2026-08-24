@@ -607,21 +607,21 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 }
 .post__title a { color: var(--ink); }
 .post__title a:hover { color: var(--gold-strong); text-decoration: none; }
-/* Потолок описания в карточке — восемь строк.
-   Десять делали карточку выше, чем нужно: лента на главной растягивалась, и
-   в первый экран помещалось меньше материалов. Восемь строк — 292 знака
-   по-русски, 281 по-казахски, 339 по-английски (замер на ширине 344 px).
-   Раньше потолка не было вовсе: выжимка из текста резалась до 170 знаков, а
-   написанное автором описание вставлялось целиком, и разброс выходил от 174
-   до 460 знаков. Мета карточки прижата книзу (margin-top: auto), поэтому
-   длинное описание растягивало карточку выше соседних.
+/* The card description is capped at eight lines.
+   Ten made the card taller than it needs to be: the front-page feed stretched and
+   fewer pieces fitted on the first screen. Eight lines is 292 characters in
+   Russian, 281 in Kazakh, 339 in English (measured at 344 px wide).
+   There used to be no cap at all: an excerpt cut from the text stopped at 170
+   characters while an author's own description went in whole, and the spread ran
+   from 174 to 460. The card's meta line is pinned to the bottom (margin-top:
+   auto), so a long description pushed the card above its neighbours.
 
-   Ограничение снимает только перелив. Ровность верхней границы оно даёт,
-   ровность нижней — нет: подпереть короткое описание нечем, это делается
-   при письме, а не стилями.
+   The limit only removes the overflow. It makes the top edge even; it cannot make
+   the bottom one even, because there is nothing to prop a short description up
+   with — that is done in the writing, not in the styles.
 
-   Обрезается только показ. Полное описание остаётся в мета-теге страницы и
-   лидом на самой статье, где место есть. */
+   Only the display is cut. The full description stays in the page's meta tag and
+   as the lead on the article itself, where there is room. */
 .post__excerpt {
   color: var(--ink-soft);
   padding: 0 10px;
@@ -629,9 +629,9 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden;
 }
 
-/* Заголовок — три строки. Обрезать его хуже, чем описание, поэтому запас
-   больше: под лимит попадают только самые длинные, а карточки перестают
-   разъезжаться по высоте текста. */
+/* The title gets three lines. Cutting it is worse than cutting the description, so
+   the allowance is larger: only the longest hit the limit, and the cards stop
+   drifting apart by the height of their text. */
 .post__title {
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
@@ -714,9 +714,9 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .prose code { font-family: var(--mono); font-size: 0.9em; background: var(--surface-2); padding: 2px 6px; border-radius: 5px; }
 .prose pre { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 16px; overflow-x: auto; }
 .prose pre code { background: none; padding: 0; }
-/* Снимок экрана внутри текста должен читаться как снимок, а не как часть
-   страницы: у наших интерфейсов светлый фон, и без рамки картинка сливается с
-   тем, на чём лежит. */
+/* A screenshot inside the text has to read as a screenshot, not as part of the
+   page: our interfaces have a light background, and without a border the image
+   merges into whatever it sits on. */
 .prose img { border-radius: var(--radius-sm); margin: 1.5em 0; border: 1px solid var(--line); background: var(--surface-2); }
 .prose ul, .prose ol { padding-left: 1.3em; }
 /* The table used to scroll itself by being display:block, which costs it its
@@ -843,17 +843,16 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 30px; }
 .stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
-/* Подпись карточки — это то, что называет цифру, без неё число ничего не
-   значит. Приглушённый серый годится для сносок, а не для названия: берём
-   основной цвет текста и добавляем вес, чтобы подпись читалась с первого
-   взгляда, но не спорила с самим числом. */
+/* A tile's label is what names the figure; without it the number means nothing.
+   Muted grey suits a footnote, not a name: take the body text colour and add
+   weight, so the label reads at a glance without arguing with the number. */
 .stat__label { font-size: var(--step--1); color: var(--ink-soft); font-weight: 600; margin: 0 0 6px; }
 .stat__value { font-family: var(--serif); font-size: var(--step-3); font-weight: 700; margin: 0; color: var(--gold-strong); }
 .stat__sub { font-size: 0.76rem; color: var(--muted); }
 .badge-lang { font-weight: 700; color: var(--gold-strong); font-size: 0.85em; }
-/* Просмотры по языкам: одна колонка, строка на язык. Код языка тёмный, число
-   красное — код здесь подпись, а считываться должна цифра. Ширина кода
-   фиксирована, поэтому числа выстраиваются по левому краю ровным столбцом. */
+/* Views by language: one column, one row per language. The language code is dark
+   and the number red — here the code is the label and the figure is what should be
+   read. The code's width is fixed, so the numbers line up in an even column. */
 .stat__langs { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 4px; }
 .stat__langs li { display: flex; align-items: baseline; gap: 10px; }
 .stat__langs-code {
@@ -873,9 +872,9 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 }
 table.list { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
 table.list th, table.list td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-/* Шапка таблицы: капитель мелкая и разрежённая, поэтому серый делал её почти
-   невидимой — колонки приходилось угадывать по содержимому. Тёмный цвет и
-   больший вес возвращают ей роль заголовка. */
+/* A table header: the small caps are fine and widely spaced, so grey made it
+   nearly invisible and the columns had to be guessed from their contents. A dark
+   colour and more weight give it back its job as a heading. */
 table.list th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); font-weight: 700; background: var(--surface-2); }
 table.list tr:last-child td { border-bottom: none; }
 table.list td.title { white-space: normal; max-width: 380px; }
@@ -1728,10 +1727,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 @media (max-width: 640px) { .author-stats { grid-template-columns: repeat(2, 1fr); } }
 
 /* ---- Comments ---- */
-/* Подпись организации. Название крупнее человека под ним: читатель сначала
-   должен понять, кто сообщает, и только потом — кто именно нажал кнопку.
-   У государственного органа значок заметнее: сообщение акимата читается
-   иначе, чем объявление компании. */
+/* An organisation's byline. The name is larger than the person beneath it: the
+   reader should first understand who is reporting and only then who pressed the
+   button. A state body's badge is more prominent: a message from the mayor's
+   office reads differently from a company's notice. */
 .author--org { font-weight: 700; }
 .author--via { color: var(--muted); font-size: 0.86rem; }
 .org-badge {
@@ -1744,7 +1743,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   color: var(--teal); border-color: color-mix(in srgb, var(--teal) 40%, transparent);
 }
 
-/* Страница места: путь наверх, подзаголовок и перечень мест внутри. */
+/* A place page: the path upward, the subtitle, and the places inside it. */
 .place-up { margin: 0 0 6px; font-size: 0.86rem; color: var(--muted); }
 .place-up a { color: var(--muted); text-decoration: none; }
 .place-up a:hover { color: var(--gold); }
@@ -1755,8 +1754,8 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .place-kids__list a { color: var(--ink-soft); text-decoration: none; font-size: 0.92rem; }
 .place-kids__list a:hover { color: var(--gold); }
 
-/* Куда идти дальше. Ставится перед комментариями: сначала читателю предлагают
-   продолжить чтение, и только потом — высказаться. */
+/* Where to go next. It stands before the comments: the reader is first offered
+   more to read and only then a chance to speak. */
 .related { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }
 .related__title { font-size: var(--step-2); margin-bottom: 16px; }
 .related__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
@@ -1768,21 +1767,23 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .related__h a:hover { color: var(--gold); }
 .related__excerpt { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
 
-/* Счётчик в подвале. Он должен быть виден — в этом весь смысл независимого
-   замера, — но не выпирать белой плашкой из тёмного подвала.
+/* The counter in the footer. It has to be visible — that is the whole point of an
+   independent measurement — without sticking out as a white slab in a dark footer.
 
-   ZERO.kz отдаёт кнопку только светлой: одиннадцать вариантов параметра t
-   отличаются цветом кольца, а фон у всех белый. Тёмной у них нет.
+   ZERO.kz serves the button in light only: the eleven variants of its t parameter
+   differ in the ring's colour, and every one has a white background. They have no
+   dark one.
 
-   Поэтому три шага. invert делает плашку чёрной, а цифры белыми; hue-rotate
-   возвращает красное кольцо, которое инверсия увела в бирюзу; а screen гасит
-   чёрное о фон — при подложке #444 чёрный пиксель даёт ровно #444, то есть
-   исчезает, а белый остаётся белым. С прозрачностью 0.6 цифры получаются
-   (180,180,180) — это и есть rgba(255,255,255,0.6) поверх #444, цвет
-   остального текста подвала. Картинка остаётся их, ссылка и подсчёт — тоже.
+   Hence three steps. invert turns the slab black and the digits white; hue-rotate
+   brings back the red ring that the inversion sent to turquoise; and screen
+   dissolves the black into the background — over #444 a black pixel gives exactly
+   #444, that is, disappears, while white stays white. At 0.6 opacity the digits
+   come out (180,180,180), which is rgba(255,255,255,0.6) over #444, the colour of
+   the rest of the footer text. The image stays theirs, and so do the link and the
+   count.
 
-   Центрируется полями, а не выравниванием текста: строка 163 задаёт всем
-   картинкам display:block, а блочную картинку text-align не двигает. */
+   It is centred with margins rather than text alignment: line 163 gives every
+   image display:block, and text-align does not move a block image. */
 .foot-counter { margin: 12px 0 0; line-height: 0; text-align: center; }
 .foot-counter a { display: inline-block; }
 .foot-counter img {
@@ -1958,8 +1959,8 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   color: var(--ink); 
   line-height: 1.1; 
 }
-/* Та же правка, что и для карточек студии: подпись под числом называет его,
-   поэтому она заголовок, а не сноска. */
+/* The same fix as for the studio's tiles: the label under a number names it, so it
+   is a heading and not a footnote. */
 .adm-kpi span:last-child { font-size: 0.78rem; color: var(--ink-soft); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
 
 /* minmax(0, 1fr), not 1fr: a plain 1fr floors at min-content, so one long
@@ -1969,9 +1970,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adm-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--adm-gap); }
 /* Stacked column-rows within a section must breathe: any .adm-cols following
    another gets vertical separation, so adding more rows never sticks again. */
-/* Гостевая аналитика: девять карточек, в каждой не больше двух колонок цифр,
-   поэтому в треть ширины они помещаются целиком и складываются в ровные 3×3
-   без пустого добора. */
+/* Guest analytics: nine cards, none holding more than two columns of figures, so
+   they fit whole into a third of the width and settle into an even 3×3 with no
+   half-empty remainder. */
 .adm-cols--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 /* The AI and payments settings side by side. Each carries a switch, a short
    radio list and a field or two; full width left both as long strips of empty
@@ -2008,11 +2009,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 @media (max-width: 1100px) { .adm-cols--settings { grid-template-columns: 1fr; } }
 @media (max-width: 1400px) { .adm-cols--3 { grid-template-columns: 1fr 1fr; } }
 
-/* Списки, которые растут вместе с данными, не должны растягивать карточку:
-   иначе одна колонка со временем уезжает вниз на несколько экранов, а рядом
-   остаётся пустота. Высота фиксируется, лишнее прокручивается внутри.
-   Значения подобраны так, чтобы было видно 3–4 записи — достаточно, чтобы
-   понять, есть ли новое, и не потерять остальную панель из виду. */
+/* Lists that grow with the data must not stretch their card: otherwise one column
+   eventually runs several screens down while an emptiness sits beside it. The
+   height is fixed and the surplus scrolls inside. The values are chosen so that
+   3–4 entries show — enough to tell whether there is anything new without losing
+   sight of the rest of the panel. */
 /* Grid rows make every card in a line the height of its tallest neighbour, so
    a card whose list is longer must scroll inside itself rather than stretch the
    row. The scroll area takes whatever height the row hands it — min-height:0 is
@@ -2028,30 +2029,29 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    rows — keeps the row a fixed height however much data any card collects.
    Browsers, bots and sources grow the same way, just more slowly. */
 .adm-scroll--chart { max-height: 270px; }
-/* Публичная страница аналитики.
-   Каждый график — прямоугольник 16:9, а не карточка по высоте содержимого:
-   так лента графиков читается как один инструмент, а не как набор плиток
-   разной величины. Что не поместилось — прокручивается внутри рамки, поэтому
-   новая страна или новый браузер не растягивают страницу. */
-/* Один график в ряд. Два помещались по ширине, но подписи вроде
-   «Информационные страницы» и «iOS (iPhone/iPad)» приходилось переносить на
-   вторую строку или обрывать. График, который надо расшифровывать, хуже
-   графика, который занимает больше места. */
+/* The public analytics page.
+   Every chart is a 16:9 rectangle rather than a card sized by its contents: that
+   way the run of charts reads as one instrument instead of a set of tiles of
+   different sizes. What does not fit scrolls inside the frame, so a new country or
+   a new browser does not stretch the page. */
+/* One chart per row. Two fitted across, but labels like "Информационные страницы"
+   and "iOS (iPhone/iPad)" had to wrap to a second line or be cut. A chart that has
+   to be deciphered is worse than a chart that takes more room. */
 .charts { display: grid; gap: 18px; grid-template-columns: 1fr; margin-bottom: 18px; }
 .charts > .chart { margin-bottom: 0; }
 .chart {
   display: flex; flex-direction: column;
-  /* Отступ снизу нужен одиночным карточкам — тем, что стоят вне сетки: без
-     него карточка садится вплотную к следующему блоку. Внутри .charts
-     промежутки задаёт gap, и там margin только сбил бы его. */
+  /* The bottom margin is for lone cards — the ones outside the grid: without it a
+     card sits flush against the next block. Inside .charts the spacing comes from
+     gap, and there a margin would only upset it. */
   margin-bottom: 18px;
   box-shadow: var(--card-shadow);
-  /* Высота — по содержимому, но не выше 16:9 собственной ширины. Жёсткое
-     соотношение растягивало карточку с тремя строками на всю рамку, и под
-     данными оставалось поле пустоты в пол-экрана; потолок оставляет 16:9 там,
-     где данных много, и убирает пустоту там, где их мало.
-     Ширину карточка берёт у сетки: container-type: inline-size отвязывает её
-     от содержимого и заодно позволяет потомкам мерить её в cqw. */
+  /* Height follows the contents, but never exceeds 16:9 of the card's own width. A
+     hard ratio stretched a card holding three rows across the whole frame, leaving
+     half a screen of emptiness under the data; a ceiling keeps 16:9 where there is
+     plenty of data and removes the emptiness where there is little.
+     The card takes its width from the grid: container-type: inline-size detaches it
+     from the contents and lets descendants measure it in cqw. */
   container-type: inline-size;
   min-width: 0; max-width: 100%;
   padding: 14px 16px;
@@ -2068,36 +2068,37 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .chart__body::-webkit-scrollbar-track { background: transparent; }
 .chart__body::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
 .chart__body { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
-/* Потолок в 16:9 держится на теле карточки: заголовок с примечанием занимают
-   немного, и остаток как раз даёт карточке нужную пропорцию. Что не влезло —
-   уезжает в прокрутку, как и раньше.
-   На ширине телефона 16:9 это 195 пикселей, и график в них перестаёт
-   читаться, поэтому там побеждает нижний предел, а не потолок: иначе тело
-   карточки оказывалось ниже собственного графика и карточка со сплошной
-   линией получала бессмысленную вертикальную прокрутку. */
+/* The 16:9 ceiling rests on the card's body: the heading and its note take little,
+   and the remainder gives the card just the right proportion. What does not fit
+   goes into the scroll, as before.
+   At a phone's width 16:9 is 195 pixels, and a chart stops reading in them, so
+   there the lower bound wins rather than the ceiling: otherwise the card's body
+   ended up shorter than its own chart and a card holding one continuous line
+   acquired a pointless vertical scroll. */
 .chart__body { max-height: max(50cqw, 190px); }
-/* У графика нет собственной высоты — столбики и линия меряются в процентах от
-   рамки. Поэтому её надо назначить: те же 16:9, но не ниже читаемого предела
-   на узком экране. */
+/* A chart has no height of its own — the bars and the line are measured as
+   percentages of the frame. So one has to be assigned: the same 16:9, but never
+   below what stays readable on a narrow screen. */
 .chart__body > .spark { flex: 1 1 auto; height: max(50cqw, 170px); }
-/* Подпись под каждым столбиком — это тридцать чисел в ряд, поэтому шрифт
-   мельче обычной оси, а последний слот не прижимается вправо: он такой же
-   день, как остальные. */
+/* A label under every bar is thirty numbers in a row, so the type is smaller than
+   an ordinary axis and the last slot is not pushed right: it is the same kind of
+   day as the rest. */
 .spark__x--days { font-size: .62rem; }
 .spark__x--days span:last-child { text-align: center; }
-/* Подпись строки в админке рассчитана на узкую колонку в треть ряда. Здесь
-   график шире, а названия длиннее — «Информационные страницы», «iOS
-   (iPhone/iPad)» — поэтому под подпись отдаётся больше места и она переносится
-   на вторую строку вместо того, чтобы обрываться на полуслове. */
+/* A row label in the admin panel is sized for a narrow column a third of the row
+   wide. Here the chart is wider and the names longer — "Информационные страницы",
+   "iOS (iPhone/iPad)" — so the label gets more room and wraps to a second line
+   instead of breaking off mid-word. */
 .chart .adm-bar { grid-template-columns: minmax(0, 240px) minmax(0, 1fr) auto; font-size: .88rem; }
 .chart .adm-bar__label { white-space: nowrap; }
-/* Нарисованный флаг шире эмодзи, и без общей ширины строка с ним съезжает
-   вправо относительно соседних. Слот один на всех, флаг внутри центрируется. */
+/* A drawn flag is wider than an emoji, and without a shared width the row holding
+   it shifts right of its neighbours. One slot for all, and the flag centres in
+   it. */
 .chart .adm-flag { flex: none; width: 1.35em; display: inline-flex; justify-content: center; }
 .chart .adm-flag .flag { display: block; }
 
-/* Сводка числами над графиками: те же плитки, что в админке, но в один ряд с
-   переносом, потому что читателю их показывают все сразу. */
+/* The figures summarised above the charts: the same tiles as in the admin panel,
+   but in one wrapping row, because the reader is shown all of them at once. */
 .stat-tiles { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 18px; }
 .stat-tile { padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: var(--card-shadow); }
 .stat-tile b { display: block; font-family: var(--serif); font-size: 1.5rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
@@ -2145,7 +2146,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   position: sticky; top: 0; z-index: 1;
   background: var(--paper);
 }
-/* Отступ под полосу прокрутки, чтобы она не наезжала на текст. */
+/* Room for the scrollbar, so it does not ride over the text. */
 .adm-scroll { padding-right: 6px; }
 .adm-scroll::-webkit-scrollbar { width: 8px; }
 .adm-scroll::-webkit-scrollbar-track { background: transparent; }
@@ -2918,11 +2919,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   .foot-logo img { width: 52px; height: 52px; }
 }
 
-/* Страница разбора курса валют.
+/* The exchange rates page.
    ------------------------------------------------------------------ */
 
-/* Выбор валюты и периода. Обе строки — обычные ссылки и форма: страница
-   работает и там, где скрипты не выполняются, а каждый выбор адресуем. */
+/* Choosing the currency and the period. Both rows are plain links and a form: the
+   page works where scripts do not run, and every choice has an address. */
 .fx-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 10px; }
 .fx-pick__lab { font-size: .82rem; color: var(--muted); }
 .fx-pick__sel {
@@ -2938,7 +2939,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .fx-tab:hover { border-color: var(--gold-strong); }
 .fx-tab.is-on { background: var(--gold-strong); border-color: var(--gold-strong); color: #fff; font-weight: 600; }
 
-/* Крупный ответ на вопрос, с которым сюда пришли. */
+/* The answer, set large, to the question people came here with. */
 .fx-now { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin: 0 0 14px; font-size: 1.05rem; }
 .fx-now__eq { color: var(--muted); }
 .fx-now__v { font-size: 1.5rem; letter-spacing: -.01em; }
@@ -2947,43 +2948,43 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .fx-now__d.is-down { color: var(--teal); }
 .fx-now__day { font-size: .8rem; color: var(--muted); margin-left: auto; }
 
-/* Рост курса чужой валюты — это ослабление тенге, поэтому вверх здесь красный,
-   а вниз зелёный. Так же, как в строке курсов в шапке. */
+/* A foreign currency's rate rising means the tenge weakening, so up is red here
+   and down is green. The same as in the header's rate ticker. */
 .fx-up { color: var(--danger); }
 .fx-down { color: var(--teal); }
 
 .fx-line .spark__plot { overflow: hidden; border-radius: 6px; }
-/* Засечки у линии считаются сверху вниз, поэтому и смещение половиной строки
-   идёт вверх, а не вниз, как у столбиков. */
+/* A line's marks are counted from the top down, so the half-line offset goes up
+   rather than down as it does for bars. */
 .fx-line .spark__y span { transform: translateY(-50%); }
 .fx-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .fx-svg__line { fill: none; stroke: var(--gold-strong); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-/* Вторая линия сравнения: другой цвет и штрих, чтобы её было видно и на
-   чёрно-белой печати, и тому, кто цвета различает хуже. */
+/* The comparison's second line: a different colour and a dash, so it is visible in
+   black-and-white print and to someone who tells colours apart less well. */
 .fx-svg__line--b { stroke: var(--teal); stroke-dasharray: 6 4; }
 .fx-key { display: inline-flex; align-items: center; gap: 5px; margin-right: 14px; }
 .fx-key::before { content: ""; width: 16px; height: 3px; border-radius: 2px; background: var(--gold-strong); }
 .fx-key--b::before { background: var(--teal); }
-/* Подзаголовок раздела внутри страницы: тоньше главного, но с той же линией. */
+/* A section subheading inside the page: lighter than the main one, same rule. */
 .section-head--sub { margin-top: 26px; }
 .section-head--sub h2 { font-family: var(--serif); font-size: 1.5rem; line-height: 1.2; margin: 0; }
 .fx-svg__area { fill: var(--gold-strong); opacity: .10; stroke: none; }
-/* Подписи оси значений выставлены абсолютно и потому не занимают ширины сами:
-   курсу в четыре-пять знаков её надо отвести явно, иначе подпись обрезается
-   слева и «478,79» превращается в «8,79». */
+/* The value axis labels are positioned absolutely and so take no width of their
+   own: a rate of four or five digits needs it allotted explicitly, or the label is
+   cut on the left and "478,79" becomes "8,79". */
 .fx-line .spark__y { width: 5.4em; }
 
-/* Подписи оси времени стоят там, где стоит их точка, а не через равные
-   промежутки: в месяцах разное число дней, и равномерная раскладка развела бы
-   подпись и засечку, к которой она относится. */
+/* Time axis labels stand where their point stands, not at even intervals: months
+   hold different numbers of days, and an even layout would separate a label from
+   the mark it belongs to. */
 .fx-line__x { position: relative; display: block; height: 1.15em; overflow: hidden; }
 .fx-line__x span { position: absolute; flex: none; transform: translateX(-50%); white-space: nowrap; font-size: .66rem; }
 .fx-line__x span:first-child { transform: none; }
 .fx-line__x span:last-child { transform: translateX(-100%); }
 .spark__grid i.fx-vgrid { top: 0; bottom: 0; left: auto; right: auto; border-top: 0; border-left: 1px dashed var(--line); }
 
-/* Годовая таблица: на длинных периодах она не влезает в узкий экран, поэтому
-   едет вбок сама, не растягивая страницу. */
+/* The annual table: over long periods it does not fit a narrow screen, so it
+   scrolls sideways itself rather than stretching the page. */
 .fx-years__wrap { overflow-x: auto; }
 .fx-years { width: 100%; border-collapse: collapse; font-size: .88rem; }
 .fx-years th, .fx-years td { padding: 6px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); }
@@ -3071,11 +3072,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   :root:not([data-theme="light"]) .fxtip { color: #1c1a17; }
 }
 
-/* Годовая сводка — самая длинная таблица страницы: тридцать три года не
-   помещаются ни в один экран. Потолок высоты тот же, что у графиков: 16:9 от
-   ширины карточки, остальное уезжает в прокрутку. Это именно потолок — на
-   новой валюте с тремя строками карточка останется короткой и не оставит под
-   собой поля пустоты. */
+/* The annual summary is the page's longest table: thirty-three years fit on no
+   screen. The height ceiling is the charts' own: 16:9 of the card's width, the rest
+   into the scroll. It is a ceiling, not a ratio — on a new currency with three rows
+   the card stays short and leaves no field of emptiness beneath it. */
 .fx-years__wrap--cap {
   max-height: max(50cqw, 220px);
   overflow-y: auto; overscroll-behavior: contain;
@@ -3084,41 +3084,41 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .fx-years__wrap--cap::-webkit-scrollbar { width: 8px; }
 .fx-years__wrap--cap::-webkit-scrollbar-track { background: transparent; }
 .fx-years__wrap--cap::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
-/* Шапка остаётся на месте: без неё на второй строке прокрутки пять колонок
-   чисел перестают что-либо значить. Фон непрозрачный — иначе строки таблицы
-   просвечивают сквозь неё. */
+/* The header stays put: without it five columns of numbers stop meaning anything
+   on the scroll's second row. The background is opaque, or the table's rows show
+   through it. */
 .fx-years__wrap--cap thead th {
   position: sticky; top: 0; z-index: 1;
   background: var(--surface);
   box-shadow: inset 0 -1px 0 var(--line);
 }
 
-/* Панель показателей внутри карточки: рамка у карточки уже есть, и вторая
-   вокруг каждой плитки превратила бы ряд в набор коробок в коробке. */
+/* The indicator panel inside a card: the card already has a border, and a second
+   one around every tile would turn the row into a set of boxes in a box. */
 .stat-tiles--flush { margin-bottom: 0; gap: 0; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
 .stat-tiles--flush .stat-tile { background: none; border: 0; box-shadow: none; padding: 10px 14px 10px 0; }
 .stat-tiles--flush .stat-tile b { font-size: 1.35rem; }
 
-/* Формулы идут по две в ряд там, где хватает ширины: каждая короткая, и в одну
-   колонку они растянули бы страницу вчетверо. */
+/* The formulas go two to a row where there is width for it: each is short, and in
+   a single column they would stretch the page fourfold. */
 .charts--two { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-/* И только эти карточки не знают потолка 16:9. У остальных под потолком лежит
-   продолжение ряда, и прокрутка его честно прячет; здесь под ним оказывалась
-   расшифровка обозначений — то единственное, ради чего карточку и открывают.
-   Содержимое у неё конечной формы: правило, числа, вывод и до пяти строк
-   расшифровки, так что расти ей некуда. */
+/* These cards alone know no 16:9 ceiling. In the others what lies below the
+   ceiling is more of the same series, and the scroll honestly hides it; here what
+   lay below was the key to the symbols — the one thing the card is opened for. Its
+   content is of fixed shape: the rule, the figures, the conclusion and at most five
+   lines of key, so it has nowhere to grow. */
 .charts--two .chart__body { max-height: none; overflow: visible; padding-right: 0; }
 .chart__note--lead { font-size: .84rem; margin: 0 0 12px; }
 
 .mform { display: flex; flex-direction: column; gap: 8px; }
-/* Само правило: буквами — крупно и вразрядку, потому что его читают как
-   строку, а не как текст. */
+/* The rule itself: in letters, large and spaced, because it is read as a line
+   rather than as text. */
 .mform__sym {
   margin: 0; font-family: var(--serif); font-size: 1.06rem; line-height: 1.35;
   letter-spacing: .01em; overflow-wrap: anywhere;
 }
-/* То же правило числами. Моноширинные цифры держат разряды друг под другом,
-   когда формул на странице несколько. */
+/* The same rule in figures. Tabular digits keep the places under one another when
+   the page holds several formulas. */
 .mform__fill {
   margin: 0; padding: 9px 11px; border-radius: var(--radius-sm);
   background: var(--surface-2);
@@ -3130,8 +3130,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .mform__out { margin: 0; font-size: .86rem; line-height: 1.5; }
 .mform__th { margin: 4px 0 0; font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
 
-/* Расшифровка: обозначение слева, смысл, значение и источник справа. Сетка, а
-   не таблица, потому что колонок две, а строк столько, сколько букв. */
+/* The key: the symbol on the left, its meaning, value and source on the right. A
+   grid rather than a table, because there are two columns and as many rows as there
+   are symbols. */
 .mterms { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 10px; margin: 0; }
 .mterms__sym {
   margin: 0; font-family: var(--serif); font-size: .95rem; font-weight: 700;
@@ -3140,22 +3141,22 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .mterms__def { margin: 0; font-size: .8rem; line-height: 1.4; }
 .mterms__name { color: var(--muted); }
 .mterms__val { margin-left: 5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-/* Источник — отдельной строкой: он длиннее самого значения, и в подбор с ним
-   строка расшифровки перестаёт читаться. */
+/* The source gets a line of its own: it is longer than the value, and run in
+   beside it the key's row stops reading. */
 .mterms__src { display: block; margin-top: 1px; font-size: .72rem; color: var(--muted); }
 
 @media (max-width: 560px) {
   .fx-now__day { margin-left: 0; width: 100%; }
-  /* Тридцать одно число в строку шириной с ладонь не помещается: на месячной
-     оси оставляем каждое третье. Прочие периоды подписаны редко и так, их
-     прореживать нечем. */
+  /* Thirty-one numbers do not fit a row a palm wide: on the monthly axis every
+     third one is kept. The other periods are sparsely labelled already, and there
+     is nothing in them left to thin. */
   .fx-line__x span { font-size: .6rem; }
   .fx-line__x--days span { display: none; }
   .fx-line__x--days span:nth-child(3n+1) { display: block; }
 }
 
-/* Канал, которого пока нет: тот же ряд, но без ссылки и приглушённый — место
-   занято, а вести в пустоту нечем. */
+/* A channel that does not exist yet: the same row, but unlinked and dimmed — the
+   place is held, and there is nowhere to lead. */
 .foot-soc__soon { display: flex; align-items: center; gap: 8px; opacity: .55; cursor: default; }
 .foot-soc__badge {
   font-size: .68rem; text-transform: lowercase; letter-spacing: .02em;

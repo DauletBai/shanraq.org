@@ -12,9 +12,9 @@ import (
 	"go.uber.org/zap"
 )
 
-// Ключ должен переживать перезапуск. Протокол проверяет владение доменом по
-// файлу с ключом, и новый ключ при каждом запуске делал бы уже отданный файл
-// недействительным — все заявки отвергались бы.
+// The key has to survive a restart. The protocol checks domain ownership by the key
+// file, and a new key on every start would invalidate the file already served —
+// every submission would be rejected.
 func TestTheIndexNowKeySurvivesARestart(t *testing.T) {
 	dsn := os.Getenv("SHANRAQ_TEST_DB")
 	if dsn == "" {
@@ -38,7 +38,7 @@ func TestTheIndexNowKeySurvivesARestart(t *testing.T) {
 	if len(first) < 8 {
 		t.Fatalf("ключ длиной %d — протокол требует не меньше восьми знаков", len(first))
 	}
-	// Второй запуск: другой экземпляр модуля над той же базой.
+	// A second start: another instance of the module over the same database.
 	second, err := (&Module{db: pool, log: zap.NewNop()}).ensureIndexNowKey(ctx)
 	if err != nil {
 		t.Fatal(err)
@@ -51,8 +51,8 @@ func TestTheIndexNowKeySurvivesARestart(t *testing.T) {
 	}
 }
 
-// Негодная строка в настройках не должна оставлять сайт без ключа: молчащий
-// IndexNow хуже, чем ключ, которого ещё никто не подтверждал.
+// An unusable row in the settings must not leave the site without a key: a silent
+// IndexNow is worse than a key nobody had confirmed yet.
 func TestABrokenStoredKeyIsReissued(t *testing.T) {
 	dsn := os.Getenv("SHANRAQ_TEST_DB")
 	if dsn == "" {
@@ -79,7 +79,7 @@ func TestABrokenStoredKeyIsReissued(t *testing.T) {
 	}
 }
 
-// Файл ключа обязан отдаваться: без него поисковик отвергает каждую заявку.
+// The key file has to be served: without it a search engine rejects every submission.
 func TestTheKeyFileIsServed(t *testing.T) {
 	m := &Module{indexNowKey: "0123456789abcdef", log: zap.NewNop()}
 	w := httptest.NewRecorder()

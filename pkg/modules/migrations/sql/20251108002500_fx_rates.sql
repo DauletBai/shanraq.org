@@ -1,14 +1,15 @@
 -- +goose Up
--- Курсы валют, которые мы храним сами.
+-- Exchange rates we keep ourselves.
 --
--- Нацбанк отдаёт исторические курсы примерно за последние пять лет: запрос за
--- 2020 год и раньше возвращает пустой ответ. Это значит, что источник — не
--- архив, а окно, и оно едет вперёд вместе с сегодняшним днём. Поэтому мы
--- складываем каждый день к себе: через год наша таблица будет глубже, чем то,
--- что банк готов отдать, а «за весь период» перестанет упираться в чужое окно.
+-- The National Bank serves historical rates for roughly the last five years: a
+-- request for 2020 or earlier comes back empty. So the source is not an archive but
+-- a window, and it moves forward with today. Hence we file every day away for
+-- ourselves: a year from now our table will be deeper than what the bank is willing
+-- to give, and "all time" will stop running into somebody else's window.
 --
--- quant — за сколько единиц валюты дан курс (за 100 йен, за 10 гривен).
--- Хранится рядом со значением, потому что без него сравнивать валюты нельзя.
+-- quant is how many units of the currency the rate is quoted for (per 100 yen, per
+-- 10 hryvnia). It is stored beside the value because without it currencies cannot
+-- be compared.
 CREATE TABLE IF NOT EXISTS fx_rates (
     day   date          NOT NULL,
     code  text          NOT NULL,
@@ -18,28 +19,29 @@ CREATE TABLE IF NOT EXISTS fx_rates (
     PRIMARY KEY (day, code)
 );
 
--- Ряд по одной валюте за период — основной запрос страницы.
+-- One currency's series over a period — the page's main query.
 CREATE INDEX IF NOT EXISTS idx_fx_rates_code_day ON fx_rates (code, day);
 
--- Журнал опросов: какой день мы уже спрашивали и сколько курсов получили.
+-- The probe log: which day we have already asked about and how many rates came
+-- back.
 --
--- Без него догрузка после каждого перезапуска заново спрашивала бы банк про
--- каждые выходные за пять лет — тысячу запросов ни за чем. Ноль в found это
--- ответ «в этот день курсов нет», и он такой же результат, как и число: он
--- показывает и выходные, и границу, за которой источник молчит.
+-- Without it the backfill would ask the bank about every weekend of the last five
+-- years again after each restart — a thousand pointless requests. A zero in found is
+-- the answer "no rates for this day", and it is as much a result as a number: it
+-- marks both the weekends and the boundary past which the source is silent.
 CREATE TABLE IF NOT EXISTS fx_probed (
     day        date        NOT NULL PRIMARY KEY,
     found      integer     NOT NULL DEFAULT 0,
     probed_at  timestamptz NOT NULL DEFAULT now()
 );
 
--- Месячный архив с ноября 1993 года — от рождения тенге.
+-- The monthly archive from November 1993 — from the tenge's birth.
 --
--- Нацбанк отдаёт дневной курс лет на пять назад и молчит про всё, что раньше.
--- Поэтому глубину берём у Банка международных расчётов: у него месячный ряд
--- курсов к доллару с 1993-11, и из него кросс-курсом получается тенге за любую
--- из наших валют. Хранится тенге за ОДНУ единицу; привычные «за 100 иен»
--- делает уже отображение.
+-- The National Bank serves daily rates about five years back and is silent about
+-- everything earlier. So the depth comes from the Bank for International
+-- Settlements: it holds a monthly series of rates against the dollar from 1993-11,
+-- and a cross rate off it gives tenge per any of our currencies. Tenge per ONE unit
+-- is what is stored; the familiar "per 100 yen" is done by the display.
 CREATE TABLE IF NOT EXISTS fx_monthly (
     month date          NOT NULL,
     code  text          NOT NULL,

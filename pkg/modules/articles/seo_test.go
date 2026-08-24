@@ -53,10 +53,10 @@ func TestBreadcrumbLD(t *testing.T) {
 	}
 }
 
-// Новостная карта — это то, чем издание сообщает Google, что вышло за
-// последние двое суток. Мы издаём одну статью на трёх языках по трём адресам,
-// а карта перечисляла только язык оригинала: две трети написанного не попадали
-// в окно вообще.
+// A news sitemap is how a publication tells Google what came out in the last two
+// days. We publish one article in three languages at three addresses, and the
+// sitemap listed only the original language: two thirds of what was written never
+// entered the window at all.
 func TestNewsSitemapCarriesEveryFinishedLanguage(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -66,7 +66,7 @@ func TestNewsSitemapCarriesEveryFinishedLanguage(t *testing.T) {
 	app.exec(`INSERT INTO article_translations (article_id, lang, title, summary, body_md, source, status)
 	          VALUES ($1,'kz','Қазақша тақырып','Сипаттама','Мәтін','human','ready'),
 	                 ($1,'en','English headline','Summary','Body','human','ready')`, id)
-	// Пустая вкладка — это намерение, а не материал: анонсировать её нельзя.
+	// An empty tab is an intention, not material: it cannot be announced.
 	other, otherSlug := app.seedArticle(author, "published")
 	app.exec(`UPDATE articles SET published_at = NOW() WHERE id = $1`, other)
 	app.exec(`INSERT INTO article_translations (article_id, lang, title, summary, body_md, source, status)
@@ -92,12 +92,12 @@ func TestNewsSitemapCarriesEveryFinishedLanguage(t *testing.T) {
 		t.Error("пустая языковая вкладка объявлена как новость")
 	}
 
-	// Казахский код языка для Google — kk, а не наш внутренний kz.
+	// Google's code for Kazakh is kk, not our internal kz.
 	if strings.Contains(body, "<news:language>kz</news:language>") {
 		t.Error("в карту попал внутренний код kz вместо kk")
 	}
 
-	// И старое остаётся за окном: Google принимает только двое суток.
+	// And the old stays outside the window: Google accepts two days only.
 	old, oldSlug := app.seedArticle(author, "published")
 	app.exec(`UPDATE articles SET published_at = NOW() - interval '5 days' WHERE id = $1`, old)
 	if body := app.do(http.MethodGet, "/sitemap-news.xml", nil).Body.String(); strings.Contains(body, oldSlug) {
@@ -105,14 +105,14 @@ func TestNewsSitemapCarriesEveryFinishedLanguage(t *testing.T) {
 	}
 }
 
-// Счётчик ZERO.kz должен запрашиваться при открытии страницы, а не при
-// прокрутке до подвала.
+// The ZERO.kz counter has to be requested when the page opens, not when it is
+// scrolled to the footer.
 //
-// Он стоит внизу, и с loading="lazy" браузер забирал картинку только у тех,
-// кто дочитал до конца: 22.08.2026 замер показал, что открытие главной не
-// запрашивает ничего, а прокрутка до подвала — запрашивает. Счётчик при этом
-// считал не посещения, а дочитавших, и цифра, которую мы показали бы
-// рекламодателю, была бы малой долей правды.
+// It stands at the bottom, and with loading="lazy" the browser fetched the image
+// only for those who read to the end: a measurement on 22.08.2026 showed that
+// opening the front page requests nothing while scrolling to the footer does. The
+// counter was then counting finishers rather than visits, and the figure we would
+// have shown an advertiser would have been a small fraction of the truth.
 func TestTheVisitorCounterIsFetchedOnOpeningNotOnScrolling(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -127,8 +127,8 @@ func TestTheVisitorCounterIsFetchedOnOpeningNotOnScrolling(t *testing.T) {
 	if strings.Contains(tag, "loading=\"lazy\"") {
 		t.Errorf("счётчик отложен до прокрутки: %s", tag)
 	}
-	// decoding="async" остаётся: он откладывает превращение байтов в пиксели,
-	// а не сам запрос.
+	// decoding="async" stays: it defers turning bytes into pixels, not the request
+	// itself.
 	if !strings.Contains(tag, "decoding=\"async\"") {
 		t.Errorf("у счётчика пропала асинхронная декодировка: %s", tag)
 	}

@@ -413,12 +413,17 @@
 
     <div class="adm-cards2">
     {{ if .CanManageUsers }}
-    <section class="adv-card">
-      <h2 class="adv-card__title">{{ t .Lang "agent.queue_title" }}{{/* Заявки организаций. Решение здесь — вся суть функции: до него имя
-     организации не показывается нигде, а после него подписывает статьи. */}}
-{{ if .PendingOrgs }}
-<div class="adm-card">
-  <h2>{{ t .Lang "org.queue" }}</h2>
+      {{/* Organisation applications. The decision here is the whole substance of the
+           feature: before it the organisation's name is shown nowhere, and after it
+           the name signs articles.
+
+           This block used to sit inside the heading below — a level-two heading
+           nested inside another one, which no browser accepts: it closed the title
+           early and left the badge's closing tag stray. It is a card of its own and
+           belongs beside the other cards, not inside one's title. */}}
+      {{ if .PendingOrgs }}
+      <div class="adm-card">
+        <h2>{{ t .Lang "org.queue" }}</h2>
   {{ range .PendingOrgs }}
   <div class="adm-row">
     <div>
@@ -435,10 +440,11 @@
     </form>
   </div>
   {{ end }}
-</div>
-{{ end }}
+      </div>
+      {{ end }}
 
-{{ if .PendingAgents }} <span class="subbar__badge">{{ len .PendingAgents }}</span>{{ end }}</h2>
+    <section class="adv-card">
+      <h2 class="adv-card__title">{{ t .Lang "agent.queue_title" }}{{ if .PendingAgents }} <span class="subbar__badge">{{ len .PendingAgents }}</span>{{ end }}</h2>
       <p class="aside__text">{{ t .Lang "agent.queue_hint" }}</p>
       {{ if not .PendingAgents }}<p class="aside__text">{{ t .Lang "agent.queue_none" }}</p>{{ end }}
         <div class="adm-scroll adm-scroll--tall">

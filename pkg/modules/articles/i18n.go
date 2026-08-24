@@ -974,7 +974,7 @@ var messages = map[string]map[string]string{
 	"ag.clicks":           {"kz": "Клик оқиғалары (30 күн)", "ru": "Клики (30 дней)", "en": "Clicks (30 days)"},
 	"stats.title":         {"kz": "Аналитика", "ru": "Аналитика", "en": "Analytics"},
 
-	// Страница разбора курса валют.
+	// The exchange rates page.
 	"fx.title":    {"kz": "Валюта бағамдары", "ru": "Курсы валют", "en": "Exchange rates"},
 	"fx.desc":     {"kz": "Теңге бағамы мен Қазақстандағы инфляция: 1993 жылдан бергі доллар бағамы, ақша массасы М3, алтын-валюта резервтері, Ұлттық қор және жылдық инфляция. График, ең жоғары және ең төмен нүктелер, жылдар бойынша өзгеріс.", "ru": "Курс тенге и инфляция в Казахстане: курс доллара с 1993 года, денежная масса М3, золотовалютные резервы, Национальный фонд и годовая инфляция. График, максимумы и минимумы, изменение по годам.", "en": "The tenge rate and inflation in Kazakhstan: the dollar rate since 1993, the M3 money supply, gold and foreign exchange reserves, the National Fund and annual inflation. A chart, highs and lows, change by year."},
 	"fx.lead":     {"kz": "Ұлттық банктің ресми бағамы. Күнделікті деректер — банктің өзінен, ал 1993 жылдың қарашасынан бастап, теңге пайда болған айдан бергі тереңдік — Халықаралық есеп айырысу банкінің айлық қатарынан.", "ru": "Официальный курс Национального банка. Дневные данные — от самого банка, а глубина с ноября 1993 года, с месяца появления тенге, — из месячного ряда Банка международных расчётов.", "en": "The National Bank's official rate. The daily figures come from the bank itself; the depth back to November 1993, the month the tenge was born, comes from the Bank for International Settlements' monthly series."},
@@ -1054,7 +1054,7 @@ var messages = map[string]map[string]string{
 	"fx.link":      {"kz": "Бағам тарихы", "ru": "История курса", "en": "Rate history"},
 	"fx.title_cur": {"kz": "%s — теңге бағамы", "ru": "%s — курс к тенге", "en": "%s to KZT exchange rate"},
 
-	// Раздел «Как формируется курс тенге и инфляция».
+	// The section "How the tenge rate and inflation are formed".
 	"fx.macro_h":    {"kz": "Теңге бағамы мен инфляция қалай қалыптасады", "ru": "Как формируется курс тенге и инфляция", "en": "How the tenge rate and inflation are formed"},
 	"fx.macro_lead": {"kz": "Доллардың теңгеге бағамы да, Қазақстандағы инфляция да Ұлттық банктің өзі жариялайтын екі шамадан шығады: елде қанша теңге бар және алтын-валюта резервтерінде қанша доллар бар. Төменде — 1994 жылдан бергі екі қатар және олардан не шығатыны. Дерек автоматты түрде жаңарады.", "ru": "И курс доллара к тенге, и инфляция в Казахстане складываются из двух величин, которые Национальный банк публикует сам: сколько в стране тенге и сколько долларов в золотовалютных резервах. Ниже — оба ряда с 1994 года и то, что из них следует. Данные обновляются автоматически.", "en": "Both the dollar-to-tenge rate and inflation in Kazakhstan follow from two quantities the National Bank publishes itself: how many tenge exist and how many dollars sit in the gold and foreign exchange reserves. Below are both series since 1994 and what follows from them. The figures update themselves."},
 
@@ -1090,8 +1090,8 @@ var messages = map[string]map[string]string{
 	"fx.erode_then": {"kz": "Сонда доллармен", "ru": "В долларах тогда", "en": "In dollars then"},
 	"fx.erode_now":  {"kz": "Қазір доллармен", "ru": "В долларах сейчас", "en": "In dollars now"},
 
-	// Панель Нацбанка, ставка и формулы: то, из чего инфляция и курс выходят,
-	// и кто эти величины назначает.
+	// The National Bank's panel, its rate and the formulas: what inflation and the rate
+	// follow from, and who sets those quantities.
 	"fx.pp": {"kz": "п.т.", "ru": "п.п.", "en": "pp"},
 
 	"fx.u_kzt_usd": {"kz": "₸/$", "ru": "₸/$", "en": "₸/$"},

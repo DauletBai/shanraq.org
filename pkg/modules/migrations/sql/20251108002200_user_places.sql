@@ -1,20 +1,20 @@
 -- +goose Up
--- Где живёт читатель. Одно поле, а не четыре.
+-- Where the reader lives. One field, not four.
 --
--- Форма спрашивает страну, область и город каскадом, но хранится только
--- выбранный узел: республику и область из него выводит дерево geo_nodes, а
--- четыре отдельные колонки рано или поздно начали бы противоречить друг другу —
--- город из одной области рядом с областью из другой.
+-- The form asks for country, region and city as a cascade, but only the chosen node
+-- is stored: the republic and the region are derived from it by the geo_nodes tree,
+-- whereas four separate columns would sooner or later start contradicting one
+-- another — a city from one region beside a region from another.
 --
--- Это нужно для доставки: автор сможет опубликовать материал для своего
--- посёлка, района или области, и он дойдёт до тех, кого касается. Определить
--- место по IP нельзя: установленная у нас база DB-IP Lite различает только
--- страну, а городские базы в Казахстане показывают половину страны в Алматы,
--- потому что мобильный трафик выходит через несколько шлюзов. Поэтому
--- спрашиваем у человека и даём поменять в один клик.
+-- This is for delivery: an author will be able to publish for their own settlement,
+-- district or region, and it will reach the people it concerns. The place cannot be
+-- determined by IP: the DB-IP Lite database we run tells only countries apart, and
+-- city-level databases in Kazakhstan put half the country in Almaty because mobile
+-- traffic leaves through a handful of gateways. So we ask the person and let them
+-- change it in one click.
 --
--- Отдельная таблица, а не колонка в auth_users: география — предмет модуля
--- статей, и модулю авторизации о ней знать незачем.
+-- A separate table rather than a column in auth_users: geography is the articles
+-- module's business, and the auth module has no need to know about it.
 CREATE TABLE IF NOT EXISTS user_places (
     user_id UUID PRIMARY KEY REFERENCES auth_users(id) ON DELETE CASCADE,
     geo_node_id UUID NOT NULL REFERENCES geo_nodes(id) ON DELETE CASCADE,

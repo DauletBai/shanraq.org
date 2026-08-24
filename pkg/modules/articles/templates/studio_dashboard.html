@@ -34,9 +34,9 @@
       </div>
       <div class="stat">
         <p class="stat__label">{{ t .Lang "studio.stat_by_lang" }}</p>
-        {{/* Строка на язык вместо одного бегущего абзаца: в узкой карточке он
-             переносился как попало и отрывал число от своего языка — «kz 169 ru»
-             на первой строке, «1450 en» на второй. */}}
+        {{/* One row per language instead of a single running paragraph: in a
+             narrow card it wrapped anywhere and tore a number from its language
+             — "kz 169 ru" on the first line, "1450 en" on the second. */}}
         <ul class="stat__langs">
           {{ range langs }}
           <li><span class="stat__langs-code">{{ label . }}</span><b>{{ money (index $.Stats.ViewsByLang .) }}</b></li>

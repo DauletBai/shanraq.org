@@ -8,9 +8,9 @@ import (
 	"time"
 )
 
-// Пустой ответ банка — это не поломка. За выходные и за даты вне его окна
-// приходит документ без единой валюты, и если считать это ошибкой, догрузка
-// будет вечно спотыкаться о каждую субботу.
+// An empty answer from the bank is not a breakage. For weekends and for dates
+// outside its window a document with no currencies arrives, and treating that as
+// an error would have the backfill trip over every Saturday for ever.
 func TestAnEmptyDayFromTheBankIsNotAnError(t *testing.T) {
 	rates, err := parseFxRates([]byte(`<?xml version="1.0"?><rates></rates>`), time.Now())
 	if err != nil {
@@ -21,8 +21,8 @@ func TestAnEmptyDayFromTheBankIsNotAnError(t *testing.T) {
 	}
 }
 
-// Банк объявляет иену сотнями, и кратность надо сохранить: без неё курс иены
-// окажется в сто раз больше, чем он есть.
+// The bank quotes the yen in hundreds, and that multiple has to be kept: without
+// it the yen's rate comes out a hundred times larger than it is.
 func TestTheBanksMultiplierSurvivesParsing(t *testing.T) {
 	body := []byte(`<rates>
 		<item><fullname>ДОЛЛАР США</fullname><title>USD</title><description>456.88</description><quant>1</quant></item>
@@ -47,8 +47,9 @@ func TestTheBanksMultiplierSurvivesParsing(t *testing.T) {
 	}
 }
 
-// В выгрузке BIS все валюты меряются долларом. Тенге за единицу валюты — это
-// частное двух её строк, и если считать иначе, глубокая история будет врать.
+// In the BIS export every currency is measured in dollars. Tenge per unit of a
+// currency is the quotient of two of its rows, and computing it any other way makes
+// the deep history lie.
 func TestTheDeepArchiveIsCrossedThroughTheDollar(t *testing.T) {
 	csv := `FREQ,REF_AREA,CURRENCY,COLLECTION,TIME_PERIOD,OBS_VALUE
 M,KZ,KZT,E,2026-06,480.72
@@ -64,14 +65,15 @@ M,XM,EUR,E,1993-11,NaN
 	for _, r := range rows {
 		got[r.Code+"@"+r.Month.Format("2006-01")] = r.Value
 	}
-	// Доллар — база ряда, его курс к тенге берётся напрямую.
+	// The dollar is the series' base, so its rate against the tenge is taken
+	// directly.
 	if v := got["USD@2026-06"]; v < 480.7 || v > 480.8 {
 		t.Errorf("доллар посчитан как %.2f вместо 480.72", v)
 	}
 	if v := got["EUR@2026-06"]; v < 547 || v > 549 {
 		t.Errorf("евро посчитано как %.2f, а 480.72/0.8777 это около 547.7", v)
 	}
-	// Месяц рождения тенге доллар покрывает, а евро тогда ещё не было.
+	// The dollar covers the tenge's birth month; the euro did not exist yet.
 	if v := got["USD@1993-11"]; v < 4.69 || v > 4.71 {
 		t.Errorf("ноябрь 1993 потерян: %.2f", v)
 	}
@@ -80,8 +82,8 @@ M,XM,EUR,E,1993-11,NaN
 	}
 }
 
-// Месяц без курса тенге нельзя пересчитать ни во что: делить не на что.
-// Такой месяц должен выпадать целиком, а не превращаться в ноль.
+// A month with no tenge rate cannot be converted into anything: there is nothing
+// to divide by. Such a month must drop out whole rather than become a zero.
 func TestAMonthWithoutTheTengeIsDropped(t *testing.T) {
 	rows, err := parseBISMonthly(strings.NewReader(
 		"FREQ,REF_AREA,CURRENCY,COLLECTION,TIME_PERIOD,OBS_VALUE\nM,XM,EUR,E,1998-01,0.9\n"))
@@ -93,8 +95,8 @@ func TestAMonthWithoutTheTengeIsDropped(t *testing.T) {
 	}
 }
 
-// Прореживание длинного ряда не должно терять его концы: именно по ним
-// страница считает изменение за период.
+// Thinning a long series must not lose its ends: they are what the page computes
+// the change over the period from.
 func TestThinningKeepsBothEndsOfTheSeries(t *testing.T) {
 	pts := make([]FxPoint, 3000)
 	base := time.Date(2015, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -113,8 +115,8 @@ func TestThinningKeepsBothEndsOfTheSeries(t *testing.T) {
 	}
 }
 
-// Мелкие валюты вроде узбекского сума меньше единицы. Два знака после запятой
-// превратили бы весь их ряд в одинаковые нули.
+// Small currencies like the Uzbek sum are worth less than one. Two decimal places
+// would turn their whole series into identical zeros.
 func TestSmallRatesKeepEnoughDigits(t *testing.T) {
 	if got := fxNum(0.0384); got != "0,0384" {
 		t.Errorf("мелкий курс напечатан как %q", got)
@@ -125,8 +127,8 @@ func TestSmallRatesKeepEnoughDigits(t *testing.T) {
 	if got := fxDelta(2.5, 456.0); !strings.HasPrefix(got, "+") {
 		t.Errorf("рост напечатан без плюса: %q", got)
 	}
-	// Точность изменения задаёт величина курса, а не самого изменения: иначе в
-	// одном столбце встают «+2,25» и «+0,5900», и колонка перестаёт читаться.
+	// A change's precision is set by the size of the rate, not of the change itself:
+	// otherwise "+2,25" and "+0,5900" stand in one column and it stops reading.
 	if got := fxDelta(0.59, 456.0); got != "+0,59" {
 		t.Errorf("мелкое изменение крупного курса напечатано как %q", got)
 	}
@@ -138,7 +140,7 @@ func TestSmallRatesKeepEnoughDigits(t *testing.T) {
 	}
 }
 
-// seedFx кладёт короткую историю: месяц дневных курсов и одну глубокую точку.
+// seedFx lays down a short history: a month of daily rates and one deep point.
 func seedFx(app *testApp) {
 	app.exec(`DELETE FROM fx_rates WHERE code IN ('USD','JPY')`)
 	app.exec(`DELETE FROM fx_monthly WHERE code IN ('USD','JPY')`)
@@ -152,8 +154,8 @@ func seedFx(app *testApp) {
 		ON CONFLICT (month, code) DO NOTHING`)
 }
 
-// Страница курса публичная и открывается без входа: она затем и нужна, чтобы
-// на неё приходили посторонние.
+// The rates page is public and opens without a login: its whole purpose is that
+// strangers arrive on it.
 func TestTheRatesPageIsOpenAndShowsTheRate(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -170,18 +172,18 @@ func TestTheRatesPageIsOpenAndShowsTheRate(t *testing.T) {
 	if strings.Contains(body, T(LangRU, "fx.empty")) {
 		t.Fatal("страница говорит, что данных нет, хотя они засеяны")
 	}
-	// Линия рисуется на сервере: без неё останутся одни числа.
+	// The line is drawn on the server: without it only the numbers remain.
 	if !strings.Contains(body, "fx-svg__line") {
 		t.Error("на странице нет линии курса")
 	}
-	// Источник обязан быть назван на самой странице.
+	// The source has to be named on the page itself.
 	if !strings.Contains(body, T(LangRU, "fx.src_bis")) {
 		t.Error("страница не называет источник глубокой истории")
 	}
 }
 
-// Неизвестная валюта в адресе не должна ронять страницу или показывать пустоту:
-// её место занимает доллар.
+// An unknown currency in the address must not break the page or show an emptiness:
+// the dollar takes its place.
 func TestAnUnknownCurrencyFallsBackToTheDollar(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -196,8 +198,8 @@ func TestAnUnknownCurrencyFallsBackToTheDollar(t *testing.T) {
 	}
 }
 
-// Весь период должен начинаться с ноября 1993 года — с месяца, когда тенге
-// появился. Ради этого глубокий архив и заводился.
+// "All time" has to begin in November 1993 — the month the tenge appeared. That is
+// what the deep archive was built for.
 func TestTheWholePeriodReachesTheBirthOfTheTenge(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -213,24 +215,24 @@ func TestTheWholePeriodReachesTheBirthOfTheTenge(t *testing.T) {
 	if got := pts[0].Day.Format("2006-01"); got != "1993-11" {
 		t.Errorf("ряд начинается с %s, а не с рождения тенге", got)
 	}
-	// Хвост, до которого глубокий источник не дошёл, берётся из дневного
-	// архива — иначе страница показывала бы курс двухмесячной давности.
+	// The tail the deep source has not reached comes from the daily archive —
+	// otherwise the page would show a rate two months old.
 	last := pts[len(pts)-1].Day
 	if last.Before(monthStart(time.Now().UTC().AddDate(0, -1, 0))) {
 		t.Errorf("ряд обрывается на %s — свежий хвост не подставлен", last.Format("2006-01"))
 	}
 }
 
-// Догрузка не должна переспрашивать банк про дни, о которых уже спрашивала:
-// пять лет выходных — это тысяча запросов ни за чем при каждом перезапуске.
+// The backfill must not ask the bank again about days it has already asked about:
+// five years of weekends is a thousand pointless requests on every restart.
 func TestAProbedDayIsNeverAskedTwice(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
 	ctx := context.Background()
 	fx := app.module().fx
 
-	// Окно готовим сами: тест, который берёт первый попавшийся неопрошенный
-	// день, зависит от того, что оставила в базе предыдущая работа.
+	// The window is staged here: a test that takes whichever unprobed day comes
+	// first depends on what an earlier run left in the database.
 	app.exec(`INSERT INTO fx_probed (day, found)
 	          SELECT g::date, 0 FROM generate_series(CURRENT_DATE - 5, CURRENT_DATE, interval '1 day') g
 	          ON CONFLICT (day) DO NOTHING`)
@@ -258,9 +260,9 @@ func TestAProbedDayIsNeverAskedTwice(t *testing.T) {
 	}
 }
 
-// Длинная цепочка пустых дней — это край чужого архива, и упираться в него
-// бесконечно незачем. Праздники дают до девяти пустых дней подряд, поэтому
-// порог должен быть заметно выше.
+// A long run of empty days is the edge of somebody else's archive, and there is no
+// point pushing against it for ever. Holidays give up to nine empty days in a row,
+// so the threshold has to sit well above that.
 func TestTheEndOfTheSourcesWindowIsRecognised(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -279,14 +281,14 @@ func TestTheEndOfTheSourcesWindowIsRecognised(t *testing.T) {
 	if run < fxEmptyRun {
 		t.Errorf("подряд пустых дней насчитано %d — край окна не распознан", run)
 	}
-	// Строка с курсами обрывает цепочку: ниже неё считать нечего.
+	// A row holding rates breaks the run: below it there is nothing to count.
 	if run > 55 {
 		t.Errorf("цепочка в %d дней перешагнула день с курсами", run)
 	}
 }
 
-// Названия банк пишет прописными, а аббревиатуры в них нельзя опускать в
-// строчные: «ДОЛЛАР США» должен стать «Доллар США», а не «Доллар сша».
+// The bank writes the names in capitals, and abbreviations inside them must not be
+// lower-cased: "ДОЛЛАР США" has to become "Доллар США", not "Доллар сша".
 func TestTheBanksShoutingNamesAreCalmedDown(t *testing.T) {
 	for in, want := range map[string]string{
 		"ДОЛЛАР США":       "Доллар США",
@@ -302,9 +304,9 @@ func TestTheBanksShoutingNamesAreCalmedDown(t *testing.T) {
 	}
 }
 
-// У курса каждой валюты свой адрес. Свернуть их в один значит, что человек,
-// ищущий курс рубля, нашу страницу курса рубля не найдёт: поисковик знает
-// только тот адрес, который сайт объявил своим.
+// Each currency's rate has its own address. Folding them into one means that
+// someone searching for the rouble rate will not find our rouble rate page: a
+// search engine only knows the address the site declared as its own.
 func TestEachCurrencyIsItsOwnPage(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -322,7 +324,7 @@ func TestEachCurrencyIsItsOwnPage(t *testing.T) {
 	if !strings.Contains(body, `href="/rates?c=EUR&amp;lang=ru"`) {
 		t.Error("canonical евро не указывает на собственный адрес валюты")
 	}
-	// Период в canonical не входит: это тот же курс на другую глубину.
+	// The period stays out of the canonical: it is the same rate at another depth.
 	if strings.Contains(body, "c=EUR&amp;p=year&amp;lang=ru") {
 		t.Error("период попал в canonical и размножил страницу на четыре копии")
 	}
@@ -333,14 +335,15 @@ func TestEachCurrencyIsItsOwnPage(t *testing.T) {
 		t.Error("в описании страницы нет названия валюты")
 	}
 
-	// Доллар — это и есть /rates, второй адрес ему не нужен.
+	// The dollar is /rates, and it needs no second address.
 	w = app.do(http.MethodGet, "/rates?c=USD", nil)
 	if b := w.Body.String(); strings.Contains(b, `href="/rates?c=USD&amp;lang=ru"`) {
 		t.Error("доллар получил отдельный адрес, хотя он и есть страница курсов")
 	}
 }
 
-// Страница, которой нет в карте сайта, для поисковика не существует.
+// A page missing from the sitemap does not exist as far as a search engine is
+// concerned.
 func TestEveryCurrencyIsOfferedInTheSitemap(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -361,15 +364,16 @@ func TestEveryCurrencyIsOfferedInTheSitemap(t *testing.T) {
 	if !strings.Contains(body, "/rates?lang=ru") {
 		t.Error("самой страницы курсов нет в карте сайта")
 	}
-	// Доллар не должен предлагаться дважды — своим адресом и как /rates.
+	// The dollar must not be offered twice — once by its own address and once as
+	// /rates.
 	if strings.Contains(body, "/rates?c=USD") {
 		t.Error("доллар предложен вторым адресом — это дубль страницы курсов")
 	}
 }
 
-// Постоянные страницы должны уходить в IndexNow на всех трёх языках и ровно
-// теми адресами, которые сайт объявляет своими: заявка на чужой адрес
-// поисковику ничего не даёт.
+// The standing pages have to go to IndexNow in all three languages and by exactly
+// the addresses the site declares as its own: a submission for someone else's
+// address gives a search engine nothing.
 func TestPermanentPagesAreAnnouncedInEveryLanguage(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()

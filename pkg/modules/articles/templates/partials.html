@@ -142,8 +142,8 @@
     <div class="infobar__cell"><span class="metaic">{{ icon "calendar" }}<span class="wx__temp">{{ .Info.Today }}</span></span></div>
     <div class="infobar__cell">{{ if .Info.WeatherTemp }}<span class="metaic wx">{{ icon .Info.WeatherIcon }}<span class="wx__temp">{{ .Info.WeatherTemp }}</span>{{ if .Info.WeatherPress }}<span class="wx__press">{{ icon "wx_press" }}<span class="wx__pval">{{ .Info.WeatherPress }} {{ t .Lang "wx.pressure_unit" }}</span></span>{{ end }}</span>{{ else }}<span class="infobar__muted">—</span>{{ end }}</div>
     <div class="infobar__cell infobar__rates">
-      {{/* Каждый курс ведёт в историю именно этой валюты: человек нажимает
-           на доллар, потому что хочет знать про доллар. */}}
+      {{/* Every rate leads to that currency's own history: someone clicks the
+           dollar because they want to know about the dollar. */}}
       {{ range .Info.Rates }}<a class="rate" href="/rates?c={{ .Code }}" title="{{ t $.Lang "fx.link" }}: {{ .Code }}"><span class="rate__cur">{{ curSymbol .Code }}</span> <span class="rate__num">{{ .Main }}<span class="rate__last">{{ .Last }}</span></span>{{ if eq .Dir "up" }} <span class="rate__arr rate--up">▲</span>{{ else if eq .Dir "down" }} <span class="rate__arr rate--down">▼</span>{{ end }}</a>{{ else }}<a class="infobar__muted" href="/rates">$ € ₽</a>{{ end }}
     </div>
     <div class="infobar__cell infobar__social">{{ template "social_icons" .Info.Social }}</div>
@@ -453,10 +453,10 @@
           {{ range liveSocial .Info.Social }}
           <li><a href="{{ .URL }}" target="_blank" rel="noopener">{{ brandicon .Name }}<span class="foot-soc__name">{{ .Name }}</span></a></li>
           {{ end }}
-          {{/* Канал, которого пока нет: показан без ссылки, чтобы не вести в
-               пустоту. Место занято намеренно — читатель видит, что он будет.
-               Подпись «скоро» снята: приглушённая строка без ссылки говорит то
-               же самое, а слово обещало срок, которого мы не называли. */}}
+          {{/* A channel that does not exist yet: shown without a link so as not
+               to lead nowhere. The place is held deliberately — the reader sees
+               it is coming. The "soon" label is gone: a dimmed unlinked row says
+               the same thing, while the word promised a date we never named. */}}
           <li class="foot-soc__soon">{{ brandicon "youtube" }}<span class="foot-soc__name">YouTube</span></li>
           {{ if ne .Info.GitHub "" }}
           <li><a href="{{ .Info.GitHub }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6 0-.3 0-1.1 0-2-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2 0 1.6 0 2.9 0 3.3 0 .3.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg><span class="foot-soc__name">GitHub</span></a></li>

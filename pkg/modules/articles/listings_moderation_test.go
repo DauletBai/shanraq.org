@@ -6,11 +6,11 @@ import (
 	"testing"
 )
 
-// Забракованное объявление должно объяснять себя целиком. «Скрыто: скрытая
-// реклама» не говорит автору ничего, что можно исправить, — он остаётся гадать,
-// какая фраза не понравилась, а догадка не есть исправление. Поэтому проверка
-// объявлений отвечает тем же контрактом, что и проверка статей: список находок,
-// в каждой — правило, точная цитата и что менять.
+// A rejected listing has to explain itself in full. "Hidden: covert advertising"
+// tells the author nothing they can act on — they are left guessing which phrase
+// gave offence, and a guess is not a fix. So the listing check answers with the
+// same contract as the article check: a list of findings, each carrying the rule,
+// the exact quotation, and what to change.
 func TestListingPromptDemandsAnExplanationPerFinding(t *testing.T) {
 	p := listingReviewPrompt("ru", "текст объявления")
 
@@ -33,11 +33,11 @@ func TestListingPromptDemandsAnExplanationPerFinding(t *testing.T) {
 			t.Errorf("промпт не требует объяснения: нет %q", must)
 		}
 	}
-	// Замечание пишется на языке автора, а не на языке промпта.
+	// The remark is written in the author's language, not the prompt's.
 	if !strings.Contains(p, "Write \"note\" in ru") {
 		t.Error("язык замечания не задан")
 	}
-	// И то, из-за чего проверка не должна ругаться на честное объявление.
+	// And the thing the check must not complain about: an honest listing.
 	for _, guard := range []string{
 		"must return an empty findings array",
 		"badly written or overpriced listing breaks no rule",
@@ -49,10 +49,10 @@ func TestListingPromptDemandsAnExplanationPerFinding(t *testing.T) {
 	}
 }
 
-// Половина того, что делает объявление недостоверным, не видна в описании
-// самом по себе — она в расхождении между описанием и полями. «Просторная
-// квартира 120 м²» при заявленных 54 — это и есть самая частая жалоба, и
-// увидеть её можно, только если обе половины лежат перед проверяющим.
+// Half of what makes a listing untrue is invisible in the description on its own —
+// it lies in the gap between the description and the fields. "A spacious 120 m²
+// flat" against a declared 54 is the single commonest complaint, and it can only
+// be seen if both halves lie in front of the checker.
 func TestScreeningTextCarriesTheDeclaredFields(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -83,10 +83,11 @@ func TestScreeningTextCarriesTheDeclaredFields(t *testing.T) {
 	}
 }
 
-// Проверка идёт в фоне, а не в обработчике формы: при трёх запросах в минуту
-// синхронный вызов держал бы форму до двадцати секунд, а весь смысл доски
-// объявлений в том, что подача занимает секунды. И если модель выключена,
-// задача не ставится вовсе — подача работает ровно как раньше.
+// The check runs in the background rather than in the form handler: at three
+// requests a minute a synchronous call would hold the form for up to twenty
+// seconds, and the whole point of a classifieds board is that posting takes
+// seconds. And with the model switched off no job is queued at all — posting works
+// exactly as it did before.
 func TestScreeningIsQueuedNotAwaited(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -106,8 +107,8 @@ func TestScreeningIsQueuedNotAwaited(t *testing.T) {
 	}
 }
 
-// Уже снятое, истёкшее или пожалованное читателями объявление проверять нечего:
-// решение по нему уже принято, и машине незачем его пересматривать.
+// A listing already withdrawn, expired or reported by readers is nothing to check:
+// a decision on it has been taken, and the machine has no business revisiting it.
 func TestScreeningSkipsListingsThatAreNoLongerPublished(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()

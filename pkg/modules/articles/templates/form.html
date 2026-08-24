@@ -36,16 +36,16 @@
       </div>
       {{ end }}
       {{ if eq .Mode "register" }}
-      {{/* Где живёт читатель. Спрашиваем здесь, потому что позже спросить уже
-           негде: человек приходит читать, а не заполнять профиль.
+      {{/* Where the reader lives. Asked here because there is nowhere later to
+           ask: people arrive to read, not to fill in a profile.
 
-           Не обязательное поле. Регистрация — узкое место, и требование
-           выбрать посёлок до создания аккаунта стоит дороже, чем даёт: кто не
-           выберет, будет видеть всё, ровно как раньше. Поменять можно в
-           профиле в один клик.
+           Not required. Registration is the bottleneck, and demanding a
+           settlement before an account exists costs more than it gives:
+           whoever chooses none will see everything, exactly as before. It can
+           be changed in the profile in one click.
 
-           Виджет тот же, что в форме подачи объявления: он сам ходит за
-           деревом в /api/geo/*, а сюда кладёт только выбранный узел. */}}
+           The widget is the one from the listing form: it fetches the tree
+           from /api/geo/* itself and puts only the chosen node here. */}}
       <div class="field">
         <label>{{ t .Lang "form.place" }} {{ template "fhelp" (t .Lang "form.place_hint") }}</label>
         <div class="geo-cascade" data-geo data-lang="{{ .Lang }}" data-geo-selected="{{ .PlaceID }}"></div>

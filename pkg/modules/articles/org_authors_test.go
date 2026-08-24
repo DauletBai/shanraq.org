@@ -8,10 +8,10 @@ import (
 	"testing"
 )
 
-// Главное свойство всей функции: имя, которое можно вписать самому, не
-// показывается нигде, пока его не подтвердил человек. Иначе площадка
-// превращается в машину для выдачи себя за акимат, а одна поддельная
-// публикация стоит дороже сотни настоящих.
+// The whole feature's central property: a name anyone can type in is shown
+// nowhere until a person has confirmed it. Otherwise the platform becomes a
+// machine for impersonating a mayor's office, and one forged publication costs
+// more than a hundred genuine ones.
 func TestUnverifiedOrganisationIsShownNowhere(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -23,7 +23,7 @@ func TestUnverifiedOrganisationIsShownNowhere(t *testing.T) {
 		t.Fatalf("Apply: %v", err)
 	}
 
-	// Заявка есть, но подтверждения нет.
+	// The application exists, the confirmation does not.
 	org, err := store.ByUser(context.Background(), authorID)
 	if err != nil || org == nil {
 		t.Fatalf("ByUser: %v, %v", org, err)
@@ -39,14 +39,14 @@ func TestUnverifiedOrganisationIsShownNowhere(t *testing.T) {
 		t.Fatal("непроверенная организация вернулась как подтверждённая")
 	}
 
-	// И на странице статьи её тоже нет.
+	// And it is not on the article page either.
 	_, slug := app.seedArticle(authorID, "published")
 	w := app.do(http.MethodGet, "/read/"+slug, nil)
 	if strings.Contains(w.Body.String(), "Акимат г. Костанай") {
 		t.Error("непроверенное название организации попало в подпись статьи")
 	}
 
-	// После подтверждения — появляется, и рядом стоит человек.
+	// Once confirmed it appears, with the person beside it.
 	if err := store.SetStatus(context.Background(), authorID, orgVerified, "", nil); err != nil {
 		t.Fatalf("SetStatus: %v", err)
 	}
@@ -60,8 +60,8 @@ func TestUnverifiedOrganisationIsShownNowhere(t *testing.T) {
 	}
 }
 
-// Правка заявки сбрасывает подтверждение: изменённое название никто ещё не
-// смотрел, и оно не должно донашивать значок, выданный под другое имя.
+// Editing the application clears the confirmation: nobody has looked at the
+// changed name, and it must not inherit a badge granted to another one.
 func TestEditingAnApplicationDropsTheBadge(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -88,7 +88,7 @@ func TestEditingAnApplicationDropsTheBadge(t *testing.T) {
 	}
 }
 
-// Неизвестный вид не должен тихо превращаться в государственный орган.
+// An unknown kind must not quietly turn into a state body.
 func TestUnknownKindNeverBecomesAnOfficialBody(t *testing.T) {
 	for _, in := range []string{"", "акимат", "government", "  ", "official"} {
 		got := NormalizeOrgKind(in)
@@ -110,8 +110,8 @@ func TestUnknownKindNeverBecomesAnOfficialBody(t *testing.T) {
 	}
 }
 
-// Организация публикует для своей территории и того, что внутри неё. Без
-// этого подтверждённый значок становится пропуском на всю страну.
+// An organisation publishes for its own territory and what lies inside it.
+// Without that a confirmed badge becomes a pass to the whole country.
 func TestOrganisationCannotPublishOutsideItsTerritory(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -134,15 +134,15 @@ func TestOrganisationCannotPublishOutsideItsTerritory(t *testing.T) {
 		t.Error("акимат Костаная смог опубликовать для Алматы")
 	}
 
-	// Организация без территории не ограничена: так выглядит республиканское
-	// ведомство, и заявку на него смотрел человек.
+	// An organisation with no territory is unrestricted: that is what a national
+	// agency looks like, and a person reviewed its application.
 	national := &OrgAuthor{Name: "Министерство", Kind: "akimat"}
 	if ok, err := store.MayPublishFor(ctx, national, &almatyID); err != nil || !ok {
 		t.Errorf("организация без территории оказалась ограничена: %v, %v", ok, err)
 	}
 }
 
-// Кривой БИН отсекается до модератора, чтобы не тратить его время.
+// A malformed business number is rejected before the moderator, to spare their time.
 func TestMalformedBINIsRefusedAtTheForm(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
@@ -160,7 +160,7 @@ func TestMalformedBINIsRefusedAtTheForm(t *testing.T) {
 		t.Errorf("заявителю не объяснили, что не так с БИН")
 	}
 
-	// А правильный проходит.
+	// And a correct one gets through.
 	if w := app.do(http.MethodPost, "/studio/org", url.Values{
 		"name": {"ТОО Водоканал"}, "kind": {"company"}, "bin": {"123456789012"},
 	}, withCookie(cookie)); w.Code != http.StatusSeeOther {

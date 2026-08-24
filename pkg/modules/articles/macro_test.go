@@ -9,9 +9,9 @@ import (
 	"time"
 )
 
-// book собирает книгу Excel из строк листа: список строк, каждая — список
-// ячеек. Настоящая книга источника весит восемьдесят килобайт, и класть её в
-// репозиторий ради проверки разбора незачем.
+// book assembles an Excel workbook from sheet rows: a list of rows, each a list
+// of cells. The real workbook from the source weighs eighty kilobytes, and there
+// is no reason to keep it in the repository just to test the parsing.
 func book(rows [][]string) []byte {
 	var shared []string
 	idx := map[string]int{}
@@ -73,8 +73,8 @@ func isNumber(s string) bool {
 	return s != ""
 }
 
-// Пустая ячейка в книге записывается самозакрывающимся тегом, и пропустить её
-// нельзя: на ней держится соответствие колонок показателям.
+// An empty cell is written as a self-closing tag, and it cannot be skipped: the
+// match between columns and indicators rests on it.
 func TestEmptyCellsKeepTheirPlace(t *testing.T) {
 	sheet, err := readXLSX(book([][]string{{"A", "", "C"}}))
 	if err != nil {
@@ -91,8 +91,8 @@ func TestEmptyCellsKeepTheirPlace(t *testing.T) {
 	}
 }
 
-// Год в подписях источника двузначный, и век приходится угадывать. Граница
-// проведена по появлению тенге.
+// The year in the source's labels is two digits, so the century has to be guessed.
+// The boundary is drawn at the tenge's appearance.
 func TestTwoDigitYearsLandInTheRightCentury(t *testing.T) {
 	for in, want := range map[string]string{
 		" 07.26": "2026-07",
@@ -114,9 +114,9 @@ func TestTwoDigitYearsLandInTheRightCentury(t *testing.T) {
 	}
 }
 
-// В книге денежных агрегатов месяцы идут по колонкам, показатели по строкам, и
-// нужные строки узнаются по номеру с названием, а не по счёту: порядок строк
-// источник менял, нумерацию — нет.
+// In the monetary aggregates workbook months run across the columns and indicators
+// down the rows, and the rows of interest are recognised by number plus name
+// rather than by counting: the source has changed the row order, never the numbers.
 func TestMoneyAggregatesAreFoundByName(t *testing.T) {
 	data := book([][]string{
 		{"Денежная база и агрегаты"},
@@ -132,7 +132,7 @@ func TestMoneyAggregatesAreFoundByName(t *testing.T) {
 		t.Fatal("три месяца — слишком короткая книга, но она принята")
 	}
 
-	// Та же книга, но достаточной длины.
+	// The same workbook, but long enough.
 	head := []string{""}
 	base := []string{"1. Денежная база (резервные деньги)"}
 	m0 := []string{"2. M0 (наличные деньги в обращении)"}
@@ -157,15 +157,15 @@ func TestMoneyAggregatesAreFoundByName(t *testing.T) {
 	if got[MacroM3][0].Value != 8001 {
 		t.Errorf("первое значение M3 — %.0f", got[MacroM3][0].Value)
 	}
-	// Строка процентов не должна подменить собой показатель.
+	// A percentages row must not stand in for the indicator itself.
 	if got[MacroBase][0].Value == 1.1 {
 		t.Error("вместо денежной базы прочитана строка процентов")
 	}
 }
 
-// В книге резервов у каждого показателя три колонки, и колонку Национального
-// фонда надо искать по названию. Если считать позиции, фондом окажутся чистые
-// резервы — а они существуют с 1993 года, тогда как фонд создан в 2000-м.
+// In the reserves workbook each indicator has three columns, and the National
+// Fund's column has to be found by name. Counting positions makes net reserves the
+// Fund — and those exist from 1993, whereas the Fund was created in 2000.
 func TestTheNationalFundIsFoundByNameNotByPosition(t *testing.T) {
 	rows := [][]string{
 		{"Международные резервы"},
@@ -199,7 +199,7 @@ func TestTheNationalFundIsFoundByNameNotByPosition(t *testing.T) {
 	if n := len(got[MacroReserves]); n != 14 {
 		t.Errorf("резервов %d точек вместо 14", n)
 	}
-	// Фонд заполнен только со второй половины ряда — как в жизни.
+	// The Fund is filled only from the second half of the series — as in life.
 	if n := len(got[MacroFund]); n != 7 {
 		t.Errorf("Нацфонд получил %d точек вместо семи: похоже, взята соседняя колонка", n)
 	}
@@ -211,8 +211,8 @@ func TestTheNationalFundIsFoundByNameNotByPosition(t *testing.T) {
 	}
 }
 
-// Годы без наблюдения приходят с null, и принимать их за ноль нельзя: ноль
-// означал бы, что цены в тот год не росли вовсе.
+// Years with no observation arrive as null, and they must not be taken for zero: a
+// zero would mean prices did not rise at all that year.
 func TestYearsWithoutAnObservationAreSkipped(t *testing.T) {
 	body := []byte(`[{"page":1},[
 		{"date":"2025","value":11.39},
@@ -230,8 +230,8 @@ func TestYearsWithoutAnObservationAreSkipped(t *testing.T) {
 	}
 }
 
-// Покрытие считается как отношение двух опубликованных чисел, и месяцы должны
-// совпадать: денежная масса июля к резервам июля, а не к чему попало.
+// Cover is the ratio of two published figures, and the months have to match: July's
+// money supply against July's reserves, not against whatever comes to hand.
 func TestCoverMatchesMonthToMonth(t *testing.T) {
 	july := time.Date(2026, 7, 1, 0, 0, 0, 0, time.UTC)
 	june := july.AddDate(0, -1, 0)
@@ -247,8 +247,7 @@ func TestCoverMatchesMonthToMonth(t *testing.T) {
 	}
 }
 
-// «в 97,2 раз» — это опечатка, о которую читатель спотыкается вместо того,
-// чтобы смотреть на число.
+// "в 97,2 раз" is a typo the reader trips over instead of looking at the number.
 func TestTheRussianWordForTimesIsDeclined(t *testing.T) {
 	for n, want := range map[int64]string{
 		1: "раз", 2: "раза", 3: "раза", 4: "раза", 5: "раз",
@@ -269,7 +268,7 @@ func TestTheRussianWordForTimesIsDeclined(t *testing.T) {
 	}
 }
 
-// Обесценение считается по накопленной инфляции, а не по одному году.
+// Erosion is computed from accumulated inflation, not from a single year.
 func TestSavingsErosionCompoundsEveryYear(t *testing.T) {
 	cpi := []MacroPoint{}
 	for y := 2020; y <= 2025; y++ {
@@ -284,7 +283,7 @@ func TestSavingsErosionCompoundsEveryYear(t *testing.T) {
 	if len(got) != 1 || got[0].Year != 2020 {
 		t.Fatalf("получено %v", got)
 	}
-	// Пять лет по сто процентов — это деление на тридцать два, а не на шесть.
+	// Five years at a hundred percent is a division by thirty-two, not by six.
 	if got[0].Kept != "31" {
 		t.Errorf("покупательная способность посчитана как %q вместо 31", got[0].Kept)
 	}

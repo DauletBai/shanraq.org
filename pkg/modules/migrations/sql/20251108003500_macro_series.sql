@@ -1,12 +1,13 @@
 -- +goose Up
--- Макроряды: то, из чего складываются курс и инфляция.
+-- Macro series: what the exchange rate and inflation are made of.
 --
--- Одна таблица на все показатели, а не таблица на источник: рядов немного, они
--- одинаковой формы — период и число, — и сравнивать их между собой приходится
--- постоянно. Раскладывать их по отдельным таблицам значило бы писать join там,
--- где хватает WHERE.
+-- One table for every indicator rather than a table per source: there are few series,
+-- they are all the same shape — a period and a number — and they constantly have to
+-- be compared with one another. Spreading them across separate tables would mean
+-- writing a join where a WHERE does.
 --
--- period — первое число месяца для месячных рядов и первое января для годовых.
+-- period is the first of the month for monthly series and the first of January for
+-- annual ones.
 CREATE TABLE IF NOT EXISTS macro_series (
     code   text          NOT NULL,
     period date          NOT NULL,

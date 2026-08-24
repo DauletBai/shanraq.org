@@ -5,18 +5,18 @@ import (
 	"testing"
 )
 
-// Первая версия сравнения знала только цифры и потому кричала на каждом
-// честном переводе. Автор, увидевший четыре предупреждения на исправном тексте,
-// перестаёт читать предупреждения вообще — и ложная тревога оказывается опаснее
-// молчания, потому что обесценивает настоящую.
+// The first version of this comparison knew only digits, and so shouted on every
+// honest translation. An author who sees four warnings on a sound text stops
+// reading warnings altogether — and the false alarm turns out to be more dangerous
+// than silence, because it devalues the real one.
 //
-// Все случаи ниже — из продакшена, из статьи про корь.
+// Every case below is from production, from the measles article.
 func TestCompareNumbersStaysQuietOnHonestTranslations(t *testing.T) {
 	cases := []struct{ name, src, dst string }{
 		{
-			// «99% in 2019, 99% in 2022». Первая версия считала любую запятую
-			// между цифрами разделителем разрядов и склеивала это в число
-			// 201999, которого в оригинале, разумеется, не было.
+			// "99% in 2019, 99% in 2022". The first version treated any comma between
+			// digits as a thousands separator and glued this into the number 201999,
+			// which was of course nowhere in the original.
 			"процент и год через запятую",
 			"Охват 99% в 2019 году, 99% в 2022 году и 93% в 2023 году.",
 			"Coverage was 99% in 2019, 99% in 2022 and 93% in 2023.",
@@ -27,8 +27,8 @@ func TestCompareNumbersStaysQuietOnHonestTranslations(t *testing.T) {
 			"There were 28,147 cases at 98.5% coverage.",
 		},
 		{
-			// Одно и то же число встречается в оригинале четыре раза, а в
-			// переводе три: так строит фразу язык, а не так ломается смысл.
+			// The same number appears four times in the original and three times in the
+			// translation: that is the language building the sentence, not the meaning breaking.
 			"число повторено разное число раз",
 			"28 147 случаев. Из этих 28 147 — дети. Итого 28 147.",
 			"28,147 cases, mostly children. That is 28,147 in total.",
@@ -63,9 +63,9 @@ func TestCompareNumbersStaysQuietOnHonestTranslations(t *testing.T) {
 	}
 }
 
-// То, ради чего всё это. Kimi k2.6, которого четыре раза попросили перевести
-// одно предложение с «сорок триллионов», ответил 40, 43, 40, 43 — это не редкая
-// осечка, которую можно записать в журнал, а подброшенная монета.
+// What all of this is for. Kimi k2.6, asked four times to translate one sentence
+// containing "сорок триллионов", answered 40, 43, 40, 43 — that is not a rare slip
+// to be noted in a log, it is a tossed coin.
 func TestCompareNumbersCatchesInventedFigures(t *testing.T) {
 	d := CompareNumbers(
 		"Государственный долг США перешёл отметку в сорок триллионов долларов.",
@@ -75,8 +75,8 @@ func TestCompareNumbersCatchesInventedFigures(t *testing.T) {
 	}
 }
 
-// Выброшенное предложение уносит с собой числа, и это единственное, что автор,
-// не знающий языка, может заметить сам.
+// A dropped sentence takes its numbers with it, and that is the only thing an
+// author who does not read the language can notice unaided.
 func TestCompareNumbersCatchesLostFigures(t *testing.T) {
 	d := CompareNumbers(
 		"Узбекистан — 20 940 случаев. Таджикистан отчитался о нуле, находясь между "+
@@ -91,9 +91,9 @@ func TestCompareNumbersCatchesLostFigures(t *testing.T) {
 	}
 }
 
-// Пересчёт в масштабе разрешён только целыми тройками нулей — иначе правило,
-// придуманное ради «123 тысячи» против «123,000», начало бы пропускать
-// настоящую порчу.
+// Rescaling is allowed only by whole groups of three zeros — otherwise the rule
+// invented for "123 тысячи" against "123,000" would start letting real damage
+// through.
 func TestRescalingDoesNotHideDamage(t *testing.T) {
 	d := CompareNumbers("В Узбекистане 20 940 случаев.", "Өзбекстанда 2 094 жағдай.")
 	if d.Empty() {
@@ -101,8 +101,8 @@ func TestRescalingDoesNotHideDamage(t *testing.T) {
 	}
 }
 
-// Числительные читаются так, как их произносят: соседние складываются, а
-// масштабное слово умножает то, что стоит перед ним.
+// Numerals are read as they are spoken: neighbours add up, and a scale word
+// multiplies what stands before it.
 func TestNumeralsCompose(t *testing.T) {
 	cases := []struct {
 		text string
@@ -123,10 +123,10 @@ func TestNumeralsCompose(t *testing.T) {
 	}
 }
 
-// Разбор по приставкам однажды прочитал русское «стоит» как «сто», а казахское
-// «оның» как «он», и проверка отметила двадцать шесть абзацев из семидесяти
-// одного на переводе, где ошибка была в одном. Приставки остались только там,
-// где слово достаточно длинное, чтобы совпадение было неслучайным.
+// Prefix matching once read the Russian "стоит" as "сто" and the Kazakh "оның"
+// as "он", and the check flagged twenty-six paragraphs out of seventy-one on a
+// translation with one error in it. Prefixes were kept only where the word is
+// long enough for the match not to be a coincidence.
 func TestOrdinaryWordsAreNotReadAsNumbers(t *testing.T) {
 	for _, w := range []string{"стоит", "стоимость", "оның", "онда", "она", "простой", "семья", "стороны"} {
 		if v, ok := wordValue(w); ok {
@@ -135,9 +135,9 @@ func TestOrdinaryWordsAreNotReadAsNumbers(t *testing.T) {
 	}
 }
 
-// Мелкие числа переписываются при переводе на законных основаниях: «один
-// больной» становится «a single case», «две недели» — «a fortnight». Ниже
-// десяти ловить нечего, а ложных тревог там предостаточно.
+// Small numbers are legitimately rewritten in translation: "один больной" becomes
+// "a single case", "две недели" becomes "a fortnight". Below ten there is nothing
+// to catch and false alarms in plenty.
 func TestSmallNumbersAreNotCompared(t *testing.T) {
 	if d := CompareNumbers("Один больной заражает двенадцать человек.",
 		"A single case infects a dozen people."); !d.Empty() {
@@ -145,8 +145,8 @@ func TestSmallNumbersAreNotCompared(t *testing.T) {
 	}
 }
 
-// Перечень должен оставаться читаемым: потерянный абзац уносит десятки цифр, а
-// предупреждение, называющее все, — это предупреждение, которое не читают.
+// The list has to stay readable: a lost paragraph takes dozens of figures with it,
+// and a warning that names them all is a warning nobody reads.
 func TestCapListTrims(t *testing.T) {
 	got := CapList([]string{"1", "2", "3", "4", "5", "6", "7"}, 5)
 	if got != "1, 2, 3, 4, 5, …" {

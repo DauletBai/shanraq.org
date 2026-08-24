@@ -61,7 +61,7 @@ func TestTranslationBudgetFollowsTheText(t *testing.T) {
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			// Кириллица: считаем в рунах, а не в байтах — иначе оценка вдвое завышена.
+			// Cyrillic: count in runes, not bytes — otherwise the estimate is doubled.
 			src := strings.Repeat("я", c.chars)
 			if got := translationBudget(src, c.floor); got != c.want {
 				t.Errorf("translationBudget(%d знаков, минимум %d) = %d, ожидалось %d",
@@ -70,8 +70,8 @@ func TestTranslationBudgetFollowsTheText(t *testing.T) {
 		})
 	}
 
-	// Байты против рун: русская буква занимает два байта, и подсчёт по длине
-	// строки дал бы вдвое больший лимит, чем нужно.
+	// Bytes against runes: a Russian letter takes two bytes, and counting by string
+	// length would give twice the limit needed.
 	if translationBudget(strings.Repeat("я", 1000), 0) != translationBudget(strings.Repeat("a", 1000), 0) {
 		t.Error("оценка зависит от алфавита — значит, считает байты, а не символы")
 	}
@@ -94,17 +94,17 @@ func TestLinkTargetsAreRestoredFromTheSource(t *testing.T) {
 	if !strings.Contains(got, "[газет](https://tbsnews.net/story)") {
 		t.Errorf("вторая ссылка испорчена:\n%s", got)
 	}
-	// Подписи — работа переводчика, их трогать нельзя.
+	// Captions are the translator's work and must not be touched.
 	if strings.Contains(got, "ВОЗ") {
 		t.Error("восстановление URL затронуло текст подписи")
 	}
 
-	// Если модель потеряла или добавила ссылку, позиционное сопоставление
-	// начнёт врать — тогда лучше не трогать вовсе.
+	// If the model lost or added a link, matching by position starts to lie — then it is
+	// better not to touch anything at all.
 	if _, ok := restoreLinkTargets(src, "Только [одна](https://example.com/x)."); ok {
 		t.Error("при несовпадении числа ссылок восстановление должно отказываться")
 	}
-	// Текст без ссылок — не ошибка.
+	// Text without links is not an error.
 	if _, ok := restoreLinkTargets("без ссылок", "сілтемесіз"); !ok {
 		t.Error("текст без ссылок не должен считаться сбоем")
 	}
@@ -144,7 +144,7 @@ func TestOnlyWhatFollowsTheMarkerIsKept(t *testing.T) {
 			}
 		})
 	}
-	// Промпт и резак должны договориться об одной и той же строке.
+	// The prompt and the cutter have to agree on one and the same string.
 	if !strings.Contains(withGlossary("глоссарий", "поле", "Kazakh"), translateMarker) {
 		t.Error("промпт не содержит маркера, по которому режет afterMarker")
 	}

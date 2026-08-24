@@ -12,8 +12,8 @@ func TestTranslationChecksCatchMechanicalDamage(t *testing.T) {
 	src := "## Заголовок\n\nВ 2024 году было 28 147 случаев, охват 98,5%.\n\n| A | B |\n|---|---|\n| 1 | 2 |\n\nСм. [ВОЗ](https://who.int/x)."
 
 	t.Run("честный перевод не даёт замечаний", func(t *testing.T) {
-		// Разделители разрядов и десятичная запятая меняются при локализации —
-		// это правильный перевод, а не поломка.
+		// Thousands separators and the decimal comma change with localisation —
+		// that is a correct translation, not a breakage.
 		dst := "## Title\n\nIn 2024 there were 28,147 cases, coverage 98.5%.\n\n| A | B |\n|---|---|\n| 1 | 2 |\n\nSee [WHO](https://who.int/x)."
 		if got := compareTranslation(src, dst); len(got) != 0 {
 			t.Errorf("на корректном переводе найдены замечания: %+v", got)
@@ -41,7 +41,7 @@ func TestTranslationChecksCatchMechanicalDamage(t *testing.T) {
 		})
 	}
 
-	// Пустые поля — не повод для претензий: переводить ещё нечего.
+	// Empty fields are no grounds for complaint: there is nothing to translate yet.
 	if got := compareTranslation("", "что-то"); got != nil {
 		t.Errorf("пустой оригинал дал замечания: %+v", got)
 	}
@@ -50,38 +50,38 @@ func TestTranslationChecksCatchMechanicalDamage(t *testing.T) {
 	}
 }
 
-// Первая версия проверки кричала на каждом переводе — и на всех трёх языках
-// сразу. Автор, увидев четыре предупреждения на исправном тексте, перестаёт
-// читать предупреждения вообще; ложная тревога опаснее молчания, потому что
-// она обесценивает и настоящую.
+// The first version of this check shouted on every translation — and in all
+// three languages at once. An author who sees four warnings on a sound text
+// stops reading warnings altogether; a false alarm is more dangerous than
+// silence, because it devalues the real one too.
 //
-// Все случаи ниже взяты из продакшена, из статьи про корь.
+// Every case below is taken from production, from the measles article.
 func TestTranslationChecksStayQuietOnHonestTranslations(t *testing.T) {
 	cases := []struct{ name, src, dst string }{
 		{
-			// Разбор: «99% in 2019, 99% in 2022». Первая версия считала любую
-			// запятую между цифрами разделителем разрядов и склеивала это в
-			// число 201999 — которого, разумеется, не было в оригинале.
+			// The text: "99% in 2019, 99% in 2022". The first version treated any comma
+			// between digits as a thousands separator and glued this into the number
+			// 201999 — which was, of course, nowhere in the original.
 			"процент и год через запятую",
 			"Охват 99% в 2019 году, 99% в 2022 году и 93% в 2023 году.",
 			"Coverage was 99% in 2019, 99% in 2022 and 93% in 2023.",
 		},
 		{
-			// Одно и то же число может встретиться в оригинале четыре раза, а
-			// в переводе три: язык иначе строит фразу. Это разница изложения,
-			// а не факта.
+			// The same number can appear four times in the original and three in the
+			// translation: the language builds the sentence differently. That is a
+			// difference of phrasing, not of fact.
 			"число повторено разное число раз",
 			"28 147 случаев. Из этих 28 147 — большинство дети. Итого 28 147.",
 			"28,147 cases, mostly children. That is 28,147 in total.",
 		},
 		{
-			// Число прописью — стилистическое решение переводчика, и хорошее.
+			// A number spelled out in words is the translator's stylistic choice, and a good one.
 			"число прописью",
 			"Госдолг США перевалил за $40 триллионов.",
 			"U.S. national debt crossed the forty-trillion-dollar mark.",
 		},
 		{
-			// «123 тысячи» и «123,000» — одно и то же, записанное по-разному.
+			// "123 тысячи" and "123,000" are the same thing written two ways.
 			"тысячи словом против разрядов",
 			"123 тысячи случаев кори за два года.",
 			"123,000 measles cases in two years.",
@@ -98,10 +98,10 @@ func TestTranslationChecksStayQuietOnHonestTranslations(t *testing.T) {
 	}
 }
 
-// А это — то, ради чего проверка существует. В казахской версии статьи про корь
-// модель выбросила целое предложение: «Таджикистан за 2024 год отчитался о нуле
-// — находясь между Киргизией с её 14 380 случаями и Узбекистаном с 20 940».
-// Прочитать текст автор не мог, а увидеть, что число 14 380 исчезло, — мог.
+// And this is what the check exists for. In the Kazakh version of the measles
+// article the model dropped a whole sentence: "Tajikistan reported zero for 2024
+// — sitting between Kyrgyzstan with its 14,380 cases and Uzbekistan with
+// 20,940". The author could not read the text, but could see 14 380 had gone.
 func TestTranslationCheckNamesTheMissingNumber(t *testing.T) {
 	src := "Узбекистан — 20 940 случаев. Таджикистан отчитался о нуле, " +
 		"находясь между Киргизией с её 14 380 случаями и Узбекистаном с 20 940."
@@ -116,15 +116,15 @@ func TestTranslationCheckNamesTheMissingNumber(t *testing.T) {
 	if !strings.Contains(detail, "14 380") {
 		t.Fatalf("пропавшее число не названо, получено %q", detail)
 	}
-	// 20 940 в переводе осталось — жаловаться не на что.
+	// 20 940 survived the translation, so there is nothing to complain about.
 	if strings.Contains(detail, "20 940") {
 		t.Errorf("названо число, которое на месте: %q", detail)
 	}
 }
 
-// Числа перечисляются так, как их написал автор: он будет искать «14 380» в
-// своём тексте, а не «14380». И перечень не бесконечен — потерянный абзац
-// уносит с собой десятки цифр, а предупреждение должно оставаться читаемым.
+// Numbers are listed as the author wrote them: they will look for "14 380" in
+// their own text, not "14380". And the list is not endless — a lost paragraph
+// takes dozens of figures with it, and the warning has to stay readable.
 func TestTranslationCheckQuotesNumbersAsWrittenAndCapsTheList(t *testing.T) {
 	var src strings.Builder
 	src.WriteString("Было 14 380 случаев. ")
@@ -151,10 +151,10 @@ func TestTranslationCheckQuotesNumbersAsWrittenAndCapsTheList(t *testing.T) {
 	}
 }
 
-// Пропажа и выдумка — не одно и то же. Потерянное предложение оставляет дыру,
-// которую читатель может заметить; выдуманное число читается как факт и цитируется
-// как факт. Обе версии статьи про корь превратили «сорок триллионов» в «сорок три»
-// — в тексте, где в списке источников стояло сорок.
+// A loss and an invention are not the same thing. A dropped sentence leaves a
+// hole the reader may notice; an invented number reads as fact and gets quoted
+// as fact. Both versions of the measles article turned "forty trillion" into
+// "forty-three" — in a text whose source list said forty.
 func TestTranslationCheckCatchesInventedNumbers(t *testing.T) {
 	got := compareTranslation(
 		"Государственный долг США перешёл отметку в сорок триллионов долларов.",
@@ -170,8 +170,8 @@ func TestTranslationCheckCatchesInventedNumbers(t *testing.T) {
 	}
 }
 
-// Встречная проверка не должна ругаться на честный перевод — иначе она разделит
-// судьбу первой версии, на которую перестали смотреть.
+// The counter-check must not complain about an honest translation — or it will
+// share the fate of the first version, which people stopped looking at.
 func TestInventedNumbersStayQuietOnHonestTranslations(t *testing.T) {
 	cases := []struct{ name, src, dst string }{
 		{"те же числа, другая запись", "Было 28 147 случаев и 98,5% охвата.",
@@ -191,11 +191,11 @@ func TestInventedNumbersStayQuietOnHonestTranslations(t *testing.T) {
 	}
 }
 
-// Сравнение идёт абзац против абзаца, и это не тонкость. Статья, с которой всё
-// началось, прошла проверку по целому тексту чисто: перевод написал «43
-// триллион» там, где в оригинале стояло «сорок», а число 43 нашлось четырьмя
-// абзацами ниже — в «сорок три тысячи заболевших». Против всего текста улика
-// растворяется, против своего абзаца — нет.
+// The comparison runs paragraph against paragraph, and that is not a nicety. The
+// article this started with passed a whole-text check cleanly: the translation
+// wrote "43 триллион" where the original said "сорок", and the number 43 turned
+// up four paragraphs below in "forty-three thousand cases". Against the whole
+// text the evidence dissolves; against its own paragraph it does not.
 func TestNumbersAreJudgedAgainstTheirOwnParagraph(t *testing.T) {
 	src := "Госдолг США перешёл отметку в сорок триллионов долларов.\n\n" +
 		"## Число\n\n" +
@@ -215,16 +215,16 @@ func TestNumbersAreJudgedAgainstTheirOwnParagraph(t *testing.T) {
 	}
 }
 
-// Одинаковое число абзацев ещё не значит, что это те же абзацы. Перевод, где
-// одно предложение потеряно, а другое разбито надвое, даёт тот же итог — и
-// сопоставление по позиции начинает ругаться на всё, что стоит после сдвига.
-// Тогда честнее сравнить тексты целиком: грубее, зато без вранья.
+// The same number of paragraphs does not mean they are the same paragraphs. A
+// translation that loses one sentence and splits another in two gives the same
+// count — and matching by position starts complaining about everything after
+// the shift. Then it is honester to compare the texts whole: cruder, but true.
 func TestShiftedParagraphsFallBackToWholeText(t *testing.T) {
 	src := "В 2019 году было 13 326 случаев.\n\n" +
 		"Таджикистан отчитался о нуле при 14 380 у соседа.\n\n" +
 		"В 2023 году — 15 111 случаев.\n\n" +
 		"А в 2024-м — 28 147."
-	// Второй абзац выброшен, последний разбит надвое: счёт сошёлся, содержание съехало.
+	// The second paragraph is dropped and the last split in two: the count adds up, the content has moved.
 	dst := "2019 жылы 13 326 жағдай болды.\n\n" +
 		"2023 жылы — 15 111 жағдай.\n\n" +
 		"Ал 2024 жылы —\n\n" +

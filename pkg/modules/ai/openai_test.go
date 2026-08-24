@@ -215,8 +215,8 @@ func TestRequestTimeoutScalesWithTheAnswer(t *testing.T) {
 			}
 		})
 	}
-	// Короткий вызов не должен получать столько же времени, сколько статья:
-	// зависший запрос обязан отваливаться быстро.
+	// A short call must not be given as long as an article: a hung request has to fall
+	// away quickly.
 	if requestTimeout(512) >= requestTimeout(9517) {
 		t.Error("короткий запрос ждёт не меньше длинного — срок не зависит от объёма")
 	}
