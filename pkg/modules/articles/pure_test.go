@@ -43,8 +43,8 @@ func TestAdFormats(t *testing.T) {
 	if len(fs) != 4 {
 		t.Fatalf("want 4 formats, got %d", len(fs))
 	}
-	if fs[0].Code != "horizontal" || fs[0].Price30 != 12500 {
-		t.Errorf("first format should be horizontal @12500, got %s @%d", fs[0].Code, fs[0].Price30)
+	if fs[0].Code != "horizontal" || fs[0].Price30 != 67500 {
+		t.Errorf("first format should be horizontal @67500, got %s @%d", fs[0].Code, fs[0].Price30)
 	}
 	for _, f := range []string{"horizontal", "vertical", "square", "rectangle"} {
 		if !isAdFormat(f) {
@@ -63,13 +63,13 @@ func TestAdFormats(t *testing.T) {
 }
 
 func TestAdOrderTotal(t *testing.T) {
-	// horizontal 30d rate = 12500; home+realestate weight = 20+20 = 40 (×10).
-	// total = 12500 * 40 / 10 = 50000, nationwide.
+	// horizontal 30d rate = 67500; home+realestate weight = 20+20 = 40 (×10).
+	// total = 67500 * 40 / 10 = 270000, nationwide.
 	p := AdOrderTotal("horizontal", []string{surfaceHome, surfaceRealestate}, 30)
-	if p.Total != 50000 {
-		t.Errorf("total = %d, want 50000", p.Total)
+	if p.Total != 270000 {
+		t.Errorf("total = %d, want 270000", p.Total)
 	}
-	if p.Surfaces != 2 || p.Weight10 != 40 || p.FormatRate != 12500 {
+	if p.Surfaces != 2 || p.Weight10 != 40 || p.FormatRate != 67500 {
 		t.Errorf("breakdown wrong: %+v", p)
 	}
 	// Unknown surfaces are ignored, not priced.
@@ -82,15 +82,15 @@ func TestAdOrderTotal(t *testing.T) {
 	if p.Format != "rectangle" {
 		t.Errorf("unknown format should fall back to rectangle, got %s", p.Format)
 	}
-	if p.FormatRate != 1100 { // rectangle 3-day
-		t.Errorf("unknown duration should use the 3-day rate 1100, got %d", p.FormatRate)
+	if p.FormatRate != 6000 { // rectangle 3-day
+		t.Errorf("unknown duration should use the 3-day rate 6000, got %d", p.FormatRate)
 	}
 }
 
 func TestAdSurfaceFormatPrice(t *testing.T) {
-	// horizontal 30d on home, nationwide: 12500 * 20 / 10 = 25000.
-	if got := AdSurfaceFormatPrice("horizontal", surfaceHome, 30); got != 25000 {
-		t.Errorf("= %d, want 25000", got)
+	// horizontal 30d on home, nationwide: 67500 * 20 / 10 = 135000.
+	if got := AdSurfaceFormatPrice("horizontal", surfaceHome, 30); got != 135000 {
+		t.Errorf("= %d, want 135000", got)
 	}
 	// Unknown format → 0.
 	if got := AdSurfaceFormatPrice("bogus", surfaceHome, 30); got != 0 {

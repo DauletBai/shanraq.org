@@ -36,42 +36,46 @@ var tariffDefs = []tariffDef{
 	// tenge). These are the rates for the whole of Kazakhstan; geography only
 	// discounts them.
 	//
-	// The card was cut to roughly a seventh of its first version on 24 August
-	// 2026, after the market was actually looked at rather than guessed. What
-	// the market charges today:
+	// The card is anchored at half of what a comparable competitor charges for a
+	// comparable placement, and the anchor is checked at both ends of the ladder
+	// rather than at one:
 	//
-	//   zakon.kz          300 000 ₸ a day for a text-graphic block at full traffic
-	//   informburo.kz     1 650 ₸ per thousand impressions, plus 25% for targeting
-	//   cifrum.kz         60 000 ₸ for seven days of a banner in one rubric
-	//   ng.kz (Kostanay)  54 000 ₸ a month at the top of the front page,
-	//                     39 600 in the middle, 12 600 at the foot — against
-	//                     330 000 unique visitors a month
-	//   ibirzha.kz        4 000 ₸ a week, about 17 000 a month
+	//   ng.kz, Kostanay   54 000 ₸ a month at the top of the front page, for a
+	//                     paper whose whole audience is that one region. Our top
+	//                     banner bought for Kostanay region comes to 27 000 ₸ —
+	//                     half, exactly.
+	//   cifrum.kz         60 000 ₸ for seven days of a banner in one rubric,
+	//                     about 257 000 ₸ over thirty. Ours nationwide is
+	//                     135 000 ₸ — some forty-seven percent under.
 	//
-	// The old card asked 180 000 ₸ for a month of the top banner on our own
-	// front page: three and a third times what the strongest paper in Kostanay
-	// charges for the same month, on a fraction of its readership. Nobody who
-	// checked would have paid it.
+	// For scale at the top of the market, zakon.kz asks 300 000 ₸ a day for a
+	// text-graphic block at full traffic, and informburo.kz 1 650 ₸ per thousand
+	// impressions plus a quarter again for targeting.
 	//
-	// The top format nationwide is now 25 000 ₸ a month on the front page
-	// (12 500 × the ×2.0 surface weight) — under half of ng.kz's regional rate,
-	// for the whole country. Bought for Kostanay region it comes to about
-	// 5 000 ₸, eleven times under their price in their own city.
+	// Two earlier versions of this card were wrong in opposite directions, which
+	// is worth recording because both mistakes are easy to repeat. The first
+	// asked 180 000 ₸ for a month of the top banner on our own front page —
+	// three and a third times ng.kz's regional rate, guessed rather than
+	// checked. The correction then overshot: cutting the base to 12 500 put a
+	// Kostanay region booking at 5 000 ₸ against their 54 000, eleven times
+	// under, because a discount ladder was applied to a base that was already
+	// below market. A price an order of magnitude under everyone else does not
+	// read as competitive; it reads as a different class of product.
 	//
-	// The card prices a slot, not an impression, which is how a local paper
-	// sells and what an advertiser here is actually buying: a place in the
-	// publication for a period. These are tariffs, and they move from the admin
-	// panel as the audience grows.
-	{"ad.horizontal.3", 2500, false}, {"ad.horizontal.7", 5000, false}, {"ad.horizontal.14", 8300, false}, {"ad.horizontal.30", 12500, false},
-	{"ad.vertical.3", 1900, false}, {"ad.vertical.7", 3900, false}, {"ad.vertical.14", 6500, false}, {"ad.vertical.30", 9800, false},
-	{"ad.square.3", 1300, false}, {"ad.square.7", 2500, false}, {"ad.square.14", 4200, false}, {"ad.square.30", 6300, false},
-	{"ad.rectangle.3", 1100, false}, {"ad.rectangle.7", 2200, false}, {"ad.rectangle.14", 3700, false}, {"ad.rectangle.30", 5500, false},
+	// The rule that avoids both: set the base so that the price of the
+	// COMPARABLE targeted product is half the competitor's, then let the ladder
+	// fall out of it. The nationwide figure is a consequence of that anchor, not
+	// an independent decision.
+	{"ad.horizontal.3", 13500, false}, {"ad.horizontal.7", 27000, false}, {"ad.horizontal.14", 45000, false}, {"ad.horizontal.30", 67500, false},
+	{"ad.vertical.3", 10500, false}, {"ad.vertical.7", 21000, false}, {"ad.vertical.14", 35300, false}, {"ad.vertical.30", 52500, false},
+	{"ad.square.3", 6800, false}, {"ad.square.7", 13500, false}, {"ad.square.14", 22500, false}, {"ad.square.30", 33800, false},
+	{"ad.rectangle.3", 6000, false}, {"ad.rectangle.7", 12000, false}, {"ad.rectangle.14", 20300, false}, {"ad.rectangle.30", 30000, false},
 	// Geography. exponent is a percentage: 100 prices strictly in proportion to
 	// population, 50 takes the square root of the share, 33 the cube root. The
 	// card is built on 50 — see ads_geo.go for why proportion is the wrong
 	// answer. min_price is the floor under any order, because below it the
 	// booking costs more to handle than it brings.
-	{"geo.exponent", 50, true}, {"geo.min_price", 1000, false},
+	{"geo.exponent", 50, true}, {"geo.min_price", 2000, false},
 	// Surface weight tiers (×10).
 	{"weight.high", 20, true}, {"weight.mid", 13, true}, {"weight.base", 10, true},
 	// Listing sidebar banner: banner.<days> (tenge).

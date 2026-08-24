@@ -10,8 +10,8 @@ import "testing"
 func TestTariffDefaultsUnchanged(t *testing.T) {
 	tariffCache.Store(nil)
 	cases := map[string]int64{
-		"ad.horizontal.30": 12500, "ad.vertical.3": 1900, "ad.square.14": 4200, "ad.rectangle.7": 2200,
-		"geo.exponent": 50, "geo.min_price": 1000,
+		"ad.horizontal.30": 67500, "ad.vertical.3": 10500, "ad.square.14": 22500, "ad.rectangle.7": 12000,
+		"geo.exponent": 50, "geo.min_price": 2000,
 		"weight.high": 20, "weight.mid": 13, "weight.base": 10,
 		"banner.1": 990, "banner.3": 2690, "banner.7": 4990,
 		"promote.price": 299, "feature.price": 499,
@@ -26,8 +26,8 @@ func TestTariffDefaultsUnchanged(t *testing.T) {
 
 func TestPricingAccessorsMatchDefaults(t *testing.T) {
 	tariffCache.Store(nil)
-	if got := adFormatPriceVal("rectangle", 30); got != 5500 {
-		t.Errorf("adFormatPriceVal(rectangle,30) = %d, want 5500", got)
+	if got := adFormatPriceVal("rectangle", 30); got != 30000 {
+		t.Errorf("adFormatPriceVal(rectangle,30) = %d, want 30000", got)
 	}
 	if got := listingBannerPrice(5); got != 3990 {
 		t.Errorf("listingBannerPrice(5) = %d, want 3990", got)
@@ -49,9 +49,9 @@ func TestPricingAccessorsMatchDefaults(t *testing.T) {
 // The pricing formula (base × summed surface weights / 10) must be unchanged.
 func TestAdOrderTotalUnchanged(t *testing.T) {
 	tariffCache.Store(nil)
-	// horizontal 30d = 12500 base; home(20) + realestate(20) = weight 40; /10.
+	// horizontal 30d = 67500 base; home(20) + realestate(20) = weight 40; /10.
 	p := AdOrderTotal("horizontal", []string{surfaceHome, surfaceRealestate}, 30)
-	if want := int64(12500 * 40 / 10); p.Total != want {
+	if want := int64(67500 * 40 / 10); p.Total != want {
 		t.Errorf("AdOrderTotal.Total = %d, want %d", p.Total, want)
 	}
 	// Nationwide is the same figure: no geography chosen is no discount.

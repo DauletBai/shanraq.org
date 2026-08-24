@@ -6,6 +6,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.1] — 2026-08-24
+
+### Changed
+
+- Прайс на рекламу пересчитан: дешевле рынка вдвое, а не на порядок. Карта
+  0.13.0 была срезана слишком глубоко — скидка за географию накладывалась на
+  базу, которая и без неё уже стояла ниже рынка, и две скидки перемножились.
+  Костанайская область выходила в 5 000 ₸ против 54 000 ₸ у ng.kz: цена на
+  порядок ниже читается не как выгодная, а как другой класс продукта.
+
+  Теперь база подобрана так, чтобы **сопоставимый** таргетированный продукт
+  стоил ровно половину конкурента, а цена за всю страну выводилась уже из неё.
+  Верхний баннер на главной за 30 дней: вся страна 135 000 ₸, Алматы 44 145 ₸,
+  Астана 32 926 ₸, Костанайская область 27 000 ₸, Костанай 15 538 ₸,
+  Качар 2 889 ₸.
+
+  Привязка проверена с двух концов лестницы: 27 000 ₸ за Костанайскую область —
+  половина от 54 000 ₸, которые берёт ng.kz, чья аудитория этой областью и
+  исчерпывается; 135 000 ₸ за всю страну — на 47% ниже примерно 257 000 ₸,
+  во что обходится месяц баннера в рубрике на cifrum.kz.
+
+- Минимальная цена заказа поднята с 1 000 до 2 000 ₸: на прежней карте она
+  оказалась ниже, чем стоит самое мелкое размещение, и потому не срабатывала.
+
+
 ## [0.13.0] — 2026-08-24
 
 ### Added
@@ -642,7 +667,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.13.0...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.13.1...HEAD
+[0.13.1]: https://github.com/DauletBai/shanraq.org/compare/v0.13.0...v0.13.1
 [0.13.0]: https://github.com/DauletBai/shanraq.org/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/DauletBai/shanraq.org/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/DauletBai/shanraq.org/compare/v0.10.2...v0.11.0

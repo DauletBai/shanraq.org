@@ -96,8 +96,8 @@ func TestGeoFloorAppliesOnlyToRealOrders(t *testing.T) {
 	// Nationwide is reported beside the discounted total, so an advertiser sees
 	// what the narrowing saved rather than only a smaller number.
 	big := AdOrderTotalGeo("horizontal", []string{surfaceHome}, 30, kachar)
-	if big.Nationwide != 25000 {
-		t.Errorf("цена за всю страну = %d, ожидалось 25000", big.Nationwide)
+	if big.Nationwide != 135000 {
+		t.Errorf("цена за всю страну = %d, ожидалось 135000", big.Nationwide)
 	}
 	if big.Total >= big.Nationwide {
 		t.Errorf("скидка не применилась: %+v", big)

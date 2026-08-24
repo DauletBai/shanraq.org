@@ -37,7 +37,7 @@ func TestAdvertisePageShowsTheGeoLadder(t *testing.T) {
 		}
 	}
 	// The ladder must show the same figures the pricing code produces.
-	for _, want := range []string{"25 000", "5 000", "1 000"} {
+	for _, want := range []string{"135 000", "27 000", "2 889"} {
 		if !strings.Contains(b, want) {
 			t.Errorf("нет цены %q", want)
 		}
