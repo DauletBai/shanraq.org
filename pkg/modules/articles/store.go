@@ -643,3 +643,34 @@ func (s *Store) ArticlePlace(ctx context.Context, id uuid.UUID) (*uuid.UUID, err
 	}
 	return node, nil
 }
+
+// PlaceIDBySlug resolves a place's address to its id. Zero and no error means
+// there is no such place, which is a 404's business, not an error.
+func (s *Store) PlaceIDBySlug(ctx context.Context, slug string) (uuid.UUID, error) {
+	var id uuid.UUID
+	err := s.db.QueryRow(ctx, `SELECT id FROM geo_nodes WHERE slug = $1`, slug).Scan(&id)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return uuid.Nil, nil
+	}
+	if err != nil {
+		return uuid.Nil, fmt.Errorf("place id by slug: %w", err)
+	}
+	return id, nil
+}
+
+// ArticlePlaceBySlug is the place an article was written for, or zero when it
+// was written for nowhere in particular.
+func (s *Store) ArticlePlaceBySlug(ctx context.Context, slug string) (uuid.UUID, error) {
+	var id *uuid.UUID
+	err := s.db.QueryRow(ctx, `SELECT geo_node_id FROM articles WHERE slug = $1`, slug).Scan(&id)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return uuid.Nil, nil
+	}
+	if err != nil {
+		return uuid.Nil, fmt.Errorf("article place by slug: %w", err)
+	}
+	if id == nil {
+		return uuid.Nil, nil
+	}
+	return *id, nil
+}

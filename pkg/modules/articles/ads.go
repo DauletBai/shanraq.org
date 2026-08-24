@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
@@ -87,7 +88,7 @@ func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
 	if surface == "" || m.ads == nil {
 		return nil
 	}
-	orders, err := m.ads.ActiveBySurface(r.Context(), surface, lang, 12)
+	orders, err := m.ads.ActiveBySurface(r.Context(), surface, lang, m.adPageGeo(r), 12)
 	if err != nil {
 		m.rt.Logger.Warn("sidebar ads", zap.Error(err))
 		return houseAds(lang)
@@ -110,4 +111,41 @@ func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
 		out = append(out, Ad{Image: o.ImageURL, Title: o.Title, Desc: o.Body, Price: cta, URL: url})
 	}
 	return out
+}
+
+// adPageGeo is the page's own geography, used to decide which geo-targeted
+// bookings belong on it.
+//
+// Only two kinds of page carry a place: the page of a place, and an article
+// written for one. Everything else — the front page, a rubric, a listing —
+// belongs to no particular geography and therefore carries only the bookings
+// that were bought for none.
+func (m *Module) adPageGeo(r *http.Request) uuid.UUID {
+	if m.store == nil {
+		return uuid.Nil
+	}
+	p := r.URL.Path
+	var id uuid.UUID
+	var err error
+	switch {
+	case strings.HasPrefix(p, "/place/"):
+		slug := strings.Trim(strings.TrimPrefix(p, "/place/"), "/")
+		if slug == "" || strings.Contains(slug, "/") {
+			return uuid.Nil
+		}
+		id, err = m.store.PlaceIDBySlug(r.Context(), slug)
+	case strings.HasPrefix(p, "/read/"):
+		slug := strings.Trim(strings.TrimPrefix(p, "/read/"), "/")
+		if slug == "" || strings.Contains(slug, "/") {
+			return uuid.Nil
+		}
+		id, err = m.store.ArticlePlaceBySlug(r.Context(), slug)
+	default:
+		return uuid.Nil
+	}
+	if err != nil {
+		m.rt.Logger.Warn("ad page geo", zap.Error(err))
+		return uuid.Nil
+	}
+	return id
 }

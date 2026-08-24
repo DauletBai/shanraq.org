@@ -35,16 +35,24 @@ type Advertiser struct {
 // optional exclusive hold. Captured as pending_payment until a payment provider
 // is wired; once paid it flips to active and is served automatically.
 type AdOrder struct {
-	ID            string
-	Title         string
-	Body          string
-	ImageURL      string
-	TargetURL     string
-	CTA           string
-	Format        string   // horizontal | vertical | square | rectangle
-	Placement     string   // legacy single placement (kept for old rows)
-	Surfaces      []string // the surfaces this order covers
-	GeoRegion     string
+	ID        string
+	Title     string
+	Body      string
+	ImageURL  string
+	TargetURL string
+	CTA       string
+	Format    string   // horizontal | vertical | square | rectangle
+	Placement string   // legacy single placement (kept for old rows)
+	Surfaces  []string // the surfaces this order covers
+	GeoRegion string
+	// GeoNodeID is the place this booking was bought for; empty means the whole
+	// country. GeoShare is that place's share of the country's population in
+	// hundred-thousandths, frozen at purchase so the agreed price stays
+	// reproducible after a census moves the figure underneath it.
+	GeoNodeID string
+	GeoShare  int64
+	// GeoName is the place's name for display; not stored, joined on read.
+	GeoName       string
 	Rubric        string
 	Lang          string
 	Exclusive     bool
@@ -119,16 +127,28 @@ func (s *AdStore) CreateOrder(ctx context.Context, advertiserID string, o AdOrde
 	err := s.db.QueryRow(ctx, `
 		INSERT INTO ad_orders (advertiser_id, title, body, image_url, target_url, cta,
 		                       placement, surfaces, format, geo_region, lang, exclusive,
-		                       starts_at, ends_at, duration_days, price, payment_method)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::date,$14::date,$15,$16,$17)
+		                       starts_at, ends_at, duration_days, price, payment_method,
+		                       geo_node_id, geo_share)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::date,$14::date,$15,$16,$17,
+		        NULLIF($18,'')::uuid,$19)
 		RETURNING id`,
 		advertiserID, o.Title, o.Body, o.ImageURL, o.TargetURL, o.CTA,
 		placement, o.Surfaces, o.Format, o.GeoRegion, o.Lang, o.Exclusive,
-		o.StartsAt, o.EndsAt, o.DurationDays, o.Price, o.PaymentMethod).Scan(&id)
+		o.StartsAt, o.EndsAt, o.DurationDays, o.Price, o.PaymentMethod,
+		o.GeoNodeID, geoShareOrWhole(o.GeoShare)).Scan(&id)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("create ad order: %w", err)
 	}
 	return id, nil
+}
+
+// geoShareOrWhole defaults a missing share to the whole country, which is what
+// an order with no place selected is.
+func geoShareOrWhole(share int64) int64 {
+	if share <= 0 || share > adGeoShareUnit {
+		return adGeoShareUnit
+	}
+	return share
 }
 
 // ListOrders returns an advertiser's orders, newest first.
@@ -213,19 +233,39 @@ func (s *AdStore) AvailabilityByDay(ctx context.Context, surface, format, from, 
 }
 
 // ActiveBySurface returns creatives currently running on a surface, for serving.
-func (s *AdStore) ActiveBySurface(ctx context.Context, surface, lang string, limit int) ([]AdOrder, error) {
+//
+// place is the page's own geography — the place a /place page is about, or the
+// place an article was written for — and may be uuid.Nil for a page that has
+// none. A booking bought for a region runs on that region and everything inside
+// it; a booking bought for nowhere in particular runs everywhere.
+//
+// The narrowing is the whole of what geo targeting sells, so it lives in the
+// serving query rather than anywhere it could be forgotten: an advertiser who
+// paid a fifth of the price for Kostanay must not be shown across the country,
+// and one who paid for the country must not vanish from a village page.
+func (s *AdStore) ActiveBySurface(ctx context.Context, surface, lang string, place uuid.UUID, limit int) ([]AdOrder, error) {
 	if limit <= 0 || limit > 20 {
 		limit = 12
 	}
+	var pageID any
+	if place != uuid.Nil {
+		pageID = place
+	}
 	rows, err := s.db.Query(ctx, `
+		WITH RECURSIVE up AS (
+			SELECT id, parent_id FROM geo_nodes WHERE id = $4::uuid
+			UNION ALL
+			SELECT g.id, g.parent_id FROM geo_nodes g JOIN up ON g.id = up.parent_id
+		)
 		SELECT title, COALESCE(body,''), COALESCE(image_url,''), COALESCE(target_url,''), COALESCE(cta,''), COALESCE(format,'rectangle')
 		FROM ad_orders
 		WHERE status = 'active'
 		  AND starts_at <= CURRENT_DATE AND ends_at >= CURRENT_DATE
 		  AND surfaces @> ARRAY[$1]
 		  AND COALESCE(lang,'') IN ('', $2)
+		  AND (geo_node_id IS NULL OR geo_node_id IN (SELECT id FROM up))
 		ORDER BY exclusive DESC, created_at DESC
-		LIMIT $3`, surface, lang, limit)
+		LIMIT $3`, surface, lang, limit, pageID)
 	if err != nil {
 		return nil, fmt.Errorf("active ads: %w", err)
 	}
@@ -253,6 +293,24 @@ type AdvertisePage struct {
 	Pricing    AdOrderPricing // last computed total (on validation failure)
 	Saved      string         // "company" | "order" flash
 	Error      string
+	// Geo is every place that can be bought, priced. GeoLadder is the short
+	// worked example on the rate card — the same arithmetic on real places, so
+	// an advertiser can see where their own town would land before filling
+	// anything in.
+	Geo       []AdGeo
+	GeoLadder []AdGeoRung
+	// GeoMinPrice is the floor under any order, in tenge.
+	GeoMinPrice int64
+}
+
+// AdGeoRung is one line of the worked example on the rate card.
+type AdGeoRung struct {
+	Name  string
+	Pop   int64
+	Year  int
+	Share string // "3,999 %"
+	Mult  string // "0,20"
+	Price int64  // the top format for 30 days on the front page
 }
 
 func (m *Module) handleAdvertise(w http.ResponseWriter, r *http.Request) {
@@ -276,6 +334,8 @@ func (m *Module) handleAdvertise(w http.ResponseWriter, r *http.Request) {
 			m.rt.Logger.Warn("advertiser orders", zap.Error(oerr))
 		}
 	}
+	page.Geo, page.GeoLadder = m.adGeoForPage(r.Context(), lang)
+	page.GeoMinPrice = geoMinPriceVal()
 	today := time.Now().Truncate(24 * time.Hour)
 	page.Today = today.Format("2006-01-02")
 	page.Avail = m.surfaceAvailability(r.Context(), "rectangle", page.Today, today.AddDate(0, 0, 29).Format("2006-01-02"))
@@ -370,7 +430,22 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 	}
 	end := start.AddDate(0, 0, days-1)
 
-	pricing := AdOrderTotal(format, surfaces, days)
+	// Geography. An unknown or unpriceable place is treated as no choice at all
+	// — the booking is nationwide and priced accordingly — rather than quietly
+	// discounted on a number we do not have.
+	geoMult := int64(adGeoMultUnit)
+	var geoNodeID string
+	var geoShare int64 = adGeoShareUnit
+	var geoName string
+	if raw := strings.TrimSpace(r.FormValue("geo_node")); raw != "" {
+		if id, perr := uuid.Parse(raw); perr == nil {
+			if g, gerr := m.geo.AdGeoPlace(r.Context(), id, lang); gerr == nil && g != nil {
+				geoMult, geoNodeID, geoShare, geoName = g.Mult, g.ID, g.Share, g.Name
+			}
+		}
+	}
+
+	pricing := AdOrderTotalGeo(format, surfaces, days, geoMult)
 	o := AdOrder{
 		Format:        format,
 		Title:         strings.TrimSpace(r.FormValue("title")),
@@ -380,6 +455,9 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 		CTA:           strings.TrimSpace(r.FormValue("cta")),
 		Surfaces:      surfaces,
 		GeoRegion:     strings.TrimSpace(r.FormValue("geo_region")),
+		GeoNodeID:     geoNodeID,
+		GeoShare:      geoShare,
+		GeoName:       geoName,
 		Lang:          r.FormValue("target_lang"),
 		Exclusive:     exclusive,
 		StartsAt:      start.Format("2006-01-02"),
@@ -403,6 +481,8 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 		page.Avail = m.surfaceAvailability(r.Context(), format, o.StartsAt, o.EndsAt)
 		page.Today = today.Format("2006-01-02")
 		page.Pricing = pricing
+		page.Geo, page.GeoLadder = m.adGeoForPage(r.Context(), lang)
+		page.GeoMinPrice = geoMinPriceVal()
 		m.render(w, "advertise", page)
 	}
 
@@ -532,4 +612,44 @@ func (m *Module) handleAdsAvailability(w http.ResponseWriter, r *http.Request) {
 		"capacity": AdFormatSlots(format),
 		"days":     out,
 	})
+}
+
+// adGeoForPage loads the buyable places and builds the worked example beside
+// the rate card.
+//
+// The example is not a fixed table of invented towns: it is the real ladder,
+// recomputed from the same populations the picker prices with, so the figure an
+// advertiser reads on the rate card is the figure the form will quote them.
+func (m *Module) adGeoForPage(ctx context.Context, lang string) ([]AdGeo, []AdGeoRung) {
+	if m.geo == nil {
+		return nil, nil
+	}
+	opts, err := m.geo.AdGeoOptions(ctx, "KZ", lang)
+	if err != nil {
+		m.rt.Logger.Warn("ad geo options", zap.Error(err))
+		return nil, nil
+	}
+	// Four rungs, far apart, so the shape of the ladder is visible in one look:
+	// the country, its largest city, a region, and a village.
+	wanted := []string{"kazahstan", "almaty", "kostanaiskaya-oblast", "kachar"}
+	bySlug := make(map[string]AdGeo, len(opts))
+	for _, g := range opts {
+		bySlug[g.Slug] = g
+	}
+	ladder := make([]AdGeoRung, 0, len(wanted))
+	for _, slug := range wanted {
+		g, ok := bySlug[slug]
+		if !ok {
+			continue
+		}
+		ladder = append(ladder, AdGeoRung{
+			Name:  g.Name,
+			Pop:   g.Pop,
+			Year:  g.Year,
+			Share: fxFormat(float64(g.Share)/1000, 3) + " %",
+			Mult:  fxFormat(float64(g.Mult)/adGeoMultUnit, 2),
+			Price: AdOrderTotalGeo("horizontal", []string{surfaceHome}, 30, g.Mult).Total,
+		})
+	}
+	return opts, ladder
 }

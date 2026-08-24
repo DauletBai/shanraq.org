@@ -35,6 +35,7 @@ The name refers to the *shanyrak* — the crown of the Kazakh yurt — the livin
 - 📰 **Trilingual publishing** — one article, three language variants; per-language `hreflang`, sitemaps and JSON-LD.
 - 🏠 **Real-estate classifieds** — listings with photos, geo, amenities, promotion/feature tariffs, and a dedicated listings sitemap.
 - 🤖 **AI translation & moderation** — provider-agnostic (Claude, ChatGPT or Kimi), off unless a key is set. Translation keeps the author's Markdown and links; the platform then compares the result against the original and reports anything mechanically lost, so an author can check a language they do not read.
+- 📍 **Advertising priced by reach** — an advertiser buys a place, not the whole country, and pays by the square root of the population share it covers: 25,000 ₸ nationwide for a month of the top banner, about 5,000 ₸ for one region, 1,000 ₸ for a village. The banner runs on that place's pages and on everything inside it. No impression count is promised and no reader is located — the targeting is by what a page is about.
 - 📣 **Block-resilient syndication** — RSS always on; automatic Telegram posting on publish.
 - 🖼️ **Media pipeline** — upload, EXIF-strip, brand-watermark; pluggable storage (filesystem now, S3/MinIO ready).
 - ⭐ **Ratings & author karma** — weighted voting with anti-brigading.

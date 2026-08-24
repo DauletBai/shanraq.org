@@ -154,17 +154,35 @@ type AdOrderPricing struct {
 	Surfaces   int    `json:"surfaces"`
 	Weight10   int64  `json:"weight10"`
 	FormatRate int64  `json:"format_rate"`
-	Total      int64  `json:"total"`
+	// GeoMult is the geography multiplier ×10 000; 10 000 is nationwide.
+	GeoMult int64 `json:"geo_mult"`
+	// Nationwide is the price before the geography discount, kept so the
+	// advertiser can see what the narrowing saved them rather than just a
+	// smaller number.
+	Nationwide int64 `json:"nationwide"`
+	// AtFloor marks an order the minimum price lifted off the ladder.
+	AtFloor bool  `json:"at_floor"`
+	Total   int64 `json:"total"`
 }
 
-// AdOrderTotal prices a format + surface set for a period. Total is the format's
-// rate for the period times the summed surface weights.
+// AdOrderTotal prices a format + surface set for a period, nationwide.
 func AdOrderTotal(format string, surfaces []string, days int) AdOrderPricing {
+	return AdOrderTotalGeo(format, surfaces, days, adGeoMultUnit)
+}
+
+// AdOrderTotalGeo prices the same booking narrowed to one place. Total is the
+// format's rate for the period, times the summed surface weights, times the
+// geography multiplier — never below the floor, because an order costs
+// something to handle however small its reach.
+func AdOrderTotalGeo(format string, surfaces []string, days int, geoMult int64) AdOrderPricing {
 	if !isAdFormat(format) {
 		format = "rectangle"
 	}
 	if !adDurationSet[days] {
 		days = 3
+	}
+	if geoMult <= 0 || geoMult > adGeoMultUnit {
+		geoMult = adGeoMultUnit
 	}
 	rate := adFormatPriceVal(format, days)
 	var w int64
@@ -175,22 +193,40 @@ func AdOrderTotal(format string, surfaces []string, days int) AdOrderPricing {
 			n++
 		}
 	}
+	nationwide := rate * w / 10
+	total := nationwide * geoMult / adGeoMultUnit
+	atFloor := false
+	// The floor applies only to an order that actually has something in it: a
+	// form with no surface ticked yet is worth nothing and must not display a
+	// thousand tenge before the advertiser has chosen anything.
+	if floor := geoMinPriceVal(); n > 0 && total < floor {
+		total, atFloor = floor, true
+	}
 	return AdOrderPricing{
 		Format: format, Surfaces: n, Weight10: w,
-		FormatRate: rate, Total: rate * w / 10,
+		FormatRate: rate, GeoMult: geoMult,
+		Nationwide: nationwide, AtFloor: atFloor, Total: total,
 	}
 }
 
 // AdSurfaceFormatPrice is the 30-day price of one format on one surface — the
 // per-surface figure shown next to each checkbox, which changes with the format.
 func AdSurfaceFormatPrice(format, surface string, days int) int64 {
+	return AdSurfaceFormatPriceGeo(format, surface, days, adGeoMultUnit)
+}
+
+// AdSurfaceFormatPriceGeo is the same figure narrowed to a place.
+func AdSurfaceFormatPriceGeo(format, surface string, days int, geoMult int64) int64 {
 	if !isAdFormat(format) {
 		return 0
 	}
 	if !adDurationSet[days] {
 		days = 30
 	}
-	return adFormatPriceVal(format, days) * adSurfaceWeight10(surface) / 10
+	if geoMult <= 0 || geoMult > adGeoMultUnit {
+		geoMult = adGeoMultUnit
+	}
+	return adFormatPriceVal(format, days) * adSurfaceWeight10(surface) / 10 * geoMult / adGeoMultUnit
 }
 
 // surfaceLabelKey maps a surface code to its i18n key.

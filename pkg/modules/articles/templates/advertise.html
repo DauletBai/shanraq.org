@@ -96,8 +96,19 @@
             {{ range langs }}<option value="{{ . }}">{{ langName . }}</option>{{ end }}
           </select>
         </div>
+        {{/* География — третье измерение прайса. Свободная строка, стоявшая
+             здесь раньше, ни на что не влияла: её нельзя было ни проверить, ни
+             посчитать. Теперь это выбор из мест, у которых есть население, и
+             цена пересчитывается на месте. */}}
         <div class="field"><label>{{ t .Lang "adv.geo" }} {{ template "fhelp" (t .Lang "adv.h_geo") }}</label>
-          <input class="input" name="geo_region"></div>
+          <select class="select" name="geo_node" data-ad-geo>
+            <option value="" data-mult="10000">{{ t .Lang "adv.geo_all" }}</option>
+            {{ range .Geo }}
+            <option value="{{ .ID }}" data-mult="{{ .Mult }}">{{ .Name }}{{ if gt .Pop 0 }} — {{ .Pop }}{{ end }}</option>
+            {{ end }}
+          </select>
+          <p class="hint">{{ t .Lang "adv.geo_hint" }}</p>
+        </div>
       </div>
 
       <h3 class="adv-subhead">{{ t .Lang "adv.sec_when" }}</h3>
@@ -162,6 +173,45 @@
       <p class="adv-split" style="margin-top:8px">{{ t .Lang "adv.ratecard_note" }}</p>
     </div>
     <p class="adv-split" style="margin-top:12px">{{ t .Lang "adv.discount_note" }}</p>
+
+    {{/* Лестница географии: тот же расчёт, что делает форма, на настоящих
+         местах. Числа не вписаны — они пересчитываются из того же населения,
+         которым цена и считается, поэтому прайс не может разойтись с формой. */}}
+    {{ if .GeoLadder }}
+    <h3 class="adv-subhead">{{ t .Lang "adv.geo_h" }}</h3>
+    <p class="adv-split">{{ t .Lang "adv.geo_lead" }}</p>
+    <div class="table-wrap">
+      <table class="spec adv-rates">
+        <thead><tr>
+          <th>{{ t .Lang "adv.geo_c_place" }}</th>
+          <th>{{ t .Lang "adv.geo_c_pop" }}</th>
+          <th>{{ t .Lang "adv.geo_c_share" }}</th>
+          <th>{{ t .Lang "adv.geo_c_mult" }}</th>
+          <th>{{ t .Lang "adv.geo_c_price" }}</th>
+        </tr></thead>
+        <tbody>
+          {{ range .GeoLadder }}
+          <tr>
+            <td>{{ .Name }}</td>
+            <td class="aside__text">{{ money .Pop }}{{ if .Year }} <span class="adv-year">({{ .Year }})</span>{{ end }}</td>
+            <td class="aside__text">{{ .Share }}</td>
+            <td class="aside__text">×{{ .Mult }}</td>
+            <td><b>{{ money .Price }} ₸</b></td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+    <p class="adv-split" style="margin-top:8px">{{ t .Lang "adv.geo_why" }}</p>
+    {{ if .GeoMinPrice }}<p class="adv-split">{{ printf (t .Lang "adv.geo_floor") (money .GeoMinPrice) }}</p>{{ end }}
+    <p class="adv-split">{{ t .Lang "adv.geo_src" }}</p>
+
+    <aside class="mverdict" style="margin-top:14px">
+      <h4 class="mverdict__h">{{ t .Lang "adv.geo_sold_h" }}</h4>
+      <p class="mverdict__p">{{ t .Lang "adv.geo_sold_1" }}</p>
+      <p class="mverdict__p">{{ t .Lang "adv.geo_sold_2" }}</p>
+    </aside>
+    {{ end }}
     {{ if .Avail }}
     <h3 class="adv-subhead">{{ t .Lang "adv.avail" }}</h3>
     <div class="adv-avail">
@@ -208,6 +258,8 @@
   var totalEl = form.querySelector('[data-ad-total]');
   var breakEl = form.querySelector('[data-ad-breakdown]');
   var gridEl  = form.querySelector('[data-ad-cal-grid]');
+  var geoEl   = form.querySelector('[data-ad-geo]');
+  var geoFloor = {{ .GeoMinPrice }};
   var rates   = {{ adRatesJSON }};
   var lang    = '{{ .Lang }}';
   var locale  = lang === 'kz' ? 'kk-KZ' : (lang === 'en' ? 'en-US' : 'ru-RU');
@@ -220,6 +272,17 @@
   function rate(days) { var f = rates.formatPrice[currentFormat()] || {}; return f[days] || 0; }
   function selected() { return surfEls.filter(function (c) { return c.checked; }); }
 
+  // Geography multiplier, ×10 000, straight off the chosen option — the server
+  // computed it from the population and put it there, so the browser never
+  // repeats the arithmetic and never disagrees with the invoice.
+  function geoMult() {
+    if (!geoEl) return 10000;
+    var o = geoEl.options[geoEl.selectedIndex];
+    var m = o ? parseInt(o.getAttribute('data-mult'), 10) : 10000;
+    return (m > 0 && m <= 10000) ? m : 10000;
+  }
+  function applyGeo(n) { return Math.round(n * geoMult() / 10000); }
+
   // Per-surface price = format rate × surface weight/10. Update each tile's
   // label whenever the format or duration changes.
   function renderSurfacePrices() {
@@ -227,7 +290,7 @@
     surfEls.forEach(function (c) {
       var w = parseInt(c.getAttribute('data-weight'), 10) || 10;
       var el = c.parentNode.querySelector('[data-surf-price]');
-      if (el) el.textContent = fmt(Math.round(r * w / 10)) + ' \u20b8';
+      if (el) el.textContent = fmt(applyGeo(Math.round(r * w / 10))) + ' \u20b8';
     });
   }
 
@@ -236,10 +299,19 @@
   function renderTotal() {
     var sel = selected(), r = rate(daysEl.value), w = 0;
     sel.forEach(function (c) { w += parseInt(c.getAttribute('data-weight'), 10) || 10; });
-    var total = Math.round(r * w / 10);
+    var nationwide = Math.round(r * w / 10);
+    var total = applyGeo(nationwide);
+    // The floor is the server's, and it applies before the exclusive surcharge
+    // for the same reason it does there: it is the price of handling an order,
+    // not a discount on one.
+    if (sel.length && total < geoFloor) total = geoFloor;
     if (exclEl && exclEl.checked) total += Math.floor(total * 50 / 100);
     totalEl.textContent = sel.length ? (fmt(total) + ' \u20b8') : '\u2014';
-    if (breakEl) breakEl.textContent = sel.length ? (sel.length + ' ' + t('surfaces') + ' \u00d7 ' + fmt(r)) : '';
+    if (breakEl) {
+      var parts = sel.length ? (sel.length + ' ' + t('surfaces') + ' \u00d7 ' + fmt(r)) : '';
+      if (parts && geoMult() < 10000) parts += ' \u00d7 ' + (geoMult() / 10000).toFixed(2);
+      breakEl.textContent = parts;
+    }
   }
 
   function selectedRange() {
@@ -297,6 +369,9 @@
   surfEls.forEach(function (c) { c.addEventListener('change', function () { renderTotal(); loadAvail(); }); });
   [startEl, daysEl].forEach(function (el) { el.addEventListener('change', function () { renderSurfacePrices(); renderCal(); renderTotal(); }); });
   if (exclEl) exclEl.addEventListener('change', renderTotal);
+  // Narrowing the geography changes every price on the form, not just the
+  // total: each surface tile carries its own figure.
+  if (geoEl) geoEl.addEventListener('change', function () { renderSurfacePrices(); renderTotal(); });
   var allBtn = form.querySelector('[data-surf-all]'), noneBtn = form.querySelector('[data-surf-none]');
   if (allBtn) allBtn.addEventListener('click', function () { surfEls.forEach(function (c) { c.checked = true; }); renderTotal(); loadAvail(); });
   if (noneBtn) noneBtn.addEventListener('click', function () { surfEls.forEach(function (c) { c.checked = false; }); renderTotal(); loadAvail(); });
