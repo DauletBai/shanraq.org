@@ -148,7 +148,7 @@ Shanraq.org is a home where free voices meet.`},
 
 Не пересказывайте первый абзац. Опишите, что внутри: какие цифры, за какие годы, чем это кончилось.
 
-![Карточка статьи с описанием на восемь строк](/static/guide/guide-place-page.png)
+![Карточка статьи с описанием на восемь строк](/static/guide/guide-place-page.webp)
 
 ### Статья для места
 Если материал касается конкретного посёлка, города или области — укажите место в редакторе.
@@ -323,7 +323,7 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 
 Бірінші абзацты қайталап айтпаңыз. Ішінде не бар екенін жазыңыз: қандай сандар, қай жылдарға, немен бітті.
 
-![Сегіз жолдық сипаттамасы бар мақала карточкасы](/static/guide/guide-place-page.png)
+![Сегіз жолдық сипаттамасы бар мақала карточкасы](/static/guide/guide-place-page.webp)
 
 ### Орынға арналған мақала
 Материал нақты кентке, қалаға немесе облысқа қатысты болса — редакторда орнын көрсетіңіз.
@@ -498,7 +498,7 @@ The summary is what a reader sees on the card in the feed, and almost always the
 
 Do not retell the opening paragraph. Say what is inside: which numbers, for which years, and how it turned out.
 
-![An article card with an eight-line summary](/static/guide/guide-place-page.png)
+![An article card with an eight-line summary](/static/guide/guide-place-page.webp)
 
 ### An article for a place
 If the material concerns a particular town, city, or region, give it a place in the editor.
