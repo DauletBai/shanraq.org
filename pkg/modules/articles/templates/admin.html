@@ -872,11 +872,18 @@
       if (!pair) { return; }
       var translate = pair.querySelector('[name="translate_model"]');
       if (!translate) { return; }
+      // The moderation model is cleared rather than refilled: empty means "use the
+      // translation model", which is the right default for every classifier here —
+      // screening, the publication check and the proof-reader. Left alone it kept
+      // the previous provider's identifier, and after a switch the cheap tier called
+      // Kimi with a Claude model name and failed on every request.
+      var moderate = pair.querySelector('[name="moderate_model"]');
 
       document.querySelectorAll('input[name="provider"][data-translate-model]').forEach(function (radio) {
         radio.addEventListener('change', function () {
           if (!radio.checked) { return; }
           translate.value = radio.getAttribute('data-translate-model') || '';
+          if (moderate) { moderate.value = ''; }
           if (!translate.value) { translate.focus(); }
         });
       });
