@@ -154,6 +154,7 @@
             <span class="fx-key fx-key--b">{{ t .Lang "fx.col_base" }}</span>
           </p>
           <p class="chart__note">{{ printf (t .Lang "fx.money_note") .Macro.M3Month .Macro.M3Last .Macro.M3Year .Macro.BaseLast .Macro.BaseYear .Macro.Mult }} {{ t .Lang "fx.axis_log_m3" }}</p>
+          {{ if .Macro.RateBankShare }}<p class="chart__verdict">{{ printf (t .Lang "fx.v_money") .Macro.RateBankShare }}</p>{{ end }}
         </div>
       </div>
 
@@ -167,6 +168,7 @@
             <span class="fx-key fx-key--b">{{ t .Lang "fx.col_rate" }}</span>
           </p>
           <p class="chart__note">{{ printf (t .Lang "fx.cmp_note") .Macro.CmpFrom .Macro.MoneyMul .Macro.RateMul }} {{ t .Lang "fx.axis_log" }}</p>
+          <p class="chart__verdict">{{ printf (t .Lang "fx.v_cmp") .Macro.MoneyMul .Macro.RateMul }}</p>
         </div>
       </div>
       {{ end }}
@@ -177,6 +179,7 @@
           <h3 class="chart__h">{{ t .Lang "fx.cover_h" }}</h3>
           <div class="chart__body">{{ template "fx_line" (dict "C" .Macro.Cover "Cls" "fx-svg__line") }}</div>
           <p class="chart__note">{{ printf (t .Lang "fx.cover_note") .Macro.CoverMonth .Macro.CoverLast .Macro.RateAt }}</p>
+          <p class="chart__verdict">{{ t .Lang "fx.v_cover" }}</p>
         </div>
       </div>
       {{ end }}
@@ -191,6 +194,7 @@
             <span class="fx-key fx-key--b">{{ t .Lang "fx.col_fund" }}</span>
           </p>
           <p class="chart__note">{{ printf (t .Lang "fx.res_note") .Macro.ResLast .Macro.FundLast .Macro.ResMonth }} {{ t .Lang "fx.axis_bln" }}</p>
+          <p class="chart__verdict">{{ t .Lang "fx.v_res" }}</p>
         </div>
       </div>
       {{ end }}
@@ -224,7 +228,8 @@
                  самом деле, — и наоборот, если однажды год окажется в цели,
                  фраза «ни разу» станет неправдой. */}}
             <p class="mverdict__p">{{ if .Macro.RateAllYearsMissed }}{{ printf (t .Lang "fx.rate_verdict_1") .Macro.RateYears .Macro.RateMissed .Macro.RateAvg10 .Macro.RateTarget }}{{ else }}{{ printf (t .Lang "fx.rate_verdict_1p") .Macro.RateYears .Macro.RateMissed .Macro.RateAvg10 .Macro.RateTarget }}{{ end }}</p>
-            <p class="mverdict__p">{{ t .Lang "fx.rate_verdict_2" }}</p>
+            {{ if .Macro.RateGap }}<p class="mverdict__p">{{ printf (t .Lang "fx.rate_verdict_2") .Macro.RateGdpMul .Macro.RateMoneyMul .Macro.RateGap }}</p>{{ end }}
+            {{ if and .Macro.RateBankShare .Macro.RateDearYears }}<p class="mverdict__p">{{ printf (t .Lang "fx.rate_verdict_4") .Macro.RateBankShare .Macro.RateDearYears .Macro.RateYears .Macro.RateMoneyMul .Macro.RateGdpMul }}</p>{{ end }}
             {{ if .Macro.RateErodeKept }}<p class="mverdict__p">{{ printf (t .Lang "fx.rate_verdict_3") .Macro.RateErodeYear .Macro.RateErodeKept }}</p>{{ end }}
           </aside>
         </div>
@@ -257,6 +262,7 @@
       <div class="chart">
         <h3 class="chart__h">{{ t .Lang "fx.years_h" }}</h3>
         <p class="chart__note">{{ t .Lang "fx.years_note" }}</p>
+        <p class="chart__verdict">{{ t .Lang "fx.v_years" }}</p>
         <div class="fx-years__wrap fx-years__wrap--cap">
           <table class="fx-years">
             <thead><tr>

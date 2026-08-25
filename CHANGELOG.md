@@ -6,6 +6,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] — 2026-08-25
+
+### Changed
+
+- Раздел «Как формируется курс тенге и инфляция» говорит прямо. Под каждым
+  графиком теперь стоит вывод из его же чисел, а не одно описание того, что
+  нарисовано.
+
+  Главная врезка переписана на счёт, который не зависит ни от каких споров о
+  том, что чему предшествует: производство в стране выросло в 3,6 раза,
+  денежная масса — в 6 776 раз. Разница между этими двумя числами и есть
+  инфляция. Ставка тут не причина и не лекарство, а цена, по которой
+  Национальный банк отдаёт банкам деньги.
+
+  Добавлено, кому это досталось: 70% денежной массы создали коммерческие банки,
+  выдавая кредит под ставку Нацбанка, а заёмные деньги для производства 22 года
+  из 32 стоили дороже, чем росли цены.
+
+  Убрана фраза «какая из них тянет другую, годовой график не разбирает — да и
+  незачем». Она поднимала вопрос и уходила от него, и читалась как оправдание.
+
+
 ## [0.15.4] — 2026-08-25
 
 ### Fixed
@@ -812,7 +834,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.15.4...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/DauletBai/shanraq.org/compare/v0.15.4...v0.16.0
 [0.15.4]: https://github.com/DauletBai/shanraq.org/compare/v0.15.3...v0.15.4
 [0.15.3]: https://github.com/DauletBai/shanraq.org/compare/v0.15.2...v0.15.3
 [0.15.2]: https://github.com/DauletBai/shanraq.org/compare/v0.15.1...v0.15.2

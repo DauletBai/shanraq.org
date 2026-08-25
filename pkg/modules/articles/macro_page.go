@@ -132,6 +132,17 @@ type MacroBlock struct {
 	// oldest year the erosion table reaches, and what it buys now.
 	RateErodeYear string
 	RateErodeKept string
+	// The gap the whole page is about: how many times the money supply grew
+	// against how many times the country's output did, and the ratio between
+	// them. Counted from the same year the comparison chart starts.
+	RateGdpMul   string
+	RateMoneyMul string
+	RateGap      string
+	// Who ended up holding the money and what it cost to borrow: the share of
+	// the money supply commercial banks created themselves, and how many of the
+	// chart's years credit cost more than prices rose.
+	RateBankShare string
+	RateDearYears string
 }
 
 // ready reports whether the section was assembled in full.
@@ -277,6 +288,7 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 			// percent, and on a linear scale today's two-digit figures would lie
 			// in a single line along the bottom.
 			var nYears int64
+			b.RateDearYears = macroDearYears(ra, rb)
 			b.RateYears, b.RateMissed, b.RateAvg10, b.RateAllYearsMissed =
 				macroTargetRecord(rb, cpiTargetValue(m, ctx))
 			if v, err := strconv.ParseInt(b.RateYears, 10, 64); err == nil {
@@ -294,6 +306,16 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 			)
 			b.RateCPIFrom = fmt.Sprintf("%d", ra[0].Day.Year())
 			b.RateTarget = macroPctTrim(cpiTargetValue(m, ctx))
+		}
+	}
+
+	// Money against output, from the first year both are known. This is the one
+	// figure on the page that needs no theory of what causes what: the country
+	// produced this much more, and this much more money was printed for it.
+	b.RateGdpMul, b.RateMoneyMul, b.RateGap = macroMoneyVsOutput(m3, gdpSeries(m, ctx), lang)
+	if last, ok := macroLastPoint(m3); ok && last.Value > 0 {
+		if bv, ok := macroAt(baseMoney, last.Period); ok && bv > 0 {
+			b.RateBankShare = fxFormat((last.Value-bv)/last.Value*100, 0) + " %"
 		}
 	}
 
@@ -967,4 +989,83 @@ func cpiTargetValue(m *Module, ctx context.Context) float64 {
 		return 5
 	}
 	return pts[len(pts)-1].Value
+}
+
+// gdpSeries loads real output growth, or nothing when it has not been fetched.
+func gdpSeries(m *Module, ctx context.Context) []MacroPoint {
+	if m.macro == nil {
+		return nil
+	}
+	pts, err := m.macro.Series(ctx, MacroGDP)
+	if err != nil {
+		return nil
+	}
+	return pts
+}
+
+// macroMoneyVsOutput compares how much the money supply grew with how much the
+// country's production grew, over the years both are known for.
+//
+// This is the page's plainest statement and the one that survives every
+// argument about which line on a chart moves first. Prices are what money buys;
+// when money multiplies far faster than the things it can buy, the difference
+// comes out in prices. Both figures are published by the institutions
+// themselves, and the arithmetic is a division.
+func macroMoneyVsOutput(m3 []MacroPoint, gdp []MacroPoint, lang string) (gdpMul, moneyMul, gap string) {
+	if len(m3) < 2 || len(gdp) < 5 {
+		return "", "", ""
+	}
+	// Output: compound the annual real growth rates.
+	firstYear := gdp[0].Period.Year()
+	out := 1.0
+	years := 0
+	for _, p := range gdp {
+		out *= 1 + p.Value/100
+		years++
+	}
+	if out <= 0 || years < 5 {
+		return "", "", ""
+	}
+	// Money: from the first month of the same year the output series starts, so
+	// the two spans match. Comparing a money multiple since 1994 with output
+	// since 1998 would be the same mismatch this page has already been caught
+	// making once.
+	var start, end float64
+	for _, p := range m3 {
+		if p.Period.Year() < firstYear {
+			continue
+		}
+		if start == 0 {
+			start = p.Value
+		}
+		end = p.Value
+	}
+	if start <= 0 || end <= 0 {
+		return "", "", ""
+	}
+	money := end / start
+	if money <= 0 {
+		return "", "", ""
+	}
+	return macroMul(out, lang), macroMul(money, lang), macroMul(money/out, lang)
+}
+
+// macroDearYears counts the years borrowing cost more than prices rose — the
+// rate above inflation.
+//
+// This is the plainest measure of what credit cost the people who might have
+// built something with it. It says nothing about intent and needs no theory:
+// either the money was dearer than the inflation it was meant to outrun, or it
+// was not.
+func macroDearYears(rate, cpi []FxPoint) string {
+	if len(rate) == 0 || len(rate) != len(cpi) {
+		return ""
+	}
+	n := 0
+	for i := range rate {
+		if rate[i].Value > cpi[i].Value {
+			n++
+		}
+	}
+	return fmt.Sprintf("%d", n)
 }
