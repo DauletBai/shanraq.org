@@ -64,6 +64,19 @@ Shanraq.org is a home where free voices meet.`},
 
 Место нужно затем, чтобы до вас доходило местное: объявление ЖКХ о пуске тепла, сообщение акимата, предупреждение ТЭЦ об отключении воды. Переехали — поменяйте в профиле.
 
+## На каких языках выходит статья
+**Норма — три языка: казахский, русский и английский.** Издание называется трёхъязычным, и это должно быть правдой на каждой странице, а не только в описании. Пишите на всех трёх везде, где можете.
+
+**Материал для всей страны — на всех трёх обязательно.** Место его не ограничивает, значит и читатель может быть любым.
+
+**Материал для конкретного посёлка, города или области допускается на двух** — казахском и русском. Это тот минимум, который требует закон: статья 21 закона «О языках в Республике Казахстан» от 11 июля 1997 года № 151-I — «Бланки, вывески, объявления, реклама, прейскуранты, ценники, другая визуальная информация излагаются на государственном и русском, а при необходимости, и на других языках».
+
+Закон говорит об объявлениях, а мы применяем правило ко всему, что написано для места: местный материал почти всегда объявление и есть — график поликлиники, уведомление ЖКХ, сообщение акимата. Оставить его на одном языке значит оставить без него часть жителей.
+
+**Третий язык для местного материала приветствуется.** Ограничение в два языка — послабление, а не образец: в Качаре и Костанае живут люди, читающие по-английски, и статья, доступная им, теряет от этого ровно ничего.
+
+**Что будет, если языка не хватает.** Статья не опубликуется: проверка перед публикацией смотрит на это вместе с остальными правилами и возвращает материал, называя, какой именно версии нет. Кнопка вернёт вас в редактор с тем же сообщением.
+
 ## Погода и архив по дням
 В полосе наверху каждой страницы кликается всё: дата, погода и каждый курс валют.
 
@@ -252,6 +265,19 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 
 Орын жергілікті хабар сізге жетуі үшін керек: ТКШ-ның жылу беру туралы хабарландыруы, әкімдіктің хабарламасы, ЖЭО-ның су өшіру туралы ескертуі. Көшіп кетсеңіз — профильде ауыстырыңыз.
 
+## Мақала қай тілдерде шығады
+**Қалып — үш тіл: қазақ, орыс және ағылшын.** Басылым үш тілді деп аталады, және бұл сипаттамада ғана емес, әр бетте шындық болуға тиіс. Мүмкіндігіңіз болса, барлық жерде үш тілде жазыңыз.
+
+**Бүкіл елге арналған материал — үшеуінде де міндетті.** Оны жер шектемейді, демек оқырманы кез келген адам болуы мүмкін.
+
+**Нақты кентке, қалаға немесе облысқа арналған материалға екі тіл жеткілікті** — қазақ және орыс. Бұл заң талап ететін ең аз шама: «Қазақстан Республикасындағы тіл туралы» 1997 жылғы 11 шілдедегі № 151-I заңының 21-бабы бланкілерді, маңдайшаларды, хабарландыруларды, жарнаманы және басқа көрнекі ақпаратты мемлекеттік және орыс тілдерінде жазуды міндеттейді.
+
+Заң хабарландырулар туралы айтады, ал біз ережені жерге жазылған нәрсенің бәріне қолданамыз: жергілікті материал көбіне хабарландырудың өзі — емхананың кестесі, ТКШ хабарламасы, әкімдіктің хабары. Оны бір тілде қалдыру — тұрғындардың бір бөлігін онсыз қалдыру.
+
+**Жергілікті материалға үшінші тіл қосылса — құптаймыз.** Екі тілмен шектеу — жеңілдік, үлгі емес: Качар мен Қостанайда ағылшынша оқитын адамдар бар, ал оларға қолжетімді мақала бұдан ештеңе жоғалтпайды.
+
+**Тіл жетіспесе не болады.** Мақала жарияланбайды: жариялау алдындағы тексеру мұны басқа ережелермен бірге қарап, қай нұсқа жоқ екенін атап, материалды қайтарады. Түйме сізді сол хабарламамен редакторға қайтарады.
+
 ## Ауа райы және күндер бойынша мұрағат
 Әр беттің жоғарғы жолағында бәрі басылады: күні, ауа райы және әр валюта бағамы.
 
@@ -439,6 +465,19 @@ Registration has a "Where do you live" field: country, region, city, or town. It
 It is a choice from a reference list, not a determination of your location: we do not use GPS and do not work your city out from your network address. Your place is shown to nobody — not in comments, not on your profile, not in listings.
 
 The place is there so that local things reach you: a utility's notice that the heating is going on, a message from the local administration, a warning from the heating plant about a water shutdown. If you move, change it in your profile.
+
+## Which languages an article must exist in
+**The norm is three: Kazakh, Russian and English.** The publication calls itself trilingual, and that should be true of every page rather than only of the description. Write in all three wherever you can.
+
+**Material for the whole country must exist in all three.** No place narrows it, so its reader could be anyone.
+
+**Material for a particular village, city or region may be in two** — Kazakh and Russian. That is the minimum the law requires: Article 21 of the Law of the Republic of Kazakhstan "On languages in the Republic of Kazakhstan" (11 July 1997, No. 151-I) requires blanks, signboards, announcements, advertising and other visual information to be set out in the state language and in Russian, and where necessary in other languages too.
+
+The law speaks of announcements; we apply the rule to everything written for a place, because local material is almost always an announcement — a clinic's timetable, a utility's notice, an akimat's message. Leaving it in one language leaves part of the town without it.
+
+**A third language on local material is welcome.** The two-language limit is an allowance, not a model: people who read English live in Kachar and Kostanay too, and an article they can read loses nothing by it.
+
+**What happens when a language is missing.** The article will not publish: the pre-publication check weighs this along with the other rules and returns the material, naming the version that is absent. The button sends you back to the editor with the same message.
 
 ## Weather and the archive by day
 Everything in the strip at the top of every page is clickable: the date, the weather and each exchange rate.

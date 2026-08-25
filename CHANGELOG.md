@@ -6,6 +6,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] — 2026-08-25
+
+### Added
+
+- Проверка перед публикацией теперь ищет и языковые ошибки: орфографию,
+  грамматику и пунктуацию. Каждая находка приходит с процитированным местом,
+  чтобы автор правил конкретное слово, а не искал его по тексту. Эти правила
+  предупреждают, но не блокируют: запятая — повод сказать автору, а не повод
+  остановить материал.
+
+  Проверяющему прямо запрещено спорить о стиле и о выборе слов, и запрещено
+  трогать имена собственные, термины и цитаты. Статью пишет автор.
+
+- Требование к языкам. Норма — три языка; материал для всей страны выходит на
+  всех трёх, материал для конкретного места допускается на двух —
+  государственном и русском. Основание — статья 21 закона «О языках в
+  Республике Казахстан» от 11 июля 1997 года № 151-I, где объявления и другая
+  визуальная информация прямо отнесены к двуязычным.
+
+  Проверяется не моделью, а запросом к базе: версия либо есть и содержит текст,
+  либо нет, и тут нечего решать. Правило стоит на единственном месте, через
+  которое проходит любая публикация, — с включённой проверкой и без неё.
+
+  Отказ называет, какой именно версии не хватает, и в кабинете, и в журнале
+  модерации.
+
+
 ## [0.16.0] — 2026-08-25
 
 ### Changed
@@ -834,7 +861,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/DauletBai/shanraq.org/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/DauletBai/shanraq.org/compare/v0.15.4...v0.16.0
 [0.15.4]: https://github.com/DauletBai/shanraq.org/compare/v0.15.3...v0.15.4
 [0.15.3]: https://github.com/DauletBai/shanraq.org/compare/v0.15.2...v0.15.3

@@ -1571,6 +1571,19 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 
 	lang := m.resolveLang(w, r)
 	page := EditorPage{Base: m.base(r, T(lang, "editor.edit"), lang)}
+	// The publish button sends the author back here when a local piece is
+	// missing one of the two languages, so the reason has to be visible on
+	// arrival rather than left for them to guess.
+	// The publish button sends the author back here when a version is missing.
+	// Which one is stashed in the query, because "not all languages" sends them
+	// hunting through their own piece for the gap.
+	if r.URL.Query().Get("err") == "languages" {
+		e := &MissingLanguagesError{
+			Placed:  r.URL.Query().Get("scope") == "local",
+			Missing: strings.Split(r.URL.Query().Get("miss"), ","),
+		}
+		page.Error = e.Reason(lang)
+	}
 	page.ArticleID = a.ID.String()
 	page.Slug = a.Slug
 	page.Status = a.Status
@@ -1905,6 +1918,20 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 	// downgrade that choice to open publishing.
 	if m.ai == nil || !m.ai.ReviewCheckEnabled() {
 		if err := m.publishNow(r.Context(), id, authorID); err != nil {
+			// A local notice missing one of the two languages is the author's
+			// to fix, not an error to log: they are told which language and
+			// sent back to the editor.
+			var miss *MissingLanguagesError
+			if errors.As(err, &miss) {
+				scope := "all"
+				if miss.Placed {
+					scope = "local"
+				}
+				http.Redirect(w, r, "/studio/a/"+id.String()+
+					"?err=languages&scope="+scope+"&miss="+strings.Join(miss.Missing, ","),
+					http.StatusSeeOther)
+				return
+			}
 			if errors.Is(err, ErrNotFound) {
 				// Either not theirs, or readers have hidden it — the one state
 				// the author cannot clear by pressing publish again.

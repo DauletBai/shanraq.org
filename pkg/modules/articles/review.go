@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -30,6 +31,17 @@ var ReviewRules = []string{
 	"plagiarism",      // someone else's text without attribution
 	"title_mismatch",  // headline not supported by the body
 	"unreadable",      // incoherent or machine-dumped text
+	// Language quality. These warn rather than block: a misplaced comma is a
+	// reason to tell an author, never a reason to stop a piece that is
+	// otherwise sound. They carry the passage they object to, so the author
+	// fixes a specific word instead of hunting the text.
+	"spelling", // misspelt words
+	"grammar",  // agreement, case, syntax
+	"punctuation",
+	// The language rule for local material. Unlike the rest of this list it is
+	// not decided by the model — see requireLocalLanguages — but it needs a code
+	// so the author sees it beside the others in one place.
+	"local_languages",
 }
 
 func isReviewRule(code string) bool {
@@ -75,7 +87,16 @@ func reviewPrompt(lang, title, summary, body string) string {
 	b.WriteString("- disguised_ad: promotional material presented as editorial\n")
 	b.WriteString("- plagiarism: substantial text that appears to be someone else's without attribution\n")
 	b.WriteString("- title_mismatch: the headline claims more than the body supports\n")
-	b.WriteString("- unreadable: incoherent text, or raw machine output pasted in\n\n")
+	b.WriteString("- unreadable: incoherent text, or raw machine output pasted in\n")
+	b.WriteString("- spelling: a misspelt word. Quote the word alone.\n")
+	b.WriteString("- grammar: wrong agreement, case, verb form or word order. Quote the phrase.\n")
+	b.WriteString("- punctuation: a missing or wrong mark that changes or obscures the meaning. Quote the phrase.\n\n")
+	b.WriteString("On spelling, grammar and punctuation, report every instance you are confident about, ")
+	b.WriteString("each as its own finding with the exact passage quoted. Judge the text in the language it is ")
+	b.WriteString("written in — Kazakh, Russian or English — and never propose translating it. ")
+	b.WriteString("Do not report style, word choice, or a phrasing you would merely have written differently: ")
+	b.WriteString("the author writes the article, and a checker that argues about taste gets switched off.\n")
+	b.WriteString("Proper names, place names, terms and quoted speech are not errors. When unsure, say nothing.\n\n")
 	b.WriteString("Severity: \"block\" stops publication; \"warn\" is advice that does not.\n")
 	b.WriteString("Use \"block\" only for defamation, hatred, personal_data, illegal, plagiarism, disguised_ad, ")
 	b.WriteString("and for unreadable text. For unsourced_claim, opinion_as_fact and title_mismatch use \"block\" ")
@@ -218,6 +239,29 @@ func (m *Module) submitForReview(ctx context.Context, id, author uuid.UUID, lang
 	if blocking > 0 {
 		action, reason, status = "reject", "rules_failed", "needs_work"
 	}
+	// The language rule stops a place-targeted piece regardless of what the
+	// checker found. This path does not go through publishNow, so without the
+	// same test here a local notice in one language would sail past whenever
+	// the pre-publication checker happened to be switched on.
+	if status == "published" {
+		if lerr := m.requireLocalLanguages(ctx, id); lerr != nil {
+			if !errors.Is(lerr, ErrLocalNeedsBothLanguages) {
+				return false, blocking, lerr
+			}
+			blocking++
+			action, reason, status = "reject", "local_languages", "needs_work"
+			note := T(lang, "rule.local_languages_note")
+			var missing *MissingLanguagesError
+			if errors.As(lerr, &missing) {
+				note = missing.Reason(lang)
+			}
+			findings = append(findings, Finding{
+				RuleCode: "local_languages",
+				Severity: "block",
+				Note:     note,
+			})
+		}
+	}
 	// Status, ledger entry and findings commit as one unit. Before, a status
 	// could move without its record, so an article might go live with nothing
 	// in the log; that is the divergence the review flagged.
@@ -254,6 +298,12 @@ func humanActor(id uuid.UUID, n string) actor { return actor{kind: "human", id: 
 // is the one status the author may not clear on their own, or a hide would last
 // exactly as long as it takes to press the button again.
 func (m *Module) publishNow(ctx context.Context, id, author uuid.UUID) error {
+	// The one choke point every publish passes through, with the checker on or
+	// off. Putting the language rule anywhere else would leave a route around
+	// it the day somebody adds a second publish button.
+	if err := m.requireLocalLanguages(ctx, id); err != nil {
+		return err
+	}
 	ct, err := m.rt.DB.Exec(ctx, `
 		UPDATE articles
 		   SET status = 'published',
@@ -475,4 +525,100 @@ func (m *Module) DecideArticle(ctx context.Context, id uuid.UUID, decision strin
 		}
 	}
 	return nil
+}
+
+// ErrLocalNeedsBothLanguages is returned when an article is missing a language
+// version its reach requires.
+var ErrLocalNeedsBothLanguages = errors.New("материал опубликован не на всех необходимых языках")
+
+// requiredLanguages is the set an article must carry before it goes live.
+//
+// Material written for a place needs the state language and Russian: it is, in
+// practice, municipal information — a clinic's timetable, a utility's notice,
+// an akimat's announcement — and one language leaves part of the town without
+// it. Material addressed to everybody needs English as well, because a piece
+// with no place is a piece for anyone who finds it, and this is a trilingual
+// publication in fact and not only in description.
+func requiredLanguages(placed bool) []string {
+	if placed {
+		return []string{LangKZ, LangRU}
+	}
+	return []string{LangKZ, LangRU, LangEN}
+}
+
+// requireLocalLanguages enforces that rule.
+//
+// Checked here rather than asked of the model, because it is not a judgement.
+// Either the versions exist and carry text, or they do not; a model asked this
+// question could only get it wrong.
+func (m *Module) requireLocalLanguages(ctx context.Context, id uuid.UUID) error {
+	var placed bool
+	if err := m.rt.DB.QueryRow(ctx,
+		`SELECT geo_node_id IS NOT NULL FROM articles WHERE id = $1`, id).Scan(&placed); err != nil {
+		return fmt.Errorf("article place: %w", err)
+	}
+	rows, err := m.rt.DB.Query(ctx, `
+		SELECT lang FROM article_translations
+		 WHERE article_id = $1 AND COALESCE(title,'') <> '' AND COALESCE(body_md,'') <> ''`, id)
+	if err != nil {
+		return fmt.Errorf("article languages: %w", err)
+	}
+	defer rows.Close()
+	have := map[string]bool{}
+	for rows.Next() {
+		var l string
+		if err := rows.Scan(&l); err != nil {
+			return err
+		}
+		have[l] = true
+	}
+	if err := rows.Err(); err != nil {
+		return err
+	}
+	var missing []string
+	for _, want := range requiredLanguages(placed) {
+		if !have[want] {
+			missing = append(missing, want)
+		}
+	}
+	if len(missing) > 0 {
+		return &MissingLanguagesError{Missing: missing, Placed: placed}
+	}
+	return nil
+}
+
+// MissingLanguagesError names the versions an article still needs.
+//
+// It carries the list rather than a bare refusal because "not all languages"
+// sends an author looking through their own piece for what is missing. The
+// answer is known at the moment of refusal and costs nothing to say.
+type MissingLanguagesError struct {
+	Missing []string
+	Placed  bool
+}
+
+func (e *MissingLanguagesError) Error() string {
+	return "article is missing language versions: " + strings.Join(e.Missing, ", ")
+}
+
+// Is makes the typed error answer to the sentinel, so existing checks stand.
+func (e *MissingLanguagesError) Is(target error) bool { return target == ErrLocalNeedsBothLanguages }
+
+// Reason spells the refusal out for the author, in their own language, naming
+// the versions that are missing and why this piece needs them.
+func (e *MissingLanguagesError) Reason(lang string) string {
+	names := make([]string, 0, len(e.Missing))
+	for _, l := range e.Missing {
+		if n := LangNames[strings.TrimSpace(l)]; n != "" {
+			names = append(names, n)
+		}
+	}
+	if len(names) == 0 {
+		return T(lang, "rule.local_languages_note")
+	}
+	key := "rule.langs_all_note"
+	if e.Placed {
+		key = "rule.langs_local_note"
+	}
+	return fmt.Sprintf(T(lang, key), strings.Join(names, ", "))
 }
