@@ -1,8 +1,10 @@
 package articles
 
 import (
+	"strconv"
 	"strings"
 	"testing"
+	"time"
 )
 
 // The verdict under the rate chart is the picture's own arithmetic, so it has
@@ -101,5 +103,88 @@ func TestVerdictClaimsNoLeadOrLag(t *testing.T) {
 				t.Errorf("нет строки %q для языка %q", key, lang)
 			}
 		}
+	}
+}
+
+// Which way the erosion figure runs.
+//
+// This is the regression test for a sentence that was published backwards. The
+// column holds 1000 ÷ (accumulated price growth): what a thousand tenge of that
+// year buys today, counted in that same year's money. With prices up forty-two
+// times since 1995, a thousand tenge of 1995 buys today what twenty-four tenge
+// bought then — it is NOT that a thousand tenge of 1995 equals twenty-four
+// tenge of today, which would mean old money was worth less than new.
+func TestErosionRunsFromTheOldYearForward(t *testing.T) {
+	year := func(y int, v float64) MacroPoint {
+		return MacroPoint{Period: mustYear(y), Value: v}
+	}
+	// Prices double every year for four years: growth ×8 from 1995 to 1998.
+	cpi := []MacroPoint{year(1995, 100), year(1996, 100), year(1997, 100), year(1998, 100),
+		year(1999, 0), year(2000, 0)}
+	// The erosion table needs a monthly rate series of its own: it also answers
+	// "how many dollars did that thousand fetch", and one point a year is not
+	// enough for it to run at all.
+	rate := []FxPoint{}
+	for y := 1995; y <= 2000; y++ {
+		for m := time.January; m <= time.December; m++ {
+			rate = append(rate, FxPoint{
+				Day:   time.Date(y, m, 1, 0, 0, 0, 0, time.UTC),
+				Value: 100,
+			})
+		}
+	}
+	rows, _ := macroErosion(cpi, rate)
+	if len(rows) == 0 {
+		t.Fatal("таблица обесценения пуста")
+	}
+	first := rows[0]
+	if first.Year != 1995 {
+		t.Fatalf("первая строка = %d, ожидался 1995", first.Year)
+	}
+	// Prices double in each of 1995–1998 and hold still in 1999, so growth from
+	// 1995 to the last year with a rate (2000) is 2⁴ = 16 and the thousand comes
+	// to 62. The figure must be far below a thousand either way: money loses
+	// value with time, it does not gain it.
+	got := strings.ReplaceAll(strings.ReplaceAll(first.Kept, " ", ""), " ", "")
+	n, err := strconv.Atoi(got)
+	if err != nil {
+		t.Fatalf("не число: %q", first.Kept)
+	}
+	if n >= 1000 {
+		t.Errorf("осталось %d из тысячи — направление перевёрнуто: деньги не дорожают со временем", n)
+	}
+	if n != 62 {
+		t.Errorf("осталось %d, ожидалось 62 (тысяча делится на рост цен в 16 раз)", n)
+	}
+}
+
+func mustYear(y int) time.Time { return time.Date(y, time.January, 1, 0, 0, 0, 0, time.UTC) }
+
+// A formula whose own numbers fail to multiply out is worse than no formula:
+// the first reader with a calculator finds the page wrong about itself.
+func TestPrintedIdentityMultipliesOut(t *testing.T) {
+	// The real July 2026 figures, which is where this was caught: rounding each
+	// factor on its own gave 55,8 = 16,7 × 3,33, and 16,7 × 3,33 is 55,61.
+	const m3, base = 55_783_694.0, 16_749_995.0
+	mult := macroShownRatio(m3, base)
+
+	shownM3, _ := macroShownValue(m3)
+	shownBase, _ := macroShownValue(base)
+	rounded := float64(int(mult*100+0.5)) / 100 // as printed, two decimals
+
+	product := shownBase * rounded
+	if diff := product - shownM3; diff > 0.05 || diff < -0.05 {
+		t.Errorf("%.1f × %.2f = %.2f, а напечатано %.1f — формула не сходится",
+			shownBase, rounded, product, shownM3)
+	}
+
+	// When the two sums land in different magnitudes no printed line invites the
+	// multiplication, and the exact ratio is the honest answer.
+	if got := macroShownRatio(55_783_694, 900); got != 55_783_694.0/900 {
+		t.Errorf("разные порядки должны давать точное отношение, вышло %v", got)
+	}
+	// A zero denominator must not produce an infinity on the page.
+	if got := macroShownRatio(100, 0); got != 0 {
+		t.Errorf("деление на ноль дало %v", got)
 	}
 }

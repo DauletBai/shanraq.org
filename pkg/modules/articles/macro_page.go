@@ -192,7 +192,10 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 		// latest of each: the two series can be published a month apart, and
 		// dividing across that gap would invent a jump that never happened.
 		if bv, ok := macroAt(baseMoney, last.Period); ok && bv > 0 {
-			b.Mult = fxFormat(last.Value/bv, 2)
+			// The same ratio the formula prints, derived the same way: the
+			// note and the formula must not disagree about the multiplier by a
+			// hundredth.
+			b.Mult = fxFormat(macroShownRatio(last.Value, bv), 2)
 		}
 	}
 
@@ -200,9 +203,7 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 	//    a hundred in their first shared month: one is measured in tenge and the
 	//    other in tenge per dollar, and they can only be compared as multiples.
 	if len(rate) > 24 {
-		b.Cmp, b.CmpFrom = macroCompare(m3, rate, lang)
-		b.MoneyMul = macroTimes(m3, lang)
-		b.RateMul = macroTimes(rate, lang)
+		b.Cmp, b.CmpFrom, b.MoneyMul, b.RateMul = macroCompare(m3, rate, lang)
 	}
 
 	// 3. How many tenge there are per dollar of reserves. Not a rate and not a
@@ -486,21 +487,35 @@ func ruTimesWord(n int64) string {
 
 // macroCompare builds two lines indexed to a hundred in their first shared
 // month.
-func macroCompare(m3 []MacroPoint, rate []FxPoint, lang string) (MacroChart, string) {
+// macroCompare returns the chart, the month both lines start from, and how many
+// times each has grown SINCE THAT MONTH.
+//
+// The multiples used to be measured from each series' own first point, while the
+// caption said "since January 1994" — the month the lines are indexed to. The
+// two series do not begin together: the money supply starts in January 1994 and
+// the exchange rate in November 1993, when the tenge was two months old and
+// stood at 4.70. Measured from its own beginning the dollar had grown 97 times;
+// measured from the month the sentence actually names, 43. The page printed the
+// first number under the second date.
+//
+// So the multiples are computed here, from the same trimmed series the chart
+// draws, and cannot drift away from the caption again.
+func macroCompare(m3 []MacroPoint, rate []FxPoint, lang string) (chart MacroChart, from string, moneyMul, rateMul string) {
 	a := macroPoints(m3)
-	from := a[0].Day
-	if rate[0].Day.After(from) {
-		from = rate[0].Day
+	start := a[0].Day
+	if rate[0].Day.After(start) {
+		start = rate[0].Day
 	}
-	a = macroSince(a, from)
-	b := macroSince(rate, from)
+	a = macroSince(a, start)
+	b := macroSince(rate, start)
 	if len(a) < 2 || len(b) < 2 {
-		return MacroChart{}, ""
+		return MacroChart{}, "", "", ""
 	}
-	return macroTwoLinesWith(macroIndex(a), macroIndex(b), lang, true,
+	chart = macroTwoLinesWith(macroIndex(a), macroIndex(b), lang, true,
 		fxChartOpts{Name: T(lang, "fx.col_money"), Format: macroOne},
 		fxChartOpts{Name: T(lang, "fx.col_rate"), Format: macroOne},
-	), macroMonthIn(from, lang)
+	)
+	return chart, macroMonthIn(start, lang), macroTimes(a, lang), macroTimes(b, lang)
 }
 
 // macroScaled converts a series into convenient units: millions of tenge into

@@ -336,7 +336,13 @@ func formulaBase(in macroFormulaInput) (MacroFormula, bool) {
 	if !ok || base <= 0 {
 		return MacroFormula{}, false
 	}
-	mult := m3.Value / base
+	// The multiplier is derived from the figures as they are PRINTED, not from
+	// the precise ones behind them. A formula whose own numbers fail to
+	// multiply out is worse than no formula: 55,8 = 16,7 × 3,33 comes to 55,61,
+	// and the first reader with a calculator finds the page wrong about itself.
+	// Rounding each factor on its own put a hundred and ninety billion tenge
+	// into that gap.
+	mult := macroShownRatio(m3.Value, base)
 
 	f := MacroFormula{
 		ID:      "base",
@@ -536,4 +542,37 @@ func formulaTarget(in macroFormulaInput) (MacroFormula, bool) {
 // checks.
 func macroFormulaWidth(f MacroFormula) int {
 	return int(math.Max(float64(len([]rune(f.Symbols))), float64(len([]rune(strings.TrimSpace(f.Filled))))))
+}
+
+// macroShownRatio divides two sums the way the page shows them, so a printed
+// identity holds when the reader checks it.
+//
+// Both figures reach the page through macroTenge, which rounds to one decimal
+// inside its magnitude. When they land in the same magnitude the ratio is taken
+// between those rounded values; when they do not — a base in billions under a
+// mass in trillions — the exact ratio is the honest one, and no printed line
+// invites the multiplication anyway.
+func macroShownRatio(numMillions, denMillions float64) float64 {
+	if denMillions <= 0 {
+		return 0
+	}
+	nv, nu := macroShownValue(numMillions)
+	dv, du := macroShownValue(denMillions)
+	if nu == du && dv != 0 {
+		return nv / dv
+	}
+	return numMillions / denMillions
+}
+
+// macroShownValue is the number macroTenge prints, with the magnitude it printed
+// it in.
+func macroShownValue(millions float64) (float64, string) {
+	switch {
+	case millions >= 1e6:
+		return math.Round(millions/1e6*10) / 10, "trn"
+	case millions >= 1e3:
+		return math.Round(millions/1e3*10) / 10, "bln"
+	default:
+		return math.Round(millions), "mln"
+	}
 }
