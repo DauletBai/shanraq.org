@@ -105,6 +105,11 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 		Provider:       orDefault(cfg.Provider, ProviderAnthropic),
 		TranslateModel: orDefault(cfg.TranslateModel, "claude-haiku-4-5"),
 		MaxTokens:      cfg.MaxTokens,
+		// A fresh install seeds this row itself, so the column default in the
+		// migration never reaches it -- automatic translation has to be on
+		// here too, or a new site starts unable to reach the languages
+		// publication requires.
+		AutoTranslate: true,
 	}
 	if defaults.MaxTokens <= 0 {
 		defaults.MaxTokens = 4096
@@ -163,10 +168,12 @@ func (m *Module) ReviewCheckEnabled() bool {
 }
 
 // AutoTranslateEnabled reports whether the site translates articles for their
-// authors. Off since the day the arithmetic was done: the rebuilt pipeline
-// works — verified batches, every paragraph accounted for, every figure
-// checked — and still takes eight minutes and twenty requests to do what an
-// author's own model does in one, in a language they can read back.
+// authors. It stayed off while translating was merely a convenience: the
+// pipeline takes eight minutes and twenty requests to do what an author's own
+// model does in one. Publication now requires the missing languages outright,
+// so the eight minutes buy an article that would otherwise not run at all, and
+// an author without a second model has a way through. The Kazakh it produces
+// is the weakest of the three; the editor says so beside the button.
 func (m *Module) AutoTranslateEnabled() bool {
 	if m == nil || !m.Enabled() {
 		return false

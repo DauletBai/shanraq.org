@@ -94,3 +94,32 @@ func hasLang(xs []string, x string) bool {
 	}
 	return false
 }
+
+// Publication demands languages an author may not have; the site translates for
+// them, and its Kazakh is the weakest of the three. The guide has to say so in
+// every language, or a Kazakh reader is the one who pays for the silence.
+func TestGuideWarnsThatMachineKazakhNeedsChecking(t *testing.T) {
+	// Words that only appear where the warning does, one per language.
+	marks := map[string][]string{
+		"kz": {"Қазақша аударманы тексеріңіз", "маманына"},
+		"ru": {"Казахский перевод проверяйте", "специалисту в предмете"},
+		"en": {"Check the Kazakh", "a specialist in the subject"},
+	}
+	for lang, want := range marks {
+		body := staticContent("guide", lang).Body
+		for _, w := range want {
+			if !strings.Contains(body, w) {
+				t.Errorf("руководство (%s) не предупреждает о качестве казахского перевода: нет %q", lang, w)
+			}
+		}
+	}
+}
+
+// The warning also stands beside the button the author actually presses.
+func TestTheEditorWarnsBesideTheTranslateButton(t *testing.T) {
+	for _, lang := range []string{"kz", "ru", "en"} {
+		if s := T(lang, "editor.ai_kk_warn"); s == "" || s == "editor.ai_kk_warn" {
+			t.Errorf("у кнопки перевода нет предупреждения на языке %q", lang)
+		}
+	}
+}

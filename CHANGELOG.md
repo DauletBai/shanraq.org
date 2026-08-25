@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.1] — 2026-08-25
+
+### Changed
+
+- Автоматический перевод включён. Он лежал выключенным, пока перевод был
+  удобством: собственная модель автора справлялась быстрее, чем наши восемь
+  минут и двадцать запросов. Теперь публикация требует недостающих языков сама,
+  и автору без второй модели нужен путь — эти восемь минут покупают статью,
+  которая иначе не вышла бы вовсе. В редакторе автору снова видна кнопка
+  «Перевести на другие языки».
+
+  Включено и для существующей установки (миграцией), и для новой (умолчанием в
+  коде: свежая база сеет строку настроек сама и до умолчания колонки не
+  доходит). Выключить по-прежнему можно в админке.
+
+### Added
+
+- Предупреждение о казахском переводе — рядом с кнопкой в редакторе и в
+  руководстве на всех трёх языках. Машина переводит на казахский заметно слабее,
+  чем на русский и английский: страдают термины, официальный слог и формы слов.
+  Автора просят вычитать казахскую версию, а официальный, медицинский или
+  юридический материал показать переводчику, редактору или специалисту в
+  предмете. Ответственность за текст остаётся на авторе.
+
 ## [0.17.0] — 2026-08-25
 
 ### Added
@@ -861,7 +885,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.17.0...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.17.1...HEAD
+[0.17.1]: https://github.com/DauletBai/shanraq.org/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/DauletBai/shanraq.org/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/DauletBai/shanraq.org/compare/v0.15.4...v0.16.0
 [0.15.4]: https://github.com/DauletBai/shanraq.org/compare/v0.15.3...v0.15.4

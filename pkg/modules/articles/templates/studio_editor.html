@@ -26,6 +26,10 @@
       {{/* Name the languages instead of promising "three": the original is
            already written, so there are two. */}}
       <span class="hint">{{ printf (t .Lang "editor.ai_targets") (langList .TargetLangs) }} {{ t .Lang "editor.ai_saved_hint" }}</span>
+      {{/* Предупреждение стоит у самой кнопки, а не только в руководстве:
+           автор нажимает её здесь, и здесь же должен узнать, что казахскую
+           версию придётся вычитать. */}}
+      <p class="hint hint--warn">{{ t .Lang "editor.ai_kk_warn" }}</p>
 
       {{/* The outcome of the last run. Without it the author clicks, reads
            "started", and then waits in front of empty tabs with no way to find

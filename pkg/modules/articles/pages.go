@@ -75,6 +75,10 @@ Shanraq.org is a home where free voices meet.`},
 
 **Третий язык для местного материала приветствуется.** Ограничение в два языка — послабление, а не образец: в Качаре и Костанае живут люди, читающие по-английски, и статья, доступная им, теряет от этого ровно ничего.
 
+**Перевод можно поручить редакции.** В редакторе есть кнопка «Перевести на другие языки»: наша модель сделает недостающие версии из той, которую вы уже написали.
+
+**Казахский перевод проверяйте.** Машина переводит на казахский заметно слабее, чем на русский и английский: чаще всего страдают термины, официальный слог и формы слов. Вычитайте казахскую версию сами, а официальный, медицинский или юридический материал покажите тому, кто знает язык профессионально, — переводчику, редактору, специалисту в предмете. Под статьёй стоит ваше имя: за текст отвечаете вы, а не машина.
+
 **Что будет, если языка не хватает.** Статья не опубликуется: проверка перед публикацией смотрит на это вместе с остальными правилами и возвращает материал, называя, какой именно версии нет. Кнопка вернёт вас в редактор с тем же сообщением.
 
 ## Погода и архив по дням
@@ -276,6 +280,10 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 
 **Жергілікті материалға үшінші тіл қосылса — құптаймыз.** Екі тілмен шектеу — жеңілдік, үлгі емес: Качар мен Қостанайда ағылшынша оқитын адамдар бар, ал оларға қолжетімді мақала бұдан ештеңе жоғалтпайды.
 
+**Аударманы редакцияға тапсыруға болады.** Редакторда «Басқа тілдерге аудару» түймесі бар: біздің модель сіз жазған нұсқадан жетіспейтін нұсқаларды жасайды.
+
+**Қазақша аударманы тексеріңіз.** Машина қазақ тіліне орыс және ағылшын тіліне қарағанда әлдеқайда әлсіз аударады: көбіне термин, ресми сөз мәнері және сөз тұлғасы бұрмаланады. Қазақша нұсқаны өзіңіз оқып шығыңыз, ал ресми, медициналық немесе құқықтық материалды тілді кәсіби білетін адамға — аудармашыға, редакторға, сол саланың маманына — көрсетіңіз. Мақаланың астында сіздің атыңыз тұр: мәтін үшін машина емес, сіз жауап бересіз.
+
 **Тіл жетіспесе не болады.** Мақала жарияланбайды: жариялау алдындағы тексеру мұны басқа ережелермен бірге қарап, қай нұсқа жоқ екенін атап, материалды қайтарады. Түйме сізді сол хабарламамен редакторға қайтарады.
 
 ## Ауа райы және күндер бойынша мұрағат
@@ -476,6 +484,10 @@ The place is there so that local things reach you: a utility's notice that the h
 The law speaks of announcements; we apply the rule to everything written for a place, because local material is almost always an announcement — a clinic's timetable, a utility's notice, an akimat's message. Leaving it in one language leaves part of the town without it.
 
 **A third language on local material is welcome.** The two-language limit is an allowance, not a model: people who read English live in Kachar and Kostanay too, and an article they can read loses nothing by it.
+
+**You can leave the translation to us.** The editor has a "Translate to the other languages" button: our model builds the missing versions from the one you wrote.
+
+**Check the Kazakh.** Machine translation into Kazakh is markedly weaker than into Russian or English: terminology, official register and word forms are what suffer. Read the Kazakh version through yourself, and show official, medical or legal material to someone who knows the language professionally — a translator, an editor, a specialist in the subject. Your name stands under the article: you answer for the text, not the machine.
 
 **What happens when a language is missing.** The article will not publish: the pre-publication check weighs this along with the other rules and returns the material, naming the version that is absent. The button sends you back to the editor with the same message.
 

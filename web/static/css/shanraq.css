@@ -3219,6 +3219,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .charts--two .chart__body { max-height: none; overflow: visible; padding-right: 0; }
 .chart__note--lead { font-size: .84rem; margin: 0 0 12px; }
 
+/* Предупреждение в подсказке: не ошибка, но и не проходная строка —
+   автор должен заметить его до того, как нажмёт кнопку. */
+.hint--warn { border-left: 3px solid var(--gold); padding-left: 10px; margin-top: 8px; }
+
 /* Короткий вывод под графиком. Не такая же врезка, как под графиком ставки:
    пять одинаковых блоков подряд превратили бы страницу в один сплошной
    манифест и обесценили бы главный. Одна строка с полосой — ровно столько,
