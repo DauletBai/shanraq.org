@@ -173,20 +173,57 @@ func TestMacroPolicyRateSplice(t *testing.T) {
 	}
 }
 
-func TestMacroRateByYearCarriesForward(t *testing.T) {
+// The year's rate is the one actually in force through it, weighted by the days
+// it held — not the rate standing on 31 December.
+//
+// This is the regression test for a chart that falsified its own subject. Read
+// at year end, the rate for 2015 was 16.0 against inflation of 6.7, and every
+// reader saw the Bank raising rates a full year before prices moved. Weighted
+// by days, 2015 was 8.65 against 6.68 and 2016 was 14.47 against 14.36 — the
+// lines almost touching. The lead was an artefact of comparing a snapshot with
+// a whole year, and a chart that shows a sequence the numbers do not contain is
+// worse than no chart.
+func TestYearRateIsWeightedByDaysNotReadAtYearEnd(t *testing.T) {
 	day := func(y int, m time.Month, d int) time.Time {
 		return time.Date(y, m, d, 0, 0, 0, 0, time.UTC)
 	}
 	rate := macroRateByYear([]FxPoint{
 		{Day: day(2020, time.March, 10), Value: 12},
 		{Day: day(2020, time.July, 21), Value: 9},
-		// No decision in 2021 at all: the year inherits 2020's last one.
+		// No decision in 2021 at all: the year is carried entirely by 2020's
+		// last one, so an untouched year still reads as that flat rate.
 		{Day: day(2022, time.February, 24), Value: 13.5},
 	})
-	for y, want := range map[int]float64{2020: 9, 2021: 9, 2022: 13.5} {
-		if rate[y] != want {
-			t.Errorf("%d = %v, want %v", y, rate[y], want)
-		}
+
+	// 2020: 12% until 10 March is inherited from nothing before it, so the year
+	// starts unset; the first decision that year takes effect on 10 March.
+	// What matters is that the answer is neither of the two decisions taken —
+	// it lies between them, which a year-end reading could never produce.
+	got := rate[2020]
+	if got <= 9 || got >= 12 {
+		t.Errorf("2020 = %v — ожидалось значение между 9 и 12, а не одно из решений", got)
+	}
+	// A year with no decisions is flat at the last rate before it.
+	if rate[2021] != 9 {
+		t.Errorf("2021 = %v, ожидалось 9: год без решений держит прежнюю ставку", rate[2021])
+	}
+	// 2022 begins at 9 and moves to 13.5 on 24 February, so most of the year is
+	// the higher rate but the average must still sit below it.
+	if rate[2022] >= 13.5 || rate[2022] <= 9 {
+		t.Errorf("2022 = %v — ожидалось между 9 и 13,5", rate[2022])
+	}
+
+	// The whole point, stated as an assertion: a rate raised in December must
+	// barely move that year's figure, and must move the next year's instead.
+	late := macroRateByYear([]FxPoint{
+		{Day: day(2015, time.January, 1), Value: 5.5},
+		{Day: day(2015, time.December, 2), Value: 16},
+	})
+	if late[2015] > 7 {
+		t.Errorf("решение 2 декабря сдвинуло год до %v — снимок на конец года вернулся", late[2015])
+	}
+	if late[2016] != 16 {
+		t.Errorf("2016 = %v, ожидалось 16: декабрьское решение держит весь следующий год", late[2016])
 	}
 }
 

@@ -199,7 +199,15 @@
       <div class="charts">
         <div class="chart">
           <h3 class="chart__h">{{ t .Lang "fx.rate_h" }}</h3>
-          <div class="chart__body">{{ template "fx_two" .Macro.RateCPI }}</div>
+          {{/* Развёрнут по горизонтали: тридцать с лишним лет в ширину колонки
+               дают два десятка пикселей на год, и погодовое движение пропадает.
+               Ось значений остаётся на месте при прокрутке — без неё линия
+               перестаёт что-либо означать. */}}
+          <div class="chart__body fx-scroll">
+            <div class="fx-scroll__inner"{{ if .Macro.RateCPI.MinWidth }} style="min-width:{{ .Macro.RateCPI.MinWidth }}px"{{ end }}>
+              {{ template "fx_two" .Macro.RateCPI }}
+            </div>
+          </div>
           <p class="chart__note">
             <span class="fx-key fx-key--a">{{ t .Lang "fx.rate_key_a" }}</span>
             <span class="fx-key fx-key--b">{{ t .Lang "fx.col_cpi" }}</span>
@@ -211,8 +219,13 @@
                собирается, а внизу карточки он читался бы как сноска. */}}
           <aside class="mverdict">
             <h4 class="mverdict__h">{{ t .Lang "fx.rate_verdict_h" }}</h4>
-            <p class="mverdict__p">{{ t .Lang "fx.rate_verdict_1" }}</p>
+            {{/* Два варианта первой фразы: пока цель не достигнута ни разу,
+                 счёт «столько-то из стольки-то» звучит мягче, чем есть на
+                 самом деле, — и наоборот, если однажды год окажется в цели,
+                 фраза «ни разу» станет неправдой. */}}
+            <p class="mverdict__p">{{ if .Macro.RateAllYearsMissed }}{{ printf (t .Lang "fx.rate_verdict_1") .Macro.RateYears .Macro.RateMissed .Macro.RateAvg10 .Macro.RateTarget }}{{ else }}{{ printf (t .Lang "fx.rate_verdict_1p") .Macro.RateYears .Macro.RateMissed .Macro.RateAvg10 .Macro.RateTarget }}{{ end }}</p>
             <p class="mverdict__p">{{ t .Lang "fx.rate_verdict_2" }}</p>
+            {{ if .Macro.RateErodeKept }}<p class="mverdict__p">{{ printf (t .Lang "fx.rate_verdict_3") .Macro.RateErodeYear .Macro.RateErodeKept }}</p>{{ end }}
           </aside>
         </div>
       </div>

@@ -3081,6 +3081,21 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   :root:not([data-theme="light"]) .fxtip { color: #1c1a17; }
 }
 
+/* График, развёрнутый по горизонтали. Плотный ряд не влезает в ширину колонки
+   осмысленно, поэтому рамка становится шире неё, а читатель ведёт её вбок. */
+.fx-scroll { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; }
+.fx-scroll__inner { height: 100%; }
+/* Ось значений прибита к левому краю: уехав вместе с линией, она оставила бы
+   читателя с кривой без единого числа. */
+.fx-scroll .spark__y {
+  position: sticky; left: 0; z-index: 2;
+  background: var(--surface); padding-right: 4px;
+}
+.fx-scroll::-webkit-scrollbar { height: 8px; }
+.fx-scroll::-webkit-scrollbar-track { background: transparent; }
+.fx-scroll::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
+.fx-scroll { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+
 /* Карта погоды. Соотношение 16:9 на широком экране и 9:16 на вертикальном
    телефоне: карта — единственное на сайте, чему высота нужна больше ширины,
    когда экран узкий, иначе от мира остаётся полоска в три сантиметра.

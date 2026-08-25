@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -32,6 +33,10 @@ type MacroChart struct {
 	Height int
 	// Log marks a logarithmic scale — the reader has to be told.
 	Log bool
+	// MinWidth, when set, is the frame's width in pixels inside a sideways
+	// scroll: a series too dense to read at the column's width gets room and
+	// the reader moves along it.
+	MinWidth int
 	// Hover carries the readout data for the frame, as ready JSON.
 	Hover string
 }
@@ -114,6 +119,19 @@ type MacroBlock struct {
 	RateCPI     MacroChart
 	RateCPIFrom string
 	RateSince   string
+	// The Bank's record against its own target, counted from the same series
+	// the chart draws. Hard-coding these would let the verdict drift away from
+	// the picture it stands under, which is the one failure this block cannot
+	// afford.
+	RateYears          string // сколько лет на графике
+	RateMissed         string // из них лет выше цели
+	RateAvg10          string // средняя инфляция за последнее десятилетие
+	RateTarget         string // объявленная цель
+	RateAllYearsMissed bool
+	// What the record cost a person holding money: a thousand tenge of the
+	// oldest year the erosion table reaches, and what it buys now.
+	RateErodeYear string
+	RateErodeKept string
 }
 
 // ready reports whether the section was assembled in full.
@@ -226,6 +244,12 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 
 	b.Years = macroYears(cpi, m3, rate, fund)
 	b.Erode, b.NowDollars = macroErosion(cpi, rate)
+	// The oldest row is the one that lands: a thousand tenge from thirty years
+	// ago says more about the record than any percentage.
+	if len(b.Erode) > 0 {
+		b.RateErodeYear = fmt.Sprintf("%d", b.Erode[0].Year)
+		b.RateErodeKept = b.Erode[0].Kept
+	}
 
 	// 6. The decision everything follows from: the National Bank's rate. It is
 	//    the one quantity in this analysis with a day, a signature and a minute
@@ -242,12 +266,24 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 			// Logarithmic scale: in 1994 inflation ran into thousands of
 			// percent, and on a linear scale today's two-digit figures would lie
 			// in a single line along the bottom.
+			var nYears int64
+			b.RateYears, b.RateMissed, b.RateAvg10, b.RateAllYearsMissed =
+				macroTargetRecord(rb, cpiTargetValue(m, ctx))
+			if v, err := strconv.ParseInt(b.RateYears, 10, 64); err == nil {
+				nYears = v
+				b.RateYears = b.RateYears + " " + macroYearsWord(nYears, lang)
+			}
 			b.RateCPI = macroTwoLinesWith(ra, rb, lang, true,
 				fxChartOpts{Name: T(lang, "fx.rate_key_a"), Unit: "%", Annual: true,
+					// Three decades of annual figures at the column's width
+					// give twenty pixels a year, and the year-to-year movement
+					// — the whole point of the picture — disappears.
+					PxPerPoint: 38,
 					AxisFormat: func(v float64) string { return fxFormat(v, 0) + " %" }},
 				fxChartOpts{Name: T(lang, "fx.col_cpi"), Unit: "%", Annual: true},
 			)
 			b.RateCPIFrom = fmt.Sprintf("%d", ra[0].Day.Year())
+			b.RateTarget = macroPctTrim(cpiTargetValue(m, ctx))
 		}
 	}
 
@@ -624,14 +660,19 @@ func macroTwoLinesWith(a, b []FxPoint, lang string, log bool, oa, ob fxChartOpts
 		hover.S = append(hover.S, ser)
 	}
 
+	minWidth := 0
+	if oa.PxPerPoint > 0 {
+		minWidth = len(grid) * oa.PxPerPoint
+	}
 	return MacroChart{
 		A: pa, B: macroPath(bv, bh, at, w),
 		Area:  area,
 		Y:     ticks,
 		X:     fxAxis(grid, "all", lang),
 		Width: int(w), Height: int(h),
-		Log:   log,
-		Hover: hoverJSON(hover),
+		Log:      log,
+		Hover:    hoverJSON(hover),
+		MinWidth: minWidth,
 	}
 }
 
@@ -819,4 +860,87 @@ func (m *Module) macroCached(ctx context.Context, lang string) MacroBlock {
 	macroCache.byLg[lang] = built
 	macroCache.mu.Unlock()
 	return built
+}
+
+// macroTargetRecord counts the Bank's record against its own inflation target,
+// straight off the series the chart draws.
+//
+// Counted rather than written down, because a verdict printed under a picture
+// has to be the picture's own arithmetic. A number typed into a translation
+// string is right on the day it is typed and wrong from the next revision of
+// the data onwards, and nobody notices until a reader does.
+func macroTargetRecord(cpi []FxPoint, target float64) (years, missed, avg10 string, allMissed bool) {
+	if len(cpi) == 0 || target <= 0 {
+		return "", "", "", false
+	}
+	n, over := 0, 0
+	for _, p := range cpi {
+		n++
+		if p.Value > target {
+			over++
+		}
+	}
+	// The last ten points, or all of them when the series is shorter.
+	tail := cpi
+	if len(tail) > 10 {
+		tail = tail[len(tail)-10:]
+	}
+	sum := 0.0
+	for _, p := range tail {
+		sum += p.Value
+	}
+	return fmt.Sprintf("%d", n), fmt.Sprintf("%d", over),
+		fxFormat(sum/float64(len(tail)), 1) + " %", over == n
+}
+
+// macroYearsWord puts the Russian word for "year" into the form the number in
+// front of it requires: 32 года, 35 лет, 31 год. Without it the verdict reads
+// "за все 32 лет", and a sentence that stumbles is a sentence the reader stops
+// trusting. Kazakh and English need no agreement here.
+func macroYearsWord(n int64, lang string) string {
+	switch lang {
+	case LangKZ:
+		return "жыл"
+	case LangEN:
+		if n == 1 {
+			return "year"
+		}
+		return "years"
+	}
+	if n < 0 {
+		n = -n
+	}
+	if t := n % 100; t >= 11 && t <= 14 {
+		return "лет"
+	}
+	switch n % 10 {
+	case 1:
+		return "год"
+	case 2, 3, 4:
+		return "года"
+	}
+	return "лет"
+}
+
+// macroPctTrim prints a percentage without a fraction when it has none: an
+// inflation target of "5,00 %" is two characters of false precision on a figure
+// that was announced as five.
+func macroPctTrim(v float64) string {
+	if v == math.Trunc(v) {
+		return fxFormat(v, 0) + " %"
+	}
+	return fxFormat(v, 2) + " %"
+}
+
+// cpiTargetValue is the target the Bank publishes, or five percent when the
+// panel has not been read yet — the figure it has announced for years.
+func cpiTargetValue(m *Module, ctx context.Context) float64 {
+	if m.macro == nil {
+		return 5
+	}
+	pts, err := m.macro.Series(ctx, MacroCPITarget)
+	if err != nil || len(pts) == 0 {
+		return 5
+	}
+	return pts[len(pts)-1].Value
 }

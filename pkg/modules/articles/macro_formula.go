@@ -115,28 +115,85 @@ func macroPolicyRate(refi, base []MacroPoint) []FxPoint {
 	return out
 }
 
-// macroRateByYear takes the rate in force at each year's end.
+// macroRateByYear reduces the policy rate to one figure per year: the rate
+// actually in force through that year, weighted by the number of days it held.
 //
-// Decisions are taken on arbitrary days, inflation is measured over a year, and
-// the two can only be laid side by side on a common step. Year end is the choice
-// because annual inflation is December against December too.
+// The obvious alternative — the rate standing on 31 December — is what this did
+// first, and it quietly falsified the chart. Inflation for a year is what
+// happened over the whole of it; a rate read on the last day is a snapshot. Put
+// side by side, the two describe different things, and the mismatch invented a
+// lead that was never in the data.
+//
+// 2015 is the case that exposed it. The tenge was floated that August, the Bank
+// answered with a rate of sixteen percent in December, and the devaluation
+// reached the shops over the following months. Read at year end the rate showed
+// 16.0 against inflation of 6.7 — the rate apparently leaping a full year ahead
+// of prices. Averaged over the days it actually held, 2015 was 8.65 against
+// 6.68, and 2016 was 14.47 against 14.36: the two lines almost touching, which
+// is what happened.
+//
+// A chart that makes a reader see a sequence the numbers do not contain is
+// worse than no chart. This one now compares a year with the same year.
 func macroRateByYear(pts []FxPoint) map[int]float64 {
 	out := map[int]float64{}
-	// A rate holds until the next decision, so a year without decisions
-	// inherits the last one taken.
 	if len(pts) == 0 {
 		return out
 	}
-	cur := pts[0].Value
-	year := pts[0].Day.Year()
-	last := pts[len(pts)-1].Day.Year()
-	i := 0
-	for y := year; y <= last; y++ {
-		for i < len(pts) && pts[i].Day.Year() <= y {
-			cur = pts[i].Value
-			i++
+	firstYear := pts[0].Day.Year()
+	lastYear := pts[len(pts)-1].Day.Year()
+	// A rate holds until the next decision, and the next decision may be a long
+	// way off — so the series runs to the present, not to the last meeting.
+	// Stopping at the last decision dropped whole years in which the Bank
+	// simply left the rate alone, which is itself a decision.
+	if now := siteNow().Year(); now > lastYear {
+		lastYear = now
+	}
+	// The rate holds until the next decision, so a year with no decisions in it
+	// is carried entirely by the last one taken before it.
+	for y := firstYear; y <= lastYear; y++ {
+		start := time.Date(y, time.January, 1, 0, 0, 0, 0, time.UTC)
+		end := start.AddDate(1, 0, 0)
+
+		cur := 0.0
+		haveCur := false
+		for _, p := range pts {
+			if !p.Day.After(start) {
+				cur, haveCur = p.Value, true
+			}
 		}
-		out[y] = cur
+		// Decisions taken inside the year, in order.
+		type step struct {
+			at time.Time
+			v  float64
+		}
+		steps := []step{}
+		if haveCur {
+			steps = append(steps, step{start, cur})
+		}
+		for _, p := range pts {
+			if p.Day.After(start) && p.Day.Before(end) {
+				steps = append(steps, step{p.Day, p.Value})
+			}
+		}
+		if len(steps) == 0 {
+			continue
+		}
+		total, days := 0.0, 0.0
+		for i, st := range steps {
+			until := end
+			if i+1 < len(steps) {
+				until = steps[i+1].at
+			}
+			n := until.Sub(st.at).Hours() / 24
+			if n <= 0 {
+				continue
+			}
+			total += st.v * n
+			days += n
+		}
+		if days > 0 {
+			out[y] = total / days
+		}
 	}
 	return out
 }

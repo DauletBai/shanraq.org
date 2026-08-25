@@ -261,6 +261,11 @@ type fxChartOpts struct {
 	Annual bool
 	// Format prints the value; empty means print it as an exchange rate.
 	Format func(float64) string
+	// PxPerPoint asks for a frame wider than the column, scrolled sideways:
+	// so many pixels for every point in the series. Zero leaves the chart
+	// fitted to the page, which is right for a dense monthly line and wrong for
+	// three decades of annual figures squeezed into a phone.
+	PxPerPoint int
 	// AxisFormat prints an axis tick. Ticks sit on exact powers of ten, so the
 	// fractional part a readout needs is three characters of noise here — and
 	// the axis gutter is the one place on the page where characters are
