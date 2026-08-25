@@ -202,6 +202,29 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 				emit("/place/"+slug, time.Time{})
 			}
 		}
+		// Forecast pages for the places that can have one. These are the pages
+		// people look for by name — "погода Качар" — and until now there was
+		// nothing for that search to find. Only places with coordinates and a
+		// slug qualify: the rest cannot be forecast at all.
+		if m.geo != nil {
+			if wx, werr := m.geo.WeatherPlaces(r.Context()); werr != nil {
+				m.rt.Logger.Warn("sitemap weather places", zap.Error(werr))
+			} else {
+				for _, slug := range wx {
+					emit("/weather/"+slug, time.Time{})
+				}
+			}
+		}
+		// Days that actually have something on them. An archive page for an
+		// empty day is a real URL a crawler can reach, and a few hundred of
+		// them would say nothing except that the site is mostly empty.
+		if days, derr := m.store.PublishedDays(r.Context(), 400); derr != nil {
+			m.rt.Logger.Warn("sitemap days", zap.Error(derr))
+		} else {
+			for _, d := range days {
+				emit("/archive/"+d.Format("2006-01-02"), d)
+			}
+		}
 		if arts, err := m.store.SitemapArticles(r.Context()); err != nil {
 			m.rt.Logger.Error("sitemap articles", zap.Error(err))
 		} else {

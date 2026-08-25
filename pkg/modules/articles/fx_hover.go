@@ -62,6 +62,7 @@ func hoverPct(v float64) *float64 {
 // actually measured: no more, because "01.01.2024" credits an annual figure with
 // a day it never had, and no less, because a daily rate needs its day.
 const (
+	fxLabelHour  = "hour"
 	fxLabelDay   = "day"
 	fxLabelMonth = "month"
 	fxLabelYear  = "year"
@@ -73,6 +74,9 @@ func fxPointLabels(pts []FxPoint, mode, lang string) []string {
 	out := make([]string, 0, len(pts))
 	for _, p := range pts {
 		switch mode {
+		case fxLabelHour:
+			out = append(out, fmt.Sprintf("%d %s, %02d:00",
+				p.Day.Day(), fxMonthShort(p.Day.Month(), lang), p.Day.Hour()))
 		case fxLabelYear:
 			out = append(out, fmt.Sprintf("%d", p.Day.Year()))
 		case fxLabelMonth:

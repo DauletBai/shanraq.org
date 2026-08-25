@@ -3081,6 +3081,30 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   :root:not([data-theme="light"]) .fxtip { color: #1c1a17; }
 }
 
+/* Страница прогноза. Крупная строка ответа устроена как на странице курса:
+   человек, зашедший узнать погоду, не должен искать градусы среди плиток. */
+/* Значение плитки не переносится посреди единицы измерения: «764 мм рт.ст.»
+   разрывалось на две строки и плитка распухала выше соседних. */
+.wx-tiles .stat-tile b { white-space: nowrap; font-size: 1.32rem; }
+.wx-now { align-items: center; gap: 10px; }
+.wx-now__ic { display: inline-flex; width: 2.2rem; height: 2.2rem; color: var(--gold-strong); }
+.wx-now__ic svg { width: 100%; height: 100%; }
+.wx-now__desc { font-size: 1rem; color: var(--muted); }
+
+/* Недельная таблица: день с датой в одной ячейке, ночная температура тусклее
+   дневной — строка читается как «сколько будет», а не как два равных числа. */
+.wx-week td { vertical-align: middle; }
+.wx-week__date { display: block; font-size: .74rem; color: var(--muted); }
+.wx-week__min { color: var(--muted); }
+.wx-week__ic { text-align: left; }
+.wx-week__ic svg { width: 20px; height: 20px; vertical-align: middle; color: var(--gold-strong); }
+.wx-week__desc { margin-left: 7px; font-size: .82rem; color: var(--muted); }
+.wx-week__sun { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wx-week__today td { background: var(--surface-2); }
+
+/* Соседние места: те же вкладки, что у периодов на странице курса. */
+.wx-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+
 /* The annual summary is the page's longest table: thirty-three years fit on no
    screen. The height ceiling is the charts' own: 16:9 of the card's width, the rest
    into the scroll. It is a ceiling, not a ratio — on a new currency with three rows

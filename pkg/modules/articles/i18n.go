@@ -1075,6 +1075,58 @@ var messages = map[string]map[string]string{
 	"fx.title_cur": {"kz": "%s — теңге бағамы", "ru": "%s — курс к тенге", "en": "%s to KZT exchange rate"},
 
 	// The section "How the tenge rate and inflation are formed".
+	// Страница прогноза погоды.
+	// Архив по дням публикации.
+	"arch.title":    {"kz": "Жарияланым мұрағаты", "ru": "Архив публикаций", "en": "Publishing archive"},
+	"arch.desc_pre": {"kz": "Сол күні жарияланғанның бәрі:", "ru": "Всё, что опубликовано за", "en": "Everything published on"},
+	"arch.today":    {"kz": "бүгін", "ru": "сегодня", "en": "today"},
+	"arch.empty":    {"kz": "Бұл күні ештеңе жарияланбаған.", "ru": "В этот день ничего не публиковалось.", "en": "Nothing was published on this day."},
+	"arch.prev":     {"kz": "Алдыңғы күн", "ru": "Предыдущий день", "en": "Previous day"},
+	"arch.next":     {"kz": "Келесі күн", "ru": "Следующий день", "en": "Next day"},
+	"arch.link":     {"kz": "Осы күні не шықты", "ru": "Что вышло в этот день", "en": "What came out on this day"},
+
+	"wx.title_place":  {"kz": "%s — ауа райы және болжам", "ru": "%s — погода и прогноз", "en": "%s — weather and forecast"},
+	"wx.desc_place":   {"kz": "%s: қазіргі температура, екі тәулікке сағаттық болжам және аптаға арналған болжам.", "ru": "%s: температура сейчас, почасовой прогноз на двое суток и прогноз на неделю.", "en": "%s: the temperature now, an hourly forecast for two days and the week ahead."},
+	"wx.lead":         {"kz": "%s бойынша қазіргі жағдай, алдағы екі тәулікке сағаттық болжам және аптаның қалған бөлігі.", "ru": "%s: что сейчас, почасовой прогноз на ближайшие двое суток и остальная неделя.", "en": "%s: conditions now, hour by hour for the next two days, and the rest of the week."},
+	"wx.default_city": {"kz": "Алматы", "ru": "Алматы", "en": "Almaty"},
+	"wx.at":           {"kz": "%s жағдайы бойынша", "ru": "на %s", "en": "as of %s"},
+	"wx.empty":        {"kz": "Болжам қазір қолжетімсіз. Бірнеше минуттан кейін қайта кіріңіз.", "ru": "Прогноз сейчас недоступен. Загляните через несколько минут.", "en": "The forecast is unavailable right now. Look again in a few minutes."},
+
+	"wx.feels":    {"kz": "Сезілуі", "ru": "Ощущается", "en": "Feels like"},
+	"wx.humidity": {"kz": "Ылғалдылық", "ru": "Влажность", "en": "Humidity"},
+	"wx.wind":     {"kz": "Жел", "ru": "Ветер", "en": "Wind"},
+	"wx.pressure": {"kz": "Қысым", "ru": "Давление", "en": "Pressure"},
+	"wx.calm":     {"kz": "Тымық", "ru": "Штиль", "en": "Calm"},
+	"wx.ms":       {"kz": "м/с", "ru": "м/с", "en": "m/s"},
+	"wx.mm":       {"kz": "мм", "ru": "мм", "en": "mm"},
+
+	"wx.temp_h":    {"kz": "Температура сағат сайын", "ru": "Температура по часам", "en": "Temperature by the hour"},
+	"wx.temp_note": {"kz": "Алдағы екі тәулік. Нүктені меңзесеңіз, нақты сағат пен градус көрсетіледі.", "ru": "Ближайшие двое суток. Наведите на линию — покажет час и градусы.", "en": "The next two days. Point at the line for the hour and the temperature."},
+	"wx.rain_h":    {"kz": "Жауын-шашын ықтималдығы", "ru": "Вероятность осадков", "en": "Chance of precipitation"},
+	"wx.rain_note": {"kz": "Сол екі тәулікке пайызбен. Қатар мүлдем нөл болса, бұл график көрсетілмейді.", "ru": "В процентах, за те же двое суток. Если осадков не ожидается вовсе, этот график не показывается.", "en": "As a percentage, over the same two days. With no precipitation expected at all, this chart is not shown."},
+	"wx.week_h":    {"kz": "Апталық болжам", "ru": "Прогноз на неделю", "en": "The week ahead"},
+	"wx.nearby":    {"kz": "Жақын жерлер", "ru": "Рядом", "en": "Nearby"},
+
+	"wx.c_day":    {"kz": "Күн", "ru": "День", "en": "Day"},
+	"wx.c_temp":   {"kz": "Күндіз / түнде", "ru": "Днём / ночью", "en": "Day / night"},
+	"wx.c_precip": {"kz": "Жауын-шашын", "ru": "Осадки", "en": "Precipitation"},
+	"wx.c_wind":   {"kz": "Жел", "ru": "Ветер", "en": "Wind"},
+	"wx.c_sun":    {"kz": "Күн шығуы — батуы", "ru": "Восход — закат", "en": "Sunrise — sunset"},
+
+	"wx.c_clear":   {"kz": "Ашық", "ru": "Ясно", "en": "Clear"},
+	"wx.c_partly":  {"kz": "Аздап бұлтты", "ru": "Малооблачно", "en": "Partly cloudy"},
+	"wx.c_cloud":   {"kz": "Бұлтты", "ru": "Облачно", "en": "Cloudy"},
+	"wx.c_fog":     {"kz": "Тұман", "ru": "Туман", "en": "Fog"},
+	"wx.c_drizzle": {"kz": "Себелеген жаңбыр", "ru": "Морось", "en": "Drizzle"},
+	"wx.c_rain":    {"kz": "Жаңбыр", "ru": "Дождь", "en": "Rain"},
+	"wx.c_showers": {"kz": "Нөсер", "ru": "Ливень", "en": "Showers"},
+	"wx.c_snow":    {"kz": "Қар", "ru": "Снег", "en": "Snow"},
+	"wx.c_storm":   {"kz": "Найзағай", "ru": "Гроза", "en": "Thunderstorm"},
+
+	"wx.source":  {"kz": "Болжам — Open-Meteo, ашық метеорологиялық дерек қызметі.", "ru": "Прогноз — Open-Meteo, открытая метеорологическая служба.", "en": "Forecast from Open-Meteo, an open meteorological service."},
+	"wx.updated": {"kz": "Дерек %s жағдайы бойынша алынды.", "ru": "Данные сняты на %s.", "en": "Taken at %s."},
+	"wx.link":    {"kz": "Ауа райы болжамы", "ru": "Прогноз погоды", "en": "Weather forecast"},
+
 	"fx.macro_h":    {"kz": "Теңге бағамы мен инфляция қалай қалыптасады", "ru": "Как формируется курс тенге и инфляция", "en": "How the tenge rate and inflation are formed"},
 	"fx.macro_lead": {"kz": "Доллардың теңгеге бағамы да, Қазақстандағы инфляция да Ұлттық банктің өзі жариялайтын екі шамадан шығады: елде қанша теңге бар және алтын-валюта резервтерінде қанша доллар бар. Төменде — 1994 жылдан бергі екі қатар және олардан не шығатыны. Дерек автоматты түрде жаңарады.", "ru": "И курс доллара к тенге, и инфляция в Казахстане складываются из двух величин, которые Национальный банк публикует сам: сколько в стране тенге и сколько долларов в золотовалютных резервах. Ниже — оба ряда с 1994 года и то, что из них следует. Данные обновляются автоматически.", "en": "Both the dollar-to-tenge rate and inflation in Kazakhstan follow from two quantities the National Bank publishes itself: how many tenge exist and how many dollars sit in the gold and foreign exchange reserves. Below are both series since 1994 and what follows from them. The figures update themselves."},
 

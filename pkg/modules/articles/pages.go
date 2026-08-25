@@ -64,6 +64,17 @@ Shanraq.org is a home where free voices meet.`},
 
 Место нужно затем, чтобы до вас доходило местное: объявление ЖКХ о пуске тепла, сообщение акимата, предупреждение ТЭЦ об отключении воды. Переехали — поменяйте в профиле.
 
+## Погода и архив по дням
+В полосе наверху каждой страницы кликается всё: дата, погода и каждый курс валют.
+
+**Погода** ведёт на прогноз: что сейчас, почасовой график на двое суток, вероятность осадков и неделя вперёд с восходом и закатом. Если вы указали в профиле, где живёте, откроется прогноз вашего места — качарцу Качар, костанайцу Костанай. У кого место не указано, увидит Алматы.
+
+У каждого населённого пункта свой адрес: **/weather/kachar**. Прогноз есть везде, где у места известны координаты — это без малого четыреста городов и посёлков.
+
+**Дата** ведёт в архив: всё, что опубликовано в этот день. Стрелки внизу переводят к ближайшему дню, где что-то есть, а не к пустому вчерашнему числу.
+
+**Курс валюты** ведёт на её историю — это работало и раньше.
+
 ## Телеграм: канал и бот — это разные вещи
 В телеграме у нас два адреса, и они возят разное.
 
@@ -239,6 +250,17 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 
 Орын жергілікті хабар сізге жетуі үшін керек: ТКШ-ның жылу беру туралы хабарландыруы, әкімдіктің хабарламасы, ЖЭО-ның су өшіру туралы ескертуі. Көшіп кетсеңіз — профильде ауыстырыңыз.
 
+## Ауа райы және күндер бойынша мұрағат
+Әр беттің жоғарғы жолағында бәрі басылады: күні, ауа райы және әр валюта бағамы.
+
+**Ауа райы** болжамға апарады: қазір қандай, екі тәулікке сағаттық график, жауын-шашын ықтималдығы және алдағы апта, күннің шығуы мен батуы қоса. Профильде қай жерде тұратыныңызды көрсетсеңіз, өз жеріңіздің болжамы ашылады — качарлыққа Качар, қостанайлыққа Қостанай. Орын көрсетілмесе, Алматы көрінеді.
+
+Әр елді мекеннің өз мекенжайы бар: **/weather/kachar**. Координаттары белгілі жердің бәрінде болжам бар — бұл төрт жүзге жуық қала мен кент.
+
+**Күні** мұрағатқа апарады: сол күні жарияланғанның бәрі. Төмендегі сілтемелер бос кешегі күнге емес, бірдеңе бар ең жақын күнге ауыстырады.
+
+**Валюта бағамы** оның тарихына апарады — бұл бұрын да жұмыс істейтін.
+
 ## Телеграм: арна мен бот — екі бөлек нәрсе
 Телеграмда бізде екі мекенжай бар, әрқайсысы бөлек нәрсе жеткізеді.
 
@@ -413,6 +435,17 @@ Registration has a "Where do you live" field: country, region, city, or town. It
 It is a choice from a reference list, not a determination of your location: we do not use GPS and do not work your city out from your network address. Your place is shown to nobody — not in comments, not on your profile, not in listings.
 
 The place is there so that local things reach you: a utility's notice that the heating is going on, a message from the local administration, a warning from the heating plant about a water shutdown. If you move, change it in your profile.
+
+## Weather and the archive by day
+Everything in the strip at the top of every page is clickable: the date, the weather and each exchange rate.
+
+**The weather** leads to a forecast: conditions now, an hourly chart for two days, the chance of precipitation, and the week ahead with sunrise and sunset. If you told your profile where you live, you get your own town's forecast — Kachar for someone in Kachar, Kostanay for someone in Kostanay. Anyone who has not said gets Almaty.
+
+Every settlement has its own address: **/weather/kachar**. A forecast exists wherever the place's coordinates are known — close to four hundred towns and villages.
+
+**The date** leads to the archive: everything published that day. The links at the foot move to the nearest day that has something on it, rather than to an empty yesterday.
+
+**An exchange rate** leads to that currency's history, as it always did.
 
 ## Telegram: the channel and the bot are different things
 We have two addresses on Telegram, and they carry different things.

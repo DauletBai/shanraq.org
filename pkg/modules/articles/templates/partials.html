@@ -139,8 +139,13 @@
 {{ define "site_header" }}
 <div class="infobar">
   <div class="container infobar__grid">
-    <div class="infobar__cell"><span class="metaic">{{ icon "calendar" }}<span class="wx__temp">{{ .Info.Today }}</span></span></div>
-    <div class="infobar__cell">{{ if .Info.WeatherTemp }}<span class="metaic wx">{{ icon .Info.WeatherIcon }}<span class="wx__temp">{{ .Info.WeatherTemp }}</span>{{ if .Info.WeatherPress }}<span class="wx__press">{{ icon "wx_press" }}<span class="wx__pval">{{ .Info.WeatherPress }} {{ t .Lang "wx.pressure_unit" }}</span></span>{{ end }}</span>{{ else }}<span class="infobar__muted">—</span>{{ end }}</div>
+    {{/* Дата ведёт в архив этого дня: «что вышло сегодня» — вопрос, который
+         задают любому изданию, а ячейка до сих пор никуда не вела. */}}
+    <div class="infobar__cell"><a class="metaic" href="/archive/{{ .Info.TodayISO }}" title="{{ t .Lang "arch.link" }}">{{ icon "calendar" }}<span class="wx__temp">{{ .Info.Today }}</span></a></div>
+    {{/* Погода ведёт на свой прогноз целиком — вместе с иконками: температура
+         отвечает на «что сейчас» и сразу вызывает «а завтра», а до сих пор эта
+         ячейка никуда не вела. */}}
+    <div class="infobar__cell">{{ if .Info.WeatherTemp }}<a class="metaic wx" href="/weather" title="{{ t .Lang "wx.link" }}">{{ icon .Info.WeatherIcon }}<span class="wx__temp">{{ .Info.WeatherTemp }}</span>{{ if .Info.WeatherPress }}<span class="wx__press">{{ icon "wx_press" }}<span class="wx__pval">{{ .Info.WeatherPress }} {{ t .Lang "wx.pressure_unit" }}</span></span>{{ end }}</a>{{ else }}<a class="infobar__muted" href="/weather">—</a>{{ end }}</div>
     <div class="infobar__cell infobar__rates">
       {{/* Every rate leads to that currency's own history: someone clicks the
            dollar because they want to know about the dollar. */}}

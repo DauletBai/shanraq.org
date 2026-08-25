@@ -50,7 +50,9 @@ func liveSocial(links []SocialLink) []SocialLink {
 
 // InfoBarData is the per-request snapshot handed to templates.
 type InfoBarData struct {
-	Today        string
+	Today string
+	// TodayISO is the same day in machine form, for the link into the archive.
+	TodayISO     string
 	WeatherIcon  string // icon key, e.g. "wx_sun" ("" when unavailable)
 	WeatherTemp  string // e.g. "+25°"
 	WeatherPress string // atmospheric pressure, e.g. "742 мм" ("" when unavailable)
@@ -98,18 +100,18 @@ func NewInfoBar(log *zap.Logger, social []SocialLink, github string) *InfoBar {
 	return &InfoBar{
 		httpc:  &http.Client{Timeout: 10 * time.Second},
 		log:    log,
-		lat:    43.2389,
-		lon:    76.8897,
+		lat:    wxDefaultLat,
+		lon:    wxDefaultLon,
 		social: social,
 		github: strings.TrimSpace(github),
 	}
 }
 
 // Snapshot returns the cached bar data for the given day string.
-func (b *InfoBar) Snapshot(today string) InfoBarData {
+func (b *InfoBar) Snapshot(today, todayISO string) InfoBarData {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
-	return InfoBarData{Today: today, WeatherIcon: b.weatherIc, WeatherTemp: b.weatherTmp, WeatherPress: b.weatherPres, Rates: b.rates, Social: b.social, GitHub: b.github}
+	return InfoBarData{Today: today, TodayISO: todayISO, WeatherIcon: b.weatherIc, WeatherTemp: b.weatherTmp, WeatherPress: b.weatherPres, Rates: b.rates, Social: b.social, GitHub: b.github}
 }
 
 // Run refreshes weather every 30 min and rates every ~6 h until ctx is done.

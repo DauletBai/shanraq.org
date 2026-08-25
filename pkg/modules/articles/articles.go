@@ -232,6 +232,12 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/predictions", m.handlePredictions)
 		r.Get("/analytics", m.handlePublicStats)
 		r.Get("/rates", m.handleRates)
+		// The forecast: the bare address keeps the city the strip has always
+		// shown, and every place with coordinates gets one of its own.
+		// One address per day of publishing: the date in the strip leads here.
+		r.Get("/archive/{date}", m.handleArchive)
+		r.Get("/weather", m.handleWeather)
+		r.Get("/weather/{slug}", m.handleWeather)
 		r.Get("/about", m.handleStaticPage("about"))
 		r.Get("/guide", m.handleStaticPage("guide"))
 		r.Get("/formatting", m.handleStaticPage("formatting"))

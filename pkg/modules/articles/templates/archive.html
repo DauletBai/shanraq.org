@@ -1,0 +1,54 @@
+{{ define "archive" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div class="layout__main">
+
+      <p class="place-crumbs">{{ t .Lang "arch.title" }}</p>
+      <div class="section-head">
+        <h1>{{ .Human }}</h1>
+      </div>
+      <p class="place-lead">{{ .Weekday }}{{ if .IsToday }} · {{ t .Lang "arch.today" }}{{ end }}</p>
+
+      {{ if .Posts }}
+      <div class="posts">
+        {{ range .Posts }}
+        <article class="post">
+          <a class="post__media" href="/read/{{ .Slug }}?lang={{ $.Lang }}" aria-label="{{ .Title }}" tabindex="-1">
+            {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="" loading="lazy" decoding="async">
+            {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt="" loading="lazy" decoding="async"></span>{{ end }}
+          </a>
+          <a class="kicker" href="/?lang={{ $.Lang }}&cat={{ .Category }}">{{ catIcon .Category }}{{ t $.Lang (printf "cat.%s" .Category) }}</a>
+          <h3 class="post__title"><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
+          {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
+          {{ template "post_meta" (dict "P" . "Lang" $.Lang) }}
+        </article>
+        {{ end }}
+      </div>
+      {{ else }}
+      {{/* Пустой день — обычное дело, а не ошибка: ссылка из шапки попадает
+           сюда в любой тихий день. Поэтому здесь не извинение, а два выхода:
+           к ближайшему дню, где что-то есть, и к своей публикации. */}}
+      <div class="empty">
+        <p style="font-size:1.2rem;margin-bottom:18px">{{ t .Lang "arch.empty" }}</p>
+        <a class="btn btn--primary" href="/studio/new">{{ t .Lang "place.empty_cta" }}</a>
+      </div>
+      {{ end }}
+
+      {{/* Переходы ведут к соседним дням, где что-то опубликовано, а не к
+           вчерашнему числу: иначе читатель уходит в череду пустых страниц. */}}
+      {{ if or .PrevURL .NextURL }}
+      <nav class="arch-nav" aria-label="{{ t .Lang "arch.title" }}">
+        {{ if .PrevURL }}<a class="fx-tab" href="{{ .PrevURL }}">← {{ t .Lang "arch.prev" }}</a>{{ end }}
+        {{ if .NextURL }}<a class="fx-tab" href="{{ .NextURL }}">{{ t .Lang "arch.next" }} →</a>{{ end }}
+      </nav>
+      {{ end }}
+
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

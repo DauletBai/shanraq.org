@@ -674,3 +674,92 @@ func (s *Store) ArticlePlaceBySlug(ctx context.Context, slug string) (uuid.UUID,
 	}
 	return *id, nil
 }
+
+// ListByDay returns the articles published on one calendar day, newest first,
+// narrowed to what this reader is addressed by.
+//
+// The day is read in the site's own timezone rather than UTC: an article
+// published at half past one in the morning belongs to the day the author was
+// living in, not to the one before it.
+func (s *Store) ListByDay(ctx context.Context, day time.Time, limit, offset int, addressed []uuid.UUID) ([]*Article, error) {
+	if limit <= 0 || limit > 60 {
+		limit = 24
+	}
+	args := []any{day.Format("2006-01-02"), siteTimeZone, limit, offset}
+	where := placeClause(&args, addressed)
+	rows, err := s.db.Query(ctx, `
+		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug,
+		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, a.views_count,
+		       a.published_at, a.created_at, a.updated_at, a.indexable
+		FROM articles a
+		JOIN auth_users u ON u.id = a.author_id
+		WHERE a.status = 'published' AND a.indexable
+		  AND (a.published_at AT TIME ZONE $2)::date = $1::date`+where+`
+		ORDER BY a.published_at DESC NULLS LAST, a.id DESC
+		LIMIT $3 OFFSET $4`, args...)
+	if err != nil {
+		return nil, fmt.Errorf("list by day: %w", err)
+	}
+	arts, err := scanArticles(rows)
+	if err != nil {
+		return nil, err
+	}
+	return s.attachTranslations(ctx, arts)
+}
+
+// PublishedDays lists the days that actually have something on them, newest
+// first. Only these get an address in the sitemap: an archive page for a day
+// nobody published on is a real URL a crawler can reach, and a few hundred of
+// them would say nothing except that the site is mostly empty.
+func (s *Store) PublishedDays(ctx context.Context, limit int) ([]time.Time, error) {
+	if limit <= 0 || limit > 2000 {
+		limit = 400
+	}
+	rows, err := s.db.Query(ctx, `
+		SELECT DISTINCT (published_at AT TIME ZONE $1)::date AS d
+		FROM articles
+		WHERE status = 'published' AND indexable AND published_at IS NOT NULL
+		  AND geo_node_id IS NULL
+		ORDER BY d DESC
+		LIMIT $2`, siteTimeZone, limit)
+	if err != nil {
+		return nil, fmt.Errorf("published days: %w", err)
+	}
+	defer rows.Close()
+	out := []time.Time{}
+	for rows.Next() {
+		var d time.Time
+		if err := rows.Scan(&d); err != nil {
+			return nil, err
+		}
+		out = append(out, d)
+	}
+	return out, rows.Err()
+}
+
+// NeighbourDay finds the nearest day before or after `day` that has something
+// published on it, so the archive's back and forward links never walk a reader
+// into a run of empty pages.
+func (s *Store) NeighbourDay(ctx context.Context, day time.Time, forward bool) (time.Time, error) {
+	q := `SELECT (published_at AT TIME ZONE $1)::date AS d
+	      FROM articles
+	      WHERE status = 'published' AND indexable AND published_at IS NOT NULL
+	        AND (published_at AT TIME ZONE $1)::date < $2::date
+	      ORDER BY d DESC LIMIT 1`
+	if forward {
+		q = `SELECT (published_at AT TIME ZONE $1)::date AS d
+		     FROM articles
+		     WHERE status = 'published' AND indexable AND published_at IS NOT NULL
+		       AND (published_at AT TIME ZONE $1)::date > $2::date
+		     ORDER BY d ASC LIMIT 1`
+	}
+	var d time.Time
+	err := s.db.QueryRow(ctx, q, siteTimeZone, day.Format("2006-01-02")).Scan(&d)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return time.Time{}, nil
+	}
+	if err != nil {
+		return time.Time{}, fmt.Errorf("neighbour day: %w", err)
+	}
+	return d, nil
+}

@@ -1,6 +1,10 @@
 package main
 
 import (
+	// The timezone database, embedded: the runtime image carries no system
+	// zoneinfo, and without this the site's own clock silently falls back to UTC.
+	_ "time/tzdata"
+
 	"context"
 	"errors"
 	"flag"

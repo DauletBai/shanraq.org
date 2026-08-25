@@ -132,7 +132,7 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Desc:      T(lang, "seo.site_desc"),
 		OGImage:   site + "/static/brand/og-cover.png",
 		OGType:    "website",
-		Info:      m.infobar.Snapshot(localizedDate(lang, time.Now())),
+		Info:      m.infobar.Snapshot(localizedDate(lang, siteNow()), siteNow().Format("2006-01-02")),
 		Ads:       m.sidebarAds(r, lang),
 		Svc:       m.serviceViews(r, lang),
 	}

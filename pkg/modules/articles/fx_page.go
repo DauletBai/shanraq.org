@@ -251,6 +251,10 @@ type fxChartOpts struct {
 	Name string
 	// Unit is the unit of measurement appended to the value.
 	Unit string
+	// Hourly marks a series whose point is an hour. A weather forecast is the
+	// only thing here measured in hours, and an axis of days says nothing about
+	// whether it will rain this afternoon.
+	Hourly bool
 	// Monthly marks a series whose point is a month rather than a day.
 	Monthly bool
 	// Annual marks a series whose point is a whole year.
@@ -267,6 +271,8 @@ type fxChartOpts struct {
 // label resolves how much of the date a point should show.
 func (o fxChartOpts) label(period string) string {
 	switch {
+	case o.Hourly:
+		return fxLabelHour
 	case o.Annual:
 		return fxLabelYear
 	case o.Monthly || period == "all" || period == "five":
@@ -311,7 +317,13 @@ func fxBuildChartWith(pts []FxPoint, period, lang string, o fxChartOpts) FxChart
 
 	ticks := []FxTick{}
 	for v := hi; v >= lo-step/2; v -= step {
-		ticks = append(ticks, FxTick{Label: fxAxisNum(v, step), Pos: (hi - v) / (hi - lo) * 100})
+		// A series that knows how to name its own units labels the axis that
+		// way; the rest fall back to the step's own precision.
+		label := fxAxisNum(v, step)
+		if o.AxisFormat != nil {
+			label = o.AxisFormat(v)
+		}
+		ticks = append(ticks, FxTick{Label: label, Pos: (hi - v) / (hi - lo) * 100})
 	}
 
 	format := o.Format
@@ -358,6 +370,16 @@ func fxAxis(pts []FxPoint, period, lang string) []FxAxis {
 	out := []FxAxis{}
 
 	switch period {
+	case "hours":
+		// Every third hour carries a label and midnight carries a grid line, so
+		// the eye can find "tomorrow morning" without counting ticks.
+		for i, p := range pts {
+			lab := ""
+			if p.Day.Hour()%3 == 0 {
+				lab = fmt.Sprintf("%02d", p.Day.Hour())
+			}
+			out = append(out, FxAxis{Label: lab, Pos: pos(i), Grid: p.Day.Hour() == 0})
+		}
 	case "month":
 		// Every day by its number: a month is read by day-of-month, not by date.
 		for i, p := range pts {

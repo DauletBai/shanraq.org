@@ -1,0 +1,105 @@
+{{ define "weather" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div class="layout__main">
+
+      {{ if .PlaceLabel }}<p class="place-crumbs">{{ .PlaceLabel }}</p>{{ end }}
+      <div class="section-head"><h1>{{ printf (t .Lang "wx.title_place") .PlaceName }}</h1></div>
+
+      {{ if .HasData }}
+      <p class="place-lead">{{ printf (t .Lang "wx.lead") .PlaceName }}</p>
+
+      {{/* Крупная строка ответа: человек, зашедший узнать погоду, не должен
+           искать градусы среди плиток. */}}
+      <p class="fx-now wx-now">
+        <span class="wx-now__ic">{{ icon .Now.Icon }}</span>
+        <b class="fx-now__v">{{ .Now.Temp }}</b>
+        <span class="wx-now__desc">{{ .Now.Desc }}</span>
+        {{ if .Now.At }}<span class="fx-now__day">{{ printf (t .Lang "wx.at") .Now.At }}</span>{{ end }}
+      </p>
+
+      <div class="stat-tiles wx-tiles">
+        <div class="stat-tile"><b>{{ .Now.Feels }}</b><span>{{ t .Lang "wx.feels" }}</span></div>
+        <div class="stat-tile"><b>{{ .Now.Humidity }}</b><span>{{ t .Lang "wx.humidity" }}</span></div>
+        <div class="stat-tile"><b>{{ .Now.Wind }}</b><span>{{ t .Lang "wx.wind" }}</span></div>
+        <div class="stat-tile"><b>{{ .Now.Pressure }}</b><span>{{ t .Lang "wx.pressure" }}</span></div>
+      </div>
+
+      {{ if .Temp.Line }}
+      <div class="charts">
+        <div class="chart">
+          <h2 class="chart__h">{{ t .Lang "wx.temp_h" }}</h2>
+          <div class="chart__body">{{ template "fx_line" (dict "C" .Temp "Cls" "fx-svg__line") }}</div>
+          <p class="chart__note">{{ t .Lang "wx.temp_note" }}</p>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ if .HasRain }}
+      <div class="charts">
+        <div class="chart">
+          <h2 class="chart__h">{{ t .Lang "wx.rain_h" }}</h2>
+          <div class="chart__body">{{ template "fx_line" (dict "C" .Rain "Cls" "fx-svg__line") }}</div>
+          <p class="chart__note">{{ t .Lang "wx.rain_note" }}</p>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ if .Days }}
+      <div class="chart">
+        <h2 class="chart__h">{{ t .Lang "wx.week_h" }}</h2>
+        <div class="fx-years__wrap fx-years__wrap--cap">
+          <table class="fx-years wx-week">
+            <thead><tr>
+              <th>{{ t .Lang "wx.c_day" }}</th>
+              <th></th>
+              <th>{{ t .Lang "wx.c_temp" }}</th>
+              <th>{{ t .Lang "wx.c_precip" }}</th>
+              <th>{{ t .Lang "wx.c_wind" }}</th>
+              <th>{{ t .Lang "wx.c_sun" }}</th>
+            </tr></thead>
+            <tbody>
+              {{ range .Days }}
+              <tr{{ if .Today }} class="wx-week__today"{{ end }}>
+                <td><b>{{ .Weekday }}</b><span class="wx-week__date">{{ .Date }}</span></td>
+                <td class="wx-week__ic">{{ icon .Icon }}<span class="wx-week__desc">{{ .Desc }}</span></td>
+                <td><b>{{ .Max }}</b> <span class="wx-week__min">{{ .Min }}</span></td>
+                <td>{{ if .Precip }}{{ .Precip }}{{ else }}—{{ end }}</td>
+                <td>{{ .Wind }}</td>
+                <td class="wx-week__sun">{{ .Sunrise }} — {{ .Sunset }}</td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ if .Nearby }}
+      <div class="chart">
+        <h2 class="chart__h">{{ t .Lang "wx.nearby" }}</h2>
+        <p class="wx-links">
+          {{ range .Nearby }}<a class="fx-tab" href="/weather/{{ .Slug }}">{{ .Name }}</a>{{ end }}
+        </p>
+      </div>
+      {{ end }}
+
+      {{ else }}
+      <p class="chart__note">{{ t .Lang "wx.empty" }}</p>
+      {{ end }}
+
+      <div class="chart">
+        <h2 class="chart__h">{{ t .Lang "fx.sources" }}</h2>
+        <p class="chart__note">{{ t .Lang "wx.source" }}</p>
+        {{ if .Updated }}<p class="chart__note">{{ printf (t .Lang "wx.updated") .Updated }}</p>{{ end }}
+      </div>
+
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}
