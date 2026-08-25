@@ -6,6 +6,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.3] — 2026-08-25
+
+### Fixed
+
+- Обесценение было напечатано в обратную сторону: «тысяча тенге 1995 года
+  покупает сегодня столько же, сколько 21 ₸» утверждало, что старые деньги
+  стоили меньше новых. Верно обратное: тысяча, отложенная в 1995-м, покупает
+  сегодня то, что тогда покупал двадцать один тенге. Колонка таблицы и
+  примечание теперь говорят, в каких деньгах посчитано, — прежде это
+  приходилось угадывать.
+
+- Формула M3 = B × m не сходилась при перемножении: печаталось
+  55,8 = 16,7 × 3,33, а это 55,61 — сто девяносто миллиардов тенге в зазоре
+  между округлениями. Отношение теперь берётся между напечатанными числами, и
+  тот же множитель стоит в примечании к графику денежной массы.
+
+- Кратности роста измерялись не от той даты, которую называет их же подпись.
+  «Приведены к ста в январе 1994… курс вырос в 97 раз» — но 97 это рост от
+  ноября 1993-го, когда тенге было две недели. От января 1994-го рост в 43 раза.
+  Теперь обе кратности считаются от общего месяца, к которому приведены линии.
+
+
 ## [0.15.2] — 2026-08-25
 
 ### Fixed
@@ -780,7 +802,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.15.2...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.15.3...HEAD
+[0.15.3]: https://github.com/DauletBai/shanraq.org/compare/v0.15.2...v0.15.3
 [0.15.2]: https://github.com/DauletBai/shanraq.org/compare/v0.15.1...v0.15.2
 [0.15.1]: https://github.com/DauletBai/shanraq.org/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/DauletBai/shanraq.org/compare/v0.14.0...v0.15.0
