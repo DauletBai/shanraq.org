@@ -168,8 +168,9 @@ func TestPrintedIdentityMultipliesOut(t *testing.T) {
 	const m3, base = 55_783_694.0, 16_749_995.0
 	mult := macroShownRatio(m3, base)
 
-	shownM3, _ := macroShownValue(m3)
-	shownBase, _ := macroShownValue(base)
+	// Both sums as printed, in trillions.
+	shownM3 := macroShownMillions(m3) / 1e6
+	shownBase := macroShownMillions(base) / 1e6
 	rounded := float64(int(mult*100+0.5)) / 100 // as printed, two decimals
 
 	product := shownBase * rounded
@@ -178,10 +179,12 @@ func TestPrintedIdentityMultipliesOut(t *testing.T) {
 			shownBase, rounded, product, shownM3)
 	}
 
-	// When the two sums land in different magnitudes no printed line invites the
-	// multiplication, and the exact ratio is the honest answer.
-	if got := macroShownRatio(55_783_694, 900); got != 55_783_694.0/900 {
-		t.Errorf("разные порядки должны давать точное отношение, вышло %v", got)
+	// Across magnitudes too: the reserves line prints trillions over billions,
+	// and 55,8 ÷ 63,7 has to come to what the page says it does.
+	const res = 63_715.0
+	k := macroShownRatio(m3, res)
+	if want := 55.8e6 / 63.7e3; k < want-0.01 || k > want+0.01 {
+		t.Errorf("K = %.2f, а 55,8 трлн ÷ 63,7 млрд = %.2f", k, want)
 	}
 	// A zero denominator must not produce an infinity on the page.
 	if got := macroShownRatio(100, 0); got != 0 {

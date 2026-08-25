@@ -474,7 +474,9 @@ func formulaCover(in macroFormulaInput) (MacroFormula, bool) {
 		}
 		res = r.Value
 	}
-	implied := m3.Value / res
+	// Printed beside the two rounded sums, so the division shown is the division
+	// the reader can repeat.
+	implied := macroShownRatio(m3.Value, res)
 
 	f := MacroFormula{
 		ID:      "cover",
@@ -545,34 +547,37 @@ func macroFormulaWidth(f MacroFormula) int {
 }
 
 // macroShownRatio divides two sums the way the page shows them, so a printed
-// identity holds when the reader checks it.
+// line holds when the reader checks it.
 //
-// Both figures reach the page through macroTenge, which rounds to one decimal
-// inside its magnitude. When they land in the same magnitude the ratio is taken
-// between those rounded values; when they do not — a base in billions under a
-// mass in trillions — the exact ratio is the honest one, and no printed line
-// invites the multiplication anyway.
+// Both figures reach the page through macroTenge or macroDollars, which round
+// to one decimal inside their magnitude. Dividing the precise values behind
+// them and printing the result beside the rounded ones produces a line that
+// fails its own arithmetic: 55,8 ÷ 63,7 is 876,0, and the page said 875,52.
+//
+// Magnitudes may differ — a reserve in billions under a mass in trillions — so
+// both are brought back to millions before the division. That is not a
+// conversion of units the reader has to follow: it is the same two numbers they
+// can see, in a common scale.
 func macroShownRatio(numMillions, denMillions float64) float64 {
 	if denMillions <= 0 {
 		return 0
 	}
-	nv, nu := macroShownValue(numMillions)
-	dv, du := macroShownValue(denMillions)
-	if nu == du && dv != 0 {
-		return nv / dv
+	n := macroShownMillions(numMillions)
+	d := macroShownMillions(denMillions)
+	if d == 0 {
+		return numMillions / denMillions
 	}
-	return numMillions / denMillions
+	return n / d
 }
 
-// macroShownValue is the number macroTenge prints, with the magnitude it printed
-// it in.
-func macroShownValue(millions float64) (float64, string) {
+// macroShownMillions is the figure the page prints, converted back to millions.
+func macroShownMillions(millions float64) float64 {
 	switch {
 	case millions >= 1e6:
-		return math.Round(millions/1e6*10) / 10, "trn"
+		return math.Round(millions/1e6*10) / 10 * 1e6
 	case millions >= 1e3:
-		return math.Round(millions/1e3*10) / 10, "bln"
+		return math.Round(millions/1e3*10) / 10 * 1e3
 	default:
-		return math.Round(millions), "mln"
+		return math.Round(millions)
 	}
 }

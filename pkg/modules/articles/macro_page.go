@@ -215,7 +215,16 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 				Unit: T(lang, "fx.u_kzt_usd"),
 			})
 			c := cover[len(cover)-1]
-			b.CoverLast, b.CoverMonth = fxNum(c.Value), macroMonth(c.Day, lang)
+			// The figure in the note is the one the formula prints, derived the
+			// same way: the two must not disagree by half a tenge, because a
+			// reader who spots that stops trusting both.
+			shown := c.Value
+			if rv, ok := macroAt(res, c.Day); ok && rv > 0 {
+				if mv, ok := macroAt(m3, c.Day); ok && mv > 0 {
+					shown = macroShownRatio(mv, rv)
+				}
+			}
+			b.CoverLast, b.CoverMonth = fxNum(shown), macroMonth(c.Day, lang)
 			if v, ok := macroRateAt(rate, c.Day); ok {
 				b.RateAt = fxNum(v)
 			}
