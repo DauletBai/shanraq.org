@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.4] — 2026-08-25
+
+### Fixed
+
+- Формула покрытия печаталась как 55,8 трлн ÷ 63,7 млрд = 875,52, а это деление
+  даёт 875,98: результат считался по точным числам рядом с округлёнными. То же
+  число в примечании к графику покрытия бралось из ряда и разошлось бы с
+  формулой на полтенге. Теперь обе строки считают одинаково.
+
+
 ## [0.15.3] — 2026-08-25
 
 ### Fixed
@@ -802,7 +812,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.15.3...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.15.4...HEAD
+[0.15.4]: https://github.com/DauletBai/shanraq.org/compare/v0.15.3...v0.15.4
 [0.15.3]: https://github.com/DauletBai/shanraq.org/compare/v0.15.2...v0.15.3
 [0.15.2]: https://github.com/DauletBai/shanraq.org/compare/v0.15.1...v0.15.2
 [0.15.1]: https://github.com/DauletBai/shanraq.org/compare/v0.15.0...v0.15.1
