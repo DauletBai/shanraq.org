@@ -229,7 +229,7 @@
                  фраза «ни разу» станет неправдой. */}}
             <p class="mverdict__p">{{ if .Macro.RateAllYearsMissed }}{{ printf (t .Lang "fx.rate_verdict_1") .Macro.RateYears .Macro.RateMissed .Macro.RateAvg10 .Macro.RateTarget }}{{ else }}{{ printf (t .Lang "fx.rate_verdict_1p") .Macro.RateYears .Macro.RateMissed .Macro.RateAvg10 .Macro.RateTarget }}{{ end }}</p>
             {{ if .Macro.RateGap }}<p class="mverdict__p">{{ printf (t .Lang "fx.rate_verdict_2") .Macro.RateGdpMul .Macro.RateMoneyMul .Macro.RateGap }}</p>{{ end }}
-            {{ if and .Macro.RateBankShare .Macro.RateDearYears }}<p class="mverdict__p">{{ printf (t .Lang "fx.rate_verdict_4") .Macro.RateBankShare .Macro.RateDearYears .Macro.RateYears .Macro.RateMoneyMul .Macro.RateGdpMul }}</p>{{ end }}
+            {{ if and .Macro.RateBankShare .Macro.RateDearYears }}<p class="mverdict__p">{{ printf (t .Lang "fx.rate_verdict_4") .Macro.RateBankShare .Macro.RateDearYears .Macro.RateYearsNum .Macro.RateMoneyMul .Macro.RateGdpMul }}</p>{{ end }}
             {{ if .Macro.RateErodeKept }}<p class="mverdict__p">{{ printf (t .Lang "fx.rate_verdict_3") .Macro.RateErodeYear .Macro.RateErodeKept }}</p>{{ end }}
           </aside>
         </div>

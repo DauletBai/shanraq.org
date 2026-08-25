@@ -191,3 +191,40 @@ func TestPrintedIdentityMultipliesOut(t *testing.T) {
 		t.Errorf("деление на ноль дало %v", got)
 	}
 }
+
+// Money and output must be compared over the same years.
+//
+// The page has been caught making this mistake twice: first with the growth
+// multiples under the comparison chart, then here. Output is published from
+// 1991 and the money supply only from 1994, and those three missing years hold
+// the deepest contraction the country has had — counted against money that was
+// not yet measured, a 3.6-fold rise in output reads as 2.7.
+func TestMoneyAndOutputSpanTheSameYears(t *testing.T) {
+	year := func(y int, v float64) MacroPoint {
+		return MacroPoint{Period: mustYear(y), Value: v}
+	}
+	// Output falls hard in 1991–1993, then doubles each year 1994–1997.
+	gdp := []MacroPoint{
+		year(1991, -50), year(1992, -50), year(1993, -50),
+		year(1994, 100), year(1995, 100), year(1996, 100), year(1997, 100), year(1998, 100),
+	}
+	// Money exists only from 1994 and grows tenfold.
+	m3 := []MacroPoint{year(1994, 100), year(1998, 1000)}
+
+	gdpMul, moneyMul, gap := macroMoneyVsOutput(m3, gdp, LangRU)
+	if gdpMul == "" {
+		t.Fatal("сравнение не построилось")
+	}
+	// From 1994 output multiplies by 2⁵ = 32. Counting the collapse before the
+	// money series begins would give 4, and the page would understate the gap.
+	if !strings.HasPrefix(gdpMul, "32") {
+		t.Errorf("производство = %q, ожидалось 32 раза: годы до начала денежного ряда считаться не должны", gdpMul)
+	}
+	if !strings.HasPrefix(moneyMul, "10") {
+		t.Errorf("деньги = %q, ожидалось 10 раз", moneyMul)
+	}
+	// 10 ÷ 32 is below one, so the gap must not read as a multiple above it.
+	if strings.HasPrefix(gap, "32") {
+		t.Errorf("разрыв = %q — похоже, делится не на то", gap)
+	}
+}

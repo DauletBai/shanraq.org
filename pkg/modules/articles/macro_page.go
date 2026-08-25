@@ -143,6 +143,9 @@ type MacroBlock struct {
 	// chart's years credit cost more than prices rose.
 	RateBankShare string
 	RateDearYears string
+	// RateYearsNum is the bare count, for a sentence that supplies its own word
+	// for "years": "22 года из 32" needs the second number naked.
+	RateYearsNum string
 }
 
 // ready reports whether the section was assembled in full.
@@ -291,6 +294,7 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 			b.RateDearYears = macroDearYears(ra, rb)
 			b.RateYears, b.RateMissed, b.RateAvg10, b.RateAllYearsMissed =
 				macroTargetRecord(rb, cpiTargetValue(m, ctx))
+			b.RateYearsNum = b.RateYears
 			if v, err := strconv.ParseInt(b.RateYears, 10, 64); err == nil {
 				nYears = v
 				b.RateYears = b.RateYears + " " + macroYearsWord(nYears, lang)
@@ -1015,11 +1019,24 @@ func macroMoneyVsOutput(m3 []MacroPoint, gdp []MacroPoint, lang string) (gdpMul,
 	if len(m3) < 2 || len(gdp) < 5 {
 		return "", "", ""
 	}
-	// Output: compound the annual real growth rates.
+	// Both spans must start in the same year, or the comparison is between
+	// different stretches of history. Output is published from 1991 and the
+	// money supply only from 1994, and the three missing years are the deepest
+	// contraction the country has had — counting them against money that was
+	// not yet measured turned a 3.6-fold rise in output into 2.7.
+	//
+	// This is the second time the page has been caught making exactly this
+	// mistake; the first was the growth multiples under the comparison chart.
 	firstYear := gdp[0].Period.Year()
+	if m3First := m3[0].Period.Year(); m3First > firstYear {
+		firstYear = m3First
+	}
 	out := 1.0
 	years := 0
 	for _, p := range gdp {
+		if p.Period.Year() < firstYear {
+			continue
+		}
 		out *= 1 + p.Value/100
 		years++
 	}
