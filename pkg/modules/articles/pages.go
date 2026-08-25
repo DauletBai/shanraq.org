@@ -69,9 +69,11 @@ Shanraq.org is a home where free voices meet.`},
 
 **Погода** ведёт на прогноз: что сейчас, почасовой график на двое суток, вероятность осадков и неделя вперёд с восходом и закатом. Если вы указали в профиле, где живёте, откроется прогноз вашего места — качарцу Качар, костанайцу Костанай. У кого место не указано, увидит Алматы.
 
+Любое другое место выбирается списком вверху страницы: города сгруппированы по областям. Внизу — карта осадков: её можно двигать и рассматривать любой регион планеты.
+
 У каждого населённого пункта свой адрес: **/weather/kachar**. Прогноз есть везде, где у места известны координаты — это без малого четыреста городов и посёлков.
 
-**Дата** ведёт в архив: всё, что опубликовано в этот день. Стрелки внизу переводят к ближайшему дню, где что-то есть, а не к пустому вчерашнему числу.
+**Дата** ведёт в архив: всё, что опубликовано в этот день. Наверху страницы — календарь месяца: выделенные дни это те, в которые что-то вышло, и любой из них открывается одним нажатием. Стрелками месяц листается назад. Переходы внизу ведут к ближайшему дню с публикациями, а не к пустому вчерашнему числу.
 
 **Курс валюты** ведёт на её историю — это работало и раньше.
 
@@ -255,9 +257,11 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 
 **Ауа райы** болжамға апарады: қазір қандай, екі тәулікке сағаттық график, жауын-шашын ықтималдығы және алдағы апта, күннің шығуы мен батуы қоса. Профильде қай жерде тұратыныңызды көрсетсеңіз, өз жеріңіздің болжамы ашылады — качарлыққа Качар, қостанайлыққа Қостанай. Орын көрсетілмесе, Алматы көрінеді.
 
+Басқа кез келген жерді беттің жоғарғы жағындағы тізімнен таңдауға болады: қалалар облыстар бойынша топтастырылған. Төменде — жауын-шашын картасы: оны жылжытып, планетаның кез келген өңірін көруге болады.
+
 Әр елді мекеннің өз мекенжайы бар: **/weather/kachar**. Координаттары белгілі жердің бәрінде болжам бар — бұл төрт жүзге жуық қала мен кент.
 
-**Күні** мұрағатқа апарады: сол күні жарияланғанның бәрі. Төмендегі сілтемелер бос кешегі күнге емес, бірдеңе бар ең жақын күнге ауыстырады.
+**Күні** мұрағатқа апарады: сол күні жарияланғанның бәрі. Беттің жоғарғы жағында айдың күнтізбесі бар: түсі айқын күндер — бірдеңе шыққандары, кез келгені бір басуда ашылады. Көрсеткіштермен ай артқа парақталады. Төмендегі сілтемелер бос кешегі күнге емес, жарияланымы бар ең жақын күнге ауыстырады.
 
 **Валюта бағамы** оның тарихына апарады — бұл бұрын да жұмыс істейтін.
 
@@ -441,9 +445,11 @@ Everything in the strip at the top of every page is clickable: the date, the wea
 
 **The weather** leads to a forecast: conditions now, an hourly chart for two days, the chance of precipitation, and the week ahead with sunrise and sunset. If you told your profile where you live, you get your own town's forecast — Kachar for someone in Kachar, Kostanay for someone in Kostanay. Anyone who has not said gets Almaty.
 
+Any other place is chosen from the list at the top of the page, with towns grouped by region. At the foot is a precipitation map you can drag to look at any region of the planet.
+
 Every settlement has its own address: **/weather/kachar**. A forecast exists wherever the place's coordinates are known — close to four hundred towns and villages.
 
-**The date** leads to the archive: everything published that day. The links at the foot move to the nearest day that has something on it, rather than to an empty yesterday.
+**The date** leads to the archive: everything published that day. At the top of the page is that month's calendar — the highlighted days are the ones with something on them, and any of them opens in one tap. The arrows page the month backwards. The links at the foot move to the nearest day with something published, rather than to an empty yesterday.
 
 **An exchange rate** leads to that currency's history, as it always did.
 

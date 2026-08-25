@@ -554,6 +554,49 @@
   </div>
 </footer>
 {{ if .NeedsMap }}<script src="{{ asset "/static/vendor/leaflet.js" }}"></script>{{ end }}
+{{ if .NeedsMap }}
+<script>
+// Карта погоды: слой осадков поверх обычной карты мира.
+//
+// Адрес свежего кадра пришёл с сервера в data-radar — браузеру наружу за ним
+// ходить нельзя, connect-src это запрещает. Сами тайлы — картинки, и их
+// политика безопасности пропускает с любого HTTPS-хоста.
+(function () {
+  var box = document.querySelector('[data-wx-map]');
+  if (!box || typeof L === 'undefined') return;
+  var lat = parseFloat(box.getAttribute('data-lat'));
+  var lng = parseFloat(box.getAttribute('data-lng'));
+  if (isNaN(lat) || isNaN(lng)) { lat = 48; lng = 68; }
+
+  // Колесо не перехватываем: карта стоит посреди страницы, и прокрутка должна
+  // листать страницу, а не масштабировать карту под курсором.
+  var map = L.map(box, { scrollWheelZoom: false, worldCopyJump: true })
+             .setView([lat, lng], 5);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 12, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+
+  var radar = box.getAttribute('data-radar');
+  if (radar) {
+    L.tileLayer(radar, { opacity: 0.65, maxZoom: 12, tileSize: 256 }).addTo(map);
+  }
+  // Метка нарисована разметкой, а не картинкой: файлов значков Leaflet в
+  // проекте нет, и его значок по умолчанию ищет их по своему пути и рвётся.
+  var place = box.getAttribute('data-place');
+  if (place) {
+    L.marker([lat, lng], {
+      icon: L.divIcon({ className: 'wx-pin', html: '<i></i>', iconSize: [14, 14], iconAnchor: [7, 7] }),
+      title: place
+    }).addTo(map).bindPopup(place);
+  }
+
+  // Высоту рамке задаёт aspect-ratio, а Leaflet читает её при создании — до
+  // того, как раскладка успела посчитаться. Без этого карта иногда рождается
+  // нулевой высоты и остаётся серым прямоугольником.
+  setTimeout(function () { map.invalidateSize(); }, 0);
+})();
+</script>
+{{ end }}
 <script>
   // Installable site: the worker only caches /static/*, so the worst a
   // failed registration costs is the install prompt, never the page.

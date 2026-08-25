@@ -9,6 +9,24 @@
       {{ if .PlaceLabel }}<p class="place-crumbs">{{ .PlaceLabel }}</p>{{ end }}
       <div class="section-head"><h1>{{ printf (t .Lang "wx.title_place") .PlaceName }}</h1></div>
 
+      {{ if .Options }}
+      {{/* Выбор без единой строки скрипта: обычная форма. Она не может
+           отправить в сегмент пути, поэтому уходит запросом, а обработчик
+           уводит на настоящий адрес места. */}}
+      <form class="fx-pick" method="get" action="/weather">
+        <label class="fx-pick__lab" for="wx-p">{{ t .Lang "wx.pick" }}</label>
+        <select class="fx-pick__sel" id="wx-p" name="p">
+          {{ $g := "" }}
+          {{ range .Options }}
+          {{ if ne .Group $g }}{{ if ne $g "" }}</optgroup>{{ end }}<optgroup label="{{ .Group }}">{{ $g = .Group }}{{ end }}
+          <option value="{{ .Slug }}"{{ if .On }} selected{{ end }}>{{ .Name }}</option>
+          {{ end }}
+          {{ if ne $g "" }}</optgroup>{{ end }}
+        </select>
+        <button class="btn btn--sm" type="submit">{{ t .Lang "fx.show" }}</button>
+      </form>
+      {{ end }}
+
       {{ if .HasData }}
       <p class="place-lead">{{ printf (t .Lang "wx.lead") .PlaceName }}</p>
 
@@ -77,6 +95,19 @@
         </div>
       </div>
       {{ end }}
+
+      {{/* Карта мира с текущим слоем осадков. Внизу намеренно: страница сперва
+           отвечает про своё место, а карта — про любое другое.
+           Тайлы — обычные картинки, их политика безопасности и так пропускает;
+           адрес свежего кадра узнан на сервере, потому что connect-src
+           браузеру ходить наружу не даёт. */}}
+      <div class="chart">
+        <h2 class="chart__h">{{ t .Lang "wx.map_h" }}</h2>
+        <div class="wx-map" data-wx-map data-lat="{{ .Lat }}" data-lng="{{ .Lng }}"
+             data-radar="{{ .Radar }}" data-place="{{ .PlaceName }}"></div>
+        <p class="chart__note">{{ t .Lang "wx.map_note" }}</p>
+        <p class="chart__note">{{ t .Lang "wx.map_src" }}</p>
+      </div>
 
       {{ if .Nearby }}
       <div class="chart">

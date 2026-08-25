@@ -12,6 +12,37 @@
       </div>
       <p class="place-lead">{{ .Weekday }}{{ if .IsToday }} · {{ t .Lang "arch.today" }}{{ end }}</p>
 
+      {{/* Календарь месяца: любой день выбирается сразу, а не перелистыванием
+           по одному. День без публикаций не ссылка — квадрат, ведущий на пустую
+           страницу, хуже квадрата, который никуда не ведёт. */}}
+      {{ if .Calendar }}
+      <div class="chart arch-cal">
+        <div class="arch-cal__head">
+          {{ if .PrevMonth }}<a class="arch-cal__nav" href="/archive/{{ .PrevMonth }}?lang={{ .Lang }}" aria-label="{{ t .Lang "arch.prev_month" }}">←</a>{{ else }}<span class="arch-cal__nav is-off">←</span>{{ end }}
+          <b class="arch-cal__month">{{ .MonthName }}</b>
+          {{ if .NextMonth }}<a class="arch-cal__nav" href="/archive/{{ .NextMonth }}?lang={{ .Lang }}" aria-label="{{ t .Lang "arch.next_month" }}">→</a>{{ else }}<span class="arch-cal__nav is-off">→</span>{{ end }}
+        </div>
+        <table class="arch-cal__grid">
+          <thead><tr>{{ range .Weekdays }}<th>{{ . }}</th>{{ end }}</tr></thead>
+          <tbody>
+            {{ range .Calendar }}
+            <tr>
+              {{ range . }}
+              <td>
+                {{ if not .Day }}<span class="arch-cal__pad"></span>
+                {{ else if .ISO }}<a class="arch-cal__day is-has{{ if .Sel }} is-sel{{ end }}{{ if .Today }} is-today{{ end }}" href="/archive/{{ .ISO }}?lang={{ $.Lang }}">{{ .Day }}</a>
+                {{ else }}<span class="arch-cal__day{{ if .Sel }} is-sel{{ end }}{{ if .Today }} is-today{{ end }}{{ if .Ahead }} is-ahead{{ end }}">{{ .Day }}</span>
+                {{ end }}
+              </td>
+              {{ end }}
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+        <p class="chart__note">{{ t .Lang "arch.cal_note" }}</p>
+      </div>
+      {{ end }}
+
       {{ if .Posts }}
       <div class="posts">
         {{ range .Posts }}

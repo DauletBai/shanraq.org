@@ -100,6 +100,12 @@ type WeatherPage struct {
 
 	// Nearby are other places a reader may want instead, largest first.
 	Nearby []GeoNode
+	// Options is every place with a forecast, for the picker.
+	Options []WxOption
+	// Lat and Lng centre the map; Radar is the precipitation tile template,
+	// empty when the service could not be reached.
+	Lat, Lng float64
+	Radar    string
 	// Updated is when this forecast was fetched.
 	Updated string
 }
@@ -126,6 +132,13 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 		name, label string
 		node        *GeoNode
 	)
+	// The picker is a plain GET form, and a form cannot post into a path
+	// segment — so it arrives as a query and is sent on to the real address.
+	if p := strings.TrimSpace(r.URL.Query().Get("p")); p != "" && slug == "" {
+		http.Redirect(w, r, "/weather/"+p+"?lang="+lang, http.StatusFound)
+		return
+	}
+
 	if slug == "" {
 		// A reader who told us where they live gets their own town, by way of
 		// its real address rather than by rendering it here: one page per place
@@ -175,9 +188,19 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	page.PlaceLabel = label
+	page.Lat, page.Lng = lat, lon
+	page.Radar = m.radarTiles(r.Context())
+	if opts, oerr := m.geo.weatherOptions(r.Context(), lang, slug); oerr == nil {
+		page.Options = opts
+	} else {
+		m.rt.Logger.Warn("weather options", zap.Error(oerr))
+	}
 
 	title := fmt.Sprintf(T(lang, "wx.title_place"), name)
 	page.Base = m.base(r, title, lang)
+	// The map needs Leaflet, and Leaflet is only shipped to the pages that draw
+	// one: it is the heaviest asset on the site.
+	page.NeedsMap = true
 	page.Desc = fmt.Sprintf(T(lang, "wx.desc_place"), name)
 	if slug != "" {
 		page.Base.CanonURL = canonURL("/weather/"+slug, "", lang)
@@ -532,6 +555,116 @@ func (s *GeoStore) WeatherPlaces(ctx context.Context) ([]string, error) {
 			return nil, err
 		}
 		out = append(out, slug)
+	}
+	return out, rows.Err()
+}
+
+// The precipitation layer.
+//
+// RainViewer publishes radar tiles for the whole world without a key, but the
+// address of the current frame changes every ten minutes and has to be looked
+// up first. The browser cannot do that lookup — connect-src is 'self', and
+// relaxing it to reach a weather service would open the page to every other
+// one — so the server fetches it and hands the finished tile template down.
+//
+// The tiles themselves are ordinary images, which img-src already allows from
+// any HTTPS host. So a live global weather layer costs no change to the content
+// security policy and loads no third-party script.
+
+// rvTTL is how long a frame address is reused. Frames appear about every ten
+// minutes; asking more often spends requests on the same picture.
+const rvTTL = 5 * time.Minute
+
+var rvCache = struct {
+	mu   sync.Mutex
+	at   time.Time
+	tmpl string
+}{}
+
+// radarTiles returns the Leaflet tile template for the newest radar frame, or
+// "" when the service cannot be reached — the map then draws without the layer
+// rather than not at all.
+func (m *Module) radarTiles(ctx context.Context) string {
+	rvCache.mu.Lock()
+	if time.Since(rvCache.at) < rvTTL && rvCache.tmpl != "" {
+		t := rvCache.tmpl
+		rvCache.mu.Unlock()
+		return t
+	}
+	rvCache.mu.Unlock()
+
+	body, err := macroFetch(ctx, "https://api.rainviewer.com/public/weather-maps.json")
+	if err != nil {
+		m.rt.Logger.Warn("radar frames", zap.Error(err))
+		return ""
+	}
+	var doc struct {
+		Host  string `json:"host"`
+		Radar struct {
+			Past []struct {
+				Path string `json:"path"`
+			} `json:"past"`
+		} `json:"radar"`
+	}
+	if err := json.Unmarshal(body, &doc); err != nil || len(doc.Radar.Past) == 0 {
+		m.rt.Logger.Warn("radar frames unreadable", zap.Error(err))
+		return ""
+	}
+	host := doc.Host
+	if host == "" {
+		host = "https://tilecache.rainviewer.com"
+	}
+	// 256-pixel tiles, colour scheme 2, smoothed with snow shown separately.
+	tmpl := host + doc.Radar.Past[len(doc.Radar.Past)-1].Path + "/256/{z}/{x}/{y}/2/1_1.png"
+
+	rvCache.mu.Lock()
+	rvCache.at, rvCache.tmpl = time.Now(), tmpl
+	rvCache.mu.Unlock()
+	return tmpl
+}
+
+// WxOption is one entry of the place picker.
+type WxOption struct {
+	Slug  string
+	Name  string
+	Group string
+	On    bool
+}
+
+// weatherOptions lists every place a forecast exists for, grouped by the region
+// it sits in so a list four hundred long stays navigable.
+func (s *GeoStore) weatherOptions(ctx context.Context, lang, current string) ([]WxOption, error) {
+	name := fmt.Sprintf("COALESCE(NULLIF(c.%s,''), c.name_ru)", geoNameCol(lang))
+	parent := fmt.Sprintf("COALESCE(NULLIF(p.%s,''), p.name_ru)", geoNameCol(lang))
+	// A place whose parent is missing falls back to its country's own name
+	// rather than to the two-letter code: an option list headed "KZ" tells a
+	// reader nothing.
+	country := fmt.Sprintf("COALESCE(NULLIF(k.%s,''), k.name_ru)", geoNameCol(lang))
+	rows, err := s.db.Query(ctx, fmt.Sprintf(`
+		SELECT c.slug, %s, COALESCE(NULLIF(%s,''), %s, c.country), c.country
+		FROM geo_nodes c
+		LEFT JOIN geo_nodes p ON p.id = c.parent_id
+		LEFT JOIN geo_nodes k ON k.level = 0 AND k.country = c.country
+		WHERE c.slug IS NOT NULL AND c.lat IS NOT NULL AND c.lng IS NOT NULL
+		ORDER BY c.country, COALESCE(NULLIF(%s,''), %s, c.country),
+		         c.population DESC NULLS LAST, 2`,
+		name, parent, country, parent, country))
+	if err != nil {
+		return nil, fmt.Errorf("weather options: %w", err)
+	}
+	defer rows.Close()
+	out := []WxOption{}
+	for rows.Next() {
+		var o WxOption
+		var country string
+		if err := rows.Scan(&o.Slug, &o.Name, &o.Group, &country); err != nil {
+			return nil, err
+		}
+		if o.Group == "" {
+			o.Group = country
+		}
+		o.On = o.Slug == current
+		out = append(out, o)
 	}
 	return out, rows.Err()
 }

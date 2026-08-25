@@ -763,3 +763,33 @@ func (s *Store) NeighbourDay(ctx context.Context, day time.Time, forward bool) (
 	}
 	return d, nil
 }
+
+// DaysWithArticlesInMonth returns the days of one month that have something
+// published on them, as a set of day-of-month numbers.
+//
+// The calendar needs the whole month in one query: asking day by day would be
+// thirty-one round trips to draw one grid.
+func (s *Store) DaysWithArticlesInMonth(ctx context.Context, year int, month time.Month, addressed []uuid.UUID) (map[int]bool, error) {
+	first := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
+	args := []any{siteTimeZone, first.Format("2006-01-02"), first.AddDate(0, 1, 0).Format("2006-01-02")}
+	where := placeClause(&args, addressed)
+	rows, err := s.db.Query(ctx, `
+		SELECT DISTINCT EXTRACT(DAY FROM (a.published_at AT TIME ZONE $1))::int AS d
+		FROM articles a
+		WHERE a.status = 'published' AND a.indexable AND a.published_at IS NOT NULL
+		  AND (a.published_at AT TIME ZONE $1)::date >= $2::date
+		  AND (a.published_at AT TIME ZONE $1)::date <  $3::date`+where, args...)
+	if err != nil {
+		return nil, fmt.Errorf("days with articles: %w", err)
+	}
+	defer rows.Close()
+	out := map[int]bool{}
+	for rows.Next() {
+		var d int
+		if err := rows.Scan(&d); err != nil {
+			return nil, err
+		}
+		out[d] = true
+	}
+	return out, rows.Err()
+}

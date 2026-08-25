@@ -6,6 +6,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.1] — 2026-08-25
+
+### Added
+
+- Календарь месяца на странице архива. Любой день выбирается сразу, а не
+  перелистыванием по одному; выделены те дни, в которые что-то опубликовано, и
+  только они кликаются. Месяц листается назад стрелками, вперёд — не дальше
+  сегодняшнего: календарь дней, которых ещё не было, это прогулка по 404.
+
+- Выбор места на странице прогноза: список всех городов и посёлков с прогнозом,
+  сгруппированный по областям. Обычная форма, без единой строки скрипта.
+
+- Карта осадков внизу страницы прогноза — можно двигать и рассматривать любой
+  регион планеты. 16:9 на широком экране, 9:16 на вертикальном телефоне: карта —
+  единственное на сайте, чему на узком экране высота нужна больше ширины.
+
+  Карта своя, не встроенная чужая: политика безопасности запрещает вставлять
+  чужие страницы рамкой, и обходить её ради погоды не стоило. Основа —
+  OpenStreetMap, слой осадков — RainViewer, адрес свежего кадра узнаётся на
+  сервере, потому что браузеру ходить наружу тоже запрещено. Ни одной сторонней
+  строки кода на странице не выполняется.
+
+
 ## [0.15.0] — 2026-08-25
 
 ### Added
@@ -728,7 +751,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.15.0...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.15.1...HEAD
+[0.15.1]: https://github.com/DauletBai/shanraq.org/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/DauletBai/shanraq.org/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/DauletBai/shanraq.org/compare/v0.13.1...v0.14.0
 [0.13.1]: https://github.com/DauletBai/shanraq.org/compare/v0.13.0...v0.13.1

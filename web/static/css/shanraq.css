@@ -3081,6 +3081,63 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   :root:not([data-theme="light"]) .fxtip { color: #1c1a17; }
 }
 
+/* Карта погоды. Соотношение 16:9 на широком экране и 9:16 на вертикальном
+   телефоне: карта — единственное на сайте, чему высота нужна больше ширины,
+   когда экран узкий, иначе от мира остаётся полоска в три сантиметра.
+   Потолок высоты и прокрутка, принятые для крупных блоков, здесь не годятся:
+   вложенная прокрутка отняла бы у карты перетаскивание. */
+.wx-map {
+  width: 100%; aspect-ratio: 16 / 9; margin-top: 10px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--surface-2); overflow: hidden; z-index: 0;
+}
+@media (max-width: 620px) and (orientation: portrait) {
+  .wx-map { aspect-ratio: 9 / 16; }
+}
+/* Метка выбранного места. Точка с кольцом видна и на зелёной равнине, и на
+   сером городе, а картинки значка в проекте нет. */
+.wx-pin i {
+  display: block; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--gold); box-shadow: 0 0 0 3px rgba(255,255,255,.9), 0 1px 4px rgba(0,0,0,.4);
+}
+
+/* Календарь месяца в архиве. Семь колонок фиксированной ширины, чтобы числа
+   стояли столбиком, а не разъезжались по длине. */
+.arch-cal { padding-bottom: 10px; }
+.arch-cal__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.arch-cal__month { font-family: var(--serif); font-size: 1.05rem; text-transform: capitalize; }
+.arch-cal__nav {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  color: var(--ink); text-decoration: none; font-size: .95rem;
+}
+.arch-cal__nav:hover { border-color: var(--gold); color: var(--gold-strong); }
+.arch-cal__nav.is-off { opacity: .3; cursor: default; }
+/* Ширина ограничена: растянутая на всю колонку сетка давала клетку в сто
+   пикселей, и месяц занимал экран целиком. Календарь должен читаться одним
+   взглядом, а не листаться. */
+.arch-cal__grid { width: 100%; max-width: 340px; margin: 0 auto; border-collapse: collapse; table-layout: fixed; }
+.arch-cal__grid th {
+  padding: 4px 0; font-size: .7rem; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.arch-cal__grid td { padding: 2px; text-align: center; }
+.arch-cal__day {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; margin: 0 auto; border-radius: var(--radius-sm);
+  font-size: .88rem; font-variant-numeric: tabular-nums;
+  color: var(--muted); text-decoration: none;
+}
+/* День, в который что-то опубликовано, — единственный кликабельный, и он
+   единственный выглядит кликабельным. */
+.arch-cal__day.is-has { color: var(--on-accent); background: var(--gold); font-weight: 600; }
+.arch-cal__day.is-has:hover { background: var(--gold-strong); }
+.arch-cal__day.is-sel { outline: 2px solid var(--ink); outline-offset: 1px; }
+.arch-cal__day.is-today:not(.is-has) { border: 1px dashed var(--line-strong); color: var(--ink); }
+.arch-cal__day.is-ahead { opacity: .35; }
+.arch-cal__pad { display: block; height: 36px; }
+.arch-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+
 /* Страница прогноза. Крупная строка ответа устроена как на странице курса:
    человек, зашедший узнать погоду, не должен искать градусы среди плиток. */
 /* Значение плитки не переносится посреди единицы измерения: «764 мм рт.ст.»
