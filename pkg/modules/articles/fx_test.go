@@ -14,10 +14,10 @@ import (
 func TestAnEmptyDayFromTheBankIsNotAnError(t *testing.T) {
 	rates, err := parseFxRates([]byte(`<?xml version="1.0"?><rates></rates>`), time.Now())
 	if err != nil {
-		t.Fatalf("пустой день признан ошибкой: %v", err)
+		t.Fatalf("an empty day was reported as an error: %v", err)
 	}
 	if len(rates) != 0 {
-		t.Fatalf("из пустого документа взялось %d курсов", len(rates))
+		t.Fatalf("an empty document yielded %d rates", len(rates))
 	}
 }
 
@@ -33,17 +33,17 @@ func TestTheBanksMultiplierSurvivesParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(rates) != 2 {
-		t.Fatalf("разобрано %d курсов вместо двух", len(rates))
+		t.Fatalf("parsed %d rates instead of two", len(rates))
 	}
 	by := map[string]FxRate{}
 	for _, r := range rates {
 		by[r.Code] = r
 	}
 	if by["JPY"].Quant != 100 {
-		t.Errorf("кратность иены потеряна: %d", by["JPY"].Quant)
+		t.Errorf("the yen's quantity was lost: %d", by["JPY"].Quant)
 	}
 	if by["USD"].Value != 456.88 || by["USD"].Name == "" {
-		t.Errorf("доллар разобран неверно: %+v", by["USD"])
+		t.Errorf("the dollar parsed wrongly: %+v", by["USD"])
 	}
 }
 
@@ -68,17 +68,17 @@ M,XM,EUR,E,1993-11,NaN
 	// The dollar is the series' base, so its rate against the tenge is taken
 	// directly.
 	if v := got["USD@2026-06"]; v < 480.7 || v > 480.8 {
-		t.Errorf("доллар посчитан как %.2f вместо 480.72", v)
+		t.Errorf("the dollar came to %.2f instead of 480.72", v)
 	}
 	if v := got["EUR@2026-06"]; v < 547 || v > 549 {
-		t.Errorf("евро посчитано как %.2f, а 480.72/0.8777 это около 547.7", v)
+		t.Errorf("the euro came to %.2f, but 480.72/0.8777 is about 547.7", v)
 	}
 	// The dollar covers the tenge's birth month; the euro did not exist yet.
 	if v := got["USD@1993-11"]; v < 4.69 || v > 4.71 {
-		t.Errorf("ноябрь 1993 потерян: %.2f", v)
+		t.Errorf("November 1993 was lost: %.2f", v)
 	}
 	if _, ok := got["EUR@1993-11"]; ok {
-		t.Error("евро появилось в 1993 году, хотя в выгрузке там пусто")
+		t.Error("the euro appeared in 1993, where the source has nothing")
 	}
 }
 
@@ -91,7 +91,7 @@ func TestAMonthWithoutTheTengeIsDropped(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(rows) != 0 {
-		t.Fatalf("без курса тенге получилось %d строк", len(rows))
+		t.Fatalf("%d rows came back with no tenge rate", len(rows))
 	}
 }
 
@@ -105,13 +105,13 @@ func TestThinningKeepsBothEndsOfTheSeries(t *testing.T) {
 	}
 	out := fxThin(pts, fxMaxPoints)
 	if len(out) != fxMaxPoints {
-		t.Fatalf("после прореживания %d точек вместо %d", len(out), fxMaxPoints)
+		t.Fatalf("thinning left %d points instead of %d", len(out), fxMaxPoints)
 	}
 	if out[0] != pts[0] {
-		t.Error("потеряно начало ряда")
+		t.Error("the start of the series was lost")
 	}
 	if out[len(out)-1] != pts[len(pts)-1] {
-		t.Error("потерян конец ряда — по нему считается текущий курс")
+		t.Error("the end of the series was lost; the current rate is read from it")
 	}
 }
 
@@ -119,24 +119,24 @@ func TestThinningKeepsBothEndsOfTheSeries(t *testing.T) {
 // would turn their whole series into identical zeros.
 func TestSmallRatesKeepEnoughDigits(t *testing.T) {
 	if got := fxNum(0.0384); got != "0,0384" {
-		t.Errorf("мелкий курс напечатан как %q", got)
+		t.Errorf("a small rate printed as %q", got)
 	}
 	if got := fxNum(1234.5); got != "1\u202f234,50" {
-		t.Errorf("крупный курс напечатан как %q", got)
+		t.Errorf("a large rate printed as %q", got)
 	}
 	if got := fxDelta(2.5, 456.0); !strings.HasPrefix(got, "+") {
-		t.Errorf("рост напечатан без плюса: %q", got)
+		t.Errorf("a rise printed without its plus: %q", got)
 	}
 	// A change's precision is set by the size of the rate, not of the change itself:
 	// otherwise "+2,25" and "+0,5900" stand in one column and it stops reading.
 	if got := fxDelta(0.59, 456.0); got != "+0,59" {
-		t.Errorf("мелкое изменение крупного курса напечатано как %q", got)
+		t.Errorf("a small move in a large rate printed as %q", got)
 	}
 	if got := fxDelta(0.0031, 0.0384); got != "+0,0031" {
-		t.Errorf("изменение мелкого курса напечатано как %q", got)
+		t.Errorf("a move in a small rate printed as %q", got)
 	}
 	if got := fxPct(-1.9); got != "−1,90%" {
-		t.Errorf("проценты напечатаны как %q", got)
+		t.Errorf("the percentage printed as %q", got)
 	}
 }
 
@@ -163,22 +163,22 @@ func TestTheRatesPageIsOpenAndShowsTheRate(t *testing.T) {
 
 	w := app.do(http.MethodGet, "/rates?c=USD&p=month", nil)
 	if w.Code != http.StatusOK {
-		t.Fatalf("страница курса отдала %d без входа", w.Code)
+		t.Fatalf("the rates page returned %d to a signed-out visitor", w.Code)
 	}
 	body := w.Body.String()
 	if !strings.Contains(body, T(LangRU, "fx.title")) {
-		t.Error("на странице нет её собственного заголовка")
+		t.Error("the page is missing its own heading")
 	}
 	if strings.Contains(body, T(LangRU, "fx.empty")) {
-		t.Fatal("страница говорит, что данных нет, хотя они засеяны")
+		t.Fatal("the page says there is no data, though it was seeded")
 	}
 	// The line is drawn on the server: without it only the numbers remain.
 	if !strings.Contains(body, "fx-svg__line") {
-		t.Error("на странице нет линии курса")
+		t.Error("the page is missing the rate line")
 	}
 	// The source has to be named on the page itself.
 	if !strings.Contains(body, T(LangRU, "fx.src_bis")) {
-		t.Error("страница не называет источник глубокой истории")
+		t.Error("the page does not name the source of the deep history")
 	}
 }
 
@@ -191,10 +191,10 @@ func TestAnUnknownCurrencyFallsBackToTheDollar(t *testing.T) {
 
 	w := app.do(http.MethodGet, "/rates?c=ZZZ&p=year", nil)
 	if w.Code != http.StatusOK {
-		t.Fatalf("неизвестная валюта уронила страницу: %d", w.Code)
+		t.Fatalf("an unknown currency brought the page down: %d", w.Code)
 	}
 	if strings.Contains(w.Body.String(), T(LangRU, "fx.empty")) {
-		t.Error("вместо подстановки доллара страница осталась пустой")
+		t.Error("the page came back empty instead of falling back to the dollar")
 	}
 }
 
@@ -210,16 +210,16 @@ func TestTheWholePeriodReachesTheBirthOfTheTenge(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(pts) < 3 {
-		t.Fatalf("месячный ряд собрал %d точек", len(pts))
+		t.Fatalf("the monthly series gathered %d points", len(pts))
 	}
 	if got := pts[0].Day.Format("2006-01"); got != "1993-11" {
-		t.Errorf("ряд начинается с %s, а не с рождения тенге", got)
+		t.Errorf("the series starts at %s rather than at the tenge's birth", got)
 	}
 	// The tail the deep source has not reached comes from the daily archive —
 	// otherwise the page would show a rate two months old.
 	last := pts[len(pts)-1].Day
 	if last.Before(monthStart(time.Now().UTC().AddDate(0, -1, 0))) {
-		t.Errorf("ряд обрывается на %s — свежий хвост не подставлен", last.Format("2006-01"))
+		t.Errorf("the series stops at %s; the recent tail was not appended", last.Format("2006-01"))
 	}
 }
 
@@ -244,10 +244,10 @@ func TestAProbedDayIsNeverAskedTwice(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !ok {
-		t.Fatal("единственный неопрошенный день окна не найден")
+		t.Fatal("the one unpolled day in the window was not found")
 	}
 	if got := day.Format("2006-01-02"); got != time.Now().UTC().AddDate(0, 0, -3).Format("2006-01-02") {
-		t.Fatalf("к опросу предложен %s, а не единственный пропуск", got)
+		t.Fatalf("%s was offered for polling rather than the single gap", got)
 	}
 
 	if err := fx.MarkProbed(ctx, day, 0); err != nil {
@@ -256,7 +256,7 @@ func TestAProbedDayIsNeverAskedTwice(t *testing.T) {
 	if _, ok, err := fx.NextToProbe(ctx, floor); err != nil {
 		t.Fatal(err)
 	} else if ok {
-		t.Error("после отметки догрузка снова нашла, что опрашивать в закрытом окне")
+		t.Error("after marking, the backfill again found something to poll in a closed window")
 	}
 }
 
@@ -279,11 +279,11 @@ func TestTheEndOfTheSourcesWindowIsRecognised(t *testing.T) {
 		t.Fatal(err)
 	}
 	if run < fxEmptyRun {
-		t.Errorf("подряд пустых дней насчитано %d — край окна не распознан", run)
+		t.Errorf("%d empty days in a row; the window edge was not recognised", run)
 	}
 	// A row holding rates breaks the run: below it there is nothing to count.
 	if run > 55 {
-		t.Errorf("цепочка в %d дней перешагнула день с курсами", run)
+		t.Errorf("a run of %d days stepped over a day that has rates", run)
 	}
 }
 
@@ -299,7 +299,7 @@ func TestTheBanksShoutingNamesAreCalmedDown(t *testing.T) {
 		"":                 "",
 	} {
 		if got := fxTidyName(in); got != want {
-			t.Errorf("%q превратилось в %q, а ожидалось %q", in, got, want)
+			t.Errorf("%q became %q, expected %q", in, got, want)
 		}
 	}
 }
@@ -318,27 +318,27 @@ func TestEachCurrencyIsItsOwnPage(t *testing.T) {
 
 	w := app.do(http.MethodGet, "/rates?c=EUR&p=year", nil)
 	if w.Code != http.StatusOK {
-		t.Fatalf("страница евро отдала %d", w.Code)
+		t.Fatalf("the euro page returned %d", w.Code)
 	}
 	body := w.Body.String()
 	if !strings.Contains(body, `href="/rates?c=EUR&amp;lang=ru"`) {
-		t.Error("canonical евро не указывает на собственный адрес валюты")
+		t.Error("the euro canonical does not point at the currency's own address")
 	}
 	// The period stays out of the canonical: it is the same rate at another depth.
 	if strings.Contains(body, "c=EUR&amp;p=year&amp;lang=ru") {
-		t.Error("период попал в canonical и размножил страницу на четыре копии")
+		t.Error("the period leaked into the canonical and split the page into four copies")
 	}
 	if !strings.Contains(body, "EUR — курс к тенге") {
-		t.Error("у страницы евро общий заголовок вместо собственного")
+		t.Error("the euro page carries the generic title instead of its own")
 	}
 	if !strings.Contains(body, "Евро (EUR)") {
-		t.Error("в описании страницы нет названия валюты")
+		t.Error("the page description does not name the currency")
 	}
 
 	// The dollar is /rates, and it needs no second address.
 	w = app.do(http.MethodGet, "/rates?c=USD", nil)
 	if b := w.Body.String(); strings.Contains(b, `href="/rates?c=USD&amp;lang=ru"`) {
-		t.Error("доллар получил отдельный адрес, хотя он и есть страница курсов")
+		t.Error("the dollar was given an address of its own, though it is the rates page")
 	}
 }
 
@@ -355,19 +355,19 @@ func TestEveryCurrencyIsOfferedInTheSitemap(t *testing.T) {
 
 	w := app.do(http.MethodGet, "/sitemap.xml", nil)
 	if w.Code != http.StatusOK {
-		t.Fatalf("карта сайта отдала %d", w.Code)
+		t.Fatalf("the sitemap returned %d", w.Code)
 	}
 	body := w.Body.String()
 	if !strings.Contains(body, "/rates?c=EUR&amp;lang=ru") {
-		t.Error("курса евро нет в карте сайта")
+		t.Error("the euro rate is missing from the sitemap")
 	}
 	if !strings.Contains(body, "/rates?lang=ru") {
-		t.Error("самой страницы курсов нет в карте сайта")
+		t.Error("the rates page itself is missing from the sitemap")
 	}
 	// The dollar must not be offered twice — once by its own address and once as
 	// /rates.
 	if strings.Contains(body, "/rates?c=USD") {
-		t.Error("доллар предложен вторым адресом — это дубль страницы курсов")
+		t.Error("the dollar is offered as a second address, duplicating the rates page")
 	}
 }
 
@@ -380,7 +380,7 @@ func TestPermanentPagesAreAnnouncedInEveryLanguage(t *testing.T) {
 
 	urls := app.module().pageURLs([]string{"/rates", "/analytics"})
 	if len(urls) != 2*len(Langs) {
-		t.Fatalf("адресов %d, а страниц две на %d языка", len(urls), len(Langs))
+		t.Fatalf("%d addresses for two pages in %d languages", len(urls), len(Langs))
 	}
 	for _, want := range []string{"/rates?lang=ru", "/rates?lang=kz", "/rates?lang=en", "/analytics?lang=ru"} {
 		found := false
@@ -391,12 +391,12 @@ func TestPermanentPagesAreAnnouncedInEveryLanguage(t *testing.T) {
 			}
 		}
 		if !found {
-			t.Errorf("в заявке нет адреса %s", want)
+			t.Errorf("the submission is missing the address %s", want)
 		}
 	}
 	for _, u := range urls {
 		if !strings.HasPrefix(u, "http") {
-			t.Errorf("адрес %q не абсолютный — IndexNow такой отвергнет", u)
+			t.Errorf("the address %q is not absolute; IndexNow rejects those", u)
 		}
 	}
 }
