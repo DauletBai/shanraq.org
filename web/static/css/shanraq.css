@@ -3223,6 +3223,16 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    автор должен заметить его до того, как нажмёт кнопку. */
 .hint--warn { border-left: 3px solid var(--gold); padding-left: 10px; margin-top: 8px; }
 
+/* Sidebar cards carry the same resting shadow everywhere. Written against the
+   container rather than each card, so a card added to the sidebar later gets it
+   without anyone remembering to. The token is theme-aware. */
+.aside > .aside__block,
+.aside > .rebanner,
+.aside > .adcarousel,
+.aside > .adslot,
+.aside > .re-calc,
+.cab-side__me { box-shadow: var(--card-shadow); }
+
 /* Loan calculator. The form is a plain grid; what carries the page is the
    result block, where the total the reader will actually part with is set
    larger than anything else on the screen. */
@@ -3276,6 +3286,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .calc__who-row--you .calc__who-bar { background: none; }
 .calc__who-sum { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .calc__who-note { font-size: .82rem; color: var(--muted); margin: 6px 0 0; line-height: 1.4; }
+.calc__out #o-toggle { margin-top: 18px; }
 
 .calc__sched { margin-top: 12px; max-height: max(50cqw, 260px); overflow: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); }
 .calc__scroll { overflow-x: auto; }
