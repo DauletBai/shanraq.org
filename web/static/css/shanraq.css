@@ -3302,9 +3302,16 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* The sidebar link: one line, not a widget. The calculator is a page of its
    own, and its value does not depend on how many listings we hold. */
-.re-calc { display: block; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 12px; }
-.re-calc__t { display: block; font-weight: 600; margin-bottom: 2px; }
-.re-calc__c { display: block; font-size: .85rem; color: var(--gold); }
+/* Painted in the brand red so it is found rather than looked for. Foreground
+   comes from --on-accent, not from a literal white: in the dark theme the red
+   lightens to a coral, and white on it would be unreadable. That is the same
+   pair .btn--primary uses. */
+.re-calc { display: block; border: 1px solid var(--gold); border-radius: var(--radius-sm);
+  padding: 12px 14px; margin-bottom: 12px; background: var(--gold); color: var(--on-accent);
+  text-decoration: none; }
+.re-calc:hover { background: var(--gold-strong); border-color: var(--gold-strong); text-decoration: none; }
+.re-calc__t { display: block; font-weight: 600; margin-bottom: 2px; color: inherit; }
+.re-calc__c { display: block; font-size: .85rem; color: inherit; opacity: .9; }
 
 /* Короткий вывод под графиком. Не такая же врезка, как под графиком ставки:
    пять одинаковых блоков подряд превратили бы страницу в один сплошной
