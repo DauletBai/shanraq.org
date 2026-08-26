@@ -1,0 +1,191 @@
+{{ define "calculator" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div class="layout__main">
+
+      <div class="section-head"><h1>{{ t .Lang "calc.title" }}</h1></div>
+      <p class="place-lead">{{ t .Lang "calc.lead" }}</p>
+
+      {{/* The form is one object holding the programme table as JSON. Picking a
+           type filters the programmes; picking a programme fills the rate, term
+           and minimum down payment, and every one of them stays editable — our
+           figures go stale and the reader's own offer beats ours. */}}
+      <form class="calc" id="calc" data-programs="{{ .DataJSON }}" data-market="{{ .MarketJSON }}" data-labels="{{ .LabelsJSON }}" autocomplete="off">
+        <div class="calc__kinds" role="tablist">
+          {{ range .Kinds }}
+          <button type="button" class="calc__kind" data-kind="{{ . }}" aria-pressed="false">{{ t $.Lang (printf "calc.k_%s" .) }}</button>
+          {{ end }}
+        </div>
+
+        <div class="calc__grid">
+          <label class="calc__f calc__f--wide">
+            <span>{{ t .Lang "calc.f_program" }}</span>
+            <select id="c-prog"><option value="">{{ t .Lang "calc.f_own" }}</option></select>
+          </label>
+
+          <label class="calc__f" data-when="price">
+            <span>{{ t .Lang "calc.f_price" }}</span>
+            <input type="text" id="c-price" class="calc__money" inputmode="numeric" autocomplete="off" value="20 000 000">
+          </label>
+          <label class="calc__f" data-when="price">
+            <span>{{ t .Lang "calc.f_down" }}</span>
+            <input type="text" id="c-down" class="calc__money" inputmode="numeric" autocomplete="off" value="4 000 000">
+          </label>
+          <label class="calc__f" data-when="amount" hidden>
+            <span>{{ t .Lang "calc.f_amount" }}</span>
+            <input type="text" id="c-amount" class="calc__money" inputmode="numeric" autocomplete="off" value="2 000 000">
+          </label>
+
+          <label class="calc__f">
+            <span>{{ t .Lang "calc.f_rate" }}</span>
+            <input type="number" id="c-rate" min="0" max="200" step="0.01" inputmode="decimal" value="18">
+          </label>
+          <label class="calc__f">
+            <span>{{ t .Lang "calc.f_months" }}</span>
+            <input type="number" id="c-months" min="1" max="600" step="1" inputmode="numeric" value="240">
+          </label>
+
+          <fieldset class="calc__f calc__f--wide calc__scheme">
+            <legend>{{ t .Lang "calc.f_scheme" }}</legend>
+            {{/* The radios sit in a box of their own: a fieldset laid out as a
+                 flex container puts its legend on a line the browser owns, and
+                 the controls drift to the far edge. */}}
+            <div class="calc__scheme-opts">
+              <label><input type="radio" name="scheme" value="annuity" checked> {{ t .Lang "calc.s_annuity" }}</label>
+              <label><input type="radio" name="scheme" value="differentiated"> {{ t .Lang "calc.s_diff" }}</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <details class="calc__extra">
+          <summary>{{ t .Lang "calc.f_extra" }}</summary>
+          <div class="calc__grid">
+            <label class="calc__f"><span>{{ t .Lang "calc.f_fee1p" }}</span><input type="number" id="c-fee1p" min="0" max="20" step="0.1" inputmode="decimal" value="0"></label>
+            <label class="calc__f"><span>{{ t .Lang "calc.f_fee1f" }}</span><input type="text" id="c-fee1f" class="calc__money" inputmode="numeric" autocomplete="off" value="0"></label>
+            <label class="calc__f"><span>{{ t .Lang "calc.f_feem" }}</span><input type="number" id="c-feem" min="0" max="10" step="0.01" inputmode="decimal" value="0"></label>
+            <label class="calc__f"><span>{{ t .Lang "calc.f_ins" }}</span><input type="number" id="c-ins" min="0" max="20" step="0.1" inputmode="decimal" value="0"></label>
+          </div>
+        </details>
+
+        <p class="calc__note" id="c-prognote" hidden></p>
+      </form>
+
+      {{/* Results. The headline is what the purchase costs, not the instalment:
+           every lender's calculator puts the small number first, and that is
+           the number that sells rather than the one that informs. */}}
+      <section class="calc__out" id="c-out" aria-live="polite">
+        <div class="calc__head">
+          <p class="calc__head-lab">{{ t .Lang "calc.r_total" }}</p>
+          <p class="calc__head-sum" id="o-total">—</p>
+          <p class="calc__head-mul" id="o-mul"></p>
+        </div>
+
+        <div class="calc__cards">
+          <div class="calc__card calc__card--eff">
+            <span class="calc__card-lab">{{ t .Lang "calc.r_eff" }}</span>
+            <span class="calc__card-val" id="o-eff">—</span>
+            <span class="calc__card-note">{{ t .Lang "calc.r_eff_note" }}</span>
+          </div>
+          <div class="calc__card">
+            <span class="calc__card-lab" id="o-paylab">{{ t .Lang "calc.r_monthly" }}</span>
+            <span class="calc__card-val" id="o-pay">—</span>
+            <span class="calc__card-note" id="o-paylast"></span>
+          </div>
+          <div class="calc__card">
+            <span class="calc__card-lab">{{ t .Lang "calc.r_loan" }}</span>
+            <span class="calc__card-val" id="o-loan">—</span>
+          </div>
+          <div class="calc__card">
+            <span class="calc__card-lab">{{ t .Lang "calc.r_paid" }}</span>
+            <span class="calc__card-val" id="o-paid">—</span>
+            <span class="calc__card-note" id="o-over"></span>
+          </div>
+        </div>
+
+        {{/* The breakdown by recipient. A total overpayment is abstract; "this
+             much to the bank, this much to the insurer, this much from the
+             budget" is not, and only the first line buys anything real. */}}
+        <div class="calc__who">
+          <h2>{{ t .Lang "calc.who" }}</h2>
+          <ul class="calc__who-list" id="o-who"></ul>
+          <p class="calc__who-note">{{ t .Lang "calc.who_note" }}</p>
+          <p class="calc__who-note" id="o-subnote" hidden>{{ t .Lang "calc.w_sub_note" }}</p>
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--sm" id="o-toggle"
+                data-show="{{ t .Lang "calc.sched_show" }}" data-hide="{{ t .Lang "calc.sched_hide" }}">{{ t .Lang "calc.sched_show" }}</button>
+        <div class="calc__sched" id="o-sched" hidden>
+          <table class="calc__table">
+            <thead><tr>
+              <th>{{ t .Lang "calc.sc_n" }}</th><th>{{ t .Lang "calc.sc_pay" }}</th>
+              <th>{{ t .Lang "calc.sc_princ" }}</th><th>{{ t .Lang "calc.sc_int" }}</th>
+              <th>{{ t .Lang "calc.sc_fee" }}</th><th>{{ t .Lang "calc.sc_bal" }}</th>
+            </tr></thead>
+            <tbody id="o-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <noscript><p class="hint hint--warn">{{ t .Lang "calc.noscript" }}</p></noscript>
+
+      {{/* Computed on the server, so the page answers something before anyone
+           touches a field and still makes its point with scripts off. */}}
+      <section class="calc__example">
+        <h2>{{ t .Lang "calc.ex_head" }}</h2>
+        <table class="calc__table calc__table--ex">
+          <tbody>
+            <tr><th>{{ t .Lang "calc.f_price" }}</th><td>{{ money .ExPrice }} ₸</td></tr>
+            <tr><th>{{ t .Lang "calc.f_down" }}</th><td>{{ money .ExDown }} ₸</td></tr>
+            <tr><th>{{ .ExRate }} % · {{ printf (t .Lang "calc.t_months") .ExMonths }}</th><td><b>{{ money .ExPlan.TotalCost }} ₸</b> — {{ printf "%.1f" .ExPlan.Multiple }}×</td></tr>
+            <tr><th>{{ .ExStateRate }} % · {{ printf (t .Lang "calc.t_months") .ExStateMonths }}</th><td><b>{{ money .ExState.TotalCost }} ₸</b> — {{ printf "%.1f" .ExState.Multiple }}×</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      {{/* The programme table: plain HTML, every row with its source and the
+           date it was checked, unchecked rows marked as such. */}}
+      <section class="calc__programs">
+        <h2>{{ t .Lang "calc.t_head" }}</h2>
+        {{ range $.Kinds }}
+        {{ $rows := $.ProgramsByKind . }}
+        {{ if $rows }}
+        <h3>{{ t $.Lang (printf "calc.k_%s" .) }}</h3>
+        <div class="calc__scroll">
+          <table class="calc__table">
+            <thead><tr>
+              <th>{{ t $.Lang "calc.t_program" }}</th><th>{{ t $.Lang "calc.t_lender" }}</th>
+              <th>{{ t $.Lang "calc.t_rate" }}</th><th>{{ t $.Lang "calc.t_term" }}</th>
+              <th>{{ t $.Lang "calc.t_down" }}</th><th>{{ t $.Lang "calc.t_checked" }}</th>
+            </tr></thead>
+            <tbody>
+              {{ range $rows }}
+              <tr>
+                <td>{{ .Name }}{{ if .Note }}<span class="calc__rownote">{{ .Note }}</span>{{ end }}</td>
+                <td>{{ if .Lender }}{{ .Lender }}{{ else }}—{{ end }}</td>
+                <td>{{ printf "%.2f" .Rate }} %</td>
+                <td>{{ printf (t $.Lang "calc.t_months") .MaxMonths }}</td>
+                <td>{{ if .MinDownPct }}{{ .MinDownPct }} %{{ else }}—{{ end }}</td>
+                <td>{{ if .CheckedOn }}{{ .CheckedOn }}{{ if .SourceURL }} · <a href="{{ .SourceURL }}" rel="nofollow noopener" target="_blank">{{ t $.Lang "calc.t_source" }}</a>{{ end }}{{ else }}<span class="calc__unchecked">{{ t $.Lang "calc.t_unchecked" }}</span>{{ end }}</td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
+        {{ end }}
+        {{ end }}
+        <p class="hint hint--warn">{{ t .Lang "calc.stale" }}</p>
+      </section>
+
+    </div>
+    {{ template "re_sidebar" . }}
+  </div>
+</main>
+
+<script src="{{ asset "/static/js/calculator.js" }}" defer></script>
+{{ template "site_footer" . }}
+</body>
+</html>
+{{ end }}

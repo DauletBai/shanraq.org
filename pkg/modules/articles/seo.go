@@ -156,7 +156,7 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 // knows about either goes unindexed or gets offered to a search engine twice.
 var publicPages = []string{
 	"/about", "/guide", "/formatting", "/pricing", "/support",
-	"/listings", "/predictions", "/analytics", "/rates", "/author/sana",
+	"/listings", "/predictions", "/analytics", "/rates", "/calculator", "/author/sana",
 }
 
 // handleSitemap emits the main trilingual sitemap: home, static pages, category

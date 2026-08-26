@@ -293,6 +293,15 @@
      desktop, so a bought banner stays on screen while the visitor scrolls. */}}
 {{ define "re_sidebar" }}
 <aside class="aside">
+  {{/* The calculator is a page, not a widget: what it is worth depends on how
+       many people search for a loan, not on how many listings we hold. The
+       sidebar only points at it. */}}
+  {{ if ne .Active "calculator" }}
+  <a class="re-calc" href="/calculator?lang={{ .Lang }}">
+    <span class="re-calc__t">{{ t .Lang "calc.sidebar" }}</span>
+    <span class="re-calc__c">{{ t .Lang "calc.sidebar_cta" }} →</span>
+  </a>
+  {{ end }}
   {{ range .BannerAds }}
   <a class="rebanner" href="/listings/{{ .ID }}?lang={{ $.Lang }}">
     <span class="rebanner__label">{{ t $.Lang "ad.badge" }}</span>

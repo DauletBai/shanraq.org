@@ -35,6 +35,7 @@ type Module struct {
 	rt            *shanraq.Runtime
 	store         *Store
 	listings      *ListingStore
+	loans         *LoanStore
 	ads           *AdStore
 	mods          *ModStore
 	refs          *ReferralStore
@@ -83,6 +84,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
 	m.listings = NewListingStore(rt.DB)
+	m.loans = NewLoanStore(rt.DB)
 	m.ads = NewAdStore(rt.DB)
 	m.mods = NewModStore(rt.DB)
 	m.refs = NewReferralStore(rt.DB)
@@ -232,6 +234,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/predictions", m.handlePredictions)
 		r.Get("/analytics", m.handlePublicStats)
 		r.Get("/rates", m.handleRates)
+		r.Get("/calculator", m.handleCalculator)
 		// The forecast: the bare address keeps the city the strip has always
 		// shown, and every place with coordinates gets one of its own.
 		// One address per day of publishing: the date in the strip leads here.

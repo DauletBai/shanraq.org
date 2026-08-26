@@ -3223,6 +3223,78 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    автор должен заметить его до того, как нажмёт кнопку. */
 .hint--warn { border-left: 3px solid var(--gold); padding-left: 10px; margin-top: 8px; }
 
+/* Loan calculator. The form is a plain grid; what carries the page is the
+   result block, where the total the reader will actually part with is set
+   larger than anything else on the screen. */
+.calc { margin: 18px 0 8px; }
+.calc__kinds { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.calc__kind { padding: 7px 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 999px; cursor: pointer; font: inherit; font-size: .92rem; }
+.calc__kind[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.calc__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 12px; }
+.calc__f { display: flex; flex-direction: column; gap: 4px; font-size: .88rem; }
+.calc__f--wide { grid-column: 1 / -1; }
+.calc__f { min-width: 0; }
+/* Only the text and number boxes fill their cell. Without the exclusion a
+   radio inherits width:100% and swallows the label beside it. */
+.calc__f input:not([type=radio]):not([type=checkbox]), .calc__f select { width: 100%; box-sizing: border-box; padding: 9px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--ink); font: inherit; }
+.calc__f[hidden] { display: none; }
+.calc__scheme { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 8px 12px; min-width: 0; }
+.calc__scheme legend { font-size: .88rem; padding: 0 4px; }
+.calc__scheme-opts { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.calc__scheme-opts label { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; }
+.calc__scheme-opts input { flex: none; width: auto; margin: 0; }
+.calc__extra { margin-top: 12px; }
+.calc__extra summary { cursor: pointer; font-size: .9rem; padding: 6px 0; }
+.calc__note { margin-top: 10px; font-size: .88rem; color: var(--muted); border-left: 3px solid var(--gold); padding-left: 10px; }
+
+.calc__out { margin: 22px 0; }
+.calc__head { text-align: center; padding: 18px 12px; border: 1px solid var(--line); background: var(--surface-2); border-radius: var(--radius); }
+.calc__head-lab { margin: 0; font-size: .9rem; color: var(--muted); }
+.calc__head-sum { margin: 4px 0 0; font-size: clamp(1.6rem, 6vw, 2.6rem); font-weight: 700; line-height: 1.1; }
+.calc__head-mul { margin: 4px 0 0; font-size: 1rem; color: var(--gold); }
+.calc__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr)); gap: 10px; margin-top: 12px; }
+.calc__card { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+.calc__card--eff { border-color: var(--gold); }
+.calc__card-lab { font-size: .82rem; color: var(--muted); }
+.calc__card-val { font-size: 1.25rem; font-weight: 600; }
+.calc__card-note { font-size: .78rem; color: var(--muted); line-height: 1.35; }
+
+/* Who gets the money. The seller's bar is the only one that bought something;
+   the budget's line is money nobody in this room paid. */
+.calc__who { margin-top: 20px; }
+.calc__who h2 { font-size: 1.05rem; margin: 0 0 8px; }
+.calc__who-list { list-style: none; margin: 0; padding: 0; }
+.calc__who-row { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(40px, 2fr) auto;
+  align-items: center; gap: 10px; padding: 5px 0; font-size: .9rem; }
+.calc__who-bar { background: var(--line); border-radius: 999px; height: 8px; overflow: hidden; }
+.calc__who-bar i { display: block; height: 100%; background: var(--ink-soft, var(--ink)); border-radius: 999px; }
+.calc__who-row--seller .calc__who-bar i { background: var(--gold); }
+.calc__who-row--budget .calc__who-bar i { background: repeating-linear-gradient(45deg, var(--muted) 0 4px, transparent 4px 8px); }
+.calc__who-row--you { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 8px; font-weight: 600; }
+.calc__who-row--you .calc__who-bar { background: none; }
+.calc__who-sum { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.calc__who-note { font-size: .82rem; color: var(--muted); margin: 6px 0 0; line-height: 1.4; }
+
+.calc__sched { margin-top: 12px; max-height: max(50cqw, 260px); overflow: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.calc__scroll { overflow-x: auto; }
+.calc__table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.calc__table th, .calc__table td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+.calc__table thead th { position: sticky; top: 0; background: var(--surface); z-index: 1; font-weight: 600; }
+.calc__table td { font-variant-numeric: tabular-nums; }
+.calc__table--ex th { white-space: normal; }
+.calc__rownote { display: block; font-size: .8rem; color: var(--muted); white-space: normal; max-width: 34ch; }
+.calc__unchecked { color: var(--gold); }
+.calc__example, .calc__programs { margin-top: 26px; }
+.calc__programs h3 { font-size: .98rem; margin: 16px 0 6px; }
+
+/* The sidebar link: one line, not a widget. The calculator is a page of its
+   own, and its value does not depend on how many listings we hold. */
+.re-calc { display: block; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 12px; }
+.re-calc__t { display: block; font-weight: 600; margin-bottom: 2px; }
+.re-calc__c { display: block; font-size: .85rem; color: var(--gold); }
+
 /* Короткий вывод под графиком. Не такая же врезка, как под графиком ставки:
    пять одинаковых блоков подряд превратили бы страницу в один сплошной
    манифест и обесценили бы главный. Одна строка с полосой — ровно столько,
