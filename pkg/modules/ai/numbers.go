@@ -313,6 +313,25 @@ func matches(v int64, in numbersFound) bool {
 	return false
 }
 
+// linkTarget matches the address half of a Markdown link and a bare URL. The
+// visible label is left alone: it is prose, and "Tengrinews, 17 July" carries a
+// date a translation must keep.
+var linkTarget = regexp.MustCompile(`\]\([^)]*\)|https?://\S+`)
+
+// stripLinkTargets removes URLs before the figures are read.
+//
+// A digit inside an address is not a claim about the world; it is part of the
+// address. An article translated properly links to the same outlet's own
+// English page, and that page has a different id -- so comparing the digits
+// reported one number lost and another invented on a translation where nothing
+// at all had happened to the text.
+func stripLinkTargets(s string) string {
+	if !strings.Contains(s, "](") && !strings.Contains(s, "http") {
+		return s
+	}
+	return linkTarget.ReplaceAllString(s, " ")
+}
+
 // NumberDiff is what a translation did to the figures of its original.
 type NumberDiff struct {
 	Missing  []string // stated by the original, absent from the translation
@@ -340,6 +359,7 @@ func CompareNumbers(src, dst string) NumberDiff {
 	if strings.TrimSpace(src) == "" || strings.TrimSpace(dst) == "" {
 		return d
 	}
+	src, dst = stripLinkTargets(src), stripLinkTargets(dst)
 	srcDigits, srcAll := digitNumbers(src), licensedValues(src)
 	dstDigits, dstAll := digitNumbers(dst), licensedValues(dst)
 

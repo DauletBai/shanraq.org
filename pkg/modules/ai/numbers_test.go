@@ -170,3 +170,20 @@ func TestPercentAdjectivesAreReadAsNumbers(t *testing.T) {
 		}
 	}
 }
+
+// A translation links to the same outlet's own page in the target language, and
+// that page has a different id in its address. Read literally, the comparison
+// says one number was lost and another invented while the prose is identical.
+func TestDigitsInsideLinksAreNotCompared(t *testing.T) {
+	src := "Концерт перенесли — [Tengrinews](https://tengrinews.kz/kazakhstan_news/kontsert-perenesli-606228/)."
+	dst := "The concert was postponed — [Tengrinews](https://en.tengrinews.kz/kazakhstan_news/concert-postponed-272924/)."
+	if d := CompareNumbers(src, dst); !d.Empty() {
+		t.Errorf("адреса ссылок сверены как числа: потеряно %v, появилось %v", d.Missing, d.Invented)
+	}
+	// A figure in the visible label is prose and must still be checked.
+	if d := CompareNumbers(
+		"[Tengrinews, 17 июля](https://a.kz/x-1.html): 31 000 зрителей",
+		"[Tengrinews, 17 July](https://b.kz/y-2.html): 41 000 spectators"); d.Empty() {
+		t.Error("подменённое число в тексте пропущено — сверка ослепла на весь абзац")
+	}
+}
