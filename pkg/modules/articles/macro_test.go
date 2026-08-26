@@ -81,13 +81,13 @@ func TestEmptyCellsKeepTheirPlace(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(sheet) != 1 {
-		t.Fatalf("прочитано %d строк", len(sheet))
+		t.Fatalf("read %d rows", len(sheet))
 	}
 	if _, ok := sheet[0]["B"]; !ok {
-		t.Error("пустая ячейка выпала, и колонка C заняла бы место B")
+		t.Error("an empty cell was dropped and column C would take B's place")
 	}
 	if sheet[0]["C"] != "C" {
-		t.Errorf("колонка C прочиталась как %q", sheet[0]["C"])
+		t.Errorf("column C read as %q", sheet[0]["C"])
 	}
 }
 
@@ -102,15 +102,15 @@ func TestTwoDigitYearsLandInTheRightCentury(t *testing.T) {
 	} {
 		got, ok := parseNBKMonth(in)
 		if !ok {
-			t.Errorf("%q не разобрано", in)
+			t.Errorf("%q did not parse", in)
 			continue
 		}
 		if got.Format("2006-01") != want {
-			t.Errorf("%q → %s, ожидалось %s", in, got.Format("2006-01"), want)
+			t.Errorf("%q gave %s, expected %s", in, got.Format("2006-01"), want)
 		}
 	}
 	if _, ok := parseNBKMonth("итого"); ok {
-		t.Error("подпись «итого» принята за месяц")
+		t.Error("a totals label was taken for a month")
 	}
 }
 
@@ -130,11 +130,11 @@ func TestYearsMissingTheirTrailingZero(t *testing.T) {
 	} {
 		got, ok := parseNBKMonth(in)
 		if !ok {
-			t.Errorf("%q не разобрано", in)
+			t.Errorf("%q did not parse", in)
 			continue
 		}
 		if got.Format("2006-01") != want {
-			t.Errorf("%q → %s, ожидалось %s", in, got.Format("2006-01"), want)
+			t.Errorf("%q gave %s, expected %s", in, got.Format("2006-01"), want)
 		}
 	}
 }
@@ -154,7 +154,7 @@ func TestMoneyAggregatesAreFoundByName(t *testing.T) {
 	})
 	got, err := parseNBKMoney(data)
 	if err == nil {
-		t.Fatal("три месяца — слишком короткая книга, но она принята")
+		t.Fatal("three months is too short a book, yet it was accepted")
 	}
 
 	// The same workbook, but long enough.
@@ -176,15 +176,15 @@ func TestMoneyAggregatesAreFoundByName(t *testing.T) {
 	}
 	for _, code := range []string{MacroBase, MacroM0, MacroM3} {
 		if len(got[code]) != 14 {
-			t.Errorf("%s: %d точек вместо 14", code, len(got[code]))
+			t.Errorf("%s: %d points instead of 14", code, len(got[code]))
 		}
 	}
 	if got[MacroM3][0].Value != 8001 {
-		t.Errorf("первое значение M3 — %.0f", got[MacroM3][0].Value)
+		t.Errorf("the first M3 value is %.0f", got[MacroM3][0].Value)
 	}
 	// A percentages row must not stand in for the indicator itself.
 	if got[MacroBase][0].Value == 1.1 {
-		t.Error("вместо денежной базы прочитана строка процентов")
+		t.Error("the interest row was read instead of the monetary base")
 	}
 }
 
@@ -222,17 +222,17 @@ func TestTheNationalFundIsFoundByNameNotByPosition(t *testing.T) {
 		t.Fatal(err)
 	}
 	if n := len(got[MacroReserves]); n != 14 {
-		t.Errorf("резервов %d точек вместо 14", n)
+		t.Errorf("reserves have %d points instead of 14", n)
 	}
 	// The Fund is filled only from the second half of the series — as in life.
 	if n := len(got[MacroFund]); n != 7 {
-		t.Errorf("Нацфонд получил %d точек вместо семи: похоже, взята соседняя колонка", n)
+		t.Errorf("the national fund got %d points instead of seven; the neighbouring column was probably read", n)
 	}
 	if got[MacroReserves][0].Value != 701 {
-		t.Errorf("первое значение резервов — %.0f", got[MacroReserves][0].Value)
+		t.Errorf("the first reserves value is %.0f", got[MacroReserves][0].Value)
 	}
 	if got[MacroFund][0].Value != 608 {
-		t.Errorf("первое значение Нацфонда — %.0f", got[MacroFund][0].Value)
+		t.Errorf("the first national fund value is %.0f", got[MacroFund][0].Value)
 	}
 }
 
@@ -248,10 +248,10 @@ func TestYearsWithoutAnObservationAreSkipped(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(pts) != 2 {
-		t.Fatalf("получено %d точек вместо двух", len(pts))
+		t.Fatalf("got %d points instead of two", len(pts))
 	}
 	if pts[0].Period.Year() != 2023 || pts[1].Period.Year() != 2025 {
-		t.Errorf("ряд не упорядочен по годам: %v", pts)
+		t.Errorf("the series is not ordered by year: %v", pts)
 	}
 }
 
@@ -265,10 +265,10 @@ func TestCoverMatchesMonthToMonth(t *testing.T) {
 		[]MacroPoint{{Period: july, Value: 4}},
 	)
 	if len(got) != 1 {
-		t.Fatalf("получено %d точек: месяц без пары должен выпадать", len(got))
+		t.Fatalf("got %d points; a month without a pair must drop out", len(got))
 	}
 	if got[0].Value != 500 {
-		t.Errorf("покрытие посчитано как %.0f вместо 500", got[0].Value)
+		t.Errorf("coverage came to %.0f instead of 500", got[0].Value)
 	}
 }
 
@@ -279,17 +279,17 @@ func TestTheRussianWordForTimesIsDeclined(t *testing.T) {
 		11: "раз", 12: "раз", 14: "раз", 22: "раза", 97: "раз", 6776: "раз",
 	} {
 		if got := ruTimesWord(n); got != want {
-			t.Errorf("%d %s, а должно быть %s", n, got, want)
+			t.Errorf("%d %s, expected %s", n, got, want)
 		}
 	}
 	if got := macroMul(97.2, LangRU); got != "97 раз" {
-		t.Errorf("кратность напечатана как %q", got)
+		t.Errorf("the multiple printed as %q", got)
 	}
 	if got := macroMul(2.4, LangRU); got != "2,4 раза" {
-		t.Errorf("дробная кратность напечатана как %q", got)
+		t.Errorf("дробная the multiple printed as %q", got)
 	}
 	if got := macroMul(97.2, LangEN); got != "97 times" {
-		t.Errorf("по-английски напечатано %q", got)
+		t.Errorf("the English rendering printed as %q", got)
 	}
 }
 
@@ -306,13 +306,13 @@ func TestSavingsErosionCompoundsEveryYear(t *testing.T) {
 	}
 	got, now := macroErosion(cpi, rate)
 	if len(got) != 1 || got[0].Year != 2020 {
-		t.Fatalf("получено %v", got)
+		t.Fatalf("got %v", got)
 	}
 	// Five years at a hundred percent is a division by thirty-two, not by six.
 	if got[0].Kept != "31" {
-		t.Errorf("покупательная способность посчитана как %q вместо 31", got[0].Kept)
+		t.Errorf("purchasing power came to %q instead of 31", got[0].Kept)
 	}
 	if now != "2,50" {
-		t.Errorf("сегодняшний эквивалент — %q", now)
+		t.Errorf("today's equivalent is %q", now)
 	}
 }

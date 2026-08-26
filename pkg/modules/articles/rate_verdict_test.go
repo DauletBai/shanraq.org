@@ -20,16 +20,16 @@ func TestTargetRecordCountsTheSeries(t *testing.T) {
 	}
 	years, missed, avg, all := macroTargetRecord(series(4, 6, 7), 5)
 	if years != "3" || missed != "2" || all {
-		t.Errorf("три года, два выше цели: получили %s/%s all=%v", years, missed, all)
+		t.Errorf("three years, two above target: got %s/%s all=%v", years, missed, all)
 	}
 	if avg != "5,7 %" {
-		t.Errorf("среднее = %q, ожидалось 5,7 %%", avg)
+		t.Errorf("the average is %q, expected 5.7%%", avg)
 	}
 	// Every year above the target is the case the page actually shows, and the
 	// flag that selects the harder sentence.
 	_, _, _, all = macroTargetRecord(series(6, 7, 8), 5)
 	if !all {
-		t.Error("все годы выше цели не распознаны")
+		t.Error("every year being above target was not recognised")
 	}
 	// The average covers the last ten points, not the whole series: the verdict
 	// speaks about the decade.
@@ -41,11 +41,11 @@ func TestTargetRecordCountsTheSeries(t *testing.T) {
 		long = append(long, 10)
 	}
 	if _, _, a, _ := macroTargetRecord(series(long...), 5); a != "10,0 %" {
-		t.Errorf("среднее за десятилетие = %q, ожидалось 10,0 %%", a)
+		t.Errorf("the decade average is %q, expected 10.0%%", a)
 	}
 	// An empty series must not produce a verdict at all.
 	if y, _, _, _ := macroTargetRecord(nil, 5); y != "" {
-		t.Errorf("пустой ряд дал вердикт %q", y)
+		t.Errorf("an empty series produced the verdict %q", y)
 	}
 }
 
@@ -58,14 +58,14 @@ func TestYearsAgreeWithTheirNumeral(t *testing.T) {
 	}
 	for n, want := range ru {
 		if got := macroYearsWord(n, LangRU); got != want {
-			t.Errorf("%d %s — ожидалось %q", n, got, want)
+			t.Errorf("%d %s, expected %q", n, got, want)
 		}
 	}
 	if macroYearsWord(1, LangEN) != "year" || macroYearsWord(2, LangEN) != "years" {
-		t.Error("английское число не согласовано")
+		t.Error("the English numeral does not agree")
 	}
 	if macroYearsWord(32, LangKZ) != "жыл" {
-		t.Error("казахский вариант потерян")
+		t.Error("the Kazakh form was lost")
 	}
 }
 
@@ -73,10 +73,10 @@ func TestYearsAgreeWithTheirNumeral(t *testing.T) {
 // characters of precision the figure never had.
 func TestTargetPrintsWithoutFalsePrecision(t *testing.T) {
 	if got := macroPctTrim(5); got != "5 %" {
-		t.Errorf("macroPctTrim(5) = %q, ожидалось \"5 %%\"", got)
+		t.Errorf("macroPctTrim(5) = %q, expected \"5 %%\"", got)
 	}
 	if got := macroPctTrim(4.75); got != "4,75 %" {
-		t.Errorf("macroPctTrim(4.75) = %q, ожидалось \"4,75 %%\"", got)
+		t.Errorf("macroPctTrim(4.75) = %q, expected \"4,75 %%\"", got)
 	}
 }
 
@@ -92,7 +92,7 @@ func TestVerdictClaimsNoLeadOrLag(t *testing.T) {
 		text := T(lang, "fx.rate_verdict_1") + " " + T(lang, "fx.rate_verdict_2")
 		for _, p := range phrases {
 			if strings.Contains(text, p) {
-				t.Errorf("вердикт (%s) снова утверждает направление: %q", lang, p)
+				t.Errorf("the verdict (%s) asserts the direction again: %q", lang, p)
 			}
 		}
 	}
@@ -100,7 +100,7 @@ func TestVerdictClaimsNoLeadOrLag(t *testing.T) {
 	for _, lang := range []string{LangKZ, LangRU, LangEN} {
 		for _, key := range []string{"fx.rate_verdict_1", "fx.rate_verdict_1p", "fx.rate_verdict_2"} {
 			if strings.TrimSpace(T(lang, key)) == "" {
-				t.Errorf("нет строки %q для языка %q", key, lang)
+				t.Errorf("no string %q for language %q", key, lang)
 			}
 		}
 	}
@@ -135,11 +135,11 @@ func TestErosionRunsFromTheOldYearForward(t *testing.T) {
 	}
 	rows, _ := macroErosion(cpi, rate)
 	if len(rows) == 0 {
-		t.Fatal("таблица обесценения пуста")
+		t.Fatal("the erosion table is empty")
 	}
 	first := rows[0]
 	if first.Year != 1995 {
-		t.Fatalf("первая строка = %d, ожидался 1995", first.Year)
+		t.Fatalf("the first row is %d, expected 1995", first.Year)
 	}
 	// Prices double in each of 1995–1998 and hold still in 1999, so growth from
 	// 1995 to the last year with a rate (2000) is 2⁴ = 16 and the thousand comes
@@ -148,13 +148,13 @@ func TestErosionRunsFromTheOldYearForward(t *testing.T) {
 	got := strings.ReplaceAll(strings.ReplaceAll(first.Kept, " ", ""), " ", "")
 	n, err := strconv.Atoi(got)
 	if err != nil {
-		t.Fatalf("не число: %q", first.Kept)
+		t.Fatalf("not a number: %q", first.Kept)
 	}
 	if n >= 1000 {
-		t.Errorf("осталось %d из тысячи — направление перевёрнуто: деньги не дорожают со временем", n)
+		t.Errorf("%d left of a thousand; the direction is inverted, money does not gain value over time", n)
 	}
 	if n != 62 {
-		t.Errorf("осталось %d, ожидалось 62 (тысяча делится на рост цен в 16 раз)", n)
+		t.Errorf("%d left, expected 62 (a thousand divided by a 16-fold rise in prices)", n)
 	}
 }
 
@@ -175,7 +175,7 @@ func TestPrintedIdentityMultipliesOut(t *testing.T) {
 
 	product := shownBase * rounded
 	if diff := product - shownM3; diff > 0.05 || diff < -0.05 {
-		t.Errorf("%.1f × %.2f = %.2f, а напечатано %.1f — формула не сходится",
+		t.Errorf("%.1f x %.2f = %.2f but %.1f was printed; the identity does not multiply out",
 			shownBase, rounded, product, shownM3)
 	}
 
@@ -184,11 +184,11 @@ func TestPrintedIdentityMultipliesOut(t *testing.T) {
 	const res = 63_715.0
 	k := macroShownRatio(m3, res)
 	if want := 55.8e6 / 63.7e3; k < want-0.01 || k > want+0.01 {
-		t.Errorf("K = %.2f, а 55,8 трлн ÷ 63,7 млрд = %.2f", k, want)
+		t.Errorf("K = %.2f but 55.8 trn / 63.7 bn = %.2f", k, want)
 	}
 	// A zero denominator must not produce an infinity on the page.
 	if got := macroShownRatio(100, 0); got != 0 {
-		t.Errorf("деление на ноль дало %v", got)
+		t.Errorf("division by zero produced %v", got)
 	}
 }
 
@@ -213,18 +213,18 @@ func TestMoneyAndOutputSpanTheSameYears(t *testing.T) {
 
 	gdpMul, moneyMul, gap := macroMoneyVsOutput(m3, gdp, LangRU)
 	if gdpMul == "" {
-		t.Fatal("сравнение не построилось")
+		t.Fatal("the comparison did not build")
 	}
 	// From 1994 output multiplies by 2⁵ = 32. Counting the collapse before the
 	// money series begins would give 4, and the page would understate the gap.
 	if !strings.HasPrefix(gdpMul, "32") {
-		t.Errorf("производство = %q, ожидалось 32 раза: годы до начала денежного ряда считаться не должны", gdpMul)
+		t.Errorf("output = %q, expected 32-fold: years before the money series starts must not count", gdpMul)
 	}
 	if !strings.HasPrefix(moneyMul, "10") {
-		t.Errorf("деньги = %q, ожидалось 10 раз", moneyMul)
+		t.Errorf("money = %q, expected 10-fold", moneyMul)
 	}
 	// 10 ÷ 32 is below one, so the gap must not read as a multiple above it.
 	if strings.HasPrefix(gap, "32") {
-		t.Errorf("разрыв = %q — похоже, делится не на то", gap)
+		t.Errorf("the gap is %q; the wrong quantities are being divided", gap)
 	}
 }

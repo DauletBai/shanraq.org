@@ -18,10 +18,10 @@ func place(t *testing.T, app *testApp, name string) (uuid.UUID, string) {
 	if err := app.pool.QueryRow(context.Background(),
 		`SELECT id, COALESCE(slug,'') FROM geo_nodes WHERE name_ru = $1 ORDER BY level LIMIT 1`, name).
 		Scan(&id, &slug); err != nil {
-		t.Skipf("в тестовой базе нет места %q: %v", name, err)
+		t.Skipf("the test database has no place %q: %v", name, err)
 	}
 	if slug == "" {
-		t.Skipf("у места %q нет адреса", name)
+		t.Skipf("the place %q has no slug", name)
 	}
 	return id, slug
 }
@@ -37,25 +37,25 @@ func TestEveryPlaceHasAReadableAddress(t *testing.T) {
 	var empty int
 	if err := app.pool.QueryRow(context.Background(),
 		`SELECT count(*) FROM geo_nodes WHERE slug IS NULL OR slug = ''`).Scan(&empty); err != nil {
-		t.Fatalf("проверка: %v", err)
+		t.Fatalf("check failed: %v", err)
 	}
 	if empty != 0 {
-		t.Errorf("без адреса осталось мест: %d", empty)
+		t.Errorf("%d places were left without a slug", empty)
 	}
 
 	_, slug := place(t, app, "Качар")
 	if slug != "kachar" {
-		t.Errorf("адрес Качара %q, ожидался kachar", slug)
+		t.Errorf("Kachar's slug is %q, expected kachar", slug)
 	}
 
 	// Namesakes are separated rather than overwriting each other: Almaty is both a city and its districts.
 	var dupes int
 	if err := app.pool.QueryRow(context.Background(),
 		`SELECT count(*) FROM (SELECT slug FROM geo_nodes GROUP BY slug HAVING count(*) > 1) d`).Scan(&dupes); err != nil {
-		t.Fatalf("проверка тёзок: %v", err)
+		t.Fatalf("duplicate-name check failed: %v", err)
 	}
 	if dupes != 0 {
-		t.Errorf("одинаковых адресов: %d", dupes)
+		t.Errorf("%d slugs collide", dupes)
 	}
 }
 
@@ -79,28 +79,28 @@ func TestPlaceFeedCarriesWhatIsAddressedToThePlace(t *testing.T) {
 	// A settlement's page carries its own and what is addressed to the whole region.
 	w := app.do(http.MethodGet, "/place/"+kacharSlug, nil)
 	if w.Code != http.StatusOK {
-		t.Fatalf("страница посёлка: %d", w.Code)
+		t.Fatalf("the village page returned %d", w.Code)
 	}
 	body := w.Body.String()
 	if !strings.Contains(body, kacharArticle) {
-		t.Error("страница посёлка не показывает свой материал")
+		t.Error("the village page does not show its own material")
 	}
 	if !strings.Contains(body, oblastArticle) {
-		t.Error("страница посёлка не показывает областное сообщение, адресованное и ей")
+		t.Error("the village page does not show the regional notice addressed to it as well")
 	}
 
 	// A region's page carries only what is addressed to the region, and not what was
 	// written for one settlement inside it.
 	w = app.do(http.MethodGet, "/place/"+oblastSlug, nil)
 	if w.Code != http.StatusOK {
-		t.Fatalf("страница области: %d", w.Code)
+		t.Fatalf("the region page returned %d", w.Code)
 	}
 	body = w.Body.String()
 	if !strings.Contains(body, oblastArticle) {
-		t.Error("страница области не показывает свой же материал")
+		t.Error("the region page does not show its own material")
 	}
 	if strings.Contains(body, kacharArticle) {
-		t.Error("написанное для одного посёлка попало на страницу всей области")
+		t.Error("material written for one village reached the whole region's page")
 	}
 }
 
@@ -113,13 +113,13 @@ func TestEmptyPlaceStillHasAPage(t *testing.T) {
 	_, slug := place(t, app, "Качар")
 	w := app.do(http.MethodGet, "/place/"+slug, nil)
 	if w.Code != http.StatusOK {
-		t.Fatalf("получили %d, страница места должна открываться всегда", w.Code)
+		t.Fatalf("got %d; a place page must always open", w.Code)
 	}
 	if !strings.Contains(w.Body.String(), "Качар") {
-		t.Error("страница не называет место")
+		t.Error("the page does not name the place")
 	}
 	if w := app.do(http.MethodGet, "/place/takogo-mesta-net", nil); w.Code != http.StatusNotFound {
-		t.Errorf("несуществующее место вернуло %d, ожидался 404", w.Code)
+		t.Errorf("a non-existent place returned %d, expected 404", w.Code)
 	}
 }
 
@@ -140,18 +140,18 @@ func TestAuthorPicksThePlaceAndItSticks(t *testing.T) {
 		"geo_node_id": {kacharID.String()},
 	}
 	if w := app.do(http.MethodPost, "/studio/a/"+id.String(), form, withCookie(cookie)); w.Code != http.StatusSeeOther {
-		t.Fatalf("сохранение статьи: %d (%s)", w.Code, w.Body.String())
+		t.Fatalf("saving the article returned %d (%s)", w.Code, w.Body.String())
 	}
 
 	got, err := NewStore(app.pool).ArticlePlace(context.Background(), id)
 	if err != nil || got == nil || *got != kacharID {
-		t.Fatalf("место статьи не сохранилось: %v, %v", got, err)
+		t.Fatalf("the article's place was not saved: %v, %v", got, err)
 	}
 
 	// And it comes back into the form, so an edit does not erase the choice.
 	page := app.do(http.MethodGet, "/studio/a/"+id.String(), nil, withCookie(cookie))
 	if !strings.Contains(page.Body.String(), kacharID.String()) {
-		t.Error("редактор не вернул выбранное место в форму")
+		t.Error("the editor did not return the chosen place to the form")
 	}
 }
 
@@ -183,10 +183,10 @@ func TestSitemapCarriesOnlyPlacesSomethingWasWrittenFor(t *testing.T) {
 		return false
 	}
 	if !has(kacharSlug) {
-		t.Error("места со статьёй нет в списке для sitemap")
+		t.Error("a place with an article is missing from the sitemap list")
 	}
 	if has(oblastSlug) {
-		t.Error("область без собственных материалов попала в sitemap")
+		t.Error("a region with no material of its own reached the sitemap")
 	}
 }
 
@@ -206,16 +206,16 @@ func TestTheWayUpActuallyLeadsSomewhere(t *testing.T) {
 	}
 	for _, n := range chain {
 		if n.Slug == "" {
-			t.Errorf("у предка %q нет адреса", n.Name)
+			t.Errorf("the ancestor %q has no slug", n.Name)
 		}
 	}
 
 	body := app.do(http.MethodGet, "/place/kachar", nil).Body.String()
 	if strings.Contains(body, `href="/place/?`) {
-		t.Error("хлебная крошка ведёт в никуда")
+		t.Error("a breadcrumb leads nowhere")
 	}
 	if !strings.Contains(body, "/place/"+oblastSlug) {
-		t.Error("со страницы посёлка нельзя подняться в область")
+		t.Error("the village page offers no way up to the region")
 	}
 }
 
@@ -243,13 +243,13 @@ func TestAFeedCardNamesTheOrganisation(t *testing.T) {
 
 	body := app.do(http.MethodGet, "/place/"+kacharSlug, nil).Body.String()
 	if !strings.Contains(body, "КСК «Качарец»") {
-		t.Error("карточка в ленте места не называет организацию")
+		t.Error("the card in a place's feed does not name the organisation")
 	}
 
 	// And one query for the whole feed, not one per card.
 	names, err := store.VerifiedNames(ctx, []uuid.UUID{authorID})
 	if err != nil || names[authorID] != "КСК «Качарец»" {
-		t.Errorf("пакетный поиск не нашёл организацию: %v, %v", names, err)
+		t.Errorf("the batch lookup did not find the organisation: %v, %v", names, err)
 	}
 }
 
@@ -262,12 +262,12 @@ func TestBreadcrumbHasNoTrailingSeparator(t *testing.T) {
 	body := app.do(http.MethodGet, "/place/kachar", nil).Body.String()
 	i := strings.Index(body, "place-up")
 	if i < 0 {
-		t.Fatal("на странице нет пути наверх")
+		t.Fatal("the page has no path upwards")
 	}
 	nav := body[i:]
 	nav = nav[:strings.Index(nav, "</nav>")]
 	if strings.Contains(nav[strings.LastIndex(nav, "</a>"):], "·") {
-		t.Errorf("после последнего звена висит разделитель: %q", nav[strings.LastIndex(nav, "</a>"):])
+		t.Errorf("a separator dangles after the last link: %q", nav[strings.LastIndex(nav, "</a>"):])
 	}
 }
 
@@ -368,15 +368,15 @@ func TestAGuestOnTheHomePageSeesNoLocalNotices(t *testing.T) {
 
 	body := app.do(http.MethodGet, "/", nil).Body.String()
 	if !strings.Contains(body, commonSlug) {
-		t.Error("гость не увидел материал, написанный для всех")
+		t.Error("a guest did not see material written for everyone")
 	}
 	if strings.Contains(body, localSlug) {
-		t.Error("местное объявление попало в ленту гостя")
+		t.Error("a local notice reached a guest's feed")
 	}
 
 	// And on its own place page it is there — which is where people look for it.
 	place := app.do(http.MethodGet, "/place/kachar", nil).Body.String()
 	if !strings.Contains(place, localSlug) {
-		t.Error("местное объявление пропало и со страницы места")
+		t.Error("the local notice vanished from the place page too")
 	}
 }

@@ -35,6 +35,26 @@ jobs:
         run: go vet ./...
       - name: govulncheck
         run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+      # A commit subject is the most repeated sentence the project has: it
+      # heads every workflow run, every release and the front page of the
+      # repository. Those are read by people who do not read Russian, so they
+      # are English -- and the rule lives here rather than in anyone's memory,
+      # because kept in memory it was broken about weekly.
+      #
+      # Only subjects are checked for now. The same script also finds Russian
+      # prose in comments and in test failure messages; that switch goes on
+      # once the backlog it reports is cleared, so it can be zero-tolerance
+      # instead of a warning nobody reads.
+      - name: commit subjects are English
+        run: |
+          before='${{ github.event.before }}'
+          case "$before" in
+            ''|0000000000000000000000000000000000000000)
+              echo "no previous revision to compare against; nothing to check" ;;
+            *)
+              git fetch --quiet origin "$before" 2>/dev/null || true
+              python3 scripts/check_language.py --commits "$before..${{ github.sha }}" --subjects-only ;;
+          esac
 
   unit:
     runs-on: ubuntu-latest
