@@ -156,3 +156,17 @@ func TestCapListTrims(t *testing.T) {
 		t.Errorf("короткий перечень тронут: %q", got)
 	}
 }
+
+// Russian folds a ratio into a single adjective where the other two languages
+// spell it out. Read literally, the translation looks like it invented a 100.
+func TestPercentAdjectivesAreReadAsNumbers(t *testing.T) {
+	pairs := [][2]string{
+		{"стопроцентное резервирование", "100 percent reserves"},
+		{"стопроцентное резервирование", "жүз пайыздық резервтеу"},
+	}
+	for _, p := range pairs {
+		if d := CompareNumbers(p[0], p[1]); !d.Empty() {
+			t.Errorf("CompareNumbers(%q, %q): потеряно %v, появилось %v", p[0], p[1], d.Missing, d.Invented)
+		}
+	}
+}
