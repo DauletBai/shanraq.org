@@ -452,7 +452,14 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 /* The advertising slot. 300px on purpose: the hero carousel across the page is
    300px, and the two sit on the same top line, so any other value reads as a
    misalignment rather than a choice. */
-.adslot { height: 300px; margin-bottom: 22px; }
+.adslot {
+  height: 300px;
+  /* Zero rather than absent. The sidebar advertisement carries both classes,
+     and .adcarousel sets 34px; deleting this line would let that through and
+     open the gap further instead of closing it. The column's own gap does the
+     spacing, and one source of spacing is enough. */
+  margin-bottom: 0;
+}
 .adslot__slide {
   /* Centred, and clear of the dots: the copy used to sit hard against them at
      the foot of the slide. Extra bottom padding reserves the dots' own row. */
@@ -654,7 +661,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .tag--ai { background: color-mix(in srgb, var(--teal) 16%, transparent); color: var(--teal); }
 
 /* sidebar */
-.aside { display: flex; flex-direction: column; gap: 26px;
+.aside { display: flex; flex-direction: column; gap: 22px;
 }
 @media (min-width: 900px) { .aside { position: sticky; top: 92px; align-self: start; } }
 .aside__block { border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; background: var(--surface-2); }
@@ -2587,7 +2594,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .adcarousel--ad .adcarousel__dots button::before { background: rgba(255, 255, 255, 0.5); }
 .adcarousel--ad .adcarousel__dots button.is-active::before { background: #fff; }
 
-.article-aside { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
+.article-aside { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
 .toc-box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
 /* Sidebar eyebrow labels. At .7rem in muted grey they read as chrome and got
    skipped entirely; brand red at .8rem makes each card announce itself without
