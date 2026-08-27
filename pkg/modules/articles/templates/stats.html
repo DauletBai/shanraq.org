@@ -22,7 +22,12 @@
       <div class="stat-tiles">
         <div class="stat-tile"><b>{{ money .Guests.Month.Total }}</b><span>{{ t .Lang "stats.views_30" }}</span></div>
         <div class="stat-tile"><b>{{ money .Guests.Month.Guest }}</b><span>{{ t .Lang "stats.guests_30" }}</span></div>
-        <div class="stat-tile"><b>{{ money .Guests.Month.Registered }}</b><span>{{ t .Lang "stats.registered_30" }}</span></div>
+        {{/* The tile here used to read "registered", which counted page views
+             made from an account, not people who had signed up -- so it stood
+             next to the subscriber count looking like a second, contradictory
+             headcount. Guests over the last week say something a reader can
+             actually use: whether the place is being visited now. */}}
+        <div class="stat-tile"><b>{{ money .Guests.Week.Guest }}</b><span>{{ t .Lang "stats.guests_7" }}</span></div>
         <div class="stat-tile"><b>{{ money .Articles }}</b><span>{{ t .Lang "stats.articles" }}</span></div>
         <div class="stat-tile"><b>{{ money .Listings }}</b><span>{{ t .Lang "stats.listings" }}</span></div>
         <div class="stat-tile"><b>{{ money .Subscribers }}</b><span>{{ t .Lang "stats.subscribers" }}</span></div>
