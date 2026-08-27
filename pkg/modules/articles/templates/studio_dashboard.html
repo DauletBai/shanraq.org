@@ -94,6 +94,9 @@
                    call San Marino the world's most sporting nation. */}}
               {{ if ge .D25 5 }}<span class="depth-rate" title="{{ t $.Lang "studio.depth_rate" }}">{{ .PFinish }}%</span>
               {{ else }}<span class="depth-rate depth-rate--few" title="{{ t $.Lang "studio.depth_few" }}">—</span>{{ end }}
+              {{/* Listeners, if there were any. They are already inside the
+                   figures to the left; this says how many took that route. */}}
+              {{ if gt .L25 0 }}<span class="depth-listen" title="{{ t $.Lang "studio.depth_listen" }}">{{ icon "speaker" }}<b>{{ .L25 }}</b>{{ if gt .L100 0 }} · 🏁<b>{{ .L100 }}</b>{{ end }}</span>{{ end }}
               {{ else }}<span class="dot">—</span>{{ end }}
             </td>
             <td>{{ fmtDate .Updated }}</td>

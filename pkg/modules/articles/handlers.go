@@ -1287,6 +1287,9 @@ type StudioRow struct {
 	// Reading-depth funnel: reader counts and their share of views (percent).
 	D25, D50, D75, D100 int64
 	P25, P50, P75, P100 int
+	// L25 and L100 are the listeners inside the figures above: how many started
+	// the recording and how many heard it out.
+	L25, L100 int64
 	// PFinish is what share of the readers who STARTED the article finished it.
 	// Unlike the percentages above it has no view count in the denominator, so
 	// it stays honest whatever the view counter is doing — and it answers the
@@ -1353,12 +1356,22 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			Langs:   a.AvailableLangs(),
 		}
 		if d := depth[row.ID]; d != nil {
-			row.D25, row.D50, row.D75, row.D100 = d[25], d[50], d[75], d[100]
+			// The funnel counts everyone who got that far, by either route.
+			row.D25 = depthTotal(d, 25)
+			row.D50 = depthTotal(d, 50)
+			row.D75 = depthTotal(d, 75)
+			row.D100 = depthTotal(d, 100)
 			row.P25 = pctOf(row.D25, row.Views)
 			row.P50 = pctOf(row.D50, row.Views)
 			row.P75 = pctOf(row.D75, row.Views)
 			row.P100 = pctOf(row.D100, row.Views)
 			row.PFinish = pctOf(row.D100, row.D25)
+			// And separately: of those, how many were listening. Shown beside
+			// the funnel rather than inside it, because it answers a different
+			// question -- not how far, but by which route.
+			if l := d[ModeListen]; l != nil {
+				row.L25, row.L100 = l[25], l[100]
+			}
 		}
 		rows = append(rows, row)
 	}

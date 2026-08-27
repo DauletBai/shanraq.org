@@ -3223,6 +3223,30 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    автор должен заметить его до того, как нажмёт кнопку. */
 .hint--warn { border-left: 3px solid var(--gold); padding-left: 10px; margin-top: 8px; }
 
+/* Read-aloud control. It sits under the byline, next to the reading time,
+   because that is where a reader decides how to take the piece in. Hidden by
+   default and shown by the script only when the device has a voice for this
+   page's language. */
+.listen { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0 2px; }
+.listen[hidden] { display: none; }
+.listen__btn, .listen__stop {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border: 1px solid var(--line-strong); border-radius: 999px;
+  background: var(--surface); color: var(--ink); font: inherit; font-size: .9rem; cursor: pointer;
+}
+.listen__btn[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--paper); }
+.listen__btn:hover, .listen__stop:hover { border-color: var(--gold); }
+.listen__stop { padding: 6px 10px; }
+.listen__speed { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--muted); }
+.listen__speed input { width: 96px; }
+.depth-listen { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px;
+  font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.listen__hint { flex-basis: 100%; font-size: .78rem; color: var(--muted); line-height: 1.35; }
+
+/* The block being spoken. A tint rather than a border: the text must not move
+   as the highlight travels down the article. */
+.prose .listen-now { background: color-mix(in srgb, var(--gold) 12%, transparent); border-radius: 4px; }
+
 /* Sidebar cards carry the same resting shadow everywhere. Written against the
    container rather than each card, so a card added to the sidebar later gets it
    without anyone remembering to. The token is theme-aware. */
