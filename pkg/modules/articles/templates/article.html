@@ -54,7 +54,20 @@
                  explanation is what sends a reader hunting through settings. */}}
             <p class="listen__note" id="listen-note" hidden
                data-blocked="{{ t .Lang "listen.blocked" }}"
-               data-failed="{{ t .Lang "listen.failed" }}"></p>
+               data-failed="{{ t .Lang "listen.failed" }}"
+               data-found="{{ t .Lang "listen.found" }}"
+               data-sound="{{ t .Lang "listen.sound_chrome" }}"
+               data-mac="{{ t .Lang "listen.where_mac" }}"
+               data-win="{{ t .Lang "listen.where_win" }}"
+               data-android="{{ t .Lang "listen.where_android" }}"
+               data-ios="{{ t .Lang "listen.where_ios" }}"></p>
+            {{/* Offered, not imposed: when the system has no voice for this
+                 language, the reader decides whether a substitute will do. */}}
+            <p class="listen__note listen__note--offer" id="listen-offer" hidden
+               data-substitute="{{ t .Lang "listen.substitute" }}">
+              <span id="listen-offer-text"></span>
+              <button type="button" class="listen__btn listen__btn--sm" id="listen-accept">{{ t .Lang "listen.sub_yes" }}</button>
+            </p>
           </div>
           <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="margin:14px 0 4px">{{ catIcon .Category }}{{ t .Lang (printf "cat.%s" .Category) }}</a>
           <h1 class="article__title">{{ .Title }}</h1>

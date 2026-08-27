@@ -3256,6 +3256,8 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .listen__note { flex-basis: 100%; margin: 4px 0 0; font-size: .85rem; line-height: 1.4;
   color: var(--ink); border-left: 3px solid var(--gold); padding-left: 10px; }
 .listen__note[hidden] { display: none; }
+.listen__note--offer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.listen__btn--sm { padding: 4px 12px; font-size: .85rem; }
 
 /* Sidebar cards carry the same resting shadow everywhere. Written against the
    container rather than each card, so a card added to the sidebar later gets it

@@ -580,13 +580,27 @@ var messages = map[string]map[string]string{
 	"nav.favorites":      {"kz": "Таңдаулылар", "ru": "Избранное", "en": "Saved"},
 	"article.toc":        {"kz": "Мазмұны", "ru": "Содержание", "en": "Contents"},
 	// Reading the article aloud with the browser's own speech synthesis.
-	"studio.depth_listen":    {"kz": "Тыңдағандар: бастағаны және аяғына дейін тыңдағаны. Олар сол сандардың ішінде.", "ru": "Слушали: начали и дослушали до конца. Они входят в цифры слева.", "en": "Listened: started and heard out. They are counted inside the figures to the left."},
-	"listen.play":            {"kz": "Тыңдау", "ru": "Слушать", "en": "Listen"},
-	"listen.pause":           {"kz": "Кідірту", "ru": "Пауза", "en": "Pause"},
-	"listen.stop":            {"kz": "Тоқтату", "ru": "Стоп", "en": "Stop"},
-	"listen.speed":           {"kz": "Жылдамдық", "ru": "Скорость", "en": "Speed"},
-	"listen.blocked":         {"kz": "Браузер дауыстап оқуды бұғаттады. «Тыңдау» түймесін қайта басып көріңіз; көмектеспесе, браузердің осы сайтқа арналған дыбыс рұқсатын тексеріңіз.", "ru": "Браузер заблокировал озвучивание. Нажмите «Слушать» ещё раз; если не поможет — проверьте в настройках браузера разрешение на звук для этого сайта.", "en": "The browser blocked the reading. Press Listen again; if that does not help, check the browser's sound permission for this site."},
-	"listen.failed":          {"kz": "Дауыстап оқу басталмады. Құрылғының дыбысы қосулы ма және браузерде дауыс орнатылған ба, тексеріңіз.", "ru": "Озвучивание не началось. Проверьте, включён ли звук на устройстве и установлен ли в браузере голос для этого языка.", "en": "The reading did not start. Check that the device's sound is on and that the browser has a voice for this language."},
+	"studio.depth_listen": {"kz": "Тыңдағандар: бастағаны және аяғына дейін тыңдағаны. Олар сол сандардың ішінде.", "ru": "Слушали: начали и дослушали до конца. Они входят в цифры слева.", "en": "Listened: started and heard out. They are counted inside the figures to the left."},
+	"listen.play":         {"kz": "Тыңдау", "ru": "Слушать", "en": "Listen"},
+	"listen.pause":        {"kz": "Кідірту", "ru": "Пауза", "en": "Pause"},
+	"listen.stop":         {"kz": "Тоқтату", "ru": "Стоп", "en": "Stop"},
+	"listen.speed":        {"kz": "Жылдамдық", "ru": "Скорость", "en": "Speed"},
+	// Said when the system has no voice for this language. The reader is offered
+	// a substitute rather than refused: it is their choice to make, not ours.
+	"listen.substitute": {"kz": "Жүйеде қазақ тіліне арналған дауыс жоқ. «%s» дауысымен оқиық па?", "ru": "В системе нет голоса для этого языка. Прочитать голосом «%s»?", "en": "The system has no voice for this language. Read it with the \"%s\" voice?"},
+	"listen.sub_yes":    {"kz": "Иә, оқы", "ru": "Да, прочитать", "en": "Yes, read it"},
+	// Where the voices actually live. Not "check your settings": the reader has
+	// already looked there and found nothing, because there is nothing there --
+	// voices belong to the operating system, not to the browser.
+	"listen.where_mac":     {"kz": "Дауыстар браузерде емес, жүйеде тұрады: Жүйе параметрлері → Қолжетімділік → Айтылатын мазмұн → Дауыстарды басқару.", "ru": "Голоса живут не в браузере, а в системе: Системные настройки → Универсальный доступ → Проговаривание → Управление голосами.", "en": "Voices live in the system, not the browser: System Settings → Accessibility → Spoken Content → Manage Voices."},
+	"listen.where_win":     {"kz": "Дауыстар жүйеде: Параметрлер → Уақыт және тіл → Тіл және аймақ → тілді қосып, «Сөйлеу» құрамдасын таңдаңыз.", "ru": "Голоса ставятся в системе: Параметры → Время и язык → Язык и регион → добавить язык и отметить компонент «Речь».", "en": "Voices are installed in the system: Settings → Time & language → Language & region → add a language and tick the Speech feature."},
+	"listen.where_android": {"kz": "Дауыстар жүйеде: Параметрлер → Қолжетімділік → Мәтінді дыбыстау.", "ru": "Голоса в системе: Настройки → Специальные возможности → Преобразование текста в речь.", "en": "Voices are in the system: Settings → Accessibility → Text-to-speech output."},
+	"listen.where_ios":     {"kz": "Дауыстар жүйеде: Параметрлер → Қолжетімділік → Айтылатын мазмұн → Дауыстар. Экран сөнгенде оқу тоқтайды.", "ru": "Голоса в системе: Настройки → Универсальный доступ → Устный контент → Голоса. При гаснущем экране чтение прерывается.", "en": "Voices are in the system: Settings → Accessibility → Spoken Content → Voices. Reading stops when the screen locks."},
+	// The one browser setting that matters, and the one nobody finds.
+	"listen.sound_chrome":    {"kz": "Chrome дыбысты сайт бойынша бөгей алады: мекенжай жолындағы құлыпты басып → Сайт параметрлері → Дыбыс → Рұқсат ету.", "ru": "Chrome умеет глушить звук по сайтам: нажмите замок в адресной строке → Настройки сайтов → Звук → Разрешить.", "en": "Chrome can mute sound per site: click the padlock in the address bar → Site settings → Sound → Allow."},
+	"listen.found":           {"kz": "Табылған дауыс: %s.", "ru": "Найден голос: %s.", "en": "Voice found: %s."},
+	"listen.blocked":         {"kz": "Браузер дауыстап оқуды бұғаттады. Қайта басып көріңіз.", "ru": "Браузер заблокировал озвучивание. Попробуйте нажать ещё раз.", "en": "The browser blocked the reading. Try pressing again."},
+	"listen.failed":          {"kz": "Дауыстап оқу басталмады.", "ru": "Озвучивание не началось.", "en": "The reading did not start."},
 	"listen.hint":            {"kz": "Мақаланы браузер дауысымен тыңдау. Телефонда экран сөнгенде оқу тоқтайды.", "ru": "Прослушать статью голосом браузера. На телефоне чтение прерывается, когда гаснет экран.", "en": "Have the article read aloud by the browser. On a phone the reading stops when the screen locks."},
 	"article.read_min":       {"kz": "мин оқу", "ru": "мин чтения", "en": "min read"},
 	"share.title":            {"kz": "Бөлісу", "ru": "Поделиться", "en": "Share"},
