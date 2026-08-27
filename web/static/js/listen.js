@@ -34,6 +34,7 @@
   var label = document.getElementById('listen-label');
   var speedBox = document.getElementById('listen-speedbox');
   var speed = document.getElementById('listen-speed');
+  var note = document.getElementById('listen-note');
 
   var chunks = [];   // {text, el}
   var at = 0;
@@ -171,11 +172,53 @@
     u.voice = voice;
     u.lang = voice.lang;
     u.rate = parseFloat(speed.value) || 1;
-    u.onstart = function () { mark(chunks[i].el); };
+    u.onstart = function () { started = true; mark(chunks[i].el); say(''); };
     u.onend = function () { reached(i); if (playing) speak(i + 1); };
-    u.onerror = function () { if (playing) speak(i + 1); };
+    // One failure stops the reading. It used to step to the next sentence,
+    // which meant a browser refusing to speak at all raced through the whole
+    // article in silence: the reader pressed the button and nothing happened,
+    // with nothing said about why.
+    u.onerror = function (ev) { fail(ev && ev.error); };
+    started = false;
+    // Chrome can leave the queue paused after a navigation, and everything
+    // spoken afterwards waits behind that pause for ever. Clearing and
+    // resuming first costs nothing and unsticks it.
+    try { synth.cancel(); synth.resume(); } catch (e) {}
     synth.speak(u);
+    watch();
   }
+
+  // Speech that neither starts nor errors is the worst case: silence with
+  // nothing to explain it. If nothing has begun within a few seconds, say so.
+  var started = false, timer = null;
+  function watch() {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      if (playing && !started) fail('silent');
+    }, 3000);
+  }
+
+  function say(msg) {
+    if (!note) return;
+    note.textContent = msg || '';
+    note.hidden = !msg;
+  }
+
+  function fail(reason) {
+    clearTimeout(timer);
+    var key = reason === 'not-allowed' ? 'blocked' : 'failed';
+    say(note ? (note.getAttribute('data-' + key) || note.getAttribute('data-failed')) : '');
+    playing = false;
+    try { synth.cancel(); } catch (e) {}
+    setPlaying(false);
+    mark(null);
+  }
+
+  // Chrome pauses a long reading of its own accord; a nudge every few seconds
+  // keeps it going. Harmless when nothing is speaking.
+  setInterval(function () {
+    if (playing && synth.paused) { try { synth.resume(); } catch (e) {} }
+  }, 5000);
 
   function setPlaying(on) {
     playing = on;
@@ -186,6 +229,8 @@
   }
 
   function finish() {
+    clearTimeout(timer);
+    say('');
     synth.cancel();
     setPlaying(false);
     at = 0;
@@ -203,6 +248,7 @@
       setPlaying(false);
       return;
     }
+    say('');
     setPlaying(true);
     speak(at);
   });

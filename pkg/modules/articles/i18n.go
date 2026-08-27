@@ -585,6 +585,8 @@ var messages = map[string]map[string]string{
 	"listen.pause":           {"kz": "Кідірту", "ru": "Пауза", "en": "Pause"},
 	"listen.stop":            {"kz": "Тоқтату", "ru": "Стоп", "en": "Stop"},
 	"listen.speed":           {"kz": "Жылдамдық", "ru": "Скорость", "en": "Speed"},
+	"listen.blocked":         {"kz": "Браузер дауыстап оқуды бұғаттады. «Тыңдау» түймесін қайта басып көріңіз; көмектеспесе, браузердің осы сайтқа арналған дыбыс рұқсатын тексеріңіз.", "ru": "Браузер заблокировал озвучивание. Нажмите «Слушать» ещё раз; если не поможет — проверьте в настройках браузера разрешение на звук для этого сайта.", "en": "The browser blocked the reading. Press Listen again; if that does not help, check the browser's sound permission for this site."},
+	"listen.failed":          {"kz": "Дауыстап оқу басталмады. Құрылғының дыбысы қосулы ма және браузерде дауыс орнатылған ба, тексеріңіз.", "ru": "Озвучивание не началось. Проверьте, включён ли звук на устройстве и установлен ли в браузере голос для этого языка.", "en": "The reading did not start. Check that the device's sound is on and that the browser has a voice for this language."},
 	"listen.hint":            {"kz": "Мақаланы браузер дауысымен тыңдау. Телефонда экран сөнгенде оқу тоқтайды.", "ru": "Прослушать статью голосом браузера. На телефоне чтение прерывается, когда гаснет экран.", "en": "Have the article read aloud by the browser. On a phone the reading stops when the screen locks."},
 	"article.read_min":       {"kz": "мин оқу", "ru": "мин чтения", "en": "min read"},
 	"share.title":            {"kz": "Бөлісу", "ru": "Поделиться", "en": "Share"},

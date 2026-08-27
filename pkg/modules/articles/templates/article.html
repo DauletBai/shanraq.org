@@ -50,6 +50,11 @@
               <input type="range" id="listen-speed" min="0.7" max="1.6" step="0.1" value="1">
             </label>
             <span class="listen__hint">{{ t .Lang "listen.hint" }}</span>
+            {{/* Said out loud when the browser refuses. Silence with no
+                 explanation is what sends a reader hunting through settings. */}}
+            <p class="listen__note" id="listen-note" hidden
+               data-blocked="{{ t .Lang "listen.blocked" }}"
+               data-failed="{{ t .Lang "listen.failed" }}"></p>
           </div>
           <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="margin:14px 0 4px">{{ catIcon .Category }}{{ t .Lang (printf "cat.%s" .Category) }}</a>
           <h1 class="article__title">{{ .Title }}</h1>

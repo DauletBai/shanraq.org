@@ -3245,7 +3245,17 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* The block being spoken. A tint rather than a border: the text must not move
    as the highlight travels down the article. */
-.prose .listen-now { background: color-mix(in srgb, var(--gold) 12%, transparent); border-radius: 4px; }
+.prose .listen-now { background: rgba(211, 47, 47, 0.5); border-radius: 4px; }
+/* In the dark theme the same red at the same strength sits on a dark ground,
+   where it reads as muddy rather than marked; the lighter brand red keeps the
+   text legible at the same fifty per cent. */
+:root[data-theme="dark"] .prose .listen-now { background: rgba(255, 122, 114, 0.5); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .prose .listen-now { background: rgba(255, 122, 114, 0.5); }
+}
+.listen__note { flex-basis: 100%; margin: 4px 0 0; font-size: .85rem; line-height: 1.4;
+  color: var(--ink); border-left: 3px solid var(--gold); padding-left: 10px; }
+.listen__note[hidden] { display: none; }
 
 /* Sidebar cards carry the same resting shadow everywhere. Written against the
    container rather than each card, so a card added to the sidebar later gets it
