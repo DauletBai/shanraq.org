@@ -187,3 +187,29 @@ func TestDigitsInsideLinksAreNotCompared(t *testing.T) {
 		t.Error("подменённое число в тексте пропущено — сверка ослепла на весь абзац")
 	}
 }
+
+// English is the only language here that uses a group separator and a decimal
+// point in the same number, so "1744,8" comes back as "1,744.8". The parser used
+// to stop at the group and read 1744 where the original said 17448, reporting
+// the same figure lost and invented at once. Every English translation carrying
+// such a number tripped it, which made the fault look like a quirk of one
+// language rather than a rule that was one clause short.
+func TestGroupedDecimalsSurviveTranslation(t *testing.T) {
+	pairs := [][2]string{
+		{"площадь сократилась с 1744,8 до 1032,1 км²", "the area shrank from 1,744.8 to 1,032.1 km²"},
+		{"смета выросла до 22 100,5 тенге", "the estimate rose to 22,100.5 tenge"},
+	}
+	for _, p := range pairs {
+		if d := CompareNumbers(p[0], p[1]); !d.Empty() {
+			t.Errorf("CompareNumbers(%q, %q): missing %v, invented %v", p[0], p[1], d.Missing, d.Invented)
+		}
+	}
+}
+
+// The fractional tail must not reach across a sentence boundary: a separator
+// counts only when digits follow it immediately.
+func TestGroupedNumberDoesNotSwallowTheNextSentence(t *testing.T) {
+	if d := CompareNumbers("смета 22 100 тенге. 15 человек ушли", "the estimate is 22,100 tenge. 15 people left"); !d.Empty() {
+		t.Errorf("sentence boundary read as a decimal point: missing %v, invented %v", d.Missing, d.Invented)
+	}
+}

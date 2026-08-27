@@ -128,7 +128,19 @@ var wordValues = func() map[string]int64 {
 // when it groups exactly three of them: without that rule "99% in 2019, 99% in
 // 2022" reads as the single number 201999, and every English translation is
 // reported as damaged.
-var numberToken = regexp.MustCompile(`\d{1,3}(?:[\s,.\x{00a0} ]\d{3})+|\d+(?:[.,]\d+)?`)
+//
+// The grouped form carries an optional fractional tail, and it has to. English
+// is the one language here that uses both separators in the same number, so a
+// glacier area written "1744,8" in Russian comes back as "1,744.8". Without the
+// tail the match stopped at the group and yielded 1744 against the original's
+// 17448 -- the figure was reported lost and invented at once, on a translation
+// that was in fact correct. Every English article carrying a grouped decimal hit
+// this, which is why the false alarms looked like a quirk of one language.
+//
+// The tail cannot swallow a sentence boundary: the separator must be followed
+// immediately by digits, so "cost 22,100. 5 people came" still parses as two
+// numbers.
+var numberToken = regexp.MustCompile(`\d{1,3}(?:[\s,.\x{00a0} ]\d{3})+(?:[.,]\d+)?|\d+(?:[.,]\d+)?`)
 
 var notDigit = regexp.MustCompile(`\D`)
 
