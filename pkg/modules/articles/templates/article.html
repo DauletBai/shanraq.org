@@ -32,40 +32,7 @@
             {{ if gt .ReadingMin 0 }}<span class="dot">·</span><span class="metaic">{{ icon "clock" }}{{ .ReadingMin }} {{ t .Lang "article.read_min" }}</span>{{ end }}
           </div>
 
-          {{/* The reading. It is a recorded file, not the browser's synthesiser: that
-               had no Kazakh voice on any system, fell silent when a phone locked,
-               and failed for reasons living in the reader's operating system
-               rather than on this page. The controls appear only where a
-               recording exists -- a button that produces silence is worse than
-               no button. */}}
-          {{ if .AudioURL }}
-          <audio id="listen-audio" preload="none" src="{{ .AudioURL }}"
-                 data-cues="{{ .AudioCues }}"{{ if .AudioStale }} data-stale="1"{{ end }}></audio>
-          <div class="listen" id="listen" data-lang="{{ .Lang }}" hidden
-               data-play="{{ t .Lang "listen.play" }}" data-pause="{{ t .Lang "listen.pause" }}">
-            <button type="button" class="listen__btn" id="listen-play">
-              {{ icon "speaker" }}<span id="listen-label">{{ t .Lang "listen.play" }}</span>
-            </button>
-            <button type="button" class="listen__stop" id="listen-stop" title="{{ t .Lang "listen.stop" }}" hidden>
-              {{ icon "speaker_off" }}
-            </button>
-            <span class="listen__hint">{{ t .Lang "listen.hint" }}</span>
-            {{/* Every failure now has a cause on our side -- a missing file, a
-                 format the browser will not decode, a network that dropped --
-                 so each is named. Silence with no explanation is what sent
-                 readers into their settings last time, where nothing awaited
-                 them. */}}
-            <p class="listen__note" id="listen-note" hidden
-               data-failed="{{ t .Lang "listen.failed" }}"
-               data-missing="{{ t .Lang "listen.missing" }}"
-               data-decode="{{ t .Lang "listen.decode" }}"
-               data-network="{{ t .Lang "listen.network" }}"
-               data-slow="{{ t .Lang "listen.slow" }}"
-               data-blocked="{{ t .Lang "listen.blocked" }}"
-               data-stale-note="{{ t .Lang "listen.stale" }}"></p>
-          </div>
-          {{ end }}
-          <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="margin:14px 0 4px">{{ catIcon .Category }}{{ t .Lang (printf "cat.%s" .Category) }}</a>
+                    <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="margin:14px 0 4px">{{ catIcon .Category }}{{ t .Lang (printf "cat.%s" .Category) }}</a>
           <h1 class="article__title">{{ .Title }}</h1>
           {{ if .Summary }}<p class="article__lead">{{ .Summary }}</p>{{ end }}
 
@@ -144,8 +111,7 @@
         {{ if .Translated }}<p class="notice">{{ t .Lang "article.translated" }}</p>{{ end }}
         {{ if .IsAI }}<p class="notice">{{ t .Lang "article.ai_note" }}</p>{{ end }}
 
-        <div class="prose" data-read-progress="{{ .Slug }}"
-             data-article-id="{{ .ArticleID }}" data-text-digest="{{ .TextDigest }}">{{ .Body }}</div>
+        <div class="prose" data-read-progress="{{ .Slug }}">{{ .Body }}</div>
 
         {{/* Proof-reading, offered where the reader has just finished the text and
              still has the sentence in front of them. A quiet line rather than a
@@ -320,6 +286,5 @@
     {{ end }}
   </div>
 </main>
-<script src="{{ asset "/static/js/listen.js" }}" defer></script>
 {{ template "site_footer" . }}
 {{ end }}

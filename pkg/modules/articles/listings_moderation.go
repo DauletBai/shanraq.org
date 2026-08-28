@@ -38,7 +38,6 @@ type moderateListingPayload struct {
 // RegisterJobs attaches the listing screening handler to the job queue.
 func (m *Module) RegisterJobs(j *jobs.Module) {
 	j.Handle(JobModerateListing, m.handleModerateListingJob)
-	j.Handle(JobNarrate, m.handleNarrateJob)
 }
 
 // enqueueListingScreening files a listing for background screening. Failures are

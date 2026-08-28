@@ -634,17 +634,6 @@ type ArticlePage struct {
 	AIAuthor      bool
 	Translated    bool
 
-	// AudioURL and AudioCues carry the pre-rendered reading, when one exists for
-	// the language actually served. Empty means the page falls back to the
-	// browser's own speech synthesis, which is what every article had before.
-	AudioURL   string
-	AudioCues  template.JS
-	AudioStale bool
-	// TextDigest fingerprints the text as served. The narrator echoes it back
-	// with the audio, so the two sides cannot disagree about what was read: the
-	// page is the single place the digest is computed.
-	TextDigest string
-
 	// OrgName, OrgKind and OrgOfficial describe the organisation this was
 	// published on behalf of, when the account has a verified one. Empty
 	// otherwise, and empty is the only thing an unverified application shows.
@@ -749,19 +738,6 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.IsAI = tr.Source == "ai"
 	page.Translated = served != lang
 	page.AvailableLangs = a.AvailableLangs()
-
-	// The digest is of the served translation, so audio made for an older draft
-	// is reported stale rather than silently contradicting the text on screen.
-	page.TextDigest = TextDigest(tr.Title, tr.BodyMD)
-	if n, err := m.audio.Get(r.Context(), a.ID, served, page.TextDigest); err != nil {
-		m.rt.Logger.Warn("article audio", zap.Error(err))
-	} else if n != nil {
-		page.AudioURL = n.URL
-		page.AudioStale = n.Stale
-		if len(n.Cues) > 0 {
-			page.AudioCues = template.JS(n.Cues)
-		}
-	}
 
 	viewer := m.viewerID(r)
 	if rating, err := m.ratings.ForArticle(r.Context(), a.ID, viewer); err == nil {
@@ -1311,9 +1287,6 @@ type StudioRow struct {
 	// Reading-depth funnel: reader counts and their share of views (percent).
 	D25, D50, D75, D100 int64
 	P25, P50, P75, P100 int
-	// L25 and L100 are the listeners inside the figures above: how many started
-	// the recording and how many heard it out.
-	L25, L100 int64
 	// PFinish is what share of the readers who STARTED the article finished it.
 	// Unlike the percentages above it has no view count in the denominator, so
 	// it stays honest whatever the view counter is doing — and it answers the
@@ -1381,21 +1354,15 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		}
 		if d := depth[row.ID]; d != nil {
 			// The funnel counts everyone who got that far, by either route.
-			row.D25 = depthTotal(d, 25)
-			row.D50 = depthTotal(d, 50)
-			row.D75 = depthTotal(d, 75)
-			row.D100 = depthTotal(d, 100)
+			row.D25 = d[25]
+			row.D50 = d[50]
+			row.D75 = d[75]
+			row.D100 = d[100]
 			row.P25 = pctOf(row.D25, row.Views)
 			row.P50 = pctOf(row.D50, row.Views)
 			row.P75 = pctOf(row.D75, row.Views)
 			row.P100 = pctOf(row.D100, row.Views)
 			row.PFinish = pctOf(row.D100, row.D25)
-			// And separately: of those, how many were listening. Shown beside
-			// the funnel rather than inside it, because it answers a different
-			// question -- not how far, but by which route.
-			if l := d[ModeListen]; l != nil {
-				row.L25, row.L100 = l[25], l[100]
-			}
 		}
 		rows = append(rows, row)
 	}
@@ -1941,7 +1908,6 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
 			m.rt.Logger.Warn("enqueue publish", zap.Error(err))
 		}
-		m.narrateAfterPublish(r.Context(), id)
 		http.Redirect(w, r, "/studio?ok=published", http.StatusSeeOther)
 		return
 	}
@@ -1983,7 +1949,6 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
 			m.rt.Logger.Warn("enqueue publish", zap.Error(err))
 		}
-		m.narrateAfterPublish(r.Context(), id)
 		http.Redirect(w, r, "/studio?ok=published", http.StatusSeeOther)
 		return
 	}
@@ -2003,7 +1968,6 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
 			m.rt.Logger.Warn("enqueue publish", zap.Error(err))
 		}
-		m.narrateAfterPublish(r.Context(), id)
 		http.Redirect(w, r, "/studio?ok=published", http.StatusSeeOther)
 	case blocking > 0:
 		http.Redirect(w, r, "/studio/moderation?ok=returned", http.StatusSeeOther)

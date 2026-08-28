@@ -589,20 +589,8 @@ var messages = map[string]map[string]string{
 	"nav.favorites":      {"kz": "Таңдаулылар", "ru": "Избранное", "en": "Saved"},
 	"article.toc":        {"kz": "Мазмұны", "ru": "Содержание", "en": "Contents"},
 	// Reading the article aloud with the browser's own speech synthesis.
-	"studio.depth_listen": {"kz": "Тыңдағандар: бастағаны және аяғына дейін тыңдағаны. Олар сол сандардың ішінде.", "ru": "Слушали: начали и дослушали до конца. Они входят в цифры слева.", "en": "Listened: started and heard out. They are counted inside the figures to the left."},
-	"listen.play":         {"kz": "Тыңдау", "ru": "Слушать", "en": "Listen"},
-	"listen.pause":        {"kz": "Кідірту", "ru": "Пауза", "en": "Pause"},
-	"listen.stop":         {"kz": "Тоқтату", "ru": "Стоп", "en": "Stop"},
 	// Said when the system has no voice for this language. The reader is offered
 	// a substitute rather than refused: it is their choice to make, not ours.
-	"listen.hint":            {"kz": "Мақаланы дауыстап тыңдауға болады.", "ru": "Статью можно послушать вслух.", "en": "The article can be listened to."},
-	"listen.failed":          {"kz": "Жазбаны ойнату мүмкін болмады. Бетті жаңартып көріңіз.", "ru": "Не удалось воспроизвести запись. Попробуйте обновить страницу.", "en": "The recording could not be played. Try reloading the page."},
-	"listen.missing":         {"kz": "Бұл мақаланың дыбыс жазбасы табылмады. Біз хабардармыз және қалпына келтіреміз.", "ru": "Звуковая запись этой статьи не найдена. Мы знаем об этом и восстановим её.", "en": "The recording for this article is missing. We know, and we will restore it."},
-	"listen.decode":          {"kz": "Браузеріңіз бұл дыбыс форматын ашпайды. Басқа браузерде тыңдап көріңіз.", "ru": "Ваш браузер не открывает этот звуковой формат. Попробуйте другой браузер.", "en": "Your browser will not open this audio format. Try another browser."},
-	"listen.network":         {"kz": "Байланыс үзілді, жазба толық жүктелмеді.", "ru": "Связь прервалась, запись загрузилась не полностью.", "en": "The connection dropped and the recording did not finish loading."},
-	"listen.slow":            {"kz": "Жазба баяу жүктелуде — байланысты тексеріңіз.", "ru": "Запись загружается медленно — проверьте связь.", "en": "The recording is loading slowly — check your connection."},
-	"listen.blocked":         {"kz": "Браузер ойнатудан бас тартты. Тыңдау түймесін қайта басыңыз.", "ru": "Браузер отказался воспроизвести звук. Нажмите «Слушать» ещё раз.", "en": "The browser refused to play. Press Listen again."},
-	"listen.stale":           {"kz": "Мақала жазба жасалғаннан кейін өңделген: дыбыс мәтіннен өзгеше болуы мүмкін.", "ru": "Статью правили после записи: звук может отличаться от текста.", "en": "The article was edited after it was recorded: the audio may differ from the text."},
 	"article.read_min":       {"kz": "мин оқу", "ru": "мин чтения", "en": "min read"},
 	"share.title":            {"kz": "Бөлісу", "ru": "Поделиться", "en": "Share"},
 	"share.foot":             {"kz": "Мақала пайдалы болса — бөлісіңіз", "ru": "Если статья была полезной — поделитесь", "en": "If this was worth your time, pass it on"},

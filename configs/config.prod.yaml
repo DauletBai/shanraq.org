@@ -107,7 +107,3 @@ analytics:
   # readers, not US-hosted bots/VPN exits. Absent file → filter simply off.
   geoip_asn_db: /app/geoip/asn.mmdb
 
-# Speech synthesiser for reading articles aloud. Empty or absent means no
-# narration: articles work exactly as before and show no listen button.
-tts:
-  url: "http://tts:8081"
