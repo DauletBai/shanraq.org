@@ -474,9 +474,9 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 /* House slides are the site talking about itself, so they take the quieter
    graphite rather than the brand red a paying advertiser gets. */
 .adslot__slide--house {
-  /* Same gradient geometry as the accent card: 120deg, two stops, dark towards
-     the bottom right. White text on a filled ground takes a steep slope without
-     losing legibility, so this one runs the full range. */
+  /* Three stops over 150 degrees, dark towards the bottom right. White text on
+     a filled ground takes a steep slope without losing legibility, so this card
+     runs the full range from mid grey to near black. */
   background: linear-gradient(150deg, #737577 0%, #454545 55%, #191b1d 100%);
 }
 .adslot__slide:hover { text-decoration: none; }
@@ -669,14 +669,29 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 @media (min-width: 900px) { .aside { position: sticky; top: 92px; align-self: start; } }
 .aside__block {
   border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
-  /* Same geometry as the other two cards -- 120deg, light to dark towards the
-     bottom right -- but the dark stop starts late, and that is deliberate.
-     A flat gradient deep enough to match the other cards would put --ink-soft
-     text on a mid grey at 3:1, under the 4.5:1 floor. Holding the surface flat
-     for the first 55% keeps every line of text on the light ground and spends
-     the depth on the empty corner, where nothing has to be read. */
+  /* A wash rather than a fill: the stops carry alpha, so the page shows through
+     and the card reads as paper instead of as a panel. Against white paper this
+     holds --ink-soft between 8:1 and 9.4:1, well clear of the 4.5:1 floor. The
+     dark theme needs its own stops -- see below. */
   background: linear-gradient(150deg, #fff6e340 0%, #e3d5b940 55%, #beaa8340 100%);
 }
+/* The same wash, inverted. Cream over a dark ground lifts the card to a mid
+   grey near #62605b, and --ink-soft on that falls to 3.3:1 -- under the floor,
+   and in the one band where light text reads worst. So the dark theme keeps the
+   hue, the alpha, the three stops and the 150 degrees, and keeps the end-to-end
+   span at 1.18 to match, but darkens the paper instead of lightening it. Worst
+   point 5.9:1.
+   Two selectors because there are two ways to be in the dark theme: the reader
+   chose it, or the reader's system did and they never touched the toggle. */
+:root[data-theme="dark"] .aside__block {
+  background: linear-gradient(150deg, #685c4540 0%, #51483640 55%, #39332640 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .aside__block {
+    background: linear-gradient(150deg, #685c4540 0%, #51483640 55%, #39332640 100%);
+  }
+}
+
 .aside__title { font-size: var(--step-1); margin-bottom: 8px; }
 .aside__text { color: var(--ink-soft); font-size: var(--step--1); margin: 0; }
 /* newsletter card — red gradient banner (same as the hero carousel) with an
