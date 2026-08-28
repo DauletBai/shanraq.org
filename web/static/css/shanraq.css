@@ -474,7 +474,9 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 /* House slides are the site talking about itself, so they take the quieter
    graphite rather than the brand red a paying advertiser gets. */
 .adslot__slide--house {
-  background: linear-gradient(150deg, #2f3336 0%, #23272a 55%, #17191b 100%);
+  /* Same gradient geometry as the accent card: 120deg, two stops, the end at
+     roughly 53% of the start's lightness. One rule for every sidebar card. */
+  background: linear-gradient(120deg, #2f3336, #191b1d);
 }
 .adslot__slide:hover { text-decoration: none; }
 .adslot__title { font-family: var(--serif); font-size: var(--step-1); font-weight: 800; line-height: 1.2; }
@@ -664,7 +666,19 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .aside { display: flex; flex-direction: column; gap: 22px;
 }
 @media (min-width: 900px) { .aside { position: sticky; top: 92px; align-self: start; } }
-.aside__block { border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; background: var(--surface-2); }
+.aside__block {
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
+  /* Same geometry as the accent card -- 120deg, two stops -- but not the same
+     depth, and the reason is measurable rather than a matter of taste. The
+     accent card carries white text on a filled ground, so its end may sit at
+     53% of the start's lightness. This card carries body text in --ink-soft on
+     a light surface: at 53% the contrast falls to 2.5:1, well under the 4.5:1
+     floor, and the text stops being readable halfway across the card. 80% is
+     the deepest end that still clears the floor, at 5.5:1.
+     The end is mixed from the surface token, so the gradient follows the theme
+     instead of fighting it. */
+  background: linear-gradient(120deg, var(--surface-2), color-mix(in srgb, var(--surface-2) 80%, #000));
+}
 .aside__title { font-size: var(--step-1); margin-bottom: 8px; }
 .aside__text { color: var(--ink-soft); font-size: var(--step--1); margin: 0; }
 /* newsletter card — red gradient banner (same as the hero carousel) with an
