@@ -546,6 +546,15 @@ var messages = map[string]map[string]string{
 	},
 	"house.beside_cta": {"kz": "Форматтар", "ru": "Форматы", "en": "Formats"},
 
+	// Our own product rather than the slot. It runs on the same unsold-inventory
+	// path as the rest, so it costs nothing and never displaces a paying order.
+	"house.adam_title": {"kz": "Еңбекті қорғау нұсқамасына арналған ЖИ", "ru": "ИИ для инструктажа по охране труда", "en": "AI for safety briefings"},
+	"house.adam_desc": {
+		"kz": "Нұсқама, сынақ және допуск хаттамасы — офлайн, қазақша және орысша. Өз әзірлемеміз.",
+		"ru": "Инструктаж, зачёт и протокол допуска — офлайн, на казахском и русском. Наша разработка.",
+		"en": "Briefing, test and admission protocol — offline, in Kazakh and Russian. Built by us.",
+	},
+	"house.adam_cta":      {"kz": "Қалай жұмыс істейді", "ru": "Как это работает", "en": "How it works"},
 	"house.notrack_title": {"kz": "Бақылаусыз және бөгде cookie-сіз", "ru": "Без слежки и сторонних cookie", "en": "No tracking, no third-party cookies"},
 	"house.notrack_desc": {
 		"kz": "Біз оқырман деректерін жарнама желілеріне бермейміз: сайтта бөгде жарнама скрипттері жоқ.",

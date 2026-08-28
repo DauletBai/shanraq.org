@@ -47,6 +47,7 @@ func houseAds(lang string) []Ad {
 		{"notrack", "/privacy"},  // no third-party tracking — a real difference
 		{"price", "/advertise"},  // open rate card, no agency in between
 		{"realty", "/advertise"}, // the audience nearest to a buying decision
+		{"adam", "/adam"},        // our own product: the one thing here that is not the slot
 	}
 	out := make([]Ad, 0, len(slides))
 	for _, s := range slides {

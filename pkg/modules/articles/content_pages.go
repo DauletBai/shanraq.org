@@ -16,7 +16,7 @@ import (
 // editablePageKeys lists the info/legal pages an operator may edit from the
 // admin panel, in display order. Every key must exist in staticPages, which
 // supplies both the seed content and the fallback if a row is ever missing.
-var editablePageKeys = []string{"about", "guide", "pricing", "support", "formatting", "privacy", "terms"}
+var editablePageKeys = []string{"about", "adam", "guide", "pricing", "support", "formatting", "privacy", "terms"}
 
 // ContentStore persists the editable pages (title + Markdown body per page and
 // language). It backs both the public reader and the admin editor.

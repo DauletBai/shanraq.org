@@ -1434,6 +1434,119 @@ The law of the Republic of Kazakhstan applies to the Terms. Disputes are resolve
 ## 16. Changes to the Terms
 We may update the Terms; material changes are published on the Platform, and renewed consent is requested where necessary. Continued use after changes constitutes acceptance of them.`},
 	},
+	"adam": {
+		"ru": {Title: "adam — инструктаж и проверка знаний по ОТ и ТБ", Body: `adam — детерминированный помощник для инструктажа и проверки знаний по охране труда и технике безопасности. Написан на Rust, работает на компьютере предприятия и не выходит в сеть.
+
+## Что он делает
+
+Проводит сессию целиком, а не отдельный её кусок:
+
+**инструктаж → проверка знаний → оценка (допуск или неудовлетворительно) → протокол**
+
+Именно эту последовательность предписывает статья 182 Трудового кодекса РК и приказ №1019. Дистанционный формат такой проверки допускается приказом №223, вступившим в силу 12 июля 2026 года.
+
+Корпус — 33 процедуры, покрывающие обычный для промышленного предприятия цикл ОТ и ТБ. Работает не единичная процедура, а годовая программа тем: каждая тема проводится, по каждой принимается зачёт.
+
+## Почему это работает офлайн
+
+Ни GPU, ни интернета. Всё считается на месте: отклик 13,6 мс в половине случаев, пик памяти 314 МБ. Достаточно ноутбука на Apple Silicon с 8 ГБ памяти.
+
+Для предприятия это не техническая деталь, а вопрос данных. Фамилии работников, результаты зачётов и протоколы не покидают периметр, потому что уходить им некуда.
+
+## Казахский и русский наравне
+
+Инструктаж и проверка знаний идут на языке, который выбрал сам работник, — от первого вопроса до протокола. Казахский здесь не перевод с русского: у системы собственная морфология и лексикон.
+
+Есть голосовой режим — для тех, у кого руки заняты работой.
+
+## Протокол, который можно проверить
+
+Готовый протокол допуска подписывается криптографически и проверяется независимо, без обращения к нам. По форме это удостоверение о допуске к работе по модели W3C Verifiable Credentials.
+
+В начале сессии камера делает снимок; его контрольная сумма запечатывается внутрь допуска. Это отвечает на вопрос, который задаст любой инспектор: зачёт сдавал именно тот человек?
+
+## Что дальше
+
+Система в стадии пилота. Мы ищем предприятия, готовые провести её на реальной программе инструктажей и сказать, где она ошибается.
+
+Что нужно с вашей стороны: один компьютер, один технический контакт и две недели. Что получаете: работающий цикл допуска на ваших процедурах и прямую линию с разработчиком.
+
+Написать: baimurza.daulet@gmail.com`},
+		"kz": {Title: "adam — ЕҚ және ҚТ бойынша нұсқама мен білімді тексеру", Body: `adam — еңбекті қорғау және қауіпсіздік техникасы бойынша нұсқама мен білімді тексеруге арналған детерминистік көмекші. Rust тілінде жазылған, кәсіпорынның компьютерінде жұмыс істейді және желіге шықпайды.
+
+## Не істейді
+
+Сессияны бөлшектеп емес, толық өткізеді:
+
+**нұсқама → білімді тексеру → бағалау (допуск немесе қанағаттанарлықсыз) → хаттама**
+
+Дәл осы тізбекті ҚР Еңбек кодексінің 182-бабы мен №1019 бұйрық белгілейді. Мұндай тексерудің қашықтық форматына 2026 жылғы 12 шілдеде күшіне енген №223 бұйрық жол береді.
+
+Корпус — өнеркәсіптік кәсіпорынға тән ЕҚ және ҚТ циклін қамтитын 33 рәсім. Жеке рәсім емес, жылдық тақырыптар бағдарламасы жұмыс істейді: әр тақырып өтіледі, әрқайсысы бойынша сынақ қабылданады.
+
+## Неге бұл офлайн жұмыс істейді
+
+GPU да, интернет те қажет емес. Бәрі орнында есептеледі: жағдайлардың жартысында жауап 13,6 мс, жады шыңы 314 МБ. Apple Silicon процессорлы, 8 ГБ жады бар ноутбук жеткілікті.
+
+Кәсіпорын үшін бұл техникалық ұсақ-түйек емес, деректер мәселесі. Жұмысшылардың тегі, сынақ нәтижелері мен хаттамалар периметрден шықпайды, өйткені шығатын жері жоқ.
+
+## Қазақ және орыс тілі тең
+
+Нұсқама мен білімді тексеру жұмысшының өзі таңдаған тілде жүреді — алғашқы сұрақтан хаттамаға дейін. Мұндағы қазақ тілі орыс тілінен аударма емес: жүйенің өз морфологиясы мен лексиконы бар.
+
+Қолы бос емес адамдарға арналған дауыстық режим бар.
+
+## Тексеруге болатын хаттама
+
+Дайын допуск хаттамасы криптографиялық қол қойылады және бізге жүгінбей тәуелсіз тексеріледі. Түрі бойынша бұл W3C Verifiable Credentials үлгісіндегі жұмысқа жіберу куәлігі.
+
+Сессия басында камера сурет түсіреді; оның бақылау сомасы допусктің ішіне бекітіледі. Бұл кез келген инспектор қоятын сұраққа жауап береді: сынақты дәл сол адам тапсырды ма?
+
+## Әрі қарай не
+
+Жүйе пилоттық сатыда. Оны нақты нұсқама бағдарламасында сынап көріп, қателерін айтуға дайын кәсіпорындарды іздеп жүрміз.
+
+Сіз жағыңыздан керегі: бір компьютер, бір техникалық байланыс және екі апта. Алатыныңыз: өз рәсімдеріңізде жұмыс істейтін допуск циклі және әзірлеушімен тікелей байланыс.
+
+Жазу: baimurza.daulet@gmail.com`},
+		"en": {Title: "adam — safety briefings and knowledge checks", Body: `adam is a deterministic assistant for occupational safety briefings and knowledge checks. It is written in Rust, runs on the enterprise's own machine and never reaches the network.
+
+## What it does
+
+It runs the whole session, not a piece of it:
+
+**briefing → knowledge check → assessment (admitted or failed) → protocol**
+
+That is the sequence Kazakhstan's Labour Code article 182 and Order No. 1019 prescribe. Order No. 223, in force since 12 July 2026, permits the check to be conducted remotely.
+
+The corpus holds 33 procedures covering the safety lifecycle an industrial site actually runs. It is not a single procedure but an annual programme of topics: each is briefed, and each is examined.
+
+## Why it works offline
+
+No GPU, no internet. Everything is computed on the spot: 13.6 ms response at the median, 314 MB peak memory. A laptop on Apple Silicon with 8 GB of memory is enough.
+
+For an enterprise that is not a technical footnote but a question about data. Workers' names, test results and protocols never leave the perimeter, because there is nowhere for them to go.
+
+## Kazakh and Russian as equals
+
+The briefing and the knowledge check run in the language the worker chose, from the first question to the protocol. The Kazakh here is not translated from Russian: the system carries its own morphology and lexicon.
+
+There is a voice mode, for people whose hands are busy.
+
+## A protocol that can be verified
+
+The finished admission protocol is cryptographically signed and can be verified independently, without coming back to us. In form it is a work-admission credential shaped after W3C Verifiable Credentials.
+
+At the start of a session the camera takes a photograph, and its checksum is sealed inside the admission. That answers the question any inspector will ask: was it this person who sat the test?
+
+## What comes next
+
+The system is at pilot stage. We are looking for enterprises willing to run it against a real briefing programme and tell us where it gets things wrong.
+
+What it needs from you: one machine, one technical contact and two weeks. What you get: a working admission cycle on your own procedures, and a direct line to the developer.
+
+Write to baimurza.daulet@gmail.com`},
+	},
 }
 
 // staticContent returns the page for key in lang, falling back to Russian.
