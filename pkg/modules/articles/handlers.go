@@ -634,6 +634,17 @@ type ArticlePage struct {
 	AIAuthor      bool
 	Translated    bool
 
+	// AudioURL and AudioCues carry the pre-rendered reading, when one exists for
+	// the language actually served. Empty means the page falls back to the
+	// browser's own speech synthesis, which is what every article had before.
+	AudioURL   string
+	AudioCues  template.JS
+	AudioStale bool
+	// TextDigest fingerprints the text as served. The narrator echoes it back
+	// with the audio, so the two sides cannot disagree about what was read: the
+	// page is the single place the digest is computed.
+	TextDigest string
+
 	// OrgName, OrgKind and OrgOfficial describe the organisation this was
 	// published on behalf of, when the account has a verified one. Empty
 	// otherwise, and empty is the only thing an unverified application shows.
@@ -738,6 +749,19 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.IsAI = tr.Source == "ai"
 	page.Translated = served != lang
 	page.AvailableLangs = a.AvailableLangs()
+
+	// The digest is of the served translation, so audio made for an older draft
+	// is reported stale rather than silently contradicting the text on screen.
+	page.TextDigest = TextDigest(tr.Title, tr.BodyMD)
+	if n, err := m.audio.Get(r.Context(), a.ID, served, page.TextDigest); err != nil {
+		m.rt.Logger.Warn("article audio", zap.Error(err))
+	} else if n != nil {
+		page.AudioURL = n.URL
+		page.AudioStale = n.Stale
+		if len(n.Cues) > 0 {
+			page.AudioCues = template.JS(n.Cues)
+		}
+	}
 
 	viewer := m.viewerID(r)
 	if rating, err := m.ratings.ForArticle(r.Context(), a.ID, viewer); err == nil {

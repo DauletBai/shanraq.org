@@ -593,7 +593,6 @@ var messages = map[string]map[string]string{
 	"listen.play":         {"kz": "Тыңдау", "ru": "Слушать", "en": "Listen"},
 	"listen.pause":        {"kz": "Кідірту", "ru": "Пауза", "en": "Pause"},
 	"listen.stop":         {"kz": "Тоқтату", "ru": "Стоп", "en": "Stop"},
-	"listen.speed":        {"kz": "Жылдамдық", "ru": "Скорость", "en": "Speed"},
 	// Said when the system has no voice for this language. The reader is offered
 	// a substitute rather than refused: it is their choice to make, not ours.
 	"listen.substitute": {"kz": "Жүйеде қазақ тіліне арналған дауыс жоқ. «%s» дауысымен оқиық па?", "ru": "В системе нет голоса для этого языка. Прочитать голосом «%s»?", "en": "The system has no voice for this language. Read it with the \"%s\" voice?"},

@@ -22,8 +22,113 @@
 
   var box = document.getElementById('listen');
   var prose = document.querySelector('.prose');
+  if (!box || !prose) return;
+
+  // The same block rule the recorded reading was cut along: outermost blocks
+  // only, nothing inside code, nothing hidden, nothing shorter than a word.
+  // The generator applies it to the rendered page, so cue N and block N are the
+  // same paragraph. Change it here and the highlight drifts from the sound.
+  var BLOCK_SEL = 'p, h2, h3, h4, li, blockquote, figcaption, th, td';
+  function blockEls() {
+    var out = [];
+    prose.querySelectorAll(BLOCK_SEL).forEach(function (el) {
+      if (el.parentElement && el.parentElement.closest(BLOCK_SEL)) return;
+      if (el.closest('pre, code, [aria-hidden="true"]')) return;
+      if ((el.textContent || '').trim().length < 2) return;
+      out.push(el);
+    });
+    return out;
+  }
+
+  // ---- recorded reading ---------------------------------------------------
+  //
+  // When the article has audio, it replaces the browser's synthesiser outright.
+  // Nothing below this block runs: no voice hunting, no permission prompts, no
+  // silent failure on a system with no Kazakh voice. The buttons stay the same;
+  // only what produces the sound changes.
+  var recorded = document.getElementById('listen-audio');
+  if (recorded) { recordedMode(recorded); return; }
+
+  function recordedMode(audio) {
+    var playBtn = document.getElementById('listen-play');
+    var stopBtn = document.getElementById('listen-stop');
+    var label = document.getElementById('listen-label');
+    var playTxt = box.getAttribute('data-play') || '';
+    var pauseTxt = box.getAttribute('data-pause') || '';
+    var cues = [];
+    try { cues = JSON.parse(audio.getAttribute('data-cues') || '[]') || []; } catch (e) {}
+    var els = blockEls();
+    box.hidden = false;
+
+    var slug = prose.getAttribute('data-read-progress') || '';
+    var memo = 'shanraq-listen:' + slug, heard = {};
+    try { heard = JSON.parse(sessionStorage.getItem(memo) || '{}'); } catch (e) {}
+    function progress(pct) {
+      if (!slug || !navigator.sendBeacon) return;
+      [25, 50, 75, 100].forEach(function (m) {
+        if (pct < m || heard[m]) return;
+        heard[m] = true;
+        try { sessionStorage.setItem(memo, JSON.stringify(heard)); } catch (e) {}
+        try { navigator.sendBeacon('/read/' + encodeURIComponent(slug) + '/progress?d=' + m + '&m=listen'); } catch (e) {}
+      });
+    }
+
+    var shown = -1;
+    function follow() {
+      if (!cues.length) return;
+      var t = audio.currentTime, i = -1;
+      for (var k = 0; k < cues.length; k++) {
+        if (t >= cues[k].a && t < cues[k].b) { i = cues[k].i; break; }
+      }
+      if (i < 0 || i === shown) return;
+      shown = i;
+      prose.querySelectorAll('.listen-now').forEach(function (n) { n.classList.remove('listen-now'); });
+      var el = els[i];
+      if (!el) return;
+      el.classList.add('listen-now');
+      // Only scroll when the line has left the comfortable middle of the
+      // screen. Scrolling on every block fights a reader who is following
+      // along with their own eyes, and the point of the highlight is that they
+      // do not have to.
+      var r = el.getBoundingClientRect();
+      var h = window.innerHeight || 0;
+      if (r.top < h * 0.15 || r.bottom > h * 0.85) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    audio.addEventListener('timeupdate', function () {
+      follow();
+      if (audio.duration) progress((audio.currentTime / audio.duration) * 100);
+    });
+    audio.addEventListener('play', function () { if (label) label.textContent = pauseTxt; if (stopBtn) stopBtn.hidden = false; });
+    audio.addEventListener('pause', function () { if (label) label.textContent = playTxt; });
+    audio.addEventListener('ended', function () {
+      if (label) label.textContent = playTxt;
+      if (stopBtn) stopBtn.hidden = true;
+      prose.querySelectorAll('.listen-now').forEach(function (n) { n.classList.remove('listen-now'); });
+      shown = -1;
+      progress(100);
+    });
+
+    if (playBtn) {
+      playBtn.addEventListener('click', function () {
+        if (audio.paused) { audio.play().catch(function () {}); } else { audio.pause(); }
+      });
+    }
+    if (stopBtn) {
+      stopBtn.addEventListener('click', function () {
+        audio.pause();
+        audio.currentTime = 0;
+        stopBtn.hidden = true;
+        shown = -1;
+        prose.querySelectorAll('.listen-now').forEach(function (n) { n.classList.remove('listen-now'); });
+      });
+    }
+  }
+
   var synth = window.speechSynthesis;
-  if (!box || !prose || !synth || typeof SpeechSynthesisUtterance === 'undefined') return;
+  if (!synth || typeof SpeechSynthesisUtterance === 'undefined') return;
 
   var lang = (box.getAttribute('data-lang') || 'ru').toLowerCase();
   // The page calls Kazakh "kz"; BCP 47, and therefore every voice, calls it "kk".
@@ -32,8 +137,6 @@
   var playBtn = document.getElementById('listen-play');
   var stopBtn = document.getElementById('listen-stop');
   var label = document.getElementById('listen-label');
-  var speedBox = document.getElementById('listen-speedbox');
-  var speed = document.getElementById('listen-speed');
   var note = document.getElementById('listen-note');
   var offer = document.getElementById('listen-offer');
   var offerText = document.getElementById('listen-offer-text');
@@ -197,7 +300,6 @@
     // between page loads, and a stale one is spoken by nobody.
     u.lang = voice.lang;
     if (substitute || pinned) u.voice = voice;
-    u.rate = parseFloat(speed.value) || 1;
     u.onstart = function () { started = true; mark(chunks[i].el); say(''); };
     u.onend = function () { reached(i); if (playing) speak(i + 1); };
     // One failure stops the reading. It used to step to the next sentence,
@@ -291,7 +393,6 @@
     playing = on;
     label.textContent = box.getAttribute(on ? 'data-pause' : 'data-play');
     stopBtn.hidden = !on && at === 0;
-    speedBox.hidden = !on && at === 0;
     playBtn.setAttribute('aria-pressed', String(on));
   }
 
@@ -303,7 +404,6 @@
     at = 0;
     mark(null);
     stopBtn.hidden = true;
-    speedBox.hidden = true;
   }
 
   playBtn.addEventListener('click', function () {
@@ -332,12 +432,6 @@
   }
 
   stopBtn.addEventListener('click', finish);
-
-  speed.addEventListener('change', function () {
-    if (!playing) return;
-    synth.cancel();
-    speak(at);           // the new rate takes effect from the current sentence
-  });
 
   // Leaving the page with a voice still talking would follow the reader to the
   // next one.

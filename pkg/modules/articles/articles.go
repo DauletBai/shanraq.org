@@ -37,6 +37,8 @@ type Module struct {
 	listings      *ListingStore
 	loans         *LoanStore
 	ads           *AdStore
+	audio         *AudioStore
+	apiAuth       func(http.Handler) http.Handler
 	mods          *ModStore
 	refs          *ReferralStore
 	reagents      *AgentStore
@@ -86,6 +88,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.listings = NewListingStore(rt.DB)
 	m.loans = NewLoanStore(rt.DB)
 	m.ads = NewAdStore(rt.DB)
+	m.audio = NewAudioStore(rt.DB)
 	m.mods = NewModStore(rt.DB)
 	m.refs = NewReferralStore(rt.DB)
 	m.reagents = NewAgentStore(rt.DB)
@@ -209,6 +212,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		// soft session load so it can tell the two apart; records nothing else.
 		r.Use(m.trackTraffic)
 		r.Post("/api/track", m.handleTrack)
+		m.routeNarration(r)
 		r.Get("/", m.handleHome)
 		// Uptime monitors and HTTP clients probe with HEAD, and chi answers 405
 		// unless the method is registered. Go's ResponseWriter discards the body

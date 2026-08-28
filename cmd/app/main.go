@@ -143,6 +143,9 @@ func main() {
 	mediaModule := media.New(authModule)
 	app.Register(mediaModule)
 	articlesModule = articles.New(authModule, aiModule, syndicateModule, mediaModule, notifierModule)
+	// Narration is synthesised off this server and posted back, so the writer is
+	// a script with a key rather than a browser with a cookie.
+	articlesModule.UseAPIKeyAuth(apiKeyModule.RequireAPIKey())
 	articlesModule.RegisterJobs(jobModule)
 	app.Register(articlesModule)
 	app.Register(webui.New(jobWorkers, jobPollSeconds,
