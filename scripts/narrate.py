@@ -188,6 +188,7 @@ def main() -> int:
     ap.add_argument("--model", required=True, help="Piper .onnx voice")
     ap.add_argument("--out", default="", help="keep the audio at this path too")
     ap.add_argument("--dry-run", action="store_true", help="synthesise, do not upload")
+    ap.add_argument("--cues-out", default="", help="write the cue map here as JSON")
     args = ap.parse_args()
 
     article_id, digest, blocks = fetch_blocks(args.slug, args.lang)
@@ -207,6 +208,15 @@ def main() -> int:
         encode(wav, m4a)
         size = os.path.getsize(m4a)
         print(f"total {seconds / 60:.1f} min, {size / 1048576:.1f} MB")
+        if args.cues_out:
+            # Writing the map out is what makes an upload-free install possible:
+            # copy the audio into place, put the row in by hand, and the page
+            # can still follow along. Useful before the first API key exists.
+            with open(args.cues_out, "w", encoding="utf-8") as f:
+                json.dump({"cues": cues, "digest": digest, "seconds": round(seconds, 1),
+                           "article_id": article_id, "blocks": len(blocks)}, f,
+                          ensure_ascii=False, separators=(",", ":"))
+            print("cues at", args.cues_out)
         if args.dry_run:
             print("dry run: not uploaded")
             if args.out:

@@ -32,20 +32,15 @@
             {{ if gt .ReadingMin 0 }}<span class="dot">·</span><span class="metaic">{{ icon "clock" }}{{ .ReadingMin }} {{ t .Lang "article.read_min" }}</span>{{ end }}
           </div>
 
-          {{/* Read aloud. The control sits beside the reading time because that is
-               where a reader decides how to take the piece in. It is hidden until
-               the script has confirmed the browser holds a voice for this page's
-               language: an offer that produces silence, or Kazakh spoken with a
-               Russian voice, is worse than no offer. */}}
-          {{/* A recorded reading, where one exists for this language. It replaces
-               the browser's synthesiser entirely: same buttons, but the sound
-               comes from a file, so it does not depend on which voices the
-               reader's system happens to have, survives a locked screen, and
-               carries a cue map the page uses to follow along. */}}
+          {{/* The reading. It is a recorded file, not the browser's synthesiser: that
+               had no Kazakh voice on any system, fell silent when a phone locked,
+               and failed for reasons living in the reader's operating system
+               rather than on this page. The controls appear only where a
+               recording exists -- a button that produces silence is worse than
+               no button. */}}
           {{ if .AudioURL }}
           <audio id="listen-audio" preload="none" src="{{ .AudioURL }}"
                  data-cues="{{ .AudioCues }}"{{ if .AudioStale }} data-stale="1"{{ end }}></audio>
-          {{ end }}
           <div class="listen" id="listen" data-lang="{{ .Lang }}" hidden
                data-play="{{ t .Lang "listen.play" }}" data-pause="{{ t .Lang "listen.pause" }}">
             <button type="button" class="listen__btn" id="listen-play">
@@ -55,25 +50,21 @@
               {{ icon "speaker_off" }}
             </button>
             <span class="listen__hint">{{ t .Lang "listen.hint" }}</span>
-            {{/* Said out loud when the browser refuses. Silence with no
-                 explanation is what sends a reader hunting through settings. */}}
+            {{/* Every failure now has a cause on our side -- a missing file, a
+                 format the browser will not decode, a network that dropped --
+                 so each is named. Silence with no explanation is what sent
+                 readers into their settings last time, where nothing awaited
+                 them. */}}
             <p class="listen__note" id="listen-note" hidden
-               data-blocked="{{ t .Lang "listen.blocked" }}"
                data-failed="{{ t .Lang "listen.failed" }}"
-               data-found="{{ t .Lang "listen.found" }}"
-               data-sound="{{ t .Lang "listen.sound_chrome" }}"
-               data-mac="{{ t .Lang "listen.where_mac" }}"
-               data-win="{{ t .Lang "listen.where_win" }}"
-               data-android="{{ t .Lang "listen.where_android" }}"
-               data-ios="{{ t .Lang "listen.where_ios" }}"></p>
-            {{/* Offered, not imposed: when the system has no voice for this
-                 language, the reader decides whether a substitute will do. */}}
-            <p class="listen__note listen__note--offer" id="listen-offer" hidden
-               data-substitute="{{ t .Lang "listen.substitute" }}">
-              <span id="listen-offer-text"></span>
-              <button type="button" class="listen__btn listen__btn--sm" id="listen-accept">{{ t .Lang "listen.sub_yes" }}</button>
-            </p>
+               data-missing="{{ t .Lang "listen.missing" }}"
+               data-decode="{{ t .Lang "listen.decode" }}"
+               data-network="{{ t .Lang "listen.network" }}"
+               data-slow="{{ t .Lang "listen.slow" }}"
+               data-blocked="{{ t .Lang "listen.blocked" }}"
+               data-stale-note="{{ t .Lang "listen.stale" }}"></p>
           </div>
+          {{ end }}
           <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="margin:14px 0 4px">{{ catIcon .Category }}{{ t .Lang (printf "cat.%s" .Category) }}</a>
           <h1 class="article__title">{{ .Title }}</h1>
           {{ if .Summary }}<p class="article__lead">{{ .Summary }}</p>{{ end }}

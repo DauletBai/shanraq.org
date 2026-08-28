@@ -595,21 +595,14 @@ var messages = map[string]map[string]string{
 	"listen.stop":         {"kz": "Тоқтату", "ru": "Стоп", "en": "Stop"},
 	// Said when the system has no voice for this language. The reader is offered
 	// a substitute rather than refused: it is their choice to make, not ours.
-	"listen.substitute": {"kz": "Жүйеде қазақ тіліне арналған дауыс жоқ. «%s» дауысымен оқиық па?", "ru": "В системе нет голоса для этого языка. Прочитать голосом «%s»?", "en": "The system has no voice for this language. Read it with the \"%s\" voice?"},
-	"listen.sub_yes":    {"kz": "Иә, оқы", "ru": "Да, прочитать", "en": "Yes, read it"},
-	// Where the voices actually live. Not "check your settings": the reader has
-	// already looked there and found nothing, because there is nothing there --
-	// voices belong to the operating system, not to the browser.
-	"listen.where_mac":     {"kz": "Дауыстар браузерде емес, жүйеде тұрады: Жүйе параметрлері → Қолжетімділік → Айтылатын мазмұн → Дауыстарды басқару.", "ru": "Голоса живут не в браузере, а в системе: Системные настройки → Универсальный доступ → Проговаривание → Управление голосами.", "en": "Voices live in the system, not the browser: System Settings → Accessibility → Spoken Content → Manage Voices."},
-	"listen.where_win":     {"kz": "Дауыстар жүйеде: Параметрлер → Уақыт және тіл → Тіл және аймақ → тілді қосып, «Сөйлеу» құрамдасын таңдаңыз.", "ru": "Голоса ставятся в системе: Параметры → Время и язык → Язык и регион → добавить язык и отметить компонент «Речь».", "en": "Voices are installed in the system: Settings → Time & language → Language & region → add a language and tick the Speech feature."},
-	"listen.where_android": {"kz": "Дауыстар жүйеде: Параметрлер → Қолжетімділік → Мәтінді дыбыстау.", "ru": "Голоса в системе: Настройки → Специальные возможности → Преобразование текста в речь.", "en": "Voices are in the system: Settings → Accessibility → Text-to-speech output."},
-	"listen.where_ios":     {"kz": "Дауыстар жүйеде: Параметрлер → Қолжетімділік → Айтылатын мазмұн → Дауыстар. Экран сөнгенде оқу тоқтайды.", "ru": "Голоса в системе: Настройки → Универсальный доступ → Устный контент → Голоса. При гаснущем экране чтение прерывается.", "en": "Voices are in the system: Settings → Accessibility → Spoken Content → Voices. Reading stops when the screen locks."},
-	// The one browser setting that matters, and the one nobody finds.
-	"listen.sound_chrome":    {"kz": "Chrome дыбысты сайт бойынша бөгей алады: мекенжай жолындағы құлыпты басып → Сайт параметрлері → Дыбыс → Рұқсат ету.", "ru": "Chrome умеет глушить звук по сайтам: нажмите замок в адресной строке → Настройки сайтов → Звук → Разрешить.", "en": "Chrome can mute sound per site: click the padlock in the address bar → Site settings → Sound → Allow."},
-	"listen.found":           {"kz": "Табылған дауыс: %s.", "ru": "Найден голос: %s.", "en": "Voice found: %s."},
-	"listen.blocked":         {"kz": "Браузер дауыстап оқуды бұғаттады. Қайта басып көріңіз.", "ru": "Браузер заблокировал озвучивание. Попробуйте нажать ещё раз.", "en": "The browser blocked the reading. Try pressing again."},
-	"listen.failed":          {"kz": "Дауыстап оқу басталмады.", "ru": "Озвучивание не началось.", "en": "The reading did not start."},
-	"listen.hint":            {"kz": "Мақаланы браузер дауысымен тыңдау. Телефонда экран сөнгенде оқу тоқтайды.", "ru": "Прослушать статью голосом браузера. На телефоне чтение прерывается, когда гаснет экран.", "en": "Have the article read aloud by the browser. On a phone the reading stops when the screen locks."},
+	"listen.hint":            {"kz": "Мақаланы дауыстап тыңдауға болады.", "ru": "Статью можно послушать вслух.", "en": "The article can be listened to."},
+	"listen.failed":          {"kz": "Жазбаны ойнату мүмкін болмады. Бетті жаңартып көріңіз.", "ru": "Не удалось воспроизвести запись. Попробуйте обновить страницу.", "en": "The recording could not be played. Try reloading the page."},
+	"listen.missing":         {"kz": "Бұл мақаланың дыбыс жазбасы табылмады. Біз хабардармыз және қалпына келтіреміз.", "ru": "Звуковая запись этой статьи не найдена. Мы знаем об этом и восстановим её.", "en": "The recording for this article is missing. We know, and we will restore it."},
+	"listen.decode":          {"kz": "Браузеріңіз бұл дыбыс форматын ашпайды. Басқа браузерде тыңдап көріңіз.", "ru": "Ваш браузер не открывает этот звуковой формат. Попробуйте другой браузер.", "en": "Your browser will not open this audio format. Try another browser."},
+	"listen.network":         {"kz": "Байланыс үзілді, жазба толық жүктелмеді.", "ru": "Связь прервалась, запись загрузилась не полностью.", "en": "The connection dropped and the recording did not finish loading."},
+	"listen.slow":            {"kz": "Жазба баяу жүктелуде — байланысты тексеріңіз.", "ru": "Запись загружается медленно — проверьте связь.", "en": "The recording is loading slowly — check your connection."},
+	"listen.blocked":         {"kz": "Браузер ойнатудан бас тартты. Тыңдау түймесін қайта басыңыз.", "ru": "Браузер отказался воспроизвести звук. Нажмите «Слушать» ещё раз.", "en": "The browser refused to play. Press Listen again."},
+	"listen.stale":           {"kz": "Мақала жазба жасалғаннан кейін өңделген: дыбыс мәтіннен өзгеше болуы мүмкін.", "ru": "Статью правили после записи: звук может отличаться от текста.", "en": "The article was edited after it was recorded: the audio may differ from the text."},
 	"article.read_min":       {"kz": "мин оқу", "ru": "мин чтения", "en": "min read"},
 	"share.title":            {"kz": "Бөлісу", "ru": "Поделиться", "en": "Share"},
 	"share.foot":             {"kz": "Мақала пайдалы болса — бөлісіңіз", "ru": "Если статья была полезной — поделитесь", "en": "If this was worth your time, pass it on"},
