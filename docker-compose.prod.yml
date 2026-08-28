@@ -63,6 +63,28 @@ networks:
       config:
         - subnet: 172.28.0.0/16
 
+  # The speech synthesiser that reads articles aloud. Kept beside the app
+  # rather than inside it: it is Python with an ONNX runtime and 240 MB of voice
+  # models, while the app is a small static binary. It is not published to the
+  # internet -- only the app talks to it, over the compose network.
+  #
+  # Memory is the constraint, not speed. The Kazakh voice is around 600 MB
+  # resident and synthesises at roughly twice real time on these four cores,
+  # which is fast enough to keep ahead of a listener; two of them at once is
+  # what gets this container killed, so the service serialises its work.
+  tts:
+    build: ./deploy/tts
+    restart: unless-stopped
+    environment:
+      TTS_PORT: 8081
+    volumes:
+      # Filled once by deploy/tts/fetch-voices.sh. Out of the image because the
+      # models are large, change about never, and carry their own licence.
+      - /var/lib/shanraq/voices:/models:ro
+    mem_limit: 1600m
+    expose:
+      - "8081"
+
 volumes:
   db-data:
   media-data:

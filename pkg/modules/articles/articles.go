@@ -38,6 +38,7 @@ type Module struct {
 	loans         *LoanStore
 	ads           *AdStore
 	audio         *AudioStore
+	tts           *ttsClient
 	apiAuth       func(http.Handler) http.Handler
 	mods          *ModStore
 	refs          *ReferralStore
@@ -89,6 +90,11 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.loans = NewLoanStore(rt.DB)
 	m.ads = NewAdStore(rt.DB)
 	m.audio = NewAudioStore(rt.DB)
+	// No URL configured means no narration: the button simply does not appear,
+	// which is how every article read before this existed.
+	if u := strings.TrimSpace(rt.Config.TTS.URL); u != "" {
+		m.tts = newTTSClient(u)
+	}
 	m.mods = NewModStore(rt.DB)
 	m.refs = NewReferralStore(rt.DB)
 	m.reagents = NewAgentStore(rt.DB)

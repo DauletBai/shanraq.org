@@ -25,6 +25,7 @@ type Config struct {
 	Payments      PaymentsConfig      `mapstructure:"payments"`
 	Syndicate     SyndicateConfig     `mapstructure:"syndicate"`
 	Media         MediaConfig         `mapstructure:"media"`
+	TTS           TTSConfig           `mapstructure:"tts"`
 	Social        SocialConfig        `mapstructure:"social"`
 	Operator      OperatorConfig      `mapstructure:"operator"`
 	Bootstrap     BootstrapConfig     `mapstructure:"bootstrap"`
@@ -128,6 +129,16 @@ type TelegramConfig struct {
 	Enabled  bool   `mapstructure:"enabled"`
 	BotToken string `mapstructure:"bot_token"`
 	ChatID   string `mapstructure:"chat_id"`
+}
+
+// TTSConfig points at the speech synthesiser that reads articles aloud.
+//
+// It is a separate service on the private network rather than a library,
+// because it is Python with an ONNX runtime and 240 MB of voice models while
+// the site is a static Go binary. Empty URL means no narration: articles keep
+// working and simply show no listen button, which is where they started.
+type TTSConfig struct {
+	URL string `mapstructure:"url"`
 }
 
 // AIConfig controls the optional AI writing assistant. It stays disabled until

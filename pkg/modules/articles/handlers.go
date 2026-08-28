@@ -1941,6 +1941,7 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
 			m.rt.Logger.Warn("enqueue publish", zap.Error(err))
 		}
+		m.narrateAfterPublish(r.Context(), id)
 		http.Redirect(w, r, "/studio?ok=published", http.StatusSeeOther)
 		return
 	}
@@ -1982,6 +1983,7 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
 			m.rt.Logger.Warn("enqueue publish", zap.Error(err))
 		}
+		m.narrateAfterPublish(r.Context(), id)
 		http.Redirect(w, r, "/studio?ok=published", http.StatusSeeOther)
 		return
 	}
@@ -2001,6 +2003,7 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		if err := m.syndicate.EnqueuePublish(r.Context(), m.jobs, id); err != nil {
 			m.rt.Logger.Warn("enqueue publish", zap.Error(err))
 		}
+		m.narrateAfterPublish(r.Context(), id)
 		http.Redirect(w, r, "/studio?ok=published", http.StatusSeeOther)
 	case blocking > 0:
 		http.Redirect(w, r, "/studio/moderation?ok=returned", http.StatusSeeOther)

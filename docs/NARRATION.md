@@ -25,51 +25,94 @@ twenty years.
 |---|---|
 | Table | `article_audio`, migration `20251108004400_article_audio.sql` |
 | Store and digest | `pkg/modules/articles/audio.go` |
-| Upload endpoint | `pkg/modules/articles/audio_http.go` |
+| Blocks and text cleaning | `pkg/modules/articles/narrate.go` |
+| Client and background job | `pkg/modules/articles/narrate_job.go` |
+| Synthesiser service | `deploy/tts/` |
 | Blob storage | `media.Module.SaveBlob` / `DeleteBlob` |
-| Player | `web/static/js/listen.js`, the recorded-reading branch |
-| Generator | `scripts/narrate.py` |
+| Player | `web/static/js/listen.js` |
+| Manual upload (rarely needed) | `pkg/modules/articles/audio_http.go`, `scripts/narrate.py` |
 
-## The server has no synthesiser
+## The synthesiser runs on the server
 
-Deliberately. Piper needs a voice model — 122 MB for Kazakh, 60 MB each for
-Russian and English — plus espeak-ng and an ONNX runtime. None of that belongs
-on a small VPS to render audio that changes once per article.
+Narration used to be produced on a laptop and uploaded. That was wrong for a
+site that gains an article a day: every publication would have waited on someone
+remembering to run a script, and authors would have inherited a chore that has
+nothing to do with writing.
 
-So narration is produced wherever the models are, usually a laptop, and posted
-back. The server stores the file and serves it. Nothing about playback depends
-on the generator being reachable, or existing at all.
+So the synthesiser is a container beside the app, `deploy/tts`. It is separate
+from the app rather than inside it because it is Python with an ONNX runtime and
+240 MB of voice models, while the app is a small static Go binary; fusing them
+would put a component that changes once a year into every deploy. It is not
+published to the internet — only the app talks to it, over the compose network.
 
-## Running the generator
+**Measured on this VPS** (4 cores, Broadwell, 3.9 GB):
 
-Piper and the voices are not vendored. Set up once:
-
-    python3 -m venv ~/.piper-venv
-    ~/.piper-venv/bin/pip install piper-tts
-    brew install espeak-ng          # see the espeak note below
-
-Download voices from `rhasspy/piper-voices` on Hugging Face:
-
-| Language | Voice | Size |
+| Language | Speed | Peak memory |
 |---|---|---|
-| Kazakh | `kk/kk_KZ/issai/high` | 122 MB |
-| Russian | `ru/ru_RU/dmitri/medium` | 60 MB |
-| English | `en/en_US/lessac/medium` | 60 MB |
+| Russian | 10.8× real time | 440 MB |
+| Kazakh | 2.2× real time | 602 MB |
 
-Then, for one article and one language:
+Kazakh is slower because its voice is the "high" model rather than "medium" —
+122 MB against 60 MB. It is worth it: Kazakh is the language no browser could
+speak at all, and the one we cannot afford to get wrong.
 
-    export SHANRAQ_BASE=https://shanraq.org
-    export SHANRAQ_API_KEY=<key with the operator or admin role>
-    ~/.piper-venv/bin/python scripts/narrate.py \
-        --slug sel-nad-almaty-... --lang kz \
-        --model ~/voices/kk_KZ-issai-high.onnx
+Memory, not speed, is the constraint. Two Kazakh readings at once is 1.2 GB of
+model plus working memory on a machine with less than four, so the service holds
+a lock and synthesises one article at a time. The container has a 1600 MB limit
+so that a runaway job is killed rather than taking Postgres with it.
 
-Add `--dry-run --out /tmp/preview.m4a` to hear it before anything is uploaded.
+## Voices are a mounted volume
 
-Roughly what to expect: a Kazakh article synthesises at about twice real time
-because the Kazakh voice is a high-quality model; Russian and English run at
-fourteen to sixteen times real time on the same machine. An eighteen-minute
-article lands at about six megabytes at 48 kbit/s.
+They are not in the image and not in git: 240 MB together, they change about
+never, and the Kazakh one carries its own licence. Fill the volume once on the
+host:
+
+    deploy/tts/fetch-voices.sh /var/lib/shanraq/voices
+
+## Mixed-language text
+
+An article is not monolingual. A Russian piece carries "Eurasian Resources
+Group"; a Kazakh one carries the same. Read by the wrong voice those come out as
+a Russian speaker spelling through English letters, and the listener hears a
+mistake rather than a name.
+
+Each block is therefore cut into runs of one language and each run is spoken by
+its own voice. All three models share a 22 050 Hz sample rate, which is what
+lets the pieces be joined without resampling.
+
+What the detection can and cannot see:
+
+- **Latin letters are English.** Reliable.
+- **The letters Kazakh has and Russian does not** — ә ғ қ ң ө ұ ү һ і — mark
+  Kazakh. Reliable.
+- **Russian inside Kazakh is invisible.** Both are Cyrillic, and a Russian word
+  carrying none of those letters is spelled exactly like a Kazakh one. Telling
+  them apart needs a dictionary. Until then such words are read in the article's
+  own voice.
+
+A run must be at least four letters to earn a change of voice. Below that the
+sentence stutters between two speakers, which is worse than reading a short
+abbreviation slightly wrong: "ERG" in a Russian voice is how it is said aloud
+here anyway.
+
+## What the text loses on the way to the ear
+
+A page is written for eyes. `speechText` in `pkg/modules/articles/narrate.go`
+removes what means nothing aloud, and keeps what does:
+
+| Removed | Why |
+|---|---|
+| `\ | * # ~ ^ < > { } [ ] _` | noise dropped into the middle of a sentence |
+| `( ) « » „ " " ' '` | punctuation for the eye; **the words inside stay** |
+| bare URLs | "h t t p s colon slash slash" for twenty characters |
+| `·` `•` between sources | reads as "middle dot"; it is a pause |
+
+| Rewritten | Why |
+|---|---|
+| `16 700` → `16700` | a thousands separator is read as a full stop: "sixteen, seven hundred" |
+| ` — ` → `, ` | a spaced dash is a pause; a hyphen inside a word must survive |
+
+A hyphen against a word is left alone, or compound words come apart.
 
 ## The cue map is the whole trick
 
@@ -77,37 +120,37 @@ The page highlights the paragraph being read and scrolls to follow it. Speech
 synthesis gave that away free — it fires an event as it crosses each word. A
 finished audio file says nothing at all about itself.
 
-So the generator synthesises **one block at a time**, records how long each
-took, and uploads the offsets alongside the audio:
+So the service synthesises **one block at a time**, records how long each took,
+and returns the offsets alongside the audio:
 
     [{"i": 0, "a": 0.0, "b": 30.5}, {"i": 1, "a": 30.5, "b": 55.9}, ...]
 
 `i` indexes the block sequence. Cue N and block N must be the same paragraph,
-which means the block rule exists in two places and they have to agree:
+which means the block rule exists in more than one place and they have to agree:
 
-- `blockEls()` in `listen.js`
-- `Blocks` in `narrate.py`
+- `NarrationBlocks` in `narrate.go` — what gets synthesised
+- `blockEls()` in `listen.js` — what gets highlighted
+- `Blocks` in `narrate.py` — only for the manual path
 
-Both say: outermost blocks of `p, h2, h3, h4, li, blockquote, figcaption, th,
+All say: outermost blocks of `p, h2, h3, h4, li, blockquote, figcaption, th,
 td`; skip anything inside `pre` or `code`; skip `aria-hidden`; skip anything
-shorter than two characters. **Change one and the highlight drifts away from
-the sound** — silently, and only on articles with nested markup.
-
-The map travels in the `X-Audio-Cues` header rather than the query string: a
-long article has a cue per block, which is kilobytes of JSON, and query strings
-get truncated by proxies and written into access logs.
+shorter than two characters. **Change one and the highlight drifts away from the
+sound** — silently, and only on articles with nested markup. `narrate_test.go`
+pins both halves of the Go side.
 
 ## Staleness
 
 An article edited after narration leaves the recording saying something the page
 no longer says. It still plays; nothing errors.
 
-The page computes a digest of the served title and body, hands it to the reader
-in `data-text-digest`, and the generator echoes it back with the audio. The
-digest is computed in exactly one place on purpose: a second implementation of
-"the same text" would drift, and every narration would report itself stale.
+`TextDigest` is computed in exactly one place and used by both sides: the job
+stores it with the audio, and the page compares it against the text it is about
+to serve. A second implementation of "the same text" would drift, and every
+narration would report itself stale.
 
-When they differ the page carries `data-stale="1"`. Re-run the generator.
+When they differ the page carries `data-stale="1"`. Re-publishing the article
+queues a fresh reading; an unchanged article is skipped without spending the
+eleven minutes of Kazakh synthesis to arrive at the same file.
 
 ## Two traps that were handled
 

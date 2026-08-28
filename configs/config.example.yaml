@@ -95,3 +95,8 @@ operator:
   address_en: ""       # registered address (EN, optional)
   email: ""            # operator contact, e.g. support@shanraq.org
   phone: ""            # optional
+
+# Speech synthesiser for reading articles aloud. Empty or absent means no
+# narration: articles work exactly as before and show no listen button.
+tts:
+  url: "http://tts:8081"
