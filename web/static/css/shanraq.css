@@ -477,7 +477,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   /* Same gradient geometry as the accent card: 120deg, two stops, dark towards
      the bottom right. White text on a filled ground takes a steep slope without
      losing legibility, so this one runs the full range. */
-  background: linear-gradient(120deg, #737577, #191b1d);
+  background: linear-gradient(150deg, #737577 0%, #454545 55%, #191b1d 100%);
 }
 .adslot__slide:hover { text-decoration: none; }
 .adslot__title { font-family: var(--serif); font-size: var(--step-1); font-weight: 800; line-height: 1.2; }
@@ -675,9 +675,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
      text on a mid grey at 3:1, under the 4.5:1 floor. Holding the surface flat
      for the first 55% keeps every line of text on the light ground and spends
      the depth on the empty corner, where nothing has to be read. */
-  background: linear-gradient(120deg,
-    var(--surface-2) 55%,
-    color-mix(in srgb, var(--surface-2) 62%, #000) 100%);
+  background: linear-gradient(150deg, #fff6e340 0%, #e3d5b940 55%, #beaa8340 100%);
 }
 .aside__title { font-size: var(--step-1); margin-bottom: 8px; }
 .aside__text { color: var(--ink-soft); font-size: var(--step--1); margin: 0; }
