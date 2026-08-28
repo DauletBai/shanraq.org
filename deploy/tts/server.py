@@ -34,6 +34,18 @@ VOICES = {
 }
 BITRATE = os.environ.get("TTS_BITRATE", "24k")
 
+# How long each phoneme is held. Above 1.0 is slower.
+#
+# At the default pace the voice clips the ends of words -- Russian and Kazakh
+# both carry their grammar in the endings, so a swallowed suffix is not a
+# blemish but a lost case or a lost tense. Ten per cent slower is enough to land
+# them and is still a natural reading speed; it costs the same ten per cent in
+# file size and synthesis time.
+#
+# Kept as an environment variable because the right value is a judgement made by
+# ear, and finding it should not require rebuilding an image.
+LENGTH_SCALE = float(os.environ.get("TTS_LENGTH_SCALE", "1.1"))
+
 # ---- mixed-language text ---------------------------------------------------
 #
 # Our articles are not monolingual. A Russian piece carries "Eurasian Resources
@@ -132,7 +144,7 @@ def synthesize(lang, blocks):
     """One WAV of the whole article, and where each block sits inside it."""
     from piper import SynthesisConfig
 
-    cfg = SynthesisConfig()
+    cfg = SynthesisConfig(length_scale=LENGTH_SCALE)
     frames, cues, cursor = [], [], 0.0
     rate = channels = width = None
 

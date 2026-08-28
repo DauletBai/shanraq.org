@@ -77,6 +77,11 @@ networks:
     restart: unless-stopped
     environment:
       TTS_PORT: 8081
+      # Ten per cent slower than the model's default pace. At the default the
+      # voice clips the ends of words, and both Russian and Kazakh carry their
+      # grammar there -- a swallowed suffix is a lost case, not a blemish.
+      # Tune by ear without rebuilding: raise for slower, 1.0 is the default.
+      TTS_LENGTH_SCALE: "1.1"
     volumes:
       # Filled once by deploy/tts/fetch-voices.sh. Out of the image because the
       # models are large, change about never, and carry their own licence.
