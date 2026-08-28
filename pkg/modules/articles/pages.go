@@ -81,6 +81,20 @@ Shanraq.org is a home where free voices meet.`},
 
 **Что будет, если языка не хватает.** Статья не опубликуется: проверка перед публикацией смотрит на это вместе с остальными правилами и возвращает материал, называя, какой именно версии нет. Кнопка вернёт вас в редактор с тем же сообщением.
 
+## Статью можно слушать
+
+Под заголовком каждой статьи есть кнопка «Слушать». Она читает текст вслух, подсвечивает абзац, который звучит сейчас, и сама прокручивает страницу следом. Можно заниматься своими делами и слушать, не глядя в экран, а когда взгляд возвращается — сразу видно, где идёт чтение.
+
+Читать статью могут двумя способами, и это заметно на слух.
+
+**Записанное чтение.** Мы заранее озвучиваем статью и храним готовый файл. Тогда это обычный аудиоплеер: звучит одинаково у всех, работает на телефоне с погашенным экраном и ничего не требует от настроек вашего устройства.
+
+**Голос браузера.** Если записи для этой статьи ещё нет, текст читает синтезатор, встроенный в ваш браузер. Он бесплатен и всегда под рукой, но зависит от того, какие голоса стоят в системе, и на телефоне замолкает, когда гаснет экран.
+
+Разница особенно важна для казахского. Ни один браузер не поставляется с казахским голосом, поэтому раньше на казахской статье предлагался русский — то есть казахский текст читался русским голосом. Записанное чтение это исправляет: казахский звучит по-казахски.
+
+Если статью правили после того, как её озвучили, запись может отличаться от текста на экране. Мы это видим и заново озвучиваем такие статьи.
+
 ## Погода и архив по дням
 В полосе наверху каждой страницы кликается всё: дата, погода и каждый курс валют.
 
@@ -286,6 +300,20 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 
 **Тіл жетіспесе не болады.** Мақала жарияланбайды: жариялау алдындағы тексеру мұны басқа ережелермен бірге қарап, қай нұсқа жоқ екенін атап, материалды қайтарады. Түйме сізді сол хабарламамен редакторға қайтарады.
 
+## Мақаланы тыңдауға болады
+
+Әр мақаланың тақырыбының астында «Тыңдау» түймесі бар. Ол мәтінді дауыстап оқиды, дәл қазір оқылып жатқан абзацты бөліп көрсетеді және бетті өзі сол бағытта жылжытады. Өз ісіңізбен айналысып, экранға қарамай тыңдай беруге болады, ал көз қайта түскенде оқу қай жерде екені бірден көрінеді.
+
+Мақаланы екі тәсілмен оқи алады, және мұны құлақ ажыратады.
+
+**Жазылған оқу.** Біз мақаланы алдын ала дауыстап жазып, дайын файлды сақтаймыз. Бұл — кәдімгі аудиоплеер: бәрінде бірдей естіледі, экраны сөнген телефонда да жұмыс істейді және құрылғыңыздың баптауларынан ештеңе талап етпейді.
+
+**Браузер дауысы.** Егер бұл мақалаға жазба әлі болмаса, мәтінді браузерге кірістірілген синтезатор оқиды. Ол тегін әрі әрқашан қолжетімді, бірақ жүйеде қандай дауыстар орнатылғанына тәуелді және телефонда экран сөнгенде үнсіз қалады.
+
+Айырмашылық әсіресе қазақ тілі үшін маңызды. Бірде-бір браузер қазақ дауысымен келмейді, сондықтан бұрын қазақ мақаласында орыс дауысы ұсынылатын — яғни қазақ мәтінін орыс дауысы оқитын. Жазылған оқу мұны түзетеді: қазақша қазақша естіледі.
+
+Егер мақала дауыстап жазылғаннан кейін өңделсе, жазба экрандағы мәтіннен өзгеше болуы мүмкін. Біз мұны көріп отырамыз және ондай мақалаларды қайта дауыстаймыз.
+
 ## Ауа райы және күндер бойынша мұрағат
 Әр беттің жоғарғы жолағында бәрі басылады: күні, ауа райы және әр валюта бағамы.
 
@@ -490,6 +518,20 @@ The law speaks of announcements; we apply the rule to everything written for a p
 **Check the Kazakh.** Machine translation into Kazakh is markedly weaker than into Russian or English: terminology, official register and word forms are what suffer. Read the Kazakh version through yourself, and show official, medical or legal material to someone who knows the language professionally — a translator, an editor, a specialist in the subject. Your name stands under the article: you answer for the text, not the machine.
 
 **What happens when a language is missing.** The article will not publish: the pre-publication check weighs this along with the other rules and returns the material, naming the version that is absent. The button sends you back to the editor with the same message.
+
+## An article can be listened to
+
+Under every article's title there is a Listen button. It reads the text aloud, highlights the paragraph being spoken, and scrolls the page along with it. You can get on with something else and listen without watching the screen; when you look back, you can see at once where the reading has got to.
+
+An article can be read to you in two ways, and the difference is audible.
+
+**A recording.** We narrate the article in advance and keep the finished file. That makes it an ordinary audio player: it sounds the same for everyone, it works on a phone with the screen off, and it asks nothing of your device's settings.
+
+**The browser's own voice.** Where an article has no recording yet, the text is read by the synthesiser built into your browser. That is free and always at hand, but it depends on which voices your system happens to have, and on a phone it falls silent when the screen locks.
+
+The difference matters most for Kazakh. No browser ships a Kazakh voice, so a Kazakh article used to be offered a Russian one -- Kazakh text read in a Russian voice. A recording fixes that: Kazakh sounds Kazakh.
+
+If an article was edited after it was narrated, the recording may differ from the text on screen. We can see when that has happened, and we re-record those articles.
 
 ## Weather and the archive by day
 Everything in the strip at the top of every page is clickable: the date, the weather and each exchange rate.
