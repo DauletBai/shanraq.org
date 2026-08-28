@@ -3279,13 +3279,18 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* The block being spoken. A tint rather than a border: the text must not move
    as the highlight travels down the article. */
-.prose .listen-now { background: rgba(211, 47, 47, 0.5); border-radius: 4px; }
+/* The line being read aloud. Twenty per cent, not fifty: at fifty the wash was
+   dark enough to fight the words on top of it -- 4.3:1 against --ink in the
+   light theme and 3.9:1 in the dark, both under the 4.5:1 floor. The mark has
+   to say "here" without making "here" the one line you cannot read. At twenty
+   it clears 7:1 and 6.7:1. */
+.prose .listen-now { background: rgba(211, 47, 47, 0.2); border-radius: 4px; }
 /* In the dark theme the same red at the same strength sits on a dark ground,
    where it reads as muddy rather than marked; the lighter brand red keeps the
    text legible at the same fifty per cent. */
-:root[data-theme="dark"] .prose .listen-now { background: rgba(255, 122, 114, 0.5); }
+:root[data-theme="dark"] .prose .listen-now { background: rgba(255, 122, 114, 0.2); }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .prose .listen-now { background: rgba(255, 122, 114, 0.5); }
+  :root:not([data-theme="light"]) .prose .listen-now { background: rgba(255, 122, 114, 0.2); }
 }
 .listen__note { flex-basis: 100%; margin: 4px 0 0; font-size: .85rem; line-height: 1.4;
   color: var(--ink); border-left: 3px solid var(--gold); padding-left: 10px; }
