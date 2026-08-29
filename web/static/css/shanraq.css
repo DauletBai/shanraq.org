@@ -477,7 +477,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   /* Three stops over 150 degrees, dark towards the bottom right. White text on
      a filled ground takes a steep slope without losing legibility, so this card
      runs the full range from mid grey to near black. */
-  background: linear-gradient(150deg, #737577 0%, #454545 55%, #191b1d 100%);
+  background: linear-gradient(150deg, #606060 0%, #404040 55%, #202020 100%);
 }
 .adslot__slide:hover { text-decoration: none; }
 .adslot__title { font-family: var(--serif); font-size: var(--step-1); font-weight: 800; line-height: 1.2; }
