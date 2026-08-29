@@ -2092,7 +2092,6 @@ var messages = map[string]map[string]string{
 	"tc.aud_mobkz":  {"kz": "Моб. Қаз.", "ru": "Моб. Каз.", "en": "Mobile, KZ"},
 	"tc.per_hour":   {"kz": "Сағат сайын", "ru": "По часам", "en": "By hour"},
 	"tc.per_day":    {"kz": "Күн сайын", "ru": "По дням", "en": "By day"},
-	"tc.per_week":   {"kz": "Апта сайын", "ru": "По неделям", "en": "By week"},
 	"tc.per_month":  {"kz": "Ай сайын", "ru": "По месяцам", "en": "By month"},
 	"tc.s_hosts":    {"kz": "Хосттар", "ru": "Хосты", "en": "Hosts"},
 	"tc.s_visitors": {"kz": "Келушілер", "ru": "Посетители", "en": "Visitors"},

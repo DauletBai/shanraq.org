@@ -3487,7 +3487,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 :root[data-theme="dark"] .tc { --tc-0: #35A183; --tc-1: #C87A2E; --tc-2: #4A8FD0; --tc-3: #BE72A3; }
 
-.tc__switches { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 0 0 16px; }
+/* Audience on the left, period on the right: two questions, pushed apart so
+   the eye does not read eight pills as one row of choices. They stack when
+   the row cannot hold both. */
+.tc__switches { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 22px; margin: 0 0 16px; }
 .tc__row { display: flex; flex-wrap: wrap; gap: 4px; }
 .tc__sw {
   font-size: .82rem; padding: 5px 11px; border-radius: 999px;

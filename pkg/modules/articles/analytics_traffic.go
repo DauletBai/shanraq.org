@@ -44,11 +44,14 @@ type trafficPeriod struct {
 	Window time.Duration
 }
 
+// Each slice shows the whole of the next unit up: hours make a day, days make a
+// month, months make a year. Weeks sat between the first two and told the same
+// story as days with fewer points -- a slice that duplicates its neighbour is
+// one more thing to click and nothing more to learn.
 var trafficPeriods = []trafficPeriod{
 	{Code: "hour", Trunc: "hour", Window: 24 * time.Hour},
 	{Code: "day", Trunc: "day", Window: 30 * 24 * time.Hour},
-	{Code: "week", Trunc: "week", Window: 26 * 7 * 24 * time.Hour},
-	{Code: "month", Trunc: "month", Window: 730 * 24 * time.Hour},
+	{Code: "month", Trunc: "month", Window: 365 * 24 * time.Hour},
 }
 
 func audienceByCode(c string) trafficAudience {
