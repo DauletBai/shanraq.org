@@ -27,6 +27,7 @@ const publicStatsTTL = time.Hour
 
 // PublicStats backs /analytics.
 type PublicStats struct {
+	Traffic TrafficChart
 	Base
 	Guests GuestAnalytics
 
@@ -76,6 +77,9 @@ func (m *Module) handlePublicStats(w http.ResponseWriter, r *http.Request) {
 
 	page.Base = m.base(r, T(lang, "stats.title"), lang)
 	page.Desc = T(lang, "stats.desc")
+	// Outside the cache: the switches are part of the address, so a cached page
+	// would serve one reader's choice of audience to the next one.
+	page.Traffic = m.trafficChartFrom(r)
 	m.render(w, "stats", page)
 }
 

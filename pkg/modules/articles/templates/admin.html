@@ -91,6 +91,14 @@
         <div class="adm-kpi"><span class="adm-kpi__ic">⌂</span><b>{{ .Analytics.ActiveListing }}</b><span>{{ t .Lang "an2.listings" }}</span></div>
       </div>
 
+      {{/* The traffic chart under the counters, on the same data and the same
+           switches as /analytics: the panel and the page an advertiser reads
+           must never show different numbers for the same question. */}}
+      <div class="adm-card">
+        <h2 class="adm-card__h">{{ t .Lang "tc.alt" }}</h2>
+        {{ template "trafficchart" (dict "Chart" .Traffic "Lang" .Lang "Base" "/admin") }}
+      </div>
+
       {{/* Three panels, not two. Referrals shared a row with a card holding both
            Content and Engagement, so the taller neighbour stretched the row and
            left Referrals with a band of nothing underneath. One subject per

@@ -340,6 +340,11 @@ type Metrics struct {
 	log *zap.Logger
 	mu  sync.Mutex
 	buf map[metricKey]int64
+	// slots buffers visitor-slots on the same mutex and the same ticker as the
+	// counters above; see analytics_slots.go for what a slot is and why the
+	// identifiers in it cannot outlive the day that made them.
+	slots map[slotKey]int64
+	salts saltCache
 }
 
 // NewMetrics returns a collector bound to the pool.
@@ -480,10 +485,14 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 					// hosting/cloud/VPN networks — and discarded. Nothing per-visitor
 					// is stored. The country|lang cross tells, e.g., whether the
 					// masked VPN visitors read Russian (locals/Russia) or English.
-					if c := m.geoip.geoLabel(clientIP(r)); c != "" {
-						m.metrics.inc(metricCountry, c, guest)
-						m.metrics.inc(metricGeoLang, c+"|"+lng, guest)
+					country := m.geoip.geoLabel(clientIP(r))
+					if country != "" {
+						m.metrics.inc(metricCountry, country, guest)
+						m.metrics.inc(metricGeoLang, country+"|"+lng, guest)
 					}
+					// The same hit against its visitor-slot, which is where
+					// hosts, visitors and visits come from.
+					m.metrics.noteSlot(r.Context(), r, country == "KZ", deviceClass(ua) == "mobile")
 				}
 			}
 		}
@@ -509,14 +518,25 @@ func (m *Module) handleTrack(w http.ResponseWriter, r *http.Request) {
 func (m *Module) metricsFlushLoop(ctx context.Context) {
 	t := time.NewTicker(30 * time.Second)
 	defer t.Stop()
+	// Expiring the old salts is not housekeeping: the privacy policy says
+	// yesterday's key cannot be recovered, which holds only while something
+	// deletes it. Hourly, and once at boot so a restarted process does not
+	// leave a stale key sitting for an hour.
+	purge := time.NewTicker(time.Hour)
+	defer purge.Stop()
+	go m.metrics.purge(ctx)
 	for {
 		select {
 		case <-ctx.Done():
 			// Detach from the cancelled request context for the final write.
 			m.metrics.Flush(context.Background())
+			m.metrics.flushSlots(context.Background())
 			return
 		case <-t.C:
 			m.metrics.Flush(ctx)
+			m.metrics.flushSlots(ctx)
+		case <-purge.C:
+			m.metrics.purge(ctx)
 		}
 	}
 }

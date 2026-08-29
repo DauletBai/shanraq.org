@@ -35,6 +35,17 @@
         <div class="stat-tile"><b>{{ money .Comments }}</b><span>{{ t .Lang "stats.comments" }}</span></div>
       </div>
 
+      {{/* Hosts, visitors, visits and views, under their own switches. It runs
+           above the older sparkline because it answers the question the page is
+           opened with, and the sparkline is a fourteen-day detail of one of its
+           four lines. */}}
+      <div class="charts">
+        <div class="chart">
+          <h2 class="chart__h">{{ t .Lang "tc.alt" }}</h2>
+          {{ template "trafficchart" (dict "Chart" .Traffic "Lang" .Lang "Base" "/analytics") }}
+        </div>
+      </div>
+
       {{/* The daily chart runs full width: it has a time axis, and halving that
            means reading a month in two goes. */}}
       <div class="charts">

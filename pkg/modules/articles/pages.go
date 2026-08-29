@@ -1094,7 +1094,17 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 Мы применяем организационные и технические меры защиты (хеширование паролей, ограничение доступа, защита от подделки запросов, заголовки безопасности, ограничение частоты попыток входа). При выявлении несанкционированного доступа к персональным данным мы уведомляем уполномоченный орган в срок, установленный законом (по общему правилу — в течение одного рабочего дня).
 
 ## 9. Cookie и аналитика
-Мы используем технически необходимые cookie (например, для сессии входа) и, при наличии, минимальную аналитику для улучшения сервиса. В подвале сайта установлен счётчик посещаемости ZERO.kz: он считает просмотры страниц независимо от нас, чтобы цифры посещаемости, которые мы показываем рекламодателям, не были посчитаны только нами самими. Счётчик — это картинка: при открытии страницы ваш браузер запрашивает её у ZERO.kz и тем самым сообщает туда ваш IP-адрес и тип браузера. Код ZERO.kz на наших страницах не выполняется — политика безопасности этого не позволяет. Таргетированная реклама на основе расы, национальности, политических взглядов, биометрических данных или данных о здоровье не ведётся.
+Мы используем технически необходимые cookie (например, для сессии входа) и собственную аналитику посещаемости.
+
+**Зачем мы считаем.** Чтобы показывать рекламодателю размер и состав аудитории и чтобы понимать, что читают. Без этих цифр реклама на сайте не продаётся, а без неё сайт не живёт.
+
+**Что именно считается.** Хосты, посетители, визиты и просмотры — по получасовым интервалам, с разбивкой на Казахстан и остальной мир, мобильные и прочие устройства. Эти же цифры открыто показаны всем на странице «Аналитика»: мы не держим для себя данных, которых не показываем вам.
+
+**Как это устроено, чтобы не стать слежкой.** Посетитель считается по анонимному идентификатору. Он вычисляется из IP-адреса и строки браузера ключом, который создаётся заново каждые сутки; сам адрес нигде не сохраняется. Ключ вчерашнего дня не восстанавливается, поэтому один и тот же человек в понедельник и во вторник даёт два несвязанных значения. Проследить за кем-то дольше суток нельзя технически — в том числе нам.
+
+**Чего мы не делаем.** Не записываем ваш путь по сайту, не строим профиль интересов, не передаём эти данные третьим лицам и не используем их для подбора рекламы под конкретного человека.
+
+В подвале сайта установлен счётчик посещаемости ZERO.kz: он считает просмотры страниц независимо от нас, чтобы цифры посещаемости, которые мы показываем рекламодателям, не были посчитаны только нами самими. Счётчик — это картинка: при открытии страницы ваш браузер запрашивает её у ZERO.kz и тем самым сообщает туда ваш IP-адрес и тип браузера. Код ZERO.kz на наших страницах не выполняется — политика безопасности этого не позволяет. Таргетированная реклама на основе расы, национальности, политических взглядов, биометрических данных или данных о здоровье не ведётся.
 
 ## 10. Обработка с помощью ИИ
 ИИ применяется для проверки объявлений и статей на нарушения правил; он обрабатывает только текст материала в объёме, необходимом для этой задачи. Комментарии ИИ не читает — их оценивают читатели. Автоматический перевод отключён: версии на трёх языках пишет автор. Материалы ИИ-обозревателя явно маркируются и закрыты от поисковых систем. Мы не принимаем значимых для пользователя решений исключительно автоматически без возможности обращения к человеку.
@@ -1145,7 +1155,17 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 Біз қорғаудың ұйымдастырушылық және техникалық шараларын қолданамыз (құпия сөздерді хештеу, қолжетімділікті шектеу, сұрауларды жалғандаудан қорғау, қауіпсіздік тақырыпаттары, кіру әрекеттерінің жиілігін шектеу). Дербес деректерге рұқсатсыз қол жеткізу анықталған кезде біз уәкілетті органды заңда белгіленген мерзімде (жалпы ереже бойынша — бір жұмыс күні ішінде) хабардар етеміз.
 
 ## 9. Cookie және аналитика
-Біз техникалық тұрғыдан қажетті cookie файлдарын (мысалы, кіру сессиясы үшін) және бар болса, сервисті жақсарту үшін ең аз аналитиканы қолданамыз. Сайттың төменгі бөлігінде ZERO.kz келушілер санағышы орнатылған: ол бет қаралымдарын бізден тәуелсіз санайды, сондықтан жарнама берушілерге көрсететін сандарымызды тек өзіміз санаған болып шықпаймыз. Санағыш — сурет: бет ашылғанда браузеріңіз оны ZERO.kz-тен сұрайды және сол арқылы IP-мекенжайыңыз бен браузер түріңізді хабарлайды. ZERO.kz коды біздің беттерімізде орындалмайды — қауіпсіздік саясаты оған жол бермейді. Нәсіл, ұлт, саяси көзқарас, биометриялық деректер немесе денсаулық туралы деректер негізінде мақсатты жарнама жүргізілмейді.
+Біз техникалық тұрғыдан қажетті cookie файлдарын (мысалы, кіру сессиясы үшін) және өз келушілер аналитикамызды қолданамыз.
+
+**Не үшін санаймыз.** Жарнама берушіге аудиторияның көлемі мен құрамын көрсету үшін және не оқылатынын түсіну үшін. Бұл сандарсыз сайтта жарнама сатылмайды, ал онсыз сайттың өзі тұрмайды.
+
+**Не саналады.** Хосттар, келушілер, кірулер және қаралымдар — жарты сағаттық аралықтармен, Қазақстан мен қалған әлемге, мобильді және өзге құрылғыларға бөлініп. Дәл осы сандар «Аналитика» бетінде барлығына ашық көрсетілген: өзімізге көрсетпейтін дерек ұстамаймыз.
+
+**Бұл қалай бақылауға айналмайды.** Келуші анонимді идентификатормен саналады. Ол IP-мекенжай мен браузер жолынан күн сайын жаңадан жасалатын кілтпен есептеледі; мекенжайдың өзі еш жерде сақталмайды. Кешегі кілт қалпына келтірілмейді, сондықтан бір адам дүйсенбіде де, сейсенбіде де екі байланыссыз мән береді. Біреуді бір тәуліктен ұзақ қадағалау техникалық тұрғыдан мүмкін емес — бізге де.
+
+**Не істемейміз.** Сайттағы жолыңызды жазбаймыз, қызығушылық профилін құрмаймыз, бұл деректерді үшінші тұлғаларға бермейміз және нақты адамға жарнама таңдау үшін пайдаланбаймыз.
+
+Сайттың төменгі бөлігінде ZERO.kz келушілер санағышы орнатылған: ол бет қаралымдарын бізден тәуелсіз санайды, сондықтан жарнама берушілерге көрсететін сандарымызды тек өзіміз санаған болып шықпаймыз. Санағыш — сурет: бет ашылғанда браузеріңіз оны ZERO.kz-тен сұрайды және сол арқылы IP-мекенжайыңыз бен браузер түріңізді хабарлайды. ZERO.kz коды біздің беттерімізде орындалмайды — қауіпсіздік саясаты оған жол бермейді. Нәсіл, ұлт, саяси көзқарас, биометриялық деректер немесе денсаулық туралы деректер негізінде мақсатты жарнама жүргізілмейді.
 
 ## 10. ЖИ көмегімен өңдеу
 ЖИ хабарландырулар мен мақалаларды ережелердің бұзылуына тексеру үшін қолданылады; ол материал мәтінін ғана осы міндетке қажетті көлемде өңдейді. Пікірлерді ЖИ оқымайды — оларды оқырмандар бағалайды. Автоматты аударма өшірілген: үш тілдегі нұсқаны автор жазады. ЖИ-шолушының материалдары айқын белгіленеді және іздеу жүйелерінен жабық. Біз пайдаланушы үшін маңызды шешімдерді адамға жүгіну мүмкіндігінсіз тек автоматты түрде қабылдамаймыз.
@@ -1196,7 +1216,17 @@ Send requests through the [support page](/support).
 We apply organizational and technical protection measures (password hashing, access restriction, protection against request forgery, security headers, rate limiting of login attempts). If unauthorized access to personal data is detected, we notify the authorized body within the period established by law (as a general rule, within one business day).
 
 ## 9. Cookies and Analytics
-We use technically necessary cookies (for example, for the login session) and, where present, minimal analytics to improve the service. A ZERO.kz visitor counter runs in the site footer: it counts page views independently of us, so that the traffic figures we show advertisers are not figures only we have counted. The counter is an image: when a page opens, your browser requests it from ZERO.kz and thereby reports your IP address and browser type there. ZERO.kz code does not run on our pages — our security policy does not permit it. We do not conduct targeted advertising based on race, ethnicity, political views, biometric data, or health data.
+We use technically necessary cookies (for example, for the login session) and our own traffic analytics.
+
+**Why we count.** To show advertisers the size and shape of the audience, and to see what is read. Without those figures the advertising does not sell, and without that the site does not run.
+
+**What is counted.** Hosts, visitors, visits and views, in half-hour windows, split between Kazakhstan and the rest of the world and between mobile and other devices. The same figures are shown openly to everyone on the Analytics page: we keep no traffic data that we do not show you.
+
+**How it is kept from becoming surveillance.** A visitor is counted under an anonymous identifier, derived from the address and the browser string with a key that is generated afresh every day; the address itself is never stored anywhere. Yesterday's key cannot be recovered, so the same person on Monday and on Tuesday yields two unrelated values. Following anyone for longer than a day is not technically possible -- for us either.
+
+**What we do not do.** We do not record your path through the site, do not build an interest profile, do not pass this data to third parties, and do not use it to select advertising for a particular person.
+
+A ZERO.kz visitor counter runs in the site footer: it counts page views independently of us, so that the traffic figures we show advertisers are not figures only we have counted. The counter is an image: when a page opens, your browser requests it from ZERO.kz and thereby reports your IP address and browser type there. ZERO.kz code does not run on our pages — our security policy does not permit it. We do not conduct targeted advertising based on race, ethnicity, political views, biometric data, or health data.
 
 ## 10. Processing with the Help of AI
 AI is used to screen listings and articles for rule violations; it processes only the text of the material, to the extent necessary for that task. AI does not read comments — readers rate them. Automatic translation is switched off: the author writes the versions in all three languages. Materials of the AI columnist are clearly marked and closed to search engines. We do not make decisions of significance to the user solely automatically, without the possibility of recourse to a human.

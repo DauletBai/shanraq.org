@@ -3473,3 +3473,49 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   font-size: .68rem; text-transform: lowercase; letter-spacing: .02em;
   padding: 1px 7px; border: 1px solid currentColor; border-radius: 999px; opacity: .8;
 }
+
+/* ---- traffic chart ---------------------------------------------------- */
+/* Four categorical hues in a fixed order: a series keeps its colour whatever
+   the switches are set to, so changing the audience never repaints the ones
+   that remain. Both sets were checked against the light and the dark surface
+   for colour-vision separation rather than chosen by eye; the pink/blue pair
+   sits in the floor band, which is why every line is also named in the legend,
+   labelled at its own end, and repeated as a table underneath. */
+.tc { --tc-0: #0F7B5F; --tc-1: #A85400; --tc-2: #1A6FB5; --tc-3: #9C3F7A; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tc { --tc-0: #35A183; --tc-1: #C87A2E; --tc-2: #4A8FD0; --tc-3: #BE72A3; }
+}
+:root[data-theme="dark"] .tc { --tc-0: #35A183; --tc-1: #C87A2E; --tc-2: #4A8FD0; --tc-3: #BE72A3; }
+
+.tc__switches { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 0 0 16px; }
+.tc__row { display: flex; flex-wrap: wrap; gap: 4px; }
+.tc__sw {
+  font-size: .82rem; padding: 5px 11px; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--ink-soft); text-decoration: none;
+}
+.tc__sw:hover { border-color: var(--gold); color: var(--ink); text-decoration: none; }
+.tc__sw.is-on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+.tc__legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 10px; font-size: .84rem; }
+/* The swatch carries the identity; the word stays in ink, never in the series
+   colour, so the label is readable at any contrast. */
+.tc__key { display: inline-flex; align-items: center; gap: 7px; color: var(--ink-soft); }
+.tc__key::before { content: ""; width: 14px; height: 3px; border-radius: 2px; background: currentColor; }
+.tc__key--0::before { background: var(--tc-0); }
+.tc__key--1::before { background: var(--tc-1); }
+.tc__key--2::before { background: var(--tc-2); }
+.tc__key--3::before { background: var(--tc-3); }
+
+.tc__plot { position: relative; }
+.tc__plot svg { width: 100%; height: 300px; display: block; overflow: visible; }
+.tc__grid { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.tc__line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.tc__line--0 { stroke: var(--tc-0); } .tc__line--1 { stroke: var(--tc-1); }
+.tc__line--2 { stroke: var(--tc-2); } .tc__line--3 { stroke: var(--tc-3); }
+.tc__dot--0 { fill: var(--tc-0); } .tc__dot--1 { fill: var(--tc-1); }
+.tc__dot--2 { fill: var(--tc-2); } .tc__dot--3 { fill: var(--tc-3); }
+.tc__end { font-size: 13px; font-weight: 700; fill: var(--ink); }
+.tc__x { position: relative; height: 18px; margin: 6px 0 0; font-size: .74rem; color: var(--muted); }
+.tc__x span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.tc__table { margin-top: 14px; }
+.tc__table summary { cursor: pointer; font-size: .86rem; color: var(--ink-soft); }

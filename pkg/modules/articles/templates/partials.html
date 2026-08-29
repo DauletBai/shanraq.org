@@ -432,6 +432,74 @@
 </div>
 {{ end }}
 
+{{/* trafficchart — hosts, visitors, visits and views over time, with the two
+     rows of switches. Takes Chart, Lang and Base (the page the switches link
+     back to). Drawn on the server: this page is opened by advertisers weighing
+     the audience, and a figure that needs a script to appear is a figure some
+     of them never see. */}}
+{{ define "trafficchart" }}
+<div class="tc">
+  <div class="tc__switches">
+    <div class="tc__row" role="group" aria-label="{{ t .Lang "tc.audience" }}">
+      {{ $c := .Chart }}{{ $b := .Base }}{{ $l := .Lang }}
+      {{ range $c.Audiences }}
+      <a class="tc__sw{{ if .On }} is-on{{ end }}" href="{{ $c.Href $b "a" .Code }}"
+         {{ if .On }}aria-current="true"{{ end }}>{{ t $l (printf "tc.aud_%s" .Code) }}</a>
+      {{ end }}
+    </div>
+    <div class="tc__row" role="group" aria-label="{{ t .Lang "tc.period" }}">
+      {{ range $c.Periods }}
+      <a class="tc__sw{{ if .On }} is-on{{ end }}" href="{{ $c.Href $b "p" .Code }}"
+         {{ if .On }}aria-current="true"{{ end }}>{{ t $l (printf "tc.per_%s" .Code) }}</a>
+      {{ end }}
+    </div>
+  </div>
+
+  {{ if .Chart.Empty }}
+  <p class="chart__note">{{ t .Lang "tc.empty" }}</p>
+  {{ else }}
+  {{/* The legend is always present: with four lines, identity must never rest
+       on colour alone. Each line is also labelled at its own end. */}}
+  <p class="tc__legend">
+    {{ range $c.Series }}<span class="tc__key tc__key--{{ .Slot }}">{{ t $l (printf "tc.s_%s" .Key) }}</span>{{ end }}
+  </p>
+  <div class="tc__plot">
+    <svg viewBox="0 0 1000 330" preserveAspectRatio="none" role="img"
+         aria-label="{{ t .Lang "tc.alt" }}">
+      {{ range $c.Ticks }}
+      <line class="tc__grid" x1="0" y1="{{ .Y }}" x2="1000" y2="{{ .Y }}"/>
+      {{ end }}
+      {{ range $c.Series }}
+      <polyline class="tc__line tc__line--{{ .Slot }}" points="{{ .Points }}"/>
+      <circle class="tc__dot tc__dot--{{ .Slot }}" cx="{{ .LastX }}" cy="{{ .LastY }}" r="4"/>
+      <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LastY }}" dx="10" dy="4">{{ .Last }}</text>
+      {{ end }}
+    </svg>
+    <p class="tc__x" aria-hidden="true">
+      {{ range $c.XLabels }}<span style="left:{{ .X }}%">{{ .L }}</span>{{ end }}
+    </p>
+  </div>
+  {{/* The same figures as text. It is what a reader who cannot separate two of
+       the hues falls back on, and what anyone copying a number into a media
+       plan actually wants. */}}
+  <details class="tc__table">
+    <summary>{{ t .Lang "tc.table" }}</summary>
+    <div class="tscroll">
+      <table>
+        <thead><tr><th>{{ t $l "tc.when" }}</th>
+          {{ range $c.Series }}<th>{{ t $l (printf "tc.s_%s" .Key) }}</th>{{ end }}</tr></thead>
+        <tbody>
+          {{ range $c.Points }}<tr><td>{{ .Label }}</td>
+            <td>{{ .Hosts }}</td><td>{{ .Visitors }}</td><td>{{ .Visits }}</td><td>{{ .Views }}</td></tr>{{ end }}
+        </tbody>
+      </table>
+    </div>
+  </details>
+  {{ end }}
+  <p class="chart__note">{{ t .Lang "tc.why" }}</p>
+</div>
+{{ end }}
+
 {{ define "site_footer" }}
 <footer class="site-footer">
   <div class="container">

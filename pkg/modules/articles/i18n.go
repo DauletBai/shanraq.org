@@ -558,8 +558,14 @@ var messages = map[string]map[string]string{
 		"ru": "Голосовой диалог на казахском и русском. Инструктаж, зачёт, протокол допуска — офлайн.",
 		"en": "Voice dialogue in Kazakh and Russian. Briefing, test, admission protocol — offline.",
 	},
-	"house.adam_cta":      {"kz": "Қалай жұмыс істейді", "ru": "Как это работает", "en": "How it works"},
-	"house.notrack_title": {"kz": "Бақылаусыз және бөгде cookie-сіз", "ru": "Без слежки и сторонних cookie", "en": "No tracking, no third-party cookies"},
+	"house.adam_cta": {"kz": "Қалай жұмыс істейді", "ru": "Как это работает", "en": "How it works"},
+	// "No tracking" stopped being exact the day the traffic chart began
+	// counting visitors, even under a key that is thrown away nightly. What
+	// the slide can still say without qualification is what it now says: no
+	// ad networks, no third-party cookies. The claim below it -- no reader
+	// data leaves for an ad network, no third-party ad script loads -- was
+	// and stays true, and is the part an advertiser is buying.
+	"house.notrack_title": {"kz": "Жарнама желілерінсіз, бөгде cookie-сіз", "ru": "Без рекламных сетей и сторонних cookie", "en": "No ad networks, no third-party cookies"},
 	"house.notrack_desc": {
 		"kz": "Біз оқырман деректерін жарнама желілеріне бермейміз: сайтта бөгде жарнама скрипттері жоқ.",
 		"ru": "Мы не передаём данные читателей рекламным сетям — сторонних рекламных скриптов на сайте нет.",
@@ -1369,7 +1375,7 @@ var messages = map[string]map[string]string{
 	"stats.desc":         {"kz": "Сайттың ашық статистикасы: қаралымдар, елдер, көздер, құрылғылар және краулерлер — соңғы 30 күн.", "ru": "Открытая статистика сайта: просмотры, страны, источники, устройства и краулеры — за последние 30 дней.", "en": "The site's open statistics: views, countries, sources, devices and crawlers over the last 30 days."},
 	"stats.lead":         {"kz": "Сайт аудиториясы соңғы 30 күнде: қанша бет ашылды, қай елдерден және қандай құрылғылардан, оқырмандар қайдан келді және келулердің қаншасы іздеу роботтары.", "ru": "Аудитория сайта за последние 30 дней: сколько страниц открывали, из каких стран и на каких устройствах, откуда приходили читатели и сколько среди визитов поисковых роботов.", "en": "The site's audience over the last 30 days: how many pages were opened, from which countries and on what devices, where readers came from, and how many of the visits were crawlers."},
 	"stats.method":       {"kz": "Қалай санаймыз", "ru": "Как мы считаем", "en": "How we count"},
-	"stats.method_note":  {"kz": "Қаралым — беттің ашылуы. Краулерлер қонақтар санынан алынып тасталған және төменде бөлек көрсетілген. Нақты мекенжайлар жазылмайды — тек беттің түрі, сондықтан бұл беттен кім не оқығанын білу мүмкін емес.", "ru": "Просмотр — это открытие страницы. Краулеры исключены из числа гостей и показаны ниже отдельно. Конкретные адреса не записываются — только тип страницы, поэтому по этой странице нельзя узнать, кто что читал.", "en": "A view is a page opening. Crawlers are excluded from the guest figures and shown separately below. Individual addresses are never recorded — only the kind of page — so this page cannot reveal who read what."},
+	"stats.method_note":  {"kz": "Қаралым — беттің ашылуы. Кіру — жарты сағат ішіндегі бір келуші: бес бет ашсаңыз да бір кіру, үзілістен кейін оралсаңыз — жаңасы. Келуші мен хост анонимді идентификатормен ажыратылады, ол күн сайын ауысатын кілтпен есептеледі, ал IP-мекенжайдың өзі сақталмайды — сондықтан ешкімді келесі күнге дейін қадағалау мүмкін емес. Краулерлер санынан алынып тасталған және төменде бөлек көрсетілген. Не үшін санайтынымыз құпиялылық саясатында жазылған.", "ru": "Просмотр — это открытие страницы. Визит — один посетитель внутри получаса: откроете пять страниц — визит один, вернётесь после перерыва — новый. Посетители и хосты различаются по анонимному идентификатору, который вычисляется ключом, меняющимся каждые сутки, а сам IP-адрес не сохраняется — поэтому проследить за кем-либо до следующего дня нельзя. Краулеры исключены и показаны ниже отдельно. Зачем мы это считаем — написано в политике конфиденциальности.", "en": "A view is a page opening. A visit is one visitor inside a half-hour: open five pages and it stays one visit, come back after a break and it is a new one. Visitors and hosts are told apart by an anonymous identifier computed with a key that is replaced every day, while the address itself is never stored — so nobody can be followed into the next day. Crawlers are excluded and shown separately below. Why we count this is set out in the privacy policy."},
 	"stats.since":        {"kz": "Санағыш %s жылдан бері жұмыс істейді", "ru": "Счётчик считает с %s", "en": "The counter has been running since %s"},
 	"stats.updated":      {"kz": "жаңартылды: %s", "ru": "обновлено: %s", "en": "updated: %s"},
 	"stats.views_30":     {"kz": "30 күндегі қаралым", "ru": "просмотров за 30 дней", "en": "views in 30 days"},
@@ -2076,8 +2082,42 @@ var messages = map[string]map[string]string{
 	"footer.columnist":  {"kz": "AI Dake (ЖИ)", "ru": "AI Dake (ИИ)", "en": "AI Dake (AI)"},
 	"footer.adam":       {"kz": "ӨҚ, ЕҚ және ҚТ бойынша ЖИ", "ru": "ИИ для ПБ, ОТ и ТБ", "en": "AI for industrial safety"},
 	"footer.framework":  {"kz": "Фреймворк", "ru": "Фреймворк", "en": "Framework"},
-	"footer.privacy":    {"kz": "Құпиялылық", "ru": "Конфиденциальность", "en": "Privacy"},
-	"footer.terms":      {"kz": "Шарттар", "ru": "Условия", "en": "Terms"},
+
+	// Traffic chart.
+	"tc.audience":   {"kz": "Аудитория", "ru": "Аудитория", "en": "Audience"},
+	"tc.period":     {"kz": "Кезең", "ru": "Период", "en": "Period"},
+	"tc.aud_all":    {"kz": "Барлық елдер", "ru": "Все страны", "en": "All countries"},
+	"tc.aud_kz":     {"kz": "Қазақстан", "ru": "Казахстан", "en": "Kazakhstan"},
+	"tc.aud_mob":    {"kz": "Моб. барлығы", "ru": "Моб. все", "en": "Mobile, all"},
+	"tc.aud_mobkz":  {"kz": "Моб. Қаз.", "ru": "Моб. Каз.", "en": "Mobile, KZ"},
+	"tc.per_hour":   {"kz": "Сағат сайын", "ru": "По часам", "en": "By hour"},
+	"tc.per_day":    {"kz": "Күн сайын", "ru": "По дням", "en": "By day"},
+	"tc.per_week":   {"kz": "Апта сайын", "ru": "По неделям", "en": "By week"},
+	"tc.per_month":  {"kz": "Ай сайын", "ru": "По месяцам", "en": "By month"},
+	"tc.s_hosts":    {"kz": "Хосттар", "ru": "Хосты", "en": "Hosts"},
+	"tc.s_visitors": {"kz": "Келушілер", "ru": "Посетители", "en": "Visitors"},
+	"tc.s_visits":   {"kz": "Кірулер", "ru": "Визиты", "en": "Visits"},
+	"tc.s_views":    {"kz": "Қаралымдар", "ru": "Просмотры", "en": "Views"},
+	"tc.empty": {
+		"kz": "Бұл кезеңде әзірге дерек жоқ.",
+		"ru": "За этот период данных пока нет.",
+		"en": "No data for this period yet.",
+	},
+	"tc.alt": {
+		"kz": "Хосттар, келушілер, кірулер және қаралымдар графигі.",
+		"ru": "График хостов, посетителей, визитов и просмотров.",
+		"en": "A chart of hosts, visitors, visits and views.",
+	},
+	"tc.table": {"kz": "Сандарды кесте түрінде көрсету", "ru": "Показать цифры таблицей", "en": "Show the figures as a table"},
+	"tc.when":  {"kz": "Кезең", "ru": "Период", "en": "Period"},
+	// Why the counting exists, said where the counting is shown.
+	"tc.why": {
+		"kz": "Бұл сандар жарнама берушіге аудиторияны көрсету үшін және не оқылатынын түсіну үшін жиналады. Келуші жарты сағаттық аралықта анонимді идентификатормен саналады: ол IP-мекенжай мен браузерден күн сайын ауысатын кілтпен есептеледі, мекенжайдың өзі сақталмайды. Сондықтан кілт ауысқан соң ешкімді келесі күнге дейін қадағалауға болмайды — бізге де.",
+		"ru": "Эти цифры собираются, чтобы показывать аудиторию рекламодателю и понимать, что читают. Посетитель считается в получасовом интервале по анонимному идентификатору: он вычисляется из IP-адреса и браузера ключом, который меняется каждые сутки, а сам адрес не сохраняется. Поэтому после смены ключа проследить за кем-либо до следующего дня нельзя — в том числе нам.",
+		"en": "These figures exist to show advertisers the audience and to see what is read. A visitor is counted inside a half-hour window under an anonymous identifier, derived from the address and the browser with a key that is replaced every day; the address itself is never stored. Once the key turns over, nobody can be followed into the next day -- ourselves included.",
+	},
+	"footer.privacy": {"kz": "Құпиялылық", "ru": "Конфиденциальность", "en": "Privacy"},
+	"footer.terms":   {"kz": "Шарттар", "ru": "Условия", "en": "Terms"},
 
 	"guide.side_title": {"kz": "Мақала не жарнаманы қалай орналастыру керек", "ru": "Как разместить статью или объявление", "en": "How to publish a story or an ad"},
 	"guide.side_text":  {"kz": "Жариялау, құқықтар мен жауапкершілік туралы қысқаша нұсқаулық.", "ru": "Краткий справочник о публикации, правах и ответственности.", "en": "A short guide to publishing, rights and responsibilities."},

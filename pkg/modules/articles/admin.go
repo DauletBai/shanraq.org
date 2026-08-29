@@ -227,6 +227,9 @@ type AdminPage struct {
 	Queue   []ReviewItem // articles awaiting a human decision
 	// Growth analytics.
 	Analytics AdminAnalytics
+	// Traffic is the same chart the public page carries, on the same data: the
+	// panel and the page an advertiser reads must never disagree.
+	Traffic TrafficChart
 	// Aggregate audience (guest vs registered) traffic.
 	Guests GuestAnalytics
 	// SourcesSince is the day the view counter restarts from, shown under the
@@ -318,6 +321,7 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		page.Email = claims.Email
 		page.Role = claims.PrimaryRole
 	}
+	page.Traffic = m.trafficChartFrom(r)
 	m.render(w, "admin", page)
 }
 
