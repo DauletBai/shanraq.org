@@ -80,7 +80,12 @@ type TrafficPoint struct {
 	// Running marks the bucket still filling. The hour now in progress holds
 	// five minutes of traffic against a full hour before it, and drawn as an
 	// ordinary point it reads as a collapse rather than as a count so far.
-	Running  bool
+	Running bool
+	// Counted says hosts, visitors and visits were measured for this bucket.
+	// Views reach back to the older counter, which never told readers apart, so
+	// a day from before that counting began has a real view total and no
+	// measurement at all of the other three.
+	Counted  bool
 	Hosts    int64
 	Visitors int64
 	Visits   int64
@@ -143,7 +148,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string, loc 
 			m.rt.Logger.Warn("traffic chart scan", zap.Error(err))
 			break
 		}
-		pt.Label, pt.Known = at.Format(layout), true
+		pt.Label, pt.Known, pt.Counted = at.Format(layout), true, true
 		out.Points = append(out.Points, pt)
 	}
 	// Views reach further back than the other three. analytics_daily has counted
@@ -226,7 +231,7 @@ func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p traffic
 			}
 			continue
 		}
-		older = append(older, TrafficPoint{Label: lbl, Views: n, Known: true})
+		older = append(older, TrafficPoint{Label: lbl, Views: n, Known: true, Counted: false})
 	}
 	if len(older) > 0 {
 		out.Points = append(older, out.Points...)
@@ -345,8 +350,12 @@ func (c TrafficChart) Series() []TrafficSeries {
 		ser := TrafficSeries{Key: s.key, Slot: i}
 		pts, lastAt := "", ""
 		for j, p := range c.Points {
-			if !p.Known {
-				continue // holds its place on the axis, carries no point
+			// A bucket holds its place on the axis whatever it knows. Views are
+			// drawn wherever there is a total; the other three only where they
+			// were actually measured, so the line begins at the counting rather
+			// than climbing out of a zero nobody recorded.
+			if !p.Known || (s.key != "views" && !p.Counted) {
+				continue
 			}
 			v := s.get(p)
 			x := float64(j) * step
@@ -460,7 +469,8 @@ func fillHours(out *TrafficChart, since time.Time, loc *time.Location) {
 			day = append(day, pt)
 			continue
 		}
-		day = append(day, TrafficPoint{Label: lbl, Known: !at.Before(from) && !at.After(upto), Running: running})
+		known := !at.Before(from) && !at.After(upto)
+		day = append(day, TrafficPoint{Label: lbl, Known: known, Counted: known, Running: running})
 	}
 	out.Points = day
 	if n := len(day); n > 0 {

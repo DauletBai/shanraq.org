@@ -508,8 +508,9 @@
                missing, not nil, and the distinction is the whole point of the
                gap in the line above. */}}
           {{ range $c.Points }}<tr><td>{{ .Label }}</td>
-            {{ if .Known }}<td>{{ .Hosts }}</td><td>{{ .Visitors }}</td><td>{{ .Visits }}</td><td>{{ .Views }}</td>
-            {{ else }}<td>—</td><td>—</td><td>—</td><td>—</td>{{ end }}</tr>{{ end }}
+            {{ if .Counted }}<td>{{ .Hosts }}</td><td>{{ .Visitors }}</td><td>{{ .Visits }}</td>
+            {{ else }}<td>—</td><td>—</td><td>—</td>{{ end }}
+            {{ if .Known }}<td>{{ .Views }}</td>{{ else }}<td>—</td>{{ end }}</tr>{{ end }}
         </tbody>
       </table>
     </div>
