@@ -522,7 +522,17 @@ func recentSlice(items []FeedItem, n int) []FeedItem {
 type StaticPage struct {
 	Base
 	Body interface{}
+	// InlineAd asks for the card under the text. The footer already carries the
+	// same placement a screen further down, so on a page long enough to be
+	// scrolled the two land within sight of each other and the second one only
+	// repeats the first. It stays off where the page is its own argument and an
+	// advert interrupts it.
+	InlineAd bool
 }
+
+// noInlineAd lists the pages that carry no card under the text. The footer
+// placement is unaffected: these pages still advertise, once.
+var noInlineAd = map[string]bool{"framework": true}
 
 // handleStaticPage renders a localized info page by key.
 func (m *Module) handleStaticPage(key string) http.HandlerFunc {
@@ -535,7 +545,7 @@ func (m *Module) handleStaticPage(key string) http.HandlerFunc {
 			http.NotFound(w, r)
 			return
 		}
-		page := StaticPage{Base: m.base(r, title, lang)}
+		page := StaticPage{Base: m.base(r, title, lang), InlineAd: !noInlineAd[key]}
 		page.Body = RenderMarkdown(applyOperator(body, m.rt.Config.Operator, lang))
 		m.render(w, "page", page)
 	}

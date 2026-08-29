@@ -13,7 +13,7 @@
        the sidebar draws, held to a readable width under the text rather than
        beside it. On /adam it renders nothing: ownAds withholds the slide from
        the page it points at. */}}
-  {{ if .Ads }}<div class="pagead">{{ template "sidebar_ad" . }}</div>{{ end }}
+  {{ if and .InlineAd .Ads }}<div class="pagead">{{ template "sidebar_ad" . }}</div>{{ end }}
 </main>
 {{ template "site_footer" . }}
 {{ end }}
