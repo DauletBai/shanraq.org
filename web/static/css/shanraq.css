@@ -480,6 +480,10 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   background: linear-gradient(150deg, #606060 0%, #404040 55%, #202020 100%);
 }
 .adslot__slide:hover { text-decoration: none; }
+/* The same card on a page that has no aside to hold it: the aside is narrow
+   by construction, so a full-width column would stretch the slide into a
+   billboard. Held to the aside's own width and centred under the text. */
+.pagead { max-width: 420px; margin: 36px auto 0; }
 .adslot__title { font-family: var(--serif); font-size: var(--step-1); font-weight: 800; line-height: 1.2; }
 .adslot__desc { font-size: 0.9rem; line-height: 1.5; color: rgba(255, 255, 255, 0.82); }
 /* A link, not a slab: the slide is already one big click target, so a filled

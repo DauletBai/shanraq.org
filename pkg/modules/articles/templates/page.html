@@ -8,6 +8,12 @@
     <h1 class="page__title">{{ .Title }}</h1>
     <div class="prose">{{ .Body }}</div>
   </div>
+  {{/* These pages have no aside, so until now they carried no placement at all
+       -- and they are the pages a reader reaches on purpose. The card is the one
+       the sidebar draws, held to a readable width under the text rather than
+       beside it. On /adam it renders nothing: ownAds withholds the slide from
+       the page it points at. */}}
+  {{ if .Ads }}<div class="pagead">{{ template "sidebar_ad" . }}</div>{{ end }}
 </main>
 {{ template "site_footer" . }}
 {{ end }}
