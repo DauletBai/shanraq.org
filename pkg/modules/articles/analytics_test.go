@@ -66,19 +66,31 @@ func TestTrafficSource(t *testing.T) {
 
 func TestPageKind(t *testing.T) {
 	cases := map[string]string{
-		"/":                   "home",
-		"/read":               "article",
-		"/read/some-slug":     "article",
-		"/listings":           "listings",
-		"/listings/new":       "listings",
-		"/listings/my":        "listings",
-		"/listings/abc-123":   "listing",
-		"/author/42":          "author",
-		"/agent/7":            "agent",
-		"/favorites":          "favorites",
-		"/about":              "static",
-		"/privacy":            "static",
-		"/terms":              "static",
+		"/":                 "home",
+		"/read":             "article",
+		"/read/some-slug":   "article",
+		"/listings":         "listings",
+		"/listings/new":     "listings",
+		"/listings/my":      "listings",
+		"/listings/abc-123": "listing",
+		"/author/42":        "author",
+		"/agent/7":          "agent",
+		"/favorites":        "favorites",
+		// Each standing page counts under its own name: a shared "static"
+		// bucket said how many people read something and never which.
+		"/about":     "about",
+		"/privacy":   "privacy",
+		"/terms":     "terms",
+		"/adam":      "adam",
+		"/framework": "framework",
+		// The forecast pages are most of the site and used to count for
+		// nothing at all, taking the visitor behind them with it.
+		"/weather":            "weather",
+		"/weather/karaotkel":  "weather",
+		"/rates":              "rates",
+		"/archive/2026-08-29": "archive",
+		"/place/kachar":       "place",
+		"/predictions":        "predictions",
 		"/api/geo/roots":      "",        // not counted
 		"/static/css/x.css":   "",        // not counted
 		"/studio/new":         "",        // staff area, not a public page

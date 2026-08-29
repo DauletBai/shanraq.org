@@ -34,8 +34,39 @@ func pageKind(path string) string {
 		return "listings"
 	case "/favorites":
 		return "favorites"
-	case "/about", "/guide", "/formatting", "/pricing", "/support", "/privacy", "/terms":
-		return "static"
+	// Each standing page counts under its own name. They shared a "static"
+	// bucket, which answered how many people read something and never which --
+	// and the question the panel exists for is where the readers went.
+	case "/about":
+		return "about"
+	case "/guide":
+		return "guide"
+	case "/formatting":
+		return "formatting"
+	case "/pricing":
+		return "pricing"
+	case "/support":
+		return "support"
+	case "/privacy":
+		return "privacy"
+	case "/terms":
+		return "terms"
+	case "/adam":
+		return "adam"
+	case "/framework":
+		return "framework"
+	case "/advertise":
+		return "advertise"
+	case "/predictions":
+		return "predictions"
+	case "/analytics":
+		return "stats"
+	case "/calculator":
+		return "calculator"
+	case "/rates":
+		return "rates"
+	case "/weather":
+		return "weather"
 	}
 	switch {
 	case strings.HasPrefix(path, "/read/"):
@@ -46,6 +77,17 @@ func pageKind(path string) string {
 		return "agent"
 	case strings.HasPrefix(path, "/listings/"):
 		return "listing"
+	// The forecast pages are the largest part of the site by a wide margin and
+	// counted for nothing: an unnamed path returns "", and trackTraffic skips
+	// the request whole -- the view, the country, the device and the visitor
+	// with it. A stranger arriving on the forecast for their own village was
+	// invisible to every figure we publish.
+	case strings.HasPrefix(path, "/weather/"):
+		return "weather"
+	case strings.HasPrefix(path, "/place/"):
+		return "place"
+	case strings.HasPrefix(path, "/archive/"):
+		return "archive"
 	}
 	return ""
 }
