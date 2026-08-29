@@ -1094,7 +1094,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 Мы применяем организационные и технические меры защиты (хеширование паролей, ограничение доступа, защита от подделки запросов, заголовки безопасности, ограничение частоты попыток входа). При выявлении несанкционированного доступа к персональным данным мы уведомляем уполномоченный орган в срок, установленный законом (по общему правилу — в течение одного рабочего дня).
 
 ## 9. Cookie и аналитика
-Мы используем технически необходимые cookie (например, для сессии входа) и собственную аналитику посещаемости.
+Мы используем технически необходимые cookie — для сессии входа, выбранного языка и вашего часового пояса, чтобы время на графиках показывалось по вашим часам, а не по нашим, — и собственную аналитику посещаемости.
 
 **Зачем мы считаем.** Чтобы показывать рекламодателю размер и состав аудитории и чтобы понимать, что читают. Без этих цифр реклама на сайте не продаётся, а без неё сайт не живёт.
 
@@ -1155,7 +1155,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 Біз қорғаудың ұйымдастырушылық және техникалық шараларын қолданамыз (құпия сөздерді хештеу, қолжетімділікті шектеу, сұрауларды жалғандаудан қорғау, қауіпсіздік тақырыпаттары, кіру әрекеттерінің жиілігін шектеу). Дербес деректерге рұқсатсыз қол жеткізу анықталған кезде біз уәкілетті органды заңда белгіленген мерзімде (жалпы ереже бойынша — бір жұмыс күні ішінде) хабардар етеміз.
 
 ## 9. Cookie және аналитика
-Біз техникалық тұрғыдан қажетті cookie файлдарын (мысалы, кіру сессиясы үшін) және өз келушілер аналитикамызды қолданамыз.
+Біз техникалық тұрғыдан қажетті cookie файлдарын — кіру сессиясы, таңдалған тіл және сіздің сағаттық белдеуіңіз үшін, графиктердегі уақыт біздің емес, сіздің сағатыңызбен көрсетілуі үшін — және өз келушілер аналитикамызды қолданамыз.
 
 **Не үшін санаймыз.** Жарнама берушіге аудиторияның көлемі мен құрамын көрсету үшін және не оқылатынын түсіну үшін. Бұл сандарсыз сайтта жарнама сатылмайды, ал онсыз сайттың өзі тұрмайды.
 
@@ -1216,7 +1216,7 @@ Send requests through the [support page](/support).
 We apply organizational and technical protection measures (password hashing, access restriction, protection against request forgery, security headers, rate limiting of login attempts). If unauthorized access to personal data is detected, we notify the authorized body within the period established by law (as a general rule, within one business day).
 
 ## 9. Cookies and Analytics
-We use technically necessary cookies (for example, for the login session) and our own traffic analytics.
+We use technically necessary cookies -- for the login session, the chosen language, and your time zone, so that times on the charts are shown by your clock rather than ours -- and our own traffic analytics.
 
 **Why we count.** To show advertisers the size and shape of the audience, and to see what is read. Without those figures the advertising does not sell, and without that the site does not run.
 

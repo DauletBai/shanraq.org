@@ -90,12 +90,16 @@ type TrafficChart struct {
 	// run further back, from the older counter, so without this line the early
 	// part of the chart looks broken rather than merely older.
 	Since string
+	// Zone is the clock the figures are drawn under, named on the page: a chart
+	// of hours that does not say whose hours is a chart two readers will read
+	// two different ways.
+	Zone string
 }
 
 // trafficChart reads one audience over one period.
-func (m *Module) trafficChart(ctx context.Context, audience, period string) TrafficChart {
+func (m *Module) trafficChart(ctx context.Context, audience, period string, loc *time.Location) TrafficChart {
 	a, p := audienceByCode(audience), periodByCode(period)
-	out := TrafficChart{Audience: a.Code, Period: p.Code}
+	out := TrafficChart{Audience: a.Code, Period: p.Code, Zone: loc.String()}
 
 	// The audience switches are AND-ed onto the query rather than pre-summed
 	// into four buckets, so "mobile in Kazakhstan" needs no table of its own.
@@ -111,7 +115,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string) Traf
 		   AND ($4::bool IS NOT TRUE OR is_mobile)
 		 GROUP BY b
 		 ORDER BY b`,
-		p.Trunc, siteNow().Add(-p.Window), a.KZ, a.Mob, siteTimeZone)
+		p.Trunc, time.Now().In(loc).Add(-p.Window), a.KZ, a.Mob, loc.String())
 	if err != nil {
 		m.rt.Logger.Warn("traffic chart", zap.Error(err))
 		out.Empty = true
@@ -136,13 +140,13 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string) Traf
 	// deliberately never recorded. So the older part of the chart carries the one
 	// line that is real for it, and the other three begin where counting began --
 	// which is honest in a way that back-filling them with zero would not be.
-	m.backfillViews(ctx, a, p, &out)
+	m.backfillViews(ctx, a, p, &out, loc)
 
 	var first time.Time
 	if err := m.rt.DB.QueryRow(ctx, `SELECT MIN(slot) FROM analytics_slots`).Scan(&first); err == nil && !first.IsZero() {
-		out.Since = first.In(siteLoc()).Format("02.01.2006 15:04")
+		out.Since = first.In(loc).Format("02.01.2006 15:04")
 		if p.Code == "hour" {
-			fillHours(&out, first)
+			fillHours(&out, first, loc)
 		}
 	}
 
@@ -163,7 +167,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string) Traf
 // page counter for everyone, the country counter for Kazakhstan, the device
 // counter for mobile. It keeps no country-by-device cross, so "mobile in
 // Kazakhstan" has no history and starts where the new table does.
-func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p trafficPeriod, out *TrafficChart) {
+func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p trafficPeriod, out *TrafficChart, loc *time.Location) {
 	if p.Code == "hour" {
 		return // analytics_daily is keyed by date; it cannot answer an hour
 	}
@@ -181,7 +185,7 @@ func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p traffic
 		  FROM analytics_daily
 		 WHERE day >= $2 AND kind = $3 AND ($4 = '' OR label = $4)
 		 GROUP BY b ORDER BY b`,
-		p.Trunc, siteNow().Add(-p.Window), kind, label)
+		p.Trunc, time.Now().In(loc).Add(-p.Window), kind, label)
 	if err != nil {
 		m.rt.Logger.Warn("traffic backfill", zap.Error(err))
 		return
@@ -233,7 +237,7 @@ func trafficLayout(code string) string {
 // trafficChartFrom reads the switches off the query string. Unknown values fall
 // back rather than erroring: a hand-edited address should show a chart.
 func (m *Module) trafficChartFrom(r *http.Request) TrafficChart {
-	return m.trafficChart(r.Context(), r.URL.Query().Get("a"), r.URL.Query().Get("p"))
+	return m.trafficChart(r.Context(), r.URL.Query().Get("a"), r.URL.Query().Get("p"), readerLoc(r))
 }
 
 // Pct places one value on the chart's own scale, as a percentage of its tallest
@@ -409,13 +413,13 @@ func maxInt(a, b int) int {
 // It starts at the later of a day ago and the hour counting began: before that
 // the value is not zero but unknown, and drawing it as zero would be a claim we
 // cannot make.
-func fillHours(out *TrafficChart, since time.Time) {
+func fillHours(out *TrafficChart, since time.Time, loc *time.Location) {
 	// The reader's clock, not the server's: at a quarter to six in Kazakhstan
 	// the server says a quarter to one, and an axis ending at "12:00" reads as
 	// data that stopped five hours ago.
-	now := siteNow().Truncate(time.Hour)
+	now := time.Now().In(loc).Truncate(time.Hour)
 	from := now.Add(-23 * time.Hour)
-	if s := since.In(siteLoc()).Truncate(time.Hour); s.After(from) {
+	if s := since.In(loc).Truncate(time.Hour); s.After(from) {
 		from = s
 	}
 	have := map[string]TrafficPoint{}

@@ -507,12 +507,29 @@
     </div>
   </details>
   {{ end }}
+  <p class="chart__note">{{ printf (t .Lang "tc.tz") $c.Zone }}</p>
   {{ if $c.Since }}<p class="chart__note">{{ printf (t .Lang "tc.since") $c.Since }}</p>{{ end }}
   <p class="chart__note">{{ t .Lang "tc.why" }}</p>
 </div>
 {{ end }}
 
 {{ define "site_footer" }}
+{{/* The reader's own clock, asked for once.
+     An HTTP request carries no timezone, and the address narrows it only to a
+     country -- which settles nothing for Russia or the United States and is
+     wrong for anyone travelling. The browser knows, so it says so once a year.
+     Without this running, the figures fall back to the site's own clock, which
+     is right for most readers and wrong for no one silently: the chart names
+     the zone it drew. */}}
+<script>
+(function () {
+  try {
+    if (document.cookie.indexOf('tz=') !== -1) return;
+    var z = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (z) document.cookie = 'tz=' + encodeURIComponent(z) + ';path=/;max-age=31536000;samesite=lax';
+  } catch (e) {}
+})();
+</script>
 <footer class="site-footer">
   <div class="container">
     <div class="foot-top">

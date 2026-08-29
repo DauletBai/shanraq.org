@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"net/http"
 	"sync"
 	"time"
 )
@@ -40,3 +41,41 @@ func siteDay(t time.Time) time.Time {
 	t = t.In(siteLoc())
 	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, siteLoc())
 }
+
+// tzCookieName carries the reader's own IANA zone, set once by the browser.
+//
+// The server cannot know it: an HTTP request says nothing about the clock on
+// the other end, and the address only narrows it to a country -- which settles
+// nothing for a reader in Russia or the United States, and guesses wrong for
+// anyone travelling. So the browser, which does know, says so once and the
+// answer is kept for a year.
+//
+// The value is a zone name and nothing else. It is not an identifier: millions
+// of people share "Asia/Almaty", and it is used for one thing, deciding which
+// hour a figure is drawn under.
+const tzCookieName = "tz"
+
+// readerLoc is the clock to show a reader their figures in.
+//
+// Their own if the browser has told us, the site's otherwise -- which is the
+// right default, because most readers are here and because a chart with no
+// script running is still a chart that has to be correct for somebody.
+func readerLoc(r *http.Request) *time.Location {
+	if r == nil {
+		return siteLoc()
+	}
+	c, err := r.Cookie(tzCookieName)
+	if err != nil || c.Value == "" || len(c.Value) > 64 {
+		return siteLoc()
+	}
+	// LoadLocation is the validation: a name the zone database does not know is
+	// simply not a zone, and nothing else is done with the string.
+	loc, err := time.LoadLocation(c.Value)
+	if err != nil {
+		return siteLoc()
+	}
+	return loc
+}
+
+// readerNow is siteNow through the reader's own clock.
+func readerNow(r *http.Request) time.Time { return time.Now().In(readerLoc(r)) }
