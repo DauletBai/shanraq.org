@@ -2884,6 +2884,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    leads, so every channel is named as well as drawn. */
 .foot-soc a { display: inline-flex; align-items: center; gap: 9px; line-height: 1; }
 .foot-soc svg { width: 18px; height: 18px; flex: none; }
+.foot-soc__mark { width: 18px; height: 18px; flex: none; }
 .foot-soc__name { text-transform: capitalize; }
 
 .foot-ad {

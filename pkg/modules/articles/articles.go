@@ -243,6 +243,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/weather/{slug}", m.handleWeather)
 		r.Get("/about", m.handleStaticPage("about"))
 		r.Get("/adam", m.handleStaticPage("adam"))
+		r.Get("/framework", m.handleStaticPage("framework"))
 		r.Get("/guide", m.handleStaticPage("guide"))
 		r.Get("/formatting", m.handleStaticPage("formatting"))
 		r.Get("/pricing", m.handleStaticPage("pricing"))

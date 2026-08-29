@@ -473,6 +473,10 @@
                it is coming. The "soon" label is gone: a dimmed unlinked row says
                the same thing, while the word promised a date we never named. */}}
           <li class="foot-soc__soon">{{ brandicon "youtube" }}<span class="foot-soc__name">YouTube</span></li>
+          {{/* Not a channel, but what the channels are about. It sits above the
+               repository because the page explains what the repository holds,
+               and a reader who wants the code reaches both in one glance. */}}
+          <li><a href="/framework"><img class="foot-soc__mark" src="{{ asset "/static/brand/shanraq-light.svg" }}" alt="" aria-hidden="true"><span class="foot-soc__name">{{ t .Lang "footer.framework" }}</span></a></li>
           {{ if ne .Info.GitHub "" }}
           <li><a href="{{ .Info.GitHub }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6 0-.3 0-1.1 0-2-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2 0 1.6 0 2.9 0 3.3 0 .3.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg><span class="foot-soc__name">GitHub</span></a></li>
           {{ end }}

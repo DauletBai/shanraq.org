@@ -2076,6 +2076,7 @@ var messages = map[string]map[string]string{
 	"footer.support":    {"kz": "Қолдау", "ru": "Поддержка", "en": "Support"},
 	"footer.columnist":  {"kz": "AI Dake (ЖИ)", "ru": "AI Dake (ИИ)", "en": "AI Dake (AI)"},
 	"footer.adam":       {"kz": "ӨҚ, ЕҚ және ҚТ бойынша ЖИ", "ru": "ИИ для ПБ, ОТ и ТБ", "en": "AI for industrial safety"},
+	"footer.framework":  {"kz": "Фреймворк", "ru": "Фреймворк", "en": "Framework"},
 	"footer.privacy":    {"kz": "Құпиялылық", "ru": "Конфиденциальность", "en": "Privacy"},
 	"footer.terms":      {"kz": "Шарттар", "ru": "Условия", "en": "Terms"},
 

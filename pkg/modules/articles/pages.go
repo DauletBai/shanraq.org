@@ -1434,6 +1434,131 @@ The law of the Republic of Kazakhstan applies to the Terms. Disputes are resolve
 ## 16. Changes to the Terms
 We may update the Terms; material changes are published on the Platform, and renewed consent is requested where necessary. Continued use after changes constitutes acceptance of them.`},
 	},
+	"framework": {
+		"ru": {Title: "Свой фреймворк на Go: как устроен shanraq.org", Body: `Этот сайт не работает ни на готовой CMS, ни на веб-фреймворке. Публикации, объявления, реклама, переводы, рассылки и платежи собраны из модулей, написанных здесь же, на Go.
+
+## Цифры
+
+43 031 строка кода и 16 581 строка тестов в 271 файле. 14 модулей, 143 миграции базы, 36 шаблонов.
+
+И 589 строк JavaScript в двух файлах — на весь сайт. Ни React, ни Vue, ни сборщика. Оформление — 3 478 строк собственного CSS, без Bootstrap и Tailwind. Страница, которую вы читаете, не загружает ни одного стороннего скрипта.
+
+## Что такое модуль
+
+Ядро — интерфейс из одного метода:
+
+    type Module interface {
+        Name() string
+    }
+
+Дальше модуль добавляет то, что ему нужно: Routes — если у него есть страницы, Init — если нужна подготовка до старта сервера, Start — если он держит фонового работника. Приложение собирает модули в список и на запуске выдаёт каждому Runtime: конфигурацию, логер, пул соединений к базе и роутер.
+
+Отсюда правило, которое держит систему целой: модуль не знает про соседей. Статьи не импортируют объявления, объявления не импортируют почту. Убрать модуль — значит убрать одну строку регистрации.
+
+Сегодня их четырнадцать: ai, apikeys, articles, auth, health, jobs, media, migrations, notifier, ratings, sms, syndicate, telemetry, webui.
+
+## Что взято готовым
+
+Список приводим полностью, потому что «свой фреймворк» часто означает «свой поверх чужого» — и это нормально ровно до тех пор, пока сказано прямо.
+
+Маршрутизация — chi. Postgres — pgx. Логи — zap. Конфигурация — viper. Миграции — goose. Markdown — goldmark. Метрики и трассировка — Prometheus и OpenTelemetry.
+
+Чего нет: ORM. Все запросы к базе написаны на SQL и лежат рядом с кодом, который их выполняет.
+
+## Почему почти без JavaScript
+
+Сайт читают с телефонов, часто на медленной связи и в райцентрах. Страница, которая сначала грузит фреймворк, чтобы потом нарисовать текст, там просто не открывается.
+
+Поэтому HTML собирается на сервере и приходит готовым. JavaScript остаётся только там, где без него нельзя: карусель, карта осадков, переключение языка. Выбор места в прогнозе погоды сделан обычной формой — без единой строки скрипта.
+
+## Три языка
+
+Казахский, русский и английский — не перевод интерфейса, а три равноправные версии контента. У статьи три текста, у каждого свой адрес и свой canonical. Машинный перевод есть, но он предлагает, а решает автор.
+
+Код открыт: https://github.com/DauletBai/shanraq.org`},
+		"kz": {Title: "Go тіліндегі өз фреймворкіміз: shanraq.org қалай құрылған", Body: `Бұл сайт дайын CMS-те де, веб-фреймворкте де жұмыс істемейді. Жарияланымдар, хабарландырулар, жарнама, аудармалар, таратылымдар мен төлемдер — осында, Go тілінде жазылған модульдерден жиналған.
+
+## Сандар
+
+271 файлда 43 031 жол код және 16 581 жол тест. 14 модуль, 143 дерекқор миграциясы, 36 үлгі.
+
+Және бүкіл сайтқа екі файлда 589 жол JavaScript. React те, Vue де, жинақтауыш та жоқ. Безендіру — Bootstrap пен Tailwind-сыз, 3 478 жол өз CSS-іміз. Сіз оқып отырған бет бірде-бір бөгде скрипт жүктемейді.
+
+## Модуль дегеніміз не
+
+Өзегі — бір әдістен тұратын интерфейс:
+
+    type Module interface {
+        Name() string
+    }
+
+Әрі қарай модуль өзіне керегін қосады: беттері болса — Routes, сервер қосылғанға дейін дайындық керек болса — Init, фондық жұмысшы ұстаса — Start. Қосымша модульдерді тізімге жинап, іске қосылғанда әрқайсысына Runtime береді: конфигурация, логер, дерекқор байланыстарының пулы және роутер.
+
+Жүйені бүтін ұстайтын ереже осыдан шығады: модуль көршілерін білмейді. Мақалалар хабарландыруларды импорттамайды, хабарландырулар поштаны импорттамайды. Модульді алып тастау — тіркеудің бір жолын алып тастау деген сөз.
+
+Бүгінде олар он төртеу: ai, apikeys, articles, auth, health, jobs, media, migrations, notifier, ratings, sms, syndicate, telemetry, webui.
+
+## Дайын күйінде алынғаны
+
+Тізімді толық келтіреміз, себебі «өз фреймворкі» көбіне «бөтеннің үстіндегі өзінікі» дегенді білдіреді — және бұл тікелей айтылса, әбден қалыпты.
+
+Маршруттау — chi. Postgres — pgx. Логтар — zap. Конфигурация — viper. Миграциялар — goose. Markdown — goldmark. Метрикалар мен трассировка — Prometheus және OpenTelemetry.
+
+Жоқ нәрсе: ORM. Дерекқорға сұраныстардың бәрі SQL тілінде жазылған және оларды орындайтын кодтың қасында жатыр.
+
+## Неге JavaScript-сіз дерлік
+
+Сайтты телефоннан оқиды, көбіне баяу байланыста және аудан орталықтарында. Алдымен мәтін салу үшін фреймворк жүктейтін бет ол жерде ашылмайды.
+
+Сондықтан HTML серверде жиналып, дайын күйінде келеді. JavaScript тек онсыз болмайтын жерде қалады: карусель, жауын-шашын картасы, тіл ауыстыру. Ауа райы болжамында жер таңдау кәдімгі формамен жасалған — бірде-бір жол скриптсіз.
+
+## Үш тіл
+
+Қазақша, орысша және ағылшынша — интерфейс аудармасы емес, мазмұнның тең құқылы үш нұсқасы. Мақаланың үш мәтіні бар, әрқайсысының өз мекенжайы мен өз canonical-і. Машиналық аударма бар, бірақ ол ұсынады, шешімді автор қабылдайды.
+
+Код ашық: https://github.com/DauletBai/shanraq.org`},
+		"en": {Title: "Our own Go framework: how shanraq.org is built", Body: `This site runs on no off-the-shelf CMS and no web framework. Publishing, classifieds, advertising, translation, mailing and payments are assembled from modules written here, in Go.
+
+## The numbers
+
+43,031 lines of code and 16,581 lines of tests across 271 files. 14 modules, 143 database migrations, 36 templates.
+
+And 589 lines of JavaScript in two files, for the whole site. No React, no Vue, no bundler. The styling is 3,478 lines of our own CSS, with no Bootstrap and no Tailwind. The page you are reading loads no third-party script at all.
+
+## What a module is
+
+The core is a one-method interface:
+
+    type Module interface {
+        Name() string
+    }
+
+A module then adds what it needs: Routes if it has pages, Init if it must prepare something before the server starts, Start if it holds a background worker. The application collects the modules into a list and hands each of them a Runtime at boot: configuration, logger, database pool and router.
+
+From that follows the rule that keeps the system whole: a module knows nothing of its neighbours. Articles do not import classifieds, classifieds do not import mail. Removing a module means removing one line of registration.
+
+There are fourteen today: ai, apikeys, articles, auth, health, jobs, media, migrations, notifier, ratings, sms, syndicate, telemetry, webui.
+
+## What was taken ready-made
+
+The list is given in full, because "our own framework" often means "ours on top of someone else's" — which is perfectly fine for exactly as long as it is said plainly.
+
+Routing is chi. Postgres is pgx. Logs are zap. Configuration is viper. Migrations are goose. Markdown is goldmark. Metrics and tracing are Prometheus and OpenTelemetry.
+
+What is absent: an ORM. Every database query is written in SQL and sits beside the code that runs it.
+
+## Why almost no JavaScript
+
+People read this site on phones, often on a slow connection and in district towns. A page that first downloads a framework in order to draw text afterwards simply does not open there.
+
+So the HTML is assembled on the server and arrives finished. JavaScript stays only where nothing else will do: the carousel, the precipitation map, the language switch. Choosing a place in the weather forecast is an ordinary form, without a single line of script.
+
+## Three languages
+
+Kazakh, Russian and English are not a translated interface but three equal versions of the content. An article has three texts, each with its own address and its own canonical. Machine translation exists, but it proposes and the author decides.
+
+The code is open: https://github.com/DauletBai/shanraq.org`},
+	},
 	"adam": {
 		"ru": {Title: "adam — инструктаж и проверка знаний по ПБ, ОТ и ТБ", Body: `adam — детерминированный помощник для инструктажа и проверки знаний по охране труда и технике безопасности. Написан на Rust, работает на компьютере предприятия и не выходит в сеть.
 
