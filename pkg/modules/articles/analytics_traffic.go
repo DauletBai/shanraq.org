@@ -71,7 +71,12 @@ func periodByCode(c string) trafficPeriod {
 
 // TrafficPoint is one column of the chart.
 type TrafficPoint struct {
-	Label    string
+	Label string
+	// Known separates an hour with no visitors from an hour nobody counted. The
+	// axis spans the whole day either way, but a line drawn through the second
+	// kind would claim a zero we never measured -- and would dive to the floor
+	// across every hour still to come.
+	Known    bool
 	Hosts    int64
 	Visitors int64
 	Visits   int64
@@ -131,7 +136,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string, loc 
 			m.rt.Logger.Warn("traffic chart scan", zap.Error(err))
 			break
 		}
-		pt.Label = at.Format(layout)
+		pt.Label, pt.Known = at.Format(layout), true
 		out.Points = append(out.Points, pt)
 	}
 	// Views reach further back than the other three. analytics_daily has counted
@@ -214,7 +219,7 @@ func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p traffic
 			}
 			continue
 		}
-		older = append(older, TrafficPoint{Label: lbl, Views: n})
+		older = append(older, TrafficPoint{Label: lbl, Views: n, Known: true})
 	}
 	if len(older) > 0 {
 		out.Points = append(older, out.Points...)
@@ -331,14 +336,20 @@ func (c TrafficChart) Series() []TrafficSeries {
 		ser := TrafficSeries{Key: s.key, Slot: i}
 		pts := ""
 		for j, p := range c.Points {
+			if !p.Known {
+				continue // holds its place on the axis, carries no point
+			}
 			v := s.get(p)
 			x := float64(j) * step
 			y := float64(chartH) - float64(v)*float64(chartH)/float64(c.Max)
-			if j > 0 {
+			if pts != "" {
 				pts += " "
 			}
 			pts += fmt.Sprintf("%.1f,%.1f", x, y)
 			ser.LastX, ser.LastY, ser.Last = x, y, v
+		}
+		if pts == "" {
+			continue
 		}
 		ser.Points = pts
 		out = append(out, ser)
@@ -401,39 +412,33 @@ func maxInt(a, b int) int {
 	return b
 }
 
-// fillHours turns the hourly view into a continuous day.
+// fillHours lays out the whole day, whether or not it has been counted.
 //
-// The query returns only the hours that had traffic, and a chart drawn from
-// those alone puts a single busy hour at the left edge and stops there, saying
-// nothing about the fifteen quiet hours since. An hour with no visitors is a
-// real zero -- we were counting and nobody came -- so the gaps are filled and
-// the line runs to the hour now in progress, which is where the reader's eye
-// goes first.
-//
-// It starts at the later of a day ago and the hour counting began: before that
-// the value is not zero but unknown, and drawing it as zero would be a claim we
-// cannot make.
+// The axis runs midnight to midnight in the reader's own clock, so the shape of
+// a day is read against a fixed frame rather than against however many hours
+// happen to hold data. Hours that were counted and saw nobody are real zeros
+// and get a point on the floor. Hours before counting started, and hours still
+// to come, are not zero but unmeasured: they hold the x position and carry no
+// point, so the line begins where the counting did and ends at the hour now in
+// progress.
 func fillHours(out *TrafficChart, since time.Time, loc *time.Location) {
-	// The reader's clock, not the server's: at a quarter to six in Kazakhstan
-	// the server says a quarter to one, and an axis ending at "12:00" reads as
-	// data that stopped five hours ago.
-	now := time.Now().In(loc).Truncate(time.Hour)
-	from := now.Add(-23 * time.Hour)
-	if s := since.In(loc).Truncate(time.Hour); s.After(from) {
-		from = s
-	}
+	now := time.Now().In(loc)
+	midnight := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
+	from, upto := since.In(loc).Truncate(time.Hour), now.Truncate(time.Hour)
+
 	have := map[string]TrafficPoint{}
 	for _, pt := range out.Points {
 		have[pt.Label] = pt
 	}
-	filled := make([]TrafficPoint, 0, 24)
-	for h := from; !h.After(now); h = h.Add(time.Hour) {
-		lbl := h.Format(trafficLayout("hour"))
+	day := make([]TrafficPoint, 0, 24)
+	for h := 0; h < 24; h++ {
+		at := midnight.Add(time.Duration(h) * time.Hour)
+		lbl := at.Format(trafficLayout("hour"))
 		if pt, ok := have[lbl]; ok {
-			filled = append(filled, pt)
+			day = append(day, pt)
 			continue
 		}
-		filled = append(filled, TrafficPoint{Label: lbl})
+		day = append(day, TrafficPoint{Label: lbl, Known: !at.Before(from) && !at.After(upto)})
 	}
-	out.Points = filled
+	out.Points = day
 }

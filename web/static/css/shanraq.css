@@ -3532,13 +3532,17 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .tc__end { font-size: 13px; font-weight: 700; fill: var(--ink); }
 .tc__x { position: relative; height: 18px; margin: 8px 0 0; font-size: .74rem; color: var(--muted); }
 .tc__x span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
-.tc__table { margin-top: 14px; }
+.tc__table { margin-top: 14px; container-type: inline-size; }
 .tc__table summary { cursor: pointer; font-size: .86rem; color: var(--ink-soft); }
-/* The figures open to a 16:9 window and scroll inside it. A month of days is
-   thirty rows; unrolled they push the page past the fold and the chart they
-   belong to disappears above it. */
+/* The figures grow with the rows and stop at 16:9 of their own width. A fixed
+   ratio was wrong in the other direction: two rows of an hourly chart left most
+   of the box empty. cqw measures the container, so the cap is a proportion of
+   the table's width rather than of the screen; the vh line before it is what a
+   browser without container units falls back to. */
 .tc__table .tscroll {
-  aspect-ratio: 16 / 9; overflow: auto; margin-top: 10px;
+  max-height: 70vh;
+  max-height: 56.25cqw;
+  overflow: auto; margin-top: 10px;
   border: 1px solid var(--line); border-radius: 6px;
 }
 .tc__table table { margin: 0; }

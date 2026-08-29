@@ -500,8 +500,12 @@
         <thead><tr><th>{{ t $l "tc.when" }}</th>
           {{ range $c.Series }}<th>{{ t $l (printf "tc.s_%s" .Key) }}</th>{{ end }}</tr></thead>
         <tbody>
+          {{/* An hour nobody counted shows a dash, not a zero: the figure is
+               missing, not nil, and the distinction is the whole point of the
+               gap in the line above. */}}
           {{ range $c.Points }}<tr><td>{{ .Label }}</td>
-            <td>{{ .Hosts }}</td><td>{{ .Visitors }}</td><td>{{ .Visits }}</td><td>{{ .Views }}</td></tr>{{ end }}
+            {{ if .Known }}<td>{{ .Hosts }}</td><td>{{ .Visitors }}</td><td>{{ .Visits }}</td><td>{{ .Views }}</td>
+            {{ else }}<td>—</td><td>—</td><td>—</td><td>—</td>{{ end }}</tr>{{ end }}
         </tbody>
       </table>
     </div>
