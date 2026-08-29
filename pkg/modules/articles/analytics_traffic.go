@@ -165,9 +165,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string, loc 
 	var first time.Time
 	if err := m.rt.DB.QueryRow(ctx, `SELECT MIN(slot) FROM analytics_slots`).Scan(&first); err == nil && !first.IsZero() {
 		out.Since = first.In(loc).Format("02.01.2006 15:04")
-		if p.Code == "hour" {
-			fillHours(&out, first, loc)
-		}
+		fillPeriod(&out, first, loc, p.Code)
 	}
 
 	for _, pt := range out.Points {
@@ -444,43 +442,74 @@ func maxInt(a, b int) int {
 	return b
 }
 
-// fillHours lays out the whole day, whether or not it has been counted.
+// fillPeriod lays out the whole calendar unit, counted or not.
 //
-// The axis runs midnight to midnight in the reader's own clock, so the shape of
-// a day is read against a fixed frame rather than against however many hours
-// happen to hold data. Hours that were counted and saw nobody are real zeros
-// and get a point on the floor. Hours before counting started, and hours still
-// to come, are not zero but unmeasured: they hold the x position and carry no
-// point, so the line begins where the counting did and ends at the hour now in
-// progress.
-func fillHours(out *TrafficChart, since time.Time, loc *time.Location) {
+// Each slice frames the next unit up -- hours make a day, days make a month,
+// months make a year -- and the frame is drawn whole. Without it the axis was
+// only as wide as the data: "Mobile, KZ" by day showed a single column against
+// the left edge, and nothing said whether that was one busy day or the only day
+// there had ever been.
+//
+// Buckets that were counted and saw nobody are real zeros and sit on the floor.
+// Buckets from before counting started, and buckets still to come, are not zero
+// but unmeasured: they hold their place on the axis and carry no point.
+func fillPeriod(out *TrafficChart, since time.Time, loc *time.Location, code string) {
 	now := time.Now().In(loc)
-	midnight := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
-	from, upto := since.In(loc).Truncate(time.Hour), now.Truncate(time.Hour)
+	var start time.Time
+	var n int
+	var add func(int) time.Time
+	switch code {
+	case "hour":
+		start = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
+		n = 24
+		add = func(i int) time.Time { return start.Add(time.Duration(i) * time.Hour) }
+	case "day":
+		start = time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, loc)
+		n = start.AddDate(0, 1, -1).Day()
+		add = func(i int) time.Time { return start.AddDate(0, 0, i) }
+	case "month":
+		start = time.Date(now.Year(), 1, 1, 0, 0, 0, 0, loc)
+		n = 12
+		add = func(i int) time.Time { return start.AddDate(0, i, 0) }
+	default:
+		return
+	}
+
+	// upto is the bucket in progress: everything after it is the future.
+	upto := add(0)
+	for i := 1; i < n; i++ {
+		if add(i).After(now) {
+			break
+		}
+		upto = add(i)
+	}
+	from := since.In(loc)
 
 	have := map[string]TrafficPoint{}
 	for _, pt := range out.Points {
 		have[pt.Label] = pt
 	}
-	day := make([]TrafficPoint, 0, 24)
-	for h := 0; h < 24; h++ {
-		at := midnight.Add(time.Duration(h) * time.Hour)
-		lbl := at.Format(trafficLayout("hour"))
+	layout := trafficLayout(code)
+	filled := make([]TrafficPoint, 0, n)
+	for i := 0; i < n; i++ {
+		at := add(i)
+		lbl := at.Format(layout)
 		running := at.Equal(upto)
 		if pt, ok := have[lbl]; ok {
 			pt.Running = running
-			day = append(day, pt)
+			filled = append(filled, pt)
 			continue
 		}
-		known := !at.Before(from) && !at.After(upto)
-		day = append(day, TrafficPoint{Label: lbl, Known: known, Counted: known, Running: running})
+		// A bucket the slot table never saw may still have a view total from the
+		// older counter, which back-fill already folded in; what is left here is
+		// genuinely unmeasured for the counted three.
+		counted := !at.Before(from.Truncate(time.Hour)) && !at.After(upto)
+		filled = append(filled, TrafficPoint{Label: lbl, Known: counted, Counted: counted, Running: running})
 	}
-	out.Points = day
-	if n := len(day); n > 0 {
-		for _, pt := range day {
-			if pt.Running && pt.Known {
-				out.Partial = true
-			}
+	out.Points = filled
+	for _, pt := range filled {
+		if pt.Running && pt.Counted {
+			out.Partial = true
 		}
 	}
 }

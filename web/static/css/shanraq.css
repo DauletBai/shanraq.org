@@ -3478,10 +3478,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* Four categorical hues in a fixed order: a series keeps its colour whatever
    the switches are set to, so changing the audience never repaints the ones
    that remain. Both sets were checked against the light and the dark surface
-   for colour-vision separation rather than chosen by eye; the pink/blue pair
-   sits in the floor band, which is why every line is also named in the legend,
-   labelled at its own end, and repeated as a table underneath. */
-.tc { margin-top: 14px; --tc-0: #0F7B5F; --tc-1: #A85400; --tc-2: #1A6FB5; --tc-3: #9C3F7A; }
+   for colour-vision separation rather than chosen by eye. The light set was
+   re-run a shade lighter after four dark discs on white read as one tone; the
+   pink/blue pair sits in the floor band, which is why every line is also named
+   in the legend, labelled at its own end, and readable from the bubble. */
+.tc { margin-top: 14px; --tc-0: #12967A; --tc-1: #C27B1B; --tc-2: #3E86D0; --tc-3: #BC5F99; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .tc { --tc-0: #35A183; --tc-1: #C87A2E; --tc-2: #4A8FD0; --tc-3: #BE72A3; }
 }
@@ -3509,7 +3510,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    them to judge. The ring keeps the palest of them off a white surface. */
 .tc__key::before {
   content: ""; width: .72em; height: .72em; border-radius: 50%;
-  background: currentColor; box-shadow: 0 0 0 1px rgb(0 0 0 / .12) inset;
+  background: currentColor; box-shadow: 0 0 0 1px rgb(0 0 0 / .06) inset;
 }
 .tc__key--0::before { background: var(--tc-0); }
 .tc__key--1::before { background: var(--tc-1); }
@@ -3570,7 +3571,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .tc__tip__r b { margin-left: auto; color: var(--ink); font-variant-numeric: tabular-nums; }
 .tc__tip__r i {
   width: .72em; height: .72em; border-radius: 50%; flex: none;
-  box-shadow: 0 0 0 1px rgb(0 0 0 / .12) inset;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / .06) inset;
 }
 .tc__tip__r .tc__key--0 { background: var(--tc-0); }
 .tc__tip__r .tc__key--1 { background: var(--tc-1); }
