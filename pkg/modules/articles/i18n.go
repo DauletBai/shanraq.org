@@ -1006,8 +1006,16 @@ var messages = map[string]map[string]string{
 	"an2.hidden":                {"kz": "жасырылған", "ru": "скрыто", "en": "hidden"},
 
 	// Guest / audience analytics (aggregate, no profiling).
-	"ag.title":       {"kz": "Аудитория және қонақтар", "ru": "Аудитория и гости", "en": "Audience & guests"},
-	"ag.note":        {"kz": "Тек жиынтық сандар: жеке келушілер тіркелмейді, профильдеу жоқ.", "ru": "Только сводные числа: отдельные посетители не отслеживаются, профилирования нет.", "en": "Aggregate counts only: no individual visitors are tracked, no profiling."},
+	// Page views, and the heading now says so. "Audience & guests" promised
+	// people over four figures that count openings of a page, and since the
+	// visitor chart went in above it the two readings sit side by side --
+	// one word covering both is how an advertiser gets quoted the wrong one.
+	"ag.title": {"kz": "Бет қаралымдары", "ru": "Просмотры страниц", "en": "Page views"},
+	"ag.note": {
+		"kz": "Бұл — адамдар емес, бет қаралымдары: бетті бір ашу — бір қаралым, сол оқырманның он беті — он қаралым. Келушілердің нақты саны жоғарыдағы графикте, онда олар тәулік сайын ауысатын кілтпен есептелетін анонимді идентификатор бойынша ажыратылады. Есеп 28.07.2026 басталды, сондықтан «айына» мен «жылына» әзірге бір сан.",
+		"ru": "Это просмотры страниц, а не люди: одно открытие — один просмотр, десять страниц одного читателя — десять просмотров. Сколько было именно посетителей, показывает график выше: там они различаются по анонимному идентификатору, который меняется каждые сутки. Счёт идёт с 28.07.2026, поэтому «за месяц» и «за год» пока одно и то же число.",
+		"en": "These are page views, not people: one opening is one view, and ten pages read by one person are ten views. How many visitors there were is in the chart above, where they are told apart by an anonymous identifier that changes every day. Counting began on 28.07.2026, so the month and the year are still the same figure.",
+	},
 	"ag.views_day":   {"kz": "Бүгін", "ru": "Сегодня", "en": "Today"},
 	"ag.views_week":  {"kz": "Осы аптада", "ru": "За неделю", "en": "This week"},
 	"ag.views_month": {"kz": "Осы айда", "ru": "За месяц", "en": "This month"},
