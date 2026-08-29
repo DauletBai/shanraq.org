@@ -2270,7 +2270,13 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* Wide tables inside a third-width card scroll sideways rather than spilling
    past the card's edge. */
 .adm-xscroll { overflow-x: auto; overscroll-behavior-x: contain; }
-.adm-xscroll > table { min-width: 260px; }
+.adm-xscroll > table { min-width: 300px; }
+/* The header stays put while the rows move under it: scrolled halfway down a
+   list of pages, the columns are three bare numbers without it. */
+.adm-xscroll thead th, .adm-scroll thead th {
+  position: sticky; top: 0; z-index: 1; background: var(--surface);
+  box-shadow: 0 1px 0 var(--line);
+}
 
 .adm-tbl { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
 .adm-tbl td { padding: 8px 8px; border-bottom: 1px solid var(--line); }

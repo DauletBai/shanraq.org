@@ -173,8 +173,12 @@
         <div class="adm-panel">
           <h2>{{ t .Lang "ag.pages" }}</h2>
           {{/* Four columns in a third of a row: on a narrow screen the numbers
-               have to scroll sideways rather than run out past the card. */}}
-          <div class="adm-xscroll">
+               scroll sideways rather than run out past the card. The list also
+               scrolls down. Every standing page counts under its own name now,
+               which took the panel from six rows to fourteen and stretched the
+               two beside it -- a card of clicks three rows long was left
+               holding a third of a screen of nothing. */}}
+          <div class="adm-xscroll adm-scroll">
           <table class="spec adm-mixed">
             <thead><tr><th></th><th>{{ t $.Lang "ag.total" }}</th><th>{{ t $.Lang "ag.guests" }}</th><th title="{{ t $.Lang "ag.registered" }}">{{ t $.Lang "ag.registered_short" }}</th></tr></thead>
             <tbody>

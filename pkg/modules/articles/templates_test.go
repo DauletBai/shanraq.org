@@ -543,9 +543,11 @@ func TestAdminGuestPanelsSplitInThree(t *testing.T) {
 			t.Errorf("the trend chart is missing %s", want)
 		}
 	}
-	// Four numeric columns in a third of a row must scroll, not spill.
-	if !strings.Contains(g[1], `class="adm-xscroll"`) {
-		t.Error("the pages table is not in a horizontal scroller")
+	// Four numeric columns in a third of a row must scroll, not spill -- and
+	// since every standing page counts under its own name the list is long
+	// enough to stretch the two panels beside it, so it scrolls down as well.
+	if !strings.Contains(g[1], `class="adm-xscroll adm-scroll"`) {
+		t.Error("the pages table is not in a scroller on both axes")
 	}
 	// The chart fills the height its tallest neighbour sets instead of leaving
 	// the bottom of the card empty.
