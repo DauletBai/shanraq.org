@@ -42,24 +42,54 @@ type Ad struct {
 // crawlers and datacenter addresses, so any number quoted here would flatter.
 func houseAds(lang string) []Ad {
 	slides := []struct{ key, cta string }{
+		// Our own product leads. It used to sit last of six, which meant the
+		// footer -- which shows only the first -- never carried it at all, and
+		// the carousel reached it after five turns. Unsold inventory is worth
+		// more selling something we have than selling the space itself, and the
+		// offer to advertise loses nothing by following one slide later.
+		{"adam", "/adam"},
 		{"free", "/advertise"},   // the direct offer
 		{"beside", "/advertise"}, // the format: beside the text, never over it
 		{"notrack", "/privacy"},  // no third-party tracking — a real difference
 		{"price", "/advertise"},  // open rate card, no agency in between
 		{"realty", "/advertise"}, // the audience nearest to a buying decision
-		{"adam", "/adam"},        // our own product: the one thing here that is not the slot
 	}
 	out := make([]Ad, 0, len(slides))
 	for _, s := range slides {
-		out = append(out, Ad{
-			URL:   s.cta,
-			Title: T(lang, "house."+s.key+"_title"),
-			Desc:  T(lang, "house."+s.key+"_desc"),
-			Price: T(lang, "house."+s.key+"_cta"),
-			House: true,
-		})
+		out = append(out, houseSlide(lang, s.key, s.cta))
 	}
 	return out
+}
+
+// houseSlide builds one house slide from its string key and where it leads.
+func houseSlide(lang, key, cta string) Ad {
+	return Ad{
+		URL:   cta,
+		Title: T(lang, "house."+key+"_title"),
+		Desc:  T(lang, "house."+key+"_desc"),
+		Price: T(lang, "house."+key+"_cta"),
+		House: true,
+	}
+}
+
+// ownAds is what a page outside the sold surfaces carries.
+//
+// Only three surfaces are sold -- listings, articles, the home page -- so every
+// other address returned no ads at all: no card in the aside, and a footer
+// falling through to the generic "your ad could be here". That is most of the
+// site by count. The thousand forecast pages alone carried nothing, and they
+// are the pages a stranger arrives on.
+//
+// Nothing is sold there, so nothing is displaced: the space shows our own
+// product. Two addresses are left out -- /adam, where the ad would point at the
+// page the reader is already on, and /advertise, whose whole subject is selling
+// the slot rather than filling it.
+func ownAds(r *http.Request, lang string) []Ad {
+	p := r.URL.Path
+	if p == "/adam" || strings.HasPrefix(p, "/advertise") {
+		return nil
+	}
+	return []Ad{houseSlide(lang, "adam", "/adam")}
 }
 
 // adSurfaceFor maps a request to the surface it belongs to, mirroring the
@@ -84,10 +114,13 @@ func adSurfaceFor(r *http.Request) string {
 // back to the house slides when none are running. It used to return nil on an
 // unsold surface, which is why the slot never appeared at all and the sidebar
 // filled the space with a carousel repeating the page's own headlines.
+//
+// A page with no surface at all -- a forecast, the rates, a static page -- gets
+// our own product rather than nothing; see ownAds.
 func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
 	surface := adSurfaceFor(r)
 	if surface == "" || m.ads == nil {
-		return nil
+		return ownAds(r, lang)
 	}
 	orders, err := m.ads.ActiveBySurface(r.Context(), surface, lang, m.adPageGeo(r), 12)
 	if err != nil {
