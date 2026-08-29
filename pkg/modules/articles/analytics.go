@@ -609,6 +609,10 @@ type GuestClickRow struct {
 	A     Audience
 }
 
+// simpleRowsMax is how many named rows a panel shows before the remainder is
+// folded into one. Twenty covers everything with a share worth acting on.
+const simpleRowsMax = 20
+
 // GuestSimpleRow is one labeled aggregate over the window — a traffic source or
 // a bot family — carrying a single count (no guest/registered split).
 type GuestSimpleRow struct {
@@ -918,6 +922,20 @@ func (m *Module) simpleRows(ctx context.Context, kind, i18nPrefix, lang string) 
 	for i := 1; i < len(out); i++ { // busiest first (tiny list, insertion sort)
 		for j := i; j > 0 && out[j].N > out[j-1].N; j-- {
 			out[j], out[j-1] = out[j-1], out[j]
+		}
+	}
+	// A hundred countries, ninety of them with one hit apiece, is a list nobody
+	// reads to the end -- and its tail is where one crawler's exit node looks
+	// exactly like a country. Keep the rows with a share worth naming, fold the
+	// rest into one so the total still adds up.
+	if len(out) > simpleRowsMax {
+		var tail int64
+		for _, r := range out[simpleRowsMax:] {
+			tail += r.N
+		}
+		out = out[:simpleRowsMax:simpleRowsMax]
+		if tail > 0 {
+			out = append(out, GuestSimpleRow{Name: "other", Title: T(lang, "ag.rest"), N: tail})
 		}
 	}
 	for i := range out {
