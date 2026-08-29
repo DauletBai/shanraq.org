@@ -1465,9 +1465,11 @@ We may update the Terms; material changes are published on the Platform, and ren
 
 В начале сессии камера делает снимок; его контрольная сумма запечатывается внутрь допуска. Это отвечает на вопрос, который задаст любой инспектор: зачёт сдавал именно тот человек?
 
-## Что дальше
+## Как начать
 
-Система в стадии пилота. Мы ищем предприятия, готовые провести её на реальной программе инструктажей и сказать, где она ошибается.
+Система готова. Под предприятие настраивается не она, а содержание: виды работ, правила и программа инструктажей у каждой отрасли свои.
+
+Это и есть пилот — ввод ваших данных. Вы передаёте процедуры и требования, действующие у вас; система обучает и принимает по ним зачёт. Не по общему образцу, а по вашему.
 
 Что нужно с вашей стороны: один компьютер, один технический контакт и две недели. Что получаете: работающий цикл допуска на ваших процедурах и прямую линию с разработчиком.
 
@@ -1502,9 +1504,11 @@ GPU да, интернет те қажет емес. Бәрі орнында е�
 
 Сессия басында камера сурет түсіреді; оның бақылау сомасы допусктің ішіне бекітіледі. Бұл кез келген инспектор қоятын сұраққа жауап береді: сынақты дәл сол адам тапсырды ма?
 
-## Әрі қарай не
+## Қалай бастау керек
 
-Жүйе пилоттық сатыда. Оны нақты нұсқама бағдарламасында сынап көріп, қателерін айтуға дайын кәсіпорындарды іздеп жүрміз.
+Жүйе дайын. Кәсіпорынға бейімделетін — жүйенің өзі емес, мазмұны: жұмыс түрлері, ережелер мен нұсқама бағдарламасы әр салада өзінше.
+
+Пилот дегеніміз осы — сіздің деректеріңізді енгізу. Сіз өзіңізде қолданылатын рәсімдер мен талаптарды бересіз; жүйе солар бойынша оқытады және сынақ қабылдайды. Жалпы үлгі бойынша емес, сіздікі бойынша.
 
 Сіз жағыңыздан керегі: бір компьютер, бір техникалық байланыс және екі апта. Алатыныңыз: өз рәсімдеріңізде жұмыс істейтін допуск циклі және әзірлеушімен тікелей байланыс.
 
@@ -1539,9 +1543,11 @@ The finished admission protocol is cryptographically signed and can be verified 
 
 At the start of a session the camera takes a photograph, and its checksum is sealed inside the admission. That answers the question any inspector will ask: was it this person who sat the test?
 
-## What comes next
+## How to start
 
-The system is at pilot stage. We are looking for enterprises willing to run it against a real briefing programme and tell us where it gets things wrong.
+The system is finished. What is fitted to an enterprise is not the system but the content: every industry has its own kinds of work, its own rules and its own briefing programme.
+
+That is what the pilot is — loading your data. You hand over the procedures and requirements in force at your site; the system teaches and examines against those. Not against a general template, against yours.
 
 What it needs from you: one machine, one technical contact and two weeks. What you get: a working admission cycle on your own procedures, and a direct line to the developer.
 
