@@ -3534,3 +3534,18 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .tc__x span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
 .tc__table { margin-top: 14px; }
 .tc__table summary { cursor: pointer; font-size: .86rem; color: var(--ink-soft); }
+/* The figures open to a 16:9 window and scroll inside it. A month of days is
+   thirty rows; unrolled they push the page past the fold and the chart they
+   belong to disappears above it. */
+.tc__table .tscroll {
+  aspect-ratio: 16 / 9; overflow: auto; margin-top: 10px;
+  border: 1px solid var(--line); border-radius: 6px;
+}
+.tc__table table { margin: 0; }
+/* The header stays put while the rows move under it, or a reader scrolled
+   halfway down cannot tell which column is which. */
+.tc__table thead th {
+  position: sticky; top: 0; z-index: 1;
+  background: var(--surface-2); box-shadow: 0 1px 0 var(--line);
+}
+.tc__table td, .tc__table th { font-variant-numeric: tabular-nums; }

@@ -45,7 +45,7 @@ type trafficPeriod struct {
 }
 
 var trafficPeriods = []trafficPeriod{
-	{Code: "hour", Trunc: "hour", Window: 48 * time.Hour},
+	{Code: "hour", Trunc: "hour", Window: 24 * time.Hour},
 	{Code: "day", Trunc: "day", Window: 30 * 24 * time.Hour},
 	{Code: "week", Trunc: "week", Window: 26 * 7 * 24 * time.Hour},
 	{Code: "month", Trunc: "month", Window: 730 * 24 * time.Hour},
@@ -140,7 +140,10 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string) Traf
 
 	var first time.Time
 	if err := m.rt.DB.QueryRow(ctx, `SELECT MIN(slot) FROM analytics_slots`).Scan(&first); err == nil && !first.IsZero() {
-		out.Since = first.Format("02.01.2006")
+		out.Since = first.Format("02.01.2006 15:04")
+		if p.Code == "hour" {
+			fillHours(&out, first)
+		}
 	}
 
 	for _, pt := range out.Points {
@@ -219,7 +222,7 @@ func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p traffic
 func trafficLayout(code string) string {
 	switch code {
 	case "hour":
-		return "02.01 15:04"
+		return "15:00"
 	case "month":
 		return "01.2006"
 	default:
@@ -367,7 +370,14 @@ func (c TrafficChart) XLabels() []map[string]any {
 	if n == 0 {
 		return nil
 	}
+	// The hourly view is read as a day, so it is labelled every other hour --
+	// twelve marks that a reader counts round rather than eight that only sample
+	// it. The other periods thin to eight, which is as many as their longer
+	// labels fit.
 	every := maxInt(n/8, 1)
+	if c.Period == "hour" {
+		every = 2
+	}
 	step := float64(chartW-padR) / float64(maxInt(n-1, 1))
 	out := []map[string]any{}
 	for i, p := range c.Points {
@@ -385,4 +395,38 @@ func maxInt(a, b int) int {
 		return a
 	}
 	return b
+}
+
+// fillHours turns the hourly view into a continuous day.
+//
+// The query returns only the hours that had traffic, and a chart drawn from
+// those alone puts a single busy hour at the left edge and stops there, saying
+// nothing about the fifteen quiet hours since. An hour with no visitors is a
+// real zero -- we were counting and nobody came -- so the gaps are filled and
+// the line runs to the hour now in progress, which is where the reader's eye
+// goes first.
+//
+// It starts at the later of a day ago and the hour counting began: before that
+// the value is not zero but unknown, and drawing it as zero would be a claim we
+// cannot make.
+func fillHours(out *TrafficChart, since time.Time) {
+	now := time.Now().UTC().Truncate(time.Hour)
+	from := now.Add(-23 * time.Hour)
+	if s := since.UTC().Truncate(time.Hour); s.After(from) {
+		from = s
+	}
+	have := map[string]TrafficPoint{}
+	for _, pt := range out.Points {
+		have[pt.Label] = pt
+	}
+	filled := make([]TrafficPoint, 0, 24)
+	for h := from; !h.After(now); h = h.Add(time.Hour) {
+		lbl := h.Format(trafficLayout("hour"))
+		if pt, ok := have[lbl]; ok {
+			filled = append(filled, pt)
+			continue
+		}
+		filled = append(filled, TrafficPoint{Label: lbl})
+	}
+	out.Points = filled
 }
