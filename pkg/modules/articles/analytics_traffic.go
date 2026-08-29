@@ -523,7 +523,8 @@ func (c TrafficChart) Hits(lang string) []TrafficHit {
 	step := float64(chartW-padR) / float64(maxInt(n-1, 1)) * 100 / chartW
 	out := make([]TrafficHit, 0, n)
 	for i, p := range c.Points {
-		h := TrafficHit{I: i, X: float64(i) * span, W: span, Mid: float64(i) * step, Label: p.Label}
+		mid := float64(i) * step
+		h := TrafficHit{I: i, X: float64(i) * span, W: span, Mid: mid, Label: p.Label, Flip: mid > 68}
 		dash := "—"
 		vals := []struct {
 			key string
