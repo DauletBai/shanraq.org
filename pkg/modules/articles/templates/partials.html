@@ -488,33 +488,58 @@
           <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LastY }}" dx="10" dy="4">{{ .Last }}</text>
           {{ end }}
         </svg>
+        {{/* One invisible band per column. The figures ride in the page rather
+             than being assembled in the browser, so a screen reader reaches them
+             through aria-label and a saved page still has them. */}}
+        <div class="tc__hits">
+          {{ range $c.Hits $l }}
+          <button type="button" class="tc__hit" data-i="{{ .I }}"
+                  style="left:{{ .X }}%;width:{{ .W }}%" aria-label="{{ .Alt }}"></button>
+          {{ end }}
+        </div>
+        {{ range $c.Hits $l }}
+        <div class="tc__tip{{ if .Flip }} tc__tip--flip{{ end }}" data-i="{{ .I }}" style="left:{{ .Mid }}%" hidden>
+          <b class="tc__tip__h">{{ .Label }}</b>
+          {{ range .Rows }}
+          <span class="tc__tip__r"><i class="tc__key--{{ .Slot }}"></i>{{ t $l (printf "tc.s_%s" .Key) }}<b>{{ .Val }}</b></span>
+          {{ end }}
+        </div>
+        {{ end }}
         <p class="tc__x" aria-hidden="true">
           {{ range $c.XLabels }}<span style="left:{{ .X }}%">{{ .L }}</span>{{ end }}
         </p>
       </div>
     </div>
   </div>
-  {{/* The same figures as text. It is what a reader who cannot separate two of
-       the hues falls back on, and what anyone copying a number into a media
-       plan actually wants. */}}
-  <details class="tc__table">
-    <summary>{{ t .Lang "tc.table" }}</summary>
-    <div class="tscroll">
-      <table>
-        <thead><tr><th>{{ t $l "tc.when" }}</th>
-          {{ range $c.Series }}<th>{{ t $l (printf "tc.s_%s" .Key) }}</th>{{ end }}</tr></thead>
-        <tbody>
-          {{/* An hour nobody counted shows a dash, not a zero: the figure is
-               missing, not nil, and the distinction is the whole point of the
-               gap in the line above. */}}
-          {{ range $c.Points }}<tr><td>{{ .Label }}</td>
-            {{ if .Counted }}<td>{{ .Hosts }}</td><td>{{ .Visitors }}</td><td>{{ .Visits }}</td>
-            {{ else }}<td>—</td><td>—</td><td>—</td>{{ end }}
-            {{ if .Known }}<td>{{ .Views }}</td>{{ else }}<td>—</td>{{ end }}</tr>{{ end }}
-        </tbody>
-      </table>
-    </div>
-  </details>
+  {{ end }}
+  {{ if not $c.Empty }}
+  <script>
+  (function () {
+    var plot = document.currentScript.parentNode.querySelector('.tc__canvas');
+    if (!plot) return;
+    var tips = plot.querySelectorAll('.tc__tip');
+    function show(i) {
+      for (var k = 0; k < tips.length; k++) {
+        tips[k].hidden = tips[k].dataset.i !== String(i);
+      }
+    }
+    function hide() { for (var k = 0; k < tips.length; k++) { tips[k].hidden = true; } }
+    plot.addEventListener('pointerover', function (e) {
+      var h = e.target.closest('.tc__hit');
+      if (h) show(h.dataset.i);
+    });
+    plot.addEventListener('pointerdown', function (e) {
+      var h = e.target.closest('.tc__hit');
+      if (h) show(h.dataset.i);
+    });
+    plot.addEventListener('focusin', function (e) {
+      var h = e.target.closest('.tc__hit');
+      if (h) show(h.dataset.i);
+    });
+    plot.addEventListener('pointerleave', hide);
+    plot.addEventListener('focusout', hide);
+  })();
+  </script>
   {{ end }}
   {{ if $c.Partial }}<p class="chart__note">{{ t .Lang "tc.partial" }}</p>{{ end }}
   <p class="chart__note">{{ printf (t .Lang "tc.tz") $c.Zone }}</p>

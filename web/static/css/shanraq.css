@@ -3503,7 +3503,14 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* The swatch carries the identity; the word stays in ink, never in the series
    colour, so the label is readable at any contrast. */
 .tc__key { display: inline-flex; align-items: center; gap: 7px; color: var(--ink-soft); }
-.tc__key::before { content: ""; width: 14px; height: 3px; border-radius: 2px; background: currentColor; }
+/* A disc the height of the capital next to it. The 3px dash it replaced put
+   too little colour on screen to separate four hues on a white ground -- the
+   hues were checked and passed, but a hairline gives the eye almost none of
+   them to judge. The ring keeps the palest of them off a white surface. */
+.tc__key::before {
+  content: ""; width: .72em; height: .72em; border-radius: 50%;
+  background: currentColor; box-shadow: 0 0 0 1px rgb(0 0 0 / .12) inset;
+}
 .tc__key--0::before { background: var(--tc-0); }
 .tc__key--1::before { background: var(--tc-1); }
 .tc__key--2::before { background: var(--tc-2); }
@@ -3537,24 +3544,35 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .tc__end { font-size: 13px; font-weight: 700; fill: var(--ink); }
 .tc__x { position: relative; height: 18px; margin: 8px 0 0; font-size: .74rem; color: var(--muted); }
 .tc__x span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
-.tc__table { margin-top: 14px; container-type: inline-size; }
-.tc__table summary { cursor: pointer; font-size: .86rem; color: var(--ink-soft); }
-/* The figures grow with the rows and stop at 16:9 of their own width. A fixed
-   ratio was wrong in the other direction: two rows of an hourly chart left most
-   of the box empty. cqw measures the container, so the cap is a proportion of
-   the table's width rather than of the screen; the vh line before it is what a
-   browser without container units falls back to. */
-.tc__table .tscroll {
-  max-height: 70vh;
-  max-height: 56.25cqw;
-  overflow: auto; margin-top: 10px;
-  border: 1px solid var(--line); border-radius: 6px;
+
+/* Hover targets: one invisible band per column, wide enough to be hit with a
+   thumb, and focusable so the figures are reachable from the keyboard now that
+   the table under the chart is gone. */
+.tc__hits { position: absolute; inset: 0; }
+.tc__hit {
+  position: absolute; top: 0; bottom: 0; padding: 0; margin: 0;
+  border: 0; background: transparent; cursor: pointer;
 }
-.tc__table table { margin: 0; }
-/* The header stays put while the rows move under it, or a reader scrolled
-   halfway down cannot tell which column is which. */
-.tc__table thead th {
-  position: sticky; top: 0; z-index: 1;
-  background: var(--surface-2); box-shadow: 0 1px 0 var(--line);
+.tc__hit:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.tc__tip {
+  position: absolute; top: 4px; z-index: 3; transform: translateX(-50%);
+  min-width: 148px; padding: 9px 11px; pointer-events: none;
+  background: var(--surface); border: 1px solid var(--line-strong);
+  border-radius: 8px; box-shadow: 0 6px 18px rgb(0 0 0 / .14);
+  font-size: .82rem; line-height: 1.5;
 }
-.tc__table td, .tc__table th { font-variant-numeric: tabular-nums; }
+/* Near the right edge the bubble would hang off the plot; which columns those
+   are is decided in Go, where it is arithmetic rather than a guess at a style
+   attribute's text. */
+.tc__tip--flip { transform: translateX(-92%); }
+.tc__tip__h { display: block; margin-bottom: 4px; color: var(--ink); }
+.tc__tip__r { display: flex; align-items: center; gap: 7px; color: var(--ink-soft); }
+.tc__tip__r b { margin-left: auto; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tc__tip__r i {
+  width: .72em; height: .72em; border-radius: 50%; flex: none;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / .12) inset;
+}
+.tc__tip__r .tc__key--0 { background: var(--tc-0); }
+.tc__tip__r .tc__key--1 { background: var(--tc-1); }
+.tc__tip__r .tc__key--2 { background: var(--tc-2); }
+.tc__tip__r .tc__key--3 { background: var(--tc-3); }

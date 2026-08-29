@@ -484,3 +484,68 @@ func fillHours(out *TrafficChart, since time.Time, loc *time.Location) {
 		}
 	}
 }
+
+// TrafficHit is one column's hover target: the invisible band a pointer lands
+// in, the figures to show for it, and the sentence a screen reader is given
+// instead of the shape.
+type TrafficHit struct {
+	I     int
+	X     float64 // left edge, percent
+	W     float64 // width, percent
+	Mid   float64 // centre, percent -- where the bubble is anchored
+	Label string
+	Rows  []TrafficHitRow
+	Alt   string
+	// Flip anchors the bubble by its right edge. Centred on a column near the
+	// end of the plot it would hang off the panel; which columns those are is
+	// arithmetic, not something a CSS attribute-substring match can be trusted
+	// to guess.
+	Flip bool
+}
+
+// TrafficHitRow is one line inside the bubble.
+type TrafficHitRow struct {
+	Slot int
+	Key  string
+	Val  string
+}
+
+// Hits builds the hover targets. They are computed here and rendered into the
+// page rather than assembled in the browser, so the figures are in the HTML --
+// where a screen reader and a page saved to disk can both still find them now
+// that the table underneath is gone.
+func (c TrafficChart) Hits(lang string) []TrafficHit {
+	n := len(c.Points)
+	if n == 0 {
+		return nil
+	}
+	span := 100.0 / float64(n)
+	step := float64(chartW-padR) / float64(maxInt(n-1, 1)) * 100 / chartW
+	out := make([]TrafficHit, 0, n)
+	for i, p := range c.Points {
+		h := TrafficHit{I: i, X: float64(i) * span, W: span, Mid: float64(i) * step, Label: p.Label}
+		dash := "—"
+		vals := []struct {
+			key string
+			v   int64
+			ok  bool
+		}{
+			{"hosts", p.Hosts, p.Counted},
+			{"visitors", p.Visitors, p.Counted},
+			{"visits", p.Visits, p.Counted},
+			{"views", p.Views, p.Known},
+		}
+		alt := p.Label
+		for slot, v := range vals {
+			s := dash
+			if v.ok {
+				s = fmt.Sprintf("%d", v.v)
+			}
+			h.Rows = append(h.Rows, TrafficHitRow{Slot: slot, Key: v.key, Val: s})
+			alt += ", " + T(lang, "tc.s_"+v.key) + " " + s
+		}
+		h.Alt = alt
+		out = append(out, h)
+	}
+	return out
+}
