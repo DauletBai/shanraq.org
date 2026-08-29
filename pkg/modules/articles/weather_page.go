@@ -98,10 +98,15 @@ type WeatherPage struct {
 	Rain    FxChart
 	HasRain bool
 
-	// Nearby are other places a reader may want instead, largest first.
+	// Nearby are other places a reader may want instead, largest first: a
+	// region's own settlements, never the whole reference.
 	Nearby []GeoNode
-	// Options is every place with a forecast, for the picker.
-	Options []WxOption
+	// Population is the place's own, formatted, empty when unknown; PopYear the
+	// census it was counted in. They are here because a page that says only what
+	// the sky is doing says the same thing as every other forecast page, and a
+	// search engine reading four hundred of those sees one page repeated.
+	Population string
+	PopYear    int
 	// Lat and Lng centre the map; Radar is the precipitation tile template,
 	// empty when the service could not be reached.
 	Lat, Lng float64
@@ -185,16 +190,23 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 			if kids, err := m.geo.Children(r.Context(), id, lang); err == nil {
 				page.Nearby = wxWithCoords(kids)
 			}
+			// A settlement has no children; its region's other places serve.
+			if len(page.Nearby) == 0 {
+				if sib, err := m.geo.Siblings(r.Context(), id, lang); err == nil {
+					page.Nearby = wxWithCoords(sib)
+				}
+			}
+			if len(page.Nearby) > wxNearbyMax {
+				page.Nearby = page.Nearby[:wxNearbyMax]
+			}
+			if pop, year, err := m.geo.PlaceFacts(r.Context(), id); err == nil && pop > 0 {
+				page.Population, page.PopYear = wxGroupDigits(pop), year
+			}
 		}
 	}
 	page.PlaceLabel = label
 	page.Lat, page.Lng = lat, lon
 	page.Radar = m.radarTiles(r.Context())
-	if opts, oerr := m.geo.weatherOptions(r.Context(), lang, slug); oerr == nil {
-		page.Options = opts
-	} else {
-		m.rt.Logger.Warn("weather options", zap.Error(oerr))
-	}
 
 	title := fmt.Sprintf(T(lang, "wx.title_place"), name)
 	page.Base = m.base(r, title, lang)
@@ -207,6 +219,23 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 		page.Base.LangLinks = langLinks("/weather/"+slug, "")
 	}
 	m.render(w, "weather", page)
+}
+
+// wxNearbyMax caps the neighbours listed. A dozen is navigation; a hundred is
+// the picker this replaced.
+const wxNearbyMax = 12
+
+// wxGroupDigits writes a population with thin gaps: 20 423, not 20423.
+func wxGroupDigits(n int) string {
+	s := fmt.Sprintf("%d", n)
+	var b strings.Builder
+	for i, r := range s {
+		if i > 0 && (len(s)-i)%3 == 0 {
+			b.WriteRune('\u00a0')
+		}
+		b.WriteRune(r)
+	}
+	return b.String()
 }
 
 // wxWithCoords keeps only the places a forecast can be built for.
@@ -621,50 +650,4 @@ func (m *Module) radarTiles(ctx context.Context) string {
 	rvCache.at, rvCache.tmpl = time.Now(), tmpl
 	rvCache.mu.Unlock()
 	return tmpl
-}
-
-// WxOption is one entry of the place picker.
-type WxOption struct {
-	Slug  string
-	Name  string
-	Group string
-	On    bool
-}
-
-// weatherOptions lists every place a forecast exists for, grouped by the region
-// it sits in so a list four hundred long stays navigable.
-func (s *GeoStore) weatherOptions(ctx context.Context, lang, current string) ([]WxOption, error) {
-	name := fmt.Sprintf("COALESCE(NULLIF(c.%s,''), c.name_ru)", geoNameCol(lang))
-	parent := fmt.Sprintf("COALESCE(NULLIF(p.%s,''), p.name_ru)", geoNameCol(lang))
-	// A place whose parent is missing falls back to its country's own name
-	// rather than to the two-letter code: an option list headed "KZ" tells a
-	// reader nothing.
-	country := fmt.Sprintf("COALESCE(NULLIF(k.%s,''), k.name_ru)", geoNameCol(lang))
-	rows, err := s.db.Query(ctx, fmt.Sprintf(`
-		SELECT c.slug, %s, COALESCE(NULLIF(%s,''), %s, c.country), c.country
-		FROM geo_nodes c
-		LEFT JOIN geo_nodes p ON p.id = c.parent_id
-		LEFT JOIN geo_nodes k ON k.level = 0 AND k.country = c.country
-		WHERE c.slug IS NOT NULL AND c.lat IS NOT NULL AND c.lng IS NOT NULL
-		ORDER BY c.country, COALESCE(NULLIF(%s,''), %s, c.country),
-		         c.population DESC NULLS LAST, 2`,
-		name, parent, country, parent, country))
-	if err != nil {
-		return nil, fmt.Errorf("weather options: %w", err)
-	}
-	defer rows.Close()
-	out := []WxOption{}
-	for rows.Next() {
-		var o WxOption
-		var country string
-		if err := rows.Scan(&o.Slug, &o.Name, &o.Group, &country); err != nil {
-			return nil, err
-		}
-		if o.Group == "" {
-			o.Group = country
-		}
-		o.On = o.Slug == current
-		out = append(out, o)
-	}
-	return out, rows.Err()
 }

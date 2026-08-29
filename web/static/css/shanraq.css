@@ -1791,6 +1791,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .place-up a { color: var(--muted); text-decoration: none; }
 .place-up a:hover { color: var(--gold); }
 .place-lead { color: var(--ink-soft); margin: -6px 0 20px; }
+.wx-facts { color: var(--ink-soft); font-size: .92rem; margin: -4px 0 16px; }
+.wx-facts b { color: var(--ink); font-weight: 700; }
+.wx-facts__y { color: var(--muted); }
 .place-kids { margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); }
 .place-kids__title { font-size: var(--step-1); margin-bottom: 10px; }
 .place-kids__list { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; }

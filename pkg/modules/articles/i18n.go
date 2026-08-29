@@ -1216,7 +1216,7 @@ var messages = map[string]map[string]string{
 	"wx.c_snow":    {"kz": "Қар", "ru": "Снег", "en": "Snow"},
 	"wx.c_storm":   {"kz": "Найзағай", "ru": "Гроза", "en": "Thunderstorm"},
 
-	"wx.pick":     {"kz": "Жер", "ru": "Место", "en": "Place"},
+	"wx.pop":      {"kz": "Халқы", "ru": "Население", "en": "Population"},
 	"wx.map_h":    {"kz": "Жауын-шашын картасы", "ru": "Карта осадков", "en": "Precipitation map"},
 	"wx.map_note": {"kz": "Картаны жылжытып, кез келген өңірді көруге болады. Түсті қабат — соңғы радар кадры.", "ru": "Карту можно двигать и рассматривать любой регион. Цветной слой — последний кадр радара.", "en": "Drag the map to look at any region. The coloured layer is the latest radar frame."},
 	"wx.map_src":  {"kz": "Негізгі карта — OpenStreetMap, жауын-шашын қабаты — RainViewer. Карта ашылғанда браузеріңіз тайлдарды солардан сұрайды.", "ru": "Основа карты — OpenStreetMap, слой осадков — RainViewer. При открытии карты ваш браузер запрашивает тайлы у них.", "en": "The base map is OpenStreetMap and the precipitation layer is RainViewer. Opening the map means your browser requests tiles from them."},

@@ -9,22 +9,11 @@
       {{ if .PlaceLabel }}<p class="place-crumbs">{{ .PlaceLabel }}</p>{{ end }}
       <div class="section-head"><h1>{{ printf (t .Lang "wx.title_place") .PlaceName }}</h1></div>
 
-      {{ if .Options }}
-      {{/* Выбор без единой строки скрипта: обычная форма. Она не может
-           отправить в сегмент пути, поэтому уходит запросом, а обработчик
-           уводит на настоящий адрес места. */}}
-      <form class="fx-pick" method="get" action="/weather">
-        <label class="fx-pick__lab" for="wx-p">{{ t .Lang "wx.pick" }}</label>
-        <select class="fx-pick__sel" id="wx-p" name="p">
-          {{ $g := "" }}
-          {{ range .Options }}
-          {{ if ne .Group $g }}{{ if ne $g "" }}</optgroup>{{ end }}<optgroup label="{{ .Group }}">{{ $g = .Group }}{{ end }}
-          <option value="{{ .Slug }}"{{ if .On }} selected{{ end }}>{{ .Name }}</option>
-          {{ end }}
-          {{ if ne $g "" }}</optgroup>{{ end }}
-        </select>
-        <button class="btn btn--sm" type="submit">{{ t .Lang "fx.show" }}</button>
-      </form>
+      {{/* What this page knows about the place and no forecast service does.
+           The picker that stood here listed every place in the reference, so
+           each of four hundred pages carried the same four hundred names. */}}
+      {{ if .Population }}
+      <p class="wx-facts">{{ t .Lang "wx.pop" }}: <b>{{ .Population }}</b>{{ if .PopYear }} <span class="wx-facts__y">({{ .PopYear }})</span>{{ end }}</p>
       {{ end }}
 
       {{ if .HasData }}

@@ -86,6 +86,36 @@ func (s *GeoStore) Children(ctx context.Context, parent uuid.UUID, lang string) 
 	return s.query(ctx, lang, "c.parent_id = $1", parent)
 }
 
+// Siblings returns the places sharing a node's parent, itself excluded.
+//
+// A settlement is a leaf, so Children gives it nothing and its forecast page
+// used to carry the whole four-hundred-name picker instead — the same list on
+// every page, which is what made one weather page indistinguishable from the
+// next. Its own region's places are shorter, differ from region to region, and
+// are what a reader actually wants next: the neighbouring town, not Moscow.
+func (s *GeoStore) Siblings(ctx context.Context, node uuid.UUID, lang string) ([]GeoNode, error) {
+	return s.query(ctx, lang,
+		"c.parent_id = (SELECT parent_id FROM geo_nodes WHERE id = $1) AND c.id <> $1", node)
+}
+
+// PlaceFacts returns what the reference knows about a place beyond its name.
+// Both are optional: districts and countries carry no population.
+func (s *GeoStore) PlaceFacts(ctx context.Context, node uuid.UUID) (pop, year int, err error) {
+	var p, y *int
+	err = s.db.QueryRow(ctx,
+		`SELECT population, population_year FROM geo_nodes WHERE id = $1`, node).Scan(&p, &y)
+	if err != nil {
+		return 0, 0, fmt.Errorf("place facts: %w", err)
+	}
+	if p != nil {
+		pop = *p
+	}
+	if y != nil {
+		year = *y
+	}
+	return pop, year, nil
+}
+
 // Ancestry returns the path from the root down to node (inclusive), localized.
 // Used to fill a listing's denormalized country/region/city/village fields, and
 // to draw the way back up from a place page — which is why the slug comes along:
