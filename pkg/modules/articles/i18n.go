@@ -548,7 +548,7 @@ var messages = map[string]map[string]string{
 
 	// Our own product rather than the slot. It runs on the same unsold-inventory
 	// path as the rest, so it costs nothing and never displaces a paying order.
-	"house.adam_title": {"kz": "Еңбекті қорғау нұсқамасына арналған ЖИ", "ru": "ИИ для инструктажа по охране труда", "en": "AI for safety briefings"},
+	"house.adam_title": {"kz": "ӨҚ, ЕҚ және ҚТ нұсқамасына арналған ЖИ", "ru": "ИИ для инструктажа по ПБ, ОТ и ТБ", "en": "AI for industrial and workplace safety"},
 	// The voice dialogue leads because it is the part a reader cannot assume:
 	// briefing software is expected, a machine that talks a worker through the
 	// briefing in his own language is not. "Built by us" went: the slide runs on
@@ -2075,7 +2075,7 @@ var messages = map[string]map[string]string{
 	"footer.you":        {"kz": "Сіз туралы", "ru": "О вас", "en": "About you"},
 	"footer.support":    {"kz": "Қолдау", "ru": "Поддержка", "en": "Support"},
 	"footer.columnist":  {"kz": "AI Dake (ЖИ)", "ru": "AI Dake (ИИ)", "en": "AI Dake (AI)"},
-	"footer.adam":       {"kz": "Еңбекті қорғауға арналған ЖИ", "ru": "ИИ для охраны труда", "en": "AI for safety briefings"},
+	"footer.adam":       {"kz": "ӨҚ, ЕҚ және ҚТ бойынша ЖИ", "ru": "ИИ для ПБ, ОТ и ТБ", "en": "AI for industrial safety"},
 	"footer.privacy":    {"kz": "Құпиялылық", "ru": "Конфиденциальность", "en": "Privacy"},
 	"footer.terms":      {"kz": "Шарттар", "ru": "Условия", "en": "Terms"},
 

@@ -1435,7 +1435,7 @@ The law of the Republic of Kazakhstan applies to the Terms. Disputes are resolve
 We may update the Terms; material changes are published on the Platform, and renewed consent is requested where necessary. Continued use after changes constitutes acceptance of them.`},
 	},
 	"adam": {
-		"ru": {Title: "adam — инструктаж и проверка знаний по ОТ и ТБ", Body: `adam — детерминированный помощник для инструктажа и проверки знаний по охране труда и технике безопасности. Написан на Rust, работает на компьютере предприятия и не выходит в сеть.
+		"ru": {Title: "adam — инструктаж и проверка знаний по ПБ, ОТ и ТБ", Body: `adam — детерминированный помощник для инструктажа и проверки знаний по охране труда и технике безопасности. Написан на Rust, работает на компьютере предприятия и не выходит в сеть.
 
 ## Что он делает
 
@@ -1446,6 +1446,20 @@ We may update the Terms; material changes are published on the Platform, and ren
 Именно эту последовательность предписывает статья 182 Трудового кодекса РК и приказ №1019. Дистанционный формат такой проверки допускается приказом №223, вступившим в силу 12 июля 2026 года.
 
 Корпус — 33 процедуры, покрывающие обычный для промышленного предприятия цикл ОТ и ТБ. Работает не единичная процедура, а годовая программа тем: каждая тема проводится, по каждой принимается зачёт.
+
+## ПБ, ОТ и ТБ — три режима, один цикл
+
+На предприятии с опасными производственными объектами учатся и сдают по трём направлениям, и это разные правовые режимы с разными сроками.
+
+Охрана труда и техника безопасности — Трудовой кодекс и приказ №1019: проверка знаний не реже одного раза в год, повторный инструктаж — раз в полугодие.
+
+Промышленная безопасность — закон «О гражданской защите» и приказ МЧС №332: рабочие опасных производственных объектов сдают ежегодно после обучения не менее десяти часов, руководители, специалисты и ИТР — один раз в три года.
+
+Одно предприятие сводит это в один экзамен, другое разносит на разные даты. Цикл при этом один и тот же, и adam проводит его по любому из трёх направлений: содержание даёте вы.
+
+Пункт 15 приказа №332 задаёт, какой должна быть программа, принимающая экзамен по промышленной безопасности: вход по персональным данным и индивидуальному номеру, перемешивание вопросов, запрет повтора внутри одного теста, таймер, вывод протокола с результатом «сдал» или «не сдал». adam отвечает всем пяти пунктам — и протокол не просто выводит, а подписывает криптографически.
+
+Экзамен принимает учебная организация или аттестованный учебный центр предприятия через постоянно действующую экзаменационную комиссию. adam работает внутри этого порядка, а не вместо него.
 
 ## Почему это работает офлайн
 
@@ -1474,7 +1488,7 @@ We may update the Terms; material changes are published on the Platform, and ren
 Что нужно с вашей стороны: один компьютер, один технический контакт и две недели. Что получаете: работающий цикл допуска на ваших процедурах и прямую линию с разработчиком.
 
 Написать: baimurza.daulet@gmail.com`},
-		"kz": {Title: "adam — ЕҚ және ҚТ бойынша нұсқама мен білімді тексеру", Body: `adam — еңбекті қорғау және қауіпсіздік техникасы бойынша нұсқама мен білімді тексеруге арналған детерминистік көмекші. Rust тілінде жазылған, кәсіпорынның компьютерінде жұмыс істейді және желіге шықпайды.
+		"kz": {Title: "adam — ӨҚ, ЕҚ және ҚТ бойынша нұсқама мен білімді тексеру", Body: `adam — еңбекті қорғау және қауіпсіздік техникасы бойынша нұсқама мен білімді тексеруге арналған детерминистік көмекші. Rust тілінде жазылған, кәсіпорынның компьютерінде жұмыс істейді және желіге шықпайды.
 
 ## Не істейді
 
@@ -1485,6 +1499,20 @@ We may update the Terms; material changes are published on the Platform, and ren
 Дәл осы тізбекті ҚР Еңбек кодексінің 182-бабы мен №1019 бұйрық белгілейді. Мұндай тексерудің қашықтық форматына 2026 жылғы 12 шілдеде күшіне енген №223 бұйрық жол береді.
 
 Корпус — өнеркәсіптік кәсіпорынға тән ЕҚ және ҚТ циклін қамтитын 33 рәсім. Жеке рәсім емес, жылдық тақырыптар бағдарламасы жұмыс істейді: әр тақырып өтіледі, әрқайсысы бойынша сынақ қабылданады.
+
+## ӨҚ, ЕҚ және ҚТ — үш режим, бір цикл
+
+Қауіпті өндірістік объектілері бар кәсіпорында үш бағыт бойынша оқытылады және сынақ тапсырылады, бұл — мерзімдері әртүрлі бөлек құқықтық режимдер.
+
+Еңбекті қорғау мен қауіпсіздік техникасы — Еңбек кодексі және №1019 бұйрық: білімді тексеру жылына кемінде бір рет, қайталама нұсқама — жарты жылда бір рет.
+
+Өнеркәсіптік қауіпсіздік — «Азаматтық қорғау туралы» заң және ТЖМ №332 бұйрығы: қауіпті өндірістік объектілердің жұмысшылары кемінде он сағаттық оқудан кейін жыл сайын, басшылар, мамандар мен ИТҚ үш жылда бір рет тапсырады.
+
+Бір кәсіпорын мұны бір емтиханға біріктіреді, екіншісі әртүрлі күнге бөледі. Цикл бәрібір бір, және adam оны кез келген бағыт бойынша өткізеді: мазмұнды сіз бересіз.
+
+№332 бұйрықтың 15-тармағы өнеркәсіптік қауіпсіздік бойынша емтихан қабылдайтын бағдарлама қандай болуы керегін белгілейді: жеке деректер мен емтихан тапсырушының жеке нөмірі бойынша кіру, сұрақтарды араластыру, бір тест ішінде қайталауға тыйым, таймер, «сдал» немесе «не сдал» нәтижесімен хаттама шығару. adam бес тармақтың бәріне жауап береді — әрі хаттаманы жай шығарып қана қоймай, криптографиялық қол қояды.
+
+Емтиханды оқу ұйымы немесе кәсіпорынның аттестатталған оқу орталығы тұрақты жұмыс істейтін емтихан комиссиясы арқылы қабылдайды. adam осы тәртіптің орнына емес, ішінде жұмыс істейді.
 
 ## Неге бұл офлайн жұмыс істейді
 
@@ -1513,7 +1541,7 @@ GPU да, интернет те қажет емес. Бәрі орнында е�
 Сіз жағыңыздан керегі: бір компьютер, бір техникалық байланыс және екі апта. Алатыныңыз: өз рәсімдеріңізде жұмыс істейтін допуск циклі және әзірлеушімен тікелей байланыс.
 
 Жазу: baimurza.daulet@gmail.com`},
-		"en": {Title: "adam — safety briefings and knowledge checks", Body: `adam is a deterministic assistant for occupational safety briefings and knowledge checks. It is written in Rust, runs on the enterprise's own machine and never reaches the network.
+		"en": {Title: "adam — industrial and workplace safety briefings", Body: `adam is a deterministic assistant for occupational safety briefings and knowledge checks. It is written in Rust, runs on the enterprise's own machine and never reaches the network.
 
 ## What it does
 
@@ -1524,6 +1552,20 @@ It runs the whole session, not a piece of it:
 That is the sequence Kazakhstan's Labour Code article 182 and Order No. 1019 prescribe. Order No. 223, in force since 12 July 2026, permits the check to be conducted remotely.
 
 The corpus holds 33 procedures covering the safety lifecycle an industrial site actually runs. It is not a single procedure but an annual programme of topics: each is briefed, and each is examined.
+
+## Industrial, occupational and technical safety — three regimes, one cycle
+
+At a site with hazardous production facilities, workers are trained and examined on three fronts, and these are separate legal regimes with separate deadlines.
+
+Occupational safety and safety technique fall under the Labour Code and Order No. 1019: a knowledge check at least once a year, a repeat briefing every six months.
+
+Industrial safety falls under the Civil Protection Act and Emergencies Ministry Order No. 332: workers at hazardous production facilities are examined annually after at least ten hours of training; managers, specialists and engineering staff once every three years.
+
+One enterprise merges these into a single exam, another spreads them across separate dates. The cycle is the same either way, and adam runs it on any of the three: the content is yours.
+
+Clause 15 of Order No. 332 sets out what software taking an industrial-safety exam must do: entry by personal details and the examinee's individual number, questions shuffled between variants, no repetition within one test, a timer, and a protocol printed at the end reading passed or failed. adam meets all five — and it does not merely print the protocol, it signs it cryptographically.
+
+The exam itself is held by a training organisation, or by an enterprise training centre holding the attestation, through its standing examination board. adam works inside that order, not instead of it.
 
 ## Why it works offline
 
