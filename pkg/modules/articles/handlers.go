@@ -1292,6 +1292,11 @@ type StudioRow struct {
 	// it stays honest whatever the view counter is doing — and it answers the
 	// question an author actually has: was the piece worth staying with?
 	PFinish int
+	// Read is the count that survives both tests: the end of the prose reached
+	// AND at least half the estimated time spent engaged with it. Views count
+	// anything that fetched the page; this counts what behaved like reading.
+	Read    int64
+	AvgSecs int64
 }
 
 // analyticsSince is the day the view and reading-depth counters were reset to
@@ -1337,6 +1342,10 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	lang := m.resolveLang(w, r)
+	reads, err := m.store.AuthorReads(r.Context(), authorID)
+	if err != nil {
+		m.rt.Logger.Warn("author reads", zap.Error(err))
+	}
 	rows := make([]StudioRow, 0, len(arts))
 	for _, a := range arts {
 		title := T(lang, "studio.untitled")
@@ -1363,6 +1372,12 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			row.P75 = pctOf(row.D75, row.Views)
 			row.P100 = pctOf(row.D100, row.Views)
 			row.PFinish = pctOf(row.D100, row.D25)
+		}
+		if rd := reads[row.ID]; rd != nil {
+			row.Read = rd.Finished
+			if rd.Samples > 0 {
+				row.AvgSecs = rd.Seconds / rd.Samples
+			}
 		}
 		rows = append(rows, row)
 	}

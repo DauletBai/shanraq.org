@@ -2084,6 +2084,13 @@ var messages = map[string]map[string]string{
 	"footer.framework":  {"kz": "Фреймворк", "ru": "Фреймворк", "en": "Framework"},
 
 	// Traffic chart.
+	"studio.read":     {"kz": "оқылды", "ru": "прочитано", "en": "read"},
+	"studio.read_sec": {"kz": " с", "ru": " с", "en": "s"},
+	"studio.read_note": {
+		"kz": "Мәтіннің соңына жеткен және онымен есептік оқу уақытының кемінде жартысын өткізген сессиялар. Қасында — бір сессияның орташа белсенді уақыты.",
+		"ru": "Сессии, которые дошли до конца текста и провели с ним не меньше половины расчётного времени чтения. Рядом — среднее активное время одной сессии.",
+		"en": "Sessions that reached the end of the text and spent at least half its estimated reading time with it. Beside it, the average engaged time of one session.",
+	},
 	"tc.audience":   {"kz": "Аудитория", "ru": "Аудитория", "en": "Audience"},
 	"tc.period":     {"kz": "Кезең", "ru": "Период", "en": "Period"},
 	"tc.aud_all":    {"kz": "Барлық елдер", "ru": "Все страны", "en": "All countries"},

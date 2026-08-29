@@ -793,3 +793,66 @@ func (s *Store) DaysWithArticlesInMonth(ctx context.Context, year int, month tim
 	}
 	return out, rows.Err()
 }
+
+// ReadingSeconds is how long the article's text should take at the pace the
+// page itself advertises. Computed from the stored body rather than taken from
+// the browser, which is the point: the threshold a session is measured against
+// cannot be argued with by the thing being measured.
+func (s *Store) ReadingSeconds(ctx context.Context, id uuid.UUID, lang string) int {
+	var body string
+	if err := s.db.QueryRow(ctx,
+		`SELECT body_md FROM article_translations WHERE article_id = $1 AND lang = $2`,
+		id, lang).Scan(&body); err != nil {
+		return 0
+	}
+	return readingMinutes(body) * 60
+}
+
+// RecordRead adds one finished reading session.
+func (s *Store) RecordRead(ctx context.Context, id uuid.UUID, seconds int, finished bool) error {
+	n := 0
+	if finished {
+		n = 1
+	}
+	_, err := s.db.Exec(ctx, `
+		INSERT INTO article_reads (article_id, finished, samples, seconds)
+		VALUES ($1, $2, 1, $3)
+		ON CONFLICT (article_id) DO UPDATE SET
+			finished = article_reads.finished + EXCLUDED.finished,
+			samples  = article_reads.samples + 1,
+			seconds  = article_reads.seconds + EXCLUDED.seconds`,
+		id, n, seconds)
+	return err
+}
+
+// ArticleReads is one article's engaged-reading tally.
+type ArticleReads struct {
+	Finished int64
+	Samples  int64
+	Seconds  int64
+}
+
+// AuthorReads returns the engaged-reading tallies for an author's articles,
+// keyed by article id as a string so the dashboard can look them up beside the
+// depth funnel.
+func (s *Store) AuthorReads(ctx context.Context, authorID uuid.UUID) (map[string]*ArticleReads, error) {
+	rows, err := s.db.Query(ctx, `
+		SELECT r.article_id, r.finished, r.samples, r.seconds
+		  FROM article_reads r
+		  JOIN articles a ON a.id = r.article_id
+		 WHERE a.author_id = $1`, authorID)
+	if err != nil {
+		return nil, fmt.Errorf("author reads: %w", err)
+	}
+	defer rows.Close()
+	out := map[string]*ArticleReads{}
+	for rows.Next() {
+		var id uuid.UUID
+		v := &ArticleReads{}
+		if err := rows.Scan(&id, &v.Finished, &v.Samples, &v.Seconds); err != nil {
+			return nil, err
+		}
+		out[id.String()] = v
+	}
+	return out, rows.Err()
+}

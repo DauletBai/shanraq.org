@@ -3583,3 +3583,7 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .tc__tip__r .tc__key--1 { background: var(--tc-1); }
 .tc__tip__r .tc__key--2 { background: var(--tc-2); }
 .tc__tip__r .tc__key--3 { background: var(--tc-3); }
+
+/* The count that passed both tests, beside the scroll funnel it corrects. */
+.depth-read { display: inline-flex; align-items: baseline; gap: 5px; margin-left: 10px; font-size: .82rem; color: var(--ink-soft); }
+.depth-read b { color: var(--ink); font-weight: 700; }

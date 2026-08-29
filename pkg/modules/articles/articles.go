@@ -230,6 +230,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/read/{slug}/comment", m.handleComment)
 		r.Post("/read/{slug}/comment/{id}/delete", m.handleCommentDelete)
 		r.Post("/read/{slug}/progress", m.handleReadProgress)
+		r.Post("/read/{slug}/done", m.handleReadDone)
 		r.Get("/author/{id}", m.handleAuthor)
 		r.Get("/predictions", m.handlePredictions)
 		r.Get("/analytics", m.handlePublicStats)

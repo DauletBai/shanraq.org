@@ -94,6 +94,10 @@
                    call San Marino the world's most sporting nation. */}}
               {{ if ge .D25 5 }}<span class="depth-rate" title="{{ t $.Lang "studio.depth_rate" }}">{{ .PFinish }}%</span>
               {{ else }}<span class="depth-rate depth-rate--few" title="{{ t $.Lang "studio.depth_few" }}">—</span>{{ end }}
+              {{/* The count that had to pass both tests: the end of the text
+                   reached, and half the estimated time spent with it. Views
+                   count whatever fetched the page; this counts reading. */}}
+              {{ if .Read }}<span class="depth-read" title="{{ t $.Lang "studio.read_note" }}">{{ t $.Lang "studio.read" }} <b>{{ .Read }}</b>{{ if .AvgSecs }} · {{ .AvgSecs }}{{ t $.Lang "studio.read_sec" }}{{ end }}</span>{{ end }}
                             {{ else }}<span class="dot">—</span>{{ end }}
             </td>
             <td>{{ fmtDate .Updated }}</td>

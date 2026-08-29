@@ -942,6 +942,47 @@
       window.addEventListener('scroll', check, { passive: true });
       window.addEventListener('resize', check, { passive: true });
       check();
+
+      // Time, alongside depth. Reaching the end of the prose says the last
+      // paragraph was on screen; it cannot say anyone was there, and a flick to
+      // the bottom reports the same 100% as an hour of reading. What separates
+      // them is how long the reader was actually with the text.
+      //
+      // Engaged time, not time since the page opened: the clock stops while the
+      // tab is in the background and while nothing at all happens for half a
+      // minute, so a page forgotten in a tab overnight counts as the minutes it
+      // was read for.
+      var engaged = 0, last = Date.now(), acted = Date.now(), sent = false;
+      function tick() {
+        var now = Date.now();
+        if (document.visibilityState === 'visible' && now - acted < 30000) {
+          engaged += (now - last) / 1000;
+        }
+        last = now;
+      }
+      setInterval(tick, 1000);
+      ['scroll', 'pointerdown', 'pointermove', 'keydown'].forEach(function (e) {
+        window.addEventListener(e, function () { acted = Date.now(); }, { passive: true });
+      });
+      // Reported once. Firing again on every return to the tab would count one
+      // reader several times, and losing the tail of a session that was tabbed
+      // away from is the cheaper of the two errors.
+      function done() {
+        tick();
+        if (sent || engaged < 3) return;
+        sent = true;
+        var d = 0;
+        [25, 50, 75, 100].forEach(function (mark) { if (fired[mark]) d = mark; });
+        try {
+          navigator.sendBeacon('/read/' + encodeURIComponent(slug) + '/done?t=' +
+            Math.round(engaged) + '&d=' + d + '&l=' +
+            encodeURIComponent(document.documentElement.lang || ''));
+        } catch (e) {}
+      }
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') done();
+      });
+      window.addEventListener('pagehide', done);
     })();
     // Aggregate click counters: any element with data-track fires a fire-and-
     // forget beacon with just the event name (no visitor identity is sent).

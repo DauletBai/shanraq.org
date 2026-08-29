@@ -92,3 +92,59 @@ func (s *Store) AuthorReadingDepth(ctx context.Context, authorID uuid.UUID) (map
 	}
 	return out, rows.Err()
 }
+
+// readFinishShare is how much of the estimated reading time a session must have
+// spent engaged before it counts as a read. Half, because the estimate is a
+// blunt 180 words a minute and real readers scatter widely around it -- a fast
+// one who genuinely finished should not be thrown away to exclude a flick, and
+// a flick takes seconds, nowhere near half.
+const readFinishShare = 0.5
+
+// readMaxSeconds caps one session's contribution. Engaged time already stops
+// for a hidden tab and for idleness, but a page open all day in front of
+// somebody doing something else would still dominate an average it has no
+// business being in.
+const readMaxSeconds = 3 * 60 * 60
+
+// handleReadDone records a finished reading session: how far the reader got and
+// how long they were actually engaged with the text.
+//
+// It arrives on page-hide, from navigator.sendBeacon, so it is fire-and-forget
+// and always answers 204. Whether the session counts as a read is decided here
+// rather than in the browser: the expected time is computed from the text the
+// server itself holds, so a client cannot report having read something faster
+// than the words in it allow.
+func (m *Module) handleReadDone(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNoContent)
+
+	secs, _ := strconv.Atoi(r.URL.Query().Get("t"))
+	depth, _ := strconv.Atoi(r.URL.Query().Get("d"))
+	if secs <= 0 {
+		return
+	}
+	if secs > readMaxSeconds {
+		secs = readMaxSeconds
+	}
+	// A crawler that runs JavaScript is rare; one that also idles on the page
+	// for minutes is rarer still. Even so, the same filter the view counter uses
+	// applies, so the two numbers are drawn from the same population.
+	if botLabel(r.UserAgent()) != "" {
+		return
+	}
+	a, err := m.store.GetPublishedBySlug(r.Context(), chi.URLParam(r, "slug"))
+	if err != nil {
+		return
+	}
+	// The page tags itself "kk" for Kazakh, which is the correct BCP 47 subtag
+	// and not the code the translations are stored under. Read back what we
+	// wrote rather than trusting the two to be the same string.
+	lang := r.URL.Query().Get("l")
+	if lang == "kk" {
+		lang = LangKZ
+	}
+	expect := m.store.ReadingSeconds(r.Context(), a.ID, lang)
+	finished := depth >= 100 && expect > 0 && float64(secs) >= float64(expect)*readFinishShare
+	if err := m.store.RecordRead(r.Context(), a.ID, secs, finished); err != nil {
+		m.rt.Logger.Warn("record read", zap.Error(err))
+	}
+}
