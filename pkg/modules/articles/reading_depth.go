@@ -143,8 +143,20 @@ func (m *Module) handleReadDone(w http.ResponseWriter, r *http.Request) {
 		lang = LangKZ
 	}
 	expect := m.store.ReadingSeconds(r.Context(), a.ID, lang)
-	finished := depth >= 100 && expect > 0 && float64(secs) >= float64(expect)*readFinishShare
+	finished := readCounts(depth, secs, expect)
 	if err := m.store.RecordRead(r.Context(), a.ID, secs, finished); err != nil {
 		m.rt.Logger.Warn("record read", zap.Error(err))
 	}
+}
+
+// readCounts decides whether one session was a read.
+//
+// Both tests, not either: the end of the prose reached, and enough of the
+// article's own estimate spent with it. Depth alone passes a two-second flick
+// to the bottom; time alone passes a tab left open on the first paragraph.
+func readCounts(depth, secs, expect int) bool {
+	if depth < 100 || expect <= 0 {
+		return false
+	}
+	return float64(secs) >= float64(expect)*readFinishShare
 }
