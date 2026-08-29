@@ -76,7 +76,11 @@ type TrafficPoint struct {
 	// axis spans the whole day either way, but a line drawn through the second
 	// kind would claim a zero we never measured -- and would dive to the floor
 	// across every hour still to come.
-	Known    bool
+	Known bool
+	// Running marks the bucket still filling. The hour now in progress holds
+	// five minutes of traffic against a full hour before it, and drawn as an
+	// ordinary point it reads as a collapse rather than as a count so far.
+	Running  bool
 	Hosts    int64
 	Visitors int64
 	Visits   int64
@@ -99,6 +103,9 @@ type TrafficChart struct {
 	// of hours that does not say whose hours is a chart two readers will read
 	// two different ways.
 	Zone string
+	// Partial says the last point is a bucket still filling, so the page can
+	// say so instead of leaving a cliff unexplained.
+	Partial bool
 }
 
 // trafficChart reads one audience over one period.
@@ -307,10 +314,12 @@ const (
 type TrafficSeries struct {
 	Key    string // i18n suffix: hosts | visitors | visits | views
 	Slot   int    // colour slot, fixed: never cycled, never reassigned by rank
-	Points string // SVG polyline points
-	LastX  float64
-	LastY  float64
-	Last   int64
+	Points string // SVG polyline over the settled buckets
+	// Tail is the two-point segment into the bucket still filling, drawn dashed.
+	Tail  string
+	LastX float64
+	LastY float64
+	Last  int64
 }
 
 // Series returns the four lines in their fixed order. The order is the colour
@@ -334,7 +343,7 @@ func (c TrafficChart) Series() []TrafficSeries {
 	out := make([]TrafficSeries, 0, len(pick))
 	for i, s := range pick {
 		ser := TrafficSeries{Key: s.key, Slot: i}
-		pts := ""
+		pts, lastAt := "", ""
 		for j, p := range c.Points {
 			if !p.Known {
 				continue // holds its place on the axis, carries no point
@@ -342,16 +351,27 @@ func (c TrafficChart) Series() []TrafficSeries {
 			v := s.get(p)
 			x := float64(j) * step
 			y := float64(chartH) - float64(v)*float64(chartH)/float64(c.Max)
-			if pts != "" {
-				pts += " "
+			at := fmt.Sprintf("%.1f,%.1f", x, y)
+			if p.Running {
+				// The settled line ends at the previous point; this one hangs off
+				// it on a dashed segment.
+				ser.Tail = lastAt + " " + at
+			} else {
+				if pts != "" {
+					pts += " "
+				}
+				pts += at
+				lastAt = at
 			}
-			pts += fmt.Sprintf("%.1f,%.1f", x, y)
 			ser.LastX, ser.LastY, ser.Last = x, y, v
 		}
-		if pts == "" {
+		if pts == "" && ser.Tail == "" {
 			continue
 		}
 		ser.Points = pts
+		if ser.Tail != "" && lastAt == "" {
+			ser.Tail = "" // nothing settled to hang it from
+		}
 		out = append(out, ser)
 	}
 	return out
@@ -434,11 +454,20 @@ func fillHours(out *TrafficChart, since time.Time, loc *time.Location) {
 	for h := 0; h < 24; h++ {
 		at := midnight.Add(time.Duration(h) * time.Hour)
 		lbl := at.Format(trafficLayout("hour"))
+		running := at.Equal(upto)
 		if pt, ok := have[lbl]; ok {
+			pt.Running = running
 			day = append(day, pt)
 			continue
 		}
-		day = append(day, TrafficPoint{Label: lbl, Known: !at.Before(from) && !at.After(upto)})
+		day = append(day, TrafficPoint{Label: lbl, Known: !at.Before(from) && !at.After(upto), Running: running})
 	}
 	out.Points = day
+	if n := len(day); n > 0 {
+		for _, pt := range day {
+			if pt.Running && pt.Known {
+				out.Partial = true
+			}
+		}
+	}
 }

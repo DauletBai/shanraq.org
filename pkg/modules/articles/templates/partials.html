@@ -478,6 +478,10 @@
           {{ end }}
           {{ range $c.Series }}
           <polyline class="tc__line tc__line--{{ .Slot }}" points="{{ .Points }}"/>
+          {{/* The bucket still filling hangs off the settled line on a dashed
+               segment. Drawn solid it read as a collapse, when it is only an
+               hour five minutes old counted against a full one. */}}
+          {{ if .Tail }}<polyline class="tc__line tc__line--{{ .Slot }} tc__tail" points="{{ .Tail }}"/>{{ end }}
           {{/* The dot also carries a single-point series: a polyline of one
                point draws nothing at all. */}}
           <circle class="tc__dot tc__dot--{{ .Slot }}" cx="{{ .LastX }}" cy="{{ .LastY }}" r="4"/>
@@ -511,6 +515,7 @@
     </div>
   </details>
   {{ end }}
+  {{ if $c.Partial }}<p class="chart__note">{{ t .Lang "tc.partial" }}</p>{{ end }}
   <p class="chart__note">{{ printf (t .Lang "tc.tz") $c.Zone }}</p>
   {{ if $c.Since }}<p class="chart__note">{{ printf (t .Lang "tc.since") $c.Since }}</p>{{ end }}
   <p class="chart__note">{{ t .Lang "tc.why" }}</p>
