@@ -549,10 +549,14 @@ var messages = map[string]map[string]string{
 	// Our own product rather than the slot. It runs on the same unsold-inventory
 	// path as the rest, so it costs nothing and never displaces a paying order.
 	"house.adam_title": {"kz": "Еңбекті қорғау нұсқамасына арналған ЖИ", "ru": "ИИ для инструктажа по охране труда", "en": "AI for safety briefings"},
+	// The voice dialogue leads because it is the part a reader cannot assume:
+	// briefing software is expected, a machine that talks a worker through the
+	// briefing in his own language is not. "Built by us" went: the slide runs on
+	// our own site, so the authorship was the one thing already obvious.
 	"house.adam_desc": {
-		"kz": "Нұсқама, сынақ және допуск хаттамасы — офлайн, қазақша және орысша. Өз әзірлемеміз.",
-		"ru": "Инструктаж, зачёт и протокол допуска — офлайн, на казахском и русском. Наша разработка.",
-		"en": "Briefing, test and admission protocol — offline, in Kazakh and Russian. Built by us.",
+		"kz": "Қазақша және орысша дауыстық диалог. Нұсқама, сынақ, допуск хаттамасы — офлайн.",
+		"ru": "Голосовой диалог на казахском и русском. Инструктаж, зачёт, протокол допуска — офлайн.",
+		"en": "Voice dialogue in Kazakh and Russian. Briefing, test, admission protocol — offline.",
 	},
 	"house.adam_cta":      {"kz": "Қалай жұмыс істейді", "ru": "Как это работает", "en": "How it works"},
 	"house.notrack_title": {"kz": "Бақылаусыз және бөгде cookie-сіз", "ru": "Без слежки и сторонних cookie", "en": "No tracking, no third-party cookies"},
