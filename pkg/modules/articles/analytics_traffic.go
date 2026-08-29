@@ -313,7 +313,10 @@ func (c TrafficChart) Href(base, kind, code string) string {
 const (
 	chartW = 1000
 	chartH = 300
-	padR   = 96 // room for the direct label at the end of each line
+	// No reserve on the right. It used to hold the figure each line carries at
+	// its end, which cost a tenth of the width: the plot and the dates under it
+	// both stopped short of the frame and read as shoved to the left. The figure
+	// sits above its point instead, where it needs no room of its own.
 )
 
 // TrafficSeries is one line, ready to draw.
@@ -345,7 +348,7 @@ func (c TrafficChart) Series() []TrafficSeries {
 	if n == 0 || c.Max <= 0 {
 		return nil
 	}
-	step := float64(chartW-padR) / float64(maxInt(n-1, 1))
+	step := float64(chartW) / float64(maxInt(n-1, 1))
 	out := make([]TrafficSeries, 0, len(pick))
 	for i, s := range pick {
 		ser := TrafficSeries{Key: s.key, Slot: i}
@@ -423,7 +426,7 @@ func (c TrafficChart) XLabels() []map[string]any {
 	if c.Period == "hour" {
 		every = 2
 	}
-	step := float64(chartW-padR) / float64(maxInt(n-1, 1))
+	step := float64(chartW) / float64(maxInt(n-1, 1))
 	out := []map[string]any{}
 	for i, p := range c.Points {
 		if i%every == 0 || i == n-1 {
@@ -433,9 +436,11 @@ func (c TrafficChart) XLabels() []map[string]any {
 			// box; VX places the gridline that belongs to it, in the viewBox
 			// units the SVG itself is drawn in.
 			out = append(out, map[string]any{
-				"X":  float64(i) * step * 100 / chartW,
-				"VX": float64(i) * step,
-				"L":  p.Label,
+				"X":     float64(i) * step * 100 / chartW,
+				"VX":    float64(i) * step,
+				"L":     p.Label,
+				"First": i == 0,
+				"Last":  i == n-1,
 			})
 		}
 	}
@@ -556,7 +561,7 @@ func (c TrafficChart) Hits(lang string) []TrafficHit {
 		return nil
 	}
 	span := 100.0 / float64(n)
-	step := float64(chartW-padR) / float64(maxInt(n-1, 1)) * 100 / chartW
+	step := float64(chartW) / float64(maxInt(n-1, 1)) * 100 / chartW
 	out := make([]TrafficHit, 0, n)
 	for i, p := range c.Points {
 		mid := float64(i) * step

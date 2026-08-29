@@ -490,7 +490,10 @@
           {{/* The dot also carries a single-point series: a polyline of one
                point draws nothing at all. */}}
           <circle class="tc__dot tc__dot--{{ .Slot }}" cx="{{ .LastX }}" cy="{{ .LastY }}" r="4"/>
-          <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LastY }}" dx="10" dy="4">{{ .Last }}</text>
+          {{/* Above its own point rather than beside it: to the right it needed a
+               tenth of the width reserved, and the plot stopped short of the
+               frame because of it. */}}
+          <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LastY }}" dx="-6" dy="-9">{{ .Last }}</text>
           {{ end }}
         </svg>
         {{/* One invisible band per column. The figures ride in the page rather
@@ -511,7 +514,9 @@
         </div>
         {{ end }}
         <p class="tc__x" aria-hidden="true">
-          {{ range $c.XLabels }}<span style="left:{{ .X }}%">{{ .L }}</span>{{ end }}
+          {{/* The end dates hug their own end of the axis; a centred one would hang
+           half outside the panel now that the plot runs the full width. */}}
+      {{ range $c.XLabels }}<span class="{{ if .First }}is-first{{ else if .Last }}is-last{{ end }}" style="left:{{ .X }}%">{{ .L }}</span>{{ end }}
         </p>
       </div>
     </div>

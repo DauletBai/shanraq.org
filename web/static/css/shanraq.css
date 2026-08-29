@@ -3545,9 +3545,12 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .tc__line--2 { stroke: var(--tc-2); } .tc__line--3 { stroke: var(--tc-3); }
 .tc__dot--0 { fill: var(--tc-0); } .tc__dot--1 { fill: var(--tc-1); }
 .tc__dot--2 { fill: var(--tc-2); } .tc__dot--3 { fill: var(--tc-3); }
-.tc__end { font-size: 13px; font-weight: 700; fill: var(--ink); }
+.tc__end { font-size: 13px; font-weight: 700; fill: var(--ink); text-anchor: end; paint-order: stroke;
+  stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
 .tc__x { position: relative; height: 18px; margin: 8px 0 0; font-size: .74rem; color: var(--muted); }
 .tc__x span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.tc__x span.is-first { transform: none; }
+.tc__x span.is-last { transform: translateX(-100%); }
 
 /* Hover targets: one invisible band per column, wide enough to be hit with a
    thumb, and focusable so the figures are reachable from the keyboard now that
