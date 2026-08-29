@@ -507,8 +507,10 @@
            ribbon: a house slide is still advertising, it just advertises the
            slot. When ad orders are switched off the card stops being a link,
            because an offer that leads to a closed door is worse than none. */}}
-      <div class="foot-col foot-col--ad" aria-labelledby="foot-ad">
-        <h2 class="foot-h" id="foot-ad">{{ t .Lang "footer.col_ad" }}</h2>
+      {{/* No heading. Every state of the card below wears the "Реклама" ribbon,
+           so a heading over it printed the same word twice and spent a row of
+           the column's height saying it. */}}
+      <div class="foot-col foot-col--ad">
         {{ if .Ads }}{{ with index .Ads 0 }}
         <a class="foot-ad{{ if .House }} foot-ad--house{{ end }}" href="{{ .URL }}"{{ if not .House }} rel="nofollow sponsored noopener" target="_blank"{{ end }}>
           <span class="adslot__ribbon{{ if .House }} adslot__ribbon--house{{ end }}">{{ t $.Lang "ad.badge" }}</span>
