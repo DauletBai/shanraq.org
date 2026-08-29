@@ -100,7 +100,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string) Traf
 	// The audience switches are AND-ed onto the query rather than pre-summed
 	// into four buckets, so "mobile in Kazakhstan" needs no table of its own.
 	rows, err := m.rt.DB.Query(ctx, `
-		SELECT date_trunc($1, slot) AS b,
+		SELECT date_trunc($1, slot AT TIME ZONE $5) AS b,
 		       COUNT(DISTINCT host) AS hosts,
 		       COUNT(DISTINCT vid)  AS visitors,
 		       COUNT(*)             AS visits,
@@ -111,7 +111,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string) Traf
 		   AND ($4::bool IS NOT TRUE OR is_mobile)
 		 GROUP BY b
 		 ORDER BY b`,
-		p.Trunc, time.Now().UTC().Add(-p.Window), a.KZ, a.Mob)
+		p.Trunc, siteNow().Add(-p.Window), a.KZ, a.Mob, siteTimeZone)
 	if err != nil {
 		m.rt.Logger.Warn("traffic chart", zap.Error(err))
 		out.Empty = true
@@ -140,7 +140,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string) Traf
 
 	var first time.Time
 	if err := m.rt.DB.QueryRow(ctx, `SELECT MIN(slot) FROM analytics_slots`).Scan(&first); err == nil && !first.IsZero() {
-		out.Since = first.Format("02.01.2006 15:04")
+		out.Since = first.In(siteLoc()).Format("02.01.2006 15:04")
 		if p.Code == "hour" {
 			fillHours(&out, first)
 		}
@@ -181,7 +181,7 @@ func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p traffic
 		  FROM analytics_daily
 		 WHERE day >= $2 AND kind = $3 AND ($4 = '' OR label = $4)
 		 GROUP BY b ORDER BY b`,
-		p.Trunc, time.Now().UTC().Add(-p.Window), kind, label)
+		p.Trunc, siteNow().Add(-p.Window), kind, label)
 	if err != nil {
 		m.rt.Logger.Warn("traffic backfill", zap.Error(err))
 		return
@@ -410,9 +410,12 @@ func maxInt(a, b int) int {
 // the value is not zero but unknown, and drawing it as zero would be a claim we
 // cannot make.
 func fillHours(out *TrafficChart, since time.Time) {
-	now := time.Now().UTC().Truncate(time.Hour)
+	// The reader's clock, not the server's: at a quarter to six in Kazakhstan
+	// the server says a quarter to one, and an axis ending at "12:00" reads as
+	// data that stopped five hours ago.
+	now := siteNow().Truncate(time.Hour)
 	from := now.Add(-23 * time.Hour)
-	if s := since.UTC().Truncate(time.Hour); s.After(from) {
+	if s := since.In(siteLoc()).Truncate(time.Hour); s.After(from) {
 		from = s
 	}
 	have := map[string]TrafficPoint{}
