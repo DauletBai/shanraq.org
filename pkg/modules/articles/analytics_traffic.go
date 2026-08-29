@@ -429,7 +429,14 @@ func (c TrafficChart) XLabels() []map[string]any {
 		if i%every == 0 || i == n-1 {
 			// Percent, not viewBox units: the SVG scales to its container, so a
 			// label placed at a pixel offset drifts off its own gridline.
-			out = append(out, map[string]any{"X": float64(i) * step * 100 / chartW, "L": p.Label})
+			// X places the label, in percent because the drawing scales to its
+			// box; VX places the gridline that belongs to it, in the viewBox
+			// units the SVG itself is drawn in.
+			out = append(out, map[string]any{
+				"X":  float64(i) * step * 100 / chartW,
+				"VX": float64(i) * step,
+				"L":  p.Label,
+			})
 		}
 	}
 	return out

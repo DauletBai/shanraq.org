@@ -3535,6 +3535,9 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .tc__canvas { position: relative; flex: 1 1 auto; min-width: 0; }
 .tc__canvas svg { width: 100%; height: 300px; display: block; overflow: visible; }
 .tc__grid { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+/* The verticals are fainter than the horizontals: the scale is read across,
+   and a full lattice at one weight competes with the lines it is under. */
+.tc__grid--v { opacity: .55; }
 .tc__line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
 /* The hour in progress: same hue, broken stroke. */
 .tc__tail { stroke-dasharray: 5 4; opacity: .75; }
