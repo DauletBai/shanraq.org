@@ -86,6 +86,10 @@ type TrafficChart struct {
 	Audience string
 	Period   string
 	Empty    bool
+	// Since is the day hosts, visitors and visits began being counted. Views
+	// run further back, from the older counter, so without this line the early
+	// part of the chart looks broken rather than merely older.
+	Since string
 }
 
 // trafficChart reads one audience over one period.
@@ -115,7 +119,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string) Traf
 	}
 	defer rows.Close()
 
-	layout := map[string]string{"hour": "15:04", "day": "02.01", "week": "02.01", "month": "01.2006"}[p.Code]
+	layout := trafficLayout(p.Code)
 	for rows.Next() {
 		var at time.Time
 		var pt TrafficPoint
@@ -124,15 +128,103 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string) Traf
 			break
 		}
 		pt.Label = at.Format(layout)
+		out.Points = append(out.Points, pt)
+	}
+	// Views reach further back than the other three. analytics_daily has counted
+	// them since long before this table existed, and hosts, visitors and visits
+	// cannot be recovered for those days because what they are computed from was
+	// deliberately never recorded. So the older part of the chart carries the one
+	// line that is real for it, and the other three begin where counting began --
+	// which is honest in a way that back-filling them with zero would not be.
+	m.backfillViews(ctx, a, p, &out)
+
+	var first time.Time
+	if err := m.rt.DB.QueryRow(ctx, `SELECT MIN(slot) FROM analytics_slots`).Scan(&first); err == nil && !first.IsZero() {
+		out.Since = first.Format("02.01.2006")
+	}
+
+	for _, pt := range out.Points {
 		for _, v := range []int64{pt.Hosts, pt.Visitors, pt.Visits, pt.Views} {
 			if v > out.Max {
 				out.Max = v
 			}
 		}
-		out.Points = append(out.Points, pt)
 	}
 	out.Empty = len(out.Points) == 0
 	return out
+}
+
+// backfillViews folds the older per-day view counts into the chart.
+//
+// The audience switches map onto counters analytics_daily already keeps: the
+// page counter for everyone, the country counter for Kazakhstan, the device
+// counter for mobile. It keeps no country-by-device cross, so "mobile in
+// Kazakhstan" has no history and starts where the new table does.
+func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p trafficPeriod, out *TrafficChart) {
+	if p.Code == "hour" {
+		return // analytics_daily is keyed by date; it cannot answer an hour
+	}
+	kind, label := metricPage, ""
+	switch {
+	case a.KZ && a.Mob:
+		return
+	case a.KZ:
+		kind, label = metricCountry, "KZ"
+	case a.Mob:
+		kind, label = metricDevice, "mobile"
+	}
+	rows, err := m.rt.DB.Query(ctx, `
+		SELECT date_trunc($1, day::timestamp) AS b, COALESCE(SUM(n), 0)
+		  FROM analytics_daily
+		 WHERE day >= $2 AND kind = $3 AND ($4 = '' OR label = $4)
+		 GROUP BY b ORDER BY b`,
+		p.Trunc, time.Now().UTC().Add(-p.Window), kind, label)
+	if err != nil {
+		m.rt.Logger.Warn("traffic backfill", zap.Error(err))
+		return
+	}
+	defer rows.Close()
+
+	layout := trafficLayout(p.Code)
+	byLabel := map[string]int{}
+	for i, pt := range out.Points {
+		byLabel[pt.Label] = i
+	}
+	older := []TrafficPoint{}
+	for rows.Next() {
+		var at time.Time
+		var n int64
+		if err := rows.Scan(&at, &n); err != nil {
+			break
+		}
+		lbl := at.Format(layout)
+		if i, ok := byLabel[lbl]; ok {
+			// Both sources have this bucket. The older counter is the one that
+			// has been running longest, so its view count wins rather than being
+			// added to a partial day from the new table.
+			if n > out.Points[i].Views {
+				out.Points[i].Views = n
+			}
+			continue
+		}
+		older = append(older, TrafficPoint{Label: lbl, Views: n})
+	}
+	if len(older) > 0 {
+		out.Points = append(older, out.Points...)
+	}
+}
+
+// trafficLayout is the label format for a period, shared by both sources so a
+// bucket lines up whichever table produced it.
+func trafficLayout(code string) string {
+	switch code {
+	case "hour":
+		return "02.01 15:04"
+	case "month":
+		return "01.2006"
+	default:
+		return "02.01"
+	}
 }
 
 // trafficChartFrom reads the switches off the query string. Unknown values fall
@@ -253,11 +345,16 @@ func (c TrafficChart) Ticks() []map[string]any {
 	if c.Max <= 0 {
 		return out
 	}
-	for i := 1; i <= 4; i++ {
+	for i := 0; i <= 4; i++ {
 		v := c.Max * int64(i) / 4
+		y := float64(chartH) - float64(v)*float64(chartH)/float64(c.Max)
 		out = append(out, map[string]any{
-			"Y": float64(chartH) - float64(v)*float64(chartH)/float64(c.Max),
-			"N": v,
+			"Y": y,
+			// Top is the same line as a percentage, for the label beside it: the
+			// SVG scales to its container, so a label placed in viewBox units
+			// drifts away from the gridline it belongs to.
+			"Top": y * 100 / chartH,
+			"N":   v,
 		})
 	}
 	return out

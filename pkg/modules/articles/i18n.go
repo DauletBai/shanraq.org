@@ -2108,6 +2108,11 @@ var messages = map[string]map[string]string{
 		"ru": "График хостов, посетителей, визитов и просмотров.",
 		"en": "A chart of hosts, visitors, visits and views.",
 	},
+	"tc.since": {
+		"kz": "Қаралымдар ескі санағыштан алынған және әрі қарай созылады. Хосттар, келушілер мен кірулер %s жылдан бері саналады: оларға дейінгі күндер үшін дерек жоқ, өйткені олар есептелетін нәрсе әдейі жазылмаған.",
+		"ru": "Просмотры взяты из прежнего счётчика и тянутся дальше назад. Хосты, посетители и визиты считаются с %s: за более ранние дни их нет, потому что то, из чего они вычисляются, намеренно не записывалось.",
+		"en": "Views come from the older counter and reach further back. Hosts, visitors and visits have been counted since %s: for the days before that there are none, because what they are computed from was deliberately not recorded.",
+	},
 	"tc.table": {"kz": "Сандарды кесте түрінде көрсету", "ru": "Показать цифры таблицей", "en": "Show the figures as a table"},
 	"tc.when":  {"kz": "Кезең", "ru": "Период", "en": "Period"},
 	// Why the counting exists, said where the counting is shown.

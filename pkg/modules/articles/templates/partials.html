@@ -463,21 +463,32 @@
   <p class="tc__legend">
     {{ range $c.Series }}<span class="tc__key tc__key--{{ .Slot }}">{{ t $l (printf "tc.s_%s" .Key) }}</span>{{ end }}
   </p>
-  <div class="tc__plot">
-    <svg viewBox="0 0 1000 330" preserveAspectRatio="none" role="img"
-         aria-label="{{ t .Lang "tc.alt" }}">
-      {{ range $c.Ticks }}
-      <line class="tc__grid" x1="0" y1="{{ .Y }}" x2="1000" y2="{{ .Y }}"/>
-      {{ end }}
-      {{ range $c.Series }}
-      <polyline class="tc__line tc__line--{{ .Slot }}" points="{{ .Points }}"/>
-      <circle class="tc__dot tc__dot--{{ .Slot }}" cx="{{ .LastX }}" cy="{{ .LastY }}" r="4"/>
-      <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LastY }}" dx="10" dy="4">{{ .Last }}</text>
-      {{ end }}
-    </svg>
-    <p class="tc__x" aria-hidden="true">
-      {{ range $c.XLabels }}<span style="left:{{ .X }}%">{{ .L }}</span>{{ end }}
-    </p>
+  <div class="tc__frame">
+    <div class="tc__plot">
+      {{/* The scale, beside the gridlines it belongs to. Positioned in percent
+           rather than viewBox units, because the drawing scales to its box. */}}
+      <div class="tc__y" aria-hidden="true">
+        {{ range $c.Ticks }}<span style="top:{{ .Top }}%">{{ .N }}</span>{{ end }}
+      </div>
+      <div class="tc__canvas">
+        <svg viewBox="0 0 1000 300" preserveAspectRatio="none" role="img"
+             aria-label="{{ t .Lang "tc.alt" }}">
+          {{ range $c.Ticks }}
+          <line class="tc__grid" x1="0" y1="{{ .Y }}" x2="1000" y2="{{ .Y }}"/>
+          {{ end }}
+          {{ range $c.Series }}
+          <polyline class="tc__line tc__line--{{ .Slot }}" points="{{ .Points }}"/>
+          {{/* The dot also carries a single-point series: a polyline of one
+               point draws nothing at all. */}}
+          <circle class="tc__dot tc__dot--{{ .Slot }}" cx="{{ .LastX }}" cy="{{ .LastY }}" r="4"/>
+          <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LastY }}" dx="10" dy="4">{{ .Last }}</text>
+          {{ end }}
+        </svg>
+        <p class="tc__x" aria-hidden="true">
+          {{ range $c.XLabels }}<span style="left:{{ .X }}%">{{ .L }}</span>{{ end }}
+        </p>
+      </div>
+    </div>
   </div>
   {{/* The same figures as text. It is what a reader who cannot separate two of
        the hues falls back on, and what anyone copying a number into a media
@@ -496,6 +507,7 @@
     </div>
   </details>
   {{ end }}
+  {{ if $c.Since }}<p class="chart__note">{{ printf (t .Lang "tc.since") $c.Since }}</p>{{ end }}
   <p class="chart__note">{{ t .Lang "tc.why" }}</p>
 </div>
 {{ end }}
