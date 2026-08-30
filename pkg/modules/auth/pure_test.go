@@ -82,8 +82,12 @@ func TestMemoryRateLimiterBurstAndKeys(t *testing.T) {
 		// One token per hour, burst of 2: two immediate calls, then blocked.
 		"otp": {limit: rate.Every(time.Hour), burst: 2},
 	})
-	if !rl.Allow("otp", "user-a") || !rl.Allow("otp", "user-a") {
-		t.Fatal("first two calls within burst must be allowed")
+	// Two calls, each taking a token, so they are made separately: under || the
+	// second never runs when the first fails, and the "third call" asserted
+	// below would then really be the second.
+	first, second := rl.Allow("otp", "user-a"), rl.Allow("otp", "user-a")
+	if !first || !second {
+		t.Fatalf("first two calls within burst must be allowed, got %v and %v", first, second)
 	}
 	if rl.Allow("otp", "user-a") {
 		t.Error("third call must be denied (burst exhausted)")

@@ -83,8 +83,12 @@ func retryable(err error) bool {
 	// transient failures (notably "connection refused" while Postgres is still
 	// starting) satisfy net.Error with both flags false — so DON'T return here on
 	// false; fall through to the string check below.
+	// Temporary() is deprecated and was never well defined -- the standard
+	// library's own note says most "temporary" errors are timeouts and the rest
+	// are surprising. Timeout() carries the part that meant anything, and the
+	// string check below already covers what it used to add.
 	var netErr net.Error
-	if errors.As(err, &netErr) && (netErr.Timeout() || netErr.Temporary()) {
+	if errors.As(err, &netErr) && netErr.Timeout() {
 		return true
 	}
 

@@ -152,8 +152,9 @@ func TestMoneyAggregatesAreFoundByName(t *testing.T) {
 		{"2. M0 (наличные деньги в обращении)", "2542", "2600", "2700"},
 		{"5. M3 (денежная масса)", "8232", "9000", "10000"},
 	})
-	got, err := parseNBKMoney(data)
-	if err == nil {
+	// The short book is expected to be refused, so only the error is read; the
+	// rows are picked up from the long book below.
+	if _, err := parseNBKMoney(data); err == nil {
 		t.Fatal("three months is too short a book, yet it was accepted")
 	}
 
@@ -170,7 +171,7 @@ func TestMoneyAggregatesAreFoundByName(t *testing.T) {
 		m3 = append(m3, fmt.Sprintf("%d", 8000+i))
 		pct = append(pct, "1.1")
 	}
-	got, err = parseNBKMoney(book([][]string{{"Заголовок"}, {"млн"}, head, base, pct, m0, m3}))
+	got, err := parseNBKMoney(book([][]string{{"Заголовок"}, {"млн"}, head, base, pct, m0, m3}))
 	if err != nil {
 		t.Fatal(err)
 	}

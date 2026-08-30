@@ -58,8 +58,11 @@ func TestConditionalGetTagFollowsContent(t *testing.T) {
 	if tagOf("<html>a</html>") == tagOf("<html>b</html>") {
 		t.Error("different pages share an ETag")
 	}
-	if tagOf("<html>a</html>") != tagOf("<html>a</html>") {
-		t.Error("the same page produced two different ETags")
+	// Two separate requests for the same body, named so it is plain that this
+	// is a determinism check and not an expression compared with itself.
+	firstServe, secondServe := tagOf("<html>a</html>"), tagOf("<html>a</html>")
+	if firstServe != secondServe {
+		t.Errorf("the same page produced two different ETags: %q and %q", firstServe, secondServe)
 	}
 }
 

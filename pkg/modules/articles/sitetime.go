@@ -76,6 +76,3 @@ func readerLoc(r *http.Request) *time.Location {
 	}
 	return loc
 }
-
-// readerNow is siteNow through the reader's own clock.
-func readerNow(r *http.Request) time.Time { return time.Now().In(readerLoc(r)) }

@@ -32,10 +32,6 @@ import (
 // plain query over stored rows -- no session table, no timers, nothing to
 // rebuild after a restart.
 
-// slotWindow is how long one visit lasts. Half an hour is the convention every
-// counter uses, ours included, so the numbers can be compared with theirs.
-const slotWindow = 30 * time.Minute
-
 // idLen is how much of the HMAC is kept. Sixteen bytes is far past the point
 // where two readers collide, and stopping there means the full digest -- the
 // only value an attacker holding the salt could test addresses against -- is
