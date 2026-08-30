@@ -343,11 +343,13 @@
     {{ if .L.Promoted }}<span class="badge-top">{{ t .Lang "re.badge_top" }}</span>{{ end }}
     {{ if .L.ByAgent }}<a class="agent-badge" href="/agent/{{ .L.AgentID }}" title="{{ .L.AgentName }}">{{ t .Lang "agent.badge" }}</a>{{ end }}
     {{ if .L.Images }}
-    {{/* Every slide of every card used to load at once: a feed of twenty
-         listings pulled several megabytes of photos the reader never scrolled
-         to. Lazy is right for all of them — the cover branch below already
-         does it, and the slides after the first are stacked out of sight. */}}
-    {{ range $i, $src := .L.Images }}<span class="gallery__item{{ if eq $i 0 }} is-active{{ end }}"><img src="{{ $src }}" alt="" loading="lazy" decoding="async"></span>{{ end }}
+    {{/* Only the first photo of each card carries a src. loading="lazy" was
+         meant to hold the rest back and does not: with a handful of listings on
+         screen every gallery is near enough to the viewport for the browser to
+         fetch all of it, which was five megabytes of photographs for five
+         adverts. The others carry the address and no src until their gallery is
+         turned, and the carousel fills them in one slide ahead. */}}
+    {{ range $i, $src := .L.Images }}<span class="gallery__item{{ if eq $i 0 }} is-active{{ end }}"><img{{ if eq $i 0 }} src="{{ $src }}"{{ else }} data-src="{{ $src }}"{{ end }} alt="" loading="lazy" decoding="async"></span>{{ end }}
     <a class="post__media-link" href="/listings/{{ .L.ID }}" aria-label="{{ .L.TitleIn .Lang }}"></a>
     {{ if gt (len .L.Images) 1 }}<div class="adcarousel__dots">{{ range $i, $src := .L.Images }}<button type="button" data-dot="{{ $i }}"{{ if eq $i 0 }} class="is-active"{{ end }} aria-label="{{ printf (t $.Lang "re.photo_n") (inc $i) }}"></button>{{ end }}</div>{{ end }}
     {{ else if .L.CoverURL }}
@@ -868,8 +870,20 @@
       var slides = car.querySelectorAll('.adslide, .gallery__item');
       var dots = car.querySelectorAll('[data-dot]');
       var idx = 0, n = slides.length;
+      // A slide holds its address until it is wanted. The one after it is
+      // fetched too, so turning the gallery never waits on the network.
+      function load(k) {
+        var s = slides[k];
+        if (!s) return;
+        var img = s.querySelector('img[data-src]');
+        if (!img) return;
+        img.src = img.getAttribute('data-src');
+        img.removeAttribute('data-src');
+      }
       var show = function (i) {
         idx = (i + n) % n;
+        load(idx);
+        load((idx + 1) % n);
         if (track) { track.style.transform = 'translateX(-' + (idx * 100) + '%)'; }
         slides.forEach(function (s, k) { s.classList.toggle('is-active', k === idx); });
         dots.forEach(function (d, k) { d.classList.toggle('is-active', k === idx); });
