@@ -1101,6 +1101,7 @@ var messages = map[string]map[string]string{
 	"calc.stale":           {"kz": "Мөлшерлемелер өзгеріп отырады. Әр жолда оның қайдан алынғаны және қашан тексерілгені көрсетілген, ал тексерілмегені солай белгіленген. Шартқа қол қоярдың алдында банктен тікелей сұраңыз: есеп — біздікі, ұсыныс — банктікі.", "ru": "Ставки меняются. В каждой строке указано, откуда она взята и когда проверялась, а непроверенные так и помечены. Перед подписанием договора спросите в банке напрямую: расчёт наш, предложение — банка.", "en": "Rates change. Each row says where it came from and when it was checked; unchecked rows are marked as such. Before signing, ask the bank directly: the arithmetic is ours, the offer is theirs."},
 	"calc.ex_head":         {"kz": "Мысал", "ru": "Пример", "en": "Worked example"},
 	"calc.noscript":        {"kz": "Форма JavaScript-пен жұмыс істейді. Ол өшірулі болса, төмендегі мысал мен кестені пайдаланыңыз.", "ru": "Форма работает на JavaScript. Если он отключён — пользуйтесь примером и таблицей ниже.", "en": "The form needs JavaScript. With it off, use the worked example and the table below."},
+	"calc.kind_group":      {"kz": "Несие түрі", "ru": "Тип кредита", "en": "Loan type"},
 	"calc.sidebar":         {"kz": "Несие калькуляторы", "ru": "Кредитный калькулятор", "en": "Loan calculator"},
 	"calc.sidebar_cta":     {"kz": "Санау", "ru": "Посчитать", "en": "Calculate"},
 	"fx.title":             {"kz": "Валюта бағамдары", "ru": "Курсы валют", "en": "Exchange rates"},

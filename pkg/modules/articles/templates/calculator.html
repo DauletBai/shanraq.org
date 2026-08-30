@@ -14,7 +14,13 @@
            and minimum down payment, and every one of them stays editable — our
            figures go stale and the reader's own offer beats ours. */}}
       <form class="calc" id="calc" data-programs="{{ .DataJSON }}" data-market="{{ .MarketJSON }}" data-labels="{{ .LabelsJSON }}" autocomplete="off">
-        <div class="calc__kinds" role="tablist">
+        {{/* A group of toggle buttons, not tabs. It claimed role="tablist" while
+             its children were plain buttons with aria-pressed and there were no
+             panels for them to control, so a screen reader announced a tab
+             interface that did not exist and offered arrow keys that did
+             nothing. aria-pressed is the right pattern here; the role was the
+             wrong one. */}}
+        <div class="calc__kinds" role="group" aria-label="{{ t .Lang "calc.kind_group" }}">
           {{ range .Kinds }}
           <button type="button" class="calc__kind" data-kind="{{ . }}" aria-pressed="false">{{ t $.Lang (printf "calc.k_%s" .) }}</button>
           {{ end }}

@@ -1179,6 +1179,11 @@
           row.setAttribute('data-level', level);
           var sel = document.createElement('select');
           sel.className = 'select';
+          // The label above this widget cannot carry a "for": the control does
+          // not exist until the tree is fetched. So each select names itself
+          // after the level it offers -- region, district, settlement -- which
+          // is more use to a screen reader than one label over all of them.
+          sel.setAttribute('aria-label', label(items[0].kind));
           var ph = document.createElement('option');
           ph.value = '';
           ph.textContent = '— ' + label(items[0].kind) + ' —';

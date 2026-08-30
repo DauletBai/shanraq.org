@@ -2934,7 +2934,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   display: block;
   margin-top: 10px;
   font-weight: 600;
-  color: #ef5350;
+  /* #ef5350 is the accent for a dark panel and comes to 2.79:1 on the footer's
+     lighter grey. The lighter step clears 4.5:1 and stays recognisably the
+     same red. */
+  color: #ffab9e;
 }
 
 /* Two parts with a hairline between them: the menu above, the line the reader
@@ -2946,6 +2949,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 }
 .foot-bottom { padding-top: 20px; }
 .foot-copy { margin: 0; text-align: center; }
+/* Underlined, because inside a sentence the link was told apart by its colour
+   alone -- which is exactly what a reader who cannot separate those two greys
+   has no way to do. */
+.foot-copy a { text-decoration: underline; text-underline-offset: .15em; }
 
 /* A laptop and a tablet held sideways both keep all five columns: the gap
    tightens rather than a column being dropped, because five equal columns is
@@ -3474,7 +3481,10 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 
 /* A channel that does not exist yet: the same row, but unlinked and dimmed — the
    place is held, and there is nowhere to lead. */
-.foot-soc__soon { display: flex; align-items: center; gap: 8px; opacity: .55; cursor: default; }
+/* Dimmed to say "not yet", not dimmed out of reach: at .55 the row came to
+   3.4:1 on the footer ground. At .72 it clears 4.5:1 and still reads as the
+   quiet one beside links at 7.2:1. */
+.foot-soc__soon { display: flex; align-items: center; gap: 8px; opacity: .72; cursor: default; }
 .foot-soc__badge {
   font-size: .68rem; text-transform: lowercase; letter-spacing: .02em;
   padding: 1px 7px; border: 1px solid currentColor; border-radius: 999px; opacity: .8;
