@@ -470,7 +470,14 @@
       <div class="tc__y" aria-hidden="true">
         {{ range $c.Ticks }}<span style="top:{{ .Top }}%">{{ .N }}</span>{{ end }}
       </div>
+      {{/* Below the floor width the plot scrolls sideways rather than squeezing
+           its columns: thirty-one days across a phone leave each hover band
+           nine pixels, which is a target only a mouse can hit. */}}
       <div class="tc__canvas">
+        {{/* The inner box carries the floor width, so the absolutely placed
+             hover bands and bubbles measure against the whole scrollable plot
+             rather than against the window onto it. */}}
+        <div class="tc__inner" style="min-width:{{ $c.MinW }}px">
         <svg viewBox="0 0 1000 300" preserveAspectRatio="none" role="img"
              aria-label="{{ t .Lang "tc.alt" }}">
           {{ range $c.Ticks }}
@@ -518,6 +525,7 @@
            half outside the panel now that the plot runs the full width. */}}
       {{ range $c.XLabels }}<span class="{{ if .First }}is-first{{ else if .Last }}is-last{{ end }}" style="left:{{ .X }}%">{{ .L }}</span>{{ end }}
         </p>
+        </div>
       </div>
     </div>
   </div>
@@ -525,7 +533,7 @@
   {{ if not $c.Empty }}
   <script>
   (function () {
-    var plot = document.currentScript.parentNode.querySelector('.tc__canvas');
+    var plot = document.currentScript.parentNode.querySelector('.tc__inner');
     if (!plot) return;
     var tips = plot.querySelectorAll('.tc__tip');
     function show(i) {

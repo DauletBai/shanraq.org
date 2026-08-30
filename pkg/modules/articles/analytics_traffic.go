@@ -111,6 +111,11 @@ type TrafficChart struct {
 	// of hours that does not say whose hours is a chart two readers will read
 	// two different ways.
 	Zone string
+	// MinW is the plot's floor width in pixels: 24 per column, the smallest
+	// touch target WCAG 2.2 accepts. Thirty-one days across a 360px phone give
+	// each band nine pixels, which is a target only a mouse can hit -- so below
+	// this width the plot scrolls sideways rather than shrinking its columns.
+	MinW int
 	// Partial says the last point is a bucket still filling, so the page can
 	// say so instead of leaving a cliff unexplained.
 	Partial bool
@@ -176,6 +181,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string, loc 
 		}
 	}
 	out.Empty = len(out.Points) == 0
+	out.MinW = len(out.Points) * hitMinPx
 	return out
 }
 
@@ -591,3 +597,7 @@ func (c TrafficChart) Hits(lang string) []TrafficHit {
 	}
 	return out
 }
+
+// hitMinPx is the narrowest a column may be and still be hittable with a
+// thumb. WCAG 2.2 puts the floor at 24 CSS pixels; below it the plot scrolls.
+const hitMinPx = 24

@@ -3538,7 +3538,12 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
   font-size: .74rem; color: var(--muted); font-variant-numeric: tabular-nums;
 }
 .tc__y span { position: absolute; right: 0; transform: translateY(-50%); }
-.tc__canvas { position: relative; flex: 1 1 auto; min-width: 0; }
+/* The plot keeps a floor width of 24px per column -- the smallest touch target
+   WCAG 2.2 accepts -- and scrolls sideways under it. Squeezing thirty-one days
+   into a phone gave each hover band nine pixels, hittable with a mouse and not
+   with a thumb. */
+.tc__canvas { flex: 1 1 auto; min-width: 0; overflow-x: auto; }
+.tc__inner { position: relative; }
 .tc__canvas svg { width: 100%; height: 300px; display: block; overflow: visible; }
 .tc__grid { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
 /* The verticals are fainter than the horizontals: the scale is read across,
