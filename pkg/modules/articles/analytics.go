@@ -387,6 +387,21 @@ type Metrics struct {
 	// identifiers in it cannot outlive the day that made them.
 	slots map[slotKey]int64
 	salts saltCache
+	// dropped counts what the buffer had to throw away because the database
+	// stayed unreachable long enough to fill it.
+	dropped int64
+}
+
+// metricsBufMax caps the buffer. Each entry is a kind, a label and a count --
+// a few dozen bytes -- so ten thousand is a comfortable ceiling for a site this
+// size and still small enough that a database outage cannot exhaust memory.
+const metricsBufMax = 10000
+
+// metricDelta is one buffered count, ordered so a failed batch can say which of
+// its entries never reached the database.
+type metricDelta struct {
+	k metricKey
+	n int64
 }
 
 // NewMetrics returns a collector bound to the pool.
@@ -417,27 +432,67 @@ func (mt *Metrics) Flush(ctx context.Context) {
 		mt.mu.Unlock()
 		return
 	}
-	batch := mt.buf
+	// Ordered, because what comes back on a failure has to be exactly what did
+	// not go in. A batch's results arrive in the order it was queued, and a map
+	// has no order to compare them against.
+	batch := make([]metricDelta, 0, len(mt.buf))
+	for k, n := range mt.buf {
+		batch = append(batch, metricDelta{k, n})
+	}
 	mt.buf = map[metricKey]int64{}
 	mt.mu.Unlock()
 
 	b := &pgx.Batch{}
-	for k, n := range batch {
+	for _, e := range batch {
 		b.Queue(`
 			INSERT INTO analytics_daily (day, kind, label, is_guest, n)
 			VALUES (CURRENT_DATE, $1, $2, $3, $4)
 			ON CONFLICT (day, kind, label, is_guest)
 			DO UPDATE SET n = analytics_daily.n + EXCLUDED.n`,
-			k.kind, k.label, k.guest, n)
+			e.k.kind, e.k.label, e.k.guest, e.n)
 	}
 	res := mt.db.SendBatch(ctx, b)
 	defer res.Close()
-	for range batch {
+	for i := range batch {
 		if _, err := res.Exec(); err != nil {
-			mt.log.Warn("flush analytics", zap.Error(err))
+			mt.log.Warn("flush analytics", zap.Error(err), zap.Int("returned", len(batch)-i))
+			mt.giveBack(batch[i:])
 			return
 		}
 	}
+}
+
+// giveBack returns counts a failed batch never wrote, so a database that is
+// briefly unreachable costs a delay rather than a hole. It used to cost the
+// hole: the buffer was emptied before the write and a failure dropped it, which
+// under-reported traffic exactly during the trouble worth measuring.
+//
+// The buffer has a ceiling. Beyond it the returned counts are dropped and
+// counted as dropped, because a database down for hours must not be answered by
+// growing a map until the process dies of it.
+func (mt *Metrics) giveBack(unsent []metricDelta) {
+	mt.mu.Lock()
+	defer mt.mu.Unlock()
+	for _, e := range unsent {
+		if len(mt.buf) >= metricsBufMax {
+			mt.dropped += int64(len(unsent))
+			mt.log.Warn("analytics buffer full, counts dropped",
+				zap.Int64("dropped_total", mt.dropped))
+			return
+		}
+		mt.buf[e.k] += e.n
+	}
+}
+
+// Dropped reports how many buffered counts have been thrown away for want of
+// room. Zero unless the database has been unreachable for a long time.
+func (mt *Metrics) Dropped() int64 {
+	if mt == nil {
+		return 0
+	}
+	mt.mu.Lock()
+	defer mt.mu.Unlock()
+	return mt.dropped
 }
 
 // analyticsOptOutCookie marks a browser whose traffic must never be counted —
