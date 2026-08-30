@@ -1,6 +1,7 @@
 package media
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
@@ -345,6 +346,11 @@ func (m *Module) handleUploadDoc(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		data, contentType, ext = img, "image/jpeg", ".jpg"
+	} else if bad := activePDF(raw); bad != "" {
+		m.logger.Warn("active pdf refused", zap.String("construct", bad))
+		writeJSONError(w, http.StatusUnsupportedMediaType,
+			"this PDF contains active content and cannot be published; export it as a plain document")
+		return
 	}
 
 	sum := sha256.Sum256(data)
@@ -411,3 +417,40 @@ var _ interface {
 	shanraq.InitializerModule
 	shanraq.StarterModule
 } = (*Module)(nil)
+
+// activePDF names the first construct that makes a PDF more than a document, or
+// "" when it is only pages.
+//
+// This is not virus scanning and does not pretend to be: there is no signature
+// database here and a novel payload would pass. It refuses the categories that
+// make a PDF dangerous at all -- a document that runs script on open, launches
+// a program, submits a form somewhere, or carries another file inside it. A
+// reader's browser will happily honour every one of those, and an article
+// attachment has no use for any of them.
+//
+// The check reads the raw bytes rather than parsing the document. A parser is
+// the thing being defended against, and a name split across an object stream
+// costs a false refusal, which an author can fix by exporting the file again --
+// where the other kind of mistake costs a reader.
+func activePDF(raw []byte) string {
+	// Names as they appear in a PDF's own syntax, including the hex escaping a
+	// producer may use for any character of a name.
+	for _, c := range []struct {
+		label string
+		forms []string
+	}{
+		{"JavaScript", []string{"/JavaScript", "/JS", "/J#61vaScript"}},
+		{"an action on open", []string{"/OpenAction", "/AA"}},
+		{"a program launch", []string{"/Launch"}},
+		{"an embedded file", []string{"/EmbeddedFile", "/Filespec"}},
+		{"a form submission", []string{"/SubmitForm"}},
+		{"a remote reference", []string{"/RichMedia", "/GoToR"}},
+	} {
+		for _, f := range c.forms {
+			if bytes.Contains(raw, []byte(f)) {
+				return c.label
+			}
+		}
+	}
+	return ""
+}
