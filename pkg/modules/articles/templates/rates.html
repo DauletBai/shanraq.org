@@ -307,7 +307,7 @@
     {{ template "sidebar" . }}
   </div>
 </main>
-<script>
+<script nonce="{{ .Nonce }}">
 // Chart readouts. A line shows the shape; the figures under the cursor are what
 // the reader actually came for, and estimating them against the axis ticks is
 // measuring by eye over a number we already hold.

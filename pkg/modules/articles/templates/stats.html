@@ -42,7 +42,7 @@
       <div class="charts">
         <div class="chart">
           <h2 class="chart__h">{{ t .Lang "tc.alt" }}</h2>
-          {{ template "trafficchart" (dict "Chart" .Traffic "Lang" .Lang "Base" "/analytics") }}
+          {{ template "trafficchart" (dict "Chart" .Traffic "Lang" .Lang "Base" "/analytics" "Nonce" .Nonce) }}
         </div>
       </div>
 

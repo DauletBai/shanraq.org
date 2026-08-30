@@ -3,6 +3,7 @@ package articles
 import (
 	"bytes"
 	"net/http"
+	"shanraq.org/internal/httpserver"
 	"strings"
 
 	"go.uber.org/zap"
@@ -11,6 +12,9 @@ import (
 
 // MaintenancePage backs the global maintenance screen.
 type MaintenancePage struct {
+	// Nonce authorises this page's two inline scripts. The maintenance page
+	// renders from its own struct rather than Base, so it has to carry one.
+	Nonce      string
 	Lang       string
 	Title      string
 	Message    string
@@ -60,7 +64,7 @@ func isMaintenanceExempt(p string) bool {
 func (m *Module) renderMaintenance(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
 	f := m.flags.SiteFlag()
-	data := MaintenancePage{Lang: lang, Title: T(lang, "svc.site_down_title"), Message: f.Message(lang), UntilMilli: f.UntilUnixMillis()}
+	data := MaintenancePage{Nonce: httpserver.NonceFromContext(r.Context()), Lang: lang, Title: T(lang, "svc.site_down_title"), Message: f.Message(lang), UntilMilli: f.UntilUnixMillis()}
 	if data.Message == "" {
 		data.Message = T(lang, "svc.site_down_default")
 	}

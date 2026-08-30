@@ -128,7 +128,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Shanraq.org","url":"{{ .SiteURL }}","inLanguage":["kk","ru","en"]}</script>
   {{ if .JSONLD }}{{ .JSONLD }}
   {{ end }}
-  <script>
+  <script nonce="{{ .Nonce }}">
     (function () {
       try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
     })();
@@ -439,6 +439,8 @@
      back to). Drawn on the server: this page is opened by advertisers weighing
      the audience, and a figure that needs a script to appear is a figure some
      of them never see. */}}
+{{/* Nonce comes in with the rest: this block writes an inline script and the
+     policy admits one only when it carries the value minted for the response. */}}
 {{ define "trafficchart" }}
 <div class="tc">
   <div class="tc__switches">
@@ -533,7 +535,7 @@
   </div>
   {{ end }}
   {{ if not $c.Empty }}
-  <script>
+  <script nonce="{{ .Nonce }}">
   (function () {
     var plot = document.currentScript.parentNode.querySelector('.tc__inner');
     if (!plot) return;
@@ -576,7 +578,7 @@
      Without this running, the figures fall back to the site's own clock, which
      is right for most readers and wrong for no one silently: the chart names
      the zone it drew. */}}
-<script>
+<script nonce="{{ .Nonce }}">
 (function () {
   try {
     if (document.cookie.indexOf('tz=') !== -1) return;
@@ -727,7 +729,7 @@
 </footer>
 {{ if .NeedsMap }}<script src="{{ asset "/static/vendor/leaflet.js" }}"></script>{{ end }}
 {{ if .NeedsMap }}
-<script>
+<script nonce="{{ .Nonce }}">
 // Карта погоды: слой осадков поверх обычной карты мира.
 //
 // Адрес свежего кадра пришёл с сервера в data-radar — браузеру наружу за ним
@@ -769,7 +771,7 @@
 })();
 </script>
 {{ end }}
-<script>
+<script nonce="{{ .Nonce }}">
   // Installable site: the worker only caches /static/*, so the worst a
   // failed registration costs is the install prompt, never the page.
   if ("serviceWorker" in navigator) {
@@ -779,7 +781,7 @@
   }
 </script>
 
-<script>
+<script nonce="{{ .Nonce }}">
   (function () {
     var btn = document.querySelector('[data-theme-toggle]');
     if (btn) btn.addEventListener('click', function () {

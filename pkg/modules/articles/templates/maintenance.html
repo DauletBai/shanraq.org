@@ -10,7 +10,7 @@
   <link rel="icon" type="image/svg+xml" href="/static/brand/shanraq.svg">
   <link rel="apple-touch-icon" href="/static/brand/apple-touch-icon.png">
   <link rel="stylesheet" href="{{ asset "/static/css/shanraq.css" }}">
-  <script>(function () { try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();</script>
+  <script nonce="{{ .Nonce }}">(function () { try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();</script>
 </head>
 <body class="maint-body">
   <main class="maint">
@@ -25,7 +25,7 @@
       <div class="maint__timer-label">{{ t .Lang "svc.back_in" }}</div>
       <div class="maint__count" id="maint-count">—</div>
     </div>
-    <script>
+    <script nonce="{{ .Nonce }}">
       (function () {
         var el = document.getElementById('maint-timer');
         var out = document.getElementById('maint-count');

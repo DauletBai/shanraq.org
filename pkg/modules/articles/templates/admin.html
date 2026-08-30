@@ -9,7 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="{{ asset "/static/brand/shanraq.svg" }}">
   <link rel="apple-touch-icon" href="/static/brand/apple-touch-icon.png">
   <link rel="stylesheet" href="{{ asset "/static/css/shanraq.css" }}">
-  <script>(function () { try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();</script>
+  <script nonce="{{ .Nonce }}">(function () { try { var t = localStorage.getItem('shanraq-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();</script>
 </head>
 <body class="adm-body">
 <div class="adm">
@@ -96,7 +96,7 @@
            must never show different numbers for the same question. */}}
       <div class="adm-card">
         <h2 class="adm-card__h">{{ t .Lang "tc.alt" }}</h2>
-        {{ template "trafficchart" (dict "Chart" .Traffic "Lang" .Lang "Base" "/admin") }}
+        {{ template "trafficchart" (dict "Chart" .Traffic "Lang" .Lang "Base" "/admin" "Nonce" .Nonce) }}
       </div>
 
       {{/* Three panels, not two. Referrals shared a row with a card holding both
@@ -860,7 +860,7 @@
 </main>
 </div>
 
-<script>
+<script nonce="{{ .Nonce }}">
   (function () {
     var btn = document.querySelector('[data-theme-toggle]');
     if (btn) btn.addEventListener('click', function () {

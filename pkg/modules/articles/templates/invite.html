@@ -34,7 +34,7 @@
   </div>
 </main>
 {{ template "site_footer" . }}
-<script>
+<script nonce="{{ .Nonce }}">
   (function () {
     var b = document.querySelector('[data-copy]');
     if (!b) return;

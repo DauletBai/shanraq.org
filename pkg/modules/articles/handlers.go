@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/internal/httpserver"
 	"shanraq.org/pkg/modules/ai"
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/jobs"
@@ -24,6 +25,10 @@ const langCookieName = "shanraq_lang"
 // Base carries fields shared by every page (consumed by the header/footer
 // partials via Go's embedded-field promotion). The whole UI renders in Lang.
 type Base struct {
+	// Nonce authorises this page's inline scripts. The policy admits a script
+	// tag only if it carries the value minted for this response, so a tag an
+	// attacker injects into the markup has nothing to put here.
+	Nonce     string
 	Title     string
 	Lang      string
 	Authed    bool
@@ -117,6 +122,7 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 	subMsg, subBad := subscribeFeedback(r, lang)
 	return Base{
 		Title:     title,
+		Nonce:     httpserver.NonceFromContext(r.Context()),
 		Lang:      lang,
 		SubMsg:    subMsg,
 		SubBad:    subBad,

@@ -246,7 +246,7 @@
   </section>
   {{ end }}
 </main>
-<script>
+<script nonce="{{ .Nonce }}">
 (function () {
   var form = document.querySelector('[data-adform]');
   if (!form) return;

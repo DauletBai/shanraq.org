@@ -150,7 +150,7 @@
 {{ template "site_footer" . }}
 {{ end }}
 
-<script>
+<script nonce="{{ .Nonce }}">
   // While a translation runs the author has nothing to look at and no way to
   // learn that it finished — the first long article failed three times in
   // silence. The hourglass turns so the page is visibly alive, and the state is
