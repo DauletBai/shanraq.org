@@ -37,12 +37,17 @@ func ogLocale(lang string) string {
 
 // jsonLD renders a schema.org value as an inline ld+json script. encoding/json
 // escapes <, > and & so the payload is safe inside <script>.
-func jsonLD(v any) template.HTML {
+//
+// It carries the nonce like any other script tag. The block never executes, but
+// the policy applies to it all the same, and Google renders pages in a browser
+// -- a blocked block is structured data the search engine does not see.
+func jsonLD(nonce string, v any) template.HTML {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return ""
 	}
-	return template.HTML(`<script type="application/ld+json">` + string(b) + `</script>`)
+	return template.HTML(`<script type="application/ld+json" nonce="` +
+		template.HTMLEscapeString(nonce) + `">` + string(b) + `</script>`)
 }
 
 func xmlEscape(s string) string {
@@ -361,7 +366,7 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 	// Two blocks in one array: schema.org allows it and Google reads it. The
 	// breadcrumb is what puts a "Shanraq.org › Мир › Европа" trail under the
 	// result instead of a bare URL.
-	page.JSONLD = jsonLD([]any{ld, breadcrumbLD(page)})
+	page.JSONLD = jsonLD(page.Nonce, []any{ld, breadcrumbLD(page)})
 }
 
 // breadcrumbLD builds the trail shown under a search result: site → category →
@@ -434,7 +439,7 @@ func (m *Module) applyListingSEO(page *ListingViewPage) {
 			"url":           page.SiteURL + page.Path + "?lang=" + page.Lang,
 		},
 	}
-	page.JSONLD = jsonLD(ld)
+	page.JSONLD = jsonLD(page.Nonce, ld)
 }
 
 // SitemapItem is a URL entry for the sitemap.

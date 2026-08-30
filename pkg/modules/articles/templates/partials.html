@@ -125,7 +125,7 @@
   <link rel="alternate" type="application/rss+xml" title="Shanraq.org RSS" href="/feed.xml?lang={{ .Lang }}">
   {{ if .NeedsMap }}<link rel="stylesheet" href="{{ asset "/static/vendor/leaflet.css" }}">{{ end }}
   <link rel="stylesheet" href="{{ asset "/static/css/shanraq.css" }}">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Shanraq.org","url":"{{ .SiteURL }}","inLanguage":["kk","ru","en"]}</script>
+  <script type="application/ld+json" nonce="{{ .Nonce }}">{"@context":"https://schema.org","@type":"WebSite","name":"Shanraq.org","url":"{{ .SiteURL }}","inLanguage":["kk","ru","en"]}</script>
   {{ if .JSONLD }}{{ .JSONLD }}
   {{ end }}
   <script nonce="{{ .Nonce }}">
