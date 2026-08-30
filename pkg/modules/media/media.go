@@ -194,17 +194,33 @@ func (m *Module) reserve(ctx context.Context, owner uuid.UUID, key string, size 
 	return nil
 }
 
-// keep files the stored object against its owner. A failure here is logged and
-// swallowed: the bytes are already on disk and the reader's page must not break
-// because the accounting row did not land. The sweep sees an untracked file as
-// one it does not own, and leaves it alone.
-func (m *Module) keep(ctx context.Context, owner uuid.UUID, key string, size int64, contentType string) {
+// keep files the stored object against its owner, and takes the bytes back off
+// disk if it cannot.
+//
+// The failure used to be logged and swallowed, on the reasoning that the bytes
+// were already written and a reader's page should not break over an accounting
+// row. But the sweep only ever removes keys it has a row for, so a file with no
+// row is a file nothing will ever remove -- it is charged to nobody, counted in
+// no quota, and stays until the disk fills. Losing an upload is a retry;
+// leaking one is permanent.
+//
+// So the object is deleted and the caller told, which turns a silent leak into
+// a visible failure the author can act on.
+func (m *Module) keep(ctx context.Context, owner uuid.UUID, key string, size int64, contentType string) error {
 	if m.ledger == nil {
-		return
+		return nil
 	}
 	if err := m.ledger.record(ctx, key, size, contentType, owner); err != nil {
 		m.logger.Warn("media ledger record", zap.Error(err), zap.String("key", key))
+		// Best effort in its turn: if the delete fails too there is nothing
+		// further to try, and the log now carries both halves of the story.
+		if derr := m.store.Delete(ctx, key); derr != nil {
+			m.logger.Error("orphaned media object left on disk",
+				zap.Error(derr), zap.String("key", key))
+		}
+		return err
 	}
+	return nil
 }
 
 // refuse maps a storage refusal onto a status. Being over quota is the caller's
@@ -277,7 +293,10 @@ func (m *Module) handleUpload(w http.ResponseWriter, r *http.Request) {
 		writeJSONError(w, http.StatusInternalServerError, "storage error")
 		return
 	}
-	m.keep(r.Context(), owner, key, int64(len(data)), "image/jpeg")
+	if err := m.keep(r.Context(), owner, key, int64(len(data)), "image/jpeg"); err != nil {
+		writeJSONError(w, http.StatusServiceUnavailable, "could not record the upload; try again")
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	_ = json.NewEncoder(w).Encode(uploadResponse{URL: m.store.URL(key), Key: key})
@@ -340,7 +359,10 @@ func (m *Module) handleUploadDoc(w http.ResponseWriter, r *http.Request) {
 		writeJSONError(w, http.StatusInternalServerError, "storage error")
 		return
 	}
-	m.keep(r.Context(), owner, key, int64(len(data)), contentType)
+	if err := m.keep(r.Context(), owner, key, int64(len(data)), contentType); err != nil {
+		writeJSONError(w, http.StatusServiceUnavailable, "could not record the upload; try again")
+		return
+	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	_ = json.NewEncoder(w).Encode(uploadResponse{URL: m.store.URL(key), Key: key})
 }
@@ -362,7 +384,9 @@ func (m *Module) ProcessAndSaveAvatar(ctx context.Context, owner uuid.UUID, raw 
 	if err := m.store.Put(ctx, key, data, "image/jpeg"); err != nil {
 		return "", fmt.Errorf("store avatar: %w", err)
 	}
-	m.keep(ctx, owner, key, int64(len(data)), "image/jpeg")
+	if err := m.keep(ctx, owner, key, int64(len(data)), "image/jpeg"); err != nil {
+		return "", err
+	}
 	return m.store.URL(key), nil
 }
 
