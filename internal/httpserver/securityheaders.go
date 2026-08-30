@@ -53,7 +53,12 @@ func securityHeaders(next http.Handler) http.Handler {
 			http.Error(w, "internal error", http.StatusInternalServerError)
 			return
 		}
-		nonce := base64.RawStdEncoding.EncodeToString(raw[:])
+		// URL-safe alphabet, so the value has no '+' or '/'. Standard base64
+		// puts a '+' in roughly every other nonce, html/template writes it as
+		// &#43;, and the attribute then only matches the header because the
+		// browser decodes the entity first. The CSP grammar accepts '-' and
+		// '_', so there is nothing to escape and nothing to rely on.
+		nonce := base64.RawURLEncoding.EncodeToString(raw[:])
 		csp := fmt.Sprintf(cspFmt, nonce)
 		r = r.WithContext(context.WithValue(r.Context(), nonceKey{}, nonce))
 		h := w.Header()

@@ -14,6 +14,13 @@ import (
 // untouched rather than held in memory.
 const etagLimit = 1 << 20 // 1 MiB
 
+// Since scripts moved to a per-request nonce, an HTML body differs on every
+// response and its ETag can no longer match on a revisit. The 304 path is
+// kept because it still serves everything else this wraps, and because a
+// static-hash policy would bring it back for HTML -- but a repeat visit to
+// the same page now re-sends the body. At this site's traffic that is a few
+// megabytes a day, which is the price of the policy and worth naming here.
+//
 // conditionalGet gives HTML responses an ETag and answers repeat requests with
 // 304 Not Modified.
 //

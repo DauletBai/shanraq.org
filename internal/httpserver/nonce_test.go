@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-var cspNonce = regexp.MustCompile(`script-src 'self' 'nonce-([A-Za-z0-9+/]+)'`)
+var cspNonce = regexp.MustCompile(`script-src 'self' 'nonce-([A-Za-z0-9_-]+)'`)
 
 // The policy and the page have to agree: a script tag is admitted only if it
 // carries the value this response was given, so the handler must be able to
@@ -33,6 +33,12 @@ func TestTheNonceInTheHeaderIsTheOneTheHandlerGets(t *testing.T) {
 	}
 	if len(seen) < 20 {
 		t.Errorf("nonce %q is too short to be unguessable", seen)
+	}
+	// Nothing in it may need HTML escaping, or the attribute a template writes
+	// stops being the string the header carries and only matches because the
+	// browser decodes the entity back.
+	if strings.ContainsAny(seen, "+/=<>&\"'") {
+		t.Errorf("nonce %q contains a character a template would escape", seen)
 	}
 }
 
