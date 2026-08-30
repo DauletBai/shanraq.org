@@ -1,0 +1,84 @@
+# Watches the live site from outside it.
+#
+# /healthz and /readyz have always answered; nobody was asking. The first
+# monitor of a fallen server was a reader, and a reader does not report back.
+#
+# This runs on GitHub's machines, which is the point: a check that lives on the
+# VPS it watches goes down with it. It needs no account anywhere -- a failed run
+# emails the repository owner by itself, and Telegram is added on top when the
+# secrets are set.
+name: uptime
+
+on:
+  schedule:
+    # Every ten minutes. Finer costs Actions minutes for a site whose outage
+    # would be measured in hours; coarser is a long time to be down unnoticed.
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+# A slow run must never pile onto the next one.
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe the live site
+        id: probe
+        run: |
+          set -u
+          site="https://shanraq.org"
+          fail=""
+          # Four questions, not one. A server can answer / from cache while the
+          # database is gone, so readyz is asked separately, and an article is
+          # asked last because rendering one exercises the path a reader takes.
+          check() { # url expected-code label
+            code=$(curl -sS -o /tmp/body -w '%{http_code}' --max-time 20 \
+                   -H 'User-Agent: shanraq-uptime/1 (+github actions)' "$1" || echo 000)
+            if [ "$code" != "$2" ]; then
+              echo "::error::$3 -> HTTP $code (expected $2)"
+              fail="$fail $3($code)"
+            else
+              echo "$3 -> $code"
+            fi
+          }
+          check "$site/healthz" 200 healthz
+          check "$site/readyz"  200 readyz
+          check "$site/"        200 home
+          check "$site/read/tramp-ne-diktator-i-eto-ne-ego-zasluga" 200 article
+
+          # A certificate that expires unnoticed takes the site down as surely
+          # as a crashed process, and it does it on a schedule we could have
+          # read in advance.
+          days=$(echo | openssl s_client -servername shanraq.org -connect shanraq.org:443 2>/dev/null \
+                 | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2 \
+                 | { read -r d; expiry=$(date -d "$d" +%s 2>/dev/null || echo 0); \
+                     [ "$expiry" = 0 ] && echo 99 || echo $(( (expiry - $(date +%s)) / 86400 )); })
+          echo "tls expires in ${days}d"
+          if [ "$days" -lt 10 ]; then
+            echo "::error::TLS certificate expires in ${days} days"
+            fail="$fail tls(${days}d)"
+          fi
+
+          if [ -n "$fail" ]; then
+            echo "failed=$fail" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      - name: Say so on Telegram
+        # Only when it broke, and only if the secrets exist -- a monitor that
+        # cannot notify should still fail the run rather than fail silently.
+        if: failure() && env.TG_TOKEN != ''
+        env:
+          TG_TOKEN: ${{ secrets.UPTIME_TELEGRAM_TOKEN }}
+          TG_CHAT: ${{ secrets.UPTIME_TELEGRAM_CHAT }}
+        run: |
+          text="shanraq.org: проверка не прошла — ${{ steps.probe.outputs.failed }}
+          $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          curl -sS --max-time 20 -X POST \
+            "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
+            --data-urlencode "chat_id=$TG_CHAT" \
+            --data-urlencode "text=$text" >/dev/null
