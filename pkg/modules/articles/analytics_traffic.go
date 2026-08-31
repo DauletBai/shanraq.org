@@ -53,23 +53,41 @@ var trafficPeriods = []trafficPeriod{
 	{Code: "month", Trunc: "month"},
 }
 
-// periodStart is the first moment the axis covers: midnight for a day of hours,
-// the first of the month for a month of days, January for a year of months.
-//
-// It used to be "now minus a duration", and for hours that was wrong in a way
-// that showed. A bucket is keyed by its printed label, and an hour prints as
-// "15:00" with no date, so a window reaching back a full day returned yesterday
-// evening under the same labels as this evening -- and the chart filled the
-// hours still to come with yesterday's traffic. Reading from the boundary the
-// axis actually starts at leaves nothing to collide.
-func periodStart(code string, now time.Time, loc *time.Location) time.Time {
+// periodLen is how many columns a period draws.
+func periodLen(code string) int {
 	switch code {
 	case "hour":
-		return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
+		return 24
 	case "month":
-		return time.Date(now.Year(), 1, 1, 0, 0, 0, 0, loc)
+		return 12
 	default: // day
-		return time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, loc)
+		return 30
+	}
+}
+
+// periodStart is the first moment the axis covers.
+//
+// The axis rolls: it ends at the bucket now in progress and reaches back a
+// fixed number of buckets, so the newest figure is always at the right edge and
+// the oldest falls off the left. A calendar frame -- midnight to midnight, the
+// first of the month to the last -- drew the half of the day that had not
+// happened yet as empty air, and on a chart of hours that was most of it.
+//
+// Rolling also settles a subtler fault. A point is keyed by its printed label,
+// and an hour prints as "15:00" with no date on it. Any window longer than a
+// day therefore let yesterday evening answer to this evening's name. Twenty-four
+// buckets hold each clock hour exactly once, thirty days and twelve months each
+// carry their date, so within a window no two labels can collide.
+func periodStart(code string, now time.Time, loc *time.Location) time.Time {
+	back := periodLen(code) - 1
+	switch code {
+	case "hour":
+		at := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), 0, 0, 0, loc)
+		return at.Add(-time.Duration(back) * time.Hour)
+	case "month":
+		return time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, loc).AddDate(0, -back, 0)
+	default: // day
+		return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc).AddDate(0, 0, -back)
 	}
 }
 
@@ -451,10 +469,19 @@ func (c TrafficChart) XLabels() []map[string]any {
 	if c.Period == "hour" {
 		every = 2
 	}
+	// Counted from the right, not the left. The window ends at the bucket now in
+	// progress, which is the one a reader came for, so it is the one that must
+	// carry a label. Counting from the left left it to a forced extra mark at the
+	// end, which on an even step landed one column from its neighbour and printed
+	// the two on top of each other.
+	labelled := map[int]bool{}
+	for i := n - 1; i >= 0; i -= every {
+		labelled[i] = true
+	}
 	step := float64(chartW) / float64(maxInt(n-1, 1))
 	out := []map[string]any{}
 	for i, p := range c.Points {
-		if i%every == 0 || i == n-1 {
+		if labelled[i] {
 			// Percent, not viewBox units: the SVG scales to its container, so a
 			// label placed at a pixel offset drifts off its own gridline.
 			// X places the label, in percent because the drawing scales to its
@@ -479,31 +506,27 @@ func maxInt(a, b int) int {
 	return b
 }
 
-// fillPeriod lays out the whole calendar unit, counted or not.
+// fillPeriod lays out the whole window, counted or not.
 //
-// Each slice frames the next unit up -- hours make a day, days make a month,
-// months make a year -- and the frame is drawn whole. Without it the axis was
-// only as wide as the data: "Mobile, KZ" by day showed a single column against
-// the left edge, and nothing said whether that was one busy day or the only day
-// there had ever been.
+// The window is drawn to its full width whatever the data covers. Without that
+// the axis was only as wide as the figures: "Mobile, KZ" by day showed a single
+// column against the left edge, and nothing said whether that was one busy day
+// or the only day there had ever been.
 //
 // Buckets that were counted and saw nobody are real zeros and sit on the floor.
-// Buckets from before counting started, and buckets still to come, are not zero
-// but unmeasured: they hold their place on the axis and carry no point.
+// Buckets from before counting started are not zero but unmeasured: they hold
+// their place on the axis and carry no point.
 func fillPeriod(out *TrafficChart, since time.Time, loc *time.Location, code string) {
 	now := time.Now().In(loc)
 	start := periodStart(code, now, loc)
-	var n int
+	n := periodLen(code)
 	var add func(int) time.Time
 	switch code {
 	case "hour":
-		n = 24
 		add = func(i int) time.Time { return start.Add(time.Duration(i) * time.Hour) }
 	case "day":
-		n = start.AddDate(0, 1, -1).Day()
 		add = func(i int) time.Time { return start.AddDate(0, 0, i) }
 	case "month":
-		n = 12
 		add = func(i int) time.Time { return start.AddDate(0, i, 0) }
 	default:
 		return
