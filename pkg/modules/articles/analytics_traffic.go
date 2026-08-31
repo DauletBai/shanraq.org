@@ -39,9 +39,8 @@ var trafficAudiences = []trafficAudience{
 // over. The windows differ because a chart is read at a glance: two days of
 // hours and two years of months both come to a readable number of points.
 type trafficPeriod struct {
-	Code   string
-	Trunc  string // date_trunc field
-	Window time.Duration
+	Code  string
+	Trunc string // date_trunc field
 }
 
 // Each slice shows the whole of the next unit up: hours make a day, days make a
@@ -49,9 +48,29 @@ type trafficPeriod struct {
 // story as days with fewer points -- a slice that duplicates its neighbour is
 // one more thing to click and nothing more to learn.
 var trafficPeriods = []trafficPeriod{
-	{Code: "hour", Trunc: "hour", Window: 24 * time.Hour},
-	{Code: "day", Trunc: "day", Window: 30 * 24 * time.Hour},
-	{Code: "month", Trunc: "month", Window: 365 * 24 * time.Hour},
+	{Code: "hour", Trunc: "hour"},
+	{Code: "day", Trunc: "day"},
+	{Code: "month", Trunc: "month"},
+}
+
+// periodStart is the first moment the axis covers: midnight for a day of hours,
+// the first of the month for a month of days, January for a year of months.
+//
+// It used to be "now minus a duration", and for hours that was wrong in a way
+// that showed. A bucket is keyed by its printed label, and an hour prints as
+// "15:00" with no date, so a window reaching back a full day returned yesterday
+// evening under the same labels as this evening -- and the chart filled the
+// hours still to come with yesterday's traffic. Reading from the boundary the
+// axis actually starts at leaves nothing to collide.
+func periodStart(code string, now time.Time, loc *time.Location) time.Time {
+	switch code {
+	case "hour":
+		return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
+	case "month":
+		return time.Date(now.Year(), 1, 1, 0, 0, 0, 0, loc)
+	default: // day
+		return time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, loc)
+	}
 }
 
 func audienceByCode(c string) trafficAudience {
@@ -140,7 +159,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string, loc 
 		   AND ($4::bool IS NOT TRUE OR is_mobile)
 		 GROUP BY b
 		 ORDER BY b`,
-		p.Trunc, time.Now().In(loc).Add(-p.Window), a.KZ, a.Mob, loc.String())
+		p.Trunc, periodStart(p.Code, time.Now().In(loc), loc), a.KZ, a.Mob, loc.String())
 	if err != nil {
 		m.rt.Logger.Warn("traffic chart", zap.Error(err))
 		out.Empty = true
@@ -209,7 +228,7 @@ func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p traffic
 		  FROM analytics_daily
 		 WHERE day >= $2 AND kind = $3 AND ($4 = '' OR label = $4)
 		 GROUP BY b ORDER BY b`,
-		p.Trunc, time.Now().In(loc).Add(-p.Window), kind, label)
+		p.Trunc, periodStart(p.Code, time.Now().In(loc), loc), kind, label)
 	if err != nil {
 		m.rt.Logger.Warn("traffic backfill", zap.Error(err))
 		return
@@ -473,20 +492,17 @@ func maxInt(a, b int) int {
 // but unmeasured: they hold their place on the axis and carry no point.
 func fillPeriod(out *TrafficChart, since time.Time, loc *time.Location, code string) {
 	now := time.Now().In(loc)
-	var start time.Time
+	start := periodStart(code, now, loc)
 	var n int
 	var add func(int) time.Time
 	switch code {
 	case "hour":
-		start = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, loc)
 		n = 24
 		add = func(i int) time.Time { return start.Add(time.Duration(i) * time.Hour) }
 	case "day":
-		start = time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, loc)
 		n = start.AddDate(0, 1, -1).Day()
 		add = func(i int) time.Time { return start.AddDate(0, 0, i) }
 	case "month":
-		start = time.Date(now.Year(), 1, 1, 0, 0, 0, 0, loc)
 		n = 12
 		add = func(i int) time.Time { return start.AddDate(0, i, 0) }
 	default:
@@ -513,6 +529,15 @@ func fillPeriod(out *TrafficChart, since time.Time, loc *time.Location, code str
 		at := add(i)
 		lbl := at.Format(layout)
 		running := at.Equal(upto)
+		// A bucket past the one in progress is the future, and the future holds
+		// no measurement whatever a query returned for its label. The guard is
+		// here and not only in the query because the label is the only key a
+		// point carries: widen a window again and yesterday's evening would
+		// answer to this evening's name.
+		if at.After(upto) {
+			filled = append(filled, TrafficPoint{Label: lbl})
+			continue
+		}
 		if pt, ok := have[lbl]; ok {
 			pt.Running = running
 			filled = append(filled, pt)
