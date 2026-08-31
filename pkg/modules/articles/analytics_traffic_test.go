@@ -85,29 +85,35 @@ func TestTheNewestColumnIsLastAndStillFilling(t *testing.T) {
 	}
 }
 
-func TestTheHourInProgressCarriesALabelOfItsOwn(t *testing.T) {
+func TestTheNewestColumnIsMarkedAndTheGridStaysThin(t *testing.T) {
+	loc := time.UTC
+	now := time.Now().In(loc)
 	c := TrafficChart{Period: "hour"}
-	for i := 0; i < 24; i++ {
-		c.Points = append(c.Points, TrafficPoint{Label: time.Date(2026, 8, 31, i, 0, 0, 0, time.UTC).Format("15:00")})
-	}
+	fillPeriod(&c, now.AddDate(0, 0, -7), loc, "hour")
 	labels := c.XLabels()
 	if len(labels) == 0 {
 		t.Fatal("no labels")
 	}
-	if last := labels[len(labels)-1]; last["Last"] != true {
+	last := labels[len(labels)-1]
+	if last["Last"] != true || last["L"] == "" {
 		t.Error("the newest column carries no label of its own")
 	}
-	// Labels are thinned to every other hour because "22:00" needs two columns
-	// to print in. Any pair closer than that overlaps, which is what the forced
-	// mark at the end used to do to its neighbour.
+	if last["Grid"] != true {
+		t.Error("the newest column carries no gridline; the grid is counted from the left again")
+	}
+	// Gridlines two columns apart at the narrowest. Counted from the left, a
+	// forced line at the end landed one column from its neighbour.
 	step := float64(chartW) / 23
-	want := 2 * step
-	for i := 1; i < len(labels); i++ {
-		gap := labels[i]["VX"].(float64) - labels[i-1]["VX"].(float64)
-		if gap < want-0.01 {
-			t.Errorf("labels %q and %q sit %.1f units apart, need %.1f — they overlap",
-				labels[i-1]["L"], labels[i]["L"], gap, want)
+	prev := -1.0
+	for _, l := range labels {
+		if l["Grid"] != true {
+			continue
 		}
+		vx := l["VX"].(float64)
+		if prev >= 0 && vx-prev < 2*step-0.01 {
+			t.Errorf("gridlines %.1f units apart, need %.1f", vx-prev, 2*step)
+		}
+		prev = vx
 	}
 }
 
@@ -145,5 +151,67 @@ func TestTheHourlyChartClaimsNoOlderViews(t *testing.T) {
 	c := TrafficChart{Period: "hour"}
 	if c.Backfilled {
 		t.Error("an hourly chart never reads the older counter and must not say it did")
+	}
+}
+
+// The axis labelled every second hour and every fourth day because the full
+// label is wide. The ones it left out were the columns a reader was trying to
+// read. Every column is labelled now, with the part that changes.
+
+func TestEveryColumnCarriesItsOwnLabel(t *testing.T) {
+	loc := time.UTC
+	now := time.Now().In(loc)
+	for _, code := range []string{"hour", "day", "month"} {
+		c := TrafficChart{Period: code}
+		fillPeriod(&c, now.AddDate(-2, 0, 0), loc, code)
+		labels := c.XLabels()
+		if len(labels) != periodLen(code) {
+			t.Errorf("%s: %d labels for %d columns", code, len(labels), periodLen(code))
+		}
+		grids := 0
+		for _, l := range labels {
+			if l["L"] == "" {
+				t.Errorf("%s: a column carries no label", code)
+			}
+			if l["Grid"] == true {
+				grids++
+			}
+		}
+		// Gridlines stay thinned: one behind every column is a fence.
+		if grids >= len(labels) {
+			t.Errorf("%s: %d gridlines for %d columns, they were not thinned", code, grids, len(labels))
+		}
+	}
+}
+
+func TestTheShortLabelKeepsTheUnitThatTurnedOver(t *testing.T) {
+	for _, c := range []struct {
+		code, want string
+		at         time.Time
+	}{
+		{"hour", "13", time.Date(2026, 8, 31, 13, 0, 0, 0, time.UTC)},
+		{"hour", "09", time.Date(2026, 8, 31, 9, 0, 0, 0, time.UTC)},
+		{"day", "04", time.Date(2026, 8, 4, 0, 0, 0, 0, time.UTC)},
+		{"day", "01.09", time.Date(2026, 9, 1, 0, 0, 0, 0, time.UTC)},
+		{"month", "08", time.Date(2026, 8, 1, 0, 0, 0, 0, time.UTC)},
+		{"month", "01.26", time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)},
+	} {
+		if got := shortLabel(c.code, c.at); got != c.want {
+			t.Errorf("shortLabel(%q, %s) = %q, want %q", c.code, c.at.Format("2006-01-02 15:04"), got, c.want)
+		}
+	}
+}
+
+// The full label is what the tooltip and the screen reader get: they have room,
+// and a reader hovering a column is asking exactly which one it is.
+func TestTheTooltipKeepsTheWholeLabel(t *testing.T) {
+	loc := time.UTC
+	now := time.Now().In(loc)
+	c := TrafficChart{Period: "hour"}
+	fillPeriod(&c, now.AddDate(0, 0, -7), loc, "hour")
+	for _, h := range c.Hits("ru") {
+		if len(h.Label) != len("13:00") {
+			t.Fatalf("tooltip label %q is not the whole label", h.Label)
+		}
 	}
 }

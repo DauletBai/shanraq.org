@@ -489,9 +489,9 @@
           {{ end }}
           {{/* One vertical per labelled column, so a value can be carried down
                to its own date instead of being estimated between two. */}}
-          {{ range $c.XLabels }}
+          {{ range $c.XLabels }}{{ if .Grid }}
           <line class="tc__grid tc__grid--v" x1="{{ .VX }}" y1="0" x2="{{ .VX }}" y2="300"/>
-          {{ end }}
+          {{ end }}{{ end }}
           {{ range $c.Series }}
           <polyline class="tc__line tc__line--{{ .Slot }}" points="{{ .Points }}"/>
           {{/* The bucket still filling hangs off the settled line on a dashed

@@ -125,7 +125,12 @@ type TrafficPoint struct {
 	// Views reach back to the older counter, which never told readers apart, so
 	// a day from before that counting began has a real view total and no
 	// measurement at all of the other three.
-	Counted  bool
+	Counted bool
+	// Short is the label the axis prints. Label is the whole of it -- "13:00",
+	// "04.08" -- and stays that way for the tooltip and the screen reader, which
+	// have room and need no guessing. The axis carries one under every column,
+	// so it prints the part that changes: the hour, the day, the month.
+	Short    string
 	Hosts    int64
 	Visitors int64
 	Visits   int64
@@ -286,6 +291,34 @@ func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p traffic
 	if len(older) > 0 {
 		out.Points = append(older, out.Points...)
 		out.Backfilled = true
+	}
+}
+
+// shortLabel is what one column prints under itself.
+//
+// The axis used to label every second hour and every fourth day, because the
+// full label is wide: twenty-four of "13:00" do not fit a phone, and the ones
+// left out are exactly the columns a reader is trying to read. Printing only
+// the part that changes -- the hour, the day of the month -- fits them all, and
+// the whole label is a hover away.
+//
+// The exception is the column where the larger unit turns over. A day axis
+// running 29, 30, 31, 1, 2 says nothing about which month it has crossed into,
+// so the first of a month carries its month with it.
+func shortLabel(code string, at time.Time) string {
+	switch code {
+	case "hour":
+		return at.Format("15")
+	case "month":
+		if at.Month() == time.January {
+			return at.Format("01.06")
+		}
+		return at.Format("01")
+	default: // day
+		if at.Day() == 1 {
+			return at.Format("02.01")
+		}
+		return at.Format("02")
 	}
 }
 
@@ -472,36 +505,40 @@ func (c TrafficChart) XLabels() []map[string]any {
 	// twelve marks that a reader counts round rather than eight that only sample
 	// it. The other periods thin to eight, which is as many as their longer
 	// labels fit.
-	every := maxInt(n/8, 1)
+	// Never one: twelve months divided by eight rounds to a gridline behind
+	// every column, which is the fence this thinning exists to avoid.
+	every := maxInt(n/8, 2)
 	if c.Period == "hour" {
 		every = 2
 	}
-	// Counted from the right, not the left. The window ends at the bucket now in
-	// progress, which is the one a reader came for, so it is the one that must
-	// carry a label. Counting from the left left it to a forced extra mark at the
-	// end, which on an even step landed one column from its neighbour and printed
-	// the two on top of each other.
-	labelled := map[int]bool{}
+	// Every column is labelled; only some carry a gridline. Twenty-four verticals
+	// behind a chart is a fence, but a reader counting round a day wants the hour
+	// under the column, not under the one two along from it.
+	//
+	// The gridlines are counted from the right. The window ends at the bucket now
+	// in progress, which is the one a reader came for, so it is the one that must
+	// be marked; counted from the left it fell to a forced extra line at the end,
+	// one column from its neighbour.
+	grid := map[int]bool{}
 	for i := n - 1; i >= 0; i -= every {
-		labelled[i] = true
+		grid[i] = true
 	}
 	step := float64(chartW) / float64(maxInt(n-1, 1))
-	out := []map[string]any{}
+	out := make([]map[string]any, 0, n)
 	for i, p := range c.Points {
-		if labelled[i] {
-			// Percent, not viewBox units: the SVG scales to its container, so a
-			// label placed at a pixel offset drifts off its own gridline.
-			// X places the label, in percent because the drawing scales to its
-			// box; VX places the gridline that belongs to it, in the viewBox
-			// units the SVG itself is drawn in.
-			out = append(out, map[string]any{
-				"X":     float64(i) * step * 100 / chartW,
-				"VX":    float64(i) * step,
-				"L":     p.Label,
-				"First": i == 0,
-				"Last":  i == n-1,
-			})
-		}
+		// Percent, not viewBox units: the SVG scales to its container, so a
+		// label placed at a pixel offset drifts off its own gridline.
+		// X places the label, in percent because the drawing scales to its
+		// box; VX places the gridline that belongs to it, in the viewBox
+		// units the SVG itself is drawn in.
+		out = append(out, map[string]any{
+			"X":     float64(i) * step * 100 / chartW,
+			"VX":    float64(i) * step,
+			"L":     p.Short,
+			"Grid":  grid[i],
+			"First": i == 0,
+			"Last":  i == n-1,
+		})
 	}
 	return out
 }
@@ -558,6 +595,7 @@ func fillPeriod(out *TrafficChart, since time.Time, loc *time.Location, code str
 	for i := 0; i < n; i++ {
 		at := add(i)
 		lbl := at.Format(layout)
+		short := shortLabel(code, at)
 		running := at.Equal(upto)
 		// A bucket past the one in progress is the future, and the future holds
 		// no measurement whatever a query returned for its label. The guard is
@@ -565,11 +603,11 @@ func fillPeriod(out *TrafficChart, since time.Time, loc *time.Location, code str
 		// point carries: widen a window again and yesterday's evening would
 		// answer to this evening's name.
 		if at.After(upto) {
-			filled = append(filled, TrafficPoint{Label: lbl})
+			filled = append(filled, TrafficPoint{Label: lbl, Short: short})
 			continue
 		}
 		if pt, ok := have[lbl]; ok {
-			pt.Running = running
+			pt.Running, pt.Short = running, short
 			filled = append(filled, pt)
 			continue
 		}
@@ -577,7 +615,7 @@ func fillPeriod(out *TrafficChart, since time.Time, loc *time.Location, code str
 		// older counter, which back-fill already folded in; what is left here is
 		// genuinely unmeasured for the counted three.
 		counted := !at.Before(from.Truncate(time.Hour)) && !at.After(upto)
-		filled = append(filled, TrafficPoint{Label: lbl, Known: counted, Counted: counted, Running: running})
+		filled = append(filled, TrafficPoint{Label: lbl, Short: short, Known: counted, Counted: counted, Running: running})
 	}
 	out.Points = filled
 	for _, pt := range filled {

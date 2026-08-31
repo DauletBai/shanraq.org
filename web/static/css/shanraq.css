@@ -3610,7 +3610,15 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
 .tc__dot--2 { fill: var(--tc-2); } .tc__dot--3 { fill: var(--tc-3); }
 .tc__end { font-size: 13px; font-weight: 700; fill: var(--ink); text-anchor: end; paint-order: stroke;
   stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
-.tc__x { position: relative; height: 18px; margin: 8px 0 0; font-size: .74rem; color: var(--muted); }
+/* One label under every column, so the axis is read rather than sampled. They
+   are short by construction -- the hour, the day of the month -- and the plot
+   already keeps a floor of 24px per column and scrolls below it, so the labels
+   scroll with the columns they belong to instead of piling up. Tabular figures
+   keep them the same width whatever digits they hold. */
+.tc__x {
+  position: relative; height: 16px; margin: 7px 0 0;
+  font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums;
+}
 .tc__x span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
 .tc__x span.is-first { transform: none; }
 .tc__x span.is-last { transform: translateX(-100%); }
