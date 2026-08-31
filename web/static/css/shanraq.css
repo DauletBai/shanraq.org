@@ -2,6 +2,12 @@
    One unified, self-hosted style (no external CDN). Light + dark. */
 
 :root {
+  /* Without this the browser keeps drawing the parts of a control it owns —
+     a select's dropdown, a date picker, a scrollbar — in light colours, so on
+     a dark page the role selects in the admin register came out pale boxes
+     with dark text. It has to be stated in all three theme states, because
+     the default one carries no attribute at all. */
+  color-scheme: light;
   /* One card shadow for the whole site: the admin panels and the article cards
      on the home page are the same object to a reader, and were not to the CSS. */
   --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -69,6 +75,7 @@
 }
 
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --paper: #2e2e2e;
   --surface: #262626;
   --surface-2: #34332f;
@@ -110,6 +117,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --paper: #2e2e2e;
     --surface: #262626;
     --surface-2: #34332f;
@@ -2181,6 +2189,12 @@ table.spec.adm-users th, table.spec.adm-users td { width: auto; padding: 8px 10p
 /* Dates and the register's own header must not wrap now that columns are free
    to size themselves; a wrapped date buys nothing and costs a row's height. */
 table.spec.adm-users td.adm-users__date { white-space: nowrap; }
+/* The status pills trailed the name inline and only dropped to a second line
+   when the column happened to be narrow, so one row wore its pill beside the
+   name and the next below it. Breaking the name makes the placement the same
+   in every row. */
+table.spec.adm-users td:first-child b { display: block; }
+table.spec.adm-users td:first-child .pill { margin-top: 4px; }
 /* Both outer columns sat flush against the table's edge — the name on one side,
    the edit button on the other. They need the room the card gives its own text,
    and the selector has to outweigh the rule above or it is dropped in turn. */
@@ -2189,15 +2203,24 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
 .adm-users td.adm-users__act { white-space: nowrap; color: var(--muted); }
 .adm-users__now { color: var(--muted); font-size: 0.8rem; }
 /* Role: the select and its apply button now fit side by side, so they must stay
-   there. Wrapped, the button dropped under the field and read as belonging to
-   the row beneath it. */
-.adm-inline { display: flex; align-items: stretch; flex-wrap: nowrap; gap: 6px; }
-.adm-inline .select { margin: 0; min-width: 92px; }
-/* The arrow is a pill shaped for a text label, so next to a 0.78rem select it
-   stood taller and far wider than the field it applies to. Stretched to the
-   select's height and held at 1:1 it becomes a square of exactly that height,
-   and borrowing the field's corner radius reads the two as one control. */
-.adm-inline .btn { flex: none; padding: 0; aspect-ratio: 1; border-radius: var(--radius-sm); }
+   there — wrapped, the button dropped under the field and read as belonging to
+   the row beneath it.
+
+   The arrow is a pill shaped for a text label, so next to a 0.78rem select it
+   stood taller and far wider than the field it applies to. Both controls are
+   now pinned to one height and the button squared off at it, borrowing the
+   field's corner radius so the two read as a single control. The height is
+   stated rather than stretched: an aspect-ratio square takes its width from
+   the content box before the row stretches it, which shrank the button to a
+   third of the field beside it. 30px also clears the 24px minimum for a
+   pointer target. */
+.adm-inline { --adm-ctl: 30px; display: flex; align-items: center; flex-wrap: nowrap; gap: 6px; }
+.adm-inline .select { margin: 0; min-width: 92px; height: var(--adm-ctl); }
+.adm-inline .btn {
+  flex: none;
+  width: var(--adm-ctl); height: var(--adm-ctl);
+  padding: 0; border-radius: var(--radius-sm);
+}
 .adm-users__edit summary { list-style: none; cursor: pointer; display: inline-flex; }
 .adm-users__edit summary::-webkit-details-marker { display: none; }
 .adm-users__form { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; min-width: 240px; }
