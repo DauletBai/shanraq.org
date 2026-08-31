@@ -2,6 +2,7 @@ package articles
 
 import (
 	"html/template"
+	"strconv"
 	"strings"
 	"time"
 
@@ -81,6 +82,7 @@ func templateFuncs() template.FuncMap {
 		"countryFlag":      countryFlag,
 		"countryMark":      countryMark,
 		"countryFlagEmoji": countryFlagEmoji,
+		"kilo":             kilo,
 		"liveSocial":       liveSocial, // social profiles that aren't "#" placeholders
 		"withUTM":          withUTM,
 		"dict":             dict,
@@ -99,4 +101,28 @@ func templateFuncs() template.FuncMap {
 			return t.Format("02.01.06")
 		},
 	}
+}
+
+// kilo shortens a figure to thousands so the scale beside a chart needs no
+// room held open for digits that are not there yet. A gutter wide enough for
+// six of them is mostly empty at every reading that has ever been taken, and
+// widening it the day traffic grows is a change nobody would remember to make.
+//
+// The fraction is kept only while it separates two readings -- 1,5 tells you
+// something 2 does not, 12,3 does not -- and the decimal mark follows the
+// language rather than the machine.
+func kilo(lang string, n int64) string {
+	if n > -1000 && n < 1000 {
+		return strconv.FormatInt(n, 10)
+	}
+	var s string
+	if v := float64(n) / 1000; v > -10 && v < 10 {
+		s = strings.TrimSuffix(strconv.FormatFloat(v, 'f', 1, 64), ".0")
+	} else {
+		s = strconv.FormatInt(n/1000, 10)
+	}
+	if lang != "en" {
+		s = strings.Replace(s, ".", ",", 1)
+	}
+	return s + T(lang, "tc.kilo")
 }

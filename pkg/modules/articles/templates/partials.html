@@ -472,7 +472,7 @@
       {{/* The scale, beside the gridlines it belongs to. Positioned in percent
            rather than viewBox units, because the drawing scales to its box. */}}
       <div class="tc__y" aria-hidden="true">
-        {{ range $c.Ticks }}<span style="top:{{ .Top }}%">{{ .N }}</span>{{ end }}
+        {{ range $c.Ticks }}<span style="top:{{ .Top }}%">{{ kilo $l .N }}</span>{{ end }}
       </div>
       {{/* Below the floor width the plot scrolls sideways rather than squeezing
            its columns: thirty-one days across a phone leave each hover band
@@ -504,7 +504,7 @@
           {{/* Above its own point rather than beside it: to the right it needed a
                tenth of the width reserved, and the plot stopped short of the
                frame because of it. */}}
-          <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LastY }}" dx="-6" dy="-9">{{ .Last }}</text>
+          <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LastY }}" dx="-6" dy="-9">{{ kilo $l .Last }}</text>
           {{ end }}
         </svg>
         {{/* One invisible band per column. The figures ride in the page rather
@@ -565,7 +565,7 @@
   {{ end }}
   {{ if $c.Partial }}<p class="chart__note">{{ t .Lang "tc.partial" }}</p>{{ end }}
   <p class="chart__note">{{ printf (t .Lang "tc.tz") $c.Zone }}</p>
-  {{ if $c.Since }}<p class="chart__note">{{ printf (t .Lang "tc.since") $c.Since }}</p>{{ end }}
+  {{ if $c.Since }}<p class="chart__note">{{ printf (t .Lang "tc.since") $c.Since }}{{ if $c.Backfilled }} {{ t .Lang "tc.older" }}{{ end }}</p>{{ end }}
   <p class="chart__note">{{ t .Lang "tc.why" }}</p>
 </div>
 {{ end }}

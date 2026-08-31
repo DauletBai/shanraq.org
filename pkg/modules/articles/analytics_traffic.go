@@ -156,6 +156,12 @@ type TrafficChart struct {
 	// Partial says the last point is a bucket still filling, so the page can
 	// say so instead of leaving a cliff unexplained.
 	Partial bool
+	// Backfilled says the older view counter actually contributed buckets this
+	// chart would not otherwise have. The note about where those views come
+	// from was printed on every chart, including the hourly one, which never
+	// asks that counter at all -- a sentence true of the page in general and
+	// false of the chart under it.
+	Backfilled bool
 }
 
 // trafficChart reads one audience over one period.
@@ -279,6 +285,7 @@ func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p traffic
 	}
 	if len(older) > 0 {
 		out.Points = append(older, out.Points...)
+		out.Backfilled = true
 	}
 }
 

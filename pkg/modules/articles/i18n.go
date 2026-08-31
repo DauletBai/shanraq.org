@@ -2190,27 +2190,36 @@ var messages = map[string]map[string]string{
 		"en": "A chart of hosts, visitors, visits and views.",
 	},
 	"tc.partial": {
-		"kz": "Соңғы нүкте — әлі жүріп жатқан сағат, ол үзік сызықпен көрсетілген: ондағы сан толық сағатпен емес, әзірге жиналғанмен салыстырылады.",
-		"ru": "Последняя точка — идущий час, он показан пунктиром: число в нём набрано не за полный час, а за прошедшую его часть.",
-		"en": "The last point is the hour still running, drawn dashed: its figure covers the part of the hour elapsed, not a whole one.",
+		"kz": "Оң жақтағы үзік сызық — әлі аяқталмаған сағат.",
+		"ru": "Пунктир справа — идущий час, он ещё не закончился.",
+		"en": "The dashed end is the hour still running.",
 	},
 	"tc.tz": {
-		"kz": "Уақыт %s белдеуі бойынша көрсетілген — браузеріңіз хабарлаған белдеу; ол хабарламаса, сайттың белдеуі алынады.",
-		"ru": "Время показано по поясу %s — тому, что сообщил ваш браузер; если он молчит, берётся пояс сайта.",
-		"en": "Times are shown in %s — the zone your browser reported; without one, the site's own zone is used.",
+		"kz": "Уақыт — %s белдеуі бойынша.",
+		"ru": "Время — по поясу %s.",
+		"en": "Times in %s.",
 	},
 	"tc.since": {
-		"kz": "Қаралымдар ескі санағыштан алынған және әрі қарай созылады. Хосттар, келушілер мен кірулер %s жылдан бері саналады: оларға дейінгі күндер үшін дерек жоқ, өйткені олар есептелетін нәрсе әдейі жазылмаған.",
-		"ru": "Просмотры взяты из прежнего счётчика и тянутся дальше назад. Хосты, посетители и визиты считаются с %s: за более ранние дни их нет, потому что то, из чего они вычисляются, намеренно не записывалось.",
-		"en": "Views come from the older counter and reach further back. Hosts, visitors and visits have been counted since %s: for the days before that there are none, because what they are computed from was deliberately not recorded.",
+		"kz": "Хосттар, келушілер мен кірулер %s бастап саналады.",
+		"ru": "Хосты, посетители и визиты считаются с %s.",
+		"en": "Hosts, visitors and visits counted since %s.",
 	},
+	// Printed only where the older counter actually supplied buckets: the
+	// hourly chart never asks it.
+	"tc.older": {
+		"kz": "Оған дейінгі қаралымдар — ескі санағыштан.",
+		"ru": "Просмотры до этой даты — из прежнего счётчика.",
+		"en": "Views before that come from the older counter.",
+	},
+	// The thousands mark on a chart scale: "12т", "12м", "12k".
+	"tc.kilo":  {"kz": "м", "ru": "т", "en": "k"},
 	"tc.table": {"kz": "Сандарды кесте түрінде көрсету", "ru": "Показать цифры таблицей", "en": "Show the figures as a table"},
 	"tc.when":  {"kz": "Кезең", "ru": "Период", "en": "Period"},
 	// Why the counting exists, said where the counting is shown.
 	"tc.why": {
-		"kz": "Бұл сандар жарнама берушіге аудиторияны көрсету үшін және не оқылатынын түсіну үшін жиналады. Келуші жарты сағаттық аралықта анонимді идентификатормен саналады: ол IP-мекенжай мен браузерден күн сайын ауысатын кілтпен есептеледі, мекенжайдың өзі сақталмайды. Сондықтан кілт ауысқан соң ешкімді келесі күнге дейін қадағалауға болмайды — бізге де.",
-		"ru": "Эти цифры собираются, чтобы показывать аудиторию рекламодателю и понимать, что читают. Посетитель считается в получасовом интервале по анонимному идентификатору: он вычисляется из IP-адреса и браузера ключом, который меняется каждые сутки, а сам адрес не сохраняется. Поэтому после смены ключа проследить за кем-либо до следующего дня нельзя — в том числе нам.",
-		"en": "These figures exist to show advertisers the audience and to see what is read. A visitor is counted inside a half-hour window under an anonymous identifier, derived from the address and the browser with a key that is replaced every day; the address itself is never stored. Once the key turns over, nobody can be followed into the next day -- ourselves included.",
+		"kz": "Аудиторияны жарнама берушіге көрсету үшін санаймыз. Келуші — IP мен браузерден жасалған анонимді идентификатор: кілт күн сайын ауысады, мекенжай сақталмайды. Ешкімді бір тәуліктен ұзақ қадағалау мүмкін емес, бізге де.",
+		"ru": "Считаем, чтобы показывать аудиторию рекламодателю. Посетитель — анонимный идентификатор из IP и браузера: ключ меняется каждые сутки, адрес не хранится. Следить за кем-то дольше суток нельзя, и нам тоже.",
+		"en": "We count to show advertisers the audience. A visitor is an anonymous id from address and browser: the key changes daily, the address is never stored. Nobody can be followed beyond a day, ourselves included.",
 	},
 	"footer.privacy": {"kz": "Құпиялылық", "ru": "Конфиденциальность", "en": "Privacy"},
 	"footer.terms":   {"kz": "Шарттар", "ru": "Условия", "en": "Terms"},

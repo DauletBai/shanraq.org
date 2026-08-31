@@ -3581,10 +3581,12 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
   background: var(--surface); padding: 18px 18px 10px;
 }
 /* Room on the left for the scale, and on the right for the figure each line
-   carries at its own end. */
-.tc__plot { position: relative; display: flex; gap: 10px; }
+   carries at its own end. The gutter is sized for the widest label the scale
+   can now print -- thousands are shortened to "12т" -- rather than for six
+   digits that have never appeared and would leave a hand's width of nothing. */
+.tc__plot { position: relative; display: flex; gap: 8px; }
 .tc__y {
-  position: relative; flex: none; width: 46px; height: 300px;
+  position: relative; flex: none; width: 28px; height: 300px;
   font-size: .74rem; color: var(--muted); font-variant-numeric: tabular-nums;
 }
 .tc__y span { position: absolute; right: 0; transform: translateY(-50%); }

@@ -110,3 +110,40 @@ func TestTheHourInProgressCarriesALabelOfItsOwn(t *testing.T) {
 		}
 	}
 }
+
+// The scale beside the chart held a gutter wide enough for six digits, which
+// at every reading ever taken was mostly empty. Thousands are shortened
+// instead, so the gutter can be narrow and stay narrow.
+
+func TestKiloShortensOnlyWhereItSaysSomething(t *testing.T) {
+	for _, c := range []struct {
+		lang string
+		n    int64
+		want string
+	}{
+		{"ru", 0, "0"},
+		{"ru", 999, "999"},
+		{"ru", 1000, "1т"},
+		{"ru", 1500, "1,5т"},
+		{"ru", 9900, "9,9т"},
+		{"ru", 12345, "12т"},
+		{"ru", 150000, "150т"},
+		{"kz", 1500, "1,5м"},
+		{"en", 1500, "1.5k"},
+		{"en", 999, "999"},
+	} {
+		if got := kilo(c.lang, c.n); got != c.want {
+			t.Errorf("kilo(%q, %d) = %q, want %q", c.lang, c.n, got, c.want)
+		}
+	}
+}
+
+// The note saying views reach further back than the other three was printed on
+// every chart, including the hourly one, which never asks the older counter at
+// all. It is now tied to the counter having actually contributed.
+func TestTheHourlyChartClaimsNoOlderViews(t *testing.T) {
+	c := TrafficChart{Period: "hour"}
+	if c.Backfilled {
+		t.Error("an hourly chart never reads the older counter and must not say it did")
+	}
+}
