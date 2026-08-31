@@ -215,3 +215,51 @@ func TestTheTooltipKeepsTheWholeLabel(t *testing.T) {
 		}
 	}
 }
+
+// Hosts, visitors and visits track one another, so their lines usually finish
+// within a couple of units of each other and their end figures printed on top
+// of one another.
+func TestEndFiguresAreSpreadFarEnoughToRead(t *testing.T) {
+	s := []TrafficSeries{
+		{Key: "hosts", LastY: 200, LabelY: 200},
+		{Key: "visitors", LastY: 202, LabelY: 202},
+		{Key: "visits", LastY: 205, LabelY: 205},
+		{Key: "views", LastY: 150, LabelY: 150},
+	}
+	spreadEndLabels(s)
+	ys := make([]float64, len(s))
+	for i, x := range s {
+		ys[i] = x.LabelY
+		if x.LabelY < 0 || x.LabelY > chartH {
+			t.Errorf("%s label at %.1f is outside the drawing", x.Key, x.LabelY)
+		}
+	}
+	for i := range ys {
+		for j := i + 1; j < len(ys); j++ {
+			if d := ys[i] - ys[j]; d < endLabelGap && d > -endLabelGap {
+				t.Errorf("%s and %s labels %.1f apart, need %d",
+					s[i].Key, s[j].Key, d, endLabelGap)
+			}
+		}
+	}
+	// The order of the figures must still match the order of the lines.
+	if !(s[3].LabelY < s[0].LabelY && s[0].LabelY < s[1].LabelY && s[1].LabelY < s[2].LabelY) {
+		t.Errorf("labels crossed: views %.1f hosts %.1f visitors %.1f visits %.1f",
+			s[3].LabelY, s[0].LabelY, s[1].LabelY, s[2].LabelY)
+	}
+}
+
+func TestEndFiguresStayInsideWhenCrowdedAtTheFloor(t *testing.T) {
+	s := []TrafficSeries{
+		{Key: "hosts", LabelY: 296},
+		{Key: "visitors", LabelY: 297},
+		{Key: "visits", LabelY: 298},
+		{Key: "views", LabelY: 299},
+	}
+	spreadEndLabels(s)
+	for _, x := range s {
+		if x.LabelY < 0 || x.LabelY > chartH {
+			t.Errorf("%s label at %.1f fell out of the drawing", x.Key, x.LabelY)
+		}
+	}
+}

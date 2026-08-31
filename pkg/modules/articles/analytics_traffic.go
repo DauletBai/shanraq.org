@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"sort"
 	"time"
 
 	"go.uber.org/zap"
@@ -411,7 +412,12 @@ type TrafficSeries struct {
 	Tail  string
 	LastX float64
 	LastY float64
-	Last  int64
+	// LabelY is where the end figure prints, which is not always where the line
+	// ends. Four lines can finish within a couple of units of each other -- they
+	// usually do, since hosts, visitors and visits track one another -- and the
+	// figures then print on top of one another and none of them can be read.
+	LabelY float64
+	Last   int64
 }
 
 // Series returns the four lines in their fixed order. The order is the colour
@@ -468,9 +474,49 @@ func (c TrafficChart) Series() []TrafficSeries {
 		if ser.Tail != "" && lastAt == "" {
 			ser.Tail = "" // nothing settled to hang it from
 		}
+		ser.LabelY = ser.LastY
 		out = append(out, ser)
 	}
+	spreadEndLabels(out)
 	return out
+}
+
+// endLabelGap is the room one end figure needs above the next, in viewBox
+// units: the drawing is 300 tall and the figure is set at 13px, so a quarter of
+// that is a line's height with a little air.
+const endLabelGap = 22
+
+// spreadEndLabels pushes end figures apart just enough to be read.
+//
+// Each starts where its own line ends. Taken from the top down, any that sits
+// too close to the one above is moved down to clear it, so a label never crosses
+// a label it was below -- the figures stay in the same order as the lines they
+// belong to, which is what lets a reader match them up by eye.
+func spreadEndLabels(s []TrafficSeries) {
+	if len(s) < 2 {
+		return
+	}
+	order := make([]int, len(s))
+	for i := range order {
+		order[i] = i
+	}
+	sort.SliceStable(order, func(a, b int) bool { return s[order[a]].LabelY < s[order[b]].LabelY })
+	for k := 1; k < len(order); k++ {
+		prev, cur := &s[order[k-1]], &s[order[k]]
+		if y := prev.LabelY + endLabelGap; cur.LabelY < y {
+			cur.LabelY = y
+		}
+	}
+	// Anything pushed past the floor is lifted back, together with everything
+	// above it, so the last one never falls out of the drawing.
+	if last := &s[order[len(order)-1]]; last.LabelY > chartH {
+		shift := last.LabelY - chartH
+		for _, i := range order {
+			if s[i].LabelY -= shift; s[i].LabelY < endLabelGap {
+				s[i].LabelY = endLabelGap
+			}
+		}
+	}
 }
 
 // Ticks are the horizontal grid lines and their values, four across the scale.

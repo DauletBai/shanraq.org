@@ -504,7 +504,7 @@
           {{/* Above its own point rather than beside it: to the right it needed a
                tenth of the width reserved, and the plot stopped short of the
                frame because of it. */}}
-          <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LastY }}" dx="-6" dy="-9">{{ kilo $l .Last }}</text>
+          <text class="tc__end tc__end--{{ .Slot }}" x="{{ .LastX }}" y="{{ .LabelY }}" dx="-6" dy="-9">{{ kilo $l .Last }}</text>
           {{ end }}
         </svg>
         {{/* One invisible band per column. The figures ride in the page rather
