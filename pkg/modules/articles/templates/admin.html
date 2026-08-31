@@ -629,7 +629,7 @@
                     <button class="btn btn--ghost btn--sm" type="submit" title="{{ t $.Lang "admin.assign" }}">→</button>
                   </form>
                 </td>
-                <td>{{ fmtDate .CreatedAt }}</td>
+                <td class="adm-users__date">{{ fmtDate .CreatedAt }}</td>
                 <td class="adm-users__act" title="{{ t $.Lang "admin.u_activity" }}">{{ .Articles }} / {{ .Listings }} / {{ .Comments }}</td>
                 <td>
                   <details class="adm-users__edit">

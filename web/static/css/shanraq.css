@@ -2169,18 +2169,32 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 /* .spec is a two-column key/value table: its `th` is pinned to 38% of the
    width. Seven columns each claiming 38% is what crushed the register — the
    activity counts wrapped one digit per line. Here the columns size to their
-   own content and the padding tightens, which is what gives them room. */
+   own content and the padding tightens, which is what gives them room.
+
+   The selector has to match `table.spec th` weight for weight. A bare
+   `.adm-users th` scores below it and loses, so the 38% survived and the
+   browser split the width into seven equal shares: the country column, holding
+   one dash, was as wide as a full name, and the role column was too narrow for
+   its own select. */
 .adm-users { font-size: 0.88rem; }
-.adm-users th, .adm-users td { width: auto; padding: 9px 5px; vertical-align: top; }
+table.spec.adm-users th, table.spec.adm-users td { width: auto; padding: 8px 10px; vertical-align: top; }
+/* Dates and the register's own header must not wrap now that columns are free
+   to size themselves; a wrapped date buys nothing and costs a row's height. */
+table.spec.adm-users td.adm-users__date { white-space: nowrap; }
 /* The first column sat flush against the table's edge; 6px lifts it off. */
 .adm-users th:first-child, .adm-users td:first-child { padding-left: 6px; }
 .adm-users td.adm-users__act { white-space: nowrap; color: var(--muted); }
 .adm-users__now { color: var(--muted); font-size: 0.8rem; }
-/* Role: the select and its apply button share a column too narrow to hold them
-   side by side, so they stack — and stacked, they need a gap or the button
-   reads as glued to the field above it. */
-.adm-inline { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+/* Role: the select and its apply button now fit side by side, so they must stay
+   there. Wrapped, the button dropped under the field and read as belonging to
+   the row beneath it. */
+.adm-inline { display: flex; align-items: stretch; flex-wrap: nowrap; gap: 6px; }
 .adm-inline .select { margin: 0; min-width: 92px; }
+/* The arrow is a pill shaped for a text label, so next to a 0.78rem select it
+   stood taller and far wider than the field it applies to. Stretched to the
+   select's height and held at 1:1 it becomes a square of exactly that height,
+   and borrowing the field's corner radius reads the two as one control. */
+.adm-inline .btn { flex: none; padding: 0; aspect-ratio: 1; border-radius: var(--radius-sm); }
 .adm-users__edit summary { list-style: none; cursor: pointer; display: inline-flex; }
 .adm-users__edit summary::-webkit-details-marker { display: none; }
 .adm-users__form { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; min-width: 240px; }
