@@ -2181,8 +2181,11 @@ table.spec.adm-users th, table.spec.adm-users td { width: auto; padding: 8px 10p
 /* Dates and the register's own header must not wrap now that columns are free
    to size themselves; a wrapped date buys nothing and costs a row's height. */
 table.spec.adm-users td.adm-users__date { white-space: nowrap; }
-/* The first column sat flush against the table's edge; 6px lifts it off. */
-.adm-users th:first-child, .adm-users td:first-child { padding-left: 6px; }
+/* Both outer columns sat flush against the table's edge — the name on one side,
+   the edit button on the other. They need the room the card gives its own text,
+   and the selector has to outweigh the rule above or it is dropped in turn. */
+table.spec.adm-users th:first-child, table.spec.adm-users td:first-child { padding-left: 16px; }
+table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding-right: 16px; }
 .adm-users td.adm-users__act { white-space: nowrap; color: var(--muted); }
 .adm-users__now { color: var(--muted); font-size: 0.8rem; }
 /* Role: the select and its apply button now fit side by side, so they must stay
