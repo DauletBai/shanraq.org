@@ -668,6 +668,13 @@ type GuestClickRow struct {
 // folded into one. Twenty covers everything with a share worth acting on.
 const simpleRowsMax = 20
 
+// countryRowsMax is the exception. Browsers and devices come from a short list
+// that repeats; countries do not, and where a reader is is the one of these a
+// publisher acts on -- it decides what gets written and who the advertiser is
+// sold. Thirty reaches well past the handful that dominate, and the tail is
+// still folded so the total adds up.
+const countryRowsMax = 30
+
 // GuestSimpleRow is one labeled aggregate over the window — a traffic source or
 // a bot family — carrying a single count (no guest/registered split).
 type GuestSimpleRow struct {
@@ -811,7 +818,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	g.Devices = m.simpleRows(ctx, metricDevice, "ag.device.", lang)
 	g.OS = m.simpleRows(ctx, metricOS, "ag.os.", lang)
 	g.Browsers = m.simpleRows(ctx, metricBrowser, "ag.browser.", lang)
-	g.Countries = m.simpleRows(ctx, metricCountry, "ag.country.", lang)
+	g.Countries = m.simpleRowsN(ctx, metricCountry, "ag.country.", lang, countryRowsMax)
 	g.Langs = m.simpleRows(ctx, metricLang, "ag.lang.", lang)
 	g.EnglishBy = m.englishByGeo(ctx, lang)
 	g.VPNLangs = m.langOfGeo(ctx, datacenterLabel, lang)
@@ -947,6 +954,12 @@ func axisTicks(max int64) []AxisTick {
 // The tiles above carry the signed-in share as their own line; these panels
 // answer a different question, and it is about the audience.
 func (m *Module) simpleRows(ctx context.Context, kind, i18nPrefix, lang string) []GuestSimpleRow {
+	return m.simpleRowsN(ctx, kind, i18nPrefix, lang, simpleRowsMax)
+}
+
+// simpleRowsN is simpleRows with the row cap named, for the panel that wants a
+// longer list than the rest.
+func (m *Module) simpleRowsN(ctx context.Context, kind, i18nPrefix, lang string, keep int) []GuestSimpleRow {
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT label, COALESCE(SUM(n), 0)
 		FROM analytics_daily
@@ -983,12 +996,12 @@ func (m *Module) simpleRows(ctx context.Context, kind, i18nPrefix, lang string) 
 	// reads to the end -- and its tail is where one crawler's exit node looks
 	// exactly like a country. Keep the rows with a share worth naming, fold the
 	// rest into one so the total still adds up.
-	if len(out) > simpleRowsMax {
+	if len(out) > keep {
 		var tail int64
-		for _, r := range out[simpleRowsMax:] {
+		for _, r := range out[keep:] {
 			tail += r.N
 		}
-		out = out[:simpleRowsMax:simpleRowsMax]
+		out = out[:keep:keep]
 		if tail > 0 {
 			out = append(out, GuestSimpleRow{Name: "other", Title: T(lang, "ag.rest"), N: tail})
 		}

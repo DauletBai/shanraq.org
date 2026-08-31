@@ -100,3 +100,41 @@ func TestTheAudiencePageSpeaksAllThreeLanguages(t *testing.T) {
 		}
 	}
 }
+
+// Countries is the panel a publisher acts on: it decides what gets written and
+// who the advertiser is sold. Twenty rows cut it off while the tail still held
+// countries worth naming, so this one panel keeps thirty while the rest stay at
+// twenty.
+func TestTheCountryPanelKeepsMoreRowsThanTheOthers(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	// Twenty-six countries, each with a different count so the order is settled,
+	// plus one more so the tail is folded rather than merely truncated.
+	for i := 0; i < 26; i++ {
+		code := string(rune('A'+i)) + "Z"
+		app.exec(`INSERT INTO analytics_daily (day, kind, label, is_guest, n)
+			VALUES (CURRENT_DATE, 'country', $1, true, $2)
+			ON CONFLICT (day, kind, label, is_guest) DO UPDATE SET n = EXCLUDED.n`, code, 100-i)
+		app.exec(`INSERT INTO analytics_daily (day, kind, label, is_guest, n)
+			VALUES (CURRENT_DATE, 'browser', $1, true, $2)
+			ON CONFLICT (day, kind, label, is_guest) DO UPDATE SET n = EXCLUDED.n`, code, 100-i)
+	}
+
+	rows := app.module().simpleRowsN(t.Context(), metricCountry, "ag.country.", "ru", countryRowsMax)
+	if len(rows) < 21 {
+		t.Fatalf("countries returned %d rows; the cap did not rise above twenty", len(rows))
+	}
+	if len(rows) > countryRowsMax+1 { // +1 for the folded remainder
+		t.Errorf("countries returned %d rows, more than %d plus a remainder", len(rows), countryRowsMax)
+	}
+
+	// The other panels are unchanged, on the same shape of data.
+	other := app.module().simpleRows(t.Context(), metricBrowser, "ag.browser.", "ru")
+	if len(other) > simpleRowsMax+1 {
+		t.Errorf("browsers returned %d rows, more than %d plus a remainder", len(other), simpleRowsMax)
+	}
+	if len(other) >= len(rows) {
+		t.Errorf("browsers kept %d rows and countries %d; countries should keep more", len(other), len(rows))
+	}
+}
