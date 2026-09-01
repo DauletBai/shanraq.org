@@ -8,7 +8,9 @@ import (
 	"strconv"
 	"strings"
 
+	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/extension"
 	gmhtml "github.com/yuin/goldmark/renderer/html"
 )
@@ -16,8 +18,26 @@ import (
 // md is a shared, safe Markdown renderer. Raw inline HTML is NOT enabled
 // (no WithUnsafe), so user-supplied HTML is escaped — our first XSS guard.
 var md = goldmark.New(
-	goldmark.WithExtensions(extension.GFM, extension.Typographer),
+	goldmark.WithExtensions(extension.GFM, extension.Typographer, codeHighlighting),
 	goldmark.WithRendererOptions(gmhtml.WithHardWraps()),
+)
+
+// codeHighlighting colours fenced code the way an editor does. It runs on the
+// server, so there is no script to load and no CDN to be cut off from, and a
+// crawler sees exactly what a reader sees.
+//
+// Classes rather than inline styles: inline colours are fixed at render time
+// and could not follow the site's light/dark switch. The palette lives in the
+// stylesheet beside every other colour we use. Chroma's class names are very
+// short (k, s, nf), so every rule for them is scoped under .chroma.
+//
+// Guessing is off on purpose. A fence with no language is terminal output in
+// these articles, and a guesser paints it as though it were code.
+var codeHighlighting = highlighting.NewHighlighting(
+	highlighting.WithFormatOptions(
+		chromahtml.WithClasses(true),
+	),
+	highlighting.WithGuessLanguage(false),
 )
 
 // tableOpen matches the opening tag goldmark emits for a GFM table, and

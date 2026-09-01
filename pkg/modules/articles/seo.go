@@ -162,7 +162,6 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 var publicPages = []string{
 	"/about", "/adam", "/framework", "/guide", "/formatting", "/pricing", "/support",
 	"/listings", "/predictions", "/analytics", "/rates", "/calculator", "/author/sana",
-	"/courses",
 }
 
 // handleSitemap emits the main trilingual sitemap: home, static pages, category
@@ -189,12 +188,18 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
-		// One entry per course map. The map is the page that links every lesson
-		// together, so a crawler that never reaches it sees forty unrelated
-		// articles instead of a course.
+		// One entry per course map, plus the index above them. The map is the
+		// page that links every lesson together, so a crawler that never
+		// reaches it sees forty unrelated articles instead of a course.
+		//
+		// The index is offered only once a course exists. It used to sit in
+		// publicPages, which is announced wholesale to IndexNow at start-up —
+		// so the day the code shipped we would have handed search engines a
+		// page reading "no courses published yet", in three languages.
 		if cs, cerr := m.series.List(r.Context()); cerr != nil {
 			m.rt.Logger.Warn("sitemap courses", zap.Error(cerr))
-		} else {
+		} else if len(cs) > 0 {
+			emit("/courses", time.Time{})
 			for _, c := range cs {
 				emit("/course/"+c.Slug, c.UpdatedAt)
 			}

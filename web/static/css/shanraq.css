@@ -3730,3 +3730,61 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
   .lnav__side--next { text-align: left; }
   .lnav__map { justify-self: start; }
 }
+
+/* ---- Code highlighting ---- */
+
+/* Chroma marks up the tokens on the server and we colour them here, so the
+   palette follows the site's light/dark switch like everything else. Inline
+   colours would have been fixed at render time and stuck in one theme.
+   Chroma's class names are a single letter or two, so every rule is scoped
+   under .chroma. A fence with no language is left alone: in these articles
+   that is terminal output, and colouring it would be a lie about what it is. */
+:root {
+  --ch-key: #8250bf;   /* func, return, if, package */
+  --ch-typ: #0b6e6e;   /* string, int, float64 */
+  --ch-fn:  #1959b5;   /* the name being declared or called */
+  --ch-str: #2f7d32;
+  --ch-num: #b0500a;
+  --ch-com: #7a756e;
+  --ch-op:  #5c5c5c;
+  --ch-pun: #8a857e;
+}
+:root[data-theme="dark"] {
+  --ch-key: #c792ea;
+  --ch-typ: #7fdbca;
+  --ch-fn:  #82aaff;
+  --ch-str: #a5d6a7;
+  --ch-num: #f7a072;
+  --ch-com: #8f8a83;
+  --ch-op:  #bebbb6;
+  --ch-pun: #9a958e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ch-key: #c792ea;
+    --ch-typ: #7fdbca;
+    --ch-fn:  #82aaff;
+    --ch-str: #a5d6a7;
+    --ch-num: #f7a072;
+    --ch-com: #8f8a83;
+    --ch-op:  #bebbb6;
+    --ch-pun: #9a958e;
+  }
+}
+
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kn,
+.chroma .kp, .chroma .kr { color: var(--ch-key); }
+.chroma .kt, .chroma .nc, .chroma .nt { color: var(--ch-typ); }
+.chroma .nf, .chroma .nb, .chroma .nd { color: var(--ch-fn); }
+.chroma .s, .chroma .s1, .chroma .s2, .chroma .sb,
+.chroma .sc, .chroma .se, .chroma .sh, .chroma .si { color: var(--ch-str); }
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh,
+.chroma .mi, .chroma .mo { color: var(--ch-num); }
+.chroma .c, .chroma .c1, .chroma .cm, .chroma .cs,
+.chroma .cp, .chroma .cpf { color: var(--ch-com); font-style: italic; }
+.chroma .o, .chroma .ow { color: var(--ch-op); }
+.chroma .p { color: var(--ch-pun); }
+/* An identifier is the reader's own word — a name they chose — so it keeps the
+   body colour and the coloured tokens stay the ones the language owns. */
+.chroma .nx, .chroma .na, .chroma .nv { color: inherit; }
+.chroma .err { color: var(--danger); }
