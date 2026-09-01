@@ -163,7 +163,7 @@ STYLE = """
 .rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
 .gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
 .band-req{fill:var(--red);opacity:.16}
-.band-res{fill:var(--grn);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}\n.band-flow{fill:var(--ink);opacity:.13}\n.arw-flow{fill:var(--soft)}
 .arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
 text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
@@ -223,6 +223,36 @@ def map00(s):
     parts.append(text(0, res_line - 0.42, s["res_ex"], "mono"))
     parts.append(on_face(-5.3, 1.7, s["client"], s["client_sub"]))
     parts.append(on_face(5.3, 2.95, s["server"], s["server_sub"]))
+    return "".join(parts)
+
+
+def map02(s):
+    """Lesson: the three tools and what each is answerable for.
+
+    A beginner meets the editor, the terminal and the language on the same day
+    and blames the wrong one when something breaks. The map exists to fix which
+    is which before any of them misbehaves.
+    """
+    parts = [ground(-6.7, 6.7, -1.5, 1.5, "g")]
+
+    half, top = 1.5, 1.15
+    seats = (-5.0, 0.0, 5.0)
+    for u in seats:
+        parts.append(block(u, 0, half, top, "t", "l", "r"))
+    for a, b in ((-3.3, -1.7), (1.7, 3.3)):
+        parts.append(road(a, b, top * 0.55, 0.42, "band-flow"))
+        for u in (a + 0.45, b - 0.45):
+            parts.append(chevron(u, top * 0.55 + 0.02, +1, "arw-flow"))
+
+    for u, k in zip(seats, ("b1", "b2", "b3")):
+        parts.append(on_face(u, top, s[k], s[k + "_sub"]))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["dir"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["dir_sub"], "mono"))
     return "".join(parts)
 
 
@@ -335,11 +365,39 @@ L01 = {
     ),
 }
 
+L02 = {
+    "kz": dict(
+        alt="Редактор, терминал және Go: қайсысы не үшін жауап береді",
+        b1="РЕДАКТОР", b1_sub="VS Code — мәтін жазасыз",
+        b2="ТЕРМИНАЛ", b2_sub="go run . — пәрмен бересіз",
+        b3="GO", b3_sub="жинайды және іске қосады",
+        head="ҚАЙСЫСЫ НЕ ҮШІН ЖАУАП БЕРЕДІ", head_sub="үш құрал, үш жауапкершілік",
+        dir="ЖОБА ҚАЛТАСЫ", dir_sub="go-oqu/sabaq-01 · go.mod + main.go",
+    ),
+    "ru": dict(
+        alt="Редактор, терминал и Go: кто за что отвечает",
+        b1="РЕДАКТОР", b1_sub="VS Code — пишете текст",
+        b2="ТЕРМИНАЛ", b2_sub="go run . — отдаёте команду",
+        b3="GO", b3_sub="собирает и запускает",
+        head="КТО ЗА ЧТО ОТВЕЧАЕТ", head_sub="три инструмента, три зоны вины",
+        dir="ПАПКА ПРОЕКТА", dir_sub="go-oqu/sabaq-01 · go.mod + main.go",
+    ),
+    "en": dict(
+        alt="Editor, terminal and Go: which one is answerable for what",
+        b1="EDITOR", b1_sub="VS Code — you write text",
+        b2="TERMINAL", b2_sub="go run . — you give the order",
+        b3="GO", b3_sub="builds it and runs it",
+        head="WHICH ONE IS ANSWERABLE", head_sub="three tools, three kinds of fault",
+        dir="PROJECT FOLDER", dir_sub="go-oqu/sabaq-01 · go.mod + main.go",
+    ),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
     os.makedirs(out, exist_ok=True)
-    for name, scene, table in (("00", map00, L), ("01", map01, L01)):
+    for name, scene, table in (("internet", map00, L), ("first-server", map01, L01),
+                               ("workspace", map02, L02)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

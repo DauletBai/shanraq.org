@@ -21,6 +21,8 @@
 .gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
 .band-req{fill:var(--red);opacity:.16}
 .band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
 .arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
 text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
