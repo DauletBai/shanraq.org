@@ -110,6 +110,19 @@ def text(u, z, s, cls, side=0.0, dy=0.0):
     return f'<text class="{cls}" x="{px:.2f}" y="{py + dy:.2f}">{esc(s)}</text>'
 
 
+def on_face(u, z_top, title, sub=""):
+    """A name written across the middle of a block's top face.
+
+    The centre of that face is the block's own top height taken at side 0, so
+    the position follows the block instead of being guessed -- placed by eye the
+    two names sat up by the far corner rather than in the rhombus.
+    """
+    out = [text(u, z_top, title, "lbl", dy=-2.0 if sub else 4.0)]
+    if sub:
+        out.append(text(u, z_top, sub, "sub", dy=11.0))
+    return "".join(out)
+
+
 def ground(u0, u1, s0, s1, cls, step=1.1):
     """A ground plane cut to the objects standing on it. The first draft drew a
     square grid from the origin; it reached far past the scene and was what put
@@ -130,7 +143,7 @@ def ground(u0, u1, s0, s1, cls, step=1.1):
 
 STYLE = """
 :root{
-  --ink:#3a3a3a; --soft:#6b6b6b; --line:#d6d3ce;
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
   --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
   --red:#d32f2f; --red-d:#a92525; --red-l:#e86a63;
   --grn:#2e7d32; --grn-d:#24632a; --grn-l:#5fa363;
@@ -138,8 +151,8 @@ STYLE = """
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --ink:#d8d6d2; --soft:#a3a099; --line:#454545;
-    --top:#6a6761; --lft:#54514c; --rgt:#403e3a;
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
     --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
     --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
     --tagink:#241f1f;
@@ -208,10 +221,8 @@ def map00(s):
     parts.append(text(0, req_line, s["req_ex"], "mono"))
     parts.append(text(0, res_line, s["res"], "cap"))
     parts.append(text(0, res_line - 0.42, s["res_ex"], "mono"))
-    parts.append(text(-5.3, 2.55, s["client"], "lbl"))
-    parts.append(text(-5.3, 2.15, s["client_sub"], "sub"))
-    parts.append(text(5.3, 3.75, s["server"], "lbl"))
-    parts.append(text(5.3, 3.35, s["server_sub"], "sub"))
+    parts.append(on_face(-5.3, 1.7, s["client"], s["client_sub"]))
+    parts.append(on_face(5.3, 2.95, s["server"], s["server_sub"]))
     return "".join(parts)
 
 
