@@ -31,13 +31,11 @@ type PublicStats struct {
 	Base
 	Guests GuestAnalytics
 
-	// Totals that live outside the counter: what the site holds rather than
-	// what happened to it this month.
-	Articles    int64
-	Listings    int64
-	Subscribers int64
-	Authors     int64
-	Comments    int64
+	// One total that lives outside the counter: how much there is to read.
+	// The stock figures beside it -- listings, subscribers, authors, comments --
+	// were removed: at this size they say more about how small the place is
+	// than about whether it is worth reading, which is what the page is for.
+	Articles int64
 
 	Since   string // the day the counter started measuring
 	Updated string // when these figures were assembled
@@ -99,10 +97,6 @@ func (m *Module) buildPublicStats(ctx context.Context, lang string) PublicStats 
 		return n
 	}
 	p.Articles = count(`SELECT count(*) FROM articles WHERE status = 'published'`)
-	p.Listings = count(`SELECT count(*) FROM listings WHERE status = 'published'`)
-	p.Subscribers = count(`SELECT count(*) FROM subscribers`)
-	p.Authors = count(`SELECT count(DISTINCT author_id) FROM articles WHERE status = 'published'`)
-	p.Comments = count(`SELECT count(*) FROM comments WHERE status = 'published'`)
 
 	var since time.Time
 	if err := m.rt.DB.QueryRow(ctx,

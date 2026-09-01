@@ -3788,3 +3788,9 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
    body colour and the coloured tokens stay the ones the language owns. */
 .chroma .nx, .chroma .na, .chroma .nv { color: inherit; }
 .chroma .err { color: var(--danger); }
+
+/* The confirmed-read tiles sit in the same row as the view counts and must not
+   read as more of the same: they answer a different question, and the gap
+   between them is the point. A quiet left rule sets them apart without turning
+   the row into two rows. */
+.adm-kpi--read { border-left: 3px solid var(--teal); }

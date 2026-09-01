@@ -232,6 +232,12 @@ type AdminPage struct {
 	Traffic TrafficChart
 	// Aggregate audience (guest vs registered) traffic.
 	Guests GuestAnalytics
+	// Confirmed reads: the scroll beacon fires only where a browser ran the
+	// script and somebody spent time on the page, so it counts people where the
+	// view counter counts requests. It sits beside the views on purpose — the
+	// gap between the two is the honest measure of how much of the traffic is
+	// automation, and it should be visible every time the panel is opened.
+	Reads ReadTotals
 	// SourcesSince is the day the view counter restarts from, shown under the
 	// "Views" tile. That counter really was reset — crawler hits were taken out
 	// of it — while the guest panel's article figure covers the whole history,
@@ -284,6 +290,11 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Error("admin analytics", zap.Error(err))
 	}
 	page.Guests = m.guestAnalytics(r.Context(), lang)
+	if reads, err := m.store.ReadTotals(r.Context()); err == nil {
+		page.Reads = reads
+	} else {
+		m.rt.Logger.Warn("read totals", zap.Error(err))
+	}
 	page.SourcesSince = analyticsSince
 	page.CanManageUsers = canManageUsers(claims)
 	page.CanFinance = canViewFinance(claims)

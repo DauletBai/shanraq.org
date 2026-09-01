@@ -161,6 +161,12 @@
         <div class="adm-kpi"><span class="adm-kpi__ic">◔</span><b>{{ money .Guests.Week.Total }}</b><span>{{ t .Lang "ag.views_week" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">◑</span><b>{{ money .Guests.Month.Total }}</b><span>{{ t .Lang "ag.views_month" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">◯</span><b>{{ money .Guests.Year.Total }}</b><span>{{ t .Lang "ag.views_year" }}</span></div>
+        {{/* Beside the request counts, the one number automation cannot produce:
+             the scroll beacon needs a browser that ran the script and a person
+             who stayed. The distance between this tile and the ones to its left
+             is how much of the traffic is machinery. */}}
+        <div class="adm-kpi adm-kpi--read"><span class="adm-kpi__ic">◕</span><b>{{ money .Reads.Samples }}</b><span>{{ t .Lang "ag.reads" }}</span></div>
+        <div class="adm-kpi adm-kpi--read"><span class="adm-kpi__ic">●</span><b>{{ money .Reads.Finished }}</b><span>{{ t .Lang "ag.reads_done" }}</span></div>
       </div>
       {{/* Three panels, not two: pages, clicks and the trend are three separate
            questions, and the old pairing left the chart floating under the

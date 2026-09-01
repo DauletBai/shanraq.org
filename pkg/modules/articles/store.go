@@ -856,3 +856,28 @@ func (s *Store) AuthorReads(ctx context.Context, authorID uuid.UUID) (map[string
 	}
 	return out, rows.Err()
 }
+
+// ReadTotals is the confirmed-reading counter, summed over every article.
+//
+// It answers a different question from the view counter and is the only one of
+// the two a crawler cannot inflate: the beacon behind it fires from a browser
+// that ran the page's script and stayed long enough to be measured. Kept
+// all-time because the table holds a running total per article and no day.
+type ReadTotals struct {
+	Samples  int64 // reading measurements taken
+	Finished int64 // of those, read to the end
+	Minutes  int64 // total time spent reading
+}
+
+// ReadTotals sums the reading counters across all articles.
+func (s *Store) ReadTotals(ctx context.Context) (ReadTotals, error) {
+	var t ReadTotals
+	err := s.db.QueryRow(ctx, `
+		SELECT COALESCE(SUM(samples), 0), COALESCE(SUM(finished), 0),
+		       COALESCE(SUM(seconds), 0) / 60
+		FROM article_reads`).Scan(&t.Samples, &t.Finished, &t.Minutes)
+	if err != nil {
+		return ReadTotals{}, fmt.Errorf("read totals: %w", err)
+	}
+	return t, nil
+}

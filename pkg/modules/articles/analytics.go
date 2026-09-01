@@ -528,6 +528,43 @@ func (m *Module) excluded(w http.ResponseWriter, r *http.Request) bool {
 	return false
 }
 
+// Audience buckets. Every countable hit lands in exactly one of them, and only
+// one is the audience.
+const (
+	bucketAudience   = "audience"
+	bucketBot        = "bot"
+	bucketDatacenter = "datacenter"
+	bucketDrop       = "drop"
+)
+
+// audienceBucket decides what a hit is, from the two signals worth trusting:
+// what the client calls itself, and what kind of network it came from.
+//
+// The network verdict has to be taken here rather than further down. It used to
+// be read inside the "this is a person" branch and kept as a dimension the panel
+// could slice by — so an automated client sending an ordinary Chrome string from
+// a cloud address was counted as a reader in every figure at once: views,
+// visitors, hosts, sources (as "direct", having no referrer), devices, OS and
+// browsers. One misplaced line, and nothing downstream could correct for it.
+//
+// What this still does not catch: automation behind a residential proxy, which
+// arrives on a consumer ISP address and is indistinguishable from a reader by
+// origin. The honest limit of the rule is "declared crawlers and hosting
+// networks are out"; the scroll beacon, which needs a real browser and real
+// time on the page, is what separates the rest.
+func audienceBucket(bot, country string) string {
+	switch {
+	case bot == "seo":
+		return bucketDrop
+	case bot != "":
+		return bucketBot
+	case country == datacenterLabel:
+		return bucketDatacenter
+	default:
+		return bucketAudience
+	}
+}
+
 // trackTraffic counts one page view per GET of a countable page. It reads the
 // (soft-loaded) session only to tell guests from signed-in users — nothing
 // about who they are is recorded.
@@ -544,15 +581,34 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 			if kind := pageKind(r.URL.Path); kind != "" {
 				ua := r.Header.Get("User-Agent")
 				bot := botLabel(ua)
-				switch {
-				case bot == "seo":
+				// Where the visitor's network sits is decided BEFORE the audience
+				// is, because it is a verdict and not a detail. It used to be read
+				// one branch lower, inside "this is a person", and recorded as a
+				// dimension the panel could slice by — so an automated client that
+				// sends an ordinary Chrome string from a cloud address was counted
+				// as a reader in every figure at once: views, visitors, hosts,
+				// sources (as "direct", having no referrer), devices, OS, browsers.
+				// That single misplacement is what made the panel unreadable, and
+				// no amount of correcting the numbers downstream could fix it.
+				country := m.geoip.geoLabel(clientIP(r))
+				switch audienceBucket(bot, country) {
+				case bucketDrop:
 					// Commercial SEO scanners are turned away in robots.txt and
 					// excluded from analytics entirely, so they neither count as
 					// guests nor clutter the bot panel.
-				case bot != "":
+				case bucketBot:
 					// Other crawlers are counted apart so they never inflate the
 					// real human audience — that was the whole point.
 					m.metrics.inc(metricBot, bot, true)
+				case bucketDatacenter:
+					// A hosting, cloud or VPN network. Some of this is a person
+					// behind a VPN, but most of it is automation that declines to
+					// say so, and the two cannot be told apart from the outside.
+					// Counted and visible, like a crawler, and outside the
+					// audience — for the same reason.
+					m.metrics.inc(metricBot, datacenterLabel, true)
+					m.metrics.inc(metricCountry, country, true)
+					m.metrics.inc(metricGeoLang, country+"|"+readingLang(r), true)
 				default:
 					_, ok := auth.ClaimsFromContext(r.Context())
 					guest := !ok
@@ -577,12 +633,9 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 					// curious locals or VPN traffic from censored countries.
 					lng := readingLang(r)
 					m.metrics.inc(metricLang, lng, guest)
-					// Visitor country (nil geoip → no-op). The IP is resolved to a
-					// coarse label — an ISO country code, or "datacenter" for
-					// hosting/cloud/VPN networks — and discarded. Nothing per-visitor
-					// is stored. The country|lang cross tells, e.g., whether the
-					// masked VPN visitors read Russian (locals/Russia) or English.
-					country := m.geoip.geoLabel(clientIP(r))
+					// Visitor country (nil geoip → no-op). The IP was resolved to a
+					// coarse label above — an ISO country code — and discarded.
+					// Nothing per-visitor is stored.
 					if country != "" {
 						m.metrics.inc(metricCountry, country, guest)
 						m.metrics.inc(metricGeoLang, country+"|"+lng, guest)
