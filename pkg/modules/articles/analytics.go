@@ -1192,3 +1192,10 @@ func withUTM(rawURL, source string) string {
 	}
 	return rawURL + sep + "utm_source=" + url.QueryEscape(source) + "&utm_medium=share"
 }
+
+// audienceHit reports whether a request counts as a person, by the same rule
+// the page counter uses. The reading beacons ask it too, so the funnel and the
+// views describe one population and can honestly be compared.
+func (m *Module) audienceHit(r *http.Request) bool {
+	return audienceBucket(botLabel(r.UserAgent()), m.geoip.geoLabel(clientIP(r))) == bucketAudience
+}

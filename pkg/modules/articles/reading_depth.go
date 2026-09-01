@@ -20,6 +20,14 @@ func (m *Module) handleReadProgress(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
+	// This beacon had no filter of any kind, while the one beside it dropped
+	// crawlers -- so the funnel and the read counter were drawn from different
+	// populations and could not be compared. Both now answer to the same rule
+	// as a page view.
+	if !m.audienceHit(r) {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 	// How the article was taken in. Anything unrecognised is reading: the
 	// parameter arrived later than the beacon that sends it, and an old cached
 	// page must keep counting rather than start dropping its reports.
@@ -58,6 +66,25 @@ func (s *Store) RecordDepth(ctx context.Context, articleID uuid.UUID, depth int)
 	return err
 }
 
+// monotonicDepth repairs a funnel that cannot be true as recorded.
+//
+// The four milestones are separate counters and each beacon can be lost on
+// page-hide, so a session that reported 75% may have had its 50% dropped. The
+// panel then showed more readers at three quarters than at half, which is
+// impossible: nobody reaches 75% of a page without passing 50%. Every shallower
+// step is therefore at least as large as the deepest one below it.
+func monotonicDepth(d map[int]int64) map[int]int64 {
+	out := map[int]int64{}
+	var deeper int64
+	for _, mark := range []int{100, 75, 50, 25} {
+		if d[mark] > deeper {
+			deeper = d[mark]
+		}
+		out[mark] = deeper
+	}
+	return out
+}
+
 // AuthorReadingDepth returns, per article of the author, the reader counts at
 // each depth milestone, split by how the article was taken in:
 // map[articleID][mode][depth].
@@ -89,6 +116,9 @@ func (s *Store) AuthorReadingDepth(ctx context.Context, authorID uuid.UUID) (map
 			out[k] = map[int]int64{}
 		}
 		out[k][depth] = count
+	}
+	for k, d := range out {
+		out[k] = monotonicDepth(d)
 	}
 	return out, rows.Err()
 }
@@ -126,9 +156,9 @@ func (m *Module) handleReadDone(w http.ResponseWriter, r *http.Request) {
 		secs = readMaxSeconds
 	}
 	// A crawler that runs JavaScript is rare; one that also idles on the page
-	// for minutes is rarer still. Even so, the same filter the view counter uses
+	// for minutes is rarer still. Even so, the same rule the view counter uses
 	// applies, so the two numbers are drawn from the same population.
-	if botLabel(r.UserAgent()) != "" {
+	if !m.audienceHit(r) {
 		return
 	}
 	a, err := m.store.GetPublishedBySlug(r.Context(), chi.URLParam(r, "slug"))
