@@ -130,25 +130,22 @@ def ground(u0, u1, s0, s1, cls, step=1.1):
 
 STYLE = """
 :root{
-  --ink:#3a3a3a; --soft:#6b6b6b; --line:#d6d3ce; --ground:#efece7;
-  --top:#ffffff; --lft:#e6e1d9; --rgt:#d9d3c9;
+  --ink:#3a3a3a; --soft:#6b6b6b; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
   --red:#d32f2f; --red-d:#a92525; --red-l:#e86a63;
   --grn:#2e7d32; --grn-d:#24632a; --grn-l:#5fa363;
-  --card:#faf8f4;
   --tagink:#ffffff;
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --ink:#ddd9d3; --soft:#a8a49d; --line:#4a4844; --ground:#343330;
-    --top:#4a4844; --lft:#3c3b38; --rgt:#333230;
+    --ink:#d8d6d2; --soft:#a3a099; --line:#454545;
+    --top:#6a6761; --lft:#54514c; --rgt:#403e3a;
     --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
     --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
-    --card:#2b2a28;
     --tagink:#241f1f;
   }
 }
-.bg{fill:var(--card)}
-.g{stroke:var(--line);stroke-width:.7;fill:none;opacity:.55}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
 .t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
 .rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
 .gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
@@ -231,7 +228,6 @@ def render(scene, strings, pad=46):
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{x0:.1f} {y0:.1f} {w:.1f} {h:.1f}" '
         f'width="{w:.0f}" height="{h:.0f}" role="img" aria-label="{esc(strings["alt"])}">'
         f"<style>{STYLE}</style>"
-        f'<rect class="bg" x="{x0:.1f}" y="{y0:.1f}" width="{w:.1f}" height="{h:.1f}" rx="16"/>'
         f"{body}</svg>"
     )
 
