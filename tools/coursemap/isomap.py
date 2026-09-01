@@ -86,6 +86,25 @@ def chevron(u, z, direction, cls, px=9.5):
                  (cx - px * 0.45 * direction, cy + px * 0.72)], cls)
 
 
+def clear_above(z_top, half, gap_px=20.0):
+    """The height a caption must sit at to clear the top corner of a block.
+
+    A block's highest point on screen is its far top corner, which rises with
+    the block's own footprint -- so the clearance depends on the block's size,
+    not only on how tall it stands.
+    """
+    return z_top + half + gap_px / SCALE
+
+
+def clear_below(z_bottom, half, gap_px=30.0):
+    """The height a caption must sit at to clear the near bottom corner.
+
+    The gap is larger than above because a caption's baseline is its underside:
+    the lettering grows upward, back towards the block.
+    """
+    return z_bottom - half - gap_px / SCALE
+
+
 def text(u, z, s, cls, side=0.0, dy=0.0):
     px, py = iso(*at(u, side), z)
     return f'<text class="{cls}" x="{px:.2f}" y="{py + dy:.2f}">{esc(s)}</text>'
@@ -173,21 +192,25 @@ def map00(s):
     # The three parts of a request ride above the upper road; the three parts of
     # a response sit below the lower one. Same shape both times: a reader who
     # has learned to read the red row can read the green one unprompted.
+    tile, tile_h = 0.92, 0.5
+    req_z, res_z = 3.05, -1.15
     for i, key in enumerate(("req1", "req2", "req3")):
         u = -2.45 + i * 2.45
-        parts.append(block(u, 3.05, 1.02, 0.5, "rt", "rl", "rr"))
-        parts.append(text(u, 3.55, s[key], "tag", dy=4.0))
+        parts.append(block(u, req_z, tile, tile_h, "rt", "rl", "rr"))
+        parts.append(text(u, req_z + tile_h, s[key], "tag", dy=4.0))
     for i, key in enumerate(("res1", "res2", "res3")):
         u = -2.45 + i * 2.45
-        parts.append(block(u, -1.15, 1.02, 0.5, "gt", "gl", "gr"))
-        parts.append(text(u, -0.65, s[key], "tag", dy=4.0))
+        parts.append(block(u, res_z, tile, tile_h, "gt", "gl", "gr"))
+        parts.append(text(u, res_z + tile_h, s[key], "tag", dy=4.0))
 
-    # Captions sit clear of the geometry: the two headings on the centre line
-    # above and below, the two blocks named beside their own tops.
-    parts.append(text(0, 4.55, s["req"], "cap"))
-    parts.append(text(0, 4.15, s["req_ex"], "mono"))
-    parts.append(text(0, -2.45, s["res"], "cap"))
-    parts.append(text(0, -2.85, s["res_ex"], "mono"))
+    # Captions are measured off the tiles rather than placed by eye, so a longer
+    # scene or a taller block cannot push a heading back onto the drawing.
+    req_line = clear_above(req_z + tile_h, tile)
+    res_line = clear_below(res_z, tile)
+    parts.append(text(0, req_line + 0.42, s["req"], "cap"))
+    parts.append(text(0, req_line, s["req_ex"], "mono"))
+    parts.append(text(0, res_line, s["res"], "cap"))
+    parts.append(text(0, res_line - 0.42, s["res_ex"], "mono"))
     parts.append(text(-5.3, 2.55, s["client"], "lbl"))
     parts.append(text(-5.3, 2.15, s["client_sub"], "sub"))
     parts.append(text(5.3, 3.75, s["server"], "lbl"))
