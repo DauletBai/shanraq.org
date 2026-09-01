@@ -123,6 +123,15 @@ def on_face(u, z_top, title, sub=""):
     return "".join(out)
 
 
+def on_face_side(u, side, z_top, title, sub="", accent=False):
+    """on_face for a block set off across the road, optionally an accent one."""
+    lbl, sb = ("lbl-acc", "sub-acc") if accent else ("lbl", "sub")
+    out = [text(u, z_top, title, lbl, side=side, dy=-2.0 if sub else 4.0)]
+    if sub:
+        out.append(text(u, z_top, sub, sb, side=side, dy=11.0))
+    return "".join(out)
+
+
 def ground(u0, u1, s0, s1, cls, step=1.1):
     """A ground plane cut to the objects standing on it. The first draft drew a
     square grid from the origin; it reached far past the scene and was what put
@@ -145,8 +154,8 @@ STYLE = """
 :root{
   --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
   --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
-  --red:#d32f2f; --red-d:#a92525; --red-l:#e86a63;
-  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#5fa363;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
   --tagink:#ffffff;
 }
 @media (prefers-color-scheme: dark){
@@ -169,7 +178,7 @@ text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-se
 .lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
 .sub{fill:var(--soft);font-size:11px;text-anchor:middle}
 .tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
-.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}\n.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}\n.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
 """
 
@@ -316,6 +325,40 @@ def map03(s):
     return "".join(parts)
 
 
+def map04(s):
+    """Lesson: a call goes in on one line and two answers come back.
+
+    The two results sit side by side across the road rather than in a queue
+    along it: in a row they would read as one following the other, and the
+    whole point is that both arrive from the same call.
+    """
+    parts = [ground(-6.8, 6.2, -3.5, 3.5, "g")]
+
+    half, top = 1.45, 1.15
+    parts.append(road(-3.6, -1.9, top * 0.55, 0.42, "band-flow"))
+    parts.append(chevron(-2.75, top * 0.55 + 0.02, +1, "arw-flow"))
+    parts.append(road(1.1, 2.9, top * 0.55, 0.42, "band-res"))
+    parts.append(chevron(2.0, top * 0.55 + 0.02, +1, "arw-res"))
+
+    parts.append(block(-5.2, 0, half, top, "t", "l", "r"))
+    parts.append(block(-0.4, 0, half, top, "t", "l", "r"))
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr", side=-1.95))
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr", side=1.95))
+
+    parts.append(on_face(-5.2, top, s["in"], s["in_sub"]))
+    parts.append(on_face(-0.4, top, s["fn"], s["fn_sub"]))
+    parts.append(on_face_side(4.5, -1.95, top, s["o1"], s["o1_sub"], accent=True))
+    parts.append(on_face_side(4.5, 1.95, top, s["o2"], s["o2_sub"], accent=True))
+
+    line_up = clear_above(top, half + 1.95)
+    line_dn = clear_below(0, half + 1.95)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -447,13 +490,44 @@ L03 = {
     ),
 }
 
+L04 = {
+    "kz": dict(
+        alt="Бір шақыру — екі жауап: нәтиже және шықты ма деген белгі",
+        in_="", fn="ФУНКЦИЯ", fn_sub="divide",
+        o1="НӘТИЖЕ", o1_sub="2.5",
+        o2="ШЫҚТЫ МА", o2_sub="true",
+        head="БІР ШАҚЫРУ — ЕКІ ЖАУАП", head_sub="result, ok := divide(10, 4)",
+        foot="ЕКІНШІ ЖАУАПТЫ ЕЛЕМЕУГЕ БОЛМАЙДЫ", foot_sub="result, _ := divide(10, 4)",
+    ),
+    "ru": dict(
+        alt="Один вызов — два ответа: результат и признак, получилось ли",
+        fn="ФУНКЦИЯ", fn_sub="divide",
+        o1="РЕЗУЛЬТАТ", o1_sub="2.5",
+        o2="ПОЛУЧИЛОСЬ ЛИ", o2_sub="true",
+        head="ОДИН ВЫЗОВ — ДВА ОТВЕТА", head_sub="result, ok := divide(10, 4)",
+        foot="ВТОРОЙ ОТВЕТ ИГНОРИРОВАТЬ НЕЛЬЗЯ", foot_sub="result, _ := divide(10, 4)",
+    ),
+    "en": dict(
+        alt="One call, two answers: the result and whether it worked",
+        fn="FUNCTION", fn_sub="divide",
+        o1="RESULT", o1_sub="2.5",
+        o2="DID IT WORK", o2_sub="true",
+        head="ONE CALL, TWO ANSWERS", head_sub="result, ok := divide(10, 4)",
+        foot="THE SECOND ANSWER CANNOT BE IGNORED", foot_sub="result, _ := divide(10, 4)",
+    ),
+}
+L04["kz"]["in"] = "НЕ ӘКЕЛДІҢІЗ"; L04["kz"]["in_sub"] = "a, b float64"
+L04["ru"]["in"] = "ЧТО ПРИНЕСЛИ"; L04["ru"]["in_sub"] = "a, b float64"
+L04["en"]["in"] = "WHAT YOU BRING"; L04["en"]["in_sub"] = "a, b float64"
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
     os.makedirs(out, exist_ok=True)
     for name, scene, table in (("internet", map00, L), ("first-server", map01, L01),
                                ("workspace", map02, L02),
-                               ("types", map03, L03)):
+                               ("types", map03, L03),
+                               ("functions", map04, L04)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

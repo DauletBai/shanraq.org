@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-493.6 -102.9 960.8 476.0" width="961" height="476" role="img" aria-label="Один вызов — два ответа: результат и признак, получилось ли"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-447.56" y1="19.00" x2="-447.56" y2="285.00"/><line class="g" x1="-375.16" y1="19.00" x2="-375.16" y2="285.00"/><line class="g" x1="-302.76" y1="19.00" x2="-302.76" y2="285.00"/><line class="g" x1="-230.36" y1="19.00" x2="-230.36" y2="285.00"/><line class="g" x1="-157.96" y1="19.00" x2="-157.96" y2="285.00"/><line class="g" x1="-85.56" y1="19.00" x2="-85.56" y2="285.00"/><line class="g" x1="-13.16" y1="19.00" x2="-13.16" y2="285.00"/><line class="g" x1="59.24" y1="19.00" x2="59.24" y2="285.00"/><line class="g" x1="131.64" y1="19.00" x2="131.64" y2="285.00"/><line class="g" x1="204.04" y1="19.00" x2="204.04" y2="285.00"/><line class="g" x1="276.44" y1="19.00" x2="276.44" y2="285.00"/><line class="g" x1="348.84" y1="19.00" x2="348.84" y2="285.00"/><line class="g" x1="421.23" y1="19.00" x2="421.23" y2="285.00"/><line class="g" x1="-447.56" y1="19.00" x2="408.07" y2="19.00"/><line class="g" x1="-447.56" y1="60.80" x2="408.07" y2="60.80"/><line class="g" x1="-447.56" y1="102.60" x2="408.07" y2="102.60"/><line class="g" x1="-447.56" y1="144.40" x2="408.07" y2="144.40"/><line class="g" x1="-447.56" y1="186.20" x2="408.07" y2="186.20"/><line class="g" x1="-447.56" y1="228.00" x2="408.07" y2="228.00"/><line class="g" x1="-447.56" y1="269.80" x2="408.07" y2="269.80"/><polygon class="band-flow" points="-236.94,112.00 -125.05,112.01 -125.05,143.93 -236.94,143.93"/><polygon class="arw-flow" points="-171.50,127.21 -185.27,120.37 -185.27,134.05"/><polygon class="band-res" points="72.40,112.01 190.87,112.01 190.87,143.93 72.40,143.93"/><polygon class="arw-res" points="141.14,127.21 127.36,120.37 127.36,134.05"/><polygon class="t" points="-342.25,53.20 -246.82,108.30 -342.25,163.40 -437.69,108.30"/><polygon class="r" points="-437.69,152.00 -342.25,207.10 -342.25,163.40 -437.69,108.30"/><polygon class="l" points="-246.82,152.00 -342.25,207.10 -342.25,163.40 -246.82,108.30"/><polygon class="t" points="-26.33,53.20 69.11,108.30 -26.33,163.40 -121.76,108.30"/><polygon class="r" points="-121.76,152.00 -26.33,207.10 -26.33,163.40 -121.76,108.30"/><polygon class="l" points="69.11,152.00 -26.33,207.10 -26.33,163.40 69.11,108.30"/><polygon class="gt" points="296.18,-20.90 391.62,34.20 296.18,89.30 200.74,34.20"/><polygon class="gr" points="200.74,77.90 296.18,133.00 296.18,89.30 200.74,34.20"/><polygon class="gl" points="391.62,77.90 296.18,133.00 296.18,89.30 391.62,34.20"/><polygon class="gt" points="296.18,127.30 391.62,182.40 296.18,237.50 200.74,182.40"/><polygon class="gr" points="200.74,226.10 296.18,281.20 296.18,237.50 200.74,182.40"/><polygon class="gl" points="391.62,226.10 296.18,281.20 296.18,237.50 391.62,182.40"/><text class="lbl" x="-342.25" y="106.30">ЧТО ПРИНЕСЛИ</text><text class="sub" x="-342.25" y="119.30">a, b float64</text><text class="lbl" x="-26.33" y="106.30">ФУНКЦИЯ</text><text class="sub" x="-26.33" y="119.30">divide</text><text class="lbl-acc" x="296.18" y="32.20">РЕЗУЛЬТАТ</text><text class="sub-acc" x="296.18" y="45.20">2.5</text><text class="lbl-acc" x="296.18" y="180.40">ПОЛУЧИЛОСЬ ЛИ</text><text class="sub-acc" x="296.18" y="193.40">true</text><text class="cap" x="0.00" y="-56.86">ОДИН ВЫЗОВ — ДВА ОТВЕТА</text><text class="mono" x="0.00" y="-40.90">result, ok := divide(10, 4)</text><text class="cap" x="0.00" y="311.20">ВТОРОЙ ОТВЕТ ИГНОРИРОВАТЬ НЕЛЬЗЯ</text><text class="mono" x="0.00" y="327.16">result, _ := divide(10, 4)</text></svg>
