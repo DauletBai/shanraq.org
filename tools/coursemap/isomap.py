@@ -291,6 +291,31 @@ def map01(s):
     return "".join(parts)
 
 
+def map03(s):
+    """Lesson: the four types that carry a blog, and that a type is chosen once.
+
+    Four boxes rather than a list, because the point is that each value sits in
+    a container of a fixed kind. The caption underneath is the half beginners
+    trip over: the box does not change shape later.
+    """
+    parts = [ground(-7.4, 7.4, -1.5, 1.5, "g")]
+
+    half, top = 1.6, 1.15
+    seats = (-5.7, -1.9, 1.9, 5.7)
+    keys = ("t1", "t2", "t3", "t4")
+    for u, k in zip(seats, keys):
+        parts.append(block(u, 0, half, top, "t", "l", "r"))
+        parts.append(on_face(u, top, s[k], s[k + "_val"]))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -392,12 +417,43 @@ L02 = {
     ),
 }
 
+L03 = {
+    "kz": dict(
+        alt="Төрт тип: мәтін, бүтін сан, бөлшек сан және иә-жоқ",
+        t1="STRING", t1_val="мәтін · «Сәлем, әлем!»",
+        t2="INT", t2_val="бүтін сан · 0",
+        t3="FLOAT64", t3_val="бөлшек сан · 4.5",
+        t4="BOOL", t4_val="иә-жоқ · true",
+        head="ӘЗІРГЕ ЖЕТЕТІН ТӨРТ ТИП", head_sub="title · views · rating · published",
+        foot="ТИП БІР РЕТ ТАҢДАЛАДЫ", foot_sub='views = "көп"  →  жинақтау қатесі',
+    ),
+    "ru": dict(
+        alt="Четыре типа: текст, целое число, дробное число и да-нет",
+        t1="STRING", t1_val="текст · «Сәлем, әлем!»",
+        t2="INT", t2_val="целое · 0",
+        t3="FLOAT64", t3_val="дробное · 4.5",
+        t4="BOOL", t4_val="да-нет · true",
+        head="ЧЕТЫРЕ ТИПА, КОТОРЫХ ПОКА ХВАТИТ", head_sub="title · views · rating · published",
+        foot="ТИП ВЫБИРАЕТСЯ ОДИН РАЗ", foot_sub='views = "много"  →  ошибка при сборке',
+    ),
+    "en": dict(
+        alt="Four types: text, whole number, fractional number and yes-no",
+        t1="STRING", t1_val="text · \u0022Salem, alem!\u0022",
+        t2="INT", t2_val="whole · 0",
+        t3="FLOAT64", t3_val="fractional · 4.5",
+        t4="BOOL", t4_val="yes-no · true",
+        head="FOUR TYPES THAT WILL DO FOR NOW", head_sub="title · views · rating · published",
+        foot="A TYPE IS CHOSEN ONCE", foot_sub='views = "a lot"  \u2192  build error',
+    ),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
     os.makedirs(out, exist_ok=True)
     for name, scene, table in (("internet", map00, L), ("first-server", map01, L01),
-                               ("workspace", map02, L02)):
+                               ("workspace", map02, L02),
+                               ("types", map03, L03)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
