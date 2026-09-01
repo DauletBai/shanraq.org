@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-490.3 -67.7 980.5 374.0" width="981" height="374" role="img" aria-label="Клиент сұраныс жібереді, сервер жауап қайтарады"><style>
+:root{
+  --ink:#3a3a3a; --soft:#6b6b6b; --line:#d6d3ce; --ground:#efece7;
+  --top:#ffffff; --lft:#e6e1d9; --rgt:#d9d3c9;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#e86a63;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#5fa363;
+  --card:#faf8f4;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#ddd9d3; --soft:#a8a49d; --line:#4a4844; --ground:#343330;
+    --top:#4a4844; --lft:#3c3b38; --rgt:#333230;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --card:#2b2a28;
+    --tagink:#241f1f;
+  }
+}
+.bg{fill:var(--card)}
+.g{stroke:var(--line);stroke-width:.7;fill:none;opacity:.55}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><rect class="bg" x="-490.3" y="-67.7" width="980.5" height="374.0" rx="16"/><line class="g" x1="-434.40" y1="83.60" x2="-434.40" y2="220.40"/><line class="g" x1="-362.00" y1="83.60" x2="-362.00" y2="220.40"/><line class="g" x1="-289.60" y1="83.60" x2="-289.60" y2="220.40"/><line class="g" x1="-217.20" y1="83.60" x2="-217.20" y2="220.40"/><line class="g" x1="-144.80" y1="83.60" x2="-144.80" y2="220.40"/><line class="g" x1="-72.40" y1="83.60" x2="-72.40" y2="220.40"/><line class="g" x1="0.00" y1="83.60" x2="0.00" y2="220.40"/><line class="g" x1="72.40" y1="83.60" x2="72.40" y2="220.40"/><line class="g" x1="144.80" y1="83.60" x2="144.80" y2="220.40"/><line class="g" x1="217.20" y1="83.60" x2="217.20" y2="220.40"/><line class="g" x1="289.60" y1="83.60" x2="289.60" y2="220.40"/><line class="g" x1="362.00" y1="83.60" x2="362.00" y2="220.40"/><line class="g" x1="434.40" y1="83.60" x2="434.40" y2="220.40"/><line class="g" x1="-434.40" y1="83.60" x2="434.40" y2="83.60"/><line class="g" x1="-434.40" y1="125.40" x2="434.40" y2="125.40"/><line class="g" x1="-434.40" y1="167.20" x2="434.40" y2="167.20"/><line class="g" x1="-434.40" y1="209.00" x2="434.40" y2="209.00"/><polygon class="band-req" points="-302.76,46.74 302.76,46.74 302.76,93.86 -302.76,93.86"/><polygon class="arw-req" points="-181.37,69.54 -195.15,62.70 -195.15,76.38"/><polygon class="arw-req" points="-56.32,69.54 -70.09,62.70 -70.09,76.38"/><polygon class="arw-req" points="68.74,69.54 54.96,62.70 54.96,76.38"/><polygon class="arw-req" points="193.79,69.54 180.02,62.70 180.02,76.38"/><polygon class="band-res" points="-302.76,117.04 302.76,117.04 302.76,164.16 -302.76,164.16"/><polygon class="arw-res" points="-193.79,139.84 -180.02,133.00 -180.02,146.68"/><polygon class="arw-res" points="-68.74,139.84 -54.96,133.00 -54.96,146.68"/><polygon class="arw-res" points="56.32,139.84 70.09,133.00 70.09,146.68"/><polygon class="arw-res" points="181.37,139.84 195.15,133.00 195.15,146.68"/><polygon class="t" points="-348.84,32.30 -253.40,87.40 -348.84,142.50 -444.27,87.40"/><polygon class="r" points="-444.27,152.00 -348.84,207.10 -348.84,142.50 -444.27,87.40"/><polygon class="l" points="-253.40,152.00 -348.84,207.10 -348.84,142.50 -253.40,87.40"/><polygon class="t" points="348.84,64.60 444.27,119.70 348.84,174.80 253.40,119.70"/><polygon class="r" points="253.40,152.00 348.84,207.10 348.84,174.80 253.40,119.70"/><polygon class="l" points="444.27,152.00 348.84,207.10 348.84,174.80 444.27,119.70"/><polygon class="t" points="348.84,24.70 444.27,79.80 348.84,134.90 253.40,79.80"/><polygon class="r" points="253.40,112.10 348.84,167.20 348.84,134.90 253.40,79.80"/><polygon class="l" points="444.27,112.10 348.84,167.20 348.84,134.90 444.27,79.80"/><polygon class="t" points="348.84,-15.20 444.27,39.90 348.84,95.00 253.40,39.90"/><polygon class="r" points="253.40,72.20 348.84,127.30 348.84,95.00 253.40,39.90"/><polygon class="l" points="444.27,72.20 348.84,127.30 348.84,95.00 444.27,39.90"/><polygon class="rt" points="-161.25,-21.66 -94.12,17.10 -161.25,55.86 -228.39,17.10"/><polygon class="rr" points="-228.39,36.10 -161.25,74.86 -161.25,55.86 -228.39,17.10"/><polygon class="rl" points="-94.12,36.10 -161.25,74.86 -161.25,55.86 -94.12,17.10"/><text class="tag" x="-161.25" y="21.10">ӘДІС</text><polygon class="rt" points="0.00,-21.66 67.13,17.10 0.00,55.86 -67.13,17.10"/><polygon class="rr" points="-67.13,36.10 0.00,74.86 0.00,55.86 -67.13,17.10"/><polygon class="rl" points="67.13,36.10 0.00,74.86 0.00,55.86 67.13,17.10"/><text class="tag" x="0.00" y="21.10">ЖОЛ</text><polygon class="rt" points="161.25,-21.66 228.39,17.10 161.25,55.86 94.12,17.10"/><polygon class="rr" points="94.12,36.10 161.25,74.86 161.25,55.86 94.12,17.10"/><polygon class="rl" points="228.39,36.10 161.25,74.86 161.25,55.86 228.39,17.10"/><text class="tag" x="161.25" y="21.10">ТАҚЫРЫПТАР</text><polygon class="gt" points="-161.25,137.94 -94.12,176.70 -161.25,215.46 -228.39,176.70"/><polygon class="gr" points="-228.39,195.70 -161.25,234.46 -161.25,215.46 -228.39,176.70"/><polygon class="gl" points="-94.12,195.70 -161.25,234.46 -161.25,215.46 -94.12,176.70"/><text class="tag" x="-161.25" y="180.70">КОД</text><polygon class="gt" points="0.00,137.94 67.13,176.70 0.00,215.46 -67.13,176.70"/><polygon class="gr" points="-67.13,195.70 0.00,234.46 0.00,215.46 -67.13,176.70"/><polygon class="gl" points="67.13,195.70 0.00,234.46 0.00,215.46 67.13,176.70"/><text class="tag" x="0.00" y="180.70">ТАҚЫРЫПТАР</text><polygon class="gt" points="161.25,137.94 228.39,176.70 161.25,215.46 94.12,176.70"/><polygon class="gr" points="94.12,195.70 161.25,234.46 161.25,215.46 94.12,176.70"/><polygon class="gl" points="228.39,195.70 161.25,234.46 161.25,215.46 228.39,176.70"/><text class="tag" x="161.25" y="180.70">ДЕНЕ</text><text class="cap" x="0.00" y="-20.90">СҰРАНЫС</text><text class="mono" x="0.00" y="-5.70">GET /read/salem</text><text class="cap" x="0.00" y="245.10">ЖАУАП</text><text class="mono" x="0.00" y="260.30">200 + HTML</text><text class="lbl" x="-348.84" y="55.10">Клиент</text><text class="sub" x="-348.84" y="70.30">браузер, curl</text><text class="lbl" x="348.84" y="9.50">Сервер</text><text class="sub" x="348.84" y="24.70">сұрақ күтіп тұр</text></svg>
