@@ -570,6 +570,17 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
    allowed to resize the page under someone already reading it. */
 .article__media { margin: 0 0 20px; border-radius: var(--radius-sm); overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
 .article__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Vector covers are diagrams, not photographs: fit the whole thing in and let
+   the card's own ground show through the transparent margins. */
+.hero__media img[src$=".svg"], .post__media img[src$=".svg"], .article__media img[src$=".svg"] {
+  object-fit: contain;
+}
+/* In the hero a headline is printed across the picture. A photograph takes that
+   and a diagram does not: its own labels start competing with the title, which
+   is how the lesson map read behind "Как работает интернет". Sitting it back
+   keeps the headline the subject; the card and the article page show the same
+   file at full strength. */
+.hero__media img[src$=".svg"] { opacity: .42; }
 /* A phone held sideways is ~800px wide and 390px tall, so the ratio alone would
    make the cover 450px — taller than the screen, and the reader would open an
    article to a full page of picture. The cap is on every size, but only
@@ -3662,6 +3673,9 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
 /* ---- Courses: an ordered series of ordinary articles ---- */
 
 /* Course index and the map of one course. */
+/* The page's own gutters. .container sets side padding only, so without this
+   the last card butts straight into the footer. */
+.crs { max-width: 840px; padding-top: 24px; padding-bottom: 56px; }
 .crs__h1 { font-size: var(--step-4); margin-bottom: 10px; }
 .crs__lead { color: var(--ink-soft); max-width: 62ch; margin-bottom: 18px; }
 .crs__empty { margin: 24px 0; }

@@ -343,7 +343,10 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 	if page.Summary != "" {
 		page.Desc = clip(page.Summary, 200)
 	}
-	if img := absURL(page.SiteURL, page.CoverURL); img != "" {
+	// A vector cover stays on the page but never becomes the social preview:
+	// Telegram, Facebook and LinkedIn render nothing for an SVG, so the card
+	// would come out blank. Those fall back to the site's own OG image.
+	if img := absURL(page.SiteURL, page.CoverURL); img != "" && !strings.HasSuffix(strings.ToLower(page.CoverURL), ".svg") {
 		page.OGImage = img
 	}
 	canonical := page.SiteURL + page.Path + "?lang=" + page.Lang

@@ -2,7 +2,7 @@
 {{ template "site_head" . }}
 <body>
 {{ template "site_header" . }}
-<main class="container crs" style="max-width:840px;padding-top:24px">
+<main class="container crs">
   {{ template "backlink" (dict "Href" (printf "/courses?lang=%s" .Lang) "Label" (t .Lang "course.index_title")) }}
 
   <header class="crsmap__head">

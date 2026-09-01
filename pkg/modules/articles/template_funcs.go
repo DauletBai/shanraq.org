@@ -54,6 +54,9 @@ func templateFuncs() template.FuncMap {
 		// labels are read by people.
 		"inc": func(i int) int { return i + 1 },
 		"mul": func(a, b int) int { return a * b },
+		// A cover that is a drawing rather than a photograph. The hero prints a
+		// headline across the picture, and a diagram's own labels fight it.
+		"isvector": func(s string) bool { return strings.HasSuffix(strings.ToLower(s), ".svg") },
 		// The reader's report names one of the site's published rules — the same
 		// list the checker used — so a report is a claim about a rule, not a
 		// second opinion about the topic.
