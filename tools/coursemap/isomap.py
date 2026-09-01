@@ -226,6 +226,41 @@ def map00(s):
     return "".join(parts)
 
 
+def map01(s):
+    """Lesson 1: the two halves of a first program, and where to look at it.
+
+    Three blocks in a row rather than a stack: in isometric a block standing on
+    another hides the lower one's top face, and both halves have to carry a
+    name. Read left to right they are also the order the program runs in.
+    """
+    parts = [ground(-6.7, 6.7, -1.5, 1.5, "g")]
+
+    half, top = 1.5, 1.15
+    seats = (-5.0, 0.0, 5.0)
+    for u in seats:
+        parts.append(block(u, 0, half, top, "t", "l", "r"))
+
+    # Connectors sit in the gaps only. Run as one band across the whole row it
+    # read as a road passing straight through the middle block -- the blocks
+    # hide it, so what showed was a stripe entering one side and leaving the
+    # other. Green is the colour the response already wore a lesson ago.
+    for a, b in ((-3.3, -1.7), (1.7, 3.3)):
+        parts.append(road(a, b, top * 0.55, 0.42, "band-res"))
+        for u in (a + 0.45, b - 0.45):
+            parts.append(chevron(u, top * 0.55 + 0.02, +1, "arw-res"))
+
+    for u, k in zip(seats, ("b1", "b2", "b3")):
+        parts.append(on_face(u, top, s[k], s[k + "_sub"]))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half)
+    parts.append(text(0, line_up + 0.42, s["run"], "cap"))
+    parts.append(text(0, line_up, s["run_sub"], "mono"))
+    parts.append(text(0, line_dn, s["out"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["out_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -273,12 +308,40 @@ L = {
     ),
 }
 
+L01 = {
+    "kz": dict(
+        alt="Бағдарлама нені жауап беретінін біледі, қай жерде тыңдайтынын біледі, ал браузер жауапты көреді",
+        b1="НЕНІ ЖАУАП БЕРУ", b1_sub="http.HandleFunc",
+        b2="ҚАЙДА ТЫҢДАУ", b2_sub="http.ListenAndServe",
+        b3="БРАУЗЕР", b3_sub="localhost:8080",
+        run="БІР ПӘРМЕН", run_sub="go run main.go",
+        out="ЖАУАП", out_sub="200 · Сәлем",
+    ),
+    "ru": dict(
+        alt="Программа знает, что отвечать и где слушать, а браузер видит ответ",
+        b1="ЧТО ОТВЕЧАТЬ", b1_sub="http.HandleFunc",
+        b2="ГДЕ СЛУШАТЬ", b2_sub="http.ListenAndServe",
+        b3="БРАУЗЕР", b3_sub="localhost:8080",
+        run="ОДНА КОМАНДА", run_sub="go run main.go",
+        out="ОТВЕТ", out_sub="200 · Сәлем",
+    ),
+    "en": dict(
+        alt="The program knows what to answer and where to listen; the browser sees the answer",
+        b1="WHAT TO ANSWER", b1_sub="http.HandleFunc",
+        b2="WHERE TO LISTEN", b2_sub="http.ListenAndServe",
+        b3="BROWSER", b3_sub="localhost:8080",
+        run="ONE COMMAND", run_sub="go run main.go",
+        out="RESPONSE", out_sub="200 · Salem",
+    ),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
     os.makedirs(out, exist_ok=True)
-    for lang, strings in L.items():
-        path = os.path.join(out, f"map-00-{lang}.svg")
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(render(map00, strings))
-        print("wrote", path)
+    for name, scene, table in (("00", map00, L), ("01", map01, L01)):
+        for lang, strings in table.items():
+            path = os.path.join(out, f"map-{name}-{lang}.svg")
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(render(scene, strings))
+            print("wrote", path)
