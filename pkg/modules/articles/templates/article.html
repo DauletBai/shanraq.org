@@ -33,6 +33,16 @@
           </div>
 
                     <a class="kicker" href="/?lang={{ .Lang }}&cat={{ .Category }}" style="margin:14px 0 4px">{{ catIcon .Category }}{{ t .Lang (printf "cat.%s" .Category) }}</a>
+          {{/* A lesson has to say where in the course it sits before the
+               text starts: a reader arriving from search on lesson 17 needs to
+               learn in one line that there are sixteen before it and a map
+               listing all of them. */}}
+          {{ range .SeriesPlaces }}{{ if .Number }}
+          <p class="lstrip">
+            <a class="lstrip__course" href="/course/{{ .Series.Slug }}?lang={{ $.Lang }}">{{ .Series.TitleIn $.Lang }}</a>
+            <span class="lstrip__pos">{{ printf (t $.Lang "course.pos_fmt") .Number .Total }}</span>
+          </p>
+          {{ end }}{{ end }}
           <h1 class="article__title">{{ .Title }}</h1>
           {{ if .Summary }}<p class="article__lead">{{ .Summary }}</p>{{ end }}
 
@@ -176,6 +186,25 @@
            subcategory, then same section, then simply recent. Only the human
            articles are offered; the machine columns are open to whoever
            chooses them and are not pushed at anybody. */}}
+      {{/* The next lesson outranks the related-articles block below: a reader
+           inside a course has already chosen where to go, and offering them
+           four unrelated pieces first is how a course loses people mid-way. */}}
+      {{ range .SeriesPlaces }}{{ if .Number }}
+      <nav class="lnav" aria-label="{{ .Series.TitleIn $.Lang }}">
+        <div class="lnav__side">
+          {{ with .Prev }}<a class="lnav__link lnav__link--prev" href="/read/{{ .Slug }}?lang={{ $.Lang }}">
+            <span class="lnav__cap">← {{ t $.Lang "course.prev" }}</span>
+            <span class="lnav__t">{{ .Title }}</span></a>{{ end }}
+        </div>
+        <a class="lnav__map" href="/course/{{ .Series.Slug }}?lang={{ $.Lang }}">{{ icon "list" }}{{ t $.Lang "course.map" }}</a>
+        <div class="lnav__side lnav__side--next">
+          {{ with .Next }}<a class="lnav__link lnav__link--next" href="/read/{{ .Slug }}?lang={{ $.Lang }}">
+            <span class="lnav__cap">{{ t $.Lang "course.next" }} →</span>
+            <span class="lnav__t">{{ .Title }}</span></a>{{ end }}
+        </div>
+      </nav>
+      {{ end }}{{ end }}
+
       {{ if .Related }}
       <section class="related" aria-labelledby="related-h">
         <h2 class="related__title" id="related-h">{{ t .Lang "article.related" }}</h2>

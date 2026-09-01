@@ -2227,6 +2227,94 @@ var messages = map[string]map[string]string{
 	"guide.side_title": {"kz": "Мақала не жарнаманы қалай орналастыру керек", "ru": "Как разместить статью или объявление", "en": "How to publish a story or an ad"},
 	"guide.side_text":  {"kz": "Жариялау, құқықтар мен жауапкершілік туралы қысқаша нұсқаулық.", "ru": "Краткий справочник о публикации, правах и ответственности.", "en": "A short guide to publishing, rights and responsibilities."},
 	"common.more":      {"kz": "Толығырақ", "ru": "Подробнее", "en": "Learn more"},
+
+	// ---- courses: an ordered series of ordinary articles ----
+	"nav.courses":        {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
+	"course.index_title": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
+	"course.index_lead": {
+		"kz": "Ретімен оқылатын сабақтар топтамасы. Барлық сабақтар ашық: тегін және тіркелусіз.",
+		"ru": "Серии уроков, которые читаются по порядку. Все уроки открыты: бесплатно и без регистрации.",
+		"en": "Lesson series meant to be read in order. Every lesson is open: free, no sign-up.",
+	},
+	"course.empty_index": {
+		"kz": "Әзірге бірде-бір курс жарияланған жоқ.",
+		"ru": "Пока не опубликовано ни одного курса.",
+		"en": "No courses published yet.",
+	},
+	"course.empty": {
+		"kz": "Бұл курста әзірге жарияланған сабақ жоқ.",
+		"ru": "В этом курсе пока нет опубликованных уроков.",
+		"en": "This course has no published lessons yet.",
+	},
+	"course.lessons_n": {"kz": "Сабақтар", "ru": "Уроков", "en": "Lessons"},
+	"course.time_n":    {"kz": "Оқу уақыты", "ru": "Время чтения", "en": "Reading time"},
+	"course.min":       {"kz": "мин", "ru": "мин", "en": "min"},
+	"course.start":     {"kz": "Бірінші сабақтан бастау", "ru": "Начать с первого урока", "en": "Start with lesson one"},
+	"course.free": {
+		"kz": "Барлық сабақ ашық. Тіркелу тек өткен сабақтарды белгілеу мен жаңа сабақ туралы хабарлама үшін керек.",
+		"ru": "Все уроки открыты. Регистрация нужна только для отметок о пройденном и письма о новом уроке.",
+		"en": "Every lesson is open. Signing up only adds progress marks and a note when the next lesson lands.",
+	},
+	// "Урок 3 из 40" on a lesson page.
+	"course.pos_fmt": {"kz": "%d-сабақ (барлығы %d)", "ru": "Урок %d из %d", "en": "Lesson %d of %d"},
+	"course.prev":    {"kz": "Алдыңғы сабақ", "ru": "Предыдущий урок", "en": "Previous lesson"},
+	"course.next":    {"kz": "Келесі сабақ", "ru": "Следующий урок", "en": "Next lesson"},
+	"course.map":     {"kz": "Курс картасы", "ru": "Карта курса", "en": "Course map"},
+
+	// ---- courses: admin ----
+	"course.admin_title": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
+	"course.admin_intro": {
+		"kz": "Курс — реті бар қарапайым мақалалар топтамасы. Сабақтар ашық әрі индекстелетін күйінде қалады.",
+		"ru": "Курс — это упорядоченная серия обычных статей. Уроки остаются открытыми и индексируемыми.",
+		"en": "A course is an ordered series of ordinary articles. The lessons stay open and indexable.",
+	},
+	"course.admin_view": {"kz": "Курстарды қарау", "ru": "Посмотреть курсы", "en": "View courses"},
+	"course.new":        {"kz": "Жаңа курс", "ru": "Новый курс", "en": "New course"},
+	"course.edit":       {"kz": "Курсты өңдеу", "ru": "Редактирование курса", "en": "Edit course"},
+	"course.f_slug":     {"kz": "Мекенжай (slug)", "ru": "Адрес (slug)", "en": "Address (slug)"},
+	"course.h_slug": {
+		"kz": "Курс беті /course/<slug> мекенжайында ашылады. Кейін өзгертпеген жөн: сілтемелер бұзылады.",
+		"ru": "Страница курса открывается по адресу /course/<slug>. Менять потом не стоит: сломаются ссылки.",
+		"en": "The course page lives at /course/<slug>. Better not to change it later: links break.",
+	},
+	"course.f_cover":      {"kz": "Мұқаба сілтемесі", "ru": "Ссылка на обложку", "en": "Cover URL"},
+	"course.f_status":     {"kz": "Күйі", "ru": "Статус", "en": "Status"},
+	"course.f_title":      {"kz": "Атауы", "ru": "Название", "en": "Title"},
+	"course.f_summary":    {"kz": "Сипаттамасы", "ru": "Описание", "en": "Summary"},
+	"course.st_draft":     {"kz": "жоба", "ru": "черновик", "en": "draft"},
+	"course.st_published": {"kz": "жарияланған", "ru": "опубликован", "en": "published"},
+	"course.h_status": {
+		"kz": "Жоба сілтеме арқылы ашылады, бірақ тізімде көрінбейді.",
+		"ru": "Черновик открывается по прямой ссылке, но не показывается в списке.",
+		"en": "A draft opens by direct link but stays out of the listing.",
+	},
+	"course.items":      {"kz": "Сабақтар", "ru": "Уроки", "en": "Lessons"},
+	"course.no_items":   {"kz": "Сабақ қосылмаған.", "ru": "Уроки не добавлены.", "en": "No lessons added."},
+	"course.add_lesson": {"kz": "Сабақ қосу", "ru": "Добавить урок", "en": "Add lesson"},
+	"course.f_article":  {"kz": "Мақала", "ru": "Статья", "en": "Article"},
+	"course.f_position": {"kz": "Реті", "ru": "Позиция", "en": "Position"},
+	"course.h_position": {
+		"kz": "Сабақтар осы сан бойынша сұрыпталады. 10, 20, 30 деп қойған ыңғайлы: арасына жаңасын қосу оңай.",
+		"ru": "Уроки сортируются по этому числу. Удобно ставить 10, 20, 30 — тогда легко вставить урок между ними.",
+		"en": "Lessons sort by this number. Use 10, 20, 30 so a new one can be slipped in between.",
+	},
+	"course.save_order": {"kz": "Ретін сақтау", "ru": "Сохранить порядок", "en": "Save order"},
+	"course.remove":     {"kz": "Курстан шығару", "ru": "Убрать из курса", "en": "Remove from course"},
+	"course.remove_confirm": {
+		"kz": "Сабақты курстан шығару керек пе? Мақаланың өзі жойылмайды.",
+		"ru": "Убрать урок из курса? Сама статья останется на месте.",
+		"en": "Remove this lesson from the course? The article itself stays.",
+	},
+	"course.delete": {"kz": "Курсты жою", "ru": "Удалить курс", "en": "Delete course"},
+	"course.delete_confirm": {
+		"kz": "Курсты жою керек пе? Сабақтар жеке мақала болып қала береді.",
+		"ru": "Удалить курс? Уроки останутся на сайте обычными статьями.",
+		"en": "Delete this course? The lessons stay on the site as ordinary articles.",
+	},
+	"course.saved":       {"kz": "Сақталды", "ru": "Сохранено", "en": "Saved"},
+	"course.deleted":     {"kz": "Курс жойылды", "ru": "Курс удалён", "en": "Course deleted"},
+	"course.err_slug":    {"kz": "Мекенжай бос немесе бос емес.", "ru": "Адрес пуст или уже занят.", "en": "The address is empty or already taken."},
+	"course.draft_badge": {"kz": "жоба", "ru": "черновик", "en": "draft"},
 }
 
 // T returns the UI string for key in lang, falling back to Russian then the key.

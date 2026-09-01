@@ -662,6 +662,11 @@ type ArticlePage struct {
 	Predictions []*Prediction
 	PredScore   PredictionScore
 
+	// Courses this article is a lesson in. Usually none, at most one; the slice
+	// exists because an article may serve two courses and picking one of them
+	// arbitrarily would hide the other from the reader who came via it.
+	SeriesPlaces []*SeriesPlace
+
 	Category    string
 	Subcategory string
 	CoverURL    string
@@ -804,6 +809,12 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		m.rt.Logger.Warn("article predictions", zap.Error(err))
+	}
+
+	if places, err := m.series.ForArticle(r.Context(), a.ID, page.Lang); err == nil {
+		page.SeriesPlaces = places
+	} else {
+		m.rt.Logger.Warn("article series", zap.Error(err))
 	}
 
 	// Only the human-written articles offer a citation: the whole point of the

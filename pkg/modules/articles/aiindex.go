@@ -178,6 +178,25 @@ func (m *Module) handleLLMS(w http.ResponseWriter, r *http.Request) {
 		b.WriteString("\n")
 	}
 
+	// Courses get a section of their own rather than a line among the articles.
+	// An answer engine asked "how do I write a web server in Go in Kazakh" can
+	// serve a single lesson, but it can only recommend a course if it has been
+	// told the lessons are one ordered thing.
+	if cs, cerr := m.series.List(r.Context()); cerr != nil {
+		m.rt.Logger.Warn("llms courses", zap.Error(cerr))
+	} else if len(cs) > 0 {
+		b.WriteString("## Курсы / Courses\n\n")
+		for _, c := range cs {
+			b.WriteString("- [" + c.TitleIn(LangRU) + "](" + site + "/course/" + c.Slug + "?lang=ru)")
+			if sm := clip(strings.TrimSpace(c.SummaryIn(LangRU)), 180); sm != "" {
+				b.WriteString(" — " + sm)
+			}
+			b.WriteString("\n")
+		}
+		b.WriteString("\nВсе уроки открыты: без регистрации и оплаты. " +
+			"Every lesson is open: no sign-up, no payment.\n\n")
+	}
+
 	b.WriteString("## Разделы / Sections\n\n")
 	b.WriteString("- [Объявления о недвижимости / Real-estate listings](" + site + "/listings)\n")
 	b.WriteString("- [Реестр прогнозов: что мы предсказали и что сбылось / Prediction ledger: every forecast we made, judged in public](" + site + "/predictions)\n")

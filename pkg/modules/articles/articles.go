@@ -51,6 +51,7 @@ type Module struct {
 	users         *auth.Store // account administration (list / edit / delete)
 	content       *ContentStore
 	predictions   *PredictionStore
+	series        *SeriesStore
 	tariffs       *TariffStore
 	fx            *FxStore
 	macro         *MacroStore
@@ -119,6 +120,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.users = auth.NewStore(rt.DB)
 	m.content = NewContentStore(rt.DB)
 	m.predictions = NewPredictionStore(rt.DB)
+	m.series = NewSeriesStore(rt.DB)
 	// Fill the editable-pages table from the built-in defaults on first boot;
 	// idempotent and best-effort, so it never blocks startup.
 	m.seedContentPages(ctx)
@@ -233,6 +235,8 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/read/{slug}/done", m.handleReadDone)
 		r.Get("/author/{id}", m.handleAuthor)
 		r.Get("/predictions", m.handlePredictions)
+		r.Get("/courses", m.handleCourses)
+		r.Get("/course/{slug}", m.handleCourse)
 		r.Get("/analytics", m.handlePublicStats)
 		r.Get("/rates", m.handleRates)
 		r.Get("/calculator", m.handleCalculator)
@@ -343,6 +347,13 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/admin/predictions/{id}", m.handleAdminPredictions)
 		r.Post("/admin/predictions", m.handleAdminPredictionSave)
 		r.Post("/admin/predictions/{id}/delete", m.handleAdminPredictionDelete)
+		r.Get("/admin/series", m.handleAdminSeries)
+		r.Get("/admin/series/{id}", m.handleAdminSeries)
+		r.Post("/admin/series", m.handleAdminSeriesSave)
+		r.Post("/admin/series/{id}/items", m.handleAdminSeriesAttach)
+		r.Post("/admin/series/{id}/order", m.handleAdminSeriesOrder)
+		r.Post("/admin/series/{id}/items/{article}/delete", m.handleAdminSeriesDetach)
+		r.Post("/admin/series/{id}/delete", m.handleAdminSeriesDelete)
 		r.Get("/admin/pages", m.handleAdminPages)
 		r.Get("/admin/pages/{key}", m.handleAdminPageEdit)
 		r.Post("/admin/pages/{key}", m.handleAdminPageSave)

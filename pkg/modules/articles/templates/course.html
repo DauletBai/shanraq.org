@@ -1,0 +1,50 @@
+{{ define "course" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container crs" style="max-width:840px;padding-top:24px">
+  {{ template "backlink" (dict "Href" (printf "/courses?lang=%s" .Lang) "Label" (t .Lang "course.index_title")) }}
+
+  <header class="crsmap__head">
+    <h1 class="crs__h1">{{ .Series.TitleIn .Lang }}</h1>
+    {{ with .Series.SummaryIn .Lang }}<p class="crs__lead">{{ . }}</p>{{ end }}
+
+    {{ if .Items }}
+    <p class="crsmap__facts">
+      <span class="metaic">{{ icon "list" }}{{ t .Lang "course.lessons_n" }}: <b>{{ .Lessons }}</b></span>
+      {{ if gt .Minutes 0 }}<span class="dot">·</span>
+      <span class="metaic">{{ icon "clock" }}{{ t .Lang "course.time_n" }}: <b>{{ .Minutes }}</b> {{ t .Lang "course.min" }}</span>{{ end }}
+    </p>
+
+    {{/* The promise the reader most needs at the door. The course earns its
+         readers from search lesson by lesson, so nothing here is gated -- and
+         saying so plainly is worth more than any call to action. */}}
+    <p class="crsmap__free">{{ t .Lang "course.free" }}</p>
+
+    {{ $first := index .Items 0 }}
+    <p><a class="btn btn--primary" href="/read/{{ $first.Slug }}?lang={{ .Lang }}">{{ t .Lang "course.start" }} →</a></p>
+    {{ end }}
+  </header>
+
+  {{ if not .Items }}
+    <p class="hint crs__empty">{{ t .Lang "course.empty" }}</p>
+  {{ else }}
+  {{/* The whole road, visible from the first step. A reader who can see where
+       it ends decides whether to walk it; one shown a single step at a time
+       has nothing to decide about. */}}
+  <ol class="lessons">
+    {{ range $i, $it := .Items }}
+    <li class="lesson">
+      <span class="lesson__no" aria-hidden="true">{{ inc $i }}</span>
+      <div class="lesson__body">
+        <h2 class="lesson__h"><a href="/read/{{ $it.Slug }}?lang={{ $.Lang }}">{{ $it.Title }}</a></h2>
+        {{ with $it.Summary }}<p class="lesson__sum">{{ . }}</p>{{ end }}
+        {{ if gt $it.Minutes 0 }}<p class="lesson__meta">{{ icon "clock" }}{{ $it.Minutes }} {{ t $.Lang "course.min" }}</p>{{ end }}
+      </div>
+    </li>
+    {{ end }}
+  </ol>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}

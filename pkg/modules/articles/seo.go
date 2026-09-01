@@ -162,6 +162,7 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 var publicPages = []string{
 	"/about", "/adam", "/framework", "/guide", "/formatting", "/pricing", "/support",
 	"/listings", "/predictions", "/analytics", "/rates", "/calculator", "/author/sana",
+	"/courses",
 }
 
 // handleSitemap emits the main trilingual sitemap: home, static pages, category
@@ -186,6 +187,16 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 					}
 					emit("/rates?c="+c.Code, time.Time{})
 				}
+			}
+		}
+		// One entry per course map. The map is the page that links every lesson
+		// together, so a crawler that never reaches it sees forty unrelated
+		// articles instead of a course.
+		if cs, cerr := m.series.List(r.Context()); cerr != nil {
+			m.rt.Logger.Warn("sitemap courses", zap.Error(cerr))
+		} else {
+			for _, c := range cs {
+				emit("/course/"+c.Slug, c.UpdatedAt)
 			}
 		}
 		fresh, ferr := m.store.CategoryFreshness(r.Context())

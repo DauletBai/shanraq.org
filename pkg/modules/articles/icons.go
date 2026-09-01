@@ -44,6 +44,8 @@ var iconPaths = map[string]string{
 	"megaphone": `<path d="M3 11v2a1 1 0 0 0 1 1h2l6 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M6 14v3a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/>`,
 	"calendar":  `<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>`,
 	"clock":     `<circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/>`,
+	// A numbered list, for the lesson count on a course map.
+	"list": `<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h1M4 12h1M4 18h1"/>`,
 	// A speaker with two waves, for the control that reads the article aloud.
 	"speaker": `<path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>`,
 	// The same speaker with the waves struck through: pressed, it stops the reading.

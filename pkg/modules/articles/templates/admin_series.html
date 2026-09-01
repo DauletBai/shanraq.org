@@ -1,0 +1,131 @@
+{{ define "admin_series" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container" style="max-width:940px;padding-top:24px">
+  <p style="margin-bottom:12px"><a href="/admin">← {{ t .Lang "pages.back_admin" }}</a></p>
+  <h1>{{ t .Lang "course.admin_title" }}</h1>
+  <p class="hint" style="margin-bottom:18px">{{ t .Lang "course.admin_intro" }}
+    <a href="/courses" target="_blank">{{ t .Lang "course.admin_view" }}</a></p>
+  {{ with .Notice }}{{ template "saved" . }}{{ end }}
+  {{ with .Error }}<p class="alert alert--error">{{ . }}</p>{{ end }}
+
+  <div class="cab-card">
+    <h2 style="margin-top:0">{{ if .Editing }}{{ t .Lang "course.edit" }}{{ else }}{{ t .Lang "course.new" }}{{ end }}</h2>
+    <form method="post" action="/admin/series">
+      {{ if .Editing }}<input type="hidden" name="id" value="{{ .Editing.ID }}">{{ end }}
+
+      {{ range .Langs }}
+      {{ $code := .Code }}
+      <fieldset class="pform__lang">
+        <legend>{{ .Label }}</legend>
+        <label>{{ t $.Lang "course.f_title" }}
+          <input class="input" type="text" name="title_{{ $code }}"
+                 value="{{ if $.Editing }}{{ index $.Editing.Title $code }}{{ end }}">
+        </label>
+        <label>{{ t $.Lang "course.f_summary" }}
+          <textarea class="input" name="summary_{{ $code }}" rows="2">{{ if $.Editing }}{{ index $.Editing.Summary $code }}{{ end }}</textarea>
+        </label>
+      </fieldset>
+      {{ end }}
+
+      <div class="pform__grid">
+        <label>{{ t .Lang "course.f_slug" }} {{ template "fhelp" (t .Lang "course.h_slug") }}
+          <input class="input" type="text" name="slug" required
+                 value="{{ if .Editing }}{{ .Editing.Slug }}{{ end }}">
+        </label>
+        <label>{{ t .Lang "course.f_cover" }}
+          <input class="input" type="text" name="cover_url"
+                 value="{{ if .Editing }}{{ .Editing.CoverURL }}{{ end }}">
+        </label>
+        <label>{{ t .Lang "course.f_status" }} {{ template "fhelp" (t .Lang "course.h_status") }}
+          <select class="input" name="status">
+            {{ $cur := "draft" }}{{ if .Editing }}{{ $cur = .Editing.Status }}{{ end }}
+            {{ range .Statuses }}
+            <option value="{{ . }}" {{ if eq . $cur }}selected{{ end }}>{{ t $.Lang (printf "course.st_%s" .) }}</option>
+            {{ end }}
+          </select>
+        </label>
+      </div>
+
+      <p style="margin-top:14px"><button class="btn btn--primary" type="submit">{{ t .Lang "re.save" }}</button></p>
+    </form>
+  </div>
+
+  {{/* Lessons are only editable once the course exists: the join table needs an
+       id, and offering the picker before there is one would be a form that
+       cannot be submitted. */}}
+  {{ if .Editing }}
+  <div class="cab-card">
+    <h2 style="margin-top:0">{{ t .Lang "course.items" }}</h2>
+
+    {{ if not .Editing.Items }}
+      <p class="hint">{{ t .Lang "course.no_items" }}</p>
+    {{ else }}
+    <form method="post" action="/admin/series/{{ .Editing.ID }}/order">
+      <table class="table">
+        <tbody>
+          {{ range .Editing.Items }}
+          <tr>
+            <td style="width:96px">
+              <input class="input" type="number" name="pos_{{ .ArticleID }}" value="{{ .Position }}" step="10">
+            </td>
+            <td>
+              <a href="/read/{{ .Slug }}?lang={{ $.Lang }}" target="_blank">{{ .Title }}</a>
+              {{ if not .Published }}<span class="badge">{{ t $.Lang "course.draft_badge" }}</span>{{ end }}
+            </td>
+            <td style="width:1%;white-space:nowrap">
+              <button class="btn btn--ghost btn--sm" type="submit"
+                      formaction="/admin/series/{{ $.Editing.ID }}/items/{{ .ArticleID }}/delete"
+                      formnovalidate
+                      onclick="return confirm('{{ t $.Lang "course.remove_confirm" }}')">{{ t $.Lang "course.remove" }}</button>
+            </td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+      <p><button class="btn btn--primary" type="submit">{{ t .Lang "course.save_order" }}</button></p>
+    </form>
+    {{ end }}
+
+    <form method="post" action="/admin/series/{{ .Editing.ID }}/items" class="pform__grid" style="margin-top:16px">
+      <label>{{ t .Lang "course.f_article" }}
+        <select class="input" name="article" required>
+          <option value="">—</option>
+          {{ range .Articles }}<option value="{{ .ID }}">{{ .Title }}</option>{{ end }}
+        </select>
+      </label>
+      <label>{{ t .Lang "course.f_position" }} {{ template "fhelp" (t .Lang "course.h_position") }}
+        <input class="input" type="number" name="position" value="{{ mul (len .Editing.Items) 10 }}" step="10">
+      </label>
+      <p><button class="btn" type="submit">{{ t .Lang "course.add_lesson" }}</button></p>
+    </form>
+  </div>
+  {{ end }}
+
+  {{ if .Items }}
+  <div class="cab-card">
+    <h2 style="margin-top:0">{{ t .Lang "course.admin_title" }}</h2>
+    <table class="table">
+      <tbody>
+        {{ range .Items }}
+        <tr>
+          <td><a href="/admin/series/{{ .ID }}">{{ .TitleIn $.Lang }}</a>
+            {{ if not .IsPublished }}<span class="badge">{{ t $.Lang "course.draft_badge" }}</span>{{ end }}
+          </td>
+          <td><code>/course/{{ .Slug }}</code></td>
+          <td style="width:1%;white-space:nowrap">
+            <form method="post" action="/admin/series/{{ .ID }}/delete"
+                  onsubmit="return confirm('{{ t $.Lang "course.delete_confirm" }}')">
+              <button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "course.delete" }}</button>
+            </form>
+          </td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </div>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}

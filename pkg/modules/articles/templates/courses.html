@@ -1,0 +1,26 @@
+{{ define "courses" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container crs" style="max-width:840px;padding-top:24px">
+  <h1 class="crs__h1">{{ t .Lang "course.index_title" }}</h1>
+  <p class="crs__lead">{{ t .Lang "course.index_lead" }}</p>
+
+  {{ if not .List }}
+    <p class="hint crs__empty">{{ t .Lang "course.empty_index" }}</p>
+  {{ end }}
+
+  <ul class="crs__list">
+    {{ range .List }}
+    <li class="crs__card">
+      {{ if .CoverURL }}<a class="crs__cover" href="/course/{{ .Slug }}?lang={{ $.Lang }}"><img src="{{ .CoverURL }}" alt="" loading="lazy" decoding="async"></a>{{ end }}
+      <div class="crs__body">
+        <h2 class="crs__title"><a href="/course/{{ .Slug }}?lang={{ $.Lang }}">{{ .TitleIn $.Lang }}</a></h2>
+        {{ with .SummaryIn $.Lang }}<p class="crs__sum">{{ . }}</p>{{ end }}
+      </div>
+    </li>
+    {{ end }}
+  </ul>
+</main>
+{{ template "site_footer" . }}
+{{ end }}
