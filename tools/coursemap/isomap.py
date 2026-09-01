@@ -359,6 +359,35 @@ def map04(s):
     return "".join(parts)
 
 
+def map05(s):
+    """The announcement cover: five lessons stand, the road keeps going.
+
+    Five solid blocks and an empty road after them says what a sentence would
+    have to spell out — that the course is real and unfinished at once — and it
+    cannot go stale the way a number in a headline does.
+    """
+    parts = [ground(-7.0, 7.0, -1.4, 1.4, "g")]
+
+    half, top = 0.86, 0.95
+    for i, u in enumerate((-5.6, -3.6, -1.6, 0.4, 2.4)):
+        parts.append(block(u, 0, half, top, "gt", "gl", "gr"))
+        parts.append(text(u, top, str(i + 1), "tag", dy=4.0))
+
+    # The road past the last block: lessons that exist as a plan, not yet as
+    # pages. Drawn as a path with nothing standing on it.
+    parts.append(road(3.5, 6.4, top * 0.5, 0.44, "band-flow"))
+    for u in (4.2, 5.1, 6.0):
+        parts.append(chevron(u, top * 0.5 + 0.02, +1, "arw-flow"))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -520,6 +549,18 @@ L04["kz"]["in"] = "НЕ ӘКЕЛДІҢІЗ"; L04["kz"]["in_sub"] = "a, b float64
 L04["ru"]["in"] = "ЧТО ПРИНЕСЛИ"; L04["ru"]["in_sub"] = "a, b float64"
 L04["en"]["in"] = "WHAT YOU BRING"; L04["en"]["in_sub"] = "a, b float64"
 
+L05 = {
+    "kz": dict(alt="Бес сабақ жарияланды, жол әрі қарай созылады",
+               head="ТЕГІН КУРС: GO НӨЛДЕН", head_sub="43 сабақ · тіркелусіз · үш тілде",
+               foot="БЕС САБАҚ ЖАРИЯЛАНДЫ", foot_sub="қалғаны — жазылу ретімен"),
+    "ru": dict(alt="Пять уроков опубликованы, дорога идёт дальше",
+               head="БЕСПЛАТНЫЙ КУРС: GO С НУЛЯ", head_sub="43 урока · без регистрации · три языка",
+               foot="ОПУБЛИКОВАНО ПЯТЬ", foot_sub="остальные — по мере написания"),
+    "en": dict(alt="Five lessons published, the road keeps going",
+               head="A FREE COURSE: GO FROM SCRATCH", head_sub="43 lessons · no account · three languages",
+               foot="FIVE ARE PUBLISHED", foot_sub="the rest as they are written"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -527,7 +568,8 @@ if __name__ == "__main__":
     for name, scene, table in (("internet", map00, L), ("first-server", map01, L01),
                                ("workspace", map02, L02),
                                ("types", map03, L03),
-                               ("functions", map04, L04)):
+                               ("functions", map04, L04),
+                               ("launch", map05, L05)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
