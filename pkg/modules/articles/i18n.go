@@ -14,10 +14,15 @@ var messages = map[string]map[string]string{
 
 	"nav.latest": {"kz": "Соңғы", "ru": "Свежее", "en": "Latest"},
 	"nav.top":    {"kz": "Үздік", "ru": "Популярное", "en": "Top"},
+	// What search shows under the front page, so it has to say what the site
+	// holds today. It described the site as it was before the course: six
+	// lessons, their own section and a map, and the one thing here anybody
+	// searches for by name went unmentioned in the most valuable 155 characters
+	// the site owns.
 	"seo.site_desc": {
-		"kz": "Shanraq.org — қазақ, орыс және ағылшын тілдеріндегі тәуелсіз жарияланым алаңы: мақалалар, талдау және жылжымайтын мүлік хабарландырулары.",
-		"ru": "Shanraq.org — независимая площадка публикаций на казахском, русском и английском: статьи, аналитика и объявления о недвижимости.",
-		"en": "Shanraq.org — an independent publishing platform in Kazakh, Russian and English: articles, analysis, and real-estate listings.",
+		"kz": "Shanraq.org — қазақ, орыс және ағылшын тіліндегі тәуелсіз алаң: экономика мен қоғам туралы талдаулар, нөлден бастайтын тегін Go курсы, мүлік хабарландырулары.",
+		"ru": "Shanraq.org — независимая площадка на казахском, русском и английском: разборы об экономике и обществе, бесплатный курс Go с нуля, объявления о недвижимости.",
+		"en": "Shanraq.org — an independent platform in Kazakh, Russian and English: analysis of economy and society, a free Go course from scratch, real-estate listings.",
 	},
 
 	"nav.all":        {"kz": "Барлығы", "ru": "Все", "en": "All"},
