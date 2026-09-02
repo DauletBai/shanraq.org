@@ -10,6 +10,9 @@
   color-scheme: light;
   /* One card shadow for the whole site: the admin panels and the article cards
      on the home page are the same object to a reader, and were not to the CSS. */
+  --code-bg: rgba(0, 173, 216, 0.10);
+  --code-bd: rgba(0, 132, 165, 0.30);
+  --code-ink: #0e5a6e;
   --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --paper: #ffffff;
   --surface: #ffffff;
@@ -79,6 +82,10 @@
   --paper: #2e2e2e;
   --surface: #262626;
   --surface-2: #34332f;
+  --code-bg: rgba(0, 173, 216, 0.17);
+  --code-bd: rgba(94, 206, 236, 0.36);
+  --code-ink: #93dcee;
+
   --ink: #d8d6d2;
   --ink-soft: #bebbb6;
   /* Every accent below is a step lighter than it was. On the dark surfaces the
@@ -121,6 +128,10 @@
     --paper: #2e2e2e;
     --surface: #262626;
     --surface-2: #34332f;
+    --code-bg: rgba(0, 173, 216, 0.17);
+    --code-bd: rgba(94, 206, 236, 0.36);
+    --code-ink: #93dcee;
+
     --ink: #d8d6d2;
     --ink-soft: #bebbb6;
     --muted: #8f8c86;
@@ -764,9 +775,35 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .prose h3 { font-size: var(--step-1); margin-top: 1.5em; }
 .prose a { color: var(--gold-strong); text-decoration: underline; }
 .prose blockquote { border-left: 3px solid var(--gold); margin: 1.5em 0; padding: 2px 0 2px 22px; color: var(--ink-soft); font-style: italic; font-family: var(--serif); font-size: 1.15em; }
-.prose code { font-family: var(--mono); font-size: 0.9em; background: var(--surface-2); padding: 2px 6px; border-radius: 5px; }
+/* Inline code, and why it is not a grey box.
+   It used to sit on --surface-2, which on the dark page is #34332f against a
+   #2e2e2e ground: a difference you have to look for. A tint carries further
+   than a shade, and a cool one reads as "this is code" in a way no grey does —
+   the hue is Go's own cyan, kept at low enough alpha to stay a hint rather than
+   a highlighter, so it is as much at home in an article about the tenge. The
+   hairline does most of the work: a border survives both themes, where a fill
+   can always be lost against the ground behind it. */
+.prose code {
+  font-family: var(--mono); font-size: 0.9em;
+  background: var(--code-bg); color: var(--code-ink);
+  border: 1px solid var(--code-bd); border-radius: 5px;
+  padding: 1px 5px;
+}
 .prose pre { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 16px; overflow-x: auto; }
-.prose pre code { background: none; padding: 0; }
+.prose pre code { background: none; color: inherit; border: 0; padding: 0; }
+/* Nothing here may rest on the fill alone. A code span is marked four ways —
+   the monospace face, the tint, the hairline and the letter colour — so losing
+   any one of them leaves it readable. High-contrast mode takes the first three
+   away at once: the system paints its own colours and drops backgrounds, so the
+   border is restated in the system's own ink, which it will not override. */
+@media (forced-colors: active) {
+  .prose code {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+    forced-color-adjust: none;
+  }
+}
 /* A screenshot inside the text has to read as a screenshot, not as part of the
    page: our interfaces have a light background, and without a border the image
    merges into whatever it sits on. */
@@ -3825,4 +3862,6 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
    as a code block in the lesson, because it is the same renderer — a reader
    should recognise their own code as the thing the lesson has been showing. */
 .chk__pretty { margin-top: 12px; }
-.chk__pretty pre { margin: 0; }
+.chk__pretty pre { margin: 0; background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: 16px; overflow-x: auto; }
+.chk__pretty code { background: none; color: inherit; border: 0; padding: 0; }
