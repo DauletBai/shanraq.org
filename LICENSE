@@ -22,6 +22,19 @@ Not permitted without prior written permission:
 The names "Shanraq", "shanraq.org", and the associated logos are trademarks of
 the copyright holder and may not be used without permission.
 
+COURSE MATERIALS ARE EXEMPT FROM THE ABOVE
+
+The terms above cover the platform: the software that runs shanraq.org. They do
+not cover the teaching materials published on it, which would otherwise be
+unusable for the purpose they exist for — a course whose examples may not be
+run teaches nothing. Those materials are licensed separately, in LICENSE-COURSE:
+
+  - the lesson texts and the lesson maps under web/static/course/ are released
+    under Creative Commons Attribution 4.0;
+  - the code examples inside the lessons are released under the MIT License.
+
+Where a file could be read as belonging to both, the course licence governs.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT

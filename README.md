@@ -13,7 +13,8 @@
   <a href="https://github.com/DauletBai/shanraq.org/actions/workflows/ci.yml"><img src="https://github.com/DauletBai/shanraq.org/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://go.dev"><img src="https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white" alt="Go 1.26"></a>
   <a href="https://www.postgresql.org"><img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL 16"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Proprietary-red" alt="License: Proprietary"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/platform-Proprietary-red" alt="Platform: Proprietary"></a>
+  <a href="LICENSE-COURSE"><img src="https://img.shields.io/badge/course-CC%20BY%204.0%20%2B%20MIT-2e7d32" alt="Course: CC BY 4.0 + MIT"></a>
   <a href="https://shanraq.org"><img src="https://img.shields.io/badge/live-shanraq.org-e53935" alt="Live: shanraq.org"></a>
 </p>
 
@@ -122,7 +123,17 @@ a tag can never ship without its notes.
 
 ## License
 
-**Proprietary — all rights reserved.** The source is published for transparency
-and review; it is **not** open-source and may not be used, deployed, or
-redistributed without written permission. See **[LICENSE](LICENSE)**.
+Two licences, because the platform and what is taught on it are different
+things.
+
+**The platform is proprietary — all rights reserved.** The source is published
+for transparency and review; it is **not** open-source and may not be used,
+deployed, or redistributed without written permission. See **[LICENSE](LICENSE)**.
+
+**The course materials are open.** Lesson texts and lesson maps under
+`web/static/course/` are **CC BY 4.0**; the code examples printed inside the
+lessons are **MIT**. A course whose examples may not be run teaches nothing, so
+they are released on terms that let a reader copy, run and adapt them. See
+**[LICENSE-COURSE](LICENSE-COURSE)**.
+
 For partnership or commercial-use inquiries: **shanirak.org@gmail.com**.
