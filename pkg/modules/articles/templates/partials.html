@@ -939,6 +939,63 @@
           .catch(function () { if (status) status.textContent = '✕'; });
       });
     });
+    // Exercise check. Answers arrive as JSON and are painted in place: a reader
+    // who has just typed thirty lines into the box must not lose them to a
+    // page reload, which is exactly what a plain form post would do.
+    (function () {
+      var box = document.querySelector('[data-check]');
+      if (!box) return;
+      var slug = box.getAttribute('data-check');
+      var ta = box.querySelector('.chk__code');
+      var go = box.querySelector('.chk__go');
+      var out = box.querySelector('.chk__out');
+      var busy = go.getAttribute('data-busy');
+      var idle = go.textContent;
+
+      function show(cls, head, text) {
+        out.textContent = '';
+        var p = document.createElement('p');
+        p.className = 'chk__note' + (cls ? ' ' + cls : '');
+        if (head) {
+          var b = document.createElement('b');
+          b.textContent = head + '. ';
+          p.appendChild(b);
+        }
+        p.appendChild(document.createTextNode(text));
+        out.appendChild(p);
+      }
+
+      go.addEventListener('click', function () {
+        var code = (ta.value || '').trim();
+        if (!code) { ta.focus(); return; }
+        go.disabled = true;
+        go.textContent = busy;
+        var body = new URLSearchParams();
+        body.set('solution', code);
+        fetch('/read/' + encodeURIComponent(slug) + '/check', {
+          method: 'POST', body: body, credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(function (r) { return r.json(); }).then(function (d) {
+          if (d.error) { show('chk__note--bad', '', d.error); return; }
+          show(d.passed ? 'chk__note--ok' : '', d.passed ? go.getAttribute('data-ok') : go.getAttribute('data-no'), d.note);
+          if (d.passed) {
+            var h = box.querySelector('.chk__h');
+            if (h && !h.querySelector('.chk__badge')) {
+              var s = document.createElement('span');
+              s.className = 'chk__badge';
+              s.textContent = go.getAttribute('data-mark') || '';
+              h.appendChild(s);
+            }
+          }
+        }).catch(function () {
+          show('chk__note--bad', '', go.getAttribute('data-fail') || '');
+        }).then(function () {
+          go.disabled = false;
+          go.textContent = idle;
+        });
+      });
+    })();
+
     // Reading-depth beacon: report 25/50/75/100% scroll milestones once each.
     (function () {
       var el = document.querySelector('[data-read-progress]');

@@ -186,6 +186,33 @@
            subcategory, then same section, then simply recent. Only the human
            articles are offered; the machine columns are open to whoever
            chooses them and are not pushed at anybody. */}}
+      {{/* The exercise check. It sits above the course navigation on purpose:
+           the way on is through the task, not past it. Shown only to a signed-in
+           reader on a lesson that sets an exercise — every check costs a model
+           call, and an anonymous one cannot be limited or told from a script. */}}
+      {{ if .HasExercise }}
+      <section class="chk" data-check="{{ .Slug }}">
+        <h2 class="chk__h">{{ t .Lang "chk.title" }}
+          {{ if .Progress.Passed }}<span class="chk__badge">{{ t .Lang "chk.done_mark" }}</span>{{ end }}
+        </h2>
+        <p class="chk__hint">{{ t .Lang "chk.hint" }}</p>
+        <textarea class="input chk__code" rows="10" spellcheck="false"
+                  aria-label="{{ t .Lang "chk.title" }}">{{ .Progress.Solution }}</textarea>
+        <p><button type="button" class="btn btn--primary chk__go"
+                   data-busy="{{ t .Lang "chk.checking" }}"
+                   data-ok="{{ t .Lang "chk.passed" }}" data-no="{{ t .Lang "chk.again" }}"
+                   data-mark="{{ t .Lang "chk.done_mark" }}" data-fail="{{ t .Lang "chk.failed" }}">{{ t .Lang "chk.submit" }}</button></p>
+        <div class="chk__out" role="status" aria-live="polite">
+          {{ with .Progress.Note }}
+          <p class="chk__note{{ if $.Progress.Passed }} chk__note--ok{{ end }}">
+            <b>{{ if $.Progress.Passed }}{{ t $.Lang "chk.passed" }}{{ else }}{{ t $.Lang "chk.again" }}{{ end }}.</b>
+            {{ . }}
+          </p>
+          {{ end }}
+        </div>
+      </section>
+      {{ end }}
+
       {{/* The next lesson outranks the related-articles block below: a reader
            inside a course has already chosen where to go, and offering them
            four unrelated pieces first is how a course loses people mid-way. */}}

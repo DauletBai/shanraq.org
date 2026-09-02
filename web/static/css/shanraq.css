@@ -3794,3 +3794,24 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
    between them is the point. A quiet left rule sets them apart without turning
    the row into two rows. */
 .adm-kpi--read { border-left: 3px solid var(--teal); }
+
+/* ---- Exercise check ---- */
+
+/* The way on is through the task, so the block sits between the lesson and the
+   navigation out of it, and reads as part of the lesson rather than a widget
+   bolted under it. */
+.chk { margin: 32px 0 8px; padding-top: 24px; border-top: 1px solid var(--line); }
+.chk__h { font-size: var(--step-2); margin: 0 0 8px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.chk__badge { font-size: .72rem; font-weight: 700; letter-spacing: .4px; text-transform: uppercase;
+  color: var(--paper); background: var(--teal); border-radius: 999px; padding: 3px 9px; }
+.chk__hint { color: var(--ink-soft); margin: 0 0 12px; max-width: 62ch; }
+.chk__code { width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .9rem; line-height: 1.55; resize: vertical; }
+.chk__out { margin-top: 4px; }
+/* A review is prose about the reader's own work, so it is set like the lesson's
+   own asides rather than like an alert. */
+.chk__note { border-left: 3px solid var(--line-strong); padding: 2px 0 2px 12px;
+  margin: 12px 0 0; max-width: 62ch; color: var(--ink-soft); }
+.chk__note--ok { border-left-color: var(--teal); }
+.chk__note--bad { border-left-color: var(--gold); }
+.chk__note b { color: var(--ink); }

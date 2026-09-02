@@ -662,6 +662,13 @@ type ArticlePage struct {
 	Predictions []*Prediction
 	PredScore   PredictionScore
 
+	// The lesson's exercise, and what this reader has done with it. Present
+	// only on a lesson that sets one and only for a signed-in reader: the check
+	// costs a model call, so it is not offered to somebody who cannot be
+	// counted, rate-limited, or told apart from a script.
+	HasExercise bool
+	Progress    Progress
+
 	// Courses this article is a lesson in. Usually none, at most one; the slice
 	// exists because an article may serve two courses and picking one of them
 	// arbitrarily would hide the other from the reader who came via it.
@@ -815,6 +822,15 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		page.SeriesPlaces = places
 	} else {
 		m.rt.Logger.Warn("article series", zap.Error(err))
+	}
+
+	// The check box appears only where there is something to check and someone
+	// to check it for.
+	if uid, ok := m.authorID(r); ok && lessonExercise(tr.BodyMD) != "" && m.ai != nil && m.ai.Enabled() {
+		page.HasExercise = true
+		if pr, err := m.progress.Get(r.Context(), uid, a.ID); err == nil {
+			page.Progress = pr
+		}
 	}
 
 	// Only the human-written articles offer a citation: the whole point of the

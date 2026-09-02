@@ -2268,6 +2268,28 @@ var messages = map[string]map[string]string{
 	"course.next":    {"kz": "Келесі сабақ", "ru": "Следующий урок", "en": "Next lesson"},
 	"course.map":     {"kz": "Курс картасы", "ru": "Карта курса", "en": "Course map"},
 
+	// ---- checking a lesson exercise ----
+	"chk.title": {"kz": "Тапсырманы тексеру", "ru": "Проверить задание", "en": "Check your exercise"},
+	"chk.hint": {
+		"kz": "Шешіміңізді осында қойыңыз. Тексеретін — модель: ол қатені атап көрсетеді, бірақ дайын жауапты бермейді.",
+		"ru": "Вставьте своё решение. Проверяет модель: она укажет на ошибку, но не даст готовый ответ.",
+		"en": "Paste your solution. A model reads it: it will point at the mistake but will not hand you the answer.",
+	},
+	"chk.submit":    {"kz": "Тексеру", "ru": "Проверить", "en": "Check"},
+	"chk.checking":  {"kz": "Тексерілуде…", "ru": "Проверяю…", "en": "Checking…"},
+	"chk.passed":    {"kz": "Тапсырма қабылданды", "ru": "Задание принято", "en": "Exercise accepted"},
+	"chk.again":     {"kz": "Әзірге болмады", "ru": "Пока не сходится", "en": "Not yet"},
+	"chk.done_mark": {"kz": "өтілді", "ru": "пройдено", "en": "passed"},
+	"chk.login":     {"kz": "Тексеру үшін кіру керек.", "ru": "Чтобы проверить, нужно войти.", "en": "Sign in to have it checked."},
+	"chk.off":       {"kz": "Тексеру уақытша қолжетімсіз.", "ru": "Проверка временно недоступна.", "en": "Checking is unavailable right now."},
+	"chk.no_lesson": {"kz": "Сабақ табылмады.", "ru": "Урок не найден.", "en": "Lesson not found."},
+	"chk.no_task":   {"kz": "Бұл сабақта тапсырма жоқ.", "ru": "В этом уроке нет задания.", "en": "This lesson has no exercise."},
+	"chk.bad":       {"kz": "Сұраныс дұрыс емес.", "ru": "Некорректный запрос.", "en": "Malformed request."},
+	"chk.empty":     {"kz": "Шешім бос.", "ru": "Решение пустое.", "en": "The solution is empty."},
+	"chk.too_long":  {"kz": "Шешім тым ұзын.", "ru": "Решение слишком длинное.", "en": "The solution is too long."},
+	"chk.quota":     {"kz": "Сағатына тексеру шегіне жеттіңіз. Сәл кейінірек көріңіз.", "ru": "Достигнут предел проверок за час. Попробуйте чуть позже.", "en": "You have reached this hour's limit. Try a little later."},
+	"chk.failed":    {"kz": "Тексеру сәтсіз аяқталды. Қайталап көріңіз.", "ru": "Проверка не удалась. Попробуйте ещё раз.", "en": "The check failed. Try again."},
+
 	// ---- courses: admin ----
 	"course.admin_title": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.admin_intro": {
