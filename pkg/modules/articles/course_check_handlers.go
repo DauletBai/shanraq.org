@@ -18,6 +18,15 @@ const (
 	checkQuota  = 30
 )
 
+// maxAttempts is how many times one reader may have one exercise checked.
+//
+// Three, and then the machine stops answering. Not to save money — three checks
+// cost less than half a cent — but because a fourth is where the exercise turns
+// into a guessing game against a reviewer, and guessing is the opposite of what
+// the lesson is for. What comes after the third is deliberately not another
+// model call: re-read the lesson, or ask a person in the comments.
+const maxAttempts = 3
+
 // maxSolution caps a submission. A beginner's answer to a lesson exercise is
 // tens of lines; anything past this is a paste of something else.
 const maxSolution = 8000
@@ -26,7 +35,10 @@ const maxSolution = 8000
 type checkResponse struct {
 	Passed bool   `json:"passed"`
 	Note   string `json:"note"`
-	Error  string `json:"error,omitempty"`
+	// Left is how many checks of this exercise remain. The reader is told before
+	// spending one, not after: a limit nobody can see is a trap.
+	Left  int    `json:"left"`
+	Error string `json:"error,omitempty"`
 }
 
 // handleCourseCheck reviews a reader's solution to a lesson's exercise.
@@ -71,8 +83,18 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// The quota is checked before the model is called, not after: the point of
-	// it is the bill, and a refusal that has already paid is not a refusal.
+	// Both limits are read before the model is called, not after: the point of a
+	// limit is what it prevents, and a refusal that has already paid prevents
+	// nothing.
+	pr, _ := m.progress.Get(r.Context(), user, a.ID)
+	if pr.Passed {
+		reply(http.StatusOK, checkResponse{Passed: true, Note: pr.Note, Left: 0})
+		return
+	}
+	if pr.Attempts >= maxAttempts {
+		reply(http.StatusTooManyRequests, checkResponse{Error: T(lang, "chk.spent"), Left: 0})
+		return
+	}
 	if n, err := m.progress.AttemptsSince(r.Context(), user, checkWindow); err == nil && n >= checkQuota {
 		reply(http.StatusTooManyRequests, checkResponse{Error: T(lang, "chk.quota")})
 		return
@@ -117,5 +139,9 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 		// a reason to withhold it.
 		m.rt.Logger.Warn("course progress record", zap.Error(err))
 	}
-	reply(http.StatusOK, checkResponse{Passed: v.Passed, Note: v.Note})
+	left := maxAttempts - (pr.Attempts + 1)
+	if v.Passed || left < 0 {
+		left = 0
+	}
+	reply(http.StatusOK, checkResponse{Passed: v.Passed, Note: v.Note, Left: left})
 }

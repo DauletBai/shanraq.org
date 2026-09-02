@@ -198,16 +198,31 @@
         <p class="chk__hint">{{ t .Lang "chk.hint" }}</p>
         <textarea class="input chk__code" rows="10" spellcheck="false"
                   aria-label="{{ t .Lang "chk.title" }}">{{ .Progress.Solution }}</textarea>
-        <p><button type="button" class="btn btn--primary chk__go"
-                   data-busy="{{ t .Lang "chk.checking" }}"
-                   data-ok="{{ t .Lang "chk.passed" }}" data-no="{{ t .Lang "chk.again" }}"
-                   data-mark="{{ t .Lang "chk.done_mark" }}" data-fail="{{ t .Lang "chk.failed" }}">{{ t .Lang "chk.submit" }}</button></p>
+        {{ $left := sub 3 .Progress.Attempts }}{{ if lt $left 0 }}{{ $left = 0 }}{{ end }}
+        {{ if and (not .Progress.Passed) (gt $left 0) }}
+        <p class="chk__row">
+          <button type="button" class="btn btn--primary chk__go"
+                  data-busy="{{ t .Lang "chk.checking" }}"
+                  data-ok="{{ t .Lang "chk.passed" }}" data-no="{{ t .Lang "chk.again" }}"
+                  data-mark="{{ t .Lang "chk.done_mark" }}" data-fail="{{ t .Lang "chk.failed" }}"
+                  data-spent="{{ t .Lang "chk.spent" }}" data-help="{{ t .Lang "chk.help" }}"
+                  data-left="{{ t .Lang "chk.left" }}">{{ t .Lang "chk.submit" }}</button>
+          <span class="chk__left">{{ count (t .Lang "chk.left") $left }}</span>
+        </p>
+        {{ end }}
         <div class="chk__out" role="status" aria-live="polite">
           {{ with .Progress.Note }}
           <p class="chk__note{{ if $.Progress.Passed }} chk__note--ok{{ end }}">
             <b>{{ if $.Progress.Passed }}{{ t $.Lang "chk.passed" }}{{ else }}{{ t $.Lang "chk.again" }}{{ end }}.</b>
             {{ . }}
           </p>
+          {{ end }}
+          {{/* Where to go when the machine stops: back to the lesson, or to a
+               person. And where to go when it was easy: to somebody stuck. */}}
+          {{ if .Progress.Passed }}
+          <p class="chk__note chk__note--ok"><a href="#comments">{{ t .Lang "chk.help" }}</a></p>
+          {{ else if le $left 0 }}
+          <p class="chk__note chk__note--bad">{{ t .Lang "chk.spent" }}</p>
           {{ end }}
         </div>
       </section>

@@ -2290,6 +2290,23 @@ var messages = map[string]map[string]string{
 	"chk.quota":     {"kz": "Сағатына тексеру шегіне жеттіңіз. Сәл кейінірек көріңіз.", "ru": "Достигнут предел проверок за час. Попробуйте чуть позже.", "en": "You have reached this hour's limit. Try a little later."},
 	"chk.failed":    {"kz": "Тексеру сәтсіз аяқталды. Қайталап көріңіз.", "ru": "Проверка не удалась. Попробуйте ещё раз.", "en": "The check failed. Try again."},
 
+	// Three checks, and then a person instead of a machine. The wording says
+	// where to go rather than that the door is shut.
+	// {n} rather than %d: this line is also handed to the browser, and a page
+	// carrying a printf verb is a page with an unrendered placeholder in it —
+	// which is exactly what one of the tests refuses to allow.
+	"chk.left": {"kz": "Қалған тексеру: {n}", "ru": "Осталось проверок: {n}", "en": "Checks left: {n}"},
+	"chk.spent": {
+		"kz": "Осы тапсырма бойынша тексеру бітті. Сабақты қайта оқып шығыңыз — жауап әдетте сонда тұрады. Болмаса, төменде пікір қалдырыңыз: не істегеніңізді және не шықпағанын жазыңыз, түсіндіреміз.",
+		"ru": "Проверки по этому заданию закончились. Перечитайте урок — ответ обычно лежит там. Если не помогло, напишите в комментариях ниже: что сделали и что не сходится, — разберём.",
+		"en": "You have used the checks for this exercise. Read the lesson again — the answer is usually in it. If that does not help, write in the comments below: what you did and what will not come out, and we will work through it.",
+	},
+	"chk.help": {
+		"kz": "Оңай болды ма? Төмендегі пікірлерде тұрып қалғандарға жауап беріңіз. Курс тегін, ал сіздің жауабыңыз — оған ең жақсы алғыс.",
+		"ru": "Далось легко? Ответьте в комментариях тем, кто застрял. Курс бесплатный, и ваш ответ — лучшая благодарность за него.",
+		"en": "Came easily? Answer somebody stuck in the comments below. The course is free, and your answer is the best thanks it can get.",
+	},
+
 	// ---- courses: admin ----
 	"course.admin_title": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.admin_intro": {

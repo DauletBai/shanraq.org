@@ -54,6 +54,10 @@ func templateFuncs() template.FuncMap {
 		// labels are read by people.
 		"inc": func(i int) int { return i + 1 },
 		"mul": func(a, b int) int { return a * b },
+		"sub": func(a, b int) int { return a - b },
+		// Fills the {n} of a counted label. Not printf: the same string is read
+		// by the browser, where a %d would be a stray placeholder in the markup.
+		"count": func(s string, n int) string { return strings.ReplaceAll(s, "{n}", strconv.Itoa(n)) },
 		// A cover that is a drawing rather than a photograph. The hero prints a
 		// headline across the picture, and a diagram's own labels fight it.
 		"isvector": func(s string) bool { return strings.HasSuffix(strings.ToLower(s), ".svg") },

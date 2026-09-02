@@ -952,6 +952,22 @@
       var busy = go.getAttribute('data-busy');
       var idle = go.textContent;
 
+      // Once the machine is done, the controls go rather than sit there greyed:
+      // a disabled button invites clicking, and there is nothing left to click.
+      function stop() {
+        var row = box.querySelector('.chk__row');
+        if (row) row.remove();
+        ta.readOnly = true;
+      }
+
+      function add(cls, text) {
+        if (!text) return;
+        var p = document.createElement('p');
+        p.className = 'chk__note ' + cls;
+        p.textContent = text;
+        out.appendChild(p);
+      }
+
       function show(cls, head, text) {
         out.textContent = '';
         var p = document.createElement('p');
@@ -976,7 +992,7 @@
           method: 'POST', body: body, credentials: 'same-origin',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function (r) { return r.json(); }).then(function (d) {
-          if (d.error) { show('chk__note--bad', '', d.error); return; }
+          if (d.error) { show('chk__note--bad', '', d.error); stop(); return; }
           show(d.passed ? 'chk__note--ok' : '', d.passed ? go.getAttribute('data-ok') : go.getAttribute('data-no'), d.note);
           if (d.passed) {
             var h = box.querySelector('.chk__h');
@@ -986,6 +1002,19 @@
               s.textContent = go.getAttribute('data-mark') || '';
               h.appendChild(s);
             }
+            add('chk__note--ok', go.getAttribute('data-help'));
+            stop();
+            return;
+          }
+          // Three checks and then a person. The count is shown before the next
+          // one is spent, and when it runs out the box says where to go rather
+          // than simply going quiet.
+          if (d.left > 0) {
+            var l = box.querySelector('.chk__left');
+            if (l) l.textContent = (go.getAttribute('data-left') || '').replace('{n}', d.left);
+          } else {
+            add('chk__note--bad', go.getAttribute('data-spent'));
+            stop();
           }
         }).catch(function () {
           show('chk__note--bad', '', go.getAttribute('data-fail') || '');

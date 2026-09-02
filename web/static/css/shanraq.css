@@ -3815,3 +3815,8 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
 .chk__note--ok { border-left-color: var(--teal); }
 .chk__note--bad { border-left-color: var(--gold); }
 .chk__note b { color: var(--ink); }
+
+/* The count of checks left sits beside the button, not under it: a limit read
+   after the click is a trap, and one read at the click is information. */
+.chk__row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.chk__left { color: var(--muted); font-size: .85rem; }
