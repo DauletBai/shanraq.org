@@ -57,6 +57,20 @@ def poly(points, cls):
     return f'<polygon class="{cls}" points="{d}"/>'
 
 
+def slab(u, z, half_u, half_side, h, top, left, right):
+    """A block that can be wider along the road than across it."""
+    x, y = at(u, 0.0)
+    x -= half_u
+    y -= half_side
+    w, d = half_u * 2, half_side * 2
+    p = lambda dx, dy, dz: iso(x + dx, y + dy, z + dz)
+    return "".join([
+        poly([p(0, 0, h), p(w, 0, h), p(w, d, h), p(0, d, h)], top),
+        poly([p(0, d, 0), p(w, d, 0), p(w, d, h), p(0, d, h)], right),
+        poly([p(w, 0, 0), p(w, d, 0), p(w, d, h), p(w, 0, h)], left),
+    ])
+
+
 def block(u, z, half, h, top, left, right, side=0.0):
     """A cube centred on the road at u, standing on height z."""
     x, y = at(u, side)
@@ -414,6 +428,49 @@ def map06(s):
     return "".join(parts)
 
 
+def map07(s):
+    """Lesson: a byte is not a letter.
+
+    Seven letters, and the wide ones cost two bytes where the narrow ones cost
+    one. The widths are the argument: a row of equal boxes would illustrate the
+    opposite of what the lesson says.
+    """
+    parts = []
+    # G o (space) т і л і — the Latin half one byte each, the Kazakh half two.
+    letters = [("G", 1), ("o", 1), ("␣", 1), ("т", 2), ("і", 2), ("л", 2), ("і", 2)]
+    unit, gap, top = 0.62, 0.16, 1.0
+    total = sum(n * unit * 2 for _, n in letters) + gap * (len(letters) - 1)
+    u = -total / 2
+    offset = 0
+    marks = []
+    for ch, n in letters:
+        halfu = n * unit
+        centre = u + halfu
+        wide = n == 2
+        parts.append(slab(centre, 0, halfu, 0.62, top,
+                          "rt" if wide else "t", "rl" if wide else "l", "rr" if wide else "r"))
+        parts.append(text(centre, top, ch, "lbl-acc" if wide else "lbl", dy=4.0))
+        marks.append((centre, offset))
+        offset += n
+        u += halfu * 2 + gap
+    parts.insert(0, ground(-total / 2 - 0.6, total / 2 + 0.6, -0.9, 0.9, "g"))
+
+    # The byte offset under each letter: the number range hands back, and the
+    # reason it jumps by two. Below the blocks, not behind them — set level with
+    # the row it belongs to, half of them disappeared behind the fronts.
+    offsets_at = clear_below(0, 0.62, gap_px=14)
+    for centre, off in marks:
+        parts.append(text(centre, offsets_at, str(off), "mono"))
+
+    line_up = clear_above(top, 0.62)
+    line_dn = offsets_at - 0.62
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -614,6 +671,19 @@ L06 = {
     ),
 }
 
+L07 = {
+    "kz": dict(alt="Жеті әріп, он бір байт: латын әрпі бір, қазақ әрпі екі байт",
+               head="«Go тілі» — ЖЕТІ ӘРІП", head_sub="len(\"Go тілі\") = 11",
+               foot="БАЙТ ≠ ӘРІП", foot_sub="astyndagy sandar — байт ығысуы"),
+    "ru": dict(alt="Семь букв, одиннадцать байт: латинская буква один, казахская два",
+               head="«Go тілі» — СЕМЬ БУКВ", head_sub="len(\"Go тілі\") = 11",
+               foot="БАЙТ ≠ БУКВА", foot_sub="числа под буквами — смещение в байтах"),
+    "en": dict(alt="Seven letters, eleven bytes: a Latin letter costs one, a Kazakh letter two",
+               head="\"Go тілі\" — SEVEN LETTERS", head_sub="len(\"Go тілі\") = 11",
+               foot="A BYTE IS NOT A LETTER", foot_sub="the numbers below are byte offsets"),
+}
+L07["kz"]["foot_sub"] = "әріп астындағы сандар — байт ығысуы"
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -623,7 +693,8 @@ if __name__ == "__main__":
                                ("types", map03, L03),
                                ("functions", map04, L04),
                                ("launch", map05, L05),
-                               ("loops", map06, L06)):
+                               ("loops", map06, L06),
+                               ("bytes", map07, L07)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

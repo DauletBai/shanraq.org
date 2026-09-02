@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-566.0 8.5 1131.9 266.6" width="1132" height="267" role="img" aria-label="Seven letters, eleven bytes: a Latin letter costs one, a Kazakh letter two"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-519.96" y1="117.80" x2="-519.96" y2="186.20"/><line class="g" x1="-447.56" y1="117.80" x2="-447.56" y2="186.20"/><line class="g" x1="-375.16" y1="117.80" x2="-375.16" y2="186.20"/><line class="g" x1="-302.76" y1="117.80" x2="-302.76" y2="186.20"/><line class="g" x1="-230.36" y1="117.80" x2="-230.36" y2="186.20"/><line class="g" x1="-157.96" y1="117.80" x2="-157.96" y2="186.20"/><line class="g" x1="-85.56" y1="117.80" x2="-85.56" y2="186.20"/><line class="g" x1="-13.16" y1="117.80" x2="-13.16" y2="186.20"/><line class="g" x1="59.24" y1="117.80" x2="59.24" y2="186.20"/><line class="g" x1="131.64" y1="117.80" x2="131.64" y2="186.20"/><line class="g" x1="204.04" y1="117.80" x2="204.04" y2="186.20"/><line class="g" x1="276.44" y1="117.80" x2="276.44" y2="186.20"/><line class="g" x1="348.84" y1="117.80" x2="348.84" y2="186.20"/><line class="g" x1="421.23" y1="117.80" x2="421.23" y2="186.20"/><line class="g" x1="493.63" y1="117.80" x2="493.63" y2="186.20"/><line class="g" x1="-519.96" y1="117.80" x2="519.96" y2="117.80"/><line class="g" x1="-519.96" y1="159.60" x2="519.96" y2="159.60"/><line class="g" x1="-519.96" y1="201.40" x2="519.96" y2="201.40"/><polygon class="t" points="-439.66,90.44 -398.86,114.00 -439.66,137.56 -480.47,114.00"/><polygon class="r" points="-480.47,152.00 -439.66,175.56 -439.66,137.56 -480.47,114.00"/><polygon class="l" points="-398.86,152.00 -439.66,175.56 -439.66,137.56 -398.86,114.00"/><text class="lbl" x="-439.66" y="118.00">G</text><polygon class="t" points="-347.52,90.44 -306.71,114.00 -347.52,137.56 -388.33,114.00"/><polygon class="r" points="-388.33,152.00 -347.52,175.56 -347.52,137.56 -388.33,114.00"/><polygon class="l" points="-306.71,152.00 -347.52,175.56 -347.52,137.56 -306.71,114.00"/><text class="lbl" x="-347.52" y="118.00">o</text><polygon class="t" points="-255.37,90.44 -214.57,114.00 -255.37,137.56 -296.18,114.00"/><polygon class="r" points="-296.18,152.00 -255.37,175.56 -255.37,137.56 -296.18,114.00"/><polygon class="l" points="-214.57,152.00 -255.37,175.56 -255.37,137.56 -214.57,114.00"/><text class="lbl" x="-255.37" y="118.00">␣</text><polygon class="rt" points="-142.82,78.66 -61.21,125.78 -102.02,149.34 -183.63,102.22"/><polygon class="rr" points="-183.63,140.22 -102.02,187.34 -102.02,149.34 -183.63,102.22"/><polygon class="rl" points="-61.21,163.78 -102.02,187.34 -102.02,149.34 -61.21,125.78"/><text class="lbl-acc" x="-122.42" y="118.00">т</text><polygon class="rt" points="30.93,78.66 112.55,125.78 71.74,149.34 -9.87,102.22"/><polygon class="rr" points="-9.87,140.22 71.74,187.34 71.74,149.34 -9.87,102.22"/><polygon class="rl" points="112.55,163.78 71.74,187.34 71.74,149.34 112.55,125.78"/><text class="lbl-acc" x="51.34" y="118.00">і</text><polygon class="rt" points="204.69,78.66 286.31,125.78 245.50,149.34 163.89,102.22"/><polygon class="rr" points="163.89,140.22 245.50,187.34 245.50,149.34 163.89,102.22"/><polygon class="rl" points="286.31,163.78 245.50,187.34 245.50,149.34 286.31,125.78"/><text class="lbl-acc" x="225.10" y="118.00">л</text><polygon class="rt" points="378.45,78.66 460.07,125.78 419.26,149.34 337.65,102.22"/><polygon class="rr" points="337.65,140.22 419.26,187.34 419.26,149.34 337.65,102.22"/><polygon class="rl" points="460.07,163.78 419.26,187.34 419.26,149.34 460.07,125.78"/><text class="lbl-acc" x="398.86" y="118.00">і</text><text class="mono" x="-439.66" y="189.56">0</text><text class="mono" x="-347.52" y="189.56">1</text><text class="mono" x="-255.37" y="189.56">2</text><text class="mono" x="-122.42" y="189.56">3</text><text class="mono" x="51.34" y="189.56">5</text><text class="mono" x="225.10" y="189.56">7</text><text class="mono" x="398.86" y="189.56">9</text><text class="cap" x="0.00" y="54.48">"Go тілі" — SEVEN LETTERS</text><text class="mono" x="0.00" y="70.44">len("Go тілі") = 11</text><text class="cap" x="0.00" y="213.12">A BYTE IS NOT A LETTER</text><text class="mono" x="0.00" y="229.08">the numbers below are byte offsets</text></svg>
