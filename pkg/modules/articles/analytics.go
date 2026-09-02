@@ -473,9 +473,16 @@ func (mt *Metrics) Flush(ctx context.Context) {
 func (mt *Metrics) giveBack(unsent []metricDelta) {
 	mt.mu.Lock()
 	defer mt.mu.Unlock()
-	for _, e := range unsent {
+	for i, e := range unsent {
 		if len(mt.buf) >= metricsBufMax {
-			mt.dropped += int64(len(unsent))
+			// What is lost is the counts still ahead, not the number of entries
+			// in the batch — and not the ones already put back. Counting rows
+			// instead of the tallies inside them made this figure wrong by
+			// whatever the buffered hits happened to be worth, exactly during
+			// the outage the figure exists to measure.
+			for _, rest := range unsent[i:] {
+				mt.dropped += rest.n
+			}
 			mt.log.Warn("analytics buffer full, counts dropped",
 				zap.Int64("dropped_total", mt.dropped))
 			return

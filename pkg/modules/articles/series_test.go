@@ -150,3 +150,40 @@ func seriesSlug(t *testing.T, st *SeriesStore, id uuid.UUID) string {
 	}
 	return s.Slug
 }
+
+// A draft course must not announce itself through a lesson that went live.
+// The strip and the link on an article page come from ForArticle, which found
+// every course a lesson belonged to and asked nothing about its status — so a
+// course kept back deliberately was published by its own first lesson.
+func TestDraftSeriesStaysOffPublishedLesson(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	author := app.createUser("series-draft@example.com", "Passw0rd!x")
+	st := NewSeriesStore(app.pool)
+	ctx := context.Background()
+
+	sid, err := st.Save(ctx, nil, "hidden-"+uuid.NewString()[:6], "", SeriesDraft,
+		map[string]string{LangRU: "Черновой курс"}, map[string]string{})
+	if err != nil {
+		t.Fatalf("Save: %v", err)
+	}
+	lesson, _ := app.seedArticle(author, "published")
+	mustAttach(t, st, sid, lesson, 10)
+
+	places, err := st.ForArticle(ctx, lesson, LangRU)
+	if err != nil {
+		t.Fatalf("ForArticle: %v", err)
+	}
+	if len(places) != 0 {
+		t.Fatalf("черновой курс виден на опубликованном уроке: %d", len(places))
+	}
+
+	// And it appears the moment the course itself is published.
+	if _, err := st.Save(ctx, &sid, seriesSlug(t, st, sid), "", SeriesPublished,
+		map[string]string{LangRU: "Черновой курс"}, map[string]string{}); err != nil {
+		t.Fatalf("publish: %v", err)
+	}
+	if places, err = st.ForArticle(ctx, lesson, LangRU); err != nil || len(places) != 1 {
+		t.Fatalf("опубликованный курс не виден: %d, %v", len(places), err)
+	}
+}

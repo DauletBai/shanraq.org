@@ -251,10 +251,15 @@ func (st *SeriesStore) items(ctx context.Context, seriesID uuid.UUID, lang strin
 // to a draft, and a gap in the middle of a course under construction would
 // otherwise dead-end them.
 func (st *SeriesStore) ForArticle(ctx context.Context, articleID uuid.UUID, lang string) ([]*SeriesPlace, error) {
+	// Published courses only. A draft course is meant to be reachable by its own
+	// link and nowhere else, but a lesson of it that went live carried the strip
+	// and the link out onto a public page — so the course announced itself
+	// through the very article that was supposed to be independent of it.
 	rows, err := st.db.Query(ctx,
 		`SELECT `+seriesCols+` FROM article_series s
 		 JOIN article_series_items i ON i.series_id = s.id
-		 WHERE i.article_id = $1 ORDER BY s.created_at`, articleID)
+		 WHERE i.article_id = $1 AND s.status = $2 ORDER BY s.created_at`,
+		articleID, SeriesPublished)
 	if err != nil {
 		return nil, err
 	}

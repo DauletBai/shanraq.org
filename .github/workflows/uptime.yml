@@ -56,8 +56,16 @@ jobs:
           days=$(echo | openssl s_client -servername shanraq.org -connect shanraq.org:443 2>/dev/null \
                  | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2 \
                  | { read -r d; expiry=$(date -d "$d" +%s 2>/dev/null || echo 0); \
-                     [ "$expiry" = 0 ] && echo 99 || echo $(( (expiry - $(date +%s)) / 86400 )); })
+                     echo $(( expiry == 0 ? -1 : (expiry - $(date +%s)) / 86400 )); })
           echo "tls expires in ${days}d"
+          # A date that could not be read is not a healthy certificate, it is an
+          # unanswered question. Standing in 99 days for it turned every failure
+          # to reach or parse the certificate into a green check — the one
+          # outcome a monitor must never produce.
+          if [ "$days" -lt 0 ]; then
+            echo "::error::could not read the TLS expiry date"
+            exit 1
+          fi
           if [ "$days" -lt 10 ]; then
             echo "::error::TLS certificate expires in ${days} days"
             fail="$fail tls(${days}d)"

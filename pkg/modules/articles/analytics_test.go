@@ -431,3 +431,20 @@ func TestAxisTopHugsTheData(t *testing.T) {
 		}
 	}
 }
+
+// The dropped counter has one job: to be right about how much was lost while
+// the database was unreachable. It counted rows in the batch — including ones
+// already handed back — instead of the tallies still ahead of it.
+func TestGiveBackCountsLostTallies(t *testing.T) {
+	mt := &Metrics{log: zap.NewNop(), buf: map[metricKey]int64{}, slots: map[slotKey]int64{}}
+	for i := 0; i < metricsBufMax; i++ {
+		mt.buf[metricKey{metricPage, string(rune('a'+i%26)) + string(rune('a'+i/26)), true}] = 1
+	}
+	mt.giveBack([]metricDelta{
+		{k: metricKey{metricPage, "home", true}, n: 7},
+		{k: metricKey{metricPage, "article", true}, n: 11},
+	})
+	if got := mt.Dropped(); got != 18 {
+		t.Errorf("Dropped() = %d, хотели 18 (7+11), а не число строк", got)
+	}
+}

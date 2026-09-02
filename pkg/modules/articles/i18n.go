@@ -2252,10 +2252,15 @@ var messages = map[string]map[string]string{
 	"course.time_n":    {"kz": "Оқу уақыты", "ru": "Время чтения", "en": "Reading time"},
 	"course.min":       {"kz": "мин", "ru": "мин", "en": "min"},
 	"course.start":     {"kz": "Бірінші сабақтан бастау", "ru": "Начать с первого урока", "en": "Start with lesson one"},
+	// Says what is true today and nothing else. It used to promise progress
+	// marks and a letter when the next lesson lands: there is no course-progress
+	// table, no lesson-completion route, no marking interface and no link
+	// between an account and course notifications. A promise on a page is a
+	// claim, not a plan — the same mistake that had to be undone on /pricing.
 	"course.free": {
-		"kz": "Барлық сабақ ашық. Тіркелу тек өткен сабақтарды белгілеу мен жаңа сабақ туралы хабарлама үшін керек.",
-		"ru": "Все уроки открыты. Регистрация нужна только для отметок о пройденном и письма о новом уроке.",
-		"en": "Every lesson is open. Signing up only adds progress marks and a note when the next lesson lands.",
+		"kz": "Барлық сабақ ашық: оқу үшін тіркелудің қажеті жоқ.",
+		"ru": "Все уроки открыты: регистрация для чтения не нужна.",
+		"en": "Every lesson is open: reading needs no account.",
 	},
 	// "Урок 3 из 40" on a lesson page.
 	"course.pos_fmt": {"kz": "%d-сабақ (барлығы %d)", "ru": "Урок %d из %d", "en": "Lesson %d of %d"},
