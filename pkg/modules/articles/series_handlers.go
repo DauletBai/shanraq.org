@@ -28,6 +28,8 @@ type CoursePage struct {
 	Items   []*SeriesItem
 	Lessons int
 	Minutes int
+	// Done is how many of them this reader has passed; zero for a visitor.
+	Done int
 }
 
 // handleCourses serves /courses.
@@ -82,6 +84,26 @@ func (m *Module) handleCourse(w http.ResponseWriter, r *http.Request) {
 	for _, it := range s.Items {
 		if it.Published {
 			page.Items = append(page.Items, it)
+		}
+	}
+
+	// A reader who is signed in sees which lessons they have already been
+	// through. Marked by the exercise being accepted, not by the page having
+	// been opened: the map should show what was done, not what was visited.
+	if uid, ok := m.authorID(r); ok && len(page.Items) > 0 {
+		ids := make([]uuid.UUID, 0, len(page.Items))
+		for _, it := range page.Items {
+			ids = append(ids, it.ArticleID)
+		}
+		if done, err := m.progress.PassedIn(r.Context(), uid, ids); err == nil {
+			for _, it := range page.Items {
+				it.Passed = done[it.ArticleID]
+				if it.Passed {
+					page.Done++
+				}
+			}
+		} else {
+			m.rt.Logger.Warn("course progress", zap.Error(err))
 		}
 	}
 	m.render(w, "course", page)

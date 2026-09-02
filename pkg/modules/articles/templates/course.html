@@ -14,6 +14,8 @@
       <span class="metaic">{{ icon "list" }}{{ t .Lang "course.lessons_n" }}: <b>{{ .Lessons }}</b></span>
       {{ if gt .Minutes 0 }}<span class="dot">·</span>
       <span class="metaic">{{ icon "clock" }}{{ t .Lang "course.time_n" }}: <b>{{ .Minutes }}</b> {{ t .Lang "course.min" }}</span>{{ end }}
+      {{ if gt .Done 0 }}<span class="dot">·</span>
+      <span class="metaic">{{ icon "list" }}{{ t .Lang "course.done_n" }}: <b>{{ .Done }}</b></span>{{ end }}
     </p>
 
     {{/* The promise the reader most needs at the door. The course earns its
@@ -37,7 +39,9 @@
     <li class="lesson">
       <span class="lesson__no" aria-hidden="true">{{ inc $i }}</span>
       <div class="lesson__body">
-        <h2 class="lesson__h"><a href="/read/{{ $it.Slug }}?lang={{ $.Lang }}">{{ $it.Title }}</a></h2>
+        <h2 class="lesson__h"><a href="/read/{{ $it.Slug }}?lang={{ $.Lang }}">{{ $it.Title }}</a>
+          {{ if $it.Passed }}<span class="chk__badge">{{ t $.Lang "chk.done_mark" }}</span>{{ end }}
+        </h2>
         {{ with $it.Summary }}<p class="lesson__sum">{{ . }}</p>{{ end }}
         {{ if gt $it.Minutes 0 }}<p class="lesson__meta">{{ icon "clock" }}{{ $it.Minutes }} {{ t $.Lang "course.min" }}</p>{{ end }}
       </div>

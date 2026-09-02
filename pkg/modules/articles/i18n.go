@@ -2250,6 +2250,7 @@ var messages = map[string]map[string]string{
 	},
 	"course.lessons_n": {"kz": "Сабақтар", "ru": "Уроков", "en": "Lessons"},
 	"course.time_n":    {"kz": "Оқу уақыты", "ru": "Время чтения", "en": "Reading time"},
+	"course.done_n":    {"kz": "Өткеніңіз", "ru": "Пройдено вами", "en": "You have passed"},
 	"course.min":       {"kz": "мин", "ru": "мин", "en": "min"},
 	"course.start":     {"kz": "Бірінші сабақтан бастау", "ru": "Начать с первого урока", "en": "Start with lesson one"},
 	// Says what is true today and nothing else. It used to promise progress

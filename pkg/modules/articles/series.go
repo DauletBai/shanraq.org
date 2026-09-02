@@ -53,6 +53,9 @@ type SeriesItem struct {
 	Summary   string
 	Minutes   int
 	Published bool
+	// Passed is set only for a signed-in reader, and only on the course map:
+	// whether they have had this lesson's exercise accepted.
+	Passed bool
 }
 
 // TitleIn returns the course title in the reader's language, falling back to any
