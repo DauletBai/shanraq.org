@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"go/format"
+	"html/template"
 	"regexp"
 	"strings"
 	"time"
@@ -194,4 +196,46 @@ func parseCheckVerdict(raw string) (CheckVerdict, error) {
 		return CheckVerdict{}, fmt.Errorf("verdict: empty note")
 	}
 	return v, nil
+}
+
+// formatSolution runs the reader's code through gofmt.
+//
+// The standard library's own formatter, not an imitation: the reader sees
+// exactly what their editor does to the same text, which is the point. A
+// beginner has not learned the indentation rules yet and should not be spending
+// attention on them while learning what a function is.
+//
+// It doubles as a free syntax check. Code that will not parse cannot be
+// reviewed, and refusing it here costs nothing — the parser is local, the
+// reviewer is a paid call — so a missing brace is answered instantly instead of
+// spending one of three attempts on a verdict the reader could have got from
+// their own editor.
+func formatSolution(src string) (string, error) {
+	out, err := format.Source([]byte(src))
+	if err != nil {
+		return "", err
+	}
+	return string(out), nil
+}
+
+// syntaxHint turns a parser error into something a beginner can act on. Go's
+// own message names the file it never had; the line and the complaint are what
+// help.
+func syntaxHint(err error) string {
+	s := err.Error()
+	if i := strings.Index(s, ".go:"); i >= 0 {
+		s = s[i+4:]
+	}
+	return strings.TrimSpace(s)
+}
+
+// highlightGo renders code the way the lessons render theirs — through the same
+// Markdown pipeline, so the colours in the box and the colours in the lesson
+// are the same colours, and follow the same light/dark switch.
+//
+// The markup is produced by our own renderer from the reader's own text, and
+// Chroma escapes every token it emits; it is also only ever shown back to the
+// person who typed it.
+func highlightGo(code string) template.HTML {
+	return RenderMarkdown("```go\n" + code + "\n```")
 }

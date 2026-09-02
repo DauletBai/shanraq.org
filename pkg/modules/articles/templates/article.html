@@ -206,9 +206,14 @@
                   data-ok="{{ t .Lang "chk.passed" }}" data-no="{{ t .Lang "chk.again" }}"
                   data-mark="{{ t .Lang "chk.done_mark" }}" data-fail="{{ t .Lang "chk.failed" }}"
                   data-spent="{{ t .Lang "chk.spent" }}" data-help="{{ t .Lang "chk.help" }}"
-                  data-left="{{ t .Lang "chk.left" }}">{{ t .Lang "chk.submit" }}</button>
+                  data-left="{{ t .Lang "chk.left" }}" data-tidied="{{ t .Lang "chk.tidied" }}">{{ t .Lang "chk.submit" }}</button>
+          <button type="button" class="btn btn--ghost chk__fmt">{{ t .Lang "chk.format" }}</button>
           <span class="chk__left">{{ count (t .Lang "chk.left") $left }}</span>
         </p>
+        {{/* The tidied code, coloured the way the lesson colours its own. Shown
+             rather than merely applied: the layout rules are learned by watching
+             them happen to your own text. */}}
+        <div class="chk__pretty" hidden></div>
         {{ end }}
         <div class="chk__out" role="status" aria-live="polite">
           {{ with .Progress.Note }}

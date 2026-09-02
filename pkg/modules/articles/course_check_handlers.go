@@ -35,6 +35,14 @@ const maxSolution = 8000
 type checkResponse struct {
 	Passed bool   `json:"passed"`
 	Note   string `json:"note"`
+	// Code is the submission after gofmt, and HTML the same thing coloured. The
+	// reader gets their own text back tidied: the layout rules are learned by
+	// watching them applied, not by being told about them.
+	Code string `json:"code,omitempty"`
+	HTML string `json:"html,omitempty"`
+	// Syntax is a parse error. It is answered separately from a review because
+	// it is not one, and because it must not cost an attempt.
+	Syntax string `json:"syntax,omitempty"`
 	// Left is how many checks of this exercise remain. The reader is told before
 	// spending one, not after: a limit nobody can see is a trap.
 	Left  int    `json:"left"`
@@ -82,6 +90,19 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 		reply(http.StatusRequestEntityTooLarge, checkResponse{Error: T(lang, "chk.too_long")})
 		return
 	}
+
+	// Tidy first, and refuse code that will not parse before anything is spent
+	// on it. A missing brace is not something to ask a reviewer about, and the
+	// reader's own editor would have said so — which is the lesson here.
+	formatted, ferr := formatSolution(solution)
+	if ferr != nil {
+		reply(http.StatusUnprocessableEntity, checkResponse{
+			Syntax: syntaxHint(ferr),
+			Error:  T(lang, "chk.syntax"),
+		})
+		return
+	}
+	solution = formatted
 
 	// Both limits are read before the model is called, not after: the point of a
 	// limit is what it prevents, and a refusal that has already paid prevents
@@ -143,5 +164,49 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 	if v.Passed || left < 0 {
 		left = 0
 	}
-	reply(http.StatusOK, checkResponse{Passed: v.Passed, Note: v.Note, Left: left})
+	reply(http.StatusOK, checkResponse{
+		Passed: v.Passed, Note: v.Note, Left: left,
+		Code: solution, HTML: string(highlightGo(solution)),
+	})
+}
+
+// handleCourseFormat tidies a submission and hands it back coloured, without
+// asking the reviewer anything.
+//
+// Separate from the check on purpose: formatting is local, instant and free, so
+// a reader may lean on it as often as they like. Tying it to the three attempts
+// would have taught them to avoid the very tool the lesson wants them using.
+func (m *Module) handleCourseFormat(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	lang := m.resolveLang(w, r)
+	reply := func(code int, res checkResponse) {
+		w.WriteHeader(code)
+		_ = json.NewEncoder(w).Encode(res)
+	}
+	if _, ok := m.authorID(r); !ok {
+		reply(http.StatusUnauthorized, checkResponse{Error: T(lang, "chk.login")})
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		reply(http.StatusBadRequest, checkResponse{Error: T(lang, "chk.bad")})
+		return
+	}
+	src := unfence(r.FormValue("solution"))
+	if src == "" {
+		reply(http.StatusBadRequest, checkResponse{Error: T(lang, "chk.empty")})
+		return
+	}
+	if len(src) > maxSolution {
+		reply(http.StatusRequestEntityTooLarge, checkResponse{Error: T(lang, "chk.too_long")})
+		return
+	}
+	out, err := formatSolution(src)
+	if err != nil {
+		reply(http.StatusUnprocessableEntity, checkResponse{
+			Syntax: syntaxHint(err),
+			Error:  T(lang, "chk.syntax"),
+		})
+		return
+	}
+	reply(http.StatusOK, checkResponse{Code: out, HTML: string(highlightGo(out))})
 }

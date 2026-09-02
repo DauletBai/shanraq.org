@@ -981,18 +981,58 @@
         out.appendChild(p);
       }
 
+      var fmt = box.querySelector('.chk__fmt');
+      var pretty = box.querySelector('.chk__pretty');
+
+      // The tidied code is painted from markup the server built with the same
+      // renderer the lessons use — Chroma escapes every token it emits, and the
+      // only person who ever sees it is the one who typed it.
+      function paint(d) {
+        if (!pretty || !d.html) return;
+        pretty.innerHTML = d.html;
+        pretty.hidden = false;
+      }
+
+      function post(path, code) {
+        var body = new URLSearchParams();
+        body.set('solution', code);
+        return fetch('/read/' + encodeURIComponent(slug) + '/' + path, {
+          method: 'POST', body: body, credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(function (r) { return r.json(); });
+      }
+
+      // Tidying is local, instant and free, so it is a button of its own and
+      // does not touch the three attempts. A reader who had to spend one to see
+      // their indentation fixed would learn to avoid the tool.
+      if (fmt) {
+        fmt.addEventListener('click', function () {
+          var code = (ta.value || '').trim();
+          if (!code) { ta.focus(); return; }
+          fmt.disabled = true;
+          post('format', code).then(function (d) {
+            if (d.syntax) { show('chk__note--bad', '', d.error + ' ' + d.syntax); return; }
+            if (d.error) { show('chk__note--bad', '', d.error); return; }
+            ta.value = d.code;
+            paint(d);
+            show('', '', go.getAttribute('data-tidied') || '');
+          }).catch(function () {
+            show('chk__note--bad', '', go.getAttribute('data-fail') || '');
+          }).then(function () { fmt.disabled = false; });
+        });
+      }
+
       go.addEventListener('click', function () {
         var code = (ta.value || '').trim();
         if (!code) { ta.focus(); return; }
         go.disabled = true;
         go.textContent = busy;
-        var body = new URLSearchParams();
-        body.set('solution', code);
-        fetch('/read/' + encodeURIComponent(slug) + '/check', {
-          method: 'POST', body: body, credentials: 'same-origin',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }).then(function (r) { return r.json(); }).then(function (d) {
+        post('check', code).then(function (d) {
+          // Code that will not parse never reached the reviewer, so no attempt
+          // was spent and the controls stay.
+          if (d.syntax) { show('chk__note--bad', '', d.error + ' ' + d.syntax); return; }
           if (d.error) { show('chk__note--bad', '', d.error); stop(); return; }
+          if (d.code) { ta.value = d.code; paint(d); }
           show(d.passed ? 'chk__note--ok' : '', d.passed ? go.getAttribute('data-ok') : go.getAttribute('data-no'), d.note);
           if (d.passed) {
             var h = box.querySelector('.chk__h');

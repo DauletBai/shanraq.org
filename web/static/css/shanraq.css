@@ -3820,3 +3820,9 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
    after the click is a trap, and one read at the click is information. */
 .chk__row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .chk__left { color: var(--muted); font-size: .85rem; }
+
+/* The tidied submission, shown under the box. Same panel and same token colours
+   as a code block in the lesson, because it is the same renderer — a reader
+   should recognise their own code as the thing the lesson has been showing. */
+.chk__pretty { margin-top: 12px; }
+.chk__pretty pre { margin: 0; }

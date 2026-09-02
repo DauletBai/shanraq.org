@@ -2270,10 +2270,13 @@ var messages = map[string]map[string]string{
 
 	// ---- checking a lesson exercise ----
 	"chk.title": {"kz": "Тапсырманы тексеру", "ru": "Проверить задание", "en": "Check your exercise"},
+	// Says where the work belongs before it says what the box does. The box is
+	// the last step, not the place to write code in: an editor corrects you
+	// while you type and costs nothing, and there are only three checks.
 	"chk.hint": {
-		"kz": "Шешіміңізді осында қойыңыз. Тексеретін — модель: ол қатені атап көрсетеді, бірақ дайын жауапты бермейді.",
-		"ru": "Вставьте своё решение. Проверяет модель: она укажет на ошибку, но не даст готовый ответ.",
-		"en": "Paste your solution. A model reads it: it will point at the mistake but will not hand you the answer.",
+		"kz": "Алдымен VS Code-та шешіп, іске қосыңыз — редактор қатені сол жерде көрсетеді. Дайын шешімді осында қойыңыз. Тексеретін — модель: ол қатені атап көрсетеді, бірақ дайын жауапты бермейді.",
+		"ru": "Сначала решите и запустите в VS Code — редактор покажет ошибку на месте. Готовое решение вставьте сюда. Проверяет модель: она укажет на ошибку, но не даст готовый ответ.",
+		"en": "Solve it and run it in VS Code first — the editor shows the mistake where you made it. Paste the finished solution here. A model reads it: it will point at the mistake but will not hand you the answer.",
 	},
 	"chk.submit":    {"kz": "Тексеру", "ru": "Проверить", "en": "Check"},
 	"chk.checking":  {"kz": "Тексерілуде…", "ru": "Проверяю…", "en": "Checking…"},
@@ -2295,7 +2298,18 @@ var messages = map[string]map[string]string{
 	// {n} rather than %d: this line is also handed to the browser, and a page
 	// carrying a printf verb is a page with an unrendered placeholder in it —
 	// which is exactly what one of the tests refuses to allow.
-	"chk.left": {"kz": "Қалған тексеру: {n}", "ru": "Осталось проверок: {n}", "en": "Checks left: {n}"},
+	"chk.left":   {"kz": "Қалған тексеру: {n}", "ru": "Осталось проверок: {n}", "en": "Checks left: {n}"},
+	"chk.format": {"kz": "Оформдеу", "ru": "Оформить", "en": "Tidy up"},
+	"chk.syntax": {
+		"kz": "Бұл кодты Go оқи алмады, сондықтан тексеруге жіберілмеді — әрекет те жұмсалмады. Төмендегі жолды қараңыз: әдетте жабылмаған жақша не үтір.",
+		"ru": "Такой код Go прочитать не смог, поэтому на проверку он не пошёл — и попытка не потрачена. Посмотрите строку ниже: обычно это незакрытая скобка или запятая.",
+		"en": "Go could not read this, so it was not sent for review — and no attempt was spent. Look at the line below: usually it is an unclosed bracket or a comma.",
+	},
+	"chk.tidied": {
+		"kz": "Код gofmt арқылы өтті — редакторыңыз да дәл солай істейді. Шегіністерді қолмен түзеудің қажеті жоқ.",
+		"ru": "Код прошёл через gofmt — ровно то же делает ваш редактор. Отступы руками поправлять не нужно.",
+		"en": "The code went through gofmt — exactly what your editor does. Indentation is not something to fix by hand.",
+	},
 	"chk.spent": {
 		"kz": "Осы тапсырма бойынша тексеру бітті. Сабақты қайта оқып шығыңыз — жауап әдетте сонда тұрады. Болмаса, төменде пікір қалдырыңыз: не істегеніңізді және не шықпағанын жазыңыз, түсіндіреміз.",
 		"ru": "Проверки по этому заданию закончились. Перечитайте урок — ответ обычно лежит там. Если не помогло, напишите в комментариях ниже: что сделали и что не сходится, — разберём.",
