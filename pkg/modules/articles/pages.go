@@ -12,7 +12,7 @@ var staticPages = map[string]map[string]staticPageContent{
 		"ru": {Title: "О нас", Body: `Shanraq.org — независимая площадка, где любой человек может писать и публиковать статьи на казахском, русском и английском языках. Мы верим, что доступ к информации и право высказываться — основа развития общества.
 
 ## Наша миссия
-Дать голос не только профессиональным журналистам, но и обычным людям: врачам, учителям, предпринимателям, студентам. Автор сам пишет версии на казахском, русском и английском. Платформа сверяет их между собой: числа, ссылки, заголовки и абзацы должны совпадать, и о расхождении она предупреждает.
+Дать голос не только профессиональным журналистам, но и обычным людям: врачам, учителям, предпринимателям, студентам. Автор пишет на одном языке — платформа переводит на два других, а он проверяет перевод и правит, если нужно. Затем она сверяет версии между собой: числа, ссылки, заголовки и абзацы должны совпадать, и о расхождении она предупреждает.
 
 ## Наши принципы
 - **Проверяемость.** Мы за факты, которые можно проверить, а не за громкие лозунги.
@@ -23,7 +23,7 @@ Shanraq.org — это дом, где сходятся свободные гол
 		"kz": {Title: "Біз туралы", Body: `Shanraq.org — кез келген адам қазақ, орыс және ағылшын тілдерінде мақала жазып, жариялай алатын тәуелсіз алаң. Ақпаратқа қолжетімділік пен пікір білдіру құқығы қоғам дамуының негізі деп сенеміз.
 
 ## Біздің миссиямыз
-Кәсіби журналистерге ғана емес, қарапайым адамдарға — дәрігерлерге, мұғалімдерге, кәсіпкерлерге, студенттерге — дауыс беру. Автор қазақ, орыс және ағылшын тіліндегі нұсқаларды өзі жазады. Платформа оларды бір-бірімен салыстырады: сандар, сілтемелер, тақырыптар мен абзацтар сәйкес келуге тиіс, айырма болса ескертеді.
+Кәсіби журналистерге ғана емес, қарапайым адамдарға — дәрігерлерге, мұғалімдерге, кәсіпкерлерге, студенттерге — дауыс беру. Автор бір тілде жазады — платформа қалған екеуіне аударады, ал ол аударманы тексеріп, керек болса түзетеді. Содан кейін нұсқаларды бір-бірімен салыстырады: сандар, сілтемелер, тақырыптар мен абзацтар сәйкес келуге тиіс, айырма болса ескертеді.
 
 ## Біздің ұстанымдарымыз
 - **Тексерілетіндік.** Айқайлаған ұрандар емес, тексеруге болатын фактілер.
@@ -34,7 +34,7 @@ Shanraq.org — еркін дауыстар тоғысатын үй.`},
 		"en": {Title: "About us", Body: `Shanraq.org is an independent platform where anyone can write and publish articles in Kazakh, Russian, and English. We believe that access to information and the right to speak are the foundation of a thriving society.
 
 ## Our mission
-To give a voice not only to professional journalists but to ordinary people — doctors, teachers, entrepreneurs, students. Authors write the Kazakh, Russian and English versions themselves. The platform compares them: numbers, links, headings and paragraphs must match, and it warns when they do not.
+To give a voice not only to professional journalists but to ordinary people — doctors, teachers, entrepreneurs, students. An author writes in one language; the platform translates it into the other two, and the author checks that translation and corrects it where needed. It then compares the versions: numbers, links, headings and paragraphs must match, and it warns when they do not.
 
 ## Our principles
 - **Verifiability.** We stand for facts that can be checked, not loud slogans.
