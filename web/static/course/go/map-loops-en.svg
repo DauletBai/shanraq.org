@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-487.0 -34.5 974.0 339.2" width="974" height="339" role="img" aria-label="One word, for, in three shapes: counter, condition and endless"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-440.98" y1="95.00" x2="-440.98" y2="209.00"/><line class="g" x1="-368.58" y1="95.00" x2="-368.58" y2="209.00"/><line class="g" x1="-296.18" y1="95.00" x2="-296.18" y2="209.00"/><line class="g" x1="-223.78" y1="95.00" x2="-223.78" y2="209.00"/><line class="g" x1="-151.38" y1="95.00" x2="-151.38" y2="209.00"/><line class="g" x1="-78.98" y1="95.00" x2="-78.98" y2="209.00"/><line class="g" x1="-6.58" y1="95.00" x2="-6.58" y2="209.00"/><line class="g" x1="65.82" y1="95.00" x2="65.82" y2="209.00"/><line class="g" x1="138.22" y1="95.00" x2="138.22" y2="209.00"/><line class="g" x1="210.62" y1="95.00" x2="210.62" y2="209.00"/><line class="g" x1="283.02" y1="95.00" x2="283.02" y2="209.00"/><line class="g" x1="355.42" y1="95.00" x2="355.42" y2="209.00"/><line class="g" x1="427.82" y1="95.00" x2="427.82" y2="209.00"/><line class="g" x1="-440.98" y1="95.00" x2="440.98" y2="95.00"/><line class="g" x1="-440.98" y1="136.80" x2="440.98" y2="136.80"/><line class="g" x1="-440.98" y1="178.60" x2="440.98" y2="178.60"/><line class="g" x1="-440.98" y1="220.40" x2="440.98" y2="220.40"/><polygon class="t" points="-329.09,47.50 -223.78,108.30 -329.09,169.10 -434.40,108.30"/><polygon class="r" points="-434.40,152.00 -329.09,212.80 -329.09,169.10 -434.40,108.30"/><polygon class="l" points="-223.78,152.00 -329.09,212.80 -329.09,169.10 -223.78,108.30"/><text class="lbl" x="-329.09" y="106.30">COUNTER</text><text class="sub" x="-329.09" y="119.30">for i := 1; i &lt;= 3; i++</text><polygon class="t" points="0.00,47.50 105.31,108.30 0.00,169.10 -105.31,108.30"/><polygon class="r" points="-105.31,152.00 0.00,212.80 0.00,169.10 -105.31,108.30"/><polygon class="l" points="105.31,152.00 0.00,212.80 0.00,169.10 105.31,108.30"/><text class="lbl" x="0.00" y="106.30">CONDITION</text><text class="sub" x="0.00" y="119.30">for words &lt; 600</text><polygon class="t" points="329.09,47.50 434.40,108.30 329.09,169.10 223.78,108.30"/><polygon class="r" points="223.78,152.00 329.09,212.80 329.09,169.10 223.78,108.30"/><polygon class="l" points="434.40,152.00 329.09,212.80 329.09,169.10 434.40,108.30"/><text class="lbl" x="329.09" y="106.30">ENDLESS</text><text class="sub" x="329.09" y="119.30">for { … break }</text><polygon class="band-flow" points="-217.20,112.01 -111.89,112.01 -111.89,143.93 -217.20,143.93"/><polygon class="band-flow" points="111.89,112.01 217.20,112.01 217.20,143.93 111.89,143.93"/><text class="cap" x="0.00" y="11.54">ONE WORD, THREE SHAPES</text><text class="mono" x="0.00" y="27.50">the only loop in Go is for</text><text class="cap" x="0.00" y="242.80">GO HAS NONE OF THESE</text><text class="mono" x="0.00" y="258.76">while · do-while · foreach</text></svg>

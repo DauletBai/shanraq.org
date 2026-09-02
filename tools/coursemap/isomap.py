@@ -388,6 +388,32 @@ def map05(s):
     return "".join(parts)
 
 
+def map06(s):
+    """Lesson: one loop word, three shapes.
+
+    Three blocks rather than a list, because the point is that they are the same
+    word wearing different clothes — and the caption underneath names the three
+    keywords Go does not have, which is what the reader is really being told.
+    """
+    parts = [ground(-6.7, 6.7, -1.5, 1.5, "g")]
+
+    half, top = 1.6, 1.15
+    seats = (-5.0, 0.0, 5.0)
+    for u, k in zip(seats, ("f1", "f2", "f3")):
+        parts.append(block(u, 0, half, top, "t", "l", "r"))
+        parts.append(on_face(u, top, s[k], s[k + "_sub"]))
+    for a, b in ((-3.3, -1.7), (1.7, 3.3)):
+        parts.append(road(a, b, top * 0.55, 0.42, "band-flow"))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -561,6 +587,33 @@ L05 = {
                foot="FIVE ARE PUBLISHED", foot_sub="the rest as they are written"),
 }
 
+L06 = {
+    "kz": dict(
+        alt="Бір for сөзі, үш түрлі пішін: санауыш, шарт және шексіз",
+        f1="САНАУЫШ", f1_sub="for i := 1; i <= 3; i++",
+        f2="ШАРТ", f2_sub="for words < 600",
+        f3="ШЕКСІЗ", f3_sub="for { … break }",
+        head="БІР СӨЗ, ҮШ ПІШІН", head_sub="Go-дағы жалғыз цикл — for",
+        foot="GO-ДА БҰЛАР ЖОҚ", foot_sub="while · do-while · foreach",
+    ),
+    "ru": dict(
+        alt="Одно слово for, три формы: счётчик, условие и бесконечный",
+        f1="СЧЁТЧИК", f1_sub="for i := 1; i <= 3; i++",
+        f2="УСЛОВИЕ", f2_sub="for words < 600",
+        f3="БЕЗ УСЛОВИЯ", f3_sub="for { … break }",
+        head="ОДНО СЛОВО, ТРИ ФОРМЫ", head_sub="единственный цикл в Go — for",
+        foot="В GO ИХ НЕТ", foot_sub="while · do-while · foreach",
+    ),
+    "en": dict(
+        alt="One word, for, in three shapes: counter, condition and endless",
+        f1="COUNTER", f1_sub="for i := 1; i <= 3; i++",
+        f2="CONDITION", f2_sub="for words < 600",
+        f3="ENDLESS", f3_sub="for { … break }",
+        head="ONE WORD, THREE SHAPES", head_sub="the only loop in Go is for",
+        foot="GO HAS NONE OF THESE", foot_sub="while · do-while · foreach",
+    ),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -569,7 +622,8 @@ if __name__ == "__main__":
                                ("workspace", map02, L02),
                                ("types", map03, L03),
                                ("functions", map04, L04),
-                               ("launch", map05, L05)):
+                               ("launch", map05, L05),
+                               ("loops", map06, L06)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
