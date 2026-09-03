@@ -282,7 +282,7 @@ func (m *Module) latestNews(r *http.Request, lang string, n int) []FeedItem {
 		name, aiAuthor := authorDisplay(a)
 		out = append(out, FeedItem{
 			Slug: a.Slug, Title: tr.Title, AuthorName: name, AuthorID: a.AuthorID.String(), AIAuthor: aiAuthor,
-			ServedLang: served, Category: a.Category, CoverURL: a.CoverURL,
+			ServedLang: served, Category: a.Category, CoverURL: a.CoverIn(served),
 		})
 	}
 	return out
@@ -446,7 +446,7 @@ func feedItems(arts []*Article, lang string) []FeedItem {
 			ServedLang:     served,
 			Category:       a.Category,
 			Subcategory:    a.Subcategory,
-			CoverURL:       a.CoverURL,
+			CoverURL:       a.CoverIn(served),
 			Published:      a.PublishedAt,
 			Views:          a.ViewsCount,
 			Score:          a.Score,
@@ -662,11 +662,16 @@ type ArticlePage struct {
 	Predictions []*Prediction
 	PredScore   PredictionScore
 
-	// The lesson's exercise, and what this reader has done with it. Present
-	// only on a lesson that sets one and only for a signed-in reader: the check
-	// costs a model call, so it is not offered to somebody who cannot be
-	// counted, rate-limited, or told apart from a script.
+	// The lesson's exercise, and what this reader has done with it. Present on
+	// every lesson that sets one -- including for a reader who cannot use it
+	// yet. The check costs a model call, so only a signed-in reader may submit
+	// (CheckReady); everyone else is told why in CheckWhy rather than shown
+	// nothing at all, because a box that is simply absent cannot tell a visitor
+	// that the course checks their work.
 	HasExercise bool
+	CheckReady  bool
+	CheckWhy    string
+	CheckLogin  bool
 	Progress    Progress
 
 	// Courses this article is a lesson in. Usually none, at most one; the slice
@@ -735,7 +740,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.Slug = a.Slug
 	page.Category = a.Category
 	page.Subcategory = a.Subcategory
-	page.CoverURL = a.CoverURL
+	page.CoverURL = a.CoverIn(served)
 	page.Title = tr.Title
 	page.Summary = tr.Summary
 	page.AuthorName, page.AIAuthor = authorDisplay(a)
@@ -824,12 +829,23 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Warn("article series", zap.Error(err))
 	}
 
-	// The check box appears only where there is something to check and someone
-	// to check it for.
-	if uid, ok := m.authorID(r); ok && lessonExercise(tr.BodyMD) != "" && m.ai != nil && m.ai.Enabled() {
+	// The check box appears wherever there is something to check, and says why
+	// it cannot be used when it cannot. Hiding it from a signed-out reader hid
+	// the feature from exactly the people it is meant to bring in.
+	if lessonExercise(tr.BodyMD) != "" {
 		page.HasExercise = true
-		if pr, err := m.progress.Get(r.Context(), uid, a.ID); err == nil {
-			page.Progress = pr
+		uid, signedIn := m.authorID(r)
+		switch {
+		case m.ai == nil || !m.ai.Enabled():
+			page.CheckWhy = T(page.Lang, "chk.off")
+		case !signedIn:
+			page.CheckWhy = T(page.Lang, "chk.login")
+			page.CheckLogin = true
+		default:
+			page.CheckReady = true
+			if pr, err := m.progress.Get(r.Context(), uid, a.ID); err == nil {
+				page.Progress = pr
+			}
 		}
 	}
 

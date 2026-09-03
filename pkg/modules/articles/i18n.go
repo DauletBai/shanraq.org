@@ -2287,7 +2287,7 @@ var messages = map[string]map[string]string{
 	"chk.submit":    {"kz": "Тексеру", "ru": "Проверить", "en": "Check"},
 	"chk.checking":  {"kz": "Тексерілуде…", "ru": "Проверяю…", "en": "Checking…"},
 	"chk.passed":    {"kz": "Тапсырма қабылданды", "ru": "Задание принято", "en": "Exercise accepted"},
-	"chk.again":     {"kz": "Әзірге болмады", "ru": "Пока не сходится", "en": "Not yet"},
+	"chk.again":     {"kz": "Әзірге дұрыс емес", "ru": "Пока не сходится", "en": "Not yet"},
 	"chk.done_mark": {"kz": "өтілді", "ru": "пройдено", "en": "passed"},
 	"chk.login":     {"kz": "Тексеру үшін кіру керек.", "ru": "Чтобы проверить, нужно войти.", "en": "Sign in to have it checked."},
 	"chk.off":       {"kz": "Тексеру уақытша қолжетімсіз.", "ru": "Проверка временно недоступна.", "en": "Checking is unavailable right now."},
@@ -2304,12 +2304,12 @@ var messages = map[string]map[string]string{
 	// {n} rather than %d: this line is also handed to the browser, and a page
 	// carrying a printf verb is a page with an unrendered placeholder in it —
 	// which is exactly what one of the tests refuses to allow.
-	"chk.left":   {"kz": "Қалған тексеру: {n}", "ru": "Осталось проверок: {n}", "en": "Checks left: {n}"},
-	"chk.format": {"kz": "Оформдеу", "ru": "Оформить", "en": "Tidy up"},
+	"chk.left":   {"kz": "Қалған тексеру саны: {n}", "ru": "Осталось проверок: {n}", "en": "Checks left: {n}"},
+	"chk.format": {"kz": "Пішімдеу", "ru": "Форматировать", "en": "Tidy up"},
 	"chk.syntax": {
-		"kz": "Бұл кодты Go оқи алмады, сондықтан тексеруге жіберілмеді — әрекет те жұмсалмады. Төмендегі жолды қараңыз: әдетте жабылмаған жақша не үтір.",
-		"ru": "Такой код Go прочитать не смог, поэтому на проверку он не пошёл — и попытка не потрачена. Посмотрите строку ниже: обычно это незакрытая скобка или запятая.",
-		"en": "Go could not read this, so it was not sent for review — and no attempt was spent. Look at the line below: usually it is an unclosed bracket or a comma.",
+		"kz": "Бұл — синтаксис тексерісі: мұндай кодты Go оқи алмады, сондықтан талдауға жіберілмеді, тексеру мүмкіндігі де есептен алынбады. Төмендегі жолды қараңыз: әдетте жабылмаған жақша не үтір.",
+		"ru": "Это проверка синтаксиса: такой код Go прочитать не смог, поэтому на разбор он не пошёл, и попытка не потрачена. Посмотрите строку ниже: обычно это незакрытая скобка или запятая.",
+		"en": "This is a syntax check: Go could not read the code, so it was not sent for review, and no attempt was spent. Look at the line below: usually it is an unclosed bracket or a comma.",
 	},
 	"chk.tidied": {
 		"kz": "Код gofmt арқылы өтті — редакторыңыз да дәл солай істейді. Шегіністерді қолмен түзеудің қажеті жоқ.",

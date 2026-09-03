@@ -196,6 +196,12 @@
           {{ if .Progress.Passed }}<span class="chk__badge">{{ t .Lang "chk.done_mark" }}</span>{{ end }}
         </h2>
         <p class="chk__hint">{{ t .Lang "chk.hint" }}</p>
+        {{ if not .CheckReady }}
+        {{/* Why the form is not here, instead of no form and no reason. */}}
+        <p class="chk__note">{{ .CheckWhy }}
+          {{ if .CheckLogin }}<a href="/studio/login">{{ t .Lang "header.login" }}</a>{{ end }}
+        </p>
+        {{ else }}
         <textarea class="input chk__code" rows="10" spellcheck="false"
                   aria-label="{{ t .Lang "chk.title" }}">{{ .Progress.Solution }}</textarea>
         {{ $left := sub 3 .Progress.Attempts }}{{ if lt $left 0 }}{{ $left = 0 }}{{ end }}
@@ -230,6 +236,7 @@
           <p class="chk__note chk__note--bad">{{ t .Lang "chk.spent" }}</p>
           {{ end }}
         </div>
+        {{ end }}
       </section>
       {{ end }}
 
