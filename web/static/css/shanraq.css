@@ -3853,9 +3853,31 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
 .chk__note--bad { border-left-color: var(--gold); }
 .chk__note b { color: var(--ink); }
 
+/* The answers a lesson hides until they are asked for. A disclosure rather
+   than a script: it works before the stylesheet loads, a keyboard reaches it
+   without help, and print can force it open. The marker is the browser's own —
+   a custom triangle is one more thing to get wrong in two themes. */
+.fold { margin: 0 0 20px; }
+.fold__s { cursor: pointer; display: inline-block; padding: 8px 14px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--surface-2); color: var(--ink-soft);
+  font-size: .92rem; font-weight: 600; }
+.fold__s:hover { color: var(--ink); border-color: var(--line-strong); }
+.fold__s:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.fold[open] .fold__s { margin-bottom: 8px; }
+.fold__b { border-left: 3px solid var(--line); padding-left: 16px; }
+/* On paper there is nothing to click, so the answers are simply there. */
+@media print {
+  .fold__b { display: block !important; border-left: 0; padding-left: 0; }
+  .fold__s { display: none; }
+}
+
 /* The count of checks left sits beside the button, not under it: a limit read
    after the click is a trap, and one read at the click is information. */
 .chk__row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+/* The appeal sits on a row of its own and not in .chk__row: the script removes
+   that row when the attempts run out, and the appeal has to outlive it. */
+.chk__appealrow { margin: 12px 0 0; }
 .chk__left { color: var(--muted); font-size: .85rem; }
 
 /* The tidied submission, shown under the box. Same panel and same token colours

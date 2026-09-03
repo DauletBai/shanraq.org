@@ -119,7 +119,54 @@ func RenderMarkdownTOC(source string) (template.HTML, []TOCItem) {
 	for _, it := range toc {
 		out = strings.Replace(out, "<h2>", `<h2 id="`+it.ID+`">`, 1)
 	}
-	return template.HTML(deferImages(wrapTables(out))), toc //nolint:gosec // goldmark configured without raw HTML
+	return template.HTML(foldAnswers(deferImages(wrapTables(out)))), toc //nolint:gosec // goldmark configured without raw HTML
+}
+
+// answersHead matches a lesson's answers heading, which the course writes with
+// the same three words in every lesson.
+var answersHead = regexp.MustCompile(`<h2 id="sec-\d+">(Ответы|Жауаптар|Answers)</h2>`)
+
+// foldShow is the label on the fold, by the language the heading is written in.
+var foldShow = map[string]string{
+	"Ответы":   "Показать ответы",
+	"Жауаптар": "Жауаптарды көрсету",
+	"Answers":  "Show the answers",
+}
+
+// foldAnswers hides a lesson's answers behind a disclosure.
+//
+// The course asks three questions and answers them at the bottom of the same
+// page. Read straight through, the answers arrive before the reader has tried
+// to produce one, and recall that costs nothing teaches nothing. A <details>
+// puts the effort back: the answer is one click away, but the click is a
+// decision the reader makes.
+//
+// Only lessons are folded -- the guard is an exercise heading in the same
+// document -- so an ordinary article with a section called "Ответы" is left
+// alone. The heading itself stays outside the fold: it carries the table of
+// contents anchor, and a link into a closed disclosure would land nowhere.
+func foldAnswers(html string) string {
+	if !strings.Contains(html, ">Задание</h2>") &&
+		!strings.Contains(html, ">Тапсырма</h2>") &&
+		!strings.Contains(html, ">Exercise</h2>") {
+		return html
+	}
+	loc := answersHead.FindStringSubmatchIndex(html)
+	if loc == nil {
+		return html
+	}
+	head := html[loc[0]:loc[1]]
+	word := html[loc[2]:loc[3]]
+	body := html[loc[1]:]
+	// The fold ends where the next section begins; the sources block below the
+	// answers is a section of its own and stays visible.
+	if i := strings.Index(body, "<h2"); i >= 0 {
+		body = body[:i]
+	}
+	folded := head + `<details class="fold"><summary class="fold__s">` +
+		template.HTMLEscapeString(foldShow[word]) + `</summary><div class="fold__b">` +
+		body + `</div></details>`
+	return html[:loc[0]] + folded + html[loc[1]+len(body):]
 }
 
 // stripInline removes inline Markdown emphasis/link markup from a heading so the
