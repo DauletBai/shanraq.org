@@ -2321,6 +2321,24 @@ var messages = map[string]map[string]string{
 		"ru": "Проверки по этому заданию закончились. Перечитайте урок — ответ обычно лежит там. Если не помогло, напишите в комментариях ниже: что сделали и что не сходится, — разберём.",
 		"en": "You have used the checks for this exercise. Read the lesson again — the answer is usually in it. If that does not help, write in the comments below: what you did and what will not come out, and we will work through it.",
 	},
+	// A wrong verdict costs the reader nothing but the click. Asking them to
+	// argue their case would put the burden on the person least equipped to
+	// carry it, so the wording asks for nothing and simply gives the check back.
+	"chk.appeal": {
+		"kz": "Тексеру қателесті ме?",
+		"ru": "Проверка ошиблась?",
+		"en": "Was the check wrong?",
+	},
+	"chk.appeal_done": {
+		"kz": "Бір тексеру қайтарылды. Не дұрыс емес екенін төмендегі пікірлерде жазып қалдырыңыз — қарап шығамыз.",
+		"ru": "Одна проверка возвращена. Напишите в комментариях ниже, что не так, — мы посмотрим.",
+		"en": "One check has been returned. Write in the comments below what went wrong and we will look at it.",
+	},
+	"chk.appeal_used": {
+		"kz": "Бір тапсырма бойынша тексеру бір рет қана қайтарылады.",
+		"ru": "По одному заданию проверку возвращают один раз.",
+		"en": "A check is returned once per exercise.",
+	},
 	"chk.help": {
 		"kz": "Оңай болды ма? Төмендегі пікірлерде тұрып қалғандарға жауап беріңіз. Курс тегін, ал сіздің жауабыңыз — оған ең жақсы алғыс.",
 		"ru": "Далось легко? Ответьте в комментариях тем, кто застрял. Курс бесплатный, и ваш ответ — лучшая благодарность за него.",

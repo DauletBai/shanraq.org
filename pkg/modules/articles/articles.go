@@ -237,6 +237,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Post("/read/{slug}/done", m.handleReadDone)
 		r.Post("/read/{slug}/check", m.handleCourseCheck)
 		r.Post("/read/{slug}/format", m.handleCourseFormat)
+		r.Post("/read/{slug}/appeal", m.handleCourseAppeal)
 		r.Get("/author/{id}", m.handleAuthor)
 		r.Get("/predictions", m.handlePredictions)
 		r.Get("/courses", m.handleCourses)

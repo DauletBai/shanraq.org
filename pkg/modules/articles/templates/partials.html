@@ -1022,6 +1022,27 @@
         });
       }
 
+      // The appeal: one attempt back when the reviewer was wrong. The page is
+      // reloaded rather than patched, because the controls may have been taken
+      // away when the attempts ran out — and the reader's own code comes back
+      // with it, since the server keeps the last solution.
+      var appealRow = box.querySelector('.chk__appealrow');
+      var appeal = box.querySelector('.chk__appeal');
+      if (appeal) {
+        appeal.addEventListener('click', function () {
+          appeal.disabled = true;
+          fetch('/read/' + encodeURIComponent(slug) + '/appeal', {
+            method: 'POST', credentials: 'same-origin'
+          }).then(function (r) { return r.json(); }).then(function (d) {
+            if (d.error) { show('chk__note--bad', '', d.error); return; }
+            window.location.reload();
+          }).catch(function () {
+            show('chk__note--bad', '', go.getAttribute('data-fail') || '');
+            appeal.disabled = false;
+          });
+        });
+      }
+
       go.addEventListener('click', function () {
         var code = (ta.value || '').trim();
         if (!code) { ta.focus(); return; }
@@ -1049,6 +1070,7 @@
           // Three checks and then a person. The count is shown before the next
           // one is spent, and when it runs out the box says where to go rather
           // than simply going quiet.
+          if (appealRow) appealRow.hidden = false;
           if (d.left > 0) {
             var l = box.querySelector('.chk__left');
             if (l) l.textContent = (go.getAttribute('data-left') || '').replace('{n}', d.left);

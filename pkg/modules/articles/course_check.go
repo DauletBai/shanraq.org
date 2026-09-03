@@ -38,6 +38,11 @@ type Progress struct {
 	Note     string
 	Solution string
 	Updated  time.Time
+
+	// Appealed records that this reader has already had an attempt back on this
+	// exercise. Once per lesson: enough to undo a wrong verdict, not enough to
+	// turn three checks into an unlimited supply.
+	Appealed bool
 }
 
 // ProgressStore keeps per-reader lesson progress.
@@ -51,9 +56,9 @@ func NewProgressStore(db *pgxpool.Pool) *ProgressStore { return &ProgressStore{d
 func (st *ProgressStore) Get(ctx context.Context, user, article uuid.UUID) (Progress, error) {
 	var p Progress
 	err := st.db.QueryRow(ctx, `
-		SELECT passed, attempts, note, solution, updated_at
+		SELECT passed, attempts, note, solution, updated_at, appealed
 		FROM course_progress WHERE user_id = $1 AND article_id = $2`, user, article).
-		Scan(&p.Passed, &p.Attempts, &p.Note, &p.Solution, &p.Updated)
+		Scan(&p.Passed, &p.Attempts, &p.Note, &p.Solution, &p.Updated, &p.Appealed)
 	if err != nil {
 		return Progress{}, nil
 	}
@@ -74,6 +79,24 @@ func (st *ProgressStore) Record(ctx context.Context, user, article uuid.UUID, v 
 			updated_at = now()`,
 		user, article, v.Passed, v.Note, solution)
 	return err
+}
+
+// Appeal gives one attempt back on a lesson whose verdict the reader says was
+// wrong, and returns how many they have left. The false result means there was
+// nothing to give: the lesson is already passed, no attempt has been spent, or
+// this reader has appealed here before.
+func (st *ProgressStore) Appeal(ctx context.Context, user, article uuid.UUID) (int, bool, error) {
+	var attempts int
+	err := st.db.QueryRow(ctx, `
+		UPDATE course_progress
+		   SET attempts = attempts - 1, appealed = true, updated_at = now()
+		 WHERE user_id = $1 AND article_id = $2
+		   AND NOT appealed AND NOT passed AND attempts > 0
+		RETURNING attempts`, user, article).Scan(&attempts)
+	if err != nil {
+		return 0, false, nil
+	}
+	return attempts, true, nil
 }
 
 // PassedIn returns the article ids of a course this reader has passed.

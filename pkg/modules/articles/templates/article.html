@@ -236,6 +236,13 @@
           <p class="chk__note chk__note--bad">{{ t .Lang "chk.spent" }}</p>
           {{ end }}
         </div>
+        {{/* A verdict can be wrong, and three checks is too few for a wrong one
+             to cost a third of them. Once per exercise, no case to argue. */}}
+        {{ if and (not .Progress.Passed) (not .Progress.Appealed) }}
+        <p class="chk__appealrow"{{ if eq .Progress.Attempts 0 }} hidden{{ end }}>
+          <button type="button" class="btn btn--ghost chk__appeal">{{ t .Lang "chk.appeal" }}</button>
+        </p>
+        {{ end }}
         {{ end }}
       </section>
       {{ end }}

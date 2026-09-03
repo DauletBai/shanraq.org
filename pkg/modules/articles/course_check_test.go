@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/url"
@@ -199,5 +200,52 @@ func TestLessonExerciseStopsAtOptional(t *testing.T) {
 		if !strings.Contains(got, "count") {
 			t.Errorf("%s: обязательная часть потерялась: %q", lang, got)
 		}
+	}
+}
+
+// The appeal end to end: a spent attempt comes back once, and only once.
+func TestCourseAppealReturnsOneAttempt(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	author := app.createUser("appeal@t.test", "Parol12345")
+	app.exec(`UPDATE auth_users SET email_verified_at = now() WHERE lower(email) = 'appeal@t.test'`)
+	cookie := app.login("appeal@t.test", "Parol12345")
+	id, slug := app.seedArticle(author, "published")
+
+	// Two attempts spent on this lesson, neither of them accepted.
+	app.exec(`INSERT INTO course_progress (user_id, article_id, passed, attempts, note, solution)
+	          VALUES ($1, $2, false, 2, 'не сходится', 'package main')`, author, id)
+
+	appeal := func() (int, checkResponse) {
+		w := app.do(http.MethodPost, "/read/"+slug+"/appeal", url.Values{}, withCookie(cookie))
+		var res checkResponse
+		_ = json.Unmarshal(w.Body.Bytes(), &res)
+		return w.Code, res
+	}
+
+	code, res := appeal()
+	if code != http.StatusOK {
+		t.Fatalf("код ответа %d: %s", code, res.Error)
+	}
+	if res.Left != 2 {
+		t.Errorf("осталось проверок %d, ждали 2", res.Left)
+	}
+	var attempts int
+	var appealed bool
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT attempts, appealed FROM course_progress WHERE user_id = $1 AND article_id = $2`,
+		author, id).Scan(&attempts, &appealed); err != nil {
+		t.Fatalf("чтение прогресса: %v", err)
+	}
+	if attempts != 1 || !appealed {
+		t.Errorf("попытки %d, апелляция %v — ждали 1 и true", attempts, appealed)
+	}
+
+	if code, _ := appeal(); code != http.StatusConflict {
+		t.Errorf("вторая апелляция дала %d, ждали 409", code)
+	}
+
+	if w := app.do(http.MethodPost, "/read/"+slug+"/appeal", url.Values{}); w.Code != http.StatusUnauthorized {
+		t.Errorf("без входа %d, ждали 401", w.Code)
 	}
 }

@@ -49,6 +49,43 @@ type checkResponse struct {
 	Error string `json:"error,omitempty"`
 }
 
+// handleCourseAppeal gives one attempt back when the reviewer got it wrong.
+//
+// No argument is demanded and none is judged: asking a beginner to prove that a
+// model was mistaken puts the burden on the person least able to carry it. The
+// appeal is once per exercise and it is recorded, so the cost of a wrong
+// verdict is one attempt to us and none to the reader -- and the log tells us
+// how often the reviewer is actually wrong.
+func (m *Module) handleCourseAppeal(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	lang := m.resolveLang(w, r)
+	reply := func(code int, res checkResponse) {
+		w.WriteHeader(code)
+		_ = json.NewEncoder(w).Encode(res)
+	}
+
+	user, ok := m.authorID(r)
+	if !ok {
+		reply(http.StatusUnauthorized, checkResponse{Error: T(lang, "chk.login")})
+		return
+	}
+	slug := chi.URLParam(r, "slug")
+	a, err := m.store.GetPublishedBySlug(r.Context(), slug)
+	if err != nil {
+		reply(http.StatusNotFound, checkResponse{Error: T(lang, "chk.no_lesson")})
+		return
+	}
+	left, done, err := m.progress.Appeal(r.Context(), user, a.ID)
+	if err != nil || !done {
+		reply(http.StatusConflict, checkResponse{Error: T(lang, "chk.appeal_used")})
+		return
+	}
+	pr, _ := m.progress.Get(r.Context(), user, a.ID)
+	m.rt.Logger.Info("course appeal",
+		zap.String("slug", slug), zap.String("user", user.String()), zap.String("verdict", pr.Note))
+	reply(http.StatusOK, checkResponse{Note: T(lang, "chk.appeal_done"), Left: maxAttempts - left})
+}
+
 // handleCourseCheck reviews a reader's solution to a lesson's exercise.
 //
 // Answers JSON because the page asks without reloading — a reader who has just
