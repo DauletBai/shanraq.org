@@ -471,6 +471,32 @@ def map07(s):
     return "".join(parts)
 
 
+def map08(s):
+    """Lesson: length is what is in it, capacity is what fits before it moves.
+
+    Three full cells and one empty one, because the whole idea is the gap
+    between the two numbers. Drawn at len == cap the picture would say nothing.
+    """
+    parts = [ground(-5.6, 5.6, -1.4, 1.4, "g")]
+
+    half, top = 1.15, 1.0
+    seats = (-3.6, -1.2, 1.2, 3.6)
+    for i, u in enumerate(seats):
+        full = i < 3
+        parts.append(block(u, 0, half, top,
+                           "gt" if full else "t", "gl" if full else "l", "gr" if full else "r"))
+        parts.append(text(u, top, s["c%d" % (i + 1)],
+                          "lbl-acc" if full else "sub", dy=4.0))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -684,6 +710,21 @@ L07 = {
 }
 L07["kz"]["foot_sub"] = "әріп астындағы сандар — байт ығысуы"
 
+L08 = {
+    "kz": dict(alt="Ұзындық үш, сыйымдылық төрт: үш ұяшық толы, біреуі бос",
+               c1="Шаңырақ", c2="Go тілі", c3="Дала", c4="бос",
+               head="len = 3 — НЕШЕУІ БАР", head_sub="titles[0] … titles[2]",
+               foot="cap = 4 — КӨШПЕЙ НЕШЕУІ СЫЯДЫ", foot_sub="append төртіншіде көшірмейді, бесіншіде көшіреді"),
+    "ru": dict(alt="Длина три, ёмкость четыре: три ячейки заняты, одна свободна",
+               c1="Шаңырақ", c2="Go тілі", c3="Дала", c4="свободно",
+               head="len = 3 — СКОЛЬКО ЛЕЖИТ", head_sub="titles[0] … titles[2]",
+               foot="cap = 4 — СКОЛЬКО ВЛЕЗЕТ БЕЗ ПЕРЕЕЗДА", foot_sub="append на четвёртом не переселяет, на пятом переселит"),
+    "en": dict(alt="Length three, capacity four: three cells taken, one free",
+               c1="Шаңырақ", c2="Go тілі", c3="Дала", c4="free",
+               head="len = 3 — WHAT IS IN IT", head_sub="titles[0] … titles[2]",
+               foot="cap = 4 — WHAT FITS BEFORE IT MOVES", foot_sub="the fourth append stays put, the fifth moves house"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -694,7 +735,8 @@ if __name__ == "__main__":
                                ("functions", map04, L04),
                                ("launch", map05, L05),
                                ("loops", map06, L06),
-                               ("bytes", map07, L07)):
+                               ("bytes", map07, L07),
+                               ("slices", map08, L08)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
