@@ -114,6 +114,14 @@ func (st *ProgressStore) AttemptsSince(ctx context.Context, user uuid.UUID, sinc
 // three languages the course is written in.
 var exerciseHeads = []string{"## Задание", "## Тапсырма", "## Exercise"}
 
+// optionalHeads mark where the exercise stops being required. Everything after
+// one of them is offered, not asked for -- and a reviewer that reads it can
+// fail a reader for skipping work the lesson itself called voluntary, spending
+// one of three attempts on it. All three languages are searched whatever the
+// lesson's own language, because the cost of a stray match is nil and the cost
+// of a missed one is a wrong verdict.
+var optionalHeads = []string{"**По желанию", "**Қалауыңызша", "**Optional"}
+
 // lessonExercise pulls the exercise out of a lesson's own text.
 //
 // The task is not stored separately on purpose: a second copy would drift from
@@ -128,6 +136,11 @@ func lessonExercise(body string) string {
 		rest := body[i+len(head):]
 		if j := strings.Index(rest, "\n## "); j >= 0 {
 			rest = rest[:j]
+		}
+		for _, opt := range optionalHeads {
+			if j := strings.Index(rest, opt); j >= 0 {
+				rest = rest[:j]
+			}
 		}
 		return strings.TrimSpace(rest)
 	}

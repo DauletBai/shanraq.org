@@ -175,3 +175,29 @@ func TestCourseFormatEndpoint(t *testing.T) {
 		}
 	})
 }
+
+// The reviewer must never see the optional half of an exercise. It reads
+// whatever it is handed as the task, so a reader who did the required part and
+// skipped the voluntary one was failed for it -- and the refusal cost one of
+// their three attempts.
+func TestLessonExerciseStopsAtOptional(t *testing.T) {
+	cases := map[string]string{
+		"ru": "## Задание\n\n**Обязательное.** Напишите count.\n\n**По желанию.**\n\n- отсортируйте ключи\n\n## Ответы\n\nтекст",
+		"kz": "## Тапсырма\n\n**Міндетті.** count жазыңыз.\n\n**Қалауыңызша.**\n\n- кілттерді сұрыптаңыз\n\n## Жауаптар\n\nмәтін",
+		"en": "## Exercise\n\n**Required.** Write count.\n\n**Optional.**\n\n- sort the keys\n\n## Answers\n\ntext",
+	}
+	for lang, body := range cases {
+		got := lessonExercise(body)
+		if got == "" {
+			t.Fatalf("%s: задание не найдено", lang)
+		}
+		for _, gone := range []string{"По желанию", "Қалауыңызша", "Optional", "сұрыптаңыз", "sort the keys", "отсортируйте"} {
+			if strings.Contains(got, gone) {
+				t.Errorf("%s: в задание попало необязательное (%q): %q", lang, gone, got)
+			}
+		}
+		if !strings.Contains(got, "count") {
+			t.Errorf("%s: обязательная часть потерялась: %q", lang, got)
+		}
+	}
+}
