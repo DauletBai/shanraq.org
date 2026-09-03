@@ -38,7 +38,7 @@ func toFeedItems(arts []*Article, lang string) []FeedItem {
 			ServedLang:     served,
 			Category:       a.Category,
 			Subcategory:    a.Subcategory,
-			CoverURL:       a.CoverURL,
+			CoverURL:       a.CoverIn(served),
 			Published:      a.PublishedAt,
 			Views:          a.ViewsCount,
 			Score:          a.Score,

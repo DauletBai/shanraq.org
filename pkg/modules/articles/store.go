@@ -416,7 +416,7 @@ func (s *Store) AuthorStats(ctx context.Context, authorID uuid.UUID) (AuthorStat
 
 func (s *Store) loadTranslations(ctx context.Context, art *Article) error {
 	rows, err := s.db.Query(ctx, `
-		SELECT lang, title, summary, body_md, source, status
+		SELECT lang, title, summary, body_md, source, status, cover_url
 		FROM article_translations WHERE article_id = $1
 	`, art.ID)
 	if err != nil {
@@ -426,7 +426,7 @@ func (s *Store) loadTranslations(ctx context.Context, art *Article) error {
 	art.Translations = map[string]*Translation{}
 	for rows.Next() {
 		var t Translation
-		if err := rows.Scan(&t.Lang, &t.Title, &t.Summary, &t.BodyMD, &t.Source, &t.Status); err != nil {
+		if err := rows.Scan(&t.Lang, &t.Title, &t.Summary, &t.BodyMD, &t.Source, &t.Status, &t.CoverURL); err != nil {
 			return err
 		}
 		tr := t

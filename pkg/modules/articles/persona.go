@@ -120,7 +120,7 @@ func (m *Module) renderAuthor(w http.ResponseWriter, r *http.Request, lang, auth
 		items = append(items, FeedItem{
 			Slug: a.Slug, Title: tr.Title, Summary: summary,
 			AuthorName: name, AuthorID: authorID, AIAuthor: isAI, ServedLang: served,
-			Category: a.Category, Subcategory: a.Subcategory, CoverURL: a.CoverURL,
+			Category: a.Category, Subcategory: a.Subcategory, CoverURL: a.CoverIn(served),
 			Published: a.PublishedAt, Views: a.ViewsCount, Score: a.Score,
 			AvailableLangs: a.AvailableLangs(),
 		})

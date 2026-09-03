@@ -77,6 +77,23 @@ type Translation struct {
 	BodyMD  string
 	Source  string // human | ai
 	Status  string // draft | pending | ready
+
+	// CoverURL overrides the article's cover for this language. Empty for
+	// almost every article: a photograph says the same thing in any language.
+	// A diagram does not, and a course lesson's map is a diagram.
+	CoverURL string
+}
+
+// CoverIn returns the picture to show a reader of lang: the language's own
+// cover when it has one, and the article's otherwise.
+func (a *Article) CoverIn(lang string) string {
+	if a == nil {
+		return ""
+	}
+	if tr, ok := a.Translations[lang]; ok && tr.CoverURL != "" {
+		return tr.CoverURL
+	}
+	return a.CoverURL
 }
 
 // Translation returns the version for lang, falling back to the original
