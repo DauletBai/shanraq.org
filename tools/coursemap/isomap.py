@@ -374,18 +374,18 @@ def map04(s):
 
 
 def map05(s):
-    """The announcement cover: five lessons stand, the road keeps going.
+    """The announcement cover: lessons stand, the road keeps going.
 
-    Five solid blocks and an empty road after them says what a sentence would
-    have to spell out — that the course is real and unfinished at once — and it
-    cannot go stale the way a number in a headline does.
+    Solid blocks and an empty road after them say what a sentence would have to
+    spell out — that the course is real and unfinished at once. The blocks are
+    deliberately unnumbered: numbered ones claimed a count, and the count was
+    wrong within a month of publishing.
     """
     parts = [ground(-7.0, 7.0, -1.4, 1.4, "g")]
 
     half, top = 0.86, 0.95
-    for i, u in enumerate((-5.6, -3.6, -1.6, 0.4, 2.4)):
+    for u in (-5.6, -3.6, -1.6, 0.4, 2.4):
         parts.append(block(u, 0, half, top, "gt", "gl", "gr"))
-        parts.append(text(u, top, str(i + 1), "tag", dy=4.0))
 
     # The road past the last block: lessons that exist as a plan, not yet as
     # pages. Drawn as a path with nothing standing on it.
@@ -590,7 +590,7 @@ L01 = {
         b1="НЕНІ ЖАУАП БЕРУ", b1_sub="http.HandleFunc",
         b2="ҚАЙДА ТЫҢДАУ", b2_sub="http.ListenAndServe",
         b3="БРАУЗЕР", b3_sub="localhost:8080",
-        run="БІР ПӘРМЕН", run_sub="go run main.go",
+        run="БІР ПӘРМЕН", run_sub="go run .",
         out="ЖАУАП", out_sub="200 · Сәлем",
     ),
     "ru": dict(
@@ -598,7 +598,7 @@ L01 = {
         b1="ЧТО ОТВЕЧАТЬ", b1_sub="http.HandleFunc",
         b2="ГДЕ СЛУШАТЬ", b2_sub="http.ListenAndServe",
         b3="БРАУЗЕР", b3_sub="localhost:8080",
-        run="ОДНА КОМАНДА", run_sub="go run main.go",
+        run="ОДНА КОМАНДА", run_sub="go run .",
         out="ОТВЕТ", out_sub="200 · Сәлем",
     ),
     "en": dict(
@@ -606,7 +606,7 @@ L01 = {
         b1="WHAT TO ANSWER", b1_sub="http.HandleFunc",
         b2="WHERE TO LISTEN", b2_sub="http.ListenAndServe",
         b3="BROWSER", b3_sub="localhost:8080",
-        run="ONE COMMAND", run_sub="go run main.go",
+        run="ONE COMMAND", run_sub="go run .",
         out="RESPONSE", out_sub="200 · Salem",
     ),
 }
@@ -699,15 +699,15 @@ L04["ru"]["in"] = "ЧТО ПРИНЕСЛИ"; L04["ru"]["in_sub"] = "a, b float64
 L04["en"]["in"] = "WHAT YOU BRING"; L04["en"]["in_sub"] = "a, b float64"
 
 L05 = {
-    "kz": dict(alt="Бес сабақ жарияланды, жол әрі қарай созылады",
-               head="ТЕГІН КУРС: GO НӨЛДЕН", head_sub="43 сабақ · тіркелусіз · үш тілде",
-               foot="БЕС САБАҚ ЖАРИЯЛАНДЫ", foot_sub="қалғаны — жазылу ретімен"),
-    "ru": dict(alt="Пять уроков опубликованы, дорога идёт дальше",
-               head="БЕСПЛАТНЫЙ КУРС: GO С НУЛЯ", head_sub="43 урока · без регистрации · три языка",
-               foot="ОПУБЛИКОВАНО ПЯТЬ", foot_sub="остальные — по мере написания"),
-    "en": dict(alt="Five lessons published, the road keeps going",
-               head="A FREE COURSE: GO FROM SCRATCH", head_sub="43 lessons · no account · three languages",
-               foot="FIVE ARE PUBLISHED", foot_sub="the rest as they are written"),
+    "kz": dict(alt="Сабақтар тұр, жол әрі қарай созылады",
+               head="ТЕГІН КУРС: GO НӨЛДЕН", head_sub="45 сабақ · тіркелусіз · үш тілде",
+               foot="ЖОЛ БАСТАЛДЫ ЖӘНЕ ӘРІ ҚАРАЙ СОЗЫЛАДЫ", foot_sub="жаңа сабақтар — жазылу ретімен"),
+    "ru": dict(alt="Уроки стоят, дорога идёт дальше",
+               head="БЕСПЛАТНЫЙ КУРС: GO С НУЛЯ", head_sub="45 уроков · без регистрации · три языка",
+               foot="ДОРОГА НАЧАТА И ИДЁТ ДАЛЬШЕ", foot_sub="новые уроки — по мере написания"),
+    "en": dict(alt="Lessons stand, and the road keeps going",
+               head="A FREE COURSE: GO FROM SCRATCH", head_sub="45 lessons · no account · three languages",
+               foot="THE ROAD IS STARTED AND KEEPS GOING", foot_sub="new lessons as they are written"),
 }
 
 L06 = {
@@ -754,15 +754,15 @@ L08 = {
     "kz": dict(alt="Ұзындық үш, сыйымдылық төрт: үш ұяшық толы, біреуі бос",
                c1="Шаңырақ", c2="Go тілі", c3="Дала", c4="бос",
                head="len = 3 — НЕШЕУІ БАР", head_sub="titles[0] … titles[2]",
-               foot="cap = 4 — КӨШПЕЙ НЕШЕУІ СЫЯДЫ", foot_sub="append төртіншіде көшірмейді, бесіншіде көшіреді"),
+               foot="cap = 4 — КӨШПЕЙ НЕШЕУІ СЫЯДЫ", foot_sub="орын жетпесе, append көшіріп, жаңа мекенжай береді"),
     "ru": dict(alt="Длина три, ёмкость четыре: три ячейки заняты, одна свободна",
                c1="Шаңырақ", c2="Go тілі", c3="Дала", c4="свободно",
                head="len = 3 — СКОЛЬКО ЛЕЖИТ", head_sub="titles[0] … titles[2]",
-               foot="cap = 4 — СКОЛЬКО ВЛЕЗЕТ БЕЗ ПЕРЕЕЗДА", foot_sub="append на четвёртом не переселяет, на пятом переселит"),
+               foot="cap = 4 — СКОЛЬКО ВЛЕЗЕТ БЕЗ ПЕРЕЕЗДА", foot_sub="места не хватило — append переселит и вернёт новый адрес"),
     "en": dict(alt="Length three, capacity four: three cells taken, one free",
                c1="Шаңырақ", c2="Go тілі", c3="Дала", c4="free",
                head="len = 3 — WHAT IS IN IT", head_sub="titles[0] … titles[2]",
-               foot="cap = 4 — WHAT FITS BEFORE IT MOVES", foot_sub="the fourth append stays put, the fifth moves house"),
+               foot="cap = 4 — WHAT FITS BEFORE IT MOVES", foot_sub="out of room, append moves it and hands back a new address"),
 }
 
 L09 = {
