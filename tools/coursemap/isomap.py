@@ -497,6 +497,46 @@ def map08(s):
     return "".join(parts)
 
 
+def map09(s):
+    """Lesson: a key hands you its value at once, and a missing key hands zero.
+
+    The palette is the one lesson 0 set: the question is red, the answer green.
+    Three keys stand over the value they open; the fourth stands over a flat
+    neutral tile with a nought on it, because a key that is not there is not an
+    error -- it is an answer nobody put anything into.
+    """
+    parts = [ground(-5.6, 5.6, -1.4, 1.4, "g")]
+
+    half, top = 1.15, 0.9
+    tile, tile_h, tile_z = 0.9, 0.45, 1.05
+    seats = (-3.6, -1.2, 1.2, 3.6)
+    vals = ("v1", "v2", "v3", "v4")
+    keys = ("k1", "k2", "k3", "k4")
+
+    # The value goes UNDER its box, not on its top face: the key tile sits over
+    # that face and hides whatever is written there. Read downwards, a column is
+    # the whole idea in three lines -- key, box, value.
+    line_val = clear_below(0, half, gap_px=16.0)
+    for i, u in enumerate(seats):
+        if i < 3:
+            parts.append(block(u, 0, half, top, "gt", "gl", "gr"))
+        else:
+            # Flat, not a cube: nothing was ever put here, and the nought under
+            # it is the whole point of the lesson's second half.
+            parts.append(block(u, 0, half, 0.16, "t", "l", "r"))
+        parts.append(block(u, tile_z, tile, tile_h, "rt", "rl", "rr"))
+        parts.append(text(u, tile_z + tile_h, s[keys[i]], "tag", dy=4.0))
+        parts.append(text(u, line_val, s[vals[i]], "lbl"))
+
+    line_up = clear_above(tile_z + tile_h, tile)
+    line_dn = clear_below(0, half, gap_px=56.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -725,6 +765,27 @@ L08 = {
                foot="cap = 4 — WHAT FITS BEFORE IT MOVES", foot_sub="the fourth append stays put, the fifth moves house"),
 }
 
+L09 = {
+    "kz": dict(alt="Үш кілт өз мәнін ашады, төртінші кілтке ештеңе салынбаған: нөл",
+               k1='"go"', k2='"веб"', k3='"дала"', k4='"музыка"',
+               v1="121", v2="30", v3="7", v4="0",
+               head="КІЛТ МӘНДІ БІРДЕН БЕРЕДІ", head_sub='views := map[string]int{…}',
+               foot="ЖОҚ КІЛТ — ҚАТЕ ЕМЕС, НӨЛ",
+               foot_sub='n, ok := views["музыка"]   // 0, false'),
+    "ru": dict(alt="Три ключа открывают своё значение, в четвёртый никто ничего не клал: ноль",
+               k1='"go"', k2='"веб"', k3='"дала"', k4='"музыка"',
+               v1="121", v2="30", v3="7", v4="0",
+               head="КЛЮЧ ОТДАЁТ ЗНАЧЕНИЕ СРАЗУ", head_sub='views := map[string]int{…}',
+               foot="КЛЮЧА НЕТ — ЭТО НЕ ОШИБКА, А НОЛЬ",
+               foot_sub='n, ok := views["музыка"]   // 0, false'),
+    "en": dict(alt="Three keys open their value, the fourth had nothing put in it: zero",
+               k1='"go"', k2='"веб"', k3='"дала"', k4='"музыка"',
+               v1="121", v2="30", v3="7", v4="0",
+               head="A KEY HANDS BACK ITS VALUE AT ONCE", head_sub='views := map[string]int{…}',
+               foot="A MISSING KEY IS NOT AN ERROR, IT IS ZERO",
+               foot_sub='n, ok := views["музыка"]   // 0, false'),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -736,7 +797,8 @@ if __name__ == "__main__":
                                ("launch", map05, L05),
                                ("loops", map06, L06),
                                ("bytes", map07, L07),
-                               ("slices", map08, L08)):
+                               ("slices", map08, L08),
+                               ("maps", map09, L09)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
