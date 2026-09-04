@@ -802,6 +802,79 @@ def map16(s):
     return "".join(parts)
 
 
+def map17(s):
+    """Lesson: two steps, not one -- add chooses, commit records.
+
+    Beginners lose files between those two commands, so the map draws them as
+    two separate journeys along one road rather than one arrow. Green is what is
+    kept forever; the middle block is the waiting room and neither one thing nor
+    the other, which is exactly how the index behaves.
+    """
+    parts = [ground(-6.0, 6.0, -1.8, 1.8, "g")]
+
+    for u0, u1, mid in ((-2.5, -1.0, -1.75), (1.0, 2.5, 1.75)):
+        parts.append(road(u0, u1, 0.55, 0.5, "band-flow"))
+        parts.append(chevron(mid, 0.57, +1, "arw-flow"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.0, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.0, 0.0, top, s["work"], s["work_sub"]))
+
+    parts.append(block(0.0, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.0, 0.0, top, s["index"], s["index_sub"], accent=True))
+
+    parts.append(block(4.0, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.0, 0.0, top, s["hist"], s["hist_sub"], accent=True))
+
+    # Above the blocks, not level with them: at block height the second label
+    # started exactly where the red block ends and read as part of it.
+    parts.append(text(-1.75, 1.75, s["cmd1"], "mono"))
+    parts.append(text(1.75, 1.75, s["cmd2"], "mono"))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=44.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
+def map18(s):
+    """Lesson: the same history, in two places, kept in step by two commands.
+
+    Not a backup and not a different thing -- the same records, one copy on the
+    desk and one on the network. push sends, pull brings back, and the two roads
+    run in opposite directions because that is the whole of it.
+    """
+    parts = [ground(-5.8, 5.8, -2.0, 2.0, "g")]
+
+    parts.append(road(-2.2, 2.2, 2.1, 0.55, "band-res"))
+    for u in (-1.5, 0.0, 1.5):
+        parts.append(chevron(u, 2.12, +1, "arw-res"))
+    parts.append(road(-2.2, 2.2, 0.35, 0.55, "band-req"))
+    for u in (-1.5, 0.0, 1.5):
+        parts.append(chevron(u, 0.37, -1, "arw-req"))
+
+    half, top = 1.45, 1.45
+    parts.append(block(-4.2, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["local"], s["local_sub"], accent=True))
+
+    parts.append(block(4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(4.2, 0.0, top, s["remote"], s["remote_sub"]))
+
+    parts.append(text(0, 2.72, s["push"], "mono"))
+    parts.append(text(0, 0.92, s["pull"], "mono"))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=44.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -1210,6 +1283,57 @@ L16 = {
                foot_sub="s.Get(…) is visible   ·   s.count() is not"),
 }
 
+L17 = {
+    "kz": dict(alt="Екі қадам: git add таңдайды, git commit жазып қояды",
+               work="жұмыс қалтасы", work_sub="файлдарды өзгертесіз",
+               index="индекс", index_sub="не сақталатыны",
+               hist="тарих", hist_sub="қайта оралуға болатын нүкте",
+               cmd1="git add", cmd2="git commit",
+               head="ЕКІ ҚАДАМ, БІРЕУ ЕМЕС", head_sub="git status — қазір қай кезеңде тұрғаныңыз",
+               foot="ТАРИХ — ҚАЙТА ОРАЛУҒА БОЛАТЫН НҮКТЕЛЕР",
+               foot_sub="git log --oneline   ·   git restore --source=HEAD~1 main.go"),
+    "ru": dict(alt="Два шага: git add выбирает, git commit записывает",
+               work="рабочая папка", work_sub="вы правите файлы",
+               index="индекс", index_sub="что попадёт в запись",
+               hist="история", hist_sub="точка, куда можно вернуться",
+               cmd1="git add", cmd2="git commit",
+               head="ДВА ШАГА, А НЕ ОДИН", head_sub="git status — на каком шаге вы сейчас",
+               foot="ИСТОРИЯ — ЭТО ТОЧКИ, В КОТОРЫЕ МОЖНО ВЕРНУТЬСЯ",
+               foot_sub="git log --oneline   ·   git restore --source=HEAD~1 main.go"),
+    "en": dict(alt="Two steps: git add chooses, git commit records",
+               work="working folder", work_sub="you edit the files",
+               index="the index", index_sub="what goes into the record",
+               hist="history", hist_sub="a point you can return to",
+               cmd1="git add", cmd2="git commit",
+               head="TWO STEPS, NOT ONE", head_sub="git status — which step you are on",
+               foot="HISTORY IS A SET OF POINTS YOU CAN RETURN TO",
+               foot_sub="git log --oneline   ·   git restore --source=HEAD~1 main.go"),
+}
+
+L18 = {
+    "kz": dict(alt="Бір тарих, екі жерде: push жібереді, pull кері әкеледі",
+               local="сіздің компьютеріңіз", local_sub=".git қалтасы",
+               remote="GitHub", remote_sub="желідегі көшірме",
+               push="git push", pull="git pull",
+               head="СОЛ ТАРИХ, ЕКІ ЖЕРДЕ", head_sub="git remote add origin … · git push -u origin main",
+               foot="БҰЛ САҚТЫҚ КӨШІРМЕ ЕМЕС — КӨРІНЕТІН ЖҰМЫС",
+               foot_sub="README.md — адам ең алдымен оқитын нәрсе"),
+    "ru": dict(alt="Одна история в двух местах: push отправляет, pull приносит обратно",
+               local="ваш компьютер", local_sub="папка .git",
+               remote="GitHub", remote_sub="копия в сети",
+               push="git push", pull="git pull",
+               head="ТА ЖЕ ИСТОРИЯ, В ДВУХ МЕСТАХ", head_sub="git remote add origin … · git push -u origin main",
+               foot="ЭТО НЕ РЕЗЕРВНАЯ КОПИЯ — ЭТО ВИДИМАЯ РАБОТА",
+               foot_sub="README.md — первое, что читает человек"),
+    "en": dict(alt="One history in two places: push sends, pull brings it back",
+               local="your computer", local_sub="the .git folder",
+               remote="GitHub", remote_sub="the copy on the network",
+               push="git push", pull="git pull",
+               head="THE SAME HISTORY, IN TWO PLACES", head_sub="git remote add origin … · git push -u origin main",
+               foot="THIS IS NOT A BACKUP — IT IS WORK PEOPLE CAN SEE",
+               foot_sub="README.md — the first thing a person reads"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1229,7 +1353,9 @@ if __name__ == "__main__":
                                ("pointers", map13, L13),
                                ("interface", map14, L14),
                                ("errors", map15, L15),
-                               ("packages", map16, L16)):
+                               ("packages", map16, L16),
+                               ("git", map17, L17),
+                               ("github", map18, L18)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-427.7 -40.2 888.4 353.2" width="888" height="353" role="img" aria-label="Одна история в двух местах: push отправляет, pull приносит обратно"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-381.74" y1="76.00" x2="-381.74" y2="228.00"/><line class="g" x1="-309.34" y1="76.00" x2="-309.34" y2="228.00"/><line class="g" x1="-236.94" y1="76.00" x2="-236.94" y2="228.00"/><line class="g" x1="-164.54" y1="76.00" x2="-164.54" y2="228.00"/><line class="g" x1="-92.15" y1="76.00" x2="-92.15" y2="228.00"/><line class="g" x1="-19.75" y1="76.00" x2="-19.75" y2="228.00"/><line class="g" x1="52.65" y1="76.00" x2="52.65" y2="228.00"/><line class="g" x1="125.05" y1="76.00" x2="125.05" y2="228.00"/><line class="g" x1="197.45" y1="76.00" x2="197.45" y2="228.00"/><line class="g" x1="269.85" y1="76.00" x2="269.85" y2="228.00"/><line class="g" x1="342.25" y1="76.00" x2="342.25" y2="228.00"/><line class="g" x1="414.65" y1="76.00" x2="414.65" y2="228.00"/><line class="g" x1="-381.74" y1="76.00" x2="381.74" y2="76.00"/><line class="g" x1="-381.74" y1="117.80" x2="381.74" y2="117.80"/><line class="g" x1="-381.74" y1="159.60" x2="381.74" y2="159.60"/><line class="g" x1="-381.74" y1="201.40" x2="381.74" y2="201.40"/><line class="g" x1="-381.74" y1="243.20" x2="381.74" y2="243.20"/><polygon class="band-res" points="-144.80,51.30 144.80,51.30 144.80,93.10 -144.80,93.10"/><polygon class="arw-res" points="-89.23,71.44 -103.00,64.60 -103.00,78.28"/><polygon class="arw-res" points="9.50,71.44 -4.28,64.60 -4.28,78.28"/><polygon class="arw-res" points="108.23,71.44 94.45,64.60 94.45,78.28"/><polygon class="band-req" points="-144.80,117.80 144.80,117.80 144.80,159.60 -144.80,159.60"/><polygon class="arw-req" points="-108.23,137.94 -94.45,131.10 -94.45,144.78"/><polygon class="arw-req" points="-9.50,137.94 4.28,131.10 4.28,144.78"/><polygon class="arw-req" points="89.23,137.94 103.00,131.10 103.00,144.78"/><polygon class="gt" points="-276.44,41.80 -181.00,96.90 -276.44,152.00 -371.87,96.90"/><polygon class="gr" points="-371.87,152.00 -276.44,207.10 -276.44,152.00 -371.87,96.90"/><polygon class="gl" points="-181.00,152.00 -276.44,207.10 -276.44,152.00 -181.00,96.90"/><text class="lbl-acc" x="-276.44" y="94.90">ваш компьютер</text><text class="sub-acc" x="-276.44" y="107.90">папка .git</text><polygon class="t" points="276.44,41.80 371.87,96.90 276.44,152.00 181.00,96.90"/><polygon class="r" points="181.00,152.00 276.44,207.10 276.44,152.00 181.00,96.90"/><polygon class="l" points="371.87,152.00 276.44,207.10 276.44,152.00 371.87,96.90"/><text class="lbl" x="276.44" y="94.90">GitHub</text><text class="sub" x="276.44" y="107.90">копия в сети</text><text class="mono" x="0.00" y="48.64">git push</text><text class="mono" x="0.00" y="117.04">git pull</text><text class="cap" x="0.00" y="5.84">ТА ЖЕ ИСТОРИЯ, В ДВУХ МЕСТАХ</text><text class="mono" x="0.00" y="21.80">git remote add origin … · git push -u origin main</text><text class="cap" x="0.00" y="251.10">ЭТО НЕ РЕЗЕРВНАЯ КОПИЯ — ЭТО ВИДИМАЯ РАБОТА</text><text class="mono" x="0.00" y="267.06">README.md — первое, что читает человек</text></svg>
