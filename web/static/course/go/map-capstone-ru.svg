@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-427.7 -47.8 888.4 408.5" width="888" height="409" role="img" aria-label="Шесть знакомых деталей собираются в одну программу"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-381.74" y1="15.20" x2="-381.74" y2="288.80"/><line class="g" x1="-309.34" y1="15.20" x2="-309.34" y2="288.80"/><line class="g" x1="-236.94" y1="15.20" x2="-236.94" y2="288.80"/><line class="g" x1="-164.54" y1="15.20" x2="-164.54" y2="288.80"/><line class="g" x1="-92.15" y1="15.20" x2="-92.15" y2="288.80"/><line class="g" x1="-19.75" y1="15.20" x2="-19.75" y2="288.80"/><line class="g" x1="52.65" y1="15.20" x2="52.65" y2="288.80"/><line class="g" x1="125.05" y1="15.20" x2="125.05" y2="288.80"/><line class="g" x1="197.45" y1="15.20" x2="197.45" y2="288.80"/><line class="g" x1="269.85" y1="15.20" x2="269.85" y2="288.80"/><line class="g" x1="342.25" y1="15.20" x2="342.25" y2="288.80"/><line class="g" x1="414.65" y1="15.20" x2="414.65" y2="288.80"/><line class="g" x1="-381.74" y1="15.20" x2="381.74" y2="15.20"/><line class="g" x1="-381.74" y1="57.00" x2="381.74" y2="57.00"/><line class="g" x1="-381.74" y1="98.80" x2="381.74" y2="98.80"/><line class="g" x1="-381.74" y1="140.60" x2="381.74" y2="140.60"/><line class="g" x1="-381.74" y1="182.40" x2="381.74" y2="182.40"/><line class="g" x1="-381.74" y1="224.20" x2="381.74" y2="224.20"/><line class="g" x1="-381.74" y1="266.00" x2="381.74" y2="266.00"/><line class="g" x1="-381.74" y1="307.80" x2="381.74" y2="307.80"/><polygon class="band-flow" points="-65.82,114.00 65.82,114.00 65.82,152.00 -65.82,152.00"/><polygon class="arw-flow" points="-29.99,132.24 -43.77,125.40 -43.77,139.08"/><polygon class="arw-flow" points="22.66,132.24 8.89,125.40 8.89,139.08"/><polygon class="t" points="-289.60,0.00 -223.78,38.00 -289.60,76.00 -355.42,38.00"/><polygon class="r" points="-355.42,53.20 -289.60,91.20 -289.60,76.00 -355.42,38.00"/><polygon class="l" points="-223.78,53.20 -289.60,91.20 -289.60,76.00 -223.78,38.00"/><text class="sub" x="-289.60" y="42.00">struct</text><polygon class="t" points="-289.60,98.80 -223.78,136.80 -289.60,174.80 -355.42,136.80"/><polygon class="r" points="-355.42,152.00 -289.60,190.00 -289.60,174.80 -355.42,136.80"/><polygon class="l" points="-223.78,152.00 -289.60,190.00 -289.60,174.80 -223.78,136.80"/><text class="sub" x="-289.60" y="140.80">slice</text><polygon class="t" points="-289.60,197.60 -223.78,235.60 -289.60,273.60 -355.42,235.60"/><polygon class="r" points="-355.42,250.80 -289.60,288.80 -289.60,273.60 -355.42,235.60"/><polygon class="l" points="-223.78,250.80 -289.60,288.80 -289.60,273.60 -223.78,235.60"/><text class="sub" x="-289.60" y="239.60">map</text><polygon class="t" points="-144.80,-0.00 -78.98,38.00 -144.80,76.00 -210.62,38.00"/><polygon class="r" points="-210.62,53.20 -144.80,91.20 -144.80,76.00 -210.62,38.00"/><polygon class="l" points="-78.98,53.20 -144.80,91.20 -144.80,76.00 -78.98,38.00"/><text class="sub" x="-144.80" y="42.00">методы</text><polygon class="t" points="-144.80,98.80 -78.98,136.80 -144.80,174.80 -210.62,136.80"/><polygon class="r" points="-210.62,152.00 -144.80,190.00 -144.80,174.80 -210.62,136.80"/><polygon class="l" points="-78.98,152.00 -144.80,190.00 -144.80,174.80 -78.98,136.80"/><text class="sub" x="-144.80" y="140.80">ошибки</text><polygon class="t" points="-144.80,197.60 -78.98,235.60 -144.80,273.60 -210.62,235.60"/><polygon class="r" points="-210.62,250.80 -144.80,288.80 -144.80,273.60 -210.62,235.60"/><polygon class="l" points="-78.98,250.80 -144.80,288.80 -144.80,273.60 -78.98,235.60"/><text class="sub" x="-144.80" y="239.60">пакеты</text><polygon class="gt" points="184.29,34.20 289.60,95.00 184.29,155.80 78.98,95.00"/><polygon class="gr" points="78.98,152.00 184.29,212.80 184.29,155.80 78.98,95.00"/><polygon class="gl" points="289.60,152.00 184.29,212.80 184.29,155.80 289.60,95.00"/><text class="lbl-acc" x="184.29" y="93.00">блокнот в консоли</text><text class="sub-acc" x="184.29" y="106.00">законченная программа</text><text class="cap" x="0.00" y="-1.76">НИЧЕГО НОВОГО — ВСЁ ЗНАКОМОЕ</text><text class="mono" x="0.00" y="14.20">add · list · find · top · del</text><text class="cap" x="0.00" y="298.80">СОБРАТЬ — ТОЖЕ УМЕНИЕ</text><text class="mono" x="0.00" y="314.76">go run .   ·   go test ./...</text></svg>

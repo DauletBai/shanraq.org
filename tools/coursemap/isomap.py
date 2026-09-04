@@ -875,6 +875,44 @@ def map18(s):
     return "".join(parts)
 
 
+def map19(s):
+    """Capstone: nothing new on the table, everything already learned.
+
+    Six tiles for six lessons and one green block for the program they make.
+    The point of the picture is that the tiles are ordinary and grey -- the
+    reader has held every one of them before, and the only new thing today is
+    that they fit together.
+    """
+    parts = [ground(-5.8, 5.8, -3.6, 3.6, "g")]
+
+    parts.append(road(-1.0, 1.0, 0.5, 0.5, "band-flow"))
+    for u in (-0.6, 0.2):
+        parts.append(chevron(u, 0.52, +1, "arw-flow"))
+
+    # Spread far enough that no tile lands on its neighbour: a step across the
+    # road moves a block straight down the screen by that step, so the gap has
+    # to clear the tile's own height. The first draft did not, and the six
+    # familiar parts arrived looking like a pile of rubble.
+    tile, tile_h = 1.0, 0.4
+    left = (("p1", -4.4, -2.6), ("p2", -4.4, 0.0), ("p3", -4.4, 2.6),
+            ("p4", -2.2, -2.6), ("p5", -2.2, 0.0), ("p6", -2.2, 2.6))
+    for key, u, side in left:
+        parts.append(block(u, 0, tile, tile_h, "t", "l", "r", side=side))
+        parts.append(text(u, tile_h, s[key], "sub", side=side, dy=4.0))
+
+    half, top = 1.6, 1.5
+    parts.append(block(2.8, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(2.8, 0.0, top, s["prog"], s["prog_sub"], accent=True))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=86.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -1334,6 +1372,27 @@ L18 = {
                foot_sub="README.md — the first thing a person reads"),
 }
 
+L19 = {
+    "kz": dict(alt="Алты таныс бөлшек бір бағдарламаға жиналады",
+               p1="struct", p2="slice", p3="map", p4="әдістер", p5="қателер", p6="пакеттер",
+               prog="жазба кітапшасы", prog_sub="аяқталған бағдарлама",
+               head="ЖАҢА ЕШТЕҢЕ ЖОҚ — БӘРІ ТАНЫС", head_sub="add · list · find · top · del",
+               foot="ЖИНАҚТАУ — БҰЛ ДА ШЕБЕРЛІК",
+               foot_sub="go run .   ·   go test ./..."),
+    "ru": dict(alt="Шесть знакомых деталей собираются в одну программу",
+               p1="struct", p2="slice", p3="map", p4="методы", p5="ошибки", p6="пакеты",
+               prog="блокнот в консоли", prog_sub="законченная программа",
+               head="НИЧЕГО НОВОГО — ВСЁ ЗНАКОМОЕ", head_sub="add · list · find · top · del",
+               foot="СОБРАТЬ — ТОЖЕ УМЕНИЕ",
+               foot_sub="go run .   ·   go test ./..."),
+    "en": dict(alt="Six familiar parts come together into one program",
+               p1="struct", p2="slice", p3="map", p4="methods", p5="errors", p6="packages",
+               prog="a console notebook", prog_sub="a finished program",
+               head="NOTHING NEW — ALL OF IT FAMILIAR", head_sub="add · list · find · top · del",
+               foot="PUTTING IT TOGETHER IS A SKILL TOO",
+               foot_sub="go run .   ·   go test ./..."),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1355,7 +1414,8 @@ if __name__ == "__main__":
                                ("errors", map15, L15),
                                ("packages", map16, L16),
                                ("git", map17, L17),
-                               ("github", map18, L18)):
+                               ("github", map18, L18),
+                               ("capstone", map19, L19)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
