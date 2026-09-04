@@ -725,6 +725,45 @@ def map14(s):
     return "".join(parts)
 
 
+def map15(s):
+    """Lesson: a function has two ways out, and the second is checked first.
+
+    Two roads again, because by now the reader reads them without help: the
+    upper green one carries the value, the lower red one carries the error.
+    They leave the same function, which is the point -- an error in Go is not a
+    siren somewhere else in the building, it is the second thing handed back.
+    """
+    parts = [ground(-5.6, 5.6, -2.0, 2.0, "g")]
+
+    parts.append(road(-1.7, 3.4, 2.15, 0.55, "band-res"))
+    for u in (-1.2, 0.2, 1.6):
+        parts.append(chevron(u, 2.17, +1, "arw-res"))
+    parts.append(road(-1.7, 3.4, 0.35, 0.55, "band-req"))
+    for u in (-1.2, 0.2, 1.6):
+        parts.append(chevron(u, 0.37, +1, "arw-req"))
+
+    half, top = 1.45, 1.5
+    parts.append(block(-3.3, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-3.3, 0.0, top, s["fn"], s["fn_sub"]))
+
+    tile, tile_h = 1.15, 0.48
+    parts.append(block(4.6, 1.95, tile, tile_h, "gt", "gl", "gr"))
+    parts.append(text(4.6, 1.95 + tile_h, s["good"], "tag", dy=4.0))
+    parts.append(block(4.6, 0.0, tile, tile_h, "rt", "rl", "rr"))
+    parts.append(text(4.6, tile_h, s["bad"], "tag", dy=4.0))
+
+    parts.append(text(0.9, 2.72, s["good_sub"], "sub"))
+    parts.append(text(0.9, 0.92, s["bad_sub"], "sub"))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=46.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -1082,6 +1121,33 @@ L14 = {
                foot_sub="func (s *MemoryStore) Add(a Article)"),
 }
 
+L15 = {
+    "kz": dict(alt="Функцияның екі шығуы бар: мән және қате",
+               fn="Get(slug)", fn_sub="екі мән қайтарады",
+               good="Article", bad="error",
+               good_sub="қате болмаса — мән", bad_sub="қате болса — nil емес",
+               head="ҚАТЕ — ЕРЕКШЕ ЖАҒДАЙ ЕМЕС, ЕКІНШІ МӘН",
+               head_sub="func (s *Store) Get(slug string) (Article, error)",
+               foot="ЕКІНШІСІ БІРІНШІ ТЕКСЕРІЛЕДІ",
+               foot_sub="if err != nil { return … }   ·   errors.Is(err, ErrNotFound)"),
+    "ru": dict(alt="У функции два выхода: значение и ошибка",
+               fn="Get(slug)", fn_sub="возвращает два значения",
+               good="Article", bad="error",
+               good_sub="нет ошибки — есть значение", bad_sub="есть ошибка — не nil",
+               head="ОШИБКА — НЕ ИСКЛЮЧЕНИЕ, А ВТОРОЕ ЗНАЧЕНИЕ",
+               head_sub="func (s *Store) Get(slug string) (Article, error)",
+               foot="ВТОРОЕ ПРОВЕРЯЮТ ПЕРВЫМ",
+               foot_sub="if err != nil { return … }   ·   errors.Is(err, ErrNotFound)"),
+    "en": dict(alt="A function has two ways out: a value and an error",
+               fn="Get(slug)", fn_sub="returns two values",
+               good="Article", bad="error",
+               good_sub="no error — a value", bad_sub="an error — not nil",
+               head="AN ERROR IS NOT AN EXCEPTION, IT IS THE SECOND VALUE",
+               head_sub="func (s *Store) Get(slug string) (Article, error)",
+               foot="THE SECOND ONE IS CHECKED FIRST",
+               foot_sub="if err != nil { return … }   ·   errors.Is(err, ErrNotFound)"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1099,7 +1165,8 @@ if __name__ == "__main__":
                                ("start", map11, L11),
                                ("struct", map12, L12),
                                ("pointers", map13, L13),
-                               ("interface", map14, L14)):
+                               ("interface", map14, L14),
+                               ("errors", map15, L15)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
