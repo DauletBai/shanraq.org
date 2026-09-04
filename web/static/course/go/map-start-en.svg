@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-388.3 -7.9 776.5 321.5" width="777" height="322" role="img" aria-label="Three things you need — a computer, the right to install, half an hour a day — and one you do not"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-342.25" y1="98.80" x2="-342.25" y2="205.20"/><line class="g" x1="-269.85" y1="98.80" x2="-269.85" y2="205.20"/><line class="g" x1="-197.45" y1="98.80" x2="-197.45" y2="205.20"/><line class="g" x1="-125.05" y1="98.80" x2="-125.05" y2="205.20"/><line class="g" x1="-52.65" y1="98.80" x2="-52.65" y2="205.20"/><line class="g" x1="19.75" y1="98.80" x2="19.75" y2="205.20"/><line class="g" x1="92.15" y1="98.80" x2="92.15" y2="205.20"/><line class="g" x1="164.54" y1="98.80" x2="164.54" y2="205.20"/><line class="g" x1="236.94" y1="98.80" x2="236.94" y2="205.20"/><line class="g" x1="309.34" y1="98.80" x2="309.34" y2="205.20"/><line class="g" x1="-342.25" y1="98.80" x2="342.25" y2="98.80"/><line class="g" x1="-342.25" y1="140.60" x2="342.25" y2="140.60"/><line class="g" x1="-342.25" y1="182.40" x2="342.25" y2="182.40"/><line class="g" x1="-342.25" y1="224.20" x2="342.25" y2="224.20"/><polygon class="gt" points="-236.94,74.10 -161.25,117.80 -236.94,161.50 -312.64,117.80"/><polygon class="gr" points="-312.64,152.00 -236.94,195.70 -236.94,161.50 -312.64,117.80"/><polygon class="gl" points="-161.25,152.00 -236.94,195.70 -236.94,161.50 -161.25,117.80"/><text class="lbl-acc" x="-236.94" y="121.80">A COMPUTER</text><text class="sub" x="-236.94" y="211.70">a phone will not do</text><polygon class="gt" points="-78.98,74.10 -3.29,117.80 -78.98,161.50 -154.67,117.80"/><polygon class="gr" points="-154.67,152.00 -78.98,195.70 -78.98,161.50 -154.67,117.80"/><polygon class="gl" points="-3.29,152.00 -78.98,195.70 -78.98,161.50 -3.29,117.80"/><text class="lbl-acc" x="-78.98" y="121.80">RIGHT TO INSTALL</text><text class="sub" x="-78.98" y="211.70">software</text><polygon class="gt" points="78.98,74.10 154.67,117.80 78.98,161.50 3.29,117.80"/><polygon class="gr" points="3.29,152.00 78.98,195.70 78.98,161.50 3.29,117.80"/><polygon class="gl" points="154.67,152.00 78.98,195.70 78.98,161.50 154.67,117.80"/><text class="lbl-acc" x="78.98" y="121.80">HALF AN HOUR</text><text class="sub" x="78.98" y="211.70">a day</text><polygon class="t" points="236.94,102.22 312.64,145.92 236.94,189.62 161.25,145.92"/><polygon class="r" points="161.25,152.00 236.94,195.70 236.94,189.62 161.25,145.92"/><polygon class="l" points="312.64,152.00 236.94,195.70 236.94,189.62 312.64,145.92"/><text class="sub" x="236.94" y="149.92">ENGLISH</text><text class="sub" x="236.94" y="211.70">not required</text><text class="cap" x="0.00" y="38.14">WHAT YOU NEED TO START</text><text class="mono" x="0.00" y="54.10">go.dev/dl · code.visualstudio.com</text><text class="cap" x="0.00" y="251.70">IF INSTALLING IS BLOCKED — go.dev/play</text><text class="mono" x="0.00" y="267.66">from the server lesson on you need your own machine</text></svg>

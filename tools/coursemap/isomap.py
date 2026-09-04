@@ -579,6 +579,37 @@ def map10(s):
     return "".join(parts)
 
 
+def map11(s):
+    """Preface: three things you need, and one you do not.
+
+    The same row the lesson maps use, so a reader who has seen one recognises
+    the grammar before reading a word: green is what you must have, the flat
+    neutral tile is the thing people wrongly think they need and turn back over.
+    """
+    parts = [ground(-5.2, 5.2, -1.4, 1.4, "g")]
+
+    half, top = 1.15, 0.9
+    seats = (-3.6, -1.2, 1.2, 3.6)
+    line_lbl = clear_below(0, half, gap_px=16.0)
+    for i, u in enumerate(seats):
+        need = i < 3
+        if need:
+            parts.append(block(u, 0, half, top, "gt", "gl", "gr"))
+            parts.append(text(u, top, s["n%d" % (i + 1)], "lbl-acc", dy=4.0))
+        else:
+            parts.append(block(u, 0, half, 0.16, "t", "l", "r"))
+            parts.append(text(u, 0.16, s["n4"], "sub", dy=4.0))
+        parts.append(text(u, line_lbl, s["s%d" % (i + 1)], "sub"))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=56.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -846,6 +877,27 @@ L10 = {
                foot="_test.go NEVER SHIPS WITH THE PROGRAM", foot_sub="ok  sabaq09   ·   main_test.go:9: got 2, wanted 3"),
 }
 
+L11 = {
+    "kz": dict(alt="Керек үш нәрсе — компьютер, орнату құқығы, күніне жарты сағат — және керек емес біреуі",
+               n1="КОМПЬЮТЕР", n2="ОРНАТУ ҚҰҚЫҒЫ", n3="ЖАРТЫ САҒАТ", n4="АҒЫЛШЫН",
+               s1="телефон жетпейді", s2="бағдарлама орнату", s3="күніне", s4="керек емес",
+               head="БАСТАУ ҮШІН НЕ КЕРЕК", head_sub="go.dev/dl · code.visualstudio.com",
+               foot="ОРНАТУҒА ТЫЙЫМ САЛЫНСА — go.dev/play",
+               foot_sub="сервер сабағынан бастап өз компьютері керек"),
+    "ru": dict(alt="Три нужные вещи — компьютер, право ставить программы, полчаса в день — и одна ненужная",
+               n1="КОМПЬЮТЕР", n2="ПРАВО СТАВИТЬ", n3="ПОЛЧАСА", n4="АНГЛИЙСКИЙ",
+               s1="телефона не хватит", s2="программы", s3="в день", s4="не нужен",
+               head="ЧТО НУЖНО, ЧТОБЫ НАЧАТЬ", head_sub="go.dev/dl · code.visualstudio.com",
+               foot="ЕСЛИ СТАВИТЬ ЗАПРЕЩЕНО — go.dev/play",
+               foot_sub="с урока про сервер понадобится свой компьютер"),
+    "en": dict(alt="Three things you need — a computer, the right to install, half an hour a day — and one you do not",
+               n1="A COMPUTER", n2="RIGHT TO INSTALL", n3="HALF AN HOUR", n4="ENGLISH",
+               s1="a phone will not do", s2="software", s3="a day", s4="not required",
+               head="WHAT YOU NEED TO START", head_sub="go.dev/dl · code.visualstudio.com",
+               foot="IF INSTALLING IS BLOCKED — go.dev/play",
+               foot_sub="from the server lesson on you need your own machine"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -859,7 +911,8 @@ if __name__ == "__main__":
                                ("bytes", map07, L07),
                                ("slices", map08, L08),
                                ("maps", map09, L09),
-                               ("test", map10, L10)):
+                               ("test", map10, L10),
+                               ("start", map11, L11)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
