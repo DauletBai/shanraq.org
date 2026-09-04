@@ -688,6 +688,43 @@ def map13(s):
     return "".join(parts)
 
 
+def map14(s):
+    """Lesson: one function, any store, because the contract is a list of skills.
+
+    The code that does the work stands on the left and knows nothing about what
+    is on the right. Between them is the contract -- two method names on a red
+    tile, red because it is the thing being asked for. Three stores satisfy it,
+    and one of them exists only in a test, which is the point that sells
+    interfaces to a beginner.
+    """
+    parts = [ground(-6.0, 6.0, -2.6, 2.6, "g")]
+
+    parts.append(road(-2.5, 0.6, 0.55, 0.5, "band-req"))
+    for u in (-2.0, -1.0, 0.0):
+        parts.append(chevron(u, 0.57, +1, "arw-req"))
+
+    half, top = 1.4, 1.4
+    parts.append(block(-4.0, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(-4.0, 0.0, top, s["fn"], s["fn_sub"], accent=True))
+
+    gate, gate_h = 1.3, 1.1
+    parts.append(block(1.7, 0, gate, gate_h, "rt", "rl", "rr"))
+    parts.append(on_face_side(1.7, 0.0, gate_h, s["iface"], s["iface_sub"], accent=True))
+
+    tile, tile_h = 1.0, 0.42
+    for side, key in ((-1.9, "s1"), (0.0, "s2"), (1.9, "s3")):
+        parts.append(block(5.0, 0, tile, tile_h, "t", "l", "r", side=side))
+        parts.append(text(5.0, tile_h, s[key], "sub", side=side, dy=4.0))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=44.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -1021,6 +1058,30 @@ L13 = {
                foot_sub="for i := range blog { blog[i].Publish() }"),
 }
 
+L14 = {
+    "kz": dict(alt="Бір функция, кез келген қойма: келісім — біліктер тізімі",
+               fn="report", fn_sub="қойма қандай екенін білмейді",
+               iface="Store", iface_sub="Add · All",
+               s1="MemoryStore", s2="LastTwoStore", s3="fakeStore (тест)",
+               head="ҚҰРЫЛЫСЫ ЕМЕС, БІЛІГІ", head_sub="type Store interface { Add · All }",
+               foot="ІСКЕ АСЫРУ ЖАРИЯЛАНБАЙДЫ — ӨЗІНЕН-ӨЗІ ШЫҒАДЫ",
+               foot_sub="func (s *MemoryStore) Add(a Article)"),
+    "ru": dict(alt="Одна функция, любое хранилище: договор — это список умений",
+               fn="report", fn_sub="не знает, что за хранилище",
+               iface="Store", iface_sub="Add · All",
+               s1="MemoryStore", s2="LastTwoStore", s3="fakeStore (тест)",
+               head="УМЕНИЯ, А НЕ УСТРОЙСТВО", head_sub="type Store interface { Add · All }",
+               foot="РЕАЛИЗАЦИЯ НЕ ОБЪЯВЛЯЕТСЯ — ОНА ПОЛУЧАЕТСЯ САМА",
+               foot_sub="func (s *MemoryStore) Add(a Article)"),
+    "en": dict(alt="One function, any store: the contract is a list of skills",
+               fn="report", fn_sub="knows nothing of the store",
+               iface="Store", iface_sub="Add · All",
+               s1="MemoryStore", s2="LastTwoStore", s3="fakeStore (a test)",
+               head="WHAT IT CAN DO, NOT WHAT IT IS", head_sub="type Store interface { Add · All }",
+               foot="IMPLEMENTING IS NOT DECLARED — IT SIMPLY HAPPENS",
+               foot_sub="func (s *MemoryStore) Add(a Article)"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1037,7 +1098,8 @@ if __name__ == "__main__":
                                ("test", map10, L10),
                                ("start", map11, L11),
                                ("struct", map12, L12),
-                               ("pointers", map13, L13)):
+                               ("pointers", map13, L13),
+                               ("interface", map14, L14)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
