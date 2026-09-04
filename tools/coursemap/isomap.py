@@ -764,6 +764,44 @@ def map15(s):
     return "".join(parts)
 
 
+def map16(s):
+    """Lesson: a package is a folder, and a capital letter is its door.
+
+    main on the left knows only what the package lets out. The two tiles beside
+    the package say which is which: green for what a capital letter exports,
+    grey for what stays inside. Drawn this way the export rule stops being a
+    style convention and becomes a wall you can see.
+    """
+    parts = [ground(-5.6, 5.6, -2.8, 2.8, "g")]
+
+    parts.append(road(-2.1, 0.6, 0.5, 0.5, "band-flow"))
+    for u in (-1.6, -0.7, 0.2):
+        parts.append(chevron(u, 0.52, +1, "arw-flow"))
+
+    half, top = 1.35, 1.3
+    parts.append(block(-3.6, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-3.6, 0.0, top, s["main"], s["main_sub"]))
+
+    parts.append(block(1.9, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(1.9, 0.0, top, s["pkg"], s["pkg_sub"], accent=True))
+
+    # Wide enough for the names written on them: a label that overhangs its own
+    # tile reads as two labels, which is what the first render looked like.
+    tile, tile_h = 1.5, 0.42
+    parts.append(block(5.2, 0, tile, tile_h, "gt", "gl", "gr", side=-1.8))
+    parts.append(text(5.2, tile_h, s["out"], "tag", side=-1.8, dy=4.0))
+    parts.append(block(5.2, 0, tile, tile_h, "t", "l", "r", side=1.8))
+    parts.append(text(5.2, tile_h, s["inn"], "sub", side=1.8, dy=4.0))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=44.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -1148,6 +1186,30 @@ L15 = {
                foot_sub="if err != nil { return … }   ·   errors.Is(err, ErrNotFound)"),
 }
 
+L16 = {
+    "kz": dict(alt="Пакет — қалта: бас әріппен жазылғаны сыртқа көрінеді, қалғаны ішінде қалады",
+               main="main", main_sub="тек рұқсат етілгенді көреді",
+               pkg="blog", pkg_sub="blog/ қалтасы",
+               out="Article · Get", inn="items · count",
+               head="ПАКЕТ — БҰЛ ҚАЛТА", head_sub='import "sabaq14/blog"',
+               foot="БАС ӘРІП — СЫРТҚА АШЫЛАТЫН ЕСІК",
+               foot_sub="s.Get(…) көрінеді   ·   s.count() көрінбейді"),
+    "ru": dict(alt="Пакет — это папка: с заглавной буквы видно снаружи, остальное остаётся внутри",
+               main="main", main_sub="видит только разрешённое",
+               pkg="blog", pkg_sub="папка blog/",
+               out="Article · Get", inn="items · count",
+               head="ПАКЕТ — ЭТО ПАПКА", head_sub='import "sabaq14/blog"',
+               foot="ЗАГЛАВНАЯ БУКВА — ДВЕРЬ НАРУЖУ",
+               foot_sub="s.Get(…) видно   ·   s.count() не видно"),
+    "en": dict(alt="A package is a folder: a capital letter is visible outside, the rest stays in",
+               main="main", main_sub="sees only what is let out",
+               pkg="blog", pkg_sub="the blog/ folder",
+               out="Article · Get", inn="items · count",
+               head="A PACKAGE IS A FOLDER", head_sub='import "sabaq14/blog"',
+               foot="A CAPITAL LETTER IS THE DOOR OUT",
+               foot_sub="s.Get(…) is visible   ·   s.count() is not"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1166,7 +1228,8 @@ if __name__ == "__main__":
                                ("struct", map12, L12),
                                ("pointers", map13, L13),
                                ("interface", map14, L14),
-                               ("errors", map15, L15)):
+                               ("errors", map15, L15),
+                               ("packages", map16, L16)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

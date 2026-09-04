@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-414.6 -35.4 901.6 358.8" width="902" height="359" role="img" aria-label="Пакет — қалта: бас әріппен жазылғаны сыртқа көрінеді, қалғаны ішінде қалады"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-368.58" y1="45.60" x2="-368.58" y2="258.40"/><line class="g" x1="-296.18" y1="45.60" x2="-296.18" y2="258.40"/><line class="g" x1="-223.78" y1="45.60" x2="-223.78" y2="258.40"/><line class="g" x1="-151.38" y1="45.60" x2="-151.38" y2="258.40"/><line class="g" x1="-78.98" y1="45.60" x2="-78.98" y2="258.40"/><line class="g" x1="-6.58" y1="45.60" x2="-6.58" y2="258.40"/><line class="g" x1="65.82" y1="45.60" x2="65.82" y2="258.40"/><line class="g" x1="138.22" y1="45.60" x2="138.22" y2="258.40"/><line class="g" x1="210.62" y1="45.60" x2="210.62" y2="258.40"/><line class="g" x1="283.02" y1="45.60" x2="283.02" y2="258.40"/><line class="g" x1="355.42" y1="45.60" x2="355.42" y2="258.40"/><line class="g" x1="-368.58" y1="45.60" x2="368.58" y2="45.60"/><line class="g" x1="-368.58" y1="87.40" x2="368.58" y2="87.40"/><line class="g" x1="-368.58" y1="129.20" x2="368.58" y2="129.20"/><line class="g" x1="-368.58" y1="171.00" x2="368.58" y2="171.00"/><line class="g" x1="-368.58" y1="212.80" x2="368.58" y2="212.80"/><line class="g" x1="-368.58" y1="254.60" x2="368.58" y2="254.60"/><polygon class="band-flow" points="-138.22,114.00 39.49,114.00 39.49,152.00 -138.22,152.00"/><polygon class="arw-flow" points="-95.81,132.24 -109.58,125.40 -109.58,139.08"/><polygon class="arw-flow" points="-36.57,132.24 -50.35,125.40 -50.35,139.08"/><polygon class="arw-flow" points="22.66,132.24 8.89,125.40 8.89,139.08"/><polygon class="t" points="-236.94,51.30 -148.09,102.60 -236.94,153.90 -325.80,102.60"/><polygon class="r" points="-325.80,152.00 -236.94,203.30 -236.94,153.90 -325.80,102.60"/><polygon class="l" points="-148.09,152.00 -236.94,203.30 -236.94,153.90 -148.09,102.60"/><text class="lbl" x="-236.94" y="100.60">main</text><text class="sub" x="-236.94" y="113.60">тек рұқсат етілгенді көреді</text><polygon class="gt" points="125.05,51.30 213.91,102.60 125.05,153.90 36.20,102.60"/><polygon class="gr" points="36.20,152.00 125.05,203.30 125.05,153.90 36.20,102.60"/><polygon class="gl" points="213.91,152.00 125.05,203.30 125.05,153.90 213.91,102.60"/><text class="lbl-acc" x="125.05" y="100.60">blog</text><text class="sub-acc" x="125.05" y="113.60">blog/ қалтасы</text><polygon class="gt" points="342.25,10.64 440.98,67.64 342.25,124.64 243.53,67.64"/><polygon class="gr" points="243.53,83.60 342.25,140.60 342.25,124.64 243.53,67.64"/><polygon class="gl" points="440.98,83.60 342.25,140.60 342.25,124.64 440.98,67.64"/><text class="tag" x="342.25" y="71.64">Article · Get</text><polygon class="t" points="342.25,147.44 440.98,204.44 342.25,261.44 243.53,204.44"/><polygon class="r" points="243.53,220.40 342.25,277.40 342.25,261.44 243.53,204.44"/><polygon class="l" points="440.98,220.40 342.25,277.40 342.25,261.44 440.98,204.44"/><text class="sub" x="342.25" y="208.44">items · count</text><text class="cap" x="0.00" y="15.34">ПАКЕТ — БҰЛ ҚАЛТА</text><text class="mono" x="0.00" y="31.30">import "sabaq14/blog"</text><text class="cap" x="0.00" y="247.30">БАС ӘРІП — СЫРТҚА АШЫЛАТЫН ЕСІК</text><text class="mono" x="0.00" y="263.26">s.Get(…) көрінеді   ·   s.count() көрінбейді</text></svg>
