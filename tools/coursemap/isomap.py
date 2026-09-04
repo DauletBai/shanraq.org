@@ -537,6 +537,48 @@ def map09(s):
     return "".join(parts)
 
 
+def map10(s):
+    """Lesson: the test stands beside the code, calls it, and answers twice.
+
+    Red asks and green answers, the same way round as lesson 0: here the test
+    is the question and the program is what answers it. The two outcomes are
+    drawn as tiles rather than described, because a beginner meets FAIL long
+    before PASS and needs to recognise it as a report, not a punishment.
+    """
+    parts = [ground(-5.2, 5.2, -2.1, 2.1, "g")]
+
+    half, top = 1.3, 1.0
+
+    # The test calls the code: a band pointing back down the road, laid before
+    # the blocks so it runs behind them rather than across their faces.
+    parts.append(road(-2.4, -0.3, 0.55, 0.5, "band-req"))
+    for u in (-2.0, -1.0):
+        parts.append(chevron(u, 0.57, -1, "arw-req"))
+
+    parts.append(block(-3.7, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(-3.7, 0.0, top, s["code"], s["code_sub"], accent=True))
+
+    parts.append(block(0.0, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.0, 0.0, top, s["test"], s["test_sub"], accent=True))
+
+    # The two outcomes, one above the other on screen. They are set apart across
+    # the road rather than stacked in z: a step sideways moves a block straight
+    # down the picture without moving it along, so the pair reads as a choice
+    # between two answers and neither tile covers the other's face.
+    tile, tile_h = 0.85, 0.4
+    for side, key, palette in ((-1.4, "good", ("gt", "gl", "gr")), (1.4, "bad", ("rt", "rl", "rr"))):
+        parts.append(block(3.9, 0, tile, tile_h, *palette, side=side))
+        parts.append(text(3.9, tile_h, s[key], "tag", side=side, dy=4.0))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=44.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -786,6 +828,24 @@ L09 = {
                foot_sub='n, ok := views["музыка"]   // 0, false'),
 }
 
+L10 = {
+    "kz": dict(alt="Тест кодтың қасында тұрып, оны шақырады және екі жауаптың бірін береді",
+               code="main.go", code_sub="бағдарлама", test="main_test.go", test_sub="тексеру",
+               good="PASS", bad="FAIL",
+               head="go test — ЖАЗЫЛЫП ҚОЙҒАН ТЕКСЕРУ", head_sub="func TestCount(t *testing.T)",
+               foot="_test.go ДАЙЫН БАҒДАРЛАМАҒА КІРМЕЙДІ", foot_sub="ok  sabaq09   ·   main_test.go:9: алдық 2, күттік 3"),
+    "ru": dict(alt="Тест стоит рядом с кодом, вызывает его и даёт один из двух ответов",
+               code="main.go", code_sub="программа", test="main_test.go", test_sub="проверка",
+               good="PASS", bad="FAIL",
+               head="go test — ЗАПИСАННАЯ ПРОВЕРКА", head_sub="func TestCount(t *testing.T)",
+               foot="_test.go В ГОТОВУЮ ПРОГРАММУ НЕ ПОПАДАЕТ", foot_sub="ok  sabaq09   ·   main_test.go:9: получили 2, ждали 3"),
+    "en": dict(alt="The test stands beside the code, calls it and gives one of two answers",
+               code="main.go", code_sub="the program", test="main_test.go", test_sub="the check",
+               good="PASS", bad="FAIL",
+               head="go test — A CHECK THAT STAYS WRITTEN DOWN", head_sub="func TestCount(t *testing.T)",
+               foot="_test.go NEVER SHIPS WITH THE PROGRAM", foot_sub="ok  sabaq09   ·   main_test.go:9: got 2, wanted 3"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -798,7 +858,8 @@ if __name__ == "__main__":
                                ("loops", map06, L06),
                                ("bytes", map07, L07),
                                ("slices", map08, L08),
-                               ("maps", map09, L09)):
+                               ("maps", map09, L09),
+                               ("test", map10, L10)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

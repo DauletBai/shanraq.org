@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-388.3 -17.4 776.5 324.7" width="777" height="325" role="img" aria-label="Тест стоит рядом с кодом, вызывает его и даёт один из двух ответов"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-342.25" y1="72.20" x2="-342.25" y2="231.80"/><line class="g" x1="-269.85" y1="72.20" x2="-269.85" y2="231.80"/><line class="g" x1="-197.45" y1="72.20" x2="-197.45" y2="231.80"/><line class="g" x1="-125.05" y1="72.20" x2="-125.05" y2="231.80"/><line class="g" x1="-52.65" y1="72.20" x2="-52.65" y2="231.80"/><line class="g" x1="19.75" y1="72.20" x2="19.75" y2="231.80"/><line class="g" x1="92.15" y1="72.20" x2="92.15" y2="231.80"/><line class="g" x1="164.54" y1="72.20" x2="164.54" y2="231.80"/><line class="g" x1="236.94" y1="72.20" x2="236.94" y2="231.80"/><line class="g" x1="309.34" y1="72.20" x2="309.34" y2="231.80"/><line class="g" x1="-342.25" y1="72.20" x2="342.25" y2="72.20"/><line class="g" x1="-342.25" y1="114.00" x2="342.25" y2="114.00"/><line class="g" x1="-342.25" y1="155.80" x2="342.25" y2="155.80"/><line class="g" x1="-342.25" y1="197.60" x2="342.25" y2="197.60"/><line class="g" x1="-342.25" y1="239.40" x2="342.25" y2="239.40"/><polygon class="band-req" points="-157.96,112.10 -19.75,112.10 -19.75,150.10 -157.96,150.10"/><polygon class="arw-req" points="-141.14,130.34 -127.36,123.50 -127.36,137.18"/><polygon class="arw-req" points="-75.32,130.34 -61.54,123.50 -61.54,137.18"/><polygon class="gt" points="-243.53,64.60 -157.96,114.00 -243.53,163.40 -329.09,114.00"/><polygon class="gr" points="-329.09,152.00 -243.53,201.40 -243.53,163.40 -329.09,114.00"/><polygon class="gl" points="-157.96,152.00 -243.53,201.40 -243.53,163.40 -157.96,114.00"/><text class="lbl-acc" x="-243.53" y="112.00">main.go</text><text class="sub-acc" x="-243.53" y="125.00">программа</text><polygon class="rt" points="0.00,64.60 85.56,114.00 0.00,163.40 -85.56,114.00"/><polygon class="rr" points="-85.56,152.00 0.00,201.40 0.00,163.40 -85.56,114.00"/><polygon class="rl" points="85.56,152.00 0.00,201.40 0.00,163.40 85.56,114.00"/><text class="lbl-acc" x="0.00" y="112.00">main_test.go</text><text class="sub-acc" x="0.00" y="125.00">проверка</text><polygon class="gt" points="256.69,51.30 312.64,83.60 256.69,115.90 200.74,83.60"/><polygon class="gr" points="200.74,98.80 256.69,131.10 256.69,115.90 200.74,83.60"/><polygon class="gl" points="312.64,98.80 256.69,131.10 256.69,115.90 312.64,83.60"/><text class="tag" x="256.69" y="87.60">PASS</text><polygon class="rt" points="256.69,157.70 312.64,190.00 256.69,222.30 200.74,190.00"/><polygon class="rr" points="200.74,205.20 256.69,237.50 256.69,222.30 200.74,190.00"/><polygon class="rl" points="312.64,205.20 256.69,237.50 256.69,222.30 312.64,190.00"/><text class="tag" x="256.69" y="194.00">FAIL</text><text class="cap" x="0.00" y="28.64">go test — ЗАПИСАННАЯ ПРОВЕРКА</text><text class="mono" x="0.00" y="44.60">func TestCount(t *testing.T)</text><text class="cap" x="0.00" y="245.40">_test.go В ГОТОВУЮ ПРОГРАММУ НЕ ПОПАДАЕТ</text><text class="mono" x="0.00" y="261.36">ok  sabaq09   ·   main_test.go:9: получили 2, ждали 3</text></svg>
