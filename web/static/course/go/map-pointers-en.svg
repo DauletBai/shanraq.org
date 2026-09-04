@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-440.9 -45.9 931.2 366.9" width="931" height="367" role="img" aria-label="A copy is a dead end, an address leads back to the value itself"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-394.91" y1="83.60" x2="-394.91" y2="220.40"/><line class="g" x1="-322.51" y1="83.60" x2="-322.51" y2="220.40"/><line class="g" x1="-250.11" y1="83.60" x2="-250.11" y2="220.40"/><line class="g" x1="-177.71" y1="83.60" x2="-177.71" y2="220.40"/><line class="g" x1="-105.31" y1="83.60" x2="-105.31" y2="220.40"/><line class="g" x1="-32.91" y1="83.60" x2="-32.91" y2="220.40"/><line class="g" x1="39.49" y1="83.60" x2="39.49" y2="220.40"/><line class="g" x1="111.89" y1="83.60" x2="111.89" y2="220.40"/><line class="g" x1="184.29" y1="83.60" x2="184.29" y2="220.40"/><line class="g" x1="256.69" y1="83.60" x2="256.69" y2="220.40"/><line class="g" x1="329.09" y1="83.60" x2="329.09" y2="220.40"/><line class="g" x1="401.49" y1="83.60" x2="401.49" y2="220.40"/><line class="g" x1="-394.91" y1="83.60" x2="394.91" y2="83.60"/><line class="g" x1="-394.91" y1="125.40" x2="394.91" y2="125.40"/><line class="g" x1="-394.91" y1="167.20" x2="394.91" y2="167.20"/><line class="g" x1="-394.91" y1="209.00" x2="394.91" y2="209.00"/><polygon class="band-flow" points="-157.96,52.06 289.60,52.06 289.60,96.14 -157.96,96.14"/><polygon class="arw-flow" points="-82.65,73.34 -96.42,66.50 -96.42,80.18"/><polygon class="arw-flow" points="35.83,73.34 22.05,66.50 22.05,80.18"/><polygon class="arw-flow" points="154.30,73.34 140.52,66.50 140.52,80.18"/><polygon class="band-res" points="-157.96,116.66 289.60,116.66 289.60,160.74 -157.96,160.74"/><polygon class="arw-res" points="-88.48,137.94 -74.71,131.10 -74.71,144.78"/><polygon class="arw-res" points="29.99,137.94 43.77,131.10 43.77,144.78"/><polygon class="arw-res" points="148.46,137.94 162.24,131.10 162.24,144.78"/><polygon class="gt" points="-283.02,36.10 -187.58,91.20 -283.02,146.30 -378.45,91.20"/><polygon class="gr" points="-378.45,152.00 -283.02,207.10 -283.02,146.30 -378.45,91.20"/><polygon class="gl" points="-187.58,152.00 -283.02,207.10 -283.02,146.30 -187.58,91.20"/><text class="lbl-acc" x="-283.02" y="89.20">Article</text><text class="sub-acc" x="-283.02" y="102.20">the value in memory</text><polygon class="t" points="368.58,17.10 444.27,60.80 368.58,104.50 292.89,60.80"/><polygon class="r" points="292.89,79.80 368.58,123.50 368.58,104.50 292.89,60.80"/><polygon class="l" points="444.27,79.80 368.58,123.50 368.58,104.50 444.27,60.80"/><text class="lbl" x="368.58" y="64.80">a copy</text><polygon class="rt" points="368.58,89.30 444.27,133.00 368.58,176.70 292.89,133.00"/><polygon class="rr" points="292.89,152.00 368.58,195.70 368.58,176.70 292.89,133.00"/><polygon class="rl" points="444.27,152.00 368.58,195.70 368.58,176.70 444.27,133.00"/><text class="tag" x="368.58" y="137.00">&amp;a</text><text class="sub" x="65.82" y="52.44">the edit stays there</text><text class="sub" x="65.82" y="117.04">the edit arrives</text><text class="cap" x="0.00" y="0.14">A METHOD TAKES ONE OF THE TWO</text><text class="mono" x="0.00" y="16.10">func (a Article)   ·   func (a *Article)</text><text class="cap" x="0.00" y="259.10">CHANGES IT — POINTER; ONLY READS IT — VALUE</text><text class="mono" x="0.00" y="275.06">for i := range blog { blog[i].Publish() }</text></svg>

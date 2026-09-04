@@ -643,6 +643,51 @@ def map12(s):
     return "".join(parts)
 
 
+def map13(s):
+    """Lesson: a copy is a dead end, an address leads back to the value.
+
+    Two roads, as in lesson 0, because the reader has to see two separate
+    journeys rather than one line with arrows at both ends. The upper one
+    carries a copy away from the value and stops at a grey tile: whatever is
+    written there stays there. The lower one carries an address back INTO the
+    value, and the arrows point that way on purpose.
+    """
+    parts = [ground(-6.0, 6.0, -1.8, 1.8, "g")]
+
+    # Roads first: drawn after the blocks they would lie across their faces.
+    parts.append(road(-2.4, 4.4, 2.05, 0.58, "band-flow"))
+    for u in (-1.4, 0.4, 2.2):
+        parts.append(chevron(u, 2.07, +1, "arw-flow"))
+    parts.append(road(-2.4, 4.4, 0.35, 0.58, "band-res"))
+    for u in (-1.2, 0.6, 2.4):
+        parts.append(chevron(u, 0.37, -1, "arw-res"))
+
+    half, top = 1.45, 1.6
+    parts.append(block(-4.3, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(-4.3, 0.0, top, s["value"], s["value_sub"], accent=True))
+
+    tile, tile_h = 1.15, 0.5
+    parts.append(block(5.6, 1.9, tile, tile_h, "t", "l", "r"))
+    parts.append(text(5.6, 1.9 + tile_h, s["copy"], "lbl", dy=4.0))
+
+    parts.append(block(5.6, 0.0, tile, tile_h, "rt", "rl", "rr"))
+    parts.append(text(5.6, tile_h, s["addr"], "tag", dy=4.0))
+
+    # What each road does is written on the road, not on the tile it ends at:
+    # a caption laid over a tile's face fights the fill for contrast and loses,
+    # and on the red one it lost badly.
+    parts.append(text(1.0, 2.62, s["copy_sub"], "sub"))
+    parts.append(text(1.0, 0.92, s["addr_sub"], "sub"))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=52.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -952,6 +997,30 @@ L12 = {
                foot_sub="for _, a := range blog { a.Title = … }  // changes nothing"),
 }
 
+L13 = {
+    "kz": dict(alt="Көшірме тұйыққа кетеді, мекенжай мәнге қайта әкеледі",
+               value="Article", value_sub="жадыдағы мән",
+               copy="көшірме", copy_sub="жазғаныңыз сонда қалады",
+               addr="&a", addr_sub="жазғаныңыз жетеді",
+               head="ӘДІС ЕКЕУДІҢ БІРІН АЛАДЫ", head_sub="func (a Article)   ·   func (a *Article)",
+               foot="ӨЗГЕРТСЕ — СІЛТЕГІШ, ТЕК ОҚИТЫН БОЛСА — МӘН",
+               foot_sub="for i := range blog { blog[i].Publish() }"),
+    "ru": dict(alt="Копия уходит в тупик, адрес возвращает к самому значению",
+               value="Article", value_sub="значение в памяти",
+               copy="копия", copy_sub="правка остаётся там",
+               addr="&a", addr_sub="правка доходит",
+               head="МЕТОД БЕРЁТ ОДНО ИЗ ДВУХ", head_sub="func (a Article)   ·   func (a *Article)",
+               foot="МЕНЯЕТ — УКАЗАТЕЛЬ, ТОЛЬКО ЧИТАЕТ — ЗНАЧЕНИЕ",
+               foot_sub="for i := range blog { blog[i].Publish() }"),
+    "en": dict(alt="A copy is a dead end, an address leads back to the value itself",
+               value="Article", value_sub="the value in memory",
+               copy="a copy", copy_sub="the edit stays there",
+               addr="&a", addr_sub="the edit arrives",
+               head="A METHOD TAKES ONE OF THE TWO", head_sub="func (a Article)   ·   func (a *Article)",
+               foot="CHANGES IT — POINTER; ONLY READS IT — VALUE",
+               foot_sub="for i := range blog { blog[i].Publish() }"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -967,7 +1036,8 @@ if __name__ == "__main__":
                                ("maps", map09, L09),
                                ("test", map10, L10),
                                ("start", map11, L11),
-                               ("struct", map12, L12)):
+                               ("struct", map12, L12),
+                               ("pointers", map13, L13)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
