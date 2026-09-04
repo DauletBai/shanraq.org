@@ -610,6 +610,39 @@ def map11(s):
     return "".join(parts)
 
 
+def map12(s):
+    """Lesson: three parallel maps collapse into one type.
+
+    The left side is what the blog looked like before -- a title here, a word
+    count there, a language somewhere else, all kept in step by hand. The right
+    side is the same data as one value. The footer carries the trap that costs
+    beginners an afternoon: range hands you a copy, so writing to it changes
+    nothing.
+    """
+    parts = [ground(-5.4, 5.4, -2.3, 2.3, "g")]
+
+    tile, tile_h = 0.85, 0.4
+    for side, key in ((-1.6, "p1"), (0.0, "p2"), (1.6, "p3")):
+        parts.append(block(-3.7, 0, tile, tile_h, "t", "l", "r", side=side))
+        parts.append(text(-3.7, tile_h, s[key], "sub", side=side, dy=4.0))
+
+    parts.append(road(-2.3, -0.7, 0.2, 0.45, "band-flow"))
+    for u in (-1.9, -1.1):
+        parts.append(chevron(u, 0.22, +1, "arw-flow"))
+
+    half, top = 1.5, 1.15
+    parts.append(block(1.9, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(1.9, 0.0, top, s["name"], s["fields"], accent=True))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=40.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -898,6 +931,27 @@ L11 = {
                foot_sub="from the server lesson on you need your own machine"),
 }
 
+L12 = {
+    "kz": dict(alt="Үш бөлек сөздік бір типке жиналады: Article",
+               p1="titles", p2="words", p3="lang",
+               name="Article", fields="Title · Words · Lang",
+               head="ҮШЕУДІҢ ОРНЫНА БІР МӘН", head_sub="type Article struct { … }",
+               foot="ҚҰРЫЛЫМ КӨШІРМЕМЕН БЕРІЛЕДІ",
+               foot_sub="for _, a := range blog { a.Title = … }  // ештеңе өзгермейді"),
+    "ru": dict(alt="Три отдельных словаря собираются в один тип: Article",
+               p1="titles", p2="words", p3="lang",
+               name="Article", fields="Title · Words · Lang",
+               head="ОДНО ЗНАЧЕНИЕ ВМЕСТО ТРЁХ", head_sub="type Article struct { … }",
+               foot="СТРУКТУРА ПЕРЕДАЁТСЯ КОПИЕЙ",
+               foot_sub="for _, a := range blog { a.Title = … }  // ничего не изменит"),
+    "en": dict(alt="Three separate maps collapse into one type: Article",
+               p1="titles", p2="words", p3="lang",
+               name="Article", fields="Title · Words · Lang",
+               head="ONE VALUE INSTEAD OF THREE", head_sub="type Article struct { … }",
+               foot="A STRUCT IS PASSED AS A COPY",
+               foot_sub="for _, a := range blog { a.Title = … }  // changes nothing"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -912,7 +966,8 @@ if __name__ == "__main__":
                                ("slices", map08, L08),
                                ("maps", map09, L09),
                                ("test", map10, L10),
-                               ("start", map11, L11)):
+                               ("start", map11, L11),
+                               ("struct", map12, L12)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
