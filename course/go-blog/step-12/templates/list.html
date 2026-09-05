@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+ <title>Менің блогым</title></head>
+<body>
+  <img src="/static/logo.svg" width="120" height="60" alt="блог белгісі">
+  <h1>Менің блогым</h1>
+  <form method="post" action="/add">
+    <label for="title">Мақаланың тақырыбы</label>
+    <input id="title" name="title" value="{{ .Draft }}" required maxlength="80">
+    <button type="submit">Қосу</button>
+  </form>
+  {{ if .Err }}<p class="err">{{ .Err }}</p>{{ end }}
+
+  {{ if .Articles }}
+  <ul>
+    {{ range .Articles }}
+    <li><a href="/read/{{ .Slug }}">{{ .Title }}</a> — {{ .ReadingTime }} мин</li>
+    {{ end }}
+  </ul>
+  {{ else }}
+  <p>Әзірге мақала жоқ.</p>
+  {{ end }}
+  <p><a href="/about">Блог туралы</a></p>
+</body>
+</html>

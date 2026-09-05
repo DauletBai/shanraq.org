@@ -1001,6 +1001,38 @@ def map24(s):
     return "".join(parts)
 
 
+def map25(s):
+    """Lesson: a page is assembled, a file is not.
+
+    The road runs straight from the browser to the finished page, and the two
+    blocks set off on either side of it are the two ways the server can answer:
+    build something this time, or hand over a file exactly as it lies on disk.
+    They sit at the same point on the road because they are the same request
+    for the reader -- only the work behind them differs.
+    """
+    parts = []
+
+    parts.append(road(-2.6, 0.2, 0.55, 0.5, "band-req"))
+    parts.append(road(0.2, 3.0, 0.55, 0.5, "band-res"))
+    parts.append(chevron(-1.7, 0.57, +1, "arw-req"))
+    parts.append(chevron(2.1, 0.57, +1, "arw-res"))
+
+    half, top = 1.25, 1.1
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.2, 0, half, top, "rt", "rl", "rr", side=-2.9))
+    parts.append(on_face_side(0.2, -2.9, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(0.2, 0, half, top, "gt", "gl", "gr", side=2.9))
+    parts.append(on_face_side(0.2, 2.9, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(block(4.6, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(4.6, 0.0, top, s["b4"], s["b4_sub"]))
+
+    return "".join(parts)
+
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -1674,6 +1706,36 @@ L24 = {
                foot_sub="http.Redirect(w, r, \"/\", http.StatusSeeOther)"),
 }
 
+L25 = {
+    "kz": dict(alt="Бет жиналады, ал файл сол күйінде беріледі",
+               b1="браузер", b1_sub="бетті сұрайды",
+               b2="GET /", b2_sub="үлгі + дерек",
+               b3="GET /static/", b3_sub="файл сол күйінде",
+               b4="бет", b4_sub="мәнерімен",
+               head="САЙТ ЖҰМЫС ІСТЕП ҚАНА ҚОЙМАЙ, КӨРІНЕДІ",
+               head_sub='mux.Handle("GET /static/", http.FileServerFS(files))',
+               foot="ЖИНАЛАТЫН БЕТ ПЕН ӨЗГЕРМЕЙТІН ФАЙЛ — ЕКІ БӨЛЕК ЖОЛ",
+               foot_sub="Content-Type: text/css; charset=utf-8"),
+    "ru": dict(alt="Страница собирается, а файл отдаётся как есть",
+               b1="браузер", b1_sub="просит страницу",
+               b2="GET /", b2_sub="шаблон + данные",
+               b3="GET /static/", b3_sub="файл как есть",
+               b4="страница", b4_sub="со стилем",
+               head="САЙТ НЕ ТОЛЬКО РАБОТАЕТ, НО И ВЫГЛЯДИТ",
+               head_sub='mux.Handle("GET /static/", http.FileServerFS(files))',
+               foot="СОБРАННАЯ СТРАНИЦА И НЕИЗМЕННЫЙ ФАЙЛ — ДВА РАЗНЫХ ПУТИ",
+               foot_sub="Content-Type: text/css; charset=utf-8"),
+    "en": dict(alt="A page is assembled, a file is handed over unchanged",
+               b1="the browser", b1_sub="asks for a page",
+               b2="GET /", b2_sub="template + data",
+               b3="GET /static/", b3_sub="the file as it is",
+               b4="the page", b4_sub="with its style",
+               head="THE SITE NOW LOOKS LIKE SOMETHING, NOT ONLY WORKS",
+               head_sub='mux.Handle("GET /static/", http.FileServerFS(files))',
+               foot="AN ASSEMBLED PAGE AND AN UNCHANGING FILE TAKE DIFFERENT PATHS",
+               foot_sub="Content-Type: text/css; charset=utf-8"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1701,7 +1763,8 @@ if __name__ == "__main__":
                                ("routes", map21, L21),
                                ("middleware", map22, L22),
                                ("templates", map23, L23),
-                               ("forms", map24, L24)):
+                               ("forms", map24, L24),
+                               ("static", map25, L25)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

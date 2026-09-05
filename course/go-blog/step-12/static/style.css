@@ -1,0 +1,16 @@
+:root { --ink: #1a1a1a; --paper: #fffdf8; --accent: #7a1f1f; }
+
+body {
+  margin: 0 auto;
+  max-width: 38rem;
+  padding: 2rem 1rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1.05rem/1.6 -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+}
+
+h1 { font-size: 1.6rem; letter-spacing: -0.01em; }
+a { color: var(--accent); }
+ul { padding-left: 1.1rem; }
+li { margin: 0.4rem 0; }
+img { max-width: 100%; height: auto; }
