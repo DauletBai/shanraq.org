@@ -14,6 +14,7 @@ sharp at any size, and carries its own light/dark palette.
 
 import math
 import os
+import re
 
 # Isometric projection: x runs right-and-down, y right-and-up, z straight up.
 # A true isometric (30 degrees) keeps every edge measurable with a ruler, which
@@ -247,10 +248,10 @@ text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-se
    The captions carry most of the increase because they stand in open space.
    A label on a block is held to what the block's face can hold: past that it
    overhangs the edges and reads as floating text rather than a name. */
-.lbl{fill:var(--ink);font-size:16px;font-weight:600;text-anchor:middle}
-.sub{fill:var(--soft);font-size:13px;text-anchor:middle}
-.tag{fill:var(--tagink);font-size:13px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
-.cap{fill:var(--ink);font-size:21px;font-weight:700;text-anchor:middle}\n.lbl-acc{fill:var(--tagink);font-size:16px;font-weight:600;text-anchor:middle}\n.sub-acc{fill:var(--tagink);opacity:.85;font-size:13px;text-anchor:middle}
+.lbl{fill:var(--ink);font-size:18px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:14px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:14px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:21px;font-weight:700;text-anchor:middle}\n.lbl-acc{fill:var(--tagink);font-size:18px;font-weight:600;text-anchor:middle}\n.sub-acc{fill:var(--tagink);opacity:.85;font-size:14px;text-anchor:middle}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:18px;fill:var(--soft);text-anchor:middle}
 """
 
@@ -396,23 +397,24 @@ def map04(s):
 
 
 def map05(s):
-    """The announcement cover: lessons stand, the road keeps going.
+    """The announcement cover: the modules stand, the road keeps going.
 
-    Solid blocks and an empty road after them say what a sentence would have to
-    spell out — that the course is real and unfinished at once. The blocks are
-    deliberately unnumbered: numbered ones claimed a count, and the count was
-    wrong within a month of publishing.
+    The blocks used to be blank, on the argument that numbering them would claim
+    a lesson count that goes stale. It does — but five anonymous cubes say
+    nothing at all, which is worse. Named after the course's modules they carry
+    the shape of the whole thing and stay true as lessons are added.
     """
     parts = []
 
-    half, top = 0.86, 0.95
-    for u in (-5.6, -3.6, -1.6, 0.4, 2.4):
+    half, top = 1.0, 0.95
+    for u, key in ((-5.4, "m1"), (-3.2, "m2"), (-1.0, "m3"), (1.2, "m4"), (3.4, "m5")):
         parts.append(block(u, 0, half, top, "gt", "gl", "gr"))
+        parts.append(text(u, top, s[key], "tag", dy=4.0))
 
     # The road past the last block: lessons that exist as a plan, not yet as
     # pages. Drawn as a path with nothing standing on it.
-    parts.append(road(3.5, 6.4, top * 0.5, 0.44, "band-flow"))
-    for u in (4.2, 5.1, 6.0):
+    parts.append(road(4.6, 7.4, top * 0.5, 0.44, "band-flow"))
+    for u in (5.3, 6.2, 7.1):
         parts.append(chevron(u, top * 0.5 + 0.02, +1, "arw-flow"))
     return "".join(parts)
 
@@ -465,7 +467,7 @@ def map07(s):
     # The byte offset under each letter: the number range hands back, and the
     # reason it jumps by two. Below the blocks, not behind them — set level with
     # the row it belongs to, half of them disappeared behind the fronts.
-    offsets_at = clear_below(0, 0.62, gap_px=14)
+    offsets_at = clear_below(0, 0.62, gap_px=30)
     for centre, off in marks:
         parts.append(text(centre, offsets_at, str(off), "mono"))
 
@@ -637,7 +639,7 @@ def map13(s):
     half, top = 1.45, 1.6
     base = 0.95
     parts.append(block(-4.3, base, half, top, "gt", "gl", "gr"))
-    parts.append(on_face_side(-4.3, base, base + top, s["value"], s["value_sub"], accent=True))
+    parts.append(on_face_side(-4.3, 0.0, base + top, s["value"], s["value_sub"], accent=True))
 
     # The two roads end at two tiles, one above the other, so the gap between
     # them has to clear a whole tile — height and both halves. At the first
@@ -928,6 +930,49 @@ def map22(s):
     return "".join(parts)
 
 
+# Rough width of a rendered string, in px. Enough to catch a label that has
+# outgrown the block it names -- exact metrics would need the font itself.
+_CHAR_W = {"lbl": 0.56, "lbl-acc": 0.56, "sub": 0.52, "sub-acc": 0.52,
+           "tag": 0.58, "cap": 0.58, "mono": 0.60}
+_FONT_PX = {"lbl": 18, "lbl-acc": 18, "sub": 14, "sub-acc": 14,
+            "tag": 14, "cap": 21, "mono": 18}
+
+
+def check_labels(svg_body, name, lang):
+    """Warn when a label is wider than the face it is written on.
+
+    A label that overhangs its block stops naming it and turns into text lying
+    over the picture. Eyeballing sixty-six files does not scale, so the width is
+    estimated here and the map that broke it is named.
+
+    The face is a rhombus, so its widest chord is the one through the middle and
+    every line above or below it has less room -- which is exactly where a
+    second line of label goes. That is why the check narrows the allowance by
+    how far the text sits from the centre.
+    """
+    faces = []
+    for m in re.finditer(r'<polygon class="(gt|rt|t)" points="([^"]+)"/>', svg_body):
+        pts = [tuple(map(float, pt.split(","))) for pt in m.group(2).split()]
+        xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+        cx, cy = sum(xs) / len(xs), sum(ys) / len(ys)
+        faces.append((cx, cy, max(xs) - min(xs), (max(ys) - min(ys)) / 2))
+    if not faces:
+        return
+    for m in re.finditer(r'<text class="([a-z-]+)" x="([-\d.]+)" y="([-\d.]+)">([^<]*)</text>', svg_body):
+        cls, x, y = m.group(1), float(m.group(2)), float(m.group(3))
+        body = (m.group(4).replace("&lt;", "<").replace("&gt;", ">")
+                .replace("&amp;", "&"))
+        if cls not in ("lbl", "lbl-acc", "sub", "sub-acc", "tag") or not body:
+            continue
+        cx, cy, fw, fh = min(faces, key=lambda f: (f[0] - x) ** 2 + (f[1] - y) ** 2)
+        if abs(cx - x) > 40 or abs(cy - y) > fh + 20:
+            continue  # not written on a block at all
+        room = fw * max(0.25, 1.0 - abs(y - cy) / max(fh, 1.0))
+        want = len(body) * _FONT_PX[cls] * _CHAR_W[cls]
+        if want > room * 0.98:
+            print(f"  ШИРЕ ГРАНИ: {name}-{lang} «{body}» {want:.0f}px, место {room:.0f}px")
+
+
 def render(scene, strings, name="", lang=""):
     """Draw the shared frame, then the scene centred inside it, 16:9."""
     _seen.clear()
@@ -958,6 +1003,7 @@ def render(scene, strings, name="", lang=""):
 
     if half_w * k > SAFE_X or half_h * k > SAFE_Y_DOWN:
         print(f"  НЕ ВЛЕЗАЕТ: {name}-{lang} {half_w * 2 * k:.0f}x{half_h * 2 * k:.0f}px")
+    check_labels(body, name, lang)
 
     x0, y0 = -CANVAS_W / 2, ORIGIN_Y - CANVAS_H / 2
     return (
@@ -1030,24 +1076,24 @@ L01 = {
 L02 = {
     "kz": dict(
         alt="Редактор, терминал және Go: қайсысы не үшін жауап береді",
-        b1="РЕДАКТОР", b1_sub="VS Code — мәтін жазасыз",
-        b2="ТЕРМИНАЛ", b2_sub="go run . — пәрмен бересіз",
-        b3="GO", b3_sub="жинайды және іске қосады",
+        b1="РЕДАКТОР", b1_sub="VS Code",
+        b2="ТЕРМИНАЛ", b2_sub="go run .",
+        b3="GO", b3_sub="жинап, қосады",
         head="ҚАЙСЫСЫ НЕ ҮШІН ЖАУАП БЕРЕДІ", head_sub="үш құрал, үш жауапкершілік",
         foot="ЖОБА ҚАЛТАСЫ", foot_sub="go-oqu/sabaq-01 · go.mod + main.go",
     ),
     "ru": dict(
         alt="Редактор, терминал и Go: кто за что отвечает",
-        b1="РЕДАКТОР", b1_sub="VS Code — пишете текст",
-        b2="ТЕРМИНАЛ", b2_sub="go run . — отдаёте команду",
+        b1="РЕДАКТОР", b1_sub="VS Code",
+        b2="ТЕРМИНАЛ", b2_sub="go run .",
         b3="GO", b3_sub="собирает и запускает",
         head="КТО ЗА ЧТО ОТВЕЧАЕТ", head_sub="три инструмента, три зоны вины",
         foot="ПАПКА ПРОЕКТА", foot_sub="go-oqu/sabaq-01 · go.mod + main.go",
     ),
     "en": dict(
         alt="Editor, terminal and Go: which one is answerable for what",
-        b1="EDITOR", b1_sub="VS Code — you write text",
-        b2="TERMINAL", b2_sub="go run . — you give the order",
+        b1="EDITOR", b1_sub="VS Code",
+        b2="TERMINAL", b2_sub="go run .",
         b3="GO", b3_sub="builds it and runs it",
         head="WHICH ONE IS ANSWERABLE", head_sub="three tools, three kinds of fault",
         foot="PROJECT FOLDER", foot_sub="go-oqu/sabaq-01 · go.mod + main.go",
@@ -1115,14 +1161,17 @@ L04["ru"]["in"] = "ЧТО ПРИНЕСЛИ"; L04["ru"]["in_sub"] = "a, b float64
 L04["en"]["in"] = "WHAT YOU BRING"; L04["en"]["in_sub"] = "a, b float64"
 
 L05 = {
-    "kz": dict(alt="Сабақтар тұр, жол әрі қарай созылады",
-               head="ТЕГІН КУРС: GO НӨЛДЕН", head_sub="45 сабақ · тіркелусіз · үш тілде",
+    "kz": dict(alt="Курс модульдері тұр, жол әрі қарай созылады",
+               m1="КІРІСПЕ", m2="ТІЛ", m3="ВЕБ", m4="ДЕРЕКТЕР", m5="АДАМДАР",
+               head="ТЕГІН КУРС: GO НӨЛДЕН", head_sub="46 сабақ · тіркелусіз · үш тілде",
                foot="ЖОЛ БАСТАЛДЫ ЖӘНЕ ӘРІ ҚАРАЙ СОЗЫЛАДЫ", foot_sub="жаңа сабақтар — жазылу ретімен"),
-    "ru": dict(alt="Уроки стоят, дорога идёт дальше",
-               head="БЕСПЛАТНЫЙ КУРС: GO С НУЛЯ", head_sub="45 уроков · без регистрации · три языка",
+    "ru": dict(alt="Модули курса стоят, дорога идёт дальше",
+               m1="ПРОЛОГ", m2="ЯЗЫК", m3="ВЕБ", m4="ДАННЫЕ", m5="ЛЮДИ",
+               head="БЕСПЛАТНЫЙ КУРС: GO С НУЛЯ", head_sub="46 уроков · без регистрации · три языка",
                foot="ДОРОГА НАЧАТА И ИДЁТ ДАЛЬШЕ", foot_sub="новые уроки — по мере написания"),
-    "en": dict(alt="Lessons stand, and the road keeps going",
-               head="A FREE COURSE: GO FROM SCRATCH", head_sub="45 lessons · no account · three languages",
+    "en": dict(alt="The course's modules stand, and the road keeps going",
+               m1="PROLOGUE", m2="LANGUAGE", m3="WEB", m4="DATA", m5="PEOPLE",
+               head="A FREE COURSE: GO FROM SCRATCH", head_sub="46 lessons · no account · three languages",
                foot="THE ROAD IS STARTED AND KEEPS GOING", foot_sub="new lessons as they are written"),
 }
 
@@ -1234,7 +1283,7 @@ L11 = {
                foot="ЕСЛИ СТАВИТЬ ЗАПРЕЩЕНО — go.dev/play",
                foot_sub="с урока про сервер понадобится свой компьютер"),
     "en": dict(alt="Three things you need — a computer, the right to install, half an hour a day — and one you do not",
-               n1="A COMPUTER", n2="RIGHT TO INSTALL", n3="HALF AN HOUR", n4="ENGLISH",
+               n1="A COMPUTER", n2="CAN INSTALL", n3="HALF AN HOUR", n4="ENGLISH",
                s1="a phone will not do", s2="software", s3="a day", s4="not required",
                head="WHAT YOU NEED TO START", head_sub="go.dev/dl · code.visualstudio.com",
                foot="IF INSTALLING IS BLOCKED — go.dev/play",
@@ -1290,21 +1339,21 @@ L14 = {
     "kz": dict(alt="Бір функция, кез келген қойма: келісім — біліктер тізімі",
                fn="report", fn_sub="қойманы білмейді",
                iface="Store", iface_sub="Add · All",
-               s1="MemoryStore", s2="LastTwoStore", s3="fakeStore (тест)",
+               s1="MemoryStore", s2="LastTwoStore", s3="fakeStore",
                head="ҚҰРЫЛЫСЫ ЕМЕС, БІЛІГІ", head_sub="type Store interface { Add · All }",
                foot="ІСКЕ АСЫРУ ЖАРИЯЛАНБАЙДЫ — ӨЗІНЕН-ӨЗІ ШЫҒАДЫ",
                foot_sub="func (s *MemoryStore) Add(a Article)"),
     "ru": dict(alt="Одна функция, любое хранилище: договор — это список умений",
                fn="report", fn_sub="не знает какое",
                iface="Store", iface_sub="Add · All",
-               s1="MemoryStore", s2="LastTwoStore", s3="fakeStore (тест)",
+               s1="MemoryStore", s2="LastTwoStore", s3="fakeStore",
                head="УМЕНИЯ, А НЕ УСТРОЙСТВО", head_sub="type Store interface { Add · All }",
                foot="РЕАЛИЗАЦИЯ НЕ ОБЪЯВЛЯЕТСЯ — ОНА ПОЛУЧАЕТСЯ САМА",
                foot_sub="func (s *MemoryStore) Add(a Article)"),
     "en": dict(alt="One function, any store: the contract is a list of skills",
                fn="report", fn_sub="knows no store",
                iface="Store", iface_sub="Add · All",
-               s1="MemoryStore", s2="LastTwoStore", s3="fakeStore (a test)",
+               s1="MemoryStore", s2="LastTwoStore", s3="fakeStore",
                head="WHAT IT CAN DO, NOT WHAT IT IS", head_sub="type Store interface { Add · All }",
                foot="IMPLEMENTING IS NOT DECLARED — IT SIMPLY HAPPENS",
                foot_sub="func (s *MemoryStore) Add(a Article)"),
@@ -1312,7 +1361,7 @@ L14 = {
 
 L15 = {
     "kz": dict(alt="Функцияның екі шығуы бар: мән және қате",
-               fn="Get(slug)", fn_sub="екі мән қайтарады",
+               fn="Get(slug)", fn_sub="екі мән",
                good="Article", bad="error",
                good_sub="қате болмаса — мән", bad_sub="қате болса — nil емес",
                head="ҚАТЕ — ЕРЕКШЕ ЖАҒДАЙ ЕМЕС, ЕКІНШІ МӘН",
@@ -1320,7 +1369,7 @@ L15 = {
                foot="ЕКІНШІСІ БІРІНШІ ТЕКСЕРІЛЕДІ",
                foot_sub="if err != nil { return … }   ·   errors.Is(err, ErrNotFound)"),
     "ru": dict(alt="У функции два выхода: значение и ошибка",
-               fn="Get(slug)", fn_sub="возвращает два значения",
+               fn="Get(slug)", fn_sub="два значения",
                good="Article", bad="error",
                good_sub="нет ошибки — есть значение", bad_sub="есть ошибка — не nil",
                head="ОШИБКА — НЕ ИСКЛЮЧЕНИЕ, А ВТОРОЕ ЗНАЧЕНИЕ",
@@ -1328,7 +1377,7 @@ L15 = {
                foot="ВТОРОЕ ПРОВЕРЯЮТ ПЕРВЫМ",
                foot_sub="if err != nil { return … }   ·   errors.Is(err, ErrNotFound)"),
     "en": dict(alt="A function has two ways out: a value and an error",
-               fn="Get(slug)", fn_sub="returns two values",
+               fn="Get(slug)", fn_sub="two values",
                good="Article", bad="error",
                good_sub="no error — a value", bad_sub="an error — not nil",
                head="AN ERROR IS NOT AN EXCEPTION, IT IS THE SECOND VALUE",
@@ -1363,25 +1412,25 @@ L16 = {
 
 L17 = {
     "kz": dict(alt="Екі қадам: git add таңдайды, git commit жазып қояды",
-               work="жұмыс қалтасы", work_sub="файлдарды өзгертесіз",
-               index="индекс", index_sub="не сақталатыны",
-               hist="тарих", hist_sub="қайта оралуға болатын нүкте",
+               work="жұмыс қалтасы", work_sub="өзгертесіз",
+               index="индекс", index_sub="не сақталады",
+               hist="тарих", hist_sub="оралу нүктесі",
                cmd1="git add", cmd2="git commit",
                head="ЕКІ ҚАДАМ, БІРЕУ ЕМЕС", head_sub="git status — қазір қай кезеңде тұрғаныңыз",
                foot="ТАРИХ — ҚАЙТА ОРАЛУҒА БОЛАТЫН НҮКТЕЛЕР",
                foot_sub="git log --oneline   ·   git restore --source=HEAD~1 main.go"),
     "ru": dict(alt="Два шага: git add выбирает, git commit записывает",
-               work="рабочая папка", work_sub="вы правите файлы",
-               index="индекс", index_sub="что попадёт в запись",
-               hist="история", hist_sub="точка, куда можно вернуться",
+               work="рабочая папка", work_sub="правите файлы",
+               index="индекс", index_sub="что запишем",
+               hist="история", hist_sub="точка возврата",
                cmd1="git add", cmd2="git commit",
                head="ДВА ШАГА, А НЕ ОДИН", head_sub="git status — на каком шаге вы сейчас",
                foot="ИСТОРИЯ — ЭТО ТОЧКИ, В КОТОРЫЕ МОЖНО ВЕРНУТЬСЯ",
                foot_sub="git log --oneline   ·   git restore --source=HEAD~1 main.go"),
     "en": dict(alt="Two steps: git add chooses, git commit records",
-               work="working folder", work_sub="you edit the files",
-               index="the index", index_sub="what goes into the record",
-               hist="history", hist_sub="a point you can return to",
+               work="working folder", work_sub="you edit them",
+               index="the index", index_sub="what gets in",
+               hist="history", hist_sub="a return point",
                cmd1="git add", cmd2="git commit",
                head="TWO STEPS, NOT ONE", head_sub="git status — which step you are on",
                foot="HISTORY IS A SET OF POINTS YOU CAN RETURN TO",
@@ -1390,7 +1439,7 @@ L17 = {
 
 L18 = {
     "kz": dict(alt="Бір тарих, екі жерде: push жібереді, pull кері әкеледі",
-               local="сіздің компьютеріңіз", local_sub=".git қалтасы",
+               local="компьютеріңіз", local_sub=".git қалтасы",
                remote="GitHub", remote_sub="желідегі көшірме",
                push="git push", pull="git pull",
                head="СОЛ ТАРИХ, ЕКІ ЖЕРДЕ", head_sub="git remote add origin … · git push -u origin main",
@@ -1405,7 +1454,7 @@ L18 = {
                foot_sub="README.md — первое, что читает человек"),
     "en": dict(alt="One history in two places: push sends, pull brings it back",
                local="your computer", local_sub="the .git folder",
-               remote="GitHub", remote_sub="the copy on the network",
+               remote="GitHub", remote_sub="the network copy",
                push="git push", pull="git pull",
                head="THE SAME HISTORY, IN TWO PLACES", head_sub="git remote add origin … · git push -u origin main",
                foot="THIS IS NOT A BACKUP — IT IS WORK PEOPLE CAN SEE",
@@ -1460,7 +1509,7 @@ L20 = {
 L21 = {
     "kz": dict(alt="Бір кіреберіс, бірнеше белгіленген есік: бағыттауыш таңдайды",
                req="сұраныс", req_sub="әдіс + жол",
-               mux="ServeMux", mux_sub="кімге беруді шешеді",
+               mux="ServeMux", mux_sub="кімге береді",
                r1="GET /{$}", r2="GET /read/{slug}", r3="POST /read/{slug}/like",
                head="ӘДІС ПЕН ЖОЛ — БІР ЖОЛДА", head_sub='mux.HandleFunc("POST /read/{slug}/like", …)',
                foot="ТАППАСА — 404, ӘДІСІ БАСҚА БОЛСА — 405, ӨЗІ",
@@ -1502,7 +1551,7 @@ L22 = {
                b1="a request", b1_sub="comes in",
                b2="logging", b2_sub="the wrapper",
                b3="ServeMux", b3_sub="the router",
-               b4="the handler", b4_sub="writes the answer",
+               b4="the handler", b4_sub="writes it",
                head="ONE WRAPPER AROUND EVERYTHING", head_sub="http.ListenAndServe(\":8080\", logging(mux))",
                foot="THE REQUEST GOES THROUGH IT TWICE: IN AND OUT",
                foot_sub="next.ServeHTTP(w, r) — there is code before it and after it"),
