@@ -616,20 +616,27 @@ def map13(s):
     parts = []
 
     # Roads first: drawn after the blocks they would lie across their faces.
-    parts.append(road(-2.4, 4.4, 2.05, 0.58, "band-flow"))
+    parts.append(road(-2.4, 4.4, 3.15, 0.58, "band-flow"))
     for u in (-1.4, 0.4, 2.2):
-        parts.append(chevron(u, 2.07, +1, "arw-flow"))
+        parts.append(chevron(u, 3.17, +1, "arw-flow"))
     parts.append(road(-2.4, 4.4, 0.35, 0.58, "band-res"))
     for u in (-1.2, 0.6, 2.4):
         parts.append(chevron(u, 0.37, -1, "arw-res"))
 
+    # Lifted to sit level with the middle of the two roads: standing on the
+    # ground it hung below both of them and looked like a third thing rather
+    # than the value they lead to and from.
     half, top = 1.45, 1.6
-    parts.append(block(-4.3, 0, half, top, "gt", "gl", "gr"))
-    parts.append(on_face_side(-4.3, 0.0, top, s["value"], s["value_sub"], accent=True))
+    base = 0.95
+    parts.append(block(-4.3, base, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(-4.3, base, base + top, s["value"], s["value_sub"], accent=True))
 
-    tile, tile_h = 1.15, 0.5
-    parts.append(block(5.6, 1.9, tile, tile_h, "t", "l", "r"))
-    parts.append(text(5.6, 1.9 + tile_h, s["copy"], "lbl", dy=4.0))
+    # The two roads end at two tiles, one above the other, so the gap between
+    # them has to clear a whole tile — height and both halves. At the first
+    # spacing the white one sat on the red one's shoulder.
+    tile, tile_h = 0.95, 0.42
+    parts.append(block(5.6, 3.0, tile, tile_h, "t", "l", "r"))
+    parts.append(text(5.6, 3.0 + tile_h, s["copy"], "lbl", dy=4.0))
 
     parts.append(block(5.6, 0.0, tile, tile_h, "rt", "rl", "rr"))
     parts.append(text(5.6, tile_h, s["addr"], "tag", dy=4.0))
@@ -637,7 +644,7 @@ def map13(s):
     # What each road does is written on the road, not on the tile it ends at:
     # a caption laid over a tile's face fights the fill for contrast and loses,
     # and on the red one it lost badly.
-    parts.append(text(1.0, 2.62, s["copy_sub"], "sub"))
+    parts.append(text(1.0, 3.72, s["copy_sub"], "sub"))
     parts.append(text(1.0, 0.92, s["addr_sub"], "sub"))
     return "".join(parts)
 
@@ -1412,7 +1419,7 @@ L20 = {
 }
 
 L21 = {
-    "kz": dict(alt="Бір кіреберіс, бірнеше белгіленген есік: маршрутизатор таңдайды",
+    "kz": dict(alt="Бір кіреберіс, бірнеше белгіленген есік: бағыттауыш таңдайды",
                req="сұраныс", req_sub="әдіс + жол",
                mux="ServeMux", mux_sub="қайсысы екенін шешеді",
                r1="GET /{$}", r2="GET /read/{slug}", r3="POST /read/{slug}/like",
