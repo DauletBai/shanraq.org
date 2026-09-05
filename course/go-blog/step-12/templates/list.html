@@ -4,10 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/style.css">
- <title>Менің блогым</title></head>
+  <title>Менің блогым</title>
+</head>
 <body>
-  <img src="/static/logo.svg" width="120" height="60" alt="блог белгісі">
-  <h1>Менің блогым</h1>
+  <header class="brand">
+    <img src="/static/logo.svg" width="60" height="60" alt="">
+    <h1>Менің блогым</h1>
+  </header>
   <form method="post" action="/add">
     <label for="title">Мақаланың тақырыбы</label>
     <input id="title" name="title" value="{{ .Draft }}" required maxlength="80">

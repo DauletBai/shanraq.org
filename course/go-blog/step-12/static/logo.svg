@@ -1,10 +1,10 @@
-<!-- The site mark: the shanyraq lattice, white on the accent colour. Geometry
-     mirrors web/static/brand/shanraq-mark-light.svg; no text, so the same file
-     serves the course in all three languages. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" width="120" height="60">
-  <rect width="120" height="60" rx="6" fill="#7a1f1f"/>
-  <g transform="translate(33 3) scale(0.135)" fill="none" stroke="#fffdf8" stroke-linecap="round">
-    <g stroke-opacity="0.35" stroke-width="45">
+<!-- The site mark: the shanyraq lattice, in the brand red on a transparent
+     ground. Same geometry and colours as web/static/brand/shanraq-mark.svg.
+     There is no text in it, so one file serves the course in all three
+     languages; the blog's name stands next to it as real text. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="60" height="60">
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#ffadad" stroke-opacity="0.5" stroke-width="45">
       <line x1="76" y1="76" x2="324" y2="324"/>
       <line x1="137" y1="37" x2="363" y2="263"/>
       <line x1="37" y1="137" x2="263" y2="363"/>
@@ -12,7 +12,7 @@
       <line x1="137" y1="363" x2="363" y2="137"/>
       <line x1="37" y1="263" x2="263" y2="37"/>
     </g>
-    <g stroke-width="26">
+    <g stroke="#e53935" stroke-width="30">
       <line x1="76" y1="76" x2="324" y2="324"/>
       <line x1="137" y1="37" x2="363" y2="263"/>
       <line x1="37" y1="137" x2="263" y2="363"/>
