@@ -1151,9 +1151,10 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
 .reportbox__form .hint { margin: 8px 0 12px; }
 .reported-note { display: inline-block; margin-top: 4px; }
 
-/* At the foot of an article the report sits beside the typo line, so it needs
-   the same quiet spacing rather than the tight one it had in the header. */
-.reportbox--foot { margin: 0 0 20px; }
+/* At the foot of an article the report follows the typo line, and the two are
+   separate offers: run together they read as one broken sentence. The header
+   version had no top margin because it hung off a toolbar; here it needs one. */
+.reportbox--foot { margin: 16px 0 26px; }
 
 /* The hourglass turns while a translation runs: a page that shows nothing for
    several minutes is indistinguishable from a page that has forgotten. */
