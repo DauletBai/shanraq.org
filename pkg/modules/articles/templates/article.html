@@ -92,29 +92,6 @@
                  is exactly the reader we most want to keep. */}}
             {{ template "share_row" (dict "Lang" .Lang "Title" .Title "URL" (printf "%s%s" .SiteURL .CanonURL)) }}
 
-            {{/* A report is not a downvote and does not sit beside one. It names
-                 a rule from the site's own published list, it is folded away so
-                 it is available without being an invitation, and it counts once
-                 per reader. */}}
-            {{ if .CanReport }}
-            {{ if .Reported }}
-            <span class="hint reported-note">✓ {{ t .Lang "article.report_done" }}</span>
-            {{ else }}
-            <details class="reportbox">
-              <summary class="reportbox__toggle">{{ t .Lang "article.report" }}</summary>
-              <form method="post" action="/read/{{ .Slug }}/report" class="reportbox__form">
-                <div class="field">
-                  <label for="report_reason">{{ t .Lang "article.report_reason" }}</label>
-                  <select class="select" id="report_reason" name="reason" required>
-                    {{ range reviewRules }}<option value="{{ . }}">{{ t $.Lang (printf "rule.%s" .) }}</option>{{ end }}
-                  </select>
-                </div>
-                <p class="hint">{{ t .Lang "article.report_hint" }}</p>
-                <button type="submit" class="btn btn--ghost">{{ t .Lang "article.report_send" }}</button>
-              </form>
-            </details>
-            {{ end }}
-            {{ end }}
           </div>
         </div>
 
@@ -129,6 +106,33 @@
         <p class="typo-line">
           <a class="typo-line__link" href="/read/{{ .Slug }}/typo?lang={{ .Lang }}">{{ icon "pencil" }}{{ t .Lang "corr.link" }}</a>
         </p>
+
+        {{/* A report belongs after the text, not above it. Everything published
+             here has already been through the rules once, so putting the form
+             at the top asks a reader to judge a piece they have not read — and
+             suggests we expect the worst of our own articles. A reader who has
+             finished and thinks a rule was broken knows what they are naming;
+             it names a rule from the published list, folds away, and counts
+             once per reader. */}}
+        {{ if .CanReport }}
+        {{ if .Reported }}
+        <p class="hint reported-note">✓ {{ t .Lang "article.report_done" }}</p>
+        {{ else }}
+        <details class="reportbox reportbox--foot">
+          <summary class="reportbox__toggle">{{ t .Lang "article.report" }}</summary>
+          <form method="post" action="/read/{{ .Slug }}/report" class="reportbox__form">
+            <div class="field">
+              <label for="report_reason">{{ t .Lang "article.report_reason" }}</label>
+              <select class="select" id="report_reason" name="reason" required>
+                {{ range reviewRules }}<option value="{{ . }}">{{ t $.Lang (printf "rule.%s" .) }}</option>{{ end }}
+              </select>
+            </div>
+            <p class="hint">{{ t .Lang "article.report_hint" }}</p>
+            <button type="submit" class="btn btn--ghost">{{ t .Lang "article.report_send" }}</button>
+          </form>
+        </details>
+        {{ end }}
+        {{ end }}
 
         {{/* The second share row is the one that earns its keep: the reader has
              finished and is deciding whether the piece was worth passing on. */}}
