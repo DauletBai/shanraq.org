@@ -57,9 +57,14 @@ def poly(points, cls):
     return f'<polygon class="{cls}" points="{d}"/>'
 
 
-def slab(u, z, half_u, half_side, h, top, left, right):
-    """A block that can be wider along the road than across it."""
-    x, y = at(u, 0.0)
+def slab(u, z, half_u, half_side, h, top, left, right, side=0.0):
+    """A block that can be wider along the road than across it.
+
+    The side step is what makes a stack of these compact: a wide, shallow slab
+    drops much less on screen than a cube of the same width, so several fit one
+    above another without the gap swallowing the picture.
+    """
+    x, y = at(u, side)
     x -= half_u
     y -= half_side
     w, d = half_u * 2, half_side * 2
@@ -945,6 +950,45 @@ def map20(s):
     return "".join(parts)
 
 
+def map21(s):
+    """Lesson: one entrance, several labelled doors, and the router decides.
+
+    The routes stand apart on the right with the method written into each,
+    because in Go 1.22 the method is part of the pattern rather than an if at
+    the top of the handler. What the reader wrote by hand last lesson is now
+    the box in the middle.
+    """
+    parts = [ground(-6.0, 6.0, -3.0, 3.0, "g")]
+
+    parts.append(road(-2.6, -0.6, 0.5, 0.5, "band-flow"))
+    for u in (-2.1, -1.2):
+        parts.append(chevron(u, 0.52, +1, "arw-flow"))
+
+    half, top = 1.35, 1.2
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["req"], s["req_sub"]))
+
+    parts.append(block(0.6, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.6, 0.0, top, s["mux"], s["mux_sub"], accent=True))
+
+    # Two routes rather than three: a third slab either overlapped its
+    # neighbours or had to be spread so far that the picture went hollow, and
+    # two are enough to show that the method rides in the pattern. The one that
+    # did not fit is named in the caption instead.
+    tile_u, tile_s, tile_h = 1.95, 1.0, 0.4
+    for side, key in ((-1.75, "r1"), (1.75, "r2")):
+        parts.append(slab(4.4, 0, tile_u, tile_s, tile_h, "gt", "gl", "gr", side=side))
+        parts.append(text(4.4, tile_h, s[key], "tag", side=side, dy=4.0))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=104.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -1449,6 +1493,30 @@ L20 = {
                foot_sub="http: superfluous response.WriteHeader call"),
 }
 
+L21 = {
+    "kz": dict(alt="Бір кіреберіс, бірнеше белгіленген есік: маршрутизатор таңдайды",
+               req="сұраныс", req_sub="әдіс + жол",
+               mux="ServeMux", mux_sub="қайсысы екенін шешеді",
+               r1="GET /{$}", r2="GET /read/{slug}", r3="POST /read/{slug}/like",
+               head="ӘДІС ПЕН ЖОЛ — БІР ЖОЛДА", head_sub='mux.HandleFunc("POST /read/{slug}/like", …)',
+               foot="ТАППАСА — 404, ӘДІСІ БАСҚА БОЛСА — 405, ӨЗІ",
+               foot_sub="Allow: GET, HEAD"),
+    "ru": dict(alt="Один вход, несколько подписанных дверей: выбирает маршрутизатор",
+               req="запрос", req_sub="метод + путь",
+               mux="ServeMux", mux_sub="решает, кому отдать",
+               r1="GET /{$}", r2="GET /read/{slug}", r3="POST /read/{slug}/like",
+               head="МЕТОД И ПУТЬ — В ОДНОЙ СТРОКЕ", head_sub='mux.HandleFunc("POST /read/{slug}/like", …)',
+               foot="НЕ НАШЁЛ — 404, НЕ ТОТ МЕТОД — 405, САМ",
+               foot_sub="Allow: GET, HEAD"),
+    "en": dict(alt="One entrance, several labelled doors: the router chooses",
+               req="a request", req_sub="method + path",
+               mux="ServeMux", mux_sub="decides who gets it",
+               r1="GET /{$}", r2="GET /read/{slug}", r3="POST /read/{slug}/like",
+               head="METHOD AND PATH ON ONE LINE", head_sub='mux.HandleFunc("POST /read/{slug}/like", …)',
+               foot="NOT FOUND — 404; WRONG METHOD — 405; ON ITS OWN",
+               foot_sub="Allow: GET, HEAD"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1472,7 +1540,8 @@ if __name__ == "__main__":
                                ("git", map17, L17),
                                ("github", map18, L18),
                                ("capstone", map19, L19),
-                               ("http", map20, L20)):
+                               ("http", map20, L20),
+                               ("routes", map21, L21)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
