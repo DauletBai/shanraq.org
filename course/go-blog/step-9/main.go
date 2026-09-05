@@ -37,7 +37,7 @@ func logging(next http.Handler) http.Handler {
 
 		next.ServeHTTP(rec, r)
 
-		log.Printf("%s %s → %d за %s", r.Method, r.URL.Path, rec.code,
+		log.Printf("%s %s → %d, %s ішінде", r.Method, r.URL.Path, rec.code,
 			time.Since(start).Round(time.Millisecond))
 	})
 }
