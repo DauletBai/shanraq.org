@@ -1033,6 +1033,36 @@ def map25(s):
     return "".join(parts)
 
 
+def map26(s):
+    """Lesson: what the reader gets when a handler blows up.
+
+    Three beats along one road, because the reader's experience is a sequence,
+    not a set: something breaks, something catches it, and something reaches
+    the screen. The footer carries the limit -- once the answer has left, the
+    catch is too late.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"], accent=True))
+
+    parts.append(block(0.15, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -1736,6 +1766,36 @@ L25 = {
                foot_sub="Content-Type: text/css; charset=utf-8"),
 }
 
+L26 = {
+    "kz": dict(alt="Паника ұсталады да, оқырман код пен нөмір алады",
+               b1="паника", b1_sub="нөл-сөздікке жазу",
+               b2="recover", b2_sub="аралық қабат",
+               b3="500 + нөмір", b3_sub="журналда стек",
+               c1="ұсталды", c2="жауап",
+               head="АҚ ЭКРАННЫҢ ОРНЫНА — КОД ПЕН НӨМІР",
+               head_sub="if v := recover(); v != nil {",
+               foot="ЖАУАП КЕТІП ҮЛГЕРСЕ, ҚҰТҚАРУ КЕШ: 200 ЖӘНЕ ЖАРТЫ БЕТ",
+               foot_sub="superfluous response.WriteHeader call"),
+    "ru": dict(alt="Панику ловят, и читатель получает код и номер",
+               b1="паника", b1_sub="nil-словарь",
+               b2="recover", b2_sub="прослойка",
+               b3="500 + номер", b3_sub="в журнале стек",
+               c1="поймали", c2="ответ",
+               head="ВМЕСТО БЕЛОГО ЭКРАНА — КОД И НОМЕР",
+               head_sub="if v := recover(); v != nil {",
+               foot="ЕСЛИ ОТВЕТ УЖЕ УШЁЛ, СПАСАТЬ ПОЗДНО: 200 И ПОЛСТРАНИЦЫ",
+               foot_sub="superfluous response.WriteHeader call"),
+    "en": dict(alt="The panic is caught, and the reader gets a code and a number",
+               b1="a panic", b1_sub="a nil map",
+               b2="recover", b2_sub="middleware",
+               b3="500 + a number", b3_sub="stack in the log",
+               c1="caught", c2="answer",
+               head="A CODE AND A NUMBER INSTEAD OF A BLANK SCREEN",
+               head_sub="if v := recover(); v != nil {",
+               foot="ONCE THE ANSWER HAS LEFT IT IS TOO LATE: 200 AND HALF A PAGE",
+               foot_sub="superfluous response.WriteHeader call"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1764,7 +1824,8 @@ if __name__ == "__main__":
                                ("middleware", map22, L22),
                                ("templates", map23, L23),
                                ("forms", map24, L24),
-                               ("static", map25, L25)):
+                               ("static", map25, L25),
+                               ("errors2", map26, L26)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
