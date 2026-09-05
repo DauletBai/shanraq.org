@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-608 -190 1216 684" width="1216" height="684" role="img" aria-label="The reader sends data, and the handler sends the browser to a page"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+/* Sizes are for the file, not the screen: a map 1216px wide is shown in an
+   article at roughly half that, so everything here lands at about 0.6 of what
+   it says. At the old sizes the caption arrived as 7px and the code line as 6,
+   which is a squint, and a squint over forty lessons is a headache.
+
+   The captions carry most of the increase because they stand in open space.
+   A label on a block is held to what the block's face can hold: past that it
+   overhangs the edges and reads as floating text rather than a name. */
+.lbl{fill:var(--ink);font-size:18px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:14px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:14px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:21px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:18px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.85;font-size:14px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:18px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-608.16" y1="-64.60" x2="-608.16" y2="368.60"/><line class="g" x1="-535.76" y1="-64.60" x2="-535.76" y2="368.60"/><line class="g" x1="-463.36" y1="-64.60" x2="-463.36" y2="368.60"/><line class="g" x1="-390.96" y1="-64.60" x2="-390.96" y2="368.60"/><line class="g" x1="-318.56" y1="-64.60" x2="-318.56" y2="368.60"/><line class="g" x1="-246.16" y1="-64.60" x2="-246.16" y2="368.60"/><line class="g" x1="-173.76" y1="-64.60" x2="-173.76" y2="368.60"/><line class="g" x1="-101.36" y1="-64.60" x2="-101.36" y2="368.60"/><line class="g" x1="-28.96" y1="-64.60" x2="-28.96" y2="368.60"/><line class="g" x1="43.44" y1="-64.60" x2="43.44" y2="368.60"/><line class="g" x1="115.84" y1="-64.60" x2="115.84" y2="368.60"/><line class="g" x1="188.24" y1="-64.60" x2="188.24" y2="368.60"/><line class="g" x1="260.64" y1="-64.60" x2="260.64" y2="368.60"/><line class="g" x1="333.04" y1="-64.60" x2="333.04" y2="368.60"/><line class="g" x1="405.44" y1="-64.60" x2="405.44" y2="368.60"/><line class="g" x1="477.84" y1="-64.60" x2="477.84" y2="368.60"/><line class="g" x1="550.24" y1="-64.60" x2="550.24" y2="368.60"/><line class="g" x1="622.64" y1="-64.60" x2="622.64" y2="368.60"/><line class="g" x1="-608.16" y1="-64.60" x2="608.16" y2="-64.60"/><line class="g" x1="-608.16" y1="-22.80" x2="608.16" y2="-22.80"/><line class="g" x1="-608.16" y1="19.00" x2="608.16" y2="19.00"/><line class="g" x1="-608.16" y1="60.80" x2="608.16" y2="60.80"/><line class="g" x1="-608.16" y1="102.60" x2="608.16" y2="102.60"/><line class="g" x1="-608.16" y1="144.40" x2="608.16" y2="144.40"/><line class="g" x1="-608.16" y1="186.20" x2="608.16" y2="186.20"/><line class="g" x1="-608.16" y1="228.00" x2="608.16" y2="228.00"/><line class="g" x1="-608.16" y1="269.80" x2="608.16" y2="269.80"/><line class="g" x1="-608.16" y1="311.60" x2="608.16" y2="311.60"/><line class="g" x1="-608.16" y1="353.40" x2="608.16" y2="353.40"/><text class="cap" x="0.00" y="-126.00">THE READER SENDS SOMETHING</text><text class="mono" x="0.00" y="-99.00">title := r.FormValue("title")</text><text class="cap" x="0.00" y="408.00">POST → 303 → GET: A REFRESH WILL NOT RESUBMIT</text><text class="mono" x="0.00" y="435.00">http.Redirect(w, r, "/", http.StatusSeeOther)</text><g transform="translate(0,152.00) scale(1.250) translate(-9.87,-130.15)"><polygon class="band-req" points="-164.54,112.10 -46.07,112.10 -46.07,150.10 -164.54,150.10"/><polygon class="arw-req" points="-95.81,130.34 -109.58,123.50 -109.58,137.18"/><polygon class="band-res" points="65.82,112.10 184.29,112.10 184.29,150.10 65.82,150.10"/><polygon class="arw-res" points="134.55,130.34 120.78,123.50 120.78,137.18"/><polygon class="t" points="-276.44,58.90 -190.87,108.30 -276.44,157.70 -362.00,108.30"/><polygon class="r" points="-362.00,152.00 -276.44,201.40 -276.44,157.70 -362.00,108.30"/><polygon class="l" points="-190.87,152.00 -276.44,201.40 -276.44,157.70 -190.87,108.30"/><text class="lbl" x="-276.44" y="106.30">the browser</text><text class="sub" x="-276.44" y="119.30">fills the form in</text><polygon class="rt" points="9.87,58.90 95.44,108.30 9.87,157.70 -75.69,108.30"/><polygon class="rr" points="-75.69,152.00 9.87,201.40 9.87,157.70 -75.69,108.30"/><polygon class="rl" points="95.44,152.00 9.87,201.40 9.87,157.70 95.44,108.30"/><text class="lbl-acc" x="9.87" y="106.30">POST /add</text><text class="sub-acc" x="9.87" y="119.30">changes things</text><polygon class="gt" points="296.18,58.90 381.74,108.30 296.18,157.70 210.62,108.30"/><polygon class="gr" points="210.62,152.00 296.18,201.40 296.18,157.70 210.62,108.30"/><polygon class="gl" points="381.74,152.00 296.18,201.40 296.18,157.70 381.74,108.30"/><text class="lbl-acc" x="296.18" y="106.30">GET /</text><text class="sub-acc" x="296.18" y="119.30">shows them</text><text class="mono" x="-105.31" y="81.70">POST</text><text class="mono" x="125.05" y="81.70">303</text></g></svg>

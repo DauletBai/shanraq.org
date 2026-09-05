@@ -971,6 +971,36 @@ def map23(s):
     return "".join(parts)
 
 
+def map24(s):
+    """Lesson: the reader sends something, and the answer is a redirect.
+
+    Three stops rather than two, because the third is the point: the handler
+    that changed something does not draw a page, it sends the browser to one.
+    Without that stop a refresh submits the form again, which is the bug this
+    picture exists to prevent.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -1617,6 +1647,33 @@ L23 = {
                foot_sub="a «<script>» on the page stays text and never runs"),
 }
 
+L24 = {
+    "kz": dict(alt="Оқырман дерек жібереді, өңдеуші оны браузерді бетке жібереді",
+               b1="браузер", b1_sub="форманы толтырады",
+               b2="POST /add", b2_sub="өзгертеді",
+               b3="GET /", b3_sub="көрсетеді",
+               c1="POST", c2="303",
+               head="ОҚЫРМАН ДЕРЕК ЖІБЕРЕДІ", head_sub='title := r.FormValue("title")',
+               foot="POST → 303 → GET: ЖАҢАРТУ ФОРМАНЫ ҚАЙТА ЖІБЕРМЕЙДІ",
+               foot_sub="http.Redirect(w, r, \"/\", http.StatusSeeOther)"),
+    "ru": dict(alt="Читатель отправляет данные, обработчик отправляет браузер на страницу",
+               b1="браузер", b1_sub="заполняет форму",
+               b2="POST /add", b2_sub="меняет",
+               b3="GET /", b3_sub="показывает",
+               c1="POST", c2="303",
+               head="ЧИТАТЕЛЬ ОТПРАВЛЯЕТ ДАННЫЕ", head_sub='title := r.FormValue("title")',
+               foot="POST → 303 → GET: ОБНОВЛЕНИЕ НЕ ОТПРАВИТ ФОРМУ ПОВТОРНО",
+               foot_sub="http.Redirect(w, r, \"/\", http.StatusSeeOther)"),
+    "en": dict(alt="The reader sends data, and the handler sends the browser to a page",
+               b1="the browser", b1_sub="fills the form in",
+               b2="POST /add", b2_sub="changes things",
+               b3="GET /", b3_sub="shows them",
+               c1="POST", c2="303",
+               head="THE READER SENDS SOMETHING", head_sub='title := r.FormValue("title")',
+               foot="POST → 303 → GET: A REFRESH WILL NOT RESUBMIT",
+               foot_sub="http.Redirect(w, r, \"/\", http.StatusSeeOther)"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1643,7 +1700,8 @@ if __name__ == "__main__":
                                ("http", map20, L20),
                                ("routes", map21, L21),
                                ("middleware", map22, L22),
-                               ("templates", map23, L23)):
+                               ("templates", map23, L23),
+                               ("forms", map24, L24)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
