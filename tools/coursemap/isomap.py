@@ -938,6 +938,39 @@ _FONT_PX = {"lbl": 18, "lbl-acc": 18, "sub": 14, "sub-acc": 14,
             "tag": 14, "cap": 21, "mono": 18}
 
 
+def map23(s):
+    """Lesson: a form and some data make a page.
+
+    Two roads meeting one block, because that is the whole shape of it: the
+    template is written once and the data changes on every request. The footer
+    carries what html/template does that a beginner would otherwise have to be
+    bitten by first.
+    """
+    parts = []
+
+    # Two roads meeting: the template comes down from above, the data up from
+    # below, and both end at the same page.
+    parts.append(road(-2.4, 1.0, 2.75, 0.5, "band-flow"))
+    for u in (-1.9, -0.9, 0.1):
+        parts.append(chevron(u, 2.77, +1, "arw-flow"))
+    parts.append(road(-2.4, 1.0, -1.65, 0.5, "band-res"))
+    for u in (-1.9, -0.9, 0.1):
+        parts.append(chevron(u, -1.63, +1, "arw-res"))
+
+    # Far enough apart to clear each other: two blocks stacked in z need a gap
+    # wider than a whole block, both halves and its height together.
+    half, top = 1.3, 1.05
+    parts.append(block(-4.0, 2.2, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.0, 0.0, 2.2 + top, s["tpl"], s["tpl_sub"]))
+
+    parts.append(block(-4.0, -2.2, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(-4.0, 0.0, -2.2 + top, s["data"], s["data_sub"], accent=True))
+
+    parts.append(block(3.1, 0.0, 1.5, 1.35, "gt", "gl", "gr"))
+    parts.append(on_face_side(3.1, 0.0, 1.35, s["page"], s["page_sub"], accent=True))
+    return "".join(parts)
+
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -1557,6 +1590,33 @@ L22 = {
                foot_sub="next.ServeHTTP(w, r) — there is code before it and after it"),
 }
 
+L23 = {
+    "kz": dict(alt="Шаблон мен деректер бір бетке қосылады",
+               tpl="шаблон", tpl_sub="{{ .Title }}",
+               data="деректер", data_sub="[]Article",
+               page="бет", page_sub="дайын HTML",
+               head="БЛАНК ПЕН ДЕРЕКТЕР — БЕТ БОЛАДЫ",
+               head_sub="template.Must(template.ParseFS(files, …))",
+               foot="БӨТЕН МӘТІН ӨЗІНЕН-ӨЗІ ЗАЛАЛСЫЗДАНАДЫ",
+               foot_sub="«<script>» бетте мәтін болып қалады, код емес"),
+    "ru": dict(alt="Шаблон и данные складываются в одну страницу",
+               tpl="шаблон", tpl_sub="{{ .Title }}",
+               data="данные", data_sub="[]Article",
+               page="страница", page_sub="готовый HTML",
+               head="БЛАНК И ДАННЫЕ ДАЮТ СТРАНИЦУ",
+               head_sub="template.Must(template.ParseFS(files, …))",
+               foot="ЧУЖОЙ ТЕКСТ ОБЕЗВРЕЖИВАЕТСЯ САМ",
+               foot_sub="«<script>» на странице останется текстом, а не кодом"),
+    "en": dict(alt="A template and some data add up to one page",
+               tpl="a template", tpl_sub="{{ .Title }}",
+               data="the data", data_sub="[]Article",
+               page="a page", page_sub="finished HTML",
+               head="A FORM PLUS DATA MAKES A PAGE",
+               head_sub="template.Must(template.ParseFS(files, …))",
+               foot="SOMEBODY ELSE'S TEXT IS MADE SAFE FOR YOU",
+               foot_sub="a «<script>» on the page stays text and never runs"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1582,7 +1642,8 @@ if __name__ == "__main__":
                                ("capstone", map19, L19),
                                ("http", map20, L20),
                                ("routes", map21, L21),
-                               ("middleware", map22, L22)):
+                               ("middleware", map22, L22),
+                               ("templates", map23, L23)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

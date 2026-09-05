@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-608 -190 1216 684" width="1216" height="684" role="img" aria-label="A template and some data add up to one page"><style>
+:root{
+  --ink:#3a3a3a; --soft:#5c5c5c; --line:#d6d3ce;
+  --top:#ded8cd; --lft:#bcb6aa; --rgt:#9d978d;
+  --red:#d32f2f; --red-d:#a92525; --red-l:#d9564f;
+  --grn:#2e7d32; --grn-d:#24632a; --grn-l:#4e8f52;
+  --tagink:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#d8d6d2; --soft:#c2bfb8; --line:#454545;
+    --top:#4f4c47; --lft:#403d3a; --rgt:#34322f;
+    --red:#ef5350; --red-d:#b93b38; --red-l:#ff8a84;
+    --grn:#66bb6a; --grn-d:#478a4a; --grn-l:#8fd193;
+    --tagink:#241f1f;
+  }
+}
+.g{stroke:#8a857e;stroke-width:.7;fill:none;opacity:.35}
+.t{fill:var(--top)}   .l{fill:var(--lft)}   .r{fill:var(--rgt)}
+.rt{fill:var(--red-l)} .rl{fill:var(--red)}  .rr{fill:var(--red-d)}
+.gt{fill:var(--grn-l)} .gl{fill:var(--grn)}  .gr{fill:var(--grn-d)}
+.band-req{fill:var(--red);opacity:.16}
+.band-res{fill:var(--grn);opacity:.16}
+.band-flow{fill:var(--ink);opacity:.13}
+.arw-flow{fill:var(--soft)}
+.arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
+text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+/* Sizes are for the file, not the screen: a map 1216px wide is shown in an
+   article at roughly half that, so everything here lands at about 0.6 of what
+   it says. At the old sizes the caption arrived as 7px and the code line as 6,
+   which is a squint, and a squint over forty lessons is a headache.
+
+   The captions carry most of the increase because they stand in open space.
+   A label on a block is held to what the block's face can hold: past that it
+   overhangs the edges and reads as floating text rather than a name. */
+.lbl{fill:var(--ink);font-size:18px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:14px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:14px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:21px;font-weight:700;text-anchor:middle}
+.lbl-acc{fill:var(--tagink);font-size:18px;font-weight:600;text-anchor:middle}
+.sub-acc{fill:var(--tagink);opacity:.85;font-size:14px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:18px;fill:var(--soft);text-anchor:middle}
+</style><line class="g" x1="-608.16" y1="-64.60" x2="-608.16" y2="368.60"/><line class="g" x1="-535.76" y1="-64.60" x2="-535.76" y2="368.60"/><line class="g" x1="-463.36" y1="-64.60" x2="-463.36" y2="368.60"/><line class="g" x1="-390.96" y1="-64.60" x2="-390.96" y2="368.60"/><line class="g" x1="-318.56" y1="-64.60" x2="-318.56" y2="368.60"/><line class="g" x1="-246.16" y1="-64.60" x2="-246.16" y2="368.60"/><line class="g" x1="-173.76" y1="-64.60" x2="-173.76" y2="368.60"/><line class="g" x1="-101.36" y1="-64.60" x2="-101.36" y2="368.60"/><line class="g" x1="-28.96" y1="-64.60" x2="-28.96" y2="368.60"/><line class="g" x1="43.44" y1="-64.60" x2="43.44" y2="368.60"/><line class="g" x1="115.84" y1="-64.60" x2="115.84" y2="368.60"/><line class="g" x1="188.24" y1="-64.60" x2="188.24" y2="368.60"/><line class="g" x1="260.64" y1="-64.60" x2="260.64" y2="368.60"/><line class="g" x1="333.04" y1="-64.60" x2="333.04" y2="368.60"/><line class="g" x1="405.44" y1="-64.60" x2="405.44" y2="368.60"/><line class="g" x1="477.84" y1="-64.60" x2="477.84" y2="368.60"/><line class="g" x1="550.24" y1="-64.60" x2="550.24" y2="368.60"/><line class="g" x1="622.64" y1="-64.60" x2="622.64" y2="368.60"/><line class="g" x1="-608.16" y1="-64.60" x2="608.16" y2="-64.60"/><line class="g" x1="-608.16" y1="-22.80" x2="608.16" y2="-22.80"/><line class="g" x1="-608.16" y1="19.00" x2="608.16" y2="19.00"/><line class="g" x1="-608.16" y1="60.80" x2="608.16" y2="60.80"/><line class="g" x1="-608.16" y1="102.60" x2="608.16" y2="102.60"/><line class="g" x1="-608.16" y1="144.40" x2="608.16" y2="144.40"/><line class="g" x1="-608.16" y1="186.20" x2="608.16" y2="186.20"/><line class="g" x1="-608.16" y1="228.00" x2="608.16" y2="228.00"/><line class="g" x1="-608.16" y1="269.80" x2="608.16" y2="269.80"/><line class="g" x1="-608.16" y1="311.60" x2="608.16" y2="311.60"/><line class="g" x1="-608.16" y1="353.40" x2="608.16" y2="353.40"/><text class="cap" x="0.00" y="-126.00">A FORM PLUS DATA MAKES A PAGE</text><text class="mono" x="0.00" y="-99.00">template.Must(template.ParseFS(files, …))</text><text class="cap" x="0.00" y="408.00">SOMEBODY ELSE'S TEXT IS MADE SAFE FOR YOU</text><text class="mono" x="0.00" y="435.00">a «&lt;script&gt;» on the page stays text and never runs</text><g transform="translate(0,152.00) scale(1.250) translate(23.04,-132.05)"><polygon class="band-flow" points="-157.96,28.50 65.82,28.50 65.82,66.50 -157.96,66.50"/><polygon class="arw-flow" points="-115.55,46.74 -129.33,39.90 -129.33,53.58"/><polygon class="arw-flow" points="-49.74,46.74 -63.51,39.90 -63.51,53.58"/><polygon class="arw-flow" points="16.08,46.74 2.31,39.90 2.31,53.58"/><polygon class="band-res" points="-157.96,195.70 65.82,195.70 65.82,233.70 -157.96,233.70"/><polygon class="arw-res" points="-115.55,213.94 -129.33,207.10 -129.33,220.78"/><polygon class="arw-res" points="-49.74,213.94 -63.51,207.10 -63.51,220.78"/><polygon class="arw-res" points="16.08,213.94 2.31,207.10 2.31,220.78"/><polygon class="t" points="-263.27,-20.90 -177.71,28.50 -263.27,77.90 -348.84,28.50"/><polygon class="r" points="-348.84,68.40 -263.27,117.80 -263.27,77.90 -348.84,28.50"/><polygon class="l" points="-177.71,68.40 -263.27,117.80 -263.27,77.90 -177.71,28.50"/><text class="lbl" x="-263.27" y="26.50">a template</text><text class="sub" x="-263.27" y="39.50">{{ .Title }}</text><polygon class="gt" points="-263.27,146.30 -177.71,195.70 -263.27,245.10 -348.84,195.70"/><polygon class="gr" points="-348.84,235.60 -263.27,285.00 -263.27,245.10 -348.84,195.70"/><polygon class="gl" points="-177.71,235.60 -263.27,285.00 -263.27,245.10 -177.71,195.70"/><text class="lbl-acc" x="-263.27" y="193.70">the data</text><text class="sub-acc" x="-263.27" y="206.70">[]Article</text><polygon class="gt" points="204.04,43.70 302.76,100.70 204.04,157.70 105.31,100.70"/><polygon class="gr" points="105.31,152.00 204.04,209.00 204.04,157.70 105.31,100.70"/><polygon class="gl" points="302.76,152.00 204.04,209.00 204.04,157.70 302.76,100.70"/><text class="lbl-acc" x="204.04" y="98.70">a page</text><text class="sub-acc" x="204.04" y="111.70">finished HTML</text></g></svg>
