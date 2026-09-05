@@ -913,6 +913,38 @@ def map19(s):
     return "".join(parts)
 
 
+def map20(s):
+    """Lesson: a response goes out in one direction and does not come back.
+
+    Three blocks in the order they must happen, and the middle one is red
+    because it is the point of no return: once the status code is out, the
+    headers are already on their way and nothing written after it will travel.
+    """
+    parts = [ground(-6.0, 6.0, -1.8, 1.8, "g")]
+
+    for u0, u1, mid in ((-2.6, -1.1, -1.85), (1.1, 2.6, 1.85)):
+        parts.append(road(u0, u1, 0.55, 0.5, "band-flow"))
+        parts.append(chevron(mid, 0.57, +1, "arw-flow"))
+
+    half, top = 1.35, 1.15
+    parts.append(block(-4.2, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["h1"], s["h1_sub"], accent=True))
+
+    parts.append(block(0.0, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.0, 0.0, top, s["h2"], s["h2_sub"], accent=True))
+
+    parts.append(block(4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(4.2, 0.0, top, s["h3"], s["h3_sub"]))
+
+    line_up = clear_above(top, half)
+    line_dn = clear_below(0, half, gap_px=64.0)
+    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
+    parts.append(text(0, line_up, s["head_sub"], "mono"))
+    parts.append(text(0, line_dn, s["foot"], "cap"))
+    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    return "".join(parts)
+
+
 def render(scene, strings, pad=46):
     """Draw the scene, then frame it around its own bounding box."""
     _seen.clear()
@@ -1393,6 +1425,30 @@ L19 = {
                foot_sub="go run .   ·   go test ./..."),
 }
 
+L20 = {
+    "kz": dict(alt="Жауап бір бағытта кетеді: тақырыптар, күй коды, дене",
+               h1="тақырыптар", h1_sub="w.Header().Set(…)",
+               h2="күй коды", h2_sub="w.WriteHeader(404)",
+               h3="дене", h3_sub="fmt.Fprint(w, …)",
+               head="ЖАУАП БІР БАҒЫТТА КЕТЕДІ", head_sub="кодтан кейін тақырып жіберілмейді",
+               foot="ДЕНЕНІ БІРІНШІ ЖАЗСАҢЫЗ — КОД 200 БОЛЫП ҚАЛАДЫ",
+               foot_sub="http: superfluous response.WriteHeader call"),
+    "ru": dict(alt="Ответ уходит в одну сторону: заголовки, код состояния, тело",
+               h1="заголовки", h1_sub="w.Header().Set(…)",
+               h2="код состояния", h2_sub="w.WriteHeader(404)",
+               h3="тело", h3_sub="fmt.Fprint(w, …)",
+               head="ОТВЕТ УХОДИТ В ОДНУ СТОРОНУ", head_sub="после кода заголовок уже не уедет",
+               foot="НАПИСАЛИ ТЕЛО ПЕРВЫМ — КОД НАВСЕГДА 200",
+               foot_sub="http: superfluous response.WriteHeader call"),
+    "en": dict(alt="A response goes out one way: headers, status code, body",
+               h1="headers", h1_sub="w.Header().Set(…)",
+               h2="status code", h2_sub="w.WriteHeader(404)",
+               h3="body", h3_sub="fmt.Fprint(w, …)",
+               head="A RESPONSE GOES OUT ONE WAY", head_sub="after the code, a header no longer travels",
+               foot="WRITE THE BODY FIRST AND THE CODE IS 200 FOR GOOD",
+               foot_sub="http: superfluous response.WriteHeader call"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1415,7 +1471,8 @@ if __name__ == "__main__":
                                ("packages", map16, L16),
                                ("git", map17, L17),
                                ("github", map18, L18),
-                               ("capstone", map19, L19)):
+                               ("capstone", map19, L19),
+                               ("http", map20, L20)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
