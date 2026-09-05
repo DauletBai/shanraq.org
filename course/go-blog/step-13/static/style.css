@@ -13,6 +13,12 @@ h1 { font-size: 1.6rem; letter-spacing: -0.01em; }
 .brand { display: flex; align-items: center; gap: 0.75rem; }
 .brand h1 { margin: 0; }
 a { color: var(--accent); }
+form { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 1.4rem 0; }
+label { color: #6b625a; }
+input, button { font: inherit; padding: 0.4rem 0.65rem; border: 1px solid #ddd5c9; border-radius: 4px; }
+input { flex: 1 1 14rem; min-width: 0; background: #fff; color: inherit; }
+button { background: var(--accent); border-color: var(--accent); color: var(--paper); cursor: pointer; }
+.err { color: var(--accent); margin: -0.6rem 0 1.2rem; }
 ul { padding-left: 1.1rem; }
 li { margin: 0.4rem 0; }
 img { max-width: 100%; height: auto; }
