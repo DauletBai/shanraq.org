@@ -889,6 +889,37 @@ def map21(s):
     return "".join(parts)
 
 
+def map22(s):
+    """Lesson: a wrapper the request passes through twice.
+
+    The row is what the request meets on the way in; the lower road is the same
+    row on the way out. Drawing both makes the point that the wrapper runs code
+    before and after the handler -- which is the whole reason it can time a
+    response or record its status code.
+    """
+    parts = []
+
+    # Clear of the row, not behind it: laid level with the blocks the bands ran
+    # behind them and six of the eight arrows disappeared, which made the
+    # journey look like it stopped at the first box.
+    parts.append(road(-5.9, 5.9, 3.75, 0.55, "band-req"))
+    for u in (-4.4, -1.6, 1.2, 4.0):
+        parts.append(chevron(u, 3.77, +1, "arw-req"))
+    parts.append(road(-5.9, 5.9, -0.7, 0.55, "band-res"))
+    for u in (-4.0, -1.2, 1.6, 4.4):
+        parts.append(chevron(u, -0.68, -1, "arw-res"))
+
+    half, top, base = 1.2, 1.0, 1.15
+    row = ((-4.4, "b1", ("t", "l", "r"), False),
+           (-1.5, "b2", ("rt", "rl", "rr"), True),
+           (1.5, "b3", ("t", "l", "r"), False),
+           (4.4, "b4", ("gt", "gl", "gr"), True))
+    for u, key, palette, accent in row:
+        parts.append(block(u, base, half, top, *palette))
+        parts.append(on_face_side(u, 0.0, base + top, s[key], s[key + "_sub"], accent=accent))
+    return "".join(parts)
+
+
 def render(scene, strings, name="", lang=""):
     """Draw the shared frame, then the scene centred inside it, 16:9."""
     _seen.clear()
@@ -1442,6 +1473,33 @@ L21 = {
                foot_sub="Allow: GET, HEAD"),
 }
 
+L22 = {
+    "kz": dict(alt="Орама: сұраныс өңдеушіге дейін де, кейін де сол қабаттан өтеді",
+               b1="сұраныс", b1_sub="кіріп келеді",
+               b2="logging", b2_sub="орама",
+               b3="ServeMux", b3_sub="бағыттауыш",
+               b4="өңдеуші", b4_sub="жауап жазады",
+               head="ОРАМА — БАРЛЫҒЫНЫҢ АЙНАЛАСЫНДА", head_sub="http.ListenAndServe(\":8080\", logging(mux))",
+               foot="СҰРАНЫС ОДАН ЕКІ РЕТ ӨТЕДІ: БАРҒАНДА ЖӘНЕ ҚАЙТҚАНДА",
+               foot_sub="next.ServeHTTP(w, r) — оның алдында да, соңында да код бар"),
+    "ru": dict(alt="Обёртка: запрос проходит через неё до обработчика и после него",
+               b1="запрос", b1_sub="входит",
+               b2="logging", b2_sub="обёртка",
+               b3="ServeMux", b3_sub="маршрутизатор",
+               b4="обработчик", b4_sub="пишет ответ",
+               head="ОБЁРТКА — ВОКРУГ ВСЕГО СРАЗУ", head_sub="http.ListenAndServe(\":8080\", logging(mux))",
+               foot="ЗАПРОС ПРОХОДИТ ЧЕРЕЗ НЕЁ ДВАЖДЫ: ТУДА И ОБРАТНО",
+               foot_sub="next.ServeHTTP(w, r) — код есть и до него, и после"),
+    "en": dict(alt="A wrapper: the request passes through it before the handler and after it",
+               b1="a request", b1_sub="comes in",
+               b2="logging", b2_sub="the wrapper",
+               b3="ServeMux", b3_sub="the router",
+               b4="the handler", b4_sub="writes the answer",
+               head="ONE WRAPPER AROUND EVERYTHING", head_sub="http.ListenAndServe(\":8080\", logging(mux))",
+               foot="THE REQUEST GOES THROUGH IT TWICE: IN AND OUT",
+               foot_sub="next.ServeHTTP(w, r) — there is code before it and after it"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1466,7 +1524,8 @@ if __name__ == "__main__":
                                ("github", map18, L18),
                                ("capstone", map19, L19),
                                ("http", map20, L20),
-                               ("routes", map21, L21)):
+                               ("routes", map21, L21),
+                               ("middleware", map22, L22)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
