@@ -2,7 +2,7 @@
      ground. Same geometry and colours as web/static/brand/shanraq-mark.svg.
      There is no text in it, so one file serves the course in all three
      languages; the blog's name stands next to it as real text. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="60" height="60">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="40" height="40">
   <g fill="none" stroke-linecap="round">
     <g stroke="#ffadad" stroke-opacity="0.5" stroke-width="45">
       <line x1="76" y1="76" x2="324" y2="324"/>

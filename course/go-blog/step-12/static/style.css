@@ -22,3 +22,14 @@ button { background: var(--accent); border-color: var(--accent); color: var(--pa
 ul { padding-left: 1.1rem; }
 li { margin: 0.4rem 0; }
 img { max-width: 100%; height: auto; }
+
+@media (max-width: 30rem) {
+  body { padding: 1.2rem 0.9rem; }
+  h1 { font-size: 1.35rem; }
+  /* Stack the form: on a narrow screen the label and the field do not sit
+     side by side comfortably. In a column, flex-basis sizes the HEIGHT, so the
+     field's 14rem basis has to be dropped or the box grows 14rem tall. */
+  form { flex-direction: column; align-items: stretch; }
+  input { flex: 0 0 auto; }
+  button { align-self: start; }
+}
