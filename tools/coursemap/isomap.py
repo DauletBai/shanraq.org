@@ -47,11 +47,11 @@ ORIGIN_Y = 152.0            # where iso(at(0, 0), 0) lands on screen
 # The ground fills the frame edge to edge and stops just short of the two
 # captions: in screen terms u only moves a point sideways and side only moves
 # it up and down, so these two numbers are the rectangle itself.
-GRID_U, GRID_S = 9.24, 6.0
+GRID_U, GRID_S = 9.24, 5.7
 
 # Caption baselines, as offsets from the centre of the canvas.
-CAP_TOP, CAP_TOP_SUB = -272.0, -250.0
-CAP_BOT, CAP_BOT_SUB = 258.0, 280.0
+CAP_TOP, CAP_TOP_SUB = -278.0, -251.0
+CAP_BOT, CAP_BOT_SUB = 256.0, 283.0
 
 # Everything a scene draws has to stay inside this, or it collides with a
 # caption or runs off the edge. render() checks and says which map broke it.
@@ -59,7 +59,7 @@ SAFE_X, SAFE_Y_UP, SAFE_Y_DOWN = 594.0, -232.0, 228.0
 
 # How far a scene may be grown to fill the frame. Without a cap a map with
 # three blocks would swell until its lettering dwarfed every other lesson's.
-ZOOM_MAX = 1.5
+ZOOM_MAX = 1.25
 
 _seen = []
 
@@ -239,11 +239,19 @@ STYLE = """
 .band-res{fill:var(--grn);opacity:.16}\n.band-flow{fill:var(--ink);opacity:.13}\n.arw-flow{fill:var(--soft)}
 .arw-req{fill:var(--red)} .arw-res{fill:var(--grn)}
 text{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.lbl{fill:var(--ink);font-size:13px;font-weight:600;text-anchor:middle}
-.sub{fill:var(--soft);font-size:11px;text-anchor:middle}
-.tag{fill:var(--tagink);font-size:10px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
-.cap{fill:var(--ink);font-size:12.5px;font-weight:700;text-anchor:middle}\n.lbl-acc{fill:var(--tagink);font-size:13px;font-weight:600;text-anchor:middle}\n.sub-acc{fill:var(--tagink);opacity:.8;font-size:11px;text-anchor:middle}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--soft);text-anchor:middle}
+/* Sizes are for the file, not the screen: a map 1216px wide is shown in an
+   article at roughly half that, so everything here lands at about 0.6 of what
+   it says. At the old sizes the caption arrived as 7px and the code line as 6,
+   which is a squint, and a squint over forty lessons is a headache.
+
+   The captions carry most of the increase because they stand in open space.
+   A label on a block is held to what the block's face can hold: past that it
+   overhangs the edges and reads as floating text rather than a name. */
+.lbl{fill:var(--ink);font-size:16px;font-weight:600;text-anchor:middle}
+.sub{fill:var(--soft);font-size:13px;text-anchor:middle}
+.tag{fill:var(--tagink);font-size:13px;font-weight:700;text-anchor:middle;letter-spacing:.3px}
+.cap{fill:var(--ink);font-size:21px;font-weight:700;text-anchor:middle}\n.lbl-acc{fill:var(--tagink);font-size:16px;font-weight:600;text-anchor:middle}\n.sub-acc{fill:var(--tagink);opacity:.85;font-size:13px;text-anchor:middle}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:18px;fill:var(--soft);text-anchor:middle}
 """
 
 
@@ -1280,21 +1288,21 @@ L13 = {
 
 L14 = {
     "kz": dict(alt="Бір функция, кез келген қойма: келісім — біліктер тізімі",
-               fn="report", fn_sub="қойма қандай екенін білмейді",
+               fn="report", fn_sub="қойманы білмейді",
                iface="Store", iface_sub="Add · All",
                s1="MemoryStore", s2="LastTwoStore", s3="fakeStore (тест)",
                head="ҚҰРЫЛЫСЫ ЕМЕС, БІЛІГІ", head_sub="type Store interface { Add · All }",
                foot="ІСКЕ АСЫРУ ЖАРИЯЛАНБАЙДЫ — ӨЗІНЕН-ӨЗІ ШЫҒАДЫ",
                foot_sub="func (s *MemoryStore) Add(a Article)"),
     "ru": dict(alt="Одна функция, любое хранилище: договор — это список умений",
-               fn="report", fn_sub="не знает, что за хранилище",
+               fn="report", fn_sub="не знает какое",
                iface="Store", iface_sub="Add · All",
                s1="MemoryStore", s2="LastTwoStore", s3="fakeStore (тест)",
                head="УМЕНИЯ, А НЕ УСТРОЙСТВО", head_sub="type Store interface { Add · All }",
                foot="РЕАЛИЗАЦИЯ НЕ ОБЪЯВЛЯЕТСЯ — ОНА ПОЛУЧАЕТСЯ САМА",
                foot_sub="func (s *MemoryStore) Add(a Article)"),
     "en": dict(alt="One function, any store: the contract is a list of skills",
-               fn="report", fn_sub="knows nothing of the store",
+               fn="report", fn_sub="knows no store",
                iface="Store", iface_sub="Add · All",
                s1="MemoryStore", s2="LastTwoStore", s3="fakeStore (a test)",
                head="WHAT IT CAN DO, NOT WHAT IT IS", head_sub="type Store interface { Add · All }",
@@ -1331,21 +1339,21 @@ L15 = {
 
 L16 = {
     "kz": dict(alt="Пакет — қалта: бас әріппен жазылғаны сыртқа көрінеді, қалғаны ішінде қалады",
-               main="main", main_sub="тек рұқсат етілгенді көреді",
+               main="main", main_sub="рұқсат етілгенді",
                pkg="blog", pkg_sub="blog/ қалтасы",
                out="Article · Get", inn="items · count",
                head="ПАКЕТ — БҰЛ ҚАЛТА", head_sub='import "sabaq14/blog"',
                foot="БАС ӘРІП — СЫРТҚА АШЫЛАТЫН ЕСІК",
                foot_sub="s.Get(…) көрінеді   ·   s.count() көрінбейді"),
     "ru": dict(alt="Пакет — это папка: с заглавной буквы видно снаружи, остальное остаётся внутри",
-               main="main", main_sub="видит только разрешённое",
+               main="main", main_sub="видит разрешённое",
                pkg="blog", pkg_sub="папка blog/",
                out="Article · Get", inn="items · count",
                head="ПАКЕТ — ЭТО ПАПКА", head_sub='import "sabaq14/blog"',
                foot="ЗАГЛАВНАЯ БУКВА — ДВЕРЬ НАРУЖУ",
                foot_sub="s.Get(…) видно   ·   s.count() не видно"),
     "en": dict(alt="A package is a folder: a capital letter is visible outside, the rest stays in",
-               main="main", main_sub="sees only what is let out",
+               main="main", main_sub="sees the exports",
                pkg="blog", pkg_sub="the blog/ folder",
                out="Article · Get", inn="items · count",
                head="A PACKAGE IS A FOLDER", head_sub='import "sabaq14/blog"',
@@ -1452,21 +1460,21 @@ L20 = {
 L21 = {
     "kz": dict(alt="Бір кіреберіс, бірнеше белгіленген есік: бағыттауыш таңдайды",
                req="сұраныс", req_sub="әдіс + жол",
-               mux="ServeMux", mux_sub="қайсысы екенін шешеді",
+               mux="ServeMux", mux_sub="кімге беруді шешеді",
                r1="GET /{$}", r2="GET /read/{slug}", r3="POST /read/{slug}/like",
                head="ӘДІС ПЕН ЖОЛ — БІР ЖОЛДА", head_sub='mux.HandleFunc("POST /read/{slug}/like", …)',
                foot="ТАППАСА — 404, ӘДІСІ БАСҚА БОЛСА — 405, ӨЗІ",
                foot_sub="Allow: GET, HEAD"),
     "ru": dict(alt="Один вход, несколько подписанных дверей: выбирает маршрутизатор",
                req="запрос", req_sub="метод + путь",
-               mux="ServeMux", mux_sub="решает, кому отдать",
+               mux="ServeMux", mux_sub="выбирает, кому",
                r1="GET /{$}", r2="GET /read/{slug}", r3="POST /read/{slug}/like",
                head="МЕТОД И ПУТЬ — В ОДНОЙ СТРОКЕ", head_sub='mux.HandleFunc("POST /read/{slug}/like", …)',
                foot="НЕ НАШЁЛ — 404, НЕ ТОТ МЕТОД — 405, САМ",
                foot_sub="Allow: GET, HEAD"),
     "en": dict(alt="One entrance, several labelled doors: the router chooses",
                req="a request", req_sub="method + path",
-               mux="ServeMux", mux_sub="decides who gets it",
+               mux="ServeMux", mux_sub="picks who gets it",
                r1="GET /{$}", r2="GET /read/{slug}", r3="POST /read/{slug}/like",
                head="METHOD AND PATH ON ONE LINE", head_sub='mux.HandleFunc("POST /read/{slug}/like", …)',
                foot="NOT FOUND — 404; WRONG METHOD — 405; ON ITS OWN",
