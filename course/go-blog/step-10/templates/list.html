@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="kk">
+<head><meta charset="utf-8"><title>Менің блогым</title></head>
+<body>
+  <h1>Менің блогым</h1>
+  {{ if .Articles }}
+  <ul>
+    {{ range .Articles }}
+    <li><a href="/read/{{ .Slug }}">{{ .Title }}</a> — {{ .ReadingTime }} мин</li>
+    {{ end }}
+  </ul>
+  {{ else }}
+  <p>Әзірге мақала жоқ.</p>
+  {{ end }}
+  <p><a href="/about">Блог туралы</a></p>
+</body>
+</html>

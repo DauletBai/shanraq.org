@@ -13,18 +13,27 @@
 | [step-4](step-4) | Первый тест | Те же файлы плюс `main_test.go` |
 | [step-5](step-5) | Структура (struct) | Три словаря исчезли: `[]Article` вместо них |
 | [step-6](step-6) | Пакеты и модули | Блог разложен на два пакета, у шага свой `go.mod` |
+| [step-7](step-7) | HTTP по-настоящему | Коды и заголовки осознанно: 404, 405 с `Allow`, Content-Type |
+| [step-8](step-8) | Маршруты | `ServeMux` вместо ручных проверок: `/`, `/about`, `/read/{slug}` |
+| [step-9](step-9) | Обработчик и middleware | Журнал и заголовок — обёрткой на все страницы сразу |
+| [step-10](step-10) | Шаблоны | HTML уехал в `templates/`, страница собирается в буфер |
+| [step-11](step-11) | Формы | Форма, проверка на сервере и редирект после POST |
 
 ## Как запустить
+
+Шаги с первого по пятый — просто файлы, поэтому в скопированной папке сначала
+заводят модуль:
 
 ```
 go mod init blog
 go run .
 ```
 
-Затем откройте `http://localhost:8080`. Остановить — `Ctrl+C`.
+С шестого шага, где урок как раз про модули, `go.mod` уже лежит в папке, и
+`go mod init` делать не надо — сразу `go run .`.
 
-Папку можно скопировать к себе целиком; `go mod init` вы уже делали в каждом
-уроке, здесь то же самое. Если порт занят, замените `8080` на `8081`.
+Затем откройте `http://localhost:8080`. Остановить — `Ctrl+C`. Если порт
+занят, замените `8080` на `8081`.
 
 ## Сіз құрып жатқан блог
 
@@ -32,8 +41,9 @@ go run .
 тұр: сізбен бірге өсетін бір жоба. Әр қалта — белгілі бір сабақтан кейінгі
 блогтың күйі, және онда сол сабаққа дейін талданбаған ештеңе жоқ.
 
-Іске қосу: қалтаны көшіріп алыңыз, `go mod init blog`, содан кейін `go run .`
-және `http://localhost:8080`.
+Іске қосу: қалтаны көшіріп алыңыз. Бірінші-бесінші қадамдарда алдымен
+`go mod init blog` керек, алтыншыдан бастап `go.mod` қалтада дайын тұр,
+сондықтан бірден `go run .` және `http://localhost:8080`.
 
 ## The blog you are building
 
@@ -42,8 +52,9 @@ half of the work: one project that grows with you. Each folder is the state of
 the blog after a particular lesson, and it contains nothing that lesson has not
 already covered.
 
-To run: copy the folder, `go mod init blog`, then `go run .` and open
-`http://localhost:8080`.
+To run: copy the folder. Steps 1 to 5 need `go mod init blog` first; from
+step 6 on the folder already carries its own `go.mod`, so `go run .` is
+enough. Then open `http://localhost:8080`.
 
 ## Лицензия · Лицензиясы · Licence
 
