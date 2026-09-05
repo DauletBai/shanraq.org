@@ -33,6 +33,34 @@ SCALE = 38.0
 # frame closes tightly around it.
 ROAD = 4.0
 
+# One canvas for every map in the course. The maps used to be framed around
+# their own contents, so each came out a different size and shape, the grid
+# changed density from lesson to lesson, and the captions sat wherever the
+# blocks left room. On a page that is a picture jumping about; for a reader it
+# is a new frame to re-read every time.
+#
+# So the frame is fixed and the scene lives inside it: 16:9, one grid, and the
+# two captions always at the same height. What changes between lessons is what
+# stands on the grid -- which is the only thing that should.
+CANVAS_W, CANVAS_H = 1216.0, 684.0
+ORIGIN_Y = 152.0            # where iso(at(0, 0), 0) lands on screen
+# The ground fills the frame edge to edge and stops just short of the two
+# captions: in screen terms u only moves a point sideways and side only moves
+# it up and down, so these two numbers are the rectangle itself.
+GRID_U, GRID_S = 9.24, 6.0
+
+# Caption baselines, as offsets from the centre of the canvas.
+CAP_TOP, CAP_TOP_SUB = -272.0, -250.0
+CAP_BOT, CAP_BOT_SUB = 258.0, 280.0
+
+# Everything a scene draws has to stay inside this, or it collides with a
+# caption or runs off the edge. render() checks and says which map broke it.
+SAFE_X, SAFE_Y_UP, SAFE_Y_DOWN = 594.0, -232.0, 228.0
+
+# How far a scene may be grown to fill the frame. Without a cap a map with
+# three blocks would swell until its lettering dwarfed every other lesson's.
+ZOOM_MAX = 1.5
+
 _seen = []
 
 
@@ -151,6 +179,23 @@ def on_face_side(u, side, z_top, title, sub="", accent=False):
     return "".join(out)
 
 
+def text_px(dy_from_centre, body, cls, dx=0.0):
+    """A caption at a fixed place on the canvas, not measured off the blocks."""
+    return (f'<text class="{cls}" x="{dx:.2f}" y="{ORIGIN_Y + dy_from_centre:.2f}">'
+            f"{esc(body)}</text>")
+
+
+def frame(s):
+    """The grid and the four caption lines every map shares."""
+    return "".join([
+        ground(-GRID_U, GRID_U, -GRID_S, GRID_S, "g"),
+        text_px(CAP_TOP, s["head"], "cap"),
+        text_px(CAP_TOP_SUB, s["head_sub"], "mono"),
+        text_px(CAP_BOT, s["foot"], "cap"),
+        text_px(CAP_BOT_SUB, s["foot_sub"], "mono"),
+    ])
+
+
 def ground(u0, u1, s0, s1, cls, step=1.1):
     """A ground plane cut to the objects standing on it. The first draft drew a
     square grid from the origin; it reached far past the scene and was what put
@@ -209,7 +254,7 @@ def map00(s):
     the question and the answer are separate journeys, not one line with arrows
     at both ends.
     """
-    parts = [ground(-6.6, 6.6, -1.8, 1.8, "g")]
+    parts = []
 
     # Painter's order matters here. The roads go down before the blocks, so a
     # road runs behind the server rack instead of across its face -- drawn last,
@@ -241,14 +286,6 @@ def map00(s):
         parts.append(block(u, res_z, tile, tile_h, "gt", "gl", "gr"))
         parts.append(text(u, res_z + tile_h, s[key], "tag", dy=4.0))
 
-    # Captions are measured off the tiles rather than placed by eye, so a longer
-    # scene or a taller block cannot push a heading back onto the drawing.
-    req_line = clear_above(req_z + tile_h, tile)
-    res_line = clear_below(res_z, tile)
-    parts.append(text(0, req_line + 0.42, s["req"], "cap"))
-    parts.append(text(0, req_line, s["req_ex"], "mono"))
-    parts.append(text(0, res_line, s["res"], "cap"))
-    parts.append(text(0, res_line - 0.42, s["res_ex"], "mono"))
     parts.append(on_face(-5.3, 1.7, s["client"], s["client_sub"]))
     parts.append(on_face(5.3, 2.95, s["server"], s["server_sub"]))
     return "".join(parts)
@@ -261,7 +298,7 @@ def map02(s):
     and blames the wrong one when something breaks. The map exists to fix which
     is which before any of them misbehaves.
     """
-    parts = [ground(-6.7, 6.7, -1.5, 1.5, "g")]
+    parts = []
 
     half, top = 1.5, 1.15
     seats = (-5.0, 0.0, 5.0)
@@ -274,13 +311,6 @@ def map02(s):
 
     for u, k in zip(seats, ("b1", "b2", "b3")):
         parts.append(on_face(u, top, s[k], s[k + "_sub"]))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["dir"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["dir_sub"], "mono"))
     return "".join(parts)
 
 
@@ -291,7 +321,7 @@ def map01(s):
     another hides the lower one's top face, and both halves have to carry a
     name. Read left to right they are also the order the program runs in.
     """
-    parts = [ground(-6.7, 6.7, -1.5, 1.5, "g")]
+    parts = []
 
     half, top = 1.5, 1.15
     seats = (-5.0, 0.0, 5.0)
@@ -309,13 +339,6 @@ def map01(s):
 
     for u, k in zip(seats, ("b1", "b2", "b3")):
         parts.append(on_face(u, top, s[k], s[k + "_sub"]))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half)
-    parts.append(text(0, line_up + 0.42, s["run"], "cap"))
-    parts.append(text(0, line_up, s["run_sub"], "mono"))
-    parts.append(text(0, line_dn, s["out"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["out_sub"], "mono"))
     return "".join(parts)
 
 
@@ -326,7 +349,7 @@ def map03(s):
     a container of a fixed kind. The caption underneath is the half beginners
     trip over: the box does not change shape later.
     """
-    parts = [ground(-7.4, 7.4, -1.5, 1.5, "g")]
+    parts = []
 
     half, top = 1.6, 1.15
     seats = (-5.7, -1.9, 1.9, 5.7)
@@ -334,13 +357,6 @@ def map03(s):
     for u, k in zip(seats, keys):
         parts.append(block(u, 0, half, top, "t", "l", "r"))
         parts.append(on_face(u, top, s[k], s[k + "_val"]))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -351,7 +367,7 @@ def map04(s):
     along it: in a row they would read as one following the other, and the
     whole point is that both arrive from the same call.
     """
-    parts = [ground(-6.8, 6.2, -3.5, 3.5, "g")]
+    parts = []
 
     half, top = 1.45, 1.15
     parts.append(road(-3.6, -1.9, top * 0.55, 0.42, "band-flow"))
@@ -368,13 +384,6 @@ def map04(s):
     parts.append(on_face(-0.4, top, s["fn"], s["fn_sub"]))
     parts.append(on_face_side(4.5, -1.95, top, s["o1"], s["o1_sub"], accent=True))
     parts.append(on_face_side(4.5, 1.95, top, s["o2"], s["o2_sub"], accent=True))
-
-    line_up = clear_above(top, half + 1.95)
-    line_dn = clear_below(0, half + 1.95)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -386,7 +395,7 @@ def map05(s):
     deliberately unnumbered: numbered ones claimed a count, and the count was
     wrong within a month of publishing.
     """
-    parts = [ground(-7.0, 7.0, -1.4, 1.4, "g")]
+    parts = []
 
     half, top = 0.86, 0.95
     for u in (-5.6, -3.6, -1.6, 0.4, 2.4):
@@ -397,13 +406,6 @@ def map05(s):
     parts.append(road(3.5, 6.4, top * 0.5, 0.44, "band-flow"))
     for u in (4.2, 5.1, 6.0):
         parts.append(chevron(u, top * 0.5 + 0.02, +1, "arw-flow"))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -414,7 +416,7 @@ def map06(s):
     word wearing different clothes — and the caption underneath names the three
     keywords Go does not have, which is what the reader is really being told.
     """
-    parts = [ground(-6.7, 6.7, -1.5, 1.5, "g")]
+    parts = []
 
     half, top = 1.6, 1.15
     seats = (-5.0, 0.0, 5.0)
@@ -423,13 +425,6 @@ def map06(s):
         parts.append(on_face(u, top, s[k], s[k + "_sub"]))
     for a, b in ((-3.3, -1.7), (1.7, 3.3)):
         parts.append(road(a, b, top * 0.55, 0.42, "band-flow"))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -458,7 +453,6 @@ def map07(s):
         marks.append((centre, offset))
         offset += n
         u += halfu * 2 + gap
-    parts.insert(0, ground(-total / 2 - 0.6, total / 2 + 0.6, -0.9, 0.9, "g"))
 
     # The byte offset under each letter: the number range hands back, and the
     # reason it jumps by two. Below the blocks, not behind them — set level with
@@ -467,12 +461,6 @@ def map07(s):
     for centre, off in marks:
         parts.append(text(centre, offsets_at, str(off), "mono"))
 
-    line_up = clear_above(top, 0.62)
-    line_dn = offsets_at - 0.62
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -482,7 +470,7 @@ def map08(s):
     Three full cells and one empty one, because the whole idea is the gap
     between the two numbers. Drawn at len == cap the picture would say nothing.
     """
-    parts = [ground(-5.6, 5.6, -1.4, 1.4, "g")]
+    parts = []
 
     half, top = 1.15, 1.0
     seats = (-3.6, -1.2, 1.2, 3.6)
@@ -492,13 +480,6 @@ def map08(s):
                            "gt" if full else "t", "gl" if full else "l", "gr" if full else "r"))
         parts.append(text(u, top, s["c%d" % (i + 1)],
                           "lbl-acc" if full else "sub", dy=4.0))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -510,7 +491,7 @@ def map09(s):
     neutral tile with a nought on it, because a key that is not there is not an
     error -- it is an answer nobody put anything into.
     """
-    parts = [ground(-5.6, 5.6, -1.4, 1.4, "g")]
+    parts = []
 
     half, top = 1.15, 0.9
     tile, tile_h, tile_z = 0.9, 0.45, 1.05
@@ -532,13 +513,6 @@ def map09(s):
         parts.append(block(u, tile_z, tile, tile_h, "rt", "rl", "rr"))
         parts.append(text(u, tile_z + tile_h, s[keys[i]], "tag", dy=4.0))
         parts.append(text(u, line_val, s[vals[i]], "lbl"))
-
-    line_up = clear_above(tile_z + tile_h, tile)
-    line_dn = clear_below(0, half, gap_px=56.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -550,7 +524,7 @@ def map10(s):
     drawn as tiles rather than described, because a beginner meets FAIL long
     before PASS and needs to recognise it as a report, not a punishment.
     """
-    parts = [ground(-5.2, 5.2, -2.1, 2.1, "g")]
+    parts = []
 
     half, top = 1.3, 1.0
 
@@ -571,16 +545,9 @@ def map10(s):
     # down the picture without moving it along, so the pair reads as a choice
     # between two answers and neither tile covers the other's face.
     tile, tile_h = 0.85, 0.4
-    for side, key, palette in ((-1.4, "good", ("gt", "gl", "gr")), (1.4, "bad", ("rt", "rl", "rr"))):
+    for side, key, palette in ((-1.9, "good", ("gt", "gl", "gr")), (1.9, "bad", ("rt", "rl", "rr"))):
         parts.append(block(3.9, 0, tile, tile_h, *palette, side=side))
         parts.append(text(3.9, tile_h, s[key], "tag", side=side, dy=4.0))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=44.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -591,7 +558,7 @@ def map11(s):
     the grammar before reading a word: green is what you must have, the flat
     neutral tile is the thing people wrongly think they need and turn back over.
     """
-    parts = [ground(-5.2, 5.2, -1.4, 1.4, "g")]
+    parts = []
 
     half, top = 1.15, 0.9
     seats = (-3.6, -1.2, 1.2, 3.6)
@@ -605,13 +572,6 @@ def map11(s):
             parts.append(block(u, 0, half, 0.16, "t", "l", "r"))
             parts.append(text(u, 0.16, s["n4"], "sub", dy=4.0))
         parts.append(text(u, line_lbl, s["s%d" % (i + 1)], "sub"))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=56.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -624,10 +584,13 @@ def map12(s):
     beginners an afternoon: range hands you a copy, so writing to it changes
     nothing.
     """
-    parts = [ground(-5.4, 5.4, -2.3, 2.3, "g")]
+    parts = []
 
-    tile, tile_h = 0.85, 0.4
-    for side, key in ((-1.6, "p1"), (0.0, "p2"), (1.6, "p3")):
+    # Far enough apart that each card is its own card: at the old spacing the
+    # three overlapped and read as one leaning stack, which is the opposite of
+    # the point — they are three separate things kept in step by hand.
+    tile, tile_h = 0.9, 0.4
+    for side, key in ((-2.5, "p1"), (0.0, "p2"), (2.5, "p3")):
         parts.append(block(-3.7, 0, tile, tile_h, "t", "l", "r", side=side))
         parts.append(text(-3.7, tile_h, s[key], "sub", side=side, dy=4.0))
 
@@ -638,13 +601,6 @@ def map12(s):
     half, top = 1.5, 1.15
     parts.append(block(1.9, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(1.9, 0.0, top, s["name"], s["fields"], accent=True))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=40.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -657,7 +613,7 @@ def map13(s):
     written there stays there. The lower one carries an address back INTO the
     value, and the arrows point that way on purpose.
     """
-    parts = [ground(-6.0, 6.0, -1.8, 1.8, "g")]
+    parts = []
 
     # Roads first: drawn after the blocks they would lie across their faces.
     parts.append(road(-2.4, 4.4, 2.05, 0.58, "band-flow"))
@@ -683,13 +639,6 @@ def map13(s):
     # and on the red one it lost badly.
     parts.append(text(1.0, 2.62, s["copy_sub"], "sub"))
     parts.append(text(1.0, 0.92, s["addr_sub"], "sub"))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=52.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -702,7 +651,7 @@ def map14(s):
     and one of them exists only in a test, which is the point that sells
     interfaces to a beginner.
     """
-    parts = [ground(-6.0, 6.0, -2.6, 2.6, "g")]
+    parts = []
 
     parts.append(road(-2.5, 0.6, 0.55, 0.5, "band-req"))
     for u in (-2.0, -1.0, 0.0):
@@ -717,16 +666,9 @@ def map14(s):
     parts.append(on_face_side(1.7, 0.0, gate_h, s["iface"], s["iface_sub"], accent=True))
 
     tile, tile_h = 1.0, 0.42
-    for side, key in ((-1.9, "s1"), (0.0, "s2"), (1.9, "s3")):
+    for side, key in ((-2.7, "s1"), (0.0, "s2"), (2.7, "s3")):
         parts.append(block(5.0, 0, tile, tile_h, "t", "l", "r", side=side))
         parts.append(text(5.0, tile_h, s[key], "sub", side=side, dy=4.0))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=44.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -738,7 +680,7 @@ def map15(s):
     They leave the same function, which is the point -- an error in Go is not a
     siren somewhere else in the building, it is the second thing handed back.
     """
-    parts = [ground(-5.6, 5.6, -2.0, 2.0, "g")]
+    parts = []
 
     parts.append(road(-1.7, 3.4, 2.15, 0.55, "band-res"))
     for u in (-1.2, 0.2, 1.6):
@@ -752,20 +694,13 @@ def map15(s):
     parts.append(on_face_side(-3.3, 0.0, top, s["fn"], s["fn_sub"]))
 
     tile, tile_h = 1.15, 0.48
-    parts.append(block(4.6, 1.95, tile, tile_h, "gt", "gl", "gr"))
-    parts.append(text(4.6, 1.95 + tile_h, s["good"], "tag", dy=4.0))
+    parts.append(block(4.6, 2.45, tile, tile_h, "gt", "gl", "gr"))
+    parts.append(text(4.6, 2.45 + tile_h, s["good"], "tag", dy=4.0))
     parts.append(block(4.6, 0.0, tile, tile_h, "rt", "rl", "rr"))
     parts.append(text(4.6, tile_h, s["bad"], "tag", dy=4.0))
 
     parts.append(text(0.9, 2.72, s["good_sub"], "sub"))
     parts.append(text(0.9, 0.92, s["bad_sub"], "sub"))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=46.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -777,7 +712,7 @@ def map16(s):
     grey for what stays inside. Drawn this way the export rule stops being a
     style convention and becomes a wall you can see.
     """
-    parts = [ground(-5.6, 5.6, -2.8, 2.8, "g")]
+    parts = []
 
     parts.append(road(-2.1, 0.6, 0.5, 0.5, "band-flow"))
     for u in (-1.6, -0.7, 0.2):
@@ -793,17 +728,10 @@ def map16(s):
     # Wide enough for the names written on them: a label that overhangs its own
     # tile reads as two labels, which is what the first render looked like.
     tile, tile_h = 1.5, 0.42
-    parts.append(block(5.2, 0, tile, tile_h, "gt", "gl", "gr", side=-1.8))
-    parts.append(text(5.2, tile_h, s["out"], "tag", side=-1.8, dy=4.0))
-    parts.append(block(5.2, 0, tile, tile_h, "t", "l", "r", side=1.8))
-    parts.append(text(5.2, tile_h, s["inn"], "sub", side=1.8, dy=4.0))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=44.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
+    parts.append(block(5.2, 0, tile, tile_h, "gt", "gl", "gr", side=-2.2))
+    parts.append(text(5.2, tile_h, s["out"], "tag", side=-2.2, dy=4.0))
+    parts.append(block(5.2, 0, tile, tile_h, "t", "l", "r", side=2.2))
+    parts.append(text(5.2, tile_h, s["inn"], "sub", side=2.2, dy=4.0))
     return "".join(parts)
 
 
@@ -815,7 +743,7 @@ def map17(s):
     kept forever; the middle block is the waiting room and neither one thing nor
     the other, which is exactly how the index behaves.
     """
-    parts = [ground(-6.0, 6.0, -1.8, 1.8, "g")]
+    parts = []
 
     for u0, u1, mid in ((-2.5, -1.0, -1.75), (1.0, 2.5, 1.75)):
         parts.append(road(u0, u1, 0.55, 0.5, "band-flow"))
@@ -835,13 +763,6 @@ def map17(s):
     # started exactly where the red block ends and read as part of it.
     parts.append(text(-1.75, 1.75, s["cmd1"], "mono"))
     parts.append(text(1.75, 1.75, s["cmd2"], "mono"))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=44.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -852,7 +773,7 @@ def map18(s):
     desk and one on the network. push sends, pull brings back, and the two roads
     run in opposite directions because that is the whole of it.
     """
-    parts = [ground(-5.8, 5.8, -2.0, 2.0, "g")]
+    parts = []
 
     parts.append(road(-2.2, 2.2, 2.1, 0.55, "band-res"))
     for u in (-1.5, 0.0, 1.5):
@@ -870,13 +791,6 @@ def map18(s):
 
     parts.append(text(0, 2.72, s["push"], "mono"))
     parts.append(text(0, 0.92, s["pull"], "mono"))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=44.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -888,7 +802,7 @@ def map19(s):
     reader has held every one of them before, and the only new thing today is
     that they fit together.
     """
-    parts = [ground(-5.8, 5.8, -3.6, 3.6, "g")]
+    parts = []
 
     parts.append(road(-1.0, 1.0, 0.5, 0.5, "band-flow"))
     for u in (-0.6, 0.2):
@@ -899,8 +813,8 @@ def map19(s):
     # to clear the tile's own height. The first draft did not, and the six
     # familiar parts arrived looking like a pile of rubble.
     tile, tile_h = 1.0, 0.4
-    left = (("p1", -4.4, -2.6), ("p2", -4.4, 0.0), ("p3", -4.4, 2.6),
-            ("p4", -2.2, -2.6), ("p5", -2.2, 0.0), ("p6", -2.2, 2.6))
+    left = (("p1", -4.9, -3.1), ("p2", -4.9, 0.0), ("p3", -4.9, 3.1),
+            ("p4", -2.3, -3.1), ("p5", -2.3, 0.0), ("p6", -2.3, 3.1))
     for key, u, side in left:
         parts.append(block(u, 0, tile, tile_h, "t", "l", "r", side=side))
         parts.append(text(u, tile_h, s[key], "sub", side=side, dy=4.0))
@@ -908,13 +822,6 @@ def map19(s):
     half, top = 1.6, 1.5
     parts.append(block(2.8, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(2.8, 0.0, top, s["prog"], s["prog_sub"], accent=True))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=86.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -925,7 +832,7 @@ def map20(s):
     because it is the point of no return: once the status code is out, the
     headers are already on their way and nothing written after it will travel.
     """
-    parts = [ground(-6.0, 6.0, -1.8, 1.8, "g")]
+    parts = []
 
     for u0, u1, mid in ((-2.6, -1.1, -1.85), (1.1, 2.6, 1.85)):
         parts.append(road(u0, u1, 0.55, 0.5, "band-flow"))
@@ -940,13 +847,6 @@ def map20(s):
 
     parts.append(block(4.2, 0, half, top, "t", "l", "r"))
     parts.append(on_face_side(4.2, 0.0, top, s["h3"], s["h3_sub"]))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=64.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
@@ -958,7 +858,7 @@ def map21(s):
     the top of the handler. What the reader wrote by hand last lesson is now
     the box in the middle.
     """
-    parts = [ground(-6.0, 6.0, -3.0, 3.0, "g")]
+    parts = []
 
     parts.append(road(-2.6, -0.6, 0.5, 0.5, "band-flow"))
     for u in (-2.1, -1.2):
@@ -979,30 +879,48 @@ def map21(s):
     for side, key in ((-1.75, "r1"), (1.75, "r2")):
         parts.append(slab(4.4, 0, tile_u, tile_s, tile_h, "gt", "gl", "gr", side=side))
         parts.append(text(4.4, tile_h, s[key], "tag", side=side, dy=4.0))
-
-    line_up = clear_above(top, half)
-    line_dn = clear_below(0, half, gap_px=104.0)
-    parts.append(text(0, line_up + 0.42, s["head"], "cap"))
-    parts.append(text(0, line_up, s["head_sub"], "mono"))
-    parts.append(text(0, line_dn, s["foot"], "cap"))
-    parts.append(text(0, line_dn - 0.42, s["foot_sub"], "mono"))
     return "".join(parts)
 
 
-def render(scene, strings, pad=46):
-    """Draw the scene, then frame it around its own bounding box."""
+def render(scene, strings, name="", lang=""):
+    """Draw the shared frame, then the scene centred inside it, 16:9."""
+    _seen.clear()
+    grid_and_caps = frame(strings)
+
+    # Only the scene's own points decide where it sits, so the grid and the
+    # captions are drawn first and their points forgotten.
     _seen.clear()
     body = scene(strings)
-    xs = [p[0] for p in _seen]
-    ys = [p[1] for p in _seen]
-    x0, x1 = min(xs) - pad, max(xs) + pad
-    y0, y1 = min(ys) - pad, max(ys) + pad
-    w, h = x1 - x0, y1 - y0
+    xs = [x for x, _ in _seen]
+    ys = [y for _, y in _seen]
+
+    # Scenes were each composed inside their own tight frame, so their natural
+    # centres are all over the place. Rather than nudging twenty-two of them by
+    # hand, the whole scene is shifted so its middle lands on the middle of the
+    # canvas: the captions stay put and the picture stops sliding about.
+    cx, cy = (min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2
+    half_w = max((max(xs) - min(xs)) / 2, 1.0)
+    half_h = max((max(ys) - min(ys)) / 2, 1.0)
+
+    # And grown to use the room it has. A scene composed for a tight frame
+    # looks marooned in the middle of a fixed one, so it is scaled up until it
+    # nearly touches the safe area. The cap keeps a sparse map from blowing its
+    # three blocks up to twice the size of everyone else's.
+    k = min(SAFE_X * 0.94 / half_w, SAFE_Y_DOWN * 0.94 / half_h, ZOOM_MAX)
+    body = (f'<g transform="translate(0,{ORIGIN_Y:.2f}) scale({k:.3f}) '
+            f'translate({-cx:.2f},{-cy:.2f})">{body}</g>')
+
+    if half_w * k > SAFE_X or half_h * k > SAFE_Y_DOWN:
+        print(f"  НЕ ВЛЕЗАЕТ: {name}-{lang} {half_w * 2 * k:.0f}x{half_h * 2 * k:.0f}px")
+
+    x0, y0 = -CANVAS_W / 2, ORIGIN_Y - CANVAS_H / 2
     return (
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{x0:.1f} {y0:.1f} {w:.1f} {h:.1f}" '
-        f'width="{w:.0f}" height="{h:.0f}" role="img" aria-label="{esc(strings["alt"])}">'
+        f'<svg xmlns="http://www.w3.org/2000/svg" '
+        f'viewBox="{x0:.0f} {y0:.0f} {CANVAS_W:.0f} {CANVAS_H:.0f}" '
+        f'width="{CANVAS_W:.0f}" height="{CANVAS_H:.0f}" '
+        f'role="img" aria-label="{esc(strings["alt"])}">'
         f"<style>{STYLE}</style>"
-        f"{body}</svg>"
+        f"{grid_and_caps}{body}</svg>"
     )
 
 
@@ -1011,8 +929,8 @@ L = {
         alt="Клиент сұраныс жібереді, сервер жауап қайтарады",
         client="Клиент", client_sub="браузер, curl",
         server="Сервер", server_sub="сұрақ күтіп тұр",
-        req="СҰРАНЫС", req_ex="GET /read/salem",
-        res="ЖАУАП", res_ex="200 + HTML",
+        head="СҰРАНЫС", head_sub="GET /read/salem",
+        foot="ЖАУАП", foot_sub="200 + HTML",
         req1="ӘДІС", req2="ЖОЛ", req3="ТАҚЫРЫПТАР",
         res1="КОД", res2="ТАҚЫРЫПТАР", res3="ДЕНЕ",
     ),
@@ -1020,8 +938,8 @@ L = {
         alt="Клиент отправляет запрос, сервер возвращает ответ",
         client="Клиент", client_sub="браузер, curl",
         server="Сервер", server_sub="ждёт вопроса",
-        req="ЗАПРОС", req_ex="GET /read/salem",
-        res="ОТВЕТ", res_ex="200 + HTML",
+        head="ЗАПРОС", head_sub="GET /read/salem",
+        foot="ОТВЕТ", foot_sub="200 + HTML",
         req1="МЕТОД", req2="ПУТЬ", req3="ЗАГОЛОВКИ",
         res1="КОД", res2="ЗАГОЛОВКИ", res3="ТЕЛО",
     ),
@@ -1029,8 +947,8 @@ L = {
         alt="A client sends a request, a server returns a response",
         client="Client", client_sub="browser, curl",
         server="Server", server_sub="waiting to be asked",
-        req="REQUEST", req_ex="GET /read/salem",
-        res="RESPONSE", res_ex="200 + HTML",
+        head="REQUEST", head_sub="GET /read/salem",
+        foot="RESPONSE", foot_sub="200 + HTML",
         req1="METHOD", req2="PATH", req3="HEADERS",
         res1="CODE", res2="HEADERS", res3="BODY",
     ),
@@ -1042,24 +960,24 @@ L01 = {
         b1="НЕНІ ЖАУАП БЕРУ", b1_sub="http.HandleFunc",
         b2="ҚАЙДА ТЫҢДАУ", b2_sub="http.ListenAndServe",
         b3="БРАУЗЕР", b3_sub="localhost:8080",
-        run="БІР ПӘРМЕН", run_sub="go run .",
-        out="ЖАУАП", out_sub="200 · Сәлем",
+        head="БІР ПӘРМЕН", head_sub="go run .",
+        foot="ЖАУАП", foot_sub="200 · Сәлем",
     ),
     "ru": dict(
         alt="Программа знает, что отвечать и где слушать, а браузер видит ответ",
         b1="ЧТО ОТВЕЧАТЬ", b1_sub="http.HandleFunc",
         b2="ГДЕ СЛУШАТЬ", b2_sub="http.ListenAndServe",
         b3="БРАУЗЕР", b3_sub="localhost:8080",
-        run="ОДНА КОМАНДА", run_sub="go run .",
-        out="ОТВЕТ", out_sub="200 · Сәлем",
+        head="ОДНА КОМАНДА", head_sub="go run .",
+        foot="ОТВЕТ", foot_sub="200 · Сәлем",
     ),
     "en": dict(
         alt="The program knows what to answer and where to listen; the browser sees the answer",
         b1="WHAT TO ANSWER", b1_sub="http.HandleFunc",
         b2="WHERE TO LISTEN", b2_sub="http.ListenAndServe",
         b3="BROWSER", b3_sub="localhost:8080",
-        run="ONE COMMAND", run_sub="go run .",
-        out="RESPONSE", out_sub="200 · Salem",
+        head="ONE COMMAND", head_sub="go run .",
+        foot="RESPONSE", foot_sub="200 · Salem",
     ),
 }
 
@@ -1070,7 +988,7 @@ L02 = {
         b2="ТЕРМИНАЛ", b2_sub="go run . — пәрмен бересіз",
         b3="GO", b3_sub="жинайды және іске қосады",
         head="ҚАЙСЫСЫ НЕ ҮШІН ЖАУАП БЕРЕДІ", head_sub="үш құрал, үш жауапкершілік",
-        dir="ЖОБА ҚАЛТАСЫ", dir_sub="go-oqu/sabaq-01 · go.mod + main.go",
+        foot="ЖОБА ҚАЛТАСЫ", foot_sub="go-oqu/sabaq-01 · go.mod + main.go",
     ),
     "ru": dict(
         alt="Редактор, терминал и Go: кто за что отвечает",
@@ -1078,7 +996,7 @@ L02 = {
         b2="ТЕРМИНАЛ", b2_sub="go run . — отдаёте команду",
         b3="GO", b3_sub="собирает и запускает",
         head="КТО ЗА ЧТО ОТВЕЧАЕТ", head_sub="три инструмента, три зоны вины",
-        dir="ПАПКА ПРОЕКТА", dir_sub="go-oqu/sabaq-01 · go.mod + main.go",
+        foot="ПАПКА ПРОЕКТА", foot_sub="go-oqu/sabaq-01 · go.mod + main.go",
     ),
     "en": dict(
         alt="Editor, terminal and Go: which one is answerable for what",
@@ -1086,7 +1004,7 @@ L02 = {
         b2="TERMINAL", b2_sub="go run . — you give the order",
         b3="GO", b3_sub="builds it and runs it",
         head="WHICH ONE IS ANSWERABLE", head_sub="three tools, three kinds of fault",
-        dir="PROJECT FOLDER", dir_sub="go-oqu/sabaq-01 · go.mod + main.go",
+        foot="PROJECT FOLDER", foot_sub="go-oqu/sabaq-01 · go.mod + main.go",
     ),
 }
 
@@ -1545,5 +1463,5 @@ if __name__ == "__main__":
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
-                f.write(render(scene, strings))
+                f.write(render(scene, strings, name, lang))
             print("wrote", path)
