@@ -1,26 +1,26 @@
 <!doctype html>
 <html lang="kk">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/static/style.css">
-  <link rel="icon" href="/static/logo.svg" type="image/svg+xml">
-  <title>#{{ .Tag }} — Менің блогым</title>
-</head>
-<body>
-  <header class="brand">
-    <img src="/static/logo.svg" width="40" height="40" alt="">
-    <h1>#{{ .Tag }}</h1>
-  </header>
-  {{ if .Articles }}
-  <ul>
-    {{ range .Articles }}
-    <li><a href="/read/{{ .Slug }}">{{ .Title }}</a> — {{ .ReadingTime }} мин</li>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="/static/logo.svg" type="image/svg+xml">
+    <title>#{{ .Tag }} — Менің блогым</title>
+  </head>
+  <body>
+    <header class="brand">
+      <img src="/static/logo.svg" width="40" height="40" alt="">
+      <h1>#{{ .Tag }}</h1>
+    </header>
+    {{ if .Articles }}
+    <ul>
+      {{ range .Articles }}
+      <li><a href="/read/{{ .Slug }}">{{ .Title }}</a> — {{ .ReadingTime }} мин</li>
+      {{ end }}
+    </ul>
+    {{ else }}
+    <p>Бұл тегпен мақала жоқ.</p>
     {{ end }}
-  </ul>
-  {{ else }}
-  <p>Бұл тегпен мақала жоқ.</p>
-  {{ end }}
-  <p><a href="/">← тізімге</a></p>
-</body>
+    <p><a href="/">← тізімге</a></p>
+  </body>
 </html>
