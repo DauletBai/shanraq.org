@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" href="/static/logo.svg" type="image/svg+xml">
+  <title>Менің блогым</title>
+</head>
+<body>
+  <header class="brand">
+    <img src="/static/logo.svg" width="40" height="40" alt="">
+    <h1>Менің блогым</h1>
+  </header>
+  <form method="post" action="/add">
+    <label for="title">Мақаланың тақырыбы</label>
+    <input id="title" name="title" value="{{ .Draft }}" required maxlength="80">
+    <label for="tags">Тегтер</label>
+    <input id="tags" name="tags" value="{{ .DraftTag }}" placeholder="дала, блог" maxlength="120">
+    <button type="submit">Қосу</button>
+  </form>
+  {{ if .Err }}<p class="err">{{ .Err }}</p>{{ end }}
+
+  <p class="sorts"><a href="/search">Іздеу</a></p>
+
+  {{ if .Articles }}
+  <p class="sorts">
+    <a href="/">қосылу ретімен</a> ·
+    <a href="/?sort=title">тақырып бойынша</a> ·
+    <a href="/?sort=updated">өңделу уақыты бойынша</a>
+  </p>
+  <ul>
+    {{ range .Articles }}
+    <li><a href="/read/{{ .Slug }}">{{ .Title }}</a> — {{ .ReadingTime }} мин</li>
+    {{ end }}
+  </ul>
+  {{ else }}
+  <p>Әзірге мақала жоқ.</p>
+  {{ end }}
+  <p><a href="/about">Блог туралы</a></p>
+</body>
+</html>

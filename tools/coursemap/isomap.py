@@ -1294,6 +1294,34 @@ def map34(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map35(s):
+    """Lesson: what a person typed, the index, and the order of the answer.
+
+    Both later blocks are accented: the index is the thing that replaces a
+    scan, and the order is the thing a reader actually judges the search by.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2267,6 +2295,36 @@ L34 = {
                foot_sub="not in a column holding a list"),
 }
 
+L35 = {
+    "kz": dict(alt="Сөз, көрсеткіш және реттелген жауап",
+               b1="сұрау", b1_sub="адам терген",
+               b2="FTS5", b2_sub="сөз көрсеткіші",
+               b3="жауап", b3_sub="ең жақсысы алда",
+               c1="дайындау", c2="rank",
+               head="ІЗДЕУ: LIKE ЕМЕС, КӨРСЕТКІШ",
+               head_sub="match … order by rank",
+               foot="ПАРАМЕТР SQL-ДІ ҚОРҒАЙДЫ, ІЗДЕУ СҰРАУЫН ЕМЕС",
+               foot_sub="сөз тырнақшаға, жұлдызша сыртқа"),
+    "ru": dict(alt="Слово, указатель и ответ по порядку",
+               b1="запрос", b1_sub="что набрали",
+               b2="FTS5", b2_sub="указатель слов",
+               b3="ответ", b3_sub="лучшее первым",
+               c1="подготовка", c2="rank",
+               head="ПОИСК: НЕ LIKE, А УКАЗАТЕЛЬ",
+               head_sub="match … order by rank",
+               foot="ПАРАМЕТР СПАСАЕТ SQL, НО НЕ ПОИСКОВЫЙ ЗАПРОС",
+               foot_sub="слово в кавычки, звёздочку наружу"),
+    "en": dict(alt="A word, an index and an answer in order",
+               b1="the query", b1_sub="what was typed",
+               b2="FTS5", b2_sub="an index of words",
+               b3="the answer", b3_sub="best one first",
+               c1="preparing", c2="rank",
+               head="SEARCH: AN INDEX, NOT A LIKE",
+               head_sub="match … order by rank",
+               foot="A PARAMETER SAVES THE SQL, NOT THE SEARCH QUERY",
+               foot_sub="quote the word, keep the star outside"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2304,7 +2362,8 @@ if __name__ == "__main__":
                                ("crud", map31, L31),
                                ("migrate", map32, L32),
                                ("tx", map33, L33),
-                               ("tags", map34, L34)):
+                               ("tags", map34, L34),
+                               ("search", map35, L35)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

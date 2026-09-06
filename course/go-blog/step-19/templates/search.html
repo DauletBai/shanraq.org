@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" href="/static/logo.svg" type="image/svg+xml">
+  <title>Іздеу — Менің блогым</title>
+</head>
+<body>
+  <header class="brand">
+    <img src="/static/logo.svg" width="40" height="40" alt="">
+    <h1>Іздеу</h1>
+  </header>
+  <form method="get" action="/search">
+    <label for="q">Сөз немесе оның басы</label>
+    <input id="q" name="q" value="{{ .Query }}" autofocus>
+    <button type="submit">Іздеу</button>
+  </form>
+  {{ if .Found }}
+  <ul class="found">
+    {{ range .Found }}
+    <li>
+      <a href="/read/{{ .Article.Slug }}">{{ .Article.Title }}</a>
+      <p class="fragment">{{ .Fragment }}</p>
+    </li>
+    {{ end }}
+  </ul>
+  {{ else if .Query }}
+  <p>Ештеңе табылмады.</p>
+  {{ end }}
+  <p><a href="/">← тізімге</a></p>
+</body>
+</html>
