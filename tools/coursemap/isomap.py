@@ -1518,6 +1518,34 @@ def map42(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map43(s):
+    """Lesson: the server was already concurrent; the memory is what needs a lock.
+
+    Shared memory is the accent: it is the one box a reader did not know they
+    had built.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2731,6 +2759,36 @@ L42 = {
                foot_sub="the name of a case speaks"),
 }
 
+L43 = {
+    "kz": dict(alt="Әр сұраныс — өз горутинасы, ортақ жады құлып астында",
+               b1="сұраныстар", b1_sub="әрқайсысы бөлек",
+               b2="ортақ жад", b2_sub="құлыпсыз — жарыс",
+               b3="жауап", b3_sub="дұрыс сан",
+               c1="go func", c2="-race",
+               head="ГОРУТИНА МЕН АРНА: ВЕБКЕ НЕ ҮШІН",
+               head_sub="Mutex · chan · WaitGroup",
+               foot="ЖАРЫС ЖҮКТЕМЕНІ КҮТЕДІ, СІЗДІ ЕМЕС",
+               foot_sub="сондықтан тестте -race"),
+    "ru": dict(alt="Каждый запрос — своя горутина, общая память под замком",
+               b1="запросы", b1_sub="каждый в горутине",
+               b2="общая память", b2_sub="без замка — гонка",
+               b3="ответ", b3_sub="верное число",
+               c1="go func", c2="-race",
+               head="ГОРУТИНЫ И КАНАЛЫ: ЗАЧЕМ ОНИ ВЕБУ",
+               head_sub="Mutex · chan · WaitGroup",
+               foot="ГОНКА ЖДЁТ НАГРУЗКИ, А НЕ ВАС",
+               foot_sub="поэтому -race в тестах"),
+    "en": dict(alt="Each request its own goroutine, shared memory under a lock",
+               b1="requests", b1_sub="one each",
+               b2="shared memory", b2_sub="no lock, a race",
+               b3="the answer", b3_sub="the right number",
+               c1="go func", c2="-race",
+               head="GOROUTINES AND CHANNELS ON THE WEB",
+               head_sub="Mutex · chan · WaitGroup",
+               foot="A RACE WAITS FOR LOAD, NOT FOR YOU",
+               foot_sub="which is why -race runs in tests"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2776,7 +2834,8 @@ if __name__ == "__main__":
                                ("perms", map39, L39),
                                ("csrf", map40, L40),
                                ("upload", map41, L41),
-                               ("tests", map42, L42)):
+                               ("tests", map42, L42),
+                               ("race", map43, L43)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
