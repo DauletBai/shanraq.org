@@ -1553,7 +1553,7 @@ L14 = {
                fn="report", fn_sub="қойманы білмейді",
                iface="Store", iface_sub="Add · All",
                s1="MemoryStore", s2="LastTwoStore", s3="fakeStore",
-               head="ҚҰРЫЛЫСЫ ЕМЕС, БІЛІГІ", head_sub="type Store interface { Add · All }",
+               head="ҚҰРЫЛЫСЫ ЕМЕС, ӘДІСТЕРІ", head_sub="type Store interface { Add · All }",
                foot="ІСКЕ АСЫРУ ЖАРИЯЛАНБАЙДЫ — ӨЗІНЕН-ӨЗІ ШЫҒАДЫ",
                foot_sub="func (s *MemoryStore) Add(a Article)"),
     "ru": dict(alt="Одна функция, любое хранилище: договор — это список умений",
