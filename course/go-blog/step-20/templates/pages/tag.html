@@ -1,0 +1,15 @@
+{{ define "title" }}#{{ .Tag }} — Менің блогым{{ end }}
+
+{{ define "main" }}
+  <h1>#{{ .Tag }}</h1>
+
+  {{ if .Articles }}
+  <ul>
+    {{ range .Articles }}
+    <li><a href="/read/{{ .Slug }}">{{ .Title }}</a> — {{ .ReadingTime }} мин</li>
+    {{ end }}
+  </ul>
+  {{ else }}
+  <p>Бұл тегпен мақала жоқ.</p>
+  {{ end }}
+{{ end }}

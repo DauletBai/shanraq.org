@@ -1322,6 +1322,34 @@ def map35(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map36(s):
+    """Lesson: pages fill a frame, and the frame is what gets executed.
+
+    The frame is the accent: it is the block that does the drawing, which is
+    the thing a reader keeps getting backwards.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2325,6 +2353,36 @@ L35 = {
                foot_sub="quote the word, keep the star outside"),
 }
 
+L36 = {
+    "kz": dict(alt="Бір жақтау, ортақ бөліктер және беттер",
+               b1="pages", b1_sub="title мен main",
+               b2="base", b2_sub="жақтау",
+               b3="бет", b3_sub="дайын HTML",
+               c1="блоктар", c2="base орындалады",
+               head="МАКЕТ: БАРЛЫҚ БЕТКЕ БІР ЖАҚТАУ",
+               head_sub="define · block · template",
+               foot="ӘР БЕТКЕ ӨЗ ҮЛГІ ЖИЫНЫ",
+               foot_sub="аттар жиын ішінде ортақ"),
+    "ru": dict(alt="Одна рамка, общие куски и страницы",
+               b1="pages", b1_sub="title и main",
+               b2="base", b2_sub="рамка",
+               b3="страница", b3_sub="готовый HTML",
+               c1="блоки", c2="выполняется base",
+               head="МАКЕТ: ОДНА РАМКА НА ВСЕ СТРАНИЦЫ",
+               head_sub="define · block · template",
+               foot="СВОЙ НАБОР ШАБЛОНОВ НА КАЖДУЮ СТРАНИЦУ",
+               foot_sub="имена внутри набора общие"),
+    "en": dict(alt="One frame, the shared pieces and the pages",
+               b1="pages", b1_sub="title and main",
+               b2="base", b2_sub="the frame",
+               b3="the page", b3_sub="finished HTML",
+               c1="blocks", c2="base is executed",
+               head="LAYOUT: ONE FRAME FOR EVERY PAGE",
+               head_sub="define · block · template",
+               foot="A TEMPLATE SET OF ITS OWN PER PAGE",
+               foot_sub="names are shared inside a set"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2363,7 +2421,8 @@ if __name__ == "__main__":
                                ("migrate", map32, L32),
                                ("tx", map33, L33),
                                ("tags", map34, L34),
-                               ("search", map35, L35)):
+                               ("search", map35, L35),
+                               ("layout", map36, L36)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
