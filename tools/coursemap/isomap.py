@@ -1546,6 +1546,34 @@ def map43(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map44(s):
+    """Lesson: a cancellation travelling down the chain.
+
+    The context is the accent: it is the thing the reader did not create and
+    cannot see, and it is what carries the news that nobody is waiting.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2789,6 +2817,36 @@ L43 = {
                foot_sub="which is why -race runs in tests"),
 }
 
+L44 = {
+    "kz": dict(alt="Оқырман кетті — тізбек бойымен тоқтау",
+               b1="оқырман", b1_sub="қойындыны жапты",
+               b2="r.Context()", b2_sub="өзі жабылады",
+               b3="дерекқор", b3_sub="сұраныс үзіледі",
+               c1="Done()", c2="...Context",
+               head="CONTEXT: СҰРАНЫСТЫ УАҚЫТЫНДА ТОҚТАТУ",
+               head_sub="cancel · timeout · value",
+               foot="КЕТКЕН ОҚЫРМАНҒА ЖҰМЫС ІСТЕМЕЙДІ",
+               foot_sub="кілт — өз типімен"),
+    "ru": dict(alt="Читатель ушёл — остановка по всей цепочке",
+               b1="читатель", b1_sub="закрыл вкладку",
+               b2="r.Context()", b2_sub="закрылся сам",
+               b3="база", b3_sub="запрос оборван",
+               c1="Done()", c2="...Context",
+               head="CONTEXT: ВОВРЕМЯ ОСТАНОВИТЬ ЗАПРОС",
+               head_sub="cancel · timeout · value",
+               foot="НА УШЕДШЕГО ЧИТАТЕЛЯ НЕ РАБОТАЮТ",
+               foot_sub="ключ — своего типа"),
+    "en": dict(alt="The reader left, and the whole chain stops",
+               b1="the reader", b1_sub="closed the tab",
+               b2="r.Context()", b2_sub="closes itself",
+               b3="the database", b3_sub="query cut off",
+               c1="Done()", c2="...Context",
+               head="CONTEXT: STOPPING WORK IN TIME",
+               head_sub="cancel · timeout · value",
+               foot="NOBODY WORKS FOR A READER WHO LEFT",
+               foot_sub="a key of your own type"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2835,7 +2893,8 @@ if __name__ == "__main__":
                                ("csrf", map40, L40),
                                ("upload", map41, L41),
                                ("tests", map42, L42),
-                               ("race", map43, L43)):
+                               ("race", map43, L43),
+                               ("context", map44, L44)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
