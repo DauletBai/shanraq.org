@@ -1434,6 +1434,34 @@ def map39(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map40(s):
+    """Lesson: what comes from outside, what escapes it, and what proves the form is ours.
+
+    Escaping is the accent: it is the one of the three that is already working
+    and the one a reader can switch off by accident.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2557,6 +2585,36 @@ L39 = {
                foot_sub="the request goes without it"),
 }
 
+L40 = {
+    "kz": dict(alt="Экрандау, жетон және үш тақырып",
+               b1="бөтен мәтін", b1_sub="оқырманнан",
+               b2="экрандау", b2_sub="орнына қарай",
+               b3="жетон", b3_sub="формада",
+               c1="html/template", c2="POST",
+               head="CSRF ПЕН XSS: ҮШ ҚОРҒАНЫС",
+               head_sub="экрандау · жетон · тақырыптар",
+               foot="БӨТЕН САЙТ БЕТІҢІЗДІ ОҚИ АЛМАЙДЫ",
+               foot_sub="сондықтан жетонды білмейді"),
+    "ru": dict(alt="Экранирование, жетон и три заголовка",
+               b1="чужой текст", b1_sub="от читателя",
+               b2="экранирование", b2_sub="по месту",
+               b3="жетон", b3_sub="в форме",
+               c1="html/template", c2="POST",
+               head="CSRF И XSS: ТРИ ЗАЩИТЫ",
+               head_sub="экранирование · жетон · заголовки",
+               foot="ЧУЖОЙ САЙТ НЕ ПРОЧТЁТ ВАШУ СТРАНИЦУ",
+               foot_sub="потому и не знает жетона"),
+    "en": dict(alt="Escaping, a token and three headers",
+               b1="text from outside", b1_sub="from a reader",
+               b2="escaping", b2_sub="by context",
+               b3="the token", b3_sub="in the form",
+               c1="html/template", c2="POST",
+               head="CSRF AND XSS: THREE GUARDS",
+               head_sub="escaping · token · headers",
+               foot="ANOTHER SITE CANNOT READ YOUR PAGE",
+               foot_sub="which is why it cannot know the token"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2599,7 +2657,8 @@ if __name__ == "__main__":
                                ("layout", map36, L36),
                                ("passwords", map37, L37),
                                ("sessions", map38, L38),
-                               ("perms", map39, L39)):
+                               ("perms", map39, L39),
+                               ("csrf", map40, L40)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
