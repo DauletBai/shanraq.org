@@ -1,0 +1,17 @@
+{{ define "title" }}Тіркелу — Менің блогым{{ end }}
+
+{{ define "main" }}
+  <h1>Тіркелу</h1>
+
+  {{ with .Err }}<p class="err">{{ . }}</p>{{ end }}
+
+  <form method="post" action="/register">
+    <label for="email">Пошта</label>
+    <input id="email" name="email" type="email" value="{{ .Email }}" required maxlength="120">
+    <label for="password">Құпиясөз</label>
+    <input id="password" name="password" type="password" required minlength="8">
+    <button type="submit">Тіркелу</button>
+  </form>
+
+  <p class="hint">Кемінде сегіз таңба. Ұзындығы белгілерден маңыздырақ.</p>
+{{ end }}
