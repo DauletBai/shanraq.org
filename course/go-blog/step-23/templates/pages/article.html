@@ -1,0 +1,14 @@
+{{ define "title" }}{{ .Article.Title }} — Менің блогым{{ end }}
+
+{{ define "main" }}
+      <h1>{{ .Article.Title }}</h1>
+      <p>{{ .Article.Body }}</p>
+      <p>оқу уақыты: {{ .Article.ReadingTime }} мин</p>
+      {{ with .Article.Updated }}<p>өңделген: {{ . }}</p>{{ end }}
+      {{ with .Tags }}
+      <p class="tags">{{ range . }}<a href="/tag/{{ . }}">#{{ . }}</a> {{ end }}</p>
+      {{ end }}
+      {{- if .MayEdit }}
+      <p><a href="/edit/{{ .Article.Slug }}">өңдеу</a></p>
+      {{- end }}
+{{- end }}

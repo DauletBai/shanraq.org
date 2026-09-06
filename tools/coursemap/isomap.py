@@ -1406,6 +1406,34 @@ def map38(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map39(s):
+    """Lesson: three questions in order, and three different refusals.
+
+    The last block is the accent: ownership is the question a beginner skips,
+    and the one an attacker asks first.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2499,6 +2527,36 @@ L38 = {
                foot_sub="the cookie is never believed"),
 }
 
+L39 = {
+    "kz": dict(alt="Кірді ме, табылды ма, оныкі ме",
+               b1="кірді ме", b1_sub="жоқ — кіруге",
+               b2="табылды ма", b2_sub="жоқ болса — 404",
+               b3="оныкі ме", b3_sub="жоқ болса — 403",
+               c1="сессия", c2="author_id",
+               head="ҚҰҚЫҚ: КІМ НЕНІ ӨЗГЕРТЕ АЛАДЫ",
+               head_sub="MayEdit — жалғыз орын",
+               foot="БАТЫРМАНЫ ЖАСЫРУ — ҚОРҒАНЫС ЕМЕС",
+               foot_sub="сұраныс онсыз да жіберіледі"),
+    "ru": dict(alt="Вошёл ли, нашли ли, его ли",
+               b1="вошёл ли", b1_sub="нет — на вход",
+               b2="нашли ли", b2_sub="нет — 404",
+               b3="его ли", b3_sub="нет — 403",
+               c1="сессия", c2="author_id",
+               head="ПРАВА: КТО ЧТО МОЖЕТ МЕНЯТЬ",
+               head_sub="MayEdit — одно место",
+               foot="СПРЯТАТЬ КНОПКУ — НЕ ЗАЩИТА",
+               foot_sub="запрос отправят и без неё"),
+    "en": dict(alt="Signed in, found, and theirs",
+               b1="signed in?", b1_sub="no — to sign-in",
+               b2="found?", b2_sub="no — 404",
+               b3="theirs?", b3_sub="no — 403",
+               c1="the session", c2="author_id",
+               head="PERMISSIONS: WHO MAY CHANGE WHAT",
+               head_sub="MayEdit — one place",
+               foot="HIDING A BUTTON IS NOT A GUARD",
+               foot_sub="the request goes without it"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2540,7 +2598,8 @@ if __name__ == "__main__":
                                ("search", map35, L35),
                                ("layout", map36, L36),
                                ("passwords", map37, L37),
-                               ("sessions", map38, L38)):
+                               ("sessions", map38, L38),
+                               ("perms", map39, L39)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

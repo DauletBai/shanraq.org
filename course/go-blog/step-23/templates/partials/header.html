@@ -1,0 +1,17 @@
+    {{ define "header" -}}
+    <header class="brand">
+      <a href="/"><img src="/static/logo.svg" width="40" height="40" alt=""></a>
+      <nav>
+        <a href="/">Мақалалар</a>
+        <a href="/search">Іздеу</a>
+        <a href="/about">Блог туралы</a>
+        {{- if .User }}
+        <span class="who">{{ .User.Email }}</span>
+        <form method="post" action="/logout" class="inline"><button type="submit">Шығу</button></form>
+        {{- else }}
+        <a href="/login">Кіру</a>
+        <a href="/register">Тіркелу</a>
+        {{- end }}
+      </nav>
+    </header>
+    {{- end }}
