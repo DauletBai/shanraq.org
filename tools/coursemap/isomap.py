@@ -1122,6 +1122,35 @@ def map28(s):
     return "".join(parts)
 
 
+def map29(s):
+    """Lesson: database/sql hands out a pool, not a connection.
+
+    The middle block is the pool, accented because it is the thing beginners do
+    not know is there: a pragma sent as a query lands on one connection of it,
+    and the rest of the pool never hears about it.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -1915,6 +1944,36 @@ L28 = {
                foot_sub="select changes(); → 4"),
 }
 
+L29 = {
+    "kz": dict(alt="database/sql бір қосылым емес, пул береді",
+               b1="бағдарлама", b1_sub="database/sql",
+               b2="пул", b2_sub="бірнеше қосылым",
+               b3="blog.db", b3_sub="бір файл",
+               c1="сұраныс", c2="ашады",
+               head="АШУ ӘЛІ ҚОСЫЛУ ДЕГЕН СӨЗ ЕМЕС",
+               head_sub="db.Ping()",
+               foot="ПРАГМА СҰРАНЫСПЕН ТӨРТТІҢ БІРІН ҒАНА БАПТАЙДЫ",
+               foot_sub="foreign_keys: 1 0 0 0"),
+    "ru": dict(alt="database/sql даёт пул соединений, а не одно соединение",
+               b1="программа", b1_sub="database/sql",
+               b2="пул", b2_sub="много соединений",
+               b3="blog.db", b3_sub="один файл",
+               c1="запрос", c2="открывает",
+               head="ОТКРЫТЬ — ЕЩЁ НЕ ЗНАЧИТ ПОДКЛЮЧИТЬСЯ",
+               head_sub="db.Ping()",
+               foot="PRAGMA ЗАПРОСОМ НАСТРОИТ ОДНО СОЕДИНЕНИЕ ИЗ ЧЕТЫРЁХ",
+               foot_sub="foreign_keys: 1 0 0 0"),
+    "en": dict(alt="database/sql hands you a pool, not a single connection",
+               b1="the program", b1_sub="database/sql",
+               b2="the pool", b2_sub="many connections",
+               b3="blog.db", b3_sub="one file",
+               c1="a query", c2="opens",
+               head="OPENING IS NOT YET CONNECTING",
+               head_sub="db.Ping()",
+               foot="A PRAGMA SENT AS A QUERY REACHES ONE CONNECTION OF FOUR",
+               foot_sub="foreign_keys: 1 0 0 0"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1946,7 +2005,8 @@ if __name__ == "__main__":
                                ("static", map25, L25),
                                ("errors2", map26, L26),
                                ("config", map27, L27),
-                               ("sql", map28, L28)):
+                               ("sql", map28, L28),
+                               ("dbsql", map29, L29)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
