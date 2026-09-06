@@ -1,23 +1,23 @@
 {{ define "title" }}Іздеу — Менің блогым{{ end }}
 
 {{ define "main" }}
-  <h1>Іздеу</h1>
+      <h1>Іздеу</h1>
 
-  <form method="get" action="/search">
-    <label for="q">Сөз немесе оның басы</label>
-    <input id="q" name="q" value="{{ .Query }}" autofocus>
-    <button type="submit">Іздеу</button>
-  </form>
-  {{ if .Found }}
-  <ul class="found">
-    {{ range .Found }}
-    <li>
-      <a href="/read/{{ .Article.Slug }}">{{ .Article.Title }}</a>
-      <p class="fragment">{{ .Fragment }}</p>
-    </li>
-    {{ end }}
-  </ul>
-  {{ else if .Query }}
-  <p>Ештеңе табылмады.</p>
-  {{ end }}
-{{ end }}
+      <form method="get" action="/search">
+        <label for="q">Сөз немесе оның басы</label>
+        <input id="q" name="q" value="{{ .Query }}" autofocus>
+        <button type="submit">Іздеу</button>
+      </form>
+      {{ if .Found }}
+      <ul class="found">
+        {{ range .Found }}
+        <li>
+          <a href="/read/{{ .Article.Slug }}">{{ .Article.Title }}</a>
+          <p class="fragment">{{ .Fragment }}</p>
+        </li>
+        {{ end }}
+      </ul>
+      {{ else if .Query }}
+      <p>Ештеңе табылмады.</p>
+      {{ end }}
+{{- end }}

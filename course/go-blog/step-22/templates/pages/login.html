@@ -1,17 +1,17 @@
 {{ define "title" }}Кіру — Менің блогым{{ end }}
 
 {{ define "main" }}
-  <h1>Кіру</h1>
+      <h1>Кіру</h1>
 
-  {{ with .Err }}<p class="err">{{ . }}</p>{{ end }}
+      {{ with .Err }}<p class="err">{{ . }}</p>{{ end }}
 
-  <form method="post" action="/login">
-    <label for="email">Пошта</label>
-    <input id="email" name="email" type="email" value="{{ .Email }}" required maxlength="120">
-    <label for="password">Құпиясөз</label>
-    <input id="password" name="password" type="password" required>
-    <button type="submit">Кіру</button>
-  </form>
+      <form method="post" action="/login">
+        <label for="email">Пошта</label>
+        <input id="email" name="email" type="email" value="{{ .Email }}" required maxlength="120">
+        <label for="password">Құпиясөз</label>
+        <input id="password" name="password" type="password" required>
+        <button type="submit">Кіру</button>
+      </form>
 
-  <p class="hint">Аккаунт жоқ па? <a href="/register">Тіркеліңіз</a>.</p>
-{{ end }}
+      <p class="hint">Аккаунт жоқ па? <a href="/register">Тіркеліңіз</a>.</p>
+{{- end }}

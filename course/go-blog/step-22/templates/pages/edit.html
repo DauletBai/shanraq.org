@@ -1,11 +1,11 @@
 {{ define "title" }}Өңдеу — {{ .Article.Title }}{{ end }}
 
 {{ define "main" }}
-  <h1>Тақырыпты өңдеу</h1>
-  {{ with .Err }}<p class="err">{{ . }}</p>{{ end }}
-  <form method="post" action="/edit/{{ .Article.Slug }}">
-    <input type="text" name="title" value="{{ .Article.Title }}" autofocus>
-    <button type="submit">сақтау</button>
-  </form>
-  <p><a href="/read/{{ .Article.Slug }}">← мақалаға</a></p>
-{{ end }}
+      <h1>Тақырыпты өңдеу</h1>
+      {{ with .Err }}<p class="err">{{ . }}</p>{{ end }}
+      <form method="post" action="/edit/{{ .Article.Slug }}">
+        <input type="text" name="title" value="{{ .Article.Title }}" autofocus>
+        <button type="submit">сақтау</button>
+      </form>
+      <p><a href="/read/{{ .Article.Slug }}">← мақалаға</a></p>
+{{- end }}
