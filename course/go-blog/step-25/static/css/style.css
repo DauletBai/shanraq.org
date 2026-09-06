@@ -1,104 +1,119 @@
-:root { --ink: #1a1a1a; --paper: #fffdf8; --accent: #d32f2f; }
+:root { --ink: #1a1a1a; --paper: #fffdf8; --accent: #d32f2f; --muted: #6b625a; --line: #e6e0d6; }
 
+/* The page is a column: header, main, footer. min-height keeps the footer at
+   the bottom of the window on a short page instead of climbing up to meet the
+   text. */
 body {
-  margin: 0 auto;
-  max-width: 38rem;
-  padding: 2rem 1rem;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
   background: var(--paper);
   color: var(--ink);
   font: 1.05rem/1.6 -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
 }
 
-h1 { font-size: 1.6rem; letter-spacing: -0.01em; }
-.brand { display: flex; align-items: center; gap: 0.75rem; }
-.brand h1 { margin: 0; }
+/* One measure for all three: the column of text is centred on the screen while
+   the text inside it stays left, which is how it is read. */
+header,
+main,
+footer {
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
+}
+
+main {
+  flex: 1;
+  padding-top: 1.75rem;
+  padding-bottom: 2.5rem;
+}
+
+/* Brand on the left, menu on the right: space-between puts the gap between
+   them rather than around them. */
+header.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+header.brand nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+header.brand nav a { text-decoration: none; }
+
+footer {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+  border-top: 1px solid var(--line);
+  color: #857c72;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+h1 { font-size: 1.6rem; letter-spacing: -0.01em; margin: 0 0 1rem; }
 a { color: var(--accent); }
-form { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 1.4rem 0; }
-label { color: #6b625a; }
-input, button { font: inherit; padding: 0.4rem 0.65rem; border: 1px solid #ddd5c9; border-radius: 4px; }
-input { flex: 1 1 14rem; min-width: 0; background: #fff; color: inherit; }
-button { background: var(--accent); border-color: var(--accent); color: var(--paper); cursor: pointer; }
-.err { color: var(--accent); margin: -0.6rem 0 1.2rem; }
 ul { padding-left: 1.1rem; }
 li { margin: 0.4rem 0; }
 img { max-width: 100%; height: auto; }
 
-@media (max-width: 30rem) {
-  body { padding: 1.2rem 0.9rem; }
-  h1 { font-size: 1.35rem; }
-  /* Stack the form: on a narrow screen the label and the field do not sit
-     side by side comfortably. In a column, flex-basis sizes the HEIGHT, so the
-     field's 14rem basis has to be dropped or the box grows 14rem tall. */
-  form { flex-direction: column; align-items: stretch; }
-  input { flex: 0 0 auto; }
-  button { align-self: start; }
+/* A form is a stack: a label, the field it names under it, the next pair under
+   that, and the button at the end. Nothing shares a line, so nothing has to be
+   re-arranged on a narrow screen. */
+form {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 1.75rem;
+  max-width: 30rem;
 }
 
-.sorts {
-  margin: 0 0 0.6rem;
-  font-size: 0.9rem;
+label {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
 }
 
-.tags a {
-  margin-right: 0.3rem;
-  white-space: nowrap;
+input, button {
+  font: inherit;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #ddd5c9;
+  border-radius: 4px;
 }
 
-.fragment {
-  margin: 0.2rem 0 0;
-  color: #555;
+input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  color: inherit;
 }
 
-mark {
-  background: #ffe08a;
-  padding: 0 0.1em;
+button {
+  justify-self: start;
+  margin-top: 0.9rem;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+  cursor: pointer;
 }
 
-/* The frame: a header with the navigation, the page itself, a footer. Nothing
-   here is design — it is the little that keeps a page from looking like a
-   1995 document. Styles are not what this course teaches. */
-header.brand nav {
-  display: flex;
-  gap: 0.9rem;
-  flex-wrap: wrap;
-}
+.err { color: var(--accent); margin: 0 0 1rem; }
+.hint { color: #857c72; font-size: 0.9rem; }
+.who { color: var(--muted); }
 
-header.brand nav a {
-  text-decoration: none;
-}
-
-main {
-  display: block;
-}
-
-footer {
-  margin-top: 2.5rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid #e2e2e2;
-  color: #777;
-  font-size: 0.9rem;
-}
-
-.hint {
-  color: #777;
-  font-size: 0.9rem;
-}
-
-/* The signed-in address and the sign-out button sit in the navigation, so the
-   form has to stop behaving like a block. */
-form.inline {
-  display: inline;
-  margin: 0;
-}
-
-form.inline button {
-  padding: 0.1rem 0.5rem;
-  font-size: 0.9rem;
-}
-
-.who {
-  color: #555;
-}
+.sorts { margin: 0 0 0.8rem; font-size: 0.9rem; }
+.tags a { margin-right: 0.3rem; white-space: nowrap; }
+.fragment { margin: 0.2rem 0 0; color: #555; }
+mark { background: #ffe08a; padding: 0 0.1em; }
 
 .cover {
   display: block;
@@ -106,4 +121,25 @@ form.inline button {
   max-width: 40rem;
   height: auto;
   border-radius: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+/* The sign-out button lives in the navigation, so this one form stops being a
+   stack and behaves like a word in a line. */
+form.inline {
+  display: inline;
+  margin: 0;
+  max-width: none;
+}
+
+form.inline button {
+  margin: 0;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 34rem) {
+  header.brand { flex-wrap: wrap; }
+  h1 { font-size: 1.35rem; }
+  main { padding-top: 1.25rem; }
 }
