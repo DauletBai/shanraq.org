@@ -1,0 +1,8 @@
+# What a run leaves behind: the database file and whatever was uploaded into
+# the tree while trying the blog out. Neither belongs in the repository.
+blog.db
+blog.db-journal
+blog.db-wal
+blog.db-shm
+step-*/static/uploads/*
+!step-*/static/uploads/.gitkeep
