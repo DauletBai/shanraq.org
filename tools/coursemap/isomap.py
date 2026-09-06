@@ -1093,6 +1093,35 @@ def map27(s):
     return "".join(parts)
 
 
+def map28(s):
+    """Lesson: two tables and the key that ties them.
+
+    The middle block is accented because the foreign key is the whole idea: a
+    comment does not contain its article, it points at it by id, and the join
+    is what puts them back together for one answer.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -1856,6 +1885,36 @@ L27 = {
                foot_sub="config: no database string given"),
 }
 
+L28 = {
+    "kz": dict(alt="Екі кесте және оларды байланыстыратын кілт",
+               b1="comments", b1_sub="article_id",
+               b2="articles", b2_sub="id",
+               b3="join", b3_sub="бір жауап",
+               c1="сілтейді", c2="бірге",
+               head="ДЕРЕК ҚАЙТА ҚОСУДАН АМАН ҚАЛАДЫ",
+               head_sub="join comments c on c.article_id = a.id",
+               foot="WHERE ҰМЫТЫЛСА — БАРЛЫҚ ЖОЛ ӨЗГЕРЕДІ",
+               foot_sub="select changes(); → 4"),
+    "ru": dict(alt="Две таблицы и ключ, который их связывает",
+               b1="comments", b1_sub="article_id",
+               b2="articles", b2_sub="id",
+               b3="join", b3_sub="один ответ",
+               c1="ссылается", c2="вместе",
+               head="ДАННЫЕ ПЕРЕЖИВАЮТ ПЕРЕЗАПУСК",
+               head_sub="join comments c on c.article_id = a.id",
+               foot="ЗАБЫЛИ WHERE — ИЗМЕНИЛИСЬ ВСЕ СТРОКИ",
+               foot_sub="select changes(); → 4"),
+    "en": dict(alt="Two tables and the key that ties them together",
+               b1="comments", b1_sub="article_id",
+               b2="articles", b2_sub="id",
+               b3="join", b3_sub="one answer",
+               c1="points at", c2="together",
+               head="THE DATA SURVIVES A RESTART",
+               head_sub="join comments c on c.article_id = a.id",
+               foot="FORGET THE WHERE AND EVERY ROW CHANGES",
+               foot_sub="select changes(); → 4"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1886,7 +1945,8 @@ if __name__ == "__main__":
                                ("forms", map24, L24),
                                ("static", map25, L25),
                                ("errors2", map26, L26),
-                               ("config", map27, L27)):
+                               ("config", map27, L27),
+                               ("sql", map28, L28)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
