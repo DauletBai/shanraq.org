@@ -1462,6 +1462,34 @@ def map40(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map41(s):
+    """Lesson: what arrives, what decides it is an image, and what it is called.
+
+    The check is the accent: it is the step a beginner replaces with a look at
+    the file extension.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2615,6 +2643,36 @@ L40 = {
                foot_sub="which is why it cannot know the token"),
 }
 
+L41 = {
+    "kz": dict(alt="Өлшем, түр, ат және орын",
+               b1="форма", b1_sub="бөтен файл",
+               b2="тексеру", b2_sub="алғашқы 512 байт",
+               b3="дискідегі ат", b3_sub="біз ойлап табамыз",
+               c1="2 МиБ шек", c2="uploads/",
+               head="СУРЕТ ЖҮКТЕУ: БӨТЕН ФАЙЛ",
+               head_sub="өлшем · түр · ат · орын",
+               foot="КЕҢЕЙТІМГЕ ДЕ, БРАУЗЕРГЕ ДЕ СЕНБЕЙДІ",
+               foot_sub="мазмұны шешеді"),
+    "ru": dict(alt="Размер, тип, имя и место",
+               b1="форма", b1_sub="чужой файл",
+               b2="проверка", b2_sub="первые 512 байт",
+               b3="имя на диске", b3_sub="придумали мы",
+               c1="предел 2 МиБ", c2="uploads/",
+               head="ЗАГРУЗКА КАРТИНОК: ЧУЖОЙ ФАЙЛ",
+               head_sub="размер · тип · имя · место",
+               foot="НИ РАСШИРЕНИЮ, НИ БРАУЗЕРУ НЕ ВЕРЯТ",
+               foot_sub="решает содержимое"),
+    "en": dict(alt="Size, type, name and place",
+               b1="the form", b1_sub="a stranger's file",
+               b2="the check", b2_sub="first 512 bytes",
+               b3="name on disk", b3_sub="we make it up",
+               c1="2 MiB cap", c2="uploads/",
+               head="UPLOADS: SOMEBODY ELSE'S FILE",
+               head_sub="size · type · name · place",
+               foot="NEITHER EXTENSION NOR BROWSER IS BELIEVED",
+               foot_sub="the content decides"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2658,7 +2716,8 @@ if __name__ == "__main__":
                                ("passwords", map37, L37),
                                ("sessions", map38, L38),
                                ("perms", map39, L39),
-                               ("csrf", map40, L40)):
+                               ("csrf", map40, L40),
+                               ("upload", map41, L41)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

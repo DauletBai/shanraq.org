@@ -1,0 +1,33 @@
+{{ define "title" }}Мақалалар — Менің блогым{{ end }}
+
+{{ define "main" }}
+      <h1>Мақалалар</h1>
+
+      <form method="post" action="/add" enctype="multipart/form-data">
+        <input type="hidden" name="csrf" value="{{ .CSRF }}">
+        <label for="title">Мақаланың тақырыбы</label>
+        <input id="title" name="title" value="{{ .Draft }}" required maxlength="80">
+        <label for="tags">Тегтер</label>
+        <input id="tags" name="tags" value="{{ .DraftTag }}" placeholder="дала, блог" maxlength="120">
+        <label for="cover">Мұқаба (міндетті емес)</label>
+        <input id="cover" name="cover" type="file" accept="image/*">
+        <button type="submit">Қосу</button>
+      </form>
+      {{ if .Err }}<p class="err">{{ .Err }}</p>{{ end }}
+
+      {{ if .Articles }}
+      <p class="sorts">
+        <a href="/">қосылу ретімен</a> ·
+        <a href="/?sort=title">тақырып бойынша</a> ·
+        <a href="/?sort=updated">өңделу уақыты бойынша</a>
+      </p>
+      <ul>
+        {{- range .Articles }}
+        <li><a href="/read/{{ .Slug }}">{{ .Title }}</a> — {{ .ReadingTime }} мин</li>
+        {{- end }}
+      </ul>
+      {{ else }}
+      <p>Әзірге мақала жоқ.</p>
+      {{ end }}
+      <p><a href="/about">Блог туралы</a></p>
+{{- end }}
