@@ -4,8 +4,9 @@
 // the environment, or from the default here — in that order, because the
 // variable is what the flag falls back to.
 //
-// There is no -dsn here yet: the blog has no database until the next module.
-// When it arrives it goes in this struct beside the address, and nowhere else.
+// The database path is not here yet: the blog has no database until the next
+// module. When it arrives, -db and BLOG_DB_PATH go in this struct beside the
+// address, and nowhere else.
 package main
 
 import (
