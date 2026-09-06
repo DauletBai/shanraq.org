@@ -1,12 +1,11 @@
-// Step 20 — after the lesson "Layout".
+// Step 21 — after the lesson "Registration and passwords".
 //
-// Seven templates held seven copies of the same start of a page. Now there is
-// one frame in base.html, the shared pieces live in partials, and every page
-// only says what its title and its main are.
+// The blog has its first people. What goes into the database is never the
+// password but its bcrypt hash, with the salt inside it, and the address is
+// lower-cased first so that unique means one person.
 //
-// Each page gets a template set of its own — frame, partials and exactly one
-// page — because ParseFS keeps every template in one namespace, and two pages
-// defining main would quietly overwrite each other.
+// A taken address answers in words a reader can act on; a wrong password and
+// an address nobody registered answer identically, in the same time.
 package main
 
 import (
@@ -292,6 +291,48 @@ func routes(store *blog.Store) http.Handler {
 			return
 		}
 		render(w, http.StatusOK, "tag.html", front{Articles: list, Tag: tag})
+	})
+
+	mux.HandleFunc("GET /register", func(w http.ResponseWriter, r *http.Request) {
+		render(w, http.StatusOK, "register.html", map[string]any{})
+	})
+
+	mux.HandleFunc("POST /register", func(w http.ResponseWriter, r *http.Request) {
+		email := blog.NormalizeEmail(r.FormValue("email"))
+		password := r.FormValue("password")
+
+		// The address comes back to the form; the password never does. Making
+		// someone retype an address is rude, keeping their password in the
+		// page is careless.
+		fail := func(msg string) {
+			render(w, http.StatusBadRequest, "register.html",
+				map[string]any{"Email": email, "Err": msg})
+		}
+
+		switch {
+		case !strings.Contains(email, "@"):
+			fail("пошта дұрыс емес")
+			return
+		case utf8.RuneCountInString(password) < blog.MinPassword:
+			fail("құпиясөз сегіз таңбадан қысқа")
+			return
+		case len(password) > blog.MaxPasswordBytes:
+			fail("құпиясөз тым ұзын: 72 байт, қазақша 36 әріп")
+			return
+		}
+
+		switch err := store.Register(email, password); {
+		case errors.Is(err, blog.ErrEmailTaken):
+			fail("бұл пошта тіркелген")
+			return
+		case err != nil:
+			logger.Error("тіркеу", "id", reqID(w), "қате", err)
+			serverError(w)
+			return
+		}
+
+		logger.Info("жаңа адам", "id", reqID(w), "пошта", email)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	})
 
 	mux.HandleFunc("GET /about", func(w http.ResponseWriter, r *http.Request) {

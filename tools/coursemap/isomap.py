@@ -1350,6 +1350,34 @@ def map36(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map37(s):
+    """Lesson: what goes into the database in place of a password.
+
+    bcrypt is the accent because the whole lesson is about paying for its
+    slowness on purpose.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2383,6 +2411,36 @@ L36 = {
                foot_sub="names are shared inside a set"),
 }
 
+L37 = {
+    "kz": dict(alt="Құпиясөз, тұз және құны",
+               b1="құпиясөз", b1_sub="сақталмайды",
+               b2="bcrypt", b2_sub="тұз ішінде",
+               b3="хеш", b3_sub="дерекқорда",
+               c1="10 хеш/с", c2="кері жол жоқ",
+               head="ҚҰПИЯСӨЗДІҢ ОРНЫНА НЕ САҚТАЙДЫ",
+               head_sub="$2a$10$…",
+               foot="БІР ҚҰПИЯСӨЗ — ӘР ЖОЛЫ БАСҚА ХЕШ",
+               foot_sub="72 байт = 36 қазақ әрпі"),
+    "ru": dict(alt="Пароль, соль и стоимость",
+               b1="пароль", b1_sub="не хранится",
+               b2="bcrypt", b2_sub="соль внутри",
+               b3="хеш", b3_sub="лежит в базе",
+               c1="10 хешей/с", c2="обратно нельзя",
+               head="ЧТО ХРАНЯТ ВМЕСТО ПАРОЛЯ",
+               head_sub="$2a$10$…",
+               foot="ОДИН ПАРОЛЬ — КАЖДЫЙ РАЗ ДРУГОЙ ХЕШ",
+               foot_sub="72 байта = 36 казахских букв"),
+    "en": dict(alt="A password, a salt and a cost",
+               b1="the password", b1_sub="never stored",
+               b2="bcrypt", b2_sub="salt inside",
+               b3="the hash", b3_sub="in the database",
+               c1="10 hashes/s", c2="no way back",
+               head="WHAT IS KEPT INSTEAD OF A PASSWORD",
+               head_sub="$2a$10$…",
+               foot="ONE PASSWORD, A DIFFERENT HASH EVERY TIME",
+               foot_sub="72 bytes = 36 Kazakh letters"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2422,7 +2480,8 @@ if __name__ == "__main__":
                                ("tx", map33, L33),
                                ("tags", map34, L34),
                                ("search", map35, L35),
-                               ("layout", map36, L36)):
+                               ("layout", map36, L36),
+                               ("passwords", map37, L37)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

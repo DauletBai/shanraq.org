@@ -1,0 +1,85 @@
+:root { --ink: #1a1a1a; --paper: #fffdf8; --accent: #d32f2f; }
+
+body {
+  margin: 0 auto;
+  max-width: 38rem;
+  padding: 2rem 1rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1.05rem/1.6 -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+}
+
+h1 { font-size: 1.6rem; letter-spacing: -0.01em; }
+.brand { display: flex; align-items: center; gap: 0.75rem; }
+.brand h1 { margin: 0; }
+a { color: var(--accent); }
+form { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 1.4rem 0; }
+label { color: #6b625a; }
+input, button { font: inherit; padding: 0.4rem 0.65rem; border: 1px solid #ddd5c9; border-radius: 4px; }
+input { flex: 1 1 14rem; min-width: 0; background: #fff; color: inherit; }
+button { background: var(--accent); border-color: var(--accent); color: var(--paper); cursor: pointer; }
+.err { color: var(--accent); margin: -0.6rem 0 1.2rem; }
+ul { padding-left: 1.1rem; }
+li { margin: 0.4rem 0; }
+img { max-width: 100%; height: auto; }
+
+@media (max-width: 30rem) {
+  body { padding: 1.2rem 0.9rem; }
+  h1 { font-size: 1.35rem; }
+  /* Stack the form: on a narrow screen the label and the field do not sit
+     side by side comfortably. In a column, flex-basis sizes the HEIGHT, so the
+     field's 14rem basis has to be dropped or the box grows 14rem tall. */
+  form { flex-direction: column; align-items: stretch; }
+  input { flex: 0 0 auto; }
+  button { align-self: start; }
+}
+
+.sorts {
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+}
+
+.tags a {
+  margin-right: 0.3rem;
+  white-space: nowrap;
+}
+
+.fragment {
+  margin: 0.2rem 0 0;
+  color: #555;
+}
+
+mark {
+  background: #ffe08a;
+  padding: 0 0.1em;
+}
+
+/* The frame: a header with the navigation, the page itself, a footer. Nothing
+   here is design — it is the little that keeps a page from looking like a
+   1995 document. Styles are not what this course teaches. */
+header.brand nav {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+header.brand nav a {
+  text-decoration: none;
+}
+
+main {
+  display: block;
+}
+
+footer {
+  margin-top: 2.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #e2e2e2;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.hint {
+  color: #777;
+  font-size: 0.9rem;
+}
