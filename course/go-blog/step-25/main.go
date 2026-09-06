@@ -270,8 +270,8 @@ func (app *app) render(w http.ResponseWriter, r *http.Request, code int, name st
 	if data == nil {
 		data = map[string]any{}
 	}
-	// Шапка одна на все страницы, поэтому вошедшего кладут здесь, а не в
-	// каждом обработчике.
+	// The header is the same on every page, so who is signed in is put in
+	// here rather than remembered by each handler.
 	if u, ok := currentUser(app.store, r); ok {
 		data["User"] = u
 	}
@@ -329,8 +329,9 @@ func seed(store *blog.Store) error {
 	return nil
 }
 
-// app — то, что нужно обработчикам: хранилище и всё, что появится дальше.
-// Раньше это передавали параметром, но теперь их стало двое, и метод удобнее.
+// app is what the handlers need: the store, and whatever joins it later. It
+// used to travel as a parameter; with more than one thing to carry, a method
+// reads better.
 type app struct {
 	store   *blog.Store
 	uploads string
@@ -361,8 +362,8 @@ func routes(store *blog.Store, uploads string) http.Handler {
 	})
 
 	mux.HandleFunc("POST /add", func(w http.ResponseWriter, r *http.Request) {
-		// 32 КиБ держим в памяти, остальное Go само уводит во временный файл
-		// и убирает за собой.
+		// 32 KiB stays in memory; Go moves the rest into a temporary file by
+		// itself and clears up afterwards.
 		if err := r.ParseMultipartForm(32 << 10); err != nil {
 			showList(w, r, http.StatusRequestEntityTooLarge,
 				map[string]any{"Err": "файл тым үлкен"})
