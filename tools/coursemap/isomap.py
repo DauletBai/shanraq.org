@@ -1151,6 +1151,35 @@ def map29(s):
     return "".join(parts)
 
 
+def map30(s):
+    """Lesson: one table, a row put in and a row taken back out.
+
+    Deliberately the plainest scene in the course, because the lesson it belongs
+    to is the plainest idea in the module: a table is a shape, insert puts a row
+    into it, select asks for rows back.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -1974,6 +2003,36 @@ L29 = {
                foot_sub="foreign_keys: 1 0 0 0"),
 }
 
+L30 = {
+    "kz": dict(alt="Бір кесте: жол салынады да, сұраныспен қайтарылады",
+               b1="insert", b1_sub="жолды салады",
+               b2="articles", b2_sub="бір кесте",
+               b3="select", b3_sub="жолды алады",
+               c1="жаңа жол", c2="сұраныс",
+               head="ДЕРЕК ҚАЙТА ҚОСУДАН АМАН ҚАЛАДЫ",
+               head_sub="insert … returning id;",
+               foot="WHERE ҰМЫТЫЛСА — БАРЛЫҚ ЖОЛ ӨЗГЕРЕДІ",
+               foot_sub="select changes(); → 4"),
+    "ru": dict(alt="Одна таблица: строку кладут и достают запросом",
+               b1="insert", b1_sub="кладёт строку",
+               b2="articles", b2_sub="одна таблица",
+               b3="select", b3_sub="достаёт строку",
+               c1="новая строка", c2="запрос",
+               head="ДАННЫЕ ПЕРЕЖИВАЮТ ПЕРЕЗАПУСК",
+               head_sub="insert … returning id;",
+               foot="ЗАБЫЛИ WHERE — ИЗМЕНИЛИСЬ ВСЕ СТРОКИ",
+               foot_sub="select changes(); → 4"),
+    "en": dict(alt="One table: a row goes in and comes back out with a query",
+               b1="insert", b1_sub="puts a row in",
+               b2="articles", b2_sub="one table",
+               b3="select", b3_sub="takes a row out",
+               c1="a new row", c2="a query",
+               head="THE DATA SURVIVES A RESTART",
+               head_sub="insert … returning id;",
+               foot="FORGET THE WHERE AND EVERY ROW CHANGES",
+               foot_sub="select changes(); → 4"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2006,7 +2065,8 @@ if __name__ == "__main__":
                                ("errors2", map26, L26),
                                ("config", map27, L27),
                                ("sql", map28, L28),
-                               ("dbsql", map29, L29)):
+                               ("dbsql", map29, L29),
+                               ("sqlone", map30, L30)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
