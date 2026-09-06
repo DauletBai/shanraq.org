@@ -1180,6 +1180,35 @@ def map30(s):
     return "".join(parts)
 
 
+def map31(s):
+    """Lesson: four actions, and the one that answers silently.
+
+    The middle block is accented because it is where the surprise lives: the
+    database was asked to change a row that does not exist, and it did exactly
+    that -- nothing -- without calling it an error.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2033,6 +2062,36 @@ L30 = {
                foot_sub="select changes(); → 4"),
 }
 
+L31 = {
+    "kz": dict(alt="Төрт әрекет, ал біреуі үнсіз жауап береді",
+               b1="Exec", b1_sub="update … where",
+               b2="дерекқор", b2_sub="жол табылмады",
+               b3="RowsAffected", b3_sub="жалғыз белгі",
+               c1="сұраныс", c2="сан",
+               head="МАҚАЛА ҮСТІНДЕГІ ТӨРТ ӘРЕКЕТ",
+               head_sub="insert · select · update · delete",
+               foot="ЖОҚ НӘРСЕНІ ЖАҢАРТУ — ҚАТЕ ЕМЕС",
+               foot_sub="қате=<nil>   RowsAffected=0"),
+    "ru": dict(alt="Четыре действия, и одно отвечает молча",
+               b1="Exec", b1_sub="update … where",
+               b2="база", b2_sub="строк не нашлось",
+               b3="RowsAffected", b3_sub="весь сигнал",
+               c1="запрос", c2="число",
+               head="ЧЕТЫРЕ ДЕЙСТВИЯ НАД СТАТЬЁЙ",
+               head_sub="insert · select · update · delete",
+               foot="ОБНОВИТЬ ТО, ЧЕГО НЕТ, — НЕ ОШИБКА",
+               foot_sub="ошибка=<nil>   RowsAffected=0"),
+    "en": dict(alt="Four actions, and one of them answers in silence",
+               b1="Exec", b1_sub="update … where",
+               b2="the database", b2_sub="no rows matched",
+               b3="RowsAffected", b3_sub="the only signal",
+               c1="a query", c2="a number",
+               head="FOUR ACTIONS ON AN ARTICLE",
+               head_sub="insert · select · update · delete",
+               foot="UPDATING WHAT IS NOT THERE IS NOT AN ERROR",
+               foot_sub="err=<nil>   RowsAffected=0"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2066,7 +2125,8 @@ if __name__ == "__main__":
                                ("config", map27, L27),
                                ("sql", map28, L28),
                                ("dbsql", map29, L29),
-                               ("sqlone", map30, L30)):
+                               ("sqlone", map30, L30),
+                               ("crud", map31, L31)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
