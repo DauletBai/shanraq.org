@@ -1490,6 +1490,34 @@ def map41(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map42(s):
+    """Lesson: cases in a list, a name on each, and a report that points.
+
+    t.Run is the accent: the name is what turns a failure from a fact into an
+    address.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2673,6 +2701,36 @@ L41 = {
                foot_sub="the content decides"),
 }
 
+L42 = {
+    "kz": dict(alt="Жағдайлар кестесі, аттар және есеп",
+               b1="кесте", b1_sub="жағдай — бір жол",
+               b2="t.Run", b2_sub="әрқайсысына ат",
+               b3="есеп", b3_sub="қайсысы сынды",
+               c1="цикл", c2="go test -v",
+               head="ТЕСТ: ТҮЗЕТКЕНДЕ НЕ СЫНҒАНЫН БІЛУ",
+               head_sub="кестелік тест",
+               foot="«ТЕСТ ҚҰЛАДЫ» ЕМЕС, «ҚАЙСЫСЫ ҚҰЛАДЫ»",
+               foot_sub="аты бар жағдай өзін айтады"),
+    "ru": dict(alt="Таблица случаев, имена и отчёт",
+               b1="таблица", b1_sub="случай — строка",
+               b2="t.Run", b2_sub="каждому имя",
+               b3="отчёт", b3_sub="что сломалось",
+               c1="цикл", c2="go test -v",
+               head="ТЕСТЫ: ЧТО СЛОМАЛОСЬ ПРИ ПРАВКЕ",
+               head_sub="табличный тест",
+               foot="НЕ «ТЕСТ УПАЛ», А «УПАЛ ВОТ ЭТОТ СЛУЧАЙ»",
+               foot_sub="имя случая говорит само"),
+    "en": dict(alt="A table of cases, names and a report",
+               b1="the table", b1_sub="a case per line",
+               b2="t.Run", b2_sub="a name each",
+               b3="the report", b3_sub="what broke",
+               c1="a loop", c2="go test -v",
+               head="TESTS: WHAT AN EDIT BROKE",
+               head_sub="table-driven tests",
+               foot="NOT THE TEST FAILED BUT THIS CASE FAILED",
+               foot_sub="the name of a case speaks"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2717,7 +2775,8 @@ if __name__ == "__main__":
                                ("sessions", map38, L38),
                                ("perms", map39, L39),
                                ("csrf", map40, L40),
-                               ("upload", map41, L41)):
+                               ("upload", map41, L41),
+                               ("tests", map42, L42)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
