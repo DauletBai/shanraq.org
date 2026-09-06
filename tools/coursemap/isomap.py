@@ -1238,6 +1238,34 @@ def map32(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+
+def map33(s):
+    """Lesson: the value travels beside the query, never inside it.
+
+    The middle block is the accent because that is the whole lesson: the place
+    where a value goes in is a place, not a hole in the text.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2151,6 +2179,36 @@ L32 = {
                foot_sub="you write the next one"),
 }
 
+L33 = {
+    "kz": dict(alt="Мән сұраныстан бөлек жүреді, ал екі әрекет бірге",
+               b1="сұраныс", b1_sub="мәтіні — біздікі",
+               b2="?", b2_sub="мән — бөтен",
+               b3="дерекқор", b3_sub="бөлек талдайды",
+               c1="мәтін", c2="мән",
+               head="СҰРАНЫС — ЖАБЫСТЫРЫЛАТЫН ЖОЛ ЕМЕС",
+               head_sub="select … where slug = ?",
+               foot="НЕ ЕКІ СҰРАНЫС, НЕ БІРДЕ-БІРІ",
+               foot_sub="Begin · Commit · Rollback"),
+    "ru": dict(alt="Значение идёт отдельно от запроса, а два действия — вместе",
+               b1="запрос", b1_sub="текст пишем мы",
+               b2="?", b2_sub="значение чужое",
+               b3="база", b3_sub="разбирает порознь",
+               c1="текст", c2="значение",
+               head="ЗАПРОС — НЕ СТРОКА, КОТОРУЮ СКЛЕИВАЮТ",
+               head_sub="select … where slug = ?",
+               foot="ЛИБО ОБА ЗАПРОСА, ЛИБО НИ ОДНОГО",
+               foot_sub="Begin · Commit · Rollback"),
+    "en": dict(alt="The value travels apart from the query, the two actions together",
+               b1="the query", b1_sub="its text is ours",
+               b2="?", b2_sub="the value is not",
+               b3="the database", b3_sub="reads them apart",
+               c1="text", c2="a value",
+               head="A QUERY IS NOT A STRING YOU GLUE",
+               head_sub="select … where slug = ?",
+               foot="EITHER BOTH STATEMENTS OR NEITHER",
+               foot_sub="Begin · Commit · Rollback"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2186,7 +2244,8 @@ if __name__ == "__main__":
                                ("dbsql", map29, L29),
                                ("sqlone", map30, L30),
                                ("crud", map31, L31),
-                               ("migrate", map32, L32)):
+                               ("migrate", map32, L32),
+                               ("tx", map33, L33)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
