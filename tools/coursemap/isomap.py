@@ -1209,6 +1209,35 @@ def map31(s):
     return "".join(parts)
 
 
+
+def map32(s):
+    """Lesson: numbered files, a journal, and a schema that changes in steps.
+
+    The middle block is accented because the journal is what makes the whole
+    thing work: the files are only files until something remembers which of
+    them this database has already seen.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2092,6 +2121,36 @@ L31 = {
                foot_sub="err=<nil>   RowsAffected=0"),
 }
 
+L32 = {
+    "kz": dict(alt="Нөмірленген файлдар, журнал және бір транзакция",
+               b1="migrations/", b1_sub="нөмірлі файлдар",
+               b2="журнал", b2_sub="не қолданылған",
+               b3="схема", b3_sub="қадаммен өзгереді",
+               c1="кезекпен", c2="бір рет",
+               head="КӨШІ-ҚОН: ДЕРЕКҚОР ТАРИХЫ",
+               head_sub="0001 · 0002 · 0003",
+               foot="ҚОЛДАНЫЛҒАН ФАЙЛ ТҮЗЕТІЛМЕЙДІ",
+               foot_sub="келесісі жазылады"),
+    "ru": dict(alt="Нумерованные файлы, журнал и одна транзакция",
+               b1="migrations/", b1_sub="файлы по номерам",
+               b2="журнал", b2_sub="что уже применено",
+               b3="схема", b3_sub="меняется шагами",
+               c1="по порядку", c2="один раз",
+               head="МИГРАЦИИ: ИСТОРИЯ БАЗЫ",
+               head_sub="0001 · 0002 · 0003",
+               foot="ПРИМЕНЁННЫЙ ФАЙЛ НЕ ПРАВЯТ",
+               foot_sub="пишут следующий"),
+    "en": dict(alt="Numbered files, a journal and one transaction",
+               b1="migrations/", b1_sub="files by number",
+               b2="the journal", b2_sub="what is applied",
+               b3="the schema", b3_sub="changes in steps",
+               c1="in order", c2="once",
+               head="MIGRATIONS: THE HISTORY OF A DATABASE",
+               head_sub="0001 · 0002 · 0003",
+               foot="AN APPLIED FILE IS NEVER EDITED",
+               foot_sub="you write the next one"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2126,7 +2185,8 @@ if __name__ == "__main__":
                                ("sql", map28, L28),
                                ("dbsql", map29, L29),
                                ("sqlone", map30, L30),
-                               ("crud", map31, L31)):
+                               ("crud", map31, L31),
+                               ("migrate", map32, L32)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
