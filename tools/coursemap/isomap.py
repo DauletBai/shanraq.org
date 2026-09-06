@@ -2605,7 +2605,7 @@ L40 = {
                foot="ЧУЖОЙ САЙТ НЕ ПРОЧТЁТ ВАШУ СТРАНИЦУ",
                foot_sub="потому и не знает жетона"),
     "en": dict(alt="Escaping, a token and three headers",
-               b1="from outside", b1_sub="what a reader sent",
+               b1="from outside", b1_sub="a reader typed it",
                b2="escaping", b2_sub="by context",
                b3="the token", b3_sub="in the form",
                c1="html/template", c2="POST",
