@@ -1063,6 +1063,36 @@ def map26(s):
     return "".join(parts)
 
 
+def map27(s):
+    """Lesson: one setting, three places it can come from.
+
+    Left to right is the order of precedence, which is also the order the
+    program reads them in: the default written in the code, then the variable
+    in the environment, then the flag on the command line. The last block is
+    accented because the last one wins.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -1796,6 +1826,36 @@ L26 = {
                foot_sub="superfluous response.WriteHeader call"),
 }
 
+L27 = {
+    "kz": dict(alt="Бір баптау үш жерден келеді, соңғысы жеңеді",
+               b1="код", b1_sub="әдепкі мән",
+               b2="орта айнымалысы", b2_sub="кодты басады",
+               b3="флаг", b3_sub="екеуін де басады",
+               c1="басады", c2="басады",
+               head="ҚҰПИЯ СӨЗ КОДТА ТҰРМАЙДЫ",
+               head_sub='flag.StringVar(&c.dsn, "dsn", env("BLOG_DSN", ""), …)',
+               foot="БАПТАУ ЖОҚ БОЛСА — БІРІНШІ СҰРАНЫСТА ЕМЕС, ІСКЕ ҚОСЫЛҒАНДА ҚҰЛАЙМЫЗ",
+               foot_sub="баптау: дерекқор жолы берілмеген"),
+    "ru": dict(alt="Одна настройка приходит из трёх мест, побеждает последнее",
+               b1="код", b1_sub="по умолчанию",
+               b2="окружение", b2_sub="подменяет код",
+               b3="флаг", b3_sub="подменяет обе",
+               c1="подменяет", c2="подменяет",
+               head="ПАРОЛЬ НЕ ЖИВЁТ В КОДЕ",
+               head_sub='flag.StringVar(&c.dsn, "dsn", env("BLOG_DSN", ""), …)',
+               foot="НЕТ НАСТРОЙКИ — ПАДАЕМ ПРИ СТАРТЕ, А НЕ НА ПЕРВОМ ЗАПРОСЕ",
+               foot_sub="настройки: не задана строка подключения"),
+    "en": dict(alt="One setting arrives from three places, and the last one wins",
+               b1="the code", b1_sub="the default",
+               b2="the environment", b2_sub="overrides code",
+               b3="a flag", b3_sub="overrides both",
+               c1="overrides", c2="overrides",
+               head="THE PASSWORD DOES NOT LIVE IN THE CODE",
+               head_sub='flag.StringVar(&c.dsn, "dsn", env("BLOG_DSN", ""), …)',
+               foot="A MISSING SETTING STOPS THE START, NOT THE FIRST REQUEST",
+               foot_sub="config: no database string given"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -1825,7 +1885,8 @@ if __name__ == "__main__":
                                ("templates", map23, L23),
                                ("forms", map24, L24),
                                ("static", map25, L25),
-                               ("errors2", map26, L26)):
+                               ("errors2", map26, L26),
+                               ("config", map27, L27)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
