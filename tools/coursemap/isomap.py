@@ -1795,6 +1795,34 @@ def pymap01(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap02(s):
+    """Python lesson 2: the system, the project's environment and the project.
+
+    The accent is the middle block: the whole lesson is that a package installed
+    there is invisible outside it, which is the difference between a workplace
+    and a machine full of somebody else's versions.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3308,6 +3336,36 @@ PY01 = {
                foot_sub="measured: the price index 100 to 348.1"),
 }
 
+PY02 = {
+    "kz": dict(alt="Жүйе, орта және жоба",
+               b1="жүйе", b1_sub="ортақ Python",
+               b2="орта", b2_sub=".venv, тек жобаға",
+               b3="жоба", b3_sub="код пен тізім",
+               c1="python3 -m venv", c2="requirements.txt",
+               head="ЖҰМЫС ОРНЫ: ЖОБАНЫҢ ОРТАСЫ",
+               head_sub="екінші сабақ: не үшін .venv",
+               foot="ОРТАДАН ТЫС ПАКЕТ ЖОҚ",
+               foot_sub="өлшенді: ModuleNotFoundError"),
+    "ru": dict(alt="Система, окружение и проект",
+               b1="система", b1_sub="общий Python",
+               b2="окружение", b2_sub=".venv проекта",
+               b3="проект", b3_sub="код и список",
+               c1="python3 -m venv", c2="requirements.txt",
+               head="РАБОЧЕЕ МЕСТО: ОКРУЖЕНИЕ ПРОЕКТА",
+               head_sub="второй урок: зачем нужен .venv",
+               foot="ВНЕ ОКРУЖЕНИЯ ПАКЕТА НЕТ",
+               foot_sub="измерено: ModuleNotFoundError"),
+    "en": dict(alt="The system, the environment and the project",
+               b1="the system", b1_sub="shared Python",
+               b2="the venv", b2_sub="this project only",
+               b3="the project", b3_sub="code and a list",
+               c1="python3 -m venv", c2="requirements.txt",
+               head="A WORKPLACE: THE PROJECT'S ENVIRONMENT",
+               head_sub="lesson two: what a .venv is for",
+               foot="OUTSIDE IT THE PACKAGE IS GONE",
+               foot_sub="measured: ModuleNotFoundError"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3317,7 +3375,8 @@ if __name__ == "__main__":
     py_out = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..",
                                            "web", "static", "course", "py"))
     os.makedirs(py_out, exist_ok=True)
-    for name, scene, table in (("prices", pymap01, PY01),):
+    for name, scene, table in (("prices", pymap01, PY01),
+                               ("workspace", pymap02, PY02)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
