@@ -58,6 +58,22 @@ def check_plan():
     return 0
 
 
+def found(marker, text):
+    """A marker matches as plain text first; only then is it tried as a pattern.
+
+    Most markers are fragments of code -- print(, .split(, ** -- and those are
+    not patterns, they are what the text literally contains. Treating them as
+    regular expressions turned an unbalanced bracket into a crash, which is a
+    checker failing on the very thing it checks.
+    """
+    if marker in text:
+        return True
+    try:
+        return re.search(marker, text) is not None
+    except re.error:
+        return False
+
+
 def check_lesson(number, path):
     text = Path(path).read_text(encoding="utf-8")
     mine = [(what, markers) for what, n, markers in rows() if n == number]
@@ -66,7 +82,7 @@ def check_lesson(number, path):
         return 0
     missing = []
     for what, markers in mine:
-        if not any(re.search(m, text) if any(c in m for c in ".*[]()\\") else m in text for m in markers):
+        if not any(found(m, text) for m in markers):
             missing.append(f"  {what}: не нашёл ни одного из {markers}")
     print(f"урок {number}: элементов назначено {len(mine)}, не найдено {len(missing)}")
     if missing:

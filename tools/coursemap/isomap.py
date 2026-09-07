@@ -1823,6 +1823,33 @@ def pymap02(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap03(s):
+    """Python lesson 3: numbers, strings and the way out of the program.
+
+    The accent is the last block: a number printed without a format is a number
+    nobody reads, and the lesson's own example is thirteen digits long.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3366,6 +3393,36 @@ PY02 = {
                foot_sub="measured: ModuleNotFoundError"),
 }
 
+PY03 = {
+    "kz": dict(alt="Сандар, жолдар және шығыс",
+               b1="сандар", b1_sub="екі бөлу",
+               b2="жолдар", b2_sub="тазалау, кесу",
+               b3="f-жол", b3_sub="сан мәтін ішінде",
+               c1="// және %", c2="{x:,.0f}",
+               head="САНДАР, ЖОЛДАР ЖӘНЕ ШЫҒЫС",
+               head_sub="үшінші сабақ: чектен бастаймыз",
+               foot="ЕКІ БӨЛУ — ЕКІ ТҮРЛІ ЖАУАП",
+               foot_sub="өлшенді: 7/2 = 3.5, 7//2 = 3"),
+    "ru": dict(alt="Числа, строки и вывод",
+               b1="числа", b1_sub="два деления",
+               b2="строки", b2_sub="чистим и режем",
+               b3="f-строка", b3_sub="число в тексте",
+               c1="// и %", c2="{x:,.0f}",
+               head="ЧИСЛА, СТРОКИ И ВЫВОД",
+               head_sub="третий урок: начинаем с чека",
+               foot="ДВА ДЕЛЕНИЯ — РАЗНЫЕ ОТВЕТЫ",
+               foot_sub="измерено: 7/2 = 3.5, 7//2 = 3"),
+    "en": dict(alt="Numbers, strings and the output",
+               b1="numbers", b1_sub="two divisions",
+               b2="strings", b2_sub="clean and cut",
+               b3="an f-string", b3_sub="a number inside",
+               c1="// and %", c2="{x:,.0f}",
+               head="NUMBERS, STRINGS AND OUTPUT",
+               head_sub="lesson three: start with a receipt",
+               foot="TWO DIVISIONS, TWO ANSWERS",
+               foot_sub="measured: 7/2 = 3.5, 7//2 = 3"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3376,7 +3433,8 @@ if __name__ == "__main__":
                                            "web", "static", "course", "py"))
     os.makedirs(py_out, exist_ok=True)
     for name, scene, table in (("prices", pymap01, PY01),
-                               ("workspace", pymap02, PY02)):
+                               ("workspace", pymap02, PY02),
+                               ("numbers", pymap03, PY03)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
