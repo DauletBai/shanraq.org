@@ -1,0 +1,65 @@
+name: Course
+
+# The lessons are code as much as prose: every one of them prints a program the
+# reader is expected to type in, and a lesson that no longer compiles is found
+# by that reader, not by us. It happened -- a regular expression rewrote a block
+# and turned a working program into one that still looked right on the page.
+#
+# So the same checks that were run by hand now run here, and only when a lesson
+# or a checker changes: gofmt parses every Go program, the Python compiler takes
+# every Python one, the language of the code is held to the language of the
+# lesson, and no element of the Python syllabus is left without a lesson.
+#
+# The outside world is checked once a week instead of on every push. A link that
+# dies on somebody else's server is worth knowing about and is not a reason to
+# fail a commit that did not touch it.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'course/lessons/**'
+      - 'tools/coursecheck/**'
+      - 'tools/course/**'
+      - 'docs/py-syllabus.md'
+      - 'docs/py-course.md'
+      - '.github/workflows/course.yml'
+  pull_request:
+    paths:
+      - 'course/lessons/**'
+      - 'tools/coursecheck/**'
+      - 'tools/course/**'
+      - 'docs/py-syllabus.md'
+      - 'docs/py-course.md'
+      - '.github/workflows/course.yml'
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  lessons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - name: Code speaks the language of its lesson
+        run: python3 tools/coursecheck/langcheck.py course/lessons/article-*.md
+
+      - name: Every Go program parses
+        run: python3 tools/coursecheck/gocheck.py course/lessons/article-go-*.md
+
+      - name: Every Python program compiles
+        run: python3 tools/coursecheck/pycheck.py course/lessons/article-py-*.md
+
+      - name: Links into this repository exist
+        run: python3 tools/coursecheck/linkcheck.py --offline course/lessons/article-*.md
+
+      - name: Every element of the language has a lesson
+        run: python3 tools/coursecheck/pysyllabus.py plan
+
+      - name: Follow every outside link
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: python3 tools/coursecheck/linkcheck.py course/lessons/article-*.md
