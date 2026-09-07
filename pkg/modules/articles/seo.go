@@ -461,6 +461,112 @@ func (m *Module) applyListingSEO(page *ListingViewPage) {
 	page.JSONLD = jsonLD(page.Nonce, ld)
 }
 
+// siteLD is the card the site shows about itself on every page: the name, the
+// languages, what it publishes, and where else it can be found.
+//
+// It used to be four fields written by hand in the template, which said the
+// name and nothing about the site -- a search engine reading it learned that
+// Shanraq.org exists and had to guess the rest from the page. The description
+// is the same localized line the meta tag carries, so the two can never drift
+// apart.
+func siteLD(nonce, site, lang string) template.HTML {
+	return jsonLD(nonce, map[string]any{
+		"@context":    "https://schema.org",
+		"@type":       "WebSite",
+		"name":        "Shanraq.org",
+		"url":         site,
+		"inLanguage":  []string{"kk", "ru", "en"},
+		"description": T(lang, "seo.site_desc"),
+		"publisher": map[string]any{
+			"@type": "Organization",
+			"name":  "Shanraq.org",
+			"url":   site,
+			"logo": map[string]any{
+				"@type": "ImageObject",
+				"url":   site + "/static/brand/shanraq.svg",
+			},
+			"sameAs": []string{"https://t.me/shanraq_org"},
+		},
+	})
+}
+
+// applyCourseSEO marks a course page up as a course.
+//
+// Without this a search engine sees a page that happens to list links and files
+// it as an article; with it the same page can be shown as a course, with its
+// length and its price. Free is stated twice on purpose -- as a flag and as an
+// offer of zero -- because that is what makes "free course" a fact search can
+// read rather than a word in a sentence.
+func (m *Module) applyCourseSEO(page *CoursePage) {
+	if page.Series == nil {
+		return
+	}
+	instance := map[string]any{
+		"@type":      "CourseInstance",
+		"courseMode": "online",
+		"inLanguage": htmlLang(page.Lang),
+	}
+	if page.Minutes > 0 {
+		instance["courseWorkload"] = fmt.Sprintf("PT%dM", page.Minutes)
+	}
+	ld := map[string]any{
+		"@context":            "https://schema.org",
+		"@type":               "Course",
+		"name":                page.Series.TitleIn(page.Lang),
+		"description":         page.Desc,
+		"url":                 page.SiteURL + "/course/" + page.Series.Slug + "?lang=" + page.Lang,
+		"inLanguage":          htmlLang(page.Lang),
+		"isAccessibleForFree": true,
+		"provider": map[string]any{
+			"@type": "Organization",
+			"name":  "Shanraq.org",
+			"url":   page.SiteURL,
+		},
+		"offers": map[string]any{
+			"@type":         "Offer",
+			"price":         "0",
+			"priceCurrency": "KZT",
+			"category":      "Free",
+			"availability":  "https://schema.org/InStock",
+		},
+		"hasCourseInstance": instance,
+	}
+	page.JSONLD = jsonLD(page.Nonce, ld)
+}
+
+// applyCoursesSEO marks the index as the list of courses it is, so the hub page
+// can be shown with the courses under it instead of as a bare link.
+func (m *Module) applyCoursesSEO(page *CoursesPage) {
+	items := make([]map[string]any, 0, len(page.List))
+	for i, s := range page.List {
+		items = append(items, map[string]any{
+			"@type":    "ListItem",
+			"position": i + 1,
+			"item": map[string]any{
+				"@type":               "Course",
+				"name":                s.TitleIn(page.Lang),
+				"description":         s.SummaryIn(page.Lang),
+				"url":                 page.SiteURL + "/course/" + s.Slug + "?lang=" + page.Lang,
+				"inLanguage":          htmlLang(page.Lang),
+				"isAccessibleForFree": true,
+				"provider": map[string]any{
+					"@type": "Organization",
+					"name":  "Shanraq.org",
+					"url":   page.SiteURL,
+				},
+			},
+		})
+	}
+	if len(items) == 0 {
+		return
+	}
+	page.JSONLD = jsonLD(page.Nonce, map[string]any{
+		"@context":        "https://schema.org",
+		"@type":           "ItemList",
+		"itemListElement": items,
+	})
+}
+
 // SitemapItem is a URL entry for the sitemap.
 type SitemapItem struct {
 	Slug    string

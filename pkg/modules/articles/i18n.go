@@ -15,14 +15,15 @@ var messages = map[string]map[string]string{
 	"nav.latest": {"kz": "Соңғы", "ru": "Свежее", "en": "Latest"},
 	"nav.top":    {"kz": "Үздік", "ru": "Популярное", "en": "Top"},
 	// What search shows under the front page, so it has to say what the site
-	// holds today. It described the site as it was before the course: six
-	// lessons, their own section and a map, and the one thing here anybody
-	// searches for by name went unmentioned in the most valuable 155 characters
-	// the site owns.
+	// holds today rather than what it held when the line was written. It has
+	// been wrong twice already: once when it predated the courses entirely, and
+	// once when it named a single Go course while a second one was running. The
+	// rule is to name what a reader can open right now, in the 155 characters
+	// search will actually show -- longer than that is written for nobody.
 	"seo.site_desc": {
-		"kz": "Shanraq.org — қазақ, орыс және ағылшын тіліндегі тәуелсіз алаң: экономика мен қоғам туралы талдаулар, нөлден бастайтын тегін Go курсы, мүлік хабарландырулары.",
-		"ru": "Shanraq.org — независимая площадка на казахском, русском и английском: разборы об экономике и обществе, бесплатный курс Go с нуля, объявления о недвижимости.",
-		"en": "Shanraq.org — an independent platform in Kazakh, Russian and English: analysis of economy and society, a free Go course from scratch, real-estate listings.",
+		"kz": "Shanraq.org — үш тілдегі тәуелсіз алаң: экономика мен қоғам талдаулары, тегін Go және Python бағдарламалау курстары, мүлік хабарландырулары.",
+		"ru": "Shanraq.org — независимая площадка на трёх языках: разборы об экономике и обществе, бесплатные курсы программирования Go и Python, объявления о недвижимости.",
+		"en": "Shanraq.org — an independent platform in three languages: analysis of economy and society, free Go and Python programming courses, real-estate listings.",
 	},
 
 	"nav.all":        {"kz": "Барлығы", "ru": "Все", "en": "All"},
@@ -511,9 +512,9 @@ var messages = map[string]map[string]string{
 	"home.empty_cta": {"kz": "Бірінші мақаланы жазу", "ru": "Написать первую статью", "en": "Write the first story"},
 	// The home page heading. Category feeds are separate indexable URLs, so
 	// they name their own subject instead of all ten repeating one line.
-	"home.h1":         {"kz": "Shanraq.org — тәуелсіз талдаулар: Қазақстан, экономика, әлем", "ru": "Shanraq.org — независимые разборы: Казахстан, экономика, мир", "en": "Shanraq.org — independent analysis: Kazakhstan, economy, world"},
+	"home.h1":         {"kz": "Shanraq.org — тәуелсіз талдаулар және тегін курстар: Қазақстан, экономика, бағдарламалау", "ru": "Shanraq.org — независимые разборы и бесплатные курсы: Казахстан, экономика, программирование", "en": "Shanraq.org — independent analysis and free courses: Kazakhstan, economy, programming"},
 	"home.h1_cat":     {"kz": "%s — Shanraq.org талдаулары", "ru": "%s — разборы Shanraq.org", "en": "%s — analysis on Shanraq.org"},
-	"home.page_title": {"kz": "Еркін үш тілді жарияланымдар алаңы", "ru": "Свободная трёхъязычная площадка публикаций", "en": "A free trilingual publishing platform"},
+	"home.page_title": {"kz": "Еркін үш тілді алаң: талдаулар және тегін курстар", "ru": "Свободная трёхъязычная площадка: разборы и бесплатные курсы", "en": "A free trilingual platform: analysis and free courses"},
 
 	"follow.title": {"kz": "Жаңа талдаулар, күн сайын", "ru": "Новые разборы, ежедневно", "en": "New analysis, daily"},
 	"follow.text": {
@@ -597,7 +598,7 @@ var messages = map[string]map[string]string{
 	"ad.cta":           {"kz": "Жарнама орналастыру", "ru": "Разместить рекламу", "en": "Advertise here"},
 
 	"sidebar.about":      {"kz": "Біз туралы", "ru": "О нас", "en": "About"},
-	"sidebar.about_text": {"kz": "Shanraq.org — қарапайым адамдар мен журналистер үш тілде еркін жазатын тәуелсіз алаң.", "ru": "Shanraq.org — независимая площадка, где обычные люди и журналисты свободно пишут на трёх языках.", "en": "Shanraq.org is an independent platform where ordinary people and journalists write freely in three languages."},
+	"sidebar.about_text": {"kz": "Shanraq.org — үш тілдегі тәуелсіз алаң: талдаулар, тегін бағдарламалау курстары және хабарландырулар.", "ru": "Shanraq.org — независимая площадка на трёх языках: разборы, бесплатные курсы программирования и объявления.", "en": "Shanraq.org is an independent platform in three languages: analysis, free programming courses and listings."},
 	"sidebar.recent":     {"kz": "Соңғы жазбалар", "ru": "Недавние записи", "en": "Recent posts"},
 	"sidebar.follow":     {"kz": "Бізді қадағалаңыз", "ru": "Читайте нас", "en": "Follow us"},
 	"sidebar.read":       {"kz": "Оқу", "ru": "Читать", "en": "Read"},
@@ -2158,7 +2159,7 @@ var messages = map[string]map[string]string{
 	// Two pages that had no label of their own outside the body text.
 	"footer.formatting": {"kz": "Мәтінді ресімдеу", "ru": "Оформление текста", "en": "Text formatting"},
 	"footer.pricing":    {"kz": "Тарифтер", "ru": "Тарифы", "en": "Pricing"},
-	"footer.tag":        {"kz": "Еркін ақпарат, талдаулар және тексерілетін болжамдар.", "ru": "Свободная информация, разборы и проверяемые прогнозы.", "en": "Free information, analysis, and forecasts you can check."},
+	"footer.tag":        {"kz": "Еркін ақпарат, тегін курстар және тексерілетін болжамдар.", "ru": "Свободная информация, бесплатные курсы и проверяемые прогнозы.", "en": "Free information, free courses, and forecasts you can check."},
 	"footer.rights":     {"kz": "Барлық құқықтар қорғалған", "ru": "Все права защищены", "en": "All rights reserved"},
 	"footer.about":      {"kz": "Біз туралы", "ru": "О нас", "en": "About us"},
 	"footer.you":        {"kz": "Сіз туралы", "ru": "О вас", "en": "About you"},
@@ -2241,9 +2242,9 @@ var messages = map[string]map[string]string{
 	"nav.courses":        {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.index_title": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.index_lead": {
-		"kz": "Ретімен оқылатын сабақтар топтамасы. Барлық сабақтар ашық: тегін және тіркелусіз.",
-		"ru": "Серии уроков, которые читаются по порядку. Все уроки открыты: бесплатно и без регистрации.",
-		"en": "Lesson series meant to be read in order. Every lesson is open: free, no sign-up.",
+		"kz": "Ретімен оқылатын сабақтар топтамасы. Барлық сабақтар ашық: тегін және тіркелусіз. Қазір бұл — бағдарламалау: Go мен Python; әрі қарай SQL, Rust және машиналық оқыту.",
+		"ru": "Серии уроков, которые читаются по порядку. Все уроки открыты: бесплатно и без регистрации. Сейчас это программирование — Go и Python; дальше SQL, Rust и машинное обучение.",
+		"en": "Lesson series meant to be read in order. Every lesson is open: free, no sign-up. Today that means programming — Go and Python; next come SQL, Rust and machine learning.",
 	},
 	"course.empty_index": {
 		"kz": "Әзірге бірде-бір курс жарияланған жоқ.",

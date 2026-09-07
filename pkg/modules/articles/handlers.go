@@ -70,6 +70,7 @@ type Base struct {
 	OGImage string        // absolute image URL for social previews
 	OGType  string        // "website" | "article"
 	JSONLD  template.HTML // structured data (schema.org), injected verbatim
+	SiteLD  template.HTML // the site's own card: who publishes this and where
 	// NoIndex asks search engines to keep this page out of their index while
 	// still following its links. Set for articles flagged non-indexable.
 	NoIndex bool
@@ -141,6 +142,7 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Info:      m.infobar.Snapshot(localizedDate(lang, siteNow()), siteNow().Format("2006-01-02")),
 		Ads:       m.sidebarAds(r, lang),
 		Svc:       m.serviceViews(r, lang),
+		SiteLD:    siteLD(httpserver.NonceFromContext(r.Context()), site, lang),
 	}
 }
 

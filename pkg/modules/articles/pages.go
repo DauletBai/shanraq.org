@@ -9,37 +9,76 @@ type staticPageContent struct {
 // staticPages holds the About / Guide / Support / Pricing pages in every UI language.
 var staticPages = map[string]map[string]staticPageContent{
 	"about": {
-		"ru": {Title: "О нас", Body: `Shanraq.org — независимая площадка, где любой человек может писать и публиковать статьи на казахском, русском и английском языках. Мы верим, что доступ к информации и право высказываться — основа развития общества.
+		"ru": {Title: "О нас", Body: `Shanraq.org — независимая площадка на трёх языках: казахском, русском и английском. Здесь читают разборы о Казахстане, экономике и мире, бесплатно проходят курсы программирования и подают объявления о недвижимости. Чтение и учёба не стоят ничего и не требуют регистрации.
 
 ## Наша миссия
-Дать голос не только профессиональным журналистам, но и обычным людям: врачам, учителям, предпринимателям, студентам. Автор пишет на одном языке — платформа переводит на два других, а он проверяет перевод и правит, если нужно. Затем она сверяет версии между собой: числа, ссылки, заголовки и абзацы должны совпадать, и о расхождении она предупреждает.
+Дать голос не только профессиональным журналистам, но и обычным людям: врачам, учителям, предпринимателям, студентам. И дать знание тем, кому его негде взять на родном языке: курс программирования на казахском — редкость, и это одна из причин, по которой площадка существует.
+
+## Бесплатные курсы
+Курсы открыты целиком — без «первый урок бесплатно» и без личного кабинета:
+
+- **[Go: с нуля до своего блога](/course/go?lang=ru)** — 50 уроков: от установки языка до работающего сайта с базой, входом, поиском и выкладкой в интернет. Курс закончен.
+- **[Python: от данных до своей сводки](/course/python?lang=ru)** — уклон в данные и искусственный интеллект: программа сама забирает открытые данные, считает, строит графики и собирает отчёт. Выходит урок за уроком.
+- Дальше — SQL и Rust, а за ними машинное обучение: как модель учится на данных, где она ошибается и как её проверить. Мы не останавливаемся на программировании и идём туда, где сегодня нужны передовые знания.
+
+Каждый урок выходит сразу на трёх языках, и код внутри говорит на языке урока.
+
+## Как устроены три языка
+Автор пишет на одном языке — платформа переводит на два других, а он проверяет перевод и правит, если нужно. Затем она сверяет версии между собой: числа, ссылки, заголовки и абзацы должны совпадать, и о расхождении она предупреждает. Машинный перевод помечен, а колонки нашего ИИ-автора AI Dake выходят под его именем и со знаком «мнение ИИ».
 
 ## Наши принципы
-- **Проверяемость.** Мы за факты, которые можно проверить, а не за громкие лозунги.
+- **Проверяемость.** Факты, которые можно проверить, и числа, которые измерены, а не придуманы.
 - **Уважение.** Профессиональный тон вместо оскорблений.
-- **Открытость.** Прозрачные правила и устойчивость к произвольным блокировкам.
+- **Открытость.** Прозрачные правила и устойчивость к произвольным блокировкам: новое выходит и в Telegram, и в RSS.
+- **Знание бесплатно.** Курсы открыты сейчас и останутся открытыми.
 
 Shanraq.org — это дом, где сходятся свободные голоса.`},
-		"kz": {Title: "Біз туралы", Body: `Shanraq.org — кез келген адам қазақ, орыс және ағылшын тілдерінде мақала жазып, жариялай алатын тәуелсіз алаң. Ақпаратқа қолжетімділік пен пікір білдіру құқығы қоғам дамуының негізі деп сенеміз.
+		"kz": {Title: "Біз туралы", Body: `Shanraq.org — үш тілде жұмыс істейтін тәуелсіз алаң: қазақша, орысша және ағылшынша. Мұнда Қазақстан, экономика және әлем туралы талдаулар оқылады, тегін бағдарламалау курстары өтіледі, мүлік туралы хабарландырулар беріледі. Оқу да, үйрену де ақша талап етпейді әрі тіркелуді қажет етпейді.
 
 ## Біздің миссиямыз
-Кәсіби журналистерге ғана емес, қарапайым адамдарға — дәрігерлерге, мұғалімдерге, кәсіпкерлерге, студенттерге — дауыс беру. Автор бір тілде жазады — платформа қалған екеуіне аударады, ал ол аударманы тексеріп, керек болса түзетеді. Содан кейін нұсқаларды бір-бірімен салыстырады: сандар, сілтемелер, тақырыптар мен абзацтар сәйкес келуге тиіс, айырма болса ескертеді.
+Кәсіби журналистерге ғана емес, қарапайым адамдарға — дәрігерлерге, мұғалімдерге, кәсіпкерлерге, студенттерге — дауыс беру. Әрі білімді ана тілінде алатын жер таппағандарға сол білімді беру: қазақша бағдарламалау курсы — сирек нәрсе, алаңның бар болу себептерінің бірі осы.
+
+## Тегін курстар
+Курстар түгелдей ашық — «бірінші сабақ тегін» деген жоқ, жеке кабинеттің де қажеті жоқ:
+
+- **[Go тілі: нөлден өз блогыңызға дейін](/course/go?lang=kz)** — 50 сабақ: тілді орнатудан бастап дерекқоры, кіруі мен іздеуі бар, интернетке шығарылған сайтқа дейін. Курс аяқталды.
+- **[Python: деректен өз есебіңізге дейін](/course/python?lang=kz)** — деректер мен жасанды интеллект жағына қарай: бағдарлама ашық деректерді өзі алады, санайды, графиктер салады және есеп жинайды. Сабақ артынан сабақ шығып жатыр.
+- Әрі қарай — SQL мен Rust, олардан кейін машиналық оқыту: модель деректен қалай үйренеді, қай жерде қателеседі және оны қалай тексереді. Біз бағдарламалаумен шектелмейміз әрі бүгін озық білім керек болған жаққа қарай жүреміз.
+
+Әр сабақ бірден үш тілде шығады, ал ішіндегі код сабақтың тілінде сөйлейді.
+
+## Үш тіл қалай жұмыс істейді
+Автор бір тілде жазады — платформа қалған екеуіне аударады, ал ол аударманы тексеріп, керек болса түзетеді. Содан кейін нұсқаларды бір-бірімен салыстырады: сандар, сілтемелер, тақырыптар мен абзацтар сәйкес келуге тиіс, айырма болса ескертеді. Машина аудармасы белгіленеді, ал ЖИ-авторымыз AI Dake-тің бағандары өз атымен әрі «ЖИ пікірі» белгісімен шығады.
 
 ## Біздің ұстанымдарымыз
-- **Тексерілетіндік.** Айқайлаған ұрандар емес, тексеруге болатын фактілер.
+- **Тексерілетіндік.** Тексеруге болатын фактілер және ойдан шығарылмай, өлшенген сандар.
 - **Құрмет.** Балағаттың орнына кәсіби тон.
-- **Ашықтық.** Мөлдір ережелер және еркін блоктауға төзімділік.
+- **Ашықтық.** Мөлдір ережелер және еркін блоктауға төзімділік: жаңа материал Telegram-да да, RSS-те де шығады.
+- **Білім тегін.** Курстар қазір де ашық, әрі ашық болып қала береді.
 
 Shanraq.org — еркін дауыстар тоғысатын үй.`},
-		"en": {Title: "About us", Body: `Shanraq.org is an independent platform where anyone can write and publish articles in Kazakh, Russian, and English. We believe that access to information and the right to speak are the foundation of a thriving society.
+		"en": {Title: "About us", Body: `Shanraq.org is an independent platform in three languages: Kazakh, Russian and English. It publishes analysis of Kazakhstan, the economy and the world, teaches free programming courses, and carries real-estate listings. Reading and learning cost nothing and need no account.
 
 ## Our mission
-To give a voice not only to professional journalists but to ordinary people — doctors, teachers, entrepreneurs, students. An author writes in one language; the platform translates it into the other two, and the author checks that translation and corrects it where needed. It then compares the versions: numbers, links, headings and paragraphs must match, and it warns when they do not.
+To give a voice not only to professional journalists but to ordinary people — doctors, teachers, entrepreneurs, students. And to give knowledge to those who have nowhere to take it in their own language: a programming course in Kazakh is a rare thing, and it is one of the reasons this platform exists.
+
+## Free courses
+The courses are open in full — no "first lesson free", no account required:
+
+- **[Go: from zero to your own blog](/course/go?lang=en)** — 50 lessons, from installing the language to a working site with a database, sign-in, search and a deployment of its own. The course is finished.
+- **[Python: from data to your own digest](/course/python?lang=en)** — leaning towards data and artificial intelligence: the program fetches open data by itself, counts, draws charts and assembles a report. It comes out lesson by lesson.
+- Next are SQL and Rust, and after them machine learning: how a model learns from data, where it goes wrong, and how to check it. We do not stop at programming; we go where the knowledge that matters is.
+
+Every lesson comes out in all three languages at once, and the code inside speaks the language of its lesson.
+
+## How three languages work
+An author writes in one language; the platform translates it into the other two, and the author checks that translation and corrects it where needed. It then compares the versions: numbers, links, headings and paragraphs must match, and it warns when they do not. Machine translation is labelled, and the columns of our AI author, AI Dake, appear under that name with an "AI opinion" mark.
 
 ## Our principles
-- **Verifiability.** We stand for facts that can be checked, not loud slogans.
+- **Verifiability.** Facts that can be checked, and numbers that were measured rather than imagined.
 - **Respect.** A professional tone instead of insults.
-- **Openness.** Transparent rules and resilience to arbitrary blocking.
+- **Openness.** Transparent rules and resilience to arbitrary blocking: everything new goes out on Telegram and in RSS as well.
+- **Knowledge is free.** The courses are open now and will stay open.
 
 Shanraq.org is a home where free voices meet.`},
 	},

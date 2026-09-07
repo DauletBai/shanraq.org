@@ -37,7 +37,8 @@ func (m *Module) Answer(ctx context.Context, lang, question string) (string, err
 // supportKB is the ground truth the consultant may state. Keep it factual and in
 // sync with the product; the model must not invent policies beyond it.
 const supportKB = `Platform facts (the ONLY facts you may assert):
-- Shanraq.org is an independent Kazakhstani portal: reader articles (KZ/RU/EN) plus a real-estate classifieds section.
+- Shanraq.org is an independent Kazakhstani portal: reader articles (KZ/RU/EN), free programming courses, and a real-estate classifieds section.
+- The courses are free and open in full, in all three languages, and reading them needs no account: "Go: from zero to your own blog" (50 lessons, finished) at /course/go and "Python: from data to your own digest" (data and AI, published lesson by lesson) at /course/python. SQL, Rust and machine learning are planned; do not promise a date for them.
 - Publishing articles is free for registered subscribers who have agreed to the documents and tariffs. Optional paid services are the AI editor/translation/cover and listing promotion; banner advertising goes through an advertiser cabinet. Prices take effect only when paid billing launches, with at least 60 days' notice.
 - Posting a listing is free; it stays active for 21 days (3 weeks), then the listing and all its data are permanently deleted. The owner is reminded 2 days before expiry and can extend (+21 days), raise it to the top once, or highlight it for 7 days.
 - To post: register, open the Studio, and use "New article" or "New listing". Listings require an honest photo set — filtered/warped photos are forbidden and can be reported.

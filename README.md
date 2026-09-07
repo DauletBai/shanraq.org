@@ -5,8 +5,8 @@
 <h1 align="center">Shanraq</h1>
 
 <p align="center">
-  <b>A censorship-resistant, trilingual publishing &amp; classifieds platform for Kazakhstan.</b><br>
-  Independent journalism and real-estate listings — in Kazakh, Russian and English — under one roof.
+  <b>A censorship-resistant, trilingual publishing, teaching &amp; classifieds platform for Kazakhstan.</b><br>
+  Independent journalism, free programming courses and real-estate listings — in Kazakh, Russian and English — under one roof.
 </p>
 
 <p align="center">
@@ -20,7 +20,7 @@
 
 ---
 
-**Shanraq** ([shanraq.org](https://shanraq.org)) is a modular Go platform that fuses two things regional media has always kept apart: **trustworthy local journalism** and a **modern classifieds marketplace** (real estate first, autos and more to come). It is built to keep reaching readers even when a single channel is blocked — through automatic syndication to Telegram and RSS — and to run three languages as one publication, not three separate sites.
+**Shanraq** ([shanraq.org](https://shanraq.org)) is a modular Go platform that fuses three things regional media has always kept apart: **trustworthy local journalism**, **free technical courses** written in Kazakh as a first language, and a **modern classifieds marketplace** (real estate first, autos and more to come). It is built to keep reaching readers even when a single channel is blocked — through automatic syndication to Telegram and RSS — and to run three languages as one publication, not three separate sites.
 
 The name refers to the *shanyrak* — the crown of the Kazakh yurt — the living centre that holds the whole roof together.
 
@@ -29,11 +29,13 @@ The name refers to the *shanyrak* — the crown of the Kazakh yurt — the livin
 - **Resilience over dependence.** Content is pushed to Telegram and RSS automatically on publish, so the audience stays reachable even if the website is unavailable.
 - **One roof, not five apps.** News, real estate, and (next) autos and a marketplace live in a single product instead of scattered across separate sites and apps.
 - **AI that removes drudgery, not judgement.** Optional machine translation turns one journalist's work into a trilingual, SEO-ready, auto-distributed publication. The platform does not write or edit for the author: the text is theirs, and so is the byline.
+- **Teaching in a language that has little of it.** A programming course in Kazakh is close to nonexistent, so the courses here are written in all three languages at once and given away: open in full, no account, no "first lesson free".
 - **Built for a small, open economy.** Trilingual (kk/ru/en) with per-language SEO (hreflang, sitemaps, structured data), data stored in-country, self-hostable on a single VPS.
 
 ## Features
 
 - 📰 **Trilingual publishing** — one article, three language variants; per-language `hreflang`, sitemaps and JSON-LD.
+- 🎓 **Free courses** — *Go: from zero to your own blog* (50 lessons, finished) and *Python: from data to your own digest* (data and AI, publishing lesson by lesson); SQL, Rust and machine learning are next. Every lesson is open in three languages, the sources live in [`course/lessons/`](course/lessons/), and CI parses every program printed in them.
 - 🏠 **Real-estate classifieds** — listings with photos, geo, amenities, promotion/feature tariffs, and a dedicated listings sitemap.
 - 🤖 **AI translation & moderation** — provider-agnostic (Claude, ChatGPT or Kimi), off unless a key is set. Translation keeps the author's Markdown and links; the platform then compares the result against the original and reports anything mechanically lost, so an author can check a language they do not read.
 - 🌤 **Weather and the daily archive** — every settlement with coordinates has its own forecast page (`/weather/kachar`): conditions now, an hourly chart for two days, the chance of rain, and the week ahead. A reader who told their profile where they live is taken to their own town. Every day of publishing has an address too (`/archive/2026-08-25`), and both feed the sitemap.

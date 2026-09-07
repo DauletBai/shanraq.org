@@ -136,12 +136,12 @@ func (m *Module) handleLLMS(w http.ResponseWriter, r *http.Request) {
 	site := m.siteURL()
 	var b strings.Builder
 	b.WriteString("# Shanraq.org\n\n")
-	b.WriteString("> Независимые аналитические разборы об экономике и политике Казахстана и мира, " +
-		"на казахском, русском и английском. Каждый факт со ссылкой на первоисточник; " +
-		"оценка обозначена как оценка.\n> \n")
+	b.WriteString("> Независимые аналитические разборы об экономике и политике Казахстана и мира " +
+		"и бесплатные курсы программирования — на казахском, русском и английском. " +
+		"Каждый факт со ссылкой на первоисточник; оценка обозначена как оценка.\n> \n")
 	b.WriteString("> Independent analytical essays on the economy and politics of Kazakhstan and the " +
-		"wider world, in Kazakh, Russian and English. Every fact is sourced; judgement is labelled " +
-		"as judgement.\n\n")
+		"wider world, and free programming courses, in Kazakh, Russian and English. Every fact is " +
+		"sourced; judgement is labelled as judgement.\n\n")
 
 	b.WriteString("## О материалах / About this material\n\n")
 	b.WriteString("- Всё, что перечислено ниже, написано человеком — автором издания. " +

@@ -43,6 +43,7 @@ func (m *Module) handleCourses(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Error("series list", zap.Error(err))
 	}
 	page.List = list
+	m.applyCoursesSEO(&page)
 	m.render(w, "courses", page)
 }
 
@@ -106,6 +107,7 @@ func (m *Module) handleCourse(w http.ResponseWriter, r *http.Request) {
 			m.rt.Logger.Warn("course progress", zap.Error(err))
 		}
 	}
+	m.applyCourseSEO(&page)
 	m.render(w, "course", page)
 }
 
