@@ -2151,6 +2151,7 @@ var messages = map[string]map[string]string{
 	"footer.col_follow":  {"kz": "Бізді бақылаңыз", "ru": "Мы в соцсетях", "en": "Follow us"},
 	"footer.col_you":     {"kz": "Сізге арналған", "ru": "Для вас", "en": "For you"},
 	"footer.col_courses": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
+	"footer.course_soon": {"kz": "Курс жазылып жатыр — жақында ашылады", "ru": "Курс в разработке — скоро будет доступен", "en": "This course is being written — coming soon"},
 	"footer.rates":       {"kz": "Бағам және инфляция", "ru": "Курс и инфляция", "en": "Rates and inflation"},
 	"footer.soon":        {"kz": "жақында", "ru": "скоро", "en": "soon"},
 	"footer.guide":       {"kz": "Нұсқаулық", "ru": "Руководство", "en": "Guide"},
