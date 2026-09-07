@@ -1850,6 +1850,33 @@ def pymap03(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap04(s):
+    """Python lesson 4: text, number and truth.
+
+    The accent is the middle block: money in float is the mistake this lesson
+    exists to prevent, and 0.1 + 0.2 is the shortest proof of it.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3423,6 +3450,36 @@ PY03 = {
                foot_sub="measured: 7/2 = 3.5, 7//2 = 3"),
 }
 
+PY04 = {
+    "kz": dict(alt="Мәтін, сан және ақиқат",
+               b1="мәтін", b1_sub="файлдан келеді",
+               b2="сан", b2_sub="ақшаға Decimal",
+               b3="ақиқат", b3_sub="None нөл емес",
+               c1="int(\"260\")", c2="0.1 + 0.2",
+               head="АЙНЫМАЛЫЛАР ЖӘНЕ ТИПТЕР",
+               head_sub="төртінші сабақ: мәтін мен сан",
+               foot="0.1 + 0.2 ҮШ ОНДЫҚҚА ТЕҢ ЕМЕС",
+               foot_sub="өлшенді: 0.30000000000000004"),
+    "ru": dict(alt="Текст, число и истина",
+               b1="текст", b1_sub="так придёт файл",
+               b2="число", b2_sub="деньги — Decimal",
+               b3="истина", b3_sub="None — не ноль",
+               c1="int(\"260\")", c2="0.1 + 0.2",
+               head="ПЕРЕМЕННЫЕ И ТИПЫ",
+               head_sub="четвёртый урок: текст и число",
+               foot="0.1 + 0.2 НЕ РАВНО 0.3",
+               foot_sub="измерено: 0.30000000000000004"),
+    "en": dict(alt="Text, number and truth",
+               b1="text", b1_sub="files give this",
+               b2="a number", b2_sub="money: Decimal",
+               b3="truth", b3_sub="None is not zero",
+               c1="int(\"260\")", c2="0.1 + 0.2",
+               head="VARIABLES AND TYPES",
+               head_sub="lesson four: text and number",
+               foot="0.1 + 0.2 IS NOT 0.3",
+               foot_sub="measured: 0.30000000000000004"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3434,7 +3491,8 @@ if __name__ == "__main__":
     os.makedirs(py_out, exist_ok=True)
     for name, scene, table in (("prices", pymap01, PY01),
                                ("workspace", pymap02, PY02),
-                               ("numbers", pymap03, PY03)):
+                               ("numbers", pymap03, PY03),
+                               ("types", pymap04, PY04)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
