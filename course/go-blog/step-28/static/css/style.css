@@ -27,8 +27,8 @@ footer {
 
 main {
   flex: 1;
-  padding-top: 1.75rem;
-  padding-bottom: 2.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 /* Brand on the left, menu on the right: space-between puts the gap between
@@ -38,8 +38,8 @@ header.brand {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-top: 1.5rem;
-  padding-bottom: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--line);
 }
 
@@ -54,7 +54,7 @@ header.brand nav a { text-decoration: none; }
 
 footer {
   padding-top: 1rem;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
   border-top: 1px solid var(--line);
   color: #857c72;
   font-size: 0.9rem;

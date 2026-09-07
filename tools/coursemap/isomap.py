@@ -1602,6 +1602,33 @@ def map45(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+def map46(s):
+    """Lesson: one setting, one file, one line -- and the blog is yours.
+
+    The accent is on the setting: the name used to stand in eleven templates,
+    and that is the block a reader has to see feeding all of them.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"], accent=True))
+
+    parts.append(block(0.15, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2905,6 +2932,36 @@ L45 = {
                foot_sub="a program is reading it"),
 }
 
+L46 = {
+    "kz": dict(alt="Баптау, белгі және бетбелгі",
+               b1="блог аты", b1_sub="бір баптау",
+               b2="үлгілер", b2_sub="он бір файл",
+               b3="белгіше", b3_sub="қойындыда тұрады",
+               c1="BLOG_NAME", c2="/favicon.ico",
+               head="ӨЗ БЕЛГІҢ, ӨЗ АТЫҢ",
+               head_sub="blog енді сенікі",
+               foot="SVG — БҰЛ МӘТІН",
+               foot_sub="193 байт, кез келген өлшемде анық"),
+    "ru": dict(alt="Настройка, знак и вкладка",
+               b1="имя блога", b1_sub="одна настройка",
+               b2="шаблоны", b2_sub="11 файлов",
+               b3="иконка", b3_sub="видна на вкладке",
+               c1="BLOG_NAME", c2="/favicon.ico",
+               head="СВОЙ ЗНАК, СВОЁ ИМЯ",
+               head_sub="блог становится вашим",
+               foot="SVG — ЭТО ТЕКСТ",
+               foot_sub="193 байта, чёткий в любом размере"),
+    "en": dict(alt="A setting, a mark and a tab",
+               b1="the name", b1_sub="one setting",
+               b2="templates", b2_sub="eleven files",
+               b3="the icon", b3_sub="seen on the tab",
+               c1="BLOG_NAME", c2="/favicon.ico",
+               head="YOUR OWN MARK AND NAME",
+               head_sub="the blog becomes yours",
+               foot="SVG IS TEXT",
+               foot_sub="193 bytes, sharp at any size"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -2953,7 +3010,8 @@ if __name__ == "__main__":
                                ("tests", map42, L42),
                                ("race", map43, L43),
                                ("context", map44, L44),
-                               ("json", map45, L45)):
+                               ("json", map45, L45),
+                               ("brand", map46, L46)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
