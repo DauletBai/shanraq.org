@@ -1629,6 +1629,33 @@ def map46(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+def map47(s):
+    """Lesson: what a host decides for us -- the port, the interface, the disk.
+
+    The accent is on the interface: a service that listens to itself alone is
+    the one failure every first deploy runs into.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -2962,6 +2989,36 @@ L46 = {
                foot_sub="193 bytes, sharp at any size"),
 }
 
+L47 = {
+    "kz": dict(alt="Порт, интерфейс және диск",
+               b1="порт", b1_sub="PORT-тан келеді",
+               b2="интерфейс", b2_sub="барлық мекенжай",
+               b3="диск", b3_sub="деплойда жоғалады",
+               c1="/healthz", c2="бір файл",
+               head="БЛОГТЫ АДАМДАРҒА ЖЕТКІЗУ",
+               head_sub="тегін тарифке қою",
+               foot="ТЕГІН ДИСК САҚТАМАЙДЫ",
+               foot_sub="дерек сыртқы базада тұрсын"),
+    "ru": dict(alt="Порт, интерфейс и диск",
+               b1="порт", b1_sub="приходит в PORT",
+               b2="интерфейс", b2_sub="все адреса",
+               b3="диск", b3_sub="деплой стирает",
+               c1="/healthz", c2="один файл",
+               head="БЛОГ ТУДА, ГДЕ ЕГО ОТКРОЮТ",
+               head_sub="бесплатный тариф",
+               foot="БЕСПЛАТНЫЙ ДИСК НЕ ХРАНИТ",
+               foot_sub="данные — во внешнюю базу"),
+    "en": dict(alt="A port, an interface and a disk",
+               b1="the port", b1_sub="arrives in PORT",
+               b2="the interface", b2_sub="all, not just one",
+               b3="the disk", b3_sub="wiped on deploy",
+               c1="/healthz", c2="one file",
+               head="PUTTING THE BLOG WITHIN REACH",
+               head_sub="on a free plan",
+               foot="A FREE DISK KEEPS NOTHING",
+               foot_sub="data belongs in a database"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3011,7 +3068,8 @@ if __name__ == "__main__":
                                ("race", map43, L43),
                                ("context", map44, L44),
                                ("json", map45, L45),
-                               ("brand", map46, L46)):
+                               ("brand", map46, L46),
+                               ("deploy", map47, L47)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

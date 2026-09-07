@@ -1,0 +1,17 @@
+{{ define "title" }}{{ .Article.Title }} — {{ .SiteName }}{{ end }}
+
+{{ define "main" }}
+      {{- with .Article.Cover }}
+      <img class="cover" src="/static/uploads/{{ . }}" alt="">
+      {{- end }}
+      <h1>{{ .Article.Title }}</h1>
+      <p>{{ .Article.Body }}</p>
+      <p>оқу уақыты: {{ .Article.ReadingTime }} мин · оқылған: {{ .Views }}</p>
+      {{ with .Article.Updated }}<p>өңделген: {{ . }}</p>{{ end }}
+      {{ with .Tags }}
+      <p class="tags">{{ range . }}<a href="/tag/{{ . }}">#{{ . }}</a> {{ end }}</p>
+      {{ end }}
+      {{- if .MayEdit }}
+      <p><a href="/edit/{{ .Article.Slug }}">өңдеу</a></p>
+      {{- end }}
+{{- end }}
