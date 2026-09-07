@@ -1877,6 +1877,33 @@ def pymap04(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap05(s):
+    """Python lesson 5: a list, a slice and a tuple.
+
+    The accent is the middle block: the slice is where the off-by-one lives,
+    and the lesson is built so the reader meets it on purpose.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3480,6 +3507,36 @@ PY04 = {
                foot_sub="measured: 0.30000000000000004"),
 }
 
+PY05 = {
+    "kz": dict(alt="Тізім, тілім және кортеж",
+               b1="тізім", b1_sub="реті сақталады",
+               b2="тілім", b2_sub="оң шек кірмейді",
+               b3="кортеж", b3_sub="өзгермейді",
+               c1="sum, max, min", c2="sorted(key=)",
+               head="ТІЗІМ ЖӘНЕ КОРТЕЖ",
+               head_sub="бесінші сабақ: чек өзін санайды",
+               foot="sorted() ЖАҢАСЫН, .sort() ӨЗІН",
+               foot_sub="өлшенді: .sort() None қайтарады"),
+    "ru": dict(alt="Список, срез и кортеж",
+               b1="список", b1_sub="порядок хранится",
+               b2="срез", b2_sub="правый край вне",
+               b3="кортеж", b3_sub="не меняется",
+               c1="sum, max, min", c2="sorted(key=)",
+               head="СПИСОК И КОРТЕЖ",
+               head_sub="пятый урок: чек считает себя",
+               foot="sorted() — НОВЫЙ, .sort() — СЕБЯ",
+               foot_sub="измерено: .sort() возвращает None"),
+    "en": dict(alt="A list, a slice and a tuple",
+               b1="a list", b1_sub="order is kept",
+               b2="a slice", b2_sub="right end is out",
+               b3="a tuple", b3_sub="does not change",
+               c1="sum, max, min", c2="sorted(key=)",
+               head="A LIST AND A TUPLE",
+               head_sub="lesson five: the receipt counts itself",
+               foot="sorted() MAKES ONE, .sort() CHANGES ONE",
+               foot_sub="measured: .sort() returns None"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3492,7 +3549,8 @@ if __name__ == "__main__":
     for name, scene, table in (("prices", pymap01, PY01),
                                ("workspace", pymap02, PY02),
                                ("numbers", pymap03, PY03),
-                               ("types", pymap04, PY04)):
+                               ("types", pymap04, PY04),
+                               ("list", pymap05, PY05)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
