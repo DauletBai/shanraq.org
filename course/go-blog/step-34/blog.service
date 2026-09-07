@@ -1,0 +1,42 @@
+# The blog as a service: started on boot, restarted after a crash, stopped the
+# way it was taught to stop. Copy to /etc/systemd/system/blog.service, then
+# systemctl daemon-reload && systemctl enable --now blog.
+[Unit]
+Description=Blog
+# The network has to be up before us: a service that starts first cannot bind
+# its address and dies for no visible reason.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# Its own user, with nothing else on the machine belonging to it.
+User=blog
+Group=blog
+WorkingDirectory=/opt/blog
+ExecStart=/opt/blog/blog
+
+# The settings from the configuration lesson: the environment is where a
+# service is told things.
+Environment=BLOG_ADDR=127.0.0.1:8080
+Environment=BLOG_DB_PATH=/var/lib/blog/blog.db
+Environment=BLOG_UPLOADS=/var/lib/blog/uploads
+
+# A blog that fell over comes back by itself, but not in a tight loop.
+Restart=always
+RestartSec=2
+
+# SIGTERM is what the program is waiting for, and 20 seconds is longer than
+# the 15 it gives to the answers in flight.
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+# The little that costs nothing: no new privileges, a private /tmp, a
+# read-only system, and one folder we may write to.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/blog
+
+[Install]
+WantedBy=multi-user.target

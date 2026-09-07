@@ -996,8 +996,8 @@ def map24(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1058,8 +1058,8 @@ def map26(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1088,8 +1088,8 @@ def map27(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1117,8 +1117,8 @@ def map28(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1146,8 +1146,8 @@ def map29(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1175,8 +1175,8 @@ def map30(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1204,8 +1204,8 @@ def map31(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1234,8 +1234,8 @@ def map32(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1262,8 +1262,8 @@ def map33(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1290,8 +1290,8 @@ def map34(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1318,8 +1318,8 @@ def map35(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1346,8 +1346,8 @@ def map36(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1374,8 +1374,8 @@ def map37(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1402,8 +1402,8 @@ def map38(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1430,8 +1430,8 @@ def map39(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1458,8 +1458,8 @@ def map40(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1486,8 +1486,8 @@ def map41(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1514,8 +1514,8 @@ def map42(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1542,8 +1542,8 @@ def map43(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1570,8 +1570,8 @@ def map44(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 
@@ -1598,8 +1598,8 @@ def map45(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 def map46(s):
@@ -1625,8 +1625,8 @@ def map46(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 def map47(s):
@@ -1652,8 +1652,8 @@ def map47(s):
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 def map48(s):
@@ -1674,13 +1674,13 @@ def map48(s):
     parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
 
     parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
-    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
 
     parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 def map49(s):
@@ -1704,10 +1704,37 @@ def map49(s):
     parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
 
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
-    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"]))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
 
-    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
-    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
+def map50(s):
+    """Lesson: the three things a blog is not opened to strangers without.
+
+    The accent is on the timeouts: a server without them is held open by one
+    slow line, and that is the item people skip.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"], accent=True))
+
+    parts.append(block(0.15, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
 def check_labels(svg_body, name, lang):
@@ -3133,6 +3160,36 @@ L49 = {
                foot_sub="measured: EOF against 200"),
 }
 
+L50 = {
+    "kz": dict(alt="Таймаут, көшірме және сипаттама",
+               b1="таймаут", b1_sub="баяу ұстамайды",
+               b2="көшірме", b2_sub="тірі базадан",
+               b3="сипаттама", b3_sub="іздеу көреді",
+               c1="ReadHeaderTimeout", c2="vacuum into",
+               head="ІСКЕ ҚОСАР АЛДЫНДА",
+               head_sub="тексеру парағы",
+               foot="ТАЙМАУТСЫЗ СЕРВЕР МӘҢГІ КҮТЕДІ",
+               foot_sub="өлшенді: 2 сек күттік те, бас тарттық"),
+    "ru": dict(alt="Таймауты, копия и описание",
+               b1="таймауты", b1_sub="медленный уйдёт",
+               b2="копия", b2_sub="с живой базы",
+               b3="описание", b3_sub="его видит поиск",
+               c1="ReadHeaderTimeout", c2="vacuum into",
+               head="ПЕРЕД ЗАПУСКОМ",
+               head_sub="чек-лист, а не надежда",
+               foot="СЕРВЕР БЕЗ ТАЙМАУТОВ ЖДЁТ ВЕЧНО",
+               foot_sub="измерено: ждали 2 с и сдались первыми"),
+    "en": dict(alt="Timeouts, a copy and a description",
+               b1="timeouts", b1_sub="the slow let go",
+               b2="a backup", b2_sub="from a live db",
+               b3="description", b3_sub="search shows it",
+               c1="ReadHeaderTimeout", c2="vacuum into",
+               head="BEFORE THE LAUNCH",
+               head_sub="a checklist, not a hope",
+               foot="A SERVER WITHOUT TIMEOUTS WAITS FOREVER",
+               foot_sub="measured: we gave up first, after 2 s"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3185,7 +3242,8 @@ if __name__ == "__main__":
                                ("brand", map46, L46),
                                ("deploy", map47, L47),
                                ("https", map48, L48),
-                               ("systemd", map49, L49)):
+                               ("systemd", map49, L49),
+                               ("checklist", map50, L50)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
