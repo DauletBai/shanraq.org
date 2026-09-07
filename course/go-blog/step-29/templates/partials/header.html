@@ -8,12 +8,11 @@
         {{- if .User }}
         <span class="who">{{ .User.Email }}</span>
         <form method="post" action="/logout" class="inline">
-        <input type="hidden" name="csrf" value="{{ .CSRF }}">
-        <button type="submit">Шығу</button>
-      </form>
+          <input type="hidden" name="csrf" value="{{ .CSRF }}">
+          <button type="submit">Шығу</button>
+        </form>
         {{- else }}
         <a href="/login">Кіру</a>
-        <a href="/register">Тіркелу</a>
         {{- end }}
       </nav>
     </header>

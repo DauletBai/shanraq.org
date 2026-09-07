@@ -2735,6 +2735,24 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
 .toc-box__list a { display: flex; gap: 9px; align-items: baseline; color: var(--ink-soft); font-size: .9rem; padding: 5px 7px; border-radius: 6px; text-decoration: none; line-height: 1.35; }
 .toc-box__list a::before { content: counter(toc); font-family: var(--mono); font-size: .72rem; color: var(--gold-strong); font-weight: 700; }
 .toc-box__list a:hover { background: var(--surface-2); color: var(--ink); }
+/* Course contents in a lesson's sidebar. The list is long by design — a course
+   is forty lessons — so it scrolls inside its own box instead of pushing the
+   follow card off the screen, and the current lesson is marked so a reader
+   always knows where they are. */
+.course-box__count { font-family: var(--mono); font-size: .78rem; color: var(--ink-soft); margin: -6px 0 10px; }
+.course-box__list { list-style: none; margin: 0; padding: 0; counter-reset: lesson; display: grid; gap: 2px; max-height: 22rem; overflow-y: auto; }
+.course-box__item { counter-increment: lesson; }
+.course-box__item a,
+.course-box__soon { display: flex; gap: 9px; align-items: baseline; font-size: .88rem; line-height: 1.35; padding: 4px 7px; border-radius: 6px; text-decoration: none; }
+.course-box__item a { color: var(--ink-soft); }
+.course-box__soon { color: var(--ink-faint, #9a938c); }
+.course-box__item a::before,
+.course-box__soon::before { content: counter(lesson); font-family: var(--mono); font-size: .72rem; color: var(--gold-strong); font-weight: 700; }
+.course-box__item a:hover { background: var(--surface-2); color: var(--ink); }
+.course-box__item.is-current a,
+.course-box__item.is-current .course-box__soon { background: var(--surface-2); color: var(--ink); font-weight: 600; }
+.course-box__all { display: inline-block; margin-top: 10px; font-size: .85rem; }
+
 /* Follow card — deliberately built from the same box, padding and label style as
    the contents above it, so the two read as one sticky column rather than as a
    banner bolted onto the article. */
