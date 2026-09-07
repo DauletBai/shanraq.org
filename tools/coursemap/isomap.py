@@ -1904,6 +1904,33 @@ def pymap05(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap06(s):
+    """Python lesson 6: a key, a value and a counter.
+
+    The accent is the middle block: a missing key is an error rather than a
+    zero, and that distinction is what keeps a calculation honest.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3537,6 +3564,36 @@ PY05 = {
                foot_sub="measured: .sort() returns None"),
 }
 
+PY06 = {
+    "kz": dict(alt="Кілт, мән және санағыш",
+               b1="кілт", b1_sub="іздеу осымен",
+               b2="мән", b2_sub="жоқ кілт — қате",
+               b3="санағыш", b3_sub="Counter бір жолда",
+               c1=".get(кілт, 0)", c2=".items()",
+               head="СӨЗДІК: РЕТКЕ ЕМЕС, БАЙЛАНЫСҚА",
+               head_sub="алтыншы сабақ: кілт пен мән",
+               foot="ЖОҚ КІЛТ — БОС ЕМЕС, ҚАТЕ",
+               foot_sub="өлшенді: KeyError"),
+    "ru": dict(alt="Ключ, значение и счётчик",
+               b1="ключ", b1_sub="по нему ищут",
+               b2="значение", b2_sub="нет ключа — сбой",
+               b3="счётчик", b3_sub="Counter в строку",
+               c1=".get(ключ, 0)", c2=".items()",
+               head="СЛОВАРЬ: СВЯЗЬ ВМЕСТО ПОРЯДКА",
+               head_sub="шестой урок: ключ и значение",
+               foot="НЕТ КЛЮЧА — НЕ ПУСТОТА, А ОШИБКА",
+               foot_sub="измерено: KeyError"),
+    "en": dict(alt="A key, a value and a counter",
+               b1="a key", b1_sub="what you look by",
+               b2="a value", b2_sub="no key: an error",
+               b3="a counter", b3_sub="Counter, one line",
+               c1=".get(key, 0)", c2=".items()",
+               head="A DICTIONARY: A LINK, NOT AN ORDER",
+               head_sub="lesson six: key and value",
+               foot="A MISSING KEY IS AN ERROR, NOT A ZERO",
+               foot_sub="measured: KeyError"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3550,7 +3607,8 @@ if __name__ == "__main__":
                                ("workspace", pymap02, PY02),
                                ("numbers", pymap03, PY03),
                                ("types", pymap04, PY04),
-                               ("list", pymap05, PY05)):
+                               ("list", pymap05, PY05),
+                               ("dict", pymap06, PY06)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
