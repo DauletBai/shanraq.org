@@ -1,0 +1,62 @@
+<!-- The social card: what Telegram, Facebook and LinkedIn show when a link to
+     the site is shared. It is a PNG because none of them render SVG, and it
+     lived for a year as a PNG with no source at all -- which is how it came to
+     say "a trilingual publishing platform" long after half the site had become
+     a course.
+
+     Render it after an edit and replace the file the site serves:
+
+       chrome --headless --disable-gpu --hide-scrollbars \
+              --force-device-scale-factor=1 --window-size=1200,630 \
+              --screenshot=web/static/brand/og-cover.png \
+              --user-data-dir=$(mktemp -d) tools/brand/og-cover.html
+
+     The static tree is embedded in the binary (web/static.go), so the app has
+     to be rebuilt for a new card to reach a reader. -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<style>
+  html,body { margin:0; padding:0; }
+  body { width:1200px; height:630px; overflow:hidden;
+         font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+         background: linear-gradient(180deg, #fdfbf9 0%, #f6f2ee 100%); }
+  .bar { height:14px; background:#e53935; }
+  .wrap { height:616px; display:flex; flex-direction:column; align-items:center;
+          justify-content:center; gap:0; }
+  .mark { margin-bottom:18px; }
+  .name { font-family: Georgia, "Times New Roman", serif; font-size:108px; font-weight:700;
+          color:#1c1c1c; letter-spacing:-0.5px; line-height:1; margin:0 0 22px; }
+  .tag { font-size:33px; color:#454545; margin:0 0 26px; }
+  .langs { font-size:26px; font-weight:700; color:#e53935; letter-spacing:3px; margin:0 0 46px; }
+  .dom { font-size:27px; font-weight:700; color:#1c1c1c; }
+</style></head>
+<body>
+  <div class="bar"></div>
+  <div class="wrap">
+    <div class="mark"><svg width="150" height="150" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#ffadad" stroke-opacity="0.5" stroke-width="45">
+      <line x1="76" y1="76" x2="324" y2="324"/>
+      <line x1="137" y1="37" x2="363" y2="263"/>
+      <line x1="37" y1="137" x2="263" y2="363"/>
+      <line x1="76" y1="324" x2="324" y2="76"/>
+      <line x1="137" y1="363" x2="363" y2="137"/>
+      <line x1="37" y1="263" x2="263" y2="37"/>
+    </g>
+    <g stroke="#e53935" stroke-width="30">
+      <line x1="76" y1="76" x2="324" y2="324"/>
+      <line x1="137" y1="37" x2="363" y2="263"/>
+      <line x1="37" y1="137" x2="263" y2="363"/>
+      <line x1="76" y1="324" x2="324" y2="76"/>
+      <line x1="137" y1="363" x2="363" y2="137"/>
+      <line x1="37" y1="263" x2="263" y2="37"/>
+    </g>
+  </g>
+</svg>
+</div>
+    <div class="name">Shanraq</div>
+    <div class="tag">Разборы, бесплатные курсы и объявления</div>
+    <div class="langs">ҚАЗАҚША · РУССКИЙ · ENGLISH</div>
+    <div class="dom">shanraq.org</div>
+  </div>
+</body></html>
