@@ -216,6 +216,25 @@ func stripMD(s string) string {
 	return strings.Join(strings.Fields(b.String()), " ")
 }
 
+// firstParagraphs returns the first n paragraphs of a Markdown document,
+// skipping headings and quote blocks. It is what a page says about itself
+// before it starts explaining, which is exactly what a search result has room
+// for.
+func firstParagraphs(md string, n int) string {
+	var out []string
+	for _, para := range strings.Split(strings.ReplaceAll(md, "\r\n", "\n"), "\n\n") {
+		p := strings.TrimSpace(para)
+		if p == "" || strings.HasPrefix(p, "#") || strings.HasPrefix(p, ">") || strings.HasPrefix(p, "_") {
+			continue
+		}
+		out = append(out, p)
+		if len(out) == n {
+			break
+		}
+	}
+	return strings.Join(out, " ")
+}
+
 // excerpt trims text to a plain-text summary of at most n runes.
 func excerpt(s string, n int) string {
 	s = strings.TrimSpace(s)

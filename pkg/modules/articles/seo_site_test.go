@@ -86,3 +86,23 @@ func TestCourseCardSaysTheCourseIsFree(t *testing.T) {
 		t.Errorf("the course URL is %v", ld["url"])
 	}
 }
+
+// An info page used to be handed to search with the site's own description, so
+// /about and /pricing were offered under the same sentence and neither said
+// what it held. The page's opening lines are what it says about itself.
+func TestInfoPageDescribesItselfNotTheSite(t *testing.T) {
+	body := staticContent("about", LangRU).Body
+	lead := excerpt(stripMD(firstParagraphs(body, 2)), 200)
+	if lead == "" {
+		t.Fatal("the About page yields no description")
+	}
+	if lead == T(LangRU, "seo.site_desc") {
+		t.Error("the About page still describes the site rather than itself")
+	}
+	if strings.HasPrefix(lead, "#") || strings.Contains(lead, "##") {
+		t.Errorf("a heading leaked into the description: %q", lead)
+	}
+	if n := len([]rune(lead)); n > 201 {
+		t.Errorf("the description is %d runes; search shows a fraction of that", n)
+	}
+}

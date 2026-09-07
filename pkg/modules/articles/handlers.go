@@ -544,6 +544,13 @@ func (m *Module) handleStaticPage(key string) http.HandlerFunc {
 			return
 		}
 		page := StaticPage{Base: m.base(r, title, lang)}
+		// Search shows the description under the title, and the site-wide one
+		// says nothing about this page in particular: /about and /pricing were
+		// both offered to a reader as "an independent platform in three
+		// languages". The page's own opening lines say what it holds.
+		if lead := excerpt(stripMD(firstParagraphs(body, 2)), 200); lead != "" {
+			page.Desc = lead
+		}
 		page.Body = RenderMarkdown(applyOperator(body, m.rt.Config.Operator, lang))
 		m.render(w, "page", page)
 	}
