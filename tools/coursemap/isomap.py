@@ -1767,6 +1767,34 @@ def map51(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap01(s):
+    """Python lesson 1: what the numbers say before any of them is explained.
+
+    Three blocks: what prices did, what the neighbours' prices did, and the
+    question the course exists to answer. The accent is the middle one --
+    the comparison is what makes the first block impossible to wave away.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3250,10 +3278,51 @@ L51 = {
                foot_sub="measured: 534 ns against 1801 ns"),
 }
 
+PY01 = {
+    "kz": dict(alt="Бағалар, көршілер және сұрақ",
+               b1="бағалар", b1_sub="3,48 есе өсті",
+               b2="көршілер", b2_sub="сан басқа",
+               b3="сұрақ", b3_sub="өзің санайсың",
+               c1="FP.CPI.TOTL", c2="urllib + json",
+               head="PYTHON: ДЕРЕКТЕН ӨЗ ЕСЕБІҢЕ",
+               head_sub="бірінші сабақ: не үшін санаймыз",
+               foot="2010 ЖЫЛҒЫ 1000 ТЕҢГЕ — БҮГІНГІ 287",
+               foot_sub="өлшенді: бағалар индексі 100 → 348,1"),
+    "ru": dict(alt="Цены, соседи и вопрос",
+               b1="цены", b1_sub="в 3,48 раза",
+               b2="соседи", b2_sub="цифры другие",
+               b3="вопрос", b3_sub="считаете вы сами",
+               c1="FP.CPI.TOTL", c2="urllib + json",
+               head="PYTHON: ОТ ДАННЫХ ДО СВОЕЙ СВОДКИ",
+               head_sub="первый урок: зачем мы считаем",
+               foot="1000 ТЕНГЕ 2010 ГОДА — ЭТО 287 СЕГОДНЯ",
+               foot_sub="измерено: индекс цен 100 → 348,1"),
+    "en": dict(alt="Prices, the neighbours and the question",
+               b1="prices", b1_sub="up 3.48 times",
+               b2="neighbours", b2_sub="other numbers",
+               b3="the question", b3_sub="you count it",
+               c1="FP.CPI.TOTL", c2="urllib + json",
+               head="PYTHON: FROM DATA TO YOUR OWN DIGEST",
+               head_sub="lesson one: why we count",
+               foot="1000 TENGE OF 2010 IS 287 TODAY",
+               foot_sub="measured: the price index 100 to 348.1"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
     os.makedirs(out, exist_ok=True)
+    # The second course keeps its maps apart: same shapes and palette, its own
+    # folder, so a lesson number in one course never collides with the other.
+    py_out = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..",
+                                           "web", "static", "course", "py"))
+    os.makedirs(py_out, exist_ok=True)
+    for name, scene, table in (("prices", pymap01, PY01),):
+        for lang, strings in table.items():
+            path = os.path.join(py_out, f"map-{name}-{lang}.svg")
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(render(scene, strings, name, lang))
+            print("wrote", path)
     for name, scene, table in (("internet", map00, L), ("first-server", map01, L01),
                                ("workspace", map02, L02),
                                ("types", map03, L03),
