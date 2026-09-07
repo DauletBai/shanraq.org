@@ -656,41 +656,21 @@
         </ul>
       </nav>
 
-      {{/* 5 — the slot. It carries a real placement when one is booked and
-           sells itself when none is, and either way it wears the "Реклама"
-           ribbon: a house slide is still advertising, it just advertises the
-           slot. When ad orders are switched off the card stops being a link,
-           because an offer that leads to a closed door is worse than none. */}}
-      {{/* No heading. Every state of the card below wears the ad badge,
-           so a heading over it printed the same word twice and spent a row of
-           the column's height saying it. */}}
-      {{ if not .NoAds }}
-      <div class="foot-col foot-col--ad">
-        {{ if .Ads }}{{ with index .Ads 0 }}
-        <a class="foot-ad{{ if .House }} foot-ad--house{{ end }}" href="{{ .URL }}"{{ if not .House }} rel="nofollow sponsored noopener" target="_blank"{{ end }}>
-          <span class="adslot__ribbon{{ if .House }} adslot__ribbon--house{{ end }}">{{ t $.Lang "ad.badge" }}</span>
-          <span class="foot-ad__title">{{ .Title }}</span>
-          {{ if .Desc }}<span class="foot-ad__desc">{{ .Desc }}</span>{{ end }}
-          <span class="foot-ad__cta">{{ if .Price }}{{ .Price }}{{ else }}{{ t $.Lang "ad.learn_more" }}{{ end }} →</span>
-        </a>
-        {{ end }}{{ else if svcOff .Svc "ad_orders" }}
-        {{/* Not .is-disabled: that class is written for an inline link and
-             appends " 🛠" after the word, which on a card lands on a line of
-             its own like debris. The card says why in a sentence instead. */}}
-        <div class="foot-ad foot-ad--house foot-ad--off" aria-disabled="true">
-          <span class="adslot__ribbon adslot__ribbon--house">{{ t .Lang "ad.badge" }}</span>
-          <span class="foot-ad__title">{{ t .Lang "ad.placeholder" }}</span>
-          <span class="foot-ad__desc">{{ svcMsg .Svc "ad_orders" }}</span>
-        </div>
-        {{ else }}
-        <a class="foot-ad foot-ad--house" href="/advertise">
-          <span class="adslot__ribbon adslot__ribbon--house">{{ t .Lang "ad.badge" }}</span>
-          <span class="foot-ad__title">{{ t .Lang "ad.placeholder" }}</span>
-          <span class="foot-ad__cta">{{ t .Lang "ad.cta" }} →</span>
-        </a>
-        {{ end }}
-      </div>
-      {{ end }}
+      {{/* 5 — what the site teaches. The courses stand where the house ad
+           card used to: a reader who reached the bottom of a page is more
+           likely to want the next lesson than the next offer. The mark is the
+           language's own, so the row is recognised before it is read. */}}
+      <nav class="foot-col" aria-labelledby="foot-courses">
+        <h2 class="foot-h" id="foot-courses">{{ t .Lang "footer.col_courses" }}</h2>
+        <ul class="foot-list foot-courses">
+          <li>
+            <a href="/course/go">
+              <img class="foot-course__mark" src="{{ asset "/static/brand/go-logo.svg" }}" alt="" aria-hidden="true" width="34" height="13">
+              <span class="foot-course__name">Golang</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
       </div>
     </div>

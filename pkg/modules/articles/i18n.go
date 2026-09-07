@@ -2147,12 +2147,13 @@ var messages = map[string]map[string]string{
 	"notice.ai_off":            {"kz": "ИИ-ассистент қазір өшірулі (API кілті жоқ).", "ru": "ИИ-ассистент сейчас отключён (не задан API-ключ).", "en": "AI assistant is currently off (no API key)."},
 
 	// Column headings in the footer grid.
-	"footer.col_about":  {"kz": "Біз туралы", "ru": "О нас", "en": "About us"},
-	"footer.col_follow": {"kz": "Бізді бақылаңыз", "ru": "Мы в соцсетях", "en": "Follow us"},
-	"footer.col_you":    {"kz": "Сізге арналған", "ru": "Для вас", "en": "For you"},
-	"footer.rates":      {"kz": "Бағам және инфляция", "ru": "Курс и инфляция", "en": "Rates and inflation"},
-	"footer.soon":       {"kz": "жақында", "ru": "скоро", "en": "soon"},
-	"footer.guide":      {"kz": "Нұсқаулық", "ru": "Руководство", "en": "Guide"},
+	"footer.col_about":   {"kz": "Біз туралы", "ru": "О нас", "en": "About us"},
+	"footer.col_follow":  {"kz": "Бізді бақылаңыз", "ru": "Мы в соцсетях", "en": "Follow us"},
+	"footer.col_you":     {"kz": "Сізге арналған", "ru": "Для вас", "en": "For you"},
+	"footer.col_courses": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
+	"footer.rates":       {"kz": "Бағам және инфляция", "ru": "Курс и инфляция", "en": "Rates and inflation"},
+	"footer.soon":        {"kz": "жақында", "ru": "скоро", "en": "soon"},
+	"footer.guide":       {"kz": "Нұсқаулық", "ru": "Руководство", "en": "Guide"},
 	// Two pages that had no label of their own outside the body text.
 	"footer.formatting": {"kz": "Мәтінді ресімдеу", "ru": "Оформление текста", "en": "Text formatting"},
 	"footer.pricing":    {"kz": "Тарифтер", "ru": "Тарифы", "en": "Pricing"},

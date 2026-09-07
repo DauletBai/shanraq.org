@@ -47,11 +47,6 @@ type Base struct {
 	// Ads feeds the sidebar ad carousel (demo placements for now).
 	Ads []Ad
 
-	// NoAds takes every placement off a page, the footer column included. A
-	// lesson sets it: a reader working through a course is here to learn, and
-	// the empty "your ad could be here" card is still an ad.
-	NoAds bool
-
 	// Info feeds the top info bar (date, weather, rates, social links).
 	Info InfoBarData
 
@@ -843,7 +838,6 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 				// attention that belongs to the lesson.
 				page.IsLesson = true
 				page.Ads = nil
-				page.NoAds = true
 				break
 			}
 		}

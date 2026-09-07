@@ -981,10 +981,10 @@ def map24(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1043,10 +1043,10 @@ def map26(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "rt", "rl", "rr"))
@@ -1073,10 +1073,10 @@ def map27(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1102,10 +1102,10 @@ def map28(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1131,10 +1131,10 @@ def map29(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1160,10 +1160,10 @@ def map30(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1189,10 +1189,10 @@ def map31(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1219,10 +1219,10 @@ def map32(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1247,10 +1247,10 @@ def map33(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1275,9 +1275,9 @@ def map34(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
     parts.append(chevron(2.2, 0.57, -1, "arw-res"))
 
     half, top = 1.3, 1.15
@@ -1303,10 +1303,10 @@ def map35(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1331,10 +1331,10 @@ def map36(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1359,10 +1359,10 @@ def map37(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1387,10 +1387,10 @@ def map38(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1415,10 +1415,10 @@ def map39(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1443,10 +1443,10 @@ def map40(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1471,10 +1471,10 @@ def map41(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1499,10 +1499,10 @@ def map42(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1527,10 +1527,10 @@ def map43(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1555,10 +1555,10 @@ def map44(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1583,10 +1583,10 @@ def map45(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1610,10 +1610,10 @@ def map46(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "rt", "rl", "rr"))
@@ -1637,10 +1637,10 @@ def map47(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1664,10 +1664,10 @@ def map48(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1691,10 +1691,10 @@ def map49(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
@@ -1718,10 +1718,10 @@ def map50(s):
     """
     parts = []
 
-    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
-    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
-    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
-    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
 
     half, top = 1.3, 1.15
     parts.append(block(-4.2, 0, half, top, "rt", "rl", "rr"))
@@ -1729,6 +1729,33 @@ def map50(s):
 
     parts.append(block(0.15, 0, half, top, "t", "l", "r"))
     parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
+def map51(s):
+    """Last lesson: a type parameter, the condition on it, and the road on.
+
+    The accent is on the condition: a type parameter without one is a promise
+    nobody checks, and the compiler is the whole point of the feature.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
 
     parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
     parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
@@ -3190,6 +3217,36 @@ L50 = {
                foot_sub="measured: we gave up first, after 2 s"),
 }
 
+L51 = {
+    "kz": dict(alt="Тип параметрі, шарт және әрі қарайғы жол",
+               b1="тип параметрі", b1_sub="бір код, көп тип",
+               b2="шарт", b2_sub="компилятор көреді",
+               b3="әрі қарай", b3_sub="жол бітпейді",
+               c1="Sum[T Number]", c2="slices, maps",
+               head="ӘРІ ҚАРАЙ ҚАЙДА",
+               head_sub="курстың соңғы сабағы",
+               foot="ДЖЕНЕРИК — ҚАЙТАЛАУДЫҢ ЕМІ",
+               foot_sub="өлшенді: 534 нс пен 1801 нс"),
+    "ru": dict(alt="Параметр типа, условие и дорога дальше",
+               b1="параметр типа", b1_sub="код один на все",
+               b2="условие", b2_sub="проверит сборка",
+               b3="дальше", b3_sub="дорога длиннее",
+               c1="Sum[T Number]", c2="slices, maps",
+               head="КУДА ДАЛЬШЕ",
+               head_sub="последний урок курса",
+               foot="ДЖЕНЕРИКИ — ЛЕКАРСТВО ОТ ПОВТОРА",
+               foot_sub="измерено: 534 нс против 1801 нс"),
+    "en": dict(alt="A type parameter, its condition and the road on",
+               b1="type parameter", b1_sub="any type at all",
+               b2="the condition", b2_sub="the build checks",
+               b3="onwards", b3_sub="the road goes on",
+               c1="Sum[T Number]", c2="slices, maps",
+               head="WHERE TO GO NEXT",
+               head_sub="the last lesson of the course",
+               foot="GENERICS CURE REPETITION",
+               foot_sub="measured: 534 ns against 1801 ns"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3243,7 +3300,8 @@ if __name__ == "__main__":
                                ("deploy", map47, L47),
                                ("https", map48, L48),
                                ("systemd", map49, L49),
-                               ("checklist", map50, L50)):
+                               ("checklist", map50, L50),
+                               ("next", map51, L51)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
