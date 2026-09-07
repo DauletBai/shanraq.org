@@ -2742,18 +2742,19 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
 .course-box__count { font-family: var(--mono); font-size: .78rem; color: var(--ink-soft); margin: -6px 0 10px; }
 .course-box__list { list-style: none; margin: 0; padding: 0; counter-reset: lesson; display: grid; gap: 2px; max-height: 22rem; overflow-y: auto; }
 .course-box__item { counter-increment: lesson; }
-/* Front matter -- the announcement and the preface -- is part of the course but
-   not a lesson: it takes no number, and the numbering of the lessons below it
-   stays what their own texts say. */
 .course-box__item--intro { counter-increment: none; }
-.course-box__item--intro a::before,
-.course-box__item--intro .course-box__soon::before { content: "·"; }
 .course-box__item a,
 .course-box__soon { display: flex; gap: 9px; align-items: baseline; font-size: .88rem; line-height: 1.35; padding: 4px 7px; border-radius: 6px; text-decoration: none; }
 .course-box__item a { color: var(--ink-soft); }
 .course-box__soon { color: var(--ink-faint, #9a938c); }
 .course-box__item a::before,
 .course-box__soon::before { content: counter(lesson); font-family: var(--mono); font-size: .72rem; color: var(--gold-strong); font-weight: 700; }
+/* Front matter -- the announcement and the preface -- is part of the course but
+   not a lesson, so it takes a dot instead of a number and leaves the lessons
+   below it numbered as their own texts say. This rule follows the one above on
+   purpose: same specificity, and the later of the two wins. */
+.course-box__item--intro a::before,
+.course-box__item--intro .course-box__soon::before { content: "·"; color: var(--ink-faint, #9a938c); }
 .course-box__item a:hover { background: var(--surface-2); color: var(--ink); }
 .course-box__item.is-current a,
 .course-box__item.is-current .course-box__soon { background: var(--surface-2); color: var(--ink); font-weight: 600; }
