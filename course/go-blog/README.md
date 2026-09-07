@@ -35,6 +35,7 @@
 | [step-26](step-26) | Тесты | Табличные тесты, `t.Run`, обработчик через `httptest`, база в `t.TempDir` |
 | [step-27](step-27) | Горутины | Счётчик просмотров под `sync.Mutex`, тест с `-race` |
 | [step-28](step-28) | context | `ctx` первым аргументом, `...Context` в базу, вошедший — в контексте запроса |
+| [step-29](step-29) | JSON и API | `/api/articles` и `/api/articles/{slug}`, ошибки тоже JSON |
 
 ## Как запустить
 
