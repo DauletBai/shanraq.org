@@ -830,16 +830,14 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 
 	if places, err := m.series.ForArticle(r.Context(), a.ID, page.Lang); err == nil {
 		page.SeriesPlaces = places
-		for _, pl := range places {
-			if pl.Number > 0 {
-				// A lesson page carries the whole course in its sidebar and no
-				// advertising at all: a reader who is working through a course
-				// is here to learn, and a placement beside the contents buys
-				// attention that belongs to the lesson.
-				page.IsLesson = true
-				page.Ads = nil
-				break
-			}
+		if len(places) > 0 {
+			// A page inside a course carries the whole course in its sidebar
+			// and no advertising at all: a reader who is working through one is
+			// here to learn, and a placement beside the contents buys attention
+			// that belongs to the lesson. The course's own front matter counts:
+			// it is where the reader starts.
+			page.IsLesson = true
+			page.Ads = nil
 		}
 	} else {
 		m.rt.Logger.Warn("article series", zap.Error(err))

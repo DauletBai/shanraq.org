@@ -418,6 +418,13 @@ func routes(store *blog.Store, c config) http.Handler {
 	})
 
 	mux.HandleFunc("POST /add", func(w http.ResponseWriter, r *http.Request) {
+		// Writing is for whoever signed in. Hiding the form is a convenience;
+		// this line is the guard, exactly as with editing.
+		if _, ok := currentUser(store, r); !ok {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
 		// 32 KiB stays in memory; Go moves the rest into a temporary file by
 		// itself and clears up afterwards.
 		if err := r.ParseMultipartForm(32 << 10); err != nil {

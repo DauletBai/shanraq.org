@@ -58,6 +58,13 @@ type SeriesItem struct {
 	Passed bool
 }
 
+// Intro reports whether this item is the course's front matter rather than a
+// lesson -- an announcement, a preface. The convention is the position: lessons
+// are numbered from ten upwards in steps of ten, so anything below ten is what
+// stands before the first lesson. Front matter is not numbered, otherwise every
+// lesson in the contents would be off by the number of pages in front of it.
+func (it *SeriesItem) Intro() bool { return it.Position < 10 }
+
 // TitleIn returns the course title in the reader's language, falling back to any
 // language that has one -- a course shown with a blank name would be worse than
 // one shown in the wrong language.
@@ -296,10 +303,25 @@ func (st *SeriesStore) ForArticle(ctx context.Context, articleID uuid.UUID, lang
 				pub = append(pub, it)
 			}
 		}
-		place.Total = len(pub)
+		// Numbering counts lessons only: the front matter is part of the
+		// course and part of the chain, but "1 / 50" beside a preface would
+		// shift every lesson number away from what its own text says.
+		lessons := 0
+		for _, it := range pub {
+			if !it.Intro() {
+				lessons++
+			}
+		}
+		place.Total = lessons
+		seen := 0
 		for i, it := range pub {
+			if !it.Intro() {
+				seen++
+			}
 			if it.ArticleID == articleID {
-				place.Number = i + 1
+				if !it.Intro() {
+					place.Number = seen
+				}
 				if i > 0 {
 					place.Prev = pub[i-1]
 				}

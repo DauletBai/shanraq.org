@@ -374,13 +374,15 @@
            block, and the strip at the top of the page only shows the two
            neighbours. Lessons that are not published yet are named but not
            linked: the gap is honest and the chain stays unbroken. */}}
-      {{ range .SeriesPlaces }}{{ if .Number }}
+      {{ range .SeriesPlaces }}
       <nav class="toc-box course-box" aria-label="{{ .Series.TitleIn $.Lang }}">
         <p class="toc-box__title">{{ .Series.TitleIn $.Lang }}</p>
-        <p class="course-box__count">{{ .Number }} / {{ .Total }}</p>
+        {{/* The count names the lesson, so the course's front matter -- the
+             announcement, the preface -- shows none: it is not lesson zero. */}}
+        {{ if .Number }}<p class="course-box__count">{{ .Number }} / {{ .Total }}</p>{{ end }}
         <ol class="course-box__list">
           {{ range .Series.Items }}
-          <li class="course-box__item{{ if eq .Slug $.Slug }} is-current{{ end }}">
+          <li class="course-box__item{{ if .Intro }} course-box__item--intro{{ end }}{{ if eq .Slug $.Slug }} is-current{{ end }}">
             {{ if .Published }}<a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a>
             {{ else }}<span class="course-box__soon">{{ .Title }}</span>{{ end }}
           </li>
@@ -388,7 +390,7 @@
         </ol>
         <a class="course-box__all" href="/course/{{ .Series.Slug }}?lang={{ $.Lang }}">{{ t $.Lang "course.map" }} →</a>
       </nav>
-      {{ end }}{{ end }}
+      {{ end }}
 
       {{ if .TOC }}
       <nav class="toc-box" aria-label="{{ t .Lang "article.toc" }}">

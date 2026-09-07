@@ -397,12 +397,14 @@ def map04(s):
 
 
 def map05(s):
-    """The announcement cover: the modules stand, the road keeps going.
+    """The announcement cover: the arc of the course, and the road out of it.
 
     The blocks used to be blank, on the argument that numbering them would claim
     a lesson count that goes stale. It does — but five anonymous cubes say
     nothing at all, which is worse. Named after the course's modules they carry
-    the shape of the whole thing and stay true as lessons are added.
+    the shape of the whole thing. The road past the last block used to mean
+    lessons still unwritten; the course is written now, and it means what comes
+    after it: the reader's own blog.
     """
     parts = []
 
@@ -411,8 +413,9 @@ def map05(s):
         parts.append(block(u, 0, half, top, "gt", "gl", "gr"))
         parts.append(text(u, top, s[key], "tag", dy=4.0))
 
-    # The road past the last block: lessons that exist as a plan, not yet as
-    # pages. Drawn as a path with nothing standing on it.
+    # The road past the last block: what the course leads to rather than what
+    # is left of it. Drawn as a path with nothing standing on it, because what
+    # stands there is built by the reader.
     parts.append(road(4.6, 7.4, top * 0.5, 0.44, "band-flow"))
     for u in (5.3, 6.2, 7.1):
         parts.append(chevron(u, top * 0.5 + 0.02, +1, "arw-flow"))
@@ -1987,18 +1990,18 @@ L04["ru"]["in"] = "ЧТО ПРИНЕСЛИ"; L04["ru"]["in_sub"] = "a, b float64
 L04["en"]["in"] = "WHAT YOU BRING"; L04["en"]["in_sub"] = "a, b float64"
 
 L05 = {
-    "kz": dict(alt="Курс модульдері тұр, жол әрі қарай созылады",
-               m1="КІРІСПЕ", m2="ТІЛ", m3="ВЕБ", m4="ДЕРЕКТЕР", m5="АДАМДАР",
-               head="ТЕГІН КУРС: GO НӨЛДЕН", head_sub="46 сабақ · тіркелусіз · үш тілде",
-               foot="ЖОЛ БАСТАЛДЫ ЖӘНЕ ӘРІ ҚАРАЙ СОЗЫЛАДЫ", foot_sub="жаңа сабақтар — жазылу ретімен"),
-    "ru": dict(alt="Модули курса стоят, дорога идёт дальше",
-               m1="ПРОЛОГ", m2="ЯЗЫК", m3="ВЕБ", m4="ДАННЫЕ", m5="ЛЮДИ",
-               head="БЕСПЛАТНЫЙ КУРС: GO С НУЛЯ", head_sub="46 уроков · без регистрации · три языка",
-               foot="ДОРОГА НАЧАТА И ИДЁТ ДАЛЬШЕ", foot_sub="новые уроки — по мере написания"),
-    "en": dict(alt="The course's modules stand, and the road keeps going",
-               m1="PROLOGUE", m2="LANGUAGE", m3="WEB", m4="DATA", m5="PEOPLE",
-               head="A FREE COURSE: GO FROM SCRATCH", head_sub="46 lessons · no account · three languages",
-               foot="THE ROAD IS STARTED AND KEEPS GOING", foot_sub="new lessons as they are written"),
+    "kz": dict(alt="Курс модульдері тұр, жол одан әрі оқырманның блогына апарады",
+               m1="ТІЛ", m2="ВЕБ", m3="ДЕРЕКТЕР", m4="АДАМДАР", m5="ІСКЕ ҚОСУ",
+               head="ТЕГІН КУРС: GO НӨЛДЕН", head_sub="50 сабақ · тіркелусіз · үш тілде",
+               foot="КУРС ТОЛЫҚ ЖАЗЫЛҒАН", foot_sub="соңында — интернеттегі өз блогың"),
+    "ru": dict(alt="Модули курса стоят, дорога ведёт дальше — к вашему блогу",
+               m1="ЯЗЫК", m2="ВЕБ", m3="ДАННЫЕ", m4="ЛЮДИ", m5="ЗАПУСК",
+               head="БЕСПЛАТНЫЙ КУРС: GO С НУЛЯ", head_sub="50 уроков · без регистрации · три языка",
+               foot="КУРС НАПИСАН ЦЕЛИКОМ", foot_sub="в конце — ваш блог в интернете"),
+    "en": dict(alt="The course's modules stand, and the road leads on to your blog",
+               m1="LANGUAGE", m2="WEB", m3="DATA", m4="PEOPLE", m5="LAUNCH",
+               head="A FREE COURSE: GO FROM SCRATCH", head_sub="50 lessons · no account · three languages",
+               foot="THE COURSE IS WRITTEN IN FULL", foot_sub="at the end, your own blog online"),
 }
 
 L06 = {

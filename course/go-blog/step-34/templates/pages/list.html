@@ -4,6 +4,7 @@
 {{ define "main" }}
       <h1>Мақалалар</h1>
 
+      {{- if .User }}
       <form method="post" action="/add" enctype="multipart/form-data">
         <input type="hidden" name="csrf" value="{{ .CSRF }}">
         <label for="title">Мақаланың тақырыбы</label>
@@ -14,6 +15,7 @@
         <input id="cover" name="cover" type="file" accept="image/*">
         <button type="submit">Қосу</button>
       </form>
+      {{- end }}
       {{ if .Err }}<p class="err">{{ .Err }}</p>{{ end }}
 
       {{ if .Articles }}
