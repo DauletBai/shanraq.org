@@ -224,7 +224,12 @@ func firstParagraphs(md string, n int) string {
 	var out []string
 	for _, para := range strings.Split(strings.ReplaceAll(md, "\r\n", "\n"), "\n\n") {
 		p := strings.TrimSpace(para)
-		if p == "" || strings.HasPrefix(p, "#") || strings.HasPrefix(p, ">") || strings.HasPrefix(p, "_") {
+		// Headings, quotes, italic notes and lists are skipped: a description
+		// that begins mid-list ("- Reader. Comments, ratings...") reads as a
+		// fragment torn out of the page, which is what it is.
+		if p == "" || strings.HasPrefix(p, "#") || strings.HasPrefix(p, ">") ||
+			strings.HasPrefix(p, "_") || strings.HasPrefix(p, "- ") ||
+			strings.HasPrefix(p, "* ") || strings.HasPrefix(p, "|") {
 			continue
 		}
 		out = append(out, p)
