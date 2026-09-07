@@ -1,0 +1,6 @@
+# What the image has no use for. The build copies the folder as it is, so a
+# local database or somebody's uploaded picture would travel into production.
+blog.db
+blog.db-*
+static/uploads/
+*.md

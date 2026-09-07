@@ -1,0 +1,12 @@
+# The whole configuration of the proxy that stands in front of the blog. Caddy
+# asks Let's Encrypt for a certificate on the first start and renews it by
+# itself, which is why there is not a line about certificates here.
+blog.example.kz {
+	# Everything arrives on 443 and goes on to the blog, which listens on the
+	# loopback and is not reachable from the network at all. Caddy adds
+	# X-Forwarded-For with the reader's address on the way.
+	reverse_proxy 127.0.0.1:8080
+
+	# The answer travels compressed; the blog does not have to know about it.
+	encode zstd gzip
+}
