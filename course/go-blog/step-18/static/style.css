@@ -18,7 +18,7 @@ a { color: var(--accent); }
    to re-arrange on a narrow screen. */
 form { display: grid; gap: 0.35rem; margin: 0 0 1.75rem; max-width: 30rem; }
 label { color: #6b625a; font-size: 0.95rem; margin-top: 0.5rem; }
-input, button { font: inherit; line-height: 1.35; padding: 0.3rem 0.7rem; border: 1px solid #ddd5c9; border-radius: 0.45rem; }
+input, button { font: inherit; line-height: 1.35; padding: 0.3rem 0.7rem; border: 1px solid #9d8f7b; border-radius: 0.45rem; }
 input { width: 100%; box-sizing: border-box; background: #fff; color: inherit; }
 button { justify-self: start; margin-top: 0.9rem; background: var(--accent); border-color: var(--accent); color: var(--paper); cursor: pointer; }
 .err { color: var(--accent); margin: -0.6rem 0 1.2rem; }

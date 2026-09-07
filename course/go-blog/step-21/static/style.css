@@ -56,7 +56,7 @@ footer {
   padding-top: 1rem;
   padding-bottom: 1rem;
   border-top: 1px solid var(--line);
-  color: #857c72;
+  color: #7a7169;
   font-size: 0.9rem;
   text-align: center;
 }
@@ -87,7 +87,7 @@ input, button {
   font: inherit;
   line-height: 1.35;
   padding: 0.3rem 0.7rem;
-  border: 1px solid #ddd5c9;
+  border: 1px solid #9d8f7b;
   border-radius: 0.45rem;
 }
 
@@ -108,7 +108,7 @@ button {
 }
 
 .err { color: var(--accent); margin: 0 0 1rem; }
-.hint { color: #857c72; font-size: 0.9rem; }
+.hint { color: #7a7169; font-size: 0.9rem; }
 .who { color: var(--muted); }
 
 .sorts { margin: 0 0 0.8rem; font-size: 0.9rem; }

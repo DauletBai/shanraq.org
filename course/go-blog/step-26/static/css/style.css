@@ -1,4 +1,16 @@
-:root { --ink: #1a1a1a; --paper: #fffdf8; --accent: #d32f2f; --muted: #6b625a; --line: #e6e0d6; }
+:root {
+  /* The palette of the blog. Every colour on the page comes from here, so a
+     blog of your own is these lines and nothing else. */
+  --ink: #1a1a1a;     /* the text */
+  --paper: #fffdf8;   /* the page behind it */
+  --accent: #d32f2f;  /* links and buttons */
+  --muted: #6b625a;   /* labels and the second voice */
+  --faint: #7a7169;   /* the footer and the hints */
+  --line: #e6e0d6;    /* the rules under the header and above the footer */
+  --edge: #9d8f7b;    /* the edge of a field: a border has to be seen */
+  --field: #ffffff;   /* what a field is filled with */
+  --mark: #ffe08a;    /* the found words in a search result */
+}
 
 /* The page is a column: header, main, footer. min-height keeps the footer at
    the bottom of the window on a short page instead of climbing up to meet the
@@ -56,7 +68,7 @@ footer {
   padding-top: 1rem;
   padding-bottom: 1rem;
   border-top: 1px solid var(--line);
-  color: #857c72;
+  color: var(--faint);
   font-size: 0.9rem;
   text-align: center;
 }
@@ -87,14 +99,14 @@ input, button {
   font: inherit;
   line-height: 1.35;
   padding: 0.3rem 0.7rem;
-  border: 1px solid #ddd5c9;
+  border: 1px solid var(--edge);
   border-radius: 0.45rem;
 }
 
 input {
   width: 100%;
   box-sizing: border-box;
-  background: #fff;
+  background: var(--field);
   color: inherit;
 }
 
@@ -108,13 +120,13 @@ button {
 }
 
 .err { color: var(--accent); margin: 0 0 1rem; }
-.hint { color: #857c72; font-size: 0.9rem; }
+.hint { color: var(--faint); font-size: 0.9rem; }
 .who { color: var(--muted); }
 
 .sorts { margin: 0 0 0.8rem; font-size: 0.9rem; }
 .tags a { margin-right: 0.3rem; white-space: nowrap; }
-.fragment { margin: 0.2rem 0 0; color: #555; }
-mark { background: #ffe08a; padding: 0 0.1em; }
+.fragment { margin: 0.2rem 0 0; color: var(--muted); }
+mark { background: var(--mark); padding: 0 0.1em; }
 
 .cover {
   display: block;
