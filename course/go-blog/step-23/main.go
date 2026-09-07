@@ -175,16 +175,18 @@ func currentUser(store *blog.Store, r *http.Request) (blog.User, bool) {
 }
 
 // setSessionCookie carries the token to the browser. HttpOnly keeps it away
-// from JavaScript, Secure keeps it off plain http, SameSite keeps it out of
-// requests another site starts.
-func setSessionCookie(w http.ResponseWriter, token string) {
+// from JavaScript, SameSite keeps it out of requests another site starts, and
+// Secure is decided by the request: over https it is on, on your own machine
+// over plain http it is off -- otherwise the cookie would be set and never
+// sent back, and every page would forget the reader who just signed in.
+func setSessionCookie(w http.ResponseWriter, r *http.Request, token string) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     blog.CookieName,
 		Value:    token,
 		Path:     "/",
 		Expires:  time.Now().Add(blog.SessionLife),
 		HttpOnly: true,
-		Secure:   true,
+		Secure:   overHTTPS(r),
 		SameSite: http.SameSiteLaxMode,
 	})
 }
@@ -372,7 +374,7 @@ func routes(store *blog.Store) http.Handler {
 			serverError(w)
 			return
 		}
-		setSessionCookie(w, token)
+		setSessionCookie(w, r, token)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	})
 
@@ -386,7 +388,7 @@ func routes(store *blog.Store) http.Handler {
 		http.SetCookie(w, &http.Cookie{
 			Name: blog.CookieName, Value: "", Path: "/",
 			Expires: time.Unix(0, 0), MaxAge: -1,
-			HttpOnly: true, Secure: true, SameSite: http.SameSiteLaxMode,
+			HttpOnly: true, Secure: overHTTPS(r), SameSite: http.SameSiteLaxMode,
 		})
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	})
@@ -435,7 +437,7 @@ func routes(store *blog.Store) http.Handler {
 		// pair again immediately is rudeness, not security.
 		if id, err := store.Authenticate(email, password); err == nil {
 			if token, err := store.StartSession(id); err == nil {
-				setSessionCookie(w, token)
+				setSessionCookie(w, r, token)
 			}
 		}
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -554,3 +556,11 @@ func main() {
 		os.Exit(1)
 	}
 }
+
+// overHTTPS reports whether this request really arrived over TLS. Cookie
+// security depends on it: a cookie marked Secure never travels over plain
+// http, so on your own machine it would be set once and never sent back --
+// you sign in and the next page has forgotten you. Marking it by the request
+// means the blog is safe on a real address and workable on localhost, with
+// nothing to remember and no flag to forget.
+func overHTTPS(r *http.Request) bool { return r.TLS != nil }
