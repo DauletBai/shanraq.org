@@ -1656,6 +1656,33 @@ def map47(s):
     parts.append(text(1.9, 1.85, s["c2"], "mono"))
     return "".join(parts)
 
+def map48(s):
+    """Lesson: a name instead of digits, and a channel nobody can read.
+
+    The accent is on TLS: the lesson exists because the same password is a
+    plain word in one channel and nothing at all in the other.
+    """
+    parts = []
+
+    parts.append(road(-2.5, -0.7, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-1.6, 0.57, +1, "arw-req"))
+    parts.append(road(1.0, 2.8, 0.55, 0.5, "band-res"))
+    parts.append(chevron(1.9, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-1.6, 1.85, s["c1"], "mono"))
+    parts.append(text(1.9, 1.85, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3019,6 +3046,36 @@ L47 = {
                foot_sub="data belongs in a database"),
 }
 
+L48 = {
+    "kz": dict(alt="Домен, прокси және TLS",
+               b1="домен", b1_sub="A-жазба → IP",
+               b2="прокси", b2_sub="куәлікті ұстайды",
+               b3="TLS", b3_sub="құпиясөз жасырын",
+               c1="308 → https", c2="Let's Encrypt",
+               head="ӨЗ ДОМЕНІҢ ЖӘНЕ HTTPS",
+               head_sub="блог санмен емес, атпен",
+               foot="TLS-СІЗ ҚҰПИЯСӨЗ КӨРІНЕДІ",
+               foot_sub="өлшенді: 222 байт ашық мәтін"),
+    "ru": dict(alt="Домен, прокси и TLS",
+               b1="домен", b1_sub="A-запись → IP",
+               b2="прокси", b2_sub="держит сертификат",
+               b3="TLS", b3_sub="пароль скрыт",
+               c1="308 → https", c2="Let's Encrypt",
+               head="СВОЙ ДОМЕН И HTTPS",
+               head_sub="блог по имени, а не по цифрам",
+               foot="БЕЗ TLS ПАРОЛЬ ВИДЕН",
+               foot_sub="измерено: 222 байта открытым текстом"),
+    "en": dict(alt="A domain, a proxy and TLS",
+               b1="the domain", b1_sub="an A record → IP",
+               b2="the proxy", b2_sub="holds the cert",
+               b3="TLS", b3_sub="nothing readable",
+               c1="308 → https", c2="Let's Encrypt",
+               head="A DOMAIN OF YOUR OWN AND HTTPS",
+               head_sub="a blog by name, not by digits",
+               foot="WITHOUT TLS THE PASSWORD SHOWS",
+               foot_sub="measured: 222 bytes in the clear"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3069,7 +3126,8 @@ if __name__ == "__main__":
                                ("context", map44, L44),
                                ("json", map45, L45),
                                ("brand", map46, L46),
-                               ("deploy", map47, L47)):
+                               ("deploy", map47, L47),
+                               ("https", map48, L48)):
         for lang, strings in table.items():
             path = os.path.join(out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
