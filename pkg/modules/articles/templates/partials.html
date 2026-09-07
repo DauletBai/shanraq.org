@@ -672,19 +672,21 @@
               <span class="foot-course__name">Golang</span>
             </a>
           </li>
+          <li>
+            <a href="/course/python">
+              <img class="foot-course__mark foot-course__mark--square" src="{{ asset "/static/brand/python-logo.svg" }}" alt="" aria-hidden="true" width="18" height="18">
+              <span class="foot-course__name">Python</span>
+            </a>
+          </li>
           {{/* Courses being written: the place is held, the row is dimmed and
                unlinked, and the hint says why rather than leaving the reader to
                click something that does not exist. */}}
           <li class="foot-course--soon" title="{{ t .Lang "footer.course_soon" }}">
-            <img class="foot-course__mark" src="{{ asset "/static/brand/python-logo.svg" }}" alt="" aria-hidden="true" width="18" height="18">
-            <span class="foot-course__name">Python</span>
-          </li>
-          <li class="foot-course--soon" title="{{ t .Lang "footer.course_soon" }}">
-            <img class="foot-course__mark" src="{{ asset "/static/brand/sql-mark.svg" }}" alt="" aria-hidden="true" width="18" height="18">
+            <img class="foot-course__mark foot-course__mark--square" src="{{ asset "/static/brand/sql-mark.svg" }}" alt="" aria-hidden="true" width="18" height="18">
             <span class="foot-course__name">SQL</span>
           </li>
           <li class="foot-course--soon" title="{{ t .Lang "footer.course_soon" }}">
-            <img class="foot-course__mark" src="{{ asset "/static/brand/rust-logo.svg" }}" alt="" aria-hidden="true" width="18" height="18">
+            <img class="foot-course__mark foot-course__mark--square" src="{{ asset "/static/brand/rust-logo.svg" }}" alt="" aria-hidden="true" width="18" height="18">
             <span class="foot-course__name">Rust</span>
           </li>
         </ul>

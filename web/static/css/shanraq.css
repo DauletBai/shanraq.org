@@ -3012,6 +3012,9 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
    and a baseline nudge instead of the 18px box the round icons sit in. */
 .foot-courses a { display: inline-flex; align-items: center; gap: 10px; line-height: 1; }
 .foot-course__mark { width: 34px; height: auto; flex: none; }
+/* Go's mark is a wordmark and wants the wider box; the square marks of the
+   other languages sit in the same 18px as the channel icons above. */
+.foot-course__mark--square { width: 18px; }
 /* A course still being written holds its place without pretending to be a link:
    the row is dimmed, the mark loses its colour, and the cursor stays an arrow.
    The hint on hover says why, so the greyness is not a riddle. */
