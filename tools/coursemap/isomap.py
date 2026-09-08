@@ -2094,6 +2094,33 @@ def pymap12(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap13(s):
+    """Python lesson 13: the shape of the answer, null and the keys.
+
+    The accent is on the two places where a round trip through JSON changes the
+    data without saying so: null becomes None and a numeric key becomes a string.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3939,6 +3966,35 @@ PY12 = {
 
 
 
+PY13 = {
+    "kz": dict(alt="Жауаптың пішіні, null және кілттер",
+               b1="жауап", b1_sub="екі элемент",
+               b2="null", b2_sub="бұл None",
+               b3="кілттер", b3_sub="жол болып қайтты",
+               c1="json.loads", c2="dumps → мәтін",
+               head="JSON: ЖЕЛІДЕН НЕ КЕЛДІ",
+               head_sub="он үшінші сабақ: json, null, кілттер",
+               foot="2025 КЕТТІ, «2025» КЕЛДІ",
+               foot_sub="өлшенді: JSON кілті — жол"),
+    "ru": dict(alt="Форма ответа, null и ключи",
+               b1="ответ", b1_sub="список из двух",
+               b2="null", b2_sub="это None",
+               b3="ключи", b3_sub="стали строками",
+               c1="json.loads", c2="dumps → текст",
+               head="JSON: ЧТО ПРИЕХАЛО ИЗ СЕТИ",
+               head_sub="тринадцатый урок: json, null, ключи",
+               foot="2025 УШЁЛ, «2025» ПРИШЁЛ",
+               foot_sub="измерено: ключ в JSON — строка"),
+    "en": dict(alt="The shape of the answer, null and the keys",
+               b1="the answer", b1_sub="a list of two",
+               b2="null", b2_sub="means None",
+               b3="keys", b3_sub="come back strings",
+               c1="json.loads", c2="dumps → text",
+               head="JSON: WHAT CAME OFF THE WIRE",
+               head_sub="lesson thirteen: json, null, keys",
+               foot="2025 WENT OUT, “2025” CAME IN",
+               foot_sub="measured: a JSON key is a string"),
+}
 
 
 
@@ -3963,7 +4019,8 @@ if __name__ == "__main__":
                                ("functions", pymap09, PY09),
                                ("errors", pymap10, PY10),
                                ("files", pymap11, PY11),
-                               ("csv", pymap12, PY12)):
+                               ("csv", pymap12, PY12),
+                               ("json", pymap13, PY13)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

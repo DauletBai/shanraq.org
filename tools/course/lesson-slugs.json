@@ -599,6 +599,18 @@
   "tegin-kurs-python-derek-pen-ii",
   "kz"
  ],
+ "python/json": [
+  "py-json-null-kilt-jol",
+  "ru"
+ ],
+ "python/json-en": [
+  "py-json-null-kilt-jol",
+  "en"
+ ],
+ "python/json-kz": [
+  "py-json-null-kilt-jol",
+  "kz"
+ ],
  "python/list": [
   "py-tizim-men-kortej",
   "ru"
