@@ -39,7 +39,7 @@ python3 tools/coursecheck/pysyllabus.py lesson 5 файл.md     # покрыл 
 | Цикл for и range | 8 | `for `, `range(` |
 | while, break, continue | 8 | `while `, `break`, `continue` |
 | enumerate и zip | 8 | `enumerate(`, `zip(` |
-| Списковые выражения | 8 | `[x for` |
+| Списковые выражения | 16 | `[x for` |
 | Функции: def, return, аргументы | 9 | `def `, `return`, `=` |
 | Значения по умолчанию и ловушка изменяемого | 9 | `def f(x=`, `None`, `[]` |
 | Именованные аргументы, *args, **kwargs | 9 | `*args`, `**kwargs` |

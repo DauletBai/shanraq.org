@@ -1958,6 +1958,34 @@ def pymap07(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap08(s):
+    """Python lesson 8: the walk, the skip and the edge.
+
+    The accent is the last block: a loop that says nothing when it runs out of
+    data is the trap of this lesson -- zip cuts to the shorter series without a
+    word, and a while runs past the end of one.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3624,7 +3652,7 @@ PY06 = {
 PY07 = {
     "kz": dict(alt="Айыр, тізбек және деректегі олқылық",
                b1="салыстыру", b1_sub="if — бір шарт",
-               b2="тізбек", b2_sub="elif біреуінде тоқтайды",
+               b2="тізбек", b2_sub="бірінде тоқтайды",
                b3="олқылық", b3_sub="None — нөл емес",
                c1="if / elif / else", c2="is None",
                head="ШАРТТАР: САН ЖОЛДЫ ТАҢДАЙДЫ",
@@ -3633,8 +3661,8 @@ PY07 = {
                foot_sub="өлшенді: 2025 — 11,4%, әлем — 3,0%"),
     "ru": dict(alt="Развилка, цепочка и пропуск в данных",
                b1="сравнение", b1_sub="if — одно условие",
-               b2="цепочка", b2_sub="elif встанет на первом",
-               b3="пропуск", b3_sub="None — это не ноль",
+               b2="цепочка", b2_sub="стоп на первом",
+               b3="пропуск", b3_sub="None — не ноль",
                c1="if / elif / else", c2="is None",
                head="УСЛОВИЯ: ЧИСЛО ВЫБИРАЕТ ПУТЬ",
                head_sub="седьмой урок: if, elif, else",
@@ -3642,14 +3670,45 @@ PY07 = {
                foot_sub="измерено: 2025 — 11,4%, мир — 3,0%"),
     "en": dict(alt="A fork, a chain and a gap in the data",
                b1="a comparison", b1_sub="if: one condition",
-               b2="a chain", b2_sub="elif stops at the first",
-               b3="a gap", b3_sub="None is not a zero",
+               b2="a chain", b2_sub="stops at first",
+               b3="a gap", b3_sub="None is not zero",
                c1="if / elif / else", c2="is None",
                head="CONDITIONS: THE NUMBER PICKS THE ROAD",
                head_sub="lesson seven: if, elif, else",
                foot="NO NUMBER IS NOT A ZERO",
                foot_sub="measured: 2025 at 11.4%, the world at 3.0%"),
 }
+
+PY08 = {
+    "kz": dict(alt="Аралау, аттап өту және шет",
+               b1="аралау", b1_sub="ереже бір рет",
+               b2="олқылық", b2_sub="есепке кірмейді",
+               b3="шет", b3_sub="zip үнсіз қияды",
+               c1="for / range", c2="zip / while",
+               head="ЦИКЛ: ҚАТАРДЫ БАҒДАРЛАМА АРАЛАЙДЫ",
+               head_sub="сегізінші сабақ: for, range, while",
+               foot="БЕС ЖЫЛДЫҢ ОРТАШАСЫ — 11,52%",
+               foot_sub="өлшенді: алтыдан бесеуінде сан бар"),
+    "ru": dict(alt="Проход, пропуск и край",
+               b1="проход", b1_sub="правило один раз",
+               b2="пропуск", b2_sub="в счёт не идёт",
+               b3="край", b3_sub="zip молча режет",
+               c1="for / range", c2="zip / while",
+               head="ЦИКЛЫ: РЯД ПРОХОДИТ ПРОГРАММА",
+               head_sub="восьмой урок: for, range, while",
+               foot="СРЕДНЕЕ ЗА ПЯТЬ ЛЕТ — 11,52%",
+               foot_sub="измерено: пять лет с числами из шести"),
+    "en": dict(alt="The walk, the skip and the edge",
+               b1="the walk", b1_sub="the rule once",
+               b2="the skip", b2_sub="left out",
+               b3="the edge", b3_sub="zip cuts, quietly",
+               c1="for / range", c2="zip / while",
+               head="LOOPS: THE PROGRAM WALKS THE SERIES",
+               head_sub="lesson eight: for, range, while",
+               foot="FIVE-YEAR AVERAGE: 11.52%",
+               foot_sub="measured: five of six years have a figure"),
+}
+
 
 
 if __name__ == "__main__":
@@ -3667,7 +3726,8 @@ if __name__ == "__main__":
                                ("types", pymap04, PY04),
                                ("list", pymap05, PY05),
                                ("dict", pymap06, PY06),
-                               ("conditions", pymap07, PY07)):
+                               ("conditions", pymap07, PY07),
+                               ("loops", pymap08, PY08)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

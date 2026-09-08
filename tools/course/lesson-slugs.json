@@ -563,6 +563,18 @@
   "py-tizim-men-kortej",
   "kz"
  ],
+ "python/loops": [
+  "py-cikldar-for-range-while",
+  "ru"
+ ],
+ "python/loops-en": [
+  "py-cikldar-for-range-while",
+  "en"
+ ],
+ "python/loops-kz": [
+  "py-cikldar-for-range-while",
+  "kz"
+ ],
  "python/numbers": [
   "py-sandar-joldar-shygys",
   "ru"
