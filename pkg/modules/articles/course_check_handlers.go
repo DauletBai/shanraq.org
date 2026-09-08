@@ -1,12 +1,14 @@
 package articles
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
@@ -128,10 +130,18 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Which language this lesson's course is in. Everything below follows it:
+	// running a Python solution through a Go parser refused correct answers
+	// before the reviewer ever saw them.
+	codeLang, err := m.series.CodeLangForArticle(r.Context(), a.ID)
+	if err != nil {
+		m.rt.Logger.Warn("course code lang", zap.Error(err))
+	}
+
 	// Tidy first, and refuse code that will not parse before anything is spent
 	// on it. A missing brace is not something to ask a reviewer about, and the
 	// reader's own editor would have said so — which is the lesson here.
-	formatted, ferr := formatSolution(solution)
+	formatted, ferr := formatSolution(solution, codeLang)
 	if ferr != nil {
 		reply(http.StatusUnprocessableEntity, checkResponse{
 			Syntax: syntaxHint(ferr),
@@ -174,12 +184,20 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 	var b strings.Builder
 	b.WriteString("LESSON: ")
 	b.WriteString(tr.Title)
+	// What the course has taught by this lesson, so "you should have used a
+	// dictionary comprehension" cannot be said to somebody who has not met one.
+	// The list is the course's own contents up to here, in the reader's
+	// language, which is the only honest account of what they have been shown.
+	if taught := m.taughtSoFar(r.Context(), a.ID, lang); taught != "" {
+		b.WriteString("\n\nTAUGHT SO FAR (do not require anything beyond this):\n")
+		b.WriteString(taught)
+	}
 	b.WriteString("\n\nEXERCISE:\n")
 	b.WriteString(task)
 	b.WriteString("\n\nSOLUTION:\n")
 	b.WriteString(solution)
 
-	raw, err := m.ai.Check(r.Context(), checkSystem(served), b.String(), 700)
+	raw, err := m.ai.Check(r.Context(), checkSystem(served, codeLang), b.String(), 700)
 	if err != nil {
 		m.rt.Logger.Warn("course check", zap.Error(err))
 		reply(http.StatusBadGateway, checkResponse{Error: T(lang, "chk.failed")})
@@ -203,7 +221,7 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 	}
 	reply(http.StatusOK, checkResponse{
 		Passed: v.Passed, Note: v.Note, Left: left,
-		Code: solution, HTML: string(highlightGo(solution)),
+		Code: solution, HTML: string(highlightCode(solution, codeLang)),
 	})
 }
 
@@ -237,7 +255,17 @@ func (m *Module) handleCourseFormat(w http.ResponseWriter, r *http.Request) {
 		reply(http.StatusRequestEntityTooLarge, checkResponse{Error: T(lang, "chk.too_long")})
 		return
 	}
-	out, err := formatSolution(src)
+
+	// The tidier is the course's, not Go's: a lesson of the Python course sends
+	// Python here, and gofmt would refuse it as a broken program.
+	codeLang := CodeGo
+	if a, err := m.store.GetPublishedBySlug(r.Context(), chi.URLParam(r, "slug")); err == nil {
+		if cl, err := m.series.CodeLangForArticle(r.Context(), a.ID); err == nil {
+			codeLang = cl
+		}
+	}
+
+	out, err := formatSolution(src, codeLang)
 	if err != nil {
 		reply(http.StatusUnprocessableEntity, checkResponse{
 			Syntax: syntaxHint(err),
@@ -245,5 +273,32 @@ func (m *Module) handleCourseFormat(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	reply(http.StatusOK, checkResponse{Code: out, HTML: string(highlightGo(out))})
+	reply(http.StatusOK, checkResponse{Code: out, HTML: string(highlightCode(out, codeLang))})
+}
+
+// taughtSoFar lists the lessons this reader has already been through, as the
+// course's own contents in their language.
+//
+// A reviewer that does not know what has been taught reaches for whatever an
+// experienced hand would write, and a beginner is told to use a tool the course
+// has not handed them yet. That is not a review, it is a way to lose them.
+func (m *Module) taughtSoFar(ctx context.Context, articleID uuid.UUID, lang string) string {
+	places, err := m.series.ForArticle(ctx, articleID, lang)
+	if err != nil || len(places) == 0 {
+		return ""
+	}
+	var titles []string
+	for _, it := range places[0].Series.Items {
+		if it.Intro() || !it.Published {
+			continue
+		}
+		titles = append(titles, "- "+it.Title)
+		if it.ArticleID == articleID {
+			break
+		}
+	}
+	if len(titles) == 0 {
+		return ""
+	}
+	return strings.Join(titles, "\n")
 }

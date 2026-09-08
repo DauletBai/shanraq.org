@@ -37,6 +37,10 @@ type Series struct {
 	Title   map[string]string
 	Summary map[string]string
 
+	// CodeLang is the language the course's exercises are written in: what
+	// the checker tidies, parses and colours a submission as.
+	CodeLang string
+
 	// Items are the lessons in reading order; empty unless loaded.
 	Items []*SeriesItem
 
@@ -140,11 +144,12 @@ func NewSeriesStore(db *pgxpool.Pool) *SeriesStore { return &SeriesStore{db: db}
 // ErrSeriesNotFound is returned when no course has the requested slug or id.
 var ErrSeriesNotFound = errors.New("series not found")
 
-const seriesCols = `s.id, s.slug, s.cover_url, s.status, s.created_at, s.updated_at`
+const seriesCols = `s.id, s.slug, s.cover_url, s.status, s.code_lang, s.created_at, s.updated_at`
 
 func scanSeries(row pgx.Row) (*Series, error) {
 	s := &Series{Title: map[string]string{}, Summary: map[string]string{}}
-	if err := row.Scan(&s.ID, &s.Slug, &s.CoverURL, &s.Status, &s.CreatedAt, &s.UpdatedAt); err != nil {
+	if err := row.Scan(&s.ID, &s.Slug, &s.CoverURL, &s.Status, &s.CodeLang,
+		&s.CreatedAt, &s.UpdatedAt); err != nil {
 		return nil, err
 	}
 	return s, nil
@@ -276,6 +281,24 @@ func (st *SeriesStore) items(ctx context.Context, seriesID uuid.UUID, lang strin
 		list = append(list, it)
 	}
 	return list, rows.Err()
+}
+
+// CodeLangForArticle returns the language the exercises of this article's course
+// are written in, and Go for an article that belongs to no course -- the checker
+// has to answer something, and the first course is the one that had exercises.
+func (st *SeriesStore) CodeLangForArticle(ctx context.Context, articleID uuid.UUID) (string, error) {
+	var lang string
+	err := st.db.QueryRow(ctx,
+		`SELECT s.code_lang FROM article_series s
+		 JOIN article_series_items i ON i.series_id = s.id
+		 WHERE i.article_id = $1 ORDER BY s.created_at LIMIT 1`, articleID).Scan(&lang)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return CodeGo, nil
+	}
+	if err != nil {
+		return CodeGo, err
+	}
+	return lang, nil
 }
 
 // ForArticle returns the article's place in each course it belongs to. Prev and

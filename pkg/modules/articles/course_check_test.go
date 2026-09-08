@@ -7,6 +7,8 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+
+	"github.com/google/uuid"
 )
 
 // The exercise is read out of the lesson's own text, so a lesson edited without
@@ -95,7 +97,7 @@ func TestUnfence(t *testing.T) {
 // than sent to a paid reviewer.
 func TestFormatSolution(t *testing.T) {
 	messy := "package main\nimport \"fmt\"\nfunc main(){\nfmt.Println( \"x\" )\n}"
-	out, err := formatSolution(messy)
+	out, err := formatSolution(messy, CodeGo)
 	if err != nil {
 		t.Fatalf("годный код не отформатирован: %v", err)
 	}
@@ -106,7 +108,7 @@ func TestFormatSolution(t *testing.T) {
 		t.Error("пустая строка между import и func не поставлена")
 	}
 
-	if _, err := formatSolution("package main\nfunc main() {"); err == nil {
+	if _, err := formatSolution("package main\nfunc main() {", CodeGo); err == nil {
 		t.Error("непарсящийся код принят")
 	} else if h := syntaxHint(err); h == "" || strings.Contains(h, ".go:") {
 		t.Errorf("подсказка непригодна для новичка: %q", h)
@@ -115,13 +117,64 @@ func TestFormatSolution(t *testing.T) {
 
 // The preview is rendered by the article pipeline, so it carries the same
 // classes the lessons do and inherits their palette.
-func TestHighlightGo(t *testing.T) {
-	h := string(highlightGo("package main"))
+func TestHighlightCode(t *testing.T) {
+	h := string(highlightCode("package main", CodeGo))
 	if !strings.Contains(h, `class="chroma"`) {
 		t.Errorf("подсветка не применена: %.80s", h)
 	}
 	if !strings.Contains(h, "package") {
 		t.Error("код потерян при подсветке")
+	}
+	// Python read as Go loses every colour it has: the keywords are not Go's.
+	py := string(highlightCode("def main():\n    return None", CodePython))
+	if !strings.Contains(py, `class="chroma"`) {
+		t.Errorf("подсветка Python не применена: %.80s", py)
+	}
+	if !strings.Contains(py, "def") {
+		t.Error("код потерян при подсветке Python")
+	}
+}
+
+// A Python course sends Python here, and the checker used to answer it with a
+// Go parser: a correct solution was refused before the reviewer saw it, and the
+// reader was told their program does not compile.
+func TestFormatSolutionPython(t *testing.T) {
+	src := "def average(series):   \n    total = 0.0\n    for value in series:\n        total += value\n    return total / len(series)"
+	out, err := formatSolution(src, CodePython)
+	if err != nil {
+		t.Fatalf("годный Python отвергнут: %v", err)
+	}
+	if !strings.Contains(out, "\n    total = 0.0\n") {
+		t.Errorf("отступ Python изменён — это меняет программу:\n%s", out)
+	}
+	if strings.Contains(out, "):   \n") {
+		t.Error("хвостовые пробелы не убраны")
+	}
+	if !strings.HasSuffix(out, "\n") || strings.HasSuffix(out, "\n\n") {
+		t.Errorf("файл не заканчивается ровно одним переводом строки: %q", out[len(out)-3:])
+	}
+	// Broken Python is not refused here: there is no parser to refuse it with,
+	// and a wrong refusal costs the reader an answer they were entitled to.
+	if _, err := formatSolution("def main(:\n", CodePython); err != nil {
+		t.Errorf("сломанный Python отвергнут локально, хотя разбирать его нечем: %v", err)
+	}
+}
+
+// The reviewer is told which language it is reading. Told "a Go course" over a
+// Python solution, it reviewed the reader's Python as if it were Go.
+func TestCheckSystemNamesTheLanguage(t *testing.T) {
+	py := checkSystem(LangRU, CodePython)
+	if !strings.Contains(py, "Python") {
+		t.Error("в инструкции не назван Python")
+	}
+	if strings.Contains(py, "Go course") {
+		t.Error("Python-решение отправлено как упражнение курса по Go")
+	}
+	if !strings.Contains(py, "Russian") {
+		t.Error("язык ответа не назван")
+	}
+	if !strings.Contains(checkSystem(LangEN, CodeGo), "Go course") {
+		t.Error("курс по Go перестал называться")
 	}
 }
 
@@ -175,6 +228,39 @@ func TestCourseFormatEndpoint(t *testing.T) {
 			t.Errorf("код ответа %d, ждали 401", w.Code)
 		}
 	})
+}
+
+// The tidy endpoint end to end for the second course: a lesson of the Python
+// course sends Python, and gets it back tidied rather than refused. This is the
+// wiring the checker got wrong -- the language was assumed, not looked up.
+func TestCourseFormatPythonLesson(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	author := app.createUser("pyfmt@t.test", "Parol12345")
+	app.exec(`UPDATE auth_users SET email_verified_at = now() WHERE lower(email) = 'pyfmt@t.test'`)
+	cookie := app.login("pyfmt@t.test", "Parol12345")
+	id, slug := app.seedArticle(author, "published")
+
+	series := uuid.New()
+	app.exec(`INSERT INTO article_series (id, slug, cover_url, status, code_lang)
+		VALUES ($1, $2, '', 'published', 'python')`, series, "py-"+series.String()[:8])
+	app.exec(`INSERT INTO article_series_items (series_id, article_id, position)
+		VALUES ($1, $2, 10)`, series, id)
+
+	f := url.Values{}
+	f.Set("solution", "def average(series):   \n    return sum(series) / len(series)")
+	w := app.do(http.MethodPost, "/read/"+slug+"/format", f, withCookie(cookie))
+	var res checkResponse
+	_ = json.Unmarshal(w.Body.Bytes(), &res)
+	if w.Code != http.StatusOK {
+		t.Fatalf("код ответа %d (%s): годный Python отвергнут", w.Code, res.Error)
+	}
+	if !strings.Contains(res.Code, "\n    return sum(series)") {
+		t.Errorf("отступ Python не сохранён:\n%s", res.Code)
+	}
+	if !strings.Contains(res.HTML, `class="chroma"`) {
+		t.Error("подсветка не пришла")
+	}
 }
 
 // The reviewer must never see the optional half of an exercise. It reads

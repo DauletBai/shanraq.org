@@ -25,6 +25,15 @@ import (
 // learns nothing; one who is told which line does not do what they think can
 // fix it themselves, which is the whole point of an exercise.
 
+// The languages a course's exercises are written in. A lesson belongs to one
+// course, the course names one language, and every part of the check follows
+// it: what tidies the code, what refuses it before the model is called, what
+// colours it, and what the reviewer is told it is reading.
+const (
+	CodeGo     = "go"
+	CodePython = "python"
+)
+
 // CheckVerdict is one review of one submission.
 type CheckVerdict struct {
 	Passed bool   `json:"passed"`
@@ -185,8 +194,16 @@ func unfence(s string) string {
 // reader is a beginner who has met perhaps five lessons' worth of the language,
 // and a verdict without a way forward wastes the one moment they are paying
 // attention.
-func checkSystem(lang string) string {
-	common := `You review a beginner's solution to one exercise from a Go course.
+func checkSystem(lang, codeLang string) string {
+	name := "Go"
+	if codeLang == CodePython {
+		name = "Python"
+	}
+	common := `You review a beginner's solution to one exercise from a ` + name + ` course.
+
+The solution is written in ` + name + `. Judge it as ` + name + `, and if it
+would not run at all, name the line and what is wrong with it instead of
+guessing at the intent.
 
 Answer with JSON and nothing else: {"passed": true|false, "note": "..."}.
 
@@ -234,24 +251,47 @@ func parseCheckVerdict(raw string) (CheckVerdict, error) {
 	return v, nil
 }
 
-// formatSolution runs the reader's code through gofmt.
+// formatSolution tidies the reader's code in the language their course is in.
 //
-// The standard library's own formatter, not an imitation: the reader sees
-// exactly what their editor does to the same text, which is the point. A
-// beginner has not learned the indentation rules yet and should not be spending
-// attention on them while learning what a function is.
+// For Go it is the standard library's own formatter, not an imitation: the
+// reader sees exactly what their editor does to the same text, which is the
+// point. A beginner has not learned the indentation rules yet and should not be
+// spending attention on them while learning what a function is.
 //
-// It doubles as a free syntax check. Code that will not parse cannot be
+// It doubles there as a free syntax check. Code that will not parse cannot be
 // reviewed, and refusing it here costs nothing — the parser is local, the
 // reviewer is a paid call — so a missing brace is answered instantly instead of
 // spending one of three attempts on a verdict the reader could have got from
 // their own editor.
-func formatSolution(src string) (string, error) {
+//
+// Python gets the careful version instead. We have no Python parser here, and a
+// formatter that guesses would be worse than none: indentation carries meaning,
+// so touching it could change what the program does. Trailing spaces and a
+// final newline are all that is safe, and a syntax error is left to the
+// reviewer, which is told to name the line.
+func formatSolution(src, codeLang string) (string, error) {
+	if codeLang == CodePython {
+		return tidyPython(src), nil
+	}
 	out, err := format.Source([]byte(src))
 	if err != nil {
 		return "", err
 	}
 	return string(out), nil
+}
+
+// tidyPython does the only two things that cannot change a Python program:
+// drops trailing whitespace and ends the file with one newline.
+func tidyPython(src string) string {
+	lines := strings.Split(strings.ReplaceAll(src, "\r\n", "\n"), "\n")
+	for i, line := range lines {
+		lines[i] = strings.TrimRight(line, " \t")
+	}
+	out := strings.TrimRight(strings.Join(lines, "\n"), "\n")
+	if out == "" {
+		return ""
+	}
+	return out + "\n"
 }
 
 // syntaxHint turns a parser error into something a beginner can act on. Go's
@@ -265,13 +305,18 @@ func syntaxHint(err error) string {
 	return strings.TrimSpace(s)
 }
 
-// highlightGo renders code the way the lessons render theirs — through the same
-// Markdown pipeline, so the colours in the box and the colours in the lesson
-// are the same colours, and follow the same light/dark switch.
+// highlightCode renders code the way the lessons render theirs — through the
+// same Markdown pipeline, so the colours in the box and the colours in the
+// lesson are the same colours, and follow the same light/dark switch. Coloured
+// as the course's own language: Python read as Go is a page of black text.
 //
 // The markup is produced by our own renderer from the reader's own text, and
 // Chroma escapes every token it emits; it is also only ever shown back to the
 // person who typed it.
-func highlightGo(code string) template.HTML {
-	return RenderMarkdown("```go\n" + code + "\n```")
+func highlightCode(code, codeLang string) template.HTML {
+	fence := CodeGo
+	if codeLang == CodePython {
+		fence = CodePython
+	}
+	return RenderMarkdown("```" + fence + "\n" + code + "\n```")
 }
