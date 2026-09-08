@@ -12,6 +12,26 @@ computed correctly and described backwards, which every existing check passed.
 A program that needs the network is run too. If the network is unreachable the
 program is reported as skipped rather than failed: a course must not go red
 because somebody else's server is down.
+
+The warm-up drills are checked the same way. A drill shows a program in one
+place and its output in another -- the reader is asked to predict it, or to fix
+the program first -- so the two are tied together by a marker instead of by
+being next to each other:
+
+    <!-- drill 1 -->        before the program that is meant to run
+    <!-- drill 1 out -->    before the output it is meant to print
+
+The exercise is held to the same standard. A lesson sets its required task on
+fixed data and prints the output the reader is working towards; that output is
+a promise, and a promise nobody can keep is the worst kind of error a course can
+make. So the task's own solution lives beside the lessons, out of the reader's
+way, and the printed result is compared with what it actually prints:
+
+    course/lessons/python/answers/<lesson>.py     the reference solution
+    <!-- task out -->                             before the promised output
+
+Both markers are HTML comments, so a reader never sees them, and the answer at
+the end of the lesson is held to what the machine actually prints.
 """
 
 import os
@@ -29,12 +49,59 @@ NETWORK = ("URLError", "urlopen error", "Temporary failure in name resolution",
            "Network is unreachable", "timed out", "getaddrinfo failed")
 
 
+DRILL = re.compile(r"<!--\s*drill (\d+)(?:\s+(out))?\s*-->")
+
+
+def drills(text):
+    """Yield (number, program, expected output) for the lesson's warm-up drills.
+
+    A drill's program and its output live apart -- the whole point is that the
+    reader answers before they see the answer -- so each is named by a marker
+    and the pair is put back together here.
+    """
+    fences = list(FENCE.finditer(text))
+
+    def after(pos):
+        """The first fence that starts after this marker."""
+        for f in fences:
+            if f.start() >= pos:
+                return f
+        return None
+
+    program, printed = {}, {}
+    for m in DRILL.finditer(text):
+        f = after(m.end())
+        if f is None:
+            continue
+        (printed if m.group(2) else program)[m.group(1)] = f
+    for number in sorted(program, key=int):
+        if number in printed:
+            yield number, program[number].group(2), printed[number].group(2)
+
+
+def drill_bodies(text):
+    """The fences that belong to a drill, so the plain scan leaves them alone."""
+    return {f.group(2) for _, f, _ in _drill_fences(text)}
+
+
+def _drill_fences(text):
+    fences = list(FENCE.finditer(text))
+    for m in DRILL.finditer(text):
+        for f in fences:
+            if f.start() >= m.end():
+                yield m.group(1), f, bool(m.group(2))
+                break
+
+
 def blocks(text):
     """Yield (program, printed output) for every whole program in a lesson."""
     found = FENCE.findall(text)
+    taken = drill_bodies(text)
     for i, (lang, body) in enumerate(found):
         if lang != "python" or not body.lstrip().startswith(WHOLE):
             continue
+        if body in taken:
+            continue  # a drill: checked by its marker, not by what follows it
         # The output is the first plain fence after the program: the lesson's
         # own layout, "here is the program, here is what it prints".
         for lang2, out in found[i + 1:]:
@@ -42,6 +109,34 @@ def blocks(text):
                 break
             yield body, out
             break
+
+
+TASK_OUT = re.compile(r"<!--\s*task out\s*-->")
+
+
+def task(path, text):
+    """Return (reference solution, promised output) for the lesson's exercise.
+
+    Both halves are optional: a lesson without a fixed-data task has neither,
+    and a lesson that has one without a solution beside it is reported, because
+    that is how a promise goes unchecked.
+    """
+    m = TASK_OUT.search(text)
+    if not m:
+        return None, None
+    printed = None
+    for f in FENCE.finditer(text):
+        if f.start() >= m.end():
+            printed = f.group(2)
+            break
+    # One solution per lesson file, not per lesson: the printed result is in
+    # the lesson's own language, and that is exactly where a translation drifts.
+    name = os.path.basename(path).removesuffix(".md")
+    solution = os.path.join(os.path.dirname(path), "answers", name + ".py")
+    if not os.path.isfile(solution):
+        return "", printed
+    with open(solution, encoding="utf-8") as f:
+        return f.read(), printed
 
 
 def normalise(s):
@@ -84,6 +179,44 @@ def check_lessons(paths):
             if normalise(out) != normalise(printed):
                 bad += 1
                 print(f"  ! {os.path.basename(path)} #{n}: вывод разошёлся с уроком")
+                for line in diff(normalise(printed), normalise(out)):
+                    print("      " + line)
+        solution, promised = task(path, text)
+        if promised is not None:
+            if not solution:
+                bad += 1
+                print(f"  ! {os.path.basename(path)} задание: нет решения в answers/, "
+                      f"обещанный вывод никем не проверен")
+            else:
+                out, err = run(solution)
+                if err and any(mark in err for mark in NETWORK):
+                    skipped += 1
+                    print(f"  ~ {os.path.basename(path)} задание: пропущено, сеть недоступна")
+                elif err:
+                    bad += 1
+                    print(f"  ! {os.path.basename(path)} задание: {err}")
+                else:
+                    ran += 1
+                    if normalise(out) != normalise(promised):
+                        bad += 1
+                        print(f"  ! {os.path.basename(path)} задание: обещанный вывод "
+                              f"разошёлся с решением")
+                        for line in diff(normalise(promised), normalise(out)):
+                            print("      " + line)
+        for number, program, printed in drills(text):
+            out, err = run(program)
+            if err and any(mark in err for mark in NETWORK):
+                skipped += 1
+                print(f"  ~ {os.path.basename(path)} разминка {number}: пропущена, сеть недоступна")
+                continue
+            if err:
+                bad += 1
+                print(f"  ! {os.path.basename(path)} разминка {number}: {err}")
+                continue
+            ran += 1
+            if normalise(out) != normalise(printed):
+                bad += 1
+                print(f"  ! {os.path.basename(path)} разминка {number}: ответ разошёлся с выводом")
                 for line in diff(normalise(printed), normalise(out)):
                     print("      " + line)
     print(f"выполнено программ: {ran}, пропущено: {skipped}, разошлось: {bad}")

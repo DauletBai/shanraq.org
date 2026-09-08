@@ -223,9 +223,76 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 2. Why is `into=[]` in a header a mistake while `into=None` is not?
 3. How does `assert` differ from checking data with an `if`?
 
+## Warm-up
+
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this program print?
+
+<!-- drill 1 -->
+```python
+def average(series):
+    total = 0.0
+    count = 0
+    for value in series:
+        if value is None:
+            continue
+        total += value
+        count += 1
+    return total / count
+
+
+print(average([8.0, None, 15.0]))
+```
+
+**2. Fill in the gap.** In place of `...` put the condition: a year is taken when it has a number and that number is above the limit.
+
+```python
+def above(series, limit):
+    years = []
+    for year, value in series.items():
+        if ...:
+            years.append(year)
+    return years
+
+
+print(above({2024: 8.7, 2025: 11.4, 2026: None}, 10))
+```
+
+**3. Fix it.** The program prints a number and then `None`. Explain why, and make the second line show the average.
+
+```python
+def average(series):
+    print(sum(series) / len(series))
+
+
+result = average([8.0, 15.0])
+print("average:", result)
+```
+
 ## Exercise
 
-**Required.** Write a function `average(series)` for your own series from the previous lesson: gaps are left out, and an empty series is stopped by an `assert` with a clear message. Write a second one — `above(series, limit)` — that returns the list of keys whose value is greater than `limit`, and call it twice with different limits.
+**Required.** Given:
+
+```python
+kz = {2023: 14.5, 2024: 8.7, 2025: 11.4, 2026: None}
+world = {2023: 5.8, 2024: 3.0, 2026: 2.9}
+```
+
+Write `average(series)` — the average over a series, gaps left out, an empty series stopped by an `assert` with a clear message. Write `above(series, other)` — the years in which the first series is above the second; a year without a number in either series does not count. Print the average of each series to two decimal places and the list of years.
+
+The expected output:
+
+<!-- task out -->
+```
+average for Kazakhstan: 11.53
+average for the world: 3.90
+above the world: [2023, 2024]
+```
+
+Done when: the output matches line by line; `average` is called twice rather than written twice; `above` does not fall over on 2026, where both sides are `None`, and does not take 2025, which the second series does not have.
+
+**On your own data.** Write a function `average(series)` for your own series from the previous lesson: gaps are left out, and an empty series is stopped by an `assert` with a clear message. Write a second one — `above(series, limit)` — that returns the list of keys whose value is greater than `limit`, and call it twice with different limits.
 
 All of it is put together in [step-3](https://github.com/DauletBai/shanraq.org/tree/main/course/py-digest/step-3) — compare once you have written your own.
 
@@ -243,9 +310,57 @@ Debts. Our one check sits inside the calculation. Real checks live apart from th
 
 ## The answers
 
+### To the questions
+
 1. `None`. A function without a `return` runs to its end and hands back emptiness — not an error, which is why a forgotten `return` is not visible at once.
 2. Because a default is worked out once, when the `def` is read. The list made then lives on between calls and gathers other calls' values; `None` cannot change, and a new list is made inside on every call.
 3. `assert` checks the author's assumption about the calculation and is switched off by running `python -O`. Data that arrives from outside is checked with an ordinary `if` and a clear error — an assert cannot be relied on for that.
+
+### To the warm-up
+
+1. `11.5`. The gap reached neither the sum nor the counter, so `23.0` is divided by `2` rather than by `3`.
+
+<!-- drill 1 out -->
+```
+11.5
+```
+
+2. `value is not None and value > limit`. The order matters: put the comparison first and the program falls over on the gap, because `None > 10` cannot be compared.
+
+<!-- drill 2 -->
+```python
+def above(series, limit):
+    years = []
+    for year, value in series.items():
+        if value is not None and value > limit:
+            years.append(year)
+    return years
+
+
+print(above({2024: 8.7, 2025: 11.4, 2026: None}, 10))
+```
+
+<!-- drill 2 out -->
+```
+[2025]
+```
+
+3. The function prints but returns nothing, and a function without a `return` returns `None` — which is what `result` got. Printing and returning are different things: printing shows a person, `return` hands the value to the program.
+
+<!-- drill 3 -->
+```python
+def average(series):
+    return sum(series) / len(series)
+
+
+result = average([8.0, 15.0])
+print("average:", result)
+```
+
+<!-- drill 3 out -->
+```
+average: 11.5
+```
 
 ## Sources
 

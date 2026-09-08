@@ -193,9 +193,63 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 2. Why is the average worked out by dividing by `count` rather than by the length of the series?
 3. What does `zip` do when one series is shorter than the other, and why is that dangerous?
 
+## Warm-up
+
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this program print?
+
+<!-- drill 1 -->
+```python
+total = 0
+for value in [8.0, None, 15.0]:
+    if value is None:
+        continue
+    total += value
+print(total)
+```
+
+**2. Fill in the gap.** In place of `...` put what prints the years from 2021 to 2025 inclusive.
+
+```python
+for year in ...:
+    print(year, end=" ")
+```
+
+**3. Fix it.** The program prints two years out of three. Find where the first one went.
+
+```python
+years = [2021, 2022, 2023]
+for i in range(1, len(years)):
+    print(years[i])
+```
+
 ## Exercise
 
-**Required.** Take a series of five to seven numbers of your own — the price of one item month by month, your own spending, anything you can measure — and put a `None` in one place. Walk it with a loop: print the gap on a line of its own and leave it out of the count; for the rest print the value and work out the sum, the count and the average.
+**Required.** Given:
+
+```python
+prices = [520.0, 546.0, None, 498.0, 515.0]
+```
+
+Walk the list and print the number of the month (counting from one) and its price; print a month without a number on its own line and leave it out of the count. At the end print how many months have a number and the average over those. Then find the **first** month above 530 and print its number — and stop looking.
+
+The expected output:
+
+<!-- task out -->
+```
+1: 520.0
+2: 546.0
+3: no data
+4: 498.0
+5: 515.0
+months with a number: 4, average: 519.75
+first above 530: month 2
+```
+
+Done when: the output matches line by line; the gap got into neither the sum nor the counter; the search for the first month stops itself instead of walking the list to the end.
+
+**On your own data.** Take a series of five to seven numbers of your own — the price of one item month by month, your own spending, anything you can measure — and put a `None` in one place. Walk it with a loop: print the gap on a line of its own and leave it out of the count; for the rest print the value and work out the sum, the count and the average.
 
 **Optional.**
 
@@ -212,9 +266,49 @@ Debts. The walk is still written inside the program as one lump: to count the sa
 
 ## The answers
 
+### To the questions
+
 1. `continue` abandons the current turn and moves to the next item; the loop goes on. `break` leaves the loop altogether and the remaining items are never examined.
 2. Because the series holds a year with no figure. Dividing by the length of the series would mean counting the gap as a zero — which is what the previous lesson was about.
 3. `zip` stops at the shorter series and silently drops the tail of the longer one — no error, no warning. If the series came from different sources, the report comes out on incomplete data; so either the lengths are checked or `strict=True` is used.
+
+### To the warm-up
+
+1. `23.0`. `continue` drops the current turn and goes to the next value, so the `None` never reaches the sum while `8.0 + 15.0` do.
+
+<!-- drill 1 out -->
+```
+23.0
+```
+
+2. `range(2021, 2026)`. The right-hand bound is not included, so the last year is written one higher than the one you want — this is the first place a beginner loses a year.
+
+<!-- drill 2 -->
+```python
+for year in range(2021, 2026):
+    print(year, end=" ")
+```
+
+<!-- drill 2 out -->
+```
+2021 2022 2023 2024 2025
+```
+
+3. `range(1, len(years))` starts at the second element: a list counts from zero. When it is the element you want rather than its number, walk the list directly:
+
+<!-- drill 3 -->
+```python
+years = [2021, 2022, 2023]
+for year in years:
+    print(year)
+```
+
+<!-- drill 3 out -->
+```
+2021
+2022
+2023
+```
 
 ## Sources
 

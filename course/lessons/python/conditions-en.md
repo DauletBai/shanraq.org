@@ -166,9 +166,69 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 2. How does `if value is None` differ from `if not value`, and why does it matter in data?
 3. What does `and` do when the left-hand side turns out to be false?
 
+## Warm-up
+
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this program print? Say it out loud, then run it.
+
+<!-- drill 1 -->
+```python
+value = None
+if value == 0:
+    print("zero")
+elif value is None:
+    print("no number")
+else:
+    print("number:", value)
+```
+
+**2. Fill in the gap.** In place of `...` put the condition "differs from the average by no more than 5% either way".
+
+```python
+value = 8.3
+average = 8.0
+if ...:
+    print("about the average")
+else:
+    print("far from the average")
+```
+
+**3. Fix it.** This program falls over on the second pair. Find the line that causes it and make both lines print.
+
+```python
+kz = {2024: 8.7, 2025: None}
+for year, value in kz.items():
+    if value > 8:
+        print(year, "above eight")
+    elif value is None:
+        print(year, "no number")
+```
+
 ## Exercise
 
-**Required.** Take three numbers of your own — the price of one item in different shops, or your own inflation from your receipts, or anything you can measure. Compare each with the average and print an `if — elif — else` chain: "below average", "about average" (within 5%), "above average". Make one of the three `None` and check for it first, before any comparison.
+**Required.** Given:
+
+```python
+prices = {"January": 520.0, "February": 580.0, "March": None, "April": 498.0}
+```
+
+Print the average over the months that have a number, and then each month with a label: "about the average" if the price differs from it by no more than 5% (exactly 5% counts as "about"), otherwise "above the average" or "below the average"; a month without a number is "no data". The checks go in this order: the gap first, then "about", then above and below.
+
+The expected output:
+
+<!-- task out -->
+```
+average: 532.67
+January: 520.0 — about the average
+February: 580.0 — above the average
+March: no data
+April: 498.0 — below the average
+```
+
+Done when: the output matches line by line; the average is worked out over three months rather than four; no comparison ever meets a `None`.
+
+**On your own data.** Take three numbers of your own — the price of one item in different shops, or your own inflation from your receipts, or anything you can measure. Compare each with the average and print an `if — elif — else` chain: "below average", "about average" (within 5%), "above average". Make one of the three `None` and check for it first, before any comparison.
 
 **Optional.**
 
@@ -184,9 +244,55 @@ Debts. The conditions are still written out one per year — with a loop that be
 
 ## The answers
 
+### To the questions
+
 1. Because the chain is checked from the top down and stops at the first condition that matched: the rest are not checked at all. Separate `if` statements are independent questions, and each of them can match.
 2. `is None` asks whether the value is absent. `not value` is true for `None`, for zero and for an empty string alike — a year of zero inflation would disappear from the calculation as "no data".
 3. Nothing: the right-hand side is not evaluated. That is why `value is not None and value > 5` is safe while the other order falls over on a gap.
+
+### To the warm-up
+
+1. `no number`. `None == 0` is `False`: a gap is not equal to zero, so the first branch does not match, and the second one asks `is None` and does.
+
+<!-- drill 1 out -->
+```
+no number
+```
+
+2. `abs(value - average) <= average * 0.05`. The absolute difference is what "either way" means, and `<=` includes exactly 5%: the boundary has to be decided once and written down, or two people will get different answers from the same data.
+
+<!-- drill 2 -->
+```python
+value = 8.3
+average = 8.0
+if abs(value - average) <= average * 0.05:
+    print("about the average")
+else:
+    print("far from the average")
+```
+
+<!-- drill 2 out -->
+```
+about the average
+```
+
+3. The line with `None` is not the culprit, the order is: `value > 8` is checked first, and on 2025 that comparison meets a `None` — `TypeError`. The gap is checked before any comparison:
+
+<!-- drill 3 -->
+```python
+kz = {2024: 8.7, 2025: None}
+for year, value in kz.items():
+    if value is None:
+        print(year, "no number")
+    elif value > 8:
+        print(year, "above eight")
+```
+
+<!-- drill 3 out -->
+```
+2024 above eight
+2025 no number
+```
 
 ## Sources
 
