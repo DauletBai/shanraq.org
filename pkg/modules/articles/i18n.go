@@ -516,6 +516,14 @@ var messages = map[string]map[string]string{
 	"home.h1_cat": {"kz": "%s — Shanraq.org талдаулары", "ru": "%s — разборы Shanraq.org", "en": "%s — analysis on Shanraq.org"},
 	// What search shows under a category or subcategory feed. Without it every
 	// feed borrowed the front page's sentence and none of them said what it held.
+	// The tab title of a feed. It must not repeat the site name: the template
+	// already appends it, and "AI — analysis on Shanraq.org · Shanraq.org" is
+	// what came out of borrowing the heading for it.
+	"seo.feed_title": {
+		"kz": "%s — талдаулар мен сабақтар",
+		"ru": "%s — разборы и уроки",
+		"en": "%s — analysis and lessons",
+	},
 	"seo.feed_desc": {
 		"kz": "%s: Shanraq.org-тағы талдаулар мен сабақтар — қазақ, орыс және ағылшын тілдерінде, тегін.",
 		"ru": "%s: разборы и уроки на Shanraq.org — на казахском, русском и английском, бесплатно.",

@@ -624,7 +624,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	// the AI feed, which the Python course now lands in, said "IT" over a list
 	// of Python lessons.
 	if label := feedLabel(lang, cat, sub); label != "" {
-		page.Title = fmt.Sprintf(T(lang, "home.h1_cat"), label)
+		page.Title = fmt.Sprintf(T(lang, "seo.feed_title"), label)
 		page.Desc = fmt.Sprintf(T(lang, "seo.feed_desc"), label)
 	}
 	page.Subscribed = r.URL.Query().Get("subscribed") == "ok"
