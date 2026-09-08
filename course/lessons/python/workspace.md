@@ -56,7 +56,7 @@ $ du -sh .venv
 
 Номер патч-версии, версии библиотек и размер `.venv` у вас будут другими — они меняются каждый месяц. Важны не сами числа, а то, что происходит.
 
-Если у вас Windows, три строки выглядят иначе, а всё остальное совпадает:
+Если у вас Windows, часть команд выглядит иначе. Сами команды Python — те же; отличаются те, что обращаются к системе:
 
 | Что делаем | Windows PowerShell | macOS и Linux |
 |---|---|---|
@@ -64,6 +64,8 @@ $ du -sh .venv
 | заводим окружение | `py -m venv .venv` | `python3 -m venv .venv` |
 | входим в окружение | `.venv\Scripts\Activate.ps1` | `source .venv/bin/activate` |
 | смотрим файлы | `Get-ChildItem -Force` | `ls -a` |
+| пишем `.gitignore` | `Set-Content .gitignore ".venv/`n__pycache__/"` | `printf '.venv/\n__pycache__/\n' > .gitignore` |
+| смотрим размер папки | `(Get-ChildItem .venv -Recurse \| Measure-Object Length -Sum).Sum/1MB` | `du -sh .venv` |
 
 В PowerShell первая же активация может упереться в запрет на выполнение сценариев. Лечится один раз: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, и об этом сказано в [документации venv](https://docs.python.org/3/library/venv.html).
 
@@ -74,7 +76,7 @@ $ du -sh .venv
 `python3 --version` — первая команда любого дня. Ответила номером — язык стоит. Ответила «command not found» — ставим:
 
 - **Windows:** откройте python.org, скачайте установщик и **обязательно** отметьте галочку «Add python.exe to PATH» на первом экране. Забыли — переустановите, это быстрее, чем чинить.
-- **macOS:** проще всего через Homebrew: `brew install python`. Тот Python, что уже есть в системе, лучше не трогать: им пользуется сама система.
+- **macOS:** возьмите установщик с python.org — он не требует ничего ставить заранее. Если у вас уже есть Homebrew, то же самое делает `brew install python`. Тот Python, что пришёл с системой, лучше не трогать: им пользуется сама macOS.
 - **Linux:** он почти наверняка уже есть; если нет — `sudo apt install python3 python3-venv` или то же через пакетный менеджер вашей системы.
 
 Годится любая версия от 3.12. Курс написан и проверен на 3.14.

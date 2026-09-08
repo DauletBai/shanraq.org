@@ -56,7 +56,7 @@ $ du -sh .venv
 
 The patch version, the library versions and the size of `.venv` will be different for you — they change every month. What matters is not the numbers but what happens.
 
-On Windows three lines look different and the rest is the same:
+On Windows some of the commands look different. The Python ones are the same; the ones that talk to the system are not:
 
 | What we do | Windows PowerShell | macOS and Linux |
 |---|---|---|
@@ -65,6 +65,8 @@ On Windows three lines look different and the rest is the same:
 | create the environment | `py -m venv .venv` | `python3 -m venv .venv` |
 | enter the environment | `.venv\Scripts\Activate.ps1` | `source .venv/bin/activate` |
 | look at the files | `Get-ChildItem -Force` | `ls -a` |
+| write `.gitignore` | `Set-Content .gitignore ".venv/`n__pycache__/"` | `printf '.venv/\n__pycache__/\n' > .gitignore` |
+| look at a folder's size | `(Get-ChildItem .venv -Recurse \| Measure-Object Length -Sum).Sum/1MB` | `du -sh .venv` |
 
 In PowerShell the very first activation can run into a ban on running scripts. It is cured once: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, and it is written up in [the venv documentation](https://docs.python.org/3/library/venv.html).
 
@@ -75,7 +77,7 @@ In PowerShell the very first activation can run into a ban on running scripts. I
 `python3 --version` is the first command of any day. Answered with a number — the language is installed. Answered "command not found" — install it:
 
 - **Windows:** open python.org, download the installer and **be sure** to tick "Add python.exe to PATH" on the first screen. Forgot it? Reinstall; that is quicker than repairing.
-- **macOS:** the simplest way is Homebrew: `brew install python`. Better to leave the Python already in the system alone: the system itself uses it.
+- **macOS:** take the installer from python.org — it asks for nothing to be installed first. If you already have Homebrew, `brew install python` does the same. Better to leave the Python that came with the system alone: macOS itself uses it.
 - **Linux:** it is almost certainly there already; if not, `sudo apt install python3 python3-venv` or the same through your package manager.
 
 Any version from 3.12 will do. The course is written and checked on 3.14.
