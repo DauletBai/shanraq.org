@@ -22,6 +22,10 @@ The required part is the first two blocks: parse the answer and pull a series ou
 This is a piece of a real World Bank answer: the service part on top, the
 records below. In the first lesson the program parsed it without explaining
 anything. Let us explain it.
+
+The answer is cut down to three records, and the 2023 value is replaced with
+null: the real answer has one, but a gap is what today needs, and it is fairer
+to say it was put there on purpose.
 """
 
 import json
@@ -60,8 +64,11 @@ print("after: ", back)
 
 print()
 print("== non-Latin letters and indentation")
-print("by default:    ", json.dumps({"note": "дерек жоқ"}))
-print("ensure_ascii=False:", json.dumps({"note": "дерек жоқ"}, ensure_ascii=False))
+note = {"note": "дерек жоқ"}
+print("by default:    ", json.dumps(note))
+print("ensure_ascii=False:", json.dumps(note, ensure_ascii=False))
+print("bytes:", len(json.dumps(note).encode()), "escaped,",
+      len(json.dumps(note, ensure_ascii=False).encode()), "not")
 print(json.dumps(series, ensure_ascii=False, indent=2))
 ```
 
@@ -86,6 +93,7 @@ after:  {'2025': 11.39, '2024': 8.69, '2023': None}
 == non-Latin letters and indentation
 by default:     {"note": "\u0434\u0435\u0440\u0435\u043a \u0436\u043e\u049b"}
 ensure_ascii=False: {"note": "дерек жоқ"}
+bytes: 61 escaped, 29 not
 {
   "2025": 11.39,
   "2024": 8.69,
@@ -146,11 +154,14 @@ Further along, `series[2025]` gives a `KeyError` although the data is there and 
 ```
 by default:     {"note": "\u0434\u0435\u0440\u0435\u043a \u0436\u043e\u049b"}
 ensure_ascii=False: {"note": "дерек жоқ"}
+bytes: 61 escaped, 29 not
 ```
 
 By default `json.dumps` writes everything except Latin letters as escape sequences. The file stays valid JSON and any program will read it correctly — but a person will see nothing in it.
 
-For files that people open with their eyes, write `ensure_ascii=False`, and add `indent=2` for readability. For sending over a network, leave it as it is: it is shorter.
+For files that people open with their eyes, write `ensure_ascii=False`, and add `indent=2` for readability.
+
+The default was not chosen for length: escaped, our string takes 61 bytes, unescaped 29 — measured by the program itself. One Cyrillic letter costs six characters of `\uXXXX` instead of two bytes of UTF-8. What the default buys is something else: plain ASCII travels everywhere, including through a channel that would mangle the encoding. The saving is in the spaces instead: `separators=(",", ":")` removes the ones `json.dumps` puts after a comma and a colon.
 
 ## The map of the lesson
 

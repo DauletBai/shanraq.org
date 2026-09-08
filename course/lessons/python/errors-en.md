@@ -122,7 +122,9 @@ else:
 
 There is one line inside `try` — the one that may not work. Everything done **after it succeeds** has moved into `else`.
 
-That is not for tidiness. Put `total += value` inside the `try` and an error in the addition would land there too — and be caught by an `except BadRow` written for something else entirely. `else` holds the line: what is risky goes in `try`, what follows a risk that did not fire goes in `else`.
+That is not for tidiness. What sits inside a `try` is exactly the line that may not work, so the code shows where trouble was expected. Put `total += value` inside it and a place nobody guarded would look guarded: addition has an error type of its own, `TypeError`, and `except BadRow` does not catch it.
+
+It is worse when the catch is wider. Write `except ValueError` — the temptation is real, `BadRow` descends from it — and put a second risky line inside the `try`, say `year = int(year_text)`. A bad year arrives as that same `ValueError`, is announced as "not a number" and goes quietly among the skipped rows, and you will look for it in the data rather than in the code. `else` holds the line: what is risky goes in `try`, what follows a risk that did not fire goes in `else`.
 
 ### The order of the `except` branches matters
 
@@ -219,7 +221,7 @@ Debts. Skipped rows are printed to the screen for now. Their place is in a log b
 
 ## The answers
 
-1. Because only what can break is held inside a `try`. Otherwise an error in the addition lands in an `except` written for parsing a row, and gets explained by the wrong cause.
+1. Because only what can break is held inside a `try` — then the code shows where trouble was expected. Otherwise an error in the next line either brings the program down in a place that looks guarded, or, if the `except` is wider, gets explained by the wrong cause and goes quietly among the skipped rows.
 2. The `FileNotFoundError` branch never runs: `OSError` is the general case, and Python takes the first branch that fits from the top. The particular always stands above the general.
 3. The last one: it holds the type of the error and its message — what actually happened. Above it is the chain of calls, and there you look for the nearest frame with your own file.
 

@@ -44,10 +44,13 @@ def average(series):
 
 
 def above(series, other, since=2021):
-    """The years in which the first series is above the second, from since on."""
+    """The years in which the first series is above the second, from since on.
+
+    A year without a number in either series does not count.
+    """
     years = []
     for year, value in series.items():
-        if year < since or value is None or year not in other:
+        if year < since or value is None or other.get(year) is None:
             continue
         if value > other[year]:
             years.append(year)
@@ -103,6 +106,8 @@ def average(series):
 A function without a `return` works too, but it returns `None` — the same "no number" as in lesson seven. A forgotten `return` gives you not an error but a hole in the calculation, and that takes a long time to find later.
 
 The string in triple quotes right after `def` is a **docstring**, the function's description. We have seen one at the top of a file; here it explains a single piece rather than the program, and it is the place to say what the function does with gaps.
+
+Saying it is not enough; it has to be done. Inside `above` the gap is checked **on both sides**: `other.get(year) is None` covers both "the other series has no such year" and "the year is there but the number is not". Check only our own series and `value > other[year]` would one day meet a `None` and fall over with a `TypeError` instead of answering. A function that promises to work with gaps owes that promise to every gap that reaches it.
 
 > **Picture it.** A recipe with a name. While it lives in your head you retell it every time; written down and named, it is passed on in one phrase.
 

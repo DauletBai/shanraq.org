@@ -104,7 +104,9 @@ ordinary: 3.5 <class 'float'>
 whole:    3 <class 'int'>
 ```
 
-`/` always gives a fractional number, even when it divides evenly: `4 / 2` is `2.0`, not `2`. `//` returns a whole number **rounded down** — towards the smaller number, not towards zero. On positive numbers that looks like throwing the fraction away: `7 // 2` is `3`. On negative ones the rule shows itself: `-7 // 2` is `-4`, not `-3`.
+`/` always gives a fractional number, even when it divides evenly: `4 / 2` is `2.0`, not `2`. `//` **rounds down** — towards the smaller number, not towards zero. On positive numbers that looks like throwing the fraction away: `7 // 2` is `3`. On negative ones the rule shows itself: `-7 // 2` is `-4`, not `-3`.
+
+Rounding and type are two different things. The type of the result comes from the operands: `7 // 2` is the whole number `3`, while `7.0 // 2` is the fractional `3.0`. The fraction is thrown away in both cases, but a `float` does not become an `int` by dividing evenly.
 
 That is not a detail. "How many loaves at 260 tenge fit into a thousand" is `1000 // 260`, three of them, with no "3.84 loaves" about it. And `%` gives what is left: `220` tenge. The pair `//` and `%` answers "how many whole ones and how much change", and it will be needed everywhere, from pages to time.
 
@@ -173,7 +175,7 @@ The debts. We cut a string and got a list, but what to do with it we do not know
 
 ## The answers
 
-1. In the result and in the type: `7 / 2` is `3.5`, a floating-point number; `7 // 2` is `3`, a whole one. Division with `/` always returns a `float`, even when it divides exactly.
+1. In the result and in the type: `7 / 2` is `3.5`, a floating-point number; `7 // 2` is `3`, a whole one. Division with `/` always returns a `float`, even when it divides exactly; with `//` the type comes from the operands, so `7.0 // 2` is `3.0`.
 2. Because strings in Python are immutable: any method returns a **new** string while the original stays as it was. To keep the result you have to assign it.
 3. It sets the format: how many decimal places (`.2f`), whether to group the thousands (`,`), and how to align. The number itself does not change — only the way it was shown.
 

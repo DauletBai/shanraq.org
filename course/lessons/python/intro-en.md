@@ -70,7 +70,7 @@ The same way as in the Go course: on the method of **Viktor Fyodorovich Shatalov
 
 ## The language whole, with nothing left for later
 
-The syllabus was drawn up before the first lesson was written: a [list of 77 elements of the language](https://github.com/DauletBai/shanraq.org/blob/main/docs/py-syllabus.md), each with a lesson of its own. Slices and dictionaries, exceptions and files, sets, generators, a package of your own — all of it is on the list rather than in plans for the future.
+The syllabus was drawn up before the first lesson was written: a [list of 78 elements of the language](https://github.com/DauletBai/shanraq.org/blob/main/docs/py-syllabus.md), each with a lesson of its own. Slices and dictionaries, exceptions and files, sets, generators, a package of your own — all of it is on the list rather than in plans for the future.
 
 Before publication every lesson is checked against that list by machine: if a topic assigned to a lesson is not explained in its text, the lesson does not go out.
 

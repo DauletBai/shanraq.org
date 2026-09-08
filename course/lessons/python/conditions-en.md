@@ -89,7 +89,7 @@ Hence the one beginner's mistake you can catch by eye: a line drifts to the wron
 
 ### `elif` is not "another if"
 
-The difference people trip over is visible in our own output. Several conditions fit: `11.4` is above the world's, and it is also more than twice the world's. One line was printed — the first one the chain matched.
+The difference people trip over is visible in our own output. The chain is checked from the top down: `11.4` is not `None`, not below the world's, not less than twice the world's. No condition matched, so it reached the `else`, and one line was printed.
 
 An `if — elif — else` chain is checked from the top down and **stops at the first match**. The rest are not checked at all.
 

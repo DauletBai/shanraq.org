@@ -143,6 +143,10 @@ for number, (here, there) in enumerate(zip(kz.values(), world.values()), start=1
 
 Here that suits us: 2026 has no figure anyway. But the habit is dangerous: if two series come from different sources and one is shorter, `zip` quietly cuts the tail off and the report comes out on incomplete data. When the length matters, it is checked outright — `len(a) == len(b)` — or you take `zip(a, b, strict=True)`, which raises on a mismatch instead of saying nothing.
 
+And the thing that matters more than the cut: `zip` joins **by position, not by year**. Here the keys of both series run in order, so the pairs came out right. Let the series come from different sources and the order of the keys may differ, and `zip` will quietly pair 2021 with 2022. Neither equal length nor `strict=True` saves you from that: they count elements, they do not match keys.
+
+Hence the rule: **two series are compared by key**, not by position. That is what the years are for: `for year in kz: ... world[year]`. `zip` is for the places where the position is itself the meaning — as in our output, where two numbers for the same year are printed side by side because both series were taken from one place, in one order.
+
 ### `enumerate` counts the turns for you
 
 ```python
@@ -198,6 +202,7 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 - Use `break` to find the first month whose figure went above the average.
 - Put two of your own series through `zip` and make them different lengths on purpose — see how many rows get printed.
 - Replace `zip(a, b)` with `zip(a, b, strict=True)` and read what Python says.
+- Swap two pairs around in the second series, keeping its length, and look at the output: the same numbers, different pairs, no error.
 
 ## Where this goes in the project
 
