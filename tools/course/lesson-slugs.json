@@ -551,6 +551,18 @@
   "py-qateler-try-except-raise",
   "kz"
  ],
+ "python/files": [
+  "py-faildar-pathlib-kodtau",
+  "ru"
+ ],
+ "python/files-en": [
+  "py-faildar-pathlib-kodtau",
+  "en"
+ ],
+ "python/files-kz": [
+  "py-faildar-pathlib-kodtau",
+  "kz"
+ ],
  "python/functions": [
   "py-funkciyalar-def-return-assert",
   "ru"

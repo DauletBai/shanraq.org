@@ -2040,6 +2040,33 @@ def pymap10(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap11(s):
+    """Python lesson 11: the path, the encoding and the file beside the program.
+
+    The accent is the middle block: an encoding left unnamed is chosen by the
+    system, and the program reads the wrong letters without an error.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3823,6 +3850,37 @@ PY10 = {
                foot_sub="measured: 'no data' and an empty row are not numbers"),
 }
 
+PY11 = {
+    "kz": dict(alt="Жол, кодтау және қасындағы файл",
+               b1="жол", b1_sub="Path қосады",
+               b2="кодтау", b2_sub="әрқашан жазыңыз",
+               b3="жазу", b3_sub="with өзі жабады",
+               c1="Path / __file__", c2="encoding=utf-8",
+               head="ФАЙЛ: ЖОЛ, КОДТАУ, КЕЛІСІМ",
+               head_sub="он бірінші сабақ: pathlib, with",
+               foot="БАҒДАРЛАМАНЫҢ ҚАЛТАСЫ — ІСКЕ ҚОСУДЫҚІ ЕМЕС",
+               foot_sub="өлшенді: 37 байт, төрт жолдың үшеуі талданды"),
+    "ru": dict(alt="Путь, кодировка и файл рядом",
+               b1="путь", b1_sub="Path соединяет",
+               b2="кодировка", b2_sub="пишут всегда",
+               b3="запись", b3_sub="with закроет сам",
+               c1="Path / __file__", c2="encoding=utf-8",
+               head="ФАЙЛ: ПУТЬ, КОДИРОВКА, ДОГОВОР",
+               head_sub="одиннадцатый урок: pathlib, with",
+               foot="ПАПКА ПРОГРАММЫ, А НЕ ПАПКА ЗАПУСКА",
+               foot_sub="измерено: 37 байт, три строки из четырёх"),
+    "en": dict(alt="The path, the encoding and the file beside",
+               b1="the path", b1_sub="Path joins it",
+               b2="encoding", b2_sub="always name it",
+               b3="writing", b3_sub="with closes it",
+               c1="Path / __file__", c2="encoding=utf-8",
+               head="A FILE: A PATH, AN ENCODING, A PACT",
+               head_sub="lesson eleven: pathlib, with",
+               foot="THE PROGRAM'S FOLDER, NOT THE CALLER'S",
+               foot_sub="measured: 37 bytes, three rows of four"),
+}
+
+
 
 
 
@@ -3845,7 +3903,8 @@ if __name__ == "__main__":
                                ("conditions", pymap07, PY07),
                                ("loops", pymap08, PY08),
                                ("functions", pymap09, PY09),
-                               ("errors", pymap10, PY10)):
+                               ("errors", pymap10, PY10),
+                               ("files", pymap11, PY11)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
