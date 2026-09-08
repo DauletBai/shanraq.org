@@ -515,6 +515,18 @@
   "go-suret-jukteu",
   "kz"
  ],
+ "python/conditions": [
+  "py-shartar-if-elif-else",
+  "ru"
+ ],
+ "python/conditions-en": [
+  "py-shartar-if-elif-else",
+  "en"
+ ],
+ "python/conditions-kz": [
+  "py-shartar-if-elif-else",
+  "kz"
+ ],
  "python/dict": [
   "py-sozdik-kilt-pen-man",
   "ru"

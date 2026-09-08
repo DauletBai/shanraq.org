@@ -1931,6 +1931,33 @@ def pymap06(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap07(s):
+    """Python lesson 7: the fork, the chain and the gap in the data.
+
+    The accent is the last block: a missing value is not a zero, and a course
+    about data has to say so at the first condition the reader writes.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3594,6 +3621,37 @@ PY06 = {
                foot_sub="measured: KeyError"),
 }
 
+PY07 = {
+    "kz": dict(alt="Айыр, тізбек және деректегі олқылық",
+               b1="салыстыру", b1_sub="if — бір шарт",
+               b2="тізбек", b2_sub="elif біреуінде тоқтайды",
+               b3="олқылық", b3_sub="None — нөл емес",
+               c1="if / elif / else", c2="is None",
+               head="ШАРТТАР: САН ЖОЛДЫ ТАҢДАЙДЫ",
+               head_sub="жетінші сабақ: if, elif, else",
+               foot="ЖОҚ САН — НӨЛ ЕМЕС",
+               foot_sub="өлшенді: 2025 — 11,4%, әлем — 3,0%"),
+    "ru": dict(alt="Развилка, цепочка и пропуск в данных",
+               b1="сравнение", b1_sub="if — одно условие",
+               b2="цепочка", b2_sub="elif встанет на первом",
+               b3="пропуск", b3_sub="None — это не ноль",
+               c1="if / elif / else", c2="is None",
+               head="УСЛОВИЯ: ЧИСЛО ВЫБИРАЕТ ПУТЬ",
+               head_sub="седьмой урок: if, elif, else",
+               foot="ЧИСЛА НЕТ — ЭТО НЕ НОЛЬ",
+               foot_sub="измерено: 2025 — 11,4%, мир — 3,0%"),
+    "en": dict(alt="A fork, a chain and a gap in the data",
+               b1="a comparison", b1_sub="if: one condition",
+               b2="a chain", b2_sub="elif stops at the first",
+               b3="a gap", b3_sub="None is not a zero",
+               c1="if / elif / else", c2="is None",
+               head="CONDITIONS: THE NUMBER PICKS THE ROAD",
+               head_sub="lesson seven: if, elif, else",
+               foot="NO NUMBER IS NOT A ZERO",
+               foot_sub="measured: 2025 at 11.4%, the world at 3.0%"),
+}
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -3608,7 +3666,8 @@ if __name__ == "__main__":
                                ("numbers", pymap03, PY03),
                                ("types", pymap04, PY04),
                                ("list", pymap05, PY05),
-                               ("dict", pymap06, PY06)):
+                               ("dict", pymap06, PY06),
+                               ("conditions", pymap07, PY07)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

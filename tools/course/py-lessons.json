@@ -4,5 +4,6 @@
   "3": "python/numbers",
   "4": "python/types",
   "5": "python/list",
-  "6": "python/dict"
+  "6": "python/dict",
+  "7": "python/conditions"
 }
