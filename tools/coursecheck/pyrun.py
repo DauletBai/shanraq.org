@@ -6,7 +6,7 @@ this program, typed in exactly as printed, prints exactly this. The two are not
 the same check, and the difference has already cost a real error -- a ratio
 computed correctly and described backwards, which every existing check passed.
 
-    python3 tools/coursecheck/pyrun.py course/lessons/article-py-*.md
+    python3 tools/coursecheck/pyrun.py course/lessons/python/*.md
     python3 tools/coursecheck/pyrun.py --steps
 
 A program that needs the network is run too. If the network is unreachable the

@@ -9,7 +9,7 @@ subtitle the source file does not.
 
     python3 tools/course/publish.py --check     # list what differs
     python3 tools/course/publish.py             # send the differences
-    python3 tools/course/publish.py article-go-http.md ...   # only these
+    python3 tools/course/publish.py go/http.md ...          # only these
 
 The host comes from SHANRAQ_HOST (default: the production host in docs/BACKUPS.md)
 and every statement runs through the same psql the deploy runbook uses. A file
@@ -47,6 +47,16 @@ def parse(path):
     if not m:
         raise ValueError(f"{path}: the third line is not a summary")
     return lines[0][2:].strip(), m.group(1).strip(), "\n".join(lines[4:]).strip() + "\n"
+
+
+def lesson_key(arg, slugs):
+    """Turn whatever was typed on the command line into a key of the map."""
+    path = Path(arg)
+    stem = path.name[:-3] if path.name.endswith(".md") else path.name
+    if path.parent.name and f"{path.parent.name}/{stem}" in slugs:
+        return f"{path.parent.name}/{stem}"
+    matches = [k for k in slugs if k.split("/")[-1] == stem]
+    return matches[0] if len(matches) == 1 else stem
 
 
 def sha(text):
@@ -87,7 +97,10 @@ def main(argv):
     args = ap.parse_args(argv[1:])
 
     slugs = json.load(io.open(SLUGS, encoding="utf-8"))
-    names = [Path(f).name[:-3] for f in args.files] if args.files else sorted(slugs)
+    # A file may be named as it is passed on the command line -- with or
+    # without the course folder, with or without the leading path -- and the
+    # map is keyed by "<course>/<name>".
+    names = [lesson_key(f, slugs) for f in args.files] if args.files else sorted(slugs)
     published = live()
 
     todo, sql = [], ["BEGIN;"]

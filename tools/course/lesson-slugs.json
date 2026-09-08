@@ -1,602 +1,602 @@
 {
- "article-go-brand-kz": [
-  "go-oz-logotip-pen-belgishe",
-  "kz"
- ],
- "article-go-brand": [
+ "go/brand": [
   "go-oz-logotip-pen-belgishe",
   "ru"
  ],
- "article-go-capstone-en": [
-  "go-jinaqtau-jazba-kitapshasy",
-  "en"
- ],
- "article-go-capstone-kz": [
-  "go-jinaqtau-jazba-kitapshasy",
-  "kz"
- ],
- "article-go-capstone": [
-  "go-jinaqtau-jazba-kitapshasy",
-  "ru"
- ],
- "article-go-checklist-en": [
-  "go-iske-qosar-aldyndagy-tizim",
-  "en"
- ],
- "article-go-checklist-kz": [
-  "go-iske-qosar-aldyndagy-tizim",
-  "kz"
- ],
- "article-go-checklist": [
-  "go-iske-qosar-aldyndagy-tizim",
-  "ru"
- ],
- "article-go-config-en": [
-  "go-baptau-env-pen-flagtar",
-  "en"
- ],
- "article-go-config-kz": [
-  "go-baptau-env-pen-flagtar",
-  "kz"
- ],
- "article-go-config": [
-  "go-baptau-env-pen-flagtar",
-  "ru"
- ],
- "article-go-context-en": [
-  "go-context-suranysty-toqtatu",
-  "en"
- ],
- "article-go-context-kz": [
-  "go-context-suranysty-toqtatu",
-  "kz"
- ],
- "article-go-context": [
-  "go-context-suranysty-toqtatu",
-  "ru"
- ],
- "article-go-crud-en": [
-  "go-crud-tort-amal",
-  "en"
- ],
- "article-go-crud-kz": [
-  "go-crud-tort-amal",
-  "kz"
- ],
- "article-go-crud": [
-  "go-crud-tort-amal",
-  "ru"
- ],
- "article-go-csrf-en": [
-  "go-csrf-pen-xss",
-  "en"
- ],
- "article-go-csrf-kz": [
-  "go-csrf-pen-xss",
-  "kz"
- ],
- "article-go-csrf": [
-  "go-csrf-pen-xss",
-  "ru"
- ],
- "article-go-dbsql-en": [
-  "go-sqlite-men-database-sql",
-  "en"
- ],
- "article-go-dbsql-kz": [
-  "go-sqlite-men-database-sql",
-  "kz"
- ],
- "article-go-dbsql": [
-  "go-sqlite-men-database-sql",
-  "ru"
- ],
- "article-go-deploy-en": [
-  "go-tegin-hostingke-shygaru",
-  "en"
- ],
- "article-go-deploy-kz": [
-  "go-tegin-hostingke-shygaru",
-  "kz"
- ],
- "article-go-deploy": [
-  "go-tegin-hostingke-shygaru",
-  "ru"
- ],
- "article-go-errors-en": [
-  "go-qateler-jai-man",
-  "en"
- ],
- "article-go-errors-kz": [
-  "go-qateler-jai-man",
-  "kz"
- ],
- "article-go-errors": [
-  "go-qateler-jai-man",
-  "ru"
- ],
- "article-go-forms-en": [
-  "go-forma-oqyrmannan-derek",
-  "en"
- ],
- "article-go-forms-kz": [
-  "go-forma-oqyrmannan-derek",
-  "kz"
- ],
- "article-go-forms": [
-  "go-forma-oqyrmannan-derek",
-  "ru"
- ],
- "article-go-git-en": [
-  "go-git-kodyn-tarihy",
-  "en"
- ],
- "article-go-git-kz": [
-  "go-git-kodyn-tarihy",
-  "kz"
- ],
- "article-go-git": [
-  "go-git-kodyn-tarihy",
-  "ru"
- ],
- "article-go-github-en": [
-  "go-github-korinetin-kod",
-  "en"
- ],
- "article-go-github-kz": [
-  "go-github-korinetin-kod",
-  "kz"
- ],
- "article-go-github": [
-  "go-github-korinetin-kod",
-  "ru"
- ],
- "article-go-http-en": [
-  "go-http-shyndyghynda",
-  "en"
- ],
- "article-go-http-kz": [
-  "go-http-shyndyghynda",
-  "kz"
- ],
- "article-go-http": [
-  "go-http-shyndyghynda",
-  "ru"
- ],
- "article-go-https-en": [
-  "go-oz-domen-men-https",
-  "en"
- ],
- "article-go-https-kz": [
-  "go-oz-domen-men-https",
-  "kz"
- ],
- "article-go-https": [
-  "go-oz-domen-men-https",
-  "ru"
- ],
- "article-go-interface-en": [
-  "go-interfeis-kelisim",
-  "en"
- ],
- "article-go-interface-kz": [
-  "go-interfeis-kelisim",
-  "kz"
- ],
- "article-go-interface": [
-  "go-interfeis-kelisim",
-  "ru"
- ],
- "article-go-json-en": [
-  "go-json-pen-oz-api",
-  "en"
- ],
- "article-go-json-kz": [
-  "go-json-pen-oz-api",
-  "kz"
- ],
- "article-go-json": [
-  "go-json-pen-oz-api",
-  "ru"
- ],
- "article-go-layout-en": [
-  "go-maket-bir-jaqtau",
-  "en"
- ],
- "article-go-layout-kz": [
-  "go-maket-bir-jaqtau",
-  "kz"
- ],
- "article-go-layout": [
-  "go-maket-bir-jaqtau",
-  "ru"
- ],
- "article-go-logs-en": [
-  "go-qate-men-jurnal-ne-buzyldy",
-  "en"
- ],
- "article-go-logs-kz": [
-  "go-qate-men-jurnal-ne-buzyldy",
-  "kz"
- ],
- "article-go-logs": [
-  "go-qate-men-jurnal-ne-buzyldy",
-  "ru"
- ],
- "article-go-middleware-en": [
-  "go-ondeushi-men-orama",
-  "en"
- ],
- "article-go-middleware-kz": [
-  "go-ondeushi-men-orama",
-  "kz"
- ],
- "article-go-middleware": [
-  "go-ondeushi-men-orama",
-  "ru"
- ],
- "article-go-migrate-en": [
-  "go-koshi-qon-derekqor-tarihy",
-  "en"
- ],
- "article-go-migrate-kz": [
-  "go-koshi-qon-derekqor-tarihy",
-  "kz"
- ],
- "article-go-migrate": [
-  "go-koshi-qon-derekqor-tarihy",
-  "ru"
- ],
- "article-go-next-en": [
-  "go-ari-qarai-qaida-generikter",
-  "en"
- ],
- "article-go-next-kz": [
-  "go-ari-qarai-qaida-generikter",
-  "kz"
- ],
- "article-go-next": [
-  "go-ari-qarai-qaida-generikter",
-  "ru"
- ],
- "article-go-packages-en": [
-  "go-paketter-men-moduldar",
-  "en"
- ],
- "article-go-packages-kz": [
-  "go-paketter-men-moduldar",
-  "kz"
- ],
- "article-go-packages": [
-  "go-paketter-men-moduldar",
-  "ru"
- ],
- "article-go-passwords-en": [
-  "go-tirkelu-men-qupiyasoz",
-  "en"
- ],
- "article-go-passwords-kz": [
-  "go-tirkelu-men-qupiyasoz",
-  "kz"
- ],
- "article-go-passwords": [
-  "go-tirkelu-men-qupiyasoz",
-  "ru"
- ],
- "article-go-perms-en": [
-  "go-quqyq-kim-nene-ozgerte-alady",
-  "en"
- ],
- "article-go-perms-kz": [
-  "go-quqyq-kim-nene-ozgerte-alady",
-  "kz"
- ],
- "article-go-perms": [
-  "go-quqyq-kim-nene-ozgerte-alady",
-  "ru"
- ],
- "article-go-pointers-en": [
-  "go-siltegishter-men-adister",
-  "en"
- ],
- "article-go-pointers-kz": [
-  "go-siltegishter-men-adister",
-  "kz"
- ],
- "article-go-pointers": [
-  "go-siltegishter-men-adister",
-  "ru"
- ],
- "article-go-race-en": [
-  "go-gorutina-men-arna",
-  "en"
- ],
- "article-go-race-kz": [
-  "go-gorutina-men-arna",
-  "kz"
- ],
- "article-go-race": [
-  "go-gorutina-men-arna",
-  "ru"
- ],
- "article-go-routes-en": [
-  "go-bagyttar-kim-ondejdi",
-  "en"
- ],
- "article-go-routes-kz": [
-  "go-bagyttar-kim-ondejdi",
-  "kz"
- ],
- "article-go-routes": [
-  "go-bagyttar-kim-ondejdi",
-  "ru"
- ],
- "article-go-search-en": [
-  "go-izdeu-fts5",
-  "en"
- ],
- "article-go-search-kz": [
-  "go-izdeu-fts5",
-  "kz"
- ],
- "article-go-search": [
-  "go-izdeu-fts5",
-  "ru"
- ],
- "article-go-sessions-en": [
-  "go-sessiya-men-cookie",
-  "en"
- ],
- "article-go-sessions-kz": [
-  "go-sessiya-men-cookie",
-  "kz"
- ],
- "article-go-sessions": [
-  "go-sessiya-men-cookie",
-  "ru"
- ],
- "article-go-sqljoin-en": [
-  "go-sql-eki-keste-join",
-  "en"
- ],
- "article-go-sqljoin-kz": [
-  "go-sql-eki-keste-join",
-  "kz"
- ],
- "article-go-sqljoin": [
-  "go-sql-eki-keste-join",
-  "ru"
- ],
- "article-go-sqlone-en": [
-  "go-sql-birinshi-keste",
-  "en"
- ],
- "article-go-sqlone-kz": [
-  "go-sql-birinshi-keste",
-  "kz"
- ],
- "article-go-sqlone": [
-  "go-sql-birinshi-keste",
-  "ru"
- ],
- "article-go-start-en": [
-  "go-kurs-bastar-aldynda",
-  "en"
- ],
- "article-go-start-kz": [
-  "go-kurs-bastar-aldynda",
-  "kz"
- ],
- "article-go-start": [
-  "go-kurs-bastar-aldynda",
-  "ru"
- ],
- "article-go-static-en": [
-  "go-statika-css-qarip-suret",
-  "en"
- ],
- "article-go-static-kz": [
-  "go-statika-css-qarip-suret",
-  "kz"
- ],
- "article-go-static": [
-  "go-statika-css-qarip-suret",
-  "ru"
- ],
- "article-go-struct-en": [
-  "go-qurylym-struct-oz-tipin",
-  "en"
- ],
- "article-go-struct-kz": [
-  "go-qurylym-struct-oz-tipin",
-  "kz"
- ],
- "article-go-struct": [
-  "go-qurylym-struct-oz-tipin",
-  "ru"
- ],
- "article-go-systemd-en": [
-  "go-systemd-pen-uqypty-toqtau",
-  "en"
- ],
- "article-go-systemd-kz": [
-  "go-systemd-pen-uqypty-toqtau",
-  "kz"
- ],
- "article-go-systemd": [
-  "go-systemd-pen-uqypty-toqtau",
-  "ru"
- ],
- "article-go-tags-en": [
-  "go-tegter-kopke-kop-bailanys",
-  "en"
- ],
- "article-go-tags-kz": [
-  "go-tegter-kopke-kop-bailanys",
-  "kz"
- ],
- "article-go-tags": [
-  "go-tegter-kopke-kop-bailanys",
-  "ru"
- ],
- "article-go-templates-en": [
-  "go-ulgiler-html-template",
-  "en"
- ],
- "article-go-templates-kz": [
-  "go-ulgiler-html-template",
-  "kz"
- ],
- "article-go-templates": [
-  "go-ulgiler-html-template",
-  "ru"
- ],
- "article-go-test-en": [
-  "go-algashqy-test",
-  "en"
- ],
- "article-go-test-kz": [
-  "go-algashqy-test",
-  "kz"
- ],
- "article-go-test": [
-  "go-algashqy-test",
-  "ru"
- ],
- "article-go-tests2-en": [
-  "go-testter-ne-syndy",
-  "en"
- ],
- "article-go-tests2-kz": [
-  "go-testter-ne-syndy",
-  "kz"
- ],
- "article-go-tests2": [
-  "go-testter-ne-syndy",
-  "ru"
- ],
- "article-go-tx-en": [
-  "go-tranzakciya-men-sql-inekciya",
-  "en"
- ],
- "article-go-tx-kz": [
-  "go-tranzakciya-men-sql-inekciya",
-  "kz"
- ],
- "article-go-tx": [
-  "go-tranzakciya-men-sql-inekciya",
-  "ru"
- ],
- "article-go-upload-en": [
-  "go-suret-jukteu",
-  "en"
- ],
- "article-go-upload-kz": [
-  "go-suret-jukteu",
-  "kz"
- ],
- "article-go-upload": [
-  "go-suret-jukteu",
-  "ru"
- ],
- "article-py-dict-en": [
-  "py-sozdik-kilt-pen-man",
-  "en"
- ],
- "article-py-dict-kz": [
-  "py-sozdik-kilt-pen-man",
-  "kz"
- ],
- "article-py-dict": [
-  "py-sozdik-kilt-pen-man",
-  "ru"
- ],
- "article-py-list-en": [
-  "py-tizim-men-kortej",
-  "en"
- ],
- "article-py-list-kz": [
-  "py-tizim-men-kortej",
-  "kz"
- ],
- "article-py-list": [
-  "py-tizim-men-kortej",
-  "ru"
- ],
- "article-py-numbers-en": [
-  "py-sandar-joldar-shygys",
-  "en"
- ],
- "article-py-numbers-kz": [
-  "py-sandar-joldar-shygys",
-  "kz"
- ],
- "article-py-numbers": [
-  "py-sandar-joldar-shygys",
-  "ru"
- ],
- "article-py-prices-en": [
-  "py-agany-bagalar-tenge",
-  "en"
- ],
- "article-py-prices-kz": [
-  "py-agany-bagalar-tenge",
-  "kz"
- ],
- "article-py-prices": [
-  "py-agany-bagalar-tenge",
-  "ru"
- ],
- "article-py-types-en": [
-  "py-aynymalylar-men-tipter",
-  "en"
- ],
- "article-py-types-kz": [
-  "py-aynymalylar-men-tipter",
-  "kz"
- ],
- "article-py-types": [
-  "py-aynymalylar-men-tipter",
-  "ru"
- ],
- "article-py-workspace-en": [
-  "py-jumys-orny-venv",
-  "en"
- ],
- "article-py-workspace-kz": [
-  "py-jumys-orny-venv",
-  "kz"
- ],
- "article-py-workspace": [
-  "py-jumys-orny-venv",
-  "ru"
- ],
- "article-go-brand-en": [
+ "go/brand-en": [
   "go-oz-logotip-pen-belgishe",
   "en"
  ],
- "article-py-intro": [
+ "go/brand-kz": [
+  "go-oz-logotip-pen-belgishe",
+  "kz"
+ ],
+ "go/capstone": [
+  "go-jinaqtau-jazba-kitapshasy",
+  "ru"
+ ],
+ "go/capstone-en": [
+  "go-jinaqtau-jazba-kitapshasy",
+  "en"
+ ],
+ "go/capstone-kz": [
+  "go-jinaqtau-jazba-kitapshasy",
+  "kz"
+ ],
+ "go/checklist": [
+  "go-iske-qosar-aldyndagy-tizim",
+  "ru"
+ ],
+ "go/checklist-en": [
+  "go-iske-qosar-aldyndagy-tizim",
+  "en"
+ ],
+ "go/checklist-kz": [
+  "go-iske-qosar-aldyndagy-tizim",
+  "kz"
+ ],
+ "go/config": [
+  "go-baptau-env-pen-flagtar",
+  "ru"
+ ],
+ "go/config-en": [
+  "go-baptau-env-pen-flagtar",
+  "en"
+ ],
+ "go/config-kz": [
+  "go-baptau-env-pen-flagtar",
+  "kz"
+ ],
+ "go/context": [
+  "go-context-suranysty-toqtatu",
+  "ru"
+ ],
+ "go/context-en": [
+  "go-context-suranysty-toqtatu",
+  "en"
+ ],
+ "go/context-kz": [
+  "go-context-suranysty-toqtatu",
+  "kz"
+ ],
+ "go/crud": [
+  "go-crud-tort-amal",
+  "ru"
+ ],
+ "go/crud-en": [
+  "go-crud-tort-amal",
+  "en"
+ ],
+ "go/crud-kz": [
+  "go-crud-tort-amal",
+  "kz"
+ ],
+ "go/csrf": [
+  "go-csrf-pen-xss",
+  "ru"
+ ],
+ "go/csrf-en": [
+  "go-csrf-pen-xss",
+  "en"
+ ],
+ "go/csrf-kz": [
+  "go-csrf-pen-xss",
+  "kz"
+ ],
+ "go/dbsql": [
+  "go-sqlite-men-database-sql",
+  "ru"
+ ],
+ "go/dbsql-en": [
+  "go-sqlite-men-database-sql",
+  "en"
+ ],
+ "go/dbsql-kz": [
+  "go-sqlite-men-database-sql",
+  "kz"
+ ],
+ "go/deploy": [
+  "go-tegin-hostingke-shygaru",
+  "ru"
+ ],
+ "go/deploy-en": [
+  "go-tegin-hostingke-shygaru",
+  "en"
+ ],
+ "go/deploy-kz": [
+  "go-tegin-hostingke-shygaru",
+  "kz"
+ ],
+ "go/errors": [
+  "go-qateler-jai-man",
+  "ru"
+ ],
+ "go/errors-en": [
+  "go-qateler-jai-man",
+  "en"
+ ],
+ "go/errors-kz": [
+  "go-qateler-jai-man",
+  "kz"
+ ],
+ "go/forms": [
+  "go-forma-oqyrmannan-derek",
+  "ru"
+ ],
+ "go/forms-en": [
+  "go-forma-oqyrmannan-derek",
+  "en"
+ ],
+ "go/forms-kz": [
+  "go-forma-oqyrmannan-derek",
+  "kz"
+ ],
+ "go/git": [
+  "go-git-kodyn-tarihy",
+  "ru"
+ ],
+ "go/git-en": [
+  "go-git-kodyn-tarihy",
+  "en"
+ ],
+ "go/git-kz": [
+  "go-git-kodyn-tarihy",
+  "kz"
+ ],
+ "go/github": [
+  "go-github-korinetin-kod",
+  "ru"
+ ],
+ "go/github-en": [
+  "go-github-korinetin-kod",
+  "en"
+ ],
+ "go/github-kz": [
+  "go-github-korinetin-kod",
+  "kz"
+ ],
+ "go/http": [
+  "go-http-shyndyghynda",
+  "ru"
+ ],
+ "go/http-en": [
+  "go-http-shyndyghynda",
+  "en"
+ ],
+ "go/http-kz": [
+  "go-http-shyndyghynda",
+  "kz"
+ ],
+ "go/https": [
+  "go-oz-domen-men-https",
+  "ru"
+ ],
+ "go/https-en": [
+  "go-oz-domen-men-https",
+  "en"
+ ],
+ "go/https-kz": [
+  "go-oz-domen-men-https",
+  "kz"
+ ],
+ "go/interface": [
+  "go-interfeis-kelisim",
+  "ru"
+ ],
+ "go/interface-en": [
+  "go-interfeis-kelisim",
+  "en"
+ ],
+ "go/interface-kz": [
+  "go-interfeis-kelisim",
+  "kz"
+ ],
+ "go/intro": [
+  "tegin-bagdarlamalau-kursy-go",
+  "ru"
+ ],
+ "go/intro-en": [
+  "tegin-bagdarlamalau-kursy-go",
+  "en"
+ ],
+ "go/intro-kz": [
+  "tegin-bagdarlamalau-kursy-go",
+  "kz"
+ ],
+ "go/json": [
+  "go-json-pen-oz-api",
+  "ru"
+ ],
+ "go/json-en": [
+  "go-json-pen-oz-api",
+  "en"
+ ],
+ "go/json-kz": [
+  "go-json-pen-oz-api",
+  "kz"
+ ],
+ "go/layout": [
+  "go-maket-bir-jaqtau",
+  "ru"
+ ],
+ "go/layout-en": [
+  "go-maket-bir-jaqtau",
+  "en"
+ ],
+ "go/layout-kz": [
+  "go-maket-bir-jaqtau",
+  "kz"
+ ],
+ "go/logs": [
+  "go-qate-men-jurnal-ne-buzyldy",
+  "ru"
+ ],
+ "go/logs-en": [
+  "go-qate-men-jurnal-ne-buzyldy",
+  "en"
+ ],
+ "go/logs-kz": [
+  "go-qate-men-jurnal-ne-buzyldy",
+  "kz"
+ ],
+ "go/middleware": [
+  "go-ondeushi-men-orama",
+  "ru"
+ ],
+ "go/middleware-en": [
+  "go-ondeushi-men-orama",
+  "en"
+ ],
+ "go/middleware-kz": [
+  "go-ondeushi-men-orama",
+  "kz"
+ ],
+ "go/migrate": [
+  "go-koshi-qon-derekqor-tarihy",
+  "ru"
+ ],
+ "go/migrate-en": [
+  "go-koshi-qon-derekqor-tarihy",
+  "en"
+ ],
+ "go/migrate-kz": [
+  "go-koshi-qon-derekqor-tarihy",
+  "kz"
+ ],
+ "go/next": [
+  "go-ari-qarai-qaida-generikter",
+  "ru"
+ ],
+ "go/next-en": [
+  "go-ari-qarai-qaida-generikter",
+  "en"
+ ],
+ "go/next-kz": [
+  "go-ari-qarai-qaida-generikter",
+  "kz"
+ ],
+ "go/packages": [
+  "go-paketter-men-moduldar",
+  "ru"
+ ],
+ "go/packages-en": [
+  "go-paketter-men-moduldar",
+  "en"
+ ],
+ "go/packages-kz": [
+  "go-paketter-men-moduldar",
+  "kz"
+ ],
+ "go/passwords": [
+  "go-tirkelu-men-qupiyasoz",
+  "ru"
+ ],
+ "go/passwords-en": [
+  "go-tirkelu-men-qupiyasoz",
+  "en"
+ ],
+ "go/passwords-kz": [
+  "go-tirkelu-men-qupiyasoz",
+  "kz"
+ ],
+ "go/perms": [
+  "go-quqyq-kim-nene-ozgerte-alady",
+  "ru"
+ ],
+ "go/perms-en": [
+  "go-quqyq-kim-nene-ozgerte-alady",
+  "en"
+ ],
+ "go/perms-kz": [
+  "go-quqyq-kim-nene-ozgerte-alady",
+  "kz"
+ ],
+ "go/pointers": [
+  "go-siltegishter-men-adister",
+  "ru"
+ ],
+ "go/pointers-en": [
+  "go-siltegishter-men-adister",
+  "en"
+ ],
+ "go/pointers-kz": [
+  "go-siltegishter-men-adister",
+  "kz"
+ ],
+ "go/race": [
+  "go-gorutina-men-arna",
+  "ru"
+ ],
+ "go/race-en": [
+  "go-gorutina-men-arna",
+  "en"
+ ],
+ "go/race-kz": [
+  "go-gorutina-men-arna",
+  "kz"
+ ],
+ "go/routes": [
+  "go-bagyttar-kim-ondejdi",
+  "ru"
+ ],
+ "go/routes-en": [
+  "go-bagyttar-kim-ondejdi",
+  "en"
+ ],
+ "go/routes-kz": [
+  "go-bagyttar-kim-ondejdi",
+  "kz"
+ ],
+ "go/search": [
+  "go-izdeu-fts5",
+  "ru"
+ ],
+ "go/search-en": [
+  "go-izdeu-fts5",
+  "en"
+ ],
+ "go/search-kz": [
+  "go-izdeu-fts5",
+  "kz"
+ ],
+ "go/sessions": [
+  "go-sessiya-men-cookie",
+  "ru"
+ ],
+ "go/sessions-en": [
+  "go-sessiya-men-cookie",
+  "en"
+ ],
+ "go/sessions-kz": [
+  "go-sessiya-men-cookie",
+  "kz"
+ ],
+ "go/sqljoin": [
+  "go-sql-eki-keste-join",
+  "ru"
+ ],
+ "go/sqljoin-en": [
+  "go-sql-eki-keste-join",
+  "en"
+ ],
+ "go/sqljoin-kz": [
+  "go-sql-eki-keste-join",
+  "kz"
+ ],
+ "go/sqlone": [
+  "go-sql-birinshi-keste",
+  "ru"
+ ],
+ "go/sqlone-en": [
+  "go-sql-birinshi-keste",
+  "en"
+ ],
+ "go/sqlone-kz": [
+  "go-sql-birinshi-keste",
+  "kz"
+ ],
+ "go/start": [
+  "go-kurs-bastar-aldynda",
+  "ru"
+ ],
+ "go/start-en": [
+  "go-kurs-bastar-aldynda",
+  "en"
+ ],
+ "go/start-kz": [
+  "go-kurs-bastar-aldynda",
+  "kz"
+ ],
+ "go/static": [
+  "go-statika-css-qarip-suret",
+  "ru"
+ ],
+ "go/static-en": [
+  "go-statika-css-qarip-suret",
+  "en"
+ ],
+ "go/static-kz": [
+  "go-statika-css-qarip-suret",
+  "kz"
+ ],
+ "go/struct": [
+  "go-qurylym-struct-oz-tipin",
+  "ru"
+ ],
+ "go/struct-en": [
+  "go-qurylym-struct-oz-tipin",
+  "en"
+ ],
+ "go/struct-kz": [
+  "go-qurylym-struct-oz-tipin",
+  "kz"
+ ],
+ "go/systemd": [
+  "go-systemd-pen-uqypty-toqtau",
+  "ru"
+ ],
+ "go/systemd-en": [
+  "go-systemd-pen-uqypty-toqtau",
+  "en"
+ ],
+ "go/systemd-kz": [
+  "go-systemd-pen-uqypty-toqtau",
+  "kz"
+ ],
+ "go/tags": [
+  "go-tegter-kopke-kop-bailanys",
+  "ru"
+ ],
+ "go/tags-en": [
+  "go-tegter-kopke-kop-bailanys",
+  "en"
+ ],
+ "go/tags-kz": [
+  "go-tegter-kopke-kop-bailanys",
+  "kz"
+ ],
+ "go/templates": [
+  "go-ulgiler-html-template",
+  "ru"
+ ],
+ "go/templates-en": [
+  "go-ulgiler-html-template",
+  "en"
+ ],
+ "go/templates-kz": [
+  "go-ulgiler-html-template",
+  "kz"
+ ],
+ "go/test": [
+  "go-algashqy-test",
+  "ru"
+ ],
+ "go/test-en": [
+  "go-algashqy-test",
+  "en"
+ ],
+ "go/test-kz": [
+  "go-algashqy-test",
+  "kz"
+ ],
+ "go/tests2": [
+  "go-testter-ne-syndy",
+  "ru"
+ ],
+ "go/tests2-en": [
+  "go-testter-ne-syndy",
+  "en"
+ ],
+ "go/tests2-kz": [
+  "go-testter-ne-syndy",
+  "kz"
+ ],
+ "go/tx": [
+  "go-tranzakciya-men-sql-inekciya",
+  "ru"
+ ],
+ "go/tx-en": [
+  "go-tranzakciya-men-sql-inekciya",
+  "en"
+ ],
+ "go/tx-kz": [
+  "go-tranzakciya-men-sql-inekciya",
+  "kz"
+ ],
+ "go/upload": [
+  "go-suret-jukteu",
+  "ru"
+ ],
+ "go/upload-en": [
+  "go-suret-jukteu",
+  "en"
+ ],
+ "go/upload-kz": [
+  "go-suret-jukteu",
+  "kz"
+ ],
+ "python/dict": [
+  "py-sozdik-kilt-pen-man",
+  "ru"
+ ],
+ "python/dict-en": [
+  "py-sozdik-kilt-pen-man",
+  "en"
+ ],
+ "python/dict-kz": [
+  "py-sozdik-kilt-pen-man",
+  "kz"
+ ],
+ "python/intro": [
   "tegin-kurs-python-derek-pen-ii",
   "ru"
  ],
- "article-py-intro-kz": [
-  "tegin-kurs-python-derek-pen-ii",
-  "kz"
- ],
- "article-py-intro-en": [
+ "python/intro-en": [
   "tegin-kurs-python-derek-pen-ii",
   "en"
  ],
- "article-go-intro": [
-  "tegin-bagdarlamalau-kursy-go",
+ "python/intro-kz": [
+  "tegin-kurs-python-derek-pen-ii",
+  "kz"
+ ],
+ "python/list": [
+  "py-tizim-men-kortej",
   "ru"
  ],
- "article-go-intro-kz": [
-  "tegin-bagdarlamalau-kursy-go",
+ "python/list-en": [
+  "py-tizim-men-kortej",
+  "en"
+ ],
+ "python/list-kz": [
+  "py-tizim-men-kortej",
   "kz"
  ],
- "article-go-intro-en": [
-  "tegin-bagdarlamalau-kursy-go",
+ "python/numbers": [
+  "py-sandar-joldar-shygys",
+  "ru"
+ ],
+ "python/numbers-en": [
+  "py-sandar-joldar-shygys",
   "en"
+ ],
+ "python/numbers-kz": [
+  "py-sandar-joldar-shygys",
+  "kz"
+ ],
+ "python/prices": [
+  "py-agany-bagalar-tenge",
+  "ru"
+ ],
+ "python/prices-en": [
+  "py-agany-bagalar-tenge",
+  "en"
+ ],
+ "python/prices-kz": [
+  "py-agany-bagalar-tenge",
+  "kz"
+ ],
+ "python/types": [
+  "py-aynymalylar-men-tipter",
+  "ru"
+ ],
+ "python/types-en": [
+  "py-aynymalylar-men-tipter",
+  "en"
+ ],
+ "python/types-kz": [
+  "py-aynymalylar-men-tipter",
+  "kz"
+ ],
+ "python/workspace": [
+  "py-jumys-orny-venv",
+  "ru"
+ ],
+ "python/workspace-en": [
+  "py-jumys-orny-venv",
+  "en"
+ ],
+ "python/workspace-kz": [
+  "py-jumys-orny-venv",
+  "kz"
  ]
 }

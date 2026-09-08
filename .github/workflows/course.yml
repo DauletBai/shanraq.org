@@ -46,25 +46,25 @@ jobs:
           go-version-file: go.mod
 
       - name: Code speaks the language of its lesson
-        run: python3 tools/coursecheck/langcheck.py course/lessons/article-*.md
+        run: python3 tools/coursecheck/langcheck.py course/lessons/*/*.md
 
       - name: Every Go program parses
-        run: python3 tools/coursecheck/gocheck.py course/lessons/article-go-*.md
+        run: python3 tools/coursecheck/gocheck.py course/lessons/go/*.md
 
       - name: Every Python program compiles
-        run: python3 tools/coursecheck/pycheck.py course/lessons/article-py-*.md
+        run: python3 tools/coursecheck/pycheck.py course/lessons/python/*.md
 
       # Compiling is not the promise a lesson makes. The promise is that this
       # program, typed in as printed, prints exactly this -- and the one error
       # that slipped through every check was of that kind.
       - name: Every Python program prints what the lesson shows
-        run: python3 tools/coursecheck/pyrun.py course/lessons/article-py-*.md
+        run: python3 tools/coursecheck/pyrun.py course/lessons/python/*.md
 
       - name: Every step of the course project runs
         run: python3 tools/coursecheck/pyrun.py --steps
 
       - name: Links into this repository exist
-        run: python3 tools/coursecheck/linkcheck.py --offline course/lessons/article-*.md
+        run: python3 tools/coursecheck/linkcheck.py --offline course/lessons/*/*.md
 
       - name: Every element of the language has a lesson
         run: python3 tools/coursecheck/pysyllabus.py plan
@@ -77,4 +77,4 @@ jobs:
 
       - name: Follow every outside link
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        run: python3 tools/coursecheck/linkcheck.py course/lessons/article-*.md
+        run: python3 tools/coursecheck/linkcheck.py course/lessons/*/*.md

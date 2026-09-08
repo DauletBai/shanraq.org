@@ -35,7 +35,7 @@ The name refers to the *shanyrak* — the crown of the Kazakh yurt — the livin
 ## Features
 
 - 📰 **Trilingual publishing** — one article, three language variants; per-language `hreflang`, sitemaps and JSON-LD.
-- 🎓 **Free courses** — *Go: from zero to your own blog* (50 lessons, finished) and *Python: from data to your own digest* (data and AI, publishing lesson by lesson); SQL, Rust and machine learning are next. Every lesson is open in three languages, the sources live in [`course/lessons/`](course/lessons/), and CI parses every program printed in them.
+- 🎓 **Free courses** — *Go: from zero to your own blog* (50 lessons, finished) and *Python: from data to your own digest* (data and AI, publishing lesson by lesson); SQL, Rust and machine learning are next. Every lesson is open in three languages, the sources live in [`course/lessons/`](course/lessons/), a folder per course, and CI parses every program printed in them.
 - 🏠 **Real-estate classifieds** — listings with photos, geo, amenities, promotion/feature tariffs, and a dedicated listings sitemap.
 - 🤖 **AI translation & moderation** — provider-agnostic (Claude, ChatGPT or Kimi), off unless a key is set. Translation keeps the author's Markdown and links; the platform then compares the result against the original and reports anything mechanically lost, so an author can check a language they do not read.
 - 🌤 **Weather and the daily archive** — every settlement with coordinates has its own forecast page (`/weather/kachar`): conditions now, an hourly chart for two days, the chance of rain, and the week ahead. A reader who told their profile where they live is taken to their own town. Every day of publishing has an address too (`/archive/2026-08-25`), and both feed the sitemap.

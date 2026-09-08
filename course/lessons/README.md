@@ -1,10 +1,17 @@
 # Course lessons — the sources
 
-Every lesson of the courses lives here as Markdown, one file per language:
+Every lesson lives here as Markdown: a folder per course, and one file per
+language inside it.
 
-    article-go-http.md      Russian
-    article-go-http-kz.md   Kazakh
-    article-go-http-en.md   English
+    go/http.md         Russian
+    go/http-kz.md      Kazakh
+    go/http-en.md      English
+    python/prices.md   and the same three for the Python course
+
+A folder per course rather than one flat pile: two courses make 150 files, and
+SQL, Rust and machine learning are already named on the site as what comes
+next. The language suffix is what the checks read, so it stays whatever the
+folder is called.
 
 The site is the published copy, not the source. Until this folder existed the
 only copies were the production database and a scratch directory, so nothing
@@ -38,6 +45,10 @@ carry a subtitle after a colon, and they are edited there, not here.
   two rules do not meet, because a lesson's program is read by the student.
 - **Every program parses.** `gocheck.py` and `pycheck.py` hand each fenced block
   that starts a whole program to `gofmt -e` or to the Python compiler.
+- **Every Python program prints what the page shows.** `pyrun.py` runs it and
+  compares the output with the block printed under it, because compiling says
+  nothing about what a program does. `--steps` does the same for the course
+  project in `course/py-digest`.
 - **Links exist.** `linkcheck.py` compares links into this repository against the
   real remote and fetches the rest.
 - **Nothing is silently missing.** `pysyllabus.py` holds every element of Python
@@ -46,13 +57,21 @@ carry a subtitle after a colon, and they are edited there, not here.
 
 Run them all at once:
 
-    python3 tools/coursecheck/langcheck.py course/lessons/*.md
-    python3 tools/coursecheck/gocheck.py   course/lessons/article-go-*.md
-    python3 tools/coursecheck/pycheck.py   course/lessons/article-py-*.md
-    python3 tools/coursecheck/linkcheck.py --offline course/lessons/*.md
+    python3 tools/coursecheck/langcheck.py course/lessons/*/*.md
+    python3 tools/coursecheck/gocheck.py   course/lessons/go/*.md
+    python3 tools/coursecheck/pycheck.py   course/lessons/python/*.md
+    python3 tools/coursecheck/pyrun.py     course/lessons/python/*.md
+    python3 tools/coursecheck/pyrun.py     --steps
+    python3 tools/coursecheck/linkcheck.py --offline course/lessons/*/*.md
     python3 tools/coursecheck/pysyllabus.py plan
+    python3 tools/coursecheck/pysyllabus.py published
 
 CI runs the same set on any change under `course/lessons/` or `tools/coursecheck/`.
+
+A new course adds a folder here and its own line to the checks that are
+language-specific; nothing else moves. The code a course builds keeps its own
+place — `course/go-blog` for the blog, `course/py-digest` for the digest —
+because lessons link into it by URL and those links are already published.
 
 ## Publishing
 
@@ -60,8 +79,9 @@ CI runs the same set on any change under `course/lessons/` or `tools/coursecheck
 what differs. It never invents an article: a lesson must already exist, and the
 mapping from file to slug is `tools/course/lesson-slugs.json`.
 
-    python3 tools/course/publish.py --check      # what differs from the site
-    python3 tools/course/publish.py              # send the differences
+    python3 tools/course/publish.py --check       # what differs from the site
+    python3 tools/course/publish.py               # send the differences
+    python3 tools/course/publish.py python/prices.md   # one lesson
 
 Numbers measured in a lesson are numbers measured, not numbers imagined: when a
 figure changes, the program is run again and the output block is replaced with
