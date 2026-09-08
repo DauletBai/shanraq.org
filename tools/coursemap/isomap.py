@@ -2067,6 +2067,33 @@ def pymap11(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap12(s):
+    """Python lesson 12: the separator, the quotes and the header row.
+
+    The accent is the middle block: a comma inside a field is what splits an
+    export into the wrong number of columns, quietly and every time.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3880,6 +3907,37 @@ PY11 = {
                foot_sub="measured: 37 bytes, three rows of four"),
 }
 
+PY12 = {
+    "kz": dict(alt="Бөлгіш, тырнақша және тақырып",
+               b1="бөлгіш", b1_sub="анық жазыңыз",
+               b2="тырнақша", b2_sub="ішінде үтір бар",
+               b3="тақырып", b3_sub="ат бойынша",
+               c1="csv.reader", c2="utf-8-sig",
+               head="CSV: ЖОЛ ЕМЕС, ПІШІМ",
+               head_sub="он екінші сабақ: csv, DictReader",
+               foot="SPLIT ҮШТІҢ ОРНЫНА БЕС БӨЛІК БЕРДІ",
+               foot_sub="өлшенді: csv.reader — үшеу"),
+    "ru": dict(alt="Разделитель, кавычки и заголовок",
+               b1="разделитель", b1_sub="назовите явно",
+               b2="кавычки", b2_sub="внутри запятая",
+               b3="заголовок", b3_sub="ищем по имени",
+               c1="csv.reader", c2="utf-8-sig",
+               head="CSV: НЕ СТРОКА, А ФОРМАТ",
+               head_sub="двенадцатый урок: csv, DictReader",
+               foot="SPLIT ДАЛ ПЯТЬ КУСКОВ ВМЕСТО ТРЁХ",
+               foot_sub="измерено: csv.reader — три"),
+    "en": dict(alt="The separator, the quotes and the header",
+               b1="separator", b1_sub="name it outright",
+               b2="quotes", b2_sub="a comma inside",
+               b3="header", b3_sub="found by name",
+               c1="csv.reader", c2="utf-8-sig",
+               head="CSV IS A FORMAT, NOT A LINE",
+               head_sub="lesson twelve: csv, DictReader",
+               foot="SPLIT GAVE FIVE PIECES, NOT THREE",
+               foot_sub="measured: csv.reader gives three"),
+}
+
+
 
 
 
@@ -3904,7 +3962,8 @@ if __name__ == "__main__":
                                ("loops", pymap08, PY08),
                                ("functions", pymap09, PY09),
                                ("errors", pymap10, PY10),
-                               ("files", pymap11, PY11)):
+                               ("files", pymap11, PY11),
+                               ("csv", pymap12, PY12)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

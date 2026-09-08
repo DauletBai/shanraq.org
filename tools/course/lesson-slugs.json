@@ -527,6 +527,18 @@
   "py-shartar-if-elif-else",
   "kz"
  ],
+ "python/csv": [
+  "py-csv-utir-tyrnaqsha-tanba",
+  "ru"
+ ],
+ "python/csv-en": [
+  "py-csv-utir-tyrnaqsha-tanba",
+  "en"
+ ],
+ "python/csv-kz": [
+  "py-csv-utir-tyrnaqsha-tanba",
+  "kz"
+ ],
  "python/dict": [
   "py-sozdik-kilt-pen-man",
   "ru"
