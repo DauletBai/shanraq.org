@@ -12,6 +12,8 @@ A **dictionary** makes the link explicit: every value has a key it is found by. 
 
 The file `sozdik.py`. Run it with `python sozdik.py` from inside the environment.
 
+The program is long — sixty lines. The required part is the dictionary itself, `get`, `in` and `items()`. The `Counter` and `defaultdict` at the end come on top of that: enough to recognise by sight, and the exercise does not need them.
+
 ```python
 """Lesson 6: a dictionary, the link between a name and a value.
 

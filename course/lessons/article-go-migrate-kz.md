@@ -192,7 +192,7 @@ alter table comments add column author text not null default '';
 alter table comments add column author text not null default '';
 ```
 
-Жегу:
+Іске қосу:
 
 ```
 бұрын қолданылған: 0004_comments

@@ -153,7 +153,7 @@ func TestArticles(t *testing.T) {
 }
 ```
 
-Жегу:
+Іске қосу:
 
 ```
 $ go test -v -run TestParseTags

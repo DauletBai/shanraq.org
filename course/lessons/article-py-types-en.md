@@ -12,6 +12,8 @@ The second reason for this lesson: money cannot be counted the way school taught
 
 The file `tipter.py`. Run it with `python tipter.py` from inside the environment.
 
+The program is long — sixty lines. What has to stay in your head is the first half: a string into a number, money in `Decimal`. The rest (`None`, truthiness, `is`) is enough to recognise by sight and come back to when you meet it.
+
 ```python
 """Lesson 4: variables and types, on numbers that arrived as text.
 

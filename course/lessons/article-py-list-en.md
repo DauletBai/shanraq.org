@@ -12,6 +12,8 @@ For a collection Python has a **list**. It can do more than it looks: add everyt
 
 The file `tizim.py`. Run it with `python tizim.py` from inside the environment.
 
+The program is long — sixty lines. The required part is the list, the slices, `sum`, `max` and sorting. `itemgetter` and tuples come on top of that: enough to recognise by sight, and the exercise does not need them.
+
 ```python
 """Lesson 5: a list and a tuple, on the prices from one receipt.
 
