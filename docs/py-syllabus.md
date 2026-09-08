@@ -24,7 +24,7 @@ python3 tools/coursecheck/pysyllabus.py lesson 5 файл.md     # покрыл 
 | Числа: int, float, деление, остаток, степень | 3 | `int`, `float`, `//`, `%`, `**` |
 | Строки: кавычки, склейка, f-строки | 3 | `f"`, `str`, `+` |
 | Методы строк: split, join, strip, replace, lower | 3 | `.split(`, `.join(`, `.strip(`, `.replace(`, `.lower(` |
-| Переменные и имена | 4 | `=`, имя |
+| Переменные и имена | 4 | `=`, `price_text` |
 | Тип значения и преобразования | 4 | `type(`, `int(`, `float(`, `str(` |
 | bool, None и истинность | 4 | `True`, `False`, `None`, `bool(` |
 | Сравнения и логика | 4 | `==`, `!=`, `and`, `or`, `not` |

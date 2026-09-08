@@ -59,6 +59,19 @@ def check_plan():
     return 0
 
 
+# A marker that any Python program carries proves nothing about the lesson: an
+# assignment sign is in every one of them, so "functions: def, return, =" was
+# satisfied by the "=" alone. Where a row has a marker that says something, that
+# is the one that has to be found; the weak ones only count when a row has
+# nothing better.
+WEAK = {"=", "+", "-", "*", "/", "#"}
+
+
+def telling(markers):
+    """The markers of a row that are worth looking for."""
+    return [m for m in markers if m not in WEAK] or markers
+
+
 def found(marker, text):
     """A marker matches as plain text first; only then is it tried as a pattern.
 
@@ -83,8 +96,9 @@ def check_lesson(number, path):
         return 0
     missing = []
     for what, markers in mine:
-        if not any(found(m, text) for m in markers):
-            missing.append(f"  {what}: не нашёл ни одного из {markers}")
+        wanted = telling(markers)
+        if not any(found(m, text) for m in wanted):
+            missing.append(f"  {what}: не нашёл ни одного из {wanted}")
     print(f"урок {number}: элементов назначено {len(mine)}, не найдено {len(missing)}")
     if missing:
         print("\n".join(missing))
