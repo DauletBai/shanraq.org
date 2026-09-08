@@ -37,6 +37,38 @@ relies on exactly this shape.
 The headline here may be shorter than the one on the site: the site's titles
 carry a subtitle after a colon, and they are edited there, not here.
 
+## The shape of an exercise
+
+A lesson ends with a ladder, and the steps are what a reader climbs alone:
+
+    ## Разминка / Жаттығу / Warm-up
+    1. Предскажите   a program to answer before running it
+    2. Заполните     one gap to fill in
+    3. Почините      one broken program to mend
+    ## Задание / Тапсырма / Exercise
+    **Обязательное.**   the task on fixed data, with the output it must print
+    **На своих данных.** the same task on the reader's own numbers
+    **По желанию.**     what is worth trying and is not required
+
+The exercise heading is the one the site reads to put the check box on the page
+(`lessonExercise` in `pkg/modules/articles/course_check.go`), so it stays
+exactly one of those three, and "На своих данных" comes after the required part
+rather than instead of it.
+
+Everything the ladder promises is run. A drill's program and its answer live
+apart -- the reader is meant to answer first -- so they are tied by markers,
+which are HTML comments and never reach the page:
+
+    <!-- drill 1 -->        the program that is meant to run
+    <!-- drill 1 out -->    the output it is meant to print
+    <!-- task out -->       the output the required task promises
+
+The required task's own solution lives in `course/lessons/python/answers/` as
+`<lesson file>-answer.py` -- one per language, because the printed result is in
+the lesson's language, and that is exactly where a translation drifts. The
+`-answer` suffix is not decoration: a file called `csv.py` beside a program is
+what `import csv` finds.
+
 ## The rules the checks enforce
 
 - **Code speaks the lesson's language.** Comments, strings and sample data in a
@@ -49,6 +81,10 @@ carry a subtitle after a colon, and they are edited there, not here.
   compares the output with the block printed under it, because compiling says
   nothing about what a program does. `--steps` does the same for the course
   project in `course/py-digest`.
+- **Every answer is the one the machine printed.** The same `pyrun.py` runs the
+  warm-up drills through their markers and the exercise's reference solution
+  against the output the lesson promises. A promise nobody checks is the part
+  that rots: the reader types towards it and gets something else.
 - **Links exist.** `linkcheck.py` compares links into this repository against the
   real remote and fetches the rest.
 - **Nothing is silently missing.** `pysyllabus.py` holds every element of Python

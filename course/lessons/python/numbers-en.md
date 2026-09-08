@@ -87,7 +87,7 @@ ordinary: 3.5 <class 'float'>
 whole:    3 <class 'int'>
 ```
 
-## The walk-through
+## Taking it apart
 
 ### `print` is the only window out
 
@@ -157,9 +157,55 @@ Without looking, answer aloud or on paper. The answers are at the end of the les
 2. Why does `"  Bread  ".strip()` not change the string itself?
 3. What does the colon inside the curly braces of an f-string do?
 
-## The exercise
+## Warm-up
 
-**Required.** Take a real receipt from a shop. Write a program that prints: the sum for one item (price × quantity), the change from a round sum, how many of that item a thousand tenge buys, and how much is left over. Print every number with an f-string to two decimal places.
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this line print?
+
+<!-- drill 1 -->
+```python
+print(7 / 2, 7 // 2, 7 % 2)
+```
+
+**2. Fill in the gap.** In place of `...` put the format that leaves two digits after the point.
+
+```python
+print(f"{1 / 3:...}")
+```
+
+**3. Fix it.** The program falls over. Read the error and make the line print.
+
+```python
+print("total: " + 780)
+```
+
+## Exercise
+
+**Required.** Given:
+
+```python
+price = 260
+count = 3
+paid = 1000
+```
+
+Print five lines: what the item costs in all; the change from the sum paid; how many whole loaves fit into the sum paid and what is left over; the price of one in dollars at a rate of 540, to two decimal places; and a line where the name, the count and the total are put together by an f-string.
+
+The expected output:
+
+<!-- task out -->
+```
+for the item: 780 tenge
+change from 1000: 220 tenge
+whole loaves for 1000: 3, left over 220
+the price of one in dollars: 0.48
+text and number together: bread × 3 = 780
+```
+
+Done when: the output matches line by line; "whole ones and change" are worked out with `//` and `%` rather than by rounding; no number is glued to text with a `+`.
+
+**On your own data.** Take a real receipt from a shop. Write a program that prints: the sum for one item (price × quantity), the change from a round sum, how many of that item a thousand tenge buys, and how much is left over. Print every number with an f-string to two decimal places.
 
 **If you want more.**
 
@@ -175,9 +221,44 @@ The debts. We cut a string and got a list, but what to do with it we do not know
 
 ## The answers
 
+### To the questions
+
 1. In the result and in the type: `7 / 2` is `3.5`, a floating-point number; `7 // 2` is `3`, a whole one. Division with `/` always returns a `float`, even when it divides exactly; with `//` the type comes from the operands, so `7.0 // 2` is `3.0`.
 2. Because strings in Python are immutable: any method returns a **new** string while the original stays as it was. To keep the result you have to assign it.
 3. It sets the format: how many decimal places (`.2f`), whether to group the thousands (`,`), and how to align. The number itself does not change — only the way it was shown.
+
+### To the warm-up
+
+1. `3.5 3 1`. `/` always gives a fractional number, `//` rounds down, `%` returns the remainder. Three different answers to one question of "how many".
+
+<!-- drill 1 out -->
+```
+3.5 3 1
+```
+
+2. `.2f`. The point with a number is how many digits go after it, and the `f` says to print an ordinary number rather than scientific notation.
+
+<!-- drill 2 -->
+```python
+print(f"{1 / 3:.2f}")
+```
+
+<!-- drill 2 out -->
+```
+0.33
+```
+
+3. Python does not understand a `+` between a string and a number: `TypeError: can only concatenate str (not "int") to str`. Numbers are joined to text by a comma inside `print` or by an f-string, which turns the number into text itself:
+
+<!-- drill 3 -->
+```python
+print(f"total: {780}")
+```
+
+<!-- drill 3 out -->
+```
+total: 780
+```
 
 ## Sources
 

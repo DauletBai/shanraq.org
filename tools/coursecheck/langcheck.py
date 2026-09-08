@@ -49,7 +49,13 @@ RUSSIAN_MARKERS = re.compile(
     re.IGNORECASE,
 )
 
-FENCE = re.compile(r"```(?:go|html|text|)\n(.*?)```", re.S)
+# Every fence is matched, and the language decides what is read. Naming only
+# some languages in the pattern looked cheaper and was wrong twice over: a
+# ```python block was never opened, so the second course's code went unchecked,
+# and the scanner then paired that block's closing fence with the next opening
+# one -- reading the prose in between as if it were code.
+FENCE = re.compile(r"```(\w*)\n(.*?)```", re.S)
+CODE_FENCES = ("go", "html", "text", "python", "")
 CYRILLIC_WORD = re.compile(r"[А-Яа-яЁёӘҒҚҢӨҰҮҺІәғқңөұүһі]{2,}")
 
 # Deliberate exceptions, documented in docs/go-course.md: a word the lesson is
@@ -73,7 +79,8 @@ def language_of(path):
 def check(path):
     name, lang = language_of(path)
     with open(path, encoding="utf-8") as f:
-        code = "".join(FENCE.findall(f.read()))
+        code = "".join(body for lang, body in FENCE.findall(f.read())
+                       if lang in CODE_FENCES)
     allowed = {w.lower() for w in ALLOWED.get((name, lang), set())}
 
     if lang == "ru":

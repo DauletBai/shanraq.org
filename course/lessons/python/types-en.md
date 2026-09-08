@@ -134,7 +134,7 @@ first is first:   True
 the right check for nothing: nothing is None -> True
 ```
 
-## The walk-through
+## Taking it apart
 
 ### A variable is a name for a value
 
@@ -240,9 +240,58 @@ Without looking, answer aloud or on paper. The answers are at the end of the les
 2. What is wrong with `0.1 + 0.2`, and how is money counted?
 3. Why is `bool("0")` true?
 
-## The exercise
+## Warm-up
 
-**Required.** Take three **weights** from a receipt — they are written with a fraction, and they show exactly what this lesson is about: `"1,15"`, `" 0,25 "`, `"0,2"` (kilograms). Turn each into a number (two of them will need repairing), add them up and print the sum with an f-string to two decimal places. Then count the same sum through `Decimal` and compare both results with `==`.
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this line print? Note that the `+` does two different things here.
+
+<!-- drill 1 -->
+```python
+print(int("8") + 1, "8" + "1")
+```
+
+**2. Fill in the gap.** In place of `...` prepare the string so that `float` will take it.
+
+```python
+text = " 1,15 "
+clean = ...
+print(float(clean))
+```
+
+**3. Fix it.** The program says there is no value, although there is one and it is zero. Replace the check with the right one.
+
+```python
+value = 0.0
+print("no value:", not value)
+```
+
+## Exercise
+
+**Required.** Given:
+
+```python
+first = " 1,15 "
+second = "0,25"
+third = None
+```
+
+Turn the first two into numbers: take the spaces off and replace the comma with a point. Print each with its type, then on its own line whether the third one is empty, then whether zero counts as a gap, and at the end the sum to two decimal places and the average to three.
+
+The expected output:
+
+<!-- task out -->
+```
+the first: 1.15 kg, type float
+the second: 0.25 kg, type float
+the third is empty: True
+and zero is a value: False
+1.40 kg in all, 0.700 kg on average
+```
+
+Done when: the output matches line by line; the gap is checked with `is None` rather than with "is it empty"; no string becomes a number without a `strip` and the comma replaced.
+
+**On your own data.** Take three **weights** from a receipt — they are written with a fraction, and they show exactly what this lesson is about: `"1,15"`, `" 0,25 "`, `"0,2"` (kilograms). Turn each into a number (two of them will need repairing), add them up and print the sum with an f-string to two decimal places. Then count the same sum through `Decimal` and compare both results with `==`.
 
 The printed lines will match — both show `1.60` — and `==` will return `False`. That is the answer to why money is counted in `Decimal`.
 
@@ -260,9 +309,47 @@ The debts. We repaired one string by hand, but a file will have thousands of the
 
 ## The answers
 
+### To the questions
+
 1. Because adding strings has a meaning of its own — gluing — and Python used it. It does not guess intent; whoever writes the code watches the types.
 2. A `float` stores numbers in binary, where `0.1` is an endless fraction, so the tail `0.30000000000000004` appears. For showing a person, `round` is enough; for money, `Decimal` is used and made from a string. And comparing a `float` with a `Decimal` through `==` is a poor contract: either round both to the digit you need, or count in `Decimal` from the first character to the last.
 3. Because the truth of a string is decided by its length rather than its contents: `"0"` is not empty, so it is true. The empty string `""` is false.
+
+### To the warm-up
+
+1. `9 81`. On the left `int("8")` gives a number and the `+` adds. On the right both halves are strings and the same `+` glues them. One sign, two actions, and the type decides which.
+
+<!-- drill 1 out -->
+```
+9 81
+```
+
+2. `text.strip().replace(",", ".")`. `float` will forgive the spaces around it, but not the comma: `float("1,15")` falls over with a `ValueError`.
+
+<!-- drill 2 -->
+```python
+text = " 1,15 "
+clean = text.strip().replace(",", ".")
+print(float(clean))
+```
+
+<!-- drill 2 out -->
+```
+1.15
+```
+
+3. `not value` asks "is it empty", and Python counts zero, an empty string and an empty list as empty alike. The absence of a value is `None`, and that is asked about outright:
+
+<!-- drill 3 -->
+```python
+value = 0.0
+print("no value:", value is None)
+```
+
+<!-- drill 3 out -->
+```
+no value: False
+```
 
 ## Sources
 

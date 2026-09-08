@@ -88,7 +88,69 @@ Armenia         7.2    8.6    2.0    0.3    3.3
 Poland          5.1   14.4   11.5    3.8    3.8
 ```
 
-## The walk-through
+## If there is no network
+
+The program goes out to the internet, and that is the first thing that can fail: no connection, blocked access, somebody else's server having a day off. When it does, take the same program with the numbers already in it — they come from that same World Bank answer, and it prints the same thing.
+
+```python
+"""The same program without the network: the numbers are already in it.
+
+They are taken from that same World Bank answer, so it prints the same thing.
+Later in the course we will learn to fetch them ourselves.
+"""
+
+# The consumer price index: 2010 is taken as 100.
+prices = {2010: 100.0, 2025: 348.1}
+# Inflation by year, %; an em dash where there is no number.
+inflation = {
+    "Kazakhstan": {2021: 8.0, 2022: 15.0, 2023: 14.5, 2024: 8.7, 2025: 11.4},
+    "the world": {2021: 3.5, 2022: 8.1, 2023: 5.8, 2024: 3.0, 2025: 3.0},
+    "Georgia": {2021: 9.6, 2022: 11.9, 2023: 2.5, 2024: 1.1, 2025: 3.9},
+    "Armenia": {2021: 7.2, 2022: 8.6, 2023: 2.0, 2024: 0.3, 2025: 3.3},
+    "Poland": {2021: 5.1, 2022: 14.4, 2023: 11.5, 2024: 3.8, 2025: 3.8},
+}
+
+print("== how many times prices grew in Kazakhstan")
+base, last = min(prices), max(prices)
+times = prices[last] / prices[base]
+print(f"price index in {base}: {prices[base]:.1f}")
+print(f"price index in {last}: {prices[last]:.1f}")
+print(f"prices grew {times:.2f} times")
+print(f"1000 tenge of {last} = {1000 / times:.0f} tenge at {base} prices")
+print(f"what cost 1000 tenge in {base} costs {1000 * times:.0f} now")
+
+print()
+print("== one world, different prices: inflation by year, %")
+years = range(2021, 2026)
+print("country     " + "".join(f"{year:>7}" for year in years))
+for name, series in inflation.items():
+    line = "".join(f"{series[year]:7.1f}" if year in series else f"{'—':>7}"
+                   for year in years)
+    print(f"{name:<12}{line}")
+```
+
+It prints:
+
+```
+== how many times prices grew in Kazakhstan
+price index in 2010: 100.0
+price index in 2025: 348.1
+prices grew 3.48 times
+1000 tenge of 2025 = 287 tenge at 2010 prices
+what cost 1000 tenge in 2010 costs 3481 now
+
+== one world, different prices: inflation by year, %
+country        2021   2022   2023   2024   2025
+Kazakhstan      8.0   15.0   14.5    8.7   11.4
+the world       3.5    8.1    5.8    3.0    3.0
+Georgia         9.6   11.9    2.5    1.1    3.9
+Armenia         7.2    8.6    2.0    0.3    3.3
+Poland          5.1   14.4   11.5    3.8    3.8
+```
+
+The numbers here are written into the program, and that is called what it is: they were not fetched, they were copied across. How to fetch them yourself is lesson thirteen.
+
+## Taking it apart
 
 ### What you have just counted
 
@@ -158,7 +220,32 @@ Without looking, answer aloud or on paper. The answers are at the end of the les
 2. Why is the table of other countries stronger than a single row for Kazakhstan?
 3. Why can these two tables not yet name the one to blame?
 
-## The exercise
+## Warm-up
+
+Three short steps before the exercise: predict, fill in, fix. Today they are about `print` — the one part of the program you can already repeat yourself. The answers are at the end of the lesson.
+
+**1. Predict.** What does this line print?
+
+<!-- drill 1 -->
+```python
+print("bread", 260 * 3)
+```
+
+**2. Fill in the gap.** In place of `...` put what gives the total for three loaves.
+
+```python
+price = 260
+count = 3
+print(f"total: {...} tenge")
+```
+
+**3. Fix it.** The program does not start. Read what Python says and mend the line.
+
+```python
+print("total: 780 tenge)
+```
+
+## Exercise
 
 **Required.** Run the program and change the starting year in it from 2010 to the year you were born — or any year that matters to you. Read both lines aloud: what today's thousand is worth at that year's prices, and what is asked today for what cost a thousand then.
 
@@ -176,9 +263,46 @@ The debts are visible already. The program dies without the internet and says no
 
 ## The answers
 
+### To the questions
+
 1. That prices are 3.48 times higher: the same basket that cost 100 units in 2010 costs 348.1 in 2025. The other side of it is that a thousand of today's tenge buys what 287 tenge bought in 2010, while the basket that cost a thousand in 2010 now costs 3481.
 2. Because one row can be explained by anything. A comparison tests the explanation: if a shared external shock is to blame, the countries that got the same shock should show similar numbers. They do not.
 3. Because a coincidence and a difference are not yet a cause. We have seen that an external shock alone cannot explain it; to name a cause you have to put money, the exchange rate, tariffs and taxes side by side — and that is the work of several lessons, not one table.
+
+### To the warm-up
+
+1. `bread 780`. `print` prints everything it is given with a space between, and it works out `260 * 3` before printing it.
+
+<!-- drill 1 out -->
+```
+bread 780
+```
+
+2. `price * count`. Inside the braces of an f-string you may write a calculation and not only a name.
+
+<!-- drill 2 -->
+```python
+price = 260
+count = 3
+print(f"total: {price * count} tenge")
+```
+
+<!-- drill 2 out -->
+```
+total: 780 tenge
+```
+
+3. `SyntaxError: unterminated string literal` — the quote was never closed. Python names the line and the place, and that is the first thing worth trusting: it shows you where it broke rather than telling you off.
+
+<!-- drill 3 -->
+```python
+print("total: 780 tenge")
+```
+
+<!-- drill 3 out -->
+```
+total: 780 tenge
+```
 
 ## Sources
 

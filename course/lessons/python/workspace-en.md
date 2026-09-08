@@ -68,7 +68,7 @@ On Windows three lines look different and the rest is the same:
 
 In PowerShell the very first activation can run into a ban on running scripts. It is cured once: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, and it is written up in [the venv documentation](https://docs.python.org/3/library/venv.html).
 
-## The walk-through
+## Taking it apart
 
 ### First check that the language is there at all
 
@@ -159,7 +159,23 @@ Without looking, answer aloud or on paper. The answers are at the end of the les
 2. Why is `.venv` kept out of the repository while `requirements.txt` is kept in it?
 3. How can you tell in one second that you are outside the environment?
 
-## The exercise
+## Warm-up
+
+Three short steps before the exercise. Today they are not about code but about the terminal: this is where a beginner loses an evening. The answers are at the end of the lesson.
+
+**1. Predict.** You have built the environment and have **not** activated it. What will `which python3` (on Windows, `where python`) show, and where will `pip install requests` put the package after that?
+
+**2. Fill in the gap.** Complete the three commands so that they make a working day from nothing:
+
+```
+python3 -m venv .venv
+...
+pip install -r requirements.txt
+```
+
+**3. Fix it.** Someone complains: "I installed `requests` and the program says `ModuleNotFoundError`." Their terminal prompt has no `(.venv)` in it. What happened, and what should they do?
+
+## Exercise
 
 **Required.** Make a `digest` folder, create an environment in it, move yesterday's program there and run it from inside the environment. Then repeat the check: install `requests`, leave the environment, and make sure the import no longer works.
 
@@ -177,9 +193,19 @@ The debts. The program still dies without the internet and fetches the data afre
 
 ## The answers
 
+### To the questions
+
 1. Only the paths. `activate` puts `.venv/bin` first in `PATH`, so the word `python` starts meaning the interpreter from the project and `pip` starts installing packages there. Nothing is installed in the process.
 2. Because `.venv` is a result: rebuilt with one command, 17 megabytes, and system-dependent. `requirements.txt` is the cause: five lines from which the result follows on any machine.
 3. Look at the terminal prompt: an activated environment shows `(.venv)` on the left. If in doubt, `python -c "import sys; print(sys.executable)"` shows which interpreter is running.
+
+### To the warm-up
+
+1. `which python3` will show the system Python — `/usr/bin/python3` or something like it, and not a path inside `.venv`. So `pip install requests` will put the package into the system too: it lands in every project at once, and it will not appear in `requirements.txt`, because nobody wrote it there.
+
+2. `source .venv/bin/activate` (on Windows, `.venv\Scripts\activate`). The order is exactly that: first the environment is created, then you step into it, and only then are packages installed — otherwise they go past it.
+
+3. The package was installed into the system while the program was run inside the environment, or the other way round. The missing `(.venv)` in the prompt is the answer to the lesson's third question: it is visible in a second. Step into the environment and install the package again, from inside it.
 
 ## Sources
 

@@ -131,7 +131,7 @@ by name:   [('bread', 280), ('butter', 1890), ('milk', 620), ('salt', 90)]
 the dearest row: ('butter', 1890)
 ```
 
-## The walk-through
+## Taking it apart
 
 ### A list: order and numbers
 
@@ -257,9 +257,60 @@ Without looking, answer aloud or on paper. The answers are at the end of the les
 2. How does `sorted(prices)` differ from `prices.sort()`, and what does the second return?
 3. When does data go into a tuple rather than a list?
 
-## The exercise
+## Warm-up
 
-**Required.** Build your own receipt: a list of prices and a list of names. Print the sum, the dearest and the cheapest price, the average to two decimal places, and the list of prices sorted ascending — without changing the original list.
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this line print?
+
+<!-- drill 1 -->
+```python
+prices = [260, 620, 1890]
+print(prices[0], prices[-1], len(prices), prices[:2])
+```
+
+**2. Fill in the gap.** In place of `...` work out the average price — without a loop, there have been none yet.
+
+```python
+prices = [260, 620, 1890, 90]
+print("average:", ...)
+```
+
+**3. Fix it.** The program falls over. Read the error and take the last price.
+
+```python
+prices = [260, 620, 1890]
+print(prices[3])
+```
+
+## Exercise
+
+**Required.** Given:
+
+```python
+prices = [260, 620, 1890, 90, 310]
+names = ["bread", "milk", "butter", "salt", "eggs"]
+```
+
+Print: how many items there are and the first and last price; what the receipt adds up to; the dearest and the cheapest; the average price to two decimal places; the first three prices as a slice; the list in ascending order — and right after it the original, so that it shows it did not change; the first two names as a slice. Write no loops: the built-in functions do all of this.
+
+The expected output:
+
+<!-- task out -->
+```
+items: 5 | first: 260 | last: 310
+the receipt adds up to: 3170
+dearest: 1890 | cheapest: 90
+average price: 634.00
+the first three: [260, 620, 1890]
+in ascending order: [90, 260, 310, 620, 1890]
+the original is untouched: [260, 620, 1890, 90, 310]
+names: ['bread', 'milk'] …
+```
+
+Done when: the output matches line by line; the order inside `prices` is the same after all the work — which means `sorted()` was used rather than `.sort()`; the last price is taken with `-1` rather than with `len(prices) - 1`.
+
+**On your own data.** Build your own receipt: a list of prices and a list of names. Print the sum, the dearest and the cheapest price, the average to two decimal places, and the list of prices sorted ascending — without changing the original list.
 
 **If you want more.**
 
@@ -275,9 +326,46 @@ The debts. We cannot yet total a list of tuples: that needs walking through the 
 
 ## The answers
 
+### To the questions
+
 1. Because the right edge of a slice is not included: the elements numbered 1 and 2 are taken. That way `prices[:3]` and `prices[3:]` together give the whole list with no overlap.
 2. `sorted()` returns a new list and leaves the original alone; `.sort()` sorts the original in place and returns `None`. So `prices = prices.sort()` leaves emptiness where the data was.
 3. When the values differ in meaning and together make one record — a name and a price, say. A list is for a collection of values of the same kind, which can be added to and removed from.
+
+### To the warm-up
+
+1. `260 1890 3 [260, 620]`. Counting starts at zero, `-1` is the last element, and the slice `[:2]` takes the first two without including the second index.
+
+<!-- drill 1 out -->
+```
+260 1890 3 [260, 620]
+```
+
+2. `sum(prices) / len(prices)`. Both functions take the whole list, so the average price is one line.
+
+<!-- drill 2 -->
+```python
+prices = [260, 620, 1890, 90]
+print("average:", sum(prices) / len(prices))
+```
+
+<!-- drill 2 out -->
+```
+average: 715.0
+```
+
+3. `IndexError: list index out of range`. The list holds three elements, so the indexes are `0`, `1`, `2`, and `3` is already past the edge. The last one is taken with `-1`, and then the number need not be recounted every time the list changes:
+
+<!-- drill 3 -->
+```python
+prices = [260, 620, 1890]
+print(prices[-1])
+```
+
+<!-- drill 3 out -->
+```
+1890
+```
 
 ## Sources
 

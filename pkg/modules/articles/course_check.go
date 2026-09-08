@@ -144,7 +144,11 @@ func (st *ProgressStore) AttemptsSince(ctx context.Context, user uuid.UUID, sinc
 
 // exerciseHeads are the lesson headings that introduce the exercise, in the
 // three languages the course is written in.
-var exerciseHeads = []string{"## Задание", "## Тапсырма", "## Exercise"}
+var exerciseHeads = []string{"## Задание", "## Тапсырма", "## Exercise",
+	// An English lesson once headed it "The exercise", and the check box quietly
+	// did not appear on it. The heading is uniform in the lessons now; this line
+	// is what keeps a single stray heading from taking the feature away again.
+	"## The exercise"}
 
 // optionalHeads mark where the exercise stops being required. Everything after
 // one of them is offered, not asked for -- and a reviewer that reads it can

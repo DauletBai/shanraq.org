@@ -130,7 +130,7 @@ an ordinary dictionary -> KeyError - 'bread'
 defaultdict worked: {'bread': 2}
 ```
 
-## The walk-through
+## Taking it apart
 
 ### A key and a value
 
@@ -222,9 +222,59 @@ Without looking, answer aloud or on paper. The answers are at the end of the les
 2. Does `max(prices, key=prices.get)` return the price or the name?
 3. How does `defaultdict(int)` differ from an ordinary dictionary in the line `d["bread"] += 1`?
 
-## The exercise
+## Warm-up
 
-**Required.** Build a **price list** as a dictionary: name to price. A real receipt is not kept this way — it has two identical names, a quantity, a unit price and a discount, and a dictionary simply overwrites the first entry when the same key comes again. For looking a price up by name it does fit, and that is what we are doing today. Print the price of one item, the price of an item that is not in the receipt (through `get` with a default), the sum of all prices, the name of the dearest item, and the list of pairs sorted by name.
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this line print?
+
+<!-- drill 1 -->
+```python
+prices = {"bread": 280, "salt": 90}
+print(prices.get("sugar"), "salt" in prices, len(prices))
+```
+
+**2. Fill in the gap.** In place of `...` put the default under which a missing item's price counts as zero.
+
+```python
+prices = {"bread": 280, "salt": 90}
+print(prices.get("sugar", ...))
+```
+
+**3. Fix it.** The program falls over on an item the price list does not have. Make it answer `0`.
+
+```python
+prices = {"bread": 280, "salt": 90}
+print(prices["sugar"])
+```
+
+## Exercise
+
+**Required.** Given:
+
+```python
+prices = {"bread": 280, "milk": 620, "butter": 1890, "salt": 90}
+```
+
+Print: how many entries there are; the price of milk by its key; the price of sugar through `get` without a default and with a default of `0`; whether sugar and salt are in the list. Then add sugar at 450 and print how many entries there are now and what they add up to; the dearest price; the list of names. Write no loops.
+
+The expected output:
+
+<!-- task out -->
+```
+entries: 4
+the price of milk: 620
+the price of sugar: None
+the price of sugar with a default: 0 tenge
+sugar is there: False | salt is there: True
+after adding: 5 entries, sum: 3330
+the dearest price: 1890
+names: ['bread', 'milk', 'butter', 'salt', 'sugar']
+```
+
+Done when: the output matches line by line; a missing key is never asked for with square brackets; sugar comes last in the list of names — which means a dictionary keeps the order things were added in.
+
+**On your own data.** Build a **price list** as a dictionary: name to price. A real receipt is not kept this way — it has two identical names, a quantity, a unit price and a discount, and a dictionary simply overwrites the first entry when the same key comes again. For looking a price up by name it does fit, and that is what we are doing today. Print the price of one item, the price of an item that is not in the receipt (through `get` with a default), the sum of all prices, the name of the dearest item, and the list of pairs sorted by name.
 
 **If you want more.**
 
@@ -240,9 +290,46 @@ The debts. We still cannot walk a dictionary through all its keys — that needs
 
 ## The answers
 
+### To the questions
+
 1. Because "no data" and "zero" are different things, and putting the second in place of the first is dangerous: the calculation comes out quietly wrong. When a missing key is normal, `get` with a default is there for it.
 2. The name: `max` goes through the keys, and `key=prices.get` says which value to compare them by. To get the price you need `max(prices.values())`.
 3. In an ordinary dictionary `d["bread"] += 1` requires the key to exist already, or it is a `KeyError`. `defaultdict(int)` supplies `0` at the moment of the first reach, and the addition works.
+
+### To the warm-up
+
+1. `None True 2`. For a missing key `get` returns `None` rather than an error, `in` answers `True` or `False`, and `len` counts entries rather than letters.
+
+<!-- drill 1 out -->
+```
+None True 2
+```
+
+2. `0`. The second argument to `get` is the answer for "there is no such key". It is also the place where you decide what absence counts as: zero here, and not zero at all when an average is being worked out.
+
+<!-- drill 2 -->
+```python
+prices = {"bread": 280, "salt": 90}
+print(prices.get("sugar", 0))
+```
+
+<!-- drill 2 out -->
+```
+0
+```
+
+3. `KeyError: 'sugar'`. The square brackets demand a key and fall over without one; `get` asks and returns the default. The first is right where the key must be there, the second where it may not be:
+
+<!-- drill 3 -->
+```python
+prices = {"bread": 280, "salt": 90}
+print(prices.get("sugar", 0))
+```
+
+<!-- drill 3 out -->
+```
+0
+```
 
 ## Sources
 
