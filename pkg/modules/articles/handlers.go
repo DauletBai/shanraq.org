@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"errors"
+	"fmt"
 	"html/template"
 	"net/http"
 	"net/url"
@@ -144,6 +145,18 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Svc:       m.serviceViews(r, lang),
 		SiteLD:    siteLD(httpserver.NonceFromContext(r.Context()), site, lang),
 	}
+}
+
+// feedLabel names a feed: the subcategory when one is chosen, otherwise the
+// category, and nothing at all on the front page.
+func feedLabel(lang, cat, sub string) string {
+	if sub != "" {
+		return T(lang, "sub."+sub)
+	}
+	if cat != "" {
+		return T(lang, "cat."+cat)
+	}
+	return ""
 }
 
 // subscribeFeedback turns the ?subscribed= marker left by the syndicate module's
@@ -605,6 +618,15 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	page.Active = active
 	page.ActiveCat = cat
 	page.ActiveSub = sub
+	// A category feed is its own page and has to say so. All of them used to be
+	// handed to search under the home page's title and description, so "IT" and
+	// "AI" and the front page competed for one result with one sentence -- and
+	// the AI feed, which the Python course now lands in, said "IT" over a list
+	// of Python lessons.
+	if label := feedLabel(lang, cat, sub); label != "" {
+		page.Title = fmt.Sprintf(T(lang, "home.h1_cat"), label)
+		page.Desc = fmt.Sprintf(T(lang, "seo.feed_desc"), label)
+	}
 	page.Subscribed = r.URL.Query().Get("subscribed") == "ok"
 	if r.URL.Query().Get("reported") == "hidden" {
 		page.Notice = T(lang, "article.report_hidden")

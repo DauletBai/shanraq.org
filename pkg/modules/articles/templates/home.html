@@ -9,7 +9,8 @@
        the masthead to satisfy a crawler. Category feeds are their own indexable
        URLs, so each names its own subject. */}}
   <h1 class="visually-hidden">
-    {{- if .ActiveCat }}{{ printf (t .Lang "home.h1_cat") (t .Lang (printf "cat.%s" .ActiveCat)) }}
+    {{- if .ActiveSub }}{{ printf (t .Lang "home.h1_cat") (t .Lang (printf "sub.%s" .ActiveSub)) }}
+    {{- else if .ActiveCat }}{{ printf (t .Lang "home.h1_cat") (t .Lang (printf "cat.%s" .ActiveCat)) }}
     {{- else }}{{ t .Lang "home.h1" }}{{ end -}}
   </h1>
   <div class="layout">

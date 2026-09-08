@@ -512,8 +512,15 @@ var messages = map[string]map[string]string{
 	"home.empty_cta": {"kz": "Бірінші мақаланы жазу", "ru": "Написать первую статью", "en": "Write the first story"},
 	// The home page heading. Category feeds are separate indexable URLs, so
 	// they name their own subject instead of all ten repeating one line.
-	"home.h1":         {"kz": "Shanraq.org — тәуелсіз талдаулар және тегін курстар: Қазақстан, экономика, бағдарламалау", "ru": "Shanraq.org — независимые разборы и бесплатные курсы: Казахстан, экономика, программирование", "en": "Shanraq.org — independent analysis and free courses: Kazakhstan, economy, programming"},
-	"home.h1_cat":     {"kz": "%s — Shanraq.org талдаулары", "ru": "%s — разборы Shanraq.org", "en": "%s — analysis on Shanraq.org"},
+	"home.h1":     {"kz": "Shanraq.org — тәуелсіз талдаулар және тегін курстар: Қазақстан, экономика, бағдарламалау", "ru": "Shanraq.org — независимые разборы и бесплатные курсы: Казахстан, экономика, программирование", "en": "Shanraq.org — independent analysis and free courses: Kazakhstan, economy, programming"},
+	"home.h1_cat": {"kz": "%s — Shanraq.org талдаулары", "ru": "%s — разборы Shanraq.org", "en": "%s — analysis on Shanraq.org"},
+	// What search shows under a category or subcategory feed. Without it every
+	// feed borrowed the front page's sentence and none of them said what it held.
+	"seo.feed_desc": {
+		"kz": "%s: Shanraq.org-тағы талдаулар мен сабақтар — қазақ, орыс және ағылшын тілдерінде, тегін.",
+		"ru": "%s: разборы и уроки на Shanraq.org — на казахском, русском и английском, бесплатно.",
+		"en": "%s: the analysis and lessons on Shanraq.org — in Kazakh, Russian and English, free.",
+	},
 	"home.page_title": {"kz": "Еркін үш тілді алаң: талдаулар және тегін курстар", "ru": "Свободная трёхъязычная площадка: разборы и бесплатные курсы", "en": "A free trilingual platform: analysis and free courses"},
 
 	"follow.title": {"kz": "Жаңа талдаулар, күн сайын", "ru": "Новые разборы, ежедневно", "en": "New analysis, daily"},
