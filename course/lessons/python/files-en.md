@@ -166,9 +166,72 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 2. How does `Path(__file__).parent` differ from the current folder?
 3. What happens if a file written in UTF-8 is opened without `encoding`?
 
+## Warm-up
+
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this program print? You need not count the bytes — say what the number is made of.
+
+<!-- drill 1 -->
+```python
+from pathlib import Path
+
+HERE = Path(__file__).parent
+data = HERE / "dannye.txt"
+data.write_text("520\n546\n", encoding="utf-8")
+print(data.name, data.suffix, data.stat().st_size)
+data.unlink()
+```
+
+**2. Fill in the gap.** In place of `...` build the path to a file `dannye.csv` beside the program.
+
+```python
+from pathlib import Path
+
+HERE = Path(__file__).parent
+data = ...
+data.write_text("8.0\n", encoding="utf-8")
+print(data.exists(), data.name)
+data.unlink()
+```
+
+**3. Fix it.** The program prints gibberish instead of letters, although it wrote the file itself. Find the line where the agreement is broken.
+
+```python
+from pathlib import Path
+
+HERE = Path(__file__).parent
+data = HERE / "dannye.txt"
+data.write_text("дерек жоқ\n", encoding="utf-8")
+print(data.read_text(encoding="cp1251"))
+data.unlink()
+```
+
 ## Exercise
 
-**Required.** Write a program that creates a file of its own numbers beside itself (a year and a value separated by a semicolon), reads it line by line through `with` and `encoding="utf-8"`, parses the rows and writes a report into a second file. Build the paths from `Path(__file__).parent`.
+**Required.** Given:
+
+```python
+rows = ["January;520", "February;546,5", "March;no price", "April;498"]
+```
+
+Build the paths from `Path(__file__).parent`. Write the rows into `ceny.csv` with `encoding="utf-8"` and print its name and its size in bytes. Read the file line by line through `with`, parse each line on the `;` (a comma inside a number counts as a point), and collect the unusable months separately. Print the report over the usable ones to two decimal places, then the list of skipped ones, and at the end take both files away after you.
+
+The expected output:
+
+<!-- task out -->
+```
+written: ceny.csv, 52 bytes
+January: 520.00
+February: 546.50
+April: 498.00
+skipped: March
+cleared, files beside it: 0
+```
+
+Done when: the output matches line by line; no path is glued out of strings; every read and every write names its encoding; nothing of the practice files is left beside the program afterwards.
+
+**On your own data.** Write a program that creates a file of its own numbers beside itself (a year and a value separated by a semicolon), reads it line by line through `with` and `encoding="utf-8"`, parses the rows and writes a report into a second file. Build the paths from `Path(__file__).parent`.
 
 All of it is put together in [step-4](https://github.com/DauletBai/shanraq.org/tree/main/course/py-digest/step-4) — compare once you have written your own.
 
@@ -186,9 +249,56 @@ Debts. We write over the old file: if the program falls over halfway through wri
 
 ## The answers
 
+### To the questions
+
 1. Because systems use different path separators, and `Path` supplies the right one. Gluing strings gives a path that works for its author and breaks for the reader.
 2. The current folder is the one the program was started from and changes from run to run. `Path(__file__).parent` is the folder the program's own file lives in, and it does not depend on where it was called from.
 3. Python takes the system's encoding. On macOS and modern Linux that is UTF-8 and everything matches; on Windows the letters arrive mangled — and without an error, so only a person notices.
+
+### To the warm-up
+
+1. `dannye.txt .txt 8`. The size is bytes on disk: the eight characters of `520\n546\n`, each of which takes one byte in UTF-8.
+
+<!-- drill 1 out -->
+```
+dannye.txt .txt 8
+```
+
+2. `HERE / "dannye.csv"`. The slash on a `Path` joins rather than divides, and the system supplies the separator.
+
+<!-- drill 2 -->
+```python
+from pathlib import Path
+
+HERE = Path(__file__).parent
+data = HERE / "dannye.csv"
+data.write_text("8.0\n", encoding="utf-8")
+print(data.exists(), data.name)
+data.unlink()
+```
+
+<!-- drill 2 out -->
+```
+True dannye.csv
+```
+
+3. The file was written in UTF-8 and read as `cp1251`: the same bytes, a different agreement — and the program does not fall over, because to it these are perfectly good letters. You read with what you wrote with:
+
+<!-- drill 3 -->
+```python
+from pathlib import Path
+
+HERE = Path(__file__).parent
+data = HERE / "dannye.txt"
+data.write_text("дерек жоқ\n", encoding="utf-8")
+print(data.read_text(encoding="utf-8"))
+data.unlink()
+```
+
+<!-- drill 3 out -->
+```
+дерек жоқ
+```
 
 ## Sources
 

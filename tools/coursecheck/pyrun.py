@@ -27,7 +27,7 @@ a promise, and a promise nobody can keep is the worst kind of error a course can
 make. So the task's own solution lives beside the lessons, out of the reader's
 way, and the printed result is compared with what it actually prints:
 
-    course/lessons/python/answers/<lesson>.py     the reference solution
+    course/lessons/python/answers/<lesson>-answer.py   the reference solution
     <!-- task out -->                             before the promised output
 
 Both markers are HTML comments, so a reader never sees them, and the answer at
@@ -131,8 +131,10 @@ def task(path, text):
             break
     # One solution per lesson file, not per lesson: the printed result is in
     # the lesson's own language, and that is exactly where a translation drifts.
+    # The "-answer" is not decoration: a file called csv.py beside a program is
+    # what "import csv" finds, and the solution would break on its own name.
     name = os.path.basename(path).removesuffix(".md")
-    solution = os.path.join(os.path.dirname(path), "answers", name + ".py")
+    solution = os.path.join(os.path.dirname(path), "answers", name + "-answer.py")
     if not os.path.isfile(solution):
         return "", printed
     with open(solution, encoding="utf-8") as f:

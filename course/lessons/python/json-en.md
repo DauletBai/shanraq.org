@@ -175,9 +175,75 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 2. Why does `series[2025]` stop working after a write to JSON and a read back?
 3. What arrives in Python in place of `null`, and how does it differ from zero?
 
+## Warm-up
+
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this program print?
+
+<!-- drill 1 -->
+```python
+import json
+
+data = json.loads('{"year": "2025", "value": null}')
+print(type(data["year"]).__name__, data["value"])
+```
+
+**2. Fill in the gap.** In place of `...` put what gives the keys their numeric form back.
+
+```python
+import json
+
+series = {2025: 11.39, 2024: 8.69}
+back = json.loads(json.dumps(series))
+fixed = {}
+for key, value in back.items():
+    fixed[...] = value
+print(fixed)
+```
+
+**3. Fix it.** The program falls over with a `KeyError` although the data is right there. Explain where the key went, and mend the reading.
+
+```python
+import json
+
+series = {2025: 11.39}
+back = json.loads(json.dumps(series))
+print(back[2025])
+```
+
 ## Exercise
 
-**Required.** Take your own dictionary of "year → value" with one `None` in it. Write it into a file through `json.dump` with `ensure_ascii=False` and `indent=2`, read it back through `json.load`, and print the types of the keys before and after. Then mend the reading so that the keys become numbers again.
+**Required.** Given:
+
+```python
+ANSWER = """[
+  {"page": 1, "pages": 1, "per_page": 4, "total": 4},
+  [
+    {"country": {"id": "KZ", "value": "Kazakhstan"}, "date": "2025", "value": 11.39},
+    {"country": {"id": "KZ", "value": "Kazakhstan"}, "date": "2024", "value": 8.69},
+    {"country": {"id": "KZ", "value": "Kazakhstan"}, "date": "2023", "value": null},
+    {"country": {"id": "KZ", "value": "Kazakhstan"}, "date": "2022", "value": 15.0}
+  ]
+]"""
+```
+
+Parse the answer and print how many records it holds. Build a dictionary of "year → value" where the year is a number and the records with `null` go into a list of gaps. Print how many years have a number and their average to two decimal places, then the list of gaps. Then make a round trip through JSON — `dumps` and back through `loads` — and print the type of the key before and after; then mend the keys and print the value for 2025.
+
+The expected output:
+
+<!-- task out -->
+```
+records: 4
+years with a number: 3, average: 11.69
+gaps: [2023]
+key before: int | after: str
+after the mend: 11.39
+```
+
+Done when: the output matches line by line; the year becomes a number during parsing rather than after; the `null` landed among the gaps rather than in the average; after the round trip through JSON, asking by a number works again.
+
+**On your own data.** Take your own dictionary of "year → value" with one `None` in it. Write it into a file through `json.dump` with `ensure_ascii=False` and `indent=2`, read it back through `json.load`, and print the types of the keys before and after. Then mend the reading so that the keys become numbers again.
 
 **Optional.**
 
@@ -193,9 +259,55 @@ Debts. We parse the answer by hand and hope the keys are in place. A real check 
 
 ## The answers
 
+### To the questions
+
 1. Only by the input: `loads` parses a string, `load` an open file. The `s` is for "string". The same holds for `dumps`, which gives a string, and `dump`, which writes into a file.
 2. Because an object key in JSON is always a string, and writing turns `2025` into `"2025"`. After the read the keys stay strings, and asking by a number gives a `KeyError`.
 3. `None` arrives — the absence of a value. Zero is a value, and the two must not be confused: a gap counted as zero pulls the average down.
+
+### To the warm-up
+
+1. `str None`. A date in JSON is a string, so `"2025"` arrives as one, and `null` becomes `None` — not zero and not an empty string.
+
+<!-- drill 1 out -->
+```
+str None
+```
+
+2. `int(key)`. An object key in JSON is always a string, and it is brought back to a number on reading; otherwise `series[2025]` stops finding a year that never went anywhere.
+
+<!-- drill 2 -->
+```python
+import json
+
+series = {2025: 11.39, 2024: 8.69}
+back = json.loads(json.dumps(series))
+fixed = {}
+for key, value in back.items():
+    fixed[int(key)] = value
+print(fixed)
+```
+
+<!-- drill 2 out -->
+```
+{2025: 11.39, 2024: 8.69}
+```
+
+3. The key went nowhere — it changed type: `dumps` wrote `2025` as `"2025"`, and after `loads` the dictionary holds a string. It is no longer found by a number, so either you ask by the string or — better — you give the keys their numbers back right after reading.
+
+<!-- drill 3 -->
+```python
+import json
+
+series = {2025: 11.39}
+back = json.loads(json.dumps(series))
+print(back["2025"])
+```
+
+<!-- drill 3 out -->
+```
+11.39
+```
 
 ## Sources
 

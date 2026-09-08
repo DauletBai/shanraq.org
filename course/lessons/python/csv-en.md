@@ -177,9 +177,80 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 2. What makes `DictReader` better than `reader` when the file came from somebody else?
 3. What is a BOM, and why does it make `row["year"]` raise `KeyError`?
 
+## Warm-up
+
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** How many pieces come out?
+
+<!-- drill 1 -->
+```python
+line = '2022,15.0,"a shock, a war, logistics"'
+print(len(line.split(",")))
+```
+
+**2. Fill in the gap.** The file was saved by Excel. In place of `...` put the encoding under which the first column's name does not arrive with a mark on it.
+
+```python
+import csv
+from pathlib import Path
+
+HERE = Path(__file__).parent
+data = HERE / "excel.csv"
+data.write_bytes("year,value\n2021,8.0\n".encode("utf-8-sig"))
+with data.open(encoding=..., newline="") as source:
+    for row in csv.DictReader(source):
+        print(row["year"])
+data.unlink()
+```
+
+**3. Fix it.** The row was written by gluing, and on reading there are more fields than were written. Build it the way it is supposed to be built.
+
+```python
+import csv
+from pathlib import Path
+
+HERE = Path(__file__).parent
+data = HERE / "vygruzka.csv"
+row = ["2022", "15.0", "a shock, a war, logistics"]
+
+data.write_text(",".join(row) + "\n", encoding="utf-8")
+with data.open(encoding="utf-8", newline="") as source:
+    for back in csv.reader(source):
+        print("fields:", len(back))
+data.unlink()
+```
+
 ## Exercise
 
-**Required.** Build a file from your own data with `csv.writer`, making sure one field holds a comma. Read it two ways — `split(",")` and `csv.reader` — and print both results side by side. Then walk the file with `DictReader` and work out the average of the numeric column, skipping `n/a`.
+**Required.** Given:
+
+```python
+rows = [
+    ["month", "price", "note"],
+    ["January", "520", "an ordinary month"],
+    ["February", "546,5", "a shock, demand, logistics"],
+    ["March", "n/a", "no price"],
+]
+```
+
+Write it into `vygruzka.csv` through `csv.writer` with `newline=""`. Print how many pieces `split(",")` gives on the file's third line and how many fields `csv.reader` sees. Then walk the file with `DictReader`: print the month with `n/a` as skipped along with its note, the others with their price and note, and at the end print how many months were taken and the average to two decimal places (a comma inside a number counts as a point). Take the file away after you.
+
+The expected output:
+
+<!-- task out -->
+```
+split(','): 6 pieces
+csv.reader: 3 fields
+January: 520 — an ordinary month
+February: 546,5 — a shock, demand, logistics
+March: skipped — no price
+months taken: 2, average 533.25
+```
+
+Done when: the output matches line by line; the file is built by `csv.writer` rather than by gluing strings; the columns are taken by name rather than by number; `newline=""` is there on the write and on the read.
+
+**On your own data.** Build a file from your own data with `csv.writer`, making sure one field holds a comma. Read it two ways — `split(",")` and `csv.reader` — and print both results side by side. Then walk the file with `DictReader` and work out the average of the numeric column, skipping `n/a`.
 
 All of it is put together in [step-5](https://github.com/DauletBai/shanraq.org/tree/main/course/py-digest/step-5) — compare once you have written your own.
 
@@ -197,9 +268,65 @@ Debts. We read the file in a loop but keep what we parsed in memory. For an expo
 
 ## The answers
 
+### To the questions
+
 1. Because the field held a comma, and `split` knows nothing about quotes: it cuts at every separator character. `csv.reader` knows the format's rule — a comma inside quotes belongs to the value.
 2. It takes the first row as a header and hands back a dictionary, so a column is found by its name. If the source inserts a column in the middle, parsing by number breaks silently while parsing by name carries on.
 3. Three invisible bytes at the start of a file, which Excel writes as an encoding mark. Read as plain `utf-8` they stick to the name of the first column, and it stops being found under its real name. Such files are read as `utf-8-sig`.
+
+### To the warm-up
+
+1. Five. There are two separating commas and two more inside the note, and `split` cuts on all four: it knows nothing about quotes. On that same line `csv.reader` gives three fields.
+
+<!-- drill 1 out -->
+```
+5
+```
+
+2. `"utf-8-sig"`. A plain `utf-8` leaves Excel's mark glued to the first column's name, and `row["year"]` answers `KeyError` while the column is right there.
+
+<!-- drill 2 -->
+```python
+import csv
+from pathlib import Path
+
+HERE = Path(__file__).parent
+data = HERE / "excel.csv"
+data.write_bytes("year,value\n2021,8.0\n".encode("utf-8-sig"))
+with data.open(encoding="utf-8-sig", newline="") as source:
+    for row in csv.DictReader(source):
+        print(row["year"])
+data.unlink()
+```
+
+<!-- drill 2 out -->
+```
+2021
+```
+
+3. `",".join(row)` wrote the note's commas as separators, and on reading there were five fields instead of three. The quotes are put in by the writer — `csv.writer`:
+
+<!-- drill 3 -->
+```python
+import csv
+from pathlib import Path
+
+HERE = Path(__file__).parent
+data = HERE / "vygruzka.csv"
+row = ["2022", "15.0", "a shock, a war, logistics"]
+
+with data.open("w", encoding="utf-8", newline="") as target:
+    csv.writer(target).writerow(row)
+with data.open(encoding="utf-8", newline="") as source:
+    for back in csv.reader(source):
+        print("fields:", len(back))
+data.unlink()
+```
+
+<!-- drill 3 out -->
+```
+fields: 3
+```
 
 ## Sources
 

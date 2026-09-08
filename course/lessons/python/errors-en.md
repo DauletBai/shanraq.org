@@ -203,9 +203,73 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 2. What happens if `except OSError` is put above `except FileNotFoundError`?
 3. Which line of a traceback do you read first, and what does it tell you?
 
+## Warm-up
+
+Three short steps before the exercise: predict, fill in, fix. The answers are at the end of the lesson, but answer them yourself first.
+
+**1. Predict.** What does this program print?
+
+<!-- drill 1 -->
+```python
+def to_number(text):
+    return float(text.replace(",", "."))
+
+
+for text in ["8,0", "no data"]:
+    try:
+        print(to_number(text))
+    except ValueError:
+        print("not a number:", text)
+```
+
+**2. Fill in the gap.** In place of `...` put the name of the error that has to be caught here.
+
+```python
+prices = {"bread": 260}
+try:
+    print(prices["milk"])
+except ...:
+    print("no such item")
+```
+
+**3. Fix it.** The program prints `8.0` although there are two numbers. Find where the second one went, and make the skipped row say so out loud.
+
+```python
+values = ["8.0", "15,0"]
+total = 0.0
+for text in values:
+    try:
+        total += float(text)
+    except:
+        pass
+print(total)
+```
+
 ## Exercise
 
-**Required.** Take a list of strings as an export delivers them: a number, a number with a comma, an empty string, a word. Write `to_number(text)` that raises an exception of your own on a row it cannot parse, and a loop that adds the good ones and prints the bad ones with the reason. At the end: how many of how many were parsed.
+**Required.** Given:
+
+```python
+rows = ["520", "546,5", "", "no price", "498.0"]
+```
+
+Write an error of your own, `BadRow`, and a function `to_number(text)`: a comma counts as a point, and anything else raises `BadRow` with a message that shows the row itself. Walk the list: print a usable row as taken, an unusable one as skipped along with the reason. At the end print how many of how many were parsed, and the average to two decimal places.
+
+The expected output:
+
+<!-- task out -->
+```
+taken: 520.0
+taken: 546.5
+skipped — not a number: ''
+skipped — not a number: 'no price'
+taken: 498.0
+parsed 3 of 5, average 521.50
+```
+
+Done when: the output matches line by line; there is one line inside the `try` and the accumulating is in the `else`; there is no bare `except` anywhere in the program.
+
+**On your own data.** Take a list of strings as an export delivers them: a number, a number with a comma, an empty string, a word. Write `to_number(text)` that raises an exception of your own on a row it cannot parse, and a loop that adds the good ones and prints the bad ones with the reason. At the end: how many of how many were parsed.
 
 **Optional.**
 
@@ -221,9 +285,57 @@ Debts. Skipped rows are printed to the screen for now. Their place is in a log b
 
 ## The answers
 
+### To the questions
+
 1. Because only what can break is held inside a `try` — then the code shows where trouble was expected. Otherwise an error in the next line either brings the program down in a place that looks guarded, or, if the `except` is wider, gets explained by the wrong cause and goes quietly among the skipped rows.
 2. The `FileNotFoundError` branch never runs: `OSError` is the general case, and Python takes the first branch that fits from the top. The particular always stands above the general.
 3. The last one: it holds the type of the error and its message — what actually happened. Above it is the chain of calls, and there you look for the nearest frame with your own file.
+
+### To the warm-up
+
+1. First `8.0`, then the message: `float("8,0".replace(",", "."))` is `8.0`, while "no data" does not become a number, so the `ValueError` goes to the `except`.
+
+<!-- drill 1 out -->
+```
+8.0
+not a number: no data
+```
+
+2. `KeyError` — the error of a missing key. `ValueError` does not apply here: the value is not spoiled, it is simply absent.
+
+<!-- drill 2 -->
+```python
+prices = {"bread": 260}
+try:
+    print(prices["milk"])
+except KeyError:
+    print("no such item")
+```
+
+<!-- drill 2 out -->
+```
+no such item
+```
+
+3. The bare `except` with a `pass` swallowed `15,0` and its reason with it: `float("15,0")` does not parse, and the error was caught and thrown away without a word. An error is called by its name and said out loud:
+
+<!-- drill 3 -->
+```python
+values = ["8.0", "15,0"]
+total = 0.0
+for text in values:
+    try:
+        total += float(text)
+    except ValueError:
+        print("skipped:", text)
+print(total)
+```
+
+<!-- drill 3 out -->
+```
+skipped: 15,0
+8.0
+```
 
 ## Sources
 
