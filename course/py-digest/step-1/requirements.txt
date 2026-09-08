@@ -1,0 +1,2 @@
+# Nothing to install: step 1 uses the standard library only.
+# The file exists so that every step is entered the same way.

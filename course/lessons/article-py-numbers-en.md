@@ -104,7 +104,7 @@ ordinary: 3.5 <class 'float'>
 whole:    3 <class 'int'>
 ```
 
-`/` always gives a fractional number, even when it divides evenly: `4 / 2` is `2.0`, not `2`. `//` throws the fractional part away and returns a whole number.
+`/` always gives a fractional number, even when it divides evenly: `4 / 2` is `2.0`, not `2`. `//` returns a whole number **rounded down** — towards the smaller number, not towards zero. On positive numbers that looks like throwing the fraction away: `7 // 2` is `3`. On negative ones the rule shows itself: `-7 // 2` is `-4`, not `-3`.
 
 That is not a detail. "How many loaves at 260 tenge fit into a thousand" is `1000 // 260`, three of them, with no "3.84 loaves" about it. And `%` gives what is left: `220` tenge. The pair `//` and `%` answers "how many whole ones and how much change", and it will be needed everywhere, from pages to time.
 

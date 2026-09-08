@@ -8,6 +8,7 @@ docs/py-syllabus.md before the lesson is written, and this checks two things:
 
     plan            every element has a lesson, and no lesson is out of range
     lesson N file   the elements assigned to lesson N appear in that text
+    published       every published lesson, in all three languages, at once
 
 A marker is a word or a fragment of code the explanation cannot avoid. It is a
 coarse instrument on purpose: it does not judge whether the explanation is good,
@@ -91,12 +92,42 @@ def check_lesson(number, path):
     return 0
 
 
+def check_published():
+    """Every published lesson, in every language, against what it promised.
+
+    "plan" only proves that nothing was forgotten on paper. This proves that
+    the lesson which was assigned an element actually explains it -- and it
+    runs over all three languages, because a topic covered in Russian and
+    dropped from the Kazakh version is exactly the kind of gap nobody notices.
+    """
+    import json
+    listing = ROOT / "tools" / "course" / "py-lessons.json"
+    if not listing.exists():
+        print("нет tools/course/py-lessons.json — нечего проверять")
+        return 0
+    lessons = json.loads(listing.read_text(encoding="utf-8"))
+    bad = 0
+    for number, base in sorted(lessons.items(), key=lambda kv: int(kv[0])):
+        for suffix in ("", "-kz", "-en"):
+            path = ROOT / "course" / "lessons" / f"{base}{suffix}.md"
+            if not path.exists():
+                print(f"  ! нет файла {path.name}")
+                bad += 1
+                continue
+            bad += check_lesson(int(number), path)
+    print("опубликованные уроки покрывают назначенное" if not bad
+          else f"уроков с пропусками: {bad}")
+    return 1 if bad else 0
+
+
 def main(argv):
-    if not argv or argv[0] not in {"plan", "lesson"}:
+    if not argv or argv[0] not in {"plan", "lesson", "published"}:
         print(__doc__)
         return 2
     if argv[0] == "plan":
         return check_plan()
+    if argv[0] == "published":
+        return check_published()
     if len(argv) < 3:
         print("нужно: pysyllabus.py lesson НОМЕР файл.md")
         return 2

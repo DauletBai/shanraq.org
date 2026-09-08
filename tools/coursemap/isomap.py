@@ -1770,7 +1770,7 @@ def map51(s):
 def pymap01(s):
     """Python lesson 1: what the numbers say before any of them is explained.
 
-    Three blocks: what prices did, what the neighbours' prices did, and the
+    Three blocks: what prices did, what prices elsewhere did, and the
     question the course exists to answer. The accent is the middle one --
     the comparison is what makes the first block impossible to wave away.
     """
@@ -3415,32 +3415,32 @@ L51 = {
 }
 
 PY01 = {
-    "kz": dict(alt="Бағалар, көршілер және сұрақ",
+    "kz": dict(alt="Бағалар, салыстыру және сұрақ",
                b1="бағалар", b1_sub="3,48 есе өсті",
-               b2="көршілер", b2_sub="сан басқа",
-               b3="сұрақ", b3_sub="өзің санайсың",
+               b2="басқа елдер", b2_sub="сан басқа",
+               b3="сұрақ", b3_sub="өзіңіз санайсыз",
                c1="FP.CPI.TOTL", c2="urllib + json",
-               head="PYTHON: ДЕРЕКТЕН ӨЗ ЕСЕБІҢЕ",
+               head="PYTHON: ДЕРЕКТЕН ӨЗ ЕСЕБІҢІЗГЕ",
                head_sub="бірінші сабақ: не үшін санаймыз",
-               foot="2010 ЖЫЛҒЫ 1000 ТЕҢГЕ — БҮГІНГІ 287",
+               foot="1000 ТЕҢГЕ ТҰРҒАН НӘРСЕ — 3481",
                foot_sub="өлшенді: бағалар индексі 100 → 348,1"),
-    "ru": dict(alt="Цены, соседи и вопрос",
+    "ru": dict(alt="Цены, сравнение и вопрос",
                b1="цены", b1_sub="в 3,48 раза",
-               b2="соседи", b2_sub="цифры другие",
+               b2="другие страны", b2_sub="цифры другие",
                b3="вопрос", b3_sub="считаете вы сами",
                c1="FP.CPI.TOTL", c2="urllib + json",
                head="PYTHON: ОТ ДАННЫХ ДО СВОЕЙ СВОДКИ",
                head_sub="первый урок: зачем мы считаем",
-               foot="1000 ТЕНГЕ 2010 ГОДА — ЭТО 287 СЕГОДНЯ",
+               foot="ЧТО СТОИЛО 1000 ТЕНГЕ, СТОИТ 3481",
                foot_sub="измерено: индекс цен 100 → 348,1"),
-    "en": dict(alt="Prices, the neighbours and the question",
+    "en": dict(alt="Prices, the comparison and the question",
                b1="prices", b1_sub="up 3.48 times",
-               b2="neighbours", b2_sub="other numbers",
+               b2="other countries", b2_sub="other numbers",
                b3="the question", b3_sub="you count it",
                c1="FP.CPI.TOTL", c2="urllib + json",
                head="PYTHON: FROM DATA TO YOUR OWN DIGEST",
                head_sub="lesson one: why we count",
-               foot="1000 TENGE OF 2010 IS 287 TODAY",
+               foot="WHAT COST 1000 TENGE NOW COSTS 3481",
                foot_sub="measured: the price index 100 to 348.1"),
 }
 

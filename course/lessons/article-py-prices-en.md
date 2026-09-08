@@ -1,6 +1,6 @@
 # Counting for yourself: prices, the tenge and one question
 
-_Лид (summary):_ **The first lesson of the Python course. Nothing has to be installed: a program of thirty lines fetches the official numbers itself. Prices in Kazakhstan grew 3.48 times since 2010 — a thousand tenge of that year is worth 287 today. And after the same shock the neighbours' inflation is three times lower.**
+_Лид (summary):_ **The first lesson of the Python course. No libraries have to be installed: a ready program fetches the official numbers itself. Prices in Kazakhstan grew 3.48 times since 2010: what cost a thousand tenge now costs 3481. And after the same shock inflation in other countries of the region is three times lower, which is the first reason to count for yourself.**
 
 ## Why this is needed
 
@@ -12,7 +12,9 @@ Let us start from the end: with the answer you will have in fifteen minutes, kno
 
 ## The whole thing at once
 
-Make a file called `tsena.py` and paste this in. Nothing has to be installed: everything used here comes with Python.
+First check that the language is there: in a terminal, `python3 --version` (on Windows, `py --version`). A version number means you can go on. No answer means you should start with [the next lesson](/course/python?lang=en), where Python is installed from scratch in ten minutes, and come back here.
+
+Make a file called `tsena.py` and paste this in. Nothing extra has to be installed: everything used here comes with Python. The program is longer than a first day would like — fifty lines — and it does not have to be taken apart today: what matters now is the answer, not the machinery.
 
 ```python
 """The first program of the course: it asks the question the course was written for.
@@ -47,7 +49,9 @@ def main():
     print(f"price index in {base}: {prices[base]:.1f}")
     print(f"price index in {last}: {prices[last]:.1f}")
     print(f"prices grew {times:.2f} times")
-    print(f"1000 tenge of {base} is worth {1000 / times:.0f} tenge today")
+    # One ratio reads both ways, and mixing them up is an expensive mistake.
+    print(f"1000 tenge of {last} = {1000 / times:.0f} tenge at {base} prices")
+    print(f"what cost 1000 tenge in {base} costs {1000 * times:.0f} now")
 
     print()
     print("== one world, different prices: inflation by year, %")
@@ -72,7 +76,8 @@ Run `python3 tsena.py`. The output:
 price index in 2010: 100.0
 price index in 2025: 348.1
 prices grew 3.48 times
-1000 tenge of 2010 is worth 287 tenge today
+1000 tenge of 2025 = 287 tenge at 2010 prices
+what cost 1000 tenge in 2010 costs 3481 now
 
 == one world, different prices: inflation by year, %
 country        2021   2022   2023   2024   2025
@@ -87,7 +92,9 @@ Poland          5.1   14.4   11.5    3.8    3.8
 
 ### What you have just counted
 
-The first four lines are about the money in your pocket. The price index of 2010 is 100; today it is 348.1. That means prices grew **3.48 times**, and the thousand tenge you held in 2010 buys today what **287 tenge** buys.
+The first five lines are about the money in your pocket. The price index of 2010 is 100; in 2025 it is 348.1. So prices grew **3.48 times**, and that number reads both ways.
+
+A thousand tenge lying in your pocket today buys what **287 tenge** bought in 2010. And the other way round: what cost a thousand in 2010 is now asked **3481 tenge** for. One ratio, two different sentences — and mixing them up is an error of twelvefold.
 
 Not "about three times" and not "everybody knows". The number was counted in front of you from an official series, and you can change the year from 2010 to 2015 and see what happens.
 
@@ -99,11 +106,11 @@ When prices rise, the explanation usually sounds like this: the world got dearer
 
 After that the paths part. By 2025 the world is back at 3.0%, Armenia at 3.3%, Georgia at 3.9%, Poland at 3.8%. Kazakhstan is at **11.4%** and rising again.
 
-The shock was shared. So it is not what makes the difference.
+The shock was shared — so it alone does not explain the difference. How much of the difference it does account for cannot be read off this table: for that you would put the structure of imports, the exchange rate, the weights in the consumer basket, the tariffs and the domestic decisions side by side. The table says something smaller and sturdier: the answer "the outside world is to blame" does not add up on it.
 
 ### What follows from this, and what does not
 
-One thing follows: **"the outside world is to blame" is not a sufficient explanation**. It does not survive a comparison with neighbours who got the same oil, the same grain and the same logistics.
+One thing follows: **"the outside world is to blame" is not a sufficient explanation**. It does not survive a comparison with countries that got the same oil, the same grain and the same logistics.
 
 But the opposite simple explanation — "they printed money" — does not add up on its own either, and we will check that too. Broad money grows by 13–18% a year in Armenia, 11–17% in Georgia and 12–21% in Kazakhstan. The growth is comparable while inflation differs three- to fourfold. So it is not one row of numbers: beside it stand the tenge's exchange rate, the tariffs, the taxes, and **where** the new money goes.
 
@@ -141,19 +148,19 @@ Nothing else: no paid course, no keys, no sign-up. The data we count is open to 
 
 ## The map of the lesson
 
-![The map of the lesson: prices, the neighbours and the question](/static/course/py/map-prices-en.svg)
+![The map of the lesson: prices, the comparison and the question](/static/course/py/map-prices-en.svg)
 
 ## Say it in your own words
 
 Without looking, answer aloud or on paper. The answers are at the end of the lesson.
 
 1. What does "the price index of 2025 is 348.1" mean, when in 2010 it was 100?
-2. Why is the table of neighbouring countries stronger than a single row for Kazakhstan?
+2. Why is the table of other countries stronger than a single row for Kazakhstan?
 3. Why can these two tables not yet name the one to blame?
 
 ## The exercise
 
-**Required.** Run the program and change the starting year in it from 2010 to the year you were born — or any year that matters to you. Work out what a thousand tenge of that year is worth today.
+**Required.** Run the program and change the starting year in it from 2010 to the year you were born — or any year that matters to you. Read both lines aloud: what today's thousand is worth at that year's prices, and what is asked today for what cost a thousand then.
 
 **If you want more.**
 
@@ -169,9 +176,9 @@ The debts are visible already. The program dies without the internet and says no
 
 ## The answers
 
-1. That prices grew 3.48 times: the same basket that cost 100 units in 2010 costs 348.1 today. The other side of it is that a thousand tenge of that year buys what 287 buys now.
-2. Because one row can be explained by anything. A comparison tests the explanation: if a shared external shock is to blame, the neighbours who got the same shock should show similar numbers. They do not.
-3. Because a coincidence and a difference are not yet a cause. We have seen that an external shock cannot explain it; to name a cause you have to put money, the exchange rate, tariffs and taxes side by side — and that is the work of several lessons, not one table.
+1. That prices grew 3.48 times: the same basket that cost 100 units in 2010 costs 348.1 in 2025. The other side of it is that a thousand of today's tenge buys what 287 tenge bought in 2010, while the basket that cost a thousand in 2010 now costs 3481.
+2. Because one row can be explained by anything. A comparison tests the explanation: if a shared external shock is to blame, the countries that got the same shock should show similar numbers. They do not.
+3. Because a coincidence and a difference are not yet a cause. We have seen that an external shock alone cannot explain it; to name a cause you have to put money, the exchange rate, tariffs and taxes side by side — and that is the work of several lessons, not one table.
 
 ## Sources
 

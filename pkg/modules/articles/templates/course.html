@@ -23,9 +23,9 @@
          saying so plainly is worth more than any call to action. */}}
     <p class="crsmap__free">{{ t .Lang "course.free" }}</p>
 
-    {{ $first := index .Items 0 }}
+    {{ $first := .Series.FirstLesson }}{{ if $first }}
     <p><a class="btn btn--primary" href="/read/{{ $first.Slug }}?lang={{ .Lang }}">{{ t .Lang "course.start" }} →</a></p>
-    {{ end }}
+    {{ end }}{{ end }}
   </header>
 
   {{ if not .Items }}

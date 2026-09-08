@@ -23,13 +23,16 @@ $ source .venv/bin/activate
 $ python -c "import sys, pathlib; print(pathlib.Path(sys.executable).relative_to(pathlib.Path.cwd()))"
 .venv/bin/python
 
-$ pip install requests
+$ python -c "import sys; print(sys.prefix == sys.base_prefix)"
+False                            # we are inside the environment
+
+$ python -m pip install requests
 Successfully installed certifi-2026.7.22 charset_normalizer-3.5.1 idna-3.19 requests-2.34.2 urllib3-2.7.0
 
 $ python -c "import requests; print(requests.__version__)"
 2.34.2
 
-$ pip freeze > requirements.txt
+$ python -m pip freeze > requirements.txt
 $ cat requirements.txt
 certifi==2026.7.22
 charset-normalizer==3.5.1
@@ -38,15 +41,32 @@ requests==2.34.2
 urllib3==2.7.0
 
 $ deactivate                     # leave the environment
+$ python3 -c "import sys; print(sys.prefix == sys.base_prefix)"
+True                             # back in the system
 $ python3 -c "import requests"
 Traceback (most recent call last):
   File "<string>", line 1, in <module>
     import requests
 ModuleNotFoundError: No module named 'requests'
 
+$ printf '.venv/\\n__pycache__/\\n' > .gitignore
 $ du -sh .venv
  17M    .venv
 ```
+
+The patch version, the library versions and the size of `.venv` will be different for you — they change every month. What matters is not the numbers but what happens.
+
+On Windows three lines look different and the rest is the same:
+
+| What we do | Windows PowerShell | macOS and Linux |
+|---|---|---|
+
+| start the language | `py` | `python3` |
+| create the environment | `py -m venv .venv` | `python3 -m venv .venv` |
+| enter the environment | `.venv\Scripts\Activate.ps1` | `source .venv/bin/activate` |
+| look at the files | `Get-ChildItem -Force` | `ls -a` |
+
+In PowerShell the very first activation can run into a ban on running scripts. It is cured once: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, and it is written up in [the venv documentation](https://docs.python.org/3/library/venv.html).
 
 ## The walk-through
 
@@ -70,11 +90,13 @@ The `.venv/bin/python` line in the output confirms it: after `activate`, the wor
 
 ### The proof this was all for
 
-Look at two lines of the output in a row.
+Look at two pairs of lines.
 
-Inside the environment `import requests` works and reports version `2.34.2`. Leave the environment with `deactivate` and the same import gives `ModuleNotFoundError: No module named 'requests'`.
+The first pair is about where you are. `sys.prefix` is the folder the interpreter runs from, and `sys.base_prefix` is the folder of the system Python. Inside an environment they differ, so the comparison gives `False`; after `deactivate` it gives `True`. This is the sturdiest check there is: it depends neither on what you already have installed nor on the shell's prompt.
 
-That is not a failure. That is the isolation: the library went **into the project**, not into the system. There is nothing left to break a neighbouring project with.
+The second pair is about the library. Inside the environment `import requests` works and reports version `2.34.2`; outside it the same import gives `ModuleNotFoundError`. A caveat: if `requests` was ever installed into the system, the import will succeed outside too — and that does not mean the environment is broken. Look at the first check and at the path to `python` instead.
+
+That is the isolation: the library went **into the project**, not into the system. There is nothing left to break a neighbouring project with.
 
 ### `requirements.txt`, the list an environment is rebuilt from
 
@@ -87,7 +109,14 @@ urllib3==2.7.0
 
 We saved that into `requirements.txt`. A year from now, on another machine, `pip install -r requirements.txt` assembles the same thing. Notice: you asked for `requests` alone and the list has five lines — the rest came with it, and that is normal.
 
-The `.venv` itself does **not** go into the repository: 17 megabytes, different on every system, and rebuilt from the list with one command. That is why the project now has a two-line `.gitignore`.
+The `.venv` itself does **not** go into the repository: 17 megabytes, different on every system, and rebuilt from the list with one command. That is why we made the `.gitignore` — the two-line one:
+
+```
+.venv/
+__pycache__/
+```
+
+The first line is about the environment, the second about the folder Python creates by itself for compiled modules.
 
 ### What the project looks like now
 
@@ -101,7 +130,7 @@ $ python tsena.py | head -5
 price index in 2010: 100.0
 price index in 2025: 348.1
 prices grew 3.48 times
-1000 tenge of 2010 is worth 287 tenge today
+1000 tenge of 2025 = 287 tenge at 2010 prices
 ```
 
 Four names, each in its place: the code, the list of dependencies, the environment, and the rule about what stays out of the repository. Yesterday's program runs from the project and prints the same thing.
@@ -116,7 +145,7 @@ Checking is easy: open `tsena.py` and press "Run" — the program should behave 
 
 ### One warning about `pip`
 
-Better never to type `pip install` **outside an environment**. If you are unsure where you are, look at the prompt: an activated environment puts `(.venv)` on the left. No `(.venv)`? Then `source .venv/bin/activate` first (on Windows: `.venv\Scripts\activate`).
+Better never to type `pip install` **outside an environment**. And better to write it as `python -m pip`: then the package is installed into the interpreter you are actually working with rather than into another one that also happens to be on the system. If you are unsure where you are, look at the prompt: an activated environment puts `(.venv)` on the left. No `(.venv)`? Then `source .venv/bin/activate` first (on Windows: `.venv\Scripts\Activate.ps1`).
 
 ## The map of the lesson
 

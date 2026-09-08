@@ -78,14 +78,36 @@ func (s *Series) IsPublished() bool { return s.Status == SeriesPublished }
 
 // Lessons counts the published lessons -- the number a reader is shown, which is
 // not the number of rows when part of the course is still being written.
+//
+// Front matter is not counted. The announcement and the preface are read, but
+// they are not lessons: the Go course said "fifty lessons" in its own summary
+// while the page above it said 52, and the Python course offered "7 lessons"
+// when six were written. A count a reader can disprove by scrolling is worse
+// than no count.
 func (s *Series) Lessons() int {
 	n := 0
 	for _, it := range s.Items {
-		if it.Published {
+		if it.Published && !it.Intro() {
 			n++
 		}
 	}
 	return n
+}
+
+// FirstLesson is where "start with lesson one" leads: the first lesson proper,
+// or the front matter when nothing else is published yet.
+func (s *Series) FirstLesson() *SeriesItem {
+	for _, it := range s.Items {
+		if it.Published && !it.Intro() {
+			return it
+		}
+	}
+	for _, it := range s.Items {
+		if it.Published {
+			return it
+		}
+	}
+	return nil
 }
 
 // Minutes totals the reading time of the published lessons.

@@ -15,8 +15,9 @@ The file `tipter.py`. Run it with `python tipter.py` from inside the environment
 ```python
 """Lesson 4: variables and types, on numbers that arrived as text.
 
-Data from somebody else's file always arrives as text. Until the text becomes a
-number, adding it makes no sense: adding strings gives something else entirely.
+From a CSV, from a form and from a plain text file, values usually arrive as
+text. Until the text becomes a number, adding it makes no sense: adding strings
+gives something else entirely.
 """
 
 from decimal import Decimal
@@ -239,7 +240,9 @@ Without looking, answer aloud or on paper. The answers are at the end of the les
 
 ## The exercise
 
-**Required.** Take three numbers from your receipt but write them as **strings**, as they would arrive from a file: `"1200"`, `"260,5"`, `" 90 "`. Turn each into a number (one of them will need repairing), add them up and print the sum with an f-string to two decimal places. Then count the same sum through `Decimal` and compare both results with `==`.
+**Required.** Take three **weights** from a receipt — they are written with a fraction, and they show exactly what this lesson is about: `"1,15"`, `" 0,25 "`, `"0,2"` (kilograms). Turn each into a number (two of them will need repairing), add them up and print the sum with an f-string to two decimal places. Then count the same sum through `Decimal` and compare both results with `==`.
+
+The printed lines will match — both show `1.60` — and `==` will return `False`. That is the answer to why money is counted in `Decimal`.
 
 **If you want more.**
 
@@ -256,7 +259,7 @@ The debts. We repaired one string by hand, but a file will have thousands of the
 ## The answers
 
 1. Because adding strings has a meaning of its own — gluing — and Python used it. It does not guess intent; whoever writes the code watches the types.
-2. A `float` stores numbers in binary, where `0.1` is an endless fraction, so the tail `0.30000000000000004` appears. For showing a person, `round` is enough; for money, `Decimal` is used and made from a string.
+2. A `float` stores numbers in binary, where `0.1` is an endless fraction, so the tail `0.30000000000000004` appears. For showing a person, `round` is enough; for money, `Decimal` is used and made from a string. And comparing a `float` with a `Decimal` through `==` is a poor contract: either round both to the digit you need, or count in `Decimal` from the first character to the last.
 3. Because the truth of a string is decided by its length rather than its contents: `"0"` is not empty, so it is true. The empty string `""` is false.
 
 ## Sources

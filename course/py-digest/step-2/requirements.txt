@@ -1,0 +1,2 @@
+# Still the standard library only. The first real dependency arrives with the
+# lesson on HTTP, and it is added here by "python -m pip freeze".

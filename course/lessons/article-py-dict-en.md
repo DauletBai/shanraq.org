@@ -138,7 +138,7 @@ prices = {"bread": 280, "milk": 620, "butter": 1890, "salt": 90}
 
 Curly braces, pairs separated by colons. On the left the key, what you look by; on the right the value, what you find. `prices["milk"]` gives `620` at once, without going through the others.
 
-A key can be a string, a number, a tuple — anything that does not change. A list cannot be a key: a changeable value has no lasting imprint for the dictionary to recognise it by.
+A key can be a string, a number, a tuple — anything with a lasting imprint for the dictionary to recognise it by. A list cannot be a key: it changes, and the imprint changes with it. The exact word for this property is **hashable**, and "immutable" is not the same thing: a tuple with a list inside does not change itself, yet it cannot be a key — what is inside it does.
 
 ### No such key is an error
 
@@ -222,7 +222,7 @@ Without looking, answer aloud or on paper. The answers are at the end of the les
 
 ## The exercise
 
-**Required.** Build your receipt as a dictionary: name to price. Print the price of one item, the price of an item that is not in the receipt (through `get` with a default), the sum of all prices, the name of the dearest item, and the list of pairs sorted by name.
+**Required.** Build a **price list** as a dictionary: name to price. A real receipt is not kept this way — it has two identical names, a quantity, a unit price and a discount, and a dictionary simply overwrites the first entry when the same key comes again. For looking a price up by name it does fit, and that is what we are doing today. Print the price of one item, the price of an item that is not in the receipt (through `get` with a default), the sum of all prices, the name of the dearest item, and the list of pairs sorted by name.
 
 **If you want more.**
 

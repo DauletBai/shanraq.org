@@ -15,8 +15,8 @@ The file `tizim.py`. Run it with `python tizim.py` from inside the environment.
 ```python
 """Lesson 5: a list and a tuple, on the prices from one receipt.
 
-There have been no loops yet and none are needed here: a list can add itself
-up, find its largest value and sort itself.
+There have been no loops yet and none are needed here: built-in functions take
+the whole list at once, and sorting it can do on its own.
 """
 
 from operator import itemgetter
@@ -207,7 +207,17 @@ Round brackets instead of square ones, and you have a **tuple**. It is almost a 
 item[1] = 300 → TypeError — 'tuple' object does not support item assignment
 ```
 
-What is that for? A tuple is a **record** rather than a collection of similar values. `("bread", 280)` is a line of a receipt: a name and a price, each position with its own meaning. A list of four prices is four numbers that mean the same kind of thing. The rule is simple: the same in meaning goes in a list, different in meaning goes in a tuple.
+What actually makes a tuple is not the brackets but the **comma**. Brackets only group, and that is easy to see for yourself:
+
+```
+type((280))   → int      — just a number in brackets
+type((280,))  → tuple    — the comma makes the tuple
+pair = 280, 1 → tuple    — no brackets needed at all
+```
+
+Hence the rule everyone trips over: a one-item tuple is written with a trailing comma — `one = ("bread",)`. Without it, it is only a string in brackets.
+
+What is that for? A tuple is a **record** rather than a collection of similar values. `("bread", 280)` is a line of a receipt: a name and a price, each position with its own meaning. A list of four prices is four numbers that mean the same kind of thing. "The same in meaning goes in a list, different in meaning goes in a tuple" is not a rule of the language but a guide: the language allows a list of different things and a tuple of identical ones.
 
 ### Unpacking
 

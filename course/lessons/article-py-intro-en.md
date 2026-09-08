@@ -1,6 +1,6 @@
 # A second free course: Python for data and AI
 
-_Лид (summary):_ **The site's second free course — 55 lessons, from data to a digest that updates itself. Why Python, why data and AI rather than the web, and what the reader will actually count: prices up 3.48 times, a thousand tenge of 2010 worth 287 today. No account, no payment, in three languages.**
+_Лид (summary):_ **The site's second free course — 55 lessons, from data to a digest that updates itself. Why Python, why data and AI rather than the web, and what the reader will actually count: prices up 3.48 times, and what cost a thousand tenge now costs 3481. No account, no payment, in three languages.**
 
 ## What we have opened
 
@@ -12,9 +12,11 @@ The first lessons are published. The whole text is open always, in Kazakh, Russi
 
 Three reasons, and every one of them can be checked.
 
-**The first: it is the language data is counted in today.** In September's TIOBE index Python has 17.76%, first place with twice the share of the next language. Over the last year 11.2 million repositories were created on GitHub in Python — more than in any other language.
+**The first: it is the language data is analysed in today.** In the TIOBE index for September 2026 Python has 17.76%, first place with twice the share of the next language; TIOBE itself warns that the index measures the popularity of searches, not the quality of a language or the amount of code written in it.
 
-**The second: there is work in it here.** A search of Kazakhstan's vacancies on the day this was written returned 357 openings mentioning Python against 20 mentioning Go. The Go course teaches building a service whole; Python adds what is asked for most often.
+GitHub gives a sharper and more interesting picture. Between September 2024 and August 2025, 9.26 million repositories were created in Python — second place, just behind JavaScript (9.35 million) — and by contributor count Python gave up first place to TypeScript for the first time. But where AI is concerned there is nothing to argue about: nearly half of all new AI repositories are written in Python — 582 thousand in a year, up 50.7%.
+
+**The second: there is local demand for it.** Check it yourself rather than taking our word: open a job search for Kazakhstan and compare two queries, "Python" and "Go". When this announcement was written the gap was more than tenfold in Python's favour. The numbers change daily; the order of magnitude does not. The Go course teaches building a service whole; Python adds what is asked for most often.
 
 **The third, and the main one: without Python there is no approaching data or AI.** Models, training, table processing, reports — all of it is written in it and driven by it. Whoever can count data does not depend on which framework is in fashion this year.
 
@@ -30,7 +32,7 @@ And there is a third reason people say out loud now: **AI writes code**. It has 
 
 Not abstract examples about students and their marks. **Prices, the tenge and money** — what touches everybody in Kazakhstan.
 
-Here is what the reader's own program gives them in the first lesson: the price index of 2010 is 100, today it is 348.1. Prices grew **3.48 times**, and a thousand tenge of that year buys today what **287 tenge** buys.
+Here is what the reader's own program gives them in the first lesson: the price index of 2010 is 100, and in 2025 it is 348.1. Prices grew **3.48 times**, and that reads both ways: today's thousand buys what **287 tenge** bought in 2010, while what cost a thousand back then now costs **3481**.
 
 Then comes the table that makes learning to count worth it. Inflation, % per year:
 
@@ -96,5 +98,6 @@ What you need to start: a computer, the internet and half an hour. Nothing else.
 ## Sources
 
 - [TIOBE: the index of programming languages](https://www.tiobe.com/tiobe-index/)
+- [GitHub Octoverse 2025: the languages of the year](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/)
 - [World Bank: the consumer price index](https://data.worldbank.org/indicator/FP.CPI.TOTL)
 - [Course map: "Python: from data to your own digest"](https://shanraq.org/course/python?lang=en)

@@ -54,11 +54,26 @@ jobs:
       - name: Every Python program compiles
         run: python3 tools/coursecheck/pycheck.py course/lessons/article-py-*.md
 
+      # Compiling is not the promise a lesson makes. The promise is that this
+      # program, typed in as printed, prints exactly this -- and the one error
+      # that slipped through every check was of that kind.
+      - name: Every Python program prints what the lesson shows
+        run: python3 tools/coursecheck/pyrun.py course/lessons/article-py-*.md
+
+      - name: Every step of the course project runs
+        run: python3 tools/coursecheck/pyrun.py --steps
+
       - name: Links into this repository exist
         run: python3 tools/coursecheck/linkcheck.py --offline course/lessons/article-*.md
 
       - name: Every element of the language has a lesson
         run: python3 tools/coursecheck/pysyllabus.py plan
+
+      # And every published lesson, in all three languages, actually explains
+      # what was assigned to it: a topic covered in Russian and dropped from the
+      # Kazakh version is the gap nobody notices.
+      - name: Every published lesson covers what it promised
+        run: python3 tools/coursecheck/pysyllabus.py published
 
       - name: Follow every outside link
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
