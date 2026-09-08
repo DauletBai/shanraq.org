@@ -1986,6 +1986,33 @@ def pymap08(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap09(s):
+    """Python lesson 9: a name, an argument and a check.
+
+    The accent is the middle block: the default value in a header is worked out
+    once, and a list put there keeps what earlier calls left in it.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3709,6 +3736,37 @@ PY08 = {
                foot_sub="measured: five of six years have a figure"),
 }
 
+PY09 = {
+    "kz": dict(alt="Ат, аргумент және тексеру",
+               b1="ат", b1_sub="def пен return",
+               b2="аргумент", b2_sub="әдепкісі — None",
+               b3="тексеру", b3_sub="assert ұстайды",
+               c1="def / return", c2="assert",
+               head="ФУНКЦИЯ: ЕСЕП КЕСЕГІНЕ АТ",
+               head_sub="тоғызыншы сабақ: def, return, assert",
+               foot="into=[] ШАҚЫРУЛАР АРАСЫНДА ЖИНАЙДЫ",
+               foot_sub="өлшенді: bad(1) → [1], bad(2) → [1, 2]"),
+    "ru": dict(alt="Имя, аргумент и проверка",
+               b1="имя", b1_sub="def и return",
+               b2="аргумент", b2_sub="по умолчанию None",
+               b3="проверка", b3_sub="ловит сразу",
+               c1="def / return", c2="assert",
+               head="ФУНКЦИИ: ИМЯ ДЛЯ КУСКА РАСЧЁТА",
+               head_sub="девятый урок: def, return, assert",
+               foot="into=[] КОПИТ МЕЖДУ ВЫЗОВАМИ",
+               foot_sub="измерено: bad(1) → [1], bad(2) → [1, 2]"),
+    "en": dict(alt="A name, an argument and a check",
+               b1="a name", b1_sub="def and return",
+               b2="an argument", b2_sub="default is None",
+               b3="a check", b3_sub="stops it at once",
+               c1="def / return", c2="assert",
+               head="FUNCTIONS: A NAME FOR A CALCULATION",
+               head_sub="lesson nine: def, return, assert",
+               foot="into=[] KEEPS VALUES BETWEEN CALLS",
+               foot_sub="measured: bad(1) → [1], bad(2) → [1, 2]"),
+}
+
+
 
 
 if __name__ == "__main__":
@@ -3727,7 +3785,8 @@ if __name__ == "__main__":
                                ("list", pymap05, PY05),
                                ("dict", pymap06, PY06),
                                ("conditions", pymap07, PY07),
-                               ("loops", pymap08, PY08)):
+                               ("loops", pymap08, PY08),
+                               ("functions", pymap09, PY09)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

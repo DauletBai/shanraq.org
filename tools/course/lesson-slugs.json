@@ -539,6 +539,18 @@
   "py-sozdik-kilt-pen-man",
   "kz"
  ],
+ "python/functions": [
+  "py-funkciyalar-def-return-assert",
+  "ru"
+ ],
+ "python/functions-en": [
+  "py-funkciyalar-def-return-assert",
+  "en"
+ ],
+ "python/functions-kz": [
+  "py-funkciyalar-def-return-assert",
+  "kz"
+ ],
  "python/intro": [
   "tegin-kurs-python-derek-pen-ii",
   "ru"
