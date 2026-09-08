@@ -1,4 +1,4 @@
-"""Step 12 -- after the lesson on CSV.
+"""Step 5 -- after lesson 12, on CSV.
 
 The store becomes a real table. The series is written with csv.DictWriter and
 read back with csv.DictReader, so a column is found by its name rather than by

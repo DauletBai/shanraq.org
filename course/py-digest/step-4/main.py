@@ -1,4 +1,4 @@
-"""Step 11 -- after the lesson on files and pathlib.
+"""Step 4 -- after lesson 11, on files and pathlib.
 
 The digest gets a disk. The series it fetched is saved beside the program, and
 the next run reads the file instead of asking the bank again. The report is

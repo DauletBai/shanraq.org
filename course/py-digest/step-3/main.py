@@ -1,4 +1,4 @@
-"""Step 9 -- after the lesson on functions.
+"""Step 3 -- after lesson 9, on functions.
 
 The digest has names now. average() walks a series and leaves the years without
 a figure out of the count; above() puts two series side by side. An assert stops

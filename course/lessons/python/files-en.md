@@ -170,6 +170,8 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 
 **Required.** Write a program that creates a file of its own numbers beside itself (a year and a value separated by a semicolon), reads it line by line through `with` and `encoding="utf-8"`, parses the rows and writes a report into a second file. Build the paths from `Path(__file__).parent`.
 
+All of it is put together in [step-4](https://github.com/DauletBai/shanraq.org/tree/main/course/py-digest/step-4) — compare once you have written your own.
+
 **Optional.**
 
 - Start the program from another folder (`python path/to/program.py`) and make sure it still finds its file.

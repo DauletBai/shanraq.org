@@ -222,6 +222,8 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 
 **Required.** Write a function `average(series)` for your own series from the previous lesson: gaps are left out, and an empty series is stopped by an `assert` with a clear message. Write a second one — `above(series, limit)` — that returns the list of keys whose value is greater than `limit`, and call it twice with different limits.
 
+All of it is put together in [step-3](https://github.com/DauletBai/shanraq.org/tree/main/course/py-digest/step-3) — compare once you have written your own.
+
 **Optional.**
 
 - Give `average` an argument `digits=2` and round the result.

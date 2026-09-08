@@ -1,4 +1,4 @@
-# Step 12 — the store becomes a table
+# Step 5 — the store becomes a table
 
 The state of the digest after lesson 12, *CSV*.
 

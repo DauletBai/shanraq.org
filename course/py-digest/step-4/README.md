@@ -1,4 +1,4 @@
-# Step 11 — the digest gets a disk
+# Step 4 — the digest gets a disk
 
 The state of the digest after lesson 11, *Files and pathlib*.
 

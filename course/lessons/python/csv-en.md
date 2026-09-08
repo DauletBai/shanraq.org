@@ -181,6 +181,8 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 
 **Required.** Build a file from your own data with `csv.writer`, making sure one field holds a comma. Read it two ways — `split(",")` and `csv.reader` — and print both results side by side. Then walk the file with `DictReader` and work out the average of the numeric column, skipping `n/a`.
 
+All of it is put together in [step-5](https://github.com/DauletBai/shanraq.org/tree/main/course/py-digest/step-5) — compare once you have written your own.
+
 **Optional.**
 
 - Write the file with `delimiter=";"` and open it in Excel or LibreOffice.

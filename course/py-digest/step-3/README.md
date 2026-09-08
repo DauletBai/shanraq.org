@@ -1,6 +1,7 @@
-# Step 9 — the digest gets names
+# Step 3 — the digest gets names
 
-The state of the digest after lesson 9, *Functions*.
+The state of the digest after lesson 9, *Functions*. Steps are numbered in
+order, as in the Go course; the lesson each one follows is named here.
 
 The walk over a series, written inside the program until now, has become two
 functions with names: `average()` leaves the years without a figure out of the

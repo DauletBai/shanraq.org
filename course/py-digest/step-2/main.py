@@ -1,4 +1,4 @@
-"""Step 1 -- after the lesson "Why count for yourself".
+"""Step 2 -- after lesson 2, "A workplace".
 
 The first state of the digest: it goes to the World Bank for the price index
 and the inflation series and prints what it found. No storage, no schedule and
