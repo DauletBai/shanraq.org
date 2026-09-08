@@ -6,7 +6,8 @@
   <div class="layout">
     <div class="layout__main">
 
-      <div class="section-head"><h1>{{ t .Lang "fx.title" }}</h1></div>
+      <div class="section-head"><h1>{{ .Heading }}</h1></div>
+      {{ with .LeadCur }}<p class="place-lead">{{ . }}</p>{{ end }}
       <p class="place-lead">{{ t .Lang "fx.lead" }}</p>
 
       {{/* Selection without a line of script: the period is plain links, the

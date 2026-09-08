@@ -106,3 +106,26 @@ func TestInfoPageDescribesItselfNotTheSite(t *testing.T) {
 		t.Errorf("the description is %d runes; search shows a fraction of that", n)
 	}
 }
+
+// A currency variant of /rates used to be the whole page with a different
+// chart: same heading, same two thousand words, different numbers. Sixteen of
+// those are one document to a search engine, which then picks a canonical of
+// its own and drops the rest -- which is exactly what Search Console reported.
+// The heading and the opening sentence are what make the page its own.
+func TestCurrencyPageIsAboutThatCurrency(t *testing.T) {
+	if got := T(LangRU, "fx.title_cur"); !strings.Contains(got, "%s") {
+		t.Fatalf("the per-currency title has no place for the code: %q", got)
+	}
+	lead := T(LangRU, "fx.lead_cur")
+	if n := strings.Count(lead, "%s"); n != 4 {
+		t.Errorf("the per-currency lead takes %d values, the page fills four", n)
+	}
+	for _, lang := range []string{LangKZ, LangRU, LangEN} {
+		if T(lang, "fx.lead_cur") == "" {
+			t.Errorf("%s: no per-currency lead", lang)
+		}
+		if T(lang, "fx.title_cur") == T(lang, "fx.title") {
+			t.Errorf("%s: a currency page is headed like the index", lang)
+		}
+	}
+}

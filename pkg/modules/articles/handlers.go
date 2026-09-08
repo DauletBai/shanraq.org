@@ -717,12 +717,32 @@ type ArticlePage struct {
 	CommentReview bool // the reader's comment was held for moderation
 }
 
+// retiredSlugs are addresses that were published once and then replaced. A 404
+// on them loses whatever links and history they collected, and search consoles
+// report them for months; a permanent redirect hands both to the article that
+// took their place.
+//
+// "SQL in one lesson" was split into two lessons while the course was being
+// written, and its address stayed in the world -- a crawler still asked for it
+// in September 2026.
+var retiredSlugs = map[string]string{
+	"go-bir-sabaqta-sql": "go-sql-birinshi-keste",
+}
+
 func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 	lang := m.resolveLang(w, r)
 
 	a, err := m.store.GetPublishedBySlug(r.Context(), slug)
 	if err != nil {
+		if to, ok := retiredSlugs[slug]; ok {
+			target := "/read/" + to
+			if q := r.URL.RawQuery; q != "" {
+				target += "?" + q
+			}
+			http.Redirect(w, r, target, http.StatusMovedPermanently)
+			return
+		}
 		http.NotFound(w, r)
 		return
 	}

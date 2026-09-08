@@ -74,7 +74,14 @@ type FxYear struct {
 // FxPage is the page's data.
 type FxPage struct {
 	Base
-	Desc       string
+	Desc string
+	// Heading is the visible <h1>. Every currency variant used to show "Exchange
+	// rates" over its own numbers, so sixteen pages differed by a chart and were
+	// the same document to a search engine -- which then picked one of them as
+	// the canonical and dropped the rest. The title said the currency; the page
+	// did not.
+	Heading    string
+	LeadCur    string
 	Currencies []FxCurrency
 	Code       string
 	Name       string
@@ -136,12 +143,21 @@ func (m *Module) handleRates(w http.ResponseWriter, r *http.Request) {
 	// rate shown at different depths.
 	page.Base = m.base(r, T(lang, "fx.title"), lang)
 	page.Desc = T(lang, "fx.desc")
+	page.Heading = T(lang, "fx.title")
 	if page.Code != fxDefaultCode {
 		filter := "c=" + page.Code
 		page.Base.CanonURL = canonURL("/rates", filter, lang)
 		page.Base.LangLinks = langLinks("/rates", filter)
 		page.Base.Title = fmt.Sprintf(T(lang, "fx.title_cur"), page.Code)
 		page.Desc = fmt.Sprintf(T(lang, "fx.desc_cur"), fxSubject(page.Name, page.Code, lang))
+		page.Heading = fmt.Sprintf(T(lang, "fx.title_cur"), page.Code)
+		// The opening sentence carries this currency's own measured numbers, so
+		// the top of the page is about the rouble or the euro rather than about
+		// exchange rates in general.
+		if page.HasData {
+			page.LeadCur = fmt.Sprintf(T(lang, "fx.lead_cur"),
+				fxSubject(page.Name, page.Code, lang), page.Last, page.Pct, page.Since)
+		}
 	}
 	m.render(w, "rates", page)
 }

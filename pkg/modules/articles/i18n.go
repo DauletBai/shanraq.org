@@ -1190,6 +1190,12 @@ var messages = map[string]map[string]string{
 
 	"fx.link":      {"kz": "Бағам тарихы", "ru": "История курса", "en": "Rate history"},
 	"fx.title_cur": {"kz": "%s — теңге бағамы", "ru": "%s — курс к тенге", "en": "%s to KZT exchange rate"},
+	// The first sentence of a currency's page, in that currency's own numbers.
+	"fx.lead_cur": {
+		"kz": "%s — теңгеге ресми бағам: қазір %s ₸, таңдалған кезеңдегі өзгеріс %s. Қатар %s басталады.",
+		"ru": "%s — официальный курс к тенге: сейчас %s ₸, изменение за выбранный период %s. Ряд начинается %s.",
+		"en": "%s — the official rate against the tenge: %s ₸ now, %s over the chosen period. The series starts on %s.",
+	},
 
 	// The section "How the tenge rate and inflation are formed".
 	// Страница прогноза погоды.
