@@ -539,6 +539,18 @@
   "py-sozdik-kilt-pen-man",
   "kz"
  ],
+ "python/errors": [
+  "py-qateler-try-except-raise",
+  "ru"
+ ],
+ "python/errors-en": [
+  "py-qateler-try-except-raise",
+  "en"
+ ],
+ "python/errors-kz": [
+  "py-qateler-try-except-raise",
+  "kz"
+ ],
  "python/functions": [
   "py-funkciyalar-def-return-assert",
   "ru"
