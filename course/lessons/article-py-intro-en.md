@@ -2,7 +2,7 @@
 
 _Лид (summary):_ **The site's second free course — 55 lessons, from data to a digest that updates itself. Why Python, why data and AI rather than the web, and what the reader will actually count: prices up 3.48 times, and what cost a thousand tenge now costs 3481. No account, no payment, in three languages.**
 
-## What we have opened
+## What we launched
 
 The site's second free course: **"Python: from data to your own digest"** — [55 lessons](https://shanraq.org/course/python?lang=en) that end with a program which fetches fresh data itself, files it in a database, counts, draws charts, assembles a report page and runs on a schedule without you.
 
@@ -18,7 +18,7 @@ GitHub gives a sharper and more interesting picture. Between September 2024 and 
 
 **The second: there is local demand for it.** Check it yourself rather than taking our word: open a job search for Kazakhstan and compare two queries, "Python" and "Go". When this announcement was written the gap was more than tenfold in Python's favour. The numbers change daily; the order of magnitude does not. The Go course teaches building a service whole; Python adds what is asked for most often.
 
-**The third, and the main one: without Python there is no approaching data or AI.** Models, training, table processing, reports — all of it is written in it and driven by it. Whoever can count data does not depend on which framework is in fashion this year.
+**The third, and the main one: in data and AI, Python is the default language.** Models, training, table processing, reports — it comes first here, and almost any library you meet will get on with it. It is not the only one: SQL, R, Julia and Java all exist, and each is better in its own place. But Python is the cheapest place to start, and whoever can analyse data does not depend on which tool is in fashion this year.
 
 ## Why data and AI rather than the web
 

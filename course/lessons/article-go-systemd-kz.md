@@ -135,7 +135,7 @@ func signalDemo() {
 }
 
 // shortErr қатеден кездейсоқ порты бар мекенжайды алып тастайды, сонда шығыс
-// әр жегілгенде бірдей болады.
+// әр іске қосылғанда бірдей болады.
 func shortErr(err error) string {
 	var ue *net.OpError
 	if errors.As(err, &ue) {

@@ -1,6 +1,6 @@
 # Counting for yourself: prices, the tenge and one question
 
-_Лид (summary):_ **The first lesson of the Python course. No libraries have to be installed: a ready program fetches the official numbers itself. Prices in Kazakhstan grew 3.48 times since 2010: what cost a thousand tenge now costs 3481. And after the same shock inflation in other countries of the region is three times lower, which is the first reason to count for yourself.**
+_Лид (summary):_ **The first lesson of the Python course. No libraries have to be installed: a ready program fetches the official numbers itself. Prices in Kazakhstan are 3.48 times higher than in 2010: what cost a thousand tenge now costs 3481. And after the same shock inflation in other countries of the region is three times lower, which is the first reason to count for yourself.**
 
 ## Why this is needed
 
@@ -92,7 +92,7 @@ Poland          5.1   14.4   11.5    3.8    3.8
 
 ### What you have just counted
 
-The first five lines are about the money in your pocket. The price index of 2010 is 100; in 2025 it is 348.1. So prices grew **3.48 times**, and that number reads both ways.
+The first five lines are about the money in your pocket. The price index of 2010 is 100; in 2025 it is 348.1. So prices are **3.48 times higher**, and that number reads both ways.
 
 A thousand tenge lying in your pocket today buys what **287 tenge** bought in 2010. And the other way round: what cost a thousand in 2010 is now asked **3481 tenge** for. One ratio, two different sentences — and mixing them up is an error of twelvefold.
 
@@ -176,7 +176,7 @@ The debts are visible already. The program dies without the internet and says no
 
 ## The answers
 
-1. That prices grew 3.48 times: the same basket that cost 100 units in 2010 costs 348.1 in 2025. The other side of it is that a thousand of today's tenge buys what 287 tenge bought in 2010, while the basket that cost a thousand in 2010 now costs 3481.
+1. That prices are 3.48 times higher: the same basket that cost 100 units in 2010 costs 348.1 in 2025. The other side of it is that a thousand of today's tenge buys what 287 tenge bought in 2010, while the basket that cost a thousand in 2010 now costs 3481.
 2. Because one row can be explained by anything. A comparison tests the explanation: if a shared external shock is to blame, the countries that got the same shock should show similar numbers. They do not.
 3. Because a coincidence and a difference are not yet a cause. We have seen that an external shock alone cannot explain it; to name a cause you have to put money, the exchange rate, tariffs and taxes side by side — and that is the work of several lessons, not one table.
 

@@ -84,7 +84,7 @@ Any version from 3.12 will do. The course is written and checked on 3.14.
 
 `python3 -m venv .venv` creates a `.venv` folder inside the project. Inside it are a `python` of its own and a place of its own for libraries.
 
-The `.venv/bin/python` line in the output confirms it: after `activate`, the word `python` means not the system language but the one lying in your project. Nothing was "configured globally" — only a path changed.
+The `.venv/bin/python` line in the output confirms it: after `activate`, the word `python` means not the system interpreter but the one lying in your project. Nothing was "configured globally" — only a path changed.
 
 > **Picture it.** A first-aid kit of your own in the car rather than the shared one in the yard. In the shared one the bandages run out, or somebody leaves something expired; yours is always the way you packed it.
 
@@ -179,7 +179,7 @@ The debts. The program still dies without the internet and fetches the data afre
 
 1. Only the paths. `activate` puts `.venv/bin` first in `PATH`, so the word `python` starts meaning the interpreter from the project and `pip` starts installing packages there. Nothing is installed in the process.
 2. Because `.venv` is a result: rebuilt with one command, 17 megabytes, and system-dependent. `requirements.txt` is the cause: five lines from which the result follows on any machine.
-3. Look at the terminal prompt: an activated environment shows `(.venv)` on the left. If in doubt, `python -c "import sys; print(sys.executable)"` shows whose python this is.
+3. Look at the terminal prompt: an activated environment shows `(.venv)` on the left. If in doubt, `python -c "import sys; print(sys.executable)"` shows which interpreter is running.
 
 ## Sources
 

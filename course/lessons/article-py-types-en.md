@@ -1,6 +1,6 @@
 # Variables and types: why "260" and 260 are different things
 
-_Лид (summary):_ **The fourth lesson of the Python course. Data from somebody else's file arrives as text, and until the text becomes a number, adding it makes no sense: "260" + "260" gives 260260. The money rule is measured too: 0.1 + 0.2 is not 0.3, while Decimal is. Plus None, the truth of "0", and == against is.**
+_Лид (summary):_ **The fourth lesson of the Python course. Data from somebody else's file arrives as text, and until the text becomes a number, adding it makes no sense: "260" + "260" gives 260260. The money rule is measured too: 0.1 + 0.2 is not 0.3, while Decimal is. Plus None, the truth of "0", and the difference between == and is.**
 
 ## Why this is needed
 

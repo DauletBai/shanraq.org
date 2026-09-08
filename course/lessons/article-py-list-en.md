@@ -1,6 +1,6 @@
 # A list and a tuple: a receipt that counts itself
 
-_Лид (summary):_ **The fifth lesson of the Python course. Prices in a list: indexes, slices, changes, the sum and the largest — without a single loop. The difference everybody trips over is measured: sorted() returns a new list, .sort() changes the original and returns None. And a tuple that refuses to change: TypeError.**
+_Лид (summary):_ **The fifth lesson of the Python course. Prices in a list: indexes, slices, changes, the sum and the maximum — without a single loop. The difference everybody trips over is measured: sorted() returns a new list, .sort() changes the original and returns None. And a tuple that refuses to change: TypeError.**
 
 ## Why this is needed
 
