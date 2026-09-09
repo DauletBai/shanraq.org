@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -74,6 +75,45 @@ func (s *GeoStore) query(ctx context.Context, lang, where string, args ...any) (
 		out = append(out, n)
 	}
 	return out, rows.Err()
+}
+
+// Nearest returns the closest place in the reference to a point, no further
+// than maxKm, so a click on the map can be answered with a name instead of two
+// numbers. The distance is the flat approximation -- over a few hundred
+// kilometres that is exact enough to pick a neighbour, and picking a neighbour
+// is all it does.
+func (s *GeoStore) Nearest(ctx context.Context, lang string, lat, lon, maxKm float64) (GeoNode, float64, bool, error) {
+	name := fmt.Sprintf("COALESCE(NULLIF(c.%s,''), c.name_ru)", geoNameCol(lang))
+	cos := math.Cos(lat * math.Pi / 180)
+	if cos < 0.01 {
+		cos = 0.01
+	}
+	dLat, dLon := maxKm/111.32, maxKm/(111.32*cos)
+	q := fmt.Sprintf(`
+		SELECT c.id, COALESCE(c.slug, '') AS slug, %s AS name, c.kind, c.level, c.country,
+		       EXISTS(SELECT 1 FROM geo_nodes g WHERE g.parent_id = c.id) AS has_children,
+		       c.lat, c.lng,
+		       111.32 * sqrt(pow(c.lat - $1, 2) + pow((c.lng - $2) * $3, 2)) AS km
+		FROM geo_nodes c
+		WHERE c.lat IS NOT NULL AND c.lng IS NOT NULL
+		  AND c.lat BETWEEN $1 - $4 AND $1 + $4
+		  AND c.lng BETWEEN $2 - $5 AND $2 + $5
+		ORDER BY km, c.population DESC NULLS LAST
+		LIMIT 1`, name)
+
+	var n GeoNode
+	var id uuid.UUID
+	var km float64
+	err := s.db.QueryRow(ctx, q, lat, lon, cos, dLat, dLon).
+		Scan(&id, &n.Slug, &n.Name, &n.Kind, &n.Level, &n.Country, &n.HasChildren, &n.Lat, &n.Lng, &km)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return GeoNode{}, 0, false, nil
+	}
+	if err != nil {
+		return GeoNode{}, 0, false, fmt.Errorf("geo nearest: %w", err)
+	}
+	n.ID = id.String()
+	return n, km, true, nil
 }
 
 // Roots returns the countries (top of the tree).

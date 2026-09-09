@@ -140,11 +140,30 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		Desc:      T(lang, "seo.site_desc"),
 		OGImage:   site + "/static/brand/og-cover.png",
 		OGType:    "website",
-		Info:      m.infobar.Snapshot(localizedDate(lang, siteNow()), siteNow().Format("2006-01-02")),
+		Info:      m.readerInfoBar(r, lang),
 		Ads:       m.sidebarAds(r, lang),
 		Svc:       m.serviceViews(r, lang),
 		SiteLD:    siteLD(httpserver.NonceFromContext(r.Context()), site, lang),
 	}
+}
+
+// readerInfoBar builds the top strip for this reader.
+//
+// Everything in it is the same for everybody except the temperature, which has
+// no business being: the strip is on every page, and a reader in Petropavl
+// reading that it is thirty degrees is reading about somewhere else. The place
+// comes from the address the request arrived from, coarsely -- a city, not a
+// street -- and is used for this one answer and not kept.
+func (m *Module) readerInfoBar(r *http.Request, lang string) InfoBarData {
+	today, todayISO := localizedDate(lang, siteNow()), siteNow().Format("2006-01-02")
+	if m.geoip == nil || !m.geoip.hasCity() {
+		return m.infobar.Snapshot(today, todayISO)
+	}
+	lat, lon, city, ok := m.geoip.point(clientIP(r))
+	if !ok {
+		return m.infobar.Snapshot(today, todayISO)
+	}
+	return m.infobar.SnapshotAt(today, todayISO, city, lat, lon)
 }
 
 // feedLabel names a feed: the subcategory when one is chosen, otherwise the

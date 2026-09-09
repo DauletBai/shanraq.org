@@ -42,6 +42,11 @@ type Config struct {
 type AnalyticsConfig struct {
 	GeoIPDB    string `mapstructure:"geoip_db"`
 	GeoIPASNDB string `mapstructure:"geoip_asn_db"`
+	// GeoIPCityDB is an optional city-level database. It is read for one
+	// thing only: the coordinates the info bar's temperature is taken at, so
+	// that a reader in Aktobe is not told what the sky is doing in Almaty.
+	// Empty leaves the bar on its default city.
+	GeoIPCityDB string `mapstructure:"geoip_city_db"`
 	// ExcludeEmails is a comma-separated list of user emails whose traffic is left
 	// out of analytics (e.g. the owner's own test account). Staff (admin/operator)
 	// are excluded automatically. Bound as SHANRAQ_ANALYTICS_EXCLUDE_EMAILS.

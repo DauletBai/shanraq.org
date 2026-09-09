@@ -40,6 +40,8 @@ services:
       # country.mmdb → country per IP; asn.mmdb → flags hosting/cloud/VPN traffic.
       - ./data/dbip-country.mmdb:/app/geoip/country.mmdb:ro
       - ./data/dbip-asn.mmdb:/app/geoip/asn.mmdb:ro
+      # city.mmdb → coordinates for the strip's local temperature.
+      - ./data/dbip-city.mmdb:/app/geoip/city.mmdb:ro
     restart: unless-stopped
     # No published ports: only Caddy talks to the app.
 

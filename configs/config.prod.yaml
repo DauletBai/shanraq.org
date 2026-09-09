@@ -106,4 +106,9 @@ analytics:
   # are shown as "ЦОД / VPN" instead of a country, so the country rows are real
   # readers, not US-hosted bots/VPN exits. Absent file → filter simply off.
   geoip_asn_db: /app/geoip/asn.mmdb
+  # Optional city database (DB-IP City Lite): read only to place the temperature
+  # in the top strip, so a reader in Oral is not shown the sky over Almaty. The
+  # coordinates are taken coarsely — a city, not a street — used for that one
+  # answer and never stored. Absent file → the strip keeps its default city.
+  geoip_city_db: /app/geoip/city.mmdb
 

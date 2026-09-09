@@ -145,7 +145,7 @@
     {{/* Погода ведёт на свой прогноз целиком — вместе с иконками: температура
          отвечает на «что сейчас» и сразу вызывает «а завтра», а до сих пор эта
          ячейка никуда не вела. */}}
-    <div class="infobar__cell">{{ if .Info.WeatherTemp }}<a class="metaic wx" href="/weather" title="{{ t .Lang "wx.link" }}">{{ icon .Info.WeatherIcon }}<span class="wx__temp">{{ .Info.WeatherTemp }}</span>{{ if .Info.WeatherPress }}<span class="wx__press">{{ icon "wx_press" }}<span class="wx__pval">{{ .Info.WeatherPress }} {{ t .Lang "wx.pressure_unit" }}</span></span>{{ end }}</a>{{ else }}<a class="infobar__muted" href="/weather">—</a>{{ end }}</div>
+    <div class="infobar__cell">{{ if .Info.WeatherTemp }}<a class="metaic wx" href="/weather" title="{{ if .Info.WeatherPlace }}{{ .Info.WeatherPlace }} — {{ end }}{{ t .Lang "wx.link" }}">{{ icon .Info.WeatherIcon }}<span class="wx__temp">{{ .Info.WeatherTemp }}</span>{{ if .Info.WeatherPress }}<span class="wx__press">{{ icon "wx_press" }}<span class="wx__pval">{{ .Info.WeatherPress }} {{ t .Lang "wx.pressure_unit" }}</span></span>{{ end }}</a>{{ else }}<a class="infobar__muted" href="/weather">—</a>{{ end }}</div>
     <div class="infobar__cell infobar__rates">
       {{/* Every rate leads to that currency's own history: someone clicks the
            dollar because they want to know about the dollar. */}}
@@ -764,6 +764,42 @@
       icon: L.divIcon({ className: 'wx-pin', html: '<i></i>', iconSize: [14, 14], iconAnchor: [7, 7] }),
       title: place
     }).addTo(map).bindPopup(place);
+  }
+
+  // Нажатие по карте: сервер отвечает куском страницы про эту точку. Ходим
+  // только к себе — connect-src это разрешает, — и форматирует ответ он же,
+  // поэтому числа выглядят так же, как везде на странице.
+  var out = document.querySelector('[data-wx-point]');
+  if (out) {
+    var pin = null;
+    var busy = null;
+    var lang = document.documentElement.getAttribute('lang') || '';
+    map.on('click', function (e) {
+      var p = e.latlng;
+      if (pin) { pin.setLatLng(p); } else {
+        pin = L.marker(p, {
+          icon: L.divIcon({ className: 'wx-pin wx-pin--pick', html: '<i></i>', iconSize: [14, 14], iconAnchor: [7, 7] })
+        }).addTo(map);
+      }
+      // Ответ на предыдущее нажатие уже не нужен: читатель спросил про другое.
+      if (busy) busy.abort();
+      busy = ('AbortController' in window) ? new AbortController() : null;
+
+      out.hidden = false;
+      out.textContent = out.getAttribute('data-loading') || '…';
+      var url = '/weather/point?lat=' + p.lat.toFixed(4) + '&lon=' + p.lng.toFixed(4) +
+                (lang ? '&lang=' + encodeURIComponent(lang) : '');
+      fetch(url, { headers: { 'Accept': 'text/html' }, signal: busy ? busy.signal : undefined })
+        .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.text(); })
+        .then(function (html) {
+          out.innerHTML = html;
+          out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        })
+        .catch(function (err) {
+          if (err && err.name === 'AbortError') return;
+          out.textContent = out.getAttribute('data-failed') || '';
+        });
+    });
   }
 
   // Высоту рамке задаёт aspect-ratio, а Leaflet читает её при создании — до
@@ -1914,3 +1950,138 @@
 </body>
 </html>
 {{ end }}
+
+{{/* The chart readout, shared by every page that draws a line: the rates
+     page has five of them and the forecast two, and a reader who learns to
+     point at one chart expects the next one to answer as well. */}}
+{{ define "chart_readout" }}
+<script nonce="{{ .Nonce }}">
+// Chart readouts. A line shows the shape; the figures under the cursor are what
+// the reader actually came for, and estimating them against the axis ticks is
+// measuring by eye over a number we already hold.
+//
+// Everything shown here was formatted on the server, so a thousands separator in
+// the readout matches the one in the table below it. This code only decides which
+// point is being pointed at.
+(function () {
+  var plots = document.querySelectorAll('.spark__plot[data-fx]');
+  if (!plots.length) return;
+
+  Array.prototype.forEach.call(plots, function (plot) {
+    var data;
+    try { data = JSON.parse(plot.getAttribute('data-fx')); } catch (e) { return; }
+    if (!data || !data.l || !data.l.length || !data.s || !data.s.length) return;
+    var n = data.l.length;
+    if (n < 2) return;
+
+    var guide = document.createElement('i');
+    guide.className = 'fxcur';
+    guide.setAttribute('aria-hidden', 'true');
+    plot.appendChild(guide);
+
+    var dots = data.s.map(function (s, i) {
+      var d = document.createElement('i');
+      d.className = 'fxdot' + (i ? ' fxdot--b' : '');
+      d.setAttribute('aria-hidden', 'true');
+      plot.appendChild(d);
+      return d;
+    });
+
+    // role=status so a screen reader announces the point the keyboard lands on;
+    // without it the arrow keys would move a cursor nobody can hear.
+    var tip = document.createElement('div');
+    tip.className = 'fxtip';
+    tip.setAttribute('role', 'status');
+    tip.setAttribute('aria-live', 'polite');
+    plot.appendChild(tip);
+
+    var shown = -1;
+
+    function row(name, value) {
+      var wrap = document.createElement('span');
+      wrap.className = 'fxtip__row';
+      if (name) {
+        var nm = document.createElement('span');
+        nm.className = 'fxtip__n';
+        nm.textContent = name;
+        wrap.appendChild(nm);
+      }
+      var v = document.createElement('b');
+      v.className = 'fxtip__v';
+      v.textContent = value;
+      wrap.appendChild(v);
+      return wrap;
+    }
+
+    function show(i) {
+      i = Math.max(0, Math.min(n - 1, i));
+      if (i === shown) return;
+      shown = i;
+      var x = (i / (n - 1)) * 100;
+      guide.style.left = x + '%';
+
+      while (tip.firstChild) tip.removeChild(tip.firstChild);
+      var head = document.createElement('b');
+      head.className = 'fxtip__x';
+      head.textContent = data.l[i];
+      tip.appendChild(head);
+
+      data.s.forEach(function (s, k) {
+        var y = s.y[i];
+        if (y === null || y === undefined) {
+          dots[k].style.display = 'none';
+          return;
+        }
+        dots[k].style.display = '';
+        dots[k].style.left = x + '%';
+        dots[k].style.top = y + '%';
+        tip.appendChild(row(s.n, s.v[i]));
+      });
+
+      // The readout stays inside its own frame: at the edges it would otherwise
+      // hang over the axis labels, and on a phone off the screen entirely.
+      tip.style.left = Math.max(14, Math.min(86, x)) + '%';
+      plot.classList.add('is-hover');
+    }
+
+    function hide() {
+      shown = -1;
+      plot.classList.remove('is-hover');
+    }
+
+    function indexAt(clientX) {
+      var r = plot.getBoundingClientRect();
+      if (r.width <= 0) return 0;
+      return Math.round(((clientX - r.left) / r.width) * (n - 1));
+    }
+
+    plot.addEventListener('mousemove', function (e) { show(indexAt(e.clientX)); });
+    plot.addEventListener('mouseleave', hide);
+
+    // On a touch screen the readout answers a tap and then holds still. Tracking
+    // the finger would mean fighting the page's own scrolling for every drag
+    // that happens to start on a chart.
+    plot.addEventListener('touchstart', function (e) {
+      if (e.touches && e.touches.length) show(indexAt(e.touches[0].clientX));
+    }, { passive: true });
+
+    plot.addEventListener('focus', function () { show(shown < 0 ? n - 1 : shown); });
+    plot.addEventListener('blur', hide);
+    plot.addEventListener('keydown', function (e) {
+      var step = e.shiftKey ? 10 : 1;
+      var at = shown < 0 ? n - 1 : shown;
+      switch (e.key) {
+        case 'ArrowLeft': show(at - step); break;
+        case 'ArrowRight': show(at + step); break;
+        case 'Home': show(0); break;
+        case 'End': show(n - 1); break;
+        case 'Escape': hide(); return;
+        default: return;
+      }
+      e.preventDefault();
+    });
+  });
+})();
+</script>
+{{ end }}
+

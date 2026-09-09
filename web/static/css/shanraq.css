@@ -3298,6 +3298,15 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
   display: block; width: 14px; height: 14px; border-radius: 50%;
   background: var(--gold); box-shadow: 0 0 0 3px rgba(255,255,255,.9), 0 1px 4px rgba(0,0,0,.4);
 }
+/* Метка нажатой точки отличается от метки места: одна говорит «вы здесь»,
+   другая — «вы спросили про здесь», и путать их нельзя. */
+.wx-pin--pick i { background: var(--ink); }
+
+/* Ответ по нажатой точке. Появляется под картой и ведёт себя как обычный блок
+   страницы: те же плитки, та же таблица недели. */
+.wx-point[hidden] { display: none; }
+.wx-point__where { color: var(--ink-2); font-size: .85rem; margin: -2px 0 12px; }
+.wx-point__where a { color: inherit; }
 
 /* Календарь месяца в архиве. Семь колонок фиксированной ширины, чтобы числа
    стояли столбиком, а не разъезжались по длине. */

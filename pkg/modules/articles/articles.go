@@ -140,7 +140,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	// domestic (KZ) readers from genuine foreign ones. The optional ASN database
 	// separates hosting/cloud/VPN traffic ("datacenter") from real readers. Off
 	// when no country DB is set.
-	m.geoip = openGeoIP(rt.Config.Analytics.GeoIPDB, rt.Config.Analytics.GeoIPASNDB)
+	m.geoip = openGeoIP(rt.Config.Analytics.GeoIPDB, rt.Config.Analytics.GeoIPASNDB, rt.Config.Analytics.GeoIPCityDB)
 	if m.geoip != nil {
 		rt.Logger.Info("country analytics enabled",
 			zap.String("geoip_db", rt.Config.Analytics.GeoIPDB),
@@ -250,6 +250,9 @@ func (m *Module) browserRoutes(r chi.Router) {
 		// One address per day of publishing: the date in the strip leads here.
 		r.Get("/archive/{date}", m.handleArchive)
 		r.Get("/weather", m.handleWeather)
+		// The map's answer for one point, as a fragment of the same page.
+		// Registered before the slug route so "point" is not read as a place.
+		r.Get("/weather/point", m.handleWeatherPoint)
 		r.Get("/weather/{slug}", m.handleWeather)
 		r.Get("/about", m.handleStaticPage("about"))
 		r.Get("/adam", m.handleStaticPage("adam"))

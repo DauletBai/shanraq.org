@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -114,6 +115,74 @@ type WeatherPage struct {
 	// Updated is when this forecast was fetched.
 	Updated string
 }
+
+// WxPoint is the forecast for a point somebody pressed on the map.
+//
+// The page answers about its own place, and the map underneath it answers about
+// anywhere else — but until now pressing it did nothing, so a reader who wanted
+// the weather in the next town had to go and find that town's page. The answer
+// is rendered by the server, like everything else here, and arrives as a
+// fragment of this same page rather than as figures a script has to format.
+type WxPoint struct {
+	Lang string
+	// Name is the nearest place in the reference, or the coordinates themselves
+	// when the point is far from anything the reference knows.
+	Name string
+	// Slug leads to that place's own page; empty when the point is not a place.
+	Slug string
+	// Away is how far the named place is from the point, e.g. "12 км".
+	Away    string
+	Coords  string
+	HasData bool
+	Now     WxNow
+	Days    []WxDay
+	Updated string
+}
+
+// handleWeatherPoint answers a press on the map with the forecast for that
+// point, as a fragment of the weather page.
+func (m *Module) handleWeatherPoint(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	lat, errLat := strconv.ParseFloat(strings.TrimSpace(r.URL.Query().Get("lat")), 64)
+	lon, errLon := strconv.ParseFloat(strings.TrimSpace(r.URL.Query().Get("lon")), 64)
+	if errLat != nil || errLon != nil || !wxPointOK(lat, lon) {
+		http.Error(w, "bad point", http.StatusBadRequest)
+		return
+	}
+	// Rounded before anything else: two decimals is about a kilometre, which is
+	// one forecast, and it keeps a dragged finger from asking for a thousand.
+	lat = math.Round(lat*100) / 100
+	lon = math.Round(lon*100) / 100
+
+	out := WxPoint{Lang: lang, Coords: fmt.Sprintf("%.2f, %.2f", lat, lon)}
+	out.Name = out.Coords
+	if m.geo != nil {
+		if node, km, ok, err := m.geo.Nearest(r.Context(), lang, lat, lon, wxNearKm); err == nil && ok {
+			out.Name = node.Name
+			out.Slug = node.Slug
+			if km >= 1 {
+				out.Away = fmt.Sprintf("%.0f %s", km, T(lang, "wx.km"))
+			}
+		} else if err != nil {
+			m.rt.Logger.Warn("weather point place", zap.Error(err))
+		}
+	}
+
+	page, ok := m.weatherCached(r.Context(), fmt.Sprintf("@%.2f,%.2f", lat, lon), lang, lat, lon)
+	if ok && page.HasData {
+		out.HasData, out.Now, out.Days, out.Updated = true, page.Now, page.Days, page.Updated
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	// The fragment is as fresh as the forecast behind it and no fresher.
+	w.Header().Set("Cache-Control", "public, max-age=600")
+	m.render(w, "wx_point", out)
+}
+
+// wxNearKm is how far the reference is searched for a name to call a point by.
+// Beyond it a "nearest" settlement says nothing useful: the steppe is wide, and
+// a hundred kilometres away is a different sky.
+const wxNearKm = 80
 
 // wxCacheEntry is one place's cached forecast.
 type wxCacheEntry struct {

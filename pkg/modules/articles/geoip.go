@@ -30,6 +30,7 @@ import (
 type geoIP struct {
 	cr *maxminddb.Reader // country
 	ar *maxminddb.Reader // ASN (optional)
+	ct *maxminddb.Reader // city (optional)
 }
 
 // datacenterLabel is the analytics bucket for hosting/cloud/VPN IPs — traffic
@@ -56,7 +57,7 @@ var datacenterOrgs = []string{
 // *geoIP (feature off) without an error — country enrichment is best-effort,
 // never a boot blocker. A missing/broken ASN database is non-fatal: the reader
 // stays nil and datacenter detection is simply skipped.
-func openGeoIP(countryPath, asnPath string) *geoIP {
+func openGeoIP(countryPath, asnPath, cityPath string) *geoIP {
 	if strings.TrimSpace(countryPath) == "" {
 		return nil
 	}
@@ -70,8 +71,16 @@ func openGeoIP(countryPath, asnPath string) *geoIP {
 			g.ar = ar
 		}
 	}
+	if p := strings.TrimSpace(cityPath); p != "" {
+		if ct, err := maxminddb.Open(p); err == nil {
+			g.ct = ct
+		}
+	}
 	return g
 }
+
+// hasCity reports whether coordinates can be resolved from an address.
+func (g *geoIP) hasCity() bool { return g != nil && g.ct != nil }
 
 // hasASN reports whether the datacenter/VPN filter is active.
 func (g *geoIP) hasASN() bool { return g != nil && g.ar != nil }
@@ -86,6 +95,9 @@ func (g *geoIP) close() {
 	}
 	if g.ar != nil {
 		_ = g.ar.Close()
+	}
+	if g.ct != nil {
+		_ = g.ct.Close()
 	}
 }
 
@@ -119,6 +131,43 @@ func (g *geoIP) country(ip net.IP) string {
 		return ""
 	}
 	return strings.ToUpper(strings.TrimSpace(rec.Country.ISOCode))
+}
+
+// point returns the approximate coordinates and city name for ip.
+//
+// It exists for the forecast in the info bar, and it is deliberately coarse:
+// the answer is the middle of a city, which is all a temperature needs and all
+// a free database honestly knows. Like every other lookup here the address is
+// read for this answer and never stored.
+func (g *geoIP) point(ip net.IP) (lat, lon float64, city string, ok bool) {
+	if g == nil || g.ct == nil || ip == nil {
+		return 0, 0, "", false
+	}
+	var rec struct {
+		City struct {
+			Names map[string]string `maxminddb:"names"`
+		} `maxminddb:"city"`
+		Location struct {
+			Lat float64 `maxminddb:"latitude"`
+			Lon float64 `maxminddb:"longitude"`
+		} `maxminddb:"location"`
+	}
+	if err := g.ct.Lookup(ip, &rec); err != nil {
+		return 0, 0, "", false
+	}
+	lat, lon = rec.Location.Lat, rec.Location.Lon
+	// A record with no location is the database saying "somewhere in this
+	// country", and 0,0 is the Atlantic rather than an answer.
+	if lat == 0 && lon == 0 {
+		return 0, 0, "", false
+	}
+	for _, key := range []string{"ru", "en"} {
+		if name := strings.TrimSpace(rec.City.Names[key]); name != "" {
+			city = name
+			break
+		}
+	}
+	return lat, lon, city, true
 }
 
 // isDatacenter reports whether ip belongs to a hosting/cloud/VPN network, by

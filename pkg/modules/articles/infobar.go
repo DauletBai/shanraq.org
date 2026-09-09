@@ -56,10 +56,34 @@ type InfoBarData struct {
 	WeatherIcon  string // icon key, e.g. "wx_sun" ("" when unavailable)
 	WeatherTemp  string // e.g. "+25°"
 	WeatherPress string // atmospheric pressure, e.g. "742 мм" ("" when unavailable)
+	// WeatherPlace names the town the temperature was taken in, when it is the
+	// reader's own rather than the default city. Empty keeps the cell silent.
+	WeatherPlace string
 	Rates        []Rate // empty when unavailable
 	Social       []SocialLink
 	GitHub       string // repository URL, rendered in the footer only ("" hides it)
 }
+
+// wxBarReading is one place's temperature for the strip.
+type wxBarReading struct {
+	at    time.Time
+	icon  string
+	temp  string
+	press string
+	// pending marks a fetch already on its way, so a hundred readers from one
+	// city ask the forecast service once between them.
+	pending bool
+}
+
+// wxBarTTL is how long a reading is reused, and wxBarPlaces how many places are
+// kept at once. The strip is on every page, so both numbers are about not
+// turning a popular site into a load generator: half an hour is finer than the
+// weather changes, and a few hundred places cover a country several times over
+// while giving a crawler nothing to fill memory with.
+const (
+	wxBarTTL    = 30 * time.Minute
+	wxBarPlaces = 400
+)
 
 // InfoBar fetches and caches the weather and exchange rates in the background.
 type InfoBar struct {
@@ -68,6 +92,10 @@ type InfoBar struct {
 	weatherIc   string
 	weatherTmp  string
 	weatherPres string
+	// byPlace holds a reading per rounded coordinate. The default city's own
+	// reading stays in the fields above: it is the answer for everyone whose
+	// place we do not know, and it must be there before the first request.
+	byPlace map[string]wxBarReading
 
 	httpc    *http.Client
 	log      *zap.Logger
@@ -98,12 +126,13 @@ func socialLinks(cfg config.SocialConfig) []SocialLink {
 // NewInfoBar builds the provider. Weather defaults to Almaty.
 func NewInfoBar(log *zap.Logger, social []SocialLink, github string) *InfoBar {
 	return &InfoBar{
-		httpc:  &http.Client{Timeout: 10 * time.Second},
-		log:    log,
-		lat:    wxDefaultLat,
-		lon:    wxDefaultLon,
-		social: social,
-		github: strings.TrimSpace(github),
+		httpc:   &http.Client{Timeout: 10 * time.Second},
+		log:     log,
+		lat:     wxDefaultLat,
+		lon:     wxDefaultLon,
+		social:  social,
+		github:  strings.TrimSpace(github),
+		byPlace: map[string]wxBarReading{},
 	}
 }
 
@@ -112,6 +141,89 @@ func (b *InfoBar) Snapshot(today, todayISO string) InfoBarData {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 	return InfoBarData{Today: today, TodayISO: todayISO, WeatherIcon: b.weatherIc, WeatherTemp: b.weatherTmp, WeatherPress: b.weatherPres, Rates: b.rates, Social: b.social, GitHub: b.github}
+}
+
+// SnapshotAt is the same bar with the temperature of the reader's own place.
+//
+// The strip showed one city to everybody, which is right for the exchange rate
+// and wrong for the sky: a reader in Oral has no use for what it is doing in
+// Almaty. When the place is unknown -- no city database, an address it does not
+// cover -- the default city answers, exactly as before.
+//
+// Nothing is fetched while the reader waits. A place we have not seen for half
+// an hour is refreshed in the background and shows the default city until it
+// arrives, because a page must not wait on somebody else's server.
+func (b *InfoBar) SnapshotAt(today, todayISO, place string, lat, lon float64) InfoBarData {
+	data := b.Snapshot(today, todayISO)
+	if !wxPointOK(lat, lon) {
+		return data
+	}
+	key := wxPlaceKey(lat, lon)
+
+	b.mu.Lock()
+	got, ok := b.byPlace[key]
+	fresh := ok && time.Since(got.at) < wxBarTTL
+	if !fresh && !got.pending {
+		got.pending = true
+		b.byPlace[key] = got
+		go b.fetchPlace(key, lat, lon)
+	}
+	b.mu.Unlock()
+
+	if !ok || got.temp == "" {
+		return data
+	}
+	data.WeatherIcon, data.WeatherTemp, data.WeatherPress = got.icon, got.temp, got.press
+	data.WeatherPlace = place
+	return data
+}
+
+// wxPointOK rejects coordinates that cannot be a place on Earth, including the
+// 0,0 that a database returns when it means "no idea".
+func wxPointOK(lat, lon float64) bool {
+	if lat == 0 && lon == 0 {
+		return false
+	}
+	return lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180
+}
+
+// wxPlaceKey rounds a point to a tenth of a degree -- some eleven kilometres,
+// which is one city and one temperature.
+func wxPlaceKey(lat, lon float64) string {
+	return fmt.Sprintf("%.1f,%.1f", lat, lon)
+}
+
+// fetchPlace reads one place's current weather and stores it under key.
+func (b *InfoBar) fetchPlace(key string, lat, lon float64) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	icon, temp, press, err := b.currentWeather(ctx, lat, lon)
+
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	entry := b.byPlace[key]
+	entry.pending = false
+	if err != nil {
+		// The failure is kept quiet on purpose: an unreachable forecast service
+		// is not this reader's problem, and the strip already has an answer.
+		b.byPlace[key] = entry
+		return
+	}
+	entry.at, entry.icon, entry.temp, entry.press = time.Now(), icon, temp, press
+	// A cache with no ceiling is a way for a crawler walking every address to
+	// fill memory. Past the ceiling the oldest reading goes.
+	if len(b.byPlace) >= wxBarPlaces {
+		oldest, at := "", time.Now()
+		for k, v := range b.byPlace {
+			if k != key && !v.pending && v.at.Before(at) {
+				oldest, at = k, v.at
+			}
+		}
+		if oldest != "" {
+			delete(b.byPlace, oldest)
+		}
+	}
+	b.byPlace[key] = entry
 }
 
 // Run refreshes weather every 30 min and rates every ~6 h until ctx is done.
@@ -230,13 +342,25 @@ func (b *InfoBar) refreshRates(ctx context.Context) {
 	}
 }
 
-// refreshWeather pulls the current temperature and condition from open-meteo.
+// refreshWeather pulls the default city's current conditions for the strip.
 func (b *InfoBar) refreshWeather(ctx context.Context) {
-	url := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%.4f&longitude=%.4f&current=temperature_2m,weather_code,pressure_msl&timezone=auto", b.lat, b.lon)
+	icon, temp, press, err := b.currentWeather(ctx, b.lat, b.lon)
+	if err != nil {
+		b.log.Warn("infobar weather", zap.Error(err))
+		return
+	}
+	b.mu.Lock()
+	b.weatherIc, b.weatherTmp, b.weatherPres = icon, temp, press
+	b.mu.Unlock()
+}
+
+// currentWeather reads one point's conditions from open-meteo and formats them
+// the way the strip shows them.
+func (b *InfoBar) currentWeather(ctx context.Context, lat, lon float64) (icon, temp, press string, err error) {
+	url := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%.4f&longitude=%.4f&current=temperature_2m,weather_code,pressure_msl&timezone=auto", lat, lon)
 	body, err := b.get(ctx, url)
 	if err != nil {
-		b.log.Warn("infobar weather fetch", zap.Error(err))
-		return
+		return "", "", "", err
 	}
 	var doc struct {
 		Current struct {
@@ -246,8 +370,7 @@ func (b *InfoBar) refreshWeather(ctx context.Context) {
 		} `json:"current"`
 	}
 	if err := json.Unmarshal(body, &doc); err != nil {
-		b.log.Warn("infobar weather parse", zap.Error(err))
-		return
+		return "", "", "", err
 	}
 	sign := ""
 	t := int(doc.Current.Temp)
@@ -256,15 +379,10 @@ func (b *InfoBar) refreshWeather(ctx context.Context) {
 	}
 	// Pressure in mm Hg (hPa × 0.750062) — just the number; the template appends
 	// the unit in the active UI language ("мм рт.ст." / "mmHg" / "мм сын.бағ.").
-	press := ""
 	if doc.Current.Press > 0 {
 		press = fmt.Sprintf("%d", int(doc.Current.Press*0.750062+0.5))
 	}
-	b.mu.Lock()
-	b.weatherIc = weatherIconName(doc.Current.Code)
-	b.weatherTmp = fmt.Sprintf("%s%d°", sign, t)
-	b.weatherPres = press
-	b.mu.Unlock()
+	return weatherIconName(doc.Current.Code), fmt.Sprintf("%s%d°", sign, t), press, nil
 }
 
 // monthNames holds the info-bar month names per UI language. Russian uses the
