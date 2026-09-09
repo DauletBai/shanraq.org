@@ -214,6 +214,10 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if slug == "" {
+		// The bare address answers differently for different readers, so it is
+		// nobody's to keep: a proxy that cached one reader's town would hand it
+		// to the next city along.
+		w.Header().Set("Cache-Control", "private, no-store")
 		// A reader who told us where they live gets their own town, by way of
 		// its real address rather than by rendering it here: one page per place
 		// keeps the link shareable, the cache useful and the crawler happy.
