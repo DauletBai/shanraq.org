@@ -695,6 +695,18 @@
   "py-sandar-joldar-shygys",
   "kz"
  ],
+ "python/polite": [
+  "py-sypaiylyq-timeout-retry-kesh",
+  "ru"
+ ],
+ "python/polite-en": [
+  "py-sypaiylyq-timeout-retry-kesh",
+  "en"
+ ],
+ "python/polite-kz": [
+  "py-sypaiylyq-timeout-retry-kesh",
+  "kz"
+ ],
  "python/prices": [
   "py-agany-bagalar-tenge",
   "ru"

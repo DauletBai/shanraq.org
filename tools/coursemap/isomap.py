@@ -2284,6 +2284,33 @@ def pymap19(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap20(s):
+    """Python lesson 20: the timeout, the backoff and the cache.
+
+    The accents are the two habits that decide whether a source keeps answering
+    you: a pause that grows between retries, and a question asked once.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4354,6 +4381,38 @@ PY19 = {
 
 
 
+PY20 = {
+    "kz": dict(alt="Таймаут, қайталау және кэш",
+               b1="таймаут", b1_sub="мәңгі күтпеу",
+               b2="қайталау", b2_sub="кідіріс екі есе",
+               b3="кэш", b3_sub="екі рет сұрамау",
+               c1="timeout=0.3", c2="4 оқу → 1",
+               head="СЫПАЙЫЛЫҚ — ӘДЕП ЕМЕС, ҮШ НӘРСЕ",
+               head_sub="жиырмасыншы сабақ: timeout, retry, кэш",
+               foot="ТӨРТ ОҚУ — БІР СҰРАНЫС",
+               foot_sub="өлшенді: 503-тен кейін үшінші талпыныс"),
+    "ru": dict(alt="Таймаут, повтор и кеш",
+               b1="таймаут", b1_sub="не ждать вечно",
+               b2="повтор", b2_sub="пауза растёт",
+               b3="кеш", b3_sub="не спрашивать",
+               c1="timeout=0.3", c2="4 чтения → 1",
+               head="ВЕЖЛИВОСТЬ — НЕ МАНЕРЫ, А ТРИ ВЕЩИ",
+               head_sub="двадцатый урок: timeout, retry, кеш",
+               foot="ЧЕТЫРЕ ЧТЕНИЯ — ОДИН ЗАПРОС",
+               foot_sub="измерено: после 503 третья попытка"),
+    "en": dict(alt="The timeout, the retry and the cache",
+               b1="timeout", b1_sub="stop waiting",
+               b2="retry", b2_sub="pause doubles",
+               b3="cache", b3_sub="ask once",
+               c1="timeout=0.3", c2="4 reads → 1",
+               head="POLITENESS IS THREE THINGS, NOT MANNERS",
+               head_sub="lesson twenty: timeout, retry, cache",
+               foot="FOUR READINGS, ONE REQUEST",
+               foot_sub="measured: after 503, the third attempt"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4381,7 +4440,8 @@ if __name__ == "__main__":
                                ("generators", pymap16, PY16),
                                ("modules", pymap17, PY17),
                                ("http", pymap18, PY18),
-                               ("xml", pymap19, PY19)):
+                               ("xml", pymap19, PY19),
+                               ("polite", pymap20, PY20)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
