@@ -2311,6 +2311,33 @@ def pymap20(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap21(s):
+    """Python lesson 21: the key, the upsert and the question mark.
+
+    The accents are what turns a file into a history: a key that makes a second
+    run update rather than duplicate, and a value that never touches the query.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4413,6 +4440,38 @@ PY20 = {
 
 
 
+PY21 = {
+    "kz": dict(alt="Кілт, upsert және сұрақ белгісі",
+               b1="кесте", b1_sub="күн + валюта",
+               b2="upsert", b2_sub="қоспай, жаңартады",
+               b3="?", b3_sub="мән жабыспайды",
+               c1="ON CONFLICT", c2="commit()",
+               head="ФАЙЛ ЕМЕС, ТАРИХ",
+               head_sub="жиырма бірінші сабақ: sqlite3, dataclass",
+               foot="ЖАБЫСТЫРУ БҮКІЛ КЕСТЕНІ БЕРДІ",
+               foot_sub="өлшенді: 4 жол, ? арқылы — 0"),
+    "ru": dict(alt="Ключ, upsert и знак вопроса",
+               b1="таблица", b1_sub="день + валюта",
+               b2="upsert", b2_sub="обновит строку",
+               b3="?", b3_sub="значение не клеят",
+               c1="ON CONFLICT", c2="commit()",
+               head="НЕ ФАЙЛ, А ИСТОРИЯ",
+               head_sub="двадцать первый урок: sqlite3, dataclass",
+               foot="СКЛЕЙКА ВЕРНУЛА ВСЮ ТАБЛИЦУ",
+               foot_sub="измерено: 4 строки, через ? — 0"),
+    "en": dict(alt="The key, the upsert and the question mark",
+               b1="the table", b1_sub="day + currency",
+               b2="upsert", b2_sub="updates, not adds",
+               b3="?", b3_sub="no glued values",
+               c1="ON CONFLICT", c2="commit()",
+               head="A HISTORY, NOT A FILE",
+               head_sub="lesson twenty-one: sqlite3, dataclass",
+               foot="GLUING RETURNED THE WHOLE TABLE",
+               foot_sub="measured: 4 rows, through a ? — 0"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4441,7 +4500,8 @@ if __name__ == "__main__":
                                ("modules", pymap17, PY17),
                                ("http", pymap18, PY18),
                                ("xml", pymap19, PY19),
-                               ("polite", pymap20, PY20)):
+                               ("polite", pymap20, PY20),
+                               ("sqlite", pymap21, PY21)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

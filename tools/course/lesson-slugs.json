@@ -731,6 +731,18 @@
   "py-jiyndar-set-qiylysu-ayyrma",
   "kz"
  ],
+ "python/sqlite": [
+  "py-sqlite-keste-kilt-tarih",
+  "ru"
+ ],
+ "python/sqlite-en": [
+  "py-sqlite-keste-kilt-tarih",
+  "en"
+ ],
+ "python/sqlite-kz": [
+  "py-sqlite-keste-kilt-tarih",
+  "kz"
+ ],
  "python/types": [
   "py-aynymalylar-men-tipter",
   "ru"
