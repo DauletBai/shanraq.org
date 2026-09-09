@@ -742,5 +742,17 @@
  "python/workspace-kz": [
   "py-jumys-orny-venv",
   "kz"
+ ],
+ "python/xml": [
+  "py-xml-talday-elementtree",
+  "ru"
+ ],
+ "python/xml-en": [
+  "py-xml-talday-elementtree",
+  "en"
+ ],
+ "python/xml-kz": [
+  "py-xml-talday-elementtree",
+  "kz"
  ]
 }

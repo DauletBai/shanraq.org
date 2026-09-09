@@ -2257,6 +2257,33 @@ def pymap18(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap19(s):
+    """Python lesson 19: the tree, the missing tag and the namespace.
+
+    The accents are the two silences: a tag that is not there answers None, and
+    a tag inside a namespace is not found by the name you can see.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4295,6 +4322,38 @@ PY18 = {
 
 
 
+PY19 = {
+    "kz": dict(alt="Ағаш, жоқ тег және аттар кеңістігі",
+               b1="белгілеу", b1_sub="жол емес, ағаш",
+               b2="жоқ тег", b2_sub="None, қате емес",
+               b3="xmlns", b3_sub="аты ұзынырақ",
+               c1="findall(item)", c2="findtext(def)",
+               head="ТЕГ АТЫ БОЙЫНША, КЕСЕК БОЙЫНША ЕМЕС",
+               head_sub="он тоғызыншы сабақ: ElementTree",
+               foot="ЖАУАПТА 39 ВАЛЮТА, 45 БАЛА",
+               foot_sub="өлшенді: findall тек сұралғанды алады"),
+    "ru": dict(alt="Дерево, отсутствующий тег и пространство имён",
+               b1="разметка", b1_sub="дерево, не строка",
+               b2="нет тега", b2_sub="None, а не ошибка",
+               b3="xmlns", b3_sub="имя длиннее",
+               c1="findall(item)", c2="findtext(def)",
+               head="ПО ИМЕНИ ТЕГА, А НЕ ПО КУСКАМ",
+               head_sub="девятнадцатый урок: ElementTree",
+               foot="В ОТВЕТЕ 39 ВАЛЮТ, 45 ДЕТЕЙ",
+               foot_sub="измерено: findall берёт только своё"),
+    "en": dict(alt="The tree, the missing tag and the namespace",
+               b1="markup", b1_sub="a tree, not text",
+               b2="no tag", b2_sub="None, no error",
+               b3="xmlns", b3_sub="a longer name",
+               c1="findall(item)", c2="findtext(def)",
+               head="BY THE NAME OF A TAG, NOT BY PIECES",
+               head_sub="lesson nineteen: ElementTree",
+               foot="39 CURRENCIES, 45 CHILDREN",
+               foot_sub="measured: findall takes only its own"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4321,7 +4380,8 @@ if __name__ == "__main__":
                                ("sets", pymap15, PY15),
                                ("generators", pymap16, PY16),
                                ("modules", pymap17, PY17),
-                               ("http", pymap18, PY18)):
+                               ("http", pymap18, PY18),
+                               ("xml", pymap19, PY19)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
