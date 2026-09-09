@@ -3307,6 +3307,12 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
    Нажатия по старым цифрам в это время не считаются: они уже про другое
    место. */
 [data-wx-part].is-swapping { opacity: .45; pointer-events: none; transition: opacity .12s ease; }
+/* Заголовок, на который переводится фокус после подмены: читатель экрана
+   должен услышать новое место, но обводки вокруг заголовка быть не должно —
+   её рисуют для того, кто ходит по странице с клавиатуры, а сюда фокус
+   поставила страница сама. */
+h1[tabindex="-1"]:focus { outline: none; }
+h1[tabindex="-1"]:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
 /* Строка «выбранная на карте точка»: откуда взялось место, которое читатель
    не называл по имени. */
 .wx-from { color: var(--ink-2); font-size: .85rem; margin: -2px 0 12px; }
