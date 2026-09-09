@@ -719,6 +719,18 @@
   "py-agany-bagalar-tenge",
   "kz"
  ],
+ "python/schedule": [
+  "py-keste-cron-argparse-logging",
+  "ru"
+ ],
+ "python/schedule-en": [
+  "py-keste-cron-argparse-logging",
+  "en"
+ ],
+ "python/schedule-kz": [
+  "py-keste-cron-argparse-logging",
+  "kz"
+ ],
  "python/sets": [
   "py-jiyndar-set-qiylysu-ayyrma",
   "ru"

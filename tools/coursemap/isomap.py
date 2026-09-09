@@ -2365,6 +2365,34 @@ def pymap22(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap23(s):
+    """Python lesson 23: the argument, the journal and the lock.
+
+    The accents are the two things that make a scheduled run survivable: a
+    journal to read in the morning, and a lock so that two runs are never one
+    job done twice.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4531,6 +4559,38 @@ PY22 = {
 
 
 
+PY23 = {
+    "kz": dict(alt="Аргумент, журнал және құлып",
+               b1="аргумент", b1_sub="кодты түземей",
+               b2="журнал", b2_sub="деңгей мен уақыт",
+               b3="құлып", b3_sub="екінші кірмейді",
+               c1="argparse", c2="SystemExit(1)",
+               head="СІЗСІЗ ЖҰМЫС ІСТЕЙТІН БАҒДАРЛАМА",
+               head_sub="жиырма үшінші сабақ: cron, logging",
+               foot="КЕСТЕ ТЕК ҚАЙТАРУ КОДЫН ОҚИДЫ",
+               foot_sub="өлшенді: 0 — болды, 2 — жоқ"),
+    "ru": dict(alt="Аргумент, журнал и замок",
+               b1="аргумент", b1_sub="без правки кода",
+               b2="журнал", b2_sub="уровень и время",
+               b3="замок", b3_sub="второй не войдёт",
+               c1="argparse", c2="SystemExit(1)",
+               head="ПРОГРАММА, КОТОРАЯ РАБОТАЕТ БЕЗ ВАС",
+               head_sub="двадцать третий урок: cron, logging",
+               foot="РАСПИСАНИЕ ЧИТАЕТ ТОЛЬКО КОД ВОЗВРАТА",
+               foot_sub="измерено: 0 — вышло, 2 — нет"),
+    "en": dict(alt="The argument, the journal and the lock",
+               b1="argument", b1_sub="no editing",
+               b2="journal", b2_sub="level and time",
+               b3="the lock", b3_sub="no second run",
+               c1="argparse", c2="SystemExit(1)",
+               head="A PROGRAM THAT WORKS WITHOUT YOU",
+               head_sub="lesson twenty-three: cron, logging",
+               foot="THE SCHEDULER READS ONLY THE EXIT CODE",
+               foot_sub="measured: 0 done, 2 not"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4561,7 +4621,8 @@ if __name__ == "__main__":
                                ("xml", pymap19, PY19),
                                ("polite", pymap20, PY20),
                                ("sqlite", pymap21, PY21),
-                               ("sql", pymap22, PY22)):
+                               ("sql", pymap22, PY22),
+                               ("schedule", pymap23, PY23)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
