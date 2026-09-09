@@ -611,6 +611,18 @@
   "py-generatorlar-yield-jad",
   "kz"
  ],
+ "python/http": [
+  "py-http-suranys-urllib-status",
+  "ru"
+ ],
+ "python/http-en": [
+  "py-http-suranys-urllib-status",
+  "en"
+ ],
+ "python/http-kz": [
+  "py-http-suranys-urllib-status",
+  "kz"
+ ],
  "python/intro": [
   "tegin-kurs-python-derek-pen-ii",
   "ru"

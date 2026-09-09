@@ -2229,6 +2229,34 @@ def pymap17(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap18(s):
+    """Python lesson 18: the address, the answer and the two failures.
+
+    The accents are what a beginner gets wrong: the answer is bytes rather than
+    text, and a server that says no is not the same as a server that says
+    nothing.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4235,6 +4263,38 @@ PY17 = {
 
 
 
+PY18 = {
+    "kz": dict(alt="Мекенжай, жауап және екі сәтсіздік",
+               b1="сұраныс", b1_sub="timeout, қолтаңба",
+               b2="жауап", b2_sub="мәтін емес, байт",
+               b3="404 vs жоқ", b3_sub="екі бөлек қате",
+               c1="urlopen", c2="decode(charset)",
+               head="HTTP: АЛДЫМЕН СТАТУС, СОСЫН ДЕНЕ",
+               head_sub="он сегізінші сабақ: urllib, status",
+               foot="200, TEXT/XML, 11 407 БАЙТ",
+               foot_sub="өлшенді: Ұлттық банктің жауабы"),
+    "ru": dict(alt="Адрес, ответ и две неудачи",
+               b1="запрос", b1_sub="timeout и подпись",
+               b2="ответ", b2_sub="байты, не текст",
+               b3="404 и нет сети", b3_sub="разные ошибки",
+               c1="urlopen", c2="decode(charset)",
+               head="HTTP: СНАЧАЛА СТАТУС, ПОТОМ ТЕЛО",
+               head_sub="восемнадцатый урок: urllib, status",
+               foot="200, TEXT/XML, 11 407 БАЙТ",
+               foot_sub="измерено: ответ Нацбанка"),
+    "en": dict(alt="The address, the answer and the two failures",
+               b1="request", b1_sub="timeout, a name",
+               b2="answer", b2_sub="bytes, not text",
+               b3="404 vs no reply", b3_sub="different errors",
+               c1="urlopen", c2="decode(charset)",
+               head="HTTP: THE STATUS FIRST, THE BODY AFTER",
+               head_sub="lesson eighteen: urllib, status",
+               foot="200, TEXT/XML, 11,407 BYTES",
+               foot_sub="measured: the National Bank's answer"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4260,7 +4320,8 @@ if __name__ == "__main__":
                                ("dates", pymap14, PY14),
                                ("sets", pymap15, PY15),
                                ("generators", pymap16, PY16),
-                               ("modules", pymap17, PY17)):
+                               ("modules", pymap17, PY17),
+                               ("http", pymap18, PY18)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
