@@ -2202,6 +2202,33 @@ def pymap16(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap17(s):
+    """Python lesson 17: the file, the name and the package.
+
+    The accents are the two things import does that surprise a beginner: it runs
+    the file rather than attaching it, and it looks beside the program first.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4176,6 +4203,38 @@ PY16 = {
 
 
 
+PY17 = {
+    "kz": dict(alt="Файл, атау және пакет",
+               b1="файл", b1_sub="қасында жатыр",
+               b2="import", b2_sub="тұтас орындайды",
+               b3="пакет", b3_sub="__init__.py бар",
+               c1="import sana", c2="sholu.esep",
+               head="МОДУЛЬ — АТЫМЕН ШАҚЫРЫЛАТЫН ФАЙЛ",
+               head_sub="он жетінші сабақ: import, __name__",
+               foot="ӨЗ CSV.PY СТАНДАРТТЫНЫ АУЫСТЫРАДЫ",
+               foot_sub="өлшенді: csv.reader бар ма — жоқ"),
+    "ru": dict(alt="Файл, имя и пакет",
+               b1="файл", b1_sub="лежит рядом",
+               b2="import", b2_sub="выполняет целиком",
+               b3="пакет", b3_sub="с __init__.py",
+               c1="import sana", c2="svodka.otchet",
+               head="МОДУЛЬ — ФАЙЛ, КОТОРЫЙ ЗОВУТ ПО ИМЕНИ",
+               head_sub="семнадцатый урок: import, __name__",
+               foot="СВОЙ CSV.PY ПОДМЕНЯЕТ СТАНДАРТНЫЙ",
+               foot_sub="измерено: csv.reader есть — нет"),
+    "en": dict(alt="The file, the name and the package",
+               b1="the file", b1_sub="lies beside",
+               b2="import", b2_sub="runs it whole",
+               b3="package", b3_sub="has __init__.py",
+               c1="import sana", c2="digest.report",
+               head="A MODULE IS A FILE CALLED BY NAME",
+               head_sub="lesson seventeen: import, __name__",
+               foot="YOUR OWN CSV.PY REPLACES THE STANDARD ONE",
+               foot_sub="measured: is csv.reader there — no"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4200,7 +4259,8 @@ if __name__ == "__main__":
                                ("json", pymap13, PY13),
                                ("dates", pymap14, PY14),
                                ("sets", pymap15, PY15),
-                               ("generators", pymap16, PY16)):
+                               ("generators", pymap16, PY16),
+                               ("modules", pymap17, PY17)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

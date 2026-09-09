@@ -659,6 +659,18 @@
   "py-cikldar-for-range-while",
   "kz"
  ],
+ "python/modules": [
+  "py-modul-paket-import-name",
+  "ru"
+ ],
+ "python/modules-en": [
+  "py-modul-paket-import-name",
+  "en"
+ ],
+ "python/modules-kz": [
+  "py-modul-paket-import-name",
+  "kz"
+ ],
  "python/numbers": [
   "py-sandar-joldar-shygys",
   "ru"
