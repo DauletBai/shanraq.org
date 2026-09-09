@@ -731,6 +731,18 @@
   "py-jiyndar-set-qiylysu-ayyrma",
   "kz"
  ],
+ "python/sql": [
+  "py-sql-group-by-join-suranys",
+  "ru"
+ ],
+ "python/sql-en": [
+  "py-sql-group-by-join-suranys",
+  "en"
+ ],
+ "python/sql-kz": [
+  "py-sql-group-by-join-suranys",
+  "kz"
+ ],
  "python/sqlite": [
   "py-sqlite-keste-kilt-tarih",
   "ru"

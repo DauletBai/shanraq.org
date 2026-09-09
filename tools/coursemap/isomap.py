@@ -2338,6 +2338,33 @@ def pymap21(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap22(s):
+    """Python lesson 22: the aggregate, the group and the join.
+
+    The accents are the two things a loop cannot do as well: one row per group,
+    and a name fetched from another table by a match.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4472,6 +4499,38 @@ PY21 = {
 
 
 
+PY22 = {
+    "kz": dict(alt="Агрегат, топ және біріктіру",
+               b1="кесте", b1_sub="көп жол",
+               b2="GROUP BY", b2_sub="топқа бір жол",
+               b3="JOIN", b3_sub="атауы екіншіден",
+               c1="avg, count", c2="HAVING > 100",
+               head="ЦИКЛ ЕМЕС, ДЕРЕКҚОР САНАЙДЫ",
+               head_sub="жиырма екінші сабақ: GROUP BY, JOIN",
+               foot="БОС БОЙЫНША AVG — NONE, НӨЛ ЕМЕС",
+               foot_sub="өлшенді: count нөл береді"),
+    "ru": dict(alt="Агрегат, группа и соединение",
+               b1="таблица", b1_sub="много строк",
+               b2="GROUP BY", b2_sub="строка на группу",
+               b3="JOIN", b3_sub="имя из второй",
+               c1="avg, count", c2="HAVING > 100",
+               head="СЧИТАЕТ БАЗА, А НЕ ЦИКЛ",
+               head_sub="двадцать второй урок: GROUP BY, JOIN",
+               foot="AVG ПО ПУСТОМУ — NONE, НЕ НОЛЬ",
+               foot_sub="измерено: count даёт ноль"),
+    "en": dict(alt="The aggregate, the group and the join",
+               b1="the table", b1_sub="many rows",
+               b2="GROUP BY", b2_sub="a row per group",
+               b3="JOIN", b3_sub="name from another",
+               c1="avg, count", c2="HAVING > 100",
+               head="THE DATABASE COUNTS, NOT THE LOOP",
+               head_sub="lesson twenty-two: GROUP BY, JOIN",
+               foot="AVG OVER NOTHING IS NONE, NOT ZERO",
+               foot_sub="measured: count gives zero"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4501,7 +4560,8 @@ if __name__ == "__main__":
                                ("http", pymap18, PY18),
                                ("xml", pymap19, PY19),
                                ("polite", pymap20, PY20),
-                               ("sqlite", pymap21, PY21)):
+                               ("sqlite", pymap21, PY21),
+                               ("sql", pymap22, PY22)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
