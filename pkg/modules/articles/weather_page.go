@@ -224,10 +224,34 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/weather/"+own+"?lang="+lang, http.StatusFound)
 			return
 		}
-		// Everyone else keeps the city the strip has always shown, so the link
-		// in the header lands where its temperature came from.
-		lat, lon = wxDefaultLat, wxDefaultLon
-		name = T(lang, "wx.default_city")
+		// A reader who told us nothing still came from somewhere. The address
+		// gives a city — coarsely, and read for this answer only — and the
+		// reference turns it into a place with a page of its own, which is
+		// where the reader is sent. The strip above already shows that town's
+		// temperature; landing on Almaty after pressing it was the page
+		// contradicting its own header.
+		if pt, ok := m.readerPoint(r); ok {
+			if m.geo != nil {
+				if node, _, found, err := m.geo.Nearest(r.Context(), lang, pt.lat, pt.lon, wxNearKm); err == nil && found && node.Slug != "" {
+					http.Redirect(w, r, "/weather/"+node.Slug+"?lang="+lang, http.StatusFound)
+					return
+				} else if err != nil {
+					m.rt.Logger.Warn("weather reader place", zap.Error(err))
+				}
+			}
+			// Nothing in the reference within eighty kilometres: the forecast
+			// is still the reader's own, it simply has no page of its own to
+			// live at, so it is rendered here under the name the address knows.
+			lat, lon, name = pt.lat, pt.lon, pt.city
+			if name == "" {
+				name = fmt.Sprintf("%.2f, %.2f", pt.lat, pt.lon)
+			}
+		} else {
+			// Everyone else keeps the city the strip has always shown, so the
+			// link in the header lands where its temperature came from.
+			lat, lon = wxDefaultLat, wxDefaultLon
+			name = T(lang, "wx.default_city")
+		}
 	} else {
 		n, err := m.geo.BySlug(r.Context(), slug, lang)
 		if err != nil {
@@ -427,7 +451,9 @@ func (m *Module) fetchForecast(ctx context.Context, lang string, lat, lon float6
 	}
 	if len(temps) > 2 {
 		page.Temp = fxBuildChartWith(temps, "hours", lang, fxChartOpts{
-			Hourly: true, Unit: "°C", Format: func(v float64) string { return wxTemp(v) },
+			// No unit here: wxTemp already ends in a degree sign, and the
+			// readout was printing "+30° °C".
+			Hourly: true, Format: func(v float64) string { return wxTemp(v) },
 			AxisFormat: func(v float64) string { return fxFormat(v, 0) + "°" },
 		})
 	}
@@ -606,6 +632,27 @@ func (s *GeoStore) WeatherPlaceFor(ctx context.Context, place uuid.UUID) (string
 		return "", fmt.Errorf("weather place for: %w", err)
 	}
 	return slug, nil
+}
+
+// readerPlace is where a request came from, as far as an address database can
+// tell: a city's middle, and its name in whatever language that database holds.
+type readerPlace struct {
+	lat, lon float64
+	city     string
+}
+
+// readerPoint resolves the request's address to a place. False when there is no
+// city database, or it has nothing for this address — in which case the page
+// keeps its default city rather than guessing.
+func (m *Module) readerPoint(r *http.Request) (readerPlace, bool) {
+	if m.geoip == nil || !m.geoip.hasCity() {
+		return readerPlace{}, false
+	}
+	lat, lon, city, ok := m.geoip.point(clientIP(r))
+	if !ok || !wxPointOK(lat, lon) {
+		return readerPlace{}, false
+	}
+	return readerPlace{lat: lat, lon: lon, city: city}, true
 }
 
 // readerWeatherSlug is the place this reader's own forecast lives at, or "" for

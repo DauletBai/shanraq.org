@@ -91,3 +91,16 @@ func TestWeatherPointIsAFragment(t *testing.T) {
 		t.Errorf("фрагмент пуст: %.200q", body)
 	}
 }
+
+// Without a city database the bare address keeps its default city: the feature
+// is off, not broken.
+func TestWeatherDefaultsWhenPlaceUnknown(t *testing.T) {
+	app := newTestApp(t)
+	rec := app.do("GET", "/weather", nil)
+	if rec.Code != 200 {
+		t.Fatalf("/weather ответил %d", rec.Code)
+	}
+	if !strings.Contains(rec.Body.String(), T(LangRU, "wx.default_city")) {
+		t.Error("без базы городов страница не показала город по умолчанию")
+	}
+}
