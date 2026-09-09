@@ -71,24 +71,86 @@ func TestWeatherPointRefusesNonsense(t *testing.T) {
 	}
 }
 
-// The fragment is a fragment: a piece of the page, not a page. Injecting a whole
-// document into a div is how a layout ends up with two headers.
-func TestWeatherPointIsAFragment(t *testing.T) {
+// The map's answer replaces the page instead of growing a second one beneath
+// it: a reader in Kostanay who presses Almaty asked for Almaty's page. So the
+// answer carries the same parts the page is built from, and the address to put
+// in the bar along with them.
+func TestWeatherPointAnswersWithTheWholePage(t *testing.T) {
 	app := newTestApp(t)
 	rec := app.do("GET", "/weather/point?lat=47.09&lon=51.92", nil)
 	if rec.Code != 200 {
 		t.Fatalf("точка ответила %d", rec.Code)
 	}
 	body := rec.Body.String()
+	// A fragment, not a document: injecting a whole page into a div is how a
+	// layout ends up with two headers.
 	for _, whole := range []string{"<html", "<body", "site_header", "<footer"} {
 		if strings.Contains(body, whole) {
 			t.Errorf("в ответе оказался кусок целой страницы: %q", whole)
 		}
 	}
-	// Either the forecast arrived or the fragment says so; silence is the one
-	// thing a reader who pressed the map must not get.
+	for _, part := range []string{`data-wx-part="top"`, `data-wx-part="bottom"`, "data-wx-meta"} {
+		if !strings.Contains(body, part) {
+			t.Errorf("в ответе нет части %q — заменять на странице нечего", part)
+		}
+	}
+	// The address goes with the answer, or the page would end up saying one
+	// place and the link another.
+	if !strings.Contains(body, `data-url="/weather`) {
+		t.Errorf("ответ не сказал, каким адресом он живёт: %.300q", body)
+	}
+	// Either the forecast arrived or the page says so; silence is the one thing
+	// a reader who pressed the map must not get.
 	if !strings.Contains(body, "chart__h") && !strings.Contains(body, "chart__note") {
-		t.Errorf("фрагмент пуст: %.200q", body)
+		t.Errorf("ответ пуст: %.200q", body)
+	}
+}
+
+// One forecast lives at one address, and the answer knows which. A point the
+// reference names is that place's page; a point in the empty steppe keeps its
+// coordinates, so the link a reader shares still opens what they saw.
+func TestWeatherPlaceAddresses(t *testing.T) {
+	named := wxPlace{slug: "almaty", name: "Алматы", lat: 43.24, lon: 76.89}
+	if got := named.url(); got != "/weather/almaty" {
+		t.Errorf("адрес места = %q", got)
+	}
+	if got := named.key(); got != "almaty" {
+		t.Errorf("ключ кэша места = %q, а страница этого места кэшируется по слагу", got)
+	}
+	empty := wxPlace{name: "48.10, 66.20", lat: 48.1, lon: 66.2}
+	if got := empty.url(); got != "/weather?at=48.10,66.20" {
+		t.Errorf("адрес точки = %q", got)
+	}
+	// Two points in two different steppes are two forecasts: before this they
+	// shared the empty key and were served each other's sky.
+	if empty.key() == (wxPlace{lat: 50.0, lon: 60.0}).key() {
+		t.Error("разные точки попали в один ключ кэша")
+	}
+	for _, bad := range [][2]string{{"", ""}, {"abc", "51"}, {"95", "51"}, {"0", "0"}} {
+		if _, _, ok := wxCoords(bad[0], bad[1]); ok {
+			t.Errorf("координаты %v приняты, а это не место на Земле", bad)
+		}
+	}
+	lat, lon, ok := wxCoords(" 47.09 ", "51.92")
+	if !ok || lat != 47.09 || lon != 51.92 {
+		t.Errorf("разбор координат дал %v, %v, %v", lat, lon, ok)
+	}
+}
+
+// A point somebody shared opens as a page of its own rather than as somebody
+// else's town.
+func TestWeatherOpensASharedPoint(t *testing.T) {
+	app := newTestApp(t)
+	rec := app.do("GET", "/weather?at=48.10,66.20", nil)
+	if rec.Code != 200 {
+		t.Fatalf("точка в адресе ответила %d", rec.Code)
+	}
+	if body := rec.Body.String(); !strings.Contains(body, "48.10, 66.20") {
+		t.Errorf("страница не назвала точку, о которой её спросили: %.200q", body)
+	}
+	// Nonsense in the address is not a page.
+	if rec := app.do("GET", "/weather?at=95,200", nil); rec.Code != 404 {
+		t.Errorf("невозможная точка ответила %d, ожидался 404", rec.Code)
 	}
 }
 

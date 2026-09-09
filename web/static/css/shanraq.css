@@ -3302,11 +3302,16 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
    другая — «вы спросили про здесь», и путать их нельзя. */
 .wx-pin--pick i { background: var(--ink); }
 
-/* Ответ по нажатой точке. Появляется под картой и ведёт себя как обычный блок
-   страницы: те же плитки, та же таблица недели. */
-.wx-point[hidden] { display: none; }
-.wx-point__where { color: var(--ink-2); font-size: .85rem; margin: -2px 0 12px; }
-.wx-point__where a { color: inherit; }
+/* Ответ по нажатой точке приходит на место прежнего: пока он в пути, страница
+   гаснет наполовину — видно, что цифры уже не те, но раскладка не прыгает.
+   Нажатия по старым цифрам в это время не считаются: они уже про другое
+   место. */
+[data-wx-part].is-swapping { opacity: .45; pointer-events: none; transition: opacity .12s ease; }
+/* Строка «выбранная на карте точка»: откуда взялось место, которое читатель
+   не называл по имени. */
+.wx-from { color: var(--ink-2); font-size: .85rem; margin: -2px 0 12px; }
+.wx-fail[hidden] { display: none; }
+.wx-fail { color: var(--danger); }
 
 /* Календарь месяца в архиве. Семь колонок фиксированной ширины, чтобы числа
    стояли столбиком, а не разъезжались по длине. */

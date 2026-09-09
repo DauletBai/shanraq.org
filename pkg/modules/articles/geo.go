@@ -83,6 +83,20 @@ func (s *GeoStore) query(ctx context.Context, lang, where string, args ...any) (
 // kilometres that is exact enough to pick a neighbour, and picking a neighbour
 // is all it does.
 func (s *GeoStore) Nearest(ctx context.Context, lang string, lat, lon, maxKm float64) (GeoNode, float64, bool, error) {
+	return s.pick(ctx, lang, lat, lon, maxKm, "km, c.population DESC NULLS LAST")
+}
+
+// Prominent returns the largest place within maxKm instead of the closest one.
+// A reader looking at the whole country and pressing the Almaty blob means
+// Almaty, not the village six kilometres from the pixel they hit; how wide that
+// "means" is depends on how far the map is zoomed out, and the caller decides
+// it by choosing maxKm.
+func (s *GeoStore) Prominent(ctx context.Context, lang string, lat, lon, maxKm float64) (GeoNode, float64, bool, error) {
+	return s.pick(ctx, lang, lat, lon, maxKm, "c.population DESC NULLS LAST, km")
+}
+
+// pick is one place near a point, chosen by the given order.
+func (s *GeoStore) pick(ctx context.Context, lang string, lat, lon, maxKm float64, order string) (GeoNode, float64, bool, error) {
 	name := fmt.Sprintf("COALESCE(NULLIF(c.%s,''), c.name_ru)", geoNameCol(lang))
 	cos := math.Cos(lat * math.Pi / 180)
 	if cos < 0.01 {
@@ -98,7 +112,7 @@ func (s *GeoStore) Nearest(ctx context.Context, lang string, lat, lon, maxKm flo
 		WHERE c.lat IS NOT NULL AND c.lng IS NOT NULL
 		  AND c.lat BETWEEN $1 - $4 AND $1 + $4
 		  AND c.lng BETWEEN $2 - $5 AND $2 + $5
-		ORDER BY km, c.population DESC NULLS LAST
+		ORDER BY `+order+`
 		LIMIT 1`, name)
 
 	var n GeoNode

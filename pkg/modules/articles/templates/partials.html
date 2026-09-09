@@ -758,24 +758,45 @@
   }
   // Метка нарисована разметкой, а не картинкой: файлов значков Leaflet в
   // проекте нет, и его значок по умолчанию ищет их по своему пути и рвётся.
-  var place = box.getAttribute('data-place');
-  if (place) {
-    L.marker([lat, lng], {
+  function mark(la, ln, name) {
+    return L.marker([la, ln], {
       icon: L.divIcon({ className: 'wx-pin', html: '<i></i>', iconSize: [14, 14], iconAnchor: [7, 7] }),
-      title: place
-    }).addTo(map).bindPopup(place);
+      title: name
+    }).addTo(map).bindPopup(name);
   }
+  var place = box.getAttribute('data-place');
+  var here = place ? mark(lat, lng, place) : null;
 
-  // Нажатие по карте: сервер отвечает куском страницы про эту точку. Ходим
-  // только к себе — connect-src это разрешает, — и форматирует ответ он же,
-  // поэтому числа выглядят так же, как везде на странице.
-  var out = document.querySelector('[data-wx-point]');
-  if (out) {
+  // Нажатие по карте: страница целиком становится страницей нажатого места.
+  // Ходим только к себе — connect-src это разрешает, — и куски страницы
+  // собирает сервер, поэтому числа выглядят так же, как до нажатия.
+  var top = document.querySelector('[data-wx-part="top"]');
+  var bottom = document.querySelector('[data-wx-part="bottom"]');
+  if (top && bottom && 'fetch' in window) {
     var pin = null;
     var busy = null;
+    var fail = document.querySelector('[data-wx-fail]');
     var lang = document.documentElement.getAttribute('lang') || '';
+
+    function part(doc, name) {
+      var el = doc.querySelector('[data-wx-part="' + name + '"]');
+      return el ? el.innerHTML : null;
+    }
+
+    // Двойное нажатие — это приближение, а не вопрос про место: Leaflet
+    // присылает при нём два обычных нажатия, и без задержки читатель, который
+    // просто приблизил карту, получил бы две подмены страницы подряд.
+    var soon = null;
+    map.on('dblclick', function () { if (soon) { clearTimeout(soon); soon = null; } });
     map.on('click', function (e) {
       var p = e.latlng;
+      if (soon) clearTimeout(soon);
+      soon = setTimeout(function () { soon = null; ask(p); }, 260);
+    });
+
+    function ask(p) {
+      // Метка нажатия стоит там, где нажали, — ответ придёт по ближайшему
+      // городу, и видно, какой пиксель этот город выбрал.
       if (pin) { pin.setLatLng(p); } else {
         pin = L.marker(p, {
           icon: L.divIcon({ className: 'wx-pin wx-pin--pick', html: '<i></i>', iconSize: [14, 14], iconAnchor: [7, 7] })
@@ -785,20 +806,73 @@
       if (busy) busy.abort();
       busy = ('AbortController' in window) ? new AbortController() : null;
 
-      out.hidden = false;
-      out.textContent = out.getAttribute('data-loading') || '…';
+      if (fail) fail.hidden = true;
+      top.classList.add('is-swapping');
+      bottom.classList.add('is-swapping');
+      box.setAttribute('aria-busy', 'true');
+
+      // Масштаб едет вместе с нажатием: на карте всей страны палец накрывает
+      // сотню километров, и попавший в пятно Алматы имел в виду Алматы.
       var url = '/weather/point?lat=' + p.lat.toFixed(4) + '&lon=' + p.lng.toFixed(4) +
+                '&z=' + Math.round(map.getZoom()) +
                 (lang ? '&lang=' + encodeURIComponent(lang) : '');
       fetch(url, { headers: { 'Accept': 'text/html' }, signal: busy ? busy.signal : undefined })
         .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.text(); })
         .then(function (html) {
-          out.innerHTML = html;
-          out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          var doc = document.createElement('div');
+          doc.innerHTML = html;
+          var head = part(doc, 'top'), foot = part(doc, 'bottom');
+          var meta = doc.querySelector('[data-wx-meta]');
+          if (head === null || foot === null || !meta) throw new Error('empty answer');
+
+          // Карта остаётся на месте: она не перерисовывается и не уезжает под
+          // курсором. Верх страницы меняет высоту — на столько же двигаем
+          // прокрутку, иначе карта прыгает из-под пальца.
+          var was = box.getBoundingClientRect().top;
+          top.innerHTML = head;
+          bottom.innerHTML = foot;
+          window.scrollBy(0, box.getBoundingClientRect().top - was);
+
+          document.title = meta.getAttribute('data-title') || document.title;
+          // Страница сменилась целиком, как при переходе по ссылке, поэтому и
+          // читатель экрана должен услышать новый заголовок. Прокрутку при
+          // этом не трогаем: карта остаётся там, где на неё нажали.
+          var h1 = top.querySelector('h1');
+          if (h1) { h1.setAttribute('tabindex', '-1'); h1.focus({ preventScroll: true }); }
+          var place = meta.getAttribute('data-place') || '';
+          var mlat = parseFloat(meta.getAttribute('data-lat'));
+          var mlng = parseFloat(meta.getAttribute('data-lng'));
+          if (!isNaN(mlat) && !isNaN(mlng)) {
+            box.setAttribute('data-lat', mlat);
+            box.setAttribute('data-lng', mlng);
+            box.setAttribute('data-place', place);
+            // Жёлтая метка — место, о котором теперь вся страница.
+            if (here) { here.setLatLng([mlat, mlng]); if (place) here.setPopupContent(place); }
+            else { here = mark(mlat, mlng, place); }
+          }
+          // Адрес меняется вместе со страницей: ссылку можно отправить, а
+          // «назад» возвращает туда, откуда читатель пришёл.
+          var to = meta.getAttribute('data-url');
+          if (to && window.history && history.pushState) history.pushState({ wx: 1 }, '', to);
+          // Подсказки на новых графиках сами себя не подключат.
+          if (window.shanraqCharts) window.shanraqCharts();
         })
         .catch(function (err) {
           if (err && err.name === 'AbortError') return;
-          out.textContent = out.getAttribute('data-failed') || '';
+          if (fail) { fail.textContent = box.getAttribute('data-failed') || ''; fail.hidden = false; }
+        })
+        .then(function () {
+          top.classList.remove('is-swapping');
+          bottom.classList.remove('is-swapping');
+          box.removeAttribute('aria-busy');
         });
+    }
+
+    // Кнопка «назад» вернула прежний адрес — страница под ним должна быть
+    // прежней. Перерисовывает её сервер: он и так знает это место наизусть.
+    window.addEventListener('popstate', function (e) {
+      if (e.state && e.state.wx) { location.reload(); return; }
+      if (location.pathname.indexOf('/weather') === 0) location.reload();
     });
   }
 
@@ -1964,10 +2038,7 @@
 // the readout matches the one in the table below it. This code only decides which
 // point is being pointed at.
 (function () {
-  var plots = document.querySelectorAll('.spark__plot[data-fx]');
-  if (!plots.length) return;
-
-  Array.prototype.forEach.call(plots, function (plot) {
+  function bind(plot) {
     var data;
     try { data = JSON.parse(plot.getAttribute('data-fx')); } catch (e) { return; }
     if (!data || !data.l || !data.l.length || !data.s || !data.s.length) return;
@@ -2080,7 +2151,20 @@
       }
       e.preventDefault();
     });
-  });
+  }
+
+  // Rerun after a page swaps its charts for another place's: the handlers live
+  // on the frames themselves, and those frames are new. A frame already wired
+  // is left alone, so a second pass does not double every listener.
+  function scan() {
+    Array.prototype.forEach.call(document.querySelectorAll('.spark__plot[data-fx]'), function (plot) {
+      if (plot.hasAttribute('data-fx-live')) return;
+      plot.setAttribute('data-fx-live', '1');
+      bind(plot);
+    });
+  }
+  window.shanraqCharts = scan;
+  scan();
 })();
 </script>
 {{ end }}

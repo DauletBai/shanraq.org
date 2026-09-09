@@ -114,69 +114,225 @@ type WeatherPage struct {
 	Radar    string
 	// Updated is when this forecast was fetched.
 	Updated string
+	// FromPoint explains a place the reader never named: they pressed the map,
+	// and this is the nearest settlement to where they pressed. Empty on a page
+	// somebody opened by its own address.
+	FromPoint string
 }
 
-// WxPoint is the forecast for a point somebody pressed on the map.
+// WxSwap is the answer to a press on the map: the whole of the page, for the
+// place that was pressed.
 //
-// The page answers about its own place, and the map underneath it answers about
-// anywhere else — but until now pressing it did nothing, so a reader who wanted
-// the weather in the next town had to go and find that town's page. The answer
-// is rendered by the server, like everything else here, and arrives as a
-// fragment of this same page rather than as figures a script has to format.
-type WxPoint struct {
-	Lang string
-	// Name is the nearest place in the reference, or the coordinates themselves
-	// when the point is far from anything the reference knows.
-	Name string
-	// Slug leads to that place's own page; empty when the point is not a place.
-	Slug string
-	// Away is how far the named place is from the point, e.g. "12 км".
-	Away    string
-	Coords  string
-	HasData bool
-	Now     WxNow
-	Days    []WxDay
-	Updated string
+// The map used to answer beneath itself, in a block of its own, and that was the
+// wrong answer to the question people were asking. A reader in Kostanay who
+// presses Almaty wants Almaty's page — its heading, its degrees now, its two
+// charts, its week, its neighbours — not Kostanay's page with a second table
+// sewn onto the bottom. So the server renders the same parts the page is built
+// from, the browser puts them where the old ones stood, and the address bar
+// changes to the place that answered: what is on the screen and what the link
+// says stay the same thing.
+type WxSwap struct {
+	Page WeatherPage
+	// URL is where this answer lives — the place's own page, or the coordinates
+	// when the point is far from anything named. It is pressed into the reader's
+	// history, so the link stays shareable and Back still leads back.
+	URL string
+	// Title is the browser tab's, spelled the way site_head spells it.
+	Title string
 }
 
-// handleWeatherPoint answers a press on the map with the forecast for that
-// point, as a fragment of the weather page.
-func (m *Module) handleWeatherPoint(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
-	lat, errLat := strconv.ParseFloat(strings.TrimSpace(r.URL.Query().Get("lat")), 64)
-	lon, errLon := strconv.ParseFloat(strings.TrimSpace(r.URL.Query().Get("lon")), 64)
-	if errLat != nil || errLon != nil || !wxPointOK(lat, lon) {
-		http.Error(w, "bad point", http.StatusBadRequest)
-		return
+// wxSiteTitle is the tail of every page title. site_head writes it into the
+// markup; here it is written by hand, because the tab has to keep saying the
+// same thing after the page changes underneath it.
+const wxSiteTitle = " \u00b7 Shanraq.org"
+
+// wxPlace is what a weather page answers about: a point on Earth, a name for it,
+// and the reference entry behind it when there is one.
+type wxPlace struct {
+	slug string
+	name string
+	node *GeoNode
+	lat  float64
+	lon  float64
+	// note explains a place the reader never named: they pressed the map, and
+	// this is how far from that press the answer was taken.
+	note string
+}
+
+// key is what this place's forecast is cached under. A place with an address of
+// its own shares the cache with its page; anything else is kept by coordinates,
+// so two readers standing in different steppes are not served each other's sky.
+func (p wxPlace) key() string {
+	if p.slug != "" {
+		return p.slug
 	}
+	return fmt.Sprintf("@%.2f,%.2f", p.lat, p.lon)
+}
+
+// url is the address this answer lives at.
+func (p wxPlace) url() string {
+	if p.slug != "" {
+		return "/weather/" + p.slug
+	}
+	return fmt.Sprintf("/weather?at=%.2f,%.2f", p.lat, p.lon)
+}
+
+// wxCoords reads a pair of coordinates and refuses anything that is not a place
+// on Earth.
+func wxCoords(latS, lonS string) (float64, float64, bool) {
+	lat, errLat := strconv.ParseFloat(strings.TrimSpace(latS), 64)
+	lon, errLon := strconv.ParseFloat(strings.TrimSpace(lonS), 64)
+	if errLat != nil || errLon != nil || !wxPointOK(lat, lon) {
+		return 0, 0, false
+	}
+	return lat, lon, true
+}
+
+// wxPickPixels is how wide a press on the map is taken to be. A click is a
+// finger, not a coordinate.
+const wxPickPixels = 24
+
+// wxPickMinKm keeps the reach of a press sane at the closest zooms: a village is
+// still a village when the map is showing streets.
+const wxPickMinKm = 3
+
+// wxPickKm is how far a press may reach for a place, in kilometres, at the zoom
+// the reader is looking at. With the whole country on the screen that same
+// finger covers a hundred kilometres, and somebody who put it on the Almaty
+// blob meant Almaty — not the village six kilometres from the pixel they hit.
+// Zoomed in until streets show, it covers barely one, and then the village is
+// exactly what they meant.
+func wxPickKm(zoom int, lat float64) float64 {
+	if zoom <= 0 {
+		return 0
+	}
+	if zoom > 20 {
+		zoom = 20
+	}
+	// Web Mercator: one pixel at the equator is 156.543 km at zoom zero, halved
+	// with every step, and narrowed by the latitude.
+	perPixel := 156.543 * math.Cos(lat*math.Pi/180) / math.Pow(2, float64(zoom))
+	km := perPixel * wxPickPixels
+	if km < wxPickMinKm {
+		km = wxPickMinKm
+	}
+	if km > wxNearKm {
+		km = wxNearKm
+	}
+	return km
+}
+
+// pointPlace turns coordinates into the place a page can answer about: the
+// place the press was aimed at, the nearest settlement within wxNearKm when it
+// was aimed at nothing, or the point itself when the steppe around it is empty.
+// zoom is the map's, zero when the coordinates came from something other than a
+// press and there is no finger to be wide.
+func (m *Module) pointPlace(ctx context.Context, lang string, lat, lon float64, zoom int) wxPlace {
 	// Rounded before anything else: two decimals is about a kilometre, which is
 	// one forecast, and it keeps a dragged finger from asking for a thousand.
 	lat = math.Round(lat*100) / 100
 	lon = math.Round(lon*100) / 100
+	where := fmt.Sprintf("%.2f, %.2f", lat, lon)
+	p := wxPlace{lat: lat, lon: lon, name: where}
+	if m.geo == nil {
+		return p
+	}
+	var (
+		node  GeoNode
+		km    float64
+		found bool
+		err   error
+	)
+	if reach := wxPickKm(zoom, lat); reach > 0 {
+		node, km, found, err = m.geo.Prominent(ctx, lang, lat, lon, reach)
+	}
+	// Nothing was aimed at: the press landed in open steppe, and the nearest
+	// town — however far — is still a better answer than two numbers.
+	if err == nil && !found {
+		node, km, found, err = m.geo.Nearest(ctx, lang, lat, lon, wxNearKm)
+	}
+	if err != nil {
+		m.rt.Logger.Warn("weather point place", zap.Error(err))
+		return p
+	}
+	if !found || node.Lat == nil || node.Lng == nil {
+		return p
+	}
+	// The forecast is taken at the town rather than at the pixel: this is that
+	// town's page now, and a page must not disagree with its own address.
+	p.node, p.slug, p.name = &node, node.Slug, node.Name
+	p.lat, p.lon = *node.Lat, *node.Lng
+	if km >= 1 {
+		p.note = fmt.Sprintf(T(lang, "wx.point_from"), where,
+			fmt.Sprintf("%.0f %s", km, T(lang, "wx.km")))
+	} else {
+		p.note = fmt.Sprintf(T(lang, "wx.point_here"), where)
+	}
+	return p
+}
 
-	out := WxPoint{Lang: lang, Coords: fmt.Sprintf("%.2f, %.2f", lat, lon)}
-	out.Name = out.Coords
-	if m.geo != nil {
-		if node, km, ok, err := m.geo.Nearest(r.Context(), lang, lat, lon, wxNearKm); err == nil && ok {
-			out.Name = node.Name
-			out.Slug = node.Slug
-			if km >= 1 {
-				out.Away = fmt.Sprintf("%.0f %s", km, T(lang, "wx.km"))
-			}
-		} else if err != nil {
-			m.rt.Logger.Warn("weather point place", zap.Error(err))
+// weatherAt builds everything a weather page shows about a place: the forecast,
+// the address it sits at, its population and its neighbours. The page and the
+// map's answer are the same page, so both are built here.
+func (m *Module) weatherAt(ctx context.Context, lang string, p wxPlace) WeatherPage {
+	page, ok := m.weatherCached(ctx, p.key(), lang, p.lat, p.lon)
+	if !ok {
+		m.rt.Logger.Warn("weather unavailable", zap.String("place", p.key()))
+	}
+	page.PlaceName, page.Slug, page.FromPoint = p.name, p.slug, p.note
+	page.Lat, page.Lng = p.lat, p.lon
+	page.Radar = m.radarTiles(ctx)
+	if p.node == nil || m.geo == nil {
+		return page
+	}
+	id, err := uuid.Parse(p.node.ID)
+	if err != nil {
+		return page
+	}
+	if label, err := m.geo.PlaceLabel(ctx, id, lang); err == nil {
+		page.PlaceLabel = label
+	}
+	if kids, err := m.geo.Children(ctx, id, lang); err == nil {
+		page.Nearby = wxWithCoords(kids)
+	}
+	// A settlement has no children; its region's other places serve.
+	if len(page.Nearby) == 0 {
+		if sib, err := m.geo.Siblings(ctx, id, lang); err == nil {
+			page.Nearby = wxWithCoords(sib)
 		}
 	}
-
-	page, ok := m.weatherCached(r.Context(), fmt.Sprintf("@%.2f,%.2f", lat, lon), lang, lat, lon)
-	if ok && page.HasData {
-		out.HasData, out.Now, out.Days, out.Updated = true, page.Now, page.Days, page.Updated
+	if len(page.Nearby) > wxNearbyMax {
+		page.Nearby = page.Nearby[:wxNearbyMax]
 	}
+	if pop, year, err := m.geo.PlaceFacts(ctx, id); err == nil && pop > 0 {
+		page.Population, page.PopYear = wxGroupDigits(pop), year
+	}
+	return page
+}
+
+// handleWeatherPoint answers a press on the map with the page for that place.
+func (m *Module) handleWeatherPoint(w http.ResponseWriter, r *http.Request) {
+	lang := m.resolveLang(w, r)
+	lat, lon, ok := wxCoords(r.URL.Query().Get("lat"), r.URL.Query().Get("lon"))
+	if !ok {
+		http.Error(w, "bad point", http.StatusBadRequest)
+		return
+	}
+	zoom, _ := strconv.Atoi(strings.TrimSpace(r.URL.Query().Get("z")))
+	place := m.pointPlace(r.Context(), lang, lat, lon, zoom)
+	page := m.weatherAt(r.Context(), lang, place)
+	// The parts rendered here are the page's own, and they ask the templates for
+	// the reader's language the way the whole page does.
+	page.Base = Base{Lang: lang}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	// The fragment is as fresh as the forecast behind it and no fresher.
+	// The answer is as fresh as the forecast behind it and no fresher.
 	w.Header().Set("Cache-Control", "public, max-age=600")
-	m.render(w, "wx_point", out)
+	m.render(w, "wx_swap", WxSwap{
+		Page:  page,
+		URL:   place.url(),
+		Title: fmt.Sprintf(T(lang, "wx.title_place"), place.name) + wxSiteTitle,
+	})
 }
 
 // wxNearKm is how far the reference is searched for a name to call a point by.
@@ -201,11 +357,6 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 	lang := m.resolveLang(w, r)
 	slug := strings.TrimSpace(chi.URLParam(r, "slug"))
 
-	var (
-		lat, lon    float64
-		name, label string
-		node        *GeoNode
-	)
 	// The picker is a plain GET form, and a form cannot post into a path
 	// segment — so it arrives as a query and is sent on to the real address.
 	if p := strings.TrimSpace(r.URL.Query().Get("p")); p != "" && slug == "" {
@@ -213,7 +364,42 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if slug == "" {
+	var place wxPlace
+	switch {
+	case slug != "":
+		n, err := m.geo.BySlug(r.Context(), slug, lang)
+		if err != nil {
+			m.rt.Logger.Error("weather place", zap.Error(err))
+			http.Error(w, "internal error", http.StatusInternalServerError)
+			return
+		}
+		// A place with no coordinates cannot have a forecast, and inventing one
+		// from its region would be a forecast for somewhere else.
+		if n == nil || n.Lat == nil || n.Lng == nil {
+			http.NotFound(w, r)
+			return
+		}
+		place = wxPlace{slug: slug, name: n.Name, node: n, lat: *n.Lat, lon: *n.Lng}
+
+	// A point in the address: somebody shared the answer the map gave them for
+	// a spot the reference does not name. It is the same for everybody who
+	// opens it, so unlike the bare address it is a page a cache may keep.
+	case strings.Contains(r.URL.Query().Get("at"), ","):
+		at := strings.SplitN(strings.TrimSpace(r.URL.Query().Get("at")), ",", 2)
+		lat, lon, ok := wxCoords(at[0], at[1])
+		if !ok {
+			http.NotFound(w, r)
+			return
+		}
+		place = m.pointPlace(r.Context(), lang, lat, lon, 0)
+		// The reference does name it after all: the place has a page, and two
+		// addresses for one forecast is one address too many.
+		if place.slug != "" {
+			http.Redirect(w, r, "/weather/"+place.slug+"?lang="+lang, http.StatusFound)
+			return
+		}
+
+	default:
 		// The bare address answers differently for different readers, so it is
 		// nobody's to keep: a proxy that cached one reader's town would hand it
 		// to the next city along.
@@ -234,77 +420,30 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 		// where the reader is sent. The strip above already shows that town's
 		// temperature; landing on Almaty after pressing it was the page
 		// contradicting its own header.
-		if pt, ok := m.readerPoint(r); ok {
-			if m.geo != nil {
-				if node, _, found, err := m.geo.Nearest(r.Context(), lang, pt.lat, pt.lon, wxNearKm); err == nil && found && node.Slug != "" {
-					http.Redirect(w, r, "/weather/"+node.Slug+"?lang="+lang, http.StatusFound)
-					return
-				} else if err != nil {
-					m.rt.Logger.Warn("weather reader place", zap.Error(err))
-				}
-			}
-			// Nothing in the reference within eighty kilometres: the forecast
-			// is still the reader's own, it simply has no page of its own to
-			// live at, so it is rendered here under the name the address knows.
-			lat, lon, name = pt.lat, pt.lon, pt.city
-			if name == "" {
-				name = fmt.Sprintf("%.2f, %.2f", pt.lat, pt.lon)
-			}
-		} else {
+		pt, ok := m.readerPoint(r)
+		if !ok {
 			// Everyone else keeps the city the strip has always shown, so the
 			// link in the header lands where its temperature came from.
-			lat, lon = wxDefaultLat, wxDefaultLon
-			name = T(lang, "wx.default_city")
+			place = wxPlace{lat: wxDefaultLat, lon: wxDefaultLon, name: T(lang, "wx.default_city")}
+			break
 		}
-	} else {
-		n, err := m.geo.BySlug(r.Context(), slug, lang)
-		if err != nil {
-			m.rt.Logger.Error("weather place", zap.Error(err))
-			http.Error(w, "internal error", http.StatusInternalServerError)
+		place = m.pointPlace(r.Context(), lang, pt.lat, pt.lon, 0)
+		if place.slug != "" {
+			http.Redirect(w, r, "/weather/"+place.slug+"?lang="+lang, http.StatusFound)
 			return
 		}
-		// A place with no coordinates cannot have a forecast, and inventing one
-		// from its region would be a forecast for somewhere else.
-		if n == nil || n.Lat == nil || n.Lng == nil {
-			http.NotFound(w, r)
-			return
-		}
-		node, lat, lon, name = n, *n.Lat, *n.Lng, n.Name
-	}
-
-	page, ok := m.weatherCached(r.Context(), slug, lang, lat, lon)
-	page.PlaceName = name
-	page.Slug = slug
-	if !ok {
-		m.rt.Logger.Warn("weather unavailable", zap.String("slug", slug))
-	}
-
-	if node != nil {
-		if id, err := uuid.Parse(node.ID); err == nil {
-			if l, err := m.geo.PlaceLabel(r.Context(), id, lang); err == nil {
-				label = l
-			}
-			if kids, err := m.geo.Children(r.Context(), id, lang); err == nil {
-				page.Nearby = wxWithCoords(kids)
-			}
-			// A settlement has no children; its region's other places serve.
-			if len(page.Nearby) == 0 {
-				if sib, err := m.geo.Siblings(r.Context(), id, lang); err == nil {
-					page.Nearby = wxWithCoords(sib)
-				}
-			}
-			if len(page.Nearby) > wxNearbyMax {
-				page.Nearby = page.Nearby[:wxNearbyMax]
-			}
-			if pop, year, err := m.geo.PlaceFacts(r.Context(), id); err == nil && pop > 0 {
-				page.Population, page.PopYear = wxGroupDigits(pop), year
-			}
+		// Nothing in the reference within eighty kilometres: the forecast is
+		// still the reader's own, it simply has no page of its own to live at,
+		// so it is rendered here under the name the address knows. The reader
+		// pressed nothing, so there is nothing to explain about a press.
+		place.note = ""
+		if pt.city != "" {
+			place.name = pt.city
 		}
 	}
-	page.PlaceLabel = label
-	page.Lat, page.Lng = lat, lon
-	page.Radar = m.radarTiles(r.Context())
 
+	page := m.weatherAt(r.Context(), lang, place)
+	name := place.name
 	title := fmt.Sprintf(T(lang, "wx.title_place"), name)
 	page.Base = m.base(r, title, lang)
 	// The map needs Leaflet, and Leaflet is only shipped to the pages that draw
