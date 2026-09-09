@@ -599,6 +599,18 @@
   "py-funkciyalar-def-return-assert",
   "kz"
  ],
+ "python/generators": [
+  "py-generatorlar-yield-jad",
+  "ru"
+ ],
+ "python/generators-en": [
+  "py-generatorlar-yield-jad",
+  "en"
+ ],
+ "python/generators-kz": [
+  "py-generatorlar-yield-jad",
+  "kz"
+ ],
  "python/intro": [
   "tegin-kurs-python-derek-pen-ii",
   "ru"

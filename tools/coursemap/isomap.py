@@ -2175,6 +2175,33 @@ def pymap15(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap16(s):
+    """Python lesson 16: the list, the generator and the pass that is already spent.
+
+    The accents are what a generator buys and what it costs: values one at a
+    time instead of all of them at once, and nothing left for a second pass.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4117,6 +4144,38 @@ PY15 = {
 
 
 
+PY16 = {
+    "kz": dict(alt="Тізім, генератор және сарқылған аралау",
+               b1="тізім", b1_sub="бірден бәрі",
+               b2="генератор", b2_sub="бір-бірлеп",
+               b3="2-аралау", b3_sub="бос",
+               c1="yield", c2="800984 → 208",
+               head="МӘНДЕР БІР-БІРЛЕП ПАЙДА БОЛАДЫ",
+               head_sub="он алтыншы сабақ: yield, генераторлар",
+               foot="800 984 БАЙТҚА ҚАРСЫ 208",
+               foot_sub="өлшенді: тізім мен генератор"),
+    "ru": dict(alt="Список, генератор и исчерпанный проход",
+               b1="список", b1_sub="все сразу",
+               b2="генератор", b2_sub="по одному",
+               b3="проход 2", b3_sub="уже пусто",
+               c1="yield", c2="800984 → 208",
+               head="ЗНАЧЕНИЯ ПОЯВЛЯЮТСЯ ПО ОДНОМУ",
+               head_sub="шестнадцатый урок: yield, генераторы",
+               foot="800 984 БАЙТА ПРОТИВ 208",
+               foot_sub="измерено: список против генератора"),
+    "en": dict(alt="The list, the generator and the spent pass",
+               b1="the list", b1_sub="all at once",
+               b2="generator", b2_sub="one at a time",
+               b3="pass 2", b3_sub="already empty",
+               c1="yield", c2="800984 → 208",
+               head="THE VALUES ARRIVE ONE AT A TIME",
+               head_sub="lesson sixteen: yield, generators",
+               foot="800,984 BYTES AGAINST 208",
+               foot_sub="measured: a list against a generator"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4140,7 +4199,8 @@ if __name__ == "__main__":
                                ("csv", pymap12, PY12),
                                ("json", pymap13, PY13),
                                ("dates", pymap14, PY14),
-                               ("sets", pymap15, PY15)):
+                               ("sets", pymap15, PY15),
+                               ("generators", pymap16, PY16)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
