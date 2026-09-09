@@ -16,7 +16,7 @@
            the text takes and how long the exercises do. One number here used to
            be the reading alone, and the reader found that out the hard way. */}}
       {{ if gt .Minutes 0 }}<span class="dot">·</span>
-      <span class="metaic">{{ icon "clock" }}{{ t .Lang "course.time_n" }}: <b>{{ .Minutes }}</b> {{ t .Lang "course.min" }} {{ t .Lang "course.time_read" }}{{ if gt .Practice 0 }} + <b>{{ .Practice }}</b> {{ t .Lang "course.min" }} {{ t .Lang "course.time_prac" }}{{ end }}</span>{{ end }}
+      <span class="metaic">{{ icon "clock" }}<b>{{ .Minutes }}</b> {{ t .Lang "course.min" }} {{ t .Lang "course.time_read" }}{{ if gt .Practice 0 }} · <b>{{ .Practice }}</b> {{ t .Lang "course.min" }} {{ t .Lang "course.time_prac" }}{{ end }}</span>{{ end }}
       {{ if gt .Done 0 }}<span class="dot">·</span>
       <span class="metaic">{{ icon "list" }}{{ t .Lang "course.done_n" }}: <b>{{ .Done }}</b></span>{{ end }}
     </p>
