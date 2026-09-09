@@ -38,3 +38,7 @@ configs/config.local.yaml
 
 # Local backup archives (contain data — never commit)
 /backups/
+
+# Python bytecode: written by any run of the course project.
+__pycache__/
+*.pyc
