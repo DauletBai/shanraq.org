@@ -134,6 +134,25 @@ def test_pyrun():
         code, out = run("pyrun.py", task)
         check("обещанный вывод сверен с решением", code, 0)
 
+        # From the pandas module on, a lesson needs a library that is not part
+        # of Python. Absent on this machine, it is a machine that is not set up;
+        # absent in the standard library, it is a mistake in the lesson.
+        absent = write(tmp, "lib.md", LESSON.format(
+            program="import nesushchestvuyushchaya_biblioteka\n\nprint(1)", output="1"))
+        code, out = run("pyrun.py", absent)
+        check("неустановленная библиотека — пропуск, не ошибка", code, 0)
+        check("сказано, чего не хватает", "не установлена библиотека" in out, True)
+
+        # A module Python itself ships is a different matter: missing, it means
+        # the lesson names it wrongly, and that must stay an error.
+        pyrun = load("pyrun")
+        check("отсутствующая библиотека названа",
+              pyrun.missing_library("ModuleNotFoundError: No module named 'pandas'"), "pandas")
+        check("стандартный модуль не считается неустановленной библиотекой",
+              pyrun.missing_library("ModuleNotFoundError: No module named 'sqlite3'"), "")
+        check("другая ошибка библиотекой не объясняется",
+              pyrun.missing_library("NameError: name 'x' is not defined"), "")
+
 
 def test_pycheck():
     print("pycheck:")

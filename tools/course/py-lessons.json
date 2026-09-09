@@ -15,6 +15,7 @@
   "21": "python/sqlite",
   "22": "python/sql",
   "23": "python/schedule",
+  "24": "python/pandas",
   "3": "python/numbers",
   "4": "python/types",
   "5": "python/list",

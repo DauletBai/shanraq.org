@@ -695,6 +695,18 @@
   "py-sandar-joldar-shygys",
   "kz"
  ],
+ "python/pandas": [
+  "py-pandas-nege-kerek-olsheu",
+  "ru"
+ ],
+ "python/pandas-en": [
+  "py-pandas-nege-kerek-olsheu",
+  "en"
+ ],
+ "python/pandas-kz": [
+  "py-pandas-nege-kerek-olsheu",
+  "kz"
+ ],
  "python/polite": [
   "py-sypaiylyq-timeout-retry-kesh",
   "ru"

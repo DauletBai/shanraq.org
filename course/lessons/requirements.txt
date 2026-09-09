@@ -1,0 +1,7 @@
+# Libraries the Python lessons are written against.
+#
+# The output printed in a lesson is the output of these exact versions: pandas
+# prints a table its own way, and a changed default would make a lesson lie. CI
+# installs this file before running the lessons; a reader installs the same
+# versions in the lesson that introduces the library.
+pandas==3.0.5

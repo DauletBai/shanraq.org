@@ -72,6 +72,13 @@ jobs:
         with:
           python-version: '3.14'
 
+      # From the pandas module on, the lessons need a library Python does not
+      # ship, and the version is the one their output was printed with. Without
+      # it those lessons are skipped rather than run -- a skip is silent, and a
+      # silent check proves nothing.
+      - name: Libraries the lessons are written against
+        run: pip install --disable-pip-version-check -r course/lessons/requirements.txt
+
       # The checkers first: a broken checker is a green run that proves nothing,
       # and two of them have been quietly broken before.
       - name: The checks themselves work

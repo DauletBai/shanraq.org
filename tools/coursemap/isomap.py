@@ -2393,6 +2393,34 @@ def pymap23(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap24(s):
+    """Python lesson 24: the same question, asked two ways.
+
+    Two blocks stand for the two ways and are deliberately the same height: the
+    measurement's point is not that one of them is a giant, but where the
+    distance between them is a step and where it is an order.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4591,6 +4619,38 @@ PY23 = {
 
 
 
+PY24 = {
+    "kz": dict(alt="Тізім, өлшем және кесте",
+               b1="тізім", b1_sub="цикл және сөздік",
+               b2="өлшем", b2_sub="timeit, бес рет",
+               b3="кесте", b3_sub="бір жол",
+               c1="сол сұрақ", c2="сол жауап",
+               head="ЕКІ ТӘСІЛ — БІР ЖАУАП",
+               head_sub="жиырма төртінші сабақ: pandas",
+               foot="БАҒАН 40 ЕСЕ, ТОПТАУ 2 ЕСЕ",
+               foot_sub="өлшенді: миллион жол"),
+    "ru": dict(alt="Список, замер и таблица",
+               b1="список", b1_sub="цикл и словарь",
+               b2="замер", b2_sub="timeit, пять раз",
+               b3="таблица", b3_sub="одна строка",
+               c1="тот же вопрос", c2="тот же ответ",
+               head="ДВА СПОСОБА — ОДИН ОТВЕТ",
+               head_sub="двадцать четвёртый урок: pandas",
+               foot="СТОЛБЕЦ В 40 РАЗ, ГРУППИРОВКА ВДВОЕ",
+               foot_sub="измерено: миллион строк"),
+    "en": dict(alt="A list, a measurement and a table",
+               b1="a list", b1_sub="a loop and a dict",
+               b2="measure", b2_sub="timeit, five runs",
+               b3="a table", b3_sub="one line",
+               c1="same question", c2="same answer",
+               head="TWO WAYS, ONE ANSWER",
+               head_sub="lesson twenty-four: pandas",
+               foot="A COLUMN BY 40, GROUPING BY 2",
+               foot_sub="measured: a million rows"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4622,7 +4682,8 @@ if __name__ == "__main__":
                                ("polite", pymap20, PY20),
                                ("sqlite", pymap21, PY21),
                                ("sql", pymap22, PY22),
-                               ("schedule", pymap23, PY23)):
+                               ("schedule", pymap23, PY23),
+                               ("pandas", pymap24, PY24)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

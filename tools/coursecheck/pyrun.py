@@ -48,6 +48,21 @@ WHOLE = ("\"\"\"", "'''", "import ", "from ", "#!/")
 NETWORK = ("URLError", "urlopen error", "Temporary failure in name resolution",
            "Network is unreachable", "timed out", "getaddrinfo failed")
 
+# From the pandas module on, a lesson needs a library that is not part of Python.
+# A machine without it is a machine that is not set up, and that is not the same
+# thing as a broken lesson -- the same rule the network already gets. A missing
+# standard-library module stays an error, because that is a typo in the lesson.
+NO_MODULE = re.compile(r"ModuleNotFoundError: No module named '([\w.]+)'")
+
+
+def missing_library(err):
+    """The uninstalled library a program needed, or "" when that was not why."""
+    m = NO_MODULE.search(err)
+    if not m:
+        return ""
+    name = m.group(1).split(".")[0]
+    return "" if name in sys.stdlib_module_names else name
+
 
 DRILL = re.compile(r"<!--\s*drill (\d+)(?:\s+(out))?\s*-->")
 
@@ -173,6 +188,11 @@ def check_lessons(paths):
                 skipped += 1
                 print(f"  ~ {os.path.basename(path)} #{n}: пропущено, сеть недоступна")
                 continue
+            if err and missing_library(err):
+                skipped += 1
+                print(f"  ~ {os.path.basename(path)} #{n}: пропущено, "
+                      f"не установлена библиотека {missing_library(err)}")
+                continue
             if err:
                 bad += 1
                 print(f"  ! {os.path.basename(path)} #{n}: {err}")
@@ -194,6 +214,10 @@ def check_lessons(paths):
                 if err and any(mark in err for mark in NETWORK):
                     skipped += 1
                     print(f"  ~ {os.path.basename(path)} задание: пропущено, сеть недоступна")
+                elif err and missing_library(err):
+                    skipped += 1
+                    print(f"  ~ {os.path.basename(path)} задание: пропущено, "
+                          f"не установлена библиотека {missing_library(err)}")
                 elif err:
                     bad += 1
                     print(f"  ! {os.path.basename(path)} задание: {err}")
@@ -210,6 +234,11 @@ def check_lessons(paths):
             if err and any(mark in err for mark in NETWORK):
                 skipped += 1
                 print(f"  ~ {os.path.basename(path)} разминка {number}: пропущена, сеть недоступна")
+                continue
+            if err and missing_library(err):
+                skipped += 1
+                print(f"  ~ {os.path.basename(path)} разминка {number}: пропущена, "
+                      f"не установлена библиотека {missing_library(err)}")
                 continue
             if err:
                 bad += 1
@@ -265,6 +294,10 @@ def check_steps():
             if any(mark in r.stderr for mark in NETWORK):
                 skipped += 1
                 print(f"  ~ {name}: пропущен, сеть недоступна")
+            elif missing_library(r.stderr):
+                skipped += 1
+                print(f"  ~ {name}: пропущен, не установлена библиотека "
+                      f"{missing_library(r.stderr)}")
             else:
                 bad += 1
                 print(f"  ! {name}: {last}")
