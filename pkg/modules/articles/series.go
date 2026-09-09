@@ -60,6 +60,15 @@ type SeriesItem struct {
 	// Passed is set only for a signed-in reader, and only on the course map:
 	// whether they have had this lesson's exercise accepted.
 	Passed bool
+	// Practice is how long the lesson's exercises take, beside the minutes its
+	// text takes to read. Zero for a lesson that sets none.
+	Practice int
+	// No is the lesson's number as the reader counts them, and zero for the
+	// front matter. The contents used to number every row from one, so the
+	// first lesson was shown as the second and the twentieth as the
+	// twenty-first -- while the strip beside a lesson, which skips the front
+	// matter, said something else on the same site.
+	No int
 }
 
 // Intro reports whether this item is the course's front matter rather than a
@@ -120,6 +129,18 @@ func (s *Series) Minutes() int {
 	for _, it := range s.Items {
 		if it.Published {
 			n += it.Minutes
+		}
+	}
+	return n
+}
+
+// Practice totals the time the published lessons' exercises take. A course is
+// as long as it takes to walk it, and the reading is the shorter half.
+func (s *Series) Practice() int {
+	n := 0
+	for _, it := range s.Items {
+		if it.Published {
+			n += it.Practice
 		}
 	}
 	return n
@@ -278,7 +299,18 @@ func (st *SeriesStore) items(ctx context.Context, seriesID uuid.UUID, lang strin
 		}
 		it.Published = status == "published"
 		it.Minutes = readingMinutes(body)
+		it.Practice = practiceMinutes(body)
 		list = append(list, it)
+	}
+	// Numbering counts lessons only, so the announcement in front of them does
+	// not shift every number by one.
+	n := 0
+	for _, it := range list {
+		if it.Intro() {
+			continue
+		}
+		n++
+		it.No = n
 	}
 	return list, rows.Err()
 }

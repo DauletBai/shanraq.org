@@ -80,7 +80,7 @@ In PowerShell the very first activation can run into a ban on running scripts. I
 - **macOS:** take the installer from python.org — it asks for nothing to be installed first. If you already have Homebrew, `brew install python` does the same. Better to leave the Python that came with the system alone: macOS itself uses it.
 - **Linux:** it is almost certainly there already; if not, `sudo apt install python3 python3-venv` or the same through your package manager.
 
-Any version from 3.12 will do. The course is written and checked on 3.14.
+Any version from 3.12 will do: on 3.12 and 3.13 every program in the course is checked to compile. The course is written and measured on 3.14, and Python's own messages differ a little between versions — if your output differs from the lesson in the text of an error, that is usually why.
 
 ### What an environment is and why it lives in the project
 

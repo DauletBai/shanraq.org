@@ -217,6 +217,21 @@ A transaction is "all or nothing": several changes either reach the file togethe
 
 It is worth knowing, too, that `with sqlite3.connect(...) as conn` does **commit** but does **not close** the connection — unlike a `with` on a file. The file is closed explicitly.
 
+### `REAL` — and what became of `Decimal` from lesson four
+
+Lesson four said it outright: money is not counted in `float`, because `0.1 + 0.2` is not `0.3`. And here the rate lies in a `REAL` column, which is that same `float`. There is no contradiction, but the boundary has to be named, or the rule looks repealed.
+
+The rule about `Decimal` is about **sums somebody owes somebody**: a price on a receipt, a balance on an account, tax assessed. There an error of a hundredth is an error in money, and it accumulates as thousands of rows are added.
+
+An exchange rate, inflation, a temperature are **measurements**. Their precision is already what it is on the way in (the bank gives two decimals), they are rarely added up, and averages over them are approximate anyway. For such a series `float` is honest.
+
+If it really is money going into the database, SQLite has no `Decimal` type, and the decision is made in advance — one of two:
+
+- **a whole number of the smallest unit** (`INTEGER`): 1,234.56 is stored as `123456`, and all the arithmetic is in integers;
+- **text** (`TEXT`): the `Decimal` goes in as a string and comes back through `Decimal(row["value"])`.
+
+Both are agreements, and they are written down beside the table. A silent "let us put it in a `float` and sort it out later" is exactly the case where six months on the report is a penny out and nobody remembers why.
+
 ### A `dataclass` is a record with names
 
 ```python
@@ -230,6 +245,12 @@ class Rate:
 `@dataclass` takes the drudgery away: it writes the `__init__`, the comparison and the printing itself. A row comes out of the database, a `Rate` is built from it, and from there the program carries an object with fields rather than a tuple in which you have to remember what sits in second place.
 
 It prints itself, too — `Rate(day='2026-01-15', code='EUR', value=594.86)` — and that is not decoration: while debugging you can see what is actually in the variable.
+
+**And a word about the word `class`.** The object model — classes with methods, inheritance, everything behind it — is not part of this course: the digest does not need it, and the course says so outright rather than pretending the language ends here.
+
+But `class` has met you three times already, and every time in the same modest role: a **name**. In lesson ten `class BadRow(ValueError)` gave a name to an error of your own. In lesson twenty a class described the teaching server — which you read rather than wrote. Here `@dataclass` gives a name to a record: `Rate` is "day, currency, rate", and `Rate("2026-01-15", "USD", 510.43)` is one such set of values, an instance. It has the fields you declared; you wrote no methods, and you are not writing any today.
+
+That is enough to use a `dataclass` knowingly. Everything else about classes is a separate conversation, and it is not here.
 
 ## The map of the lesson
 

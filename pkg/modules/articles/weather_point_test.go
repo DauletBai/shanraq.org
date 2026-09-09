@@ -104,3 +104,68 @@ func TestWeatherDefaultsWhenPlaceUnknown(t *testing.T) {
 		t.Error("без базы городов страница не показала город по умолчанию")
 	}
 }
+
+// The contents and the strip beside a lesson must count the same way: the
+// announcement in front of the course is not lesson one.
+func TestCourseNumbersSkipTheAnnouncement(t *testing.T) {
+	items := []*SeriesItem{
+		{Position: 1, Title: "О курсе"},
+		{Position: 10, Title: "Урок 1"},
+		{Position: 20, Title: "Урок 2"},
+	}
+	n := 0
+	for _, it := range items {
+		if it.Intro() {
+			continue
+		}
+		n++
+		it.No = n
+	}
+	if items[0].No != 0 {
+		t.Errorf("анонс получил номер %d", items[0].No)
+	}
+	if items[1].No != 1 || items[2].No != 2 {
+		t.Errorf("уроки пронумерованы %d и %d, ожидались 1 и 2", items[1].No, items[2].No)
+	}
+}
+
+// A lesson's figure used to count the reading alone, so a reader who saw eight
+// minutes and spent an hour typing had been told something untrue by the course
+// itself.
+func TestPracticeTimeCountsTheExercises(t *testing.T) {
+	body := `## Разминка
+
+<!-- drill 1 -->
+` + "```python\nprint(1)\n```" + `
+
+<!-- drill 1 out -->
+` + "```\n1\n```" + `
+
+<!-- drill 2 -->
+` + "```python\nprint(2)\n```" + `
+
+<!-- drill 2 out -->
+` + "```\n2\n```" + `
+
+## Задание
+
+**Обязательное.** Сделайте это.
+
+**На своих данных.** И то же самое на своих.
+
+## Ответы
+`
+	// Two drills (10) + the required task (20) + own data (10).
+	if got := practiceMinutes(body); got != 40 {
+		t.Errorf("практика = %d мин, ожидалось 40", got)
+	}
+	// A page with no exercise sets no practice at all.
+	if got := practiceMinutes("## Зачем это нужно\n\nПросто текст."); got != 0 {
+		t.Errorf("страница без задания получила %d мин практики", got)
+	}
+	// The reading estimate stays what it was: the two answer different
+	// questions and must not be added into one figure by accident.
+	if readingMinutes(body) < 1 {
+		t.Error("время чтения потерялось")
+	}
+}

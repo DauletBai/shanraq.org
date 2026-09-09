@@ -28,6 +28,10 @@ type CoursePage struct {
 	Items   []*SeriesItem
 	Lessons int
 	Minutes int
+	// Practice is the time the exercises take, shown beside the reading time:
+	// a course whose figure counts only the reading tells the reader something
+	// untrue on the very first page.
+	Practice int
 	// Done is how many of them this reader has passed; zero for a visitor.
 	Done int
 }
@@ -68,10 +72,11 @@ func (m *Module) handleCourse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	page := CoursePage{
-		Base:    m.base(r, s.TitleIn(lang), lang),
-		Series:  s,
-		Lessons: s.Lessons(),
-		Minutes: s.Minutes(),
+		Base:     m.base(r, s.TitleIn(lang), lang),
+		Series:   s,
+		Lessons:  s.Lessons(),
+		Minutes:  s.Minutes(),
+		Practice: s.Practice(),
 	}
 	if d := s.SummaryIn(lang); d != "" {
 		page.Desc = d

@@ -12,8 +12,11 @@
     {{ if .Items }}
     <p class="crsmap__facts">
       <span class="metaic">{{ icon "list" }}{{ t .Lang "course.lessons_n" }}: <b>{{ .Lessons }}</b></span>
+      {{/* Two numbers, because they answer two different questions: how long
+           the text takes and how long the exercises do. One number here used to
+           be the reading alone, and the reader found that out the hard way. */}}
       {{ if gt .Minutes 0 }}<span class="dot">·</span>
-      <span class="metaic">{{ icon "clock" }}{{ t .Lang "course.time_n" }}: <b>{{ .Minutes }}</b> {{ t .Lang "course.min" }}</span>{{ end }}
+      <span class="metaic">{{ icon "clock" }}{{ t .Lang "course.time_n" }}: <b>{{ .Minutes }}</b> {{ t .Lang "course.min" }} {{ t .Lang "course.time_read" }}{{ if gt .Practice 0 }} + <b>{{ .Practice }}</b> {{ t .Lang "course.min" }} {{ t .Lang "course.time_prac" }}{{ end }}</span>{{ end }}
       {{ if gt .Done 0 }}<span class="dot">·</span>
       <span class="metaic">{{ icon "list" }}{{ t .Lang "course.done_n" }}: <b>{{ .Done }}</b></span>{{ end }}
     </p>
@@ -37,13 +40,13 @@
   <ol class="lessons">
     {{ range $i, $it := .Items }}
     <li class="lesson">
-      <span class="lesson__no" aria-hidden="true">{{ inc $i }}</span>
+      <span class="lesson__no" aria-hidden="true">{{ if $it.No }}{{ $it.No }}{{ else }}·{{ end }}</span>
       <div class="lesson__body">
         <h2 class="lesson__h"><a href="/read/{{ $it.Slug }}?lang={{ $.Lang }}">{{ $it.Title }}</a>
           {{ if $it.Passed }}<span class="chk__badge">{{ t $.Lang "chk.done_mark" }}</span>{{ end }}
         </h2>
         {{ with $it.Summary }}<p class="lesson__sum">{{ . }}</p>{{ end }}
-        {{ if gt $it.Minutes 0 }}<p class="lesson__meta">{{ icon "clock" }}{{ $it.Minutes }} {{ t $.Lang "course.min" }}</p>{{ end }}
+        {{ if gt $it.Minutes 0 }}<p class="lesson__meta">{{ icon "clock" }}{{ $it.Minutes }} {{ t $.Lang "course.min_short" }} {{ t $.Lang "course.time_read" }}{{ if gt $it.Practice 0 }} · {{ $it.Practice }} {{ t $.Lang "course.min_short" }} {{ t $.Lang "course.time_prac" }}{{ end }}</p>{{ end }}
       </div>
     </li>
     {{ end }}

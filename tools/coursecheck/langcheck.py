@@ -76,6 +76,48 @@ def language_of(path):
     return stem.removesuffix(".ru.md").removesuffix(".md"), "ru"
 
 
+# Russian words that keep creeping into the Kazakh lessons because the author
+# thinks in Russian while writing them. Each one has a Kazakh word that says the
+# same thing, and a reader who meets "выгрузка" in a Kazakh sentence learns that
+# the course was translated rather than written.
+RUSSISMS_KZ = {
+    "выгрузка": "деректер экспорты",
+    "выгрузку": "деректер экспортын",
+    "выгрузки": "деректер экспорты",
+    "олқылық": "жетіспейтін мән",
+    "аңғал уақыт": "белдеусіз уақыт",
+    "саналы уақыт": "белдеуі бар уақыт",
+}
+
+# Second-person singular forms. The lessons address the reader as "сіз"
+# throughout, and one "сен" in the middle of a paragraph reads as a different
+# author.
+INFORMAL_KZ = re.compile(
+    r"\b(өзің|сенің|сені|саған|қатеңе|атауың|аласың|көресің|жазасың|істейсің|"
+    r"қоясың|білесің|аларсың)\b", re.IGNORECASE)
+
+
+def check_kazakh_prose(path):
+    """Reports Russian loanwords and informal address in a Kazakh lesson.
+
+    Both are about the same thing: a Kazakh page that reads as a translation is
+    a Kazakh page the reader will switch away from.
+    """
+    if not path.endswith("-kz.md"):
+        return []
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
+    prose = "".join(FENCE.sub("", text))
+    found = []
+    for word, better in RUSSISMS_KZ.items():
+        if word in prose.lower():
+            found.append(f"русизм «{word}» — лучше «{better}»")
+    for m in INFORMAL_KZ.finditer(prose):
+        found.append(f"обращение на «сен»: «{m.group(0)}»")
+        break
+    return found
+
+
 def check(path):
     name, lang = language_of(path)
     with open(path, encoding="utf-8") as f:
@@ -111,8 +153,11 @@ def main(paths):
         if words:
             bad += 1
             print(f"{path}: {why}: {' '.join(words)}")
+        for note in check_kazakh_prose(path):
+            bad += 1
+            print(f"{path}: {note}")
     if bad:
-        print(f"\nфайлов с расхождением: {bad} из {len(paths)}")
+        print(f"\nзамечаний: {bad}")
         return 1
     print(f"проверено файлов: {len(paths)} — язык кода везде совпадает с языком урока")
     return 0

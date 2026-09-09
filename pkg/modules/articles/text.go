@@ -187,6 +187,36 @@ func readingMinutes(source string) int {
 	return m
 }
 
+// practiceMinutes estimates how long a lesson's exercises take, which is not
+// the same question as how long its text takes to read.
+//
+// The figure beside a lesson used to be reading time alone, and a reader who
+// saw "8 min" and then spent an hour typing, running and mending had been told
+// something untrue by their own course. The estimate here is deliberately
+// coarse and deliberately visible: five minutes for each warm-up drill, twenty
+// for the required task with its fixed data, ten for repeating it on the
+// reader's own numbers. A lesson with no exercise gets none.
+func practiceMinutes(source string) int {
+	drills := strings.Count(source, "<!-- drill ")
+	// Each drill has two markers -- the program and its answer -- and only the
+	// programs are counted.
+	drills -= strings.Count(source, " out -->")
+	if drills < 0 {
+		drills = 0
+	}
+	minutes := drills * 5
+	if lessonExercise(source) != "" {
+		minutes += 20
+	}
+	for _, own := range []string{"**На своих данных.**", "**Өз деректеріңізде.**", "**On your own data.**"} {
+		if strings.Contains(source, own) {
+			minutes += 10
+			break
+		}
+	}
+	return minutes
+}
+
 // stripMD removes the most common Markdown markup to produce plain text
 // suitable for a feed summary.
 // htmlTag matches a complete tag, so an author who pasted HTML gets it removed

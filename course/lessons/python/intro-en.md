@@ -44,7 +44,9 @@ Then comes the table that makes learning to count worth it. Inflation, % per yea
 | Armenia | 7.2 | 8.6 | 2.0 | 0.3 | 3.3 |
 | Poland | 5.1 | 14.4 | 11.5 | 3.8 | 3.8 |
 
-Everybody got the shock of 2022. The world came back to 3.0%, the neighbours to 3–4%, and Kazakhstan re-accelerated to 11.4%.
+The countries in the table were chosen not by their borders but by the likeness of their situation: a small open economy with a currency of its own, dependent on imports and on one or two large markets. Georgia and Armenia are neighbours within the region; Poland is the same logic in Europe.
+
+Everybody got the shock of 2022. The world came back to 3.0%, the compared countries to 3–4%, and Kazakhstan re-accelerated to 11.4%.
 
 Along the way the reader counts their **own personal inflation** from their own receipts and compares it with the official figure; finds out how much money there is per tenge of GDP and who created it; reads what the law says about issuing money and what it says about credit; trains a first model and sees where it lies.
 
@@ -52,7 +54,7 @@ Along the way the reader counts their **own personal inflation** from their own 
 
 **It will not name a culprit in advance.** A conclusion announced before you have opened the data is somebody else's conclusion. Here the counting is yours.
 
-We show where both of the usual stories fail. "The outside world is to blame" does not explain the table above: the neighbours had the same shock. But "they simply printed money" does not explain it either: broad money grows 13–18% a year in Armenia, 11–17% in Georgia and 12–21% in Kazakhstan — comparable growth with inflation three times apart. So several series have to be looked at together: money, the exchange rate, tariffs, and where the new money goes.
+We show where both of the usual stories fail. "The outside world is to blame" does not explain the table above: the compared countries had the same shock. But "they simply printed money" does not explain it either: broad money grows 13–18% a year in Armenia, 11–17% in Georgia and 12–21% in Kazakhstan — comparable growth with inflation three times apart. So several series have to be looked at together: money, the exchange rate, tariffs, and where the new money goes.
 
 **It will not ask you to take our word.** This site has already published pieces on money, banks and inflation. In the exercises the reader takes a claim from one of our articles and checks it against open data. If it does not hold, write to us and the article gets corrected.
 
@@ -60,7 +62,7 @@ We show where both of the usual stories fail. "The outside world is to blame" do
 
 The same way as in the Go course: on the method of **Viktor Fyodorovich Shatalov**, the Soviet teacher whose system let schoolchildren cover the syllabus several times faster. We consider it the best thing twentieth-century teaching produced.
 
-**The whole first, the details after.** Every lesson starts with a working program: you run it understanding nothing yet, and only then take it apart. The first lesson needs nothing installed at all — thirty lines run on bare Python.
+**The whole first, the details after.** Every lesson starts with a working program: you run it understanding nothing yet, and only then take it apart. The first lesson needs nothing installed at all — fifty lines run on bare Python.
 
 **The supporting signal.** At the end of the walk-through comes the map of the lesson: one picture on one screen, which you can redraw by hand.
 

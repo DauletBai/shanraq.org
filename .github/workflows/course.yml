@@ -39,6 +39,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  # The plan says the course runs on 3.12 and up, and this is what backs that
+  # claim: every program is compiled on each version. Only compiled -- the
+  # printed output is 3.14's, because Python's own messages change between
+  # versions and a lesson prints what Python printed.
+  compiles:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.12', '3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Every Python program compiles on ${{ matrix.python }}
+        run: python3 tools/coursecheck/pycheck.py course/lessons/python/*.md
+
   lessons:
     runs-on: ubuntu-latest
     steps:

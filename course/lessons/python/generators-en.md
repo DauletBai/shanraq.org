@@ -1,6 +1,6 @@
-# Iterators and generators: 800,984 bytes against 208
+# Iterators and generators: four megabytes against four hundred bytes
 
-_Лид (summary):_ **The sixteenth lesson of the Python course. A hundred thousand squares take 800,984 bytes as a list and 208 as a generator — measured. The difference is not in how you count them but in when the values appear. Plus the mistake that matters: a generator is good for one pass, and the second one quietly gives you nothing.**
+_Лид (summary):_ **The sixteenth lesson of the Python course. A hundred thousand squares take almost four megabytes as a list and 376 bytes as a generator — measured, with every number counted in. The difference is not in how you count them but in when the values appear. Plus the mistake that matters: a generator is good for one pass, and the second one quietly gives you nothing.**
 
 ## Why this is needed
 
@@ -25,6 +25,7 @@ all at once, or one at a time.
 """
 
 import sys
+import tracemalloc
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -64,10 +65,17 @@ print("the second value:", next(stream))
 
 print()
 print("== the brackets decide: a list or a generator")
+# getsizeof measures the object itself, and a list is only references to the
+# numbers. What is actually taken up is counted by tracemalloc.
+tracemalloc.start()
+base = tracemalloc.get_traced_memory()[0]
 squares_list = [number * number for number in range(100_000)]
+list_all = tracemalloc.get_traced_memory()[0] - base
 squares_gen = (number * number for number in range(100_000))
-print("list:     ", type(squares_list).__name__, sys.getsizeof(squares_list), "bytes")
-print("generator:", type(squares_gen).__name__, sys.getsizeof(squares_gen), "bytes")
+gen_all = tracemalloc.get_traced_memory()[0] - base - list_all
+tracemalloc.stop()
+print("list:      the object itself", sys.getsizeof(squares_list), "bytes, with every number", list_all)
+print("generator: the object itself", sys.getsizeof(squares_gen), "bytes, with all it holds", gen_all)
 print("the sum is the same:", sum(squares_list) == sum(squares_gen))
 
 print()
@@ -100,8 +108,8 @@ the first value: (2000, 1.5)
 the second value: (2000, 2.5)
 
 == the brackets decide: a list or a generator
-list:      list 800984 bytes
-generator: generator 208 bytes
+list:      the object itself 800984 bytes, with every number 3999680
+generator: the object itself 208 bytes, with all it holds 376
 the sum is the same: True
 
 == a generator is good for one pass
@@ -152,11 +160,13 @@ Square brackets make a **list comprehension**: the short form of a loop that col
 Round brackets make a **generator expression**: the same thing, except the values are not collected but handed over one at a time. The difference shows in the measurement:
 
 ```
-list:      list 800984 bytes
-generator: generator 208 bytes
+list:      the object itself 800984 bytes, with every number 3999680
+generator: the object itself 208 bytes, with all it holds 376
 ```
 
-Eight hundred kilobytes against two hundred and eight bytes — and that is over a hundred thousand. A generator takes the same room over any number of them: it holds not the values but the place it stopped at.
+There are two measurements here and both are needed. `sys.getsizeof` shows **the object itself**: for the list that is 800 kilobytes — a hundred thousand references and nothing more, because the numbers themselves lie elsewhere. `tracemalloc` counts **everything that was allocated**, and there the truth shows: some four megabytes against three hundred and seventy-six bytes.
+
+The difference is nearly ten thousandfold, and only one side of it grows with the data. A generator takes the same room over any number of values: it holds not the values but the place it stopped at — its own local variables and the current step. "It holds nothing" would be untrue; the truth is that it holds no **finished result**.
 
 The rule for choosing is simple: **if the result is needed whole and more than once, a list; if it is needed once and in passing, a generator**. `sum(x * x for x in range(100_000))` builds no list at all.
 

@@ -12,7 +12,7 @@ Let us start from the end: with the answer you will have in fifteen minutes, kno
 
 ## The whole thing at once
 
-First check that the language is there: in a terminal, `python3 --version` (on Windows, `py --version`). A version number means you can go on. No answer means you should start with [the next lesson](/course/python?lang=en), where Python is installed from scratch in ten minutes, and come back here.
+First check that the language is there: in a terminal, `python3 --version` (on Windows, `py --version`). A version number means you can go on. No answer means you should start with [the next lesson](/read/py-jumys-orny-venv?lang=en), where Python is installed from scratch in ten minutes, and come back here.
 
 Make a file called `tsena.py` and paste this in. Nothing extra has to be installed: everything used here comes with Python. The program is longer than a first day would like — fifty lines — and it does not have to be taken apart today: what matters now is the answer, not the machinery.
 
@@ -148,7 +148,7 @@ Armenia         7.2    8.6    2.0    0.3    3.3
 Poland          5.1   14.4   11.5    3.8    3.8
 ```
 
-The numbers here are written into the program, and that is called what it is: they were not fetched, they were copied across. How to fetch them yourself is lesson thirteen.
+The numbers here are written into the program, and that is called what it is: they were not fetched, they were copied across. How the bank's answer is built is lesson thirteen; how to go and fetch it yourself is lesson eighteen.
 
 ## Taking it apart
 
@@ -182,7 +182,7 @@ The course will not hand you a ready culprit. It will hand you the ability to pu
 
 ### How we will learn
 
-The Go course on this site is built on the method of **Viktor Fyodorovich Shatalov**, a Soviet teacher whose system let schoolchildren cover the syllabus several times faster. We consider it the best thing twentieth-century teaching produced, and the second course follows it too.
+The Go course on this site is built on the method of **Viktor Fyodorovich Shatalov**, a Soviet teacher whose system let schoolchildren cover the syllabus several times faster. The second course follows it too; the system itself is described [in an article about him](https://ru.wikipedia.org/wiki/Шаталов,_Виктор_Фёдорович) (in Russian).
 
 Four things are taken from it.
 

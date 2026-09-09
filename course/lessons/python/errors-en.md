@@ -26,7 +26,11 @@ to know what to do with each of them.
 
 
 class BadRow(ValueError):
-    """A row that could not be parsed. Our own name for our own error."""
+    """A row that could not be parsed. Our own name for our own error.
+
+    This is a class, and today it is needed only as a name: what stands behind
+    the word class is taken apart in lesson twenty-one.
+    """
 
 
 # This is what an export from someone's table looks like: five rows, three good.

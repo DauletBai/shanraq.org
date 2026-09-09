@@ -506,8 +506,11 @@ func (m *Module) applyCourseSEO(page *CoursePage) {
 		"courseMode": "online",
 		"inLanguage": htmlLang(page.Lang),
 	}
-	if page.Minutes > 0 {
-		instance["courseWorkload"] = fmt.Sprintf("PT%dM", page.Minutes)
+	// The workload is the whole of it: reading plus the exercises. Declaring
+	// the reading alone was a three-hour course on paper and a fortnight in
+	// practice.
+	if total := page.Minutes + page.Practice; total > 0 {
+		instance["courseWorkload"] = fmt.Sprintf("PT%dM", total)
 	}
 	ld := map[string]any{
 		"@context":            "https://schema.org",
