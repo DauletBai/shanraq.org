@@ -358,7 +358,7 @@ Done when: the output matches line by line; the second run added not one row; no
 
 The digest gets a memory. Every day's rate goes into the database, a second run doubles nothing, and the question "how did the dollar move over the month" stops requiring every file to be read in turn.
 
-Debts. We wrote `SELECT` in its simplest form: the next lesson is entirely about queries — grouping, joining two tables, and how to take a slice without writing a single loop. And our database is one for everything; once there are several tables, what relates to what will have to be decided.
+Still open. We wrote `SELECT` in its simplest form: the next lesson is entirely about queries — grouping, joining two tables, and how to take a slice without writing a single loop. And our database is one for everything; once there are several tables, what relates to what will have to be decided.
 
 ## The answers
 

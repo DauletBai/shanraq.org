@@ -249,7 +249,7 @@ Done when: the output matches line by line; there is not one `split` over the ma
 
 The digest gains a second real source — the exchange rate — and gains it reliably: the parsing no longer depends on whether the bank moves a space. From here the numbers of the two sources can be brought into one table: inflation by the year and the rate by the day.
 
-Debts. We read the whole answer into memory — right for one day, no longer right for ten years of history. And we took `quant` into account, while weekends and holidays, when the rate does not change, are still something the digest cannot tell apart.
+Still open. We read the whole answer into memory — right for one day, no longer right for ten years of history. And we took `quant` into account, while weekends and holidays, when the rate does not change, are still something the digest cannot tell apart.
 
 ## The answers
 

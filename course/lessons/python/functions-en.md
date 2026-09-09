@@ -306,7 +306,7 @@ All of it is put together in [step-3](https://github.com/DauletBai/shanraq.org/t
 
 The digest gets its first names: "the average of a series", "the years above the norm". Later they move into a file of their own and become a module, and the calculation in the main program stays three lines long.
 
-Debts. Our one check sits inside the calculation. Real checks live apart from the code they check; `pytest` comes at the end of the course, but an `assert` in the right place works today.
+Still open. Our one check sits inside the calculation. Real checks live apart from the code they check; `pytest` comes at the end of the course, but an `assert` in the right place works today.
 
 ## The answers
 

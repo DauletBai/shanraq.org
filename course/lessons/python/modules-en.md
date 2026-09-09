@@ -299,7 +299,7 @@ All of it is put together in [step-6](https://github.com/DauletBai/shanraq.org/t
 
 The digest stops being one file. The arithmetic, the reading of the export and the printing move to places of their own, and every name is now called at an address. That is the first step towards being able to check the parts separately — tests are not far off.
 
-Debts. We have not touched `sys.path`, nor installing a package of your own with `pip install -e .`: for now it is enough that the modules lie beside the program. And our `__init__.py` is empty — once the package has something to show outwards, that will stop being true.
+Still open. We have not touched `sys.path`, nor installing a package of your own with `pip install -e .`: for now it is enough that the modules lie beside the program. And our `__init__.py` is empty — once the package has something to show outwards, that will stop being true.
 
 ## The answers
 

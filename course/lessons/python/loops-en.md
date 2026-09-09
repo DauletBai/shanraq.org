@@ -262,7 +262,7 @@ Done when: the output matches line by line; the gap got into neither the sum nor
 
 The digest stops depending on how many years the series holds. One and the same walk works out the average, finds the maximum and sets the gaps aside — over five years or over thirty.
 
-Debts. The walk is still written inside the program as one lump: to count the same thing over a second series it would have to be copied. The next lesson gives that lump a name — a function.
+Still open. The walk is still written inside the program as one lump: to count the same thing over a second series it would have to be copied. The next lesson gives that lump a name — a function.
 
 ## The answers
 

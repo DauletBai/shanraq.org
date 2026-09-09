@@ -283,7 +283,7 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 
 The blog has stopped going silent when it breaks. Next comes configuration: the address, the port and the paths stop being written into the code.
 
-Debts. The reference number lives in a header, and its proper home is the request context; that arrives with the concurrency lesson. The per-request line is still separate middleware, and one wrapper for everything would be better. And `debug.Stack()` in a log is a heavy thing: on a real site it is written for real panics only, not for every error.
+Still open. The reference number lives in a header, and its proper home is the request context; that arrives with the concurrency lesson. The per-request line is still separate middleware, and one wrapper for everything would be better. And `debug.Stack()` in a log is a heavy thing: on a real site it is written for real panics only, not for every error.
 
 ## Answers
 

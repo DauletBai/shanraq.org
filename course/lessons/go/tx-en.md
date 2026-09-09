@@ -287,7 +287,7 @@ The sorting is already written in [step-17](https://github.com/DauletBai/shanraq
 
 There is no gluing in the blog — parameters have been there since the very first query. What appears instead is a sortable list, and it is the first place where a column name arrives from outside.
 
-Debts. There is nowhere serious to put a transaction yet: they are genuinely needed in the lesson on tags, where one article is written into two tables at once. And `Update` still writes every field at once.
+Still open. There is nowhere serious to put a transaction yet: they are genuinely needed in the lesson on tags, where one article is written into two tables at once. And `Update` still writes every field at once.
 
 ## Answers
 

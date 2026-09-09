@@ -285,7 +285,7 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 
 The `articles` table is the blog's future storage. But an article rarely lives alone: comments arrive, and tags later. There is nowhere to put them in the same table, and the next lesson is about tying two tables together with a key and collecting them back into one answer.
 
-Debts. We created no indexes — invisible on four rows, but on ten thousand a lookup by `slug` becomes a scan. Time is stored as text, because SQLite has no separate date type.
+Still open. We created no indexes — invisible on four rows, but on ten thousand a lookup by `slug` becomes a scan. Time is stored as text, because SQLite has no separate date type.
 
 ## Answers
 

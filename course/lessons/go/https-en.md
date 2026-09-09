@@ -276,7 +276,7 @@ All of it is done in [step-32](https://github.com/DauletBai/shanraq.org/tree/mai
 
 Step 32 gained a `Caddyfile` — a real one, checked by the real Caddy — and the `clientIP` function, thanks to which the log shows the reader again rather than the proxy.
 
-Debts. The blog still cannot stop tidily: the proxy has already switched to the new version while the old one cuts off answers half-read. That is the next lesson, about a service that survives a reboot.
+Still open. The blog still cannot stop tidily: the proxy has already switched to the new version while the old one cuts off answers half-read. That is the next lesson, about a service that survives a reboot.
 
 ## The answers
 

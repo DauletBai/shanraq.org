@@ -293,7 +293,7 @@ All of it is written in [step-19](https://github.com/DauletBai/shanraq.org/tree/
 
 Search is the first part of the blog that works with every article at once. And the first whose answer depends on how well somebody else's input was prepared.
 
-Debts. The index knows nothing about tags. Kazakh letters are searched literally. And the search page has neither paging nor a memory of the query — the lesson on layout sees to that, when every page gets a frame of its own.
+Still open. The index knows nothing about tags. Kazakh letters are searched literally. And the search page has neither paging nor a memory of the query — the lesson on layout sees to that, when every page gets a frame of its own.
 
 ## Answers
 

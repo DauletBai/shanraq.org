@@ -288,7 +288,7 @@ All of it is done in [step-22](https://github.com/DauletBai/shanraq.org/tree/mai
 
 The blog can tell people apart for the first time. Everything after this is built on it: permissions, other people's drafts, "my articles".
 
-Debts. Sessions are neither renewed nor cleaned up. The signed-in person is looked up by every handler. And the sign-in form is not protected from guessing yet — no delay and no limit on attempts.
+Still open. Sessions are neither renewed nor cleaned up. The signed-in person is looked up by every handler. And the sign-in form is not protected from guessing yet — no delay and no limit on attempts.
 
 ## Answers
 

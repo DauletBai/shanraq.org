@@ -117,7 +117,7 @@ between the first and the last: 45 days, 0:00:00
 days: 45
 ```
 
-Subtracting two dates gives not a number but a `timedelta` — a span. It prints itself its own way, and the number of days is asked of it: `.days`. Beside it live `.seconds` and `.total_seconds()`, for when the hours and minutes matter.
+Subtracting two dates gives not a number but a `timedelta` — a span. It prints itself its own way, and you ask it for the number of days: `.days`. Beside it live `.seconds` and `.total_seconds()`, for when the hours and minutes matter.
 
 It works the other way too: `days[-1] + timedelta(days=7)` is the date a week later. What is added is a span rather than a number: dates cannot be added to numbers, and rightly so, because "seven" is seven of what.
 
@@ -265,7 +265,7 @@ Done when: the output matches line by line; the dates become a `date` or a `date
 
 The digest gets a time axis. The measurements stop being merely numbers: days are counted between them, and "when it was collected" is written in UTC — not because it looks better, but because the digest will one day move to a server, and that server's clock is not set to Almaty.
 
-Debts. We still have nothing to add a month with, and a fixed offset knows nothing about clock changes. The first is settled by an agreement, the second by `zoneinfo`; we will come back to both when the digest starts running on a schedule.
+Still open. We still have nothing to add a month with, and a fixed offset knows nothing about clock changes. The first is settled by an agreement, the second by `zoneinfo`; we will come back to both when the digest starts running on a schedule.
 
 ## The answers
 

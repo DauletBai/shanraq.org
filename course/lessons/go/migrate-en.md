@@ -299,7 +299,7 @@ The migration runner is already written in [step-16](https://github.com/DauletBa
 
 `Open` stops knowing about the schema: its job is to open the database, and the shape of the tables is set by the files in `migrations`. The blog can now change without losing what is written.
 
-Debts. The queries are still assembled out of strings, and the next lesson shows why that must not be done. `Update` writes every field at once. And we have no lock around migrations — harmless with one server, not with two.
+Still open. The queries are still assembled out of strings, and the next lesson shows why that must not be done. `Update` writes every field at once. And we have no lock around migrations — harmless with one server, not with two.
 
 ## Answers
 

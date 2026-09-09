@@ -354,7 +354,7 @@ All of it is done in [step-25](https://github.com/DauletBai/shanraq.org/tree/mai
 
 An article gets a cover, and the blog gets its first folder whose contents we did not write. From now on `/static` lives by a rule: ours apart, theirs apart.
 
-Debts. Old files are not deleted along with an article. Pictures are not re-encoded: whatever was sent is what sits there, camera metadata and all. And we serve them from the same domain as the pages.
+Still open. Old files are not deleted along with an article. Pictures are not re-encoded: whatever was sent is what sits there, camera metadata and all. And we serve them from the same domain as the pages.
 
 ## Answers
 

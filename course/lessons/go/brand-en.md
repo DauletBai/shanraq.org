@@ -454,7 +454,7 @@ In step 30 all three icons answer:
 
 The blog stops being somebody else's kit. From here it can be shown to people — and the next lessons are about exactly how to do that.
 
-Debts. The pages still have no description for a search engine. Nor a picture for the social networks, the one shown when a link is sent. And the name of the author appears nowhere, although the database has it.
+Still open. The pages still have no description for a search engine. Nor a picture for the social networks, the one shown when a link is sent. And the name of the author appears nowhere, although the database has it.
 
 ## The answers
 

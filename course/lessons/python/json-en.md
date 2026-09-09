@@ -255,7 +255,7 @@ Done when: the output matches line by line; the year becomes a number during par
 
 The digest stops taking the answer at its word. The shape is checked, `null` lands among the gaps, and the year turns into a number during parsing rather than after — because after is too late.
 
-Debts. We parse the answer by hand and hope the keys are in place. A real check of the shape is a schema that says "a number was expected here, a string arrived"; we will get to it when a language model's answer reaches the digest.
+Still open. We parse the answer by hand and hope the keys are in place. A real check of the shape is a schema that says "a number was expected here, a string arrived"; we will get to it when a language model's answer reaches the digest.
 
 ## The answers
 

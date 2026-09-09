@@ -224,7 +224,7 @@ Done when: the output matches line by line; there is not one nested loop — all
 
 The digest starts noticing what went missing. It used to count what arrived; now it can say what the new export does **not** have compared with the last one — and that is the first sign that the source broke rather than that the world changed.
 
-Debts. A set answers "is it there" and not "how many times" — that needs a counter, which arrives in the lesson on the `collections` module. And it keeps no order, so "the first five new ones" cannot be taken out of it without sorting.
+Still open. A set answers "is it there" and not "how many times" — that needs a counter, which arrives in the lesson on the `collections` module. And it keeps no order, so "the first five new ones" cannot be taken out of it without sorting.
 
 ## The answers
 

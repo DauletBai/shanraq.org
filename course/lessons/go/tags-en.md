@@ -324,7 +324,7 @@ All of it is already written in [step-18](https://github.com/DauletBai/shanraq.o
 
 The third table is the first in the blog with no page of its own. It is there for the links rather than for the reader, and that is normal: real databases hold many such tables.
 
-Debts. Tags cannot yet be found by part of a word — the next lesson, on search, sees to that. The tag cloud is counted afresh every time. And tags typed in different cases stay different until you do the optional exercise.
+Still open. Tags cannot yet be found by part of a word — the next lesson, on search, sees to that. The tag cloud is counted afresh every time. And tags typed in different cases stay different until you do the optional exercise.
 
 ## Answers
 

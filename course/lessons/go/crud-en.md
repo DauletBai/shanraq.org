@@ -322,7 +322,7 @@ You do not have to work out the move to a database yourself: it is done in [step
 
 The slice goes and the database stays: this is the step the whole module was for. The blog now survives a restart.
 
-Debts. The schema is still created by the program at start-up, which stops working once there are ten tables and they begin to change — that is the next lesson, on migrations. The query texts sit inside the methods, and at twenty of them you will want a place of their own. And `Update` writes every field at once: if two people edit one article, the second overwrites the first without noticing.
+Still open. The schema is still created by the program at start-up, which stops working once there are ten tables and they begin to change — that is the next lesson, on migrations. The query texts sit inside the methods, and at twenty of them you will want a place of their own. And `Update` writes every field at once: if two people edit one article, the second overwrites the first without noticing.
 
 ## Answers
 

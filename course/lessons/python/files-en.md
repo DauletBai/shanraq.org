@@ -245,7 +245,7 @@ All of it is put together in [step-4](https://github.com/DauletBai/shanraq.org/t
 
 The digest gets a disk. The data it fetched from the network lands in a file beside the program, the report is written into a second one, and the skipped rows — the ones that were printed to the screen yesterday — can now go into a log.
 
-Debts. We write over the old file: if the program falls over halfway through writing, nothing is left of the previous data. Real writing goes into a temporary file and is then renamed into place — we will get there when the digest starts running on a schedule.
+Still open. We write over the old file: if the program falls over halfway through writing, nothing is left of the previous data. Real writing goes into a temporary file and is then renamed into place — we will get there when the digest starts running on a schedule.
 
 ## The answers
 

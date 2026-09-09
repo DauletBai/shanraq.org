@@ -171,7 +171,7 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 
 The schema from these two lessons is the blog's schema. Next lesson Go connects to it: `database/sql`, a driver, and the first row read from a file rather than from a slice.
 
-Debts. We typed the queries by hand in a console: from Go they have to be sent so that a stranger's text cannot become part of the command, which is the lesson on injections. And `pragma foreign_keys` has to be switched on in every connection, of which a program has several — the next lesson says so separately.
+Still open. We typed the queries by hand in a console: from Go they have to be sent so that a stranger's text cannot become part of the command, which is the lesson on injections. And `pragma foreign_keys` has to be switched on in every connection, of which a program has several — the next lesson says so separately.
 
 ## Answers
 

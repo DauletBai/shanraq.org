@@ -286,7 +286,7 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 
 The settings are in one place, and the path to the database is already among them. Nobody opens `blog.db` yet — the next module does that, and `config` will not need changing for it.
 
-Debts. There is no settings file: flags and variables are enough for a blog, and `yaml` or `toml` start earning their keep at about thirty settings. There is one check so far — "the key is not empty"; the address deserves a check on its shape and the key a minimum length. And `flag` has no notion of a required flag: `-secret` is required only because we checked it ourselves after `Parse`.
+Still open. There is no settings file: flags and variables are enough for a blog, and `yaml` or `toml` start earning their keep at about thirty settings. There is one check so far — "the key is not empty"; the address deserves a check on its shape and the key a minimum length. And `flag` has no notion of a required flag: `-secret` is required only because we checked it ourselves after `Parse`.
 
 ## Answers
 

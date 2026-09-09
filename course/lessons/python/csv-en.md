@@ -264,7 +264,7 @@ All of it is put together in [step-5](https://github.com/DauletBai/shanraq.org/t
 
 The digest stops depending on who exported the data and how. The file is read by `DictReader` through the names of its columns, the separator is named outright, Excel's mark does not break the first column, and a row holding `n/a` goes to the skipped ones rather than into the average.
 
-Debts. We read the file in a loop but keep what we parsed in memory. For an export of hundreds of thousands of rows that is already too much — how to read those comes in the lesson on generators.
+Still open. We read the file in a loop but keep what we parsed in memory. For an export of hundreds of thousands of rows that is already too much — how to read those comes in the lesson on generators.
 
 ## The answers
 

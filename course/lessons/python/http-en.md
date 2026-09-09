@@ -143,7 +143,7 @@ These are different troubles and they are cured differently. **`HTTPError`** mea
 
 **`URLError`** means there was no answer at all: no network, the name did not resolve, the connection dropped. The reason is inside (`error.reason`), and its type shows what happened.
 
-One subtlety matters: `HTTPError` is a **special case** of `URLError`. So the order of the branches decides, exactly as in lesson ten: the particular above the general, or `except URLError` takes everything and you never see the response code. The third warm-up drill is built on that.
+One subtlety matters: `HTTPError` is a **special case** of `URLError`. So the order of the branches decides, exactly as in lesson ten: put the specific one first, or `except URLError` takes everything and you never see the response code. The third warm-up drill is built on that.
 
 ### `requests` — the same thing, but not out of the box
 
@@ -242,7 +242,7 @@ Done when: the output matches line by line; the request has both a `timeout` and
 
 The digest gains a second source. Inflation came from the World Bank once a year; the exchange rate is given by the National Bank every working day, and for the first time the digest has data with a "today" in it.
 
-Debts. We pulled the rate out of markup with string methods — which is not the way, and the next lesson mends it. And we go to the network on every run: a cache on disk has been there since lesson eleven, but tying it to a date is still ahead.
+Still open. We pulled the rate out of markup with string methods — which is not the way, and the next lesson mends it. And we go to the network on every run: a cache on disk has been there since lesson eleven, but tying it to a date is still ahead.
 
 ## The answers
 

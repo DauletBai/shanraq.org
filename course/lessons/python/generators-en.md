@@ -262,7 +262,7 @@ Done when: the output matches line by line; there is a `yield` in the program an
 
 The digest stops depending on the size of the export. It used to read the file into a list and count over that; now the rows flow through a generator and there is always one of them in memory. The same code will work over a hundred rows and over a gigabyte.
 
-Debts. One pass is a discipline: everything the data is needed for has to be decided in advance. And we named `itertools` without taking it apart; we will come back when the digest has several sources to join.
+Still open. One pass is a discipline: everything the data is needed for has to be decided in advance. And we named `itertools` without taking it apart; we will come back when the digest has several sources to join.
 
 ## The answers
 

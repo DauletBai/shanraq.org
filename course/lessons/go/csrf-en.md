@@ -278,7 +278,7 @@ All of it is done in [step-24](https://github.com/DauletBai/shanraq.org/tree/mai
 
 After this lesson the blog stops being defenceless against the next tab. Three headers, a token in every form, and the escaping that was already there — that is the minimum below which a site is not opened to people.
 
-Debts. The token lives in memory rather than in the database: restarting the server breaks every open form. The CSP allows inline styles, because we have them. And uploading files, which has dangers of its own, gets a lesson to itself.
+Still open. The token lives in memory rather than in the database: restarting the server breaks every open form. The CSP allows inline styles, because we have them. And uploading files, which has dangers of its own, gets a lesson to itself.
 
 ## Answers
 

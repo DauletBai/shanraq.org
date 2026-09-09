@@ -314,7 +314,7 @@ step 33, SIGTERM:  exit code 0
 
 Code `143` is `128 + 15`, that is, "the process was killed by signal number 15". Code `0` is "the program finished by itself and properly". In systemd's own view the first shows as `failed` and the second as `inactive (dead)`, and that line is where people look afterwards for the reason something died.
 
-Debts. The blog still sets no timeouts on reading and writing a request, and without them one slow connection can hold a goroutine for a long time. That is the pre-launch checklist — the next lesson.
+Still open. The blog still sets no timeouts on reading and writing a request, and without them one slow connection can hold a goroutine for a long time. That is the pre-launch checklist — the next lesson.
 
 ## The answers
 

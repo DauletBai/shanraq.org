@@ -268,7 +268,7 @@ All of it is done in [step-28](https://github.com/DauletBai/shanraq.org/tree/mai
 
 The blog stops working into the void: the reader left, so we stopped too. And the signed-in person is no longer looked up in every handler.
 
-Debts. Nothing but the example has a deadline on its queries. The background work from the previous lesson cannot stop on a context. And there is no graceful shutdown, in which unfinished requests live out their seconds — that is the deploy lesson.
+Still open. Nothing but the example has a deadline on its queries. The background work from the previous lesson cannot stop on a context. And there is no graceful shutdown, in which unfinished requests live out their seconds — that is the deploy lesson.
 
 ## Answers
 

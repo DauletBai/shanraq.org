@@ -268,7 +268,7 @@ All of it is done in [step-27](https://github.com/DauletBai/shanraq.org/tree/mai
 
 The blog gets its first shared state in memory — and with it the habit of running the tests with `-race`.
 
-Debts. The counter lives until a restart: surviving one needs the database. There is one worker and no queue in the database — if the process dies, the jobs are lost. And `context`, which can stop work when a reader closes the tab, is the next lesson.
+Still open. The counter lives until a restart: surviving one needs the database. There is one worker and no queue in the database — if the process dies, the jobs are lost. And `context`, which can stop work when a reader closes the tab, is the next lesson.
 
 ## Answers
 

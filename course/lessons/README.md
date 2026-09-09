@@ -91,8 +91,15 @@ what `import csv` finds.
   to the lesson that promised it — the answer to the Go course, where arrays and
   constants were not postponed but forgotten.
 
+- **The checks themselves are checked.** `selftest.py` hands each checker a
+  small file with a known fault and fails when it is not reported. Two of these
+  tools were silently broken before somebody read their source: langcheck's
+  fence pattern never opened a ```python block, and pysyllabus took an equals
+  sign as proof that a lesson explains functions.
+
 Run them all at once:
 
+    python3 tools/coursecheck/selftest.py
     python3 tools/coursecheck/langcheck.py course/lessons/*/*.md
     python3 tools/coursecheck/gocheck.py   course/lessons/go/*.md
     python3 tools/coursecheck/pycheck.py   course/lessons/python/*.md

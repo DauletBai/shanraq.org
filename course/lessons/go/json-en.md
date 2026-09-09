@@ -238,7 +238,7 @@ All of it is done in [step-29](https://github.com/DauletBai/shanraq.org/tree/mai
 
 The blog gets a second way of being read — and the first that does not depend on markup. From now on a page can be rewritten without breaking whoever reads the data.
 
-Debts. The API hands everything back at once, with no paging. Nothing limits it: a hundred requests a second from one script go unstopped. And there is no writing through the API — which would mean deciding how to guard it.
+Still open. The API hands everything back at once, with no paging. Nothing limits it: a hundred requests a second from one script go unstopped. And there is no writing through the API — which would mean deciding how to guard it.
 
 ## Answers
 

@@ -348,7 +348,7 @@ Without looking, answer out loud or on paper. The answers are at the end of the 
 
 The slice goes, the database stays. Next come the four operations on an article — create, read, update, delete — all through forms that already exist.
 
-Debts. We create and pass `sql.DB` by hand; once there is a third function it will want a store type. The schema is still created by the program at start-up, which stops working once there are ten tables and they begin to change — that is the migrations lesson. And we left `SetMaxOpenConns` alone, which matters for SQLite: only one writer at a time.
+Still open. We create and pass `sql.DB` by hand; once there is a third function it will want a store type. The schema is still created by the program at start-up, which stops working once there are ten tables and they begin to change — that is the migrations lesson. And we left `SetMaxOpenConns` alone, which matters for SQLite: only one writer at a time.
 
 ## Answers
 

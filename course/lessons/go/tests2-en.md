@@ -312,7 +312,7 @@ All of it is done in [step-26](https://github.com/DauletBai/shanraq.org/tree/mai
 
 From this lesson on, an edit stops being frightening: `go test ./...` says in a second whether you broke what was working yesterday.
 
-Debts. The blog has few tests, and they touch neither sessions nor permissions. There is no check for races — that comes in the lesson on goroutines, together with `-race`. And we have no test database that fills itself the same way before every test.
+Still open. The blog has few tests, and they touch neither sessions nor permissions. There is no check for races — that comes in the lesson on goroutines, together with `-race`. And we have no test database that fills itself the same way before every test.
 
 ## Answers
 

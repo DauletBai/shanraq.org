@@ -72,6 +72,11 @@ jobs:
         with:
           python-version: '3.14'
 
+      # The checkers first: a broken checker is a green run that proves nothing,
+      # and two of them have been quietly broken before.
+      - name: The checks themselves work
+        run: python3 tools/coursecheck/selftest.py
+
       - name: Code speaks the language of its lesson
         run: python3 tools/coursecheck/langcheck.py course/lessons/*/*.md
 

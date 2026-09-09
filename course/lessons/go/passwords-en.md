@@ -295,7 +295,7 @@ All of it is done in [step-21](https://github.com/DauletBai/shanraq.org/tree/mai
 
 The blog has its first person. So far they can only register — signing in, which remembers something, is the next lesson, on sessions.
 
-Debts. Nobody confirms the address, so somebody else's can still be used. The number of sign-in attempts is not limited. And we check no list of leaked passwords — all of it is genuinely needed, and each pulls a lesson of its own.
+Still open. Nobody confirms the address, so somebody else's can still be used. The number of sign-in attempts is not limited. And we check no list of leaked passwords — all of it is genuinely needed, and each pulls a lesson of its own.
 
 ## Answers
 

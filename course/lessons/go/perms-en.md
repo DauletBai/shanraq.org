@@ -278,7 +278,7 @@ All of it is done in [step-23](https://github.com/DauletBai/shanraq.org/tree/mai
 
 From this lesson on, the blog stops being one person's: every article has an owner, and what belongs to somebody else is untouchable.
 
-Debts. There are no roles — only "owner or not". There is no limit on sign-in attempts either. And the forms can still be submitted from another site: that is the CSRF hole, and the next lesson is about exactly that.
+Still open. There are no roles — only "owner or not". There is no limit on sign-in attempts either. And the forms can still be submitted from another site: that is the CSRF hole, and the next lesson is about exactly that.
 
 ## Answers
 

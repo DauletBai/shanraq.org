@@ -240,7 +240,7 @@ Done when: the output matches line by line; the average is worked out over three
 
 The digest stops counting everything indiscriminately. From this lesson on it has judgement: a year with a gap stays out of the average, a figure above the norm is marked, and a row of rubbish is set aside instead of spoiling the total.
 
-Debts. The conditions are still written out one per year — with a loop that becomes three lines. And "above the norm" is decided by eye: where the norm runs is written down nowhere.
+Still open. The conditions are still written out one per year — with a loop that becomes three lines. And "above the norm" is decided by eye: where the norm runs is written down nowhere.
 
 ## The answers
 

@@ -16,6 +16,7 @@ does not answer 2xx or 3xx is named.
 """
 
 import concurrent.futures
+import json
 import os
 import re
 import subprocess
@@ -25,6 +26,13 @@ import urllib.parse
 import urllib.request
 
 LINK = re.compile(r"\]\((https?://[^)\s]+)\)")
+# Links inside the site: a lesson that sends the reader to /read/<slug> or shows
+# an image from /static must not invent either. Neither is fetched -- both are
+# checked against what the repository actually holds, so the check works with no
+# network at all.
+INTERNAL = re.compile(r"\]\((/[^)\s]+)\)")
+SLUGS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                     "course", "lesson-slugs.json")
 TIMEOUT = 20
 AGENT = "shanraq-coursecheck/1.0 (+https://shanraq.org)"
 
@@ -57,6 +65,38 @@ def fetch(url):
         return type(e).__name__
 
 
+def known_slugs():
+    """Every lesson slug the publisher knows, or None when the map is missing."""
+    try:
+        with open(SLUGS, encoding="utf-8") as f:
+            return {slug for slug, _ in json.load(f).values()}
+    except (OSError, ValueError):
+        return None
+
+
+def internal_problems(path, slugs, root):
+    """Links inside the site that lead nowhere.
+
+    A lesson once sent a reader with no Python to "the next lesson" and the
+    address was the course map, whose first button opens the lesson they were
+    reading. The link answered 200 and was still wrong; a mistyped slug would
+    have answered 404 and nobody would have noticed either.
+    """
+    out = []
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
+    for href in INTERNAL.findall(text):
+        target = href.split("?")[0].split("#")[0]
+        if target.startswith("/read/"):
+            slug = target[len("/read/"):].strip("/")
+            if slugs is not None and slug not in slugs:
+                out.append(f"{href} — такого урока нет в lesson-slugs.json")
+        elif target.startswith("/static/"):
+            if not os.path.isfile(os.path.join(root, "web", target.lstrip("/"))):
+                out.append(f"{href} — файла нет в web/static")
+    return out
+
+
 def main(argv):
     offline = "--offline" in argv
     paths = [a for a in argv[1:] if not a.startswith("--")]
@@ -65,6 +105,9 @@ def main(argv):
         return 2
 
     ours = repo_prefix()
+    slugs = known_slugs()
+    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    inside = 0
     links = {}
     for p in paths:
         with open(p, encoding="utf-8") as f:
@@ -72,6 +115,15 @@ def main(argv):
                 links.setdefault(url, set()).add(os.path.basename(p))
 
     bad = []
+    # Inside the site first: no network, and the commonest mistake -- a lesson
+    # pointing at a page that does not exist -- is caught before anything is
+    # fetched.
+    for p in paths:
+        for note in internal_problems(p, slugs, root):
+            bad.append((note, "ссылка внутрь сайта", {os.path.basename(p)}))
+        with open(p, encoding="utf-8") as f:
+            inside += len(INTERNAL.findall(f.read()))
+
     # Ours first: a wrong repository address is a mistake in the text, not a
     # server having a bad day, and it is found without asking anyone.
     for url in sorted(links):
@@ -88,7 +140,7 @@ def main(argv):
 
     for url, why, where in sorted(bad, key=lambda b: b[0]):
         print(f"{url}\n    {why}\n    в файлах: {', '.join(sorted(where))}")
-    print(f"проверено ссылок: {len(links)}, битых: {len(bad)}")
+    print(f"проверено ссылок: {len(links)} наружу и {inside} внутрь, битых: {len(bad)}")
     return 1 if bad else 0
 
 

@@ -306,7 +306,7 @@ Done when: the output matches line by line; the request has a `timeout`; `404` a
 
 The digest stops being a problem for its sources. Every request it makes is now bounded in time, refusals are survived with a backoff, and a second run on the same day reads yesterday's answer off the disk instead of going back to the bank.
 
-Debts. Our cache is in memory, and the digest needs it on disk — and there the question of what to do with old entries appears. We come back to it in the next lesson: where to put data so that it survives being switched off.
+Still open. Our cache is in memory, and the digest needs it on disk — and there the question of what to do with old entries appears. We come back to it in the next lesson: where to put data so that it survives being switched off.
 
 ## The answers
 

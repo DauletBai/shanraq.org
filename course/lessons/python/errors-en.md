@@ -285,7 +285,7 @@ Done when: the output matches line by line; there is one line inside the `try` a
 
 The digest stops falling over on one bad row. Parsing an export runs to the end, bad rows are named one by one, and the report gains a count: so many parsed, so many skipped — and that number is itself a measure of the source's quality.
 
-Debts. Skipped rows are printed to the screen for now. Their place is in a log beside the report, so that tomorrow it is visible what failed to parse yesterday.
+Still open. Skipped rows are printed to the screen for now. Their place is in a log beside the report, so that tomorrow it is visible what failed to parse yesterday.
 
 ## The answers
 

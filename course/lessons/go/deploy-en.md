@@ -326,7 +326,7 @@ signing in with the same password:  401 — the person is gone
 
 The third block is what this lesson was written for. The blog is alive and the person is gone.
 
-Debts. The blog still cannot stop tidily: the host sends a signal and we cut requests off mid-sentence — that is the lesson on systemd. There is no domain of our own and no HTTPS either — the next lesson.
+Still open. The blog still cannot stop tidily: the host sends a signal and we cut requests off mid-sentence — that is the lesson on systemd. There is no domain of our own and no HTTPS either — the next lesson.
 
 ## The answers
 

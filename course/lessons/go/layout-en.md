@@ -376,7 +376,7 @@ All of it is done in [step-20](https://github.com/DauletBai/shanraq.org/tree/mai
 
 This is the first lesson after which the blog stops looking like a teaching example. One frame, real markup, a human date.
 
-Debts. There are still almost no styles, and that is deliberate: this course does not teach design. The navigation does not know which page the reader is on. And the pages carry neither a description for a search engine nor titles for social networks — that comes in the lesson on the checklist before launch.
+Still open. There are still almost no styles, and that is deliberate: this course does not teach design. The navigation does not know which page the reader is on. And the pages carry neither a description for a search engine nor titles for social networks — that comes in the lesson on the checklist before launch.
 
 ## Answers
 
