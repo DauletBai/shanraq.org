@@ -671,6 +671,18 @@
   "py-agany-bagalar-tenge",
   "kz"
  ],
+ "python/sets": [
+  "py-jiyndar-set-qiylysu-ayyrma",
+  "ru"
+ ],
+ "python/sets-en": [
+  "py-jiyndar-set-qiylysu-ayyrma",
+  "en"
+ ],
+ "python/sets-kz": [
+  "py-jiyndar-set-qiylysu-ayyrma",
+  "kz"
+ ],
  "python/types": [
   "py-aynymalylar-men-tipter",
   "ru"

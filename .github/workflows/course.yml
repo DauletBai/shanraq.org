@@ -46,6 +46,13 @@ jobs:
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
+      # The lessons print what Python printed, and Python's own messages change
+      # between versions: "unhashable type" gained a sentence around it in 3.14.
+      # So the checks run the version the course says it was written on, rather
+      # than whatever the runner happens to ship this month.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
 
       - name: Code speaks the language of its lesson
         run: python3 tools/coursecheck/langcheck.py course/lessons/*/*.md

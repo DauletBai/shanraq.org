@@ -2148,6 +2148,33 @@ def pymap14(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap15(s):
+    """Python lesson 15: the repeat, the set and the difference.
+
+    The accents are what a set gives and what it takes: the repeat is gone
+    without a word, and one sign answers what the second export does not have.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4058,6 +4085,38 @@ PY14 = {
 
 
 
+PY15 = {
+    "kz": dict(alt="Қайталау, жиын және айырма",
+               b1="тізім", b1_sub="ішінде қайталау",
+               b2="жиын", b2_sub="қайталау кетті",
+               b3="a - b", b3_sub="екіншісінде жоқ",
+               c1="set(...)", c2="& | - ^",
+               head="БАР МА, ЖОҚ ПА — НЕШЕУ ЕМЕС",
+               head_sub="он бесінші сабақ: set, &, -, |",
+               foot="БЕС АТАУДЫҢ ӘРТҮРЛІСІ — ТӨРТЕУ",
+               foot_sub="өлшенді: қайталау үнсіз кетті"),
+    "ru": dict(alt="Повтор, множество и разность",
+               b1="список", b1_sub="повтор внутри",
+               b2="множество", b2_sub="повтор ушёл",
+               b3="a - b", b3_sub="нет во второй",
+               c1="set(...)", c2="& | - ^",
+               head="ЕСТЬ ИЛИ НЕТ, А НЕ СКОЛЬКО",
+               head_sub="пятнадцатый урок: set, &, -, |",
+               foot="ИЗ ПЯТИ НАЗВАНИЙ РАЗНЫХ — ЧЕТЫРЕ",
+               foot_sub="измерено: повтор ушёл молча"),
+    "en": dict(alt="The repeat, the set and the difference",
+               b1="the list", b1_sub="a repeat inside",
+               b2="the set", b2_sub="the repeat left",
+               b3="a - b", b3_sub="not in b",
+               c1="set(...)", c2="& | - ^",
+               head="IS IT THERE, NOT HOW MANY",
+               head_sub="lesson fifteen: set, &, -, |",
+               foot="FIVE NAMES, FOUR OF THEM DIFFERENT",
+               foot_sub="measured: the repeat left in silence"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4080,7 +4139,8 @@ if __name__ == "__main__":
                                ("files", pymap11, PY11),
                                ("csv", pymap12, PY12),
                                ("json", pymap13, PY13),
-                               ("dates", pymap14, PY14)):
+                               ("dates", pymap14, PY14),
+                               ("sets", pymap15, PY15)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
