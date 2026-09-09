@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -163,7 +164,62 @@ func (m *Module) readerInfoBar(r *http.Request, lang string) InfoBarData {
 	if !ok {
 		return m.infobar.Snapshot(today, todayISO)
 	}
-	return m.infobar.SnapshotAt(today, todayISO, city, lat, lon)
+	return m.infobar.SnapshotAt(today, todayISO, m.placeName(r, lang, lat, lon, city), lat, lon)
+}
+
+// wxNameCache remembers what a point is called in one language.
+//
+// The address database names cities in English — "Kostanay" over a page written
+// in Russian — while our own reference has all three names for every place in
+// the country. Looking that up is a query, and the strip is on every page, so
+// the answer is kept: a city is asked about once per language and then read
+// from memory.
+var wxNameCache = struct {
+	mu sync.Mutex
+	m  map[string]string
+}{m: map[string]string{}}
+
+// wxNameKm is how far the reference is searched for the name of the reader's
+// own point. A city is tens of kilometres across; beyond that the name would be
+// somebody else's town.
+const wxNameKm = 50
+
+// placeName is what to call the reader's point, in their language.
+func (m *Module) placeName(r *http.Request, lang string, lat, lon float64, fallback string) string {
+	if m.geo == nil {
+		return fallback
+	}
+	key := wxPlaceKey(lat, lon) + "|" + lang
+	wxNameCache.mu.Lock()
+	name, ok := wxNameCache.m[key]
+	wxNameCache.mu.Unlock()
+	if ok {
+		if name == "" {
+			return fallback
+		}
+		return name
+	}
+
+	node, _, found, err := m.geo.Nearest(r.Context(), lang, lat, lon, wxNameKm)
+	if err != nil {
+		m.rt.Logger.Warn("infobar place name", zap.Error(err))
+		return fallback
+	}
+	if found {
+		name = node.Name
+	}
+	wxNameCache.mu.Lock()
+	// Bounded for the same reason the readings are: the key is a point on Earth
+	// and a crawler can ask about all of them.
+	if len(wxNameCache.m) >= wxBarPlaces*3 {
+		wxNameCache.m = map[string]string{}
+	}
+	wxNameCache.m[key] = name
+	wxNameCache.mu.Unlock()
+	if name == "" {
+		return fallback
+	}
+	return name
 }
 
 // feedLabel names a feed: the subcategory when one is chosen, otherwise the
