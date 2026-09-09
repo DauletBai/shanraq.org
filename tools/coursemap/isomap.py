@@ -2121,6 +2121,33 @@ def pymap13(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap14(s):
+    """Python lesson 14: the string, the format and the timezone.
+
+    The accents are the two traps: a format that reads two ways without an
+    error, and a time with no zone on it, which is not a moment at all.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -3999,6 +4026,38 @@ PY13 = {
 
 
 
+PY14 = {
+    "kz": dict(alt="Жол, пішім және уақыт белдеуі",
+               b1="жол", b1_sub="талдауда ISO",
+               b2="пішім", b2_sub="екі түрлі оқылады",
+               b3="белдеу", b3_sub="None — уақыт емес",
+               c1="fromisoformat", c2="astimezone",
+               head="КҮН: ЖОЛ ЕМЕС, НҮКТЕ",
+               head_sub="он төртінші сабақ: datetime, timedelta",
+               foot="ЕКІ КҮННІҢ АРАСЫ — 45 КҮН",
+               foot_sub="өлшенді: 01.02.2026 екі түрлі оқылады"),
+    "ru": dict(alt="Строка, формат и часовой пояс",
+               b1="строка", b1_sub="ISO при разборе",
+               b2="формат", b2_sub="читается двояко",
+               b3="пояс", b3_sub="None — не время",
+               c1="fromisoformat", c2="astimezone",
+               head="ДАТА: ТОЧКА, А НЕ СТРОКА",
+               head_sub="четырнадцатый урок: datetime, timedelta",
+               foot="45 ДНЕЙ МЕЖДУ ДВУМЯ ДАТАМИ",
+               foot_sub="измерено: 01.02.2026 читается двояко"),
+    "en": dict(alt="The string, the format and the timezone",
+               b1="the string", b1_sub="ISO on parsing",
+               b2="the format", b2_sub="reads two ways",
+               b3="the zone", b3_sub="None is no moment",
+               c1="fromisoformat", c2="astimezone",
+               head="A DATE IS A POINT, NOT A STRING",
+               head_sub="lesson fourteen: datetime, timedelta",
+               foot="45 DAYS BETWEEN TWO DATES",
+               foot_sub="measured: 01.02.2026 reads two ways"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4020,7 +4079,8 @@ if __name__ == "__main__":
                                ("errors", pymap10, PY10),
                                ("files", pymap11, PY11),
                                ("csv", pymap12, PY12),
-                               ("json", pymap13, PY13)):
+                               ("json", pymap13, PY13),
+                               ("dates", pymap14, PY14)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

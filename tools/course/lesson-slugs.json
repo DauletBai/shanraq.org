@@ -539,6 +539,18 @@
   "py-csv-utir-tyrnaqsha-tanba",
   "kz"
  ],
+ "python/dates": [
+  "py-kunder-uaqyt-datetime-timedelta",
+  "ru"
+ ],
+ "python/dates-en": [
+  "py-kunder-uaqyt-datetime-timedelta",
+  "en"
+ ],
+ "python/dates-kz": [
+  "py-kunder-uaqyt-datetime-timedelta",
+  "kz"
+ ],
  "python/dict": [
   "py-sozdik-kilt-pen-man",
   "ru"
