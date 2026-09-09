@@ -143,6 +143,9 @@ def test_pyrun():
         check("неустановленная библиотека — пропуск, не ошибка", code, 0)
         check("сказано, чего не хватает", "не установлена библиотека" in out, True)
 
+        code, out = run("pyrun.py", "--libraries-required", absent)
+        check("с --libraries-required пропуск библиотеки — ошибка", code, 1)
+
         # A module Python itself ships is a different matter: missing, it means
         # the lesson names it wrongly, and that must stay an error.
         pyrun = load("pyrun")

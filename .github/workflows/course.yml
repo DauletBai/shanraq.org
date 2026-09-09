@@ -97,7 +97,7 @@ jobs:
       # program, typed in as printed, prints exactly this -- and the one error
       # that slipped through every check was of that kind.
       - name: Every Python program prints what the lesson shows
-        run: python3 tools/coursecheck/pyrun.py course/lessons/python/*.md
+        run: python3 tools/coursecheck/pyrun.py --libraries-required course/lessons/python/*.md
 
       - name: Every step of the course project runs
         run: python3 tools/coursecheck/pyrun.py --steps

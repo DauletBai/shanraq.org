@@ -9,6 +9,12 @@ computed correctly and described backwards, which every existing check passed.
     python3 tools/coursecheck/pyrun.py course/lessons/python/*.md
     python3 tools/coursecheck/pyrun.py --steps
 
+A lesson may need a library Python does not ship. Missing, it is reported as a
+skip rather than a failure -- a machine that is not set up is not a broken
+lesson. On the machine that guards the course that leniency would be a check
+quietly not happening, so CI adds --libraries-required and a skipped library
+becomes an error.
+
 A program that needs the network is run too. If the network is unreachable the
 program is reported as skipped rather than failed: a course must not go red
 because somebody else's server is down.
@@ -177,8 +183,9 @@ def run(program):
         return r.stdout, ""
 
 
-def check_lessons(paths):
+def check_lessons(paths, strict=False):
     ran = skipped = bad = 0
+    absent = set()
     for path in paths:
         with open(path, encoding="utf-8") as f:
             text = f.read()
@@ -190,6 +197,7 @@ def check_lessons(paths):
                 continue
             if err and missing_library(err):
                 skipped += 1
+                absent.add(missing_library(err))
                 print(f"  ~ {os.path.basename(path)} #{n}: пропущено, "
                       f"не установлена библиотека {missing_library(err)}")
                 continue
@@ -216,6 +224,7 @@ def check_lessons(paths):
                     print(f"  ~ {os.path.basename(path)} задание: пропущено, сеть недоступна")
                 elif err and missing_library(err):
                     skipped += 1
+                    absent.add(missing_library(err))
                     print(f"  ~ {os.path.basename(path)} задание: пропущено, "
                           f"не установлена библиотека {missing_library(err)}")
                 elif err:
@@ -237,6 +246,7 @@ def check_lessons(paths):
                 continue
             if err and missing_library(err):
                 skipped += 1
+                absent.add(missing_library(err))
                 print(f"  ~ {os.path.basename(path)} разминка {number}: пропущена, "
                       f"не установлена библиотека {missing_library(err)}")
                 continue
@@ -251,6 +261,12 @@ def check_lessons(paths):
                 for line in diff(normalise(printed), normalise(out)):
                     print("      " + line)
     print(f"выполнено программ: {ran}, пропущено: {skipped}, разошлось: {bad}")
+    # On a reader's machine a missing library is a note; on the machine that
+    # guards the course it is the whole check quietly not happening.
+    if strict and absent:
+        print("! библиотеки не установлены, а уроки на них написаны: "
+              + ", ".join(sorted(absent)))
+        return 1
     return 1 if bad else 0
 
 
@@ -312,9 +328,14 @@ def main(argv):
     if not args:
         print(__doc__.strip())
         return 2
-    if args[0] == "--steps":
+    strict = "--libraries-required" in args
+    args = [a for a in args if a != "--libraries-required"]
+    if args and args[0] == "--steps":
         return check_steps()
-    return check_lessons(args)
+    if not args:
+        print(__doc__.strip())
+        return 2
+    return check_lessons(args, strict)
 
 
 if __name__ == "__main__":
