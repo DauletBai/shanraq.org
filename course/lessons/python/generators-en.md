@@ -66,7 +66,9 @@ print("the second value:", next(stream))
 print()
 print("== the brackets decide: a list or a generator")
 # getsizeof measures the object itself, and a list is only references to the
-# numbers. What is actually taken up is counted by tracemalloc.
+# numbers. What is actually taken up is counted by tracemalloc. We print
+# megabytes: tracemalloc's exact byte differs from machine to machine, while
+# "four megabytes" is the same everywhere.
 tracemalloc.start()
 base = tracemalloc.get_traced_memory()[0]
 squares_list = [number * number for number in range(100_000)]
@@ -74,8 +76,8 @@ list_all = tracemalloc.get_traced_memory()[0] - base
 squares_gen = (number * number for number in range(100_000))
 gen_all = tracemalloc.get_traced_memory()[0] - base - list_all
 tracemalloc.stop()
-print("list:      the object itself", sys.getsizeof(squares_list), "bytes, with every number", list_all)
-print("generator: the object itself", sys.getsizeof(squares_gen), "bytes, with all it holds", gen_all)
+print(f"list:      the object itself {sys.getsizeof(squares_list)} bytes, with every number {list_all / 1_000_000:.1f} MB")
+print(f"generator: the object itself {sys.getsizeof(squares_gen)} bytes, with all it holds {gen_all} bytes")
 print("the sum is the same:", sum(squares_list) == sum(squares_gen))
 
 print()
@@ -108,8 +110,8 @@ the first value: (2000, 1.5)
 the second value: (2000, 2.5)
 
 == the brackets decide: a list or a generator
-list:      the object itself 800984 bytes, with every number 3999680
-generator: the object itself 208 bytes, with all it holds 376
+list:      the object itself 800984 bytes, with every number 4.0 MB
+generator: the object itself 208 bytes, with all it holds 376 bytes
 the sum is the same: True
 
 == a generator is good for one pass
@@ -160,8 +162,8 @@ Square brackets make a **list comprehension**: the short form of a loop that col
 Round brackets make a **generator expression**: the same thing, except the values are not collected but handed over one at a time. The difference shows in the measurement:
 
 ```
-list:      the object itself 800984 bytes, with every number 3999680
-generator: the object itself 208 bytes, with all it holds 376
+list:      the object itself 800984 bytes, with every number 4.0 MB
+generator: the object itself 208 bytes, with all it holds 376 bytes
 ```
 
 There are two measurements here and both are needed. `sys.getsizeof` shows **the object itself**: for the list that is 800 kilobytes — a hundred thousand references and nothing more, because the numbers themselves lie elsewhere. `tracemalloc` counts **everything that was allocated**, and there the truth shows: some four megabytes against three hundred and seventy-six bytes.
