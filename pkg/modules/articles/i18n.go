@@ -2180,7 +2180,7 @@ var messages = map[string]map[string]string{
 	// Two pages that had no label of their own outside the body text.
 	"footer.formatting": {"kz": "Мәтінді ресімдеу", "ru": "Оформление текста", "en": "Text formatting"},
 	"footer.pricing":    {"kz": "Тарифтер", "ru": "Тарифы", "en": "Pricing"},
-	"footer.tag":        {"kz": "Еркін ақпарат, тегін курстар және тексерілетін болжамдар.", "ru": "Свободная информация, бесплатные курсы и проверяемые прогнозы.", "en": "Free information, free courses, and forecasts you can check."},
+	"footer.tag":        {"kz": "Еркін ақпарат, тегін курстар, хабарландырулар және тексерілетін болжамдар.", "ru": "Свободная информация, бесплатные курсы, классифайды и проверяемые прогнозы.", "en": "Free information, free courses, classifieds, and forecasts you can check."},
 	"footer.rights":     {"kz": "Барлық құқықтар қорғалған", "ru": "Все права защищены", "en": "All rights reserved"},
 	"footer.about":      {"kz": "Біз туралы", "ru": "О нас", "en": "About us"},
 	"footer.you":        {"kz": "Сіз туралы", "ru": "О вас", "en": "About you"},
