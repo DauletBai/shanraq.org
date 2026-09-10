@@ -2449,6 +2449,34 @@ def pymap25(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap26(s):
+    """Python lesson 26: the file, the table and the query.
+
+    The middle block is the reading, because that is where a foreign file is
+    either understood or quietly misread; the query on the right is the answer
+    that never had to come home as a million rows.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4711,6 +4739,38 @@ PY25 = {
 
 
 
+PY26 = {
+    "kz": dict(alt="Файл, кесте және сұраныс",
+               b1="файл", b1_sub="бөлгіш, BOM",
+               b2="оқу", b2_sub="read_csv",
+               b3="сұраныс", b3_sub="read_sql",
+               c1="параметрлер", c2="дайын кесте",
+               head="БІР ЖОЛ — АРЫ, БІР ЖОЛ — БЕРІ",
+               head_sub="жиырма алтыншы сабақ: пішімдер",
+               foot="ФАЙЛ ИНДЕКС ПЕН ТҮРДІ ҰМЫТАДЫ",
+               foot_sub="index_col, parse_dates"),
+    "ru": dict(alt="Файл, таблица и запрос",
+               b1="файл", b1_sub="разделитель, BOM",
+               b2="чтение", b2_sub="read_csv",
+               b3="запрос", b3_sub="read_sql",
+               c1="аргументы", c2="готовая таблица",
+               head="ОДНА СТРОКА ТУДА, ОДНА ОБРАТНО",
+               head_sub="двадцать шестой урок: форматы",
+               foot="ФАЙЛ НЕ ПОМНИТ ИНДЕКС И ТИП",
+               foot_sub="index_col, parse_dates"),
+    "en": dict(alt="A file, a table and a query",
+               b1="a file", b1_sub="separator, BOM",
+               b2="reading", b2_sub="read_csv",
+               b3="a query", b3_sub="read_sql",
+               c1="arguments", c2="a table back",
+               head="ONE LINE OUT, ONE LINE BACK",
+               head_sub="lesson twenty-six: formats",
+               foot="A FILE FORGETS INDEX AND TYPE",
+               foot_sub="index_col, parse_dates"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4744,7 +4804,8 @@ if __name__ == "__main__":
                                ("sql", pymap22, PY22),
                                ("schedule", pymap23, PY23),
                                ("pandas", pymap24, PY24),
-                               ("frame", pymap25, PY25)):
+                               ("frame", pymap25, PY25),
+                               ("io", pymap26, PY26)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

@@ -647,6 +647,18 @@
   "tegin-kurs-python-derek-pen-ii",
   "kz"
  ],
+ "python/io": [
+  "py-oqu-jazu-csv-json-sql",
+  "ru"
+ ],
+ "python/io-en": [
+  "py-oqu-jazu-csv-json-sql",
+  "en"
+ ],
+ "python/io-kz": [
+  "py-oqu-jazu-csv-json-sql",
+  "kz"
+ ],
  "python/json": [
   "py-json-null-kilt-jol",
   "ru"
