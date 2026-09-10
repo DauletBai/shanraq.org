@@ -587,6 +587,18 @@
   "py-faildar-pathlib-kodtau",
   "kz"
  ],
+ "python/frame": [
+  "py-dataframe-series-indeks-qoltanba",
+  "ru"
+ ],
+ "python/frame-en": [
+  "py-dataframe-series-indeks-qoltanba",
+  "en"
+ ],
+ "python/frame-kz": [
+  "py-dataframe-series-indeks-qoltanba",
+  "kz"
+ ],
  "python/functions": [
   "py-funkciyalar-def-return-assert",
   "ru"

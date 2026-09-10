@@ -285,13 +285,14 @@ def diff(want, got):
     return out
 
 
-def check_steps():
+def check_steps(strict=False):
     """Run every step of the course project the way its README says to."""
     root = os.path.join(ROOT, "course", "py-digest")
     if not os.path.isdir(root):
         print("шагов проекта пока нет")
         return 0
     ran = skipped = bad = 0
+    absent = set()
     for name in sorted(os.listdir(root)):
         step = os.path.join(root, name)
         main = os.path.join(step, "main.py")
@@ -312,6 +313,7 @@ def check_steps():
                 print(f"  ~ {name}: пропущен, сеть недоступна")
             elif missing_library(r.stderr):
                 skipped += 1
+                absent.add(missing_library(r.stderr))
                 print(f"  ~ {name}: пропущен, не установлена библиотека "
                       f"{missing_library(r.stderr)}")
             else:
@@ -320,6 +322,10 @@ def check_steps():
             continue
         ran += 1
     print(f"шагов проекта выполнено: {ran}, пропущено: {skipped}, сломанных: {bad}")
+    if strict and absent:
+        print("! библиотеки не установлены, а шаги на них написаны: "
+              + ", ".join(sorted(absent)))
+        return 1
     return 1 if bad else 0
 
 
@@ -331,7 +337,7 @@ def main(argv):
     strict = "--libraries-required" in args
     args = [a for a in args if a != "--libraries-required"]
     if args and args[0] == "--steps":
-        return check_steps()
+        return check_steps(strict)
     if not args:
         print(__doc__.strip())
         return 2

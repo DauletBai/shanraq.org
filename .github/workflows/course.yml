@@ -100,7 +100,7 @@ jobs:
         run: python3 tools/coursecheck/pyrun.py --libraries-required course/lessons/python/*.md
 
       - name: Every step of the course project runs
-        run: python3 tools/coursecheck/pyrun.py --steps
+        run: python3 tools/coursecheck/pyrun.py --steps --libraries-required
 
       - name: Links into this repository exist
         run: python3 tools/coursecheck/linkcheck.py --offline course/lessons/*/*.md

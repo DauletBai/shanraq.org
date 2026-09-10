@@ -2421,6 +2421,34 @@ def pymap24(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap25(s):
+    """Python lesson 25: the label, the row and the column.
+
+    The middle block is the accent because the index is what the lesson is
+    about: the same row is reached by a year or by a number, and only one of
+    those survives a sort.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4651,6 +4679,38 @@ PY24 = {
 
 
 
+PY25 = {
+    "kz": dict(alt="Қолтаңба, жол және баған",
+               b1="кесте", b1_sub="DataFrame",
+               b2="индекс", b2_sub="жыл, нөмір емес",
+               b3="баған", b3_sub="Series",
+               c1="loc[2022]", c2="iloc[1]",
+               head="КЕСТЕ КЕСТЕ БОЛЫП ТҰРСЫН",
+               head_sub="жиырма бесінші сабақ: индекс",
+               foot="ҚОСУ ҚОЛТАҢБА БОЙЫНША ЖҮРЕДІ",
+               foot_sub="сәйкес келмесе — NaN"),
+    "ru": dict(alt="Подпись, строка и столбец",
+               b1="таблица", b1_sub="DataFrame",
+               b2="индекс", b2_sub="год, а не номер",
+               b3="столбец", b3_sub="Series",
+               c1="loc[2022]", c2="iloc[1]",
+               head="ТАБЛИЦА КАК ТАБЛИЦА",
+               head_sub="двадцать пятый урок: индекс",
+               foot="СЛОЖЕНИЕ ИДЁТ ПО ПОДПИСЯМ",
+               foot_sub="не совпало — NaN"),
+    "en": dict(alt="A label, a row and a column",
+               b1="a table", b1_sub="DataFrame",
+               b2="the index", b2_sub="a year, not a row",
+               b3="a column", b3_sub="Series",
+               c1="loc[2022]", c2="iloc[1]",
+               head="A TABLE HELD AS A TABLE",
+               head_sub="lesson twenty-five: the index",
+               foot="ADDITION GOES BY LABEL",
+               foot_sub="no match, no number: NaN"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4683,7 +4743,8 @@ if __name__ == "__main__":
                                ("sqlite", pymap21, PY21),
                                ("sql", pymap22, PY22),
                                ("schedule", pymap23, PY23),
-                               ("pandas", pymap24, PY24)):
+                               ("pandas", pymap24, PY24),
+                               ("frame", pymap25, PY25)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
