@@ -18,6 +18,7 @@
   "24": "python/pandas",
   "25": "python/frame",
   "26": "python/io",
+  "27": "python/select",
   "3": "python/numbers",
   "4": "python/types",
   "5": "python/list",

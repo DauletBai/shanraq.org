@@ -767,6 +767,18 @@
   "py-keste-cron-argparse-logging",
   "kz"
  ],
+ "python/select": [
+  "py-tandau-suzgi-maska-loc",
+  "ru"
+ ],
+ "python/select-en": [
+  "py-tandau-suzgi-maska-loc",
+  "en"
+ ],
+ "python/select-kz": [
+  "py-tandau-suzgi-maska-loc",
+  "kz"
+ ],
  "python/sets": [
   "py-jiyndar-set-qiylysu-ayyrma",
   "ru"

@@ -2477,6 +2477,33 @@ def pymap26(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap27(s):
+    """Python lesson 27: the mask, the rows and the columns.
+
+    The mask is the accent because everything else in the lesson is a
+    consequence of it: a column of yes and no, matched to the table by label.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4771,6 +4798,38 @@ PY26 = {
 
 
 
+PY27 = {
+    "kz": dict(alt="Маска, жолдар және бағандар",
+               b1="кесте", b1_sub="он жол",
+               b2="маска", b2_sub="иә мен жоқ",
+               b3="таңдау", b3_sub="loc[маска, баған]",
+               c1="шарт", c2="керегі ғана",
+               head="ТЕК КЕРЕГІН ҚАЛДЫРУ",
+               head_sub="жиырма жетінші сабақ: сүзгілер",
+               foot="СҮЗГІ ҚОЛТАҢБАНЫ ҚАЙТА САНАМАЙДЫ",
+               foot_sub="loc пен iloc ажырасады"),
+    "ru": dict(alt="Маска, строки и столбцы",
+               b1="таблица", b1_sub="десять строк",
+               b2="маска", b2_sub="да и нет",
+               b3="выборка", b3_sub="loc[маска, ...]",
+               c1="условие", c2="только нужное",
+               head="ОСТАВИТЬ ТОЛЬКО НУЖНОЕ",
+               head_sub="двадцать седьмой урок: фильтры",
+               foot="ФИЛЬТР НЕ ПЕРЕСЧИТЫВАЕТ ПОДПИСИ",
+               foot_sub="loc и iloc расходятся"),
+    "en": dict(alt="A mask, rows and columns",
+               b1="a table", b1_sub="ten rows",
+               b2="a mask", b2_sub="yes and no",
+               b3="selection", b3_sub="loc[mask, cols]",
+               c1="a condition", c2="only what is needed",
+               head="KEEP ONLY WHAT IS NEEDED",
+               head_sub="lesson twenty-seven: filters",
+               foot="A FILTER KEEPS THE OLD LABELS",
+               foot_sub="loc and iloc part company"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4805,7 +4864,8 @@ if __name__ == "__main__":
                                ("schedule", pymap23, PY23),
                                ("pandas", pymap24, PY24),
                                ("frame", pymap25, PY25),
-                               ("io", pymap26, PY26)):
+                               ("io", pymap26, PY26),
+                               ("select", pymap27, PY27)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
