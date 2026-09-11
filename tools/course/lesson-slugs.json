@@ -827,6 +827,18 @@
   "py-agany-bagalar-tenge",
   "kz"
  ],
+ "python/report": [
+  "py-esep-bet-html-ulgi-escape",
+  "ru"
+ ],
+ "python/report-en": [
+  "py-esep-bet-html-ulgi-escape",
+  "en"
+ ],
+ "python/report-kz": [
+  "py-esep-bet-html-ulgi-escape",
+  "kz"
+ ],
  "python/schedule": [
   "py-keste-cron-argparse-logging",
   "ru"

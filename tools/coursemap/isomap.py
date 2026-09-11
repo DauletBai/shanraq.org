@@ -2694,6 +2694,34 @@ def pymap33(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap34(s):
+    """Python lesson 34: the template, the escaping and one file.
+
+    Escaping is the accent because it is the only part that is not about
+    appearance: data that becomes markup is the same mistake as data that
+    becomes SQL.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5244,6 +5272,38 @@ PY33 = {
 
 
 
+PY34 = {
+    "kz": dict(alt="Үлгі, экрандау және бір файл",
+               b1="дерек", b1_sub="кесте, сурет",
+               b2="экрандау", b2_sub="html.escape",
+               b3="бет", b3_sub="бір HTML файл",
+               c1="үлгі", c2="браузерде ашылады",
+               head="ЕСЕП-БЕТ",
+               head_sub="отыз төртінші сабақ: HTML",
+               foot="ДЕРЕК КОДҚА АЙНАЛМАУҒА ТИІС",
+               foot_sub="SQL-де инъекция, HTML-де бөтен скрипт"),
+    "ru": dict(alt="Шаблон, экранирование и один файл",
+               b1="данные", b1_sub="таблица, картинка",
+               b2="экранирование", b2_sub="html.escape",
+               b3="страница", b3_sub="один HTML-файл",
+               c1="шаблон", c2="открывается везде",
+               head="ОТЧЁТ-СТРАНИЦА",
+               head_sub="тридцать четвёртый урок: HTML",
+               foot="ДАННЫЕ НЕ ДОЛЖНЫ СТАНОВИТЬСЯ КОДОМ",
+               foot_sub="в SQL инъекция, в HTML чужой скрипт"),
+    "en": dict(alt="A template, escaping and one file",
+               b1="the data", b1_sub="table, picture",
+               b2="escaping", b2_sub="html.escape",
+               b3="the page", b3_sub="one HTML file",
+               c1="a template", c2="opens anywhere",
+               head="THE REPORT AS A PAGE",
+               head_sub="lesson thirty-four: HTML",
+               foot="DATA MUST NOT BECOME CODE",
+               foot_sub="injection in SQL, a script in HTML"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5286,7 +5346,8 @@ if __name__ == "__main__":
                                ("glossary", pymapgloss, PYG),
                                ("time", pymap31, PY31),
                                ("chart", pymap32, PY32),
-                               ("honest", pymap33, PY33)):
+                               ("honest", pymap33, PY33),
+                               ("report", pymap34, PY34)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
