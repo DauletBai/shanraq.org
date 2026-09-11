@@ -515,6 +515,18 @@
   "go-suret-jukteu",
   "kz"
  ],
+ "python/chart": [
+  "py-matplotlib-birinshi-grafik",
+  "ru"
+ ],
+ "python/chart-en": [
+  "py-matplotlib-birinshi-grafik",
+  "en"
+ ],
+ "python/chart-kz": [
+  "py-matplotlib-birinshi-grafik",
+  "kz"
+ ],
  "python/clean": [
   "py-las-derek-isna-fillna-astype",
   "ru"

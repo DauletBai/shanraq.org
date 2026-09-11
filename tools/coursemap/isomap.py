@@ -2640,6 +2640,33 @@ def pymap31(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap32(s):
+    """Python lesson 32: the sheet, the axes and the file.
+
+    The axes are the accent because everything a reader will see is decided
+    there; the file at the end is only where it lands.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5126,6 +5153,38 @@ PY31 = {
 
 
 
+PY32 = {
+    "kz": dict(alt="Парақ, осьтер және файл",
+               b1="парақ", b1_sub="Figure, дюйм",
+               b2="осьтер", b2_sub="сызық, белгі",
+               b3="файл", b3_sub="savefig, dpi",
+               c1="ax арқылы", c2="терезесіз",
+               head="БІРІНШІ ГРАФИК",
+               head_sub="отыз екінші сабақ: matplotlib",
+               foot="ЭКРАН ЖОҚ: Agg ЖӘНЕ ФАЙЛ",
+               foot_sub="алдымен саламыз, сосын сақтаймыз"),
+    "ru": dict(alt="Лист, оси и файл",
+               b1="лист", b1_sub="Figure, дюймы",
+               b2="оси", b2_sub="линия, подписи",
+               b3="файл", b3_sub="savefig, dpi",
+               c1="через ax", c2="без окна",
+               head="ПЕРВЫЙ ГРАФИК",
+               head_sub="тридцать второй урок: matplotlib",
+               foot="ЭКРАНА НЕТ: Agg И ФАЙЛ",
+               foot_sub="сначала рисуем, потом сохраняем"),
+    "en": dict(alt="A sheet, axes and a file",
+               b1="a sheet", b1_sub="Figure, inches",
+               b2="the axes", b2_sub="line, labels",
+               b3="a file", b3_sub="savefig, dpi",
+               c1="through ax", c2="no window",
+               head="THE FIRST CHART",
+               head_sub="lesson thirty-two: matplotlib",
+               foot="NO SCREEN: Agg AND A FILE",
+               foot_sub="draw first, save second"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5166,7 +5225,8 @@ if __name__ == "__main__":
                                ("merge", pymap29, PY29),
                                ("clean", pymap30, PY30),
                                ("glossary", pymapgloss, PYG),
-                               ("time", pymap31, PY31)):
+                               ("time", pymap31, PY31),
+                               ("chart", pymap32, PY32)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

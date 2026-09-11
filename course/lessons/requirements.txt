@@ -5,3 +5,4 @@
 # installs this file before running the lessons; a reader installs the same
 # versions in the lesson that introduces the library.
 pandas==3.0.5
+matplotlib==3.11.1
