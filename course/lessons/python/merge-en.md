@@ -4,7 +4,7 @@ _Лид (summary):_ **The twenty-ninth lesson of the Python course. `merge` join
 
 ## Why this matters
 
-Data almost never sits in one table. The bank hands over country codes; the names live in a directory. Sales in one file, prices in another. Orders apart, customers apart.
+Data almost never sits in one table. The bank hands over country codes; the names live in a lookup table. Sales in one file, prices in another. Orders apart, customers apart.
 
 Lesson 28 ended on exactly that debt: the report came out in the codes `KAZ`, `UZB`, `RUS`, because we had no names for them. Today we put the names beside them — and see what a join can break along the way.
 
@@ -12,7 +12,7 @@ If you remember `JOIN` from [lesson twenty-two](/read/py-sql-group-by-join-suran
 
 ## The whole thing first
 
-The file is `sklejka.py`. Inflation by code on the left; on the right a directory, deliberately incomplete and with one code to spare.
+The file is `sklejka.py`. Inflation by code on the left; on the right a lookup table, deliberately incomplete and with one code to spare.
 
 ```python
 """Lesson 29: joining two tables on a key.
@@ -119,15 +119,22 @@ validate caught it: Merge keys are not unique in right dataset; not a many-to-on
 
 ### `inner` by default, and it is the most expensive line in the lesson
 
-`data.merge(names, on="code")` keeps only the rows whose key was found **on both sides**. Six rows became four in the example: Russia is not in the directory, and both of its rows vanished. No error, no warning.
+`data.merge(names, on="code")` keeps only the rows whose key was found **on both sides**. Six rows became four in the example: Russia is not in the lookup table, and both of its rows vanished. No error, no warning.
 
-This is the commonest silent loss of data in table work. The report comes out plausible, the sums are smaller than the truth, and there is exactly one way to notice: count the rows before and after.
+This is the commonest silent loss of data in table work. The report comes out plausible, the sums are smaller than the truth, and you see it only if you check on purpose.
 
-The habit: **compare the length after every join**. `len(data)` and `len(joined)` differ — you either lost rows or multiplied them; there is no third possibility.
+**The length alone will not tell you.** One join can lose some rows and multiply others while the length stays where it was. Keys `A` and `B` on the left, `A`, `A` and `C` in the lookup table: `inner` drops `B`, doubles `A` — and leaves the same two rows. The length agrees and the table is not the same one.
 
-### `left`: the data decides, the directory adds
+So the check is made of four things, and the first is the cheapest of them:
 
-`how="left"` keeps every row of the left table; where no match was found, the right-hand columns hold `NaN`. That is the sane choice when the data is on the left and a directory on the right: the data decides which rows exist, the directory only adds words to them.
+- **`validate=`** — say which relation you expect: `"many_to_one"` for "data and a lookup table", or `"one_to_one"`, `"one_to_many"`. If it does not hold, a `MergeError` where the mistake happened;
+- **`indicator=True` with `how="outer"`** — three numbers before the join in earnest: how many matched on both sides, how many were left unmatched on the left and on the right;
+- **the uniqueness of the key** — `names["code"].duplicated().sum()` for whichever side is meant to be the lookup table;
+- **the length and a control sum** — `len` before and after, and beside it the sum of the column the report will show: if it grew, rows were multiplied.
+
+### `left`: the data decides, the lookup table adds
+
+`how="left"` keeps every row of the left table; where no match was found, the right-hand columns hold `NaN`. That is the sane choice when the data is on the left and a lookup table on the right: the data decides which rows exist, the lookup table only adds words to them.
 
 There is also `how="right"` (the mirror image) and `how="outer"` — keep everything from both sides. `outer` earns its place less in a report than in a check: with `indicator=True` it shows how many rows were found on both sides, how many were left unmatched on the left, and how many on the right.
 
@@ -135,7 +142,7 @@ There is also `how="right"` (the mirror image) and `how="outer"` — keep everyt
 {'both': 4, 'left_only': 2, 'right_only': 1}
 ```
 
-Three numbers worth looking at **before** joining in earnest. `left_only` is what the directory does not have; `right_only` is what the data does not have.
+Three numbers worth looking at **before** joining in earnest. `left_only` is what the lookup table does not have; `right_only` is what the data does not have.
 
 ### When the key is called something else
 
@@ -147,14 +154,14 @@ Columns with the same name on both sides do not clash: they get `_x` and `_y` at
 
 ### A duplicate in the key multiplies the rows
 
-The second trap, the mirror image of the first. If a code appears twice in the directory, every row of data with that code is **doubled**. There are more rows than there were, the sums grow, and again nothing is said.
+The second trap, the mirror image of the first. If a code appears twice in the lookup table, every row of data with that code is **doubled**. There are more rows than there were, the sums grow, and again nothing is said.
 
 The drill shows it in numbers: a sum of 300 turns into 400 — not because anything was added, but because one row was counted twice.
 
 The cure is `validate`:
 
 - `validate="one_to_one"` — the key is unique on both sides;
-- `validate="many_to_one"` — it may repeat on the left but not on the right (the commonest case: data and a directory);
+- `validate="many_to_one"` — it may repeat on the left but not on the right (the commonest case: data and a lookup table);
 - `validate="one_to_many"` — the other way round.
 
 If it does not hold, a `MergeError` instead of a silent multiplication. This is one of those checks worth writing every time: it costs nothing and catches the mistake where it happened.
@@ -218,7 +225,7 @@ print("rows:", len(joined), "| sum:", int(joined["value"].sum()))
 
 ## The exercise
 
-**Required.** You are given eight rows of inflation across four codes and a directory of four countries — not quite the same four. Join them so that no row of data is lost, and print:
+**Required.** You are given eight rows of inflation across four codes and a lookup table of four countries — not quite the same four. Join them so that no row of data is lost, and print:
 
 1. how many rows there were and how many there are, along with the codes that found no name;
 2. the average inflation per country, with the name beside the code;
@@ -244,7 +251,7 @@ region
 Central Asia          3     9.98
 ```
 
-Done when: the output matches line for line; the number of rows is the same before and after; the join is checked with `validate`; the rows without a region are left out of the per-region grouping rather than filed under somebody else's region.
+Done when: the output matches line for line; the join is checked with `validate` rather than by comparing lengths alone; the number of rows is the same before and after; the rows without a region are left out of the per-region grouping rather than filed under somebody else's region.
 
 **On your own data.** Take two of your tables with a key in common — anything with a code or an identifier. Look at `merge(..., how="outer", indicator=True)` first and read off the three numbers. Then join the way your task needs and compare the length before and after.
 
@@ -258,21 +265,21 @@ Done when: the output matches line for line; the number of rows is the same befo
 
 Step ten: the report stops speaking in codes. `sholu/anyqtama.py` is a table of three columns — code, name, region — and the report joins it on the code.
 
-Two decisions there are worth reading in the code. The join is a **left** one: the data decides which rows exist, the directory only adds words, and a country the directory has never heard of stays in the report under its code. And the join is **checked**: `validate="one_to_one"`, because a repeated code in the directory would multiply the rows and the totals would grow on their own.
+Two decisions there are worth reading in the code. The join is a **left** one: the data decides which rows exist, the lookup table only adds words, and a country the lookup table has never heard of stays in the report under its code. And the join is **checked**: `validate="one_to_one"`, because a repeated code in the lookup table would multiply the rows and the totals would grow on their own.
 
-Debts. Our directory is incomplete on purpose: Russia is not in it, and in the report it stayed a code with an empty region. That is the right behaviour, but an empty cell in a report is a question somebody has to answer; what to fill such gaps with is the subject of the next lesson, on dirty data.
+Still open. Our lookup table is incomplete on purpose: Russia is not in it, and in the report it stayed a code with an empty region. That is the right behaviour, but an empty cell in a report is a question somebody has to answer; what to fill such gaps with is the subject of the next lesson, on dirty data.
 
 ## The answers
 
 ### To the questions
 
 1. Under `inner` they disappear — from both sides, silently. Under `left` every row of the left table stays and the right-hand columns are filled with `NaN` where no match was found.
-2. `merge(..., how="outer", indicator=True)` adds a `_merge` column holding `both`, `left_only` and `right_only`; `value_counts()` over it gives the three numbers.
+2. `merge(..., how="outer", indicator=True)` adds a `_merge` column holding `both`, `left_only` and `right_only`; `value_counts()` over it gives the three numbers. The length of the table is not enough on its own: lost rows and multiplied ones can add up to the same figure.
 3. Because the key is not unique in the right-hand table: every row on the left is multiplied by the number of matches on the right. The `validate` argument catches it and raises a `MergeError` instead.
 
 ### To the warm-up
 
-1. The default join is `inner`, and the row with the code `RUS` disappears because the directory does not have it. Two rows remain out of three.
+1. The default join is `inner`, and the row with the code `RUS` disappears because the lookup table does not have it. Two rows remain out of three.
 
 <!-- drill 1 out -->
 ```text
@@ -299,7 +306,7 @@ print(len(joined), "| without a name:", int(joined["name"].isna().sum()))
 3 | without a name: 1
 ```
 
-3. Drop the duplicate from the directory — `names.drop_duplicates("code")` — and add the check, so that next time it is the program that notices rather than the report.
+3. Drop the duplicate from the lookup table — `names.drop_duplicates("code")` — and add the check, so that next time it is the program that notices rather than the report.
 
 <!-- drill 3 -->
 ```python
@@ -318,7 +325,7 @@ rows: 2 | sum: 300
 
 ### To the exercise
 
-The join is a left one and it is checked: `how="left", validate="many_to_one"`. Left, because the data matters more than the directory; checked, because the directory came from outside, which means nobody is answerable for the uniqueness of its key.
+The join is a left one and it is checked: `how="left", validate="many_to_one"`. Left, because the data matters more than the lookup table; checked, because the lookup table came from outside, which means nobody is answerable for the uniqueness of its key.
 
 The rows without a region are dropped from the per-region grouping with `dropna(subset=["region"])`. Not because they are unwanted, but because their region is not empty but unknown: filing them under "Central Asia" would be inventing data.
 

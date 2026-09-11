@@ -208,7 +208,7 @@ b = pd.Series([10.0, 9.6], index=[...])
 print((a - b).round(1).tolist())
 ```
 
-**3. Fix it.** The program goes for the row of 2022 and falls over with `KeyError: 2022`. Replace one lookup.
+**3. Fix it.** The program goes for the row of 2022 and raises `KeyError: 2022`. Replace one lookup.
 
 ```python
 # square brackets on a table ask about a column, and we want a row
@@ -271,7 +271,7 @@ Step seven: the digest stops holding its series in a dictionary. `sholu/esep.py`
 
 The disk is untouched for now: the CSV is still written and read by the `csv` module. `read_csv` and `to_csv` are the next lesson.
 
-Debts. The digest's index is a year as a number rather than a date; for a monthly series that will no longer do, and the lesson on time in a table will have to move to real dates.
+Still open. The digest's index is a year as a number rather than a date; for a monthly series that will no longer do, and the lesson on time in a table will have to move to real dates.
 
 ## The answers
 

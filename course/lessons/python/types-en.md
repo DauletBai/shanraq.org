@@ -324,7 +324,7 @@ The debts. We repaired one string by hand, but a file will have thousands of the
 9 81
 ```
 
-2. `text.strip().replace(",", ".")`. `float` will forgive the spaces around it, but not the comma: `float("1,15")` falls over with a `ValueError`.
+2. `text.strip().replace(",", ".")`. `float` will forgive the spaces around it, but not the comma: `float("1,15")` raises a `ValueError`.
 
 <!-- drill 2 -->
 ```python

@@ -107,7 +107,7 @@ A function without a `return` works too, but it returns `None` — the same "no 
 
 The string in triple quotes right after `def` is a **docstring**, the function's description. We have seen one at the top of a file; here it explains a single piece rather than the program, and it is the place to say what the function does with gaps.
 
-Saying it is not enough; it has to be done. Inside `above` the gap is checked **on both sides**: `other.get(year) is None` covers both "the other series has no such year" and "the year is there but the number is not". Check only our own series and `value > other[year]` would one day meet a `None` and fall over with a `TypeError` instead of answering. A function that promises to work with gaps owes that promise to every gap that reaches it.
+Saying it is not enough; it has to be done. Inside `above` the gap is checked **on both sides**: `other.get(year) is None` covers both "the other series has no such year" and "the year is there but the number is not". Check only our own series and `value > other[year]` would one day meet a `None` and raise a `TypeError` instead of answering. A function that promises to work with gaps owes that promise to every gap that reaches it.
 
 > **Picture it.** A recipe with a name. While it lives in your head you retell it every time; written down and named, it is passed on in one phrase.
 

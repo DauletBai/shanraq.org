@@ -4952,7 +4952,7 @@ PY29 = {
                head="ЕКІ ДЕРЕККӨЗ, БІР КІЛТ",
                head_sub="жиырма тоғызыншы сабақ: біріктіру",
                foot="INNER ЖҰПСЫЗ ЖОЛДЫ ҮНСІЗ ТАСТАЙДЫ",
-               foot_sub="жол санын салыстырыңыз"),
+               foot_sub="validate және indicator қойыңыз"),
     "ru": dict(alt="Два источника, один ключ",
                b1="данные", b1_sub="коды",
                b2="ключ", b2_sub="merge, how=left",
@@ -4961,7 +4961,7 @@ PY29 = {
                head="ДВА ИСТОЧНИКА, ОДИН КЛЮЧ",
                head_sub="двадцать девятый урок: соединение",
                foot="INNER МОЛЧА ВЫБРАСЫВАЕТ СТРОКИ",
-               foot_sub="сверяйте длину до и после"),
+               foot_sub="ставьте validate и indicator"),
     "en": dict(alt="Two sources, one key",
                b1="the data", b1_sub="codes",
                b2="the key", b2_sub="merge, how=left",
@@ -4970,7 +4970,7 @@ PY29 = {
                head="TWO SOURCES, ONE KEY",
                head_sub="lesson twenty-nine: joining",
                foot="INNER DROPS ROWS IN SILENCE",
-               foot_sub="compare the length before and after"),
+               foot_sub="use validate and indicator"),
 }
 
 

@@ -140,7 +140,7 @@ A file is text. It forgets two things, and both cost mistakes.
 
 **The type.** `2026-01-15` in a file is a string. pandas will read it as one, and `day.dt.month` will not work: a string has no month. `parse_dates=["day"]` turns it into a date, and the output shows `str` becoming `datetime64[us]`. The same goes for codes: `dtype={"kod": str}` saves the leading zero that otherwise disappears along with the turn into a number.
 
-A gap, unlike those, survives the trip: an empty cell reads back as `NaN`, and `NaN` writes out as an empty cell. Which is why there are exactly two empty cells in the example — the two that were there.
+In this example the gap survived the trip: an empty cell read back as `NaN` and `NaN` wrote out as an empty cell — hence exactly two empty cells, the same two. But that is luck rather than a property of the column: in a text column an empty cell and an empty string are indistinguishable, and the words `NA`, `N/A`, `nan` and a dozen more are treated as gaps by `read_csv` out of the box — including `NA`, the real country code of Namibia. What counts as a gap is better stated outright: `na_values=[...]` and `keep_default_na=False`.
 
 ### The arguments that cover almost any file somebody sends you
 
@@ -171,7 +171,7 @@ Three matter on the way out:
 
 But the bank's answer from [lesson eighteen](/read/py-http-suranys-urllib-status) is not a table: it has nested objects, a wrapper and metadata around the data. That is easier to take apart with `json.load`, which is what we did, and to build a table from the list of dictionaries it leaves. For nested structures there is `pd.json_normalize`, which spreads them into columns.
 
-The rule: **read somebody else's API with `json.load`; read your own `to_json` with `read_json`**.
+The rule is about the shape rather than the owner: **flat JSON that is already a table goes to `read_json`; nested JSON is taken apart with `json.load` or `json_normalize`**. Somebody else's API usually sends the second kind and your own `to_json` the first, but it is the structure that decides, not who sent the file.
 
 ### SQL: `to_sql` and `read_sql`
 
@@ -179,7 +179,7 @@ The connection comes from where it came from in [lesson twenty-one](/read/py-sql
 
 This does not replace [lesson twenty-two](/read/py-sql-group-by-join-suranys); it continues it. Grouping, joining and filtering are still better left to the database: it can do them over data that will not fit in memory, and it hands you a small result instead of a large one. `read_sql` is a door between two worlds, not a reason to fall out of love with `GROUP BY`.
 
-Two warnings. Values go into a query through `params=` rather than through string formatting — the lesson on SQLite shows why. And `sqlite3` is the only database pandas works with directly; PostgreSQL and the rest need SQLAlchemy, though the call itself looks the same.
+Two warnings. Values go into a query through `params=` rather than through string formatting — the lesson on SQLite shows why. And about the connection: `sqlite3` is taken as it is, while PostgreSQL and the rest are reached through SQLAlchemy or ADBC — the call looks the same either way, only what you handed to `con` changes.
 
 ## The map of this lesson
 
@@ -298,7 +298,7 @@ The `note` column is gone: it existed to spell out the `n/a` mark in words, and 
 
 The network is untouched: the bank answers with one small JSON, and `json.load` is still the right tool for it.
 
-Debts. The digest has no database yet: `to_sql` is not used in the project, though the data is ready for it. We will get there where we get to the server.
+Still open. The digest has no database yet: `to_sql` is not used in the project, though the data is ready for it. We will get there where we get to the server.
 
 ## The answers
 

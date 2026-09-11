@@ -202,7 +202,7 @@ for key, value in back.items():
 print(fixed)
 ```
 
-**3. Fix it.** The program falls over with a `KeyError` although the data is right there. Explain where the key went, and mend the reading.
+**3. Fix it.** The program raises a `KeyError` although the data is right there. Explain where the key went, and mend the reading.
 
 ```python
 import json

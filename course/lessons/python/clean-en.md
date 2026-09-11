@@ -1,6 +1,6 @@
 # Dirty data: gaps, duplicates and types
 
-_Лид (summary):_ **The thirtieth lesson of the Python course. Data arrives broken: numbers as text, a city spelled three ways, a twin row and an empty cell. `isna`, `to_numeric` with `errors="coerce"`, `astype`, `drop_duplicates` — and the question the lesson turns on: drop a gap or fill it, and what filling it costs.**
+_Лид (summary):_ **The thirtieth lesson of the Python course. Data arrives broken: numbers as text, a city spelled three ways, a duplicate row and an empty cell. `isna`, `to_numeric` with `errors="coerce"`, `astype`, `drop_duplicates` — and the question the lesson turns on: drop a gap or fill it, and what filling it costs.**
 
 ## Why this matters
 
@@ -16,7 +16,7 @@ The file is `uborka.py`. Eight rows in which everything that usually breaks is b
 """Lesson 30: repairing what arrived broken.
 
 Eight rows in which everything that usually breaks is broken: gaps, a twin row,
-numbers as text, a city spelled three ways. We mend them one at a time and count
+numbers as text, a city spelled three ways. We clean them one at a time and count
 what changed.
 """
 
@@ -37,7 +37,7 @@ print(df)
 print("types:", dict(df.dtypes.astype(str)))
 
 print()
-print("== what is broken: look before mending")
+print("== what is broken: look before cleaning")
 print("gaps per column:", df.isna().sum().to_dict())
 print("whole duplicates:", int(df.duplicated().sum()))
 print("cities before:", sorted(df["city"].unique()))
@@ -92,7 +92,7 @@ It prints:
 7     Astana   food   7 300  2026-01-15
 types: {'city': 'str', 'kind': 'str', 'amount': 'str', 'day': 'str'}
 
-== what is broken: look before mending
+== what is broken: look before cleaning
 gaps per column: {'city': 0, 'kind': 0, 'amount': 0, 'day': 1}
 whole duplicates: 1
 cities before: ['Astana', 'KOSTANAY', 'Kostanay', 'Rudny', 'kostanay ']
@@ -121,7 +121,7 @@ as strings: 447 | as a category: 229
 
 ## Going through it
 
-### Look first, mend second
+### Look first, clean second
 
 Three lines that start any work with somebody else's table:
 
@@ -133,13 +133,45 @@ df["city"].unique()    how many distinct values there really are
 
 The third is usually the eye-opener: five "cities" instead of three, because of a space here and capitals there. `value_counts()` shows the same with numbers — and then it is plain which spellings are rare, which is to say probably wrong.
 
+In the example `str.strip().str.capitalize()` brings the three spellings together, and for a lesson that is enough. In real work it is dangerous: `capitalize` lower-cases everything after the first letter, which ruins abbreviations (`LLP`), double names and anything hyphenated. As soon as there are more than three spellings, people keep a lookup of their own — a dictionary of "as it arrived → as it should be" — and apply it with `replace`; whatever is not in the dictionary stays visible and goes into the log.
+
 ### Numbers: `to_numeric`, not `astype`
 
 `astype(float)` over a column that holds "n/a" falls over entirely: one bad cell and not a single number. `pd.to_numeric(..., errors="coerce")` converts what it can and turns what it cannot into `NaN`. That is the honest move: a value that makes no sense becomes **known to make no sense** rather than becoming a zero.
 
-The spaces inside a number come out before the conversion: `str.replace(" ", "", regex=False)`. The same line is where a currency sign, a per cent mark and the non-breaking space that comes out of Excel — and looks exactly like an ordinary one — are removed.
+The spaces inside a number come out before the conversion. And here is a trap worth a program of its own: **a space is not always a space**. Excel puts a non-breaking space inside a number, sometimes a narrow one; on screen they look exactly like the ordinary kind, and `replace(" ", "")` does not touch them.
 
-Dates are mended the same way: `pd.to_datetime(..., errors="coerce")`.
+```python
+import pandas as pd
+
+# The spaces are written as codes on purpose: in a file they look ordinary.
+# \u00a0 — the non-breaking space out of Excel, \u202f — the narrow one
+raw = pd.Series(["1\u00a0200,50", "18\u202f500 ₸", "12%", "н/д"])
+
+only_space = raw.str.replace(" ", "", regex=False)
+print("only the ordinary space removed:", pd.to_numeric(only_space, errors="coerce").tolist())
+
+clean = (raw.str.replace("\u00a0", "", regex=False)
+            .str.replace("\u202f", "", regex=False)
+            .str.replace(" ", "", regex=False)
+            .str.replace("₸", "", regex=False)
+            .str.replace("%", "", regex=False)
+            .str.replace(",", ".", regex=False))
+print("everything spare removed:      ", pd.to_numeric(clean, errors="coerce").tolist())
+```
+
+It prints:
+
+```text
+only the ordinary space removed: [nan, nan, nan, nan]
+everything spare removed:       [1200.5, 18500.0, 12.0, nan]
+```
+
+The first line is four gaps: there was not one ordinary space in those numbers. So the currency, the per cent and each kind of space are removed separately, and the decimal comma is turned into a point — or all of it at once with a regular expression, when there are enough of them to be worth it.
+
+The per cent raises a question of its own, to be settled before anything is counted: is `12%` the number 12 or the fraction 0.12? The answer depends on what the column is for, and it is better written down beside the code than recalled a month later.
+
+Dates are repaired the same way: `pd.to_datetime(..., errors="coerce")`.
 
 ### Types: `astype`, and integers with gaps
 
@@ -165,20 +197,20 @@ df.drop_duplicates(subset=["city", "day"], keep="last")
 
 `keep="last"` — when a later record counts as a correction of an earlier one. That is a decision about the meaning of the data rather than a technical detail: choosing `first` or `last`, you are answering which of the two records is the truer.
 
-What it costs to miss was shown in [lesson twenty-nine](/read/py-kesteler-merge-join-kilt): a duplicate in a directory's key multiplies rows during a join.
+What it costs to miss was shown in [lesson twenty-nine](/read/py-kesteler-merge-join-kilt): a duplicate in a lookup table's key multiplies rows during a join.
 
 ### Gaps: drop or fill
 
 Here the lesson reaches the place where technique ends and honesty begins.
 
-`dropna()` throws away rows with gaps — whole or by `subset`. `fillna(value)` fills them. Both are decisions, not habits.
+In pandas' own words these are **missing values**; this course calls them gaps, and they are the same thing. `dropna()` throws away rows with gaps — whole or by `subset`. `fillna(value)` fills them. Both are decisions, not habits.
 
 Look at the numbers in the example. The sum did not change: `fillna(0)` added a zero, and a zero adds nothing to a sum. But the average fell from 31,600 to 27,086 — because an empty receipt became a receipt for zero tenge that never existed. The same operation is harmless for one figure and a lie for another.
 
 When filling is fair:
 
 - the default value is known and real: no quantity given means one;
-- a series over time where a value holds until the next change (`ffill`): the rate on a weekend equals Friday's rate, because it really does;
+- a series over time where **the subject matter** says that the last published value holds until the next update (`ffill`): a weekend rate is Friday's rate not because anybody measured it on Saturday but because that is how the rule works. It is an assumption, and it has to be written down — in the code and beside the report. Better still, mark the filled values with a column of their own, so that a measurement can be told from a carry-forward;
 - the gap is an "unknown" that can be put into words, and you set a **marker** rather than a number: `"unknown"`, `"not stated"`. A marker is not an invention; it tells the truth.
 
 When it is not:
@@ -230,7 +262,7 @@ numbers = pd.to_numeric(amounts, ...)
 print(numbers.isna().sum(), "| type:", numbers.dtype)
 ```
 
-**3. Fix it.** The program falls over with `IntCastingNaNError`. The year has to stay an integer and the gap has to stay a gap.
+**3. Fix it.** The program raises `IntCastingNaNError`. The year has to stay an integer and the gap has to stay a gap.
 
 ```python
 # an ordinary integer cannot be empty
@@ -281,9 +313,9 @@ Step eleven: a cleaning step appears between the source and the report. `sholu/t
 
 Its rules are the lesson's: a row without a key is dropped (that is not a gap in the data but the absence of the row itself), so is a repeated country-and-year pair, what is not a number becomes a gap rather than a zero, and the country code becomes a `category`.
 
-The report no longer decides any of that; it only counts. One decision stayed with it, and it is about words rather than numbers: a country the directory does not know gets the marker `белгісіз` instead of an empty cell. That settles the debt of [lesson twenty-nine](/read/py-kesteler-merge-join-kilt): an empty cell in a report is a question nobody answers, and a marker answers it honestly.
+The report no longer decides any of that; it only counts. One decision stayed with it, and it is about words rather than numbers: a country the lookup table does not know gets the marker `белгісіз` instead of an empty cell. That settles the debt of [lesson twenty-nine](/read/py-kesteler-merge-join-kilt): an empty cell in a report is a question nobody answers, and a marker answers it honestly.
 
-Debts. The cleaning log is printed to the screen and disappears with it. Its place is beside the report — in a file that can be compared with the last run; we will get there where we get to the server.
+Still open. The cleaning log is printed to the screen and disappears with it. Its place is beside the report — in a file that can be compared with the last run; we will get there where we get to the server.
 
 ## The answers
 
@@ -291,7 +323,7 @@ Debts. The cleaning log is printed to the screen and disappears with it. Its pla
 
 1. Because `astype(float)` falls over at the first value it cannot read and converts nothing, while `to_numeric(errors="coerce")` converts everything it can and makes the rest `NaN` — that is, known to be unreadable. That can be worked with: counted, shown, decided about.
 2. Because a zero adds nothing to a sum but adds another term to an average. An empty receipt became a receipt for zero tenge that never existed, and the average fell from 31,600 to 27,086.
-3. Honest when a real default is being filled in, when a series over time holds its previous value until the next change, and when a marker of "unknown" stands in place of a number. Invention when a gap is filled with a mean or a zero so that a formula will compute: such data cannot afterwards be told apart from the real kind.
+3. Honest when a real default is being filled in, when the rule of the subject matter itself says the previous value holds until the next update, and when a marker of "unknown" stands in place of a number. In the first two the assumption gets written down, and the filled values are better marked. Invention when a gap is filled with a mean or a zero so that a formula will compute: such data cannot afterwards be told apart from the real kind.
 
 ### To the warm-up
 

@@ -172,7 +172,9 @@ Gaps are checked separately: `df["amount"].isna()` and `.notna()`. A comparison 
 
 `df.loc[mask, ["day", "amount"]]` — the left side picks the rows, the right side the columns. That is both shorter and cheaper than `df[mask][["day", "amount"]]`, which builds an intermediate table out of every column only to throw most of it away.
 
-There is a worded form too: `df.query("amount > 5000 and city == 'Kostanay'")` — inside that string `and` and `or` do work. It suits long conditions and is irreplaceable when the condition arrives from outside, but in ordinary code an expression with masks is easier to debug: a mask can be printed.
+There is a worded form too: `df.query("amount > 5000 and city == 'Kostanay'")` — inside that string `and` and `or` do work. It suits long conditions that you wrote yourself.
+
+What it must not be used for: **building the query string out of what a user typed**. `query` parses the expression as code, and text put into it is executed — the same hole as the SQL injection of [lesson twenty-one](/read/py-sqlite-keste-kilt-tarih). Values go in through `@variable` (`df.query("amount > @limit")`), and a condition that arrives from outside is safer built as a mask, which executes nothing.
 
 ### A filter does not renumber the labels
 
@@ -271,7 +273,7 @@ Rudny       62000
 
 Done when: the output matches line for line; the mark is set through `df.loc[mask, "size"]` rather than through a filter to the left of the `=`; the first answer picks two columns in one go; the sums come from grouping a filtered table rather than from a loop.
 
-**On your own data.** Take a table of yours and write three conditions for it: a simple one, one made of two parts, and one with `isin` or `between`. Print how many rows matched each. If one of them matched nothing, check the column's type: comparing a number with a string raises no error, it is simply never true.
+**On your own data.** Take a table of yours and write three conditions for it: a simple one, one made of two parts, and one with `isin` or `between`. Print how many rows matched each. If one of them matched nothing, look at `dtypes`. When a column holds strings instead of numbers, `==` quietly answers no for every row while `>` and `<` raise a `TypeError`. The cure is not a different condition but `pd.to_numeric` before the filter.
 
 **If you feel like it.**
 
@@ -283,7 +285,7 @@ Done when: the output matches line for line; the mark is set through `df.loc[mas
 
 There is no step this time: the digest has five rows and nothing in it to filter yet. But selection is what the next step will be made of: once there are several series, the report will start with "take only the rows that matter" and only then reach the grouping of the next lesson.
 
-Debts. Our conditions are written inline. Once there are more than three of them they will want a name — and turn into functions like `large(df)`, which read better than three brackets in a row.
+Still open. Our conditions are written inline. Once there are more than three of them they will want a name — and turn into functions like `large(df)`, which read better than three brackets in a row.
 
 ## The answers
 

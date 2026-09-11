@@ -159,6 +159,8 @@ The levels are not decoration. `DEBUG` is turned on while something is being inv
 
 And a small thing that matters: `log.info("day %s: %d taken", day, n)` — with percent signs rather than an f-string. That way the text is assembled only if that level is on.
 
+One detail of the program does not travel into real work: `filemode="w"` erases the journal on every run, and it stands here only so that the lesson's output is the same for everybody. In a real program the mode is `"a"`, appending — which is the default anyway — and to keep the file from growing without end there is `RotatingFileHandler`, by size, or `TimedRotatingFileHandler`, by day.
+
 ### A lock: one copy running instead of two
 
 ```
@@ -179,7 +181,9 @@ exit code: 2 | on stderr: the source did not answer
 zero means all is well: 0
 ```
 
-The scheduler does not read your journal. It looks at the number the program returned: `0` means it worked, anything else means it did not. Notifications, retries and monitoring are all built on that.
+The scheduler does not read your journal. It looks at the number the program returned: `0` means it worked, anything else means it did not.
+
+What happens to that number next depends on the scheduler, and the difference matters. `systemd` really does read the status: a service has `Restart=on-failure`, and a failure shows in `systemctl status`. Plain `cron` restarts nothing by itself: it can mail you whatever the program printed (`MAILTO`), and there its part ends. Retries, a message in a messenger and monitoring are things configured separately; the exit code only gives them their cue.
 
 So a night-time program has a contract: `raise SystemExit(1)` when the work was not done, and zero when it was. The error itself is better printed to `stderr` — cron keeps the two streams apart.
 
@@ -289,7 +293,7 @@ Done when: the output matches line by line; the lock is released in a `finally` 
 
 The digest becomes a service. Once a day it fetches the rate itself, puts it into the database, writes into the journal what it did, and returns zero — and you hear about it only when the zero stops coming.
 
-Still open. Our lock is a file: it will not survive the power going out mid-run, and in the morning it will have to be removed by hand. And the journal grows without limit — rotation waits where the server does.
+Still open. Our lock is a file, and the trouble with it is the opposite of the obvious one: it **does** survive a crash. Kill the program, pull the power — the file stays where it was, and the next run finds the lock taken with nobody holding it. In the morning it comes off by hand. The cure is to write the process number and the time into the lock: if no process with that number exists, the lock is stale and can be removed on the spot. And the journal grows without limit — rotation waits where the server does.
 
 ## The answers
 

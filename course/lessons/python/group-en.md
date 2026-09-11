@@ -72,7 +72,7 @@ by_month = df.groupby(df["day"].dt.to_period("M"))["amount"].agg(["count", "sum"
 print(by_month)
 
 print()
-print("== count counts numbers, size counts rows")
+print("== count counts values that are there, size counts rows")
 with_gap = df.copy()
 with_gap.loc[6, "amount"] = None
 print("count:", with_gap.groupby("kind")["amount"].count().to_dict())
@@ -135,7 +135,7 @@ day
 2026-01      7  144590
 2026-02      5  183890
 
-== count counts numbers, size counts rows
+== count counts values that are there, size counts rows
 count: {'food': 3, 'fuel': 3, 'phone': 2, 'rent': 3}
 size:  {'food': 4, 'fuel': 3, 'phone': 2, 'rent': 3}
 
@@ -169,11 +169,13 @@ df.groupby("kind").agg(
 )
 ```
 
-On the left, the name of the column in the answer; on the right, the pair of "which column to count" and "what to count with". One `agg` can mix different columns: `dearest=("amount", "max"), first_day=("day", "min")`.
+On the left, the name of the column in the answer; on the right, the pair (column, aggregation function): which column to count and what to count it with. One `agg` can mix different columns: `dearest=("amount", "max"), first_day=("day", "min")`.
 
-### `count` counts numbers, `size` counts rows
+### `count` counts the values that are there, `size` counts all the rows
 
-The difference is not cosmetic. `count` passes over `NaN` and `size` does not, and the gap between them is exactly the number of missing values in the group. In the example, after one value was erased, `count` says 3 for food and `size` says 4.
+The difference is not cosmetic. `count` counts the values a column holds — any of them: numbers, strings, dates — and passes over the missing ones. `size` counts the rows of the group whole. The gap between them is exactly the number of missing values in the column you counted. In the example, after one value was erased, `count` says 3 for food and `size` says 4.
+
+Hence the difference in how they are asked: `count` is asked of a column (`groupby(...)["amount"].count()`), `size` of the group itself, which needs no column.
 
 That is the first of two ways to get a wrong answer in silence. The second is worse.
 
@@ -294,14 +296,14 @@ Step nine: the digest stops watching one country. Three of them arrive in a sing
 
 That shape is what it was all for: the report turns into one question instead of a loop over countries. `groupby("country").agg(...)` gives the years, the gaps, the average and the maximum, and the year of the maximum comes from `idxmax` inside the grouping — the label of the largest value is that row, and the row knows its year.
 
-Debts. The countries in the report are called `KAZ`, `UZB`, `RUS`, because that is how the bank hands them over. Their names are in the same answer, but putting them alongside needs a second table and a join on a key. That is the next lesson.
+Still open. The countries in the report are called `KAZ`, `UZB`, `RUS`, because that is how the bank hands them over. Their names are in the same answer, but putting them alongside needs a second table and a join on a key. That is the next lesson.
 
 ## The answers
 
 ### To the questions
 
 1. It cuts the table into pieces by the key, counts each piece separately and puts the answers back together as a table. The key becomes the row's label — the index — so the answer can be sorted and added to other series by those same labels.
-2. `count` counts the values that are there, `size` counts rows, gaps included. Their difference is the number of gaps in the group.
+2. `count` counts the values that are there — numbers, strings, dates, anything; `size` counts every row of the group. Their difference is the number of gaps in the column you counted.
 3. `agg` squeezes a group into one number; `transform` returns as many values as there are rows, repeating the group's number for every row of its own group. It is what you want when a group's answer has to stand beside the original rows: a share, a deviation from the average, a rank within the group.
 
 ### To the warm-up

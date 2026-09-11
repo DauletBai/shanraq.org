@@ -166,7 +166,7 @@ On my machine — Python 3.14.5, pandas 3.0.5, a million rows:
 | sorting by amount | 0.173 s | 0.089 s |
 | memory for the same table | 100 MB | 155 MB |
 
-Your numbers will be different: another machine, another version, another set of things running. What matters is not the numbers themselves but the distances between the columns — those are the same everywhere.
+Your numbers will be different: another machine, another version of pandas, other column types, another load on the box. The distances between the columns move too — more in one place, less in another. What holds is something else: **which operation puts the difference into orders of magnitude and which leaves it in multiples**. That is the part to remember; the numbers are to be measured again on your own machine.
 
 ### What those numbers show
 
@@ -174,7 +174,7 @@ Your numbers will be different: another machine, another version, another set of
 
 **Twice, where everything has to be walked anyway.** Grouping and sorting win by two, not by forty. The work is the same; it is simply carried out by faster code than ours. Twice is good, and twice is not the difference libraries are installed for.
 
-**Slower, where we asked for more than we needed.** `df.loc[df["kind"] == "food", "amount"].sum()` first builds a mask: a million yes-or-no answers, a whole new column, and only then adds. Meanwhile `sum(a for k, a in rows if k == "food")` walks the data once and builds nothing. On one question the list wins. On ten questions to the same table the mask is built once and the questions are ten — and then pandas wins.
+**Slower, where we asked for more than we needed.** `df.loc[df["kind"] == "food", "amount"].sum()` first builds a mask: a million yes-or-no answers, a whole new column, and only then adds. Meanwhile `sum(a for k, a in rows if k == "food")` walks the data once and builds nothing. On one question the list wins. The win appears once the mask is **kept and reused**: `food = df["kind"] == "food"`, and then `df.loc[food, "amount"].sum()`, `df.loc[food, "amount"].mean()`, `df.loc[food]` — a million comparisons made once for ten questions. Write the condition out afresh every time and pandas will build the mask afresh too.
 
 **Memory is not free.** The same table: a hundred megabytes as a list, a hundred and fifty-five as a table. The numbers are not to blame, the words are: the `kind` column holds five distinct values, but they lie there one per row. `df["kind"].astype("category")` turns those 155 MB into 9 MB — the five words are stored once and the column keeps their numbers. It is the same move as in [the lesson on sets](/read/py-jiyndar-set-qiylysu-ayyrma): do not store the same thing twice.
 
@@ -280,7 +280,7 @@ Done when: the output matches line for line; the shares are computed from the to
 
 Nowhere yet, and that is on purpose. The lesson answers "is it worth it", not "how"; the digest changes from the next lesson on, where its table becomes a `DataFrame`. The only thing added now is the line `pandas==3.0.5` in the project's `requirements.txt`: the version is pinned because the output in these lessons was printed with that one.
 
-Debts. A library is a dependency: it has to be installed, updated and one day repaired after an update. While the digest counts exchange rates, where rows number in the thousands, all pandas wins there is shorter code rather than speed. Saying so is the honest thing, rather than pretending we got faster.
+Still open. A library is a dependency: it has to be installed, updated and one day repaired after an update. While the digest counts exchange rates, where rows number in the thousands, all pandas wins there is shorter code rather than speed. Saying so is the honest thing, rather than pretending we got faster.
 
 ## The answers
 

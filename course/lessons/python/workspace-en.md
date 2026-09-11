@@ -179,7 +179,16 @@ pip install -r requirements.txt
 
 ## Exercise
 
-**Required.** Make a `digest` folder, create an environment in it, move yesterday's program there and run it from inside the environment. Then repeat the check: install `requests`, leave the environment, and make sure the import no longer works.
+**Required.** Make a `digest` folder, create an environment in it, move yesterday's program there and run it from inside the environment. Then install `requests` into the environment and check that you really are inside it rather than somewhere else:
+
+```python
+import sys
+
+print(sys.executable)                    # the path of the python that hears you
+print(sys.prefix != sys.base_prefix)     # True means you are in an environment
+```
+
+Leave the environment (`deactivate`) and run the same two lines: the path changes and the `True` becomes `False`. That is the check that holds. Testing an environment by trying an import does not: `requests` may well be installed system-wide too, in which case the import works outside as well and you draw the wrong conclusion.
 
 **If you want more.**
 
@@ -203,7 +212,7 @@ The debts. The program still dies without the internet and fetches the data afre
 
 ### To the warm-up
 
-1. `which python3` will show the system Python — `/usr/bin/python3` or something like it, and not a path inside `.venv`. So `pip install requests` will put the package into the system too: it lands in every project at once, and it will not appear in `requirements.txt`, because nobody wrote it there.
+1. `which python3` will show the system Python — `/usr/bin/python3` or something like it, and not a path inside `.venv`. So `pip install requests` works outside the project. Where exactly it puts the package depends on the system: on Linux such an install is these days usually refused outright (`externally-managed-environment`), and otherwise the package lands in the user's home directory or in the system as a whole. All three endings have one thing in common: the package will not appear in `requirements.txt`, and your project will not have it.
 
 2. `source .venv/bin/activate` (on Windows, `.venv\Scripts\activate`). The order is exactly that: first the environment is created, then you step into it, and only then are packages installed — otherwise they go past it.
 
