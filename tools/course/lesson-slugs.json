@@ -815,6 +815,18 @@
   "py-pandas-nege-kerek-olsheu",
   "kz"
  ],
+ "python/pipeline": [
+  "py-konveyer-main-cron-dry-run",
+  "ru"
+ ],
+ "python/pipeline-en": [
+  "py-konveyer-main-cron-dry-run",
+  "en"
+ ],
+ "python/pipeline-kz": [
+  "py-konveyer-main-cron-dry-run",
+  "kz"
+ ],
  "python/polite": [
   "py-sypaiylyq-timeout-retry-kesh",
   "ru"

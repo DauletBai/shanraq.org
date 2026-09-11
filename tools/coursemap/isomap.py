@@ -2749,6 +2749,33 @@ def pymap35(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap36(s):
+    """Python lesson 36: the pipeline, the temporary file and the exit code.
+
+    The write is the accent: everything before it can be repeated, and it is the
+    only step a reader can catch halfway.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5363,6 +5390,38 @@ PY35 = {
 
 
 
+PY36 = {
+    "kz": dict(alt="Конвейер, уақытша файл және код",
+               b1="main()", b1_sub="төрт қадам",
+               b2="жазу", b2_sub="os.replace",
+               b3="код", b3_sub="0 немесе 1",
+               c1="журнал", c2="жоспарлағышқа",
+               head="ӨЗІ ЖАҢАРАТЫН ЖИЫНТЫҚ",
+               head_sub="отыз алтыншы сабақ: конвейер",
+               foot="ҚҰЛАҒАН ДЕРЕККӨЗ ЕСЕПТІ ӨШІРМЕЙДІ",
+               foot_sub="бос есеп ескіден жаман"),
+    "ru": dict(alt="Конвейер, временный файл и код",
+               b1="main()", b1_sub="четыре шага",
+               b2="запись", b2_sub="os.replace",
+               b3="код", b3_sub="0 или 1",
+               c1="журнал", c2="планировщику",
+               head="СВОДКА, КОТОРАЯ ОБНОВЛЯЕТСЯ САМА",
+               head_sub="тридцать шестой урок: конвейер",
+               foot="УПАВШИЙ ИСТОЧНИК НЕ СТИРАЕТ ОТЧЁТ",
+               foot_sub="пустой отчёт хуже старого"),
+    "en": dict(alt="A pipeline, a temporary file and a code",
+               b1="main()", b1_sub="four steps",
+               b2="the write", b2_sub="os.replace",
+               b3="the code", b3_sub="0 or 1",
+               c1="the log", c2="to the scheduler",
+               head="A DIGEST THAT UPDATES ITSELF",
+               head_sub="lesson thirty-six: the pipeline",
+               foot="A FALLEN SOURCE KEEPS THE REPORT",
+               foot_sub="an empty report is worse than an old one"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5407,7 +5466,8 @@ if __name__ == "__main__":
                                ("chart", pymap32, PY32),
                                ("honest", pymap33, PY33),
                                ("report", pymap34, PY34),
-                               ("format", pymap35, PY35)):
+                               ("format", pymap35, PY35),
+                               ("pipeline", pymap36, PY36)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
