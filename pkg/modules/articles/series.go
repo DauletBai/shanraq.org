@@ -78,6 +78,13 @@ type SeriesItem struct {
 // lesson in the contents would be off by the number of pages in front of it.
 func (it *SeriesItem) Intro() bool { return it.Position < 10 }
 
+// Aside marks a page that belongs to the course and is not a lesson: a glossary
+// in front of a heavy module, a recap, an answer to a question several lessons
+// raised. Lessons sit at round positions -- 10, 20, 230 -- so a page between two
+// of them says what it is by where it stands, and numbering leaves it alone
+// rather than shifting every lesson after it by one.
+func (it *SeriesItem) Aside() bool { return it.Position >= 10 && it.Position%10 != 0 }
+
 // TitleIn returns the course title in the reader's language, falling back to any
 // language that has one -- a course shown with a blank name would be worse than
 // one shown in the wrong language.
@@ -302,11 +309,11 @@ func (st *SeriesStore) items(ctx context.Context, seriesID uuid.UUID, lang strin
 		it.Practice = practiceMinutes(body)
 		list = append(list, it)
 	}
-	// Numbering counts lessons only, so the announcement in front of them does
-	// not shift every number by one.
+	// Numbering counts lessons only, so neither the announcement in front of
+	// them nor a glossary between them shifts every number by one.
 	n := 0
 	for _, it := range list {
-		if it.Intro() {
+		if it.Intro() || it.Aside() {
 			continue
 		}
 		n++

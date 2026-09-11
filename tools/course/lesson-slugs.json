@@ -635,6 +635,18 @@
   "py-generatorlar-yield-jad",
   "kz"
  ],
+ "python/glossary": [
+  "py-modul-sozdigi-segiz-soz",
+  "ru"
+ ],
+ "python/glossary-en": [
+  "py-modul-sozdigi-segiz-soz",
+  "en"
+ ],
+ "python/glossary-kz": [
+  "py-modul-sozdigi-segiz-soz",
+  "kz"
+ ],
  "python/group": [
   "py-toptau-groupby-agg-transform",
   "ru"

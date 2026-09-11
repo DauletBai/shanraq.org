@@ -173,11 +173,12 @@ func TestCourseNumbersSkipTheAnnouncement(t *testing.T) {
 	items := []*SeriesItem{
 		{Position: 1, Title: "О курсе"},
 		{Position: 10, Title: "Урок 1"},
+		{Position: 15, Title: "Словарь модуля"},
 		{Position: 20, Title: "Урок 2"},
 	}
 	n := 0
 	for _, it := range items {
-		if it.Intro() {
+		if it.Intro() || it.Aside() {
 			continue
 		}
 		n++
@@ -186,8 +187,13 @@ func TestCourseNumbersSkipTheAnnouncement(t *testing.T) {
 	if items[0].No != 0 {
 		t.Errorf("анонс получил номер %d", items[0].No)
 	}
-	if items[1].No != 1 || items[2].No != 2 {
-		t.Errorf("уроки пронумерованы %d и %d, ожидались 1 и 2", items[1].No, items[2].No)
+	// A page between two lessons is not a lesson and must not take a number,
+	// or every lesson after it is called by the wrong one.
+	if items[2].No != 0 {
+		t.Errorf("вставка получила номер %d", items[2].No)
+	}
+	if items[1].No != 1 || items[3].No != 2 {
+		t.Errorf("уроки пронумерованы %d и %d, ожидались 1 и 2", items[1].No, items[3].No)
 	}
 }
 

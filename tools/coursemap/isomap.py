@@ -2585,6 +2585,33 @@ def pymap30(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymapgloss(s):
+    """The module's vocabulary: a page that is not a lesson.
+
+    Same three blocks as a lesson map, because it stands in the same contents
+    list and should not look like a stranger there.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5007,6 +5034,38 @@ PY30 = {
 
 
 
+PYG = {
+    "kz": dict(alt="Кесте сөйлейтін сегіз сөз",
+               b1="кесте", b1_sub="DataFrame, Series",
+               b2="белгі", b2_sub="loc пен iloc",
+               b3="маска", b3_sub="NaN, кілт, түр",
+               c1="сегіз сөз", c2="бір кестеде",
+               head="КЕСТЕ СӨЙЛЕЙТІН СЕГІЗ СӨЗ",
+               head_sub="модуль сөздігі: сабақ емес",
+               foot="СӨЗ КЕЗДЕСКЕНДЕ ҚАЙТА ОРАЛЫҢЫЗ",
+               foot_sub="қасында қай сабақ екені жазулы"),
+    "ru": dict(alt="Восемь слов, которыми говорит таблица",
+               b1="таблица", b1_sub="DataFrame, Series",
+               b2="подпись", b2_sub="loc и iloc",
+               b3="маска", b3_sub="NaN, ключ, тип",
+               c1="восемь слов", c2="одна таблица",
+               head="ВОСЕМЬ СЛОВ, КОТОРЫМИ ГОВОРИТ ТАБЛИЦА",
+               head_sub="словарь модуля: не урок",
+               foot="ВОЗВРАЩАЙТЕСЬ, КОГДА СЛОВО ВСТРЕТИТСЯ",
+               foot_sub="рядом сказано, в каком уроке"),
+    "en": dict(alt="Eight words a table speaks in",
+               b1="a table", b1_sub="DataFrame, Series",
+               b2="a label", b2_sub="loc and iloc",
+               b3="a mask", b3_sub="NaN, key, type",
+               c1="eight words", c2="one table",
+               head="EIGHT WORDS A TABLE SPEAKS IN",
+               head_sub="the module's vocabulary, not a lesson",
+               foot="COME BACK WHEN A WORD TURNS UP",
+               foot_sub="the lesson for each is named beside it"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5045,7 +5104,8 @@ if __name__ == "__main__":
                                ("select", pymap27, PY27),
                                ("group", pymap28, PY28),
                                ("merge", pymap29, PY29),
-                               ("clean", pymap30, PY30)):
+                               ("clean", pymap30, PY30),
+                               ("glossary", pymapgloss, PYG)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
