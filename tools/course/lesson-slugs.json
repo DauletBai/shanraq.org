@@ -863,6 +863,18 @@
   "py-sqlite-keste-kilt-tarih",
   "kz"
  ],
+ "python/time": [
+  "py-uaqyt-resample-rolling-asfreq",
+  "ru"
+ ],
+ "python/time-en": [
+  "py-uaqyt-resample-rolling-asfreq",
+  "en"
+ ],
+ "python/time-kz": [
+  "py-uaqyt-resample-rolling-asfreq",
+  "kz"
+ ],
  "python/types": [
   "py-aynymalylar-men-tipter",
   "ru"

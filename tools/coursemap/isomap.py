@@ -2612,6 +2612,34 @@ def pymapgloss(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap31(s):
+    """Python lesson 31: days, weeks and what smoothing costs.
+
+    The smoothing is the accent because it is the one that can lie: the two
+    blocks before it only change what a point means, while this one decides
+    what a reader will be shown instead of the data.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5066,6 +5094,38 @@ PYG = {
 
 
 
+PY31 = {
+    "kz": dict(alt="Күндер, апталар және тегістеу",
+               b1="күндер", b1_sub="asfreq: тесіктер",
+               b2="апталар", b2_sub="resample",
+               b3="тегістеу", b3_sub="rolling",
+               c1="ірілендіру", c2="бірақ адал",
+               head="КЕСТЕДЕГІ УАҚЫТ",
+               head_sub="отыз бірінші сабақ: уақыт қатары",
+               foot="ТЕГІСТЕЛГЕН ҚАТАР — ДЕРЕК ЕМЕС",
+               foot_sub="өлшенді: ауқым 23.75 → 12.73"),
+    "ru": dict(alt="Дни, недели и сглаживание",
+               b1="дни", b1_sub="asfreq: дыры",
+               b2="недели", b2_sub="resample",
+               b3="сглаживание", b3_sub="rolling",
+               c1="укрупняем", c2="но честно",
+               head="ВРЕМЯ В ТАБЛИЦЕ",
+               head_sub="тридцать первый урок: ряды по времени",
+               foot="СГЛАЖЕННЫЙ РЯД — НЕ ДАННЫЕ",
+               foot_sub="измерено: размах 23.75 → 12.73"),
+    "en": dict(alt="Days, weeks and smoothing",
+               b1="days", b1_sub="asfreq: the holes",
+               b2="weeks", b2_sub="resample",
+               b3="smoothing", b3_sub="rolling",
+               c1="coarsen", c2="but honestly",
+               head="TIME IN A TABLE",
+               head_sub="lesson thirty-one: series over time",
+               foot="A SMOOTHED SERIES IS NOT DATA",
+               foot_sub="measured: range 23.75 -> 12.73"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5105,7 +5165,8 @@ if __name__ == "__main__":
                                ("group", pymap28, PY28),
                                ("merge", pymap29, PY29),
                                ("clean", pymap30, PY30),
-                               ("glossary", pymapgloss, PYG)):
+                               ("glossary", pymapgloss, PYG),
+                               ("time", pymap31, PY31)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
