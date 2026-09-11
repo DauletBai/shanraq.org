@@ -707,6 +707,18 @@
   "py-cikldar-for-range-while",
   "kz"
  ],
+ "python/merge": [
+  "py-kesteler-merge-join-kilt",
+  "ru"
+ ],
+ "python/merge-en": [
+  "py-kesteler-merge-join-kilt",
+  "en"
+ ],
+ "python/merge-kz": [
+  "py-kesteler-merge-join-kilt",
+  "kz"
+ ],
  "python/modules": [
   "py-modul-paket-import-name",
   "ru"

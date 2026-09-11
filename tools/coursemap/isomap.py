@@ -2531,6 +2531,33 @@ def pymap28(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap29(s):
+    """Python lesson 29: two sources, one key.
+
+    The key is the accent: everything the lesson warns about -- rows lost,
+    rows multiplied -- happens in that block and nowhere else.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4889,6 +4916,38 @@ PY28 = {
 
 
 
+PY29 = {
+    "kz": dict(alt="Екі дереккөз, бір кілт",
+               b1="дерек", b1_sub="кодтар",
+               b2="кілт", b2_sub="merge, how=left",
+               b3="анықтама", b3_sub="атауы, өңірі",
+               c1="кілт бойынша", c2="атауымен",
+               head="ЕКІ ДЕРЕККӨЗ, БІР КІЛТ",
+               head_sub="жиырма тоғызыншы сабақ: біріктіру",
+               foot="INNER ЖҰПСЫЗ ЖОЛДЫ ҮНСІЗ ТАСТАЙДЫ",
+               foot_sub="жол санын салыстырыңыз"),
+    "ru": dict(alt="Два источника, один ключ",
+               b1="данные", b1_sub="коды",
+               b2="ключ", b2_sub="merge, how=left",
+               b3="справочник", b3_sub="название, регион",
+               c1="по ключу", c2="с названием",
+               head="ДВА ИСТОЧНИКА, ОДИН КЛЮЧ",
+               head_sub="двадцать девятый урок: соединение",
+               foot="INNER МОЛЧА ВЫБРАСЫВАЕТ СТРОКИ",
+               foot_sub="сверяйте длину до и после"),
+    "en": dict(alt="Two sources, one key",
+               b1="the data", b1_sub="codes",
+               b2="the key", b2_sub="merge, how=left",
+               b3="directory", b3_sub="name, region",
+               c1="on the key", c2="with a name",
+               head="TWO SOURCES, ONE KEY",
+               head_sub="lesson twenty-nine: joining",
+               foot="INNER DROPS ROWS IN SILENCE",
+               foot_sub="compare the length before and after"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4925,7 +4984,8 @@ if __name__ == "__main__":
                                ("frame", pymap25, PY25),
                                ("io", pymap26, PY26),
                                ("select", pymap27, PY27),
-                               ("group", pymap28, PY28)):
+                               ("group", pymap28, PY28),
+                               ("merge", pymap29, PY29)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
