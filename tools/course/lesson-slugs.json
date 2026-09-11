@@ -515,6 +515,18 @@
   "go-suret-jukteu",
   "kz"
  ],
+ "python/clean": [
+  "py-las-derek-isna-fillna-astype",
+  "ru"
+ ],
+ "python/clean-en": [
+  "py-las-derek-isna-fillna-astype",
+  "en"
+ ],
+ "python/clean-kz": [
+  "py-las-derek-isna-fillna-astype",
+  "kz"
+ ],
  "python/conditions": [
   "py-shartar-if-elif-else",
   "ru"
