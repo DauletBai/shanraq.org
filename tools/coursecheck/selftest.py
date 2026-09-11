@@ -98,6 +98,14 @@ def test_langcheck():
         p = write(tmp, "urok3-kz.md", LESSON.format(program='print("дерек жоқ")', output="дерек жоқ")
                   + "\n\nБұл выгрузка туралы.\n")
         check("русизм в казахской прозе", bool(lang.check_kazakh_prose(p)), True)
+        # A word that is Kazakh and still wrong here: unknown to the reader, or
+        # breaking vowel harmony.
+        p = write(tmp, "urok3-kz.md", LESSON.format(program='print("дерек жоқ")', output="дерек жоқ")
+                  + "\n\nБөгде файл келді.\n")
+        check("неудачное слово поймано", bool(lang.check_kazakh_prose(p)), True)
+        p = write(tmp, "urok5-kz.md", LESSON.format(program='print("дерек жоқ")', output="дерек жоқ")
+                  + "\n\nДеректер экспортының көлемі өсті.\n")
+        check("похожее правильное слово не поймано", lang.check_kazakh_prose(p), [])
         p = write(tmp, "urok4-kz.md", LESSON.format(program='print("дерек жоқ")', output="дерек жоқ")
                   + "\n\nОны өзің істейсің.\n")
         check("обращение на «сен»", bool(lang.check_kazakh_prose(p)), True)

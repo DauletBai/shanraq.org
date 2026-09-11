@@ -89,16 +89,29 @@ RUSSISMS_KZ = {
     "саналы уақыт": "белдеуі бар уақыт",
 }
 
+# Words that are Kazakh and still wrong here. Some are book words a reader of
+# this course has never met ("бөгде"); others break vowel harmony, which is the
+# mistake a Russian-speaking writer makes without hearing it. Matched whole, so
+# that "экспортының" is not reported for containing "экспортыны".
+WRONG_KZ = {
+    "бөгде": "бөтен, басқа",
+    "мәндерға": "мәндерге",
+    "мәнсыз": "мәнсіз",
+    "экспортыны": "экспортын",
+    "экспортыдағы": "экспортындағы",
+    "экспортылар": "экспорттары",
+}
+
 # Second-person singular forms. The lessons address the reader as "сіз"
 # throughout, and one "сен" in the middle of a paragraph reads as a different
 # author.
 INFORMAL_KZ = re.compile(
-    r"\b(өзің|сенің|сені|саған|қатеңе|атауың|аласың|көресің|жазасың|істейсің|"
-    r"қоясың|білесің|аларсың)\b", re.IGNORECASE)
+    r"\b(өзің|сенің|сені|саған|қатеңе|атауың|аласың|алмайсың|көресің|жазасың|"
+    r"істейсің|қоясың|білесің|аларсың)\b", re.IGNORECASE)
 
 
 def check_kazakh_prose(path):
-    """Reports Russian loanwords and informal address in a Kazakh lesson.
+    """Reports Russian loanwords, wrong words and informal address in Kazakh.
 
     Both are about the same thing: a Kazakh page that reads as a translation is
     a Kazakh page the reader will switch away from.
@@ -112,6 +125,9 @@ def check_kazakh_prose(path):
     for word, better in RUSSISMS_KZ.items():
         if word in prose.lower():
             found.append(f"русизм «{word}» — лучше «{better}»")
+    for word, better in WRONG_KZ.items():
+        if re.search(r"\b" + word + r"\b", prose, re.IGNORECASE):
+            found.append(f"неудачное слово «{word}» — лучше «{better}»")
     for m in INFORMAL_KZ.finditer(prose):
         found.append(f"обращение на «сен»: «{m.group(0)}»")
         break
