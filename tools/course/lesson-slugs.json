@@ -623,6 +623,18 @@
   "py-generatorlar-yield-jad",
   "kz"
  ],
+ "python/group": [
+  "py-toptau-groupby-agg-transform",
+  "ru"
+ ],
+ "python/group-en": [
+  "py-toptau-groupby-agg-transform",
+  "en"
+ ],
+ "python/group-kz": [
+  "py-toptau-groupby-agg-transform",
+  "kz"
+ ],
  "python/http": [
   "py-http-suranys-urllib-status",
   "ru"

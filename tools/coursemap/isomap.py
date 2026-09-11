@@ -2504,6 +2504,33 @@ def pymap27(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap28(s):
+    """Python lesson 28: cut, count, put back.
+
+    Three blocks for the three motions of a grouping, with the counting in the
+    middle because that is the only one anybody writes.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -4830,6 +4857,38 @@ PY27 = {
 
 
 
+PY28 = {
+    "kz": dict(alt="Кесу, санау, жинау",
+               b1="кесте", b1_sub="он екі жол",
+               b2="кілт", b2_sub="groupby",
+               b3="есеп", b3_sub="agg",
+               c1="кесеміз", c2="жинаймыз",
+               head="САНАТ ПЕН АЙ БОЙЫНША",
+               head_sub="жиырма сегізінші сабақ: топтау",
+               foot="БОС КІЛТ ҮНСІЗ ЖОҒАЛАДЫ",
+               foot_sub="dropna=False"),
+    "ru": dict(alt="Разрезать, посчитать, собрать",
+               b1="таблица", b1_sub="двенадцать строк",
+               b2="ключ", b2_sub="groupby",
+               b3="отчёт", b3_sub="agg",
+               c1="режем", c2="собираем",
+               head="ПО КАТЕГОРИЯМ И ПО МЕСЯЦАМ",
+               head_sub="двадцать восьмой урок: группировки",
+               foot="ПУСТОЙ КЛЮЧ ТЕРЯЕТСЯ МОЛЧА",
+               foot_sub="dropna=False"),
+    "en": dict(alt="Cut, count, put back",
+               b1="a table", b1_sub="twelve rows",
+               b2="a key", b2_sub="groupby",
+               b3="a report", b3_sub="agg",
+               c1="cut", c2="put back",
+               head="BY CATEGORY AND BY MONTH",
+               head_sub="lesson twenty-eight: grouping",
+               foot="AN EMPTY KEY GOES MISSING",
+               foot_sub="dropna=False"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -4865,7 +4924,8 @@ if __name__ == "__main__":
                                ("pandas", pymap24, PY24),
                                ("frame", pymap25, PY25),
                                ("io", pymap26, PY26),
-                               ("select", pymap27, PY27)):
+                               ("select", pymap27, PY27),
+                               ("group", pymap28, PY28)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
