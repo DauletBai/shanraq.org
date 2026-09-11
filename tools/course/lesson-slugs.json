@@ -671,6 +671,18 @@
   "py-toptau-groupby-agg-transform",
   "kz"
  ],
+ "python/honest": [
+  "py-grafikpen-otirik-aitpau-shkala",
+  "ru"
+ ],
+ "python/honest-en": [
+  "py-grafikpen-otirik-aitpau-shkala",
+  "en"
+ ],
+ "python/honest-kz": [
+  "py-grafikpen-otirik-aitpau-shkala",
+  "kz"
+ ],
  "python/http": [
   "py-http-suranys-urllib-status",
   "ru"

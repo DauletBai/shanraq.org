@@ -2667,6 +2667,33 @@ def pymap32(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap33(s):
+    """Python lesson 33: the zero, the proportions and the labels.
+
+    The proportions are the accent because they are the distortion nobody
+    notices: the numbers are untouched and the impression is another one.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5185,6 +5212,38 @@ PY32 = {
 
 
 
+PY33 = {
+    "kz": dict(alt="Нөл, пропорция және белгілер",
+               b1="нөл", b1_sub="1.31 → 4.86",
+               b2="пропорция", b2_sub="14° → 73°",
+               b3="белгілер", b3_sub="өлшем, дереккөз",
+               c1="сол сандар", c2="басқа хабар",
+               head="ГРАФИКПЕН ӨТІРІК АЙТПАУ",
+               head_sub="отыз үшінші сабақ: адал шкала",
+               foot="ӘР БҰРМАЛАУ ӨЛШЕНГЕН",
+               foot_sub="п.т. пен %-ды шатастырмаңыз"),
+    "ru": dict(alt="Ноль, пропорции и подписи",
+               b1="ноль", b1_sub="1.31 → 4.86",
+               b2="пропорции", b2_sub="14° → 73°",
+               b3="подписи", b3_sub="единицы, источник",
+               c1="те же числа", c2="другое сообщение",
+               head="КАК НЕ СОВРАТЬ ГРАФИКОМ",
+               head_sub="тридцать третий урок: честные шкалы",
+               foot="КАЖДОЕ ИСКАЖЕНИЕ ИЗМЕРЕНО",
+               foot_sub="не путайте п.п. и проценты"),
+    "en": dict(alt="Zero, proportions and labels",
+               b1="zero", b1_sub="1.31 -> 4.86",
+               b2="proportions", b2_sub="14 deg -> 73 deg",
+               b3="labels", b3_sub="units, source, N",
+               c1="same numbers", c2="another message",
+               head="HOW NOT TO LIE WITH A CHART",
+               head_sub="lesson thirty-three: honest scales",
+               foot="EVERY DISTORTION IS MEASURED",
+               foot_sub="points are not per cent"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5226,7 +5285,8 @@ if __name__ == "__main__":
                                ("clean", pymap30, PY30),
                                ("glossary", pymapgloss, PYG),
                                ("time", pymap31, PY31),
-                               ("chart", pymap32, PY32)):
+                               ("chart", pymap32, PY32),
+                               ("honest", pymap33, PY33)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
