@@ -2722,6 +2722,33 @@ def pymap34(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap35(s):
+    """Python lesson 35: the format, the rounding and the units.
+
+    Rounding is the accent: the format only changes how a number looks, while
+    rounding changes whether the report adds up.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5304,6 +5331,38 @@ PY34 = {
 
 
 
+PY35 = {
+    "kz": dict(alt="Пішім, дөңгелектеу және өлшем",
+               b1="сан", b1_sub="толық дәлдік",
+               b2="дөңгелектеу", b2_sub="жұпқа қарай",
+               b3="мәтін", b3_sub="1 234 567,89",
+               c1=":,.2f", c2="оқырманға",
+               head="ЕСЕПТЕГІ САНДАР",
+               head_sub="отыз бесінші сабақ: пішімдер",
+               foot="ДӨҢГЕЛЕКТЕЛГЕНДЕРДІҢ СОМАСЫ ≠ СОМА",
+               foot_sub="өлшем бірлігі — тақырыпта"),
+    "ru": dict(alt="Формат, округление и единицы",
+               b1="число", b1_sub="полная точность",
+               b2="округление", b2_sub="к чётному",
+               b3="текст", b3_sub="1 234 567,89",
+               c1=":,.2f", c2="читателю",
+               head="ЧИСЛА В ОТЧЁТЕ",
+               head_sub="тридцать пятый урок: форматы",
+               foot="СУММА ОКРУГЛЁННЫХ ≠ ОКРУГЛЁННАЯ СУММА",
+               foot_sub="единица — в заголовке столбца"),
+    "en": dict(alt="Format, rounding and units",
+               b1="a number", b1_sub="full precision",
+               b2="rounding", b2_sub="to the even",
+               b3="text", b3_sub="1 234 567,89",
+               c1=":,.2f", c2="to the reader",
+               head="NUMBERS IN A REPORT",
+               head_sub="lesson thirty-five: formats",
+               foot="SUM OF ROUNDED IS NOT THE ROUNDED SUM",
+               foot_sub="the unit goes in the heading"),
+}
+
+
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5347,7 +5406,8 @@ if __name__ == "__main__":
                                ("time", pymap31, PY31),
                                ("chart", pymap32, PY32),
                                ("honest", pymap33, PY33),
-                               ("report", pymap34, PY34)):
+                               ("report", pymap34, PY34),
+                               ("format", pymap35, PY35)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

@@ -611,6 +611,18 @@
   "py-faildar-pathlib-kodtau",
   "kz"
  ],
+ "python/format": [
+  "py-sandar-pishim-dongelekteu-olshem",
+  "ru"
+ ],
+ "python/format-en": [
+  "py-sandar-pishim-dongelekteu-olshem",
+  "en"
+ ],
+ "python/format-kz": [
+  "py-sandar-pishim-dongelekteu-olshem",
+  "kz"
+ ],
  "python/frame": [
   "py-dataframe-series-indeks-qoltanba",
   "ru"
