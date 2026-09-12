@@ -25,7 +25,7 @@
           <p class="kicker">{{ icon "book" }}{{ t $.Lang (printf "shop.status_%s" .Status) }}{{ if .Edition }} · {{ t $.Lang "shop.edition" }} {{ .Edition }}{{ end }}</p>
           <h3 class="post__title"><a href="/shop/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
           {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
-          <p class="post__price">{{ if .OnSale }}{{ t $.Lang "shop.from" }} {{ money .From }} ₸{{ else }}{{ t $.Lang "shop.price_soon" }}{{ end }}</p>
+          <p class="post__price">{{ if .From }}{{ t $.Lang "shop.from" }} {{ money .From }} ₸{{ else }}{{ t $.Lang "shop.price_soon" }}{{ end }}</p>
         </article>
         {{ end }}
       </div>
