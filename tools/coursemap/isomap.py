@@ -2830,6 +2830,33 @@ def pymap38(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap39(s):
+    """Python lesson 39: the receipt, the weight and your own index.
+
+    The weight is the accent: it is what makes one person's inflation differ
+    from another's when the prices are the same for both.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5534,6 +5561,37 @@ PY38 = {
                foot_sub="the rates add up to 92.98 %"),
 }
 
+PY39 = {
+    "kz": dict(alt="Чек, салмақ және өз индексіңіз",
+               b1="чек", b1_sub="не сатып алынды",
+               b2="салмақ", b2_sub="шығыстағы үлес",
+               b3="индекс", b3_sub="сіздікі мен жалпы",
+               c1="орташалауға болмайды", c2="үлес = салмақ × өсім",
+               head="ӨЗІҢІЗДІҢ ИНФЛЯЦИЯҢЫЗ",
+               head_sub="отыз тоғызыншы сабақ: себет",
+               foot="СІЗДІҢ СЕБЕТ 69.8 %, РЕСМИ 65.1 %",
+               foot_sub="жай орташа 84.6 % деп уәде етеді"),
+    "ru": dict(alt="Чек, вес и свой индекс",
+               b1="чек", b1_sub="что куплено",
+               b2="вес", b2_sub="доля расходов",
+               b3="индекс", b3_sub="ваш и общий",
+               c1="усреднять нельзя", c2="вклад = вес × рост",
+               head="СВОЯ ИНФЛЯЦИЯ",
+               head_sub="тридцать девятый урок: корзина",
+               foot="ВАША КОРЗИНА 69.8 %, ОФИЦИАЛЬНАЯ 65.1 %",
+               foot_sub="простое среднее обещает 84.6 %"),
+    "en": dict(alt="A receipt, a weight and your own index",
+               b1="the receipt", b1_sub="what you buy",
+               b2="the weight", b2_sub="share of spend",
+               b3="the index", b3_sub="yours and theirs",
+               c1="never averaged", c2="share = weight x rise",
+               head="YOUR OWN INFLATION",
+               head_sub="lesson thirty-nine: the basket",
+               foot="YOUR BASKET 69.8 %, THE OFFICIAL 65.1 %",
+               foot_sub="a plain average promises 84.6 %"),
+}
+
+
 
 
 
@@ -5585,7 +5643,8 @@ if __name__ == "__main__":
                                ("format", pymap35, PY35),
                                ("pipeline", pymap36, PY36),
                                ("average", pymap37, PY37),
-                               ("index", pymap38, PY38)):
+                               ("index", pymap38, PY38),
+                               ("basket", pymap39, PY39)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

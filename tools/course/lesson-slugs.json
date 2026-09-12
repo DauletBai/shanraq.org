@@ -527,6 +527,18 @@
     "py-ortasha-mediana-shashyrau",
     "kz"
   ],
+  "python/basket": [
+    "py-oz-sebeti-salmaq-ulesi",
+    "ru"
+  ],
+  "python/basket-en": [
+    "py-oz-sebeti-salmaq-ulesi",
+    "en"
+  ],
+  "python/basket-kz": [
+    "py-oz-sebeti-salmaq-ulesi",
+    "kz"
+  ],
   "python/chart": [
     "py-matplotlib-birinshi-grafik",
     "ru"
