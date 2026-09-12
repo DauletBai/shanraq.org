@@ -64,7 +64,7 @@
 <text x="360" y="842" text-anchor="middle" fill="#555759" font-family="-apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="24">который вырастает в работающий магазин</text>
 
 <!-- the publisher: the mark, small, immediately before the name -->
-<g transform="translate(266,882)">
+<g transform="translate(204,882)">
   <g transform="scale(0.09)" fill="none" stroke="#007D9C" stroke-linecap="round">
     <g stroke-opacity="0.35" stroke-width="45">
       <line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/>
@@ -78,5 +78,5 @@
     </g>
   </g>
 </g>
-<text x="320" y="913" fill="#454545" font-family="Georgia, 'Noto Serif', serif" font-size="27" font-weight="700">Shanraq.org</text>
+<text x="252" y="911" fill="#454545" font-family="Georgia, 'Noto Serif', serif" font-size="30" font-weight="700" letter-spacing="1.5">SHANRAQ.ORG</text>
 </svg>
