@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"shanraq.org/pkg/modules/ai"
+	"shanraq.org/pkg/modules/payments"
 	"shanraq.org/pkg/site"
 	"shanraq.org/web"
 )
@@ -96,7 +97,7 @@ func TestTemplatesExecute(t *testing.T) {
 				Services:      []ServiceFlag{{Code: SvcAdOrders, TitleKey: "svc.ad_orders", Status: svcMaintenance}},
 				Site:          ServiceFlag{Code: SvcSite, TitleKey: "svc.site", Status: svcOn},
 				PendingAgents: []Agent{{UserID: "u1", Name: "Асан Серіков", Agency: "Дом", Phone: "+7 700", Email: "a@b.c", Status: agentPending}},
-				Payments:      paymentsAdminView{Enabled: true, Provider: PayProviderKaspi, ActiveReady: false, Providers: []paymentProviderStatus{{Code: PayProviderKaspi, Label: "Kaspi Pay", Implemented: false, IsActive: true}, {Code: PayProviderIoka, Label: "ioka", Implemented: false}}},
+				Payments:      payments.AdminView{Enabled: true, Provider: payments.ProviderKaspi, ActiveReady: false, Providers: []payments.ProviderStatus{{Code: payments.ProviderKaspi, Label: "Kaspi Pay", Implemented: false, IsActive: true}, {Code: payments.ProviderIoka, Label: "ioka", Implemented: false}}},
 				Stats:         AdminStats{Users: 3, Articles: 2}}},
 			{"admin_pages", adminPagesList{Base: base, Items: []adminPageItem{{Key: "privacy", Name: "Конфиденциальность"}, {Key: "terms", Name: "Условия"}}}},
 			{"admin_page_edit", adminPageEditView{Base: base, Key: "privacy", Name: "Конфиденциальность", Notice: "N", LastEdited: "2026-07-28 10:00", LastEditor: "a@b.c", Langs: []adminPageLangView{
@@ -579,8 +580,8 @@ func renderAdminFull(t *testing.T) string {
 					Translate: "claude-haiku-4-5"},
 				{Code: "openai", Label: "ChatGPT (OpenAI)"},
 			}},
-		Payments: paymentsAdminView{Enabled: true, Provider: PayProviderKaspi,
-			Providers: []paymentProviderStatus{{Code: PayProviderKaspi, Label: "Kaspi Pay", IsActive: true}}},
+		Payments: payments.AdminView{Enabled: true, Provider: payments.ProviderKaspi,
+			Providers: []payments.ProviderStatus{{Code: payments.ProviderKaspi, Label: "Kaspi Pay", IsActive: true}}},
 		Guests: GuestAnalytics{HasData: true, Sources: rows, Bots: rows, Devices: rows,
 			OS: rows, Browsers: rows, Countries: rows, Langs: rows, EnglishBy: rows, VPNLangs: rows},
 	}

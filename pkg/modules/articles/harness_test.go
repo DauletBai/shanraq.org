@@ -18,6 +18,7 @@ import (
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/media"
 	"shanraq.org/pkg/modules/notifier"
+	"shanraq.org/pkg/modules/payments"
 	"shanraq.org/pkg/modules/syndicate"
 	"shanraq.org/pkg/shanraq"
 	"shanraq.org/pkg/site"
@@ -74,9 +75,10 @@ func newTestApp(t *testing.T, authOpts ...auth.Option) *testApp {
 	aiM := ai.New()
 	synM := syndicate.New(mailer)
 	mediaM := media.New(authM)
-	arts := New(authM, aiM, synM, mediaM, mailer)
+	payM := payments.New()
+	arts := New(authM, aiM, synM, mediaM, payM, mailer)
 
-	for _, m := range []shanraq.InitializerModule{authM, aiM, synM, mediaM, arts} {
+	for _, m := range []shanraq.InitializerModule{authM, aiM, synM, mediaM, payM, arts} {
 		if err := m.Init(ctx, rt); err != nil {
 			t.Fatalf("%s init: %v", m.Name(), err)
 		}

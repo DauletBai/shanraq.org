@@ -525,7 +525,7 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 	// Open a pending payment holding the slot for 30 minutes. With no provider
 	// configured this simply records the intent; once a provider is wired, the
 	// cabinet will show its QR and the webhook will activate the order.
-	if _, perr := m.pay.Create(r.Context(), "ad_order", orderID, o.Price, 30); perr != nil {
+	if _, perr := m.payments.Store().Create(r.Context(), payKindAdOrder, orderID, o.Price, 30); perr != nil {
 		m.rt.Logger.Warn("create payment", zap.Error(perr))
 	}
 	http.Redirect(w, r, "/advertise?saved=order", http.StatusSeeOther)

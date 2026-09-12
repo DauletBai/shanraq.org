@@ -1,4 +1,4 @@
-package articles
+package payments
 
 import (
 	"context"
@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -28,7 +29,19 @@ func TestPaymentsIntegration(t *testing.T) {
 		t.Fatalf("connect: %v", err)
 	}
 	defer pool.Close()
-	ps := NewPaymentStore(pool)
+	ps := NewStore(pool)
+	// The seller says what a settled payment does to its own record. Here that
+	// is the advertising module's order, registered exactly as articles does it.
+	ps.Handle("ad_order", Settlement{
+		Paid: func(ctx context.Context, tx pgx.Tx, target uuid.UUID) error {
+			_, err := tx.Exec(ctx, `UPDATE ad_orders SET status = 'active' WHERE id = $1 AND status = 'pending_payment'`, target)
+			return err
+		},
+		Expired: func(ctx context.Context, tx pgx.Tx, target uuid.UUID) error {
+			_, err := tx.Exec(ctx, `UPDATE ad_orders SET status = 'cancelled' WHERE id = $1 AND status = 'pending_payment'`, target)
+			return err
+		},
+	})
 
 	// A minimal advertiser + ad order in pending_payment.
 	owner := uuid.New()

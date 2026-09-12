@@ -27,6 +27,7 @@ import (
 	"shanraq.org/pkg/modules/media"
 	"shanraq.org/pkg/modules/migrations"
 	"shanraq.org/pkg/modules/notifier"
+	"shanraq.org/pkg/modules/payments"
 	"shanraq.org/pkg/modules/sms"
 	"shanraq.org/pkg/modules/syndicate"
 	"shanraq.org/pkg/modules/telemetry"
@@ -142,7 +143,11 @@ func main() {
 	app.Register(syndicateModule)
 	mediaModule := media.New(authModule)
 	app.Register(mediaModule)
-	articlesModule = articles.New(authModule, aiModule, syndicateModule, mediaModule, notifierModule)
+	// Payments is registered before the modules that sell something: they hand
+	// it their settlement hooks during Init, and Init runs in this order.
+	paymentsModule := payments.New()
+	app.Register(paymentsModule)
+	articlesModule = articles.New(authModule, aiModule, syndicateModule, mediaModule, paymentsModule, notifierModule)
 	articlesModule.RegisterJobs(jobModule)
 	app.Register(articlesModule)
 	app.Register(webui.New(jobWorkers, jobPollSeconds,

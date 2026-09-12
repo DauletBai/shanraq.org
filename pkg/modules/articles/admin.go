@@ -15,6 +15,7 @@ import (
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/ai"
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/modules/payments"
 	"shanraq.org/pkg/site"
 )
 
@@ -247,7 +248,7 @@ type AdminPage struct {
 	// AI model configuration (provider/model switch).
 	AI ai.AdminView
 	// Payment acquirer configuration (provider on/off/switch).
-	Payments paymentsAdminView
+	Payments payments.AdminView
 	// Operational service switches (maintenance mode per service).
 	Services      []ServiceFlag
 	ServiceStates []string    // selectable statuses: on | maintenance | off
@@ -316,7 +317,9 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		if m.ai != nil {
 			page.AI = m.ai.AdminView()
 		}
-		page.Payments = m.paymentsAdminView()
+		if m.payments != nil {
+			page.Payments = m.payments.Admin()
+		}
 		if pend, err := m.reagents.Pending(r.Context(), 100); err == nil {
 			page.PendingAgents = pend
 		} else {

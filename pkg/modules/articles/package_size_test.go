@@ -20,7 +20,7 @@ import (
 // pkg/modules, the way the shop does.
 func TestArticlesPackageOnlyShrinks(t *testing.T) {
 	// Lower this when a domain moves out. Never raise it.
-	const ceiling = 167
+	const ceiling = 162
 
 	entries, err := os.ReadDir(".")
 	if err != nil {

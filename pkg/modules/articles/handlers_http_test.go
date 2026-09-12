@@ -157,16 +157,6 @@ func TestLoginPageShowsSessionExpiredReason(t *testing.T) {
 	}
 }
 
-// ---- payment webhook fails closed ----
-
-func TestPaymentWebhookDisabled(t *testing.T) {
-	app := newTestApp(t)
-	w := app.do(http.MethodPost, "/pay/webhook/kaspi", nil)
-	if w.Code != http.StatusServiceUnavailable {
-		t.Errorf("webhook with no provider = %d, want 503", w.Code)
-	}
-}
-
 // ---- agent public page is verified-only ----
 
 func TestAgentPublicNotFoundWhenUnverified(t *testing.T) {

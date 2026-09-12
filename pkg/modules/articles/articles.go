@@ -7,11 +7,14 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/ai"
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/jobs"
 	"shanraq.org/pkg/modules/media"
+	"shanraq.org/pkg/modules/payments"
 	"shanraq.org/pkg/modules/ratings"
 	"shanraq.org/pkg/modules/syndicate"
 	"shanraq.org/pkg/shanraq"
@@ -40,8 +43,7 @@ type Module struct {
 	refs          *ReferralStore
 	reagents      *AgentStore
 	orgs          *OrgStore
-	pay           *PaymentStore
-	paySettings   *PaymentSettingsStore
+	payments      *payments.Module
 	flags         *ServiceFlags
 	geo           *GeoStore
 	comments      *CommentStore
@@ -73,8 +75,8 @@ type Module struct {
 // New builds the articles module. It depends on auth (browser sessions), ai
 // (writing assistant), syndicate (publish → external channels), and a mailer
 // (listing expiry reminders).
-func New(authModule *auth.Module, aiModule *ai.Module, syndicateModule *syndicate.Module, mediaModule *media.Module, mailer Mailer) *Module {
-	return &Module{auth: authModule, ai: aiModule, syndicate: syndicateModule, media: mediaModule, mailer: mailer}
+func New(authModule *auth.Module, aiModule *ai.Module, syndicateModule *syndicate.Module, mediaModule *media.Module, payModule *payments.Module, mailer Mailer) *Module {
+	return &Module{auth: authModule, ai: aiModule, syndicate: syndicateModule, media: mediaModule, payments: payModule, mailer: mailer}
 }
 
 func (m *Module) Name() string { return "articles" }
@@ -89,14 +91,25 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.mods = NewModStore(rt.DB)
 	m.refs = NewReferralStore(rt.DB)
 	m.reagents = NewAgentStore(rt.DB)
-	m.pay = NewPaymentStore(rt.DB)
-	// Which acquirer is live (and whether payments are on) is a runtime choice in
-	// the admin panel — secrets stay in config. Defaults come from config so a
-	// fresh DB has a starting point; the effective provider is built per request
-	// from these settings (m.paymentProvider), disabled until an adapter lands.
-	m.paySettings = NewPaymentSettingsStore(rt.DB, PaymentSettings{Provider: rt.Config.Payments.Provider})
-	if _, err := m.paySettings.Load(ctx); err != nil {
-		rt.Logger.Warn("load payment settings", zap.Error(err))
+	// An advertising order is paid for through the payments module, which knows
+	// nothing about advertising: it calls these two hooks inside the payment's
+	// own transaction, so an order can never be active without its payment or
+	// paid without being activated.
+	if m.payments != nil {
+		m.payments.Handle(payKindAdOrder, payments.Settlement{
+			Paid: func(ctx context.Context, tx pgx.Tx, target uuid.UUID) error {
+				_, err := tx.Exec(ctx, `
+					UPDATE ad_orders SET status = 'active'
+					 WHERE id = $1 AND status = 'pending_payment'`, target)
+				return err
+			},
+			Expired: func(ctx context.Context, tx pgx.Tx, target uuid.UUID) error {
+				_, err := tx.Exec(ctx, `
+					UPDATE ad_orders SET status = 'cancelled'
+					 WHERE id = $1 AND status = 'pending_payment'`, target)
+				return err
+			},
+		})
 	}
 	m.flags = NewServiceFlags(rt.DB)
 	if err := m.flags.Load(ctx); err != nil {
@@ -172,9 +185,6 @@ func (m *Module) Routes(r chi.Router) {
 	// Everything below lives in one inline group so the CSRF guard can be a
 	// group middleware — the shared mux already has routes from other modules,
 	// and chi forbids Use() after routes on the same mux.
-	// Payment provider callbacks are server-to-server; they carry no Origin
-	// header, so they must not go through the CSRF-guarded browser group.
-	r.Post("/pay/webhook/{provider}", m.handlePaymentWebhook)
 	r.Group(m.browserRoutes)
 }
 

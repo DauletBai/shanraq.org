@@ -43,3 +43,8 @@ var (
 	Categories    = site.Categories
 	Subcategories = site.Subcategories
 )
+
+// payKindAdOrder is what an advertising order is called in the payments ledger.
+// The payments module treats it as an opaque label; this package is the one
+// that knows what it means.
+const payKindAdOrder = "ad_order"

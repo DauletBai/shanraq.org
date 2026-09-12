@@ -6,6 +6,8 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+
+	"shanraq.org/pkg/modules/payments"
 )
 
 // adminApp returns a wired test app plus a logged-in leadership (admin) cookie,
@@ -76,29 +78,11 @@ func TestAdminPageSaveForbiddenForEditor(t *testing.T) {
 
 // ---- payments ----
 
-func TestPaymentSettingsSaveValidation(t *testing.T) {
-	app, _ := adminApp(t)
-	st := NewPaymentSettingsStore(app.pool, PaymentSettings{})
-	ctx := context.Background()
-	if err := st.Save(ctx, PaymentSettings{Enabled: true, Provider: "bogus"}, nil); err == nil {
-		t.Error("enabled + unknown provider must be rejected")
-	}
-	if err := st.Save(ctx, PaymentSettings{Enabled: true, Provider: PayProviderKaspi}, nil); err != nil {
-		t.Errorf("enabled + kaspi must save: %v", err)
-	}
-	if got := st.Get(); !got.Enabled || got.Provider != PayProviderKaspi {
-		t.Errorf("cache not refreshed after save: %+v", got)
-	}
-	if err := st.Save(ctx, PaymentSettings{Enabled: false}, nil); err != nil {
-		t.Errorf("disabled must save: %v", err)
-	}
-}
-
 func TestAdminPaymentsSave(t *testing.T) {
 	app, cookie := adminApp(t)
 	// valid: enable kaspi
 	w := app.do(http.MethodPost, "/admin/payments",
-		url.Values{"enabled": {"on"}, "provider": {PayProviderKaspi}}, withCookie(cookie))
+		url.Values{"enabled": {"on"}, "provider": {payments.ProviderKaspi}}, withCookie(cookie))
 	if w.Code != http.StatusSeeOther || w.Header().Get("Location") != "/admin?ok=pay_set" {
 		t.Fatalf("valid payments save = %d loc=%q, want 303 ?ok=pay_set", w.Code, w.Header().Get("Location"))
 	}
