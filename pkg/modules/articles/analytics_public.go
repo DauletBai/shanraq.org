@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // The public audience page.
@@ -51,7 +52,7 @@ var publicStats = statsCache{byLg: map[string]PublicStats{}}
 
 // handlePublicStats renders the audience page.
 func (m *Module) handlePublicStats(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 
 	publicStats.mu.Lock()
 	fresh := time.Since(publicStats.at) < publicStatsTTL
@@ -73,8 +74,8 @@ func (m *Module) handlePublicStats(w http.ResponseWriter, r *http.Request) {
 		publicStats.mu.Unlock()
 	}
 
-	page.Base = m.base(r, T(lang, "stats.title"), lang)
-	page.Desc = T(lang, "stats.desc")
+	page.Base = m.base(r, site.T(lang, "stats.title"), lang)
+	page.Desc = site.T(lang, "stats.desc")
 	// Outside the cache: the switches are part of the address, so a cached page
 	// would serve one reader's choice of audience to the next one.
 	page.Traffic = m.trafficChartFrom(r)

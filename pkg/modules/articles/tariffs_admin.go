@@ -9,6 +9,7 @@ import (
 	"go.uber.org/zap"
 
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // The admin tariff editor lets leadership retune the ad rate card, listing
@@ -53,40 +54,40 @@ func (m *Module) tariffsAdminView(lang string) tariffsAdminView {
 		v.AdFormats = append(v.AdFormats, row)
 	}
 	v.Weights = []tariffField{
-		{"weight.high", T(lang, "tar.w_high"), tariffVal("weight.high")},
-		{"weight.mid", T(lang, "tar.w_mid"), tariffVal("weight.mid")},
-		{"weight.base", T(lang, "tar.w_base"), tariffVal("weight.base")},
+		{"weight.high", site.T(lang, "tar.w_high"), tariffVal("weight.high")},
+		{"weight.mid", site.T(lang, "tar.w_mid"), tariffVal("weight.mid")},
+		{"weight.base", site.T(lang, "tar.w_base"), tariffVal("weight.base")},
 	}
 	for _, d := range BannerDays() {
 		key := "banner." + strconv.Itoa(d)
 		v.Banner = append(v.Banner, tariffField{Key: key, Label: strconv.Itoa(d), Value: tariffVal(key)})
 	}
 	v.Services = []tariffField{
-		{"promote.price", T(lang, "tar.promote"), tariffVal("promote.price")},
-		{"feature.price", T(lang, "tar.feature"), tariffVal("feature.price")},
+		{"promote.price", site.T(lang, "tar.promote"), tariffVal("promote.price")},
+		{"feature.price", site.T(lang, "tar.feature"), tariffVal("feature.price")},
 	}
 	v.Durations = []tariffField{
-		{"listing.free_days", T(lang, "tar.free_days"), tariffVal("listing.free_days")},
-		{"promote.days", T(lang, "tar.promote_days"), tariffVal("promote.days")},
-		{"feature.days", T(lang, "tar.feature_days"), tariffVal("feature.days")},
+		{"listing.free_days", site.T(lang, "tar.free_days"), tariffVal("listing.free_days")},
+		{"promote.days", site.T(lang, "tar.promote_days"), tariffVal("promote.days")},
+		{"feature.days", site.T(lang, "tar.feature_days"), tariffVal("feature.days")},
 	}
 	return v
 }
 
 func (m *Module) handleAdminTariffs(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	claims, _ := auth.ClaimsFromContext(r.Context())
 	if !canManageUsers(claims) {
 		http.Error(w, "forbidden", http.StatusForbidden)
 		return
 	}
 	view := m.tariffsAdminView(lang)
-	view.Base = m.base(r, T(lang, "tar.title"), lang)
+	view.Base = m.base(r, site.T(lang, "tar.title"), lang)
 	if r.URL.Query().Get("ok") == "1" {
-		view.Notice = T(lang, "tar.saved")
+		view.Notice = site.T(lang, "tar.saved")
 	}
 	if r.URL.Query().Get("err") == "1" {
-		view.Error = T(lang, "tar.err")
+		view.Error = site.T(lang, "tar.err")
 	}
 	m.render(w, "admin_tariffs", view)
 }

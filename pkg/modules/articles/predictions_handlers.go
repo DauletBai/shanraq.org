@@ -12,6 +12,7 @@ import (
 	"go.uber.org/zap"
 
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // PredictionsPage is the public ledger.
@@ -28,9 +29,9 @@ type PredictionsPage struct {
 // can still argue with — the settled half is the evidence that the open half is
 // worth reading.
 func (m *Module) handlePredictions(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
-	page := PredictionsPage{Base: m.base(r, T(lang, "pred.title"), lang)}
-	page.Desc = T(lang, "pred.lead")
+	lang := site.ResolveLang(w, r)
+	page := PredictionsPage{Base: m.base(r, site.T(lang, "pred.title"), lang)}
+	page.Desc = site.T(lang, "pred.lead")
 
 	list, err := m.predictions.List(r.Context(), lang)
 	if err != nil {
@@ -73,14 +74,14 @@ type predArticleOption struct {
 }
 
 func (m *Module) handleAdminPredictions(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	claims, _ := auth.ClaimsFromContext(r.Context())
 	if !canManageUsers(claims) {
 		http.Error(w, "forbidden", http.StatusForbidden)
 		return
 	}
 	page := adminPredictionsPage{
-		Base:     m.base(r, T(lang, "pred.admin_title"), lang),
+		Base:     m.base(r, site.T(lang, "pred.admin_title"), lang),
 		Statuses: PredStatuses,
 	}
 	for _, l := range pageEditLangs {
@@ -88,12 +89,12 @@ func (m *Module) handleAdminPredictions(w http.ResponseWriter, r *http.Request) 
 	}
 	switch r.URL.Query().Get("saved") {
 	case "1":
-		page.Notice = T(lang, "pred.saved")
+		page.Notice = site.T(lang, "pred.saved")
 	case "deleted":
-		page.Notice = T(lang, "pred.deleted")
+		page.Notice = site.T(lang, "pred.deleted")
 	}
 	if e := r.URL.Query().Get("err"); e != "" {
-		page.Error = T(lang, "pred.err_empty")
+		page.Error = site.T(lang, "pred.err_empty")
 	}
 
 	var err error
@@ -134,7 +135,7 @@ func parseDate(s string) *time.Time {
 }
 
 func (m *Module) handleAdminPredictionSave(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	claims, _ := auth.ClaimsFromContext(r.Context())
 	if !canManageUsers(claims) {
 		http.Error(w, "forbidden", http.StatusForbidden)
@@ -183,7 +184,7 @@ func (m *Module) handleAdminPredictionSave(w http.ResponseWriter, r *http.Reques
 }
 
 func (m *Module) handleAdminPredictionDelete(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	claims, _ := auth.ClaimsFromContext(r.Context())
 	if !canManageUsers(claims) {
 		http.Error(w, "forbidden", http.StatusForbidden)

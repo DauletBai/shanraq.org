@@ -2,6 +2,7 @@ package articles
 
 import (
 	"encoding/json"
+	"shanraq.org/pkg/site"
 	"strings"
 	"testing"
 )
@@ -31,9 +32,9 @@ func unwrapLD(t *testing.T, s string) map[string]any {
 func TestSiteCardCarriesWhatTheSitePublishes(t *testing.T) {
 	for _, lang := range []string{LangKZ, LangRU, LangEN} {
 		ld := unwrapLD(t, string(siteLD("n0nce", "https://shanraq.org", lang)))
-		if got := ld["description"]; got != T(lang, "seo.site_desc") {
+		if got := ld["description"]; got != site.T(lang, "seo.site_desc") {
 			t.Errorf("%s: the card describes the site as %q, the meta tag as %q",
-				lang, got, T(lang, "seo.site_desc"))
+				lang, got, site.T(lang, "seo.site_desc"))
 		}
 		pub, ok := ld["publisher"].(map[string]any)
 		if !ok {
@@ -96,7 +97,7 @@ func TestInfoPageDescribesItselfNotTheSite(t *testing.T) {
 	if lead == "" {
 		t.Fatal("the About page yields no description")
 	}
-	if lead == T(LangRU, "seo.site_desc") {
+	if lead == site.T(LangRU, "seo.site_desc") {
 		t.Error("the About page still describes the site rather than itself")
 	}
 	if strings.HasPrefix(lead, "#") || strings.Contains(lead, "##") {
@@ -113,18 +114,18 @@ func TestInfoPageDescribesItselfNotTheSite(t *testing.T) {
 // its own and drops the rest -- which is exactly what Search Console reported.
 // The heading and the opening sentence are what make the page its own.
 func TestCurrencyPageIsAboutThatCurrency(t *testing.T) {
-	if got := T(LangRU, "fx.title_cur"); !strings.Contains(got, "%s") {
+	if got := site.T(LangRU, "fx.title_cur"); !strings.Contains(got, "%s") {
 		t.Fatalf("the per-currency title has no place for the code: %q", got)
 	}
-	lead := T(LangRU, "fx.lead_cur")
+	lead := site.T(LangRU, "fx.lead_cur")
 	if n := strings.Count(lead, "%s"); n != 4 {
 		t.Errorf("the per-currency lead takes %d values, the page fills four", n)
 	}
 	for _, lang := range []string{LangKZ, LangRU, LangEN} {
-		if T(lang, "fx.lead_cur") == "" {
+		if site.T(lang, "fx.lead_cur") == "" {
 			t.Errorf("%s: no per-currency lead", lang)
 		}
-		if T(lang, "fx.title_cur") == T(lang, "fx.title") {
+		if site.T(lang, "fx.title_cur") == site.T(lang, "fx.title") {
 			t.Errorf("%s: a currency page is headed like the index", lang)
 		}
 	}

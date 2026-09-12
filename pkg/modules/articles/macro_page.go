@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"shanraq.org/pkg/site"
 	"sort"
 	"strconv"
 	"sync"
@@ -185,9 +186,9 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 	// read in billions and millions.
 	tenge := func(v float64) string { return macroTenge(v*1e6, lang) }
 	b.M3 = macroTwoLinesWith(macroScaled(m3, 1e6), macroScaled(baseMoney, 1e6), lang, true,
-		fxChartOpts{Name: T(lang, "fx.col_money"), Unit: "₸", Format: tenge,
+		fxChartOpts{Name: site.T(lang, "fx.col_money"), Unit: "₸", Format: tenge,
 			AxisFormat: func(v float64) string { return macroTengeRound(v*1e6, lang) }},
-		fxChartOpts{Name: T(lang, "fx.col_base"), Unit: "₸", Format: tenge},
+		fxChartOpts{Name: site.T(lang, "fx.col_base"), Unit: "₸", Format: tenge},
 	) // trillions of tenge
 	last := m3[len(m3)-1]
 	b.M3Last = macroTenge(last.Value, lang)
@@ -226,7 +227,7 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 		cover := macroCover(m3, res)
 		if len(cover) > 24 {
 			b.Cover = fxBuildChartWith(cover, "all", lang, fxChartOpts{
-				Unit: T(lang, "fx.u_kzt_usd"),
+				Unit: site.T(lang, "fx.u_kzt_usd"),
 			})
 			c := cover[len(cover)-1]
 			// The figure in the note is the one the formula prints, derived the
@@ -249,8 +250,8 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 	if len(res) > 24 && len(fund) > 24 {
 		dollars := func(v float64) string { return macroDollars(v*1e3, lang) }
 		b.Res = macroTwoLinesWith(macroScaled(res, 1e3), macroScaled(fund, 1e3), lang, false,
-			fxChartOpts{Name: T(lang, "fx.res_key_a"), Unit: "$", Format: dollars},
-			fxChartOpts{Name: T(lang, "fx.col_fund"), Unit: "$", Format: dollars},
+			fxChartOpts{Name: site.T(lang, "fx.res_key_a"), Unit: "$", Format: dollars},
+			fxChartOpts{Name: site.T(lang, "fx.col_fund"), Unit: "$", Format: dollars},
 		) // billions of dollars
 		b.ResLast = macroDollars(res[len(res)-1].Value, lang)
 		b.FundLast = macroDollars(fund[len(fund)-1].Value, lang)
@@ -300,13 +301,13 @@ func (m *Module) buildMacro(ctx context.Context, lang string) MacroBlock {
 				b.RateYears = b.RateYears + " " + macroYearsWord(nYears, lang)
 			}
 			b.RateCPI = macroTwoLinesWith(ra, rb, lang, true,
-				fxChartOpts{Name: T(lang, "fx.rate_key_a"), Unit: "%", Annual: true,
+				fxChartOpts{Name: site.T(lang, "fx.rate_key_a"), Unit: "%", Annual: true,
 					// Three decades of annual figures at the column's width
 					// give twenty pixels a year, and the year-to-year movement
 					// — the whole point of the picture — disappears.
 					PxPerPoint: 38,
 					AxisFormat: func(v float64) string { return fxFormat(v, 0) + " %" }},
-				fxChartOpts{Name: T(lang, "fx.col_cpi"), Unit: "%", Annual: true},
+				fxChartOpts{Name: site.T(lang, "fx.col_cpi"), Unit: "%", Annual: true},
 			)
 			b.RateCPIFrom = fmt.Sprintf("%d", ra[0].Day.Year())
 			b.RateTarget = macroPctTrim(cpiTargetValue(m, ctx))
@@ -547,8 +548,8 @@ func macroCompare(m3 []MacroPoint, rate []FxPoint, lang string) (chart MacroChar
 		return MacroChart{}, "", "", ""
 	}
 	chart = macroTwoLinesWith(macroIndex(a), macroIndex(b), lang, true,
-		fxChartOpts{Name: T(lang, "fx.col_money"), Format: macroOne},
-		fxChartOpts{Name: T(lang, "fx.col_rate"), Format: macroOne},
+		fxChartOpts{Name: site.T(lang, "fx.col_money"), Format: macroOne},
+		fxChartOpts{Name: site.T(lang, "fx.col_rate"), Format: macroOne},
 	)
 	return chart, macroMonthIn(start, lang), macroTimes(a, lang), macroTimes(b, lang)
 }
@@ -797,31 +798,31 @@ func macroYearChange(pts []FxPoint) map[int]float64 {
 func macroTengeRound(millions float64, lang string) string {
 	switch {
 	case millions >= 1e6:
-		return fxFormat(millions/1e6, 0) + " " + T(lang, "fx.mag_trn")
+		return fxFormat(millions/1e6, 0) + " " + site.T(lang, "fx.mag_trn")
 	case millions >= 1e3:
-		return fxFormat(millions/1e3, 0) + " " + T(lang, "fx.mag_bln")
+		return fxFormat(millions/1e3, 0) + " " + site.T(lang, "fx.mag_bln")
 	default:
-		return fxFormat(millions, 0) + " " + T(lang, "fx.mag_mln")
+		return fxFormat(millions, 0) + " " + site.T(lang, "fx.mag_mln")
 	}
 }
 
 func macroTenge(millions float64, lang string) string {
 	switch {
 	case millions >= 1e6:
-		return fxFormat(millions/1e6, 1) + " " + T(lang, "fx.mag_trn")
+		return fxFormat(millions/1e6, 1) + " " + site.T(lang, "fx.mag_trn")
 	case millions >= 1e3:
-		return fxFormat(millions/1e3, 1) + " " + T(lang, "fx.mag_bln")
+		return fxFormat(millions/1e3, 1) + " " + site.T(lang, "fx.mag_bln")
 	default:
-		return fxFormat(millions, 0) + " " + T(lang, "fx.mag_mln")
+		return fxFormat(millions, 0) + " " + site.T(lang, "fx.mag_mln")
 	}
 }
 
 // macroDollars prints a dollar sum that arrives in millions.
 func macroDollars(millions float64, lang string) string {
 	if millions >= 1e3 {
-		return fxFormat(millions/1e3, 1) + " " + T(lang, "fx.mag_bln")
+		return fxFormat(millions/1e3, 1) + " " + site.T(lang, "fx.mag_bln")
 	}
-	return fxFormat(millions, 0) + " " + T(lang, "fx.mag_mln")
+	return fxFormat(millions, 0) + " " + site.T(lang, "fx.mag_mln")
 }
 
 // macroMonth prints a month by name with its year. An abbreviation suits a label

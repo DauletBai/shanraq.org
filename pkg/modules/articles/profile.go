@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/media"
+	"shanraq.org/pkg/site"
 )
 
 // ProfilePage backs the cabinet profile/settings screen: avatar, identity, and
@@ -41,8 +42,8 @@ func (m *Module) handleProfile(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
 		return
 	}
-	lang := m.resolveLang(w, r)
-	page := ProfilePage{Base: m.base(r, T(lang, "prof.title"), lang)}
+	lang := site.ResolveLang(w, r)
+	page := ProfilePage{Base: m.base(r, site.T(lang, "prof.title"), lang)}
 	page.Notice = noticeText(lang, r.URL.Query().Get("ok"))
 
 	page.FirstName, page.LastName, page.PhoneVerified = m.auth.AuthorIdentity(r.Context(), authorID)
@@ -183,7 +184,7 @@ func noticeText(lang, code string) string {
 	if code == "" {
 		return ""
 	}
-	msg := T(lang, "prof."+code)
+	msg := site.T(lang, "prof."+code)
 	if strings.HasPrefix(msg, "prof.") {
 		return "" // unknown code
 	}

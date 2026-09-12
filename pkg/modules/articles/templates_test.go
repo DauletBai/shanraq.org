@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"shanraq.org/pkg/modules/ai"
+	"shanraq.org/pkg/site"
 	"shanraq.org/web"
 )
 
@@ -29,7 +30,7 @@ func TestTemplatesExecute(t *testing.T) {
 
 	// Exercise every UI language so a missing translation key surfaces.
 	for _, lang := range Langs {
-		base := Base{Title: "T", Lang: lang, Authed: true, ShowLangs: true, ActiveCat: "sport", ActiveSub: "football", LangLinks: langLinks("/", "cat=sport"), Ads: houseAds(lang)}
+		base := Base{Title: "T", Lang: lang, Authed: true, ShowLangs: true, ActiveCat: "sport", ActiveSub: "football", LangLinks: site.LangLinks("/", "cat=sport"), Ads: houseAds(lang)}
 		item := FeedItem{Slug: "s", Title: "Заголовок", Summary: "Краткое", AuthorName: "Автор",
 			ServedLang: LangRU, Category: "politics", Subcategory: "elections", Published: &now, Views: 5, Score: 12, AvailableLangs: []string{LangRU, LangKZ}}
 
@@ -110,16 +111,6 @@ func TestTemplatesExecute(t *testing.T) {
 		for _, c := range cases {
 			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {
 				t.Errorf("execute %q (lang %s): %v", c.name, lang, err)
-			}
-		}
-	}
-}
-
-func TestTranslationsCoverAllLangs(t *testing.T) {
-	for key, m := range messages {
-		for _, lang := range Langs {
-			if v, ok := m[lang]; !ok || v == "" {
-				t.Errorf("translation key %q missing %s", key, lang)
 			}
 		}
 	}
@@ -260,7 +251,7 @@ func TestAgentKind(t *testing.T) {
 		if NormalizeAgentKind(k) != k {
 			t.Errorf("NormalizeAgentKind(%q) changed a valid kind", k)
 		}
-		if key := (Agent{Kind: k}).KindLabelKey(); messages[key] == nil {
+		if key := (Agent{Kind: k}).KindLabelKey(); !site.HasKey(key) {
 			t.Errorf("kind %q has no translation key %q", k, key)
 		}
 	}
@@ -271,7 +262,7 @@ func TestAgentKind(t *testing.T) {
 		t.Error("a private realtor is not a company")
 	}
 	// A profile written before the kind column existed still renders a label.
-	if key := (Agent{}).KindLabelKey(); messages[key] == nil {
+	if key := (Agent{}).KindLabelKey(); !site.HasKey(key) {
 		t.Errorf("empty kind produced unusable key %q", key)
 	}
 }
@@ -294,12 +285,12 @@ func TestLiveSocial(t *testing.T) {
 		{Name: "facebook", URL: ""},
 		{Name: "instagram", URL: "https://instagram.com/shanraq_org"},
 	}
-	got := liveSocial(in)
+	got := site.LiveSocial(in)
 	if len(got) != 2 || got[0].Name != "telegram" || got[1].Name != "instagram" {
-		t.Errorf("liveSocial() = %+v, want telegram + instagram only", got)
+		t.Errorf("LiveSocial() = %+v, want telegram + instagram only", got)
 	}
-	if n := len(liveSocial(nil)); n != 0 {
-		t.Errorf("liveSocial(nil) returned %d links, want 0", n)
+	if n := len(site.LiveSocial(nil)); n != 0 {
+		t.Errorf("LiveSocial(nil) returned %d links, want 0", n)
 	}
 }
 
@@ -413,7 +404,7 @@ func TestArticleShowsShareToGuests(t *testing.T) {
 	if !strings.Contains(out, "share--foot") {
 		t.Error("end-of-article share row is missing its foot variant")
 	}
-	if !strings.Contains(out, T(LangRU, "share.foot")) {
+	if !strings.Contains(out, site.T(LangRU, "share.foot")) {
 		t.Error("end-of-article row should carry the pass-it-on label, not the plain one")
 	}
 }
@@ -658,7 +649,7 @@ func TestHomeHasExactlyOneH1(t *testing.T) {
 	tmpl := buildTemplates(t)
 	render := func(cat string) string {
 		t.Helper()
-		base := Base{Title: "T", Lang: LangRU, ShowLangs: true, ActiveCat: cat, LangLinks: langLinks("/", "")}
+		base := Base{Title: "T", Lang: LangRU, ShowLangs: true, ActiveCat: cat, LangLinks: site.LangLinks("/", "")}
 		var sb strings.Builder
 		if err := tmpl.ExecuteTemplate(&sb, "home", HomePage{Base: base}); err != nil {
 			t.Fatal(err)
@@ -682,11 +673,11 @@ func TestHomeHasExactlyOneH1(t *testing.T) {
 	if strings.Count(world, "<h1") != 1 {
 		t.Fatal("a category feed should still have exactly one <h1>")
 	}
-	if !strings.Contains(world, T(LangRU, "cat.world")) {
+	if !strings.Contains(world, site.T(LangRU, "cat.world")) {
 		t.Errorf("the category feed's heading does not name the category: %s",
 			regexp.MustCompile(`(?s)<h1.*?</h1>`).FindString(world))
 	}
-	if strings.Contains(world, T(LangRU, "home.h1")) {
+	if strings.Contains(world, site.T(LangRU, "home.h1")) {
 		t.Error("the category feed repeats the site-wide heading")
 	}
 }
@@ -696,7 +687,7 @@ func TestHomeHasExactlyOneH1(t *testing.T) {
 // draw one should pay for it.
 func TestLeafletOnlyWhereThereIsAMap(t *testing.T) {
 	tmpl := buildTemplates(t)
-	base := Base{Title: "T", Lang: LangRU, ShowLangs: true, LangLinks: langLinks("/", "")}
+	base := Base{Title: "T", Lang: LangRU, ShowLangs: true, LangLinks: site.LangLinks("/", "")}
 	render := func(name string, data any) string {
 		t.Helper()
 		var sb strings.Builder

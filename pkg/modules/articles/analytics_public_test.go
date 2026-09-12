@@ -3,6 +3,7 @@ package articles
 import (
 	"html/template"
 	"net/http"
+	"shanraq.org/pkg/site"
 	"strings"
 	"testing"
 	"time"
@@ -44,17 +45,17 @@ func TestTheAudiencePageIsOpenToEveryone(t *testing.T) {
 		t.Fatalf("страница аналитики отдала %d без входа", w.Code)
 	}
 	body := w.Body.String()
-	if !strings.Contains(body, T(LangRU, "stats.title")) {
+	if !strings.Contains(body, site.T(LangRU, "stats.title")) {
 		t.Error("на странице нет её собственного заголовка")
 	}
 	// The method is stated on the page itself: a number without a definition is the
 	// very thing our own articles argue with.
-	if !strings.Contains(body, T(LangRU, "stats.method")) {
+	if !strings.Contains(body, site.T(LangRU, "stats.method")) {
 		t.Error("на странице не сказано, как мы считаем")
 	}
 	// Crawlers are shown separately rather than blended in with people: there are more
 	// of them, and mixing the two would double the reported audience.
-	if !strings.Contains(body, T(LangRU, "stats.bots_note")) {
+	if !strings.Contains(body, site.T(LangRU, "stats.bots_note")) {
 		t.Error("нет оговорки о том, что краулеры не входят в число людей")
 	}
 }
@@ -95,7 +96,7 @@ func TestTheAudiencePageSpeaksAllThreeLanguages(t *testing.T) {
 		// The comparison is against the escaped form: an apostrophe, an ampersand and a
 		// plus look different in markup than in the dictionary, and a literal search would
 		// find not a missing translation but the template engine doing its job.
-		if want := template.HTMLEscapeString(T(lang, "stats.lead")); !strings.Contains(w.Body.String(), want) {
+		if want := template.HTMLEscapeString(site.T(lang, "stats.lead")); !strings.Contains(w.Body.String(), want) {
 			t.Errorf("язык %s: нет вводной строки на этом языке", lang)
 		}
 	}

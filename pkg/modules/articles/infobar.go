@@ -20,50 +20,6 @@ import (
 // blocks the browser from calling external APIs, and server-side fetching
 // degrades gracefully (a cell simply hides) if a source is blocked or down.
 
-// Rate is one currency's KZT rate for the info bar. Main+Last split the value
-// so the last digit can be dropped on narrow phones (Main shown, Last hidden).
-type Rate struct {
-	Code string // USD / EUR / RUB
-	Main string // value without its last character, e.g. "469.8"
-	Last string // the last character, e.g. "3"
-	Dir  string // "up" | "down" | ""
-}
-
-// SocialLink is one configured social profile shown in the bar.
-type SocialLink struct {
-	Name string // telegram | instagram | youtube | facebook (icon key)
-	URL  string
-}
-
-// liveSocial keeps only the profiles that actually lead somewhere. A "#" entry
-// is a placeholder for a network we have not opened yet — acceptable as a hint
-// in the header strip, never on a card whose entire purpose is to be clicked.
-func liveSocial(links []SocialLink) []SocialLink {
-	out := make([]SocialLink, 0, len(links))
-	for _, l := range links {
-		if l.URL != "" && l.URL != "#" {
-			out = append(out, l)
-		}
-	}
-	return out
-}
-
-// InfoBarData is the per-request snapshot handed to templates.
-type InfoBarData struct {
-	Today string
-	// TodayISO is the same day in machine form, for the link into the archive.
-	TodayISO     string
-	WeatherIcon  string // icon key, e.g. "wx_sun" ("" when unavailable)
-	WeatherTemp  string // e.g. "+25°"
-	WeatherPress string // atmospheric pressure, e.g. "742 мм" ("" when unavailable)
-	// WeatherPlace names the town the temperature was taken in, when it is the
-	// reader's own rather than the default city. Empty keeps the cell silent.
-	WeatherPlace string
-	Rates        []Rate // empty when unavailable
-	Social       []SocialLink
-	GitHub       string // repository URL, rendered in the footer only ("" hides it)
-}
-
 // wxBarReading is one place's temperature for the strip.
 type wxBarReading struct {
 	at    time.Time
@@ -110,10 +66,10 @@ type InfoBar struct {
 func socialLinks(cfg config.SocialConfig) []SocialLink {
 	out := make([]SocialLink, 0, 4)
 	for _, s := range []SocialLink{
-		{"telegram", strings.TrimSpace(cfg.Telegram)},
-		{"instagram", strings.TrimSpace(cfg.Instagram)},
-		{"youtube", strings.TrimSpace(cfg.YouTube)},
-		{"facebook", strings.TrimSpace(cfg.Facebook)},
+		{Name: "telegram", URL: strings.TrimSpace(cfg.Telegram)},
+		{Name: "instagram", URL: strings.TrimSpace(cfg.Instagram)},
+		{Name: "youtube", URL: strings.TrimSpace(cfg.YouTube)},
+		{Name: "facebook", URL: strings.TrimSpace(cfg.Facebook)},
 	} {
 		if s.URL == "" {
 			s.URL = "#"

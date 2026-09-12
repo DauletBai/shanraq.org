@@ -15,6 +15,7 @@ import (
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/ai"
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // Staff roles that may open the admin dashboard.
@@ -257,7 +258,7 @@ type AdminPage struct {
 }
 
 func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	claims, _ := auth.ClaimsFromContext(r.Context())
 	stats, err := m.admin.Stats(r.Context())
 	if err != nil {
@@ -265,7 +266,7 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
-	page := AdminPage{Base: m.base(r, T(lang, "admin.title"), lang)}
+	page := AdminPage{Base: m.base(r, site.T(lang, "admin.title"), lang)}
 	page.Stats = stats
 	if canModerate(claims) {
 		if ap, err := m.mods.OpenAppeals(r.Context(), 50); err == nil {

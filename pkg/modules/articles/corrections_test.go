@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"shanraq.org/pkg/site"
 	"strings"
 	"testing"
 )
@@ -193,12 +194,12 @@ func TestCorrectionFormNeedsNoLoginToRead(t *testing.T) {
 	}
 	body := rec.Body.String()
 	// A guest sees what the page is for and how to become able to use it.
-	if !strings.Contains(body, T(LangRU, "corr.login_note")) {
+	if !strings.Contains(body, site.T(LangRU, "corr.login_note")) {
 		t.Error("the guest was not told an account is needed")
 	}
 	// All three fields carry a "?" hint, which is the whole point of the form.
 	for _, k := range []string{"corr.h_chapter", "corr.h_sentence", "corr.h_word"} {
-		if !strings.Contains(body, T(LangRU, k)) {
+		if !strings.Contains(body, site.T(LangRU, k)) {
 			t.Errorf("hint %s missing from the form", k)
 		}
 	}
@@ -243,7 +244,7 @@ func TestCorrectionRejectsMalformedClaims(t *testing.T) {
 			if rec.Code != http.StatusOK {
 				t.Fatalf("POST = %d", rec.Code)
 			}
-			if want := T(LangRU, tc.wants); !strings.Contains(rec.Body.String(), want) {
+			if want := site.T(LangRU, tc.wants); !strings.Contains(rec.Body.String(), want) {
 				t.Errorf("expected %q in the response", want)
 			}
 		})
@@ -273,7 +274,7 @@ func TestCorrectionAppliesHomoglyphFix(t *testing.T) {
 	if rec.Code != http.StatusOK {
 		t.Fatalf("POST = %d", rec.Code)
 	}
-	if want := T(LangRU, "corr.h_applied"); !strings.Contains(rec.Body.String(), want) {
+	if want := site.T(LangRU, "corr.h_applied"); !strings.Contains(rec.Body.String(), want) {
 		t.Fatalf("expected %q in the response, got:\n%s", want, clipForLog(rec.Body.String()))
 	}
 
@@ -320,7 +321,7 @@ func TestCorrectionHeldWithoutChecker(t *testing.T) {
 	if rec.Code != http.StatusOK {
 		t.Fatalf("POST = %d", rec.Code)
 	}
-	if want := T(LangRU, "corr.h_pending"); !strings.Contains(rec.Body.String(), want) {
+	if want := site.T(LangRU, "corr.h_pending"); !strings.Contains(rec.Body.String(), want) {
 		t.Errorf("expected %q, got:\n%s", want, clipForLog(rec.Body.String()))
 	}
 	art, _ := NewStore(app.pool).GetPublishedBySlug(context.Background(), slug)

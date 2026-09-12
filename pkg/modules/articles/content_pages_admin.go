@@ -8,6 +8,7 @@ import (
 	"go.uber.org/zap"
 
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // The admin page editor lets project leadership update the info & legal pages
@@ -57,13 +58,13 @@ func (m *Module) editablePageName(r *http.Request, key, lang string) string {
 }
 
 func (m *Module) handleAdminPages(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	claims, _ := auth.ClaimsFromContext(r.Context())
 	if !canManageUsers(claims) {
 		http.Error(w, "forbidden", http.StatusForbidden)
 		return
 	}
-	page := adminPagesList{Base: m.base(r, T(lang, "pages.title"), lang)}
+	page := adminPagesList{Base: m.base(r, site.T(lang, "pages.title"), lang)}
 	for _, key := range editablePageKeys {
 		page.Items = append(page.Items, adminPageItem{Key: key, Name: m.editablePageName(r, key, lang)})
 	}
@@ -71,7 +72,7 @@ func (m *Module) handleAdminPages(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleAdminPageEdit(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	claims, _ := auth.ClaimsFromContext(r.Context())
 	if !canManageUsers(claims) {
 		http.Error(w, "forbidden", http.StatusForbidden)
@@ -83,12 +84,12 @@ func (m *Module) handleAdminPageEdit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	view := adminPageEditView{
-		Base: m.base(r, T(lang, "pages.edit_title"), lang),
+		Base: m.base(r, site.T(lang, "pages.edit_title"), lang),
 		Key:  key,
 		Name: m.editablePageName(r, key, lang),
 	}
 	if r.URL.Query().Get("ok") == "1" {
-		view.Notice = T(lang, "pages.saved")
+		view.Notice = site.T(lang, "pages.saved")
 	}
 	if when, by, ok, _ := m.content.LastEdited(r.Context(), key); ok && !when.IsZero() {
 		view.LastEdited = when.Format("2006-01-02 15:04")
@@ -121,7 +122,7 @@ func (m *Module) handleAdminPageSave(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad form", http.StatusBadRequest)
 		return
 	}
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	// Collect every language first so validation can reject the whole save: a
 	// missing title or body must never overwrite a live legal page with a blank.
 	langs := make([]adminPageLangView, 0, len(pageEditLangs))
@@ -142,10 +143,10 @@ func (m *Module) handleAdminPageSave(w http.ResponseWriter, r *http.Request) {
 		// Re-render with what the operator typed plus an error — nothing is lost
 		// and a blank page can't be saved.
 		m.render(w, "admin_page_edit", adminPageEditView{
-			Base:  m.base(r, T(lang, "pages.edit_title"), lang),
+			Base:  m.base(r, site.T(lang, "pages.edit_title"), lang),
 			Key:   key,
 			Name:  m.editablePageName(r, key, lang),
-			Error: T(lang, "pages.err_required"),
+			Error: site.T(lang, "pages.err_required"),
 			Langs: langs,
 		})
 		return

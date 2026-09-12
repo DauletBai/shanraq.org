@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"html/template"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -20,102 +19,14 @@ import (
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/modules/jobs"
 	"shanraq.org/pkg/modules/ratings"
+	"shanraq.org/pkg/site"
 )
-
-const langCookieName = "shanraq_lang"
-
-// Base carries fields shared by every page (consumed by the header/footer
-// partials via Go's embedded-field promotion). The whole UI renders in Lang.
-type Base struct {
-	// Nonce authorises this page's inline scripts. The policy admits a script
-	// tag only if it carries the value minted for this response, so a tag an
-	// attacker injects into the markup has nothing to put here.
-	Nonce     string
-	Title     string
-	Lang      string
-	Authed    bool
-	IsStaff   bool
-	CanAuthor bool   // leadership who may publish without email/phone verification
-	Avatar    string // current user's avatar URL ("" = none), for the header/cabinet
-	ShowLangs bool
-	Active    string // active section: "latest" | "top" | ""
-	ActiveCat string // active category slug, or "" for All
-	ActiveSub string // active subcategory slug, or ""
-	LangLinks map[string]string
-
-	// SidebarNews feeds the "latest news" carousel in the sidebar.
-	SidebarNews []FeedItem
-
-	// Ads feeds the sidebar ad carousel (demo placements for now).
-	Ads []Ad
-
-	// Info feeds the top info bar (date, weather, rates, social links).
-	Info InfoBarData
-
-	// NeedsMap loads Leaflet. Only the two pages that draw one set it: the
-	// library and its stylesheet are ~270 KB and were being fetched on every
-	// page of the site, including the home feed, which has no map.
-	NeedsMap bool
-
-	// Newsletter form feedback, set from ?subscribed= after the POST redirect.
-	// It lives on Base rather than one page's context because the form sits in
-	// the follow card, which the home sidebar and every article aside share.
-	SubMsg string
-	SubBad bool // the message is a failure, not a confirmation
-
-	// SEO fields (populated by base(); pages may override).
-	SiteURL  string // absolute origin, e.g. https://shanraq.org
-	Path     string // request path, no query (used for nav active state)
-	CanonURL string // relative canonical path+query for THIS language,
-	//                        including only whitelisted indexable filters
-	Desc    string        // meta description
-	OGImage string        // absolute image URL for social previews
-	OGType  string        // "website" | "article"
-	JSONLD  template.HTML // structured data (schema.org), injected verbatim
-	SiteLD  template.HTML // the site's own card: who publishes this and where
-	// NoIndex asks search engines to keep this page out of their index while
-	// still following its links. Set for articles flagged non-indexable.
-	NoIndex bool
-
-	// Svc carries the operational state of each toggleable service, already
-	// localized, so any template can show a maintenance notice and hide a paid
-	// action without a funcmap. Keyed by service code (e.g. "listing_promo").
-	Svc map[string]ServiceView
-}
-
-// ServiceView is a service's state as a template sees it: whether its paid
-// action is available, and the localized notice to show when it is not.
-type ServiceView struct {
-	On  bool
-	Msg string
-}
-
-// serviceLinkOff reports whether a service's entry point should be disabled in
-// the UI. An unknown/unconfigured code is treated as available, so a missing
-// flag never hides a link. Exposed to templates as "svcOff": it greys out
-// links/buttons that lead to a service the admin turned off or set to maintenance.
-func serviceLinkOff(svc map[string]ServiceView, code string) bool {
-	if v, ok := svc[code]; ok {
-		return !v.On
-	}
-	return false
-}
-
-// serviceLinkMsg returns the localized "temporarily unavailable / by invitation"
-// notice for a service, for use as a tooltip on the disabled entry point.
-// Exposed to templates as "svcMsg".
-func serviceLinkMsg(svc map[string]ServiceView, code string) string {
-	if v, ok := svc[code]; ok {
-		return v.Msg
-	}
-	return ""
-}
 
 // base builds the shared page context. The language switcher points at the
 // current path so switching language re-renders the same page fully localized.
 func (m *Module) base(r *http.Request, title, lang string) Base {
 	claims, authed := auth.ClaimsFromContext(r.Context())
-	site := m.rt.Config.PublicBase()
+	origin := m.rt.Config.PublicBase()
 	avatar := ""
 	if authed && claims != nil {
 		if id, err := uuid.Parse(claims.Subject); err == nil {
@@ -134,17 +45,17 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 		CanAuthor: canAuthorAsStaff(claims),
 		Avatar:    avatar,
 		ShowLangs: true,
-		LangLinks: langLinks(r.URL.Path, seoFilterQuery(r)),
-		SiteURL:   site,
+		LangLinks: site.LangLinks(r.URL.Path, seoFilterQuery(r)),
+		SiteURL:   origin,
 		Path:      r.URL.Path,
-		CanonURL:  canonURL(r.URL.Path, seoFilterQuery(r), lang),
-		Desc:      T(lang, "seo.site_desc"),
-		OGImage:   site + "/static/brand/og-cover.png",
+		CanonURL:  site.CanonURL(r.URL.Path, seoFilterQuery(r), lang),
+		Desc:      site.T(lang, "seo.site_desc"),
+		OGImage:   origin + "/static/brand/og-cover.png",
 		OGType:    "website",
 		Info:      m.readerInfoBar(r, lang),
 		Ads:       m.sidebarAds(r, lang),
 		Svc:       m.serviceViews(r, lang),
-		SiteLD:    siteLD(httpserver.NonceFromContext(r.Context()), site, lang),
+		SiteLD:    siteLD(httpserver.NonceFromContext(r.Context()), origin, lang),
 	}
 }
 
@@ -226,10 +137,10 @@ func (m *Module) placeName(r *http.Request, lang string, lat, lon float64, fallb
 // category, and nothing at all on the front page.
 func feedLabel(lang, cat, sub string) string {
 	if sub != "" {
-		return T(lang, "sub."+sub)
+		return site.T(lang, "sub."+sub)
 	}
 	if cat != "" {
-		return T(lang, "cat."+cat)
+		return site.T(lang, "cat."+cat)
 	}
 	return ""
 }
@@ -241,11 +152,11 @@ func feedLabel(lang, cat, sub string) string {
 func subscribeFeedback(r *http.Request, lang string) (string, bool) {
 	switch r.URL.Query().Get("subscribed") {
 	case "pending":
-		return T(lang, "sidebar.subscribe_pending"), false
+		return site.T(lang, "sidebar.subscribe_pending"), false
 	case "bad":
-		return T(lang, "sidebar.subscribe_bad"), true
+		return site.T(lang, "sidebar.subscribe_bad"), true
 	case "err":
-		return T(lang, "sidebar.subscribe_err"), true
+		return site.T(lang, "sidebar.subscribe_err"), true
 	}
 	return "", false
 }
@@ -270,11 +181,11 @@ func (m *Module) serviceViews(r *http.Request, lang string) map[string]ServiceVi
 			if invited {
 				on = true
 			} else if msg == "" {
-				msg = T(lang, "svc.invite_note")
+				msg = site.T(lang, "svc.invite_note")
 			}
 		default:
 			if !on && msg == "" {
-				msg = T(lang, "svc.closed_note")
+				msg = site.T(lang, "svc.closed_note")
 			}
 		}
 		out[f.Code] = ServiceView{On: on, Msg: msg}
@@ -313,25 +224,13 @@ func (m *Module) gateReason(r *http.Request, code, lang string) (allowed bool, m
 		if s := f.Message(lang); s != "" {
 			return false, s
 		}
-		return false, T(lang, "svc.invite_note")
+		return false, site.T(lang, "svc.invite_note")
 	default: // maintenance | off
 		if s := f.Message(lang); s != "" {
 			return false, s
 		}
-		return false, T(lang, "svc.closed_note")
+		return false, site.T(lang, "svc.closed_note")
 	}
-}
-
-// resolveLang picks the active language from ?lang=, then cookie, then default.
-func (m *Module) resolveLang(w http.ResponseWriter, r *http.Request) string {
-	if q := r.URL.Query().Get("lang"); IsLang(q) {
-		http.SetCookie(w, &http.Cookie{Name: langCookieName, Value: q, Path: "/", MaxAge: 31536000, SameSite: http.SameSiteLaxMode})
-		return q
-	}
-	if c, err := r.Cookie(langCookieName); err == nil && IsLang(c.Value) {
-		return c.Value
-	}
-	return LangRU
 }
 
 // addressedTo returns the places whose material this reader should be shown:
@@ -415,27 +314,6 @@ func seoFilterQuery(r *http.Request) string {
 	return strings.Join(parts, "&")
 }
 
-// canonURL builds the canonical relative URL for a page in one language,
-// preserving the whitelisted filters so /?cat=sport canonicalizes to itself
-// (with its category), not to a bare "/".
-func canonURL(path, filters, lang string) string {
-	q := "lang=" + lang
-	if filters != "" {
-		q = filters + "&" + q
-	}
-	return path + "?" + q
-}
-
-// langLinks builds the per-language alternates for the current page, carrying
-// the same whitelisted filters so switching language keeps the category/filter.
-func langLinks(base, filters string) map[string]string {
-	out := make(map[string]string, len(Langs))
-	for _, l := range Langs {
-		out[l] = canonURL(base, filters, l)
-	}
-	return out
-}
-
 func (m *Module) authorID(r *http.Request) (uuid.UUID, bool) {
 	claims, ok := auth.ClaimsFromContext(r.Context())
 	if !ok {
@@ -457,32 +335,6 @@ func (m *Module) viewerID(r *http.Request) uuid.UUID {
 }
 
 // ---------- public reader ----------
-
-// FeedItem is one card in the feed.
-type FeedItem struct {
-	Slug           string
-	Title          string
-	Summary        string
-	AuthorName     string
-	AuthorID       string // for the byline link to /author/{id}
-	ServedLang     string
-	Category       string
-	Subcategory    string
-	CoverURL       string
-	Published      *time.Time
-	Views          int64
-	Score          int
-	IsAI           bool
-	AIAuthor       bool
-	AvailableLangs []string
-
-	// OrgName is the verified organisation this was published on behalf of.
-	// A card shows it instead of the person: on a place page the reader is
-	// looking for the akimat and the utility, and "А. Смағұлова" hides exactly
-	// the fact the whole feature exists to show. The person is still named in
-	// full on the article itself.
-	OrgName string
-}
 
 // withOrgs fills in the organisation behind each card, in one query for the
 // whole feed rather than one per card.
@@ -623,7 +475,7 @@ type StaticPage struct {
 // handleStaticPage renders a localized info page by key.
 func (m *Module) handleStaticPage(key string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		lang := m.resolveLang(w, r)
+		lang := site.ResolveLang(w, r)
 		// Effective content: the admin-editable DB override, falling back to the
 		// built-in default so a page never blanks out.
 		title, body := m.pageContent(r.Context(), key, lang)
@@ -654,7 +506,7 @@ func (m *Module) handleReadRedirect(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 
 	sort := "recent"
 	active := "latest"
@@ -689,7 +541,7 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 
 	items := m.withOrgs(r.Context(), arts, feedItems(arts, lang))
 
-	page := HomePage{Base: m.base(r, T(lang, "home.page_title"), lang)}
+	page := HomePage{Base: m.base(r, site.T(lang, "home.page_title"), lang)}
 	page.Active = active
 	page.ActiveCat = cat
 	page.ActiveSub = sub
@@ -699,12 +551,12 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 	// the AI feed, which the Python course now lands in, said "IT" over a list
 	// of Python lessons.
 	if label := feedLabel(lang, cat, sub); label != "" {
-		page.Title = fmt.Sprintf(T(lang, "seo.feed_title"), label)
-		page.Desc = fmt.Sprintf(T(lang, "seo.feed_desc"), label)
+		page.Title = fmt.Sprintf(site.T(lang, "seo.feed_title"), label)
+		page.Desc = fmt.Sprintf(site.T(lang, "seo.feed_desc"), label)
 	}
 	page.Subscribed = r.URL.Query().Get("subscribed") == "ok"
 	if r.URL.Query().Get("reported") == "hidden" {
-		page.Notice = T(lang, "article.report_hidden")
+		page.Notice = site.T(lang, "article.report_hidden")
 	}
 	page.Posts = items
 	page.Recent = recentSlice(items, 5)
@@ -828,7 +680,7 @@ var retiredSlugs = map[string]string{
 
 func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 
 	a, err := m.store.GetPublishedBySlug(r.Context(), slug)
 	if err != nil {
@@ -913,9 +765,9 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 
 	switch {
 	case r.URL.Query().Get("reported") == "ok":
-		page.Notice = T(lang, "article.report_thanks")
+		page.Notice = site.T(lang, "article.report_thanks")
 	case r.URL.Query().Get("notice") == "verify":
-		page.Notice = T(lang, "article.report_verify")
+		page.Notice = site.T(lang, "article.report_verify")
 	}
 	page.CommentReview = r.URL.Query().Get("comment") == "review"
 	// The article page shows only its table of contents in the aside (no news
@@ -977,9 +829,9 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		uid, signedIn := m.authorID(r)
 		switch {
 		case m.ai == nil || !m.ai.Enabled():
-			page.CheckWhy = T(page.Lang, "chk.off")
+			page.CheckWhy = site.T(page.Lang, "chk.off")
 		case !signedIn:
-			page.CheckWhy = T(page.Lang, "chk.login")
+			page.CheckWhy = site.T(page.Lang, "chk.login")
 			page.CheckLogin = true
 		default:
 			page.CheckReady = true
@@ -1057,7 +909,7 @@ func (m *Module) handleComment(w http.ResponseWriter, r *http.Request) {
 	}
 	// Comments gate (staged launch). The form is hidden when closed; this is the
 	// backstop for a direct POST.
-	if ok, _ := m.gateReason(r, SvcComments, m.resolveLang(w, r)); !ok {
+	if ok, _ := m.gateReason(r, SvcComments, site.ResolveLang(w, r)); !ok {
 		http.Redirect(w, r, backTo, http.StatusSeeOther)
 		return
 	}
@@ -1219,18 +1071,18 @@ func safeNext(v string) string {
 }
 
 func (m *Module) handleLoginPage(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
-	page := FormPage{Base: m.base(r, T(lang, "form.login_title"), lang), Mode: "login"}
+	lang := site.ResolveLang(w, r)
+	page := FormPage{Base: m.base(r, site.T(lang, "form.login_title"), lang), Mode: "login"}
 	switch r.URL.Query().Get("verified") {
 	case "ok":
-		page.Notice = T(lang, "form.verified_ok")
+		page.Notice = site.T(lang, "form.verified_ok")
 	case "invalid":
-		page.Error = T(lang, "form.verified_invalid")
+		page.Error = site.T(lang, "form.verified_invalid")
 	}
 	// A protected action (e.g. publishing a listing) bounced here because the
 	// session had lapsed — say so, so the user understands the failure.
 	if r.URL.Query().Get("reason") == "session_expired" {
-		page.Notice = T(lang, "form.session_expired")
+		page.Notice = site.T(lang, "form.session_expired")
 	}
 	// Arriving here on the way to somewhere else — a printed QR code aimed at
 	// the posting form is the case this was built for. Carry the destination
@@ -1238,15 +1090,15 @@ func (m *Module) handleLoginPage(w http.ResponseWriter, r *http.Request) {
 	// stranger who scanned a poster about free listings has no reason to guess.
 	page.Next = safeNext(r.URL.Query().Get("next"))
 	if page.Next == "/listings/new" && page.Notice == "" {
-		page.Notice = T(lang, "form.next_listing")
+		page.Notice = site.T(lang, "form.next_listing")
 	}
 	m.render(w, "form", page)
 }
 
 func (m *Module) handleRegisterPage(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	m.render(w, "form", FormPage{
-		Base: m.base(r, T(lang, "form.register_title"), lang),
+		Base: m.base(r, site.T(lang, "form.register_title"), lang),
 		Mode: "register",
 		Ref:  strings.TrimSpace(r.URL.Query().Get("ref")),
 		Next: safeNext(r.URL.Query().Get("next")),
@@ -1254,7 +1106,7 @@ func (m *Module) handleRegisterPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	if err := r.ParseForm(); err != nil {
 		http.Error(w, "bad form", http.StatusBadRequest)
 		return
@@ -1264,10 +1116,10 @@ func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
 
 	if !m.auth.AllowAuthAttempt(r, "signin", email) {
 		m.render(w, "form", FormPage{
-			Base:  m.base(r, T(lang, "form.login_title"), lang),
+			Base:  m.base(r, site.T(lang, "form.login_title"), lang),
 			Mode:  "login",
 			Email: email,
-			Error: T(lang, "form.err_rate_limit"),
+			Error: site.T(lang, "form.err_rate_limit"),
 		})
 		return
 	}
@@ -1280,10 +1132,10 @@ func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
 	// cannot be used to probe which e-mails exist.
 	if m.auth.MFAEnabled() {
 		m.render(w, "form", FormPage{
-			Base:  m.base(r, T(lang, "form.login_title"), lang),
+			Base:  m.base(r, site.T(lang, "form.login_title"), lang),
 			Mode:  "login",
 			Email: email,
-			Error: T(lang, "form.err_mfa_web"),
+			Error: site.T(lang, "form.err_mfa_web"),
 		})
 		return
 	}
@@ -1291,10 +1143,10 @@ func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
 	user, token, err := m.auth.LoginPassword(r.Context(), email, password)
 	if err != nil {
 		m.render(w, "form", FormPage{
-			Base:  m.base(r, T(lang, "form.login_title"), lang),
+			Base:  m.base(r, site.T(lang, "form.login_title"), lang),
 			Mode:  "login",
 			Email: email,
-			Error: T(lang, "form.err_credentials"),
+			Error: site.T(lang, "form.err_credentials"),
 			Next:  safeNext(r.FormValue("next")),
 		})
 		return
@@ -1305,7 +1157,7 @@ func (m *Module) handleLoginSubmit(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	if err := r.ParseForm(); err != nil {
 		http.Error(w, "bad form", http.StatusBadRequest)
 		return
@@ -1321,7 +1173,7 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	place := strings.TrimSpace(r.FormValue("geo_node_id"))
 	regFail := func(msg string) {
 		m.render(w, "form", FormPage{
-			Base: m.base(r, T(lang, "form.register_title"), lang), Mode: "register",
+			Base: m.base(r, site.T(lang, "form.register_title"), lang), Mode: "register",
 			Email: email, First: first, Last: last, Middle: middle, Ref: ref, Error: msg,
 			PlaceID: place,
 		})
@@ -1331,13 +1183,13 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 		// open to everyone
 	case svcInviteOnly:
 		if _, ok := m.refs.ReferrerByCode(r.Context(), ref); !ok {
-			regFail(T(lang, "form.err_invite_only"))
+			regFail(site.T(lang, "form.err_invite_only"))
 			return
 		}
 	default: // maintenance | off
 		msg := m.flags.Flag(SvcRegistration).Message(lang)
 		if msg == "" {
-			msg = T(lang, "svc.closed_note")
+			msg = site.T(lang, "svc.closed_note")
 		}
 		regFail(msg)
 		return
@@ -1345,10 +1197,10 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 
 	if !m.auth.AllowAuthAttempt(r, "signup", email) {
 		m.render(w, "form", FormPage{
-			Base:  m.base(r, T(lang, "form.register_title"), lang),
+			Base:  m.base(r, site.T(lang, "form.register_title"), lang),
 			Mode:  "register",
 			Email: email,
-			Error: T(lang, "form.err_rate_limit"),
+			Error: site.T(lang, "form.err_rate_limit"),
 		})
 		return
 	}
@@ -1357,34 +1209,34 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	// consent to the Terms and Privacy Policy.
 	if r.FormValue("consent") != "on" {
 		m.render(w, "form", FormPage{
-			Base:  m.base(r, T(lang, "form.register_title"), lang),
+			Base:  m.base(r, site.T(lang, "form.register_title"), lang),
 			Mode:  "register",
 			Email: email,
-			Error: T(lang, "form.err_consent"),
+			Error: site.T(lang, "form.err_consent"),
 		})
 		return
 	}
 
 	if _, ok := auth.NormalizeEmail(email); !ok {
-		regFail(T(lang, "form.err_email_invalid"))
+		regFail(site.T(lang, "form.err_email_invalid"))
 		return
 	}
 	if err := auth.ValidatePassword(password); err != nil {
-		regFail(T(lang, "form.err_password_rule"))
+		regFail(site.T(lang, "form.err_password_rule"))
 		return
 	}
 	// Real name is required for everyone — readers, authors and agents alike —
 	// so attribution on comments and articles is a person, not an e-mail.
 	if err := auth.ValidatePersonName(first); err != nil {
-		regFail(T(lang, "form.err_first_name"))
+		regFail(site.T(lang, "form.err_first_name"))
 		return
 	}
 	if err := auth.ValidatePersonName(last); err != nil {
-		regFail(T(lang, "form.err_last_name"))
+		regFail(site.T(lang, "form.err_last_name"))
 		return
 	}
 	if err := auth.ValidateOptionalPersonName(middle); err != nil {
-		regFail(T(lang, "form.err_middle_name"))
+		regFail(site.T(lang, "form.err_middle_name"))
 		return
 	}
 
@@ -1401,11 +1253,11 @@ func (m *Module) handleRegisterSubmit(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if err != nil {
-		msg := T(lang, "form.err_generic")
+		msg := site.T(lang, "form.err_generic")
 		if errors.Is(err, auth.ErrEmailExists) {
-			msg = T(lang, "form.err_email_taken")
+			msg = site.T(lang, "form.err_email_taken")
 		} else if errors.Is(err, auth.ErrInvalidEmail) {
-			msg = T(lang, "form.err_email_invalid")
+			msg = site.T(lang, "form.err_email_invalid")
 		}
 		regFail(msg)
 		return
@@ -1530,14 +1382,14 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Warn("author reading depth", zap.Error(err))
 	}
 
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	reads, err := m.store.AuthorReads(r.Context(), authorID)
 	if err != nil {
 		m.rt.Logger.Warn("author reads", zap.Error(err))
 	}
 	rows := make([]StudioRow, 0, len(arts))
 	for _, a := range arts {
-		title := T(lang, "studio.untitled")
+		title := site.T(lang, "studio.untitled")
 		if tr, _ := a.Translation(a.OriginalLang); tr != nil && tr.Title != "" {
 			title = tr.Title
 		}
@@ -1577,19 +1429,19 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	page := StudioPage{
-		Base:  m.base(r, T(lang, "studio.title"), lang),
+		Base:  m.base(r, site.T(lang, "studio.title"), lang),
 		Since: analyticsSince,
 	}
 	switch r.URL.Query().Get("ok") {
 	case "published":
-		page.Notice = T(lang, "studio.n_published")
+		page.Notice = site.T(lang, "studio.n_published")
 	case "in_review":
-		page.Notice = T(lang, "studio.n_review")
+		page.Notice = site.T(lang, "studio.n_review")
 	}
 	// A deleted draft leaves no trace in the table, so say so explicitly —
 	// otherwise the author cannot tell a successful delete from a silent failure.
 	if r.URL.Query().Get("deleted") == "1" {
-		page.Notice = T(lang, "studio.deleted_ok")
+		page.Notice = site.T(lang, "studio.deleted_ok")
 	}
 	page.Stats = stats
 	page.Karma = karma
@@ -1722,9 +1574,9 @@ func aiNotice(lang, flag string) string {
 	// and the column drafter are gone, and with them their flags.
 	switch flag {
 	case "queued":
-		return T(lang, "notice.ai_queued")
+		return site.T(lang, "notice.ai_queued")
 	case "off":
-		return T(lang, "notice.ai_off")
+		return site.T(lang, "notice.ai_off")
 	default:
 		return ""
 	}
@@ -1739,8 +1591,8 @@ func emptyFields() map[string]TranslationField {
 }
 
 func (m *Module) handleEditorNew(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
-	page := EditorPage{Base: m.base(r, T(lang, "editor.new"), lang)}
+	lang := site.ResolveLang(w, r)
+	page := EditorPage{Base: m.base(r, site.T(lang, "editor.new"), lang)}
 	page.IsNew = true
 	page.OriginalLang = lang
 	page.TargetLangs = otherLangs(lang)
@@ -1777,8 +1629,8 @@ func (m *Module) handleEditorEdit(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	lang := m.resolveLang(w, r)
-	page := EditorPage{Base: m.base(r, T(lang, "editor.edit"), lang)}
+	lang := site.ResolveLang(w, r)
+	page := EditorPage{Base: m.base(r, site.T(lang, "editor.edit"), lang)}
 	// The publish button sends the author back here when a local piece is
 	// missing one of the two languages, so the reason has to be visible on
 	// arrival rather than left for them to guess.
@@ -1914,7 +1766,7 @@ func sanitizeCoverURL(v string) string {
 // parseEditorForm reads the three-language editor form into translation inputs.
 func parseEditorForm(r *http.Request) (originalLang, category, subcategory, coverURL string, trs []TranslationInput) {
 	originalLang = r.FormValue("original_lang")
-	if !IsLang(originalLang) {
+	if !site.IsLang(originalLang) {
 		originalLang = LangRU
 	}
 	category = NormalizeCategory(r.FormValue("category"))
@@ -1981,7 +1833,7 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 	}
 	originalLang, category, subcategory, coverURL, trs := parseEditorForm(r)
 
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	// Article submission gate (staged launch): open / invite-only / closed.
 	// Leadership (the CEO/directors) bypass it so they can write during the beta.
 	claims, _ := auth.ClaimsFromContext(r.Context())
@@ -1993,7 +1845,7 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 	}
 	orig := findTR(trs, originalLang)
 	if orig.Title == "" || orig.BodyMD == "" {
-		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, T(lang, "editor.err_required"))
+		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, site.T(lang, "editor.err_required"))
 		return
 	}
 
@@ -2006,7 +1858,7 @@ func (m *Module) handleCreate(w http.ResponseWriter, r *http.Request) {
 	id, err := m.store.Create(r.Context(), authorID, slug, originalLang, category, subcategory, coverURL, trs)
 	if err != nil {
 		m.rt.Logger.Error("create article", zap.Error(err))
-		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, T(lang, "editor.err_save"))
+		m.reRenderEditor(w, r, true, "", "", originalLang, category, subcategory, coverURL, trs, site.T(lang, "editor.err_save"))
 		return
 	}
 	if place := formPlace(r); m.placeAllowed(r, authorID, place) {
@@ -2089,7 +1941,7 @@ func (m *Module) handlePublish(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 
 	// Leadership publishes immediately — no review queue. They are the editorial
 	// authority, so their piece goes live at once, logged as a staff publish
@@ -2190,7 +2042,7 @@ type ConsentPage struct {
 // handleConsent shows the author consent gate (documents + tariffs) required
 // once before publishing.
 func (m *Module) handleConsent(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	authorID, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
@@ -2200,20 +2052,20 @@ func (m *Module) handleConsent(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/studio", http.StatusSeeOther)
 		return
 	}
-	m.render(w, "author_consent", ConsentPage{Base: m.base(r, T(lang, "consent.title"), lang)})
+	m.render(w, "author_consent", ConsentPage{Base: m.base(r, site.T(lang, "consent.title"), lang)})
 }
 
 // handleConsentSubmit records the author's acknowledgment, then returns to the
 // studio so they can publish.
 func (m *Module) handleConsentSubmit(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	authorID, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
 		return
 	}
 	if r.FormValue("consent") != "on" {
-		m.render(w, "author_consent", ConsentPage{Base: m.base(r, T(lang, "consent.title"), lang), Error: T(lang, "consent.error")})
+		m.render(w, "author_consent", ConsentPage{Base: m.base(r, site.T(lang, "consent.title"), lang), Error: site.T(lang, "consent.error")})
 		return
 	}
 	if err := m.auth.RecordAuthorConsent(r.Context(), r, authorID, "web"); err != nil {
@@ -2293,8 +2145,8 @@ func (m *Module) reRenderEditor(w http.ResponseWriter, r *http.Request, isNew bo
 	for _, tr := range trs {
 		fields[tr.Lang] = TranslationField{Title: tr.Title, Summary: tr.Summary, BodyMD: tr.BodyMD, Source: tr.Source}
 	}
-	lang := m.resolveLang(w, r)
-	page := EditorPage{Base: m.base(r, T(lang, "editor.new"), lang)}
+	lang := site.ResolveLang(w, r)
+	page := EditorPage{Base: m.base(r, site.T(lang, "editor.new"), lang)}
 	page.IsNew = isNew
 	page.ArticleID = id
 	page.Slug = slug

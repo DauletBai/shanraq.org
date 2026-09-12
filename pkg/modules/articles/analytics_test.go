@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 	"shanraq.org/internal/config"
 	"shanraq.org/pkg/shanraq"
+	"shanraq.org/pkg/site"
 )
 
 func TestBotLabel(t *testing.T) {
@@ -238,7 +239,7 @@ func TestMetricsFlushAndGuestAnalytics(t *testing.T) {
 		t.Errorf("pages = %+v, want [home, article]", g.Pages)
 	}
 	// Page titles are localized (not the raw kind).
-	if g.Pages[0].Title != T(LangRU, "ag.page.home") {
+	if g.Pages[0].Title != site.T(LangRU, "ag.page.home") {
 		t.Errorf("home title = %q, want localized", g.Pages[0].Title)
 	}
 	// One click event recorded.
@@ -300,7 +301,7 @@ func TestCountryFlagEmoji(t *testing.T) {
 		if countryFlagEmoji(code) == "" {
 			t.Errorf("no flag for %q, which the live analytics does report", code)
 		}
-		if name := T(LangRU, "ag.country."+code); strings.HasPrefix(name, "ag.country.") {
+		if name := site.T(LangRU, "ag.country."+code); strings.HasPrefix(name, "ag.country.") {
 			t.Errorf("no Russian name for %q — it would render as a bare ISO code", code)
 		}
 	}
@@ -331,7 +332,7 @@ func TestGoogleIsNotOneThing(t *testing.T) {
 	// Every bucket the classifier can emit needs a label, or the panel prints
 	// the raw key at the reader.
 	for _, src := range []string{"google", "email", "translate", "share", "other"} {
-		if name := T(LangRU, "ag.source."+src); strings.HasPrefix(name, "ag.source.") {
+		if name := site.T(LangRU, "ag.source."+src); strings.HasPrefix(name, "ag.source.") {
 			t.Errorf("no Russian label for source %q", src)
 		}
 	}

@@ -1,0 +1,36 @@
+package articles
+
+import "shanraq.org/pkg/site"
+
+// The page frame — the languages, the UI dictionary, and the structs the shared
+// header, sidebar and footer render — lives in pkg/site, so that a module that
+// is not "articles" (the shop, the weather, the payments desk) can render a
+// page of this site without importing this package.
+//
+// The names below are aliases, not copies: articles.Base and site.Base are the
+// same type. They exist so that moving the definitions did not have to touch a
+// thousand lines that only mention them. Each one disappears when the last file
+// that uses it leaves this package for a module of its own.
+const (
+	LangKZ = site.LangKZ
+	LangRU = site.LangRU
+	LangEN = site.LangEN
+
+	langCookieName = site.LangCookie
+)
+
+var (
+	Langs      = site.Langs
+	LangLabels = site.LangLabels
+	LangNames  = site.LangNames
+)
+
+type (
+	Base        = site.Base
+	ServiceView = site.ServiceView
+	FeedItem    = site.FeedItem
+	Ad          = site.Ad
+	Rate        = site.Rate
+	SocialLink  = site.SocialLink
+	InfoBarData = site.InfoBarData
+)

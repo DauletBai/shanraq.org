@@ -12,6 +12,7 @@ import (
 	"go.uber.org/zap"
 
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // CoursesPage lists the published courses.
@@ -38,9 +39,9 @@ type CoursePage struct {
 
 // handleCourses serves /courses.
 func (m *Module) handleCourses(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
-	page := CoursesPage{Base: m.base(r, T(lang, "course.index_title"), lang)}
-	page.Desc = T(lang, "course.index_lead")
+	lang := site.ResolveLang(w, r)
+	page := CoursesPage{Base: m.base(r, site.T(lang, "course.index_title"), lang)}
+	page.Desc = site.T(lang, "course.index_lead")
 
 	list, err := m.series.List(r.Context())
 	if err != nil {
@@ -57,7 +58,7 @@ func (m *Module) handleCourses(w http.ResponseWriter, r *http.Request) {
 // can see where the road ends decides to walk it, and one who is shown a single
 // step at a time has nothing to decide about.
 func (m *Module) handleCourse(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	slug := strings.TrimSpace(chi.URLParam(r, "slug"))
 
 	s, err := m.series.BySlug(r.Context(), slug, lang)
@@ -131,14 +132,14 @@ type adminSeriesPage struct {
 
 // handleAdminSeries serves the course editor.
 func (m *Module) handleAdminSeries(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	claims, _ := auth.ClaimsFromContext(r.Context())
 	if !canManageUsers(claims) {
 		http.Error(w, "forbidden", http.StatusForbidden)
 		return
 	}
 	page := adminSeriesPage{
-		Base:     m.base(r, T(lang, "course.admin_title"), lang),
+		Base:     m.base(r, site.T(lang, "course.admin_title"), lang),
 		Statuses: []string{SeriesDraft, SeriesPublished},
 	}
 	for _, l := range pageEditLangs {
@@ -146,12 +147,12 @@ func (m *Module) handleAdminSeries(w http.ResponseWriter, r *http.Request) {
 	}
 	switch r.URL.Query().Get("saved") {
 	case "1":
-		page.Notice = T(lang, "course.saved")
+		page.Notice = site.T(lang, "course.saved")
 	case "deleted":
-		page.Notice = T(lang, "course.deleted")
+		page.Notice = site.T(lang, "course.deleted")
 	}
 	if r.URL.Query().Get("err") != "" {
-		page.Error = T(lang, "course.err_slug")
+		page.Error = site.T(lang, "course.err_slug")
 	}
 
 	var err error

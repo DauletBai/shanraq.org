@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+	"shanraq.org/pkg/site"
 	"strconv"
 	"strings"
 	"testing"
@@ -44,15 +45,15 @@ func TestBuildingDetailsSurviveAndShow(t *testing.T) {
 	// The form is what the seller touches, so it matters more than the page.
 	form2 := app.do(http.MethodGet, "/listings/new", nil, withCookie(cookie)).Body.String()
 	for _, want := range []string{`name="build_year"`, `name="wall_material"`, `name="ceiling_height"`,
-		T(LangRU, "re.wall.frame_reed"), T(LangRU, "re.not_stated")} {
+		site.T(LangRU, "re.wall.frame_reed"), site.T(LangRU, "re.not_stated")} {
 		if !strings.Contains(form2, want) {
 			t.Errorf("the posting form is missing %q", want)
 		}
 	}
 
 	body := app.do(http.MethodGet, "/listings/"+id, nil).Body.String()
-	for _, want := range []string{T(LangRU, "re.build_year"), "1998",
-		T(LangRU, "re.wall.panel"), T(LangRU, "re.ceiling_height")} {
+	for _, want := range []string{site.T(LangRU, "re.build_year"), "1998",
+		site.T(LangRU, "re.wall.panel"), site.T(LangRU, "re.ceiling_height")} {
 		if !strings.Contains(body, want) {
 			t.Errorf("the listing page does not show %q", want)
 		}
@@ -118,7 +119,7 @@ func TestPhotoCapMatchesWhatTheFormPromises(t *testing.T) {
 	cookie := app.login("photos@t.test", "Parol12345")
 
 	form := app.do(http.MethodGet, "/listings/new", nil, withCookie(cookie)).Body.String()
-	promise := fmt.Sprintf(T(LangRU, "re.photos_max"), maxListingPhotos)
+	promise := fmt.Sprintf(site.T(LangRU, "re.photos_max"), maxListingPhotos)
 	if !strings.Contains(form, promise) {
 		t.Errorf("the form does not promise %q", promise)
 	}

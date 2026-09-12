@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // AI Dake is the platform's AI columnist — an AI model that publishes
@@ -58,7 +59,7 @@ type AuthorPage struct {
 // their published articles (good for readers discovering more and for internal
 // SEO links). The AI columnist keeps its friendly slug and richer bio/badge.
 func (m *Module) handleAuthor(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	raw := chi.URLParam(r, "id")
 
 	if raw == SanaSlug || raw == SanaAuthorID {
@@ -147,7 +148,7 @@ func (m *Module) renderAuthor(w http.ResponseWriter, r *http.Request, lang, auth
 	page.IsTeam = card.IsTeam
 	page.IsAI = isAI
 	if isAI {
-		page.Desc = T(lang, "author.sana_bio")
+		page.Desc = site.T(lang, "author.sana_bio")
 	} else if card.Bio != "" {
 		page.Desc = clip(card.Bio, 200)
 	}

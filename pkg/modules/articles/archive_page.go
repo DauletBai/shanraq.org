@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // The archive: one address per day of publishing.
@@ -54,7 +55,7 @@ type ArchiveDay struct {
 
 // handleArchive renders one day of publishing.
 func (m *Module) handleArchive(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	raw := chi.URLParam(r, "date")
 
 	day, err := time.ParseInLocation("2006-01-02", raw, siteLoc())
@@ -110,10 +111,10 @@ func (m *Module) handleArchive(w http.ResponseWriter, r *http.Request) {
 	}
 
 	title := localizedDate(lang, day)
-	page.Base = m.base(r, T(lang, "arch.title")+" — "+title, lang)
-	page.Desc = T(lang, "arch.desc_pre") + " " + title + "."
-	page.Base.CanonURL = canonURL("/archive/"+page.ISO, "", lang)
-	page.Base.LangLinks = langLinks("/archive/"+page.ISO, "")
+	page.Base = m.base(r, site.T(lang, "arch.title")+" — "+title, lang)
+	page.Desc = site.T(lang, "arch.desc_pre") + " " + title + "."
+	page.Base.CanonURL = site.CanonURL("/archive/"+page.ISO, "", lang)
+	page.Base.LangLinks = site.LangLinks("/archive/"+page.ISO, "")
 	// A day with nothing on it is a legitimate address — the link from the strip
 	// lands on it on a quiet day — but it has no business in the index claiming
 	// to be about that day.

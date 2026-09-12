@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"shanraq.org/pkg/site"
 	"shanraq.org/web"
 )
 
@@ -14,15 +15,15 @@ import (
 // be available in one place and missing in the other.
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
-		"t": T,
+		"t": site.T,
 		// Every stylesheet and script must go through this: a bare path keeps
 		// serving from cache for a day after a deploy, so new markup lands on
 		// old CSS. See web.AssetURL.
 		"asset": web.AssetURL,
 		// Brand mark for an analytics row, "" for rows that name no brand.
 		"brandicon":        brandIcon,
-		"svcOff":           serviceLinkOff, // is a service's entry link disabled?
-		"svcMsg":           serviceLinkMsg, // its localized "unavailable" tooltip
+		"svcOff":           site.ServiceOff, // is a service's entry link disabled?
+		"svcMsg":           site.ServiceMsg, // its localized "unavailable" tooltip
 		"label":            func(l string) string { return LangLabels[l] },
 		"langName":         func(l string) string { return LangNames[l] },
 		"langs":            func() []string { return Langs },
@@ -79,8 +80,8 @@ func templateFuncs() template.FuncMap {
 		"compactNum":       compactNum, // 1234 → "1,2 тыс." for tight meta rows
 		"shortAuthor":      shortAuthor,
 		"hasSuffix":        strings.HasSuffix,
-		"ogLocale":         ogLocale,
-		"htmlLang":         htmlLang,
+		"ogLocale":         site.OGLocale,
+		"htmlLang":         site.HTMLLang,
 		"curSymbol":        curSymbol,
 		"icon":             icon,
 		"roomIcon":         roomIcon,
@@ -91,7 +92,7 @@ func templateFuncs() template.FuncMap {
 		"countryMark":      countryMark,
 		"countryFlagEmoji": countryFlagEmoji,
 		"kilo":             kilo,
-		"liveSocial":       liveSocial, // social profiles that aren't "#" placeholders
+		"liveSocial":       site.LiveSocial, // social profiles that aren't "#" placeholders
 		"withUTM":          withUTM,
 		"dict":             dict,
 		"year":             func() int { return time.Now().Year() },
@@ -132,5 +133,5 @@ func kilo(lang string, n int64) string {
 	if lang != "en" {
 		s = strings.Replace(s, ".", ",", 1)
 	}
-	return s + T(lang, "tc.kilo")
+	return s + site.T(lang, "tc.kilo")
 }

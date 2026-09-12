@@ -12,6 +12,7 @@ import (
 	"go.uber.org/zap"
 
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // MyModerationPage is the author's own record: every decision taken about
@@ -26,16 +27,16 @@ type MyModerationPage struct {
 // handleMyModeration shows an author what was done to their content and why.
 // Before this existed a comment could vanish with no explanation to anyone.
 func (m *Module) handleMyModeration(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
 		return
 	}
-	page := MyModerationPage{Base: m.base(r, T(lang, "mod.my_title"), lang)}
+	page := MyModerationPage{Base: m.base(r, site.T(lang, "mod.my_title"), lang)}
 	page.Saved = r.URL.Query().Get("ok")
 	if q := r.URL.Query().Get("err"); q != "" {
-		page.Error = T(lang, "mod.err_appeal")
+		page.Error = site.T(lang, "mod.err_appeal")
 	}
 	acts, err := m.mods.ForSubject(r.Context(), uid, 100)
 	if err != nil {
@@ -136,7 +137,7 @@ func (m *Module) handleAdminDecideArticle(w http.ResponseWriter, r *http.Request
 // same gesture as a downvote: it names a rule, it needs a verified account, and
 // it counts once per reader.
 func (m *Module) handleArticleReport(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	slug := chi.URLParam(r, "slug")
 	back := "/read/" + slug + "?lang=" + lang
 

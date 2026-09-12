@@ -11,29 +11,8 @@ import (
 	"unicode/utf8"
 
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
-
-// htmlLang maps our internal UI code to the BCP-47 language subtag used in
-// HTML lang / hreflang / schema.org. Kazakh's ISO 639-1 code is "kk"; we keep
-// "kz" internally (routing, ?lang=) but must present "kk" to browsers/crawlers.
-func htmlLang(lang string) string {
-	if lang == LangKZ {
-		return "kk"
-	}
-	return lang
-}
-
-// ogLocale maps a UI language to an Open Graph locale.
-func ogLocale(lang string) string {
-	switch lang {
-	case LangKZ:
-		return "kk_KZ"
-	case LangEN:
-		return "en_US"
-	default:
-		return "ru_RU"
-	}
-}
 
 // jsonLD renders a schema.org value as an inline ld+json script. encoding/json
 // escapes <, > and & so the payload is safe inside <script>.
@@ -72,7 +51,7 @@ func (m *Module) siteURL() string {
 // says it does not do.
 func (m *Module) handleRobots(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	site := m.siteURL()
+	origin := m.siteURL()
 	// Commercial SEO scanners: pure parasites (feed third-party SEO databases,
 	// send us no traffic) and the heaviest crawlers we see — refuse them.
 	seoBots := []string{"AhrefsBot", "SemrushBot", "MJ12bot", "DotBot", "BLEXBot", "DataForSeoBot", "PetalBot", "MegaIndex"}
@@ -99,7 +78,7 @@ func (m *Module) handleRobots(w http.ResponseWriter, r *http.Request) {
 		blocked = nil
 	}
 	m.aiRobotsGroup(w, blocked, err != nil)
-	fmt.Fprintf(w, "Sitemap: %s/sitemap.xml\nSitemap: %s/sitemap-listings.xml\nSitemap: %s/sitemap-news.xml\n", site, site, site)
+	fmt.Fprintf(w, "Sitemap: %s/sitemap.xml\nSitemap: %s/sitemap-listings.xml\nSitemap: %s/sitemap-news.xml\n", origin, origin, origin)
 }
 
 func seoURL(site, path, lang string) string {
@@ -124,24 +103,24 @@ func seoURL(site, path, lang string) string {
 // sideways. The self-reference also satisfies the reciprocity rule; without it
 // Google is entitled to ignore the annotations altogether.
 func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) []byte {
-	site := m.siteURL()
+	origin := m.siteURL()
 	var b strings.Builder
 	b.WriteString(`<?xml version="1.0" encoding="UTF-8"?>` + "\n")
 	b.WriteString(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">` + "\n")
 	emit := func(path string, mod time.Time) {
 		for _, self := range Langs {
 			b.WriteString("<url><loc>")
-			b.WriteString(seoURL(site, path, self))
+			b.WriteString(seoURL(origin, path, self))
 			b.WriteString("</loc>")
 			for _, l := range Langs {
 				b.WriteString(`<xhtml:link rel="alternate" hreflang="`)
-				b.WriteString(htmlLang(l))
+				b.WriteString(site.HTMLLang(l))
 				b.WriteString(`" href="`)
-				b.WriteString(seoURL(site, path, l))
+				b.WriteString(seoURL(origin, path, l))
 				b.WriteString(`"/>`)
 			}
 			b.WriteString(`<xhtml:link rel="alternate" hreflang="x-default" href="`)
-			b.WriteString(seoURL(site, path, LangRU))
+			b.WriteString(seoURL(origin, path, LangRU))
 			b.WriteString(`"/>`)
 			if !mod.IsZero() {
 				b.WriteString("<lastmod>")
@@ -267,7 +246,7 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 // entries be dropped after 48 hours, so this file is usually short and often
 // empty — an empty <urlset> is valid and is the correct answer on a quiet day.
 func (m *Module) handleSitemapNews(w http.ResponseWriter, r *http.Request) {
-	site := m.siteURL()
+	origin := m.siteURL()
 	var b strings.Builder
 	b.WriteString(`<?xml version="1.0" encoding="UTF-8"?>` + "\n")
 	b.WriteString(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" ` +
@@ -277,9 +256,9 @@ func (m *Module) handleSitemapNews(w http.ResponseWriter, r *http.Request) {
 	} else {
 		for _, a := range arts {
 			b.WriteString("<url><loc>")
-			b.WriteString(seoURL(site, "/read/"+a.Slug, a.Lang))
+			b.WriteString(seoURL(origin, "/read/"+a.Slug, a.Lang))
 			b.WriteString("</loc><news:news><news:publication><news:name>Shanraq.org</news:name>")
-			b.WriteString("<news:language>" + htmlLang(a.Lang) + "</news:language></news:publication>")
+			b.WriteString("<news:language>" + site.HTMLLang(a.Lang) + "</news:language></news:publication>")
 			b.WriteString("<news:publication_date>" + a.Published.UTC().Format(time.RFC3339) + "</news:publication_date>")
 			b.WriteString("<news:title>" + xmlEscape(a.Title) + "</news:title>")
 			b.WriteString("</news:news></url>\n")
@@ -360,7 +339,7 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 		"@type":            "NewsArticle",
 		"headline":         page.Title,
 		"description":      page.Desc,
-		"inLanguage":       htmlLang(page.ServedLang),
+		"inLanguage":       site.HTMLLang(page.ServedLang),
 		"author":           authorLD(page),
 		"image":            page.OGImage,
 		"mainEntityOfPage": canonical,
@@ -370,7 +349,7 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 		},
 	}
 	if page.Category != "" {
-		ld["articleSection"] = T(page.Lang, "cat."+page.Category)
+		ld["articleSection"] = site.T(page.Lang, "cat."+page.Category)
 	}
 	if page.Published != nil {
 		ld["datePublished"] = page.Published.UTC().Format(time.RFC3339)
@@ -400,14 +379,14 @@ func breadcrumbLD(page *ArticlePage) map[string]any {
 	if page.Category != "" {
 		items = append(items, map[string]any{
 			"@type": "ListItem", "position": len(items) + 1,
-			"name": T(page.Lang, "cat."+page.Category),
+			"name": site.T(page.Lang, "cat."+page.Category),
 			"item": page.SiteURL + "/?cat=" + page.Category + "&lang=" + page.Lang,
 		})
 	}
 	if page.Subcategory != "" {
 		items = append(items, map[string]any{
 			"@type": "ListItem", "position": len(items) + 1,
-			"name": T(page.Lang, "sub."+page.Subcategory),
+			"name": site.T(page.Lang, "sub."+page.Subcategory),
 			"item": page.SiteURL + "/?sub=" + page.Subcategory + "&lang=" + page.Lang,
 		})
 	}
@@ -449,7 +428,7 @@ func (m *Module) applyListingSEO(page *ListingViewPage) {
 		"name":        l.TitleIn(page.Lang),
 		"description": page.Desc,
 		"image":       page.OGImage,
-		"category":    T(page.Lang, "re.type_"+l.PropertyType),
+		"category":    site.T(page.Lang, "re.type_"+l.PropertyType),
 		"offers": map[string]any{
 			"@type":         "Offer",
 			"price":         l.Price,
@@ -469,21 +448,21 @@ func (m *Module) applyListingSEO(page *ListingViewPage) {
 // Shanraq.org exists and had to guess the rest from the page. The description
 // is the same localized line the meta tag carries, so the two can never drift
 // apart.
-func siteLD(nonce, site, lang string) template.HTML {
+func siteLD(nonce, origin, lang string) template.HTML {
 	return jsonLD(nonce, map[string]any{
 		"@context":    "https://schema.org",
 		"@type":       "WebSite",
 		"name":        "Shanraq.org",
-		"url":         site,
+		"url":         origin,
 		"inLanguage":  []string{"kk", "ru", "en"},
-		"description": T(lang, "seo.site_desc"),
+		"description": site.T(lang, "seo.site_desc"),
 		"publisher": map[string]any{
 			"@type": "Organization",
 			"name":  "Shanraq.org",
-			"url":   site,
+			"url":   origin,
 			"logo": map[string]any{
 				"@type": "ImageObject",
-				"url":   site + "/static/brand/shanraq.svg",
+				"url":   origin + "/static/brand/shanraq.svg",
 			},
 			"sameAs": []string{"https://t.me/shanraq_org"},
 		},
@@ -504,7 +483,7 @@ func (m *Module) applyCourseSEO(page *CoursePage) {
 	instance := map[string]any{
 		"@type":      "CourseInstance",
 		"courseMode": "online",
-		"inLanguage": htmlLang(page.Lang),
+		"inLanguage": site.HTMLLang(page.Lang),
 	}
 	// The workload is the whole of it: reading plus the exercises. Declaring
 	// the reading alone was a three-hour course on paper and a fortnight in
@@ -518,7 +497,7 @@ func (m *Module) applyCourseSEO(page *CoursePage) {
 		"name":                page.Series.TitleIn(page.Lang),
 		"description":         page.Desc,
 		"url":                 page.SiteURL + "/course/" + page.Series.Slug + "?lang=" + page.Lang,
-		"inLanguage":          htmlLang(page.Lang),
+		"inLanguage":          site.HTMLLang(page.Lang),
 		"isAccessibleForFree": true,
 		"provider": map[string]any{
 			"@type": "Organization",
@@ -550,7 +529,7 @@ func (m *Module) applyCoursesSEO(page *CoursesPage) {
 				"name":                s.TitleIn(page.Lang),
 				"description":         s.SummaryIn(page.Lang),
 				"url":                 page.SiteURL + "/course/" + s.Slug + "?lang=" + page.Lang,
-				"inLanguage":          htmlLang(page.Lang),
+				"inLanguage":          site.HTMLLang(page.Lang),
 				"isAccessibleForFree": true,
 				"provider": map[string]any{
 					"@type": "Organization",

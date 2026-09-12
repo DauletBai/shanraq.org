@@ -3,6 +3,7 @@ package articles
 import (
 	"context"
 	"net/http"
+	"shanraq.org/pkg/site"
 	"strings"
 	"testing"
 	"time"
@@ -166,10 +167,10 @@ func TestTheRatesPageIsOpenAndShowsTheRate(t *testing.T) {
 		t.Fatalf("the rates page returned %d to a signed-out visitor", w.Code)
 	}
 	body := w.Body.String()
-	if !strings.Contains(body, T(LangRU, "fx.title")) {
+	if !strings.Contains(body, site.T(LangRU, "fx.title")) {
 		t.Error("the page is missing its own heading")
 	}
-	if strings.Contains(body, T(LangRU, "fx.empty")) {
+	if strings.Contains(body, site.T(LangRU, "fx.empty")) {
 		t.Fatal("the page says there is no data, though it was seeded")
 	}
 	// The line is drawn on the server: without it only the numbers remain.
@@ -177,7 +178,7 @@ func TestTheRatesPageIsOpenAndShowsTheRate(t *testing.T) {
 		t.Error("the page is missing the rate line")
 	}
 	// The source has to be named on the page itself.
-	if !strings.Contains(body, T(LangRU, "fx.src_bis")) {
+	if !strings.Contains(body, site.T(LangRU, "fx.src_bis")) {
 		t.Error("the page does not name the source of the deep history")
 	}
 }
@@ -193,7 +194,7 @@ func TestAnUnknownCurrencyFallsBackToTheDollar(t *testing.T) {
 	if w.Code != http.StatusOK {
 		t.Fatalf("an unknown currency brought the page down: %d", w.Code)
 	}
-	if strings.Contains(w.Body.String(), T(LangRU, "fx.empty")) {
+	if strings.Contains(w.Body.String(), site.T(LangRU, "fx.empty")) {
 		t.Error("the page came back empty instead of falling back to the dollar")
 	}
 }

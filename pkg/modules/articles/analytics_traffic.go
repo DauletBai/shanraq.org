@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // The traffic chart behind /analytics and the admin panel.
@@ -729,7 +730,7 @@ func (c TrafficChart) Hits(lang string) []TrafficHit {
 				s = fmt.Sprintf("%d", v.v)
 			}
 			h.Rows = append(h.Rows, TrafficHitRow{Slot: slot, Key: v.key, Val: s})
-			alt += ", " + T(lang, "tc.s_"+v.key) + " " + s
+			alt += ", " + site.T(lang, "tc.s_"+v.key) + " " + s
 		}
 		h.Alt = alt
 		out = append(out, h)

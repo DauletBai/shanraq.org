@@ -12,6 +12,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // Guest analytics is deliberately AGGREGATE ONLY: every hit is folded into a
@@ -121,10 +122,10 @@ const (
 // resolveLang's precedence (query, then cookie, then the RU default) but has no
 // cookie side effect, so it is safe to call from the tracking middleware.
 func readingLang(r *http.Request) string {
-	if q := r.URL.Query().Get("lang"); IsLang(q) {
+	if q := r.URL.Query().Get("lang"); site.IsLang(q) {
 		return q
 	}
-	if c, err := r.Cookie(langCookieName); err == nil && IsLang(c.Value) {
+	if c, err := r.Cookie(langCookieName); err == nil && site.IsLang(c.Value) {
 		return c.Value
 	}
 	return LangRU
@@ -829,7 +830,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		for rows.Next() {
 			var r GuestPageRow
 			if err := rows.Scan(&r.Kind, &r.A.Guest, &r.A.Registered); err == nil {
-				r.Title = T(lang, "ag.page."+r.Kind)
+				r.Title = site.T(lang, "ag.page."+r.Kind)
 				if strings.HasPrefix(r.Title, "ag.page.") {
 					r.Title = r.Kind
 				}
@@ -859,7 +860,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		for rows.Next() {
 			var r GuestClickRow
 			if err := rows.Scan(&r.Name, &r.A.Guest, &r.A.Registered); err == nil {
-				r.Title = T(lang, "ag.click."+r.Name)
+				r.Title = site.T(lang, "ag.click."+r.Name)
 				if strings.HasPrefix(r.Title, "ag.click.") {
 					r.Title = r.Name
 				}
@@ -1038,7 +1039,7 @@ func (m *Module) simpleRowsN(ctx context.Context, kind, i18nPrefix, lang string,
 		if err := rows.Scan(&r.Name, &r.N); err != nil {
 			continue
 		}
-		r.Title = T(lang, i18nPrefix+r.Name)
+		r.Title = site.T(lang, i18nPrefix+r.Name)
 		if strings.HasPrefix(r.Title, i18nPrefix) {
 			r.Title = r.Name
 		}
@@ -1063,7 +1064,7 @@ func (m *Module) simpleRowsN(ctx context.Context, kind, i18nPrefix, lang string,
 		}
 		out = out[:keep:keep]
 		if tail > 0 {
-			out = append(out, GuestSimpleRow{Name: "other", Title: T(lang, "ag.rest"), N: tail})
+			out = append(out, GuestSimpleRow{Name: "other", Title: site.T(lang, "ag.rest"), N: tail})
 		}
 	}
 	for i := range out {
@@ -1098,7 +1099,7 @@ func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow
 		if err := rows.Scan(&r.Name, &r.N); err != nil {
 			continue
 		}
-		r.Title = T(lang, "ag.country."+r.Name)
+		r.Title = site.T(lang, "ag.country."+r.Name)
 		if strings.HasPrefix(r.Title, "ag.country.") {
 			r.Title = r.Name
 		}
@@ -1143,7 +1144,7 @@ func (m *Module) langOfGeo(ctx context.Context, geo, lang string) []GuestSimpleR
 		if err := rows.Scan(&r.Name, &r.N); err != nil {
 			continue
 		}
-		r.Title = T(lang, "ag.lang."+r.Name)
+		r.Title = site.T(lang, "ag.lang."+r.Name)
 		if strings.HasPrefix(r.Title, "ag.lang.") {
 			r.Title = r.Name
 		}

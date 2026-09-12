@@ -133,7 +133,7 @@ func (s *Store) LLMSIndex(ctx context.Context, lang string) ([]LLMSItem, error) 
 // cite them. The AI columns are absent — the same line drawn in robots.txt,
 // stated a second time where it can be read rather than merely obeyed.
 func (m *Module) handleLLMS(w http.ResponseWriter, r *http.Request) {
-	site := m.siteURL()
+	origin := m.siteURL()
 	var b strings.Builder
 	b.WriteString("# Shanraq.org\n\n")
 	b.WriteString("> Независимые аналитические разборы об экономике и политике Казахстана и мира " +
@@ -168,7 +168,7 @@ func (m *Module) handleLLMS(w http.ResponseWriter, r *http.Request) {
 	if len(arts) > 0 {
 		b.WriteString("## Статьи / Articles\n\n")
 		for _, a := range arts {
-			b.WriteString("- [" + a.Title + "](" + site + "/read/" + a.Slug + "?lang=ru)")
+			b.WriteString("- [" + a.Title + "](" + origin + "/read/" + a.Slug + "?lang=ru)")
 			b.WriteString(" — " + a.Published.UTC().Format("2006-01-02"))
 			if s := clip(strings.TrimSpace(a.Summary), 180); s != "" {
 				b.WriteString(". " + s)
@@ -187,7 +187,7 @@ func (m *Module) handleLLMS(w http.ResponseWriter, r *http.Request) {
 	} else if len(cs) > 0 {
 		b.WriteString("## Курсы / Courses\n\n")
 		for _, c := range cs {
-			b.WriteString("- [" + c.TitleIn(LangRU) + "](" + site + "/course/" + c.Slug + "?lang=ru)")
+			b.WriteString("- [" + c.TitleIn(LangRU) + "](" + origin + "/course/" + c.Slug + "?lang=ru)")
 			if sm := clip(strings.TrimSpace(c.SummaryIn(LangRU)), 180); sm != "" {
 				b.WriteString(" — " + sm)
 			}
@@ -198,13 +198,13 @@ func (m *Module) handleLLMS(w http.ResponseWriter, r *http.Request) {
 	}
 
 	b.WriteString("## Разделы / Sections\n\n")
-	b.WriteString("- [Объявления о недвижимости / Real-estate listings](" + site + "/listings)\n")
-	b.WriteString("- [Реестр прогнозов: что мы предсказали и что сбылось / Prediction ledger: every forecast we made, judged in public](" + site + "/predictions)\n")
-	b.WriteString("- [Об издании / About](" + site + "/about)\n")
+	b.WriteString("- [Объявления о недвижимости / Real-estate listings](" + origin + "/listings)\n")
+	b.WriteString("- [Реестр прогнозов: что мы предсказали и что сбылось / Prediction ledger: every forecast we made, judged in public](" + origin + "/predictions)\n")
+	b.WriteString("- [Об издании / About](" + origin + "/about)\n")
 	// The feed lives at /feed.xml; /rss.xml has never existed, so this line was
 	// handing every crawler that reads llms.txt a 404.
-	b.WriteString("- [RSS](" + site + "/feed.xml)\n")
-	b.WriteString("- [Sitemap](" + site + "/sitemap.xml)\n")
+	b.WriteString("- [RSS](" + origin + "/feed.xml)\n")
+	b.WriteString("- [Sitemap](" + origin + "/sitemap.xml)\n")
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	_, _ = w.Write([]byte(b.String()))

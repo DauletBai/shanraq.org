@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // InvitePage backs the referral cabinet page: the user's invite link, how many
@@ -22,7 +23,7 @@ type InvitePage struct {
 
 // handleInvite shows the author their invite link and referral progress.
 func (m *Module) handleInvite(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
@@ -34,13 +35,13 @@ func (m *Module) handleInvite(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
-	page := InvitePage{Base: m.base(r, T(lang, "inv.title"), lang)}
+	page := InvitePage{Base: m.base(r, site.T(lang, "inv.title"), lang)}
 	page.Stats = stats
 	page.Reward = referralRewardDays
 	page.Link = m.rt.Config.PublicBase() + "/studio/register?ref=" + stats.Code
 	page.Saved = r.URL.Query().Get("ok")
 	if r.URL.Query().Get("err") == "credit" {
-		page.Error = T(lang, "inv.err_credit")
+		page.Error = site.T(lang, "inv.err_credit")
 	}
 	m.render(w, "invite", page)
 }

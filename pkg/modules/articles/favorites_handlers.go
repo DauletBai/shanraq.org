@@ -6,6 +6,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // FavoritesPage backs the reader's "saved" page — bookmarked articles and listings.
@@ -51,13 +52,13 @@ func toFeedItems(arts []*Article, lang string) []FeedItem {
 
 // handleFavorites renders the current user's saved articles and listings.
 func (m *Module) handleFavorites(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
 		return
 	}
-	page := FavoritesPage{Base: m.base(r, T(lang, "fav.title"), lang)}
+	page := FavoritesPage{Base: m.base(r, site.T(lang, "fav.title"), lang)}
 	if arts, err := m.store.ListFavorited(r.Context(), uid); err != nil {
 		m.rt.Logger.Error("favorited articles", zap.Error(err))
 	} else {

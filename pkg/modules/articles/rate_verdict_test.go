@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"shanraq.org/pkg/site"
 	"strconv"
 	"strings"
 	"testing"
@@ -89,7 +90,7 @@ func TestVerdictClaimsNoLeadOrLag(t *testing.T) {
 		LangEN: {"follows the inflation line", "rather than leading"},
 	}
 	for lang, phrases := range forbidden {
-		text := T(lang, "fx.rate_verdict_1") + " " + T(lang, "fx.rate_verdict_2")
+		text := site.T(lang, "fx.rate_verdict_1") + " " + site.T(lang, "fx.rate_verdict_2")
 		for _, p := range phrases {
 			if strings.Contains(text, p) {
 				t.Errorf("the verdict (%s) asserts the direction again: %q", lang, p)
@@ -99,7 +100,7 @@ func TestVerdictClaimsNoLeadOrLag(t *testing.T) {
 	// And it must still name who owns both quantities — that is the whole point.
 	for _, lang := range []string{LangKZ, LangRU, LangEN} {
 		for _, key := range []string{"fx.rate_verdict_1", "fx.rate_verdict_1p", "fx.rate_verdict_2"} {
-			if strings.TrimSpace(T(lang, key)) == "" {
+			if strings.TrimSpace(site.T(lang, key)) == "" {
 				t.Errorf("no string %q for language %q", key, lang)
 			}
 		}

@@ -2,6 +2,7 @@ package articles
 
 import (
 	"errors"
+	"shanraq.org/pkg/site"
 	"strings"
 	"testing"
 )
@@ -65,7 +66,7 @@ func TestSpellingRulesExistAndDoNotBlock(t *testing.T) {
 			t.Errorf("правило %q не объявлено", code)
 		}
 		for _, lang := range []string{LangKZ, LangRU, LangEN} {
-			if strings.TrimSpace(T(lang, "rule."+code)) == "" {
+			if strings.TrimSpace(site.T(lang, "rule."+code)) == "" {
 				t.Errorf("нет перевода rule.%s для %q", code, lang)
 			}
 		}
@@ -118,7 +119,7 @@ func TestGuideWarnsThatMachineKazakhNeedsChecking(t *testing.T) {
 // The warning also stands beside the button the author actually presses.
 func TestTheEditorWarnsBesideTheTranslateButton(t *testing.T) {
 	for _, lang := range []string{"kz", "ru", "en"} {
-		if s := T(lang, "editor.ai_kk_warn"); s == "" || s == "editor.ai_kk_warn" {
+		if s := site.T(lang, "editor.ai_kk_warn"); s == "" || s == "editor.ai_kk_warn" {
 			t.Errorf("у кнопки перевода нет предупреждения на языке %q", lang)
 		}
 	}

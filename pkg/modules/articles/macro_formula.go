@@ -3,6 +3,7 @@ package articles
 import (
 	"fmt"
 	"math"
+	"shanraq.org/pkg/site"
 	"strings"
 	"time"
 )
@@ -73,14 +74,14 @@ func macroPct(v float64) string { return fxFormat(v, 2) + " %" }
 
 // macroPP prints the difference of two percentages, in points, with its sign.
 func macroPP(v float64, lang string) string {
-	return fxSign(v, fxFormat(v, 2)) + " " + T(lang, "fx.pp")
+	return fxSign(v, fxFormat(v, 2)) + " " + site.T(lang, "fx.pp")
 }
 
 // macroPPAbs prints the same difference without a sign. Needed wherever the
 // direction is already said in words: "the rate is −3.25 pp below inflation" is
 // two negatives in a row, one of them redundant.
 func macroPPAbs(v float64, lang string) string {
-	return fxFormat(math.Abs(v), 2) + " " + T(lang, "fx.pp")
+	return fxFormat(math.Abs(v), 2) + " " + site.T(lang, "fx.pp")
 }
 
 // macroLastPoint returns a series' last point.
@@ -219,7 +220,7 @@ func macroAlignYears(rate map[int]float64, cpi []MacroPoint) ([]FxPoint, []FxPoi
 // macroSource assembles a source line: "National Bank · monetary aggregates ·
 // July 2026".
 func macroSource(lang, key string, when time.Time) string {
-	s := T(lang, key)
+	s := site.T(lang, key)
 	if when.IsZero() {
 		return s
 	}
@@ -230,7 +231,7 @@ func macroSource(lang, key string, when time.Time) string {
 // month, and a "January 2025" label would credit an annual quantity with a
 // precision it does not have.
 func macroSourceYear(lang, key string, when time.Time) string {
-	s := T(lang, key)
+	s := site.T(lang, key)
 	if when.IsZero() {
 		return s
 	}
@@ -239,7 +240,7 @@ func macroSourceYear(lang, key string, when time.Time) string {
 
 // macroSourceDay is the same with an exact date: a rate decision has a day.
 func macroSourceDay(lang, key string, when time.Time) string {
-	s := T(lang, key)
+	s := site.T(lang, key)
 	if when.IsZero() {
 		return s
 	}
@@ -351,10 +352,10 @@ func formulaBase(in macroFormulaInput) (MacroFormula, bool) {
 			macroTenge(m3.Value, lang), macroTenge(base, lang), fxFormat(mult, 2)),
 		Out: macroTenge(base, lang),
 		Terms: []MacroTerm{
-			{Sym: "B", Name: T(lang, "fx.t_base"), Value: macroTenge(base, lang) + " ₸",
+			{Sym: "B", Name: site.T(lang, "fx.t_base"), Value: macroTenge(base, lang) + " ₸",
 				Src: macroSource(lang, "fx.s_m3", m3.Period)},
-			{Sym: "m", Name: T(lang, "fx.t_mult"), Value: fxFormat(mult, 2)},
-			{Sym: "M3", Name: T(lang, "fx.t_m3"), Value: macroTenge(m3.Value, lang) + " ₸",
+			{Sym: "m", Name: site.T(lang, "fx.t_mult"), Value: fxFormat(mult, 2)},
+			{Sym: "M3", Name: site.T(lang, "fx.t_m3"), Value: macroTenge(m3.Value, lang) + " ₸",
 				Src: macroSource(lang, "fx.s_m3", m3.Period)},
 		},
 	}
@@ -362,7 +363,7 @@ func formulaBase(in macroFormulaInput) (MacroFormula, bool) {
 	// shows which of the two actually moved.
 	if pm, ok1 := macroAt(in.m3, m3.Period.AddDate(-1, 0, 0)); ok1 && pm > 0 {
 		if pb, ok2 := macroAt(in.base, m3.Period.AddDate(-1, 0, 0)); ok2 && pb > 0 {
-			f.Note = fmt.Sprintf(T(lang, "fx.f_base_cmp"),
+			f.Note = fmt.Sprintf(site.T(lang, "fx.f_base_cmp"),
 				macroTenge(base, lang), macroTenge(m3.Value, lang),
 				fxPct((base/pb-1)*100), fxPct((m3.Value/pm-1)*100))
 		}
@@ -402,18 +403,18 @@ func formulaExchange(in macroFormulaInput) (MacroFormula, bool) {
 		Filled:  fmt.Sprintf("π ≈ %s − %s = %s", macroPct(dm), macroPct(dq), macroPct(exp)),
 		Out:     macroPct(exp),
 		Terms: []MacroTerm{
-			{Sym: "ΔM", Name: T(lang, "fx.t_dm"), Value: macroPct(dm),
+			{Sym: "ΔM", Name: site.T(lang, "fx.t_dm"), Value: macroPct(dm),
 				Src: macroSource(lang, "fx.s_m3", last.Period)},
-			{Sym: "ΔQ", Name: T(lang, "fx.t_dq"), Value: macroPct(dq),
+			{Sym: "ΔQ", Name: site.T(lang, "fx.t_dq"), Value: macroPct(dq),
 				Src: macroSourceYear(lang, "fx.s_gdp", g.Period)},
-			{Sym: "V", Name: T(lang, "fx.t_v"), Value: T(lang, "fx.t_v_val")},
-			{Sym: "π", Name: T(lang, "fx.t_pi"), Value: macroPct(exp)},
+			{Sym: "V", Name: site.T(lang, "fx.t_v"), Value: site.T(lang, "fx.t_v_val")},
+			{Sym: "π", Name: site.T(lang, "fx.t_pi"), Value: macroPct(exp)},
 		},
 	}
 	// The estimate always stands next to measured inflation: the discrepancy
 	// between them is precisely the part the equation does not explain.
 	if now, ok := macroLastPoint(in.cpiNow); ok {
-		f.Note = fmt.Sprintf(T(lang, "fx.f_exch_cmp"), macroPct(exp), macroPct(now.Value),
+		f.Note = fmt.Sprintf(site.T(lang, "fx.f_exch_cmp"), macroPct(exp), macroPct(now.Value),
 			macroPPAbs(now.Value-exp, lang))
 	}
 	return f, true
@@ -438,18 +439,18 @@ func formulaReal(in macroFormulaInput) (MacroFormula, bool) {
 		Filled:  fmt.Sprintf("r = %s − %s = %s", macroPct(last.Value), macroPct(now.Value), macroPP(r, lang)),
 		Out:     macroPP(r, lang),
 		Terms: []MacroTerm{
-			{Sym: "i", Name: T(lang, "fx.t_i"), Value: macroPct(last.Value),
+			{Sym: "i", Name: site.T(lang, "fx.t_i"), Value: macroPct(last.Value),
 				Src: macroSourceDay(lang, "fx.s_base", last.Day)},
-			{Sym: "π", Name: T(lang, "fx.t_cpi"), Value: macroPct(now.Value),
+			{Sym: "π", Name: site.T(lang, "fx.t_cpi"), Value: macroPct(now.Value),
 				Src: macroSourceDay(lang, "fx.s_panel", now.Period)},
-			{Sym: "r", Name: T(lang, "fx.t_r"), Value: macroPP(r, lang)},
+			{Sym: "r", Name: site.T(lang, "fx.t_r"), Value: macroPP(r, lang)},
 		},
 	}
 	key := "fx.f_real_neg"
 	if r > 0 {
 		key = "fx.f_real_pos"
 	}
-	f.Note = fmt.Sprintf(T(lang, key), macroPPAbs(r, lang))
+	f.Note = fmt.Sprintf(site.T(lang, key), macroPPAbs(r, lang))
 	return f, true
 }
 
@@ -485,18 +486,18 @@ func formulaCover(in macroFormulaInput) (MacroFormula, bool) {
 			macroTenge(m3.Value, lang), macroDollars(res, lang), fxNum(implied)),
 		Out: fxNum(implied) + " ₸/$",
 		Terms: []MacroTerm{
-			{Sym: "M3", Name: T(lang, "fx.t_m3"), Value: macroTenge(m3.Value, lang) + " ₸",
+			{Sym: "M3", Name: site.T(lang, "fx.t_m3"), Value: macroTenge(m3.Value, lang) + " ₸",
 				Src: macroSource(lang, "fx.s_m3", m3.Period)},
-			{Sym: "R", Name: T(lang, "fx.t_res"), Value: macroDollars(res, lang) + " $",
+			{Sym: "R", Name: site.T(lang, "fx.t_res"), Value: macroDollars(res, lang) + " $",
 				Src: macroSource(lang, "fx.s_res", m3.Period)},
-			{Sym: "K", Name: T(lang, "fx.t_k"), Value: fxNum(implied) + " ₸/$"},
+			{Sym: "K", Name: site.T(lang, "fx.t_k"), Value: fxNum(implied) + " ₸/$"},
 		},
 	}
 	if v, ok := macroRateAt(in.fxRate, m3.Period); ok && v > 0 {
-		f.Note = fmt.Sprintf(T(lang, "fx.f_cover_cmp"), fxNum(implied), fxNum(v),
+		f.Note = fmt.Sprintf(site.T(lang, "fx.f_cover_cmp"), fxNum(implied), fxNum(v),
 			macroMul(implied/v, lang))
 		f.Terms = append(f.Terms, MacroTerm{
-			Sym: "K₀", Name: T(lang, "fx.t_k0"), Value: fxNum(v) + " ₸/$",
+			Sym: "K₀", Name: site.T(lang, "fx.t_k0"), Value: fxNum(v) + " ₸/$",
 			Src: macroSource(lang, "fx.s_fx", m3.Period),
 		})
 	}
@@ -524,18 +525,18 @@ func formulaTarget(in macroFormulaInput) (MacroFormula, bool) {
 			macroPct(now.Value), macroPct(tgt.Value), macroPP(gap, lang)),
 		Out: macroPP(gap, lang),
 		Terms: []MacroTerm{
-			{Sym: "π", Name: T(lang, "fx.t_cpi"), Value: macroPct(now.Value),
+			{Sym: "π", Name: site.T(lang, "fx.t_cpi"), Value: macroPct(now.Value),
 				Src: macroSourceDay(lang, "fx.s_panel", now.Period)},
-			{Sym: "π*", Name: T(lang, "fx.t_target"), Value: macroPct(tgt.Value),
+			{Sym: "π*", Name: site.T(lang, "fx.t_target"), Value: macroPct(tgt.Value),
 				Src: macroSourceDay(lang, "fx.s_panel", tgt.Period)},
-			{Sym: "Δ", Name: T(lang, "fx.t_gap"), Value: macroPP(gap, lang)},
+			{Sym: "Δ", Name: site.T(lang, "fx.t_gap"), Value: macroPP(gap, lang)},
 		},
 	}
 	key, times := "fx.f_target_over", macroMul(now.Value/tgt.Value, lang)
 	if gap < 0 {
 		key, times = "fx.f_target_under", macroMul(tgt.Value/now.Value, lang)
 	}
-	f.Note = fmt.Sprintf(T(lang, key), times)
+	f.Note = fmt.Sprintf(site.T(lang, key), times)
 	return f, true
 }
 

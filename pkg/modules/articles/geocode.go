@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // Geocoding proxy over OpenStreetMap Nominatim. The strict browser CSP blocks
@@ -214,7 +215,7 @@ func (m *Module) handleGeocode(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "query too short", http.StatusBadRequest)
 		return
 	}
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	endpoint := "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=" +
 		url.QueryEscape(lang) + "&q=" + url.QueryEscape(q)
 	body, err := geocoder.get(r.Context(), endpoint)
@@ -288,7 +289,7 @@ func (m *Module) handleGeocodeReverse(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "lat/lng required", http.StatusBadRequest)
 		return
 	}
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	endpoint := "https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&addressdetails=1&accept-language=" +
 		url.QueryEscape(lang) + "&lat=" + url.QueryEscape(lat) + "&lon=" + url.QueryEscape(lng)
 	body, err := geocoder.get(r.Context(), endpoint)

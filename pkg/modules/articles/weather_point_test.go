@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // The strip's temperature is per reader, and the machinery that makes it so has
@@ -162,7 +163,7 @@ func TestWeatherDefaultsWhenPlaceUnknown(t *testing.T) {
 	if rec.Code != 200 {
 		t.Fatalf("/weather ответил %d", rec.Code)
 	}
-	if !strings.Contains(rec.Body.String(), T(LangRU, "wx.default_city")) {
+	if !strings.Contains(rec.Body.String(), site.T(LangRU, "wx.default_city")) {
 		t.Error("без базы городов страница не показала город по умолчанию")
 	}
 }

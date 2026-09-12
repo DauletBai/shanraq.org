@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"shanraq.org/pkg/site"
 	"strconv"
 	"strings"
 	"time"
@@ -111,7 +112,7 @@ type FxPage struct {
 
 // handleRates serves the exchange rate page.
 func (m *Module) handleRates(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	ctx := r.Context()
 
 	page := FxPage{Period: fxPeriod(r.URL.Query().Get("p"))}
@@ -141,21 +142,21 @@ func (m *Module) handleRates(w http.ResponseWriter, r *http.Request) {
 	// find our rouble rate page: a search engine only knows the address we
 	// declared as ours. The period stays out of the canonical — it is the same
 	// rate shown at different depths.
-	page.Base = m.base(r, T(lang, "fx.title"), lang)
-	page.Desc = T(lang, "fx.desc")
-	page.Heading = T(lang, "fx.title")
+	page.Base = m.base(r, site.T(lang, "fx.title"), lang)
+	page.Desc = site.T(lang, "fx.desc")
+	page.Heading = site.T(lang, "fx.title")
 	if page.Code != fxDefaultCode {
 		filter := "c=" + page.Code
-		page.Base.CanonURL = canonURL("/rates", filter, lang)
-		page.Base.LangLinks = langLinks("/rates", filter)
-		page.Base.Title = fmt.Sprintf(T(lang, "fx.title_cur"), page.Code)
-		page.Desc = fmt.Sprintf(T(lang, "fx.desc_cur"), fxSubject(page.Name, page.Code, lang))
-		page.Heading = fmt.Sprintf(T(lang, "fx.title_cur"), page.Code)
+		page.Base.CanonURL = site.CanonURL("/rates", filter, lang)
+		page.Base.LangLinks = site.LangLinks("/rates", filter)
+		page.Base.Title = fmt.Sprintf(site.T(lang, "fx.title_cur"), page.Code)
+		page.Desc = fmt.Sprintf(site.T(lang, "fx.desc_cur"), fxSubject(page.Name, page.Code, lang))
+		page.Heading = fmt.Sprintf(site.T(lang, "fx.title_cur"), page.Code)
 		// The opening sentence carries this currency's own measured numbers, so
 		// the top of the page is about the rouble or the euro rather than about
 		// exchange rates in general.
 		if page.HasData {
-			page.LeadCur = fmt.Sprintf(T(lang, "fx.lead_cur"),
+			page.LeadCur = fmt.Sprintf(site.T(lang, "fx.lead_cur"),
 				fxSubject(page.Name, page.Code, lang), page.Last, page.Pct, page.Since)
 		}
 	}

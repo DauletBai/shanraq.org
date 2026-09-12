@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // checkWindow and checkQuota bound what one reader can spend of somebody else's
@@ -60,7 +61,7 @@ type checkResponse struct {
 // how often the reviewer is actually wrong.
 func (m *Module) handleCourseAppeal(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	reply := func(code int, res checkResponse) {
 		w.WriteHeader(code)
 		_ = json.NewEncoder(w).Encode(res)
@@ -68,24 +69,24 @@ func (m *Module) handleCourseAppeal(w http.ResponseWriter, r *http.Request) {
 
 	user, ok := m.authorID(r)
 	if !ok {
-		reply(http.StatusUnauthorized, checkResponse{Error: T(lang, "chk.login")})
+		reply(http.StatusUnauthorized, checkResponse{Error: site.T(lang, "chk.login")})
 		return
 	}
 	slug := chi.URLParam(r, "slug")
 	a, err := m.store.GetPublishedBySlug(r.Context(), slug)
 	if err != nil {
-		reply(http.StatusNotFound, checkResponse{Error: T(lang, "chk.no_lesson")})
+		reply(http.StatusNotFound, checkResponse{Error: site.T(lang, "chk.no_lesson")})
 		return
 	}
 	left, done, err := m.progress.Appeal(r.Context(), user, a.ID)
 	if err != nil || !done {
-		reply(http.StatusConflict, checkResponse{Error: T(lang, "chk.appeal_used")})
+		reply(http.StatusConflict, checkResponse{Error: site.T(lang, "chk.appeal_used")})
 		return
 	}
 	pr, _ := m.progress.Get(r.Context(), user, a.ID)
 	m.rt.Logger.Info("course appeal",
 		zap.String("slug", slug), zap.String("user", user.String()), zap.String("verdict", pr.Note))
-	reply(http.StatusOK, checkResponse{Note: T(lang, "chk.appeal_done"), Left: maxAttempts - left})
+	reply(http.StatusOK, checkResponse{Note: site.T(lang, "chk.appeal_done"), Left: maxAttempts - left})
 }
 
 // handleCourseCheck reviews a reader's solution to a lesson's exercise.
@@ -94,7 +95,7 @@ func (m *Module) handleCourseAppeal(w http.ResponseWriter, r *http.Request) {
 // typed thirty lines into a textarea must not lose them to a redirect.
 func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	reply := func(code int, res checkResponse) {
 		w.WriteHeader(code)
 		_ = json.NewEncoder(w).Encode(res)
@@ -102,31 +103,31 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 
 	user, ok := m.authorID(r)
 	if !ok {
-		reply(http.StatusUnauthorized, checkResponse{Error: T(lang, "chk.login")})
+		reply(http.StatusUnauthorized, checkResponse{Error: site.T(lang, "chk.login")})
 		return
 	}
 	if m.ai == nil || !m.ai.Enabled() {
-		reply(http.StatusServiceUnavailable, checkResponse{Error: T(lang, "chk.off")})
+		reply(http.StatusServiceUnavailable, checkResponse{Error: site.T(lang, "chk.off")})
 		return
 	}
 
 	a, err := m.store.GetPublishedBySlug(r.Context(), chi.URLParam(r, "slug"))
 	if err != nil {
-		reply(http.StatusNotFound, checkResponse{Error: T(lang, "chk.no_lesson")})
+		reply(http.StatusNotFound, checkResponse{Error: site.T(lang, "chk.no_lesson")})
 		return
 	}
 
 	if err := r.ParseForm(); err != nil {
-		reply(http.StatusBadRequest, checkResponse{Error: T(lang, "chk.bad")})
+		reply(http.StatusBadRequest, checkResponse{Error: site.T(lang, "chk.bad")})
 		return
 	}
 	solution := unfence(r.FormValue("solution"))
 	if solution == "" {
-		reply(http.StatusBadRequest, checkResponse{Error: T(lang, "chk.empty")})
+		reply(http.StatusBadRequest, checkResponse{Error: site.T(lang, "chk.empty")})
 		return
 	}
 	if len(solution) > maxSolution {
-		reply(http.StatusRequestEntityTooLarge, checkResponse{Error: T(lang, "chk.too_long")})
+		reply(http.StatusRequestEntityTooLarge, checkResponse{Error: site.T(lang, "chk.too_long")})
 		return
 	}
 
@@ -145,7 +146,7 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 	if ferr != nil {
 		reply(http.StatusUnprocessableEntity, checkResponse{
 			Syntax: syntaxHint(ferr),
-			Error:  T(lang, "chk.syntax"),
+			Error:  site.T(lang, "chk.syntax"),
 		})
 		return
 	}
@@ -160,11 +161,11 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if pr.Attempts >= maxAttempts {
-		reply(http.StatusTooManyRequests, checkResponse{Error: T(lang, "chk.spent"), Left: 0})
+		reply(http.StatusTooManyRequests, checkResponse{Error: site.T(lang, "chk.spent"), Left: 0})
 		return
 	}
 	if n, err := m.progress.AttemptsSince(r.Context(), user, checkWindow); err == nil && n >= checkQuota {
-		reply(http.StatusTooManyRequests, checkResponse{Error: T(lang, "chk.quota")})
+		reply(http.StatusTooManyRequests, checkResponse{Error: site.T(lang, "chk.quota")})
 		return
 	}
 
@@ -172,12 +173,12 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 	// language they are reading it in.
 	tr, served := a.Translation(lang)
 	if tr == nil {
-		reply(http.StatusNotFound, checkResponse{Error: T(lang, "chk.no_lesson")})
+		reply(http.StatusNotFound, checkResponse{Error: site.T(lang, "chk.no_lesson")})
 		return
 	}
 	task := lessonExercise(tr.BodyMD)
 	if task == "" {
-		reply(http.StatusNotFound, checkResponse{Error: T(lang, "chk.no_task")})
+		reply(http.StatusNotFound, checkResponse{Error: site.T(lang, "chk.no_task")})
 		return
 	}
 
@@ -200,13 +201,13 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 	raw, err := m.ai.Check(r.Context(), checkSystem(served, codeLang), b.String(), 700)
 	if err != nil {
 		m.rt.Logger.Warn("course check", zap.Error(err))
-		reply(http.StatusBadGateway, checkResponse{Error: T(lang, "chk.failed")})
+		reply(http.StatusBadGateway, checkResponse{Error: site.T(lang, "chk.failed")})
 		return
 	}
 	v, err := parseCheckVerdict(raw)
 	if err != nil {
 		m.rt.Logger.Warn("course check verdict", zap.Error(err), zap.String("raw", clip(raw, 200)))
-		reply(http.StatusBadGateway, checkResponse{Error: T(lang, "chk.failed")})
+		reply(http.StatusBadGateway, checkResponse{Error: site.T(lang, "chk.failed")})
 		return
 	}
 
@@ -233,26 +234,26 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 // would have taught them to avoid the very tool the lesson wants them using.
 func (m *Module) handleCourseFormat(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	reply := func(code int, res checkResponse) {
 		w.WriteHeader(code)
 		_ = json.NewEncoder(w).Encode(res)
 	}
 	if _, ok := m.authorID(r); !ok {
-		reply(http.StatusUnauthorized, checkResponse{Error: T(lang, "chk.login")})
+		reply(http.StatusUnauthorized, checkResponse{Error: site.T(lang, "chk.login")})
 		return
 	}
 	if err := r.ParseForm(); err != nil {
-		reply(http.StatusBadRequest, checkResponse{Error: T(lang, "chk.bad")})
+		reply(http.StatusBadRequest, checkResponse{Error: site.T(lang, "chk.bad")})
 		return
 	}
 	src := unfence(r.FormValue("solution"))
 	if src == "" {
-		reply(http.StatusBadRequest, checkResponse{Error: T(lang, "chk.empty")})
+		reply(http.StatusBadRequest, checkResponse{Error: site.T(lang, "chk.empty")})
 		return
 	}
 	if len(src) > maxSolution {
-		reply(http.StatusRequestEntityTooLarge, checkResponse{Error: T(lang, "chk.too_long")})
+		reply(http.StatusRequestEntityTooLarge, checkResponse{Error: site.T(lang, "chk.too_long")})
 		return
 	}
 
@@ -269,7 +270,7 @@ func (m *Module) handleCourseFormat(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		reply(http.StatusUnprocessableEntity, checkResponse{
 			Syntax: syntaxHint(err),
-			Error:  T(lang, "chk.syntax"),
+			Error:  site.T(lang, "chk.syntax"),
 		})
 		return
 	}

@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // ListingsPage backs the real-estate marketplace grid.
@@ -74,7 +75,7 @@ type MyListingsPage struct {
 }
 
 func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	q := r.URL.Query()
 	deal := q.Get("deal")
 	ptype := q.Get("type")
@@ -106,7 +107,7 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
-	page := ListingsPage{Base: m.base(r, T(lang, "re.heading"), lang)}
+	page := ListingsPage{Base: m.base(r, site.T(lang, "re.heading"), lang)}
 	page.ActiveCat = "realestate"
 	page.Listings = items
 	page.Count = len(items)
@@ -144,7 +145,7 @@ func (m *Module) handleListings(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleListingNew(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	if _, ok := m.authorID(r); !ok {
 		// Carry the destination, so the account that gets created here finishes
 		// on the listing form the visitor was reaching for — not in the article
@@ -152,7 +153,7 @@ func (m *Module) handleListingNew(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/studio/login?next=/listings/new", http.StatusSeeOther)
 		return
 	}
-	page := ListingFormPage{Base: m.base(r, T(lang, "re.new_title"), lang)}
+	page := ListingFormPage{Base: m.base(r, site.T(lang, "re.new_title"), lang)}
 	page.ActiveCat = "realestate"
 	page.Values = ListingInput{DealType: "sale", PropertyType: "apartment", Country: countryDefault(lang)}
 	// Both of these draw a map, so they are the only pages that pay for Leaflet.
@@ -169,7 +170,7 @@ func (m *Module) listingFormFail(w http.ResponseWriter, r *http.Request, lang, e
 	if editID != "" {
 		title = "re.edit_title"
 	}
-	page := ListingFormPage{Base: m.base(r, T(lang, title), lang)}
+	page := ListingFormPage{Base: m.base(r, site.T(lang, title), lang)}
 	page.ActiveCat = "realestate"
 	page.Values = in
 	page.EditID = editID
@@ -264,29 +265,29 @@ func validateListing(in ListingInput, countryCode, lang string) string {
 	// address closes that hole at the source, and a property advertisement
 	// without one was never worth publishing anyway.
 	if in.GeoNodeID == nil {
-		return T(lang, "re.err_location_required")
+		return site.T(lang, "re.err_location_required")
 	}
 	if !in.NoFilters {
-		return T(lang, "re.err_no_filters")
+		return site.T(lang, "re.err_no_filters")
 	}
 	// Kazakh title is mandatory (the flagship trilingual rule) — except for
 	// Russian listings, where only Russian and English are required.
 	kzRequired := countryCode != "RU" && in.Currency != "RUB"
 	if (kzRequired && in.TitleKz == "") || in.TitleRu == "" || in.TitleEn == "" || in.Contact == "" {
-		return T(lang, "re.err_required")
+		return site.T(lang, "re.err_required")
 	}
 	// Language sanity: English must be Latin (no Cyrillic), Russian must be
 	// Cyrillic, and Kazakh may be either — Kazakh is transitioning from Cyrillic
 	// to a Latin alphabet, so both scripts are valid. This catches the common
 	// mistake of pasting one language into every tab.
 	if !isLatinText(in.TitleEn) || !isCyrillicText(in.TitleRu) || (in.TitleKz != "" && !hasLetters(in.TitleKz)) {
-		return T(lang, "re.err_lang_script")
+		return site.T(lang, "re.err_lang_script")
 	}
 	return ""
 }
 
 func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	authorID, ok := m.authorID(r)
 	if !ok {
 		// Session expired (or never authenticated) — explain why on the login
@@ -295,7 +296,7 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := r.ParseForm(); err != nil {
-		m.listingFormFail(w, r, lang, "", ListingInput{}, T(lang, "re.err_bad_form"))
+		m.listingFormFail(w, r, lang, "", ListingInput{}, site.T(lang, "re.err_bad_form"))
 		return
 	}
 
@@ -308,7 +309,7 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 	}
 	// Posting requires a verified email (blocks throwaway-account spam).
 	if !m.auth.IsEmailVerified(r.Context(), authorID) {
-		m.listingFormFail(w, r, lang, "", in, T(lang, "re.err_verify_email"))
+		m.listingFormFail(w, r, lang, "", in, site.T(lang, "re.err_verify_email"))
 		return
 	}
 
@@ -325,7 +326,7 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Error("create listing", zap.Error(err))
 		// Re-render the form with everything the user typed so a transient save
 		// error never costs them their work; tell them plainly what happened.
-		m.listingFormFail(w, r, lang, "", in, T(lang, "re.err_save_failed"))
+		m.listingFormFail(w, r, lang, "", in, site.T(lang, "re.err_save_failed"))
 		return
 	}
 	// A real listing is the rewardable action: if this author was invited,
@@ -343,12 +344,12 @@ func (m *Module) handleListingCreate(w http.ResponseWriter, r *http.Request) {
 // handleListingEdit shows the submission form filled with an existing listing.
 // Scoped to the owner: another account's id is a 404, not a peek at the form.
 func (m *Module) handleListingEdit(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	l, _, ok := m.ownedListing(w, r)
 	if !ok {
 		return
 	}
-	page := ListingFormPage{Base: m.base(r, T(lang, "re.edit_title"), lang)}
+	page := ListingFormPage{Base: m.base(r, site.T(lang, "re.edit_title"), lang)}
 	page.ActiveCat = "realestate"
 	page.Values = listingToInput(l)
 	page.EditID = l.ID
@@ -361,13 +362,13 @@ func (m *Module) handleListingEdit(w http.ResponseWriter, r *http.Request) {
 // submission, so a listing cannot be edited into a state it could not be posted
 // in — an edited price still has to carry the currency of a real country.
 func (m *Module) handleListingUpdate(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	l, authorID, ok := m.ownedListing(w, r)
 	if !ok {
 		return
 	}
 	if err := r.ParseForm(); err != nil {
-		m.listingFormFail(w, r, lang, l.ID, listingToInput(l), T(lang, "re.err_bad_form"))
+		m.listingFormFail(w, r, lang, l.ID, listingToInput(l), site.T(lang, "re.err_bad_form"))
 		return
 	}
 	in := parseListingForm(r)
@@ -389,7 +390,7 @@ func (m *Module) handleListingUpdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		m.rt.Logger.Error("update listing", zap.Error(err))
-		m.listingFormFail(w, r, lang, l.ID, in, T(lang, "re.err_save_failed"))
+		m.listingFormFail(w, r, lang, l.ID, in, site.T(lang, "re.err_save_failed"))
 		return
 	}
 	// An edit is screened like a first posting. Otherwise the way past the
@@ -502,7 +503,7 @@ func (m *Module) isListingOwner(r *http.Request, l *Listing) bool {
 // renderListingView builds and renders a listing page. reveal (or ownership)
 // shows the full contact; otherwise it is masked behind a "show contact" button.
 func (m *Module) renderListingView(w http.ResponseWriter, r *http.Request, l *Listing, reveal bool) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	page := ListingViewPage{Base: m.base(r, l.TitleIn(lang), lang)}
 	page.ActiveCat = "realestate"
 	page.L = l
@@ -576,23 +577,23 @@ func (m *Module) reportEmail(l *Listing, count int, hidden bool) (subject, body 
 		key = "re.report_mail_hidden"
 		subjectKey = "re.report_mail_subject_hidden"
 	}
-	subject = T(LangRU, subjectKey) + " · " + T(LangKZ, subjectKey) + " · " + T(LangEN, subjectKey)
+	subject = site.T(LangRU, subjectKey) + " · " + site.T(LangKZ, subjectKey) + " · " + site.T(LangEN, subjectKey)
 
 	var b strings.Builder
 	b.WriteString(l.TitleIn(LangRU) + "\n" + link + "\n")
 	for _, lang := range []string{LangRU, LangKZ, LangEN} {
-		b.WriteString("\n— — —\n\n" + T(lang, key) + "\n")
+		b.WriteString("\n— — —\n\n" + site.T(lang, key) + "\n")
 		if !hidden {
-			b.WriteString(fmt.Sprintf(T(lang, "re.report_mail_count"), count, reportMinReports) + "\n")
+			b.WriteString(fmt.Sprintf(site.T(lang, "re.report_mail_count"), count, reportMinReports) + "\n")
 		}
-		b.WriteString(T(lang, "re.report_mail_fix") + "\n" + base + "/listings/" + l.ID + "/edit\n")
+		b.WriteString(site.T(lang, "re.report_mail_fix") + "\n" + base + "/listings/" + l.ID + "/edit\n")
 	}
 	b.WriteString("\n— Shanraq.org")
 	return subject, b.String()
 }
 
 func (m *Module) handleListingReport(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
@@ -643,7 +644,7 @@ func (m *Module) handleListingReport(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleMyListings(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	authorID, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
@@ -655,7 +656,7 @@ func (m *Module) handleMyListings(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
-	page := MyListingsPage{Base: m.base(r, T(lang, "re.my_listings"), lang)}
+	page := MyListingsPage{Base: m.base(r, site.T(lang, "re.my_listings"), lang)}
 	page.ActiveCat = "realestate"
 	page.Listings = items
 	page.Saved = r.URL.Query().Get("ok")

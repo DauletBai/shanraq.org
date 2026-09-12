@@ -8,6 +8,7 @@ import (
 
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // MaintenancePage backs the global maintenance screen.
@@ -62,11 +63,11 @@ func isMaintenanceExempt(p string) bool {
 }
 
 func (m *Module) renderMaintenance(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	f := m.flags.SiteFlag()
-	data := MaintenancePage{Nonce: httpserver.NonceFromContext(r.Context()), Lang: lang, Title: T(lang, "svc.site_down_title"), Message: f.Message(lang), UntilMilli: f.UntilUnixMillis()}
+	data := MaintenancePage{Nonce: httpserver.NonceFromContext(r.Context()), Lang: lang, Title: site.T(lang, "svc.site_down_title"), Message: f.Message(lang), UntilMilli: f.UntilUnixMillis()}
 	if data.Message == "" {
-		data.Message = T(lang, "svc.site_down_default")
+		data.Message = site.T(lang, "svc.site_down_default")
 	}
 	// Render to a buffer first so a template error does not leave us with a
 	// half-written body under a 503 status.

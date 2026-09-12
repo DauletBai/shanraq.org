@@ -6,24 +6,8 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
-
-// Ad is one creative in the sidebar slot. It is either a booked placement from
-// the advertiser cabinet or a house slide selling the slot itself; the corner
-// ribbon says which, so nothing ever implies a commercial relationship that does
-// not exist.
-type Ad struct {
-	Image string // /static/... illustration
-	Title string
-	Price string
-	Desc  string
-	URL   string // click target
-	// House marks a slide that advertises the slot itself rather than a paying
-	// customer. Both kinds carry the "Реклама" ribbon — a house slide is still
-	// advertising — but a house slide takes the quieter graphite panel and keeps
-	// rel="sponsored" off a link that points back into our own site.
-	House bool
-}
 
 // houseAds fills the sidebar slot when nothing is sold for this surface. Every
 // slide sells the slot itself, which is the only honest thing an empty ad space
@@ -65,9 +49,9 @@ func houseAds(lang string) []Ad {
 func houseSlide(lang, key, cta string) Ad {
 	return Ad{
 		URL:   cta,
-		Title: T(lang, "house."+key+"_title"),
-		Desc:  T(lang, "house."+key+"_desc"),
-		Price: T(lang, "house."+key+"_cta"),
+		Title: site.T(lang, "house."+key+"_title"),
+		Desc:  site.T(lang, "house."+key+"_desc"),
+		Price: site.T(lang, "house."+key+"_cta"),
 		House: true,
 	}
 }
@@ -140,7 +124,7 @@ func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
 		// otherwise render a button reading just "→".
 		cta := strings.TrimSpace(o.CTA)
 		if cta == "" {
-			cta = T(lang, "ad.learn_more")
+			cta = site.T(lang, "ad.learn_more")
 		}
 		out = append(out, Ad{Image: o.ImageURL, Title: o.Title, Desc: o.Body, Price: cta, URL: url})
 	}

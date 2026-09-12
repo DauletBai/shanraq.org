@@ -7,40 +7,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// Supported content languages. Author writes in one; the story is published in all three.
-const (
-	LangKZ = "kz"
-	LangRU = "ru"
-	LangEN = "en"
-)
-
-// Langs is the canonical, ordered list of supported languages.
-var Langs = []string{LangKZ, LangRU, LangEN}
-
-// LangLabels maps a language code to its short display label.
-var LangLabels = map[string]string{
-	LangKZ: "kz",
-	LangRU: "ru",
-	LangEN: "en",
-}
-
-// LangNames maps a language code to its full native name.
-var LangNames = map[string]string{
-	LangKZ: "Қазақша",
-	LangRU: "Русский",
-	LangEN: "English",
-}
-
-// IsLang reports whether code is a supported language.
-func IsLang(code string) bool {
-	switch code {
-	case LangKZ, LangRU, LangEN:
-		return true
-	default:
-		return false
-	}
-}
-
 // Article is the language-independent story record.
 type Article struct {
 	ID           uuid.UUID

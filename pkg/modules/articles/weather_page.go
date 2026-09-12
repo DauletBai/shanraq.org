@@ -14,6 +14,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // The forecast page.
@@ -263,10 +264,10 @@ func (m *Module) pointPlace(ctx context.Context, lang string, lat, lon float64, 
 	p.node, p.slug, p.name = &node, node.Slug, node.Name
 	p.lat, p.lon = *node.Lat, *node.Lng
 	if km >= 1 {
-		p.note = fmt.Sprintf(T(lang, "wx.point_from"), where,
-			fmt.Sprintf("%.0f %s", km, T(lang, "wx.km")))
+		p.note = fmt.Sprintf(site.T(lang, "wx.point_from"), where,
+			fmt.Sprintf("%.0f %s", km, site.T(lang, "wx.km")))
 	} else {
-		p.note = fmt.Sprintf(T(lang, "wx.point_here"), where)
+		p.note = fmt.Sprintf(site.T(lang, "wx.point_here"), where)
 	}
 	return p
 }
@@ -312,7 +313,7 @@ func (m *Module) weatherAt(ctx context.Context, lang string, p wxPlace) WeatherP
 
 // handleWeatherPoint answers a press on the map with the page for that place.
 func (m *Module) handleWeatherPoint(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	lat, lon, ok := wxCoords(r.URL.Query().Get("lat"), r.URL.Query().Get("lon"))
 	if !ok {
 		http.Error(w, "bad point", http.StatusBadRequest)
@@ -331,7 +332,7 @@ func (m *Module) handleWeatherPoint(w http.ResponseWriter, r *http.Request) {
 	m.render(w, "wx_swap", WxSwap{
 		Page:  page,
 		URL:   place.url(),
-		Title: fmt.Sprintf(T(lang, "wx.title_place"), place.name) + wxSiteTitle,
+		Title: fmt.Sprintf(site.T(lang, "wx.title_place"), place.name) + wxSiteTitle,
 	})
 }
 
@@ -354,7 +355,7 @@ var wxCache = struct {
 
 // handleWeather renders the forecast for a place.
 func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	slug := strings.TrimSpace(chi.URLParam(r, "slug"))
 
 	// The picker is a plain GET form, and a form cannot post into a path
@@ -424,7 +425,7 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			// Everyone else keeps the city the strip has always shown, so the
 			// link in the header lands where its temperature came from.
-			place = wxPlace{lat: wxDefaultLat, lon: wxDefaultLon, name: T(lang, "wx.default_city")}
+			place = wxPlace{lat: wxDefaultLat, lon: wxDefaultLon, name: site.T(lang, "wx.default_city")}
 			break
 		}
 		place = m.pointPlace(r.Context(), lang, pt.lat, pt.lon, 0)
@@ -444,15 +445,15 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 
 	page := m.weatherAt(r.Context(), lang, place)
 	name := place.name
-	title := fmt.Sprintf(T(lang, "wx.title_place"), name)
+	title := fmt.Sprintf(site.T(lang, "wx.title_place"), name)
 	page.Base = m.base(r, title, lang)
 	// The map needs Leaflet, and Leaflet is only shipped to the pages that draw
 	// one: it is the heaviest asset on the site.
 	page.NeedsMap = true
-	page.Desc = fmt.Sprintf(T(lang, "wx.desc_place"), name)
+	page.Desc = fmt.Sprintf(site.T(lang, "wx.desc_place"), name)
 	if slug != "" {
-		page.Base.CanonURL = canonURL("/weather/"+slug, "", lang)
-		page.Base.LangLinks = langLinks("/weather/"+slug, "")
+		page.Base.CanonURL = site.CanonURL("/weather/"+slug, "", lang)
+		page.Base.LangLinks = site.LangLinks("/weather/"+slug, "")
 	}
 	m.render(w, "weather", page)
 }
@@ -629,7 +630,7 @@ func (m *Module) fetchForecast(ctx context.Context, lang string, lat, lon float6
 			Today:   doc.Daily.Time[i] == today,
 		}
 		if p := doc.Daily.Precip[i]; p > 0 {
-			row.Precip = fxFormat(p, 1) + " " + T(lang, "wx.mm")
+			row.Precip = fxFormat(p, 1) + " " + site.T(lang, "wx.mm")
 		}
 		page.Days = append(page.Days, row)
 	}
@@ -681,15 +682,15 @@ func wxWind(kmh float64, lang string) string {
 	// Still air is a state, not a measurement of zero: "0 m/s" reads like a
 	// missing figure, and every forecast in the language calls this calm.
 	if ms < 1 {
-		return T(lang, "wx.calm")
+		return site.T(lang, "wx.calm")
 	}
-	return fmt.Sprintf("%.0f %s", ms, T(lang, "wx.ms"))
+	return fmt.Sprintf("%.0f %s", ms, site.T(lang, "wx.ms"))
 }
 
 // wxPressure converts hectopascals to the millimetres of mercury a barometer in
 // this part of the world is marked in.
 func wxPressure(hpa float64, lang string) string {
-	return fmt.Sprintf("%.0f %s", hpa*0.750062, T(lang, "wx.pressure_unit"))
+	return fmt.Sprintf("%.0f %s", hpa*0.750062, site.T(lang, "wx.pressure_unit"))
 }
 
 // wxClock keeps the time out of an ISO stamp.
@@ -740,7 +741,7 @@ func wxDescribe(code int, lang string) string {
 	case code >= 95:
 		key = "wx.c_storm"
 	}
-	return T(lang, key)
+	return site.T(lang, key)
 }
 
 // WeatherPlaceFor picks the place whose forecast answers a reader who lives in

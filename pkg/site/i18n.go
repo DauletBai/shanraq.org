@@ -1,4 +1,4 @@
-package articles
+package site
 
 // This is the single source of UI strings. The interface renders entirely in
 // the active language — never a mix. Add a key here, use {{ t $.Lang "key" }}
@@ -2446,3 +2446,9 @@ func T(lang, key string) string {
 	}
 	return key
 }
+
+// HasKey reports whether the dictionary holds a key. A module builds some keys
+// by hand ("agent.kind." + kind), and a test that walks the possible values is
+// the only thing standing between a new value and a label that reads as its own
+// key on the page.
+func HasKey(key string) bool { return messages[key] != nil }

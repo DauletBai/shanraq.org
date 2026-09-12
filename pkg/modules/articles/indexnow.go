@@ -2,6 +2,7 @@ package articles
 
 import (
 	"context"
+	"shanraq.org/pkg/site"
 	"time"
 )
 
@@ -62,11 +63,11 @@ func (m *Module) runIndexNow(ctx context.Context) {
 // ones the sitemap and the canonical carry. A submission for an address the site
 // does not declare as its own gives a search engine nothing.
 func (m *Module) pageURLs(paths []string) []string {
-	site := m.rt.Config.PublicBase()
+	origin := m.rt.Config.PublicBase()
 	out := make([]string, 0, len(paths)*len(Langs))
 	for _, p := range paths {
 		for _, lang := range Langs {
-			out = append(out, site+canonURL(p, "", lang))
+			out = append(out, origin+site.CanonURL(p, "", lang))
 		}
 	}
 	return out

@@ -10,6 +10,7 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // ReviewRules are the publication rules an article is checked against. The
@@ -250,7 +251,7 @@ func (m *Module) submitForReview(ctx context.Context, id, author uuid.UUID, lang
 			}
 			blocking++
 			action, reason, status = "reject", "local_languages", "needs_work"
-			note := T(lang, "rule.local_languages_note")
+			note := site.T(lang, "rule.local_languages_note")
 			var missing *MissingLanguagesError
 			if errors.As(lerr, &missing) {
 				note = missing.Reason(lang)
@@ -614,11 +615,11 @@ func (e *MissingLanguagesError) Reason(lang string) string {
 		}
 	}
 	if len(names) == 0 {
-		return T(lang, "rule.local_languages_note")
+		return site.T(lang, "rule.local_languages_note")
 	}
 	key := "rule.langs_all_note"
 	if e.Placed {
 		key = "rule.langs_local_note"
 	}
-	return fmt.Sprintf(T(lang, key), strings.Join(names, ", "))
+	return fmt.Sprintf(site.T(lang, key), strings.Join(names, ", "))
 }

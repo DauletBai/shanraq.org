@@ -13,6 +13,7 @@ import (
 	highlighting "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/extension"
 	gmhtml "github.com/yuin/goldmark/renderer/html"
+	"shanraq.org/pkg/site"
 )
 
 // md is a shared, safe Markdown renderer. Raw inline HTML is NOT enabled
@@ -358,7 +359,7 @@ func compactNum(lang string, n int64) string {
 	if lang == LangEN {
 		gap = ""
 	}
-	return num + gap + T(lang, unit)
+	return num + gap + site.T(lang, unit)
 }
 
 // translitMap transliterates Kazakh + Russian Cyrillic to latin for slugs.

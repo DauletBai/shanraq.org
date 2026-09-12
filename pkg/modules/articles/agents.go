@@ -12,6 +12,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // Agent is a real-estate agent's public profile. One per user; registration is
@@ -203,7 +204,7 @@ type AgentPublicPage struct {
 }
 
 func (m *Module) handleAgentCabinet(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
@@ -215,7 +216,7 @@ func (m *Module) handleAgentCabinet(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
-	page := AgentCabinetPage{Base: m.base(r, T(lang, "agent.title"), lang), Agent: agent}
+	page := AgentCabinetPage{Base: m.base(r, site.T(lang, "agent.title"), lang), Agent: agent}
 	page.ActiveCat = "realestate"
 	page.Saved = r.URL.Query().Get("saved") == "1"
 	if agent != nil {
@@ -228,7 +229,7 @@ func (m *Module) handleAgentCabinet(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
@@ -259,12 +260,12 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 
 	fail := func(msg string) {
 		existing, _ := m.reagents.ByUser(r.Context(), uid)
-		page := AgentCabinetPage{Base: m.base(r, T(lang, "agent.title"), lang), Agent: existing, Draft: a, Error: msg}
+		page := AgentCabinetPage{Base: m.base(r, site.T(lang, "agent.title"), lang), Agent: existing, Draft: a, Error: msg}
 		page.ActiveCat = "realestate"
 		m.render(w, "agent_cabinet", page)
 	}
 	if a.FirstName == "" {
-		fail(T(lang, "agent.err_name"))
+		fail(site.T(lang, "agent.err_name"))
 		return
 	}
 	// A company claims a brand, so it must name the entity and give the БИН a
@@ -272,18 +273,18 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 	// granted. A private realtor answers with their own name and needs neither.
 	if a.IsCompany() {
 		if a.Agency == "" {
-			fail(T(lang, "agent.err_company"))
+			fail(site.T(lang, "agent.err_company"))
 			return
 		}
 		if !validBIN(a.BIN) {
-			fail(T(lang, "agent.err_bin"))
+			fail(site.T(lang, "agent.err_bin"))
 			return
 		}
 	}
 	// An agent is a trust signal, so the bar is a verified email AND phone — the
 	// same identity proof the platform already requires to post and to author.
 	if !m.auth.IsEmailVerified(r.Context(), uid) || !m.auth.IsPhoneVerified(r.Context(), uid) {
-		fail(T(lang, "agent.err_verify"))
+		fail(site.T(lang, "agent.err_verify"))
 		return
 	}
 	if err := m.reagents.Save(r.Context(), uid, a); err != nil {
@@ -295,7 +296,7 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleAgentPublic(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, err := uuid.Parse(chi.URLParam(r, "id"))
 	if err != nil {
 		http.NotFound(w, r)

@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // TestCrawlersDoNotCountAsViews pins the fix for the defect that made the whole
@@ -167,7 +168,7 @@ func TestWebLoginRefusesWhenMFAIsOn(t *testing.T) {
 	if loc := w.Header().Get("Location"); loc == "/studio" {
 		t.Fatal("login redirected into the studio, so the second factor was skipped")
 	}
-	if !strings.Contains(w.Body.String(), T(LangRU, "form.err_mfa_web")) {
+	if !strings.Contains(w.Body.String(), site.T(LangRU, "form.err_mfa_web")) {
 		t.Error("the reader is not told why the login was refused")
 	}
 }

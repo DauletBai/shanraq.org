@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // Place pages: one address per place, one feed per address.
@@ -44,7 +45,7 @@ type PlacePage struct {
 // handlePlace renders the feed of one place: what was published for it, and for
 // anywhere inside it.
 func (m *Module) handlePlace(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	slug := chi.URLParam(r, "slug")
 
 	node, err := m.geo.BySlug(r.Context(), slug, lang)
@@ -82,7 +83,7 @@ func (m *Module) handlePlace(w http.ResponseWriter, r *http.Request) {
 		arts = arts[:placePageSize]
 	}
 
-	page := PlacePage{Base: m.base(r, node.Name+" — "+T(lang, "place.title_suffix"), lang)}
+	page := PlacePage{Base: m.base(r, node.Name+" — "+site.T(lang, "place.title_suffix"), lang)}
 	page.PlaceName = node.Name
 	page.Kind = node.Kind
 	page.Slug = slug

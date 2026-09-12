@@ -13,6 +13,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
+	"shanraq.org/pkg/site"
 )
 
 // Advertiser is a company account in the self-serve ad cabinet. One per user
@@ -314,7 +315,7 @@ type AdGeoRung struct {
 }
 
 func (m *Module) handleAdvertise(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
@@ -326,7 +327,7 @@ func (m *Module) handleAdvertise(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
-	page := AdvertisePage{Base: m.base(r, T(lang, "adv.title"), lang), Advertiser: adv}
+	page := AdvertisePage{Base: m.base(r, site.T(lang, "adv.title"), lang), Advertiser: adv}
 	if adv != nil {
 		if orders, oerr := m.ads.ListOrders(r.Context(), adv.ID); oerr == nil {
 			page.Orders = orders
@@ -344,7 +345,7 @@ func (m *Module) handleAdvertise(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Module) handleAdvertiseCompany(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
@@ -365,7 +366,7 @@ func (m *Module) handleAdvertiseCompany(w http.ResponseWriter, r *http.Request) 
 	}
 	if a.CompanyName == "" || a.ContactName == "" || a.ContactPhone == "" {
 		adv, _ := m.ads.ByOwner(r.Context(), uid)
-		page := AdvertisePage{Base: m.base(r, T(lang, "adv.title"), lang), Advertiser: adv, Error: T(lang, "adv.err_company")}
+		page := AdvertisePage{Base: m.base(r, site.T(lang, "adv.title"), lang), Advertiser: adv, Error: site.T(lang, "adv.err_company")}
 		if adv == nil {
 			page.Advertiser = &a // echo entered values back into the form
 		}
@@ -381,7 +382,7 @@ func (m *Module) handleAdvertiseCompany(w http.ResponseWriter, r *http.Request) 
 }
 
 func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 	uid, ok := m.authorID(r)
 	if !ok {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
@@ -469,12 +470,12 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 	if !adPayMethods[o.PaymentMethod] {
 		o.PaymentMethod = "kaspi"
 	}
-	if !IsLang(o.Lang) {
+	if !site.IsLang(o.Lang) {
 		o.Lang = ""
 	}
 
 	fail := func(msg string) {
-		page := AdvertisePage{Base: m.base(r, T(lang, "adv.title"), lang), Advertiser: adv, Error: msg}
+		page := AdvertisePage{Base: m.base(r, site.T(lang, "adv.title"), lang), Advertiser: adv, Error: msg}
 		if orders, oerr := m.ads.ListOrders(r.Context(), adv.ID); oerr == nil {
 			page.Orders = orders
 		}
@@ -487,11 +488,11 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if o.Title == "" || o.TargetURL == "" {
-		fail(T(lang, "adv.err_order"))
+		fail(site.T(lang, "adv.err_order"))
 		return
 	}
 	if len(surfaces) == 0 {
-		fail(T(lang, "adv.err_no_surface"))
+		fail(site.T(lang, "adv.err_no_surface"))
 		return
 	}
 
@@ -506,11 +507,11 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 		taken, aerr := m.ads.SlotsTaken(r.Context(), sfc, format, o.StartsAt, o.EndsAt)
 		if aerr != nil {
 			m.rt.Logger.Error("slots taken", zap.Error(aerr))
-			fail(T(lang, "adv.err_order"))
+			fail(site.T(lang, "adv.err_order"))
 			return
 		}
 		if taken+need > capFmt {
-			fail(T(lang, "adv.err_busy"))
+			fail(site.T(lang, "adv.err_busy"))
 			return
 		}
 	}

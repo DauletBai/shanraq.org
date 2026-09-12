@@ -6,6 +6,7 @@ import (
 	"go.uber.org/zap"
 
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // VerifyAuthorPage backs the Studio "become a verified author" flow.
@@ -23,8 +24,8 @@ type VerifyAuthorPage struct {
 }
 
 func (m *Module) renderVerifyAuthor(w http.ResponseWriter, r *http.Request, p VerifyAuthorPage) {
-	lang := m.resolveLang(w, r)
-	p.Base = m.base(r, T(lang, "author.verify_title"), lang)
+	lang := site.ResolveLang(w, r)
+	p.Base = m.base(r, site.T(lang, "author.verify_title"), lang)
 	uid, ok := m.authorID(r)
 	if ok {
 		first, last, verified := m.auth.AuthorIdentity(r.Context(), uid)
@@ -37,13 +38,13 @@ func (m *Module) renderVerifyAuthor(w http.ResponseWriter, r *http.Request, p Ve
 	p.CodeSent = q.Get("code") == "sent" || p.CodeSent
 	switch {
 	case q.Get("name") == "ok":
-		p.Notice = T(lang, "author.name_saved")
+		p.Notice = site.T(lang, "author.name_saved")
 	case q.Get("verified") == "ok":
-		p.Notice = T(lang, "author.phone_ok")
+		p.Notice = site.T(lang, "author.phone_ok")
 	case q.Get("code") == "bad":
-		p.Error = T(lang, "author.code_bad")
+		p.Error = site.T(lang, "author.code_bad")
 	case q.Get("phone") == "bad":
-		p.Error = T(lang, "author.err_phone")
+		p.Error = site.T(lang, "author.err_phone")
 	}
 	m.render(w, "verify_author", p)
 }
@@ -60,7 +61,7 @@ func (m *Module) handleAuthorName(w http.ResponseWriter, r *http.Request) {
 	}
 	_ = r.ParseForm()
 	if err := m.auth.SetAuthorName(r.Context(), uid, r.FormValue("first_name"), r.FormValue("last_name"), r.FormValue("middle_name")); err != nil {
-		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Error: T(m.resolveLang(w, r), "author.err_name")})
+		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Error: site.T(site.ResolveLang(w, r), "author.err_name")})
 		return
 	}
 	http.Redirect(w, r, "/studio/author?name=ok", http.StatusSeeOther)
@@ -74,7 +75,7 @@ func (m *Module) handleAuthorPhone(w http.ResponseWriter, r *http.Request) {
 	}
 	_ = r.ParseForm()
 	if !m.auth.AllowAuthAttempt(r, "signin", r.FormValue("phone")) { // reuse the signin limiter for OTP sends
-		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Error: T(m.resolveLang(w, r), "form.err_rate_limit")})
+		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Error: site.T(site.ResolveLang(w, r), "form.err_rate_limit")})
 		return
 	}
 	if err := m.auth.StartPhoneVerification(r.Context(), uid, r.FormValue("phone")); err != nil {

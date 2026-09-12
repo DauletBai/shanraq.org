@@ -3,6 +3,7 @@ package articles
 import (
 	"encoding/json"
 	"net/http"
+	"shanraq.org/pkg/site"
 )
 
 // CalcPage is the loan calculator page.
@@ -71,7 +72,7 @@ const (
 )
 
 func (m *Module) handleCalculator(w http.ResponseWriter, r *http.Request) {
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 
 	page := CalcPage{
 		Kinds:         LoanKinds,
@@ -124,19 +125,19 @@ func (m *Module) handleCalculator(w http.ResponseWriter, r *http.Request) {
 	}
 
 	labels := map[string]string{
-		"multiple": T(lang, "calc.r_multiple"),
-		"monthly":  T(lang, "calc.r_monthly"),
-		"first":    T(lang, "calc.r_first"),
-		"last":     T(lang, "calc.r_last"),
-		"overpay":  T(lang, "calc.r_overpay_short"),
-		"interest": T(lang, "calc.r_interest"),
-		"fees":     T(lang, "calc.r_fees"),
-		"seller":   T(lang, "calc.w_seller"),
-		"wint":     T(lang, "calc.w_int"),
-		"wfees":    T(lang, "calc.w_fees"),
-		"wins":     T(lang, "calc.w_ins"),
-		"subsidy":  T(lang, "calc.w_subsidy"),
-		"you":      T(lang, "calc.w_you"),
+		"multiple": site.T(lang, "calc.r_multiple"),
+		"monthly":  site.T(lang, "calc.r_monthly"),
+		"first":    site.T(lang, "calc.r_first"),
+		"last":     site.T(lang, "calc.r_last"),
+		"overpay":  site.T(lang, "calc.r_overpay_short"),
+		"interest": site.T(lang, "calc.r_interest"),
+		"fees":     site.T(lang, "calc.r_fees"),
+		"seller":   site.T(lang, "calc.w_seller"),
+		"wint":     site.T(lang, "calc.w_int"),
+		"wfees":    site.T(lang, "calc.w_fees"),
+		"wins":     site.T(lang, "calc.w_ins"),
+		"subsidy":  site.T(lang, "calc.w_subsidy"),
+		"you":      site.T(lang, "calc.w_you"),
 	}
 	if b, err := json.Marshal(labels); err == nil {
 		page.LabelsJSON = string(b)
@@ -144,11 +145,11 @@ func (m *Module) handleCalculator(w http.ResponseWriter, r *http.Request) {
 		page.LabelsJSON = "{}"
 	}
 
-	page.Base = m.base(r, T(lang, "calc.title"), lang)
+	page.Base = m.base(r, site.T(lang, "calc.title"), lang)
 	// The shared sidebar links to the calculator; on the calculator itself that
 	// link points at the page you are already reading.
 	page.Base.Active = "calculator"
-	page.Desc = T(lang, "calc.desc")
+	page.Desc = site.T(lang, "calc.desc")
 	m.render(w, "calculator", page)
 }
 

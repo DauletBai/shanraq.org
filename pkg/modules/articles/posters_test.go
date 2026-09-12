@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
+	"shanraq.org/pkg/site"
 )
 
 func posterRouter() http.Handler {
@@ -78,7 +79,7 @@ func TestEveryPosterLabelHasPanelTitles(t *testing.T) {
 	for _, label := range labels {
 		for _, lang := range []string{"kz", "ru", "en"} {
 			key := "ag.source." + label
-			if got := T(lang, key); got == key || got == "" {
+			if got := site.T(lang, key); got == key || got == "" {
 				t.Errorf("%s [%s] has no panel title", key, lang)
 			}
 		}

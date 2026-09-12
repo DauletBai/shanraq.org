@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"shanraq.org/pkg/site"
 	"strings"
 	"testing"
 )
@@ -16,13 +17,13 @@ func TestCalculatorPageRendersInEveryLanguage(t *testing.T) {
 			t.Fatalf("%s: код %d", lang, rec.Code)
 		}
 		body := rec.Body.String()
-		for _, want := range []string{T(lang, "calc.title"), T(lang, "calc.who"), "data-programs", "7-20-25"} {
+		for _, want := range []string{site.T(lang, "calc.title"), site.T(lang, "calc.who"), "data-programs", "7-20-25"} {
 			if !strings.Contains(body, want) {
 				t.Errorf("%s: на странице нет %q", lang, want)
 			}
 		}
 		// Unverified rows must be visibly marked, not quietly shown as fact.
-		if !strings.Contains(body, T(lang, "calc.t_unchecked")) {
+		if !strings.Contains(body, site.T(lang, "calc.t_unchecked")) {
 			t.Errorf("%s: непроверенные ставки не помечены", lang)
 		}
 	}

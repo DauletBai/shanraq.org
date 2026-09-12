@@ -14,6 +14,7 @@ import (
 	"go.uber.org/zap"
 
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // Publishing as an organisation: ЖКХ «Качарец», ТОО «Водоканал», an akimat.
@@ -280,8 +281,8 @@ func (m *Module) handleOrgCabinet(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
 		return
 	}
-	lang := m.resolveLang(w, r)
-	page := OrgCabinetPage{Base: m.base(r, T(lang, "org.title"), lang), Kinds: orgKinds}
+	lang := site.ResolveLang(w, r)
+	page := OrgCabinetPage{Base: m.base(r, site.T(lang, "org.title"), lang), Kinds: orgKinds}
 	page.Notice = orgNotice(lang, r.URL.Query().Get("ok"))
 	if org, err := m.orgs.ByUser(r.Context(), userID); err != nil {
 		m.rt.Logger.Error("org by user", zap.Error(err))
@@ -298,7 +299,7 @@ func orgNotice(lang, code string) string {
 	if code == "" {
 		return ""
 	}
-	msg := T(lang, "org."+code)
+	msg := site.T(lang, "org."+code)
 	if strings.HasPrefix(msg, "org.") {
 		return ""
 	}
@@ -315,7 +316,7 @@ func (m *Module) handleOrgApply(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad form", http.StatusBadRequest)
 		return
 	}
-	lang := m.resolveLang(w, r)
+	lang := site.ResolveLang(w, r)
 
 	in := OrgAuthor{
 		Name:    strings.TrimSpace(r.FormValue("name")),
@@ -326,7 +327,7 @@ func (m *Module) handleOrgApply(w http.ResponseWriter, r *http.Request) {
 		PlaceID: formPlace(r),
 	}
 	fail := func(msg string) {
-		page := OrgCabinetPage{Base: m.base(r, T(lang, "org.title"), lang), Kinds: orgKinds, Error: msg}
+		page := OrgCabinetPage{Base: m.base(r, site.T(lang, "org.title"), lang), Kinds: orgKinds, Error: msg}
 		page.Org = &in
 		if in.PlaceID != nil {
 			page.PlaceID = in.PlaceID.String()
@@ -334,18 +335,18 @@ func (m *Module) handleOrgApply(w http.ResponseWriter, r *http.Request) {
 		m.render(w, "studio_org", page)
 	}
 	if in.Name == "" {
-		fail(T(lang, "org.err_name"))
+		fail(site.T(lang, "org.err_name"))
 		return
 	}
 	// A БИН is what a moderator checks against the public register, so a
 	// malformed one is refused here rather than wasting their time.
 	if in.BIN != "" && !validBIN(in.BIN) {
-		fail(T(lang, "org.err_bin"))
+		fail(site.T(lang, "org.err_bin"))
 		return
 	}
 	if err := m.orgs.Apply(r.Context(), userID, in); err != nil {
 		m.rt.Logger.Error("apply org", zap.Error(err))
-		fail(T(lang, "org.err_save"))
+		fail(site.T(lang, "org.err_save"))
 		return
 	}
 	http.Redirect(w, r, "/studio/org?ok=applied", http.StatusSeeOther)
