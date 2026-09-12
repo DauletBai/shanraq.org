@@ -35,20 +35,43 @@ jobs:
           # Four questions, not one. A server can answer / from cache while the
           # database is gone, so readyz is asked separately, and an article is
           # asked last because rendering one exercises the path a reader takes.
+          #
+          # A bad answer is logged but not annotated here: the first pass is
+          # allowed to be wrong, and only the last one speaks.
           check() { # url expected-code label
             code=$(curl -sS -o /tmp/body -w '%{http_code}' --max-time 20 \
                    -H 'User-Agent: shanraq-uptime/1 (+github actions)' "$1" || echo 000)
             if [ "$code" != "$2" ]; then
-              echo "::error::$3 -> HTTP $code (expected $2)"
               fail="$fail $3($code)"
+              echo "$3 -> $code (expected $2)"
             else
               echo "$3 -> $code"
             fi
           }
-          check "$site/healthz" 200 healthz
-          check "$site/readyz"  200 readyz
-          check "$site/"        200 home
-          check "$site/read/tramp-ne-diktator-i-eto-ne-ego-zasluga" 200 article
+          probe() {
+            fail=""
+            check "$site/healthz" 200 healthz
+            check "$site/readyz"  200 readyz
+            check "$site/"        200 home
+            check "$site/read/tramp-ne-diktator-i-eto-ne-ego-zasluga" 200 article
+          }
+
+          probe
+          # A deploy swaps the app container, and for those few seconds the
+          # proxy has nobody to talk to: on 12 Sep 2026 all four probes landed
+          # one second before the new container came up and the run failed with
+          # the site perfectly healthy. A monitor that cries wolf on every
+          # deploy is a monitor people learn to ignore, so the whole set is
+          # asked again half a minute later and only the second answer counts.
+          # A real outage outlives the wait and is still caught.
+          if [ -n "$fail" ]; then
+            echo "first pass failed:$fail — asking again in 30s"
+            sleep 30
+            probe
+          fi
+          if [ -n "$fail" ]; then
+            echo "::error::the site did not answer:$fail"
+          fi
 
           # A certificate that expires unnoticed takes the site down as surely
           # as a crashed process, and it does it on a schedule we could have
