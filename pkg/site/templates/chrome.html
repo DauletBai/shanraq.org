@@ -175,17 +175,25 @@
 <div class="adcarousel adslot" data-carousel>
   <div class="carousel__track">
     {{ range $i, $ad := .Ads }}
-    <a class="adslide adslot__slide{{ if $ad.House }} adslot__slide--house{{ end }}{{ if eq $i 0 }} is-active{{ end }}"
+    {{/* A slide of our own that has a picture IS the picture: a book cover
+         already carries its title and its promise, so repeating them beside it
+         only shrinks the one thing worth looking at. Everything else keeps the
+         headline-and-line-of-copy shape. A paid banner's picture stays its
+         ground, dimmed behind the copy. */}}
+    {{ $cover := and $ad.Image $ad.House }}
+    <a class="adslide adslot__slide{{ if $ad.House }} adslot__slide--house{{ end }}{{ if $cover }} adslot__slide--cover{{ end }}{{ if eq $i 0 }} is-active{{ end }}"
        href="{{ $ad.URL }}"{{ if not $ad.House }} rel="nofollow sponsored noopener" target="_blank"{{ end }}>
       <span class="adslot__ribbon{{ if $ad.House }} adslot__ribbon--house{{ end }}">{{ t $.Lang "ad.badge" }}</span>
-      {{/* A paid banner's picture is its ground: dimmed, behind the copy. Our
-           own slide about a book shows the cover as a cover — a book is chosen
-           with the eyes before it is read. */}}
       {{ if and $ad.Image (not $ad.House) }}<span class="adslot__img"><img src="{{ $ad.Image }}" alt="" loading="lazy"></span>{{ end }}
       <span class="adslot__body">
-        {{ if and $ad.Image $ad.House }}<img class="adslot__cover" src="{{ $ad.Image }}" alt="" loading="lazy" decoding="async">{{ end }}
+        {{ if $cover }}
+        {{/* The alt carries the title, because here the picture is the whole
+             slide and a reader who cannot see it would otherwise get nothing. */}}
+        <img class="adslot__cover" src="{{ $ad.Image }}" alt="{{ $ad.Title }}" loading="lazy" decoding="async">
+        {{ else }}
         <span class="adslot__title">{{ $ad.Title }}</span>
         <span class="adslot__desc">{{ $ad.Desc }}</span>
+        {{ end }}
         <span class="adslot__cta">{{ $ad.Price }} →</span>
       </span>
     </a>
