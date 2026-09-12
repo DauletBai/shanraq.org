@@ -178,3 +178,17 @@ type InfoBarData struct {
 	Social       []SocialLink
 	GitHub       string // repository URL, rendered in the footer only ("" hides it)
 }
+
+// CurSymbol maps a currency code to its symbol for the compact bar.
+func CurSymbol(code string) string {
+	switch code {
+	case "USD":
+		return "$"
+	case "EUR":
+		return "€"
+	case "RUB":
+		return "₽"
+	default:
+		return code
+	}
+}

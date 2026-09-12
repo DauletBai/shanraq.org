@@ -1,4 +1,4 @@
-package articles
+package site
 
 import "html/template"
 
@@ -105,10 +105,10 @@ func letter16(text string) string {
 		` text-anchor="middle" dominant-baseline="central">` + text + `</text>`
 }
 
-// brandIcon returns the mark for a metric row's slug, or an empty string for
+// BrandIcon returns the mark for a metric row's slug, or an empty string for
 // rows that name no brand — "direct", "other", "mobile" and the like. The
 // template reserves the column either way, so the labels stay aligned.
-func brandIcon(slug string) template.HTML {
+func BrandIcon(slug string) template.HTML {
 	m, ok := brandMarks[slug]
 	if !ok {
 		return ""

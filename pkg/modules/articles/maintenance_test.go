@@ -4,6 +4,9 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"go.uber.org/zap"
+	"shanraq.org/pkg/shanraq"
 )
 
 // TestValidServiceCode guards the admin toggle's accept-list: the global site
@@ -45,7 +48,7 @@ func TestIsMaintenanceExempt(t *testing.T) {
 // site is down, an ordinary page returns 503, but the admin recovery route
 // still passes through. No DB needed — the cache is set directly.
 func TestMaintenanceGuard(t *testing.T) {
-	m := &Module{tmpl: buildTemplates(t)}
+	m := &Module{rt: &shanraq.Runtime{Logger: zap.NewNop(), Site: buildTemplates(t)}}
 	m.flags = &ServiceFlags{cache: map[string]ServiceFlag{
 		SvcSite: {Code: SvcSite, Status: svcMaintenance, MessageRU: "Скоро вернёмся"},
 	}}

@@ -4,36 +4,23 @@ import (
 	"html/template"
 	"strconv"
 	"strings"
-	"time"
 
 	"shanraq.org/pkg/site"
-	"shanraq.org/web"
 )
 
-// templateFuncs is the single source of the template function map. Both the
-// live module (Init) and the template tests use it, so a new helper can never
-// be available in one place and missing in the other.
+// templateFuncs are the helpers that know what this module's pages are about.
+// Everything the frame itself needs -- the dictionary, the languages, the icon
+// set, the small formatting verbs -- comes from site.BaseFuncs, which the
+// renderer already holds. Both the live module (Init) and the template tests
+// go through the same renderer, so a helper can never be available in one
+// place and missing in the other.
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
-		"t": site.T,
-		// Every stylesheet and script must go through this: a bare path keeps
-		// serving from cache for a day after a deploy, so new markup lands on
-		// old CSS. See web.AssetURL.
-		"asset": web.AssetURL,
-		// Brand mark for an analytics row, "" for rows that name no brand.
-		"brandicon":        brandIcon,
-		"svcOff":           site.ServiceOff, // is a service's entry link disabled?
-		"svcMsg":           site.ServiceMsg, // its localized "unavailable" tooltip
-		"label":            func(l string) string { return LangLabels[l] },
-		"langName":         func(l string) string { return LangNames[l] },
-		"langs":            func() []string { return Langs },
-		"categories":       func() []string { return Categories },
 		"wallMaterials":    func() []string { return WallMaterials },
 		"maxPhotos":        func() int { return maxListingPhotos },
 		"maxDocs":          func() int { return maxListingDocs },
 		"wallKey":          WallMaterialKey,
 		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
-		"subcats":          func(cat string) []string { return Subcats(cat) },
 		"dealTypes":        func() []string { return DealTypes },
 		"propertyTypes":    func() []string { return PropertyTypes },
 		"amenities":        AmenityKeys,
@@ -51,64 +38,17 @@ func templateFuncs() template.FuncMap {
 		"surfaceLabel":      SurfaceLabelKey,
 		"adFormatSlots":     AdFormatSlots,
 		"money":             money,
-		// Templates count from zero and people count from one; screen-reader
-		// labels are read by people.
-		"inc": func(i int) int { return i + 1 },
-		"mul": func(a, b int) int { return a * b },
-		"sub": func(a, b int) int { return a - b },
-		// Fills the {n} of a counted label. Not printf: the same string is read
-		// by the browser, where a %d would be a stray placeholder in the markup.
-		"count": func(s string, n int) string { return strings.ReplaceAll(s, "{n}", strconv.Itoa(n)) },
-		// A cover that is a drawing rather than a photograph. The hero prints a
-		// headline across the picture, and a diagram's own labels fight it.
-		"isvector": func(s string) bool { return strings.HasSuffix(strings.ToLower(s), ".svg") },
 		// The reader's report names one of the site's published rules — the same
 		// list the checker used — so a report is a claim about a rule, not a
 		// second opinion about the topic.
-		"reviewRules": func() []string { return ReviewRules },
-		// The tabs and the translate button must name languages the same way,
-		// or the reader has to work out that "3 языка" and "Қазақша" are about
-		// the same thing.
-		"langNames": func() map[string]string { return LangNames },
-		"langList": func(ls []string) string {
-			out := make([]string, 0, len(ls))
-			for _, l := range ls {
-				out = append(out, LangNames[l])
-			}
-			return strings.Join(out, ", ")
-		},
+		"reviewRules":      func() []string { return ReviewRules },
 		"compactNum":       compactNum, // 1234 → "1,2 тыс." for tight meta rows
 		"shortAuthor":      shortAuthor,
-		"hasSuffix":        strings.HasSuffix,
-		"ogLocale":         site.OGLocale,
-		"htmlLang":         site.HTMLLang,
-		"curSymbol":        curSymbol,
-		"icon":             icon,
-		"roomIcon":         roomIcon,
-		"amenityIcon":      amenityIcon,
-		"catIcon":          catIcon,
-		"firstN":           firstStrings,
 		"countryFlag":      countryFlag,
 		"countryMark":      countryMark,
 		"countryFlagEmoji": countryFlagEmoji,
 		"kilo":             kilo,
-		"liveSocial":       site.LiveSocial, // social profiles that aren't "#" placeholders
-		"withUTM":          withUTM,
-		"dict":             dict,
-		"year":             func() int { return time.Now().Year() },
 		"markdown":         RenderMarkdown,
-		"fmtDate": func(t time.Time) string {
-			if t.IsZero() {
-				return "—"
-			}
-			return t.Format("02.01.06")
-		},
-		"fmtDatePtr": func(t *time.Time) string {
-			if t == nil || t.IsZero() {
-				return "—"
-			}
-			return t.Format("02.01.06")
-		},
 	}
 }
 

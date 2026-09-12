@@ -1,4 +1,4 @@
-package articles
+package site
 
 import (
 	"strings"
@@ -17,7 +17,7 @@ func TestEveryAnalyticsBrandHasAMark(t *testing.T) {
 		"windows", "android", "linux", "chromeos", "apple", "ios", "macos",
 	}
 	for _, b := range brands {
-		icon := string(brandIcon(b))
+		icon := string(BrandIcon(b))
 		if icon == "" {
 			t.Errorf("%q has no brand mark", b)
 			continue
@@ -37,7 +37,7 @@ func TestEveryAnalyticsBrandHasAMark(t *testing.T) {
 // icons do rather than being pushed by a placeholder.
 func TestNonBrandRowsHaveNoMark(t *testing.T) {
 	for _, s := range []string{"direct", "other", "mobile", "tablet", "desktop", "seo", "ai", "email", "share", ""} {
-		if got := brandIcon(s); got != "" {
+		if got := BrandIcon(s); got != "" {
 			t.Errorf("%q should have no mark, got %s", s, got)
 		}
 	}

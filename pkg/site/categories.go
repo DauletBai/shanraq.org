@@ -1,4 +1,4 @@
-package articles
+package site
 
 // CategoryGeneral is the default rubric for unclassified articles.
 const CategoryGeneral = "general"

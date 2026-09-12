@@ -72,7 +72,7 @@ func (m *Module) renderMaintenance(w http.ResponseWriter, r *http.Request) {
 	// Render to a buffer first so a template error does not leave us with a
 	// half-written body under a 503 status.
 	var buf bytes.Buffer
-	if err := m.tmpl.ExecuteTemplate(&buf, "maintenance", data); err != nil {
+	if err := m.rt.Site.Execute(&buf, "maintenance", data); err != nil {
 		m.rt.Logger.Error("render maintenance", zap.Error(err))
 		http.Error(w, "Site under maintenance", http.StatusServiceUnavailable)
 		return

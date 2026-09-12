@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"shanraq.org/pkg/site"
 	"strings"
 	"testing"
 )
@@ -152,18 +153,18 @@ func TestCategorySlugsAreClosed(t *testing.T) {
 	bad := []string{"", " ", "sport; DROP TABLE articles", "../admin", "SPORT",
 		"politics'", "<script>", "general"}
 	for _, s := range bad {
-		if IsCategory(s) && s != "general" {
+		if site.IsCategory(s) && s != "general" {
 			t.Errorf("IsCategory(%q) accepted an unknown slug", s)
 		}
-		if IsSubcategory(s) {
+		if site.IsSubcategory(s) {
 			t.Errorf("IsSubcategory(%q) accepted an unknown slug", s)
 		}
 	}
-	if NormalizeCategory("sport; DROP TABLE articles") != CategoryGeneral {
+	if site.NormalizeCategory("sport; DROP TABLE articles") != CategoryGeneral {
 		t.Error("an unknown category must normalise to the general bucket")
 	}
 	for _, c := range Categories {
-		if !IsCategory(c) {
+		if !site.IsCategory(c) {
 			t.Errorf("IsCategory(%q) rejected a registered category", c)
 		}
 	}

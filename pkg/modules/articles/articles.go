@@ -3,7 +3,6 @@ package articles
 import (
 	"context"
 	"embed"
-	"html/template"
 	"net/http"
 	"strings"
 
@@ -67,7 +66,6 @@ type Module struct {
 	syndicate     *syndicate.Module
 	media         *media.Module
 	mailer        Mailer
-	tmpl          *template.Template
 	validator     *validate.Validator
 	infobar       *InfoBar
 }
@@ -159,11 +157,9 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.validator = validate.New()
 	m.infobar = NewInfoBar(rt.Logger, socialLinks(rt.Config.Social), rt.Config.Social.GitHub)
 
-	tmpl, err := template.New("articles").Funcs(templateFuncs()).ParseFS(templateFiles, "templates/*.html")
-	if err != nil {
-		return err
-	}
-	m.tmpl = tmpl
+	// The pages go into the site-wide template set; it is parsed once, after
+	// every module has added its own.
+	rt.Site.Add(templateFuncs(), templateFiles, "templates/*.html")
 	return nil
 }
 
@@ -372,8 +368,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 }
 
 func (m *Module) render(w http.ResponseWriter, name string, data any) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	if err := m.tmpl.ExecuteTemplate(w, name, data); err != nil {
+	if err := m.rt.Site.Render(w, name, data); err != nil {
 		m.rt.Logger.Error("render article template", zap.String("template", name), zap.Error(err))
 		http.Error(w, "template error", http.StatusInternalServerError)
 	}

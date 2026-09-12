@@ -1,8 +1,7 @@
-package articles
+package site
 
 import (
 	"html/template"
-	"strings"
 )
 
 // Shanraq's own line-icon set — drawn in-house in one consistent style so we
@@ -129,8 +128,8 @@ var iconPaths = map[string]string{
 	"am_gas":             `<path d="M12 22a6 6 0 0 0 6-6c0-4-3-5-4-9-1 3-3 3-4 2-1 3-4 4-4 7a6 6 0 0 0 6 6z"/>`,
 }
 
-// icon returns the inline SVG for a named glyph, or empty if unknown.
-func icon(name string) template.HTML {
+// Icon returns the inline SVG for a named glyph, or empty if unknown.
+func Icon(name string) template.HTML {
 	p, ok := iconPaths[name]
 	if !ok {
 		return ""
@@ -140,62 +139,15 @@ func icon(name string) template.HTML {
 		p + `</svg>`)
 }
 
-// roomIcon returns the icon for a room-type key (e.g. "bedroom").
-func roomIcon(roomType string) template.HTML { return icon("room_" + roomType) }
+// RoomIcon returns the icon for a room-type key (e.g. "bedroom").
+func RoomIcon(roomType string) template.HTML { return Icon("room_" + roomType) }
 
-// amenityIcon returns the icon for an amenity key (e.g. "parking").
-func amenityIcon(key string) template.HTML { return icon("am_" + key) }
+// AmenityIcon returns the icon for an amenity key (e.g. "parking").
+func AmenityIcon(key string) template.HTML { return Icon("am_" + key) }
 
-// countryFlags holds small COLORED flag SVGs — an intentional exception to the
-// monochrome red set, since a flag is meaningful only in its own colours.
-var countryFlags = map[string]string{
-	"Казахстан": `<rect width="24" height="16" rx="2" fill="#00AFCA"/><circle cx="13" cy="7" r="2.4" fill="#FEC50C"/>` +
-		`<g stroke="#FEC50C" stroke-width=".7" stroke-linecap="round"><path d="M13 3.3v1M13 10.7v-1M8.7 7h1M17.3 7h-1M9.9 3.9l.7.7M16.1 10.1l-.7-.7M16.1 3.9l-.7.7M9.9 10.1l.7-.7"/></g>` +
-		`<path d="M3 2.6v10.8" stroke="#FEC50C" stroke-width=".9"/>`,
-	"Россия": `<rect width="24" height="16" rx="2" fill="#fff"/>` +
-		`<path d="M0 5.33h24v5.34H0z" fill="#0039A6"/>` +
-		`<path d="M0 10.67h24V14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2z" fill="#D52B1E"/>`,
-}
-
-// countryAliases maps every name a country is stored under to the key the flag
-// table uses. The cascade writes the country in the language the author was
-// reading, so the same place arrives as Россия, Ресей or Russia — and a lookup
-// on the Russian name alone found nothing for two of the three.
-var countryAliases = map[string]string{
-	"Kazakhstan": "Казахстан", "Қазақстан": "Казахстан",
-	"Russia": "Россия", "Ресей": "Россия",
-}
-
-// countryMark draws the flag beside a country in the public statistics: the
-// drawn one where we have it, an emoji flag otherwise.
-//
-// The emoji is the only way to cover ninety-odd countries without hand-drawing
-// ninety-odd flags, but it renders on Windows as two letters instead of a flag.
-// The two countries this audience actually looks for are drawn as SVG, so they
-// keep their colours on every machine; the long tail degrades to a code, which
-// is still the right answer.
-func countryMark(code, title string) template.HTML {
-	if svg := countryFlag(title); svg != "" {
-		return svg
-	}
-	return template.HTML(template.HTMLEscapeString(countryFlagEmoji(code)))
-}
-
-// countryFlag returns the colored flag for a country name, or "" if unknown.
-func countryFlag(country string) template.HTML {
-	if canonical, ok := countryAliases[country]; ok {
-		country = canonical
-	}
-	f, ok := countryFlags[country]
-	if !ok || f == "" {
-		return ""
-	}
-	return template.HTML(`<svg class="flag" viewBox="0 0 24 16" width="1.3em" height="0.87em" aria-hidden="true">` + f + `</svg>`)
-}
-
-// dict builds a map from alternating key/value pairs, so a template can pass
+// Dict builds a map from alternating key/value pairs, so a template can pass
 // several named values into a sub-template ({{ template "x" (dict "a" 1) }}).
-func dict(pairs ...any) map[string]any {
+func Dict(pairs ...any) map[string]any {
 	m := make(map[string]any, len(pairs)/2)
 	for i := 0; i+1 < len(pairs); i += 2 {
 		if k, ok := pairs[i].(string); ok {
@@ -205,50 +157,19 @@ func dict(pairs ...any) map[string]any {
 	return m
 }
 
-// firstStrings returns at most n items of a slice (for a compact icon row).
-func firstStrings(list []string, n int) []string {
+// FirstStrings returns at most n items of a slice (for a compact icon row).
+func FirstStrings(list []string, n int) []string {
 	if len(list) > n {
 		return list[:n]
 	}
 	return list
 }
 
-// catIcon returns the rubric icon for a category key (e.g. "politics"),
+// CatIcon returns the rubric icon for a category key (e.g. "politics"),
 // falling back to the "general" glyph for unknown categories.
-func catIcon(category string) template.HTML {
+func CatIcon(category string) template.HTML {
 	if _, ok := iconPaths["cat_"+category]; !ok {
-		return icon("cat_general")
+		return Icon("cat_general")
 	}
-	return icon("cat_" + category)
+	return Icon("cat_" + category)
 }
-
-// countryFlagEmoji turns a two-letter ISO country code into its flag, by the
-// Unicode rule that a flag IS its country code written in regional-indicator
-// letters. Derived, not looked up: every country the analytics can ever report
-// gets a flag, with no table to maintain and no country silently missing one.
-//
-// The datacenter/VPN bucket has no country by definition, so it gets a cloud —
-// it is hosting, not a place. Anything that is not exactly two ASCII letters
-// gets nothing rather than a mystery glyph.
-//
-// Caveat worth knowing: Windows renders these as the two letters instead of a
-// flag. That degrades to the country code, which is still the right answer.
-func countryFlagEmoji(code string) string {
-	if code == datacenterLabel {
-		return "☁️"
-	}
-	if len(code) != 2 {
-		return ""
-	}
-	var out []rune
-	for _, c := range strings.ToUpper(code) {
-		if c < 'A' || c > 'Z' {
-			return ""
-		}
-		out = append(out, regionalIndicatorA+(c-'A'))
-	}
-	return string(out)
-}
-
-// regionalIndicatorA is U+1F1E6 REGIONAL INDICATOR SYMBOL LETTER A.
-const regionalIndicatorA = '\U0001F1E6'

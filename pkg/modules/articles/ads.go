@@ -86,7 +86,7 @@ func adSurfaceFor(r *http.Request) string {
 	case strings.HasPrefix(p, "/read/"):
 		return surfaceArticles
 	case p == "/":
-		if cat := r.URL.Query().Get("cat"); cat != "" && IsCategory(cat) {
+		if cat := r.URL.Query().Get("cat"); cat != "" && site.IsCategory(cat) {
 			return adRubricSurface(cat)
 		}
 		return surfaceHome

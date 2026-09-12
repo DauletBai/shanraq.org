@@ -14,18 +14,21 @@ import (
 )
 
 // buildTemplates mirrors Module.Init template wiring so we can validate the
-// embedded templates without a running server or database.
-func buildTemplates(t *testing.T) *template.Template {
+// embedded templates without a running server or database. It goes through the
+// site renderer, which is what the running module does, so a page that needs a
+// partial or a helper from the frame is tested with them present.
+func buildTemplates(t *testing.T) *site.Renderer {
 	t.Helper()
-	tmpl, err := template.New("articles").Funcs(templateFuncs()).ParseFS(templateFiles, "templates/*.html")
-	if err != nil {
+	r := site.NewRenderer()
+	r.Add(templateFuncs(), templateFiles, "templates/*.html")
+	if err := r.Build(); err != nil {
 		t.Fatalf("parse templates: %v", err)
 	}
-	return tmpl
+	return r
 }
 
 func TestTemplatesExecute(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	now := time.Now()
 
 	// Exercise every UI language so a missing translation key surfaces.
@@ -109,7 +112,7 @@ func TestTemplatesExecute(t *testing.T) {
 				Durations: []tariffField{{"listing.free_days", "Free", 21}}}},
 		}
 		for _, c := range cases {
-			if err := tmpl.ExecuteTemplate(io.Discard, c.name, c.data); err != nil {
+			if err := renderer.Execute(io.Discard, c.name, c.data); err != nil {
 				t.Errorf("execute %q (lang %s): %v", c.name, lang, err)
 			}
 		}
@@ -162,7 +165,7 @@ func TestCompactNum(t *testing.T) {
 // stretch their card until one column runs several screens past the other, so
 // every growing list must scroll inside a fixed height instead.
 func TestAdminGrowingListsScroll(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	now := time.Now()
 	rows := []GuestSimpleRow{{Title: "Прямые", N: 1345, Pct: 100}, {Title: "Facebook", N: 62, Pct: 5}}
 	var cs []AdminComment
@@ -180,7 +183,7 @@ func TestAdminGrowingListsScroll(t *testing.T) {
 			Browsers: rows, Countries: rows, Langs: rows, EnglishBy: rows, VPNLangs: rows},
 	}
 	var sb strings.Builder
-	if err := tmpl.ExecuteTemplate(&sb, "admin", page); err != nil {
+	if err := renderer.Execute(&sb, "admin", page); err != nil {
 		t.Fatal(err)
 	}
 	out := sb.String()
@@ -215,14 +218,14 @@ func TestAdminGrowingListsScroll(t *testing.T) {
 }
 
 func TestStudioDeleteIsDraftOnly(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	now := time.Now()
 	var sb strings.Builder
 	page := StudioPage{Base: Base{Lang: "ru", Title: "T"}, Articles: []StudioRow{
 		{ID: "d1", Slug: "s1", Title: "Черновик", Status: "draft", Updated: now, Langs: []string{LangRU}},
 		{ID: "p1", Slug: "s2", Title: "Опубликована", Status: "published", Updated: now, Langs: []string{LangRU}},
 	}}
-	if err := tmpl.ExecuteTemplate(&sb, "studio_dashboard", page); err != nil {
+	if err := renderer.Execute(&sb, "studio_dashboard", page); err != nil {
 		t.Fatal(err)
 	}
 	out := sb.String()
@@ -313,11 +316,11 @@ func TestSlugify(t *testing.T) {
 // a share link that is double-escaped still renders fine and only fails in the
 // target app, where nobody on the team would notice.
 func TestShareRowLinks(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 
 	const url = "https://shanraq.org/read/ne-ta-tablica?lang=ru"
 	var b strings.Builder
-	if err := tmpl.ExecuteTemplate(&b, "share_row", map[string]any{
+	if err := renderer.Execute(&b, "share_row", map[string]any{
 		"Lang": LangRU, "Title": "Не та таблица & спорт", "URL": url,
 	}); err != nil {
 		t.Fatalf("execute share_row: %v", err)
@@ -372,7 +375,7 @@ func TestShareRowLinks(t *testing.T) {
 // TestArticleShowsShareToGuests guards the point of the feature: the reader most
 // likely to pass an article on is the one who is not logged in.
 func TestArticleShowsShareToGuests(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	now := time.Now()
 	page := ArticlePage{
 		Base: Base{Title: "T", Lang: LangRU, Authed: false,
@@ -381,7 +384,7 @@ func TestArticleShowsShareToGuests(t *testing.T) {
 		Published: &now, Body: template.HTML("<p>x</p>"),
 	}
 	var b strings.Builder
-	if err := tmpl.ExecuteTemplate(&b, "article", page); err != nil {
+	if err := renderer.Execute(&b, "article", page); err != nil {
 		t.Fatalf("execute article: %v", err)
 	}
 	out := b.String()
@@ -412,7 +415,7 @@ func TestArticleShowsShareToGuests(t *testing.T) {
 // TestListingShowsShare guards sharing on listings, where it matters most:
 // people send a flat to family long before they call the number.
 func TestListingShowsShare(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	page := ListingViewPage{
 		Base: Base{Title: "T", Lang: LangRU, Authed: false,
 			SiteURL: "https://shanraq.org", CanonURL: "/listings/abc?lang=ru"},
@@ -421,7 +424,7 @@ func TestListingShowsShare(t *testing.T) {
 			Title: "Дом в аренду", Contact: "+7 700 000 00 00"},
 	}
 	var b strings.Builder
-	if err := tmpl.ExecuteTemplate(&b, "listing_view", page); err != nil {
+	if err := renderer.Execute(&b, "listing_view", page); err != nil {
 		t.Fatalf("execute listing_view: %v", err)
 	}
 	out := b.String()
@@ -446,8 +449,8 @@ func TestWithUTM(t *testing.T) {
 		{"", "whatsapp", ""},
 	}
 	for _, c := range cases {
-		if got := withUTM(c.in, c.src); got != c.want {
-			t.Errorf("withUTM(%q, %q) = %q, want %q", c.in, c.src, got, c.want)
+		if got := site.WithUTM(c.in, c.src); got != c.want {
+			t.Errorf("WithUTM(%q, %q) = %q, want %q", c.in, c.src, got, c.want)
 		}
 	}
 	// The label has to survive the round trip, or the tag is decoration.
@@ -463,7 +466,7 @@ func TestWithUTM(t *testing.T) {
 // the four that had one rendered at 1.8–2.9:1 against the dark panel — "По
 // приглашению" was effectively invisible. This catches the next one.
 func TestAdminStatusBadgesAreThemeable(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	var sb strings.Builder
 	page := AdminPage{
 		Base:           Base{Lang: "ru", Title: "T"},
@@ -471,7 +474,7 @@ func TestAdminStatusBadgesAreThemeable(t *testing.T) {
 		Services:       []ServiceFlag{{Code: "listing_promo", Status: svcInviteOnly}},
 		Site:           ServiceFlag{Code: "site", Status: svcOn},
 	}
-	if err := tmpl.ExecuteTemplate(&sb, "admin", page); err != nil {
+	if err := renderer.Execute(&sb, "admin", page); err != nil {
 		t.Fatalf("render admin: %v", err)
 	}
 	out := sb.String()
@@ -484,7 +487,7 @@ func TestAdminStatusBadgesAreThemeable(t *testing.T) {
 // figures said once rather than as a chart plus a table of the same numbers,
 // and a chart with a readable scale.
 func TestAdminGuestPanelsSplitInThree(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	rows := []GuestSimpleRow{{Title: "Статьи", N: 1223, Pct: 100}, {Title: "Главная", N: 1044, Pct: 85}}
 	pages := []GuestPageRow{
 		{Title: "Статьи", Pct: 100, A: Audience{Guest: 1184, Registered: 39}},
@@ -501,7 +504,7 @@ func TestAdminGuestPanelsSplitInThree(t *testing.T) {
 			TrendTicks: []AxisTick{{N: 300, Pct: 100}, {N: 150, Pct: 50}, {N: 0, Pct: 0}}},
 	}
 	var sb strings.Builder
-	if err := tmpl.ExecuteTemplate(&sb, "admin", page); err != nil {
+	if err := renderer.Execute(&sb, "admin", page); err != nil {
 		t.Fatal(err)
 	}
 	out := sb.String()
@@ -560,7 +563,7 @@ func TestAdminGuestPanelsSplitInThree(t *testing.T) {
 // permission-gated section is present.
 func renderAdminFull(t *testing.T) string {
 	t.Helper()
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	rows := []GuestSimpleRow{{Title: "Прямые", N: 10, Pct: 100}}
 	page := AdminPage{Base: Base{Lang: LangRU, Title: "T"}, Email: "a@b.c", Role: "admin",
 		CanManageUsers: true, CanModerate: true, CanFinance: true,
@@ -582,7 +585,7 @@ func renderAdminFull(t *testing.T) string {
 			OS: rows, Browsers: rows, Countries: rows, Langs: rows, EnglishBy: rows, VPNLangs: rows},
 	}
 	var sb strings.Builder
-	if err := tmpl.ExecuteTemplate(&sb, "admin", page); err != nil {
+	if err := renderer.Execute(&sb, "admin", page); err != nil {
 		t.Fatal(err)
 	}
 	return sb.String()
@@ -646,12 +649,12 @@ func TestAdminNavAnchorsExist(t *testing.T) {
 // an image. Category feeds are separate indexable URLs, so each names its own
 // subject rather than all ten repeating one line.
 func TestHomeHasExactlyOneH1(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	render := func(cat string) string {
 		t.Helper()
 		base := Base{Title: "T", Lang: LangRU, ShowLangs: true, ActiveCat: cat, LangLinks: site.LangLinks("/", "")}
 		var sb strings.Builder
-		if err := tmpl.ExecuteTemplate(&sb, "home", HomePage{Base: base}); err != nil {
+		if err := renderer.Execute(&sb, "home", HomePage{Base: base}); err != nil {
 			t.Fatal(err)
 		}
 		return sb.String()
@@ -686,12 +689,12 @@ func TestHomeHasExactlyOneH1(t *testing.T) {
 // the site, including the home feed, which has no map. Only the two pages that
 // draw one should pay for it.
 func TestLeafletOnlyWhereThereIsAMap(t *testing.T) {
-	tmpl := buildTemplates(t)
+	renderer := buildTemplates(t)
 	base := Base{Title: "T", Lang: LangRU, ShowLangs: true, LangLinks: site.LangLinks("/", "")}
 	render := func(name string, data any) string {
 		t.Helper()
 		var sb strings.Builder
-		if err := tmpl.ExecuteTemplate(&sb, name, data); err != nil {
+		if err := renderer.Execute(&sb, name, data); err != nil {
 			t.Fatal(err)
 		}
 		return sb.String()

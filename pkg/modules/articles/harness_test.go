@@ -20,6 +20,7 @@ import (
 	"shanraq.org/pkg/modules/notifier"
 	"shanraq.org/pkg/modules/syndicate"
 	"shanraq.org/pkg/shanraq"
+	"shanraq.org/pkg/site"
 )
 
 // testApp wires the real auth + articles modules against the test database and
@@ -66,7 +67,7 @@ func newTestApp(t *testing.T, authOpts ...auth.Option) *testApp {
 			MaxDimension: 1600, MaxUploadBytes: 10 << 20,
 		},
 	}
-	rt := &shanraq.Runtime{Config: cfg, Logger: zap.NewNop(), DB: pool, Router: chi.NewRouter()}
+	rt := &shanraq.Runtime{Config: cfg, Logger: zap.NewNop(), DB: pool, Router: chi.NewRouter(), Site: site.NewRenderer()}
 
 	mailer := notifier.New()
 	authM := auth.New(append([]auth.Option{auth.WithMailer(mailer)}, authOpts...)...)
@@ -79,6 +80,9 @@ func newTestApp(t *testing.T, authOpts ...auth.Option) *testApp {
 		if err := m.Init(ctx, rt); err != nil {
 			t.Fatalf("%s init: %v", m.Name(), err)
 		}
+	}
+	if err := rt.Site.Build(); err != nil {
+		t.Fatalf("site templates: %v", err)
 	}
 	authM.Routes(rt.Router)
 	mediaM.Routes(rt.Router)

@@ -34,3 +34,12 @@ type (
 	SocialLink  = site.SocialLink
 	InfoBarData = site.InfoBarData
 )
+
+// The rubric list is the site's own menu rather than one module's taxonomy:
+// articles are filed under it, listings sit beside it, and the header draws it.
+const CategoryGeneral = site.CategoryGeneral
+
+var (
+	Categories    = site.Categories
+	Subcategories = site.Subcategories
+)

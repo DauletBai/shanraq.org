@@ -286,10 +286,10 @@ func seoFilterQuery(r *http.Request) string {
 	var parts []string
 	switch r.URL.Path {
 	case "/":
-		if c := q.Get("cat"); IsCategory(c) {
+		if c := q.Get("cat"); site.IsCategory(c) {
 			parts = append(parts, "cat="+url.QueryEscape(c))
 			// A subcategory is only meaningful under its category.
-			if s := q.Get("sub"); IsSubcategory(s) {
+			if s := q.Get("sub"); site.IsSubcategory(s) {
 				parts = append(parts, "sub="+url.QueryEscape(s))
 			}
 		}
@@ -443,9 +443,9 @@ func feedURL(r *http.Request, lang string, page int) string {
 	q := url.Values{}
 	q.Set("lang", lang)
 	src := r.URL.Query()
-	if c := src.Get("cat"); IsCategory(c) {
+	if c := src.Get("cat"); site.IsCategory(c) {
 		q.Set("cat", c)
-		if sub := src.Get("sub"); IsSubcategory(sub) {
+		if sub := src.Get("sub"); site.IsSubcategory(sub) {
 			q.Set("sub", sub)
 		}
 	}
@@ -515,13 +515,13 @@ func (m *Module) handleHome(w http.ResponseWriter, r *http.Request) {
 		active = "top"
 	}
 	cat := ""
-	if c := r.URL.Query().Get("cat"); IsCategory(c) {
+	if c := r.URL.Query().Get("cat"); site.IsCategory(c) {
 		cat = c
 	}
 	sub := ""
-	if s := r.URL.Query().Get("sub"); IsSubcategory(s) {
+	if s := r.URL.Query().Get("sub"); site.IsSubcategory(s) {
 		sub = s
-		cat = SubcategoryParent(s) // a subcategory implies its parent category
+		cat = site.SubcategoryParent(s) // a subcategory implies its parent category
 	}
 
 	pageNo := pageParam(r)
@@ -1769,8 +1769,8 @@ func parseEditorForm(r *http.Request) (originalLang, category, subcategory, cove
 	if !site.IsLang(originalLang) {
 		originalLang = LangRU
 	}
-	category = NormalizeCategory(r.FormValue("category"))
-	subcategory = NormalizeSubcategory(category, r.FormValue("subcategory"))
+	category = site.NormalizeCategory(r.FormValue("category"))
+	subcategory = site.NormalizeSubcategory(category, r.FormValue("subcategory"))
 	coverURL = sanitizeCoverURL(r.FormValue("cover_url"))
 	for _, l := range Langs {
 		trs = append(trs, TranslationInput{

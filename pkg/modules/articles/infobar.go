@@ -372,20 +372,6 @@ func localizedDate(lang string, t time.Time) string {
 	return fmt.Sprintf("%s, %d %s %d", days[int(t.Weekday())], t.Day(), months[int(t.Month())-1], t.Year())
 }
 
-// curSymbol maps a currency code to its symbol for the compact bar.
-func curSymbol(code string) string {
-	switch code {
-	case "USD":
-		return "$"
-	case "EUR":
-		return "€"
-	case "RUB":
-		return "₽"
-	default:
-		return code
-	}
-}
-
 // weatherIconName maps a WMO weather code to a Shanraq weather icon key.
 func weatherIconName(code int) string {
 	switch {

@@ -1,4 +1,4 @@
-package articles
+package site
 
 import (
 	"os"
@@ -17,7 +17,7 @@ func TestDumpBrandMarks(t *testing.T) {
 		t.Skip("set BRANDICO_DUMP=<dir> to write the marks out")
 	}
 	for slug := range brandMarks {
-		svg := string(brandIcon(slug))
+		svg := string(BrandIcon(slug))
 		svg = strings.Replace(svg, `<svg class="brandico brandico--ink"`,
 			`<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"`, 1)
 		svg = strings.Replace(svg, `<svg class="brandico"`,

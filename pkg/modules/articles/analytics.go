@@ -1182,25 +1182,6 @@ func sortClickRows(rs []GuestClickRow) {
 	}
 }
 
-// withUTM tags a share link with its channel, so a reader who passes an article
-// on through WhatsApp arrives as WhatsApp rather than as "direct".
-//
-// This is not decoration. Messengers and in-app browsers strip the Referer, so
-// without the tag every shared link lands in the direct bucket and the panel
-// cannot tell a channel that works from one that does not — which is the whole
-// question at this stage. utmSource maps the value back to a known label; a
-// source it does not recognise is ignored rather than stored.
-func withUTM(rawURL, source string) string {
-	if rawURL == "" || source == "" {
-		return rawURL
-	}
-	sep := "?"
-	if strings.Contains(rawURL, "?") {
-		sep = "&"
-	}
-	return rawURL + sep + "utm_source=" + url.QueryEscape(source) + "&utm_medium=share"
-}
-
 // audienceHit reports whether a request counts as a person, by the same rule
 // the page counter uses. The reading beacons ask it too, so the funnel and the
 // views describe one population and can honestly be compared.

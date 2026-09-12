@@ -8,6 +8,7 @@ import (
 	"shanraq.org/internal/db"
 	"shanraq.org/internal/httpserver"
 	"shanraq.org/internal/logging"
+	"shanraq.org/pkg/site"
 	"shanraq.org/pkg/transport/respond"
 
 	"github.com/go-chi/chi/v5"
@@ -45,6 +46,9 @@ type Runtime struct {
 	Logger *zap.Logger
 	DB     *pgxpool.Pool
 	Router chi.Router
+	// Site is the shared page frame: one template set for the whole site, which
+	// every module adds its own pages and helpers to during Init.
+	Site *site.Renderer
 }
 
 // Application wires together configuration, dependencies, and modules.
@@ -83,6 +87,7 @@ func (a *Application) Run(ctx context.Context) error {
 		Logger: logger,
 		DB:     pool,
 		Router: server.Router(),
+		Site:   site.NewRenderer(),
 	}
 
 	// 5xx responses hide their cause from the caller (it tends to be raw driver
@@ -102,6 +107,13 @@ func (a *Application) Run(ctx context.Context) error {
 		if router, ok := mod.(RouterModule); ok {
 			router.Routes(rt.Router)
 		}
+	}
+
+	// Every module has now contributed its templates and helpers, so the one
+	// template set can be parsed. A broken template stops the boot here rather
+	// than showing up as a 500 on the one page that uses it.
+	if err := rt.Site.Build(); err != nil {
+		return fmt.Errorf("site templates: %w", err)
 	}
 
 	group, groupCtx := errgroup.WithContext(ctx)
