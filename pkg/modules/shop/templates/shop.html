@@ -67,7 +67,7 @@
 
       {{/* What is on offer, in one panel: the right the buyer gets, the price
            (or the honest absence of one), and the free fragment. */}}
-      <section class="cab-card shop-offer" aria-labelledby="shop-rights">
+      <section class="cab-card shop-card shop-offer" aria-labelledby="shop-rights">
         <h2 id="shop-rights">{{ t .Lang "shop.rights_title" }}</h2>
         <p>{{ t .Lang "shop.rights_text" }}</p>
         <p class="hint shop-offer__terms"><a href="/offer?lang={{ .Lang }}">{{ t .Lang "shop.offer_link" }}</a></p>
@@ -87,7 +87,7 @@
         <h2 class="shop-plans__h" id="shop-plans-h">{{ t .Lang "shop.plans_title" }}</h2>
         <div class="shop-plans__grid">
           {{ range .Packages }}
-          <div class="cab-card shop-plan">
+          <div class="cab-card shop-card shop-plan">
             <h3 class="shop-plan__title">{{ .Title }}</h3>
             <p class="shop-price{{ if not .Buyable }} shop-price--soon{{ end }}">
               {{ if .Buyable }}{{ money .Price }} ₸{{ else }}{{ t $.Lang "shop.price_soon" }}{{ end }}
@@ -105,7 +105,7 @@
       {{/* Nothing can be bought until an acquirer is connected, so the page
            offers the one thing it can honestly offer: a letter when it is. */}}
       {{ if not .P.OnSale }}
-      <section class="cab-card" aria-labelledby="shop-notify">
+      <section class="cab-card shop-card" aria-labelledby="shop-notify">
         <h2 id="shop-notify">{{ t .Lang "shop.notify_title" }}</h2>
         <p class="hint">{{ t .Lang "shop.notify_text" }}</p>
         <form class="subgroup shop-notify" method="post" action="/shop/{{ .P.Slug }}/notify?lang={{ .Lang }}" data-track="shop_notify">
@@ -135,7 +135,7 @@
   {{ end }}
 
   {{ range .Items }}
-  <form class="cab-card" method="post" action="/admin/shop/{{ .P.Slug }}">
+  <form class="cab-card shop-card" method="post" action="/admin/shop/{{ .P.Slug }}">
     <h2>{{ .P.Slug }}</h2>
     <p class="hint">
       <a href="{{ .URL }}">{{ t $.Lang "shop.admin_open" }}</a> ·
