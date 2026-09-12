@@ -719,6 +719,18 @@
     "py-http-suranys-urllib-status",
     "kz"
   ],
+  "python/index": [
+    "py-inflyaciya-kobeitkish-indeks",
+    "ru"
+  ],
+  "python/index-en": [
+    "py-inflyaciya-kobeitkish-indeks",
+    "en"
+  ],
+  "python/index-kz": [
+    "py-inflyaciya-kobeitkish-indeks",
+    "kz"
+  ],
   "python/intro": [
     "tegin-kurs-python-derek-pen-ii",
     "ru"

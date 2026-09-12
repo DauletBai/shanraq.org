@@ -2803,6 +2803,33 @@ def pymap37(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap38(s):
+    """Python lesson 38: the rate, the multiplier and the index.
+
+    The multiplier is the accent: it is the step where percentages stop being
+    numbers you add and start being numbers you multiply.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5477,6 +5504,37 @@ PY37 = {
                foot_sub="measured: 2022, ten countries"),
 }
 
+PY38 = {
+    "kz": dict(alt="Мөлшерлеме, көбейткіш және индекс",
+               b1="мөлшерлеме", b1_sub="жылына пайыз",
+               b2="көбейткіш", b2_sub="1 + p / 100",
+               b3="индекс", b3_sub="cumprod",
+               c1="қосуға болмайды", c2="база: 2014 = 100",
+               head="ИНФЛЯЦИЯ — КӨБЕЙТКІШ",
+               head_sub="отыз сегізінші сабақ: индекс",
+               foot="ОН ЖЫЛДА БАҒА 2.42 ЕСЕ ӨСТІ",
+               foot_sub="мөлшерлемелер қосындысы 92.98 % дейді"),
+    "ru": dict(alt="Ставка, множитель и индекс",
+               b1="ставка", b1_sub="процент за год",
+               b2="множитель", b2_sub="1 + p / 100",
+               b3="индекс", b3_sub="cumprod",
+               c1="складывать нельзя", c2="база: 2014 = 100",
+               head="ИНФЛЯЦИЯ — ЭТО МНОЖИТЕЛЬ",
+               head_sub="тридцать восьмой урок: индекс",
+               foot="ЗА ДЕСЯТЬ ЛЕТ ЦЕНЫ ВЫРОСЛИ В 2.42 РАЗА",
+               foot_sub="сумма ставок обещает 92.98 %"),
+    "en": dict(alt="The rate, the multiplier and the index",
+               b1="the rate", b1_sub="per cent a year",
+               b2="multiplier", b2_sub="1 + p / 100",
+               b3="the index", b3_sub="cumprod",
+               c1="never added up", c2="base: 2014 = 100",
+               head="INFLATION IS A MULTIPLIER",
+               head_sub="lesson thirty-eight: the index",
+               foot="IN TEN YEARS PRICES GREW 2.42 TIMES",
+               foot_sub="the rates add up to 92.98 %"),
+}
+
+
 
 
 
@@ -5526,7 +5584,8 @@ if __name__ == "__main__":
                                ("report", pymap34, PY34),
                                ("format", pymap35, PY35),
                                ("pipeline", pymap36, PY36),
-                               ("average", pymap37, PY37)):
+                               ("average", pymap37, PY37),
+                               ("index", pymap38, PY38)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
