@@ -36,6 +36,12 @@ type Module struct {
 	cfg    config.SMTPConfig
 }
 
+// replyTo is the address a reader's answer should go to. It is the operator's
+// contact address and not the sender: letters go out from no-reply@shanraq.org,
+// and that domain accepts no mail -- its MX points at our own server, which
+// runs no mail daemon. Without this header a reply to one of our letters is
+// refused, and the reader has no way of knowing that.
+
 func New() *Module { return &Module{} }
 
 func (m *Module) Name() string { return "notifier" }
@@ -50,8 +56,13 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	if m.cfg.Port == 0 {
 		m.cfg.Port = 587
 	}
-	m.sender = &smtpSender{cfg: m.cfg}
-	rt.Logger.Info("notifier: smtp configured", zap.String("host", m.cfg.Host), zap.Int("port", m.cfg.Port))
+	replyTo := strings.TrimSpace(rt.Config.Operator.Email)
+	m.sender = &smtpSender{cfg: m.cfg, replyTo: replyTo}
+	rt.Logger.Info("notifier: smtp configured",
+		zap.String("host", m.cfg.Host), zap.Int("port", m.cfg.Port), zap.String("reply_to", replyTo))
+	if replyTo == "" {
+		rt.Logger.Warn("notifier: no reply-to address configured; a reader's answer will bounce")
+	}
 	return nil
 }
 
@@ -81,7 +92,8 @@ var _ interface {
 } = (*Module)(nil)
 
 type smtpSender struct {
-	cfg config.SMTPConfig
+	cfg     config.SMTPConfig
+	replyTo string
 }
 
 func (s *smtpSender) Send(ctx context.Context, to, subject, body string) error {
@@ -98,7 +110,7 @@ func (s *smtpSender) SendWithHeaders(ctx context.Context, to, subject, body stri
 	addr := fmt.Sprintf("%s:%d", s.cfg.Host, s.cfg.Port)
 	// The From header keeps any display name ("Shanraq.org <no-reply@…>"), but
 	// the SMTP envelope sender (MAIL FROM) must be a bare address.
-	msg := buildMessage(s.cfg.From, to, subject, body, extra)
+	msg := buildMessage(s.cfg.From, to, subject, body, withReplyTo(extra, s.replyTo))
 
 	var auth smtp.Auth
 	if s.cfg.Username != "" {
@@ -106,6 +118,27 @@ func (s *smtpSender) SendWithHeaders(ctx context.Context, to, subject, body stri
 	}
 
 	return smtp.SendMail(addr, auth, envelopeSender(s.cfg.From), []string{to}, msg)
+}
+
+// withReplyTo adds the Reply-To header unless the caller set one itself. A
+// caller that knows better -- a thread that should be answered somewhere else --
+// keeps its own value; everything else gets the address the site tells readers
+// to write to.
+func withReplyTo(extra map[string]string, replyTo string) map[string]string {
+	if replyTo == "" {
+		return extra
+	}
+	for k := range extra {
+		if strings.EqualFold(k, "Reply-To") {
+			return extra
+		}
+	}
+	out := make(map[string]string, len(extra)+1)
+	for k, v := range extra {
+		out[k] = v
+	}
+	out["Reply-To"] = replyTo
+	return out
 }
 
 // envelopeSender extracts the bare e-mail address from a possibly display-named

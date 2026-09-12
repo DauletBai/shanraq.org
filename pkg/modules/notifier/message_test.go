@@ -80,3 +80,53 @@ func TestBuildMessageRejectsHeaderInjection(t *testing.T) {
 		t.Errorf("expected 6 header lines, got %d: %q", n, head)
 	}
 }
+
+// Every letter leaves from an address that accepts no mail, so it must say
+// where an answer goes. Without this header a reader's reply is refused by our
+// own domain, which has an MX record and no mail server behind it.
+func TestReplyToIsAddedAndNeverOverridesTheCaller(t *testing.T) {
+	got := withReplyTo(nil, "hello@example.kz")
+	if got["Reply-To"] != "hello@example.kz" {
+		t.Errorf("Reply-To not added: %+v", got)
+	}
+
+	// A caller that set its own Reply-To knows something we do not.
+	own := map[string]string{"Reply-To": "thread@example.kz"}
+	got = withReplyTo(own, "hello@example.kz")
+	if got["Reply-To"] != "thread@example.kz" {
+		t.Errorf("caller's Reply-To was overwritten: %+v", got)
+	}
+	// Header names are case-insensitive, and so is that rule.
+	mixed := map[string]string{"reply-to": "thread@example.kz"}
+	got = withReplyTo(mixed, "hello@example.kz")
+	if _, added := got["Reply-To"]; added {
+		t.Errorf("a differently-cased Reply-To was duplicated: %+v", got)
+	}
+
+	// Nothing configured: no header, and the caller's map is left alone.
+	if got := withReplyTo(nil, ""); got != nil {
+		t.Errorf("with no address configured no header may be added: %+v", got)
+	}
+
+	// The other headers survive the copy.
+	other := map[string]string{"List-Unsubscribe": "<https://shanraq.org/u/1>"}
+	got = withReplyTo(other, "hello@example.kz")
+	if got["List-Unsubscribe"] == "" || got["Reply-To"] == "" {
+		t.Errorf("both headers must be present: %+v", got)
+	}
+	if _, mutated := other["Reply-To"]; mutated {
+		t.Error("the caller's map must not be mutated")
+	}
+}
+
+// The header reaches the wire, and a folded or injected value cannot ride in it.
+func TestReplyToInMessage(t *testing.T) {
+	m := string(buildMessage("no-reply@shanraq.org", "user@example.kz", "Тема", "тело",
+		withReplyTo(nil, "hello@example.kz\r\nBcc: evil@example.com")))
+	if !strings.Contains(m, "Reply-To: hello@example.kzBcc: evil@example.com") {
+		t.Errorf("scrubbed header missing or unscrubbed: %q", m)
+	}
+	if strings.Count(m, "\r\nBcc:") != 0 {
+		t.Errorf("header injection through Reply-To: %q", m)
+	}
+}
