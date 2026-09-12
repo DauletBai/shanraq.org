@@ -7,7 +7,7 @@
 INSERT INTO shop_products (slug, kind, status, price, edition, cover_url, title_kz, title_ru, title_en,
                            summary_kz, summary_ru, summary_en, body_kz, body_ru, body_en, position)
 VALUES (
-    'go-book', 'book', 'draft', 0, '0.2', '/static/shop/go-book-cover.svg',
+    'go-book', 'book', 'draft', 0, '0.2', '/static/shop/go-book-cover.jpg',
     'Go: бірінші жолдан кітап дүкеніне дейін',
     'Go: от первой строки до книжного магазина',
     'Go: from the first line to a bookshop',
