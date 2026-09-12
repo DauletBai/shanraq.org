@@ -73,6 +73,7 @@
         <p class="shop-price{{ if not .P.OnSale }} shop-price--soon{{ end }}">
           {{ if .P.OnSale }}{{ money .P.Price }} ₸{{ else }}{{ t .Lang "shop.price_soon" }}{{ end }}
         </p>
+        <p class="hint shop-offer__terms"><a href="/offer?lang={{ .Lang }}">{{ t .Lang "shop.offer_link" }}</a></p>
         <p class="shop-offer__acts">
           {{ if .P.OnSale }}<a class="btn btn--primary" href="/shop/{{ .P.Slug }}/buy?lang={{ .Lang }}">{{ t .Lang "shop.buy" }}</a>{{ end }}
           {{ if .P.PreviewURL }}

@@ -273,6 +273,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		r.Get("/support", m.handleStaticPage("support"))
 		r.Get("/privacy", m.handleStaticPage("privacy"))
 		r.Get("/terms", m.handleStaticPage("terms"))
+		r.Get("/offer", m.handleStaticPage("offer"))
 		r.Get("/api/geo/roots", m.handleGeoRoots)
 		r.Get("/api/geo/children", m.handleGeoChildren)
 		r.Get("/api/geo/path", m.handleGeoPath)

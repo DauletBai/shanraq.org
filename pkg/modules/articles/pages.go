@@ -1503,6 +1503,213 @@ The law of the Republic of Kazakhstan applies to the Terms. Disputes are resolve
 ## 16. Changes to the Terms
 We may update the Terms; material changes are published on the Platform, and renewed consent is requested where necessary. Continued use after changes constitutes acceptance of them.`},
 	},
+	// The shop's own legal page: what a buyer of a digital edition gets, and
+	// the one question every shop is asked -- whether the money comes back.
+	// It lives with the other legal pages so that all of them are edited in
+	// one place, and it carries the operator tokens for the same reason.
+	"offer": {
+		"ru": {Title: "Оферта и правила возврата", Body: `_Редакция от 12 сентября 2026 года._
+
+Эта страница — публичная оферта: предложение купить цифровое издание на изложенных здесь условиях, обращённое к любому, кто отзовётся (статьи 395 и 396 Гражданского кодекса Республики Казахстан — об оферте и акцепте). Оплатив заказ, вы принимаете эти условия целиком. Не согласны хотя бы с одним — не оплачивайте.
+
+Продавец — {{operator_block}}
+
+## 1. Что продаётся
+Цифровые издания, перечисленные в [магазине](/shop): книги и учебные материалы, которые редакция пишет сама. Товар — файлы (PDF, EPUB, HTML), покупатель скачивает их по ссылке. Бумажных экземпляров нет, почтой ничего не отправляется.
+
+Состав издания на момент покупки указан на его странице: какая это редакция, сколько глав готово, на каком языке написано. Покупатель платит за то состояние, которое там описано, а не за замысел целиком.
+
+## 2. Какое право получает покупатель
+«Право на издание» — личное право пользоваться купленным файлом:
+
+- читать на любом своём устройстве, без ограничения их числа;
+- печатать для себя;
+- хранить свои копии.
+
+Право не даёт публиковать файл или его части, продавать, дарить, выкладывать в открытый доступ и в файлообменники, передавать третьим лицам и использовать текст для обучения моделей машинного обучения. Исключительные права на текст остаются у автора.
+
+Цитировать книгу со ссылкой на источник можно свободно — как любую другую книгу.
+
+## 3. Обновления
+Все последующие редакции купленной книги покупатель получает бесплатно: о каждой приходит письмо со ссылкой. Доплачивать за обновление не нужно никогда.
+
+## 4. Цена и оплата
+Цена указана на странице товара в тенге и включает налоги, если рядом не написано иное. Оплата проходит через платёжный сервис: данные карты уходят прямо ему и на этом сайте не сохраняются.
+
+Договор считается заключённым в момент зачисления оплаты. Подтверждение оплаты и фискальный документ формирует платёжный сервис в порядке, установленном законодательством Республики Казахстан.
+
+## 5. Доставка
+Ссылка на скачивание приходит письмом на адрес, указанный при покупке, сразу после оплаты — обычно за несколько минут и не позже суток.
+
+Ссылка живёт ограниченное время. Когда срок выйдет, новую дадим бесплатно — достаточно письма в поддержку. Доступ к купленному сохраняется, пока работает магазин; если он закроется, мы предупредим письмом заранее и оставим время скачать файлы.
+
+Письмо не пришло — посмотрите в «Спам», потом напишите на support@shanraq.org.
+
+## 6. Возврат
+Цифровой товар нельзя вернуть так, как возвращают вещь: после скачивания файл остаётся у покупателя. Поэтому правила такие.
+
+**До скачивания — возврат полный и без объяснения причин.** Если ссылка не использована, напишите в поддержку в течение 14 календарных дней с оплаты. Деньги вернём тем же способом, каким прошёл платёж, в течение 10 рабочих дней с обращения.
+
+**Файл не открылся, повреждён или пришёл не тот** — это наша ошибка. Исправим или вернём деньги полностью, и здесь никакие 14 дней не действуют: пока покупатель не получил то, за что заплатил, обязательство не исполнено.
+
+**После скачивания возврат не производится**, кроме случая выше. Ровно поэтому вступление и первые главы каждой книги лежат бесплатно: фрагмент даёт прочитать книгу до того, как за неё платят.
+
+**Двойная оплата, ошибка платежа, оплата не того заказа** — возвращаем полностью: по обращению или сами, как только увидим.
+
+Как обратиться: письмо на support@shanraq.org с того адреса, на который оформлялась покупка, с датой оплаты. Отвечаем в течение 3 рабочих дней.
+
+## 7. Что мы обещаем и чего не обещаем
+Обещаем: файл, который открывается; состав, описанный на странице товара; бесплатные обновления; ответ поддержки.
+
+Не обещаем, что книга научит конкретного человека программировать, что после неё возьмут на работу и что каждый пример пойдёт на любой версии языка и в любой операционной системе. Книга — учебный материал, а не услуга с гарантированным результатом.
+
+Незаконченная книга продаётся как незаконченная, и на странице товара всегда написано, что готово на сегодня.
+
+## 8. Персональные данные
+Адрес электронной почты нужен, чтобы выдать покупку и сообщать о новых редакциях. Обработка — по [Политике конфиденциальности](/privacy). От писем о редакциях можно отписаться в любой момент; на доступ к купленному это не влияет.
+
+## 9. Изменения оферты
+Оферта может меняться. К совершённой покупке применяется та редакция, которая действовала в момент оплаты, — её дата стоит вверху страницы.
+
+## 10. Споры
+Применяется право Республики Казахстан. Сначала переписка: почти всё решается письмом в поддержку. Если договориться не вышло — суд по месту нахождения продавца.
+
+Права потребителя, установленные Законом Республики Казахстан «О защите прав потребителей», действуют независимо от того, что написано в этой оферте.`},
+		"kz": {Title: "Оферта және қайтару ережелері", Body: `_2026 жылғы 12 қыркүйектегі редакция._
+
+Бұл бет — жария оферта: сандық басылымды осы бетте жазылған шарттармен сатып алу туралы ұсыныс, әрі ол үн қатқан кез келген адамға арналған (Қазақстан Республикасы Азаматтық кодексінің 395 және 396-баптары — оферта мен акцепт туралы). Тапсырысты төлеу арқылы сіз бұл шарттарды толық қабылдайсыз. Біреуімен болса да келіспесеңіз — төлемеңіз.
+
+Сатушы — {{operator_block}}
+
+## 1. Не сатылады
+[Дүкенде](/shop) көрсетілген сандық басылымдар: редакция өзі жазатын кітаптар мен оқу материалдары. Тауар — файлдар (PDF, EPUB, HTML), сатып алушы оларды сілтеме арқылы жүктеп алады. Қағаз данасы жоқ, поштамен ештеңе жіберілмейді.
+
+Сатып алу сәтіндегі басылымның құрамы оның бетінде жазулы: бұл қай редакция, қанша тарау дайын, қай тілде жазылған. Сатып алушы сол жазылған күйі үшін төлейді, бүкіл ой үшін емес.
+
+## 2. Сатып алушы қандай құқық алады
+«Басылымға құқық» — сатып алынған файлды пайдаланудың жеке құқығы:
+
+- өз құрылғыларының кез келгенінде оқу, саны шектелмейді;
+- өзі үшін басып шығару;
+- өзі үшін көшірме сақтау.
+
+Бұл құқық файлды немесе оның бөліктерін жариялауға, сатуға, сыйға беруге, ашық қолжетімділікке және файл алмасу қызметтеріне салуға, үшінші тұлғаларға беруге және мәтінді машиналық оқыту модельдерін үйрету үшін пайдалануға рұқсат бермейді. Мәтінге айрықша құқық авторда қалады.
+
+Кітаптан дереккөзге сілтеме жасап дәйексөз келтіруге еркін болады — кез келген басқа кітап сияқты.
+
+## 3. Жаңартулар
+Сатып алынған кітаптың кейінгі барлық редакциясын сатып алушы тегін алады: әрқайсысы туралы сілтемесі бар хат келеді. Жаңарту үшін ешқашан қосымша төлемейді.
+
+## 4. Бағасы және төлем
+Баға тауар бетінде теңгемен көрсетілген әрі қасында басқаша жазылмаса, салықтарды қамтиды. Төлем төлем қызметі арқылы өтеді: карта деректері тікелей соған кетеді, бұл сайтта сақталмайды.
+
+Шарт төлем түскен сәтте жасалды деп есептеледі. Төлемнің расталуы мен фискалдық құжатты төлем қызметі Қазақстан Республикасының заңнамасында белгіленген тәртіппен жасайды.
+
+## 5. Жеткізу
+Жүктеу сілтемесі сатып алу кезінде көрсетілген мекенжайға хатпен төлемнен кейін бірден келеді — әдетте бірнеше минутта, ең кеші бір тәулікте.
+
+Сілтеме шектеулі уақыт жұмыс істейді. Мерзімі өткенде жаңасын тегін береміз — қолдау қызметіне хат жазсаңыз жеткілікті. Сатып алынғанға қолжетімділік дүкен жұмыс істеп тұрғанда сақталады; ол жабылатын болса, алдын ала хатпен ескертеміз әрі файлдарды жүктеп алуға уақыт қалдырамыз.
+
+Хат келмесе — «Спам» қалтасын қараңыз, сосын support@shanraq.org мекенжайына жазыңыз.
+
+## 6. Қайтару
+Сандық тауарды затты қайтарғандай қайтару мүмкін емес: жүктеп алғаннан кейін файл сатып алушыда қалады. Сондықтан ережелер мынадай.
+
+**Жүктеп алғанға дейін — толық әрі себебін түсіндірмей қайтару.** Сілтеме пайдаланылмаған болса, төлемнен кейінгі 14 күнтізбелік күн ішінде қолдау қызметіне жазыңыз. Ақшаны төлем өткен тәсілмен, өтініштен кейінгі 10 жұмыс күні ішінде қайтарамыз.
+
+**Файл ашылмаса, бүлінген болса немесе басқасы келсе** — бұл біздің қатеміз. Түзетеміз немесе ақшаны толық қайтарамыз, әрі мұнда 14 күннің қатысы жоқ: сатып алушы төлегенін алмайынша, міндеттеме орындалмаған.
+
+**Жүктеп алғаннан кейін қайтару жасалмайды**, жоғарыдағы жағдайдан басқа. Дәл сондықтан әр кітаптың кіріспесі мен алғашқы тараулары тегін жатыр: үзінді кітапты ақша төлеуден бұрын оқуға мүмкіндік береді.
+
+**Қосарланған төлем, төлемдегі қате, басқа тапсырыстың төленуі** — толық қайтарамыз: өтініш бойынша немесе көрген бойда өзіміз.
+
+Қалай жүгінеді: support@shanraq.org мекенжайына сатып алу рәсімделген поштадан, төлем күнін көрсетіп хат жазасыз. Үш жұмыс күні ішінде жауап береміз.
+
+## 7. Нені уәде етеміз, нені етпейміз
+Уәде етеміз: ашылатын файлды; тауар бетінде сипатталған құрамды; тегін жаңартуларды; қолдау қызметінің жауабын.
+
+Кітап нақты бір адамды бағдарламалауға үйретеді, одан кейін жұмысқа алады немесе әр мысал тілдің кез келген нұсқасында және кез келген операциялық жүйеде жүреді деп уәде етпейміз. Кітап — оқу материалы, нәтижесі кепілдендірілген қызмет емес.
+
+Аяқталмаған кітап аяқталмаған күйінде сатылады, әрі тауар бетінде бүгінге не дайын екені әрқашан жазулы тұрады.
+
+## 8. Дербес деректер
+Электрондық пошта мекенжайы сатып алынғанды беру және жаңа редакциялар туралы хабарлау үшін керек. Өңдеу — [Құпиялылық саясаты](/privacy) бойынша. Редакциялар туралы хаттардан кез келген уақытта бас тартуға болады; бұл сатып алынғанға қолжетімділікке әсер етпейді.
+
+## 9. Офертаның өзгеруі
+Оферта өзгеруі мүмкін. Жасалған сатып алуға төлем сәтінде қолданылған редакция қатысты — оның күні беттің жоғарысында тұр.
+
+## 10. Даулар
+Қазақстан Республикасының құқығы қолданылады. Алдымен хат алмасу: бәрі дерлік қолдау қызметіне жазған хатпен шешіледі. Келісе алмасақ — сатушының тұрған жері бойынша сот.
+
+Қазақстан Республикасының «Тұтынушылардың құқықтарын қорғау туралы» Заңында белгіленген тұтынушы құқықтары осы офертада не жазылғанына қарамастан қолданылады.`},
+		"en": {Title: "Offer and refund rules", Body: `_Edition of 12 September 2026._
+
+This page is a public offer: a proposal to buy a digital edition on the terms set out here, addressed to anyone who accepts it (Articles 395 and 396 of the Civil Code of the Republic of Kazakhstan, on offer and acceptance). By paying for an order you accept these terms in full. If you disagree with even one of them, do not pay.
+
+The seller is {{operator_block}}
+
+## 1. What is sold
+The digital editions listed in the [shop](/shop): books and teaching material the newsroom writes itself. The goods are files (PDF, EPUB, HTML) that the buyer downloads through a link. There are no printed copies and nothing is sent by post.
+
+What an edition contains at the moment of purchase is stated on its page: which edition it is, how many chapters are ready, what language it is written in. The buyer pays for that state, not for the whole intention.
+
+## 2. What right the buyer gets
+"A right to the edition" is a personal right to use the file that was bought:
+
+- to read it on any of your own devices, with no limit on their number;
+- to print it for yourself;
+- to keep your own copies.
+
+The right does not allow publishing the file or parts of it, selling it, giving it away, posting it in open access or on file-sharing services, passing it to third parties, or using the text to train machine-learning models. The exclusive rights to the text remain with the author.
+
+Quoting the book with a reference to the source is free — as with any other book.
+
+## 3. Updates
+The buyer receives every later edition of the book they bought at no charge: each one arrives as an email with a link. There is never anything extra to pay for an update.
+
+## 4. Price and payment
+The price is shown on the product page in tenge and includes taxes unless stated otherwise beside it. Payment goes through a payment service: card details go straight to it and are not stored on this site.
+
+The contract is concluded at the moment the payment is credited. Confirmation of payment and the fiscal document are produced by the payment service in the manner established by the law of the Republic of Kazakhstan.
+
+## 5. Delivery
+The download link is emailed to the address given at purchase, immediately after payment — usually within minutes, and no later than 24 hours.
+
+A link lives for a limited time. When it expires, a new one is free: an email to support is enough. Access to what was bought remains for as long as the shop runs; if it closes, we will write in advance and leave time to download the files.
+
+If the email does not arrive, check the spam folder, then write to support@shanraq.org.
+
+## 6. Refunds
+A digital product cannot be returned the way a thing is returned: after a download the file stays with the buyer. Hence these rules.
+
+**Before the download — a full refund, no reasons asked.** If the link has not been used, write to support within 14 calendar days of payment. The money goes back by the same route the payment came, within 10 working days of the request.
+
+**If the file does not open, is damaged, or is the wrong one** — that is our mistake. We fix it or refund in full, and no 14-day limit applies here: until the buyer has what they paid for, the obligation is not performed.
+
+**After the download there is no refund**, apart from the case above. That is exactly why the preface and the first chapters of every book are published free: the excerpt lets you read the book before paying for it.
+
+**A double payment, a payment error, a payment for the wrong order** — refunded in full, on request or by us as soon as we see it.
+
+How to ask: an email to support@shanraq.org from the address the purchase was made with, giving the date of payment. We answer within 3 working days.
+
+## 7. What we promise and what we do not
+We promise: a file that opens; the contents described on the product page; free updates; an answer from support.
+
+We do not promise that the book will teach a particular person to program, that it will get anyone hired, or that every example will run on every version of the language and every operating system. A book is teaching material, not a service with a guaranteed result.
+
+An unfinished book is sold as unfinished, and the product page always says what is ready today.
+
+## 8. Personal data
+An email address is needed to deliver the purchase and to write about new editions. Processing follows the [Privacy Policy](/privacy). You can unsubscribe from edition notices at any time; that does not affect access to what you bought.
+
+## 9. Changes to this offer
+This offer may change. A purchase is governed by the edition that was in force when it was paid for — its date is at the top of this page.
+
+## 10. Disputes
+The law of the Republic of Kazakhstan applies. Correspondence first: almost everything is settled by an email to support. Where agreement cannot be reached, the courts at the seller's location.
+
+The consumer rights established by the Law of the Republic of Kazakhstan "On the Protection of Consumer Rights" apply regardless of what is written in this offer.`},
+	},
 	"framework": {
 		"ru": {Title: "Свой фреймворк на Go: как устроен shanraq.org", Body: `Этот сайт не работает ни на готовой CMS, ни на веб-фреймворке. Публикации, объявления, реклама, переводы, рассылки и платежи собраны из модулей, написанных здесь же, на Go.
 

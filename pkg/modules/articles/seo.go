@@ -141,6 +141,7 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 var publicPages = []string{
 	"/about", "/adam", "/framework", "/guide", "/formatting", "/pricing", "/support",
 	"/listings", "/predictions", "/analytics", "/rates", "/calculator", "/author/sana",
+	"/shop", "/offer",
 }
 
 // handleSitemap emits the main trilingual sitemap: home, static pages, category

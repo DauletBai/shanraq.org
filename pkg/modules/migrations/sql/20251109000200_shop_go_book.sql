@@ -4,10 +4,10 @@
 -- It is seeded as a draft, which means only staff can open its page. The panel
 -- at /admin/shop is where it is announced, priced and put on sale -- that is an
 -- editorial decision, not a migration.
-INSERT INTO shop_products (slug, kind, status, price, edition, cover_url, title_kz, title_ru, title_en,
+INSERT INTO shop_products (slug, kind, status, price, edition, cover_url, preview_url, title_kz, title_ru, title_en,
                            summary_kz, summary_ru, summary_en, body_kz, body_ru, body_en, position)
 VALUES (
-    'go-book', 'book', 'draft', 0, '0.2', '/static/shop/go-book-cover.jpg',
+    'go-book', 'book', 'draft', 0, '0.4', '/static/shop/go-book-cover.jpg', '/static/shop/go-book-preview.pdf',
     'Go: бірінші жолдан кітап дүкеніне дейін',
     'Go: от первой строки до книжного магазина',
     'Go: from the first line to a bookshop',

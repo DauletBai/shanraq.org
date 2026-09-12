@@ -2480,6 +2480,14 @@ var messages = map[string]map[string]string{
 	"shop.notify_again": {"kz": "Бұл мекенжай тізімде бар.", "ru": "Этот адрес уже в списке.", "en": "That address is already on the list."},
 	"shop.notify_bad":   {"kz": "Пошта мекенжайын тексеріңіз.", "ru": "Проверьте адрес почты.", "en": "Check the email address."},
 	"shop.email_ph":     {"kz": "email@...", "ru": "email@...", "en": "email@..."},
+	// The offer is linked from the product page and from the footer: a shop
+	// that takes money owes the reader its terms before it asks for any.
+	"shop.offer_link": {
+		"kz": "Оферта және қайтару ережелері",
+		"ru": "Оферта и правила возврата",
+		"en": "Offer and refund rules",
+	},
+	"footer.offer": {"kz": "Оферта", "ru": "Оферта", "en": "Offer"},
 
 	"shop.admin_title":   {"kz": "Дүкен: тауарлар", "ru": "Магазин: товары", "en": "Shop: products"},
 	"shop.admin_saved":   {"kz": "Сақталды", "ru": "Сохранено", "en": "Saved"},
