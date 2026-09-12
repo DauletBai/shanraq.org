@@ -48,17 +48,34 @@ func TestApplyOperator_Configured(t *testing.T) {
 }
 
 func TestApplyOperator_EmptyFallsBackWithoutLeakingLabels(t *testing.T) {
-	// Nothing configured (the public-repo default): a generic owner phrase and
-	// the default support email, with no empty "БИН"/"BIN" label dangling.
+	// Nothing configured (the public-repo default): a generic owner phrase, no
+	// empty "БИН"/"BIN" label dangling — and no contact clause at all. There is
+	// no default address on purpose: a page that names a mailbox nobody reads
+	// is worse than a page that names none, and that is not hypothetical —
+	// support@shanraq.org sat in these pages while the domain's mail server
+	// refused every letter.
 	out := applyOperator("Оператором данных является {{operator_block}}", config.OperatorConfig{}, LangRU)
 	if !strings.Contains(out, "владелец платформы Shanraq") {
 		t.Errorf("expected generic fallback name, got %q", out)
 	}
-	if !strings.Contains(out, "support@shanraq.org") {
-		t.Errorf("expected default contact email, got %q", out)
+	if strings.Contains(out, "Для обращений") || strings.Contains(out, "@") {
+		t.Errorf("with nothing configured there must be no contact clause: %q", out)
 	}
 	if strings.Contains(out, "БИН") || strings.Contains(out, "{{") {
 		t.Errorf("empty config must not print a BIN label or leave tokens: %q", out)
+	}
+}
+
+// The address a reader is told to write to comes from config and nowhere else.
+func TestApplyOperator_EmailToken(t *testing.T) {
+	op := config.OperatorConfig{Email: "hello@example.kz"}
+	out := applyOperator("Напишите на {{op_email}}.", op, LangRU)
+	if out != "Напишите на hello@example.kz." {
+		t.Errorf("email token: got %q", out)
+	}
+	// Unconfigured, the token leaves nothing behind rather than a stray literal.
+	if got := applyOperator("Напишите на {{op_email}}.", config.OperatorConfig{}, LangRU); got != "Напишите на ." {
+		t.Errorf("unset email must substitute to empty, got %q", got)
 	}
 }
 

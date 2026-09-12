@@ -1543,7 +1543,7 @@ We may update the Terms; material changes are published on the Platform, and ren
 
 Ссылка живёт ограниченное время. Когда срок выйдет, новую дадим бесплатно — достаточно письма в поддержку. Доступ к купленному сохраняется, пока работает магазин; если он закроется, мы предупредим письмом заранее и оставим время скачать файлы.
 
-Письмо не пришло — посмотрите в «Спам», потом напишите на support@shanraq.org.
+Письмо не пришло — посмотрите в «Спам», потом напишите на {{op_email}}.
 
 ## 6. Возврат
 Цифровой товар нельзя вернуть так, как возвращают вещь: после скачивания файл остаётся у покупателя. Поэтому правила такие.
@@ -1556,7 +1556,7 @@ We may update the Terms; material changes are published on the Platform, and ren
 
 **Двойная оплата, ошибка платежа, оплата не того заказа** — возвращаем полностью: по обращению или сами, как только увидим.
 
-Как обратиться: письмо на support@shanraq.org с того адреса, на который оформлялась покупка, с датой оплаты. Отвечаем в течение 3 рабочих дней.
+Как обратиться: письмо на {{op_email}} с того адреса, на который оформлялась покупка, с датой оплаты. Отвечаем в течение 3 рабочих дней.
 
 ## 7. Что мы обещаем и чего не обещаем
 Обещаем: файл, который открывается; состав, описанный на странице товара; бесплатные обновления; ответ поддержки.
@@ -1610,7 +1610,7 @@ We may update the Terms; material changes are published on the Platform, and ren
 
 Сілтеме шектеулі уақыт жұмыс істейді. Мерзімі өткенде жаңасын тегін береміз — қолдау қызметіне хат жазсаңыз жеткілікті. Сатып алынғанға қолжетімділік дүкен жұмыс істеп тұрғанда сақталады; ол жабылатын болса, алдын ала хатпен ескертеміз әрі файлдарды жүктеп алуға уақыт қалдырамыз.
 
-Хат келмесе — «Спам» қалтасын қараңыз, сосын support@shanraq.org мекенжайына жазыңыз.
+Хат келмесе — «Спам» қалтасын қараңыз, сосын {{op_email}} мекенжайына жазыңыз.
 
 ## 6. Қайтару
 Сандық тауарды затты қайтарғандай қайтару мүмкін емес: жүктеп алғаннан кейін файл сатып алушыда қалады. Сондықтан ережелер мынадай.
@@ -1623,7 +1623,7 @@ We may update the Terms; material changes are published on the Platform, and ren
 
 **Қосарланған төлем, төлемдегі қате, басқа тапсырыстың төленуі** — толық қайтарамыз: өтініш бойынша немесе көрген бойда өзіміз.
 
-Қалай жүгінеді: support@shanraq.org мекенжайына сатып алу рәсімделген поштадан, төлем күнін көрсетіп хат жазасыз. Үш жұмыс күні ішінде жауап береміз.
+Қалай жүгінеді: {{op_email}} мекенжайына сатып алу рәсімделген поштадан, төлем күнін көрсетіп хат жазасыз. Үш жұмыс күні ішінде жауап береміз.
 
 ## 7. Нені уәде етеміз, нені етпейміз
 Уәде етеміз: ашылатын файлды; тауар бетінде сипатталған құрамды; тегін жаңартуларды; қолдау қызметінің жауабын.
@@ -1677,7 +1677,7 @@ The download link is emailed to the address given at purchase, immediately after
 
 A link lives for a limited time. When it expires, a new one is free: an email to support is enough. Access to what was bought remains for as long as the shop runs; if it closes, we will write in advance and leave time to download the files.
 
-If the email does not arrive, check the spam folder, then write to support@shanraq.org.
+If the email does not arrive, check the spam folder, then write to {{op_email}}.
 
 ## 6. Refunds
 A digital product cannot be returned the way a thing is returned: after a download the file stays with the buyer. Hence these rules.
@@ -1690,7 +1690,7 @@ A digital product cannot be returned the way a thing is returned: after a downlo
 
 **A double payment, a payment error, a payment for the wrong order** — refunded in full, on request or by us as soon as we see it.
 
-How to ask: an email to support@shanraq.org from the address the purchase was made with, giving the date of payment. We answer within 3 working days.
+How to ask: an email to {{op_email}} from the address the purchase was made with, giving the date of payment. We answer within 3 working days.
 
 ## 7. What we promise and what we do not
 We promise: a file that opens; the contents described on the product page; free updates; an answer from support.

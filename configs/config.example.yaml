@@ -93,6 +93,6 @@ operator:
   bin: ""              # business identification number
   address: ""          # registered address (RU/KZ)
   address_en: ""       # registered address (EN, optional)
-  email: ""            # operator contact, e.g. support@shanraq.org
+  email: ""            # operator contact, e.g. hello@example.kz
   phone: ""            # optional
 

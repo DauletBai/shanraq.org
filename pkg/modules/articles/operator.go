@@ -14,11 +14,22 @@ import (
 // Tokens:
 //
 //	{{op}}              — the operator's legal name (short, inline).
+//	{{op_email}}        — the address readers are told to write to.
 //	{{operator_block}}  — a full identity sentence: name, BIN, address, contact.
 func applyOperator(body string, op config.OperatorConfig, lang string) string {
 	body = strings.ReplaceAll(body, "{{op}}", operatorName(op, lang))
+	body = strings.ReplaceAll(body, "{{op_email}}", operatorEmail(op))
 	body = strings.ReplaceAll(body, "{{operator_block}}", operatorBlock(op, lang))
 	return body
+}
+
+// operatorEmail is the one address a reader is asked to write to. It comes from
+// config and from nowhere else: an address typed into a page outlives the
+// mailbox behind it, which is exactly what happened to support@shanraq.org --
+// the domain's MX points at our own server, and that server has never run a
+// mail daemon, so every letter to it was refused.
+func operatorEmail(op config.OperatorConfig) string {
+	return strings.TrimSpace(op.Email)
 }
 
 func operatorName(op config.OperatorConfig, lang string) string {
@@ -42,7 +53,7 @@ func operatorName(op config.OperatorConfig, lang string) string {
 // fields are set, so an unconfigured field is simply omitted rather than
 // printing an empty label.
 func operatorBlock(op config.OperatorConfig, lang string) string {
-	var binLabel, contactLabel, defaultEmail string
+	var binLabel, contactLabel string
 	switch lang {
 	case LangKZ:
 		binLabel, contactLabel = "БСН", "Хабарласу үшін:"
@@ -51,8 +62,6 @@ func operatorBlock(op config.OperatorConfig, lang string) string {
 	default:
 		binLabel, contactLabel = "БИН", "Для обращений:"
 	}
-	defaultEmail = "support@shanraq.org"
-
 	parts := []string{operatorName(op, lang)}
 	if b := strings.TrimSpace(op.BIN); b != "" {
 		parts = append(parts, binLabel+" "+b)
@@ -66,13 +75,18 @@ func operatorBlock(op config.OperatorConfig, lang string) string {
 	}
 	out := strings.Join(parts, ", ") + "."
 
-	email := strings.TrimSpace(op.Email)
-	if email == "" {
-		email = defaultEmail
-	}
-	contact := contactLabel + " " + email
+	// With no address and no phone configured there is no contact clause at
+	// all. The alternative -- printing a default -- is how a page ends up
+	// naming a mailbox that refuses mail.
+	contact := strings.TrimSpace(op.Email)
 	if p := strings.TrimSpace(op.Phone); p != "" {
-		contact += ", " + p
+		if contact != "" {
+			contact += ", "
+		}
+		contact += p
 	}
-	return out + " " + contact + "."
+	if contact == "" {
+		return out
+	}
+	return out + " " + contactLabel + " " + contact + "."
 }
