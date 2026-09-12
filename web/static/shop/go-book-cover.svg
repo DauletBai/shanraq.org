@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 960" width="720" height="960" role="img" aria-label="Go: от первой строки до книжного магазина">
 <title>Go: от первой строки до книжного магазина</title>
 <!-- The cover speaks Go's own visual language: the gopher blue field, the light
-     blue mascot, the yellow accent and the fuchsia the language uses for
-     emphasis. The publisher's mark is small and at the foot, where a
+     blue mascot, the yellow accent under the title, and Go's blue on the level
+     line and the publisher's mark. The mark is small and at the foot, where a
      publisher's mark belongs. The gopher is drawn here rather than borrowed,
      in the spirit of Renee French's character. -->
 <defs>
@@ -58,14 +58,14 @@
 <text x="360" y="628" text-anchor="middle" fill="#FFFFFF" fill-opacity="0.95" font-family="-apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="31">до книжного магазина</text>
 
 <!-- the foot -->
-<text x="360" y="726" text-anchor="middle" fill="#CE3262" font-family="-apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="25" font-weight="700" letter-spacing="3">JUNIOR · MIDDLE · SENIOR</text>
+<text x="360" y="726" text-anchor="middle" fill="#007D9C" font-family="-apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="25" font-weight="700" letter-spacing="3">JUNIOR · MIDDLE · SENIOR</text>
 <line x1="150" y1="756" x2="570" y2="756" stroke="#DBD9D6" stroke-width="2"/>
 <text x="360" y="806" text-anchor="middle" fill="#555759" font-family="-apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="24">Практическая книга: один пример,</text>
 <text x="360" y="842" text-anchor="middle" fill="#555759" font-family="-apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="24">который вырастает в работающий магазин</text>
 
 <!-- the publisher: the mark, small, immediately before the name -->
 <g transform="translate(266,882)">
-  <g transform="scale(0.09)" fill="none" stroke="#D32F2F" stroke-linecap="round">
+  <g transform="scale(0.09)" fill="none" stroke="#007D9C" stroke-linecap="round">
     <g stroke-opacity="0.35" stroke-width="45">
       <line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/>
       <line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/>
