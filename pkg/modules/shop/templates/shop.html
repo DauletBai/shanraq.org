@@ -25,7 +25,7 @@
           <p class="kicker">{{ icon "book" }}{{ t $.Lang (printf "shop.status_%s" .Status) }}{{ if .Edition }} · {{ t $.Lang "shop.edition" }} {{ .Edition }}{{ end }}</p>
           <h3 class="post__title"><a href="/shop/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
           {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
-          <p class="post__price">{{ if .OnSale }}{{ money .Price }} ₸{{ else }}{{ t $.Lang "shop.price_soon" }}{{ end }}</p>
+          <p class="post__price">{{ if .OnSale }}{{ t $.Lang "shop.from" }} {{ money .From }} ₸{{ else }}{{ t $.Lang "shop.price_soon" }}{{ end }}</p>
         </article>
         {{ end }}
       </div>
@@ -70,18 +70,37 @@
       <section class="cab-card shop-offer" aria-labelledby="shop-rights">
         <h2 id="shop-rights">{{ t .Lang "shop.rights_title" }}</h2>
         <p>{{ t .Lang "shop.rights_text" }}</p>
-        <p class="shop-price{{ if not .P.OnSale }} shop-price--soon{{ end }}">
-          {{ if .P.OnSale }}{{ money .P.Price }} ₸{{ else }}{{ t .Lang "shop.price_soon" }}{{ end }}
-        </p>
         <p class="hint shop-offer__terms"><a href="/offer?lang={{ .Lang }}">{{ t .Lang "shop.offer_link" }}</a></p>
+        {{ if .P.PreviewURL }}
         <p class="shop-offer__acts">
-          {{ if .P.OnSale }}<a class="btn btn--primary" href="/shop/{{ .P.Slug }}/buy?lang={{ .Lang }}">{{ t .Lang "shop.buy" }}</a>{{ end }}
-          {{ if .P.PreviewURL }}
           <a class="btn btn--outline" href="{{ .P.PreviewURL }}" rel="nofollow" data-track="shop_preview">{{ t .Lang "shop.preview" }}</a>
           <span class="hint">{{ t .Lang "shop.preview_note" }}</span>
-          {{ end }}
         </p>
+        {{ end }}
       </section>
+
+      {{/* The packages. Two for the book: the book alone, and the book with the
+           code it builds. A package with no price says so plainly rather than
+           showing a button that cannot take money. */}}
+      {{ if .Packages }}
+      <section class="shop-plans" aria-labelledby="shop-plans-h">
+        <h2 class="shop-plans__h" id="shop-plans-h">{{ t .Lang "shop.plans_title" }}</h2>
+        <div class="shop-plans__grid">
+          {{ range .Packages }}
+          <div class="cab-card shop-plan">
+            <h3 class="shop-plan__title">{{ .Title }}</h3>
+            <p class="shop-price{{ if not .Buyable }} shop-price--soon{{ end }}">
+              {{ if .Buyable }}{{ money .Price }} ₸{{ else }}{{ t $.Lang "shop.price_soon" }}{{ end }}
+            </p>
+            <div class="shop-plan__list">{{ .Includes }}</div>
+            {{ if and .Buyable $.P.OnSale }}
+            <a class="btn btn--primary" href="/shop/{{ $.P.Slug }}/buy?plan={{ .Code }}&amp;lang={{ $.Lang }}">{{ t $.Lang "shop.buy" }}</a>
+            {{ end }}
+          </div>
+          {{ end }}
+        </div>
+      </section>
+      {{ end }}
 
       {{/* Nothing can be bought until an acquirer is connected, so the page
            offers the one thing it can honestly offer: a letter when it is. */}}
@@ -132,10 +151,6 @@
         </select>
       </label>
       <label class="shop-f">
-        <span class="shop-f__lab">{{ t $.Lang "shop.admin_price" }}</span>
-        <input class="input" type="number" name="price" min="0" step="100" value="{{ .P.Price }}">
-      </label>
-      <label class="shop-f">
         <span class="shop-f__lab">{{ t $.Lang "shop.admin_edition" }}</span>
         <input class="input" type="text" name="edition" value="{{ .P.Edition }}">
       </label>
@@ -168,6 +183,28 @@
         <span class="shop-f__lab">{{ t $.Lang "shop.admin_body_f" }}</span>
         <textarea class="input shop-body" name="body_{{ . }}" rows="12">{{ index $p.Body . }}</textarea>
       </label>
+    </fieldset>
+    {{ end }}
+
+    <h3>{{ t $.Lang "shop.admin_plans" }}</h3>
+    {{ range .P.Plans }}
+    <fieldset class="shop-lang">
+      <legend>{{ .Code }}</legend>
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ t $.Lang "shop.admin_price" }}</span>
+        <input class="input" type="number" name="price_{{ .Code }}" min="0" step="100" value="{{ .Price }}">
+      </label>
+      {{ $code := .Code }}{{ $title := .Title }}{{ $inc := .Includes }}
+      {{ range langs }}
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ langName . }} — {{ t $.Lang "shop.admin_title_f" }}</span>
+        <input class="input" type="text" name="plan_title_{{ $code }}_{{ . }}" value="{{ index $title . }}">
+      </label>
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ langName . }} — {{ t $.Lang "shop.admin_includes_f" }}</span>
+        <textarea class="input shop-body" name="plan_includes_{{ $code }}_{{ . }}" rows="4">{{ index $inc . }}</textarea>
+      </label>
+      {{ end }}
     </fieldset>
     {{ end }}
 

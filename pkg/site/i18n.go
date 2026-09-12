@@ -2487,7 +2487,11 @@ var messages = map[string]map[string]string{
 		"ru": "Оферта и правила возврата",
 		"en": "Offer and refund rules",
 	},
-	"footer.offer": {"kz": "Оферта", "ru": "Оферта", "en": "Offer"},
+	"footer.offer":          {"kz": "Оферта", "ru": "Оферта", "en": "Offer"},
+	"shop.from":             {"kz": "бастап", "ru": "от", "en": "from"},
+	"shop.plans_title":      {"kz": "Не сатып аласыз", "ru": "Что можно купить", "en": "What you can buy"},
+	"shop.admin_plans":      {"kz": "Жинақтар мен бағалар", "ru": "Комплекты и цены", "en": "Packages and prices"},
+	"shop.admin_includes_f": {"kz": "Не кіреді", "ru": "Что входит", "en": "What is included"},
 
 	"shop.admin_title":   {"kz": "Дүкен: тауарлар", "ru": "Магазин: товары", "en": "Shop: products"},
 	"shop.admin_saved":   {"kz": "Сақталды", "ru": "Сохранено", "en": "Saved"},

@@ -1,6 +1,7 @@
 package shop
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -30,21 +31,31 @@ func TestShopTemplatesExecute(t *testing.T) {
 	for _, lang := range site.Langs {
 		base := site.Base{Title: "T", Lang: lang, ShowLangs: true, LangLinks: site.LangLinks("/shop", "")}
 		p := Product{
-			Slug: "go-book", Status: StatusAnnounced, Price: 0, Edition: "0.2",
+			Slug: "go-book", Status: StatusAnnounced, Edition: "0.4",
 			Title:   map[string]string{lang: "Книга"},
 			Summary: map[string]string{lang: "Кратко"},
 			Body:    map[string]string{lang: "# Заголовок\n\nтекст"},
+			Plans: []Plan{
+				{Code: "book", Title: map[string]string{lang: "Книга"},
+					Includes: map[string]string{lang: "- PDF и EPUB"}},
+				{Code: "kit", Price: 19900, Title: map[string]string{lang: "Книга и код"},
+					Includes: map[string]string{lang: "- PDF, EPUB, HTML\n- код магазина"}},
+			},
 		}
 		cases := []struct {
 			name string
 			data any
 		}{
 			{"shop_index", indexPage{Base: base, Products: []productCard{{
-				Slug: "go-book", Title: "Книга", Summary: "Кратко", Edition: "0.2", Status: StatusAnnounced,
+				Slug: "go-book", Title: "Книга", Summary: "Кратко", Edition: "0.4", Status: StatusAnnounced, From: 9900, OnSale: true,
 			}}}},
 			{"shop_index", indexPage{Base: base}}, // nothing published yet
 			{"shop_product", productPage{Base: base, P: p, Title: "Книга", Summary: "Кратко",
-				Body: site.RenderMarkdown(p.BodyIn(lang)), Notice: "ok"}},
+				Body: site.RenderMarkdown(p.BodyIn(lang)), Notice: "ok", Packages: []packageView{
+					{Code: "book", Title: "Книга", Includes: site.RenderMarkdown("- PDF и EPUB")},
+					{Code: "kit", Title: "Книга и код", Price: 12900, Buyable: true,
+						Includes: site.RenderMarkdown("- PDF, EPUB, HTML")},
+				}}},
 			{"shop_admin", adminPage{Base: base, Statuses: Statuses, Items: []adminItem{{P: p, Leads: 3, URL: "/shop/go-book"}}}},
 		}
 		for _, c := range cases {
@@ -60,21 +71,40 @@ func TestShopTemplatesExecute(t *testing.T) {
 // disagree about whether something can be bought.
 func TestOnSale(t *testing.T) {
 	cases := []struct {
+		name   string
 		status string
-		price  int64
+		prices []int64
 		want   bool
 	}{
-		{StatusSelling, 12000, true},
-		{StatusSelling, 0, false}, // priced at nothing is not for sale
-		{StatusAnnounced, 12000, false},
-		{StatusPaused, 12000, false},
-		{StatusDraft, 12000, false},
+		{"selling, both packages priced", StatusSelling, []int64{9900, 19900}, true},
+		{"selling, one package priced", StatusSelling, []int64{0, 19900}, true},
+		{"selling, nothing priced", StatusSelling, []int64{0, 0}, false},
+		{"selling, no packages at all", StatusSelling, nil, false},
+		{"announced", StatusAnnounced, []int64{9900}, false},
+		{"paused", StatusPaused, []int64{9900}, false},
+		{"draft", StatusDraft, []int64{9900}, false},
 	}
 	for _, c := range cases {
-		p := Product{Status: c.status, Price: c.price}
-		if got := p.OnSale(); got != c.want {
-			t.Errorf("status %q price %d: OnSale = %v, want %v", c.status, c.price, got, c.want)
+		p := Product{Status: c.status}
+		for i, price := range c.prices {
+			p.Plans = append(p.Plans, Plan{Code: fmt.Sprintf("p%d", i), Price: price})
 		}
+		if got := p.OnSale(); got != c.want {
+			t.Errorf("%s: OnSale = %v, want %v", c.name, got, c.want)
+		}
+	}
+}
+
+// The card in the list quotes the cheapest package that has a price.
+func TestFrom(t *testing.T) {
+	p := Product{Status: StatusSelling, Plans: []Plan{
+		{Code: "kit", Price: 19900}, {Code: "book", Price: 9900}, {Code: "unpriced"},
+	}}
+	if got := p.From(); got != 9900 {
+		t.Errorf("From = %d, want the cheapest priced package, 9900", got)
+	}
+	if got := (Product{}).From(); got != 0 {
+		t.Errorf("with nothing priced From = %d, want 0", got)
 	}
 }
 

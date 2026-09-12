@@ -86,19 +86,24 @@ func (m *Module) handleAdminSave(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/shop?ok=bad", http.StatusSeeOther)
 		return
 	}
-	price, err := strconv.ParseInt(strings.TrimSpace(r.FormValue("price")), 10, 64)
-	if err != nil || price < 0 {
-		http.Redirect(w, r, "/admin/shop?ok=bad", http.StatusSeeOther)
-		return
+	// Each package has its own price, and a price of nothing means "not
+	// announced yet" rather than "free".
+	prices := map[string]int64{}
+	for _, pl := range p.Plans {
+		v, err := strconv.ParseInt(strings.TrimSpace(r.FormValue("price_"+pl.Code)), 10, 64)
+		if err != nil || v < 0 {
+			http.Redirect(w, r, "/admin/shop?ok=bad", http.StatusSeeOther)
+			return
+		}
+		prices[pl.Code] = v
 	}
 	// Selling something for nothing is a mistake nobody means to make, and it
 	// would be made silently: the page would show a buy button and take no money.
-	if status == StatusSelling && price == 0 {
+	if status == StatusSelling && !anyPriced(prices) {
 		http.Redirect(w, r, "/admin/shop?ok=bad", http.StatusSeeOther)
 		return
 	}
 	p.Status = status
-	p.Price = price
 	p.Edition = strings.TrimSpace(r.FormValue("edition"))
 	p.CoverURL = strings.TrimSpace(r.FormValue("cover_url"))
 	p.PreviewURL = strings.TrimSpace(r.FormValue("preview_url"))
@@ -112,8 +117,30 @@ func (m *Module) handleAdminSave(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/shop?ok=bad", http.StatusSeeOther)
 		return
 	}
-	m.logger().Info("shop product saved", zap.String("slug", slug), zap.String("status", status), zap.Int64("price", price))
+	for _, pl := range p.Plans {
+		pl.Price = prices[pl.Code]
+		for _, l := range site.Langs {
+			pl.Title[l] = strings.TrimSpace(r.FormValue("plan_title_" + pl.Code + "_" + l))
+			pl.Includes[l] = r.FormValue("plan_includes_" + pl.Code + "_" + l)
+		}
+		if err := m.store.SavePlan(r.Context(), pl); err != nil {
+			m.logger().Error("shop save plan", zap.Error(err))
+			http.Redirect(w, r, "/admin/shop?ok=bad", http.StatusSeeOther)
+			return
+		}
+	}
+	m.logger().Info("shop product saved", zap.String("slug", slug), zap.String("status", status))
 	http.Redirect(w, r, "/admin/shop?ok=saved", http.StatusSeeOther)
+}
+
+// anyPriced reports whether at least one package has a price on it.
+func anyPriced(prices map[string]int64) bool {
+	for _, v := range prices {
+		if v > 0 {
+			return true
+		}
+	}
+	return false
 }
 
 func validStatus(s string) bool {

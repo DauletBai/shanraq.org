@@ -41,6 +41,12 @@ func TestShopStore(t *testing.T) {
 		ON CONFLICT (slug) DO UPDATE SET status = 'draft'`, slug); err != nil {
 		t.Fatalf("seed: %v", err)
 	}
+	if _, err := pool.Exec(ctx, `
+		INSERT INTO shop_plans (product_id, code, position, title_ru, includes_ru)
+		SELECT id, 'book', 10, 'Книга', '- PDF и EPUB' FROM shop_products WHERE slug = $1
+		ON CONFLICT (product_id, code) DO NOTHING`, slug); err != nil {
+		t.Fatalf("seed package: %v", err)
+	}
 	t.Cleanup(func() { _, _ = pool.Exec(ctx, `DELETE FROM shop_products WHERE slug = $1`, slug) })
 
 	// A draft is staff-only: guessing the address must not open the page.
@@ -54,7 +60,6 @@ func TestShopStore(t *testing.T) {
 
 	// An edit round trip, including the price rule the panel enforces.
 	p.Status = StatusSelling
-	p.Price = 12900
 	p.Edition = "1.0"
 	p.Title[site.LangKZ] = "Кітап"
 	p.Body[site.LangRU] = "Текст"
@@ -65,8 +70,29 @@ func TestShopStore(t *testing.T) {
 	if err != nil {
 		t.Fatalf("read after save: %v", err)
 	}
-	if got.Price != 12900 || got.Edition != "1.0" || got.TitleIn(site.LangKZ) != "Кітап" || !got.OnSale() {
+	if got.Edition != "1.0" || got.TitleIn(site.LangKZ) != "Кітап" {
 		t.Errorf("saved product came back as %+v", got)
+	}
+
+	// The packages: a price set in the panel comes back on the product, and it
+	// is what decides whether anything can be bought.
+	if len(got.Plans) == 0 {
+		t.Fatal("a product with no packages cannot be sold; the seed must create them")
+	}
+	if got.OnSale() {
+		t.Error("nothing is priced yet, so the product must not be on sale")
+	}
+	pl := got.Plans[0]
+	pl.Price = 12900
+	if err := s.SavePlan(ctx, pl); err != nil {
+		t.Fatalf("save plan: %v", err)
+	}
+	got, err = s.BySlug(ctx, slug, false)
+	if err != nil {
+		t.Fatalf("read after saving a package: %v", err)
+	}
+	if got.From() != 12900 || !got.OnSale() {
+		t.Errorf("priced package did not put the product on sale: from=%d onsale=%v", got.From(), got.OnSale())
 	}
 
 	// The waiting list: the same address twice is one row and not an error.

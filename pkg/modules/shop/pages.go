@@ -26,9 +26,10 @@ type productCard struct {
 	CoverURL string
 	Edition  string
 	Status   string
-	Price    int64
-	OnSale   bool
-	Draft    bool
+	// From is the cheapest package's price, 0 while nothing is priced.
+	From   int64
+	OnSale bool
+	Draft  bool
 }
 
 // productPage is one product's own page.
@@ -38,10 +39,22 @@ type productPage struct {
 	Title   string
 	Summary string
 	Body    template.HTML
+	// Packages are what the reader chooses between: the book, or the book and
+	// the code. Rendered in the product's own order, cheapest first.
+	Packages []packageView
 	// Notice is the answer to a just-submitted notify form: "you are on the
 	// list", "you already were", or "that address does not look right".
 	Notice string
 	Bad    bool
+}
+
+// packageView is one package as the page shows it.
+type packageView struct {
+	Code     string
+	Title    string
+	Includes template.HTML
+	Price    int64
+	Buyable  bool
 }
 
 func (m *Module) handleIndex(w http.ResponseWriter, r *http.Request) {
@@ -59,7 +72,7 @@ func (m *Module) handleIndex(w http.ResponseWriter, r *http.Request) {
 		page.Products = append(page.Products, productCard{
 			Slug: p.Slug, Title: p.TitleIn(lang), Summary: p.SummaryIn(lang),
 			CoverURL: p.CoverURL, Edition: p.Edition, Status: p.Status,
-			Price: p.Price, OnSale: p.OnSale(), Draft: p.Status == StatusDraft,
+			From: p.From(), OnSale: p.OnSale(), Draft: p.Status == StatusDraft,
 		})
 	}
 	m.render(w, "shop_index", page)
@@ -79,6 +92,17 @@ func (m *Module) handleProduct(w http.ResponseWriter, r *http.Request) {
 		Title:   title,
 		Summary: p.SummaryIn(lang),
 		Body:    site.RenderMarkdown(p.BodyIn(lang)),
+	}
+	for _, pl := range p.Plans {
+		page.Packages = append(page.Packages, packageView{
+			Code:  pl.Code,
+			Title: pl.TitleIn(lang),
+			// The list is Markdown so the owner writes it in the panel the way
+			// the rest of the site is written, without markup in a form field.
+			Includes: site.RenderMarkdown(pl.IncludesIn(lang)),
+			Price:    pl.Price,
+			Buyable:  pl.Buyable(),
+		})
 	}
 	if s := strings.TrimSpace(page.Summary); s != "" {
 		page.Desc = s

@@ -3980,3 +3980,15 @@ h1[tabindex="-1"]:focus, h1[tabindex="-1"]:focus-visible { outline: none; }
 .shop-lang { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 14px 16px; margin: 0 0 14px; display: flex; flex-direction: column; gap: 12px; }
 .shop-lang legend { padding: 0 6px; color: var(--muted); font-size: var(--step--1); }
 .shop-body { font-family: var(--mono); font-size: var(--step--1); line-height: 1.5; }
+
+/* Two packages side by side: the book, and the book with the code. One column
+   on a phone — a price comparison that needs a horizontal scroll is not one. */
+.shop-plans { margin: 28px 0 0; }
+.shop-plans__h { font-size: var(--step-1); margin: 0 0 14px; }
+.shop-plans__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.shop-plan { margin: 0; display: flex; flex-direction: column; }
+.shop-plan__title { font-size: var(--step-1); margin: 0; }
+.shop-plan .shop-price { margin: 10px 0 12px; }
+.shop-plan__list { flex: 1 1 auto; }
+.shop-plan__list ul { margin: 0 0 14px; padding-left: 20px; }
+.shop-plan__list li { margin: 4px 0; color: var(--ink-soft); }
