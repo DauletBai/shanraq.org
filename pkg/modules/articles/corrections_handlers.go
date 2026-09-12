@@ -73,7 +73,7 @@ func (m *Module) handleCorrectionForm(w http.ResponseWriter, r *http.Request) {
 		Title:  tr.Title,
 		Authed: authed,
 	}
-	_, page.Chapters = RenderMarkdownTOC(tr.BodyMD)
+	_, page.Chapters = site.RenderMarkdownTOC(tr.BodyMD)
 	page.Base = m.base(r, site.T(lang, "corr.title"), lang)
 	page.Base.CanonURL = "/read/" + slug + "/typo"
 	// A form is not a page a search engine has any use for, and it must not
@@ -113,7 +113,7 @@ func (m *Module) handleCorrectionSubmit(w http.ResponseWriter, r *http.Request) 
 		Sentence: clipField(r.FormValue("sentence"), correctionSentenceMax),
 		Word:     clipField(r.FormValue("word"), correctionWordMax),
 	}
-	_, page.Chapters = RenderMarkdownTOC(tr.BodyMD)
+	_, page.Chapters = site.RenderMarkdownTOC(tr.BodyMD)
 	page.Base = m.base(r, site.T(lang, "corr.title"), lang)
 	page.Base.CanonURL = "/read/" + slug + "/typo"
 	page.Base.NoIndex = true

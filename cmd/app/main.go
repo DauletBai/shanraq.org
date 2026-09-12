@@ -28,6 +28,7 @@ import (
 	"shanraq.org/pkg/modules/migrations"
 	"shanraq.org/pkg/modules/notifier"
 	"shanraq.org/pkg/modules/payments"
+	"shanraq.org/pkg/modules/shop"
 	"shanraq.org/pkg/modules/sms"
 	"shanraq.org/pkg/modules/syndicate"
 	"shanraq.org/pkg/modules/telemetry"
@@ -150,6 +151,9 @@ func main() {
 	articlesModule = articles.New(authModule, aiModule, syndicateModule, mediaModule, paymentsModule, notifierModule)
 	articlesModule.RegisterJobs(jobModule)
 	app.Register(articlesModule)
+	// The shop registers after articles: articles is the module that fills the
+	// page frame, and the shop's pages ask for it.
+	app.Register(shop.New(authModule, paymentsModule))
 	app.Register(webui.New(jobWorkers, jobPollSeconds,
 		webui.WithTenantResolver(func(r *http.Request) (uuid.UUID, bool) {
 			return tenantResolver(r)

@@ -25,7 +25,11 @@ func TestSettingsSaveValidation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	// Closing is registered as a cleanup rather than deferred: cleanups run
+	// last-in-first-out, so the rows below are deleted while the pool is still
+	// open. A deferred Close would shut it first and the deletes would quietly
+	// do nothing, leaving rows that fail the next run.
+	t.Cleanup(pool.Close)
 	t.Cleanup(func() { _, _ = pool.Exec(ctx, `DELETE FROM payment_settings WHERE id = 1`) })
 
 	st := NewSettingsStore(pool, Settings{})

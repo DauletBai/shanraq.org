@@ -173,6 +173,10 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	// The pages go into the site-wide template set; it is parsed once, after
 	// every module has added its own.
 	rt.Site.Add(templateFuncs(), templateFiles, "templates/*.html")
+	// This module answers what every page of the site has in common — the
+	// reader, the top strip, the aside — so a page from another module wears
+	// the same frame instead of assembling its own nearly-identical one.
+	rt.Site.SetFrame(m)
 	return nil
 }
 

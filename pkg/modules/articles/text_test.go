@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"shanraq.org/pkg/site"
 	"strings"
 	"testing"
 )
@@ -41,7 +42,7 @@ func TestRenderedTablesScrollFromTheKeyboard(t *testing.T) {
 // with the same wrapper, or an article gets it and a page does not.
 func TestTOCRenderAlsoWrapsTables(t *testing.T) {
 	src := "## Раздел\n\n| A | B |\n|---|---|\n| 1 | 2 |\n"
-	out, toc := RenderMarkdownTOC(src)
+	out, toc := site.RenderMarkdownTOC(src)
 	if len(toc) != 1 {
 		t.Fatalf("toc has %d entries, want 1", len(toc))
 	}

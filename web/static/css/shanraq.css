@@ -3950,3 +3950,33 @@ h1[tabindex="-1"]:focus, h1[tabindex="-1"]:focus-visible { outline: none; }
 .chk__pretty pre { margin: 0; background: var(--surface-2); border: 1px solid var(--line);
   border-radius: var(--radius-sm); padding: 16px; overflow-x: auto; }
 .chk__pretty code { background: none; color: inherit; border: 0; padding: 0; }
+
+/* ── Shop ──────────────────────────────────────────────────────────────────
+   The offer is a panel, not a paragraph: what the buyer gets, what it costs
+   and what can be read for free stand together, because they are one decision.
+   Everything else on these pages is the site's existing furniture. */
+.shop-card__media { aspect-ratio: 3 / 4; background: var(--surface-2); }
+.shop-card__media img { object-fit: contain; }
+
+.shop-cover { margin: 0 0 22px; }
+.shop-cover img { width: 100%; max-width: 420px; border-radius: var(--radius); border: 1px solid var(--line); }
+
+.shop-offer h2 { margin-top: 0; }
+.shop-price { font-family: var(--serif); font-size: var(--step-2); font-weight: 700; margin: 14px 0 4px; }
+/* A price that does not exist yet is written as plainly as one that does, and
+   is not dressed up to look like a number. */
+.shop-price--soon { font-family: var(--sans); font-size: var(--step-0); font-weight: 600; color: var(--muted); }
+.shop-offer__acts { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 14px 0 0; }
+
+/* The "tell me when it is out" pill is the newsletter control, widened: the
+   main column has room the sidebar does not. */
+.shop-notify { max-width: 460px; margin-top: 12px; }
+
+/* The panel where a product is edited. Three fields to a row on a desk, one to
+   a row on a phone. */
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 14px 0; }
+.shop-f { display: flex; flex-direction: column; gap: 6px; }
+.shop-f__lab { font-size: var(--step--1); color: var(--muted); }
+.shop-lang { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 14px 16px; margin: 0 0 14px; display: flex; flex-direction: column; gap: 12px; }
+.shop-lang legend { padding: 0 6px; color: var(--muted); font-size: var(--step--1); }
+.shop-body { font-family: var(--mono); font-size: var(--step--1); line-height: 1.5; }

@@ -13,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+	"shanraq.org/internal/httpserver"
 	"shanraq.org/web"
 )
 
@@ -33,11 +34,48 @@ type Renderer struct {
 	funcs   template.FuncMap
 	sources []templateSource
 	tmpl    *template.Template
+	frame   Frame
 }
 
 type templateSource struct {
 	fsys     fs.FS
 	patterns []string
+}
+
+// Frame fills the page context that every shared partial reads: who is
+// reading, what the top strip says today, what the aside shows, which services
+// are up. One module owns that answer for the whole site; the others ask for it
+// rather than each assembling a slightly different header.
+type Frame interface {
+	Base(r *http.Request, title, lang string) Base
+}
+
+// SetFrame names the module that fills the page context.
+func (r *Renderer) SetFrame(f Frame) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.frame = f
+}
+
+// Base returns the shared page context for this request. With no frame
+// registered it still returns a usable context -- title, language and the
+// language links -- so a page renders plainly rather than not at all.
+func (r *Renderer) Base(req *http.Request, title, lang string) Base {
+	r.mu.RLock()
+	f := r.frame
+	r.mu.RUnlock()
+	if f != nil {
+		return f.Base(req, title, lang)
+	}
+	return Base{
+		Title:     title,
+		Lang:      lang,
+		Nonce:     httpserver.NonceFromContext(req.Context()),
+		ShowLangs: true,
+		Path:      req.URL.Path,
+		LangLinks: LangLinks(req.URL.Path, ""),
+		CanonURL:  CanonURL(req.URL.Path, "", lang),
+	}
 }
 
 // NewRenderer returns a renderer holding the site's own frame: the helpers in
@@ -134,6 +172,7 @@ func BaseFuncs() template.FuncMap {
 		},
 		"liveSocial":  LiveSocial, // social profiles that aren't "#" placeholders
 		"curSymbol":   CurSymbol,
+		"money":       Money,
 		"svcOff":      ServiceOff, // is a service's entry link disabled?
 		"svcMsg":      ServiceMsg, // its localized "unavailable" tooltip
 		"categories":  func() []string { return Categories },

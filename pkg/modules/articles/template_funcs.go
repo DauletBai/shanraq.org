@@ -37,7 +37,6 @@ func templateFuncs() template.FuncMap {
 		"adRatesJSON":       AdRatesJSON,
 		"surfaceLabel":      SurfaceLabelKey,
 		"adFormatSlots":     AdFormatSlots,
-		"money":             money,
 		// The reader's report names one of the site's published rules — the same
 		// list the checker used — so a report is a claim about a rule, not a
 		// second opinion about the topic.

@@ -28,7 +28,11 @@ func TestPaymentsIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	// Closing is registered as a cleanup rather than deferred: cleanups run
+	// last-in-first-out, so the rows below are deleted while the pool is still
+	// open. A deferred Close would shut it first and the deletes would quietly
+	// do nothing, leaving rows that fail the next run.
+	t.Cleanup(pool.Close)
 	ps := NewStore(pool)
 	// The seller says what a settled payment does to its own record. Here that
 	// is the advertising module's order, registered exactly as articles does it.

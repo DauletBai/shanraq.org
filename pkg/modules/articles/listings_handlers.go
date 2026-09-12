@@ -1019,24 +1019,3 @@ func countryDefault(lang string) string {
 		return "Казахстан"
 	}
 }
-
-// money formats an integer amount with thin thousands separators.
-func money(v int64) string {
-	s := strconv.FormatInt(v, 10)
-	n := len(s)
-	if n <= 3 {
-		return s
-	}
-	var b strings.Builder
-	pre := n % 3
-	if pre > 0 {
-		b.WriteString(s[:pre])
-	}
-	for i := pre; i < n; i += 3 {
-		if b.Len() > 0 {
-			b.WriteByte(' ')
-		}
-		b.WriteString(s[i : i+3])
-	}
-	return b.String()
-}

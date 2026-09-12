@@ -7,7 +7,7 @@ import (
 
 func TestFoldAnswers(t *testing.T) {
 	lesson := "## Задание\n\nНапишите функцию.\n\n## Ответы\n\n1. Потому что.\n2. Оттого.\n\n## Источники\n\n- [go.dev](https://go.dev)\n"
-	html, toc := RenderMarkdownTOC(lesson)
+	html, toc := renderLessonTOC(lesson)
 	s := string(html)
 	if !strings.Contains(s, `<details class="fold">`) {
 		t.Fatalf("ответы не свёрнуты: %s", s)
@@ -25,7 +25,7 @@ func TestFoldAnswers(t *testing.T) {
 		t.Errorf("оглавление сбилось: %d", len(toc))
 	}
 	// An ordinary article that happens to answer something is left alone.
-	plain, _ := RenderMarkdownTOC("## Вопросы\n\nтекст\n\n## Ответы\n\nтекст\n")
+	plain, _ := renderLessonTOC("## Вопросы\n\nтекст\n\n## Ответы\n\nтекст\n")
 	if strings.Contains(string(plain), "<details") {
 		t.Error("свёрнута обычная статья, а не урок")
 	}
@@ -34,7 +34,7 @@ func TestFoldAnswers(t *testing.T) {
 		"## Тапсырма\n\nЖазыңыз.\n\n## Жауаптар\n\n1. Себебі.\n":  "Жауаптарды көрсету",
 		"## Exercise\n\nWrite it.\n\n## Answers\n\n1. Because.\n": "Show the answers",
 	} {
-		got, _ := RenderMarkdownTOC(src)
+		got, _ := renderLessonTOC(src)
 		if !strings.Contains(string(got), want) {
 			t.Errorf("нет подписи %q", want)
 		}

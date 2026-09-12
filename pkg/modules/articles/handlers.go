@@ -730,7 +730,7 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	page.AuthorID = a.AuthorID.String()
 	page.ServedLang = served
 	page.RequestedLang = lang
-	page.Body, page.TOC = RenderMarkdownTOC(tr.BodyMD)
+	page.Body, page.TOC = renderLessonTOC(tr.BodyMD)
 	page.ReadingMin = readingMinutes(tr.BodyMD)
 	page.Published = a.PublishedAt
 	if !a.UpdatedAt.IsZero() {
@@ -2183,4 +2183,10 @@ func findTR(trs []TranslationInput, lang string) TranslationInput {
 		}
 	}
 	return TranslationInput{Lang: lang}
+}
+
+// Base exposes the shared page context to the other modules (site.Frame). The
+// unexported base() stays the one place it is built.
+func (m *Module) Base(r *http.Request, title, lang string) Base {
+	return m.base(r, title, lang)
 }

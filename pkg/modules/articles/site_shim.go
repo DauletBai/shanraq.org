@@ -1,6 +1,10 @@
 package articles
 
-import "shanraq.org/pkg/site"
+import (
+	"html/template"
+
+	"shanraq.org/pkg/site"
+)
 
 // The page frame — the languages, the UI dictionary, and the structs the shared
 // header, sidebar and footer render — lives in pkg/site, so that a module that
@@ -48,3 +52,10 @@ var (
 // The payments module treats it as an opaque label; this package is the one
 // that knows what it means.
 const payKindAdOrder = "ad_order"
+
+// TOCItem is the frame's, since the frame renders the Markdown.
+type TOCItem = site.TOCItem
+
+// RenderMarkdown is re-exported: the studio preview and the tools that render
+// a body outside a page call it by this name.
+func RenderMarkdown(source string) template.HTML { return site.RenderMarkdown(source) }

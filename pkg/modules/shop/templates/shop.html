@@ -1,0 +1,178 @@
+{{/* The shop's three pages: what the house sells, a product's own page, and
+     the panel where it is edited. They wear the site's frame like every other
+     page; only what sits between the header and the footer is here. */}}
+
+{{ define "shop_index" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div class="layout__main">
+      <div class="section-head">
+        <h1>{{ t .Lang "shop.title" }}</h1>
+      </div>
+      <p class="place-lead">{{ t .Lang "shop.lead" }}</p>
+
+      {{ if .Products }}
+      <div class="posts">
+        {{ range .Products }}
+        <article class="post">
+          <a class="post__media shop-card__media" href="/shop/{{ .Slug }}?lang={{ $.Lang }}" aria-label="{{ .Title }}" tabindex="-1">
+            {{ if .CoverURL }}<img src="{{ .CoverURL }}" alt="" loading="lazy" decoding="async">
+            {{ else }}<span class="media-ph"><img src="/static/brand/shanraq.svg" alt="" loading="lazy" decoding="async"></span>{{ end }}
+          </a>
+          <p class="kicker">{{ icon "book" }}{{ t $.Lang (printf "shop.status_%s" .Status) }}{{ if .Edition }} · {{ t $.Lang "shop.edition" }} {{ .Edition }}{{ end }}</p>
+          <h3 class="post__title"><a href="/shop/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></h3>
+          {{ if .Summary }}<p class="post__excerpt">{{ .Summary }}</p>{{ end }}
+          <p class="post__price">{{ if .OnSale }}{{ money .Price }} ₸{{ else }}{{ t $.Lang "shop.price_soon" }}{{ end }}</p>
+        </article>
+        {{ end }}
+      </div>
+      {{ else }}
+      <div class="empty"><p style="font-size:1.2rem">{{ t .Lang "shop.empty" }}</p></div>
+      {{ end }}
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}
+
+
+{{ define "shop_product" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container">
+  <div class="layout">
+    <div class="layout__main">
+      {{ template "backlink" (dict "Href" (printf "/shop?lang=%s" .Lang) "Label" (t .Lang "shop.title")) }}
+
+      <div class="section-head">
+        <h1>{{ .Title }}</h1>
+      </div>
+      <p class="kicker">{{ icon "book" }}{{ t .Lang (printf "shop.status_%s" .P.Status) }}{{ if .P.Edition }} · {{ t .Lang "shop.edition" }} {{ .P.Edition }}{{ end }}</p>
+      {{ if .Summary }}<p class="place-lead">{{ .Summary }}</p>{{ end }}
+
+      {{ if .Notice }}
+        {{ if .Bad }}<p class="alert alert--error">{{ .Notice }}</p>{{ else }}{{ template "saved" .Notice }}{{ end }}
+      {{ end }}
+
+      {{ if .P.CoverURL }}
+      <figure class="shop-cover"><img src="{{ .P.CoverURL }}" alt="{{ .Title }}" loading="lazy" decoding="async"></figure>
+      {{ end }}
+
+      <div class="prose">{{ .Body }}</div>
+
+      {{/* What is on offer, in one panel: the right the buyer gets, the price
+           (or the honest absence of one), and the free fragment. */}}
+      <section class="cab-card shop-offer" aria-labelledby="shop-rights">
+        <h2 id="shop-rights">{{ t .Lang "shop.rights_title" }}</h2>
+        <p>{{ t .Lang "shop.rights_text" }}</p>
+        <p class="shop-price{{ if not .P.OnSale }} shop-price--soon{{ end }}">
+          {{ if .P.OnSale }}{{ money .P.Price }} ₸{{ else }}{{ t .Lang "shop.price_soon" }}{{ end }}
+        </p>
+        <p class="shop-offer__acts">
+          {{ if .P.OnSale }}<a class="btn btn--primary" href="/shop/{{ .P.Slug }}/buy?lang={{ .Lang }}">{{ t .Lang "shop.buy" }}</a>{{ end }}
+          {{ if .P.PreviewURL }}
+          <a class="btn btn--outline" href="{{ .P.PreviewURL }}" rel="nofollow" data-track="shop_preview">{{ t .Lang "shop.preview" }}</a>
+          <span class="hint">{{ t .Lang "shop.preview_note" }}</span>
+          {{ end }}
+        </p>
+      </section>
+
+      {{/* Nothing can be bought until an acquirer is connected, so the page
+           offers the one thing it can honestly offer: a letter when it is. */}}
+      {{ if not .P.OnSale }}
+      <section class="cab-card" aria-labelledby="shop-notify">
+        <h2 id="shop-notify">{{ t .Lang "shop.notify_title" }}</h2>
+        <p class="hint">{{ t .Lang "shop.notify_text" }}</p>
+        <form class="subgroup shop-notify" method="post" action="/shop/{{ .P.Slug }}/notify?lang={{ .Lang }}" data-track="shop_notify">
+          <input class="subgroup__input" type="email" name="email" required
+                 placeholder="{{ t .Lang "shop.email_ph" }}" aria-label="{{ t .Lang "shop.notify_title" }}">
+          <button class="subgroup__btn" type="submit">{{ t .Lang "shop.notify_cta" }}</button>
+        </form>
+      </section>
+      {{ end }}
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}
+
+
+{{ define "shop_admin" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container" style="max-width:960px;padding-top:24px">
+  <p style="margin-bottom:12px"><a href="/admin">← {{ t .Lang "tar.back_admin" }}</a></p>
+  <h1>{{ t .Lang "shop.admin_title" }}</h1>
+  {{ if .Notice }}
+    {{ if .Bad }}<p class="alert alert--error">{{ .Notice }}</p>{{ else }}{{ template "saved" .Notice }}{{ end }}
+  {{ end }}
+
+  {{ range .Items }}
+  <form class="cab-card" method="post" action="/admin/shop/{{ .P.Slug }}">
+    <h2>{{ .P.Slug }}</h2>
+    <p class="hint">
+      <a href="{{ .URL }}">{{ t $.Lang "shop.admin_open" }}</a> ·
+      {{ t $.Lang "shop.admin_leads" }}: <b>{{ .Leads }}</b>
+    </p>
+
+    <div class="shop-grid">
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ t $.Lang "shop.admin_status" }}</span>
+        {{ $cur := .P.Status }}
+        <select class="input" name="status">
+          {{ range $.Statuses }}<option value="{{ . }}"{{ if eq . $cur }} selected{{ end }}>{{ t $.Lang (printf "shop.status_%s" .) }}</option>{{ end }}
+        </select>
+      </label>
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ t $.Lang "shop.admin_price" }}</span>
+        <input class="input" type="number" name="price" min="0" step="100" value="{{ .P.Price }}">
+      </label>
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ t $.Lang "shop.admin_edition" }}</span>
+        <input class="input" type="text" name="edition" value="{{ .P.Edition }}">
+      </label>
+    </div>
+
+    <div class="shop-grid">
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ t $.Lang "shop.admin_cover" }}</span>
+        <input class="input" type="text" name="cover_url" value="{{ .P.CoverURL }}" placeholder="/media/…">
+      </label>
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ t $.Lang "shop.admin_preview" }}</span>
+        <input class="input" type="text" name="preview_url" value="{{ .P.PreviewURL }}" placeholder="/media/…">
+      </label>
+    </div>
+
+    {{ $p := .P }}
+    {{ range langs }}
+    <fieldset class="shop-lang">
+      <legend>{{ langName . }}</legend>
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ t $.Lang "shop.admin_title_f" }}</span>
+        <input class="input" type="text" name="title_{{ . }}" value="{{ index $p.Title . }}">
+      </label>
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ t $.Lang "shop.admin_sum_f" }}</span>
+        <input class="input" type="text" name="summary_{{ . }}" value="{{ index $p.Summary . }}">
+      </label>
+      <label class="shop-f">
+        <span class="shop-f__lab">{{ t $.Lang "shop.admin_body_f" }}</span>
+        <textarea class="input shop-body" name="body_{{ . }}" rows="12">{{ index $p.Body . }}</textarea>
+      </label>
+    </fieldset>
+    {{ end }}
+
+    <button class="btn btn--primary" type="submit">{{ t $.Lang "shop.admin_save" }}</button>
+  </form>
+  {{ end }}
+</main>
+{{ template "site_footer" . }}
+{{ end }}

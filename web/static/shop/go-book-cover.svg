@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 960" width="720" height="960" role="img" aria-label="Go: от первой строки до книжного магазина">
+<title>Go: от первой строки до книжного магазина</title>
+<!-- A cover in the site's own hand: the brand mark, one red field, and the
+     title set in the serif the site reads in. Deliberately plain: the book is
+     about a program that grows, and the cover says the publisher, not a scene.
+     The admin panel can replace it with a drawn cover at any time. -->
+<defs>
+  <linearGradient id="field" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#d32f2f"/>
+    <stop offset="100%" stop-color="#8f1b1b"/>
+  </linearGradient>
+</defs>
+<rect width="720" height="960" fill="#faf8f5"/>
+<rect x="0" y="0" width="720" height="620" fill="url(#field)"/>
+
+<!-- The mark, drawn in the same six strokes as the site's own -->
+<g transform="translate(360,196) scale(0.62) translate(-200,-200)" fill="none" stroke="#ffffff" stroke-linecap="round">
+  <g stroke-opacity="0.35" stroke-width="45">
+    <line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/>
+    <line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/>
+    <line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/>
+  </g>
+  <g stroke-width="26">
+    <line x1="76" y1="76" x2="324" y2="324"/><line x1="137" y1="37" x2="363" y2="263"/>
+    <line x1="37" y1="137" x2="263" y2="363"/><line x1="76" y1="324" x2="324" y2="76"/>
+    <line x1="137" y1="363" x2="363" y2="137"/><line x1="37" y1="263" x2="263" y2="37"/>
+  </g>
+</g>
+
+<text x="360" y="430" text-anchor="middle" fill="#ffffff" font-family="Georgia, 'Noto Serif', serif" font-size="88" font-weight="700">Go</text>
+<text x="360" y="492" text-anchor="middle" fill="#ffffff" fill-opacity="0.92" font-family="Georgia, 'Noto Serif', serif" font-size="34">от первой строки</text>
+<text x="360" y="540" text-anchor="middle" fill="#ffffff" fill-opacity="0.92" font-family="Georgia, 'Noto Serif', serif" font-size="34">до книжного магазина</text>
+
+<line x1="120" y1="700" x2="600" y2="700" stroke="#dddddd" stroke-width="2"/>
+<text x="360" y="678" text-anchor="middle" fill="#454545" font-family="-apple-system, 'Segoe UI', Roboto, sans-serif" font-size="26" letter-spacing="2">JUNIOR · MIDDLE · SENIOR</text>
+<text x="360" y="756" text-anchor="middle" fill="#6e6e6e" font-family="-apple-system, 'Segoe UI', Roboto, sans-serif" font-size="24">Практическая книга: один пример,</text>
+<text x="360" y="792" text-anchor="middle" fill="#6e6e6e" font-family="-apple-system, 'Segoe UI', Roboto, sans-serif" font-size="24">который вырастает в работающий магазин</text>
+<text x="360" y="890" text-anchor="middle" fill="#454545" font-family="Georgia, 'Noto Serif', serif" font-size="28" font-weight="700">Shanraq.org</text>
+</svg>
