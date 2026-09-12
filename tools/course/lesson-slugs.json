@@ -1,974 +1,986 @@
 {
- "go/brand": [
-  "go-oz-logotip-pen-belgishe",
-  "ru"
- ],
- "go/brand-en": [
-  "go-oz-logotip-pen-belgishe",
-  "en"
- ],
- "go/brand-kz": [
-  "go-oz-logotip-pen-belgishe",
-  "kz"
- ],
- "go/capstone": [
-  "go-jinaqtau-jazba-kitapshasy",
-  "ru"
- ],
- "go/capstone-en": [
-  "go-jinaqtau-jazba-kitapshasy",
-  "en"
- ],
- "go/capstone-kz": [
-  "go-jinaqtau-jazba-kitapshasy",
-  "kz"
- ],
- "go/checklist": [
-  "go-iske-qosar-aldyndagy-tizim",
-  "ru"
- ],
- "go/checklist-en": [
-  "go-iske-qosar-aldyndagy-tizim",
-  "en"
- ],
- "go/checklist-kz": [
-  "go-iske-qosar-aldyndagy-tizim",
-  "kz"
- ],
- "go/config": [
-  "go-baptau-env-pen-flagtar",
-  "ru"
- ],
- "go/config-en": [
-  "go-baptau-env-pen-flagtar",
-  "en"
- ],
- "go/config-kz": [
-  "go-baptau-env-pen-flagtar",
-  "kz"
- ],
- "go/context": [
-  "go-context-suranysty-toqtatu",
-  "ru"
- ],
- "go/context-en": [
-  "go-context-suranysty-toqtatu",
-  "en"
- ],
- "go/context-kz": [
-  "go-context-suranysty-toqtatu",
-  "kz"
- ],
- "go/crud": [
-  "go-crud-tort-amal",
-  "ru"
- ],
- "go/crud-en": [
-  "go-crud-tort-amal",
-  "en"
- ],
- "go/crud-kz": [
-  "go-crud-tort-amal",
-  "kz"
- ],
- "go/csrf": [
-  "go-csrf-pen-xss",
-  "ru"
- ],
- "go/csrf-en": [
-  "go-csrf-pen-xss",
-  "en"
- ],
- "go/csrf-kz": [
-  "go-csrf-pen-xss",
-  "kz"
- ],
- "go/dbsql": [
-  "go-sqlite-men-database-sql",
-  "ru"
- ],
- "go/dbsql-en": [
-  "go-sqlite-men-database-sql",
-  "en"
- ],
- "go/dbsql-kz": [
-  "go-sqlite-men-database-sql",
-  "kz"
- ],
- "go/deploy": [
-  "go-tegin-hostingke-shygaru",
-  "ru"
- ],
- "go/deploy-en": [
-  "go-tegin-hostingke-shygaru",
-  "en"
- ],
- "go/deploy-kz": [
-  "go-tegin-hostingke-shygaru",
-  "kz"
- ],
- "go/errors": [
-  "go-qateler-jai-man",
-  "ru"
- ],
- "go/errors-en": [
-  "go-qateler-jai-man",
-  "en"
- ],
- "go/errors-kz": [
-  "go-qateler-jai-man",
-  "kz"
- ],
- "go/forms": [
-  "go-forma-oqyrmannan-derek",
-  "ru"
- ],
- "go/forms-en": [
-  "go-forma-oqyrmannan-derek",
-  "en"
- ],
- "go/forms-kz": [
-  "go-forma-oqyrmannan-derek",
-  "kz"
- ],
- "go/git": [
-  "go-git-kodyn-tarihy",
-  "ru"
- ],
- "go/git-en": [
-  "go-git-kodyn-tarihy",
-  "en"
- ],
- "go/git-kz": [
-  "go-git-kodyn-tarihy",
-  "kz"
- ],
- "go/github": [
-  "go-github-korinetin-kod",
-  "ru"
- ],
- "go/github-en": [
-  "go-github-korinetin-kod",
-  "en"
- ],
- "go/github-kz": [
-  "go-github-korinetin-kod",
-  "kz"
- ],
- "go/http": [
-  "go-http-shyndyghynda",
-  "ru"
- ],
- "go/http-en": [
-  "go-http-shyndyghynda",
-  "en"
- ],
- "go/http-kz": [
-  "go-http-shyndyghynda",
-  "kz"
- ],
- "go/https": [
-  "go-oz-domen-men-https",
-  "ru"
- ],
- "go/https-en": [
-  "go-oz-domen-men-https",
-  "en"
- ],
- "go/https-kz": [
-  "go-oz-domen-men-https",
-  "kz"
- ],
- "go/interface": [
-  "go-interfeis-kelisim",
-  "ru"
- ],
- "go/interface-en": [
-  "go-interfeis-kelisim",
-  "en"
- ],
- "go/interface-kz": [
-  "go-interfeis-kelisim",
-  "kz"
- ],
- "go/intro": [
-  "tegin-bagdarlamalau-kursy-go",
-  "ru"
- ],
- "go/intro-en": [
-  "tegin-bagdarlamalau-kursy-go",
-  "en"
- ],
- "go/intro-kz": [
-  "tegin-bagdarlamalau-kursy-go",
-  "kz"
- ],
- "go/json": [
-  "go-json-pen-oz-api",
-  "ru"
- ],
- "go/json-en": [
-  "go-json-pen-oz-api",
-  "en"
- ],
- "go/json-kz": [
-  "go-json-pen-oz-api",
-  "kz"
- ],
- "go/layout": [
-  "go-maket-bir-jaqtau",
-  "ru"
- ],
- "go/layout-en": [
-  "go-maket-bir-jaqtau",
-  "en"
- ],
- "go/layout-kz": [
-  "go-maket-bir-jaqtau",
-  "kz"
- ],
- "go/logs": [
-  "go-qate-men-jurnal-ne-buzyldy",
-  "ru"
- ],
- "go/logs-en": [
-  "go-qate-men-jurnal-ne-buzyldy",
-  "en"
- ],
- "go/logs-kz": [
-  "go-qate-men-jurnal-ne-buzyldy",
-  "kz"
- ],
- "go/middleware": [
-  "go-ondeushi-men-orama",
-  "ru"
- ],
- "go/middleware-en": [
-  "go-ondeushi-men-orama",
-  "en"
- ],
- "go/middleware-kz": [
-  "go-ondeushi-men-orama",
-  "kz"
- ],
- "go/migrate": [
-  "go-koshi-qon-derekqor-tarihy",
-  "ru"
- ],
- "go/migrate-en": [
-  "go-koshi-qon-derekqor-tarihy",
-  "en"
- ],
- "go/migrate-kz": [
-  "go-koshi-qon-derekqor-tarihy",
-  "kz"
- ],
- "go/next": [
-  "go-ari-qarai-qaida-generikter",
-  "ru"
- ],
- "go/next-en": [
-  "go-ari-qarai-qaida-generikter",
-  "en"
- ],
- "go/next-kz": [
-  "go-ari-qarai-qaida-generikter",
-  "kz"
- ],
- "go/packages": [
-  "go-paketter-men-moduldar",
-  "ru"
- ],
- "go/packages-en": [
-  "go-paketter-men-moduldar",
-  "en"
- ],
- "go/packages-kz": [
-  "go-paketter-men-moduldar",
-  "kz"
- ],
- "go/passwords": [
-  "go-tirkelu-men-qupiyasoz",
-  "ru"
- ],
- "go/passwords-en": [
-  "go-tirkelu-men-qupiyasoz",
-  "en"
- ],
- "go/passwords-kz": [
-  "go-tirkelu-men-qupiyasoz",
-  "kz"
- ],
- "go/perms": [
-  "go-quqyq-kim-nene-ozgerte-alady",
-  "ru"
- ],
- "go/perms-en": [
-  "go-quqyq-kim-nene-ozgerte-alady",
-  "en"
- ],
- "go/perms-kz": [
-  "go-quqyq-kim-nene-ozgerte-alady",
-  "kz"
- ],
- "go/pointers": [
-  "go-siltegishter-men-adister",
-  "ru"
- ],
- "go/pointers-en": [
-  "go-siltegishter-men-adister",
-  "en"
- ],
- "go/pointers-kz": [
-  "go-siltegishter-men-adister",
-  "kz"
- ],
- "go/race": [
-  "go-gorutina-men-arna",
-  "ru"
- ],
- "go/race-en": [
-  "go-gorutina-men-arna",
-  "en"
- ],
- "go/race-kz": [
-  "go-gorutina-men-arna",
-  "kz"
- ],
- "go/routes": [
-  "go-bagyttar-kim-ondejdi",
-  "ru"
- ],
- "go/routes-en": [
-  "go-bagyttar-kim-ondejdi",
-  "en"
- ],
- "go/routes-kz": [
-  "go-bagyttar-kim-ondejdi",
-  "kz"
- ],
- "go/search": [
-  "go-izdeu-fts5",
-  "ru"
- ],
- "go/search-en": [
-  "go-izdeu-fts5",
-  "en"
- ],
- "go/search-kz": [
-  "go-izdeu-fts5",
-  "kz"
- ],
- "go/sessions": [
-  "go-sessiya-men-cookie",
-  "ru"
- ],
- "go/sessions-en": [
-  "go-sessiya-men-cookie",
-  "en"
- ],
- "go/sessions-kz": [
-  "go-sessiya-men-cookie",
-  "kz"
- ],
- "go/sqljoin": [
-  "go-sql-eki-keste-join",
-  "ru"
- ],
- "go/sqljoin-en": [
-  "go-sql-eki-keste-join",
-  "en"
- ],
- "go/sqljoin-kz": [
-  "go-sql-eki-keste-join",
-  "kz"
- ],
- "go/sqlone": [
-  "go-sql-birinshi-keste",
-  "ru"
- ],
- "go/sqlone-en": [
-  "go-sql-birinshi-keste",
-  "en"
- ],
- "go/sqlone-kz": [
-  "go-sql-birinshi-keste",
-  "kz"
- ],
- "go/start": [
-  "go-kurs-bastar-aldynda",
-  "ru"
- ],
- "go/start-en": [
-  "go-kurs-bastar-aldynda",
-  "en"
- ],
- "go/start-kz": [
-  "go-kurs-bastar-aldynda",
-  "kz"
- ],
- "go/static": [
-  "go-statika-css-qarip-suret",
-  "ru"
- ],
- "go/static-en": [
-  "go-statika-css-qarip-suret",
-  "en"
- ],
- "go/static-kz": [
-  "go-statika-css-qarip-suret",
-  "kz"
- ],
- "go/struct": [
-  "go-qurylym-struct-oz-tipin",
-  "ru"
- ],
- "go/struct-en": [
-  "go-qurylym-struct-oz-tipin",
-  "en"
- ],
- "go/struct-kz": [
-  "go-qurylym-struct-oz-tipin",
-  "kz"
- ],
- "go/systemd": [
-  "go-systemd-pen-uqypty-toqtau",
-  "ru"
- ],
- "go/systemd-en": [
-  "go-systemd-pen-uqypty-toqtau",
-  "en"
- ],
- "go/systemd-kz": [
-  "go-systemd-pen-uqypty-toqtau",
-  "kz"
- ],
- "go/tags": [
-  "go-tegter-kopke-kop-bailanys",
-  "ru"
- ],
- "go/tags-en": [
-  "go-tegter-kopke-kop-bailanys",
-  "en"
- ],
- "go/tags-kz": [
-  "go-tegter-kopke-kop-bailanys",
-  "kz"
- ],
- "go/templates": [
-  "go-ulgiler-html-template",
-  "ru"
- ],
- "go/templates-en": [
-  "go-ulgiler-html-template",
-  "en"
- ],
- "go/templates-kz": [
-  "go-ulgiler-html-template",
-  "kz"
- ],
- "go/test": [
-  "go-algashqy-test",
-  "ru"
- ],
- "go/test-en": [
-  "go-algashqy-test",
-  "en"
- ],
- "go/test-kz": [
-  "go-algashqy-test",
-  "kz"
- ],
- "go/tests2": [
-  "go-testter-ne-syndy",
-  "ru"
- ],
- "go/tests2-en": [
-  "go-testter-ne-syndy",
-  "en"
- ],
- "go/tests2-kz": [
-  "go-testter-ne-syndy",
-  "kz"
- ],
- "go/tx": [
-  "go-tranzakciya-men-sql-inekciya",
-  "ru"
- ],
- "go/tx-en": [
-  "go-tranzakciya-men-sql-inekciya",
-  "en"
- ],
- "go/tx-kz": [
-  "go-tranzakciya-men-sql-inekciya",
-  "kz"
- ],
- "go/upload": [
-  "go-suret-jukteu",
-  "ru"
- ],
- "go/upload-en": [
-  "go-suret-jukteu",
-  "en"
- ],
- "go/upload-kz": [
-  "go-suret-jukteu",
-  "kz"
- ],
- "python/chart": [
-  "py-matplotlib-birinshi-grafik",
-  "ru"
- ],
- "python/chart-en": [
-  "py-matplotlib-birinshi-grafik",
-  "en"
- ],
- "python/chart-kz": [
-  "py-matplotlib-birinshi-grafik",
-  "kz"
- ],
- "python/clean": [
-  "py-las-derek-isna-fillna-astype",
-  "ru"
- ],
- "python/clean-en": [
-  "py-las-derek-isna-fillna-astype",
-  "en"
- ],
- "python/clean-kz": [
-  "py-las-derek-isna-fillna-astype",
-  "kz"
- ],
- "python/conditions": [
-  "py-shartar-if-elif-else",
-  "ru"
- ],
- "python/conditions-en": [
-  "py-shartar-if-elif-else",
-  "en"
- ],
- "python/conditions-kz": [
-  "py-shartar-if-elif-else",
-  "kz"
- ],
- "python/csv": [
-  "py-csv-utir-tyrnaqsha-tanba",
-  "ru"
- ],
- "python/csv-en": [
-  "py-csv-utir-tyrnaqsha-tanba",
-  "en"
- ],
- "python/csv-kz": [
-  "py-csv-utir-tyrnaqsha-tanba",
-  "kz"
- ],
- "python/dates": [
-  "py-kunder-uaqyt-datetime-timedelta",
-  "ru"
- ],
- "python/dates-en": [
-  "py-kunder-uaqyt-datetime-timedelta",
-  "en"
- ],
- "python/dates-kz": [
-  "py-kunder-uaqyt-datetime-timedelta",
-  "kz"
- ],
- "python/dict": [
-  "py-sozdik-kilt-pen-man",
-  "ru"
- ],
- "python/dict-en": [
-  "py-sozdik-kilt-pen-man",
-  "en"
- ],
- "python/dict-kz": [
-  "py-sozdik-kilt-pen-man",
-  "kz"
- ],
- "python/errors": [
-  "py-qateler-try-except-raise",
-  "ru"
- ],
- "python/errors-en": [
-  "py-qateler-try-except-raise",
-  "en"
- ],
- "python/errors-kz": [
-  "py-qateler-try-except-raise",
-  "kz"
- ],
- "python/files": [
-  "py-faildar-pathlib-kodtau",
-  "ru"
- ],
- "python/files-en": [
-  "py-faildar-pathlib-kodtau",
-  "en"
- ],
- "python/files-kz": [
-  "py-faildar-pathlib-kodtau",
-  "kz"
- ],
- "python/format": [
-  "py-sandar-pishim-dongelekteu-olshem",
-  "ru"
- ],
- "python/format-en": [
-  "py-sandar-pishim-dongelekteu-olshem",
-  "en"
- ],
- "python/format-kz": [
-  "py-sandar-pishim-dongelekteu-olshem",
-  "kz"
- ],
- "python/frame": [
-  "py-dataframe-series-indeks-qoltanba",
-  "ru"
- ],
- "python/frame-en": [
-  "py-dataframe-series-indeks-qoltanba",
-  "en"
- ],
- "python/frame-kz": [
-  "py-dataframe-series-indeks-qoltanba",
-  "kz"
- ],
- "python/functions": [
-  "py-funkciyalar-def-return-assert",
-  "ru"
- ],
- "python/functions-en": [
-  "py-funkciyalar-def-return-assert",
-  "en"
- ],
- "python/functions-kz": [
-  "py-funkciyalar-def-return-assert",
-  "kz"
- ],
- "python/generators": [
-  "py-generatorlar-yield-jad",
-  "ru"
- ],
- "python/generators-en": [
-  "py-generatorlar-yield-jad",
-  "en"
- ],
- "python/generators-kz": [
-  "py-generatorlar-yield-jad",
-  "kz"
- ],
- "python/glossary": [
-  "py-modul-sozdigi-segiz-soz",
-  "ru"
- ],
- "python/glossary-en": [
-  "py-modul-sozdigi-segiz-soz",
-  "en"
- ],
- "python/glossary-kz": [
-  "py-modul-sozdigi-segiz-soz",
-  "kz"
- ],
- "python/group": [
-  "py-toptau-groupby-agg-transform",
-  "ru"
- ],
- "python/group-en": [
-  "py-toptau-groupby-agg-transform",
-  "en"
- ],
- "python/group-kz": [
-  "py-toptau-groupby-agg-transform",
-  "kz"
- ],
- "python/honest": [
-  "py-grafikpen-otirik-aitpau-shkala",
-  "ru"
- ],
- "python/honest-en": [
-  "py-grafikpen-otirik-aitpau-shkala",
-  "en"
- ],
- "python/honest-kz": [
-  "py-grafikpen-otirik-aitpau-shkala",
-  "kz"
- ],
- "python/http": [
-  "py-http-suranys-urllib-status",
-  "ru"
- ],
- "python/http-en": [
-  "py-http-suranys-urllib-status",
-  "en"
- ],
- "python/http-kz": [
-  "py-http-suranys-urllib-status",
-  "kz"
- ],
- "python/intro": [
-  "tegin-kurs-python-derek-pen-ii",
-  "ru"
- ],
- "python/intro-en": [
-  "tegin-kurs-python-derek-pen-ii",
-  "en"
- ],
- "python/intro-kz": [
-  "tegin-kurs-python-derek-pen-ii",
-  "kz"
- ],
- "python/io": [
-  "py-oqu-jazu-csv-json-sql",
-  "ru"
- ],
- "python/io-en": [
-  "py-oqu-jazu-csv-json-sql",
-  "en"
- ],
- "python/io-kz": [
-  "py-oqu-jazu-csv-json-sql",
-  "kz"
- ],
- "python/json": [
-  "py-json-null-kilt-jol",
-  "ru"
- ],
- "python/json-en": [
-  "py-json-null-kilt-jol",
-  "en"
- ],
- "python/json-kz": [
-  "py-json-null-kilt-jol",
-  "kz"
- ],
- "python/list": [
-  "py-tizim-men-kortej",
-  "ru"
- ],
- "python/list-en": [
-  "py-tizim-men-kortej",
-  "en"
- ],
- "python/list-kz": [
-  "py-tizim-men-kortej",
-  "kz"
- ],
- "python/loops": [
-  "py-cikldar-for-range-while",
-  "ru"
- ],
- "python/loops-en": [
-  "py-cikldar-for-range-while",
-  "en"
- ],
- "python/loops-kz": [
-  "py-cikldar-for-range-while",
-  "kz"
- ],
- "python/merge": [
-  "py-kesteler-merge-join-kilt",
-  "ru"
- ],
- "python/merge-en": [
-  "py-kesteler-merge-join-kilt",
-  "en"
- ],
- "python/merge-kz": [
-  "py-kesteler-merge-join-kilt",
-  "kz"
- ],
- "python/modules": [
-  "py-modul-paket-import-name",
-  "ru"
- ],
- "python/modules-en": [
-  "py-modul-paket-import-name",
-  "en"
- ],
- "python/modules-kz": [
-  "py-modul-paket-import-name",
-  "kz"
- ],
- "python/numbers": [
-  "py-sandar-joldar-shygys",
-  "ru"
- ],
- "python/numbers-en": [
-  "py-sandar-joldar-shygys",
-  "en"
- ],
- "python/numbers-kz": [
-  "py-sandar-joldar-shygys",
-  "kz"
- ],
- "python/pandas": [
-  "py-pandas-nege-kerek-olsheu",
-  "ru"
- ],
- "python/pandas-en": [
-  "py-pandas-nege-kerek-olsheu",
-  "en"
- ],
- "python/pandas-kz": [
-  "py-pandas-nege-kerek-olsheu",
-  "kz"
- ],
- "python/pipeline": [
-  "py-konveyer-main-cron-dry-run",
-  "ru"
- ],
- "python/pipeline-en": [
-  "py-konveyer-main-cron-dry-run",
-  "en"
- ],
- "python/pipeline-kz": [
-  "py-konveyer-main-cron-dry-run",
-  "kz"
- ],
- "python/polite": [
-  "py-sypaiylyq-timeout-retry-kesh",
-  "ru"
- ],
- "python/polite-en": [
-  "py-sypaiylyq-timeout-retry-kesh",
-  "en"
- ],
- "python/polite-kz": [
-  "py-sypaiylyq-timeout-retry-kesh",
-  "kz"
- ],
- "python/prices": [
-  "py-agany-bagalar-tenge",
-  "ru"
- ],
- "python/prices-en": [
-  "py-agany-bagalar-tenge",
-  "en"
- ],
- "python/prices-kz": [
-  "py-agany-bagalar-tenge",
-  "kz"
- ],
- "python/report": [
-  "py-esep-bet-html-ulgi-escape",
-  "ru"
- ],
- "python/report-en": [
-  "py-esep-bet-html-ulgi-escape",
-  "en"
- ],
- "python/report-kz": [
-  "py-esep-bet-html-ulgi-escape",
-  "kz"
- ],
- "python/schedule": [
-  "py-keste-cron-argparse-logging",
-  "ru"
- ],
- "python/schedule-en": [
-  "py-keste-cron-argparse-logging",
-  "en"
- ],
- "python/schedule-kz": [
-  "py-keste-cron-argparse-logging",
-  "kz"
- ],
- "python/select": [
-  "py-tandau-suzgi-maska-loc",
-  "ru"
- ],
- "python/select-en": [
-  "py-tandau-suzgi-maska-loc",
-  "en"
- ],
- "python/select-kz": [
-  "py-tandau-suzgi-maska-loc",
-  "kz"
- ],
- "python/sets": [
-  "py-jiyndar-set-qiylysu-ayyrma",
-  "ru"
- ],
- "python/sets-en": [
-  "py-jiyndar-set-qiylysu-ayyrma",
-  "en"
- ],
- "python/sets-kz": [
-  "py-jiyndar-set-qiylysu-ayyrma",
-  "kz"
- ],
- "python/sql": [
-  "py-sql-group-by-join-suranys",
-  "ru"
- ],
- "python/sql-en": [
-  "py-sql-group-by-join-suranys",
-  "en"
- ],
- "python/sql-kz": [
-  "py-sql-group-by-join-suranys",
-  "kz"
- ],
- "python/sqlite": [
-  "py-sqlite-keste-kilt-tarih",
-  "ru"
- ],
- "python/sqlite-en": [
-  "py-sqlite-keste-kilt-tarih",
-  "en"
- ],
- "python/sqlite-kz": [
-  "py-sqlite-keste-kilt-tarih",
-  "kz"
- ],
- "python/time": [
-  "py-uaqyt-resample-rolling-asfreq",
-  "ru"
- ],
- "python/time-en": [
-  "py-uaqyt-resample-rolling-asfreq",
-  "en"
- ],
- "python/time-kz": [
-  "py-uaqyt-resample-rolling-asfreq",
-  "kz"
- ],
- "python/types": [
-  "py-aynymalylar-men-tipter",
-  "ru"
- ],
- "python/types-en": [
-  "py-aynymalylar-men-tipter",
-  "en"
- ],
- "python/types-kz": [
-  "py-aynymalylar-men-tipter",
-  "kz"
- ],
- "python/workspace": [
-  "py-jumys-orny-venv",
-  "ru"
- ],
- "python/workspace-en": [
-  "py-jumys-orny-venv",
-  "en"
- ],
- "python/workspace-kz": [
-  "py-jumys-orny-venv",
-  "kz"
- ],
- "python/xml": [
-  "py-xml-talday-elementtree",
-  "ru"
- ],
- "python/xml-en": [
-  "py-xml-talday-elementtree",
-  "en"
- ],
- "python/xml-kz": [
-  "py-xml-talday-elementtree",
-  "kz"
- ]
+  "go/brand": [
+    "go-oz-logotip-pen-belgishe",
+    "ru"
+  ],
+  "go/brand-en": [
+    "go-oz-logotip-pen-belgishe",
+    "en"
+  ],
+  "go/brand-kz": [
+    "go-oz-logotip-pen-belgishe",
+    "kz"
+  ],
+  "go/capstone": [
+    "go-jinaqtau-jazba-kitapshasy",
+    "ru"
+  ],
+  "go/capstone-en": [
+    "go-jinaqtau-jazba-kitapshasy",
+    "en"
+  ],
+  "go/capstone-kz": [
+    "go-jinaqtau-jazba-kitapshasy",
+    "kz"
+  ],
+  "go/checklist": [
+    "go-iske-qosar-aldyndagy-tizim",
+    "ru"
+  ],
+  "go/checklist-en": [
+    "go-iske-qosar-aldyndagy-tizim",
+    "en"
+  ],
+  "go/checklist-kz": [
+    "go-iske-qosar-aldyndagy-tizim",
+    "kz"
+  ],
+  "go/config": [
+    "go-baptau-env-pen-flagtar",
+    "ru"
+  ],
+  "go/config-en": [
+    "go-baptau-env-pen-flagtar",
+    "en"
+  ],
+  "go/config-kz": [
+    "go-baptau-env-pen-flagtar",
+    "kz"
+  ],
+  "go/context": [
+    "go-context-suranysty-toqtatu",
+    "ru"
+  ],
+  "go/context-en": [
+    "go-context-suranysty-toqtatu",
+    "en"
+  ],
+  "go/context-kz": [
+    "go-context-suranysty-toqtatu",
+    "kz"
+  ],
+  "go/crud": [
+    "go-crud-tort-amal",
+    "ru"
+  ],
+  "go/crud-en": [
+    "go-crud-tort-amal",
+    "en"
+  ],
+  "go/crud-kz": [
+    "go-crud-tort-amal",
+    "kz"
+  ],
+  "go/csrf": [
+    "go-csrf-pen-xss",
+    "ru"
+  ],
+  "go/csrf-en": [
+    "go-csrf-pen-xss",
+    "en"
+  ],
+  "go/csrf-kz": [
+    "go-csrf-pen-xss",
+    "kz"
+  ],
+  "go/dbsql": [
+    "go-sqlite-men-database-sql",
+    "ru"
+  ],
+  "go/dbsql-en": [
+    "go-sqlite-men-database-sql",
+    "en"
+  ],
+  "go/dbsql-kz": [
+    "go-sqlite-men-database-sql",
+    "kz"
+  ],
+  "go/deploy": [
+    "go-tegin-hostingke-shygaru",
+    "ru"
+  ],
+  "go/deploy-en": [
+    "go-tegin-hostingke-shygaru",
+    "en"
+  ],
+  "go/deploy-kz": [
+    "go-tegin-hostingke-shygaru",
+    "kz"
+  ],
+  "go/errors": [
+    "go-qateler-jai-man",
+    "ru"
+  ],
+  "go/errors-en": [
+    "go-qateler-jai-man",
+    "en"
+  ],
+  "go/errors-kz": [
+    "go-qateler-jai-man",
+    "kz"
+  ],
+  "go/forms": [
+    "go-forma-oqyrmannan-derek",
+    "ru"
+  ],
+  "go/forms-en": [
+    "go-forma-oqyrmannan-derek",
+    "en"
+  ],
+  "go/forms-kz": [
+    "go-forma-oqyrmannan-derek",
+    "kz"
+  ],
+  "go/git": [
+    "go-git-kodyn-tarihy",
+    "ru"
+  ],
+  "go/git-en": [
+    "go-git-kodyn-tarihy",
+    "en"
+  ],
+  "go/git-kz": [
+    "go-git-kodyn-tarihy",
+    "kz"
+  ],
+  "go/github": [
+    "go-github-korinetin-kod",
+    "ru"
+  ],
+  "go/github-en": [
+    "go-github-korinetin-kod",
+    "en"
+  ],
+  "go/github-kz": [
+    "go-github-korinetin-kod",
+    "kz"
+  ],
+  "go/http": [
+    "go-http-shyndyghynda",
+    "ru"
+  ],
+  "go/http-en": [
+    "go-http-shyndyghynda",
+    "en"
+  ],
+  "go/http-kz": [
+    "go-http-shyndyghynda",
+    "kz"
+  ],
+  "go/https": [
+    "go-oz-domen-men-https",
+    "ru"
+  ],
+  "go/https-en": [
+    "go-oz-domen-men-https",
+    "en"
+  ],
+  "go/https-kz": [
+    "go-oz-domen-men-https",
+    "kz"
+  ],
+  "go/interface": [
+    "go-interfeis-kelisim",
+    "ru"
+  ],
+  "go/interface-en": [
+    "go-interfeis-kelisim",
+    "en"
+  ],
+  "go/interface-kz": [
+    "go-interfeis-kelisim",
+    "kz"
+  ],
+  "go/intro": [
+    "tegin-bagdarlamalau-kursy-go",
+    "ru"
+  ],
+  "go/intro-en": [
+    "tegin-bagdarlamalau-kursy-go",
+    "en"
+  ],
+  "go/intro-kz": [
+    "tegin-bagdarlamalau-kursy-go",
+    "kz"
+  ],
+  "go/json": [
+    "go-json-pen-oz-api",
+    "ru"
+  ],
+  "go/json-en": [
+    "go-json-pen-oz-api",
+    "en"
+  ],
+  "go/json-kz": [
+    "go-json-pen-oz-api",
+    "kz"
+  ],
+  "go/layout": [
+    "go-maket-bir-jaqtau",
+    "ru"
+  ],
+  "go/layout-en": [
+    "go-maket-bir-jaqtau",
+    "en"
+  ],
+  "go/layout-kz": [
+    "go-maket-bir-jaqtau",
+    "kz"
+  ],
+  "go/logs": [
+    "go-qate-men-jurnal-ne-buzyldy",
+    "ru"
+  ],
+  "go/logs-en": [
+    "go-qate-men-jurnal-ne-buzyldy",
+    "en"
+  ],
+  "go/logs-kz": [
+    "go-qate-men-jurnal-ne-buzyldy",
+    "kz"
+  ],
+  "go/middleware": [
+    "go-ondeushi-men-orama",
+    "ru"
+  ],
+  "go/middleware-en": [
+    "go-ondeushi-men-orama",
+    "en"
+  ],
+  "go/middleware-kz": [
+    "go-ondeushi-men-orama",
+    "kz"
+  ],
+  "go/migrate": [
+    "go-koshi-qon-derekqor-tarihy",
+    "ru"
+  ],
+  "go/migrate-en": [
+    "go-koshi-qon-derekqor-tarihy",
+    "en"
+  ],
+  "go/migrate-kz": [
+    "go-koshi-qon-derekqor-tarihy",
+    "kz"
+  ],
+  "go/next": [
+    "go-ari-qarai-qaida-generikter",
+    "ru"
+  ],
+  "go/next-en": [
+    "go-ari-qarai-qaida-generikter",
+    "en"
+  ],
+  "go/next-kz": [
+    "go-ari-qarai-qaida-generikter",
+    "kz"
+  ],
+  "go/packages": [
+    "go-paketter-men-moduldar",
+    "ru"
+  ],
+  "go/packages-en": [
+    "go-paketter-men-moduldar",
+    "en"
+  ],
+  "go/packages-kz": [
+    "go-paketter-men-moduldar",
+    "kz"
+  ],
+  "go/passwords": [
+    "go-tirkelu-men-qupiyasoz",
+    "ru"
+  ],
+  "go/passwords-en": [
+    "go-tirkelu-men-qupiyasoz",
+    "en"
+  ],
+  "go/passwords-kz": [
+    "go-tirkelu-men-qupiyasoz",
+    "kz"
+  ],
+  "go/perms": [
+    "go-quqyq-kim-nene-ozgerte-alady",
+    "ru"
+  ],
+  "go/perms-en": [
+    "go-quqyq-kim-nene-ozgerte-alady",
+    "en"
+  ],
+  "go/perms-kz": [
+    "go-quqyq-kim-nene-ozgerte-alady",
+    "kz"
+  ],
+  "go/pointers": [
+    "go-siltegishter-men-adister",
+    "ru"
+  ],
+  "go/pointers-en": [
+    "go-siltegishter-men-adister",
+    "en"
+  ],
+  "go/pointers-kz": [
+    "go-siltegishter-men-adister",
+    "kz"
+  ],
+  "go/race": [
+    "go-gorutina-men-arna",
+    "ru"
+  ],
+  "go/race-en": [
+    "go-gorutina-men-arna",
+    "en"
+  ],
+  "go/race-kz": [
+    "go-gorutina-men-arna",
+    "kz"
+  ],
+  "go/routes": [
+    "go-bagyttar-kim-ondejdi",
+    "ru"
+  ],
+  "go/routes-en": [
+    "go-bagyttar-kim-ondejdi",
+    "en"
+  ],
+  "go/routes-kz": [
+    "go-bagyttar-kim-ondejdi",
+    "kz"
+  ],
+  "go/search": [
+    "go-izdeu-fts5",
+    "ru"
+  ],
+  "go/search-en": [
+    "go-izdeu-fts5",
+    "en"
+  ],
+  "go/search-kz": [
+    "go-izdeu-fts5",
+    "kz"
+  ],
+  "go/sessions": [
+    "go-sessiya-men-cookie",
+    "ru"
+  ],
+  "go/sessions-en": [
+    "go-sessiya-men-cookie",
+    "en"
+  ],
+  "go/sessions-kz": [
+    "go-sessiya-men-cookie",
+    "kz"
+  ],
+  "go/sqljoin": [
+    "go-sql-eki-keste-join",
+    "ru"
+  ],
+  "go/sqljoin-en": [
+    "go-sql-eki-keste-join",
+    "en"
+  ],
+  "go/sqljoin-kz": [
+    "go-sql-eki-keste-join",
+    "kz"
+  ],
+  "go/sqlone": [
+    "go-sql-birinshi-keste",
+    "ru"
+  ],
+  "go/sqlone-en": [
+    "go-sql-birinshi-keste",
+    "en"
+  ],
+  "go/sqlone-kz": [
+    "go-sql-birinshi-keste",
+    "kz"
+  ],
+  "go/start": [
+    "go-kurs-bastar-aldynda",
+    "ru"
+  ],
+  "go/start-en": [
+    "go-kurs-bastar-aldynda",
+    "en"
+  ],
+  "go/start-kz": [
+    "go-kurs-bastar-aldynda",
+    "kz"
+  ],
+  "go/static": [
+    "go-statika-css-qarip-suret",
+    "ru"
+  ],
+  "go/static-en": [
+    "go-statika-css-qarip-suret",
+    "en"
+  ],
+  "go/static-kz": [
+    "go-statika-css-qarip-suret",
+    "kz"
+  ],
+  "go/struct": [
+    "go-qurylym-struct-oz-tipin",
+    "ru"
+  ],
+  "go/struct-en": [
+    "go-qurylym-struct-oz-tipin",
+    "en"
+  ],
+  "go/struct-kz": [
+    "go-qurylym-struct-oz-tipin",
+    "kz"
+  ],
+  "go/systemd": [
+    "go-systemd-pen-uqypty-toqtau",
+    "ru"
+  ],
+  "go/systemd-en": [
+    "go-systemd-pen-uqypty-toqtau",
+    "en"
+  ],
+  "go/systemd-kz": [
+    "go-systemd-pen-uqypty-toqtau",
+    "kz"
+  ],
+  "go/tags": [
+    "go-tegter-kopke-kop-bailanys",
+    "ru"
+  ],
+  "go/tags-en": [
+    "go-tegter-kopke-kop-bailanys",
+    "en"
+  ],
+  "go/tags-kz": [
+    "go-tegter-kopke-kop-bailanys",
+    "kz"
+  ],
+  "go/templates": [
+    "go-ulgiler-html-template",
+    "ru"
+  ],
+  "go/templates-en": [
+    "go-ulgiler-html-template",
+    "en"
+  ],
+  "go/templates-kz": [
+    "go-ulgiler-html-template",
+    "kz"
+  ],
+  "go/test": [
+    "go-algashqy-test",
+    "ru"
+  ],
+  "go/test-en": [
+    "go-algashqy-test",
+    "en"
+  ],
+  "go/test-kz": [
+    "go-algashqy-test",
+    "kz"
+  ],
+  "go/tests2": [
+    "go-testter-ne-syndy",
+    "ru"
+  ],
+  "go/tests2-en": [
+    "go-testter-ne-syndy",
+    "en"
+  ],
+  "go/tests2-kz": [
+    "go-testter-ne-syndy",
+    "kz"
+  ],
+  "go/tx": [
+    "go-tranzakciya-men-sql-inekciya",
+    "ru"
+  ],
+  "go/tx-en": [
+    "go-tranzakciya-men-sql-inekciya",
+    "en"
+  ],
+  "go/tx-kz": [
+    "go-tranzakciya-men-sql-inekciya",
+    "kz"
+  ],
+  "go/upload": [
+    "go-suret-jukteu",
+    "ru"
+  ],
+  "go/upload-en": [
+    "go-suret-jukteu",
+    "en"
+  ],
+  "go/upload-kz": [
+    "go-suret-jukteu",
+    "kz"
+  ],
+  "python/average": [
+    "py-ortasha-mediana-shashyrau",
+    "ru"
+  ],
+  "python/average-en": [
+    "py-ortasha-mediana-shashyrau",
+    "en"
+  ],
+  "python/average-kz": [
+    "py-ortasha-mediana-shashyrau",
+    "kz"
+  ],
+  "python/chart": [
+    "py-matplotlib-birinshi-grafik",
+    "ru"
+  ],
+  "python/chart-en": [
+    "py-matplotlib-birinshi-grafik",
+    "en"
+  ],
+  "python/chart-kz": [
+    "py-matplotlib-birinshi-grafik",
+    "kz"
+  ],
+  "python/clean": [
+    "py-las-derek-isna-fillna-astype",
+    "ru"
+  ],
+  "python/clean-en": [
+    "py-las-derek-isna-fillna-astype",
+    "en"
+  ],
+  "python/clean-kz": [
+    "py-las-derek-isna-fillna-astype",
+    "kz"
+  ],
+  "python/conditions": [
+    "py-shartar-if-elif-else",
+    "ru"
+  ],
+  "python/conditions-en": [
+    "py-shartar-if-elif-else",
+    "en"
+  ],
+  "python/conditions-kz": [
+    "py-shartar-if-elif-else",
+    "kz"
+  ],
+  "python/csv": [
+    "py-csv-utir-tyrnaqsha-tanba",
+    "ru"
+  ],
+  "python/csv-en": [
+    "py-csv-utir-tyrnaqsha-tanba",
+    "en"
+  ],
+  "python/csv-kz": [
+    "py-csv-utir-tyrnaqsha-tanba",
+    "kz"
+  ],
+  "python/dates": [
+    "py-kunder-uaqyt-datetime-timedelta",
+    "ru"
+  ],
+  "python/dates-en": [
+    "py-kunder-uaqyt-datetime-timedelta",
+    "en"
+  ],
+  "python/dates-kz": [
+    "py-kunder-uaqyt-datetime-timedelta",
+    "kz"
+  ],
+  "python/dict": [
+    "py-sozdik-kilt-pen-man",
+    "ru"
+  ],
+  "python/dict-en": [
+    "py-sozdik-kilt-pen-man",
+    "en"
+  ],
+  "python/dict-kz": [
+    "py-sozdik-kilt-pen-man",
+    "kz"
+  ],
+  "python/errors": [
+    "py-qateler-try-except-raise",
+    "ru"
+  ],
+  "python/errors-en": [
+    "py-qateler-try-except-raise",
+    "en"
+  ],
+  "python/errors-kz": [
+    "py-qateler-try-except-raise",
+    "kz"
+  ],
+  "python/files": [
+    "py-faildar-pathlib-kodtau",
+    "ru"
+  ],
+  "python/files-en": [
+    "py-faildar-pathlib-kodtau",
+    "en"
+  ],
+  "python/files-kz": [
+    "py-faildar-pathlib-kodtau",
+    "kz"
+  ],
+  "python/format": [
+    "py-sandar-pishim-dongelekteu-olshem",
+    "ru"
+  ],
+  "python/format-en": [
+    "py-sandar-pishim-dongelekteu-olshem",
+    "en"
+  ],
+  "python/format-kz": [
+    "py-sandar-pishim-dongelekteu-olshem",
+    "kz"
+  ],
+  "python/frame": [
+    "py-dataframe-series-indeks-qoltanba",
+    "ru"
+  ],
+  "python/frame-en": [
+    "py-dataframe-series-indeks-qoltanba",
+    "en"
+  ],
+  "python/frame-kz": [
+    "py-dataframe-series-indeks-qoltanba",
+    "kz"
+  ],
+  "python/functions": [
+    "py-funkciyalar-def-return-assert",
+    "ru"
+  ],
+  "python/functions-en": [
+    "py-funkciyalar-def-return-assert",
+    "en"
+  ],
+  "python/functions-kz": [
+    "py-funkciyalar-def-return-assert",
+    "kz"
+  ],
+  "python/generators": [
+    "py-generatorlar-yield-jad",
+    "ru"
+  ],
+  "python/generators-en": [
+    "py-generatorlar-yield-jad",
+    "en"
+  ],
+  "python/generators-kz": [
+    "py-generatorlar-yield-jad",
+    "kz"
+  ],
+  "python/glossary": [
+    "py-modul-sozdigi-segiz-soz",
+    "ru"
+  ],
+  "python/glossary-en": [
+    "py-modul-sozdigi-segiz-soz",
+    "en"
+  ],
+  "python/glossary-kz": [
+    "py-modul-sozdigi-segiz-soz",
+    "kz"
+  ],
+  "python/group": [
+    "py-toptau-groupby-agg-transform",
+    "ru"
+  ],
+  "python/group-en": [
+    "py-toptau-groupby-agg-transform",
+    "en"
+  ],
+  "python/group-kz": [
+    "py-toptau-groupby-agg-transform",
+    "kz"
+  ],
+  "python/honest": [
+    "py-grafikpen-otirik-aitpau-shkala",
+    "ru"
+  ],
+  "python/honest-en": [
+    "py-grafikpen-otirik-aitpau-shkala",
+    "en"
+  ],
+  "python/honest-kz": [
+    "py-grafikpen-otirik-aitpau-shkala",
+    "kz"
+  ],
+  "python/http": [
+    "py-http-suranys-urllib-status",
+    "ru"
+  ],
+  "python/http-en": [
+    "py-http-suranys-urllib-status",
+    "en"
+  ],
+  "python/http-kz": [
+    "py-http-suranys-urllib-status",
+    "kz"
+  ],
+  "python/intro": [
+    "tegin-kurs-python-derek-pen-ii",
+    "ru"
+  ],
+  "python/intro-en": [
+    "tegin-kurs-python-derek-pen-ii",
+    "en"
+  ],
+  "python/intro-kz": [
+    "tegin-kurs-python-derek-pen-ii",
+    "kz"
+  ],
+  "python/io": [
+    "py-oqu-jazu-csv-json-sql",
+    "ru"
+  ],
+  "python/io-en": [
+    "py-oqu-jazu-csv-json-sql",
+    "en"
+  ],
+  "python/io-kz": [
+    "py-oqu-jazu-csv-json-sql",
+    "kz"
+  ],
+  "python/json": [
+    "py-json-null-kilt-jol",
+    "ru"
+  ],
+  "python/json-en": [
+    "py-json-null-kilt-jol",
+    "en"
+  ],
+  "python/json-kz": [
+    "py-json-null-kilt-jol",
+    "kz"
+  ],
+  "python/list": [
+    "py-tizim-men-kortej",
+    "ru"
+  ],
+  "python/list-en": [
+    "py-tizim-men-kortej",
+    "en"
+  ],
+  "python/list-kz": [
+    "py-tizim-men-kortej",
+    "kz"
+  ],
+  "python/loops": [
+    "py-cikldar-for-range-while",
+    "ru"
+  ],
+  "python/loops-en": [
+    "py-cikldar-for-range-while",
+    "en"
+  ],
+  "python/loops-kz": [
+    "py-cikldar-for-range-while",
+    "kz"
+  ],
+  "python/merge": [
+    "py-kesteler-merge-join-kilt",
+    "ru"
+  ],
+  "python/merge-en": [
+    "py-kesteler-merge-join-kilt",
+    "en"
+  ],
+  "python/merge-kz": [
+    "py-kesteler-merge-join-kilt",
+    "kz"
+  ],
+  "python/modules": [
+    "py-modul-paket-import-name",
+    "ru"
+  ],
+  "python/modules-en": [
+    "py-modul-paket-import-name",
+    "en"
+  ],
+  "python/modules-kz": [
+    "py-modul-paket-import-name",
+    "kz"
+  ],
+  "python/numbers": [
+    "py-sandar-joldar-shygys",
+    "ru"
+  ],
+  "python/numbers-en": [
+    "py-sandar-joldar-shygys",
+    "en"
+  ],
+  "python/numbers-kz": [
+    "py-sandar-joldar-shygys",
+    "kz"
+  ],
+  "python/pandas": [
+    "py-pandas-nege-kerek-olsheu",
+    "ru"
+  ],
+  "python/pandas-en": [
+    "py-pandas-nege-kerek-olsheu",
+    "en"
+  ],
+  "python/pandas-kz": [
+    "py-pandas-nege-kerek-olsheu",
+    "kz"
+  ],
+  "python/pipeline": [
+    "py-konveyer-main-cron-dry-run",
+    "ru"
+  ],
+  "python/pipeline-en": [
+    "py-konveyer-main-cron-dry-run",
+    "en"
+  ],
+  "python/pipeline-kz": [
+    "py-konveyer-main-cron-dry-run",
+    "kz"
+  ],
+  "python/polite": [
+    "py-sypaiylyq-timeout-retry-kesh",
+    "ru"
+  ],
+  "python/polite-en": [
+    "py-sypaiylyq-timeout-retry-kesh",
+    "en"
+  ],
+  "python/polite-kz": [
+    "py-sypaiylyq-timeout-retry-kesh",
+    "kz"
+  ],
+  "python/prices": [
+    "py-agany-bagalar-tenge",
+    "ru"
+  ],
+  "python/prices-en": [
+    "py-agany-bagalar-tenge",
+    "en"
+  ],
+  "python/prices-kz": [
+    "py-agany-bagalar-tenge",
+    "kz"
+  ],
+  "python/report": [
+    "py-esep-bet-html-ulgi-escape",
+    "ru"
+  ],
+  "python/report-en": [
+    "py-esep-bet-html-ulgi-escape",
+    "en"
+  ],
+  "python/report-kz": [
+    "py-esep-bet-html-ulgi-escape",
+    "kz"
+  ],
+  "python/schedule": [
+    "py-keste-cron-argparse-logging",
+    "ru"
+  ],
+  "python/schedule-en": [
+    "py-keste-cron-argparse-logging",
+    "en"
+  ],
+  "python/schedule-kz": [
+    "py-keste-cron-argparse-logging",
+    "kz"
+  ],
+  "python/select": [
+    "py-tandau-suzgi-maska-loc",
+    "ru"
+  ],
+  "python/select-en": [
+    "py-tandau-suzgi-maska-loc",
+    "en"
+  ],
+  "python/select-kz": [
+    "py-tandau-suzgi-maska-loc",
+    "kz"
+  ],
+  "python/sets": [
+    "py-jiyndar-set-qiylysu-ayyrma",
+    "ru"
+  ],
+  "python/sets-en": [
+    "py-jiyndar-set-qiylysu-ayyrma",
+    "en"
+  ],
+  "python/sets-kz": [
+    "py-jiyndar-set-qiylysu-ayyrma",
+    "kz"
+  ],
+  "python/sql": [
+    "py-sql-group-by-join-suranys",
+    "ru"
+  ],
+  "python/sql-en": [
+    "py-sql-group-by-join-suranys",
+    "en"
+  ],
+  "python/sql-kz": [
+    "py-sql-group-by-join-suranys",
+    "kz"
+  ],
+  "python/sqlite": [
+    "py-sqlite-keste-kilt-tarih",
+    "ru"
+  ],
+  "python/sqlite-en": [
+    "py-sqlite-keste-kilt-tarih",
+    "en"
+  ],
+  "python/sqlite-kz": [
+    "py-sqlite-keste-kilt-tarih",
+    "kz"
+  ],
+  "python/time": [
+    "py-uaqyt-resample-rolling-asfreq",
+    "ru"
+  ],
+  "python/time-en": [
+    "py-uaqyt-resample-rolling-asfreq",
+    "en"
+  ],
+  "python/time-kz": [
+    "py-uaqyt-resample-rolling-asfreq",
+    "kz"
+  ],
+  "python/types": [
+    "py-aynymalylar-men-tipter",
+    "ru"
+  ],
+  "python/types-en": [
+    "py-aynymalylar-men-tipter",
+    "en"
+  ],
+  "python/types-kz": [
+    "py-aynymalylar-men-tipter",
+    "kz"
+  ],
+  "python/workspace": [
+    "py-jumys-orny-venv",
+    "ru"
+  ],
+  "python/workspace-en": [
+    "py-jumys-orny-venv",
+    "en"
+  ],
+  "python/workspace-kz": [
+    "py-jumys-orny-venv",
+    "kz"
+  ],
+  "python/xml": [
+    "py-xml-talday-elementtree",
+    "ru"
+  ],
+  "python/xml-en": [
+    "py-xml-talday-elementtree",
+    "en"
+  ],
+  "python/xml-kz": [
+    "py-xml-talday-elementtree",
+    "kz"
+  ]
 }

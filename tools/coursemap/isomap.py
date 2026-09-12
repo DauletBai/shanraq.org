@@ -2776,6 +2776,33 @@ def pymap36(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap37(s):
+    """Python lesson 37: the mean, the median and the spread.
+
+    The median is the accent: it is the measure that does not move when one
+    value is far away, which is the whole point of the lesson.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5420,6 +5447,37 @@ PY36 = {
                foot_sub="an empty report is worse than an old one"),
 }
 
+PY37 = {
+    "kz": dict(alt="Орташа, медиана және шашырау",
+               b1="орташа", b1_sub="құйрыққа ереді",
+               b2="медиана", b2_sub="ортада тұрады",
+               b3="шашырау", b3_sub="std және ширек",
+               c1="ал ортасы ше?", c2="қашықтығы қандай?",
+               head="ОРТАША, МЕДИАНА, ШАШЫРАУ",
+               head_sub="отыз жетінші сабақ: өлшемдер",
+               foot="ОН ЕЛДІҢ СЕГІЗІ — ОРТАШАДАН ТӨМЕН",
+               foot_sub="өлшенді: 2022 жыл, он ел"),
+    "ru": dict(alt="Среднее, медиана и разброс",
+               b1="среднее", b1_sub="идёт за хвостом",
+               b2="медиана", b2_sub="стоит в середине",
+               b3="разброс", b3_sub="std и четверти",
+               c1="а у середины?", c2="а как далеко?",
+               head="СРЕДНЕЕ, МЕДИАНА, РАЗБРОС",
+               head_sub="тридцать седьмой урок: меры",
+               foot="ВОСЕМЬ СТРАН ИЗ ДЕСЯТИ — НИЖЕ СРЕДНЕГО",
+               foot_sub="измерено: 2022 год, десять стран"),
+    "en": dict(alt="The mean, the median and the spread",
+               b1="the mean", b1_sub="follows the tail",
+               b2="the median", b2_sub="the middle one",
+               b3="the spread", b3_sub="std and quarters",
+               c1="and the middle?", c2="and how far apart?",
+               head="MEAN, MEDIAN AND SPREAD",
+               head_sub="lesson thirty-seven: the measures",
+               foot="EIGHT OF TEN COUNTRIES BELOW THE MEAN",
+               foot_sub="measured: 2022, ten countries"),
+}
+
+
 
 
 if __name__ == "__main__":
@@ -5467,7 +5525,8 @@ if __name__ == "__main__":
                                ("honest", pymap33, PY33),
                                ("report", pymap34, PY34),
                                ("format", pymap35, PY35),
-                               ("pipeline", pymap36, PY36)):
+                               ("pipeline", pymap36, PY36),
+                               ("average", pymap37, PY37)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
