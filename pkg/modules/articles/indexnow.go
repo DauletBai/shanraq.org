@@ -45,6 +45,14 @@ func (m *Module) runIndexNow(ctx context.Context) {
 	}
 
 	all := append([]string{"/"}, publicPages...)
+	// Other modules' standing pages go in the same submission: the shop's
+	// product pages are exactly the kind a search engine will not find on its
+	// own for weeks.
+	if m.rt.Pages != nil {
+		for _, pg := range m.rt.Pages.All(ctx) {
+			all = append(all, pg.Path)
+		}
+	}
 	m.syndicate.SubmitURLs(m.pageURLs(all), "постоянные страницы")
 
 	t := time.NewTicker(indexNowEvery)

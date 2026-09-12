@@ -178,8 +178,12 @@
     <a class="adslide adslot__slide{{ if $ad.House }} adslot__slide--house{{ end }}{{ if eq $i 0 }} is-active{{ end }}"
        href="{{ $ad.URL }}"{{ if not $ad.House }} rel="nofollow sponsored noopener" target="_blank"{{ end }}>
       <span class="adslot__ribbon{{ if $ad.House }} adslot__ribbon--house{{ end }}">{{ t $.Lang "ad.badge" }}</span>
+      {{/* A paid banner's picture is its ground: dimmed, behind the copy. Our
+           own slide about a book shows the cover as a cover — a book is chosen
+           with the eyes before it is read. */}}
       {{ if and $ad.Image (not $ad.House) }}<span class="adslot__img"><img src="{{ $ad.Image }}" alt="" loading="lazy"></span>{{ end }}
       <span class="adslot__body">
+        {{ if and $ad.Image $ad.House }}<img class="adslot__cover" src="{{ $ad.Image }}" alt="" loading="lazy" decoding="async">{{ end }}
         <span class="adslot__title">{{ $ad.Title }}</span>
         <span class="adslot__desc">{{ $ad.Desc }}</span>
         <span class="adslot__cta">{{ $ad.Price }} →</span>

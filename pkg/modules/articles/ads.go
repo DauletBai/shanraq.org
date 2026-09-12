@@ -32,6 +32,9 @@ func houseAds(lang string) []Ad {
 		// more selling something we have than selling the space itself, and the
 		// offer to advertise loses nothing by following one slide later.
 		{"adam", "/adam"},
+		// The book follows it: it is the other thing we sell, it is new, and
+		// unlike the rest of these slides it has a picture worth showing.
+		{"book", "/shop/go-book"},
 		{"free", "/advertise"},   // the direct offer
 		{"beside", "/advertise"}, // the format: beside the text, never over it
 		{"notrack", "/privacy"},  // no third-party tracking — a real difference
@@ -40,10 +43,19 @@ func houseAds(lang string) []Ad {
 	}
 	out := make([]Ad, 0, len(slides))
 	for _, s := range slides {
-		out = append(out, houseSlide(lang, s.key, s.cta))
+		ad := houseSlide(lang, s.key, s.cta)
+		if s.key == "book" {
+			ad.Image = bookCoverURL
+		}
+		out = append(out, ad)
 	}
 	return out
 }
+
+// bookCoverURL is the cover the book slide shows. It is the product's own
+// cover file; the product row may point somewhere else once the owner replaces
+// it in the panel, and then this is the one line to follow.
+const bookCoverURL = "/static/shop/go-book-cover.jpg"
 
 // houseSlide builds one house slide from its string key and where it leads.
 func houseSlide(lang, key, cta string) Ad {

@@ -110,6 +110,7 @@ func (m *Module) handleProduct(w http.ResponseWriter, r *http.Request) {
 	if p.CoverURL != "" {
 		page.OGImage = absolute(page.SiteURL, p.CoverURL)
 	}
+	page.JSONLD = productLD(page.Nonce, page.SiteURL, p, lang)
 	switch r.URL.Query().Get("notified") {
 	case "1":
 		page.Notice = site.T(lang, "shop.notify_ok")
@@ -166,6 +167,54 @@ func validEmail(s string) bool {
 	at := strings.IndexByte(s, '@')
 	return at > 0 && at < len(s)-3 && strings.LastIndexByte(s, '@') == at &&
 		strings.Contains(s[at:], ".")
+}
+
+// productLD describes the product to a search engine: what it is, what it looks
+// like, who publishes it — and what it costs, but only while it can actually be
+// bought. A price in structured data is a promise that the page can take money
+// for it; until an acquirer is connected, the honest markup is a product with
+// no offers rather than an offer nobody can accept.
+func productLD(nonce, origin string, p Product, lang string) template.HTML {
+	ld := map[string]any{
+		"@context":    "https://schema.org",
+		"@type":       "Product",
+		"name":        p.TitleIn(lang),
+		"description": p.SummaryIn(lang),
+		"url":         absolute(origin, "/shop/"+p.Slug+"?lang="+lang),
+		"brand":       map[string]any{"@type": "Organization", "name": "Shanraq.org"},
+		"category":    p.Kind,
+	}
+	if p.CoverURL != "" {
+		ld["image"] = absolute(origin, p.CoverURL)
+	}
+	if !p.OnSale() {
+		return site.JSONLD(nonce, ld)
+	}
+	offers := make([]map[string]any, 0, len(p.Plans))
+	for _, pl := range p.Plans {
+		if !pl.Buyable() {
+			continue
+		}
+		offers = append(offers, map[string]any{
+			"@type":         "Offer",
+			"name":          pl.TitleIn(lang),
+			"price":         pl.Price,
+			"priceCurrency": currencyOr(p.Currency),
+			"availability":  "https://schema.org/InStock",
+			"url":           absolute(origin, "/shop/"+p.Slug+"?lang="+lang),
+		})
+	}
+	ld["offers"] = offers
+	return site.JSONLD(nonce, ld)
+}
+
+// currencyOr keeps the markup valid for a row written before the column had a
+// default: an empty currency would publish a price in no currency at all.
+func currencyOr(c string) string {
+	if c = strings.TrimSpace(c); c != "" {
+		return c
+	}
+	return "KZT"
 }
 
 // absolute turns a site-relative URL into an absolute one for a social preview.

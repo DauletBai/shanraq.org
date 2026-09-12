@@ -1,6 +1,7 @@
 package site
 
 import (
+	"encoding/json"
 	"html/template"
 	"strconv"
 	"strings"
@@ -214,4 +215,19 @@ func Money(v int64) string {
 		b.WriteString(s[i : i+3])
 	}
 	return b.String()
+}
+
+// JSONLD renders a schema.org value as an inline ld+json script. encoding/json
+// escapes <, > and & so the payload is safe inside <script>.
+//
+// It carries the nonce like any other script tag. The block never executes, but
+// the policy applies to it all the same, and Google renders pages in a browser
+// -- a blocked block is structured data the search engine does not see.
+func JSONLD(nonce string, v any) template.HTML {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return ""
+	}
+	return template.HTML(`<script type="application/ld+json" nonce="` +
+		template.HTMLEscapeString(nonce) + `">` + string(b) + `</script>`) //nolint:gosec // json.Marshal escapes the payload
 }

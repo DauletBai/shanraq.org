@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/go-chi/chi/v5"
@@ -154,5 +155,41 @@ func TestAdminNeedsLeadership(t *testing.T) {
 		if rec.Code != http.StatusForbidden {
 			t.Errorf("%s %s without a session = %d, want 403", c.method, c.path, rec.Code)
 		}
+	}
+}
+
+// Structured data is a claim a search engine will act on, so it may never
+// offer a price the page cannot take money for.
+func TestProductLD(t *testing.T) {
+	p := Product{
+		Slug: "go-book", Kind: "book", Status: StatusAnnounced, CoverURL: "/static/shop/c.jpg",
+		Title:   map[string]string{site.LangRU: "Книга"},
+		Summary: map[string]string{site.LangRU: "Кратко"},
+		Plans:   []Plan{{Code: "book", Price: 9900, Title: map[string]string{site.LangRU: "Книга"}}},
+	}
+	announced := string(productLD("n0nce", "https://shanraq.org", p, site.LangRU))
+	if !strings.Contains(announced, `"@type":"Product"`) || !strings.Contains(announced, "Книга") {
+		t.Errorf("product markup missing: %s", announced)
+	}
+	if strings.Contains(announced, "offers") || strings.Contains(announced, "9900") {
+		t.Errorf("a product that is not on sale must not publish an offer: %s", announced)
+	}
+	if !strings.Contains(announced, "https://shanraq.org/static/shop/c.jpg") {
+		t.Errorf("image must be absolute: %s", announced)
+	}
+
+	p.Status = StatusSelling
+	selling := string(productLD("n0nce", "https://shanraq.org", p, site.LangRU))
+	if !strings.Contains(selling, `"price":9900`) || !strings.Contains(selling, `"priceCurrency":"KZT"`) {
+		t.Errorf("a product on sale must publish its price: %s", selling)
+	}
+	if !strings.Contains(selling, "https://schema.org/InStock") {
+		t.Errorf("availability missing: %s", selling)
+	}
+
+	// The block is a script tag carrying this page's nonce, or the policy stops
+	// the crawler's browser from reading it.
+	if !strings.Contains(selling, `nonce="n0nce"`) || !strings.Contains(selling, "application/ld+json") {
+		t.Errorf("the block must be a nonced ld+json script: %s", selling)
 	}
 }

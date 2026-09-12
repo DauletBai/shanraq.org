@@ -141,7 +141,7 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 var publicPages = []string{
 	"/about", "/adam", "/framework", "/guide", "/formatting", "/pricing", "/support",
 	"/listings", "/predictions", "/analytics", "/rates", "/calculator", "/author/sana",
-	"/shop", "/offer",
+	"/offer",
 }
 
 // handleSitemap emits the main trilingual sitemap: home, static pages, category
@@ -152,6 +152,14 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 		emit("/", time.Now())
 		for _, p := range publicPages {
 			emit(p, time.Time{})
+		}
+		// What other modules own: the shop's products today, whatever the next
+		// module registers tomorrow. They are read at request time, so a page
+		// published this morning is offered this morning.
+		if m.rt.Pages != nil {
+			for _, pg := range m.rt.Pages.All(r.Context()) {
+				emit(pg.Path, pg.Updated)
+			}
 		}
 		// Each currency's rate is a page of its own with its own history, and has
 		// to be offered separately: people search for the rouble rate, not for

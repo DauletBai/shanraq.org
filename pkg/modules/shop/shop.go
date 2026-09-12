@@ -50,7 +50,30 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
 	rt.Site.Add(nil, templateFiles, "templates/*.html")
+	// The sitemap is built elsewhere, but only this module knows which products
+	// are on show. A draft is not offered to a search engine: it 404s for
+	// everyone but staff, and a sitemap entry that 404s is a mark against the
+	// whole site.
+	if rt.Pages != nil {
+		rt.Pages.Add(m.publicPages)
+	}
 	return nil
+}
+
+// publicPages is the shop's contribution to the sitemap: its front page and
+// every product a reader can open.
+func (m *Module) publicPages(ctx context.Context) []site.Page {
+	items, err := m.store.List(ctx, false)
+	if err != nil {
+		m.logger().Warn("shop pages for sitemap", zap.Error(err))
+		return nil
+	}
+	out := make([]site.Page, 0, len(items)+1)
+	out = append(out, site.Page{Path: "/shop"})
+	for _, p := range items {
+		out = append(out, site.Page{Path: "/shop/" + p.Slug, Updated: p.UpdatedAt})
+	}
+	return out
 }
 
 // Routes registers the shop's browser surface. Everything here is a page or a

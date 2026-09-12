@@ -49,6 +49,9 @@ type Runtime struct {
 	// Site is the shared page frame: one template set for the whole site, which
 	// every module adds its own pages and helpers to during Init.
 	Site *site.Renderer
+	// Pages is where a module registers the public addresses it owns, for the
+	// sitemap and for the search engines we notify.
+	Pages *site.Pages
 }
 
 // Application wires together configuration, dependencies, and modules.
@@ -88,6 +91,7 @@ func (a *Application) Run(ctx context.Context) error {
 		DB:     pool,
 		Router: server.Router(),
 		Site:   site.NewRenderer(),
+		Pages:  site.NewPages(),
 	}
 
 	// 5xx responses hide their cause from the caller (it tends to be raw driver
