@@ -92,12 +92,25 @@ A single Go binary composed of independent modules that implement the
 `shanraq.Module` contract (init / start / routes):
 
 ```
-articles · auth · ai · media · syndicate · notifier · jobs · ratings · migrations
+articles · shop · payments · auth · ai · media · syndicate · notifier · jobs · ratings · migrations
 ```
 
 Each module wires its own routes, migrations, and background workers, so features
-compose without a service mesh. See **[docs/](docs/)** for the configuration
-reference, module guides, and deployment runbook.
+compose without a service mesh.
+
+`pkg/site` is the page frame every module shares: the three languages, the UI
+dictionary, the header, the aside, the footer, and one template set that modules
+add their own pages to. The dependency points one way — a module knows about the
+frame, the frame knows nothing about a module, and a test parses the frame with
+no module registered to keep it that way.
+
+**A new subject is a new module.** `pkg/modules/articles` grew to 171 files
+because every new thing the site did was added beside the last one; a test now
+holds it to a ceiling that can only be lowered. Something with its own tables,
+its own pages and its own vocabulary belongs in a package with its own name.
+
+See **[docs/](docs/)** for the configuration reference, module guides, and
+deployment runbook.
 
 ## Documentation
 
