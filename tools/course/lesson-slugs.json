@@ -827,6 +827,18 @@
     "py-modul-paket-import-name",
     "kz"
   ],
+  "python/money": [
+    "py-aqsha-qaydan-shygady-agregattar",
+    "ru"
+  ],
+  "python/money-en": [
+    "py-aqsha-qaydan-shygady-agregattar",
+    "en"
+  ],
+  "python/money-kz": [
+    "py-aqsha-qaydan-shygady-agregattar",
+    "kz"
+  ],
   "python/numbers": [
     "py-sandar-joldar-shygys",
     "ru"

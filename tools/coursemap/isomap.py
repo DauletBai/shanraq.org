@@ -2857,6 +2857,34 @@ def pymap39(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap40(s):
+    """Python lesson 40: cash, a deposit and the credit that makes it.
+
+    The credit block is the accent: it is where the ninety-one per cent of the
+    money comes from, and the one thing the printing press has nothing to do
+    with.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5596,6 +5624,36 @@ PY39 = {
 
 
 
+PY40 = {
+    "kz": dict(alt="Қолма-қол, депозит және несие",
+               b1="қолма-қол", b1_sub="банкнот, монета",
+               b2="депозит", b2_sub="банктегі жазба",
+               b3="несие", b3_sub="депозитті жасайды",
+               c1="ақшаның 9 %-ы", c2="ақшаның 91 %-ы",
+               head="АҚША ҚАЙДАН ШЫҒАДЫ",
+               head_sub="қырқыншы сабақ: агрегаттар",
+               foot="ЖІӨ ТЕҢГЕСІНЕ — 33 ТИЫН",
+               foot_sub="көбейткіш 3.365, қолма-қол 9 %"),
+    "ru": dict(alt="Наличные, депозит и кредит",
+               b1="наличные", b1_sub="купюра и монета",
+               b2="депозит", b2_sub="запись в банке",
+               b3="кредит", b3_sub="создаёт депозит",
+               c1="9 % всех денег", c2="91 % всех денег",
+               head="ОТКУДА БЕРУТСЯ ДЕНЬГИ",
+               head_sub="сороковой урок: агрегаты",
+               foot="НА ТЕНГЕ ВВП — 33 ТИЫНА",
+               foot_sub="множитель 3.365, наличных 9 %"),
+    "en": dict(alt="Cash, a deposit and credit",
+               b1="cash", b1_sub="notes and coins",
+               b2="a deposit", b2_sub="a bank's record",
+               b3="credit", b3_sub="makes the deposit",
+               c1="9 % of the money", c2="91 % of the money",
+               head="WHERE MONEY COMES FROM",
+               head_sub="lesson forty: the aggregates",
+               foot="33 TIYN PER TENGE OF GDP",
+               foot_sub="multiplier 3.365, cash at 9 %"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5644,7 +5702,8 @@ if __name__ == "__main__":
                                ("pipeline", pymap36, PY36),
                                ("average", pymap37, PY37),
                                ("index", pymap38, PY38),
-                               ("basket", pymap39, PY39)):
+                               ("basket", pymap39, PY39),
+                               ("money", pymap40, PY40)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
