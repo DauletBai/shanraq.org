@@ -971,6 +971,18 @@
     "py-sqlite-keste-kilt-tarih",
     "kz"
   ],
+  "python/statistics": [
+    "py-resmi-statistikany-qalay-oqu",
+    "ru"
+  ],
+  "python/statistics-en": [
+    "py-resmi-statistikany-qalay-oqu",
+    "en"
+  ],
+  "python/statistics-kz": [
+    "py-resmi-statistikany-qalay-oqu",
+    "kz"
+  ],
   "python/time": [
     "py-uaqyt-resample-rolling-asfreq",
     "ru"

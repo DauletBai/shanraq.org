@@ -2885,6 +2885,33 @@ def pymap40(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap41(s):
+    """Python lesson 41: one table, the question, the number.
+
+    The question is the accent: the table does not change between the five
+    numbers in it, only what each of them is compared against.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"], accent=True))
+
+    parts.append(block(4.5, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"]))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5654,6 +5681,36 @@ PY40 = {
                foot_sub="multiplier 3.365, cash at 9 %"),
 }
 
+PY41 = {
+    "kz": dict(alt="Кесте, сұрақ және сан",
+               b1="кесте", b1_sub="бір жарияланым",
+               b2="сұрақ", b2_sub="неге салыстырады",
+               b3="сан", b3_sub="олар бесеу",
+               c1="салмақ = үлес ÷ өсім", c2="база деңгейді ауыстырады",
+               head="РЕСМИ СТАТИСТИКАНЫ ОҚУ",
+               head_sub="қырық бірінші сабақ: ТБИ",
+               foot="БІР АЙ — 100.6, 106.4, 109.8",
+               foot_sub="ал Дүниежүзілік банкте 110.8"),
+    "ru": dict(alt="Таблица, вопрос и число",
+               b1="таблица", b1_sub="одна публикация",
+               b2="вопрос", b2_sub="с чем сравнили",
+               b3="число", b3_sub="их пять",
+               c1="вес = вклад ÷ прирост", c2="база меняет уровень",
+               head="КАК ЧИТАТЬ СТАТИСТИКУ",
+               head_sub="сорок первый урок: ИПЦ",
+               foot="ОДИН МЕСЯЦ — 100.6, 106.4, 109.8",
+               foot_sub="а у Всемирного банка 110.8"),
+    "en": dict(alt="A table, a question and a number",
+               b1="the table", b1_sub="one release",
+               b2="the question", b2_sub="against what",
+               b3="the number", b3_sub="there are five",
+               c1="weight = share / rise", c2="the base moves levels",
+               head="READING OFFICIAL STATISTICS",
+               head_sub="lesson forty-one: the CPI",
+               foot="ONE MONTH — 100.6, 106.4, 109.8",
+               foot_sub="and 110.8 at the World Bank"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5703,7 +5760,8 @@ if __name__ == "__main__":
                                ("average", pymap37, PY37),
                                ("index", pymap38, PY38),
                                ("basket", pymap39, PY39),
-                               ("money", pymap40, PY40)):
+                               ("money", pymap40, PY40),
+                               ("statistics", pymap41, PY41)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
