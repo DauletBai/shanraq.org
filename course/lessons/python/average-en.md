@@ -159,7 +159,7 @@ below the median: 5 of 10
 
 The median splits a series in half by definition — half is always below it. If eight of ten came out below the mean, the series has a long tail upwards, and "20 % on average" describes not the region but its single extreme.
 
-The same skew shows in Kazakhstan's eleven years: a mean of 9.08 against a median of 7.44 — three spikes out of eleven years lifted the mean nearly a point and a half above the middle.
+The same skew shows in Kazakhstan's eleven years: a mean of 9.08 against a median of 7.44 — three spikes out of eleven years lifted the mean by more than a point and a half above the middle.
 
 ### Spread: one number against four
 
@@ -172,7 +172,7 @@ quarters: 12.36 | 13.88 | 15.16
 interquartile range: 2.81
 ```
 
-Eight countries of ten fit into a band less than three points wide. That is the real spread of this series — and 18.97 describes not the spread but the distance to Turkiye.
+The middle of the series — half of the countries — fits into a band less than three points wide. That is the real spread of this series — and 18.97 describes not the spread but the distance to Turkiye.
 
 The range (`max - min`) is useful for something else: it names the **limits**, not the typical distance. In a headline it is honest only next to the number of observations.
 
