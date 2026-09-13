@@ -1652,7 +1652,7 @@ var messages = map[string]map[string]string{
 	"ag.page.agent":          {"kz": "Агенттер", "ru": "Агенты", "en": "Agents"},
 	"ag.page.static":         {"kz": "Ақпараттық беттер", "ru": "Информационные страницы", "en": "Info pages"},
 	"ag.page.weather":        {"kz": "Ауа райы", "ru": "Погода", "en": "Weather"},
-	"ag.page.rates":          {"kz": "Бағам және инфляция", "ru": "Курс и инфляция", "en": "Rates"},
+	"ag.page.rates":          {"kz": "Валюта бағамдары", "ru": "Курсы валют", "en": "Exchange rates"},
 	"ag.page.archive":        {"kz": "Мұрағат", "ru": "Архив", "en": "Archive"},
 	"ag.page.place":          {"kz": "Елді мекендер", "ru": "Населённые пункты", "en": "Places"},
 	"ag.page.predictions":    {"kz": "Болжамдар", "ru": "Прогнозы", "en": "Predictions"},
@@ -2193,7 +2193,7 @@ var messages = map[string]map[string]string{
 	"footer.col_you":     {"kz": "Сізге арналған", "ru": "Для вас", "en": "For you"},
 	"footer.col_courses": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"footer.course_soon": {"kz": "Курс жазылып жатыр — жақында ашылады", "ru": "Курс в разработке — скоро будет доступен", "en": "This course is being written — coming soon"},
-	"footer.rates":       {"kz": "Бағам және инфляция", "ru": "Курс и инфляция", "en": "Rates and inflation"},
+	"footer.rates":       {"kz": "Валюта бағамдары", "ru": "Курсы валют", "en": "Exchange rates"},
 	"footer.soon":        {"kz": "жақында", "ru": "скоро", "en": "soon"},
 	"footer.guide":       {"kz": "Нұсқаулық", "ru": "Руководство", "en": "Guide"},
 	// Two pages that had no label of their own outside the body text.
