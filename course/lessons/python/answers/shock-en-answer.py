@@ -54,8 +54,14 @@ print()
 print("== Taking out one country at a time")
 table = pd.DataFrame({column: without_each(NEIGHBOURS, column) for column in COLUMNS})
 for column in COLUMNS:
-    table[column + ", shift"] = (table[column] - base[column]).round(3)
-order = table["rate, shift"].abs().sort_values(ascending=False).index
+    shift = (table[column] - base[column]).round(3)
+    # A zero with a minus sign prints as "-0.000" and differs from a zero only
+    # by the order of operations inside the library. A promised output must not
+    # depend on that.
+    table[column + ", shift"] = shift.where(shift != 0, 0.0)
+# A stable sort: several countries share a shift, and with an ordinary sort
+# their order depends on the machine, while the lesson promises an exact output.
+order = table["rate, shift"].abs().sort_values(ascending=False, kind="stable").index
 print(table.loc[order].to_string())
 
 print()

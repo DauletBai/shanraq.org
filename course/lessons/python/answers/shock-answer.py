@@ -53,8 +53,14 @@ print()
 print("== Если убрать по одной стране")
 table = pd.DataFrame({column: bez_odnoy(SOSEDI, column) for column in COLUMNS})
 for column in COLUMNS:
-    table[column + ", сдвиг"] = (table[column] - base[column]).round(3)
-order = table["курс, сдвиг"].abs().sort_values(ascending=False).index
+    shift = (table[column] - base[column]).round(3)
+    # Ноль со знаком минус печатается как «-0.000», а отличается от нуля только
+    # порядком операций внутри библиотеки. Обещанный вывод от этого зависеть
+    # не должен.
+    table[column + ", сдвиг"] = shift.where(shift != 0, 0.0)
+# Сортировка устойчивая: сдвиги совпадают у нескольких стран, и при обычной
+# сортировке их порядок зависит от машины, а урок обещает точный вывод.
+order = table["курс, сдвиг"].abs().sort_values(ascending=False, kind="stable").index
 print(table.loc[order].to_string())
 
 print()

@@ -53,8 +53,13 @@ print()
 print("== Әр елді кезекпен алып тастасақ")
 table = pd.DataFrame({column: bir_elsiz(KORSHILER, column) for column in COLUMNS})
 for column in COLUMNS:
-    table[column + ", жылжу"] = (table[column] - base[column]).round(3)
-order = table["бағам, жылжу"].abs().sort_values(ascending=False).index
+    shift = (table[column] - base[column]).round(3)
+    # Таңбасы минус нөл «-0.000» болып басылады, ал нөлден тек кітапхана ішіндегі
+    # амалдар ретімен ерекшеленеді. Уәде етілген шығыс оған тәуелді болмауға тиіс.
+    table[column + ", жылжу"] = shift.where(shift != 0, 0.0)
+# Сұрыптау тұрақты: жылжу бірнеше елде бірдей, ал кәдімгі сұрыптауда олардың
+# реті машинаға тәуелді болады, сабақ болса дәл шығысты уәде етеді.
+order = table["бағам, жылжу"].abs().sort_values(ascending=False, kind="stable").index
 print(table.loc[order].to_string())
 
 print()

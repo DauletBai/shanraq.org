@@ -259,11 +259,11 @@ Moldova     0.985  0.891        0.014         0.152
 Uzbekistan  0.978  0.793        0.007         0.054
 Kazakhstan  0.977  0.735        0.006        -0.004
 Georgia     0.972  0.728        0.001        -0.011
-Russia      0.972  0.739        0.001        -0.000
-Belarus     0.972  0.739        0.001        -0.000
-Armenia     0.971  0.728       -0.000        -0.011
-Azerbaijan  0.971  0.747       -0.000         0.008
-Kyrgyzstan  0.971  0.782       -0.000         0.043
+Russia      0.972  0.739        0.001         0.000
+Belarus     0.972  0.739        0.001         0.000
+Armenia     0.971  0.728        0.000        -0.011
+Azerbaijan  0.971  0.747        0.000         0.008
+Kyrgyzstan  0.971  0.782        0.000         0.043
 
 == Who decides the answer
   rate     without Turkiye the link goes from +0.971 to +0.597
@@ -274,7 +274,7 @@ Kyrgyzstan  0.971  0.782       -0.000         0.043
   money    countries that flip the sign: Turkiye
 ```
 
-Done means: the output matches line for line; the number of countries is printed beside every link rather than once at the bottom; "who decides the answer" is found by the size of the shift rather than by eye; the change of sign is checked by comparing signs rather than by looking.
+Done means: the output matches line for line; the number of countries is printed beside every link rather than once at the bottom; "who decides the answer" is found by the size of the shift rather than by eye; the change of sign is checked by comparing signs rather than by looking; the sort is stable — several countries share a shift, and an ordinary sort puts them in a different order on a different machine.
 
 **On your own data.** Take any two columns you believe are related: spending and the weather, visits and the day of the week, sales and the exchange rate. Count the link, then count it without each point in turn — and see how many points have to go before the answer changes. That is the measure of how far you can lean on it.
 
