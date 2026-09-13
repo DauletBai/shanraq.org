@@ -563,6 +563,18 @@
     "py-uyretu-men-tekseru-uaqyt-boyynsha",
     "kz"
   ],
+  "python/classes": [
+    "py-syniptau-men-qate-matricasy",
+    "ru"
+  ],
+  "python/classes-en": [
+    "py-syniptau-men-qate-matricasy",
+    "en"
+  ],
+  "python/classes-kz": [
+    "py-syniptau-men-qate-matricasy",
+    "kz"
+  ],
   "python/clean": [
     "py-las-derek-isna-fillna-astype",
     "ru"

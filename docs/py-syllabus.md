@@ -105,7 +105,7 @@ python3 tools/coursecheck/pysyllabus.py lesson 5 файл.md     # покрыл 
 | Внешнее и своё | 42 | `corr(`, `dropna(` |
 | Регрессия | 43 | `sklearn`, `LinearRegression` |
 | Обучение и проверка | 44 | `train_test_split`, переобуч |
-| Классификация и матрица ошибок | 45 | `confusion_matrix`, точност |
+| Классификация и матрица ошибок | 45 | `confusion_matrix`, `predict_proba` |
 | Границы модели | 46 | не знает, границ |
 
 ## ИИ и взрослые вещи

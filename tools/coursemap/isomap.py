@@ -2993,6 +2993,33 @@ def pymap44(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap45(s):
+    """Python lesson 45: the answer, the matrix and the price of a mistake.
+
+    The price is the accent: the four cells are counted by the machine, and what
+    they cost is not in the data at all.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5882,6 +5909,36 @@ PY44 = {
                foot_sub="and cannot deliver"),
 }
 
+PY45 = {
+    "kz": dict(alt="Жауап, матрица және қатенің бағасы",
+               b1="иә/жоқ", b1_sub="жауап екеу",
+               b2="матрица", b2_sub="төрт ұяшық",
+               b3="баға", b3_sub="оны адам қояды",
+               c1="дәлдік 0.75", c2="20 өткізіп алу",
+               head="СЫНЫПТАУ ЖӘНЕ ҚАТЕ МАТРИЦАСЫ",
+               head_sub="қырық бесінші сабақ: иә/жоқ",
+               foot="ЖАЛҒАН «ИӘ» ЖОҚ, АЛ 26-НЫҢ 20-Ы ҚАЛДЫ",
+               foot_sub="табалдырық — шешім"),
+    "ru": dict(alt="Ответ, матрица и цена ошибки",
+               b1="да/нет", b1_sub="ответа два",
+               b2="матрица", b2_sub="четыре клетки",
+               b3="цена", b3_sub="её ставит человек",
+               c1="точность 0.75", c2="20 пропусков",
+               head="КЛАССИФИКАЦИЯ И МАТРИЦА",
+               head_sub="сорок пятый урок: да или нет",
+               foot="ЛОЖНЫХ «ДА» НЕТ, А ИЗ 26 УПУЩЕНО 20",
+               foot_sub="порог — это решение"),
+    "en": dict(alt="The answer, the matrix and the price",
+               b1="yes/no", b1_sub="two answers",
+               b2="the matrix", b2_sub="four cells",
+               b3="the price", b3_sub="set by a person",
+               c1="accuracy 0.75", c2="20 missed",
+               head="CLASSES AND THE MATRIX",
+               head_sub="lesson forty-five: yes or no",
+               foot="NO FALSE YES, AND 20 OF 26 MISSED",
+               foot_sub="a threshold is a decision"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5935,7 +5992,8 @@ if __name__ == "__main__":
                                ("statistics", pymap41, PY41),
                                ("shock", pymap42, PY42),
                                ("model", pymap43, PY43),
-                               ("check", pymap44, PY44)):
+                               ("check", pymap44, PY44),
+                               ("classes", pymap45, PY45)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
