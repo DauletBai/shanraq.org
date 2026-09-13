@@ -803,6 +803,18 @@
     "py-json-null-kilt-jol",
     "kz"
   ],
+  "python/limits": [
+    "py-model-qayda-bitedi-shekara",
+    "ru"
+  ],
+  "python/limits-en": [
+    "py-model-qayda-bitedi-shekara",
+    "en"
+  ],
+  "python/limits-kz": [
+    "py-model-qayda-bitedi-shekara",
+    "kz"
+  ],
   "python/list": [
     "py-tizim-men-kortej",
     "ru"

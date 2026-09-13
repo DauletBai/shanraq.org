@@ -3020,6 +3020,33 @@ def pymap45(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap46(s):
+    """Python lesson 46: the answer, the edge of the data and the border.
+
+    The border is the accent: the model has none of its own, and the whole
+    lesson is about writing one down.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5939,6 +5966,36 @@ PY45 = {
                foot_sub="a threshold is a decision"),
 }
 
+PY46 = {
+    "kz": dict(alt="Жауап, дерек шеті және шекара",
+               b1="жауап", b1_sub="әрқашан беріледі",
+               b2="дерек шеті", b2_sub="модель білмейді",
+               b3="шекара", b3_sub="оны адам жазады",
+               c1="2100 → 146206", c2="1900 → 0.012",
+               head="МОДЕЛЬ ҚАЙДА БІТЕДІ",
+               head_sub="қырық алтыншы сабақ: шекара",
+               foot="2010–2021, ҚАТЕСІ 15–55 ТАРМАҚ",
+               foot_sub="одан әрі — болжам"),
+    "ru": dict(alt="Ответ, край данных и граница",
+               b1="ответ", b1_sub="даётся всегда",
+               b2="край данных", b2_sub="модель не знает",
+               b3="граница", b3_sub="её пишет человек",
+               c1="2100 → 146206", c2="1900 → 0.012",
+               head="ГДЕ КОНЧАЕТСЯ МОДЕЛЬ",
+               head_sub="сорок шестой урок: граница",
+               foot="2010–2021, ОШИБКА 15–55 ПУНКТОВ",
+               foot_sub="дальше — догадка"),
+    "en": dict(alt="The answer, the edge of the data and the border",
+               b1="an answer", b1_sub="always given",
+               b2="the edge", b2_sub="unknown to it",
+               b3="the border", b3_sub="written by hand",
+               c1="2100 -> 146206", c2="1900 -> 0.012",
+               head="WHERE A MODEL ENDS",
+               head_sub="lesson forty-six: the border",
+               foot="2010-2021, ERROR 15-55 POINTS",
+               foot_sub="beyond that, a guess"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5993,7 +6050,8 @@ if __name__ == "__main__":
                                ("shock", pymap42, PY42),
                                ("model", pymap43, PY43),
                                ("check", pymap44, PY44),
-                               ("classes", pymap45, PY45)):
+                               ("classes", pymap45, PY45),
+                               ("limits", pymap46, PY46)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

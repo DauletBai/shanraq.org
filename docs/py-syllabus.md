@@ -106,7 +106,7 @@ python3 tools/coursecheck/pysyllabus.py lesson 5 файл.md     # покрыл 
 | Регрессия | 43 | `sklearn`, `LinearRegression` |
 | Обучение и проверка | 44 | `train_test_split`, переобуч |
 | Классификация и матрица ошибок | 45 | `confusion_matrix`, `predict_proba` |
-| Границы модели | 46 | не знает, границ |
+| Границы модели | 46 | `n_features_in_`, `predict(` |
 
 ## ИИ и взрослые вещи
 
