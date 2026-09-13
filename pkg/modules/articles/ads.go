@@ -43,13 +43,20 @@ func houseAds(lang string) []Ad {
 	}
 	out := make([]Ad, 0, len(slides))
 	for _, s := range slides {
-		ad := houseSlide(lang, s.key, s.cta)
 		if s.key == "book" {
-			ad.Image = bookCoverURL
+			out = append(out, bookSlide(lang))
+			continue
 		}
-		out = append(out, ad)
+		out = append(out, houseSlide(lang, s.key, s.cta))
 	}
 	return out
+}
+
+// bookSlide is the one house slide with a picture: the cover is the slide.
+func bookSlide(lang string) Ad {
+	ad := houseSlide(lang, "book", "/shop/go-book")
+	ad.Image = bookCoverURL
+	return ad
 }
 
 // bookCoverURL is the cover the book slide shows. It is the product's own
@@ -76,16 +83,29 @@ func houseSlide(lang, key, cta string) Ad {
 // site by count. The thousand forecast pages alone carried nothing, and they
 // are the pages a stranger arrives on.
 //
-// Nothing is sold there, so nothing is displaced: the space shows our own
-// product. Two addresses are left out -- /adam, where the ad would point at the
-// page the reader is already on, and /advertise, whose whole subject is selling
-// the slot rather than filling it.
+// Nothing is sold there, so nothing is displaced: the space shows what we sell
+// ourselves. Both products, not one: a single slide renders a still card with
+// no dots, so the book -- which has a cover worth looking at -- never reached
+// any of these pages at all, and the slot looked like a fixed banner rather
+// than the rotating slot it is everywhere else.
+//
+// A product is left out on its own pages, where the slide would point at the
+// page the reader is already on: Adam on /adam, the book anywhere under /shop.
+// /advertise keeps the slot empty -- its whole subject is selling the space
+// rather than filling it.
 func ownAds(r *http.Request, lang string) []Ad {
 	p := r.URL.Path
-	if p == "/adam" || strings.HasPrefix(p, "/advertise") {
+	if strings.HasPrefix(p, "/advertise") {
 		return nil
 	}
-	return []Ad{houseSlide(lang, "adam", "/adam")}
+	out := make([]Ad, 0, 2)
+	if p != "/adam" {
+		out = append(out, houseSlide(lang, "adam", "/adam"))
+	}
+	if !strings.HasPrefix(p, "/shop") {
+		out = append(out, bookSlide(lang))
+	}
+	return out
 }
 
 // adSurfaceFor maps a request to the surface it belongs to, mirroring the

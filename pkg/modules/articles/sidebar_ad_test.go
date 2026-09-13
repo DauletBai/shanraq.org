@@ -67,3 +67,72 @@ func TestHouseAdsAreFullyTranslated(t *testing.T) {
 		}
 	}
 }
+
+// A page outside the three sold surfaces -- a forecast, the rates, the shop --
+// used to get exactly one house slide. One slide renders no dots and never
+// turns, so the slot read as a fixed banner and the book, the only slide with a
+// cover worth showing, reached none of those pages.
+func TestOwnAdsCarryBothProductsSoTheSlotTurns(t *testing.T) {
+	for _, path := range []string{"/rates", "/weather/almaty", "/courses"} {
+		r, _ := http.NewRequest(http.MethodGet, path, nil)
+		ads := ownAds(r, LangRU)
+		if len(ads) != 2 {
+			t.Fatalf("%s: %d slides, want 2 — a carousel needs something to turn to", path, len(ads))
+		}
+		if ads[0].URL != "/adam" || ads[1].URL != "/shop/go-book" {
+			t.Errorf("%s: slides point at %q and %q", path, ads[0].URL, ads[1].URL)
+		}
+		if ads[1].Image != bookCoverURL {
+			t.Errorf("%s: the book slide has no cover (%q)", path, ads[1].Image)
+		}
+		for i, a := range ads {
+			if !a.House || a.Title == "" || a.Price == "" {
+				t.Errorf("%s: slide %d is not a finished house slide: %+v", path, i, a)
+			}
+		}
+	}
+}
+
+// A slide must not point at the page the reader is standing on.
+func TestOwnAdsLeaveOutTheProductWhosePageThisIs(t *testing.T) {
+	cases := map[string][]string{
+		"/adam":          {"/shop/go-book"},
+		"/shop":          {"/adam"},
+		"/shop/go-book":  {"/adam"},
+		"/advertise":     {},
+		"/advertise/faq": {},
+	}
+	for path, want := range cases {
+		r, _ := http.NewRequest(http.MethodGet, path, nil)
+		ads := ownAds(r, LangRU)
+		if len(ads) != len(want) {
+			t.Fatalf("%s: %d slides, want %d", path, len(ads), len(want))
+		}
+		for i, url := range want {
+			if ads[i].URL != url {
+				t.Errorf("%s: slide %d points at %q, want %q", path, i, ads[i].URL, url)
+			}
+		}
+	}
+}
+
+// The book slide is the same slide wherever it comes from: the house carousel
+// on a sold surface and the two-slide slot everywhere else must not drift apart.
+func TestBookSlideIsTheSameEverywhere(t *testing.T) {
+	for _, lang := range []string{LangRU, LangKZ, LangEN} {
+		var fromHouse Ad
+		for _, a := range houseAds(lang) {
+			if a.URL == "/shop/go-book" {
+				fromHouse = a
+			}
+		}
+		if fromHouse.URL == "" {
+			t.Fatalf("%s: the house carousel lost the book", lang)
+		}
+		r, _ := http.NewRequest(http.MethodGet, "/rates", nil)
+		own := ownAds(r, lang)
+		if own[1] != fromHouse {
+			t.Errorf("%s: the book differs between the two slots:\n house %+v\n own   %+v", lang, fromHouse, own[1])
+		}
+	}
+}
