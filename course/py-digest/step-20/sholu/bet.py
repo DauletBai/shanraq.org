@@ -20,9 +20,13 @@ PAGE = Template("""<!doctype html>
 <meta charset="utf-8">
 <title>$title</title>
 <style>
- body { font: 15px/1.5 system-ui, sans-serif; max-width: 760px; margin: 32px auto; padding: 0 16px; }
+ body { font: 15px/1.5 system-ui, sans-serif; margin: 32px 24px; }
+ h1, h2 { line-height: 1.25; }
+ /* Широкая таблица не обрезается и не сжимает столбцы в кашу: она
+    прокручивается внутри своей рамки, а страница стоит на месте. */
+ .scroll { overflow-x: auto; }
  table { border-collapse: collapse; width: 100%; }
- th, td { border: 1px solid #d6d3ce; padding: 6px 10px; text-align: right; }
+ th, td { border: 1px solid #d6d3ce; padding: 6px 10px; text-align: right; white-space: nowrap; }
  th:first-child, td:first-child { text-align: left; }
  td { font-variant-numeric: tabular-nums; }
  img { max-width: 100%; }
@@ -34,25 +38,33 @@ PAGE = Template("""<!doctype html>
 <h1>$title</h1>
 <p>$prepared: $day. $rows_word: $count.</p>
 <img alt="$title" src="data:image/png;base64,$picture">
+<div class="scroll">
 <table>
 $head
 $body
 </table>
+</div>
 <h2>$spread_title</h2>
+<div class="scroll">
 <table>
 $spread_head
 $spread_body
 </table>
+</div>
 <h2>$index_title</h2>
+<div class="scroll">
 <table>
 $index_head
 $index_body
 </table>
+</div>
 <h2>$money_title</h2>
+<div class="scroll">
 <table>
 $money_head
 $money_body
 </table>
+</div>
 <p class="source">$source</p>
 <p class="source">$money_source</p>
 $about
