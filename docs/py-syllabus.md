@@ -102,7 +102,7 @@ python3 tools/coursecheck/pysyllabus.py lesson 5 файл.md     # покрыл 
 | Своя корзина | 39 | `basket`, `weights` |
 | Наличные, депозиты, кредит | 40 | `M0`, `M3` |
 | Как устроен ИПЦ | 41 | `FP.CPI.TOTL`, `185.8` |
-| Внешнее и своё | 42 | сравнен, сосед |
+| Внешнее и своё | 42 | `corr(`, `dropna(` |
 | Регрессия | 43 | `sklearn`, `LinearRegression` |
 | Обучение и проверка | 44 | `train_test_split`, переобуч |
 | Классификация и матрица ошибок | 45 | `confusion_matrix`, точност |

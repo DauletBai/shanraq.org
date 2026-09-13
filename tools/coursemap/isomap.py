@@ -2912,6 +2912,33 @@ def pymap41(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap42(s):
+    """Python lesson 42: the world, the countries, the link between two columns.
+
+    The link is the accent: it is the new instrument, and the one that has to be
+    read with the number of points beside it.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5711,6 +5738,36 @@ PY41 = {
                foot_sub="and 110.8 at the World Bank"),
 }
 
+PY42 = {
+    "kz": dict(alt="Әлем, елдер және байланыс",
+               b1="әлем", b1_sub="бәріне бір шок",
+               b2="елдер", b2_sub="бағасы әртүрлі",
+               b3="байланыс", b3_sub="және неше нүкте",
+               c1="бәріне +14.9 %", c2="8.6-дан 72.3-ке",
+               head="СЫРТҚЫ ЖӘНЕ ӨЗІНІКІ",
+               head_sub="қырық екінші сабақ: шок",
+               foot="БАЙЛАНЫС 0.971 — БІР ЕЛСІЗ 0.597",
+               foot_sub="ақшада таңба ауысады"),
+    "ru": dict(alt="Мир, страны и связь",
+               b1="мир", b1_sub="один шок на всех",
+               b2="страны", b2_sub="цены разные",
+               b3="связь", b3_sub="и сколько точек",
+               c1="всем +14.9 %", c2="от 8.6 до 72.3",
+               head="ВНЕШНЕЕ И СВОЁ",
+               head_sub="сорок второй урок: шок",
+               foot="СВЯЗЬ 0.971 — И 0.597 БЕЗ ОДНОЙ",
+               foot_sub="у денег меняется знак"),
+    "en": dict(alt="The world, the countries and the link",
+               b1="the world", b1_sub="one shock for all",
+               b2="countries", b2_sub="prices differ",
+               b3="the link", b3_sub="and how many",
+               c1="+14.9 % for all", c2="from 8.6 to 72.3",
+               head="OUTSIDE AND OUR OWN",
+               head_sub="lesson forty-two: the shock",
+               foot="A LINK OF 0.971 — 0.597 WITHOUT ONE",
+               foot_sub="for money the sign flips"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5761,7 +5818,8 @@ if __name__ == "__main__":
                                ("index", pymap38, PY38),
                                ("basket", pymap39, PY39),
                                ("money", pymap40, PY40),
-                               ("statistics", pymap41, PY41)):
+                               ("statistics", pymap41, PY41),
+                               ("shock", pymap42, PY42)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

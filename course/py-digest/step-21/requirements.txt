@@ -1,0 +1,4 @@
+# The digest needs two libraries beyond the standard one. The versions are
+# pinned: the lessons print the output of these.
+pandas==3.0.5
+matplotlib==3.11.1

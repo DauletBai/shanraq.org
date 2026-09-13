@@ -947,6 +947,18 @@
     "py-jiyndar-set-qiylysu-ayyrma",
     "kz"
   ],
+  "python/shock": [
+    "py-syrtqy-shok-pen-baylanys",
+    "ru"
+  ],
+  "python/shock-en": [
+    "py-syrtqy-shok-pen-baylanys",
+    "en"
+  ],
+  "python/shock-kz": [
+    "py-syrtqy-shok-pen-baylanys",
+    "kz"
+  ],
   "python/sql": [
     "py-sql-group-by-join-suranys",
     "ru"
