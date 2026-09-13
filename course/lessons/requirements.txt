@@ -6,3 +6,4 @@
 # versions in the lesson that introduces the library.
 pandas==3.0.5
 matplotlib==3.11.1
+scikit-learn==1.9.1

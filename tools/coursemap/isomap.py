@@ -2939,6 +2939,33 @@ def pymap42(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap43(s):
+    """Python lesson 43: the points, the line and the error.
+
+    The error is the accent: fitting is two lines of code, and everything the
+    lesson is about happens after them.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5768,6 +5795,36 @@ PY42 = {
                foot_sub="for money the sign flips"),
 }
 
+PY43 = {
+    "kz": dict(alt="Нүктелер, түзу және қате",
+               b1="нүктелер", b1_sub="он алты жыл",
+               b2="түзу", b2_sub="fit пен predict",
+               b3="қате", b3_sub="және оның пішіні",
+               c1="R² 0.927", c2="қатесі 17 тармақ",
+               head="БІРІНШІ МОДЕЛЬ",
+               head_sub="қырық үшінші сабақ: түзу",
+               foot="ЛОГАРИФМДЕ ҚАТЕ ЕКІ ЕСЕ АЗ",
+               foot_sub="жылына 8.49 %"),
+    "ru": dict(alt="Точки, прямая и ошибка",
+               b1="точки", b1_sub="шестнадцать лет",
+               b2="прямая", b2_sub="fit и predict",
+               b3="ошибка", b3_sub="и её форма",
+               c1="R² 0.927", c2="промах 17 пунктов",
+               head="ПЕРВАЯ МОДЕЛЬ",
+               head_sub="сорок третий урок: прямая",
+               foot="В ЛОГАРИФМАХ ОШИБКА ВДВОЕ МЕНЬШЕ",
+               foot_sub="8.49 % в год"),
+    "en": dict(alt="The points, the line and the error",
+               b1="the points", b1_sub="sixteen years",
+               b2="the line", b2_sub="fit and predict",
+               b3="the error", b3_sub="and its shape",
+               c1="R² 0.927", c2="off by 17 points",
+               head="THE FIRST MODEL",
+               head_sub="lesson forty-three: a line",
+               foot="IN LOGARITHMS THE ERROR HALVES",
+               foot_sub="8.49 % a year"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5819,7 +5876,8 @@ if __name__ == "__main__":
                                ("basket", pymap39, PY39),
                                ("money", pymap40, PY40),
                                ("statistics", pymap41, PY41),
-                               ("shock", pymap42, PY42)):
+                               ("shock", pymap42, PY42),
+                               ("model", pymap43, PY43)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

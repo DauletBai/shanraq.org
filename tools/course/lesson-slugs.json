@@ -815,6 +815,18 @@
     "py-kesteler-merge-join-kilt",
     "kz"
   ],
+  "python/model": [
+    "py-birinshi-model-syzyqtyq-regressiya",
+    "ru"
+  ],
+  "python/model-en": [
+    "py-birinshi-model-syzyqtyq-regressiya",
+    "en"
+  ],
+  "python/model-kz": [
+    "py-birinshi-model-syzyqtyq-regressiya",
+    "kz"
+  ],
   "python/modules": [
     "py-modul-paket-import-name",
     "ru"
