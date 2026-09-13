@@ -2966,6 +2966,33 @@ def pymap43(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap44(s):
+    """Python lesson 44: the past, the cut and the check.
+
+    The check is the accent: it is the only measurement the model cannot pass
+    by remembering.
+    """
+    parts = []
+
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5825,6 +5852,36 @@ PY43 = {
                foot_sub="8.49 % a year"),
 }
 
+PY44 = {
+    "kz": dict(alt="Өткен, кесу және тексеру",
+               b1="өткен", b1_sub="неде үйретеміз",
+               b2="кесу", b2_sub="уақыт бойынша",
+               b3="тексеру", b3_sub="көрмегенінде",
+               c1="қате 2.48", c2="қате 35.99",
+               head="ҮЙРЕТУ ЖӘНЕ ТЕКСЕРУ",
+               head_sub="қырық төртінші сабақ: кесу",
+               foot="КЕЗДЕЙСОҚ КЕСУ 5.37 УӘДЕ ЕТЕДІ",
+               foot_sub="әрі орындамайды"),
+    "ru": dict(alt="Прошлое, разрез и проверка",
+               b1="прошлое", b1_sub="на чём учим",
+               b2="разрез", b2_sub="по времени",
+               b3="проверка", b3_sub="чего не видели",
+               c1="ошибка 2.48", c2="ошибка 35.99",
+               head="ОБУЧЕНИЕ И ПРОВЕРКА",
+               head_sub="сорок четвёртый урок: разрез",
+               foot="СЛУЧАЙНЫЙ РАЗРЕЗ ОБЕЩАЕТ 5.37",
+               foot_sub="и не выполнит"),
+    "en": dict(alt="The past, the cut and the check",
+               b1="the past", b1_sub="what it learns on",
+               b2="the cut", b2_sub="by time",
+               b3="the check", b3_sub="years unseen",
+               c1="error 2.48", c2="error 35.99",
+               head="TRAINING AND CHECKING",
+               head_sub="lesson forty-four: the cut",
+               foot="A RANDOM CUT PROMISES 5.37",
+               foot_sub="and cannot deliver"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -5877,7 +5934,8 @@ if __name__ == "__main__":
                                ("money", pymap40, PY40),
                                ("statistics", pymap41, PY41),
                                ("shock", pymap42, PY42),
-                               ("model", pymap43, PY43)):
+                               ("model", pymap43, PY43),
+                               ("check", pymap44, PY44)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

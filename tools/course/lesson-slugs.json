@@ -551,6 +551,18 @@
     "py-matplotlib-birinshi-grafik",
     "kz"
   ],
+  "python/check": [
+    "py-uyretu-men-tekseru-uaqyt-boyynsha",
+    "ru"
+  ],
+  "python/check-en": [
+    "py-uyretu-men-tekseru-uaqyt-boyynsha",
+    "en"
+  ],
+  "python/check-kz": [
+    "py-uyretu-men-tekseru-uaqyt-boyynsha",
+    "kz"
+  ],
   "python/clean": [
     "py-las-derek-isna-fillna-astype",
     "ru"
