@@ -1,48 +1,87 @@
-# Publishes a GitHub Release whenever a version tag is pushed, with the notes
-# taken from the matching CHANGELOG section.
-#
-# It exists because the manual step is the one that gets skipped. The project
-# had 23 tags and no published release: from the outside that reads as a repo
-# nobody maintains, while in fact it ships most days. Tagging is now the only
-# thing a human has to remember.
+# VERSION is the single deliberate release decision. After CI accepts that
+# version on main, this workflow creates both the annotated tag and the GitHub
+# Release from CHANGELOG.md. Re-running is safe.
 name: Release
 
 on:
-  push:
-    tags: [ 'v*' ]
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   publish:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
         with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
 
-      - name: Extract the notes for this version
-        id: notes
+      - name: Read and validate the version
+        id: version
+        shell: bash
         run: |
-          version="${GITHUB_REF_NAME#v}"
-          # Everything between this version's heading and the next one.
-          awk -v v="$version" '
+          version="$(tr -d '[:space:]' < VERSION)"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "VERSION must contain SemVer such as 0.18.0, got: $version" >&2
+            exit 1
+          fi
+          if ! grep -q "^## \[$version\]" CHANGELOG.md; then
+            echo "CHANGELOG.md has no section for $version" >&2
+            exit 1
+          fi
+          echo "number=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Extract release notes
+        env:
+          VERSION: ${{ steps.version.outputs.number }}
+        run: |
+          awk -v v="$VERSION" '
             $0 ~ "^## \\[" v "\\]" { found = 1; next }
             found && /^## \[/       { exit }
             found                   { print }
           ' CHANGELOG.md > notes.md
           if [ ! -s notes.md ]; then
-            echo "CHANGELOG.md has no section for $version — refusing to publish empty notes." >&2
+            echo "The changelog section for $VERSION is empty" >&2
             exit 1
           fi
-          echo "Notes: $(wc -l < notes.md) lines"
 
-      - name: Publish
+      - name: Create the tag when this version is new
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "$TAG already exists"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin "$TAG"
+
+      - name: Publish the GitHub Release when absent
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
-            --title "$GITHUB_REF_NAME" \
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists"
+            exit 0
+          fi
+          gh release create "$TAG" \
+            --title "$TAG" \
             --notes-file notes.md \
             --verify-tag

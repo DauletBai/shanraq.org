@@ -6044,6 +6044,36 @@ PY47 = {
                foot_sub="local does not mean correct"),
 }
 
+PY48 = {
+    "kz": dict(alt="Рөл, дерек, параметр және сақталған сұраныс",
+               b1="құрылым", b1_sub="рөл, міндет, кіріс",
+               b2="параметр", b2_sub="temperature, seed",
+               b3="жазба", b3_sub="сұраныс пен жауап",
+               c1="бір кіріс", c2="бір өзгеріс",
+               head="ПРОМПТ — КОД",
+               head_sub="қырық сегізінші сабақ: қайталау",
+               foot="РӨЛ + ДЕРЕК + ПАРАМЕТР → ЖАЗБА",
+               foot_sub="seed бүкіл жүйені бекітпейді"),
+    "ru": dict(alt="Роль, данные, параметры и сохранённый запрос",
+               b1="структура", b1_sub="роль, задача, ввод",
+               b2="параметры", b2_sub="temperature, seed",
+               b3="запись", b3_sub="запрос и ответ",
+               c1="один вход", c2="одно изменение",
+               head="ПРОМПТ КАК КОД",
+               head_sub="сорок восьмой урок: повторяемость",
+               foot="РОЛЬ + ДАННЫЕ + ПАРАМЕТРЫ → ЗАПИСЬ",
+               foot_sub="seed не фиксирует всю систему"),
+    "en": dict(alt="Role, data, settings, and a stored request",
+               b1="structure", b1_sub="role, task, data",
+               b2="settings", b2_sub="temperature, seed",
+               b3="the record", b3_sub="request + answer",
+               c1="one input", c2="one change",
+               head="A PROMPT AS CODE",
+               head_sub="lesson forty-eight: repeatability",
+               foot="ROLE + DATA + SETTINGS → RECORD",
+               foot_sub="a seed does not pin the whole system"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -6100,7 +6130,8 @@ if __name__ == "__main__":
                                ("check", pymap44, PY44),
                                ("classes", pymap45, PY45),
                                ("limits", pymap46, PY46),
-                               ("local", pymap47, PY47)):
+                               ("local", pymap47, PY47),
+                               ("prompt", pymap47, PY48)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

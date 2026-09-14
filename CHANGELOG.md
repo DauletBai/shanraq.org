@@ -6,14 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.0] — 2026-09-14
+
 ### Added
 
+- Expanded the Python course from lesson 18 through lesson 48, taking its running digest project from HTTP, XML, APIs and SQLite through pandas, visualisation, statistics, monetary data, model evaluation and a local language model.
 - Added Python lesson 47 in Kazakh, Russian and English: a local language model through Ollama, with a checked HTTP boundary, deterministic exercises and localized Shatalov-style lesson maps.
+- Added Python lesson 48 in all three languages: prompts as versioned inputs, pinned generation settings, canonical request records, controlled experiments and localized lesson maps.
+- Added the first Shanraq shop product, package-based pricing, public offer and refund pages, preview chapters and shop sitemap coverage.
+- Added version-driven release automation: after successful CI on `main`, a new value in `VERSION` creates the missing annotated tag and GitHub Release from this changelog.
 
 ### Changed
 
 - Corrected the Python course in Russian, Kazakh and English: clarified validation versus testing, correlation, residual diagnostics, descriptive statistics, price indices, monetary aggregates and scheduler behaviour; also improved terminology and supporting lesson text.
 - Kept the lesson-map generator in sync with the corrected maps so regeneration no longer restores outdated wording.
+- Updated the repository presentation to describe Shanraq as a multilingual publishing and learning platform rather than the former Tenge-language experiment.
 
 ## [0.17.1] — 2026-08-25
 
@@ -894,7 +901,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.17.1...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/DauletBai/shanraq.org/compare/v0.17.1...v0.18.0
 [0.17.1]: https://github.com/DauletBai/shanraq.org/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/DauletBai/shanraq.org/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/DauletBai/shanraq.org/compare/v0.15.4...v0.16.0

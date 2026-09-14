@@ -827,6 +827,18 @@
     "py-zhergilikti-model-ollama",
     "kz"
   ],
+  "python/prompt": [
+    "py-prompt-kod-temperature-seed",
+    "ru"
+  ],
+  "python/prompt-en": [
+    "py-prompt-kod-temperature-seed",
+    "en"
+  ],
+  "python/prompt-kz": [
+    "py-prompt-kod-temperature-seed",
+    "kz"
+  ],
   "python/list": [
     "py-tizim-men-kortej",
     "ru"

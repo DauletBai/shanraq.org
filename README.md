@@ -128,13 +128,12 @@ git-ignored. To report a vulnerability, see **[SECURITY.md](SECURITY.md)**
 
 ## Status & versioning
 
-Live in **closed beta** at [shanraq.org](https://shanraq.org). Releases follow
+Live in production at [shanraq.org](https://shanraq.org). Releases follow
 [Semantic Versioning](https://semver.org); see **[CHANGELOG.md](CHANGELOG.md)**.
 
-Cutting a release is one command — pushing an annotated `vX.Y.Z` tag. The
-`Release` workflow then publishes the GitHub Release with the notes taken from
-the matching CHANGELOG section, and fails loudly if that section is missing, so
-a tag can never ship without its notes.
+`VERSION` is the single release decision. After its matching CHANGELOG section
+passes CI on `main`, the `Release` workflow creates the annotated tag and the
+GitHub Release. Re-running it is safe: an existing tag or release is kept.
 
 ## License
 
