@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added Python lesson 50 in Kazakh, Russian and English: stable source identifiers, exact decimal comparisons, rejection by reason, source-owned numeric rendering, localized lesson maps, and step 25 of the running digest project.
 - Added Python lesson 51 in all three languages and step 26 of the digest project: observations, reproducible calculations and causal claims follow separate evidence paths; free-form causal prose is held for review.
+- Added Python lesson 52 in all three languages and step 27 of the digest project: behavioural tests with `pytest`, parametrized boundary cases, expected exceptions, isolated temporary files and regression coverage.
 
 ## [0.19.0] — 2026-09-14
 

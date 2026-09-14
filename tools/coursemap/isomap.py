@@ -6164,6 +6164,36 @@ PY51 = {
                foot_sub="a cause needs separate evidence"),
 }
 
+PY52 = {
+    "kz": dict(alt="Уәде, тест жағдайлары және тексеру нәтижесі",
+               b1="уәде", b1_sub="күтілетін мінез",
+               b2="жағдайлар", b2_sub="қалыпты + шекара",
+               b3="нәтиже", b3_sub="passed / failed",
+               c1="қате → тест", c2="tmp_path → оқшаулау",
+               head="УӘДЕНІ ТЕКСЕРУ",
+               head_sub="елу екінші сабақ: pytest",
+               foot="УӘДЕ → МЫСАЛ → ASSERT",
+               foot_sub="табылған ақау қайта оралмасын"),
+    "ru": dict(alt="Обещание, тестовые случаи и результат проверки",
+               b1="обещание", b1_sub="ожидаемое поведение",
+               b2="случаи", b2_sub="норма + граница",
+               b3="результат", b3_sub="passed / failed",
+               c1="баг → тест", c2="tmp_path → изоляция",
+               head="ПРОВЕРЯЕМ ОБЕЩАНИЕ",
+               head_sub="пятьдесят второй урок: pytest",
+               foot="ОБЕЩАНИЕ → ПРИМЕР → ASSERT",
+               foot_sub="найденный баг не должен вернуться"),
+    "en": dict(alt="A promise, test cases, and the check result",
+               b1="the promise", b1_sub="expected behaviour",
+               b2="the cases", b2_sub="normal + boundary",
+               b3="the result", b3_sub="passed / failed",
+               c1="bug → test", c2="tmp_path → isolation",
+               head="VERIFY THE PROMISE",
+               head_sub="lesson fifty-two: pytest",
+               foot="PROMISE → EXAMPLE → ASSERT",
+               foot_sub="a fixed bug must not return"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -6224,7 +6254,8 @@ if __name__ == "__main__":
                                ("prompt", pymap47, PY48),
                                ("structured", pymap47, PY49),
                                ("grounded", pymap47, PY50),
-                               ("trust", pymap47, PY51)):
+                               ("trust", pymap47, PY51),
+                               ("tests", pymap47, PY52)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

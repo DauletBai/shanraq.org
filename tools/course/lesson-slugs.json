@@ -875,6 +875,18 @@
     "py-modelge-ne-senbeu-fakt-sebep",
     "kz"
   ],
+  "python/tests": [
+    "py-pytest-konveyer-testteri",
+    "ru"
+  ],
+  "python/tests-en": [
+    "py-pytest-konveyer-testteri",
+    "en"
+  ],
+  "python/tests-kz": [
+    "py-pytest-konveyer-testteri",
+    "kz"
+  ],
   "python/list": [
     "py-tizim-men-kortej",
     "ru"
