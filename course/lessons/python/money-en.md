@@ -184,7 +184,7 @@ That is why credit to the private sector stands next to it in the program: 21.2 
 
 For every tenge of a year's output there are 33 tiyn of money in the country. The tiyn, incidentally, exists in the law — "the tenge consists of 100 tiyn" — and while you will not find one in a wallet, it is alive in the arithmetic.
 
-The other way round it is the velocity of money: one tenge serves three tenge of a year's output. That is neither "little" nor "much" on its own: in 2024 Uzbekistan had 18 % of GDP, Kazakhstan 33, the United States 99 and China 228 — and what it says is not how rich a country is but how much of its economy runs through banks and how long money sits in accounts instead of passing straight through.
+Here annual nominal GDP divided by year-end M3 is only a rough turnover proxy. Velocity is normally nominal GDP divided by the average money stock over the same period; a single year-end observation can distort it. The ratio is neither "little" nor "much" on its own: in 2024 broad money was 18 % of GDP in Uzbekistan, 33 % in Kazakhstan, 99 % in the United States and 228 % in China. These figures describe financial structure and cannot by themselves measure wealth or how long money remains in accounts.
 
 ### The monetary base and the multiplier
 
