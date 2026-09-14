@@ -851,6 +851,18 @@
     "py-json-schema-model-zhauabyn-tekseru",
     "kz"
   ],
+  "python/grounded": [
+    "py-model-oz-deregi-source-id",
+    "ru"
+  ],
+  "python/grounded-en": [
+    "py-model-oz-deregi-source-id",
+    "en"
+  ],
+  "python/grounded-kz": [
+    "py-model-oz-deregi-source-id",
+    "kz"
+  ],
   "python/list": [
     "py-tizim-men-kortej",
     "ru"

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Releases are now deliberate project milestones started manually; publishing an individual course lesson no longer creates a repository release.
 - The scheduled external-link audit reports transport failures as unavailable checks instead of claiming that an unresponsive third-party server is a broken link; definite HTTP failures still fail the run.
 
+### Added
+
+- Added Python lesson 50 in Kazakh, Russian and English: stable source identifiers, exact decimal comparisons, rejection by reason, and source-owned numeric rendering with localized lesson maps.
+
 ## [0.19.0] — 2026-09-14
 
 ### Added

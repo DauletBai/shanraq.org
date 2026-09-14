@@ -6104,6 +6104,36 @@ PY49 = {
                foot_sub="a valid shape is not a valid fact"),
 }
 
+PY50 = {
+    "kz": dict(alt="Дереккөз, тұжырым, салыстыру және қауіпсіз мәтін",
+               b1="дереккөз", b1_sub="тұрақты source_id",
+               b2="тұжырым", b2_sub="мән, жыл, бірлік",
+               b3="салыстыру", b3_sub="сәйкес / бас тарту",
+               c1="санды код қояды", c2="модель атайды",
+               head="ӨЗ ДЕРЕГІМІЗ",
+               head_sub="елуінші сабақ: әр санды салыстыру",
+               foot="SOURCE_ID → САЛЫСТЫРУ → МӘТІН",
+               foot_sub="дұрыс схема фактіні дәлелдемейді"),
+    "ru": dict(alt="Источник, утверждение, сверка и безопасный текст",
+               b1="источник", b1_sub="source_id",
+               b2="утверждение", b2_sub="число + год + ед.",
+               b3="сверка", b3_sub="совпало или отказ",
+               c1="число ставит код", c2="модель называет",
+               head="НАШИ ДАННЫЕ",
+               head_sub="пятидесятый урок: сверяем каждое число",
+               foot="SOURCE_ID → СВЕРКА → ТЕКСТ",
+               foot_sub="верная схема не доказывает факт"),
+    "en": dict(alt="A source, a claim, verification, and safe text",
+               b1="the source", b1_sub="stable source_id",
+               b2="the claim", b2_sub="value, year, unit",
+               b3="compare", b3_sub="match or reject",
+               c1="code prints values", c2="model names them",
+               head="OUR OWN DATA",
+               head_sub="lesson fifty: verify every number",
+               foot="SOURCE_ID → COMPARE → TEXT",
+               foot_sub="a valid schema does not prove a fact"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -6162,7 +6192,8 @@ if __name__ == "__main__":
                                ("limits", pymap46, PY46),
                                ("local", pymap47, PY47),
                                ("prompt", pymap47, PY48),
-                               ("structured", pymap47, PY49)):
+                               ("structured", pymap47, PY49),
+                               ("grounded", pymap47, PY50)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:
