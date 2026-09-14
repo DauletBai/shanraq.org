@@ -863,6 +863,18 @@
     "py-model-oz-deregi-source-id",
     "kz"
   ],
+  "python/trust": [
+    "py-modelge-ne-senbeu-fakt-sebep",
+    "ru"
+  ],
+  "python/trust-en": [
+    "py-modelge-ne-senbeu-fakt-sebep",
+    "en"
+  ],
+  "python/trust-kz": [
+    "py-modelge-ne-senbeu-fakt-sebep",
+    "kz"
+  ],
   "python/list": [
     "py-tizim-men-kortej",
     "ru"
