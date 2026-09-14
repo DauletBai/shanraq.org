@@ -3047,6 +3047,24 @@ def pymap46(s):
     parts.append(text(2.33, 2.15, s["c2"], "mono"))
     return "".join(parts)
 
+def pymap47(s):
+    """Python lesson 47: a prompt crosses only the local API boundary."""
+    parts = []
+    parts.append(road(-2.6, -1.45, 0.55, 0.5, "band-req"))
+    parts.append(chevron(-2.03, 0.57, +1, "arw-req"))
+    parts.append(road(1.75, 2.9, 0.55, 0.5, "band-res"))
+    parts.append(chevron(2.33, 0.57, +1, "arw-res"))
+    half, top = 1.3, 1.15
+    parts.append(block(-4.2, 0, half, top, "t", "l", "r"))
+    parts.append(on_face_side(-4.2, 0.0, top, s["b1"], s["b1_sub"]))
+    parts.append(block(0.15, 0, half, top, "gt", "gl", "gr"))
+    parts.append(on_face_side(0.15, 0.0, top, s["b2"], s["b2_sub"]))
+    parts.append(block(4.5, 0, half, top, "rt", "rl", "rr"))
+    parts.append(on_face_side(4.5, 0.0, top, s["b3"], s["b3_sub"], accent=True))
+    parts.append(text(-2.03, 2.15, s["c1"], "mono"))
+    parts.append(text(2.33, 2.15, s["c2"], "mono"))
+    return "".join(parts)
+
 def check_labels(svg_body, name, lang):
     """Warn when a label is wider than the face it is written on.
 
@@ -5669,7 +5687,7 @@ PY36 = {
                c1="журнал", c2="жоспарлағышқа",
                head="ӨЗІ ЖАҢАРАТЫН ЖИЫНТЫҚ",
                head_sub="отыз алтыншы сабақ: конвейер",
-               foot="ҚҰЛАҒАН ДЕРЕККӨЗ ЕСЕПТІ ӨШІРМЕЙДІ",
+               foot="ҚОЛЖЕТІМСІЗ ДЕРЕККӨЗ ЕСЕПТІ ӨШІРМЕЙДІ",
                foot_sub="бос есеп ескіден жаман"),
     "ru": dict(alt="Конвейер, временный файл и код",
                b1="main()", b1_sub="четыре шага",
@@ -5821,7 +5839,7 @@ PY41 = {
                b1="кесте", b1_sub="бір жарияланым",
                b2="сұрақ", b2_sub="неге салыстырады",
                b3="сан", b3_sub="олар бесеу",
-               c1="салмақ = үлес ÷ өсім", c2="база деңгейді ауыстырады",
+               c1="жуық: салмақ ≈ үлес ÷ өсім", c2="база деңгейді ауыстырады",
                head="РЕСМИ СТАТИСТИКАНЫ ОҚУ",
                head_sub="қырық бірінші сабақ: ТБИ",
                foot="БІР АЙ — 100.6, 106.4, 109.8",
@@ -5830,7 +5848,7 @@ PY41 = {
                b1="таблица", b1_sub="одна публикация",
                b2="вопрос", b2_sub="с чем сравнили",
                b3="число", b3_sub="их пять",
-               c1="вес = вклад ÷ прирост", c2="база меняет уровень",
+               c1="примерно: вес ≈ вклад ÷ прирост", c2="база меняет уровень",
                head="КАК ЧИТАТЬ СТАТИСТИКУ",
                head_sub="сорок первый урок: ИПЦ",
                foot="ОДИН МЕСЯЦ — 100.6, 106.4, 109.8",
@@ -5839,7 +5857,7 @@ PY41 = {
                b1="the table", b1_sub="one release",
                b2="the question", b2_sub="against what",
                b3="the number", b3_sub="there are five",
-               c1="weight = share / rise", c2="the base moves levels",
+               c1="approx. weight ≈ share / rise", c2="the base moves levels",
                head="READING OFFICIAL STATISTICS",
                head_sub="lesson forty-one: the CPI",
                foot="ONE MONTH — 100.6, 106.4, 109.8",
@@ -5974,7 +5992,7 @@ PY46 = {
                c1="2100 → 146206", c2="1900 → 0.012",
                head="МОДЕЛЬ ҚАЙДА БІТЕДІ",
                head_sub="қырық алтыншы сабақ: шекара",
-               foot="2010–2021, ҚАТЕСІ 15–55 ТАРМАҚ",
+               foot="4 ЖЫЛДА: 15–55 ИНДЕКС ПУНКТІ",
                foot_sub="одан әрі — болжам"),
     "ru": dict(alt="Ответ, край данных и граница",
                b1="ответ", b1_sub="даётся всегда",
@@ -5983,7 +6001,7 @@ PY46 = {
                c1="2100 → 146206", c2="1900 → 0.012",
                head="ГДЕ КОНЧАЕТСЯ МОДЕЛЬ",
                head_sub="сорок шестой урок: граница",
-               foot="2010–2021, ОШИБКА 15–55 ПУНКТОВ",
+               foot="4 ГОДА: НАБЛЮДАЛОСЬ 15–55 ПУНКТОВ",
                foot_sub="дальше — догадка"),
     "en": dict(alt="The answer, the edge of the data and the border",
                b1="an answer", b1_sub="always given",
@@ -5992,8 +6010,38 @@ PY46 = {
                c1="2100 -> 146206", c2="1900 -> 0.012",
                head="WHERE A MODEL ENDS",
                head_sub="lesson forty-six: the border",
-               foot="2010-2021, ERROR 15-55 POINTS",
+               foot="4 YEARS: 15-55 POINTS OBSERVED",
                foot_sub="beyond that, a guess"),
+}
+
+PY47 = {
+    "kz": dict(alt="Сұрақ, жергілікті мекенжай және жауап",
+               b1="сұрақ", b1_sub="пайдаланушы мәтіні",
+               b2="localhost", b2_sub="11434 / api / chat",
+               b3="жауап", b3_sub="алдымен тексеру",
+               c1="JSON сұранысы", c2="JSON жауабы",
+               head="ӨЗ КОМПЬЮТЕРІҢІЗДЕГІ МОДЕЛЬ",
+               head_sub="қырық жетінші сабақ: Ollama",
+               foot="СҰРАҚ → JSON → LOCALHOST → ТЕКСЕРУ",
+               foot_sub="жергілікті деген сөз — дұрыс деген сөз емес"),
+    "ru": dict(alt="Вопрос, локальный адрес и ответ",
+               b1="вопрос", b1_sub="текст пользователя",
+               b2="localhost", b2_sub="11434 / api / chat",
+               b3="ответ", b3_sub="сначала проверить",
+               c1="JSON-запрос", c2="JSON-ответ",
+               head="МОДЕЛЬ НА СВОЁМ КОМПЬЮТЕРЕ",
+               head_sub="сорок седьмой урок: Ollama",
+               foot="ВОПРОС → JSON → LOCALHOST → ПРОВЕРКА",
+               foot_sub="локально — не значит правильно"),
+    "en": dict(alt="A question, a local address and an answer",
+               b1="a question", b1_sub="the user's text",
+               b2="localhost", b2_sub="11434 / api / chat",
+               b3="an answer", b3_sub="check it first",
+               c1="JSON request", c2="JSON response",
+               head="A MODEL ON YOUR OWN COMPUTER",
+               head_sub="lesson forty-seven: Ollama",
+               foot="QUESTION → JSON → LOCALHOST → CHECK",
+               foot_sub="local does not mean correct"),
 }
 
 if __name__ == "__main__":
@@ -6051,7 +6099,8 @@ if __name__ == "__main__":
                                ("model", pymap43, PY43),
                                ("check", pymap44, PY44),
                                ("classes", pymap45, PY45),
-                               ("limits", pymap46, PY46)):
+                               ("limits", pymap46, PY46),
+                               ("local", pymap47, PY47)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

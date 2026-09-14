@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added Python lesson 47 in Kazakh, Russian and English: a local language model through Ollama, with a checked HTTP boundary, deterministic exercises and localized Shatalov-style lesson maps.
+
 ### Changed
 
 - Corrected the Python course in Russian, Kazakh and English: clarified validation versus testing, correlation, residual diagnostics, descriptive statistics, price indices, monetary aggregates and scheduler behaviour; also improved terminology and supporting lesson text.
+- Kept the lesson-map generator in sync with the corrected maps so regeneration no longer restores outdated wording.
 
 ## [0.17.1] — 2026-08-25
 

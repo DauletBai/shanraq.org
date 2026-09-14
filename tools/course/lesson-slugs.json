@@ -815,6 +815,18 @@
     "py-model-qayda-bitedi-shekara",
     "kz"
   ],
+  "python/local": [
+    "py-zhergilikti-model-ollama",
+    "ru"
+  ],
+  "python/local-en": [
+    "py-zhergilikti-model-ollama",
+    "en"
+  ],
+  "python/local-kz": [
+    "py-zhergilikti-model-ollama",
+    "kz"
+  ],
   "python/list": [
     "py-tizim-men-kortej",
     "ru"
