@@ -6074,6 +6074,36 @@ PY48 = {
                foot_sub="a seed does not pin the whole system"),
 }
 
+PY49 = {
+    "kz": dict(alt="Шикі жауап, JSON, схема және тексерілген өрістер",
+               b1="талдау", b1_sub="json.loads",
+               b2="схема", b2_sub="түр + required",
+               b3="нәтиже", b3_sub="өтті / өтпеді",
+               c1="JSON қатесі", c2="схема қатесі",
+               head="ЖАУАПТЫ ТЕКСЕРУ",
+               head_sub="қырық тоғызыншы сабақ: JSON Schema",
+               foot="ЖАУАП → JSON → СХЕМА → ФАКТ",
+               foot_sub="дұрыс құрылым — дұрыс факт емес"),
+    "ru": dict(alt="Сырой ответ, JSON, схема и проверенные поля",
+               b1="разбор", b1_sub="json.loads",
+               b2="схема", b2_sub="тип + required",
+               b3="результат", b3_sub="принят / отклонён",
+               c1="ошибка JSON", c2="ошибка схемы",
+               head="ПРОВЕРЯЕМ ОТВЕТ",
+               head_sub="сорок девятый урок: JSON Schema",
+               foot="ОТВЕТ → JSON → СХЕМА → ФАКТ",
+               foot_sub="верная форма ещё не верный факт"),
+    "en": dict(alt="A raw response, JSON, a schema, and checked fields",
+               b1="parse", b1_sub="json.loads",
+               b2="the schema", b2_sub="type + required",
+               b3="the result", b3_sub="accept or reject",
+               c1="JSON failure", c2="schema failure",
+               head="VALIDATE THE RESPONSE",
+               head_sub="lesson forty-nine: JSON Schema",
+               foot="RESPONSE → JSON → SCHEMA → FACT",
+               foot_sub="a valid shape is not a valid fact"),
+}
+
 if __name__ == "__main__":
     out = os.path.join(os.path.dirname(__file__), "..", "..", "web", "static", "course", "go")
     out = os.path.normpath(out)
@@ -6131,7 +6161,8 @@ if __name__ == "__main__":
                                ("classes", pymap45, PY45),
                                ("limits", pymap46, PY46),
                                ("local", pymap47, PY47),
-                               ("prompt", pymap47, PY48)):
+                               ("prompt", pymap47, PY48),
+                               ("structured", pymap47, PY49)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

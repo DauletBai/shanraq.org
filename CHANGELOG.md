@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.0] — 2026-09-14
+
+### Added
+
+- Added Python lesson 49 in Kazakh, Russian and English: parsing model JSON, validating Draft 2020-12 schemas, separating syntax, structural and factual checks, and localized Shatalov-style lesson maps.
+- Pinned `jsonschema` 4.26.0 alongside the course libraries so every example and exercise runs in CI against the version taught.
+
 ## [0.18.0] — 2026-09-14
 
 ### Added
@@ -901,7 +908,8 @@ First tagged release. Live in closed beta at [shanraq.org](https://shanraq.org).
 - Secure auth: refresh-token rotation, RBAC, password-reset flows, CSRF protection.
 - Production stack: Docker Compose + Caddy automatic HTTPS, embedded Goose migrations.
 
-[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.18.0...HEAD
+[Unreleased]: https://github.com/DauletBai/shanraq.org/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/DauletBai/shanraq.org/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/DauletBai/shanraq.org/compare/v0.17.1...v0.18.0
 [0.17.1]: https://github.com/DauletBai/shanraq.org/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/DauletBai/shanraq.org/compare/v0.16.0...v0.17.0

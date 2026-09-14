@@ -839,6 +839,18 @@
     "py-prompt-kod-temperature-seed",
     "kz"
   ],
+  "python/structured": [
+    "py-json-schema-model-zhauabyn-tekseru",
+    "ru"
+  ],
+  "python/structured-en": [
+    "py-json-schema-model-zhauabyn-tekseru",
+    "en"
+  ],
+  "python/structured-kz": [
+    "py-json-schema-model-zhauabyn-tekseru",
+    "kz"
+  ],
   "python/list": [
     "py-tizim-men-kortej",
     "ru"
