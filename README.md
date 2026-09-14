@@ -131,9 +131,10 @@ git-ignored. To report a vulnerability, see **[SECURITY.md](SECURITY.md)**
 Live in production at [shanraq.org](https://shanraq.org). Releases follow
 [Semantic Versioning](https://semver.org); see **[CHANGELOG.md](CHANGELOG.md)**.
 
-`VERSION` is the single release decision. After its matching CHANGELOG section
-passes CI on `main`, the `Release` workflow creates the annotated tag and the
-GitHub Release. Re-running it is safe: an existing tag or release is kept.
+`VERSION` is the single release decision. At a project milestone, update it and
+its matching CHANGELOG section, let `main` pass CI, then run the `Release`
+workflow manually. It creates the annotated tag and GitHub Release; ordinary
+content commits do not cut releases. Re-running it is safe.
 
 ## License
 

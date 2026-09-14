@@ -115,6 +115,7 @@ def main(argv):
                 links.setdefault(url, set()).add(os.path.basename(p))
 
     bad = []
+    unknown = []
     # Inside the site first: no network, and the commonest mistake -- a lesson
     # pointing at a page that does not exist -- is caught before anything is
     # fetched.
@@ -135,12 +136,22 @@ def main(argv):
         rest = [u for u in sorted(links) if not any(u == b[0] for b in bad)]
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
             for url, status in zip(rest, pool.map(fetch, rest)):
-                if not (isinstance(status, int) and 200 <= status < 400):
+                if isinstance(status, str):
+                    # A timeout, TLS interruption, or DNS failure says nothing
+                    # about whether the page exists. Weekly checks used to turn
+                    # one unreachable government server into a red course run.
+                    # Report uncertainty, but fail only on an actual HTTP answer.
+                    unknown.append((url, status, links[url]))
+                elif not 200 <= status < 400:
                     bad.append((url, f"ответ {status}", links[url]))
 
+    for url, why, where in sorted(unknown, key=lambda b: b[0]):
+        print(f"{url}\n    временно не проверена: {why}\n"
+              f"    в файлах: {', '.join(sorted(where))}")
     for url, why, where in sorted(bad, key=lambda b: b[0]):
         print(f"{url}\n    {why}\n    в файлах: {', '.join(sorted(where))}")
-    print(f"проверено ссылок: {len(links)} наружу и {inside} внутрь, битых: {len(bad)}")
+    print(f"проверено ссылок: {len(links)} наружу и {inside} внутрь, "
+          f"битых: {len(bad)}, временно недоступных: {len(unknown)}")
     return 1 if bad else 0
 
 

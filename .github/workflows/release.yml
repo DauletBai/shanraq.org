@@ -1,12 +1,9 @@
-# VERSION is the single deliberate release decision. After CI accepts that
-# version on main, this workflow creates both the annotated tag and the GitHub
-# Release from CHANGELOG.md. Re-running is safe.
+# Releases are deliberate project milestones, not a side effect of every
+# content commit. Run this workflow manually after VERSION and CHANGELOG.md are
+# prepared; it creates both the annotated tag and the GitHub Release.
 name: Release
 
 on:
-  workflow_run:
-    workflows: [CI]
-    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -18,15 +15,10 @@ concurrency:
 
 jobs:
   publish:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
 
       - name: Read and validate the version
