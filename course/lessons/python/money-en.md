@@ -152,13 +152,13 @@ M0, M1, M2 and M3 are not four piles of money to be added up. Each one contains 
 
 Adding them up is the standard mistake: it gives 115 trillion tenge where the money is 52.75 trillion. That is why the program counts a layer as a difference instead of taking it from a line of its own.
 
-### Nine per cent is printed by the National Bank
+### M0 is nine per cent of broad money
 
 ```text
 2025: cash 9.0 %, records in banks 91.0 %
 ```
 
-Cash is M0, and it is the only part that comes off a press. Six years ago its share was 10.8 %, and it is drifting down: people pay with a card rather than a note.
+M0 is cash outside deposit-taking institutions; in 2025 it is 9% of M3. The other 91% consists of bank deposits. Much deposit money is created through bank lending, but repayments, transfers, asset purchases, fiscal, external and central-bank operations also change the aggregates. Six years ago its share was 10.8 %, and it is drifting down: people pay with a card rather than a note.
 
 The National Bank's table has a similar number standing next to it, and it is a different one: cash outside the National Bank is 5 271 109 million against the 4 749 199 of M0. The difference, 521 910 million, sits in the tills of the banks. It is not part of the country's money: a note in a bank's till is not yet in anybody's hands, so M0 does not count it.
 
@@ -170,7 +170,7 @@ The split of the aggregates follows from that. Article 757 lists the kinds of de
 
 ### Credit creates the deposit
 
-When a bank lends, it does not take somebody's deposit out of a drawer. It makes two records at once: a sum appears in your account, and your debt to the bank appears with it. The money in the country grows by exactly the size of the loan — and shrinks when the loan is repaid.
+When a bank lends, it records a loan asset and usually credits a deposit liability. In a simplified balance sheet both initially grow by the loan amount. Transfers, repayments and other operations then affect monetary aggregates, so M3 need not change by exactly the amount of one loan.
 
 This is not a fringe theory but the way central banks describe their own system; the shortest and clearest account of it is the Bank of England's [Money creation in the modern economy](https://www.bankofengland.co.uk/quarterly-bulletin/2014/q1/money-creation-in-the-modern-economy).
 

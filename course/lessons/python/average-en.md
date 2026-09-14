@@ -137,7 +137,7 @@ The price of that is sensitivity. One large value pulls the mean towards itself,
 
 ### The median answers "and what about the middle"
 
-The median is the value with half the series above it and half below. No single number shifts it, however large: all that matters is which side of the middle it is on.
+The median is the middle value of an ordered series, or the mean of the two middle values when the count is even. Making an extreme value still larger does not change the median while it remains on the same side; changing a central value can move it.
 
 The program measures this. Drop Turkiye from the ten:
 
@@ -157,13 +157,13 @@ below the mean: 8 of 10
 below the median: 5 of 10
 ```
 
-The median splits a series in half by definition — half is always below it. If eight of ten came out below the mean, the series has a long tail upwards, and "20 % on average" describes not the region but its single extreme.
+The median divides an ordered series into two halves, but with tied values the number strictly below it need not be exactly half. If eight of ten came out below the mean, the series has a long tail upwards, and "20 % on average" describes not the region but its single extreme.
 
 The same skew shows in Kazakhstan's eleven years: a mean of 9.08 against a median of 7.44 — three spikes out of eleven years lifted the mean by more than a point and a half above the middle.
 
 ### Spread: one number against four
 
-`std` is the average distance of the values from the mean, and it has exactly the same weakness: an outlier inflates it along with the mean. For the ten countries `std` is 18.97 while the median is 13.88 — the spread is larger than the middle itself.
+`std` is the square root of the mean squared deviation from the mean (with the `ddof` convention explained below), not the average distance. An outlier inflates it along with the mean. For the ten countries `std` is 18.97 while the median is 13.88 — the spread is larger than the middle itself.
 
 The quarters work differently. The first quarter is the value a quarter of the series falls below; the third is the one three quarters fall below; the distance between them is called the interquartile range:
 
@@ -172,7 +172,7 @@ quarters: 12.36 | 13.88 | 15.16
 interquartile range: 2.81
 ```
 
-The middle of the series — half of the countries — fits into a band less than three points wide. That is the real spread of this series — and 18.97 describes not the spread but the distance to Turkiye.
+The central 50% of the countries fit into a band less than three points wide. The interquartile range is robust to outliers, while standard deviation is sensitive to them; both measure spread, but answer different questions.
 
 The range (`max - min`) is useful for something else: it names the **limits**, not the typical distance. In a headline it is honest only next to the number of observations.
 
@@ -200,7 +200,7 @@ A report takes two or three of them. Looking at the data yourself, you read all 
 A rule worth writing into the code rather than keeping in your head:
 
 1. A question about the **sum** — the mean. "How much was collected and how much per person" is answered by nothing else.
-2. A question about the **typical** value — the median, if the mean has visibly moved away from it; otherwise it makes no difference, and then the mean is the more familiar of the two.
+2. For a question about a **typical** value, inspect the distribution, quantiles and outliers first. A similar mean and median is useful evidence, but does not make them interchangeable: the choice depends on the question and on how extreme values matter.
 3. Next to any measure — the **number of observations**: 20 % across ten countries and 20 % across a hundred are different statements.
 4. If the series is lopsided, one measure is not enough: the median with the quarters says what the mean with `std` hides.
 
@@ -326,7 +326,7 @@ UZB  5 years  mean 10.14  median 9.96   spread 1.04  -> the mean
 
 It chose the **mean** for all three: their five-year series are symmetrical enough that the median sits a per cent or two from the mean. That is the use of a rule written into the code — it does not slip in a "careful" median where the data does not ask for one, and it will say the opposite the day a spike like Turkiye's appears in a series.
 
-Debts. Five points is a short series: a median over five observations is coarse, and a spread over five years is an estimate with a wide error the digest names nowhere. That is the same conversation about the number of observations beside a measure, and it returns in the lesson on reading official statistics.
+Limitations. Five points is a short series: a median over five observations is coarse, and a spread over five years is an estimate with a wide error the digest names nowhere. That is the same conversation about the number of observations beside a measure, and it returns in the lesson on reading official statistics.
 
 ## Answers
 

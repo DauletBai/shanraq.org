@@ -1,6 +1,6 @@
 # A digest that updates itself: the whole pipeline
 
-_Лид (summary):_ **The thirty-sixth lesson of the Python course and the end of the module on reports. Four steps in one `main()`, a write through a temporary file, a repeat with no consequences, `--dry-run` and an exit code. And the rule it was all for: a source that fell over leaves yesterday's report rather than erasing it.**
+_Лид (summary):_ **The thirty-sixth lesson of the Python course and the end of the module on reports. Four steps in one `main()`, a write through a temporary file, a repeat with no consequences and an exit code; the exercise adds `--dry-run`. And the rule it was all for: a source that fell over leaves yesterday's report rather than erasing it.**
 
 ## Why this matters
 
@@ -164,7 +164,7 @@ In [lesson ten](/read/py-qateler-try-except-raise) that was put as "do not swall
 
 ### The exit code and the log
 
-A scheduler reads only the number the program returned ([lesson twenty-three](/read/py-keste-cron-argparse-logging)): `0` means done, anything else means not. So `main()` always has a `return`, and the run ends with `raise SystemExit(main(sys.argv[1:]))`.
+The shell or process supervisor reads the exit code: `0` means success and a non-zero value means failure. `systemd` and monitoring systems can react to it; plain `cron` does not retry a failed job by itself, and output or notifications require separate configuration. So `main()` always returns a code, and the run ends with `raise SystemExit(main(sys.argv[1:]))`.
 
 The log is a line per step: how many rows were taken, how many were left after cleaning, what was counted, where it was written. The morning after, that is enough to understand what happened without running anything again.
 

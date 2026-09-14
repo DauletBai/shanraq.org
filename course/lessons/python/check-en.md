@@ -163,7 +163,7 @@ The fifth-degree polynomial describes the past almost perfectly — an error of 
 
 That is overfitting, and notice: **the left column does not show it**. There everything looks like an improvement. Overfitting is not a property of a model you can inspect; it is the difference between two columns.
 
-### The choice is made by the check, not by the training
+### Choose on validation and leave the test until the end
 
 ```text
   best degree by training: 5 — on the check it gives 116.69
@@ -178,7 +178,9 @@ And separately: the line in logarithms, the one with the right shape, gives 35.9
 
 There are four check years. That is better than none and still few: had a quiet year fallen among them instead of 2022, the numbers would be different. The honest conclusion from a check like this is "the model is off by tens of points", not "the model is off by 35.99".
 
-And one more thing to keep from this lesson: check years are spent. Pick a model by looking at the check, do that ten times, and the check slowly turns into training — just by a slower route.
+In this teaching example the last four years are validation data used to compare model forms. No independent test remains after that choice, so these errors are not a final estimate of performance. In real work, reserve a later test period and inspect it once after model selection.
+
+And one more thing to keep from this lesson: validation years are spent. Pick a model by looking at the check, do that ten times, and the check slowly turns into training — just by a slower route.
 
 ## The lesson map
 

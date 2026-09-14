@@ -49,7 +49,7 @@ print("  the difference:", round((total - 1) * 100 - rates.sum(), 2), "percentag
 print()
 print("== What happened to a thousand")
 kept = 1000 / total
-print("  a thousand of 2014 buys in 2024 what", round(kept, 2), "tenge bought back then")
+print("  a thousand tenge in 2024 has the purchasing power that", round(kept, 2), "tenge had in 2014")
 print("  lost:", round(100 - kept / 10, 2), "% of the purchasing power")
 print("  to buy the same in 2024 you need:", round(1000 * total, 2), "tenge")
 
@@ -97,7 +97,7 @@ It prints:
   the difference: 49.0 percentage points
 
 == What happened to a thousand
-  a thousand of 2014 buys in 2024 what 413.25 tenge bought back then
+  a thousand tenge in 2024 has the purchasing power that 413.25 tenge had in 2014
   lost: 58.67 % of the purchasing power
   to buy the same in 2024 you need: 2419.84 tenge
 
@@ -139,7 +139,7 @@ The base is the year everything is counted against. There is no right value for 
 Two questions people mix up, though there is only one multiplier:
 
 ```text
-a thousand of 2014 buys in 2024 what 413.25 tenge bought back then
+a thousand tenge in 2024 has the purchasing power that 413.25 tenge had in 2014
 to buy the same in 2024 you need: 2419.84 tenge
 ```
 
@@ -282,7 +282,7 @@ What came out on the digest's data: from 2021 to 2025 prices grew 1.595 times in
 
 For the digest this is the first calculation in which **every** year takes part, rather than the last and the one before it. So it also brings the first check for gaps: an index only means something on an unbroken run of years, and if a year is missing, `indeks` says so instead of counting in silence.
 
-Debts. The digest's index rests on the World Bank's yearly rates, and those are themselves a smoothed yearly estimate. Monthly data would be more precise, and with it would come the question of seasonality; both are waiting for the lesson on reading official statistics.
+Limitations. The digest's index rests on the World Bank's yearly rates, and those are themselves a smoothed yearly estimate. Monthly data would be more precise, and with it would come the question of seasonality; both are waiting for the lesson on reading official statistics.
 
 ## Answers
 

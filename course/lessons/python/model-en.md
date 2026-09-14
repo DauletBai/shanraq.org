@@ -143,7 +143,7 @@ One subtlety about the shape of the data: `X` has to be a **table** of features 
 
 R² is the share of the spread the model explained: 0.927 sounds like "the model is 93 % right". What actually stands beside it is an average error of 17 points on an index that started at a hundred.
 
-The reason is simple: R² compares the model with the weakest thing there is — a horizontal line at the mean. Beating that is easy for any series that grows. So R² is almost never the answer to "is this model any good".
+The reason is simple: R² compares the model with a mean-value baseline. R² = 0 matches that baseline and a negative value is worse; the baseline is not the weakest model possible. Beating that is easy for any series that grows. So R² is almost never the answer to "is this model any good".
 
 ### The error has a shape
 
@@ -153,7 +153,7 @@ The reason is simple: R² compares the model with the weakest thing there is —
   a random error would have about 9
 ```
 
-This is the real diagnosis. If a model has the right shape, its misses scatter at random: the sign changes often, and the runs are about half the number of points. Here there are three runs: the model overshoots systematically, then undershoots for as many years, then overshoots again.
+This is a useful heuristic, not a final diagnosis. If residuals are independent, their signs tend to alternate more often; the expected number of runs depends on the counts of positive and negative residuals. A formal conclusion needs a runs test and a residual plot, while "about half the points" is only a rough guide when signs are balanced. Here there are three runs: the model overshoots systematically, then undershoots for as many years, then overshoots again.
 
 That is what **not noise but a missing part of the model** looks like. A straight line cannot bend, and the series bends.
 

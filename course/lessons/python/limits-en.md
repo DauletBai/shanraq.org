@@ -80,8 +80,8 @@ past = KAZAKHSTAN.index <= 2021
 checked = trained_on(KAZAKHSTAN[past])
 errors = (KAZAKHSTAN[~past] - checked(KAZAKHSTAN[~past].index.to_numpy())).abs()
 print(errors.round(1).to_string())
-print(f"  the mean: {errors.mean():.1f} — but the honest answer sounds like"
-      f" \"{errors.min():.0f} to {errors.max():.0f} points\"")
+print(f"  the mean: {errors.mean():.1f}; observed across four years:"
+      f" {errors.min():.0f} to {errors.max():.0f} points")
 
 print()
 print("== What is not in the model at all")
@@ -121,7 +121,7 @@ Japan              118.04           324.0  -206.0
 2023    33.9
 2024    39.9
 2025    55.1
-  the mean: 36.0 — but the honest answer sounds like "15 to 55 points"
+  the mean: 36.0; observed across four years: 15 to 55 points
 
 == What is not in the model at all
   features on the input: 1
@@ -170,12 +170,12 @@ It sounds obvious, and yet that is what most real mistakes look like: a model is
 ```text
 2022    15.1
 2025    55.1
-  the mean: 36.0 — but the honest answer sounds like "15 to 55 points"
+  the mean: 36.0; observed across four years: 15 to 55 points
 ```
 
-The mean error is a convenient number for comparing models with each other. As a promise to a reader it is almost always too precise: over four check years the errors spread from 15 to 55 points.
+Mean error is useful for comparing models. Across four check years, observed absolute errors ranged from 15 to 55 points and averaged 36. This describes only four observations, not a prediction interval: the next error may fall outside that range.
 
-So what goes into a report is the range rather than the mean. "Off by 36.0" sounds like a measurement; "off by 15 to 55" sounds like what is actually the case.
+A report should therefore state the mean, the observed range and the number of check years. Do not present the minimum and maximum of four errors as guaranteed future bounds.
 
 ### What is not in the model at all
 

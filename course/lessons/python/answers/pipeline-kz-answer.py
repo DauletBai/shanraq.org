@@ -1,4 +1,4 @@
-"""36-сабақтың тапсырмасының шешімі: журналы, құрғақ жүрісі және қайтару коды бар конвейер.
+"""36-сабақтың тапсырмасының шешімі: журналы, dry-run режиміі және қайтару коды бар конвейер.
 
 Бір main() мазмұндама болып оқылады: алу, реттеу, санау, көрсету. Әр қадам
 журналға жол жазады, --dry-run санайды да жазбайды, ал құлаған дереккөз кешегі
@@ -64,7 +64,7 @@ def main(argv=()):
     log.append(f"есептелді: {totals}")
 
     if dry:
-        log.append("құрғақ жүріс: файл тиылмады")
+        log.append("dry-run режимі: файл өзгермеді")
     else:
         save(render(rows, totals), REPORT)
         log.append(f"жазылды: {REPORT.name}")
@@ -79,7 +79,7 @@ saved = REPORT.read_text(encoding="utf-8")
 print("  код:", code)
 
 print()
-print("== құрғақ жүріс")
+print("== dry-run режимі")
 code = main(["--dry-run"])
 print("  код:", code, "| файл өзгерген жоқ:", REPORT.read_text(encoding="utf-8") == saved)
 

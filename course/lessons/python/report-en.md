@@ -6,7 +6,7 @@ _Лид (summary):_ **The thirty-fourth lesson of the Python course. HTML built 
 
 The digest already produces three files: a CSV with the numbers, a PNG with the picture and a log on somebody's screen. Whoever receives them has to put them together: open the table in something that reads CSV, look at the picture separately and work out that the two are about the same thing.
 
-A page settles that in one file. It opens in any browser with nothing to install, it prints to PDF from that same browser, it travels as a single attachment and it looks the same for everybody.
+A page puts everything into one file. It opens in a modern browser without extra software, prints to PDF and travels as a single attachment. Fonts and browser or print settings can still change line breaks and appearance, so inspect the resulting PDF.
 
 No knowledge of HTML is needed for it: five tags will do. What is needed is something else — understanding that data **cannot go into markup as it is**.
 

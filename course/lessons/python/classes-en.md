@@ -190,7 +190,7 @@ Four cells instead of one number, and the whole picture is in them. Top left are
 
 Here the model has no false alarms at all — and twenty misses out of twenty-six. It says no almost always, and when it says yes it is never wrong. Such a model is easy to call cautious; in fact it is useless exactly where it was meant to be used.
 
-### A threshold is a decision, not a setting
+### Choose the threshold on validation, not on the test set
 
 ```text
            false yes  missed  accuracy
@@ -198,6 +198,8 @@ Here the model has no false alarms at all — and twenty misses out of twenty-si
 0.3               10      10     0.750
 0.5                0      20     0.750
 ```
+
+In this small teaching example, the later part of the time split is used to choose the threshold, so it is validation data rather than an independent test set. Final performance must be measured once on a later period untouched by model or threshold selection.
 
 `predict` is `predict_proba` plus a comparison with 0.5. That half follows from nothing: it was chosen for you, and it can be moved.
 

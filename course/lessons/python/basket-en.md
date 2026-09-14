@@ -157,7 +157,7 @@ One division: the sum of `count × today's price` over the sum of `count × the 
 simple mean over items: 1.846 → 84.6 %
 ```
 
-It treats eggs and rent as equally important. Eggs went up 2.86 times and take 2.5 % of the weight — what they add to your month is a few tenge for every tenge of the rent. In a simple mean they pull equally hard, and that is why the answer comes out fifteen points above the truth.
+It treats eggs and rent as equally important. Eggs went up 2.86 times and take 2.5 % of the weight — their contribution is about nine cents per unit of rent's contribution (`0.046 ÷ 0.531`). In a simple mean they pull equally hard, and that is why the answer comes out fifteen points above the truth.
 
 The rule: **never average over items**. Average over money.
 
@@ -174,7 +174,7 @@ Rent grew more slowly than eggs and raised the basket twelve times harder. That 
 
 ### Why your index differs from the official one
 
-Not because you are charged different prices. Because you have **different weights**: the official basket is the structure of spending averaged over the country, with its shares for food, housing, transport, communications and everything else. It is published, and it is worth reading once — the [Bureau of National Statistics](https://stat.gov.kz/en/industries/economy/prices/) explains what the CPI is assembled from.
+In this teaching example the difference comes from **different weights**. In real data, items, shops, regions, discounts, quality and observed prices may differ as well: the official basket is the structure of spending averaged over the country, with its shares for food, housing, transport, communications and everything else. It is published, and it is worth reading once — the [Bureau of National Statistics](https://stat.gov.kz/en/industries/economy/prices/) explains what the CPI is assembled from.
 
 The gap in the example is 4.8 percentage points, and it is explained entirely by the weights: rented housing takes four times more room in this basket than in the official one.
 
@@ -276,7 +276,7 @@ internet, month   0.044  1.300         0.013
 
 Done means: the output matches line for line; the weights are counted from cost rather than from prices; the index is one division of two sums rather than an average over rows; the check matches exactly rather than roughly.
 
-**On your own data.** Take a month of your receipts — at least ten items that repeat — and their prices five years ago (memory, old photos, message threads, price lists). Count your own index and compare it with the official one for the same period. Then look at the decomposition by contribution: one or two items almost certainly explain more than half of the growth. Those are the items where a decision of yours changes anything; the rest is noise.
+**On your own data.** For a Laspeyres index, use base-period quantities and the prices of the same items then and now. If only today's quantities are available, label the result as the cost of today's basket at old and current prices (a Paasche index), not Laspeyres. Count your index and compare it with the official one for the same period. Then look at the decomposition by contribution: one or two items almost certainly explain more than half of the growth. Those are the first items to investigate, but the remaining costs are real too and are not "noise".
 
 **If you want more.**
 

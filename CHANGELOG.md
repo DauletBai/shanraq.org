@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Corrected the Python course in Russian, Kazakh and English: clarified validation versus testing, correlation, residual diagnostics, descriptive statistics, price indices, monetary aggregates and scheduler behaviour; also improved terminology and supporting lesson text.
+
 ## [0.17.1] — 2026-08-25
 
 ### Changed

@@ -337,7 +337,7 @@ Personal care and other     7.1   9.6          0.68
 
 Done means: the output matches line for line; the weights are counted from the contributions rather than taken from somewhere else; "half of the rise" is found by a running sum rather than picked out by eye; the gap with the headline is printed as a number.
 
-**On your own data.** Download the latest CPI release and repeat the count on its numbers: the weights move from month to month, because the contributions are counted from the start of the year. Compare the weights you get with the ones in the lesson and see which divisions move the most. Then take your own basket from lesson thirty-nine and stand its weights next to the official ones — the difference between your inflation and the headline lives exactly there.
+**On your own data.** Download the latest CPI release and repeat the count on its numbers: fixed official weights should be recovered at roughly the same values; small differences may come from rounding, chain methods or revisions. A change in these reconstructed ratios alone does not prove that the weights changed. Compare the weights you get with the ones in the lesson and see which divisions move the most. Then take your own basket from lesson thirty-nine and stand its weights next to the official ones — the difference between your inflation and the headline lives exactly there.
 
 **If you want more.**
 

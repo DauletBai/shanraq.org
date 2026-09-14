@@ -138,11 +138,11 @@ Kyrgyzstan      13.92 -0.62  30.59
 
 The FAO index is world food prices: wheat, oil, sugar, dairy, meat. It is not about a country, it is about the world, and in 2022 it is the same for Armenia and for Türkiye.
 
-That makes the sentence "prices went up because of world prices" checkable: if it were only them, inflation among the neighbours would be roughly equal. It spread from 8.64 to 72.31 — **8.4 times**. The external shock explains why everybody rose; it does not explain why so differently.
+That makes the sentence "prices went up because of world prices" checkable. A common external shock can affect every country, but its strength depends on import exposure, exchange rates, the consumption basket and domestic pass-through. Inflation spread from 8.64 to 72.31 — **8.4 times** — so the common factor alone cannot explain the differences.
 
 ### The link: one number instead of ten comparisons
 
-`Series.corr` answers the question "do these two columns move together": +1 means they always rise together, −1 that one rises while the other falls, 0 that there is no agreement at all. It is not "how many times" and not "by how many per cent"; it is only about **the agreement of the movement**.
+`Series.corr` computes Pearson's correlation coefficient. +1 is a perfect positive linear relationship, −1 a perfect negative linear relationship, and 0 means no linear relationship; a nonlinear relationship may still exist. Here it compares **differences among countries in one year**, not movement of two series through time. It does not mean "how many times" or "by how many per cent".
 
 ```text
   its own exchange rate  link +0.971   countries counted: 10
@@ -169,7 +169,7 @@ Moldova         28.74  6.88   5.27
 Kyrgyzstan      13.92 -0.62  30.59
 ```
 
-Moldova: prices rose 28.7 % with money almost still and the rate moderate — its shock was a different one, about gas, and these three columns do not have it. Kyrgyzstan is the other way round: broad money grew 30.6 % and prices stayed at the level of the neighbours.
+Moldova's row shows inflation of 28.7 % alongside broad-money growth of 5.3 % and an exchange-rate change of 6.9 %. Other factors, such as an energy-price shock, may be involved, but this table cannot identify the cause. Kyrgyzstan shows the reverse pattern: broad money grew 30.6 %, while inflation stayed near the level of its neighbours.
 
 A pair of rows like that is the best test of an explanation. If the cause has been named correctly, it has to work on them too.
 
