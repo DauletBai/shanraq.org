@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added Python lesson 50 in Kazakh, Russian and English: stable source identifiers, exact decimal comparisons, rejection by reason, and source-owned numeric rendering with localized lesson maps.
+- Added Python lesson 50 in Kazakh, Russian and English: stable source identifiers, exact decimal comparisons, rejection by reason, source-owned numeric rendering, localized lesson maps, and step 25 of the running digest project.
 
 ## [0.19.0] — 2026-09-14
 
