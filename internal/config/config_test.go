@@ -77,7 +77,7 @@ func TestOperatorRequiredInProduction(t *testing.T) {
 	t.Setenv("SHANRAQ_OPERATOR_LEGAL_NAME", "Test Company")
 	t.Setenv("SHANRAQ_OPERATOR_BIN", "123456789012")
 	t.Setenv("SHANRAQ_OPERATOR_ADDRESS", "Rudny, KZ")
-	t.Setenv("SHANRAQ_OPERATOR_EMAIL", "support@shanraq.org")
+	t.Setenv("SHANRAQ_OPERATOR_EMAIL", "shanirak.org@gmail.com")
 	if _, err := Load(""); err != nil {
 		t.Fatalf("production config with operator should load, got %v", err)
 	}

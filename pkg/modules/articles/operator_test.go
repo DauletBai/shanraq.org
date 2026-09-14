@@ -16,11 +16,11 @@ func TestApplyOperator_Configured(t *testing.T) {
 		BIN:         "123456789012",
 		Address:     "г. Тестоград, микрорайон 1, дом 2",
 		AddressEN:   "Testville, Microdistrict 1, bldg 2",
-		Email:       "support@shanraq.org",
+		Email:       "contact@example.kz",
 	}
 
 	ru := applyOperator("Оператор — {{operator_block}}", op, LangRU)
-	for _, want := range []string{"ТОО «Тест Компани»", "БИН 123456789012", "г. Тестоград", "support@shanraq.org", "Для обращений:"} {
+	for _, want := range []string{"ТОО «Тест Компани»", "БИН 123456789012", "г. Тестоград", "contact@example.kz", "Для обращений:"} {
 		if !strings.Contains(ru, want) {
 			t.Errorf("RU block missing %q in %q", want, ru)
 		}
@@ -51,9 +51,8 @@ func TestApplyOperator_EmptyFallsBackWithoutLeakingLabels(t *testing.T) {
 	// Nothing configured (the public-repo default): a generic owner phrase, no
 	// empty "БИН"/"BIN" label dangling — and no contact clause at all. There is
 	// no default address on purpose: a page that names a mailbox nobody reads
-	// is worse than a page that names none, and that is not hypothetical —
-	// support@shanraq.org sat in these pages while the domain's mail server
-	// refused every letter.
+	// is worse than a page that names none. A contact address must always come
+	// from production configuration rather than a hard-coded placeholder.
 	out := applyOperator("Оператором данных является {{operator_block}}", config.OperatorConfig{}, LangRU)
 	if !strings.Contains(out, "владелец платформы Shanraq") {
 		t.Errorf("expected generic fallback name, got %q", out)

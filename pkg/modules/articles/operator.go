@@ -24,10 +24,9 @@ func applyOperator(body string, op config.OperatorConfig, lang string) string {
 }
 
 // operatorEmail is the one address a reader is asked to write to. It comes from
-// config and from nowhere else: an address typed into a page outlives the
-// mailbox behind it, which is exactly what happened to support@shanraq.org --
-// the domain's MX points at our own server, and that server has never run a
-// mail daemon, so every letter to it was refused.
+// config and from nowhere else: an address typed into a page can outlive the
+// mailbox behind it. Keeping the value in production configuration lets the
+// operator change it without leaving a dead address in page templates.
 func operatorEmail(op config.OperatorConfig) string {
 	return strings.TrimSpace(op.Email)
 }
