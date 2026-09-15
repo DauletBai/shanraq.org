@@ -887,6 +887,42 @@
     "py-pytest-konveyer-testteri",
     "kz"
   ],
+  "python/typing": [
+    "py-tip-annotaciyalary-mypy",
+    "ru"
+  ],
+  "python/typing-en": [
+    "py-tip-annotaciyalary-mypy",
+    "en"
+  ],
+  "python/typing-kz": [
+    "py-tip-annotaciyalary-mypy",
+    "kz"
+  ],
+  "python/reproducible": [
+    "py-qaitalanatyn-orta-taueldilikter",
+    "ru"
+  ],
+  "python/reproducible-en": [
+    "py-qaitalanatyn-orta-taueldilikter",
+    "en"
+  ],
+  "python/reproducible-kz": [
+    "py-qaitalanatyn-orta-taueldilikter",
+    "kz"
+  ],
+  "python/publish": [
+    "py-final-tekseru-zhariyalau",
+    "ru"
+  ],
+  "python/publish-en": [
+    "py-final-tekseru-zhariyalau",
+    "en"
+  ],
+  "python/publish-kz": [
+    "py-final-tekseru-zhariyalau",
+    "kz"
+  ],
   "python/list": [
     "py-tizim-men-kortej",
     "ru"

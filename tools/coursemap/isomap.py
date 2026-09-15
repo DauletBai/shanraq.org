@@ -6175,7 +6175,7 @@ PY52 = {
                foot="УӘДЕ → МЫСАЛ → ASSERT",
                foot_sub="табылған ақау қайта оралмасын"),
     "ru": dict(alt="Обещание, тестовые случаи и результат проверки",
-               b1="обещание", b1_sub="ожидаемое поведение",
+               b1="обещание", b1_sub="ожидаемый итог",
                b2="случаи", b2_sub="норма + граница",
                b3="результат", b3_sub="passed / failed",
                c1="баг → тест", c2="tmp_path → изоляция",
@@ -6184,7 +6184,7 @@ PY52 = {
                foot="ОБЕЩАНИЕ → ПРИМЕР → ASSERT",
                foot_sub="найденный баг не должен вернуться"),
     "en": dict(alt="A promise, test cases, and the check result",
-               b1="the promise", b1_sub="expected behaviour",
+               b1="the promise", b1_sub="expected result",
                b2="the cases", b2_sub="normal + boundary",
                b3="the result", b3_sub="passed / failed",
                c1="bug → test", c2="tmp_path → isolation",
@@ -6192,6 +6192,24 @@ PY52 = {
                head_sub="lesson fifty-two: pytest",
                foot="PROMISE → EXAMPLE → ASSERT",
                foot_sub="a fixed bug must not return"),
+}
+
+PY53 = {
+    "kz": dict(alt="Мән, тип аннотациясы, тарылту және mypy тексеруі", b1="мән", b1_sub="жүйе шекарасы", b2="тип", b2_sub="дәл сигнатура", b3="mypy", b3_sub="іске қосуға дейін", c1="None → тарылту", c2="Any → шекарада", head="ТИПТІ АНЫҚ АЙТ", head_sub="елу үшінші сабақ: mypy", foot="ШЕКАРА → ТИП → ТЕКСЕРУ", foot_sub="тип тест пен валидацияны алмастырмайды"),
+    "ru": dict(alt="Значение, аннотация типа, сужение и проверка mypy", b1="значение", b1_sub="граница системы", b2="тип", b2_sub="точная сигнатура", b3="mypy", b3_sub="до запуска", c1="None → сужение", c2="Any → на границе", head="НАЗОВИ ТИП ТОЧНО", head_sub="пятьдесят третий урок: mypy", foot="ГРАНИЦА → ТИП → ПРОВЕРКА", foot_sub="тип не заменяет тест и валидацию"),
+    "en": dict(alt="A value, type annotation, narrowing, and mypy check", b1="the value", b1_sub="system boundary", b2="the type", b2_sub="precise signature", b3="mypy", b3_sub="before runtime", c1="None → narrow", c2="Any → boundary", head="NAME THE TYPE", head_sub="lesson fifty-three: mypy", foot="BOUNDARY → TYPE → CHECK", foot_sub="types do not replace tests or validation"),
+}
+
+PY54 = {
+    "kz": dict(alt="Тікелей тәуелділік, lock-файл, таза орта және тексеру", b1="ниет", b1_sub="requirements.in", b2="lock", b2_sub="нұсқа + хэш", b3="таза орта", b3_sub="қайта тексеру", c1="Python нұсқасы", c2="pip freeze ≠ ниет", head="ОРТАНЫ ҚАЙТАЛА", head_sub="елу төртінші сабақ: тәуелділіктер", foot="НИЕТ → LOCK → ТАЗА ЖИНАҚ", foot_sub="жаңарту — бөлек тексерілетін жұмыс"),
+    "ru": dict(alt="Прямая зависимость, lock-файл, чистая среда и проверка", b1="намерение", b1_sub="requirements.in", b2="lock", b2_sub="версия + хэш", b3="чистая среда", b3_sub="перепроверить", c1="версия Python", c2="pip freeze ≠ замысел", head="ПОВТОРИ СРЕДУ", head_sub="пятьдесят четвёртый урок: зависимости", foot="НАМЕРЕНИЕ → LOCK → ЧИСТАЯ СБОРКА", foot_sub="обновление — отдельная проверяемая работа"),
+    "en": dict(alt="Direct intent, a lock file, clean environment, and verification", b1="intent", b1_sub="requirements.in", b2="the lock", b2_sub="version + hash", b3="clean env", b3_sub="verify again", c1="Python version", c2="pip freeze ≠ intent", head="REBUILD THE ENV", head_sub="lesson fifty-four: dependencies", foot="INTENT → LOCK → CLEAN BUILD", foot_sub="an update is a separate verified change"),
+}
+
+PY55 = {
+    "kz": dict(alt="Тексеру шлюзі, артефакт, жариялау және қайтару", b1="тексеру", b1_sub="test + type", b2="артефакт", b2_sub="manifest + hash", b3="жариялау", b3_sub="атомарлы ауыстыру", c1="HTTP → 200", c2="ақау → қайтару", head="ЖОБАНЫ АЯҚТА", head_sub="елу бесінші сабақ: жариялау", foot="ТЕКСЕР → ЖИНА → ЖАРИЯЛА", foot_sub="не бәрі ауысады, не ештеңе өзгермейді"),
+    "ru": dict(alt="Шлюз проверок, артефакт, публикация и откат", b1="проверки", b1_sub="test + type", b2="артефакт", b2_sub="manifest + hash", b3="публикация", b3_sub="атомарная замена", c1="HTTP → 200", c2="сбой → откат", head="ЗАВЕРШИ ПРОЕКТ", head_sub="пятьдесят пятый урок: публикация", foot="ПРОВЕРЬ → СОБЕРИ → ОПУБЛИКУЙ", foot_sub="заменяется всё или не меняется ничего"),
+    "en": dict(alt="A check gate, artifact, publication, and rollback", b1="the checks", b1_sub="test + type", b2="artifact", b2_sub="manifest + hash", b3="publish", b3_sub="atomic swap", c1="HTTP → 200", c2="failure → rollback", head="FINISH THE PROJECT", head_sub="lesson fifty-five: publication", foot="VERIFY → BUILD → PUBLISH", foot_sub="replace everything or change nothing"),
 }
 
 if __name__ == "__main__":
@@ -6255,7 +6273,10 @@ if __name__ == "__main__":
                                ("structured", pymap47, PY49),
                                ("grounded", pymap47, PY50),
                                ("trust", pymap47, PY51),
-                               ("tests", pymap47, PY52)):
+                               ("tests", pymap47, PY52),
+                               ("typing", pymap47, PY53),
+                               ("reproducible", pymap47, PY54),
+                               ("publish", pymap47, PY55)):
         for lang, strings in table.items():
             path = os.path.join(py_out, f"map-{name}-{lang}.svg")
             with open(path, "w", encoding="utf-8") as f:

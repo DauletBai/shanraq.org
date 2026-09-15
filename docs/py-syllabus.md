@@ -121,7 +121,7 @@ python3 tools/coursecheck/pysyllabus.py lesson 5 файл.md     # покрыл 
 | Тесты | 52 | `pytest` |
 | Аннотации типов | 53 | `-> `, `mypy` |
 | Зависимости и воспроизводимость | 54 | `requirements`, `pip freeze` |
-| Чек-лист и публикация | 55 | чек-лист, публик |
+| Чек-лист и публикация | 55 | `release.py`, `manifest.json` |
 
 ## Правило
 

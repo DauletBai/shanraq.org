@@ -1,0 +1,6 @@
+pandas>=3.0,<3.1
+matplotlib>=3.11,<3.12
+scikit-learn>=1.9,<2
+jsonschema>=4.26,<5
+pytest>=9.1,<10
+mypy>=2.3,<3

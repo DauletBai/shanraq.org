@@ -1,0 +1,313 @@
+"""The report: the grouping, the join, the year before -- and the spread.
+
+diff() inside a grouping answers "how much more than last year" without a loop
+and without the off-by-one that a loop over sorted years invites. It needs the
+rows in order, which is what the cleaning step guarantees.
+
+Resampling and a rolling mean, the other half of lesson 31, are not here on
+purpose: five yearly points are not a series to smooth. They arrive with a
+monthly one.
+
+ozara() is lesson 37: over all the years a country has, it counts the mean, the
+median, the spread and the quarters, and picks the one measure that goes in the
+heading. The choice is a rule and not a taste -- see headline().
+
+indeks() is lesson 38: yearly rates are multipliers, so the growth over a run of
+years is their product and never their sum. It is the first count here that uses
+every year at once, which is why it is also the first to refuse a series with a
+gap in it: an index over a broken run of years means nothing.
+
+aqsha() is lesson 40, and it is the first count over a series that is not
+inflation: broad money against GDP. It shares nothing with the other three but
+the shape of the table, which is the point -- a second indicator costs one
+function, not a second program.
+
+baylanys() is lesson 42, and it is the first count that can refuse. Two columns
+over three countries always produce a number, and that number means nothing: one
+country moves it by half. So the minimum is an argument, the count of countries
+travels with the answer, and a digest that cannot support a relationship says so
+instead of printing one.
+
+shekteu() is lesson 46: the list of what this report does not say. Every line
+of it is assembled from what was counted a moment earlier -- the trend's own
+error, the countries the link lacked, the ones with no money figure, the years
+that exist -- so the limits cannot drift away from the numbers they limit.
+
+trend() is lessons 43 and 44 together. The line through the logarithm of the
+index is the shape prices actually have, and what it prints is the yearly
+multiplier that line implies, the worst it misses on the years it learned from,
+and -- since lesson 44 -- the error on the last year, which it was not given.
+Those two errors are printed side by side because they are not the same number:
+a model measured on its own years flatters itself.
+"""
+
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+
+from sholu import anyqtama
+
+UNKNOWN = "белгісіз"
+
+
+def report(table):
+    """Per country: the name, the years, the gaps, the average, the peak and the
+    change over the year before the last one."""
+    assert not table.empty, "кестеде бірде-бір жол жоқ"
+    out = table.groupby("country", observed=True).agg(
+        жылдар=("value", "size"),
+        дерегі_жоқ=("value", lambda column: int(column.isna().sum())),
+        орташа=("value", "mean"),
+        ең_жоғары=("value", "max"),
+    )
+    # The label of the largest value in each group is the row it sits in, and
+    # that row knows its year.
+    peaks = table.loc[table.groupby("country", observed=True)["value"].idxmax()]
+    out["ең_жоғары_жыл"] = peaks.set_index("country")["year"]
+
+    # The last year of each country, and how it differs from the year before.
+    ordered = table.sort_values(["country", "date"]).copy()
+    ordered["айырма"] = ordered.groupby("country", observed=True)["value"].diff()
+    last = ordered.groupby("country", observed=True).tail(1).set_index("country")
+    out["соңғы_жыл"] = last["year"]
+    out["соңғы_мән"] = last["value"]
+    out["өткен_жылға"] = last["айырма"]
+
+    out = out.reset_index()
+    out["country"] = out["country"].astype("str")
+
+    named = out.merge(anyqtama.table(), on="country", how="left", validate="one_to_one")
+    named["аты"] = named["аты"].fillna(named["country"])
+    # A marker, not a guess: "unknown" says what is true, an empty cell says
+    # nothing and a made-up region would say something false.
+    named["өңір"] = named["өңір"].fillna(UNKNOWN)
+    columns = ["country", "аты", "өңір", "жылдар", "дерегі_жоқ", "орташа", "ең_жоғары",
+               "ең_жоғары_жыл", "соңғы_жыл", "соңғы_мән", "өткен_жылға"]
+    return named[columns].round({"орташа": 2, "ең_жоғары": 2, "соңғы_мән": 2, "өткен_жылға": 2})
+
+
+def headline(row):
+    """Which measure describes a series: a rule, not a taste.
+
+    When the mean has moved away from the median by more than a tenth of the
+    median, the series has a tail -- three of these countries have spike years,
+    and a mean over those describes the spike rather than the country.
+    """
+    mean, median = row.mean(), row.median()
+    if median and abs(mean - median) / median > 0.1:
+        return "медиана", round(median, 2)
+    return "орташа", round(mean, 2)
+
+
+def ozara(table):
+    """Per country, over every year it has: the centre and the spread.
+
+    Four numbers instead of one, because one hides what it costs: a mean of 9
+    with a spread of 4 and a mean of 9 with a spread of 1 are different
+    countries, and the report used to print them the same way.
+    """
+    assert not table.empty, "кестеде бірде-бір жол жоқ"
+    rows = []
+    for country, part in table.groupby("country", observed=True):
+        values = part["value"].dropna()
+        if values.empty:
+            continue
+        quarters = values.quantile([0.25, 0.75])
+        measure, value = headline(values)
+        rows.append({
+            "country": str(country),
+            "жылдар": int(values.count()),
+            "орташа": round(values.mean(), 2),
+            "медиана": round(values.median(), 2),
+            "шашырау": round(values.std(), 2),
+            "ширекаралық": round(quarters[0.75] - quarters[0.25], 2),
+            "өлшем": measure,
+            "мәні": value,
+        })
+    out = pd.DataFrame(rows)
+    named = out.merge(anyqtama.table(), on="country", how="left", validate="one_to_one")
+    named["аты"] = named["аты"].fillna(named["country"])
+    return named[["country", "аты", "жылдар", "орташа", "медиана", "шашырау",
+                  "ширекаралық", "өлшем", "мәні"]]
+
+
+def indeks(table, base=100.0):
+    """Per country: the price index, the multiplier and what a thousand became.
+
+    The years have to run without a gap. A missing year is not a rounding
+    problem -- the product would quietly skip a multiplier and the index would
+    come out lower than the truth -- so it is reported instead of counted.
+    """
+    assert not table.empty, "кестеде бірде-бір жол жоқ"
+    rows = []
+    for country, part in table.sort_values("year").groupby("country", observed=True):
+        years = part["year"].astype(int).tolist()
+        values = part["value"].tolist()
+        gap = [y for y in range(years[0], years[-1] + 1) if y not in years]
+        factors = [1 + v / 100 for v in values[1:]]      # the first year is the base
+        total = 1.0
+        for f in factors:
+            total *= f
+        rows.append({
+            "country": str(country),
+            "база": years[0],
+            "соңғы": years[-1],
+            "үзіліс": ", ".join(str(y) for y in gap) if gap else "жоқ",
+            "индекс": round(base * total, 2),
+            "есе": round(total, 3),
+            "мың теңге": round(1000 / total, 2),
+        })
+    out = pd.DataFrame(rows)
+    named = out.merge(anyqtama.table(), on="country", how="left", validate="one_to_one")
+    named["аты"] = named["аты"].fillna(named["country"])
+    return named[["country", "аты", "база", "соңғы", "үзіліс", "индекс", "есе", "мың теңге"]]
+
+
+def aqsha(table):
+    """Per country: how much money there is for a tenge of a year of output.
+
+    The series arrives as a share of GDP, which is already the answer in
+    percent; the report says it in tiyn, because "33 tiyn for a tenge" is a
+    sentence a reader finishes without a calculator. Next to it stands the same
+    number at the start of the run, so the row says which way the country moved.
+
+    A country the source knows nothing about keeps its row and says so. Dropping
+    it would leave a report that looks complete and is not.
+    """
+    assert not table.empty, "кестеде бірде-бір жол жоқ"
+    rows = []
+    for country, part in table.sort_values("year").groupby("country", observed=True):
+        known = part.dropna(subset=["value"])
+        if known.empty:
+            rows.append({"country": str(country), "база": None, "соңғы": None,
+                         "% ЖІӨ": None, "тиын": None, "өзгерді": None})
+            continue
+        first, last = known.iloc[0], known.iloc[-1]
+        rows.append({
+            "country": str(country),
+            "база": int(first["year"]),
+            "соңғы": int(last["year"]),
+            "% ЖІӨ": round(float(last["value"]), 2),
+            # A per cent of GDP is a tenge-per-tenge ratio already: 33.06 % of a
+            # year of output is 33 tiyn of money for every tenge of it.
+            "тиын": round(float(last["value"])),
+            "өзгерді": round(float(last["value"]) - float(first["value"]), 2),
+        })
+    out = pd.DataFrame(rows)
+    named = out.merge(anyqtama.table(), on="country", how="left", validate="one_to_one")
+    named["аты"] = named["аты"].fillna(named["country"])
+    # Whole numbers that are allowed to be missing: Int64 keeps a year a year,
+    # where a plain int column would have turned 2021 into 2021.0 to make room
+    # for the gap in the row the source knows nothing about.
+    for column in ("база", "соңғы", "тиын"):
+        named[column] = named[column].astype("Int64")
+    return named[["country", "аты", "база", "соңғы", "% ЖІӨ", "тиын", "өзгерді"]]
+
+
+# Three countries is not a relationship, it is three points. The floor is the
+# one place in this file where a number was chosen rather than measured: eight
+# is small enough for a regional digest to reach and large enough that no single
+# country decides the sign, which is exactly what lesson 42 measured on ten.
+MIN_COUNTRIES = 8
+
+
+def baylanys(report, money, minimum=MIN_COUNTRIES):
+    """Whether prices and money moved together -- or why that cannot be said.
+
+    Returns a one-row frame either way: the answer and the countries behind it,
+    or the refusal and what it would take. A report that quietly drops the line
+    when the data is thin teaches the reader that the line is optional; a report
+    that prints a correlation over three countries teaches something worse.
+    """
+    left = report[["country", "соңғы_мән"]].rename(columns={"соңғы_мән": "баға"})
+    right = money[["country", "% ЖІӨ"]].rename(columns={"% ЖІӨ": "ақша"})
+    pair = left.merge(right, on="country", how="inner", validate="one_to_one").dropna()
+    enough = len(pair) >= minimum
+    return pd.DataFrame([{
+        "елдер": len(pair),
+        "керек": minimum,
+        "байланыс": round(float(pair["баға"].corr(pair["ақша"])), 3) if enough else None,
+        "қорытынды": "саналды" if enough else f"аз: {len(pair)} ел, {minimum} керек",
+    }])
+
+
+def trend(table, minimum=5):
+    """Per country: the multiplier a straight line implies, and its worst miss.
+
+    Prices multiply rather than add (lesson 38), so the line goes through the
+    logarithm of the index and comes back through exp(). The miss is reported in
+    points of the index, in the same units as the table above it: a number a
+    reader can compare with the index itself.
+
+    A run shorter than the floor gets a row that says so. Five points is already
+    thin, and the digest has exactly five -- four of which are left when the last
+    year is held back for the check.
+    """
+    assert not table.empty, "кестеде бірде-бір жол жоқ"
+    rows = []
+    for country, part in table.sort_values("year").groupby("country", observed=True):
+        part = part.dropna(subset=["value"])
+        years = part["year"].astype(int).to_numpy()
+        rates = part["value"].to_numpy()
+        if len(years) < minimum:
+            rows.append({"country": str(country), "жыл": len(years), "жылдық": None,
+                         "ең үлкен қате": None, "соңғы жылда": None,
+                         "қорытынды": f"аз: {len(years)} жыл"})
+            continue
+        # The first year is the base, exactly as in indeks(): its own rate
+        # belongs to the year before, which the series does not have.
+        index = 100.0 * np.cumprod(np.concatenate(([1.0], 1 + rates[1:] / 100)))
+        model = LinearRegression().fit(years.reshape(-1, 1), np.log(index))
+        guess = np.exp(model.predict(years.reshape(-1, 1)))
+        # The same line, taught without the last year, asked about it. One point
+        # is not a verdict, but it is the only number here the model did not see
+        # the answer to -- and it comes out several times the other one.
+        held = LinearRegression().fit(years[:-1].reshape(-1, 1), np.log(index[:-1]))
+        last = float(np.exp(held.predict(years[-1:].reshape(-1, 1)))[0])
+        rows.append({
+            "country": str(country),
+            "жыл": len(years),
+            "жылдық": round(float(np.exp(model.coef_[0])), 4),
+            "ең үлкен қате": round(float(np.max(np.abs(index - guess))), 2),
+            "соңғы жылда": round(abs(last - float(index[-1])), 2),
+            "қорытынды": "саналды",
+        })
+    out = pd.DataFrame(rows)
+    named = out.merge(anyqtama.table(), on="country", how="left", validate="one_to_one")
+    named["аты"] = named["аты"].fillna(named["country"])
+    return named[["country", "аты", "жыл", "жылдық", "ең үлкен қате",
+                  "соңғы жылда", "қорытынды"]]
+
+
+def shekteu(report, money, link, trend):
+    """What this report does not say -- in lines built from what it counted.
+
+    A page of numbers with no limits beside them reads as a page of facts. The
+    limits here are not written by hand: each line takes its figure from the
+    table above it, so a table that changes changes the line with it.
+    """
+    lines = []
+    if trend is not None and not trend.empty:
+        worst = trend["ең үлкен қате"].dropna()
+        if not worst.empty:
+            lines.append(f"болжам жоқ: тренд өз жылдарында {worst.max():.2f} "
+                         f"тармаққа дейін қателеседі")
+    if link is not None and not link.empty:
+        row = link.iloc[0]
+        if row["байланыс"] is None or pd.isna(row["байланыс"]):
+            lines.append(f"баға мен ақшаның байланысы саналмады: "
+                         f"{int(row['елдер'])} ел, {int(row['керек'])} керек")
+    if money is not None and not money.empty:
+        blank = money[money["% ЖІӨ"].isna()]["аты"].tolist()
+        if blank:
+            lines.append("ақша массасы жоқ ел: " + ", ".join(blank))
+    if report is not None and not report.empty:
+        lines.append(f"жылдар: {int(report['соңғы_жыл'].min())} дейін; "
+                     f"одан кейінгі жыл туралы есеп ештеңе айтпайды")
+    return lines
+
+
+def write(table, path):
+    """Writes the report as a CSV a spreadsheet can open."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    report(table).to_csv(path, index=False)
