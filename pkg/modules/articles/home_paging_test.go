@@ -191,3 +191,37 @@ func TestFeedPagingIsStableAcrossTiedTimestamps(t *testing.T) {
 		t.Errorf("page 1 showed %d articles, want %d", len(first), homePageSize)
 	}
 }
+
+// A lesson is an article at the storage layer, but not a story in the front
+// page feed. Its series already provides the ordered table of contents and the
+// previous/next path; repeating every chapter on the home page makes ordinary
+// editorial work disappear as soon as a course is released in a batch.
+func TestHomeFeedOmitsCourseLessons(t *testing.T) {
+	app := newTestApp(t)
+	author := app.createUser("course-feed-"+uuid.NewString()[:8]+"@t.test", "Sup3r-Secret-Pass!")
+
+	_, storySlug := app.seedArticle(author, "published")
+	lessonID, lessonSlug := app.seedArticle(author, "published")
+	seriesID := uuid.New()
+	app.exec(`INSERT INTO article_series (id, slug, status, code_lang)
+	          VALUES ($1, $2, 'published', 'python')`, seriesID, "feed-test-"+uuid.NewString())
+	app.exec(`INSERT INTO article_series_items (series_id, article_id, position)
+	          VALUES ($1, $2, 1)`, seriesID, lessonID)
+	app.exec(`UPDATE articles SET published_at = timestamptz '2099-02-01 00:00:00+00'
+	          WHERE slug IN ($1, $2)`, storySlug, lessonSlug)
+
+	articles, err := NewStore(app.pool).ListPublished(context.Background(), "", "", "", 60, 0, nil)
+	if err != nil {
+		t.Fatalf("ListPublished: %v", err)
+	}
+	seen := map[string]bool{}
+	for _, article := range articles {
+		seen[article.Slug] = true
+	}
+	if !seen[storySlug] {
+		t.Errorf("ordinary article %q disappeared from the home feed", storySlug)
+	}
+	if seen[lessonSlug] {
+		t.Errorf("course lesson %q appeared in the home feed", lessonSlug)
+	}
+}

@@ -253,9 +253,13 @@ func placeClause(args *[]any, addressed []uuid.UUID) string {
 	return fmt.Sprintf(" AND (a.geo_node_id IS NULL OR a.geo_node_id = ANY($%d))", len(*args))
 }
 
-// ListPublished returns published articles for the feed. sort "top" orders by
-// score (readers' choice); anything else by recency. A non-empty category
-// filters to that rubric.
+// ListPublished returns published editorial articles for the feed. Lessons
+// belong on their course pages: putting every newly published lesson into the
+// general feed buries reporting and analysis under chapters of one textbook.
+// They remain published, indexable, searchable and reachable through the
+// course navigation; only article_series_items are omitted here. sort "top"
+// orders by score (readers' choice); anything else by recency. A non-empty
+// category filters to that rubric.
 func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory string, limit, offset int, addressed []uuid.UUID) ([]*Article, error) {
 	if limit <= 0 || limit > 60 {
 		limit = 24
@@ -271,7 +275,9 @@ func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory s
 	}
 
 	args := []any{}
-	where := "a.status = 'published'" + placeClause(&args, addressed)
+	where := "a.status = 'published' AND NOT EXISTS (" +
+		"SELECT 1 FROM article_series_items si WHERE si.article_id = a.id)" +
+		placeClause(&args, addressed)
 	if category != "" {
 		args = append(args, category)
 		where += fmt.Sprintf(" AND a.category = $%d", len(args))
