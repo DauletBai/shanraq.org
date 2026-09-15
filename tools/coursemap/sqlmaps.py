@@ -7,6 +7,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "web/static/course/sql"
 
+# Keep the brand mark inside each map.  An external <image href> disappears
+# when a map is rendered through an image element or a restrictive SVG viewer.
+SHANRAQ_MARK = '''<svg x="492" y="57" width="116" height="116" viewBox="0 0 400 400" aria-hidden="true">
+<g transform="translate(30 30) scale(.85)" fill="none" stroke-linecap="round">
+<g stroke="#ffadad" stroke-opacity=".5" stroke-width="45">
+<path d="M76 76L324 324M137 37L363 263M37 137L263 363M76 324L324 76M137 363L363 137M37 263L263 37"/>
+</g>
+<g stroke="#e53935" stroke-width="30">
+<path d="M76 76L324 324M137 37L363 263M37 137L263 363M76 324L324 76M137 363L363 137M37 263L263 37"/>
+</g>
+</g>
+</svg>'''
+
 MAPS = {
     "why": {
         "ru": ("ФАКТЫ → ВОПРОС → ОТВЕТ", ["FROM · чеки", "WHERE · месяц", "GROUP · конверты", "SUM · итог"]),
@@ -87,7 +100,7 @@ def svg(title, steps):
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620" role="img">
 <defs><marker id="a" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#2f7d45"/></marker></defs>
 <rect width="1100" height="620" rx="32" fill="#f7f5f1"/>
-<image href="/static/brand/shanraq.svg" x="492" y="57" width="116" height="116" preserveAspectRatio="xMidYMid meet"/>
+{SHANRAQ_MARK}
 <text x="550" y="205" text-anchor="middle" font-family="Arial,sans-serif" font-size="31" font-weight="800" fill="#303030">{escape(title)}</text>
 {''.join(cards)}
 <path d="M80 455 H1020" stroke="#e1ddd6" stroke-width="3"/>

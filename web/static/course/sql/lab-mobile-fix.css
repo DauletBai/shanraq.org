@@ -31,4 +31,23 @@ body {
   .lab-langs a {
     padding-inline: 7px;
   }
+
+  textarea,
+  .lab-actions,
+  .lab-actions > *,
+  .import {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .lab-actions > * {
+    flex: 1 1 100%;
+    width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .import {
+    width: calc(100% - 24px);
+  }
 }
