@@ -133,6 +133,10 @@ func TestHighlightCode(t *testing.T) {
 	if !strings.Contains(py, "def") {
 		t.Error("код потерян при подсветке Python")
 	}
+	sql := string(highlightCode("SELECT amount FROM transactions;", CodeSQL))
+	if !strings.Contains(sql, `class="chroma"`) || !strings.Contains(sql, "SELECT") {
+		t.Errorf("подсветка SQL не применена: %.80s", sql)
+	}
 }
 
 // A Python course sends Python here, and the checker used to answer it with a
@@ -175,6 +179,20 @@ func TestCheckSystemNamesTheLanguage(t *testing.T) {
 	}
 	if !strings.Contains(checkSystem(LangEN, CodeGo), "Go course") {
 		t.Error("курс по Go перестал называться")
+	}
+	if sql := checkSystem(LangKZ, CodeSQL); !strings.Contains(sql, "SQL (SQLite dialect)") || !strings.Contains(sql, "Kazakh") {
+		t.Error("SQL-решение не названо SQL или ответ не запрошен на казахском")
+	}
+}
+
+func TestFormatSolutionSQLPreservesQuery(t *testing.T) {
+	src := "SELECT amount   \r\nFROM transactions;   \r\n"
+	out, err := formatSolution(src, CodeSQL)
+	if err != nil {
+		t.Fatalf("SQL не должен проходить через Go parser: %v", err)
+	}
+	if out != "SELECT amount\nFROM transactions;\n" {
+		t.Errorf("SQL изменён небезопасно: %q", out)
 	}
 }
 

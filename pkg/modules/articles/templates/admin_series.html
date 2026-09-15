@@ -46,6 +46,14 @@
             {{ end }}
           </select>
         </label>
+        <label>{{ t .Lang "course.f_code_lang" }}
+          {{ $codeLang := "go" }}{{ if .Editing }}{{ $codeLang = .Editing.CodeLang }}{{ end }}
+          <select class="input" name="code_lang">
+            <option value="go" {{ if eq $codeLang "go" }}selected{{ end }}>Go</option>
+            <option value="python" {{ if eq $codeLang "python" }}selected{{ end }}>Python</option>
+            <option value="sql" {{ if eq $codeLang "sql" }}selected{{ end }}>SQL (SQLite)</option>
+          </select>
+        </label>
       </div>
 
       <p style="margin-top:14px"><button class="btn btn--primary" type="submit">{{ t .Lang "re.save" }}</button></p>

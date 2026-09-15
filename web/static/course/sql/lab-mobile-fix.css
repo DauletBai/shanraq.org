@@ -1,0 +1,34 @@
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.lab-head,
+.lab-shell,
+.lab-intro,
+.lab-intro > *,
+.lab-workspace,
+.lab-workspace > * {
+  min-width: 0;
+}
+
+.lab-intro p,
+.privacy,
+.lab-help {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 420px) {
+  .lab-head {
+    align-items: flex-start;
+  }
+
+  .lab-brand {
+    padding-top: 7px;
+  }
+
+  .lab-langs a {
+    padding-inline: 7px;
+  }
+}

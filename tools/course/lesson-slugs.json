@@ -719,6 +719,18 @@
     "py-modul-sozdigi-segiz-soz",
     "kz"
   ],
+  "python/grounded": [
+    "py-model-oz-deregi-source-id",
+    "ru"
+  ],
+  "python/grounded-en": [
+    "py-model-oz-deregi-source-id",
+    "en"
+  ],
+  "python/grounded-kz": [
+    "py-model-oz-deregi-source-id",
+    "kz"
+  ],
   "python/group": [
     "py-toptau-groupby-agg-transform",
     "ru"
@@ -815,114 +827,6 @@
     "py-model-qayda-bitedi-shekara",
     "kz"
   ],
-  "python/local": [
-    "py-zhergilikti-model-ollama",
-    "ru"
-  ],
-  "python/local-en": [
-    "py-zhergilikti-model-ollama",
-    "en"
-  ],
-  "python/local-kz": [
-    "py-zhergilikti-model-ollama",
-    "kz"
-  ],
-  "python/prompt": [
-    "py-prompt-kod-temperature-seed",
-    "ru"
-  ],
-  "python/prompt-en": [
-    "py-prompt-kod-temperature-seed",
-    "en"
-  ],
-  "python/prompt-kz": [
-    "py-prompt-kod-temperature-seed",
-    "kz"
-  ],
-  "python/structured": [
-    "py-json-schema-model-zhauabyn-tekseru",
-    "ru"
-  ],
-  "python/structured-en": [
-    "py-json-schema-model-zhauabyn-tekseru",
-    "en"
-  ],
-  "python/structured-kz": [
-    "py-json-schema-model-zhauabyn-tekseru",
-    "kz"
-  ],
-  "python/grounded": [
-    "py-model-oz-deregi-source-id",
-    "ru"
-  ],
-  "python/grounded-en": [
-    "py-model-oz-deregi-source-id",
-    "en"
-  ],
-  "python/grounded-kz": [
-    "py-model-oz-deregi-source-id",
-    "kz"
-  ],
-  "python/trust": [
-    "py-modelge-ne-senbeu-fakt-sebep",
-    "ru"
-  ],
-  "python/trust-en": [
-    "py-modelge-ne-senbeu-fakt-sebep",
-    "en"
-  ],
-  "python/trust-kz": [
-    "py-modelge-ne-senbeu-fakt-sebep",
-    "kz"
-  ],
-  "python/tests": [
-    "py-pytest-konveyer-testteri",
-    "ru"
-  ],
-  "python/tests-en": [
-    "py-pytest-konveyer-testteri",
-    "en"
-  ],
-  "python/tests-kz": [
-    "py-pytest-konveyer-testteri",
-    "kz"
-  ],
-  "python/typing": [
-    "py-tip-annotaciyalary-mypy",
-    "ru"
-  ],
-  "python/typing-en": [
-    "py-tip-annotaciyalary-mypy",
-    "en"
-  ],
-  "python/typing-kz": [
-    "py-tip-annotaciyalary-mypy",
-    "kz"
-  ],
-  "python/reproducible": [
-    "py-qaitalanatyn-orta-taueldilikter",
-    "ru"
-  ],
-  "python/reproducible-en": [
-    "py-qaitalanatyn-orta-taueldilikter",
-    "en"
-  ],
-  "python/reproducible-kz": [
-    "py-qaitalanatyn-orta-taueldilikter",
-    "kz"
-  ],
-  "python/publish": [
-    "py-final-tekseru-zhariyalau",
-    "ru"
-  ],
-  "python/publish-en": [
-    "py-final-tekseru-zhariyalau",
-    "en"
-  ],
-  "python/publish-kz": [
-    "py-final-tekseru-zhariyalau",
-    "kz"
-  ],
   "python/list": [
     "py-tizim-men-kortej",
     "ru"
@@ -933,6 +837,18 @@
   ],
   "python/list-kz": [
     "py-tizim-men-kortej",
+    "kz"
+  ],
+  "python/local": [
+    "py-zhergilikti-model-ollama",
+    "ru"
+  ],
+  "python/local-en": [
+    "py-zhergilikti-model-ollama",
+    "en"
+  ],
+  "python/local-kz": [
+    "py-zhergilikti-model-ollama",
     "kz"
   ],
   "python/loops": [
@@ -1055,6 +971,30 @@
     "py-agany-bagalar-tenge",
     "kz"
   ],
+  "python/prompt": [
+    "py-prompt-kod-temperature-seed",
+    "ru"
+  ],
+  "python/prompt-en": [
+    "py-prompt-kod-temperature-seed",
+    "en"
+  ],
+  "python/prompt-kz": [
+    "py-prompt-kod-temperature-seed",
+    "kz"
+  ],
+  "python/publish": [
+    "py-final-tekseru-zhariyalau",
+    "ru"
+  ],
+  "python/publish-en": [
+    "py-final-tekseru-zhariyalau",
+    "en"
+  ],
+  "python/publish-kz": [
+    "py-final-tekseru-zhariyalau",
+    "kz"
+  ],
   "python/report": [
     "py-esep-bet-html-ulgi-escape",
     "ru"
@@ -1065,6 +1005,18 @@
   ],
   "python/report-kz": [
     "py-esep-bet-html-ulgi-escape",
+    "kz"
+  ],
+  "python/reproducible": [
+    "py-qaitalanatyn-orta-taueldilikter",
+    "ru"
+  ],
+  "python/reproducible-en": [
+    "py-qaitalanatyn-orta-taueldilikter",
+    "en"
+  ],
+  "python/reproducible-kz": [
+    "py-qaitalanatyn-orta-taueldilikter",
     "kz"
   ],
   "python/schedule": [
@@ -1151,6 +1103,30 @@
     "py-resmi-statistikany-qalay-oqu",
     "kz"
   ],
+  "python/structured": [
+    "py-json-schema-model-zhauabyn-tekseru",
+    "ru"
+  ],
+  "python/structured-en": [
+    "py-json-schema-model-zhauabyn-tekseru",
+    "en"
+  ],
+  "python/structured-kz": [
+    "py-json-schema-model-zhauabyn-tekseru",
+    "kz"
+  ],
+  "python/tests": [
+    "py-pytest-konveyer-testteri",
+    "ru"
+  ],
+  "python/tests-en": [
+    "py-pytest-konveyer-testteri",
+    "en"
+  ],
+  "python/tests-kz": [
+    "py-pytest-konveyer-testteri",
+    "kz"
+  ],
   "python/time": [
     "py-uaqyt-resample-rolling-asfreq",
     "ru"
@@ -1163,6 +1139,18 @@
     "py-uaqyt-resample-rolling-asfreq",
     "kz"
   ],
+  "python/trust": [
+    "py-modelge-ne-senbeu-fakt-sebep",
+    "ru"
+  ],
+  "python/trust-en": [
+    "py-modelge-ne-senbeu-fakt-sebep",
+    "en"
+  ],
+  "python/trust-kz": [
+    "py-modelge-ne-senbeu-fakt-sebep",
+    "kz"
+  ],
   "python/types": [
     "py-aynymalylar-men-tipter",
     "ru"
@@ -1173,6 +1161,18 @@
   ],
   "python/types-kz": [
     "py-aynymalylar-men-tipter",
+    "kz"
+  ],
+  "python/typing": [
+    "py-tip-annotaciyalary-mypy",
+    "ru"
+  ],
+  "python/typing-en": [
+    "py-tip-annotaciyalary-mypy",
+    "en"
+  ],
+  "python/typing-kz": [
+    "py-tip-annotaciyalary-mypy",
     "kz"
   ],
   "python/workspace": [
@@ -1197,6 +1197,162 @@
   ],
   "python/xml-kz": [
     "py-xml-talday-elementtree",
+    "kz"
+  ],
+  "sql/aggregate": [
+    "sql-sum-count-group-by-having",
+    "ru"
+  ],
+  "sql/aggregate-en": [
+    "sql-sum-count-group-by-having",
+    "en"
+  ],
+  "sql/aggregate-kz": [
+    "sql-sum-count-group-by-having",
+    "kz"
+  ],
+  "sql/audit": [
+    "sql-sverka-dannyh",
+    "ru"
+  ],
+  "sql/audit-en": [
+    "sql-sverka-dannyh",
+    "en"
+  ],
+  "sql/audit-kz": [
+    "sql-sverka-dannyh",
+    "kz"
+  ],
+  "sql/cte": [
+    "sql-podzaprosy-i-cte",
+    "ru"
+  ],
+  "sql/cte-en": [
+    "sql-podzaprosy-i-cte",
+    "en"
+  ],
+  "sql/cte-kz": [
+    "sql-podzaprosy-i-cte",
+    "kz"
+  ],
+  "sql/expressions": [
+    "sql-case-coalesce-daty",
+    "ru"
+  ],
+  "sql/expressions-en": [
+    "sql-case-coalesce-daty",
+    "en"
+  ],
+  "sql/expressions-kz": [
+    "sql-case-coalesce-daty",
+    "kz"
+  ],
+  "sql/final": [
+    "sql-indeks-explain-backup",
+    "ru"
+  ],
+  "sql/final-en": [
+    "sql-indeks-explain-backup",
+    "en"
+  ],
+  "sql/final-kz": [
+    "sql-indeks-explain-backup",
+    "kz"
+  ],
+  "sql/insert": [
+    "sql-insert-i-parametry",
+    "ru"
+  ],
+  "sql/insert-en": [
+    "sql-insert-i-parametry",
+    "en"
+  ],
+  "sql/insert-kz": [
+    "sql-insert-i-parametry",
+    "kz"
+  ],
+  "sql/join": [
+    "sql-klyuchi-i-join",
+    "ru"
+  ],
+  "sql/join-en": [
+    "sql-klyuchi-i-join",
+    "en"
+  ],
+  "sql/join-kz": [
+    "sql-klyuchi-i-join",
+    "kz"
+  ],
+  "sql/model": [
+    "sql-tablica-stroka-stolbec-null",
+    "ru"
+  ],
+  "sql/model-en": [
+    "sql-tablica-stroka-stolbec-null",
+    "en"
+  ],
+  "sql/model-kz": [
+    "sql-tablica-stroka-stolbec-null",
+    "kz"
+  ],
+  "sql/schema": [
+    "sql-create-table-ogranicheniya",
+    "ru"
+  ],
+  "sql/schema-en": [
+    "sql-create-table-ogranicheniya",
+    "en"
+  ],
+  "sql/schema-kz": [
+    "sql-create-table-ogranicheniya",
+    "kz"
+  ],
+  "sql/select": [
+    "sql-select-where-order-limit",
+    "ru"
+  ],
+  "sql/select-en": [
+    "sql-select-where-order-limit",
+    "en"
+  ],
+  "sql/select-kz": [
+    "sql-select-where-order-limit",
+    "kz"
+  ],
+  "sql/transactions": [
+    "sql-tranzakcii-i-update",
+    "ru"
+  ],
+  "sql/transactions-en": [
+    "sql-tranzakcii-i-update",
+    "en"
+  ],
+  "sql/transactions-kz": [
+    "sql-tranzakcii-i-update",
+    "kz"
+  ],
+  "sql/why": [
+    "sql-zachem-nuzhen-semeinyi-byudzhet",
+    "ru"
+  ],
+  "sql/why-en": [
+    "sql-zachem-nuzhen-semeinyi-byudzhet",
+    "en"
+  ],
+  "sql/why-kz": [
+    "sql-zachem-nuzhen-semeinyi-byudzhet",
+    "kz"
+  ],
+  "sql/windows": [
+    "sql-okonnye-funkcii",
+    "ru"
+  ],
+  "sql/windows-en": [
+    "sql-okonnye-funkcii",
+    "en"
+  ],
+  "sql/windows-kz": [
+    "sql-okonnye-funkcii",
     "kz"
   ]
 }

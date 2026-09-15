@@ -421,13 +421,16 @@ func (st *SeriesStore) ForArticle(ctx context.Context, articleID uuid.UUID, lang
 }
 
 // Save creates or updates a course and its per-language text. Returns the id.
-func (st *SeriesStore) Save(ctx context.Context, id *uuid.UUID, slug, coverURL, status string, title, summary map[string]string) (uuid.UUID, error) {
+func (st *SeriesStore) Save(ctx context.Context, id *uuid.UUID, slug, coverURL, status, codeLang string, title, summary map[string]string) (uuid.UUID, error) {
 	slug = strings.TrimSpace(slug)
 	if slug == "" {
 		return uuid.Nil, fmt.Errorf("series slug is required")
 	}
 	if status != SeriesPublished {
 		status = SeriesDraft
+	}
+	if codeLang != CodePython && codeLang != CodeSQL {
+		codeLang = CodeGo
 	}
 
 	tx, err := st.db.Begin(ctx)
@@ -440,13 +443,13 @@ func (st *SeriesStore) Save(ctx context.Context, id *uuid.UUID, slug, coverURL, 
 	if id != nil && *id != uuid.Nil {
 		sid = *id
 		if _, err := tx.Exec(ctx,
-			`UPDATE article_series SET slug = $2, cover_url = $3, status = $4, updated_at = now() WHERE id = $1`,
-			sid, slug, coverURL, status); err != nil {
+			`UPDATE article_series SET slug = $2, cover_url = $3, status = $4, code_lang = $5, updated_at = now() WHERE id = $1`,
+			sid, slug, coverURL, status, codeLang); err != nil {
 			return uuid.Nil, err
 		}
 	} else if err := tx.QueryRow(ctx,
-		`INSERT INTO article_series (slug, cover_url, status) VALUES ($1, $2, $3) RETURNING id`,
-		slug, coverURL, status).Scan(&sid); err != nil {
+		`INSERT INTO article_series (slug, cover_url, status, code_lang) VALUES ($1, $2, $3, $4) RETURNING id`,
+		slug, coverURL, status, codeLang).Scan(&sid); err != nil {
 		return uuid.Nil, err
 	}
 

@@ -32,6 +32,7 @@ import (
 const (
 	CodeGo     = "go"
 	CodePython = "python"
+	CodeSQL    = "sql"
 )
 
 // CheckVerdict is one review of one submission.
@@ -200,8 +201,11 @@ func unfence(s string) string {
 // attention.
 func checkSystem(lang, codeLang string) string {
 	name := "Go"
-	if codeLang == CodePython {
+	switch codeLang {
+	case CodePython:
 		name = "Python"
+	case CodeSQL:
+		name = "SQL (SQLite dialect)"
 	}
 	common := `You review a beginner's solution to one exercise from a ` + name + ` course.
 
@@ -274,7 +278,7 @@ func parseCheckVerdict(raw string) (CheckVerdict, error) {
 // final newline are all that is safe, and a syntax error is left to the
 // reviewer, which is told to name the line.
 func formatSolution(src, codeLang string) (string, error) {
-	if codeLang == CodePython {
+	if codeLang == CodePython || codeLang == CodeSQL {
 		return tidyPython(src), nil
 	}
 	out, err := format.Source([]byte(src))
@@ -319,8 +323,8 @@ func syntaxHint(err error) string {
 // person who typed it.
 func highlightCode(code, codeLang string) template.HTML {
 	fence := CodeGo
-	if codeLang == CodePython {
-		fence = CodePython
+	if codeLang == CodePython || codeLang == CodeSQL {
+		fence = codeLang
 	}
 	return RenderMarkdown("```" + fence + "\n" + code + "\n```")
 }

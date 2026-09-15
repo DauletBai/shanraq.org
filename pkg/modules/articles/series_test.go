@@ -14,7 +14,7 @@ import (
 // seedSeries makes a published course and returns its id.
 func (a *testApp) seedSeries(slug string) uuid.UUID {
 	a.t.Helper()
-	id, err := NewSeriesStore(a.pool).Save(context.Background(), nil, slug, "", SeriesPublished,
+	id, err := NewSeriesStore(a.pool).Save(context.Background(), nil, slug, "", SeriesPublished, CodeGo,
 		map[string]string{LangRU: "Курс Go", LangKZ: "Go курсы"},
 		map[string]string{LangRU: "С нуля до своего блога"})
 	if err != nil {
@@ -162,7 +162,7 @@ func TestDraftSeriesStaysOffPublishedLesson(t *testing.T) {
 	st := NewSeriesStore(app.pool)
 	ctx := context.Background()
 
-	sid, err := st.Save(ctx, nil, "hidden-"+uuid.NewString()[:6], "", SeriesDraft,
+	sid, err := st.Save(ctx, nil, "hidden-"+uuid.NewString()[:6], "", SeriesDraft, CodeGo,
 		map[string]string{LangRU: "Черновой курс"}, map[string]string{})
 	if err != nil {
 		t.Fatalf("Save: %v", err)
@@ -179,7 +179,7 @@ func TestDraftSeriesStaysOffPublishedLesson(t *testing.T) {
 	}
 
 	// And it appears the moment the course itself is published.
-	if _, err := st.Save(ctx, &sid, seriesSlug(t, st, sid), "", SeriesPublished,
+	if _, err := st.Save(ctx, &sid, seriesSlug(t, st, sid), "", SeriesPublished, CodeGo,
 		map[string]string{LangRU: "Черновой курс"}, map[string]string{}); err != nil {
 		t.Fatalf("publish: %v", err)
 	}

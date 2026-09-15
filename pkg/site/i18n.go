@@ -2406,6 +2406,7 @@ var messages = map[string]map[string]string{
 	},
 	"course.f_cover":      {"kz": "Мұқаба сілтемесі", "ru": "Ссылка на обложку", "en": "Cover URL"},
 	"course.f_status":     {"kz": "Күйі", "ru": "Статус", "en": "Status"},
+	"course.f_code_lang":  {"kz": "Тапсырма тілі", "ru": "Язык заданий", "en": "Exercise language"},
 	"course.f_title":      {"kz": "Атауы", "ru": "Название", "en": "Title"},
 	"course.f_summary":    {"kz": "Сипаттамасы", "ru": "Описание", "en": "Summary"},
 	"course.st_draft":     {"kz": "жоба", "ru": "черновик", "en": "draft"},

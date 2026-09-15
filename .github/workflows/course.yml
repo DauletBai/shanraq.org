@@ -20,19 +20,23 @@ on:
     paths:
       - 'course/lessons/**'
       - 'course/py-digest/**'
+      - 'course/sql-budget/**'
       - 'tools/coursecheck/**'
       - 'tools/course/**'
       - 'docs/py-syllabus.md'
       - 'docs/py-course.md'
+      - 'docs/sql-course.md'
       - '.github/workflows/course.yml'
   pull_request:
     paths:
       - 'course/lessons/**'
       - 'course/py-digest/**'
+      - 'course/sql-budget/**'
       - 'tools/coursecheck/**'
       - 'tools/course/**'
       - 'docs/py-syllabus.md'
       - 'docs/py-course.md'
+      - 'docs/sql-course.md'
       - '.github/workflows/course.yml'
   schedule:
     - cron: '17 6 * * 1'
@@ -92,6 +96,15 @@ jobs:
 
       - name: Every Python program compiles
         run: python3 tools/coursecheck/pycheck.py course/lessons/python/*.md
+
+      - name: Every SQL example executes against the course database
+        run: python3 tools/coursecheck/sqlcheck.py course/lessons/sql/*.md
+
+      - name: SQL translations keep the same executable examples
+        run: python3 tools/coursecheck/sql_locales.py
+
+      - name: The SQL reference project reconciles
+        run: python3 course/sql-budget/test_budget.py
 
       # Compiling is not the promise a lesson makes. The promise is that this
       # program, typed in as printed, prints exactly this -- and the one error

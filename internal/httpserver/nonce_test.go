@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"regexp"
+	"slices"
 	"strings"
 	"testing"
 )
@@ -73,8 +74,11 @@ func TestScriptsAreNonceOnlyAndStylesAreNot(t *testing.T) {
 	if strings.Contains(script, "unsafe-inline") {
 		t.Errorf("script-src still allows inline scripts: %q", script)
 	}
-	if strings.Contains(script, "unsafe-eval") {
+	if slices.Contains(strings.Fields(script), "'unsafe-eval'") {
 		t.Errorf("script-src allows eval: %q", script)
+	}
+	if !slices.Contains(strings.Fields(script), "'wasm-unsafe-eval'") {
+		t.Errorf("script-src blocks the on-device SQLite engine: %q", script)
 	}
 	// Two hundred style attributes carry chart geometry, and a nonce does not
 	// cover an attribute. Dropping this needs those moved, not a header edit.

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620" role="img">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#2f7d45"/></marker></defs>
+<rect width="1100" height="620" rx="32" fill="#f7f5f1"/>
+<image href="/static/brand/shanraq.svg" x="492" y="57" width="116" height="116" preserveAspectRatio="xMidYMid meet"/>
+<text x="550" y="205" text-anchor="middle" font-family="Arial,sans-serif" font-size="31" font-weight="800" fill="#303030">FACTS → QUESTION → ANSWER</text>
+<rect x="55" y="245" width="205" height="120" rx="20" fill="#fff" stroke="#d83232" stroke-width="4"/><text x="157" y="312" text-anchor="middle" font-size="21" font-weight="700" fill="#303030">FROM · receipts</text><path d="M262 305 H293" stroke="#2f7d45" stroke-width="7" marker-end="url(#a)"/><rect x="300" y="245" width="205" height="120" rx="20" fill="#fff" stroke="#d83232" stroke-width="4"/><text x="402" y="312" text-anchor="middle" font-size="21" font-weight="700" fill="#303030">WHERE · month</text><path d="M507 305 H538" stroke="#2f7d45" stroke-width="7" marker-end="url(#a)"/><rect x="545" y="245" width="205" height="120" rx="20" fill="#fff" stroke="#d83232" stroke-width="4"/><text x="647" y="312" text-anchor="middle" font-size="21" font-weight="700" fill="#303030">GROUP · envelopes</text><path d="M752 305 H783" stroke="#2f7d45" stroke-width="7" marker-end="url(#a)"/><rect x="790" y="245" width="205" height="120" rx="20" fill="#fff" stroke="#d83232" stroke-width="4"/><text x="892" y="312" text-anchor="middle" font-size="21" font-weight="700" fill="#303030">SUM · total</text>
+<path d="M80 455 H1020" stroke="#e1ddd6" stroke-width="3"/>
+<text x="550" y="515" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" fill="#555">SQL</text>
+</svg>

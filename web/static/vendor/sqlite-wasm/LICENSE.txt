@@ -1,0 +1,12 @@
+SQLite Wasm JavaScript/TypeScript wrapper
+
+Package: @sqlite.org/sqlite-wasm
+Version: 3.53.4-build1
+Source: https://www.npmjs.com/package/@sqlite.org/sqlite-wasm
+License: Apache License 2.0
+
+The package wraps the official SQLite Wasm build without changing it. SQLite
+itself is in the public domain: https://sqlite.org/copyright.html
+
+The Apache License 2.0 text is available at:
+https://www.apache.org/licenses/LICENSE-2.0

@@ -197,7 +197,7 @@ func (m *Module) handleAdminSeriesSave(w http.ResponseWriter, r *http.Request) {
 		idp = &id
 	}
 	sid, err := m.series.Save(r.Context(), idp,
-		r.FormValue("slug"), r.FormValue("cover_url"), r.FormValue("status"), title, summary)
+		r.FormValue("slug"), r.FormValue("cover_url"), r.FormValue("status"), r.FormValue("code_lang"), title, summary)
 	if err != nil {
 		m.rt.Logger.Error("series save", zap.Error(err))
 		http.Redirect(w, r, "/admin/series?err=1", http.StatusSeeOther)

@@ -38,7 +38,9 @@ func securityHeaders(next http.Handler) http.Handler {
 	const cspFmt = "default-src 'self'; " +
 		"img-src 'self' data: https:; " +
 		"style-src 'self' 'unsafe-inline'; " +
-		"script-src 'self' 'nonce-%s'; " +
+		// wasm-unsafe-eval permits WebAssembly compilation for the on-device
+		// SQLite lab, but does not permit JavaScript eval().
+		"script-src 'self' 'nonce-%s' 'wasm-unsafe-eval'; " +
 		"font-src 'self' data:; " +
 		"connect-src 'self'; " +
 		"object-src 'none'; " +

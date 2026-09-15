@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>SQL-лаборатория · Shanraq</title>
+  <link rel="stylesheet" href="/static/course/sql/lab.css">
+  <link rel="stylesheet" href="/static/course/sql/lab-mobile-fix.css">
+</head>
+<body>
+  <header class="lab-head">
+    <a class="lab-brand" href="/course/sql">← Shanraq · SQL</a>
+    <nav class="lab-langs" aria-label="Language">
+      <a href="?lang=kz" data-lang="kz">Қаз</a>
+      <a href="?lang=ru" data-lang="ru">Рус</a>
+      <a href="?lang=en" data-lang="en">Eng</a>
+    </nav>
+  </header>
+  <main class="lab-shell">
+    <section class="lab-intro">
+      <div>
+        <p class="eyebrow">SQLite · on-device</p>
+        <h1 data-t="title">SQL-лаборатория семейного бюджета</h1>
+        <p data-t="lead">Запускайте запросы прямо на телефоне, планшете или компьютере. База хранится в этом браузере и не отправляется на Shanraq.</p>
+      </div>
+      <p class="privacy" role="note"><strong data-t="privacyTitle">Важно:</strong> <span data-t="privacy">учебные данные вымышлены. Не вводите реальные финансовые сведения на общем устройстве. Очистка данных браузера может удалить базу — сохраняйте резервную копию.</span></p>
+    </section>
+
+    <section class="lab-workspace" aria-label="SQL workspace">
+      <div class="lab-editor-panel">
+        <div class="lab-toolbar">
+          <label for="example" data-t="example">Готовый пример</label>
+          <select id="example">
+            <option value="month" data-t="exampleMonth">Итог месяца</option>
+            <option value="largest" data-t="exampleLargest">Крупные расходы</option>
+            <option value="categories" data-t="exampleCategories">Расходы по категориям</option>
+            <option value="tables" data-t="exampleTables">Список таблиц</option>
+          </select>
+        </div>
+        <label class="sr-only" for="sql">SQL</label>
+        <textarea id="sql" spellcheck="false" autocapitalize="off" autocomplete="off">SELECT c.kind, SUM(t.amount_tiyn) / 100.0 AS amount_kzt
+FROM transactions AS t
+JOIN categories AS c ON c.id = t.category_id
+WHERE t.happened_on &gt;= '2026-09-01'
+  AND t.happened_on &lt;  '2026-10-01'
+GROUP BY c.kind;</textarea>
+        <div class="lab-actions">
+          <button id="run" class="primary" type="button" data-t="run">Выполнить</button>
+          <button id="reset" type="button" data-t="reset">Вернуть учебную базу</button>
+          <button id="backup" type="button" data-t="backup">Скачать backup</button>
+        </div>
+        <label class="import" for="restore"><span data-t="restore">Восстановить из .sqlite</span><input id="restore" type="file" accept=".sqlite,.db,application/vnd.sqlite3"></label>
+      </div>
+
+      <div class="lab-result-panel" aria-live="polite" aria-busy="true">
+        <div class="lab-status"><span id="status" data-t="loading">Запускаем SQLite…</span><span id="engine"></span></div>
+        <div id="result" class="lab-result"></div>
+      </div>
+    </section>
+    <details class="lab-help">
+      <summary data-t="helpTitle">Как пользоваться на телефоне</summary>
+      <ol>
+        <li data-t="help1">Выберите пример или измените запрос в поле.</li>
+        <li data-t="help2">Нажмите «Выполнить» — результат появится под редактором.</li>
+        <li data-t="help3">База сохраняется на этом устройстве. Периодически скачивайте backup.</li>
+      </ol>
+    </details>
+  </main>
+  <noscript>Для локального запуска SQLite в браузере нужен JavaScript.</noscript>
+  <script type="module" src="/static/course/sql/lab.js"></script>
+</body>
+</html>
