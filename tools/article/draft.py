@@ -61,6 +61,7 @@ def main(argv):
     parser.add_argument("--author", required=True)
     parser.add_argument("--cover", required=True)
     parser.add_argument("--category", default="it")
+    parser.add_argument("--subcategory", default="")
     parser.add_argument("files", nargs=3)
     args = parser.parse_args(argv[1:])
 
@@ -82,10 +83,10 @@ def main(argv):
     )
     statements.append(
         "INSERT INTO articles (id, author_id, slug, original_lang, category, subcategory, cover_url, status) "
-        f"SELECT '{article_id}'::uuid, id, {quote(args.slug)}, 'ru', {quote(args.category)}, '', {quote(args.cover)}, 'draft' "
+        f"SELECT '{article_id}'::uuid, id, {quote(args.slug)}, 'ru', {quote(args.category)}, {quote(args.subcategory)}, {quote(args.cover)}, 'draft' "
         f"FROM auth_users WHERE lower(email)=lower({quote(args.author)}) "
         "ON CONFLICT (slug) DO UPDATE SET original_lang='ru', category=EXCLUDED.category, "
-        "subcategory='', cover_url=EXCLUDED.cover_url, updated_at=NOW();"
+        "subcategory=EXCLUDED.subcategory, cover_url=EXCLUDED.cover_url, updated_at=NOW();"
     )
     for lang in ("ru", "kz", "en"):
         title, summary, body = translations[lang]
