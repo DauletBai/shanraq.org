@@ -2282,9 +2282,9 @@ var messages = map[string]map[string]string{
 	"nav.courses":        {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.index_title": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.index_lead": {
-		"kz": "Ретімен оқылатын сабақтар топтамасы. Барлық сабақтар ашық: тегін және тіркелусіз. Қазір бұл — бағдарламалау: Go мен Python; әрі қарай SQL, Rust және машиналық оқыту.",
-		"ru": "Серии уроков, которые читаются по порядку. Все уроки открыты: бесплатно и без регистрации. Сейчас это программирование — Go и Python; дальше SQL, Rust и машинное обучение.",
-		"en": "Lesson series meant to be read in order. Every lesson is open: free, no sign-up. Today that means programming — Go and Python; next come SQL, Rust and machine learning.",
+		"kz": "Ретімен оқылатын сабақтар топтамасы. Барлық сабақтар ашық: тегін және тіркелусіз. Go, Python және SQL курстары, сондай-ақ Rust курсының алғашқы сабақтары ашық. Rust курсы бес сабақтан толықтырылады.",
+		"ru": "Серии уроков, которые читаются по порядку. Все уроки открыты: бесплатно и без регистрации. Доступны курсы Go, Python и SQL, а также первые уроки Rust. Rust пополняется партиями по пять уроков.",
+		"en": "Lesson series meant to be read in order. Every lesson is open: free, no sign-up. Go, Python and SQL courses are available, along with the first Rust lessons. Rust grows five lessons at a time.",
 	},
 	"course.empty_index": {
 		"kz": "Әзірге бірде-бір курс жарияланған жоқ.",
@@ -2333,6 +2333,7 @@ var messages = map[string]map[string]string{
 	"chk.again":     {"kz": "Әзірге дұрыс емес", "ru": "Пока не сходится", "en": "Not yet"},
 	"chk.done_mark": {"kz": "өтілді", "ru": "пройдено", "en": "passed"},
 	"chk.login":     {"kz": "Тексеру үшін кіру керек.", "ru": "Чтобы проверить, нужно войти.", "en": "Sign in to have it checked."},
+	"chk.rust_self": {"kz": "Жауабыңызды сабақтағы үлгімен салыстырыңыз. Rust жауаптарын автоматты тексеру әзірге қосылмаған.", "ru": "Сравните ответ с эталоном в уроке. Автоматическая проверка ответов Rust пока не подключена.", "en": "Compare your answer with the lesson's reference answer. Automated Rust answer checking is not available yet."},
 	"chk.off":       {"kz": "Тексеру уақытша қолжетімсіз.", "ru": "Проверка временно недоступна.", "en": "Checking is unavailable right now."},
 	"chk.no_lesson": {"kz": "Сабақ табылмады.", "ru": "Урок не найден.", "en": "Lesson not found."},
 	"chk.no_task":   {"kz": "Бұл сабақта тапсырма жоқ.", "ru": "В этом уроке нет задания.", "en": "This lesson has no exercise."},

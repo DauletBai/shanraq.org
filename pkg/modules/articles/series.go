@@ -429,7 +429,7 @@ func (st *SeriesStore) Save(ctx context.Context, id *uuid.UUID, slug, coverURL, 
 	if status != SeriesPublished {
 		status = SeriesDraft
 	}
-	if codeLang != CodePython && codeLang != CodeSQL {
+	if codeLang != CodePython && codeLang != CodeSQL && codeLang != CodeRust {
 		codeLang = CodeGo
 	}
 

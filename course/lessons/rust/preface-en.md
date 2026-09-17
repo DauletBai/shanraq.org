@@ -16,8 +16,16 @@ If a step is difficult, make it smaller. Progress is what you can explain and do
 
 Include your system, lesson, command, Rust version and complete error text. Share source as text so it can be checked. Do not include passwords, access keys or private files. You may ask an AI tool to explain a diagnostic, but verify its suggestion by running the program and comparing the expected result. Ask for help using concepts already introduced, not a replacement full of unexplained features.
 
-## Current status
+## How the course is released
 
-Lessons 1–5 are author-written drafts in Kazakh, Russian and English. This is not a finished or published course. Later topics are plans rather than available pages. Each language has its own explanations, exercises and expected results; an automatic page translation is not the course edition.
+The preface and lessons 1–5 are open in Kazakh, Russian and English. Further lessons will be released five at a time in all three languages. The entire course is free: missing later lessons are still being prepared, not hidden behind a paywall. No exact date for the next group has been announced.
 
-[Start lesson 1](01-why-rust-en.md) · [Contents](README-en.md)
+## Where we are heading
+
+We start with tools, variables, types and actions. Then we study ownership, strings and collections, design tasks and add organizer commands. File storage, saving and backups follow. Tests, documentation and distribution complete the project. The working plan has 60 lessons; difficult topics may be split into smaller steps.
+
+## Checking your work
+
+The first exercises use self-checking: attempt the task, then compare your result with the hint and reference answer. Server-side automated checking of Rust answers is not connected yet. Reading and doing the exercises requires no account.
+
+[Rust: from zero to your own organizer](/course/rust?lang=en)

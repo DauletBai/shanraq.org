@@ -2,7 +2,6 @@
 
 _Summary:_ **Explain the choice of language without promising absolute safety.**
 
-Editorial draft. Prerequisite: previous lessons; no programming experience for lesson 1.
 
 ## Why this matters
 
@@ -48,4 +47,4 @@ Continue when you can distinguish the text of a program from its result without 
 
 [History from Rust's original author](https://rustfoundation.org/media/10-years-of-stable-rust-an-infrastructure-story/); [Rust 1.0 goals](https://blog.rust-lang.org/2015/05/15/Rust-1.0/).
 
-[Contents](README-en.md) · [Next lesson](02-organizer-en.md)
+[Contents](/course/rust?lang=en) · [Next lesson](/read/rust-02-organizer?lang=en)

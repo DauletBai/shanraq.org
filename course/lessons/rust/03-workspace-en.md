@@ -2,7 +2,6 @@
 
 _Summary:_ **Find the saved file without confusing it with another copy.**
 
-Editorial draft. Prerequisite: previous lessons; no programming experience for lesson 1.
 
 ## Why this matters
 
@@ -50,4 +49,4 @@ If text disappears, check saving and the folder before creating another copy. Re
 
 Continue when you can point out the file name, its folder and its contents separately.
 
-[Previous lesson](02-organizer-en.md) · [Contents](README-en.md) · [Next lesson](04-terminal-en.md)
+[Previous lesson](/read/rust-02-organizer?lang=en) · [Contents](/course/rust?lang=en) · [Next lesson](/read/rust-04-terminal?lang=en)

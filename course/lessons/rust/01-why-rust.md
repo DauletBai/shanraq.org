@@ -2,7 +2,6 @@
 
 _Лид (summary):_ **Урок 1. Объяснить выбор языка без обещаний абсолютной безопасности.**
 
-Редакционный черновик RU. Предварительно: опыт программирования не требуется.
 
 ## Зачем это нужно
 
@@ -50,4 +49,4 @@ Rust применяют для инструментов терминала, се
 
 [История от автора Rust](https://rustfoundation.org/media/10-years-of-stable-rust-an-infrastructure-story/), [цели Rust 1.0](https://blog.rust-lang.org/2015/05/15/Rust-1.0/).
 
-[Оглавление](README.md) · [Следующий урок](02-organizer.md)
+[Оглавление](/course/rust?lang=ru) · [Следующий урок](/read/rust-02-organizer?lang=ru)

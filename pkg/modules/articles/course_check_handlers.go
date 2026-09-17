@@ -139,6 +139,11 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Warn("course code lang", zap.Error(err))
 	}
 
+	if codeLang == CodeRust {
+		reply(http.StatusNotImplemented, checkResponse{Error: site.T(lang, "chk.rust_self")})
+		return
+	}
+
 	// Tidy first, and refuse code that will not parse before anything is spent
 	// on it. A missing brace is not something to ask a reviewer about, and the
 	// reader's own editor would have said so — which is the lesson here.
@@ -264,6 +269,11 @@ func (m *Module) handleCourseFormat(w http.ResponseWriter, r *http.Request) {
 		if cl, err := m.series.CodeLangForArticle(r.Context(), a.ID); err == nil {
 			codeLang = cl
 		}
+	}
+
+	if codeLang == CodeRust {
+		reply(http.StatusNotImplemented, checkResponse{Error: site.T(lang, "chk.rust_self")})
+		return
 	}
 
 	out, err := formatSolution(src, codeLang)

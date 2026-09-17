@@ -2,7 +2,6 @@
 
 _Summary:_ **Check the installation and distinguish the tools involved.**
 
-Editorial draft. Prerequisite: previous lessons; no programming experience for lesson 1.
 
 ## Why this matters
 
@@ -68,4 +67,6 @@ rustup: tool set; Cargo: coordination; rustc: compilation; linker: combining; ru
 
 The answer contains rustup, rustc and cargo version lines, not necessarily identical numbers. For help, include the system, command and complete error text. Remove private details where needed; passwords and access tokens are unnecessary.
 
-[Previous lesson](04-terminal-en.md) · [Contents](README-en.md)
+[Previous lesson](/read/rust-04-terminal?lang=en) · [Contents](/course/rust?lang=en)
+
+The next group covers lessons 6–10: Cargo, your first program, diagnostics, variables, types and numbers. For now, repeat the build probe and complete this group’s exercises.

@@ -1,6 +1,8 @@
 package articles
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -91,4 +93,87 @@ func TestReaderWalksTheCourse(t *testing.T) {
 			t.Errorf("решение не вернулось: %.120s", rec.Body.String())
 		}
 	})
+}
+
+func TestRustSelfCheckDoesNotUseGoFormatter(t *testing.T) {
+	if _, err := formatSolution("fn main() {}", CodeRust); err == nil {
+		t.Fatal("Rust must not claim a Go formatter checked the answer")
+	}
+	if !strings.Contains(checkSystem(LangKZ, CodeRust), "Rust") {
+		t.Fatal("Rust review must not identify the course as Go")
+	}
+	if got := string(highlightCode("fn main() {}", CodeRust)); !strings.Contains(got, "chroma") {
+		t.Fatal("Rust syntax was not highlighted")
+	}
+}
+
+func TestRustFirstBatchStaysOutOfFeed(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	email := "rust-" + uuid.NewString() + "@t.test"
+	author := app.createUser(email, "Sup3r-Secret-Pass!")
+	courseSlug := "rust-test-" + uuid.NewString()
+	titles := map[string]string{"ru": "Rust RU", "kz": "Rust KZ", "en": "Rust EN"}
+	series, err := NewSeriesStore(app.pool).Save(context.Background(), nil, courseSlug, "", SeriesPublished, CodeRust, titles, titles)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer app.exec(`DELETE FROM article_series WHERE id=$1`, series)
+	var slugs []string
+	for n := 0; n <= 5; n++ {
+		id, slug := app.seedArticle(author, "published")
+		slugs = append(slugs, slug)
+		pos := n * 10
+		if n == 0 {
+			pos = 1
+		}
+		app.exec(`INSERT INTO article_series_items(series_id,article_id,position) VALUES($1,$2,$3)`, series, id, pos)
+		for _, lang := range []string{"kz", "ru", "en"} {
+			heading := map[string]string{"kz": "Тапсырма", "ru": "Задание", "en": "Exercise"}[lang]
+			body := "## " + heading + "\n\nExplain your result and compare it with the reference answer.\n"
+			app.exec(`INSERT INTO article_translations(article_id,lang,title,summary,body_md,source,status)
+                VALUES($1,$2,$3,'Rust lesson',$4,'ai','ready') ON CONFLICT(article_id,lang)
+                DO UPDATE SET title=EXCLUDED.title,body_md=EXCLUDED.body_md,status='ready'`, id, lang, fmt.Sprintf("Rust %d %s", n, lang), body)
+		}
+		app.exec(`UPDATE articles SET published_at='2099-02-01',score=100000 WHERE id=$1`, id)
+	}
+	for _, lang := range []string{"kz", "ru", "en"} {
+		course := app.do(http.MethodGet, "/course/"+courseSlug+"?lang="+lang, nil)
+		if course.Code != http.StatusOK {
+			t.Fatalf("course: %d", course.Code)
+		}
+		body := course.Body.String()
+		for _, slug := range slugs {
+			if !strings.Contains(body, "/read/"+slug) {
+				t.Errorf("%s: missing %s", lang, slug)
+			}
+		}
+		if !strings.Contains(body, `aria-hidden="true">5<`) || strings.Contains(body, `aria-hidden="true">6<`) {
+			t.Errorf("%s: preface incorrectly counted as lesson", lang)
+		}
+		lesson := app.do(http.MethodGet, "/read/"+slugs[1]+"?lang="+lang, nil)
+		if lesson.Code != http.StatusOK || !strings.Contains(lesson.Body.String(), "/read/"+slugs[2]) {
+			t.Errorf("%s: missing next-lesson navigation", lang)
+		}
+		if strings.Contains(lesson.Body.String(), `data-check="`+slugs[1]+`"`) {
+			t.Errorf("%s: unsupported answer checker shown", lang)
+		}
+		for _, sort := range []string{"", "top"} {
+			feed := app.do(http.MethodGet, "/?lang="+lang+"&sort="+sort, nil)
+			if feed.Code != http.StatusOK {
+				t.Fatalf("feed: %d", feed.Code)
+			}
+			for _, slug := range slugs {
+				if feedSlugs(feed.Body.String())[slug] {
+					t.Errorf("Rust lesson leaked to feed: %s", slug)
+				}
+			}
+		}
+	}
+	cookie := app.login(email, "Sup3r-Secret-Pass!")
+	form := url.Values{"solution": {"fn main() {}"}}
+	response := app.do(http.MethodPost, "/read/"+slugs[1]+"/format", form, withCookie(cookie))
+	if response.Code != http.StatusNotImplemented {
+		t.Errorf("Rust formatter status: %d", response.Code)
+	}
 }

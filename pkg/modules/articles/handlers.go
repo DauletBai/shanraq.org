@@ -824,7 +824,13 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	// The check box appears wherever there is something to check, and says why
 	// it cannot be used when it cannot. Hiding it from a signed-out reader hid
 	// the feature from exactly the people it is meant to bring in.
-	if lessonExercise(tr.BodyMD) != "" {
+	rustSelfCheck := false
+	for _, place := range page.SeriesPlaces {
+		if place.Series.CodeLang == CodeRust {
+			rustSelfCheck = true
+		}
+	}
+	if lessonExercise(tr.BodyMD) != "" && !rustSelfCheck {
 		page.HasExercise = true
 		uid, signedIn := m.authorID(r)
 		switch {

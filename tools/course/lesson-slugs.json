@@ -1354,5 +1354,77 @@
   "sql/windows-kz": [
     "sql-okonnye-funkcii",
     "kz"
+  ],
+  "rust/preface": [
+    "rust-before-start",
+    "ru"
+  ],
+  "rust/preface-kz": [
+    "rust-before-start",
+    "kz"
+  ],
+  "rust/preface-en": [
+    "rust-before-start",
+    "en"
+  ],
+  "rust/01-why-rust": [
+    "rust-01-why-rust",
+    "ru"
+  ],
+  "rust/01-why-rust-kz": [
+    "rust-01-why-rust",
+    "kz"
+  ],
+  "rust/01-why-rust-en": [
+    "rust-01-why-rust",
+    "en"
+  ],
+  "rust/02-organizer": [
+    "rust-02-organizer",
+    "ru"
+  ],
+  "rust/02-organizer-kz": [
+    "rust-02-organizer",
+    "kz"
+  ],
+  "rust/02-organizer-en": [
+    "rust-02-organizer",
+    "en"
+  ],
+  "rust/03-workspace": [
+    "rust-03-workspace",
+    "ru"
+  ],
+  "rust/03-workspace-kz": [
+    "rust-03-workspace",
+    "kz"
+  ],
+  "rust/03-workspace-en": [
+    "rust-03-workspace",
+    "en"
+  ],
+  "rust/04-terminal": [
+    "rust-04-terminal",
+    "ru"
+  ],
+  "rust/04-terminal-kz": [
+    "rust-04-terminal",
+    "kz"
+  ],
+  "rust/04-terminal-en": [
+    "rust-04-terminal",
+    "en"
+  ],
+  "rust/05-installation": [
+    "rust-05-installation",
+    "ru"
+  ],
+  "rust/05-installation-kz": [
+    "rust-05-installation",
+    "kz"
+  ],
+  "rust/05-installation-en": [
+    "rust-05-installation",
+    "en"
   ]
 }

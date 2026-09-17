@@ -5,6 +5,9 @@ on:
       - 'course/lessons/rust/**'
       - 'course/rust-organizer/**'
       - 'docs/rust-*'
+      - 'tools/course/prepare_rust.py'
+      - 'tools/course/test_rust_release.py'
+      - 'tools/course/rust-release.json'
       - 'tools/coursecheck/rustcheck.py'
       - '.github/workflows/rust-course.yml'
   pull_request:
@@ -12,6 +15,9 @@ on:
       - 'course/lessons/rust/**'
       - 'course/rust-organizer/**'
       - 'docs/rust-*'
+      - 'tools/course/prepare_rust.py'
+      - 'tools/course/test_rust_release.py'
+      - 'tools/course/rust-release.json'
       - 'tools/coursecheck/rustcheck.py'
       - '.github/workflows/rust-course.yml'
 permissions:
@@ -34,3 +40,6 @@ jobs:
         env:
           RUSTUP_TOOLCHAIN: 1.97.0
         run: python tools/coursecheck/rustcheck.py
+
+      - name: Check publication boundary and locale coverage
+        run: python -m unittest discover -s tools/course -p test_rust_release.py

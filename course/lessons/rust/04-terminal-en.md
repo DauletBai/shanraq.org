@@ -2,7 +2,6 @@
 
 _Summary:_ **Enter a folder whose name contains spaces.**
 
-Editorial draft. Prerequisite: previous lessons; no programming experience for lesson 1.
 
 ## Why this matters
 
@@ -68,4 +67,4 @@ Terminal → shell → command and arguments → action → prompt. The current 
 
 Check location after each change using Get-Location or pwd. The path ends in rust-learning before leaving, and no longer does afterwards. Account and drive names vary. Continue when you can follow just your operating system's branch and distinguish commands from output.
 
-[Previous lesson](03-workspace-en.md) · [Contents](README-en.md) · [Next lesson](05-installation-en.md)
+[Previous lesson](/read/rust-03-workspace?lang=en) · [Contents](/course/rust?lang=en) · [Next lesson](/read/rust-05-installation?lang=en)

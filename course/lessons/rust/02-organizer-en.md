@@ -2,7 +2,6 @@
 
 _Summary:_ **Distinguish the future demonstration from the program available now.**
 
-Editorial draft. Prerequisite: previous lessons; no programming experience for lesson 1.
 
 ## Why this matters
 
@@ -52,4 +51,4 @@ For each step, state both the action and the observable result. Reference: one i
 
 Continue when you can distinguish the final goal from the current stage's capabilities.
 
-[Previous lesson](01-why-rust-en.md) · [Contents](README-en.md) · [Next lesson](03-workspace-en.md)
+[Previous lesson](/read/rust-01-why-rust?lang=en) · [Contents](/course/rust?lang=en) · [Next lesson](/read/rust-03-workspace?lang=en)
