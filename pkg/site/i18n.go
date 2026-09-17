@@ -2466,6 +2466,17 @@ var messages = map[string]map[string]string{
 	"shop.status_selling":   {"kz": "сатылымда", "ru": "в продаже", "en": "on sale"},
 	"shop.status_paused":    {"kz": "сатылым тоқтаулы", "ru": "продажа приостановлена", "en": "sales paused"},
 	"shop.edition":          {"kz": "Басылым", "ru": "Редакция", "en": "Edition"},
+	"shop.language_note": {
+		"kz": "Кітап орыс тілінде жазылған. HTML нұсқасының мәтінін Google Аудармашы арқылы өзіңізге ыңғайлы қолдау көрсетілетін тілге аударып оқуға болады. Google Chrome браузерінде бетті аудару функциясын қолданыңыз; қажет болса, жеке мәтін үзінділерін Google Аудармашыға көшіріңіз.",
+		"ru": "Книга написана на русском языке. Текст HTML-версии можно изучать на удобном вам языке, переводя его с помощью Google Переводчика на один из поддерживаемых языков. В Google Chrome используйте перевод страницы; при необходимости отдельные фрагменты текста можно скопировать в Google Переводчик.",
+		"en": "The book is written in Russian. You can study the HTML text in another supported language using Google Translate. Use page translation in Google Chrome, or copy individual passages into Google Translate when needed.",
+	},
+	"shop.translation_note": {
+		"kz": "Автоматты аудармаға интернет қажет. Код пен командаларды түпнұсқада қолданыңыз.",
+		"ru": "Для автоматического перевода нужен интернет. Код и команды используйте в оригинале.",
+		"en": "Automatic translation requires an internet connection. Keep code and commands in their original form.",
+	},
+	"shop.translation_help": {"kz": "Беттерді аудару нұсқаулығы", "ru": "Как переводить страницы", "en": "How to translate pages"},
 	"shop.start_title":      {"kz": "Неден бастаған дұрыс", "ru": "С чего лучше начать", "en": "Where to start"},
 	"shop.start_before":     {"kz": "Алдымен мына курсты өтуге кеңес береміз:", "ru": "Рекомендуем сначала пройти", "en": "We recommend starting with our"},
 	"shop.start_course":     {"kz": "тегін Go курсы", "ru": "бесплатный курс Go", "en": "free Go course"},

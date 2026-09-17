@@ -15,3 +15,5 @@ After deployment, check the product's five sample links without signing in, open
 Migration 20260917000200 replaces obsolete seeded titles, edition 0.4 and the old eight-chapter progress paragraph with the current 42-chapter draft and twelve-chapter sample. Custom descriptions and sale settings are preserved.
 
 The product page recommends the free Go course in the selected interface language before continuing with the book toward mid-level skills. The recommendation does not promise a job title or change the sale state.
+
+The description explains using Google Translate for HTML text in supported languages, with a link to Google Chrome help. It distinguishes machine translation from the Russian original and keeps code and commands in their original form.

@@ -204,6 +204,9 @@ func TestBookSampleLinksWhileAnnounced(t *testing.T) {
 		if err := r.Execute(&output, "shop_product", page); err != nil {
 			t.Fatal(err)
 		}
+		if !strings.Contains(output.String(), site.T(lang, "shop.language_note")) || !strings.Contains(output.String(), "https://support.google.com/chrome/answer/173424") {
+			t.Errorf("%s: missing HTML translation guidance", lang)
+		}
 		if !strings.Contains(output.String(), "/course/go?lang="+lang) || !strings.Contains(output.String(), site.T(lang, "shop.start_growth")) {
 			t.Errorf("%s: missing translated free-course recommendation", lang)
 		}

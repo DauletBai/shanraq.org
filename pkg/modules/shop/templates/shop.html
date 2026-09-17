@@ -63,7 +63,13 @@
       <figure class="shop-cover"><img src="{{ .P.CoverURL }}" alt="{{ .Title }}" loading="lazy" decoding="async"></figure>
       {{ end }}
 
-      <div class="prose">{{ .Body }}</div>
+      <div class="prose">
+        {{ .Body }}
+        {{ if eq .P.Slug "go-book" }}
+        <p>{{ t .Lang "shop.language_note" }}</p>
+        <p>{{ t .Lang "shop.translation_note" }} <a href="https://support.google.com/chrome/answer/173424">{{ t .Lang "shop.translation_help" }}</a>.</p>
+        {{ end }}
+      </div>
 
       {{ if eq .P.Slug "go-book" }}
       <section class="cab-card shop-card" aria-labelledby="shop-start">
