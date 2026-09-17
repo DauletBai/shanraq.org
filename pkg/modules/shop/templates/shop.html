@@ -65,6 +65,14 @@
 
       <div class="prose">{{ .Body }}</div>
 
+      {{ if eq .P.Slug "go-book" }}
+      <section class="cab-card shop-card" aria-labelledby="shop-start">
+        <h2 id="shop-start">{{ t .Lang "shop.start_title" }}</h2>
+        <p>{{ t .Lang "shop.start_before" }} <a href="/course/go?lang={{ .Lang }}" data-track="shop_free_course">{{ t .Lang "shop.start_course" }}</a>.</p>
+        <p>{{ t .Lang "shop.start_growth" }}</p>
+      </section>
+      {{ end }}
+
       {{/* What is on offer, in one panel: the right the buyer gets, the price
            (or the honest absence of one), and the free fragment. */}}
       <section class="cab-card shop-card shop-offer" aria-labelledby="shop-rights">

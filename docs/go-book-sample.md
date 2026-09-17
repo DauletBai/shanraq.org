@@ -13,3 +13,5 @@ Revision 0.21 contains 116 PDF pages and 18 runnable learning labs in the first 
 After deployment, check the product's five sample links without signing in, open chapter 12, and verify chapter 13 returns 404. The running binary must be rebuilt: uploading files beside an old binary does not replace embedded static assets.
 
 Migration 20260917000200 replaces obsolete seeded titles, edition 0.4 and the old eight-chapter progress paragraph with the current 42-chapter draft and twelve-chapter sample. Custom descriptions and sale settings are preserved.
+
+The product page recommends the free Go course in the selected interface language before continuing with the book toward mid-level skills. The recommendation does not promise a job title or change the sale state.

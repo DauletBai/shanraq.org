@@ -204,6 +204,9 @@ func TestBookSampleLinksWhileAnnounced(t *testing.T) {
 		if err := r.Execute(&output, "shop_product", page); err != nil {
 			t.Fatal(err)
 		}
+		if !strings.Contains(output.String(), "/course/go?lang="+lang) || !strings.Contains(output.String(), site.T(lang, "shop.start_growth")) {
+			t.Errorf("%s: missing translated free-course recommendation", lang)
+		}
 		for _, name := range []string{"read/toc.html", "go-book-preview.pdf", "go-book-preview.epub", "go-book-preview-html.zip", "go-book-preview-code.zip"} {
 			if !strings.Contains(output.String(), "/static/shop/go-book-sample/0.21.0-sample/"+name) {
 				t.Errorf("%s: missing sample link %s", lang, name)
