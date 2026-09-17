@@ -1,0 +1,233 @@
+[
+  {
+    "slug": "rust-before-start",
+    "lang": "ru",
+    "title": "Прежде чем начать",
+    "body_sha256": "3d4f91f4903636d6164ec3d7b1b924e64417ef6996cbd7f498e42d0d5e525f03",
+    "summary_sha256": "1144b46d7e0d169509c6d710461bc6e827f5c0f044ad72c3aa16420e4898c213"
+  },
+  {
+    "slug": "rust-before-start",
+    "lang": "kz",
+    "title": "Бастамас бұрын",
+    "body_sha256": "4bb83711640041b090c4f45400c85410112bd568ffc9b84273ff40265f363dec",
+    "summary_sha256": "c59523d0fe5f10a50f73061c401cb4345a0236aa67dd12148fa4819a27c0c6b3"
+  },
+  {
+    "slug": "rust-before-start",
+    "lang": "en",
+    "title": "Before you begin",
+    "body_sha256": "272d630a135735c93bda474edb636d9b994720c88bd46946b8ff39a8d66cf8eb",
+    "summary_sha256": "6af674ac7abd10a07fff5080d41a045fbc5fb577c4fccfec93e72fad49f64617"
+  },
+  {
+    "slug": "rust-01-why-rust",
+    "lang": "ru",
+    "title": "Что такое Rust и зачем он появился",
+    "body_sha256": "9a0fd3d629ab4ac6a2c2a02bfd0516b19fc1db04d0ff3f1f0a8f8eca959abb51",
+    "summary_sha256": "551fd5b79a568cec87787b9b71f55562bf299405a67395bc868149bbc9583451"
+  },
+  {
+    "slug": "rust-01-why-rust",
+    "lang": "kz",
+    "title": "Rust деген не және ол не үшін жасалды?",
+    "body_sha256": "b6ecf9e04e4bd65035ef6f758b8b10debc449f8fd15aa9547de0137d0030271e",
+    "summary_sha256": "b36c7e0a11b8a50247006b3e74445eb08879a21d6e2732f43ab05a30ec1e921b"
+  },
+  {
+    "slug": "rust-01-why-rust",
+    "lang": "en",
+    "title": "What Rust is and why it exists",
+    "body_sha256": "9642e7600e2197bfc8cae932031e74785845de1f5e066eef2c2e58704a5bdf31",
+    "summary_sha256": "8daf63fa148e46fced99550342c7a4c33a39bc744606bd354e58c804f52eba1c"
+  },
+  {
+    "slug": "rust-02-organizer",
+    "lang": "ru",
+    "title": "Какой органайзер мы построим",
+    "body_sha256": "f46c467cc6f9c9e8c40928aeebd66ce363149654819f380e6af583741c6d4186",
+    "summary_sha256": "ecb9923f3a87993e3e4b6f2d95f9d47508b1f630c75d8cf167d684f1eb5ee0a6"
+  },
+  {
+    "slug": "rust-02-organizer",
+    "lang": "kz",
+    "title": "Қандай жоспарлау құралын жасаймыз?",
+    "body_sha256": "58d938d3420f34d95842ce2daa9d6e3be9e81788b7fe833c07e2530bdfe442ed",
+    "summary_sha256": "f1efa8647d35614fba0124b3bf4e26b1fe7ccf6ab5fa91a2f7663fee464dd644"
+  },
+  {
+    "slug": "rust-02-organizer",
+    "lang": "en",
+    "title": "The organizer we will build",
+    "body_sha256": "8c10b40571553682aa3b56f4a8466d65450a21b43cbbfedd79dd19a2f3b40527",
+    "summary_sha256": "06f9938a5216fb99f3324761631c641b05db2e4ababa29124f011ba70150de07"
+  },
+  {
+    "slug": "rust-03-workspace",
+    "lang": "ru",
+    "title": "Файлы, папки и рабочее место",
+    "body_sha256": "d27e216267b7a86c0f6dcfe099d2b976e6d37eb63f39577569378e7015804b06",
+    "summary_sha256": "6d3ac261d7bf1d814381b8579a3d9bcbfc435eb740ba8157615e776c8c4bec56"
+  },
+  {
+    "slug": "rust-03-workspace",
+    "lang": "kz",
+    "title": "Файлдар, бумалар және жұмыс орны",
+    "body_sha256": "17a6b3b0aefba7d62069de138119ded94f3d947f3dbca506c8d7619270d3250d",
+    "summary_sha256": "340ceddba5fccb80e4d8a6043017a577d2dad246f66daf2ae310c2479aaa9376"
+  },
+  {
+    "slug": "rust-03-workspace",
+    "lang": "en",
+    "title": "Files, folders and your workspace",
+    "body_sha256": "8162b747afafbb933499f1d481cbe74fb25812fba5f76590c621c90816cd933e",
+    "summary_sha256": "23f15faab3506cf40831bb4804902768a4c9bb785d33e532590538d812f976fa"
+  },
+  {
+    "slug": "rust-04-terminal",
+    "lang": "ru",
+    "title": "Терминал без загадок",
+    "body_sha256": "a59672c88814542fc51fc1c7195810a498e1ad74e9a7ff483c78934d90fdcca6",
+    "summary_sha256": "f26d1f45e6bcd7bc891b0d34b5e93207771fd99ca3bb51e5be44bc97f13264a7"
+  },
+  {
+    "slug": "rust-04-terminal",
+    "lang": "kz",
+    "title": "Пәрмен жолын түсініп қолдану",
+    "body_sha256": "03b60e23b1519bcaf5f0de69bc474ec0af4c4ccda9e0326b6fe4c25f9fed92fc",
+    "summary_sha256": "90a211f699f68b64228cd97df74d7d5514bd08315b926e4a6896c8267baafc44"
+  },
+  {
+    "slug": "rust-04-terminal",
+    "lang": "en",
+    "title": "Understanding the terminal",
+    "body_sha256": "4cafcfd822b9cc16e7e5f45c4f581c2d0161ae073f54a82399c7051a52244d2a",
+    "summary_sha256": "7e74fb4d40c6deaa2771450e9801bab08268db7647f5c6cdc35c61f7e8524af3"
+  },
+  {
+    "slug": "rust-05-installation",
+    "lang": "ru",
+    "title": "Установка Rust и проверка инструментов",
+    "body_sha256": "af8540c307c586a7572ca6f802cff43a0044d2e3c3d70ba8405173280fdf9548",
+    "summary_sha256": "1f5861cecc6b2fd30fc6f1de3cd90a74d47967f3a567e2b56e456a64164b0b4c"
+  },
+  {
+    "slug": "rust-05-installation",
+    "lang": "kz",
+    "title": "Rust құралдарын орнату және тексеру",
+    "body_sha256": "a531f6751a6962270ee102b68072ad9efb158d0283221ce8c6c9a1cdc485dedc",
+    "summary_sha256": "e4b0384518deb29c58900c1bbc146249c3ea8a2c9fda9c749c5ecaadec460c8d"
+  },
+  {
+    "slug": "rust-05-installation",
+    "lang": "en",
+    "title": "Installing Rust and checking the tools",
+    "body_sha256": "1b7fc1b933bc802dd18a3d5f2ecf87a983d29c7db827183679c73431b793cb6d",
+    "summary_sha256": "7032c9101253c0876c4b2882c955a1e67d59257b107e8d7bb9b955491ccb527d"
+  },
+  {
+    "slug": "rust-06-cargo",
+    "lang": "ru",
+    "title": "Первый проект Cargo",
+    "body_sha256": "6a8ec1645daa3601dd41e6db484db70e61eeec03cff768eb9069c964041b2dd9",
+    "summary_sha256": "106a06890b05f4a525044a1b4ff4d9e8335b90e5fb1e3ea992bf7d198dca1d12"
+  },
+  {
+    "slug": "rust-06-cargo",
+    "lang": "kz",
+    "title": "Cargo арқылы алғашқы жоба",
+    "body_sha256": "2ba49157fe4c8cf457bf1b5202eb70830e0e7246ed2065dd5c2f92a5e7a9794e",
+    "summary_sha256": "cb0edcb70bee0a72c787ee57bb6d6b20e848588a19e3c58c05a161c5cb56c515"
+  },
+  {
+    "slug": "rust-06-cargo",
+    "lang": "en",
+    "title": "Your first Cargo project",
+    "body_sha256": "90f0bab733c7c2bb6c6554524e760f084b7aa40b3eda38054d8c4929177efdec",
+    "summary_sha256": "156cb10c7b12b542e6115eb62b5c9a48cac9e93384fac47723f507be36ba9663"
+  },
+  {
+    "slug": "rust-07-first-program",
+    "lang": "ru",
+    "title": "Разбираем первую программу",
+    "body_sha256": "da8ec99b44d045fdde38ee51eb3394aa7100573dd005c30487cc0b71a81b9729",
+    "summary_sha256": "1f831f1360effcd5a2d29ee5b7b47f37e4a4c01748497979e16237ac2dc9a349"
+  },
+  {
+    "slug": "rust-07-first-program",
+    "lang": "kz",
+    "title": "Алғашқы бағдарламаны жол-жолымен талдау",
+    "body_sha256": "a4c747f2415a13b81185e48c00c008511d699f7524745ffecab318ea769dc908",
+    "summary_sha256": "e41bf150074640b06b4a76318098927a03dc364755910c6b2fb8337673f9b096"
+  },
+  {
+    "slug": "rust-07-first-program",
+    "lang": "en",
+    "title": "Reading your first program",
+    "body_sha256": "1e68e0d42b272e5f9f02be15db31fb0bd50921fab8e629fe32d0f9f835222e30",
+    "summary_sha256": "9367747e16a279c94884ab6cb9dee4b6d60bd4190fae404968cf4b5273b9ef06"
+  },
+  {
+    "slug": "rust-08-diagnostics",
+    "lang": "ru",
+    "title": "Ошибки как подсказки",
+    "body_sha256": "99c81d352fe3d62e2e5fb0edc999d344d40253ced6041ccbedfce0775c211071",
+    "summary_sha256": "312d52fa5e04987e379576dc00290df6ca79547e6e44834fbed962d05aed96ce"
+  },
+  {
+    "slug": "rust-08-diagnostics",
+    "lang": "kz",
+    "title": "Қате хабарын көмек ретінде пайдалану",
+    "body_sha256": "dbee51df6e90fe6915ab9154304d9e6cdf6d41c40e26f728468497efa826cb13",
+    "summary_sha256": "8a3584eab16aa7385a4d28c032be4a23a298e03587c4636a23f8470c4b6d642d"
+  },
+  {
+    "slug": "rust-08-diagnostics",
+    "lang": "en",
+    "title": "Using compiler diagnostics",
+    "body_sha256": "7b3d0b8e99e7f70215dee4ac06daf5900f77aea67aa65b0a20b5c8d6d80a5d13",
+    "summary_sha256": "f9d230e62c92816099ad728dc1a2cca53b877d547bfcd65537435583479e7b75"
+  },
+  {
+    "slug": "rust-09-variables",
+    "lang": "ru",
+    "title": "Переменные, значения и типы",
+    "body_sha256": "9dc35922122229d7a29776cb2b05b510cb92f08d152321e0f8e55a01c3d9efe7",
+    "summary_sha256": "b772377524e854d9a0ec345277d2adb4a32dd6b02a46ba3cefb172c53c7c04e6"
+  },
+  {
+    "slug": "rust-09-variables",
+    "lang": "kz",
+    "title": "Айнымалылар, мәндер және деректер түрлері",
+    "body_sha256": "8a91cf552c921035d36a9fa33d58fffa90863cd7dd0db51c8129ab4241f1c0f7",
+    "summary_sha256": "8148d5166c441e441a73e54cee9ff58dd1edb2c43ef5d8157eb9ab8044793b01"
+  },
+  {
+    "slug": "rust-09-variables",
+    "lang": "en",
+    "title": "Variables, values and types",
+    "body_sha256": "305e17a678dd4669120064b240167447bdbf7f7a665a1686a1706aa0fd909194",
+    "summary_sha256": "761b316c8918de961a8085a0e6e3de7d604af1eed4ec38fd3f79b714353a95ac"
+  },
+  {
+    "slug": "rust-10-numbers",
+    "lang": "ru",
+    "title": "Числа и арифметика",
+    "body_sha256": "82fe96135beb9c64827fd0de813c6f255200752e700dd335490bd29a935423f2",
+    "summary_sha256": "20c993b0daf22acb41bdf6e141149260a31f8ed0d7f4c2c87fb82c89384a9987"
+  },
+  {
+    "slug": "rust-10-numbers",
+    "lang": "kz",
+    "title": "Сандар және арифметика",
+    "body_sha256": "f55ea83dfef6157bc510cc23c085df36db5317b990c97bf953224e2ef2a6c524",
+    "summary_sha256": "b5729aa7c15d683b0a4c90ef0d65fc3c0678491f88bc9f79ab9d2cec30132873"
+  },
+  {
+    "slug": "rust-10-numbers",
+    "lang": "en",
+    "title": "Numbers and arithmetic",
+    "body_sha256": "4c3e87d9a5dbdbfe6ac99f23904e473ff45a45693dbe55910b66882b4c0cbdd6",
+    "summary_sha256": "b8c768e70dbaad2b5441cb7911193217144631bc86cf853c0d8ad3448cdf97d8"
+  }
+]

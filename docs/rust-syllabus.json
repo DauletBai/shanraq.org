@@ -75,12 +75,13 @@
     "title": "Первый проект Cargo",
     "topics": "new, check, build, run, TOML, lock, edition, target",
     "outcome": "Различить проверку, сборку и запуск",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 7,
@@ -88,12 +89,13 @@
     "title": "Разбираем первую программу",
     "topics": "fn, main, блок, инструкция, макрос, литерал, комментарий",
     "outcome": "Изменить два сообщения и объяснить каждую строку",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 8,
@@ -101,12 +103,13 @@
     "title": "Ошибки как подсказки",
     "topics": "Диагностика, warning, номер строки, ошибка выполнения",
     "outcome": "Исправить опечатку и ошибку замысла разными способами",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 9,
@@ -114,12 +117,13 @@
     "title": "Переменные, значения и типы",
     "topics": "let, mut, аннотация типа, вывод типа, shadowing, const, scope",
     "outcome": "Предсказать значения и различить изменение и новое объявление",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 10,
@@ -127,12 +131,13 @@
     "title": "Числа и арифметика",
     "topics": "Целые, знаковые, дробные, диапазон, деление, остаток",
     "outcome": "Проверить расчёт оставшихся задач",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 11,

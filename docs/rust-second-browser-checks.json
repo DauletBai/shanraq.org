@@ -1,0 +1,254 @@
+[
+  {
+    "name": "course",
+    "lang": "kz",
+    "width": 1366,
+    "height": 900,
+    "overflow": false,
+    "heading": "Rust: алғашқы қадамнан жеке жоспарлау құралына дейін",
+    "footerRust": "/course/rust?lang=kz",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "kz",
+    "width": 1366,
+    "height": 900,
+    "overflow": false,
+    "heading": "Айнымалылар, мәндер және деректер түрлері",
+    "footerRust": "/course/rust?lang=kz",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "ru",
+    "width": 1366,
+    "height": 900,
+    "overflow": false,
+    "heading": "Rust: с нуля до своего органайзера",
+    "footerRust": "/course/rust?lang=ru",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "ru",
+    "width": 1366,
+    "height": 900,
+    "overflow": false,
+    "heading": "Переменные, значения и типы",
+    "footerRust": "/course/rust?lang=ru",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "en",
+    "width": 1366,
+    "height": 900,
+    "overflow": false,
+    "heading": "Rust: from zero to your own organizer",
+    "footerRust": "/course/rust?lang=en",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "en",
+    "width": 1366,
+    "height": 900,
+    "overflow": false,
+    "heading": "Variables, values and types",
+    "footerRust": "/course/rust?lang=en",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "kz",
+    "width": 768,
+    "height": 1024,
+    "overflow": false,
+    "heading": "Rust: алғашқы қадамнан жеке жоспарлау құралына дейін",
+    "footerRust": "/course/rust?lang=kz",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "kz",
+    "width": 768,
+    "height": 1024,
+    "overflow": false,
+    "heading": "Айнымалылар, мәндер және деректер түрлері",
+    "footerRust": "/course/rust?lang=kz",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "ru",
+    "width": 768,
+    "height": 1024,
+    "overflow": false,
+    "heading": "Rust: с нуля до своего органайзера",
+    "footerRust": "/course/rust?lang=ru",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "ru",
+    "width": 768,
+    "height": 1024,
+    "overflow": false,
+    "heading": "Переменные, значения и типы",
+    "footerRust": "/course/rust?lang=ru",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "en",
+    "width": 768,
+    "height": 1024,
+    "overflow": false,
+    "heading": "Rust: from zero to your own organizer",
+    "footerRust": "/course/rust?lang=en",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "en",
+    "width": 768,
+    "height": 1024,
+    "overflow": false,
+    "heading": "Variables, values and types",
+    "footerRust": "/course/rust?lang=en",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "kz",
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "heading": "Rust: алғашқы қадамнан жеке жоспарлау құралына дейін",
+    "footerRust": "/course/rust?lang=kz",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "kz",
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "heading": "Айнымалылар, мәндер және деректер түрлері",
+    "footerRust": "/course/rust?lang=kz",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "ru",
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "heading": "Rust: с нуля до своего органайзера",
+    "footerRust": "/course/rust?lang=ru",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "ru",
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "heading": "Переменные, значения и типы",
+    "footerRust": "/course/rust?lang=ru",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "en",
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "heading": "Rust: from zero to your own organizer",
+    "footerRust": "/course/rust?lang=en",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "en",
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "heading": "Variables, values and types",
+    "footerRust": "/course/rust?lang=en",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "kz",
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "heading": "Rust: алғашқы қадамнан жеке жоспарлау құралына дейін",
+    "footerRust": "/course/rust?lang=kz",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "kz",
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "heading": "Айнымалылар, мәндер және деректер түрлері",
+    "footerRust": "/course/rust?lang=kz",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "ru",
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "heading": "Rust: с нуля до своего органайзера",
+    "footerRust": "/course/rust?lang=ru",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "ru",
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "heading": "Переменные, значения и типы",
+    "footerRust": "/course/rust?lang=ru",
+    "brokenLinks": 0,
+    "footerClick": true
+  },
+  {
+    "name": "course",
+    "lang": "en",
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "heading": "Rust: from zero to your own organizer",
+    "footerRust": "/course/rust?lang=en",
+    "brokenLinks": 0
+  },
+  {
+    "name": "lesson",
+    "lang": "en",
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "heading": "Variables, values and types",
+    "footerRust": "/course/rust?lang=en",
+    "brokenLinks": 0,
+    "footerClick": true
+  }
+]
