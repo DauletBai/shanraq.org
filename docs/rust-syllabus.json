@@ -5,12 +5,13 @@
     "title": "Что такое Rust и зачем он появился",
     "topics": "Программа, исходный код, компилятор; история, задачи, ограничения",
     "outcome": "Объяснить выбор языка без обещаний абсолютной безопасности",
-    "status": "draft-kz-ru-en",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 2,
@@ -18,12 +19,13 @@
     "title": "Какой органайзер мы построим",
     "topics": "Сценарий, команда, запись; границы проекта",
     "outcome": "Различить демонстрацию будущего и доступную сейчас программу",
-    "status": "draft-kz-ru-en",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 3,
@@ -31,12 +33,13 @@
     "title": "Файлы, папки и рабочее место",
     "topics": "Текстовый файл, расширение, UTF-8, путь, редактор",
     "outcome": "Найти сохранённый файл и не перепутать его с копией",
-    "status": "draft-kz-ru-en",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 4,
@@ -44,12 +47,13 @@
     "title": "Терминал без загадок",
     "topics": "Оболочка, приглашение, команда, аргумент, текущая папка",
     "outcome": "Перейти в папку с пробелом в имени",
-    "status": "draft-kz-ru-en",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 5,
@@ -57,12 +61,13 @@
     "title": "Установка Rust и проверка инструментов",
     "topics": "rustup, rustc, Cargo, rust-analyzer, toolchain, PATH",
     "outcome": "Проверить установку и выполнить пробную сборку",
-    "status": "draft-kz-ru-en",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-17"
   },
   {
     "number": 6,

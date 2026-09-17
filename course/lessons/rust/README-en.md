@@ -1,6 +1,6 @@
 # Rust: from zero to your own organizer
 
-Author-written draft lessons, not yet published on the website. Lessons 1–5 are the first release group. Lessons 6–10 are being prepared separately; the full course is not complete.
+The preface and lessons 1–5 were published on 2026-09-17: [open the course](https://shanraq.org/course/rust?lang=en). Lessons 6–10 are being prepared separately; the full course is not complete.
 
 [Before you begin](preface-en.md)
 

@@ -127,11 +127,11 @@
   },
   {
     "term": "зависимость",
-    "first_lesson": 6,
+    "first_lesson": 5,
     "definition": "Библиотека, которую использует проект",
     "image": "Готовая деталь",
     "limit": "Она имеет версию, лицензию и ограничения",
-    "exercise_lesson": 6,
+    "exercise_lesson": 5,
     "review_status": "draft"
   },
   {

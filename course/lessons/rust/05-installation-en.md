@@ -5,7 +5,7 @@ _Summary:_ **Check the installation and distinguish the tools involved.**
 
 ## Why this matters
 
-A workshop has tools with different jobs. **rustup** installs and selects their set; **rustc** compiles Rust; **Cargo** coordinates projects, builds, runs and dependencies. Cargo calls rustc rather than replacing it. A **toolchain** is a compatible set of tools at a particular version. **rust-analyzer** provides editor assistance; suggestions do not replace checking the program.
+A workshop has tools with different jobs. **rustup** installs and selects their set; **rustc** compiles Rust; **Cargo** coordinates projects, builds, runs and dependencies. Cargo calls rustc rather than replacing it. A **dependency** is a library used by a project; a **library** is reusable code. Think of a ready-made part whose purpose and limitations still need to be understood. A **toolchain** is a compatible set of tools at a particular version. **rust-analyzer** provides editor assistance; suggestions do not replace checking the program.
 
 ## Installation for your system
 
