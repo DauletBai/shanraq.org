@@ -1,0 +1,36 @@
+name: Rust course checks
+on:
+  push:
+    paths:
+      - 'course/lessons/rust/**'
+      - 'course/rust-organizer/**'
+      - 'docs/rust-*'
+      - 'tools/coursecheck/rustcheck.py'
+      - '.github/workflows/rust-course.yml'
+  pull_request:
+    paths:
+      - 'course/lessons/rust/**'
+      - 'course/rust-organizer/**'
+      - 'docs/rust-*'
+      - 'tools/coursecheck/rustcheck.py'
+      - '.github/workflows/rust-course.yml'
+permissions:
+  contents: read
+jobs:
+  examples:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Install checked Rust toolchain
+        run: rustup toolchain install 1.97.0 --profile minimal --component rustfmt
+      - name: Check examples and exercise answers
+        env:
+          RUSTUP_TOOLCHAIN: 1.97.0
+        run: python tools/coursecheck/rustcheck.py

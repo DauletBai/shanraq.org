@@ -1,0 +1,782 @@
+[
+  {
+    "number": 1,
+    "slug": "why-rust",
+    "title": "Что такое Rust и зачем он появился",
+    "topics": "Программа, исходный код, компилятор; история, задачи, ограничения",
+    "outcome": "Объяснить выбор языка без обещаний абсолютной безопасности",
+    "status": "draft-kz-ru-en",
+    "locales": {
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
+    }
+  },
+  {
+    "number": 2,
+    "slug": "organizer",
+    "title": "Какой органайзер мы построим",
+    "topics": "Сценарий, команда, запись; границы проекта",
+    "outcome": "Различить демонстрацию будущего и доступную сейчас программу",
+    "status": "draft-kz-ru-en",
+    "locales": {
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
+    }
+  },
+  {
+    "number": 3,
+    "slug": "workspace",
+    "title": "Файлы, папки и рабочее место",
+    "topics": "Текстовый файл, расширение, UTF-8, путь, редактор",
+    "outcome": "Найти сохранённый файл и не перепутать его с копией",
+    "status": "draft-kz-ru-en",
+    "locales": {
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
+    }
+  },
+  {
+    "number": 4,
+    "slug": "terminal",
+    "title": "Терминал без загадок",
+    "topics": "Оболочка, приглашение, команда, аргумент, текущая папка",
+    "outcome": "Перейти в папку с пробелом в имени",
+    "status": "draft-kz-ru-en",
+    "locales": {
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
+    }
+  },
+  {
+    "number": 5,
+    "slug": "installation",
+    "title": "Установка Rust и проверка инструментов",
+    "topics": "rustup, rustc, Cargo, rust-analyzer, toolchain, PATH",
+    "outcome": "Проверить установку и выполнить пробную сборку",
+    "status": "draft-kz-ru-en",
+    "locales": {
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
+    }
+  },
+  {
+    "number": 6,
+    "slug": "cargo",
+    "title": "Первый проект Cargo",
+    "topics": "new, check, build, run, TOML, lock, edition, target",
+    "outcome": "Различить проверку, сборку и запуск",
+    "status": "draft-ru",
+    "locales": {
+      "kz": "planned",
+      "ru": "draft",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 7,
+    "slug": "first-program",
+    "title": "Разбираем первую программу",
+    "topics": "fn, main, блок, инструкция, макрос, литерал, комментарий",
+    "outcome": "Изменить два сообщения и объяснить каждую строку",
+    "status": "draft-ru",
+    "locales": {
+      "kz": "planned",
+      "ru": "draft",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 8,
+    "slug": "diagnostics",
+    "title": "Ошибки как подсказки",
+    "topics": "Диагностика, warning, номер строки, ошибка выполнения",
+    "outcome": "Исправить опечатку и ошибку замысла разными способами",
+    "status": "draft-ru",
+    "locales": {
+      "kz": "planned",
+      "ru": "draft",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 9,
+    "slug": "variables",
+    "title": "Переменные, значения и типы",
+    "topics": "let, mut, аннотация типа, вывод типа, shadowing, const, scope",
+    "outcome": "Предсказать значения и различить изменение и новое объявление",
+    "status": "draft-ru",
+    "locales": {
+      "kz": "planned",
+      "ru": "draft",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 10,
+    "slug": "numbers",
+    "title": "Числа и арифметика",
+    "topics": "Целые, знаковые, дробные, диапазон, деление, остаток",
+    "outcome": "Проверить расчёт оставшихся задач",
+    "status": "draft-ru",
+    "locales": {
+      "kz": "planned",
+      "ru": "draft",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 11,
+    "slug": "boolean",
+    "title": "Логические значения",
+    "topics": "bool, сравнение, короткое замыкание",
+    "outcome": "Записать условие отбора",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 12,
+    "slug": "branches",
+    "title": "Ветвления и выражения",
+    "topics": "if, else, значение блока, точка с запятой",
+    "outcome": "Выбрать действие и значение",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 13,
+    "slug": "loops",
+    "title": "Повторение действий",
+    "topics": "loop, while, for, диапазон, break, continue",
+    "outcome": "Обойти набор без пропусков",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 14,
+    "slug": "functions",
+    "title": "Функции",
+    "topics": "Параметр, аргумент, return, (), область видимости",
+    "outcome": "Выделить вычисление в функцию",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 15,
+    "slug": "arrays",
+    "title": "Массивы",
+    "topics": "Фиксированная длина, индекс, границы",
+    "outcome": "Обработать фиксированный набор",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 16,
+    "slug": "first-test",
+    "title": "Первый автоматический тест",
+    "topics": "Тест, assert_eq!, #[test], cargo test",
+    "outcome": "Поймать неверный результат функции",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 17,
+    "slug": "first-checkpoint",
+    "title": "Практика: простая сводка",
+    "topics": "Повторение 1–16 без нового синтаксиса",
+    "outcome": "Написать сводку без пошагового решения",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 18,
+    "slug": "memory",
+    "title": "Значения и память",
+    "topics": "Стек, куча, ресурс, время существования",
+    "outcome": "Различить значение и ссылку",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 19,
+    "slug": "ownership",
+    "title": "Владение и перемещение",
+    "topics": "Owner, move, Copy, Clone, освобождение",
+    "outcome": "Объяснить использование перемещённого значения",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 20,
+    "slug": "borrowing",
+    "title": "Заимствование",
+    "topics": "&, ссылка, чтение без передачи владения",
+    "outcome": "Передать данные без ненужной копии",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 21,
+    "slug": "mutable-borrow",
+    "title": "Изменяемое заимствование",
+    "topics": "&mut, исключительный доступ, конец заимствования",
+    "outcome": "Изменить данные через функцию",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 22,
+    "slug": "strings",
+    "title": "String и &str",
+    "topics": "Владеющая строка и представление текста",
+    "outcome": "Выбрать тип для хранения и чтения",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 23,
+    "slug": "slices",
+    "title": "Срезы",
+    "topics": "Часть данных, диапазон, связь с владельцем",
+    "outcome": "Обработать часть без копии",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 24,
+    "slug": "vectors",
+    "title": "Растущий список Vec",
+    "topics": "Vec<T>, push, remove, len, перебор по ссылке",
+    "outcome": "Управлять списком названий",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 25,
+    "slug": "unicode",
+    "title": "Текст и Unicode",
+    "topics": "Байт, char, графема, UTF-8",
+    "outcome": "Не путать длину в байтах и символах",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 26,
+    "slug": "tuples",
+    "title": "Кортежи",
+    "topics": "Группировка, распаковка",
+    "outcome": "Вернуть несколько результатов",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 27,
+    "slug": "structs",
+    "title": "Структура Task",
+    "topics": "Поле, экземпляр, проверка данных",
+    "outcome": "Собрать сведения о задаче в тип",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 28,
+    "slug": "methods",
+    "title": "Методы",
+    "topics": "impl, self, &self, &mut self, связанные функции",
+    "outcome": "Разместить поведение рядом с данными",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 29,
+    "slug": "enums",
+    "title": "Перечисления",
+    "topics": "enum, вариант, данные варианта",
+    "outcome": "Ограничить допустимые состояния",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 30,
+    "slug": "patterns",
+    "title": "Сопоставление с образцом",
+    "topics": "match, полнота, _, if let",
+    "outcome": "Обработать каждый вариант",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 31,
+    "slug": "option",
+    "title": "Отсутствие значения",
+    "topics": "Option<T>, Some, None, get",
+    "outcome": "Обработать отсутствие задачи",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 32,
+    "slug": "result",
+    "title": "Неудачная операция",
+    "topics": "Result<T,E>, Ok, Err, parse, unwrap",
+    "outcome": "Отклонить неверный ввод без аварии",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 33,
+    "slug": "propagation",
+    "title": "Передача ошибок",
+    "topics": "?, ранний возврат, совместимые ошибки",
+    "outcome": "Отделить обнаружение от сообщения",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 34,
+    "slug": "input",
+    "title": "Ввод из терминала",
+    "topics": "stdin, буфер, read_line, trim, EOF",
+    "outcome": "Обработать пустой ввод и конец потока",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 35,
+    "slug": "arguments",
+    "title": "Аргументы запуска",
+    "topics": "args, cargo run --, кавычки",
+    "outcome": "Передать команду и название с пробелами",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 36,
+    "slug": "commands",
+    "title": "Разбор команд",
+    "topics": "Перечисление команд и проверка параметров",
+    "outcome": "Отделить разбор от выполнения",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 37,
+    "slug": "operations",
+    "title": "Основные операции",
+    "topics": "Добавление, чтение, изменение, удаление в памяти",
+    "outcome": "Использовать первую интерактивную версию",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 38,
+    "slug": "ids",
+    "title": "Идентификатор не индекс",
+    "topics": "Устойчивый ID, дубликаты, переполнение счётчика",
+    "outcome": "Не изменить чужую запись после удаления",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 39,
+    "slug": "scenarios",
+    "title": "Проверка сценариев",
+    "topics": "Последовательности действий, неизменность при ошибке",
+    "outcome": "Проверить успешные и ошибочные операции",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 40,
+    "slug": "memory-checkpoint",
+    "title": "Практика: органайзер в памяти",
+    "topics": "Повторение без новых конструкций",
+    "outcome": "Самостоятельно расширить программу",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 41,
+    "slug": "iterators",
+    "title": "Итераторы",
+    "topics": "iter, iter_mut, into_iter, ленивость",
+    "outcome": "Выбрать способ обхода",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 42,
+    "slug": "closures",
+    "title": "Замыкания и выборки",
+    "topics": "Захват окружения, filter, map, collect, сортировка",
+    "outcome": "Сделать поиск и фильтры",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 43,
+    "slug": "maps-sets",
+    "title": "Словарь и множество",
+    "topics": "HashMap, HashSet, негарантированный порядок",
+    "outcome": "Получить статистику и уникальные метки",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 44,
+    "slug": "modules",
+    "title": "Модули и видимость",
+    "topics": "mod, use, pub, crate, main.rs, lib.rs",
+    "outcome": "Разделить запуск и логику",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 45,
+    "slug": "generics",
+    "title": "Обобщённые типы",
+    "topics": "Параметры типов и небольшая своя функция",
+    "outcome": "Прочитать обобщённую сигнатуру",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 46,
+    "slug": "traits",
+    "title": "Трейты",
+    "topics": "Общее поведение, реализация, ограничения, derive",
+    "outcome": "Реализовать обоснованное поведение",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 47,
+    "slug": "lifetimes",
+    "title": "Времена жизни ссылок",
+    "topics": "Выведение, связь входа и выхода, 'a",
+    "outcome": "Не вернуть ссылку на исчезнувшее значение",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 48,
+    "slug": "dependencies",
+    "title": "Внешние библиотеки",
+    "topics": "crates.io, версии, lock, лицензии, документация",
+    "outcome": "Подключить обоснованную зависимость",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 49,
+    "slug": "paths",
+    "title": "Пути и файловая система",
+    "topics": "Path, PathBuf, рабочая папка, права",
+    "outcome": "Явно выбрать путь данных",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 50,
+    "slug": "files",
+    "title": "Чтение и запись файлов",
+    "topics": "Отсутствие, доступ, кодировка, ошибки I/O",
+    "outcome": "Прочитать файл и объяснить отказ",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 51,
+    "slug": "json",
+    "title": "Формат JSON",
+    "topics": "Serde, сериализация, версия схемы, валидация",
+    "outcome": "Восстановить корректный органайзер",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 52,
+    "slug": "safe-save",
+    "title": "Сохранение без потери прежних данных",
+    "topics": "Временный файл, замена, ограничения ОС и гарантий",
+    "outcome": "Сохранить прежние данные при ошибке записи",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 53,
+    "slug": "backup",
+    "title": "Резервная копия",
+    "topics": "Проверка, восстановление, повреждённый формат",
+    "outcome": "Восстановить копию, не затерев источник",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 54,
+    "slug": "cli",
+    "title": "Удобные команды",
+    "topics": "Справка, stdout, stderr, код завершения",
+    "outcome": "Предсказуемо работать из терминала",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 55,
+    "slug": "documentation",
+    "title": "Настройки и документация",
+    "topics": "Путь данных, приоритет настроек, README, cargo doc",
+    "outcome": "Запустить по инструкции другого человека",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 56,
+    "slug": "testing",
+    "title": "Полный набор тестов",
+    "topics": "Файлы, повторный запуск, Unicode, изоляция",
+    "outcome": "Проверить сбои и границы",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 57,
+    "slug": "quality",
+    "title": "Автоматические проверки",
+    "topics": "fmt, Clippy, CI, фиксация toolchain",
+    "outcome": "Проверить проект на трёх ОС",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 58,
+    "slug": "distribution",
+    "title": "Сборка и распространение",
+    "topics": "Debug/release, платформы, архив, версия, лицензия",
+    "outcome": "Передать программу для нужной ОС",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 59,
+    "slug": "capstone",
+    "title": "Самостоятельное расширение",
+    "topics": "Требования, реализация, тесты, инструкция",
+    "outcome": "Решить новую задачу освоенными средствами",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  },
+  {
+    "number": 60,
+    "slug": "release",
+    "title": "Выпуск и продолжение",
+    "topics": "Приёмка с чистого окружения, ограничения",
+    "outcome": "Выпустить органайзер и объяснить устройство",
+    "status": "planned",
+    "locales": {
+      "kz": "planned",
+      "ru": "planned",
+      "en": "planned"
+    }
+  }
+]

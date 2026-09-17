@@ -1,0 +1,263 @@
+[
+  {
+    "term": "программа",
+    "first_lesson": 1,
+    "definition": "Последовательность инструкций для компьютера",
+    "image": "Рецепт",
+    "limit": "Компьютер не догадывается о пропущенных шагах",
+    "exercise_lesson": 1,
+    "review_status": "draft"
+  },
+  {
+    "term": "компилятор",
+    "first_lesson": 1,
+    "definition": "Проверяет и преобразует исходный код в исполняемую форму",
+    "image": "Переводчик и проверяющий",
+    "limit": "Не проверяет правильность замысла",
+    "exercise_lesson": 1,
+    "review_status": "draft"
+  },
+  {
+    "term": "исходный код",
+    "first_lesson": 1,
+    "definition": "Текст программы на языке программирования",
+    "image": "Записанный рецепт",
+    "limit": "Это не готовый исполняемый файл",
+    "exercise_lesson": 1,
+    "review_status": "draft"
+  },
+  {
+    "term": "файл",
+    "first_lesson": 3,
+    "definition": "Именованные данные в файловой системе",
+    "image": "Подписанный документ",
+    "limit": "Расширение само по себе не меняет содержимое",
+    "exercise_lesson": 3,
+    "review_status": "draft"
+  },
+  {
+    "term": "путь",
+    "first_lesson": 3,
+    "definition": "Адрес файла или папки",
+    "image": "Маршрут",
+    "limit": "Относительный путь зависит от текущей папки",
+    "exercise_lesson": 3,
+    "review_status": "draft"
+  },
+  {
+    "term": "оболочка",
+    "first_lesson": 4,
+    "definition": "Программа, которая разбирает команды терминала",
+    "image": "Диспетчер команд",
+    "limit": "Это не компилятор Rust",
+    "exercise_lesson": 4,
+    "review_status": "draft"
+  },
+  {
+    "term": "аргумент команды",
+    "first_lesson": 4,
+    "definition": "Значение, переданное запускаемой команде",
+    "image": "Параметр поручения",
+    "limit": "Пробел может разделить одно название на несколько аргументов",
+    "exercise_lesson": 4,
+    "review_status": "draft"
+  },
+  {
+    "term": "rustup",
+    "first_lesson": 5,
+    "definition": "Устанавливает и выбирает наборы инструментов Rust",
+    "image": "Хранитель инструментов",
+    "limit": "Сам не компилирует программу",
+    "exercise_lesson": 5,
+    "review_status": "draft"
+  },
+  {
+    "term": "rustc",
+    "first_lesson": 5,
+    "definition": "Компилятор Rust",
+    "image": "Переводчик",
+    "limit": "Не заменяет тестирование",
+    "exercise_lesson": 5,
+    "review_status": "draft"
+  },
+  {
+    "term": "Cargo",
+    "first_lesson": 5,
+    "definition": "Управляет проектом, сборкой, зависимостями и запуском проверок",
+    "image": "Организатор мастерской",
+    "limit": "Для компиляции вызывает rustc",
+    "exercise_lesson": 5,
+    "review_status": "draft"
+  },
+  {
+    "term": "rust-analyzer",
+    "first_lesson": 5,
+    "definition": "Помогает редактору понимать Rust",
+    "image": "Помощник у рабочего стола",
+    "limit": "Его подсказки не заменяют запуск",
+    "exercise_lesson": 5,
+    "review_status": "draft"
+  },
+  {
+    "term": "toolchain",
+    "first_lesson": 5,
+    "definition": "Набор согласованных инструментов",
+    "image": "Комплект инструментов",
+    "limit": "Версия набора не равна edition",
+    "exercise_lesson": 5,
+    "review_status": "draft"
+  },
+  {
+    "term": "PATH",
+    "first_lesson": 5,
+    "definition": "Список папок для поиска исполняемых команд",
+    "image": "Список мест поиска",
+    "limit": "Это не путь открытого исходного файла",
+    "exercise_lesson": 5,
+    "review_status": "draft"
+  },
+  {
+    "term": "TOML",
+    "first_lesson": 6,
+    "definition": "Формат текстовых настроек",
+    "image": "Паспорт с полями",
+    "limit": "Это не код Rust",
+    "exercise_lesson": 6,
+    "review_status": "draft"
+  },
+  {
+    "term": "зависимость",
+    "first_lesson": 6,
+    "definition": "Библиотека, которую использует проект",
+    "image": "Готовая деталь",
+    "limit": "Она имеет версию, лицензию и ограничения",
+    "exercise_lesson": 6,
+    "review_status": "draft"
+  },
+  {
+    "term": "edition",
+    "first_lesson": 6,
+    "definition": "Редакция правил языка для проекта",
+    "image": "Редакция правил",
+    "limit": "Не равна версии приложения или компилятора",
+    "exercise_lesson": 6,
+    "review_status": "draft"
+  },
+  {
+    "term": "макрос",
+    "first_lesson": 7,
+    "definition": "Конструкция, которая разворачивается в код при компиляции",
+    "image": "Шаблон подготовки кода",
+    "limit": "Не обычная функция; написание макросов вне первых уроков",
+    "exercise_lesson": 7,
+    "review_status": "draft"
+  },
+  {
+    "term": "литерал",
+    "first_lesson": 7,
+    "definition": "Значение, записанное прямо в исходном коде",
+    "image": "Значение на бумаге",
+    "limit": "Не имя переменной",
+    "exercise_lesson": 7,
+    "review_status": "draft"
+  },
+  {
+    "term": "переменная",
+    "first_lesson": 9,
+    "definition": "Именованная привязка к значению",
+    "image": "Подписанное место",
+    "limit": "Не обязательно отдельная коробка с копией данных",
+    "exercise_lesson": 9,
+    "review_status": "draft"
+  },
+  {
+    "term": "тип",
+    "first_lesson": 9,
+    "definition": "Определяет допустимые значения и операции",
+    "image": "Правила для содержимого",
+    "limit": "Отсутствие аннотации не означает отсутствие типа",
+    "exercise_lesson": 9,
+    "review_status": "draft"
+  },
+  {
+    "term": "выведение типа",
+    "first_lesson": 9,
+    "definition": "Компилятор устанавливает тип по выражению и контексту",
+    "image": "Определение по условиям",
+    "limit": "Это не смена типа во время выполнения",
+    "exercise_lesson": 9,
+    "review_status": "draft"
+  },
+  {
+    "term": "затенение",
+    "first_lesson": 9,
+    "definition": "Новое объявление с тем же именем",
+    "image": "Новая подпись закрывает прежнюю",
+    "limit": "Не то же самое, что присваивание через mut",
+    "exercise_lesson": 9,
+    "review_status": "draft"
+  },
+  {
+    "term": "диапазон типа",
+    "first_lesson": 10,
+    "definition": "Множество представимых значений",
+    "image": "Вместимость мерки",
+    "limit": "Значения за границей не помещаются",
+    "exercise_lesson": 10,
+    "review_status": "draft"
+  },
+  {
+    "term": "переполнение",
+    "first_lesson": 10,
+    "definition": "Результат не помещается в числовой тип",
+    "image": "Переполненная мерка",
+    "limit": "Поведение зависит от операции и настроек; не полагаться на оборачивание",
+    "exercise_lesson": 10,
+    "review_status": "draft"
+  },
+  {
+    "term": "пакет Cargo",
+    "first_lesson": 6,
+    "definition": "Проект с Cargo.toml и собираемыми частями",
+    "image": "Папка с паспортом",
+    "limit": "Не то же самое, что одна библиотека",
+    "exercise_lesson": 6,
+    "review_status": "draft"
+  },
+  {
+    "term": "линкер",
+    "first_lesson": 5,
+    "definition": "Соединяет части в исполняемую программу",
+    "image": "Сборщик изделия",
+    "limit": "Его наличие проверяется сборкой, не номером Cargo",
+    "exercise_lesson": 5,
+    "review_status": "draft"
+  },
+  {
+    "term": "UTF-8",
+    "first_lesson": 3,
+    "definition": "Представление текста байтами",
+    "image": "Способ записи знаков",
+    "limit": "Символ не обязательно один байт",
+    "exercise_lesson": 3,
+    "review_status": "draft"
+  },
+  {
+    "term": "бит",
+    "first_lesson": 10,
+    "definition": "Двоичная единица",
+    "image": "Переключатель с двумя состояниями",
+    "limit": "Не буква и не десятичная цифра",
+    "exercise_lesson": 10,
+    "review_status": "draft"
+  },
+  {
+    "term": "байт",
+    "first_lesson": 10,
+    "definition": "Группа из восьми битов",
+    "image": "Набор из восьми переключателей",
+    "limit": "Не обязательно целый символ текста",
+    "exercise_lesson": 10,
+    "review_status": "draft"
+  }
+]
