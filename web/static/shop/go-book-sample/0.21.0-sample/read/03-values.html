@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>3. Название, цена и состояние книги</title><link rel="stylesheet" href="book.css"></head><body><a class="skip" href="#content">К содержимому страницы</a><nav aria-label="Навигация книги"><a href="toc.html">Оглавление книги</a></nav><p class="status">Ознакомительный фрагмент 0.21.0-sample · вступление и главы 1–12. Бесплатный фрагмент: главы 1–12.</p><main id="content"><h1 id="3">3. Название, цена и состояние книги</h1>
+<p>Мы уже умеем выводить две строки. Но цена будет участвовать в расчётах, а состояние публикации — определять доступность товара. Поэтому данные должны иметь подходящие типы.</p>
+<p>Контрольная точка: <code>examples/03-values</code>. В своей рабочей папке замените <code>main.go</code> полным примером ниже. Цена учебная: это не объявленная стоимость будущей книги.</p>
+<h2 id="_1">Образ: ценник с подписанными местами</h2>
+<p>Возьмите воображаемый ценник. Сверху оставьте место для названия, ниже — для цены, сбоку — для отметки «показывать покупателю». Не нужно каждый раз переписывать весь ценник, чтобы поменять сумму. Достаточно найти нужное место по подписи.</p>
+<p>Имя переменной помогает найти значение в программе. Тип задаёт, какие значения и действия допустимы. Строка названия и целочисленная цена решают разные задачи: мы не станем складывать название с процентом скидки. Изменение переменной меняет её текущее значение; <code><span class="tok-keyword">const</span></code> объявляет константу, которой новое значение присвоить нельзя.</p>
+<p>На бумаге можно зачеркнуть всё что угодно. Правила языка строже: компилятор проверяет допустимость операций. Поэтому образ ценника помогает связать имя с назначением, а точный ответ о типе мы получаем из Go. Нарисуйте три подписанных места и, не глядя в код, впишите в каждое пример значения. Где можно поставить <code><span class="tok-name">false</span></code>, а где оно нарушит вашу задумку?</p>
+<h2 id="_2">Перед началом: значение, переменная и тип</h2>
+<p>После главы 2 вы умеете запустить программу и вывести текст. Теперь научимся хранить данные, менять их и отличать ошибку типа от ошибки в расчёте. До цены магазина разберём эти действия по отдельности.</p>
+<p><strong>Значение</strong> — конкретные данные: число <code><span class="tok-number">150</span></code>, строка <code><span class="tok-string">"Go"</span></code>, логическое значение <code><span class="tok-name">false</span></code>. <strong>Переменная</strong> — именованное место хранения значения определённого типа. <strong>Тип</strong> задаёт допустимые значения и операции. Это три разных понятия: <code><span class="tok-name">priceMinor</span></code> — имя, <code><span class="tok-name">int64</span></code> — тип, <code><span class="tok-number">150</span></code> — текущее значение. Изменение значения не меняет тип переменной.</p>
+<p>Литерал — запись значения прямо в исходнике. <code><span class="tok-number">150</span></code> и <code><span class="tok-string">"150"</span></code> различаются: первый — число, второй — строка из трёх цифр. Компилятор не угадывает, хотите ли вы считать деньги или напечатать номер. Преобразование пользовательского текста в число с возможной ошибкой появится при изучении форм; сейчас работаем с числовыми значениями.</p>
+<h3 id="_3">Три способа объявить переменную</h3>
+<table>
+<thead>
+<tr>
+<th>Запись внутри <code><span class="tok-name">main</span></code></th>
+<th>Что появляется</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="tok-keyword">var</span><span> </span><span class="tok-name">quantity</span><span> </span><span class="tok-name">int</span></code></td>
+<td>Переменная типа <code><span class="tok-name">int</span></code> с нулевым значением <code><span class="tok-number">0</span></code></td>
+</tr>
+<tr>
+<td><code><span class="tok-keyword">var</span><span> </span><span class="tok-name">quantity</span><span> </span><span class="tok-name">int</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">2</span></code></td>
+<td>Тот же тип с явно указанным начальным значением</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">quantity</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-number">2</span></code></td>
+<td>Новая переменная; по этому литералу Go выбирает тип <code><span class="tok-name">int</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Это <strong>альтернативные</strong> записи. Не вставляйте все три объявления одного имени подряд в один блок. В коротком объявлении <code><span class="tok-symbol">:=</span></code> двоеточие — часть оператора. Для изменения уже объявленной переменной используйте <code><span class="tok-name">quantity</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">3</span></code>. Запись <code><span class="tok-name">quantity</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-number">3</span></code> в том же блоке без нового имени приведёт к сообщению <code><span class="tok-name">no</span><span> </span><span class="tok-name">new</span><span> </span><span class="tok-name">variables</span><span> </span><span class="tok-name">on</span><span> </span><span class="tok-name">left</span><span> </span><span class="tok-name">side</span><span> </span><span class="tok-name">of</span><span> </span><span class="tok-symbol">:=</span></code>.</p>
+<p>Блок — группа команд в <code><span class="tok-brace">{</span></code> и <code><span class="tok-brace">}</span></code>. Пока наши переменные объявлены внутри блока <code><span class="tok-name">main</span></code> и доступны от своего объявления до конца этого блока. Перед объявлением обратиться к имени нельзя. В главе 4 появятся вложенные блоки условий, а в главе 5 — отдельные функции с собственными параметрами.</p>
+<h3 id="_4">Какие типы нужны в начале</h3>
+<table>
+<thead>
+<tr>
+<th>Тип</th>
+<th>Какие данные хранит</th>
+<th>Наше применение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="tok-name">bool</span></code></td>
+<td><code><span class="tok-name">true</span></code> или <code><span class="tok-name">false</span></code></td>
+<td>Опубликована ли книга</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">string</span></code></td>
+<td>Последовательность байтов; подробности текста — в главе 6</td>
+<td>Название и валюта</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">int</span></code></td>
+<td>Знаковое целое; 32 или 64 бита в зависимости от платформы</td>
+<td>Количество и индексы</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">int64</span></code></td>
+<td>Знаковое целое из 64 бит</td>
+<td>Сумма в минимальных денежных единицах</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">float64</span></code></td>
+<td>Число с плавающей точкой, обычно приближённое</td>
+<td>Измерения, но не цена нашей модели</td>
+</tr>
+</tbody>
+</table>
+<p>Есть также <code><span class="tok-name">int8</span></code>, <code><span class="tok-name">int16</span></code>, <code><span class="tok-name">int32</span></code>, беззнаковые <code><span class="tok-name">uint8</span></code>, <code><span class="tok-name">uint16</span></code>, <code><span class="tok-name">uint32</span></code>, <code><span class="tok-name">uint64</span></code>, <code><span class="tok-name">uint</span></code> и <code><span class="tok-name">float32</span></code>. Размер ограничивает диапазон: например, <code><span class="tok-name">int8</span></code> допускает −128…127, а <code><span class="tok-name">uint8</span></code> — 0…255. Отсутствие отрицательных значений у беззнакового типа не делает арифметику защищённой от переполнения. <code><span class="tok-name">byte</span></code> и <code><span class="tok-name">rune</span></code> — другие имена <code><span class="tok-name">uint8</span></code> и <code><span class="tok-name">int32</span></code>; их назначение для текста разберём в главе 6. <code><span class="tok-name">uintptr</span></code> и комплексные числа в этих упражнениях не используются и не являются предпосылкой следующей главы.</p>
+<p>Литерал <code><span class="tok-number">2</span></code> в <code><span class="tok-name">quantity</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-number">2</span></code> даёт <code><span class="tok-name">int</span></code>; <code><span class="tok-number">2.5</span></code> даёт <code><span class="tok-name">float64</span></code>, <code><span class="tok-string">"Go"</span></code> — <code><span class="tok-name">string</span></code>, <code><span class="tok-name">true</span></code> — <code><span class="tok-name">bool</span></code>. Чтобы увидеть выбранный тип, используйте формат <code><span class="tok-symbol">%</span><span class="tok-name">T</span></code> в <code><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Printf</span></code>. <code><span class="tok-symbol">%</span><span class="tok-name">t</span></code> печатает значение <code><span class="tok-name">bool</span></code>. Это команды форматирования внутри строки, а не объявления типов.</p>
+<h3 id="_5">Нулевые значения и копирование</h3>
+<p>Объявление без правой части не оставляет «случайный мусор»: Go задаёт нулевое значение. Число начинается с <code><span class="tok-number">0</span></code>, строка — с <code><span class="tok-string">""</span></code>, логическое значение — с <code><span class="tok-name">false</span></code>. Нулевое значение может быть допустимым для языка и недопустимым для задачи: пустое название потребуется отклонить отдельно.</p>
+<p>Если написать <code><span class="tok-name">otherTitle</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">title</span></code>, вторая переменная получает текущее строковое значение. Она не становится автоматически обновляемым вторым именем первой переменной. Когда позднее <code><span class="tok-name">title</span></code> получит другую строку, <code><span class="tok-name">otherTitle</span></code> сохранит прежнюю. Это правило о присваивании строковых значений, а не обещание независимости всех будущих составных данных: общий массив среза рассмотрим в главе 7.</p>
+<h3 id="_6">Разные числовые типы не складываются сами</h3>
+<p>Переменная <code><span class="tok-name">quantity</span></code> типа <code><span class="tok-name">int</span></code> и <code><span class="tok-name">priceMinor</span></code> типа <code><span class="tok-name">int64</span></code> — разные типы. Знак <code><span class="tok-symbol">*</span></code> между числами означает умножение. Для произведения явно запишем <code><span class="tok-name">int64</span><span class="tok-bracket">(</span><span class="tok-name">quantity</span><span class="tok-bracket">)</span><span> </span><span class="tok-symbol">*</span><span> </span><span class="tok-name">priceMinor</span></code>. Запись <code><span class="tok-name">int64</span><span class="tok-bracket">(</span><span class="tok-name">quantity</span><span class="tok-bracket">)</span></code> — <strong>преобразование типа</strong>, хотя по круглым скобкам похожа на вызов функции. Для нашего количества <code><span class="tok-number">2</span></code> значение после преобразования остаётся <code><span class="tok-number">2</span></code>; исходная переменная по-прежнему имеет тип <code><span class="tok-name">int</span></code>.</p>
+<p>Преобразование не является универсальной проверкой корректности. При переводе большого целого в более узкий целый тип информация может потеряться. Строку с цифрами эта запись также не разбирает. Не добавляйте преобразования наугад ради исчезновения ошибки компилятора: сначала определите единицы и допустимый диапазон.</p>
+<p><code><span class="tok-keyword">const</span><span> </span><span class="tok-name">percent</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">10</span></code> объявляет нетипизированную числовую константу. Её можно присвоить <code><span class="tok-name">int64</span></code>, если значение представимо этим типом. А <code><span class="tok-keyword">const</span><span> </span><span class="tok-name">percent</span><span> </span><span class="tok-name">int64</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">10</span></code> сразу задаёт тип константы. В отличие от переменной константа не получает новое значение. Константное <code><span class="tok-number">300</span></code> нельзя присвоить <code><span class="tok-name">uint8</span></code>: компилятор обнаружит выход за диапазон ещё до запуска.</p>
+<h2 id="_7">Маленький опыт до ценника</h2>
+<p>В готовой контрольной точке откройте <code><span class="tok-name">labs</span><span class="tok-symbol">/</span><span class="tok-number">01</span><span class="tok-symbol">-</span><span class="tok-name">values</span><span class="tok-symbol">/</span><span class="tok-name">main</span><span class="tok-symbol">.</span><span class="tok-keyword">go</span></code>. <code><span class="tok-name">labs</span></code> — обычная папка с небольшими опытами, не специальное слово Go. У каждого опыта собственная папка <code><span class="tok-package">package</span><span> </span><span class="tok-name">main</span></code>, но общий <code>go.mod</code> этой главы. Поэтому несколько функций <code><span class="tok-name">main</span></code> из разных папок не конфликтуют. Основной <code>main.go</code> магазина не меняйте.</p>
+<p>Если набираете сами, создайте указанные вложенные папки рядом с основным <code>main.go</code> и сохраните в них полный листинг. Дополнительный <code><span>go</span><span> </span><span>mod</span><span> </span><span>init</span></code> не нужен. Терминал остаётся в корне контрольной точки:</p>
+<pre><code class="language-sh"><span>go</span><span> </span><span>run</span><span> </span><span>./labs/01-values</span><span>
+</span></code></pre>
+<p>Путь после <code><span class="tok-name">run</span></code> выбирает пакет опыта, а не меняет текущую папку терминала. Команда <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code> по-прежнему запускает основной пример главы.</p>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">main</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-string">"fmt"</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">main</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-keyword">var</span><span> </span><span class="tok-name">title</span><span> </span><span class="tok-name">string</span><span>
+</span><span>    </span><span class="tok-keyword">var</span><span> </span><span class="tok-name">priceMinor</span><span> </span><span class="tok-name">int64</span><span>
+</span><span>    </span><span class="tok-keyword">var</span><span> </span><span class="tok-name">published</span><span> </span><span class="tok-name">bool</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Printf</span><span class="tok-bracket">(</span><span class="tok-string">"title=[%s], price=%d, published=%t\n"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">title</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">priceMinor</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">published</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">title</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-string">"Go"</span><span>
+</span><span>    </span><span class="tok-name">otherTitle</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">title</span><span>
+</span><span>    </span><span class="tok-name">title</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-string">"Go shop"</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-name">title</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-name">otherTitle</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">quantity</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-number">2</span><span>
+</span><span>    </span><span class="tok-name">priceMinor</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">150</span><span>
+</span><span>    </span><span class="tok-name">total</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">int64</span><span class="tok-bracket">(</span><span class="tok-name">quantity</span><span class="tok-bracket">)</span><span> </span><span class="tok-symbol">*</span><span> </span><span class="tok-name">priceMinor</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Printf</span><span class="tok-bracket">(</span><span class="tok-string">"%T %T %d\n"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">quantity</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">priceMinor</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">total</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-keyword">const</span><span> </span><span class="tok-name">percent</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">10</span><span>
+</span><span>    </span><span class="tok-keyword">var</span><span> </span><span class="tok-name">discount</span><span> </span><span class="tok-name">int64</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-name">percent</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-name">discount</span><span class="tok-bracket">)</span><span>
+</span><span class="tok-brace">}</span><span>
+</span></code></pre>
+<p>Перед запуском запишите значения обеих переменных с названием после каждого присваивания. Ожидаемый вывод:</p>
+<pre><code class="language-text">title=[], price=0, published=false
+Go shop
+Go
+int int64 300
+10
+</code></pre>
+<p>В первой строке квадратные скобки — просто напечатанные символы, между которыми видна пустая строка. Затем видны две разные строки, два числовых типа и сумма <code><span class="tok-number">300</span></code>. Последняя строка показывает присваивание константы переменной подходящего типа.</p>
+<p><strong>Измените и объясните.</strong> Замените количество <code><span class="tok-number">2</span></code> на <code><span class="tok-number">3</span></code>: сумма станет <code><span class="tok-number">450</span></code>, а строка типов не изменится. В копии опыта уберите <code><span class="tok-name">int64</span><span class="tok-bracket">(</span><span class="tok-symbol">...</span><span class="tok-bracket">)</span></code> вокруг количества: компиляция должна отказать из-за разных типов. Восстановите преобразование. Затем попробуйте присвоить цене строку <code><span class="tok-string">"150"</span></code> и объясните, почему это другая ошибка того же правила типов.</p>
+<p><strong>Проверка перед магазином.</strong> Без просмотра листинга объявите нулевую переменную <code><span class="tok-name">bool</span></code>, присвойте ей <code><span class="tok-name">true</span></code> и напечатайте. Затем объявите две независимые переменные с одним начальным строковым значением и измените только одну. Если не получается, повторите разделы об объявлении и копировании; исправлять цену магазина пока рано.</p>
+<h2 id="_8">Сразу целиком</h2>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">main</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-string">"fmt"</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">main</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-keyword">const</span><span> </span><span class="tok-name">currency</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-string">"KZT"</span><span>
+</span><span>    </span><span class="tok-keyword">const</span><span> </span><span class="tok-name">minorPerUnit</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">100</span><span>
+</span><span>    </span><span class="tok-keyword">var</span><span> </span><span class="tok-name">priceMinor</span><span> </span><span class="tok-name">int64</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">249900</span><span>
+</span><span>    </span><span class="tok-name">title</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-string">"Go: от первой строки до интернет-магазина"</span><span>
+</span><span>    </span><span class="tok-name">published</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">false</span><span>
+</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-name">title</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Printf</span><span class="tok-bracket">(</span><span class="tok-string">"Цена: %d.%02d %s\n"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">priceMinor</span><span class="tok-symbol">/</span><span class="tok-name">minorPerUnit</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">priceMinor</span><span class="tok-symbol">%</span><span class="tok-name">minorPerUnit</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">currency</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-string">"Опубликована:"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">published</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">published</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-name">true</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-string">"Опубликована:"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">published</span><span class="tok-bracket">)</span><span>
+</span><span class="tok-brace">}</span><span>
+</span></code></pre>
+<p>Запустите <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code> после того, как попробуете предсказать две последние строки.</p>
+<pre><code class="language-text">Go: от первой строки до интернет-магазина
+Цена: 2499.00 KZT
+Опубликована: false
+Опубликована: true
+</code></pre>
+<p>Одна переменная участвовала в выводе дважды, и результат различается. Между вызовами мы поменяли её значение.</p>
+<h2 id="_9">Значение и его имя</h2>
+<p><code><span class="tok-name">title</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-string">"..."</span></code> создаёт переменную <code><span class="tok-name">title</span></code> и помещает в неё строку. Go определяет тип по правой части. Короткое объявление <code><span class="tok-symbol">:=</span></code> применяется внутри функций.</p>
+<p><code><span class="tok-name">published</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">false</span></code> создаёт переменную типа <code><span class="tok-name">bool</span></code>. У логического типа два значения: <code><span class="tok-name">true</span></code> и <code><span class="tok-name">false</span></code>. Это удобно для вопроса с двумя ответами: опубликована книга или нет.</p>
+<p><code><span class="tok-name">published</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-name">true</span></code> меняет значение существующей переменной. Здесь стоит <code><span class="tok-symbol">=</span></code>, а не <code><span class="tok-symbol">:=</span></code>. Для повторного присваивания одному уже объявленному имени новое объявление не требуется.</p>
+<p><code><span class="tok-keyword">var</span><span> </span><span class="tok-name">priceMinor</span><span> </span><span class="tok-name">int64</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">249900</span></code> — более подробная форма: мы явно выбрали тип <code><span class="tok-name">int64</span></code>. Это знаковое целое фиксированной разрядности. Тип <code><span class="tok-name">int</span></code>, который часто используют для счётчиков и индексов, зависит от архитектуры. Для представления сумм в модели магазина мы выберем фиксированный целый тип.</p>
+<p>Если объявить переменную без начального значения, Go задаст нулевое: для целого числа — <code><span class="tok-number">0</span></code>, для строки — пустую строку, для <code><span class="tok-name">bool</span></code> — <code><span class="tok-name">false</span></code>. Это правило языка, но не бизнес-решение. Не стоит считать нулевую цену автоматически разрешённой, пока магазин не определил правила бесплатных книг.</p>
+<h2 id="_10">Константа не меняется</h2>
+<p><code><span class="tok-keyword">const</span><span> </span><span class="tok-name">currency</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-string">"KZT"</span></code> задаёт константу. Ей нельзя присвоить другое значение во время работы программы. В этом примере валюта одна, поэтому она неизменна.</p>
+<p>Это не означает, что любой магазин обязан иметь одну валюту. Когда появится несколько валют, код валюты станет частью данных, а правила пересчёта и округления придётся определить отдельно.</p>
+<p><code><span class="tok-name">minorPerUnit</span></code> задаёт число минимальных денежных единиц в основной для нашего учебного представления KZT: сто. Имя помогает увидеть смысл числа в выражении. Число <code><span class="tok-number">100</span></code> без имени могло бы означать и процент, и ограничение длины, и количество товаров.</p>
+<h2 id="_11">Почему цена целая</h2>
+<p>Сумму <code><span class="tok-number">2499.00</span><span> </span><span class="tok-name">KZT</span></code> мы храним как <code><span class="tok-number">249900</span></code> минимальных единиц. Такой способ позволяет выполнять расчёты целыми числами и явно решать, что делать с дробной минимальной единицей.</p>
+<p>Тип <code><span class="tok-name">float64</span></code> полезен для приближённых вычислений, измерений и многих научных задач. Но многие десятичные дроби не представимы в двоичной форме точно. Для денежных правил нам важна воспроизводимая единица учёта, а не приближение, которое случайно выглядит правильно после печати.</p>
+<p>Целое число тоже имеет предел. Сам по себе переход на <code><span class="tok-name">int64</span></code> не защищает от переполнения при умножении. В главе 5 мы ограничим входную цену до расчёта и проверим границы тестами. Сумму и валюту позже объединим в модель, чтобы не перепутать единицы.</p>
+<h2 id="_12">Как получилась точка и два нуля</h2>
+<p>В выражении <code><span class="tok-name">priceMinor</span><span> </span><span class="tok-symbol">/</span><span> </span><span class="tok-name">minorPerUnit</span></code> целочисленное деление даёт целую часть. В выражении с <code><span class="tok-symbol">%</span></code> получаем остаток. Для <code><span class="tok-number">249900</span></code> это <code><span class="tok-number">2499</span></code> и <code><span class="tok-number">0</span></code>.</p>
+<p><code><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Printf</span></code> печатает по шаблону. В нашем шаблоне:</p>
+<table>
+<thead>
+<tr>
+<th>Запись</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="tok-symbol">%</span><span class="tok-name">d</span></code></td>
+<td>Целое десятичное число</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">%</span><span class="tok-number">02</span><span class="tok-name">d</span></code></td>
+<td>Целое число шириной не менее двух позиций, с ведущим нулём</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">%</span><span class="tok-name">s</span></code></td>
+<td>Строка</td>
+</tr>
+<tr>
+<td><code><span>\</span><span class="tok-name">n</span></code></td>
+<td>Перевод строки</td>
+</tr>
+</tbody>
+</table>
+<p>Поэтому остаток <code><span class="tok-number">0</span></code> становится <code><span class="tok-number">00</span></code>, а остаток <code><span class="tok-number">5</span></code> стал бы <code><span class="tok-number">05</span></code>. В отличие от <code><span class="tok-name">Println</span></code>, <code><span class="tok-name">Printf</span></code> не добавляет перевод строки автоматически: он записан в шаблоне.</p>
+<p>Этот вывод рассчитан на неотрицательную цену. Он не является готовым форматировщиком отрицательных сумм или всех валют. Мы отделим такие правила, когда появится необходимость.</p>
+<h2 id="_13">Читаем новую запись по символам</h2>
+<table>
+<thead>
+<tr>
+<th>Запись</th>
+<th>Как прочитать</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="tok-symbol">:=</span></code></td>
+<td>Объявить переменную и дать начальное значение; двоеточие вместе с равно — один оператор</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">=</span></code></td>
+<td>Присвоить новое значение уже существующей переменной</td>
+</tr>
+<tr>
+<td><code><span class="tok-keyword">const</span></code></td>
+<td>Объявить константу</td>
+</tr>
+<tr>
+<td><code><span class="tok-keyword">var</span></code></td>
+<td>Объявить переменную</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">int64</span></code>, <code><span class="tok-name">string</span></code>, <code><span class="tok-name">bool</span></code></td>
+<td>Имена типов, то есть допустимых видов значений</td>
+</tr>
+<tr>
+<td><code><span class="tok-number">249900</span></code></td>
+<td>Целочисленный литерал без кавычек</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">false</span></code>, <code><span class="tok-name">true</span></code></td>
+<td>Логические значения без кавычек</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">,</span></code> в <code><span class="tok-name">Printf</span><span class="tok-bracket">(</span><span class="tok-symbol">...</span><span class="tok-bracket">)</span></code></td>
+<td>Разделитель аргументов одного вызова</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">/</span></code>, <code><span class="tok-symbol">%</span></code> между числами</td>
+<td>Деление и остаток от целочисленного деления</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">%</span><span class="tok-name">d</span></code> внутри кавычек</td>
+<td>Часть формата <code><span class="tok-name">Printf</span></code>, а не оператор остатка</td>
+</tr>
+</tbody>
+</table>
+<p>Одни и те же видимые знаки читаются по месту. <code><span class="tok-symbol">%</span></code> снаружи строки участвует в арифметике Go; <code><span class="tok-symbol">%</span><span class="tok-number">02</span><span class="tok-name">d</span></code> внутри строки получает смысл, когда <code><span class="tok-name">Printf</span></code> читает шаблон. Обратный слеш в <code><span>\</span><span class="tok-name">n</span></code> начинает управляющую последовательность строкового литерала, обозначающую перевод строки; это не два печатаемых символа.</p>
+<p><img alt="Опора данных: название, целая сумма и состояние публикации" src="diagrams/values.svg" /></p>
+<p><strong>Проверка понимания.</strong> Покажите в примере присваивание, которое изменяет данные, и место, которое только задаёт вид вывода. Если <code><span class="tok-symbol">%</span></code> пока означает для вас одно и то же в обоих местах, перечитайте разбор цены.</p>
+<h2 id="_14">Разминка</h2>
+<p><strong>Предскажите.</strong> Как будет выглядеть цена при <code><span class="tok-name">priceMinor</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-number">105</span></code>?</p>
+<p><strong>Заполните.</strong> Для изменения опубликованной книги на черновик используйте <code><span class="tok-name">published</span><span> </span><span class="tok-name">___</span><span> </span><span class="tok-name">false</span></code>.</p>
+<p><strong>Почините.</strong> Кто-то написал <code><span class="tok-name">priceMinor</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-string">"249900"</span></code>. Почему это не то же самое, что число <code><span class="tok-number">249900</span></code>?</p>
+<h2 id="_15">Задание</h2>
+<p><strong>Обязательное.</strong> Установите цену <code><span class="tok-number">350050</span></code>. Программа должна напечатать <code><span class="tok-name">Цена</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">3500.50</span><span> </span><span class="tok-name">KZT</span></code>. Вторая строка состояния должна оставаться <code><span class="tok-name">Опубликована</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">true</span></code>.</p>
+<p><strong>На своих данных.</strong> Возьмите положительную цену, у которой последние две цифры — <code><span class="tok-number">05</span></code>, и предскажите вывод перед запуском.</p>
+<p><strong>По желанию.</strong> Попробуйте присвоить константе <code><span class="tok-name">currency</span></code> другое значение. Прочитайте ошибку и отмените изменение.</p>
+<h2 id="_16">Скажите своими словами</h2>
+<p>Чем отличается объявление от присваивания? Почему сумма без валюты неполна? Почему целый тип не освобождает нас от проверки диапазона?</p>
+<h2 id="_17">Ответы</h2>
+<p><code><span class="tok-number">105</span></code> минимальных единиц даст <code><span class="tok-number">1.05</span><span> </span><span class="tok-name">KZT</span></code>. Для присваивания нужен <code><span class="tok-symbol">=</span></code>. Значение в кавычках имеет строковый тип, а <code><span class="tok-name">priceMinor</span></code> объявлена целой: это несовместимые типы для прямого присваивания.</p>
+<p>В обязательном задании меняется только начальное значение цены. Не исправляйте шаблон вывода под конкретный ответ: он должен работать и для предыдущей цены.</p>
+<p>У нашей книги появились данные трёх видов. Следующий шаг — принимать решение по этим данным, а не всегда печатать одно и то же.</p></main><nav aria-label="Переход между главами"><a href="02-first-program.html">← Предыдущая глава</a> · <a href="04-conditions.html">Следующая глава →</a></nav></body></html>

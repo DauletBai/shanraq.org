@@ -62,7 +62,7 @@ func bookSlide(lang string) Ad {
 // bookCoverURL is the cover the book slide shows. It is the product's own
 // cover file; the product row may point somewhere else once the owner replaces
 // it in the panel, and then this is the one line to follow.
-const bookCoverURL = "/static/shop/go-book-cover.jpg"
+const bookCoverURL = "/static/shop/go-book-sample/0.21.0-sample/read/cover/go-book-cover-v3.png"
 
 // houseSlide builds one house slide from its string key and where it leads.
 func houseSlide(lang, key, cta string) Ad {

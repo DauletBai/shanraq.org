@@ -8,8 +8,8 @@ import (
 )
 
 func TestBookSamplePublicReadingAndDownloads(t *testing.T) {
-	prefix := "/shop/go-book-sample/0.19.0-sample/"
-	for _, path := range []string{"read/toc.html", "read/12-templates.html", "go-book-preview.pdf", "go-book-preview.epub", "go-book-preview-html.zip", "go-book-preview-code.zip"} {
+	prefix := "/shop/go-book-sample/0.21.0-sample/"
+	for _, path := range []string{"", "read/cover/go-book-cover-v3.png", "read/toc.html", "read/12-templates.html", "go-book-preview.pdf", "go-book-preview.epub", "go-book-preview-html.zip", "go-book-preview-code.zip"} {
 		response := httptest.NewRecorder()
 		StaticHandler().ServeHTTP(response, httptest.NewRequest("GET", prefix+path, nil))
 		if response.Code != 200 || response.Body.Len() == 0 {

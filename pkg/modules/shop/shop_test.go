@@ -1,6 +1,7 @@
 package shop
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
@@ -191,5 +192,22 @@ func TestProductLD(t *testing.T) {
 	// the crawler's browser from reading it.
 	if !strings.Contains(selling, `nonce="n0nce"`) || !strings.Contains(selling, "application/ld+json") {
 		t.Errorf("the block must be a nonced ld+json script: %s", selling)
+	}
+}
+
+// The sample is accessible independently of the product's sale state.
+func TestBookSampleLinksWhileAnnounced(t *testing.T) {
+	r := renderer(t)
+	for _, lang := range site.Langs {
+		page := productPage{Base: site.Base{Lang: lang}, P: Product{Slug: "go-book", Status: StatusAnnounced}}
+		var output bytes.Buffer
+		if err := r.Execute(&output, "shop_product", page); err != nil {
+			t.Fatal(err)
+		}
+		for _, name := range []string{"read/toc.html", "go-book-preview.pdf", "go-book-preview.epub", "go-book-preview-html.zip", "go-book-preview-code.zip"} {
+			if !strings.Contains(output.String(), "/static/shop/go-book-sample/0.21.0-sample/"+name) {
+				t.Errorf("%s: missing sample link %s", lang, name)
+			}
+		}
 	}
 }

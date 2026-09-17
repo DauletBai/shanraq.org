@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>12. HTML-шаблон превращает каталог в страницу</title><link rel="stylesheet" href="book.css"></head><body><a class="skip" href="#content">К содержимому страницы</a><nav aria-label="Навигация книги"><a href="toc.html">Оглавление книги</a></nav><p class="status">Ознакомительный фрагмент 0.21.0-sample · вступление и главы 1–12. Бесплатный фрагмент: главы 1–12.</p><main id="content"><h1 id="12-html-">12. HTML-шаблон превращает каталог в страницу</h1>
+<p>В этой главе каталог получает заголовки, ссылки, цены и простой стиль. Мы сохраняем сервер и правила книги, меняем представление ответа. Внешний сборщик, JavaScript и CSS-фреймворк не нужны.</p>
+<p>Перед началом объясните, почему заголовок ответа устанавливают раньше тела и почему обработчик возвращает 404 для неизвестной книги. Если не получается, повторите тест маршрутов из главы 11.</p>
+<p><img alt="Данные и представление" src="diagrams/template-boundary.svg" /></p>
+<h2 id="_1">Файлы и быстрый результат</h2>
+<p>Откройте <code>examples/12-templates</code>. При ручном переходе скопируйте главу 11, согласованно замените <code><span class="tok-number">11</span><span class="tok-symbol">-</span><span class="tok-name">http</span></code> на <code><span class="tok-number">12</span><span class="tok-symbol">-</span><span class="tok-name">templates</span></code> в <code>go.mod</code> и импортах. В <code><span class="tok-name">internal</span><span class="tok-symbol">/</span><span class="tok-name">web</span></code> замените <code>web.go</code>, добавьте <code>templates.go</code>, <code>template_test.go</code> и <code>footer_test.go</code>; прежний <code>web_test.go</code> сохраняется. Скопируйте дерево <code><span class="tok-name">web</span></code> из контрольной точки: <code>assets.go</code>, <code><span class="tok-name">templates</span><span class="tok-symbol">/</span><span class="tok-name">layouts</span></code>, <code><span class="tok-name">templates</span><span class="tok-symbol">/</span><span class="tok-name">pages</span></code>, <code><span class="tok-name">templates</span><span class="tok-symbol">/</span><span class="tok-name">partials</span></code> и <code><span class="tok-name">static</span><span class="tok-symbol">/</span><span class="tok-name">css</span><span class="tok-symbol">/</span><span class="tok-name">style</span><span class="tok-symbol">.</span><span class="tok-name">css</span></code>. Остальные пакеты не меняют поведения.</p>
+<pre><code class="language-sh"><span>go</span><span> </span><span class="tok-name">test</span><span> </span><span>./...</span><span>
+</span><span>go</span><span> </span><span>run</span><span> </span><span>./cmd/shop</span><span>
+</span></code></pre>
+<p>Откройте <code><span class="tok-name">http</span><span class="tok-symbol">:</span><span class="tok-comment">//127.0.0.1:8080/</span></code>: увидите две карточки. В меню пока только eGopher: корзина появится в главе 13, регистрация — в главе 19, вход — в главе 20. Ссылки добавляем вместе с работающими маршрутами; отсутствие будущего пункта здесь не ошибка. Переход по названию открывает отдельную страницу книги. Адрес отсутствующей книги по-прежнему даёт 404. Сервер останавливается Ctrl+C.</p>
+<h2 id="html">Минимум HTML для чтения шаблона</h2>
+<p>HTML размечает смысл документа. <code><span class="tok-symbol">&lt;</span><span class="tok-name">h1</span><span class="tok-symbol">&gt;</span></code> — главный заголовок страницы, <code><span class="tok-symbol">&lt;</span><span class="tok-name">article</span><span class="tok-symbol">&gt;</span></code> — самостоятельная карточка, <code><span class="tok-symbol">&lt;</span><span class="tok-name">a</span><span> </span><span class="tok-name">href</span><span class="tok-symbol">=</span><span class="tok-string">"..."</span><span class="tok-symbol">&gt;</span></code> — ссылка, <code><span class="tok-symbol">&lt;</span><span class="tok-name">p</span><span class="tok-symbol">&gt;</span></code> — абзац. Закрывающий тег начинается с <code><span class="tok-symbol">&lt;</span><span class="tok-symbol">/</span></code>. Атрибуты внутри открывающего тега задают свойства элемента. HTML не является кодом Go.</p>
+<p><code><span class="tok-name">lang</span><span class="tok-symbol">=</span><span class="tok-string">"ru"</span></code> помогает средствам чтения выбрать язык. <code><span class="tok-name">charset</span><span class="tok-symbol">=</span><span class="tok-string">"utf-8"</span></code> задаёт кодировку. <code><span class="tok-name">viewport</span></code> позволяет странице учитывать ширину экрана. Область <code><span class="tok-symbol">&lt;</span><span class="tok-name">main</span><span class="tok-symbol">&gt;</span></code> отделяет основное содержимое, ссылка на <code><span>#</span><span class="tok-name">content</span></code> позволяет перейти к нему с клавиатуры. Сначала смысл и порядок чтения, затем оформление.</p>
+<h2 id="_2">Сначала одна подстановка</h2>
+<p>Не будем одновременно разбирать файлы layout, встраивание и каталог. Откройте <code><span class="tok-name">labs</span><span class="tok-symbol">/</span><span class="tok-number">01</span><span class="tok-symbol">-</span><span class="tok-name">template</span><span class="tok-symbol">/</span><span class="tok-name">main</span><span class="tok-symbol">.</span><span class="tok-keyword">go</span></code> в контрольной точке; команда запускается рядом с <code>go.mod</code> этой главы.</p>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">main</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-bracket">(</span><span>
+</span><span>    </span><span class="tok-string">"fmt"</span><span>
+</span><span>    </span><span class="tok-string">"html/template"</span><span>
+</span><span>    </span><span class="tok-string">"os"</span><span>
+</span><span class="tok-bracket">)</span><span>
+</span><span>
+</span><span class="tok-keyword">type</span><span> </span><span class="tok-name">Page</span><span> </span><span class="tok-keyword">struct</span><span class="tok-brace">{</span><span> </span><span class="tok-name">Title</span><span> </span><span class="tok-name">string</span><span> </span><span class="tok-brace">}</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">run</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-name">error</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">page</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">New</span><span class="tok-bracket">(</span><span class="tok-string">"card"</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">Parse</span><span class="tok-bracket">(</span><span class="tok-string">"&lt;h1&gt;{{.Title}}&lt;/h1&gt;\n"</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">!=</span><span> </span><span class="tok-name">nil</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">err</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span>    </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">page</span><span class="tok-symbol">.</span><span class="tok-name">Execute</span><span class="tok-bracket">(</span><span class="tok-name">os</span><span class="tok-symbol">.</span><span class="tok-name">Stdout</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">Page</span><span class="tok-brace">{</span><span class="tok-name">Title</span><span class="tok-symbol">:</span><span> </span><span class="tok-string">"&lt;Go&gt;"</span><span class="tok-brace">}</span><span class="tok-bracket">)</span><span>
+</span><span class="tok-brace">}</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">main</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">run</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span class="tok-symbol">;</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">!=</span><span> </span><span class="tok-name">nil</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Fprintln</span><span class="tok-bracket">(</span><span class="tok-name">os</span><span class="tok-symbol">.</span><span class="tok-name">Stderr</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">err</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-name">os</span><span class="tok-symbol">.</span><span class="tok-name">Exit</span><span class="tok-bracket">(</span><span class="tok-number">1</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span class="tok-brace">}</span><span>
+</span></code></pre>
+<pre><code class="language-sh"><span>go</span><span> </span><span>run</span><span> </span><span>./labs/01-template</span><span>
+</span></code></pre>
+<pre><code class="language-text">&lt;h1&gt;&amp;lt;Go&amp;gt;&lt;/h1&gt;
+</code></pre>
+<p><code><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">New</span><span class="tok-bracket">(</span><span class="tok-string">"card"</span><span class="tok-bracket">)</span></code> создаёт набор с именем <code><span class="tok-name">card</span></code>. <code><span class="tok-name">Parse</span></code> разбирает текст шаблона и может вернуть ошибку; <code><span class="tok-name">Execute</span></code> исполняет его с конкретными данными и записывает результат в <code><span class="tok-name">os</span><span class="tok-symbol">.</span><span class="tok-name">Stdout</span></code>. Разбор и исполнение — два разных шага. Запись <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-symbol">.</span><span class="tok-name">Title</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> читает поле текущего значения <code><span class="tok-name">Page</span></code>, переданного вторым аргументом <code><span class="tok-name">Execute</span></code>.</p>
+<p>Мы передали строку <code><span class="tok-symbol">&lt;</span><span class="tok-name">Go</span><span class="tok-symbol">&gt;</span></code>. Результат содержит <code><span class="tok-symbol">&amp;</span><span class="tok-name">lt</span><span class="tok-symbol">;</span></code> и <code><span class="tok-symbol">&amp;</span><span class="tok-name">gt</span><span class="tok-symbol">;</span></code>: HTML-сущности для знаков <code><span class="tok-symbol">&lt;</span></code> и <code><span class="tok-symbol">&gt;</span></code>. Браузер покажет название текстом, а не новым HTML-тегом. Терминал печатает сами символы разметки: он не является браузером. <strong>Опыт:</strong> замените название на <code><span class="tok-name">Go</span><span> </span><span class="tok-symbol">&amp;</span><span> </span><span class="tok-name">SQL</span></code>; ожидайте <code><span class="tok-name">Go</span><span> </span><span class="tok-symbol">&amp;</span><span class="tok-name">amp</span><span class="tok-symbol">;</span><span> </span><span class="tok-name">SQL</span></code> между тегами. Верните исходное значение после проверки.</p>
+<p>Ошибка неизвестного поля может проявиться при <strong>исполнении</strong>, когда появились конкретные данные: попробуйте <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-symbol">.</span><span class="tok-name">Missing</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code>. Ошибка незавершённого действия вроде <code><span class="tok-brace">{</span><span class="tok-brace">{</span></code> обнаружится при <strong>разборе</strong>. Сохраните рабочий вариант: позже обработчик должен различать эти стадии и не отправлять половину успешного ответа.</p>
+<h2 id="_3">Затем каркас и повторяемая часть</h2>
+<p><code><span class="tok-name">define</span></code> объявляет именованный шаблон, а <code><span class="tok-name">template</span></code> исполняет его. Имя в кавычках — ключ в наборе шаблонов, оно не обязано совпадать с именем файла. Последняя точка передаёт текущие данные вложенному шаблону.</p>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">main</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-bracket">(</span><span>
+</span><span>    </span><span class="tok-string">"fmt"</span><span>
+</span><span>    </span><span class="tok-string">"html/template"</span><span>
+</span><span>    </span><span class="tok-string">"os"</span><span>
+</span><span class="tok-bracket">)</span><span>
+</span><span>
+</span><span class="tok-keyword">type</span><span> </span><span class="tok-name">Page</span><span> </span><span class="tok-keyword">struct</span><span class="tok-brace">{</span><span> </span><span class="tok-name">Title</span><span> </span><span class="tok-name">string</span><span> </span><span class="tok-brace">}</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">run</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-name">error</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">source</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-string">`{{define "base"}}&lt;main&gt;{{template "content" .}}&lt;/main&gt;{{template "footer" .}}
+{{end}}{{define "content"}}&lt;h1&gt;{{.Title}}&lt;/h1&gt;{{end}}{{define "footer"}}&lt;footer&gt;eGopher&lt;/footer&gt;{{end}}`</span><span>
+</span><span>    </span><span class="tok-name">page</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">New</span><span class="tok-bracket">(</span><span class="tok-string">"pages"</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">Parse</span><span class="tok-bracket">(</span><span class="tok-name">source</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">!=</span><span> </span><span class="tok-name">nil</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">err</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span>    </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">page</span><span class="tok-symbol">.</span><span class="tok-name">ExecuteTemplate</span><span class="tok-bracket">(</span><span class="tok-name">os</span><span class="tok-symbol">.</span><span class="tok-name">Stdout</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"base"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">Page</span><span class="tok-brace">{</span><span class="tok-name">Title</span><span class="tok-symbol">:</span><span> </span><span class="tok-string">"Go"</span><span class="tok-brace">}</span><span class="tok-bracket">)</span><span>
+</span><span class="tok-brace">}</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">main</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">run</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span class="tok-symbol">;</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">!=</span><span> </span><span class="tok-name">nil</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Fprintln</span><span class="tok-bracket">(</span><span class="tok-name">os</span><span class="tok-symbol">.</span><span class="tok-name">Stderr</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">err</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-name">os</span><span class="tok-symbol">.</span><span class="tok-name">Exit</span><span class="tok-bracket">(</span><span class="tok-number">1</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span class="tok-brace">}</span><span>
+</span></code></pre>
+<pre><code class="language-sh"><span>go</span><span> </span><span>run</span><span> </span><span>./labs/02-layout</span><span>
+</span></code></pre>
+<pre><code class="language-text">&lt;main&gt;&lt;h1&gt;Go&lt;/h1&gt;&lt;/main&gt;&lt;footer&gt;eGopher&lt;/footer&gt;
+</code></pre>
+<p>Сначала <code><span class="tok-name">ExecuteTemplate</span></code> выбирает <code><span class="tok-name">base</span></code>, он вызывает <code><span class="tok-name">content</span></code> и <code><span class="tok-name">footer</span></code>. Только <code><span class="tok-name">content</span></code> читает <code><span class="tok-name">Title</span></code>; подвал здесь содержит постоянную подпись. Измените <code><span class="tok-name">Page</span><span class="tok-symbol">.</span><span class="tok-name">Title</span></code>: изменится заголовок, каркас и подвал сохранятся. Затем уберите точку из <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-name">template</span><span> </span><span class="tok-string">"content"</span><span> </span><span class="tok-symbol">.</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> и наблюдайте потерю данных во вложенном шаблоне. Восстановите передачу точки. Так мы проверяем назначение аргумента, а не запоминаем скобки наизусть.</p>
+<p>В магазине эти три объявления будут разделены по файлам <code><span class="tok-name">layouts</span></code>, <code><span class="tok-name">pages</span></code> и <code><span class="tok-name">partials</span></code>. <code><span class="tok-name">embed</span></code> решает доставку этих файлов вместе с программой, а CSS — их отображение в браузере. Они не меняют уже изученный принцип «данные → исполнение шаблона → HTML». Ниже добавляем их по отдельности.</p>
+<h2 id="_4">Возвращаемся к каталогу</h2>
+<p>Содержимое страницы каталога:</p>
+<pre><code class="language-html">{{define "title"}}{{.Title}}{{end}}
+{{define "content"}}
+&lt;h1&gt;{{.Title}}&lt;/h1&gt;
+{{range .Books}}
+    &lt;article&gt;
+        &lt;h2&gt;
+            &lt;a href="/books/{{.ID}}"&gt;{{.Title}}&lt;/a&gt;
+        &lt;/h2&gt;
+        &lt;p&gt;{{money .PriceMinor}} {{.Currency}}&lt;/p&gt;
+    &lt;/article&gt;
+{{else}}
+    &lt;p&gt;Каталог пока пуст.&lt;/p&gt;
+{{end}}
+{{end}}
+</code></pre>
+<p>Двойные фигурные скобки — действия шаблона. <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-symbol">.</span><span class="tok-name">Title</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> берёт поле <code><span class="tok-name">Title</span></code> текущих данных. <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-keyword">range</span><span> </span><span class="tok-symbol">.</span><span class="tok-name">Books</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> проходит по книгам; внутри цикла точкой становится текущая книга. <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-keyword">else</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> показывает текст при пустом срезе. <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-name">end</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> завершает блок. Это отдельный язык <code><span class="tok-name">html</span><span class="tok-symbol">/</span><span class="tok-name">template</span></code>; слова похожи на Go, но правила принадлежат шаблонизатору.</p>
+<p><code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-name">money</span><span> </span><span class="tok-symbol">.</span><span class="tok-name">PriceMinor</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> вызывает зарегистрированную функцию форматирования. Цена хранится целым числом минимальных единиц; деление на 100 даёт целую часть, остаток <code><span class="tok-symbol">%</span><span> </span><span class="tok-number">100</span></code> — дробную. Формат <code><span class="tok-symbol">%</span><span class="tok-number">02</span><span class="tok-name">d</span></code> дополняет дробную часть слева нулём. Из 105 получаем <code><span class="tok-number">1.05</span></code>. Область применения этого помощника — неотрицательные цены нашей валюты с двумя дробными знаками; это не универсальная библиотека денежных расчётов.</p>
+<h2 id="_5">Встраивание и подготовка ответа</h2>
+<p>Публичные ресурсы сразу разделим по назначению, чтобы рост магазина не превратил <code><span class="tok-name">static</span></code> в общий склад:</p>
+<pre><code class="language-text">web/static/
+    brand/             логотип и фирменные знаки
+    css/style.css      таблица стилей
+    js/                сценарии браузера, когда понадобятся
+    images/            общедоступные изображения
+</code></pre>
+<p>Сейчас используются CSS и фирменные изображения. В папках <code><span class="tok-name">js</span></code> и <code><span class="tok-name">images</span></code> лежит пустой <code><span class="tok-symbol">.</span><span class="tok-name">gitkeep</span></code>: Git хранит файлы, а не пустые директории, поэтому этот обычный файл сохраняет структуру в репозитории и комплекте примеров. Это соглашение проекта, не специальная команда Git. JavaScript пока не нужен; пустая папка не означает, что нужно писать лишний сценарий.</p>
+<p><code><span class="tok-name">brand</span></code> содержит постоянную айдентику магазина, <code><span class="tok-name">images</span></code> — общедоступные иллюстрации и обложки товаров. Полные платные книги, базы, ключи и пользовательские загрузки сюда не относятся. Добавление файла на диск само по себе не открывает ему HTTP-адрес: сервер явно обслуживает <code><span class="tok-symbol">/</span><span class="tok-name">assets</span><span class="tok-symbol">/</span><span class="tok-name">css</span><span class="tok-symbol">/</span><span class="tok-name">style</span><span class="tok-symbol">.</span><span class="tok-name">css</span></code> и перечисленные ниже фирменные изображения. Путь на диске — <code><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">static</span><span class="tok-symbol">/</span><span class="tok-name">css</span><span class="tok-symbol">/</span><span class="tok-name">style</span><span class="tok-symbol">.</span><span class="tok-name">css</span></code>; URL выбирает маршрутизатор. При добавлении новых типов ресурсов расширяем обработку осознанно, без выдачи списка директорий.</p>
+<h3 id="_6">Логотип и маленькая иконка решают разные задачи</h3>
+<p>В <code><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">static</span><span class="tok-symbol">/</span><span class="tok-name">brand</span><span class="tok-symbol">/</span><span class="tok-name">gopher</span><span class="tok-symbol">-</span><span class="tok-name">cart</span><span class="tok-symbol">.</span><span class="tok-name">png</span></code> лежит логотип: гофер с тележкой по мотивам обложки нашей книги. Это PNG с прозрачным фоном, 256 × 256 пикселей. В шапке он показывается размером 80 × 80; запас разрешения помогает на плотных экранах. Для крошечной вкладки подробная тележка не подходит: отдельная иконка показывает только узнаваемую голову гофера.</p>
+<p><code><span class="tok-name">favicon</span><span class="tok-symbol">.</span><span class="tok-name">ico</span></code> содержит два размера, 16 × 16 и 32 × 32. Их исходные PNG тоже лежат в <code><span class="tok-name">brand</span></code>. <code><span class="tok-name">apple</span><span class="tok-symbol">-</span><span class="tok-name">touch</span><span class="tok-symbol">-</span><span class="tok-name">icon</span><span class="tok-symbol">.</span><span class="tok-name">png</span></code> — квадрат 180 × 180 с белым фоном для сохранения сайта на домашнем экране совместимого устройства. Это иконка, не установка полноценного приложения; манифеста и работы без сети здесь нет. Исходные большие изображения и описание их подготовки находятся в материалах редакции, а в контрольной точке — готовые небольшие файлы.</p>
+<p>В <code><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">templates</span><span class="tok-symbol">/</span><span class="tok-name">layouts</span><span class="tok-symbol">/</span><span class="tok-name">base</span><span class="tok-symbol">.</span><span class="tok-name">html</span></code> элементы <code><span class="tok-name">link</span></code> с <code><span class="tok-name">rel</span><span class="tok-symbol">=</span><span class="tok-string">"icon"</span></code> и <code><span class="tok-name">rel</span><span class="tok-symbol">=</span><span class="tok-string">"apple-touch-icon"</span></code> сообщают браузеру назначение файлов. В <code><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">templates</span><span class="tok-symbol">/</span><span class="tok-name">partials</span><span class="tok-symbol">/</span><span class="tok-name">header</span><span class="tok-symbol">.</span><span class="tok-name">html</span></code> обычный <code><span class="tok-name">img</span></code> загружает логотип. Атрибуты <code><span class="tok-name">width</span></code> и <code><span class="tok-name">height</span></code> резервируют место до загрузки. Ссылка логотипа получает доступное имя через <code><span class="tok-name">aria</span><span class="tok-symbol">-</span><span class="tok-name">label</span><span class="tok-symbol">=</span><span class="tok-string">"{{brand_name}} — на главную"</span></code>. Поэтому у изображения оставлен пустой <code><span class="tok-name">alt</span><span class="tok-symbol">=</span><span class="tok-string">""</span></code>: программа чтения экрана использует имя ссылки и не повторяет его. Отдельный элемент <code><span class="tok-name">nav</span></code> с <code><span class="tok-name">aria</span><span class="tok-symbol">-</span><span class="tok-name">label</span><span class="tok-symbol">=</span><span class="tok-string">"Главное меню"</span></code> объединяет текстовые ссылки меню. Функция <code><span class="tok-name">brand_name</span></code> возвращает короткое название <code><span class="tok-name">eGopher</span></code>; шапка, подвал и название вкладки используют одну функцию. При смене бренда достаточно изменить это значение в <code><span class="tok-name">internal</span><span class="tok-symbol">/</span><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">templates</span><span class="tok-symbol">.</span><span class="tok-keyword">go</span></code>.</p>
+<p>Добавьте <code><span class="tok-name">internal</span><span class="tok-symbol">/</span><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">brand</span><span class="tok-symbol">.</span><span class="tok-keyword">go</span></code> и вызов <code><span class="tok-name">registerBrand</span><span class="tok-bracket">(</span><span class="tok-name">mux</span><span class="tok-bracket">)</span></code> сразу после создания маршрутизатора. Функция регистрирует только три разрешённых адреса; содержимое произвольной папки через HTTP не раскрывается. <code><span class="tok-name">serveImage</span></code> принимает байты и тип содержимого: <code><span class="tok-name">image</span><span class="tok-symbol">/</span><span class="tok-name">png</span></code> для PNG и <code><span class="tok-name">image</span><span class="tok-symbol">/</span><span class="tok-name">vnd</span><span class="tok-symbol">.</span><span class="tok-name">microsoft</span><span class="tok-symbol">.</span><span class="tok-name">icon</span></code> для ICO. <code><span class="tok-name">w</span><span class="tok-symbol">.</span><span class="tok-name">Write</span><span class="tok-bracket">(</span><span class="tok-name">data</span><span class="tok-bracket">)</span></code> передаёт двоичные байты без преобразования в текст. Здесь результат единственной записи игнорируется явно: при оборванном соединении повторная запись ответа не восстановит клиента.</p>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">web</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-bracket">(</span><span>
+</span><span>    </span><span class="tok-string">"net/http"</span><span>
+</span><span>
+</span><span>    </span><span class="tok-string">"github.com/dake-edu/gopher-shop/book/examples/12-templates/web"</span><span>
+</span><span class="tok-bracket">)</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">registerBrand</span><span class="tok-bracket">(</span><span class="tok-name">mux</span><span> </span><span class="tok-symbol">*</span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">ServeMux</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">serveImage</span><span class="tok-bracket">(</span><span class="tok-name">mux</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"/assets/brand/gopher-cart.png"</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"image/png"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">assets</span><span class="tok-symbol">.</span><span class="tok-name">Logo</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">serveImage</span><span class="tok-bracket">(</span><span class="tok-name">mux</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"/favicon.ico"</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"image/vnd.microsoft.icon"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">assets</span><span class="tok-symbol">.</span><span class="tok-name">Favicon</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">serveImage</span><span class="tok-bracket">(</span><span class="tok-name">mux</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"/assets/brand/apple-touch-icon.png"</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"image/png"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">assets</span><span class="tok-symbol">.</span><span class="tok-name">TouchIcon</span><span class="tok-bracket">)</span><span>
+</span><span class="tok-brace">}</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">serveImage</span><span class="tok-bracket">(</span><span class="tok-name">mux</span><span> </span><span class="tok-symbol">*</span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">ServeMux</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">path</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">contentType</span><span> </span><span class="tok-name">string</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">data</span><span> </span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">byte</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">mux</span><span class="tok-symbol">.</span><span class="tok-name">HandleFunc</span><span class="tok-bracket">(</span><span class="tok-string">"GET "</span><span class="tok-symbol">+</span><span class="tok-name">path</span><span class="tok-symbol">,</span><span> </span><span class="tok-func">func</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span> </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">ResponseWriter</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">r</span><span> </span><span class="tok-symbol">*</span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">Request</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">w</span><span class="tok-symbol">.</span><span class="tok-name">Header</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">Set</span><span class="tok-bracket">(</span><span class="tok-string">"Content-Type"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">contentType</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-name">_</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">_</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-name">w</span><span class="tok-symbol">.</span><span class="tok-name">Write</span><span class="tok-bracket">(</span><span class="tok-name">data</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span class="tok-bracket">)</span><span>
+</span><span class="tok-brace">}</span><span>
+</span></code></pre>
+<p>Логотип и иконки встраиваются через отдельные переменные <code><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">byte</span></code> в пакете <code><span class="tok-name">assets</span></code>; после замены изображения требуется пересборка программы. Проверьте логотип в шапке и откройте <code><span class="tok-symbol">/</span><span class="tok-name">favicon</span><span class="tok-symbol">.</span><span class="tok-name">ico</span></code> напрямую. Если вкладка показывает прежний значок, учтите кеш браузера: перезагрузите страницу или проверьте её в новом профиле. Тест <code><span class="tok-name">TestBrandAssetsAndClosedDirectory</span></code> сравнивает ответы с встроенными файлами и проверяет 404 для неизвестного файла и каталога.</p>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">web</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-bracket">(</span><span>
+</span><span>    </span><span class="tok-string">"bytes"</span><span>
+</span><span>    </span><span class="tok-string">"fmt"</span><span>
+</span><span>    </span><span class="tok-string">"net/http"</span><span>
+</span><span>
+</span><span>    </span><span class="tok-string">"github.com/dake-edu/gopher-shop/book/examples/12-templates/internal/catalog"</span><span>
+</span><span class="tok-bracket">)</span><span>
+</span><span>
+</span><span class="tok-keyword">type</span><span> </span><span class="tok-name">pageData</span><span> </span><span class="tok-keyword">struct</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">Title</span><span> </span><span class="tok-name">string</span><span>
+</span><span>    </span><span class="tok-name">Books</span><span> </span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">catalog</span><span class="tok-symbol">.</span><span class="tok-name">Book</span><span>
+</span><span class="tok-brace">}</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">money</span><span class="tok-bracket">(</span><span class="tok-name">minor</span><span> </span><span class="tok-name">int64</span><span class="tok-bracket">)</span><span> </span><span class="tok-name">string</span><span> </span><span class="tok-brace">{</span><span> </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Sprintf</span><span class="tok-bracket">(</span><span class="tok-string">"%d.%02d"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">minor</span><span class="tok-symbol">/</span><span class="tok-number">100</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">minor</span><span class="tok-symbol">%</span><span class="tok-number">100</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">}</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">New</span><span class="tok-bracket">(</span><span class="tok-name">books</span><span> </span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">catalog</span><span class="tok-symbol">.</span><span class="tok-name">Book</span><span class="tok-bracket">)</span><span> </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">Handler</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">snapshot</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">append</span><span class="tok-bracket">(</span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">catalog</span><span class="tok-symbol">.</span><span class="tok-name">Book</span><span class="tok-bracket">(</span><span class="tok-name">nil</span><span class="tok-bracket">)</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">books</span><span class="tok-symbol">...</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">page</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">pageTemplate</span><span class="tok-bracket">(</span><span class="tok-string">"home"</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">render</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-func">func</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span> </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">ResponseWriter</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">data</span><span> </span><span class="tok-name">pageData</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-keyword">var</span><span> </span><span class="tok-name">out</span><span> </span><span class="tok-name">bytes</span><span class="tok-symbol">.</span><span class="tok-name">Buffer</span><span>
+</span><span>        </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">page</span><span class="tok-symbol">.</span><span class="tok-name">Execute</span><span class="tok-bracket">(</span><span class="tok-symbol">&amp;</span><span class="tok-name">out</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">data</span><span class="tok-bracket">)</span><span class="tok-symbol">;</span><span> </span><span class="tok-name">err</span><span> </span><span class="tok-symbol">!=</span><span> </span><span class="tok-name">nil</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>            </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">Error</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"Не удалось показать страницу"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">StatusInternalServerError</span><span class="tok-bracket">)</span><span>
+</span><span>            </span><span class="tok-keyword">return</span><span>
+</span><span>        </span><span class="tok-brace">}</span><span>
+</span><span>        </span><span class="tok-name">w</span><span class="tok-symbol">.</span><span class="tok-name">Header</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">Set</span><span class="tok-bracket">(</span><span class="tok-string">"Content-Type"</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"text/html; charset=utf-8"</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-name">_</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">_</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-name">out</span><span class="tok-symbol">.</span><span class="tok-name">WriteTo</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span>    </span><span class="tok-name">mux</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">NewServeMux</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">registerBrand</span><span class="tok-bracket">(</span><span class="tok-name">mux</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">mux</span><span class="tok-symbol">.</span><span class="tok-name">HandleFunc</span><span class="tok-bracket">(</span><span class="tok-string">"GET /{$}"</span><span class="tok-symbol">,</span><span> </span><span class="tok-func">func</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span> </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">ResponseWriter</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">r</span><span> </span><span class="tok-symbol">*</span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">Request</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">render</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">pageData</span><span class="tok-brace">{</span><span class="tok-name">Title</span><span class="tok-symbol">:</span><span> </span><span class="tok-string">"Каталог"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">Books</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">snapshot</span><span class="tok-brace">}</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">mux</span><span class="tok-symbol">.</span><span class="tok-name">HandleFunc</span><span class="tok-bracket">(</span><span class="tok-string">"GET /assets/css/style.css"</span><span class="tok-symbol">,</span><span> </span><span class="tok-func">func</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span> </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">ResponseWriter</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">r</span><span> </span><span class="tok-symbol">*</span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">Request</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">w</span><span class="tok-symbol">.</span><span class="tok-name">Header</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">Set</span><span class="tok-bracket">(</span><span class="tok-string">"Content-Type"</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"text/css; charset=utf-8"</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Fprint</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">styleSource</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">mux</span><span class="tok-symbol">.</span><span class="tok-name">HandleFunc</span><span class="tok-bracket">(</span><span class="tok-string">"GET /books/{id}"</span><span class="tok-symbol">,</span><span> </span><span class="tok-func">func</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span> </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">ResponseWriter</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">r</span><span> </span><span class="tok-symbol">*</span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">Request</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-keyword">for</span><span> </span><span class="tok-name">_</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">book</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-keyword">range</span><span> </span><span class="tok-name">snapshot</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>            </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">book</span><span class="tok-symbol">.</span><span class="tok-name">ID</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-name">r</span><span class="tok-symbol">.</span><span class="tok-name">PathValue</span><span class="tok-bracket">(</span><span class="tok-string">"id"</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>                </span><span class="tok-name">render</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">pageData</span><span class="tok-brace">{</span><span class="tok-name">Title</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">book</span><span class="tok-symbol">.</span><span class="tok-name">Title</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">Books</span><span class="tok-symbol">:</span><span> </span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">catalog</span><span class="tok-symbol">.</span><span class="tok-name">Book</span><span class="tok-brace">{</span><span class="tok-name">book</span><span class="tok-brace">}</span><span class="tok-brace">}</span><span class="tok-bracket">)</span><span>
+</span><span>                </span><span class="tok-keyword">return</span><span>
+</span><span>            </span><span class="tok-brace">}</span><span>
+</span><span>        </span><span class="tok-brace">}</span><span>
+</span><span>        </span><span class="tok-name">http</span><span class="tok-symbol">.</span><span class="tok-name">NotFound</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">r</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">mux</span><span>
+</span><span class="tok-brace">}</span><span>
+</span></code></pre>
+<p>В верхнеуровневом пакете <code><span class="tok-name">web</span></code> объявлено имя <code><span class="tok-name">assets</span></code>, чтобы его не путать с обработчиками. Директива <code><span class="tok-comment">//go:embed templates static</span></code> включает дерево файлов в <code><span class="tok-name">embed</span><span class="tok-symbol">.</span><span class="tok-name">FS</span></code>. Это встроенная файловая система только для чтения. Путь считается от файла с директивой; выйти наверх через <code><span class="tok-symbol">.</span><span class="tok-symbol">.</span></code> нельзя. Поэтому <code>assets.go</code> лежит рядом с папками ресурсов. Отдельная строковая переменная <code><span class="tok-name">Style</span></code> встраивает CSS для простого обработчика одного файла.</p>
+<pre><code class="language-go"><span class="tok-comment">// Package assets contains the public presentation files embedded in the binary.</span><span>
+</span><span class="tok-package">package</span><span> </span><span class="tok-name">assets</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-string">"embed"</span><span>
+</span><span>
+</span><span class="tok-comment">//go:embed templates static</span><span>
+</span><span class="tok-keyword">var</span><span> </span><span class="tok-name">Files</span><span> </span><span class="tok-name">embed</span><span class="tok-symbol">.</span><span class="tok-name">FS</span><span>
+</span><span>
+</span><span class="tok-comment">//go:embed static/css/style.css</span><span>
+</span><span class="tok-keyword">var</span><span> </span><span class="tok-name">Style</span><span> </span><span class="tok-name">string</span><span>
+</span><span>
+</span><span class="tok-comment">//go:embed static/brand/gopher-cart.png</span><span>
+</span><span class="tok-keyword">var</span><span> </span><span class="tok-name">Logo</span><span> </span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">byte</span><span>
+</span><span>
+</span><span class="tok-comment">//go:embed static/brand/favicon.ico</span><span>
+</span><span class="tok-keyword">var</span><span> </span><span class="tok-name">Favicon</span><span> </span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">byte</span><span>
+</span><span>
+</span><span class="tok-comment">//go:embed static/brand/apple-touch-icon.png</span><span>
+</span><span class="tok-keyword">var</span><span> </span><span class="tok-name">TouchIcon</span><span> </span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">byte</span><span>
+</span></code></pre>
+<p>Каркас документа хранится в layout. <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-name">define</span><span> </span><span class="tok-string">"base"</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> объявляет именованный шаблон, <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-name">template</span><span> </span><span class="tok-string">"content"</span><span> </span><span class="tok-symbol">.</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> исполняет другой шаблон и передаёт ему текущие данные. Partials — небольшие повторяющиеся части, например шапка и подвал. Это соглашение об устройстве файлов, поддержанное средствами стандартной библиотеки, а не сторонний движок.</p>
+<pre><code class="language-html">{{define "base"}}
+&lt;!doctype html&gt;
+&lt;html lang="ru"&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf-8"&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+        &lt;title&gt;{{template "title" .}} — {{brand_name}}&lt;/title&gt;
+        &lt;link rel="icon" href="/favicon.ico" sizes="16x16 32x32"&gt;
+        &lt;link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" sizes="180x180"&gt;
+        &lt;link rel="stylesheet" href="/assets/css/style.css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;a href="#content"&gt;Перейти к содержимому&lt;/a&gt;
+        {{template "header" .}}
+        &lt;main id="content"&gt;{{template "content" .}}&lt;/main&gt;
+        {{template "footer" .}}
+    &lt;/body&gt;
+&lt;/html&gt;
+{{end}}
+</code></pre>
+<pre><code class="language-html">{{define "header"}}
+&lt;header&gt;
+    &lt;a class="brand" href="/" aria-label="{{brand_name}} — на главную"&gt;
+        &lt;img src="/assets/brand/gopher-cart.png" width="80" height="80" alt=""&gt;
+    &lt;/a&gt;
+    &lt;nav aria-label="Главное меню"&gt;
+        &lt;a href="/"{{if nav_active "catalog"}} aria-current="true"{{end}}&gt;{{brand_name}}&lt;/a&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+{{end}}
+</code></pre>
+<h3 id="_7">Текущий год в общем подвале</h3>
+<p>Подвал показывает знак ©, текущий год и название магазина. <code><span class="tok-symbol">&amp;</span><span class="tok-name">copy</span><span class="tok-symbol">;</span></code> — HTML-сущность: браузер отображает её как ©. <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-name">year</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> и <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-name">brand_name</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> вызывают функции без аргументов; точки перед именами нет. В отличие от <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-symbol">.</span><span class="tok-name">Title</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code>, они не читают поля данных страницы. Поэтому один подвал работает и с каталогом, и позднее с библиотекой и административными страницами, даже если у них разные структуры данных.</p>
+<pre><code class="language-html">{{define "footer"}}
+&lt;footer&gt;
+    &lt;p&gt;&amp;copy; {{year}} {{brand_name}}&lt;/p&gt;
+    &lt;p&gt;Учебный интернет-магазин.&lt;/p&gt;
+&lt;/footer&gt;
+{{end}}
+</code></pre>
+<p>Каждая страница определяет <code><span class="tok-name">title</span></code> и <code><span class="tok-name">content</span></code>. Для неё создаётся отдельный набор: общий layout, общие partials и ровно один файл страницы. Нельзя разобрать все страницы одним шаблоном: одинаковые имена <code><span class="tok-name">content</span></code> начнут заменять друг друга. <code><span class="tok-name">ParseFS</span></code> читает файлы из встроенного <code><span class="tok-name">assets</span><span class="tok-symbol">.</span><span class="tok-name">Files</span></code>; шаблон пути <code><span class="tok-symbol">*</span><span class="tok-symbol">.</span><span class="tok-name">html</span></code> выбирает partials. Имя страницы задаёт наш код при запуске, а не параметр URL. Подготовленные наборы не изменяются во время запросов.</p>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">web</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-bracket">(</span><span>
+</span><span>    </span><span class="tok-string">"html/template"</span><span>
+</span><span>    </span><span class="tok-string">"time"</span><span>
+</span><span>
+</span><span>    </span><span class="tok-name">assets</span><span> </span><span class="tok-string">"github.com/dake-edu/gopher-shop/book/examples/12-templates/web"</span><span>
+</span><span class="tok-bracket">)</span><span>
+</span><span>
+</span><span class="tok-comment">// Each page gets its own set: identical content names cannot replace another page.</span><span>
+</span><span class="tok-comment">// Call only during handler construction, before serving concurrent requests.</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">pageTemplate</span><span class="tok-bracket">(</span><span class="tok-name">name</span><span> </span><span class="tok-name">string</span><span class="tok-bracket">)</span><span> </span><span class="tok-symbol">*</span><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">Template</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">active</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-string">"account"</span><span>
+</span><span>    </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">name</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-string">"home"</span><span> </span><span class="tok-symbol">||</span><span> </span><span class="tok-name">name</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-string">"workshop"</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">active</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-string">"catalog"</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span>    </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">name</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-string">"cart"</span><span> </span><span class="tok-symbol">||</span><span> </span><span class="tok-name">name</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-string">"order"</span><span> </span><span class="tok-symbol">||</span><span> </span><span class="tok-name">name</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-string">"payment"</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">active</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-string">"cart"</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span>    </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">name</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-string">"cart"</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">name</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-string">"home"</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span>    </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">Must</span><span class="tok-bracket">(</span><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">New</span><span class="tok-bracket">(</span><span class="tok-string">"base"</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">Funcs</span><span class="tok-bracket">(</span><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">FuncMap</span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-string">"nav_active"</span><span class="tok-symbol">:</span><span> </span><span class="tok-func">func</span><span class="tok-bracket">(</span><span class="tok-name">section</span><span> </span><span class="tok-name">string</span><span class="tok-bracket">)</span><span> </span><span class="tok-name">bool</span><span> </span><span class="tok-brace">{</span><span> </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">section</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-name">active</span><span> </span><span class="tok-brace">}</span><span class="tok-symbol">,</span><span>
+</span><span>        </span><span class="tok-string">"money"</span><span class="tok-symbol">:</span><span>      </span><span class="tok-name">money</span><span class="tok-symbol">,</span><span>
+</span><span>        </span><span class="tok-string">"year"</span><span class="tok-symbol">:</span><span>       </span><span class="tok-func">func</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-name">int</span><span> </span><span class="tok-brace">{</span><span> </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">time</span><span class="tok-symbol">.</span><span class="tok-name">Now</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">Year</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">}</span><span class="tok-symbol">,</span><span>
+</span><span>        </span><span class="tok-string">"brand_name"</span><span class="tok-symbol">:</span><span> </span><span class="tok-func">func</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-name">string</span><span> </span><span class="tok-brace">{</span><span> </span><span class="tok-keyword">return</span><span> </span><span class="tok-string">"eGopher"</span><span> </span><span class="tok-brace">}</span><span class="tok-symbol">,</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">ParseFS</span><span class="tok-bracket">(</span><span>
+</span><span>        </span><span class="tok-name">assets</span><span class="tok-symbol">.</span><span class="tok-name">Files</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"templates/layouts/base.html"</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"templates/partials/*.html"</span><span class="tok-symbol">,</span><span>
+</span><span>        </span><span class="tok-string">"templates/pages/"</span><span class="tok-symbol">+</span><span class="tok-name">name</span><span class="tok-symbol">+</span><span class="tok-string">".html"</span><span class="tok-symbol">,</span><span>
+</span><span>    </span><span class="tok-bracket">)</span><span class="tok-bracket">)</span><span>
+</span><span class="tok-brace">}</span><span>
+</span><span>
+</span><span class="tok-keyword">var</span><span> </span><span class="tok-name">styleSource</span><span> </span><span class="tok-symbol">=</span><span> </span><span class="tok-name">assets</span><span class="tok-symbol">.</span><span class="tok-name">Style</span><span>
+</span></code></pre>
+<p><code><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">FuncMap</span></code> — таблица имён функций, доступных шаблону. Регистрируем <code><span class="tok-name">money</span></code>, <code><span class="tok-name">year</span></code> и <code><span class="tok-name">brand_name</span></code> через <code><span class="tok-name">Funcs</span></code> <strong>до</strong> <code><span class="tok-name">ParseFS</span></code>: иначе разбор остановится с ошибкой <code><span class="tok-name">function</span><span> </span><span class="tok-string">"year"</span><span> </span><span class="tok-name">not</span><span> </span><span class="tok-name">defined</span></code>. Функция <code><span class="tok-name">brand_name</span></code> возвращает название магазина; это значение можно изменить в одном месте для всех подвалов.</p>
+<p>Пакет <code><span class="tok-name">time</span></code> входит в стандартную библиотеку. <code><span class="tok-name">time</span><span class="tok-symbol">.</span><span class="tok-name">Now</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span></code> читает текущее время, а метод <code><span class="tok-symbol">.</span><span class="tok-name">Year</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span></code> возвращает год как <code><span class="tok-name">int</span></code>. Запись <code><span class="tok-func">func</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-name">int</span><span> </span><span class="tok-brace">{</span><span> </span><span class="tok-keyword">return</span><span> </span><span class="tok-name">time</span><span class="tok-symbol">.</span><span class="tok-name">Now</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">Year</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">}</span></code> создаёт функцию без аргументов: её тело выполняется при вызове <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-name">year</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code>, то есть при каждом формировании страницы. Мы передаём саму функцию, а не заранее вычисленный год. Поэтому работающий сервер автоматически покажет новый год после полуночи 1 января, без пересборки и перезапуска. Уже открытая вкладка обновится при следующей загрузке страницы.</p>
+<p>Здесь используется локальная временная зона процесса сервера. На сервере с UTC год сменится по UTC; если магазину нужен календарь определённого региона, временную зону следует задать явно. Это отдельное решение, а не свойство языка шаблонов.</p>
+<p>Проверьте: запустите магазин и найдите © с текущим годом внизу каталога и страницы книги. В <code>footer_test.go</code> один разобранный шаблон исполняется с тестовой функцией часов сначала для 2026, затем для 2027 года. Такая подмена проверяет смену значения без ожидания Нового года и без изменения системных часов. Числа в тесте — проверочные данные; в работающем магазине год берётся только из <code><span class="tok-name">time</span><span class="tok-symbol">.</span><span class="tok-name">Now</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">Year</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span></code>.</p>
+<p>При изменении встроенного HTML или CSS перезапустите <code><span>go</span><span> </span><span>run</span><span> </span><span>./cmd/shop</span></code>. Встраивание не делает ресурсы секретными: браузеру передаётся результат HTML и публичный CSS. Платные файлы книги здесь хранить нельзя.</p>
+<p>Новая запись <code><span class="tok-name">append</span><span class="tok-bracket">(</span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">catalog</span><span class="tok-symbol">.</span><span class="tok-name">Book</span><span class="tok-bracket">(</span><span class="tok-name">nil</span><span class="tok-bracket">)</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">books</span><span class="tok-symbol">...</span><span class="tok-bracket">)</span></code> создаёт копию элементов среза. <code><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">catalog</span><span class="tok-symbol">.</span><span class="tok-name">Book</span><span class="tok-bracket">(</span><span class="tok-name">nil</span><span class="tok-bracket">)</span></code> — пустой nil-срез нужного типа. Три точки после <code><span class="tok-name">books</span></code> передают элементы среза как отдельные аргументы <code><span class="tok-name">append</span></code>. Это краткая форма знакомой пары <code><span class="tok-name">make</span></code> и <code><span class="tok-name">copy</span></code>, а не «продолжение пропущенного кода». Исходный и новый срез не разделяют изменяемые элементы массива; вложенные ссылки внутри элементов, если появятся, требуют отдельного внимания.</p>
+<p><code><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">FuncMap</span></code> связывает имя <code><span class="tok-name">money</span></code> с нашей функцией. Функции регистрируются до <code><span class="tok-name">Parse</span></code>, чтобы имена были известны при разборе. <code><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">Must</span></code> проверяет результат разбора и аварийно останавливает запуск при ошибке встроенного шаблона. Это осознанная граница: неверный шаблон — дефект поставленной программы. Ошибки пользовательской формы позже будем возвращать как обычные ответы, без аварийной остановки.</p>
+<p>При исполнении шаблона сначала пишем в <code><span class="tok-name">bytes</span><span class="tok-symbol">.</span><span class="tok-name">Buffer</span></code> — буфер в памяти. Если <code><span class="tok-name">Execute</span></code> вернул ошибку, можно ещё честно отправить статус 500. При немедленной записи в сеть часть успешной страницы могла бы уже уйти клиенту, и поменять статус стало бы поздно. После успешного исполнения ставим <code><span class="tok-name">Content</span><span class="tok-symbol">-</span><span class="tok-name">Type</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">text</span><span class="tok-symbol">/</span><span class="tok-name">html</span><span class="tok-symbol">;</span><span> </span><span class="tok-name">charset</span><span class="tok-symbol">=</span><span class="tok-name">utf</span><span class="tok-symbol">-</span><span class="tok-number">8</span></code> и переносим буфер в ответ. Ошибку последней сетевой записи уже нельзя исправить новым статусом; наблюдаемость таких ошибок добавим позднее.</p>
+<p><code><span class="tok-name">pageData</span></code> — данные конкретного представления. Мы не передаём шаблону весь сервер или будущую запись пользователя с паролем. Это делает границы страницы понятными.</p>
+<h2 id="_8">Текст не должен становиться программой</h2>
+<p><code><span class="tok-name">html</span><span class="tok-symbol">/</span><span class="tok-name">template</span></code> экранирует обычные строки с учётом места вставки. Если название содержит <code><span class="tok-symbol">&lt;</span><span class="tok-name">script</span><span class="tok-symbol">&gt;</span></code>, браузер должен увидеть текст, а не исполнить сценарий. Нельзя отключать защиту преобразованием пользовательского ввода в <code><span class="tok-name">template</span><span class="tok-symbol">.</span><span class="tok-name">HTML</span></code>. Такой тип означает доверенный HTML и снимает часть автоматических проверок.</p>
+<p>Тестируем это и пустой каталог:</p>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">web</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-bracket">(</span><span>
+</span><span>    </span><span class="tok-string">"net/http/httptest"</span><span>
+</span><span>    </span><span class="tok-string">"strings"</span><span>
+</span><span>    </span><span class="tok-string">"testing"</span><span>
+</span><span>
+</span><span>    </span><span class="tok-string">"github.com/dake-edu/gopher-shop/book/examples/12-templates/internal/catalog"</span><span>
+</span><span class="tok-bracket">)</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">TestEscapeAndEmptyCatalog</span><span class="tok-bracket">(</span><span class="tok-name">t</span><span> </span><span class="tok-symbol">*</span><span class="tok-name">testing</span><span class="tok-symbol">.</span><span class="tok-name">T</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">cases</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">catalog</span><span class="tok-symbol">.</span><span class="tok-name">Book</span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">nil</span><span class="tok-symbol">,</span><span>
+</span><span>        </span><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-name">ID</span><span class="tok-symbol">:</span><span> </span><span class="tok-string">"go"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">Title</span><span class="tok-symbol">:</span><span> </span><span class="tok-string">"&lt;script&gt;alert(1)&lt;/script&gt;"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">Currency</span><span class="tok-symbol">:</span><span> </span><span class="tok-string">"KZT"</span><span class="tok-brace">}</span><span class="tok-brace">}</span><span class="tok-symbol">,</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span>    </span><span class="tok-keyword">for</span><span> </span><span class="tok-name">_</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">books</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-keyword">range</span><span> </span><span class="tok-name">cases</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">w</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">httptest</span><span class="tok-symbol">.</span><span class="tok-name">NewRecorder</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-name">New</span><span class="tok-bracket">(</span><span class="tok-name">books</span><span class="tok-bracket">)</span><span class="tok-symbol">.</span><span class="tok-name">ServeHTTP</span><span class="tok-bracket">(</span><span class="tok-name">w</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">httptest</span><span class="tok-symbol">.</span><span class="tok-name">NewRequest</span><span class="tok-bracket">(</span><span class="tok-string">"GET"</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"/"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">nil</span><span class="tok-bracket">)</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-name">body</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">w</span><span class="tok-symbol">.</span><span class="tok-name">Body</span><span class="tok-symbol">.</span><span class="tok-name">String</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">w</span><span class="tok-symbol">.</span><span class="tok-name">Code</span><span> </span><span class="tok-symbol">!=</span><span> </span><span class="tok-number">200</span><span> </span><span class="tok-symbol">||</span><span> </span><span class="tok-name">strings</span><span class="tok-symbol">.</span><span class="tok-name">Contains</span><span class="tok-bracket">(</span><span class="tok-name">body</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"&lt;script&gt;"</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>            </span><span class="tok-name">t</span><span class="tok-symbol">.</span><span class="tok-name">Fatalf</span><span class="tok-bracket">(</span><span class="tok-string">"unsafe response: %s"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">body</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-brace">}</span><span>
+</span><span>        </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">len</span><span class="tok-bracket">(</span><span class="tok-name">books</span><span class="tok-bracket">)</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-number">0</span><span> </span><span class="tok-symbol">&amp;&amp;</span><span> </span><span class="tok-symbol">!</span><span class="tok-name">strings</span><span class="tok-symbol">.</span><span class="tok-name">Contains</span><span class="tok-bracket">(</span><span class="tok-name">body</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"Каталог пока пуст"</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>            </span><span class="tok-name">t</span><span class="tok-symbol">.</span><span class="tok-name">Fatal</span><span class="tok-bracket">(</span><span class="tok-string">"missing empty state"</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-brace">}</span><span>
+</span><span>        </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">len</span><span class="tok-bracket">(</span><span class="tok-name">books</span><span class="tok-bracket">)</span><span> </span><span class="tok-symbol">&gt;</span><span> </span><span class="tok-number">0</span><span> </span><span class="tok-symbol">&amp;&amp;</span><span> </span><span class="tok-symbol">!</span><span class="tok-name">strings</span><span class="tok-symbol">.</span><span class="tok-name">Contains</span><span class="tok-bracket">(</span><span class="tok-name">body</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"&amp;lt;script&amp;gt;"</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>            </span><span class="tok-name">t</span><span class="tok-symbol">.</span><span class="tok-name">Fatal</span><span class="tok-bracket">(</span><span class="tok-string">"missing escaped title"</span><span class="tok-bracket">)</span><span>
+</span><span>        </span><span class="tok-brace">}</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span>    </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">money</span><span class="tok-bracket">(</span><span class="tok-number">105</span><span class="tok-bracket">)</span><span> </span><span class="tok-symbol">!=</span><span> </span><span class="tok-string">"1.05"</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-name">t</span><span class="tok-symbol">.</span><span class="tok-name">Fatal</span><span class="tok-bracket">(</span><span class="tok-string">"money format"</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span class="tok-brace">}</span><span>
+</span></code></pre>
+<p><code><span class="tok-symbol">&amp;&amp;</span></code> в тесте — логическое И: обе проверки должны быть истинны. Вычисление слева направо прекращается при первом ложном условии. В <code><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-bracket">[</span><span class="tok-bracket">]</span><span class="tok-name">catalog</span><span class="tok-symbol">.</span><span class="tok-name">Book</span></code> внешний срез хранит наборы книг, а внутренний — книги одного сценария. Вложенный литерал может опускать повтор уже известного типа; это сокращение, а не новая структура данных.</p>
+<p>Защита от внедрения HTML не заменяет проверку цены, доступов или адресов. Она решает конкретную задачу представления текста. Опорный образ — подпись в рамке: символы остаются подписью, а не становятся указаниями монтажнику. Граница образа: безопасность зависит от контекста вставки, а не от общей «чистоты» строки.</p>
+<h2 id="css">CSS и проверка удобства</h2>
+<p>Селектор выбирает элементы, свойства внутри фигурных скобок задают оформление. <code><span class="tok-name">max</span><span class="tok-symbol">-</span><span class="tok-name">width</span></code> ограничивает длину строки, <code><span class="tok-name">margin</span></code> задаёт внешние отступы, <code><span class="tok-name">padding</span></code> — внутренние. <code><span class="tok-symbol">:</span><span class="tok-name">focus</span><span class="tok-symbol">-</span><span class="tok-name">visible</span></code> обозначает видимый фокус при навигации; не убирайте обводку без понятной замены. <code><span class="tok-name">rem</span></code> соотносится с размером шрифта корневого элемента. В CSS запись <code><span class="tok-name">text</span><span class="tok-symbol">-</span><span class="tok-name">align</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">center</span><span class="tok-symbol">;</span></code> состоит из имени свойства, двоеточия, значения и точки с запятой. Это язык оформления, а не инструкция Go.</p>
+<pre><code class="language-css">*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --color-primary: #006078;
+    --color-on-primary: #fff;
+}
+
+html {
+    height: 100%;
+    overflow-wrap: anywhere;
+}
+
+body {
+    min-height: 100%;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 0.75rem;
+    font: 1rem/1.6 system-ui, sans-serif;
+    color: #182f35;
+    background: #fff;
+}
+
+h1 {
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+    line-height: 1.25;
+}
+
+h2 {
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
+    line-height: 1.35;
+}
+
+a {
+    color: var(--color-primary);
+    text-underline-offset: 0.2em;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 3px solid #9c3b00;
+    outline-offset: 3px;
+}
+
+header, nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+}
+
+header a, nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+}
+
+header, footer {
+    padding: 0.75rem 0;
+}
+
+footer {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: auto;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+article {
+    min-width: 0;
+    padding: 1rem 0;
+    border-bottom: 1px solid #bac7cb;
+}
+
+form {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+label {
+    display: block;
+    min-width: 0;
+}
+
+input, button {
+    max-width: 100%;
+    min-width: 0;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #647a80;
+    border-radius: 0.5rem;
+    font: inherit;
+}
+
+input:not([type="checkbox"]):not([type="hidden"]) {
+    display: block;
+    width: 100%;
+    background: #fff;
+    color: #182f35;
+}
+
+input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    min-height: 0;
+    margin: 0 0.5rem 0 0;
+    vertical-align: middle;
+}
+
+label:has(input[type="checkbox"]) {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+}
+
+button {
+    cursor: pointer;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+img, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+pre {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.error, [role="alert"] {
+    color: #9b1c1c;
+}
+
+@media (min-width: 40rem) {
+    body {
+        padding: 1.5rem;
+        font-size: 1.1rem;
+    }
+
+    form {
+        max-width: 36rem;
+    }
+
+    button {
+        justify-self: start;
+    }
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 100%;
+}
+
+.brand img {
+    flex: 0 0 auto;
+    width: 5rem;
+    height: 5rem;
+    object-fit: contain;
+}
+
+/* Keep the logo at the left edge and let only the menu links wrap. */
+header {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+}
+
+header .brand {
+    flex: 0 0 auto;
+}
+
+header nav {
+    flex: 1 1 0;
+    min-width: 0;
+    margin-inline-start: auto;
+    justify-content: flex-end;
+}
+
+main {
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+@media (max-width: 39.999rem) {
+    header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    header nav {
+        flex: 0 1 auto;
+        width: 100%;
+        margin-inline-start: 0;
+        justify-content: center;
+    }
+}
+
+header nav a {
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+}
+
+header nav a:hover {
+    background: #e5edf0;
+}
+
+header nav a[aria-current="true"] {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+@media (max-width: 39.999rem) {
+    header nav {
+        column-gap: 0.25rem;
+    }
+}
+</code></pre>
+<p>Селектор <code><span class="tok-name">footer</span></code> выбирает подвал из <code><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">templates</span><span class="tok-symbol">/</span><span class="tok-name">partials</span><span class="tok-symbol">/</span><span class="tok-name">footer</span><span class="tok-symbol">.</span><span class="tok-name">html</span></code>. Правило <code><span class="tok-name">text</span><span class="tok-symbol">-</span><span class="tok-name">align</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">center</span></code> в <code><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">static</span><span class="tok-symbol">/</span><span class="tok-name">css</span><span class="tok-symbol">/</span><span class="tok-name">style</span><span class="tok-symbol">.</span><span class="tok-name">css</span></code> выравнивает его текст по горизонтальному центру, включая оба абзаца. Блочный подвал занимает доступную ширину; длинные строки по-прежнему переносятся на узком экране. Фиксированная ширина и абсолютное позиционирование для этого не нужны.</p>
+<p>Чтобы подвал не поднимался к середине короткой страницы, задаём корневому <code><span class="tok-name">html</span></code> высоту <code><span class="tok-number">100</span><span class="tok-symbol">%</span></code>, а <code><span class="tok-name">body</span></code> — <code><span class="tok-name">min</span><span class="tok-symbol">-</span><span class="tok-name">height</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">100</span><span class="tok-symbol">%</span></code>, <code><span class="tok-name">display</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">flex</span></code> и <code><span class="tok-name">flex</span><span class="tok-symbol">-</span><span class="tok-name">direction</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">column</span></code>. Следующая декларация <code><span class="tok-name">min</span><span class="tok-symbol">-</span><span class="tok-name">height</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">100</span><span class="tok-name">dvh</span></code> использует высоту динамической области просмотра в поддерживающих её браузерах; процентная запись остаётся запасным вариантом. <code><span class="tok-name">min</span><span class="tok-symbol">-</span><span class="tok-name">height</span></code>, в отличие от жёсткого ограничения высоты, позволяет странице расти вместе с содержимым.</p>
+<p>У <code><span class="tok-name">footer</span></code> свойство <code><span class="tok-name">margin</span><span class="tok-symbol">-</span><span class="tok-name">top</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">auto</span></code> забирает свободное место над подвалом. На короткой странице это опускает его к нижнему краю с учётом внутренних отступов <code><span class="tok-name">body</span></code>; на длинной свободного места нет, и подвал идёт после содержимого. <code><span class="tok-name">flex</span><span class="tok-symbol">-</span><span class="tok-name">shrink</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">0</span></code> не даёт сжимать подвал. Для <code><span class="tok-name">main</span></code> запись <code><span class="tok-name">flex</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">0</span><span> </span><span class="tok-number">0</span><span> </span><span class="tok-name">auto</span></code> сохраняет естественную высоту содержимого. Здесь не требуется <code><span class="tok-name">position</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">fixed</span></code>: закреплённый поверх страницы подвал мог бы закрыть кнопки и текст.</p>
+<p>В шапке логотип и <code><span class="tok-name">nav</span></code> — два элемента горизонтальной flex-раскладки. <code><span class="tok-name">header</span></code> не переносит эти два блока (<code><span class="tok-name">flex</span><span class="tok-symbol">-</span><span class="tok-name">wrap</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">nowrap</span></code>), а ссылки внутри <code><span class="tok-name">nav</span></code> могут переноситься. <code><span class="tok-name">margin</span><span class="tok-symbol">-</span><span class="tok-name">inline</span><span class="tok-symbol">-</span><span class="tok-name">start</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">auto</span></code> отдаёт свободное место перед меню, <code><span class="tok-name">justify</span><span class="tok-symbol">-</span><span class="tok-name">content</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">flex</span><span class="tok-symbol">-</span><span class="tok-name">end</span></code> выравнивает его ссылки к правому краю. <code><span class="tok-name">flex</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">1</span><span> </span><span class="tok-number">1</span><span> </span><span class="tok-number">0</span></code> позволяет меню занять оставшуюся ширину, а <code><span class="tok-name">min</span><span class="tok-symbol">-</span><span class="tok-name">width</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">0</span></code> — сжаться на смартфоне. На широком экране логотип остаётся слева, меню справа. В медиазапросе <code><span>@</span><span class="tok-name">media</span><span> </span><span class="tok-bracket">(</span><span class="tok-name">max</span><span class="tok-symbol">-</span><span class="tok-name">width</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">39.999</span><span class="tok-name">rem</span><span class="tok-bracket">)</span></code> меняем направление шапки на <code><span class="tok-name">column</span></code>: логотип располагается по центру, меню под ним. Для меню сбрасываем автоматический боковой отступ, задаём <code><span class="tok-name">width</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">100</span><span class="tok-symbol">%</span></code> и <code><span class="tok-name">justify</span><span class="tok-symbol">-</span><span class="tok-name">content</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">center</span></code>. Короткая ссылка <code><span class="tok-name">eGopher</span></code> помогает трём пунктам помещаться в одну строку даже при ширине 320 пикселей. Перенос остаётся разрешённым для увеличенного текста или более длинного перевода: доступность ссылок важнее принудительного удержания одной строки.</p>
+<p>Проверяйте три случая: короткую карточку книги, длинный каталог и смартфон в двух ориентациях. Подвал должен оставаться ниже содержимого, логотип — полностью видимым, а ссылки — доступными без горизонтальной прокрутки. Поведение экранной клавиатуры дополнительно проверяется на реальном устройстве: уменьшение окна настольного браузера его не воспроизводит.</p>
+<p>Проверьте страницу без мыши: Tab должен последовательно переводить фокус по ссылкам, Enter — открывать выбранную. Увеличьте масштаб браузера до 200%, сузьте окно. Текст и цены должны оставаться читаемыми. Эта небольшая проверка не равна полному аудиту доступности, но выявляет дефекты раньше.</p>
+<h2 id="_9">Самостоятельно: пустое состояние</h2>
+<p>Предскажите, что отобразится при <code><span class="tok-name">New</span><span class="tok-bracket">(</span><span class="tok-name">nil</span><span class="tok-bracket">)</span></code>. Затем найдите проверку в <code>template_test.go</code>. Измените сообщение на «Новые книги скоро появятся» и сначала исправьте ожидаемый текст теста. Проверьте, что тест падает до изменения шаблона и проходит после него.</p>
+<p>Подсказка: нужен блок <code><span class="tok-keyword">else</span></code> у <code><span class="tok-keyword">range</span></code>, а не дополнительная проверка длины в Go. Решение: заменить только текст этого блока и соответствующее ожидание теста. Восстановите исходный вариант перед следующей контрольной точкой.</p>
+<p>Если компилятор сообщает <code><span class="tok-name">no</span><span> </span><span class="tok-name">matching</span><span> </span><span class="tok-name">files</span><span> </span><span class="tok-name">found</span></code>, проверьте дерево ресурсов рядом с <code><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">assets</span><span class="tok-symbol">.</span><span class="tok-keyword">go</span></code>. Если <code><span class="tok-name">ParseFS</span></code> не находит страницу, проверьте её имя в <code><span class="tok-name">web</span><span class="tok-symbol">/</span><span class="tok-name">templates</span><span class="tok-symbol">/</span><span class="tok-name">pages</span></code>. Если сервер завершился с ошибкой разбора шаблона, проверьте пары <code><span class="tok-keyword">range</span></code>/<code><span class="tok-name">end</span></code> и имена функций. Если пропал стиль, откройте <code><span class="tok-symbol">/</span><span class="tok-name">assets</span><span class="tok-symbol">/</span><span class="tok-name">css</span><span class="tok-symbol">/</span><span class="tok-name">style</span><span class="tok-symbol">.</span><span class="tok-name">css</span></code>: должен прийти CSS, а не HTML с 404.</p>
+<p>Готовность: вы различаете Go, HTML, CSS и действия шаблона, объясняете автоматическое экранирование и буфер, проверяете пустой каталог и умеете пройти страницу клавиатурой.</p>
+<h2 id="_10">Адаптивность: ширина содержимого, а не название устройства</h2>
+<p>Страница должна перестраиваться при изменении доступной ширины: смартфон поворачивается, планшет открывает два приложения рядом, пользователь ноутбука увеличивает масштаб. Не определяем устройство по имени браузера и не запрещаем масштабирование. В layout уже задан <code><span class="tok-name">width</span><span class="tok-symbol">=</span><span class="tok-name">device</span><span class="tok-symbol">-</span><span class="tok-name">width</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">initial</span><span class="tok-symbol">-</span><span class="tok-name">scale</span><span class="tok-symbol">=</span><span class="tok-number">1</span></code> без <code><span class="tok-name">maximum</span><span class="tok-symbol">-</span><span class="tok-name">scale</span></code>.</p>
+<p>Начинаем с одной колонки. <code><span class="tok-name">box</span><span class="tok-symbol">-</span><span class="tok-name">sizing</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">border</span><span class="tok-symbol">-</span><span class="tok-name">box</span></code> включает рамку и внутренние отступы в заданную ширину. Поля занимают <code><span class="tok-name">width</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">100</span><span class="tok-symbol">%</span></code>, но не выходят за родителя; <code><span class="tok-name">min</span><span class="tok-symbol">-</span><span class="tok-name">width</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">0</span></code> разрешает им сжиматься. <code><span class="tok-name">overflow</span><span class="tok-symbol">-</span><span class="tok-name">wrap</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">anywhere</span></code> переносит даже длинный ID, почту или SHA-256. Не скрываем ошибку через <code><span class="tok-name">overflow</span><span class="tok-symbol">-</span><span class="tok-name">x</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">hidden</span></code>: иначе часть содержимого просто исчезнет.</p>
+<p><code><span class="tok-name">display</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">grid</span></code> у формы располагает поля по порядку, <code><span class="tok-name">gap</span></code> создаёт промежутки без набора отдельных отступов. Навигация использует <code><span class="tok-name">display</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">flex</span></code> и <code><span class="tok-name">flex</span><span class="tok-symbol">-</span><span class="tok-name">wrap</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">wrap</span></code>: ссылки переходят на следующую строку. <code><span class="tok-name">clamp</span></code> ограничивает размер заголовка снизу и сверху, а среднее значение зависит от ширины окна (<code><span class="tok-name">vw</span></code>). Кнопки и поля имеют высоту не меньше 2.75rem; это выбранный для проекта удобный размер касания, а не доказательство полной доступности интерфейса.</p>
+<p>Селектор <code><span class="tok-symbol">:</span><span class="tok-name">not</span></code> исключает checkbox и скрытые поля из правила текстовых полей. <code><span class="tok-symbol">:</span><span class="tok-name">has</span><span class="tok-bracket">(</span><span class="tok-name">input</span><span class="tok-bracket">[</span><span class="tok-keyword">type</span><span class="tok-symbol">=</span><span class="tok-string">"checkbox"</span><span class="tok-bracket">]</span><span class="tok-bracket">)</span></code> выбирает подпись, содержащую checkbox: вся подпись становится удобной областью нажатия. Без этой дополнительной раскладки обычный label всё равно остаётся связан с вложенным полем. <code><span>@</span><span class="tok-name">media</span><span> </span><span class="tok-bracket">(</span><span class="tok-name">min</span><span class="tok-symbol">-</span><span class="tok-name">width</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">40</span><span class="tok-name">rem</span><span class="tok-bracket">)</span></code> расширяет отступы и ограничивает длину формы, когда места достаточно. Отдельного запрета или особой страницы для горизонтальной ориентации не требуется.</p>
+<p>Сейчас проверьте каталог, карточку книги и длинное название; после глав 13 и 20 добавьте ошибку формы и вход при размерах 320×568, 390×844, 844×390, 768×1024, 1024×768 и 1366×768. На ноутбуке повторите проверку при масштабе 200%. Не должно быть горизонтальной прокрутки всей страницы, обрезанных полей и перекрывающихся кнопок. Вертикальная прокрутка длинной формы нормальна, в том числе при открытой экранной клавиатуре. В дальнейшем те же правила проверяем для кабинета и административных страниц.</p>
+<p>Размер окна эмулятора не воспроизводит полностью Safari на iPhone или экранную клавиатуру Android. Перед коммерческим выпуском дополните автоматическую проверку реальными устройствами. Разбор подхода: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design.</p>
+<p>Подвал итоговых примеров содержит динамический год, название и «Учебный интернет-магазин». В главах об оплате используется sandbox: настоящие деньги не списываются. Подробности режима относятся к объяснению платёжного сценария и его странице, а не к общему подвалу.</p>
+<h2 id="_11">Активный раздел меню</h2>
+<p>Верхнее меню показывает, в каком разделе находится читатель. Функция шаблона <code><span class="tok-name">nav_active</span></code> принимает ключ раздела и сравнивает его с <code><span class="tok-name">active</span></code>, выбранным при подготовке шаблона. Каталог и карточка книги относятся к <code><span class="tok-name">catalog</span></code>; корзина, заказ и учебная оплата — к <code><span class="tok-name">cart</span></code>; вход, регистрация, библиотека и управление — к <code><span class="tok-name">account</span></code>. Более поздние страницы появятся в соответствующих главах.</p>
+<p>В шапке условие <code><span class="tok-brace">{</span><span class="tok-brace">{</span><span class="tok-keyword">if</span><span> </span><span class="tok-name">nav_active</span><span> </span><span class="tok-string">"catalog"</span><span class="tok-brace">}</span><span class="tok-brace">}</span></code> добавляет <code><span class="tok-name">aria</span><span class="tok-symbol">-</span><span class="tok-name">current</span><span class="tok-symbol">=</span><span class="tok-string">"true"</span></code> только активной ссылке. Значение <code><span class="tok-name">true</span></code> обозначает текущий пункт набора: здесь это раздел, а не обязательно точное совпадение URL с адресом ссылки. Например, карточка книги сохраняет выделение каталога. Программа чтения экрана получает то же указание, которое зрячий пользователь видит по цвету.</p>
+<p>Селектор <code><span class="tok-name">header</span><span> </span><span class="tok-name">nav</span><span> </span><span class="tok-name">a</span><span class="tok-bracket">[</span><span class="tok-name">aria</span><span class="tok-symbol">-</span><span class="tok-name">current</span><span class="tok-symbol">=</span><span class="tok-string">"true"</span><span class="tok-bracket">]</span></code> выбирает активную ссылку. Общий бирюзовый фон <code><span>#</span><span class="tok-number">00607</span><span class="tok-number">8</span></code> и белый текст <code><span>#</span><span class="tok-name">fff</span></code> выделяют её без зависимости от наведения мыши. Отступы заданы у всех пунктов заранее, поэтому при смене активного пункта ширина меню не скачет. <code><span class="tok-name">text</span><span class="tok-symbol">-</span><span class="tok-name">decoration</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">none</span></code> убирает подчёркивание только у верхнего меню; обычные ссылки в содержимом остаются подчёркнутыми. Правило <code><span class="tok-symbol">:</span><span class="tok-name">focus</span><span class="tok-symbol">-</span><span class="tok-name">visible</span></code> сохраняет рамку при переходе клавишей Tab.</p>
+<p><code><span class="tok-name">active</span></code> хранится в замыкании конкретного, заранее подготовленного шаблона. Не меняйте общую переменную «текущая страница» перед каждым запросом: одновременные посетители могли бы увидеть чужую подсветку. В следующей главе каталог и корзина используют один файл home.html, но получают два независимых подготовленных шаблона. Это разделяет данные запроса и неизменяемые настройки отображения.</p>
+<p><code><span class="tok-name">border</span><span class="tok-symbol">-</span><span class="tok-name">radius</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">0.5</span><span class="tok-name">rem</span></code> задаёт одинаковое небольшое скругление кнопок, полей ввода и активного пункта меню. При стандартном корневом размере шрифта 16 пикселей это 8 пикселей. Скругление меняет форму границы, а размеры полей и область нажатия сохраняются.</p>
+<p>Подвал использует тот же бирюзовый фон <code><span>#</span><span class="tok-number">00607</span><span class="tok-number">8</span></code> и белый текст <code><span>#</span><span class="tok-name">fff</span></code>, что кнопки и активный пункт меню. Внутренний отступ <code><span class="tok-name">padding</span><span class="tok-symbol">:</span><span> </span><span class="tok-number">1</span><span class="tok-name">rem</span></code> отделяет текст от края цветного блока; скругление <code><span class="tok-number">0.5</span><span class="tok-name">rem</span></code> согласовано с элементами управления. Цвет и оформление не заменяют <code><span class="tok-name">margin</span><span class="tok-symbol">-</span><span class="tok-name">top</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">auto</span></code>: именно flex-раскладка сохраняет положение подвала на коротких страницах.</p>
+<p>Цвета хранятся в CSS-переменных: <code><span class="tok-symbol">--</span><span class="tok-name">color</span><span class="tok-symbol">-</span><span class="tok-name">primary</span></code> и <code><span class="tok-symbol">--</span><span class="tok-name">color</span><span class="tok-symbol">-</span><span class="tok-name">on</span><span class="tok-symbol">-</span><span class="tok-name">primary</span></code> объявлены в <code><span class="tok-symbol">:</span><span class="tok-name">root</span></code>, который выбирает корневой элемент документа. Имя пользовательского свойства начинается с двух дефисов. Запись <code><span class="tok-name">background</span><span class="tok-symbol">:</span><span> </span><span class="tok-keyword">var</span><span class="tok-bracket">(</span><span class="tok-symbol">--</span><span class="tok-name">color</span><span class="tok-symbol">-</span><span class="tok-name">primary</span><span class="tok-bracket">)</span></code> подставляет значение переменной; <code><span class="tok-name">color</span><span class="tok-symbol">:</span><span> </span><span class="tok-keyword">var</span><span class="tok-bracket">(</span><span class="tok-symbol">--</span><span class="tok-name">color</span><span class="tok-symbol">-</span><span class="tok-name">on</span><span class="tok-symbol">-</span><span class="tok-name">primary</span><span class="tok-bracket">)</span></code> задаёт цвет текста на этом фоне. Кнопки, активный пункт меню и подвал используют одну пару переменных. Чтобы сменить цветовую тему, измените два значения в начале style.css, затем пересоберите приложение со встроенным CSS.</p>
+<h2 id="_12">Продолжение: от каталога к работающему магазину</h2>
+<p>Вы прошли ознакомительный фрагмент: создали модель книги, разделили программу на пакеты, запустили HTTP-сервер и вывели каталог через шаблоны. Проверьте себя: можете ли вы добавить поле карточки, объяснить путь запроса до шаблона и самостоятельно найти причину ошибки?</p>
+<p>В полной книге главы 13–42 продолжают этот же проект: формы и хранение данных, регистрация и сессии, корзина и заказы, тестовая оплата и выдача файлов, административная часть, резервные копии и выпуск приложения. Вместе с книгой предоставляются контрольные точки продолжения.</p>
+<p><a href="https://shanraq.org/shop/go-book">Посмотреть полную книгу, доступные форматы и условия покупки на shanraq.org</a>.</p></main><nav aria-label="Переход между главами"><a href="11-http.html">← Предыдущая глава</a></nav></body></html>

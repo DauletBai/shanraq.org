@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated the free Go book sample to 0.21: chapters 1–12, 18 learning labs, online reading and PDF/EPUB/HTML downloads. The product and sidebar use the current versioned cover.
+- Excluded server backup dumps, exports and rclone credentials from the Docker build context.
+
 - GitHub Releases are now deliberate project milestones started manually; publishing an individual course lesson no longer creates a repository release.
 - The scheduled external-link audit reports transport failures as unavailable checks instead of claiming that an unresponsive third-party server is a broken link; definite HTTP failures still fail the run.
 

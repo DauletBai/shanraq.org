@@ -17,3 +17,9 @@ vendor
 configs/config.local.yaml
 data
 scripts
+
+# Operator backups and storage credentials must not enter the build context.
+exports
+*.dump
+*.sql.gz
+rclone.conf

@@ -1,0 +1,38 @@
+@font-face{font-family:Noto;src:url(fonts/NotoSans-Regular.ttf)}
+@font-face{font-family:Noto;src:url(fonts/NotoSans-Bold.ttf);font-weight:700}
+@font-face{font-family:NotoMono;src:url(fonts/NotoSansMono-Regular.ttf)}
+:root{color-scheme:light}*,*::before,*::after{box-sizing:border-box}body{overflow-wrap:anywhere;font-family:Noto,sans-serif;line-height:1.7;margin:auto;max-width:52rem;padding:1.5rem;color:#182f35;background:#ffffff}
+h1,h2,h3{line-height:1.25;color:#00758D}h1{font-size:2rem}h2{margin-top:2rem}
+a{color:#00758D;text-underline-offset:.15em}nav{border-bottom:1px solid #b9cdcb;padding-bottom:1rem;margin-bottom:2rem}
+pre{background:#ffffff;border:1px solid #DBD9D6;padding:1rem;border-left:3px solid #00ADD8;overflow:auto;line-height:1.5}
+code{font-family:NotoMono,monospace;font-size:.88em}pre code{font-size:.8rem}
+img{max-width:100%;height:auto}.figure-caption{font-size:.85em;color:#526669;margin-top:.4rem}table{border-collapse:collapse;width:100%;font-size:.9em}td,th{padding:.55rem;border:1px solid #aabfbc;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+blockquote{margin-left:0;padding-left:1rem;border-left:3px solid #b08242}.status{color:#64543b;font-size:.9em}.skip{display:block}
+input{font:inherit;width:95%;padding:.5rem}li{margin-bottom:.5rem}
+
+@media print{nav,.search,.skip{display:none}body{color:#111;background:white}pre{white-space:pre-wrap}h1,h2{break-after:avoid}}
+.tok-package{color:#B45309}
+.tok-import{color:#BE185D}
+.tok-func{color:#1D4ED8}
+.tok-keyword{color:#7C3AED}
+.tok-brace{color:#A21CAF}
+.tok-bracket{color:#6D28D9}
+.tok-name{color:#00758D}
+.tok-string{color:#166534}
+.tok-number{color:#9C3B10}
+.tok-comment{color:#555759}
+.tok-symbol{color:#555759}
+
+.front-cover{max-width:42rem;padding:0 1rem;text-align:center}
+.front-cover .book-cover{display:block;width:100%;height:auto;margin:0 auto}
+.titlepage{text-align:center;max-width:42rem;padding:3rem 1.5rem}
+.titlepage main{min-height:46rem;min-height:calc(100svh - 6rem);display:flex;flex-direction:column;gap:3rem}
+.titlepage .author{font-size:.725rem;margin:0}
+.titlepage .title-block{margin:auto 0}
+.titlepage h1{font-size:clamp(1.7rem,5vw,2.5rem)}.titlepage .subtitle{font-size:1.2rem}
+.titlepage .levels{margin-top:2rem}.titlepage .imprint{margin:0}
+@media(max-height:35rem){.titlepage main{min-height:40rem}}
+.copyright-page{max-width:42rem}.copyright-page p{font-size:.95rem}
+.front-nav{text-align:center;margin-top:2rem}
+
+.sample-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin:1rem 0}.sample-actions a{display:inline-block;padding:.65rem 1rem;border-radius:.65rem;background:#006078;color:white;text-decoration:none}
