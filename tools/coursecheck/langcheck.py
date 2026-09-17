@@ -54,8 +54,8 @@ RUSSIAN_MARKERS = re.compile(
 # ```python block was never opened, so the second course's code went unchecked,
 # and the scanner then paired that block's closing fence with the next opening
 # one -- reading the prose in between as if it were code.
-FENCE = re.compile(r"```(\w*)\n(.*?)```", re.S)
-CODE_FENCES = ("go", "html", "text", "python", "")
+FENCE = re.compile(r"^```([^\n]*)\n(.*?)^```[ \t]*$", re.M | re.S)
+CODE_FENCES = ("go", "html", "text", "python", "rust", "rust,compile_fail", "")
 CYRILLIC_WORD = re.compile(r"[А-Яа-яЁёӘҒҚҢӨҰҮҺІәғқңөұүһі]{2,}")
 
 # Deliberate exceptions, documented in docs/go-course.md: a word the lesson is

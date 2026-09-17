@@ -8,6 +8,8 @@ import shutil
 import subprocess
 import tempfile
 
+import langcheck
+
 ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / 'course/lessons/rust'
 FENCES = re.compile(r'^```([^\n]*)\n(.*?)^```\s*$', re.M | re.S)
@@ -57,6 +59,10 @@ def main():
                 page = LESSONS / f"{entry['number']:02}-{entry['slug']}{suffix}.md"
                 require(page.exists(), f'missing released locale: {page}')
                 text = page.read_text(encoding='utf-8')
+                words, reason = langcheck.check(str(page))
+                require(not words, f'{page}: {reason}: {words}')
+                notes = langcheck.check_kazakh_prose(str(page))
+                require(not notes, f'{page}: {notes}')
                 expected_heading = {'ru': '## Задание', 'kz': '## Тапсырма', 'en': '## Exercise'}[lang]
                 require(expected_heading in text, f'{page}: missing exercise')
                 command_sets.append([(m[1], m[2]) for m in FENCES.finditer(text)

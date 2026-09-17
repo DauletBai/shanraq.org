@@ -88,6 +88,14 @@ def test_langcheck():
         words, _ = lang.check(p)
         check("русское слово в казахском коде", bool(words), True)
 
+        # Rust and deliberately failing Rust fences still contain user-facing text.
+        for fence in ("rust", "rust,compile_fail"):
+            p = write(tmp, "rust-kz.md", '```' + fence + '\nfn main() { println!("нет данных"); }\n```\n')
+            words, _ = lang.check(p)
+            check("Russian words caught in " + fence, bool(words), True)
+        p = write(tmp, "rust-prose-kz.md", '```rust,compile_fail\nfn main() { missing(); }\n```\n\nОбычный текст не код.\n\n```rust\nfn main() {}\n```\n')
+        check("Rust failure fence does not expose prose as code", lang.check(p)[0], [])
+
         # Prose between two fences is prose, not code.
         p = write(tmp, "urok2-kz.md", LESSON.format(program='print("дерек жоқ")', output="дерек жоқ")
                   + "\n\nОбычный текст между заборами не код.\n\n```\nещё блок\n```\n")

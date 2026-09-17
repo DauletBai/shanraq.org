@@ -9,6 +9,8 @@ on:
       - 'tools/course/test_rust_release.py'
       - 'tools/course/rust-release.json'
       - 'tools/coursecheck/rustcheck.py'
+      - 'tools/coursecheck/langcheck.py'
+      - 'tools/coursecheck/selftest.py'
       - '.github/workflows/rust-course.yml'
   pull_request:
     paths:
@@ -19,6 +21,8 @@ on:
       - 'tools/course/test_rust_release.py'
       - 'tools/course/rust-release.json'
       - 'tools/coursecheck/rustcheck.py'
+      - 'tools/coursecheck/langcheck.py'
+      - 'tools/coursecheck/selftest.py'
       - '.github/workflows/rust-course.yml'
 permissions:
   contents: read
