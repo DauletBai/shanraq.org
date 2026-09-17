@@ -1,6 +1,6 @@
 # Rust: from zero to your own organizer
 
-The preface and lessons 1–5 were published on 2026-09-17: [open the course](https://shanraq.org/course/rust?lang=en). Lessons 6–10 are being prepared separately; the full course is not complete.
+The preface and lessons 1–5 are published; lessons 6–10 are prepared in kz/ru/en for the second release. [Open the course](https://shanraq.org/course/rust?lang=en). The full plan has 60 lessons; the course is still in progress.
 
 [Before you begin](preface-en.md)
 
@@ -9,3 +9,8 @@ The preface and lessons 1–5 were published on 2026-09-17: [open the course](ht
 - [3. Files, folders and your workspace](03-workspace-en.md)
 - [4. Understanding the terminal](04-terminal-en.md)
 - [5. Installing Rust and checking the tools](05-installation-en.md)
+- [6. Your first Cargo project](06-cargo-en.md)
+- [7. Reading your first program](07-first-program-en.md)
+- [8. Using compiler diagnostics](08-diagnostics-en.md)
+- [9. Variables, values and types](09-variables-en.md)
+- [10. Numbers and arithmetic](10-numbers-en.md)

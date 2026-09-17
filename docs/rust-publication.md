@@ -1,19 +1,26 @@
-# Rust course: first publication
+# Rust course publication
 
-Release group: preface plus lessons 1–5, with original kz/ru/en texts. The remaining lessons are not public pages. The Rust course is free and explicitly in progress.
+Current manifest: preface and lessons 1–10 in kz/ru/en (second group: 6–10). The full free course remains in progress; later lessons must not be presented as published.
 
-Prepare the SQL and expected hashes from reviewed sources:
+Prepare a cumulative transaction from reviewed sources:
 
 ```sh
-python3 tools/course/prepare_rust.py --sql /tmp/rust-first-batch.sql --expected /tmp/rust-first-batch.json
+python3 tools/course/prepare_rust.py --sql /tmp/rust-release.sql --expected /tmp/rust-release.json
 python3 -m unittest discover -s tools/course -p test_rust_release.py
+python3 tools/coursecheck/rustcheck.py
 ```
 
-Apply only after deploying migration 20260917000300 and the Rust-aware application. Back up the production database first. The prepared SQL uses one transaction and creates series membership before COMMIT: no lesson becomes visible in the ordinary feed between creation and membership. It requires the existing course author's exact account and refuses collisions with another author/course. It updates only the first batch and does not delete future lessons. The fixed first-batch manifest must be extended with a new release procedure before later batches.
+Deploy only after successful site, container and three-platform Rust checks. Back up production before activation and content publication. The application must include migration 20260917000300 and Rust-aware rendering. The Rust footer link preserves the reader's selected language.
 
-Rust's initial conceptual exercises use the in-lesson reference answers. There is no server Rust runner or parser. Rust formatting/check endpoints refuse unsupported requests; the UI does not offer Go validation for Rust. The existing Go/Python/SQL workflow remains available.
+The SQL uses one transaction with an advisory lock. Course membership and all three localized versions become visible together. Author and course collisions stop the transaction; unrelated content is not deleted. The manifest lists all released groups cumulatively, with one preface and numbered lessons at positions 10, 20, and so on. Complete groups of five and all three languages are required. Register every new source in lesson-slugs.json too.
 
-Post-publication: verify 18 translated bodies and summaries against expected SHA-256 hashes; check /course/rust and all /read/rust-* pages in each language; inspect next/previous links; confirm five numbered lessons plus preface; verify home/latest/top feeds omit all six article slugs and /read/rust-06-cargo remains unavailable. Check responsive rendering and the existing Go book links.
+Rust exercises use inline reference answers. There is no server Rust runner; unsupported formatting/check requests are refused instead of reaching the Go checker. Local validation compiles every complete Rust example and answer, checks intentional compiler failures, and builds independent Cargo snapshots for all three languages. Snapshot locations: course/rust-organizer/step-NN (ru), en/step-NN, kz/step-NN. The first five lessons also need manual verification of their installation and navigation steps.
+
+After this release, compare all 33 body/summary hashes with the prepared sources. Visit each page anonymously, verify ten numbered lessons plus the preface, forward/back links and the footer in all languages. Check main/latest/top feeds for leaks; lesson 11 must remain unavailable. Check desktop, tablet and both mobile orientations, and verify existing Go book links and readiness.
+
+## Second group — prepared
+
+Lessons 6–10 explain Cargo commands, program structure, diagnostics, variables and types, then numeric calculations. Each includes recall, a required exercise, a hint, an inline reference and expected output. Kazakh and English have original localized explanations, outputs, answers and Cargo snapshots. Public activation and final checks are recorded below after deployment.
 
 ## Verified publication — 2026-09-17
 

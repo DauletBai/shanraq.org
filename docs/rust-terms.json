@@ -244,11 +244,11 @@
   },
   {
     "term": "бит",
-    "first_lesson": 10,
+    "first_lesson": 9,
     "definition": "Двоичная единица",
     "image": "Переключатель с двумя состояниями",
     "limit": "Не буква и не десятичная цифра",
-    "exercise_lesson": 10,
+    "exercise_lesson": 9,
     "review_status": "draft"
   },
   {
@@ -258,6 +258,60 @@
     "image": "Набор из восьми переключателей",
     "limit": "Не обязательно целый символ текста",
     "exercise_lesson": 10,
+    "review_status": "draft"
+  },
+  {
+    "term": "область видимости",
+    "first_lesson": 9,
+    "definition": "Часть программы, где доступно имя",
+    "image": "Комната со своими табличками",
+    "limit": "Выход из внутреннего блока возвращает видимость внешнего имени",
+    "exercise_lesson": 9,
+    "review_status": "draft"
+  },
+  {
+    "term": "константа",
+    "first_lesson": 9,
+    "definition": "Именованное значение, вычисляемое при компиляции",
+    "image": "Заранее установленный предел",
+    "limit": "Не то же самое, что обычная неизменяемая переменная",
+    "exercise_lesson": 9,
+    "review_status": "draft"
+  },
+  {
+    "term": "диагностика",
+    "first_lesson": 8,
+    "definition": "Сообщение инструмента о найденной проблеме",
+    "image": "Указатель места ремонта",
+    "limit": "Первое указанное место не всегда является причиной",
+    "exercise_lesson": 8,
+    "review_status": "draft"
+  },
+  {
+    "term": "bool",
+    "first_lesson": 9,
+    "definition": "Тип с двумя значениями true и false",
+    "image": "Ответ да или нет",
+    "limit": "Rust выводит true/false без перевода на язык страницы",
+    "exercise_lesson": 9,
+    "review_status": "draft"
+  },
+  {
+    "term": "char",
+    "first_lesson": 9,
+    "definition": "Одно скалярное значение Unicode",
+    "image": "Один допустимый код знака",
+    "limit": "Видимый знак может состоять из нескольких значений",
+    "exercise_lesson": 9,
+    "review_status": "draft"
+  },
+  {
+    "term": "&str",
+    "first_lesson": 9,
+    "definition": "Заимствованное представление текста UTF-8",
+    "image": "Просмотр уже существующего текста",
+    "limit": "Не растущая владеющая строка; владение объясняется в уроке 22",
+    "exercise_lesson": 9,
     "review_status": "draft"
   }
 ]

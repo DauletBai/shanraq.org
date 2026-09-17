@@ -19,9 +19,14 @@ def literal(value):
 def prepare():
     manifest = json.loads((ROOT / 'tools/course/rust-release.json').read_text(encoding='utf-8'))
     items = manifest['items']
-    assert manifest['course'] == 'rust' and manifest['lessons'] == 5
-    assert [i['position'] for i in items] == [1, 10, 20, 30, 40, 50]
-    assert len({i['slug'] for i in items}) == 6
+    count = manifest['lessons']
+    assert manifest['course'] == 'rust' and manifest['code_lang'] == 'rust'
+    assert isinstance(count, int) and 5 <= count <= 60 and count % 5 == 0
+    assert manifest['batch'] == count // 5
+    assert [i['position'] for i in items] == [1] + list(range(10, count * 10 + 1, 10))
+    assert len({i['slug'] for i in items}) == count + 1
+    assert items[0]['slug'] == 'rust-before-start'
+    assert all(i['slug'] == 'rust-' + i['stem'] for i in items[1:])
     expected = []
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-rust-course'));"]
     sql.append("""DO $guard$
@@ -79,7 +84,7 @@ def main():
     sql, expected = prepare()
     args.sql.write_text(sql, encoding='utf-8')
     args.expected.write_text(json.dumps(expected, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
-    print('Prepared 5 lessons + preface, 18 localized pages; no remote changes')
+    print(f'Prepared {len(expected)//3-1} lessons + preface, {len(expected)} localized pages; no remote changes')
 
 
 if __name__ == '__main__':

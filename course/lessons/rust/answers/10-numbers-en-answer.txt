@@ -1,0 +1,3 @@
+Remaining: 6
+Complete pairs: 3
+Unpaired: 0

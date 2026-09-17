@@ -1,7 +1,9 @@
 package site
 
 import (
+	"bytes"
 	"io"
+	"strings"
 	"testing"
 )
 
@@ -27,5 +29,28 @@ func TestRenderBeforeBuildFails(t *testing.T) {
 	r := NewRenderer()
 	if err := r.Execute(io.Discard, "site_head", nil); err == nil {
 		t.Fatal("execute before Build must fail")
+	}
+}
+
+// A published course must be reachable from the footer in the reader's language.
+func TestRustFooterLinkPreservesLanguage(t *testing.T) {
+	r := NewRenderer()
+	if err := r.Build(); err != nil {
+		t.Fatal(err)
+	}
+	for _, lang := range []string{"kz", "ru", "en"} {
+		t.Run(lang, func(t *testing.T) {
+			var body bytes.Buffer
+			if err := r.Execute(&body, "site_footer", Base{Lang: lang}); err != nil {
+				t.Fatal(err)
+			}
+			want := `href="/course/rust?lang=` + lang + `"`
+			if !strings.Contains(body.String(), want) {
+				t.Fatalf("footer missing Rust link %s", want)
+			}
+			if strings.Contains(body.String(), `class="foot-course--soon"`) {
+				t.Fatal("published courses still marked as coming soon")
+			}
+		})
 	}
 }

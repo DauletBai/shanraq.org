@@ -1426,5 +1426,65 @@
   "rust/05-installation-en": [
     "rust-05-installation",
     "en"
+  ],
+  "rust/06-cargo": [
+    "rust-06-cargo",
+    "ru"
+  ],
+  "rust/06-cargo-kz": [
+    "rust-06-cargo",
+    "kz"
+  ],
+  "rust/06-cargo-en": [
+    "rust-06-cargo",
+    "en"
+  ],
+  "rust/07-first-program": [
+    "rust-07-first-program",
+    "ru"
+  ],
+  "rust/07-first-program-kz": [
+    "rust-07-first-program",
+    "kz"
+  ],
+  "rust/07-first-program-en": [
+    "rust-07-first-program",
+    "en"
+  ],
+  "rust/08-diagnostics": [
+    "rust-08-diagnostics",
+    "ru"
+  ],
+  "rust/08-diagnostics-kz": [
+    "rust-08-diagnostics",
+    "kz"
+  ],
+  "rust/08-diagnostics-en": [
+    "rust-08-diagnostics",
+    "en"
+  ],
+  "rust/09-variables": [
+    "rust-09-variables",
+    "ru"
+  ],
+  "rust/09-variables-kz": [
+    "rust-09-variables",
+    "kz"
+  ],
+  "rust/09-variables-en": [
+    "rust-09-variables",
+    "en"
+  ],
+  "rust/10-numbers": [
+    "rust-10-numbers",
+    "ru"
+  ],
+  "rust/10-numbers-kz": [
+    "rust-10-numbers",
+    "kz"
+  ],
+  "rust/10-numbers-en": [
+    "rust-10-numbers",
+    "en"
   ]
 }

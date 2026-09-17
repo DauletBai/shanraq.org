@@ -69,4 +69,4 @@ The answer contains rustup, rustc and cargo version lines, not necessarily ident
 
 [Previous lesson](/read/rust-04-terminal?lang=en) · [Contents](/course/rust?lang=en)
 
-The next group covers lessons 6–10: Cargo, your first program, diagnostics, variables, types and numbers. For now, repeat the build probe and complete this group’s exercises.
+[Next lesson: your first Cargo project](/read/rust-06-cargo?lang=en).

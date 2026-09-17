@@ -107,7 +107,7 @@ func TestRustSelfCheckDoesNotUseGoFormatter(t *testing.T) {
 	}
 }
 
-func TestRustFirstBatchStaysOutOfFeed(t *testing.T) {
+func TestRustSecondBatchStaysOutOfFeed(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
 	email := "rust-" + uuid.NewString() + "@t.test"
@@ -120,7 +120,7 @@ func TestRustFirstBatchStaysOutOfFeed(t *testing.T) {
 	}
 	defer app.exec(`DELETE FROM article_series WHERE id=$1`, series)
 	var slugs []string
-	for n := 0; n <= 5; n++ {
+	for n := 0; n <= 10; n++ {
 		id, slug := app.seedArticle(author, "published")
 		slugs = append(slugs, slug)
 		pos := n * 10
@@ -148,7 +148,7 @@ func TestRustFirstBatchStaysOutOfFeed(t *testing.T) {
 				t.Errorf("%s: missing %s", lang, slug)
 			}
 		}
-		if !strings.Contains(body, `aria-hidden="true">5<`) || strings.Contains(body, `aria-hidden="true">6<`) {
+		if !strings.Contains(body, `aria-hidden="true">10<`) || strings.Contains(body, `aria-hidden="true">11<`) {
 			t.Errorf("%s: preface incorrectly counted as lesson", lang)
 		}
 		lesson := app.do(http.MethodGet, "/read/"+slugs[1]+"?lang="+lang, nil)

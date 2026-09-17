@@ -18,7 +18,7 @@ Include your system, lesson, command, Rust version and complete error text. Shar
 
 ## How the course is released
 
-The preface and lessons 1–5 are open in Kazakh, Russian and English. Further lessons will be released five at a time in all three languages. The entire course is free: missing later lessons are still being prepared, not hidden behind a paywall. No exact date for the next group has been announced.
+The preface and lessons 1–10 are open in Kazakh, Russian and English. Further lessons will be released five at a time in all three languages. The entire course is free: missing later lessons are still being prepared, not hidden behind a paywall. No exact date for the next group has been announced.
 
 ## Where we are heading
 

@@ -50,16 +50,28 @@ def main():
             for link in re.findall(r'\]\(([^)]+)\)', page.read_text(encoding='utf-8')):
                 if not re.match(r'https?://|#|/', link):
                     require((page.parent / link.split('#')[0]).exists(), f'{page}: missing {link}')
-        for entry in syllabus[:5]:
+        release = json.loads((ROOT / 'tools/course/rust-release.json').read_text(encoding='utf-8'))
+        for entry in syllabus[:release['lessons']]:
             command_sets = []
             for lang, suffix in [('ru', ''), ('kz', '-kz'), ('en', '-en')]:
                 page = LESSONS / f"{entry['number']:02}-{entry['slug']}{suffix}.md"
-                require(page.exists(), f'missing first-batch locale: {page}')
+                require(page.exists(), f'missing released locale: {page}')
                 text = page.read_text(encoding='utf-8')
                 expected_heading = {'ru': '## Задание', 'kz': '## Тапсырма', 'en': '## Exercise'}[lang]
                 require(expected_heading in text, f'{page}: missing exercise')
                 command_sets.append([(m[1], m[2]) for m in FENCES.finditer(text)
                                      if m[1] in ('sh', 'powershell')])
+                if entry['number'] >= 6:
+                    answer = LESSONS / 'answers' / (page.stem + '-answer.rs')
+                    inline = text.split('<!-- task-answer -->', 1)
+                    require(len(inline) == 2, f'{page}: missing inline answer')
+                    answer_blocks = list(FENCES.finditer(inline[1]))
+                    require(len(answer_blocks) >= 2 and answer_blocks[0][1] == 'rust'
+                            and answer_blocks[1][1] == 'text', f'{page}: answer format')
+                    require(answer_blocks[0][2] == answer.read_text(encoding='utf-8'),
+                            f'{page}: inline answer drift')
+                    require(answer_blocks[1][2] == answer.with_suffix('.txt').read_text(encoding='utf-8'),
+                            f'{page}: inline answer output drift')
                 if lang == 'kz':
                     prose = FENCES.sub('', text)
                     suspect = re.search(r'\b(?:переменная|переменные|настройки|запустите|выполните|следующий|предыдущий|папка|папки|задание|пользователь|исходный|ошибка|ошибки)\b', prose, re.I)
@@ -101,12 +113,12 @@ def main():
             check_program(answer.read_text(encoding='utf-8'),
                           answer.with_suffix('.txt').read_text(encoding='utf-8'), directory)
             count += 1
-        for step in sorted((ROOT / 'course/rust-organizer').glob('step-*')):
-            copied = directory / step.name
+        for step in sorted((ROOT / 'course/rust-organizer').rglob('step-*')):
+            copied = directory / step.relative_to(ROOT / 'course/rust-organizer')
             shutil.copytree(step, copied, ignore=shutil.ignore_patterns('target'))
-            # Select the Russian base file explicitly, not a translated file.
-            lesson = next(p for p in LESSONS.glob(step.name.removeprefix('step-')+'-*.md')
-                          if not p.stem.endswith(('-kz', '-en')))
+            suffix = '-' + step.parent.name if step.parent.name in ('kz', 'en') else ''
+            entry = syllabus[int(step.name.removeprefix('step-')) - 1]
+            lesson = LESSONS / f"{entry['number']:02}-{entry['slug']}{suffix}.md"
             code = next(m[2] for m in FENCES.finditer(lesson.read_text(encoding='utf-8')) if m[1]=='rust')
             require((step/'src/main.rs').read_text(encoding='utf-8') == code, f'{step}: lesson drift')
             result = run(['cargo', 'run', '--quiet', '--locked', '--offline'], copied)
