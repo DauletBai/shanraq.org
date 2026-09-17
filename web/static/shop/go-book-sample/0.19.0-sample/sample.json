@@ -1,0 +1,24 @@
+{
+  "edition": "0.19.0-sample",
+  "chapters": [
+    "00",
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12"
+  ],
+  "files": {
+    "go-book-preview.pdf": "0387980998d8e6328d7f5beb955f3c1bd15179ddfc89087908781a80e33603fa",
+    "go-book-preview.epub": "5b3d34cf41a4971dbc4a0eaab9eb20f0b3b196b6a6e847e9be5c7657d7a0b811",
+    "go-book-preview-html.zip": "e6c7221b187bc0b9866aafb9e2b793c9bc9a3040232196320706b4ca8fdb5893",
+    "go-book-preview-code.zip": "6a8fae55dce5de8405a4387080e9c8191fbe3abb82261449aa72f08cb4e3ce93"
+  }
+}

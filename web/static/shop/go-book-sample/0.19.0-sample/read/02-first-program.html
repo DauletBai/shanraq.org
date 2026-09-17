@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>2. Книга появляется в терминале</title><link rel="stylesheet" href="book.css"></head><body><a class="skip" href="#content">К содержимому страницы</a><nav aria-label="Навигация книги"><a href="toc.html">Оглавление книги</a></nav><p class="status">Ознакомительный фрагмент 0.19.0-sample · вступление и главы 1–12. Бесплатный фрагмент: главы 1–12.</p><main id="content"><h1 id="2">2. Книга появляется в терминале</h1>
+<p>У нас есть рабочая папка и файл <code>go.mod</code>. Теперь напишем программу, которая выводит название книги и три формата её будущего издания. Результат маленький, но проверяемый: две строки в нужном порядке.</p>
+<p>Контрольная точка: <code>examples/02-first-program</code>. Если начинаете с неё, откройте эту папку и сразу выполняйте команды запуска. Если пишете сами, продолжайте в своей <code><span class="tok-name">bookshop</span></code>.</p>
+<h2 id="_1">Образ: записка с двумя поручениями</h2>
+<p>Положите перед собой записку: «Покажи название книги. Затем покажи форматы». Если читать её сверху вниз, порядок понятен. Если поменять поручения местами, сначала появятся форматы. Именно такой небольшой порядок действий мы сейчас зададим программе.</p>
+<p>На нашей опорной записке будет три строки: <strong>пакет — нужный инструмент — поручения</strong>. <code><span class="tok-package">package</span><span> </span><span class="tok-name">main</span></code> связывает файл с исполняемым пакетом; <code><span class="tok-import">import</span><span> </span><span class="tok-string">"fmt"</span></code> делает доступным инструмент вывода; внутри <code><span class="tok-name">main</span></code> стоят два вызова <code><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span></code>. Фигурные скобки можно мысленно обвести рамкой вокруг поручений.</p>
+<p>Только не переносите образ дальше нужного: компьютер не понимает просьбы «покажи красиво», пока мы не запишем конкретное действие. И в больших программах порядок может быть сложнее простого чтения сверху вниз. Здесь мы проверяем ровно два последовательных вызова. После запуска спрячьте исходник и восстановите свою записку: что принадлежит пакету, что подключено, что выполняется?</p>
+<h2 id="_2">Сразу целиком</h2>
+<p>Создайте файл <code>main.go</code> рядом с <code>go.mod</code> и сохраните в нём:</p>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">main</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-string">"fmt"</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">main</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-string">"Go: от первой строки до интернет-магазина"</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-string">"Форматы: PDF, EPUB, HTML"</span><span class="tok-bracket">)</span><span>
+</span><span class="tok-brace">}</span><span>
+</span></code></pre>
+<p>Перед запуском запишите предполагаемый вывод. Будут ли видны кавычки? Появится ли пустая строка между названием и форматами?</p>
+<p>Для первого запуска используем <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code>. <code><span class="tok-keyword">go</span></code> — установленный инструмент, <code><span class="tok-name">run</span></code> — действие «собрать и сразу выполнить», а отдельная точка <code><span class="tok-symbol">.</span></code> — пакет в текущей папке. Пока пакет — наши Go-файлы, лежащие рядом и начинающиеся с <code><span class="tok-package">package</span><span> </span><span class="tok-name">main</span></code>. Сначала сохраните <code>main.go</code>, затем в терминале в этой же папке выполните:</p>
+<pre><code class="language-sh"><span>go</span><span> </span><span>run</span><span> </span><span>.</span><span>
+</span></code></pre>
+<p>Результат:</p>
+<pre><code class="language-text">Go: от первой строки до интернет-магазина
+Форматы: PDF, EPUB, HTML
+</code></pre>
+<p>Здесь программа заканчивает работу после двух вызовов печати, и приглашение терминала появляется снова. Это ожидаемое поведение. <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code> не открывает редактор и не следит за изменениями: после каждой сохранённой правки запускайте команду заново. Сравнение с отдельной сборкой приведено ниже в разделе «Запуск и сборка».</p>
+<h2 id="_3">Цвет помогает найти знакомое</h2>
+<p>В книге исходник подсвечен как в редакторе. Та же запись сохраняет свои цвета в предложении: например, <code><span class="tok-import">import</span><span> </span><span class="tok-string">"fmt"</span></code>. Посмотрите сначала на строку программы, затем на её объяснение ниже — вам не придётся заново искать, какая часть относится к языку, а какая содержит данные.</p>
+<table>
+<thead>
+<tr>
+<th>Пример</th>
+<th>Цвет и подсказка</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="tok-package">package</span></code></td>
+<td>Оранжевый: объявляем, к какому пакету относится файл</td>
+</tr>
+<tr>
+<td><code><span class="tok-import">import</span></code></td>
+<td>Розовый: подключаем другой пакет</td>
+</tr>
+<tr>
+<td><code><span class="tok-func">func</span></code></td>
+<td>Синий: объявляем функцию или метод</td>
+</tr>
+<tr>
+<td><code><span class="tok-keyword">var</span></code>, <code><span class="tok-keyword">const</span></code>, <code><span class="tok-keyword">type</span></code>, <code><span class="tok-keyword">if</span></code>, <code><span class="tok-keyword">for</span></code>, <code><span class="tok-keyword">return</span></code></td>
+<td>Фиолетовый: другие ключевые слова; точное действие определяем по самому слову</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">priceMinor</span></code>, <code><span class="tok-name">fmt</span></code>, <code><span class="tok-name">Println</span></code></td>
+<td>Тёмный сине-голубой: имена; их роль определяем по месту в программе</td>
+</tr>
+<tr>
+<td><code><span class="tok-string">"Книга"</span></code></td>
+<td>Зелёный: строковые данные внутри кавычек</td>
+</tr>
+<tr>
+<td><code><span class="tok-number">42</span></code></td>
+<td>Коричневый: число, записанное прямо в исходнике</td>
+</tr>
+<tr>
+<td><code><span class="tok-comment">// название книги</span></code></td>
+<td>Серый: комментарий для человека</td>
+</tr>
+<tr>
+<td><code><span class="tok-brace">{</span></code>, <code><span class="tok-brace">}</span></code></td>
+<td>Малиново-фиолетовый: границы блока, а позднее — также записи составного типа или значения</td>
+</tr>
+<tr>
+<td><code><span class="tok-bracket">(</span></code>, <code><span class="tok-bracket">)</span></code>, <code><span class="tok-bracket">[</span></code>, <code><span class="tok-bracket">]</span></code></td>
+<td>Тёмно-фиолетовый: круглые и квадратные скобки; назначение зависит от места</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">.</span></code>, <code><span class="tok-symbol">,</span></code>, <code><span class="tok-symbol">:=</span></code>, <code><span class="tok-symbol">+</span></code>, <code><span class="tok-symbol">-</span></code></td>
+<td>Серый: остальные разделители и операторы</td>
+</tr>
+</tbody>
+</table>
+<p>В первой программе можно прочитать цветовую опору так: оранжевый — принадлежность пакету, розовый — подключение, синий — объявление функции, малиново-фиолетовые скобки — границы её тела. Эти цвета повторяются в поясняющих предложениях.</p>
+<p>Пока не нужно учить новые слова из таблицы: к каждому мы вернёмся по делу. Зелёная строка <code><span class="tok-string">"Книга"</span></code> хранит данные. А сине-голубой <code><span class="tok-name">priceMinor</span></code> — имя, по которому программа обращается к значению. Цвет помогает быстро заметить это различие.</p>
+<p>Сине-голубой не означает «это обязательно переменная»: имена пакетов и функций в нашей палитре тоже сине-голубые. Предопределённые имена, например <code><span class="tok-name">int64</span></code>, <code><span class="tok-name">true</span></code> и <code><span class="tok-name">nil</span></code>, тоже сине-голубые: они не являются ключевыми словами Go. Что обозначает каждое из них, разберём при первом использовании. Подсветка разбирает запись, но не доказывает, что программа правильная.</p>
+<p>В вашей IDE — редакторе со средствами разработки — цвета могут отличаться: их выбирает тема оформления. У языка Go нет обязательного цвета для переменной или строки. В читалке с собственными настройками и на чёрно-белом экране краски тоже могут измениться или исчезнуть. Кавычки, слова, подписи и наши объяснения сохраняют смысл без цвета.</p>
+<p><strong>Попробуйте глазами.</strong> Найдите в первой программе слово <code><span class="tok-import">import</span></code>, затем строку <code><span class="tok-string">"fmt"</span></code>. Назовите их назначение без слов «розовое» и «зелёное». Если получается, цвет уже работает как подсказка, а не как единственный способ понять запись.</p>
+<h2 id="_4">Разбор по строкам</h2>
+<p><code><span class="tok-package">package</span><span> </span><span class="tok-name">main</span></code> сообщает, что файл относится к пакету <code><span class="tok-name">main</span></code>. Из такого пакета можно собрать исполняемую программу. Одного объявления пакета недостаточно: программе нужна функция <code><span class="tok-name">main</span></code>.</p>
+<p><code><span class="tok-import">import</span><span> </span><span class="tok-string">"fmt"</span></code> подключает пакет стандартной библиотеки для форматирования и вывода. Нам не пришлось отдельно скачивать библиотеку: она поставляется вместе с Go.</p>
+<p><code><span class="tok-func">func</span><span> </span><span class="tok-name">main</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span></code> объявляет функцию с именем <code><span class="tok-name">main</span></code>. Скобки после имени относятся к параметрам; у нашей функции их нет. Фигурные скобки ограничивают тело функции — команды, которые она выполняет. Подробно параметры разберём в главе 5. Перед <code><span class="tok-name">main</span></code> Go выполняет инициализацию программы, поэтому запоминать правило «main всегда первая строка исполнения» не нужно.</p>
+<p><code><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span></code> означает: взять функцию <code><span class="tok-name">Println</span></code> из пакета <code><span class="tok-name">fmt</span></code> и вызвать её. Текст в двойных кавычках — строковое значение. Кавычки отделяют текст программы от её данных, поэтому сами в вывод не попадают. <code><span class="tok-name">Println</span></code> добавляет перевод строки после вывода.</p>
+<p>Внутри <code><span class="tok-name">main</span></code> команды выполняются последовательно. Поменяете вызовы местами — поменяется и порядок строк. Go пока не знает ни о книге как товаре, ни о форматах как файлах. Мы передали функции печати обычный текст.</p>
+<h2 id="_5">Оформление без споров</h2>
+<p>Введите:</p>
+<pre><code class="language-sh"><span>gofmt</span><span> </span><span>-w</span><span> </span><span>main.go</span><span>
+</span></code></pre>
+<p><code><span class="tok-name">gofmt</span></code> приводит код к стандартному оформлению; <code><span class="tok-symbol">-</span><span class="tok-name">w</span></code> записывает результат в файл. Это может изменить отступы. Форматирование не проверяет, правильную ли книгу вы назвали, и не заменяет запуск программы.</p>
+<p>Наберите лишние пробелы перед одним вызовом, сохраните и повторите <code><span class="tok-name">gofmt</span></code>. Затем снова запустите программу. Оформление изменится, результат останется прежним.</p>
+<h2 id="_6">Запуск и сборка</h2>
+<p>У нас два способа проверить один и тот же исходник. <strong>Во время обучения после правки используйте <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code></strong>: инструмент соберёт временную программу и сразу запустит её. Это работает одинаково в PowerShell, bash и zsh. Отдельный готовый файл <code><span class="tok-name">bookshop</span></code> в папке проекта эта команда не оставляет. Предварительно выполнять <code><span>go</span><span> </span><span>build</span></code> не требуется.</p>
+<p>Когда нужен сохраняемый исполняемый файл, используется <code><span>go</span><span> </span><span>build</span></code>. Само слово <code><span class="tok-name">build</span></code> означает сборку, без запуска. Флаг <code><span class="tok-symbol">-</span><span class="tok-name">o</span></code> задаёт имя результата; следующий за ним <code><span class="tok-name">bookshop</span></code> — выбранное нами имя файла. Последняя точка снова обозначает текущий пакет. Для macOS/Linux:</p>
+<pre><code class="language-sh"><span>go</span><span> </span><span>build</span><span> </span><span>-o</span><span> </span><span>bookshop</span><span> </span><span>.</span><span>
+</span><span>./bookshop</span><span>
+</span></code></pre>
+<p>Для Windows PowerShell:</p>
+<pre><code class="language-powershell"><span class="tok-name">go</span><span> </span><span class="tok-name">build</span><span> </span><span class="tok-name">-o</span><span> </span><span class="tok-name">bookshop</span><span class="tok-symbol">.</span><span class="tok-name">exe</span><span> </span><span class="tok-symbol">.</span><span>
+</span><span class="tok-symbol">.</span><span class="tok-symbol">\</span><span class="tok-name">bookshop</span><span class="tok-symbol">.</span><span class="tok-name">exe</span><span>
+</span></code></pre>
+<p>Первая команда создаёт программу, вторая её запускает. При успешной сборке <code><span>go</span><span> </span><span>build</span></code> обычно ничего не печатает: проверьте появление файла через <code><span class="tok-name">ls</span></code> или <code><span class="tok-name">Get</span><span class="tok-symbol">-</span><span class="tok-name">ChildItem</span></code>. Префиксы <code><span>./</span></code> и <code><span>.</span><span>\</span></code> говорят оболочке запускать файл из текущей папки; <code><span class="tok-symbol">.</span><span class="tok-name">exe</span></code> — обычное расширение исполняемой программы Windows. Это пути файла, а не замена аргументу <code><span class="tok-symbol">.</span></code> у инструмента Go.</p>
+<table>
+<thead>
+<tr>
+<th>Что нужно</th>
+<th>Команда</th>
+<th>Что происходит</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Проверить сохранённую правку</td>
+<td><code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code></td>
+<td>Сборка и немедленный запуск</td>
+</tr>
+<tr>
+<td>Получить готовый файл</td>
+<td><code><span>go</span><span> </span><span>build</span><span> </span><span>-o</span><span> </span><span>bookshop</span><span> </span><span>.</span></code></td>
+<td>Только сборка; для Windows имя <code>bookshop.exe</code></td>
+</tr>
+<tr>
+<td>Запустить уже собранный файл</td>
+<td><code><span>./bookshop</span></code> или <code><span>.</span><span class="tok-string">\b</span><span>ookshop.exe</span></code></td>
+<td>Исходники заново не читаются</td>
+</tr>
+</tbody>
+</table>
+<p>Если после сборки изменить <code>main.go</code>, уже собранный файл сам не изменится: его нужно собрать ещё раз. Проверьте это маленьким опытом: соберите файл, измените название в исходнике и сохраните. Готовый файл покажет старое название, а новый <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code> — новое. Затем повторите сборку: вывод обоих способов совпадёт.</p>
+<p>Не подменяйте команду книги на <code><span>go</span><span> </span><span>run</span><span> </span><span>main.go</span></code>. Сейчас результат может совпасть, но такой запуск выбирает только названный файл. Когда появится второй рабочий файл, его объявления не попадут в сборку. <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code> выбирает пакет целиком; тестовые файлы <code>_test.go</code> в обычный запуск не входят. В главе 10 исполняемый пакет переедет в <code><span class="tok-name">cmd</span><span class="tok-symbol">/</span><span class="tok-name">shop</span></code>, и путь в команде изменится вместе с ним.</p>
+<p>Этот пример не требует установки Go для запуска готового файла на совместимой системе. Но файл для macOS нельзя просто запускать как программу Windows: операционная система и архитектура сборки имеют значение. Позже мы также будем отдельно учитывать конфигурацию, данные и внешние сервисы приложения. Сопоставление способов запуска есть и в <a href="https://go.dev/doc/tutorial/compile-install">официальном уроке Go о сборке</a>.</p>
+<h2 id="_7">Сломайте безопасно</h2>
+<p>Удалите закрывающую кавычку у названия книги. Сохраните и запустите <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code>. Сборка завершится ошибкой. Прочитайте имя файла и номер строки; конкретное сообщение может различаться между версиями инструмента.</p>
+<p>Верните кавычку и повторите запуск. Мы исправили причину в исходнике. Переустановка Go здесь ничего бы не дала.</p>
+<h2 id="_8">Читаем запись по символам</h2>
+<table>
+<thead>
+<tr>
+<th>Запись</th>
+<th>Что означает именно здесь</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="tok-package">package</span><span> </span><span class="tok-name">main</span></code></td>
+<td>Файл принадлежит пакету с именем <code><span class="tok-name">main</span></code></td>
+</tr>
+<tr>
+<td><code><span class="tok-import">import</span><span> </span><span class="tok-string">"fmt"</span></code></td>
+<td>Подключаем пакет по пути, записанному строкой</td>
+</tr>
+<tr>
+<td><code><span class="tok-func">func</span></code></td>
+<td>Начинается объявление функции</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">main</span></code></td>
+<td>Имя функции входа в нашу программу</td>
+</tr>
+<tr>
+<td><code><span class="tok-bracket">(</span><span class="tok-bracket">)</span></code> после имени в объявлении</td>
+<td>Список параметров пуст</td>
+</tr>
+<tr>
+<td><code><span class="tok-brace">{</span></code> и <code><span class="tok-brace">}</span></code></td>
+<td>Начало и конец тела функции</td>
+</tr>
+<tr>
+<td><code><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span></code></td>
+<td>Точка связывает имя пакета с именем доступной из него функции</td>
+</tr>
+<tr>
+<td><code><span class="tok-bracket">(</span><span class="tok-string">"текст"</span><span class="tok-bracket">)</span></code> при вызове</td>
+<td>Внутри скобок передаётся аргумент — строка</td>
+</tr>
+<tr>
+<td><code><span>"</span></code></td>
+<td>Граница строкового литерала; сама кавычка не выводится</td>
+</tr>
+</tbody>
+</table>
+<p>Точка в <code><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span></code> и точка в <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code> выполняют разные роли: первая относится к записи Go, вторая — к аргументам команды терминала. Пробелы и переносы между словами помогают разделить запись, а внутри кавычек являются частью текста.</p>
+<p>В Go есть точки с запятой, но в обычном исходнике их чаще не пишут: по правилам языка они автоматически вставляются после определённых токенов в конце строки. Поэтому пока ставьте открывающую <code><span class="tok-brace">{</span></code> функции на той же строке, что и <code><span class="tok-func">func</span><span> </span><span class="tok-name">main</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span></code>. Перенос этой скобки на следующую строку может изменить разбор программы; <code><span class="tok-name">gofmt</span></code> не исправит любой синтаксический дефект вместо вас.</p>
+<p><img alt="Опора первой программы: пакет, подключение и тело main" src="diagrams/first-program.svg" /></p>
+<p><strong>Восстановите по памяти.</strong> Нарисуйте три блока, затем напишите программу заново без копирования. Если не помните скобку, найдите её пару и объясните, что она ограничивает.</p>
+<h2 id="_9">Разминка</h2>
+<p><strong>Предскажите.</strong> Что изменится, если два вызова <code><span class="tok-name">Println</span></code> поменять местами?</p>
+<p><strong>Заполните.</strong> Какое имя пакета должно стоять перед точкой в вызове <code><span class="tok-name">___</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-string">"Книга"</span><span class="tok-bracket">)</span></code>?</p>
+<p><strong>Почините.</strong> Сообщение говорит <code><span class="tok-name">undefined</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">Fmt</span></code>. Найдите разницу между написанным именем и <code><span class="tok-name">fmt</span></code>.</p>
+<h2 id="_10">Задание</h2>
+<p><strong>Обязательное.</strong> Добавьте третью строку <code><span class="tok-name">Статус</span><span class="tok-symbol">:</span><span> </span><span class="tok-name">готовится</span></code>. Первые две строки должны остаться прежними. Сохраните файл, отформатируйте и запустите.</p>
+<p><strong>На своих данных.</strong> Замените название на название собственной будущей книги. Не меняйте список форматов: наш итоговый продукт должен поддерживать PDF, EPUB и HTML.</p>
+<p><strong>По желанию.</strong> Соберите программу, затем поменяйте название в исходнике. Сравните запуск готового файла и <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code>. Объясните различие до повторной сборки.</p>
+<h2 id="_11">Скажите своими словами</h2>
+<p>Почему сохранение файла важно перед запуском? Что делает <code><span class="tok-import">import</span></code>? Почему <code><span>go</span><span> </span><span>build</span></code> не показывает название книги в терминале?</p>
+<h2 id="_12">Ответы</h2>
+<p>Порядок вызовов задаёт порядок строк. Нужен пакет <code><span class="tok-name">fmt</span></code>, с маленькой буквы: регистр символов различается. Дополнительная строка — ещё один вызов <code><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-string">"Статус: готовится"</span><span class="tok-bracket">)</span></code> внутри <code><span class="tok-name">main</span></code>, после двух существующих.</p>
+<p>Сборка читает сохранённые файлы. <code><span class="tok-import">import</span></code> делает доступным указанный пакет. <code><span>go</span><span> </span><span>build</span></code> создаёт исполняемый файл и сам его не запускает.</p>
+<p>В магазине появилась первая публичная информация — название и форматы. Пока она записана прямо в вызовах печати. В следующей главе отделим данные от действий над ними.</p></main><nav aria-label="Переход между главами"><a href="01-workspace.html">← Предыдущая глава</a> · <a href="03-values.html">Следующая глава →</a></nav></body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>4. Какие издания можно показать</title><link rel="stylesheet" href="book.css"></head><body><a class="skip" href="#content">К содержимому страницы</a><nav aria-label="Навигация книги"><a href="toc.html">Оглавление книги</a></nav><p class="status">Ознакомительный фрагмент 0.19.0-sample · вступление и главы 1–12. Бесплатный фрагмент: главы 1–12.</p><main id="content"><h1 id="4">4. Какие издания можно показать</h1>
+<p>Книга может быть черновиком, а одно из старых изданий — снятым с продажи. Напишем небольшую проверку, которая обходит три номера изданий и сообщает, какие доступны.</p>
+<p>Контрольная точка: <code>examples/04-conditions</code>. Это упражнение над состоянием каталога. Оно не удаляет купленные книги из библиотеки покупателя: правила доступа к уже приобретённому изданию будут отдельными.</p>
+<p>Набираете сами: в отдельной папке главы сохраните свой <code>go.mod</code> и создайте <code>main.go</code> из полного листинга ниже. Это опыт с условиями; цену из главы 3 сохраняем в предыдущей папке, а не удаляем из истории проекта.</p>
+<h2 id="_1">Образ: дверь и три карточки</h2>
+<p>На столе лежат три карточки изданий. Перед витриной — дверь с условием: «Показывать только опубликованное». Сначала проверяем, открыта ли дверь для нашей книги. Затем берём карточки по одной. Второе издание снято с продажи — откладываем его и берём следующее.</p>
+<p>В программе <code><span class="tok-keyword">if</span></code> выбирает действие по условию, а <code><span class="tok-keyword">for</span></code> повторяет шаги. <code><span class="tok-keyword">continue</span></code> в нашем обходе означает: закончить работу с текущей карточкой и перейти к следующему шагу цикла. <code><span class="tok-keyword">break</span></code> означает другое: завершить этот цикл целиком. Представьте, что после второй карточки вы либо тянетесь за третьей, либо убираете всю стопку. Разницу теперь можно увидеть до запуска.</p>
+<p>Дверь не является отдельным объектом программы: это рисунок выбора. Само условие должно дать логическое значение. Нарисуйте дверь и три маленьких прямоугольника. Зачеркните второй, но оставьте третий на витрине. Какой переход нужен для такого результата? Проверьте свой ответ на нашем цикле.</p>
+<h2 id="_2">Сразу целиком</h2>
+<pre><code class="language-go"><span class="tok-package">package</span><span> </span><span class="tok-name">main</span><span>
+</span><span>
+</span><span class="tok-import">import</span><span> </span><span class="tok-string">"fmt"</span><span>
+</span><span>
+</span><span class="tok-func">func</span><span> </span><span class="tok-name">main</span><span class="tok-bracket">(</span><span class="tok-bracket">)</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>    </span><span class="tok-name">published</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">true</span><span>
+</span><span>    </span><span class="tok-keyword">for</span><span> </span><span class="tok-name">edition</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-number">1</span><span class="tok-symbol">;</span><span> </span><span class="tok-name">edition</span><span> </span><span class="tok-symbol">&lt;=</span><span> </span><span class="tok-number">3</span><span class="tok-symbol">;</span><span> </span><span class="tok-name">edition</span><span class="tok-symbol">++</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>        </span><span class="tok-keyword">if</span><span> </span><span class="tok-symbol">!</span><span class="tok-name">published</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>            </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-string">"Книга готовится"</span><span class="tok-bracket">)</span><span>
+</span><span>            </span><span class="tok-keyword">break</span><span>
+</span><span>        </span><span class="tok-brace">}</span><span>
+</span><span>        </span><span class="tok-keyword">if</span><span> </span><span class="tok-name">edition</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-number">2</span><span> </span><span class="tok-brace">{</span><span>
+</span><span>            </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-string">"Издание"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">edition</span><span class="tok-symbol">,</span><span> </span><span class="tok-string">"снято с продажи"</span><span class="tok-bracket">)</span><span>
+</span><span>            </span><span class="tok-keyword">continue</span><span>
+</span><span>        </span><span class="tok-brace">}</span><span>
+</span><span>        </span><span class="tok-name">fmt</span><span class="tok-symbol">.</span><span class="tok-name">Println</span><span class="tok-bracket">(</span><span class="tok-string">"Доступно издание"</span><span class="tok-symbol">,</span><span> </span><span class="tok-name">edition</span><span class="tok-bracket">)</span><span>
+</span><span>    </span><span class="tok-brace">}</span><span>
+</span><span class="tok-brace">}</span><span>
+</span></code></pre>
+<p>Сначала отметьте на бумаге, какие строки сработают для номера <code><span class="tok-number">2</span></code>. Затем запустите <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code>.</p>
+<pre><code class="language-text">Доступно издание 1
+Издание 2 снято с продажи
+Доступно издание 3
+</code></pre>
+<p>Число <code><span class="tok-number">2</span></code> не потерялось: у него другой результат. Мы явно сообщили, что издание снято с продажи.</p>
+<h2 id="_3">Условие — вопрос с логическим ответом</h2>
+<p><code><span class="tok-keyword">if</span><span> </span><span class="tok-name">edition</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-number">2</span></code> проверяет равенство. Если условие истинно, выполняется блок в фигурных скобках. Один знак <code><span class="tok-symbol">=</span></code> присваивает значение; два знака <code><span class="tok-symbol">==</span></code> сравнивают значения. Перепутать их легко, поэтому читайте выражение словами: «номер издания равен двум?».</p>
+<p><code><span class="tok-symbol">!</span><span class="tok-name">published</span></code> означает «не опубликована». Знак <code><span class="tok-symbol">!</span></code> меняет логическое значение на противоположное. Если книга ещё не опубликована, нет смысла показывать доступные издания этого учебного каталога.</p>
+<p>Условия могут использовать <code><span class="tok-symbol">&lt;</span></code>, <code><span class="tok-symbol">&lt;=</span></code>, <code><span class="tok-symbol">&gt;</span></code>, <code><span class="tok-symbol">&gt;=</span></code> и <code><span class="tok-symbol">!=</span></code>. У равенства и сравнения тоже есть ограничения типов: не все значения языка сравниваются любым оператором. Сейчас мы работаем с целыми числами и логическим значением.</p>
+<h2 id="_4">Цикл: начало, проверка, шаг</h2>
+<p>В заголовке <code><span class="tok-keyword">for</span><span> </span><span class="tok-name">edition</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-number">1</span><span class="tok-symbol">;</span><span> </span><span class="tok-name">edition</span><span> </span><span class="tok-symbol">&lt;=</span><span> </span><span class="tok-number">3</span><span class="tok-symbol">;</span><span> </span><span class="tok-name">edition</span><span class="tok-symbol">++</span></code> три части.</p>
+<p>Первая создаёт счётчик со значением <code><span class="tok-number">1</span></code> перед обходом. Вторая проверяется перед каждым выполнением тела: можно ли продолжать? Третья увеличивает счётчик на единицу после очередного завершённого прохода.</p>
+<p>Получается последовательность: <code><span class="tok-number">1</span></code>, <code><span class="tok-number">2</span></code>, <code><span class="tok-number">3</span></code>. Когда счётчик станет равен <code><span class="tok-number">4</span></code>, условие <code><span class="tok-number">4</span><span> </span><span class="tok-symbol">&lt;=</span><span> </span><span class="tok-number">3</span></code> окажется ложным, и цикл закончится. Переменная <code><span class="tok-name">edition</span></code> объявлена в заголовке цикла и недоступна после него. Это пример области видимости: имя существует не во всех местах файла.</p>
+<p><code><span class="tok-name">edition</span><span class="tok-symbol">++</span></code> — отдельная команда увеличения, а не выражение, которое надо вкладывать в печать. Здесь она управляет переходом к следующему изданию.</p>
+<h2 id="_5">Два разных способа прекратить работу</h2>
+<p><code><span class="tok-keyword">continue</span></code> завершает текущий проход цикла. В нашем случае при номере <code><span class="tok-number">2</span></code> строка «Доступно издание» пропускается. Для такого <code><span class="tok-keyword">for</span></code> затем выполняется шаг <code><span class="tok-name">edition</span><span class="tok-symbol">++</span></code>, проверяется условие и начинается следующий проход.</p>
+<p><code><span class="tok-keyword">break</span></code> выходит из цикла целиком. Если изменить <code><span class="tok-name">published</span></code> на <code><span class="tok-name">false</span></code>, программа один раз напечатает <code><span class="tok-name">Книга</span><span> </span><span class="tok-name">готовится</span></code> и прекратит обход.</p>
+<blockquote>
+<p>Представьте проверку полки. <code><span class="tok-keyword">continue</span></code> — перейти к следующей книге на полке. <code><span class="tok-keyword">break</span></code> — прекратить проверку этой полки. Но в программе границу определяет именно цикл, а не любое место, которое кажется нам «следующей задачей».</p>
+</blockquote>
+<h2 id="_6">Проверим границы</h2>
+<p>Измените <code><span class="tok-name">edition</span><span> </span><span class="tok-symbol">&lt;=</span><span> </span><span class="tok-number">3</span></code> на <code><span class="tok-name">edition</span><span> </span><span class="tok-symbol">&lt;</span><span> </span><span class="tok-number">3</span></code>. Третье издание исчезнет из вывода. Это не сбой инструмента: условие больше не разрешает проход с номером <code><span class="tok-number">3</span></code>.</p>
+<p>Верните <code><span class="tok-symbol">&lt;=</span></code>. Затем установите начальное значение <code><span class="tok-number">4</span></code>. Тело не выполнится ни разу, потому что условие проверяется до первого прохода.</p>
+<p>Наконец, верните исходник и попробуйте убрать <code><span class="tok-name">edition</span><span class="tok-symbol">++</span></code>, сохранив обе точки с запятой. Счётчик перестанет меняться, и при опубликованной книге программа будет повторять сообщение. Остановите её <code><span class="tok-name">Ctrl</span><span class="tok-symbol">+</span><span class="tok-name">C</span></code> и восстановите шаг. Не оставляйте такой вариант работающим: пользы от повторного вывода нет.</p>
+<h2 id="_7">Читаем условие и цикл по символам</h2>
+<table>
+<thead>
+<tr>
+<th>Запись</th>
+<th>Роль</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="tok-keyword">for</span></code></td>
+<td>Начало цикла</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">;</span></code> в заголовке <code><span class="tok-keyword">for</span></code></td>
+<td>Отделяет начало, условие и шаг</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">&lt;=</span></code></td>
+<td>Меньше или равно; два знака образуют один оператор</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">++</span></code></td>
+<td>Увеличить переменную на единицу; отдельная команда</td>
+</tr>
+<tr>
+<td><code><span class="tok-keyword">if</span></code></td>
+<td>Выполнить блок, если условие истинно</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">!</span></code></td>
+<td>Логическое отрицание</td>
+</tr>
+<tr>
+<td><code><span class="tok-symbol">==</span></code></td>
+<td>Проверка равенства; это не присваивание</td>
+</tr>
+<tr>
+<td><code><span class="tok-keyword">break</span></code></td>
+<td>Закончить этот цикл</td>
+</tr>
+<tr>
+<td><code><span class="tok-keyword">continue</span></code></td>
+<td>Закончить текущий проход и перейти к следующему</td>
+</tr>
+</tbody>
+</table>
+<p>Фигурные скобки вложенных блоков закрываются в обратном порядке: сначала внутренний <code><span class="tok-keyword">if</span></code>, потом внешний <code><span class="tok-keyword">for</span></code>, потом <code><span class="tok-name">main</span></code>. Отступы помогают это видеть; если потерялись, временно подпишите закрывающие скобки в заметках. Круглые скобки вокруг условия <code><span class="tok-keyword">if</span></code> Go не требует.</p>
+<p><img alt="Опора цикла: начало, проверка, тело и шаг" src="diagrams/loop.svg" /></p>
+<p><strong>Пройдите маршрут пальцем.</strong> Для номеров 1, 2 и 3 укажите, какие условия сработают и где заканчивается проход. Сначала без запуска, затем сравните с выводом.</p>
+<h2 id="_8">Разминка</h2>
+<p><strong>Предскажите.</strong> Сколько строк появится при <code><span class="tok-name">published</span><span> </span><span class="tok-symbol">:=</span><span> </span><span class="tok-name">false</span></code>?</p>
+<p><strong>Заполните.</strong> Какой оператор оставляет номера до трёх включительно: <code><span class="tok-symbol">&lt;</span></code> или <code><span class="tok-symbol">&lt;=</span></code>?</p>
+<p><strong>Почините.</strong> У снятого издания удалили <code><span class="tok-keyword">continue</span></code>, и теперь оно одновременно «снято» и «доступно». Объясните, почему выполняются обе строки.</p>
+<h2 id="_9">Задание</h2>
+<p><strong>Обязательное.</strong> Обойдите номера от <code><span class="tok-number">1</span></code> до <code><span class="tok-number">4</span></code> включительно. Снятым должно быть издание <code><span class="tok-number">3</span></code>. Ожидаемый вывод:</p>
+<pre><code class="language-text">Доступно издание 1
+Доступно издание 2
+Издание 3 снято с продажи
+Доступно издание 4
+</code></pre>
+<p><strong>На своих данных.</strong> Выберите другой снятый номер внутри диапазона. Перед запуском перечислите ожидаемые строки.</p>
+<p><strong>По желанию.</strong> Снимите два издания с помощью двух отдельных условий. Затем найдите в документации логический оператор <code><span class="tok-symbol">||</span></code> и объедините проверку. Сравните читаемость.</p>
+<h2 id="_10">Ответы</h2>
+<p>Для черновика будет одна строка. Включённая правая граница записывается через <code><span class="tok-symbol">&lt;=</span></code>. Без <code><span class="tok-keyword">continue</span></code> программа после сообщения о снятии идёт дальше и печатает обычную строку этого же прохода.</p>
+<p>В обязательном задании верхняя граница меняется на <code><span class="tok-number">4</span></code>, а проверка снятого номера — на <code><span class="tok-name">edition</span><span> </span><span class="tok-symbol">==</span><span> </span><span class="tok-number">3</span></code>. Начальное значение остаётся <code><span class="tok-number">1</span></code>.</p>
+<p>Мы научились повторять действие и выбирать его по данным. Теперь вынесем самостоятельное правило — расчёт скидки — в функцию и закрепим ожидаемое поведение тестами.</p></main><nav aria-label="Переход между главами"><a href="03-values.html">← Предыдущая глава</a> · <a href="05-functions.html">Следующая глава →</a></nav></body></html>

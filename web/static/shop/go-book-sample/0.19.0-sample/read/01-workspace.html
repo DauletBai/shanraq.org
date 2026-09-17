@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>1. Рабочее место, которое можно проверить</title><link rel="stylesheet" href="book.css"></head><body><a class="skip" href="#content">К содержимому страницы</a><nav aria-label="Навигация книги"><a href="toc.html">Оглавление книги</a></nav><p class="status">Ознакомительный фрагмент 0.19.0-sample · вступление и главы 1–12. Бесплатный фрагмент: главы 1–12.</p><main id="content"><h1 id="1">1. Рабочее место, которое можно проверить</h1>
+<p>В конце этой главы у вас будет папка проекта и терминал, в котором работает команда <code><span>go</span><span> </span><span>version</span></code>. Пока не нужно выбирать базу данных или оплачивать сервер. Сначала убедимся, что можем сохранять файлы и запускать инструменты.</p>
+<h2 id="_1">Ориентир на экране</h2>
+<p>Снимок работающей контрольной точки 42 показывает итоговый интерфейс. В ранних главах мы будем приходить к нему постепенно; адреса, заказ и цены здесь учебные.</p>
+<p><img alt="Тот же итоговый каталог на смартфоне: навигация и форма помещаются по ширине экрана." src="screenshots/catalog-mobile.png" /></p>
+<p class="figure-caption">Тот же итоговый каталог на смартфоне: навигация и форма помещаются по ширине экрана.</p><h2 id="_2">Образ: свой рабочий стол</h2>
+<p>Представьте стол, на котором вы собираетесь написать письмо. На нём лежит папка, внутри — листы; у папки есть название. Если оставить письмо на соседнем столе, открытая перед вами папка его не получит. С программой происходит похожая путаница: вы исправили один <code>main.go</code>, а терминал запускает другой.</p>
+<p>Наша опора — <strong>стол, папка, сохранённый лист</strong>. Рабочая папка объединяет файлы проекта. Текущая папка терминала определяет, где команда начинает работу. Сохранение переносит набранный в редакторе текст в файл, который прочитает инструмент Go. Редактор может показывать несколько проектов, поэтому взгляд на вкладку ещё не доказывает, что терминал открыт там же.</p>
+<p>У образа есть граница: на компьютере команды могут принимать полный путь к чужой папке. Пока мы намеренно работаем из папки проекта. Нарисуйте прямоугольник с названием <code><span class="tok-name">bookshop</span></code>, а внутри — <code>go.mod</code>. Перед запуском показывайте пальцем: «Команду выполняю здесь». Это маленькая привычка, которая избавляет от долгих поисков не той ошибки.</p>
+<h2 id="_3">Сначала целое</h2>
+<p>Наша работа будет устроена так:</p>
+<table>
+<thead>
+<tr>
+<th>Где</th>
+<th>Что вы делаете</th>
+<th>Что получаете</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Редактор</td>
+<td>Пишете и сохраняете файл <code>main.go</code></td>
+<td>Текст программы на диске</td>
+</tr>
+<tr>
+<td>Терминал</td>
+<td>Вводите <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code></td>
+<td>Go собирает и запускает программу</td>
+</tr>
+<tr>
+<td>Терминал</td>
+<td>Читаете ответ</td>
+<td>Проверяете, совпал ли результат с ожиданием</td>
+</tr>
+</tbody>
+</table>
+<p>Сохранённый файл и открытая вкладка редактора — не одно и то же. Если вы изменили текст, но не сохранили его, команда может запустить предыдущую версию. Эту причину стоит проверять прежде, чем переписывать программу.</p>
+<p>Терминал — программа, принимающая команды. Оболочка внутри него разбирает эти команды. В macOS вы обычно встретите zsh, в Linux — bash, в Windows будем использовать PowerShell. Там, где команды различаются, книга покажет оба варианта.</p>
+<h2 id="go">Установите Go</h2>
+<p>Откройте <a href="https://go.dev/doc/install">официальную страницу установки</a>. Выберите свою операционную систему и процессор. Для Windows используется установщик MSI, для macOS — PKG; на Linux следуйте инструкции для архива вашей архитектуры. Не вставляйте в терминал команды удаления старой установки, если не понимаете, какой каталог они затронут.</p>
+<p>Материалы этого рабочего выпуска проверяются на Go 1.27.1. Ваша версия указана в выводе команды, а не в названии скачанного файла. После установки закройте терминал и откройте новый: так он получит обновлённые настройки поиска программ.</p>
+<p>Введите только команду, без символов приглашения вроде <code><span>$</span></code> или <code><span class="tok-symbol">&gt;</span></code>:</p>
+<pre><code class="language-sh"><span>go</span><span> </span><span>version</span><span>
+</span></code></pre>
+<p>Форма ответа:</p>
+<pre><code class="language-text">go version go1.27.1 darwin/arm64
+</code></pre>
+<p>Последняя часть зависит от компьютера. <code><span class="tok-name">darwin</span></code> означает macOS, <code><span class="tok-name">arm64</span></code> — архитектуру процессора. На Windows или Linux она будет другой. Здесь важно, что вы получили ответ программы Go, а не сообщение «команда не найдена».</p>
+<p>Если Go установлен раньше, не удаляйте его наугад. Сначала посмотрите версию и сверьтесь с инструкцией обновления. Работающий чужой проект может зависеть от своего набора инструментов.</p>
+<h2 id="_4">Подготовьте папку</h2>
+<p>Выберите место для учебных проектов, к которому у вас есть доступ. Не создавайте новый магазин внутри другого проекта. Откройте терминал в выбранной папке и выполните:</p>
+<pre><code class="language-sh"><span>mkdir</span><span> </span><span>bookshop</span><span>
+</span><span class="tok-name">cd</span><span> </span><span>bookshop</span><span>
+</span></code></pre>
+<p>Эти две команды подходят и для PowerShell, и для bash/zsh. Первая создаёт папку, вторая делает её текущей: следующие команды будут работать относительно неё.</p>
+<p>Если <code><span class="tok-name">bookshop</span></code> уже существует, сначала посмотрите, что внутри. Для чистого начала можно выбрать другое имя, например <code><span class="tok-name">bookshop</span><span class="tok-symbol">-</span><span class="tok-name">study</span></code>; тогда используйте его и в команде <code><span class="tok-name">cd</span></code>.</p>
+<p>Проверьте, где вы находитесь. В macOS/Linux:</p>
+<pre><code class="language-sh"><span class="tok-name">pwd</span><span>
+</span><span>ls</span><span>
+</span></code></pre>
+<p>В PowerShell:</p>
+<pre><code class="language-powershell"><span class="tok-name">Get-Location</span><span>
+</span><span class="tok-name">Get-ChildItem</span><span>
+</span></code></pre>
+<p>Первая команда показывает путь, вторая — содержимое. Не надо добиваться точного совпадения пути с книгой: у каждого своя домашняя папка. Важно увидеть выбранную вами папку <code><span class="tok-name">bookshop</span></code>.</p>
+<p>Откройте её в редакторе через меню открытия папки. Подойдёт редактор обычного текста, который сохраняет UTF-8. Если используете VS Code, открывайте всю папку, а не случайный файл из соседнего проекта. Для первых глав дополнительные расширения необязательны.</p>
+<h2 id="_5">Дайте проекту имя</h2>
+<p>В терминале внутри <code><span class="tok-name">bookshop</span></code> выполните один раз:</p>
+<pre><code class="language-sh"><span>go</span><span> </span><span>mod</span><span> </span><span>init</span><span> </span><span>example.com/bookshop</span><span>
+</span></code></pre>
+<p>Появится <code>go.mod</code>. Модуль — группа пакетов Go с общим описанием версии и зависимостей. Пока достаточно понимать: этот файл обозначает корень нашего проекта. Запись <code><span class="tok-name">example</span><span class="tok-symbol">.</span><span class="tok-name">com</span><span class="tok-symbol">/</span><span class="tok-name">bookshop</span></code> служит именем учебного модуля; для этого упражнения не нужно покупать домен или создавать сайт по такому адресу.</p>
+<p>Код книги связан с репозиторием <a href="https://github.com/dake-edu/gopher-shop">dake-edu/gopher-shop</a>. Контрольные точки находятся в <code>book/examples/</code>; их имена модулей отражают путь в репозитории. Для собственного проекта мы используем учебное имя <code><span class="tok-name">example</span><span class="tok-symbol">.</span><span class="tok-name">com</span><span class="tok-symbol">/</span><span class="tok-name">bookshop</span></code>, чтобы отличать его от готовых примеров.</p>
+<p>Не редактируйте <code>go.mod</code> ради буквального совпадения с изображением в чужом уроке: версия в нём зависит от инструмента, который его создал. В комплекте книги лежат самостоятельные контрольные точки со своими готовыми <code>go.mod</code>; для них повторный <code><span>go</span><span> </span><span>mod</span><span> </span><span>init</span></code> не нужен.</p>
+<h2 id="_6">Если не получилось</h2>
+<table>
+<thead>
+<tr>
+<th>Симптом</th>
+<th>Что проверить</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="tok-keyword">go</span></code> не найден</td>
+<td>Установка завершена? Открыт новый терминал? Найден ли каталог Go через PATH?</td>
+</tr>
+<tr>
+<td><code><span class="tok-keyword">go</span><span class="tok-symbol">.</span><span class="tok-name">mod</span><span> </span><span class="tok-name">already</span><span> </span><span class="tok-name">exists</span></code></td>
+<td>Модуль уже создан; повторная инициализация не нужна</td>
+</tr>
+<tr>
+<td>Отказ в создании папки</td>
+<td>Выберите доступную папку пользователя</td>
+</tr>
+<tr>
+<td>Редактор показывает другие файлы</td>
+<td>Сравните открытую папку с выводом <code><span class="tok-name">pwd</span></code> или <code><span class="tok-name">Get</span><span class="tok-symbol">-</span><span class="tok-name">Location</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>PATH — список папок, где оболочка ищет исполняемые программы. Он похож на список адресов доставки, но саму программу не устанавливает. Если адрес записан верно, а файла по нему нет, поиск всё равно не сработает.</p>
+<h2 id="_7">Опорные пункты: команда состоит из частей</h2>
+<p>В <code><span>go</span><span> </span><span>mod</span><span> </span><span>init</span><span> </span><span>example.com/bookshop</span></code> пробелы отделяют имя программы <code><span class="tok-keyword">go</span></code>, подкоманду <code><span class="tok-name">mod</span></code>, действие <code><span class="tok-name">init</span></code> и имя модуля. Слеш <code><span class="tok-symbol">/</span></code> здесь является частью имени модуля, а не командой перехода в папку. В <code><span>go</span><span> </span><span>run</span><span> </span><span>.</span></code> последняя точка — отдельный аргумент «текущий пакет».</p>
+<p>Символы приглашения терминала (<code><span>$</span></code>, <code><span class="tok-symbol">&gt;</span></code>, иногда <code><span class="tok-symbol">%</span></code>) перед командой не набирают. Они принадлежат оболочке. Круглых или фигурных скобок в этих командах нет: это команды инструменту, а не исходный код Go.</p>
+<p><img alt="Опора: сохранённый файл, команда Go и наблюдаемый результат" src="diagrams/workspace.svg" /></p>
+<p><strong>Восстановите по памяти.</strong> Закройте пример и назовите три места: где редактируем, что запускаем, где проверяем результат. Если путаются путь и имя модуля, вернитесь к выводу текущей папки и откройте <code>go.mod</code>.</p>
+<h2 id="_8">Разминка</h2>
+<p><strong>Предскажите.</strong> Если создать файл в папке A, а команду запустить из папки B, обязана ли команда увидеть этот файл?</p>
+<p><strong>Заполните.</strong> Какая команда меняет текущую папку на <code><span class="tok-name">bookshop</span></code>?</p>
+<p><strong>Почините.</strong> Редактор сохранил файл в <code><span class="tok-name">bookshop</span><span class="tok-symbol">-</span><span class="tok-name">old</span></code>, а терминал открыт в <code><span class="tok-name">bookshop</span></code>. Как проверить расхождение, не переустанавливая Go?</p>
+<h2 id="_9">Задание</h2>
+<p><strong>Обязательное.</strong> Создайте рабочую папку и модуль. Сохраните в <code>environment.txt</code> вывод <code><span>go</span><span> </span><span>version</span></code> и путь к папке. Проверьте в редакторе, что рядом существует <code>go.mod</code>.</p>
+<p><strong>На своих данных.</strong> Назовите папку по-своему и повторите проверку пути. Имя папки и имя модуля не обязаны совпадать.</p>
+<p><strong>По желанию.</strong> Найдите путь к установленной команде Go: <code><span class="tok-name">command</span><span> </span><span class="tok-symbol">-</span><span class="tok-name">v</span><span> </span><span class="tok-keyword">go</span></code> в bash/zsh или <code><span class="tok-name">Get</span><span class="tok-symbol">-</span><span class="tok-name">Command</span><span> </span><span class="tok-keyword">go</span></code> в PowerShell.</p>
+<h2 id="_10">Ответы и самопроверка</h2>
+<p>Команда работает в своей текущей папке и не обязана искать файл в соседней. Для перехода используется <code><span class="tok-name">cd</span><span> </span><span class="tok-name">bookshop</span></code>. Чтобы найти расхождение, сравните путь терминала с местом сохранения файла в редакторе.</p>
+<p>Вы готовы двигаться дальше, если можете объяснить, где лежит проект, показать <code>go.mod</code> и получить версию Go. Следующая глава даст этой папке первую программу.</p></main><nav aria-label="Переход между главами"><a href="00-preface.html">← Предыдущая глава</a> · <a href="02-first-program.html">Следующая глава →</a></nav></body></html>

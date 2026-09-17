@@ -2466,6 +2466,9 @@ var messages = map[string]map[string]string{
 	"shop.status_selling":   {"kz": "сатылымда", "ru": "в продаже", "en": "on sale"},
 	"shop.status_paused":    {"kz": "сатылым тоқтаулы", "ru": "продажа приостановлена", "en": "sales paused"},
 	"shop.edition":          {"kz": "Басылым", "ru": "Редакция", "en": "Edition"},
+	"shop.sample_online":    {"kz": "12 тарауды онлайн тегін оқу", "ru": "Читать 12 глав онлайн бесплатно", "en": "Read 12 chapters online for free"},
+	"shop.sample_note":      {"kz": "Орыс тіліндегі кіріспе және 1–12 тараулар. Тіркелусіз оқыңыз немесе офлайн оқу үшін жүктеңіз.", "ru": "Предисловие и главы 1–12 на русском языке. Читайте без регистрации или скачайте для чтения без интернета.", "en": "The preface and chapters 1–12 in Russian. No sign-up: read online or download for offline reading."},
+	"shop.sample_code":      {"kz": "Мысалдар кодын жүктеу", "ru": "Скачать код примеров", "en": "Download the example code"},
 	"shop.preview":          {"kz": "Тегін үзіндіні оқу", "ru": "Читать бесплатный фрагмент", "en": "Read the free excerpt"},
 	"shop.preview_note": {
 		"kz": "PDF, тіркелусіз ашылады.",
