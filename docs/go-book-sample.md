@@ -11,3 +11,5 @@ To regenerate, use the public gopher-shop repository: run the book checks, build
 Revision 0.21 contains 116 PDF pages and 18 runnable learning labs in the first twelve chapters. The sidebar banner uses the same versioned cover as the sample; changing the URL avoids a stale browser/CDN image. Migration 20260917000100 updates the product cover and preview URL, preserving its price and sale state. Earlier sample assets remain available for existing links.
 
 After deployment, check the product's five sample links without signing in, open chapter 12, and verify chapter 13 returns 404. The running binary must be rebuilt: uploading files beside an old binary does not replace embedded static assets.
+
+Migration 20260917000200 replaces obsolete seeded titles, edition 0.4 and the old eight-chapter progress paragraph with the current 42-chapter draft and twelve-chapter sample. Custom descriptions and sale settings are preserved.
