@@ -36,3 +36,5 @@ Cumulative release: preface + 15 numbered lessons, 48 localized pages. Lesson 16
 - `python3 tools/coursecheck/rust_boundaries.py`: exercise variations check archived/completed/overlong tasks, equal and invalid counts, empty iteration, positive duration boundary, no/all qualifying array values and valid array access in all three languages.
 - Language checks passed for all 51 Rust Markdown files; offline checks found no broken internal links.
 - `go test ./pkg/modules/articles ./pkg/modules/ai` passed for the public-description and assistant-guidance wording changes.
+
+The initial cross-platform run caught a checker defect on Windows: the new boundary checker used the platform default encoding for lesson files. The 166-example checker passed on all three platforms. Both boundary-checker reads now specify UTF-8; its CI invocation treats implicit-encoding warnings as errors so the defect is detectable on UTF-8 hosts too. Publication remained blocked until the corrected complete workflow set passed.
