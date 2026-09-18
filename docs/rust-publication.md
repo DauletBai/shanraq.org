@@ -1,6 +1,6 @@
 # Rust course publication
 
-Current manifest: preface and lessons 1–10 in kz/ru/en (second group: 6–10). The full free course remains in progress; later lessons must not be presented as published.
+Current manifest: preface and lessons 1–15 in kz/ru/en (third group: 11–15, prepared for publication). The full free course remains in progress; later lessons must not be presented as published.
 
 Prepare a cumulative transaction from reviewed sources:
 
@@ -16,7 +16,7 @@ The SQL uses one transaction with an advisory lock. Course membership and all th
 
 Rust exercises use inline reference answers. There is no server Rust runner; unsupported formatting/check requests are refused instead of reaching the Go checker. Local validation compiles every complete Rust example and answer, checks intentional compiler failures, and builds independent Cargo snapshots for all three languages. Snapshot locations: course/rust-organizer/step-NN (ru), en/step-NN, kz/step-NN. The first five lessons also need manual verification of their installation and navigation steps.
 
-After this release, compare all 33 body/summary hashes with the prepared sources. Visit each page anonymously, verify ten numbered lessons plus the preface, forward/back links and the footer in all languages. Check main/latest/top feeds for leaks; lesson 11 must remain unavailable. Check desktop, tablet and both mobile orientations, and verify existing Go book links and readiness.
+After this release, compare all 48 body/summary hashes with the prepared sources. Visit each page anonymously, verify fifteen numbered lessons plus the preface, forward/back links and the footer in all languages. Check main/latest/top feeds for leaks; lesson 16 must remain unavailable. Check desktop, tablet and both mobile orientations, and verify existing Go book links and readiness.
 
 ## Second group — published
 

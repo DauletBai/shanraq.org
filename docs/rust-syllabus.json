@@ -145,11 +145,11 @@
     "title": "Логические значения",
     "topics": "bool, сравнение, короткое замыкание",
     "outcome": "Записать условие отбора",
-    "status": "planned",
+    "status": "ready",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "ready",
+      "ru": "ready",
+      "en": "ready"
     }
   },
   {
@@ -158,11 +158,11 @@
     "title": "Ветвления и выражения",
     "topics": "if, else, значение блока, точка с запятой",
     "outcome": "Выбрать действие и значение",
-    "status": "planned",
+    "status": "ready",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "ready",
+      "ru": "ready",
+      "en": "ready"
     }
   },
   {
@@ -171,11 +171,11 @@
     "title": "Повторение действий",
     "topics": "loop, while, for, диапазон, break, continue",
     "outcome": "Обойти набор без пропусков",
-    "status": "planned",
+    "status": "ready",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "ready",
+      "ru": "ready",
+      "en": "ready"
     }
   },
   {
@@ -184,11 +184,11 @@
     "title": "Функции",
     "topics": "Параметр, аргумент, return, (), область видимости",
     "outcome": "Выделить вычисление в функцию",
-    "status": "planned",
+    "status": "ready",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "ready",
+      "ru": "ready",
+      "en": "ready"
     }
   },
   {
@@ -197,11 +197,11 @@
     "title": "Массивы",
     "topics": "Фиксированная длина, индекс, границы",
     "outcome": "Обработать фиксированный набор",
-    "status": "planned",
+    "status": "ready",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "ready",
+      "ru": "ready",
+      "en": "ready"
     }
   },
   {

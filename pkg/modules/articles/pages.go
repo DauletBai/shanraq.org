@@ -20,7 +20,7 @@ var staticPages = map[string]map[string]staticPageContent{
 - **[Go: с нуля до своего блога](/course/go?lang=ru)** — 50 уроков: от установки языка до работающего сайта с базой, входом, поиском и выкладкой в интернет. Курс закончен.
 - **[Python: от данных до своей сводки](/course/python?lang=ru)** — 55 уроков о данных и искусственном интеллекте: программа получает открытые данные, считает, строит графики и собирает отчёт. Курс закончен.
 - **[SQL: семейный бюджет без догадок](/course/sql?lang=ru)** — 13 уроков от первой таблицы до проверяемого отчёта и резервной копии. Работает на компьютере, планшете и смартфоне.
-- **[Rust: с нуля до своего органайзера](/course/rust?lang=ru)** — открыты первые 5 уроков. Продолжение выходит по пять уроков сразу на трёх языках.
+- **[Rust: с нуля до своего органайзера](/course/rust?lang=ru)** — уроки публикуются поэтапно; доступные уроки перечислены в оглавлении. Продолжение выходит по пять уроков сразу на трёх языках.
 - Дальше — машинное обучение: как модель учится на данных, где она ошибается и как её проверить. Мы не останавливаемся на программировании и идём туда, где сегодня нужны передовые знания.
 
 Каждый урок выходит сразу на трёх языках, и код внутри говорит на языке урока.
@@ -46,7 +46,7 @@ Shanraq.org — это дом, где сходятся свободные гол
 - **[Go тілі: нөлден өз блогыңызға дейін](/course/go?lang=kz)** — 50 сабақ: тілді орнатудан бастап дерекқоры, кіруі мен іздеуі бар, интернетке шығарылған сайтқа дейін. Курс аяқталды.
 - **[Python: деректен өз есебіңізге дейін](/course/python?lang=kz)** — деректер мен жасанды интеллект туралы 55 сабақ: бағдарлама ашық деректерді алады, есептейді, график салады және есеп құрады. Курс аяқталды.
 - **[SQL: отбасы бюджетін болжамсыз есептеу](/course/sql?lang=kz)** — алғашқы кестеден тексерілетін есеп пен сақтық көшірмеге дейінгі 13 сабақ. Компьютерде, планшетте және смартфонда жұмыс істейді.
-- **[Rust: алғашқы қадамнан жеке жоспарлау құралына дейін](/course/rust?lang=kz)** — алғашқы 5 сабақ ашық. Жалғасы үш тілде бес сабақтан жарияланады.
+- **[Rust: алғашқы қадамнан жеке жоспарлау құралына дейін](/course/rust?lang=kz)** — сабақтар кезең-кезеңімен жарияланады; қолжетімді сабақтар мазмұнда көрсетілген. Жалғасы үш тілде бес сабақтан жарияланады.
 - Әрі қарай — машиналық оқыту: модель деректен қалай үйренеді, қай жерде қателеседі және оны қалай тексереді. Біз бағдарламалаумен шектелмейміз әрі бүгін озық білім керек болған жаққа қарай жүреміз.
 
 Әр сабақ бірден үш тілде шығады, ал ішіндегі код сабақтың тілінде сөйлейді.
@@ -72,7 +72,7 @@ All published lessons are free and need no account. Courses still in progress gr
 - **[Go: from zero to your own blog](/course/go?lang=en)** — 50 lessons, from installing the language to a working site with a database, sign-in, search and a deployment of its own. The course is finished.
 - **[Python: from data to your own digest](/course/python?lang=en)** — 55 lessons on data and AI: fetch open data, calculate, chart, and assemble a report. The course is complete.
 - **[SQL: a family budget without guesswork](/course/sql?lang=en)** — 13 lessons from a first table to an auditable report and verified backup. Works on computers, tablets, and phones.
-- **[Rust: from zero to your own organizer](/course/rust?lang=en)** — the first 5 lessons are open; more arrive five at a time in all three languages.
+- **[Rust: from zero to your own organizer](/course/rust?lang=en)** — available lessons are listed in the course contents; more arrive five at a time in all three languages.
 - Next is machine learning: how a model learns from data, where it goes wrong, and how to check it. We do not stop at programming; we go where the knowledge that matters is.
 
 Every lesson comes out in all three languages at once, and the code inside speaks the language of its lesson.

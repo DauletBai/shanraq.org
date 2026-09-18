@@ -9,6 +9,7 @@ on:
       - 'tools/course/test_rust_release.py'
       - 'tools/course/rust-release.json'
       - 'tools/coursecheck/rustcheck.py'
+      - 'tools/coursecheck/rust_boundaries.py'
       - 'tools/coursecheck/langcheck.py'
       - 'tools/coursecheck/selftest.py'
       - '.github/workflows/rust-course.yml'
@@ -21,6 +22,7 @@ on:
       - 'tools/course/test_rust_release.py'
       - 'tools/course/rust-release.json'
       - 'tools/coursecheck/rustcheck.py'
+      - 'tools/coursecheck/rust_boundaries.py'
       - 'tools/coursecheck/langcheck.py'
       - 'tools/coursecheck/selftest.py'
       - '.github/workflows/rust-course.yml'
@@ -44,6 +46,11 @@ jobs:
         env:
           RUSTUP_TOOLCHAIN: 1.97.0
         run: python tools/coursecheck/rustcheck.py
+
+      - name: Check exercise boundary cases
+        env:
+          RUSTUP_TOOLCHAIN: 1.97.0
+        run: python tools/coursecheck/rust_boundaries.py
 
       - name: Check publication boundary and locale coverage
         run: python -m unittest discover -s tools/course -p test_rust_release.py

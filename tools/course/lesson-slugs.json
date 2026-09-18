@@ -1486,5 +1486,65 @@
   "rust/10-numbers-en": [
     "rust-10-numbers",
     "en"
+  ],
+  "rust/11-boolean": [
+    "rust-11-boolean",
+    "ru"
+  ],
+  "rust/11-boolean-kz": [
+    "rust-11-boolean",
+    "kz"
+  ],
+  "rust/11-boolean-en": [
+    "rust-11-boolean",
+    "en"
+  ],
+  "rust/12-branches": [
+    "rust-12-branches",
+    "ru"
+  ],
+  "rust/12-branches-kz": [
+    "rust-12-branches",
+    "kz"
+  ],
+  "rust/12-branches-en": [
+    "rust-12-branches",
+    "en"
+  ],
+  "rust/13-loops": [
+    "rust-13-loops",
+    "ru"
+  ],
+  "rust/13-loops-kz": [
+    "rust-13-loops",
+    "kz"
+  ],
+  "rust/13-loops-en": [
+    "rust-13-loops",
+    "en"
+  ],
+  "rust/14-functions": [
+    "rust-14-functions",
+    "ru"
+  ],
+  "rust/14-functions-kz": [
+    "rust-14-functions",
+    "kz"
+  ],
+  "rust/14-functions-en": [
+    "rust-14-functions",
+    "en"
+  ],
+  "rust/15-arrays": [
+    "rust-15-arrays",
+    "ru"
+  ],
+  "rust/15-arrays-kz": [
+    "rust-15-arrays",
+    "kz"
+  ],
+  "rust/15-arrays-en": [
+    "rust-15-arrays",
+    "en"
   ]
 }

@@ -117,6 +117,6 @@ Complete pairs: 3
 Unpaired: 0
 ```
 
-Continue when you can declare a variable, explain its type, change its value and calculate remaining tasks independently. Lessons 11–15 will cover logic, branches, loops, functions and arrays; they are still being prepared.
+Continue when you can declare a variable, explain its type, change its value and calculate remaining tasks independently. Lessons 11–15 cover logic, branches, loops, functions and arrays. Continue with lesson 11.
 
-[Previous lesson](/read/rust-09-variables?lang=en) · [Contents](/course/rust?lang=en)
+[Previous lesson](/read/rust-09-variables?lang=en) · [Contents](/course/rust?lang=en) · [Next lesson](/read/rust-11-boolean?lang=en)

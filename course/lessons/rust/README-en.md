@@ -1,6 +1,6 @@
 # Rust: from zero to your own organizer
 
-The preface and lessons 1–10 are published in Kazakh, Russian and English. [Open the course](https://shanraq.org/course/rust?lang=en). The full plan has 60 lessons; the course is still in progress.
+The preface and lessons 1–15 are published in Kazakh, Russian and English. [Open the course](https://shanraq.org/course/rust?lang=en). The full plan has 60 lessons; the course is still in progress.
 
 [Before you begin](preface-en.md)
 
@@ -14,3 +14,8 @@ The preface and lessons 1–10 are published in Kazakh, Russian and English. [Op
 - [8. Using compiler diagnostics](08-diagnostics-en.md)
 - [9. Variables, values and types](09-variables-en.md)
 - [10. Numbers and arithmetic](10-numbers-en.md)
+- [11. Boolean values](11-boolean-en.md)
+- [12. Branches and expressions](12-branches-en.md)
+- [13. Repeating actions](13-loops-en.md)
+- [14. Functions](14-functions-en.md)
+- [15. Arrays](15-arrays-en.md)

@@ -2,20 +2,20 @@
   "course": "rust",
   "code_lang": "rust",
   "cover_url": "/static/brand/rust-logo.svg",
-  "batch": 2,
-  "lessons": 10,
+  "batch": 3,
+  "lessons": 15,
   "metadata": {
     "ru": [
       "Rust: с нуля до своего органайзера",
-      "Открыты первые 10 уроков и предисловие. С нуля создаём личный органайзер. Новые уроки публикуются по пять сразу на казахском, русском и английском. Весь курс бесплатный; регистрация для чтения не нужна."
+      "Открыты первые 15 уроков и предисловие. С нуля создаём личный органайзер. Новые уроки публикуются по пять сразу на казахском, русском и английском. Весь курс бесплатный; регистрация для чтения не нужна."
     ],
     "kz": [
       "Rust: алғашқы қадамнан жеке жоспарлау құралына дейін",
-      "Алғашқы 10 сабақ пен кіріспе ашық. Жеке жоспарлау құралын нөлден жасаймыз. Жаңа сабақтар қазақша, орысша және ағылшынша бес-бестен жарияланады. Курс толық тегін, оқу үшін тіркелу қажет емес."
+      "Алғашқы 15 сабақ пен кіріспе ашық. Жеке жоспарлау құралын нөлден жасаймыз. Жаңа сабақтар қазақша, орысша және ағылшынша бес-бестен жарияланады. Курс толық тегін, оқу үшін тіркелу қажет емес."
     ],
     "en": [
       "Rust: from zero to your own organizer",
-      "The first 10 lessons and preface are open. Build a personal organizer from scratch. New lessons arrive in groups of five in Kazakh, Russian and English. The entire course is free; reading needs no account."
+      "The first 15 lessons and preface are open. Build a personal organizer from scratch. New lessons arrive in groups of five in Kazakh, Russian and English. The entire course is free; reading needs no account."
     ]
   },
   "items": [
@@ -73,6 +73,31 @@
       "stem": "10-numbers",
       "slug": "rust-10-numbers",
       "position": 100
+    },
+    {
+      "stem": "11-boolean",
+      "slug": "rust-11-boolean",
+      "position": 110
+    },
+    {
+      "stem": "12-branches",
+      "slug": "rust-12-branches",
+      "position": 120
+    },
+    {
+      "stem": "13-loops",
+      "slug": "rust-13-loops",
+      "position": 130
+    },
+    {
+      "stem": "14-functions",
+      "slug": "rust-14-functions",
+      "position": 140
+    },
+    {
+      "stem": "15-arrays",
+      "slug": "rust-15-arrays",
+      "position": 150
     }
   ]
 }

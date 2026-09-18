@@ -313,5 +313,226 @@
     "limit": "Не растущая владеющая строка; владение объясняется в уроке 22",
     "exercise_lesson": 9,
     "review_status": "draft"
+  },
+  {
+    "term": "сравнение",
+    "first_lesson": 11,
+    "definition": "Операция, дающая bool при сравнении значений",
+    "image": "Вопрос да или нет",
+    "limit": "Не меняет сравниваемые значения",
+    "exercise_lesson": 11,
+    "locales": {
+      "kz": "салыстыру",
+      "en": "comparison"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "короткое замыкание",
+    "first_lesson": 11,
+    "definition": "Правая часть && или || вычисляется только при необходимости",
+    "image": "Проверка пропуска до номера кабинета",
+    "limit": "Порядок частей влияет на безопасность",
+    "exercise_lesson": 11,
+    "locales": {
+      "kz": "қысқа тұйықталу",
+      "en": "short-circuit evaluation"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "ветвление",
+    "first_lesson": 12,
+    "definition": "Выбор блока по логическому условию",
+    "image": "Развилка",
+    "limit": "Условия проверяются в записанном порядке",
+    "exercise_lesson": 12,
+    "locales": {
+      "kz": "тармақталу",
+      "en": "branching"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "значение блока",
+    "first_lesson": 12,
+    "definition": "Последнее выражение без точки с запятой задаёт результат блока",
+    "image": "Выход расчёта",
+    "limit": "Блок без такого выражения даёт ()",
+    "exercise_lesson": 12,
+    "locales": {
+      "kz": "блок мәні",
+      "en": "block value"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "unit",
+    "first_lesson": 12,
+    "definition": "Тип () с единственным значением ()",
+    "image": "Результат без полезной нагрузки",
+    "limit": "Не ноль и не false",
+    "exercise_lesson": 12,
+    "locales": {
+      "kz": "бірлік мән",
+      "en": "unit"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "цикл",
+    "first_lesson": 13,
+    "definition": "Повторение блока",
+    "image": "Отметки в календаре",
+    "limit": "Выход не всегда обеспечивается автоматически",
+    "exercise_lesson": 13,
+    "locales": {
+      "kz": "қайталау құрылымы",
+      "en": "loop"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "итерация",
+    "first_lesson": 13,
+    "definition": "Один проход цикла",
+    "image": "Один день плана",
+    "limit": "continue пропускает оставшуюся часть прохода",
+    "exercise_lesson": 13,
+    "locales": {
+      "kz": "айналым",
+      "en": "iteration"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "диапазон",
+    "first_lesson": 13,
+    "definition": "Последовательность с заданными границами",
+    "image": "Отрезок календаря",
+    "limit": ".. исключает конец; ..= включает; рассматриваемые диапазоны возрастают",
+    "exercise_lesson": 13,
+    "locales": {
+      "kz": "аралық",
+      "en": "range"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "накопитель",
+    "first_lesson": 13,
+    "definition": "Переменная, собирающая результат проходов",
+    "image": "Итоговая строка плана",
+    "limit": "Объявление внутри прохода сбрасывает накопление",
+    "exercise_lesson": 13,
+    "locales": {
+      "kz": "жинақтауыш",
+      "en": "accumulator"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "параметр функции",
+    "first_lesson": 14,
+    "definition": "Именованный типизированный вход функции",
+    "image": "Место в рецепте для количества",
+    "limit": "Имя не связано с одноимённой переменной вызывающего кода",
+    "exercise_lesson": 14,
+    "locales": {
+      "kz": "функция параметрі",
+      "en": "function parameter"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "аргумент функции",
+    "first_lesson": 14,
+    "definition": "Конкретное значение, переданное при вызове",
+    "image": "Выбранная порция",
+    "limit": "В этих вызовах передаётся по позиции, не по имени",
+    "exercise_lesson": 14,
+    "locales": {
+      "kz": "функция аргументі",
+      "en": "function argument"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "предусловие",
+    "first_lesson": 14,
+    "definition": "Требование к входам, обеспечиваемое вызывающим кодом",
+    "image": "Проверка перед началом работы",
+    "limit": "u32 сам не доказывает done <= total",
+    "exercise_lesson": 14,
+    "locales": {
+      "kz": "алдын ала шарт",
+      "en": "precondition"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "массив",
+    "first_lesson": 15,
+    "definition": "Один тип элементов и длина, входящая в тип",
+    "image": "Лоток с фиксированными отделениями",
+    "limit": "mut не позволяет нарастить длину",
+    "exercise_lesson": 15,
+    "locales": {
+      "kz": "жиым",
+      "en": "array"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "индекс",
+    "first_lesson": 15,
+    "definition": "Позиция элемента начиная с нуля",
+    "image": "Номер отделения",
+    "limit": "Последний индекс меньше длины",
+    "exercise_lesson": 15,
+    "locales": {
+      "kz": "индекс",
+      "en": "index"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "метод",
+    "first_lesson": 15,
+    "definition": "Операция, вызываемая через точку у значения",
+    "image": "Действие для конкретного набора",
+    "limit": "Сейчас только len; собственные методы в уроке 28",
+    "exercise_lesson": 15,
+    "locales": {
+      "kz": "әдіс",
+      "en": "method"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "usize",
+    "first_lesson": 10,
+    "definition": "Зависимый от платформы беззнаковый тип размеров и индексов",
+    "image": "Номер позиции",
+    "limit": "Не единица времени; в уроке 15 первое применение",
+    "exercise_lesson": 15,
+    "locales": {
+      "kz": "usize",
+      "en": "usize"
+    },
+    "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "паника",
+    "first_lesson": 15,
+    "definition": "Остановка нормального исполнения из-за обнаруженной ошибки",
+    "image": "Аварийная остановка",
+    "limit": "Безопасность памяти не означает удобство для пользователя",
+    "exercise_lesson": 15,
+    "locales": {
+      "kz": "дүрбелең",
+      "en": "panic"
+    },
+    "review_status": "reviewed-in-third-batch"
   }
 ]
