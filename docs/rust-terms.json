@@ -880,5 +880,135 @@
       "en": "\\u{301}"
     },
     "review_status": "draft-fifth-batch"
+  },
+  {
+    "term": "кортеж",
+    "first_lesson": 26,
+    "definition": "Одно составное значение с фиксированными позициями, допускающими разные типы",
+    "image": "Карточка с двумя местами",
+    "limit": "Места названы номером, а не смыслом",
+    "exercise_lesson": 26,
+    "locales": {
+      "kz": "кортеж",
+      "en": "tuple"
+    },
+    "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "распаковка кортежа",
+    "first_lesson": 26,
+    "definition": "Связывание элементов кортежа с отдельными именами по порядку",
+    "image": "Прочитать две строки карточки",
+    "limit": "Порядок должен совпасть с назначением мест",
+    "exercise_lesson": 26,
+    "locales": {
+      "kz": "кортежді ажырату",
+      "en": "tuple unpacking"
+    },
+    "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "структура",
+    "first_lesson": 27,
+    "definition": "Собственный тип с именованными полями",
+    "image": "Подписанная форма задачи",
+    "limit": "Не проверяет смысл значений автоматически",
+    "exercise_lesson": 27,
+    "locales": {
+      "kz": "құрылым",
+      "en": "struct"
+    },
+    "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "поле",
+    "first_lesson": 27,
+    "definition": "Именованная часть значения структуры",
+    "image": "Подписанная графа формы",
+    "limit": "Имя поля не гарантирует корректный смысл значения",
+    "exercise_lesson": 27,
+    "locales": {
+      "kz": "өріс",
+      "en": "field"
+    },
+    "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "экземпляр",
+    "first_lesson": 27,
+    "definition": "Конкретное значение объявленной структуры",
+    "image": "Заполненная карточка",
+    "limit": "Все поля должны иметь значения и верные типы",
+    "exercise_lesson": 27,
+    "locales": {
+      "kz": "дана",
+      "en": "instance"
+    },
+    "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "связанная функция",
+    "first_lesson": 28,
+    "definition": "Функция внутри impl без параметра self, вызываемая через имя типа",
+    "image": "Мастерская делает новую карточку",
+    "limit": "Не получает существующий экземпляр автоматически",
+    "exercise_lesson": 28,
+    "locales": {
+      "kz": "байланысқан функция",
+      "en": "associated function"
+    },
+    "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "перечисление",
+    "first_lesson": 29,
+    "definition": "Тип с набором явно названных взаимоисключающих вариантов",
+    "image": "Один штамп состояния на карточке",
+    "limit": "Данные варианта требуют отдельной смысловой проверки",
+    "exercise_lesson": 29,
+    "locales": {
+      "kz": "санамалау",
+      "en": "enum"
+    },
+    "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "вариант",
+    "first_lesson": 29,
+    "definition": "Одна возможная форма значения перечисления, иногда с данными",
+    "image": "Конкретный штамп состояния",
+    "limit": "В одном значении выбран только один вариант",
+    "exercise_lesson": 29,
+    "locales": {
+      "kz": "нұсқа",
+      "en": "variant"
+    },
+    "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "match",
+    "first_lesson": 29,
+    "definition": "Выбор одной ветки по форме значения с проверкой полноты вариантов",
+    "image": "Инструкция на каждый штамп",
+    "limit": "Образец _ может скрыть будущий вариант",
+    "exercise_lesson": 29,
+    "locales": {
+      "kz": "match",
+      "en": "match"
+    },
+    "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "if let",
+    "first_lesson": 30,
+    "definition": "Условная ветка для одного образца с возможным else",
+    "image": "Проверить один особый штамп",
+    "limit": "Без else прочие варианты не получат действия",
+    "exercise_lesson": 30,
+    "locales": {
+      "kz": "if let",
+      "en": "if let"
+    },
+    "review_status": "draft-sixth-batch"
   }
 ]

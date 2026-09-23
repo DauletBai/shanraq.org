@@ -1666,5 +1666,65 @@
   "rust/25-unicode-en": [
     "rust-25-unicode",
     "en"
+  ],
+  "rust/26-tuples": [
+    "rust-26-tuples",
+    "ru"
+  ],
+  "rust/26-tuples-kz": [
+    "rust-26-tuples",
+    "kz"
+  ],
+  "rust/26-tuples-en": [
+    "rust-26-tuples",
+    "en"
+  ],
+  "rust/27-structs": [
+    "rust-27-structs",
+    "ru"
+  ],
+  "rust/27-structs-kz": [
+    "rust-27-structs",
+    "kz"
+  ],
+  "rust/27-structs-en": [
+    "rust-27-structs",
+    "en"
+  ],
+  "rust/28-methods": [
+    "rust-28-methods",
+    "ru"
+  ],
+  "rust/28-methods-kz": [
+    "rust-28-methods",
+    "kz"
+  ],
+  "rust/28-methods-en": [
+    "rust-28-methods",
+    "en"
+  ],
+  "rust/29-enums": [
+    "rust-29-enums",
+    "ru"
+  ],
+  "rust/29-enums-kz": [
+    "rust-29-enums",
+    "kz"
+  ],
+  "rust/29-enums-en": [
+    "rust-29-enums",
+    "en"
+  ],
+  "rust/30-patterns": [
+    "rust-30-patterns",
+    "ru"
+  ],
+  "rust/30-patterns-kz": [
+    "rust-30-patterns",
+    "kz"
+  ],
+  "rust/30-patterns-en": [
+    "rust-30-patterns",
+    "en"
   ]
 }

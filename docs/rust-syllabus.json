@@ -285,12 +285,13 @@
     "title": "Изменяемое заимствование",
     "topics": "&mut, исключительный доступ, конец заимствования",
     "outcome": "Изменить данные через функцию",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 22,
@@ -298,12 +299,13 @@
     "title": "String и &str",
     "topics": "Владеющая строка и представление текста",
     "outcome": "Выбрать тип для хранения и чтения",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 23,
@@ -311,12 +313,13 @@
     "title": "Срезы",
     "topics": "Часть данных, диапазон, связь с владельцем",
     "outcome": "Обработать часть без копии",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 24,
@@ -324,12 +327,13 @@
     "title": "Растущий список Vec",
     "topics": "Vec<T>, push, remove, len, перебор по ссылке",
     "outcome": "Управлять списком названий",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 25,
@@ -337,12 +341,13 @@
     "title": "Текст и Unicode",
     "topics": "Байт, char, графема, UTF-8",
     "outcome": "Не путать длину в байтах и символах",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 26,
@@ -350,11 +355,11 @@
     "title": "Кортежи",
     "topics": "Группировка, распаковка",
     "outcome": "Вернуть несколько результатов",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -363,11 +368,11 @@
     "title": "Структура Task",
     "topics": "Поле, экземпляр, проверка данных",
     "outcome": "Собрать сведения о задаче в тип",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -376,11 +381,11 @@
     "title": "Методы",
     "topics": "impl, self, &self, &mut self, связанные функции",
     "outcome": "Разместить поведение рядом с данными",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -389,11 +394,11 @@
     "title": "Перечисления",
     "topics": "enum, вариант, данные варианта",
     "outcome": "Ограничить допустимые состояния",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -402,11 +407,11 @@
     "title": "Сопоставление с образцом",
     "topics": "match, полнота, _, if let",
     "outcome": "Обработать каждый вариант",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {

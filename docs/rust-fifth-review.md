@@ -1,6 +1,6 @@
 # Rust lessons 21–25: first-use and language review
 
-Working drafts in kz/ru/en; absent from the publication manifest and the live course. The group follows the published lesson 20. Each new notation is defined before the first runnable code that uses it.
+Published in kz/ru/en on 2026-09-23. The group follows lesson 20. Each new notation is defined before the first runnable code that uses it. Publication evidence is recorded in [rust-publication.md](rust-publication.md).
 
 | Lesson | First new idea | Familiar image and its limit | Independent task |
 |---|---|---|---|
@@ -12,4 +12,4 @@ Working drafts in kz/ru/en; absent from the publication manifest and the live co
 
 All three locales contain localized visible output, predictions, recall maps, deliberately failing examples with a diagnostic code, required exercises, hints, inline answers, and routes to prerequisites. The Kazakh text uses the working terms recorded in [rust-kz-style.md](rust-kz-style.md), with unfamiliar code terms explained where they first appear. The official Rust Book chapters on [borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html), [slices](https://doc.rust-lang.org/book/ch04-03-slices.html), [vectors](https://doc.rust-lang.org/book/ch08-01-vectors.html), and [UTF-8 strings](https://doc.rust-lang.org/book/ch08-02-strings.html) support the technical rules.
 
-The checker compiles each complete example and answer, verifies expected output and intentional failures, and runs each independent Cargo snapshot. It cannot establish that every beginner will understand a metaphor on first reading. The next publication requires the five-lesson manifest, exact-commit CI, backup, and public-page checks.
+The checker compiles each complete example and answer, verifies expected output and intentional failures, and runs each independent Cargo snapshot. It cannot establish that every beginner will understand a metaphor on first reading. Publication used the five-lesson manifest, exact-commit CI, backup, and public-page checks.
