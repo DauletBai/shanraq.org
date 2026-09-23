@@ -1606,5 +1606,65 @@
   "rust/20-borrowing-en": [
     "rust-20-borrowing",
     "en"
+  ],
+  "rust/21-mutable-borrow": [
+    "rust-21-mutable-borrow",
+    "ru"
+  ],
+  "rust/21-mutable-borrow-kz": [
+    "rust-21-mutable-borrow",
+    "kz"
+  ],
+  "rust/21-mutable-borrow-en": [
+    "rust-21-mutable-borrow",
+    "en"
+  ],
+  "rust/22-strings": [
+    "rust-22-strings",
+    "ru"
+  ],
+  "rust/22-strings-kz": [
+    "rust-22-strings",
+    "kz"
+  ],
+  "rust/22-strings-en": [
+    "rust-22-strings",
+    "en"
+  ],
+  "rust/23-slices": [
+    "rust-23-slices",
+    "ru"
+  ],
+  "rust/23-slices-kz": [
+    "rust-23-slices",
+    "kz"
+  ],
+  "rust/23-slices-en": [
+    "rust-23-slices",
+    "en"
+  ],
+  "rust/24-vectors": [
+    "rust-24-vectors",
+    "ru"
+  ],
+  "rust/24-vectors-kz": [
+    "rust-24-vectors",
+    "kz"
+  ],
+  "rust/24-vectors-en": [
+    "rust-24-vectors",
+    "en"
+  ],
+  "rust/25-unicode": [
+    "rust-25-unicode",
+    "ru"
+  ],
+  "rust/25-unicode-kz": [
+    "rust-25-unicode",
+    "kz"
+  ],
+  "rust/25-unicode-en": [
+    "rust-25-unicode",
+    "en"
   ]
 }

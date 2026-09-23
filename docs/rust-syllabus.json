@@ -285,11 +285,11 @@
     "title": "Изменяемое заимствование",
     "topics": "&mut, исключительный доступ, конец заимствования",
     "outcome": "Изменить данные через функцию",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -298,11 +298,11 @@
     "title": "String и &str",
     "topics": "Владеющая строка и представление текста",
     "outcome": "Выбрать тип для хранения и чтения",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -311,11 +311,11 @@
     "title": "Срезы",
     "topics": "Часть данных, диапазон, связь с владельцем",
     "outcome": "Обработать часть без копии",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -324,11 +324,11 @@
     "title": "Растущий список Vec",
     "topics": "Vec<T>, push, remove, len, перебор по ссылке",
     "outcome": "Управлять списком названий",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -337,11 +337,11 @@
     "title": "Текст и Unicode",
     "topics": "Байт, char, графема, UTF-8",
     "outcome": "Не путать длину в байтах и символах",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {

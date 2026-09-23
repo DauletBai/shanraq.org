@@ -1,0 +1,3 @@
+First pair: 15
+Last pair: 35
+Element count: 4

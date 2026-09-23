@@ -776,5 +776,109 @@
       "en": "Git"
     },
     "review_status": "draft-editorial"
+  },
+  {
+    "term": "изменяемое заимствование &mut",
+    "first_lesson": 21,
+    "definition": "Временное право изменить значение через ссылку без передачи владения",
+    "image": "Временный отдельный доступ к исправлению страницы",
+    "limit": "Изменяемый и читающий доступы к одному значению не могут пересекаться по использованию",
+    "exercise_lesson": 21,
+    "locales": {
+      "kz": "өзгермелі қарызға алу &mut",
+      "en": "mutable borrowing &mut"
+    },
+    "review_status": "draft-fifth-batch"
+  },
+  {
+    "term": "as_str()",
+    "first_lesson": 22,
+    "definition": "Представление текста String как &str для чтения без копирования текста",
+    "image": "Открытая страница своей записной книжки",
+    "limit": "Представление не владеет текстом и не живёт дольше владельца",
+    "exercise_lesson": 22,
+    "locales": {
+      "kz": "as_str()",
+      "en": "as_str()"
+    },
+    "review_status": "draft-fifth-batch"
+  },
+  {
+    "term": "срез &[u32]",
+    "first_lesson": 23,
+    "definition": "Ссылка на непрерывную последовательность элементов без владения ими",
+    "image": "Две соседние строки общего листа",
+    "limit": "Срез зависит от владельца и требует допустимых границ",
+    "exercise_lesson": 23,
+    "locales": {
+      "kz": "тілім &[u32]",
+      "en": "slice &[u32]"
+    },
+    "review_status": "draft-fifth-batch"
+  },
+  {
+    "term": "Vec<String>",
+    "first_lesson": 24,
+    "definition": "Владеющий список строк, длина которого может меняться во время работы",
+    "image": "Список, к которому дописывают новые строки",
+    "limit": "Рост может переместить хранилище, а удаление сдвигает индексы",
+    "exercise_lesson": 24,
+    "locales": {
+      "kz": "Vec<String> өсетін тізімі",
+      "en": "Vec<String> growable list"
+    },
+    "review_status": "draft-fifth-batch"
+  },
+  {
+    "term": "remove()",
+    "first_lesson": 24,
+    "definition": "Удаляет элемент Vec по индексу и возвращает удалённое значение",
+    "image": "Убрать строку из списка и сдвинуть следующие",
+    "limit": "Недопустимый индекс вызывает panic; индекс не постоянный ID",
+    "exercise_lesson": 24,
+    "locales": {
+      "kz": "remove()",
+      "en": "remove()"
+    },
+    "review_status": "draft-fifth-batch"
+  },
+  {
+    "term": "графема",
+    "first_lesson": 25,
+    "definition": "Видимая единица письма, которая может состоять из нескольких скалярных значений Unicode",
+    "image": "Одна видимая буква из основы и знака ударения",
+    "limit": "chars().count() считает значения char, не графемы",
+    "exercise_lesson": 25,
+    "locales": {
+      "kz": "графема",
+      "en": "grapheme"
+    },
+    "review_status": "draft-fifth-batch"
+  },
+  {
+    "term": "итератор",
+    "first_lesson": 25,
+    "definition": "Источник значений, которые можно получать по одному; здесь результат chars()",
+    "image": "Последовательно перелистывать записи",
+    "limit": "Подробные способы работы с итераторами появятся позже",
+    "exercise_lesson": 25,
+    "locales": {
+      "kz": "итератор",
+      "en": "iterator"
+    },
+    "review_status": "draft-fifth-batch"
+  },
+  {
+    "term": "\\u{301}",
+    "first_lesson": 25,
+    "definition": "Запись кодового значения Unicode в строковом литерале; здесь добавляемый знак ударения",
+    "image": "Точный номер письменного знака",
+    "limit": "Не является подстановкой переменной println!",
+    "exercise_lesson": 25,
+    "locales": {
+      "kz": "\\u{301}",
+      "en": "\\u{301}"
+    },
+    "review_status": "draft-fifth-batch"
   }
 ]

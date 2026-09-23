@@ -1,4 +1,4 @@
-"""Verify boundary variations promised in Rust lessons 11–15 in each locale."""
+"""Verify meaningful boundary variations promised in Rust lessons 11–25."""
 import sys,tempfile,re
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -24,4 +24,21 @@ with tempfile.TemporaryDirectory() as name:
   text=(R/f'15-arrays{suffix}.md').read_text(encoding='utf-8')
   s=next(m[2] for m in FENCES.finditer(text) if m[1]=='rust' and 'fn print_at' in m[2])
   check_program(s.replace('print_at(minutes, 3);','print_at(minutes, 1);'),'25\n',Path(name));count+=1
+  first,last,elements={
+   'ru':('Первые','Последние','Всего элементов'),
+   'kz':('Алғашқылары','Соңғылары','Барлық элемент'),
+   'en':('First pair','Last pair','Element count'),
+  }[lang]
+  check('23-slices','&minutes[0..2]','&minutes[0..0]',
+        first+': 0\n'+last+': 35\n'+elements+': 4\n')
+  removed,remaining,count_label={
+   'ru':('Чтение',('Прогулка','Отдых'),'Осталось'),
+   'kz':('Оқу',('Серуен','Демалыс'),'Қалды'),
+   'en':('Reading',('Walk','Rest'),'Remaining'),
+  }[lang]
+  removed_label={'ru':'Удалено','kz':'Өшірілді','en':'Removed'}[lang]
+  task_label={'ru':'Задача','kz':'Тапсырма','en':'Task'}[lang]
+  check('24-vectors','titles.remove(1)','titles.remove(0)',
+        removed_label+': '+removed+'\n'+task_label+': '+remaining[0]+'\n'
+        +task_label+': '+remaining[1]+'\n'+count_label+': 2\n')
  print(f'PASS: {count} additional exercise boundary cases across three locales')

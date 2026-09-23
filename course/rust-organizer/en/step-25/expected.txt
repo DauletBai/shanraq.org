@@ -1,0 +1,2 @@
+Bytes: 2
+char values: 1
