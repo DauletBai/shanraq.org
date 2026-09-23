@@ -495,12 +495,13 @@
     "title": "Разбор команд",
     "topics": "Перечисление команд и проверка параметров",
     "outcome": "Отделить разбор от выполнения",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 37,
@@ -508,12 +509,13 @@
     "title": "Основные операции",
     "topics": "Добавление, чтение, изменение, удаление в памяти",
     "outcome": "Использовать первую интерактивную версию",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 38,
@@ -521,12 +523,13 @@
     "title": "Идентификатор не индекс",
     "topics": "Устойчивый ID, дубликаты, переполнение счётчика",
     "outcome": "Не изменить чужую запись после удаления",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 39,
@@ -534,12 +537,13 @@
     "title": "Проверка сценариев",
     "topics": "Последовательности действий, неизменность при ошибке",
     "outcome": "Проверить успешные и ошибочные операции",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 40,
@@ -547,12 +551,13 @@
     "title": "Практика: органайзер в памяти",
     "topics": "Повторение 1–39, интерактивный ввод и split_once для названия с пробелами",
     "outcome": "Самостоятельно расширить программу",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 41,

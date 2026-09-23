@@ -1,6 +1,6 @@
 # Rust: from zero to your own organizer
 
-The preface and lessons 1–35 are published in Kazakh, Russian and English. [Open the course](https://shanraq.org/course/rust?lang=en). The full plan has 60 lessons; the course is still in progress.
+The preface and lessons 1–40 are published in Kazakh, Russian and English. [Open the course](https://shanraq.org/course/rust?lang=en). The full plan has 60 lessons; the course is still in progress.
 
 [Before you begin](preface-en.md)
 

@@ -1,6 +1,6 @@
-# Rust lessons 36–40: draft review
+# Rust lessons 36–40: publication review
 
-Working drafts in kz/ru/en. They are available in the repository for offline review and absent from the public release manifest. Published lesson 35 has no forward link to lesson 36; lesson 40 does not link to an unwritten lesson 41.
+Published in kz/ru/en on 2026-09-23. Lesson 35 links forward to lesson 36; lesson 40 does not link to the unpublished lesson 41.
 
 | Lesson | New step | Familiar image and its limit | Required independent result |
 |---|---|---|---|
@@ -14,4 +14,4 @@ Each language has a recall map, explanation before the first runnable example, v
 
 The examples and answers compile and run in all three languages, and each first example matches an independent Cargo snapshot. Lesson 39's tests run under `cargo test`. Additional boundary checks run lesson 40 answers with real input and verify an empty task list. Files are not yet used: every lesson states that task data vanish when the process ends.
 
-Technical behavior was checked against official [enum and match documentation](https://doc.rust-lang.org/book/ch06-02-match.html), [`Vec::remove`](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.remove), [`u32::checked_add`](https://doc.rust-lang.org/std/primitive.u32.html#method.checked_add), [Rust testing guide](https://doc.rust-lang.org/book/ch11-01-writing-tests.html), [`read_line`](https://doc.rust-lang.org/std/io/struct.Stdin.html#method.read_line), and [`split_once`](https://doc.rust-lang.org/std/primitive.str.html#method.split_once). A beginner's manual run of the terminal exercises remains editorial verification work before the next publication.
+Technical behavior was checked against official [enum and match documentation](https://doc.rust-lang.org/book/ch06-02-match.html), [`Vec::remove`](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.remove), [`u32::checked_add`](https://doc.rust-lang.org/std/primitive.u32.html#method.checked_add), [Rust testing guide](https://doc.rust-lang.org/book/ch11-01-writing-tests.html), [`read_line`](https://doc.rust-lang.org/std/io/struct.Stdin.html#method.read_line), and [`split_once`](https://doc.rust-lang.org/std/primitive.str.html#method.split_once). Automated checks do not replace a beginner's manual run of the terminal exercises.

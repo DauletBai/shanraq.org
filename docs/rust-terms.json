@@ -1178,7 +1178,7 @@
       "kz": "пәрменді талдау",
       "en": "command parsing"
     },
-    "review_status": "draft-eighth-batch"
+    "review_status": "published-eighth-batch"
   },
   {
     "term": "список задач в памяти",
@@ -1191,7 +1191,7 @@
       "kz": "жадтағы тапсырмалар тізімі",
       "en": "in-memory task list"
     },
-    "review_status": "draft-eighth-batch"
+    "review_status": "published-eighth-batch"
   },
   {
     "term": "устойчивый ID",
@@ -1204,7 +1204,7 @@
       "kz": "тұрақты ID",
       "en": "stable ID"
     },
-    "review_status": "draft-eighth-batch"
+    "review_status": "published-eighth-batch"
   },
   {
     "term": "checked_add",
@@ -1217,7 +1217,7 @@
       "kz": "checked_add",
       "en": "checked_add"
     },
-    "review_status": "draft-eighth-batch"
+    "review_status": "published-eighth-batch"
   },
   {
     "term": "сценарный тест",
@@ -1230,7 +1230,7 @@
       "kz": "сценарий сынағы",
       "en": "scenario test"
     },
-    "review_status": "draft-eighth-batch"
+    "review_status": "published-eighth-batch"
   },
   {
     "term": "split_once",
@@ -1243,6 +1243,6 @@
       "kz": "split_once",
       "en": "split_once"
     },
-    "review_status": "draft-eighth-batch"
+    "review_status": "published-eighth-batch"
   }
 ]

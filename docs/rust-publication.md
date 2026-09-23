@@ -1,6 +1,6 @@
 # Rust course publication
 
-Current manifest: preface and lessons 1–35 published in kz/ru/en. The full free course remains in progress; later lessons must not be presented as published.
+Current manifest: preface and lessons 1–40 published in kz/ru/en. The full free course remains in progress; later lessons must not be presented as published.
 
 Prepare a cumulative transaction from reviewed sources:
 
@@ -17,6 +17,12 @@ The SQL uses one transaction with an advisory lock. Course membership and all th
 Rust exercises use inline reference answers. There is no server Rust runner; unsupported formatting/check requests are refused instead of reaching the Go checker. Local validation compiles every complete Rust example and answer, checks intentional compiler failures, and builds independent Cargo snapshots for all three languages. Snapshot locations: course/rust-organizer/step-NN (ru), en/step-NN, kz/step-NN. The first five lessons also need manual verification of their installation and navigation steps.
 
 For each future release, compare every body/summary hash with the prepared sources. Visit each page anonymously, verify navigation in all languages, and check main/latest/top feeds for leaks. Check desktop, tablet and both mobile orientations, and verify existing Go book links and readiness.
+
+## Verified eighth publication — 2026-09-23
+
+Lessons 36–40 are public in kz/ru/en. Release source commit: `d1906344d3c122e2a7f900d4c94132a325d07a33`. All four required push workflows succeeded for that exact commit: [CI](https://github.com/DauletBai/shanraq.org/actions/runs/35880765223), [Course](https://github.com/DauletBai/shanraq.org/actions/runs/35880765168), [docker-smoke](https://github.com/DauletBai/shanraq.org/actions/runs/35880765109), and [Rust course checks](https://github.com/DauletBai/shanraq.org/actions/runs/35880765119). Local checks passed 544 Rust examples, answers and Cargo snapshots, 66 additional boundary cases, 126 Rust language files, 483 internal links and release tests.
+
+Lesson 36 returned 404 in all three languages before activation. A 4,489,458-byte database dump was saved at `/var/backups/shanraq/rust-content-20260923-before-36-40.dump` and its archive listing was checked with `pg_restore` inside the database container. The cumulative SQL completed in one transaction. The course has the preface and 40 numbered lessons. `publish.py --check` found no source differences. After an initial network timeout, a full anonymous HTTP pass succeeded for all 15 new pages, three course pages, three prefaces, navigation including 35→36, main/latest/top feeds, lesson 41 remaining 404, the Go course, `/readyz` and `/healthz`. The application was not restarted. Responsive browser inspection was not rerun in this pass.
 
 ## Verified seventh publication — 2026-09-23
 
