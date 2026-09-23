@@ -1,0 +1,2 @@
+Команды: add НАЗВАНИЕ | list | done ID | delete ID | rename ID НАЗВАНИЕ | quit
+Сеанс завершён

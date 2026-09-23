@@ -1,6 +1,6 @@
-# Rust lessons 31–35: draft review
+# Rust lessons 31–35: publication review
 
-Working drafts in kz/ru/en. They are linked for offline checking but absent from the public release manifest. Published lesson 30 has no forward link to lesson 31, and the live lesson 31 returns 404.
+Published in kz/ru/en on 2026-09-23. Lesson 30 links forward to 31, and lesson 35 has no forward link to the unpublished lesson 36.
 
 | Lesson | First new idea | Familiar image and its limit | Independent task |
 |---|---|---|---|

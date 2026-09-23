@@ -425,12 +425,13 @@
     "title": "Отсутствие значения",
     "topics": "Option<T>, Some, None, get",
     "outcome": "Обработать отсутствие задачи",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 32,
@@ -438,12 +439,13 @@
     "title": "Неудачная операция",
     "topics": "Result<T,E>, Ok, Err, parse, unwrap",
     "outcome": "Отклонить неверный ввод без аварии",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 33,
@@ -451,12 +453,13 @@
     "title": "Передача ошибок",
     "topics": "?, ранний возврат, совместимые ошибки",
     "outcome": "Отделить обнаружение от сообщения",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 34,
@@ -464,12 +467,13 @@
     "title": "Ввод из терминала",
     "topics": "stdin, буфер, read_line, trim, EOF",
     "outcome": "Обработать пустой ввод и конец потока",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 35,
@@ -477,12 +481,13 @@
     "title": "Аргументы запуска",
     "topics": "args, cargo run --, кавычки",
     "outcome": "Передать команду и название с пробелами",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 36,
@@ -490,11 +495,11 @@
     "title": "Разбор команд",
     "topics": "Перечисление команд и проверка параметров",
     "outcome": "Отделить разбор от выполнения",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -503,11 +508,11 @@
     "title": "Основные операции",
     "topics": "Добавление, чтение, изменение, удаление в памяти",
     "outcome": "Использовать первую интерактивную версию",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -516,11 +521,11 @@
     "title": "Идентификатор не индекс",
     "topics": "Устойчивый ID, дубликаты, переполнение счётчика",
     "outcome": "Не изменить чужую запись после удаления",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -529,24 +534,24 @@
     "title": "Проверка сценариев",
     "topics": "Последовательности действий, неизменность при ошибке",
     "outcome": "Проверить успешные и ошибочные операции",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
     "number": 40,
     "slug": "memory-checkpoint",
     "title": "Практика: органайзер в памяти",
-    "topics": "Повторение без новых конструкций",
+    "topics": "Повторение 1–39, интерактивный ввод и split_once для названия с пробелами",
     "outcome": "Самостоятельно расширить программу",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {

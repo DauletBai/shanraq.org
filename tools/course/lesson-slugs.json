@@ -1786,5 +1786,65 @@
   "rust/35-arguments-en": [
     "rust-35-arguments",
     "en"
+  ],
+  "rust/36-commands": [
+    "rust-36-commands",
+    "ru"
+  ],
+  "rust/36-commands-kz": [
+    "rust-36-commands",
+    "kz"
+  ],
+  "rust/36-commands-en": [
+    "rust-36-commands",
+    "en"
+  ],
+  "rust/37-operations": [
+    "rust-37-operations",
+    "ru"
+  ],
+  "rust/37-operations-kz": [
+    "rust-37-operations",
+    "kz"
+  ],
+  "rust/37-operations-en": [
+    "rust-37-operations",
+    "en"
+  ],
+  "rust/38-ids": [
+    "rust-38-ids",
+    "ru"
+  ],
+  "rust/38-ids-kz": [
+    "rust-38-ids",
+    "kz"
+  ],
+  "rust/38-ids-en": [
+    "rust-38-ids",
+    "en"
+  ],
+  "rust/39-scenarios": [
+    "rust-39-scenarios",
+    "ru"
+  ],
+  "rust/39-scenarios-kz": [
+    "rust-39-scenarios",
+    "kz"
+  ],
+  "rust/39-scenarios-en": [
+    "rust-39-scenarios",
+    "en"
+  ],
+  "rust/40-memory-checkpoint": [
+    "rust-40-memory-checkpoint",
+    "ru"
+  ],
+  "rust/40-memory-checkpoint-kz": [
+    "rust-40-memory-checkpoint",
+    "kz"
+  ],
+  "rust/40-memory-checkpoint-en": [
+    "rust-40-memory-checkpoint",
+    "en"
   ]
 }

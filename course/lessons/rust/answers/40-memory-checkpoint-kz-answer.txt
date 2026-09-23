@@ -1,0 +1,2 @@
+Пәрмендер: add АТАУ | list | done ID | delete ID | rename ID АТАУ | quit
+Жұмыс аяқталды

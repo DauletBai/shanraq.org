@@ -1022,7 +1022,7 @@
       "kz": "Option<T>",
       "en": "Option<T>"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "get",
@@ -1035,7 +1035,7 @@
       "kz": "get",
       "en": "get"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "Result<T, E>",
@@ -1048,7 +1048,7 @@
       "kz": "Result<T, E>",
       "en": "Result<T, E>"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "parse::<u32>()",
@@ -1061,7 +1061,7 @@
       "kz": "parse::<u32>()",
       "en": "parse::<u32>()"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "unwrap()",
@@ -1074,7 +1074,7 @@
       "kz": "unwrap()",
       "en": "unwrap()"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "?",
@@ -1087,7 +1087,7 @@
       "kz": "?",
       "en": "?"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "stdin",
@@ -1100,7 +1100,7 @@
       "kz": "стандартты енгізу",
       "en": "standard input"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "read_line",
@@ -1113,7 +1113,7 @@
       "kz": "read_line",
       "en": "read_line"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "EOF",
@@ -1126,7 +1126,7 @@
       "kz": "ағынның аяқталуы",
       "en": "end of file"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "trim()",
@@ -1139,7 +1139,7 @@
       "kz": "trim()",
       "en": "trim()"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "аргументы запуска",
@@ -1152,7 +1152,7 @@
       "kz": "іске қосу аргументтері",
       "en": "command-line arguments"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
   },
   {
     "term": "cargo run --",
@@ -1165,6 +1165,84 @@
       "kz": "cargo run --",
       "en": "cargo run --"
     },
-    "review_status": "draft-seventh-batch"
+    "review_status": "published-seventh-batch"
+  },
+  {
+    "term": "разбор команды",
+    "first_lesson": 36,
+    "definition": "Проверка слов до выполнения действия",
+    "image": "Проверка заявки перед исполнением",
+    "limit": "Не понимает произвольный естественный язык",
+    "exercise_lesson": 36,
+    "locales": {
+      "kz": "пәрменді талдау",
+      "en": "command parsing"
+    },
+    "review_status": "draft-eighth-batch"
+  },
+  {
+    "term": "список задач в памяти",
+    "first_lesson": 37,
+    "definition": "Набор записей, существующий только пока работает программа",
+    "image": "Ряд карточек на столе",
+    "limit": "Закрытие программы теряет данные",
+    "exercise_lesson": 37,
+    "locales": {
+      "kz": "жадтағы тапсырмалар тізімі",
+      "en": "in-memory task list"
+    },
+    "review_status": "draft-eighth-batch"
+  },
+  {
+    "term": "устойчивый ID",
+    "first_lesson": 38,
+    "definition": "Номер записи, не зависящий от места в Vec",
+    "image": "Инвентарный номер книги",
+    "limit": "Без сохранения новый запуск начнёт нумерацию заново",
+    "exercise_lesson": 38,
+    "locales": {
+      "kz": "тұрақты ID",
+      "en": "stable ID"
+    },
+    "review_status": "draft-eighth-batch"
+  },
+  {
+    "term": "checked_add",
+    "first_lesson": 38,
+    "definition": "Сложение, возвращающее None при переполнении",
+    "image": "Проверка свободного номера до выдачи",
+    "limit": "Проверка не сохраняет список на диск",
+    "exercise_lesson": 38,
+    "locales": {
+      "kz": "checked_add",
+      "en": "checked_add"
+    },
+    "review_status": "draft-eighth-batch"
+  },
+  {
+    "term": "сценарный тест",
+    "first_lesson": 39,
+    "definition": "Проверка последовательности действий и состояния после неё",
+    "image": "Открыть и закрыть замок, затем попробовать чужой ключ",
+    "limit": "Несколько тестов не доказывают отсутствие всех ошибок",
+    "exercise_lesson": 39,
+    "locales": {
+      "kz": "сценарий сынағы",
+      "en": "scenario test"
+    },
+    "review_status": "draft-eighth-batch"
+  },
+  {
+    "term": "split_once",
+    "first_lesson": 40,
+    "definition": "Разделяет строку по первому найденному разделителю",
+    "image": "Разделить записку на действие и весь оставшийся текст",
+    "limit": "Не разбирает все правила командной оболочки",
+    "exercise_lesson": 40,
+    "locales": {
+      "kz": "split_once",
+      "en": "split_once"
+    },
+    "review_status": "draft-eighth-batch"
   }
 ]

@@ -1,6 +1,7 @@
 # Binary outputs (anchored to repo root so it does not match pkg/shanraq/)
 /shanraq
 *.out
+/course/rust-organizer/**/target/
 
 # Configuration overrides
 config.yaml

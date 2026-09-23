@@ -1,4 +1,4 @@
-"""Verify meaningful boundary variations promised in Rust lessons 11–35."""
+"""Verify meaningful boundary variations promised in Rust lessons 11–40."""
 import os,subprocess,sys,tempfile,re
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -79,4 +79,21 @@ with tempfile.TemporaryDirectory() as name:
   check_live('35-arguments','',['add',title],argument_labels[0]+title+'\n')
   check_live('35-arguments','',['add',*title.split(' ')],argument_labels[1]+'\n')
   check_live('35-arguments','',['unknown',title],argument_labels[2]+'\n')
+  cli={
+   'ru':('Команды: add НАЗВАНИЕ | list | done ID | delete ID | rename ID НАЗВАНИЕ | quit',
+         'Добавлено', 'Изменено', 'Читать Rust', 'Читать две главы', 'ожидает',
+         'Ошибка: ID не найден', 'Задач нет', 'Сеанс завершён'),
+   'kz':('Пәрмендер: add АТАУ | list | done ID | delete ID | rename ID АТАУ | quit',
+         'Қосылды', 'Атауы өзгерді', 'Rust оқу', 'Екі тарау оқу', 'аяқталмаған',
+         'Қате: ID табылмады', 'Тапсырма жоқ', 'Жұмыс аяқталды'),
+   'en':('Commands: add TITLE | list | done ID | delete ID | rename ID TITLE | quit',
+         'Added', 'Renamed', 'Read Rust', 'Read two chapters', 'open',
+         'Error: ID not found', 'No tasks', 'Session ended'),
+  }[lang]
+  help_line,added,renamed,old_title,new_title,state,missing,empty,bye=cli
+  check_live('40-memory-checkpoint',
+             f'add {old_title}\nrename 1 {new_title}\nlist\nrename 99 Missing\nquit\n', [],
+             f'{help_line}\n{added}: 1\n{renamed}: 1\n1: {new_title} ({state})\n{missing}\n{bye}\n')
+  check_live('40-memory-checkpoint','list\nquit\n',[],
+             f'{help_line}\n{empty}\n{bye}\n')
  print(f'PASS: {count} additional exercise boundary cases across three locales')
