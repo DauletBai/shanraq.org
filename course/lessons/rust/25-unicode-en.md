@@ -105,4 +105,4 @@ accented e: bytes 3, char values 2
 
 The result separates storage size from scalar count and calls neither a count of visible letters. [Official UTF-8 and string guide](https://doc.rust-lang.org/book/ch08-02-strings.html).
 
-[Previous lesson](/read/rust-24-vectors?lang=en) · [Contents](/course/rust?lang=en)
+[Previous lesson](/read/rust-24-vectors?lang=en) · [Contents](/course/rust?lang=en) · [Next lesson](/read/rust-26-tuples?lang=en)

@@ -105,4 +105,4 @@ e с ударением: байтов 3, значений char 2
 
 Результат различает место в памяти и число значений, но не объявляет их числом видимых букв. [Официальный разбор UTF-8 и строк](https://doc.rust-lang.org/book/ch08-02-strings.html).
 
-[Предыдущий урок](/read/rust-24-vectors?lang=ru) · [Оглавление](/course/rust?lang=ru)
+[Предыдущий урок](/read/rust-24-vectors?lang=ru) · [Оглавление](/course/rust?lang=ru) · [Следующий урок](/read/rust-26-tuples?lang=ru)

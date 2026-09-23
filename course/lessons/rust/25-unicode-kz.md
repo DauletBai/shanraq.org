@@ -105,4 +105,4 @@ fn main() {
 
 Нәтиже жадтағы орын мен мән санын ажыратады, оларды көрінетін әріп саны деп атамайды. [UTF-8 және жолдар туралы ресми түсіндірме](https://doc.rust-lang.org/book/ch08-02-strings.html).
 
-[Алдыңғы сабақ](/read/rust-24-vectors?lang=kz) · [Мазмұны](/course/rust?lang=kz)
+[Алдыңғы сабақ](/read/rust-24-vectors?lang=kz) · [Мазмұны](/course/rust?lang=kz) · [Келесі сабақ](/read/rust-26-tuples?lang=kz)

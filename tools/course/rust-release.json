@@ -2,20 +2,20 @@
   "course": "rust",
   "code_lang": "rust",
   "cover_url": "/static/brand/rust-logo.svg",
-  "batch": 5,
-  "lessons": 25,
+  "batch": 6,
+  "lessons": 30,
   "metadata": {
     "ru": [
       "Rust: с нуля до своего органайзера",
-      "Открыты первые 25 уроков и предисловие. С нуля создаём личный органайзер. Новые уроки публикуются по пять сразу на казахском, русском и английском. Весь курс бесплатный; регистрация для чтения не нужна."
+      "Открытые уроки и предисловие доступны в оглавлении. С нуля создаём личный органайзер для терминала. Новые уроки публикуются по пять сразу на казахском, русском и английском. Весь курс бесплатный; регистрация для чтения не нужна."
     ],
     "kz": [
       "Rust: алғашқы қадамнан жеке жоспарлау құралына дейін",
-      "Алғашқы 25 сабақ пен кіріспе ашық. Жеке жоспарлау құралын нөлден жасаймыз. Жаңа сабақтар қазақша, орысша және ағылшынша бес-бестен жарияланады. Курс толық тегін, оқу үшін тіркелу қажет емес."
+      "Ашық сабақтар мен кіріспе мазмұнда көрсетілген. Пәрмен жолында жұмыс істейтін жеке жоспарлау құралын нөлден жасаймыз. Жаңа сабақтар қазақша, орысша және ағылшынша бес-бестен жарияланады. Курс толық тегін, оқу үшін тіркелу қажет емес."
     ],
     "en": [
       "Rust: from zero to your own organizer",
-      "The first 25 lessons and preface are open. Build a personal organizer from scratch. New lessons arrive in groups of five in Kazakh, Russian and English. The entire course is free; reading needs no account."
+      "Open lessons and the preface appear in the course contents. Build a personal terminal organizer from scratch. New lessons arrive in groups of five in Kazakh, Russian and English. The entire course is free; reading needs no account."
     ]
   },
   "items": [
@@ -148,6 +148,31 @@
       "stem": "25-unicode",
       "slug": "rust-25-unicode",
       "position": 250
+    },
+    {
+      "stem": "26-tuples",
+      "slug": "rust-26-tuples",
+      "position": 260
+    },
+    {
+      "stem": "27-structs",
+      "slug": "rust-27-structs",
+      "position": 270
+    },
+    {
+      "stem": "28-methods",
+      "slug": "rust-28-methods",
+      "position": 280
+    },
+    {
+      "stem": "29-enums",
+      "slug": "rust-29-enums",
+      "position": 290
+    },
+    {
+      "stem": "30-patterns",
+      "slug": "rust-30-patterns",
+      "position": 300
     }
   ]
 }

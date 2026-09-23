@@ -9,7 +9,7 @@ A builder needs a plan before the first wall. Our destination is an organizer th
 
 ## The whole picture
 
-This is a mock-up of the future interface, not commands you can run today. You do not yet have the organizer executable.
+This is a mock-up of the future interface, not commands you can run today. You do not yet have the organizer executable. The goal is a local terminal program with text commands and responses, without a separate graphical window. We will first read typed input and later accept words written after the program name when starting it; both happen in the terminal.
 
 Before the mock-up, read its planned labels. `organizer` is the name of a program we have not built yet; `add` will create a task, `list` will show tasks, and `done` will mark one complete. Quotes keep a title containing spaces as one value. The `1` is planned as a stable record number: like an order number on a receipt, it stays with the record even if the screen order changes. This is only a design sketch; these lines cannot save anything yet.
 

@@ -18,11 +18,11 @@ Include your system, lesson, command, Rust version and complete error text. Shar
 
 ## How the course is released
 
-The preface and lessons 1–15 are open in Kazakh, Russian and English. Further lessons will be released five at a time in all three languages. The entire course is free: missing later lessons are still being prepared, not hidden behind a paywall. No exact date for the next group has been announced.
+The [course contents](/course/rust?lang=en) show which lessons are open now. New lessons arrive in groups of five in Kazakh, Russian and English at the same time. The entire course is free: if the next lesson is absent from the contents, it is still being prepared, not hidden behind a paywall.
 
 ## Where we are heading
 
-We start with tools, variables, types and actions. Then we study ownership, strings and collections, design tasks and add organizer commands. File storage, saving and backups follow. Tests, documentation and distribution complete the project. The working plan has 60 lessons; difficult topics may be split into smaller steps.
+We start with tools, variables, types and actions. Then we study ownership, strings and collections, design tasks and add organizer commands. File storage, saving and backups follow. Tests, documentation and distribution complete the project. The finished organizer runs **in a terminal** on your computer: you type commands and read the results there. A separate graphical window with buttons is outside the required project. The working plan has 60 lessons; difficult topics may be split into smaller steps.
 
 ## Checking your work
 
