@@ -14,6 +14,7 @@ on:
       - 'tools/coursecheck/langcheck.py'
       - 'tools/coursecheck/selftest.py'
       - '.github/workflows/rust-course.yml'
+      - '.github/workflows/course.yml'
   pull_request:
     paths:
       - 'course/lessons/rust/**'
@@ -28,6 +29,7 @@ on:
       - 'tools/coursecheck/langcheck.py'
       - 'tools/coursecheck/selftest.py'
       - '.github/workflows/rust-course.yml'
+      - '.github/workflows/course.yml'
 permissions:
   contents: read
 jobs:

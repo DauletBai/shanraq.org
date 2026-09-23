@@ -27,6 +27,7 @@ on:
       - 'docs/py-course.md'
       - 'docs/sql-course.md'
       - '.github/workflows/course.yml'
+      - '.github/workflows/rust-course.yml'
   pull_request:
     paths:
       - 'course/lessons/**'
@@ -38,6 +39,7 @@ on:
       - 'docs/py-course.md'
       - 'docs/sql-course.md'
       - '.github/workflows/course.yml'
+      - '.github/workflows/rust-course.yml'
   schedule:
     - cron: '17 6 * * 1'
   workflow_dispatch:
