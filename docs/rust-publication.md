@@ -18,6 +18,12 @@ Rust exercises use inline reference answers. There is no server Rust runner; uns
 
 For each future release, compare every body/summary hash with the prepared sources. Visit each page anonymously, verify navigation in all languages, and check main/latest/top feeds for leaks. Check desktop, tablet and both mobile orientations, and verify existing Go book links and readiness.
 
+## Verified fourth publication — 2026-09-23
+
+Lessons 16–20 are public in kz/ru/en. Release source commit: `78564f95157b7c301d963b11b1883d14151ee799`. All four push workflows succeeded for that exact commit: [CI](https://github.com/DauletBai/shanraq.org/actions/runs/35830931052), [Course](https://github.com/DauletBai/shanraq.org/actions/runs/35830930962), [docker-smoke](https://github.com/DauletBai/shanraq.org/actions/runs/35830931002), and [Rust course checks](https://github.com/DauletBai/shanraq.org/actions/runs/35830931004). Locally, the checker passed 247 examples, answers and Cargo snapshots; 30 additional boundary cases, 66 Rust language files, release preparation tests and internal links also passed.
+
+Before the transaction, the new pages returned 404 and a 4.2 MB database dump was saved at `/var/backups/shanraq/rust-content-20260923-before-16-20.dump`. The cumulative SQL completed in one transaction. The course now contains the preface and 20 numbered lessons. All 63 titles, bodies and summaries match the prepared sources. The 15 new pages, course pages and the 15→16→17 and 19→20 links load anonymously in all languages; lesson 21 returns 404. Main latest/top feeds contain no new lesson URLs. The Go course, `/readyz`, and `/healthz` still return 200. The application was not restarted. Responsive browser inspection was not rerun in this publication pass.
+
 ## Verified third publication — 2026-09-23
 
 The preface and lessons 1–15 are public in kz/ru/en. Release source commit: `0d63b93c3303e17df1d52704d3f59e1a3568a23b`. The four required push workflows for that commit succeeded: [CI](https://github.com/DauletBai/shanraq.org/actions/runs/35314882908), [Course](https://github.com/DauletBai/shanraq.org/actions/runs/35314882885), [docker-smoke](https://github.com/DauletBai/shanraq.org/actions/runs/35314882896), and [Rust course checks](https://github.com/DauletBai/shanraq.org/actions/runs/35314882931). Locally, `rustcheck.py` passed 166 released examples, answers and Cargo snapshots, `rust_boundaries.py` passed 30 additional cases, and the three release preparation tests passed.
