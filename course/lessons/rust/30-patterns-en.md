@@ -127,4 +127,4 @@ After finishing: 0 min
 
 The function now has a defined result for every state. [Official `match` chapter](https://doc.rust-lang.org/book/ch06-02-match.html) and [`if let` explanation](https://doc.rust-lang.org/book/ch06-03-if-let.html).
 
-[Previous lesson](/read/rust-29-enums?lang=en) · [Contents](/course/rust?lang=en)
+[Previous lesson](/read/rust-29-enums?lang=en) · [Contents](/course/rust?lang=en) · [Next lesson](/read/rust-31-option?lang=en)

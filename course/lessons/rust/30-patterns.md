@@ -127,4 +127,4 @@ fn main() {
 
 Теперь функция даёт определённый результат для каждого состояния. [Официальный разбор `match`](https://doc.rust-lang.org/book/ch06-02-match.html) и [`if let`](https://doc.rust-lang.org/book/ch06-03-if-let.html).
 
-[Предыдущий урок](/read/rust-29-enums?lang=ru) · [Оглавление](/course/rust?lang=ru)
+[Предыдущий урок](/read/rust-29-enums?lang=ru) · [Оглавление](/course/rust?lang=ru) · [Следующий урок](/read/rust-31-option?lang=ru)

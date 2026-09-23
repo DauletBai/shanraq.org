@@ -9,16 +9,16 @@ from prepare_rust import literal, prepare
 
 
 class RustReleaseTests(unittest.TestCase):
-    def test_sixth_batch_is_complete_and_atomic(self):
+    def test_seventh_batch_is_complete_and_atomic(self):
         sql, expected = prepare()
         self.assertTrue(sql.startswith('BEGIN;'))
         self.assertTrue(sql.endswith('COMMIT;\n'))
-        self.assertEqual(len(expected), 93)
+        self.assertEqual(len(expected), 108)
         self.assertEqual({p['lang'] for p in expected}, {'kz', 'ru', 'en'})
-        self.assertEqual(len({p['slug'] for p in expected}), 31)
-        self.assertEqual(sql.count('INSERT INTO article_series_items('), 31)
-        self.assertIn('rust-30-patterns', sql)
-        self.assertNotIn('rust-31-', sql)
+        self.assertEqual(len({p['slug'] for p in expected}), 36)
+        self.assertEqual(sql.count('INSERT INTO article_series_items('), 36)
+        self.assertIn('rust-35-arguments', sql)
+        self.assertNotIn('rust-36-', sql)
         self.assertNotIn('DELETE FROM', sql)
         self.assertNotIn('TRUNCATE', sql)
         self.assertNotIn('Редакционный черновик', sql)

@@ -127,4 +127,4 @@ fn main() {
 
 Функция енді әр күйге белгілі нәтиже береді. [`match` туралы ресми тарау](https://doc.rust-lang.org/book/ch06-02-match.html) және [`if let` туралы түсіндірме](https://doc.rust-lang.org/book/ch06-03-if-let.html).
 
-[Алдыңғы сабақ](/read/rust-29-enums?lang=kz) · [Мазмұны](/course/rust?lang=kz)
+[Алдыңғы сабақ](/read/rust-29-enums?lang=kz) · [Мазмұны](/course/rust?lang=kz) · [Келесі сабақ](/read/rust-31-option?lang=kz)

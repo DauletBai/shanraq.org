@@ -2,8 +2,8 @@
   "course": "rust",
   "code_lang": "rust",
   "cover_url": "/static/brand/rust-logo.svg",
-  "batch": 6,
-  "lessons": 30,
+  "batch": 7,
+  "lessons": 35,
   "metadata": {
     "ru": [
       "Rust: с нуля до своего органайзера",
@@ -173,6 +173,31 @@
       "stem": "30-patterns",
       "slug": "rust-30-patterns",
       "position": 300
+    },
+    {
+      "stem": "31-option",
+      "slug": "rust-31-option",
+      "position": 310
+    },
+    {
+      "stem": "32-result",
+      "slug": "rust-32-result",
+      "position": 320
+    },
+    {
+      "stem": "33-propagation",
+      "slug": "rust-33-propagation",
+      "position": 330
+    },
+    {
+      "stem": "34-input",
+      "slug": "rust-34-input",
+      "position": 340
+    },
+    {
+      "stem": "35-arguments",
+      "slug": "rust-35-arguments",
+      "position": 350
     }
   ]
 }
