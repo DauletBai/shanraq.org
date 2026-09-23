@@ -14,6 +14,8 @@ Think of a switch with two positions. The analogy stops there: `false` does not 
 
 Use the `organizer` project from [lesson 6](/read/rust-06-cargo?lang=en), in the folder containing `Cargo.toml`. Save your previous work separately. Replace **all** of `src/main.rs` with the first example below, save it, and run `cargo run` in that folder’s terminal. As explained in lesson 6, this command builds and runs the program. No other files or dependencies change. Each subsequent complete example also replaces the entire file. Output blocks show only program output, without Cargo messages. Predict the output before running.
 
+Read the new signs before the code. The comparisons `>=`, `<=`, and `!=` ask “at least,” “at most,” and “not equal”; each produces a `bool`. `!done` reverses a Boolean answer. `&&` requires both conditions to be true; `||` requires at least one. Parentheses group part of a condition, as in arithmetic. In `slots != 0 && tasks / slots <= 2`, the left side checks the divisor first: if it is false, the right side is not evaluated. This is an evaluation rule, not the compiler guessing where a dangerous division is.
+
 ```rust
 fn main() {
     let done: bool = false;

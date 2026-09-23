@@ -14,6 +14,8 @@ A **type** determines valid values and operations. Think of rules for the conten
 
 Replace src/main.rs, save and use cargo run from organizer:
 
+A key before the first example: `let` binds a name to a value, `mut` permits later assignment through that name, `: u32` explicitly selects a nonnegative integer type, and `=` assigns a value. `;` ends a statement. Inside `println!`, `{count}` inserts the current value into the text; it is not another program block. Picture a labelled card with a number that may be replaced when `mut` permits it. The picture has a limit: a name does not always mean a separate box containing a copy.
+
 ```rust
 fn main() {
     let mut count: u32 = 2;
@@ -40,7 +42,9 @@ Inside the println! text, {count} inserts the variable's value. These braces ins
 
 An annotation can sometimes be omitted: the compiler determines the type from the value and surrounding uses. This is **type inference**, not the absence of a type. With let count = 2 and no other constraints, the integer type defaults to i32, which permits negative numbers. We explicitly use u32 for this teaching counter rather than asking you to guess the context.
 
-true and false have type bool, representing truth values. 'A' has type char, one Unicode scalar value: one permitted code point in a common system for representing characters. A visible character can require several such values; we will revisit this with Unicode. "Rust" is a string literal of type &str, a reference to text, not a growable string. Single and double quotes mean different things. We will explore text ownership in lesson 22 and Boolean operations in lesson 11; here the point is that types describe more than numbers.
+`true` and `false` are `bool` values. `'A'` is a `char`, one Unicode scalar value. Unicode is a shared system for representing characters; a visible character can contain several scalar values. We will return to this in the text lesson. Single quotes surround this `char`; double quotes surround text.
+
+`"Rust"` is a string literal of type `&str`. **Owning data** means being responsible for its storage and eventual release. Here `&` gives a **reference**: reading access to existing text without taking that responsibility; `str` means a piece of text. Picture a card pointing to a page in a book: it makes no second book and is useful only while the book exists. This literal remains available throughout the program; we do not grow it through `&str`. Lessons 18–22 develop the ownership and string rules. Boolean operations arrive in lesson 11. These definitions show that types describe more than numbers.
 
 
 Try several types in one small program. true is printed as true; Rust does not translate Boolean values. ready, mark and title are our chosen names. Braces inside the println! string insert a named value, just as {count} did above.

@@ -8,6 +8,8 @@ Prerequisite: lessons 1–6. Work in organizer unless stated otherwise.
 
 The last lesson used a supplied program. Now we read its instructions. Open src/main.rs, replace its entire contents with the following, save it and run cargo run from organizer:
 
+A short key before the first code: `fn` declares a function, `main` names the program’s entry point, and empty `()` means no input parameters. Braces `{}` contain its actions. `println!` prints a line; `!` here marks a macro rather than an ordinary function. Text inside double quotes is a value, and `;` ends an action. Think of a recipe with a title and steps; the compiler will not guess a missing quote. We will examine every part below.
+
 ```rust
 fn main() {
     println!("My organizer");

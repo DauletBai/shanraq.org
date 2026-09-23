@@ -13,6 +13,8 @@ Open PowerShell from the Windows menu, or Terminal on macOS/Linux. The **prompt*
 
 Find your current folder. In PowerShell:
 
+Before the first command block: `Get-Location` in PowerShell and `pwd` on macOS/Linux show the current folder. They are two names for the same job in different shells; run only your system’s command. Below, `cd` changes folders, `$HOME` supplies the path to your home folder, and quotes keep the whole path as one argument even when it contains spaces. `Get-ChildItem` or `ls` lists contents. **Arguments** after a command name specify its job. Do not assign a new value to `$HOME`.
+
 ```powershell
 Get-Location
 ```
@@ -58,6 +60,8 @@ Terminal → shell → command and arguments → action → prompt. The current 
 3. Repair a path containing spaces by quoting the whole path.
 
 ## Exercise
+
+`cd ..` moves to the parent folder: the two dots `..` name the level above the current one. You will use this in the exercise.
 
 **Required.** Enter rust-learning and list its files. Run cd .., then show your current folder again. The two dots mean the parent folder. Expect rust-learning with notes.txt first, then your home folder.
 

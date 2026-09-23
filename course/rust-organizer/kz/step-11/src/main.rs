@@ -7,5 +7,5 @@ fn main() {
     let slots: u32 = 0;
     let tasks: u32 = 6;
     let fits = slots != 0 && tasks / slots <= 2;
-    println!("Сыяды: {fits}");
+    println!("Сияды: {fits}");
 }

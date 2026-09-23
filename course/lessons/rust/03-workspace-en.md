@@ -11,13 +11,15 @@ Before coding, learn to locate what you edit. A **file** is named data; a **fold
 
 Create a folder named rust-learning inside your home folder. The home folder is your personal location: commonly C:\Users\name on Windows, /Users/name on macOS or /home/name on Linux. Replace “name” with your account name; these are examples, not commands to paste.
 
+Before saving, a **byte** is a small unit of computer data. **UTF-8** is a rule for representing text characters as bytes; it supports Kazakh, English and other writing systems. Think of writing and reading an address with the same agreed notation: using another notation to read it may garble the letters. Choose UTF-8 if the editor asks; we will examine bytes later. `.txt` labels plain text and `.rs` usually labels Rust source, but renaming alone does not change the file contents.
+
 Inside it, create notes.txt containing:
 
 ```text
 My project is an organizer. First task: learn Rust.
 ```
 
-Use a plain-text editor, not a Word document. Windows Notepad is suitable; in macOS TextEdit select plain-text mode; on Linux use your installed text editor. Lesson 5 sets up a code editor. Save as UTF-8, a way of representing text as bytes that supports different languages. We will explain bytes later; for now choose UTF-8 if the save dialog asks.
+Use a plain-text editor, not a Word document. Windows Notepad is suitable; in macOS TextEdit select plain-text mode; on Linux use your installed text editor. Lesson 5 sets up a code editor. Save as UTF-8 and reopen the file to check that Kazakh and English letters are readable.
 
 ## A path is an address
 

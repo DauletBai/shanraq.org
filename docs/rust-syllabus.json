@@ -145,12 +145,13 @@
     "title": "Логические значения",
     "topics": "bool, сравнение, короткое замыкание",
     "outcome": "Записать условие отбора",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 12,
@@ -158,12 +159,13 @@
     "title": "Ветвления и выражения",
     "topics": "if, else, значение блока, точка с запятой",
     "outcome": "Выбрать действие и значение",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 13,
@@ -171,12 +173,13 @@
     "title": "Повторение действий",
     "topics": "loop, while, for, диапазон, break, continue",
     "outcome": "Обойти набор без пропусков",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 14,
@@ -184,12 +187,13 @@
     "title": "Функции",
     "topics": "Параметр, аргумент, return, (), область видимости",
     "outcome": "Выделить вычисление в функцию",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 15,
@@ -197,12 +201,13 @@
     "title": "Массивы",
     "topics": "Фиксированная длина, индекс, границы",
     "outcome": "Обработать фиксированный набор",
-    "status": "ready",
+    "status": "published",
     "locales": {
-      "kz": "ready",
-      "ru": "ready",
-      "en": "ready"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 16,
@@ -210,11 +215,11 @@
     "title": "Первый автоматический тест",
     "topics": "Тест, assert_eq!, #[test], cargo test",
     "outcome": "Поймать неверный результат функции",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -223,11 +228,11 @@
     "title": "Практика: простая сводка",
     "topics": "Повторение 1–16 без нового синтаксиса",
     "outcome": "Написать сводку без пошагового решения",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -236,11 +241,11 @@
     "title": "Значения и память",
     "topics": "Стек, куча, ресурс, время существования",
     "outcome": "Различить значение и ссылку",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -249,11 +254,11 @@
     "title": "Владение и перемещение",
     "topics": "Owner, move, Copy, Clone, освобождение",
     "outcome": "Объяснить использование перемещённого значения",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -262,11 +267,11 @@
     "title": "Заимствование",
     "topics": "&, ссылка, чтение без передачи владения",
     "outcome": "Передать данные без ненужной копии",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {

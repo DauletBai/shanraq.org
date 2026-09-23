@@ -253,12 +253,16 @@
   },
   {
     "term": "байт",
-    "first_lesson": 10,
-    "definition": "Группа из восьми битов",
-    "image": "Набор из восьми переключателей",
-    "limit": "Не обязательно целый символ текста",
-    "exercise_lesson": 10,
-    "review_status": "draft"
+    "first_lesson": 3,
+    "definition": "Небольшая единица компьютерных данных из восьми битов",
+    "image": "Часть записи текста по правилу UTF-8",
+    "limit": "Один видимый знак не обязательно занимает один байт",
+    "exercise_lesson": 3,
+    "review_status": "draft",
+    "locales": {
+      "kz": "байт",
+      "en": "byte"
+    }
   },
   {
     "term": "область видимости",
@@ -308,11 +312,15 @@
   {
     "term": "&str",
     "first_lesson": 9,
-    "definition": "Заимствованное представление текста UTF-8",
-    "image": "Просмотр уже существующего текста",
-    "limit": "Не растущая владеющая строка; владение объясняется в уроке 22",
+    "definition": "Ссылка на доступный для чтения фрагмент текста UTF-8 без владения им",
+    "image": "Карточка, указывающая на страницу книги",
+    "limit": "Ссылка действует, пока существует сам текст; через неё текст не растёт",
     "exercise_lesson": 9,
-    "review_status": "draft"
+    "review_status": "draft",
+    "locales": {
+      "kz": "&str мәтінге сілтеме",
+      "en": "&str text reference"
+    }
   },
   {
     "term": "сравнение",
@@ -473,9 +481,9 @@
   {
     "term": "массив",
     "first_lesson": 15,
-    "definition": "Один тип элементов и длина, входящая в тип",
-    "image": "Лоток с фиксированными отделениями",
-    "limit": "mut не позволяет нарастить длину",
+    "definition": "Упорядоченная последовательность элементов одного типа с длиной, входящей в тип",
+    "image": "Лоток с пронумерованными отделениями",
+    "limit": "Элементы могут повторяться, но mut не увеличивает длину",
     "exercise_lesson": 15,
     "locales": {
       "kz": "жиым",
@@ -534,5 +542,239 @@
       "en": "panic"
     },
     "review_status": "reviewed-in-third-batch"
+  },
+  {
+    "term": "автоматический тест",
+    "first_lesson": 16,
+    "definition": "Сохранённая проверка результата для выбранного входа",
+    "image": "Контрольное взвешивание посылки",
+    "limit": "Успех выбранных случаев не доказывает все возможные случаи",
+    "exercise_lesson": 16,
+    "locales": {
+      "kz": "автоматты тест",
+      "en": "automated test"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "атрибут #[test]",
+    "first_lesson": 16,
+    "definition": "Метка перед функцией, по которой инструмент тестирования находит её",
+    "image": "Бирка на проверочном листе",
+    "limit": "Метка не запускает функцию при cargo run",
+    "exercise_lesson": 16,
+    "locales": {
+      "kz": "#[test] атрибуты",
+      "en": "#[test] attribute"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "assert_eq!",
+    "first_lesson": 16,
+    "definition": "Макрос сравнения фактического и ожидаемого значений",
+    "image": "Сверка двух показаний",
+    "limit": "Он сообщает о расхождении, но не исправляет функцию",
+    "exercise_lesson": 16,
+    "locales": {
+      "kz": "assert_eq! салыстыруы",
+      "en": "assert_eq! assertion"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "память",
+    "first_lesson": 18,
+    "definition": "Место хранения данных работающей программы",
+    "image": "Рабочее место и склад",
+    "limit": "Схема не задаёт точные физические адреса",
+    "exercise_lesson": 18,
+    "locales": {
+      "kz": "жад",
+      "en": "memory"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "String",
+    "first_lesson": 18,
+    "definition": "Тип, владеющий текстовыми данными и способный расти",
+    "image": "Папка с местом для новых листов",
+    "limit": "Сам тип не делает каждую переменную изменяемой",
+    "exercise_lesson": 18,
+    "locales": {
+      "kz": "String",
+      "en": "String"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "стек",
+    "first_lesson": 18,
+    "definition": "Обычно область данных вызовов с известным размером",
+    "image": "Рабочая поверхность текущего вызова",
+    "limit": "Оптимизация может изменить фактическое размещение",
+    "exercise_lesson": 18,
+    "locales": {
+      "kz": "стек",
+      "en": "stack"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "куча",
+    "first_lesson": 18,
+    "definition": "Область для выделения хранения во время работы",
+    "image": "Расширяемый склад",
+    "limit": "Размещение в куче само по себе не определяет правила владения",
+    "exercise_lesson": 18,
+    "locales": {
+      "kz": "үйме",
+      "en": "heap"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "владелец",
+    "first_lesson": 19,
+    "definition": "Часть программы, отвечающая за управляемый ресурс значения",
+    "image": "Держатель единственного талона",
+    "limit": "Владение не означает конкретный физический адрес",
+    "exercise_lesson": 19,
+    "locales": {
+      "kz": "ие",
+      "en": "owner"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "перемещение",
+    "first_lesson": 19,
+    "definition": "Передача значения новому владельцу с прекращением доступа через прежнее имя",
+    "image": "Передача талона",
+    "limit": "Байты не обязаны физически перемещаться",
+    "exercise_lesson": 19,
+    "locales": {
+      "kz": "иеліктің ауысуы",
+      "en": "move"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "Copy",
+    "first_lesson": 19,
+    "definition": "Трейт, допускающий неявную независимую копию значения",
+    "image": "Копия числа на втором листе",
+    "limit": "String не становится Copy из-за того, что u32 им является",
+    "exercise_lesson": 19,
+    "locales": {
+      "kz": "Copy",
+      "en": "Copy"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "clone()",
+    "first_lesson": 19,
+    "definition": "Явное создание независимой копии значения",
+    "image": "Копирование книги",
+    "limit": "Для String может требовать выделения памяти",
+    "exercise_lesson": 19,
+    "locales": {
+      "kz": "clone()",
+      "en": "clone()"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "заимствование",
+    "first_lesson": 20,
+    "definition": "Временный доступ к значению без передачи владения",
+    "image": "Книгу дали почитать",
+    "limit": "Аналогия не показывает правила срока и совместимости доступов",
+    "exercise_lesson": 20,
+    "locales": {
+      "kz": "қарызға алу",
+      "en": "borrowing"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "ссылка &",
+    "first_lesson": 20,
+    "definition": "Значение, указывающее на другое значение без владения им",
+    "image": "Указатель на книгу у владельца",
+    "limit": "Ссылка для чтения не разрешает изменять String",
+    "exercise_lesson": 20,
+    "locales": {
+      "kz": "сілтеме &",
+      "en": "reference &"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "буфер",
+    "first_lesson": 18,
+    "definition": "Выделенная область для байтов данных, размер которой может изменяться",
+    "image": "Место для новых листов",
+    "limit": "Не каждое значение имеет отдельный буфер",
+    "exercise_lesson": 18,
+    "locales": {
+      "kz": "буфер",
+      "en": "buffer"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "::",
+    "first_lesson": 18,
+    "definition": "В этом уроке выбирает функцию from, связанную с типом String",
+    "image": "Адрес внутри раздела",
+    "limit": "Не соединяет две строки",
+    "exercise_lesson": 18,
+    "locales": {
+      "kz": "::",
+      "en": "::"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "push_str",
+    "first_lesson": 18,
+    "definition": "Метод String, добавляющий текст в конец",
+    "image": "Добавление листа в папку",
+    "limit": "Нужен изменяемый доступ к String",
+    "exercise_lesson": 18,
+    "locales": {
+      "kz": "push_str",
+      "en": "push_str"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "неизменяемое заимствование",
+    "first_lesson": 20,
+    "definition": "Временный доступ для чтения без передачи владения",
+    "image": "Дать книгу почитать",
+    "limit": "Не разрешает менять String через такую ссылку",
+    "exercise_lesson": 20,
+    "locales": {
+      "kz": "өзгермейтін қарызға алу",
+      "en": "immutable borrowing"
+    },
+    "review_status": "draft-fourth-batch"
+  },
+  {
+    "term": "Git",
+    "first_lesson": 5,
+    "definition": "Отдельный инструмент записи истории изменений файлов",
+    "image": "Черновики с датами",
+    "limit": "Для проверки установки Rust история Git не нужна",
+    "exercise_lesson": 5,
+    "locales": {
+      "kz": "Git",
+      "en": "Git"
+    },
+    "review_status": "draft-editorial"
   }
 ]

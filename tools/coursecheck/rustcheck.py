@@ -39,6 +39,11 @@ def check_program(code, expected, directory, fails=False, diagnostic=None):
     require(executed.returncode == 0, executed.stderr)
     require(executed.stdout == expected,
             f'output mismatch: {executed.stdout!r} != {expected!r}')
+    if '#[test]' in code:
+        tested = run(['rustc', '--edition=2024', '--test', str(source), '-o', str(binary)], directory)
+        require(tested.returncode == 0, tested.stderr)
+        result = run([str(binary)], directory)
+        require(result.returncode == 0, result.stdout + result.stderr)
 
 
 def main():
@@ -53,7 +58,11 @@ def main():
                 if not re.match(r'https?://|#|/', link):
                     require((page.parent / link.split('#')[0]).exists(), f'{page}: missing {link}')
         release = json.loads((ROOT / 'tools/course/rust-release.json').read_text(encoding='utf-8'))
-        for entry in syllabus[:release['lessons']]:
+        for entry in syllabus:
+            locales = [LESSONS / f"{entry['number']:02}-{entry['slug']}{suffix}.md"
+                       for suffix in ('', '-kz', '-en')]
+            if entry['number'] > release['lessons'] and not all(page.exists() for page in locales):
+                continue
             command_sets = []
             for lang, suffix in [('ru', ''), ('kz', '-kz'), ('en', '-en')]:
                 page = LESSONS / f"{entry['number']:02}-{entry['slug']}{suffix}.md"
@@ -94,6 +103,17 @@ def main():
             require(text.startswith('# '), f'{lesson}: missing title')
             require(len(text.splitlines()) > 4 and '**' in text.splitlines()[2],
                     f'{lesson}: missing summary')
+            answer = LESSONS / 'answers' / (lesson.stem + '-answer.rs')
+            if answer.exists():
+                inline = text.split('<!-- task-answer -->', 1)
+                require(len(inline) == 2, f'{lesson}: missing inline answer')
+                answer_blocks = list(FENCES.finditer(inline[1]))
+                require(len(answer_blocks) >= 2 and answer_blocks[0][1] == 'rust'
+                        and answer_blocks[1][1] == 'text', f'{lesson}: answer format')
+                require(answer_blocks[0][2] == answer.read_text(encoding='utf-8'),
+                        f'{lesson}: inline answer drift')
+                require(answer_blocks[1][2] == answer.with_suffix('.txt').read_text(encoding='utf-8'),
+                        f'{lesson}: inline answer output drift')
             for link in re.findall(r'\]\(([^)]+)\)', text):
                 if not re.match(r'https?://|#|/', link):
                     require((lesson.parent / link.split('#')[0]).exists(), f'{lesson}: missing {link}')

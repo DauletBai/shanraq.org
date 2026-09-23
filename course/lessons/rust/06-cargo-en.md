@@ -10,7 +10,9 @@ In lesson 5 you built a disposable installation probe. Now we create the organiz
 
 ## The whole picture
 
-Enter rust-learning as in lesson 4, not the rust-install-check folder. cargo new creates a new project directory; organizer is its name. --edition selects the language edition; --vcs none avoids creating Git history before we have explained that tool. Run:
+Enter rust-learning as in lesson 4, not the rust-install-check folder. cargo new creates a new project directory; organizer is its name. --edition selects the language edition; --vcs none avoids creating Git history because this first project does not need it. Run:
+
+Before the commands: `cargo new organizer` creates a project folder named `organizer`; `--edition 2024` selects a set of language rules, and `--vcs none` skips creating Git history. `cd organizer` enters that folder. `cargo check` checks code without producing the final executable, `cargo build` creates the executable, and `cargo run` builds if needed and runs it. Think of checking a plan, making an object, and using it as separate workshop steps.
 
 ```sh
 cargo new organizer --edition 2024 --vcs none
@@ -25,6 +27,8 @@ check checks the code without producing an executable. build creates the executa
 ## Where the program lives
 
 Use your editor's Open Folder command to open organizer. Do not create another organizer inside it. The generated src/main.rs contains:
+
+Before opening the generated file, read a short key to Cargo’s template. `fn main()` names the program’s entry: `fn` declares a function, and empty `()` means no input parameters. Braces contain its actions. `println!` prints a line, double quotes bound text, and `;` ends the action. This is still a supplied template; lesson 7 examines each symbol in detail.
 
 ```rust
 fn main() {
@@ -44,7 +48,7 @@ This is Cargo's supplied example. Lesson 7 explains every symbol; you are not ye
 
 Rust 1.97.0 and Edition 2024 are different: a tool release and a language edition. target holds generated build output; do not edit those files. Debug is the development build; we will study optimized release builds before distributing the program.
 
-After cargo build you can run the executable directly. Windows PowerShell:
+After `cargo build` you can run the executable directly. Leading `./` on macOS/Linux and `.\` in PowerShell mean “from the current folder”; `/` and `\` separate path parts on those systems. This path leads to the already built file, so changing `main.rs` does not update it by itself. Windows PowerShell:
 
 ```powershell
 .\target\debug\organizer.exe

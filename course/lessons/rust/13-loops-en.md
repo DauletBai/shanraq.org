@@ -14,6 +14,8 @@ Plan ten minutes of tasks on each of three days. The program calculates the plan
 
 Use the `organizer` project from [lesson 6](/read/rust-06-cargo?lang=en), in the folder containing `Cargo.toml`. Save your previous work separately. Replace **all** of `src/main.rs` with the first example below, save it, and run `cargo run` in that folder’s terminal. As explained in lesson 6, this command builds and runs the program. No other files or dependencies change. Each subsequent complete example also replaces the entire file. Output blocks show only program output, without Cargo messages. Predict the output before running.
 
+Read the new form before running it: `for day in 1..=3` visits the numbers from 1 through 3 **including** 3. `for` begins repetition, `day` names the current number, `in` introduces its source, and `..=` includes the right endpoint. Picture a finger visiting three calendar squares in order; the program does not wait for real days. Each execution of the `{ ... }` block is one iteration.
+
 ```rust
 fn main() {
     let mut total_minutes: u32 = 0;
@@ -43,7 +45,6 @@ Total minutes: 30
 `while` checks its condition **before** each iteration. If it starts false, the body never runs. `loop` repeats without a condition. `break` immediately leaves the innermost loop; `continue` skips the rest of the current iteration. A `while` then checks its condition again, while a `for` moves to its next value.
 
 The next example is a separate program. Temporarily replace all of `src/main.rs`; do not add a second `main`.
-
 
 ```rust
 fn main() {

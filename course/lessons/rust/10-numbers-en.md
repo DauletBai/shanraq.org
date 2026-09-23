@@ -12,6 +12,8 @@ Our organizer now has numbers. **Integers** have no fractional part. **Floating-
 
 Replace src/main.rs and run cargo run from organizer:
 
+Before running, read the new signs: `-` subtracts, `/` divides, and `%` gives the remainder of integer division. Empty `{}` in `println!` is replaced with the following value after the comma; for example, `println!("{}", 5)` prints 5. Picture grouping five tasks into pairs: two full pairs and one task left over. Here `%` means remainder, not a percentage.
+
 ```rust
 fn main() {
     let total: u32 = 7;
@@ -63,7 +65,7 @@ fn main() {
 
 ## Overflow and conversions
 
-**Overflow** occurs when a result cannot fit its type. In our fixed example, done never exceeds total. If that condition is broken, unsigned subtraction does not produce an ordinary negative value. A checked build can stop; do not rely on wrapping when checks are disabled. Conditions and input-validation lessons will enforce this rule explicitly.
+**Overflow** occurs when a result cannot fit its type. In our fixed example, done never exceeds total. If that condition is broken, unsigned subtraction does not produce an ordinary negative value. With overflow checks enabled, as they normally are in a debug build, the program stops with an error when executed. If checks are disabled, the value may wrap around the range like a counter after its last digit; that is not a correct task count. Conditions and input-validation lessons will enforce this rule explicitly.
 
 Applying a minus sign to an unsigned u32 is invalid. This deliberately wrong example should produce E0600:
 
@@ -75,7 +77,7 @@ fn main() {
 }
 ```
 
-A type conversion is an operation, not merely changing how you spell a number. Later we will study checked conversions that can fail. Do not treat as as a universal repair: narrowing may lose data. Here our types agree and our fixed inputs satisfy the task's conditions.
+A type conversion is an operation, not merely changing how you spell a number. Later we will study checked conversions that can fail. `as` is an explicit type-conversion operator. Do not treat it as a universal repair: narrowing may lose data. Here our types agree and our fixed inputs satisfy the task's conditions.
 
 ## Recall map
 

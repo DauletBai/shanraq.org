@@ -6,13 +6,15 @@ Prerequisites: lessons 1–14. If variables are unclear, revisit [lesson 9](/rea
 
 ## Why this matters
 
-Until now we used a separate variable for each task. An **array** holds values of one type with a length known at compile time. Picture a tray with three compartments: contents can change, but you cannot attach a fourth compartment to the same array. Every element must have the same type; similar meanings do not make different types interchangeable.
+Until now we used a separate variable for each task. An **array** is an ordered sequence of values of one type with a length known at compile time. Values may repeat. Picture a tray with three compartments: contents can change, but you cannot attach a fourth compartment to the same array. Every element must have the same type; similar meanings do not make different types interchangeable.
 
 Store three task durations and compute their total with a loop from lesson 13. This is still a numeric summary, not a complete task with a title and status; structures will provide that later.
 
 ## Run the example
 
 Use the `organizer` project from [lesson 6](/read/rust-06-cargo?lang=en), in the folder containing `Cargo.toml`. Save your previous work separately. Replace **all** of `src/main.rs` with the first example below, save it, and run `cargo run` in that folder’s terminal. As explained in lesson 6, this command builds and runs the program. No other files or dependencies change. Each subsequent complete example also replaces the entire file. Output blocks show only program output, without Cargo messages. Predict the output before running.
+
+Read the brackets before the first example. In the type `[u32; 3]`, square brackets describe an array of three `u32` elements; the inner `;` separates type from length. In the value `[10, 20, 15]`, commas separate elements. `minutes[0]` gets the first element because positions start at zero. `minutes.len()` calls the `len` method through a dot and returns the number of elements. Picture a tray with three slots numbered 0, 1, and 2, while its length is 3.
 
 ```rust
 fn main() {
@@ -71,7 +73,7 @@ No such position
 
 With `index = 3`, access is skipped. Change the index to 1 and expect `25`. The condition must be strict: `index < minutes.len()`, not `<=`. An empty array has no valid index at all. Computing `minutes[index]` before checking bounds is too late.
 
-An out-of-bounds access causes a **panic**: the program stops normal execution with an error message. If the invalid index is already obvious at compile time, the compiler may reject the code beforehand. Rust does not simply allow reading neighboring memory. An unexpected stop is still inconvenient, so validate the index first. Lesson 31 will introduce safer element access with `get` and `Option`.
+An out-of-bounds access causes a **panic**: the program stops normal execution with an error message. If the invalid index is already obvious at compile time, the compiler may reject the code beforehand. Rust does not simply allow reading neighboring memory. An unexpected stop is still inconvenient, so validate the index first. Lesson 31 will introduce a more convenient way to access an element without an out-of-bounds panic.
 
 Repeated elements have a shorter notation: `let minutes: [u32; 3] = [0; 3];` creates three zeros. In the **value** `[0; 3]`, the left part is the initial value and the right part is the count. In the **type** `[u32; 3]`, the left part is a type. Similar notation serves two different purposes.
 
@@ -87,7 +89,7 @@ fn main() {
 }
 ```
 
-Correct the length or the contents according to the actual requirement. If a user must add an arbitrary number of tasks, a fixed array is unsuitable; lesson 24 introduces the growable `Vec` list.
+Correct the length or the contents according to the actual requirement. If a user must add an arbitrary number of tasks, a fixed array is unsuitable; lesson 24 introduces a growable list.
 
 ## Reference map
 

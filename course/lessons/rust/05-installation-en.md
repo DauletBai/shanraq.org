@@ -7,15 +7,17 @@ _Summary:_ **Check the installation and distinguish the tools involved.**
 
 A workshop has tools with different jobs. **rustup** installs and selects their set; **rustc** compiles Rust; **Cargo** coordinates projects, builds, runs and dependencies. Cargo calls rustc rather than replacing it. A **dependency** is a library used by a project; a **library** is reusable code. Think of a ready-made part whose purpose and limitations still need to be understood. A **toolchain** is a compatible set of tools at a particular version. **rust-analyzer** provides editor assistance; suggestions do not replace checking the program.
 
+**Git** is a separate tool for recording a history of file changes, like dated drafts. We will skip creating such history in the installation probe because checking Rust does not need it. This does not delete existing files.
+
 ## Installation for your system
 
 Open the [official installation page](https://rust-lang.org/tools/install/) and follow the branch for your operating system. Do not download installers from advertisements. On Unix the page offers a command that downloads and runs an installation script. This is a program from the internet: verify the address and command on the official page, and do not disable certificate checks to make installation succeed.
 
 **Windows.** Use rustup-init for your architecture. If prompted for Visual Studio C++ tools, follow the provided installation route; C++ components and the Windows SDK are needed. An SDK is a kit for building programs for a platform. The full Visual Studio editor is not required. For this beginner course, choose ordinary Windows installation instead of mixing it with WSL, a separate Linux environment inside Windows.
 
-**macOS.** If Apple command-line tools are missing, xcode-select --install opens their official installer. Complete it, then follow rustup's instructions. Finish installation dialogs before checking Rust.
+**macOS.** `xcode-select` manages Apple developer tools; `--install` asks it to open their installer. If the command-line tools are missing, run `xcode-select --install`. Complete it, then follow rustup's instructions. Finish installation dialogs before checking Rust.
 
-**Linux.** You may need system build tools in addition to rustup. On Ubuntu/Debian these are commonly supplied by build-essential. sudo apt install build-essential requires administrator permission: sudo requests it, apt manages packages, install selects installation and build-essential names the package. Use your own distribution's instructions on other systems. On a managed computer, ask the administrator; this course does not require bypassing restrictions.
+**Linux.** You may need system build tools in addition to rustup. On Ubuntu/Debian these are commonly supplied by build-essential. `sudo` requests administrator permission, `apt` manages packages, `install` selects installation, and `build-essential` names the package. Thus `sudo apt install build-essential` installs that package with administrator permission. Use your own distribution's instructions on other systems. On a managed computer, ask the administrator; this course does not require bypassing restrictions.
 
 A **linker** combines prepared parts into an executable, like an assembler of a finished product. An error mentioning linker or link.exe may mean missing system tools rather than incorrect Rust code.
 

@@ -14,6 +14,8 @@ Return to lesson 10. Subtracting completed tasks from a `u32` total is invalid w
 
 Use the `organizer` project from [lesson 6](/read/rust-06-cargo?lang=en), in the folder containing `Cargo.toml`. Save your previous work separately. Replace **all** of `src/main.rs` with the first example below, save it, and run `cargo run` in that folder’s terminal. As explained in lesson 6, this command builds and runs the program. No other files or dependencies change. Each subsequent complete example also replaces the entire file. Output blocks show only program output, without Cargo messages. Predict the output before running.
 
+Before the example, read the new form. `if` checks a `bool` condition and runs the following `{ ... }` block when it is true. `else if` checks another possibility; `else`, without a condition, handles what remains. At most one branch in this chain runs. In `let urgent: bool = if ... { true } else { false };`, the chain itself chooses a value, and both blocks must yield `bool`. We will examine that rule after running the example.
+
 ```rust
 fn main() {
     let total: u32 = 7;
@@ -52,7 +54,6 @@ A final expression **without `;`** supplies the block's value. Branches that sup
 A block without a final value expression produces **`()`**, called the **unit value**. Its type is also written `()`. It carries no useful numeric or Boolean answer and is neither zero nor `false`. `println!` displays text but does not return that text as its result. We will revisit unit with functions in lesson 14.
 
 An ordinary block can produce a value too:
-
 
 ```rust
 fn main() {

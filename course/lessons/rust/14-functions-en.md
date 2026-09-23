@@ -14,6 +14,8 @@ Separate computing a remaining count from displaying it. That will make calculat
 
 Use the `organizer` project from [lesson 6](/read/rust-06-cargo?lang=en), in the folder containing `Cargo.toml`. Save your previous work separately. Replace **all** of `src/main.rs` with the first example below, save it, and run `cargo run` in that folder’s terminal. As explained in lesson 6, this command builds and runs the program. No other files or dependencies change. Each subsequent complete example also replaces the entire file. Output blocks show only program output, without Cargo messages. Predict the output before running.
 
+Before the example, read the function signature. In `fn remaining(total: u32, done: u32) -> u32`, the names and types inside the parentheses are **parameters**, places for input values; the comma separates them. `-> u32` promises to return a number of that type. In `remaining(total, done)`, the actual supplied values are **arguments**; they match parameters by position. The last expression without `;` becomes the result, as with blocks in lesson 12. A function without `->` returns the familiar `()`.
+
 ```rust
 fn remaining(total: u32, done: u32) -> u32 {
     total - done
@@ -51,7 +53,7 @@ Declaring a function does not execute its body. Execution starts in `main`, reac
 
 ## A contract for inputs
 
-Our `remaining` function requires `done <= total`. This is a **precondition**, a rule the calling code must satisfy. Here `main` checks it **before** the call. The `u32` parameter types alone do not prove this rule. Do not call `remaining(2, 7)` or conceal invalid counts by pretending the result is zero. Lessons on `Option` and `Result` will introduce explicit missing results and errors; for now this contract limits our example.
+Our `remaining` function requires `done <= total`. This is a **precondition**, a rule the calling code must satisfy. Here `main` checks it **before** the call. The `u32` parameter types alone do not prove this rule. Do not call `remaining(2, 7)` or conceal invalid counts by pretending the result is zero. Later lessons will introduce explicit missing results and errors; for now this contract limits our example.
 
 ## Returning early
 

@@ -1,6 +1,6 @@
 # Rust course publication
 
-Current manifest: preface and lessons 1–15 in kz/ru/en (third group: 11–15, prepared for publication). The full free course remains in progress; later lessons must not be presented as published.
+Current manifest: preface and lessons 1–15 published in kz/ru/en. Lessons 16–20 have working drafts in all three languages but are not in the release manifest. The full free course remains in progress; later lessons must not be presented as published.
 
 Prepare a cumulative transaction from reviewed sources:
 
@@ -16,7 +16,15 @@ The SQL uses one transaction with an advisory lock. Course membership and all th
 
 Rust exercises use inline reference answers. There is no server Rust runner; unsupported formatting/check requests are refused instead of reaching the Go checker. Local validation compiles every complete Rust example and answer, checks intentional compiler failures, and builds independent Cargo snapshots for all three languages. Snapshot locations: course/rust-organizer/step-NN (ru), en/step-NN, kz/step-NN. The first five lessons also need manual verification of their installation and navigation steps.
 
-After this release, compare all 48 body/summary hashes with the prepared sources. Visit each page anonymously, verify fifteen numbered lessons plus the preface, forward/back links and the footer in all languages. Check main/latest/top feeds for leaks; lesson 16 must remain unavailable. Check desktop, tablet and both mobile orientations, and verify existing Go book links and readiness.
+For each future release, compare every body/summary hash with the prepared sources. Visit each page anonymously, verify navigation in all languages, and check main/latest/top feeds for leaks. Check desktop, tablet and both mobile orientations, and verify existing Go book links and readiness.
+
+## Verified third publication — 2026-09-23
+
+The preface and lessons 1–15 are public in kz/ru/en. Release source commit: `0d63b93c3303e17df1d52704d3f59e1a3568a23b`. The four required push workflows for that commit succeeded: [CI](https://github.com/DauletBai/shanraq.org/actions/runs/35314882908), [Course](https://github.com/DauletBai/shanraq.org/actions/runs/35314882885), [docker-smoke](https://github.com/DauletBai/shanraq.org/actions/runs/35314882896), and [Rust course checks](https://github.com/DauletBai/shanraq.org/actions/runs/35314882931). Locally, `rustcheck.py` passed 166 released examples, answers and Cargo snapshots, `rust_boundaries.py` passed 30 additional cases, and the three release preparation tests passed.
+
+Before the database transaction, the course had 11 items. A database dump was stored at `/var/backups/shanraq/rust-content-20260923-before-11-15.dump` (4.2 MB). The prepared SQL completed as one transaction. Production then had 16 course items and all 48 localized body/summary pairs matched the prepared SHA-256 values. Anonymous HTTP checks passed for all 15 new pages, their previous/next links, and three general feed variants in each language. All three course and lesson 15 pages returned 200; lesson 16 returned 404 in every language. The application was not restarted.
+
+Responsive browser inspection and existing Go book/readiness probes were not rerun in this publication pass; they remain verification work, not completed checks.
 
 ## Second group — published
 
