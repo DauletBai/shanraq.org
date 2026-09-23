@@ -1546,5 +1546,65 @@
   "rust/15-arrays-en": [
     "rust-15-arrays",
     "en"
+  ],
+  "rust/16-first-test": [
+    "rust-16-first-test",
+    "ru"
+  ],
+  "rust/16-first-test-kz": [
+    "rust-16-first-test",
+    "kz"
+  ],
+  "rust/16-first-test-en": [
+    "rust-16-first-test",
+    "en"
+  ],
+  "rust/17-first-checkpoint": [
+    "rust-17-first-checkpoint",
+    "ru"
+  ],
+  "rust/17-first-checkpoint-kz": [
+    "rust-17-first-checkpoint",
+    "kz"
+  ],
+  "rust/17-first-checkpoint-en": [
+    "rust-17-first-checkpoint",
+    "en"
+  ],
+  "rust/18-memory": [
+    "rust-18-memory",
+    "ru"
+  ],
+  "rust/18-memory-kz": [
+    "rust-18-memory",
+    "kz"
+  ],
+  "rust/18-memory-en": [
+    "rust-18-memory",
+    "en"
+  ],
+  "rust/19-ownership": [
+    "rust-19-ownership",
+    "ru"
+  ],
+  "rust/19-ownership-kz": [
+    "rust-19-ownership",
+    "kz"
+  ],
+  "rust/19-ownership-en": [
+    "rust-19-ownership",
+    "en"
+  ],
+  "rust/20-borrowing": [
+    "rust-20-borrowing",
+    "ru"
+  ],
+  "rust/20-borrowing-kz": [
+    "rust-20-borrowing",
+    "kz"
+  ],
+  "rust/20-borrowing-en": [
+    "rust-20-borrowing",
+    "en"
   ]
 }
