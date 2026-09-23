@@ -2,20 +2,20 @@
   "course": "rust",
   "code_lang": "rust",
   "cover_url": "/static/brand/rust-logo.svg",
-  "batch": 3,
-  "lessons": 15,
+  "batch": 4,
+  "lessons": 20,
   "metadata": {
     "ru": [
       "Rust: с нуля до своего органайзера",
-      "Открыты первые 15 уроков и предисловие. С нуля создаём личный органайзер. Новые уроки публикуются по пять сразу на казахском, русском и английском. Весь курс бесплатный; регистрация для чтения не нужна."
+      "Открыты первые 20 уроков и предисловие. С нуля создаём личный органайзер. Новые уроки публикуются по пять сразу на казахском, русском и английском. Весь курс бесплатный; регистрация для чтения не нужна."
     ],
     "kz": [
       "Rust: алғашқы қадамнан жеке жоспарлау құралына дейін",
-      "Алғашқы 15 сабақ пен кіріспе ашық. Жеке жоспарлау құралын нөлден жасаймыз. Жаңа сабақтар қазақша, орысша және ағылшынша бес-бестен жарияланады. Курс толық тегін, оқу үшін тіркелу қажет емес."
+      "Алғашқы 20 сабақ пен кіріспе ашық. Жеке жоспарлау құралын нөлден жасаймыз. Жаңа сабақтар қазақша, орысша және ағылшынша бес-бестен жарияланады. Курс толық тегін, оқу үшін тіркелу қажет емес."
     ],
     "en": [
       "Rust: from zero to your own organizer",
-      "The first 15 lessons and preface are open. Build a personal organizer from scratch. New lessons arrive in groups of five in Kazakh, Russian and English. The entire course is free; reading needs no account."
+      "The first 20 lessons and preface are open. Build a personal organizer from scratch. New lessons arrive in groups of five in Kazakh, Russian and English. The entire course is free; reading needs no account."
     ]
   },
   "items": [
@@ -98,6 +98,31 @@
       "stem": "15-arrays",
       "slug": "rust-15-arrays",
       "position": 150
+    },
+    {
+      "stem": "16-first-test",
+      "slug": "rust-16-first-test",
+      "position": 160
+    },
+    {
+      "stem": "17-first-checkpoint",
+      "slug": "rust-17-first-checkpoint",
+      "position": 170
+    },
+    {
+      "stem": "18-memory",
+      "slug": "rust-18-memory",
+      "position": 180
+    },
+    {
+      "stem": "19-ownership",
+      "slug": "rust-19-ownership",
+      "position": 190
+    },
+    {
+      "stem": "20-borrowing",
+      "slug": "rust-20-borrowing",
+      "position": 200
     }
   ]
 }

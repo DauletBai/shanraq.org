@@ -1,6 +1,6 @@
 # Rust: from zero to your own organizer
 
-The preface and lessons 1–15 are published in Kazakh, Russian and English. [Open the course](https://shanraq.org/course/rust?lang=en). The full plan has 60 lessons; the course is still in progress.
+The preface and lessons 1–20 are published in Kazakh, Russian and English. [Open the course](https://shanraq.org/course/rust?lang=en). The full plan has 60 lessons; the course is still in progress.
 
 [Before you begin](preface-en.md)
 
@@ -19,3 +19,8 @@ The preface and lessons 1–15 are published in Kazakh, Russian and English. [Op
 - [13. Repeating actions](13-loops-en.md)
 - [14. Functions](14-functions-en.md)
 - [15. Arrays](15-arrays-en.md)
+- [16. Your first automated test](16-first-test-en.md)
+- [17. Practice: a small summary](17-first-checkpoint-en.md)
+- [18. Values and memory](18-memory-en.md)
+- [19. Ownership and moves](19-ownership-en.md)
+- [20. Borrowing for reading](20-borrowing-en.md)

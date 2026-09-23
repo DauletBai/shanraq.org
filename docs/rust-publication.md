@@ -1,6 +1,6 @@
 # Rust course publication
 
-Current manifest: preface and lessons 1–15 published in kz/ru/en. Lessons 16–20 have working drafts in all three languages but are not in the release manifest. The full free course remains in progress; later lessons must not be presented as published.
+Current manifest: preface and lessons 1–20 published in kz/ru/en. The full free course remains in progress; later lessons must not be presented as published.
 
 Prepare a cumulative transaction from reviewed sources:
 

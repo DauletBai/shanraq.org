@@ -1,6 +1,6 @@
 # Rust 16–20: sequence and terminology review
 
-Working drafts on kz/ru/en. These lessons are not in the publication manifest and are not live.
+The fourth group is prepared in kz/ru/en and included in the publication manifest. Its source, terminology and lesson sequence were reviewed before release.
 
 | Lesson | First new notation or idea | Explained before use | Familiar image and its limit | Independent result |
 |---|---|---|---|---|

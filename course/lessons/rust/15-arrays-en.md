@@ -101,7 +101,7 @@ One type and length → values → traversal → function-based selection → ac
 2. Does `mut` change the length?
 3. How does the value in `for value in minutes` differ from an index?
 
-Check: 3; no; `value` is a duration, an index is a position. You are ready for the next group if you can explain selection, repetition, and function calls in your solution. Lesson 16 on tests is still planned.
+Check: 3; no; `value` is a duration, an index is a position. You are ready for the next group if you can explain selection, repetition, and function calls in your solution. Lesson 16 will check calculations with automated tests.
 
 ## Exercise
 
@@ -143,4 +143,4 @@ Total minutes: 25
 
 [Verification source](https://doc.rust-lang.org/book/ch03-02-data-types.html)
 
-[Previous lesson](/read/rust-14-functions?lang=en) · [Contents](/course/rust?lang=en)
+[Previous lesson](/read/rust-14-functions?lang=en) · [Contents](/course/rust?lang=en) · [Next lesson](/read/rust-16-first-test?lang=en)
