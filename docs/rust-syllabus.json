@@ -355,12 +355,13 @@
     "title": "Кортежи",
     "topics": "Группировка, распаковка",
     "outcome": "Вернуть несколько результатов",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 27,
@@ -368,12 +369,13 @@
     "title": "Структура Task",
     "topics": "Поле, экземпляр, проверка данных",
     "outcome": "Собрать сведения о задаче в тип",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 28,
@@ -381,12 +383,13 @@
     "title": "Методы",
     "topics": "impl, self, &self, &mut self, связанные функции",
     "outcome": "Разместить поведение рядом с данными",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 29,
@@ -394,12 +397,13 @@
     "title": "Перечисления",
     "topics": "enum, вариант, данные варианта",
     "outcome": "Ограничить допустимые состояния",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 30,
@@ -407,12 +411,13 @@
     "title": "Сопоставление с образцом",
     "topics": "match, полнота, _, if let",
     "outcome": "Обработать каждый вариант",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-23"
   },
   {
     "number": 31,
@@ -420,11 +425,11 @@
     "title": "Отсутствие значения",
     "topics": "Option<T>, Some, None, get",
     "outcome": "Обработать отсутствие задачи",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -433,11 +438,11 @@
     "title": "Неудачная операция",
     "topics": "Result<T,E>, Ok, Err, parse, unwrap",
     "outcome": "Отклонить неверный ввод без аварии",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -446,11 +451,11 @@
     "title": "Передача ошибок",
     "topics": "?, ранний возврат, совместимые ошибки",
     "outcome": "Отделить обнаружение от сообщения",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -459,11 +464,11 @@
     "title": "Ввод из терминала",
     "topics": "stdin, буфер, read_line, trim, EOF",
     "outcome": "Обработать пустой ввод и конец потока",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -472,11 +477,11 @@
     "title": "Аргументы запуска",
     "topics": "args, cargo run --, кавычки",
     "outcome": "Передать команду и название с пробелами",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {

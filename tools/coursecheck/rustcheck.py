@@ -16,7 +16,7 @@ FENCES = re.compile(r'^```([^\n]*)\n(.*?)^```\s*$', re.M | re.S)
 
 
 def run(args, cwd):
-    return subprocess.run(args, cwd=cwd, capture_output=True, text=True,
+    return subprocess.run(args, cwd=cwd, stdin=subprocess.DEVNULL, capture_output=True, text=True,
                           encoding='utf-8', errors='replace', timeout=90)
 
 

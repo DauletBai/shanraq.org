@@ -1,0 +1,2 @@
+Enter a title:
+Input ended

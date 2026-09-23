@@ -1,5 +1,5 @@
-"""Verify meaningful boundary variations promised in Rust lessons 11–30."""
-import sys,tempfile,re
+"""Verify meaningful boundary variations promised in Rust lessons 11–35."""
+import os,subprocess,sys,tempfile,re
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from rustcheck import check_program,FENCES
@@ -55,4 +55,28 @@ with tempfile.TemporaryDirectory() as name:
   check('30-patterns','Status::Doing(25)','Status::Planned',
         active_label[0]+': 0 min\n'+active_label[1]+': 0 min\n'
         if lang=='en' else active_label[0]+': 0 мин\n'+active_label[1]+': 0 мин\n')
+  def check_live(stem, input_text, arguments, expected):
+   global count
+   source=Path(name)/'boundary.rs'
+   source.write_text((R/'answers'/f'{stem}{suffix}-answer.rs').read_text(encoding='utf-8'),encoding='utf-8')
+   binary=Path(name)/('boundary.exe' if os.name=='nt' else 'boundary')
+   built=subprocess.run(['rustc','--edition=2024',str(source),'-o',str(binary)],
+                        capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=90)
+   assert built.returncode==0,(stem,lang,built.stderr)
+   result=subprocess.run([str(binary),*arguments],input=input_text,capture_output=True,
+                         text=True,encoding='utf-8',errors='replace',timeout=90)
+   assert result.returncode==0 and result.stdout==expected,(stem,lang,result.stdout,result.stderr,expected)
+   count+=1
+  title={'ru':'Мой план','kz':'Менің жоспарым','en':'My plan'}[lang]
+  input_labels={'ru':('Добавить: ','Нужно название'),
+                'kz':('Қосу: ','Атау қажет'),
+                'en':('Add: ','A title is needed')}[lang]
+  check_live('34-input',title+'\n',[],input_labels[0]+title+'\n')
+  check_live('34-input','\n',[],input_labels[1]+'\n')
+  argument_labels={'ru':('Запланировано: ','Нужно: add "Название"','Команда не найдена'),
+                   'kz':('Жоспарланды: ','Қажет: add "Атау"','Пәрмен табылмады'),
+                   'en':('Planned: ','Need: add "Title"','Command not found')}[lang]
+  check_live('35-arguments','',['add',title],argument_labels[0]+title+'\n')
+  check_live('35-arguments','',['add',*title.split(' ')],argument_labels[1]+'\n')
+  check_live('35-arguments','',['unknown',title],argument_labels[2]+'\n')
  print(f'PASS: {count} additional exercise boundary cases across three locales')

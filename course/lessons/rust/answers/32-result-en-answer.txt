@@ -1,0 +1,2 @@
+Minutes: 30
+Error: Write minutes as a number

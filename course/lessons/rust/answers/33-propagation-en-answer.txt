@@ -1,0 +1,3 @@
+Accepted: 15 min
+Error: Minutes cannot be zero
+Error: Enter a number

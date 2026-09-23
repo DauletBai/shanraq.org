@@ -1010,5 +1010,161 @@
       "en": "if let"
     },
     "review_status": "draft-sixth-batch"
+  },
+  {
+    "term": "Option<T>",
+    "first_lesson": 31,
+    "definition": "Перечисление для значения, которое может отсутствовать: Some(T) или None",
+    "image": "Карточка найдена или отсутствует",
+    "limit": "None не сообщает причину отсутствия",
+    "exercise_lesson": 31,
+    "locales": {
+      "kz": "Option<T>",
+      "en": "Option<T>"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "get",
+    "first_lesson": 31,
+    "definition": "Чтение элемента списка по позиции с результатом Option<&T>",
+    "image": "Спросить карточку по месту",
+    "limit": "Место в Vec не является постоянным ID",
+    "exercise_lesson": 31,
+    "locales": {
+      "kz": "get",
+      "en": "get"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "Result<T, E>",
+    "first_lesson": 32,
+    "definition": "Перечисление для успешного результата Ok(T) или ошибки Err(E)",
+    "image": "Заявка принята или возвращена с причиной",
+    "limit": "Компилятор не пишет понятное сообщение за автора",
+    "exercise_lesson": 32,
+    "locales": {
+      "kz": "Result<T, E>",
+      "en": "Result<T, E>"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "parse::<u32>()",
+    "first_lesson": 32,
+    "definition": "Попытка прочитать число типа u32 из текста с результатом Result",
+    "image": "Прочитать число с карточки",
+    "limit": "Успешный разбор не проверяет смысл числа",
+    "exercise_lesson": 32,
+    "locales": {
+      "kz": "parse::<u32>()",
+      "en": "parse::<u32>()"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "unwrap()",
+    "first_lesson": 32,
+    "definition": "Извлекает Ok, но вызывает panic на Err",
+    "image": "Взять только удачную заявку",
+    "limit": "Непригоден как обычная обработка пользовательского ввода",
+    "exercise_lesson": 32,
+    "locales": {
+      "kz": "unwrap()",
+      "en": "unwrap()"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "?",
+    "first_lesson": 33,
+    "definition": "Продолжает при Ok и рано возвращает совместимую ошибку при Err",
+    "image": "Вернуть заявку после первой неудачной проверки",
+    "limit": "Не создаёт объяснение ошибки автоматически",
+    "exercise_lesson": 33,
+    "locales": {
+      "kz": "?",
+      "en": "?"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "stdin",
+    "first_lesson": 34,
+    "definition": "Стандартный поток ввода программы, обычно из терминала",
+    "image": "Канал приёма сообщений",
+    "limit": "Может быть закрыт или содержать данные другого процесса",
+    "exercise_lesson": 34,
+    "locales": {
+      "kz": "стандартты енгізу",
+      "en": "standard input"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "read_line",
+    "first_lesson": 34,
+    "definition": "Читает строку в изменяемый String и возвращает Result с числом байтов",
+    "image": "Принять одну строку заявления",
+    "limit": "Пустая строка с Enter не равна концу потока",
+    "exercise_lesson": 34,
+    "locales": {
+      "kz": "read_line",
+      "en": "read_line"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "EOF",
+    "first_lesson": 34,
+    "definition": "Конец потока: при read_line возвращается Ok(0)",
+    "image": "Закрытая стойка приёма",
+    "limit": "Отличается от пустой введённой строки",
+    "exercise_lesson": 34,
+    "locales": {
+      "kz": "ағынның аяқталуы",
+      "en": "end of file"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "trim()",
+    "first_lesson": 34,
+    "definition": "Возвращает вид текста без пробелов по краям",
+    "image": "Обрезать пустые поля листа",
+    "limit": "Удаляет и значимые крайние пробелы, если они нужны",
+    "exercise_lesson": 34,
+    "locales": {
+      "kz": "trim()",
+      "en": "trim()"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "аргументы запуска",
+    "first_lesson": 35,
+    "definition": "Значения, переданные программе при её запуске",
+    "image": "Записка с заказом при входе",
+    "limit": "Оболочка сначала разбивает исходную строку",
+    "exercise_lesson": 35,
+    "locales": {
+      "kz": "іске қосу аргументтері",
+      "en": "command-line arguments"
+    },
+    "review_status": "draft-seventh-batch"
+  },
+  {
+    "term": "cargo run --",
+    "first_lesson": 35,
+    "definition": "Отделяет аргументы программы от параметров Cargo",
+    "image": "Граница между двумя получателями указаний",
+    "limit": "Кавычки для пробелов обрабатывает оболочка",
+    "exercise_lesson": 35,
+    "locales": {
+      "kz": "cargo run --",
+      "en": "cargo run --"
+    },
+    "review_status": "draft-seventh-batch"
   }
 ]

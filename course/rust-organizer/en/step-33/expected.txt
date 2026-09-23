@@ -1,0 +1,3 @@
+Accepted: 20 min
+Error: Minutes must be greater than zero
+Error: Enter a whole number

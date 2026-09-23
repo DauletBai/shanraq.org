@@ -1726,5 +1726,65 @@
   "rust/30-patterns-en": [
     "rust-30-patterns",
     "en"
+  ],
+  "rust/31-option": [
+    "rust-31-option",
+    "ru"
+  ],
+  "rust/31-option-kz": [
+    "rust-31-option",
+    "kz"
+  ],
+  "rust/31-option-en": [
+    "rust-31-option",
+    "en"
+  ],
+  "rust/32-result": [
+    "rust-32-result",
+    "ru"
+  ],
+  "rust/32-result-kz": [
+    "rust-32-result",
+    "kz"
+  ],
+  "rust/32-result-en": [
+    "rust-32-result",
+    "en"
+  ],
+  "rust/33-propagation": [
+    "rust-33-propagation",
+    "ru"
+  ],
+  "rust/33-propagation-kz": [
+    "rust-33-propagation",
+    "kz"
+  ],
+  "rust/33-propagation-en": [
+    "rust-33-propagation",
+    "en"
+  ],
+  "rust/34-input": [
+    "rust-34-input",
+    "ru"
+  ],
+  "rust/34-input-kz": [
+    "rust-34-input",
+    "kz"
+  ],
+  "rust/34-input-en": [
+    "rust-34-input",
+    "en"
+  ],
+  "rust/35-arguments": [
+    "rust-35-arguments",
+    "ru"
+  ],
+  "rust/35-arguments-kz": [
+    "rust-35-arguments",
+    "kz"
+  ],
+  "rust/35-arguments-en": [
+    "rust-35-arguments",
+    "en"
   ]
 }

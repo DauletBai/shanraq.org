@@ -1,6 +1,6 @@
-# Rust lessons 26–30: draft review
+# Rust lessons 26–30: publication review
 
-Working drafts in kz/ru/en. They are mapped for offline link checking but absent from the release manifest and the live course. Published lesson 25 does not link forward to unpublished lesson 26.
+Published in kz/ru/en on 2026-09-23. Lesson 25 now links to lesson 26, and the group is in the release manifest. Publication evidence is in [rust-publication.md](rust-publication.md).
 
 | Lesson | First new idea | Familiar image and its limit | Independent task |
 |---|---|---|---|
