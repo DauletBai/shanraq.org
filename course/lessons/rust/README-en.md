@@ -1,6 +1,6 @@
 # Rust: from zero to your own organizer
 
-The preface and lessons 1–20 are published in Kazakh, Russian and English. [Open the course](https://shanraq.org/course/rust?lang=en). The full plan has 60 lessons; the course is still in progress.
+The preface and lessons 1–25 are published in Kazakh, Russian and English. [Open the course](https://shanraq.org/course/rust?lang=en). The full plan has 60 lessons; the course is still in progress.
 
 [Before you begin](preface-en.md)
 
@@ -24,3 +24,8 @@ The preface and lessons 1–20 are published in Kazakh, Russian and English. [Op
 - [18. Values and memory](18-memory-en.md)
 - [19. Ownership and moves](19-ownership-en.md)
 - [20. Borrowing for reading](20-borrowing-en.md)
+- [21. Mutable borrowing](21-mutable-borrow-en.md)
+- [22. String and &str](22-strings-en.md)
+- [23. Slices](23-slices-en.md)
+- [24. A growing Vec](24-vectors-en.md)
+- [25. Text and Unicode](25-unicode-en.md)

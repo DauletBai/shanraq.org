@@ -106,4 +106,4 @@ fn main() {
 
 Картаны тағы бір рет жатқа түсіндіріңіз: иесі `main` ішінде қалады, ал функция уақытша оқуға қатынайды. [Rust сілтемелері туралы ресми тарау](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html).
 
-[Алдыңғы сабақ](/read/rust-19-ownership?lang=kz) · [Мазмұны](/course/rust?lang=kz)
+[Алдыңғы сабақ](/read/rust-19-ownership?lang=kz) · [Мазмұны](/course/rust?lang=kz) · [Келесі сабақ](/read/rust-21-mutable-borrow?lang=kz)

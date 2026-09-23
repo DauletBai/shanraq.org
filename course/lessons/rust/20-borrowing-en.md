@@ -106,4 +106,4 @@ Title remains: Reading
 
 Explain the map from memory once more: the owner stays in `main` and the function receives temporary reading access. [Rust's reference chapter](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html).
 
-[Previous lesson](/read/rust-19-ownership?lang=en) · [Contents](/course/rust?lang=en)
+[Previous lesson](/read/rust-19-ownership?lang=en) · [Contents](/course/rust?lang=en) · [Next lesson](/read/rust-21-mutable-borrow?lang=en)

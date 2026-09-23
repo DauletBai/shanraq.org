@@ -2,20 +2,20 @@
   "course": "rust",
   "code_lang": "rust",
   "cover_url": "/static/brand/rust-logo.svg",
-  "batch": 4,
-  "lessons": 20,
+  "batch": 5,
+  "lessons": 25,
   "metadata": {
     "ru": [
       "Rust: с нуля до своего органайзера",
-      "Открыты первые 20 уроков и предисловие. С нуля создаём личный органайзер. Новые уроки публикуются по пять сразу на казахском, русском и английском. Весь курс бесплатный; регистрация для чтения не нужна."
+      "Открыты первые 25 уроков и предисловие. С нуля создаём личный органайзер. Новые уроки публикуются по пять сразу на казахском, русском и английском. Весь курс бесплатный; регистрация для чтения не нужна."
     ],
     "kz": [
       "Rust: алғашқы қадамнан жеке жоспарлау құралына дейін",
-      "Алғашқы 20 сабақ пен кіріспе ашық. Жеке жоспарлау құралын нөлден жасаймыз. Жаңа сабақтар қазақша, орысша және ағылшынша бес-бестен жарияланады. Курс толық тегін, оқу үшін тіркелу қажет емес."
+      "Алғашқы 25 сабақ пен кіріспе ашық. Жеке жоспарлау құралын нөлден жасаймыз. Жаңа сабақтар қазақша, орысша және ағылшынша бес-бестен жарияланады. Курс толық тегін, оқу үшін тіркелу қажет емес."
     ],
     "en": [
       "Rust: from zero to your own organizer",
-      "The first 20 lessons and preface are open. Build a personal organizer from scratch. New lessons arrive in groups of five in Kazakh, Russian and English. The entire course is free; reading needs no account."
+      "The first 25 lessons and preface are open. Build a personal organizer from scratch. New lessons arrive in groups of five in Kazakh, Russian and English. The entire course is free; reading needs no account."
     ]
   },
   "items": [
@@ -123,6 +123,31 @@
       "stem": "20-borrowing",
       "slug": "rust-20-borrowing",
       "position": 200
+    },
+    {
+      "stem": "21-mutable-borrow",
+      "slug": "rust-21-mutable-borrow",
+      "position": 210
+    },
+    {
+      "stem": "22-strings",
+      "slug": "rust-22-strings",
+      "position": 220
+    },
+    {
+      "stem": "23-slices",
+      "slug": "rust-23-slices",
+      "position": 230
+    },
+    {
+      "stem": "24-vectors",
+      "slug": "rust-24-vectors",
+      "position": 240
+    },
+    {
+      "stem": "25-unicode",
+      "slug": "rust-25-unicode",
+      "position": 250
     }
   ]
 }

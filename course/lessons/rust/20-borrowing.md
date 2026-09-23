@@ -104,4 +104,4 @@ fn main() {
 
 Возьмите паузу и воспроизведите схему без подсказки: владелец сохраняется, функция получает временный доступ. [Официальный разбор ссылок](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html).
 
-[Предыдущий урок](/read/rust-19-ownership?lang=ru) · [Оглавление](/course/rust?lang=ru)
+[Предыдущий урок](/read/rust-19-ownership?lang=ru) · [Оглавление](/course/rust?lang=ru) · [Следующий урок](/read/rust-21-mutable-borrow?lang=ru)
