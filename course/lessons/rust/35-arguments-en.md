@@ -91,4 +91,4 @@ Need: add "Title"
 
 The output block shows a launch without arguments; `cargo run -- add "My plan"` prints `Planned: My plan`. [Official command-line argument chapter](https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html) and [the `cargo run --` rule](https://doc.rust-lang.org/cargo/commands/cargo-run.html).
 
-[Previous lesson](/read/rust-34-input?lang=en) · [Contents](/course/rust?lang=en)
+[Previous lesson](/read/rust-34-input?lang=en) · [Contents](/course/rust?lang=en) · [Next lesson](/read/rust-36-commands?lang=en)

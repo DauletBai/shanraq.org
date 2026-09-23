@@ -91,4 +91,4 @@ fn main() {
 
 Нәтиже блогы аргументсіз іске қосуды көрсетеді; `cargo run -- add "Менің жоспарым"` үшін `Жоспарланды: Менің жоспарым` шығады. [Аргументтер туралы ресми тарау](https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html) және [`cargo run --` ережесі](https://doc.rust-lang.org/cargo/commands/cargo-run.html).
 
-[Алдыңғы сабақ](/read/rust-34-input?lang=kz) · [Мазмұны](/course/rust?lang=kz)
+[Алдыңғы сабақ](/read/rust-34-input?lang=kz) · [Мазмұны](/course/rust?lang=kz) · [Келесі сабақ](/read/rust-36-commands?lang=kz)

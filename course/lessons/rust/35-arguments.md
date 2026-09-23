@@ -91,4 +91,4 @@ fn main() {
 
 Блок результата показывает запуск без аргументов; `cargo run -- add "Мой план"` покажет `Запланировано: Мой план`. [Официальный разбор аргументов](https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html) и [правило `cargo run --`](https://doc.rust-lang.org/cargo/commands/cargo-run.html).
 
-[Предыдущий урок](/read/rust-34-input?lang=ru) · [Оглавление](/course/rust?lang=ru)
+[Предыдущий урок](/read/rust-34-input?lang=ru) · [Оглавление](/course/rust?lang=ru) · [Следующий урок](/read/rust-36-commands?lang=ru)
