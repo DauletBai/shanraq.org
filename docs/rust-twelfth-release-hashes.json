@@ -1,0 +1,1283 @@
+[
+  {
+    "slug": "rust-before-start",
+    "lang": "ru",
+    "title": "Прежде чем начать",
+    "body_sha256": "122d3d8730dbd10ca5bc19dd2e4b4337493fb0e40670d97168b27c5b44cc3c4a",
+    "summary_sha256": "1144b46d7e0d169509c6d710461bc6e827f5c0f044ad72c3aa16420e4898c213"
+  },
+  {
+    "slug": "rust-before-start",
+    "lang": "kz",
+    "title": "Бастамас бұрын",
+    "body_sha256": "fe001d7e621ef15b77929ab689aa37952a6d66a8226f07200537a4ddbb939bb3",
+    "summary_sha256": "c59523d0fe5f10a50f73061c401cb4345a0236aa67dd12148fa4819a27c0c6b3"
+  },
+  {
+    "slug": "rust-before-start",
+    "lang": "en",
+    "title": "Before you begin",
+    "body_sha256": "876ec3806357585981bd9cb532fbbaecac6d054077d04438a7710af946a5d89d",
+    "summary_sha256": "6af674ac7abd10a07fff5080d41a045fbc5fb577c4fccfec93e72fad49f64617"
+  },
+  {
+    "slug": "rust-01-why-rust",
+    "lang": "ru",
+    "title": "Что такое Rust и зачем он появился",
+    "body_sha256": "9a0fd3d629ab4ac6a2c2a02bfd0516b19fc1db04d0ff3f1f0a8f8eca959abb51",
+    "summary_sha256": "551fd5b79a568cec87787b9b71f55562bf299405a67395bc868149bbc9583451"
+  },
+  {
+    "slug": "rust-01-why-rust",
+    "lang": "kz",
+    "title": "Rust деген не және ол не үшін жасалды?",
+    "body_sha256": "b6ecf9e04e4bd65035ef6f758b8b10debc449f8fd15aa9547de0137d0030271e",
+    "summary_sha256": "b36c7e0a11b8a50247006b3e74445eb08879a21d6e2732f43ab05a30ec1e921b"
+  },
+  {
+    "slug": "rust-01-why-rust",
+    "lang": "en",
+    "title": "What Rust is and why it exists",
+    "body_sha256": "9642e7600e2197bfc8cae932031e74785845de1f5e066eef2c2e58704a5bdf31",
+    "summary_sha256": "8daf63fa148e46fced99550342c7a4c33a39bc744606bd354e58c804f52eba1c"
+  },
+  {
+    "slug": "rust-02-organizer",
+    "lang": "ru",
+    "title": "Какой органайзер мы построим",
+    "body_sha256": "7b96407de6917bb83069fdb330333862692c870906f8dcaa2ecaf4d5fe6f9fa9",
+    "summary_sha256": "ecb9923f3a87993e3e4b6f2d95f9d47508b1f630c75d8cf167d684f1eb5ee0a6"
+  },
+  {
+    "slug": "rust-02-organizer",
+    "lang": "kz",
+    "title": "Қандай жоспарлау құралын жасаймыз?",
+    "body_sha256": "1e4ace4aec83dd0cd468f13b4b9c0970908aaefc6538707c0d053c8c0e92704f",
+    "summary_sha256": "f1efa8647d35614fba0124b3bf4e26b1fe7ccf6ab5fa91a2f7663fee464dd644"
+  },
+  {
+    "slug": "rust-02-organizer",
+    "lang": "en",
+    "title": "The organizer we will build",
+    "body_sha256": "df3fd80e1b9b78936cdc175ca7606349540d98c43b811d19fbaf41fe7f970977",
+    "summary_sha256": "06f9938a5216fb99f3324761631c641b05db2e4ababa29124f011ba70150de07"
+  },
+  {
+    "slug": "rust-03-workspace",
+    "lang": "ru",
+    "title": "Файлы, папки и рабочее место",
+    "body_sha256": "3b3e36d345679d556580507f26db682155741cae1023aa5dc04f18a7b93f138f",
+    "summary_sha256": "6d3ac261d7bf1d814381b8579a3d9bcbfc435eb740ba8157615e776c8c4bec56"
+  },
+  {
+    "slug": "rust-03-workspace",
+    "lang": "kz",
+    "title": "Файлдар, бумалар және жұмыс орны",
+    "body_sha256": "0e4a6a3192637b214c27f6053383dc93f041dd085550e67a1e5699f594cb906a",
+    "summary_sha256": "340ceddba5fccb80e4d8a6043017a577d2dad246f66daf2ae310c2479aaa9376"
+  },
+  {
+    "slug": "rust-03-workspace",
+    "lang": "en",
+    "title": "Files, folders and your workspace",
+    "body_sha256": "30400cf04ac7240464931617132696edae38048d78727a9ff731ab735621969e",
+    "summary_sha256": "23f15faab3506cf40831bb4804902768a4c9bb785d33e532590538d812f976fa"
+  },
+  {
+    "slug": "rust-04-terminal",
+    "lang": "ru",
+    "title": "Терминал без загадок",
+    "body_sha256": "8d11df7cb8a2fccedbf469f6ea34bd9b257eb35276f91bd9876fcc5e35a29c3b",
+    "summary_sha256": "f26d1f45e6bcd7bc891b0d34b5e93207771fd99ca3bb51e5be44bc97f13264a7"
+  },
+  {
+    "slug": "rust-04-terminal",
+    "lang": "kz",
+    "title": "Пәрмен жолын түсініп қолдану",
+    "body_sha256": "a64b38a4f215251f02638ea21a3549da9b578fb9c268b3a866c2c903c8053a3c",
+    "summary_sha256": "90a211f699f68b64228cd97df74d7d5514bd08315b926e4a6896c8267baafc44"
+  },
+  {
+    "slug": "rust-04-terminal",
+    "lang": "en",
+    "title": "Understanding the terminal",
+    "body_sha256": "483b1e4e4c985e09c85a4cfd28229883533fad8ef97361e02f61a5f0fa8ecdef",
+    "summary_sha256": "7e74fb4d40c6deaa2771450e9801bab08268db7647f5c6cdc35c61f7e8524af3"
+  },
+  {
+    "slug": "rust-05-installation",
+    "lang": "ru",
+    "title": "Установка Rust и проверка инструментов",
+    "body_sha256": "c77c6d728b08b04400811ed97572132b581ef65a86b19eb46987fe7bab12e80a",
+    "summary_sha256": "1f5861cecc6b2fd30fc6f1de3cd90a74d47967f3a567e2b56e456a64164b0b4c"
+  },
+  {
+    "slug": "rust-05-installation",
+    "lang": "kz",
+    "title": "Rust құралдарын орнату және тексеру",
+    "body_sha256": "adcd92471f06a537f77bc59e2ec4fb9099dd675bfc25d6f04645d59776dfb6f8",
+    "summary_sha256": "e4b0384518deb29c58900c1bbc146249c3ea8a2c9fda9c749c5ecaadec460c8d"
+  },
+  {
+    "slug": "rust-05-installation",
+    "lang": "en",
+    "title": "Installing Rust and checking the tools",
+    "body_sha256": "7794c82055297d4701609aa3c68ae975ef8eabcd7cf3dbbb54f1d1c1b53b10f6",
+    "summary_sha256": "7032c9101253c0876c4b2882c955a1e67d59257b107e8d7bb9b955491ccb527d"
+  },
+  {
+    "slug": "rust-06-cargo",
+    "lang": "ru",
+    "title": "Первый проект Cargo",
+    "body_sha256": "99ebee8c049520662fed486a933ee812d21a98f83f7bd436c25295ff0eb7203b",
+    "summary_sha256": "106a06890b05f4a525044a1b4ff4d9e8335b90e5fb1e3ea992bf7d198dca1d12"
+  },
+  {
+    "slug": "rust-06-cargo",
+    "lang": "kz",
+    "title": "Cargo арқылы алғашқы жоба",
+    "body_sha256": "272c8c6f9e59d51b42e4f32287a95b4be1c05524a006d3d75fef5c37046cd832",
+    "summary_sha256": "cb0edcb70bee0a72c787ee57bb6d6b20e848588a19e3c58c05a161c5cb56c515"
+  },
+  {
+    "slug": "rust-06-cargo",
+    "lang": "en",
+    "title": "Your first Cargo project",
+    "body_sha256": "1cc80dc5fef546417f8e78ba08139a478c9d5c14fe847065c2d5561be6ecbdb8",
+    "summary_sha256": "156cb10c7b12b542e6115eb62b5c9a48cac9e93384fac47723f507be36ba9663"
+  },
+  {
+    "slug": "rust-07-first-program",
+    "lang": "ru",
+    "title": "Разбираем первую программу",
+    "body_sha256": "b4c96222baf755acdce8c075f0f9621f58226e018344be6b372a7975a90a958f",
+    "summary_sha256": "1f831f1360effcd5a2d29ee5b7b47f37e4a4c01748497979e16237ac2dc9a349"
+  },
+  {
+    "slug": "rust-07-first-program",
+    "lang": "kz",
+    "title": "Алғашқы бағдарламаны жол-жолымен талдау",
+    "body_sha256": "ea7ed1de6ab50843a050a2459f76cd41ef15b6ce1c9d5f212fe43e620f31fe4e",
+    "summary_sha256": "e41bf150074640b06b4a76318098927a03dc364755910c6b2fb8337673f9b096"
+  },
+  {
+    "slug": "rust-07-first-program",
+    "lang": "en",
+    "title": "Reading your first program",
+    "body_sha256": "23d10e78baf2d7e606f062075234f19b50faf81e001b6805c864b8fdea0b5984",
+    "summary_sha256": "9367747e16a279c94884ab6cb9dee4b6d60bd4190fae404968cf4b5273b9ef06"
+  },
+  {
+    "slug": "rust-08-diagnostics",
+    "lang": "ru",
+    "title": "Ошибки как подсказки",
+    "body_sha256": "99c81d352fe3d62e2e5fb0edc999d344d40253ced6041ccbedfce0775c211071",
+    "summary_sha256": "312d52fa5e04987e379576dc00290df6ca79547e6e44834fbed962d05aed96ce"
+  },
+  {
+    "slug": "rust-08-diagnostics",
+    "lang": "kz",
+    "title": "Қате хабарын көмек ретінде пайдалану",
+    "body_sha256": "dbee51df6e90fe6915ab9154304d9e6cdf6d41c40e26f728468497efa826cb13",
+    "summary_sha256": "8a3584eab16aa7385a4d28c032be4a23a298e03587c4636a23f8470c4b6d642d"
+  },
+  {
+    "slug": "rust-08-diagnostics",
+    "lang": "en",
+    "title": "Using compiler diagnostics",
+    "body_sha256": "7b3d0b8e99e7f70215dee4ac06daf5900f77aea67aa65b0a20b5c8d6d80a5d13",
+    "summary_sha256": "f9d230e62c92816099ad728dc1a2cca53b877d547bfcd65537435583479e7b75"
+  },
+  {
+    "slug": "rust-09-variables",
+    "lang": "ru",
+    "title": "Переменные, значения и типы",
+    "body_sha256": "b9c96dd0e908f92cb5f0d2638ea8456300dbdd2e52b9283364c6f5b365c8b4be",
+    "summary_sha256": "b772377524e854d9a0ec345277d2adb4a32dd6b02a46ba3cefb172c53c7c04e6"
+  },
+  {
+    "slug": "rust-09-variables",
+    "lang": "kz",
+    "title": "Айнымалылар, мәндер және деректер түрлері",
+    "body_sha256": "a71cbad9137502b4fbad11fcfa011c77a1d6ef82b33fcba9350254e2b46b1e44",
+    "summary_sha256": "8148d5166c441e441a73e54cee9ff58dd1edb2c43ef5d8157eb9ab8044793b01"
+  },
+  {
+    "slug": "rust-09-variables",
+    "lang": "en",
+    "title": "Variables, values and types",
+    "body_sha256": "fde3a947fee913c20bcf8d0c6ce4e3d51af4c9e8cf3ffde5c119e60bdb3bfde7",
+    "summary_sha256": "761b316c8918de961a8085a0e6e3de7d604af1eed4ec38fd3f79b714353a95ac"
+  },
+  {
+    "slug": "rust-10-numbers",
+    "lang": "ru",
+    "title": "Числа и арифметика",
+    "body_sha256": "cb5f87b9be27378b3029ddd9d37aa700b2640733d2eca26ce58b0472d0c4b1d9",
+    "summary_sha256": "20c993b0daf22acb41bdf6e141149260a31f8ed0d7f4c2c87fb82c89384a9987"
+  },
+  {
+    "slug": "rust-10-numbers",
+    "lang": "kz",
+    "title": "Сандар және арифметика",
+    "body_sha256": "520889103caadd8b04a6ab86aea28e63959286636216bf9e03073e78c67ddfed",
+    "summary_sha256": "b5729aa7c15d683b0a4c90ef0d65fc3c0678491f88bc9f79ab9d2cec30132873"
+  },
+  {
+    "slug": "rust-10-numbers",
+    "lang": "en",
+    "title": "Numbers and arithmetic",
+    "body_sha256": "3313f7cee4a4a9421f3fecd5d3ab1dfefffe51b644fe0a08c6b3592e4d6c0e67",
+    "summary_sha256": "b8c768e70dbaad2b5441cb7911193217144631bc86cf853c0d8ad3448cdf97d8"
+  },
+  {
+    "slug": "rust-11-boolean",
+    "lang": "ru",
+    "title": "Логические значения",
+    "body_sha256": "16a8271b5e2ba6bb3a087efcc84a902e6326aee5cd3efd1efd413e9f4121b015",
+    "summary_sha256": "c3dc3e9d00c4fca0a152e4285b09eb1f99e2343c16a943e0b050521c231aa694"
+  },
+  {
+    "slug": "rust-11-boolean",
+    "lang": "kz",
+    "title": "Логикалық мәндер",
+    "body_sha256": "f9e4933aac65749e8b1b8d37a321b3bb880ca3f2081e65ecf3fedc4595b9eae7",
+    "summary_sha256": "5d1d326f8b98f94229391d3fb10d3d1b5977afd274b280642b0aaf1a50fb1a71"
+  },
+  {
+    "slug": "rust-11-boolean",
+    "lang": "en",
+    "title": "Boolean values",
+    "body_sha256": "1a5a4c35a1b65b123e8c9f82055ddfe0835ec3099d58cf0393e4703aa0468977",
+    "summary_sha256": "2f75a3ce37d27a801efb65bdf018702fd349a379b93f80c0264c05969ee73254"
+  },
+  {
+    "slug": "rust-12-branches",
+    "lang": "ru",
+    "title": "Ветвления и выражения",
+    "body_sha256": "fd8a4f2f46d0c2b855acb9f28f4a9a5b2a65e1dd3893ecdf8b067ea3e4983b9d",
+    "summary_sha256": "f89371cdfadf2074c5eb029149c9a7567ec02244dff27fdb86ce925ab9b3156b"
+  },
+  {
+    "slug": "rust-12-branches",
+    "lang": "kz",
+    "title": "Тармақталу және өрнектер",
+    "body_sha256": "37a3178b6451ef49da6b0171bcada0e2432520eb7d6715cdbb43de5472b97d72",
+    "summary_sha256": "72614f76553b31248491594e240e7c3a307ac814ec7b36fb216aab434a466f81"
+  },
+  {
+    "slug": "rust-12-branches",
+    "lang": "en",
+    "title": "Branches and expressions",
+    "body_sha256": "1204d3359c8c35cd161d37d21199551d0c206c439ee10526eeca71c5410b273d",
+    "summary_sha256": "c1857326b46f00300103256568fd9bce79cba0b98ee7ab70276d3c9701fa0c79"
+  },
+  {
+    "slug": "rust-13-loops",
+    "lang": "ru",
+    "title": "Повторение действий",
+    "body_sha256": "d4983aefd99aebeda275b229378e8146e5a212a9ea4e2f12e9b31152d70b7558",
+    "summary_sha256": "94fab2136021b53bd9d448f2b1b0cb8ab233a7901ea6783e7dcaed18de3fa4c3"
+  },
+  {
+    "slug": "rust-13-loops",
+    "lang": "kz",
+    "title": "Әрекеттерді қайталау",
+    "body_sha256": "9a977e64dbdc49b13fbaeaa72954e479e5de78f7be43cbacf82151e7f1466587",
+    "summary_sha256": "30478b45027c4ac881bf158a3d774c733933553abfc43990cefce6e22c7f5ddd"
+  },
+  {
+    "slug": "rust-13-loops",
+    "lang": "en",
+    "title": "Repeating actions",
+    "body_sha256": "3a0f78734b9b238ebedb45ee5e6d838e58c000fabdac1e772a89a93c4dbe0ff8",
+    "summary_sha256": "e6f795c0edfcc2489fc658fb8bb459880fdc72223a0a267376e4dc39f726182d"
+  },
+  {
+    "slug": "rust-14-functions",
+    "lang": "ru",
+    "title": "Функции",
+    "body_sha256": "a4ee009eb47cca96324bf74445a0c53f7578f8a985bbf98240a3c1e1eac65c15",
+    "summary_sha256": "1bb6676872469edc5e6c1159f8a20386ed83843b88ab0979308d4b274a4f2133"
+  },
+  {
+    "slug": "rust-14-functions",
+    "lang": "kz",
+    "title": "Функциялар",
+    "body_sha256": "c8c7e8e1f380c4b3d4a0666ff2b65f26909c2d98ab427b5d6980df8ef7dab861",
+    "summary_sha256": "02b03c2454cda0f4a5d5b6f6dbaad1e2dc2fd39c4e198f092da1644473065c78"
+  },
+  {
+    "slug": "rust-14-functions",
+    "lang": "en",
+    "title": "Functions",
+    "body_sha256": "ac7925902340f37b737fb9eb414247a50c994d1cc39821b65e9e5a812bb86df7",
+    "summary_sha256": "1cd42c5433ba57af8a704c519ca9ec66085d035f31198a15dcb6ae312f34f10c"
+  },
+  {
+    "slug": "rust-15-arrays",
+    "lang": "ru",
+    "title": "Массивы",
+    "body_sha256": "7442fadbbf03569e1d46297f019e5153c421f247aff32e6e2ca6f0d6571e8f6d",
+    "summary_sha256": "0c8fb77e4746993bb051e5881a8992717f686f96bae20f55faceeac096204992"
+  },
+  {
+    "slug": "rust-15-arrays",
+    "lang": "kz",
+    "title": "Жиымдар",
+    "body_sha256": "8297c3f66b79579552ae6ea82d0de4724f873112d69dda7b82586dd5d875a629",
+    "summary_sha256": "05aadaa124425a543563c0d0264aa0f69404df2a8332ce6649b322cc39251dcb"
+  },
+  {
+    "slug": "rust-15-arrays",
+    "lang": "en",
+    "title": "Arrays",
+    "body_sha256": "9b0cc51be0c1efd589582a7924a802a48af1d191c0df6b676618d8961f35b3da",
+    "summary_sha256": "2f05782872de146cf8206e379ad17e6170a57285d5f4666a35102631c58c9734"
+  },
+  {
+    "slug": "rust-16-first-test",
+    "lang": "ru",
+    "title": "Первый автоматический тест",
+    "body_sha256": "8e749a35da716ef114bba5370861cb2fcbd2a2b8edfb70aedbdb17e7dca9c0c5",
+    "summary_sha256": "d819730f7894afbaab6fe1ea7155ac2f60f66baf44da9cfb1771ba045135f99d"
+  },
+  {
+    "slug": "rust-16-first-test",
+    "lang": "kz",
+    "title": "Алғашқы автоматты тест",
+    "body_sha256": "2d68ec5a5221483c263832b5fb8295cc413138d9950c0cb85d80013577d4df87",
+    "summary_sha256": "a0072a3e19237a0a8101f9085672a21bb49bb0ac3423c01a0d0dd98bb368a061"
+  },
+  {
+    "slug": "rust-16-first-test",
+    "lang": "en",
+    "title": "Your first automated test",
+    "body_sha256": "89bde44f95cd6197db7d85e08f90757e33b84039b3781e4fcae4102495e0c401",
+    "summary_sha256": "a1a061146f0639a146733e63726de4f336f3a9ecb38d035feb28a8ff9efd503b"
+  },
+  {
+    "slug": "rust-17-first-checkpoint",
+    "lang": "ru",
+    "title": "Практика: простая сводка",
+    "body_sha256": "9af99ba9542218e9a5007c35a676b04868c04156ffb2d5bbbc1847dab745de1d",
+    "summary_sha256": "de39f0bcdca5efbe898ecce400f88a0311b7ac57edcf9ea7f71df6393fe2ac6e"
+  },
+  {
+    "slug": "rust-17-first-checkpoint",
+    "lang": "kz",
+    "title": "Тәжірибе: шағын қорытынды",
+    "body_sha256": "b8ea3d0240c41b2c50934de802612879b14be3b48f62f08837a28f0bf39f648d",
+    "summary_sha256": "64fb4392a8c4e209b87ee90b56b67e757fe24298cc2bc90a9c403a089de109d7"
+  },
+  {
+    "slug": "rust-17-first-checkpoint",
+    "lang": "en",
+    "title": "Practice: a small summary",
+    "body_sha256": "9a21cd5094c2dc447fa676a844ec0e4bc291e73dcd5eb3563338272234c9f4c3",
+    "summary_sha256": "3c29559ffd4956fd767ccb4ef165a10e09a73e630dddaa8320736daaea660e18"
+  },
+  {
+    "slug": "rust-18-memory",
+    "lang": "ru",
+    "title": "Значения и память",
+    "body_sha256": "3398e9445e58cec5c5d3452749b30ca71c90e5392abc25c240ede9e2acea5d09",
+    "summary_sha256": "765850741b5f389f1c3db098a61762c887cdba86c8ad2656b81986e7b952cac1"
+  },
+  {
+    "slug": "rust-18-memory",
+    "lang": "kz",
+    "title": "Мәндер және жад",
+    "body_sha256": "0584958828fb565bbeb55b819d6c2c8cbfdc6d8089d0811a81b783f3c8060213",
+    "summary_sha256": "0651b7fb5ab59456b157ad614f2b1ec48ee94c06773d94d528daf0c9a902e1d2"
+  },
+  {
+    "slug": "rust-18-memory",
+    "lang": "en",
+    "title": "Values and memory",
+    "body_sha256": "7998dff3384df096e372877d9e398891c224c7375a708673f360ae7dc27f1e71",
+    "summary_sha256": "0ec50c8113ae7467186963e3dbe30fa39a649d6b7710f752f8d165ae9fd4435a"
+  },
+  {
+    "slug": "rust-19-ownership",
+    "lang": "ru",
+    "title": "Владение и перемещение",
+    "body_sha256": "222df4d51c223c97d4e0fa327f2ec01984fc478f49bef5c64dce9f49b2286cf6",
+    "summary_sha256": "082ed461372039d36180ccb31c3ba179850e04dbd748bb660137b0b6fc1971f1"
+  },
+  {
+    "slug": "rust-19-ownership",
+    "lang": "kz",
+    "title": "Иелік және мәнді беру",
+    "body_sha256": "970d6d6923e0a80a96e44fcae79e2c30224a5d9aac33b1d2101c92fd4fa922f9",
+    "summary_sha256": "d69de29b3e27c783beee79c937f5ea23058f5b8173ac4e4d4c5717273bcc12d5"
+  },
+  {
+    "slug": "rust-19-ownership",
+    "lang": "en",
+    "title": "Ownership and moves",
+    "body_sha256": "a0c00467c88e258c2a6fa8144a4b9111157c58fe96c52ae80d193f3e1c40e90d",
+    "summary_sha256": "5cd098c79457e5a640c240d9ea89f5c82c3045f5e9b73f9bdb86f5aa5af2e642"
+  },
+  {
+    "slug": "rust-20-borrowing",
+    "lang": "ru",
+    "title": "Заимствование для чтения",
+    "body_sha256": "5413fa598c3a74371d0acb1fbd70431f9b7df35e9f6a69c6fa8b6797685e9c1b",
+    "summary_sha256": "e1c49f865322b3f8c7c558504f8f645a0931a70fd31f609835ab8b5a5a57f51a"
+  },
+  {
+    "slug": "rust-20-borrowing",
+    "lang": "kz",
+    "title": "Оқу үшін қарызға алу",
+    "body_sha256": "f5e21c1ae75476ec723277f59f30fa3401420e196da0f3db20bcbd679561ffed",
+    "summary_sha256": "04d6e2d8a1914941a020c2bbefb7ba25c17ad84cfd31585e85f42941827f1f9b"
+  },
+  {
+    "slug": "rust-20-borrowing",
+    "lang": "en",
+    "title": "Borrowing for reading",
+    "body_sha256": "08e6043cce61874ff789369f4b373e15a69682e9ab7696155c698e9fbba41857",
+    "summary_sha256": "8a620e07276a7344f2e69630f550bedc650cc615ee04e998ac035dd015fb2389"
+  },
+  {
+    "slug": "rust-21-mutable-borrow",
+    "lang": "ru",
+    "title": "Изменяемое заимствование",
+    "body_sha256": "0f2b47458e98a0c8b4702241e0497eea3665c1666ad9db247602e721fb737efc",
+    "summary_sha256": "02795e23d4438f5affd452fc365ad36ca5f0cd8836ee21beea71c90e974c4c28"
+  },
+  {
+    "slug": "rust-21-mutable-borrow",
+    "lang": "kz",
+    "title": "Өзгермелі қарызға алу",
+    "body_sha256": "62e657e0331519310f7cdc176dfc591498a48445159ab501d4dd995295d0fea5",
+    "summary_sha256": "a9e4ec07d5a7ed4119578613a1e5edfccb19248e460dfcbd9a8779c8cbcc3787"
+  },
+  {
+    "slug": "rust-21-mutable-borrow",
+    "lang": "en",
+    "title": "Mutable borrowing",
+    "body_sha256": "4acb3f4a86b3e08d91fb203b34d705126262bd771d7d62dff4054a33e8400cdc",
+    "summary_sha256": "2d40ff2bc90fdd31c6e48470b4d202fbd5dc0a7f247718c261f3263331af6637"
+  },
+  {
+    "slug": "rust-22-strings",
+    "lang": "ru",
+    "title": "String и &str: хранить или читать",
+    "body_sha256": "7938a776c3e11299cf5a7cadc152ff711e61875e5963a3d0450844078f32298d",
+    "summary_sha256": "53e1c502b7ed5f7e3b50d485f0ba9853e929359e2e9515cb69f60bb0a4b3fa85"
+  },
+  {
+    "slug": "rust-22-strings",
+    "lang": "kz",
+    "title": "String және &str: сақтау мен оқу",
+    "body_sha256": "d981e420fc88f53a529ec7fd5bf98e1420210b707ad0204ee47dca23129e2b62",
+    "summary_sha256": "a45d346c3b85cbea7893c93e6c3c4062ac9f1b6a810d49dab9c1d881bdc88a94"
+  },
+  {
+    "slug": "rust-22-strings",
+    "lang": "en",
+    "title": "String and &str: storing and reading",
+    "body_sha256": "8c57694f017120588effe002839e8983d609823f76df2f74c080f3db63da23b4",
+    "summary_sha256": "f2ee78d5ac9087c685d0888ee64117fec96324279ffcba8b99291daf875705b3"
+  },
+  {
+    "slug": "rust-23-slices",
+    "lang": "ru",
+    "title": "Срезы: часть данных без копии",
+    "body_sha256": "3a7ca825f98da0d5e3cda87298dae3a01df2cbc106db93269b3e320fda140b87",
+    "summary_sha256": "1289bc2b7e1f57ff8f62ccee3043a1908b89bb45239a12941cc2b0dd2f94f153"
+  },
+  {
+    "slug": "rust-23-slices",
+    "lang": "kz",
+    "title": "Тілімдер: деректің бір бөлігін көшірмей алу",
+    "body_sha256": "84ed5c47a86e95f6b15687727e0de2878c69440b98ac77e53055c8ab4058c9d4",
+    "summary_sha256": "ff0e79cf6072fff7a65bbe3d23f38c350d9b111e9682351843291876f14bb0cd"
+  },
+  {
+    "slug": "rust-23-slices",
+    "lang": "en",
+    "title": "Slices: part of data without a copy",
+    "body_sha256": "415d859275603470c7c529bacf6c2b748960e11c41ebf6e24f94a55a6dd03722",
+    "summary_sha256": "1e13c21cb3136c5b78c3bd72a111d654533b9f3dcb61994692b4bacefd73d406"
+  },
+  {
+    "slug": "rust-24-vectors",
+    "lang": "ru",
+    "title": "Растущий список Vec",
+    "body_sha256": "3d6fd50cdf1b9d5bcdff25a52959e8bfbe2d97a9d9955b61a2502a36bf36e6e9",
+    "summary_sha256": "ccfae6c41393e128867c87dce8306c2fd1d3dfa31280fcf2d8e7b58ad232033a"
+  },
+  {
+    "slug": "rust-24-vectors",
+    "lang": "kz",
+    "title": "Өсе алатын тізім: Vec",
+    "body_sha256": "3e167debd21bdec771b58ffe542d7ef6582c13e4b2f2a72874e061b989be1abf",
+    "summary_sha256": "f9ca4cdca131c2d1b35fe52a31a2a31d536afffc54accdf67ac9e93111492b6f"
+  },
+  {
+    "slug": "rust-24-vectors",
+    "lang": "en",
+    "title": "A growable list: Vec",
+    "body_sha256": "f5f5ff3c9cfdedd8def7e7611f1b6bfd13004f36c9452bec40a35bfeabb79d84",
+    "summary_sha256": "78e60bec2c5ef9ef7297e9293f970daf832f8b1dbd807ccf7bb7fa6fb6191a31"
+  },
+  {
+    "slug": "rust-25-unicode",
+    "lang": "ru",
+    "title": "Текст, UTF-8 и видимые буквы",
+    "body_sha256": "87ca5b8ce8f76e36dbd0fec43d5b2a8ab3af1b7d2b54a1f857ea79e5cd33b25a",
+    "summary_sha256": "9adf3ec9a615f1969f429e55d5ab339979a5db947cea7c23fab76f2e9d18aaa0"
+  },
+  {
+    "slug": "rust-25-unicode",
+    "lang": "kz",
+    "title": "Мәтін, UTF-8 және көрінетін әріптер",
+    "body_sha256": "d45669514c83bdd6abeff506c181e680e95a36f700d81326aa5c66af41661918",
+    "summary_sha256": "e06ef95cdce7bce2d5753a678b8867eda84e1e892450462fef0e9e686df80c6d"
+  },
+  {
+    "slug": "rust-25-unicode",
+    "lang": "en",
+    "title": "Text, UTF-8, and visible letters",
+    "body_sha256": "311f9ca0149e8bc2f7cfd4a62a28270a33b5cf8bed3786c0c77d51ca2e324bdc",
+    "summary_sha256": "7d734933c94d4d1d4b108fecab7e15f2af31c7d7b7f76f41247c91ea4170f0ad"
+  },
+  {
+    "slug": "rust-26-tuples",
+    "lang": "ru",
+    "title": "Кортеж: два результата одной функции",
+    "body_sha256": "96785adf7e1d2c6a1c1f205c075a1360711e6979302e452eb47c5c88369f81f4",
+    "summary_sha256": "0c4affdd5614ed8fab38ac745932f93513bb29933586e1f22b3247a7df5a1421"
+  },
+  {
+    "slug": "rust-26-tuples",
+    "lang": "kz",
+    "title": "Кортеж: бір функциядан екі нәтиже",
+    "body_sha256": "140b77525c0c0c21aadde688bdb1bf5f20452ce9535bd21078d5696aedf2f983",
+    "summary_sha256": "8e2774dd79b0289258dcc6025c4d010f5f60d82348c308b450087a0bb81c8560"
+  },
+  {
+    "slug": "rust-26-tuples",
+    "lang": "en",
+    "title": "Tuples: two results from one function",
+    "body_sha256": "be83179953fe4449ae03070b580f428f9778a04a139f278e51e136071e0feefd",
+    "summary_sha256": "2a3f5878c22f19db03c4905f7cddbfd21fb8bb394d52c584074417a3682401ba"
+  },
+  {
+    "slug": "rust-27-structs",
+    "lang": "ru",
+    "title": "Структура Task: данные с понятными именами",
+    "body_sha256": "61c8a8cf995245bfbf3f44d01ffcf6744b0f67ee51000da5995e12b0e7daf34e",
+    "summary_sha256": "a61ed2c0e20a4585183a75f33404a6ea72b778dd0ab6c142d2888bec4f2efc66"
+  },
+  {
+    "slug": "rust-27-structs",
+    "lang": "kz",
+    "title": "Task құрылымы: деректерді атауымен жинау",
+    "body_sha256": "2d1fb349066aaefca702229949e0604693e5bd49a6cccaa2a7656c97d41a11d2",
+    "summary_sha256": "b2a0d15164c34717cf5dbce1061c740954fd381aa32929be43c8ef50f7165f3b"
+  },
+  {
+    "slug": "rust-27-structs",
+    "lang": "en",
+    "title": "The Task struct: data with useful names",
+    "body_sha256": "bbdbfe878679eec6fc274ce49e94c378b665de908ffa38d9b26cb402c58a31ce",
+    "summary_sha256": "f866e3c4356a536898a97c63f507608d62da88f423526a7a2a62394c694ef66a"
+  },
+  {
+    "slug": "rust-28-methods",
+    "lang": "ru",
+    "title": "Методы: действия рядом с Task",
+    "body_sha256": "16611eae9997295da3952a34903fbfbd0323b71824cdd0006b3d5b838005a11e",
+    "summary_sha256": "98baf9492fd658c1cdcea6b5f641f9e162a81d19bed900d1516355ad5d16fca5"
+  },
+  {
+    "slug": "rust-28-methods",
+    "lang": "kz",
+    "title": "Әдістер: Task деректеріне қатысты әрекеттер",
+    "body_sha256": "b9d320419b1ea21616a032732417a340f57dd055e89076b523c068053382c94b",
+    "summary_sha256": "597dd1258bdb450b3d3dcdf9567554a9b6797cc1449f74de61161da437c70b17"
+  },
+  {
+    "slug": "rust-28-methods",
+    "lang": "en",
+    "title": "Methods: actions beside Task",
+    "body_sha256": "4dae7cfe3a09d2a9b88703ac3ca79a293cbaf7297f953728661e05ed6deaed92",
+    "summary_sha256": "a7c3e1bbf8e46eb2ad852b506de0cb22562357e25c29e5da2947a9a7702d3a64"
+  },
+  {
+    "slug": "rust-29-enums",
+    "lang": "ru",
+    "title": "Перечисление: состояние задачи из допустимых вариантов",
+    "body_sha256": "c1e76c7995fcc5159a870d9f5f5b548c3439a54c96cc1262fe5d7ca15419c8c7",
+    "summary_sha256": "eb6f6c2735f437d3564615e1bfae4220b60a496b3b8687763ee42ccc29301d0b"
+  },
+  {
+    "slug": "rust-29-enums",
+    "lang": "kz",
+    "title": "Санамалау: тапсырманың рұқсат етілген күйлері",
+    "body_sha256": "35119be140d0ba21c3aa2ff04beaae9598dea1fd90947907c81d0b113a3e0a07",
+    "summary_sha256": "b8bb4d5d3f12cd25a3ff9ecae2b0a5249d70b3fe6b7ae2f7e4391df902bb21f1"
+  },
+  {
+    "slug": "rust-29-enums",
+    "lang": "en",
+    "title": "Enums: one valid task state at a time",
+    "body_sha256": "aac1a0c11140c481eaa23656971db851e24958c9350deefa1bc9d19d2efaf5a9",
+    "summary_sha256": "0d96e385fbd21ede8b03f9e8cac2d8333a37fb3f1cfe8fad68e7d04b7c0d90e8"
+  },
+  {
+    "slug": "rust-30-patterns",
+    "lang": "ru",
+    "title": "match: обработать каждый вариант",
+    "body_sha256": "f76938e2c0c73a157129fc2edef04dd77ec882874b13cc792dda1f3773570c76",
+    "summary_sha256": "15f2e3a542fe1f193aa419de059223abbdfbf7fa8f3b24f0259af6172fc8a98b"
+  },
+  {
+    "slug": "rust-30-patterns",
+    "lang": "kz",
+    "title": "match: әр нұсқаны өңдеу",
+    "body_sha256": "b7e33804094aacc119c43844a0457e6dfac5165b24323312c9c005c11dcb5bd3",
+    "summary_sha256": "c94b5bf0418fba90330ee039cb2a91a84e21255679f1640bf28078f053c970cc"
+  },
+  {
+    "slug": "rust-30-patterns",
+    "lang": "en",
+    "title": "match: handle every variant",
+    "body_sha256": "42780db35bfd56fc5fe75aa40165b53195bdce8646cee577916e9b2e2fb715d0",
+    "summary_sha256": "d51415e33a9a4f646481e067ce96fd1cfcfdcb0c1904bee6e0d370b811038d5b"
+  },
+  {
+    "slug": "rust-31-option",
+    "lang": "ru",
+    "title": "Option: когда записи может не быть",
+    "body_sha256": "095feba720a00e9375a9a21d0e72c619ac0ae06b56902f397e7bef919141b2bf",
+    "summary_sha256": "d9097e016edfda1e2689a3fe0923347b1ff40aecf0a2f24d30d54825730ddbc2"
+  },
+  {
+    "slug": "rust-31-option",
+    "lang": "kz",
+    "title": "Option: жазба болмауы мүмкін",
+    "body_sha256": "14a29391f7747de3a4addd056ad5d15bc969700eff15866ba24db0b0a4130938",
+    "summary_sha256": "54e74ed396724ff8ed7ce42135e839497816586aec9baed3a8fc1bfbfb3ba33c"
+  },
+  {
+    "slug": "rust-31-option",
+    "lang": "en",
+    "title": "Option: when a record might be absent",
+    "body_sha256": "fe5f30fcdf3624e8f8c72da298da9abed3b7198393186a114331b07741422a7e",
+    "summary_sha256": "ead10e59c6e8b6aa7c39e5534c5728a8abde9b1792a3685a139fc1793b1cb50a"
+  },
+  {
+    "slug": "rust-32-result",
+    "lang": "ru",
+    "title": "Result: сообщить о неудачной операции",
+    "body_sha256": "5f36e7073eaa74cd8dcaf0fc509d16910bf497a8946ee5cbdf0796a8a3ccb126",
+    "summary_sha256": "a749b2dc20625e27a708e44c50a5ee89fd96c9161a9fdd8094fc6531fe194585"
+  },
+  {
+    "slug": "rust-32-result",
+    "lang": "kz",
+    "title": "Result: сәтсіз әрекеттің себебін жеткізу",
+    "body_sha256": "fc00bd209ff340333b39acc1269b5c34a172a0faba3da4afa796c99566c7b7da",
+    "summary_sha256": "a7a6f8c6b1d87d35b1b1bdfe22a50b0121c23927b22ea4eaa1bce6756527fcff"
+  },
+  {
+    "slug": "rust-32-result",
+    "lang": "en",
+    "title": "Result: explain a failed operation",
+    "body_sha256": "891d89562dccf5cdc38a9b2d52d63f4aa90acc9c1eb4f4aa3e5f358ed63fa0f9",
+    "summary_sha256": "fa2a3c6ef14db9bd2a3f199af8318fe95e49b624293e89b4878c4eb88420c3bc"
+  },
+  {
+    "slug": "rust-33-propagation",
+    "lang": "ru",
+    "title": "Знак вопроса: передать ошибку вызывающему коду",
+    "body_sha256": "6cc88cefffbf8373da9438cb1a1235d9d4bff9cda510965397419e7eed906ae0",
+    "summary_sha256": "32761c826f61f78d857dae65b5fd289c2e563a84a5b8452220803662f0f732ee"
+  },
+  {
+    "slug": "rust-33-propagation",
+    "lang": "kz",
+    "title": "Сұрақ белгісі: қатені шақырған жерге жеткізу",
+    "body_sha256": "592f1cb7e5193dcbc3b1a0031adccdf1e775280ca82b71a0809b5f62b806b3be",
+    "summary_sha256": "c964157d17e660af735a3dd77a550628b3ffb90c2ff2789b20fd3f9fc7b6c40b"
+  },
+  {
+    "slug": "rust-33-propagation",
+    "lang": "en",
+    "title": "The question mark: return an error to the caller",
+    "body_sha256": "a1f2757d4ee2784c67e6841b3c0fb70022e5c688559fe185ac28f720af6552da",
+    "summary_sha256": "17e4b6cd90563f33f2e3d5159c3663257385ed06b79654742e6de3bcdd893f16"
+  },
+  {
+    "slug": "rust-34-input",
+    "lang": "ru",
+    "title": "Ввод из терминала: строка, пустой ответ и конец потока",
+    "body_sha256": "f59c0280c2a02b14d639a1c1811a7ca62e6f736196ae480e026aa7a082fcebf1",
+    "summary_sha256": "c9306e02a6a8fe179b838dd554a7b98c30f2fa509a232ccf5aba655e5ceca8ef"
+  },
+  {
+    "slug": "rust-34-input",
+    "lang": "kz",
+    "title": "Пәрмен жолынан оқу: жол, бос жауап және енгізудің аяқталуы",
+    "body_sha256": "6536fddec1df1ff65205e394b560c509540ffc49d09d767bdd18105b1552678a",
+    "summary_sha256": "f4a87ccdb1e704ef8661dac733a299a49497e7d179b9344a8b6299769a85aca9"
+  },
+  {
+    "slug": "rust-34-input",
+    "lang": "en",
+    "title": "Terminal input: a line, an empty answer and end of input",
+    "body_sha256": "e477556a6534eac61f836d601ee6416a8003017bbf7e0056341f93404af6a612",
+    "summary_sha256": "f2163fb8897cdeb3b219177c544bee97df2177fcffa1d831dddb479a3e3dc814"
+  },
+  {
+    "slug": "rust-35-arguments",
+    "lang": "ru",
+    "title": "Аргументы запуска: команда и название с пробелами",
+    "body_sha256": "0f66de600a68ae1b8ba4179067897b9c5375116521f398ac7ead24354704d607",
+    "summary_sha256": "f84cc2ba5089ab66ac67e3fb775e5a03ef9108200b5bcdc4e7ae3c2bf1df74a1"
+  },
+  {
+    "slug": "rust-35-arguments",
+    "lang": "kz",
+    "title": "Іске қосу аргументтері: пәрмен мен бос орны бар атау",
+    "body_sha256": "f5a6e1581b4351baf8504b5e8d1a469f0ac8a3cc17d99ca04e50490a4b34254c",
+    "summary_sha256": "4041bfa1607a5cbee07f3f565237874d009efcf153a6ec818f973a161428cae2"
+  },
+  {
+    "slug": "rust-35-arguments",
+    "lang": "en",
+    "title": "Launch arguments: a command and a title with spaces",
+    "body_sha256": "fa06027584dc4b852b434744f93b97243ee665f9f2f193b6e492b7b51c63df91",
+    "summary_sha256": "dd825928a4f24554ab89a3397276b9970f9ccd20d351dd7624ce9fc61ad4f206"
+  },
+  {
+    "slug": "rust-36-commands",
+    "lang": "ru",
+    "title": "Команда как проверенное намерение",
+    "body_sha256": "2ce11bc15b9ac21159d722d5ddf20b2d40f5b7f85be6ad55980ceab13754fe17",
+    "summary_sha256": "bab63dd637b58563ce83d0293029c800b5c178aefe5c8c5d9834fd2e05fdafd1"
+  },
+  {
+    "slug": "rust-36-commands",
+    "lang": "kz",
+    "title": "Пәрмен — тексерілген ниет",
+    "body_sha256": "b839e2a4dd70d3540478bb16cbb32568aed8350a7d34c19f4b330ebb5c1ad751",
+    "summary_sha256": "94c41e92bb81ac51af21a092e1890463dc0ef9caf2ca54fd5d4e972f12a1c236"
+  },
+  {
+    "slug": "rust-36-commands",
+    "lang": "en",
+    "title": "A command as a checked intention",
+    "body_sha256": "949f5f831d536c9da3902b7d80bae384570d9dee4f4b9645f1936772f7286011",
+    "summary_sha256": "3b1bce2b971f182466925a3f9dc1af6d42ab368a06759ff8d20df3fda1bcf175"
+  },
+  {
+    "slug": "rust-37-operations",
+    "lang": "ru",
+    "title": "Список задач в памяти: добавить, изменить, завершить, удалить",
+    "body_sha256": "339e98c817f52da486bc3d5e34b0058732f8f8092a1e3f0739ed8db9d5958537",
+    "summary_sha256": "d4c2f438b3761f7e8a2da51ac7f94bd41e4867af026162ef698a4310712fe4fc"
+  },
+  {
+    "slug": "rust-37-operations",
+    "lang": "kz",
+    "title": "Жадтағы тапсырмалар: қосу, өзгерту, аяқтау, өшіру",
+    "body_sha256": "b746755d2432f3ba5dcacdc67a3bbc0d1aa48419739434711bdd79c2feee5169",
+    "summary_sha256": "35bb6e9541158346c9fb7e421d099fcfd7fbc61d4fc5c5199e8dd1a6c3cbef9a"
+  },
+  {
+    "slug": "rust-37-operations",
+    "lang": "en",
+    "title": "Tasks in memory: add, rename, complete, remove",
+    "body_sha256": "9998573256c708bee197bef5bc274ad8610423d7d7e4944e6c3c24243cf2252f",
+    "summary_sha256": "b0a52e6a60e5a44bbbe373634446427c102e7293a866ea2886459f5359db2a70"
+  },
+  {
+    "slug": "rust-38-ids",
+    "lang": "ru",
+    "title": "ID задачи: номер, который не сдвигается",
+    "body_sha256": "ba2f39a79fd72177149009e17ef705d47f5c03325ea80d455029d9356867eaef",
+    "summary_sha256": "69118eb9a6170d8ea38767e837a6f00c8fbbc0dbd48a23ea2be37641d9e5f51f"
+  },
+  {
+    "slug": "rust-38-ids",
+    "lang": "kz",
+    "title": "Тапсырма ID-і: орны ауысса да өзгермейтін нөмір",
+    "body_sha256": "1ab697d5b6c7875f85d980a07e31bba80864d25e9f05b9527ab087dcab593523",
+    "summary_sha256": "2828ba3bdb81bfb99a7a9dd617c24b1ecfd4066f09f5f305a91ff97ca3919c56"
+  },
+  {
+    "slug": "rust-38-ids",
+    "lang": "en",
+    "title": "Task IDs: numbers that do not shift",
+    "body_sha256": "edbaafbd9744e80c4ee087c9c2e2948a5cef43010e4595b54ec39c2055cd6176",
+    "summary_sha256": "8497cf161e3f7f68d6b530e0dfe97674396fc4ed3d2ad8e2ddf1515474fcc2ea"
+  },
+  {
+    "slug": "rust-39-scenarios",
+    "lang": "ru",
+    "title": "Сценарии: проверяем цепочку действий",
+    "body_sha256": "a41fc6f572f7eaafdfedf87cc9cdb19585f840592996337931d4bfe6488e2357",
+    "summary_sha256": "124a227d2b2c67088bc52deae4fae6d1500910a505b5e6d9a41f69fa744cb8d0"
+  },
+  {
+    "slug": "rust-39-scenarios",
+    "lang": "kz",
+    "title": "Әрекеттер тізбегін сынау",
+    "body_sha256": "5bff1e3feba3eaebd0e6c0b7ecd3b6ea1b54ec7793a27ff83e6efaa5c748b036",
+    "summary_sha256": "7b65485a9ce48a8e122e5916fec71208fc98de6262b76ad15d01819ae49a12d2"
+  },
+  {
+    "slug": "rust-39-scenarios",
+    "lang": "en",
+    "title": "Scenarios: test a sequence of actions",
+    "body_sha256": "759f62e35380579cbcedc0b070979940bad871d28e72ae9709928994f1ad0422",
+    "summary_sha256": "87d100598d2f6fbde527934756e50ff73cd41492f38327448beb6f37970aa663"
+  },
+  {
+    "slug": "rust-40-memory-checkpoint",
+    "lang": "ru",
+    "title": "Контрольная точка: органайзер в памяти",
+    "body_sha256": "bd221e5f75b36e8490771d62a1e9d12ed546acd9a6ddb5d3f03f0a1970925eac",
+    "summary_sha256": "e8318e44adb8b5230c9915ddfc2561edffc7bf1da4f2aa0340d4bf20a899cc24"
+  },
+  {
+    "slug": "rust-40-memory-checkpoint",
+    "lang": "kz",
+    "title": "Бақылау кезеңі: жадтағы жоспарлау құралы",
+    "body_sha256": "ea3e5a13080017e48e4ffc102935353a9ca440b86f26a9a92e54ecc1de6fa4bb",
+    "summary_sha256": "ee06debb8eb9e4e2332da9045817702424d9451a5bbaba43eb92aff39c94f86d"
+  },
+  {
+    "slug": "rust-40-memory-checkpoint",
+    "lang": "en",
+    "title": "Checkpoint: an organizer in memory",
+    "body_sha256": "8dca761ab4bf209943d005315d05ab0582e5f8db7e88a9cd8f36f9755bfb4489",
+    "summary_sha256": "9665ee2acddb9584e8d5e878b2a0f8deb5a89a39ffb9a0b6f4e4186d68d2f8e8"
+  },
+  {
+    "slug": "rust-41-iterators",
+    "lang": "ru",
+    "title": "Итераторы: читать, менять или передавать владение",
+    "body_sha256": "99d382f2f2ceb9e8224fee8e5152c9158a6e5eabb3590b971915546a5125973b",
+    "summary_sha256": "25dfe1c8811fff1373ea6c6aac18608f2eb4f56ca77a03564a1c17cac6721693"
+  },
+  {
+    "slug": "rust-41-iterators",
+    "lang": "kz",
+    "title": "Итераторлар: оқу, өзгерту және иелікті беру",
+    "body_sha256": "c5b3e8fc353de2e0a042aa25b164087a9bf6cb0a6b2a9bde57dace8571d0f0b2",
+    "summary_sha256": "c1ee24ac0916991f9f2130630efd8543cdfdd0dc5bad82d2601dd451254a3cbd"
+  },
+  {
+    "slug": "rust-41-iterators",
+    "lang": "en",
+    "title": "Iterators: read, change, or transfer ownership",
+    "body_sha256": "6965f6098529b40e5f52ea7c777d35388ec1dc6e262f0ea805348ccaa38efb2c",
+    "summary_sha256": "93e1e1d949e3586839282ba9048df108928cc6c0b149a28377036c4c3de372d3"
+  },
+  {
+    "slug": "rust-42-closures",
+    "lang": "ru",
+    "title": "Замыкания: выбрать нужные задачи",
+    "body_sha256": "9de0ab55f6e2a89d624c4e30d2c4f0e337a15e01f6ca007ba0616b5503b0dad1",
+    "summary_sha256": "b16991d52d633901bab1e4ec1e82a13a828bb3f9913bc0b682cdd43e16e1fb7e"
+  },
+  {
+    "slug": "rust-42-closures",
+    "lang": "kz",
+    "title": "Тұйықталым: керекті тапсырмаларды таңдау",
+    "body_sha256": "d7a436dfb3b3412cd74f36259619a2705e43d752811ea5ea94a1210c923f49fb",
+    "summary_sha256": "aa271e5c1056f2125f79b53fc1b4e39bf1eae6432b67fe421b9b28bc267092e3"
+  },
+  {
+    "slug": "rust-42-closures",
+    "lang": "en",
+    "title": "Closures: select the tasks you need",
+    "body_sha256": "0644f8d0ebde90d68117ececadfa90b2573d8030bccf9e48f7ef8c7e637d6ffb",
+    "summary_sha256": "5de7fe8a0f23ad1a8f67c0e8cc809aaf7f7e064d1a0a556e2fc5941e393b1629"
+  },
+  {
+    "slug": "rust-43-maps-sets",
+    "lang": "ru",
+    "title": "Словарь и множество: посчитать метки",
+    "body_sha256": "14f75dde6ab6d4fb76a4bff4c6a0eb78ecb8f8c7b5fdf77fd7c549a1c85deca9",
+    "summary_sha256": "4b29ab44c1c97f5b2d88fd08e37f9ae8c96bcb1665147ceac9e4c2a64c96299b"
+  },
+  {
+    "slug": "rust-43-maps-sets",
+    "lang": "kz",
+    "title": "Сөздік пен жиын: белгілерді санау",
+    "body_sha256": "0b349f1664c4ce50eb4ee7e02fe2f4b99c47827698100427dc8becc71385ac9a",
+    "summary_sha256": "626650b8c942ddc296e0155b5f7796f37bb12b264994cc682ca8cdd0e6c5586f"
+  },
+  {
+    "slug": "rust-43-maps-sets",
+    "lang": "en",
+    "title": "Map and set: count task tags",
+    "body_sha256": "523a14a7f21c2114fd134f813ba3597f8f5f51857db43d1b5ab5a94d13363639",
+    "summary_sha256": "39adfaa6a3b2e88268fdfbda5e36b4a036ba88efdbe610dc5d311d433423bb7c"
+  },
+  {
+    "slug": "rust-44-modules",
+    "lang": "ru",
+    "title": "Модули: отделить логику от запуска",
+    "body_sha256": "a561643040743401470e454832c94fbc3ed06c6f8580d4d0a800b804deddd3e4",
+    "summary_sha256": "5e92d74166dbc8c40f47e1366b2e707779772bac25291dce123264eb94bdda28"
+  },
+  {
+    "slug": "rust-44-modules",
+    "lang": "kz",
+    "title": "Модульдер: іске қосуды негізгі логикадан бөлу",
+    "body_sha256": "c5f2571e42f17e6050759e6e1dafab66800086999a65117c14ae742405dd008f",
+    "summary_sha256": "266909b987c2017ce298f41fc152d26cbde883419b43dea74cce08cfd11a96ec"
+  },
+  {
+    "slug": "rust-44-modules",
+    "lang": "en",
+    "title": "Modules: separate logic from startup",
+    "body_sha256": "1ed3f3f9f57420fffdf4bbe4cfcd8577971a0ad9afef72b44cfba72c955f9a85",
+    "summary_sha256": "38ff659bc98431dca3bc38e292582154e6face39c84e3e0b49864a4f09b2deb7"
+  },
+  {
+    "slug": "rust-45-generics",
+    "lang": "ru",
+    "title": "Обобщённый тип: одна функция для разных списков",
+    "body_sha256": "2165ed75cf5192c9f5c6374f89a1e25baff5b6d673dfaeb552019be06522a738",
+    "summary_sha256": "dc49dde10e40643492bf61a8436e37258fd5da4e2142b162ebedeb09d563ac3b"
+  },
+  {
+    "slug": "rust-45-generics",
+    "lang": "kz",
+    "title": "Жалпыланған түр: әртүрлі тізімге бір қызмет",
+    "body_sha256": "19ca19629e606822ab9e5baa2740fbd24956bd8a401b0841ab52df24b869b7f4",
+    "summary_sha256": "f3524abd0d9cfcf736edc1a82caeada226f1687a3e9a44816bc32163b2084989"
+  },
+  {
+    "slug": "rust-45-generics",
+    "lang": "en",
+    "title": "A generic type: one function for different lists",
+    "body_sha256": "e1926a7f072b695ec81fc7994a08d4572c3a9a7a30d7e43940d0625499c9c21f",
+    "summary_sha256": "23459c6d44b2e9c7c83ee4c59fd36a8ae4e789c9ea1408c2a5ba9f99573366a0"
+  },
+  {
+    "slug": "rust-46-traits",
+    "lang": "ru",
+    "title": "Трейты: общий договор о поведении",
+    "body_sha256": "454b2683f38a205c4ee23d40ff76a29285ad1080de7c20cb94d12a291b769581",
+    "summary_sha256": "879c8f1bec405921c41fb2cb9965e9d9d5bf3fe0ee5fa38adcf293ccfb0fa7ec"
+  },
+  {
+    "slug": "rust-46-traits",
+    "lang": "kz",
+    "title": "Трейт: ортақ әрекетке қойылатын талап",
+    "body_sha256": "596d2577e0380efde4bdf1c468cdb31dae9706ec1b0944985456ccd7e1aba7f2",
+    "summary_sha256": "dfe638e0f9bf410dcd02e7e47eb12822c1830edd597261b205107f819d0f44b8"
+  },
+  {
+    "slug": "rust-46-traits",
+    "lang": "en",
+    "title": "Traits: a shared behavior contract",
+    "body_sha256": "0b13ddb9791e9c5136efc681ba032c410b3ec93c8ee8a9785dde2d017cab4fd5",
+    "summary_sha256": "ce3abc6eab7af8b79ce5ccaba3d9698d806405187b7780dc8fc8408493f7d3a1"
+  },
+  {
+    "slug": "rust-47-lifetimes",
+    "lang": "ru",
+    "title": "Время жизни: связь ссылок",
+    "body_sha256": "ce4d173aa2638144aadf12ed1687c9b72cda5fca36f0270e867abf0d8e0fd258",
+    "summary_sha256": "13ea1a324ffd6731be2be17fb351b85ce75dcbe7fa208ca8bf41b0bd29e55b77"
+  },
+  {
+    "slug": "rust-47-lifetimes",
+    "lang": "kz",
+    "title": "Сілтеменің өмір сүру уақыты",
+    "body_sha256": "de5b11f1c3aa31b5b28d60c00bea52b809829562add4a6cb2952561c7b204cb2",
+    "summary_sha256": "4a058f77f21c83f891135317ea0eb3f52ba6616c4c0b905e6a8d65750d38c0ac"
+  },
+  {
+    "slug": "rust-47-lifetimes",
+    "lang": "en",
+    "title": "Lifetimes: how references relate",
+    "body_sha256": "d9b16add9fb81f9b5196b2e18a8f942f58a8b36f0fd7da1d8fc33559cc1ec876",
+    "summary_sha256": "e75a0f4d703c434320b5a6208998208e1e06d3b7eff16d98e7eb97eb21e69c8b"
+  },
+  {
+    "slug": "rust-48-dependencies",
+    "lang": "ru",
+    "title": "Внешние библиотеки и зависимости",
+    "body_sha256": "0ba475b3924bca8da377587cb765c2183162abd943ee8507713972b80b6b1f10",
+    "summary_sha256": "b7f75dd60cfa0948bc2f55f0affc908d5fa7e77f5cff2ed60f5309ae3019dfd4"
+  },
+  {
+    "slug": "rust-48-dependencies",
+    "lang": "kz",
+    "title": "Сыртқы кітапханалар мен тәуелділіктер",
+    "body_sha256": "88dc9f9fa813331c8b46dad82f7c5addd33d63929e1f88dadab96188679d54bd",
+    "summary_sha256": "ed3d84018ee049f2f361d6b3b8daf77459f97a0d2459f17e518138143d135f38"
+  },
+  {
+    "slug": "rust-48-dependencies",
+    "lang": "en",
+    "title": "External libraries and dependencies",
+    "body_sha256": "345f4225763514cfdbb6542093d0d52955a1dce425e58f457690c2428414ac31",
+    "summary_sha256": "4fe16ea0afd7309d99c80dcbde7e6508ff69b046859a9048330896f974cb3e5f"
+  },
+  {
+    "slug": "rust-49-paths",
+    "lang": "ru",
+    "title": "Пути и файловая система",
+    "body_sha256": "2b8766f685d2087ec56e5f2303ea184aaf28b211d80383ec1987305f483aaf8d",
+    "summary_sha256": "1bb07b06c5d55ca0fc03c45250e2914ad10ffeae0e6c3acbbb5c63a90b08d6c4"
+  },
+  {
+    "slug": "rust-49-paths",
+    "lang": "kz",
+    "title": "Жолдар және файл жүйесі",
+    "body_sha256": "d397b831e3bfe4fd72b1fd23cded2fc99f67be936eb8b728ad58b32fa2a13e4b",
+    "summary_sha256": "95cf4579335cf972e5f6942c15241c036c9e815e920140ba06595eb902c1fb71"
+  },
+  {
+    "slug": "rust-49-paths",
+    "lang": "en",
+    "title": "Paths and the file system",
+    "body_sha256": "510b6373679d585797ca67afd73036edc33ddccfb92bd067de199300a405cbaa",
+    "summary_sha256": "7497a548babb22d9fdab39a082072650cde1dd3cd68b5e733574223dad99b48f"
+  },
+  {
+    "slug": "rust-50-files",
+    "lang": "ru",
+    "title": "Чтение и запись файлов",
+    "body_sha256": "f439c0d4c5cc28607df5c95423403ec515d1968e659b04d654686cbddceeb072",
+    "summary_sha256": "adb1b75b2dbbf50ab27b1d5c699f1ab414b34ac45c7f5f0d56001e91108c692a"
+  },
+  {
+    "slug": "rust-50-files",
+    "lang": "kz",
+    "title": "Файлды оқу және жазу",
+    "body_sha256": "2f5b0fff07e3560757014a1d82a96cac16568ede9a16420e42823e3b761c04c7",
+    "summary_sha256": "b588abec25428ef150ad6f724a854bde0d22369ec247b3d4dea512481a7108af"
+  },
+  {
+    "slug": "rust-50-files",
+    "lang": "en",
+    "title": "Reading and writing files",
+    "body_sha256": "282d2ba8e99618e81647d992afa44c02589f031439d4f35a73a5d9185cc8a132",
+    "summary_sha256": "9922c4af42e1a423d2e71a3e72353132ea0fe807c4640e3351aec6e102f4674d"
+  },
+  {
+    "slug": "rust-51-json",
+    "lang": "ru",
+    "title": "Формат JSON",
+    "body_sha256": "bcdd1ab7c14e32ca39b7f9b04f76fcd8aa22856ef0afbfb94d3133d1952f49f3",
+    "summary_sha256": "fa955d017aafaed074a7de213c96af5dc478c42f7234f5d49bbb91caaea63c34"
+  },
+  {
+    "slug": "rust-51-json",
+    "lang": "kz",
+    "title": "JSON пішімі",
+    "body_sha256": "74aae92f71d7eb5a80609a4e3bf8e868b657b5c00713e91aad46c6cb74405708",
+    "summary_sha256": "bee163014dbbd38f78d9bb1382757352963f53f3aeab0fb4ff09cf9418c7dac8"
+  },
+  {
+    "slug": "rust-51-json",
+    "lang": "en",
+    "title": "JSON format",
+    "body_sha256": "156f9b62d36e3e0bd005b122b507fe01ab7e442d0b4239fa7a2556a7760c0d8f",
+    "summary_sha256": "310a65d27c56f0c9a83070b30475994c7f661bf60903dcfe1189b3ba11bd0996"
+  },
+  {
+    "slug": "rust-52-safe-save",
+    "lang": "ru",
+    "title": "Сохранение без потери данных",
+    "body_sha256": "ba86c7a52575c411650214649a94f2067b28f8a9d364524fad8521bc2d95cc37",
+    "summary_sha256": "24d35b4e55aaf5cdb6636b4382991d20df377d8688d34de5b68a1964ac571be2"
+  },
+  {
+    "slug": "rust-52-safe-save",
+    "lang": "kz",
+    "title": "Деректерді жоғалтпай сақтау",
+    "body_sha256": "7f0f3f67436431c7a97d3caf63e55e805ecaf3032985050ef92b03de28ac4ce9",
+    "summary_sha256": "f892b56d9d1f32bac1132b38d411c85c37410c419dc206b45d7ee0db083f2a23"
+  },
+  {
+    "slug": "rust-52-safe-save",
+    "lang": "en",
+    "title": "Saving without losing data",
+    "body_sha256": "eba50054b26fbe75360af8bb8203b5c0fb523ce13b87760638a6ad7f847532e1",
+    "summary_sha256": "134233449c6e35818b5592d340cf132f022fe6045a9534ba2c5f82a19b7dd5a1"
+  },
+  {
+    "slug": "rust-53-backup",
+    "lang": "ru",
+    "title": "Резервная копия",
+    "body_sha256": "c2b3f58c16454e9a019a0a05fd72c6f54d86bbc44654f6e9b54233cc9fbdc68a",
+    "summary_sha256": "cc01ed9a0ca30220a656c35644588d46b737ecf46c19adef4c2b0fd7ae955fbb"
+  },
+  {
+    "slug": "rust-53-backup",
+    "lang": "kz",
+    "title": "Сақтық көшірме",
+    "body_sha256": "af4ac9bf94136d4fd175c2857a7fef3170711ecdd5b7984200c1f695f531c348",
+    "summary_sha256": "3c3149a33aca3ecf672d2eebf38074ca79901062b6f9bc525db38eeba560a1fd"
+  },
+  {
+    "slug": "rust-53-backup",
+    "lang": "en",
+    "title": "Backup copy",
+    "body_sha256": "57e04ad5cd594aad47a0d562c1eb90cbb34a4361eb5feaa51d614c273e39c448",
+    "summary_sha256": "d3a32c581dd15d04c9ce7408b300de5706f313ce0161db3929e35a7097856535"
+  },
+  {
+    "slug": "rust-54-cli",
+    "lang": "ru",
+    "title": "Удобные команды",
+    "body_sha256": "fd7334563f8ca2d81d517088d80b41d081a89bbd974b76992ceea901538977e2",
+    "summary_sha256": "f2b0b694b20772c1127a2f0b1ca68cccfc489233282143e96ed16947057809c9"
+  },
+  {
+    "slug": "rust-54-cli",
+    "lang": "kz",
+    "title": "Ыңғайлы пәрмендер",
+    "body_sha256": "e29f65f0d36f2cefbacb99d1a27a260b466162e456c448ea7575ad762b0b2b84",
+    "summary_sha256": "ba6da243eadad38001832d5ef6b7fc02e2ac23e9f63e12a26610ad9cf0f56fb5"
+  },
+  {
+    "slug": "rust-54-cli",
+    "lang": "en",
+    "title": "Useful commands",
+    "body_sha256": "f6b422c167fbf5a197716bba0c91045df65b0eaf0c50dbf3e3592a23458b9785",
+    "summary_sha256": "1838f8c14ee6823130389cc3981295b1595c44ca1b2d38069dcfb4691e088fd9"
+  },
+  {
+    "slug": "rust-55-documentation",
+    "lang": "ru",
+    "title": "Настройки и документация",
+    "body_sha256": "9b229d3270ea413a8fa2d6ef172e8b6a19ce97fd10bd5975fd39c41abd30239f",
+    "summary_sha256": "4cfcd3d07dd5a14606713f5095944a5f724f04c7a71d94ca94654d00d88fcae5"
+  },
+  {
+    "slug": "rust-55-documentation",
+    "lang": "kz",
+    "title": "Баптаулар мен құжаттама",
+    "body_sha256": "3b975e9e7471485e98081d9e771b7d046f3c260f063d0dfe01179a392869f793",
+    "summary_sha256": "59fae28b37ee4a6e6668fc363dcdcc3fdf04007572b2023cf8a42a47d7555241"
+  },
+  {
+    "slug": "rust-55-documentation",
+    "lang": "en",
+    "title": "Settings and documentation",
+    "body_sha256": "33e090a1d77a5d0c440265e6a004cdecacb5203243f800e82d97054eac062938",
+    "summary_sha256": "33736ac3fa09cdd27973597e3417d5373c322a7503c9c32c2e134322e2de4a7e"
+  },
+  {
+    "slug": "rust-56-testing",
+    "lang": "ru",
+    "title": "Полный набор проверок для файла задач",
+    "body_sha256": "b321fc68f553a1837a1ea3b88899dabbd991de6147db19f3b8a514d026e75a9d",
+    "summary_sha256": "a7e229e34b82714a4755f119d1f8a85f8553c95d4e6d44fffd2729d35b39401b"
+  },
+  {
+    "slug": "rust-56-testing",
+    "lang": "kz",
+    "title": "Тапсырма файлына арналған толық тексерулер",
+    "body_sha256": "fd2179552c026a3d771d534d544798f0f2774d74236da740024187c2ceee6a81",
+    "summary_sha256": "8dbc528a7ed70eb7d5c7f7379fddd5f875fc6355487d5b2c823510a6b11f313b"
+  },
+  {
+    "slug": "rust-56-testing",
+    "lang": "en",
+    "title": "A complete test set for the task file",
+    "body_sha256": "5707e1937975d0fbf97489aeaf6c1a17de16624fd43bc951c51032f2d3ec229b",
+    "summary_sha256": "5c58de80676881b3d8372d1758671abd88b6f3bb5e8bd05c97e98fa2e4578923"
+  },
+  {
+    "slug": "rust-57-quality",
+    "lang": "ru",
+    "title": "Автоматические проверки на трёх системах",
+    "body_sha256": "7b5b06b5408b8bcc97516a50a44965f58083fd7503203578e7830181f285d181",
+    "summary_sha256": "e950423996baa5f861f7f71667a9874755c34a9992e2b6b6f1f3c7f11dfa1f0b"
+  },
+  {
+    "slug": "rust-57-quality",
+    "lang": "kz",
+    "title": "Үш жүйедегі автоматты тексерулер",
+    "body_sha256": "37d353b908b686fd868c84fbf65bf67dbea2c8b43eeb2679fe8addf2e619e57e",
+    "summary_sha256": "2758740cf686a80b08c7da370716b980128adcac290543dbd482f78ee77c969b"
+  },
+  {
+    "slug": "rust-57-quality",
+    "lang": "en",
+    "title": "Automatic checks on three systems",
+    "body_sha256": "0a04761a5d96f4d30e16b0ccd0b96c1c17e5d36c4400677a3fe6d3adac6e1600",
+    "summary_sha256": "97fd1bc416a923d56f448fc7b98475c15a184f74ca12f2e8e4e66dd1419078f3"
+  },
+  {
+    "slug": "rust-58-distribution",
+    "lang": "ru",
+    "title": "Сборка и передача программы",
+    "body_sha256": "dfa245323f7cfa307801c0420d19c2450a96dd1917b8cbcd967e930cfd6049ac",
+    "summary_sha256": "18b541dd7f63cc163363e4c972b21d8371adec47cf30c0d9f095439b40940233"
+  },
+  {
+    "slug": "rust-58-distribution",
+    "lang": "kz",
+    "title": "Бағдарламаны құрастыру және тарату",
+    "body_sha256": "504f2b64f2be8988524ae6b0cc1fc1c760ad066aa8b097c4319cdf4b7bd32ec3",
+    "summary_sha256": "3cb06133490630562b3c9c67003d9c476999200fa3176a19cbd85c173dec1a18"
+  },
+  {
+    "slug": "rust-58-distribution",
+    "lang": "en",
+    "title": "Building and sharing the program",
+    "body_sha256": "2e2411cc14397e5ae3d8898cc612944bbd7e726c7efebf37b08248784852adae",
+    "summary_sha256": "a83a80cbf43d2ad44404eba390ded4f0b13d5d42f679122e7c31022a521c355a"
+  },
+  {
+    "slug": "rust-59-capstone",
+    "lang": "ru",
+    "title": "Самостоятельное расширение: приоритет задачи",
+    "body_sha256": "63765dfeb52eeebc6a59d656a4e2cdf0ef66725699a8370b6d7d14d773f8d17a",
+    "summary_sha256": "aeb0ec9729c3afb633f4ef07ced6325064501354cebf220c99f58ec6f1d1df94"
+  },
+  {
+    "slug": "rust-59-capstone",
+    "lang": "kz",
+    "title": "Өз бетінше кеңейту: тапсырма басымдығы",
+    "body_sha256": "e6b1ba050ce2ebd42f4e16a6a13a77457dfa93090c241edd4dbd52828a4e7ffa",
+    "summary_sha256": "d10d66eca8e2ade7c46909d87b7dd0158d7a080cf67bb0021986f139907f204a"
+  },
+  {
+    "slug": "rust-59-capstone",
+    "lang": "en",
+    "title": "Independent extension: task priority",
+    "body_sha256": "f5149bc1a8ec5c9cc1d9ebd139c088004f6332d0d630945fd9351c1bc254a13b",
+    "summary_sha256": "f3c9e1709056635dea3dd5b8dfdde38f3983ce97bfa88b4500ca42376c6983d7"
+  },
+  {
+    "slug": "rust-60-release",
+    "lang": "ru",
+    "title": "Выпуск консольного органайзера",
+    "body_sha256": "25fa21101d22fb706418be8a8797aa31ad39ebf36406063ade8b110ab43ae54b",
+    "summary_sha256": "b6370be4d523f95ca6ec37cf951e5050936a632aeea6ec6f2d85b7d1ab7b28de"
+  },
+  {
+    "slug": "rust-60-release",
+    "lang": "kz",
+    "title": "Консольдық органайзерді шығару",
+    "body_sha256": "7e0b239d8f0a919f3a2bbd1518cb0caced40ed54d0a2e2e01432719c7d55a71a",
+    "summary_sha256": "df675cc9c2637c545894d7850b409800264050994f8a331768ef71f9ca8658b1"
+  },
+  {
+    "slug": "rust-60-release",
+    "lang": "en",
+    "title": "Releasing the console organizer",
+    "body_sha256": "3d107cf94c54f56ac780a2d8ed3f0e28c8ce5dfa5d59d09b297d4648b3c16b92",
+    "summary_sha256": "a44d242c26e848f836faba2cfc97ecb4f6e1c4664435110995bed9d930223149"
+  }
+]

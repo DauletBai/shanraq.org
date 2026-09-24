@@ -1,6 +1,6 @@
 # Rust course publication
 
-Current manifest and live site: preface and lessons 1–55 published in kz/ru/en. The full free course remains in progress; later lessons must not be presented as published.
+Current manifest and live site: the preface and all 60 lessons are published in kz/ru/en. The free console-organizer course is complete.
 
 Prepare a cumulative transaction from reviewed sources:
 
@@ -10,13 +10,21 @@ python3 -m unittest discover -s tools/course -p test_rust_release.py
 python3 tools/coursecheck/rustcheck.py
 ```
 
-Before publishing, list every push workflow for the exact source commit and wait for every run to succeed. Required checks are CI, Course, docker-smoke and Rust course checks; do not filter the list to only the Rust-specific workflows. Cancelled, skipped or missing required runs do not count as success. Back up production before activation and content publication. The application must include migration 20260917000300 and Rust-aware rendering. The Rust footer link preserves the reader's selected language.
+Before publishing, list every push workflow for the exact source commit. Required checks are CI, Course, docker-smoke and Rust course checks; do not filter the list to only the Rust-specific workflows. The owner may authorize activation after five minutes without errors while long jobs continue; record that state accurately and follow their results. Cancelled, skipped or missing required runs do not count as success. Back up production before activation and content publication. The application must include migration 20260917000300 and Rust-aware rendering. The Rust footer link preserves the reader's selected language.
 
 The SQL uses one transaction with an advisory lock. Course membership and all three localized versions become visible together. Author and course collisions stop the transaction; unrelated content is not deleted. The manifest lists all released groups cumulatively, with one preface and numbered lessons at positions 10, 20, and so on. Complete groups of five and all three languages are required. Register every new source in lesson-slugs.json too.
 
 Rust exercises use inline reference answers. There is no server Rust runner; unsupported formatting/check requests are refused instead of reaching the Go checker. Local validation compiles every complete Rust example and answer, checks intentional compiler failures, and builds independent Cargo snapshots for all three languages. Snapshot locations: course/rust-organizer/step-NN (ru), en/step-NN, kz/step-NN. The first five lessons also need manual verification of their installation and navigation steps.
 
 For each future release, compare every body/summary hash with the prepared sources. Visit each page anonymously, verify navigation in all languages, and check main/latest/top feeds for leaks. Check desktop, tablet and both mobile orientations, and verify existing Go book links and readiness.
+
+## Verified twelfth publication — 2026-09-24
+
+Lessons 56–60 complete the course in kz/ru/en. The lesson source commit is `4e43790bbc1b618ebe0989fc1f535230d7a6e8c3`. The owner authorized publication after five minutes without CI errors. At activation, [Course](https://github.com/DauletBai/shanraq.org/actions/runs/35967209687), [docker-smoke](https://github.com/DauletBai/shanraq.org/actions/runs/35967209727), and [Rust course checks](https://github.com/DauletBai/shanraq.org/actions/runs/35967209725) had succeeded; [CI](https://github.com/DauletBai/shanraq.org/actions/runs/35967209802) was still in progress without a failed job. All four workflows later succeeded. Local checks passed 790 Rust examples, answers and Cargo snapshots, 66 exercise boundary cases, release tests, language checks and internal links. The five final lessons had a manual novice walkthrough in three languages. [Live browser checks](rust-twelfth-live-browser-checks.json) covered the 15 new pages at four viewports after activation.
+
+Before activation, lesson 56 returned 404 and `publish.py --check` found no drift in earlier lessons. A 4,620,598-byte PostgreSQL dump was saved at `/var/backups/shanraq/rust-content-20260924-before-56-60.dump`; its archive listing was checked. The cumulative SQL completed in one transaction with SHA-256 `c06071e5f914db85577354811bedca1836e6bbd3b48b2a39e05d3cf6ab285703`. All 183 localized titles, body hashes and summary hashes then matched the [prepared manifest](rust-twelfth-release-hashes.json). The course contains 61 items including the preface; `publish.py --check` reports no drift.
+
+All 15 new pages, the three course pages and prefaces load anonymously. Navigation 55→56 works and lesson 60 has no next link. Main/top/second-page feeds in all three languages contain no lesson URLs. The Go course, `/readyz` and `/healthz` return 200. Live Chrome checks covered 15 pages at four viewports with no horizontal overflow; representative phone screenshots were visually inspected. The application was not restarted.
 
 ## Verified eleventh publication — 2026-09-24
 

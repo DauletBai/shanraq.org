@@ -2,20 +2,20 @@
   "course": "rust",
   "code_lang": "rust",
   "cover_url": "/static/brand/rust-logo.svg",
-  "batch": 11,
-  "lessons": 55,
+  "batch": 12,
+  "lessons": 60,
   "metadata": {
     "ru": [
       "Rust: с нуля до своего органайзера",
-      "Открытые уроки и предисловие доступны в оглавлении. С нуля создаём личный органайзер для терминала. Новые уроки публикуются по пять сразу на казахском, русском и английском. Весь курс бесплатный; регистрация для чтения не нужна."
+      "Все 60 уроков и предисловие доступны в оглавлении. С нуля создаём личный консольный органайзер с сохранением данных и резервной копией. Весь курс бесплатный; регистрация для чтения не нужна."
     ],
     "kz": [
       "Rust: алғашқы қадамнан жеке жоспарлау құралына дейін",
-      "Ашық сабақтар мен кіріспе мазмұнда көрсетілген. Пәрмен жолында жұмыс істейтін жеке жоспарлау құралын нөлден жасаймыз. Жаңа сабақтар қазақша, орысша және ағылшынша бес-бестен жарияланады. Курс толық тегін, оқу үшін тіркелу қажет емес."
+      "Барлық 60 сабақ пен кіріспе мазмұнда ашық тұр. Деректі сақтайтын және сақтық көшірме жасайтын жеке пәрмен жолы жоспарлау құралын нөлден құрастырамыз. Курс толық тегін, оқу үшін тіркелу қажет емес."
     ],
     "en": [
       "Rust: from zero to your own organizer",
-      "Open lessons and the preface appear in the course contents. Build a personal terminal organizer from scratch. New lessons arrive in groups of five in Kazakh, Russian and English. The entire course is free; reading needs no account."
+      "All 60 lessons and the preface are available in the course contents. Build a personal console organizer with saved data and a backup from scratch. The entire course is free; reading needs no account."
     ]
   },
   "items": [
@@ -298,6 +298,31 @@
       "stem": "55-documentation",
       "slug": "rust-55-documentation",
       "position": 550
+    },
+    {
+      "stem": "56-testing",
+      "slug": "rust-56-testing",
+      "position": 560
+    },
+    {
+      "stem": "57-quality",
+      "slug": "rust-57-quality",
+      "position": 570
+    },
+    {
+      "stem": "58-distribution",
+      "slug": "rust-58-distribution",
+      "position": 580
+    },
+    {
+      "stem": "59-capstone",
+      "slug": "rust-59-capstone",
+      "position": 590
+    },
+    {
+      "stem": "60-release",
+      "slug": "rust-60-release",
+      "position": 600
     }
   ]
 }

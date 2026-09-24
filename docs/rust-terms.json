@@ -1503,7 +1503,7 @@
       "kz": "сынақтарды оқшаулау",
       "en": "test isolation"
     },
-    "review_status": "draft-final-batch"
+    "review_status": "published-twelfth-batch"
   },
   {
     "term": "непрерывная интеграция",
@@ -1516,7 +1516,7 @@
       "kz": "үздіксіз біріктіру",
       "en": "continuous integration"
     },
-    "review_status": "draft-final-batch"
+    "review_status": "published-twelfth-batch"
   },
   {
     "term": "исполняемый файл",
@@ -1529,7 +1529,7 @@
       "kz": "орындалатын файл",
       "en": "executable file"
     },
-    "review_status": "draft-final-batch"
+    "review_status": "published-twelfth-batch"
   },
   {
     "term": "совместимое расширение данных",
@@ -1542,7 +1542,7 @@
       "kz": "деректі үйлесімді кеңейту",
       "en": "compatible data extension"
     },
-    "review_status": "draft-final-batch"
+    "review_status": "published-twelfth-batch"
   },
   {
     "term": "приёмка программы",
@@ -1555,6 +1555,6 @@
       "kz": "бағдарламаны қабылдап тексеру",
       "en": "program acceptance check"
     },
-    "review_status": "draft-final-batch"
+    "review_status": "published-twelfth-batch"
   }
 ]
