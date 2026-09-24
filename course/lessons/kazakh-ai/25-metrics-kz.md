@@ -1,0 +1,98 @@
+# 25-сабақ. Сапа мен орынды бас тартуды санаймыз
+
+## Бұл не үшін керек?
+
+Оқушыны тексерген мұғалім қате жауап пен «әзірше білмеймін» деген адал жауапты ажыратады. Бірақ тым көп бас тарту да көмектеспейді. Сондықтан бір ғана әдемі сан жеткіліксіз: дұрыс жауапты да, жауапсыз қалған таныс сұрақты да санаймыз.
+
+## Бағдарламаға дейін
+
+Енді ғана алты `test` карточкасын ашамыз. Нәтижені көрген соң 24-сабақтағы оқыту коды мен ережені өзгертпейміз. `answered` — таңдалған түрлер саны, `correct` — адам белгісімен сәйкес келгені, `known` — уақыт не орын туралы бақылау сұрақтары, `refused` — бас тартулар, `unknown_refused` — басқа тақырыпқа орынды бас тартулар. **Жауап дәлдігі** = `correct / answered`; **белгілі сұрақтарды қамту** = `correct / known`; **бас тарту үлесі** = `refused / total`. `/` сандарды бөледі. `round(x, 2)` нәтижені үтірден кейінгі екі орынға дейін дөңгелектейді. Бөлгіш нөл болса, көрсеткіш анықталмайды, сондықтан код оны әуелі тексереді.
+
+[`examples.json`](https://github.com/DauletBai/shanraq.org/blob/main/course/kazakh-ai/step-25/examples.json) файлын бағдарламамен бір қалтаға көшіріңіз. 19 карточканы қайта басудың қажеті жоқ: пішімі 22-сабақта түсіндірілген.
+
+Жоба түбірінен қадам қалтасына өтіп, бағдарламаны іске қосыңыз:
+
+```text
+cd course/kazakh-ai/step-25
+python3 evaluate.py
+```
+
+Windows жүйесінде соңғы пәрменнің орнына `py evaluate.py` деп жазыңыз.
+
+```python
+import json
+
+with open("examples.json", encoding="utf-8") as file:
+    rows = json.load(file)
+weights = {}
+for row in rows:
+    if row["split"] == "train":
+        words = row["text"].lower().replace("?", "").replace(",", "").split()
+        for word in words:
+            for feature in [word, word[:4]]:
+                if feature not in weights:
+                    weights[feature] = {"уақыт": 0, "орын": 0}
+                weights[feature][row["label"]] += 1
+answered = 0
+correct = 0
+known = 0
+refused = 0
+unknown_refused = 0
+for row in rows:
+    if row["split"] == "test":
+        scores = {"уақыт": 0, "орын": 0}
+        words = row["text"].lower().replace("?", "").replace(",", "").split()
+        for word in words:
+            for feature in [word, word[:4]]:
+                if feature in weights:
+                    scores["уақыт"] += weights[feature]["уақыт"]
+                    scores["орын"] += weights[feature]["орын"]
+        time_cue = "қашан" in words or "уақыты" in words
+        place_cue = "қайда" in words or "орны" in words
+        if time_cue and not place_cue and scores["уақыт"] > scores["орын"]:
+            prediction = "уақыт"
+        elif place_cue and not time_cue and scores["орын"] > scores["уақыт"]:
+            prediction = "орын"
+        else:
+            prediction = "білмеймін"
+        if row["label"] != "белгісіз":
+            known += 1
+        if prediction == "білмеймін":
+            refused += 1
+            if row["label"] == "белгісіз":
+                unknown_refused += 1
+        else:
+            answered += 1
+            if prediction == row["label"]:
+                correct += 1
+        print(row["text"], "→", prediction, "|", row["label"])
+print("Жауап:", answered, "Дұрыс:", correct, "Белгілі:", known)
+print("Бас тарту:", refused, "Белгісізге дұрыс бас тарту:", unknown_refused)
+if answered == 0:
+    print("Дәлдік: анықталмайды")
+else:
+    print("Дәлдік:", round(correct / answered, 2))
+if known == 0:
+    print("Толықтық: анықталмайды")
+else:
+    print("Толықтық:", round(correct / known, 2))
+total = answered + refused
+if total == 0:
+    print("Бас тарту үлесі: анықталмайды")
+else:
+    print("Бас тарту үлесі:", round(refused / total, 2))
+```
+
+[Қадам файлдары](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh-ai/step-25).
+
+## Код қалай жұмыс істейді?
+
+Алты сұрақтың екеуінің түрін анықтап, екеуін де дұрыс табады: түрді таңдау дәлдігі 1.0. Түрі белгілі төрт сұрақтың тек екеуін қамтиды: толықтық 0.5. Алты сұрақтың төртеуінің түрін анықтаудан бас тарту үлесі дөңгелектегенде 0.67 болады; екеуі басқа тақырып үшін орынды, екеуі сөздік шегін (`қай күні`, `қай жерде`) көрсетеді. Шағын жиын нақты өмірдегі сапаны сенімді бағаламайды. Дәлдік тек *сұрақ түріне* қатысты; табылған деректің шындығын өлшемейді. Ережені түзеткеннен кейін бұрын қаралмаған жаңа бақылау жиыны керек.
+
+## Тірек сызба
+
+Тәуелсіз test → әр сұраққа жауап/бас тарту → 2/2 дұрыс жауап, 2/4 белгілі сұрақ қамтылды, 4/6 бас тарту → жетіспейтін түрлер тізімі.
+
+## Еске түсіріп, тексеріңіз
+
+Кодты жауып, үш бөлшек пен олардың бөлгіштерін еске түсіріңіз. Нәтижеден белгісі белгілі, бірақ жауапсыз қалған `Шахмат қай күні?` және `Сурет қай жерде?` жолдарын табыңыз. Көмек: олар толықтықты азайтады, ал берілген жауаптардың дәлдігін өзгертпейді. Үлгі нәтиже: `Дәлдік: 1.0`, `Толықтық: 0.5`, `Бас тарту үлесі: 0.67`. Жиі қате: 1.0 санын «үлгі әрқашан дұрыс» деп айту; ол сұрақтардың үштен біріне ғана жауап берді, ал нақты деректерді мұнда тексермедік.

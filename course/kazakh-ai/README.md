@@ -1,4 +1,4 @@
-# Kazakh AI: steps 6–20 / Қазақша ЖИ: 6–20-қадамдар / ИИ для казахского: шаги 6–20
+# Kazakh AI: steps 6–25 / Қазақша ЖИ: 6–25-қадамдар / ИИ для казахского: шаги 6–25
 
 ## Русский
 
@@ -42,3 +42,19 @@ Each of these steps has its own `facts.json`. Enter that step's directory before
 | 18 | `step-18/source.py` | Source and check date / дереккөз бен күн / источник и дата |
 | 19 | `step-19/answer.py` | Answer template / жауап үлгісі / шаблон ответа |
 | 20 | `step-20/model.py` | Question, conflict, expiry / сұрақ, қайшылық, мерзім / вопрос, конфликт, срок |
+
+## Steps 21–25 / 21–25-қадамдар / Шаги 21–25
+
+Each step has a Python file and its own `examples.json`. Enter the step directory before running the Python file. The questions are fictional and the small dataset is for learning, not a measured product benchmark. Keep the `test` labels sealed while designing the classifier and gate.
+
+Әр қадамда Python файлы мен жеке `examples.json` бар. Бағдарламаны іске қоспай тұрып, сол қалтаға кіріңіз. Сұрақтар ойдан алынған; шағын жиын дайын өнімнің сапасын өлшемейді. Жіктегіш пен тоқтату ережесін жасағанда `test` белгілерін ашпаңыз.
+
+У каждого шага есть Python-файл и собственный `examples.json`. Перед запуском перейдите в папку шага. Вопросы вымышлены, а маленькая выборка служит обучению, не оценке готового продукта. При настройке классификатора и правила остановки не смотрите метки `test`.
+
+| Step / Қадам / Шаг | Program / Бағдарлама / Программа | Focus / Мақсат / Цель |
+|---|---|---|
+| 21 | `step-21/labels.py` | Human labels / адам белгілері / человеческая разметка |
+| 22 | `step-22/splits.py` | Train, tune, test / оқыту, баптау, бақылау |
+| 23 | `step-23/classifier.py` | Learned word counts / сөз санағы / счётчики слов |
+| 24 | `step-24/gate.py` | Explicit stop rule / тоқтату ережесі / правило остановки |
+| 25 | `step-25/evaluate.py` | Precision, recall, refusal / дәлдік, толықтық, бас тарту |

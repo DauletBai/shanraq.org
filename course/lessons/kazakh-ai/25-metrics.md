@@ -1,0 +1,98 @@
+# Урок 25. Считаем качество и честные отказы
+
+## Зачем это нужно
+
+Проверяя ученика, учитель различает неверный ответ и честное «я пока не знаю». Но множество отказов тоже мешает делу. Поэтому одного красивого числа недостаточно: посмотрим, сколько ответов верны и сколько известных вопросов оставлены без ответа.
+
+## До программы
+
+Только теперь открываем шесть карточек `test`. Код обучения и правило из урока 24 не меняем после просмотра результата. `answered` — число выданных видов, `correct` — сколько из них совпали с человеческой меткой, `known` — сколько контрольных вопросов действительно о времени или месте, `refused` — число отказов, `unknown_refused` — правильные отказы на чужие темы. **Точность ответов** = `correct / answered`; **полнота известных вопросов** = `correct / known`; **доля отказов** = `refused / total`. Знак `/` делит числа. `round(x, 2)` округляет число до двух знаков после запятой. При нулевом знаменателе показатель не определён, поэтому код сначала проверяет его.
+
+Скопируйте [`examples.json`](https://github.com/DauletBai/shanraq.org/blob/main/course/kazakh-ai/step-25/examples.json) в ту же папку, что и программа. Печатать все 19 карточек повторно не нужно: формат объяснён в уроке 22.
+
+Из корня проекта перейдите в папку шага и запустите программу:
+
+```text
+cd course/kazakh-ai/step-25
+python3 evaluate.py
+```
+
+В Windows вместо последней команды выполните `py evaluate.py`.
+
+```python
+import json
+
+with open("examples.json", encoding="utf-8") as file:
+    rows = json.load(file)
+weights = {}
+for row in rows:
+    if row["split"] == "train":
+        words = row["text"].lower().replace("?", "").replace(",", "").split()
+        for word in words:
+            for feature in [word, word[:4]]:
+                if feature not in weights:
+                    weights[feature] = {"уақыт": 0, "орын": 0}
+                weights[feature][row["label"]] += 1
+answered = 0
+correct = 0
+known = 0
+refused = 0
+unknown_refused = 0
+for row in rows:
+    if row["split"] == "test":
+        scores = {"уақыт": 0, "орын": 0}
+        words = row["text"].lower().replace("?", "").replace(",", "").split()
+        for word in words:
+            for feature in [word, word[:4]]:
+                if feature in weights:
+                    scores["уақыт"] += weights[feature]["уақыт"]
+                    scores["орын"] += weights[feature]["орын"]
+        time_cue = "қашан" in words or "уақыты" in words
+        place_cue = "қайда" in words or "орны" in words
+        if time_cue and not place_cue and scores["уақыт"] > scores["орын"]:
+            prediction = "уақыт"
+        elif place_cue and not time_cue and scores["орын"] > scores["уақыт"]:
+            prediction = "орын"
+        else:
+            prediction = "білмеймін"
+        if row["label"] != "белгісіз":
+            known += 1
+        if prediction == "білмеймін":
+            refused += 1
+            if row["label"] == "белгісіз":
+                unknown_refused += 1
+        else:
+            answered += 1
+            if prediction == row["label"]:
+                correct += 1
+        print(row["text"], "→", prediction, "|", row["label"])
+print("Жауап:", answered, "Дұрыс:", correct, "Белгілі:", known)
+print("Бас тарту:", refused, "Белгісізге дұрыс бас тарту:", unknown_refused)
+if answered == 0:
+    print("Дәлдік: анықталмайды")
+else:
+    print("Дәлдік:", round(correct / answered, 2))
+if known == 0:
+    print("Толықтық: анықталмайды")
+else:
+    print("Толықтық:", round(correct / known, 2))
+total = answered + refused
+if total == 0:
+    print("Бас тарту үлесі: анықталмайды")
+else:
+    print("Бас тарту үлесі:", round(refused / total, 2))
+```
+
+[Файлы шага](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh-ai/step-25).
+
+## Как работает код
+
+Из шести вопросов модель определяет тип двух и оба раза верно: точность выбора типа 1.0. Из четырёх вопросов с известным типом она охватывает лишь два: полнота 0.5. Четыре отказа определить тип из шести дают 0.67 после округления; два отказа верны для чужих тем, два показывают пробел в словаре (`қай күні`, `қай жерде`). Малый набор не даёт надёжной оценки реального качества. Точность относится только к *типу вопроса*, а не к правдивости найденного факта. После исправления правила понадобится новая, не подсмотренная контрольная выборка.
+
+## Опорная карта
+
+Независимый test → ответ/отказ по каждому вопросу → 2/2 верных ответов, 2/4 известных охвачено, 4/6 отказов → список пробелов.
+
+## Вспомните и проверьте
+
+Закройте код и восстановите три дроби вместе с их знаменателями. Найдите в выводе две строки с известной меткой и отказом: `Шахмат қай күні?` и `Сурет қай жерде?`. Подсказка: они снижают полноту, но не точность выданных ответов. Эталон: `Дәлдік: 1.0`, `Толықтық: 0.5`, `Бас тарту үлесі: 0.67`. Частая ошибка: назвать 1.0 «модель всегда права»; она ответила только на треть вопросов, а сами факты мы здесь не оценивали.
