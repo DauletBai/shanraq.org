@@ -67,6 +67,11 @@ ALLOWED = {
     # The subject of this course is Kazakh input. Its Russian explanation
     # intentionally prints the same Kazakh timetable as the other locales.
     ("02-first-program", "ru"): {"Робот", "құрастыру", "сейсенбі"},
+    ("06-cyrillic", "ru"): {"сөз"},
+    ("07-words", "ru"): {"сұрақ"},
+    ("08-roots", "ru"): {"үй", "баспана", "мектеп", "оқу", "орны", "негіз", "білмеймін"},
+    ("09-plurals", "ru"): {"қала", "үй", "қалам", "тіл", "кітап", "мектеп", "негіз", "білмеймін"},
+    ("10-order", "ru"): {"көптік", "тәуелдік", "барыс", "үй", "лер", "іміз", "ге", "реті", "қате"},
 }
 
 

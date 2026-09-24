@@ -90,8 +90,11 @@ jobs:
       - name: The checks themselves work
         run: python3 tools/coursecheck/selftest.py
 
-      - name: Kazakh AI first release is complete
+      - name: Kazakh AI release is complete
         run: python3 tools/course/test_kazakh_ai_release.py
+
+      - name: Kazakh AI lesson programs match their examples
+        run: python3 tools/course/test_kazakh_ai_lessons.py
 
       - name: Code speaks the language of its lesson
         run: python3 tools/coursecheck/langcheck.py course/lessons/*/*.md

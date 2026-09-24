@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare one atomic SQL publication for the Kazakh AI preface and lessons 1–5."""
+"""Prepare one atomic SQL publication for the Kazakh AI preface and lessons 1–10."""
 
 import argparse
 import hashlib
@@ -9,16 +9,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / "course/lessons/kazakh-ai"
 STEMS = ("preface", "01-goal", "02-first-program", "03-language-types",
-         "04-word-parts", "05-manual-model")
+         "04-word-parts", "05-manual-model", "06-cyrillic",
+         "07-words", "08-roots", "09-plurals", "10-order")
 SLUGS = ("kazakh-ai-before-start",) + tuple("kazakh-ai-" + s for s in STEMS[1:])
 LANGS = {"ru": "", "kz": "-kz", "en": "-en"}
 META = {
     "ru": ("ИИ без LLM: казахская модель с нуля",
-           "Создаём локальную модель для казахского текста: разбираем слова, проверяем источники и учимся отвечать «не знаю». Открыты первые пять уроков из запланированных 30."),
+           "Создаём локальную модель для казахского текста: разбираем слова, проверяем источники и учимся отвечать «не знаю». Открыты первые десять уроков из запланированных 30."),
     "kz": ("Үлкен тілдік үлгісіз ЖИ: қазақша мәтін үлгісі",
-           "Қазақша сөздерді талдап, дереккөзді тексеретін жергілікті үлгі құрастырамыз. Жоспарланған 30 сабақтың алғашқы бесеуі ашық."),
+           "Қазақша сөздерді талдап, дереккөзді тексеретін жергілікті үлгі құрастырамыз. Жоспарланған 30 сабақтың алғашқы оны ашық."),
     "en": ("AI without an LLM: a Kazakh text model",
-           "Build a local Kazakh text model that analyzes words, checks sources, and can say “I don't know”. The first five of 30 planned lessons are open."),
+           "Build a local Kazakh text model that analyzes words, checks sources, and can say “I don't know”. The first ten of 30 planned lessons are open."),
 }
 
 
