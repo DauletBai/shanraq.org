@@ -1,4 +1,4 @@
-# Kazakh AI: steps 6–15 / Қазақша ЖИ: 6–15-қадамдар / ИИ для казахского: шаги 6–15
+# Kazakh AI: steps 6–20 / Қазақша ЖИ: 6–20-қадамдар / ИИ для казахского: шаги 6–20
 
 ## Русский
 
@@ -26,3 +26,19 @@ These files exactly match the programs in all three lesson versions. Run each st
 | 15 | `step-15/request.py` | `Шахмат қашан?`, `Робот қашан?` |
 
 From the repository root, run `python3 course/kazakh-ai/step-09/plural.py` on macOS/Linux or `py course/kazakh-ai/step-09/plural.py` on Windows. The files do not depend on one another; the complete model will be assembled in later lessons.
+
+## Steps 16–20 / 16–20-қадамдар / Шаги 16–20
+
+Each of these steps has its own `facts.json`. Enter that step's directory before running its Python file, because the file is read from the current directory. Copy both files when working outside the repository. The club and source IDs are fictional exercises.
+
+Әр қадамның өз `facts.json` файлы бар. Python файлын іске қоспай тұрып, сол қадамның қалтасына кіріңіз: бағдарлама файлды ағымдағы қалтадан оқиды. Жоба сыртында жұмыс істесеңіз, екі файлды бірге көшіріңіз. Үйірме мен дереккөз белгілері оқу үшін ойдан алынған.
+
+У каждого шага свой файл `facts.json`. Перед запуском Python-файла перейдите в папку шага: программа читает данные из текущей папки. Вне репозитория копируйте оба файла. Кружок и обозначения источников вымышлены для упражнения.
+
+| Step / Қадам / Шаг | Program / Бағдарлама / Программа | Focus / Мақсат / Цель |
+|---|---|---|
+| 16 | `step-16/catalog.py` | JSON catalog / тізім / каталог |
+| 17 | `step-17/search.py` | Two-key lookup / екі кілтпен іздеу / поиск по двум ключам |
+| 18 | `step-18/source.py` | Source and check date / дереккөз бен күн / источник и дата |
+| 19 | `step-19/answer.py` | Answer template / жауап үлгісі / шаблон ответа |
+| 20 | `step-20/model.py` | Question, conflict, expiry / сұрақ, қайшылық, мерзім / вопрос, конфликт, срок |

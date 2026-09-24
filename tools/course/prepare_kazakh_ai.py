@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare one atomic SQL publication for the Kazakh AI preface and lessons 1–15."""
+"""Prepare one atomic SQL publication for the Kazakh AI preface and lessons 1–20."""
 
 import argparse
 import hashlib
@@ -11,16 +11,17 @@ LESSONS = ROOT / "course/lessons/kazakh-ai"
 STEMS = ("preface", "01-goal", "02-first-program", "03-language-types",
          "04-word-parts", "05-manual-model", "06-cyrillic",
          "07-words", "08-roots", "09-plurals", "10-order",
-         "11-cases", "12-ambiguity", "13-entities", "14-intent", "15-abstain")
+         "11-cases", "12-ambiguity", "13-entities", "14-intent", "15-abstain", "16-catalog", "17-lookup", "18-provenance",
+         "19-template", "20-expiry")
 SLUGS = ("kazakh-ai-before-start",) + tuple("kazakh-ai-" + s for s in STEMS[1:])
 LANGS = {"ru": "", "kz": "-kz", "en": "-en"}
 META = {
     "ru": ("ИИ без LLM: казахская модель с нуля",
-           "Создаём локальную модель для казахского текста: разбираем слова, проверяем источники и учимся отвечать «не знаю». Открыты первые пятнадцать уроков из запланированных 30."),
+           "Создаём локальную модель для казахского текста: разбираем слова, проверяем источники и учимся отвечать «не знаю». Открыты первые двадцать уроков из запланированных 30."),
     "kz": ("Үлкен тілдік үлгісіз ЖИ: қазақша мәтін үлгісі",
-           "Қазақша сөздерді талдап, дереккөзді тексеретін жергілікті үлгі құрастырамыз. Жоспарланған 30 сабақтың алғашқы он бесі ашық."),
+           "Қазақша сөздерді талдап, дереккөзді тексеретін жергілікті үлгі құрастырамыз. Жоспарланған 30 сабақтың алғашқы жиырмасы ашық."),
     "en": ("AI without an LLM: a Kazakh text model",
-           "Build a local Kazakh text model that analyzes words, checks sources, and can say “I don't know”. The first fifteen of 30 planned lessons are open."),
+           "Build a local Kazakh text model that analyzes words, checks sources, and can say “I don't know”. The first twenty of 30 planned lessons are open."),
 }
 
 
