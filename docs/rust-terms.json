@@ -1256,7 +1256,7 @@
       "kz": "iter_mut",
       "en": "iter_mut"
     },
-    "review_status": "draft-ninth-batch"
+    "review_status": "published-ninth-batch"
   },
   {
     "term": "into_iter",
@@ -1269,7 +1269,7 @@
       "kz": "into_iter",
       "en": "into_iter"
     },
-    "review_status": "draft-ninth-batch"
+    "review_status": "published-ninth-batch"
   },
   {
     "term": "замыкание",
@@ -1282,7 +1282,7 @@
       "kz": "тұйықталым",
       "en": "closure"
     },
-    "review_status": "draft-ninth-batch"
+    "review_status": "published-ninth-batch"
   },
   {
     "term": "хеш",
@@ -1295,7 +1295,7 @@
       "kz": "хеш",
       "en": "hash"
     },
-    "review_status": "draft-ninth-batch"
+    "review_status": "published-ninth-batch"
   },
   {
     "term": "HashMap",
@@ -1308,7 +1308,7 @@
       "kz": "HashMap",
       "en": "HashMap"
     },
-    "review_status": "draft-ninth-batch"
+    "review_status": "published-ninth-batch"
   },
   {
     "term": "HashSet",
@@ -1321,7 +1321,7 @@
       "kz": "HashSet",
       "en": "HashSet"
     },
-    "review_status": "draft-ninth-batch"
+    "review_status": "published-ninth-batch"
   },
   {
     "term": "модуль",
@@ -1334,7 +1334,7 @@
       "kz": "модуль",
       "en": "module"
     },
-    "review_status": "draft-ninth-batch"
+    "review_status": "published-ninth-batch"
   },
   {
     "term": "pub",
@@ -1347,7 +1347,7 @@
       "kz": "pub",
       "en": "pub"
     },
-    "review_status": "draft-ninth-batch"
+    "review_status": "published-ninth-batch"
   },
   {
     "term": "обобщённый тип",
@@ -1360,6 +1360,6 @@
       "kz": "жалпыланған түр",
       "en": "generic type"
     },
-    "review_status": "draft-ninth-batch"
+    "review_status": "published-ninth-batch"
   }
 ]

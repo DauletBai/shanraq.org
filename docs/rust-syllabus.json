@@ -565,12 +565,13 @@
     "title": "Итераторы",
     "topics": "iter, iter_mut, into_iter, ленивость",
     "outcome": "Выбрать способ обхода",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 42,
@@ -578,12 +579,13 @@
     "title": "Замыкания и выборки",
     "topics": "Захват окружения, filter, map, collect, сортировка",
     "outcome": "Сделать поиск и фильтры",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 43,
@@ -591,12 +593,13 @@
     "title": "Словарь и множество",
     "topics": "HashMap, HashSet, негарантированный порядок",
     "outcome": "Получить статистику и уникальные метки",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 44,
@@ -604,12 +607,13 @@
     "title": "Модули и видимость",
     "topics": "mod, use, pub, crate, main.rs, lib.rs",
     "outcome": "Разделить запуск и логику",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 45,
@@ -617,12 +621,13 @@
     "title": "Обобщённые типы",
     "topics": "Параметры типов и небольшая своя функция",
     "outcome": "Прочитать обобщённую сигнатуру",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 46,
