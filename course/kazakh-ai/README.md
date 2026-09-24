@@ -1,4 +1,4 @@
-# Kazakh AI: steps 6–10 / Қазақша ЖИ: 6–10-қадамдар / ИИ для казахского: шаги 6–10
+# Kazakh AI: steps 6–15 / Қазақша ЖИ: 6–15-қадамдар / ИИ для казахского: шаги 6–15
 
 ## Русский
 
@@ -19,5 +19,10 @@ These files exactly match the programs in all three lesson versions. Run each st
 | 08 | `step-08/roots.py` | `үй`, then / содан соң / затем `кітап` |
 | 09 | `step-09/plural.py` | `қала`, `үй`, `қалам`, `тіл`, `кітап`, `мектеп` |
 | 10 | `step-10/order.py` | Change `chosen` / `chosen` мәнін өзгертіңіз / измените `chosen` |
+| 11 | `step-11/case.py` | `үйлерімізге`, `мектептерімізде` |
+| 12 | `step-12/meanings.py` | `ат`, `үй` |
+| 13 | `step-13/entities.py` | `Шахмат, сурет қашан?` |
+| 14 | `step-14/intent.py` | `Шахмат қашан, қайда?` |
+| 15 | `step-15/request.py` | `Шахмат қашан?`, `Робот қашан?` |
 
 From the repository root, run `python3 course/kazakh-ai/step-09/plural.py` on macOS/Linux or `py course/kazakh-ai/step-09/plural.py` on Windows. The files do not depend on one another; the complete model will be assembled in later lessons.

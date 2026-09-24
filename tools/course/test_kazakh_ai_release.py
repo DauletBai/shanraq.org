@@ -6,14 +6,14 @@ import prepare_kazakh_ai as release
 
 
 class KazakhAIReleaseTest(unittest.TestCase):
-    def test_second_block_is_trilingual_and_transactional(self):
+    def test_third_block_is_trilingual_and_transactional(self):
         sql, expected = release.prepare()
-        self.assertEqual(len(expected), 33)
-        self.assertEqual(len({(x["slug"], x["lang"]) for x in expected}), 33)
+        self.assertEqual(len(expected), 48)
+        self.assertEqual(len({(x["slug"], x["lang"]) for x in expected}), 48)
         self.assertEqual({x["lang"] for x in expected}, {"ru", "kz", "en"})
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 11)
-        self.assertEqual(sql.count("INSERT INTO article_translations("), 33)
-        self.assertEqual(sql.count("ON CONFLICT(slug) DO UPDATE SET cover_url='',status='published'"), 11)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 16)
+        self.assertEqual(sql.count("INSERT INTO article_translations("), 48)
+        self.assertEqual(sql.count("ON CONFLICT(slug) DO UPDATE SET cover_url='',status='published'"), 16)
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.endswith("COMMIT;\n"))
         self.assertLess(sql.index("INSERT INTO article_series("),
