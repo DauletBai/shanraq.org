@@ -2,8 +2,8 @@
   "course": "rust",
   "code_lang": "rust",
   "cover_url": "/static/brand/rust-logo.svg",
-  "batch": 8,
-  "lessons": 40,
+  "batch": 9,
+  "lessons": 45,
   "metadata": {
     "ru": [
       "Rust: с нуля до своего органайзера",
@@ -223,6 +223,31 @@
       "stem": "40-memory-checkpoint",
       "slug": "rust-40-memory-checkpoint",
       "position": 400
+    },
+    {
+      "stem": "41-iterators",
+      "slug": "rust-41-iterators",
+      "position": 410
+    },
+    {
+      "stem": "42-closures",
+      "slug": "rust-42-closures",
+      "position": 420
+    },
+    {
+      "stem": "43-maps-sets",
+      "slug": "rust-43-maps-sets",
+      "position": 430
+    },
+    {
+      "stem": "44-modules",
+      "slug": "rust-44-modules",
+      "position": 440
+    },
+    {
+      "stem": "45-generics",
+      "slug": "rust-45-generics",
+      "position": 450
     }
   ]
 }

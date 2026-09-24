@@ -1,0 +1,602 @@
+[
+  {
+    "lesson": 41,
+    "lang": "en",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "en",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "en",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "en",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "kz",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "kz",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "kz",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "kz",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "ru",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "ru",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "ru",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 41,
+    "lang": "ru",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "en",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "en",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "en",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "en",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "kz",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "kz",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "kz",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "kz",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "ru",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "ru",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "ru",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 42,
+    "lang": "ru",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "en",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "en",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "en",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "en",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "kz",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "kz",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "kz",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "kz",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "ru",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "ru",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "ru",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 43,
+    "lang": "ru",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "en",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "en",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "en",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "en",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "kz",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "kz",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "kz",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "kz",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "ru",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "ru",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "ru",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 44,
+    "lang": "ru",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "en",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "en",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "en",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "en",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "kz",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "kz",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "kz",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "kz",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "ru",
+    "viewport": "desktop",
+    "width": 1366,
+    "scroll_width": 1366,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "ru",
+    "viewport": "tablet",
+    "width": 768,
+    "scroll_width": 768,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "ru",
+    "viewport": "phone",
+    "width": 390,
+    "scroll_width": 390,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  },
+  {
+    "lesson": 45,
+    "lang": "ru",
+    "viewport": "landscape",
+    "width": 844,
+    "scroll_width": 844,
+    "overflow": false,
+    "code_blocks": 4,
+    "answers_folded": true
+  }
+]

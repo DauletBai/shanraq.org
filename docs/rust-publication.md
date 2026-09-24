@@ -1,6 +1,6 @@
 # Rust course publication
 
-Current manifest: preface and lessons 1–40 published in kz/ru/en. The full free course remains in progress; later lessons must not be presented as published.
+Live site: preface and lessons 1–40 published in kz/ru/en. The prepared ninth release manifest includes lessons 41–45, but they remain absent from the live site until the guarded transaction is applied. The full free course remains in progress; later lessons must not be presented as published.
 
 Prepare a cumulative transaction from reviewed sources:
 

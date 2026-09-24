@@ -1846,5 +1846,65 @@
   "rust/40-memory-checkpoint-en": [
     "rust-40-memory-checkpoint",
     "en"
+  ],
+  "rust/41-iterators": [
+    "rust-41-iterators",
+    "ru"
+  ],
+  "rust/41-iterators-kz": [
+    "rust-41-iterators",
+    "kz"
+  ],
+  "rust/41-iterators-en": [
+    "rust-41-iterators",
+    "en"
+  ],
+  "rust/42-closures": [
+    "rust-42-closures",
+    "ru"
+  ],
+  "rust/42-closures-kz": [
+    "rust-42-closures",
+    "kz"
+  ],
+  "rust/42-closures-en": [
+    "rust-42-closures",
+    "en"
+  ],
+  "rust/43-maps-sets": [
+    "rust-43-maps-sets",
+    "ru"
+  ],
+  "rust/43-maps-sets-kz": [
+    "rust-43-maps-sets",
+    "kz"
+  ],
+  "rust/43-maps-sets-en": [
+    "rust-43-maps-sets",
+    "en"
+  ],
+  "rust/44-modules": [
+    "rust-44-modules",
+    "ru"
+  ],
+  "rust/44-modules-kz": [
+    "rust-44-modules",
+    "kz"
+  ],
+  "rust/44-modules-en": [
+    "rust-44-modules",
+    "en"
+  ],
+  "rust/45-generics": [
+    "rust-45-generics",
+    "ru"
+  ],
+  "rust/45-generics-kz": [
+    "rust-45-generics",
+    "kz"
+  ],
+  "rust/45-generics-en": [
+    "rust-45-generics",
+    "en"
   ]
 }

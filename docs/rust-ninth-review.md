@@ -1,0 +1,23 @@
+# Rust lessons 41–45: draft review
+
+Prepared in kz/ru/en; **not published**. The prepared release manifest includes 45 lessons; the live site still ends at 40 until publication. Each new lesson has a runnable example, visible output, a recall map with a familiar image and its limit, a required exercise, a hint, an inline answer, and a return route. The first example also has an independent Cargo snapshot for each language.
+
+| Lesson | New step | Boundary explained | Independent result |
+|---|---|---|---|
+| 41 | `iter`, `iter_mut`, `into_iter`, `next` | Reading, changing, and taking ownership differ; iterators wait until consumed | Count pending tasks before ownership moves |
+| 42 | Closure capture, `filter`, `map`, `collect`, `sort_by_key` | Case-sensitive search; borrowed matches; sorting changes the result order, not task IDs | Count a second search without changing tasks |
+| 43 | `HashMap`, `HashSet` | Hash iteration order is unspecified; technical string sorting is not Kazakh dictionary order; indexing a missing key panics | Report the second tag count and predict a repeated tag |
+| 44 | `mod`, `pub`, `use`, `crate`, two source files | Exposing a struct does not expose its private fields; code privacy is not data encryption | Add a public ID reader while keeping the field private |
+| 45 | `fn choose<T>`, `&[T]`, `Option<&T>` | A slice position is not a stable task ID; generic code cannot perform arbitrary operations on unknown `T` | Write `last<T>` and check an empty slice |
+
+The lesson 44 instructions for moving the module to `src/organizer.rs` were executed with Cargo in all three languages. The resulting program printed the same output as its one-file source. The file-splitting example is a manual exercise; the standard Rust snippet checker compiles the self-contained one-file version.
+
+Technical behavior was checked against the official [iterator chapter](https://doc.rust-lang.org/book/ch13-02-iterators.html), [closure chapter](https://doc.rust-lang.org/book/ch13-01-closures.html), [`HashMap` chapter](https://doc.rust-lang.org/book/ch08-03-hash-maps.html), [collections overview](https://doc.rust-lang.org/std/collections/), [module file layout](https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html), and [generic types chapter](https://doc.rust-lang.org/book/ch10-01-syntax.html).
+
+Local verification: `rustcheck.py` passed 604 runnable examples, inline answers and Cargo snapshots, including negative checker fixtures. All 15 new snapshots independently passed `cargo run --quiet --locked --offline`, expected-output comparison and `cargo fmt --check`. The shared Kazakh/Russian/English prose checks found no prohibited language fragments in the new pages. `linkcheck.py --offline` checked 96 internal and seven external links in the new lessons with no broken internal links. The release boundary unit tests passed for 45 lessons, with lesson 46 excluded.
+
+The required exercises were independently reconstructed from each lesson's instructions in temporary Cargo projects, without copying the answer files: 15 walkthroughs across the three languages passed. The walkthrough also tested case-sensitive search, a repeated tag, the two-file module split, the compiler error for direct access to a private field, and an empty slice.
+
+Responsive preview used the site's real Markdown renderer, the published lesson template for each language, and the current CSS. All 15 draft bodies were opened in Chrome at 1366×900, 768×1024, 390×844, and 844×390: [60 checks](rust-ninth-browser-checks.json) found no page overflow, and every page had its answer disclosure and code blocks. Representative Kazakh, Russian and English screenshots were visually inspected at phone, tablet, desktop and landscape widths. Long code lines scroll inside their code box on a phone; lesson 41 now explains that gesture. The preview retained the old template's lesson count and sidebar; those are populated from the course after publication and require a live follow-up check.
+
+These drafts have not yet been deployed or published. After CI and publication, verify the live navigation, all 15 URLs, course count, hashes, feeds and responsive layout again.

@@ -1,0 +1,7 @@
+First: Read Rust
+Task 1: Read Rust
+Task 2: Write an idea
+Done: 1
+Pending: 1
+Owned: Read Rust
+Owned: Write an idea

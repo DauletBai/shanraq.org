@@ -565,11 +565,11 @@
     "title": "Итераторы",
     "topics": "iter, iter_mut, into_iter, ленивость",
     "outcome": "Выбрать способ обхода",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -578,11 +578,11 @@
     "title": "Замыкания и выборки",
     "topics": "Захват окружения, filter, map, collect, сортировка",
     "outcome": "Сделать поиск и фильтры",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -591,11 +591,11 @@
     "title": "Словарь и множество",
     "topics": "HashMap, HashSet, негарантированный порядок",
     "outcome": "Получить статистику и уникальные метки",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -604,11 +604,11 @@
     "title": "Модули и видимость",
     "topics": "mod, use, pub, crate, main.rs, lib.rs",
     "outcome": "Разделить запуск и логику",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -617,11 +617,11 @@
     "title": "Обобщённые типы",
     "topics": "Параметры типов и небольшая своя функция",
     "outcome": "Прочитать обобщённую сигнатуру",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {

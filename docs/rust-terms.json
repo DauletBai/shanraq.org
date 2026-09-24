@@ -1244,5 +1244,122 @@
       "en": "split_once"
     },
     "review_status": "published-eighth-batch"
+  },
+  {
+    "term": "iter_mut",
+    "first_lesson": 41,
+    "definition": "Обход изменяемых ссылок на элементы коллекции",
+    "image": "Исправить карточки на полке",
+    "limit": "Одновременное несовместимое чтение той же коллекции запрещено",
+    "exercise_lesson": 41,
+    "locales": {
+      "kz": "iter_mut",
+      "en": "iter_mut"
+    },
+    "review_status": "draft-ninth-batch"
+  },
+  {
+    "term": "into_iter",
+    "first_lesson": 41,
+    "definition": "Обход, получающий владение элементами коллекции",
+    "image": "Забрать книги с полки",
+    "limit": "После передачи владения прежний Vec не используется",
+    "exercise_lesson": 41,
+    "locales": {
+      "kz": "into_iter",
+      "en": "into_iter"
+    },
+    "review_status": "draft-ninth-batch"
+  },
+  {
+    "term": "замыкание",
+    "first_lesson": 42,
+    "definition": "Безымянная функция, способная использовать значения окружения",
+    "image": "Правило отбора карточек со знакомым словом",
+    "limit": "Правило не выполняется само до потребления ленивого итератора",
+    "exercise_lesson": 42,
+    "locales": {
+      "kz": "тұйықталым",
+      "en": "closure"
+    },
+    "review_status": "draft-ninth-batch"
+  },
+  {
+    "term": "хеш",
+    "first_lesson": 43,
+    "definition": "Вычисляемый из ключа код, помогающий выбрать место хранения",
+    "image": "Номер секции склада для карточки",
+    "limit": "Разные ключи могут попасть в одну секцию; хеш не задаёт порядок обхода",
+    "exercise_lesson": 43,
+    "locales": {
+      "kz": "хеш",
+      "en": "hash"
+    },
+    "review_status": "draft-ninth-batch"
+  },
+  {
+    "term": "HashMap",
+    "first_lesson": 43,
+    "definition": "Коллекция соответствий ключа и значения",
+    "image": "Журнал количества коробок по категориям",
+    "limit": "Порядок обхода не гарантирован",
+    "exercise_lesson": 43,
+    "locales": {
+      "kz": "HashMap",
+      "en": "HashMap"
+    },
+    "review_status": "draft-ninth-batch"
+  },
+  {
+    "term": "HashSet",
+    "first_lesson": 43,
+    "definition": "Коллекция неповторяющихся значений",
+    "image": "Перечень встретившихся категорий",
+    "limit": "Порядок обхода не гарантирован",
+    "exercise_lesson": 43,
+    "locales": {
+      "kz": "HashSet",
+      "en": "HashSet"
+    },
+    "review_status": "draft-ninth-batch"
+  },
+  {
+    "term": "модуль",
+    "first_lesson": 44,
+    "definition": "Группа имён с границей видимости",
+    "image": "Шкаф и выставленные на общий стол инструменты",
+    "limit": "Приватность кода не шифрует данные",
+    "exercise_lesson": 44,
+    "locales": {
+      "kz": "модуль",
+      "en": "module"
+    },
+    "review_status": "draft-ninth-batch"
+  },
+  {
+    "term": "pub",
+    "first_lesson": 44,
+    "definition": "Объявление имени доступным за границей модуля",
+    "image": "Выставить нужный инструмент на общий стол",
+    "limit": "Открытый тип не делает автоматически открытыми его поля",
+    "exercise_lesson": 44,
+    "locales": {
+      "kz": "pub",
+      "en": "pub"
+    },
+    "review_status": "draft-ninth-batch"
+  },
+  {
+    "term": "обобщённый тип",
+    "first_lesson": 45,
+    "definition": "Параметр типа, позволяющий одной функции работать с разными типами элементов",
+    "image": "Номерок указывает место для вещи любого вида",
+    "limit": "Без дополнительных ограничений нельзя выполнять с неизвестным типом произвольные операции",
+    "exercise_lesson": 45,
+    "locales": {
+      "kz": "жалпыланған түр",
+      "en": "generic type"
+    },
+    "review_status": "draft-ninth-batch"
   }
 ]

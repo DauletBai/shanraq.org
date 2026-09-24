@@ -1,6 +1,9 @@
 package articles
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -37,6 +40,35 @@ func TestFoldAnswers(t *testing.T) {
 		got, _ := renderLessonTOC(src)
 		if !strings.Contains(string(got), want) {
 			t.Errorf("нет подписи %q", want)
+		}
+	}
+}
+
+func TestRustNinthBatchAnswersStayBehindFold(t *testing.T) {
+	lessons := []string{"41-iterators", "42-closures", "43-maps-sets", "44-modules", "45-generics"}
+	for _, stem := range lessons {
+		for _, locale := range []struct{ suffix, heading string }{
+			{"", "После проверки"}, {"-kz", "Тексергеннен кейін"}, {"-en", "After checking"},
+		} {
+			t.Run(stem+locale.suffix, func(t *testing.T) {
+				path := filepath.Join("..", "..", "..", "course", "lessons", "rust", fmt.Sprintf("%s%s.md", stem, locale.suffix))
+				file, err := os.ReadFile(path)
+				if err != nil {
+					t.Fatal(err)
+				}
+				lines := strings.SplitN(string(file), "\n", 5)
+				if len(lines) != 5 {
+					t.Fatal("missing lesson body")
+				}
+				html, _ := renderLessonTOC(lines[4])
+				page := string(html)
+				start := strings.Index(page, `<details class="fold">`)
+				end := strings.Index(page, "</details>")
+				next := strings.Index(page, locale.heading)
+				if start < 0 || end < start || next < end {
+					t.Fatalf("answer fold or following navigation section is misplaced: fold=%d end=%d next=%d", start, end, next)
+				}
+			})
 		}
 	}
 }
