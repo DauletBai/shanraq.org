@@ -405,5 +405,19 @@
     {{ end }}
   </div>
 </main>
+{{ if .SeriesPlaces }}
+<script nonce="{{ .Nonce }}">
+// Keep the current lesson visible inside the course list without moving the page.
+(function () {
+  document.querySelectorAll('.course-box__list').forEach(function (list) {
+    var current = list.querySelector('.is-current');
+    if (!current) return;
+    var box = list.getBoundingClientRect();
+    var row = current.getBoundingClientRect();
+    list.scrollTop += row.top - box.top - (box.height - row.height) / 2;
+  });
+})();
+</script>
+{{ end }}
 {{ template "site_footer" . }}
 {{ end }}
