@@ -1,0 +1,2 @@
+{"version":1,"next_id":2,"tasks":[{"id":1,"title":"Buy a book","done":false}]}
+Restored tasks: 1

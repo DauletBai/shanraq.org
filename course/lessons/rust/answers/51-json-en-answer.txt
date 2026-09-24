@@ -1,0 +1,3 @@
+{"version":1,"next_id":3,"tasks":[{"id":1,"title":"Buy a book","done":false},{"id":2,"title":"Call a friend","done":false}]}
+Restored tasks: 2
+Duplicate ID rejected: true

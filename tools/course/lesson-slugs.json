@@ -1966,5 +1966,65 @@
   "rust/50-files-en": [
     "rust-50-files",
     "en"
+  ],
+  "rust/51-json": [
+    "rust-51-json",
+    "ru"
+  ],
+  "rust/51-json-kz": [
+    "rust-51-json",
+    "kz"
+  ],
+  "rust/51-json-en": [
+    "rust-51-json",
+    "en"
+  ],
+  "rust/52-safe-save": [
+    "rust-52-safe-save",
+    "ru"
+  ],
+  "rust/52-safe-save-kz": [
+    "rust-52-safe-save",
+    "kz"
+  ],
+  "rust/52-safe-save-en": [
+    "rust-52-safe-save",
+    "en"
+  ],
+  "rust/53-backup": [
+    "rust-53-backup",
+    "ru"
+  ],
+  "rust/53-backup-kz": [
+    "rust-53-backup",
+    "kz"
+  ],
+  "rust/53-backup-en": [
+    "rust-53-backup",
+    "en"
+  ],
+  "rust/54-cli": [
+    "rust-54-cli",
+    "ru"
+  ],
+  "rust/54-cli-kz": [
+    "rust-54-cli",
+    "kz"
+  ],
+  "rust/54-cli-en": [
+    "rust-54-cli",
+    "en"
+  ],
+  "rust/55-documentation": [
+    "rust-55-documentation",
+    "ru"
+  ],
+  "rust/55-documentation-kz": [
+    "rust-55-documentation",
+    "kz"
+  ],
+  "rust/55-documentation-en": [
+    "rust-55-documentation",
+    "en"
   ]
 }

@@ -705,11 +705,11 @@
     "title": "Формат JSON",
     "topics": "Serde, сериализация, версия схемы, валидация",
     "outcome": "Восстановить корректный органайзер",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -718,11 +718,11 @@
     "title": "Сохранение без потери прежних данных",
     "topics": "Временный файл, замена, ограничения ОС и гарантий",
     "outcome": "Сохранить прежние данные при ошибке записи",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -731,11 +731,11 @@
     "title": "Резервная копия",
     "topics": "Проверка, восстановление, повреждённый формат",
     "outcome": "Восстановить копию, не затерев источник",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -744,11 +744,11 @@
     "title": "Удобные команды",
     "topics": "Справка, stdout, stderr, код завершения",
     "outcome": "Предсказуемо работать из терминала",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -757,11 +757,11 @@
     "title": "Настройки и документация",
     "topics": "Путь данных, приоритет настроек, README, cargo doc",
     "outcome": "Запустить по инструкции другого человека",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {

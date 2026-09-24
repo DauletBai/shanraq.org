@@ -46,12 +46,56 @@ def check_program(code, expected, directory, fails=False, diagnostic=None):
         require(result.returncode == 0, result.stdout + result.stderr)
 
 
+def dependency_manifest(page):
+    """Return a lesson snapshot manifest only when its examples need Cargo deps."""
+    number = page.stem[:2]
+    lang = 'kz' if page.stem.endswith('-kz') else 'en' if page.stem.endswith('-en') else ''
+    step = ROOT / 'course/rust-organizer' / lang / f'step-{number}'
+    manifest = step / 'Cargo.toml'
+    if not manifest.exists():
+        return None
+    after = manifest.read_text(encoding='utf-8').split('[dependencies]', 1)
+    if len(after) < 2:
+        return None
+    deps = after[1].split('\n[', 1)[0]
+    return manifest if any(line.strip() and not line.lstrip().startswith('#')
+                           for line in deps.splitlines()) else None
+
+
+def check_cargo_program(code, expected, directory, manifest, fails=False, diagnostic=None):
+    """Compile a lesson with the dependencies pinned by its first Cargo snapshot."""
+    project = directory / 'cargo-snippet'
+    (project / 'src').mkdir(parents=True, exist_ok=True)
+    shutil.copy2(manifest, project / 'Cargo.toml')
+    shutil.copy2(manifest.with_name('Cargo.lock'), project / 'Cargo.lock')
+    (project / 'src/main.rs').write_text(code, encoding='utf-8')
+    # The checker shares Cargo's target directory across lessons. Clear only
+    # this package's artifacts so identical package names cannot reuse a
+    # binary from a different lesson; dependencies stay cached.
+    cleaned = run(['cargo', 'clean', '-p', 'organizer'], project)
+    require(cleaned.returncode == 0, cleaned.stderr)
+    args = ['cargo', 'check' if fails else 'run', '--quiet', '--locked']
+    result = run(args, project)
+    if fails:
+        require(result.returncode != 0, 'compile_fail unexpectedly compiled')
+        require(diagnostic in result.stderr,
+                f'missing diagnostic {diagnostic}: {result.stderr}')
+        return
+    require(result.returncode == 0, result.stderr)
+    require(result.stdout == expected,
+            f'output mismatch: {result.stdout!r} != {expected!r}')
+    if '#[test]' in code:
+        tested = run(['cargo', 'test', '--quiet', '--locked'], project)
+        require(tested.returncode == 0, tested.stdout + tested.stderr)
+
+
 def main():
     syllabus = json.loads((ROOT / 'docs/rust-syllabus.json').read_text(encoding='utf-8'))
     require([x['number'] for x in syllabus] == list(range(1, 61)), 'syllabus numbering')
     count = 0
     with tempfile.TemporaryDirectory(prefix='rust-course-') as name:
         directory = Path(name)
+        os.environ.setdefault('CARGO_TARGET_DIR', str(directory / 'cargo-target'))
         # Check every local link, including the tables of contents and prefaces.
         for page in LESSONS.glob('*.md'):
             for link in re.findall(r'\]\(([^)]+)\)', page.read_text(encoding='utf-8')):
@@ -118,6 +162,7 @@ def main():
                 if not re.match(r'https?://|#|/', link):
                     require((lesson.parent / link.split('#')[0]).exists(), f'{lesson}: missing {link}')
             blocks = list(FENCES.finditer(text))
+            manifest = dependency_manifest(lesson)
             for index, match in enumerate(blocks):
                 kind = match[1].strip()
                 if kind not in ('rust', 'rust,compile_fail'):
@@ -126,18 +171,34 @@ def main():
                     if kind.endswith('compile_fail'):
                         prefix = text[max(0, match.start()-100):match.start()]
                         codes = re.findall(r'error-code: (E\d+)', prefix)
-                        check_program(match[2], '', directory, True,
-                                      codes[-1] if codes else 'cannot find macro')
+                        checker = check_cargo_program if manifest else check_program
+                        args = (match[2], '', directory)
+                        if manifest:
+                            checker(*args, manifest, True,
+                                    codes[-1] if codes else 'cannot find macro')
+                        else:
+                            checker(*args, True,
+                                    codes[-1] if codes else 'cannot find macro')
                     else:
                         require(index+1 < len(blocks) and blocks[index+1][1].strip() == 'text',
                                 'runnable example must be followed by its text output')
-                        check_program(match[2], blocks[index+1][2], directory)
+                        if manifest:
+                            check_cargo_program(match[2], blocks[index+1][2], directory, manifest)
+                        else:
+                            check_program(match[2], blocks[index+1][2], directory)
                     count += 1
                 except AssertionError as error:
                     raise AssertionError(f'{lesson.name} block {index+1}: {error}') from error
         for answer in sorted((LESSONS / 'answers').glob('*.rs')):
-            check_program(answer.read_text(encoding='utf-8'),
-                          answer.with_suffix('.txt').read_text(encoding='utf-8'), directory)
+            page = LESSONS / (answer.stem.removesuffix('-answer') + '.md')
+            manifest = dependency_manifest(page)
+            if manifest:
+                check_cargo_program(answer.read_text(encoding='utf-8'),
+                                    answer.with_suffix('.txt').read_text(encoding='utf-8'),
+                                    directory, manifest)
+            else:
+                check_program(answer.read_text(encoding='utf-8'),
+                              answer.with_suffix('.txt').read_text(encoding='utf-8'), directory)
             count += 1
         for step in sorted((ROOT / 'course/rust-organizer').rglob('step-*')):
             copied = directory / step.relative_to(ROOT / 'course/rust-organizer')
@@ -147,6 +208,8 @@ def main():
             lesson = LESSONS / f"{entry['number']:02}-{entry['slug']}{suffix}.md"
             code = next(m[2] for m in FENCES.finditer(lesson.read_text(encoding='utf-8')) if m[1]=='rust')
             require((step/'src/main.rs').read_text(encoding='utf-8') == code, f'{step}: lesson drift')
+            cleaned = run(['cargo', 'clean', '-p', 'organizer'], copied)
+            require(cleaned.returncode == 0, cleaned.stderr)
             result = run(['cargo', 'run', '--quiet', '--locked', '--offline'], copied)
             require(result.returncode == 0, result.stderr)
             require(result.stdout == (step/'expected.txt').read_text(encoding='utf-8'), f'{step}: output drift')

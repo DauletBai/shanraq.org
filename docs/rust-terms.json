@@ -1426,5 +1426,70 @@
       "en": "input/output"
     },
     "review_status": "published-tenth-batch"
+  },
+  {
+    "term": "сериализация",
+    "first_lesson": 51,
+    "definition": "Преобразование значения программы в сохраняемый текст JSON",
+    "image": "Карточки в подписанном конверте",
+    "limit": "Корректный JSON сам по себе не гарантирует правильные ID",
+    "exercise_lesson": 51,
+    "locales": {
+      "kz": "сериялау",
+      "en": "serialization"
+    },
+    "review_status": "draft-eleventh-batch"
+  },
+  {
+    "term": "безопасная замена файла",
+    "first_lesson": 52,
+    "definition": "Запись во временный соседний файл с последующей заменой целевого",
+    "image": "Новый лист до замены старого",
+    "limit": "Не гарантирует сохранность при отключении питания и одновременной записи",
+    "exercise_lesson": 52,
+    "locales": {
+      "kz": "файлды сақтықпен алмастыру",
+      "en": "file replacement"
+    },
+    "review_status": "draft-eleventh-batch"
+  },
+  {
+    "term": "резервная копия",
+    "first_lesson": 53,
+    "definition": "Отдельная проверяемая копия данных для восстановления",
+    "image": "Қосалқы кілт",
+    "limit": "Копия может устареть или исчезнуть вместе с оригиналом",
+    "exercise_lesson": 53,
+    "locales": {
+      "kz": "сақтық көшірме",
+      "en": "backup copy"
+    },
+    "review_status": "draft-eleventh-batch"
+  },
+  {
+    "term": "код завершения",
+    "first_lesson": 54,
+    "definition": "Числовой результат работы процесса для вызывающей программы",
+    "image": "Қызметтің аяқталғаны туралы белгі",
+    "limit": "Текст ошибки и код нужно проверять отдельно",
+    "exercise_lesson": 54,
+    "locales": {
+      "kz": "аяқталу коды",
+      "en": "exit status"
+    },
+    "review_status": "draft-eleventh-batch"
+  },
+  {
+    "term": "приоритет настроек",
+    "first_lesson": 55,
+    "definition": "Порядок выбора пути из команды, окружения и значения по умолчанию",
+    "image": "Хатқа жазылған мекенжай",
+    "limit": "Относительный путь зависит от текущей папки",
+    "exercise_lesson": 55,
+    "locales": {
+      "kz": "баптаулар басымдығы",
+      "en": "settings precedence"
+    },
+    "review_status": "draft-eleventh-batch"
   }
 ]
