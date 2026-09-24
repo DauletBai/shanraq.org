@@ -1,4 +1,4 @@
-# Kazakh AI: steps 6–25 / Қазақша ЖИ: 6–25-қадамдар / ИИ для казахского: шаги 6–25
+# Kazakh AI: steps 6–30 / Қазақша ЖИ: 6–30-қадамдар / ИИ для казахского: шаги 6–30
 
 ## Русский
 
@@ -58,3 +58,19 @@ Each step has a Python file and its own `examples.json`. Steps 21–24 expose on
 | 23 | `step-23/classifier.py` | Learned word counts / сөз санағы / счётчики слов |
 | 24 | `step-24/gate.py` | Explicit stop rule / тоқтату ережесі / правило остановки |
 | 25 | `step-25/evaluate.py` | Precision, recall, refusal / дәлдік, толықтық, бас тарту |
+
+## Steps 26–30 / 26–30-қадамдар / Шаги 26–30
+
+All five steps run with Python 3.10+ standard library. Step 26 optionally accepts a separately built `qazaq-ir` executable; it also runs without Rust. Steps 27–30 read the JSON files in their own directories. Run the Python command after entering that step directory. Step 30 is a fictional, local command-line demonstration with an explicit as-of date.
+
+Бес қадамға Python 3.10+ стандартты құралдары жеткілікті. 26-қадамға бөлек құрастырылған `qazaq-ir` файлын қосуға болады; Rust болмаса да ол іске қосылады. 27–30-қадамдар өз қалтасындағы JSON файлдарын оқиды. Python пәрменін қадам қалтасына кірген соң орындаңыз. 30-қадам — күнін ашық көрсететін, ойдан алынған жергілікті консольдық мысал.
+
+Пяти шагам достаточно Python 3.10+ и стандартной библиотеки. На шаге 26 можно дополнительно передать отдельно собранный `qazaq-ir`; без Rust шаг тоже работает. Шаги 27–30 читают JSON из своих папок. Запускайте программу из папки соответствующего шага. Шаг 30 — вымышленный локальный консольный пример с явно указанной датой.
+
+| Step / Қадам / Шаг | Program / Бағдарлама / Программа | Focus / Мақсат / Цель |
+|---|---|---|
+| 26 | `step-26/compare.py` | Optional parser comparison / қосымша талдау салыстыруы |
+| 27 | `step-27/checks.py` | Guard unknown words and two intents / бейтаныс сөз бен екі түрді тоқтату |
+| 28 | `step-28/bench.py` | Measure startup, calls and allocations / іске қосу мен жадты өлшеу |
+| 29 | `step-29/engine.py` | Sourced answer and trace / дереккөзі бар жауап пен із |
+| 30 | `step-30/main.py` | Final local CLI / соңғы жергілікті консольдық бағдарлама |

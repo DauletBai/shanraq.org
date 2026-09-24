@@ -33,6 +33,6 @@ A word borrowed from Persian can take ordinary Turkic endings. Its origin does n
 
 A **large language model** (LLM) can freely generate text. This is useful for many tasks, but it can produce a plausible claim unsupported by a source: a **hallucination**. Our system gives a factual answer only when it finds an approved record. Think of a librarian showing a catalog card instead of inventing a missing book. Errors in analysis, records, or answer selection remain possible.
 
-A small local program may use fewer resources and keep questions off external services. “A thousand times lighter, cheaper, and faster” remains a hypothesis: at the end we will measure specific systems on the same task at comparable answer quality. The first five lessons establish the foundation; 30 lessons are planned.
+A small local program may use fewer resources and keep questions off external services. “A thousand times lighter, cheaper, and faster” remains an unproven hypothesis. In lesson 28 we measure our own program and explain what a fair comparison with an LLM would still require. The course has 30 lessons.
 
 Sources: [WALS](https://wals.info/chapter/20), [Kazakh grammar description](https://slaviccenters.duke.edu/sites/slaviccenters.duke.edu/files/file-attachments/kazakh-grammar.pdf), [Turkic languages and language contact](https://www.iranicaonline.org/articles/iran-vii7-turkic-languages/), [survey of factual errors in LLMs](https://aclanthology.org/2024.emnlp-main.1088/).

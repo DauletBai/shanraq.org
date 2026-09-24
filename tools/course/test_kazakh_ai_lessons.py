@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run every printed program in Kazakh AI lessons 6–25 with novice inputs."""
+"""Run every printed program in Kazakh AI lessons 6–30 with novice inputs."""
 
 import re
 import json
@@ -33,6 +33,11 @@ STEP_FILES = {
     "23-classifier": "step-23/classifier.py",
     "24-gate": "step-24/gate.py",
     "25-metrics": "step-25/evaluate.py",
+    "26-qazaq-ir": "step-26/compare.py",
+    "27-boundary": "step-27/checks.py",
+    "28-benchmark": "step-28/bench.py",
+    "29-audit": "step-29/engine.py",
+    "30-cli": "step-30/main.py",
 }
 CASES = {
     "06-cyrillic": [("үй\n", "Сөз: үй\n")],
@@ -85,6 +90,11 @@ CASES = {
     "23-classifier": [("", "Шахмат қашан өтеді? → уақыт\nСурет қайда өтеді? → орын\nШахмат нешеде? → білмеймін\nШахмат неге? → білмеймін\nШахмат қашан және қайда өтеді? Уақыты қандай? → уақыт\n")],
     "24-gate": [("", "Шахмат қашан өтеді? → уақыт\nСурет қайда өтеді? → орын\nШахмат нешеде? → білмеймін\nШахмат неге? → білмеймін\nШахмат қашан және қайда өтеді? Уақыты қандай? → білмеймін\n")],
     "25-metrics": [("", "Сурет қашан басталады? → уақыт | уақыт\nШахмат қайда болады? → орын | орын\nШахмат қай күні? → білмеймін | уақыт\nСурет қай жерде? → білмеймін | орын\nСурет неге? → білмеймін | белгісіз\nШахмат кімге? → білмеймін | белгісіз\nЖауап: 2 Дұрыс: 2 Белгілі: 4\nБас тарту: 4 Белгісізге дұрыс бас тарту: 2\nДәлдік: 1.0\nТолықтық: 0.5\nБас тарту үлесі: 0.67\n")],
+    "26-qazaq-ir": [("", "Оқу үлгісі: мектептерімізде → мектеп ['тер', 'іміз', 'де']\nqazaq-ir: қосымша салыстыру іске қосылмады\n")],
+    "27-boundary": [("", "Шахмат қашан? → {'status': 'ready', 'club': 'шахмат', 'kind': 'уақыт'}\nШахмаат қашан? → {'status': 'refuse', 'reason': 'білмеймін: таныс емес сөз'}\nШахмат неге? → {'status': 'refuse', 'reason': 'білмеймін: таныс емес сөз'}\nШахмат қашан интернет? → {'status': 'refuse', 'reason': 'білмеймін: таныс емес сөз'}\nШахмат қашан қайда? → {'status': 'refuse', 'reason': 'нақтылаңыз: бір сұрақ түрі керек'}\n")],
+    "28-benchmark": [],
+    "29-audit": [("", "Шахмат қашан? → шахмат үйірмесінің уақыты: бейсенбі, 15:00 | 2026-09-24 күнгі дерек | дереккөз: club-sheet-01\nІз: ['Кілт: шахмат / уақыт', 'Жазба саны: 1', 'Дереккөз: club-sheet-01', 'Тексерілген: 2026-09-01', 'Жарамды: 2026-12-31 дейін']\nСурет қайда? → білмеймін: дерек жоқ\nІз: ['Кілт: сурет / орын', 'Жазба саны: 0']\nШахмаат қашан? → білмеймін: таныс емес сөз\nІз: ['Сұрақ түрі анықталмады']\n")],
+    "30-cli": [],
 }
 
 
@@ -139,6 +149,65 @@ class KazakhAILessonsTest(unittest.TestCase):
             self.assertEqual(run(conflict), "Сұрақ: тоқта: бірнеше дерек табылды\n")
             expired = [dict(facts[0], valid_until="2000-01-01"), facts[1]]
             self.assertEqual(run(expired), "Сұрақ: білмеймін: дерек ескірген\n")
+
+    def test_final_project_reuses_its_checked_components(self):
+        for n in (28, 29, 30):
+            folder = STEPS / f"step-{n}"
+            self.assertEqual((folder / "checks.py").read_bytes(),
+                             (STEPS / "step-27/checks.py").read_bytes())
+            self.assertEqual((folder / "examples.json").read_bytes(),
+                             (STEPS / "step-27/examples.json").read_bytes())
+        self.assertEqual((STEPS / "step-30/engine.py").read_bytes(),
+                         (STEPS / "step-29/engine.py").read_bytes())
+        self.assertEqual((STEPS / "step-30/facts.json").read_bytes(),
+                         (STEPS / "step-29/facts.json").read_bytes())
+        import json
+        rows = json.loads((STEPS / "step-30/examples.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(rows), 13)
+        self.assertNotIn("test", {row["split"] for row in rows})
+
+    def test_optional_comparison_and_measurements(self):
+        compare = subprocess.run([sys.executable, "compare.py", "/no/such/qazaq-ir"],
+                                 cwd=STEPS / "step-26", text=True, capture_output=True, check=True)
+        self.assertIn("бағдарлама файлы табылмады", compare.stdout)
+        bench = subprocess.run([sys.executable, "bench.py"], cwd=STEPS / "step-28",
+                               text=True, capture_output=True, timeout=10, check=True)
+        self.assertIn("Сұрау саны: 200\n", bench.stdout)
+        self.assertRegex(bench.stdout, r"Жаңа іске қосу, мс: [0-9]+\.[0-9]+")
+        self.assertRegex(bench.stdout, r"Ең көп бақыланған бөлу, байт: [1-9][0-9]*")
+        self.assertIn("құрылғы мен еңбек құны есептелмеді", bench.stdout)
+
+    def test_final_cli_answers_and_refuses_with_reason(self):
+        folder = STEPS / "step-30"
+        cases = [
+            (["2026-09-24", "Шахмат қашан?"], "шахмат үйірмесінің уақыты: бейсенбі, 15:00 | 2026-09-24 күнгі дерек | дереккөз: club-sheet-01\n", 0),
+            (["2026-09-24", "Сурет қайда?"], "білмеймін: дерек жоқ\n", 0),
+            (["2026-09-24", "Шахмаат қашан?"], "білмеймін: таныс емес сөз\n", 0),
+            (["2026-09-24", "Шахмат қашан қайда?"], "нақтылаңыз: бір сұрақ түрі керек\n", 0),
+            (["2027-01-01", "Шахмат қашан?"], "білмеймін: бұл күнге жарамды дерек жоқ\n", 0),
+            (["2026-01-01", "Шахмат қашан?"], "білмеймін: бұл күнге жарамды дерек жоқ\n", 0),
+            (["bad", "Шахмат қашан?"], "Қате күн: YYYY-MM-DD түрінде жазыңыз\n", 2),
+        ]
+        for args, expected, code in cases:
+            with self.subTest(args=args):
+                run = subprocess.run([sys.executable, "main.py", *args], cwd=folder,
+                                     text=True, capture_output=True, timeout=5, check=False)
+                self.assertEqual(run.returncode, code)
+                self.assertEqual(run.stdout, expected)
+        traced = subprocess.run([sys.executable, "main.py", "--trace", "2026-09-24", "Шахмат қашан?"],
+                                cwd=folder, text=True, capture_output=True, timeout=5, check=True)
+        self.assertEqual(traced.stdout.count("Із:"), 5)
+        import json
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            for name in ("main.py", "engine.py", "checks.py", "examples.json"):
+                (work / name).write_bytes((folder / name).read_bytes())
+            facts = json.loads((folder / "facts.json").read_text(encoding="utf-8"))
+            facts.append(dict(facts[0], value="жұма, 16:00"))
+            (work / "facts.json").write_text(json.dumps(facts, ensure_ascii=False), encoding="utf-8")
+            conflict = subprocess.run([sys.executable, "main.py", "2026-09-24", "Шахмат қашан?"],
+                                      cwd=work, text=True, capture_output=True, timeout=5, check=True)
+            self.assertEqual(conflict.stdout, "тоқта: бірнеше дерек табылды\n")
 
     def test_wrong_order_is_rejected_in_all_locales(self):
         for suffix in ("", "-kz", "-en"):

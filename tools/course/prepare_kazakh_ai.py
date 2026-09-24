@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare one atomic SQL publication for the Kazakh AI preface and lessons 1–25."""
+"""Prepare one atomic SQL publication for the Kazakh AI preface and lessons 1–30."""
 
 import argparse
 import hashlib
@@ -13,16 +13,18 @@ STEMS = ("preface", "01-goal", "02-first-program", "03-language-types",
          "07-words", "08-roots", "09-plurals", "10-order",
          "11-cases", "12-ambiguity", "13-entities", "14-intent", "15-abstain", "16-catalog", "17-lookup", "18-provenance",
          "19-template", "20-expiry", "21-labels", "22-splits",
-         "23-classifier", "24-gate", "25-metrics")
+         "23-classifier", "24-gate", "25-metrics",
+         "26-qazaq-ir", "27-boundary", "28-benchmark",
+         "29-audit", "30-cli")
 SLUGS = ("kazakh-ai-before-start",) + tuple("kazakh-ai-" + s for s in STEMS[1:])
 LANGS = {"ru": "", "kz": "-kz", "en": "-en"}
 META = {
-    "ru": ("ИИ без LLM: создаем свою модель ИИ",
-           "Создаём локальную модель для казахского текста: разбираем слова, проверяем источники и учимся отвечать «не знаю». Открыты первые двадцать пять уроков из запланированных 30."),
+    "ru": ("AI без LLM: создаем свою модель ИИ",
+           "Создаём локальную модель для казахского текста: разбираем слова, проверяем источники и учимся отвечать «не знаю». Все 30 уроков открыты."),
     "kz": ("Үлкен тілдік үлгісіз ЖИ: өз үлгімізді жасаймыз",
-           "Қазақша сөздерді талдап, дереккөзді тексеретін жергілікті үлгі құрастырамыз. Жоспарланған 30 сабақтың алғашқы жиырма бесі ашық."),
+           "Қазақша сөздерді талдап, дереккөзді тексеретін жергілікті үлгі құрастырамыз. 30 сабақтың бәрі ашық."),
     "en": ("AI without an LLM: build your own AI model",
-           "Build a local Kazakh text model that analyzes words, checks sources, and can say “I don't know”. The first twenty-five of 30 planned lessons are open."),
+           "Build a local Kazakh text model that analyzes words, checks sources, and can say “I don't know”. All 30 lessons are open."),
 }
 
 
@@ -70,7 +72,7 @@ BEGIN
     RAISE EXCEPTION 'Lesson belongs to another course';
   END IF;
 END $guard$;""")
-    cover = literal("/static/brand/kazakh-ai-mark.svg")
+    cover = literal("/static/brand/shanraq.svg")
     sql.append(f"""INSERT INTO article_series(slug,cover_url,status,code_lang)
 VALUES('kazakh-ai',{cover},'published','python')
 ON CONFLICT(slug) DO UPDATE SET cover_url=EXCLUDED.cover_url,status='published',
