@@ -54,6 +54,10 @@ def dependency_manifest(page):
     manifest = step / 'Cargo.toml'
     if not manifest.exists():
         return None
+    # Cargo sets CARGO_PKG_VERSION for env! during compilation, even when a
+    # lesson has no external dependencies.
+    if 'CARGO_PKG_VERSION' in page.read_text(encoding='utf-8'):
+        return manifest
     after = manifest.read_text(encoding='utf-8').split('[dependencies]', 1)
     if len(after) < 2:
         return None

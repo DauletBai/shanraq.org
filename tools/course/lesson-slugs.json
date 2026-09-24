@@ -2026,5 +2026,65 @@
   "rust/55-documentation-en": [
     "rust-55-documentation",
     "en"
+  ],
+  "rust/56-testing": [
+    "rust-56-testing",
+    "ru"
+  ],
+  "rust/56-testing-kz": [
+    "rust-56-testing",
+    "kz"
+  ],
+  "rust/56-testing-en": [
+    "rust-56-testing",
+    "en"
+  ],
+  "rust/57-quality": [
+    "rust-57-quality",
+    "ru"
+  ],
+  "rust/57-quality-kz": [
+    "rust-57-quality",
+    "kz"
+  ],
+  "rust/57-quality-en": [
+    "rust-57-quality",
+    "en"
+  ],
+  "rust/58-distribution": [
+    "rust-58-distribution",
+    "ru"
+  ],
+  "rust/58-distribution-kz": [
+    "rust-58-distribution",
+    "kz"
+  ],
+  "rust/58-distribution-en": [
+    "rust-58-distribution",
+    "en"
+  ],
+  "rust/59-capstone": [
+    "rust-59-capstone",
+    "ru"
+  ],
+  "rust/59-capstone-kz": [
+    "rust-59-capstone",
+    "kz"
+  ],
+  "rust/59-capstone-en": [
+    "rust-59-capstone",
+    "en"
+  ],
+  "rust/60-release": [
+    "rust-60-release",
+    "ru"
+  ],
+  "rust/60-release-kz": [
+    "rust-60-release",
+    "kz"
+  ],
+  "rust/60-release-en": [
+    "rust-60-release",
+    "en"
   ]
 }

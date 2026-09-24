@@ -1491,5 +1491,70 @@
       "en": "settings precedence"
     },
     "review_status": "published-eleventh-batch"
+  },
+  {
+    "term": "изоляция тестов",
+    "first_lesson": 56,
+    "definition": "Каждый тест пользуется своими учебными данными и не портит рабочий файл",
+    "image": "Отдельный стол для каждой проверки",
+    "limit": "Разные пути уменьшают пересечение, но сами не доказывают отсутствие гонок",
+    "exercise_lesson": 56,
+    "locales": {
+      "kz": "сынақтарды оқшаулау",
+      "en": "test isolation"
+    },
+    "review_status": "draft-final-batch"
+  },
+  {
+    "term": "непрерывная интеграция",
+    "first_lesson": 57,
+    "definition": "Автоматический запуск проверок после отправки изменений",
+    "image": "Үш түзетушінің әрқайсысы өз данасын қарайды",
+    "limit": "Успех проверок не гарантирует верность требований",
+    "exercise_lesson": 57,
+    "locales": {
+      "kz": "үздіксіз біріктіру",
+      "en": "continuous integration"
+    },
+    "review_status": "draft-final-batch"
+  },
+  {
+    "term": "исполняемый файл",
+    "first_lesson": 58,
+    "definition": "Собранная для конкретной системы программа, которую можно запустить",
+    "image": "Дайын нан мен ас әзірлеу жолы",
+    "limit": "Файл для одной ОС не обязан запускаться на другой",
+    "exercise_lesson": 58,
+    "locales": {
+      "kz": "орындалатын файл",
+      "en": "executable file"
+    },
+    "review_status": "draft-final-batch"
+  },
+  {
+    "term": "совместимое расширение данных",
+    "first_lesson": 59,
+    "definition": "Новое поле имеет определённое значение для старых файлов и не ломает их чтение",
+    "image": "Ескі қағазға қалыпты белгі беру",
+    "limit": "Явно неверные новые значения по-прежнему отвергаются",
+    "exercise_lesson": 59,
+    "locales": {
+      "kz": "деректі үйлесімді кеңейту",
+      "en": "compatible data extension"
+    },
+    "review_status": "draft-final-batch"
+  },
+  {
+    "term": "приёмка программы",
+    "first_lesson": 60,
+    "definition": "Проверка результата по шагам пользователем в чистом окружении",
+    "image": "Өзге адам шеберхана картасымен жүріп өтеді",
+    "limit": "Один успешный маршрут не доказывает отсутствие всех сбоев",
+    "exercise_lesson": 60,
+    "locales": {
+      "kz": "бағдарламаны қабылдап тексеру",
+      "en": "program acceptance check"
+    },
+    "review_status": "draft-final-batch"
   }
 ]

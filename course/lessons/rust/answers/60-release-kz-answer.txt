@@ -1,0 +1,1 @@
+Пәрмендер: add БАСЫМДЫҚ АТАУ | list | done ID | delete ID | rename ID АТАУ | search МӘТІН | filter open/done/high | sort id/title/priority | stats | backup ЖОЛ | restore КӨШІРМЕ ЖАҢА_ЖОЛ | --version

@@ -770,11 +770,11 @@
     "title": "Полный набор тестов",
     "topics": "Файлы, повторный запуск, Unicode, изоляция",
     "outcome": "Проверить сбои и границы",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -783,11 +783,11 @@
     "title": "Автоматические проверки",
     "topics": "fmt, Clippy, CI, фиксация toolchain",
     "outcome": "Проверить проект на трёх ОС",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -796,11 +796,11 @@
     "title": "Сборка и распространение",
     "topics": "Debug/release, платформы, архив, версия, лицензия",
     "outcome": "Передать программу для нужной ОС",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -809,11 +809,11 @@
     "title": "Самостоятельное расширение",
     "topics": "Требования, реализация, тесты, инструкция",
     "outcome": "Решить новую задачу освоенными средствами",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -822,11 +822,11 @@
     "title": "Выпуск и продолжение",
     "topics": "Приёмка с чистого окружения, ограничения",
     "outcome": "Выпустить органайзер и объяснить устройство",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   }
 ]

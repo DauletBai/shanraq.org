@@ -1,0 +1,1 @@
+Commands: add PRIORITY TITLE | list | done ID | delete ID | rename ID TITLE | search TEXT | filter open/done/high | sort id/title/priority | stats | backup PATH | restore BACKUP NEW_PATH | --version

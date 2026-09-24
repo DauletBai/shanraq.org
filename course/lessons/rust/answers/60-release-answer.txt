@@ -1,0 +1,1 @@
+Команды: add ПРИОРИТЕТ НАЗВАНИЕ | list | done ID | delete ID | rename ID НАЗВАНИЕ | search ТЕКСТ | filter open/done/high | sort id/title/priority | stats | backup ПУТЬ | restore КОПИЯ НОВЫЙ_ПУТЬ | --version

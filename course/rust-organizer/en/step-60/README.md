@@ -1,0 +1,3 @@
+# Console organizer
+
+Install Rust 1.97.0 and Cargo using https://www.rust-lang.org/tools/install, open a new terminal, and check `cargo --version`. In the project folder run `cargo test`, then `cargo run -- --data tasks.json add 3 "Buy a book"`, and separately `cargo run -- --data tasks.json list`. `cargo run -- help` shows other commands. Data stays in the selected JSON file, not in the executable. Before risky changes, make a copy with `backup backup.json`. `restore backup.json recovered.json` writes a new path and does not erase the source. Damaged JSON causes an error: do not replace it with an empty list. Without `--data`, the program uses `ORGANIZER_DATA`, then `tasks.json` in the current folder. Build separately for another OS.
