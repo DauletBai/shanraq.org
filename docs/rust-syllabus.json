@@ -635,11 +635,11 @@
     "title": "Трейты",
     "topics": "Общее поведение, реализация, ограничения, derive",
     "outcome": "Реализовать обоснованное поведение",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -648,11 +648,11 @@
     "title": "Времена жизни ссылок",
     "topics": "Выведение, связь входа и выхода, 'a",
     "outcome": "Не вернуть ссылку на исчезнувшее значение",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -661,11 +661,11 @@
     "title": "Внешние библиотеки",
     "topics": "crates.io, версии, lock, лицензии, документация",
     "outcome": "Подключить обоснованную зависимость",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -674,11 +674,11 @@
     "title": "Пути и файловая система",
     "topics": "Path, PathBuf, рабочая папка, права",
     "outcome": "Явно выбрать путь данных",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {
@@ -687,11 +687,11 @@
     "title": "Чтение и запись файлов",
     "topics": "Отсутствие, доступ, кодировка, ошибки I/O",
     "outcome": "Прочитать файл и объяснить отказ",
-    "status": "planned",
+    "status": "draft",
     "locales": {
-      "kz": "planned",
-      "ru": "planned",
-      "en": "planned"
+      "kz": "draft",
+      "ru": "draft",
+      "en": "draft"
     }
   },
   {

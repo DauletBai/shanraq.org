@@ -1906,5 +1906,65 @@
   "rust/45-generics-en": [
     "rust-45-generics",
     "en"
+  ],
+  "rust/46-traits": [
+    "rust-46-traits",
+    "ru"
+  ],
+  "rust/46-traits-kz": [
+    "rust-46-traits",
+    "kz"
+  ],
+  "rust/46-traits-en": [
+    "rust-46-traits",
+    "en"
+  ],
+  "rust/47-lifetimes": [
+    "rust-47-lifetimes",
+    "ru"
+  ],
+  "rust/47-lifetimes-kz": [
+    "rust-47-lifetimes",
+    "kz"
+  ],
+  "rust/47-lifetimes-en": [
+    "rust-47-lifetimes",
+    "en"
+  ],
+  "rust/48-dependencies": [
+    "rust-48-dependencies",
+    "ru"
+  ],
+  "rust/48-dependencies-kz": [
+    "rust-48-dependencies",
+    "kz"
+  ],
+  "rust/48-dependencies-en": [
+    "rust-48-dependencies",
+    "en"
+  ],
+  "rust/49-paths": [
+    "rust-49-paths",
+    "ru"
+  ],
+  "rust/49-paths-kz": [
+    "rust-49-paths",
+    "kz"
+  ],
+  "rust/49-paths-en": [
+    "rust-49-paths",
+    "en"
+  ],
+  "rust/50-files": [
+    "rust-50-files",
+    "ru"
+  ],
+  "rust/50-files-kz": [
+    "rust-50-files",
+    "kz"
+  ],
+  "rust/50-files-en": [
+    "rust-50-files",
+    "en"
   ]
 }

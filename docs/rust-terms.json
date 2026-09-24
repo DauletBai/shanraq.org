@@ -1361,5 +1361,70 @@
       "en": "generic type"
     },
     "review_status": "published-ninth-batch"
+  },
+  {
+    "term": "трейт",
+    "first_lesson": 46,
+    "definition": "Договор о методе, который тип должен реализовать",
+    "image": "Үйірме қатысушыларының өзін таныстыру ережесі",
+    "limit": "Компилятор нәтижелі мәтіннің пайдалы екенін тексермейді",
+    "exercise_lesson": 46,
+    "locales": {
+      "kz": "трейт",
+      "en": "trait"
+    },
+    "review_status": "draft-tenth-batch"
+  },
+  {
+    "term": "время жизни ссылки",
+    "first_lesson": 47,
+    "definition": "Ссылка остаётся допустимой лишь пока данные существуют",
+    "image": "Библиотечный талон для книги",
+    "limit": "Аннотация не продлевает жизнь значения",
+    "exercise_lesson": 47,
+    "locales": {
+      "kz": "сілтеменің өмір сүру уақыты",
+      "en": "reference lifetime"
+    },
+    "review_status": "draft-tenth-batch"
+  },
+  {
+    "term": "зависимость",
+    "first_lesson": 48,
+    "definition": "Библиотека, подключённая к проекту",
+    "image": "Готовая велосипедная деталь",
+    "limit": "Номер версии не подтверждает качество",
+    "exercise_lesson": 48,
+    "locales": {
+      "kz": "тәуелділік",
+      "en": "dependency"
+    },
+    "review_status": "draft-tenth-batch"
+  },
+  {
+    "term": "PathBuf",
+    "first_lesson": 49,
+    "definition": "Собственный составной путь к файлу",
+    "image": "Записанный адрес",
+    "limit": "Адрес не гарантирует доступность файла",
+    "exercise_lesson": 49,
+    "locales": {
+      "kz": "PathBuf",
+      "en": "PathBuf"
+    },
+    "review_status": "draft-tenth-batch"
+  },
+  {
+    "term": "ввод-вывод",
+    "first_lesson": 50,
+    "definition": "Работа программы с файлом или другим внешним источником",
+    "image": "Запись в тетрадь",
+    "limit": "Успех проверки пути не гарантирует успех записи",
+    "exercise_lesson": 50,
+    "locales": {
+      "kz": "енгізу-шығару",
+      "en": "input/output"
+    },
+    "review_status": "draft-tenth-batch"
   }
 ]
