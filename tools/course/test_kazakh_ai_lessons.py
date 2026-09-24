@@ -80,8 +80,8 @@ CASES = {
     "20-expiry": [("Шахмат қашан?\n", "Сұрақ: шахмат үйірмесінің уақыты: бейсенбі, 15:00\nДереккөз: club-sheet-01 | тексерілген күні: 2026-09-01\n" if date.today() <= date(2026, 12, 31) else "Сұрақ: білмеймін: дерек ескірген\n"),
                   ("Сурет қайда?\n", "Сұрақ: білмеймін: дерек жоқ\n"),
                   ("Шахмат қайда қашан?\n", "Сұрақ: нақтылаңыз: бір үйірме және бір сұрақ түрі керек\n")],
-    "21-labels": [("", "Уақыт: 8\nОрын: 7\nБелгісіз: 4\n")],
-    "22-splits": [("", "Оқыту: 8\nБаптау: 5\nБақылау: 6\nЖинақ жарамды: True\n")],
+    "21-labels": [("", "Уақыт: 6\nОрын: 5\nБелгісіз: 2\n")],
+    "22-splits": [("", "Оқыту: 8\nБаптау: 5\nБақылау: 0\nЖинақ жарамды: True\n")],
     "23-classifier": [("", "Шахмат қашан өтеді? → уақыт\nСурет қайда өтеді? → орын\nШахмат нешеде? → білмеймін\nШахмат неге? → білмеймін\nШахмат қашан және қайда өтеді? Уақыты қандай? → уақыт\n")],
     "24-gate": [("", "Шахмат қашан өтеді? → уақыт\nСурет қайда өтеді? → орын\nШахмат нешеде? → білмеймін\nШахмат неге? → білмеймін\nШахмат қашан және қайда өтеді? Уақыты қандай? → білмеймін\n")],
     "25-metrics": [("", "Сурет қашан басталады? → уақыт | уақыт\nШахмат қайда болады? → орын | орын\nШахмат қай күні? → білмеймін | уақыт\nСурет қай жерде? → білмеймін | орын\nСурет неге? → білмеймін | белгісіз\nШахмат кімге? → білмеймін | белгісіз\nЖауап: 2 Дұрыс: 2 Белгілі: 4\nБас тарту: 4 Белгісізге дұрыс бас тарту: 2\nДәлдік: 1.0\nТолықтық: 0.5\nБас тарту үлесі: 0.67\n")],
@@ -109,16 +109,20 @@ class KazakhAILessonsTest(unittest.TestCase):
 
     def test_learning_splits_keep_test_questions_unseen(self):
         import json
-        files = [STEPS / f"step-{n}" / "examples.json" for n in range(22, 26)]
-        datasets = [json.loads(path.read_text(encoding="utf-8")) for path in files]
-        self.assertTrue(all(data == datasets[0] for data in datasets), "lesson datasets diverged")
-        rows = datasets[0]
-        self.assertEqual(len(rows), 19)
-        self.assertEqual({split: sum(row["split"] == split for row in rows)
+        early_files = [STEPS / f"step-{n}" / "examples.json" for n in range(21, 25)]
+        early = [json.loads(path.read_text(encoding="utf-8")) for path in early_files]
+        self.assertEqual(len(early[0]), 13)
+        self.assertEqual(len(early[1]), 13)
+        self.assertTrue(all(data == early[1] for data in early[2:]), "tuning datasets diverged")
+        self.assertTrue(all(row["split"] != "test" for row in early[1]))
+        final = json.loads((STEPS / "step-25/examples.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(final), 19)
+        self.assertEqual(final[:13], early[1])
+        self.assertEqual({split: sum(row["split"] == split for row in final)
                           for split in ("train", "tune", "test")},
                          {"train": 8, "tune": 5, "test": 6})
-        self.assertEqual(len({row["text"] for row in rows}), len(rows))
-        self.assertEqual({row["label"] for row in rows if row["split"] == "train"},
+        self.assertEqual(len({row["text"] for row in final}), len(final))
+        self.assertEqual({row["label"] for row in final if row["split"] == "train"},
                          {"уақыт", "орын"})
 
     def test_conflict_and_expiry_stop_before_answer(self):

@@ -8,7 +8,7 @@ A receptionist sees both “when” and “where” in a note. Even if “when�
 
 Keep the learned counts but check the question before choosing. `time_cue` means an explicit time word is present; `place_cue` means an explicit place word is present. We allow only the already studied forms `қашан`, `уақыты`, `қайда`, and `орны`. `or` accepts either condition, `and` requires both, and `not` reverses a yes/no value. Choose a type only when its cue is present, the other type’s cue is absent, and its score is higher. Two kinds of cue or no clear cue lead to refusal.
 
-Copy [`examples.json`](https://github.com/DauletBai/shanraq.org/blob/main/course/kazakh-ai/step-24/examples.json) beside the program. Its 19 cards use the format explained in lesson 22.
+Copy [`examples.json`](https://github.com/DauletBai/shanraq.org/blob/main/course/kazakh-ai/step-24/examples.json) beside the program. Its 13 cards use the format explained in lesson 22.
 
 From the project root, enter the step folder and run the program:
 

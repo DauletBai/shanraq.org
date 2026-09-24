@@ -6,7 +6,7 @@ If a pupil has already seen the test answers, a high mark proves little. Put the
 
 ## Before the program
 
-The new `split` field names an envelope: `train` for learning, `tune` for adjusting the rule, and `test` for final testing. The file contains 8, 5, and 6 questions respectively. We assigned them by hand, so the result is reproducible. The same text must not appear in two envelopes. `seen` stores questions already visited; `valid` records whether we found an error. `True` means valid and `False` means invalid.
+The new `split` field names an envelope: `train` for learning, `tune` for adjusting the rule, and `test` for final testing. This file contains 8 training and 5 tuning questions. Six labeled test questions are kept in a separate step 25 file: do not open it before the final check. We assigned them by hand, so the result is reproducible. The same text must not appear in two envelopes. `seen` stores questions already visited; `valid` records whether we found an error. `True` means valid and `False` means invalid.
 
 ```json
 [
@@ -74,36 +74,6 @@ The new `split` field names an envelope: `train` for learning, `tune` for adjust
     "text": "Шахмат қашан және қайда өтеді? Уақыты қандай?",
     "label": "белгісіз",
     "split": "tune"
-  },
-  {
-    "text": "Сурет қашан басталады?",
-    "label": "уақыт",
-    "split": "test"
-  },
-  {
-    "text": "Шахмат қайда болады?",
-    "label": "орын",
-    "split": "test"
-  },
-  {
-    "text": "Шахмат қай күні?",
-    "label": "уақыт",
-    "split": "test"
-  },
-  {
-    "text": "Сурет қай жерде?",
-    "label": "орын",
-    "split": "test"
-  },
-  {
-    "text": "Сурет неге?",
-    "label": "белгісіз",
-    "split": "test"
-  },
-  {
-    "text": "Шахмат кімге?",
-    "label": "белгісіз",
-    "split": "test"
   }
 ]
 ```
@@ -150,8 +120,8 @@ The program checks whether the exact text appeared before, then `seen.append` st
 
 ## Support map
 
-19 cards → train 8 / tune 5 / test 6 → duplicate check → fair later test.
+13 open cards → train 8 / tune 5 / test 0; six test cards remain sealed → duplicate check → fair later test.
 
 ## Recall and check
 
-Hide the code and explain each envelope. Copy one question record to the end of the file. Hint: `seen` already contains that text. Expected: `Қайталанған сұрақ:` and `Жинақ жарамды: False`; the counts sum to 20. Restore the file afterwards. Common mistake: changing the rule after reading test answers while still calling the test independent.
+Hide the code and explain each envelope. Copy one question record to the end of the file. Hint: `seen` already contains that text. Expected: `Қайталанған сұрақ:` and `Жинақ жарамды: False`; the counts sum to 14. Restore the file afterwards. Common mistake: changing the rule after reading test answers while still calling the test independent.

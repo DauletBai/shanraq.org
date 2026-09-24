@@ -45,11 +45,11 @@ Each of these steps has its own `facts.json`. Enter that step's directory before
 
 ## Steps 21–25 / 21–25-қадамдар / Шаги 21–25
 
-Each step has a Python file and its own `examples.json`. Enter the step directory before running the Python file. The questions are fictional and the small dataset is for learning, not a measured product benchmark. Keep the `test` labels sealed while designing the classifier and gate.
+Each step has a Python file and its own `examples.json`. Steps 21–24 expose only 13 training and tuning cards; step 25 opens six additional test cards. Enter the step directory before running the Python file. The questions are fictional and the small dataset is for learning, not a measured product benchmark. Keep the `test` labels sealed while designing the classifier and gate.
 
-Әр қадамда Python файлы мен жеке `examples.json` бар. Бағдарламаны іске қоспай тұрып, сол қалтаға кіріңіз. Сұрақтар ойдан алынған; шағын жиын дайын өнімнің сапасын өлшемейді. Жіктегіш пен тоқтату ережесін жасағанда `test` белгілерін ашпаңыз.
+Әр қадамда Python файлы мен жеке `examples.json` бар. 21–24-қадамдарда тек оқыту мен баптауға арналған 13 карточка ашық, ал 25-қадамда тағы алты бақылау карточкасы ашылады. Бағдарламаны іске қоспай тұрып, сол қалтаға кіріңіз. Сұрақтар ойдан алынған; шағын жиын дайын өнімнің сапасын өлшемейді. Жіктегіш пен тоқтату ережесін жасағанда `test` белгілерін ашпаңыз.
 
-У каждого шага есть Python-файл и собственный `examples.json`. Перед запуском перейдите в папку шага. Вопросы вымышлены, а маленькая выборка служит обучению, не оценке готового продукта. При настройке классификатора и правила остановки не смотрите метки `test`.
+У каждого шага есть Python-файл и собственный `examples.json`. На шагах 21–24 открыты только 13 карточек обучения и настройки; на шаге 25 добавляются шесть контрольных. Перед запуском перейдите в папку шага. Вопросы вымышлены, а маленькая выборка служит обучению, не оценке готового продукта. При настройке классификатора и правила остановки не смотрите метки `test`.
 
 | Step / Қадам / Шаг | Program / Бағдарлама / Программа | Focus / Мақсат / Цель |
 |---|---|---|

@@ -6,9 +6,9 @@ A pupil notices that time cards often contain “қашан” while place cards
 
 ## Before the program
 
-Use the step 23 `examples.json`: it contains the same 19 cards and three envelopes. A **feature** is an observable part of a question. For each word we use both the full word and its first four letters. `word[:4]` takes positions from the start up to, but not including, position 4. A short word can contribute the same feature twice; this exercise keeps both counts. `weights` stores how often each feature occurred for each training label. `feature not in weights` means a record must be created.
+Use the step 23 `examples.json`: it contains 13 open training and tuning cards; the test envelope remains sealed. A **feature** is an observable part of a question. For each word we use both the full word and its first four letters. `word[:4]` takes positions from the start up to, but not including, position 4. A short word can contribute the same feature twice; this exercise keeps both counts. `weights` stores how often each feature occurred for each training label. `feature not in weights` means a record must be created.
 
-Copy [`examples.json`](https://github.com/DauletBai/shanraq.org/blob/main/course/kazakh-ai/step-23/examples.json) beside the program. Its 19 cards use the format explained in lesson 22.
+Copy [`examples.json`](https://github.com/DauletBai/shanraq.org/blob/main/course/kazakh-ai/step-23/examples.json) beside the program. Its 13 cards use the format explained in lesson 22.
 
 From the project root, enter the step folder and run the program:
 

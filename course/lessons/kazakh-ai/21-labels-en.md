@@ -6,7 +6,7 @@ A teacher prepares answer cards before marking a pupil’s work. A model likewis
 
 ## Before the program
 
-`examples.json` holds 19 fictional questions. Each card has `text`, the question, and `label`, the human exercise label: `уақыт` for time, `орын` for place, and `белгісіз` for another topic or two requests at once. A label says what the question asks; it is not a timetable fact. Before labeling, ask, “What information does this person want?” If neither type fits, do not force a label. Save the UTF-8 JSON beside `labels.py`.
+`examples.json` holds 13 fictional questions. Each card has `text`, the question, and `label`, the human exercise label: `уақыт` for time, `орын` for place, and `белгісіз` for another topic or two requests at once. A label says what the question asks; it is not a timetable fact. Before labeling, ask, “What information does this person want?” If neither type fits, do not force a label. Save the UTF-8 JSON beside `labels.py`.
 
 ```json
 [
@@ -61,30 +61,6 @@ A teacher prepares answer cards before marking a pupil’s work. A model likewis
   {
     "text": "Шахмат қашан және қайда өтеді? Уақыты қандай?",
     "label": "белгісіз"
-  },
-  {
-    "text": "Сурет қашан басталады?",
-    "label": "уақыт"
-  },
-  {
-    "text": "Шахмат қайда болады?",
-    "label": "орын"
-  },
-  {
-    "text": "Шахмат қай күні?",
-    "label": "уақыт"
-  },
-  {
-    "text": "Сурет қай жерде?",
-    "label": "орын"
-  },
-  {
-    "text": "Сурет неге?",
-    "label": "белгісіз"
-  },
-  {
-    "text": "Шахмат кімге?",
-    "label": "белгісіз"
   }
 ]
 ```
@@ -123,8 +99,8 @@ print("Белгісіз:", counts["белгісіз"])
 
 ## Support map
 
-Question → human label → JSON list → allowed-label check → counts 8 / 7 / 4.
+Question → human label → JSON list → allowed-label check → counts 6 / 5 / 2.
 
 ## Recall and check
 
-Hide the code and recall the three labels. Add `Сурет нешеде?` with label `уақыт`. Hint: separate the new card with a comma. Expected counts: `Уақыт: 9`, `Орын: 7`, `Белгісіз: 4`. Then try the invalid label `уақ` and find `Қате белгі: уақ`. Common mistake: treating `белгісіз` as a missing catalog fact; here it labels the *question*, while fact lookup happens separately.
+Hide the code and recall the three labels. Add `Сурет нешеде?` with label `уақыт`. Hint: separate the new card with a comma. Expected counts: `Уақыт: 7`, `Орын: 5`, `Белгісіз: 2`. Then try the invalid label `уақ` and find `Қате белгі: уақ`. Common mistake: treating `белгісіз` as a missing catalog fact; here it labels the *question*, while fact lookup happens separately.
