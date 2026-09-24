@@ -21,7 +21,7 @@ else:
 
 The ready-to-run file is in the [course project folder](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh-ai/step-10); read the code explanation in this lesson first.
 
-`expected` is the intended order of labels: plural, possession, direction. `chosen` is the proposed order. We saw lists and square brackets in lesson 7; now we create a list ourselves. `==` asks whether the two lists have equal values in the same order. This is a comparison, while one `=` stores a value. Lesson 8 introduced `if` and indentation. Finally we join four **previously checked** text parts; lesson 9 introduced `+` for strings. The output is `үйлерімізге`.
+`expected` is the intended order of labels: `көптік` means plural, `тәуелдік` means possession, and `барыс` means movement toward something. These are names for analysis stages, not the letters added to the word. `chosen` is the proposed order. We saw lists and square brackets in lesson 7; now we create a list ourselves. `==` asks whether the two lists have equal values in the same order. This is a comparison, while one `=` stores a value. Lesson 8 introduced `if` and indentation. Finally we join four **previously checked** text parts; lesson 9 introduced `+` for strings. The output is `үйлерімізге`.
 
 Change `chosen` to `["тәуелдік", "көптік", "барыс"]` and run again. You get `реті қате` (“wrong order”). The program does not yet construct a word from `chosen`: the list only allows or prevents printing one ready example. The next lesson block will inspect the actual parts of an entered word. An unfamiliar word does not become valid just because its parts appear to be ordered.
 
