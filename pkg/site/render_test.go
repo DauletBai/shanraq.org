@@ -48,6 +48,10 @@ func TestRustFooterLinkPreservesLanguage(t *testing.T) {
 			if !strings.Contains(body.String(), want) {
 				t.Fatalf("footer missing Rust link %s", want)
 			}
+			newCourse := `href="/course/kazakh-ai?lang=` + lang + `"`
+			if !strings.Contains(body.String(), newCourse) {
+				t.Fatalf("footer missing Kazakh AI link %s", newCourse)
+			}
 			if strings.Contains(body.String(), `class="foot-course--soon"`) {
 				t.Fatal("published courses still marked as coming soon")
 			}

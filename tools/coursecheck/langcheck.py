@@ -64,6 +64,9 @@ ALLOWED = {
     ("go-joldar-men-runalar", "ru"): {"шаңырақ", "шаңыр"},
     ("article-go-runes", "ru"): {"шаңырақ", "шаңыр"},
     ("article-go-capstone", "en"): {"шаңырақ"},
+    # The subject of this course is Kazakh input. Its Russian explanation
+    # intentionally prints the same Kazakh timetable as the other locales.
+    ("02-first-program", "ru"): {"Робот", "құрастыру", "сейсенбі"},
 }
 
 

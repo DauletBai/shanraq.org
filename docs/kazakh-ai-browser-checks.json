@@ -1,0 +1,710 @@
+[
+  {
+    "file": "01-goal-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Lesson 1. What problem will our model solve?",
+    "overflow": false
+  },
+  {
+    "file": "01-goal-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Lesson 1. What problem will our model solve?",
+    "overflow": false
+  },
+  {
+    "file": "01-goal-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Lesson 1. What problem will our model solve?",
+    "overflow": false
+  },
+  {
+    "file": "01-goal-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Lesson 1. What problem will our model solve?",
+    "overflow": false
+  },
+  {
+    "file": "01-goal-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "1-сабақ. Біздің үлгі қандай мәселені шешеді?",
+    "overflow": false
+  },
+  {
+    "file": "01-goal-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "1-сабақ. Біздің үлгі қандай мәселені шешеді?",
+    "overflow": false
+  },
+  {
+    "file": "01-goal-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "1-сабақ. Біздің үлгі қандай мәселені шешеді?",
+    "overflow": false
+  },
+  {
+    "file": "01-goal-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "1-сабақ. Біздің үлгі қандай мәселені шешеді?",
+    "overflow": false
+  },
+  {
+    "file": "01-goal.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Урок 1. Какую задачу решит наша модель",
+    "overflow": false
+  },
+  {
+    "file": "01-goal.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Урок 1. Какую задачу решит наша модель",
+    "overflow": false
+  },
+  {
+    "file": "01-goal.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Урок 1. Какую задачу решит наша модель",
+    "overflow": false
+  },
+  {
+    "file": "01-goal.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Урок 1. Какую задачу решит наша модель",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Lesson 2. The first checkable program step",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Lesson 2. The first checkable program step",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Lesson 2. The first checkable program step",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Lesson 2. The first checkable program step",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "2-сабақ. Бағдарламаның алғашқы тексерілетін қадамы",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "2-сабақ. Бағдарламаның алғашқы тексерілетін қадамы",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "2-сабақ. Бағдарламаның алғашқы тексерілетін қадамы",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "2-сабақ. Бағдарламаның алғашқы тексерілетін қадамы",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Урок 2. Первый проверяемый шаг программы",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Урок 2. Первый проверяемый шаг программы",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Урок 2. Первый проверяемый шаг программы",
+    "overflow": false
+  },
+  {
+    "file": "02-first-program.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Урок 2. Первый проверяемый шаг программы",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Lesson 3. Where does a language put grammatical meaning?",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Lesson 3. Where does a language put grammatical meaning?",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Lesson 3. Where does a language put grammatical meaning?",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Lesson 3. Where does a language put grammatical meaning?",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "3-сабақ. Тіл грамматикалық мағынаны қайда сақтайды?",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "3-сабақ. Тіл грамматикалық мағынаны қайда сақтайды?",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "3-сабақ. Тіл грамматикалық мағынаны қайда сақтайды?",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "3-сабақ. Тіл грамматикалық мағынаны қайда сақтайды?",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Урок 3. Где язык хранит грамматический смысл",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Урок 3. Где язык хранит грамматический смысл",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Урок 3. Где язык хранит грамматический смысл",
+    "overflow": false
+  },
+  {
+    "file": "03-language-types.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Урок 3. Где язык хранит грамматический смысл",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Lesson 4. Analyze a word without guessing",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Lesson 4. Analyze a word without guessing",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Lesson 4. Analyze a word without guessing",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Lesson 4. Analyze a word without guessing",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "4-сабақ. Сөзді жорамалсыз талдаймыз",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "4-сабақ. Сөзді жорамалсыз талдаймыз",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "4-сабақ. Сөзді жорамалсыз талдаймыз",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "4-сабақ. Сөзді жорамалсыз талдаймыз",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Урок 4. Разбираем слово без догадок",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Урок 4. Разбираем слово без догадок",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Урок 4. Разбираем слово без догадок",
+    "overflow": false
+  },
+  {
+    "file": "04-word-parts.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Урок 4. Разбираем слово без догадок",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Lesson 5. Build a model you can run by hand",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Lesson 5. Build a model you can run by hand",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Lesson 5. Build a model you can run by hand",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Lesson 5. Build a model you can run by hand",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "5-сабақ. Қолмен орындалатын үлгіні құрамыз",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "5-сабақ. Қолмен орындалатын үлгіні құрамыз",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "5-сабақ. Қолмен орындалатын үлгіні құрамыз",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "5-сабақ. Қолмен орындалатын үлгіні құрамыз",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "title": "Урок 5. Собираем ручную модель",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "title": "Урок 5. Собираем ручную модель",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "title": "Урок 5. Собираем ручную модель",
+    "overflow": false
+  },
+  {
+    "file": "05-manual-model.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "title": "Урок 5. Собираем ручную модель",
+    "overflow": false
+  },
+  {
+    "file": "preface-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 379
+      }
+    ],
+    "title": "Before you begin: AI without an LLM",
+    "overflow": false
+  },
+  {
+    "file": "preface-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "title": "Before you begin: AI without an LLM",
+    "overflow": false
+  },
+  {
+    "file": "preface-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "title": "Before you begin: AI without an LLM",
+    "overflow": false
+  },
+  {
+    "file": "preface-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "title": "Before you begin: AI without an LLM",
+    "overflow": false
+  },
+  {
+    "file": "preface-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 437
+      }
+    ],
+    "title": "Бастамас бұрын: үлкен тілдік үлгісіз жасалатын ЖИ",
+    "overflow": false
+  },
+  {
+    "file": "preface-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "title": "Бастамас бұрын: үлкен тілдік үлгісіз жасалатын ЖИ",
+    "overflow": false
+  },
+  {
+    "file": "preface-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "title": "Бастамас бұрын: үлкен тілдік үлгісіз жасалатын ЖИ",
+    "overflow": false
+  },
+  {
+    "file": "preface-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "title": "Бастамас бұрын: үлкен тілдік үлгісіз жасалатын ЖИ",
+    "overflow": false
+  },
+  {
+    "file": "preface.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 510
+      }
+    ],
+    "title": "Прежде чем начать: ИИ без LLM",
+    "overflow": false
+  },
+  {
+    "file": "preface.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "title": "Прежде чем начать: ИИ без LLM",
+    "overflow": false
+  },
+  {
+    "file": "preface.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "title": "Прежде чем начать: ИИ без LLM",
+    "overflow": false
+  },
+  {
+    "file": "preface.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "title": "Прежде чем начать: ИИ без LLM",
+    "overflow": false
+  }
+]
