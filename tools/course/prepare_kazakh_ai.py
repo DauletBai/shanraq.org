@@ -80,9 +80,9 @@ SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     for position, (stem, slug_name) in enumerate(zip(STEMS, SLUGS)):
         slug = literal(slug_name)
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
-SELECT id,{slug},'ru','it','programming',{cover},'published',now()
+SELECT id,{slug},'ru','it','programming','', 'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'
-ON CONFLICT(slug) DO UPDATE SET cover_url=EXCLUDED.cover_url,status='published',
+ON CONFLICT(slug) DO UPDATE SET cover_url='',status='published',
 updated_at=now(),published_at=COALESCE(articles.published_at,now());""")
         for lang, suffix in LANGS.items():
             title, summary, body = lesson(LESSONS / f"{stem}{suffix}.md")

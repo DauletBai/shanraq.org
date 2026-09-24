@@ -2192,7 +2192,7 @@ var messages = map[string]map[string]string{
 	"footer.col_follow":  {"kz": "Бізді бақылаңыз", "ru": "Мы в соцсетях", "en": "Follow us"},
 	"footer.col_you":     {"kz": "Сізге арналған", "ru": "Для вас", "en": "For you"},
 	"footer.col_courses": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
-	"footer.kazakh_ai": {"kz": "Қазақша мәтінге арналған ЖИ", "ru": "ИИ для казахского текста", "en": "AI for Kazakh text"},
+	"footer.kazakh_ai":   {"kz": "Қазақша мәтінге арналған ЖИ", "ru": "ИИ для казахского текста", "en": "AI for Kazakh text"},
 	"footer.course_soon": {"kz": "Курс жазылып жатыр — жақында ашылады", "ru": "Курс в разработке — скоро будет доступен", "en": "This course is being written — coming soon"},
 	"footer.rates":       {"kz": "Валюта бағамдары", "ru": "Курсы валют", "en": "Exchange rates"},
 	"footer.soon":        {"kz": "жақында", "ru": "скоро", "en": "soon"},
