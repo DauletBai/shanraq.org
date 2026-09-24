@@ -1,6 +1,6 @@
 # Rust course publication
 
-Current manifest and live site: preface and lessons 1–50 published in kz/ru/en. The full free course remains in progress; later lessons must not be presented as published.
+Current manifest and live site: preface and lessons 1–55 published in kz/ru/en. The full free course remains in progress; later lessons must not be presented as published.
 
 Prepare a cumulative transaction from reviewed sources:
 
@@ -17,6 +17,14 @@ The SQL uses one transaction with an advisory lock. Course membership and all th
 Rust exercises use inline reference answers. There is no server Rust runner; unsupported formatting/check requests are refused instead of reaching the Go checker. Local validation compiles every complete Rust example and answer, checks intentional compiler failures, and builds independent Cargo snapshots for all three languages. Snapshot locations: course/rust-organizer/step-NN (ru), en/step-NN, kz/step-NN. The first five lessons also need manual verification of their installation and navigation steps.
 
 For each future release, compare every body/summary hash with the prepared sources. Visit each page anonymously, verify navigation in all languages, and check main/latest/top feeds for leaks. Check desktop, tablet and both mobile orientations, and verify existing Go book links and readiness.
+
+## Verified eleventh publication — 2026-09-24
+
+Lessons 51–55 are public in kz/ru/en. Source commit: `d44e68e3aa0b5cef11b50e6ae7af91c65d46e574`. All four required workflows eventually succeeded: [CI](https://github.com/DauletBai/shanraq.org/actions/runs/35963784423), [Course](https://github.com/DauletBai/shanraq.org/actions/runs/35963784399), [docker-smoke](https://github.com/DauletBai/shanraq.org/actions/runs/35963784405), and [Rust course checks](https://github.com/DauletBai/shanraq.org/actions/runs/35963784402). The owner authorized publication after five minutes without errors; at activation, three runs were successful and CI was still in progress. Local checks passed 730 examples, answer files and Cargo snapshots; release tests, language checks and internal links passed.
+
+Before activation, lesson 51 returned 404 and `publish.py --check` found no differences in earlier lessons. A 4,572,335-byte PostgreSQL dump was saved at `/var/backups/shanraq/rust-content-20260924-before-51-55.dump` and its archive listing was checked. The cumulative SQL completed in one transaction, with source SHA-256 `4a47f469fd3f6734009ba46d38d56a7036285bed0c4c7ad5f3dab470154bff13`. Afterward, all 168 localized titles, body hashes and summary hashes matched the manifest; the course contained 56 items including the preface.
+
+All 15 new pages, three course pages and three prefaces load anonymously. Navigation including 50→51 works; lesson 56 remains unavailable. Main/top/second-page feeds in all three languages contain no new lesson URLs. The Go course, `/readyz` and `/healthz` return 200. [Live browser checks](rust-eleventh-live-browser-checks.json) covered the 15 pages at four viewports with no horizontal overflow; representative desktop and mobile screenshots were visually inspected. The application was not restarted.
 
 ## Verified tenth publication — 2026-09-24
 

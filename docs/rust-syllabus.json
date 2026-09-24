@@ -705,11 +705,11 @@
     "title": "Формат JSON",
     "topics": "Serde, сериализация, версия схемы, валидация",
     "outcome": "Восстановить корректный органайзер",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
     }
   },
   {
@@ -718,11 +718,11 @@
     "title": "Сохранение без потери прежних данных",
     "topics": "Временный файл, замена, ограничения ОС и гарантий",
     "outcome": "Сохранить прежние данные при ошибке записи",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
     }
   },
   {
@@ -731,11 +731,11 @@
     "title": "Резервная копия",
     "topics": "Проверка, восстановление, повреждённый формат",
     "outcome": "Восстановить копию, не затерев источник",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
     }
   },
   {
@@ -744,11 +744,11 @@
     "title": "Удобные команды",
     "topics": "Справка, stdout, stderr, код завершения",
     "outcome": "Предсказуемо работать из терминала",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
     }
   },
   {
@@ -757,11 +757,11 @@
     "title": "Настройки и документация",
     "topics": "Путь данных, приоритет настроек, README, cargo doc",
     "outcome": "Запустить по инструкции другого человека",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
     }
   },
   {

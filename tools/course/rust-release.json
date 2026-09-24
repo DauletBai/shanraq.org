@@ -2,8 +2,8 @@
   "course": "rust",
   "code_lang": "rust",
   "cover_url": "/static/brand/rust-logo.svg",
-  "batch": 10,
-  "lessons": 50,
+  "batch": 11,
+  "lessons": 55,
   "metadata": {
     "ru": [
       "Rust: с нуля до своего органайзера",
@@ -273,6 +273,31 @@
       "stem": "50-files",
       "slug": "rust-50-files",
       "position": 500
+    },
+    {
+      "stem": "51-json",
+      "slug": "rust-51-json",
+      "position": 510
+    },
+    {
+      "stem": "52-safe-save",
+      "slug": "rust-52-safe-save",
+      "position": 520
+    },
+    {
+      "stem": "53-backup",
+      "slug": "rust-53-backup",
+      "position": 530
+    },
+    {
+      "stem": "54-cli",
+      "slug": "rust-54-cli",
+      "position": 540
+    },
+    {
+      "stem": "55-documentation",
+      "slug": "rust-55-documentation",
+      "position": 550
     }
   ]
 }

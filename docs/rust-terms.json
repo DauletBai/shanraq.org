@@ -1438,7 +1438,7 @@
       "kz": "сериялау",
       "en": "serialization"
     },
-    "review_status": "draft-eleventh-batch"
+    "review_status": "published-eleventh-batch"
   },
   {
     "term": "безопасная замена файла",
@@ -1451,7 +1451,7 @@
       "kz": "файлды сақтықпен алмастыру",
       "en": "file replacement"
     },
-    "review_status": "draft-eleventh-batch"
+    "review_status": "published-eleventh-batch"
   },
   {
     "term": "резервная копия",
@@ -1464,7 +1464,7 @@
       "kz": "сақтық көшірме",
       "en": "backup copy"
     },
-    "review_status": "draft-eleventh-batch"
+    "review_status": "published-eleventh-batch"
   },
   {
     "term": "код завершения",
@@ -1477,7 +1477,7 @@
       "kz": "аяқталу коды",
       "en": "exit status"
     },
-    "review_status": "draft-eleventh-batch"
+    "review_status": "published-eleventh-batch"
   },
   {
     "term": "приоритет настроек",
@@ -1490,6 +1490,6 @@
       "kz": "баптаулар басымдығы",
       "en": "settings precedence"
     },
-    "review_status": "draft-eleventh-batch"
+    "review_status": "published-eleventh-batch"
   }
 ]
