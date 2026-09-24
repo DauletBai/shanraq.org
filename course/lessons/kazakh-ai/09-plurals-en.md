@@ -33,6 +33,8 @@ else:
     print("білмеймін")
 ```
 
+The ready-to-run file is in the [course project folder](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh-ai/step-09); read the code explanation in this lesson first.
+
 The dictionary continues on a second line after a comma. Its leading spaces just make the code readable; Python sees that the curly brace is still open. Here `+` **joins two strings**, like two strips of paper: `"үй" + "лер"` produces `"үйлер"`. It is not arithmetic. Input `үй` produces `үйлер`, and `тіл` produces `тілдер`. Input `дала` produces `білмеймін` because that stem is not in our table. Do not guess an ending for an unknown stem.
 
 ## Memory map and check

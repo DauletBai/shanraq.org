@@ -8,6 +8,14 @@ import unittest
 from pathlib import Path
 
 LESSONS = Path(__file__).resolve().parents[2] / "course/lessons/kazakh-ai"
+STEPS = Path(__file__).resolve().parents[2] / "course/kazakh-ai"
+STEP_FILES = {
+    "06-cyrillic": "step-06/letters.py",
+    "07-words": "step-07/words.py",
+    "08-roots": "step-08/roots.py",
+    "09-plurals": "step-09/plural.py",
+    "10-order": "step-10/order.py",
+}
 CASES = {
     "06-cyrillic": [("үй\n", "Сөз: үй\n")],
     "07-words": [("Үйлерде, мектептерде?\n", "Сұрақ: ['үйлерде', 'мектептерде']\n"),
@@ -30,6 +38,7 @@ class KazakhAILessonsTest(unittest.TestCase):
                 path = LESSONS / f"{stem}{suffix}.md"
                 blocks = re.findall(r"^```python\n(.*?)^```", path.read_text(encoding="utf-8"), re.M | re.S)
                 self.assertEqual(len(blocks), 1, path)
+                self.assertEqual(blocks[0], (STEPS / STEP_FILES[stem]).read_text(encoding="utf-8"), path)
                 for user_input, expected in cases:
                     with self.subTest(path=path.name, user_input=user_input):
                         run = subprocess.run([sys.executable, "-c", blocks[0]], input=user_input,

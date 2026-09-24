@@ -15,6 +15,8 @@ words = clean.split()
 print(words)
 ```
 
+The ready-to-run file is in the [course project folder](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh-ai/step-07); read the code explanation in this lesson first.
+
 Enter `Үйлерде, мектептерде?`. The result is `['үйлерде', 'мектептерде']`. Square brackets mark a **list**: several values in order. A comma separates items, and quotation marks show that each item is text. Python prints these marks; you do not type them.
 
 ## Explain every step

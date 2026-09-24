@@ -17,6 +17,8 @@ else:
     print("білмеймін")
 ```
 
+The ready-to-run file is in the [course project folder](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh-ai/step-08); read the code explanation in this lesson first.
+
 Input `үй` gives `баспана` (“home”), `мектеп` gives `оқу орны` (“place of study”), and `кітап` gives `білмеймін` (“I don't know”). Run the file again for each trial.
 
 ## Every new mark explained

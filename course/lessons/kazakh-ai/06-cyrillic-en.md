@@ -13,6 +13,8 @@ word = input("Сөз: ")
 print(word)
 ```
 
+The ready-to-run file is in the [course project folder](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh-ai/step-06); read the code explanation in this lesson first.
+
 Run `python3 letters.py` on macOS/Linux or `py letters.py` on Windows. At `Сөз: `, type `үй` and press Enter. You will see `Сөз: үй` and then `үй` on the next line.
 
 ## Every step explained

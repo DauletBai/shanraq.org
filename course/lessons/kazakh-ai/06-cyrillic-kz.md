@@ -13,6 +13,8 @@ word = input("Сөз: ")
 print(word)
 ```
 
+Осы қадамның дайын файлы [оқу жобасының қалтасында](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh-ai/step-06); алдымен осы сабақтағы код түсіндірмесін оқыңыз.
+
 macOS/Linux жүйесінде `python3 letters.py`, Windows жүйесінде `py letters.py` командасын орындаңыз. `Сөз: ` дегеннен кейін `үй` деп теріп, Enter басыңыз. Экранда `Сөз: үй`, келесі жолда `үй` шығады.
 
 ## Әр қадамның мәні
