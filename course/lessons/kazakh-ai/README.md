@@ -1,6 +1,6 @@
 # Курс «ИИ без LLM»: тексты уроков
 
-Предисловие и уроки 1–10 опубликованы на ru/kz/en 24 сентября 2026 года; уроки 11–15 подготовлены к публикации. [Карта курса](https://shanraq.org/course/kazakh-ai?lang=ru). Общая программа: [docs/kazakh-ai-course-proposal.md](../../../docs/kazakh-ai-course-proposal.md). Рабочий черновик введения: [docs/kazakh-ai-introduction-draft.md](../../../docs/kazakh-ai-introduction-draft.md). Публикационный источник предисловия — `preface*.md`.
+Предисловие и уроки 1–15 опубликованы на ru/kz/en 24 сентября 2026 года. [Карта курса](https://shanraq.org/course/kazakh-ai?lang=ru). Общая программа: [docs/kazakh-ai-course-proposal.md](../../../docs/kazakh-ai-course-proposal.md). Рабочий черновик введения: [docs/kazakh-ai-introduction-draft.md](../../../docs/kazakh-ai-introduction-draft.md). Публикационный источник предисловия — `preface*.md`.
 
 ## Путь новичка
 
