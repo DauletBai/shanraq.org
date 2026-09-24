@@ -635,12 +635,13 @@
     "title": "Трейты",
     "topics": "Общее поведение, реализация, ограничения, derive",
     "outcome": "Реализовать обоснованное поведение",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 47,
@@ -648,12 +649,13 @@
     "title": "Времена жизни ссылок",
     "topics": "Выведение, связь входа и выхода, 'a",
     "outcome": "Не вернуть ссылку на исчезнувшее значение",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 48,
@@ -661,12 +663,13 @@
     "title": "Внешние библиотеки",
     "topics": "crates.io, версии, lock, лицензии, документация",
     "outcome": "Подключить обоснованную зависимость",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 49,
@@ -674,12 +677,13 @@
     "title": "Пути и файловая система",
     "topics": "Path, PathBuf, рабочая папка, права",
     "outcome": "Явно выбрать путь данных",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 50,
@@ -687,12 +691,13 @@
     "title": "Чтение и запись файлов",
     "topics": "Отсутствие, доступ, кодировка, ошибки I/O",
     "outcome": "Прочитать файл и объяснить отказ",
-    "status": "draft",
+    "status": "published",
     "locales": {
-      "kz": "draft",
-      "ru": "draft",
-      "en": "draft"
-    }
+      "kz": "published",
+      "ru": "published",
+      "en": "published"
+    },
+    "published_at": "2026-09-24"
   },
   {
     "number": 51,
