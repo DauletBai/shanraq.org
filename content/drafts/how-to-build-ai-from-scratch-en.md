@@ -1,6 +1,6 @@
 # How to build your own AI from scratch: a free beginner course
 
-_In brief:_ **Build a local AI model for Kazakh text in Shanraq’s free 30-lesson Python course, then teach it to check facts, show sources, and refuse unsupported requests.**
+_In brief:_ **Build a local AI model for Kazakh text in Shanraq’s free 30-lesson Python course. Learn to parse questions, find verified facts, check their dates, and show the source behind each answer. When the evidence is missing or outdated, the model explains why it cannot answer. Every example runs on an ordinary computer without a paid API.**
 
 A search for “how to build your own AI” often leads to one of two extremes: instructions for connecting a ready-made chatbot or an advanced neural-network course. The central learning question gets lost between them: **what decisions make up an AI model, and how can each decision be tested?**
 
