@@ -29,7 +29,7 @@ else:
         print("тоқта: бірнеше дерек табылды")
     else:
         fact = matches[0]
-        today = date.today()
+        today = date.fromisoformat("2026-09-24")
         until = date.fromisoformat(fact["valid_until"])
         if today > until:
             print("білмеймін: дерек ескірген")

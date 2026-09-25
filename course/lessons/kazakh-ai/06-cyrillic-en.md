@@ -27,6 +27,8 @@ Kazakh Cyrillic has letters worth checking carefully: `ә ғ қ ң ө ұ ү һ �
 
 Keyboard → `input` → text stored in `word` → `print` → the same text. UTF-8 preserves letters in the file; you still need to type the intended letters.
 
+![Lesson 6 support map](/static/course/kazakh-ai/map-06-cyrillic-en.svg)
+
 ## Recall and check
 
 Hide the code and rebuild both lines from the map. Explain where the word on the second output line came from. Run the program afresh with `үй`, `өнер`, and `қала`. Each time the second line should exactly match your input. If the letters look wrong, check your keyboard layout and the file encoding.

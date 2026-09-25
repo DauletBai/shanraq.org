@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="752" viewBox="0 0 760 752" role="img" aria-label="Урок 18">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0 0L0 7L8 3.5Z" fill="#2f7d45"/></marker></defs>
+<style>
+:root{--bg:#f7f5f1;--card:#fff;--ink:#303030;--soft:#5b5b5b;--red:#d83232;--green:#2f7d45;--line:#e1ddd6;--badge:#fbe9e7}
+@media (prefers-color-scheme:dark){:root{--bg:#242321;--card:#302f2c;--ink:#f1efeb;--soft:#c8c3bb;--red:#ff6b66;--green:#75c98b;--line:#514e49;--badge:#482f2d}}
+text{font-family:Arial,"Noto Sans",sans-serif;fill:var(--ink)}
+</style>
+<rect width="760" height="752" rx="28" fill="var(--bg)"/>
+<text x="380.0" y="66" text-anchor="middle" font-size="18" font-weight="700" fill="var(--red)">ОПОРНАЯ СХЕМА</text>
+<text x="380.0" y="108" text-anchor="middle" font-size="29" font-weight="800">Урок 18</text>
+<rect x="40" y="180" width="680" height="92" rx="22" fill="var(--card)" stroke="var(--red)" stroke-width="4"/>
+<circle cx="80" cy="226.0" r="25" fill="var(--badge)" stroke="var(--red)" stroke-width="3"/>
+<text x="80" y="234.0" text-anchor="middle" font-size="22" font-weight="800" fill="var(--red)">1</text>
+<text x="410" y="234.0" text-anchor="middle" font-size="23" font-weight="700">Ключи</text>
+<path d="M380 282.0 V318.0" stroke="var(--green)" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+<rect x="40" y="330" width="680" height="92" rx="22" fill="var(--card)" stroke="var(--red)" stroke-width="4"/>
+<circle cx="80" cy="376.0" r="25" fill="var(--badge)" stroke="var(--red)" stroke-width="3"/>
+<text x="80" y="384.0" text-anchor="middle" font-size="22" font-weight="800" fill="var(--red)">2</text>
+<text x="410" y="384.0" text-anchor="middle" font-size="23" font-weight="700">одна карточка</text>
+<path d="M380 432.0 V468.0" stroke="var(--green)" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+<rect x="40" y="480" width="680" height="106" rx="22" fill="var(--card)" stroke="var(--red)" stroke-width="4"/>
+<circle cx="80" cy="533.0" r="25" fill="var(--badge)" stroke="var(--red)" stroke-width="3"/>
+<text x="80" y="541.0" text-anchor="middle" font-size="22" font-weight="800" fill="var(--red)">3</text>
+<text x="410" y="525.0" text-anchor="middle" font-size="23" font-weight="700">значение + условный источник + дата</text>
+<text x="410" y="557.0" text-anchor="middle" font-size="23" font-weight="700">проверки</text>
+<path d="M40 652 H720" stroke="var(--line)" stroke-width="3"/>
+<text x="380.0" y="704" text-anchor="middle" font-size="18" fill="var(--soft)">Красная рамка — граница шага · зелёная стрелка — порядок</text>
+</svg>

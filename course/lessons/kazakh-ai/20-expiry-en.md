@@ -6,7 +6,7 @@ If a notice board has two different notices for one activity, choosing the first
 
 ## Before running
 
-`valid_until` is the last calendar day on which the card is valid, inclusive. It uses the same `year-month-day` form. `from datetime import date` imports Python’s calendar date type. `date.today()` reads the computer’s date; `date.fromisoformat(...)` converts text into a date we can compare. The computer clock must be correct. `!=` means “not equal”; `or` means either condition is enough.
+`valid_until` is the last calendar day on which the card is valid, inclusive. It uses the same `year-month-day` form. `from datetime import date` imports Python’s calendar date type. `date.fromisoformat(...)` converts text into a date we can compare. This exercise fixes the date at `2026-09-24`, so its result stays the same in every year; the final program will accept a date from the user. `!=` means “not equal”; `or` means either condition is enough.
 
 ```json
 [
@@ -56,7 +56,7 @@ else:
         print("тоқта: бірнеше дерек табылды")
     else:
         fact = matches[0]
-        today = date.today()
+        today = date.fromisoformat("2026-09-24")
         until = date.fromisoformat(fact["valid_until"])
         if today > until:
             print("білмеймін: дерек ескірген")
@@ -72,12 +72,18 @@ else:
 
 ## How the program works
 
-First, the lesson 15 logic extracts exactly one activity and one information type. Then we scan the whole catalog. Zero records means missing information; two or more mean a possible conflict or duplicate that a person should review. Only for one card do we compare dates: `today > until` becomes true the day after `valid_until`. Only then do we print the answer and source. `checked_on` records a past check; `valid_until` sets the expiry. They serve different purposes. A bad source sheet, a wrong computer clock, and limited vocabulary can still cause errors; the model does not guarantee truth.
+First, the lesson 15 logic extracts exactly one activity and one information type. Then we scan the whole catalog. Zero records means missing information; two or more mean a possible conflict or duplicate that a person should review. Only for one card do we compare dates: `today > until` becomes true the day after `valid_until`. Only then do we print the answer and source. `checked_on` records a past check; `valid_until` sets the expiry. They serve different purposes. A bad source sheet and limited vocabulary can still cause errors; the model does not guarantee truth.
 
 ## Support map
 
 Question → exactly two keys → 0/1/many records → expiry of one record → sourced answer or clear stop.
 
+![Lesson 20 support map](/static/course/kazakh-ai/map-20-expiry-en.svg)
+
 ## Recall and check
 
-Try `Шахмат қашан?`, then `Сурет қайда?`. Through 31 December 2026, the first answer is `шахмат үйірмесінің уақыты: бейсенбі, 15:00` plus a source line; afterwards it is `білмеймін: дерек ескірген`. The second is always `білмеймін: дерек жоқ`. To test a conflict, add a second `шахмат / уақыт` card with another value: expect `тоқта: бірнеше дерек табылды`. To test expiry, set `valid_until` to a past date. Common mistake: deleting an old card before finding the cause of the conflict.
+Try `Шахмат қашан?`, then `Сурет қайда?`. The first answer is `шахмат үйірмесінің уақыты: бейсенбі, 15:00` plus a source line. The second is `білмеймін: дерек жоқ`. To test a conflict, add a second `шахмат / уақыт` card with another value: expect `тоқта: бірнеше дерек табылды`. To test expiry, change the exercise date in the code to `2027-01-01`: expect `білмеймін: дерек ескірген`. Common mistake: deleting an old card before finding the cause of the conflict.
+
+## Gate 4: answer only from a card
+
+Show four outcomes: one valid card, no card, two cards with the same key, and one expired card. For each, name the first check that permits or stops an answer. Pass when a factual answer appears only in the first case and includes its source. After an error, rebuild `card count → expiry → answer` and retry.

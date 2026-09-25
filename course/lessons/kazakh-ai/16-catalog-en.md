@@ -44,6 +44,8 @@ for fact in facts:
 
 JSON file → list of cards → three fields per card → display; no lookup or answer yet.
 
+![Lesson 16 support map](/static/course/kazakh-ai/map-16-catalog-en.svg)
+
 ## Recall and check
 
 Hide the code and point to one card’s boundaries. Add a `сурет / орын / 105-бөлме` card and predict the count. Hint: separate cards with a comma. Expected: `Жазба саны: 3` and `сурет орын 105-бөлме`. Common mistake: omitting JSON string quotes makes the file unreadable.

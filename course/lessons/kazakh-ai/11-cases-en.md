@@ -43,6 +43,8 @@ We confirm only two “our …” bases and two final parts. The program does no
 
 Entered word → check final `ге`/`де` → remove it → look up the rest → name direction/location or say `білмеймін`.
 
+![Lesson 11 support map](/static/course/kazakh-ai/map-11-cases-en.svg)
+
 ## Recall and task
 
 Hide the code. Using the map, explain why we cannot accept every word ending in `ге`. Then run `үйлерімізге`, `мектептерімізде`, `үйімізге`, and `үйлерімізді` separately.

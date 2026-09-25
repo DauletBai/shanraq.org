@@ -93,6 +93,12 @@ The model predicts a type for two of six questions and gets both right: type pre
 
 Held-out test → answer/refusal per question → 2/2 correct answers, 2/4 known covered, 4/6 refusals → missing forms.
 
+![Lesson 25 support map](/static/course/kazakh-ai/map-25-metrics-en.svg)
+
 ## Recall and check
 
 Hide the code and reconstruct all three fractions with their denominators. Find the two known-label refusals: `Шахмат қай күні?` and `Сурет қай жерде?`. Hint: they lower recall but leave answered-question precision unchanged. Expected: `Дәлдік: 1.0`, `Толықтық: 0.5`, `Бас тарту үлесі: 0.67`. Common mistake: reading 1.0 as “the model is always right”; it answered only one third of the questions, and this test did not check any timetable facts.
+
+## Gate 5: honest evaluation
+
+Without looking, explain the jobs of `train`, `tune`, and `test`, then reconstruct the numerator and denominator of every metric. Propose a model change without opening the test labels. Pass when you do not use `test` to choose rules and do not call precision 1.0 complete perfection. If the splits blur together, return to the three sealed boxes in lesson 22.

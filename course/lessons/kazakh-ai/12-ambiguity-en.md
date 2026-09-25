@@ -30,6 +30,8 @@ This is **not** an analysis of every possible ending or a context-based choice o
 
 Spelling → dictionary → list of possible meanings → keep all; no entry → `білмеймін`. The arrow does not jump straight to one answer.
 
+![Lesson 12 support map](/static/course/kazakh-ai/map-12-ambiguity-en.svg)
+
 ## Recall and task
 
 Hide the code and rebuild the entry for `ат` using the map. Explain why `['баспана']` stays a list even with one value. Then try `АТ`, `үй`, and `жол`.

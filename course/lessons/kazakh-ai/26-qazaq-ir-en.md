@@ -56,6 +56,8 @@ With no second argument, the program prints `qazaq-ir: қосымша салыс
 
 One word → learning parse → optional qazaq-ir CLI → compare root and status → state both limits.
 
+![Lesson 26 support map](/static/course/kazakh-ai/map-26-qazaq-ir-en.svg)
+
 ## Recall and check
 
 Hide the code and recall the two lines available without Rust: `Оқу үлгісі: мектептерімізде → мектеп ['тер', 'іміз', 'де']` and the skipped-comparison message. Hint: follow `len(sys.argv) == 1`. Then pass a nonexistent file path and find `бағдарлама файлы табылмады`. Common mistake: treating a matching root as proof of a schedule. Word analysis and fact checking are different stages.

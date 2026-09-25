@@ -101,6 +101,8 @@ print("Белгісіз:", counts["белгісіз"])
 
 Question → human label → JSON list → allowed-label check → counts 6 / 5 / 2.
 
+![Lesson 21 support map](/static/course/kazakh-ai/map-21-labels-en.svg)
+
 ## Recall and check
 
 Hide the code and recall the three labels. Add `Сурет нешеде?` with label `уақыт`. Hint: separate the new card with a comma. Expected counts: `Уақыт: 7`, `Орын: 5`, `Белгісіз: 2`. Then try the invalid label `уақ` and find `Қате белгі: уақ`. Common mistake: treating `белгісіз` as a missing catalog fact; here it labels the *question*, while fact lookup happens separately.

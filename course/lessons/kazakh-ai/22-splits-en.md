@@ -122,6 +122,8 @@ The program checks whether the exact text appeared before, then `seen.append` st
 
 13 open cards → train 8 / tune 5 / test 0; six test cards remain sealed → duplicate check → fair later test.
 
+![Lesson 22 support map](/static/course/kazakh-ai/map-22-splits-en.svg)
+
 ## Recall and check
 
 Hide the code and explain each envelope. Copy one question record to the end of the file. Hint: `seen` already contains that text. Expected: `Қайталанған сұрақ:` and `Жинақ жарамды: False`; the counts sum to 14. Restore the file afterwards. Common mistake: changing the rule after reading test answers while still calling the test independent.

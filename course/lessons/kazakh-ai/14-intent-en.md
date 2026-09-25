@@ -30,6 +30,8 @@ The [ready-to-run file](https://github.com/DauletBai/shanraq.org/tree/main/cours
 
 Question → word list → `қашан` present? add “time” → `қайда` present? add “place” → keep every found type.
 
+![Lesson 14 support map](/static/course/kazakh-ai/map-14-intent-en.svg)
+
 ## Recall and task
 
 Hide the code and explain why we use two `if` statements, not `if`/`elif`. Run `Сурет қашан?`, `Сурет қайда?`, `Сурет қашан қайда?`, and `Сурет неге?`.

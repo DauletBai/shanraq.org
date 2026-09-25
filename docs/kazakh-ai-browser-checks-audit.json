@@ -1,0 +1,6686 @@
+[
+  {
+    "file": "01-goal-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 1. What problem will our model solve?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 1. What problem will our model solve?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 1. What problem will our model solve?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 1. What problem will our model solve?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "1-сабақ. Біздің үлгі қандай мәселені шешеді?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "1-сабақ. Біздің үлгі қандай мәселені шешеді?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "1-сабақ. Біздің үлгі қандай мәселені шешеді?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "1-сабақ. Біздің үлгі қандай мәселені шешеді?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 1. Какую задачу решит наша модель",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 1. Какую задачу решит наша модель",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 1. Какую задачу решит наша модель",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "01-goal.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 1. Какую задачу решит наша модель",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 2. The first checkable program step",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 2. The first checkable program step",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 2. The first checkable program step",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 2. The first checkable program step",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "2-сабақ. Бағдарламаның алғашқы тексерілетін қадамы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "2-сабақ. Бағдарламаның алғашқы тексерілетін қадамы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "2-сабақ. Бағдарламаның алғашқы тексерілетін қадамы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "2-сабақ. Бағдарламаның алғашқы тексерілетін қадамы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 2. Первый проверяемый шаг программы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 2. Первый проверяемый шаг программы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 2. Первый проверяемый шаг программы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "02-first-program.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 2. Первый проверяемый шаг программы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 588
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 3. Where does a language put grammatical meaning?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 3. Where does a language put grammatical meaning?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 3. Where does a language put grammatical meaning?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 3. Where does a language put grammatical meaning?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 645
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "3-сабақ. Тіл грамматикалық мағынаны қайда сақтайды?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "3-сабақ. Тіл грамматикалық мағынаны қайда сақтайды?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "3-сабақ. Тіл грамматикалық мағынаны қайда сақтайды?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "3-сабақ. Тіл грамматикалық мағынаны қайда сақтайды?",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 788
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 3. Где язык хранит грамматический смысл",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 788
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 3. Где язык хранит грамматический смысл",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 788
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 3. Где язык хранит грамматический смысл",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "03-language-types.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 788
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 3. Где язык хранит грамматический смысл",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 4. Analyze a word without guessing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 4. Analyze a word without guessing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 4. Analyze a word without guessing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 4. Analyze a word without guessing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "4-сабақ. Сөзді жорамалсыз талдаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "4-сабақ. Сөзді жорамалсыз талдаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "4-сабақ. Сөзді жорамалсыз талдаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "4-сабақ. Сөзді жорамалсыз талдаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 4. Разбираем слово без догадок",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 4. Разбираем слово без догадок",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 4. Разбираем слово без догадок",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "04-word-parts.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 4. Разбираем слово без догадок",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 5. Build a model you can run by hand",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 5. Build a model you can run by hand",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 5. Build a model you can run by hand",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 5. Build a model you can run by hand",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "5-сабақ. Қолмен орындалатын үлгіні құрамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "5-сабақ. Қолмен орындалатын үлгіні құрамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "5-сабақ. Қолмен орындалатын үлгіні құрамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "5-сабақ. Қолмен орындалатын үлгіні құрамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 5. Собираем ручную модель",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 5. Собираем ручную модель",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 5. Собираем ручную модель",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "05-manual-model.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 5. Собираем ручную модель",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 6. Read Kazakh Cyrillic without losing letters",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 6. Read Kazakh Cyrillic without losing letters",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 6. Read Kazakh Cyrillic without losing letters",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 6. Read Kazakh Cyrillic without losing letters",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "6-сабақ. Қазақ кириллицасын әріп жоғалтпай оқимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "6-сабақ. Қазақ кириллицасын әріп жоғалтпай оқимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "6-сабақ. Қазақ кириллицасын әріп жоғалтпай оқимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "6-сабақ. Қазақ кириллицасын әріп жоғалтпай оқимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 6. Читаем казахскую кириллицу без потерь",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 6. Читаем казахскую кириллицу без потерь",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 6. Читаем казахскую кириллицу без потерь",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "06-cyrillic.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 6. Читаем казахскую кириллицу без потерь",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 7. Split a short question into words",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 7. Split a short question into words",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 7. Split a short question into words",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 7. Split a short question into words",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "7-сабақ. Қысқа сұрақты сөздерге бөлеміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "7-сабақ. Қысқа сұрақты сөздерге бөлеміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "7-сабақ. Қысқа сұрақты сөздерге бөлеміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "7-сабақ. Қысқа сұрақты сөздерге бөлеміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 7. Делим короткий вопрос на слова",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 7. Делим короткий вопрос на слова",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 7. Делим короткий вопрос на слова",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "07-words.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 7. Делим короткий вопрос на слова",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 8. Build a dictionary of known stems",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 8. Build a dictionary of known stems",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 8. Build a dictionary of known stems",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 8. Build a dictionary of known stems",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "8-сабақ. Белгілі негіздердің сөздігін жасаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "8-сабақ. Белгілі негіздердің сөздігін жасаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "8-сабақ. Белгілі негіздердің сөздігін жасаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "8-сабақ. Белгілі негіздердің сөздігін жасаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 8. Создаём словарь известных основ",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 8. Создаём словарь известных основ",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 8. Создаём словарь известных основ",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "08-roots.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 8. Создаём словарь известных основ",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 375
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 9. Six forms of the plural marker",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 9. Six forms of the plural marker",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 9. Six forms of the plural marker",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 9. Six forms of the plural marker",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 410
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "9-сабақ. Көптік мағынасының алты нұсқасы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "9-сабақ. Көптік мағынасының алты нұсқасы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "9-сабақ. Көптік мағынасының алты нұсқасы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "9-сабақ. Көптік мағынасының алты нұсқасы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 456
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 9. Шесть форм одного показателя множества",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 9. Шесть форм одного показателя множества",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 9. Шесть форм одного показателя множества",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "09-plurals.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 9. Шесть форм одного показателя множества",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 10. Check the order of word parts",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 10. Check the order of word parts",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 10. Check the order of word parts",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 10. Check the order of word parts",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "10-сабақ. Сөз бөліктерінің ретін тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "10-сабақ. Сөз бөліктерінің ретін тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "10-сабақ. Сөз бөліктерінің ретін тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "10-сабақ. Сөз бөліктерінің ретін тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 10. Проверяем порядок частей слова",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 10. Проверяем порядок частей слова",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 10. Проверяем порядок частей слова",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "10-order.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 10. Проверяем порядок частей слова",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 11. Tell “to our houses” from “in our houses”",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 11. Tell “to our houses” from “in our houses”",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 11. Tell “to our houses” from “in our houses”",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 11. Tell “to our houses” from “in our houses”",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "11-сабақ. «Үйлерімізге» мен «үйлерімізде» сөздерін ажыратамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "11-сабақ. «Үйлерімізге» мен «үйлерімізде» сөздерін ажыратамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "11-сабақ. «Үйлерімізге» мен «үйлерімізде» сөздерін ажыратамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "11-сабақ. «Үйлерімізге» мен «үйлерімізде» сөздерін ажыратамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 11. Различаем «к нашим домам» и «в наших домах»",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 11. Различаем «к нашим домам» и «в наших домах»",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 11. Различаем «к нашим домам» и «в наших домах»",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "11-cases.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 11. Различаем «к нашим домам» и «в наших домах»",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 12. Keep more than one possible meaning",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 12. Keep more than one possible meaning",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 12. Keep more than one possible meaning",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 12. Keep more than one possible meaning",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "12-сабақ. Бірнеше ықтимал мағынаны сақтаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "12-сабақ. Бірнеше ықтимал мағынаны сақтаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "12-сабақ. Бірнеше ықтимал мағынаны сақтаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "12-сабақ. Бірнеше ықтимал мағынаны сақтаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 12. Сохраняем несколько возможных значений",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 12. Сохраняем несколько возможных значений",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 12. Сохраняем несколько возможных значений",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "12-ambiguity.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 12. Сохраняем несколько возможных значений",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 13. Find the subject of a question",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 13. Find the subject of a question",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 13. Find the subject of a question",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 13. Find the subject of a question",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "13-сабақ. Сұрақтың нысанын табамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "13-сабақ. Сұрақтың нысанын табамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "13-сабақ. Сұрақтың нысанын табамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "13-сабақ. Сұрақтың нысанын табамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 13. Находим предмет вопроса",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 13. Находим предмет вопроса",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 13. Находим предмет вопроса",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "13-entities.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 13. Находим предмет вопроса",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 14. Identify what the person asks for",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 14. Identify what the person asks for",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 14. Identify what the person asks for",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 14. Identify what the person asks for",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "14-сабақ. Адам нені сұрап тұрғанын танимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "14-сабақ. Адам нені сұрап тұрғанын танимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "14-сабақ. Адам нені сұрап тұрғанын танимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "14-сабақ. Адам нені сұрап тұрғанын танимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 14. Узнаём, что именно спрашивают",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 14. Узнаём, что именно спрашивают",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 14. Узнаём, что именно спрашивают",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "14-intent.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 14. Узнаём, что именно спрашивают",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 15. Ask for clarification instead of guessing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 15. Ask for clarification instead of guessing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 15. Ask for clarification instead of guessing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 15. Ask for clarification instead of guessing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "15-сабақ. Жорамалдың орнына нақтылау сұраймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "15-сабақ. Жорамалдың орнына нақтылау сұраймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "15-сабақ. Жорамалдың орнына нақтылау сұраймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "15-сабақ. Жорамалдың орнына нақтылау сұраймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 15. Просим уточнить вместо догадки",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 15. Просим уточнить вместо догадки",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 15. Просим уточнить вместо догадки",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "15-abstain.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 15. Просим уточнить вместо догадки",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 16. A catalog of checked records",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 16. A catalog of checked records",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 16. A catalog of checked records",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 16. A catalog of checked records",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "16-сабақ. Тексерілген жазбалар тізімі",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "16-сабақ. Тексерілген жазбалар тізімі",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "16-сабақ. Тексерілген жазбалар тізімі",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "16-сабақ. Тексерілген жазбалар тізімі",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 16. Каталог проверенных записей",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 16. Каталог проверенных записей",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 16. Каталог проверенных записей",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "16-catalog.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 16. Каталог проверенных записей",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 17. Look up a record by two keys",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 17. Look up a record by two keys",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 17. Look up a record by two keys",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 17. Look up a record by two keys",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "17-сабақ. Екі кілт арқылы іздейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "17-сабақ. Екі кілт арқылы іздейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "17-сабақ. Екі кілт арқылы іздейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "17-сабақ. Екі кілт арқылы іздейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 17. Ищем по двум ключам",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 17. Ищем по двум ключам",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 17. Ищем по двум ключам",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "17-lookup.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 17. Ищем по двум ключам",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 18. Source and check date",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 18. Source and check date",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 18. Source and check date",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 18. Source and check date",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "18-сабақ. Дереккөз бен тексерілген күн",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "18-сабақ. Дереккөз бен тексерілген күн",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "18-сабақ. Дереккөз бен тексерілген күн",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "18-сабақ. Дереккөз бен тексерілген күн",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 18. Источник и дата проверки",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 18. Источник и дата проверки",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 18. Источник и дата проверки",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "18-provenance.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 18. Источник и дата проверки",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 19. Build an answer from a template",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 19. Build an answer from a template",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 19. Build an answer from a template",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 19. Build an answer from a template",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "19-сабақ. Жауапты үлгі бойынша құрастырамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "19-сабақ. Жауапты үлгі бойынша құрастырамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "19-сабақ. Жауапты үлгі бойынша құрастырамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "19-сабақ. Жауапты үлгі бойынша құрастырамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 19. Собираем ответ по шаблону",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 19. Собираем ответ по шаблону",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 19. Собираем ответ по шаблону",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "19-template.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 19. Собираем ответ по шаблону",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 20. Stop on conflicts and expired records",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 20. Stop on conflicts and expired records",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 20. Stop on conflicts and expired records",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 20. Stop on conflicts and expired records",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "20-сабақ. Қайшылық пен мерзім өткенде тоқтаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "20-сабақ. Қайшылық пен мерзім өткенде тоқтаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "20-сабақ. Қайшылық пен мерзім өткенде тоқтаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "20-сабақ. Қайшылық пен мерзім өткенде тоқтаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 20. Останавливаемся при конфликте и истёкшем сроке",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 20. Останавливаемся при конфликте и истёкшем сроке",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 20. Останавливаемся при конфликте и истёкшем сроке",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "20-expiry.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 20. Останавливаемся при конфликте и истёкшем сроке",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 21. Label questions by hand",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 21. Label questions by hand",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 21. Label questions by hand",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 21. Label questions by hand",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "21-сабақ. Сұрақтарды қолмен белгілейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "21-сабақ. Сұрақтарды қолмен белгілейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "21-сабақ. Сұрақтарды қолмен белгілейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "21-сабақ. Сұрақтарды қолмен белгілейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 21. Размечаем вопросы вручную",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 21. Размечаем вопросы вручную",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 21. Размечаем вопросы вручную",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "21-labels.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 21. Размечаем вопросы вручную",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 22. Separate training, tuning, and testing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 22. Separate training, tuning, and testing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 22. Separate training, tuning, and testing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 22. Separate training, tuning, and testing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "22-сабақ. Оқыту, баптау және бақылауды бөлеміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "22-сабақ. Оқыту, баптау және бақылауды бөлеміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "22-сабақ. Оқыту, баптау және бақылауды бөлеміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "22-сабақ. Оқыту, баптау және бақылауды бөлеміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 22. Разделяем обучение, настройку и контроль",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 22. Разделяем обучение, настройку и контроль",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 22. Разделяем обучение, настройку и контроль",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "22-splits.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 22. Разделяем обучение, настройку и контроль",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 23. Learn the question type from examples",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 23. Learn the question type from examples",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 23. Learn the question type from examples",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 23. Learn the question type from examples",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "23-сабақ. Мысалдардан сұрақ түрін танимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "23-сабақ. Мысалдардан сұрақ түрін танимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "23-сабақ. Мысалдардан сұрақ түрін танимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "23-сабақ. Мысалдардан сұрақ түрін танимыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 23. Учимся распознавать тип вопроса по примерам",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 23. Учимся распознавать тип вопроса по примерам",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 23. Учимся распознавать тип вопроса по примерам",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "23-classifier.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 23. Учимся распознавать тип вопроса по примерам",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 24. Require enough evidence before choosing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 24. Require enough evidence before choosing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 24. Require enough evidence before choosing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 24. Require enough evidence before choosing",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "24-сабақ. Жеткілікті негіз ережесі",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "24-сабақ. Жеткілікті негіз ережесі",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "24-сабақ. Жеткілікті негіз ережесі",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "24-сабақ. Жеткілікті негіз ережесі",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 24. Правило достаточного основания",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 24. Правило достаточного основания",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 24. Правило достаточного основания",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "24-gate.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 24. Правило достаточного основания",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 25. Measure correct answers and refusals",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 25. Measure correct answers and refusals",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 25. Measure correct answers and refusals",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 25. Measure correct answers and refusals",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "25-сабақ. Сапа мен орынды бас тартуды санаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "25-сабақ. Сапа мен орынды бас тартуды санаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "25-сабақ. Сапа мен орынды бас тартуды санаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "25-сабақ. Сапа мен орынды бас тартуды санаймыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 25. Считаем качество и честные отказы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 25. Считаем качество и честные отказы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 25. Считаем качество и честные отказы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "25-metrics.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 25. Считаем качество и честные отказы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 26. Compare our learning parser with qazaq-ir",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 26. Compare our learning parser with qazaq-ir",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 26. Compare our learning parser with qazaq-ir",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 26. Compare our learning parser with qazaq-ir",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "26-сабақ. Оқу талдауын qazaq-ir жүйесімен салыстырамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "26-сабақ. Оқу талдауын qazaq-ir жүйесімен салыстырамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "26-сабақ. Оқу талдауын qazaq-ir жүйесімен салыстырамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "26-сабақ. Оқу талдауын qazaq-ir жүйесімен салыстырамыз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 26. Сравниваем учебный разбор с qazaq-ir",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 26. Сравниваем учебный разбор с qazaq-ir",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 26. Сравниваем учебный разбор с qazaq-ir",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "26-qazaq-ir.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 26. Сравниваем учебный разбор с qazaq-ir",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 27. Check misspellings and unrelated topics",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 27. Check misspellings and unrelated topics",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 27. Check misspellings and unrelated topics",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 27. Check misspellings and unrelated topics",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "27-сабақ. Қате жазу мен басқа тақырыпты тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "27-сабақ. Қате жазу мен басқа тақырыпты тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "27-сабақ. Қате жазу мен басқа тақырыпты тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "27-сабақ. Қате жазу мен басқа тақырыпты тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 27. Проверяем опечатки и чужие темы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 27. Проверяем опечатки и чужие темы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 27. Проверяем опечатки и чужие темы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "27-boundary.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 27. Проверяем опечатки и чужие темы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 28. Measure time, memory, and cost",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 28. Measure time, memory, and cost",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 28. Measure time, memory, and cost",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 28. Measure time, memory, and cost",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "28-сабақ. Уақытты, жадты және шығынды өлшейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "28-сабақ. Уақытты, жадты және шығынды өлшейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "28-сабақ. Уақытты, жадты және шығынды өлшейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "28-сабақ. Уақытты, жадты және шығынды өлшейміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 28. Измеряем время, память и цену",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 28. Измеряем время, память и цену",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 28. Измеряем время, память и цену",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "28-benchmark.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 28. Измеряем время, память и цену",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 29. Audit locality and explain each answer",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 29. Audit locality and explain each answer",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 29. Audit locality and explain each answer",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 29. Audit locality and explain each answer",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "29-сабақ. Жергілікті жұмысты тексеріп, жауапты түсіндіреміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "29-сабақ. Жергілікті жұмысты тексеріп, жауапты түсіндіреміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "29-сабақ. Жергілікті жұмысты тексеріп, жауапты түсіндіреміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "29-сабақ. Жергілікті жұмысты тексеріп, жауапты түсіндіреміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 29. Проверяем локальность и объясняем ответ",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 29. Проверяем локальность и объясняем ответ",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 29. Проверяем локальность и объясняем ответ",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "29-audit.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 29. Проверяем локальность и объясняем ответ",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 354
+      },
+      {
+        "client": 354,
+        "scroll": 466
+      },
+      {
+        "client": 354,
+        "scroll": 504
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Lesson 30. Release the command-line model and check our claims",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 30. Release the command-line model and check our claims",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 30. Release the command-line model and check our claims",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Lesson 30. Release the command-line model and check our claims",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 354
+      },
+      {
+        "client": 354,
+        "scroll": 514
+      },
+      {
+        "client": 354,
+        "scroll": 647
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "30-сабақ. Консольдық үлгіні шығарып, тұжырымдарды тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "30-сабақ. Консольдық үлгіні шығарып, тұжырымдарды тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "30-сабақ. Консольдық үлгіні шығарып, тұжырымдарды тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "30-сабақ. Консольдық үлгіні шығарып, тұжырымдарды тексереміз",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 354
+      },
+      {
+        "client": 354,
+        "scroll": 581
+      },
+      {
+        "client": 354,
+        "scroll": 707
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 352
+      }
+    ],
+    "title": "Урок 30. Выпускаем консольную модель и проверяем выводы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 707
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 30. Выпускаем консольную модель и проверяем выводы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 707
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 30. Выпускаем консольную модель и проверяем выводы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "30-cli.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 707
+      }
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 760,
+        "clientWidth": 698
+      }
+    ],
+    "title": "Урок 30. Выпускаем консольную модель и проверяем выводы",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface-en.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 354
+      },
+      {
+        "client": 354,
+        "scroll": 454
+      },
+      {
+        "client": 354,
+        "scroll": 354
+      }
+    ],
+    "images": [],
+    "title": "Before you begin: AI without an LLM",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface-en.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [],
+    "title": "Before you begin: AI without an LLM",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface-en.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [],
+    "title": "Before you begin: AI without an LLM",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface-en.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [],
+    "title": "Before you begin: AI without an LLM",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface-kz.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 354
+      },
+      {
+        "client": 354,
+        "scroll": 467
+      },
+      {
+        "client": 354,
+        "scroll": 354
+      }
+    ],
+    "images": [],
+    "title": "Бастамас бұрын: үлкен тілдік үлгісіз AI",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface-kz.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [],
+    "title": "Бастамас бұрын: үлкен тілдік үлгісіз AI",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface-kz.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [],
+    "title": "Бастамас бұрын: үлкен тілдік үлгісіз AI",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface-kz.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [],
+    "title": "Бастамас бұрын: үлкен тілдік үлгісіз AI",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface.md.html",
+    "width": 390,
+    "scroll": 390,
+    "viewport": 390,
+    "tables": [
+      {
+        "client": 354,
+        "scroll": 354
+      },
+      {
+        "client": 354,
+        "scroll": 574
+      },
+      {
+        "client": 354,
+        "scroll": 354
+      }
+    ],
+    "images": [],
+    "title": "Прежде чем начать: AI без LLM",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface.md.html",
+    "width": 768,
+    "scroll": 768,
+    "viewport": 768,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [],
+    "title": "Прежде чем начать: AI без LLM",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface.md.html",
+    "width": 844,
+    "scroll": 844,
+    "viewport": 844,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [],
+    "title": "Прежде чем начать: AI без LLM",
+    "overflow": false,
+    "badImage": false
+  },
+  {
+    "file": "preface.md.html",
+    "width": 1366,
+    "scroll": 1366,
+    "viewport": 1366,
+    "tables": [
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      },
+      {
+        "client": 700,
+        "scroll": 700
+      }
+    ],
+    "images": [],
+    "title": "Прежде чем начать: AI без LLM",
+    "overflow": false,
+    "badImage": false
+  }
+]

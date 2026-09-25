@@ -46,8 +46,14 @@ The [step file](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh
 
 Question → known names + known types → **exactly one** of each? → lookup key; otherwise → say what is missing or needs clarification. Lookup key → facts (from lesson 16), not an answer yet.
 
+![Lesson 15 support map](/static/course/kazakh-ai/map-15-abstain-en.svg)
+
 ## Recall and task
 
 Hide the code and recover the four reasons to stop. Run the examples above and match each message to its reason.
 
 **Task:** predict the results for `СУРЕТ қайда?`, `Сурет қашан қайда?`, and an empty line. **Hint:** count both lists before checking conditions. **Answer:** `іздеу: сурет орын`; `нақтылаңыз: бір сұрақты таңдаңыз`; `білмеймін: қай үйірме?`. **Common mistake:** treating `іздеу:` as an answer about a location. The model has only identified two keys for a future search; it has not verified a fact.
+
+## Gate 3: one unambiguous key
+
+Test four cases: one club and one type; no club; two clubs; two types. Before each run, name the contents of both lists and the outcome. Pass when only the first case produces a key and the other three give distinct, clear reasons to stop. If not, return to the list length checks and retry with new names.

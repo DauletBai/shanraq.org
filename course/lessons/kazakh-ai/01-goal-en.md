@@ -4,7 +4,7 @@
 
 Imagine a school club with a timetable. A student asks, “Сабақ қашан?” (“When is the class?”). A careful desk clerk first asks which class, then checks an approved record. Without a record, the clerk does not invent a time.
 
-In this course, a **model** is a program that follows stated rules to turn a question into a checkable answer. **Data** are the records it uses. We will build a small learning model, not a chat partner for every topic.
+An **algorithm** is an ordered set of actions. A **model** is a stored way to turn input into a result. At first that method consists of rules we write; later it consists of numbers found from examples. **Data** are the records the model uses. The whole **system** is wider than the model: it accepts a question, calls the model, finds a record, and formats the answer. We will build a small learning system, not a chat partner for every topic.
 
 ## See the whole process
 
@@ -12,11 +12,13 @@ Question → identify the request → find a record → answer from that record.
 
 Our imaginary club has this record: “Robotics, Tuesday, 16:00.” For “Робот құрастыру сабағы қашан?” (“When is robotics class?”), the approved answer gives Tuesday at 16:00. There is no justified time for a class absent from the records.
 
-We will first analyze short Kazakh text written in Cyrillic, then connect that analysis to club records. An **answer source** is the specific record supporting an answer. No source means no factual answer.
+We will first analyze short Kazakh text written in Cyrillic, then connect that analysis to club records. An **answer source** is the specific record supporting an answer. No source means no factual answer. Thus “the model is ready” halfway through the course will mean that one component is ready, not the whole system.
 
 ## Recall map
 
 Question → meaning → source → answer. Unclear meaning or missing source → no guess.
+
+![Lesson 1 support map](/static/course/kazakh-ai/map-01-goal-en.svg)
 
 ## Recall without looking
 

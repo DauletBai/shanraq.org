@@ -82,6 +82,8 @@ For `Шахмат қашан?` on 24 September 2026, the trail shows the key, on
 
 Question → type → key → 0/1/many cards → two dates → sourced answer and trail or refusal.
 
+![Lesson 29 support map](/static/course/kazakh-ai/map-29-audit-en.svg)
+
 ## Recall and check
 
 Hide the code and recall the order of checks. Expected: chess yields an answer and five trail steps; art has no card and yields `білмеймін: дерек жоқ`; the typo yields `білмеймін: таныс емес сөз`. Hint: two early `return` statements stop before date checks. Change `valid_until` to `2026-09-01` and expect `білмеймін: бұл күнге жарамды дерек жоқ`. Common mistake: treating a trace as proof that the original sheet was true.

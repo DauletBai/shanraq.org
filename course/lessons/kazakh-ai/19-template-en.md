@@ -58,6 +58,8 @@ The name comes from `fact["club"]`, so the wording follows the selected card. `p
 
 Two keys → one card → time/place sentence + value → source + date.
 
+![Lesson 19 support map](/static/course/kazakh-ai/map-19-template-en.svg)
+
 ## Recall and check
 
 Enter `шахмат` and `уақыт`. Hint: the first template branch applies. Expected: `шахмат үйірмесінің уақыты: бейсенбі, 15:00` and `Дереккөз: club-sheet-01 | тексерілген күні: 2026-09-01`. Change the place value and check that the time answer stays the same. Common mistake: hard-coding the time in the template, which can then disagree with the catalog.

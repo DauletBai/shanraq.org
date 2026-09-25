@@ -29,6 +29,8 @@ This is a **small teaching rule**. It leaves full stops, exclamation marks, and 
 
 Question → lowercase → remove `?` and `,` → split at whitespace → list of words. At each arrow, ask what could still remain.
 
+![Lesson 7 support map](/static/course/kazakh-ai/map-07-words-en.svg)
+
 ## Recall and task
 
 Hide the code and explain each dot and pair of parentheses in `clean = ...`. Then enter `Мектептерде үйлер бар ма?`. **Hint:** remove only `?` first, then split at spaces. **Answer:** `['мектептерде', 'үйлер', 'бар', 'ма']`. `бар` is only a separate token so far; the program does not know its meaning. **Common mistake:** without `lower()`, the capital `М` remains and will not match a later dictionary of lowercase stems.

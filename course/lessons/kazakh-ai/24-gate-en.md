@@ -63,6 +63,8 @@ The last tuning question now yields `білмеймін` even though the time sc
 
 Learned score + explicit cue for one type + no cue for the other → type; otherwise → refuse. Fact lookup remains separate.
 
+![Lesson 24 support map](/static/course/kazakh-ai/map-24-gate-en.svg)
+
 ## Recall and check
 
 Hide the code and recall the three conditions for choosing time. Run the five tuning questions. Expected predictions: `уақыт`, `орын`, then `білмеймін` three times. Hint: on the last question both cues are true; `not place_cue` blocks the choice. Common mistake: dropping the other-cue check because the time score is higher. That recreates the lesson 23 error.

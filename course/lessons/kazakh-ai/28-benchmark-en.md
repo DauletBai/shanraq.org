@@ -60,9 +60,13 @@ print("Тікелей API төлемі: 0; құрылғы мен еңбек құ
 
 Numbers depend on the machine, load, and Python version, so the reference result is the set of output labels and positive measurements, not fixed milliseconds. Warm-function time excludes loading `examples.json`, Python startup, and fact lookup. `tracemalloc` does not report total process memory; file bytes are not RAM use. Zero direct API fee means only that this experiment makes no paid external request. Hardware, electricity, labeling, and maintenance still cost money. A “thousand times” comparison with an LLM is not established here; comparable inputs, quality, and conditions would be required.
 
+This lesson measures only the question classifier. Lesson 30 applies the same idea to the finished system, from the question through fact, date, and refusal checks.
+
 ## Support map
 
 5 fresh processes → median startup; 200 calls → median function time + allocations; files → bytes; API fee → direct fee only.
+
+![Lesson 28 support map](/static/course/kazakh-ai/map-28-benchmark-en.svg)
 
 ## Recall and check
 

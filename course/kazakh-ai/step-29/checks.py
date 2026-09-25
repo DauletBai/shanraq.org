@@ -3,6 +3,8 @@ import json
 with open("examples.json", encoding="utf-8") as file:
     rows = json.load(file)
 weights = {}
+club_forms = {"шахмат": "шахмат", "шахматтың": "шахмат",
+              "сурет": "сурет", "суреттің": "сурет"}
 for row in rows:
     if row["split"] == "train":
         words = row["text"].lower().replace("?", "").split()
@@ -16,10 +18,11 @@ for row in rows:
 def classify(question):
     text = question.lower().replace("?", "").replace(",", "").replace(".", "")
     words = text.split()
-    allowed = {"шахмат", "сурет", "қашан", "қайда", "уақыты", "орны", "өтеді", "болады"}
+    allowed = set(club_forms) | {"қашан", "қайда", "уақыты", "орны", "өтеді", "болады"}
     for word in words:
         if word not in allowed:
             return {"status": "refuse", "reason": "білмеймін: таныс емес сөз"}
+    words = [club_forms.get(word, word) for word in words]
     clubs = []
     for word in words:
         if word in ["шахмат", "сурет"]:
@@ -42,6 +45,6 @@ def classify(question):
 
 
 if __name__ == "__main__":
-    for question in ["Шахмат қашан?", "Шахмаат қашан?", "Шахмат неге?",
+    for question in ["Шахмат қашан?", "Шахматтың уақыты қашан?", "Шахмаат қашан?", "Шахмат неге?",
                      "Шахмат қашан интернет?", "Шахмат қашан қайда?"]:
         print(question, "→", classify(question))

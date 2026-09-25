@@ -34,6 +34,8 @@ The [runnable step file](https://github.com/DauletBai/shanraq.org/tree/main/cour
 
 Question → lowercase and two punctuation marks → words → visit each word → compare with two known names → list of findings.
 
+![Lesson 13 support map](/static/course/kazakh-ai/map-13-entities-en.svg)
+
 ## Recall and task
 
 Hide the code and explain why `print(found)` has no indentation. Then run `Сурет қайда?`, `Шахмат, сурет қашан?`, and `Робот қайда?`.

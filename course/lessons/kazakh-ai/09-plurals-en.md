@@ -41,4 +41,6 @@ The dictionary continues on a second line after a comma. Its leading spaces just
 
 Known stem → stored plural form → join without a hyphen → word. Unknown stem → `білмеймін`. Hide the table and name one example starting with each of `л`, `д`, `т`; then check all six program entries.
 
+![Lesson 9 support map](/static/course/kazakh-ai/map-09-plurals-en.svg)
+
 **Task:** predict the outputs for `ҚАЛАМ`, `кітап`, and `жол` before running the program. **Hint:** `lower()` changes case but adds no keys. **Answer:** `қаламдар`, `кітаптар`, `білмеймін`. **Common mistake:** `print("word + plural[word]")` prints literal text, not the built word. We will study unmarked number and context dependent meanings later; this is still a table for six stems.

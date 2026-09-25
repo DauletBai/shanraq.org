@@ -53,6 +53,8 @@ The loop visits every card. A card enters `matches` only when both fields match.
 
 Activity + type → scan catalog → 0: missing; 1: value; 2 or more: stop.
 
+![Lesson 17 support map](/static/course/kazakh-ai/map-17-lookup-en.svg)
+
 ## Recall and check
 
 Predict the output for `шахмат` + `уақыт`, then `сурет` + `орын`. Hint: both fields must match. Expected: `Табылды: бейсенбі, 15:00`; then `білмеймін: дерек жоқ`. Add a second chess time card and verify the stop. Common mistake: accepting the first match before scanning the whole catalog.

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="616" viewBox="0 0 760 616" role="img" aria-label="Lesson 12">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0 0L0 7L8 3.5Z" fill="#2f7d45"/></marker></defs>
+<style>
+:root{--bg:#f7f5f1;--card:#fff;--ink:#303030;--soft:#5b5b5b;--red:#d83232;--green:#2f7d45;--line:#e1ddd6;--badge:#fbe9e7}
+@media (prefers-color-scheme:dark){:root{--bg:#242321;--card:#302f2c;--ink:#f1efeb;--soft:#c8c3bb;--red:#ff6b66;--green:#75c98b;--line:#514e49;--badge:#482f2d}}
+text{font-family:Arial,"Noto Sans",sans-serif;fill:var(--ink)}
+</style>
+<rect width="760" height="616" rx="28" fill="var(--bg)"/>
+<text x="380.0" y="66" text-anchor="middle" font-size="18" font-weight="700" fill="var(--red)">SUPPORT MAP</text>
+<text x="380.0" y="108" text-anchor="middle" font-size="29" font-weight="800">Lesson 12</text>
+<rect x="40" y="180" width="680" height="106" rx="22" fill="var(--card)" stroke="var(--red)" stroke-width="4"/>
+<circle cx="80" cy="233.0" r="25" fill="var(--badge)" stroke="var(--red)" stroke-width="3"/>
+<text x="80" y="241.0" text-anchor="middle" font-size="22" font-weight="800" fill="var(--red)">1</text>
+<text x="410" y="225.0" text-anchor="middle" font-size="23" font-weight="700">Spelling ⇒ dictionary ⇒ list of possible</text>
+<text x="410" y="257.0" text-anchor="middle" font-size="23" font-weight="700">meanings ⇒ keep all; no entry ⇒ білмеймін</text>
+<path d="M380 296.0 V332.0" stroke="var(--green)" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+<rect x="40" y="344" width="680" height="106" rx="22" fill="var(--card)" stroke="var(--red)" stroke-width="4"/>
+<circle cx="80" cy="397.0" r="25" fill="var(--badge)" stroke="var(--red)" stroke-width="3"/>
+<text x="80" y="405.0" text-anchor="middle" font-size="22" font-weight="800" fill="var(--red)">2</text>
+<text x="410" y="389.0" text-anchor="middle" font-size="23" font-weight="700">The arrow does not jump straight to one</text>
+<text x="410" y="421.0" text-anchor="middle" font-size="23" font-weight="700">answer</text>
+<path d="M40 516 H720" stroke="var(--line)" stroke-width="3"/>
+<text x="380.0" y="568" text-anchor="middle" font-size="18" fill="var(--soft)">Red border — step boundary · green arrow — order</text>
+</svg>

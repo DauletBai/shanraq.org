@@ -3,11 +3,11 @@
 
 import re
 import json
-from datetime import date
 import subprocess
 import sys
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 LESSONS = Path(__file__).resolve().parents[2] / "course/lessons/kazakh-ai"
@@ -82,7 +82,7 @@ CASES = {
                    ("сурет\nорын\n", "Үйірме: Мәлімет түрі: білмеймін: дерек жоқ\n")],
     "18-provenance": [("шахмат\nорын\n", "Үйірме: Мәлімет түрі: Дерек: 203-бөлме\nДереккөз: club-sheet-01\nТексерілген күні: 2026-09-01\n")],
     "19-template": [("шахмат\nуақыт\n", "Үйірме: Мәлімет түрі: шахмат үйірмесінің уақыты: бейсенбі, 15:00\nДереккөз: club-sheet-01 | тексерілген күні: 2026-09-01\n")],
-    "20-expiry": [("Шахмат қашан?\n", "Сұрақ: шахмат үйірмесінің уақыты: бейсенбі, 15:00\nДереккөз: club-sheet-01 | тексерілген күні: 2026-09-01\n" if date.today() <= date(2026, 12, 31) else "Сұрақ: білмеймін: дерек ескірген\n"),
+    "20-expiry": [("Шахмат қашан?\n", "Сұрақ: шахмат үйірмесінің уақыты: бейсенбі, 15:00\nДереккөз: club-sheet-01 | тексерілген күні: 2026-09-01\n"),
                   ("Сурет қайда?\n", "Сұрақ: білмеймін: дерек жоқ\n"),
                   ("Шахмат қайда қашан?\n", "Сұрақ: нақтылаңыз: бір үйірме және бір сұрақ түрі керек\n")],
     "21-labels": [("", "Уақыт: 6\nОрын: 5\nБелгісіз: 2\n")],
@@ -91,7 +91,7 @@ CASES = {
     "24-gate": [("", "Шахмат қашан өтеді? → уақыт\nСурет қайда өтеді? → орын\nШахмат нешеде? → білмеймін\nШахмат неге? → білмеймін\nШахмат қашан және қайда өтеді? Уақыты қандай? → білмеймін\n")],
     "25-metrics": [("", "Сурет қашан басталады? → уақыт | уақыт\nШахмат қайда болады? → орын | орын\nШахмат қай күні? → білмеймін | уақыт\nСурет қай жерде? → білмеймін | орын\nСурет неге? → білмеймін | белгісіз\nШахмат кімге? → білмеймін | белгісіз\nЖауап: 2 Дұрыс: 2 Белгілі: 4\nБас тарту: 4 Белгісізге дұрыс бас тарту: 2\nДәлдік: 1.0\nТолықтық: 0.5\nБас тарту үлесі: 0.67\n")],
     "26-qazaq-ir": [("", "Оқу үлгісі: мектептерімізде → мектеп ['тер', 'іміз', 'де']\nqazaq-ir: қосымша салыстыру іске қосылмады\n")],
-    "27-boundary": [("", "Шахмат қашан? → {'status': 'ready', 'club': 'шахмат', 'kind': 'уақыт'}\nШахмаат қашан? → {'status': 'refuse', 'reason': 'білмеймін: таныс емес сөз'}\nШахмат неге? → {'status': 'refuse', 'reason': 'білмеймін: таныс емес сөз'}\nШахмат қашан интернет? → {'status': 'refuse', 'reason': 'білмеймін: таныс емес сөз'}\nШахмат қашан қайда? → {'status': 'refuse', 'reason': 'нақтылаңыз: бір сұрақ түрі керек'}\n")],
+    "27-boundary": [("", "Шахмат қашан? → {'status': 'ready', 'club': 'шахмат', 'kind': 'уақыт'}\nШахматтың уақыты қашан? → {'status': 'ready', 'club': 'шахмат', 'kind': 'уақыт'}\nШахмаат қашан? → {'status': 'refuse', 'reason': 'білмеймін: таныс емес сөз'}\nШахмат неге? → {'status': 'refuse', 'reason': 'білмеймін: таныс емес сөз'}\nШахмат қашан интернет? → {'status': 'refuse', 'reason': 'білмеймін: таныс емес сөз'}\nШахмат қашан қайда? → {'status': 'refuse', 'reason': 'нақтылаңыз: бір сұрақ түрі керек'}\n")],
     "28-benchmark": [],
     "29-audit": [("", "Шахмат қашан? → шахмат үйірмесінің уақыты: бейсенбі, 15:00 | 2026-09-24 күнгі дерек | дереккөз: club-sheet-01\nІз: ['Кілт: шахмат / уақыт', 'Жазба саны: 1', 'Дереккөз: club-sheet-01', 'Тексерілген: 2026-09-01', 'Жарамды: 2026-12-31 дейін']\nСурет қайда? → білмеймін: дерек жоқ\nІз: ['Кілт: сурет / орын', 'Жазба саны: 0']\nШахмаат қашан? → білмеймін: таныс емес сөз\nІз: ['Сұрақ түрі анықталмады']\n")],
     "30-cli": [],
@@ -99,6 +99,43 @@ CASES = {
 
 
 class KazakhAILessonsTest(unittest.TestCase):
+    def test_every_lesson_has_a_localized_visual_support_map(self):
+        maps = STEPS.parents[1] / "web/static/course/kazakh-ai"
+        self.assertEqual(len(list(maps.glob("*.svg"))), 90)
+        for path in sorted(LESSONS.glob("[0-9][0-9]-*.md")):
+            stem = re.sub(r"-(?:kz|en)$", "", path.stem)
+            lang = "kz" if path.stem.endswith("-kz") else "en" if path.stem.endswith("-en") else "ru"
+            image = maps / f"map-{stem}-{lang}.svg"
+            with self.subTest(path=path.name):
+                self.assertTrue(image.is_file(), image)
+                self.assertIn(f"/static/course/kazakh-ai/{image.name}",
+                              path.read_text(encoding="utf-8"))
+                root = ET.parse(image).getroot()
+                self.assertEqual(root.attrib["width"], "760")
+                self.assertTrue(root.attrib["viewBox"].startswith("0 0 760 "))
+                namespace = {"svg": "http://www.w3.org/2000/svg"}
+                cards = [node for node in root.findall("svg:rect", namespace)
+                         if node.attrib.get("x") == "40"]
+                self.assertGreaterEqual(len(cards), 2)
+                self.assertTrue(all(node.attrib.get("width") == "680" for node in cards))
+                arrows = [node for node in root.findall("svg:path", namespace)
+                          if "marker-end" in node.attrib]
+                self.assertTrue(all(node.attrib["d"].startswith("M380 ") for node in arrows))
+                lines = [node for node in root.findall("svg:text", namespace)
+                         if node.attrib.get("x") == "410"]
+                self.assertTrue(lines)
+                self.assertTrue(all(len(node.text or "") <= 42 for node in lines))
+
+    def test_six_mastery_gates_exist_in_every_language(self):
+        for number in (5, 10, 15, 20, 25, 30):
+            stem = next(LESSONS.glob(f"{number:02d}-*.md")).stem
+            stem = re.sub(r"-(?:kz|en)$", "", stem)
+            for suffix, marker in (("", f"## Рубеж {number // 5}"),
+                                   ("-kz", f"## {number // 5}-меже"),
+                                   ("-en", f"## Gate {number // 5}")):
+                path = LESSONS / f"{stem}{suffix}.md"
+                self.assertIn(marker, path.read_text(encoding="utf-8"), path)
+
     def test_printed_programs_and_outputs_in_all_locales(self):
         for stem, cases in CASES.items():
             for suffix in ("", "-kz", "-en"):
@@ -177,10 +214,33 @@ class KazakhAILessonsTest(unittest.TestCase):
         self.assertRegex(bench.stdout, r"Ең көп бақыланған бөлу, байт: [1-9][0-9]*")
         self.assertIn("құрылғы мен еңбек құны есептелмеді", bench.stdout)
 
+        final = subprocess.run([sys.executable, "benchmark.py", "--json"],
+                               cwd=STEPS / "step-30", text=True, capture_output=True,
+                               timeout=15, check=True)
+        report = json.loads(final.stdout)
+        self.assertEqual(report["trainable_neural_parameters"], 0)
+        self.assertIsNone(report["neural_context_window_tokens"])
+        self.assertEqual(report["training_and_tuning_examples"], 13)
+        self.assertEqual(report["supported_intent_types"], 2)
+        self.assertEqual(report["known_club_surface_forms"], 4)
+        self.assertEqual(report["approved_fact_records"], 2)
+        self.assertGreater(report["model_code_and_data_bytes"], 0)
+        self.assertGreater(report["process_peak_rss_bytes"], 0)
+        self.assertEqual(report["quality_cases"], 16)
+        self.assertEqual(report["scenario_accuracy"], 1.0)
+        self.assertEqual(report["supported_answer_accuracy"], 1.0)
+        self.assertEqual(report["correct_refusal_rate"], 1.0)
+        self.assertEqual(report["unsupported_confident_answer_rate"], 0.0)
+        self.assertEqual(report["external_api_requests"], 0)
+        self.assertEqual(report["direct_api_fee_usd"], 0)
+        self.assertIsNone(report["energy_per_request_joules"])
+
     def test_final_cli_answers_and_refuses_with_reason(self):
         folder = STEPS / "step-30"
         cases = [
             (["2026-09-24", "Шахмат қашан?"], "шахмат үйірмесінің уақыты: бейсенбі, 15:00 | 2026-09-24 күнгі дерек | дереккөз: club-sheet-01\n", 0),
+            (["2026-09-24", "Шахматтың уақыты қашан?"], "шахмат үйірмесінің уақыты: бейсенбі, 15:00 | 2026-09-24 күнгі дерек | дереккөз: club-sheet-01\n", 0),
+            (["2026-09-24", "Суреттің орны қайда?"], "білмеймін: дерек жоқ\n", 0),
             (["2026-09-24", "Сурет қайда?"], "білмеймін: дерек жоқ\n", 0),
             (["2026-09-24", "Шахмаат қашан?"], "білмеймін: таныс емес сөз\n", 0),
             (["2026-09-24", "Шахмат қашан қайда?"], "нақтылаңыз: бір сұрақ түрі керек\n", 0),

@@ -29,6 +29,12 @@ Change `chosen` to `["тәуелдік", "көптік", "барыс"]` and run 
 
 Meaning of parts → allowed order → compare with `==` → ready example or refusal. The three labels in the list are like labels on successive drawers.
 
+![Lesson 10 support map](/static/course/kazakh-ai/map-10-order-en.svg)
+
 ## Task and self-check
 
 Hide the code. Rebuild both lists and explain the difference between `=` and `==`. Then try `["көптік", "барыс", "тәуелдік"]`. **Hint:** positions two and three differ from `expected`. **Answer:** `реті қате`. Restore the correct list and see `үйлерімізге`: it means “to our houses,” not “in our houses.” **Common mistake:** reading `==` as assignment, or forgetting the spaces before `print`. If a form is unknown, the teaching model should say “I don't know” until it has a verified rule.
+
+## Gate 2: analysis in code
+
+On a blank page, write `input → lowercase → parts → dictionary → allowed order → result/refusal`. Run steps 6–10 and change one valid order into an invalid one. Pass when you can predict both outputs and point to the line that stops the invalid form. If not, rebuild the chain from the support maps and retry with another order.

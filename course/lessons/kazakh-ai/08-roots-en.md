@@ -33,6 +33,8 @@ Empty input is unknown too. We have not yet removed spaces around the word or re
 
 One entered stem → lowercase → is the key in the dictionary? → known value or `білмеймін`.
 
+![Lesson 8 support map](/static/course/kazakh-ai/map-08-roots-en.svg)
+
 ## Recall and task
 
 Hide the code, draw two labeled drawers for `үй` and `мектеп`, and reconstruct the `if`/`else` block. Then try `ҮЙ`, `үй`, `үйлер`, and `кітап`. **Hint:** uppercase becomes lowercase; no ending is removed. **Answer:** the first two give `баспана`, the last two `білмеймін`. **Common mistake:** removing the spaces before `print(roots[word])` leaves Python unable to tell which line belongs to `if`. If the bracket line fails, check that you used ordinary `"` marks and closed every bracket.

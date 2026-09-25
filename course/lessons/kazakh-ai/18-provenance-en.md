@@ -56,6 +56,8 @@ Lookup is unchanged. With one match, `fact = matches[0]` gives the selected card
 
 Keys → one card → value + exercise source ID + check date.
 
+![Lesson 18 support map](/static/course/kazakh-ai/map-18-provenance-en.svg)
+
 ## Recall and check
 
 Enter `шахмат` and `орын`. Hint: find the card matching both fields. Expected lines: `Дерек: 203-бөлме`, `Дереккөз: club-sheet-01`, `Тексерілген күні: 2026-09-01`. Change only that card’s `source` and inspect the new line. Common mistake: treating the check date as an expiry date.

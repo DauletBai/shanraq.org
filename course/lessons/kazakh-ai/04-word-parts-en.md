@@ -14,6 +14,8 @@ Another series is `мектеп` (“school”), `мектептер` (“school
 
 Written word → known stem → remaining parts → meaning of each part. Hyphens appear only in a teaching analysis.
 
+![Lesson 4 support map](/static/course/kazakh-ai/map-04-word-parts-en.svg)
+
 ## Recall without looking
 
 Explain the difference between `үй` and `үйлерде`. Why should we not assume `мектеплер` is correct by copying `үйлер`?

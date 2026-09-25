@@ -32,6 +32,8 @@ Run `python3 club.py` on macOS/Linux, or `py club.py` on Windows. Expected outpu
 
 Code file → run command → Python executes lines from top to bottom → output. `name = value` stores; `print(...)` displays.
 
+![Lesson 2 support map](/static/course/kazakh-ai/map-02-first-program-en.svg)
+
 ## Task and check
 
 Without looking at the example, create a chess record for Thursday at 15:00. Predict the output before running it. Explain why this program cannot answer a question about art class.

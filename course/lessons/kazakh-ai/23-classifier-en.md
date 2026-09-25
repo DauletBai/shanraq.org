@@ -61,6 +61,8 @@ The code learns only from `train`. `weights[feature][row["label"]] += 1` increme
 
 train → words and first 4 letters → label counts → tune → compare two scores → type or refusal.
 
+![Lesson 23 support map](/static/course/kazakh-ai/map-23-classifier-en.svg)
+
 ## Recall and check
 
 Hide the code and explain why `Шахмат нешеде?` gets a refusal: `нешеде` was absent from training and the club name appeared equally often with both labels. Expected predictions for the five `tune` questions are `уақыт`, `орын`, `білмеймін`, `білмеймін`, `уақыт`. Hint: count the `қашан`, `қайда`, and `уақыты` features. Common mistake: treating a high count as proof that the question has only one meaning.
