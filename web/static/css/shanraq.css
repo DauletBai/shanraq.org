@@ -3486,6 +3486,7 @@ h1[tabindex="-1"]:focus, h1[tabindex="-1"]:focus-visible { outline: none; }
 .aside > .adcarousel,
 .aside > .adslot,
 .aside > .re-calc,
+.article-aside > *,
 .cab-side__me { box-shadow: var(--card-shadow); }
 
 /* Loan calculator. The form is a plain grid; what carries the page is the
