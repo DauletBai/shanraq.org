@@ -2742,11 +2742,12 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
    competing with the article's own headings. */
 .toc-box__title,
 .follow__title { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-strong); font-weight: 700; margin: 0 0 10px; }
-.toc-box__list { list-style: none; margin: 0; padding: 0; counter-reset: toc; display: grid; gap: 3px; }
+.toc-box__list { list-style: none; margin: 0; padding: 0; counter-reset: toc; display: grid; gap: 3px; max-height: min(45vh, 24rem); overflow-y: auto; }
 .toc-box__list li { counter-increment: toc; }
 .toc-box__list a { display: flex; gap: 9px; align-items: baseline; color: var(--ink-soft); font-size: .9rem; padding: 5px 7px; border-radius: 6px; text-decoration: none; line-height: 1.35; }
 .toc-box__list a::before { content: counter(toc); font-family: var(--mono); font-size: .72rem; color: var(--gold-strong); font-weight: 700; }
 .toc-box__list a:hover { background: var(--surface-2); color: var(--ink); }
+.toc-box__list a[aria-current="location"] { background: var(--surface-2); color: var(--ink); font-weight: 700; box-shadow: inset 3px 0 var(--gold-strong); }
 /* Course contents in a lesson's sidebar. The list is long by design — a course
    is forty lessons — so it scrolls inside its own box instead of pushing the
    follow card off the screen, and the current lesson is marked so a reader

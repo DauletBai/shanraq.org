@@ -405,6 +405,7 @@
     {{ end }}
   </div>
 </main>
+{{ if .TOC }}<script defer src="{{ asset "/static/js/article-toc.js" }}"></script>{{ end }}
 {{ if .SeriesPlaces }}
 <script nonce="{{ .Nonce }}">
 // Keep the current lesson visible inside the course list without moving the page.
