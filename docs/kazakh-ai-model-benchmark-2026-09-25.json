@@ -2,6 +2,9 @@
   "measured_at": "2026-09-25",
   "machine": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
   "python": "3.14.5",
+  "available_logical_cpus": 8,
+  "worker_processes": 1,
+  "parallel_requests": 1,
   "architecture": "deterministic rules plus a count-based intent classifier",
   "trainable_neural_parameters": 0,
   "neural_context_window_tokens": null,
@@ -10,12 +13,46 @@
   "known_club_surface_forms": 4,
   "approved_fact_records": 2,
   "model_code_and_data_bytes": 6907,
-  "cold_start_median_ms": 35.214,
+  "cold_start_median_ms": 34.682,
   "warm_request_median_ms": 0.034,
   "warm_request_p95_ms": 0.037,
-  "warm_throughput_requests_per_second": 41827.4,
+  "warm_throughput_requests_per_second": 42519.6,
   "python_traced_peak_bytes": 135626,
-  "process_peak_rss_bytes": 21233664,
+  "process_peak_rss_bytes": 25608192,
+  "parallel_scaling": [
+    {
+      "worker_processes": 1,
+      "parallel_requests": 1,
+      "throughput_requests_per_second": 42953.1,
+      "summed_worker_peak_rss_bytes": 26640384,
+      "speedup_vs_one_worker": 1.0,
+      "parallel_efficiency": 1.0
+    },
+    {
+      "worker_processes": 2,
+      "parallel_requests": 2,
+      "throughput_requests_per_second": 80372.1,
+      "summed_worker_peak_rss_bytes": 53231616,
+      "speedup_vs_one_worker": 1.871,
+      "parallel_efficiency": 0.936
+    },
+    {
+      "worker_processes": 4,
+      "parallel_requests": 4,
+      "throughput_requests_per_second": 146241.3,
+      "summed_worker_peak_rss_bytes": 106610688,
+      "speedup_vs_one_worker": 3.405,
+      "parallel_efficiency": 0.851
+    },
+    {
+      "worker_processes": 8,
+      "parallel_requests": 8,
+      "throughput_requests_per_second": 141357.3,
+      "summed_worker_peak_rss_bytes": 213909504,
+      "speedup_vs_one_worker": 3.291,
+      "parallel_efficiency": 0.411
+    }
+  ],
   "quality_cases": 16,
   "scenario_accuracy": 1.0,
   "supported_answer_accuracy": 1.0,

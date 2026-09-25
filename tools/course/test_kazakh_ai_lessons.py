@@ -216,8 +216,11 @@ class KazakhAILessonsTest(unittest.TestCase):
 
         final = subprocess.run([sys.executable, "benchmark.py", "--json"],
                                cwd=STEPS / "step-30", text=True, capture_output=True,
-                               timeout=15, check=True)
+                               timeout=30, check=True)
         report = json.loads(final.stdout)
+        self.assertGreaterEqual(report["available_logical_cpus"], 1)
+        self.assertEqual(report["worker_processes"], 1)
+        self.assertEqual(report["parallel_requests"], 1)
         self.assertEqual(report["trainable_neural_parameters"], 0)
         self.assertIsNone(report["neural_context_window_tokens"])
         self.assertEqual(report["training_and_tuning_examples"], 13)
@@ -226,6 +229,19 @@ class KazakhAILessonsTest(unittest.TestCase):
         self.assertEqual(report["approved_fact_records"], 2)
         self.assertGreater(report["model_code_and_data_bytes"], 0)
         self.assertGreater(report["process_peak_rss_bytes"], 0)
+        scaling = report["parallel_scaling"]
+        worker_counts = [row["worker_processes"] for row in scaling]
+        self.assertEqual(worker_counts, sorted(set(worker_counts)))
+        self.assertEqual(worker_counts[0], 1)
+        self.assertLessEqual(worker_counts[-1], report["available_logical_cpus"])
+        self.assertEqual(scaling[0]["parallel_requests"], 1)
+        self.assertEqual(scaling[0]["speedup_vs_one_worker"], 1.0)
+        self.assertEqual(scaling[0]["parallel_efficiency"], 1.0)
+        for row in scaling:
+            self.assertEqual(row["parallel_requests"], row["worker_processes"])
+            self.assertGreater(row["throughput_requests_per_second"], 0)
+            if row["summed_worker_peak_rss_bytes"] is not None:
+                self.assertGreater(row["summed_worker_peak_rss_bytes"], 0)
         self.assertEqual(report["quality_cases"], 16)
         self.assertEqual(report["scenario_accuracy"], 1.0)
         self.assertEqual(report["supported_answer_accuracy"], 1.0)

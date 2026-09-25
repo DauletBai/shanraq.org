@@ -11,14 +11,15 @@ You will run a finished local model in the console, inspect the path from questi
 | Measurement | Result |
 |---|---:|
 | Model code and data | 6,907 bytes (6.7 KiB) |
-| Whole process memory including Python | 20.3 MiB |
-| Fresh start / request in a ready process | 35.214 / 0.034 ms |
-| Requests per second in the control run | 41,827 |
+| Whole process memory including Python | 24.4 MiB |
+| Fresh start / request in a ready process | 34.682 / 0.034 ms |
+| Requests per second: 1 process, no parallel work | 42,520 |
+| Total speed with 1 / 2 / 4 / 8 worker processes | 42,953 / 80,372 / 146,241 / 141,357 requests/s |
 | Open quality scenarios | 16 of 16 |
 | Confident answers in ten cases requiring refusal | 0 of 10 |
 | External API requests | 0 |
 
-One KiB is 1,024 bytes, one MiB is 1,024 KiB, and a millisecond is one thousandth of a second. A fresh start is like opening a workshop; a ready request uses tools already laid out. Time and memory will differ on another computer, so the program also reports its test environment. `0 of 10` is only the result of ten published refusal checks, not a promise of zero errors on arbitrary text. In [lesson 30](https://shanraq.org/read/kazakh-ai-30-cli?lang=en), you will repeat the experiment and use a table to identify where this narrow model is stronger than a large LLM, where it falls short, and when combining both approaches helps.
+One KiB is 1,024 bytes, one MiB is 1,024 KiB, and a millisecond is one thousandth of a second. A fresh start is like opening a workshop; a ready request uses tools already laid out. One worker process handles requests in sequence; several processes can occupy different cores. Four workers were fastest in this experiment, while eight did not improve the result: more cores do not produce an automatic gain. Time and memory will differ on another computer, so the program also reports its test environment. `0 of 10` is only the result of ten published refusal checks, not a promise of zero errors on arbitrary text. In [lesson 30](https://shanraq.org/read/kazakh-ai-30-cli?lang=en), you will repeat the experiment and use a table to identify where this narrow model is stronger than a large LLM, where it falls short, and when combining both approaches helps.
 
 ## What you should know first
 

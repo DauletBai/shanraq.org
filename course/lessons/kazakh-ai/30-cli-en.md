@@ -64,7 +64,7 @@ python3 benchmark.py --json
 
 A **cold start** begins in a new Python process. A **warm request** runs inside an existing process. `p95` is the time within which 95 percent of requests finished. **RSS** is the peak physical memory of the entire process; `tracemalloc` counts only observed Python allocations. A **trainable parameter** is a number changed while a neural network learns. This system has none: it builds intent counts from 13 cards at startup.
 
-**Throughput** is the number of requests completed per second. One KiB is 1,024 bytes, and one MiB is 1,024 KiB. ARM is the processor family of the computer used for the control run.
+**Throughput** is the number of requests completed per second. One **worker process** is one running copy of Python; in this experiment it handles requests in sequence and uses no more than one core at once. The program then warms 1, 2, 4, and 8 processes, gives each process 10,000 requests three times, and selects the middle total rate. One KiB is 1,024 bytes, and one MiB is 1,024 KiB. ARM is the processor family of the computer used for the control run.
 
 A control run on 25 September 2026 used an ARM computer with macOS 26.5.2 and Python 3.14.5:
 
@@ -74,18 +74,32 @@ On a phone, swipe the following wide tables left and right.
 |---|---:|
 | Trainable neural parameters | 0 |
 | Learning cards / approved facts | 13 / 2 |
+| Available logical cores / worker processes / concurrent requests | 8 / 1 / 1 |
 | Model code and working data | 6,907 bytes (6.7 KiB) |
-| Median cold start | 35.214 ms |
+| Median cold start | 34.682 ms |
 | Median warm request / `p95` | 0.034 / 0.037 ms |
-| Throughput in this run | 41,827 requests/s |
+| Throughput of one sequential process | 42,520 requests/s |
 | Peak `tracemalloc` allocations | 135,626 bytes |
-| Peak RSS of the whole Python process | 21,233,664 bytes (20.3 MiB) |
+| Peak RSS of the whole Python process | 25,608,192 bytes (24.4 MiB) |
 | All scenarios / correct supported answers | 16 of 16 / 6 of 6 |
 | Correct refusals | 10 of 10 |
 | Confident answer where refusal was required | 0 of 10 |
 | External API requests | 0 |
 | Direct API fee | 0; device, electricity, and labor are not free |
 | Energy per request | not measured; a hardware power meter is required |
+
+### What additional processes delivered
+
+**Speedup** compares total throughput with one worker. **Parallel efficiency** divides speedup by the worker count: 100% would mean that every new worker added its full share of speed. Summed RSS below adds the worker peaks; it excludes the coordinator process.
+
+| Worker processes | Concurrent requests | Total requests/s | Speedup | Efficiency | Summed peak RSS |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 1 | 42,953 | 1.00× | 100% | 25.4 MiB |
+| 2 | 2 | 80,372 | 1.87× | 93.6% | 50.8 MiB |
+| 4 | 4 | 146,241 | 3.41× | 85.1% | 101.7 MiB |
+| 8 | 8 | 141,357 | 3.29× | 41.1% | 204.0 MiB |
+
+Two and four workers raised total throughput. Eight were slightly slower than four and used roughly twice the worker memory. The experiment reveals a limit of this computer and program; it does not by itself identify the cause. Core types, shared files, memory, or operating-system scheduling may contribute. A different server needs a new measurement.
 
 The last quality row gives “hallucination” an operational meaning for this experiment. An error occurs when the reference requires refusal but the program confidently produces another answer. `0 of 10` applies only to the published checks. It does not establish zero errors on arbitrary text and does not protect against a wrong fact in `facts.json`.
 
@@ -97,7 +111,7 @@ A stored parameter value is called a **weight**. FP8 and BF16 are two ways to st
 
 | System | Published scale | Memory or size | The same 16 checks |
 |---|---|---|---|
-| Our learning model | 0 neural parameters; 13 cards; 2 facts | measured: 6,907 file bytes; 20.3 MiB RSS including Python | measured: 16/16; unsupported confident answers 0/10 |
+| Our learning model | 0 neural parameters; 13 cards; 2 facts | measured: 6,907 file bytes; 24.4 MiB RSS for one Python process | measured: 16/16; unsupported confident answers 0/10 |
 | Llama 3.1 405B | 405B parameters; 128K-token context | ≈405 GB FP8 or ≈810 GB BF16: 58.6–117 million times our file size | not run on our suite |
 | DeepSeek-V3 | 671B total, 37B active per token; 128K context | ≈671 GB FP8 or ≈1.342 TB BF16: 97–194 million times larger; working memory is additional | not run on our suite |
 | Qwen3-235B-A22B | 235B total, 22B active | ≈235 GB FP8 or ≈470 GB BF16: 34–68 million times larger; working memory is additional | not run on our suite |
