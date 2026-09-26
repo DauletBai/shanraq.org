@@ -40,6 +40,10 @@ configs/config.local.yaml
 # Local backup archives (contain data — never commit)
 /backups/
 
+# Daily news drafts are temporary working files, not application source code.
+# Published articles live in PostgreSQL and must be retained by content backups.
+/content/news/
+
 # Python bytecode: written by any run of the course project.
 __pycache__/
 *.pyc
