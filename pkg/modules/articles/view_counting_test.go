@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/google/uuid"
 	"shanraq.org/pkg/modules/auth"
 	"shanraq.org/pkg/site"
 )
@@ -76,6 +77,68 @@ func TestCrawlersDoNotCountAsViews(t *testing.T) {
 	}
 	if got := views(); got != 2 {
 		t.Fatalf("second browser visit left views at %d, want 2", got)
+	}
+}
+
+// Course analytics must use the exact same filtered request that increments an
+// article view. Otherwise the admin screen compares two populations and the
+// discrepancy that prompted this counter returns on its first day.
+func TestCourseLessonAndHubUseFilteredAudience(t *testing.T) {
+	app := newTestApp(t)
+	author := app.createUser("course-audience@example.com", "Sup3r-Secret-Pass!")
+	articleID, articleSlug := app.seedArticle(author, "published")
+	courseSlug := "audience-" + uuid.NewString()[:8]
+	seriesID := app.seedSeries(courseSlug)
+	defer app.exec(`DELETE FROM article_series WHERE id=$1`, seriesID)
+	mustAttach(t, NewSeriesStore(app.pool), seriesID, articleID, 10)
+
+	const chrome = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
+		"(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+	const crawler = "Mozilla/5.0 (compatible; GPTBot/1.1; +https://openai.com/gptbot)"
+
+	if w := app.do(http.MethodGet, "/read/"+articleSlug, nil, withHeader("User-Agent", chrome)); w.Code != http.StatusOK {
+		t.Fatalf("lesson as browser = %d", w.Code)
+	}
+	_ = app.do(http.MethodGet, "/read/"+articleSlug, nil, withHeader("User-Agent", crawler))
+	if w := app.do(http.MethodGet, "/course/"+courseSlug, nil, withHeader("User-Agent", chrome)); w.Code != http.StatusOK {
+		t.Fatalf("course hub as browser = %d", w.Code)
+	}
+	_ = app.do(http.MethodGet, "/course/"+courseSlug, nil, withHeader("User-Agent", crawler))
+
+	app.module().metrics.mu.Lock()
+	lesson := app.module().metrics.buf[metricKey{
+		kind: metricCourseLesson, label: courseSlug + "|" + articleSlug + "|ru", guest: true,
+	}]
+	hub := app.module().metrics.buf[metricKey{
+		kind: metricCourseHub, label: courseSlug + "|ru", guest: true,
+	}]
+	app.module().metrics.mu.Unlock()
+	if lesson != 1 {
+		t.Errorf("filtered lesson views = %d, want 1; crawler must not count", lesson)
+	}
+	if hub != 1 {
+		t.Errorf("filtered hub views = %d, want 1; crawler must not count", hub)
+	}
+
+	// Exercise the dashboard query too. This catches a drift between the label
+	// written above and the SQL that splits it into course, lesson and language.
+	app.module().metrics.Flush(context.Background())
+	got, err := app.module().courseAnalytics(context.Background(), LangRU)
+	if err != nil {
+		t.Fatalf("course analytics query: %v", err)
+	}
+	var found *CourseAnalyticsRow
+	for i := range got.Courses {
+		if got.Courses[i].Slug == courseSlug {
+			found = &got.Courses[i]
+			break
+		}
+	}
+	if found == nil {
+		t.Fatalf("course %q is missing from analytics", courseSlug)
+	}
+	if found.Views.Total() != 1 || found.Hub.Total() != 1 || found.RU != 1 {
+		t.Errorf("course row = %+v, want one RU lesson view and one hub view", *found)
 	}
 }
 

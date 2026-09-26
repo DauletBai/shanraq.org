@@ -31,6 +31,8 @@ func pageKind(path string) string {
 		return "home"
 	case "/read":
 		return "article"
+	case "/courses":
+		return "courses"
 	case "/listings", "/listings/new", "/listings/my":
 		return "listings"
 	case "/favorites":
@@ -72,6 +74,8 @@ func pageKind(path string) string {
 	switch {
 	case strings.HasPrefix(path, "/read/"):
 		return "article"
+	case strings.HasPrefix(path, "/course/"):
+		return "course"
 	case strings.HasPrefix(path, "/author/"):
 		return "author"
 	case strings.HasPrefix(path, "/agent/"):
@@ -116,6 +120,11 @@ const (
 	metricCountry = "country" // visitor country by IP (ISO code), IP not stored
 	metricLang    = "lang"    // reading language of the served page (kz/ru/en)
 	metricGeoLang = "geolang" // country|lang cross, e.g. "US|en", "datacenter|ru"
+	// Course counters use the same audience filter as the site totals. Their
+	// labels are deliberately aggregate dimensions, not visitor identifiers:
+	// course|article|language for a lesson and course|language for a hub.
+	metricCourseHub    = "course_hub"
+	metricCourseLesson = "course_lesson"
 )
 
 // readingLang reports the language a page is served in, for analytics. It mirrors
@@ -447,7 +456,7 @@ func (mt *Metrics) Flush(ctx context.Context) {
 	for _, e := range batch {
 		b.Queue(`
 			INSERT INTO analytics_daily (day, kind, label, is_guest, n)
-			VALUES (CURRENT_DATE, $1, $2, $3, $4)
+			VALUES ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date, $1, $2, $3, $4)
 			ON CONFLICT (day, kind, label, is_guest)
 			DO UPDATE SET n = analytics_daily.n + EXCLUDED.n`,
 			e.k.kind, e.k.label, e.k.guest, e.n)
@@ -664,7 +673,7 @@ func (m *Module) handleTrack(w http.ResponseWriter, r *http.Request) {
 	e := strings.TrimSpace(r.URL.Query().Get("e"))
 	// Skip the team's own clicks (opt-out cookie / staff / excluded email) so the
 	// owner's own login/like round-trips at publish time don't inflate the panel.
-	if trackedEvents[e] && botLabel(r.Header.Get("User-Agent")) == "" && !m.excluded(nil, r) {
+	if trackedEvents[e] && m.countableAudience(r) {
 		_, ok := auth.ClaimsFromContext(r.Context())
 		m.metrics.inc(metricClick, e, !ok)
 	}
@@ -807,14 +816,14 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	// as a bug even though it was arithmetically correct.
 	_ = db.QueryRow(ctx, `
 		SELECT
-		  COALESCE(SUM(n) FILTER (WHERE day = CURRENT_DATE AND is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day = CURRENT_DATE AND NOT is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '6 days' AND is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '6 days' AND NOT is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '29 days' AND is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '29 days' AND NOT is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '364 days' AND is_guest), 0),
-		  COALESCE(SUM(n) FILTER (WHERE day >= CURRENT_DATE - INTERVAL '364 days' AND NOT is_guest), 0)
+		  COALESCE(SUM(n) FILTER (WHERE day = (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date AND is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day = (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date AND NOT is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 6 AND is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 6 AND NOT is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 29 AND is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 29 AND NOT is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 364 AND is_guest), 0),
+		  COALESCE(SUM(n) FILTER (WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 364 AND NOT is_guest), 0)
 		FROM analytics_daily WHERE kind = 'page'`).
 		Scan(&g.Day.Guest, &g.Day.Registered, &g.Week.Guest, &g.Week.Registered, &g.Month.Guest, &g.Month.Registered, &g.Year.Guest, &g.Year.Registered)
 
@@ -824,7 +833,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		       COALESCE(SUM(n) FILTER (WHERE is_guest), 0),
 		       COALESCE(SUM(n) FILTER (WHERE NOT is_guest), 0)
 		FROM analytics_daily
-		WHERE kind = 'page' AND day >= CURRENT_DATE - INTERVAL '30 days'
+		WHERE kind = 'page' AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY label`); err == nil {
 		var maxTotal int64
 		for rows.Next() {
@@ -855,7 +864,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		       COALESCE(SUM(n) FILTER (WHERE is_guest), 0),
 		       COALESCE(SUM(n) FILTER (WHERE NOT is_guest), 0)
 		FROM analytics_daily
-		WHERE kind = 'click' AND day >= CURRENT_DATE - INTERVAL '30 days'
+		WHERE kind = 'click' AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY label`); err == nil {
 		for rows.Next() {
 			var r GuestClickRow
@@ -909,7 +918,7 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 	if rows, err := m.rt.DB.Query(ctx, `
 		SELECT day, COALESCE(SUM(n) FILTER (WHERE is_guest), 0)
 		FROM analytics_daily
-		WHERE kind = 'page' AND day >= CURRENT_DATE - make_interval(days => $1)
+		WHERE kind = 'page' AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - make_interval(days => $1)
 		GROUP BY day`, guestTrendDays-1); err == nil {
 		for rows.Next() {
 			var d time.Time
@@ -1024,7 +1033,7 @@ func (m *Module) simpleRowsN(ctx context.Context, kind, i18nPrefix, lang string,
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT label, COALESCE(SUM(n), 0)
 		FROM analytics_daily
-		WHERE kind = $1 AND is_guest AND day >= CURRENT_DATE - INTERVAL '30 days'
+		WHERE kind = $1 AND is_guest AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY label`, kind)
 	if err != nil {
 		m.rt.Logger.Warn("guest analytics "+kind, zap.Error(err))
@@ -1084,7 +1093,7 @@ func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT split_part(label, '|', 1) AS geo, COALESCE(SUM(n), 0)
 		FROM analytics_daily
-		WHERE kind = $1 AND is_guest AND label LIKE '%|en' AND day >= CURRENT_DATE - INTERVAL '30 days'
+		WHERE kind = $1 AND is_guest AND label LIKE '%|en' AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY geo`, metricGeoLang)
 	if err != nil {
 		m.rt.Logger.Warn("guest analytics english-by-geo", zap.Error(err))
@@ -1129,7 +1138,7 @@ func (m *Module) langOfGeo(ctx context.Context, geo, lang string) []GuestSimpleR
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT split_part(label, '|', 2) AS lng, COALESCE(SUM(n), 0)
 		FROM analytics_daily
-		WHERE kind = $1 AND is_guest AND label LIKE $2 AND day >= CURRENT_DATE - INTERVAL '30 days'
+		WHERE kind = $1 AND is_guest AND label LIKE $2 AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY lng`, metricGeoLang, geo+"|%")
 	if err != nil {
 		m.rt.Logger.Warn("guest analytics lang-of-geo", zap.Error(err))
@@ -1187,4 +1196,13 @@ func sortClickRows(rs []GuestClickRow) {
 // views describe one population and can honestly be compared.
 func (m *Module) audienceHit(r *http.Request) bool {
 	return audienceBucket(botLabel(r.UserAgent()), m.geoip.geoLabel(clientIP(r))) == bucketAudience
+}
+
+// countableAudience is the complete rule for a request that may affect a
+// reader-facing counter. audienceHit removes declared crawlers and hosting
+// networks; excluded removes staff and the owner's test devices. Keeping this
+// in one helper prevents article, course, click and reading counters from each
+// describing a subtly different population.
+func (m *Module) countableAudience(r *http.Request) bool {
+	return !m.excluded(nil, r) && m.audienceHit(r)
 }

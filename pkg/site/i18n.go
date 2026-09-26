@@ -1060,9 +1060,61 @@ var messages = map[string]map[string]string{
 	"ag.registered_short": {"kz": "тірк.", "ru": "зарег.", "en": "signed in"},
 	"ag.registered":       {"kz": "тіркелгендер", "ru": "зарегистрированные", "en": "registered"},
 	"ag.total":            {"kz": "барлығы", "ru": "всего", "en": "total"},
-	"ag.pages":            {"kz": "Беттер (30 күн)", "ru": "Страницы (30 дней)", "en": "Pages (30 days)"},
-	"ag.clicks":           {"kz": "Клик оқиғалары (30 күн)", "ru": "Клики (30 дней)", "en": "Clicks (30 days)"},
-	"stats.title":         {"kz": "Аналитика", "ru": "Аналитика", "en": "Analytics"},
+
+	// Course analytics. Filtered counters start fresh because historical
+	// article views cannot be separated from automated publication checks.
+	"ca.title": {"kz": "Курстар мен сабақтар", "ru": "Курсы и уроки", "en": "Courses and lessons"},
+	"ca.note": {
+		"kz": "Сүзілген қаралымдар белгілі боттарды, хостинг желілерін және команда құрылғыларын есептемейді. Бұл адам саны емес, бет ашылымдары.",
+		"ru": "Отфильтрованные просмотры исключают известных ботов, хостинговые сети и устройства команды. Это открытия страниц, а не число людей.",
+		"en": "Filtered views exclude known bots, hosting networks, and team devices. They are page openings, not a people count.",
+	},
+	"ca.since": {"kz": "Сүзілген есеп басталған күн:", "ru": "Отфильтрованный учёт ведётся с", "en": "Filtered counting started on"},
+	"ca.identity": {
+		"kz": "Құпиялылық үшін келушінің аты мен сабақтар бойынша жолы сақталмайды; тек қонақ/тіркелген және оқу тілі көрінеді.",
+		"ru": "Ради приватности имя посетителя и его маршрут по урокам не сохраняются; видны только гость/зарегистрированный и язык чтения.",
+		"en": "For privacy, visitor identities and lesson paths are not stored; only guest/signed-in status and reading language are shown.",
+	},
+	"ca.views_day":   {"kz": "сабақтар бүгін", "ru": "уроки сегодня", "en": "lesson views today"},
+	"ca.views_week":  {"kz": "сабақтар 7 күнде", "ru": "уроки за 7 дней", "en": "lesson views in 7 days"},
+	"ca.views_month": {"kz": "сабақтар 30 күнде", "ru": "уроки за 30 дней", "en": "lesson views in 30 days"},
+	"ca.hubs":        {"kz": "курс беттері", "ru": "страницы курсов", "en": "course pages"},
+	"ca.learners":    {"kz": "тапсырма жібергендер", "ru": "отправляли задания", "en": "submitted exercises"},
+	"ca.passed":      {"kz": "орындалған тапсырмалар", "ru": "зачтено заданий", "en": "exercises passed"},
+	"ca.by_course":   {"kz": "Курстар бойынша", "ru": "По курсам", "en": "By course"},
+	"ca.by_lesson":   {"kz": "Сабақтар бойынша", "ru": "По урокам", "en": "By lesson"},
+	"ca.course":      {"kz": "Курс", "ru": "Курс", "en": "Course"},
+	"ca.lesson":      {"kz": "Сабақ", "ru": "Урок", "en": "Lesson"},
+	"ca.lessons":     {"kz": "Сабақтар", "ru": "Уроков", "en": "Lessons"},
+	"ca.filtered":    {"kz": "Сүзілген", "ru": "Отфильтр.", "en": "Filtered"},
+	"ca.filtered_note": {
+		"kz": "Жаңа сенімді есеп: белгілі боттар, дата-орталықтар және команда трафигі алынып тасталды.",
+		"ru": "Новый сопоставимый счётчик: исключены известные боты, дата-центры и трафик команды.",
+		"en": "The new comparable count: known bots, data centres, and team traffic are excluded.",
+	},
+	"ca.started":          {"kz": "25%-ға жетті", "ru": "дошли до 25%", "en": "reached 25%"},
+	"ca.finished":         {"kz": "оқып бітірді", "ru": "подтверждённо прочли", "en": "confirmed reads"},
+	"ca.started_finished": {"kz": "25% / оқып бітірді", "ru": "25% / прочли", "en": "25% / read"},
+	"ca.read_note": {
+		"kz": "25% — мәтіннің төрттен біріне жеткен браузер сессиялары; оқып бітірді — соңына жетіп, есептік уақыттың кемінде жартысын белсенді өткізгендер. 26.09.2026 дейінгі тарих ескі сүзгімен жиналған.",
+		"ru": "25% — браузерные сессии, дошедшие до четверти текста; прочли — дошедшие до конца и активно проведшие не меньше половины расчётного времени. История до 26.09.2026 собрана со старым фильтром.",
+		"en": "25% is a browser session reaching a quarter of the text; read means reaching the end and spending at least half the estimated reading time engaged. History before 26 Sep 2026 used the old filter.",
+	},
+	"ca.learners_attempts_passed": {"kz": "адам / әрекет / өтті", "ru": "ученики / попытки / зачтено", "en": "learners / attempts / passed"},
+	"ca.legacy":                   {"kz": "Ескі ашылымдар", "ru": "Старые открытия", "en": "Legacy opens"},
+	"ca.legacy_note": {
+		"kz": "26.09.2026 дейінгі мақала есептегіші. Онда жариялау кезіндегі автоматты браузер тексерістері болуы мүмкін, сондықтан бұл сан аудитория ретінде қаралмайды.",
+		"ru": "Старый счётчик статей до 26.09.2026. В него могли попасть автоматические браузерные проверки при публикации, поэтому это справочная цифра, а не аудитория.",
+		"en": "The article counter from before 26 Sep 2026. It may include automated browser checks during publishing, so it is a reference figure rather than audience.",
+	},
+	"ca.lesson_note": {
+		"kz": "Кесте сүзілген ашылымдар бойынша сұрыпталады; жаңа есепте әзірге тең болса, ескі ашылымдар тек ретті анықтайды.",
+		"ru": "Таблица сортируется по отфильтрованным открытиям; пока новый счётчик пуст, старые открытия используются только для порядка строк.",
+		"en": "The table is sorted by filtered openings; while the new count is empty, legacy opens only determine row order.",
+	},
+	"ag.pages":    {"kz": "Беттер (30 күн)", "ru": "Страницы (30 дней)", "en": "Pages (30 days)"},
+	"ag.clicks":   {"kz": "Клик оқиғалары (30 күн)", "ru": "Клики (30 дней)", "en": "Clicks (30 days)"},
+	"stats.title": {"kz": "Аналитика", "ru": "Аналитика", "en": "Analytics"},
 
 	// The exchange rates page.
 	// Loan calculator: mortgage, car, consumer, instalments, business.

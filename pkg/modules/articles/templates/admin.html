@@ -29,6 +29,7 @@
       <span class="adm__navgroup">{{ t .Lang "admin.grp_analytics" }}</span>
       <a href="#growth" class="adm__navlink" data-nav>↗ {{ t .Lang "an2.title" }}</a>
       <a href="#guests" class="adm__navlink" data-nav>◔ {{ t .Lang "ag.title" }}</a>
+      <a href="#courses" class="adm__navlink" data-nav>▤ {{ t .Lang "ca.title" }}</a>
 
       <span class="adm__navgroup">{{ t .Lang "admin.grp_content" }}</span>
       <a href="#content" class="adm__navlink" data-nav>▦ {{ t .Lang "admin.articles" }}</a>
@@ -379,6 +380,76 @@
       {{ else }}
       <p class="adm-hint">{{ t .Lang "ag.empty" }}</p>
       {{ end }}
+    </section>
+
+    <section id="courses" class="adm-section">
+      <h2 class="adm-section__h">{{ t .Lang "ca.title" }} {{ template "fhelp" (t .Lang "ca.note") }}</h2>
+      <p class="adm-hint">{{ t .Lang "ca.since" }} {{ .Courses.Since }}. {{ t .Lang "ca.identity" }}</p>
+      <div class="adm-kpis adm-kpis--fill">
+        <div class="adm-kpi"><span class="adm-kpi__ic">☀</span><b>{{ money .Courses.Day.Total }}</b><span>{{ t .Lang "ca.views_day" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◔</span><b>{{ money .Courses.Week.Total }}</b><span>{{ t .Lang "ca.views_week" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◑</span><b>{{ money .Courses.Month.Total }}</b><span>{{ t .Lang "ca.views_month" }}</span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◎</span><b>{{ money .Courses.Hubs.Total }}</b><span>{{ t .Lang "ca.hubs" }}</span></div>
+        <div class="adm-kpi adm-kpi--read"><span class="adm-kpi__ic">◕</span><b>{{ money .Courses.Learners }}</b><span>{{ t .Lang "ca.learners" }}</span></div>
+        <div class="adm-kpi adm-kpi--read"><span class="adm-kpi__ic">✓</span><b>{{ money .Courses.Passed }}</b><span>{{ t .Lang "ca.passed" }}</span></div>
+      </div>
+
+      <div class="adm-panel">
+        <h2>{{ t .Lang "ca.by_course" }}</h2>
+        <div class="adm-xscroll">
+          <table class="spec adm-users">
+            <thead><tr>
+              <th>{{ t $.Lang "ca.course" }}</th><th>{{ t $.Lang "ca.lessons" }}</th>
+              <th title="{{ t $.Lang "ca.filtered_note" }}">{{ t $.Lang "ca.filtered" }}</th>
+              <th>{{ t $.Lang "ag.guests" }}</th><th>{{ t $.Lang "ag.registered_short" }}</th>
+              <th>{{ t $.Lang "ca.hubs" }}</th><th>KZ / RU / EN</th>
+              <th title="{{ t $.Lang "ca.read_note" }}">{{ t $.Lang "ca.started_finished" }}</th>
+              <th>{{ t $.Lang "ca.learners_attempts_passed" }}</th>
+              <th title="{{ t $.Lang "ca.legacy_note" }}">{{ t $.Lang "ca.legacy" }}</th>
+            </tr></thead>
+            <tbody>
+            {{ range .Courses.Courses }}
+              <tr>
+                <td><a href="/course/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></td>
+                <td>{{ .Lessons }}</td><td><b>{{ money .Views.Total }}</b></td>
+                <td>{{ money .Views.Guest }}</td><td>{{ money .Views.Registered }}</td>
+                <td>{{ money .Hub.Total }}</td><td>{{ money .KZ }} / {{ money .RU }} / {{ money .EN }}</td>
+                <td>{{ money .Started }} / {{ money .Finished }}</td>
+                <td>{{ money .Learners }} / {{ money .Attempts }} / {{ money .Passed }}</td>
+                <td>{{ money .LegacyViews }}</td>
+              </tr>
+            {{ end }}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="adm-panel">
+        <h2>{{ t .Lang "ca.by_lesson" }}</h2>
+        <p class="adm-hint">{{ t .Lang "ca.lesson_note" }}</p>
+        <div class="adm-scroll adm-scroll--tall adm-xscroll">
+          <table class="spec adm-users spec--sticky">
+            <thead><tr>
+              <th>{{ t $.Lang "ca.course" }}</th><th>{{ t $.Lang "ca.lesson" }}</th>
+              <th>{{ t $.Lang "ca.filtered" }}</th><th>{{ t $.Lang "ag.guests" }}</th>
+              <th>{{ t $.Lang "ag.registered_short" }}</th>
+              <th>{{ t $.Lang "ca.started" }}</th><th>{{ t $.Lang "ca.finished" }}</th>
+              <th>{{ t $.Lang "ca.legacy" }}</th>
+            </tr></thead>
+            <tbody>
+            {{ range .Courses.Lessons }}
+              <tr>
+                <td>{{ .CourseTitle }}</td>
+                <td><a href="/read/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }}</a></td>
+                <td><b>{{ money .Views.Total }}</b></td><td>{{ money .Views.Guest }}</td>
+                <td>{{ money .Views.Registered }}</td><td>{{ money .Started }}</td>
+                <td>{{ money .Finished }}</td><td>{{ money .LegacyViews }}</td>
+              </tr>
+            {{ end }}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
     <section id="content" class="adm-section">

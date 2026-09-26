@@ -703,15 +703,16 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 
 	// Count the view asynchronously-ish; ignore errors (best effort analytics).
 	//
-	// Crawlers are skipped, and that is not a detail. They used to be counted:
+	// Crawlers, hosting networks and the team's own traffic are skipped, and
+	// that is not a detail. Crawlers used to be counted:
 	// two thirds of every "views" number on the dashboard were Googlebot, the
 	// Facebook link scraper and AI crawlers. That inflated the counter itself,
 	// and — worse — it was the denominator of the reading-depth funnel, whose
 	// numerator only a real browser can produce (the beacon needs JavaScript).
 	// So genuine 23% read-through was reported as 2%, and an author reads that
 	// as "nobody finishes my articles". Crawler traffic is not lost: the
-	// analytics panel counts it under "bots".
-	counted := botLabel(r.UserAgent()) == ""
+	// analytics panel counts declared bots and hosting networks separately.
+	counted := m.countableAudience(r)
 	if counted {
 		if err := m.store.RecordView(r.Context(), a.ID, served); err != nil {
 			m.rt.Logger.Warn("record view", zap.Error(err))
@@ -816,6 +817,15 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 			// it is where the reader starts.
 			page.IsLesson = true
 			page.Ads = nil
+			if counted {
+				_, signedIn := auth.ClaimsFromContext(r.Context())
+				for _, place := range places {
+					if place.Series != nil && place.Series.Slug != "" {
+						m.metrics.inc(metricCourseLesson,
+							place.Series.Slug+"|"+a.Slug+"|"+served, !signedIn)
+					}
+				}
+			}
 		}
 	} else {
 		m.rt.Logger.Warn("article series", zap.Error(err))

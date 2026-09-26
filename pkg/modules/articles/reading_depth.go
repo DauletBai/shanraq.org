@@ -24,7 +24,7 @@ func (m *Module) handleReadProgress(w http.ResponseWriter, r *http.Request) {
 	// crawlers -- so the funnel and the read counter were drawn from different
 	// populations and could not be compared. Both now answer to the same rule
 	// as a page view.
-	if !m.audienceHit(r) {
+	if !m.countableAudience(r) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
@@ -158,7 +158,7 @@ func (m *Module) handleReadDone(w http.ResponseWriter, r *http.Request) {
 	// A crawler that runs JavaScript is rare; one that also idles on the page
 	// for minutes is rarer still. Even so, the same rule the view counter uses
 	// applies, so the two numbers are drawn from the same population.
-	if !m.audienceHit(r) {
+	if !m.countableAudience(r) {
 		return
 	}
 	a, err := m.store.GetPublishedBySlug(r.Context(), chi.URLParam(r, "slug"))

@@ -70,6 +70,8 @@ func TestPageKind(t *testing.T) {
 		"/":                 "home",
 		"/read":             "article",
 		"/read/some-slug":   "article",
+		"/courses":          "courses",
+		"/course/go":        "course",
 		"/listings":         "listings",
 		"/listings/new":     "listings",
 		"/listings/my":      "listings",

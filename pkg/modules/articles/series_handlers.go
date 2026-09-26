@@ -71,6 +71,10 @@ func (m *Module) handleCourse(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
+	if s.IsPublished() && m.countableAudience(r) {
+		_, signedIn := auth.ClaimsFromContext(r.Context())
+		m.metrics.inc(metricCourseHub, s.Slug+"|"+lang, !signedIn)
+	}
 
 	page := CoursePage{
 		Base:     m.base(r, s.TitleIn(lang), lang),

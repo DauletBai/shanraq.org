@@ -234,6 +234,9 @@ type AdminPage struct {
 	Traffic TrafficChart
 	// Aggregate audience (guest vs registered) traffic.
 	Guests GuestAnalytics
+	// Course and lesson traffic, counted with the same audience filter and kept
+	// separate from historical raw article openings.
+	Courses CourseAnalytics
 	// Confirmed reads: the scroll beacon fires only where a browser ran the
 	// script and somebody spent time on the page, so it counts people where the
 	// view counter counts requests. It sits beside the views on purpose — the
@@ -292,6 +295,11 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Error("admin analytics", zap.Error(err))
 	}
 	page.Guests = m.guestAnalytics(r.Context(), lang)
+	if courses, err := m.courseAnalytics(r.Context(), lang); err == nil {
+		page.Courses = courses
+	} else {
+		m.rt.Logger.Warn("course analytics", zap.Error(err))
+	}
 	if reads, err := m.store.ReadTotals(r.Context()); err == nil {
 		page.Reads = reads
 	} else {
