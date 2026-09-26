@@ -1,0 +1,56 @@
+{
+  "publication_date": "2026-09-26",
+  "author_email": "baimurza.daulet@gmail.com",
+  "original_language": "ru",
+  "items": [
+    {
+      "slug": "mangystau-military-exercise-investigation",
+      "category": "politics",
+      "subcategory": "defense",
+      "cover": "/static/covers/news/2026-09-26/mangystau-investigation.webp",
+      "sources": [
+        "https://www.gov.kz/memleket/entities/mod/press/news/1?directions=135",
+        "https://www.gov.kz/memleket/entities/mangystau/press/news/details/1299145?lang=ru",
+        "https://primeminister.kz/ru/news/sozdana-pravitelstvennaya-komissiya-po-rassledovaniyu-prichin-gibeli-voennosluzhashchih-v-mangistauskoy-oblasti-31924"
+      ]
+    },
+    {
+      "slug": "kazakhstan-food-prices-september-23",
+      "category": "economy",
+      "subcategory": "prices",
+      "cover": "/static/covers/news/2026-09-26/kazakhstan-food-prices.webp",
+      "sources": [
+        "https://stat.gov.kz/ru/news/v-kazakhstane-prodolzhaetsya-snizhenie-tsen-na-ryad-sotsialno-znachimykh-tovarov/"
+      ]
+    },
+    {
+      "slug": "faa-kazakhstan-iasa-assessment",
+      "category": "technology",
+      "subcategory": "aviation",
+      "cover": "/static/covers/news/2026-09-26/kazakhstan-faa-iasa.webp",
+      "sources": [
+        "https://www.caa.gov.kz/ru/blog/post/eksperty-faa-zavershili-rabotu-po-ocenke-bezopasnosti-poletov-v-kazahstane",
+        "https://www.faa.gov/about/initiatives/iasa"
+      ]
+    },
+    {
+      "slug": "un-pandemic-preparedness-2026",
+      "category": "society",
+      "subcategory": "health",
+      "cover": "/static/covers/news/2026-09-26/pandemic-preparedness.webp",
+      "sources": [
+        "https://www.who.int/hongkongchina/news/detail-global/25-09-2026-world-leaders-renew-commitment-to-protect-the-world-from-future-pandemics",
+        "https://www.un.org/pga/81/event/high-level-meeting-on-pandemic-prevention-preparedness-and-response/"
+      ]
+    },
+    {
+      "slug": "crew-13-launch-readiness",
+      "category": "technology",
+      "subcategory": "space",
+      "cover": "/static/covers/news/2026-09-26/crew-13-readiness.webp",
+      "sources": [
+        "https://www.nasa.gov/blogs/spacestation/2026/09/25/nasa-spacex-proceed-toward-crew-13-launch/"
+      ]
+    }
+  ]
+}
