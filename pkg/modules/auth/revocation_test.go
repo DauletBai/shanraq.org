@@ -59,6 +59,10 @@ func TestPrivilegedTokenDiesWithTheRole(t *testing.T) {
 	tokens := NewTokenService("test-token-secret-that-is-long-enough-1234567890", time.Hour)
 	mod := &Module{tokens: tokens, store: store}
 
+	// Keep another administrator in the database so this test exercises token
+	// revocation after a permitted demotion, independently of fixtures created
+	// by other packages.
+	seedUser(t, pool, "admin")
 	admin := seedUser(t, pool, "admin")
 	token, err := tokens.Generate(admin)
 	if err != nil {
