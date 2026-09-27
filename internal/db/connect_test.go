@@ -70,7 +70,7 @@ func TestTheConfiguredLimitsReachThePool(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 
 	if got := pool.Config().MaxConns; got != 7 {
 		t.Errorf("MaxConns = %d, want 7", got)

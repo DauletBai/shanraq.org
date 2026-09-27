@@ -186,7 +186,7 @@ func TestMetricsFlushAndGuestAnalytics(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 
 	// Dedicated table; safe to reset in the test DB for a deterministic assert.
 	if _, err := pool.Exec(ctx, `TRUNCATE analytics_daily`); err != nil {

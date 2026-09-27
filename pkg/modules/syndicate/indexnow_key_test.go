@@ -25,7 +25,7 @@ func TestTheIndexNowKeySurvivesARestart(t *testing.T) {
 	if err != nil {
 		t.Fatalf("подключение: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 	if _, err := pool.Exec(ctx, `DELETE FROM app_settings WHERE name = $1`, indexNowSetting); err != nil {
 		t.Fatalf("очистка: %v", err)
 	}
@@ -63,7 +63,7 @@ func TestABrokenStoredKeyIsReissued(t *testing.T) {
 	if err != nil {
 		t.Fatalf("подключение: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 	if _, err := pool.Exec(ctx, `
 		INSERT INTO app_settings (name, value) VALUES ($1, 'не ключ')
 		ON CONFLICT (name) DO UPDATE SET value = EXCLUDED.value`, indexNowSetting); err != nil {

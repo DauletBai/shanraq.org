@@ -26,7 +26,7 @@ func TestTranslateJobIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 
 	// Fresh author + article with a Russian original.
 	authorID := uuid.New()

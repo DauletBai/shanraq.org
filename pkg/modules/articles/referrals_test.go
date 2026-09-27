@@ -25,7 +25,7 @@ func TestReferralLoopIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 	rs := NewReferralStore(pool)
 
 	referrer, referred := uuid.New(), uuid.New()

@@ -18,7 +18,7 @@ func TestSiteMaintenanceTimer(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 
 	flags := NewServiceFlags(pool)
 	if err := flags.Load(ctx); err != nil {
@@ -79,7 +79,7 @@ func TestServiceFlagsIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 
 	flags := NewServiceFlags(pool)
 	if err := flags.Load(ctx); err != nil {

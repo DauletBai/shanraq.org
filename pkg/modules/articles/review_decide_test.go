@@ -25,7 +25,7 @@ func TestDecideArticleIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 
 	author, admin, article := uuid.New(), uuid.New(), uuid.New()
 	if _, err := pool.Exec(ctx, `INSERT INTO auth_users (id,email,password_hash,role) VALUES ($1,$2,'x','user'),($3,$4,'x','admin')`,
