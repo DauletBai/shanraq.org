@@ -98,6 +98,13 @@ func newTestApp(t *testing.T, authOpts ...auth.Option) *testApp {
 func (a *testApp) cleanup() {
 	ctx := context.Background()
 	for _, e := range a.emails {
+		// Remove editorial fixtures explicitly before the account. Most article
+		// rows disappear through the user's ON DELETE CASCADE, but tests also
+		// attach moderation and syndication records to them. A blocked account
+		// cleanup used to leave a published article behind for the next test run,
+		// so the normal CI pass contaminated the following -race pass.
+		_, _ = a.pool.Exec(ctx, `DELETE FROM articles
+			WHERE author_id IN (SELECT id FROM auth_users WHERE lower(email) = lower($1))`, e)
 		_, _ = a.pool.Exec(ctx, `DELETE FROM auth_users WHERE lower(email) = lower($1)`, e)
 	}
 	a.pool.Close()
