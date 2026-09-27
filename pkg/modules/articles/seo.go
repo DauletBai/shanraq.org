@@ -148,8 +148,15 @@ var publicPages = []string{
 // feeds and articles. Real-estate listings live in their own sitemap
 // (handleSitemapListings) so Search Console tracks the classifieds separately.
 func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
+	homeFresh, herr := m.store.HomeFreshness(r.Context())
+	if herr != nil {
+		m.rt.Logger.Warn("sitemap home freshness", zap.Error(herr))
+	}
 	doc := m.sitemapDoc(func(emit func(path string, mod time.Time)) {
-		emit("/", time.Now())
+		// The front page changes when its newest public article changes. Using the
+		// request time here made <lastmod> advance every day even on a quiet site,
+		// which eventually teaches crawlers that our modification dates are noise.
+		emit("/", homeFresh)
 		for _, p := range publicPages {
 			emit(p, time.Time{})
 		}
@@ -211,19 +218,10 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 				emit("/place/"+slug, time.Time{})
 			}
 		}
-		// Forecast pages for the places that can have one. These are the pages
-		// people look for by name — "погода Качар" — and until now there was
-		// nothing for that search to find. Only places with coordinates and a
-		// slug qualify: the rest cannot be forecast at all.
-		if m.geo != nil {
-			if wx, werr := m.geo.WeatherPlaces(r.Context()); werr != nil {
-				m.rt.Logger.Warn("sitemap weather places", zap.Error(werr))
-			} else {
-				for _, slug := range wx {
-					emit("/weather/"+slug, time.Time{})
-				}
-			}
-		}
+		// Weather remains a useful on-site utility, but it is third-party forecast
+		// data repeated over hundreds of near-identical place pages. It is kept out
+		// of Search (and marked noindex by the handler) so the sitemap concentrates
+		// on Shanraq's original reporting, courses and other durable pages.
 		// Days that actually have something on them. An archive page for an
 		// empty day is a real URL a crawler can reach, and a few hundred of
 		// them would say nothing except that the site is mostly empty.

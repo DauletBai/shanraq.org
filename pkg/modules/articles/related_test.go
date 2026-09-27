@@ -149,3 +149,24 @@ func TestCategoryFreshnessComesFromRealArticles(t *testing.T) {
 		t.Error("неиндексируемая статья задала дату рубрике, которой нет в sitemap")
 	}
 }
+
+func TestHomeFreshnessComesFromPublicContent(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	store := NewStore(app.pool)
+	if got, err := store.HomeFreshness(context.Background()); err != nil || !got.IsZero() {
+		t.Fatalf("empty home freshness = %v, %v; want zero", got, err)
+	}
+	authorID := app.createUser("homefresh@example.com", "Parol123!")
+	id, _ := app.seedArticle(authorID, "published")
+	app.exec(`UPDATE articles SET published_at='2026-04-10 09:00:00+00', updated_at='2026-04-11 12:00:00+00' WHERE id=$1`, id)
+
+	got, err := store.HomeFreshness(context.Background())
+	if err != nil {
+		t.Fatalf("HomeFreshness: %v", err)
+	}
+	if want := "2026-04-11"; got.UTC().Format("2006-01-02") != want {
+		t.Errorf("home freshness = %s, want %s", got.UTC().Format("2006-01-02"), want)
+	}
+}

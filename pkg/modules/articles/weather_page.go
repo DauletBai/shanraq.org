@@ -313,6 +313,10 @@ func (m *Module) weatherAt(ctx context.Context, lang string, p wxPlace) WeatherP
 
 // handleWeatherPoint answers a press on the map with the page for that place.
 func (m *Module) handleWeatherPoint(w http.ResponseWriter, r *http.Request) {
+	// This endpoint is an HTML fragment requested by the map, not a standalone
+	// document. If a crawler discovers the URL in the script, it must not index a
+	// fragment as a page or follow an unbounded set of coordinate combinations.
+	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
 	lang := site.ResolveLang(w, r)
 	lat, lon, ok := wxCoords(r.URL.Query().Get("lat"), r.URL.Query().Get("lon"))
 	if !ok {
@@ -447,6 +451,12 @@ func (m *Module) handleWeather(w http.ResponseWriter, r *http.Request) {
 	name := place.name
 	title := fmt.Sprintf(site.T(lang, "wx.title_place"), name)
 	page.Base = m.base(r, title, lang)
+	// Forecasts are a useful utility for readers already on Shanraq, but the
+	// underlying material comes from a third-party feed and produces hundreds of
+	// pages with the same structure. Keep the feature and its links working while
+	// keeping this inventory out of Search, where it competes with the site's
+	// original reporting and courses.
+	page.NoIndex = true
 	// The map needs Leaflet, and Leaflet is only shipped to the pages that draw
 	// one: it is the heaviest asset on the site.
 	page.NeedsMap = true

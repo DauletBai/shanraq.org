@@ -4,6 +4,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // The server runs in UTC and the readers do not. From seven in the evening
@@ -128,5 +130,28 @@ func TestWeatherNeedsCoordinates(t *testing.T) {
 	}
 	if rec := app.do("GET", "/weather/nosuchplace", nil); rec.Code != 404 {
 		t.Errorf("несуществующее место ответило %d, ожидался 404", rec.Code)
+	}
+}
+
+// Forecasts stay available to readers, but their third-party, fast-expiring
+// data must not occupy most of the editorial sitemap or join the search index.
+func TestWeatherUtilityStaysOutOfSearch(t *testing.T) {
+	app := newTestApp(t)
+	id := uuid.New()
+	slug := "seo-weather-" + id.String()[:8]
+	app.exec(`INSERT INTO geo_nodes (id,code,country,level,kind,name_ru,name_kk,name_en,slug,lat,lng)
+	          VALUES ($1,$2,'KZ',3,'city','SEO погода','SEO ауа райы','SEO weather',$3,43.2,76.9)`,
+		id, "seo-weather-"+id.String()[:8], slug)
+	t.Cleanup(func() { app.exec(`DELETE FROM geo_nodes WHERE id=$1`, id) })
+
+	if body := app.do("GET", "/sitemap.xml", nil).Body.String(); strings.Contains(body, "/weather/") {
+		t.Error("weather URLs still occupy the editorial sitemap")
+	}
+	rec := app.do("GET", "/weather/"+slug+"?lang=ru", nil)
+	if rec.Code != 200 {
+		t.Fatalf("weather utility returned %d", rec.Code)
+	}
+	if !strings.Contains(rec.Body.String(), `name="robots" content="noindex, follow, max-image-preview:large"`) {
+		t.Error("weather utility is missing noindex, follow")
 	}
 }

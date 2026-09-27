@@ -82,6 +82,9 @@ func TestWeatherPointAnswersWithTheWholePage(t *testing.T) {
 	if rec.Code != 200 {
 		t.Fatalf("точка ответила %d", rec.Code)
 	}
+	if got := rec.Header().Get("X-Robots-Tag"); got != "noindex, nofollow" {
+		t.Errorf("weather fragment robots header = %q", got)
+	}
 	body := rec.Body.String()
 	// A fragment, not a document: injecting a whole page into a div is how a
 	// layout ends up with two headers.

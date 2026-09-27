@@ -523,7 +523,28 @@ func (s *Store) RelatedPublished(ctx context.Context, exclude uuid.UUID, categor
 	return s.attachTranslations(ctx, arts)
 }
 
-// CategoryFreshness returns, per category, when its newest article appeared.
+// HomeFreshness returns the last real change to the public, non-local front
+// page. An empty site has no honest modification date and therefore returns the
+// zero value, which makes the sitemap omit <lastmod>.
+func (s *Store) HomeFreshness(ctx context.Context) (time.Time, error) {
+	var at *time.Time
+	err := s.db.QueryRow(ctx, `
+		SELECT MAX(GREATEST(published_at, updated_at))
+		FROM articles
+		WHERE status = 'published' AND indexable AND published_at IS NOT NULL
+		  AND geo_node_id IS NULL`).Scan(&at)
+	if err != nil {
+		return time.Time{}, fmt.Errorf("home freshness: %w", err)
+	}
+	if at == nil {
+		return time.Time{}, nil
+	}
+	return *at, nil
+}
+
+// CategoryFreshness returns, per category, when its newest article appeared or
+// an existing card changed. Local notices do not appear on the general category
+// feeds and therefore must not move their dates.
 //
 // It feeds <lastmod> on the category feeds in the sitemap. Those pages are real
 // hubs — they change whenever a piece lands in the section — and a crawler that
@@ -533,9 +554,10 @@ func (s *Store) RelatedPublished(ctx context.Context, exclude uuid.UUID, categor
 // more than the entries are worth.
 func (s *Store) CategoryFreshness(ctx context.Context) (map[string]time.Time, error) {
 	rows, err := s.db.Query(ctx, `
-		SELECT category, MAX(published_at)
+		SELECT category, MAX(GREATEST(published_at, updated_at))
 		FROM articles
 		WHERE status = 'published' AND indexable AND published_at IS NOT NULL
+		  AND geo_node_id IS NULL
 		GROUP BY category`)
 	if err != nil {
 		return nil, fmt.Errorf("category freshness: %w", err)
