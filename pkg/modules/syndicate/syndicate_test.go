@@ -159,7 +159,7 @@ func TestDigestIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 
 	// A published article within the last 7 days, and a subscriber.
 	authorID := uuid.New()
@@ -269,7 +269,7 @@ func TestFetchFeedIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 
 	authorID := uuid.New()
 	articleID := uuid.New()

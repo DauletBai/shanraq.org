@@ -66,7 +66,7 @@ func TestSubscribersInsideFollowsTheTreeDownwards(t *testing.T) {
 	if err != nil {
 		t.Fatalf("connect: %v", err)
 	}
-	defer pool.Close()
+	t.Cleanup(pool.Close)
 	m := &Module{db: pool, log: zap.NewNop()}
 
 	place := func(slug string) (id string) {
