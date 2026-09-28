@@ -1,0 +1,89 @@
+name: Cloud DevOps course checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'course/cloud-devops-lab/**'
+      - 'course/lessons/cloud-devops/**'
+      - 'web/static/course/cloud-devops/**'
+      - 'web/static/covers/it/devops/**'
+      - 'tools/course/generate_cloud_devops.py'
+      - 'tools/course/prepare_cloud_devops.py'
+      - 'tools/course/test_cloud_devops_release.py'
+      - 'tools/course/lesson-slugs.json'
+      - '.github/workflows/cloud-devops-course.yml'
+  pull_request:
+    paths:
+      - 'course/cloud-devops-lab/**'
+      - 'course/lessons/cloud-devops/**'
+      - 'web/static/course/cloud-devops/**'
+      - 'web/static/covers/it/devops/**'
+      - 'tools/course/generate_cloud_devops.py'
+      - 'tools/course/prepare_cloud_devops.py'
+      - 'tools/course/test_cloud_devops_release.py'
+      - 'tools/course/lesson-slugs.json'
+      - '.github/workflows/cloud-devops-course.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  project-and-publication:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: course/cloud-devops-lab/go.mod
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+
+      - name: Go project tests
+        working-directory: course/cloud-devops-lab
+        run: go test ./...
+
+      - name: Shell syntax
+        working-directory: course/cloud-devops-lab
+        run: sh -n scripts/*.sh
+
+      - name: Compose declarations
+        working-directory: course/cloud-devops-lab
+        env:
+          CLOUDLAB_IMAGE: ghcr.io/example/cloudlab:0123456789ab
+          CLOUDLAB_DOMAIN: cloudlab.example.com
+        run: |
+          docker compose config >/dev/null
+          docker compose -f compose.prod.yaml config >/dev/null
+
+      - name: Container smoke test
+        working-directory: course/cloud-devops-lab
+        run: |
+          docker compose up --build -d
+          trap 'docker compose down' EXIT
+          ready=
+          for attempt in 1 2 3 4 5 6; do
+            if curl -fsS http://127.0.0.1:8080/readyz; then
+              ready=yes
+              break
+            fi
+            sleep 2
+          done
+          if [ "$ready" != yes ]; then
+            docker compose logs app
+            exit 1
+          fi
+          curl -fsS -X POST -d note=ci-persistence-check http://127.0.0.1:8080/notes >/dev/null
+          curl -fsS http://127.0.0.1:8080/ | grep -q ci-persistence-check
+
+      - name: Publication boundary and locale coverage
+        env:
+          PYTHONPATH: tools/course
+        run: python -m unittest tools/course/test_cloud_devops_release.py
+
+      - name: Generated sources are current
+        run: |
+          python tools/course/generate_cloud_devops.py
+          git diff --exit-code -- course/lessons/cloud-devops web/static/course/cloud-devops

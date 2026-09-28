@@ -1,0 +1,33 @@
+services:
+  app:
+    image: ${CLOUDLAB_IMAGE:?set CLOUDLAB_IMAGE to an immutable image tag}
+    environment:
+      CLOUDLAB_ADDR: :8080
+      CLOUDLAB_ENV: production
+      CLOUDLAB_DATA: /data/notes.json
+    volumes:
+      - cloudlab-data:/data
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    restart: unless-stopped
+    networks: [private]
+  caddy:
+    image: caddy:2.10.2-alpine
+    environment:
+      CLOUDLAB_DOMAIN: ${CLOUDLAB_DOMAIN:?set CLOUDLAB_DOMAIN}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    restart: unless-stopped
+    networks: [private]
+
+networks:
+  private:
+volumes:
+  cloudlab-data:
+  caddy-data:
+  caddy-config:

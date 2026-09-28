@@ -2086,5 +2086,305 @@
   "rust/60-release-en": [
     "rust-60-release",
     "en"
+  ],
+  "cloud-devops/preface": [
+    "cloud-devops-before-start",
+    "ru"
+  ],
+  "cloud-devops/preface-kz": [
+    "cloud-devops-before-start",
+    "kz"
+  ],
+  "cloud-devops/preface-en": [
+    "cloud-devops-before-start",
+    "en"
+  ],
+  "cloud-devops/01-why-now": [
+    "cloud-devops-01-why-now",
+    "ru"
+  ],
+  "cloud-devops/01-why-now-kz": [
+    "cloud-devops-01-why-now",
+    "kz"
+  ],
+  "cloud-devops/01-why-now-en": [
+    "cloud-devops-01-why-now",
+    "en"
+  ],
+  "cloud-devops/02-service-map": [
+    "cloud-devops-02-service-map",
+    "ru"
+  ],
+  "cloud-devops/02-service-map-kz": [
+    "cloud-devops-02-service-map",
+    "kz"
+  ],
+  "cloud-devops/02-service-map-en": [
+    "cloud-devops-02-service-map",
+    "en"
+  ],
+  "cloud-devops/03-terminal-git": [
+    "cloud-devops-03-terminal-git",
+    "ru"
+  ],
+  "cloud-devops/03-terminal-git-kz": [
+    "cloud-devops-03-terminal-git",
+    "kz"
+  ],
+  "cloud-devops/03-terminal-git-en": [
+    "cloud-devops-03-terminal-git",
+    "en"
+  ],
+  "cloud-devops/04-linux-access": [
+    "cloud-devops-04-linux-access",
+    "ru"
+  ],
+  "cloud-devops/04-linux-access-kz": [
+    "cloud-devops-04-linux-access",
+    "kz"
+  ],
+  "cloud-devops/04-linux-access-en": [
+    "cloud-devops-04-linux-access",
+    "en"
+  ],
+  "cloud-devops/05-processes-logs": [
+    "cloud-devops-05-processes-logs",
+    "ru"
+  ],
+  "cloud-devops/05-processes-logs-kz": [
+    "cloud-devops-05-processes-logs",
+    "kz"
+  ],
+  "cloud-devops/05-processes-logs-en": [
+    "cloud-devops-05-processes-logs",
+    "en"
+  ],
+  "cloud-devops/06-networks-dns-http": [
+    "cloud-devops-06-networks-dns-http",
+    "ru"
+  ],
+  "cloud-devops/06-networks-dns-http-kz": [
+    "cloud-devops-06-networks-dns-http",
+    "kz"
+  ],
+  "cloud-devops/06-networks-dns-http-en": [
+    "cloud-devops-06-networks-dns-http",
+    "en"
+  ],
+  "cloud-devops/07-containers": [
+    "cloud-devops-07-containers",
+    "ru"
+  ],
+  "cloud-devops/07-containers-kz": [
+    "cloud-devops-07-containers",
+    "kz"
+  ],
+  "cloud-devops/07-containers-en": [
+    "cloud-devops-07-containers",
+    "en"
+  ],
+  "cloud-devops/08-images-lifecycle": [
+    "cloud-devops-08-images-lifecycle",
+    "ru"
+  ],
+  "cloud-devops/08-images-lifecycle-kz": [
+    "cloud-devops-08-images-lifecycle",
+    "kz"
+  ],
+  "cloud-devops/08-images-lifecycle-en": [
+    "cloud-devops-08-images-lifecycle",
+    "en"
+  ],
+  "cloud-devops/09-dockerfile": [
+    "cloud-devops-09-dockerfile",
+    "ru"
+  ],
+  "cloud-devops/09-dockerfile-kz": [
+    "cloud-devops-09-dockerfile",
+    "kz"
+  ],
+  "cloud-devops/09-dockerfile-en": [
+    "cloud-devops-09-dockerfile",
+    "en"
+  ],
+  "cloud-devops/10-persistent-data": [
+    "cloud-devops-10-persistent-data",
+    "ru"
+  ],
+  "cloud-devops/10-persistent-data-kz": [
+    "cloud-devops-10-persistent-data",
+    "kz"
+  ],
+  "cloud-devops/10-persistent-data-en": [
+    "cloud-devops-10-persistent-data",
+    "en"
+  ],
+  "cloud-devops/11-compose": [
+    "cloud-devops-11-compose",
+    "ru"
+  ],
+  "cloud-devops/11-compose-kz": [
+    "cloud-devops-11-compose",
+    "kz"
+  ],
+  "cloud-devops/11-compose-en": [
+    "cloud-devops-11-compose",
+    "en"
+  ],
+  "cloud-devops/12-health-resources": [
+    "cloud-devops-12-health-resources",
+    "ru"
+  ],
+  "cloud-devops/12-health-resources-kz": [
+    "cloud-devops-12-health-resources",
+    "kz"
+  ],
+  "cloud-devops/12-health-resources-en": [
+    "cloud-devops-12-health-resources",
+    "en"
+  ],
+  "cloud-devops/13-registry": [
+    "cloud-devops-13-registry",
+    "ru"
+  ],
+  "cloud-devops/13-registry-kz": [
+    "cloud-devops-13-registry",
+    "kz"
+  ],
+  "cloud-devops/13-registry-en": [
+    "cloud-devops-13-registry",
+    "en"
+  ],
+  "cloud-devops/14-cicd": [
+    "cloud-devops-14-cicd",
+    "ru"
+  ],
+  "cloud-devops/14-cicd-kz": [
+    "cloud-devops-14-cicd",
+    "kz"
+  ],
+  "cloud-devops/14-cicd-en": [
+    "cloud-devops-14-cicd",
+    "en"
+  ],
+  "cloud-devops/15-github-actions": [
+    "cloud-devops-15-github-actions",
+    "ru"
+  ],
+  "cloud-devops/15-github-actions-kz": [
+    "cloud-devops-15-github-actions",
+    "kz"
+  ],
+  "cloud-devops/15-github-actions-en": [
+    "cloud-devops-15-github-actions",
+    "en"
+  ],
+  "cloud-devops/16-release-image": [
+    "cloud-devops-16-release-image",
+    "ru"
+  ],
+  "cloud-devops/16-release-image-kz": [
+    "cloud-devops-16-release-image",
+    "kz"
+  ],
+  "cloud-devops/16-release-image-en": [
+    "cloud-devops-16-release-image",
+    "en"
+  ],
+  "cloud-devops/17-secrets": [
+    "cloud-devops-17-secrets",
+    "ru"
+  ],
+  "cloud-devops/17-secrets-kz": [
+    "cloud-devops-17-secrets",
+    "kz"
+  ],
+  "cloud-devops/17-secrets-en": [
+    "cloud-devops-17-secrets",
+    "en"
+  ],
+  "cloud-devops/18-deploy-rollback": [
+    "cloud-devops-18-deploy-rollback",
+    "ru"
+  ],
+  "cloud-devops/18-deploy-rollback-kz": [
+    "cloud-devops-18-deploy-rollback",
+    "kz"
+  ],
+  "cloud-devops/18-deploy-rollback-en": [
+    "cloud-devops-18-deploy-rollback",
+    "en"
+  ],
+  "cloud-devops/19-cloud": [
+    "cloud-devops-19-cloud",
+    "ru"
+  ],
+  "cloud-devops/19-cloud-kz": [
+    "cloud-devops-19-cloud",
+    "kz"
+  ],
+  "cloud-devops/19-cloud-en": [
+    "cloud-devops-19-cloud",
+    "en"
+  ],
+  "cloud-devops/20-server": [
+    "cloud-devops-20-server",
+    "ru"
+  ],
+  "cloud-devops/20-server-kz": [
+    "cloud-devops-20-server",
+    "kz"
+  ],
+  "cloud-devops/20-server-en": [
+    "cloud-devops-20-server",
+    "en"
+  ],
+  "cloud-devops/21-https": [
+    "cloud-devops-21-https",
+    "ru"
+  ],
+  "cloud-devops/21-https-kz": [
+    "cloud-devops-21-https",
+    "kz"
+  ],
+  "cloud-devops/21-https-en": [
+    "cloud-devops-21-https",
+    "en"
+  ],
+  "cloud-devops/22-iac": [
+    "cloud-devops-22-iac",
+    "ru"
+  ],
+  "cloud-devops/22-iac-kz": [
+    "cloud-devops-22-iac",
+    "kz"
+  ],
+  "cloud-devops/22-iac-en": [
+    "cloud-devops-22-iac",
+    "en"
+  ],
+  "cloud-devops/23-kubernetes": [
+    "cloud-devops-23-kubernetes",
+    "ru"
+  ],
+  "cloud-devops/23-kubernetes-kz": [
+    "cloud-devops-23-kubernetes",
+    "kz"
+  ],
+  "cloud-devops/23-kubernetes-en": [
+    "cloud-devops-23-kubernetes",
+    "en"
+  ],
+  "cloud-devops/24-incident": [
+    "cloud-devops-24-incident",
+    "ru"
+  ],
+  "cloud-devops/24-incident-kz": [
+    "cloud-devops-24-incident",
+    "kz"
+  ],
+  "cloud-devops/24-incident-en": [
+    "cloud-devops-24-incident",
+    "en"
   ]
 }

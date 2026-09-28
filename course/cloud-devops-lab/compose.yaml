@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        VERSION: local
+    image: cloudlab:local
+    environment:
+      CLOUDLAB_ADDR: :8080
+      CLOUDLAB_ENV: compose
+      CLOUDLAB_DATA: /data/notes.json
+    volumes:
+      - cloudlab-data:/data
+    healthcheck:
+      test: ["CMD", "/cloudlab-healthcheck"]
+      interval: 10s
+      timeout: 2s
+      retries: 3
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    restart: unless-stopped
+    networks: [private]
+  caddy:
+    image: caddy:2.10.2-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./deploy/caddy/Caddyfile.local:/etc/caddy/Caddyfile:ro
+    depends_on:
+      app:
+        condition: service_healthy
+    networks: [private]
+
+networks:
+  private:
+volumes:
+  cloudlab-data:

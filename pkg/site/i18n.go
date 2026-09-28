@@ -2335,10 +2335,11 @@ var messages = map[string]map[string]string{
 	"nav.courses":        {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.index_title": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.index_lead": {
-		"kz": "Ретімен оқылатын сабақтар топтамасы. Барлық сабақтар ашық: тегін және тіркелусіз. Go, Python және SQL курстары, сондай-ақ Rust курсының алғашқы сабақтары ашық. Rust курсы бес сабақтан толықтырылады.",
-		"ru": "Серии уроков, которые читаются по порядку. Все уроки открыты: бесплатно и без регистрации. Доступны курсы Go, Python и SQL, а также первые уроки Rust. Rust пополняется партиями по пять уроков.",
-		"en": "Lesson series meant to be read in order. Every lesson is open: free, no sign-up. Go, Python and SQL courses are available, along with the first Rust lessons. Rust grows five lessons at a time.",
+		"kz": "Ретімен оқылатын сабақтар топтамасы. Барлық курс толық ашық: тегін және тіркелусіз. Go, Python, SQL, Rust, қазақша ЖИ және Cloud & DevOps бір нақты жобамен тәжірибе береді.",
+		"ru": "Серии уроков, которые читаются по порядку. Все курсы открыты полностью: бесплатно и без регистрации. Go, Python, SQL, Rust, казахский ИИ и Cloud & DevOps дают практику на одном реальном проекте.",
+		"en": "Lesson series meant to be read in order. Every course is fully open: free and without sign-up. Go, Python, SQL, Rust, Kazakh AI, and Cloud & DevOps teach through one real project each.",
 	},
+	"footer.cloud_devops": {"kz": "Cloud & DevOps", "ru": "Cloud & DevOps", "en": "Cloud & DevOps"},
 	"course.empty_index": {
 		"kz": "Әзірге бірде-бір курс жарияланған жоқ.",
 		"ru": "Пока не опубликовано ни одного курса.",

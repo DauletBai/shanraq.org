@@ -1,0 +1,40 @@
+---
+- name: Prepare a CloudLab host
+  hosts: cloudlab
+  become: true
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - docker.io
+          - docker-compose-v2
+          - ufw
+        state: present
+        update_cache: true
+
+    - name: Enable Docker
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Allow SSH
+      community.general.ufw:
+        rule: allow
+        port: "22"
+        proto: tcp
+
+    - name: Allow HTTP and HTTPS
+      community.general.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop: ["80", "443"]
+
+    - name: Enable firewall with incoming traffic denied
+      community.general.ufw:
+        state: enabled
+        direction: incoming
+        policy: deny

@@ -107,6 +107,23 @@ func TestRustSelfCheckDoesNotUseGoFormatter(t *testing.T) {
 	}
 }
 
+func TestShellCourseUsesShellReviewAndSafeFormatting(t *testing.T) {
+	input := "#!/bin/sh  \r\nset -eu\t\r\nprintf '%s\\n' ready\r\n"
+	formatted, err := formatSolution(input, CodeShell)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := "#!/bin/sh\nset -eu\nprintf '%s\\n' ready\n"; formatted != want {
+		t.Fatalf("formatted shell = %q, want %q", formatted, want)
+	}
+	if !strings.Contains(checkSystem(LangRU, CodeShell), "Shell (POSIX sh)") {
+		t.Fatal("Shell review must identify the course language")
+	}
+	if got := string(highlightCode("printf ready", CodeShell)); !strings.Contains(got, "chroma") {
+		t.Fatal("Shell syntax was not highlighted")
+	}
+}
+
 func TestRustSecondBatchStaysOutOfFeed(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()

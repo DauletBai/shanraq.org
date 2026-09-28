@@ -52,6 +52,10 @@ func TestRustFooterLinkPreservesLanguage(t *testing.T) {
 			if !strings.Contains(body.String(), newCourse) {
 				t.Fatalf("footer missing Kazakh AI link %s", newCourse)
 			}
+			cloudCourse := `href="/course/cloud-devops?lang=` + lang + `"`
+			if !strings.Contains(body.String(), cloudCourse) {
+				t.Fatalf("footer missing Cloud & DevOps link %s", cloudCourse)
+			}
 			shortNames := map[string]string{"kz": "ЖИ курсы", "ru": "Курс ИИ", "en": "AI course"}
 			if !strings.Contains(body.String(), `/static/brand/shanraq.svg`) {
 				t.Fatal("footer missing Shanraq course mark")
