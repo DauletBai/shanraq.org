@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-<title id="title">Compare fractions</title><desc id="desc">Both fractions are placed on one number line.</desc>
+<title id="title">Сравнение 1/2 и 2/3</title><desc id="desc">Обе дроби стоят на прямой, разделенной на шесть равных интервалов: три шестых левее четырех шестых.</desc>
 <defs>
  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff"/><stop offset="1" stop-color="#fff7e5"/></linearGradient>
  <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a"/><stop offset="1" stop-color="#b80f18"/></linearGradient>
@@ -7,9 +7,11 @@
  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a"/><stop offset="1" stop-color="#e39a16"/></linearGradient>
  <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22"/></filter>
 </defs><rect width="1200" height="630" rx="34" fill="url(#bg)"/>
+<g data-comparison="1/2&lt;2/3">
 <path d="M120 320h960" stroke="#365675" stroke-width="10" stroke-linecap="round"/>
-<g stroke="#365675" stroke-width="5"><path d="M120 275v90M360 285v70M600 275v90M840 285v70M1080 275v90"/></g>
-<circle cx="570" cy="320" r="28" fill="url(#blue)" filter="url(#s)"/><circle cx="760" cy="320" r="28" fill="url(#red)" filter="url(#s)"/>
-<path d="M570 235v-70M760 235v-70" stroke="#365675" stroke-width="4"/>
-<g font-family="system-ui,sans-serif" font-size="48" font-weight="700" text-anchor="middle" fill="#17324d"><text x="120" y="410">0</text><text x="1080" y="410">1</text><text x="570" y="145">1/2</text><text x="760" y="145">2/3</text><text x="665" y="520">1/2 &lt; 2/3</text></g>
+<g class="sixth-ticks" stroke="#365675" stroke-width="5"><path d="M120 275v90"/><path d="M280 285v70"/><path d="M440 285v70"/><path d="M600 275v90"/><path d="M760 275v90"/><path d="M920 285v70"/><path d="M1080 275v90"/></g>
+<circle cx="600" cy="320" r="28" fill="url(#blue)" filter="url(#s)"/><circle cx="760" cy="320" r="28" fill="url(#red)" filter="url(#s)"/>
+<path d="M600 235v-70M760 235v-70" stroke="#365675" stroke-width="4"/>
+<g font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle" fill="#17324d"><text x="120" y="410" font-size="40">0</text><text x="1080" y="410" font-size="40">1</text><text x="600" y="145" font-size="42">1/2 = 3/6</text><text x="760" y="85" font-size="42">2/3 = 4/6</text><text x="680" y="520" font-size="48">1/2 &lt; 2/3</text></g>
+</g>
 </svg>

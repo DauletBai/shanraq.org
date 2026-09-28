@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-<title id="title">Learning route</title><desc id="desc">A bridge of connected mathematical ideas.</desc>
+<title id="title">Маршрут входной диагностики</title><desc id="desc">Ответы из задач диагностики образуют путь от арифметики к алгебре.</desc>
 <defs>
  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff"/><stop offset="1" stop-color="#fff7e5"/></linearGradient>
  <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a"/><stop offset="1" stop-color="#b80f18"/></linearGradient>
@@ -10,7 +10,7 @@
 <path d="M100 475 C290 475 280 360 455 360 S650 245 795 245 S930 135 1090 135" fill="none" stroke="#d7b06a" stroke-width="34" stroke-linecap="round" filter="url(#s)"/>
 <g fill="#fff" stroke="#365675" stroke-width="6">
  <circle cx="120" cy="475" r="54"/><circle cx="350" cy="390" r="54"/><circle cx="570" cy="310" r="54"/><circle cx="790" cy="245" r="54"/><circle cx="1015" cy="145" r="54"/>
-</g><g font-family="system-ui,sans-serif" font-size="38" font-weight="700" text-anchor="middle" fill="#17324d">
- <text x="120" y="488">12</text><text x="350" y="403">3/4</text><text x="570" y="323">2:5</text><text x="790" y="258">25%</text><text x="1015" y="158">x</text>
+</g><g data-diagnostic-route="12|3/8|2:3|25%|x=5" font-family="system-ui,sans-serif" font-size="38" font-weight="700" text-anchor="middle" fill="#17324d">
+ <text x="120" y="488">12</text><text x="350" y="403">3/8</text><text x="570" y="323">2:3</text><text x="790" y="258">25%</text><text x="1015" y="158">x=5</text>
 </g><path d="M80 550h1040" stroke="#365675" stroke-width="3" stroke-dasharray="12 14" opacity=".45"/>
 </svg>

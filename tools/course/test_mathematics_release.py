@@ -98,6 +98,49 @@ class MathematicsReleaseTests(unittest.TestCase):
         self.assertEqual(percent_map.count("percent-cell--final-seven"), 7)
         self.assertIn("30 + 7 = 37", percent_map)
 
+    def test_lesson_maps_encode_the_examples_they_explain(self):
+        maps = ROOT / "web/static/course/mathematics"
+        lessons = prepare_mathematics.LESSONS
+
+        diagnostic = (maps / "map-01-diagnostic.svg").read_text(encoding="utf-8")
+        self.assertIn('data-diagnostic-route="12|3/8|2:3|25%|x=5"', diagnostic)
+
+        expected = (
+            ("02-fraction-meaning.md", "map-02-fraction.svg", "3/8", 'data-fraction="3/8"'),
+            ("03-equivalent-fractions.md", "map-03-equivalence.svg", "1/2", 'data-equivalence="1/2=2/4"'),
+            ("04-compare-fractions.md", "map-04-compare.svg", "2/3", 'data-comparison="1/2&lt;2/3"'),
+            ("05-fraction-operations.md", "map-05-operations.svg", "5/6", 'data-equation="1/2+1/3=5/6"'),
+            ("06-ratio.md", "map-06-ratio.svg", "4:6", 'data-ratios="2:3=4:6"'),
+            ("07-percent.md", "map-07-percent.svg", "37/100", 'data-fraction="37/100"'),
+            ("08-proportion.md", "map-08-proportion.svg", "6/9", 'data-equivalence="2/3=6/9"'),
+        )
+        for lesson_name, map_name, example, marker in expected:
+            lesson = (lessons / lesson_name).read_text(encoding="utf-8")
+            illustration = (maps / map_name).read_text(encoding="utf-8")
+            self.assertIn(example, lesson, lesson_name)
+            self.assertIn(marker, illustration, map_name)
+
+        fraction = ET.parse(maps / "map-02-fraction.svg").getroot()
+        namespace = {"svg": "http://www.w3.org/2000/svg"}
+        spokes = fraction.find(".//svg:g[@class='fraction-spokes']", namespace)
+        ticks = fraction.find(".//svg:g[@class='eighth-ticks']", namespace)
+        self.assertEqual(len(spokes.findall("svg:path", namespace)), 8)
+        self.assertEqual(len(ticks.findall("svg:path", namespace)), 9)
+
+        comparison = ET.parse(maps / "map-04-compare.svg").getroot()
+        sixth_ticks = comparison.find(".//svg:g[@class='sixth-ticks']", namespace)
+        self.assertEqual(len(sixth_ticks.findall("svg:path", namespace)), 7)
+
+        mastery = (maps / "map-09-mastery.svg").read_text(encoding="utf-8")
+        self.assertEqual(mastery.count('class="mastery-skill"'), 5)
+        self.assertIn("8/10", mastery)
+        self.assertIn("7/10", mastery)
+
+        ratio = (maps / "map-06-ratio.svg").read_text(encoding="utf-8")
+        self.assertIn("×2", ratio)
+        proportion = (maps / "map-08-proportion.svg").read_text(encoding="utf-8")
+        self.assertIn("2 × 3 = 6; 3 × 3 = 9", proportion)
+
     def test_claims_do_not_turn_targets_into_results(self):
         preface = (prepare_mathematics.LESSONS / "preface.md").read_text(encoding="utf-8")
         self.assertIn("не станем выдавать", preface)
