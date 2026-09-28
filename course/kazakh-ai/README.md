@@ -61,11 +61,11 @@ Each step has a Python file and its own `examples.json`. Steps 21–24 expose on
 
 ## Steps 26–30 / 26–30-қадамдар / Шаги 26–30
 
-All five steps run with Python 3.10+ standard library. Step 26 optionally accepts a separately built `qazaq-ir` executable; it also runs without Rust. Steps 27–30 read the JSON files in their own directories. Run the Python command after entering that step directory. Step 30 is a fictional, local command-line demonstration with an explicit as-of date.
+All five steps run with Python 3.10+ standard library. Step 26 optionally accepts a separately built public `adam_fst` executable; it also runs without Rust. Steps 27–30 read the JSON files in their own directories. Run the Python command after entering that step directory. Step 30 is a fictional, local command-line demonstration with an explicit as-of date.
 
-Бес қадамға Python 3.10+ стандартты құралдары жеткілікті. 26-қадамға бөлек құрастырылған `qazaq-ir` файлын қосуға болады; Rust болмаса да ол іске қосылады. 27–30-қадамдар өз қалтасындағы JSON файлдарын оқиды. Python пәрменін қадам қалтасына кірген соң орындаңыз. 30-қадам — күнін ашық көрсететін, ойдан алынған жергілікті консольдық мысал.
+Бес қадамға Python 3.10+ стандартты құралдары жеткілікті. 26-қадамға бөлек құрастырылған ашық `adam_fst` файлын қосуға болады; Rust болмаса да ол іске қосылады. 27–30-қадамдар өз қалтасындағы JSON файлдарын оқиды. Python пәрменін қадам қалтасына кірген соң орындаңыз. 30-қадам — күнін ашық көрсететін, ойдан алынған жергілікті консольдық мысал.
 
-Пяти шагам достаточно Python 3.10+ и стандартной библиотеки. На шаге 26 можно дополнительно передать отдельно собранный `qazaq-ir`; без Rust шаг тоже работает. Шаги 27–30 читают JSON из своих папок. Запускайте программу из папки соответствующего шага. Шаг 30 — вымышленный локальный консольный пример с явно указанной датой.
+Пяти шагам достаточно Python 3.10+ и стандартной библиотеки. На шаге 26 можно дополнительно передать отдельно собранный публичный `adam_fst`; без Rust шаг тоже работает. Шаги 27–30 читают JSON из своих папок. Запускайте программу из папки соответствующего шага. Шаг 30 — вымышленный локальный консольный пример с явно указанной датой.
 
 | Step / Қадам / Шаг | Program / Бағдарлама / Программа | Focus / Мақсат / Цель |
 |---|---|---|

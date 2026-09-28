@@ -91,7 +91,7 @@ An academic grammar supports a different precise statement: Kazakh derivational 
 
 ## Why this course uses Kazakh
 
-No natural language is inherently more logical or mathematical than another. Kazakh is especially suitable **for this teaching project** because much grammatical information is expressed by ordered suffixes; a chain can be drawn as `stem → plural → possession → case`; many instructional boundaries are visible; sound variants follow a finite set of rules; and we have linguistic competence plus the `qazaq-ir` and `adam` projects for comparison.
+No natural language is inherently more logical or mathematical than another. Kazakh is especially suitable **for this teaching project** because much grammatical information is expressed by ordered suffixes; a chain can be drawn as `stem → plural → possession → case`; many instructional boundaries are visible; sound variants follow a finite set of rules; and we have linguistic competence plus the public `adam` project and its morphology module for comparison.
 
 Ordered suffixes map naturally to tables, conditions, and diagrams of allowed transitions between word parts. That makes Kazakh morphology clear for a programming lesson. It does not make the whole language a formula: context, meaning, alternations, and exceptions still need evidence.
 

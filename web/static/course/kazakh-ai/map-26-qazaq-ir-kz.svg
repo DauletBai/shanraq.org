@@ -21,7 +21,7 @@ text{font-family:Arial,"Noto Sans",sans-serif;fill:var(--ink)}
 <rect x="40" y="480" width="680" height="92" rx="22" fill="var(--card)" stroke="var(--red)" stroke-width="4"/>
 <circle cx="80" cy="526.0" r="25" fill="var(--badge)" stroke="var(--red)" stroke-width="3"/>
 <text x="80" y="534.0" text-anchor="middle" font-size="22" font-weight="800" fill="var(--red)">3</text>
-<text x="410" y="534.0" text-anchor="middle" font-size="23" font-weight="700">қалауыңызша qazaq-ir CLI</text>
+<text x="410" y="534.0" text-anchor="middle" font-size="23" font-weight="700">қалауыңызша Adam FST CLI</text>
 <path d="M380 582.0 V618.0" stroke="var(--green)" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
 <rect x="40" y="630" width="680" height="92" rx="22" fill="var(--card)" stroke="var(--red)" stroke-width="4"/>
 <circle cx="80" cy="676.0" r="25" fill="var(--badge)" stroke="var(--red)" stroke-width="3"/>

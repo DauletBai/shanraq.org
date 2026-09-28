@@ -30,7 +30,7 @@ Deeper comparison needs separate measures: morphemes per word, meanings per morp
 
 Kazakh derivational and inflectional morphology is built mainly with suffixes. The order `stem → plural → possession → case` can be represented as allowed transitions. In programming, this resembles a route with labeled stops: each stop restricts the next valid step.
 
-That is a convenience for **morphological analysis**, not proof that Kazakh is more mathematical than other languages. Auxiliary constructions, ambiguity, sound alternation, and context remain. We use Kazakh because the suffix chain is visible, the examples matter to our readers, and they can be compared with `qazaq-ir`.
+That is a convenience for **morphological analysis**, not proof that Kazakh is more mathematical than other languages. Auxiliary constructions, ambiguity, sound alternation, and context remain. We use Kazakh because the suffix chain is visible, the examples matter to our readers, and they can be compared with the morphology module in `adam`.
 
 ## Recall map
 

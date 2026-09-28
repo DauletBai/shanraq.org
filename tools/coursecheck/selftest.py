@@ -194,6 +194,9 @@ def test_linkcheck():
         check("пропавшая картинка поймана", len(link.internal_problems(p, slugs, ROOT)), 1)
         p = write(tmp, "urok4.md", "![карта](/static/course/py/map-prices-ru.svg)\n")
         check("существующая картинка принята", link.internal_problems(p, slugs, ROOT), [])
+    check("403 от защиты сайта не считается битой ссылкой", link.access_blocked(403), True)
+    check("429 от ограничения частоты не считается битой ссылкой", link.access_blocked(429), True)
+    check("404 остается битой ссылкой", link.access_blocked(404), False)
 
 
 def test_pysyllabus():

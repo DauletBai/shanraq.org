@@ -1,14 +1,14 @@
-# Lesson 26. Compare our learning parser with qazaq-ir
+# Lesson 26. Compare our learning parser with Adam FST
 
 ## Why this matters
 
-Two people inspect a bicycle: a learner names three familiar parts, while a workshop also records each part’s condition. Compare only the work they have in common. Our lesson 11 recognizes two preset forms; `qazaq-ir` is a separate Rust project that returns JSON with a root, suffix chain, and analysis status. It is not a source for club schedules.
+Two people inspect a bicycle: a learner names three familiar parts, while a workshop also records each part’s condition. Compare only the work they have in common. Our lesson 11 recognizes two preset forms; `adam_fst` is a separate Rust tool that analyzes a Kazakh word into a root and grammatical features. It is not a source for club schedules.
 
 ## Before the code
 
-The program always shows the learning analysis `мектептерімізде → мектеп + тер + іміз + де`. The second experiment is optional. `sys.argv` is the list of command words: its first item names the program, and the next may be a path to the `qazaq-ir` executable. `Path(...).is_file()` checks that the file exists. `subprocess.run` starts the external program with an argument list rather than a shell. `capture_output=True` stores its output, `text=True` decodes it as text, and `check=False` lets us inspect failure ourselves. `timeout=10` limits waiting, and `returncode` reports success. `json.loads` reads its JSON, and `tokens` is its list of analyzed words. The first experiment works without Rust installed.
+The program always shows the learning analysis `мектептерімізде → мектеп + тер + іміз + де`. The second experiment is optional. `sys.argv` is the list of command words: its first item names the program, and the next may be a path to the `adam_fst` executable. `Path(...).resolve()` makes it absolute, and `is_file()` checks that it exists. `subprocess.run` starts the external program with an argument list rather than a shell. `cwd` temporarily selects the Adam repository root because the tool reads its dictionary from the `data` directory. `capture_output=True` stores its output, `text=True` decodes it as text, and `check=False` lets us inspect failure ourselves. `timeout=10` limits waiting, and `returncode` reports success. The first experiment works without Rust installed.
 
-[qazaq-ir source project](https://github.com/qazaq-ai/qazaq-ir).
+[Adam source project](https://github.com/qazaq-ai/adam). Its morphology CLI lives in the `adam-kernel-fst` module.
 
 From the project root, enter the step folder and run the program:
 
@@ -20,7 +20,6 @@ python3 compare.py
 On Windows, replace `python3` with `py`.
 
 ```python
-import json
 import subprocess
 import sys
 from pathlib import Path
@@ -29,32 +28,29 @@ word = "мектептерімізде"
 ours = {"root": "мектеп", "parts": ["тер", "іміз", "де"]}
 print("Оқу үлгісі:", word, "→", ours["root"], ours["parts"])
 if len(sys.argv) == 1:
-    print("qazaq-ir: қосымша салыстыру іске қосылмады")
+    print("adam_fst: қосымша салыстыру іске қосылмады")
 else:
-    binary = Path(sys.argv[1])
+    binary = Path(sys.argv[1]).expanduser().resolve()
     if not binary.is_file():
-        print("qazaq-ir: бағдарлама файлы табылмады")
+        print("adam_fst: бағдарлама файлы табылмады")
     else:
-        run = subprocess.run([str(binary), "analyze", "--format", "compact", word],
+        run = subprocess.run([str(binary), "analyse", word], cwd=binary.parents[2],
                              text=True, capture_output=True, timeout=10, check=False)
         if run.returncode != 0:
-            print("qazaq-ir: іске қосу қатесі")
+            print("adam_fst: іске қосу қатесі")
         else:
-            result = json.loads(run.stdout)
-            for token in result["tokens"]:
-                print("qazaq-ir:", token["surface"], "→", token["root"],
-                      token["analysis_status"])
+            print("adam_fst:", run.stdout.strip())
 ```
 
 [Step files](https://github.com/DauletBai/shanraq.org/tree/main/course/kazakh-ai/step-26).
 
 ## How the program works
 
-With no second argument, the program prints `qazaq-ir: қосымша салыстыру іске қосылмады`. For an optional comparison, build the project with `cargo build --release -p qazaq-ir-cli` and pass the resulting `target/release/qazaq-ir` path (`.exe` on Windows). Installing Rust is a separate task; the Python course does not require it. A local check with `qazaq-ir` 0.31.0 returned `root: мектеп` and `analysis_status: partial` for this form: the root was found, but a full parse was not confirmed. Another version may differ. Compare `root` and `analysis_status` in the project JSON. Agreement on one word does not establish which system is “better AI,” nor does it verify a timetable fact or its source.
+With no second argument, the program reports that the optional comparison was skipped. To try it, clone the public Adam repository, run `cargo build --release -p adam-kernel-fst --bin adam_fst` there, and pass the path to the resulting `target/release/adam_fst` file (`adam_fst.exe` on Windows) while leaving it inside the repository. Our program runs `adam_fst analyse мектептерімізде` from the Adam root and displays the tool's answer beside the learning analysis. Installing Rust is a separate task; the Python course does not require it. Compare only the detected root and features. Agreement on one word does not establish which system is “better,” nor does it verify a timetable fact or its source.
 
 ## Support map
 
-One word → learning parse → optional qazaq-ir CLI → compare root and status → state both limits.
+One word → learning parse → optional Adam FST CLI → compare root and features → state both limits.
 
 ![Lesson 26 support map](/static/course/kazakh-ai/map-26-qazaq-ir-en.svg)
 

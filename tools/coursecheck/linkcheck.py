@@ -8,8 +8,9 @@ never existed, while the project lives at DauletBai/shanraq.org.
 
 So two checks. Links into our own repository are compared against the address
 `git remote get-url origin` actually reports, which catches an invented one
-without touching the network. Everything else is fetched, and anything that
-does not answer 2xx or 3xx is named.
+without touching the network. Everything else is fetched. A definite missing
+answer such as 404 or 410 fails; bot protection, authentication, rate limiting,
+timeouts and network failures are reported as unverified instead of dead.
 
     python3 tools/coursecheck/linkcheck.py <файлы>...
     python3 tools/coursecheck/linkcheck.py --offline <файлы>...   # только свои ссылки
@@ -35,6 +36,10 @@ SLUGS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                      "course", "lesson-slugs.json")
 TIMEOUT = 20
 AGENT = "shanraq-coursecheck/1.0 (+https://shanraq.org)"
+# These statuses are also the normal answer from sites that allow a reader's
+# browser but reject bots, unauthenticated clients, or bursts of requests. They
+# do not prove that a lesson link is dead. A real 404/410 still fails the run.
+ACCESS_BLOCKED = {401, 403, 429}
 
 
 def repo_prefix():
@@ -63,6 +68,11 @@ def fetch(url):
         return e.code
     except Exception as e:  # noqa: BLE001 -- a name that will not resolve, a timeout
         return type(e).__name__
+
+
+def access_blocked(status):
+    """Whether an HTTP answer cannot distinguish a live page from bot blocking."""
+    return status in ACCESS_BLOCKED
 
 
 def known_slugs():
@@ -142,6 +152,12 @@ def main(argv):
                     # one unreachable government server into a red course run.
                     # Report uncertainty, but fail only on an actual HTTP answer.
                     unknown.append((url, status, links[url]))
+                elif access_blocked(status):
+                    unknown.append((
+                        url,
+                        f"ответ {status}: сервер не разрешил автоматическую проверку",
+                        links[url],
+                    ))
                 elif not 200 <= status < 400:
                     bad.append((url, f"ответ {status}", links[url]))
 
