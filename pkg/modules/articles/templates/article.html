@@ -7,7 +7,7 @@
   {{ template "backlink" (dict "Href" (printf "/?lang=%s&cat=%s" .Lang .Category) "Label" (t .Lang (printf "cat.%s" .Category))) }}
   <div class="layout{{ if and (not .TOC) (not .Ads) (not (liveSocial .Info.Social)) }} layout--solo{{ end }}">
     <div>
-      <article class="article">
+      <article class="article{{ range .SeriesPlaces }}{{ if eq .Series.Slug "mathematics" }} article--mathematics{{ end }}{{ end }}">
         <div class="article__head">
           {{ if .CoverURL }}<div class="article__media"><img src="{{ .CoverURL }}" alt="{{ .Title }}" decoding="async"></div>{{ end }}
           <div class="byline">

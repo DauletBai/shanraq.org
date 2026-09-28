@@ -733,6 +733,28 @@ func TestLeafletOnlyWhereThereIsAMap(t *testing.T) {
 	}
 }
 
+func TestMathematicsLessonGetsVisualClass(t *testing.T) {
+	renderer := buildTemplates(t)
+	page := ArticlePage{
+		Base:       Base{Title: "Fractions", Lang: LangRU},
+		Slug:       "math-fractions",
+		Title:      "Fractions",
+		ServedLang: LangRU,
+		SeriesPlaces: []*SeriesPlace{{
+			Series: &Series{Slug: "mathematics", Title: map[string]string{LangRU: "Математика"}},
+			Number: 1,
+			Total:  9,
+		}},
+	}
+	var out strings.Builder
+	if err := renderer.Execute(&out, "article", page); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(out.String(), `class="article article--mathematics"`) {
+		t.Fatal("mathematics lesson is missing its visual treatment class")
+	}
+}
+
 // The cover's box has to be reserved before the image arrives, or the heading
 // below it jumps down on load — that shift was the article page's whole CLS.
 func TestArticleCoverReservesItsSpace(t *testing.T) {
