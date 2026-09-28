@@ -2244,6 +2244,8 @@ var messages = map[string]map[string]string{
 	"footer.col_follow":  {"kz": "Бізді бақылаңыз", "ru": "Мы в соцсетях", "en": "Follow us"},
 	"footer.col_you":     {"kz": "Сізге арналған", "ru": "Для вас", "en": "For you"},
 	"footer.col_courses": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
+	"footer.col_school":  {"kz": "Мектеп", "ru": "Школа", "en": "School"},
+	"footer.mathematics": {"kz": "Математика", "ru": "Математика", "en": "Mathematics"},
 	"footer.kazakh_ai":   {"kz": "ЖИ курсы", "ru": "Курс ИИ", "en": "AI course"},
 	"footer.course_soon": {"kz": "Курс жазылып жатыр — жақында ашылады", "ru": "Курс в разработке — скоро будет доступен", "en": "This course is being written — coming soon"},
 	"footer.rates":       {"kz": "Валюта бағамдары", "ru": "Курсы валют", "en": "Exchange rates"},
@@ -2335,9 +2337,9 @@ var messages = map[string]map[string]string{
 	"nav.courses":        {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.index_title": {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"course.index_lead": {
-		"kz": "Ретімен оқылатын сабақтар топтамасы. Барлық курс толық ашық: тегін және тіркелусіз. Go, Python, SQL, Rust, қазақша ЖИ және Cloud & DevOps бір нақты жобамен тәжірибе береді.",
-		"ru": "Серии уроков, которые читаются по порядку. Все курсы открыты полностью: бесплатно и без регистрации. Go, Python, SQL, Rust, казахский ИИ и Cloud & DevOps дают практику на одном реальном проекте.",
-		"en": "Lesson series meant to be read in order. Every course is fully open: free and without sign-up. Go, Python, SQL, Rust, Kazakh AI, and Cloud & DevOps teach through one real project each.",
+		"kz": "Ретімен оқылатын сабақтар топтамасы. Барлық курс толық ашық: тегін және тіркелусіз. Бағдарламалау курстары нақты жоба арқылы, ал математика ұғымдардың тәуелділік картасы арқылы үйретеді.",
+		"ru": "Серии уроков, которые читаются по порядку. Все курсы открыты полностью: бесплатно и без регистрации. Программирование изучается на реальном проекте, а математика — по карте зависимостей понятий.",
+		"en": "Lesson series meant to be read in order. Every course is fully open, free, and requires no sign-up. Programming grows through a real project; mathematics follows a dependency map of ideas.",
 	},
 	"footer.cloud_devops": {"kz": "Cloud & DevOps", "ru": "Cloud & DevOps", "en": "Cloud & DevOps"},
 	"course.empty_index": {

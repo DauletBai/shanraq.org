@@ -2972,8 +2972,8 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
 .mappin--this .mappin__txt::after { border-top-color: var(--ink); }
 
 /* ── Footer grid ─────────────────────────────────────────────────────────────
-   Four columns: who we are, where to read the rules, where to follow, and the
-   slot. The copyright sits under all of them, centred, because it belongs to
+   Six columns: identity, reference pages, channels, reader tools, courses and
+   school. The copyright sits under all of them, centred, because it belongs to
    the whole page rather than to any column.
 
    This overrides the older flex row above; the .foot-nav and .foot-social
@@ -2987,8 +2987,8 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
      grid states its own alignment instead of the old rule being removed. */
   text-align: left;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 34px 30px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 34px 24px;
   align-items: start;
 }
 .foot-col { min-width: 0; }
@@ -3099,15 +3099,13 @@ table.spec.adm-users th:last-child, table.spec.adm-users td:last-child { padding
    has no way to do. */
 .foot-copy a { text-decoration: underline; text-underline-offset: .15em; }
 
-/* A laptop and a tablet held sideways both keep all five columns: the gap
-   tightens rather than a column being dropped, because five equal columns is
-   the shape of the thing. Columns only start folding when the screen is turned
-   upright. */
+/* Six columns need a wide screen. On a compact laptop they become two rows of
+   three before labels are squeezed into unreadable towers. */
 @media (max-width: 1120px) {
-  .foot-grid { gap: 30px 22px; }
+  .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 22px; }
 }
 @media (max-width: 1000px) {
-  .foot-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 820px) {
   .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

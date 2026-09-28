@@ -2386,5 +2386,45 @@
   "cloud-devops/24-incident-en": [
     "cloud-devops-24-incident",
     "en"
+  ],
+  "mathematics/preface": [
+    "mathematics-before-start",
+    "ru"
+  ],
+  "mathematics/01-diagnostic": [
+    "math-01-diagnostic",
+    "ru"
+  ],
+  "mathematics/02-fraction-meaning": [
+    "math-02-fraction-meaning",
+    "ru"
+  ],
+  "mathematics/03-equivalent-fractions": [
+    "math-03-equivalent-fractions",
+    "ru"
+  ],
+  "mathematics/04-compare-fractions": [
+    "math-04-compare-fractions",
+    "ru"
+  ],
+  "mathematics/05-fraction-operations": [
+    "math-05-fraction-operations",
+    "ru"
+  ],
+  "mathematics/06-ratio": [
+    "math-06-ratio",
+    "ru"
+  ],
+  "mathematics/07-percent": [
+    "math-07-percent",
+    "ru"
+  ],
+  "mathematics/08-proportion": [
+    "math-08-proportion",
+    "ru"
+  ],
+  "mathematics/09-mastery": [
+    "math-09-mastery",
+    "ru"
   ]
 }

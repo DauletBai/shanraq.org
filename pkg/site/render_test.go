@@ -63,6 +63,13 @@ func TestRustFooterLinkPreservesLanguage(t *testing.T) {
 			if !strings.Contains(body.String(), `/static/brand/cloud.svg`) {
 				t.Fatal("footer missing cloud mark for the Cloud & DevOps course")
 			}
+			mathCourse := `href="/course/mathematics?lang=` + lang + `"`
+			if !strings.Contains(body.String(), mathCourse) {
+				t.Fatalf("footer missing mathematics link %s", mathCourse)
+			}
+			if !strings.Contains(body.String(), `/static/brand/math.svg`) {
+				t.Fatal("footer missing mathematics mark")
+			}
 			if !strings.Contains(body.String(), shortNames[lang]) {
 				t.Fatalf("footer missing short course name %q", shortNames[lang])
 			}

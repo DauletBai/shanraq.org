@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Percent</title><desc id="desc">A hundred-cell grid connects fractions, decimals, and percent.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff"/><stop offset="1" stop-color="#fff7e5"/></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a"/><stop offset="1" stop-color="#b80f18"/></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2"/><stop offset="1" stop-color="#2369b3"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a"/><stop offset="1" stop-color="#e39a16"/></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22"/></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)"/>
+<g transform="translate(115 65)" filter="url(#s)"><rect width="500" height="500" rx="12" fill="#fff" stroke="#365675" stroke-width="6"/>
+<path d="M0 0h185v500H0z" fill="url(#red)" opacity=".9"/><g stroke="#365675" stroke-width="2" opacity=".55"><path d="M50 0v500"/><path d="M100 0v500"/><path d="M150 0v500"/><path d="M200 0v500"/><path d="M250 0v500"/><path d="M300 0v500"/><path d="M350 0v500"/><path d="M400 0v500"/><path d="M450 0v500"/><path d="M0 50h500"/><path d="M0 100h500"/><path d="M0 150h500"/><path d="M0 200h500"/><path d="M0 250h500"/><path d="M0 300h500"/><path d="M0 350h500"/><path d="M0 400h500"/><path d="M0 450h500"/></g></g>
+<path d="M700 315h120" stroke="#365675" stroke-width="12"/><path d="M800 280l40 35-40 35" fill="none" stroke="#365675" stroke-width="12" stroke-linecap="round"/>
+<g font-family="system-ui,sans-serif" font-size="58" font-weight="700" text-anchor="middle" fill="#17324d"><text x="950" y="260">37/100</text><text x="950" y="340">0.37</text><text x="950" y="420">37%</text></g>
+</svg>

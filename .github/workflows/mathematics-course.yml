@@ -1,0 +1,34 @@
+name: Mathematics course
+
+on:
+  push:
+    paths:
+      - 'course/lessons/mathematics/**'
+      - 'course/mathematics/**'
+      - 'tools/course/prepare_mathematics.py'
+      - 'tools/course/generate_math_maps.py'
+      - 'tools/course/test_mathematics_release.py'
+      - 'web/static/course/mathematics/**'
+      - 'web/static/covers/school/mathematics/**'
+  pull_request:
+    paths:
+      - 'course/lessons/mathematics/**'
+      - 'course/mathematics/**'
+      - 'tools/course/prepare_mathematics.py'
+      - 'tools/course/generate_math_maps.py'
+      - 'tools/course/test_mathematics_release.py'
+      - 'web/static/course/mathematics/**'
+      - 'web/static/covers/school/mathematics/**'
+
+jobs:
+  course:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Regenerate support maps
+        run: python3 tools/course/generate_math_maps.py
+      - name: Verify generated maps are committed
+        run: git diff --exit-code
+      - name: Validate curriculum and lesson release
+        working-directory: tools/course
+        run: python3 -m unittest test_mathematics_release.py

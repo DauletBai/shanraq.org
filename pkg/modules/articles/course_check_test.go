@@ -185,6 +185,21 @@ func TestCheckSystemNamesTheLanguage(t *testing.T) {
 	}
 }
 
+func TestMathSolutionsStayProse(t *testing.T) {
+	src := "3/4 больше 2/3, потому что 9/12 больше 8/12."
+	out, err := formatSolution(src, CodeMath)
+	if err != nil || out != src+"\n" {
+		t.Fatalf("formatSolution(math) = %q, %v", out, err)
+	}
+	prompt := checkSystem(LangRU, CodeMath)
+	if !strings.Contains(prompt, "mathematics exercise") || !strings.Contains(prompt, "Never require programming") {
+		t.Fatalf("math reviewer prompt does not describe mathematical reasoning: %s", prompt)
+	}
+	if got := string(highlightCode(src, CodeMath)); strings.Contains(got, "chroma") || !strings.Contains(got, "<p>") {
+		t.Fatalf("mathematical prose rendered as code: %s", got)
+	}
+}
+
 func TestFormatSolutionSQLPreservesQuery(t *testing.T) {
 	src := "SELECT amount   \r\nFROM transactions;   \r\n"
 	out, err := formatSolution(src, CodeSQL)

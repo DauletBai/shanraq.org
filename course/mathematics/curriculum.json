@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "principle": "dependencies-not-grades",
+  "mastery_gate": {
+    "immediate": "8/10",
+    "delayed_7_days": "7/10",
+    "requires_unseen_transfer": true
+  },
+  "stages": [
+    {"id":"foundations","title_ru":"Числа и действия","title_kz":"Сандар мен амалдар","title_en":"Numbers and operations"},
+    {"id":"proportional","title_ru":"Дроби, отношения и проценты","title_kz":"Бөлшектер, қатынастар және пайыздар","title_en":"Fractions, ratios, and percent"},
+    {"id":"prealgebra","title_ru":"Предалгебра","title_kz":"Алгебраға дайындық","title_en":"Prealgebra"},
+    {"id":"algebra","title_ru":"Алгебра и функции","title_kz":"Алгебра және функциялар","title_en":"Algebra and functions"},
+    {"id":"geometry","title_ru":"Геометрия и пространство","title_kz":"Геометрия және кеңістік","title_en":"Geometry and space"},
+    {"id":"calculus","title_ru":"Математический анализ","title_kz":"Математикалық анализ","title_en":"Calculus"},
+    {"id":"linear","title_ru":"Линейная алгебра","title_kz":"Сызықтық алгебра","title_en":"Linear algebra"},
+    {"id":"data","title_ru":"Вероятность, статистика и дискретная математика","title_kz":"Ықтималдық, статистика және дискретті математика","title_en":"Probability, statistics, and discrete mathematics"}
+  ],
+  "modules": [
+    {"id":"counting","stage":"foundations","prerequisites":[],"title_ru":"Количество и счет","title_kz":"Мөлшер және санау","title_en":"Quantity and counting"},
+    {"id":"place-value","stage":"foundations","prerequisites":["counting"],"title_ru":"Разряды и десятичная запись","title_kz":"Разрядтар және ондық жазу","title_en":"Place value and decimal notation"},
+    {"id":"addition-subtraction","stage":"foundations","prerequisites":["place-value"],"title_ru":"Сложение и вычитание","title_kz":"Қосу және азайту","title_en":"Addition and subtraction"},
+    {"id":"multiplication-division","stage":"foundations","prerequisites":["addition-subtraction"],"title_ru":"Умножение и деление","title_kz":"Көбейту және бөлу","title_en":"Multiplication and division"},
+    {"id":"order-estimation","stage":"foundations","prerequisites":["multiplication-division"],"title_ru":"Порядок действий и оценка","title_kz":"Амалдар реті және бағалау","title_en":"Order of operations and estimation"},
+    {"id":"negative-numbers","stage":"foundations","prerequisites":["addition-subtraction"],"title_ru":"Отрицательные числа","title_kz":"Теріс сандар","title_en":"Negative numbers"},
+    {"id":"divisibility","stage":"foundations","prerequisites":["multiplication-division"],"title_ru":"Делимость и простые числа","title_kz":"Бөлінгіштік және жай сандар","title_en":"Divisibility and prime numbers"},
+
+    {"id":"fraction-meaning","stage":"proportional","prerequisites":["multiplication-division"],"title_ru":"Дробь как часть, мера и деление","title_kz":"Бөлшек: бөлік, өлшем және бөлу","title_en":"Fractions as parts, measures, and division"},
+    {"id":"fraction-equivalence","stage":"proportional","prerequisites":["fraction-meaning","divisibility"],"title_ru":"Равные дроби","title_kz":"Тең бөлшектер","title_en":"Equivalent fractions"},
+    {"id":"fraction-compare","stage":"proportional","prerequisites":["fraction-equivalence"],"title_ru":"Сравнение дробей","title_kz":"Бөлшектерді салыстыру","title_en":"Comparing fractions"},
+    {"id":"fraction-operations","stage":"proportional","prerequisites":["fraction-equivalence","order-estimation"],"title_ru":"Действия с дробями","title_kz":"Бөлшектермен амалдар","title_en":"Fraction operations"},
+    {"id":"decimal-fractions","stage":"proportional","prerequisites":["fraction-meaning","place-value"],"title_ru":"Десятичные дроби","title_kz":"Ондық бөлшектер","title_en":"Decimal fractions"},
+    {"id":"ratio-rate","stage":"proportional","prerequisites":["fraction-meaning"],"title_ru":"Отношение и скорость изменения","title_kz":"Қатынас және өзгеру жылдамдығы","title_en":"Ratios and rates"},
+    {"id":"percent","stage":"proportional","prerequisites":["decimal-fractions","ratio-rate"],"title_ru":"Проценты без формул наизусть","title_kz":"Жаттанды формуласыз пайыз","title_en":"Percent without memorized formulas"},
+    {"id":"proportion","stage":"proportional","prerequisites":["ratio-rate","fraction-equivalence"],"title_ru":"Пропорция и масштаб","title_kz":"Пропорция және масштаб","title_en":"Proportion and scale"},
+
+    {"id":"variables","stage":"prealgebra","prerequisites":["order-estimation","negative-numbers"],"title_ru":"Переменная как место для числа","title_kz":"Айнымалы: санға арналған орын","title_en":"Variables as places for numbers"},
+    {"id":"expressions","stage":"prealgebra","prerequisites":["variables","fraction-operations"],"title_ru":"Выражения и преобразования","title_kz":"Өрнектер және түрлендірулер","title_en":"Expressions and transformations"},
+    {"id":"equations-basic","stage":"prealgebra","prerequisites":["expressions"],"title_ru":"Уравнение как равновесие","title_kz":"Теңдеу тепе-теңдік ретінде","title_en":"Equations as balance"},
+    {"id":"coordinates","stage":"prealgebra","prerequisites":["negative-numbers"],"title_ru":"Координаты и графики","title_kz":"Координаттар және графиктер","title_en":"Coordinates and graphs"},
+    {"id":"inequalities","stage":"prealgebra","prerequisites":["equations-basic","coordinates"],"title_ru":"Неравенства и интервалы","title_kz":"Теңсіздіктер және аралықтар","title_en":"Inequalities and intervals"},
+
+    {"id":"linear-functions","stage":"algebra","prerequisites":["coordinates","ratio-rate","equations-basic"],"title_ru":"Линейная функция","title_kz":"Сызықтық функция","title_en":"Linear functions"},
+    {"id":"systems","stage":"algebra","prerequisites":["linear-functions"],"title_ru":"Системы уравнений","title_kz":"Теңдеулер жүйесі","title_en":"Systems of equations"},
+    {"id":"powers-roots","stage":"algebra","prerequisites":["expressions","divisibility"],"title_ru":"Степени и корни","title_kz":"Дәрежелер және түбірлер","title_en":"Powers and roots"},
+    {"id":"polynomials","stage":"algebra","prerequisites":["powers-roots","expressions"],"title_ru":"Многочлены","title_kz":"Көпмүшелер","title_en":"Polynomials"},
+    {"id":"quadratics","stage":"algebra","prerequisites":["polynomials","linear-functions"],"title_ru":"Квадратичные функции","title_kz":"Квадраттық функциялар","title_en":"Quadratic functions"},
+    {"id":"exponential-log","stage":"algebra","prerequisites":["powers-roots","linear-functions"],"title_ru":"Показательная функция и логарифм","title_kz":"Көрсеткіштік функция және логарифм","title_en":"Exponential functions and logarithms"},
+    {"id":"sequences","stage":"algebra","prerequisites":["linear-functions","exponential-log"],"title_ru":"Последовательности и ряды","title_kz":"Тізбектер және қатарлар","title_en":"Sequences and series"},
+
+    {"id":"geometry-language","stage":"geometry","prerequisites":["fraction-meaning"],"title_ru":"Точки, линии, углы и доказательство","title_kz":"Нүктелер, түзулер, бұрыштар және дәлелдеу","title_en":"Points, lines, angles, and proof"},
+    {"id":"triangles","stage":"geometry","prerequisites":["geometry-language"],"title_ru":"Треугольники и равенство","title_kz":"Үшбұрыштар және теңдік","title_en":"Triangles and congruence"},
+    {"id":"similarity","stage":"geometry","prerequisites":["triangles","proportion"],"title_ru":"Подобие и масштаб","title_kz":"Ұқсастық және масштаб","title_en":"Similarity and scale"},
+    {"id":"area-volume","stage":"geometry","prerequisites":["geometry-language","fraction-operations"],"title_ru":"Площадь и объем","title_kz":"Аудан және көлем","title_en":"Area and volume"},
+    {"id":"pythagoras","stage":"geometry","prerequisites":["triangles","powers-roots"],"title_ru":"Теорема Пифагора","title_kz":"Пифагор теоремасы","title_en":"Pythagorean theorem"},
+    {"id":"circles","stage":"geometry","prerequisites":["geometry-language","ratio-rate"],"title_ru":"Окружность и круг","title_kz":"Шеңбер және дөңгелек","title_en":"Circles"},
+    {"id":"trigonometry","stage":"geometry","prerequisites":["similarity","pythagoras"],"title_ru":"Тригонометрия","title_kz":"Тригонометрия","title_en":"Trigonometry"},
+    {"id":"vectors-geometry","stage":"geometry","prerequisites":["coordinates","trigonometry"],"title_ru":"Векторы в пространстве","title_kz":"Кеңістіктегі векторлар","title_en":"Vectors in space"},
+
+    {"id":"limits","stage":"calculus","prerequisites":["quadratics","exponential-log","trigonometry","sequences"],"title_ru":"Предел как приближение","title_kz":"Шек жақындау ретінде","title_en":"Limits as approach"},
+    {"id":"derivative","stage":"calculus","prerequisites":["limits"],"title_ru":"Производная как мгновенное изменение","title_kz":"Туынды лездік өзгеріс ретінде","title_en":"Derivatives as instantaneous change"},
+    {"id":"derivative-applications","stage":"calculus","prerequisites":["derivative"],"title_ru":"Оптимизация и исследование функций","title_kz":"Оңтайландыру және функцияларды зерттеу","title_en":"Optimization and curve analysis"},
+    {"id":"integral","stage":"calculus","prerequisites":["derivative","area-volume"],"title_ru":"Интеграл как накопление","title_kz":"Интеграл жинақталу ретінде","title_en":"Integrals as accumulation"},
+    {"id":"differential-equations","stage":"calculus","prerequisites":["integral","exponential-log"],"title_ru":"Простейшие дифференциальные уравнения","title_kz":"Қарапайым дифференциалдық теңдеулер","title_en":"Introductory differential equations"},
+
+    {"id":"matrices","stage":"linear","prerequisites":["systems","vectors-geometry"],"title_ru":"Матрицы как преобразования","title_kz":"Матрицалар түрлендіру ретінде","title_en":"Matrices as transformations"},
+    {"id":"linear-spaces","stage":"linear","prerequisites":["matrices"],"title_ru":"Линейные пространства и базис","title_kz":"Сызықтық кеңістіктер және базис","title_en":"Vector spaces and bases"},
+    {"id":"eigen","stage":"linear","prerequisites":["linear-spaces"],"title_ru":"Собственные значения и направления","title_kz":"Меншікті мәндер және бағыттар","title_en":"Eigenvalues and eigenvectors"},
+
+    {"id":"combinatorics","stage":"data","prerequisites":["multiplication-division","variables"],"title_ru":"Комбинаторика","title_kz":"Комбинаторика","title_en":"Combinatorics"},
+    {"id":"probability","stage":"data","prerequisites":["fraction-operations","combinatorics"],"title_ru":"Вероятность","title_kz":"Ықтималдық","title_en":"Probability"},
+    {"id":"descriptive-statistics","stage":"data","prerequisites":["percent","coordinates"],"title_ru":"Данные и описательная статистика","title_kz":"Деректер және сипаттамалық статистика","title_en":"Data and descriptive statistics"},
+    {"id":"inference","stage":"data","prerequisites":["probability","descriptive-statistics"],"title_ru":"Статистический вывод","title_kz":"Статистикалық қорытынды","title_en":"Statistical inference"},
+    {"id":"logic-proofs","stage":"data","prerequisites":["variables","geometry-language"],"title_ru":"Логика и доказательства","title_kz":"Логика және дәлелдемелер","title_en":"Logic and proofs"},
+    {"id":"graphs-algorithms","stage":"data","prerequisites":["logic-proofs","combinatorics"],"title_ru":"Графы и алгоритмическое мышление","title_kz":"Графтар және алгоритмдік ойлау","title_en":"Graphs and algorithmic thinking"},
+    {"id":"capstone-modeling","stage":"data","prerequisites":["derivative-applications","integral","eigen","inference","graphs-algorithms"],"title_ru":"Итоговое математическое моделирование","title_kz":"Қорытынды математикалық модельдеу","title_en":"Mathematical modeling capstone"}
+  ]
+}

@@ -415,6 +415,21 @@
         </ul>
       </nav>
 
+      {{/* 6 — general education follows a dependency map instead of school
+           years. A subject appears here only after its first complete mastery
+           route can be opened and checked. */}}
+      <nav class="foot-col" aria-labelledby="foot-school">
+        <h2 class="foot-h" id="foot-school">{{ t .Lang "footer.col_school" }}</h2>
+        <ul class="foot-list foot-courses">
+          <li>
+            <a href="/course/mathematics?lang={{ .Lang }}">
+              <img class="foot-course__mark foot-course__mark--square" src="{{ asset "/static/brand/math.svg" }}" alt="" aria-hidden="true" width="18" height="18">
+              <span class="foot-course__name">{{ t .Lang "footer.mathematics" }}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
       </div>
     </div>
 

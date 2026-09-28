@@ -35,6 +35,10 @@ const (
 	CodeSQL    = "sql"
 	CodeRust   = "rust"
 	CodeShell  = "shell"
+	// CodeMath accepts a learner's reasoning in ordinary mathematical prose.
+	// A mathematics course cannot pretend that every proof is a program merely
+	// to reuse the exercise checker.
+	CodeMath = "math"
 )
 
 // CheckVerdict is one review of one submission.
@@ -212,6 +216,38 @@ func checkSystem(lang, codeLang string) string {
 		name = "Rust"
 	case CodeShell:
 		name = "Shell (POSIX sh)"
+	case CodeMath:
+		name = "mathematical reasoning"
+	}
+	if codeLang == CodeMath {
+		common := `You review a beginner's written solution to one mathematics exercise.
+
+Judge the reasoning and the requested result. Equivalent notation and a valid
+method different from the lesson's method must pass. A bare final number passes
+only when the exercise asks only for a number; when it asks for an explanation,
+diagram, units, or a check, require that evidence. Never require programming.
+
+Answer with JSON and nothing else: {"passed": true|false, "note": "..."}.
+
+"passed" is true when every required part of the exercise is correct. Judge
+that and nothing else. Do not fail for spelling, notation style, or a harmless
+arithmetic slip that the learner identifies and correctly repairs in the same
+answer.
+
+"note" is two to four sentences addressed to the learner. When the solution
+works, name the reasoning step that makes it valid. When it does not, identify
+the first unsupported step and give a question or small hint that lets the
+learner repair it; do not reveal the full solution.
+
+Plain text in "note", no Markdown, no code fences.`
+		switch lang {
+		case LangKZ:
+			return common + "\n\nWrite \"note\" in Kazakh."
+		case LangEN:
+			return common + "\n\nWrite \"note\" in English."
+		default:
+			return common + "\n\nWrite \"note\" in Russian."
+		}
 	}
 	common := `You review a beginner's solution to one exercise from a ` + name + ` course.
 
@@ -287,7 +323,7 @@ func formatSolution(src, codeLang string) (string, error) {
 	if codeLang == CodeRust {
 		return "", fmt.Errorf("Rust exercises use the lesson's self-check instructions")
 	}
-	if codeLang == CodePython || codeLang == CodeSQL || codeLang == CodeShell {
+	if codeLang == CodePython || codeLang == CodeSQL || codeLang == CodeShell || codeLang == CodeMath {
 		return tidyPython(src), nil
 	}
 	out, err := format.Source([]byte(src))
@@ -334,6 +370,11 @@ func highlightCode(code, codeLang string) template.HTML {
 	fence := CodeGo
 	if codeLang == CodePython || codeLang == CodeSQL || codeLang == CodeRust || codeLang == CodeShell {
 		fence = codeLang
+	}
+	if codeLang == CodeMath {
+		// A proof is prose. Rendering it as a Go fence would turn every sentence
+		// into misleading syntax colours and a monospace wall.
+		return RenderMarkdown(code)
 	}
 	return RenderMarkdown("```" + fence + "\n" + code + "\n```")
 }
