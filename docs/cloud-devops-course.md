@@ -7,6 +7,23 @@ English. It follows one runnable service from a local process through Docker,
 Compose, CI/CD, a secured server, HTTPS, OpenTofu, Ansible, Kubernetes,
 observability, backup, and a recovery drill.
 
+The course assumes no infrastructure vocabulary. Its lesson order now follows
+the learning dependency: terminal and Git, Linux permissions, processes, and a
+plain-language network model come before the student starts CloudLab. Every
+lesson uses the same Shatalov-inspired learning rhythm:
+
+1. recall the previous four-part support signal;
+2. connect the new idea to a familiar physical situation;
+3. define every new term in plain language;
+4. predict the result before running a command;
+5. compare evidence with the prediction;
+6. reconstruct the support map from memory and explain each link;
+7. diagnose a plausible misconception and complete a checked exercise.
+
+The preface contains a zero-setup path for a reader who has never opened a
+terminal. The analogy is always followed by a technical definition so it does
+not become a false model.
+
 The preface states the course boundary explicitly. It teaches software and
 platform operations. It does not claim to train electrical, cooling, or
 facilities engineers for a physical data centre, and it does not turn
@@ -17,6 +34,8 @@ infrastructure investment into a guaranteed employment forecast.
 - Lessons: `course/lessons/cloud-devops/`
 - Runnable project: `course/cloud-devops-lab/`
 - Support maps: `web/static/course/cloud-devops/`
+- Beginner pedagogy and localized support signals:
+  `tools/course/cloud_devops_pedagogy.py`
 - Cover: `web/static/covers/it/devops/cloud-devops-course.webp`
 - URL mapping: `tools/course/lesson-slugs.json`
 - SQL builder: `tools/course/prepare_cloud_devops.py`

@@ -4,6 +4,8 @@ from pathlib import Path
 from html import escape
 import re
 
+from cloud_devops_pedagogy import PACKS, PREFACE_TEACHING
+
 ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / "course/lessons/cloud-devops"
 MAPS = ROOT / "web/static/course/cloud-devops"
@@ -51,7 +53,7 @@ _Лид (summary):_ **Подробное введение в бесплатны�
 
 ## Что меняется на рынке труда
 
-В отчёте World Economic Forum работодатели поставили сети и кибербезопасность на второе место среди быстрее всего растущих групп навыков до 2030 года — после ИИ и больших данных. [Источник: Future of Jobs Report 2025](https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/). Однако нельзя превращать этот вывод в обещание, что любая должность с названием DevOps обязательно вырастет.
+В отчёте World Economic Forum работодатели поставили сети и кибербезопасность на второе место среди быстрее всего растущих групп навыков до 2030 года — после ИИ и больших данных. [Источник: Future of Jobs Report 2025, PDF](https://reports.weforum.org/docs/WEF_Future_of_Jobs_Report_2025.pdf). Однако нельзя превращать этот вывод в обещание, что любая должность с названием DevOps обязательно вырастет.
 
 Статистика США хорошо показывает сдвиг. BLS ожидает на 2025–2035 годы рост занятости сетевых архитекторов примерно на 8%, специалистов по информационной безопасности — на 21%, разработчиков и тестировщиков — на 10%. При этом занятость классических сетевых и системных администраторов прогнозируется ниже на 4%: часть ручных задач автоматизируется, переходит к разработчикам DevOps и сервисным провайдерам. Это данные одной страны, а не прогноз для Казахстана, но они объясняют, почему курс строится вокруг кода, автоматизации, безопасности и надёжности, а не вокруг запоминания команд. [Источники: BLS — сетевые архитекторы](https://www.bls.gov/ooh/computer-and-information-technology/computer-network-architects.htm), [информационная безопасность](https://www.bls.gov/ooh/computer-and-information-technology/information-security-analysts.htm), [системное администрирование](https://www.bls.gov/ooh/computer-and-information-technology/network-and-computer-systems-administrators.htm).
 
@@ -113,7 +115,7 @@ CNCF-тің 2025 жылғы сауалнамасында контейнер па
 
 ## Еңбек нарығында не өзгеріп жатыр
 
-World Economic Forum жұмыс берушілер сауалнамасында желілер мен киберқауіпсіздік 2030 жылға дейін ең жылдам өсетін дағдылар арасында екінші орында тұр. [Дереккөз: Future of Jobs 2025](https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/). Бірақ бұл DevOps атауы бар әр жұмыс міндетті түрде өседі деген кепілдік емес.
+World Economic Forum жұмыс берушілер сауалнамасында желілер мен киберқауіпсіздік 2030 жылға дейін ең жылдам өсетін дағдылар арасында екінші орында тұр. [Дереккөз: Future of Jobs 2025, PDF](https://reports.weforum.org/docs/WEF_Future_of_Jobs_Report_2025.pdf). Бірақ бұл DevOps атауы бар әр жұмыс міндетті түрде өседі деген кепілдік емес.
 
 АҚШ BLS болжамы өзгерістің бағытын айқын көрсетеді: 2025–2035 жылдары желі сәулетшілері шамамен 8%, ақпараттық қауіпсіздік талдаушылары 21%, әзірлеушілер мен тестілеушілер 10% өседі деп күтіледі. Классикалық желі және жүйе әкімшілері 4% азаюы мүмкін, өйткені қол жұмысының бір бөлігі автоматтандырылып, DevOps әзірлеушілеріне және сервис провайдерлеріне өтеді. Бұл Қазақстанға арналған болжам емес, бірақ курста пәрмен жаттаудың орнына код, автоматтандыру, қауіпсіздік және сенімділік неге негізгі екенін түсіндіреді. [BLS: желі сәулетшілері](https://www.bls.gov/ooh/computer-and-information-technology/computer-network-architects.htm), [ақпараттық қауіпсіздік](https://www.bls.gov/ooh/computer-and-information-technology/information-security-analysts.htm), [жүйе әкімшілері](https://www.bls.gov/ooh/computer-and-information-technology/network-and-computer-systems-administrators.htm).
 
@@ -175,7 +177,7 @@ The software layer is mature too. In CNCF's 2025 survey, 82% of container users 
 
 ## What is changing in work
 
-Employers surveyed by the World Economic Forum ranked networks and cybersecurity as the second fastest-growing skill group through 2030, after AI and big data. [Source: Future of Jobs Report 2025](https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/). That finding must not be turned into a promise that every job titled DevOps will grow.
+Employers surveyed by the World Economic Forum ranked networks and cybersecurity as the second fastest-growing skill group through 2030, after AI and big data. [Source: Future of Jobs Report 2025, PDF](https://reports.weforum.org/docs/WEF_Future_of_Jobs_Report_2025.pdf). That finding must not be turned into a promise that every job titled DevOps will grow.
 
 US labour projections illustrate the shift. For 2025–2035, BLS projects about 8% growth for network architects, 21% for information security analysts, and 10% for software developers, QA analysts, and testers. It projects a 4% decline for traditional network and systems administrators because some routine work is automated, moved to DevOps-focused developers, or outsourced to service providers. These are US figures, not a Kazakhstan forecast, but they explain why this course focuses on code, automation, security, and reliability instead of memorising commands. [Sources: BLS on network architects](https://www.bls.gov/ooh/computer-and-information-technology/computer-network-architects.htm), [information security](https://www.bls.gov/ooh/computer-and-information-technology/information-security-analysts.htm), and [systems administration](https://www.bls.gov/ooh/computer-and-information-technology/network-and-computer-systems-administrators.htm).
 
@@ -301,6 +303,22 @@ for stem, title3, summary3, concept3, cmd, check3, task3 in MORE:
     task = dict(zip(("ru","kz","en"), task3))
     TOPICS.append({"stem":stem,"title":title,"summary":summary,"concept":concept,"cmd":cmd,"checks":checks,"task":task})
 
+# A beginner needs the workshop before the application and the network model
+# before endpoint diagnostics.  Slugs keep their stable names, while the course
+# order follows the learning dependency rather than the date they were drafted.
+BEGINNER_ORDER = (
+    "01-why-now", "03-terminal-git", "04-linux-access", "05-processes-logs",
+    "06-networks-dns-http", "02-service-map", "07-containers",
+    "08-images-lifecycle", "09-dockerfile", "10-persistent-data",
+    "11-compose", "12-health-resources", "13-registry", "14-cicd",
+    "15-github-actions", "16-release-image", "17-secrets",
+    "18-deploy-rollback", "19-cloud", "20-server", "21-https", "22-iac",
+    "23-kubernetes", "24-incident",
+)
+_topic_by_stem = {topic["stem"]: topic for topic in TOPICS}
+assert set(_topic_by_stem) == set(BEGINNER_ORDER)
+TOPICS = [_topic_by_stem[stem] for stem in BEGINNER_ORDER]
+
 
 def suffix(lang):
     return "" if lang == "ru" else f"-{lang}"
@@ -308,71 +326,240 @@ def suffix(lang):
 
 def render_lesson(topic, number, lang):
     l = LOCALE[lang]
+    p = PACKS[topic["stem"]]
     points = "\n".join(f"- {x}" for x in topic["checks"][lang])
+    glossary = "\n".join(
+        f"- **{item['name'][lang]}** — {item['text'][lang]}" for item in p["terms"]
+    )
     alt = f"{l['map']} {number}"
-    map_url = f"/static/course/cloud-devops/map-{number:02d}-{topic['stem'][3:]}-{lang}.svg"
+    map_url = f"/static/course/cloud-devops/map-{topic['stem']}-{lang}.svg"
     course_url = f"/course/cloud-devops?lang={lang}"
     repo = "https://github.com/DauletBai/shanraq.org/tree/main/course/cloud-devops-lab"
     command = re.sub(r"(printf '[^'\n]*)\n'", r"\1\\n'", topic["cmd"])
+    previous = TOPICS[number - 2] if number > 1 else None
+    following = TOPICS[number] if number < len(TOPICS) else None
+    previous_signal = PACKS[previous["stem"]]["signal"][lang] if previous else ""
+    previous_title = previous["title"][lang] if previous else ""
+    next_title = following["title"][lang] if following else ""
+
+    ui = {
+        "ru": {
+            "for_you": "Этот урок начинается с нуля. Незнакомое слово здесь не считается вашим пробелом: мы сначала создадим образ, затем дадим точное значение и только потом применим его.",
+            "where": "Где мы находимся",
+            "first": "Это первая опора курса. Сейчас важнее увидеть весь путь, чем запомнить названия инструментов.",
+            "recall": "Полётное повторение. В прошлом уроке была опора",
+            "recall_do": "Не подглядывая, назовите её четыре звена и только затем сравните с записью.",
+            "image": "Сначала знакомый образ",
+            "limit": "Аналогия помогает начать рассуждение, но не заменяет устройство технологии. Ниже мы уточним каждое слово.",
+            "signal": "Опорный сигнал урока",
+            "signal_do": "Прочитайте цепочку слева направо. Она отвечает не на вопрос «какую команду запомнить», а на вопрос «почему следующий шаг следует из предыдущего».",
+            "words": "Новые слова простыми словами",
+            "slow": "Разбираем без спешки",
+            "slow2": "Сейчас не нужно запоминать формулировку дословно. Найдите в ней причинную связь и привяжите её к опорному сигналу выше.",
+            "predict": "Сначала предскажите результат",
+            "predict_text": "До запуска ответьте на бумаге: что должно измениться, что должно остаться прежним и какой вывод команды подтвердит ваш прогноз? Даже неверный прогноз полезен, если после опыта вы можете объяснить расхождение.",
+            "steps": "Опыт маленькими шагами",
+            "run": "Запускайте блок по одной смысловой группе. После каждой остановитесь и сопоставьте результат со своим прогнозом.",
+            "explain": "Что именно делает этот опыт",
+            "seen": "Что должно получиться",
+            "map": "Соберите целое по опорной схеме",
+            "map_do": "Проведите пальцем или карандашом по четырём блокам и расскажите весь урок одним связным объяснением.",
+            "aloud": "Воспроизведите без подсказки",
+            "aloud_items": ["Закройте схему и нарисуйте четыре блока по памяти.", "Объясните каждый переход словами «потому что».", "Дайте определение одному новому термину, не повторяя текст дословно.", "Назовите один сигнал, который доказывает результат."],
+            "mistake": "Найдите и исправьте ошибку",
+            "task_intro": "Теперь соберите тот же смысл самостоятельно. Можно смотреть на опорную схему; цель — не экзамен на память, а воспроизводимый результат.",
+            "criteria": "Критерии готовности",
+            "criteria_items": ["Вы понимаете каждую запускаемую строку.", "Повторный запуск даёт ожидаемый результат или безопасно объяснённое отличие.", "В выводе нет настоящих ключей, токенов и паролей.", "Вы можете показать факт, который подтверждает успех."],
+            "retry": "Если проверка не прошла, зафиксируйте ожидаемое и фактическое, вернитесь к одному разорванному звену опоры и повторите. Ошибка не отнимает у вас право продолжать обучение.",
+            "next": "Открытая перспектива",
+            "next_text": "Следующий урок добавит новую опору",
+            "finish": "Это финальный урок. Теперь восстановите всю дорогу курса: изменение, проверка, выпуск, наблюдение и доказанное восстановление.",
+            "submit": "Отправьте только команды или скрипт POSIX sh без реальных ключей и токенов.",
+            "optional_text": "Запишите один возможный отказ и сигнал, по которому вы его заметите.",
+            "files": "Эталонные файлы проекта", "contents": "Оглавление курса",
+        },
+        "kz": {
+            "for_you": "Бұл сабақ нөлден басталады. Бейтаныс сөз сіздің кемшілігіңіз емес: алдымен бейне құрамыз, кейін дәл мағына беріп, содан соң қолданамыз.",
+            "where": "Қай жерде тұрмыз", "first": "Бұл курстың алғашқы тірегі. Қазір құрал атауын жаттаудан бұрын бүкіл жолды көру маңызды.",
+            "recall": "Қысқа қайталау. Өткен сабақтың тірегі", "recall_do": "Қарамай төрт буынды атаңыз, содан кейін ғана жазбамен салыстырыңыз.",
+            "image": "Алдымен таныс бейне", "limit": "Аналогия ойды бастауға көмектеседі, бірақ технология құрылысын алмастырмайды. Төменде әр сөзді нақтылаймыз.",
+            "signal": "Сабақтың тірек сигналы", "signal_do": "Тізбекті солдан оңға оқыңыз. Ол «қай пәрменді жаттаймын?» емес, «келесі қадам неге алдыңғысынан шығады?» дегенге жауап береді.",
+            "words": "Жаңа сөздер қарапайым тілмен", "slow": "Асықпай талдаймыз", "slow2": "Анықтаманы сөзбе-сөз жаттамаңыз. Себептік байланысты тауып, жоғарыдағы тірекпен қосыңыз.",
+            "predict": "Алдымен нәтижені болжаңыз", "predict_text": "Іске қоспай тұрып қағазға жазыңыз: не өзгеруі, не сол күйде қалуы және қай output болжамды дәлелдеуі тиіс? Қате болжам да айырманы түсіндіре алсаңыз пайдалы.",
+            "steps": "Шағын қадаммен тәжірибе", "run": "Блокты мағыналық топпен орындаңыз. Әр топтан кейін тоқтап, нәтижені болжаммен салыстырыңыз.",
+            "explain": "Бұл тәжірибе нақты не істейді", "seen": "Не шығуы тиіс", "map": "Тірек сызбамен тұтасты жинаңыз", "map_do": "Төрт блок бойынша жүріп, бүкіл сабақты бір байланысқан әңгімемен түсіндіріңіз.",
+            "aloud": "Көмексіз жаңғыртыңыз", "aloud_items": ["Сызбаны жауып, төрт блокты жатқа сызыңыз.", "Әр өтуді «себебі» сөзімен түсіндіріңіз.", "Бір жаңа терминді мәтінді қайталамай анықтаңыз.", "Нәтижені дәлелдейтін бір сигналды атаңыз."],
+            "mistake": "Қатені тауып түзетіңіз", "task_intro": "Енді сол мағынаны өзіңіз жинаңыз. Тірек сызбаға қарауға болады; мақсат — жады емтиханы емес, қайталанатын нәтиже.",
+            "criteria": "Дайындық өлшемдері", "criteria_items": ["Әр іске қосылатын жолды түсінесіз.", "Қайталау күтілетін нәтиже не қауіпсіз түсіндірілген айырма береді.", "Output ішінде нақты key, token және password жоқ.", "Success-ті дәлелдейтін факт көрсете аласыз."],
+            "retry": "Тексеру өтпесе, күтілген және нақты нәтижені жазып, тіректің бір үзілген буынына оралып қайталаңыз. Қате оқу құқығын алып қоймайды.",
+            "next": "Ашық перспектива", "next_text": "Келесі сабақ жаңа тірек қосады", "finish": "Бұл соңғы сабақ. Енді бүкіл жолды қалпына келтіріңіз: өзгеріс, тексеру, шығарылым, бақылау және дәлелденген restore.",
+            "submit": "Тек POSIX sh пәрменін не скриптін, нақты кілт пен токенсіз жіберіңіз.", "optional_text": "Бір ықтимал ақауды және оны байқайтын сигналды жазыңыз.",
+            "files": "Жобаның эталон файлдары", "contents": "Курс мазмұны",
+        },
+        "en": {
+            "for_you": "This lesson starts from zero. An unfamiliar word is not treated as your deficiency: we first build an image, then give it a precise meaning, and only then use it.",
+            "where": "Where we are", "first": "This is the course's first support. Seeing the whole path matters more now than memorising tool names.",
+            "recall": "Flight review. The previous lesson used the support", "recall_do": "Without looking, name its four links, then compare with the written signal.",
+            "image": "Begin with a familiar image", "limit": "An analogy starts reasoning but does not replace the technology. We make every word precise below.",
+            "signal": "The lesson's support signal", "signal_do": "Read the chain left to right. It answers not “which command should I memorise?” but “why does each step follow the previous one?”",
+            "words": "New words in plain language", "slow": "Take it apart without rushing", "slow2": "Do not memorise this wording. Find its cause-and-effect link and attach it to the support signal above.",
+            "predict": "Predict the result first", "predict_text": "Before running anything, write what should change, what should remain unchanged, and which output would support your prediction. A wrong prediction is useful when you can explain the difference after observing it.",
+            "steps": "Experiment in small steps", "run": "Run one meaningful group at a time. Stop after each group and compare evidence with your prediction.",
+            "explain": "What this experiment actually does", "seen": "What you should observe", "map": "Rebuild the whole from the support map", "map_do": "Follow the four blocks with a finger or pencil and tell the entire lesson as one connected explanation.",
+            "aloud": "Recall without a prompt", "aloud_items": ["Hide the map and draw its four blocks from memory.", "Explain every transition using the word “because”.", "Define one new term without repeating the text verbatim.", "Name one signal that proves the result."],
+            "mistake": "Find and correct the mistake", "task_intro": "Now rebuild the same meaning yourself. You may use the support map; the goal is a repeatable result rather than a memory exam.",
+            "criteria": "Completion criteria", "criteria_items": ["You understand every line you run.", "A repeat gives the expected result or a safely explained difference.", "Output contains no real keys, tokens, or passwords.", "You can point to evidence that proves success."],
+            "retry": "If a check fails, record expected and actual results, revisit the one broken support link, and retry. An error does not remove your right to continue learning.",
+            "next": "Open perspective", "next_text": "The next lesson adds a new support", "finish": "This is the final lesson. Reconstruct the full course path: change, verification, release, observation, and proven recovery.",
+            "submit": "Submit only POSIX sh commands or a script, with no real keys or tokens.", "optional_text": "Write down one possible failure and the signal that would reveal it.",
+            "files": "Project reference files", "contents": "Course contents",
+        },
+    }[lang]
+
+    recall = ui["first"] if previous is None else f"{ui['recall']} **{previous_signal}**. {ui['recall_do']}"
+    aloud = "\n".join(f"{i}. {item}" for i, item in enumerate(ui["aloud_items"], 1))
+    criteria = "\n".join(f"- {item}" for item in ui["criteria_items"])
+    perspective = ui["finish"] if following is None else f"{ui['next_text']}: **{next_title}**."
     return f"""# {topic['title'][lang]}
 
 _{l['lead']}:_ **{topic['summary'][lang]}**
+
+> {ui['for_you']}
+
+## {ui['where']}
+
+{recall}
 
 ## {l['outcome']}
 
 {topic['summary'][lang]} {l['done']}
 
-## {l['why']}
+## {ui['image']}
+
+{p['analogy'][lang]}
+
+{ui['limit']}
+
+## {ui['signal']}
+
+**{p['signal'][lang]}**
+
+{ui['signal_do']}
+
+## {ui['words']}
+
+{glossary}
+
+## {ui['slow']}
 
 {topic['concept'][lang]}
 
-## {l['practice']}
+{ui['slow2']}
 
-{l['run']} {l['safe']}
+## {ui['predict']}
+
+{ui['predict_text']}
+
+## {ui['steps']}
+
+{l['run']} {l['safe']} {ui['run']}
 
 ```shell
 {command}
 ```
 
-[{('Эталонные файлы проекта' if lang == 'ru' else 'Жобаның эталон файлдары' if lang == 'kz' else 'Project reference files')}]({repo}).
+[{ui['files']}]({repo}).
 
-## {l['read']}
+### {ui['explain']}
+
+{p['command'][lang]}
+
+## {ui['seen']}
 
 {points}
 
+## {ui['map']}
+
 ![{alt}]({map_url})
+
+{ui['map_do']}
+
+## {ui['aloud']}
+
+{aloud}
+
+## {ui['mistake']}
+
+{p['mistake'][lang]}
 
 ## {l['task']}
 
-**{l['required']}** {topic['task'][lang]} {('Отправьте только команды или скрипт POSIX sh без реальных ключей и токенов.' if lang == 'ru' else 'Тек POSIX sh пәрменін не скриптін, нақты кілт пен токенсіз жіберіңіз.' if lang == 'kz' else 'Submit only POSIX sh commands or a script, with no real keys or tokens.')}
+{ui['task_intro']}
 
-**{l['optional']}** {('Запишите один возможный отказ и сигнал, по которому вы его заметите.' if lang == 'ru' else 'Бір ықтимал ақауды және оны байқайтын сигналды жазыңыз.' if lang == 'kz' else 'Write down one possible failure and the signal that would reveal it.')}
+**{l['required']}** {topic['task'][lang]} {ui['submit']}
 
-[{('Оглавление курса' if lang == 'ru' else 'Курс мазмұны' if lang == 'kz' else 'Course contents')}]({course_url})
+### {ui['criteria']}
+
+{criteria}
+
+{ui['retry']}
+
+**{l['optional']}** {ui['optional_text']}
+
+## {ui['next']}
+
+{perspective}
+
+[{ui['contents']}]({course_url})
 """
+
+
+def svg_label(value, x):
+    """Centre a support label on one line, or split a long phrase over two."""
+    value = escape(value)
+    if len(value) <= 15 or " " not in value:
+        return f'<text x="{x}" y="232" fill="#17233c">{value}</text>'
+    words = value.split()
+    cut = min(
+        range(1, len(words)),
+        key=lambda i: abs(len(" ".join(words[:i])) - len(" ".join(words[i:]))),
+    )
+    top, bottom = " ".join(words[:cut]), " ".join(words[cut:])
+    return (f'<text x="{x}" fill="#17233c">'
+            f'<tspan x="{x}" y="218">{top}</tspan>'
+            f'<tspan x="{x}" y="248">{bottom}</tspan></text>')
 
 
 def render_map(topic, number, lang):
     title = escape(topic["title"][lang])
-    left = {"ru":"изменение","kz":"өзгеріс","en":"change"}[lang]
-    middle = {"ru":"проверка","kz":"тексеру","en":"verification"}[lang]
-    right = {"ru":"доказательство","kz":"дәлел","en":"evidence"}[lang]
+    nodes = PACKS[topic["stem"]]["nodes"][lang]
+    desc = escape(", ".join(nodes))
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
-<title id="title">{title}</title><desc id="desc">{left}, {middle}, {right}</desc>
+<title id="title">{title}</title><desc id="desc">{desc}</desc>
 <rect width="1200" height="420" rx="28" fill="#f4f7fb"/><text x="60" y="72" font-family="system-ui,sans-serif" font-size="30" font-weight="700" fill="#17233c">{number:02d}. {title}</text>
-<g font-family="system-ui,sans-serif" font-size="27" text-anchor="middle"><rect x="70" y="160" width="280" height="120" rx="22" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><text x="210" y="232" fill="#17233c">{left}</text><path d="M370 220h100" stroke="#64748b" stroke-width="5"/><path d="m460 205 24 15-24 15" fill="#64748b"/><rect x="485" y="160" width="230" height="120" rx="22" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/><text x="600" y="232" fill="#17233c">{middle}</text><path d="M735 220h100" stroke="#64748b" stroke-width="5"/><path d="m825 205 24 15-24 15" fill="#64748b"/><rect x="850" y="160" width="280" height="120" rx="22" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><text x="990" y="232" fill="#17233c">{right}</text></g></svg>'''
+<g font-family="system-ui,sans-serif" font-size="23" text-anchor="middle">
+<rect x="35" y="160" width="240" height="120" rx="22" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>{svg_label(nodes[0], 155)}
+<path d="M285 220h35" stroke="#64748b" stroke-width="5"/><path d="m310 207 20 13-20 13" fill="#64748b"/>
+<rect x="330" y="160" width="240" height="120" rx="22" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>{svg_label(nodes[1], 450)}
+<path d="M580 220h35" stroke="#64748b" stroke-width="5"/><path d="m605 207 20 13-20 13" fill="#64748b"/>
+<rect x="625" y="160" width="240" height="120" rx="22" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>{svg_label(nodes[2], 745)}
+<path d="M875 220h35" stroke="#64748b" stroke-width="5"/><path d="m900 207 20 13-20 13" fill="#64748b"/>
+<rect x="920" y="160" width="245" height="120" rx="22" fill="#fee2e2" stroke="#dc2626" stroke-width="3"/>{svg_label(nodes[3], 1042)}
+</g></svg>'''
 
 
 def main():
     LESSONS.mkdir(parents=True, exist_ok=True)
     MAPS.mkdir(parents=True, exist_ok=True)
     for lang, text in PREFACE.items():
-        (LESSONS / f"preface{suffix(lang)}.md").write_text(text.strip()+"\n", encoding="utf-8")
+        marker = {"ru": "## Сквозной проект", "kz": "## Ортақ жоба", "en": "## The project"}[lang]
+        expanded = text.replace(marker, PREFACE_TEACHING[lang].strip() + "\n\n" + marker)
+        (LESSONS / f"preface{suffix(lang)}.md").write_text(expanded.strip()+"\n", encoding="utf-8")
     for number, topic in enumerate(TOPICS, 1):
         assert number <= 24
         for lang in ("ru", "kz", "en"):
             (LESSONS / f"{topic['stem']}{suffix(lang)}.md").write_text(render_lesson(topic, number, lang), encoding="utf-8")
-            name = f"map-{number:02d}-{topic['stem'][3:]}-{lang}.svg"
+            name = f"map-{topic['stem']}-{lang}.svg"
             (MAPS / name).write_text(render_map(topic, number, lang), encoding="utf-8")
     print(f"generated {1 + len(TOPICS)} pages x 3 languages and {len(TOPICS) * 3} maps")
 

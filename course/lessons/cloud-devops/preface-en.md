@@ -12,7 +12,7 @@ The software layer is mature too. In CNCF's 2025 survey, 82% of container users 
 
 ## What is changing in work
 
-Employers surveyed by the World Economic Forum ranked networks and cybersecurity as the second fastest-growing skill group through 2030, after AI and big data. [Source: Future of Jobs Report 2025](https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/). That finding must not be turned into a promise that every job titled DevOps will grow.
+Employers surveyed by the World Economic Forum ranked networks and cybersecurity as the second fastest-growing skill group through 2030, after AI and big data. [Source: Future of Jobs Report 2025, PDF](https://reports.weforum.org/docs/WEF_Future_of_Jobs_Report_2025.pdf). That finding must not be turned into a promise that every job titled DevOps will grow.
 
 US labour projections illustrate the shift. For 2025–2035, BLS projects about 8% growth for network architects, 21% for information security analysts, and 10% for software developers, QA analysts, and testers. It projects a 4% decline for traditional network and systems administrators because some routine work is automated, moved to DevOps-focused developers, or outsourced to service providers. These are US figures, not a Kazakhstan forecast, but they explain why this course focuses on code, automation, security, and reliability instead of memorising commands. [Sources: BLS on network architects](https://www.bls.gov/ooh/computer-and-information-technology/computer-network-architects.htm), [information security](https://www.bls.gov/ooh/computer-and-information-technology/information-security-analysts.htm), and [systems administration](https://www.bls.gov/ooh/computer-and-information-technology/network-and-computer-systems-administrators.htm).
 
@@ -49,6 +49,45 @@ Job titles overlap. The course outcome is therefore evidence rather than a label
 Shanraq does not issue a useless certificate merely because a lesson tab was opened. A polished PDF cannot restore a failed service, find a leaked secret, or recover data. Our free courses produce work that can be shown and repeated: a repository with a clear history, a reproducible release, a working endpoint, automated checks, an incident record, and data restored from a backup.
 
 The strongest evidence is your desire to understand and your sustained effort turned into a working result. At the end you have an engineering tool and portfolio that can solve real problems, support a technical interview, and help you build a livelihood. Twenty-four lessons do not guarantee income automatically; practice, responsibility, and the ability to solve another person's problem reliably create value. The course helps you prove those abilities without relying on a decorative credential.
+
+## How we will proceed: the support-signal method
+
+This course is for someone who may be meeting DNS, TCP, TLS, container, or pipeline for the first time. We do not treat these words as obvious. A new word first connects to a familiar image, then receives a precise definition and a place on a short support map, and only then appears in a command.
+
+We adapt principles from Viktor Shatalov's teaching system to independent online learning:
+
+1. **See the whole first.** Four supports at the start keep individual commands attached to a larger meaning.
+2. **Familiar image, then term.** DNS becomes a directory, an IP a building address, and a port an office number. We then state the technical limit of the analogy.
+3. **Support signal.** A few words and symbols encode the lesson logic. You expand them in your own words instead of memorising a slogan.
+4. **Repeated recall.** The next lesson briefly returns to the previous signal. At the end, you draw the chain from memory and explain it aloud.
+5. **Predict before observing.** Before a command, you predict its result. Comparing prediction with evidence turns a label into understanding.
+6. **Frequent feedback.** Small checks reveal the exact link that is missing. An error points to the block to revisit; it is not punishment or a permanent gate.
+7. **Open perspective.** Every ending shows why the next lesson matters and which complete project is taking shape in your hands.
+
+Read each lesson in two passes. On the first, follow the story and map without trying to memorise everything. On the second, work through the terms, prediction, command, and verification. Then hide the map and reconstruct its four supports on paper. If you cannot explain a link, revisit that block rather than blindly rereading the whole page.
+
+## Zero setup: if you have never opened a terminal
+
+A terminal is an ordinary application with a text window. Open **Terminal** on macOS or Ubuntu. On Windows, install **WSL2 with Ubuntu** and enable WSL integration in Docker Desktop. This is your safe learning workshop. Do not rent a server or pay for anything at this stage.
+
+Install Git, Docker, Go, and curl using the official instructions for your system. Open a new terminal window and run these commands one at a time:
+
+```shell
+git --version
+docker version
+go version
+curl --version
+```
+
+Each command should print a version. `docker version` should show both Client and Server information. If Server is unavailable, start Docker Desktop or Docker Engine first. Then obtain the learning project:
+
+```shell
+git clone https://github.com/DauletBai/shanraq.org.git
+cd shanraq.org/course/cloud-devops-lab
+pwd
+```
+
+The output of `pwd` must end in `course/cloud-devops-lab`. Do not run later lesson commands until it does; correct the working directory first. Official installation pages: [Git](https://git-scm.com/downloads), [Docker](https://docs.docker.com/get-started/get-docker/), [Go](https://go.dev/doc/install), and [WSL](https://learn.microsoft.com/windows/wsl/install).
 
 ## The project and course rules
 

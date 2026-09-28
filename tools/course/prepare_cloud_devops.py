@@ -8,8 +8,9 @@ import re
 
 ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / "course/lessons/cloud-devops"
-STEMS = ("preface", "01-why-now", "02-service-map", "03-terminal-git",
+STEMS = ("preface", "01-why-now", "03-terminal-git",
          "04-linux-access", "05-processes-logs", "06-networks-dns-http",
+         "02-service-map",
          "07-containers", "08-images-lifecycle", "09-dockerfile",
          "10-persistent-data", "11-compose", "12-health-resources",
          "13-registry", "14-cicd", "15-github-actions", "16-release-image",
