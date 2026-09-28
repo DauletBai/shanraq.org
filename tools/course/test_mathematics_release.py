@@ -85,6 +85,19 @@ class MathematicsReleaseTests(unittest.TestCase):
             ET.parse(ROOT / "web/static/course/mathematics" / name)
         ET.parse(ROOT / "web/static/course/mathematics/map-full-ru.svg")
 
+    def test_course_map_direction_and_percent_cells_are_explicit(self):
+        maps = ROOT / "web/static/course/mathematics"
+        course_map = (maps / "map-full-ru.svg").read_text(encoding="utf-8")
+        self.assertEqual(course_map.count('class="course-step"'), 8)
+        self.assertEqual(course_map.count('class="course-arrow"'), 7)
+        self.assertNotIn("M1135 465", course_map)
+
+        percent_map = (maps / "map-07-percent.svg").read_text(encoding="utf-8")
+        self.assertEqual(percent_map.count('class="percent-cell'), 100)
+        self.assertEqual(percent_map.count("percent-cell--filled"), 37)
+        self.assertEqual(percent_map.count("percent-cell--final-seven"), 7)
+        self.assertIn("30 + 7 = 37", percent_map)
+
     def test_claims_do_not_turn_targets_into_results(self):
         preface = (prepare_mathematics.LESSONS / "preface.md").read_text(encoding="utf-8")
         self.assertIn("не станем выдавать", preface)

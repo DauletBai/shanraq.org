@@ -22,6 +22,23 @@ def save(name, title, desc, body):
     (OUT / name).write_text(HEAD.format(title=title, desc=desc) + body + TAIL, encoding="utf-8")
 
 
+def percent_grid(filled=37):
+    """Draw a 10x10 grid and make every counted cell individually visible."""
+    cells = []
+    for index in range(100):
+        classes = ["percent-cell"]
+        if index < filled:
+            classes.append("percent-cell--filled")
+        if 30 <= index < 37:
+            classes.append("percent-cell--final-seven")
+        fill = "url(#gold)" if 30 <= index < 37 else "url(#red)" if index < filled else "#fff"
+        cells.append(
+            f'<rect class="{" ".join(classes)}" x="{index % 10 * 50}" y="{index // 10 * 50}" '
+            f'width="50" height="50" fill="{fill}" stroke="#365675" stroke-width="2"/>'
+        )
+    return "".join(cells)
+
+
 def main():
     save("map-01-diagnostic.svg", "Learning route", "A bridge of connected mathematical ideas.", '''
 <path d="M100 475 C290 475 280 360 455 360 S650 245 795 245 S930 135 1090 135" fill="none" stroke="#d7b06a" stroke-width="34" stroke-linecap="round" filter="url(#s)"/>
@@ -65,11 +82,10 @@ def main():
 <g fill="url(#red)"><circle cx="745" cy="170" r="42"/><circle cx="745" cy="270" r="42"/><circle cx="745" cy="370" r="42"/><circle cx="745" cy="470" r="42"/></g><g fill="url(#blue)"><circle cx="920" cy="115" r="42"/><circle cx="920" cy="195" r="42"/><circle cx="920" cy="275" r="42"/><circle cx="920" cy="355" r="42"/><circle cx="920" cy="435" r="42"/><circle cx="920" cy="515" r="42"/></g></g>
 <g font-family="system-ui,sans-serif" font-size="52" font-weight="700" text-anchor="middle" fill="#17324d"><text x="305" y="585">2 : 3</text><text x="835" y="585">4 : 6</text></g>
 ''')
-    save("map-07-percent.svg", "Percent", "A hundred-cell grid connects fractions, decimals, and percent.", '''
-<g transform="translate(115 65)" filter="url(#s)"><rect width="500" height="500" rx="12" fill="#fff" stroke="#365675" stroke-width="6"/>
-<path d="M0 0h185v500H0z" fill="url(#red)" opacity=".9"/><g stroke="#365675" stroke-width="2" opacity=".55">'''+''.join(f'<path d="M{x} 0v500"/>' for x in range(50,500,50))+''.join(f'<path d="M0 {y}h500"/>' for y in range(50,500,50))+'''</g></g>
+    save("map-07-percent.svg", "Percent", "Exactly 37 of 100 individual cells are highlighted: 30 plus 7.", '''
+<g transform="translate(115 65)" filter="url(#s)">''' + percent_grid(37) + '''<rect width="500" height="500" rx="12" fill="none" stroke="#365675" stroke-width="6"/></g>
 <path d="M700 315h120" stroke="#365675" stroke-width="12"/><path d="M800 280l40 35-40 35" fill="none" stroke="#365675" stroke-width="12" stroke-linecap="round"/>
-<g font-family="system-ui,sans-serif" font-size="58" font-weight="700" text-anchor="middle" fill="#17324d"><text x="950" y="260">37/100</text><text x="950" y="340">0.37</text><text x="950" y="420">37%</text></g>
+<g font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle" fill="#17324d"><text x="950" y="205" font-size="42">30 + 7 = 37</text><text x="950" y="290" font-size="58">37/100</text><text x="950" y="375" font-size="58">0.37</text><text x="950" y="460" font-size="58">37%</text></g>
 ''')
     save("map-08-proportion.svg", "Proportion", "Two equivalent ratios balance because both terms scale together.", '''
 <path d="M600 130v350M300 480h600" stroke="#365675" stroke-width="18" stroke-linecap="round" filter="url(#s)"/><path d="M255 250h690" stroke="#365675" stroke-width="14"/><path d="M350 250l-90 210h180zM850 250l-90 210h180z" fill="#fff" stroke="#365675" stroke-width="7"/>
@@ -80,11 +96,32 @@ def main():
 <g fill="#fff" stroke="#365675" stroke-width="6"><rect x="85" y="425" width="160" height="100" rx="24"/><rect x="315" y="325" width="160" height="100" rx="24"/><rect x="545" y="225" width="160" height="100" rx="24"/><rect x="775" y="125" width="160" height="100" rx="24"/></g>
 <g font-family="system-ui,sans-serif" font-size="42" font-weight="700" text-anchor="middle" fill="#17324d"><text x="165" y="489">◫</text><text x="395" y="389">=</text><text x="625" y="289">?</text><text x="855" y="189">↗</text><text x="1050" y="125">8/10</text><text x="1050" y="180">7/10</text><text x="1050" y="235">+7d</text></g>
 ''')
-    save("map-full-ru.svg", "Полная карта курса", "Восемь зависимых этапов ведут от чисел к математическому моделированию.", '''
-<path d="M125 165h950M1075 165v300H125M125 465h950" fill="none" stroke="#d7b06a" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" filter="url(#s)"/>
-<g filter="url(#s)" stroke="#365675" stroke-width="4"><rect x="55" y="90" width="240" height="145" rx="25" fill="#fff"/><rect x="335" y="90" width="240" height="145" rx="25" fill="#fff"/><rect x="615" y="90" width="240" height="145" rx="25" fill="#fff"/><rect x="895" y="90" width="240" height="145" rx="25" fill="#fff"/><rect x="895" y="390" width="240" height="145" rx="25" fill="#fff"/><rect x="615" y="390" width="240" height="145" rx="25" fill="#fff"/><rect x="335" y="390" width="240" height="145" rx="25" fill="#fff"/><rect x="55" y="390" width="240" height="145" rx="25" fill="#fff"/></g>
-<g font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d"><g font-size="25" font-weight="750"><text x="175" y="145"><tspan x="175">Числа</tspan><tspan x="175" dy="34">и действия</tspan></text><text x="455" y="145"><tspan x="455">Дроби, отношения</tspan><tspan x="455" dy="34">и проценты</tspan></text><text x="735" y="145"><tspan x="735">Предалгебра:</tspan><tspan x="735" dy="34">переменные</tspan></text><text x="1015" y="145"><tspan x="1015">Алгебра</tspan><tspan x="1015" dy="34">и функции</tspan></text><text x="1015" y="445"><tspan x="1015">Геометрия</tspan><tspan x="1015" dy="34">и пространство</tspan></text><text x="735" y="445"><tspan x="735">Математический</tspan><tspan x="735" dy="34">анализ</tspan></text><text x="455" y="445"><tspan x="455">Линейная</tspan><tspan x="455" dy="34">алгебра</tspan></text><text x="175" y="435"><tspan x="175">Вероятность, данные,</tspan><tspan x="175" dy="34">логика и графы</tspan></text></g><g font-size="20" fill="#5b6b79"><text x="175" y="215">7 узлов</text><text x="455" y="215">8 узлов</text><text x="735" y="215">5 узлов</text><text x="1015" y="215">7 узлов</text><text x="1015" y="515">8 узлов</text><text x="735" y="515">5 узлов</text><text x="455" y="515">3 узла</text><text x="175" y="515">7 узлов</text></g></g>
-<circle cx="45" cy="165" r="24" fill="url(#red)"/><path d="M1135 465h30l-18-17m18 17l-18 17" stroke="#b80f18" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    save("map-full-ru.svg", "Полная карта курса", "Восемь пронумерованных этапов идут слева направо, затем сверху вниз и справа налево.", '''
+<defs><marker id="course-arrowhead" markerWidth="18" markerHeight="18" refX="16" refY="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L18 9L0 18Z" fill="#b80f18"/></marker></defs>
+<g fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" marker-end="url(#course-arrowhead)">
+ <path class="course-arrow" d="M305 168H325"/><path class="course-arrow" d="M585 168H605"/><path class="course-arrow" d="M865 168H885"/>
+ <path class="course-arrow" d="M1015 263V365"/>
+ <path class="course-arrow" d="M895 468H875"/><path class="course-arrow" d="M615 468H595"/><path class="course-arrow" d="M335 468H315"/>
+</g>
+<g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff">
+ <rect class="course-step" x="55" y="80" width="240" height="175" rx="25"/><rect class="course-step" x="335" y="80" width="240" height="175" rx="25"/><rect class="course-step" x="615" y="80" width="240" height="175" rx="25"/><rect class="course-step" x="895" y="80" width="240" height="175" rx="25"/>
+ <rect class="course-step" x="895" y="380" width="240" height="175" rx="25"/><rect class="course-step" x="615" y="380" width="240" height="175" rx="25"/><rect class="course-step" x="335" y="380" width="240" height="175" rx="25"/><rect class="course-step" x="55" y="380" width="240" height="175" rx="25"/>
+</g>
+<g fill="url(#red)" stroke="#fff" stroke-width="3"><circle cx="82" cy="107" r="20"/><circle cx="362" cy="107" r="20"/><circle cx="642" cy="107" r="20"/><circle cx="922" cy="107" r="20"/><circle cx="922" cy="407" r="20"/><circle cx="642" cy="407" r="20"/><circle cx="362" cy="407" r="20"/><circle cx="82" cy="407" r="20"/></g>
+<g font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g font-size="22" font-weight="750">
+  <text x="175" y="145"><tspan x="175">Числа</tspan><tspan x="175" dy="30">и действия</tspan></text>
+  <text x="455" y="123"><tspan x="455">Дроби</tspan><tspan x="455" dy="29">отношения</tspan><tspan x="455" dy="29">проценты</tspan></text>
+  <text x="735" y="145"><tspan x="735">Переменные</tspan><tspan x="735" dy="30">и предалгебра</tspan></text>
+  <text x="1015" y="145"><tspan x="1015">Алгебра</tspan><tspan x="1015" dy="30">и функции</tspan></text>
+  <text x="1015" y="445"><tspan x="1015">Геометрия</tspan><tspan x="1015" dy="30">и пространство</tspan></text>
+  <text x="735" y="445"><tspan x="735">Математический</tspan><tspan x="735" dy="30">анализ</tspan></text>
+  <text x="455" y="445"><tspan x="455">Линейная</tspan><tspan x="455" dy="30">алгебра</tspan></text>
+  <text x="175" y="438"><tspan x="175">Вероятность</tspan><tspan x="175" dy="29">и статистика</tspan><tspan x="175" dy="29">логика и графы</tspan></text>
+ </g>
+ <g font-size="19" fill="#5b6b79"><text x="175" y="229">7 узлов</text><text x="455" y="229">8 узлов</text><text x="735" y="229">5 узлов</text><text x="1015" y="229">7 узлов</text><text x="1015" y="529">8 узлов</text><text x="735" y="529">5 узлов</text><text x="455" y="529">3 узла</text><text x="175" y="529">7 узлов</text></g>
+ <g font-size="18" font-weight="800" fill="#fff"><text x="82" y="113">1</text><text x="362" y="113">2</text><text x="642" y="113">3</text><text x="922" y="113">4</text><text x="922" y="413">5</text><text x="642" y="413">6</text><text x="362" y="413">7</text><text x="82" y="413">8</text></g>
+</g>
 ''')
 
 
