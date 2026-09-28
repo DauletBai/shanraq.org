@@ -3961,6 +3961,7 @@ h1[tabindex="-1"]:focus, h1[tabindex="-1"]:focus-visible { outline: none; }
 .chk__hint { color: var(--ink-soft); margin: 0 0 12px; max-width: 62ch; }
 .chk__code { width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: .9rem; line-height: 1.55; resize: vertical; }
+.chk__code--prose { font-family: var(--sans); font-size: 1rem; line-height: 1.65; }
 .chk__out { margin-top: 4px; }
 /* A review is prose about the reader's own work, so it is set like the lesson's
    own asides rather than like an alert. */

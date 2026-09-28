@@ -2383,6 +2383,17 @@ var messages = map[string]map[string]string{
 		"ru": "Сначала решите и запустите в VS Code — редактор покажет ошибку на месте. Готовое решение вставьте сюда. Проверяет модель: она укажет на ошибку, но не даст готовый ответ.",
 		"en": "Solve it and run it in VS Code first — the editor shows the mistake where you made it. Paste the finished solution here. A model reads it: it will point at the mistake but will not hand you the answer.",
 	},
+	"chk.math_title": {"kz": "Шешімді тексеру", "ru": "Проверить решение", "en": "Check your solution"},
+	"chk.math_hint": {
+		"kz": "Есепті алдымен дәптерде шығарыңыз. Мұнда шешу жолын, есептеулерді, өлшем бірліктерін және түсіндірмені жазыңыз. Модель пайымдауды тексеріп, алғашқы қате немесе дәлелденбеген қадамды көрсетеді және дайын жауапты ашпай, шағын нұсқау береді.",
+		"ru": "Сначала решите задачу в тетради. Запишите сюда ход рассуждения, вычисления, единицы измерения и объяснение. Модель проверит решение, укажет первое ошибочное или необоснованное место и даст небольшую подсказку, не раскрывая готовый ответ.",
+		"en": "Solve the problem on paper first. Enter your reasoning, calculations, units, and explanation here. The model will review the solution, identify the first incorrect or unsupported step, and give a small hint without revealing the finished answer.",
+	},
+	"chk.math_placeholder": {
+		"kz": "Шешу жолын, есептеулерді және түсіндірмені жазыңыз…",
+		"ru": "Запишите ход решения, вычисления и объяснение…",
+		"en": "Enter your reasoning, calculations, and explanation…",
+	},
 	"chk.submit":    {"kz": "Тексеру", "ru": "Проверить", "en": "Check"},
 	"chk.checking":  {"kz": "Тексерілуде…", "ru": "Проверяю…", "en": "Checking…"},
 	"chk.passed":    {"kz": "Тапсырма қабылданды", "ru": "Задание принято", "en": "Exercise accepted"},

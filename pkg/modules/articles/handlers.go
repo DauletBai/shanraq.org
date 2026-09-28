@@ -630,6 +630,7 @@ type ArticlePage struct {
 	CheckReady  bool
 	CheckWhy    string
 	CheckLogin  bool
+	CheckMath   bool
 	Progress    Progress
 
 	// Courses this article is a lesson in. Usually none, at most one; the slice
@@ -836,8 +837,11 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 	// the feature from exactly the people it is meant to bring in.
 	rustSelfCheck := false
 	for _, place := range page.SeriesPlaces {
-		if place.Series.CodeLang == CodeRust {
+		switch place.Series.CodeLang {
+		case CodeRust:
 			rustSelfCheck = true
+		case CodeMath:
+			page.CheckMath = true
 		}
 	}
 	if lessonExercise(tr.BodyMD) != "" && !rustSelfCheck {

@@ -95,6 +95,37 @@ func TestReaderWalksTheCourse(t *testing.T) {
 	})
 }
 
+func TestMathCourseExplainsTheProseChecker(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	author := app.createUser("math-check@t.test", "Parol12345")
+	titles := map[string]string{"ru": "Математика", "kz": "Математика", "en": "Mathematics"}
+	series, err := NewSeriesStore(app.pool).Save(context.Background(), nil,
+		"math-check-"+uuid.NewString()[:8], "", SeriesPublished, CodeMath, titles, titles)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer app.exec(`DELETE FROM article_series WHERE id=$1`, series)
+
+	article, slug := app.seedArticle(author, "published")
+	app.exec(`UPDATE article_translations SET body_md = $2 WHERE article_id = $1 AND lang = 'ru'`,
+		article, "## Задание\n\n**Обязательное.** Запишите решение и объясните каждый шаг.\n")
+	app.exec(`INSERT INTO article_series_items(series_id, article_id, position) VALUES($1,$2,10)`, series, article)
+
+	rec := app.do(http.MethodGet, "/read/"+slug+"?lang=ru", nil)
+	if rec.Code != http.StatusOK {
+		t.Fatalf("math lesson: %d", rec.Code)
+	}
+	body := rec.Body.String()
+	if !strings.Contains(body, "Сначала решите задачу в тетради") {
+		t.Error("математический урок не объясняет проверку письменного решения")
+	}
+	if strings.Contains(body, "VS Code") {
+		t.Error("математический урок предлагает запустить решение в VS Code")
+	}
+}
+
 func TestRustSelfCheckDoesNotUseGoFormatter(t *testing.T) {
 	if _, err := formatSolution("fn main() {}", CodeRust); err == nil {
 		t.Fatal("Rust must not claim a Go formatter checked the answer")

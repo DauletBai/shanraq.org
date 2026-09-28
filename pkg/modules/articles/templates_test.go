@@ -755,6 +755,38 @@ func TestMathematicsLessonGetsVisualClass(t *testing.T) {
 	}
 }
 
+func TestMathematicsExerciseUsesProseInstructions(t *testing.T) {
+	renderer := buildTemplates(t)
+	for _, lang := range Langs {
+		page := ArticlePage{
+			Base:        Base{Title: "Mathematics", Lang: lang},
+			Slug:        "math-fractions",
+			Title:       "Fractions",
+			ServedLang:  lang,
+			HasExercise: true,
+			CheckReady:  true,
+			CheckMath:   true,
+		}
+		var out strings.Builder
+		if err := renderer.Execute(&out, "article", page); err != nil {
+			t.Fatal(err)
+		}
+		html := out.String()
+		if strings.Contains(html, "VS Code") {
+			t.Errorf("%s: mathematics exercise still gives programming instructions", lang)
+		}
+		if strings.Contains(html, `class="btn btn--ghost chk__fmt"`) {
+			t.Errorf("%s: mathematics prose is offered a code formatter", lang)
+		}
+		if !strings.Contains(html, `chk__code--prose`) || !strings.Contains(html, `spellcheck="true"`) {
+			t.Errorf("%s: mathematics solution is not rendered as prose", lang)
+		}
+		if strings.Contains(html, "chk.math_") {
+			t.Errorf("%s: mathematics translation key leaked into the page", lang)
+		}
+	}
+}
+
 // The cover's box has to be reserved before the image arrives, or the heading
 // below it jumps down on load — that shift was the article page's whole CLS.
 func TestArticleCoverReservesItsSpace(t *testing.T) {

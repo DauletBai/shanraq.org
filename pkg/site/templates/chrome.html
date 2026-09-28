@@ -799,6 +799,9 @@
       var ta = box.querySelector('.chk__code');
       var go = box.querySelector('.chk__go');
       var out = box.querySelector('.chk__out');
+      // A guest sees why sign-in is required, but has no form controls yet.
+      // Stop cleanly instead of throwing on the missing submit button.
+      if (!ta || !go || !out) return;
       var busy = go.getAttribute('data-busy');
       var idle = go.textContent;
 
