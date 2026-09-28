@@ -192,8 +192,18 @@ func TestMathSolutionsStayProse(t *testing.T) {
 		t.Fatalf("formatSolution(math) = %q, %v", out, err)
 	}
 	prompt := checkSystem(LangRU, CodeMath)
-	if !strings.Contains(prompt, "mathematics exercise") || !strings.Contains(prompt, "Never require programming") {
+	if !strings.Contains(prompt, "beginner mathematics course") || !strings.Contains(prompt, "Never require programming") {
 		t.Fatalf("math reviewer prompt does not describe mathematical reasoning: %s", prompt)
+	}
+	for _, rule := range []string{
+		"whole, base, compared quantities",
+		"first broken or unsupported link",
+		"Never reveal the final answer",
+		"Accept a precise verbal description",
+	} {
+		if !strings.Contains(prompt, rule) {
+			t.Errorf("math reviewer prompt is missing %q", rule)
+		}
 	}
 	if got := string(highlightCode(src, CodeMath)); strings.Contains(got, "chroma") || !strings.Contains(got, "<p>") {
 		t.Fatalf("mathematical prose rendered as code: %s", got)

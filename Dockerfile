@@ -6,7 +6,17 @@ WORKDIR /src
 ENV GOTOOLCHAIN=auto
 
 COPY go.mod go.sum ./
-RUN go mod download
+# The public module proxy occasionally resets a single HTTP/2 stream on a fresh
+# GitHub runner. Everything already downloaded remains in the module cache, so
+# retry the missing archive instead of turning a transient network reset into a
+# failed release.
+RUN for attempt in 1 2 3; do \
+      go mod download && exit 0; \
+      status=$?; \
+      if [ "${attempt}" -eq 3 ]; then exit "${status}"; fi; \
+      echo "go mod download failed (attempt ${attempt}/3); retrying..." >&2; \
+      sleep $((attempt * 3)); \
+    done
 
 COPY . .
 # TARGETOS/TARGETARCH are provided by BuildKit (default to the build host, or set

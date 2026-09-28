@@ -206,6 +206,9 @@ func unfence(s string) string {
 // and a verdict without a way forward wastes the one moment they are paying
 // attention.
 func checkSystem(lang, codeLang string) string {
+	if codeLang == CodeMath {
+		return mathCheckSystem(lang)
+	}
 	name := "Go"
 	switch codeLang {
 	case CodePython:
@@ -216,38 +219,6 @@ func checkSystem(lang, codeLang string) string {
 		name = "Rust"
 	case CodeShell:
 		name = "Shell (POSIX sh)"
-	case CodeMath:
-		name = "mathematical reasoning"
-	}
-	if codeLang == CodeMath {
-		common := `You review a beginner's written solution to one mathematics exercise.
-
-Judge the reasoning and the requested result. Equivalent notation and a valid
-method different from the lesson's method must pass. A bare final number passes
-only when the exercise asks only for a number; when it asks for an explanation,
-diagram, units, or a check, require that evidence. Never require programming.
-
-Answer with JSON and nothing else: {"passed": true|false, "note": "..."}.
-
-"passed" is true when every required part of the exercise is correct. Judge
-that and nothing else. Do not fail for spelling, notation style, or a harmless
-arithmetic slip that the learner identifies and correctly repairs in the same
-answer.
-
-"note" is two to four sentences addressed to the learner. When the solution
-works, name the reasoning step that makes it valid. When it does not, identify
-the first unsupported step and give a question or small hint that lets the
-learner repair it; do not reveal the full solution.
-
-Plain text in "note", no Markdown, no code fences.`
-		switch lang {
-		case LangKZ:
-			return common + "\n\nWrite \"note\" in Kazakh."
-		case LangEN:
-			return common + "\n\nWrite \"note\" in English."
-		default:
-			return common + "\n\nWrite \"note\" in Russian."
-		}
 	}
 	common := `You review a beginner's solution to one exercise from a ` + name + ` course.
 
@@ -270,6 +241,56 @@ instead — never simply "wrong", and never the corrected code, which would take
 the exercise away from them.
 
 Plain text in "note", no Markdown, no code fences.`
+	switch lang {
+	case LangKZ:
+		return common + "\n\nWrite \"note\" in Kazakh."
+	case LangEN:
+		return common + "\n\nWrite \"note\" in English."
+	default:
+		return common + "\n\nWrite \"note\" in Russian."
+	}
+}
+
+// mathCheckSystem is a mathematics tutor's brief, separate from every code
+// course. A mathematical answer is a chain of meanings and decisions, so the
+// reviewer locates the first broken link instead of treating the final number
+// like a compiler exit code.
+func mathCheckSystem(lang string) string {
+	common := `You are the checking tutor for Shanraq's beginner mathematics course.
+The course teaches through connected ideas, plain-life images, support signals,
+retrieval, error repair, and transfer. Review the learner's own reasoning; do
+not replace it with your preferred method.
+
+Read the exact EXERCISE and SOLUTION supplied by the application. Use TAUGHT SO
+FAR only to avoid demanding an idea or notation the learner has not met.
+Never require programming, VS Code, or a particular school algorithm.
+
+Check the required parts in this order when they apply:
+1. The whole, base, compared quantities, or measurement unit is identified.
+2. The representation or mathematical relationship matches the situation.
+3. The chosen operation follows from the question.
+4. The calculation and result are correct, with units where they matter.
+5. Any requested explanation, estimate, reverse check, diagram, or transfer is
+   present. Accept a precise verbal description when the learner cannot draw in
+   the text box.
+
+Equivalent notation and every valid alternative method must pass. Accept comma
+or point decimal separators. Do not fail for spelling, phrasing, notation
+style, or an arithmetic slip the learner notices and correctly repairs in the
+same submission. A bare final number passes only if the exercise asks only for
+that number.
+
+Answer with JSON and nothing else: {"passed": true|false, "note": "..."}.
+
+Set "passed" to true only when every required part is correct. If it passes,
+name the reasoning step that proves the learner understands the idea. If it
+does not pass, identify only the first broken or unsupported link, then ask one
+short guiding question or give one small next action.
+Never reveal the final answer, a corrected full chain, or a worked solution
+using the exercise's numbers.
+
+Write "note" directly to a beginner in two to four calm, concrete sentences.
+Use plain text: no Markdown and no code fences.`
 	switch lang {
 	case LangKZ:
 		return common + "\n\nWrite \"note\" in Kazakh."
