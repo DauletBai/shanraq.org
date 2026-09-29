@@ -2462,5 +2462,29 @@
   "mathematics/09-mastery": [
     "math-09-mastery",
     "ru"
+  ],
+  "mathematics/19-variables": [
+    "math-19-variables",
+    "ru"
+  ],
+  "mathematics/20-expressions": [
+    "math-20-expressions",
+    "ru"
+  ],
+  "mathematics/21-equations-basic": [
+    "math-21-equations-basic",
+    "ru"
+  ],
+  "mathematics/22-coordinates": [
+    "math-22-coordinates",
+    "ru"
+  ],
+  "mathematics/23-inequalities": [
+    "math-23-inequalities",
+    "ru"
+  ],
+  "mathematics/24-prealgebra-mastery": [
+    "math-24-prealgebra-mastery",
+    "ru"
   ]
 }

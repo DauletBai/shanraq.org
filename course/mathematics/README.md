@@ -6,10 +6,11 @@ quantity to mathematical modelling. Every prerequisite must name another node,
 and the graph must remain acyclic; `tools/course/test_mathematics_release.py`
 checks both properties.
 
-The published foundation now contains two connected blocks: numbers and
-operations, followed by fractions, ratios, percent, and proportion.  Together
-they provide eighteen lessons plus the course orientation and test the lesson
-cycle and mastery gate before the remaining nodes are written:
+The prepared Russian route now contains three connected blocks: numbers and
+operations; fractions, ratios, percent, and proportion; then variables,
+expressions, equations, coordinates, and inequalities. Together they provide
+twenty-four lessons plus the course orientation and test the lesson cycle and
+mastery gate before the remaining nodes are written:
 
 1. whole-map orientation;
 2. familiar physical image;

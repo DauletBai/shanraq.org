@@ -46,8 +46,8 @@ class MathematicsReleaseTests(unittest.TestCase):
         sql, expected = prepare_mathematics.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.endswith("COMMIT;\n"))
-        self.assertEqual(len(expected), 19)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 19)
+        self.assertEqual(len(expected), 25)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 25)
         self.assertIn("'society','education'", sql)
         self.assertIn("'published','math'", sql)
         self.assertNotIn("DELETE FROM", sql)
@@ -173,6 +173,24 @@ class MathematicsReleaseTests(unittest.TestCase):
         self.assertEqual(foundation_mastery.count('class="foundation-skill"'), 8)
         self.assertIn("8/10", foundation_mastery)
         self.assertIn("7/10", foundation_mastery)
+
+        prealgebra = (
+            ("19-variables.md", "map-19-variables.svg", "C = 700 + 120d", 'data-variable="C=700+120d;d=5;C=1300"'),
+            ("20-expressions.md", "map-20-expressions.svg", "3(2x + 5) − 4x", 'data-expression="3(2x+5)-4x=2x+15;x=4;value=23"'),
+            ("21-equations-basic.md", "map-21-equations-basic.svg", "3x + 5 = 26", 'data-equation="3x+5=26;x=7"'),
+            ("22-coordinates.md", "map-22-coordinates.svg", "A(−3; 2)", 'data-coordinates="A(-3,2);B(4,2);distance=7"'),
+            ("23-inequalities.md", "map-23-inequalities.svg", "3x + 2 ≤ 14", 'data-inequality="3x+2&lt;=14;x&lt;=4"'),
+        )
+        for lesson_name, map_name, example, marker in prealgebra:
+            lesson = (lessons / lesson_name).read_text(encoding="utf-8")
+            illustration = (maps / map_name).read_text(encoding="utf-8")
+            self.assertIn(example, lesson, lesson_name)
+            self.assertIn(marker, illustration, map_name)
+
+        prealgebra_mastery = (maps / "map-24-prealgebra-mastery.svg").read_text(encoding="utf-8")
+        self.assertEqual(prealgebra_mastery.count('class="prealgebra-skill"'), 5)
+        self.assertIn("8/10", prealgebra_mastery)
+        self.assertIn("7/10", prealgebra_mastery)
 
     def test_claims_do_not_turn_targets_into_results(self):
         preface = (prepare_mathematics.LESSONS / "preface.md").read_text(encoding="utf-8")

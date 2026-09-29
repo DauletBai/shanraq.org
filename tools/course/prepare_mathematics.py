@@ -31,10 +31,16 @@ ROUTE = (
     ("07-percent", "math-07-percent", 70),
     ("08-proportion", "math-08-proportion", 80),
     ("09-mastery", "math-09-mastery", 90),
+    ("19-variables", "math-19-variables", 100),
+    ("20-expressions", "math-20-expressions", 110),
+    ("21-equations-basic", "math-21-equations-basic", 120),
+    ("22-coordinates", "math-22-coordinates", 130),
+    ("23-inequalities", "math-23-inequalities", 140),
+    ("24-prealgebra-mastery", "math-24-prealgebra-mastery", 150),
 )
 STEMS = tuple(item[0] for item in ROUTE)
 SLUGS = tuple(item[1] for item in ROUTE)
-MASTERY_STEMS = ("18-foundations-mastery", "09-mastery")
+MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery")
 TEACHING_STEMS = tuple(
     stem for stem in STEMS if stem != "preface" and stem not in MASTERY_STEMS
 )
@@ -42,15 +48,15 @@ COVER = "/static/covers/school/mathematics/mathematics-foundations.webp"
 META = {
     "ru": (
         "Математика: от фундамента к высшей математике",
-        "Бесплатный курс по карте зависимостей, а не по классам. 18 занятий восстанавливают числа и действия, затем связывают дроби, отношения, проценты и пропорции; каждый блок завершается проверкой переноса.",
+        "Бесплатный курс по карте зависимостей, а не по классам. 24 занятия восстанавливают числа и действия, связывают дроби и проценты, затем вводят переменные, уравнения, координаты и неравенства; каждый блок завершается проверкой переноса.",
     ),
     "kz": (
         "Математика: іргетастан жоғары математикаға дейін",
-        "Сыныптармен емес, ұғымдар тәуелділігінің картасымен құрылған тегін курс. 18 сабақтан тұратын бағыт қазір орыс тілінде ашық; қазақша нұсқа редакциялық тексеруден кейін қосылады.",
+        "Сыныптармен емес, ұғымдар тәуелділігінің картасымен құрылған тегін курс. 24 сабақтан тұратын бағыт қазір орыс тілінде ашық; қазақша нұсқа редакциялық тексеруден кейін қосылады.",
     ),
     "en": (
         "Mathematics: from foundations to higher mathematics",
-        "A free course organized by idea dependencies rather than grade levels. Its 18-lesson foundations and proportional-reasoning route is open in Russian; reviewed English localization will follow.",
+        "A free course organized by idea dependencies rather than grade levels. Its 24-lesson route through foundations, proportional reasoning, and prealgebra is open in Russian; reviewed English localization will follow.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -75,8 +81,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 19 or len(STEMS) != len(SLUGS):
-        raise ValueError("expected one preface and eighteen lessons")
+    if len(ROUTE) != 25 or len(STEMS) != len(SLUGS):
+        raise ValueError("expected one preface and twenty-four lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-mathematics-course'));" ]
     slugs = ",".join(literal(s) for s in SLUGS)
     sql.append(f"""DO $guard$

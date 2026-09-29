@@ -236,6 +236,71 @@ def main():
  <text x="400" y="470" font-size="24" font-weight="780">ПЕРВАЯ ПОПЫТКА</text><text x="400" y="530" font-size="48" font-weight="880">8/10</text><text x="800" y="470" font-size="24" font-weight="780">ЧЕРЕЗ 7 ДНЕЙ</text><text x="800" y="530" font-size="48" font-weight="880">7/10</text>
 </g>
 ''')
+    save("map-19-variables.svg", "Переменная хранит значение величины", "Цена поездки состоит из семисот тенге за посадку и ста двадцати тенге за каждый из d километров; при d равном пяти цена равна тысяче тремстам тенге.", '''
+<g data-variable="C=700+120d;d=5;C=1300" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="45" y="100" width="270" height="245" rx="28"/><rect x="365" y="100" width="430" height="245" rx="28"/><rect x="845" y="100" width="310" height="245" rx="28"/></g>
+ <g font-weight="850"><text x="180" y="205" font-size="58">700</text><text x="580" y="205" font-size="58">120 × d</text><text x="1000" y="205" font-size="58">C</text></g>
+ <g font-size="22" font-weight="720" fill="#5b6b79"><text x="180" y="263"><tspan x="180">плата</tspan><tspan x="180" dy="30">за посадку</tspan></text><text x="580" y="263"><tspan x="580">120 тенге за каждый</tspan><tspan x="580" dy="30">километр расстояния d</tspan></text><text x="1000" y="263"><tspan x="1000">общая цена</tspan><tspan x="1000" dy="30">в тенге</tspan></text></g>
+ <g font-size="48" font-weight="850"><text x="340" y="225">+</text><text x="820" y="225">=</text></g>
+ <g filter="url(#s)"><rect x="145" y="420" width="910" height="125" rx="28" fill="url(#gold)" stroke="#365675" stroke-width="5"/></g>
+ <text x="600" y="475" font-size="29" font-weight="760">подстановка: d = 5 км</text><text x="600" y="522" font-size="39" font-weight="860">C = 700 + 120 × 5 = 1300 тенге</text>
+</g>
+''')
+    save("map-20-expressions.svg", "Равные пути преобразования выражения", "Выражение три умножить на два икс плюс пять минус четыре икс преобразуется в шесть икс плюс пятнадцать минус четыре икс, а затем в два икс плюс пятнадцать; при икс равном четырем оба пути дают двадцать три.", '''
+<g data-expression="3(2x+5)-4x=2x+15;x=4;value=23" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="115" y="55" width="970" height="105" rx="26"/><rect x="115" y="230" width="970" height="105" rx="26"/><rect x="325" y="405" width="550" height="105" rx="26"/></g>
+ <g font-size="40" font-weight="850"><text x="600" y="120">3(2x + 5) − 4x</text><text x="600" y="295">6x + 15 − 4x</text><text x="600" y="470">2x + 15</text></g>
+ <g fill="none" stroke="#b80f18" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M600 175v35m-15-17 15 17 15-17"/><path d="M600 350v35m-15-17 15 17 15-17"/></g>
+ <g font-size="20" font-weight="760" fill="#5b6b79"><text x="945" y="202">раскрываем скобки</text><text x="950" y="377">собираем подобные</text></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="url(#gold)"><rect x="85" y="535" width="460" height="65" rx="20"/><rect x="655" y="535" width="460" height="65" rx="20"/></g>
+ <g font-size="23" font-weight="800"><text x="315" y="576">x = 4: исходное = 23</text><text x="885" y="576">x = 4: новое = 23</text></g>
+</g>
+''')
+    save("map-21-equations-basic.svg", "Уравнение сохраняет равновесие", "Из уравнения три икс плюс пять равно двадцати шести одинаковое вычитание пяти и деление на три приводят к икс равному семи; подстановка подтверждает равенство.", '''
+<g data-equation="3x+5=26;x=7" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <path d="M600 105v255M390 205h420M455 205l-90 145M745 205l90 145" fill="none" stroke="#365675" stroke-width="11" stroke-linecap="round"/>
+ <path d="M265 350h200M735 350h200" stroke="#365675" stroke-width="9" stroke-linecap="round"/>
+ <circle cx="600" cy="105" r="34" fill="url(#red)" stroke="#fff" stroke-width="5" filter="url(#s)"/>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="235" y="250" width="260" height="90" rx="22"/><rect x="705" y="250" width="260" height="90" rx="22"/></g>
+ <g font-size="40" font-weight="850"><text x="365" y="307">3x + 5</text><text x="835" y="307">26</text></g>
+ <g fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M250 410H950"/><path d="M930 395l20 15-20 15"/></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><rect x="70" y="450" width="315" height="105" rx="23"/><rect x="442" y="450" width="315" height="105" rx="23"/><rect x="815" y="450" width="315" height="105" rx="23"/></g>
+ <g font-size="27" font-weight="820"><text x="227" y="493">−5 с обеих сторон</text><text x="227" y="530">3x = 21</text><text x="600" y="493">÷3 с обеих сторон</text><text x="600" y="530">x = 7</text><text x="972" y="493">проверка</text><text x="972" y="530">3 × 7 + 5 = 26</text></g>
+</g>
+''')
+    save("map-22-coordinates.svg", "Адреса точек на координатной плоскости", "Точки A минус три два и B четыре два лежат на одной горизонтали, а расстояние между ними равно семи единицам.", '''
+<g data-coordinates="A(-3,2);B(4,2);distance=7" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g stroke="#b8ccda" stroke-width="2" opacity=".75"><path d="M150 80v450M250 80v450M350 80v450M450 80v450M550 80v450M650 80v450M750 80v450M850 80v450M950 80v450M1050 80v450"/><path d="M150 80h900M150 180h900M150 280h900M150 380h900M150 480h900"/></g>
+ <g stroke="#365675" stroke-width="7" stroke-linecap="round"><path d="M115 380h995"/><path d="M550 555V50"/></g><g fill="#365675"><path d="M1110 380l-24-14v28z"/><path d="M550 50l-14 24h28z"/></g>
+ <g font-size="20" font-weight="700"><text x="150" y="415">−4</text><text x="250" y="415">−3</text><text x="350" y="415">−2</text><text x="450" y="415">−1</text><text x="650" y="415">1</text><text x="750" y="415">2</text><text x="850" y="415">3</text><text x="950" y="415">4</text><text x="1050" y="415">5</text><text x="522" y="487">−1</text><text x="522" y="287">1</text><text x="522" y="187">2</text><text x="522" y="87">3</text><text x="1095" y="410">x</text><text x="580" y="68">y</text><text x="525" y="410">0</text></g>
+ <path d="M250 180H950" stroke="url(#gold)" stroke-width="18" stroke-linecap="round" filter="url(#s)"/>
+ <g filter="url(#s)" stroke="#fff" stroke-width="5"><circle cx="250" cy="180" r="22" fill="url(#red)"/><circle cx="950" cy="180" r="22" fill="url(#blue)"/></g>
+ <g font-size="26" font-weight="830"><text x="250" y="140">A(−3; 2)</text><text x="950" y="140">B(4; 2)</text></g>
+ <path d="M250 545v28M950 545v28M250 560h700" stroke="#b80f18" stroke-width="5"/><text x="600" y="603" font-size="25" font-weight="820">|4 − (−3)| = 7 единиц</text>
+</g>
+''')
+    save("map-23-inequalities.svg", "Неравенство задает луч решений", "Три икс плюс два не больше четырнадцати преобразуется в икс не больше четырех; закрашенная граница четыре и луч влево показывают все решения.", '''
+<g data-inequality="3x+2&lt;=14;x&lt;=4" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><rect x="45" y="70" width="330" height="110" rx="25"/><rect x="435" y="70" width="330" height="110" rx="25"/><rect x="825" y="70" width="330" height="110" rx="25"/></g>
+ <g font-size="35" font-weight="850"><text x="210" y="138">3x + 2 ≤ 14</text><text x="600" y="138">3x ≤ 12</text><text x="990" y="138">x ≤ 4</text></g>
+ <g fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M390 125h25m-15-14 15 14-15 14"/><path d="M780 125h25m-15-14 15 14-15 14"/></g>
+ <path d="M120 395H1080" stroke="#365675" stroke-width="9" stroke-linecap="round"/>
+ <g stroke="#365675" stroke-width="4"><path d="M180 365v60"/><path d="M300 365v60"/><path d="M420 365v60"/><path d="M540 365v60"/><path d="M660 365v60"/><path d="M780 350v90"/><path d="M900 365v60"/><path d="M1020 365v60"/></g>
+ <g font-size="23" font-weight="720"><text x="180" y="465">−1</text><text x="300" y="465">0</text><text x="420" y="465">1</text><text x="540" y="465">2</text><text x="660" y="465">3</text><text x="780" y="465">4</text><text x="900" y="465">5</text><text x="1020" y="465">6</text></g>
+ <path d="M145 395H780" stroke="#c9151e" stroke-width="22" stroke-linecap="round"/><path d="M145 395l38-25v50z" fill="#b80f18"/><circle cx="780" cy="395" r="27" fill="url(#red)" stroke="#fff" stroke-width="6"/>
+ <text x="462" y="330" font-size="27" font-weight="800">все числа до 4 включительно</text>
+ <g filter="url(#s)"><rect x="275" y="515" width="650" height="75" rx="22" fill="url(#gold)" stroke="#365675" stroke-width="4"/></g><text x="600" y="563" font-size="28" font-weight="820">4 подходит: 3 × 4 + 2 = 14</text>
+</g>
+''')
+    save("map-24-prealgebra-mastery.svg", "Пять опор предалгебры", "Переменные, выражения, уравнения, координаты и неравенства ведут к проверке восемь из десяти сейчас и семь из десяти через семь дней.", '''
+<g data-prealgebra-skills="5" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><rect class="prealgebra-skill" x="60" y="65" width="320" height="105" rx="23"/><rect class="prealgebra-skill" x="440" y="65" width="320" height="105" rx="23"/><rect class="prealgebra-skill" x="820" y="65" width="320" height="105" rx="23"/><rect class="prealgebra-skill" x="250" y="220" width="320" height="105" rx="23"/><rect class="prealgebra-skill" x="630" y="220" width="320" height="105" rx="23"/></g>
+ <g font-size="25" font-weight="800"><text x="220" y="130">Переменные</text><text x="600" y="130">Выражения</text><text x="980" y="130">Уравнения</text><text x="410" y="285">Координаты</text><text x="790" y="285">Неравенства</text></g>
+ <path d="M220 185C280 365 470 390 600 405M600 185V405M980 185C920 365 730 390 600 405M410 340C455 380 510 395 600 405M790 340C745 380 690 395 600 405" fill="none" stroke="#d7b06a" stroke-width="12" stroke-linecap="round"/>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="url(#gold)"><rect x="160" y="420" width="385" height="145" rx="28"/><rect x="655" y="420" width="385" height="145" rx="28"/></g>
+ <text x="352" y="470" font-size="23" font-weight="780">ПЕРВАЯ ПОПЫТКА</text><text x="352" y="530" font-size="49" font-weight="880">8/10</text><text x="847" y="470" font-size="23" font-weight="780">ЧЕРЕЗ 7 ДНЕЙ</text><text x="847" y="530" font-size="49" font-weight="880">7/10</text>
+</g>
+''')
     save("map-full-ru.svg", "Полная карта курса", "Восемь пронумерованных этапов идут слева направо, затем сверху вниз и справа налево.", '''
 <defs><marker id="course-arrowhead" markerWidth="18" markerHeight="18" refX="16" refY="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L18 9L0 18Z" fill="#b80f18"/></marker></defs>
 <g fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" marker-end="url(#course-arrowhead)">
