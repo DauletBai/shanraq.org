@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare one atomic SQL publication for the first mathematics route."""
+"""Prepare one atomic SQL publication for the released mathematics routes."""
 import argparse
 import hashlib
 import json
@@ -8,26 +8,49 @@ import re
 
 ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / "course/lessons/mathematics"
-STEMS = (
-    "preface", "01-diagnostic", "02-fraction-meaning",
-    "03-equivalent-fractions", "04-compare-fractions",
-    "05-fraction-operations", "06-ratio", "07-percent",
-    "08-proportion", "09-mastery",
+# The source filenames retain their historical lesson numbers, while position
+# follows the dependency graph.  The foundations block therefore sits between
+# diagnosis and fractions without changing any published URL.
+ROUTE = (
+    ("preface", "mathematics-before-start", 1),
+    ("01-diagnostic", "math-01-diagnostic", 10),
+    ("10-quantity-counting", "math-10-quantity-counting", 11),
+    ("11-place-value", "math-11-place-value", 12),
+    ("12-addition-subtraction", "math-12-addition-subtraction", 13),
+    ("13-multiplication-division", "math-13-multiplication-division", 14),
+    ("14-order-estimation", "math-14-order-estimation", 15),
+    ("15-negative-numbers", "math-15-negative-numbers", 16),
+    ("16-divisibility-primes", "math-16-divisibility-primes", 17),
+    ("17-decimal-fractions", "math-17-decimal-fractions", 18),
+    ("18-foundations-mastery", "math-18-foundations-mastery", 19),
+    ("02-fraction-meaning", "math-02-fraction-meaning", 20),
+    ("03-equivalent-fractions", "math-03-equivalent-fractions", 30),
+    ("04-compare-fractions", "math-04-compare-fractions", 40),
+    ("05-fraction-operations", "math-05-fraction-operations", 50),
+    ("06-ratio", "math-06-ratio", 60),
+    ("07-percent", "math-07-percent", 70),
+    ("08-proportion", "math-08-proportion", 80),
+    ("09-mastery", "math-09-mastery", 90),
 )
-SLUGS = ("mathematics-before-start",) + tuple("math-" + stem for stem in STEMS[1:])
+STEMS = tuple(item[0] for item in ROUTE)
+SLUGS = tuple(item[1] for item in ROUTE)
+MASTERY_STEMS = ("18-foundations-mastery", "09-mastery")
+TEACHING_STEMS = tuple(
+    stem for stem in STEMS if stem != "preface" and stem not in MASTERY_STEMS
+)
 COVER = "/static/covers/school/mathematics/mathematics-foundations.webp"
 META = {
     "ru": (
         "Математика: от фундамента к высшей математике",
-        "Бесплатный курс по карте зависимостей, а не по классам. Первый открытый маршрут из 9 занятий связывает дроби, отношения, проценты и пропорции и завершает их проверкой переноса.",
+        "Бесплатный курс по карте зависимостей, а не по классам. 18 занятий восстанавливают числа и действия, затем связывают дроби, отношения, проценты и пропорции; каждый блок завершается проверкой переноса.",
     ),
     "kz": (
         "Математика: іргетастан жоғары математикаға дейін",
-        "Сыныптармен емес, ұғымдар тәуелділігінің картасымен құрылған тегін курс. 9 сабақтан тұратын алғашқы бағыт қазір орыс тілінде ашық; қазақша нұсқа редакциялық тексеруден кейін қосылады.",
+        "Сыныптармен емес, ұғымдар тәуелділігінің картасымен құрылған тегін курс. 18 сабақтан тұратын бағыт қазір орыс тілінде ашық; қазақша нұсқа редакциялық тексеруден кейін қосылады.",
     ),
     "en": (
         "Mathematics: from foundations to higher mathematics",
-        "A free course organized by idea dependencies rather than grade levels. Its first 9-lesson route is currently open in Russian; reviewed English localization will follow.",
+        "A free course organized by idea dependencies rather than grade levels. Its 18-lesson foundations and proportional-reasoning route is open in Russian; reviewed English localization will follow.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -52,8 +75,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(STEMS) != 10 or len(SLUGS) != 10:
-        raise ValueError("expected one preface and nine lessons")
+    if len(ROUTE) != 19 or len(STEMS) != len(SLUGS):
+        raise ValueError("expected one preface and eighteen lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-mathematics-course'));" ]
     slugs = ",".join(literal(s) for s in SLUGS)
     sql.append(f"""DO $guard$
@@ -81,7 +104,7 @@ SELECT id,'{lang}',{literal(title)},{literal(summary)} FROM article_series
 WHERE slug='mathematics' ON CONFLICT(series_id,lang) DO UPDATE
 SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
-    for index, (stem, slug_name) in enumerate(zip(STEMS, SLUGS)):
+    for stem, slug_name, position in ROUTE:
         title, summary, body = lesson(LESSONS / f"{stem}.md")
         slug = literal(slug_name)
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
@@ -102,7 +125,6 @@ body_md=EXCLUDED.body_md,source='ai',status='ready',updated_at=now();""")
             "body_sha256": hashlib.sha256(body.encode()).hexdigest(),
             "summary_sha256": hashlib.sha256(summary.encode()).hexdigest(),
         })
-        position = 1 if index == 0 else index * 10
         sql.append(f"""INSERT INTO article_series_items(series_id,article_id,position)
 SELECT s.id,a.id,{position} FROM article_series s,articles a
 WHERE s.slug='mathematics' AND a.slug={slug}

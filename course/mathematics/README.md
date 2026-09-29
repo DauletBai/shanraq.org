@@ -6,9 +6,10 @@ quantity to mathematical modelling. Every prerequisite must name another node,
 and the graph must remain acyclic; `tools/course/test_mathematics_release.py`
 checks both properties.
 
-The first published route is the nine-lesson fractions, ratios, percent, and
-proportion pilot in `course/lessons/mathematics`. It tests the lesson cycle and
-the mastery gate before the remaining nodes are written:
+The published foundation now contains two connected blocks: numbers and
+operations, followed by fractions, ratios, percent, and proportion.  Together
+they provide eighteen lessons plus the course orientation and test the lesson
+cycle and mastery gate before the remaining nodes are written:
 
 1. whole-map orientation;
 2. familiar physical image;
@@ -42,4 +43,3 @@ python3 tools/course/prepare_mathematics.py \
   --sql /tmp/mathematics-course.sql \
   --expected /tmp/mathematics-expected.json
 ```
-

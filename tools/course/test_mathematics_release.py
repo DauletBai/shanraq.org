@@ -46,12 +46,19 @@ class MathematicsReleaseTests(unittest.TestCase):
         sql, expected = prepare_mathematics.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.endswith("COMMIT;\n"))
-        self.assertEqual(len(expected), 10)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 10)
+        self.assertEqual(len(expected), 19)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 19)
         self.assertIn("'society','education'", sql)
         self.assertIn("'published','math'", sql)
         self.assertNotIn("DELETE FROM", sql)
         self.assertNotIn("TRUNCATE", sql)
+        positions = [position for _, _, position in prepare_mathematics.ROUTE]
+        self.assertEqual(positions, sorted(positions))
+        self.assertEqual(len(positions), len(set(positions)))
+        self.assertLess(
+            positions[prepare_mathematics.STEMS.index("18-foundations-mastery")],
+            positions[prepare_mathematics.STEMS.index("02-fraction-meaning")],
+        )
 
     def test_every_lesson_is_a_full_learning_cycle(self):
         sections = (
@@ -61,16 +68,17 @@ class MathematicsReleaseTests(unittest.TestCase):
             "## Найдите и исправьте ошибку",
             "## Задание",
         )
-        for stem in prepare_mathematics.STEMS[1:-1]:
+        for stem in prepare_mathematics.TEACHING_STEMS:
             path = prepare_mathematics.LESSONS / f"{stem}.md"
             text = path.read_text(encoding="utf-8")
             for heading in sections:
                 self.assertIn(heading, text, path)
             self.assertIn("/static/course/mathematics/", text, path)
             self.assertGreaterEqual(len(re.findall(r"\b[\w/-]+\b", text)), 500, path)
-        mastery = (prepare_mathematics.LESSONS / "09-mastery.md").read_text(encoding="utf-8")
-        self.assertIn("8 из 10", mastery)
-        self.assertIn("Через семь дней", mastery)
+        for stem in prepare_mathematics.MASTERY_STEMS:
+            mastery = (prepare_mathematics.LESSONS / f"{stem}.md").read_text(encoding="utf-8")
+            self.assertRegex(mastery, r"8 (?:из 10|из десяти)")
+            self.assertRegex(mastery, r"[Чч]ерез семь дней")
 
     def test_each_lesson_uses_its_own_map(self):
         maps = []
@@ -140,6 +148,31 @@ class MathematicsReleaseTests(unittest.TestCase):
         self.assertIn("×2", ratio)
         proportion = (maps / "map-08-proportion.svg").read_text(encoding="utf-8")
         self.assertIn("2 × 3 = 6; 3 × 3 = 9", proportion)
+
+        foundations = (
+            ("10-quantity-counting.md", "map-10-quantity-counting.svg", "4 × 6 + 3 = 27", 'data-counting="4x6+3=27"'),
+            ("11-place-value.md", "map-11-place-value.svg", "4 072", 'data-place-value="4072=4000+70+2"'),
+            ("12-addition-subtraction.md", "map-12-addition-subtraction.svg", "268 + 157 = 425", 'data-family="268+157=425"'),
+            ("13-multiplication-division.md", "map-13-multiplication-division.svg", "4 × 6", 'data-array="4x6=24"'),
+            ("14-order-estimation.md", "map-14-order-estimation.svg", "240 − 6 × (18 + 7)", 'data-expression="240-6*(18+7)=90"'),
+            ("15-negative-numbers.md", "map-15-negative-numbers.svg", "−3 + 7", 'data-integers="-3+7=4"'),
+            ("16-divisibility-primes.md", "map-16-divisibility-primes.svg", "84 = 2 × 2 × 3 × 7", 'data-factorization="84=2^2*3*7"'),
+            ("17-decimal-fractions.md", "map-17-decimal-fractions.svg", "3/8 = 375/1000", 'data-decimal="3/8=375/1000=0.375"'),
+        )
+        for lesson_name, map_name, example, marker in foundations:
+            lesson = (lessons / lesson_name).read_text(encoding="utf-8")
+            illustration = (maps / map_name).read_text(encoding="utf-8")
+            self.assertIn(example, lesson, lesson_name)
+            self.assertIn(marker, illustration, map_name)
+
+        counting = (maps / "map-10-quantity-counting.svg").read_text(encoding="utf-8")
+        self.assertEqual(counting.count("<circle"), 27)
+        array = (maps / "map-13-multiplication-division.svg").read_text(encoding="utf-8")
+        self.assertEqual(array.count("<circle"), 24)
+        foundation_mastery = (maps / "map-18-foundations-mastery.svg").read_text(encoding="utf-8")
+        self.assertEqual(foundation_mastery.count('class="foundation-skill"'), 8)
+        self.assertIn("8/10", foundation_mastery)
+        self.assertIn("7/10", foundation_mastery)
 
     def test_claims_do_not_turn_targets_into_results(self):
         preface = (prepare_mathematics.LESSONS / "preface.md").read_text(encoding="utf-8")

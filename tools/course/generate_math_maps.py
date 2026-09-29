@@ -126,6 +126,116 @@ def main():
  <path d="M575 470H625l-18-16m18 16l-18 16" fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 ''')
+    save("map-10-quantity-counting.svg", "Количество через равные группы", "Четыре полных лотка по шесть предметов и еще три предмета дают ровно двадцать семь.", '''
+<g data-counting="4x6+3=27" font-family="system-ui,sans-serif" fill="#17324d" text-anchor="middle">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff">
+  <rect x="55" y="105" width="215" height="300" rx="24"/><rect x="290" y="105" width="215" height="300" rx="24"/><rect x="525" y="105" width="215" height="300" rx="24"/><rect x="760" y="105" width="215" height="300" rx="24"/>
+ </g>
+ <g fill="url(#blue)">
+  <circle cx="110" cy="175" r="25"/><circle cx="162" cy="175" r="25"/><circle cx="214" cy="175" r="25"/><circle cx="110" cy="250" r="25"/><circle cx="162" cy="250" r="25"/><circle cx="214" cy="250" r="25"/>
+  <circle cx="345" cy="175" r="25"/><circle cx="397" cy="175" r="25"/><circle cx="449" cy="175" r="25"/><circle cx="345" cy="250" r="25"/><circle cx="397" cy="250" r="25"/><circle cx="449" cy="250" r="25"/>
+  <circle cx="580" cy="175" r="25"/><circle cx="632" cy="175" r="25"/><circle cx="684" cy="175" r="25"/><circle cx="580" cy="250" r="25"/><circle cx="632" cy="250" r="25"/><circle cx="684" cy="250" r="25"/>
+  <circle cx="815" cy="175" r="25"/><circle cx="867" cy="175" r="25"/><circle cx="919" cy="175" r="25"/><circle cx="815" cy="250" r="25"/><circle cx="867" cy="250" r="25"/><circle cx="919" cy="250" r="25"/>
+ </g>
+ <g fill="url(#red)" filter="url(#s)"><circle cx="1035" cy="175" r="27"/><circle cx="1100" cy="250" r="27"/><circle cx="1035" cy="325" r="27"/></g>
+ <g font-size="25" font-weight="750"><text x="162" y="365">6</text><text x="397" y="365">6</text><text x="632" y="365">6</text><text x="867" y="365">6</text><text x="1068" y="390">ещё 3</text></g>
+ <text x="600" y="505" font-size="50" font-weight="850">4 × 6 + 3 = 27</text>
+ <text x="600" y="560" font-size="25" font-weight="650" fill="#5b6b79">группа × размер группы + остаток</text>
+</g>
+''')
+    save("map-11-place-value.svg", "Разрядная запись числа 4 072", "Четыре тысячи, ноль сотен, семь десятков и две единицы образуют число четыре тысячи семьдесят два.", '''
+<g data-place-value="4072=4000+70+2" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4">
+  <rect x="55" y="120" width="260" height="300" rx="28" fill="#fff"/><rect x="330" y="120" width="260" height="300" rx="28" fill="#fff"/><rect x="605" y="120" width="260" height="300" rx="28" fill="#fff"/><rect x="880" y="120" width="260" height="300" rx="28" fill="#fff"/>
+  <path d="M70 405h230v-40H70z" fill="url(#blue)"/><path d="M85 365h200v-40H85z" fill="url(#blue)"/><path d="M100 325h170v-40H100z" fill="url(#blue)"/><path d="M115 285h140v-40H115z" fill="url(#blue)"/>
+  <rect x="640" y="365" width="190" height="26" rx="7" fill="url(#gold)"/><rect x="640" y="326" width="190" height="26" rx="7" fill="url(#gold)"/><rect x="640" y="287" width="190" height="26" rx="7" fill="url(#gold)"/><rect x="640" y="248" width="190" height="26" rx="7" fill="url(#gold)"/><rect x="640" y="209" width="190" height="26" rx="7" fill="url(#gold)"/><rect x="640" y="170" width="190" height="26" rx="7" fill="url(#gold)"/><rect x="640" y="131" width="190" height="26" rx="7" fill="url(#gold)"/>
+  <rect x="955" y="335" width="65" height="65" rx="10" fill="url(#red)"/><rect x="1030" y="335" width="65" height="65" rx="10" fill="url(#red)"/>
+ </g>
+ <g font-size="23" font-weight="750"><text x="185" y="90">ТЫСЯЧИ</text><text x="460" y="90">СОТНИ</text><text x="735" y="90">ДЕСЯТКИ</text><text x="1010" y="90">ЕДИНИЦЫ</text></g>
+ <g font-size="76" font-weight="850"><text x="185" y="505">4</text><text x="460" y="505">0</text><text x="735" y="505">7</text><text x="1010" y="505">2</text></g>
+ <text x="600" y="580" font-size="34" font-weight="750">4 072 = 4 000 + 0 + 70 + 2</text>
+</g>
+''')
+    save("map-12-addition-subtraction.svg", "Сложение и вычитание как прямой и обратный путь", "К числу двести шестьдесят восемь прибавляют сто пятьдесят семь и получают четыреста двадцать пять; вычитание возвращает начало.", '''
+<g data-family="268+157=425" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <path d="M180 315C300 120 760 120 1015 280" fill="none" stroke="url(#red)" stroke-width="24" stroke-linecap="round" filter="url(#s)"/>
+ <path d="M1015 350C760 515 300 515 180 345" fill="none" stroke="url(#blue)" stroke-width="24" stroke-linecap="round" filter="url(#s)"/>
+ <path d="M992 247l50 49-67 13M204 379l-51-49 67-13" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><circle cx="165" cy="330" r="92"/><circle cx="1035" cy="330" r="92"/></g>
+ <g font-size="58" font-weight="850"><text x="165" y="348">268</text><text x="1035" y="348">425</text></g>
+ <g font-size="33" font-weight="800"><text x="600" y="150">+157</text><text x="600" y="525">−157</text></g>
+ <g font-size="27" font-weight="700"><text x="600" y="265">часть + часть = целое</text><text x="600" y="370">целое − часть = другая часть</text></g>
+</g>
+''')
+    save("map-13-multiplication-division.svg", "Четыре ряда по шесть", "Прямоугольный массив содержит четыре ряда по шесть точек: всего двадцать четыре, а два деления возвращают неизвестный множитель.", '''
+<g data-array="4x6=24" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g transform="translate(90 95)" filter="url(#s)">
+  <rect width="510" height="390" rx="28" fill="#fff" stroke="#365675" stroke-width="5"/>
+  <g fill="url(#blue)">
+   <circle cx="65" cy="65" r="24"/><circle cx="140" cy="65" r="24"/><circle cx="215" cy="65" r="24"/><circle cx="290" cy="65" r="24"/><circle cx="365" cy="65" r="24"/><circle cx="440" cy="65" r="24"/>
+   <circle cx="65" cy="150" r="24"/><circle cx="140" cy="150" r="24"/><circle cx="215" cy="150" r="24"/><circle cx="290" cy="150" r="24"/><circle cx="365" cy="150" r="24"/><circle cx="440" cy="150" r="24"/>
+   <circle cx="65" cy="235" r="24"/><circle cx="140" cy="235" r="24"/><circle cx="215" cy="235" r="24"/><circle cx="290" cy="235" r="24"/><circle cx="365" cy="235" r="24"/><circle cx="440" cy="235" r="24"/>
+   <circle cx="65" cy="320" r="24"/><circle cx="140" cy="320" r="24"/><circle cx="215" cy="320" r="24"/><circle cx="290" cy="320" r="24"/><circle cx="365" cy="320" r="24"/><circle cx="440" cy="320" r="24"/>
+  </g>
+ </g>
+ <g filter="url(#s)" fill="#fff" stroke="#365675" stroke-width="4"><rect x="690" y="85" width="430" height="120" rx="24"/><rect x="690" y="255" width="430" height="120" rx="24"/><rect x="690" y="425" width="430" height="120" rx="24"/></g>
+ <g font-weight="820"><text x="905" y="157" font-size="44">4 × 6 = 24</text><text x="905" y="327" font-size="44">24 ÷ 6 = 4</text><text x="905" y="497" font-size="44">24 ÷ 4 = 6</text></g>
+ <g font-size="20" font-weight="650" fill="#5b6b79"><text x="905" y="188">группы × в группе = всего</text><text x="905" y="358">сколько групп?</text><text x="905" y="528">сколько в группе?</text></g>
+</g>
+''')
+    save("map-14-order-estimation.svg", "Дерево выражения и оценка", "В выражении двести сорок минус шесть умножить на сумму восемнадцати и семи сначала получают двадцать пять, затем сто пятьдесят и итог девяносто.", '''
+<g data-expression="240-6*(18+7)=90" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g stroke="#365675" stroke-width="7" fill="none"><path d="M600 135L380 270M600 135L820 270M820 270L710 410M820 270L930 410"/></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="485" y="65" width="230" height="105" rx="24"/><rect x="265" y="220" width="230" height="105" rx="24"/><rect x="705" y="220" width="230" height="105" rx="24"/><rect x="610" y="380" width="200" height="105" rx="24"/><rect x="840" y="380" width="180" height="105" rx="24"/></g>
+ <g font-size="34" font-weight="820"><text x="600" y="130">240 − 150 = 90</text><text x="380" y="285">240</text><text x="820" y="285">6 × 25 = 150</text><text x="710" y="445">6</text></g><text x="930" y="445" font-size="29" font-weight="820">18 + 7 = 25</text>
+ <g filter="url(#s)"><rect x="105" y="500" width="990" height="85" rx="22" fill="url(#gold)" stroke="#365675" stroke-width="4"/></g>
+ <text x="600" y="555" font-size="31" font-weight="800">оценка: 240 − примерно 150 ≈ 90</text>
+</g>
+''')
+    save("map-15-negative-numbers.svg", "От минус трех к четырем", "На числовой прямой семь шагов вправо от минус трех проходят через ноль и заканчиваются в точке четыре.", '''
+<g data-integers="-3+7=4" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <path d="M90 330H1110" stroke="#365675" stroke-width="10" stroke-linecap="round"/>
+ <g stroke="#365675" stroke-width="5"><path d="M120 290v80"/><path d="M200 300v60"/><path d="M280 300v60"/><path d="M360 285v90"/><path d="M440 300v60"/><path d="M520 300v60"/><path d="M600 280v100"/><path d="M680 300v60"/><path d="M760 300v60"/><path d="M840 300v60"/><path d="M920 285v90"/><path d="M1000 300v60"/><path d="M1080 290v80"/></g>
+ <g font-size="24" font-weight="700"><text x="120" y="415">−6</text><text x="200" y="415">−5</text><text x="280" y="415">−4</text><text x="360" y="415">−3</text><text x="440" y="415">−2</text><text x="520" y="415">−1</text><text x="600" y="415">0</text><text x="680" y="415">1</text><text x="760" y="415">2</text><text x="840" y="415">3</text><text x="920" y="415">4</text><text x="1000" y="415">5</text><text x="1080" y="415">6</text></g>
+ <path d="M360 245C485 90 795 90 920 245" fill="none" stroke="url(#red)" stroke-width="18" stroke-linecap="round" filter="url(#s)"/>
+ <path d="M888 214l42 30-48 19" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+ <circle cx="360" cy="330" r="21" fill="url(#blue)"/><circle cx="920" cy="330" r="21" fill="url(#red)"/>
+ <text x="640" y="120" font-size="38" font-weight="850">+7 шагов вправо</text><text x="640" y="535" font-size="52" font-weight="850">−3 + 7 = 4</text>
+</g>
+''')
+    save("map-16-divisibility-primes.svg", "Простые множители числа 84", "Дерево разбирает восемьдесят четыре на два, два, три и семь; произведение простых листьев возвращает исходное число.", '''
+<g data-factorization="84=2^2*3*7" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g stroke="#365675" stroke-width="6" fill="none"><path d="M600 130L390 250M600 130L810 250M390 250L280 390M390 250L500 390M810 250L700 390M810 250L920 390"/></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><circle cx="600" cy="105" r="64"/><circle cx="390" cy="250" r="58"/><circle cx="810" cy="250" r="58"/></g>
+ <g filter="url(#s)" stroke="#fff" stroke-width="4"><circle cx="280" cy="410" r="56" fill="url(#red)"/><circle cx="500" cy="410" r="56" fill="url(#red)"/><circle cx="700" cy="410" r="56" fill="url(#blue)"/><circle cx="920" cy="410" r="56" fill="url(#gold)"/></g>
+ <g font-size="42" font-weight="850"><text x="600" y="120">84</text><text x="390" y="265">4</text><text x="810" y="265">21</text></g>
+ <g font-size="38" font-weight="850" fill="#fff"><text x="280" y="425">2</text><text x="500" y="425">2</text><text x="700" y="425">3</text><text x="920" y="425">7</text></g>
+ <text x="600" y="555" font-size="43" font-weight="850">84 = 2 × 2 × 3 × 7 = 2² × 3 × 7</text>
+</g>
+''')
+    save("map-17-decimal-fractions.svg", "Три восьмых как десятичная дробь", "Умножение числителя и знаменателя на сто двадцать пять превращает три восьмых в триста семьдесят пять тысячных и запись ноль целых триста семьдесят пять тысячных.", '''
+<g data-decimal="3/8=375/1000=0.375" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="55" y="90" width="300" height="180" rx="28"/><rect x="450" y="90" width="300" height="180" rx="28"/><rect x="845" y="90" width="300" height="180" rx="28"/></g>
+ <g font-size="55" font-weight="850"><text x="205" y="190">3/8</text><text x="600" y="190">375/1000</text><text x="995" y="190">0,375</text></g>
+ <g fill="none" stroke="#b80f18" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M370 180H425l-18-16m18 16l-18 16"/><path d="M765 180H820l-18-16m18 16l-18 16"/></g>
+ <text x="400" y="135" font-size="22" font-weight="750">×125</text><text x="795" y="135" font-size="22" font-weight="750">тысячные</text>
+ <defs><clipPath id="decimal-bar-clip"><rect width="960" height="92" rx="18"/></clipPath></defs><g transform="translate(120 365)" filter="url(#s)" stroke="#365675" stroke-width="4"><g clip-path="url(#decimal-bar-clip)"><rect width="960" height="92" fill="#fff"/><rect width="360" height="92" fill="url(#red)"/></g><rect width="960" height="92" rx="18" fill="none"/><path d="M120 0v92M240 0v92M360 0v92M480 0v92M600 0v92M720 0v92M840 0v92"/></g>
+ <g font-size="24" font-weight="750"><text x="120" y="500">0</text><text x="480" y="500">3/8</text><text x="1080" y="500">1</text></g>
+ <text x="600" y="575" font-size="31" font-weight="800">0 единиц | 3 десятых | 7 сотых | 5 тысячных</text>
+</g>
+''')
+    save("map-18-foundations-mastery.svg", "Восемь опор числового фундамента", "Количество, разряды, сложение, умножение, порядок, отрицательные числа, делимость и десятичные дроби ведут к проверке восемь из десяти.", '''
+<g data-foundations-skills="8" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff">
+  <rect class="foundation-skill" x="40" y="65" width="255" height="115" rx="22"/><rect class="foundation-skill" x="325" y="65" width="255" height="115" rx="22"/><rect class="foundation-skill" x="610" y="65" width="255" height="115" rx="22"/><rect class="foundation-skill" x="895" y="65" width="255" height="115" rx="22"/>
+  <rect class="foundation-skill" x="40" y="225" width="255" height="115" rx="22"/><rect class="foundation-skill" x="325" y="225" width="255" height="115" rx="22"/><rect class="foundation-skill" x="610" y="225" width="255" height="115" rx="22"/><rect class="foundation-skill" x="895" y="225" width="255" height="115" rx="22"/>
+ </g>
+ <g font-size="23" font-weight="780"><text x="167" y="132">Количество</text><text x="452" y="132">Разряды</text><text x="737" y="120"><tspan x="737">Сложение</tspan><tspan x="737" dy="29">и вычитание</tspan></text><text x="1022" y="120"><tspan x="1022">Умножение</tspan><tspan x="1022" dy="29">и деление</tspan></text><text x="167" y="280"><tspan x="167">Порядок</tspan><tspan x="167" dy="29">и оценка</tspan></text><text x="452" y="280"><tspan x="452">Отрицательные</tspan><tspan x="452" dy="29">числа</tspan></text><text x="737" y="292">Делимость</text><text x="1022" y="280"><tspan x="1022">Десятичные</tspan><tspan x="1022" dy="29">дроби</tspan></text></g>
+ <path d="M170 365C260 430 390 445 600 445S940 430 1030 365" fill="none" stroke="#d7b06a" stroke-width="22" stroke-linecap="round" filter="url(#s)"/>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="url(#gold)"><rect x="230" y="415" width="340" height="145" rx="30"/><rect x="630" y="415" width="340" height="145" rx="30"/></g>
+ <text x="400" y="470" font-size="24" font-weight="780">ПЕРВАЯ ПОПЫТКА</text><text x="400" y="530" font-size="48" font-weight="880">8/10</text><text x="800" y="470" font-size="24" font-weight="780">ЧЕРЕЗ 7 ДНЕЙ</text><text x="800" y="530" font-size="48" font-weight="880">7/10</text>
+</g>
+''')
     save("map-full-ru.svg", "Полная карта курса", "Восемь пронумерованных этапов идут слева направо, затем сверху вниз и справа налево.", '''
 <defs><marker id="course-arrowhead" markerWidth="18" markerHeight="18" refX="16" refY="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L18 9L0 18Z" fill="#b80f18"/></marker></defs>
 <g fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" marker-end="url(#course-arrowhead)">

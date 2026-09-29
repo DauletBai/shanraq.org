@@ -2395,6 +2395,42 @@
     "math-01-diagnostic",
     "ru"
   ],
+  "mathematics/10-quantity-counting": [
+    "math-10-quantity-counting",
+    "ru"
+  ],
+  "mathematics/11-place-value": [
+    "math-11-place-value",
+    "ru"
+  ],
+  "mathematics/12-addition-subtraction": [
+    "math-12-addition-subtraction",
+    "ru"
+  ],
+  "mathematics/13-multiplication-division": [
+    "math-13-multiplication-division",
+    "ru"
+  ],
+  "mathematics/14-order-estimation": [
+    "math-14-order-estimation",
+    "ru"
+  ],
+  "mathematics/15-negative-numbers": [
+    "math-15-negative-numbers",
+    "ru"
+  ],
+  "mathematics/16-divisibility-primes": [
+    "math-16-divisibility-primes",
+    "ru"
+  ],
+  "mathematics/17-decimal-fractions": [
+    "math-17-decimal-fractions",
+    "ru"
+  ],
+  "mathematics/18-foundations-mastery": [
+    "math-18-foundations-mastery",
+    "ru"
+  ],
   "mathematics/02-fraction-meaning": [
     "math-02-fraction-meaning",
     "ru"
