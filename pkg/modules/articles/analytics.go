@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
@@ -72,29 +73,41 @@ func pageKind(path string) string {
 		return "weather"
 	}
 	switch {
-	case strings.HasPrefix(path, "/read/"):
+	case onePathChild(path, "/read/"):
 		return "article"
-	case strings.HasPrefix(path, "/course/"):
+	case onePathChild(path, "/course/"):
 		return "course"
-	case strings.HasPrefix(path, "/author/"):
+	case onePathChild(path, "/author/"):
 		return "author"
-	case strings.HasPrefix(path, "/agent/"):
+	case onePathChild(path, "/agent/"):
 		return "agent"
-	case strings.HasPrefix(path, "/listings/"):
+	case onePathChild(path, "/listings/"):
 		return "listing"
 	// The forecast pages are the largest part of the site by a wide margin and
 	// counted for nothing: an unnamed path returns "", and trackTraffic skips
 	// the request whole -- the view, the country, the device and the visitor
 	// with it. A stranger arriving on the forecast for their own village was
 	// invisible to every figure we publish.
-	case strings.HasPrefix(path, "/weather/"):
+	case onePathChild(path, "/weather/"):
 		return "weather"
-	case strings.HasPrefix(path, "/place/"):
+	case onePathChild(path, "/place/"):
 		return "place"
-	case strings.HasPrefix(path, "/archive/"):
+	case onePathChild(path, "/archive/"):
 		return "archive"
 	}
 	return ""
+}
+
+// onePathChild accepts exactly one non-empty path segment below prefix. Public
+// subroutes such as /read/{slug}/typo are tools around an article, not another
+// reading of it; treating every /read/ prefix as prose made automated form
+// checks look like article traffic.
+func onePathChild(path, prefix string) bool {
+	if !strings.HasPrefix(path, prefix) {
+		return false
+	}
+	rest := strings.TrimPrefix(path, prefix)
+	return rest != "" && !strings.Contains(rest, "/")
 }
 
 // trackedEvents is the closed set of click events the beacon may record. A
@@ -582,88 +595,105 @@ func audienceBucket(bot, country string) string {
 	}
 }
 
-// trackTraffic counts one page view per GET of a countable page. It reads the
-// (soft-loaded) session only to tell guests from signed-in users — nothing
-// about who they are is recorded.
+// trackTraffic counts one successful page response per GET of a countable page.
+// It reads the (soft-loaded) session only to tell guests from signed-in users —
+// nothing about who they are is recorded. The response is observed before the
+// counters move: guessed article URLs, redirects and failed handlers are HTTP
+// requests, but they are not page views.
 func (m *Module) trackTraffic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			// The team's own devices never count as audience — skip early (and
-			// stamp the opt-out cookie) so they don't inflate guest/Direct counts,
-			// even while logged out on a test account.
-			if m.excluded(w, r) {
-				next.ServeHTTP(w, r)
-				return
-			}
-			if kind := pageKind(r.URL.Path); kind != "" {
-				ua := r.Header.Get("User-Agent")
-				bot := botLabel(ua)
-				// Where the visitor's network sits is decided BEFORE the audience
-				// is, because it is a verdict and not a detail. It used to be read
-				// one branch lower, inside "this is a person", and recorded as a
-				// dimension the panel could slice by — so an automated client that
-				// sends an ordinary Chrome string from a cloud address was counted
-				// as a reader in every figure at once: views, visitors, hosts,
-				// sources (as "direct", having no referrer), devices, OS, browsers.
-				// That single misplacement is what made the panel unreadable, and
-				// no amount of correcting the numbers downstream could fix it.
-				country := m.geoip.geoLabel(clientIP(r))
-				switch audienceBucket(bot, country) {
-				case bucketDrop:
-					// Commercial SEO scanners are turned away in robots.txt and
-					// excluded from analytics entirely, so they neither count as
-					// guests nor clutter the bot panel.
-				case bucketBot:
-					// Other crawlers are counted apart so they never inflate the
-					// real human audience — that was the whole point.
-					m.metrics.inc(metricBot, bot, true)
-				case bucketDatacenter:
-					// A hosting, cloud or VPN network. Some of this is a person
-					// behind a VPN, but most of it is automation that declines to
-					// say so, and the two cannot be told apart from the outside.
-					// Counted and visible, like a crawler, and outside the
-					// audience — for the same reason.
-					m.metrics.inc(metricBot, datacenterLabel, true)
-					m.metrics.inc(metricCountry, country, true)
-					m.metrics.inc(metricGeoLang, country+"|"+readingLang(r), true)
-				default:
-					_, ok := auth.ClaimsFromContext(r.Context())
-					guest := !ok
-					m.metrics.inc(metricPage, kind, guest)
-					// Prefer an explicit utm_source (survives the referrer being
-					// stripped by messengers/apps); fall back to the Referer host.
-					// Only an ARRIVAL counts as a source. Every page view used to
-					// increment this, and internal navigation carries a same-host
-					// referrer, which trafficSource classifies as "direct" — so a
-					// reader who came from Facebook and opened four more pages
-					// scored Facebook 1, Direct 4. The panel then reported a
-					// direct-traffic majority that was really our own menu, and
-					// the acquisition channels were unreadable.
-					if src, ok := arrivalSource(r); ok {
-						m.metrics.inc(metricSource, src, guest)
-					}
-					m.metrics.inc(metricDevice, deviceClass(ua), guest)
-					m.metrics.inc(metricOS, osFamily(ua), guest)
-					m.metrics.inc(metricBrowser, browserFamily(ua), guest)
-					// Reading language of the served page — the signal a VPN cannot
-					// mask, so it distinguishes real foreign readers (English) from
-					// curious locals or VPN traffic from censored countries.
-					lng := readingLang(r)
-					m.metrics.inc(metricLang, lng, guest)
-					// Visitor country (nil geoip → no-op). The IP was resolved to a
-					// coarse label above — an ISO country code — and discarded.
-					// Nothing per-visitor is stored.
-					if country != "" {
-						m.metrics.inc(metricCountry, country, guest)
-						m.metrics.inc(metricGeoLang, country+"|"+lng, guest)
-					}
-					// The same hit against its visitor-slot, which is where
-					// hosts, visitors and visits come from.
-					m.metrics.noteSlot(r.Context(), r, country == "KZ", deviceClass(ua) == "mobile")
-				}
-			}
+		if r.Method != http.MethodGet {
+			next.ServeHTTP(w, r)
+			return
 		}
-		next.ServeHTTP(w, r)
+
+		// The team's own devices never count as audience. Check before serving so
+		// excluded() can stamp its cookie before the response headers are sent.
+		if m.excluded(w, r) {
+			next.ServeHTTP(w, r)
+			return
+		}
+		kind := pageKind(r.URL.Path)
+		if kind == "" {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
+		next.ServeHTTP(ww, r)
+		status := ww.Status()
+		if status == 0 {
+			status = http.StatusOK
+		}
+		if status < http.StatusOK || status >= http.StatusMultipleChoices {
+			return
+		}
+
+		ua := r.Header.Get("User-Agent")
+		bot := botLabel(ua)
+		// Where the visitor's network sits is decided BEFORE the audience
+		// is, because it is a verdict and not a detail. It used to be read
+		// one branch lower, inside "this is a person", and recorded as a
+		// dimension the panel could slice by — so an automated client that
+		// sends an ordinary Chrome string from a cloud address was counted
+		// as a reader in every figure at once: views, visitors, hosts,
+		// sources (as "direct", having no referrer), devices, OS, browsers.
+		// That single misplacement is what made the panel unreadable, and
+		// no amount of correcting the numbers downstream could fix it.
+		country := m.geoip.geoLabel(clientIP(r))
+		switch audienceBucket(bot, country) {
+		case bucketDrop:
+			// Commercial SEO scanners are turned away in robots.txt and
+			// excluded from analytics entirely, so they neither count as
+			// guests nor clutter the bot panel.
+		case bucketBot:
+			// Other crawlers are counted apart so they never inflate the
+			// real human audience — that was the whole point.
+			m.metrics.inc(metricBot, bot, true)
+		case bucketDatacenter:
+			// A hosting, cloud or VPN network. Some of this is a person
+			// behind a VPN, but most of it is automation that declines to
+			// say so, and the two cannot be told apart from the outside.
+			// Counted and visible, like a crawler, and outside the
+			// audience — for the same reason.
+			m.metrics.inc(metricBot, datacenterLabel, true)
+			m.metrics.inc(metricCountry, country, true)
+			m.metrics.inc(metricGeoLang, country+"|"+readingLang(r), true)
+		default:
+			_, ok := auth.ClaimsFromContext(r.Context())
+			guest := !ok
+			m.metrics.inc(metricPage, kind, guest)
+			// Prefer an explicit utm_source (survives the referrer being
+			// stripped by messengers/apps); fall back to the Referer host.
+			// Only an ARRIVAL counts as a source. Every page view used to
+			// increment this, and internal navigation carries a same-host
+			// referrer, which trafficSource classifies as "direct" — so a
+			// reader who came from Facebook and opened four more pages
+			// scored Facebook 1, Direct 4. The panel then reported a
+			// direct-traffic majority that was really our own menu, and
+			// the acquisition channels were unreadable.
+			if src, ok := arrivalSource(r); ok {
+				m.metrics.inc(metricSource, src, guest)
+			}
+			m.metrics.inc(metricDevice, deviceClass(ua), guest)
+			m.metrics.inc(metricOS, osFamily(ua), guest)
+			m.metrics.inc(metricBrowser, browserFamily(ua), guest)
+			// Reading language of the served page — the signal a VPN cannot
+			// mask, so it distinguishes real foreign readers (English) from
+			// curious locals or VPN traffic from censored countries.
+			lng := readingLang(r)
+			m.metrics.inc(metricLang, lng, guest)
+			// Visitor country (nil geoip → no-op). The IP was resolved to a
+			// coarse label above — an ISO country code — and discarded.
+			// Nothing per-visitor is stored.
+			if country != "" {
+				m.metrics.inc(metricCountry, country, guest)
+				m.metrics.inc(metricGeoLang, country+"|"+lng, guest)
+			}
+			// The same hit against its visitor-slot, which is where
+			// hosts, visitors and visits come from.
+			m.metrics.noteSlot(r.Context(), r, country == "KZ", deviceClass(ua) == "mobile")
+		}
 	})
 }
 

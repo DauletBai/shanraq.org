@@ -2,6 +2,8 @@ package articles
 
 import (
 	"context"
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
@@ -94,16 +96,51 @@ func TestPageKind(t *testing.T) {
 		"/archive/2026-08-29": "archive",
 		"/place/kachar":       "place",
 		"/predictions":        "predictions",
-		"/api/geo/roots":      "",        // not counted
-		"/static/css/x.css":   "",        // not counted
-		"/studio/new":         "",        // staff area, not a public page
-		"/admin":              "",        // not counted
-		"/read/slug/progress": "article", // still under /read/ prefix (POST filtered by method upstream)
+		"/api/geo/roots":      "", // not counted
+		"/static/css/x.css":   "", // not counted
+		"/studio/new":         "", // staff area, not a public page
+		"/admin":              "", // not counted
+		"/read/slug/progress": "", // supporting endpoint, not an article page
+		"/read/slug/typo":     "", // correction form, not another reading
 	}
 	for path, want := range cases {
 		if got := pageKind(path); got != want {
 			t.Errorf("pageKind(%q) = %q, want %q", path, got, want)
 		}
+	}
+}
+
+func TestTrackTrafficCountsOnlySuccessfulPublicPages(t *testing.T) {
+	m := &Module{metrics: NewMetrics(nil, zap.NewNop())}
+	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/read/missing":
+			http.NotFound(w, r)
+		case "/read":
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+		default:
+			w.WriteHeader(http.StatusOK)
+		}
+	})
+	h := m.trackTraffic(next)
+
+	for _, path := range []string{
+		"/read/real-article",      // the only countable response
+		"/read/missing",           // 404
+		"/read",                   // redirect
+		"/read/real-article/typo", // successful tool page
+	} {
+		r := httptest.NewRequest(http.MethodGet, path, nil)
+		r.RemoteAddr = "203.0.113.10:12345"
+		r.Header.Set("User-Agent", "Mozilla/5.0 Chrome/126.0 Safari/537.36")
+		h.ServeHTTP(httptest.NewRecorder(), r)
+	}
+
+	m.metrics.mu.Lock()
+	got := m.metrics.buf[metricKey{kind: metricPage, label: "article", guest: true}]
+	m.metrics.mu.Unlock()
+	if got != 1 {
+		t.Fatalf("article page views = %d, want 1 successful article response", got)
 	}
 }
 
