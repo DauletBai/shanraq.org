@@ -10,9 +10,11 @@ on:
       - 'tools/course/generate_math_geometry.py'
       - 'tools/course/generate_math_calculus.py'
       - 'tools/course/generate_math_linear.py'
+      - 'tools/course/generate_math_data.py'
       - 'tools/course/generate_math_localizations.py'
       - 'tools/course/generate_math_map_localizations.py'
       - 'tools/course/math_localization_data.py'
+      - 'tools/course/math_data_localization_data.py'
       - 'tools/course/test_mathematics_release.py'
       - 'web/static/course/mathematics/**'
       - 'web/static/covers/school/mathematics/**'
@@ -25,9 +27,11 @@ on:
       - 'tools/course/generate_math_geometry.py'
       - 'tools/course/generate_math_calculus.py'
       - 'tools/course/generate_math_linear.py'
+      - 'tools/course/generate_math_data.py'
       - 'tools/course/generate_math_localizations.py'
       - 'tools/course/generate_math_map_localizations.py'
       - 'tools/course/math_localization_data.py'
+      - 'tools/course/math_data_localization_data.py'
       - 'tools/course/test_mathematics_release.py'
       - 'web/static/course/mathematics/**'
       - 'web/static/covers/school/mathematics/**'
@@ -43,6 +47,7 @@ jobs:
           python3 tools/course/generate_math_geometry.py
           python3 tools/course/generate_math_calculus.py
           python3 tools/course/generate_math_linear.py
+          python3 tools/course/generate_math_data.py
       - name: Regenerate localized lessons and support maps
         run: |
           python3 tools/course/generate_math_localizations.py

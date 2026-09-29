@@ -46,8 +46,8 @@ class MathematicsReleaseTests(unittest.TestCase):
         sql, expected = prepare_mathematics.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.endswith("COMMIT;\n"))
-        self.assertEqual(len(expected), 156)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 52)
+        self.assertEqual(len(expected), 180)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 60)
         self.assertIn("'society','education'", sql)
         self.assertIn("'published','math'", sql)
         self.assertNotIn("DELETE FROM", sql)
@@ -287,6 +287,31 @@ class MathematicsReleaseTests(unittest.TestCase):
         self.assertEqual(linear_mastery.count('class="linear-skill"'), 3)
         self.assertIn("8/10", linear_mastery)
         self.assertIn("7/10", linear_mastery)
+
+        data_and_discrete = (
+            ("52-combinatorics.md", "map-52-combinatorics.svg", "C(5,2)=10", 'data-combinatorics="P(5,2)=20;C(5,2)=10"'),
+            ("53-probability.md", "map-53-probability.svg", "P(RR)=3/5·2/4", 'data-probability="3R,2B;P(RR)=3/10"'),
+            ("54-descriptive-statistics.md", "map-54-descriptive-statistics.svg", "2, 3, 3, 4, 8", 'data-statistics="2,3,3,4,8;mean=4;median=3;range=6"'),
+            ("55-inference.md", "map-55-inference.svg", "p̂=0,62", 'data-inference="n=100;success=62;phat=.62;CI=.52-.72"'),
+            ("56-logic-proofs.md", "map-56-logic-proofs.svg", "n=2k", 'data-logic="p->q:TTT,TFF,FTT,FFT;even-square"'),
+            ("57-graphs-algorithms.md", "map-57-graphs-algorithms.svg", "A→C→B→D→E→F", 'data-graph="A-C-B-D-E-F=13"'),
+            ("58-capstone-modeling.md", "map-58-capstone-modeling.svg", "C(b)=b²−12b+52", 'data-model="C(b)=b^2-12b+52;min=6"'),
+        )
+        for lesson_name, map_name, example, marker in data_and_discrete:
+            lesson = (lessons / lesson_name).read_text(encoding="utf-8")
+            illustration = (maps / map_name).read_text(encoding="utf-8")
+            self.assertIn(example, lesson, lesson_name)
+            self.assertIn(marker, illustration, map_name)
+
+        combinatorics = (maps / "map-52-combinatorics.svg").read_text(encoding="utf-8")
+        self.assertEqual(combinatorics.count('class="combination-pair"'), 10)
+        inference = (maps / "map-55-inference.svg").read_text(encoding="utf-8")
+        self.assertEqual(inference.count('class="sample-cell'), 100)
+        self.assertEqual(inference.count("sample-cell--success"), 62)
+        data_mastery = (maps / "map-59-data-mastery.svg").read_text(encoding="utf-8")
+        self.assertEqual(data_mastery.count('class="data-skill"'), 7)
+        self.assertIn("8/10", data_mastery)
+        self.assertIn("7/10", data_mastery)
 
         sql, _ = prepare_mathematics.prepare()
         for cover in prepare_mathematics.LESSON_COVERS.values():

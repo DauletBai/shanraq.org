@@ -3010,5 +3010,101 @@
   "mathematics/51-linear-mastery-kz": [
     "math-51-linear-mastery",
     "kz"
+  ],
+  "mathematics/52-combinatorics": [
+    "math-52-combinatorics",
+    "ru"
+  ],
+  "mathematics/52-combinatorics-en": [
+    "math-52-combinatorics",
+    "en"
+  ],
+  "mathematics/52-combinatorics-kz": [
+    "math-52-combinatorics",
+    "kz"
+  ],
+  "mathematics/53-probability": [
+    "math-53-probability",
+    "ru"
+  ],
+  "mathematics/53-probability-en": [
+    "math-53-probability",
+    "en"
+  ],
+  "mathematics/53-probability-kz": [
+    "math-53-probability",
+    "kz"
+  ],
+  "mathematics/54-descriptive-statistics": [
+    "math-54-descriptive-statistics",
+    "ru"
+  ],
+  "mathematics/54-descriptive-statistics-en": [
+    "math-54-descriptive-statistics",
+    "en"
+  ],
+  "mathematics/54-descriptive-statistics-kz": [
+    "math-54-descriptive-statistics",
+    "kz"
+  ],
+  "mathematics/55-inference": [
+    "math-55-inference",
+    "ru"
+  ],
+  "mathematics/55-inference-en": [
+    "math-55-inference",
+    "en"
+  ],
+  "mathematics/55-inference-kz": [
+    "math-55-inference",
+    "kz"
+  ],
+  "mathematics/56-logic-proofs": [
+    "math-56-logic-proofs",
+    "ru"
+  ],
+  "mathematics/56-logic-proofs-en": [
+    "math-56-logic-proofs",
+    "en"
+  ],
+  "mathematics/56-logic-proofs-kz": [
+    "math-56-logic-proofs",
+    "kz"
+  ],
+  "mathematics/57-graphs-algorithms": [
+    "math-57-graphs-algorithms",
+    "ru"
+  ],
+  "mathematics/57-graphs-algorithms-en": [
+    "math-57-graphs-algorithms",
+    "en"
+  ],
+  "mathematics/57-graphs-algorithms-kz": [
+    "math-57-graphs-algorithms",
+    "kz"
+  ],
+  "mathematics/58-capstone-modeling": [
+    "math-58-capstone-modeling",
+    "ru"
+  ],
+  "mathematics/58-capstone-modeling-en": [
+    "math-58-capstone-modeling",
+    "en"
+  ],
+  "mathematics/58-capstone-modeling-kz": [
+    "math-58-capstone-modeling",
+    "kz"
+  ],
+  "mathematics/59-data-mastery": [
+    "math-59-data-mastery",
+    "ru"
+  ],
+  "mathematics/59-data-mastery-en": [
+    "math-59-data-mastery",
+    "en"
+  ],
+  "mathematics/59-data-mastery-kz": [
+    "math-59-data-mastery",
+    "kz"
   ]
 }

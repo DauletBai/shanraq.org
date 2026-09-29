@@ -64,10 +64,18 @@ ROUTE = (
     ("49-linear-spaces", "math-49-linear-spaces", 400),
     ("50-eigen", "math-50-eigen", 410),
     ("51-linear-mastery", "math-51-linear-mastery", 420),
+    ("52-combinatorics", "math-52-combinatorics", 430),
+    ("53-probability", "math-53-probability", 440),
+    ("54-descriptive-statistics", "math-54-descriptive-statistics", 450),
+    ("55-inference", "math-55-inference", 460),
+    ("56-logic-proofs", "math-56-logic-proofs", 470),
+    ("57-graphs-algorithms", "math-57-graphs-algorithms", 480),
+    ("58-capstone-modeling", "math-58-capstone-modeling", 490),
+    ("59-data-mastery", "math-59-data-mastery", 500),
 )
 STEMS = tuple(item[0] for item in ROUTE)
 SLUGS = tuple(item[1] for item in ROUTE)
-MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery", "32-algebra-mastery", "41-geometry-mastery", "47-calculus-mastery", "51-linear-mastery")
+MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery", "32-algebra-mastery", "41-geometry-mastery", "47-calculus-mastery", "51-linear-mastery", "59-data-mastery")
 TEACHING_STEMS = tuple(
     stem for stem in STEMS if stem != "preface" and stem not in MASTERY_STEMS
 )
@@ -83,19 +91,27 @@ LESSON_COVERS = {
     "49-linear-spaces": "/static/covers/school/mathematics/linear-algebra/49-basis.webp",
     "50-eigen": "/static/covers/school/mathematics/linear-algebra/50-eigenvectors.webp",
     "51-linear-mastery": "/static/covers/school/mathematics/linear-algebra/51-linear-algebra-mastery.webp",
+    "52-combinatorics": "/static/covers/school/mathematics/data-discrete/52-combinatorics.webp",
+    "53-probability": "/static/covers/school/mathematics/data-discrete/53-probability.webp",
+    "54-descriptive-statistics": "/static/covers/school/mathematics/data-discrete/54-descriptive-statistics.webp",
+    "55-inference": "/static/covers/school/mathematics/data-discrete/55-statistical-inference.webp",
+    "56-logic-proofs": "/static/covers/school/mathematics/data-discrete/56-logic-proofs.webp",
+    "57-graphs-algorithms": "/static/covers/school/mathematics/data-discrete/57-graphs-algorithms.webp",
+    "58-capstone-modeling": "/static/covers/school/mathematics/data-discrete/58-mathematical-modeling.webp",
+    "59-data-mastery": "/static/covers/school/mathematics/data-discrete/59-data-mastery.webp",
 }
 META = {
     "ru": (
         "Математика: от фундамента к высшей математике",
-        "Бесплатный курс по карте зависимостей, а не по классам. 51 занятие ведёт от чисел и дробей через алгебру и геометрию к анализу, матрицам, базисам и собственным направлениям; каждый блок завершается проверкой переноса.",
+        "Бесплатный курс по карте зависимостей, а не по классам. 59 занятий ведут от чисел и дробей через алгебру, геометрию, анализ и линейную алгебру к вероятности, статистике, логике, графам и математическому моделированию.",
     ),
     "kz": (
         "Математика: іргетастан жоғары математикаға дейін",
-        "Сыныптарға емес, ұғымдар тәуелділігіне құрылған тегін курс. 51 сабақ сандар мен бөлшектерден алгебра, геометрия және анализ арқылы матрицаларға, базистер мен меншікті бағыттарға дейін жетелейді.",
+        "Сыныптарға емес, ұғымдар тәуелділігіне құрылған тегін курс. 59 сабақ сандар мен бөлшектерден алгебра, геометрия, анализ және сызықтық алгебра арқылы ықтималдыққа, статистикаға, логикаға, графтарға және математикалық модельдеуге дейін жетелейді.",
     ),
     "en": (
         "Mathematics: from foundations to higher mathematics",
-        "A free course organized by idea dependencies rather than grade levels. Its 51 lessons lead from numbers and fractions through algebra, geometry, and calculus to matrices, bases, and eigenvector directions.",
+        "A free course organized by idea dependencies rather than grade levels. Its 59 lessons lead from numbers and fractions through algebra, geometry, calculus, and linear algebra to probability, statistics, logic, graphs, and mathematical modelling.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -120,8 +136,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 52 or len(STEMS) != len(SLUGS):
-        raise ValueError("expected one preface and fifty-one lessons")
+    if len(ROUTE) != 60 or len(STEMS) != len(SLUGS):
+        raise ValueError("expected one preface and fifty-nine lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-mathematics-course'));" ]
     slugs = ",".join(literal(s) for s in SLUGS)
     sql.append(f"""DO $guard$

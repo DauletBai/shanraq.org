@@ -6,12 +6,12 @@ quantity to mathematical modelling. Every prerequisite must name another node,
 and the graph must remain acyclic; `tools/course/test_mathematics_release.py`
 checks both properties.
 
-The prepared route now contains seven connected blocks: numbers and operations;
+The prepared route now contains eight connected blocks: numbers and operations;
 fractions, ratios, percent, and proportion; variables and prealgebra; then
-algebra and functions; geometry and space; calculus; then matrices, vector
-spaces, bases, and eigenvectors. Together they provide fifty-one lessons plus the course
-orientation and test the lesson cycle and mastery gate before the remaining
-nodes are written:
+algebra and functions; geometry and space; calculus; matrices, vector spaces,
+bases, and eigenvectors; then probability, statistics, logic, graphs, and
+mathematical modelling. Together they provide fifty-nine lessons plus the
+course orientation and test the lesson cycle and mastery gate:
 
 1. whole-map orientation;
 2. familiar physical image;
@@ -38,6 +38,7 @@ python3 tools/course/generate_math_maps.py
 python3 tools/course/generate_math_geometry.py
 python3 tools/course/generate_math_calculus.py
 python3 tools/course/generate_math_linear.py
+python3 tools/course/generate_math_data.py
 python3 tools/course/generate_math_localizations.py
 python3 tools/course/generate_math_map_localizations.py
 cd tools/course && python3 -m unittest test_mathematics_release.py
