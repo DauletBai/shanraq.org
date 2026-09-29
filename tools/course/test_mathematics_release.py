@@ -46,8 +46,8 @@ class MathematicsReleaseTests(unittest.TestCase):
         sql, expected = prepare_mathematics.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.endswith("COMMIT;\n"))
-        self.assertEqual(len(expected), 126)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 42)
+        self.assertEqual(len(expected), 144)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 48)
         self.assertIn("'society','education'", sql)
         self.assertIn("'published','math'", sql)
         self.assertNotIn("DELETE FROM", sql)
@@ -253,6 +253,29 @@ class MathematicsReleaseTests(unittest.TestCase):
         self.assertEqual(geometry_mastery.count('class="geometry-skill"'), 8)
         self.assertIn("8/10", geometry_mastery)
         self.assertIn("7/10", geometry_mastery)
+
+        calculus = (
+            ("42-limits.md", "map-42-limits.svg", "(x²−4)/(x−2)", 'data-limit="x->2;(x^2-4)/(x-2)->4"'),
+            ("43-derivative.md", "map-43-derivative.svg", "f′(x)=2x", 'data-derivative="f=x^2;x=2;fprime=4"'),
+            ("44-derivative-applications.md", "map-44-derivative-applications.svg", "A=x(10−x)", 'data-optimization="A=x(10-x);max=A(5)=25"'),
+            ("45-integral.md", "map-45-integral.svg", "∫[0,3]2x dx=3²−0²=9", 'data-integral="integral_0^3 2x dx=9"'),
+            ("46-differential-equations.md", "map-46-differential-equations.svg", "y′=0,05y", 'data-diffeq="yprime=.05y;y(0)=100;y=100e^(.05t)"'),
+        )
+        for lesson_name, map_name, example, marker in calculus:
+            lesson = (lessons / lesson_name).read_text(encoding="utf-8")
+            illustration = (maps / map_name).read_text(encoding="utf-8")
+            self.assertIn(example, lesson, lesson_name)
+            self.assertIn(marker, illustration, map_name)
+
+        calculus_mastery = (maps / "map-47-calculus-mastery.svg").read_text(encoding="utf-8")
+        self.assertEqual(calculus_mastery.count('class="calculus-skill"'), 5)
+        self.assertIn("8/10", calculus_mastery)
+        self.assertIn("7/10", calculus_mastery)
+
+        sql, _ = prepare_mathematics.prepare()
+        for cover in prepare_mathematics.LESSON_COVERS.values():
+            self.assertIn(cover, sql)
+            self.assertTrue((ROOT / "web" / cover.lstrip("/")).is_file(), cover)
 
     def test_claims_do_not_turn_targets_into_results(self):
         preface = (prepare_mathematics.LESSONS / "preface.md").read_text(encoding="utf-8")

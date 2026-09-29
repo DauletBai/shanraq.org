@@ -2890,5 +2890,77 @@
   "mathematics/41-geometry-mastery-en": [
     "math-41-geometry-mastery",
     "en"
+  ],
+  "mathematics/42-limits": [
+    "math-42-limits",
+    "ru"
+  ],
+  "mathematics/42-limits-kz": [
+    "math-42-limits",
+    "kz"
+  ],
+  "mathematics/42-limits-en": [
+    "math-42-limits",
+    "en"
+  ],
+  "mathematics/43-derivative": [
+    "math-43-derivative",
+    "ru"
+  ],
+  "mathematics/43-derivative-kz": [
+    "math-43-derivative",
+    "kz"
+  ],
+  "mathematics/43-derivative-en": [
+    "math-43-derivative",
+    "en"
+  ],
+  "mathematics/44-derivative-applications": [
+    "math-44-derivative-applications",
+    "ru"
+  ],
+  "mathematics/44-derivative-applications-kz": [
+    "math-44-derivative-applications",
+    "kz"
+  ],
+  "mathematics/44-derivative-applications-en": [
+    "math-44-derivative-applications",
+    "en"
+  ],
+  "mathematics/45-integral": [
+    "math-45-integral",
+    "ru"
+  ],
+  "mathematics/45-integral-kz": [
+    "math-45-integral",
+    "kz"
+  ],
+  "mathematics/45-integral-en": [
+    "math-45-integral",
+    "en"
+  ],
+  "mathematics/46-differential-equations": [
+    "math-46-differential-equations",
+    "ru"
+  ],
+  "mathematics/46-differential-equations-kz": [
+    "math-46-differential-equations",
+    "kz"
+  ],
+  "mathematics/46-differential-equations-en": [
+    "math-46-differential-equations",
+    "en"
+  ],
+  "mathematics/47-calculus-mastery": [
+    "math-47-calculus-mastery",
+    "ru"
+  ],
+  "mathematics/47-calculus-mastery-kz": [
+    "math-47-calculus-mastery",
+    "kz"
+  ],
+  "mathematics/47-calculus-mastery-en": [
+    "math-47-calculus-mastery",
+    "en"
   ]
 }

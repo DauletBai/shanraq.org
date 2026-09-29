@@ -54,26 +54,40 @@ ROUTE = (
     ("39-trigonometry", "math-39-trigonometry", 300),
     ("40-vectors-geometry", "math-40-vectors-geometry", 310),
     ("41-geometry-mastery", "math-41-geometry-mastery", 320),
+    ("42-limits", "math-42-limits", 330),
+    ("43-derivative", "math-43-derivative", 340),
+    ("44-derivative-applications", "math-44-derivative-applications", 350),
+    ("45-integral", "math-45-integral", 360),
+    ("46-differential-equations", "math-46-differential-equations", 370),
+    ("47-calculus-mastery", "math-47-calculus-mastery", 380),
 )
 STEMS = tuple(item[0] for item in ROUTE)
 SLUGS = tuple(item[1] for item in ROUTE)
-MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery", "32-algebra-mastery", "41-geometry-mastery")
+MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery", "32-algebra-mastery", "41-geometry-mastery", "47-calculus-mastery")
 TEACHING_STEMS = tuple(
     stem for stem in STEMS if stem != "preface" and stem not in MASTERY_STEMS
 )
 COVER = "/static/covers/school/mathematics/mathematics-foundations.webp"
+LESSON_COVERS = {
+    "42-limits": "/static/covers/school/mathematics/calculus/42-limits.webp",
+    "43-derivative": "/static/covers/school/mathematics/calculus/43-derivative.webp",
+    "44-derivative-applications": "/static/covers/school/mathematics/calculus/44-optimization.webp",
+    "45-integral": "/static/covers/school/mathematics/calculus/45-integral.webp",
+    "46-differential-equations": "/static/covers/school/mathematics/calculus/46-differential-equations.webp",
+    "47-calculus-mastery": "/static/covers/school/mathematics/calculus/47-calculus-mastery.webp",
+}
 META = {
     "ru": (
         "Математика: от фундамента к высшей математике",
-        "Бесплатный курс по карте зависимостей, а не по классам. 41 занятие ведёт от чисел и дробей через алгебру к доказательствам, подобию, площадям, окружностям, тригонометрии и векторам; каждый блок завершается проверкой переноса.",
+        "Бесплатный курс по карте зависимостей, а не по классам. 47 занятий ведут от чисел и дробей через алгебру и геометрию к пределам, производным, интегралам и моделям изменения; каждый блок завершается проверкой переноса.",
     ),
     "kz": (
         "Математика: іргетастан жоғары математикаға дейін",
-        "Сыныптарға емес, ұғымдар тәуелділігіне құрылған тегін курс. 41 сабақ сандар мен бөлшектерден алгебра, дәлелдеу, ұқсастық, аудан, шеңбер, тригонометрия және векторларға дейін жетелейді.",
+        "Сыныптарға емес, ұғымдар тәуелділігіне құрылған тегін курс. 47 сабақ сандар мен бөлшектерден алгебра және геометрия арқылы шек, туынды, интеграл және өзгеріс модельдеріне дейін жетелейді.",
     ),
     "en": (
         "Mathematics: from foundations to higher mathematics",
-        "A free course organized by idea dependencies rather than grade levels. Its 41 lessons lead from numbers and fractions through algebra to proof, similarity, area, circles, trigonometry, and vectors.",
+        "A free course organized by idea dependencies rather than grade levels. Its 47 lessons lead from numbers and fractions through algebra and geometry to limits, derivatives, integrals, and models of change.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -98,8 +112,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 42 or len(STEMS) != len(SLUGS):
-        raise ValueError("expected one preface and forty-one lessons")
+    if len(ROUTE) != 48 or len(STEMS) != len(SLUGS):
+        raise ValueError("expected one preface and forty-seven lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-mathematics-course'));" ]
     slugs = ",".join(literal(s) for s in SLUGS)
     sql.append(f"""DO $guard$
@@ -129,8 +143,9 @@ SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
     for stem, slug_name, position in ROUTE:
         slug = literal(slug_name)
+        cover = LESSON_COVERS.get(stem, COVER)
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
-SELECT id,{slug},'ru','society','education',{literal(COVER)},'published',now()
+SELECT id,{slug},'ru','society','education',{literal(cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'
 ON CONFLICT(slug) DO UPDATE SET category='society',subcategory='education',
 cover_url=EXCLUDED.cover_url,status='published',updated_at=now(),
