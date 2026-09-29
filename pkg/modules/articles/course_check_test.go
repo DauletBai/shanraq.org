@@ -210,6 +210,29 @@ func TestMathSolutionsStayProse(t *testing.T) {
 	}
 }
 
+func TestInformaticsEvidenceStaysProse(t *testing.T) {
+	src := "Наблюдение: файл исчез после перезапуска. Объяснение: изменение не было сохранено."
+	out, err := formatSolution(src, CodeInformatics)
+	if err != nil || out != src+"\n" {
+		t.Fatalf("formatSolution(informatics) = %q, %v", out, err)
+	}
+	prompt := checkSystem(LangRU, CodeInformatics)
+	for _, rule := range []string{
+		"beginner Informatics course",
+		"observation is separated from an assumption",
+		"Never require code",
+		"uses fictional data",
+		"first missing, confused, or unsupported link",
+	} {
+		if !strings.Contains(prompt, rule) {
+			t.Errorf("Informatics reviewer prompt is missing %q", rule)
+		}
+	}
+	if got := string(highlightCode(src, CodeInformatics)); strings.Contains(got, "chroma") || !strings.Contains(got, "<p>") {
+		t.Fatalf("Informatics evidence rendered as code: %s", got)
+	}
+}
+
 func TestFormatSolutionSQLPreservesQuery(t *testing.T) {
 	src := "SELECT amount   \r\nFROM transactions;   \r\n"
 	out, err := formatSolution(src, CodeSQL)

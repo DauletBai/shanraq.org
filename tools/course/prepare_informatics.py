@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+"""Prepare the first Informatics block as one atomic SQL publication."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import re
+
+ROOT = Path(__file__).resolve().parents[2]
+LESSONS = ROOT / "course/lessons/informatics"
+ROUTE = (
+    ("01-whole-map", "informatics-01-whole-map", 10),
+    ("02-diagnostic-product", "informatics-02-diagnostic-product", 20),
+    ("03-device-system", "informatics-03-device-system", 30),
+    ("04-input-output-sensors", "informatics-04-input-output-sensors", 40),
+    ("05-cpu-memory-storage", "informatics-05-cpu-memory-storage", 50),
+    ("06-os-process-app", "informatics-06-os-process-app", 60),
+    ("07-files-folders-paths", "informatics-07-files-folders-paths", 70),
+    ("08-formats-software-licenses", "informatics-08-formats-software-licenses", 80),
+    ("09-versions-collaboration-accessibility", "informatics-09-versions-collaboration-accessibility", 90),
+    ("10-systems-mastery", "informatics-10-systems-mastery", 100),
+)
+COVER = "/static/covers/school/informatics/foundations/01-digital-world-computer-project.webp"
+META = {
+    "ru": (
+        "Информатика: создаём своего цифрового помощника",
+        "Первый бесплатный блок из 10 занятий: устройство компьютера, ввод и вывод, память, операционная система, файлы, форматы, лицензии, версии и доступность через один сквозной проект.",
+    ),
+    "kz": (
+        "Информатика: өз цифрлық көмекшімізді жасаймыз",
+        "10 сабақтан тұратын алғашқы тегін бөлім: бір жоба арқылы компьютер құрылысы, кіріс пен шығыс, жад, операциялық жүйе, файлдар, пішімдер, лицензиялар, нұсқалар және қолжетімділік.",
+    ),
+    "en": (
+        "Informatics: build your own digital assistant",
+        "The first free 10-lesson block covers computer systems, input and output, memory, operating systems, files, formats, licences, versions, and accessibility through one continuing project.",
+    ),
+}
+LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
+
+
+def literal(value: str) -> str:
+    delimiter = "$informatics_course$"
+    if delimiter in value:
+        raise ValueError("SQL delimiter occurs in Informatics content")
+    return delimiter + value + delimiter
+
+
+def lesson(path: Path):
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if len(lines) < 5 or not lines[0].startswith("# "):
+        raise ValueError(f"missing title/body: {path}")
+    lead = LEAD.fullmatch(lines[2])
+    if not lead:
+        raise ValueError(f"missing summary lead: {path}")
+    body = "\n".join(lines[4:]).strip() + "\n"
+    return lines[0][2:].strip(), lead.group(1), body
+
+
+def prepare():
+    if len(ROUTE) != 10:
+        raise ValueError("the first release must contain exactly ten lessons")
+    sql = [
+        "BEGIN;",
+        "SELECT pg_advisory_xact_lock(hashtext('shanraq-informatics-course'));",
+    ]
+    slugs = ",".join(literal(slug) for _, slug, _ in ROUTE)
+    sql.append(f"""DO $guard$
+BEGIN
+  IF (SELECT count(*) FROM auth_users WHERE email='baimurza.daulet@gmail.com') <> 1 THEN
+    RAISE EXCEPTION 'Expected course author not found';
+  END IF;
+  IF EXISTS (SELECT 1 FROM articles a JOIN auth_users u ON u.id=a.author_id
+             WHERE a.slug IN ({slugs}) AND u.email <> 'baimurza.daulet@gmail.com') THEN
+    RAISE EXCEPTION 'Informatics slug belongs to another author';
+  END IF;
+  IF EXISTS (SELECT 1 FROM article_series_items i
+             JOIN article_series s ON s.id=i.series_id JOIN articles a ON a.id=i.article_id
+             WHERE a.slug IN ({slugs}) AND s.slug <> 'informatics') THEN
+    RAISE EXCEPTION 'Informatics lesson belongs to another course';
+  END IF;
+END $guard$;""")
+    sql.append(f"""INSERT INTO article_series(slug,cover_url,status,code_lang)
+VALUES('informatics',{literal(COVER)},'published','informatics')
+ON CONFLICT(slug) DO UPDATE SET cover_url=EXCLUDED.cover_url,status='published',
+code_lang='informatics',updated_at=now();""")
+    for lang, (title, summary) in META.items():
+        sql.append(f"""INSERT INTO article_series_i18n(series_id,lang,title,summary)
+SELECT id,'{lang}',{literal(title)},{literal(summary)} FROM article_series
+WHERE slug='informatics' ON CONFLICT(series_id,lang) DO UPDATE
+SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
+
+    expected = []
+    for stem, slug_name, position in ROUTE:
+        slug = literal(slug_name)
+        sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
+SELECT id,{slug},'ru','society','education',{literal(COVER)},'published',now()
+FROM auth_users WHERE email='baimurza.daulet@gmail.com'
+ON CONFLICT(slug) DO UPDATE SET category='society',subcategory='education',
+cover_url=EXCLUDED.cover_url,status='published',updated_at=now(),
+published_at=COALESCE(articles.published_at,now());""")
+        for lang in ("ru", "kz", "en"):
+            suffix = "" if lang == "ru" else f"-{lang}"
+            title, summary, body = lesson(LESSONS / f"{stem}{suffix}.md")
+            sql.append(f"""INSERT INTO article_translations(article_id,lang,title,summary,body_md,source,status)
+SELECT id,'{lang}',{literal(title)},{literal(summary)},{literal(body)},'ai','ready'
+FROM articles WHERE slug={slug}
+ON CONFLICT(article_id,lang) DO UPDATE SET title=EXCLUDED.title,summary=EXCLUDED.summary,
+body_md=EXCLUDED.body_md,source='ai',status='ready',updated_at=now();""")
+            expected.append({
+                "slug": slug_name,
+                "lang": lang,
+                "title": title,
+                "body_sha256": hashlib.sha256(body.encode()).hexdigest(),
+                "summary_sha256": hashlib.sha256(summary.encode()).hexdigest(),
+            })
+        sql.append(f"""INSERT INTO article_series_items(series_id,article_id,position)
+SELECT s.id,a.id,{position} FROM article_series s,articles a
+WHERE s.slug='informatics' AND a.slug={slug}
+ON CONFLICT(series_id,article_id) DO UPDATE SET position=EXCLUDED.position;""")
+    sql.append("COMMIT;")
+    return "\n".join(sql) + "\n", expected
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--sql", type=Path, required=True)
+    parser.add_argument("--expected", type=Path, required=True)
+    args = parser.parse_args()
+    sql, expected = prepare()
+    args.sql.write_text(sql, encoding="utf-8")
+    args.expected.write_text(json.dumps(expected, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"Prepared {len(expected)} localized pages in one transaction; no remote changes")
+
+
+if __name__ == "__main__":
+    main()

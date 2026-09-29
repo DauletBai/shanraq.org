@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">ФИЗИКАЛЫҚ СИГНАЛДАН ДЕРЕККЕ ЖӘНЕ КЕРІ</title><desc id="desc">Құрылғы әлемді өлшейді, бағдарлама деректі өзгертеді, шығыс әлемге әсер етеді</desc>
+
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/><stop offset="1" stop-color="#e8f1fb"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#54b8ff"/><stop offset="1" stop-color="#1765b5"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#72e0dd"/><stop offset="1" stop-color="#138c9e"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b89cff"/><stop offset="1" stop-color="#6742ba"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffcb6b"/><stop offset="1" stop-color="#de7b22"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="150%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#17324f" flood-opacity=".22"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M1 1 11 6 1 11Z" fill="#d53d3d"/>
+    </marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#bfd2e6" stroke-width="1" opacity=".42"/>
+    </pattern>
+  </defs>
+  <style>
+    .title{font:800 42px Inter,Arial,sans-serif;fill:#17324f;letter-spacing:1px}
+    .subtitle{font:500 22px Inter,Arial,sans-serif;fill:#4d647a}
+    .step-title{font:800 23px Inter,Arial,sans-serif;fill:#fff}
+    .step-sub{font:600 17px Inter,Arial,sans-serif;fill:#eaf7ff}
+    .number{font:900 34px Inter,Arial,sans-serif;fill:#17324f}
+    .project{font:900 27px Inter,Arial,sans-serif;fill:#17324f;letter-spacing:.5px}
+    .project-sub{font:600 18px Inter,Arial,sans-serif;fill:#49647c}
+  </style>
+
+<rect width="1600" height="900" fill="url(#paper)"/><rect width="1600" height="900" fill="url(#grid)"/>
+
+<text x="800" y="62" text-anchor="middle" class="title" style="font-size:36px">ФИЗИКАЛЫҚ СИГНАЛДАН ДЕРЕККЕ ЖӘНЕ КЕРІ</text>
+<text x="800" y="100" text-anchor="middle" class="subtitle" style="font-size:20px">Құрылғы әлемді өлшейді, бағдарлама деректі өзгертеді, шығыс әлемге әсер етеді</text>
+<g class="io-stage" data-order="1" filter="url(#shadow)"><rect x="55" y="140" width="250" height="100" rx="22" fill="url(#orange)" stroke="#fff" stroke-width="3"/><text x="180" y="202" text-anchor="middle" class="step-title">құбылыс</text></g>
+<path d="M309 190 H357" stroke="#d53d3d" stroke-width="7" marker-end="url(#arrow)"/>
+<g class="io-stage" data-order="2" filter="url(#shadow)"><rect x="365" y="140" width="250" height="100" rx="22" fill="url(#blue)" stroke="#fff" stroke-width="3"/><text x="490" y="202" text-anchor="middle" class="step-title">сенсор</text></g>
+<path d="M619 190 H667" stroke="#d53d3d" stroke-width="7" marker-end="url(#arrow)"/>
+<g class="io-stage" data-order="3" filter="url(#shadow)"><rect x="675" y="140" width="250" height="100" rx="22" fill="url(#cyan)" stroke="#fff" stroke-width="3"/><text x="800" y="202" text-anchor="middle" class="step-title">дерек</text></g>
+<path d="M929 190 H977" stroke="#d53d3d" stroke-width="7" marker-end="url(#arrow)"/>
+<g class="io-stage" data-order="4" filter="url(#shadow)"><rect x="985" y="140" width="250" height="100" rx="22" fill="url(#violet)" stroke="#fff" stroke-width="3"/><text x="1110" y="202" text-anchor="middle" class="step-title">бағдарлама</text></g>
+<path d="M1239 190 H1287" stroke="#d53d3d" stroke-width="7" marker-end="url(#arrow)"/>
+<g class="io-stage" data-order="5" filter="url(#shadow)"><rect x="1295" y="140" width="250" height="100" rx="22" fill="url(#orange)" stroke="#fff" stroke-width="3"/><text x="1420" y="202" text-anchor="middle" class="step-title">шығыс</text></g>
+<g class="io-example" data-example="1" filter="url(#shadow)"><rect x="55" y="310" width="1490" height="105" rx="22" fill="#fff" stroke="#9ebed7" stroke-width="2"/>
+<text x="180" y="373" text-anchor="middle" class="project-sub">жарық</text>
+<text x="331" y="375" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="490" y="373" text-anchor="middle" class="project-sub">камера</text>
+<text x="641" y="375" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="800" y="373" text-anchor="middle" class="project-sub">пиксель мәндері</text>
+<text x="951" y="375" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="1110" y="373" text-anchor="middle" class="project-sub">фотоны өңдеу</text>
+<text x="1261" y="375" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="1420" y="373" text-anchor="middle" class="project-sub">экран</text>
+</g>
+<g class="io-example" data-example="2" filter="url(#shadow)"><rect x="55" y="455" width="1490" height="105" rx="22" fill="#fff" stroke="#9ebed7" stroke-width="2"/>
+<text x="180" y="518" text-anchor="middle" class="project-sub">түрту</text>
+<text x="331" y="520" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="490" y="518" text-anchor="middle" class="project-sub">сенсорлық қабат</text>
+<text x="641" y="520" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="800" y="518" text-anchor="middle" class="project-sub">x=412, y=728</text>
+<text x="951" y="520" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="1110" y="518" text-anchor="middle" class="project-sub">батырманы тексеру</text>
+<text x="1261" y="520" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="1420" y="518" text-anchor="middle" class="project-sub">жаңа экран</text>
+</g>
+<g class="io-example" data-example="3" filter="url(#shadow)"><rect x="55" y="600" width="1490" height="105" rx="22" fill="#fff" stroke="#9ebed7" stroke-width="2"/>
+<text x="180" y="663" text-anchor="middle" class="project-sub">дыбыс</text>
+<text x="331" y="665" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="490" y="663" text-anchor="middle" class="project-sub">микрофон</text>
+<text x="641" y="665" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="800" y="663" text-anchor="middle" class="project-sub">сигнал есептері</text>
+<text x="951" y="665" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="1110" y="663" text-anchor="middle" class="project-sub">кодтау</text>
+<text x="1261" y="665" text-anchor="middle" class="number" style="font-size:24px;fill:#d53d3d">→</text>
+<text x="1420" y="663" text-anchor="middle" class="project-sub">динамик</text>
+</g>
+<g filter="url(#shadow)"><rect x="225" y="770" width="1150" height="75" rx="22" fill="#fff" stroke="#d8a03e" stroke-width="3"/><text x="800" y="817" text-anchor="middle" class="project">өлшем ≠ құбылыстың өзі • шу, кідіріс және қате болуы мүмкін</text></g></svg>

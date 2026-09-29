@@ -1,0 +1,46 @@
+name: Informatics course
+
+on:
+  push:
+    paths:
+      - 'course/lessons/informatics/**'
+      - 'course/informatics/**'
+      - 'course/informatics-assistant/**'
+      - 'docs/informatics-course-proposal.md'
+      - 'tools/course/generate_informatics_foundations.py'
+      - 'tools/course/generate_informatics_maps.py'
+      - 'tools/course/prepare_informatics.py'
+      - 'tools/course/test_informatics_release.py'
+      - 'web/static/course/informatics/**'
+      - 'web/static/covers/school/informatics/**'
+  pull_request:
+    paths:
+      - 'course/lessons/informatics/**'
+      - 'course/informatics/**'
+      - 'course/informatics-assistant/**'
+      - 'docs/informatics-course-proposal.md'
+      - 'tools/course/generate_informatics_foundations.py'
+      - 'tools/course/generate_informatics_maps.py'
+      - 'tools/course/prepare_informatics.py'
+      - 'tools/course/test_informatics_release.py'
+      - 'web/static/course/informatics/**'
+      - 'web/static/covers/school/informatics/**'
+
+jobs:
+  course:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Regenerate localized lessons and support maps
+        run: |
+          python3 tools/course/generate_informatics_foundations.py
+          python3 tools/course/generate_informatics_maps.py
+      - name: Verify generated files are committed
+        run: git diff --exit-code
+      - name: Validate first atomic release
+        run: python3 -m unittest tools.course.test_informatics_release
+      - name: Prepare publication without remote changes
+        run: |
+          python3 tools/course/prepare_informatics.py \
+            --sql /tmp/informatics-course.sql \
+            --expected /tmp/informatics-course-expected.json

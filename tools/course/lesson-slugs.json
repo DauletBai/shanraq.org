@@ -3106,5 +3106,125 @@
   "mathematics/59-data-mastery-kz": [
     "math-59-data-mastery",
     "kz"
+  ],
+  "informatics/01-whole-map": [
+    "informatics-01-whole-map",
+    "ru"
+  ],
+  "informatics/01-whole-map-kz": [
+    "informatics-01-whole-map",
+    "kz"
+  ],
+  "informatics/01-whole-map-en": [
+    "informatics-01-whole-map",
+    "en"
+  ],
+  "informatics/02-diagnostic-product": [
+    "informatics-02-diagnostic-product",
+    "ru"
+  ],
+  "informatics/02-diagnostic-product-kz": [
+    "informatics-02-diagnostic-product",
+    "kz"
+  ],
+  "informatics/02-diagnostic-product-en": [
+    "informatics-02-diagnostic-product",
+    "en"
+  ],
+  "informatics/03-device-system": [
+    "informatics-03-device-system",
+    "ru"
+  ],
+  "informatics/03-device-system-kz": [
+    "informatics-03-device-system",
+    "kz"
+  ],
+  "informatics/03-device-system-en": [
+    "informatics-03-device-system",
+    "en"
+  ],
+  "informatics/04-input-output-sensors": [
+    "informatics-04-input-output-sensors",
+    "ru"
+  ],
+  "informatics/04-input-output-sensors-kz": [
+    "informatics-04-input-output-sensors",
+    "kz"
+  ],
+  "informatics/04-input-output-sensors-en": [
+    "informatics-04-input-output-sensors",
+    "en"
+  ],
+  "informatics/05-cpu-memory-storage": [
+    "informatics-05-cpu-memory-storage",
+    "ru"
+  ],
+  "informatics/05-cpu-memory-storage-kz": [
+    "informatics-05-cpu-memory-storage",
+    "kz"
+  ],
+  "informatics/05-cpu-memory-storage-en": [
+    "informatics-05-cpu-memory-storage",
+    "en"
+  ],
+  "informatics/06-os-process-app": [
+    "informatics-06-os-process-app",
+    "ru"
+  ],
+  "informatics/06-os-process-app-kz": [
+    "informatics-06-os-process-app",
+    "kz"
+  ],
+  "informatics/06-os-process-app-en": [
+    "informatics-06-os-process-app",
+    "en"
+  ],
+  "informatics/07-files-folders-paths": [
+    "informatics-07-files-folders-paths",
+    "ru"
+  ],
+  "informatics/07-files-folders-paths-kz": [
+    "informatics-07-files-folders-paths",
+    "kz"
+  ],
+  "informatics/07-files-folders-paths-en": [
+    "informatics-07-files-folders-paths",
+    "en"
+  ],
+  "informatics/08-formats-software-licenses": [
+    "informatics-08-formats-software-licenses",
+    "ru"
+  ],
+  "informatics/08-formats-software-licenses-kz": [
+    "informatics-08-formats-software-licenses",
+    "kz"
+  ],
+  "informatics/08-formats-software-licenses-en": [
+    "informatics-08-formats-software-licenses",
+    "en"
+  ],
+  "informatics/09-versions-collaboration-accessibility": [
+    "informatics-09-versions-collaboration-accessibility",
+    "ru"
+  ],
+  "informatics/09-versions-collaboration-accessibility-kz": [
+    "informatics-09-versions-collaboration-accessibility",
+    "kz"
+  ],
+  "informatics/09-versions-collaboration-accessibility-en": [
+    "informatics-09-versions-collaboration-accessibility",
+    "en"
+  ],
+  "informatics/10-systems-mastery": [
+    "informatics-10-systems-mastery",
+    "ru"
+  ],
+  "informatics/10-systems-mastery-kz": [
+    "informatics-10-systems-mastery",
+    "kz"
+  ],
+  "informatics/10-systems-mastery-en": [
+    "informatics-10-systems-mastery",
+    "en"
   ]
 }

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Versions, collaboration, and accessibility</title><desc id="desc">We preserve meaningful history, combine changes without overwriting another person's work, and test accessibility.</desc>
+
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/><stop offset="1" stop-color="#e8f1fb"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#54b8ff"/><stop offset="1" stop-color="#1765b5"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#72e0dd"/><stop offset="1" stop-color="#138c9e"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b89cff"/><stop offset="1" stop-color="#6742ba"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffcb6b"/><stop offset="1" stop-color="#de7b22"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="150%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#17324f" flood-opacity=".22"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M1 1 11 6 1 11Z" fill="#d53d3d"/>
+    </marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#bfd2e6" stroke-width="1" opacity=".42"/>
+    </pattern>
+  </defs>
+  <style>
+    .title{font:800 42px Inter,Arial,sans-serif;fill:#17324f;letter-spacing:1px}
+    .subtitle{font:500 22px Inter,Arial,sans-serif;fill:#4d647a}
+    .step-title{font:800 23px Inter,Arial,sans-serif;fill:#fff}
+    .step-sub{font:600 17px Inter,Arial,sans-serif;fill:#eaf7ff}
+    .number{font:900 34px Inter,Arial,sans-serif;fill:#17324f}
+    .project{font:900 27px Inter,Arial,sans-serif;fill:#17324f;letter-spacing:.5px}
+    .project-sub{font:600 18px Inter,Arial,sans-serif;fill:#49647c}
+  </style>
+
+<rect width="1600" height="900" fill="url(#paper)"/><rect width="1600" height="900" fill="url(#grid)"/>
+
+<text x="800" y="64" text-anchor="middle" class="title" style="font-size:36px">VERSIONS, COLLABORATION, AND ACCESSIBILITY</text>
+<text x="800" y="102" text-anchor="middle" class="subtitle" style="font-size:19px">We preserve meaningful history, combine changes without overwriting another person's work, and test accessibility.</text>
+<g class="foundation-stage" data-order="1" filter="url(#shadow)"><rect x="60" y="185" width="198" height="130" rx="24" fill="url(#blue)" stroke="#fff" stroke-width="3"/><text x="159" y="260" text-anchor="middle" class="step-title" style="font-size:20px">small change</text></g>
+<path d="M261 250 H286" stroke="#d53d3d" stroke-width="7" marker-end="url(#arrow)"/>
+<g class="foundation-stage" data-order="2" filter="url(#shadow)"><rect x="290" y="185" width="198" height="130" rx="24" fill="url(#cyan)" stroke="#fff" stroke-width="3"/><text x="389" y="260" text-anchor="middle" class="step-title" style="font-size:20px">compare</text></g>
+<path d="M491 250 H516" stroke="#d53d3d" stroke-width="7" marker-end="url(#arrow)"/>
+<g class="foundation-stage" data-order="3" filter="url(#shadow)"><rect x="520" y="185" width="198" height="130" rx="24" fill="url(#violet)" stroke="#fff" stroke-width="3"/><text x="619" y="260" text-anchor="middle" class="step-title" style="font-size:20px">review</text></g>
+<path d="M721 250 H746" stroke="#d53d3d" stroke-width="7" marker-end="url(#arrow)"/>
+<g class="foundation-stage" data-order="4" filter="url(#shadow)"><rect x="750" y="185" width="198" height="130" rx="24" fill="url(#orange)" stroke="#fff" stroke-width="3"/><text x="849" y="260" text-anchor="middle" class="step-title" style="font-size:20px">test</text></g>
+<path d="M951 250 H976" stroke="#d53d3d" stroke-width="7" marker-end="url(#arrow)"/>
+<g class="foundation-stage" data-order="5" filter="url(#shadow)"><rect x="980" y="185" width="198" height="130" rx="24" fill="url(#blue)" stroke="#fff" stroke-width="3"/><text x="1079" y="260" text-anchor="middle" class="step-title" style="font-size:20px">version</text></g>
+<path d="M1181 250 H1206" stroke="#d53d3d" stroke-width="7" marker-end="url(#arrow)"/>
+<g class="foundation-stage" data-order="6" filter="url(#shadow)"><rect x="1210" y="185" width="198" height="130" rx="24" fill="url(#cyan)" stroke="#fff" stroke-width="3"/><text x="1309" y="260" text-anchor="middle" class="step-title" style="font-size:20px">recover</text></g>
+<g class="learning-check" filter="url(#shadow)"><rect x="90" y="435" width="250" height="110" rx="22" fill="#fff" stroke="#8db7d8" stroke-width="3"/><text x="215" y="502" text-anchor="middle" class="project-sub" style="font-weight:800">OBSERVE</text></g>
+<g class="learning-check" filter="url(#shadow)"><rect x="390" y="435" width="250" height="110" rx="22" fill="#fff" stroke="#8db7d8" stroke-width="3"/><text x="515" y="502" text-anchor="middle" class="project-sub" style="font-weight:800">EXPLAIN</text></g>
+<g class="learning-check" filter="url(#shadow)"><rect x="690" y="435" width="250" height="110" rx="22" fill="#fff" stroke="#8db7d8" stroke-width="3"/><text x="815" y="502" text-anchor="middle" class="project-sub" style="font-weight:800">VERIFY</text></g>
+<g class="learning-check" filter="url(#shadow)"><rect x="990" y="435" width="250" height="110" rx="22" fill="#fff" stroke="#8db7d8" stroke-width="3"/><text x="1115" y="502" text-anchor="middle" class="project-sub" style="font-weight:800">TRANSFER</text></g>
+<g class="learning-check" filter="url(#shadow)"><rect x="1290" y="435" width="250" height="110" rx="22" fill="#fff" stroke="#8db7d8" stroke-width="3"/><text x="1415" y="502" text-anchor="middle" class="project-sub" style="font-weight:800">PROVE IN THE PROJECT</text></g>
+<g filter="url(#shadow)"><rect x="210" y="650" width="1180" height="120" rx="28" fill="#fff" stroke="#d8a03e" stroke-width="4"/><text x="800" y="722" text-anchor="middle" class="project">lesson → version 0.1 change → observable evidence</text></g></svg>

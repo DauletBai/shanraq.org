@@ -35,6 +35,9 @@ const (
 	CodeSQL    = "sql"
 	CodeRust   = "rust"
 	CodeShell  = "shell"
+	// CodeInformatics accepts observations, models, explanations, and project
+	// evidence before the course reaches programming.
+	CodeInformatics = "informatics"
 	// CodeMath accepts a learner's reasoning in ordinary mathematical prose.
 	// A mathematics course cannot pretend that every proof is a program merely
 	// to reuse the exercise checker.
@@ -209,6 +212,9 @@ func checkSystem(lang, codeLang string) string {
 	if codeLang == CodeMath {
 		return mathCheckSystem(lang)
 	}
+	if codeLang == CodeInformatics {
+		return informaticsCheckSystem(lang)
+	}
 	name := "Go"
 	switch codeLang {
 	case CodePython:
@@ -241,6 +247,52 @@ instead — never simply "wrong", and never the corrected code, which would take
 the exercise away from them.
 
 Plain text in "note", no Markdown, no code fences.`
+	switch lang {
+	case LangKZ:
+		return common + "\n\nWrite \"note\" in Kazakh."
+	case LangEN:
+		return common + "\n\nWrite \"note\" in English."
+	default:
+		return common + "\n\nWrite \"note\" in Russian."
+	}
+}
+
+// informaticsCheckSystem checks a beginner's model of a digital system rather
+// than pretending that every early exercise is source code. Later blocks can
+// still include code inside the same answer; the lesson itself defines what is
+// required and the reviewer must not introduce concepts that have not appeared.
+func informaticsCheckSystem(lang string) string {
+	common := `You are the checking tutor for Shanraq's beginner Informatics course.
+The learner is building one continuing project, “My Digital Assistant”. Early
+lessons use observation, plain-life images, precise system models, support
+signals, error repair, transfer, and project evidence before programming begins.
+
+Read the exact EXERCISE and SOLUTION supplied by the application. Use TAUGHT SO
+FAR to avoid requiring any term, tool, or programming idea the learner has not
+met. Never require code, VS Code, a screenshot, or a particular device unless
+the exercise itself explicitly asks for it.
+
+Check only the parts the exercise requires. When applicable, verify that:
+1. an observation is separated from an assumption;
+2. the named parts and arrows match the mechanism taught in the lesson;
+3. the learner explains why a step follows rather than only repeating terms;
+4. the proposed correction fixes the stated misconception;
+5. the model transfers to the new example;
+6. project evidence uses fictional data and states how the result was checked.
+
+Equivalent examples and accurate explanations in ordinary words must pass.
+Do not fail for spelling, phrasing, or a different valid project choice.
+
+Answer with JSON and nothing else: {"passed": true|false, "note": "..."}.
+
+Set "passed" to true only when every requested part is supported. If it passes,
+name the link in the learner's reasoning that shows understanding. If it does
+not pass, identify only the first missing, confused, or unsupported link, then
+ask one short guiding question or suggest one small observation. Never supply a
+finished response, complete project artefact, or answer that can be copied.
+
+Write "note" directly to a beginner in two to four calm, concrete sentences.
+Use plain text: no Markdown and no code fences.`
 	switch lang {
 	case LangKZ:
 		return common + "\n\nWrite \"note\" in Kazakh."
@@ -344,7 +396,7 @@ func formatSolution(src, codeLang string) (string, error) {
 	if codeLang == CodeRust {
 		return "", fmt.Errorf("Rust exercises use the lesson's self-check instructions")
 	}
-	if codeLang == CodePython || codeLang == CodeSQL || codeLang == CodeShell || codeLang == CodeMath {
+	if codeLang == CodePython || codeLang == CodeSQL || codeLang == CodeShell || codeLang == CodeMath || codeLang == CodeInformatics {
 		return tidyPython(src), nil
 	}
 	out, err := format.Source([]byte(src))
@@ -392,7 +444,7 @@ func highlightCode(code, codeLang string) template.HTML {
 	if codeLang == CodePython || codeLang == CodeSQL || codeLang == CodeRust || codeLang == CodeShell {
 		fence = codeLang
 	}
-	if codeLang == CodeMath {
+	if codeLang == CodeMath || codeLang == CodeInformatics {
 		// A proof is prose. Rendering it as a Go fence would turn every sentence
 		// into misleading syntax colours and a monospace wall.
 		return RenderMarkdown(code)

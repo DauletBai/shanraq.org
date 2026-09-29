@@ -196,20 +196,20 @@
            call, and an anonymous one cannot be limited or told from a script. */}}
       {{ if .HasExercise }}
       <section class="chk" data-check="{{ .Slug }}">
-        <h2 class="chk__h">{{ if .CheckMath }}{{ t .Lang "chk.math_title" }}{{ else }}{{ t .Lang "chk.title" }}{{ end }}
+        <h2 class="chk__h">{{ if .CheckMath }}{{ t .Lang "chk.math_title" }}{{ else if .CheckInformatics }}{{ t .Lang "chk.informatics_title" }}{{ else }}{{ t .Lang "chk.title" }}{{ end }}
           {{ if .Progress.Passed }}<span class="chk__badge">{{ t .Lang "chk.done_mark" }}</span>{{ end }}
         </h2>
-        <p class="chk__hint">{{ if .CheckMath }}{{ t .Lang "chk.math_hint" }}{{ else }}{{ t .Lang "chk.hint" }}{{ end }}</p>
+        <p class="chk__hint">{{ if .CheckMath }}{{ t .Lang "chk.math_hint" }}{{ else if .CheckInformatics }}{{ t .Lang "chk.informatics_hint" }}{{ else }}{{ t .Lang "chk.hint" }}{{ end }}</p>
         {{ if not .CheckReady }}
         {{/* Why the form is not here, instead of no form and no reason. */}}
         <p class="chk__note">{{ .CheckWhy }}
           {{ if .CheckLogin }}<a href="/studio/login">{{ t .Lang "header.login" }}</a>{{ end }}
         </p>
         {{ else }}
-        <textarea class="input chk__code{{ if .CheckMath }} chk__code--prose{{ end }}" rows="10"
-                  spellcheck="{{ if .CheckMath }}true{{ else }}false{{ end }}"
-                  {{ if .CheckMath }}placeholder="{{ t .Lang "chk.math_placeholder" }}"{{ end }}
-                  aria-label="{{ if .CheckMath }}{{ t .Lang "chk.math_title" }}{{ else }}{{ t .Lang "chk.title" }}{{ end }}">{{ .Progress.Solution }}</textarea>
+        <textarea class="input chk__code{{ if or .CheckMath .CheckInformatics }} chk__code--prose{{ end }}" rows="10"
+                  spellcheck="{{ if or .CheckMath .CheckInformatics }}true{{ else }}false{{ end }}"
+                  {{ if .CheckMath }}placeholder="{{ t .Lang "chk.math_placeholder" }}"{{ else if .CheckInformatics }}placeholder="{{ t .Lang "chk.informatics_placeholder" }}"{{ end }}
+                  aria-label="{{ if .CheckMath }}{{ t .Lang "chk.math_title" }}{{ else if .CheckInformatics }}{{ t .Lang "chk.informatics_title" }}{{ else }}{{ t .Lang "chk.title" }}{{ end }}">{{ .Progress.Solution }}</textarea>
         {{ $left := sub 3 .Progress.Attempts }}{{ if lt $left 0 }}{{ $left = 0 }}{{ end }}
         {{ if and (not .Progress.Passed) (gt $left 0) }}
         <p class="chk__row">
@@ -219,7 +219,7 @@
                   data-mark="{{ t .Lang "chk.done_mark" }}" data-fail="{{ t .Lang "chk.failed" }}"
                   data-spent="{{ t .Lang "chk.spent" }}" data-help="{{ t .Lang "chk.help" }}"
                   data-left="{{ t .Lang "chk.left" }}" data-tidied="{{ t .Lang "chk.tidied" }}">{{ t .Lang "chk.submit" }}</button>
-          {{ if not .CheckMath }}<button type="button" class="btn btn--ghost chk__fmt">{{ t .Lang "chk.format" }}</button>{{ end }}
+          {{ if not (or .CheckMath .CheckInformatics) }}<button type="button" class="btn btn--ghost chk__fmt">{{ t .Lang "chk.format" }}</button>{{ end }}
           <span class="chk__left">{{ count (t .Lang "chk.left") $left }}</span>
         </p>
         {{/* The tidied code, coloured the way the lesson colours its own. Shown

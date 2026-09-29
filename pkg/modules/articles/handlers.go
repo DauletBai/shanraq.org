@@ -626,12 +626,13 @@ type ArticlePage struct {
 	// (CheckReady); everyone else is told why in CheckWhy rather than shown
 	// nothing at all, because a box that is simply absent cannot tell a visitor
 	// that the course checks their work.
-	HasExercise bool
-	CheckReady  bool
-	CheckWhy    string
-	CheckLogin  bool
-	CheckMath   bool
-	Progress    Progress
+	HasExercise      bool
+	CheckReady       bool
+	CheckWhy         string
+	CheckLogin       bool
+	CheckMath        bool
+	CheckInformatics bool
+	Progress         Progress
 
 	// Courses this article is a lesson in. Usually none, at most one; the slice
 	// exists because an article may serve two courses and picking one of them
@@ -842,6 +843,8 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 			rustSelfCheck = true
 		case CodeMath:
 			page.CheckMath = true
+		case CodeInformatics:
+			page.CheckInformatics = true
 		}
 	}
 	if lessonExercise(tr.BodyMD) != "" && !rustSelfCheck {
