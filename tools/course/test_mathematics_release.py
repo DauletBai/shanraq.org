@@ -46,8 +46,8 @@ class MathematicsReleaseTests(unittest.TestCase):
         sql, expected = prepare_mathematics.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.endswith("COMMIT;\n"))
-        self.assertEqual(len(expected), 99)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 33)
+        self.assertEqual(len(expected), 126)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 42)
         self.assertIn("'society','education'", sql)
         self.assertIn("'published','math'", sql)
         self.assertNotIn("DELETE FROM", sql)
@@ -232,6 +232,27 @@ class MathematicsReleaseTests(unittest.TestCase):
         self.assertEqual(algebra_mastery.count('class="algebra-skill"'), 7)
         self.assertIn("8/10", algebra_mastery)
         self.assertIn("7/10", algebra_mastery)
+
+        geometry = (
+            ("33-geometry-language.md", "map-33-geometry-language.svg", "125°", 'data-geometry="adjacent:125+55=180"'),
+            ("34-triangles-congruence.md", "map-34-triangles-congruence.svg", "5, 7, 8", 'data-triangles="SSS:5,7,8"'),
+            ("35-similarity-scale.md", "map-35-similarity-scale.svg", "3,4,5", 'data-similarity="3-4-5~6-8-10;k=2"'),
+            ("36-area-volume.md", "map-36-area-volume.svg", "40 см²", 'data-measure="S=8*5=40;V=40*3=120"'),
+            ("37-pythagoras.md", "map-37-pythagoras.svg", "3²+4²", 'data-pythagoras="3^2+4^2=5^2"'),
+            ("38-circles.md", "map-38-circles.svg", "8π", 'data-circle="r=4;d=8;C=8pi;S=16pi"'),
+            ("39-trigonometry.md", "map-39-trigonometry.svg", "sin α=3/5", 'data-trigonometry="3-4-5;sin=3/5;cos=4/5;tan=3/4"'),
+            ("40-vectors-geometry.md", "map-40-vectors-geometry.svg", "a=(3,4)", 'data-vectors="a=(3,4);b=(-1,2);a+b=(2,6);|a|=5"'),
+        )
+        for lesson_name, map_name, example, marker in geometry:
+            lesson = (lessons / lesson_name).read_text(encoding="utf-8")
+            illustration = (maps / map_name).read_text(encoding="utf-8")
+            self.assertIn(example, lesson, lesson_name)
+            self.assertIn(marker, illustration, map_name)
+
+        geometry_mastery = (maps / "map-41-geometry-mastery.svg").read_text(encoding="utf-8")
+        self.assertEqual(geometry_mastery.count('class="geometry-skill"'), 8)
+        self.assertIn("8/10", geometry_mastery)
+        self.assertIn("7/10", geometry_mastery)
 
     def test_claims_do_not_turn_targets_into_results(self):
         preface = (prepare_mathematics.LESSONS / "preface.md").read_text(encoding="utf-8")

@@ -6,9 +6,9 @@ quantity to mathematical modelling. Every prerequisite must name another node,
 and the graph must remain acyclic; `tools/course/test_mathematics_release.py`
 checks both properties.
 
-The prepared route now contains four connected blocks: numbers and operations;
+The prepared route now contains five connected blocks: numbers and operations;
 fractions, ratios, percent, and proportion; variables and prealgebra; then
-algebra and functions. Together they provide thirty-two lessons plus the course
+algebra and functions; then geometry and space. Together they provide forty-one lessons plus the course
 orientation and test the lesson cycle and mastery gate before the remaining
 nodes are written:
 

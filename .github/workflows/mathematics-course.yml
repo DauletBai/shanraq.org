@@ -7,6 +7,7 @@ on:
       - 'course/mathematics/**'
       - 'tools/course/prepare_mathematics.py'
       - 'tools/course/generate_math_maps.py'
+      - 'tools/course/generate_math_geometry.py'
       - 'tools/course/generate_math_localizations.py'
       - 'tools/course/generate_math_map_localizations.py'
       - 'tools/course/math_localization_data.py'
@@ -19,6 +20,7 @@ on:
       - 'course/mathematics/**'
       - 'tools/course/prepare_mathematics.py'
       - 'tools/course/generate_math_maps.py'
+      - 'tools/course/generate_math_geometry.py'
       - 'tools/course/generate_math_localizations.py'
       - 'tools/course/generate_math_map_localizations.py'
       - 'tools/course/math_localization_data.py'
@@ -32,7 +34,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Regenerate support maps
-        run: python3 tools/course/generate_math_maps.py
+        run: |
+          python3 tools/course/generate_math_maps.py
+          python3 tools/course/generate_math_geometry.py
       - name: Regenerate localized lessons and support maps
         run: |
           python3 tools/course/generate_math_localizations.py

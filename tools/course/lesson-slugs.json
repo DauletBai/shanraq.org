@@ -2782,5 +2782,113 @@
   "mathematics/32-algebra-mastery-en": [
     "math-32-algebra-mastery",
     "en"
+  ],
+  "mathematics/33-geometry-language": [
+    "math-33-geometry-language",
+    "ru"
+  ],
+  "mathematics/33-geometry-language-kz": [
+    "math-33-geometry-language",
+    "kz"
+  ],
+  "mathematics/33-geometry-language-en": [
+    "math-33-geometry-language",
+    "en"
+  ],
+  "mathematics/34-triangles-congruence": [
+    "math-34-triangles-congruence",
+    "ru"
+  ],
+  "mathematics/34-triangles-congruence-kz": [
+    "math-34-triangles-congruence",
+    "kz"
+  ],
+  "mathematics/34-triangles-congruence-en": [
+    "math-34-triangles-congruence",
+    "en"
+  ],
+  "mathematics/35-similarity-scale": [
+    "math-35-similarity-scale",
+    "ru"
+  ],
+  "mathematics/35-similarity-scale-kz": [
+    "math-35-similarity-scale",
+    "kz"
+  ],
+  "mathematics/35-similarity-scale-en": [
+    "math-35-similarity-scale",
+    "en"
+  ],
+  "mathematics/36-area-volume": [
+    "math-36-area-volume",
+    "ru"
+  ],
+  "mathematics/36-area-volume-kz": [
+    "math-36-area-volume",
+    "kz"
+  ],
+  "mathematics/36-area-volume-en": [
+    "math-36-area-volume",
+    "en"
+  ],
+  "mathematics/37-pythagoras": [
+    "math-37-pythagoras",
+    "ru"
+  ],
+  "mathematics/37-pythagoras-kz": [
+    "math-37-pythagoras",
+    "kz"
+  ],
+  "mathematics/37-pythagoras-en": [
+    "math-37-pythagoras",
+    "en"
+  ],
+  "mathematics/38-circles": [
+    "math-38-circles",
+    "ru"
+  ],
+  "mathematics/38-circles-kz": [
+    "math-38-circles",
+    "kz"
+  ],
+  "mathematics/38-circles-en": [
+    "math-38-circles",
+    "en"
+  ],
+  "mathematics/39-trigonometry": [
+    "math-39-trigonometry",
+    "ru"
+  ],
+  "mathematics/39-trigonometry-kz": [
+    "math-39-trigonometry",
+    "kz"
+  ],
+  "mathematics/39-trigonometry-en": [
+    "math-39-trigonometry",
+    "en"
+  ],
+  "mathematics/40-vectors-geometry": [
+    "math-40-vectors-geometry",
+    "ru"
+  ],
+  "mathematics/40-vectors-geometry-kz": [
+    "math-40-vectors-geometry",
+    "kz"
+  ],
+  "mathematics/40-vectors-geometry-en": [
+    "math-40-vectors-geometry",
+    "en"
+  ],
+  "mathematics/41-geometry-mastery": [
+    "math-41-geometry-mastery",
+    "ru"
+  ],
+  "mathematics/41-geometry-mastery-kz": [
+    "math-41-geometry-mastery",
+    "kz"
+  ],
+  "mathematics/41-geometry-mastery-en": [
+    "math-41-geometry-mastery",
+    "en"
   ]
 }

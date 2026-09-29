@@ -45,10 +45,19 @@ ROUTE = (
     ("30-exponential-log", "math-30-exponential-log", 210),
     ("31-sequences", "math-31-sequences", 220),
     ("32-algebra-mastery", "math-32-algebra-mastery", 230),
+    ("33-geometry-language", "math-33-geometry-language", 240),
+    ("34-triangles-congruence", "math-34-triangles-congruence", 250),
+    ("35-similarity-scale", "math-35-similarity-scale", 260),
+    ("36-area-volume", "math-36-area-volume", 270),
+    ("37-pythagoras", "math-37-pythagoras", 280),
+    ("38-circles", "math-38-circles", 290),
+    ("39-trigonometry", "math-39-trigonometry", 300),
+    ("40-vectors-geometry", "math-40-vectors-geometry", 310),
+    ("41-geometry-mastery", "math-41-geometry-mastery", 320),
 )
 STEMS = tuple(item[0] for item in ROUTE)
 SLUGS = tuple(item[1] for item in ROUTE)
-MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery", "32-algebra-mastery")
+MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery", "32-algebra-mastery", "41-geometry-mastery")
 TEACHING_STEMS = tuple(
     stem for stem in STEMS if stem != "preface" and stem not in MASTERY_STEMS
 )
@@ -56,15 +65,15 @@ COVER = "/static/covers/school/mathematics/mathematics-foundations.webp"
 META = {
     "ru": (
         "Математика: от фундамента к высшей математике",
-        "Бесплатный курс по карте зависимостей, а не по классам. 32 занятия ведут от чисел и дробей через предалгебру к функциям, системам, многочленам, параболам и показательному росту; каждый блок завершается проверкой переноса.",
+        "Бесплатный курс по карте зависимостей, а не по классам. 41 занятие ведёт от чисел и дробей через алгебру к доказательствам, подобию, площадям, окружностям, тригонометрии и векторам; каждый блок завершается проверкой переноса.",
     ),
     "kz": (
         "Математика: іргетастан жоғары математикаға дейін",
-        "Сыныптарға емес, ұғымдардың тәуелділік картасына құрылған тегін курс. 32 сабақ сандар мен бөлшектерден бастап, алгебра алдындағы ұғымдар, функциялар, жүйелер, көпмүшелер, параболалар және көрсеткіштік өсуге дейін жетелейді.",
+        "Сыныптарға емес, ұғымдар тәуелділігіне құрылған тегін курс. 41 сабақ сандар мен бөлшектерден алгебра, дәлелдеу, ұқсастық, аудан, шеңбер, тригонометрия және векторларға дейін жетелейді.",
     ),
     "en": (
         "Mathematics: from foundations to higher mathematics",
-        "A free course organized by idea dependencies rather than grade levels. Its 32 lessons lead from numbers and fractions through prealgebra to functions, systems, polynomials, parabolas, and exponential growth.",
+        "A free course organized by idea dependencies rather than grade levels. Its 41 lessons lead from numbers and fractions through algebra to proof, similarity, area, circles, trigonometry, and vectors.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -89,8 +98,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 33 or len(STEMS) != len(SLUGS):
-        raise ValueError("expected one preface and thirty-two lessons")
+    if len(ROUTE) != 42 or len(STEMS) != len(SLUGS):
+        raise ValueError("expected one preface and forty-one lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-mathematics-course'));" ]
     slugs = ",".join(literal(s) for s in SLUGS)
     sql.append(f"""DO $guard$
