@@ -2962,5 +2962,53 @@
   "mathematics/47-calculus-mastery-en": [
     "math-47-calculus-mastery",
     "en"
+  ],
+  "mathematics/48-matrices": [
+    "math-48-matrices",
+    "ru"
+  ],
+  "mathematics/48-matrices-en": [
+    "math-48-matrices",
+    "en"
+  ],
+  "mathematics/48-matrices-kz": [
+    "math-48-matrices",
+    "kz"
+  ],
+  "mathematics/49-linear-spaces": [
+    "math-49-linear-spaces",
+    "ru"
+  ],
+  "mathematics/49-linear-spaces-en": [
+    "math-49-linear-spaces",
+    "en"
+  ],
+  "mathematics/49-linear-spaces-kz": [
+    "math-49-linear-spaces",
+    "kz"
+  ],
+  "mathematics/50-eigen": [
+    "math-50-eigen",
+    "ru"
+  ],
+  "mathematics/50-eigen-en": [
+    "math-50-eigen",
+    "en"
+  ],
+  "mathematics/50-eigen-kz": [
+    "math-50-eigen",
+    "kz"
+  ],
+  "mathematics/51-linear-mastery": [
+    "math-51-linear-mastery",
+    "ru"
+  ],
+  "mathematics/51-linear-mastery-en": [
+    "math-51-linear-mastery",
+    "en"
+  ],
+  "mathematics/51-linear-mastery-kz": [
+    "math-51-linear-mastery",
+    "kz"
   ]
 }

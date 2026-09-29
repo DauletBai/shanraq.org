@@ -46,8 +46,8 @@ class MathematicsReleaseTests(unittest.TestCase):
         sql, expected = prepare_mathematics.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.endswith("COMMIT;\n"))
-        self.assertEqual(len(expected), 144)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 48)
+        self.assertEqual(len(expected), 156)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 52)
         self.assertIn("'society','education'", sql)
         self.assertIn("'published','math'", sql)
         self.assertNotIn("DELETE FROM", sql)
@@ -271,6 +271,22 @@ class MathematicsReleaseTests(unittest.TestCase):
         self.assertEqual(calculus_mastery.count('class="calculus-skill"'), 5)
         self.assertIn("8/10", calculus_mastery)
         self.assertIn("7/10", calculus_mastery)
+
+        linear = (
+            ("48-matrices.md", "map-48-matrices.svg", "Ax=(10,10)", 'data-matrix="[[2,1],[1,3]]*(4,2)=(10,10)"'),
+            ("49-linear-spaces.md", "map-49-linear-spaces.svg", "v=4b₁+2b₂", 'data-basis="v=(6,2)=4(1,1)+2(1,-1)"'),
+            ("50-eigen.md", "map-50-eigen.svg", "Av=λv", 'data-eigen="A=[[2,1],[1,2]];lambda1=3;v1=(1,1);lambda2=1;v2=(1,-1)"'),
+        )
+        for lesson_name, map_name, example, marker in linear:
+            lesson = (lessons / lesson_name).read_text(encoding="utf-8")
+            illustration = (maps / map_name).read_text(encoding="utf-8")
+            self.assertIn(example, lesson, lesson_name)
+            self.assertIn(marker, illustration, map_name)
+
+        linear_mastery = (maps / "map-51-linear-mastery.svg").read_text(encoding="utf-8")
+        self.assertEqual(linear_mastery.count('class="linear-skill"'), 3)
+        self.assertIn("8/10", linear_mastery)
+        self.assertIn("7/10", linear_mastery)
 
         sql, _ = prepare_mathematics.prepare()
         for cover in prepare_mathematics.LESSON_COVERS.values():

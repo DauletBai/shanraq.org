@@ -60,10 +60,14 @@ ROUTE = (
     ("45-integral", "math-45-integral", 360),
     ("46-differential-equations", "math-46-differential-equations", 370),
     ("47-calculus-mastery", "math-47-calculus-mastery", 380),
+    ("48-matrices", "math-48-matrices", 390),
+    ("49-linear-spaces", "math-49-linear-spaces", 400),
+    ("50-eigen", "math-50-eigen", 410),
+    ("51-linear-mastery", "math-51-linear-mastery", 420),
 )
 STEMS = tuple(item[0] for item in ROUTE)
 SLUGS = tuple(item[1] for item in ROUTE)
-MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery", "32-algebra-mastery", "41-geometry-mastery", "47-calculus-mastery")
+MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery", "32-algebra-mastery", "41-geometry-mastery", "47-calculus-mastery", "51-linear-mastery")
 TEACHING_STEMS = tuple(
     stem for stem in STEMS if stem != "preface" and stem not in MASTERY_STEMS
 )
@@ -75,19 +79,23 @@ LESSON_COVERS = {
     "45-integral": "/static/covers/school/mathematics/calculus/45-integral.webp",
     "46-differential-equations": "/static/covers/school/mathematics/calculus/46-differential-equations.webp",
     "47-calculus-mastery": "/static/covers/school/mathematics/calculus/47-calculus-mastery.webp",
+    "48-matrices": "/static/covers/school/mathematics/linear-algebra/48-matrices.webp",
+    "49-linear-spaces": "/static/covers/school/mathematics/linear-algebra/49-basis.webp",
+    "50-eigen": "/static/covers/school/mathematics/linear-algebra/50-eigenvectors.webp",
+    "51-linear-mastery": "/static/covers/school/mathematics/linear-algebra/51-linear-algebra-mastery.webp",
 }
 META = {
     "ru": (
         "Математика: от фундамента к высшей математике",
-        "Бесплатный курс по карте зависимостей, а не по классам. 47 занятий ведут от чисел и дробей через алгебру и геометрию к пределам, производным, интегралам и моделям изменения; каждый блок завершается проверкой переноса.",
+        "Бесплатный курс по карте зависимостей, а не по классам. 51 занятие ведёт от чисел и дробей через алгебру и геометрию к анализу, матрицам, базисам и собственным направлениям; каждый блок завершается проверкой переноса.",
     ),
     "kz": (
         "Математика: іргетастан жоғары математикаға дейін",
-        "Сыныптарға емес, ұғымдар тәуелділігіне құрылған тегін курс. 47 сабақ сандар мен бөлшектерден алгебра және геометрия арқылы шек, туынды, интеграл және өзгеріс модельдеріне дейін жетелейді.",
+        "Сыныптарға емес, ұғымдар тәуелділігіне құрылған тегін курс. 51 сабақ сандар мен бөлшектерден алгебра, геометрия және анализ арқылы матрицаларға, базистер мен меншікті бағыттарға дейін жетелейді.",
     ),
     "en": (
         "Mathematics: from foundations to higher mathematics",
-        "A free course organized by idea dependencies rather than grade levels. Its 47 lessons lead from numbers and fractions through algebra and geometry to limits, derivatives, integrals, and models of change.",
+        "A free course organized by idea dependencies rather than grade levels. Its 51 lessons lead from numbers and fractions through algebra, geometry, and calculus to matrices, bases, and eigenvector directions.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -112,8 +120,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 48 or len(STEMS) != len(SLUGS):
-        raise ValueError("expected one preface and forty-seven lessons")
+    if len(ROUTE) != 52 or len(STEMS) != len(SLUGS):
+        raise ValueError("expected one preface and fifty-one lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-mathematics-course'));" ]
     slugs = ",".join(literal(s) for s in SLUGS)
     sql.append(f"""DO $guard$
