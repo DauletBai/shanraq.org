@@ -186,7 +186,7 @@ def main():
     save("map-14-order-estimation.svg", "Дерево выражения и оценка", "В выражении двести сорок минус шесть умножить на сумму восемнадцати и семи сначала получают двадцать пять, затем сто пятьдесят и итог девяносто.", '''
 <g data-expression="240-6*(18+7)=90" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
  <g stroke="#365675" stroke-width="7" fill="none"><path d="M600 135L380 270M600 135L820 270M820 270L710 410M820 270L930 410"/></g>
- <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="485" y="65" width="230" height="105" rx="24"/><rect x="265" y="220" width="230" height="105" rx="24"/><rect x="705" y="220" width="230" height="105" rx="24"/><rect x="610" y="380" width="200" height="105" rx="24"/><rect x="840" y="380" width="180" height="105" rx="24"/></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="430" y="65" width="340" height="105" rx="24"/><rect x="265" y="220" width="230" height="105" rx="24"/><rect x="705" y="220" width="230" height="105" rx="24"/><rect x="610" y="380" width="200" height="105" rx="24"/><rect x="840" y="380" width="180" height="105" rx="24"/></g>
  <g font-size="34" font-weight="820"><text x="600" y="130">240 − 150 = 90</text><text x="380" y="285">240</text><text x="820" y="285">6 × 25 = 150</text><text x="710" y="445">6</text></g><text x="930" y="445" font-size="29" font-weight="820">18 + 7 = 25</text>
  <g filter="url(#s)"><rect x="105" y="500" width="990" height="85" rx="22" fill="url(#gold)" stroke="#365675" stroke-width="4"/></g>
  <text x="600" y="555" font-size="31" font-weight="800">оценка: 240 − примерно 150 ≈ 90</text>
@@ -215,10 +215,10 @@ def main():
 ''')
     save("map-17-decimal-fractions.svg", "Три восьмых как десятичная дробь", "Умножение числителя и знаменателя на сто двадцать пять превращает три восьмых в триста семьдесят пять тысячных и запись ноль целых триста семьдесят пять тысячных.", '''
 <g data-decimal="3/8=375/1000=0.375" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
- <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="55" y="90" width="300" height="180" rx="28"/><rect x="450" y="90" width="300" height="180" rx="28"/><rect x="845" y="90" width="300" height="180" rx="28"/></g>
- <g font-size="55" font-weight="850"><text x="205" y="190">3/8</text><text x="600" y="190">375/1000</text><text x="995" y="190">0,375</text></g>
- <g fill="none" stroke="#b80f18" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M370 180H425l-18-16m18 16l-18 16"/><path d="M765 180H820l-18-16m18 16l-18 16"/></g>
- <text x="400" y="135" font-size="22" font-weight="750">×125</text><text x="795" y="135" font-size="22" font-weight="750">тысячные</text>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="30" y="90" width="270" height="180" rx="28"/><rect x="455" y="90" width="290" height="180" rx="28"/><rect x="900" y="90" width="270" height="180" rx="28"/></g>
+ <g font-size="52" font-weight="850"><text x="165" y="190">3/8</text><text x="1035" y="190">0,375</text></g><text x="600" y="190" font-size="48" font-weight="850">375/1000</text>
+ <g fill="none" stroke="#b80f18" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M320 180H435l-18-16m18 16l-18 16"/><path d="M765 180H880l-18-16m18 16l-18 16"/></g>
+ <g filter="url(#s)" fill="#fff" stroke="#365675" stroke-width="3"><rect x="335" y="105" width="86" height="40" rx="18"/><rect x="767" y="105" width="112" height="40" rx="18"/></g><g font-size="18" font-weight="800"><text x="378" y="132">×125</text><text x="823" y="132">тысячные</text></g>
  <defs><clipPath id="decimal-bar-clip"><rect width="960" height="92" rx="18"/></clipPath></defs><g transform="translate(120 365)" filter="url(#s)" stroke="#365675" stroke-width="4"><g clip-path="url(#decimal-bar-clip)"><rect width="960" height="92" fill="#fff"/><rect width="360" height="92" fill="url(#red)"/></g><rect width="960" height="92" rx="18" fill="none"/><path d="M120 0v92M240 0v92M360 0v92M480 0v92M600 0v92M720 0v92M840 0v92"/></g>
  <g font-size="24" font-weight="750"><text x="120" y="500">0</text><text x="480" y="500">3/8</text><text x="1080" y="500">1</text></g>
  <text x="600" y="575" font-size="31" font-weight="800">0 единиц | 3 десятых | 7 сотых | 5 тысячных</text>

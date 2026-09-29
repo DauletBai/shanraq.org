@@ -9,7 +9,7 @@
 </defs><rect width="1200" height="630" rx="34" fill="url(#bg)"/>
 <g data-expression="240-6*(18+7)=90" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
  <g stroke="#365675" stroke-width="7" fill="none"><path d="M600 135L380 270M600 135L820 270M820 270L710 410M820 270L930 410"/></g>
- <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="485" y="65" width="230" height="105" rx="24"/><rect x="265" y="220" width="230" height="105" rx="24"/><rect x="705" y="220" width="230" height="105" rx="24"/><rect x="610" y="380" width="200" height="105" rx="24"/><rect x="840" y="380" width="180" height="105" rx="24"/></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="430" y="65" width="340" height="105" rx="24"/><rect x="265" y="220" width="230" height="105" rx="24"/><rect x="705" y="220" width="230" height="105" rx="24"/><rect x="610" y="380" width="200" height="105" rx="24"/><rect x="840" y="380" width="180" height="105" rx="24"/></g>
  <g font-size="34" font-weight="820"><text x="600" y="130">240 − 150 = 90</text><text x="380" y="285">240</text><text x="820" y="285">6 × 25 = 150</text><text x="710" y="445">6</text></g><text x="930" y="445" font-size="29" font-weight="820">18 + 7 = 25</text>
  <g filter="url(#s)"><rect x="105" y="500" width="990" height="85" rx="22" fill="url(#gold)" stroke="#365675" stroke-width="4"/></g>
  <text x="600" y="555" font-size="31" font-weight="800">оценка: 240 − примерно 150 ≈ 90</text>
