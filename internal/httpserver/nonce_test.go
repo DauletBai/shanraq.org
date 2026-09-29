@@ -80,6 +80,9 @@ func TestScriptsAreNonceOnlyAndStylesAreNot(t *testing.T) {
 	if !slices.Contains(strings.Fields(script), "'wasm-unsafe-eval'") {
 		t.Errorf("script-src blocks the on-device SQLite engine: %q", script)
 	}
+	if strings.Contains(script, "zero.kz") {
+		t.Errorf("script-src grants ZERO.kz permission on pages without the nonced counter: %q", script)
+	}
 	// Two hundred style attributes carry chart geometry, and a nonce does not
 	// cover an attribute. Dropping this needs those moved, not a header edit.
 	if !strings.Contains(directive(csp, "style-src"), "unsafe-inline") {

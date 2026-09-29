@@ -35,28 +35,48 @@ func (m *Module) base(r *http.Request, title, lang string) Base {
 	}
 	subMsg, subBad := subscribeFeedback(r, lang)
 	return Base{
-		Title:     title,
-		Nonce:     httpserver.NonceFromContext(r.Context()),
-		Lang:      lang,
-		SubMsg:    subMsg,
-		SubBad:    subBad,
-		Authed:    authed,
-		IsStaff:   authed && claims.HasAnyRole(adminRoles...),
-		CanAuthor: canAuthorAsStaff(claims),
-		Avatar:    avatar,
-		ShowLangs: true,
-		LangLinks: site.LangLinks(r.URL.Path, seoFilterQuery(r)),
-		SiteURL:   origin,
-		Path:      r.URL.Path,
-		CanonURL:  site.CanonURL(r.URL.Path, seoFilterQuery(r), lang),
-		Desc:      site.T(lang, "seo.site_desc"),
-		OGImage:   origin + "/static/brand/og-cover.png",
-		OGType:    "website",
-		Info:      m.readerInfoBar(r, lang),
-		Ads:       m.sidebarAds(r, lang),
-		Svc:       m.serviceViews(r, lang),
-		SiteLD:    siteLD(httpserver.NonceFromContext(r.Context()), origin, lang),
+		Title:         title,
+		Nonce:         httpserver.NonceFromContext(r.Context()),
+		Lang:          lang,
+		SubMsg:        subMsg,
+		SubBad:        subBad,
+		Authed:        authed,
+		IsStaff:       authed && claims.HasAnyRole(adminRoles...),
+		CanAuthor:     canAuthorAsStaff(claims),
+		Avatar:        avatar,
+		ShowLangs:     true,
+		LangLinks:     site.LangLinks(r.URL.Path, seoFilterQuery(r)),
+		SiteURL:       origin,
+		Path:          r.URL.Path,
+		CanonURL:      site.CanonURL(r.URL.Path, seoFilterQuery(r), lang),
+		Desc:          site.T(lang, "seo.site_desc"),
+		OGImage:       origin + "/static/brand/og-cover.png",
+		OGType:        "website",
+		ZeroAnalytics: zeroAnalyticsPath(r.URL.Path),
+		Info:          m.readerInfoBar(r, lang),
+		Ads:           m.sidebarAds(r, lang),
+		Svc:           m.serviceViews(r, lang),
+		SiteLD:        siteLD(httpserver.NonceFromContext(r.Context()), origin, lang),
 	}
+}
+
+// zeroAnalyticsPath keeps the independent traffic counter on pages a reader
+// comes to consume. ZERO's official script sends the complete document URL,
+// so it must stay off account, administration, editing and correction forms.
+func zeroAnalyticsPath(path string) bool {
+	for _, prefix := range []string{"/admin", "/studio", "/auth"} {
+		if path == prefix || strings.HasPrefix(path, prefix+"/") {
+			return false
+		}
+	}
+	switch path {
+	case "/agent", "/advertise", "/favorites", "/listings/new", "/listings/my":
+		return false
+	}
+	if strings.HasPrefix(path, "/listings/") && strings.HasSuffix(path, "/edit") {
+		return false
+	}
+	return !(strings.HasPrefix(path, "/read/") && strings.HasSuffix(path, "/typo"))
 }
 
 // readerInfoBar builds the top strip for this reader.

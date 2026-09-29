@@ -105,31 +105,49 @@ func TestNewsSitemapCarriesEveryFinishedLanguage(t *testing.T) {
 	}
 }
 
-// The ZERO.kz counter has to be requested when the page opens, not when it is
-// scrolled to the footer.
-//
-// It stands at the bottom, and with loading="lazy" the browser fetched the image
-// only for those who read to the end: a measurement on 22.08.2026 showed that
-// opening the front page requests nothing while scrolling to the footer does. The
-// counter was then counting finishers rather than visits, and the figure we would
-// have shown an advertiser would have been a small fraction of the truth.
-func TestTheVisitorCounterIsFetchedOnOpeningNotOnScrolling(t *testing.T) {
+// ZERO.kz needs its official script to distinguish pages, visitors and
+// sessions. The fallback image alone reduced every URL to the site origin.
+func TestTheOfficialVisitorCounterRunsOnPublicPages(t *testing.T) {
 	app := newTestApp(t)
 	defer app.cleanup()
 
 	body := app.do(http.MethodGet, "/", nil).Body.String()
-	i := strings.Index(body, "c.zero.kz")
-	if i < 0 {
-		t.Fatal("счётчика нет на странице")
+	for _, want := range []string{
+		`window._zero_kz_ = window._zero_kz_ || [];`,
+		`window._zero_kz_.push(["id", 75643]);`,
+		`window._zero_kz_.push(["type", 1]);`,
+		`counter.nonce = "`,
+		`counter.src = "https://c.zero.kz/z.js";`,
+		`id="_zero_75643"`,
+	} {
+		if !strings.Contains(body, want) {
+			t.Errorf("в публичной странице нет части официального счётчика %q", want)
+		}
 	}
-	start := strings.LastIndex(body[:i], "<img")
-	tag := body[start : start+strings.Index(body[start:], ">")+1]
-	if strings.Contains(tag, "loading=\"lazy\"") {
-		t.Errorf("счётчик отложен до прокрутки: %s", tag)
+	if !strings.Contains(body, `nonce="`) {
+		t.Error("инициализатор ZERO.kz не получил nonce CSP")
 	}
-	// decoding="async" stays: it defers turning bytes into pixels, not the request
-	// itself.
-	if !strings.Contains(tag, "decoding=\"async\"") {
-		t.Errorf("у счётчика пропала асинхронная декодировка: %s", tag)
+	if strings.Contains(body, `<img src="https://c.zero.kz/z.png?u=75643"`) && !strings.Contains(body, "<noscript>") {
+		t.Error("резервный пиксель работает вместе со скриптом и удваивает просмотры")
+	}
+}
+
+func TestZEROAnalyticsStaysOffSensitivePages(t *testing.T) {
+	for _, path := range []string{
+		"/admin", "/admin/pages/privacy", "/studio/login", "/studio/a/draft",
+		"/auth/password/confirm", "/agent", "/advertise", "/favorites",
+		"/listings/new", "/listings/my", "/listings/123/edit", "/read/story/typo",
+	} {
+		if zeroAnalyticsPath(path) {
+			t.Errorf("ZERO.kz включён на служебной странице %s", path)
+		}
+	}
+	for _, path := range []string{
+		"/", "/read/story", "/course/mathematics", "/shop/go-book",
+		"/listings", "/listings/123", "/agent/123", "/privacy",
+	} {
+		if !zeroAnalyticsPath(path) {
+			t.Errorf("ZERO.kz выключен на публичной странице %s", path)
+		}
 	}
 }

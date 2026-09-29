@@ -41,6 +41,11 @@ type Base struct {
 	// page of the site, including the home feed, which has no map.
 	NeedsMap bool
 
+	// ZeroAnalytics enables ZERO.kz's official counter on public reader pages.
+	// Account, administration and editing pages leave it false because the
+	// counter sends the full page URL to a third party.
+	ZeroAnalytics bool
+
 	// Newsletter form feedback, set from ?subscribed= after the POST redirect.
 	// It lives on Base rather than one page's context because the form sits in
 	// the follow card, which the home sidebar and every article aside share.

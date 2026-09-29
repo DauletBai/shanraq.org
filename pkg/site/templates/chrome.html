@@ -441,35 +441,29 @@
 
     <div class="foot-bottom">
       <p class="foot-copy">© {{ year }} <a href="/">Shanraq.org</a> · {{ t .Lang "footer.rights" }}</p>
-      {{/* An independent count of this site's traffic.
-
-           We sell advertising, and until now the only figure an advertiser
-           could be shown was the one we produce ourselves — a number made by
-           the party it flatters and checked by nobody, which is precisely the
-           arrangement this site published an article about. This one is
-           counted by somebody else.
-
-           The pixel, not the script ZERO.kz hands out. Their code loads
-           JavaScript from c.zero.kz, which our Content-Security-Policy
-           forbids: script-src is 'self', and widening it would let another
-           company run code on every page we serve. The image is already
-           allowed by img-src and counts the same page views without granting
-           anybody anything.
-
-           Not lazy, and this is the whole point of it. Every other image here
-           waits for the reader to scroll near it, which for something sitting
-           in the footer means it is fetched only by people who read to the
-           bottom. Measured: opening the home page requested nothing; scrolling
-           to the footer requested the pixel. A counter that fires on the last
-           screen counts readers who finished, not visits — and the figure we
-           would be showing an advertiser would be a small fraction of the
-           truth. decoding stays async: that defers turning the bytes into
-           pixels, not asking for them. */}}
+      {{/* ZERO.kz independently counts public reader pages. Its official
+           script supplies the page, session and device fields that the old
+           fallback pixel could not. Base deliberately disables this block on
+           account, administration, editing and correction pages because the
+           counter receives the full document URL. */}}
+      {{ if .ZeroAnalytics }}
       <p class="foot-counter">
-        <a href="https://zero.kz/?s=75643" target="_blank" rel="noopener nofollow" aria-label="ZERO.kz">
-          <img src="https://c.zero.kz/z.png?u=75643" width="88" height="31" alt="ZERO.kz" decoding="async">
-        </a>
+        <span id="_zero_75643"><noscript><a href="https://zero.kz/?s=75643" target="_blank" rel="noopener nofollow" aria-label="ZERO.kz"><img src="https://c.zero.kz/z.png?u=75643" width="88" height="31" alt="ZERO.kz" decoding="async"></a></noscript></span>
       </p>
+      <script nonce="{{ .Nonce }}">
+      window._zero_kz_ = window._zero_kz_ || [];
+      window._zero_kz_.push(["id", 75643]);
+      window._zero_kz_.push(["type", 1]);
+      (function () {
+        var first = document.getElementsByTagName("script")[0];
+        var counter = document.createElement("script");
+        counter.async = true;
+        counter.nonce = "{{ .Nonce }}";
+        counter.src = "https://c.zero.kz/z.js";
+        first.parentNode.insertBefore(counter, first);
+      }());
+      </script>
+      {{ end }}
     </div>
   </div>
 </footer>
