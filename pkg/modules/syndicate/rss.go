@@ -117,6 +117,9 @@ func (m *Module) fetchFeed(ctx context.Context, lang string, limit int) ([]feedE
 		LEFT JOIN article_translations tl
 		     ON tl.article_id = a.id AND tl.lang = $1 AND tl.title <> '' AND tl.body_md <> ''
 		WHERE a.status = 'published' AND a.geo_node_id IS NULL
+		  AND NOT EXISTS (
+		      SELECT 1 FROM article_series_items si WHERE si.article_id = a.id
+		  )
 		ORDER BY a.published_at DESC NULLS LAST
 		LIMIT $2
 	`, lang, limit)

@@ -273,14 +273,32 @@ func TestFetchFeedIntegration(t *testing.T) {
 
 	authorID := uuid.New()
 	articleID := uuid.New()
+	lessonID := uuid.New()
+	seriesID := uuid.New()
 	slug := "rss-itest-" + articleID.String()[:8]
+	lessonSlug := "rss-course-itest-" + lessonID.String()[:8]
 	_, _ = pool.Exec(ctx, `INSERT INTO auth_users (id, email, password_hash, role) VALUES ($1,$2,'x','user')`, authorID, "rss-"+authorID.String()+"@t.test")
-	t.Cleanup(func() { _, _ = pool.Exec(ctx, `DELETE FROM auth_users WHERE id=$1`, authorID) })
+	t.Cleanup(func() {
+		_, _ = pool.Exec(ctx, `DELETE FROM article_series WHERE id=$1`, seriesID)
+		_, _ = pool.Exec(ctx, `DELETE FROM auth_users WHERE id=$1`, authorID)
+	})
 	if _, err := pool.Exec(ctx, `INSERT INTO articles (id, author_id, slug, original_lang, status, published_at) VALUES ($1,$2,$3,'ru','published',NOW())`, articleID, authorID, slug); err != nil {
 		t.Fatalf("insert article: %v", err)
 	}
 	if _, err := pool.Exec(ctx, `INSERT INTO article_translations (article_id, lang, title, summary, body_md, source, status) VALUES ($1,'ru','РСС Тест','Аннотация','Тело','human','ready')`, articleID); err != nil {
 		t.Fatalf("insert translation: %v", err)
+	}
+	if _, err := pool.Exec(ctx, `INSERT INTO articles (id, author_id, slug, original_lang, status, published_at) VALUES ($1,$2,$3,'ru','published',NOW() + INTERVAL '1 second')`, lessonID, authorID, lessonSlug); err != nil {
+		t.Fatalf("insert course lesson: %v", err)
+	}
+	if _, err := pool.Exec(ctx, `INSERT INTO article_translations (article_id, lang, title, summary, body_md, source, status) VALUES ($1,'ru','Урок','Не новость','Тело','human','ready')`, lessonID); err != nil {
+		t.Fatalf("insert course translation: %v", err)
+	}
+	if _, err := pool.Exec(ctx, `INSERT INTO article_series (id, slug, status) VALUES ($1,$2,'published')`, seriesID, "rss-series-"+seriesID.String()[:8]); err != nil {
+		t.Fatalf("insert course series: %v", err)
+	}
+	if _, err := pool.Exec(ctx, `INSERT INTO article_series_items (series_id, article_id, position) VALUES ($1,$2,1)`, seriesID, lessonID); err != nil {
+		t.Fatalf("insert course membership: %v", err)
 	}
 
 	m := &Module{db: pool, baseURL: "https://shanraq.org", log: zap.NewNop()}
@@ -290,6 +308,9 @@ func TestFetchFeedIntegration(t *testing.T) {
 	}
 	var found bool
 	for _, e := range entries {
+		if e.Slug == lessonSlug {
+			t.Fatalf("course lesson %s leaked into RSS", lessonSlug)
+		}
 		if e.Slug == slug {
 			found = true
 			if e.Title != "РСС Тест" {
