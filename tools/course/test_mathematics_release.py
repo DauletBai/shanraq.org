@@ -46,8 +46,8 @@ class MathematicsReleaseTests(unittest.TestCase):
         sql, expected = prepare_mathematics.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.endswith("COMMIT;\n"))
-        self.assertEqual(len(expected), 25)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 25)
+        self.assertEqual(len(expected), 33)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 33)
         self.assertIn("'society','education'", sql)
         self.assertIn("'published','math'", sql)
         self.assertNotIn("DELETE FROM", sql)
@@ -191,6 +191,26 @@ class MathematicsReleaseTests(unittest.TestCase):
         self.assertEqual(prealgebra_mastery.count('class="prealgebra-skill"'), 5)
         self.assertIn("8/10", prealgebra_mastery)
         self.assertIn("7/10", prealgebra_mastery)
+
+        algebra = (
+            ("25-linear-functions.md", "map-25-linear-functions.svg", "y = 2x + 1", 'data-linear="y=2x+1;(-1,-1);(0,1);(2,5)"'),
+            ("26-systems.md", "map-26-systems.svg", "x + y = 10", 'data-system="x+y=10;2x+y=16;(6,4)"'),
+            ("27-powers-roots.md", "map-27-powers-roots.svg", "2³ × 2⁴", 'data-powers="2^3*2^4=2^7=128;sqrt(144)=12"'),
+            ("28-polynomials.md", "map-28-polynomials.svg", "(2x + 3)(x − 4)", 'data-polynomial="(2x+3)(x-4)=2x^2-5x-12"'),
+            ("29-quadratics.md", "map-29-quadratics.svg", "x² − 4x + 3", 'data-quadratic="x^2-4x+3=(x-1)(x-3)=(x-2)^2-1"'),
+            ("30-exponential-log.md", "map-30-exponential-log.svg", "N = 500 × 2ᵗ", 'data-exponential="N=500*2^t;log_2(8)=3"'),
+            ("31-sequences.md", "map-31-sequences.svg", "5, 8, 11, 14", 'data-sequences="5,8,11,14;d=3|2,6,18,54;q=3"'),
+        )
+        for lesson_name, map_name, example, marker in algebra:
+            lesson = (lessons / lesson_name).read_text(encoding="utf-8")
+            illustration = (maps / map_name).read_text(encoding="utf-8")
+            self.assertIn(example, lesson, lesson_name)
+            self.assertIn(marker, illustration, map_name)
+
+        algebra_mastery = (maps / "map-32-algebra-mastery.svg").read_text(encoding="utf-8")
+        self.assertEqual(algebra_mastery.count('class="algebra-skill"'), 7)
+        self.assertIn("8/10", algebra_mastery)
+        self.assertIn("7/10", algebra_mastery)
 
     def test_claims_do_not_turn_targets_into_results(self):
         preface = (prepare_mathematics.LESSONS / "preface.md").read_text(encoding="utf-8")

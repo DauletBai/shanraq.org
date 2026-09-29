@@ -2486,5 +2486,37 @@
   "mathematics/24-prealgebra-mastery": [
     "math-24-prealgebra-mastery",
     "ru"
+  ],
+  "mathematics/25-linear-functions": [
+    "math-25-linear-functions",
+    "ru"
+  ],
+  "mathematics/26-systems": [
+    "math-26-systems",
+    "ru"
+  ],
+  "mathematics/27-powers-roots": [
+    "math-27-powers-roots",
+    "ru"
+  ],
+  "mathematics/28-polynomials": [
+    "math-28-polynomials",
+    "ru"
+  ],
+  "mathematics/29-quadratics": [
+    "math-29-quadratics",
+    "ru"
+  ],
+  "mathematics/30-exponential-log": [
+    "math-30-exponential-log",
+    "ru"
+  ],
+  "mathematics/31-sequences": [
+    "math-31-sequences",
+    "ru"
+  ],
+  "mathematics/32-algebra-mastery": [
+    "math-32-algebra-mastery",
+    "ru"
   ]
 }

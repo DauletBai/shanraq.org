@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Два условия имеют одну общую пару</title><desc id="desc">Система икс плюс игрек равно десяти и два икс плюс игрек равно шестнадцати после вычитания дает икс шесть и игрек четыре.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff"/><stop offset="1" stop-color="#fff7e5"/></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a"/><stop offset="1" stop-color="#b80f18"/></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2"/><stop offset="1" stop-color="#2369b3"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a"/><stop offset="1" stop-color="#e39a16"/></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22"/></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)"/>
+<g data-system="x+y=10;2x+y=16;(6,4)" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="55" y="75" width="430" height="120" rx="26"/><rect x="715" y="75" width="430" height="120" rx="26"/><rect x="385" y="430" width="430" height="120" rx="26"/></g>
+ <g font-size="38" font-weight="850"><text x="270" y="145">x + y = 10</text><text x="930" y="145">2x + y = 16</text><text x="600" y="500">(x; y) = (6; 4)</text></g>
+ <path d="M270 220L515 405M930 220L685 405" fill="none" stroke="#d7b06a" stroke-width="16" stroke-linecap="round"/>
+ <g filter="url(#s)"><circle cx="600" cy="315" r="105" fill="url(#blue)" stroke="#fff" stroke-width="6"/></g><text x="600" y="302" font-size="25" font-weight="760" fill="#fff">вычитаем</text><text x="600" y="345" font-size="34" font-weight="860" fill="#fff">x = 6</text>
+ <g font-size="21" font-weight="720" fill="#5b6b79"><text x="270" y="180">количество</text><text x="930" y="180">стоимость в сотнях</text><text x="600" y="535">проверка в обоих уравнениях</text></g>
+</g>
+</svg>

@@ -37,10 +37,18 @@ ROUTE = (
     ("22-coordinates", "math-22-coordinates", 130),
     ("23-inequalities", "math-23-inequalities", 140),
     ("24-prealgebra-mastery", "math-24-prealgebra-mastery", 150),
+    ("25-linear-functions", "math-25-linear-functions", 160),
+    ("26-systems", "math-26-systems", 170),
+    ("27-powers-roots", "math-27-powers-roots", 180),
+    ("28-polynomials", "math-28-polynomials", 190),
+    ("29-quadratics", "math-29-quadratics", 200),
+    ("30-exponential-log", "math-30-exponential-log", 210),
+    ("31-sequences", "math-31-sequences", 220),
+    ("32-algebra-mastery", "math-32-algebra-mastery", 230),
 )
 STEMS = tuple(item[0] for item in ROUTE)
 SLUGS = tuple(item[1] for item in ROUTE)
-MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery")
+MASTERY_STEMS = ("18-foundations-mastery", "09-mastery", "24-prealgebra-mastery", "32-algebra-mastery")
 TEACHING_STEMS = tuple(
     stem for stem in STEMS if stem != "preface" and stem not in MASTERY_STEMS
 )
@@ -48,15 +56,15 @@ COVER = "/static/covers/school/mathematics/mathematics-foundations.webp"
 META = {
     "ru": (
         "Математика: от фундамента к высшей математике",
-        "Бесплатный курс по карте зависимостей, а не по классам. 24 занятия восстанавливают числа и действия, связывают дроби и проценты, затем вводят переменные, уравнения, координаты и неравенства; каждый блок завершается проверкой переноса.",
+        "Бесплатный курс по карте зависимостей, а не по классам. 32 занятия ведут от чисел и дробей через предалгебру к функциям, системам, многочленам, параболам и показательному росту; каждый блок завершается проверкой переноса.",
     ),
     "kz": (
         "Математика: іргетастан жоғары математикаға дейін",
-        "Сыныптармен емес, ұғымдар тәуелділігінің картасымен құрылған тегін курс. 24 сабақтан тұратын бағыт қазір орыс тілінде ашық; қазақша нұсқа редакциялық тексеруден кейін қосылады.",
+        "Сыныптарға емес, ұғымдардың тәуелділік картасына құрылған тегін курс. 32 сабақ сандар мен бөлшектерден бастап, алгебра алдындағы ұғымдар, функциялар, жүйелер, көпмүшелер, параболалар және көрсеткіштік өсуге дейін жетелейді.",
     ),
     "en": (
         "Mathematics: from foundations to higher mathematics",
-        "A free course organized by idea dependencies rather than grade levels. Its 24-lesson route through foundations, proportional reasoning, and prealgebra is open in Russian; reviewed English localization will follow.",
+        "A free course organized by idea dependencies rather than grade levels. Its 32 lessons lead from numbers and fractions through prealgebra to functions, systems, polynomials, parabolas, and exponential growth.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -81,8 +89,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 25 or len(STEMS) != len(SLUGS):
-        raise ValueError("expected one preface and twenty-four lessons")
+    if len(ROUTE) != 33 or len(STEMS) != len(SLUGS):
+        raise ValueError("expected one preface and thirty-two lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-mathematics-course'));" ]
     slugs = ",".join(literal(s) for s in SLUGS)
     sql.append(f"""DO $guard$
@@ -111,7 +119,6 @@ WHERE slug='mathematics' ON CONFLICT(series_id,lang) DO UPDATE
 SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
     for stem, slug_name, position in ROUTE:
-        title, summary, body = lesson(LESSONS / f"{stem}.md")
         slug = literal(slug_name)
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
 SELECT id,{slug},'ru','society','education',{literal(COVER)},'published',now()
@@ -119,6 +126,7 @@ FROM auth_users WHERE email='baimurza.daulet@gmail.com'
 ON CONFLICT(slug) DO UPDATE SET category='society',subcategory='education',
 cover_url=EXCLUDED.cover_url,status='published',updated_at=now(),
 published_at=COALESCE(articles.published_at,now());""")
+        title, summary, body = lesson(LESSONS / f"{stem}.md")
         sql.append(f"""INSERT INTO article_translations(article_id,lang,title,summary,body_md,source,status)
 SELECT id,'ru',{literal(title)},{literal(summary)},{literal(body)},'ai','ready'
 FROM articles WHERE slug={slug}

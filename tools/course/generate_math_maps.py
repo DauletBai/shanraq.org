@@ -301,6 +301,73 @@ def main():
  <text x="352" y="470" font-size="23" font-weight="780">ПЕРВАЯ ПОПЫТКА</text><text x="352" y="530" font-size="49" font-weight="880">8/10</text><text x="847" y="470" font-size="23" font-weight="780">ЧЕРЕЗ 7 ДНЕЙ</text><text x="847" y="530" font-size="49" font-weight="880">7/10</text>
 </g>
 ''')
+    save("map-25-linear-functions.svg", "Формула, таблица и график линейной функции", "Для функции игрек равно два икс плюс один таблица точек минус один минус один, ноль один и два пять лежит на одной прямой.", '''
+<g data-linear="y=2x+1;(-1,-1);(0,1);(2,5)" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><rect x="45" y="65" width="320" height="500" rx="26"/><rect x="405" y="65" width="750" height="500" rx="26"/></g>
+ <text x="205" y="125" font-size="34" font-weight="850">y = 2x + 1</text><text x="205" y="170" font-size="20" font-weight="720">старт b = 1 · шаг k = 2</text>
+ <g font-size="24" font-weight="760"><text x="135" y="235">x</text><text x="270" y="235">y</text><text x="135" y="295">−1</text><text x="270" y="295">−1</text><text x="135" y="355">0</text><text x="270" y="355">1</text><text x="135" y="415">2</text><text x="270" y="415">5</text></g><g stroke="#b8ccda" stroke-width="2"><path d="M75 250h260M75 310h260M75 370h260M75 430h260M200 205v240"/></g>
+ <g transform="translate(470 105)"><g stroke="#c5d7e4" stroke-width="2"><path d="M0 0v400M80 0v400M160 0v400M240 0v400M320 0v400M400 0v400M480 0v400M0 0h560M0 64h560M0 128h560M0 192h560M0 256h560M0 320h560M0 384h560"/></g><g stroke="#365675" stroke-width="6"><path d="M0 320h590"/><path d="M160 420V0"/></g><path d="M80 384L320 0" stroke="#c9151e" stroke-width="10"/><g fill="url(#blue)" stroke="#fff" stroke-width="4"><circle cx="80" cy="384" r="15"/><circle cx="160" cy="256" r="15"/><circle cx="320" cy="0" r="15"/></g></g>
+ <text x="780" y="548" font-size="22" font-weight="760">каждый шаг x на 1 поднимает y на 2</text>
+</g>
+''')
+    save("map-26-systems.svg", "Два условия имеют одну общую пару", "Система икс плюс игрек равно десяти и два икс плюс игрек равно шестнадцати после вычитания дает икс шесть и игрек четыре.", '''
+<g data-system="x+y=10;2x+y=16;(6,4)" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="55" y="75" width="430" height="120" rx="26"/><rect x="715" y="75" width="430" height="120" rx="26"/><rect x="385" y="430" width="430" height="120" rx="26"/></g>
+ <g font-size="38" font-weight="850"><text x="270" y="145">x + y = 10</text><text x="930" y="145">2x + y = 16</text><text x="600" y="500">(x; y) = (6; 4)</text></g>
+ <path d="M270 220L515 405M930 220L685 405" fill="none" stroke="#d7b06a" stroke-width="16" stroke-linecap="round"/>
+ <g filter="url(#s)"><circle cx="600" cy="315" r="105" fill="url(#blue)" stroke="#fff" stroke-width="6"/></g><text x="600" y="302" font-size="25" font-weight="760" fill="#fff">вычитаем</text><text x="600" y="345" font-size="34" font-weight="860" fill="#fff">x = 6</text>
+ <g font-size="21" font-weight="720" fill="#5b6b79"><text x="270" y="180">количество</text><text x="930" y="180">стоимость в сотнях</text><text x="600" y="535">проверка в обоих уравнениях</text></g>
+</g>
+''')
+    save("map-27-powers-roots.svg", "Степени собирают одинаковые множители", "Три множителя два и четыре множителя два образуют семь множителей, поэтому два в третьей умножить на два в четвертой равно двум в седьмой.", '''
+<g data-powers="2^3*2^4=2^7=128;sqrt(144)=12" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><rect x="45" y="75" width="480" height="230" rx="26"/><rect x="675" y="75" width="480" height="230" rx="26"/><rect x="165" y="390" width="870" height="145" rx="28" fill="url(#gold)"/></g>
+ <text x="285" y="135" font-size="31" font-weight="850">2³ × 2⁴</text><text x="915" y="135" font-size="31" font-weight="850">2⁷ = 128</text>
+ <g font-size="25" font-weight="800"><text x="285" y="210">2·2·2 | 2·2·2·2</text><text x="915" y="210">2·2·2·2·2·2·2</text></g><g fill="none" stroke="#b80f18" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M545 190h110m-20-18 20 18-20 18"/></g>
+ <text x="600" y="447" font-size="28" font-weight="780">обратный вопрос</text><text x="600" y="500" font-size="40" font-weight="860">√144 = 12, но x² = 144 → x = ±12</text>
+</g>
+''')
+    save("map-28-polynomials.svg", "Умножение двух двучленов как четыре области", "Произведение двух икс плюс три и икс минус четыре дает области два икс квадрат, минус восемь икс, три икс и минус двенадцать, которые собираются в многочлен.", '''
+<g data-polynomial="(2x+3)(x-4)=2x^2-5x-12" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g transform="translate(85 90)" filter="url(#s)" stroke="#365675" stroke-width="5"><rect width="650" height="360" rx="24" fill="#fff"/><path d="M430 0v360M0 235h650"/></g>
+ <g font-size="34" font-weight="850"><text x="300" y="230">2x²</text><text x="625" y="230">−8x</text><text x="300" y="395">3x</text><text x="625" y="395">−12</text></g><g font-size="22" font-weight="760" fill="#5b6b79"><text x="300" y="70">2x</text><text x="625" y="70">+3</text><text x="55" y="220">x</text><text x="50" y="390">−4</text></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="url(#gold)"><rect x="800" y="115" width="350" height="330" rx="28"/></g>
+ <text x="975" y="185" font-size="25" font-weight="780">собираем</text><text x="975" y="250" font-size="31" font-weight="850">−8x + 3x</text><text x="975" y="300" font-size="31" font-weight="850">= −5x</text><text x="975" y="380" font-size="31" font-weight="860">2x² − 5x − 12</text>
+ <text x="600" y="555" font-size="29" font-weight="820">каждый член первой скобки × каждый член второй</text>
+</g>
+''')
+    save("map-29-quadratics.svg", "Три формы одной параболы", "Функция икс квадрат минус четыре икс плюс три имеет корни один и три, вершину два минус один и одну параболу.", '''
+<g data-quadratic="x^2-4x+3=(x-1)(x-3)=(x-2)^2-1" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><rect x="45" y="55" width="340" height="105" rx="24"/><rect x="430" y="55" width="340" height="105" rx="24"/><rect x="815" y="55" width="340" height="105" rx="24"/></g><g font-size="27" font-weight="840"><text x="215" y="120">x² − 4x + 3</text><text x="600" y="120">(x − 1)(x − 3)</text><text x="985" y="120">(x − 2)² − 1</text></g>
+ <g transform="translate(180 190)"><g stroke="#c4d6e3" stroke-width="2"><path d="M0 0v330M140 0v330M280 0v330M420 0v330M560 0v330M700 0v330M840 0v330M0 55h840M0 165h840M0 275h840"/></g><path d="M0 165h860M280 340V0" stroke="#365675" stroke-width="6"/><path d="M350 28Q560 522 770 28" fill="none" stroke="#c9151e" stroke-width="10"/><g fill="url(#blue)" stroke="#fff" stroke-width="4"><circle cx="420" cy="165" r="15"/><circle cx="700" cy="165" r="15"/><circle cx="560" cy="275" r="17"/></g></g>
+ <g fill="#fff" stroke="#365675" stroke-width="2"><rect x="530" y="365" width="140" height="38" rx="16"/><rect x="810" y="365" width="140" height="38" rx="16"/><rect x="640" y="478" width="200" height="38" rx="16"/></g><g font-size="20" font-weight="780"><text x="600" y="391">корень 1</text><text x="880" y="391">корень 3</text><text x="740" y="504">вершина (2; −1)</text></g>
+</g>
+''')
+    save("map-30-exponential-log.svg", "Удвоение и обратный вопрос", "Пятьсот умножить на два в степени тэ дает через ноль один два три часа пятьсот тысячу две тысячи четыре тысячи, а логарифм по основанию два от восьми равен трем.", '''
+<g data-exponential="N=500*2^t;log_2(8)=3" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><rect x="50" y="85" width="240" height="150" rx="24"/><rect x="335" y="85" width="240" height="150" rx="24"/><rect x="620" y="85" width="240" height="150" rx="24"/><rect x="905" y="85" width="240" height="150" rx="24"/></g>
+ <g font-size="36" font-weight="850"><text x="170" y="165">500</text><text x="455" y="165">1000</text><text x="740" y="165">2000</text><text x="1025" y="165">4000</text></g><g font-size="20" font-weight="720"><text x="170" y="210">t = 0</text><text x="455" y="210">t = 1</text><text x="740" y="210">t = 2</text><text x="1025" y="210">t = 3</text></g><g font-size="29" font-weight="850" fill="#b80f18"><text x="312" y="170">×2</text><text x="597" y="170">×2</text><text x="882" y="170">×2</text></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="url(#gold)"><rect x="150" y="335" width="900" height="175" rx="30"/></g><text x="600" y="395" font-size="31" font-weight="820">500 × 2ᵗ = 4000 → 2ᵗ = 8</text><text x="600" y="463" font-size="45" font-weight="880">t = log₂8 = 3</text>
+ <text x="600" y="570" font-size="25" font-weight="760">равный шаг времени → одинаковый множитель</text>
+</g>
+''')
+    save("map-31-sequences.svg", "Два правила последовательностей", "Арифметическая последовательность пять восемь одиннадцать четырнадцать прибавляет три, а геометрическая два шесть восемнадцать пятьдесят четыре умножает на три.", '''
+<g data-sequences="5,8,11,14;d=3|2,6,18,54;q=3" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="55" y="70" width="1090" height="210" rx="28"/><rect x="55" y="350" width="1090" height="210" rx="28"/></g>
+ <g font-size="23" font-weight="780" fill="#5b6b79"><text x="180" y="120">арифметическая</text><text x="180" y="400">геометрическая</text></g>
+ <g font-size="45" font-weight="860"><text x="210" y="210">5</text><text x="470" y="210">8</text><text x="730" y="210">11</text><text x="990" y="210">14</text><text x="210" y="490">2</text><text x="470" y="490">6</text><text x="730" y="490">18</text><text x="990" y="490">54</text></g>
+ <g font-size="25" font-weight="850" fill="#b80f18"><text x="340" y="205">+3 →</text><text x="600" y="205">+3 →</text><text x="860" y="205">+3 →</text><text x="340" y="485">×3 →</text><text x="600" y="485">×3 →</text><text x="860" y="485">×3 →</text></g>
+ <text x="600" y="315" font-size="25" font-weight="780">номер n сообщает: выполнено n − 1 переходов</text>
+</g>
+''')
+    save("map-32-algebra-mastery.svg", "Семь опор алгебры", "Линейные функции, системы, степени, многочлены, параболы, показательный рост и последовательности ведут к проверке восемь из десяти и повтору через семь дней.", '''
+<g data-algebra-skills="7" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><rect class="algebra-skill" x="35" y="55" width="250" height="95" rx="21"/><rect class="algebra-skill" x="330" y="55" width="250" height="95" rx="21"/><rect class="algebra-skill" x="625" y="55" width="250" height="95" rx="21"/><rect class="algebra-skill" x="920" y="55" width="250" height="95" rx="21"/><rect class="algebra-skill" x="180" y="205" width="250" height="95" rx="21"/><rect class="algebra-skill" x="475" y="205" width="250" height="95" rx="21"/><rect class="algebra-skill" x="770" y="205" width="250" height="95" rx="21"/></g>
+ <g font-size="21" font-weight="790"><text x="160" y="101"><tspan x="160">Линейные</tspan><tspan x="160" dy="26">функции</tspan></text><text x="455" y="113">Системы</text><text x="750" y="101"><tspan x="750">Степени</tspan><tspan x="750" dy="26">и корни</tspan></text><text x="1045" y="113">Многочлены</text><text x="305" y="263">Параболы</text><text x="600" y="250"><tspan x="600">Показательный</tspan><tspan x="600" dy="27">рост</tspan></text><text x="895" y="263" font-size="17">Последовательности</text></g>
+ <path d="M160 170C250 350 420 360 600 390M455 170C500 300 535 340 600 390M750 170C700 300 665 340 600 390M1045 170C950 350 780 360 600 390M305 320C380 370 470 385 600 390M600 320V390M895 320C820 370 730 385 600 390" fill="none" stroke="#d7b06a" stroke-width="10" stroke-linecap="round"/>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="url(#gold)"><rect x="155" y="410" width="390" height="145" rx="28"/><rect x="655" y="410" width="390" height="145" rx="28"/></g><text x="350" y="462" font-size="23" font-weight="780">ПЕРВАЯ ПОПЫТКА</text><text x="350" y="525" font-size="50" font-weight="880">8/10</text><text x="850" y="462" font-size="23" font-weight="780">ЧЕРЕЗ 7 ДНЕЙ</text><text x="850" y="525" font-size="50" font-weight="880">7/10</text>
+</g>
+''')
     save("map-full-ru.svg", "Полная карта курса", "Восемь пронумерованных этапов идут слева направо, затем сверху вниз и справа налево.", '''
 <defs><marker id="course-arrowhead" markerWidth="18" markerHeight="18" refX="16" refY="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L18 9L0 18Z" fill="#b80f18"/></marker></defs>
 <g fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" marker-end="url(#course-arrowhead)">

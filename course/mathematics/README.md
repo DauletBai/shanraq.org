@@ -6,11 +6,11 @@ quantity to mathematical modelling. Every prerequisite must name another node,
 and the graph must remain acyclic; `tools/course/test_mathematics_release.py`
 checks both properties.
 
-The prepared Russian route now contains three connected blocks: numbers and
-operations; fractions, ratios, percent, and proportion; then variables,
-expressions, equations, coordinates, and inequalities. Together they provide
-twenty-four lessons plus the course orientation and test the lesson cycle and
-mastery gate before the remaining nodes are written:
+The prepared route now contains four connected blocks: numbers and operations;
+fractions, ratios, percent, and proportion; variables and prealgebra; then
+algebra and functions. Together they provide thirty-two lessons plus the course
+orientation and test the lesson cycle and mastery gate before the remaining
+nodes are written:
 
 1. whole-map orientation;
 2. familiar physical image;
@@ -25,10 +25,10 @@ mastery gate before the remaining nodes are written:
 11. retrieval after a delay;
 12. mastery gate.
 
-The Russian edition is published first. Kazakh and English lesson files should
-be added as reviewed translations, with `-kz` and `-en` suffixes, before those
-editions are described as available. Course metadata already has all three
-languages so the hub is never blank while localization is in progress.
+The release target is Russian, Kazakh, and English for every lesson. Russian
+source files have no suffix; reviewed Kazakh and English versions use `-kz` and
+`-en`. The current worktree must not be pushed or published until the complete
+three-language set and its localized maps pass review.
 
 Generate the original support maps and run the release checks:
 
