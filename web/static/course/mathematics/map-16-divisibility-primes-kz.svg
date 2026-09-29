@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Бөлінгіштік және жай сандар: санның ішкі құрылысы</title><desc id="desc">84 санының 2 × 2 × 3 × 7 жай көбейткіштер ағашы</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff" /><stop offset="1" stop-color="#fff7e5" /></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a" /><stop offset="1" stop-color="#b80f18" /></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2" /><stop offset="1" stop-color="#2369b3" /></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a" /><stop offset="1" stop-color="#e39a16" /></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22" /></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)" />
+<g data-factorization="84=2^2*3*7" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g stroke="#365675" stroke-width="6" fill="none"><path d="M600 130L390 250M600 130L810 250M390 250L280 390M390 250L500 390M810 250L700 390M810 250L920 390" /></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><circle cx="600" cy="105" r="64" /><circle cx="390" cy="250" r="58" /><circle cx="810" cy="250" r="58" /></g>
+ <g filter="url(#s)" stroke="#fff" stroke-width="4"><circle cx="280" cy="410" r="56" fill="url(#red)" /><circle cx="500" cy="410" r="56" fill="url(#red)" /><circle cx="700" cy="410" r="56" fill="url(#blue)" /><circle cx="920" cy="410" r="56" fill="url(#gold)" /></g>
+ <g font-size="42" font-weight="850"><text x="600" y="120">84</text><text x="390" y="265">4</text><text x="810" y="265">21</text></g>
+ <g font-size="38" font-weight="850" fill="#fff"><text x="280" y="425">2</text><text x="500" y="425">2</text><text x="700" y="425">3</text><text x="920" y="425">7</text></g>
+ <text x="600" y="555" font-size="37.84" font-weight="850">84 = 2 × 2 × 3 × 7 = 2² × 3 × 7</text>
+</g>
+</svg>

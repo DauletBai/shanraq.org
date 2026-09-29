@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Operations with fractions: name the counting unit first</title><desc id="desc">Turning 1/2 + 1/3 into 5/6 by counting sixths</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff" /><stop offset="1" stop-color="#fff7e5" /></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a" /><stop offset="1" stop-color="#b80f18" /></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2" /><stop offset="1" stop-color="#2369b3" /></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a" /><stop offset="1" stop-color="#e39a16" /></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22" /></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)" />
+<g data-equation="1/2+1/3=5/6" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4">
+  <rect x="70" y="105" width="360" height="75" rx="12" fill="#fff" /><path d="M70 105h180v75H70Z" fill="url(#red)" /><rect x="70" y="105" width="360" height="75" rx="12" fill="none" /><path d="M250 105v75" />
+  <rect x="70" y="255" width="360" height="75" rx="12" fill="#fff" /><path d="M70 255h120v75H70Z" fill="url(#blue)" /><rect x="70" y="255" width="360" height="75" rx="12" fill="none" /><path d="M190 255v75M310 255v75" />
+  <rect x="700" y="105" width="420" height="75" rx="12" fill="#fff" /><path d="M700 105h210v75H700Z" fill="url(#red)" /><rect x="700" y="105" width="420" height="75" rx="12" fill="none" /><path d="M770 105v75M840 105v75M910 105v75M980 105v75M1050 105v75" />
+  <rect x="700" y="255" width="420" height="75" rx="12" fill="#fff" /><path d="M700 255h140v75H700Z" fill="url(#blue)" /><rect x="700" y="255" width="420" height="75" rx="12" fill="none" /><path d="M770 255v75M840 255v75M910 255v75M980 255v75M1050 255v75" />
+  <rect x="700" y="440" width="420" height="75" rx="12" fill="#fff" /><path d="M700 440h350v75H700Z" fill="url(#gold)" /><rect x="700" y="440" width="420" height="75" rx="12" fill="none" /><path d="M770 440v75M840 440v75M910 440v75M980 440v75M1050 440v75" />
+ </g>
+ <g font-size="34" font-weight="750"><text x="250" y="225">1/2</text><text x="250" y="375">1/3</text><text x="910" y="225">3/6</text><text x="910" y="375">2/6</text><text x="910" y="575">3/6 + 2/6 = 5/6</text></g>
+ <g font-size="58" font-weight="800"><text x="650" y="238">+</text><text x="910" y="425">↓</text></g>
+ <g fill="none" stroke="#365675" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M480 142H650l-22-18m22 18l-22 18" /><path d="M480 292H650l-22-18m22 18l-22 18" /></g>
+</g>
+</svg>

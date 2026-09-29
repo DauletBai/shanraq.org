@@ -2518,5 +2518,269 @@
   "mathematics/32-algebra-mastery": [
     "math-32-algebra-mastery",
     "ru"
+  ],
+  "mathematics/preface-kz": [
+    "mathematics-before-start",
+    "kz"
+  ],
+  "mathematics/preface-en": [
+    "mathematics-before-start",
+    "en"
+  ],
+  "mathematics/01-diagnostic-kz": [
+    "math-01-diagnostic",
+    "kz"
+  ],
+  "mathematics/01-diagnostic-en": [
+    "math-01-diagnostic",
+    "en"
+  ],
+  "mathematics/10-quantity-counting-kz": [
+    "math-10-quantity-counting",
+    "kz"
+  ],
+  "mathematics/10-quantity-counting-en": [
+    "math-10-quantity-counting",
+    "en"
+  ],
+  "mathematics/11-place-value-kz": [
+    "math-11-place-value",
+    "kz"
+  ],
+  "mathematics/11-place-value-en": [
+    "math-11-place-value",
+    "en"
+  ],
+  "mathematics/12-addition-subtraction-kz": [
+    "math-12-addition-subtraction",
+    "kz"
+  ],
+  "mathematics/12-addition-subtraction-en": [
+    "math-12-addition-subtraction",
+    "en"
+  ],
+  "mathematics/13-multiplication-division-kz": [
+    "math-13-multiplication-division",
+    "kz"
+  ],
+  "mathematics/13-multiplication-division-en": [
+    "math-13-multiplication-division",
+    "en"
+  ],
+  "mathematics/14-order-estimation-kz": [
+    "math-14-order-estimation",
+    "kz"
+  ],
+  "mathematics/14-order-estimation-en": [
+    "math-14-order-estimation",
+    "en"
+  ],
+  "mathematics/15-negative-numbers-kz": [
+    "math-15-negative-numbers",
+    "kz"
+  ],
+  "mathematics/15-negative-numbers-en": [
+    "math-15-negative-numbers",
+    "en"
+  ],
+  "mathematics/16-divisibility-primes-kz": [
+    "math-16-divisibility-primes",
+    "kz"
+  ],
+  "mathematics/16-divisibility-primes-en": [
+    "math-16-divisibility-primes",
+    "en"
+  ],
+  "mathematics/17-decimal-fractions-kz": [
+    "math-17-decimal-fractions",
+    "kz"
+  ],
+  "mathematics/17-decimal-fractions-en": [
+    "math-17-decimal-fractions",
+    "en"
+  ],
+  "mathematics/18-foundations-mastery-kz": [
+    "math-18-foundations-mastery",
+    "kz"
+  ],
+  "mathematics/18-foundations-mastery-en": [
+    "math-18-foundations-mastery",
+    "en"
+  ],
+  "mathematics/02-fraction-meaning-kz": [
+    "math-02-fraction-meaning",
+    "kz"
+  ],
+  "mathematics/02-fraction-meaning-en": [
+    "math-02-fraction-meaning",
+    "en"
+  ],
+  "mathematics/03-equivalent-fractions-kz": [
+    "math-03-equivalent-fractions",
+    "kz"
+  ],
+  "mathematics/03-equivalent-fractions-en": [
+    "math-03-equivalent-fractions",
+    "en"
+  ],
+  "mathematics/04-compare-fractions-kz": [
+    "math-04-compare-fractions",
+    "kz"
+  ],
+  "mathematics/04-compare-fractions-en": [
+    "math-04-compare-fractions",
+    "en"
+  ],
+  "mathematics/05-fraction-operations-kz": [
+    "math-05-fraction-operations",
+    "kz"
+  ],
+  "mathematics/05-fraction-operations-en": [
+    "math-05-fraction-operations",
+    "en"
+  ],
+  "mathematics/06-ratio-kz": [
+    "math-06-ratio",
+    "kz"
+  ],
+  "mathematics/06-ratio-en": [
+    "math-06-ratio",
+    "en"
+  ],
+  "mathematics/07-percent-kz": [
+    "math-07-percent",
+    "kz"
+  ],
+  "mathematics/07-percent-en": [
+    "math-07-percent",
+    "en"
+  ],
+  "mathematics/08-proportion-kz": [
+    "math-08-proportion",
+    "kz"
+  ],
+  "mathematics/08-proportion-en": [
+    "math-08-proportion",
+    "en"
+  ],
+  "mathematics/09-mastery-kz": [
+    "math-09-mastery",
+    "kz"
+  ],
+  "mathematics/09-mastery-en": [
+    "math-09-mastery",
+    "en"
+  ],
+  "mathematics/19-variables-kz": [
+    "math-19-variables",
+    "kz"
+  ],
+  "mathematics/19-variables-en": [
+    "math-19-variables",
+    "en"
+  ],
+  "mathematics/20-expressions-kz": [
+    "math-20-expressions",
+    "kz"
+  ],
+  "mathematics/20-expressions-en": [
+    "math-20-expressions",
+    "en"
+  ],
+  "mathematics/21-equations-basic-kz": [
+    "math-21-equations-basic",
+    "kz"
+  ],
+  "mathematics/21-equations-basic-en": [
+    "math-21-equations-basic",
+    "en"
+  ],
+  "mathematics/22-coordinates-kz": [
+    "math-22-coordinates",
+    "kz"
+  ],
+  "mathematics/22-coordinates-en": [
+    "math-22-coordinates",
+    "en"
+  ],
+  "mathematics/23-inequalities-kz": [
+    "math-23-inequalities",
+    "kz"
+  ],
+  "mathematics/23-inequalities-en": [
+    "math-23-inequalities",
+    "en"
+  ],
+  "mathematics/24-prealgebra-mastery-kz": [
+    "math-24-prealgebra-mastery",
+    "kz"
+  ],
+  "mathematics/24-prealgebra-mastery-en": [
+    "math-24-prealgebra-mastery",
+    "en"
+  ],
+  "mathematics/25-linear-functions-kz": [
+    "math-25-linear-functions",
+    "kz"
+  ],
+  "mathematics/25-linear-functions-en": [
+    "math-25-linear-functions",
+    "en"
+  ],
+  "mathematics/26-systems-kz": [
+    "math-26-systems",
+    "kz"
+  ],
+  "mathematics/26-systems-en": [
+    "math-26-systems",
+    "en"
+  ],
+  "mathematics/27-powers-roots-kz": [
+    "math-27-powers-roots",
+    "kz"
+  ],
+  "mathematics/27-powers-roots-en": [
+    "math-27-powers-roots",
+    "en"
+  ],
+  "mathematics/28-polynomials-kz": [
+    "math-28-polynomials",
+    "kz"
+  ],
+  "mathematics/28-polynomials-en": [
+    "math-28-polynomials",
+    "en"
+  ],
+  "mathematics/29-quadratics-kz": [
+    "math-29-quadratics",
+    "kz"
+  ],
+  "mathematics/29-quadratics-en": [
+    "math-29-quadratics",
+    "en"
+  ],
+  "mathematics/30-exponential-log-kz": [
+    "math-30-exponential-log",
+    "kz"
+  ],
+  "mathematics/30-exponential-log-en": [
+    "math-30-exponential-log",
+    "en"
+  ],
+  "mathematics/31-sequences-kz": [
+    "math-31-sequences",
+    "kz"
+  ],
+  "mathematics/31-sequences-en": [
+    "math-31-sequences",
+    "en"
+  ],
+  "mathematics/32-algebra-mastery-kz": [
+    "math-32-algebra-mastery",
+    "kz"
+  ],
+  "mathematics/32-algebra-mastery-en": [
+    "math-32-algebra-mastery",
+    "en"
   ]
 }

@@ -25,15 +25,17 @@ nodes are written:
 11. retrieval after a delay;
 12. mastery gate.
 
-The release target is Russian, Kazakh, and English for every lesson. Russian
-source files have no suffix; reviewed Kazakh and English versions use `-kz` and
-`-en`. The current worktree must not be pushed or published until the complete
-three-language set and its localized maps pass review.
+Every released page and support map is available in Russian, Kazakh, and
+English. Russian source files have no suffix; reviewed Kazakh and English
+versions use `-kz` and `-en`. The language versions keep the same formulas,
+examples, checks, and lesson order.
 
 Generate the original support maps and run the release checks:
 
 ```sh
 python3 tools/course/generate_math_maps.py
+python3 tools/course/generate_math_localizations.py
+python3 tools/course/generate_math_map_localizations.py
 cd tools/course && python3 -m unittest test_mathematics_release.py
 ```
 

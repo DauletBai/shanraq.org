@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Equations: keep both sides balanced</title><desc id="desc">Balance model for the equation 3x + 5 = 26</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff" /><stop offset="1" stop-color="#fff7e5" /></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a" /><stop offset="1" stop-color="#b80f18" /></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2" /><stop offset="1" stop-color="#2369b3" /></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a" /><stop offset="1" stop-color="#e39a16" /></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22" /></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)" />
+<g data-equation="3x+5=26;x=7" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <path d="M600 105v255M390 205h420M455 205l-90 145M745 205l90 145" fill="none" stroke="#365675" stroke-width="11" stroke-linecap="round" />
+ <path d="M265 350h200M735 350h200" stroke="#365675" stroke-width="9" stroke-linecap="round" />
+ <circle cx="600" cy="105" r="34" fill="url(#red)" stroke="#fff" stroke-width="5" filter="url(#s)" />
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="235" y="250" width="260" height="90" rx="22" /><rect x="705" y="250" width="260" height="90" rx="22" /></g>
+ <g font-size="40" font-weight="850"><text x="365" y="307">3x + 5</text><text x="835" y="307">26</text></g>
+ <g fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M250 410H950" /><path d="M930 395l20 15-20 15" /></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff"><rect x="70" y="450" width="315" height="105" rx="23" /><rect x="442" y="450" width="315" height="105" rx="23" /><rect x="815" y="450" width="315" height="105" rx="23" /></g>
+ <g font-size="27" font-weight="820"><text x="227" y="493">−5 on both sides</text><text x="227" y="530">3x = 21</text><text x="600" y="493">÷3 on both sides</text><text x="600" y="530">x = 7</text><text x="972" y="493">check</text><text x="972" y="530">3 × 7 + 5 = 26</text></g>
+</g>
+</svg>

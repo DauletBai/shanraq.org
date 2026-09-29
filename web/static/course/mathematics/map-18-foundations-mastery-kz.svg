@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Бақылау нүктесі: сандық іргетасты өз бетіңізше қолдану</title><desc id="desc">Сандық іргетастың сегіз дағдысы және екі аралықтағы нәтиже</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff" /><stop offset="1" stop-color="#fff7e5" /></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a" /><stop offset="1" stop-color="#b80f18" /></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2" /><stop offset="1" stop-color="#2369b3" /></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a" /><stop offset="1" stop-color="#e39a16" /></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22" /></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)" />
+<g data-foundations-skills="8" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff">
+  <rect class="foundation-skill" x="40" y="65" width="255" height="115" rx="22" /><rect class="foundation-skill" x="325" y="65" width="255" height="115" rx="22" /><rect class="foundation-skill" x="610" y="65" width="255" height="115" rx="22" /><rect class="foundation-skill" x="895" y="65" width="255" height="115" rx="22" />
+  <rect class="foundation-skill" x="40" y="225" width="255" height="115" rx="22" /><rect class="foundation-skill" x="325" y="225" width="255" height="115" rx="22" /><rect class="foundation-skill" x="610" y="225" width="255" height="115" rx="22" /><rect class="foundation-skill" x="895" y="225" width="255" height="115" rx="22" />
+ </g>
+ <g font-size="23" font-weight="780"><text x="167" y="132">Мөлшер</text><text x="452" y="132">Разрядтар</text><text x="737" y="120"><tspan x="737">Қосу</tspan><tspan x="737" dy="29">және азайту</tspan></text><text x="1022" y="120"><tspan x="1022">Көбейту</tspan><tspan x="1022" dy="29">және бөлу</tspan></text><text x="167" y="280"><tspan x="167">Амалдар реті</tspan><tspan x="167" dy="29">және бағалау</tspan></text><text x="452" y="280"><tspan x="452">Теріс</tspan><tspan x="452" dy="29">сандар</tspan></text><text x="737" y="292">Бөлінгіштік</text><text x="1022" y="280"><tspan x="1022">Ондық</tspan><tspan x="1022" dy="29">бөлшектер</tspan></text></g>
+ <path d="M170 365C260 430 390 445 600 445S940 430 1030 365" fill="none" stroke="#d7b06a" stroke-width="22" stroke-linecap="round" filter="url(#s)" />
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="url(#gold)"><rect x="230" y="415" width="340" height="145" rx="30" /><rect x="630" y="415" width="340" height="145" rx="30" /></g>
+ <text x="400" y="470" font-size="21.12" font-weight="780">АЛҒАШҚЫ ӘРЕКЕТ</text><text x="400" y="530" font-size="42.24" font-weight="880">8/10</text><text x="800" y="470" font-size="21.12" font-weight="780">7 КҮННЕН КЕЙІН</text><text x="800" y="530" font-size="42.24" font-weight="880">7/10</text>
+</g>
+</svg>

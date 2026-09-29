@@ -46,7 +46,7 @@ class MathematicsReleaseTests(unittest.TestCase):
         sql, expected = prepare_mathematics.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.endswith("COMMIT;\n"))
-        self.assertEqual(len(expected), 33)
+        self.assertEqual(len(expected), 99)
         self.assertEqual(sql.count("INSERT INTO article_series_items("), 33)
         self.assertIn("'society','education'", sql)
         self.assertIn("'published','math'", sql)
@@ -59,6 +59,27 @@ class MathematicsReleaseTests(unittest.TestCase):
             positions[prepare_mathematics.STEMS.index("18-foundations-mastery")],
             positions[prepare_mathematics.STEMS.index("02-fraction-meaning")],
         )
+        self.assertEqual({item["lang"] for item in expected}, {"ru", "kz", "en"})
+
+    def test_every_route_has_three_localized_pages_and_maps(self):
+        headings = {
+            "kz": ("## Картадағы орнымыз", "## Сабақтың тірек сигналы", "## Тапсырма"),
+            "en": ("## Where we are on the map", "## The lesson's support signal", "## Exercise"),
+        }
+        for stem in prepare_mathematics.STEMS:
+            for lang in ("kz", "en"):
+                path = prepare_mathematics.LESSONS / f"{stem}-{lang}.md"
+                self.assertTrue(path.is_file(), path)
+                text = path.read_text(encoding="utf-8")
+                for heading in headings[lang]:
+                    self.assertIn(heading, text, path)
+                found = re.findall(r"/static/course/mathematics/([^\s)]+\.svg)", text)
+                self.assertEqual(len(found), 1, path)
+                self.assertTrue(found[0].endswith(f"-{lang}.svg"), found[0])
+                target = ROOT / "web/static/course/mathematics" / found[0]
+                self.assertTrue(target.is_file(), target)
+                ET.parse(target)
+                self.assertIn(f"/course/mathematics?lang={lang}", text)
 
     def test_every_lesson_is_a_full_learning_cycle(self):
         sections = (

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Бөлшек — бірінің үстіне бірі жазылған екі сан емес</title><desc id="desc">Сегіз тең бөліктің үшеуі және сан осіндегі 3/8 нүктесі</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff" /><stop offset="1" stop-color="#fff7e5" /></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a" /><stop offset="1" stop-color="#b80f18" /></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2" /><stop offset="1" stop-color="#2369b3" /></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a" /><stop offset="1" stop-color="#e39a16" /></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22" /></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)" />
+<g data-fraction="3/8" filter="url(#s)">
+ <circle cx="250" cy="300" r="132" fill="#fff" />
+ <path class="fraction-sector--filled" d="M250 300L250 168A132 132 0 0 1 343.34 393.34Z" fill="url(#red)" />
+ <circle cx="250" cy="300" r="132" fill="none" stroke="#365675" stroke-width="6" />
+ <g class="fraction-spokes" stroke="#365675" stroke-width="3"><path d="M250 300L250 168" /><path d="M250 300L343.34 206.66" /><path d="M250 300L382 300" /><path d="M250 300L343.34 393.34" /><path d="M250 300L250 432" /><path d="M250 300L156.66 393.34" /><path d="M250 300L118 300" /><path d="M250 300L156.66 206.66" /></g>
+</g>
+<g font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d" font-weight="750"><text x="250" y="505" font-size="42.24">8-дің 3-еуі = 3/8</text><text x="800" y="175" font-size="44.0">3 ÷ 8 = 3/8</text></g>
+<g data-number-line-fraction="3/8">
+ <path d="M520 350H1080" stroke="#365675" stroke-width="8" stroke-linecap="round" />
+ <path d="M520 350H730" stroke="url(#red)" stroke-width="18" />
+ <g class="eighth-ticks" stroke="#365675" stroke-width="4"><path d="M520 322V378" /><path d="M590 328V372" /><path d="M660 328V372" /><path d="M730 318V382" /><path d="M800 328V372" /><path d="M870 328V372" /><path d="M940 328V372" /><path d="M1010 328V372" /><path d="M1080 322V378" /></g>
+ <circle cx="730" cy="350" r="18" fill="#b80f18" />
+ <g font-family="system-ui,sans-serif" font-size="28" font-weight="700" text-anchor="middle" fill="#17324d"><text x="520" y="425">0</text><text x="730" y="425">3/8</text><text x="1080" y="425">1</text></g>
+</g>
+</svg>

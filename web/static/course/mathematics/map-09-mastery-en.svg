@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Checkpoint: fractions, ratios, percentages, and transfer</title><desc id="desc">Five skills and results from a first attempt and seven days later</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff" /><stop offset="1" stop-color="#fff7e5" /></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a" /><stop offset="1" stop-color="#b80f18" /></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2" /><stop offset="1" stop-color="#2369b3" /></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a" /><stop offset="1" stop-color="#e39a16" /></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22" /></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)" />
+<g data-mastery-skills="5" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <path d="M135 205H1055" stroke="#d7b06a" stroke-width="24" stroke-linecap="round" filter="url(#s)" />
+ <g fill="#fff" stroke="#365675" stroke-width="5" filter="url(#s)">
+  <rect class="mastery-skill" x="45" y="95" width="180" height="220" rx="24" /><rect class="mastery-skill" x="275" y="95" width="180" height="220" rx="24" /><rect class="mastery-skill" x="505" y="95" width="180" height="220" rx="24" /><rect class="mastery-skill" x="735" y="95" width="180" height="220" rx="24" /><rect class="mastery-skill" x="965" y="95" width="180" height="220" rx="24" />
+ </g>
+ <g fill="url(#red)" stroke="#fff" stroke-width="3"><circle cx="75" cy="125" r="21" /><circle cx="305" cy="125" r="21" /><circle cx="535" cy="125" r="21" /><circle cx="765" cy="125" r="21" /><circle cx="995" cy="125" r="21" /></g>
+ <g fill="none" stroke="#17324d" stroke-width="4"><rect x="117" y="161" width="36" height="36" rx="3" /><path d="M135 161v36M117 179h36" /></g>
+ <g font-size="38" font-weight="800"><text x="365" y="198">=</text><text x="595" y="198">?</text><text x="825" y="198">↻</text><text x="1055" y="198">↗</text></g>
+ <g font-size="22" font-weight="750"><text x="135" y="260">Model</text><text x="365" y="260">Calculation</text><text x="595" y="260">Explanation</text><text x="825" y="248"><tspan x="825">Error correction</tspan><tspan x="825" dy="28" /></text><text x="1055" y="260">Transfer</text></g>
+ <g font-size="18" font-weight="800" fill="#fff"><text x="75" y="132">1</text><text x="305" y="132">2</text><text x="535" y="132">3</text><text x="765" y="132">4</text><text x="995" y="132">5</text></g>
+ <g filter="url(#s)"><rect x="245" y="405" width="310" height="130" rx="26" fill="#fff" stroke="#365675" stroke-width="5" /><rect x="645" y="405" width="310" height="130" rx="26" fill="#fff" stroke="#365675" stroke-width="5" /></g>
+ <g font-weight="750"><text x="400" y="450" font-size="19.36">FIRST ATTEMPT</text><text x="400" y="505" font-size="42.24">8/10</text><text x="800" y="450" font-size="19.36">AFTER 7 DAYS</text><text x="800" y="505" font-size="42.24">7/10</text></g>
+ <path d="M575 470H625l-18-16m18 16l-18 16" fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+</g>
+</svg>

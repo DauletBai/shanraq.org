@@ -7,6 +7,9 @@ on:
       - 'course/mathematics/**'
       - 'tools/course/prepare_mathematics.py'
       - 'tools/course/generate_math_maps.py'
+      - 'tools/course/generate_math_localizations.py'
+      - 'tools/course/generate_math_map_localizations.py'
+      - 'tools/course/math_localization_data.py'
       - 'tools/course/test_mathematics_release.py'
       - 'web/static/course/mathematics/**'
       - 'web/static/covers/school/mathematics/**'
@@ -16,6 +19,9 @@ on:
       - 'course/mathematics/**'
       - 'tools/course/prepare_mathematics.py'
       - 'tools/course/generate_math_maps.py'
+      - 'tools/course/generate_math_localizations.py'
+      - 'tools/course/generate_math_map_localizations.py'
+      - 'tools/course/math_localization_data.py'
       - 'tools/course/test_mathematics_release.py'
       - 'web/static/course/mathematics/**'
       - 'web/static/covers/school/mathematics/**'
@@ -27,6 +33,10 @@ jobs:
       - uses: actions/checkout@v7
       - name: Regenerate support maps
         run: python3 tools/course/generate_math_maps.py
+      - name: Regenerate localized lessons and support maps
+        run: |
+          python3 tools/course/generate_math_localizations.py
+          python3 tools/course/generate_math_map_localizations.py
       - name: Verify generated maps are committed
         run: git diff --exit-code
       - name: Validate curriculum and lesson release

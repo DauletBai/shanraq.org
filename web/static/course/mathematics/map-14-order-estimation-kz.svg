@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Амалдар реті және шамалау: есептемей тұрып жауапты болжау</title><desc id="desc">240 − 6 × (18 + 7) өрнегінің есептеу ағашы және 90 бағасы</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff" /><stop offset="1" stop-color="#fff7e5" /></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a" /><stop offset="1" stop-color="#b80f18" /></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2" /><stop offset="1" stop-color="#2369b3" /></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a" /><stop offset="1" stop-color="#e39a16" /></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22" /></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)" />
+<g data-expression="240-6*(18+7)=90" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g stroke="#365675" stroke-width="7" fill="none"><path d="M600 135L380 270M600 135L820 270M820 270L710 410M820 270L930 410" /></g>
+ <g filter="url(#s)" stroke="#365675" stroke-width="5" fill="#fff"><rect x="430" y="65" width="340" height="105" rx="24" /><rect x="265" y="220" width="230" height="105" rx="24" /><rect x="705" y="220" width="230" height="105" rx="24" /><rect x="610" y="380" width="200" height="105" rx="24" /><rect x="840" y="380" width="180" height="105" rx="24" /></g>
+ <g font-size="34" font-weight="820"><text x="600" y="130">240 − 150 = 90</text><text x="380" y="285">240</text><text x="820" y="285">6 × 25 = 150</text><text x="710" y="445">6</text></g><text x="930" y="445" font-size="25.52" font-weight="820">18 + 7 = 25</text>
+ <g filter="url(#s)"><rect x="105" y="500" width="990" height="85" rx="22" fill="url(#gold)" stroke="#365675" stroke-width="4" /></g>
+ <text x="600" y="555" font-size="27.28" font-weight="800">бағалау: 240 − шамамен 150 ≈ 90</text>
+</g>
+</svg>

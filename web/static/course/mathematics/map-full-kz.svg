@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Математиканы қалай оқимыз: жаттаудан түсінуге дейін</title><desc id="desc">Сандардан алгебра мен модельдеуге апаратын математика курсының картасы</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff" /><stop offset="1" stop-color="#fff7e5" /></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a" /><stop offset="1" stop-color="#b80f18" /></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2" /><stop offset="1" stop-color="#2369b3" /></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a" /><stop offset="1" stop-color="#e39a16" /></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22" /></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)" />
+<defs><marker id="course-arrowhead" markerWidth="18" markerHeight="18" refX="16" refY="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L18 9L0 18Z" fill="#b80f18" /></marker></defs>
+<g fill="none" stroke="#b80f18" stroke-width="7" stroke-linecap="round" marker-end="url(#course-arrowhead)">
+ <path class="course-arrow" d="M305 168H325" /><path class="course-arrow" d="M585 168H605" /><path class="course-arrow" d="M865 168H885" />
+ <path class="course-arrow" d="M1015 263V365" />
+ <path class="course-arrow" d="M895 468H875" /><path class="course-arrow" d="M615 468H595" /><path class="course-arrow" d="M335 468H315" />
+</g>
+<g filter="url(#s)" stroke="#365675" stroke-width="4" fill="#fff">
+ <rect class="course-step" x="55" y="80" width="240" height="175" rx="25" /><rect class="course-step" x="335" y="80" width="240" height="175" rx="25" /><rect class="course-step" x="615" y="80" width="240" height="175" rx="25" /><rect class="course-step" x="895" y="80" width="240" height="175" rx="25" />
+ <rect class="course-step" x="895" y="380" width="240" height="175" rx="25" /><rect class="course-step" x="615" y="380" width="240" height="175" rx="25" /><rect class="course-step" x="335" y="380" width="240" height="175" rx="25" /><rect class="course-step" x="55" y="380" width="240" height="175" rx="25" />
+</g>
+<g fill="url(#red)" stroke="#fff" stroke-width="3"><circle cx="82" cy="107" r="20" /><circle cx="362" cy="107" r="20" /><circle cx="642" cy="107" r="20" /><circle cx="922" cy="107" r="20" /><circle cx="922" cy="407" r="20" /><circle cx="642" cy="407" r="20" /><circle cx="362" cy="407" r="20" /><circle cx="82" cy="407" r="20" /></g>
+<g font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g font-size="22" font-weight="750">
+  <text x="175" y="145"><tspan x="175">Сандар</tspan><tspan x="175" dy="30">және амалдар</tspan></text>
+  <text x="455" y="123"><tspan x="455">Бөлшектер</tspan><tspan x="455" dy="29">қатынастар</tspan><tspan x="455" dy="29">пайыздар</tspan></text>
+  <text x="735" y="145"><tspan x="735">Айнымалылар</tspan><tspan x="735" dy="30">және предалгебра</tspan></text>
+  <text x="1015" y="145"><tspan x="1015">Алгебра</tspan><tspan x="1015" dy="30">және функциялар</tspan></text>
+  <text x="1015" y="445"><tspan x="1015">Геометрия</tspan><tspan x="1015" dy="30">және кеңістік</tspan></text>
+  <text x="735" y="445"><tspan x="735">Математикалық</tspan><tspan x="735" dy="30">анализ</tspan></text>
+  <text x="455" y="445"><tspan x="455">Сызықтық</tspan><tspan x="455" dy="30">алгебра</tspan></text>
+  <text x="175" y="438"><tspan x="175">Ықтималдық</tspan><tspan x="175" dy="29">және статистика</tspan><tspan x="175" dy="29">логика және графтар</tspan></text>
+ </g>
+ <g font-size="19" fill="#5b6b79"><text x="175" y="229">7 түйін</text><text x="455" y="229">8 түйін</text><text x="735" y="229">5 түйін</text><text x="1015" y="229">7 түйін</text><text x="1015" y="529">8 түйін</text><text x="735" y="529">5 түйін</text><text x="455" y="529">3 түйін</text><text x="175" y="529">7 түйін</text></g>
+ <g font-size="18" font-weight="800" fill="#fff"><text x="82" y="113">1</text><text x="362" y="113">2</text><text x="642" y="113">3</text><text x="922" y="113">4</text><text x="922" y="413">5</text><text x="642" y="413">6</text><text x="362" y="413">7</text><text x="82" y="413">8</text></g>
+</g>
+</svg>

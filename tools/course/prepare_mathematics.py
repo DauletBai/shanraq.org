@@ -126,19 +126,21 @@ FROM auth_users WHERE email='baimurza.daulet@gmail.com'
 ON CONFLICT(slug) DO UPDATE SET category='society',subcategory='education',
 cover_url=EXCLUDED.cover_url,status='published',updated_at=now(),
 published_at=COALESCE(articles.published_at,now());""")
-        title, summary, body = lesson(LESSONS / f"{stem}.md")
-        sql.append(f"""INSERT INTO article_translations(article_id,lang,title,summary,body_md,source,status)
-SELECT id,'ru',{literal(title)},{literal(summary)},{literal(body)},'ai','ready'
+        for lang in ("ru", "kz", "en"):
+            suffix = "" if lang == "ru" else f"-{lang}"
+            title, summary, body = lesson(LESSONS / f"{stem}{suffix}.md")
+            sql.append(f"""INSERT INTO article_translations(article_id,lang,title,summary,body_md,source,status)
+SELECT id,'{lang}',{literal(title)},{literal(summary)},{literal(body)},'ai','ready'
 FROM articles WHERE slug={slug}
 ON CONFLICT(article_id,lang) DO UPDATE SET title=EXCLUDED.title,summary=EXCLUDED.summary,
 body_md=EXCLUDED.body_md,source='ai',status='ready',updated_at=now();""")
-        expected.append({
-            "slug": slug_name,
-            "lang": "ru",
-            "title": title,
-            "body_sha256": hashlib.sha256(body.encode()).hexdigest(),
-            "summary_sha256": hashlib.sha256(summary.encode()).hexdigest(),
-        })
+            expected.append({
+                "slug": slug_name,
+                "lang": lang,
+                "title": title,
+                "body_sha256": hashlib.sha256(body.encode()).hexdigest(),
+                "summary_sha256": hashlib.sha256(summary.encode()).hexdigest(),
+            })
         sql.append(f"""INSERT INTO article_series_items(series_id,article_id,position)
 SELECT s.id,a.id,{position} FROM article_series s,articles a
 WHERE s.slug='mathematics' AND a.slug={slug}
@@ -155,7 +157,7 @@ def main():
     sql, expected = prepare()
     args.sql.write_text(sql, encoding="utf-8")
     args.expected.write_text(json.dumps(expected, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Prepared {len(expected)} Russian pages in one transaction; no remote changes")
+    print(f"Prepared {len(expected)} localized pages in one transaction; no remote changes")
 
 
 if __name__ == "__main__":

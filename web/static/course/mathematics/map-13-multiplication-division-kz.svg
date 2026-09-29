@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Көбейту мен бөлу: тең топтар және екі сұрақ</title><desc id="desc">Төрт қатардағы алты нүкте және 24-ті екі тәсілмен бөлу</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf7ff" /><stop offset="1" stop-color="#fff7e5" /></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff746a" /><stop offset="1" stop-color="#b80f18" /></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6dd8f2" /><stop offset="1" stop-color="#2369b3" /></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe89a" /><stop offset="1" stop-color="#e39a16" /></linearGradient>
+ <filter id="s" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="11" flood-color="#17324d" flood-opacity=".22" /></filter>
+</defs><rect width="1200" height="630" rx="34" fill="url(#bg)" />
+<g data-array="4x6=24" font-family="system-ui,sans-serif" text-anchor="middle" fill="#17324d">
+ <g transform="translate(90 95)" filter="url(#s)">
+  <rect width="510" height="390" rx="28" fill="#fff" stroke="#365675" stroke-width="5" />
+  <g fill="url(#blue)">
+   <circle cx="65" cy="65" r="24" /><circle cx="140" cy="65" r="24" /><circle cx="215" cy="65" r="24" /><circle cx="290" cy="65" r="24" /><circle cx="365" cy="65" r="24" /><circle cx="440" cy="65" r="24" />
+   <circle cx="65" cy="150" r="24" /><circle cx="140" cy="150" r="24" /><circle cx="215" cy="150" r="24" /><circle cx="290" cy="150" r="24" /><circle cx="365" cy="150" r="24" /><circle cx="440" cy="150" r="24" />
+   <circle cx="65" cy="235" r="24" /><circle cx="140" cy="235" r="24" /><circle cx="215" cy="235" r="24" /><circle cx="290" cy="235" r="24" /><circle cx="365" cy="235" r="24" /><circle cx="440" cy="235" r="24" />
+   <circle cx="65" cy="320" r="24" /><circle cx="140" cy="320" r="24" /><circle cx="215" cy="320" r="24" /><circle cx="290" cy="320" r="24" /><circle cx="365" cy="320" r="24" /><circle cx="440" cy="320" r="24" />
+  </g>
+ </g>
+ <g filter="url(#s)" fill="#fff" stroke="#365675" stroke-width="4"><rect x="690" y="85" width="430" height="120" rx="24" /><rect x="690" y="255" width="430" height="120" rx="24" /><rect x="690" y="425" width="430" height="120" rx="24" /></g>
+ <g font-weight="820"><text x="905" y="157" font-size="38.72">4 × 6 = 24</text><text x="905" y="327" font-size="38.72">24 ÷ 6 = 4</text><text x="905" y="497" font-size="38.72">24 ÷ 4 = 6</text></g>
+ <g font-size="20" font-weight="650" fill="#5b6b79"><text x="905" y="188">топ саны × топтағы саны = барлығы</text><text x="905" y="358">неше топ?</text><text x="905" y="528">әр топта нешеу?</text></g>
+</g>
+</svg>
