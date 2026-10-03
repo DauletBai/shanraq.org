@@ -1,0 +1,956 @@
+{
+  "language": "kk-KZ",
+  "format": "PCM WAV, 48 kHz, mono, 24-bit preferred",
+  "review": "native_speaker_required",
+  "recordings": [
+    {
+      "id": "kz-001",
+      "phrase": "Сәлем!",
+      "file": "kz-001.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "01-map-first-conversation-en.md",
+        "01-map-first-conversation-kz.md",
+        "01-map-first-conversation.md"
+      ]
+    },
+    {
+      "id": "kz-002",
+      "phrase": "Менің атым Айша.",
+      "file": "kz-002.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "01-map-first-conversation-en.md",
+        "01-map-first-conversation-kz.md",
+        "01-map-first-conversation.md"
+      ]
+    },
+    {
+      "id": "kz-003",
+      "phrase": "Сіздің атыңыз кім?",
+      "file": "kz-003.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "01-map-first-conversation-en.md",
+        "01-map-first-conversation-kz.md",
+        "01-map-first-conversation.md",
+        "06-questions-answers-en.md",
+        "06-questions-answers-kz.md",
+        "06-questions-answers.md",
+        "08-first-contact-mastery-en.md",
+        "08-first-contact-mastery-kz.md",
+        "08-first-contact-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-004",
+      "phrase": "Менің атым Данияр.",
+      "file": "kz-004.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "01-map-first-conversation-en.md",
+        "01-map-first-conversation-kz.md",
+        "01-map-first-conversation.md"
+      ]
+    },
+    {
+      "id": "kz-005",
+      "phrase": "Танысқаныма қуаныштымын.",
+      "file": "kz-005.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "01-map-first-conversation-en.md",
+        "01-map-first-conversation-kz.md",
+        "01-map-first-conversation.md",
+        "08-first-contact-mastery-en.md",
+        "08-first-contact-mastery-kz.md",
+        "08-first-contact-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-006",
+      "phrase": "Әке, іні, ұл.",
+      "file": "kz-006.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "02-nine-letters-sounds-en.md",
+        "02-nine-letters-sounds-kz.md",
+        "02-nine-letters-sounds.md"
+      ]
+    },
+    {
+      "id": "kz-007",
+      "phrase": "Өмір, үш күн.",
+      "file": "kz-007.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "02-nine-letters-sounds-en.md",
+        "02-nine-letters-sounds-kz.md",
+        "02-nine-letters-sounds.md"
+      ]
+    },
+    {
+      "id": "kz-008",
+      "phrase": "Қазақ тілі.",
+      "file": "kz-008.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "02-nine-letters-sounds-en.md",
+        "02-nine-letters-sounds-kz.md",
+        "02-nine-letters-sounds.md"
+      ]
+    },
+    {
+      "id": "kz-009",
+      "phrase": "Ғалым жаңа кітап оқыды.",
+      "file": "kz-009.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "02-nine-letters-sounds-en.md",
+        "02-nine-letters-sounds-kz.md",
+        "02-nine-letters-sounds.md"
+      ]
+    },
+    {
+      "id": "kz-010",
+      "phrase": "Қаһарман.",
+      "file": "kz-010.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "02-nine-letters-sounds-en.md",
+        "02-nine-letters-sounds-kz.md",
+        "02-nine-letters-sounds.md"
+      ]
+    },
+    {
+      "id": "kz-011",
+      "phrase": "Бала — балалар.",
+      "file": "kz-011.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "03-vowel-harmony-en.md",
+        "03-vowel-harmony-kz.md",
+        "03-vowel-harmony.md"
+      ]
+    },
+    {
+      "id": "kz-012",
+      "phrase": "Қала — қалалар.",
+      "file": "kz-012.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "03-vowel-harmony-en.md",
+        "03-vowel-harmony-kz.md",
+        "03-vowel-harmony.md"
+      ]
+    },
+    {
+      "id": "kz-013",
+      "phrase": "Әже — әжелер.",
+      "file": "kz-013.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "03-vowel-harmony-en.md",
+        "03-vowel-harmony-kz.md",
+        "03-vowel-harmony.md"
+      ]
+    },
+    {
+      "id": "kz-014",
+      "phrase": "Үй — үйлер.",
+      "file": "kz-014.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "03-vowel-harmony-en.md",
+        "03-vowel-harmony-kz.md",
+        "03-vowel-harmony.md"
+      ]
+    },
+    {
+      "id": "kz-015",
+      "phrase": "Көше — көшелер.",
+      "file": "kz-015.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "03-vowel-harmony-en.md",
+        "03-vowel-harmony-kz.md",
+        "03-vowel-harmony.md"
+      ]
+    },
+    {
+      "id": "kz-016",
+      "phrase": "Мен кітап оқимын.",
+      "file": "kz-016.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "04-sentence-skeleton-en.md",
+        "04-sentence-skeleton-kz.md",
+        "04-sentence-skeleton.md"
+      ]
+    },
+    {
+      "id": "kz-017",
+      "phrase": "Аружан мектепке барады.",
+      "file": "kz-017.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "04-sentence-skeleton-en.md",
+        "04-sentence-skeleton-kz.md",
+        "04-sentence-skeleton.md"
+      ]
+    },
+    {
+      "id": "kz-018",
+      "phrase": "Біз қазақша сөйлейміз.",
+      "file": "kz-018.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "04-sentence-skeleton-en.md",
+        "04-sentence-skeleton-kz.md",
+        "04-sentence-skeleton.md"
+      ]
+    },
+    {
+      "id": "kz-019",
+      "phrase": "Ол жаңа кітап оқиды.",
+      "file": "kz-019.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "04-sentence-skeleton-en.md",
+        "04-sentence-skeleton-kz.md",
+        "04-sentence-skeleton.md"
+      ]
+    },
+    {
+      "id": "kz-020",
+      "phrase": "Данияр бүгін үйде жұмыс істейді.",
+      "file": "kz-020.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "04-sentence-skeleton-en.md",
+        "04-sentence-skeleton-kz.md",
+        "04-sentence-skeleton.md"
+      ]
+    },
+    {
+      "id": "kz-021",
+      "phrase": "Менің атым Алина.",
+      "file": "kz-021.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "05-men-introduction-en.md",
+        "05-men-introduction-kz.md",
+        "05-men-introduction.md"
+      ]
+    },
+    {
+      "id": "kz-022",
+      "phrase": "Мен оқушымын.",
+      "file": "kz-022.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "05-men-introduction-en.md",
+        "05-men-introduction-kz.md",
+        "05-men-introduction.md"
+      ]
+    },
+    {
+      "id": "kz-023",
+      "phrase": "Мен мұғаліммін.",
+      "file": "kz-023.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "05-men-introduction-en.md",
+        "05-men-introduction-kz.md",
+        "05-men-introduction.md"
+      ]
+    },
+    {
+      "id": "kz-024",
+      "phrase": "Мен Қостанайданмын.",
+      "file": "kz-024.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "05-men-introduction-en.md",
+        "05-men-introduction-kz.md",
+        "05-men-introduction.md"
+      ]
+    },
+    {
+      "id": "kz-025",
+      "phrase": "Мен Қазақстаннанмын.",
+      "file": "kz-025.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "05-men-introduction-en.md",
+        "05-men-introduction-kz.md",
+        "05-men-introduction.md"
+      ]
+    },
+    {
+      "id": "kz-026",
+      "phrase": "Бұл не?",
+      "file": "kz-026.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "06-questions-answers-en.md",
+        "06-questions-answers-kz.md",
+        "06-questions-answers.md"
+      ]
+    },
+    {
+      "id": "kz-027",
+      "phrase": "Сіз қайда тұрасыз?",
+      "file": "kz-027.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "06-questions-answers-en.md",
+        "06-questions-answers-kz.md",
+        "06-questions-answers.md"
+      ]
+    },
+    {
+      "id": "kz-028",
+      "phrase": "Сіз қайдансыз?",
+      "file": "kz-028.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "06-questions-answers-en.md",
+        "06-questions-answers-kz.md",
+        "06-questions-answers.md"
+      ]
+    },
+    {
+      "id": "kz-029",
+      "phrase": "Сіз оқушысыз ба?",
+      "file": "kz-029.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "06-questions-answers-en.md",
+        "06-questions-answers-kz.md",
+        "06-questions-answers.md"
+      ]
+    },
+    {
+      "id": "kz-030",
+      "phrase": "Бұл мектеп пе?",
+      "file": "kz-030.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "06-questions-answers-en.md",
+        "06-questions-answers-kz.md",
+        "06-questions-answers.md"
+      ]
+    },
+    {
+      "id": "kz-031",
+      "phrase": "Кешіріңіз.",
+      "file": "kz-031.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "07-repair-politeness-en.md",
+        "07-repair-politeness-kz.md",
+        "07-repair-politeness.md"
+      ]
+    },
+    {
+      "id": "kz-032",
+      "phrase": "Түсінбедім.",
+      "file": "kz-032.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "07-repair-politeness-en.md",
+        "07-repair-politeness-kz.md",
+        "07-repair-politeness.md"
+      ]
+    },
+    {
+      "id": "kz-033",
+      "phrase": "Қайталаңызшы.",
+      "file": "kz-033.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "07-repair-politeness-en.md",
+        "07-repair-politeness-kz.md",
+        "07-repair-politeness.md",
+        "08-first-contact-mastery-en.md",
+        "08-first-contact-mastery-kz.md",
+        "08-first-contact-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-034",
+      "phrase": "Баяу айтыңызшы.",
+      "file": "kz-034.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "07-repair-politeness-en.md",
+        "07-repair-politeness-kz.md",
+        "07-repair-politeness.md"
+      ]
+    },
+    {
+      "id": "kz-035",
+      "phrase": "Бұл нені білдіреді?",
+      "file": "kz-035.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "07-repair-politeness-en.md",
+        "07-repair-politeness-kz.md",
+        "07-repair-politeness.md"
+      ]
+    },
+    {
+      "id": "kz-036",
+      "phrase": "Дұрыс айттым ба?",
+      "file": "kz-036.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "07-repair-politeness-en.md",
+        "07-repair-politeness-kz.md",
+        "07-repair-politeness.md"
+      ]
+    },
+    {
+      "id": "kz-037",
+      "phrase": "Сәлеметсіз бе!",
+      "file": "kz-037.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "08-first-contact-mastery-en.md",
+        "08-first-contact-mastery-kz.md",
+        "08-first-contact-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-038",
+      "phrase": "Менің атым…",
+      "file": "kz-038.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "08-first-contact-mastery-en.md",
+        "08-first-contact-mastery-kz.md",
+        "08-first-contact-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-039",
+      "phrase": "қыс",
+      "file": "kz-039.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "09-short-vowels-y-i-en.md",
+        "09-short-vowels-y-i-kz.md",
+        "09-short-vowels-y-i.md"
+      ]
+    },
+    {
+      "id": "kz-040",
+      "phrase": "тіс",
+      "file": "kz-040.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "09-short-vowels-y-i-en.md",
+        "09-short-vowels-y-i-kz.md",
+        "09-short-vowels-y-i.md"
+      ]
+    },
+    {
+      "id": "kz-041",
+      "phrase": "ыдыс",
+      "file": "kz-041.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "09-short-vowels-y-i-en.md",
+        "09-short-vowels-y-i-kz.md",
+        "09-short-vowels-y-i.md"
+      ]
+    },
+    {
+      "id": "kz-042",
+      "phrase": "іні",
+      "file": "kz-042.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "09-short-vowels-y-i-en.md",
+        "09-short-vowels-y-i-kz.md",
+        "09-short-vowels-y-i.md"
+      ]
+    },
+    {
+      "id": "kz-043",
+      "phrase": "ауыз — аузы",
+      "file": "kz-043.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "09-short-vowels-y-i-en.md",
+        "09-short-vowels-y-i-kz.md",
+        "09-short-vowels-y-i.md"
+      ]
+    },
+    {
+      "id": "kz-044",
+      "phrase": "орын — орны",
+      "file": "kz-044.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "09-short-vowels-y-i-en.md",
+        "09-short-vowels-y-i-kz.md",
+        "09-short-vowels-y-i.md"
+      ]
+    },
+    {
+      "id": "kz-045",
+      "phrase": "Бұл кім?",
+      "file": "kz-045.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "10-family-who-en.md",
+        "10-family-who-kz.md",
+        "10-family-who.md"
+      ]
+    },
+    {
+      "id": "kz-046",
+      "phrase": "Бұл — менің анам.",
+      "file": "kz-046.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "10-family-who-en.md",
+        "10-family-who-kz.md",
+        "10-family-who.md"
+      ]
+    },
+    {
+      "id": "kz-047",
+      "phrase": "Бұл — менің әкем.",
+      "file": "kz-047.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "10-family-who-en.md",
+        "10-family-who-kz.md",
+        "10-family-who.md"
+      ]
+    },
+    {
+      "id": "kz-048",
+      "phrase": "Бұл — менің әжем.",
+      "file": "kz-048.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "10-family-who-en.md",
+        "10-family-who-kz.md",
+        "10-family-who.md"
+      ]
+    },
+    {
+      "id": "kz-049",
+      "phrase": "Бұл — менің атам.",
+      "file": "kz-049.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "10-family-who-en.md",
+        "10-family-who-kz.md",
+        "10-family-who.md"
+      ]
+    },
+    {
+      "id": "kz-050",
+      "phrase": "Бұл — менің інім.",
+      "file": "kz-050.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "10-family-who-en.md",
+        "10-family-who-kz.md",
+        "10-family-who.md",
+        "16-people-home-mastery-en.md",
+        "16-people-home-mastery-kz.md",
+        "16-people-home-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-051",
+      "phrase": "Бұл кімнің кітабы?",
+      "file": "kz-051.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "11-belonging-possessives-en.md",
+        "11-belonging-possessives-kz.md",
+        "11-belonging-possessives.md"
+      ]
+    },
+    {
+      "id": "kz-052",
+      "phrase": "Бұл — менің кітабым.",
+      "file": "kz-052.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "11-belonging-possessives-en.md",
+        "11-belonging-possessives-kz.md",
+        "11-belonging-possessives.md"
+      ]
+    },
+    {
+      "id": "kz-053",
+      "phrase": "Бұл — сіздің кітабыңыз.",
+      "file": "kz-053.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "11-belonging-possessives-en.md",
+        "11-belonging-possessives-kz.md",
+        "11-belonging-possessives.md"
+      ]
+    },
+    {
+      "id": "kz-054",
+      "phrase": "Бұл — оның кітабы.",
+      "file": "kz-054.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "11-belonging-possessives-en.md",
+        "11-belonging-possessives-kz.md",
+        "11-belonging-possessives.md"
+      ]
+    },
+    {
+      "id": "kz-055",
+      "phrase": "Бұл — Аружанның кітабы.",
+      "file": "kz-055.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "11-belonging-possessives-en.md",
+        "11-belonging-possessives-kz.md",
+        "11-belonging-possessives.md"
+      ]
+    },
+    {
+      "id": "kz-056",
+      "phrase": "Менің үйім үлкен.",
+      "file": "kz-056.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "11-belonging-possessives-en.md",
+        "11-belonging-possessives-kz.md",
+        "11-belonging-possessives.md"
+      ]
+    },
+    {
+      "id": "kz-057",
+      "phrase": "бала — балалар",
+      "file": "kz-057.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "12-plural-families-en.md",
+        "12-plural-families-kz.md",
+        "12-plural-families.md"
+      ]
+    },
+    {
+      "id": "kz-058",
+      "phrase": "бөлме — бөлмелер",
+      "file": "kz-058.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "12-plural-families-en.md",
+        "12-plural-families-kz.md",
+        "12-plural-families.md"
+      ]
+    },
+    {
+      "id": "kz-059",
+      "phrase": "адам — адамдар",
+      "file": "kz-059.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "12-plural-families-en.md",
+        "12-plural-families-kz.md",
+        "12-plural-families.md"
+      ]
+    },
+    {
+      "id": "kz-060",
+      "phrase": "гүл — гүлдер",
+      "file": "kz-060.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "12-plural-families-en.md",
+        "12-plural-families-kz.md",
+        "12-plural-families.md"
+      ]
+    },
+    {
+      "id": "kz-061",
+      "phrase": "кітап — кітаптар",
+      "file": "kz-061.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "12-plural-families-en.md",
+        "12-plural-families-kz.md",
+        "12-plural-families.md"
+      ]
+    },
+    {
+      "id": "kz-062",
+      "phrase": "есік — есіктер",
+      "file": "kz-062.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "12-plural-families-en.md",
+        "12-plural-families-kz.md",
+        "12-plural-families.md"
+      ]
+    },
+    {
+      "id": "kz-063",
+      "phrase": "бір, екі, үш, төрт, бес",
+      "file": "kz-063.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "13-numbers-age-en.md",
+        "13-numbers-age-kz.md",
+        "13-numbers-age.md"
+      ]
+    },
+    {
+      "id": "kz-064",
+      "phrase": "алты, жеті, сегіз, тоғыз, он",
+      "file": "kz-064.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "13-numbers-age-en.md",
+        "13-numbers-age-kz.md",
+        "13-numbers-age.md"
+      ]
+    },
+    {
+      "id": "kz-065",
+      "phrase": "Үйде үш бөлме бар.",
+      "file": "kz-065.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "13-numbers-age-en.md",
+        "13-numbers-age-kz.md",
+        "13-numbers-age.md",
+        "14-home-locative-en.md",
+        "14-home-locative-kz.md",
+        "14-home-locative.md"
+      ]
+    },
+    {
+      "id": "kz-066",
+      "phrase": "Үстелде төрт кітап бар.",
+      "file": "kz-066.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "13-numbers-age-en.md",
+        "13-numbers-age-kz.md",
+        "13-numbers-age.md"
+      ]
+    },
+    {
+      "id": "kz-067",
+      "phrase": "Ол жеті жаста.",
+      "file": "kz-067.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "13-numbers-age-en.md",
+        "13-numbers-age-kz.md",
+        "13-numbers-age.md"
+      ]
+    },
+    {
+      "id": "kz-068",
+      "phrase": "Мен он жастамын.",
+      "file": "kz-068.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "13-numbers-age-en.md",
+        "13-numbers-age-kz.md",
+        "13-numbers-age.md"
+      ]
+    },
+    {
+      "id": "kz-069",
+      "phrase": "Анам ас үйде.",
+      "file": "kz-069.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "14-home-locative-en.md",
+        "14-home-locative-kz.md",
+        "14-home-locative.md"
+      ]
+    },
+    {
+      "id": "kz-070",
+      "phrase": "Кітап үстелде.",
+      "file": "kz-070.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "14-home-locative-en.md",
+        "14-home-locative-kz.md",
+        "14-home-locative.md"
+      ]
+    },
+    {
+      "id": "kz-071",
+      "phrase": "Гүл терезеде.",
+      "file": "kz-071.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "14-home-locative-en.md",
+        "14-home-locative-kz.md",
+        "14-home-locative.md"
+      ]
+    },
+    {
+      "id": "kz-072",
+      "phrase": "Киім шкафта.",
+      "file": "kz-072.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "14-home-locative-en.md",
+        "14-home-locative-kz.md",
+        "14-home-locative.md"
+      ]
+    },
+    {
+      "id": "kz-073",
+      "phrase": "Бала мектепте.",
+      "file": "kz-073.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "14-home-locative-en.md",
+        "14-home-locative-kz.md",
+        "14-home-locative.md"
+      ]
+    },
+    {
+      "id": "kz-074",
+      "phrase": "Бөлмеде үстел бар.",
+      "file": "kz-074.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "15-there-is-have-en.md",
+        "15-there-is-have-kz.md",
+        "15-there-is-have.md"
+      ]
+    },
+    {
+      "id": "kz-075",
+      "phrase": "Үстелде кітап жоқ.",
+      "file": "kz-075.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "15-there-is-have-en.md",
+        "15-there-is-have-kz.md",
+        "15-there-is-have.md"
+      ]
+    },
+    {
+      "id": "kz-076",
+      "phrase": "Үйде ас үй бар ма?",
+      "file": "kz-076.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "15-there-is-have-en.md",
+        "15-there-is-have-kz.md",
+        "15-there-is-have.md"
+      ]
+    },
+    {
+      "id": "kz-077",
+      "phrase": "Иә, ас үй бар.",
+      "file": "kz-077.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "15-there-is-have-en.md",
+        "15-there-is-have-kz.md",
+        "15-there-is-have.md"
+      ]
+    },
+    {
+      "id": "kz-078",
+      "phrase": "Жоқ, балкон жоқ.",
+      "file": "kz-078.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "15-there-is-have-en.md",
+        "15-there-is-have-kz.md",
+        "15-there-is-have.md"
+      ]
+    },
+    {
+      "id": "kz-079",
+      "phrase": "Менің інім бар.",
+      "file": "kz-079.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "15-there-is-have-en.md",
+        "15-there-is-have-kz.md",
+        "15-there-is-have.md"
+      ]
+    },
+    {
+      "id": "kz-080",
+      "phrase": "Бұл — менің отбасым.",
+      "file": "kz-080.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "16-people-home-mastery-en.md",
+        "16-people-home-mastery-kz.md",
+        "16-people-home-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-081",
+      "phrase": "Үйде төрт адам бар.",
+      "file": "kz-081.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "16-people-home-mastery-en.md",
+        "16-people-home-mastery-kz.md",
+        "16-people-home-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-082",
+      "phrase": "Оның бөлмесі үлкен.",
+      "file": "kz-082.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "16-people-home-mastery-en.md",
+        "16-people-home-mastery-kz.md",
+        "16-people-home-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-083",
+      "phrase": "Үстелде екі кітап бар.",
+      "file": "kz-083.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "16-people-home-mastery-en.md",
+        "16-people-home-mastery-kz.md",
+        "16-people-home-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-084",
+      "phrase": "Ас үйде гүл жоқ.",
+      "file": "kz-084.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "16-people-home-mastery-en.md",
+        "16-people-home-mastery-kz.md",
+        "16-people-home-mastery.md"
+      ]
+    }
+  ],
+  "candidate": {
+    "voice": "Aru",
+    "locale": "kk-KZ",
+    "rate_words_per_minute": 165,
+    "processing": "local macOS voice; 48 kHz mono PCM; loudness normalised",
+    "approval": "pending_owner_and_native_speaker_review"
+  }
+}

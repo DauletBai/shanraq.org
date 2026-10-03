@@ -4,6 +4,8 @@ from pathlib import Path
 import re
 import unittest
 import xml.etree.ElementTree as ET
+from urllib.parse import unquote
+import wave
 
 from tools.course import prepare_kazakh_language
 
@@ -109,6 +111,30 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertTrue(cover.is_file())
         self.assertGreater(cover.stat().st_size, 300_000)
         self.assertEqual(cover.read_bytes()[:4], b"RIFF")
+
+    def test_every_spoken_phrase_has_a_reviewable_audio_candidate(self):
+        audio = MAPS / "audio"
+        manifest = json.loads((audio / "manifest.json").read_text(encoding="utf-8"))
+        recordings = manifest["recordings"]
+
+        lesson_phrases = set()
+        for path in LESSONS.glob("*.md"):
+            for encoded in re.findall(r"#speak-kz=([^\)]+)", path.read_text(encoding="utf-8")):
+                lesson_phrases.add(unquote(encoded))
+
+        self.assertEqual(len(recordings), 84)
+        self.assertEqual({row["phrase"] for row in recordings}, lesson_phrases)
+        review = (audio / "review.html").read_text(encoding="utf-8")
+        for row in recordings:
+            self.assertEqual(row["status"], "candidate_review")
+            path = audio / row["file"]
+            self.assertTrue(path.is_file(), path)
+            with wave.open(str(path), "rb") as wav:
+                self.assertEqual(wav.getnchannels(), 1, path)
+                self.assertEqual(wav.getframerate(), 48_000, path)
+                self.assertEqual(wav.getsampwidth(), 3, path)
+                self.assertGreater(wav.getnframes(), 4_800, path)
+            self.assertIn(f'src="{row["file"]}"', review)
 
 
 if __name__ == "__main__":
