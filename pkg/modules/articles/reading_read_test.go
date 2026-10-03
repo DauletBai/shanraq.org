@@ -1,6 +1,12 @@
 package articles
 
-import "testing"
+import (
+	"context"
+	"testing"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgxpool"
+)
 
 // A fifteen-minute article: 2700-odd words at the 180 a minute the page prints
 // under the title.
@@ -39,5 +45,46 @@ func TestReadingMinutesMatchesWhatThePageClaims(t *testing.T) {
 	}
 	if got, want := readingMinutes(body), 15; got != want {
 		t.Errorf("readingMinutes(2700 words) = %d, want %d", got, want)
+	}
+}
+
+// PostgreSQL returns SUM(bigint) as numeric. Dividing that value by 60 keeps a
+// fractional scale, which pgx cannot scan into the integer shown by the admin
+// dashboard. Exercise the real result type so this does not silently return to
+// a warning and an empty reading total.
+func TestReadTotalsConvertsSecondsToWholeMinutes(t *testing.T) {
+	ctx := context.Background()
+	pool, err := pgxpool.New(ctx, requireTestDB(t))
+	if err != nil {
+		t.Fatalf("connect: %v", err)
+	}
+	defer pool.Close()
+
+	conn, err := pool.Acquire(ctx)
+	if err != nil {
+		t.Fatalf("acquire: %v", err)
+	}
+	defer conn.Release()
+
+	if _, err := conn.Exec(ctx, `
+		CREATE TEMP TABLE article_reads (
+			article_id uuid PRIMARY KEY,
+			finished bigint NOT NULL,
+			samples bigint NOT NULL,
+			seconds bigint NOT NULL
+		);
+		INSERT INTO article_reads(article_id, finished, samples, seconds)
+		VALUES ($1, 1, 2, 119)`, uuid.New()); err != nil {
+		t.Fatalf("fixture: %v", err)
+	}
+	defer func() { _, _ = conn.Exec(ctx, `DROP TABLE article_reads`) }()
+
+	got, err := (&Store{db: conn}).ReadTotals(ctx)
+	if err != nil {
+		t.Fatalf("ReadTotals: %v", err)
+	}
+	want := (ReadTotals{Samples: 2, Finished: 1, Minutes: 1})
+	if got != want {
+		t.Fatalf("ReadTotals = %+v, want %+v", got, want)
 	}
 }

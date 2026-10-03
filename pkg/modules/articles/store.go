@@ -902,7 +902,7 @@ func (s *Store) ReadTotals(ctx context.Context) (ReadTotals, error) {
 	var t ReadTotals
 	err := s.db.QueryRow(ctx, `
 		SELECT COALESCE(SUM(samples), 0), COALESCE(SUM(finished), 0),
-		       COALESCE(SUM(seconds), 0) / 60
+		       FLOOR(COALESCE(SUM(seconds), 0) / 60.0)::bigint
 		FROM article_reads`).Scan(&t.Samples, &t.Finished, &t.Minutes)
 	if err != nil {
 		return ReadTotals{}, fmt.Errorf("read totals: %w", err)
