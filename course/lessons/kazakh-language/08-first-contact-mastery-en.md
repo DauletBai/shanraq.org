@@ -74,4 +74,4 @@ Assemble project version `0.1`: character card, three sentences, five questions,
 - After seven days, take the delayed attempt: the goal is 7 of 10 actions without reading.
 - After thirty days, open an unprepared exchange and mark which support is no longer needed.
 
-[Course contents](/course/kazakh-language?lang=en)
+[Next lesson: Ы and І: a quiet sound is not a silent letter](/read/kazakh-language-09-short-vowels-y-i?lang=en)

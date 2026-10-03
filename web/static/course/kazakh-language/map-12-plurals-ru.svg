@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Два сигнала — одно окончание">
+      <defs>
+        <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#eaf4f9"/></linearGradient>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#8fb8d0" stroke-width="1" opacity=".28"/></pattern>
+        <filter id="cardShadow" x="-15%" y="-15%" width="140%" height="150%"><feDropShadow dx="0" dy="15" stdDeviation="13" flood-color="#17364e" flood-opacity=".20"/></filter>
+        <filter id="arrowShadow" x="-30%" y="-50%" width="180%" height="200%"><feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#69171a" flood-opacity=".25"/></filter>
+      </defs>
+      <rect width="1600" height="900" rx="34" fill="url(#paper)"/>
+      <rect width="1600" height="900" rx="34" fill="url(#grid)"/>
+      <path d="M66 218 H1534" stroke="#c83236" stroke-width="4" opacity=".75"/>
+      <text x="800" y="102" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="52" font-weight="820" fill="#17364e">Два сигнала — одно окончание</text>
+      <text x="800" y="164" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="540" fill="#4b697d">последняя гласная выбирает а/е, последний звук — л/д/т</text>
+      <g font-family="Inter,Arial,sans-serif"><g filter="url(#cardShadow)">
+          <path d="M112 276 H478 Q508 276 508 306 V626 Q508 654 480 654 H112 Q88 654 88 630 V300 Q88 276 112 276Z" fill="#fff7dd" stroke="#e4a83e" stroke-width="3"/>
+          <path d="M108 296 H488 V374 H108Z" rx="14" fill="#e4a83e" opacity=".14"/>
+          <path d="M106 630 H490" stroke="#e4a83e" stroke-width="10" opacity=".18" stroke-linecap="round"/>
+          <text x="298" y="346" text-anchor="middle" font-size="29" font-weight="800" fill="#17364e">1 · гармония</text>
+          <text text-anchor="middle" font-size="26" font-weight="600" fill="#183b52"><tspan x="298" y="432">жуан → а</tspan><tspan x="298" y="480">жіңішке → е</tspan></text>
+        </g><g filter="url(#arrowShadow)">
+              <path d="M530 463 H565" stroke="#c83236" stroke-width="8" stroke-linecap="round"/>
+              <path d="M556 449 L574 463 L556 477" fill="none" stroke="#c83236" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </g><g filter="url(#cardShadow)">
+          <path d="M614 276 H980 Q1010 276 1010 306 V626 Q1010 654 982 654 H614 Q590 654 590 630 V300 Q590 276 614 276Z" fill="#e8f6ff" stroke="#2c91bd" stroke-width="3"/>
+          <path d="M610 296 H990 V374 H610Z" rx="14" fill="#2c91bd" opacity=".14"/>
+          <path d="M608 630 H992" stroke="#2c91bd" stroke-width="10" opacity=".18" stroke-linecap="round"/>
+          <text x="800" y="346" text-anchor="middle" font-size="29" font-weight="800" fill="#17364e">2 · последний звук</text>
+          <text text-anchor="middle" font-size="24" font-weight="600" fill="#183b52"><tspan x="800" y="432">гласн., й/р/у → л</tspan><tspan x="800" y="480">л/м/н/ң/з/ж → д</tspan><tspan x="800" y="528">глухой → т</tspan></text>
+        </g><g filter="url(#arrowShadow)">
+              <path d="M1032 463 H1067" stroke="#c83236" stroke-width="8" stroke-linecap="round"/>
+              <path d="M1058 449 L1076 463 L1058 477" fill="none" stroke="#c83236" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </g><g filter="url(#cardShadow)">
+          <path d="M1116 276 H1482 Q1512 276 1512 306 V626 Q1512 654 1484 654 H1116 Q1092 654 1092 630 V300 Q1092 276 1116 276Z" fill="#eaf8ed" stroke="#3e9c61" stroke-width="3"/>
+          <path d="M1112 296 H1492 V374 H1112Z" rx="14" fill="#3e9c61" opacity=".14"/>
+          <path d="M1110 630 H1494" stroke="#3e9c61" stroke-width="10" opacity=".18" stroke-linecap="round"/>
+          <text x="1302" y="346" text-anchor="middle" font-size="29" font-weight="800" fill="#17364e">результат</text>
+          <text text-anchor="middle" font-size="26" font-weight="600" fill="#183b52"><tspan x="1302" y="432">балалар · адамдар</tspan><tspan x="1302" y="480">кітаптар · үйлер</tspan></text>
+        </g></g>
+      <g transform="translate(300 732)" filter="url(#cardShadow)">
+        <rect width="1000" height="92" rx="22" fill="#17364e"/>
+        <path d="M24 18 H976" stroke="#5fa4c7" stroke-width="2" opacity=".55"/>
+        <text x="500" y="59" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="29" font-weight="760" fill="#fff">КӨР → ТЫҢДА → АЙТ → ҚОЛДАН → ТЕКСЕР</text>
+      </g>
+    </svg>

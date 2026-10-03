@@ -523,6 +523,15 @@ def main():
             if next_entry:
                 nxt_data = next_entry[2][lang]
                 nxt = (next_entry[0], nxt_data["title"])
+            else:
+                nxt = (
+                    "09-short-vowels-y-i",
+                    {
+                        "ru": "Ы и І: тихий звук не означает немую букву",
+                        "kz": "Ы мен І: бәсең дыбыс — дыбыссыз әріп емес",
+                        "en": "Ы and І: a quiet sound is not a silent letter",
+                    }[lang],
+                )
             (OUT / f"{stem}{suffix}.md").write_text(
                 render(idx + 1, stem, map_stem, lang, data, nxt), encoding="utf-8")
     print(f"Generated {len(lessons) * 3} localized Kazakh lesson pages")

@@ -18,7 +18,7 @@
   "publication_policy": "complete-block-only",
   "blocks": [
     {"id":"first-contact","range":"1-8","status":"ready","lexical_target":120,"release":"0.1","title_kz":"Алғашқы қарым-қатынас","title_ru":"Первый контакт","title_en":"First contact"},
-    {"id":"people-home","range":"9-16","status":"planned","lexical_target":300,"release":"0.2","title_kz":"Адамдар және үй","title_ru":"Люди и дом","title_en":"People and home"},
+    {"id":"people-home","range":"9-16","status":"ready","lexical_target":300,"release":"0.2","title_kz":"Адамдар және үй","title_ru":"Люди и дом","title_en":"People and home"},
     {"id":"school-city","range":"17-24","status":"planned","lexical_target":520,"release":"0.3","title_kz":"Мектеп және қала","title_ru":"Школа и город","title_en":"School and city"},
     {"id":"day-services","range":"25-32","status":"planned","lexical_target":800,"release":"1.0","title_kz":"Күн және қызметтер","title_ru":"День и услуги","title_en":"Daily life and services"},
     {"id":"space-cases","range":"33-40","status":"planned","lexical_target":1100,"release":"1.1","title_kz":"Кеңістік және септіктер","title_ru":"Пространство и падежи","title_en":"Space and cases"},
@@ -37,5 +37,15 @@
     {"number":6,"id":"questions-answers","prerequisites":["men-introduction"],"title_kz":"Сұрақ пен жауап: кім, не, қайда","title_ru":"Вопрос и ответ: кто, что, где","title_en":"Questions and answers: who, what, and where"},
     {"number":7,"id":"repair-politeness","prerequisites":["questions-answers"],"title_kz":"Әңгімені түзету және сыпайылық","title_ru":"Как восстановить разговор и говорить вежливо","title_en":"Repairing a conversation and speaking politely"},
     {"number":8,"id":"first-contact-mastery","prerequisites":["repair-politeness"],"title_kz":"Бақылау нүктесі: алғашқы танысу","title_ru":"Контрольная точка: первое знакомство","title_en":"Mastery checkpoint: a first meeting"}
+  ],
+  "second_block_lessons": [
+    {"number":9,"id":"short-vowels-y-i","prerequisites":["first-contact-mastery"],"title_kz":"Ы мен І: бәсең дыбыс — дыбыссыз әріп емес","title_ru":"Ы и І: тихий звук не означает немую букву","title_en":"Ы and І: a quiet sound is not a silent letter"},
+    {"number":10,"id":"family-who","prerequisites":["short-vowels-y-i"],"title_kz":"Бұл кім? Отбасы туралы дәл әрі әдеппен сөйлесеміз","title_ru":"Это кто? Говорим о семье точно и бережно","title_en":"Бұл кім? Talking about family accurately and respectfully"},
+    {"number":11,"id":"belonging-possessives","prerequisites":["family-who"],"title_kz":"Бұл кімнің үйі? Меншіктілік байланысын құрамыз","title_ru":"Чей это дом? Принадлежность без отдельного глагола «иметь»","title_en":"Whose home is it? Building possession as a two-sided link"},
+    {"number":12,"id":"plural-families","prerequisites":["belonging-possessives"],"title_kz":"Біреу ме, бірнешеу ме: көптік жалғауын жүйемен таңдаймыз","title_ru":"Один или несколько: шесть окончаний множественного числа без зубрёжки","title_en":"One or several: choosing six plural endings as one system"},
+    {"number":13,"id":"numbers-age","prerequisites":["plural-families"],"title_kz":"Адамдар мен бөлмелерді санаймыз: сан, жас және қысқа ырғақ","title_ru":"Считаем людей и комнаты: число, возраст и короткий ритм","title_en":"Counting people and rooms: numbers, age, and a short rhythm"},
+    {"number":14,"id":"home-locative","prerequisites":["numbers-age"],"title_kz":"Зат қайда тұр? Үй және -да/-де/-та/-те жалғаулары","title_ru":"Где находится предмет? Дом и окончания -да/-де/-та/-те","title_en":"Where is it? The home and -да/-де/-та/-те"},
+    {"number":15,"id":"there-is-have","prerequisites":["home-locative"],"title_kz":"Үйде не бар? «Бар» мен «жоқ» арқылы табиғи айтамыз","title_ru":"Что есть дома? Бар и жоқ вместо дословного «иметь»","title_en":"What is in the home? Бар and жоқ instead of a translated ‘have’"},
+    {"number":16,"id":"people-home-mastery","prerequisites":["there-is-have"],"title_kz":"Бақылау нүктесі: адамдар мен үйді дайын мәтінсіз сипаттау","title_ru":"Контрольная точка: люди и дом без готового текста","title_en":"Mastery checkpoint: people and home without a script"}
   ]
 }

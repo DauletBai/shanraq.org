@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the first Kazakh-language block as one atomic SQL publication."""
+"""Prepare the completed Kazakh-language blocks as one atomic publication."""
 import argparse
 import hashlib
 import json
@@ -17,20 +17,32 @@ ROUTE = (
     ("06-questions-answers", "kazakh-language-06-questions-answers", 60),
     ("07-repair-politeness", "kazakh-language-07-repair-politeness", 70),
     ("08-first-contact-mastery", "kazakh-language-08-first-contact-mastery", 80),
+    ("09-short-vowels-y-i", "kazakh-language-09-short-vowels-y-i", 90),
+    ("10-family-who", "kazakh-language-10-family-who", 100),
+    ("11-belonging-possessives", "kazakh-language-11-belonging-possessives", 110),
+    ("12-plural-families", "kazakh-language-12-plural-families", 120),
+    ("13-numbers-age", "kazakh-language-13-numbers-age", 130),
+    ("14-home-locative", "kazakh-language-14-home-locative", 140),
+    ("15-there-is-have", "kazakh-language-15-there-is-have", 150),
+    ("16-people-home-mastery", "kazakh-language-16-people-home-mastery", 160),
 )
-COVER = "/static/covers/school/kazakh-language/foundations/01-first-conversation.webp"
+SERIES_COVER = "/static/covers/school/kazakh-language/foundations/01-first-conversation.webp"
+BLOCK_COVERS = {
+    1: SERIES_COVER,
+    2: "/static/covers/school/kazakh-language/people-home/02-people-home.webp",
+}
 META = {
     "ru": (
         "Казахский язык: начинаем говорить с первой встречи",
-        "Бесплатный практический курс казахского языка от первых звуков и знакомства до самостоятельного общения. Первый блок содержит восемь уроков, слуховые образцы, опорные схемы, диалоги и проект «Моя среда».",
+        "Бесплатный практический курс казахского языка от первых звуков до самостоятельного общения. Первые 16 уроков учат знакомиться, слышать естественные ы/і, рассказывать о людях и доме, а также развивают проект «Моя среда».",
     ),
     "kz": (
         "Қазақ тілі: алғашқы кездесуден бастап сөйлейміз",
-        "Алғашқы дыбыстар мен танысудан дербес қарым-қатынасқа дейінгі тегін тәжірибелік қазақ тілі курсы. Бірінші бөлімде сегіз сабақ, тыңдалым үлгілері, тірек сызбалар, диалогтар және «Менің ортам» жобасы бар.",
+        "Алғашқы дыбыстардан дербес қарым-қатынасқа дейінгі тегін тәжірибелік қазақ тілі курсы. Алғашқы 16 сабақ танысуды, табиғи ы/і айтылымын, адамдар мен үй туралы сөйлеуді және «Менің ортам» жобасын дамытады.",
     ),
     "en": (
         "Kazakh: start speaking from the first meeting",
-        "A free practical Kazakh course from first sounds and introductions to independent communication. Block one contains eight lessons, listening models, support maps, dialogues, and the continuing My World project.",
+        "A free practical Kazakh course from first sounds to independent communication. The first 16 lessons cover introductions, natural ы/і, people and home, and the continuing My World project.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -54,8 +66,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 8:
-        raise ValueError("the first release must contain exactly eight lessons")
+    if len(ROUTE) != 16:
+        raise ValueError("the current release must contain exactly sixteen lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-kazakh-language-course'));"]
     slugs = ",".join(literal(slug) for _, slug, _ in ROUTE)
     sql.append(f"""DO $guard$
@@ -74,7 +86,7 @@ BEGIN
   END IF;
 END $guard$;""")
     sql.append(f"""INSERT INTO article_series(slug,cover_url,status,code_lang)
-VALUES('kazakh-language',{literal(COVER)},'published','kazakh')
+VALUES('kazakh-language',{literal(SERIES_COVER)},'published','kazakh')
 ON CONFLICT(slug) DO UPDATE SET cover_url=EXCLUDED.cover_url,status='published',
 code_lang='kazakh',updated_at=now();""")
     for lang, (title, summary) in META.items():
@@ -86,8 +98,9 @@ SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
     for stem, slug_name, position in ROUTE:
         slug = literal(slug_name)
+        cover = BLOCK_COVERS[1 if position <= 80 else 2]
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
-SELECT id,{slug},'ru','society','education',{literal(COVER)},'published',now()
+SELECT id,{slug},'ru','society','education',{literal(cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'
 ON CONFLICT(slug) DO UPDATE SET category='society',subcategory='education',
 cover_url=EXCLUDED.cover_url,status='published',updated_at=now(),

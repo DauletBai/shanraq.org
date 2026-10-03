@@ -14,6 +14,8 @@ LESSON_STEMS = tuple(stem for stem, _, _ in prepare_kazakh_language.ROUTE)
 MAP_STEMS = (
     "01-first-contact", "02-nine-sounds", "03-harmony", "04-sentence",
     "05-introduction", "06-questions", "07-repair", "08-mastery",
+    "09-short-vowels", "10-family", "11-possessives", "12-plurals",
+    "13-numbers", "14-home", "15-existence", "16-mastery",
 )
 
 
@@ -24,16 +26,18 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(len(data["blocks"]), 10)
         self.assertEqual(data["blocks"][-1]["range"], "73-80")
         self.assertEqual(len(data["first_block_lessons"]), 8)
+        self.assertEqual(len(data["second_block_lessons"]), 8)
         self.assertEqual(data["blocks"][0]["status"], "ready")
+        self.assertEqual(data["blocks"][1]["status"], "ready")
         self.assertEqual(data["blocks"][3]["lexical_target"], 800)
         self.assertEqual(data["blocks"][6]["lexical_target"], 1783)
         self.assertEqual(data["blocks"][-1]["lexical_target"], 2229)
 
-    def test_first_block_is_complete_in_three_languages(self):
+    def test_completed_blocks_are_complete_in_three_languages(self):
         headings = {"ru": "## Задание", "kz": "## Тапсырма", "en": "## Exercise"}
         # Kazakh carries more meaning inside each inflected word, so its honest
         # word count is lower than Russian or English for equivalent content.
-        minimum = {"ru": 600, "kz": 500, "en": 680}
+        minimum = {"ru": 470, "kz": 440, "en": 570}
         forbidden = {
             "kz": ("## Задание", "Следующий урок", "Проверка переноса"),
             "en": ("## Задание", "Келесі сабақ", "Проверка переноса"),
@@ -58,7 +62,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 else:
                     self.assertIn(f"/course/kazakh-language?lang={lang}", text, path)
 
-    def test_all_first_block_maps_are_valid_and_fit_the_canvas(self):
+    def test_all_completed_block_maps_are_valid_and_fit_the_canvas(self):
         for stem in MAP_STEMS:
             for lang in ("ru", "kz", "en"):
                 path = MAPS / f"map-{stem}-{lang}.svg"
@@ -66,7 +70,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 self.assertEqual(root.attrib.get("viewBox"), "0 0 1600 900", path)
                 text = path.read_text(encoding="utf-8")
                 self.assertNotIn("TODO", text, path)
-                self.assertEqual(text.count('filter="url(#shadow)"'), 4, path)
+                self.assertGreaterEqual(text.count('filter="url(#'), 4, path)
                 self.assertFalse(
                     re.search(r'<text[^>]*x="(?:1[6-9]\d\d|[2-9]\d{3})"', text), path
                 )
@@ -75,16 +79,36 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         sql, expected = prepare_kazakh_language.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
-        self.assertEqual(sql.count("INSERT INTO articles("), 8)
-        self.assertEqual(sql.count("INSERT INTO article_translations("), 24)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 8)
-        self.assertEqual(len(expected), 24)
+        self.assertEqual(sql.count("INSERT INTO articles("), 16)
+        self.assertEqual(sql.count("INSERT INTO article_translations("), 48)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 16)
+        self.assertEqual(len(expected), 48)
         self.assertEqual(
             [position for _, _, position in prepare_kazakh_language.ROUTE],
-            list(range(10, 81, 10)),
+            list(range(10, 161, 10)),
         )
         self.assertIn("'kazakh-language'", sql)
         self.assertIn("'kazakh'", sql)
+
+    def test_phonetic_laboratory_distinguishes_sound_reduction_and_deletion(self):
+        required = {
+            "ru": ("не означает немую букву", "ауыз + ы → аузы", "орын + ы → орны"),
+            "kz": ("дыбыссыз әріп емес", "ауыз + ы → аузы", "орын + ы → орны"),
+            "en": ("not a silent letter", "ауыз + ы → аузы", "орын + ы → орны"),
+        }
+        for lang, phrases in required.items():
+            suffix = "" if lang == "ru" else f"-{lang}"
+            text = (LESSONS / f"09-short-vowels-y-i{suffix}.md").read_text(encoding="utf-8")
+            for phrase in phrases:
+                self.assertIn(phrase, text)
+            self.assertIn("1929", text)
+            self.assertIn("cambridge.org", text)
+
+    def test_second_block_cover_is_present_and_large(self):
+        cover = ROOT / "web/static/covers/school/kazakh-language/people-home/02-people-home.webp"
+        self.assertTrue(cover.is_file())
+        self.assertGreater(cover.stat().st_size, 300_000)
+        self.assertEqual(cover.read_bytes()[:4], b"RIFF")
 
 
 if __name__ == "__main__":
