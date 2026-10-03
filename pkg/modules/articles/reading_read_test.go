@@ -72,10 +72,13 @@ func TestReadTotalsConvertsSecondsToWholeMinutes(t *testing.T) {
 			finished bigint NOT NULL,
 			samples bigint NOT NULL,
 			seconds bigint NOT NULL
-		);
+		)`); err != nil {
+		t.Fatalf("create fixture table: %v", err)
+	}
+	if _, err := conn.Exec(ctx, `
 		INSERT INTO article_reads(article_id, finished, samples, seconds)
 		VALUES ($1, 1, 2, 119)`, uuid.New()); err != nil {
-		t.Fatalf("fixture: %v", err)
+		t.Fatalf("insert fixture: %v", err)
 	}
 	defer func() { _, _ = conn.Exec(ctx, `DROP TABLE article_reads`) }()
 
