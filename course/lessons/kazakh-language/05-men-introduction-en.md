@@ -14,15 +14,15 @@ A first meeting does not require a long biography. Three anchors are enough: wha
 
 ## Listen and respond
 
-<button type="button" class="speak-kz" data-speak-kz="Менің атым Алина.">Listen: Менің атым Алина.</button> — my name is Alina
+[Listen: Менің атым Алина.](#speak-kz=%D0%9C%D0%B5%D0%BD%D1%96%D2%A3%20%D0%B0%D1%82%D1%8B%D0%BC%20%D0%90%D0%BB%D0%B8%D0%BD%D0%B0.) — my name is Alina
 
-<button type="button" class="speak-kz" data-speak-kz="Мен оқушымын.">Listen: Мен оқушымын.</button> — I am a student
+[Listen: Мен оқушымын.](#speak-kz=%D0%9C%D0%B5%D0%BD%20%D0%BE%D2%9B%D1%83%D1%88%D1%8B%D0%BC%D1%8B%D0%BD.) — I am a student
 
-<button type="button" class="speak-kz" data-speak-kz="Мен мұғаліммін.">Listen: Мен мұғаліммін.</button> — I am a teacher
+[Listen: Мен мұғаліммін.](#speak-kz=%D0%9C%D0%B5%D0%BD%20%D0%BC%D2%B1%D2%93%D0%B0%D0%BB%D1%96%D0%BC%D0%BC%D1%96%D0%BD.) — I am a teacher
 
-<button type="button" class="speak-kz" data-speak-kz="Мен Қостанайданмын.">Listen: Мен Қостанайданмын.</button> — I am from Kostanay
+[Listen: Мен Қостанайданмын.](#speak-kz=%D0%9C%D0%B5%D0%BD%20%D2%9A%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%B0%D0%B9%D0%B4%D0%B0%D0%BD%D0%BC%D1%8B%D0%BD.) — I am from Kostanay
 
-<button type="button" class="speak-kz" data-speak-kz="Мен Қазақстаннанмын.">Listen: Мен Қазақстаннанмын.</button> — I am from Kazakhstan
+[Listen: Мен Қазақстаннанмын.](#speak-kz=%D0%9C%D0%B5%D0%BD%20%D2%9A%D0%B0%D0%B7%D0%B0%D2%9B%D1%81%D1%82%D0%B0%D0%BD%D0%BD%D0%B0%D0%BD%D0%BC%D1%8B%D0%BD.) — I am from Kazakhstan
 
 ## How to practise
 

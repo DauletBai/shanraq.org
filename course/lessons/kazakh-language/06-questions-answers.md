@@ -14,17 +14,17 @@ _Lead (summary):_ **Вы построите вопросы с `кім`, `не`, 
 
 ## Послушайте и ответьте
 
-<button type="button" class="speak-kz" data-speak-kz="Сіздің атыңыз кім?">Слушать: Сіздің атыңыз кім?</button> — как вас зовут?
+[Слушать: Сіздің атыңыз кім?](#speak-kz=%D0%A1%D1%96%D0%B7%D0%B4%D1%96%D2%A3%20%D0%B0%D1%82%D1%8B%D2%A3%D1%8B%D0%B7%20%D0%BA%D1%96%D0%BC%3F) — как вас зовут?
 
-<button type="button" class="speak-kz" data-speak-kz="Бұл не?">Слушать: Бұл не?</button> — что это?
+[Слушать: Бұл не?](#speak-kz=%D0%91%D2%B1%D0%BB%20%D0%BD%D0%B5%3F) — что это?
 
-<button type="button" class="speak-kz" data-speak-kz="Сіз қайда тұрасыз?">Слушать: Сіз қайда тұрасыз?</button> — где вы живёте?
+[Слушать: Сіз қайда тұрасыз?](#speak-kz=%D0%A1%D1%96%D0%B7%20%D2%9B%D0%B0%D0%B9%D0%B4%D0%B0%20%D1%82%D2%B1%D1%80%D0%B0%D1%81%D1%8B%D0%B7%3F) — где вы живёте?
 
-<button type="button" class="speak-kz" data-speak-kz="Сіз қайдансыз?">Слушать: Сіз қайдансыз?</button> — откуда вы?
+[Слушать: Сіз қайдансыз?](#speak-kz=%D0%A1%D1%96%D0%B7%20%D2%9B%D0%B0%D0%B9%D0%B4%D0%B0%D0%BD%D1%81%D1%8B%D0%B7%3F) — откуда вы?
 
-<button type="button" class="speak-kz" data-speak-kz="Сіз оқушысыз ба?">Слушать: Сіз оқушысыз ба?</button> — вы ученик?
+[Слушать: Сіз оқушысыз ба?](#speak-kz=%D0%A1%D1%96%D0%B7%20%D0%BE%D2%9B%D1%83%D1%88%D1%8B%D1%81%D1%8B%D0%B7%20%D0%B1%D0%B0%3F) — вы ученик?
 
-<button type="button" class="speak-kz" data-speak-kz="Бұл мектеп пе?">Слушать: Бұл мектеп пе?</button> — это школа?
+[Слушать: Бұл мектеп пе?](#speak-kz=%D0%91%D2%B1%D0%BB%20%D0%BC%D0%B5%D0%BA%D1%82%D0%B5%D0%BF%20%D0%BF%D0%B5%3F) — это школа?
 
 ## Как пройти практику
 

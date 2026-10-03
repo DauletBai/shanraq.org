@@ -14,17 +14,17 @@ No one knows every word in a real conversation. Silence or a random yes hides th
 
 ## Listen and respond
 
-<button type="button" class="speak-kz" data-speak-kz="Кешіріңіз.">Listen: Кешіріңіз.</button> — excuse me
+[Listen: Кешіріңіз.](#speak-kz=%D0%9A%D0%B5%D1%88%D1%96%D1%80%D1%96%D2%A3%D1%96%D0%B7.) — excuse me
 
-<button type="button" class="speak-kz" data-speak-kz="Түсінбедім.">Listen: Түсінбедім.</button> — I did not understand
+[Listen: Түсінбедім.](#speak-kz=%D0%A2%D2%AF%D1%81%D1%96%D0%BD%D0%B1%D0%B5%D0%B4%D1%96%D0%BC.) — I did not understand
 
-<button type="button" class="speak-kz" data-speak-kz="Қайталаңызшы.">Listen: Қайталаңызшы.</button> — please repeat
+[Listen: Қайталаңызшы.](#speak-kz=%D2%9A%D0%B0%D0%B9%D1%82%D0%B0%D0%BB%D0%B0%D2%A3%D1%8B%D0%B7%D1%88%D1%8B.) — please repeat
 
-<button type="button" class="speak-kz" data-speak-kz="Баяу айтыңызшы.">Listen: Баяу айтыңызшы.</button> — please speak more slowly
+[Listen: Баяу айтыңызшы.](#speak-kz=%D0%91%D0%B0%D1%8F%D1%83%20%D0%B0%D0%B9%D1%82%D1%8B%D2%A3%D1%8B%D0%B7%D1%88%D1%8B.) — please speak more slowly
 
-<button type="button" class="speak-kz" data-speak-kz="Бұл нені білдіреді?">Listen: Бұл нені білдіреді?</button> — what does this mean?
+[Listen: Бұл нені білдіреді?](#speak-kz=%D0%91%D2%B1%D0%BB%20%D0%BD%D0%B5%D0%BD%D1%96%20%D0%B1%D1%96%D0%BB%D0%B4%D1%96%D1%80%D0%B5%D0%B4%D1%96%3F) — what does this mean?
 
-<button type="button" class="speak-kz" data-speak-kz="Дұрыс айттым ба?">Listen: Дұрыс айттым ба?</button> — did I say it correctly?
+[Listen: Дұрыс айттым ба?](#speak-kz=%D0%94%D2%B1%D1%80%D1%8B%D1%81%20%D0%B0%D0%B9%D1%82%D1%82%D1%8B%D0%BC%20%D0%B1%D0%B0%3F) — did I say it correctly?
 
 ## How to practise
 

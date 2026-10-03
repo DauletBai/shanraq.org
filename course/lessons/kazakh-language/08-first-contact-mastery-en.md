@@ -14,15 +14,15 @@ This checkpoint does not ask for the dialogue from lesson one. You receive a new
 
 ## Listen and respond
 
-<button type="button" class="speak-kz" data-speak-kz="Сәлеметсіз бе!">Listen: Сәлеметсіз бе!</button> — open with a suitable greeting
+[Listen: Сәлеметсіз бе!](#speak-kz=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5%21) — open with a suitable greeting
 
-<button type="button" class="speak-kz" data-speak-kz="Менің атым…">Listen: Менің атым…</button> — introduce yourself
+[Listen: Менің атым…](#speak-kz=%D0%9C%D0%B5%D0%BD%D1%96%D2%A3%20%D0%B0%D1%82%D1%8B%D0%BC%E2%80%A6) — introduce yourself
 
-<button type="button" class="speak-kz" data-speak-kz="Сіздің атыңыз кім?">Listen: Сіздің атыңыз кім?</button> — give the turn to the partner
+[Listen: Сіздің атыңыз кім?](#speak-kz=%D0%A1%D1%96%D0%B7%D0%B4%D1%96%D2%A3%20%D0%B0%D1%82%D1%8B%D2%A3%D1%8B%D0%B7%20%D0%BA%D1%96%D0%BC%3F) — give the turn to the partner
 
-<button type="button" class="speak-kz" data-speak-kz="Қайталаңызшы.">Listen: Қайталаңызшы.</button> — repair a broken connection
+[Listen: Қайталаңызшы.](#speak-kz=%D2%9A%D0%B0%D0%B9%D1%82%D0%B0%D0%BB%D0%B0%D2%A3%D1%8B%D0%B7%D1%88%D1%8B.) — repair a broken connection
 
-<button type="button" class="speak-kz" data-speak-kz="Танысқаныма қуаныштымын.">Listen: Танысқаныма қуаныштымын.</button> — close the meeting warmly
+[Listen: Танысқаныма қуаныштымын.](#speak-kz=%D0%A2%D0%B0%D0%BD%D1%8B%D1%81%D2%9B%D0%B0%D0%BD%D1%8B%D0%BC%D0%B0%20%D2%9B%D1%83%D0%B0%D0%BD%D1%8B%D1%88%D1%82%D1%8B%D0%BC%D1%8B%D0%BD.) — close the meeting warmly
 
 ## How to practise
 

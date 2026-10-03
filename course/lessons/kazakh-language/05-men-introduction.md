@@ -14,15 +14,15 @@ _Lead (summary):_ **Вы соберёте короткое представле�
 
 ## Послушайте и ответьте
 
-<button type="button" class="speak-kz" data-speak-kz="Менің атым Алина.">Слушать: Менің атым Алина.</button> — меня зовут Алина
+[Слушать: Менің атым Алина.](#speak-kz=%D0%9C%D0%B5%D0%BD%D1%96%D2%A3%20%D0%B0%D1%82%D1%8B%D0%BC%20%D0%90%D0%BB%D0%B8%D0%BD%D0%B0.) — меня зовут Алина
 
-<button type="button" class="speak-kz" data-speak-kz="Мен оқушымын.">Слушать: Мен оқушымын.</button> — я ученик или ученица
+[Слушать: Мен оқушымын.](#speak-kz=%D0%9C%D0%B5%D0%BD%20%D0%BE%D2%9B%D1%83%D1%88%D1%8B%D0%BC%D1%8B%D0%BD.) — я ученик или ученица
 
-<button type="button" class="speak-kz" data-speak-kz="Мен мұғаліммін.">Слушать: Мен мұғаліммін.</button> — я учитель
+[Слушать: Мен мұғаліммін.](#speak-kz=%D0%9C%D0%B5%D0%BD%20%D0%BC%D2%B1%D2%93%D0%B0%D0%BB%D1%96%D0%BC%D0%BC%D1%96%D0%BD.) — я учитель
 
-<button type="button" class="speak-kz" data-speak-kz="Мен Қостанайданмын.">Слушать: Мен Қостанайданмын.</button> — я из Костаная
+[Слушать: Мен Қостанайданмын.](#speak-kz=%D0%9C%D0%B5%D0%BD%20%D2%9A%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%B0%D0%B9%D0%B4%D0%B0%D0%BD%D0%BC%D1%8B%D0%BD.) — я из Костаная
 
-<button type="button" class="speak-kz" data-speak-kz="Мен Қазақстаннанмын.">Слушать: Мен Қазақстаннанмын.</button> — я из Казахстана
+[Слушать: Мен Қазақстаннанмын.](#speak-kz=%D0%9C%D0%B5%D0%BD%20%D2%9A%D0%B0%D0%B7%D0%B0%D2%9B%D1%81%D1%82%D0%B0%D0%BD%D0%BD%D0%B0%D0%BD%D0%BC%D1%8B%D0%BD.) — я из Казахстана
 
 ## Как пройти практику
 

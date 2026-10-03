@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate the three manually localized versions of Kazakh block one."""
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "course/lessons/kazakh-language"
@@ -452,8 +453,10 @@ MORE = [
 
 def speech_button(lang, phrase, meaning):
     label = UI[lang]["play"]
-    safe = phrase.replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;')
-    return f'<button type="button" class="speak-kz" data-speak-kz="{safe}">{label}: {phrase}</button> — {meaning}'
+    # A same-page fragment survives the safe Markdown renderer. JavaScript
+    # turns it into an audio action without enabling raw HTML for articles.
+    encoded = quote(phrase, safe="")
+    return f'[{label}: {phrase}](#speak-kz={encoded}) — {meaning}'
 
 
 def render(number, stem, map_stem, lang, data, next_lesson):

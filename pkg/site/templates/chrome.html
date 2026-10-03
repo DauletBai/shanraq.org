@@ -975,15 +975,18 @@
       arm();
     })();
 
-    // Kazakh model phrases are spoken by the device's kk-KZ voice. The text is
-    // fixed lesson content; no learner input is sent by this control.
+    // Kazakh model phrases are spoken by the device's kk-KZ voice. A safe
+    // Markdown fragment carries fixed lesson text without enabling raw HTML.
     (function () {
       if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
       document.addEventListener('click', function (ev) {
-        var button = ev.target.closest ? ev.target.closest('[data-speak-kz]') : null;
-        if (!button) return;
-        var phrase = button.getAttribute('data-speak-kz');
-        if (!phrase) return;
+        var link = ev.target.closest ? ev.target.closest('a[href^="#speak-kz="]') : null;
+        if (!link) return;
+        ev.preventDefault();
+        var encoded = link.getAttribute('href').slice('#speak-kz='.length);
+        var phrase;
+        try { phrase = decodeURIComponent(encoded); } catch (_) { return; }
+        if (!phrase || phrase.length > 240) return;
         window.speechSynthesis.cancel();
         var utterance = new SpeechSynthesisUtterance(phrase);
         utterance.lang = 'kk-KZ';
