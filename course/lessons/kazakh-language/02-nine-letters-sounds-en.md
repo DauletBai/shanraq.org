@@ -14,15 +14,15 @@ A sign says `Қазақ тілі`, yet a beginner reads it as if the letters wer
 
 ## Listen and respond
 
-[Listen: Әке, іні, ұл.](#speak-kz=%D3%98%D0%BA%D0%B5%2C%20%D1%96%D0%BD%D1%96%2C%20%D2%B1%D0%BB.) — three tongue positions: Ә, І, Ұ
+[Listen: Әке, іні, ұл.](/static/course/kazakh-language/audio/kz-006.wav) — three tongue positions: Ә, І, Ұ
 
-[Listen: Өмір, үш күн.](#speak-kz=%D3%A8%D0%BC%D1%96%D1%80%2C%20%D2%AF%D1%88%20%D0%BA%D2%AF%D0%BD.) — rounded lips: Ө and Ү
+[Listen: Өмір, үш күн.](/static/course/kazakh-language/audio/kz-007.wav) — rounded lips: Ө and Ү
 
-[Listen: Қазақ тілі.](#speak-kz=%D2%9A%D0%B0%D0%B7%D0%B0%D2%9B%20%D1%82%D1%96%D0%BB%D1%96.) — the deep Қ and unrounded І
+[Listen: Қазақ тілі.](/static/course/kazakh-language/audio/kz-008.wav) — the deep Қ and unrounded І
 
-[Listen: Ғалым жаңа кітап оқыды.](#speak-kz=%D2%92%D0%B0%D0%BB%D1%8B%D0%BC%20%D0%B6%D0%B0%D2%A3%D0%B0%20%D0%BA%D1%96%D1%82%D0%B0%D0%BF%20%D0%BE%D2%9B%D1%8B%D0%B4%D1%8B.) — back Ғ and nasal Ң
+[Listen: Ғалым жаңа кітап оқыды.](/static/course/kazakh-language/audio/kz-009.wav) — back Ғ and nasal Ң
 
-[Listen: Қаһарман.](#speak-kz=%D2%9A%D0%B0%D2%BB%D0%B0%D1%80%D0%BC%D0%B0%D0%BD.) — the light breath of Һ
+[Listen: Қаһарман.](/static/course/kazakh-language/audio/kz-010.wav) — the light breath of Һ
 
 ## How to practise
 
@@ -40,7 +40,7 @@ Five vowels give five anchors. `Ә` is open and forward; `Ө` and `Ү` keep the 
 
 ## The limit of the rule
 
-A mouth description is an anchor rather than a pronunciation diagnosis. A sound shifts slightly beside other sounds, speakers have different voices, and the device voice cannot replace live listening. Do not search for one exact English or Russian substitute for every letter: a substitute erases the contrast that the learner needs to hear.
+A mouth description is an anchor rather than a pronunciation diagnosis. A sound shifts slightly beside other sounds, speakers have different voices, and the course recording cannot replace live listening. Do not search for one exact English or Russian substitute for every letter: a substitute erases the contrast that the learner needs to hear.
 
 ## Predict before the explanation
 

@@ -14,21 +14,21 @@ A new learner may see `ы` and turn it into a separate heavy syllable, or replac
 
 ## Listen and respond
 
-[Listen: қыс](#speak-kz=%D2%9B%D1%8B%D1%81) — winter: a short back ы
+[Listen: қыс](/static/course/kazakh-language/audio/kz-039.wav) — winter: a short back ы
 
-[Listen: тіс](#speak-kz=%D1%82%D1%96%D1%81) — tooth: a short front і
+[Listen: тіс](/static/course/kazakh-language/audio/kz-040.wav) — tooth: a short front і
 
-[Listen: ыдыс](#speak-kz=%D1%8B%D0%B4%D1%8B%D1%81) — dish: ы is audible but not stretched
+[Listen: ыдыс](/static/course/kazakh-language/audio/kz-041.wav) — dish: ы is audible but not stretched
 
-[Listen: іні](#speak-kz=%D1%96%D0%BD%D1%96) — younger brother: both і vowels are short
+[Listen: іні](/static/course/kazakh-language/audio/kz-042.wav) — younger brother: both і vowels are short
 
-[Listen: ауыз — аузы](#speak-kz=%D0%B0%D1%83%D1%8B%D0%B7%20%E2%80%94%20%D0%B0%D1%83%D0%B7%D1%8B) — mouth — his or her mouth: ы really drops in the second form
+[Listen: ауыз — аузы](/static/course/kazakh-language/audio/kz-043.wav) — mouth — his or her mouth: ы really drops in the second form
 
-[Listen: орын — орны](#speak-kz=%D0%BE%D1%80%D1%8B%D0%BD%20%E2%80%94%20%D0%BE%D1%80%D0%BD%D1%8B) — place — his or her place: a specific deletion pattern
+[Listen: орын — орны](/static/course/kazakh-language/audio/kz-044.wav) — place — his or her place: a specific deletion pattern
 
 ## How to practise
 
-Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. Device speech is a model; use a speaker, teacher, or comparison with your own recording as evidence of pronunciation.
+Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. The approved recording is a model; use a speaker, teacher, or comparison with your own recording to check your pronunciation.
 
 ## The precise model
 

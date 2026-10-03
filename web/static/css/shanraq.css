@@ -883,7 +883,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   font-weight: 700;
 }
 
-.prose a[href^="#speak-kz="] {
+.prose a[href^="/static/course/kazakh-language/audio/kz-"][href$=".wav"] {
   display: inline-flex;
   align-items: center;
   gap: .55rem;
@@ -898,9 +898,10 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   font-weight: 700;
   cursor: pointer;
 }
-.prose a[href^="#speak-kz="]::before { content: "▶"; color: var(--teal); font-size: .82em; }
-.prose a[href^="#speak-kz="]:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(27, 65, 82, .16); text-decoration: none; }
-.prose a[href^="#speak-kz="]:focus-visible { outline: 3px solid color-mix(in srgb, var(--teal) 35%, transparent); outline-offset: 2px; }
+.prose a[href^="/static/course/kazakh-language/audio/kz-"][href$=".wav"]::before { content: "▶"; color: var(--teal); font-size: .82em; }
+.prose a[href^="/static/course/kazakh-language/audio/kz-"][href$=".wav"].kz-audio--playing::before { content: "■"; }
+.prose a[href^="/static/course/kazakh-language/audio/kz-"][href$=".wav"]:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(27, 65, 82, .16); text-decoration: none; }
+.prose a[href^="/static/course/kazakh-language/audio/kz-"][href$=".wav"]:focus-visible { outline: 3px solid color-mix(in srgb, var(--teal) 35%, transparent); outline-offset: 2px; }
 @media (forced-colors: active) {
   .article--mathematics .prose img,
   .article--mathematics .tscroll--prose { box-shadow: none; border-color: CanvasText; }

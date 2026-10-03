@@ -14,21 +14,21 @@ A guest asks whether the home has a desk. Kazakh sets the scene, then the item, 
 
 ## Listen and respond
 
-[Listen: Бөлмеде үстел бар.](#speak-kz=%D0%91%D3%A9%D0%BB%D0%BC%D0%B5%D0%B4%D0%B5%20%D2%AF%D1%81%D1%82%D0%B5%D0%BB%20%D0%B1%D0%B0%D1%80.) — There is a table in the room.
+[Listen: Бөлмеде үстел бар.](/static/course/kazakh-language/audio/kz-074.wav) — There is a table in the room.
 
-[Listen: Үстелде кітап жоқ.](#speak-kz=%D2%AE%D1%81%D1%82%D0%B5%D0%BB%D0%B4%D0%B5%20%D0%BA%D1%96%D1%82%D0%B0%D0%BF%20%D0%B6%D0%BE%D2%9B.) — There is no book on the table.
+[Listen: Үстелде кітап жоқ.](/static/course/kazakh-language/audio/kz-075.wav) — There is no book on the table.
 
-[Listen: Үйде ас үй бар ма?](#speak-kz=%D2%AE%D0%B9%D0%B4%D0%B5%20%D0%B0%D1%81%20%D2%AF%D0%B9%20%D0%B1%D0%B0%D1%80%20%D0%BC%D0%B0%3F) — Is there a kitchen in the home?
+[Listen: Үйде ас үй бар ма?](/static/course/kazakh-language/audio/kz-076.wav) — Is there a kitchen in the home?
 
-[Listen: Иә, ас үй бар.](#speak-kz=%D0%98%D3%99%2C%20%D0%B0%D1%81%20%D2%AF%D0%B9%20%D0%B1%D0%B0%D1%80.) — Yes, there is a kitchen.
+[Listen: Иә, ас үй бар.](/static/course/kazakh-language/audio/kz-077.wav) — Yes, there is a kitchen.
 
-[Listen: Жоқ, балкон жоқ.](#speak-kz=%D0%96%D0%BE%D2%9B%2C%20%D0%B1%D0%B0%D0%BB%D0%BA%D0%BE%D0%BD%20%D0%B6%D0%BE%D2%9B.) — No, there is no balcony.
+[Listen: Жоқ, балкон жоқ.](/static/course/kazakh-language/audio/kz-078.wav) — No, there is no balcony.
 
-[Listen: Менің інім бар.](#speak-kz=%D0%9C%D0%B5%D0%BD%D1%96%D2%A3%20%D1%96%D0%BD%D1%96%D0%BC%20%D0%B1%D0%B0%D1%80.) — I have a younger brother.
+[Listen: Менің інім бар.](/static/course/kazakh-language/audio/kz-079.wav) — I have a younger brother.
 
 ## How to practise
 
-Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. Device speech is a model; use a speaker, teacher, or comparison with your own recording as evidence of pronunciation.
+Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. The approved recording is a model; use a speaker, teacher, or comparison with your own recording to check your pronunciation.
 
 ## The precise model
 

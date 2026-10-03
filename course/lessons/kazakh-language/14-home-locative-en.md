@@ -14,21 +14,21 @@ Someone is looking for a book. The answer `кітап` names it but does not hel
 
 ## Listen and respond
 
-[Listen: Үйде үш бөлме бар.](#speak-kz=%D2%AE%D0%B9%D0%B4%D0%B5%20%D2%AF%D1%88%20%D0%B1%D3%A9%D0%BB%D0%BC%D0%B5%20%D0%B1%D0%B0%D1%80.) — There are three rooms in the home.
+[Listen: Үйде үш бөлме бар.](/static/course/kazakh-language/audio/kz-065.wav) — There are three rooms in the home.
 
-[Listen: Анам ас үйде.](#speak-kz=%D0%90%D0%BD%D0%B0%D0%BC%20%D0%B0%D1%81%20%D2%AF%D0%B9%D0%B4%D0%B5.) — My mother is in the kitchen.
+[Listen: Анам ас үйде.](/static/course/kazakh-language/audio/kz-069.wav) — My mother is in the kitchen.
 
-[Listen: Кітап үстелде.](#speak-kz=%D0%9A%D1%96%D1%82%D0%B0%D0%BF%20%D2%AF%D1%81%D1%82%D0%B5%D0%BB%D0%B4%D0%B5.) — The book is on the table.
+[Listen: Кітап үстелде.](/static/course/kazakh-language/audio/kz-070.wav) — The book is on the table.
 
-[Listen: Гүл терезеде.](#speak-kz=%D0%93%D2%AF%D0%BB%20%D1%82%D0%B5%D1%80%D0%B5%D0%B7%D0%B5%D0%B4%D0%B5.) — The flower is by the window.
+[Listen: Гүл терезеде.](/static/course/kazakh-language/audio/kz-071.wav) — The flower is by the window.
 
-[Listen: Киім шкафта.](#speak-kz=%D0%9A%D0%B8%D1%96%D0%BC%20%D1%88%D0%BA%D0%B0%D1%84%D1%82%D0%B0.) — The clothes are in the wardrobe.
+[Listen: Киім шкафта.](/static/course/kazakh-language/audio/kz-072.wav) — The clothes are in the wardrobe.
 
-[Listen: Бала мектепте.](#speak-kz=%D0%91%D0%B0%D0%BB%D0%B0%20%D0%BC%D0%B5%D0%BA%D1%82%D0%B5%D0%BF%D1%82%D0%B5.) — The child is at school.
+[Listen: Бала мектепте.](/static/course/kazakh-language/audio/kz-073.wav) — The child is at school.
 
 ## How to practise
 
-Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. Device speech is a model; use a speaker, teacher, or comparison with your own recording as evidence of pronunciation.
+Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. The approved recording is a model; use a speaker, teacher, or comparison with your own recording to check your pronunciation.
 
 ## The precise model
 

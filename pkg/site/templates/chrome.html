@@ -975,23 +975,41 @@
       arm();
     })();
 
-    // Kazakh model phrases are spoken by the device's kk-KZ voice. A safe
-    // Markdown fragment carries fixed lesson text without enabling raw HTML.
+    // Approved Kazakh recordings play inline. Only the fixed course asset
+    // path is accepted, so an article cannot turn an arbitrary URL into audio.
     (function () {
-      if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+      var currentAudio = null, currentLink = null;
+      function reset() {
+        if (currentLink) {
+          currentLink.classList.remove('kz-audio--playing');
+          currentLink.setAttribute('aria-pressed', 'false');
+        }
+        currentAudio = null;
+        currentLink = null;
+      }
       document.addEventListener('click', function (ev) {
-        var link = ev.target.closest ? ev.target.closest('a[href^="#speak-kz="]') : null;
+        var link = ev.target.closest ? ev.target.closest('a[href^="/static/course/kazakh-language/audio/kz-"][href$=".wav"]') : null;
         if (!link) return;
+        var url;
+        try { url = new URL(link.href, window.location.origin); } catch (_) { return; }
+        if (url.origin !== window.location.origin || !/^\/static\/course\/kazakh-language\/audio\/kz-\d{3}\.wav$/.test(url.pathname)) return;
         ev.preventDefault();
-        var encoded = link.getAttribute('href').slice('#speak-kz='.length);
-        var phrase;
-        try { phrase = decodeURIComponent(encoded); } catch (_) { return; }
-        if (!phrase || phrase.length > 240) return;
-        window.speechSynthesis.cancel();
-        var utterance = new SpeechSynthesisUtterance(phrase);
-        utterance.lang = 'kk-KZ';
-        utterance.rate = 0.82;
-        window.speechSynthesis.speak(utterance);
+        if (currentAudio && currentLink === link) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+          reset();
+          return;
+        }
+        if (currentAudio) currentAudio.pause();
+        reset();
+        currentLink = link;
+        currentAudio = new Audio(url.href);
+        currentAudio.preload = 'auto';
+        link.classList.add('kz-audio--playing');
+        link.setAttribute('aria-pressed', 'true');
+        currentAudio.addEventListener('ended', reset, { once: true });
+        currentAudio.addEventListener('error', reset, { once: true });
+        currentAudio.play().catch(reset);
       });
     })();
 

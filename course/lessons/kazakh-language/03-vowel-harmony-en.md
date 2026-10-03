@@ -14,15 +14,15 @@ Picture a family table: a new suffix sits beside the stem and adjusts its vowel 
 
 ## Listen and respond
 
-[Listen: Бала — балалар.](#speak-kz=%D0%91%D0%B0%D0%BB%D0%B0%20%E2%80%94%20%D0%B1%D0%B0%D0%BB%D0%B0%D0%BB%D0%B0%D1%80.) — child — children, back-vowel family
+[Listen: Бала — балалар.](/static/course/kazakh-language/audio/kz-011.wav) — child — children, back-vowel family
 
-[Listen: Қала — қалалар.](#speak-kz=%D2%9A%D0%B0%D0%BB%D0%B0%20%E2%80%94%20%D2%9B%D0%B0%D0%BB%D0%B0%D0%BB%D0%B0%D1%80.) — city — cities, back-vowel family
+[Listen: Қала — қалалар.](/static/course/kazakh-language/audio/kz-012.wav) — city — cities, back-vowel family
 
-[Listen: Әже — әжелер.](#speak-kz=%D3%98%D0%B6%D0%B5%20%E2%80%94%20%D3%99%D0%B6%D0%B5%D0%BB%D0%B5%D1%80.) — grandmother — grandmothers, front-vowel family
+[Listen: Әже — әжелер.](/static/course/kazakh-language/audio/kz-013.wav) — grandmother — grandmothers, front-vowel family
 
-[Listen: Үй — үйлер.](#speak-kz=%D2%AE%D0%B9%20%E2%80%94%20%D2%AF%D0%B9%D0%BB%D0%B5%D1%80.) — home — homes, front-vowel family
+[Listen: Үй — үйлер.](/static/course/kazakh-language/audio/kz-014.wav) — home — homes, front-vowel family
 
-[Listen: Көше — көшелер.](#speak-kz=%D0%9A%D3%A9%D1%88%D0%B5%20%E2%80%94%20%D0%BA%D3%A9%D1%88%D0%B5%D0%BB%D0%B5%D1%80.) — street — streets, front-vowel family
+[Listen: Көше — көшелер.](/static/course/kazakh-language/audio/kz-015.wav) — street — streets, front-vowel family
 
 ## How to practise
 

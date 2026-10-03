@@ -14,21 +14,21 @@ Three books are on a table. Saying `кітап` is not enough to return them. As
 
 ## Listen and respond
 
-[Listen: Бұл кімнің кітабы?](#speak-kz=%D0%91%D2%B1%D0%BB%20%D0%BA%D1%96%D0%BC%D0%BD%D1%96%D2%A3%20%D0%BA%D1%96%D1%82%D0%B0%D0%B1%D1%8B%3F) — Whose book is this?
+[Listen: Бұл кімнің кітабы?](/static/course/kazakh-language/audio/kz-051.wav) — Whose book is this?
 
-[Listen: Бұл — менің кітабым.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%BC%D0%B5%D0%BD%D1%96%D2%A3%20%D0%BA%D1%96%D1%82%D0%B0%D0%B1%D1%8B%D0%BC.) — This is my book.
+[Listen: Бұл — менің кітабым.](/static/course/kazakh-language/audio/kz-052.wav) — This is my book.
 
-[Listen: Бұл — сіздің кітабыңыз.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D1%81%D1%96%D0%B7%D0%B4%D1%96%D2%A3%20%D0%BA%D1%96%D1%82%D0%B0%D0%B1%D1%8B%D2%A3%D1%8B%D0%B7.) — This is your book, respectfully.
+[Listen: Бұл — сіздің кітабыңыз.](/static/course/kazakh-language/audio/kz-053.wav) — This is your book, respectfully.
 
-[Listen: Бұл — оның кітабы.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%BE%D0%BD%D1%8B%D2%A3%20%D0%BA%D1%96%D1%82%D0%B0%D0%B1%D1%8B.) — This is his or her book.
+[Listen: Бұл — оның кітабы.](/static/course/kazakh-language/audio/kz-054.wav) — This is his or her book.
 
-[Listen: Бұл — Аружанның кітабы.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%90%D1%80%D1%83%D0%B6%D0%B0%D0%BD%D0%BD%D1%8B%D2%A3%20%D0%BA%D1%96%D1%82%D0%B0%D0%B1%D1%8B.) — This is Aruzhan's book.
+[Listen: Бұл — Аружанның кітабы.](/static/course/kazakh-language/audio/kz-055.wav) — This is Aruzhan's book.
 
-[Listen: Менің үйім үлкен.](#speak-kz=%D0%9C%D0%B5%D0%BD%D1%96%D2%A3%20%D2%AF%D0%B9%D1%96%D0%BC%20%D2%AF%D0%BB%D0%BA%D0%B5%D0%BD.) — My home is large.
+[Listen: Менің үйім үлкен.](/static/course/kazakh-language/audio/kz-056.wav) — My home is large.
 
 ## How to practise
 
-Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. Device speech is a model; use a speaker, teacher, or comparison with your own recording as evidence of pronunciation.
+Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. The approved recording is a model; use a speaker, teacher, or comparison with your own recording to check your pronunciation.
 
 ## The precise model
 

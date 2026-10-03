@@ -14,21 +14,21 @@ A fictional home needs counts of rooms, chairs, and characters. We do not chant 
 
 ## Listen and respond
 
-[Listen: бір, екі, үш, төрт, бес](#speak-kz=%D0%B1%D1%96%D1%80%2C%20%D0%B5%D0%BA%D1%96%2C%20%D2%AF%D1%88%2C%20%D1%82%D3%A9%D1%80%D1%82%2C%20%D0%B1%D0%B5%D1%81) — one through five
+[Listen: бір, екі, үш, төрт, бес](/static/course/kazakh-language/audio/kz-063.wav) — one through five
 
-[Listen: алты, жеті, сегіз, тоғыз, он](#speak-kz=%D0%B0%D0%BB%D1%82%D1%8B%2C%20%D0%B6%D0%B5%D1%82%D1%96%2C%20%D1%81%D0%B5%D0%B3%D1%96%D0%B7%2C%20%D1%82%D0%BE%D2%93%D1%8B%D0%B7%2C%20%D0%BE%D0%BD) — six through ten
+[Listen: алты, жеті, сегіз, тоғыз, он](/static/course/kazakh-language/audio/kz-064.wav) — six through ten
 
-[Listen: Үйде үш бөлме бар.](#speak-kz=%D2%AE%D0%B9%D0%B4%D0%B5%20%D2%AF%D1%88%20%D0%B1%D3%A9%D0%BB%D0%BC%D0%B5%20%D0%B1%D0%B0%D1%80.) — There are three rooms in the home.
+[Listen: Үйде үш бөлме бар.](/static/course/kazakh-language/audio/kz-065.wav) — There are three rooms in the home.
 
-[Listen: Үстелде төрт кітап бар.](#speak-kz=%D2%AE%D1%81%D1%82%D0%B5%D0%BB%D0%B4%D0%B5%20%D1%82%D3%A9%D1%80%D1%82%20%D0%BA%D1%96%D1%82%D0%B0%D0%BF%20%D0%B1%D0%B0%D1%80.) — There are four books on the table.
+[Listen: Үстелде төрт кітап бар.](/static/course/kazakh-language/audio/kz-066.wav) — There are four books on the table.
 
-[Listen: Ол жеті жаста.](#speak-kz=%D0%9E%D0%BB%20%D0%B6%D0%B5%D1%82%D1%96%20%D0%B6%D0%B0%D1%81%D1%82%D0%B0.) — He or she is seven.
+[Listen: Ол жеті жаста.](/static/course/kazakh-language/audio/kz-067.wav) — He or she is seven.
 
-[Listen: Мен он жастамын.](#speak-kz=%D0%9C%D0%B5%D0%BD%20%D0%BE%D0%BD%20%D0%B6%D0%B0%D1%81%D1%82%D0%B0%D0%BC%D1%8B%D0%BD.) — I am ten.
+[Listen: Мен он жастамын.](/static/course/kazakh-language/audio/kz-068.wav) — I am ten.
 
 ## How to practise
 
-Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. Device speech is a model; use a speaker, teacher, or comparison with your own recording as evidence of pronunciation.
+Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. The approved recording is a model; use a speaker, teacher, or comparison with your own recording to check your pronunciation.
 
 ## The precise model
 

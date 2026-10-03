@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Generate the manually localized People and Home block (lessons 9–16)."""
 from pathlib import Path
-from urllib.parse import quote
+
+try:
+    from .kazakh_audio import audio_url
+except ImportError:  # direct execution: python3 tools/course/generate_….py
+    from kazakh_audio import audio_url
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "course/lessons/kazakh-language"
@@ -13,9 +17,9 @@ UI = {
 }
 
 WORKFLOW = {
-    "ru": "Сначала слушайте с закрытым текстом и ловите только заданный смысл. Затем ведите пальцем по схеме и произносите вслед за образцом. На третьем проходе закройте образец, отбейте ладонью короткий ритм и скажите собственную фразу. Запись устройства служит моделью, но точность произношения подтвердят живой собеседник, учитель или сравнение собственной записи.",
-    "kz": "Алдымен мәтінді жасырып тыңдап, тек берілген мағынаны ұғыңыз. Кейін сызбаны саусақпен жүргізіп, үлгіден соң айтыңыз. Үшінші рет үлгіні жауып, қысқа ырғақты алақаныңызбен соғып, өз сөйлеміңізді құраңыз. Құрылғы дауысы үлгі болады, ал айтылым дәлдігін тірі әңгімелесуші, мұғалім немесе өз жазбаңызды салыстыру арқылы тексеріңіз.",
-    "en": "Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. Device speech is a model; use a speaker, teacher, or comparison with your own recording as evidence of pronunciation.",
+    "ru": "Сначала слушайте с закрытым текстом и ловите только заданный смысл. Затем ведите пальцем по схеме и произносите вслед за образцом. На третьем проходе закройте образец, отбейте ладонью короткий ритм и скажите собственную фразу. Утверждённая запись служит моделью, а точность собственного произношения помогут проверить живой собеседник, учитель или сравнение со своей записью.",
+    "kz": "Алдымен мәтінді жасырып тыңдап, тек берілген мағынаны ұғыңыз. Кейін сызбаны саусақпен жүргізіп, үлгіден соң айтыңыз. Үшінші рет үлгіні жауып, қысқа ырғақты алақаныңызбен соғып, өз сөйлеміңізді құраңыз. Бекітілген жазба үлгі болады, ал өз айтылымыңыздың дәлдігін тірі әңгімелесушімен, мұғаліммен немесе өз жазбаңызды салыстыру арқылы тексеріңіз.",
+    "en": "Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. The approved recording is a model; use a speaker, teacher, or comparison with your own recording to check your pronunciation.",
 }
 
 MAP_INTRO = {
@@ -426,7 +430,7 @@ LESSONS += [
             [("Бұл — менің отбасым.", "This is my family."), ("Үйде төрт адам бар.", "There are four people in the home."), ("Бұл — менің інім.", "This is my younger brother."), ("Оның бөлмесі үлкен.", "His or her room is large."), ("Үстелде екі кітап бар.", "There are two books on the table."), ("Ас үйде гүл жоқ.", "There is no flower in the kitchen.")],
             "Successful performance shows ten observable actions: naturally short ы/і; a `Бұл кім?` question; three relationship terms; matching possession; one plural form; two quantities without a redundant plural; three locations; both `бар` and `жоқ` statements; a `бар ма?` question; and repair after misunderstanding. Wording may differ from every model. Meaning, independent choice, and transfer to a new plan are the evidence.",
             "Ы/І → PERSON → КІМНІҢ? → NUMBER → ҚАЙДА? → БАР/ЖОҚ → 8/10 NOW + 7/10 LATER",
-            "Fluent reading of a prepared text does not prove block mastery. Speech synthesis neither evaluates pronunciation nor hears your answer. Use comparison with your own recording or human feedback for the sound criterion. Keep all details fictional.",
+            "Fluent reading of a prepared text does not prove block mastery. The course recording neither evaluates pronunciation nor hears your answer. Use comparison with your own recording or human feedback for the sound criterion. Keep all details fictional.",
             "Take random people, object, and place cards. Plan only the route for thirty seconds without writing full sentences. Predict one likely obstacle and choose the support that can restore it.",
             "Close lessons 9–15 and draw the seven block signals. Explain the route aloud from them. Open the first missing link only, hide it again, and restart with a different card.",
             "A learner reads the description perfectly but continues the old script after `Үйде балкон бар ма?`. Stop the script, recover the question, and answer from the new plan. A second error is treating an overlong `ы` as clear diction; restore the short rhythm.",
@@ -439,7 +443,7 @@ LESSONS += [
 ]
 
 def speech(lang, phrase, meaning):
-    return f"[{UI[lang][16]}: {phrase}](#speak-kz={quote(phrase, safe='')}) — {meaning}"
+    return f"[{UI[lang][16]}: {phrase}]({audio_url(phrase)}) — {meaning}"
 
 
 def render(number, stem, map_stem, lang, data, next_entry):

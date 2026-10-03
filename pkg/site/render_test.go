@@ -94,12 +94,12 @@ func TestRustFooterLinkPreservesLanguage(t *testing.T) {
 	}
 }
 
-func TestKazakhSpeechFragmentSurvivesSafeMarkdown(t *testing.T) {
-	out := string(RenderMarkdown(`[Слушать: Сәлем!](#speak-kz=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%21)`))
-	if !strings.Contains(out, `href="#speak-kz=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%21"`) {
-		t.Fatalf("Kazakh speech action lost its safe fragment: %s", out)
+func TestKazakhAudioAssetSurvivesSafeMarkdown(t *testing.T) {
+	out := string(RenderMarkdown(`[Слушать: Сәлем!](/static/course/kazakh-language/audio/kz-001.wav)`))
+	if !strings.Contains(out, `href="/static/course/kazakh-language/audio/kz-001.wav"`) {
+		t.Fatalf("Kazakh audio action lost its safe asset URL: %s", out)
 	}
 	if strings.Contains(out, "<button") {
-		t.Fatalf("speech action must not require unsafe raw HTML: %s", out)
+		t.Fatalf("audio action must not require unsafe raw HTML: %s", out)
 	}
 }

@@ -14,21 +14,21 @@ Several people appear in a photograph. Instead of guessing, ask the neutral ques
 
 ## Listen and respond
 
-[Listen: Бұл кім?](#speak-kz=%D0%91%D2%B1%D0%BB%20%D0%BA%D1%96%D0%BC%3F) — Who is this?
+[Listen: Бұл кім?](/static/course/kazakh-language/audio/kz-045.wav) — Who is this?
 
-[Listen: Бұл — менің анам.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%BC%D0%B5%D0%BD%D1%96%D2%A3%20%D0%B0%D0%BD%D0%B0%D0%BC.) — This is my mother.
+[Listen: Бұл — менің анам.](/static/course/kazakh-language/audio/kz-046.wav) — This is my mother.
 
-[Listen: Бұл — менің әкем.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%BC%D0%B5%D0%BD%D1%96%D2%A3%20%D3%99%D0%BA%D0%B5%D0%BC.) — This is my father.
+[Listen: Бұл — менің әкем.](/static/course/kazakh-language/audio/kz-047.wav) — This is my father.
 
-[Listen: Бұл — менің әжем.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%BC%D0%B5%D0%BD%D1%96%D2%A3%20%D3%99%D0%B6%D0%B5%D0%BC.) — This is my grandmother.
+[Listen: Бұл — менің әжем.](/static/course/kazakh-language/audio/kz-048.wav) — This is my grandmother.
 
-[Listen: Бұл — менің атам.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%BC%D0%B5%D0%BD%D1%96%D2%A3%20%D0%B0%D1%82%D0%B0%D0%BC.) — This is my grandfather.
+[Listen: Бұл — менің атам.](/static/course/kazakh-language/audio/kz-049.wav) — This is my grandfather.
 
-[Listen: Бұл — менің інім.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%BC%D0%B5%D0%BD%D1%96%D2%A3%20%D1%96%D0%BD%D1%96%D0%BC.) — This is my younger brother relative to the speaker.
+[Listen: Бұл — менің інім.](/static/course/kazakh-language/audio/kz-050.wav) — This is my younger brother relative to the speaker.
 
 ## How to practise
 
-Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. Device speech is a model; use a speaker, teacher, or comparison with your own recording as evidence of pronunciation.
+Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. The approved recording is a model; use a speaker, teacher, or comparison with your own recording to check your pronunciation.
 
 ## The precise model
 

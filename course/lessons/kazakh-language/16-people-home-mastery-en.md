@@ -14,21 +14,21 @@ A new conversation partner joins and sees only a blank plan. Introduce fictional
 
 ## Listen and respond
 
-[Listen: Бұл — менің отбасым.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%BC%D0%B5%D0%BD%D1%96%D2%A3%20%D0%BE%D1%82%D0%B1%D0%B0%D1%81%D1%8B%D0%BC.) — This is my family.
+[Listen: Бұл — менің отбасым.](/static/course/kazakh-language/audio/kz-080.wav) — This is my family.
 
-[Listen: Үйде төрт адам бар.](#speak-kz=%D2%AE%D0%B9%D0%B4%D0%B5%20%D1%82%D3%A9%D1%80%D1%82%20%D0%B0%D0%B4%D0%B0%D0%BC%20%D0%B1%D0%B0%D1%80.) — There are four people in the home.
+[Listen: Үйде төрт адам бар.](/static/course/kazakh-language/audio/kz-081.wav) — There are four people in the home.
 
-[Listen: Бұл — менің інім.](#speak-kz=%D0%91%D2%B1%D0%BB%20%E2%80%94%20%D0%BC%D0%B5%D0%BD%D1%96%D2%A3%20%D1%96%D0%BD%D1%96%D0%BC.) — This is my younger brother.
+[Listen: Бұл — менің інім.](/static/course/kazakh-language/audio/kz-050.wav) — This is my younger brother.
 
-[Listen: Оның бөлмесі үлкен.](#speak-kz=%D0%9E%D0%BD%D1%8B%D2%A3%20%D0%B1%D3%A9%D0%BB%D0%BC%D0%B5%D1%81%D1%96%20%D2%AF%D0%BB%D0%BA%D0%B5%D0%BD.) — His or her room is large.
+[Listen: Оның бөлмесі үлкен.](/static/course/kazakh-language/audio/kz-082.wav) — His or her room is large.
 
-[Listen: Үстелде екі кітап бар.](#speak-kz=%D2%AE%D1%81%D1%82%D0%B5%D0%BB%D0%B4%D0%B5%20%D0%B5%D0%BA%D1%96%20%D0%BA%D1%96%D1%82%D0%B0%D0%BF%20%D0%B1%D0%B0%D1%80.) — There are two books on the table.
+[Listen: Үстелде екі кітап бар.](/static/course/kazakh-language/audio/kz-083.wav) — There are two books on the table.
 
-[Listen: Ас үйде гүл жоқ.](#speak-kz=%D0%90%D1%81%20%D2%AF%D0%B9%D0%B4%D0%B5%20%D0%B3%D2%AF%D0%BB%20%D0%B6%D0%BE%D2%9B.) — There is no flower in the kitchen.
+[Listen: Ас үйде гүл жоқ.](/static/course/kazakh-language/audio/kz-084.wav) — There is no flower in the kitchen.
 
 ## How to practise
 
-Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. Device speech is a model; use a speaker, teacher, or comparison with your own recording as evidence of pronunciation.
+Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. The approved recording is a model; use a speaker, teacher, or comparison with your own recording to check your pronunciation.
 
 ## The precise model
 
@@ -42,7 +42,7 @@ Successful performance shows ten observable actions: naturally short ы/і; a `�
 
 ## The limit of the rule
 
-Fluent reading of a prepared text does not prove block mastery. Speech synthesis neither evaluates pronunciation nor hears your answer. Use comparison with your own recording or human feedback for the sound criterion. Keep all details fictional.
+Fluent reading of a prepared text does not prove block mastery. The course recording neither evaluates pronunciation nor hears your answer. Use comparison with your own recording or human feedback for the sound criterion. Keep all details fictional.
 
 ## Predict before the explanation
 

@@ -14,21 +14,21 @@ A home inventory must distinguish one object from several. Instead of memorising
 
 ## Listen and respond
 
-[Listen: бала — балалар](#speak-kz=%D0%B1%D0%B0%D0%BB%D0%B0%20%E2%80%94%20%D0%B1%D0%B0%D0%BB%D0%B0%D0%BB%D0%B0%D1%80) — child — children
+[Listen: бала — балалар](/static/course/kazakh-language/audio/kz-057.wav) — child — children
 
-[Listen: бөлме — бөлмелер](#speak-kz=%D0%B1%D3%A9%D0%BB%D0%BC%D0%B5%20%E2%80%94%20%D0%B1%D3%A9%D0%BB%D0%BC%D0%B5%D0%BB%D0%B5%D1%80) — room — rooms
+[Listen: бөлме — бөлмелер](/static/course/kazakh-language/audio/kz-058.wav) — room — rooms
 
-[Listen: адам — адамдар](#speak-kz=%D0%B0%D0%B4%D0%B0%D0%BC%20%E2%80%94%20%D0%B0%D0%B4%D0%B0%D0%BC%D0%B4%D0%B0%D1%80) — person — people
+[Listen: адам — адамдар](/static/course/kazakh-language/audio/kz-059.wav) — person — people
 
-[Listen: гүл — гүлдер](#speak-kz=%D0%B3%D2%AF%D0%BB%20%E2%80%94%20%D0%B3%D2%AF%D0%BB%D0%B4%D0%B5%D1%80) — flower — flowers
+[Listen: гүл — гүлдер](/static/course/kazakh-language/audio/kz-060.wav) — flower — flowers
 
-[Listen: кітап — кітаптар](#speak-kz=%D0%BA%D1%96%D1%82%D0%B0%D0%BF%20%E2%80%94%20%D0%BA%D1%96%D1%82%D0%B0%D0%BF%D1%82%D0%B0%D1%80) — book — books
+[Listen: кітап — кітаптар](/static/course/kazakh-language/audio/kz-061.wav) — book — books
 
-[Listen: есік — есіктер](#speak-kz=%D0%B5%D1%81%D1%96%D0%BA%20%E2%80%94%20%D0%B5%D1%81%D1%96%D0%BA%D1%82%D0%B5%D1%80) — door — doors
+[Listen: есік — есіктер](/static/course/kazakh-language/audio/kz-062.wav) — door — doors
 
 ## How to practise
 
-Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. Device speech is a model; use a speaker, teacher, or comparison with your own recording as evidence of pronunciation.
+Listen with the text hidden and catch only the target meaning. Next, trace the map with a finger and repeat after the model. On the third pass, hide the model, tap its short rhythm with your palm, and make a sentence of your own. The approved recording is a model; use a speaker, teacher, or comparison with your own recording to check your pronunciation.
 
 ## The precise model
 

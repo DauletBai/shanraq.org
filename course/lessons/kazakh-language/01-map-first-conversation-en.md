@@ -14,15 +14,15 @@ Imagine a new learner arriving at a club. You can wait for perfect grammar and s
 
 ## Listen and respond
 
-[Listen: Сәлем!](#speak-kz=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%21) — Hello!
+[Listen: Сәлем!](/static/course/kazakh-language/audio/kz-001.wav) — Hello!
 
-[Listen: Менің атым Айша.](#speak-kz=%D0%9C%D0%B5%D0%BD%D1%96%D2%A3%20%D0%B0%D1%82%D1%8B%D0%BC%20%D0%90%D0%B9%D1%88%D0%B0.) — My name is Aisha.
+[Listen: Менің атым Айша.](/static/course/kazakh-language/audio/kz-002.wav) — My name is Aisha.
 
-[Listen: Сіздің атыңыз кім?](#speak-kz=%D0%A1%D1%96%D0%B7%D0%B4%D1%96%D2%A3%20%D0%B0%D1%82%D1%8B%D2%A3%D1%8B%D0%B7%20%D0%BA%D1%96%D0%BC%3F) — What is your name?
+[Listen: Сіздің атыңыз кім?](/static/course/kazakh-language/audio/kz-003.wav) — What is your name?
 
-[Listen: Менің атым Данияр.](#speak-kz=%D0%9C%D0%B5%D0%BD%D1%96%D2%A3%20%D0%B0%D1%82%D1%8B%D0%BC%20%D0%94%D0%B0%D0%BD%D0%B8%D1%8F%D1%80.) — My name is Daniyar.
+[Listen: Менің атым Данияр.](/static/course/kazakh-language/audio/kz-004.wav) — My name is Daniyar.
 
-[Listen: Танысқаныма қуаныштымын.](#speak-kz=%D0%A2%D0%B0%D0%BD%D1%8B%D1%81%D2%9B%D0%B0%D0%BD%D1%8B%D0%BC%D0%B0%20%D2%9B%D1%83%D0%B0%D0%BD%D1%8B%D1%88%D1%82%D1%8B%D0%BC%D1%8B%D0%BD.) — I am glad to meet you.
+[Listen: Танысқаныма қуаныштымын.](/static/course/kazakh-language/audio/kz-005.wav) — I am glad to meet you.
 
 ## How to practise
 
@@ -40,7 +40,7 @@ The exchange holds four actions: **contact → information about self → questi
 
 ## The limit of the rule
 
-One route does not mean one script. `Сәлеметсіз бе!` is more formal than `Сәлем!`. We begin with a neutral respectful exchange. The button uses the device's Kazakh voice as a listening anchor; real speakers will still vary in pace and intonation.
+One route does not mean one script. `Сәлеметсіз бе!` is more formal than `Сәлем!`. We begin with a neutral respectful exchange. The button plays an approved Kazakh pronunciation recording as a listening anchor; real speakers will still vary in pace and intonation.
 
 ## Predict before the explanation
 
