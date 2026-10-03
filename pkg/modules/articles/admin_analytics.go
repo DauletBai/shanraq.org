@@ -201,7 +201,7 @@ func (m *Module) courseAnalytics(ctx context.Context, lang string) (CourseAnalyt
 			COALESCE(SUM(n) FILTER (WHERE kind=$1 AND NOT is_guest),0),
 			COALESCE(SUM(n) FILTER (WHERE kind=$2 AND is_guest),0),
 			COALESCE(SUM(n) FILTER (WHERE kind=$2 AND NOT is_guest),0)
-		FROM analytics_daily WHERE kind IN ($1,$2)`, metricCourseLesson, metricCourseHub).
+		FROM analytics_daily_display WHERE kind IN ($1,$2)`, metricCourseLesson, metricCourseHub).
 		Scan(&out.Day.Guest, &out.Day.Registered, &out.Week.Guest, &out.Week.Registered,
 			&out.Month.Guest, &out.Month.Registered, &out.All.Guest, &out.All.Registered,
 			&out.Hubs.Guest, &out.Hubs.Registered); err != nil {
@@ -210,7 +210,7 @@ func (m *Module) courseAnalytics(ctx context.Context, lang string) (CourseAnalyt
 
 	rows, err := db.Query(ctx, `
 		WITH legacy AS (
-			SELECT article_id, SUM(views) AS views FROM article_views_daily GROUP BY article_id
+			SELECT article_id, SUM(views) AS views FROM article_views_daily_display GROUP BY article_id
 		), reads AS (
 			SELECT article_id, finished FROM article_reads
 		), depth AS (
@@ -243,12 +243,12 @@ func (m *Module) courseAnalytics(ctx context.Context, lang string) (CourseAnalyt
 			       COALESCE(SUM(n) FILTER (WHERE split_part(label,'|',3)='kz'),0) AS kz,
 			       COALESCE(SUM(n) FILTER (WHERE split_part(label,'|',3)='ru'),0) AS ru,
 			       COALESCE(SUM(n) FILTER (WHERE split_part(label,'|',3)='en'),0) AS en
-			FROM analytics_daily WHERE kind=$1 GROUP BY 1
+			FROM analytics_daily_display WHERE kind=$1 GROUP BY 1
 		), hubs AS (
 			SELECT split_part(label,'|',1) AS slug,
 			       COALESCE(SUM(n) FILTER (WHERE is_guest),0) AS guest,
 			       COALESCE(SUM(n) FILTER (WHERE NOT is_guest),0) AS registered
-			FROM analytics_daily WHERE kind=$2 GROUP BY 1
+			FROM analytics_daily_display WHERE kind=$2 GROUP BY 1
 		)
 		SELECT s.slug, COALESCE(NULLIF(t.title,''),s.slug),
 		       COALESCE(i.lessons,0), COALESCE(c.guest,0), COALESCE(c.registered,0),
@@ -301,9 +301,9 @@ func (m *Module) courseAnalytics(ctx context.Context, lang string) (CourseAnalyt
 			       split_part(label,'|',2) AS article_slug,
 			       COALESCE(SUM(n) FILTER (WHERE is_guest),0) AS guest,
 			       COALESCE(SUM(n) FILTER (WHERE NOT is_guest),0) AS registered
-			FROM analytics_daily WHERE kind=$1 GROUP BY 1,2
+			FROM analytics_daily_display WHERE kind=$1 GROUP BY 1,2
 		), legacy AS (
-			SELECT article_id, SUM(views) AS views FROM article_views_daily GROUP BY article_id
+			SELECT article_id, SUM(views) AS views FROM article_views_daily_display GROUP BY article_id
 		), depth AS (
 			SELECT article_id, SUM(count) FILTER (WHERE depth=25) AS started
 			FROM reading_depth GROUP BY article_id

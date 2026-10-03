@@ -91,7 +91,7 @@ func (s *AdminStore) Stats(ctx context.Context) (AdminStats, error) {
 	if err := s.db.QueryRow(ctx, `SELECT COUNT(*) FROM articles WHERE status='published'`).Scan(&st.Articles); err != nil {
 		return st, err
 	}
-	if err := s.db.QueryRow(ctx, `SELECT COALESCE(SUM(views_count),0) FROM articles`).Scan(&st.Views); err != nil {
+	if err := s.db.QueryRow(ctx, `SELECT COALESCE(SUM(views_count + views_unverified),0) FROM articles`).Scan(&st.Views); err != nil {
 		return st, err
 	}
 	if err := s.db.QueryRow(ctx, `SELECT COUNT(*) FROM comments WHERE status='published'`).Scan(&st.Comments); err != nil {
@@ -127,7 +127,7 @@ func (s *AdminStore) Stats(ctx context.Context) (AdminStats, error) {
 		st.UsersByRole[i].Pct = barPct(int64(st.UsersByRole[i].N), int64(maxRole))
 	}
 
-	rows, err = s.db.Query(ctx, `SELECT category, COUNT(*), COALESCE(SUM(views_count),0)
+	rows, err = s.db.Query(ctx, `SELECT category, COUNT(*), COALESCE(SUM(views_count + views_unverified),0)
 		FROM articles WHERE status='published' GROUP BY category ORDER BY 3 DESC`)
 	if err != nil {
 		return st, err
@@ -151,10 +151,10 @@ func (s *AdminStore) Stats(ctx context.Context) (AdminStats, error) {
 		st.ByCat[i].Pct = barPct(st.ByCat[i].Views, maxViews)
 	}
 
-	rows, err = s.db.Query(ctx, `SELECT a.slug, COALESCE(t.title,a.slug), a.views_count, a.score
+	rows, err = s.db.Query(ctx, `SELECT a.slug, COALESCE(t.title,a.slug), (a.views_count + a.views_unverified), a.score
 		FROM articles a
 		LEFT JOIN article_translations t ON t.article_id = a.id AND t.lang = 'ru'
-		WHERE a.status='published' ORDER BY a.views_count DESC LIMIT 10`)
+		WHERE a.status='published' ORDER BY (a.views_count + a.views_unverified) DESC LIMIT 10`)
 	if err != nil {
 		return st, err
 	}
@@ -240,8 +240,9 @@ type AdminPage struct {
 	// Confirmed reads: a view proves the page was visible, while this stricter
 	// beacon also requires the end and enough engaged reading time.
 	Reads ReadTotals
-	// SourcesSince is the day the verified view counter restarts from, shown
-	// under the "Views" tile so a deliberately short clean series is explicit.
+	// SourcesSince is the first retained historical day. The interface also
+	// names the 03.10.2026 methodology boundary so old and new counts are not
+	// mistaken for one measurement method.
 	SourcesSince string
 	// AI model configuration (provider/model switch).
 	AI ai.AdminView
@@ -300,7 +301,7 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 	} else {
 		m.rt.Logger.Warn("read totals", zap.Error(err))
 	}
-	page.SourcesSince = analyticsSince
+	page.SourcesSince = analyticsHistorySince
 	page.CanManageUsers = canManageUsers(claims)
 	page.CanFinance = canViewFinance(claims)
 	page.CanModerate = canModerate(claims)

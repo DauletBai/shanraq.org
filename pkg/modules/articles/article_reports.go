@@ -112,7 +112,7 @@ func (s *Store) ReportArticle(ctx context.Context, articleID, reporterID uuid.UU
 	var status string
 	var views int
 	if err := tx.QueryRow(ctx,
-		`SELECT author_id, status, COALESCE(views_count, 0) FROM articles WHERE id = $1`,
+		`SELECT author_id, status, COALESCE(views_count + views_unverified, 0) FROM articles WHERE id = $1`,
 		articleID).Scan(&out.Author, &status, &views); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return out, ErrNotFound

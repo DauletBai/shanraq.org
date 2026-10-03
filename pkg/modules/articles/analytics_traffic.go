@@ -183,9 +183,10 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string, loc 
 		SELECT date_trunc($1, slot AT TIME ZONE $5) AS b,
 		       COUNT(DISTINCT host) AS hosts,
 		       COUNT(DISTINCT vid)  AS visitors,
-		       COUNT(DISTINCT sid)  AS visits,
+		       COUNT(DISTINCT sid) FILTER (WHERE verified)
+		         + COUNT(*) FILTER (WHERE NOT verified) AS visits,
 		       COALESCE(SUM(views), 0) AS views
-		  FROM analytics_slots
+		  FROM analytics_slots_display
 		 WHERE slot >= $2
 		   AND ($3::bool IS NOT TRUE OR is_kz)
 		   AND ($4::bool IS NOT TRUE OR is_mobile)
@@ -219,7 +220,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string, loc 
 	m.backfillViews(ctx, a, p, &out, loc)
 
 	var first time.Time
-	if err := m.rt.DB.QueryRow(ctx, `SELECT MIN(slot) FROM analytics_slots`).Scan(&first); err == nil && !first.IsZero() {
+	if err := m.rt.DB.QueryRow(ctx, `SELECT MIN(slot) FROM analytics_slots_display`).Scan(&first); err == nil && !first.IsZero() {
 		out.Since = first.In(loc).Format("02.01.2006 15:04")
 		fillPeriod(&out, first, loc, p.Code)
 	}
@@ -257,7 +258,7 @@ func (m *Module) backfillViews(ctx context.Context, a trafficAudience, p traffic
 	}
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT date_trunc($1, day::timestamp) AS b, COALESCE(SUM(n), 0)
-		  FROM analytics_daily
+		  FROM analytics_daily_display
 		 WHERE day >= $2 AND kind = $3 AND ($4 = '' OR label = $4)
 		 GROUP BY b ORDER BY b`,
 		p.Trunc, periodStart(p.Code, time.Now().In(loc), loc), kind, label)

@@ -204,7 +204,7 @@ func (s *Store) SlugExists(ctx context.Context, slug string) (bool, error) {
 func (s *Store) GetByID(ctx context.Context, id, authorID uuid.UUID) (*Article, error) {
 	row := s.db.QueryRow(ctx, `
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
+		       a.cover_url, a.score, (a.views_count + a.views_unverified), a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE a.id = $1 AND a.author_id = $2
@@ -223,7 +223,7 @@ func (s *Store) GetByID(ctx context.Context, id, authorID uuid.UUID) (*Article, 
 func (s *Store) GetPublishedBySlug(ctx context.Context, slug string) (*Article, error) {
 	row := s.db.QueryRow(ctx, `
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
+		       a.cover_url, a.score, (a.views_count + a.views_unverified), a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE a.slug = $1 AND a.status = 'published'
@@ -293,7 +293,7 @@ func (s *Store) ListPublished(ctx context.Context, sort, category, subcategory s
 
 	query := fmt.Sprintf(`
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
+		       a.cover_url, a.score, (a.views_count + a.views_unverified), a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE %s
@@ -323,7 +323,7 @@ func (s *Store) ListPublishedByAuthor(ctx context.Context, authorID string, limi
 	}
 	rows, err := s.db.Query(ctx, `
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
+		       a.cover_url, a.score, (a.views_count + a.views_unverified), a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE a.status = 'published' AND a.author_id = $1
@@ -344,7 +344,7 @@ func (s *Store) ListPublishedByAuthor(ctx context.Context, authorID string, limi
 func (s *Store) ListByAuthor(ctx context.Context, authorID uuid.UUID) ([]*Article, error) {
 	rows, err := s.db.Query(ctx, `
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug, a.original_lang, a.status, a.category, a.subcategory,
-		       a.cover_url, a.score, a.views_count, a.published_at, a.created_at, a.updated_at, a.indexable
+		       a.cover_url, a.score, (a.views_count + a.views_unverified), a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
 		WHERE a.author_id = $1
@@ -391,7 +391,7 @@ func (s *Store) AuthorStats(ctx context.Context, authorID uuid.UUID) (AuthorStat
 			COUNT(*),
 			COUNT(*) FILTER (WHERE status = 'published'),
 			COUNT(*) FILTER (WHERE status = 'draft'),
-			COALESCE(SUM(views_count), 0)
+			COALESCE(SUM(views_count + views_unverified), 0)
 		FROM articles WHERE author_id = $1
 	`, authorID).Scan(&st.TotalArticles, &st.Published, &st.Drafts, &st.TotalViews)
 	if err != nil {
@@ -400,7 +400,7 @@ func (s *Store) AuthorStats(ctx context.Context, authorID uuid.UUID) (AuthorStat
 
 	rows, err := s.db.Query(ctx, `
 		SELECT v.lang, COALESCE(SUM(v.views), 0)
-		FROM article_views_daily v
+		FROM article_views_daily_display v
 		JOIN articles a ON a.id = v.article_id
 		WHERE a.author_id = $1
 		GROUP BY v.lang
@@ -501,7 +501,7 @@ func (s *Store) RelatedPublished(ctx context.Context, exclude uuid.UUID, categor
 	args := []any{exclude, subcategory, category, limit}
 	rows, err := s.db.Query(ctx, fmt.Sprintf(`
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug,
-		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, a.views_count,
+		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, (a.views_count + a.views_unverified),
 		       a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -600,7 +600,7 @@ func (s *Store) ListForPlace(ctx context.Context, place uuid.UUID, limit, offset
 			SELECT g.id, g.parent_id FROM geo_nodes g JOIN up ON g.id = up.parent_id
 		)
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug,
-		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, a.views_count,
+		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, (a.views_count + a.views_unverified),
 		       a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id
@@ -717,7 +717,7 @@ func (s *Store) ListByDay(ctx context.Context, day time.Time, limit, offset int,
 	where := placeClause(&args, addressed)
 	rows, err := s.db.Query(ctx, `
 		SELECT a.id, a.author_id, u.email, COALESCE(u.first_name, ''), COALESCE(u.last_name, ''), a.slug,
-		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, a.views_count,
+		       a.original_lang, a.status, a.category, a.subcategory, a.cover_url, a.score, (a.views_count + a.views_unverified),
 		       a.published_at, a.created_at, a.updated_at, a.indexable
 		FROM articles a
 		JOIN auth_users u ON u.id = a.author_id

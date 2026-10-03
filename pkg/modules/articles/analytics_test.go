@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 	"shanraq.org/internal/config"
@@ -532,5 +533,70 @@ func TestGiveBackCountsLostTallies(t *testing.T) {
 	})
 	if got := mt.Dropped(); got != 18 {
 		t.Errorf("Dropped() = %d, хотели 18 (7+11), а не число строк", got)
+	}
+}
+
+// The verified counter started a cleaner series, but it must not make the
+// preceding months disappear. The read model adds both sources while writes
+// continue to land only in the current tables.
+func TestArchivedAndVerifiedAnalyticsAreBothDisplayed(t *testing.T) {
+	app := newTestApp(t)
+	label := "history-" + uuid.NewString()
+
+	app.exec(`INSERT INTO analytics_daily_unverified (day,kind,label,is_guest,n)
+		VALUES (CURRENT_DATE,'source',$1,true,7)`, label)
+	app.exec(`INSERT INTO analytics_daily (day,kind,label,is_guest,n)
+		VALUES (CURRENT_DATE,'source',$1,true,5)`, label)
+	t.Cleanup(func() {
+		_, _ = app.pool.Exec(context.Background(),
+			`DELETE FROM analytics_daily_unverified WHERE kind='source' AND label=$1`, label)
+		_, _ = app.pool.Exec(context.Background(),
+			`DELETE FROM analytics_daily WHERE kind='source' AND label=$1`, label)
+	})
+
+	var got int64
+	for _, row := range app.module().simpleRows(t.Context(), metricSource, "ag.source.", "ru") {
+		if row.Name == label {
+			got = row.N
+			break
+		}
+	}
+	if got != 12 {
+		t.Fatalf("displayed source total = %d, want archived 7 + verified 5", got)
+	}
+}
+
+func TestArticleCountersKeepHistoryAndAddNewViews(t *testing.T) {
+	app := newTestApp(t)
+	author := app.createUser("history-"+uuid.NewString()+"@t.test", "Parol123!")
+	id, slug := app.seedArticle(author, "published")
+
+	app.exec(`UPDATE articles SET views_unverified=41, views_count=2 WHERE id=$1`, id)
+	app.exec(`INSERT INTO article_views_daily_unverified(article_id,lang,day,views)
+		VALUES ($1,'ru',CURRENT_DATE,9)`, id)
+	app.exec(`INSERT INTO article_views_daily(article_id,lang,day,views)
+		VALUES ($1,'ru',CURRENT_DATE,4)`, id)
+	t.Cleanup(func() {
+		_, _ = app.pool.Exec(context.Background(),
+			`DELETE FROM article_views_daily_unverified WHERE article_id=$1`, id)
+	})
+
+	article, err := NewStore(app.pool).GetPublishedBySlug(t.Context(), slug)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if article.ViewsCount != 43 {
+		t.Fatalf("article views = %d, want archived 41 + verified 2", article.ViewsCount)
+	}
+
+	stats, err := NewStore(app.pool).AuthorStats(t.Context(), author)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if stats.TotalViews != 43 {
+		t.Fatalf("author views = %d, want 43", stats.TotalViews)
+	}
+	if stats.ViewsByLang["ru"] != 13 {
+		t.Fatalf("Russian views = %d, want archived 9 + verified 4", stats.ViewsByLang["ru"])
 	}
 }

@@ -1356,10 +1356,10 @@ type StudioRow struct {
 	AvgSecs int64
 }
 
-// analyticsSince is the day page and reader-facing view counters began
-// requiring a visible first-party browser beacon. Shown in the studio so nobody
-// reads a small number as a collapse in readership.
-const analyticsSince = "03.10.2026"
+// analyticsHistorySince is the first day retained by the site-wide counter.
+// From 03.10.2026 onward views require a visible first-party browser beacon;
+// earlier request-based figures remain visible as the historical record.
+const analyticsHistorySince = "31.07.2026"
 
 // StudioPage is the dashboard context.
 type StudioPage struct {
@@ -1445,7 +1445,7 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 
 	page := StudioPage{
 		Base:  m.base(r, site.T(lang, "studio.title"), lang),
-		Since: analyticsSince,
+		Since: analyticsHistorySince,
 	}
 	switch r.URL.Query().Get("ok") {
 	case "published":

@@ -73,7 +73,7 @@ func (s *ListingStore) Report(ctx context.Context, listingID, reporterID uuid.UU
 	if err = s.db.QueryRow(ctx,
 		`SELECT
 		    (SELECT count(*) FROM listing_reports WHERE listing_id=$1),
-		    (SELECT COALESCE(views_count, 0) FROM listings WHERE id=$1)`,
+		    (SELECT COALESCE(views_count + views_unverified, 0) FROM listings WHERE id=$1)`,
 		listingID).Scan(&count, &views); err != nil {
 		return 0, false, fmt.Errorf("count reports: %w", err)
 	}

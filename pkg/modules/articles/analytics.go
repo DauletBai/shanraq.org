@@ -948,7 +948,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		  COALESCE(SUM(n) FILTER (WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 29 AND NOT is_guest), 0),
 		  COALESCE(SUM(n) FILTER (WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 364 AND is_guest), 0),
 		  COALESCE(SUM(n) FILTER (WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 364 AND NOT is_guest), 0)
-		FROM analytics_daily WHERE kind = 'page'`).
+		FROM analytics_daily_display WHERE kind = 'page'`).
 		Scan(&g.Day.Guest, &g.Day.Registered, &g.Week.Guest, &g.Week.Registered, &g.Month.Guest, &g.Month.Registered, &g.Year.Guest, &g.Year.Registered)
 
 	// Pages, last 30 days.
@@ -956,7 +956,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		SELECT label,
 		       COALESCE(SUM(n) FILTER (WHERE is_guest), 0),
 		       COALESCE(SUM(n) FILTER (WHERE NOT is_guest), 0)
-		FROM analytics_daily
+		FROM analytics_daily_display
 		WHERE kind = 'page' AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY label`); err == nil {
 		var maxTotal int64
@@ -987,7 +987,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 		SELECT label,
 		       COALESCE(SUM(n) FILTER (WHERE is_guest), 0),
 		       COALESCE(SUM(n) FILTER (WHERE NOT is_guest), 0)
-		FROM analytics_daily
+		FROM analytics_daily_display
 		WHERE kind = 'click' AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY label`); err == nil {
 		for rows.Next() {
@@ -1041,7 +1041,7 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 	counts := map[string]int64{}
 	if rows, err := m.rt.DB.Query(ctx, `
 		SELECT day, COALESCE(SUM(n) FILTER (WHERE is_guest), 0)
-		FROM analytics_daily
+		FROM analytics_daily_display
 		WHERE kind = 'page' AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - make_interval(days => $1)
 		GROUP BY day`, guestTrendDays-1); err == nil {
 		for rows.Next() {
@@ -1156,7 +1156,7 @@ func (m *Module) simpleRows(ctx context.Context, kind, i18nPrefix, lang string) 
 func (m *Module) simpleRowsN(ctx context.Context, kind, i18nPrefix, lang string, keep int) []GuestSimpleRow {
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT label, COALESCE(SUM(n), 0)
-		FROM analytics_daily
+		FROM analytics_daily_display
 		WHERE kind = $1 AND is_guest AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY label`, kind)
 	if err != nil {
@@ -1216,7 +1216,7 @@ func (m *Module) simpleRowsN(ctx context.Context, kind, i18nPrefix, lang string,
 func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow {
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT split_part(label, '|', 1) AS geo, COALESCE(SUM(n), 0)
-		FROM analytics_daily
+		FROM analytics_daily_display
 		WHERE kind = $1 AND is_guest AND label LIKE '%|en' AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY geo`, metricGeoLang)
 	if err != nil {
@@ -1261,7 +1261,7 @@ func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow
 func (m *Module) langOfGeo(ctx context.Context, geo, lang string) []GuestSimpleRow {
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT split_part(label, '|', 2) AS lng, COALESCE(SUM(n), 0)
-		FROM analytics_daily
+		FROM analytics_daily_display
 		WHERE kind = $1 AND is_guest AND label LIKE $2 AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
 		GROUP BY lng`, metricGeoLang, geo+"|%")
 	if err != nil {

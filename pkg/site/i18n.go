@@ -1484,7 +1484,7 @@ var messages = map[string]map[string]string{
 	"stats.desc":         {"kz": "Сайттың ашық статистикасы: қаралымдар, елдер, көздер, құрылғылар және краулерлер — соңғы 30 күн.", "ru": "Открытая статистика сайта: просмотры, страны, источники, устройства и краулеры — за последние 30 дней.", "en": "The site's open statistics: views, countries, sources, devices and crawlers over the last 30 days."},
 	"stats.lead":         {"kz": "Сайт аудиториясы соңғы 30 күнде: қанша бет ашылды, қай елдерден және қандай құрылғылардан, оқырмандар қайдан келді және келулердің қаншасы іздеу роботтары.", "ru": "Аудитория сайта за последние 30 дней: сколько страниц открывали, из каких стран и на каких устройствах, откуда приходили читатели и сколько среди визитов поисковых роботов.", "en": "The site's audience over the last 30 days: how many pages were opened, from which countries and on what devices, where readers came from, and how many of the visits were crawlers."},
 	"stats.method":       {"kz": "Қалай санаймыз", "ru": "Как мы считаем", "en": "How we count"},
-	"stats.method_note":  {"kz": "Қаралым бет браузерде көрсетілгеннен кейін ғана саналады. Кіру 30 минут белсенділік болмаса аяқталады: қатарынан бес бет — бір кіру, үзілістен кейін оралу — жаңа кіру. Краулерлер есепке кірмейді, олар төменде бөлек.", "ru": "Просмотр считается только после показа страницы в браузере. Визит заканчивается после 30 минут без активности: пять страниц подряд — один визит, возврат после перерыва — новый. Краулеры в счёт не идут и показаны ниже отдельно.", "en": "A view counts only after the page is shown in a browser. A visit ends after 30 minutes without activity: five pages in a row stay one visit, a return after the break starts another. Crawlers are excluded and shown separately below."},
+	"stats.method_note":  {"kz": "Қаралым бет браузерде көрсетілгеннен кейін саналады. Кіру 30 минут белсенділік болмаса аяқталады: қатарынан бес бет — бір кіру, үзілістен кейін оралу — жаңа кіру. Краулерлер есепке кірмейді, олар төменде бөлек.", "ru": "Просмотр считается после показа страницы в браузере. Визит заканчивается после 30 минут без активности: пять страниц подряд — один визит, возврат после перерыва — новый. Краулеры в счёт не идут и показаны ниже отдельно.", "en": "A view counts after the page is shown in a browser. A visit ends after 30 minutes without activity: five pages in a row stay one visit, a return after the break starts another. Crawlers are excluded and shown separately below."},
 	"stats.since":        {"kz": "Санағыш %s жылдан бері жұмыс істейді", "ru": "Счётчик считает с %s", "en": "The counter has been running since %s"},
 	"stats.updated":      {"kz": "жаңартылды: %s", "ru": "обновлено: %s", "en": "updated: %s"},
 	"stats.views_30":     {"kz": "30 күндегі қаралым", "ru": "просмотров за 30 дней", "en": "views in 30 days"},
@@ -1503,7 +1503,7 @@ var messages = map[string]map[string]string{
 	"ag.sources":         {"kz": "Дереккөздер (30 күн)", "ru": "Источники (30 дней)", "en": "Sources (30 days)"},
 	"ag.sources_note":    {"kz": "Тірі қонақтар қайдан келді.", "ru": "Откуда пришли живые гости.", "en": "Where human visits came from."},
 	"admin.since_short":  {"kz": "бастап", "ru": "с", "en": "since"},
-	"admin.views_since":  {"kz": "Бет браузердің көрінетін қойындысында көрсетілгенін растайтын санағыш іске қосылған күннен бері саналады.", "ru": "Считается со дня запуска счётчика, подтверждающего показ страницы в видимой вкладке браузера.", "en": "Counted from the day the counter began requiring proof that the page appeared in a visible browser tab."},
+	"admin.views_since":  {"kz": "Қаралымдар тарихының басталуы:", "ru": "Начало истории просмотров:", "en": "View history begins:"},
 	"ag.bots":            {"kz": "Боттар (30 күн)", "ru": "Боты (30 дней)", "en": "Bots (30 days)"},
 	"ag.bots_note":       {"kz": "Іздеу және алдыналу боттары — қонақтар қатарына кірмейді.", "ru": "Поисковые и превью-боты — не входят в число гостей.", "en": "Crawlers & preview bots — excluded from the guest counts."},
 	"ag.devices":         {"kz": "Құрылғылар (30 күн)", "ru": "Устройства (30 дней)", "en": "Devices (30 days)"},
@@ -2166,7 +2166,7 @@ var messages = map[string]map[string]string{
 	"studio.col_langs":       {"kz": "Тілдер", "ru": "Языки", "en": "Languages"},
 	"studio.col_views":       {"kz": "Оқылым", "ru": "Просмотры", "en": "Views"},
 	"studio.col_depth":       {"kz": "Оқу тереңдігі", "ru": "Дочитывания", "en": "Read depth"},
-	"studio.since":           {"kz": "Қаралымдар мен оқу тереңдігі нөлден саналады, есеп басталған күн —", "ru": "Просмотры и дочитывания считаются с нуля, отсчёт ведётся с", "en": "Views and read depth both count from zero, starting"},
+	"studio.since":           {"kz": "Қаралымдар тарихы басталған күн —", "ru": "История просмотров начинается с", "en": "View history begins"},
 	"studio.depth_25":        {"kz": "Оқи бастады (ширегіне жетті)", "ru": "Начали читать (дошли до четверти)", "en": "Started reading (reached a quarter)"},
 	"studio.depth_50":        {"kz": "Жартысына жетті", "ru": "Дошли до середины", "en": "Reached halfway"},
 	"studio.depth_75":        {"kz": "Төрттен үшіне жетті", "ru": "Дошли до трёх четвертей", "en": "Reached three quarters"},
@@ -2314,9 +2314,9 @@ var messages = map[string]map[string]string{
 	// Printed only where the older counter actually supplied buckets: the
 	// hourly chart never asks it.
 	"tc.older": {
-		"kz": "Оған дейінгі қаралымдар — ескі санағыштан.",
-		"ru": "Просмотры до этой даты — из прежнего счётчика.",
-		"en": "Views before that come from the older counter.",
+		"kz": "Оған дейінгі кезең үшін тек қаралым саны бар.",
+		"ru": "Для более раннего периода доступны только просмотры.",
+		"en": "Only view totals are available for the earlier period.",
 	},
 	// The thousands mark on a chart scale: "12т", "12м", "12k".
 	"tc.kilo":  {"kz": "м", "ru": "т", "en": "k"},

@@ -122,7 +122,7 @@ const listingCols = `l.id, l.author_id, u.email, l.deal_type, l.property_type, l
 	l.microdistrict, l.street, l.house, l.lat, l.lng,
 	l.price, l.area, l.rooms, l.title, l.description, l.contact, l.cover_url, l.images, l.documents, l.contract_url,
 	l.title_kz, l.title_ru, l.title_en, l.description_kz, l.description_ru, l.description_en, l.currency, l.status, l.created_at,
-	l.expires_at, l.promoted_until, l.featured_until, l.banner_until, l.views_count, l.contacts_count, l.land_area, l.amenities, l.room_specs,
+	l.expires_at, l.promoted_until, l.featured_until, l.banner_until, (l.views_count + l.views_unverified), l.contacts_count, l.land_area, l.amenities, l.room_specs,
 	l.build_year, l.wall_material, l.ceiling_height,
 	l.geo_node_id, l.updated_at,
 	(SELECT count(*) FROM listing_reports rp WHERE rp.listing_id = l.id),
