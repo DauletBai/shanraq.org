@@ -652,6 +652,7 @@ type ArticlePage struct {
 	CheckLogin       bool
 	CheckMath        bool
 	CheckInformatics bool
+	CheckKazakh      bool
 	Progress         Progress
 
 	// Courses this article is a lesson in. Usually none, at most one; the slice
@@ -835,6 +836,8 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 			page.CheckMath = true
 		case CodeInformatics:
 			page.CheckInformatics = true
+		case CodeKazakh:
+			page.CheckKazakh = true
 		}
 	}
 	if lessonExercise(tr.BodyMD) != "" && !rustSelfCheck {

@@ -38,6 +38,10 @@ const (
 	// CodeInformatics accepts observations, models, explanations, and project
 	// evidence before the course reaches programming.
 	CodeInformatics = "informatics"
+	// CodeKazakh accepts language production and reflection as prose. Its
+	// reviewer checks communicative meaning and forms without pretending that a
+	// written answer proves pronunciation or listening.
+	CodeKazakh = "kazakh"
 	// CodeMath accepts a learner's reasoning in ordinary mathematical prose.
 	// A mathematics course cannot pretend that every proof is a program merely
 	// to reuse the exercise checker.
@@ -215,6 +219,9 @@ func checkSystem(lang, codeLang string) string {
 	if codeLang == CodeInformatics {
 		return informaticsCheckSystem(lang)
 	}
+	if codeLang == CodeKazakh {
+		return kazakhCheckSystem(lang)
+	}
 	name := "Go"
 	switch codeLang {
 	case CodePython:
@@ -247,6 +254,48 @@ instead — never simply "wrong", and never the corrected code, which would take
 the exercise away from them.
 
 Plain text in "note", no Markdown, no code fences.`
+	switch lang {
+	case LangKZ:
+		return common + "\n\nWrite \"note\" in Kazakh."
+	case LangEN:
+		return common + "\n\nWrite \"note\" in English."
+	default:
+		return common + "\n\nWrite \"note\" in Russian."
+	}
+}
+
+// kazakhCheckSystem reviews what the current lesson actually taught. A text
+// box can verify meaning, structure, and a learner's account of what they
+// heard; it cannot honestly certify the sound of a voice it never received.
+func kazakhCheckSystem(lang string) string {
+	common := `You are the checking tutor for Shanraq's beginner Kazakh-language course.
+The course teaches communication through a familiar situation, a short Kazakh
+model, a visual support signal, recall, a learner-created phrase, dialogue,
+error repair, transfer, and spaced retrieval.
+
+Read the exact EXERCISE and SOLUTION supplied by the application. Use TAUGHT SO
+FAR so that you never require vocabulary, grammar terminology, or a form the
+learner has not met. Check only the required parts.
+
+Judge communicative meaning first, then the Kazakh form. Accept a natural
+equivalent phrase, a different safe fictional name or city, and minor spelling
+or punctuation that does not hide the intended meaning. Where the lesson asks
+for a particular contrast or ending, verify that the learner chose it for the
+right meaning. If the learner reports a listening or speaking observation,
+check whether the explanation is plausible, but never claim to have heard
+audio: the application supplied text only.
+
+Answer with JSON and nothing else: {"passed": true|false, "note": "..."}.
+
+Set "passed" to true only when every required part is present and the Kazakh
+would be understood in the stated situation. If it passes, name one choice
+that shows the learner can build rather than copy a phrase. If it does not,
+identify only the first error that blocks meaning or the lesson's target
+contrast. Give one small cue or question; never supply the complete corrected
+answer, a ready dialogue, or a translation the learner can copy.
+
+Write two to four calm, concrete sentences directly to the learner. Plain
+text only: no Markdown and no code fences.`
 	switch lang {
 	case LangKZ:
 		return common + "\n\nWrite \"note\" in Kazakh."
@@ -396,7 +445,7 @@ func formatSolution(src, codeLang string) (string, error) {
 	if codeLang == CodeRust {
 		return "", fmt.Errorf("Rust exercises use the lesson's self-check instructions")
 	}
-	if codeLang == CodePython || codeLang == CodeSQL || codeLang == CodeShell || codeLang == CodeMath || codeLang == CodeInformatics {
+	if codeLang == CodePython || codeLang == CodeSQL || codeLang == CodeShell || codeLang == CodeMath || codeLang == CodeInformatics || codeLang == CodeKazakh {
 		return tidyPython(src), nil
 	}
 	out, err := format.Source([]byte(src))
@@ -444,7 +493,7 @@ func highlightCode(code, codeLang string) template.HTML {
 	if codeLang == CodePython || codeLang == CodeSQL || codeLang == CodeRust || codeLang == CodeShell {
 		fence = codeLang
 	}
-	if codeLang == CodeMath || codeLang == CodeInformatics {
+	if codeLang == CodeMath || codeLang == CodeInformatics || codeLang == CodeKazakh {
 		// A proof is prose. Rendering it as a Go fence would turn every sentence
 		// into misleading syntax colours and a monospace wall.
 		return RenderMarkdown(code)

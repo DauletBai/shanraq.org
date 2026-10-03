@@ -969,6 +969,23 @@
       arm();
     })();
 
+    // Kazakh model phrases are spoken by the device's kk-KZ voice. The text is
+    // fixed lesson content; no learner input is sent by this control.
+    (function () {
+      if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+      document.addEventListener('click', function (ev) {
+        var button = ev.target.closest ? ev.target.closest('[data-speak-kz]') : null;
+        if (!button) return;
+        var phrase = button.getAttribute('data-speak-kz');
+        if (!phrase) return;
+        window.speechSynthesis.cancel();
+        var utterance = new SpeechSynthesisUtterance(phrase);
+        utterance.lang = 'kk-KZ';
+        utterance.rate = 0.82;
+        window.speechSynthesis.speak(utterance);
+      });
+    })();
+
     // Reading-depth beacon: report 25/50/75/100% scroll milestones once each.
     (function () {
       var el = document.querySelector('[data-read-progress]');

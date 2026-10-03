@@ -1,0 +1,37 @@
+name: Kazakh language course
+
+on:
+  push:
+    paths:
+      - 'course/kazakh-language/**'
+      - 'course/lessons/kazakh-language/**'
+      - 'docs/kazakh-language-course.md'
+      - 'tools/course/generate_kazakh_language_foundations.py'
+      - 'tools/course/generate_kazakh_language_maps.py'
+      - 'tools/course/test_kazakh_language_release.py'
+      - 'web/static/course/kazakh-language/**'
+      - 'web/static/covers/school/kazakh-language/**'
+  pull_request:
+    paths:
+      - 'course/kazakh-language/**'
+      - 'course/lessons/kazakh-language/**'
+      - 'docs/kazakh-language-course.md'
+      - 'tools/course/generate_kazakh_language_foundations.py'
+      - 'tools/course/generate_kazakh_language_maps.py'
+      - 'tools/course/test_kazakh_language_release.py'
+      - 'web/static/course/kazakh-language/**'
+      - 'web/static/covers/school/kazakh-language/**'
+
+jobs:
+  course:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Regenerate localized lesson and support maps
+        run: |
+          python3 tools/course/generate_kazakh_language_foundations.py
+          python3 tools/course/generate_kazakh_language_maps.py
+      - name: Verify generated files are committed
+        run: git diff --exit-code
+      - name: Validate course architecture and first implementation
+        run: python3 -m unittest tools.course.test_kazakh_language_release

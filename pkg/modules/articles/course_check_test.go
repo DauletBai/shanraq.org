@@ -233,6 +233,30 @@ func TestInformaticsEvidenceStaysProse(t *testing.T) {
 	}
 }
 
+func TestKazakhLanguageResponseStaysProse(t *testing.T) {
+	src := "Сәлем! Менің атым Аружан. Сіздің атыңыз кім?"
+	out, err := formatSolution(src, CodeKazakh)
+	if err != nil || out != src+"\n" {
+		t.Fatalf("formatSolution(kazakh) = %q, %v", out, err)
+	}
+	prompt := checkSystem(LangRU, CodeKazakh)
+	lowerPrompt := strings.ToLower(prompt)
+	for _, rule := range []string{
+		"beginner kazakh-language course",
+		"judge communicative meaning first",
+		"claim to have heard",
+		"first error that blocks meaning",
+		"complete corrected",
+	} {
+		if !strings.Contains(lowerPrompt, rule) {
+			t.Errorf("Kazakh reviewer prompt is missing %q", rule)
+		}
+	}
+	if got := string(highlightCode(src, CodeKazakh)); strings.Contains(got, "chroma") || !strings.Contains(got, "<p>") {
+		t.Fatalf("Kazakh response rendered as code: %s", got)
+	}
+}
+
 func TestFormatSolutionSQLPreservesQuery(t *testing.T) {
 	src := "SELECT amount   \r\nFROM transactions;   \r\n"
 	out, err := formatSolution(src, CodeSQL)

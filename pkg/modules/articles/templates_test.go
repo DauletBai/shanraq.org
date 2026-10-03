@@ -787,6 +787,35 @@ func TestMathematicsExerciseUsesProseInstructions(t *testing.T) {
 	}
 }
 
+func TestKazakhExerciseExplainsTextOnlyReview(t *testing.T) {
+	renderer := buildTemplates(t)
+	for _, lang := range Langs {
+		page := ArticlePage{
+			Base:        Base{Title: "Kazakh", Lang: lang},
+			Slug:        "kazakh-language-first-contact",
+			Title:       "First contact",
+			ServedLang:  lang,
+			HasExercise: true,
+			CheckReady:  true,
+			CheckKazakh: true,
+		}
+		var out strings.Builder
+		if err := renderer.Execute(&out, "article", page); err != nil {
+			t.Fatal(err)
+		}
+		html := out.String()
+		if strings.Contains(html, "VS Code") || strings.Contains(html, `class="btn btn--ghost chk__fmt"`) {
+			t.Errorf("%s: Kazakh response is still presented as source code", lang)
+		}
+		if !strings.Contains(html, `chk__code--prose`) || !strings.Contains(html, `spellcheck="true"`) {
+			t.Errorf("%s: Kazakh response is not rendered as prose", lang)
+		}
+		if strings.Contains(html, "chk.kazakh_") {
+			t.Errorf("%s: Kazakh checker translation key leaked into the page", lang)
+		}
+	}
+}
+
 // The cover's box has to be reserved before the image arrives, or the heading
 // below it jumps down on load — that shift was the article page's whole CLS.
 func TestArticleCoverReservesItsSpace(t *testing.T) {

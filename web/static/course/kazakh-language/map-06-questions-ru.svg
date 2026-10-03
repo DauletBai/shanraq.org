@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Вопрос открывает место">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#a9cbe0" stroke-width="1" opacity=".35"/></pattern>
+        <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbfdff"/><stop offset="1" stop-color="#eef7fb"/></linearGradient>
+        <filter id="shadow" x="-15%" y="-15%" width="140%" height="145%"><feDropShadow dx="0" dy="13" stdDeviation="12" flood-color="#17364e" flood-opacity=".18"/></filter>
+      </defs>
+      <rect width="1600" height="900" rx="36" fill="url(#paper)"/>
+      <rect width="1600" height="900" rx="36" fill="url(#grid)"/>
+      <path d="M62 222 H1538" stroke="#c52b2f" stroke-width="4" opacity=".76"/>
+      <text x="800" y="104" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="800" fill="#17364e">Вопрос открывает место</text>
+      <text x="800" y="166" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="520" fill="#4b6a7e">не меняем весь порядок — заменяем неизвестное</text>
+      <g font-family="Inter, Arial, sans-serif"><g filter="url(#shadow)">
+          <rect x="90" y="278" width="420" height="360" rx="24" fill="#fff4d7" stroke="#e6a83a" stroke-width="3"/>
+          <rect x="108" y="296" width="384" height="70" rx="17" fill="#e6a83a" opacity=".16"/>
+          <text x="300" y="342" text-anchor="middle" font-size="29" font-weight="750" fill="#17364e">неизвестное</text>
+          <text text-anchor="middle" font-size="28" font-weight="620" fill="#24455f"><tspan x="300" y="420">Кім? Не?</tspan><tspan x="300" y="472">Қайда? Қайдан?</tspan></text>
+          <circle cx="300" cy="585" r="15" fill="#e6a83a" opacity=".78"/>
+        </g><path d="M528 458 H568" stroke="#c52b2f" stroke-width="9" stroke-linecap="round"/>
+              <path d="M559 443 L576 458 L559 473" fill="none" stroke="#c52b2f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><g filter="url(#shadow)">
+          <rect x="590" y="278" width="420" height="360" rx="24" fill="#e7f6ff" stroke="#2992bd" stroke-width="3"/>
+          <rect x="608" y="296" width="384" height="70" rx="17" fill="#2992bd" opacity=".16"/>
+          <text x="800" y="342" text-anchor="middle" font-size="29" font-weight="750" fill="#17364e">да / нет</text>
+          <text text-anchor="middle" font-size="28" font-weight="620" fill="#24455f"><tspan x="800" y="420">… ба? … бе?</tspan><tspan x="800" y="472">частица пишется отдельно</tspan></text>
+          <circle cx="800" cy="585" r="15" fill="#2992bd" opacity=".78"/>
+        </g><path d="M1028 458 H1068" stroke="#c52b2f" stroke-width="9" stroke-linecap="round"/>
+              <path d="M1059 443 L1076 458 L1059 473" fill="none" stroke="#c52b2f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><g filter="url(#shadow)">
+          <rect x="1090" y="278" width="420" height="360" rx="24" fill="#eaf8eb" stroke="#46a260" stroke-width="3"/>
+          <rect x="1108" y="296" width="384" height="70" rx="17" fill="#46a260" opacity=".16"/>
+          <text x="1300" y="342" text-anchor="middle" font-size="29" font-weight="750" fill="#17364e">ответ</text>
+          <text text-anchor="middle" font-size="28" font-weight="620" fill="#24455f"><tspan x="1300" y="420">Иә, …</tspan><tspan x="1300" y="472">Жоқ, … емес</tspan></text>
+          <circle cx="1300" cy="585" r="15" fill="#46a260" opacity=".78"/>
+        </g></g>
+      <g transform="translate(326 724)" filter="url(#shadow)">
+        <rect width="948" height="88" rx="22" fill="#17364e"/>
+        <text x="474" y="55" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="29" font-weight="720" fill="#fff">КӨР → ТЫҢДА → АЙТ → ҚОЛДАН</text>
+      </g>
+    </svg>

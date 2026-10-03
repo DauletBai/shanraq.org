@@ -882,6 +882,25 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   color: color-mix(in srgb, var(--red) 82%, var(--ink));
   font-weight: 700;
 }
+
+.prose .speak-kz {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  margin: .35rem .35rem .35rem 0;
+  padding: .58rem .82rem;
+  border: 1px solid color-mix(in srgb, var(--teal) 45%, var(--line));
+  border-radius: .8rem;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--teal) 10%, var(--surface)), var(--surface));
+  color: var(--ink);
+  box-shadow: 0 5px 14px rgba(27, 65, 82, .12);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.prose .speak-kz::before { content: "▶"; color: var(--teal); font-size: .82em; }
+.prose .speak-kz:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(27, 65, 82, .16); }
+.prose .speak-kz:focus-visible { outline: 3px solid color-mix(in srgb, var(--teal) 35%, transparent); outline-offset: 2px; }
 @media (forced-colors: active) {
   .article--mathematics .prose img,
   .article--mathematics .tscroll--prose { box-shadow: none; border-color: CanvasText; }
