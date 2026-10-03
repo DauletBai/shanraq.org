@@ -62,19 +62,28 @@ func TestCrawlersDoNotCountAsViews(t *testing.T) {
 		}
 	}
 
-	// A real browser still counts, or the fix would have replaced one wrong
-	// number with another.
+	// A browser-looking GET alone no longer counts. The rendered page's
+	// same-origin beacon is what proves a page view.
 	const chrome = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
 		"(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 	if w := app.do(http.MethodGet, "/read/"+slug, nil, withHeader("User-Agent", chrome)); w.Code != http.StatusOK {
 		t.Fatalf("GET article as browser = %d, want 200", w.Code)
 	}
+	if got := views(); got != 0 {
+		t.Fatalf("browser-looking GET left views at %d, want 0 before beacon", got)
+	}
+	if w := app.do(http.MethodPost, "/api/view", nil,
+		withHeader("User-Agent", chrome), withHeader("Referer", app.origin+"/read/"+slug)); w.Code != http.StatusNoContent {
+		t.Fatalf("article beacon = %d, want 204", w.Code)
+	}
 	if got := views(); got != 1 {
-		t.Fatalf("browser visit left views at %d, want 1", got)
+		t.Fatalf("verified browser visit left views at %d, want 1", got)
 	}
 	if w := app.do(http.MethodGet, "/read/"+slug, nil, withHeader("User-Agent", chrome)); w.Code != http.StatusOK {
 		t.Fatalf("second browser GET = %d, want 200", w.Code)
 	}
+	_ = app.do(http.MethodPost, "/api/view", nil,
+		withHeader("User-Agent", chrome), withHeader("Referer", app.origin+"/read/"+slug))
 	if got := views(); got != 2 {
 		t.Fatalf("second browser visit left views at %d, want 2", got)
 	}
@@ -99,11 +108,19 @@ func TestCourseLessonAndHubUseFilteredAudience(t *testing.T) {
 	if w := app.do(http.MethodGet, "/read/"+articleSlug, nil, withHeader("User-Agent", chrome)); w.Code != http.StatusOK {
 		t.Fatalf("lesson as browser = %d", w.Code)
 	}
+	_ = app.do(http.MethodPost, "/api/view", nil,
+		withHeader("User-Agent", chrome), withHeader("Referer", app.origin+"/read/"+articleSlug))
 	_ = app.do(http.MethodGet, "/read/"+articleSlug, nil, withHeader("User-Agent", crawler))
+	_ = app.do(http.MethodPost, "/api/view", nil,
+		withHeader("User-Agent", crawler), withHeader("Referer", app.origin+"/read/"+articleSlug))
 	if w := app.do(http.MethodGet, "/course/"+courseSlug, nil, withHeader("User-Agent", chrome)); w.Code != http.StatusOK {
 		t.Fatalf("course hub as browser = %d", w.Code)
 	}
+	_ = app.do(http.MethodPost, "/api/view", nil,
+		withHeader("User-Agent", chrome), withHeader("Referer", app.origin+"/course/"+courseSlug))
 	_ = app.do(http.MethodGet, "/course/"+courseSlug, nil, withHeader("User-Agent", crawler))
+	_ = app.do(http.MethodPost, "/api/view", nil,
+		withHeader("User-Agent", crawler), withHeader("Referer", app.origin+"/course/"+courseSlug))
 
 	app.module().metrics.mu.Lock()
 	lesson := app.module().metrics.buf[metricKey{

@@ -461,14 +461,6 @@ func (m *Module) handleListingView(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	// Count a view, excluding the owner, crawlers, hosting networks and the
-	// team's own traffic. A seller reads this number as interest in their flat,
-	// so every reader-facing counter uses the same audience rule.
-	if !m.isListingOwner(r, l) && m.countableAudience(r) {
-		if err := m.listings.RecordView(r.Context(), id); err == nil {
-			l.ViewsCount++
-		}
-	}
 	m.renderListingView(w, r, l, false)
 }
 

@@ -46,15 +46,15 @@ func TestHostSharedVisitorNot(t *testing.T) {
 	}
 }
 
-// A visit is a half-hour window: five pages in ten minutes is one visit, a
-// return after the break is another.
+// Storage rows are half-hour buckets. Visits are now joined across those rows
+// by sid, so this test checks bucketing rather than session semantics.
 func TestSlotOfHalfHourWindows(t *testing.T) {
 	at := func(h, m int) time.Time { return time.Date(2026, 8, 29, h, m, 0, 0, time.UTC) }
 	if slotOf(at(10, 3)) != slotOf(at(10, 29)) {
-		t.Error("two hits ten minutes apart fell into different visits")
+		t.Error("two hits in one half-hour fell into different storage slots")
 	}
 	if slotOf(at(10, 29)) == slotOf(at(10, 31)) {
-		t.Error("the half-hour boundary did not start a new visit")
+		t.Error("the half-hour boundary did not start a new storage slot")
 	}
 	if got, want := slotOf(at(10, 47)), at(10, 30); got != want {
 		t.Errorf("slot = %v, want %v", got, want)

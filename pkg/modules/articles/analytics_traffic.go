@@ -15,8 +15,9 @@ import (
 //
 // Four figures over time, under two sets of switches: which audience to count
 // and how finely to slice it. Everything is read from analytics_slots, so the
-// definitions are the table's own -- a visit is a visitor inside a half-hour,
-// a host is an address, a visitor is an address and a browser together.
+// definitions are the table's own -- a visit is a first-party browser session
+// renewed for thirty minutes, a host is an address, and a visitor is an address
+// and browser together for one salted day.
 //
 // The chart is drawn on the server and the switches are ordinary links. That is
 // not thrift for its own sake: this page is opened by advertisers deciding
@@ -182,7 +183,7 @@ func (m *Module) trafficChart(ctx context.Context, audience, period string, loc 
 		SELECT date_trunc($1, slot AT TIME ZONE $5) AS b,
 		       COUNT(DISTINCT host) AS hosts,
 		       COUNT(DISTINCT vid)  AS visitors,
-		       COUNT(*)             AS visits,
+		       COUNT(DISTINCT sid)  AS visits,
 		       COALESCE(SUM(views), 0) AS views
 		  FROM analytics_slots
 		 WHERE slot >= $2

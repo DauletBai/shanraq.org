@@ -72,10 +72,9 @@
       <div class="adm-kpis">
         <div class="adm-kpi"><span class="adm-kpi__ic">◕</span><b>{{ .Stats.Users }}</b><span>{{ t .Lang "admin.users" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">▦</span><b>{{ .Stats.Articles }}</b><span>{{ t .Lang "admin.articles" }}</span></div>
-        {{/* This counter restarted on the day crawler hits were removed from it, so it
-     is small on purpose. The guest panel's "Articles" figure covers the site's
-     whole history and will be much larger — saying so here stops the two being
-     read as a contradiction. */}}
+        {{/* This counter restarted when a visible first-party browser beacon
+             became mandatory. The date prevents the clean, deliberately short
+             series from being read as a sudden loss of audience. */}}
         <div class="adm-kpi" title="{{ t .Lang "admin.views_since" }} {{ .SourcesSince }}"><span class="adm-kpi__ic">◎</span><b>{{ money .Stats.Views }}</b><span>{{ t .Lang "admin.views" }} <i class="adm-kpi__since">{{ t .Lang "admin.since_short" }} {{ .SourcesSince }}</i></span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">✎</span><b>{{ .Stats.Comments }}</b><span>{{ t .Lang "admin.comments" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">⌂</span><b>{{ .Stats.ListingsActive }}</b><span>{{ t .Lang "admin.listings" }}</span></div>
@@ -162,10 +161,8 @@
         <div class="adm-kpi"><span class="adm-kpi__ic">◔</span><b>{{ money .Guests.Week.Total }}</b><span>{{ t .Lang "ag.views_week" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">◑</span><b>{{ money .Guests.Month.Total }}</b><span>{{ t .Lang "ag.views_month" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">◯</span><b>{{ money .Guests.Year.Total }}</b><span>{{ t .Lang "ag.views_year" }}</span></div>
-        {{/* Beside the request counts, the one number automation cannot produce:
-             the scroll beacon needs a browser that ran the script and a person
-             who stayed. The distance between this tile and the ones to its left
-             is how much of the traffic is machinery. */}}
+        {{/* Views prove that a page was visible; these two stricter figures also
+             require actual progress and engaged reading time. */}}
         <div class="adm-kpi adm-kpi--read"><span class="adm-kpi__ic">◕</span><b>{{ money .Reads.Samples }}</b><span>{{ t .Lang "ag.reads" }}</span></div>
         <div class="adm-kpi adm-kpi--read"><span class="adm-kpi__ic">●</span><b>{{ money .Reads.Finished }}</b><span>{{ t .Lang "ag.reads_done" }}</span></div>
       </div>

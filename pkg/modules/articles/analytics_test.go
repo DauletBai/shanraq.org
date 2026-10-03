@@ -93,6 +93,8 @@ func TestPageKind(t *testing.T) {
 		"/weather":            "weather",
 		"/weather/karaotkel":  "weather",
 		"/rates":              "rates",
+		"/shop":               "shop",
+		"/shop/go-book":       "product",
 		"/archive/2026-08-29": "archive",
 		"/place/kachar":       "place",
 		"/predictions":        "predictions",
@@ -110,7 +112,7 @@ func TestPageKind(t *testing.T) {
 	}
 }
 
-func TestTrackTrafficCountsOnlySuccessfulPublicPages(t *testing.T) {
+func TestRawBrowserRequestsDoNotCountAsHumanPageViews(t *testing.T) {
 	m := &Module{metrics: NewMetrics(nil, zap.NewNop())}
 	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -139,8 +141,52 @@ func TestTrackTrafficCountsOnlySuccessfulPublicPages(t *testing.T) {
 	m.metrics.mu.Lock()
 	got := m.metrics.buf[metricKey{kind: metricPage, label: "article", guest: true}]
 	m.metrics.mu.Unlock()
-	if got != 1 {
-		t.Fatalf("article page views = %d, want 1 successful article response", got)
+	if got != 0 {
+		t.Fatalf("raw browser-looking requests produced %d human views, want 0 until the browser beacon", got)
+	}
+}
+
+func TestViewBeaconCountsRenderedSameOriginPage(t *testing.T) {
+	m := &Module{metrics: NewMetrics(nil, zap.NewNop()), geoip: &geoIP{}}
+	r := httptest.NewRequest(http.MethodPost, "https://shanraq.org/api/view?from=google.com", nil)
+	r.Host = "shanraq.org"
+	r.RemoteAddr = "203.0.113.10:12345"
+	r.Header.Set("Referer", "https://shanraq.org/?lang=ru")
+	r.Header.Set("User-Agent", "Mozilla/5.0 Chrome/126.0 Safari/537.36")
+	w := httptest.NewRecorder()
+	m.handleView(w, r)
+
+	if w.Code != http.StatusNoContent {
+		t.Fatalf("view beacon = %d, want 204", w.Code)
+	}
+	if len(w.Result().Cookies()) != 1 || w.Result().Cookies()[0].Name != analyticsVisitCookie {
+		t.Fatal("verified view did not start the short-lived first-party visit")
+	}
+	m.metrics.mu.Lock()
+	defer m.metrics.mu.Unlock()
+	if got := m.metrics.buf[metricKey{kind: metricPage, label: "home", guest: true}]; got != 1 {
+		t.Fatalf("verified home views = %d, want 1", got)
+	}
+	if got := m.metrics.buf[metricKey{kind: metricSource, label: "google", guest: true}]; got != 1 {
+		t.Fatalf("verified Google arrivals = %d, want 1", got)
+	}
+	if len(m.metrics.slots) != 1 {
+		t.Fatalf("visitor slots = %d, want 1", len(m.metrics.slots))
+	}
+}
+
+func TestViewBeaconRejectsForeignClaimedPage(t *testing.T) {
+	m := &Module{metrics: NewMetrics(nil, zap.NewNop()), geoip: &geoIP{}}
+	r := httptest.NewRequest(http.MethodPost, "https://shanraq.org/api/view", nil)
+	r.Host = "shanraq.org"
+	r.RemoteAddr = "203.0.113.10:12345"
+	r.Header.Set("Referer", "https://attacker.example/")
+	r.Header.Set("User-Agent", "Mozilla/5.0 Chrome/126.0 Safari/537.36")
+	m.handleView(httptest.NewRecorder(), r)
+	m.metrics.mu.Lock()
+	defer m.metrics.mu.Unlock()
+	if len(m.metrics.buf) != 0 || len(m.metrics.slots) != 0 {
+		t.Fatal("foreign beacon entered audience analytics")
 	}
 }
 

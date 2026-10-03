@@ -101,7 +101,7 @@ func (m *Module) buildPublicStats(ctx context.Context, lang string) PublicStats 
 
 	var since time.Time
 	if err := m.rt.DB.QueryRow(ctx,
-		`SELECT min(day) FROM analytics_daily`).Scan(&since); err == nil && !since.IsZero() {
+		`SELECT min(day) FROM analytics_daily WHERE kind = 'page'`).Scan(&since); err == nil && !since.IsZero() {
 		p.Since = since.Format("02.01.2006")
 	}
 	return p

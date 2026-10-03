@@ -201,7 +201,7 @@
   {{/* The legend is always present: with four lines, identity must never rest
        on colour alone. Each line is also labelled at its own end. */}}
   <p class="tc__legend">
-    {{ range $c.Series }}<span class="tc__key tc__key--{{ .Slot }}">{{ t $l (printf "tc.s_%s" .Key) }}</span>{{ end }}
+    {{ range $c.Series }}<span class="tc__key tc__key--{{ .Slot }}">{{ t $l (printf "tc.s_%s" .Key) }} <b>{{ kilo $l .Last }}</b></span>{{ end }}
   </p>
   <div class="tc__frame">
     <div class="tc__plot">

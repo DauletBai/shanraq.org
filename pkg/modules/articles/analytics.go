@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
@@ -16,12 +17,11 @@ import (
 	"shanraq.org/pkg/site"
 )
 
-// Guest analytics is deliberately AGGREGATE ONLY: every hit is folded into a
-// per-day counter keyed by a coarse page kind (or a named click event) and a
-// single guest/registered flag. No visitor identifier, IP, or session is ever
-// stored, so this honours the Privacy Policy's "minimal analytics, no
-// behavioral profiling" promise while still telling us how many people read
-// what, and what they click.
+// Guest analytics keeps content data aggregate only: every verified view is
+// folded into a per-day counter keyed by a coarse page kind (or a named click
+// event) and a guest/registered flag. The separate traffic table keeps only
+// daily salted HMACs for unique visitors and a 30-minute visit; no address or
+// page path is stored there, so it cannot become a browsing profile.
 
 // pageKind maps a request path to the coarse bucket shown in the dashboard, or
 // "" for paths that should not be counted (forms handled elsewhere, assets,
@@ -71,6 +71,8 @@ func pageKind(path string) string {
 		return "rates"
 	case "/weather":
 		return "weather"
+	case "/shop":
+		return "shop"
 	}
 	switch {
 	case onePathChild(path, "/read/"):
@@ -94,6 +96,8 @@ func pageKind(path string) string {
 		return "place"
 	case onePathChild(path, "/archive/"):
 		return "archive"
+	case onePathChild(path, "/shop/"):
+		return "product"
 	}
 	return ""
 }
@@ -595,11 +599,12 @@ func audienceBucket(bot, country string) string {
 	}
 }
 
-// trackTraffic counts one successful page response per GET of a countable page.
-// It reads the (soft-loaded) session only to tell guests from signed-in users —
-// nothing about who they are is recorded. The response is observed before the
-// counters move: guessed article URLs, redirects and failed handlers are HTTP
-// requests, but they are not page views.
+// trackTraffic classifies successful page requests made by declared crawlers
+// and hosting networks. Ordinary browser-looking GETs are deliberately not
+// counted here: residential-proxy scanners can send a Chrome User-Agent and
+// made hundreds of raw HTTP requests look like readers. A human page view is
+// recorded only by handleView after the rendered page has been visible in a
+// browser.
 func (m *Module) trackTraffic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
@@ -660,41 +665,130 @@ func (m *Module) trackTraffic(next http.Handler) http.Handler {
 			m.metrics.inc(metricCountry, country, true)
 			m.metrics.inc(metricGeoLang, country+"|"+readingLang(r), true)
 		default:
-			_, ok := auth.ClaimsFromContext(r.Context())
-			guest := !ok
-			m.metrics.inc(metricPage, kind, guest)
-			// Prefer an explicit utm_source (survives the referrer being
-			// stripped by messengers/apps); fall back to the Referer host.
-			// Only an ARRIVAL counts as a source. Every page view used to
-			// increment this, and internal navigation carries a same-host
-			// referrer, which trafficSource classifies as "direct" — so a
-			// reader who came from Facebook and opened four more pages
-			// scored Facebook 1, Direct 4. The panel then reported a
-			// direct-traffic majority that was really our own menu, and
-			// the acquisition channels were unreadable.
-			if src, ok := arrivalSource(r); ok {
-				m.metrics.inc(metricSource, src, guest)
-			}
-			m.metrics.inc(metricDevice, deviceClass(ua), guest)
-			m.metrics.inc(metricOS, osFamily(ua), guest)
-			m.metrics.inc(metricBrowser, browserFamily(ua), guest)
-			// Reading language of the served page — the signal a VPN cannot
-			// mask, so it distinguishes real foreign readers (English) from
-			// curious locals or VPN traffic from censored countries.
-			lng := readingLang(r)
-			m.metrics.inc(metricLang, lng, guest)
-			// Visitor country (nil geoip → no-op). The IP was resolved to a
-			// coarse label above — an ISO country code — and discarded.
-			// Nothing per-visitor is stored.
-			if country != "" {
-				m.metrics.inc(metricCountry, country, guest)
-				m.metrics.inc(metricGeoLang, country+"|"+lng, guest)
-			}
-			// The same hit against its visitor-slot, which is where
-			// hosts, visitors and visits come from.
-			m.metrics.noteSlot(r.Context(), r, country == "KZ", deviceClass(ua) == "mobile")
+			// A browser-looking request is only a candidate. The page beacon
+			// below proves that HTML was rendered and visible before it enters
+			// any human audience figure.
 		}
 	})
+}
+
+// verifiedPageRequest reconstructs the page that emitted the same-origin
+// beacon. Browsers put that page in Referer; accepting a path supplied by the
+// caller would let one endpoint manufacture views for any page. The optional
+// "from" value contains only the previous page's hostname, classified and then
+// discarded, so source analytics does not retain a browsing history.
+func verifiedPageRequest(r *http.Request) (*http.Request, string, bool) {
+	u, err := url.Parse(strings.TrimSpace(r.Referer()))
+	if err != nil || u.Scheme == "" || u.Hostname() == "" || !strings.EqualFold(u.Hostname(), requestHostname(r.Host)) {
+		return nil, "", false
+	}
+	kind := pageKind(u.Path)
+	if kind == "" {
+		return nil, "", false
+	}
+	page := r.Clone(r.Context())
+	page.URL = &url.URL{Scheme: u.Scheme, Host: u.Host, Path: u.Path, RawPath: u.RawPath, RawQuery: u.RawQuery}
+	page.Header = r.Header.Clone()
+	page.Header.Del("Referer")
+	from := strings.TrimSpace(r.URL.Query().Get("from"))
+	if len(from) <= 253 && from != "" {
+		if prev, parseErr := url.Parse("https://" + from); parseErr == nil && prev.Hostname() != "" && prev.User == nil {
+			page.Header.Set("Referer", "https://"+prev.Hostname()+"/")
+		}
+	}
+	return page, kind, true
+}
+
+func requestHostname(hostport string) string {
+	u, err := url.Parse("//" + hostport)
+	if err != nil {
+		return ""
+	}
+	return u.Hostname()
+}
+
+// handleView records a rendered, visible first-party page view. It is the
+// source of every human audience number: views, visitors, visits, acquisition,
+// device and country. Declared bots and hosting networks remain visible in the
+// separate request counter handled above.
+func (m *Module) handleView(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Cache-Control", "no-store")
+	page, kind, ok := verifiedPageRequest(r)
+	if !ok || !m.countableAudience(r) {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	ua := r.UserAgent()
+	country := m.geoip.geoLabel(clientIP(r))
+	_, signedIn := auth.ClaimsFromContext(r.Context())
+	guest := !signedIn
+	lng := readingLang(page)
+	m.metrics.inc(metricPage, kind, guest)
+	if src, arrival := arrivalSource(page); arrival {
+		m.metrics.inc(metricSource, src, guest)
+	}
+	m.metrics.inc(metricDevice, deviceClass(ua), guest)
+	m.metrics.inc(metricOS, osFamily(ua), guest)
+	m.metrics.inc(metricBrowser, browserFamily(ua), guest)
+	m.metrics.inc(metricLang, lng, guest)
+	if country != "" {
+		m.metrics.inc(metricCountry, country, guest)
+		m.metrics.inc(metricGeoLang, country+"|"+lng, guest)
+	}
+	m.metrics.noteSlot(r.Context(), w, r, country == "KZ", deviceClass(ua) == "mobile")
+	m.recordVerifiedPageView(r, page, kind, lng, guest)
+	w.WriteHeader(http.StatusNoContent)
+}
+
+// recordVerifiedPageView keeps the counters shown on an article, lesson,
+// course or listing aligned with the same verified population as the site-wide
+// chart. All lookups are best effort: analytics must never break reading.
+func (m *Module) recordVerifiedPageView(r *http.Request, page *http.Request, kind, lang string, guest bool) {
+	segment := func(prefix string) string {
+		v := strings.TrimPrefix(page.URL.Path, prefix)
+		if decoded, err := url.PathUnescape(v); err == nil {
+			return decoded
+		}
+		return v
+	}
+	switch kind {
+	case "article":
+		a, err := m.store.GetPublishedBySlug(r.Context(), segment("/read/"))
+		if err != nil {
+			return
+		}
+		_, served := a.Translation(lang)
+		if served == "" {
+			return
+		}
+		if err := m.store.RecordView(r.Context(), a.ID, served); err != nil {
+			m.rt.Logger.Warn("record verified article view", zap.Error(err))
+		}
+		if places, err := m.series.ForArticle(r.Context(), a.ID, served); err == nil {
+			for _, place := range places {
+				if place.Series != nil && place.Series.Slug != "" {
+					m.metrics.inc(metricCourseLesson, place.Series.Slug+"|"+a.Slug+"|"+served, guest)
+				}
+			}
+		}
+	case "course":
+		s, err := m.series.BySlug(r.Context(), segment("/course/"), lang)
+		if err == nil && s.IsPublished() {
+			m.metrics.inc(metricCourseHub, s.Slug+"|"+lang, guest)
+		}
+	case "listing":
+		id, err := uuid.Parse(segment("/listings/"))
+		if err != nil {
+			return
+		}
+		l, err := m.listings.GetByID(r.Context(), id)
+		if err == nil && !m.isListingOwner(r, l) {
+			if err := m.listings.RecordView(r.Context(), id); err != nil {
+				m.rt.Logger.Warn("record verified listing view", zap.Error(err))
+			}
+		}
+	}
 }
 
 // handleTrack records a named click event sent via navigator.sendBeacon. It is
@@ -1221,9 +1315,8 @@ func sortClickRows(rs []GuestClickRow) {
 	}
 }
 
-// audienceHit reports whether a request counts as a person, by the same rule
-// the page counter uses. The reading beacons ask it too, so the funnel and the
-// views describe one population and can honestly be compared.
+// audienceHit reports whether a beacon may count as a person. Page, click and
+// reading beacons all ask it so their figures describe one population.
 func (m *Module) audienceHit(r *http.Request) bool {
 	return audienceBucket(botLabel(r.UserAgent()), m.geoip.geoLabel(clientIP(r))) == bucketAudience
 }

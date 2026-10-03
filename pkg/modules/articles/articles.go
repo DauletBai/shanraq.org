@@ -223,6 +223,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 		// soft session load so it can tell the two apart; records nothing else.
 		r.Use(m.trackTraffic)
 		r.Post("/api/track", m.handleTrack)
+		r.Post("/api/view", m.handleView)
 		r.Get("/", m.handleHome)
 		// Uptime monitors and HTTP clients probe with HEAD, and chi answers 405
 		// unless the method is registered. Go's ResponseWriter discards the body

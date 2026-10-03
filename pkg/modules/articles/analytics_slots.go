@@ -5,6 +5,7 @@ import (
 	"crypto/hmac"
 	"crypto/rand"
 	"crypto/sha256"
+	"encoding/base64"
 	"net/http"
 	"sync"
 	"time"
@@ -26,11 +27,10 @@ import (
 // visitors can be counted and nobody can be followed past midnight. The
 // addresses themselves are never written down.
 //
-// The second is the slot. A row is one visitor inside one half-hour, which is
-// also the definition of a visit: click through five pages and you stay one
-// visit, come back after a break and you are a new one. Every figure is then a
-// plain query over stored rows -- no session table, no timers, nothing to
-// rebuild after a restart.
+// The second is the slot. A row aggregates one visitor inside one half-hour;
+// the separate, daily-HMACed sid joins those rows into a rolling 30-minute
+// first-party visit. Every figure remains a plain query over stored rows and no
+// address or reusable browser identifier is retained.
 
 // idLen is how much of the HMAC is kept. Sixteen bytes is far past the point
 // where two readers collide, and stopping there means the full digest -- the
@@ -44,9 +44,16 @@ type slotKey struct {
 	slot     time.Time
 	vid      [idLen]byte
 	host     [idLen]byte
+	sid      [idLen]byte
 	isKZ     bool
 	isMobile bool
 }
+
+// analyticsVisitCookie is a short-lived, first-party session marker. It is
+// refreshed only by a verified browser page view, so raw HTTP crawlers never
+// acquire a visit. The database stores only its daily salted HMAC, never the
+// cookie value itself.
+const analyticsVisitCookie = "shanraq_visit"
 
 // slotOf truncates a moment to the half-hour it falls in.
 func slotOf(t time.Time) time.Time {
@@ -109,9 +116,47 @@ func ident(salt []byte, ip, ua string) (vid, host [idLen]byte) {
 	return vid, host
 }
 
+func visitIdent(salt []byte, raw string) (sid [idLen]byte) {
+	h := hmac.New(sha256.New, salt)
+	h.Write([]byte("visit\x00"))
+	h.Write([]byte(raw))
+	copy(sid[:], h.Sum(nil))
+	return sid
+}
+
+// visitCookie returns the current 30-minute visit token or creates one. A
+// browser that keeps moving through the site refreshes the expiry; returning
+// after 30 minutes starts another visit, which is the same session rule ZERO.kz
+// uses. Secure is derived from the request so local HTTP tests still work.
+func visitCookie(w http.ResponseWriter, r *http.Request) string {
+	if c, err := r.Cookie(analyticsVisitCookie); err == nil {
+		if b, decErr := base64.RawURLEncoding.DecodeString(c.Value); decErr == nil && len(b) == 16 {
+			http.SetCookie(w, &http.Cookie{
+				Name: analyticsVisitCookie, Value: c.Value, Path: "/", MaxAge: 30 * 60,
+				HttpOnly: true, Secure: isSecureRequest(r), SameSite: http.SameSiteLaxMode,
+			})
+			return c.Value
+		}
+	}
+	var raw [16]byte
+	if _, err := rand.Read(raw[:]); err != nil {
+		return ""
+	}
+	v := base64.RawURLEncoding.EncodeToString(raw[:])
+	http.SetCookie(w, &http.Cookie{
+		Name: analyticsVisitCookie, Value: v, Path: "/", MaxAge: 30 * 60,
+		HttpOnly: true, Secure: isSecureRequest(r), SameSite: http.SameSiteLaxMode,
+	})
+	return v
+}
+
+func isSecureRequest(r *http.Request) bool {
+	return r.TLS != nil || r.Header.Get("X-Forwarded-Proto") == "https"
+}
+
 // noteSlot buffers one page view against its visitor-slot. A missing address or
 // an unusable salt drops the hit rather than counting an unattributable one.
-func (mt *Metrics) noteSlot(ctx context.Context, r *http.Request, isKZ, isMobile bool) {
+func (mt *Metrics) noteSlot(ctx context.Context, w http.ResponseWriter, r *http.Request, isKZ, isMobile bool) {
 	if mt == nil {
 		return
 	}
@@ -123,8 +168,12 @@ func (mt *Metrics) noteSlot(ctx context.Context, r *http.Request, isKZ, isMobile
 	if len(salt) == 0 {
 		return
 	}
+	visit := visitCookie(w, r)
+	if visit == "" {
+		return
+	}
 	vid, host := ident(salt, ip.String(), r.Header.Get("User-Agent"))
-	k := slotKey{slot: slotOf(time.Now()), vid: vid, host: host, isKZ: isKZ, isMobile: isMobile}
+	k := slotKey{slot: slotOf(time.Now()), vid: vid, host: host, sid: visitIdent(salt, visit), isKZ: isKZ, isMobile: isMobile}
 	mt.mu.Lock()
 	if mt.slots == nil {
 		mt.slots = map[slotKey]int64{}
@@ -151,11 +200,11 @@ func (mt *Metrics) flushSlots(ctx context.Context) {
 	b := &pgx.Batch{}
 	for k, n := range batch {
 		b.Queue(`
-			INSERT INTO analytics_slots (slot, vid, host, is_kz, is_mobile, views)
-			VALUES ($1, $2, $3, $4, $5, $6)
+			INSERT INTO analytics_slots (slot, vid, host, sid, is_kz, is_mobile, views)
+			VALUES ($1, $2, $3, $4, $5, $6, $7)
 			ON CONFLICT (slot, vid)
 			DO UPDATE SET views = analytics_slots.views + EXCLUDED.views`,
-			k.slot, k.vid[:], k.host[:], k.isKZ, k.isMobile, n)
+			k.slot, k.vid[:], k.host[:], k.sid[:], k.isKZ, k.isMobile, n)
 	}
 	res := mt.db.SendBatch(ctx, b)
 	defer res.Close()

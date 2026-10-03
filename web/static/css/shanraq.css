@@ -3725,6 +3725,7 @@ h1[tabindex="-1"]:focus, h1[tabindex="-1"]:focus-visible { outline: none; }
 /* The swatch carries the identity; the word stays in ink, never in the series
    colour, so the label is readable at any contrast. */
 .tc__key { display: inline-flex; align-items: center; gap: 7px; color: var(--ink-soft); }
+.tc__key b { color: var(--ink); font-variant-numeric: tabular-nums; }
 /* A disc the height of the capital next to it. The 3px dash it replaced put
    too little colour on screen to separate four hues on a white ground -- the
    hues were checked and passed, but a hairline gives the eye almost none of

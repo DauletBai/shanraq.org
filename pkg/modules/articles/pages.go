@@ -1101,7 +1101,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 	},
 
 	"privacy": {
-		"ru": {Title: "Политика конфиденциальности", Body: `_Редакция от 29.09.2026._
+		"ru": {Title: "Политика конфиденциальности", Body: `_Редакция от 03.10.2026._
 
 Политика описывает, какие данные собирает Shanraq.org и как мы с ними обращаемся, в соответствии с законодательством Республики Казахстан.
 
@@ -1146,7 +1146,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 **Зачем мы считаем.** Чтобы показывать рекламодателю размер и состав аудитории и чтобы понимать, что читают. Без этих цифр реклама на сайте не продаётся, а без неё сайт не живёт.
 
-**Что именно считается.** Хосты, посетители, визиты и просмотры — по получасовым интервалам, с разбивкой на Казахстан и остальной мир, мобильные и прочие устройства. Эти же цифры открыто показаны всем на странице «Аналитика»: мы не держим для себя данных, которых не показываем вам.
+**Что именно считается.** Просмотр записывается только после того, как страница отобразилась в видимой вкладке браузера. Визит объединяет просмотры одного браузера, пока между ними нет 30 минут бездействия; для этого браузер хранит технический cookie визита, а база — только его необратимый суточный HMAC. Хосты, посетители, визиты и просмотры разбиваются на Казахстан и остальной мир, мобильные и прочие устройства. Эти же цифры открыто показаны всем на странице «Аналитика»: мы не держим для себя данных, которых не показываем вам.
 
 **Как это устроено, чтобы не стать слежкой.** Посетитель считается по анонимному идентификатору. Он вычисляется из IP-адреса и строки браузера ключом, который создаётся заново каждые сутки; сам адрес нигде не сохраняется. Ключ вчерашнего дня не восстанавливается, поэтому один и тот же человек в понедельник и во вторник даёт два несвязанных значения. Проследить за кем-то дольше суток нельзя технически — в том числе нам.
 
@@ -1162,7 +1162,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 ## 12. Контакты и регулятор
 По вопросам обработки данных обращайтесь через [страницу поддержки](/support). Уполномоченный орган в сфере защиты персональных данных — Министерство цифрового развития, инноваций и аэрокосмической промышленности Республики Казахстан.`},
-		"kz": {Title: "Құпиялылық саясаты", Body: `_29.09.2026 жағдайындағы редакция._
+		"kz": {Title: "Құпиялылық саясаты", Body: `_03.10.2026 жағдайындағы редакция._
 
 Бұл саясат Shanraq.org қандай деректерді жинайтынын және біз олармен қалай жұмыс істейтінімізді Қазақстан Республикасының заңнамасына сәйкес сипаттайды.
 
@@ -1207,7 +1207,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 **Не үшін санаймыз.** Жарнама берушіге аудиторияның көлемі мен құрамын көрсету үшін және не оқылатынын түсіну үшін. Бұл сандарсыз сайтта жарнама сатылмайды, ал онсыз сайттың өзі тұрмайды.
 
-**Не саналады.** Хосттар, келушілер, кірулер және қаралымдар — жарты сағаттық аралықтармен, Қазақстан мен қалған әлемге, мобильді және өзге құрылғыларға бөлініп. Дәл осы сандар «Аналитика» бетінде барлығына ашық көрсетілген: өзімізге көрсетпейтін дерек ұстамаймыз.
+**Не саналады.** Қаралым бет браузердің көрінетін қойындысында көрсетілгеннен кейін ғана жазылады. Бір браузердің қаралымдары арасында 30 минут әрекетсіздік болмаса, олар бір кіруге біріктіріледі; бұл үшін браузер кірудің техникалық cookie файлын, ал дерекқор оның тек қайтарымсыз тәуліктік HMAC мәнін сақтайды. Хосттар, келушілер, кірулер және қаралымдар Қазақстан мен қалған әлемге, мобильді және өзге құрылғыларға бөлінеді. Дәл осы сандар «Аналитика» бетінде барлығына ашық көрсетілген: өзімізге көрсетпейтін дерек ұстамаймыз.
 
 **Бұл қалай бақылауға айналмайды.** Келуші анонимді идентификатормен саналады. Ол IP-мекенжай мен браузер жолынан күн сайын жаңадан жасалатын кілтпен есептеледі; мекенжайдың өзі еш жерде сақталмайды. Кешегі кілт қалпына келтірілмейді, сондықтан бір адам дүйсенбіде де, сейсенбіде де екі байланыссыз мән береді. Біреуді бір тәуліктен ұзақ қадағалау техникалық тұрғыдан мүмкін емес — бізге де.
 
@@ -1223,7 +1223,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 ## 12. Байланыстар және реттеуші
 Деректерді өңдеу мәселелері бойынша [қолдау көрсету беті](/support) арқылы хабарласыңыз. Дербес деректерді қорғау саласындағы уәкілетті орган — Қазақстан Республикасының Цифрлық даму, инновациялар және аэроғарыш өнеркәсібі министрлігі.`},
-		"en": {Title: "Privacy Policy", Body: `_Revision of 29.09.2026._
+		"en": {Title: "Privacy Policy", Body: `_Revision of 03.10.2026._
 
 This Policy describes what data Shanraq.org collects and how we handle it, in accordance with the legislation of the Republic of Kazakhstan.
 
@@ -1268,7 +1268,7 @@ We use technically necessary cookies -- for the login session, the chosen langua
 
 **Why we count.** To show advertisers the size and shape of the audience, and to see what is read. Without those figures the advertising does not sell, and without that the site does not run.
 
-**What is counted.** Hosts, visitors, visits and views, in half-hour windows, split between Kazakhstan and the rest of the world and between mobile and other devices. The same figures are shown openly to everyone on the Analytics page: we keep no traffic data that we do not show you.
+**What is counted.** A view is recorded only after the page has appeared in a visible browser tab. Views from one browser remain one visit until there has been 30 minutes without activity; the browser keeps a technical visit cookie and the database stores only its irreversible daily HMAC. Hosts, visitors, visits and views are split between Kazakhstan and the rest of the world and between mobile and other devices. The same figures are shown openly to everyone on the Analytics page: we keep no traffic data that we do not show you.
 
 **How it is kept from becoming surveillance.** A visitor is counted under an anonymous identifier, derived from the address and the browser string with a key that is generated afresh every day; the address itself is never stored anywhere. Yesterday's key cannot be recovered, so the same person on Monday and on Tuesday yields two unrelated values. Following anyone for longer than a day is not technically possible -- for us either.
 

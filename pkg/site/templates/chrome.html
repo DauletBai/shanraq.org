@@ -940,6 +940,35 @@
       });
     })();
 
+    // Verified first-party page view. The server-side GET is only a request:
+    // residential-proxy scanners send an ordinary Chrome User-Agent and used
+    // to enter the audience as people. A view now needs rendered JavaScript,
+    // a visible tab and either a short visible stay or a trusted interaction.
+    // Only the previous hostname is sent for acquisition classification; no
+    // previous path or query leaves the browser.
+    (function () {
+      if (!navigator.sendBeacon || navigator.webdriver) return;
+      var sent = false, timer = 0, from = '';
+      try { if (document.referrer) from = new URL(document.referrer).hostname; } catch (e) {}
+      function send() {
+        if (sent || document.visibilityState !== 'visible') return;
+        sent = true;
+        if (timer) clearTimeout(timer);
+        try { navigator.sendBeacon('/api/view?from=' + encodeURIComponent(from)); } catch (e) {}
+      }
+      function arm() {
+        if (!sent && document.visibilityState === 'visible') timer = setTimeout(send, 1200);
+      }
+      ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (name) {
+        window.addEventListener(name, function (ev) { if (ev.isTrusted) send(); }, { passive: true, once: true });
+      });
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') arm();
+        else if (timer) clearTimeout(timer);
+      });
+      arm();
+    })();
+
     // Reading-depth beacon: report 25/50/75/100% scroll milestones once each.
     (function () {
       var el = document.querySelector('[data-read-progress]');

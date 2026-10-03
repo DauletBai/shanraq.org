@@ -237,16 +237,11 @@ type AdminPage struct {
 	// Course and lesson traffic, counted with the same audience filter and kept
 	// separate from historical raw article openings.
 	Courses CourseAnalytics
-	// Confirmed reads: the scroll beacon fires only where a browser ran the
-	// script and somebody spent time on the page, so it counts people where the
-	// view counter counts requests. It sits beside the views on purpose — the
-	// gap between the two is the honest measure of how much of the traffic is
-	// automation, and it should be visible every time the panel is opened.
+	// Confirmed reads: a view proves the page was visible, while this stricter
+	// beacon also requires the end and enough engaged reading time.
 	Reads ReadTotals
-	// SourcesSince is the day the view counter restarts from, shown under the
-	// "Views" tile. That counter really was reset — crawler hits were taken out
-	// of it — while the guest panel's article figure covers the whole history,
-	// and without the date the two read as a contradiction.
+	// SourcesSince is the day the verified view counter restarts from, shown
+	// under the "Views" tile so a deliberately short clean series is explicit.
 	SourcesSince string
 	// AI model configuration (provider/model switch).
 	AI ai.AdminView

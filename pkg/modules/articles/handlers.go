@@ -723,24 +723,6 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Count the view asynchronously-ish; ignore errors (best effort analytics).
-	//
-	// Crawlers, hosting networks and the team's own traffic are skipped, and
-	// that is not a detail. Crawlers used to be counted:
-	// two thirds of every "views" number on the dashboard were Googlebot, the
-	// Facebook link scraper and AI crawlers. That inflated the counter itself,
-	// and — worse — it was the denominator of the reading-depth funnel, whose
-	// numerator only a real browser can produce (the beacon needs JavaScript).
-	// So genuine 23% read-through was reported as 2%, and an author reads that
-	// as "nobody finishes my articles". Crawler traffic is not lost: the
-	// analytics panel counts declared bots and hosting networks separately.
-	counted := m.countableAudience(r)
-	if counted {
-		if err := m.store.RecordView(r.Context(), a.ID, served); err != nil {
-			m.rt.Logger.Warn("record view", zap.Error(err))
-		}
-	}
-
 	page := ArticlePage{Base: m.base(r, tr.Title, lang)}
 	page.ArticleID = a.ID.String()
 	page.Slug = a.Slug
@@ -761,9 +743,6 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		page.Updated = &u
 	}
 	page.Views = a.ViewsCount
-	if counted {
-		page.Views++ // the row was just bumped; show the reader their own visit
-	}
 	page.IsAI = tr.Source == "ai"
 	page.Translated = served != lang
 	page.AvailableLangs = a.AvailableLangs()
@@ -839,15 +818,6 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 			// it is where the reader starts.
 			page.IsLesson = true
 			page.Ads = nil
-			if counted {
-				_, signedIn := auth.ClaimsFromContext(r.Context())
-				for _, place := range places {
-					if place.Series != nil && place.Series.Slug != "" {
-						m.metrics.inc(metricCourseLesson,
-							place.Series.Slug+"|"+a.Slug+"|"+served, !signedIn)
-					}
-				}
-			}
 		}
 	} else {
 		m.rt.Logger.Warn("article series", zap.Error(err))
@@ -1377,17 +1347,16 @@ type StudioRow struct {
 	// question an author actually has: was the piece worth staying with?
 	PFinish int
 	// Read is the count that survives both tests: the end of the prose reached
-	// AND at least half the estimated time spent engaged with it. Views count
-	// anything that fetched the page; this counts what behaved like reading.
+	// AND at least half the estimated time spent engaged with it. A verified view
+	// proves the visible page; this stricter number proves sustained reading.
 	Read    int64
 	AvgSecs int64
 }
 
-// analyticsSince is the day the view and reading-depth counters were reset to
-// zero together, after crawler hits were found in the view counts. Shown in the
-// studio so nobody reads a small number as a collapse in readership — and so the
-// next person to look does not have to reconstruct why the history is short.
-const analyticsSince = "08.08.2026"
+// analyticsSince is the day page and reader-facing view counters began
+// requiring a visible first-party browser beacon. Shown in the studio so nobody
+// reads a small number as a collapse in readership.
+const analyticsSince = "03.10.2026"
 
 // StudioPage is the dashboard context.
 type StudioPage struct {
