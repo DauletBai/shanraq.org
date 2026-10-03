@@ -123,7 +123,10 @@ def render(number, stem, map_stem, lang, data, next_lesson):
         parts.extend([speech_button(lang, phrase, meaning), ""])
     parts.extend([
         f"## {ui['model']}", "", data['model'], "",
-        f"## {ui['support']}", "", "```text", support_for(number), "```", "",
+        # This is a language sample, not program output. The dedicated fence
+        # keeps the generic course code-language check from treating Kazakh
+        # words in a Russian or English lesson as untranslated source code.
+        f"## {ui['support']}", "", "```kazakh", support_for(number), "```", "",
         f"## {ui['limit']}", "", data['limit'], "",
         f"## {ui['predict']}", "", data['predict'], "",
         f"## {ui['recall']}", "", data['recall'], "",

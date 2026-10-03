@@ -30,7 +30,7 @@ The exchange holds four actions: **contact → information about self → questi
 
 ## The support signal
 
-```text
+```kazakh
 СӘЛЕМ → МЕНІҢ АТЫМ… → СІЗДІҢ АТЫҢЫЗ КІМ? → ЖАУАП → ҚУАНЫШТЫМЫН
 ```
 

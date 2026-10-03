@@ -23,6 +23,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         for name in names:
             text = (LESSONS / name).read_text()
             self.assertIn("data-speak-kz=", text)
+            self.assertIn("```kazakh\n", text)
             self.assertIn("## Тапсырма" if "-kz" in name else "## Exercise" if "-en" in name else "## Задание", text)
             self.assertGreater(len(text.split()), 450)
             self.assertNotRegex(text, r"\b(TODO|TBD)\b")
