@@ -11,13 +11,13 @@
   },
   "mastery_gate": {
     "skills": ["listening", "speaking", "reading", "writing"],
-    "immediate": "all required parts plus an unseen transfer",
+    "immediate": "8/10 including an unseen transfer",
     "delayed": [1, 7, 30],
     "certificate": false
   },
   "publication_policy": "complete-block-only",
   "blocks": [
-    {"id":"first-contact","range":"1-8","status":"in-development","lexical_target":120,"release":"0.1","title_kz":"Алғашқы қарым-қатынас","title_ru":"Первый контакт","title_en":"First contact"},
+    {"id":"first-contact","range":"1-8","status":"ready","lexical_target":120,"release":"0.1","title_kz":"Алғашқы қарым-қатынас","title_ru":"Первый контакт","title_en":"First contact"},
     {"id":"people-home","range":"9-16","status":"planned","lexical_target":300,"release":"0.2","title_kz":"Адамдар және үй","title_ru":"Люди и дом","title_en":"People and home"},
     {"id":"school-city","range":"17-24","status":"planned","lexical_target":520,"release":"0.3","title_kz":"Мектеп және қала","title_ru":"Школа и город","title_en":"School and city"},
     {"id":"day-services","range":"25-32","status":"planned","lexical_target":800,"release":"1.0","title_kz":"Күн және қызметтер","title_ru":"День и услуги","title_en":"Daily life and services"},

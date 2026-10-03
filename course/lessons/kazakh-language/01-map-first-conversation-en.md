@@ -24,6 +24,10 @@ Imagine a new learner arriving at a club. You can wait for perfect grammar and s
 
 <button type="button" class="speak-kz" data-speak-kz="Танысқаныма қуаныштымын.">Listen: Танысқаныма қуаныштымын.</button> — I am glad to meet you.
 
+## How to practise
+
+Press the button and look away from the text first: catch the overall meaning and just one new sound or structural choice. On the second pass, follow the phrase and the support map with your finger. Hide the model, rebuild it from two or three signs, and say a version of your own. Finish with a partner or a voice recorder: respond without preparation and note one place where you paused. Return to that link only instead of rereading the whole lesson.
+
 ## The precise model
 
 The exchange holds four actions: **contact → information about self → question → response and close**. For now, store `Менің атым…` as one useful frame. `Сіздің` is respectful “your,” and `кім?` asks about a person. Leave a small pause before the name and keep the last word of the question clear.
@@ -69,3 +73,5 @@ Create project card `0.0`: a fictional name, role, and safe familiar place. Add 
 - Tomorrow rebuild the four steps and speak them with new names.
 - After seven days, open an introduction without warning and add a return question.
 - After thirty days, record 30 seconds and mark only one place you want to improve.
+
+[Next lesson: Nine distinctive letters: see, hear, and say them](/read/kazakh-language-02-nine-letters-sounds?lang=en)

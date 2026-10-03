@@ -8,6 +8,7 @@ on:
       - 'docs/kazakh-language-course.md'
       - 'tools/course/generate_kazakh_language_foundations.py'
       - 'tools/course/generate_kazakh_language_maps.py'
+      - 'tools/course/prepare_kazakh_language.py'
       - 'tools/course/test_kazakh_language_release.py'
       - 'web/static/course/kazakh-language/**'
       - 'web/static/covers/school/kazakh-language/**'
@@ -18,6 +19,7 @@ on:
       - 'docs/kazakh-language-course.md'
       - 'tools/course/generate_kazakh_language_foundations.py'
       - 'tools/course/generate_kazakh_language_maps.py'
+      - 'tools/course/prepare_kazakh_language.py'
       - 'tools/course/test_kazakh_language_release.py'
       - 'web/static/course/kazakh-language/**'
       - 'web/static/covers/school/kazakh-language/**'
@@ -33,5 +35,10 @@ jobs:
           python3 tools/course/generate_kazakh_language_maps.py
       - name: Verify generated files are committed
         run: git diff --exit-code
-      - name: Validate course architecture and first implementation
+      - name: Validate complete first block
         run: python3 -m unittest tools.course.test_kazakh_language_release
+      - name: Prepare atomic publication
+        run: |
+          python3 tools/course/prepare_kazakh_language.py \
+            --sql /tmp/kazakh-language-course.sql \
+            --expected /tmp/kazakh-language-course.json

@@ -3226,5 +3226,101 @@
   "informatics/10-systems-mastery-en": [
     "informatics-10-systems-mastery",
     "en"
+  ],
+  "kazakh-language/01-map-first-conversation": [
+    "kazakh-language-01-map-first-conversation",
+    "ru"
+  ],
+  "kazakh-language/01-map-first-conversation-kz": [
+    "kazakh-language-01-map-first-conversation",
+    "kz"
+  ],
+  "kazakh-language/01-map-first-conversation-en": [
+    "kazakh-language-01-map-first-conversation",
+    "en"
+  ],
+  "kazakh-language/02-nine-letters-sounds": [
+    "kazakh-language-02-nine-letters-sounds",
+    "ru"
+  ],
+  "kazakh-language/02-nine-letters-sounds-kz": [
+    "kazakh-language-02-nine-letters-sounds",
+    "kz"
+  ],
+  "kazakh-language/02-nine-letters-sounds-en": [
+    "kazakh-language-02-nine-letters-sounds",
+    "en"
+  ],
+  "kazakh-language/03-vowel-harmony": [
+    "kazakh-language-03-vowel-harmony",
+    "ru"
+  ],
+  "kazakh-language/03-vowel-harmony-kz": [
+    "kazakh-language-03-vowel-harmony",
+    "kz"
+  ],
+  "kazakh-language/03-vowel-harmony-en": [
+    "kazakh-language-03-vowel-harmony",
+    "en"
+  ],
+  "kazakh-language/04-sentence-skeleton": [
+    "kazakh-language-04-sentence-skeleton",
+    "ru"
+  ],
+  "kazakh-language/04-sentence-skeleton-kz": [
+    "kazakh-language-04-sentence-skeleton",
+    "kz"
+  ],
+  "kazakh-language/04-sentence-skeleton-en": [
+    "kazakh-language-04-sentence-skeleton",
+    "en"
+  ],
+  "kazakh-language/05-men-introduction": [
+    "kazakh-language-05-men-introduction",
+    "ru"
+  ],
+  "kazakh-language/05-men-introduction-kz": [
+    "kazakh-language-05-men-introduction",
+    "kz"
+  ],
+  "kazakh-language/05-men-introduction-en": [
+    "kazakh-language-05-men-introduction",
+    "en"
+  ],
+  "kazakh-language/06-questions-answers": [
+    "kazakh-language-06-questions-answers",
+    "ru"
+  ],
+  "kazakh-language/06-questions-answers-kz": [
+    "kazakh-language-06-questions-answers",
+    "kz"
+  ],
+  "kazakh-language/06-questions-answers-en": [
+    "kazakh-language-06-questions-answers",
+    "en"
+  ],
+  "kazakh-language/07-repair-politeness": [
+    "kazakh-language-07-repair-politeness",
+    "ru"
+  ],
+  "kazakh-language/07-repair-politeness-kz": [
+    "kazakh-language-07-repair-politeness",
+    "kz"
+  ],
+  "kazakh-language/07-repair-politeness-en": [
+    "kazakh-language-07-repair-politeness",
+    "en"
+  ],
+  "kazakh-language/08-first-contact-mastery": [
+    "kazakh-language-08-first-contact-mastery",
+    "ru"
+  ],
+  "kazakh-language/08-first-contact-mastery-kz": [
+    "kazakh-language-08-first-contact-mastery",
+    "kz"
+  ],
+  "kazakh-language/08-first-contact-mastery-en": [
+    "kazakh-language-08-first-contact-mastery",
+    "en"
   ]
 }
