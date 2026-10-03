@@ -125,6 +125,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(len(recordings), 84)
         self.assertEqual({row["phrase"] for row in recordings}, lesson_phrases)
         review = (audio / "review.html").read_text(encoding="utf-8")
+        frame_counts = set()
         for row in recordings:
             self.assertEqual(row["status"], "candidate_review")
             path = audio / row["file"]
@@ -133,8 +134,19 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 self.assertEqual(wav.getnchannels(), 1, path)
                 self.assertEqual(wav.getframerate(), 48_000, path)
                 self.assertEqual(wav.getsampwidth(), 3, path)
-                self.assertGreater(wav.getnframes(), 4_800, path)
+                self.assertGreater(wav.getnframes(), 36_000, path)
+                frame_counts.add(wav.getnframes())
+                raw = wav.readframes(wav.getnframes())
+                peak = max(
+                    abs(int.from_bytes(raw[i : i + 3], "little", signed=True))
+                    for i in range(0, len(raw) - 2, 3)
+                )
+                self.assertGreater(peak, 10_000, path)
             self.assertIn(f'src="{row["file"]}"', review)
+        # MP3 source duration is quantised in codec frames, so several short
+        # phrases legitimately share a length. The failed local renderer made
+        # all 84 identical; a few dozen distinct durations catches that case.
+        self.assertGreater(len(frame_counts), 20)
 
 
 if __name__ == "__main__":

@@ -947,10 +947,11 @@
     }
   ],
   "candidate": {
-    "voice": "Aru",
+    "provider": "Microsoft neural text to speech",
+    "voice": "kk-KZ-AigulNeural",
     "locale": "kk-KZ",
-    "rate_words_per_minute": 165,
-    "processing": "local macOS voice; 48 kHz mono PCM; loudness normalised",
+    "rate": "-8%",
+    "processing": "48 kHz mono PCM; loudness normalised",
     "approval": "pending_owner_and_native_speaker_review"
   }
 }
