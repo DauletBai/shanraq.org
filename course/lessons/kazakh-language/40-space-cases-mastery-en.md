@@ -74,4 +74,4 @@ Assemble My World 1.1: a multicultural team, one central object, seven role arro
 - After seven days analyse an unseen scene and meet at least 7 of 10 criteria.
 - After thirty days use the forms in an independent account and mark which questions now appear without a prompt.
 
-[Course contents](/course/kazakh-language?lang=en)
+[Next lesson: Time is visible in the scene: yesterday, usually, now, tomorrow](/read/kazakh-language-41-time-scene-map?lang=en)

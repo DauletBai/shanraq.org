@@ -22,6 +22,9 @@ REVIEW_STEMS = (
     "33-case-role-map", "34-genitive-relationship", "35-accusative-specific-object",
     "36-dative-goal-recipient", "37-locative-place-time", "38-ablative-source",
     "39-instrumental-companion-means", "40-space-cases-mastery",
+    "41-time-scene-map", "42-habit-present-future", "43-action-now-progressive",
+    "44-completed-past", "45-future-plan-intention", "46-time-questions-negation",
+    "47-linked-time-story", "48-action-time-mastery",
 )
 LESSON_STEMS = PUBLISHED_STEMS + REVIEW_STEMS
 MAP_STEMS = (
@@ -35,6 +38,8 @@ MAP_STEMS = (
     "29-appointment", "30-health", "31-service-error", "32-mastery",
     "33-case-map", "34-genitive", "35-accusative", "36-dative",
     "37-locative", "38-ablative", "39-instrumental", "40-mastery",
+    "41-time-map", "42-habit", "43-progressive", "44-past",
+    "45-future", "46-questions", "47-story", "48-mastery",
 )
 
 
@@ -49,11 +54,13 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(len(data["third_block_lessons"]), 8)
         self.assertEqual(len(data["fourth_block_lessons"]), 8)
         self.assertEqual(len(data["fifth_block_lessons"]), 8)
+        self.assertEqual(len(data["sixth_block_lessons"]), 8)
         self.assertEqual(data["blocks"][0]["status"], "ready")
         self.assertEqual(data["blocks"][1]["status"], "ready")
         self.assertEqual(data["blocks"][2]["status"], "audio_review")
         self.assertEqual(data["blocks"][3]["status"], "audio_review")
         self.assertEqual(data["blocks"][4]["status"], "audio_review")
+        self.assertEqual(data["blocks"][5]["status"], "audio_review")
         self.assertEqual(data["blocks"][3]["lexical_target"], 800)
         self.assertEqual(data["blocks"][6]["lexical_target"], 1783)
         self.assertEqual(data["blocks"][-1]["lexical_target"], 2229)
@@ -159,6 +166,13 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(cover.read_bytes()[:4], b"RIFF")
         self.assertIn(b"VP8", cover.read_bytes()[:32])
 
+    def test_sixth_block_cover_is_present_and_4k(self):
+        cover = ROOT / "web/static/covers/school/kazakh-language/action-time/06-action-time.webp"
+        self.assertTrue(cover.is_file())
+        self.assertGreater(cover.stat().st_size, 500_000)
+        self.assertEqual(cover.read_bytes()[:4], b"RIFF")
+        self.assertIn(b"VP8", cover.read_bytes()[:32])
+
     def test_every_spoken_phrase_has_a_valid_recording_and_review_state(self):
         audio = MAPS / "audio"
         manifest = json.loads((audio / "manifest.json").read_text(encoding="utf-8"))
@@ -171,8 +185,8 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 path.read_text(encoding="utf-8"),
             ))
 
-        self.assertEqual(len(recordings), 225)
-        self.assertEqual(len(lesson_files), 702)
+        self.assertEqual(len(recordings), 273)
+        self.assertEqual(len(lesson_files), 846)
         self.assertEqual({row["file"] for row in recordings}, set(lesson_files))
         review = (audio / "review.html").read_text(encoding="utf-8")
         frame_counts = set()

@@ -17,6 +17,8 @@ on:
       - 'tools/course/generate_kazakh_language_day_services_maps.py'
       - 'tools/course/generate_kazakh_language_space_cases.py'
       - 'tools/course/generate_kazakh_language_space_cases_maps.py'
+      - 'tools/course/generate_kazakh_language_action_time.py'
+      - 'tools/course/generate_kazakh_language_action_time_maps.py'
       - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
       - 'tools/course/prepare_kazakh_language_audio.py'
@@ -39,6 +41,8 @@ on:
       - 'tools/course/generate_kazakh_language_day_services_maps.py'
       - 'tools/course/generate_kazakh_language_space_cases.py'
       - 'tools/course/generate_kazakh_language_space_cases_maps.py'
+      - 'tools/course/generate_kazakh_language_action_time.py'
+      - 'tools/course/generate_kazakh_language_action_time_maps.py'
       - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
       - 'tools/course/prepare_kazakh_language_audio.py'
@@ -63,6 +67,8 @@ jobs:
           python3 tools/course/generate_kazakh_language_day_services_maps.py
           python3 tools/course/generate_kazakh_language_space_cases.py
           python3 tools/course/generate_kazakh_language_space_cases_maps.py
+          python3 tools/course/generate_kazakh_language_action_time.py
+          python3 tools/course/generate_kazakh_language_action_time_maps.py
       - name: Verify generated files are committed
         run: git diff --exit-code
       - name: Validate completed blocks

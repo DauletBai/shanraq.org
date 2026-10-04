@@ -79,7 +79,7 @@
     {
       "id": "action-time",
       "range": "41-48",
-      "status": "planned",
+      "status": "audio_review",
       "lexical_target": 1400,
       "release": "1.2",
       "title_kz": "Әрекет және уақыт",
@@ -533,6 +533,72 @@
       "title_kz": "1.1 бақылау нүктесі: бір көрініс — жеті нақты рөл",
       "title_ru": "Контрольная точка 1.1: одна сцена — семь точных ролей",
       "title_en": "Mastery checkpoint 1.1: one scene, seven precise roles"
+    }
+  ],
+  "sixth_block_lessons": [
+    {
+      "number": 41,
+      "id": "time-scene-map",
+      "prerequisites": ["space-cases-mastery"],
+      "title_kz": "Уақыт көріністен байқалады: кеше, әдетте, қазір, ертең",
+      "title_ru": "Время видно в сцене: вчера, обычно, сейчас, завтра",
+      "title_en": "Time is visible in the scene: yesterday, usually, now, tomorrow"
+    },
+    {
+      "number": 42,
+      "id": "habit-present-future",
+      "prerequisites": ["time-scene-map"],
+      "title_kz": "Әдетте не болады: дағды және -а/-е/-й формасы",
+      "title_ru": "Что происходит обычно: привычка и форма -а/-е/-й",
+      "title_en": "What happens regularly: habit and the -а/-е/-й form"
+    },
+    {
+      "number": 43,
+      "id": "completed-past",
+      "prerequisites": ["habit-present-future"],
+      "title_kz": "Не болды: аяқталған өткен шақ -ды/-ді/-ты/-ті",
+      "title_ru": "Что уже произошло: завершённое прошлое -ды/-ді/-ты/-ті",
+      "title_en": "What has happened: completed past -ды/-ді/-ты/-ті"
+    },
+    {
+      "number": 44,
+      "id": "action-now-progressive",
+      "prerequisites": ["completed-past"],
+      "title_kz": "Дәл қазір не болып жатыр: әрекет үдерісте",
+      "title_ru": "Что происходит прямо сейчас: действие в процессе",
+      "title_en": "What is happening right now: an action in progress"
+    },
+    {
+      "number": 45,
+      "id": "future-plan-intention",
+      "prerequisites": ["action-now-progressive"],
+      "title_kz": "Әрі қарай не болады: келісім, жоспар және ниет",
+      "title_ru": "Что будет дальше: договорённость, план и намерение",
+      "title_en": "What happens next: arrangement, plan, and intention"
+    },
+    {
+      "number": 46,
+      "id": "time-questions-negation",
+      "prerequisites": ["future-plan-intention"],
+      "title_kz": "Дәл сұрау және терістеу: әрекет қашан болмады",
+      "title_ru": "Спросить и отрицать точно: когда действие не произошло",
+      "title_en": "Ask and negate precisely: when an action did not happen"
+    },
+    {
+      "number": 47,
+      "id": "linked-time-story",
+      "prerequisites": ["time-questions-negation"],
+      "title_kz": "Кадрлардан әңгімеге: кеше, қазір және ертеңді байланыстырамыз",
+      "title_ru": "Из кадров в рассказ: связываем вчера, сейчас и завтра",
+      "title_en": "From frames to a story: connect yesterday, now, and tomorrow"
+    },
+    {
+      "number": 48,
+      "id": "action-time-mastery",
+      "prerequisites": ["story-time"],
+      "title_kz": "1.2 бақылау нүктесі: кеше, қазір және ертең дайын мәтінсіз",
+      "title_ru": "Контрольная точка 1.2: вчера, сейчас и завтра без сценария",
+      "title_en": "Mastery checkpoint 1.2: yesterday, now, and tomorrow unscripted"
     }
   ]
 }

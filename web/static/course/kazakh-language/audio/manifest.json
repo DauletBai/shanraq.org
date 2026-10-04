@@ -2504,6 +2504,534 @@
         "40-space-cases-mastery-kz.md",
         "40-space-cases-mastery.md"
       ]
+    },
+    {
+      "id": "kz-227",
+      "phrase": "Кеше біз жоспарды аяқтадық.",
+      "file": "kz-227.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "41-time-scene-map-en.md",
+        "41-time-scene-map-kz.md",
+        "41-time-scene-map.md"
+      ]
+    },
+    {
+      "id": "kz-228",
+      "phrase": "Біз әдетте сабақтан кейін кездесеміз.",
+      "file": "kz-228.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "41-time-scene-map-en.md",
+        "41-time-scene-map-kz.md",
+        "41-time-scene-map.md"
+      ]
+    },
+    {
+      "id": "kz-229",
+      "phrase": "Қазір біз макет жасап жатырмыз.",
+      "file": "kz-229.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "41-time-scene-map-en.md",
+        "41-time-scene-map-kz.md",
+        "41-time-scene-map.md"
+      ]
+    },
+    {
+      "id": "kz-230",
+      "phrase": "Ертең біз жобаны көрсетеміз.",
+      "file": "kz-230.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "41-time-scene-map-en.md",
+        "41-time-scene-map-kz.md",
+        "41-time-scene-map.md"
+      ]
+    },
+    {
+      "id": "kz-231",
+      "phrase": "Бүгін жұмыс жалғасып жатыр.",
+      "file": "kz-231.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "41-time-scene-map-en.md",
+        "41-time-scene-map-kz.md",
+        "41-time-scene-map.md"
+      ]
+    },
+    {
+      "id": "kz-232",
+      "phrase": "Өткен аптада топ сурет түсірді.",
+      "file": "kz-232.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "41-time-scene-map-en.md",
+        "41-time-scene-map-kz.md",
+        "41-time-scene-map.md"
+      ]
+    },
+    {
+      "id": "kz-233",
+      "phrase": "Мен күнде қазақша оқимын.",
+      "file": "kz-233.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "42-habit-present-future-en.md",
+        "42-habit-present-future-kz.md",
+        "42-habit-present-future.md"
+      ]
+    },
+    {
+      "id": "kz-234",
+      "phrase": "Сен таңертең сөздерді қайталайсың.",
+      "file": "kz-234.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "42-habit-present-future-en.md",
+        "42-habit-present-future-kz.md",
+        "42-habit-present-future.md"
+      ]
+    },
+    {
+      "id": "kz-235",
+      "phrase": "Ол дүйсенбіде камераны тексереді.",
+      "file": "kz-235.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "42-habit-present-future-en.md",
+        "42-habit-present-future-kz.md",
+        "42-habit-present-future.md"
+      ]
+    },
+    {
+      "id": "kz-236",
+      "phrase": "Біз кешке файлдарды сақтаймыз.",
+      "file": "kz-236.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "42-habit-present-future-en.md",
+        "42-habit-present-future-kz.md",
+        "42-habit-present-future.md"
+      ]
+    },
+    {
+      "id": "kz-237",
+      "phrase": "Сіздер апта сайын сұхбат жазасыздар.",
+      "file": "kz-237.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "42-habit-present-future-en.md",
+        "42-habit-present-future-kz.md",
+        "42-habit-present-future.md"
+      ]
+    },
+    {
+      "id": "kz-238",
+      "phrase": "Олар сабақтан кейін бірге жұмыс істейді.",
+      "file": "kz-238.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "42-habit-present-future-en.md",
+        "42-habit-present-future-kz.md",
+        "42-habit-present-future.md"
+      ]
+    },
+    {
+      "id": "kz-239",
+      "phrase": "Мен мәтін жазып жатырмын.",
+      "file": "kz-239.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "43-action-now-progressive-en.md",
+        "43-action-now-progressive-kz.md",
+        "43-action-now-progressive.md"
+      ]
+    },
+    {
+      "id": "kz-240",
+      "phrase": "Сен сурет таңдап жатырсың.",
+      "file": "kz-240.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "43-action-now-progressive-en.md",
+        "43-action-now-progressive-kz.md",
+        "43-action-now-progressive.md"
+      ]
+    },
+    {
+      "id": "kz-241",
+      "phrase": "Ол макет құрып жатыр.",
+      "file": "kz-241.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "43-action-now-progressive-en.md",
+        "43-action-now-progressive-kz.md",
+        "43-action-now-progressive.md"
+      ]
+    },
+    {
+      "id": "kz-242",
+      "phrase": "Біз нәтижені тексеріп жатырмыз.",
+      "file": "kz-242.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "43-action-now-progressive-en.md",
+        "43-action-now-progressive-kz.md",
+        "43-action-now-progressive.md"
+      ]
+    },
+    {
+      "id": "kz-243",
+      "phrase": "Оқушылар сұрақ қойып жатыр.",
+      "file": "kz-243.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "43-action-now-progressive-en.md",
+        "43-action-now-progressive-kz.md",
+        "43-action-now-progressive.md"
+      ]
+    },
+    {
+      "id": "kz-244",
+      "phrase": "Жұмыс әлі жалғасып жатыр.",
+      "file": "kz-244.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "43-action-now-progressive-en.md",
+        "43-action-now-progressive-kz.md",
+        "43-action-now-progressive.md"
+      ]
+    },
+    {
+      "id": "kz-245",
+      "phrase": "Кеше мен мәтінді аяқтадым.",
+      "file": "kz-245.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "44-completed-past-en.md",
+        "44-completed-past-kz.md",
+        "44-completed-past.md"
+      ]
+    },
+    {
+      "id": "kz-246",
+      "phrase": "Сен файлды сақтадың.",
+      "file": "kz-246.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "44-completed-past-en.md",
+        "44-completed-past-kz.md",
+        "44-completed-past.md"
+      ]
+    },
+    {
+      "id": "kz-247",
+      "phrase": "Ол суретті таңдады.",
+      "file": "kz-247.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "44-completed-past-en.md",
+        "44-completed-past-kz.md",
+        "44-completed-past.md"
+      ]
+    },
+    {
+      "id": "kz-248",
+      "phrase": "Біз қонақтарды қарсы алдық.",
+      "file": "kz-248.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "44-completed-past-en.md",
+        "44-completed-past-kz.md",
+        "44-completed-past.md"
+      ]
+    },
+    {
+      "id": "kz-249",
+      "phrase": "Оқушылар макетті құрастырды.",
+      "file": "kz-249.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "44-completed-past-en.md",
+        "44-completed-past-kz.md",
+        "44-completed-past.md"
+      ]
+    },
+    {
+      "id": "kz-250",
+      "phrase": "Сабақ сағат үште басталды.",
+      "file": "kz-250.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "44-completed-past-en.md",
+        "44-completed-past-kz.md",
+        "44-completed-past.md"
+      ]
+    },
+    {
+      "id": "kz-251",
+      "phrase": "Ертең біз кітапханаға барамыз.",
+      "file": "kz-251.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "45-future-plan-intention-en.md",
+        "45-future-plan-intention-kz.md",
+        "45-future-plan-intention.md"
+      ]
+    },
+    {
+      "id": "kz-252",
+      "phrase": "Сағат онда кездесеміз.",
+      "file": "kz-252.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "45-future-plan-intention-en.md",
+        "45-future-plan-intention-kz.md",
+        "45-future-plan-intention.md"
+      ]
+    },
+    {
+      "id": "kz-253",
+      "phrase": "Мен жаңа бөлімді дайындаймын.",
+      "file": "kz-253.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "45-future-plan-intention-en.md",
+        "45-future-plan-intention-kz.md",
+        "45-future-plan-intention.md"
+      ]
+    },
+    {
+      "id": "kz-254",
+      "phrase": "Біз жобаны жұмада көрсетеміз.",
+      "file": "kz-254.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "45-future-plan-intention-en.md",
+        "45-future-plan-intention-kz.md",
+        "45-future-plan-intention.md"
+      ]
+    },
+    {
+      "id": "kz-255",
+      "phrase": "Мен сұрақтарды жазып алмақпын.",
+      "file": "kz-255.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "45-future-plan-intention-en.md",
+        "45-future-plan-intention-kz.md",
+        "45-future-plan-intention.md"
+      ]
+    },
+    {
+      "id": "kz-256",
+      "phrase": "Жоспар өзгеруі мүмкін.",
+      "file": "kz-256.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "45-future-plan-intention-en.md",
+        "45-future-plan-intention-kz.md",
+        "45-future-plan-intention.md"
+      ]
+    },
+    {
+      "id": "kz-257",
+      "phrase": "Сен кеше файлды сақтадың ба?",
+      "file": "kz-257.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "46-time-questions-negation-en.md",
+        "46-time-questions-negation-kz.md",
+        "46-time-questions-negation.md"
+      ]
+    },
+    {
+      "id": "kz-258",
+      "phrase": "Жоқ, мен файлды сақтамадым.",
+      "file": "kz-258.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "46-time-questions-negation-en.md",
+        "46-time-questions-negation-kz.md",
+        "46-time-questions-negation.md"
+      ]
+    },
+    {
+      "id": "kz-259",
+      "phrase": "Олар қазір жұмыс істеп жатыр ма?",
+      "file": "kz-259.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "46-time-questions-negation-en.md",
+        "46-time-questions-negation-kz.md",
+        "46-time-questions-negation.md"
+      ]
+    },
+    {
+      "id": "kz-260",
+      "phrase": "Жоқ, олар қазір жұмыс істеп жатқан жоқ.",
+      "file": "kz-260.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "46-time-questions-negation-en.md",
+        "46-time-questions-negation-kz.md",
+        "46-time-questions-negation.md"
+      ]
+    },
+    {
+      "id": "kz-261",
+      "phrase": "Ертең кездесеміз бе?",
+      "file": "kz-261.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "46-time-questions-negation-en.md",
+        "46-time-questions-negation-kz.md",
+        "46-time-questions-negation.md"
+      ]
+    },
+    {
+      "id": "kz-262",
+      "phrase": "Жоқ, ертең кездеспейміз.",
+      "file": "kz-262.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "46-time-questions-negation-en.md",
+        "46-time-questions-negation-kz.md",
+        "46-time-questions-negation.md"
+      ]
+    },
+    {
+      "id": "kz-263",
+      "phrase": "Кеше біз деректерді жинадық.",
+      "file": "kz-263.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "47-linked-time-story-en.md",
+        "47-linked-time-story-kz.md",
+        "47-linked-time-story.md"
+      ]
+    },
+    {
+      "id": "kz-264",
+      "phrase": "Содан кейін жоспар құрдық.",
+      "file": "kz-264.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "47-linked-time-story-en.md",
+        "47-linked-time-story-kz.md",
+        "47-linked-time-story.md"
+      ]
+    },
+    {
+      "id": "kz-265",
+      "phrase": "Қазір нәтижені тексеріп жатырмыз.",
+      "file": "kz-265.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "47-linked-time-story-en.md",
+        "47-linked-time-story-kz.md",
+        "47-linked-time-story.md"
+      ]
+    },
+    {
+      "id": "kz-266",
+      "phrase": "Себебі бір сан өзгерді.",
+      "file": "kz-266.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "47-linked-time-story-en.md",
+        "47-linked-time-story-kz.md",
+        "47-linked-time-story.md"
+      ]
+    },
+    {
+      "id": "kz-267",
+      "phrase": "Сондықтан кестені түзетеміз.",
+      "file": "kz-267.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "47-linked-time-story-en.md",
+        "47-linked-time-story-kz.md",
+        "47-linked-time-story.md"
+      ]
+    },
+    {
+      "id": "kz-268",
+      "phrase": "Ертең қорытындыны көрсетеміз.",
+      "file": "kz-268.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "47-linked-time-story-en.md",
+        "47-linked-time-story-kz.md",
+        "47-linked-time-story.md"
+      ]
+    },
+    {
+      "id": "kz-269",
+      "phrase": "Кеше топ алғашқы қадамды аяқтады.",
+      "file": "kz-269.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "48-action-time-mastery-en.md",
+        "48-action-time-mastery-kz.md",
+        "48-action-time-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-270",
+      "phrase": "Әдетте біз жұмысты бірге тексереміз.",
+      "file": "kz-270.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "48-action-time-mastery-en.md",
+        "48-action-time-mastery-kz.md",
+        "48-action-time-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-271",
+      "phrase": "Қазір екі оқушы макет жасап жатыр.",
+      "file": "kz-271.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "48-action-time-mastery-en.md",
+        "48-action-time-mastery-kz.md",
+        "48-action-time-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-272",
+      "phrase": "Бір тапсырма әлі аяқталған жоқ.",
+      "file": "kz-272.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "48-action-time-mastery-en.md",
+        "48-action-time-mastery-kz.md",
+        "48-action-time-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-273",
+      "phrase": "Ертең біз нәтижені көрсетеміз.",
+      "file": "kz-273.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "48-action-time-mastery-en.md",
+        "48-action-time-mastery-kz.md",
+        "48-action-time-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-274",
+      "phrase": "Жоспар өзгерсе, уақытты қайта белгілейміз.",
+      "file": "kz-274.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "48-action-time-mastery-en.md",
+        "48-action-time-mastery-kz.md",
+        "48-action-time-mastery.md"
+      ]
     }
   ],
   "candidate": {
