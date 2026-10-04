@@ -16,7 +16,7 @@ _Lead (summary):_ **Аяқталмаған әрекетті көсемше фо�
 
 [Тыңдау: Мен мәтін жазып жатырмын.](/static/course/kazakh-language/audio/kz-239.wav) — Қазір өтіп жатқан өз әрекетімді айтамын.
 
-[Тыңдау: Сен сурет таңдап жатырсың.](/static/course/kazakh-language/audio/kz-240.wav) — Сенің қазіргі әрекетіңді айтамын.
+[Тыңдау: Сен сурет таңдап жатырсың.](/static/course/kazakh-language/audio/kz-240.wav) — Сіздің қазіргі әрекетіңізді айтамын.
 
 [Тыңдау: Ол макет құрып жатыр.](/static/course/kazakh-language/audio/kz-241.wav) — Үшінші жақтағы үдерісті айтамын.
 
