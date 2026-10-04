@@ -459,6 +459,13 @@ def render(number, stem, map_stem, lang, data, next_entry):
     parts += [f"## {ui[13]}", ""] + [f"- {item}" for item in d["repeat"]]
     if next_entry:
         parts += ["", f"[{ui[14]}: {next_entry[2][lang]['title']}](/read/kazakh-language-{next_entry[0]}?lang={lang})"]
+    elif stem == "16-people-home-mastery":
+        next_titles = {
+            "ru": "Школа как карта: места и понятные координаты",
+            "kz": "Мектеп карта ретінде: орындар және анық координаттар",
+            "en": "School as a map: places and clear coordinates",
+        }
+        parts += ["", f"[{ui[14]}: {next_titles[lang]}](/read/kazakh-language-17-school-map?lang={lang})"]
     else:
         parts += ["", f"[{ui[15]}](/course/kazakh-language?lang={lang})"]
     return "\n".join(parts).strip() + "\n"

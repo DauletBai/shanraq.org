@@ -11,12 +11,20 @@ from tools.course import prepare_kazakh_language
 ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / "course/lessons/kazakh-language"
 MAPS = ROOT / "web/static/course/kazakh-language"
-LESSON_STEMS = tuple(stem for stem, _, _ in prepare_kazakh_language.ROUTE)
+PUBLISHED_STEMS = tuple(stem for stem, _, _ in prepare_kazakh_language.ROUTE)
+REVIEW_STEMS = (
+    "17-school-map", "18-days-subjects", "19-clock-time",
+    "20-directions-imperative", "21-from-to-route", "22-city-transport",
+    "23-rules-permission", "24-school-city-mastery",
+)
+LESSON_STEMS = PUBLISHED_STEMS + REVIEW_STEMS
 MAP_STEMS = (
     "01-first-contact", "02-nine-sounds", "03-harmony", "04-sentence",
     "05-introduction", "06-questions", "07-repair", "08-mastery",
     "09-short-vowels", "10-family", "11-possessives", "12-plurals",
     "13-numbers", "14-home", "15-existence", "16-mastery",
+    "17-school-map", "18-days-subjects", "19-clock-time", "20-directions",
+    "21-from-to", "22-transport", "23-rules", "24-mastery",
 )
 
 
@@ -28,8 +36,10 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(data["blocks"][-1]["range"], "73-80")
         self.assertEqual(len(data["first_block_lessons"]), 8)
         self.assertEqual(len(data["second_block_lessons"]), 8)
+        self.assertEqual(len(data["third_block_lessons"]), 8)
         self.assertEqual(data["blocks"][0]["status"], "ready")
         self.assertEqual(data["blocks"][1]["status"], "ready")
+        self.assertEqual(data["blocks"][2]["status"], "audio_review")
         self.assertEqual(data["blocks"][3]["lexical_target"], 800)
         self.assertEqual(data["blocks"][6]["lexical_target"], 1783)
         self.assertEqual(data["blocks"][-1]["lexical_target"], 2229)
@@ -55,7 +65,8 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 self.assertNotIn("#speak-kz=", text, path)
                 self.assertIn("```kazakh\n", text, path)
                 self.assertIn(headings[lang], text, path)
-                self.assertGreaterEqual(len(text.split()), minimum[lang], path)
+                threshold = minimum[lang] if stem in PUBLISHED_STEMS else 430
+                self.assertGreaterEqual(len(text.split()), threshold, path)
                 self.assertNotRegex(text, r"\b(TODO|TBD)\b")
                 for phrase in forbidden.get(lang, ()):
                     self.assertNotIn(phrase, text, path)
@@ -73,7 +84,8 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 self.assertEqual(root.attrib.get("viewBox"), "0 0 1600 900", path)
                 text = path.read_text(encoding="utf-8")
                 self.assertNotIn("TODO", text, path)
-                self.assertGreaterEqual(text.count('filter="url(#'), 4, path)
+                expected_filters = 4 if stem[:2].isdigit() and int(stem[:2]) <= 16 else 1
+                self.assertGreaterEqual(text.count('filter="url(#'), expected_filters, path)
                 self.assertFalse(
                     re.search(r'<text[^>]*x="(?:1[6-9]\d\d|[2-9]\d{3})"', text), path
                 )
@@ -113,7 +125,13 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertGreater(cover.stat().st_size, 300_000)
         self.assertEqual(cover.read_bytes()[:4], b"RIFF")
 
-    def test_every_spoken_phrase_uses_an_approved_audio_recording(self):
+    def test_third_block_cover_is_present_and_large(self):
+        cover = ROOT / "web/static/covers/school/kazakh-language/school-city/03-school-city.webp"
+        self.assertTrue(cover.is_file())
+        self.assertGreater(cover.stat().st_size, 500_000)
+        self.assertEqual(cover.read_bytes()[:4], b"RIFF")
+
+    def test_every_spoken_phrase_has_a_valid_recording_and_review_state(self):
         audio = MAPS / "audio"
         manifest = json.loads((audio / "manifest.json").read_text(encoding="utf-8"))
         recordings = manifest["recordings"]
@@ -125,13 +143,14 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 path.read_text(encoding="utf-8"),
             ))
 
-        self.assertEqual(len(recordings), 84)
-        self.assertEqual(len(lesson_files), 270)
+        self.assertEqual(len(recordings), 131)
+        self.assertEqual(len(lesson_files), 414)
         self.assertEqual({row["file"] for row in recordings}, set(lesson_files))
         review = (audio / "review.html").read_text(encoding="utf-8")
         frame_counts = set()
         for row in recordings:
-            self.assertEqual(row["status"], "approved")
+            expected_status = "approved" if int(row["id"].split("-")[1]) <= 84 else "candidate_review"
+            self.assertEqual(row["status"], expected_status)
             path = audio / row["file"]
             self.assertTrue(path.is_file(), path)
             with wave.open(str(path), "rb") as wav:
@@ -146,11 +165,14 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                     for i in range(0, len(raw) - 2, 3)
                 )
                 self.assertGreater(peak, 10_000, path)
-            self.assertIn(f'src="{row["file"]}"', review)
+            if expected_status == "candidate_review":
+                self.assertIn(f'src="{row["file"]}"', review)
+            else:
+                self.assertNotIn(f'src="{row["file"]}"', review)
         # MP3 source duration is quantised in codec frames, so several short
         # phrases legitimately share a length. The failed local renderer made
-        # all 84 identical; a few dozen distinct durations catches that case.
-        self.assertGreater(len(frame_counts), 20)
+        # every asset identical; a few dozen distinct durations catches that case.
+        self.assertGreater(len(frame_counts), 30)
 
 
 if __name__ == "__main__":

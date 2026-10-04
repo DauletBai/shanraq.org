@@ -11,8 +11,10 @@ def approved_audio_by_phrase():
     manifest = json.loads((AUDIO_DIR / "manifest.json").read_text(encoding="utf-8"))
     result = {}
     for recording in manifest["recordings"]:
+        # Draft blocks may carry review candidates in the shared manifest.
+        # Published lesson generators can see only owner-approved recordings.
         if recording["status"] != "approved":
-            raise ValueError(f"audio is not approved: {recording['id']}")
+            continue
         phrase = recording["phrase"]
         if phrase in result:
             raise ValueError(f"duplicate audio phrase: {phrase}")

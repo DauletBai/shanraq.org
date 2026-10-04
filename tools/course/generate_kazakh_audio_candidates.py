@@ -57,9 +57,12 @@ def validate(path: Path) -> None:
 async def render() -> None:
     data = json.loads(MANIFEST.read_text(encoding="utf-8"))
     rows = data["recordings"]
+    candidates = [row for row in rows if row["status"] == "candidate_review"]
+    if not candidates:
+        raise ValueError("manifest has no candidate_review recordings to render")
     with tempfile.TemporaryDirectory(prefix="shanraq-kz-audio-") as tmp:
         tmpdir = Path(tmp)
-        for index, row in enumerate(rows, 1):
+        for index, row in enumerate(candidates, 1):
             source = tmpdir / f"{row['id']}.mp3"
             target = AUDIO / row["file"]
             await edge_tts.Communicate(row["phrase"], VOICE, rate=RATE).save(str(source))
@@ -69,8 +72,7 @@ async def render() -> None:
                 "-ar", "48000", "-ac", "1", "-c:a", "pcm_s24le", str(target),
             ])
             validate(target)
-            row["status"] = "candidate_review"
-            print(f"[{index:02d}/{len(rows)}] {target.name}", flush=True)
+            print(f"[{index:02d}/{len(candidates)}] {target.name}", flush=True)
 
     data["candidate"] = {
         "provider": "Microsoft neural text to speech",
@@ -83,7 +85,7 @@ async def render() -> None:
     MANIFEST.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     cards = []
-    for row in rows:
+    for row in candidates:
         cards.append(
             '<article><b>{id}</b><p lang="kk">{phrase}</p>'
             '<audio controls preload="none" src="{file}"></audio></article>'.format(
@@ -100,8 +102,8 @@ async def render() -> None:
 h1{font-size:30px}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
 article{border:1px solid #d8d8d8;border-radius:12px;padding:14px;box-shadow:0 3px 12px #0001}
 p{font-size:20px;min-height:48px}audio{width:100%}</style>
-<h1>84 реплики: проверка произношения</h1>
-<p>Черновой комплект для прослушивания. Голос Aigul, язык kk-KZ. Файлы ещё не подключены к урокам.</p><section>"""
+<h1>47 новых реплик: блок «Школа и город»</h1>
+<p>Проверка произношения перед публикацией уроков 17–24. Голос Aigul, язык kk-KZ. Одобренные записи уроков 1–16 не изменялись.</p><section>"""
         + "\n".join(cards)
         + "</section></html>\n",
         encoding="utf-8",

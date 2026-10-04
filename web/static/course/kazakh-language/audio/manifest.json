@@ -944,6 +944,526 @@
         "16-people-home-mastery-kz.md",
         "16-people-home-mastery.md"
       ]
+    },
+    {
+      "id": "kz-085",
+      "phrase": "Бұл — біздің мектебіміз.",
+      "file": "kz-085.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "17-school-map-en.md",
+        "17-school-map-kz.md",
+        "17-school-map.md"
+      ]
+    },
+    {
+      "id": "kz-086",
+      "phrase": "Мектепте кітапхана бар.",
+      "file": "kz-086.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "17-school-map-en.md",
+        "17-school-map-kz.md",
+        "17-school-map.md"
+      ]
+    },
+    {
+      "id": "kz-087",
+      "phrase": "Сынып екінші қабатта.",
+      "file": "kz-087.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "17-school-map-en.md",
+        "17-school-map-kz.md",
+        "17-school-map.md"
+      ]
+    },
+    {
+      "id": "kz-088",
+      "phrase": "Асхана бірінші қабатта.",
+      "file": "kz-088.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "17-school-map-en.md",
+        "17-school-map-kz.md",
+        "17-school-map.md"
+      ]
+    },
+    {
+      "id": "kz-089",
+      "phrase": "Спортзал қайда?",
+      "file": "kz-089.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "17-school-map-en.md",
+        "17-school-map-kz.md",
+        "17-school-map.md"
+      ]
+    },
+    {
+      "id": "kz-090",
+      "phrase": "Спортзал оң жақта.",
+      "file": "kz-090.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "17-school-map-en.md",
+        "17-school-map-kz.md",
+        "17-school-map.md"
+      ]
+    },
+    {
+      "id": "kz-091",
+      "phrase": "Бүгін дүйсенбі.",
+      "file": "kz-091.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "18-days-subjects-en.md",
+        "18-days-subjects-kz.md",
+        "18-days-subjects.md"
+      ]
+    },
+    {
+      "id": "kz-092",
+      "phrase": "Бірінші сабақ — математика.",
+      "file": "kz-092.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "18-days-subjects-en.md",
+        "18-days-subjects-kz.md",
+        "18-days-subjects.md"
+      ]
+    },
+    {
+      "id": "kz-093",
+      "phrase": "Қазақ тілі сабағы сейсенбіде.",
+      "file": "kz-093.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "18-days-subjects-en.md",
+        "18-days-subjects-kz.md",
+        "18-days-subjects.md"
+      ]
+    },
+    {
+      "id": "kz-094",
+      "phrase": "Сәрсенбіде дене шынықтыру бар.",
+      "file": "kz-094.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "18-days-subjects-en.md",
+        "18-days-subjects-kz.md",
+        "18-days-subjects.md"
+      ]
+    },
+    {
+      "id": "kz-095",
+      "phrase": "Бейсенбіде информатика бар.",
+      "file": "kz-095.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "18-days-subjects-en.md",
+        "18-days-subjects-kz.md",
+        "18-days-subjects.md"
+      ]
+    },
+    {
+      "id": "kz-096",
+      "phrase": "Жұмада сабақ сағат екіде аяқталады.",
+      "file": "kz-096.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "18-days-subjects-en.md",
+        "18-days-subjects-kz.md",
+        "18-days-subjects.md"
+      ]
+    },
+    {
+      "id": "kz-097",
+      "phrase": "Сағат неше?",
+      "file": "kz-097.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "19-clock-time-en.md",
+        "19-clock-time-kz.md",
+        "19-clock-time.md"
+      ]
+    },
+    {
+      "id": "kz-098",
+      "phrase": "Сағат сегіз болды.",
+      "file": "kz-098.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "19-clock-time-en.md",
+        "19-clock-time-kz.md",
+        "19-clock-time.md"
+      ]
+    },
+    {
+      "id": "kz-099",
+      "phrase": "Сабақ сағат сегіз жарымда басталады.",
+      "file": "kz-099.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "19-clock-time-en.md",
+        "19-clock-time-kz.md",
+        "19-clock-time.md"
+      ]
+    },
+    {
+      "id": "kz-100",
+      "phrase": "Үзіліс сағат онда.",
+      "file": "kz-100.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "19-clock-time-en.md",
+        "19-clock-time-kz.md",
+        "19-clock-time.md"
+      ]
+    },
+    {
+      "id": "kz-101",
+      "phrase": "Сағат оннан он бес минут кетті.",
+      "file": "kz-101.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "19-clock-time-en.md",
+        "19-clock-time-kz.md",
+        "19-clock-time.md"
+      ]
+    },
+    {
+      "id": "kz-102",
+      "phrase": "Мен он минут ерте келемін.",
+      "file": "kz-102.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "19-clock-time-en.md",
+        "19-clock-time-kz.md",
+        "19-clock-time.md"
+      ]
+    },
+    {
+      "id": "kz-103",
+      "phrase": "Тура жүріңіз.",
+      "file": "kz-103.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "20-directions-imperative-en.md",
+        "20-directions-imperative-kz.md",
+        "20-directions-imperative.md"
+      ]
+    },
+    {
+      "id": "kz-104",
+      "phrase": "Оңға бұрылыңыз.",
+      "file": "kz-104.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "20-directions-imperative-en.md",
+        "20-directions-imperative-kz.md",
+        "20-directions-imperative.md"
+      ]
+    },
+    {
+      "id": "kz-105",
+      "phrase": "Солға бұрылыңыз.",
+      "file": "kz-105.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "20-directions-imperative-en.md",
+        "20-directions-imperative-kz.md",
+        "20-directions-imperative.md"
+      ]
+    },
+    {
+      "id": "kz-106",
+      "phrase": "Екінші қабатқа көтеріліңіз.",
+      "file": "kz-106.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "20-directions-imperative-en.md",
+        "20-directions-imperative-kz.md",
+        "20-directions-imperative.md"
+      ]
+    },
+    {
+      "id": "kz-107",
+      "phrase": "Есіктің жанында тоқтаңыз.",
+      "file": "kz-107.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "20-directions-imperative-en.md",
+        "20-directions-imperative-kz.md",
+        "20-directions-imperative.md"
+      ]
+    },
+    {
+      "id": "kz-108",
+      "phrase": "Рақмет, кітапхананы таптым.",
+      "file": "kz-108.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "20-directions-imperative-en.md",
+        "20-directions-imperative-kz.md",
+        "20-directions-imperative.md"
+      ]
+    },
+    {
+      "id": "kz-109",
+      "phrase": "Мен мектептен кітапханаға барамын.",
+      "file": "kz-109.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "21-from-to-route-en.md",
+        "21-from-to-route-kz.md",
+        "21-from-to-route.md"
+      ]
+    },
+    {
+      "id": "kz-110",
+      "phrase": "Аялдамадан дүкенге дейін жаяу барамын.",
+      "file": "kz-110.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "21-from-to-route-en.md",
+        "21-from-to-route-kz.md",
+        "21-from-to-route.md"
+      ]
+    },
+    {
+      "id": "kz-111",
+      "phrase": "Мектеп қайда орналасқан?",
+      "file": "kz-111.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "21-from-to-route-en.md",
+        "21-from-to-route-kz.md",
+        "21-from-to-route.md"
+      ]
+    },
+    {
+      "id": "kz-112",
+      "phrase": "Көшенің соңына дейін тура жүріңіз.",
+      "file": "kz-112.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "21-from-to-route-en.md",
+        "21-from-to-route-kz.md",
+        "21-from-to-route.md"
+      ]
+    },
+    {
+      "id": "kz-113",
+      "phrase": "Саябақтан кейін оңға бұрылыңыз.",
+      "file": "kz-113.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "21-from-to-route-en.md",
+        "21-from-to-route-kz.md",
+        "21-from-to-route.md"
+      ]
+    },
+    {
+      "id": "kz-114",
+      "phrase": "Кітапхана мектептің жанында.",
+      "file": "kz-114.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "21-from-to-route-en.md",
+        "21-from-to-route-kz.md",
+        "21-from-to-route.md"
+      ]
+    },
+    {
+      "id": "kz-115",
+      "phrase": "Мен мектепке автобуспен барамын.",
+      "file": "kz-115.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "22-city-transport-en.md",
+        "22-city-transport-kz.md",
+        "22-city-transport.md"
+      ]
+    },
+    {
+      "id": "kz-116",
+      "phrase": "Қай автобус орталыққа барады?",
+      "file": "kz-116.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "22-city-transport-en.md",
+        "22-city-transport-kz.md",
+        "22-city-transport.md"
+      ]
+    },
+    {
+      "id": "kz-117",
+      "phrase": "Он екінші автобуспен барыңыз.",
+      "file": "kz-117.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "22-city-transport-en.md",
+        "22-city-transport-kz.md",
+        "22-city-transport.md"
+      ]
+    },
+    {
+      "id": "kz-118",
+      "phrase": "Аялдама қайда?",
+      "file": "kz-118.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "22-city-transport-en.md",
+        "22-city-transport-kz.md",
+        "22-city-transport.md"
+      ]
+    },
+    {
+      "id": "kz-119",
+      "phrase": "Келесі аялдама — кітапхана.",
+      "file": "kz-119.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "22-city-transport-en.md",
+        "22-city-transport-kz.md",
+        "22-city-transport.md"
+      ]
+    },
+    {
+      "id": "kz-120",
+      "phrase": "Жол шамамен он бес минут.",
+      "file": "kz-120.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "22-city-transport-en.md",
+        "22-city-transport-kz.md",
+        "22-city-transport.md"
+      ]
+    },
+    {
+      "id": "kz-121",
+      "phrase": "Кітапханада тыныш сөйлеу керек.",
+      "file": "kz-121.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "23-rules-permission-en.md",
+        "23-rules-permission-kz.md",
+        "23-rules-permission.md",
+        "24-school-city-mastery-en.md",
+        "24-school-city-mastery-kz.md",
+        "24-school-city-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-122",
+      "phrase": "Дәлізде жүгіруге болмайды.",
+      "file": "kz-122.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "23-rules-permission-en.md",
+        "23-rules-permission-kz.md",
+        "23-rules-permission.md"
+      ]
+    },
+    {
+      "id": "kz-123",
+      "phrase": "Сыныпқа кіруге бола ма?",
+      "file": "kz-123.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "23-rules-permission-en.md",
+        "23-rules-permission-kz.md",
+        "23-rules-permission.md"
+      ]
+    },
+    {
+      "id": "kz-124",
+      "phrase": "Иә, кіруге болады.",
+      "file": "kz-124.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "23-rules-permission-en.md",
+        "23-rules-permission-kz.md",
+        "23-rules-permission.md"
+      ]
+    },
+    {
+      "id": "kz-125",
+      "phrase": "Телефонды өшіру керек.",
+      "file": "kz-125.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "23-rules-permission-en.md",
+        "23-rules-permission-kz.md",
+        "23-rules-permission.md"
+      ]
+    },
+    {
+      "id": "kz-126",
+      "phrase": "Жолдан жасыл шам жанғанда өту керек.",
+      "file": "kz-126.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "23-rules-permission-en.md",
+        "23-rules-permission-kz.md",
+        "23-rules-permission.md"
+      ]
+    },
+    {
+      "id": "kz-127",
+      "phrase": "Бүгін менің үш сабағым бар.",
+      "file": "kz-127.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "24-school-city-mastery-en.md",
+        "24-school-city-mastery-kz.md",
+        "24-school-city-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-128",
+      "phrase": "Бірінші сабақ сағат тоғызда басталады.",
+      "file": "kz-128.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "24-school-city-mastery-en.md",
+        "24-school-city-mastery-kz.md",
+        "24-school-city-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-129",
+      "phrase": "Сабақтан кейін кітапханаға барамын.",
+      "file": "kz-129.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "24-school-city-mastery-en.md",
+        "24-school-city-mastery-kz.md",
+        "24-school-city-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-130",
+      "phrase": "Ол жерге автобуспен барамын.",
+      "file": "kz-130.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "24-school-city-mastery-en.md",
+        "24-school-city-mastery-kz.md",
+        "24-school-city-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-131",
+      "phrase": "Аялдамадан кейін солға бұрыламын.",
+      "file": "kz-131.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "24-school-city-mastery-en.md",
+        "24-school-city-mastery-kz.md",
+        "24-school-city-mastery.md"
+      ]
     }
   ],
   "candidate": {
@@ -952,6 +1472,6 @@
     "locale": "kk-KZ",
     "rate": "-8%",
     "processing": "48 kHz mono PCM; loudness normalised",
-    "approval": "approved_by_owner_2026-10-03"
+    "approval": "pending_owner_and_native_speaker_review"
   }
 }

@@ -76,4 +76,4 @@ Assemble version 0.2: a privacy-safe five-person map, five-place home plan, obje
 - After seven days take the 7/10 delayed check on a different plan.
 - After thirty days describe a real room without private details and mark supports no longer needed.
 
-[Course contents](/course/kazakh-language?lang=en)
+[Next lesson: School as a map: places and clear coordinates](/read/kazakh-language-17-school-map?lang=en)

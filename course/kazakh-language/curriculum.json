@@ -19,7 +19,7 @@
   "blocks": [
     {"id":"first-contact","range":"1-8","status":"ready","lexical_target":120,"release":"0.1","title_kz":"Алғашқы қарым-қатынас","title_ru":"Первый контакт","title_en":"First contact"},
     {"id":"people-home","range":"9-16","status":"ready","lexical_target":300,"release":"0.2","title_kz":"Адамдар және үй","title_ru":"Люди и дом","title_en":"People and home"},
-    {"id":"school-city","range":"17-24","status":"planned","lexical_target":520,"release":"0.3","title_kz":"Мектеп және қала","title_ru":"Школа и город","title_en":"School and city"},
+    {"id":"school-city","range":"17-24","status":"audio_review","lexical_target":520,"release":"0.3","title_kz":"Мектеп және қала","title_ru":"Школа и город","title_en":"School and city"},
     {"id":"day-services","range":"25-32","status":"planned","lexical_target":800,"release":"1.0","title_kz":"Күн және қызметтер","title_ru":"День и услуги","title_en":"Daily life and services"},
     {"id":"space-cases","range":"33-40","status":"planned","lexical_target":1100,"release":"1.1","title_kz":"Кеңістік және септіктер","title_ru":"Пространство и падежи","title_en":"Space and cases"},
     {"id":"action-time","range":"41-48","status":"planned","lexical_target":1400,"release":"1.2","title_kz":"Әрекет және уақыт","title_ru":"Действие во времени","title_en":"Action and time"},
@@ -47,5 +47,15 @@
     {"number":14,"id":"home-locative","prerequisites":["numbers-age"],"title_kz":"Зат қайда тұр? Үй және -да/-де/-та/-те жалғаулары","title_ru":"Где находится предмет? Дом и окончания -да/-де/-та/-те","title_en":"Where is it? The home and -да/-де/-та/-те"},
     {"number":15,"id":"there-is-have","prerequisites":["home-locative"],"title_kz":"Үйде не бар? «Бар» мен «жоқ» арқылы табиғи айтамыз","title_ru":"Что есть дома? Бар и жоқ вместо дословного «иметь»","title_en":"What is in the home? Бар and жоқ instead of a translated ‘have’"},
     {"number":16,"id":"people-home-mastery","prerequisites":["there-is-have"],"title_kz":"Бақылау нүктесі: адамдар мен үйді дайын мәтінсіз сипаттау","title_ru":"Контрольная точка: люди и дом без готового текста","title_en":"Mastery checkpoint: people and home without a script"}
+  ],
+  "third_block_lessons": [
+    {"number":17,"id":"school-map","prerequisites":["people-home-mastery"],"title_kz":"Мектеп карта ретінде: орындар және анық координаттар","title_ru":"Школа как карта: места и понятные координаты","title_en":"School as a map: places and clear coordinates"},
+    {"number":18,"id":"days-subjects","prerequisites":["school-map"],"title_kz":"Апта және пәндер: кестені мағынамен оқимыз","title_ru":"Неделя и школьные предметы: читаем расписание по смыслу","title_en":"Week and school subjects: reading a timetable by meaning"},
+    {"number":19,"id":"clock-time","prerequisites":["days-subjects"],"title_kz":"Сағат неше және сабақ қашан басталады: уақытты шатастырмаймыз","title_ru":"Который час и когда начинается урок: время без путаницы","title_en":"What time is it, and when does class begin?"},
+    {"number":20,"id":"directions-imperative","prerequisites":["clock-time"],"title_kz":"Тура, оңға, солға: адамды бағытпен әдепті жүргіземіз","title_ru":"Прямо, направо, налево: вежливо ведём человека по маршруту","title_en":"Straight, right, left: guiding someone politely"},
+    {"number":21,"id":"from-to-route","prerequisites":["directions-imperative"],"title_kz":"Қайдан, қайда және қай жерге дейін: толық бағыт құрамыз","title_ru":"Откуда, куда и до какого места: собираем весь путь","title_en":"From where, to where, and as far as where?"},
+    {"number":22,"id":"city-transport","prerequisites":["from-to-route"],"title_kz":"Қалада автобуспен және жаяу: қозғалыс тәсілін таңдаймыз","title_ru":"По городу на автобусе и пешком: выбираем способ движения","title_en":"Across the city by bus and on foot"},
+    {"number":23,"id":"rules-permission","prerequisites":["city-transport"],"title_kz":"Болады, болмайды және керек: ережені қорқытпай түсінеміз","title_ru":"Можно, нельзя и нужно: понимаем правила без угроз и зубрёжки","title_en":"May, must not, and need to: understanding rules"},
+    {"number":24,"id":"school-city-mastery","prerequisites":["rules-permission"],"title_kz":"Бақылау нүктесі: дайын мәтінсіз оқу күні және қала бағыты","title_ru":"Контрольная точка: учебный день и городской маршрут без сценария","title_en":"Mastery checkpoint: a school day and city route without a script"}
   ]
 }
