@@ -952,7 +952,7 @@
       "id": "kz-085",
       "phrase": "Бұл — біздің мектебіміз.",
       "file": "kz-085.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "17-school-map-en.md",
         "17-school-map-kz.md",
@@ -963,7 +963,7 @@
       "id": "kz-086",
       "phrase": "Мектепте кітапхана бар.",
       "file": "kz-086.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "17-school-map-en.md",
         "17-school-map-kz.md",
@@ -974,7 +974,7 @@
       "id": "kz-087",
       "phrase": "Сынып екінші қабатта.",
       "file": "kz-087.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "17-school-map-en.md",
         "17-school-map-kz.md",
@@ -985,7 +985,7 @@
       "id": "kz-088",
       "phrase": "Асхана бірінші қабатта.",
       "file": "kz-088.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "17-school-map-en.md",
         "17-school-map-kz.md",
@@ -996,7 +996,7 @@
       "id": "kz-089",
       "phrase": "Спортзал қайда?",
       "file": "kz-089.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "17-school-map-en.md",
         "17-school-map-kz.md",
@@ -1007,7 +1007,7 @@
       "id": "kz-090",
       "phrase": "Спортзал оң жақта.",
       "file": "kz-090.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "17-school-map-en.md",
         "17-school-map-kz.md",
@@ -1018,7 +1018,7 @@
       "id": "kz-091",
       "phrase": "Бүгін дүйсенбі.",
       "file": "kz-091.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "18-days-subjects-en.md",
         "18-days-subjects-kz.md",
@@ -1029,7 +1029,7 @@
       "id": "kz-092",
       "phrase": "Бірінші сабақ — математика.",
       "file": "kz-092.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "18-days-subjects-en.md",
         "18-days-subjects-kz.md",
@@ -1040,7 +1040,7 @@
       "id": "kz-093",
       "phrase": "Қазақ тілі сабағы сейсенбіде.",
       "file": "kz-093.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "18-days-subjects-en.md",
         "18-days-subjects-kz.md",
@@ -1051,7 +1051,7 @@
       "id": "kz-094",
       "phrase": "Сәрсенбіде дене шынықтыру бар.",
       "file": "kz-094.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "18-days-subjects-en.md",
         "18-days-subjects-kz.md",
@@ -1062,7 +1062,7 @@
       "id": "kz-095",
       "phrase": "Бейсенбіде информатика бар.",
       "file": "kz-095.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "18-days-subjects-en.md",
         "18-days-subjects-kz.md",
@@ -1073,7 +1073,7 @@
       "id": "kz-096",
       "phrase": "Жұмада сабақ сағат екіде аяқталады.",
       "file": "kz-096.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "18-days-subjects-en.md",
         "18-days-subjects-kz.md",
@@ -1084,7 +1084,7 @@
       "id": "kz-097",
       "phrase": "Сағат неше?",
       "file": "kz-097.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "19-clock-time-en.md",
         "19-clock-time-kz.md",
@@ -1095,7 +1095,7 @@
       "id": "kz-098",
       "phrase": "Сағат сегіз болды.",
       "file": "kz-098.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "19-clock-time-en.md",
         "19-clock-time-kz.md",
@@ -1106,7 +1106,7 @@
       "id": "kz-099",
       "phrase": "Сабақ сағат сегіз жарымда басталады.",
       "file": "kz-099.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "19-clock-time-en.md",
         "19-clock-time-kz.md",
@@ -1117,7 +1117,7 @@
       "id": "kz-100",
       "phrase": "Үзіліс сағат онда.",
       "file": "kz-100.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "19-clock-time-en.md",
         "19-clock-time-kz.md",
@@ -1128,7 +1128,7 @@
       "id": "kz-101",
       "phrase": "Сағат оннан он бес минут кетті.",
       "file": "kz-101.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "19-clock-time-en.md",
         "19-clock-time-kz.md",
@@ -1139,7 +1139,7 @@
       "id": "kz-102",
       "phrase": "Мен он минут ерте келемін.",
       "file": "kz-102.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "19-clock-time-en.md",
         "19-clock-time-kz.md",
@@ -1150,7 +1150,7 @@
       "id": "kz-103",
       "phrase": "Тура жүріңіз.",
       "file": "kz-103.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "20-directions-imperative-en.md",
         "20-directions-imperative-kz.md",
@@ -1161,7 +1161,7 @@
       "id": "kz-104",
       "phrase": "Оңға бұрылыңыз.",
       "file": "kz-104.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "20-directions-imperative-en.md",
         "20-directions-imperative-kz.md",
@@ -1172,7 +1172,7 @@
       "id": "kz-105",
       "phrase": "Солға бұрылыңыз.",
       "file": "kz-105.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "20-directions-imperative-en.md",
         "20-directions-imperative-kz.md",
@@ -1183,7 +1183,7 @@
       "id": "kz-106",
       "phrase": "Екінші қабатқа көтеріліңіз.",
       "file": "kz-106.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "20-directions-imperative-en.md",
         "20-directions-imperative-kz.md",
@@ -1194,7 +1194,7 @@
       "id": "kz-107",
       "phrase": "Есіктің жанында тоқтаңыз.",
       "file": "kz-107.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "20-directions-imperative-en.md",
         "20-directions-imperative-kz.md",
@@ -1205,7 +1205,7 @@
       "id": "kz-108",
       "phrase": "Рақмет, кітапхананы таптым.",
       "file": "kz-108.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "20-directions-imperative-en.md",
         "20-directions-imperative-kz.md",
@@ -1216,7 +1216,7 @@
       "id": "kz-109",
       "phrase": "Мен мектептен кітапханаға барамын.",
       "file": "kz-109.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "21-from-to-route-en.md",
         "21-from-to-route-kz.md",
@@ -1227,7 +1227,7 @@
       "id": "kz-110",
       "phrase": "Аялдамадан дүкенге дейін жаяу барамын.",
       "file": "kz-110.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "21-from-to-route-en.md",
         "21-from-to-route-kz.md",
@@ -1238,7 +1238,7 @@
       "id": "kz-111",
       "phrase": "Мектеп қайда орналасқан?",
       "file": "kz-111.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "21-from-to-route-en.md",
         "21-from-to-route-kz.md",
@@ -1249,7 +1249,7 @@
       "id": "kz-112",
       "phrase": "Көшенің соңына дейін тура жүріңіз.",
       "file": "kz-112.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "21-from-to-route-en.md",
         "21-from-to-route-kz.md",
@@ -1260,7 +1260,7 @@
       "id": "kz-113",
       "phrase": "Саябақтан кейін оңға бұрылыңыз.",
       "file": "kz-113.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "21-from-to-route-en.md",
         "21-from-to-route-kz.md",
@@ -1271,7 +1271,7 @@
       "id": "kz-114",
       "phrase": "Кітапхана мектептің жанында.",
       "file": "kz-114.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "21-from-to-route-en.md",
         "21-from-to-route-kz.md",
@@ -1282,7 +1282,7 @@
       "id": "kz-115",
       "phrase": "Мен мектепке автобуспен барамын.",
       "file": "kz-115.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "22-city-transport-en.md",
         "22-city-transport-kz.md",
@@ -1293,7 +1293,7 @@
       "id": "kz-116",
       "phrase": "Қай автобус орталыққа барады?",
       "file": "kz-116.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "22-city-transport-en.md",
         "22-city-transport-kz.md",
@@ -1304,7 +1304,7 @@
       "id": "kz-117",
       "phrase": "Он екінші автобуспен барыңыз.",
       "file": "kz-117.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "22-city-transport-en.md",
         "22-city-transport-kz.md",
@@ -1315,7 +1315,7 @@
       "id": "kz-118",
       "phrase": "Аялдама қайда?",
       "file": "kz-118.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "22-city-transport-en.md",
         "22-city-transport-kz.md",
@@ -1326,7 +1326,7 @@
       "id": "kz-119",
       "phrase": "Келесі аялдама — кітапхана.",
       "file": "kz-119.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "22-city-transport-en.md",
         "22-city-transport-kz.md",
@@ -1337,7 +1337,7 @@
       "id": "kz-120",
       "phrase": "Жол шамамен он бес минут.",
       "file": "kz-120.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "22-city-transport-en.md",
         "22-city-transport-kz.md",
@@ -1348,7 +1348,7 @@
       "id": "kz-121",
       "phrase": "Кітапханада тыныш сөйлеу керек.",
       "file": "kz-121.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "23-rules-permission-en.md",
         "23-rules-permission-kz.md",
@@ -1362,7 +1362,7 @@
       "id": "kz-122",
       "phrase": "Дәлізде жүгіруге болмайды.",
       "file": "kz-122.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "23-rules-permission-en.md",
         "23-rules-permission-kz.md",
@@ -1373,7 +1373,7 @@
       "id": "kz-123",
       "phrase": "Сыныпқа кіруге бола ма?",
       "file": "kz-123.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "23-rules-permission-en.md",
         "23-rules-permission-kz.md",
@@ -1384,7 +1384,7 @@
       "id": "kz-124",
       "phrase": "Иә, кіруге болады.",
       "file": "kz-124.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "23-rules-permission-en.md",
         "23-rules-permission-kz.md",
@@ -1395,7 +1395,7 @@
       "id": "kz-125",
       "phrase": "Телефонды өшіру керек.",
       "file": "kz-125.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "23-rules-permission-en.md",
         "23-rules-permission-kz.md",
@@ -1406,7 +1406,7 @@
       "id": "kz-126",
       "phrase": "Жолдан жасыл шам жанғанда өту керек.",
       "file": "kz-126.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "23-rules-permission-en.md",
         "23-rules-permission-kz.md",
@@ -1417,7 +1417,7 @@
       "id": "kz-127",
       "phrase": "Бүгін менің үш сабағым бар.",
       "file": "kz-127.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "24-school-city-mastery-en.md",
         "24-school-city-mastery-kz.md",
@@ -1428,7 +1428,7 @@
       "id": "kz-128",
       "phrase": "Бірінші сабақ сағат тоғызда басталады.",
       "file": "kz-128.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "24-school-city-mastery-en.md",
         "24-school-city-mastery-kz.md",
@@ -1439,7 +1439,7 @@
       "id": "kz-129",
       "phrase": "Сабақтан кейін кітапханаға барамын.",
       "file": "kz-129.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "24-school-city-mastery-en.md",
         "24-school-city-mastery-kz.md",
@@ -1450,7 +1450,7 @@
       "id": "kz-130",
       "phrase": "Ол жерге автобуспен барамын.",
       "file": "kz-130.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "24-school-city-mastery-en.md",
         "24-school-city-mastery-kz.md",
@@ -1461,7 +1461,7 @@
       "id": "kz-131",
       "phrase": "Аялдамадан кейін солға бұрыламын.",
       "file": "kz-131.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "24-school-city-mastery-en.md",
         "24-school-city-mastery-kz.md",
@@ -1472,7 +1472,7 @@
       "id": "kz-132",
       "phrase": "Мен сағат жетіде тұрамын.",
       "file": "kz-132.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "25-daily-routine-en.md",
         "25-daily-routine-kz.md",
@@ -1483,7 +1483,7 @@
       "id": "kz-133",
       "phrase": "Таңертең бетімді жуамын.",
       "file": "kz-133.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "25-daily-routine-en.md",
         "25-daily-routine-kz.md",
@@ -1494,7 +1494,7 @@
       "id": "kz-134",
       "phrase": "Мен таңғы ас ішемін.",
       "file": "kz-134.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "25-daily-routine-en.md",
         "25-daily-routine-kz.md",
@@ -1505,7 +1505,7 @@
       "id": "kz-135",
       "phrase": "Сағат сегізде үйден шығамын.",
       "file": "kz-135.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "25-daily-routine-en.md",
         "25-daily-routine-kz.md",
@@ -1516,7 +1516,7 @@
       "id": "kz-136",
       "phrase": "Күндіз оқимын және жұмыс істеймін.",
       "file": "kz-136.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "25-daily-routine-en.md",
         "25-daily-routine-kz.md",
@@ -1527,7 +1527,7 @@
       "id": "kz-137",
       "phrase": "Кешке үйге қайтамын.",
       "file": "kz-137.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "25-daily-routine-en.md",
         "25-daily-routine-kz.md",
@@ -1538,7 +1538,7 @@
       "id": "kz-138",
       "phrase": "Алдымен мен оянамын.",
       "file": "kz-138.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "26-sequence-connectors-en.md",
         "26-sequence-connectors-kz.md",
@@ -1549,7 +1549,7 @@
       "id": "kz-139",
       "phrase": "Содан кейін төсегімді жинаймын.",
       "file": "kz-139.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "26-sequence-connectors-en.md",
         "26-sequence-connectors-kz.md",
@@ -1560,7 +1560,7 @@
       "id": "kz-140",
       "phrase": "Одан соң киінемін.",
       "file": "kz-140.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "26-sequence-connectors-en.md",
         "26-sequence-connectors-kz.md",
@@ -1571,7 +1571,7 @@
       "id": "kz-141",
       "phrase": "Сосын сөмкемді тексеремін.",
       "file": "kz-141.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "26-sequence-connectors-en.md",
         "26-sequence-connectors-kz.md",
@@ -1582,7 +1582,7 @@
       "id": "kz-142",
       "phrase": "Соңында үйден шығамын.",
       "file": "kz-142.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "26-sequence-connectors-en.md",
         "26-sequence-connectors-kz.md",
@@ -1593,7 +1593,7 @@
       "id": "kz-143",
       "phrase": "Бірінші не істейсіз?",
       "file": "kz-143.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "26-sequence-connectors-en.md",
         "26-sequence-connectors-kz.md",
@@ -1604,7 +1604,7 @@
       "id": "kz-144",
       "phrase": "Маған бір бөлке нан беріңізші.",
       "file": "kz-144.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "27-shop-quantity-price-en.md",
         "27-shop-quantity-price-kz.md",
@@ -1615,7 +1615,7 @@
       "id": "kz-145",
       "phrase": "Бір келі алма керек.",
       "file": "kz-145.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "27-shop-quantity-price-en.md",
         "27-shop-quantity-price-kz.md",
@@ -1626,7 +1626,7 @@
       "id": "kz-146",
       "phrase": "Бұл қанша тұрады?",
       "file": "kz-146.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "27-shop-quantity-price-en.md",
         "27-shop-quantity-price-kz.md",
@@ -1637,7 +1637,7 @@
       "id": "kz-147",
       "phrase": "Ол сегіз жүз теңге тұрады.",
       "file": "kz-147.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "27-shop-quantity-price-en.md",
         "27-shop-quantity-price-kz.md",
@@ -1648,7 +1648,7 @@
       "id": "kz-148",
       "phrase": "Барлығы қанша болды?",
       "file": "kz-148.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "27-shop-quantity-price-en.md",
         "27-shop-quantity-price-kz.md",
@@ -1659,7 +1659,7 @@
       "id": "kz-149",
       "phrase": "Чекті беріңізші.",
       "file": "kz-149.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "27-shop-quantity-price-en.md",
         "27-shop-quantity-price-kz.md",
@@ -1670,7 +1670,7 @@
       "id": "kz-150",
       "phrase": "Мәзірді беріңізші.",
       "file": "kz-150.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "28-cafe-order-en.md",
         "28-cafe-order-kz.md",
@@ -1681,7 +1681,7 @@
       "id": "kz-151",
       "phrase": "Бұл тағамның ішінде не бар?",
       "file": "kz-151.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "28-cafe-order-en.md",
         "28-cafe-order-kz.md",
@@ -1692,7 +1692,7 @@
       "id": "kz-152",
       "phrase": "Маған көкөніс салатын беріңізші.",
       "file": "kz-152.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "28-cafe-order-en.md",
         "28-cafe-order-kz.md",
@@ -1703,7 +1703,7 @@
       "id": "kz-153",
       "phrase": "Шайға қант қоспаңызшы.",
       "file": "kz-153.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "28-cafe-order-en.md",
         "28-cafe-order-kz.md",
@@ -1714,7 +1714,7 @@
       "id": "kz-154",
       "phrase": "Тапсырысым дайын ба?",
       "file": "kz-154.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "28-cafe-order-en.md",
         "28-cafe-order-kz.md",
@@ -1725,7 +1725,7 @@
       "id": "kz-155",
       "phrase": "Дәмді болды, рақмет.",
       "file": "kz-155.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "28-cafe-order-en.md",
         "28-cafe-order-kz.md",
@@ -1736,7 +1736,7 @@
       "id": "kz-156",
       "phrase": "Мен қабылдауға жазылғым келеді.",
       "file": "kz-156.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "29-appointment-time-en.md",
         "29-appointment-time-kz.md",
@@ -1747,7 +1747,7 @@
       "id": "kz-157",
       "phrase": "Бос уақыт бар ма?",
       "file": "kz-157.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "29-appointment-time-en.md",
         "29-appointment-time-kz.md",
@@ -1758,7 +1758,7 @@
       "id": "kz-158",
       "phrase": "Сейсенбі күні сағат үшке бола ма?",
       "file": "kz-158.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "29-appointment-time-en.md",
         "29-appointment-time-kz.md",
@@ -1769,7 +1769,7 @@
       "id": "kz-159",
       "phrase": "Иә, сағат үш бос.",
       "file": "kz-159.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "29-appointment-time-en.md",
         "29-appointment-time-kz.md",
@@ -1780,7 +1780,7 @@
       "id": "kz-160",
       "phrase": "Менің атым — Аян.",
       "file": "kz-160.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "29-appointment-time-en.md",
         "29-appointment-time-kz.md",
@@ -1791,7 +1791,7 @@
       "id": "kz-161",
       "phrase": "Сейсенбі, сағат үш, дұрыс па?",
       "file": "kz-161.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "29-appointment-time-en.md",
         "29-appointment-time-kz.md",
@@ -1802,7 +1802,7 @@
       "id": "kz-162",
       "phrase": "Өзімді нашар сезініп тұрмын.",
       "file": "kz-162.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "30-health-pharmacy-en.md",
         "30-health-pharmacy-kz.md",
@@ -1813,7 +1813,7 @@
       "id": "kz-163",
       "phrase": "Тамағым ауырып тұр.",
       "file": "kz-163.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "30-health-pharmacy-en.md",
         "30-health-pharmacy-kz.md",
@@ -1824,7 +1824,7 @@
       "id": "kz-164",
       "phrase": "Дене қызуым бар.",
       "file": "kz-164.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "30-health-pharmacy-en.md",
         "30-health-pharmacy-kz.md",
@@ -1835,7 +1835,7 @@
       "id": "kz-165",
       "phrase": "Бұл қашан басталды?",
       "file": "kz-165.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "30-health-pharmacy-en.md",
         "30-health-pharmacy-kz.md",
@@ -1846,7 +1846,7 @@
       "id": "kz-166",
       "phrase": "Кеше кешке басталды.",
       "file": "kz-166.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "30-health-pharmacy-en.md",
         "30-health-pharmacy-kz.md",
@@ -1857,7 +1857,7 @@
       "id": "kz-167",
       "phrase": "Маған дәрігердің көмегі керек.",
       "file": "kz-167.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "30-health-pharmacy-en.md",
         "30-health-pharmacy-kz.md",
@@ -1868,7 +1868,7 @@
       "id": "kz-168",
       "phrase": "Маған өтініш бланкісі керек.",
       "file": "kz-168.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "31-service-error-documents-en.md",
         "31-service-error-documents-kz.md",
@@ -1879,7 +1879,7 @@
       "id": "kz-169",
       "phrase": "Мына жерді қалай толтырамын?",
       "file": "kz-169.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "31-service-error-documents-en.md",
         "31-service-error-documents-kz.md",
@@ -1890,7 +1890,7 @@
       "id": "kz-170",
       "phrase": "Құжатта қате бар.",
       "file": "kz-170.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "31-service-error-documents-en.md",
         "31-service-error-documents-kz.md",
@@ -1901,7 +1901,7 @@
       "id": "kz-171",
       "phrase": "Менің тегім дұрыс жазылмаған.",
       "file": "kz-171.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "31-service-error-documents-en.md",
         "31-service-error-documents-kz.md",
@@ -1912,7 +1912,7 @@
       "id": "kz-172",
       "phrase": "Түзетуге бола ма?",
       "file": "kz-172.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "31-service-error-documents-en.md",
         "31-service-error-documents-kz.md",
@@ -1923,7 +1923,7 @@
       "id": "kz-173",
       "phrase": "Дайын болғанда хабарлаңызшы.",
       "file": "kz-173.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "31-service-error-documents-en.md",
         "31-service-error-documents-kz.md",
@@ -1934,7 +1934,7 @@
       "id": "kz-174",
       "phrase": "Алдымен күн тәртібімді тексеремін.",
       "file": "kz-174.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "32-day-services-mastery-en.md",
         "32-day-services-mastery-kz.md",
@@ -1945,7 +1945,7 @@
       "id": "kz-175",
       "phrase": "Дүкеннен бір келі алма аламын.",
       "file": "kz-175.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "32-day-services-mastery-en.md",
         "32-day-services-mastery-kz.md",
@@ -1956,7 +1956,7 @@
       "id": "kz-176",
       "phrase": "Кафеде тағамның құрамын сұраймын.",
       "file": "kz-176.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "32-day-services-mastery-en.md",
         "32-day-services-mastery-kz.md",
@@ -1967,7 +1967,7 @@
       "id": "kz-177",
       "phrase": "Сағат үшке жазыламын.",
       "file": "kz-177.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "32-day-services-mastery-en.md",
         "32-day-services-mastery-kz.md",
@@ -1981,7 +1981,7 @@
       "id": "kz-178",
       "phrase": "Қажет болса, маманнан көмек сұраймын.",
       "file": "kz-178.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "32-day-services-mastery-en.md",
         "32-day-services-mastery-kz.md",
@@ -1992,7 +1992,7 @@
       "id": "kz-179",
       "phrase": "Соңында чекті тексеремін.",
       "file": "kz-179.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "32-day-services-mastery-en.md",
         "32-day-services-mastery-kz.md",
@@ -2003,7 +2003,7 @@
       "id": "kz-180",
       "phrase": "Бұл — кітап.",
       "file": "kz-180.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "33-case-role-map-en.md",
         "33-case-role-map-kz.md",
@@ -2014,7 +2014,7 @@
       "id": "kz-181",
       "phrase": "Кітаптың мұқабасы көк.",
       "file": "kz-181.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "33-case-role-map-en.md",
         "33-case-role-map-kz.md",
@@ -2025,7 +2025,7 @@
       "id": "kz-182",
       "phrase": "Мен кітапты ашамын.",
       "file": "kz-182.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "33-case-role-map-en.md",
         "33-case-role-map-kz.md",
@@ -2036,7 +2036,7 @@
       "id": "kz-183",
       "phrase": "Кітапты досыма беремін.",
       "file": "kz-183.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "33-case-role-map-en.md",
         "33-case-role-map-kz.md",
@@ -2047,7 +2047,7 @@
       "id": "kz-184",
       "phrase": "Кітап үстелде жатыр.",
       "file": "kz-184.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "33-case-role-map-en.md",
         "33-case-role-map-kz.md",
@@ -2058,7 +2058,7 @@
       "id": "kz-185",
       "phrase": "Кітапты сөреден аламын.",
       "file": "kz-185.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "33-case-role-map-en.md",
         "33-case-role-map-kz.md",
@@ -2069,7 +2069,7 @@
       "id": "kz-186",
       "phrase": "Мектептің ауласы кең.",
       "file": "kz-186.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "34-genitive-relationship-en.md",
         "34-genitive-relationship-kz.md",
@@ -2080,7 +2080,7 @@
       "id": "kz-187",
       "phrase": "Қаланың картасы жаңа.",
       "file": "kz-187.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "34-genitive-relationship-en.md",
         "34-genitive-relationship-kz.md",
@@ -2091,7 +2091,7 @@
       "id": "kz-188",
       "phrase": "Кітапхананың есігі ашық.",
       "file": "kz-188.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "34-genitive-relationship-en.md",
         "34-genitive-relationship-kz.md",
@@ -2102,7 +2102,7 @@
       "id": "kz-189",
       "phrase": "Оқушының дәптері үстелде.",
       "file": "kz-189.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "34-genitive-relationship-en.md",
         "34-genitive-relationship-kz.md",
@@ -2113,7 +2113,7 @@
       "id": "kz-190",
       "phrase": "Досымның үйі жақын.",
       "file": "kz-190.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "34-genitive-relationship-en.md",
         "34-genitive-relationship-kz.md",
@@ -2124,7 +2124,7 @@
       "id": "kz-191",
       "phrase": "Бұл кімнің сөмкесі?",
       "file": "kz-191.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "34-genitive-relationship-en.md",
         "34-genitive-relationship-kz.md",
@@ -2135,7 +2135,7 @@
       "id": "kz-192",
       "phrase": "Мен бұл кітапты оқимын.",
       "file": "kz-192.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "35-accusative-specific-object-en.md",
         "35-accusative-specific-object-kz.md",
@@ -2146,7 +2146,7 @@
       "id": "kz-193",
       "phrase": "Көк дәптерді ашыңызшы.",
       "file": "kz-193.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "35-accusative-specific-object-en.md",
         "35-accusative-specific-object-kz.md",
@@ -2157,7 +2157,7 @@
       "id": "kz-194",
       "phrase": "Картаны үстелге қойыңызшы.",
       "file": "kz-194.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "35-accusative-specific-object-en.md",
         "35-accusative-specific-object-kz.md",
@@ -2168,7 +2168,7 @@
       "id": "kz-195",
       "phrase": "Мен тапсырманы орындаймын.",
       "file": "kz-195.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "35-accusative-specific-object-en.md",
         "35-accusative-specific-object-kz.md",
@@ -2179,7 +2179,7 @@
       "id": "kz-196",
       "phrase": "Қай кітапты таңдайсыз?",
       "file": "kz-196.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "35-accusative-specific-object-en.md",
         "35-accusative-specific-object-kz.md",
@@ -2190,7 +2190,7 @@
       "id": "kz-197",
       "phrase": "Мен кітапханаға барамын.",
       "file": "kz-197.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "36-dative-goal-recipient-en.md",
         "36-dative-goal-recipient-kz.md",
@@ -2201,7 +2201,7 @@
       "id": "kz-198",
       "phrase": "Картаны мұғалімге беремін.",
       "file": "kz-198.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "36-dative-goal-recipient-en.md",
         "36-dative-goal-recipient-kz.md",
@@ -2212,7 +2212,7 @@
       "id": "kz-199",
       "phrase": "Досыма хабарлама жазамын.",
       "file": "kz-199.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "36-dative-goal-recipient-en.md",
         "36-dative-goal-recipient-kz.md",
@@ -2223,7 +2223,7 @@
       "id": "kz-201",
       "phrase": "Балалар алаңына дейін барамыз.",
       "file": "kz-201.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "36-dative-goal-recipient-en.md",
         "36-dative-goal-recipient-kz.md",
@@ -2234,7 +2234,7 @@
       "id": "kz-202",
       "phrase": "Сізге қалай көмектесемін?",
       "file": "kz-202.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "36-dative-goal-recipient-en.md",
         "36-dative-goal-recipient-kz.md",
@@ -2245,7 +2245,7 @@
       "id": "kz-203",
       "phrase": "Кітапханада үйірме бар.",
       "file": "kz-203.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "37-locative-place-time-en.md",
         "37-locative-place-time-kz.md",
@@ -2256,7 +2256,7 @@
       "id": "kz-204",
       "phrase": "Үйірме сәрсенбіде өтеді.",
       "file": "kz-204.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "37-locative-place-time-en.md",
         "37-locative-place-time-kz.md",
@@ -2267,7 +2267,7 @@
       "id": "kz-205",
       "phrase": "Материалдар екінші қабатта.",
       "file": "kz-205.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "37-locative-place-time-en.md",
         "37-locative-place-time-kz.md",
@@ -2278,7 +2278,7 @@
       "id": "kz-206",
       "phrase": "Мен қазір сыныптамын.",
       "file": "kz-206.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "37-locative-place-time-en.md",
         "37-locative-place-time-kz.md",
@@ -2289,7 +2289,7 @@
       "id": "kz-207",
       "phrase": "Сөмкеде дәптер бар.",
       "file": "kz-207.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "37-locative-place-time-en.md",
         "37-locative-place-time-kz.md",
@@ -2300,7 +2300,7 @@
       "id": "kz-208",
       "phrase": "Сағат онда кездесейік.",
       "file": "kz-208.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "37-locative-place-time-en.md",
         "37-locative-place-time-kz.md",
@@ -2311,7 +2311,7 @@
       "id": "kz-209",
       "phrase": "Мен мектептен келемін.",
       "file": "kz-209.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "38-ablative-source-en.md",
         "38-ablative-source-kz.md",
@@ -2322,7 +2322,7 @@
       "id": "kz-210",
       "phrase": "Дүкеннен қағаз алдым.",
       "file": "kz-210.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "38-ablative-source-en.md",
         "38-ablative-source-kz.md",
@@ -2333,7 +2333,7 @@
       "id": "kz-211",
       "phrase": "Досымнан хабарлама келеді.",
       "file": "kz-211.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "38-ablative-source-en.md",
         "38-ablative-source-kz.md",
@@ -2344,7 +2344,7 @@
       "id": "kz-212",
       "phrase": "Үстел ағаштан жасалған.",
       "file": "kz-212.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "38-ablative-source-en.md",
         "38-ablative-source-kz.md",
@@ -2355,7 +2355,7 @@
       "id": "kz-213",
       "phrase": "Сағат тоғыздан бастап жұмыс істейміз.",
       "file": "kz-213.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "38-ablative-source-en.md",
         "38-ablative-source-kz.md",
@@ -2366,7 +2366,7 @@
       "id": "kz-214",
       "phrase": "Сіз қайдан келесіз?",
       "file": "kz-214.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "38-ablative-source-en.md",
         "38-ablative-source-kz.md",
@@ -2377,7 +2377,7 @@
       "id": "kz-215",
       "phrase": "Мен досыммен жұмыс істеймін.",
       "file": "kz-215.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "39-instrumental-companion-means-en.md",
         "39-instrumental-companion-means-kz.md",
@@ -2388,7 +2388,7 @@
       "id": "kz-216",
       "phrase": "Суретті қарындашпен саламын.",
       "file": "kz-216.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "39-instrumental-companion-means-en.md",
         "39-instrumental-companion-means-kz.md",
@@ -2399,7 +2399,7 @@
       "id": "kz-217",
       "phrase": "Мектепке автобуспен барамын.",
       "file": "kz-217.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "39-instrumental-companion-means-en.md",
         "39-instrumental-companion-means-kz.md",
@@ -2410,7 +2410,7 @@
       "id": "kz-218",
       "phrase": "Мұғаліммен сөйлесемін.",
       "file": "kz-218.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "39-instrumental-companion-means-en.md",
         "39-instrumental-companion-means-kz.md",
@@ -2421,7 +2421,7 @@
       "id": "kz-219",
       "phrase": "Қорапты қолмен ашпаңыз.",
       "file": "kz-219.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "39-instrumental-companion-means-en.md",
         "39-instrumental-companion-means-kz.md",
@@ -2432,7 +2432,7 @@
       "id": "kz-220",
       "phrase": "Аружан мен Мария бірге оқиды.",
       "file": "kz-220.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "39-instrumental-companion-means-en.md",
         "39-instrumental-companion-means-kz.md",
@@ -2443,7 +2443,7 @@
       "id": "kz-221",
       "phrase": "Оқушылар жобаны бастайды.",
       "file": "kz-221.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "40-space-cases-mastery-en.md",
         "40-space-cases-mastery-kz.md",
@@ -2454,7 +2454,7 @@
       "id": "kz-222",
       "phrase": "Жобаның картасы үстелде.",
       "file": "kz-222.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "40-space-cases-mastery-en.md",
         "40-space-cases-mastery-kz.md",
@@ -2465,7 +2465,7 @@
       "id": "kz-223",
       "phrase": "Картаны жаңа оқушыға беремін.",
       "file": "kz-223.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "40-space-cases-mastery-en.md",
         "40-space-cases-mastery-kz.md",
@@ -2476,7 +2476,7 @@
       "id": "kz-224",
       "phrase": "Ол картаға белгі қояды.",
       "file": "kz-224.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "40-space-cases-mastery-en.md",
         "40-space-cases-mastery-kz.md",
@@ -2487,7 +2487,7 @@
       "id": "kz-225",
       "phrase": "Белгіні қораптан аламыз.",
       "file": "kz-225.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "40-space-cases-mastery-en.md",
         "40-space-cases-mastery-kz.md",
@@ -2498,7 +2498,7 @@
       "id": "kz-226",
       "phrase": "Тапсырманы тобымызбен орындаймыз.",
       "file": "kz-226.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "40-space-cases-mastery-en.md",
         "40-space-cases-mastery-kz.md",
@@ -2509,7 +2509,7 @@
       "id": "kz-227",
       "phrase": "Кеше біз жоспарды аяқтадық.",
       "file": "kz-227.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "41-time-scene-map-en.md",
         "41-time-scene-map-kz.md",
@@ -2520,7 +2520,7 @@
       "id": "kz-228",
       "phrase": "Біз әдетте сабақтан кейін кездесеміз.",
       "file": "kz-228.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "41-time-scene-map-en.md",
         "41-time-scene-map-kz.md",
@@ -2531,7 +2531,7 @@
       "id": "kz-229",
       "phrase": "Қазір біз макет жасап жатырмыз.",
       "file": "kz-229.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "41-time-scene-map-en.md",
         "41-time-scene-map-kz.md",
@@ -2542,7 +2542,7 @@
       "id": "kz-230",
       "phrase": "Ертең біз жобаны көрсетеміз.",
       "file": "kz-230.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "41-time-scene-map-en.md",
         "41-time-scene-map-kz.md",
@@ -2553,7 +2553,7 @@
       "id": "kz-231",
       "phrase": "Бүгін жұмыс жалғасып жатыр.",
       "file": "kz-231.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "41-time-scene-map-en.md",
         "41-time-scene-map-kz.md",
@@ -2564,7 +2564,7 @@
       "id": "kz-232",
       "phrase": "Өткен аптада топ сурет түсірді.",
       "file": "kz-232.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "41-time-scene-map-en.md",
         "41-time-scene-map-kz.md",
@@ -2575,7 +2575,7 @@
       "id": "kz-233",
       "phrase": "Мен күнде қазақша оқимын.",
       "file": "kz-233.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "42-habit-present-future-en.md",
         "42-habit-present-future-kz.md",
@@ -2586,7 +2586,7 @@
       "id": "kz-234",
       "phrase": "Сен таңертең сөздерді қайталайсың.",
       "file": "kz-234.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "42-habit-present-future-en.md",
         "42-habit-present-future-kz.md",
@@ -2597,7 +2597,7 @@
       "id": "kz-235",
       "phrase": "Ол дүйсенбіде камераны тексереді.",
       "file": "kz-235.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "42-habit-present-future-en.md",
         "42-habit-present-future-kz.md",
@@ -2608,7 +2608,7 @@
       "id": "kz-236",
       "phrase": "Біз кешке файлдарды сақтаймыз.",
       "file": "kz-236.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "42-habit-present-future-en.md",
         "42-habit-present-future-kz.md",
@@ -2619,7 +2619,7 @@
       "id": "kz-237",
       "phrase": "Сіздер апта сайын сұхбат жазасыздар.",
       "file": "kz-237.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "42-habit-present-future-en.md",
         "42-habit-present-future-kz.md",
@@ -2630,7 +2630,7 @@
       "id": "kz-238",
       "phrase": "Олар сабақтан кейін бірге жұмыс істейді.",
       "file": "kz-238.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "42-habit-present-future-en.md",
         "42-habit-present-future-kz.md",
@@ -2641,7 +2641,7 @@
       "id": "kz-239",
       "phrase": "Мен мәтін жазып жатырмын.",
       "file": "kz-239.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "43-action-now-progressive-en.md",
         "43-action-now-progressive-kz.md",
@@ -2652,7 +2652,7 @@
       "id": "kz-240",
       "phrase": "Сен сурет таңдап жатырсың.",
       "file": "kz-240.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "43-action-now-progressive-en.md",
         "43-action-now-progressive-kz.md",
@@ -2663,7 +2663,7 @@
       "id": "kz-241",
       "phrase": "Ол макет құрып жатыр.",
       "file": "kz-241.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "43-action-now-progressive-en.md",
         "43-action-now-progressive-kz.md",
@@ -2674,7 +2674,7 @@
       "id": "kz-242",
       "phrase": "Біз нәтижені тексеріп жатырмыз.",
       "file": "kz-242.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "43-action-now-progressive-en.md",
         "43-action-now-progressive-kz.md",
@@ -2685,7 +2685,7 @@
       "id": "kz-243",
       "phrase": "Оқушылар сұрақ қойып жатыр.",
       "file": "kz-243.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "43-action-now-progressive-en.md",
         "43-action-now-progressive-kz.md",
@@ -2696,7 +2696,7 @@
       "id": "kz-244",
       "phrase": "Жұмыс әлі жалғасып жатыр.",
       "file": "kz-244.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "43-action-now-progressive-en.md",
         "43-action-now-progressive-kz.md",
@@ -2707,7 +2707,7 @@
       "id": "kz-245",
       "phrase": "Кеше мен мәтінді аяқтадым.",
       "file": "kz-245.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "44-completed-past-en.md",
         "44-completed-past-kz.md",
@@ -2718,7 +2718,7 @@
       "id": "kz-246",
       "phrase": "Сен файлды сақтадың.",
       "file": "kz-246.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "44-completed-past-en.md",
         "44-completed-past-kz.md",
@@ -2729,7 +2729,7 @@
       "id": "kz-247",
       "phrase": "Ол суретті таңдады.",
       "file": "kz-247.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "44-completed-past-en.md",
         "44-completed-past-kz.md",
@@ -2740,7 +2740,7 @@
       "id": "kz-248",
       "phrase": "Біз қонақтарды қарсы алдық.",
       "file": "kz-248.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "44-completed-past-en.md",
         "44-completed-past-kz.md",
@@ -2751,7 +2751,7 @@
       "id": "kz-249",
       "phrase": "Оқушылар макетті құрастырды.",
       "file": "kz-249.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "44-completed-past-en.md",
         "44-completed-past-kz.md",
@@ -2762,7 +2762,7 @@
       "id": "kz-250",
       "phrase": "Сабақ сағат үште басталды.",
       "file": "kz-250.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "44-completed-past-en.md",
         "44-completed-past-kz.md",
@@ -2773,7 +2773,7 @@
       "id": "kz-251",
       "phrase": "Ертең біз кітапханаға барамыз.",
       "file": "kz-251.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "45-future-plan-intention-en.md",
         "45-future-plan-intention-kz.md",
@@ -2784,7 +2784,7 @@
       "id": "kz-252",
       "phrase": "Сағат онда кездесеміз.",
       "file": "kz-252.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "45-future-plan-intention-en.md",
         "45-future-plan-intention-kz.md",
@@ -2795,7 +2795,7 @@
       "id": "kz-253",
       "phrase": "Мен жаңа бөлімді дайындаймын.",
       "file": "kz-253.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "45-future-plan-intention-en.md",
         "45-future-plan-intention-kz.md",
@@ -2806,7 +2806,7 @@
       "id": "kz-254",
       "phrase": "Біз жобаны жұмада көрсетеміз.",
       "file": "kz-254.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "45-future-plan-intention-en.md",
         "45-future-plan-intention-kz.md",
@@ -2817,7 +2817,7 @@
       "id": "kz-255",
       "phrase": "Мен сұрақтарды жазып алмақпын.",
       "file": "kz-255.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "45-future-plan-intention-en.md",
         "45-future-plan-intention-kz.md",
@@ -2828,7 +2828,7 @@
       "id": "kz-256",
       "phrase": "Жоспар өзгеруі мүмкін.",
       "file": "kz-256.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "45-future-plan-intention-en.md",
         "45-future-plan-intention-kz.md",
@@ -2839,7 +2839,7 @@
       "id": "kz-257",
       "phrase": "Сен кеше файлды сақтадың ба?",
       "file": "kz-257.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "46-time-questions-negation-en.md",
         "46-time-questions-negation-kz.md",
@@ -2850,7 +2850,7 @@
       "id": "kz-258",
       "phrase": "Жоқ, мен файлды сақтамадым.",
       "file": "kz-258.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "46-time-questions-negation-en.md",
         "46-time-questions-negation-kz.md",
@@ -2861,7 +2861,7 @@
       "id": "kz-259",
       "phrase": "Олар қазір жұмыс істеп жатыр ма?",
       "file": "kz-259.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "46-time-questions-negation-en.md",
         "46-time-questions-negation-kz.md",
@@ -2872,7 +2872,7 @@
       "id": "kz-260",
       "phrase": "Жоқ, олар қазір жұмыс істеп жатқан жоқ.",
       "file": "kz-260.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "46-time-questions-negation-en.md",
         "46-time-questions-negation-kz.md",
@@ -2883,7 +2883,7 @@
       "id": "kz-261",
       "phrase": "Ертең кездесеміз бе?",
       "file": "kz-261.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "46-time-questions-negation-en.md",
         "46-time-questions-negation-kz.md",
@@ -2894,7 +2894,7 @@
       "id": "kz-262",
       "phrase": "Жоқ, ертең кездеспейміз.",
       "file": "kz-262.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "46-time-questions-negation-en.md",
         "46-time-questions-negation-kz.md",
@@ -2905,7 +2905,7 @@
       "id": "kz-263",
       "phrase": "Кеше біз деректерді жинадық.",
       "file": "kz-263.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "47-linked-time-story-en.md",
         "47-linked-time-story-kz.md",
@@ -2916,7 +2916,7 @@
       "id": "kz-264",
       "phrase": "Содан кейін жоспар құрдық.",
       "file": "kz-264.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "47-linked-time-story-en.md",
         "47-linked-time-story-kz.md",
@@ -2927,7 +2927,7 @@
       "id": "kz-265",
       "phrase": "Қазір нәтижені тексеріп жатырмыз.",
       "file": "kz-265.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "47-linked-time-story-en.md",
         "47-linked-time-story-kz.md",
@@ -2938,7 +2938,7 @@
       "id": "kz-266",
       "phrase": "Себебі бір сан өзгерді.",
       "file": "kz-266.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "47-linked-time-story-en.md",
         "47-linked-time-story-kz.md",
@@ -2949,7 +2949,7 @@
       "id": "kz-267",
       "phrase": "Сондықтан кестені түзетеміз.",
       "file": "kz-267.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "47-linked-time-story-en.md",
         "47-linked-time-story-kz.md",
@@ -2960,7 +2960,7 @@
       "id": "kz-268",
       "phrase": "Ертең қорытындыны көрсетеміз.",
       "file": "kz-268.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "47-linked-time-story-en.md",
         "47-linked-time-story-kz.md",
@@ -2971,7 +2971,7 @@
       "id": "kz-269",
       "phrase": "Кеше топ алғашқы қадамды аяқтады.",
       "file": "kz-269.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "48-action-time-mastery-en.md",
         "48-action-time-mastery-kz.md",
@@ -2982,7 +2982,7 @@
       "id": "kz-270",
       "phrase": "Әдетте біз жұмысты бірге тексереміз.",
       "file": "kz-270.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "48-action-time-mastery-en.md",
         "48-action-time-mastery-kz.md",
@@ -2993,7 +2993,7 @@
       "id": "kz-271",
       "phrase": "Қазір екі оқушы макет жасап жатыр.",
       "file": "kz-271.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "48-action-time-mastery-en.md",
         "48-action-time-mastery-kz.md",
@@ -3004,7 +3004,7 @@
       "id": "kz-272",
       "phrase": "Бір тапсырма әлі аяқталған жоқ.",
       "file": "kz-272.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "48-action-time-mastery-en.md",
         "48-action-time-mastery-kz.md",
@@ -3015,7 +3015,7 @@
       "id": "kz-273",
       "phrase": "Ертең біз нәтижені көрсетеміз.",
       "file": "kz-273.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "48-action-time-mastery-en.md",
         "48-action-time-mastery-kz.md",
@@ -3026,7 +3026,7 @@
       "id": "kz-274",
       "phrase": "Жоспар өзгерсе, уақытты қайта белгілейміз.",
       "file": "kz-274.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "48-action-time-mastery-en.md",
         "48-action-time-mastery-kz.md",
@@ -3040,6 +3040,6 @@
     "locale": "kk-KZ",
     "rate": "-8%",
     "processing": "48 kHz mono PCM; loudness normalised",
-    "approval": "pending_owner_and_native_speaker_review"
+    "approval": "approved_by_owner_and_native_speaker_review"
   }
 }

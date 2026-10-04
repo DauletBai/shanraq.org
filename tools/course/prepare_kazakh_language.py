@@ -25,24 +25,60 @@ ROUTE = (
     ("14-home-locative", "kazakh-language-14-home-locative", 140),
     ("15-there-is-have", "kazakh-language-15-there-is-have", 150),
     ("16-people-home-mastery", "kazakh-language-16-people-home-mastery", 160),
+    ("17-school-map", "kazakh-language-17-school-map", 170),
+    ("18-days-subjects", "kazakh-language-18-days-subjects", 180),
+    ("19-clock-time", "kazakh-language-19-clock-time", 190),
+    ("20-directions-imperative", "kazakh-language-20-directions-imperative", 200),
+    ("21-from-to-route", "kazakh-language-21-from-to-route", 210),
+    ("22-city-transport", "kazakh-language-22-city-transport", 220),
+    ("23-rules-permission", "kazakh-language-23-rules-permission", 230),
+    ("24-school-city-mastery", "kazakh-language-24-school-city-mastery", 240),
+    ("25-daily-routine", "kazakh-language-25-daily-routine", 250),
+    ("26-sequence-connectors", "kazakh-language-26-sequence-connectors", 260),
+    ("27-shop-quantity-price", "kazakh-language-27-shop-quantity-price", 270),
+    ("28-cafe-order", "kazakh-language-28-cafe-order", 280),
+    ("29-appointment-time", "kazakh-language-29-appointment-time", 290),
+    ("30-health-pharmacy", "kazakh-language-30-health-pharmacy", 300),
+    ("31-service-error-documents", "kazakh-language-31-service-error-documents", 310),
+    ("32-day-services-mastery", "kazakh-language-32-day-services-mastery", 320),
+    ("33-case-role-map", "kazakh-language-33-case-role-map", 330),
+    ("34-genitive-relationship", "kazakh-language-34-genitive-relationship", 340),
+    ("35-accusative-specific-object", "kazakh-language-35-accusative-specific-object", 350),
+    ("36-dative-goal-recipient", "kazakh-language-36-dative-goal-recipient", 360),
+    ("37-locative-place-time", "kazakh-language-37-locative-place-time", 370),
+    ("38-ablative-source", "kazakh-language-38-ablative-source", 380),
+    ("39-instrumental-companion-means", "kazakh-language-39-instrumental-companion-means", 390),
+    ("40-space-cases-mastery", "kazakh-language-40-space-cases-mastery", 400),
+    ("41-time-scene-map", "kazakh-language-41-time-scene-map", 410),
+    ("42-habit-present-future", "kazakh-language-42-habit-present-future", 420),
+    ("43-action-now-progressive", "kazakh-language-43-action-now-progressive", 430),
+    ("44-completed-past", "kazakh-language-44-completed-past", 440),
+    ("45-future-plan-intention", "kazakh-language-45-future-plan-intention", 450),
+    ("46-time-questions-negation", "kazakh-language-46-time-questions-negation", 460),
+    ("47-linked-time-story", "kazakh-language-47-linked-time-story", 470),
+    ("48-action-time-mastery", "kazakh-language-48-action-time-mastery", 480),
 )
 SERIES_COVER = "/static/covers/school/kazakh-language/foundations/01-first-conversation.webp"
 BLOCK_COVERS = {
     1: SERIES_COVER,
     2: "/static/covers/school/kazakh-language/people-home/02-people-home.webp",
+    3: "/static/covers/school/kazakh-language/school-city/03-school-city.webp",
+    4: "/static/covers/school/kazakh-language/day-services/04-day-services.webp",
+    5: "/static/covers/school/kazakh-language/space-cases/05-space-cases.webp",
+    6: "/static/covers/school/kazakh-language/action-time/06-action-time.webp",
 }
 META = {
     "ru": (
         "Казахский язык: начинаем говорить с первой встречи",
-        "Бесплатный практический курс казахского языка от первых звуков до самостоятельного общения. Первые 16 уроков учат знакомиться, слышать естественные ы/і, рассказывать о людях и доме, а также развивают проект «Моя среда».",
+        "Бесплатный практический курс казахского языка от первых звуков до самостоятельного общения. 48 уроков учат знакомиться, ориентироваться в городе, решать бытовые задачи, выбирать падеж по смыслу и рассказывать о прошлом, настоящем и планах в проекте «Моя среда».",
     ),
     "kz": (
         "Қазақ тілі: алғашқы кездесуден бастап сөйлейміз",
-        "Алғашқы дыбыстардан дербес қарым-қатынасқа дейінгі тегін тәжірибелік қазақ тілі курсы. Алғашқы 16 сабақ танысуды, табиғи ы/і айтылымын, адамдар мен үй туралы сөйлеуді және «Менің ортам» жобасын дамытады.",
+        "Алғашқы дыбыстардан дербес қарым-қатынасқа дейінгі тегін тәжірибелік қазақ тілі курсы. 48 сабақ танысуды, қалада бағдарлауды, тұрмыстық міндеттерді, мағынаға сай септік таңдауды және өткен, қазіргі, келер әрекеттерді «Менің ортам» жобасында дамытады.",
     ),
     "en": (
         "Kazakh: start speaking from the first meeting",
-        "A free practical Kazakh course from first sounds to independent communication. The first 16 lessons cover introductions, natural ы/і, people and home, and the continuing My World project.",
+        "A free practical Kazakh course from first sounds to independent communication. Forty-eight lessons cover introductions, city routes, everyday services, meaning-based cases, and past, present, and planned actions in the continuing My World project.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -66,8 +102,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 16:
-        raise ValueError("the current release must contain exactly sixteen lessons")
+    if len(ROUTE) != 48:
+        raise ValueError("the current release must contain exactly forty-eight lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-kazakh-language-course'));"]
     slugs = ",".join(literal(slug) for _, slug, _ in ROUTE)
     sql.append(f"""DO $guard$
@@ -98,7 +134,7 @@ SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
     for stem, slug_name, position in ROUTE:
         slug = literal(slug_name)
-        cover = BLOCK_COVERS[1 if position <= 80 else 2]
+        cover = BLOCK_COVERS[(position - 1) // 80 + 1]
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
 SELECT id,{slug},'ru','society','education',{literal(cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'

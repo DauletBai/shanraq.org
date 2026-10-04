@@ -49,7 +49,7 @@
     {
       "id": "school-city",
       "range": "17-24",
-      "status": "audio_review",
+      "status": "ready",
       "lexical_target": 520,
       "release": "0.3",
       "title_kz": "Мектеп және қала",
@@ -59,7 +59,7 @@
     {
       "id": "day-services",
       "range": "25-32",
-      "status": "audio_review",
+      "status": "ready",
       "lexical_target": 800,
       "release": "1.0",
       "title_kz": "Күн және қызметтер",
@@ -69,7 +69,7 @@
     {
       "id": "space-cases",
       "range": "33-40",
-      "status": "audio_review",
+      "status": "ready",
       "lexical_target": 1100,
       "release": "1.1",
       "title_kz": "Кеңістік және септіктер",
@@ -79,7 +79,7 @@
     {
       "id": "action-time",
       "range": "41-48",
-      "status": "audio_review",
+      "status": "ready",
       "lexical_target": 1400,
       "release": "1.2",
       "title_kz": "Әрекет және уақыт",

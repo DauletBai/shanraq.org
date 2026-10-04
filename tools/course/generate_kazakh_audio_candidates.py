@@ -59,7 +59,18 @@ async def render() -> None:
     rows = data["recordings"]
     candidates = [row for row in rows if row["status"] == "candidate_review"]
     if not candidates:
-        raise ValueError("manifest has no candidate_review recordings to render")
+        REVIEW.write_text(
+            """<!doctype html><html lang=\"ru\"><meta charset=\"utf-8\">
+<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">
+<title>Казахский курс — аудио одобрено</title>
+<style>body{font:16px system-ui;max-width:920px;margin:30px auto;padding:0 18px;color:#242424}h1{font-size:30px}</style>
+<h1>Все аудиозаписи одобрены</h1>
+<p>273 казахские записи курса проверены и доступны урокам 1–48. Голос Aigul, язык kk-KZ. Новых кандидатов для прослушивания сейчас нет.</p>
+</html>\n""",
+            encoding="utf-8",
+        )
+        print(f"review page -> {REVIEW.relative_to(ROOT)} (no pending candidates)")
+        return
     with tempfile.TemporaryDirectory(prefix="shanraq-kz-audio-") as tmp:
         tmpdir = Path(tmp)
         for index, row in enumerate(candidates, 1):
