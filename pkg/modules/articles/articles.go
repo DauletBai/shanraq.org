@@ -54,6 +54,7 @@ type Module struct {
 	predictions   *PredictionStore
 	series        *SeriesStore
 	progress      *ProgressStore
+	activity      *UserActivityStore
 	tariffs       *TariffStore
 	fx            *FxStore
 	macro         *MacroStore
@@ -134,6 +135,7 @@ func (m *Module) Init(ctx context.Context, rt *shanraq.Runtime) error {
 	m.predictions = NewPredictionStore(rt.DB)
 	m.series = NewSeriesStore(rt.DB)
 	m.progress = NewProgressStore(rt.DB)
+	m.activity = NewUserActivityStore(rt.DB)
 	// Fill the editable-pages table from the built-in defaults on first boot;
 	// idempotent and best-effort, so it never blocks startup.
 	m.seedContentPages(ctx)
@@ -352,6 +354,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 	r.Group(func(r chi.Router) {
 		r.Use(m.auth.RequireSession("/studio/login", adminRoles...))
 		r.Get("/admin", m.handleAdmin)
+		r.Get("/admin/users/{id}", m.handleAdminUserActivity)
 		r.Post("/admin/roles", m.handleAdminAssignRole)
 		r.Post("/admin/users/{id}", m.handleAdminUserUpdate)
 		r.Post("/admin/users/{id}/role", m.handleAdminUserRole)

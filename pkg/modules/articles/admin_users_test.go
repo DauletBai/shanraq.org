@@ -56,6 +56,9 @@ func TestAdminSeesEveryUser(t *testing.T) {
 			t.Errorf("the register does not show %q", want)
 		}
 	}
+	if !strings.Contains(body, `/admin/users/`) || !strings.Contains(body, `class="adm-userlink"`) {
+		t.Error("the user's name does not open their activity report")
+	}
 	// Scoped to the register's own markup: the page elsewhere lists listings and
 	// audience panels that legitimately spell country names out.
 	if table := between(body, `class="spec spec--sticky adm-users"`, "</table>"); table == "" {
@@ -72,6 +75,57 @@ func TestAdminSeesEveryUser(t *testing.T) {
 	w = app.do(http.MethodGet, "/admin", url.Values{"uq": {"неттакого"}}, withCookie(cookie))
 	if strings.Contains(w.Body.String(), "reader@t.test") {
 		t.Error("search returned an account that does not match it")
+	}
+}
+
+// A visible page beacon and a finished-reading beacon become an account-linked
+// article interest only for the signed-in reader. The admin then reaches that
+// evidence by clicking the account name; a plain user cannot read somebody
+// else's history.
+func TestAdminUserActivityTracksArticleInterest(t *testing.T) {
+	app := newTestApp(t)
+	adminCookie, _ := adminSession(t, app, "activity-admin@t.test")
+	readerID := app.createUser("activity-reader@t.test", "Parol12345")
+	readerCookie := app.login("activity-reader@t.test", "Parol12345")
+	articleID, slug := app.seedArticle(readerID, "published")
+	app.exec(`UPDATE articles SET category='economy', subcategory='' WHERE id=$1`, articleID)
+
+	referer := app.origin + "/read/" + slug + "?lang=ru"
+	w := app.do(http.MethodPost, "/api/view", nil, withCookie(readerCookie),
+		withHeader("Referer", referer), withHeader("User-Agent", "Mozilla/5.0 Chrome/140 Safari/537.36"))
+	if w.Code != http.StatusNoContent {
+		t.Fatalf("view beacon = %d", w.Code)
+	}
+	w = app.do(http.MethodPost, "/read/"+slug+"/done?t=30&d=100&l=ru", nil,
+		withCookie(readerCookie), withHeader("User-Agent", "Mozilla/5.0 Chrome/140 Safari/537.36"))
+	if w.Code != http.StatusNoContent {
+		t.Fatalf("read beacon = %d", w.Code)
+	}
+
+	var events int
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT count(*) FROM user_activity_events WHERE user_id=$1 AND article_id=$2`,
+		readerID, articleID).Scan(&events); err != nil {
+		t.Fatal(err)
+	}
+	if events != 2 {
+		t.Fatalf("recorded activity events = %d, want view + read", events)
+	}
+
+	w = app.do(http.MethodGet, "/admin/users/"+readerID.String()+"?lang=ru", nil, withCookie(adminCookie))
+	if w.Code != http.StatusOK {
+		t.Fatalf("activity page = %d (%s)", w.Code, w.Body.String())
+	}
+	body := w.Body.String()
+	for _, want := range []string{"activity-reader@t.test", "Интересы по статьям", "Экономика", "Тест заголовок", "100%"} {
+		if !strings.Contains(body, want) {
+			t.Errorf("activity report does not show %q", want)
+		}
+	}
+
+	w = app.do(http.MethodGet, "/admin/users/"+readerID.String(), nil, withCookie(readerCookie))
+	if w.Code != http.StatusSeeOther {
+		t.Errorf("reader activity access = %d, want login redirect", w.Code)
 	}
 }
 

@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"shanraq.org/pkg/modules/auth"
+	"shanraq.org/pkg/site"
 )
 
 // Account administration. The panel could previously report how many accounts
@@ -156,4 +157,40 @@ func (m *Module) handleAdminUserDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Redirect(w, r, backToUsers(r, "user_deleted"), http.StatusSeeOther)
+}
+
+type AdminUserActivityPage struct {
+	Base
+	User   auth.AdminUser
+	Report UserActivityReport
+}
+
+func (m *Module) handleAdminUserActivity(w http.ResponseWriter, r *http.Request) {
+	claims, _ := auth.ClaimsFromContext(r.Context())
+	if !canManageUsers(claims) {
+		http.Error(w, "forbidden", http.StatusForbidden)
+		return
+	}
+	id, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	user, err := m.users.GetAdminUser(r.Context(), id)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	lang := site.ResolveLang(w, r)
+	report, err := m.activity.Report(r.Context(), id, lang)
+	if err != nil {
+		m.rt.Logger.Error("admin user activity", zap.String("user_id", id.String()), zap.Error(err))
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	m.render(w, "admin_user_activity", AdminUserActivityPage{
+		Base:   m.base(r, site.T(lang, "admin.ua_title"), lang),
+		User:   user,
+		Report: report,
+	})
 }

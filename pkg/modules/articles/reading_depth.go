@@ -155,12 +155,6 @@ func (m *Module) handleReadDone(w http.ResponseWriter, r *http.Request) {
 	if secs > readMaxSeconds {
 		secs = readMaxSeconds
 	}
-	// A crawler that runs JavaScript is rare; one that also idles on the page
-	// for minutes is rarer still. Even so, the same rule the view counter uses
-	// applies, so the two numbers are drawn from the same population.
-	if !m.countableAudience(r) {
-		return
-	}
 	a, err := m.store.GetPublishedBySlug(r.Context(), chi.URLParam(r, "slug"))
 	if err != nil {
 		return
@@ -174,6 +168,33 @@ func (m *Module) handleReadDone(w http.ResponseWriter, r *http.Request) {
 	}
 	expect := m.store.ReadingSeconds(r.Context(), a.ID, lang)
 	finished := readCounts(depth, secs, expect)
+
+	// Unlike the public aggregate, the account journal may record a signed-in
+	// reader behind a VPN. No-track and staff exclusions are still honored by
+	// activityUser. A course lesson carries its course id; an ordinary article
+	// remains separate so the interest profile is not polluted by coursework.
+	if user, ok := m.activityUser(r); ok {
+		kind := "article"
+		seriesID := uuid.Nil
+		if places, err := m.series.ForArticle(r.Context(), a.ID, lang); err == nil && len(places) > 0 {
+			kind = "lesson"
+			seriesID = firstSeriesID(places)
+		}
+		if err := m.activity.Record(r.Context(), UserActivityEvent{
+			UserID: user, EventType: "read", ContentKind: kind,
+			Path: "/read/" + a.Slug, Lang: lang, ArticleID: a.ID,
+			SeriesID: seriesID, Depth: depth, DurationSeconds: secs, Passed: finished,
+		}); err != nil {
+			m.rt.Logger.Warn("record signed-in read", zap.Error(err))
+		}
+	}
+
+	// A crawler that runs JavaScript is rare; one that also idles on the page
+	// for minutes is rarer still. Even so, the same rule the view counter uses
+	// applies, so the two public numbers are drawn from the same population.
+	if !m.countableAudience(r) {
+		return
+	}
 	if err := m.store.RecordRead(r.Context(), a.ID, secs, finished); err != nil {
 		m.rt.Logger.Warn("record read", zap.Error(err))
 	}

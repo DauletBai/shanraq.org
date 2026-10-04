@@ -1101,7 +1101,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 	},
 
 	"privacy": {
-		"ru": {Title: "Политика конфиденциальности", Body: `_Редакция от 03.10.2026._
+		"ru": {Title: "Политика конфиденциальности", Body: `_Редакция от 04.10.2026._
 
 Политика описывает, какие данные собирает Shanraq.org и как мы с ними обращаемся, в соответствии с законодательством Республики Казахстан.
 
@@ -1146,11 +1146,11 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 **Зачем мы считаем.** Чтобы показывать рекламодателю размер и состав аудитории и чтобы понимать, что читают. Без этих цифр реклама на сайте не продаётся, а без неё сайт не живёт.
 
-**Что именно считается.** Просмотр записывается только после того, как страница отобразилась в видимой вкладке браузера. Визит объединяет просмотры одного браузера, пока между ними нет 30 минут бездействия; для этого браузер хранит технический cookie визита, а база — только его необратимый суточный HMAC. Хосты, посетители, визиты и просмотры разбиваются на Казахстан и остальной мир, мобильные и прочие устройства. Эти же цифры открыто показаны всем на странице «Аналитика»: мы не держим для себя данных, которых не показываем вам.
+**Что именно считается.** Просмотр записывается только после того, как страница отобразилась в видимой вкладке браузера. Визит объединяет просмотры одного браузера, пока между ними нет 30 минут бездействия; для этого браузер хранит технический cookie визита, а база — только его необратимый суточный HMAC. Хосты, посетители, визиты и просмотры разбиваются на Казахстан и остальной мир, мобильные и прочие устройства. Эти агрегированные цифры открыто показаны всем на странице «Аналитика».
 
-**Как это устроено, чтобы не стать слежкой.** Посетитель считается по анонимному идентификатору. Он вычисляется из IP-адреса и строки браузера ключом, который создаётся заново каждые сутки; сам адрес нигде не сохраняется. Ключ вчерашнего дня не восстанавливается, поэтому один и тот же человек в понедельник и во вторник даёт два несвязанных значения. Проследить за кем-то дольше суток нельзя технически — в том числе нам.
+**Как устроена анонимная часть.** Посетитель, который не вошёл в аккаунт, считается по анонимному идентификатору. Он вычисляется из IP-адреса и строки браузера ключом, который создаётся заново каждые сутки; сам адрес нигде не сохраняется. Ключ вчерашнего дня не восстанавливается, поэтому один и тот же незарегистрированный посетитель в понедельник и во вторник даёт два несвязанных значения.
 
-**Чего мы не делаем в собственной аналитике.** Не записываем ваш путь по сайту, не строим профиль интересов, не передаём данные собственной аналитики третьим лицам и не используем их для подбора рекламы под конкретного человека.
+**Для зарегистрированных пользователей** сохраняется история просмотренных статей, курсов и уроков, времени чтения и результатов заданий. Она доступна администраторам, используется для анализа интересов и обучения, не передаётся рекламодателям и удаляется вместе с аккаунтом.
 
 На публичных страницах работает официальный JavaScript-счётчик ZERO.kz: он измеряет посещаемость независимо от нас, чтобы цифры для читателей и рекламодателей можно было проверить во внешнем сервисе. При открытии страницы браузер передаёт ZERO.kz полный адрес и заголовок страницы, источник перехода, время посещения, IP-адрес, сведения о браузере, устройстве, размере экрана, языке и часовом поясе, а также анонимные идентификаторы посетителя и сеанса; ZERO.kz может сохранять свои cookie. Эти данные позволяют отдельно считать страницы, посетителей, визиты и источники переходов. Счётчик отключён в админ-панели, личном кабинете, редакторе, на страницах входа, регистрации, восстановления доступа и в служебных формах. ZERO.kz обрабатывает полученные данные как самостоятельный внешний сервис. Таргетированная реклама на основе расы, национальности, политических взглядов, биометрических данных или данных о здоровье не ведётся.
 
@@ -1162,7 +1162,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 ## 12. Контакты и регулятор
 По вопросам обработки данных обращайтесь через [страницу поддержки](/support). Уполномоченный орган в сфере защиты персональных данных — Министерство цифрового развития, инноваций и аэрокосмической промышленности Республики Казахстан.`},
-		"kz": {Title: "Құпиялылық саясаты", Body: `_03.10.2026 жағдайындағы редакция._
+		"kz": {Title: "Құпиялылық саясаты", Body: `_04.10.2026 жағдайындағы редакция._
 
 Бұл саясат Shanraq.org қандай деректерді жинайтынын және біз олармен қалай жұмыс істейтінімізді Қазақстан Республикасының заңнамасына сәйкес сипаттайды.
 
@@ -1207,11 +1207,11 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 **Не үшін санаймыз.** Жарнама берушіге аудиторияның көлемі мен құрамын көрсету үшін және не оқылатынын түсіну үшін. Бұл сандарсыз сайтта жарнама сатылмайды, ал онсыз сайттың өзі тұрмайды.
 
-**Не саналады.** Қаралым бет браузердің көрінетін қойындысында көрсетілгеннен кейін ғана жазылады. Бір браузердің қаралымдары арасында 30 минут әрекетсіздік болмаса, олар бір кіруге біріктіріледі; бұл үшін браузер кірудің техникалық cookie файлын, ал дерекқор оның тек қайтарымсыз тәуліктік HMAC мәнін сақтайды. Хосттар, келушілер, кірулер және қаралымдар Қазақстан мен қалған әлемге, мобильді және өзге құрылғыларға бөлінеді. Дәл осы сандар «Аналитика» бетінде барлығына ашық көрсетілген: өзімізге көрсетпейтін дерек ұстамаймыз.
+**Не саналады.** Қаралым бет браузердің көрінетін қойындысында көрсетілгеннен кейін ғана жазылады. Бір браузердің қаралымдары арасында 30 минут әрекетсіздік болмаса, олар бір кіруге біріктіріледі; бұл үшін браузер кірудің техникалық cookie файлын, ал дерекқор оның тек қайтарымсыз тәуліктік HMAC мәнін сақтайды. Хосттар, келушілер, кірулер және қаралымдар Қазақстан мен қалған әлемге, мобильді және өзге құрылғыларға бөлінеді. Бұл жинақталған сандар «Аналитика» бетінде барлығына ашық көрсетілген.
 
-**Бұл қалай бақылауға айналмайды.** Келуші анонимді идентификатормен саналады. Ол IP-мекенжай мен браузер жолынан күн сайын жаңадан жасалатын кілтпен есептеледі; мекенжайдың өзі еш жерде сақталмайды. Кешегі кілт қалпына келтірілмейді, сондықтан бір адам дүйсенбіде де, сейсенбіде де екі байланыссыз мән береді. Біреуді бір тәуліктен ұзақ қадағалау техникалық тұрғыдан мүмкін емес — бізге де.
+**Анонимді бөлік қалай құрылған.** Есептік жазбаға кірмеген келуші анонимді идентификатормен саналады. Ол IP-мекенжай мен браузер жолынан күн сайын жаңадан жасалатын кілтпен есептеледі; мекенжайдың өзі еш жерде сақталмайды. Кешегі кілт қалпына келтірілмейді, сондықтан бір тіркелмеген келуші дүйсенбіде де, сейсенбіде де екі байланыссыз мән береді.
 
-**Өз аналитикамызда не істемейміз.** Сайттағы жолыңызды жазбаймыз, қызығушылық профилін құрмаймыз, өз аналитикамыздың деректерін үшінші тұлғаларға бермейміз және нақты адамға жарнама таңдау үшін пайдаланбаймыз.
+**Тіркелген қолданушылар үшін** қаралған мақалалар, курстар мен сабақтар, оқу уақыты және тапсырма нәтижелері сақталады. Бұл тарих әкімшілерге қолжетімді, қызығушылық пен оқу барысын талдау үшін қолданылады, жарнама берушілерге берілмейді және есептік жазбамен бірге жойылады.
 
 Жария беттерде ZERO.kz ресми JavaScript санағышы жұмыс істейді: ол оқырмандар мен жарнама берушілерге көрсетілетін сандарды сыртқы қызмет арқылы тексеруге мүмкіндік беру үшін сайтқа кіруді бізден тәуелсіз өлшейді. Бет ашылған кезде браузер ZERO.kz қызметіне беттің толық мекенжайы мен тақырыбын, ауысу көзін, кіру уақытын, IP-мекенжайды, браузер, құрылғы, экран өлшемі, тіл және сағат белдеуі туралы мәліметтерді, сондай-ақ келуші мен сеанстың анонимді идентификаторларын жібереді; ZERO.kz өз cookie файлдарын сақтай алады. Бұл деректер беттерді, келушілерді, кірулерді және ауысу көздерін бөлек санауға мүмкіндік береді. Санағыш әкімшілік панельде, жеке кабинетте, редакторда, кіру, тіркелу, қолжетімділікті қалпына келтіру беттерінде және қызметтік нысандарда өшірілген. ZERO.kz алынған деректерді дербес сыртқы қызмет ретінде өңдейді. Нәсіл, ұлт, саяси көзқарас, биометриялық деректер немесе денсаулық туралы деректер негізінде мақсатты жарнама жүргізілмейді.
 
@@ -1223,7 +1223,7 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 ## 12. Байланыстар және реттеуші
 Деректерді өңдеу мәселелері бойынша [қолдау көрсету беті](/support) арқылы хабарласыңыз. Дербес деректерді қорғау саласындағы уәкілетті орган — Қазақстан Республикасының Цифрлық даму, инновациялар және аэроғарыш өнеркәсібі министрлігі.`},
-		"en": {Title: "Privacy Policy", Body: `_Revision of 03.10.2026._
+		"en": {Title: "Privacy Policy", Body: `_Revision of 04.10.2026._
 
 This Policy describes what data Shanraq.org collects and how we handle it, in accordance with the legislation of the Republic of Kazakhstan.
 
@@ -1268,11 +1268,11 @@ We use technically necessary cookies -- for the login session, the chosen langua
 
 **Why we count.** To show advertisers the size and shape of the audience, and to see what is read. Without those figures the advertising does not sell, and without that the site does not run.
 
-**What is counted.** A view is recorded only after the page has appeared in a visible browser tab. Views from one browser remain one visit until there has been 30 minutes without activity; the browser keeps a technical visit cookie and the database stores only its irreversible daily HMAC. Hosts, visitors, visits and views are split between Kazakhstan and the rest of the world and between mobile and other devices. The same figures are shown openly to everyone on the Analytics page: we keep no traffic data that we do not show you.
+**What is counted.** A view is recorded only after the page has appeared in a visible browser tab. Views from one browser remain one visit until there has been 30 minutes without activity; the browser keeps a technical visit cookie and the database stores only its irreversible daily HMAC. Hosts, visitors, visits and views are split between Kazakhstan and the rest of the world and between mobile and other devices. These aggregate figures are shown openly to everyone on the Analytics page.
 
-**How it is kept from becoming surveillance.** A visitor is counted under an anonymous identifier, derived from the address and the browser string with a key that is generated afresh every day; the address itself is never stored anywhere. Yesterday's key cannot be recovered, so the same person on Monday and on Tuesday yields two unrelated values. Following anyone for longer than a day is not technically possible -- for us either.
+**How the anonymous part works.** A visitor who is not signed in is counted under an anonymous identifier, derived from the address and the browser string with a key that is generated afresh every day; the address itself is never stored anywhere. Yesterday's key cannot be recovered, so the same signed-out visitor on Monday and on Tuesday yields two unrelated values.
 
-**What we do not do in our own analytics.** We do not record your path through the site, build an interest profile, pass our own analytics data to third parties, or use it to select advertising for a particular person.
+**For registered users,** we retain the articles, courses and lessons viewed, reading time and exercise results. Administrators can use this history to analyze interests and learning progress; it is not shared with advertisers and is deleted with the account.
 
 The official ZERO.kz JavaScript counter runs on public pages. It measures traffic independently of us so that readers and advertisers can verify our figures through an external service. When a page opens, the browser sends ZERO.kz the full page address and title, referrer, visit time, IP address, browser and device details, screen size, language and time zone, together with anonymous visitor and session identifiers; ZERO.kz may store its own cookies. These data allow pages, visitors, visits and traffic sources to be counted separately. The counter is disabled in the administration panel, account area, editor, sign-in, registration and account-recovery pages, and service forms. ZERO.kz processes the information it receives as an independent external service. We do not conduct targeted advertising based on race, ethnicity, political views, biometric data, or health data.
 

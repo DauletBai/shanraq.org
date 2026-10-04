@@ -1,6 +1,7 @@
 package articles
 
 import (
+	"fmt"
 	"html/template"
 	"strconv"
 	"strings"
@@ -47,8 +48,28 @@ func templateFuncs() template.FuncMap {
 		"countryMark":      countryMark,
 		"countryFlagEmoji": countryFlagEmoji,
 		"kilo":             kilo,
+		"activityDuration": activityDuration,
 		"markdown":         RenderMarkdown,
 	}
+}
+
+func activityDuration(lang string, seconds int64) string {
+	if seconds <= 0 {
+		return "0 " + map[string]string{LangKZ: "мин", LangRU: "мин", LangEN: "min"}[lang]
+	}
+	minutes := (seconds + 59) / 60
+	hours := minutes / 60
+	minutes %= 60
+	if hours == 0 {
+		return fmt.Sprintf("%d %s", minutes, map[string]string{LangKZ: "мин", LangRU: "мин", LangEN: "min"}[lang])
+	}
+	if lang == LangKZ {
+		return fmt.Sprintf("%d сағ %d мин", hours, minutes)
+	}
+	if lang == LangEN {
+		return fmt.Sprintf("%d h %d min", hours, minutes)
+	}
+	return fmt.Sprintf("%d ч %d мин", hours, minutes)
 }
 
 // kilo shortens a figure to thousands so the scale beside a chart needs no

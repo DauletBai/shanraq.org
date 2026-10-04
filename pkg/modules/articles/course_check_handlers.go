@@ -221,6 +221,17 @@ func (m *Module) handleCourseCheck(w http.ResponseWriter, r *http.Request) {
 		// a reason to withhold it.
 		m.rt.Logger.Warn("course progress record", zap.Error(err))
 	}
+	seriesID := uuid.Nil
+	if places, err := m.series.ForArticle(r.Context(), a.ID, served); err == nil {
+		seriesID = firstSeriesID(places)
+	}
+	if err := m.activity.Record(r.Context(), UserActivityEvent{
+		UserID: user, EventType: "check", ContentKind: "lesson",
+		Path: "/read/" + a.Slug, Lang: served, ArticleID: a.ID,
+		SeriesID: seriesID, Passed: v.Passed,
+	}); err != nil {
+		m.rt.Logger.Warn("record course check activity", zap.Error(err))
+	}
 	left := maxAttempts - (pr.Attempts + 1)
 	if v.Passed || left < 0 {
 		left = 0

@@ -688,7 +688,7 @@
               {{ range .Users }}
               <tr>
                 <td>
-                  <b>{{ if .FullName }}{{ .FullName }}{{ else }}<span class="dot">—</span>{{ end }}</b>
+                  <b><a class="adm-userlink" href="/admin/users/{{ .ID }}?lang={{ $.Lang }}">{{ if .FullName }}{{ .FullName }}{{ else }}{{ .Email }}{{ end }}</a></b>
                   {{ if not .Verified }}<span class="pill pill--draft">{{ t $.Lang "admin.u_verified" }}: —</span>{{ end }}
                   {{ if .IsLastRoot }}<span class="pill pill--review">{{ t $.Lang "admin.u_last_admin" }}</span>{{ end }}
                 </td>

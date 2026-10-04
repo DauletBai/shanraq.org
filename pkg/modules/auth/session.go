@@ -40,7 +40,7 @@ const (
 // Policy change materially so re-consent can be required later.
 const (
 	ConsentDocument = "terms_privacy"
-	ConsentVersion  = "2026-07-18"
+	ConsentVersion  = "2026-10-04"
 )
 
 // AuthorConsentDocument/Version identify the author's one-time acknowledgment of

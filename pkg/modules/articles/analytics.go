@@ -2,6 +2,7 @@ package articles
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -714,7 +715,19 @@ func requestHostname(hostport string) string {
 func (m *Module) handleView(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")
 	page, kind, ok := verifiedPageRequest(r)
-	if !ok || !m.countableAudience(r) {
+	if !ok {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	// A signed-in reader gets a private activity journal even when their network
+	// is outside the public audience calculation (for example, a VPN). It still
+	// requires the same visible-tab, same-origin browser proof, and the explicit
+	// no-track/staff exclusions remain authoritative.
+	if user, signedIn := m.activityUser(r); signedIn {
+		m.recordUserPageView(r, page, kind, readingLang(page), user)
+	}
+	if !m.countableAudience(r) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
@@ -1328,4 +1341,380 @@ func (m *Module) audienceHit(r *http.Request) bool {
 // describing a subtly different population.
 func (m *Module) countableAudience(r *http.Request) bool {
 	return !m.excluded(nil, r) && m.audienceHit(r)
+}
+
+// UserActivityStore is the account-linked reading and learning journal. It is
+// deliberately separate from aggregate audience analytics: the latter remains
+// anonymous and public, while this journal is visible only to account admins.
+type UserActivityStore struct{ db *pgxpool.Pool }
+
+func NewUserActivityStore(db *pgxpool.Pool) *UserActivityStore { return &UserActivityStore{db: db} }
+
+type UserActivityEvent struct {
+	UserID          uuid.UUID
+	EventType       string // view | read | check
+	ContentKind     string // page | article | lesson | course | listing
+	Path            string
+	Lang            string
+	ArticleID       uuid.UUID
+	SeriesID        uuid.UUID
+	Depth           int
+	DurationSeconds int
+	Passed          bool
+}
+
+func (s *UserActivityStore) Record(ctx context.Context, e UserActivityEvent) error {
+	if e.UserID == uuid.Nil {
+		return nil
+	}
+	if e.Depth < 0 {
+		e.Depth = 0
+	}
+	if e.Depth > 100 {
+		e.Depth = 100
+	}
+	if e.DurationSeconds < 0 {
+		e.DurationSeconds = 0
+	}
+	if len(e.Path) > 500 {
+		e.Path = e.Path[:500]
+	}
+	if e.Lang != LangKZ && e.Lang != LangRU && e.Lang != LangEN {
+		e.Lang = ""
+	}
+	var article, series any
+	if e.ArticleID != uuid.Nil {
+		article = e.ArticleID
+	}
+	if e.SeriesID != uuid.Nil {
+		series = e.SeriesID
+	}
+	_, err := s.db.Exec(ctx, `
+		INSERT INTO user_activity_events
+		       (user_id, event_type, content_kind, path, lang, article_id,
+		        series_id, depth, duration_seconds, passed)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+		e.UserID, e.EventType, e.ContentKind, e.Path, e.Lang, article, series,
+		e.Depth, e.DurationSeconds, e.Passed)
+	if err != nil {
+		return fmt.Errorf("record user activity: %w", err)
+	}
+	return nil
+}
+
+// activityUser resolves an account only for the private journal. The explicit
+// no-track cookie and staff/test exclusions still win: internal quality checks
+// must not become somebody's reading profile merely because they use a login.
+func (m *Module) activityUser(r *http.Request) (uuid.UUID, bool) {
+	if m.activity == nil || m.excluded(nil, r) {
+		return uuid.Nil, false
+	}
+	claims, ok := auth.ClaimsFromContext(r.Context())
+	if !ok || claims == nil {
+		return uuid.Nil, false
+	}
+	id, err := uuid.Parse(claims.Subject)
+	return id, err == nil
+}
+
+func firstSeriesID(places []*SeriesPlace) uuid.UUID {
+	for _, place := range places {
+		if place != nil && place.Series != nil {
+			return place.Series.ID
+		}
+	}
+	return uuid.Nil
+}
+
+// recordUserPageView records exactly the page that emitted the verified
+// same-origin visibility beacon. Query strings are intentionally omitted so a
+// search term, token or form value can never enter the journal.
+func (m *Module) recordUserPageView(r *http.Request, page *http.Request, kind, lang string, user uuid.UUID) {
+	e := UserActivityEvent{
+		UserID: user, EventType: "view", ContentKind: kind,
+		Path: page.URL.Path, Lang: lang,
+	}
+	segment := func(prefix string) string {
+		v := strings.TrimPrefix(page.URL.Path, prefix)
+		if decoded, err := url.PathUnescape(v); err == nil {
+			return decoded
+		}
+		return v
+	}
+	switch kind {
+	case "article":
+		a, err := m.store.GetPublishedBySlug(r.Context(), segment("/read/"))
+		if err != nil {
+			return
+		}
+		e.ArticleID = a.ID
+		if places, err := m.series.ForArticle(r.Context(), a.ID, lang); err == nil && len(places) > 0 {
+			e.ContentKind = "lesson"
+			e.SeriesID = firstSeriesID(places)
+		}
+	case "course":
+		s, err := m.series.BySlug(r.Context(), segment("/course/"), lang)
+		if err != nil || !s.IsPublished() {
+			return
+		}
+		e.SeriesID = s.ID
+	case "listing":
+		e.ContentKind = "listing"
+	default:
+		e.ContentKind = "page"
+	}
+	if err := m.activity.Record(r.Context(), e); err != nil {
+		m.rt.Logger.Warn("record signed-in page view", zap.Error(err))
+	}
+}
+
+type UserActivitySummary struct {
+	Views          int64
+	ActiveDays     int64
+	ArticleViews   int64
+	LessonViews    int64
+	CourseViews    int64
+	ReadSessions   int64
+	CompletedReads int64
+	StudyChecks    int64
+	EngagedSeconds int64
+	FirstAt        *time.Time
+	LastAt         *time.Time
+}
+
+type UserInterest struct {
+	Category       string
+	Subcategory    string
+	Articles       int64
+	Views          int64
+	Reads          int64
+	CompletedReads int64
+	EngagedSeconds int64
+	LastAt         time.Time
+}
+
+type UserCourseActivity struct {
+	Slug          string
+	Title         string
+	HubViews      int64
+	LessonViews   int64
+	ReadSessions  int64
+	Checks        int64
+	PassedLessons int64
+	LastAt        *time.Time
+}
+
+type UserActivityDay struct {
+	Day            time.Time
+	Views          int64
+	ArticleViews   int64
+	LessonViews    int64
+	CourseViews    int64
+	ReadSessions   int64
+	CompletedReads int64
+	Checks         int64
+	EngagedSeconds int64
+}
+
+type UserActivityEntry struct {
+	Day            time.Time
+	LastAt         time.Time
+	ContentKind    string
+	Path           string
+	Lang           string
+	Title          string
+	CourseTitle    string
+	Category       string
+	Subcategory    string
+	Views          int64
+	ReadSessions   int64
+	CompletedReads int64
+	MaxDepth       int
+	EngagedSeconds int64
+	Checks         int64
+	PassedChecks   int64
+}
+
+func (e UserActivityEntry) Clock() string { return e.LastAt.In(siteLoc()).Format("15:04") }
+
+type UserActivityReport struct {
+	Summary   UserActivitySummary
+	Interests []UserInterest
+	Courses   []UserCourseActivity
+	Days      []UserActivityDay
+	Entries   []UserActivityEntry
+}
+
+func (s *UserActivityStore) Report(ctx context.Context, user uuid.UUID, lang string) (UserActivityReport, error) {
+	var out UserActivityReport
+	if err := s.db.QueryRow(ctx, `
+		SELECT count(*) FILTER (WHERE event_type='view'),
+		       count(DISTINCT (occurred_at AT TIME ZONE 'Asia/Qostanay')::date),
+		       count(*) FILTER (WHERE event_type='view' AND content_kind='article'),
+		       count(*) FILTER (WHERE event_type='view' AND content_kind='lesson'),
+		       count(*) FILTER (WHERE event_type='view' AND content_kind='course'),
+		       count(*) FILTER (WHERE event_type='read'),
+		       count(*) FILTER (WHERE event_type='read' AND passed),
+		       count(*) FILTER (WHERE event_type='check'),
+		       COALESCE(sum(duration_seconds) FILTER (WHERE event_type='read'),0),
+		       min(occurred_at), max(occurred_at)
+		  FROM user_activity_events WHERE user_id=$1`, user).Scan(
+		&out.Summary.Views, &out.Summary.ActiveDays, &out.Summary.ArticleViews,
+		&out.Summary.LessonViews, &out.Summary.CourseViews, &out.Summary.ReadSessions,
+		&out.Summary.CompletedReads, &out.Summary.StudyChecks, &out.Summary.EngagedSeconds,
+		&out.Summary.FirstAt, &out.Summary.LastAt); err != nil {
+		return out, fmt.Errorf("user activity summary: %w", err)
+	}
+
+	rows, err := s.db.Query(ctx, `
+		SELECT a.category, a.subcategory,
+		       count(DISTINCT e.article_id),
+		       count(*) FILTER (WHERE e.event_type='view'),
+		       count(*) FILTER (WHERE e.event_type='read'),
+		       count(*) FILTER (WHERE e.event_type='read' AND e.passed),
+		       COALESCE(sum(e.duration_seconds) FILTER (WHERE e.event_type='read'),0),
+		       max(e.occurred_at)
+		  FROM user_activity_events e
+		  JOIN articles a ON a.id=e.article_id
+		 WHERE e.user_id=$1 AND e.content_kind='article'
+		 GROUP BY a.category, a.subcategory
+		 ORDER BY count(*) FILTER (WHERE e.event_type='read' AND e.passed) DESC,
+		          COALESCE(sum(e.duration_seconds) FILTER (WHERE e.event_type='read'),0) DESC,
+		          count(*) FILTER (WHERE e.event_type='view') DESC`, user)
+	if err != nil {
+		return out, fmt.Errorf("user interests: %w", err)
+	}
+	for rows.Next() {
+		var v UserInterest
+		if err := rows.Scan(&v.Category, &v.Subcategory, &v.Articles, &v.Views,
+			&v.Reads, &v.CompletedReads, &v.EngagedSeconds, &v.LastAt); err != nil {
+			rows.Close()
+			return out, err
+		}
+		out.Interests = append(out.Interests, v)
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return out, err
+	}
+
+	rows, err = s.db.Query(ctx, `
+		WITH activity_course AS (
+		    SELECT COALESCE(e.series_id, i.series_id) AS series_id,
+		           count(*) FILTER (WHERE e.event_type='view' AND e.content_kind='course') hub_views,
+		           count(*) FILTER (WHERE e.event_type='view' AND e.content_kind='lesson') lesson_views,
+		           count(*) FILTER (WHERE e.event_type='read') reads,
+		           count(*) FILTER (WHERE e.event_type='check') checks,
+		           max(e.occurred_at) last_at
+		      FROM user_activity_events e
+		      LEFT JOIN article_series_items i ON e.series_id IS NULL AND i.article_id=e.article_id
+		     WHERE e.user_id=$1 AND (e.series_id IS NOT NULL OR i.series_id IS NOT NULL)
+		     GROUP BY COALESCE(e.series_id, i.series_id)
+		), progress_course AS (
+		    SELECT i.series_id, count(*) FILTER (WHERE p.passed) passed,
+		           COALESCE(sum(p.attempts),0) attempts, max(p.updated_at) last_at
+		      FROM course_progress p
+		      JOIN article_series_items i ON i.article_id=p.article_id
+		     WHERE p.user_id=$1 GROUP BY i.series_id
+		), ids AS (
+		    SELECT series_id FROM activity_course UNION SELECT series_id FROM progress_course
+		)
+		SELECT s.slug, COALESCE(NULLIF(tr.title,''),s.slug),
+		       COALESCE(a.hub_views,0), COALESCE(a.lesson_views,0), COALESCE(a.reads,0),
+		       GREATEST(COALESCE(a.checks,0),COALESCE(p.attempts,0)), COALESCE(p.passed,0),
+		       CASE WHEN a.last_at IS NULL THEN p.last_at
+		            WHEN p.last_at IS NULL THEN a.last_at
+		            ELSE GREATEST(a.last_at,p.last_at) END
+		  FROM ids
+		  JOIN article_series s ON s.id=ids.series_id
+		  LEFT JOIN article_series_i18n tr ON tr.series_id=s.id AND tr.lang=$2
+		  LEFT JOIN activity_course a ON a.series_id=s.id
+		  LEFT JOIN progress_course p ON p.series_id=s.id
+		 ORDER BY 8 DESC NULLS LAST`, user, lang)
+	if err != nil {
+		return out, fmt.Errorf("user course activity: %w", err)
+	}
+	for rows.Next() {
+		var v UserCourseActivity
+		if err := rows.Scan(&v.Slug, &v.Title, &v.HubViews, &v.LessonViews,
+			&v.ReadSessions, &v.Checks, &v.PassedLessons, &v.LastAt); err != nil {
+			rows.Close()
+			return out, err
+		}
+		out.Courses = append(out.Courses, v)
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return out, err
+	}
+
+	rows, err = s.db.Query(ctx, `
+		SELECT (occurred_at AT TIME ZONE 'Asia/Qostanay')::date,
+		       count(*) FILTER (WHERE event_type='view'),
+		       count(*) FILTER (WHERE event_type='view' AND content_kind='article'),
+		       count(*) FILTER (WHERE event_type='view' AND content_kind='lesson'),
+		       count(*) FILTER (WHERE event_type='view' AND content_kind='course'),
+		       count(*) FILTER (WHERE event_type='read'),
+		       count(*) FILTER (WHERE event_type='read' AND passed),
+		       count(*) FILTER (WHERE event_type='check'),
+		       COALESCE(sum(duration_seconds) FILTER (WHERE event_type='read'),0)
+		  FROM user_activity_events WHERE user_id=$1
+		 GROUP BY 1 ORDER BY 1 DESC`, user)
+	if err != nil {
+		return out, fmt.Errorf("user activity days: %w", err)
+	}
+	for rows.Next() {
+		var v UserActivityDay
+		if err := rows.Scan(&v.Day, &v.Views, &v.ArticleViews, &v.LessonViews,
+			&v.CourseViews, &v.ReadSessions, &v.CompletedReads, &v.Checks,
+			&v.EngagedSeconds); err != nil {
+			rows.Close()
+			return out, err
+		}
+		out.Days = append(out.Days, v)
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return out, err
+	}
+
+	rows, err = s.db.Query(ctx, `
+		SELECT (e.occurred_at AT TIME ZONE 'Asia/Qostanay')::date, max(e.occurred_at),
+		       e.content_kind, e.path, e.lang,
+		       COALESCE(NULLIF(at.title,''), e.path), COALESCE(NULLIF(st.title,''),''),
+		       COALESCE(a.category,''), COALESCE(a.subcategory,''),
+		       count(*) FILTER (WHERE e.event_type='view'),
+		       count(*) FILTER (WHERE e.event_type='read'),
+		       count(*) FILTER (WHERE e.event_type='read' AND e.passed),
+		       COALESCE(max(e.depth) FILTER (WHERE e.event_type='read'),0),
+		       COALESCE(sum(e.duration_seconds) FILTER (WHERE e.event_type='read'),0),
+		       count(*) FILTER (WHERE e.event_type='check'),
+		       count(*) FILTER (WHERE e.event_type='check' AND e.passed)
+		  FROM user_activity_events e
+		  LEFT JOIN articles a ON a.id=e.article_id
+		  LEFT JOIN article_translations at ON at.article_id=e.article_id AND at.lang=e.lang
+		  LEFT JOIN article_series s ON s.id=e.series_id
+		  LEFT JOIN article_series_i18n st ON st.series_id=e.series_id AND st.lang=$2
+		 WHERE e.user_id=$1
+		 GROUP BY 1, e.content_kind, e.path, e.lang, at.title, st.title, a.category, a.subcategory
+		 ORDER BY 1 DESC, max(e.occurred_at) DESC`, user, lang)
+	if err != nil {
+		return out, fmt.Errorf("user activity entries: %w", err)
+	}
+	for rows.Next() {
+		var v UserActivityEntry
+		if err := rows.Scan(&v.Day, &v.LastAt, &v.ContentKind, &v.Path, &v.Lang,
+			&v.Title, &v.CourseTitle, &v.Category, &v.Subcategory, &v.Views,
+			&v.ReadSessions, &v.CompletedReads, &v.MaxDepth, &v.EngagedSeconds,
+			&v.Checks, &v.PassedChecks); err != nil {
+			rows.Close()
+			return out, err
+		}
+		out.Entries = append(out.Entries, v)
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return out, err
+	}
+	return out, nil
 }

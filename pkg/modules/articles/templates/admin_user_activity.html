@@ -1,0 +1,118 @@
+{{ define "admin_user_activity" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container ua" style="max-width:1180px;padding-top:24px">
+  <p class="ua__back"><a href="/admin?lang={{ .Lang }}#users">← {{ t .Lang "admin.ua_back" }}</a></p>
+  <header class="ua__head">
+    <div>
+      <p class="kicker">{{ t .Lang "admin.ua_kicker" }}</p>
+      <h1>{{ if .User.FullName }}{{ .User.FullName }}{{ else }}{{ .User.Email }}{{ end }}</h1>
+      <p class="ua__identity">{{ .User.Email }} · {{ if .User.Country }}{{ countryFlagEmoji .User.Country }} {{ .User.Country }}{{ else }}{{ t .Lang "admin.u_unknown" }}{{ end }} · {{ t .Lang "admin.u_registered" }} {{ fmtDate .User.CreatedAt }}</p>
+    </div>
+    <span class="pill">{{ .User.Role }}</span>
+  </header>
+
+  <p class="ua__notice">{{ t .Lang "admin.ua_since" }}</p>
+
+  <section class="ua-stats" aria-label="{{ t .Lang "admin.ua_summary" }}">
+    <div><b>{{ .Report.Summary.Views }}</b><span>{{ t .Lang "admin.ua_views" }}</span></div>
+    <div><b>{{ .Report.Summary.ActiveDays }}</b><span>{{ t .Lang "admin.ua_days" }}</span></div>
+    <div><b>{{ .Report.Summary.ArticleViews }}</b><span>{{ t .Lang "admin.ua_articles" }}</span></div>
+    <div><b>{{ .Report.Summary.CompletedReads }}</b><span>{{ t .Lang "admin.ua_finished" }}</span></div>
+    <div><b>{{ .Report.Summary.LessonViews }}</b><span>{{ t .Lang "admin.ua_lessons" }}</span></div>
+    <div><b>{{ .Report.Summary.StudyChecks }}</b><span>{{ t .Lang "admin.ua_checks" }}</span></div>
+    <div><b>{{ activityDuration .Lang .Report.Summary.EngagedSeconds }}</b><span>{{ t .Lang "admin.ua_time" }}</span></div>
+  </section>
+
+  <section class="ua-panel">
+    <h2>{{ t .Lang "admin.ua_interests" }}</h2>
+    <p class="hint">{{ t .Lang "admin.ua_interests_note" }}</p>
+    {{ if .Report.Interests }}
+    <div class="table-wrap">
+      <table class="spec ua-table">
+        <thead><tr>
+          <th>{{ t .Lang "admin.ua_rubric" }}</th><th>{{ t .Lang "admin.ua_unique_articles" }}</th>
+          <th>{{ t .Lang "admin.ua_views" }}</th><th>{{ t .Lang "admin.ua_finished" }}</th>
+          <th>{{ t .Lang "admin.ua_time" }}</th><th>{{ t .Lang "admin.ua_last" }}</th>
+        </tr></thead>
+        <tbody>{{ range .Report.Interests }}<tr>
+          <td><b>{{ t $.Lang (printf "cat.%s" .Category) }}</b>{{ if .Subcategory }}<span class="ua-sub">{{ t $.Lang (printf "sub.%s" .Subcategory) }}</span>{{ end }}</td>
+          <td>{{ .Articles }}</td><td>{{ .Views }}</td><td>{{ .CompletedReads }}</td>
+          <td>{{ activityDuration $.Lang .EngagedSeconds }}</td><td>{{ fmtDate .LastAt }}</td>
+        </tr>{{ end }}</tbody>
+      </table>
+    </div>
+    {{ else }}<p class="ua-empty">{{ t .Lang "admin.ua_no_articles" }}</p>{{ end }}
+  </section>
+
+  <section class="ua-panel">
+    <h2>{{ t .Lang "admin.ua_courses" }}</h2>
+    {{ if .Report.Courses }}
+    <div class="table-wrap">
+      <table class="spec ua-table">
+        <thead><tr>
+          <th>{{ t .Lang "admin.ua_course" }}</th><th>{{ t .Lang "admin.ua_hub_views" }}</th>
+          <th>{{ t .Lang "admin.ua_lesson_views" }}</th><th>{{ t .Lang "admin.ua_reads" }}</th>
+          <th>{{ t .Lang "admin.ua_checks" }}</th><th>{{ t .Lang "admin.ua_passed" }}</th><th>{{ t .Lang "admin.ua_last" }}</th>
+        </tr></thead>
+        <tbody>{{ range .Report.Courses }}<tr>
+          <td><a href="/course/{{ .Slug }}?lang={{ $.Lang }}" target="_blank">{{ .Title }}</a></td>
+          <td>{{ .HubViews }}</td><td>{{ .LessonViews }}</td><td>{{ .ReadSessions }}</td>
+          <td>{{ .Checks }}</td><td>{{ .PassedLessons }}</td><td>{{ fmtDatePtr .LastAt }}</td>
+        </tr>{{ end }}</tbody>
+      </table>
+    </div>
+    {{ else }}<p class="ua-empty">{{ t .Lang "admin.ua_no_courses" }}</p>{{ end }}
+  </section>
+
+  <section class="ua-panel">
+    <h2>{{ t .Lang "admin.ua_by_day" }}</h2>
+    {{ if .Report.Days }}
+    <div class="table-wrap">
+      <table class="spec ua-table">
+        <thead><tr>
+          <th>{{ t .Lang "admin.ua_date" }}</th><th>{{ t .Lang "admin.ua_views" }}</th>
+          <th>{{ t .Lang "admin.ua_articles" }}</th><th>{{ t .Lang "admin.ua_lessons" }}</th>
+          <th>{{ t .Lang "admin.ua_finished" }}</th><th>{{ t .Lang "admin.ua_checks" }}</th><th>{{ t .Lang "admin.ua_time" }}</th>
+        </tr></thead>
+        <tbody>{{ range .Report.Days }}<tr>
+          <td><b>{{ fmtDate .Day }}</b></td><td>{{ .Views }}</td><td>{{ .ArticleViews }}</td>
+          <td>{{ .LessonViews }}</td><td>{{ .CompletedReads }}</td><td>{{ .Checks }}</td>
+          <td>{{ activityDuration $.Lang .EngagedSeconds }}</td>
+        </tr>{{ end }}</tbody>
+      </table>
+    </div>
+    {{ else }}<p class="ua-empty">{{ t .Lang "admin.ua_no_activity" }}</p>{{ end }}
+  </section>
+
+  <section class="ua-panel">
+    <h2>{{ t .Lang "admin.ua_history" }}</h2>
+    <p class="hint">{{ t .Lang "admin.ua_history_note" }}</p>
+    {{ if .Report.Entries }}
+    <div class="table-wrap ua-history">
+      <table class="spec ua-table">
+        <thead><tr>
+          <th>{{ t .Lang "admin.ua_date" }}</th><th>{{ t .Lang "admin.ua_material" }}</th>
+          <th>{{ t .Lang "admin.ua_type" }}</th><th>{{ t .Lang "admin.ua_rubric" }}</th>
+          <th>{{ t .Lang "admin.ua_lang" }}</th><th>{{ t .Lang "admin.ua_result" }}</th>
+        </tr></thead>
+        <tbody>{{ range .Report.Entries }}<tr>
+          <td class="ua-date">{{ fmtDate .Day }}<span>{{ .Clock }}</span></td>
+          <td><a href="{{ .Path }}?lang={{ .Lang }}" target="_blank">{{ .Title }}</a>{{ if .CourseTitle }}<span class="ua-sub">{{ .CourseTitle }}</span>{{ end }}</td>
+          <td>{{ t $.Lang (printf "admin.ua_kind_%s" .ContentKind) }}</td>
+          <td>{{ if .Category }}{{ t $.Lang (printf "cat.%s" .Category) }}{{ if .Subcategory }}<span class="ua-sub">{{ t $.Lang (printf "sub.%s" .Subcategory) }}</span>{{ end }}{{ else }}—{{ end }}</td>
+          <td>{{ .Lang }}</td>
+          <td class="ua-result">
+            {{ if .Views }}<span>{{ t $.Lang "admin.ua_opened" }}: {{ .Views }}</span>{{ end }}
+            {{ if .ReadSessions }}<span>{{ t $.Lang "admin.ua_depth" }}: {{ .MaxDepth }}% · {{ activityDuration $.Lang .EngagedSeconds }}{{ if .CompletedReads }} · ✓ {{ .CompletedReads }}{{ end }}</span>{{ end }}
+            {{ if .Checks }}<span>{{ t $.Lang "admin.ua_checks" }}: {{ .Checks }}{{ if .PassedChecks }} · ✓ {{ .PassedChecks }}{{ end }}</span>{{ end }}
+          </td>
+        </tr>{{ end }}</tbody>
+      </table>
+    </div>
+    {{ else }}<p class="ua-empty">{{ t .Lang "admin.ua_no_activity" }}</p>{{ end }}
+  </section>
+</main>
+{{ template "site_footer" . }}
+{{ end }}
