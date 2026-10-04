@@ -131,7 +131,13 @@ def main() -> None:
     audio = audio_by_phrase()
     OUT.mkdir(parents=True, exist_ok=True)
     for index, (stem, map_stem, localized) in enumerate(LESSONS):
-        next_entry = LESSONS[index + 1] if index + 1 < len(LESSONS) else None
+        next_entry = LESSONS[index + 1] if index + 1 < len(LESSONS) else (
+            "25-daily-routine", "25-daily-routine", {
+                "ru": {"title": "Мой обычный день: действия от утра до вечера"},
+                "kz": {"title": "Менің күн тәртібім: таңнан кешке дейінгі әрекеттер"},
+                "en": {"title": "My usual day: actions from morning to evening"},
+            },
+        )
         for lang, data in localized.items():
             suffix = "" if lang == "ru" else f"-{lang}"
             path = OUT / f"{stem}{suffix}.md"

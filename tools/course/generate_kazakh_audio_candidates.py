@@ -65,6 +65,10 @@ async def render() -> None:
         for index, row in enumerate(candidates, 1):
             source = tmpdir / f"{row['id']}.mp3"
             target = AUDIO / row["file"]
+            if target.is_file():
+                validate(target)
+                print(f"[{index:02d}/{len(candidates)}] {target.name} (kept)", flush=True)
+                continue
             await edge_tts.Communicate(row["phrase"], VOICE, rate=RATE).save(str(source))
             run([
                 "ffmpeg", "-y", "-i", str(source), "-af",
@@ -102,8 +106,9 @@ async def render() -> None:
 h1{font-size:30px}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
 article{border:1px solid #d8d8d8;border-radius:12px;padding:14px;box-shadow:0 3px 12px #0001}
 p{font-size:20px;min-height:48px}audio{width:100%}</style>
-<h1>47 новых реплик: блок «Школа и город»</h1>
-<p>Проверка произношения перед публикацией уроков 17–24. Голос Aigul, язык kk-KZ. Одобренные записи уроков 1–16 не изменялись.</p><section>"""
+<h1>__COUNT__ новых реплик: блоки 3–4</h1>
+<p>Проверка произношения перед публикацией уроков 17–32: «Школа и город» и «День и услуги». Голос Aigul, язык kk-KZ. Одобренные записи уроков 1–16 не изменялись.</p><section>"""
+        .replace("__COUNT__", str(len(candidates)))
         + "\n".join(cards)
         + "</section></html>\n",
         encoding="utf-8",

@@ -3514,5 +3514,101 @@
   "kazakh-language/24-school-city-mastery-en": [
     "kazakh-language-24-school-city-mastery",
     "en"
+  ],
+  "kazakh-language/25-daily-routine": [
+    "kazakh-language-25-daily-routine",
+    "ru"
+  ],
+  "kazakh-language/25-daily-routine-kz": [
+    "kazakh-language-25-daily-routine",
+    "kz"
+  ],
+  "kazakh-language/25-daily-routine-en": [
+    "kazakh-language-25-daily-routine",
+    "en"
+  ],
+  "kazakh-language/26-sequence-connectors": [
+    "kazakh-language-26-sequence-connectors",
+    "ru"
+  ],
+  "kazakh-language/26-sequence-connectors-kz": [
+    "kazakh-language-26-sequence-connectors",
+    "kz"
+  ],
+  "kazakh-language/26-sequence-connectors-en": [
+    "kazakh-language-26-sequence-connectors",
+    "en"
+  ],
+  "kazakh-language/27-shop-quantity-price": [
+    "kazakh-language-27-shop-quantity-price",
+    "ru"
+  ],
+  "kazakh-language/27-shop-quantity-price-kz": [
+    "kazakh-language-27-shop-quantity-price",
+    "kz"
+  ],
+  "kazakh-language/27-shop-quantity-price-en": [
+    "kazakh-language-27-shop-quantity-price",
+    "en"
+  ],
+  "kazakh-language/28-cafe-order": [
+    "kazakh-language-28-cafe-order",
+    "ru"
+  ],
+  "kazakh-language/28-cafe-order-kz": [
+    "kazakh-language-28-cafe-order",
+    "kz"
+  ],
+  "kazakh-language/28-cafe-order-en": [
+    "kazakh-language-28-cafe-order",
+    "en"
+  ],
+  "kazakh-language/29-appointment-time": [
+    "kazakh-language-29-appointment-time",
+    "ru"
+  ],
+  "kazakh-language/29-appointment-time-kz": [
+    "kazakh-language-29-appointment-time",
+    "kz"
+  ],
+  "kazakh-language/29-appointment-time-en": [
+    "kazakh-language-29-appointment-time",
+    "en"
+  ],
+  "kazakh-language/30-health-pharmacy": [
+    "kazakh-language-30-health-pharmacy",
+    "ru"
+  ],
+  "kazakh-language/30-health-pharmacy-kz": [
+    "kazakh-language-30-health-pharmacy",
+    "kz"
+  ],
+  "kazakh-language/30-health-pharmacy-en": [
+    "kazakh-language-30-health-pharmacy",
+    "en"
+  ],
+  "kazakh-language/31-service-error-documents": [
+    "kazakh-language-31-service-error-documents",
+    "ru"
+  ],
+  "kazakh-language/31-service-error-documents-kz": [
+    "kazakh-language-31-service-error-documents",
+    "kz"
+  ],
+  "kazakh-language/31-service-error-documents-en": [
+    "kazakh-language-31-service-error-documents",
+    "en"
+  ],
+  "kazakh-language/32-day-services-mastery": [
+    "kazakh-language-32-day-services-mastery",
+    "ru"
+  ],
+  "kazakh-language/32-day-services-mastery-kz": [
+    "kazakh-language-32-day-services-mastery",
+    "kz"
+  ],
+  "kazakh-language/32-day-services-mastery-en": [
+    "kazakh-language-32-day-services-mastery",
+    "en"
   ]
 }

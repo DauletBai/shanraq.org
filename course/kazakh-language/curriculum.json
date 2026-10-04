@@ -10,52 +10,447 @@
     "description": "A privacy-safe multimedia guide that grows from a first introduction into a B1 presentation and unscripted conversation."
   },
   "mastery_gate": {
-    "skills": ["listening", "speaking", "reading", "writing"],
+    "skills": [
+      "listening",
+      "speaking",
+      "reading",
+      "writing"
+    ],
     "immediate": "8/10 including an unseen transfer",
-    "delayed": [1, 7, 30],
+    "delayed": [
+      1,
+      7,
+      30
+    ],
     "certificate": false
   },
   "publication_policy": "complete-block-only",
   "blocks": [
-    {"id":"first-contact","range":"1-8","status":"ready","lexical_target":120,"release":"0.1","title_kz":"Алғашқы қарым-қатынас","title_ru":"Первый контакт","title_en":"First contact"},
-    {"id":"people-home","range":"9-16","status":"ready","lexical_target":300,"release":"0.2","title_kz":"Адамдар және үй","title_ru":"Люди и дом","title_en":"People and home"},
-    {"id":"school-city","range":"17-24","status":"audio_review","lexical_target":520,"release":"0.3","title_kz":"Мектеп және қала","title_ru":"Школа и город","title_en":"School and city"},
-    {"id":"day-services","range":"25-32","status":"planned","lexical_target":800,"release":"1.0","title_kz":"Күн және қызметтер","title_ru":"День и услуги","title_en":"Daily life and services"},
-    {"id":"space-cases","range":"33-40","status":"planned","lexical_target":1100,"release":"1.1","title_kz":"Кеңістік және септіктер","title_ru":"Пространство и падежи","title_en":"Space and cases"},
-    {"id":"action-time","range":"41-48","status":"planned","lexical_target":1400,"release":"1.2","title_kz":"Әрекет және уақыт","title_ru":"Действие во времени","title_en":"Action and time"},
-    {"id":"plans-problems","range":"49-56","status":"planned","lexical_target":1783,"release":"1.3","title_kz":"Жоспарлар және мәселелер","title_ru":"Планы и проблемы","title_en":"Plans and problems"},
-    {"id":"connected-speech","range":"57-64","status":"planned","lexical_target":1950,"release":"2.0","title_kz":"Байланысты сөз және тыңдалым","title_ru":"Связная речь и слух","title_en":"Connected speech and listening"},
-    {"id":"information-opinion","range":"65-72","status":"planned","lexical_target":2100,"release":"2.1","title_kz":"Ақпарат және пікір","title_ru":"Информация и мнение","title_en":"Information and opinion"},
-    {"id":"independent-communication","range":"73-80","status":"planned","lexical_target":2229,"release":"3.0","title_kz":"Дербес қарым-қатынас","title_ru":"Самостоятельное общение","title_en":"Independent communication"}
+    {
+      "id": "first-contact",
+      "range": "1-8",
+      "status": "ready",
+      "lexical_target": 120,
+      "release": "0.1",
+      "title_kz": "Алғашқы қарым-қатынас",
+      "title_ru": "Первый контакт",
+      "title_en": "First contact"
+    },
+    {
+      "id": "people-home",
+      "range": "9-16",
+      "status": "ready",
+      "lexical_target": 300,
+      "release": "0.2",
+      "title_kz": "Адамдар және үй",
+      "title_ru": "Люди и дом",
+      "title_en": "People and home"
+    },
+    {
+      "id": "school-city",
+      "range": "17-24",
+      "status": "audio_review",
+      "lexical_target": 520,
+      "release": "0.3",
+      "title_kz": "Мектеп және қала",
+      "title_ru": "Школа и город",
+      "title_en": "School and city"
+    },
+    {
+      "id": "day-services",
+      "range": "25-32",
+      "status": "audio_review",
+      "lexical_target": 800,
+      "release": "1.0",
+      "title_kz": "Күн және қызметтер",
+      "title_ru": "День и услуги",
+      "title_en": "Daily life and services"
+    },
+    {
+      "id": "space-cases",
+      "range": "33-40",
+      "status": "planned",
+      "lexical_target": 1100,
+      "release": "1.1",
+      "title_kz": "Кеңістік және септіктер",
+      "title_ru": "Пространство и падежи",
+      "title_en": "Space and cases"
+    },
+    {
+      "id": "action-time",
+      "range": "41-48",
+      "status": "planned",
+      "lexical_target": 1400,
+      "release": "1.2",
+      "title_kz": "Әрекет және уақыт",
+      "title_ru": "Действие во времени",
+      "title_en": "Action and time"
+    },
+    {
+      "id": "plans-problems",
+      "range": "49-56",
+      "status": "planned",
+      "lexical_target": 1783,
+      "release": "1.3",
+      "title_kz": "Жоспарлар және мәселелер",
+      "title_ru": "Планы и проблемы",
+      "title_en": "Plans and problems"
+    },
+    {
+      "id": "connected-speech",
+      "range": "57-64",
+      "status": "planned",
+      "lexical_target": 1950,
+      "release": "2.0",
+      "title_kz": "Байланысты сөз және тыңдалым",
+      "title_ru": "Связная речь и слух",
+      "title_en": "Connected speech and listening"
+    },
+    {
+      "id": "information-opinion",
+      "range": "65-72",
+      "status": "planned",
+      "lexical_target": 2100,
+      "release": "2.1",
+      "title_kz": "Ақпарат және пікір",
+      "title_ru": "Информация и мнение",
+      "title_en": "Information and opinion"
+    },
+    {
+      "id": "independent-communication",
+      "range": "73-80",
+      "status": "planned",
+      "lexical_target": 2229,
+      "release": "3.0",
+      "title_kz": "Дербес қарым-қатынас",
+      "title_ru": "Самостоятельное общение",
+      "title_en": "Independent communication"
+    }
   ],
   "first_block_lessons": [
-    {"number":1,"id":"map-first-conversation","prerequisites":[],"title_kz":"Курс картасы және әңгіменің алғашқы 30 секунды","title_ru":"Карта курса и первые 30 секунд разговора","title_en":"The course map and the first 30 seconds of conversation"},
-    {"number":2,"id":"nine-letters-sounds","prerequisites":["map-first-conversation"],"title_kz":"Тоғыз ерекше әріп: көру, есту, айту","title_ru":"Девять особых букв: увидеть, услышать, произнести","title_en":"Nine distinctive letters: see, hear, and say them"},
-    {"number":3,"id":"vowel-harmony","prerequisites":["nine-letters-sounds"],"title_kz":"Үндестік заңы: екі дыбыстық отбасы","title_ru":"Гармония гласных: две звуковые семьи","title_en":"Vowel harmony: two sound families"},
-    {"number":4,"id":"sentence-skeleton","prerequisites":["vowel-harmony"],"title_kz":"Қазақ сөйлемінің қаңқасы","title_ru":"Скелет казахского предложения","title_en":"The skeleton of a Kazakh sentence"},
-    {"number":5,"id":"men-introduction","prerequisites":["sentence-skeleton"],"title_kz":"«Мен…»: өзіңді таныстыру","title_ru":"«Мен…»: представляем себя","title_en":"Men…: introducing yourself"},
-    {"number":6,"id":"questions-answers","prerequisites":["men-introduction"],"title_kz":"Сұрақ пен жауап: кім, не, қайда","title_ru":"Вопрос и ответ: кто, что, где","title_en":"Questions and answers: who, what, and where"},
-    {"number":7,"id":"repair-politeness","prerequisites":["questions-answers"],"title_kz":"Әңгімені түзету және сыпайылық","title_ru":"Как восстановить разговор и говорить вежливо","title_en":"Repairing a conversation and speaking politely"},
-    {"number":8,"id":"first-contact-mastery","prerequisites":["repair-politeness"],"title_kz":"Бақылау нүктесі: алғашқы танысу","title_ru":"Контрольная точка: первое знакомство","title_en":"Mastery checkpoint: a first meeting"}
+    {
+      "number": 1,
+      "id": "map-first-conversation",
+      "prerequisites": [],
+      "title_kz": "Курс картасы және әңгіменің алғашқы 30 секунды",
+      "title_ru": "Карта курса и первые 30 секунд разговора",
+      "title_en": "The course map and the first 30 seconds of conversation"
+    },
+    {
+      "number": 2,
+      "id": "nine-letters-sounds",
+      "prerequisites": [
+        "map-first-conversation"
+      ],
+      "title_kz": "Тоғыз ерекше әріп: көру, есту, айту",
+      "title_ru": "Девять особых букв: увидеть, услышать, произнести",
+      "title_en": "Nine distinctive letters: see, hear, and say them"
+    },
+    {
+      "number": 3,
+      "id": "vowel-harmony",
+      "prerequisites": [
+        "nine-letters-sounds"
+      ],
+      "title_kz": "Үндестік заңы: екі дыбыстық отбасы",
+      "title_ru": "Гармония гласных: две звуковые семьи",
+      "title_en": "Vowel harmony: two sound families"
+    },
+    {
+      "number": 4,
+      "id": "sentence-skeleton",
+      "prerequisites": [
+        "vowel-harmony"
+      ],
+      "title_kz": "Қазақ сөйлемінің қаңқасы",
+      "title_ru": "Скелет казахского предложения",
+      "title_en": "The skeleton of a Kazakh sentence"
+    },
+    {
+      "number": 5,
+      "id": "men-introduction",
+      "prerequisites": [
+        "sentence-skeleton"
+      ],
+      "title_kz": "«Мен…»: өзіңді таныстыру",
+      "title_ru": "«Мен…»: представляем себя",
+      "title_en": "Men…: introducing yourself"
+    },
+    {
+      "number": 6,
+      "id": "questions-answers",
+      "prerequisites": [
+        "men-introduction"
+      ],
+      "title_kz": "Сұрақ пен жауап: кім, не, қайда",
+      "title_ru": "Вопрос и ответ: кто, что, где",
+      "title_en": "Questions and answers: who, what, and where"
+    },
+    {
+      "number": 7,
+      "id": "repair-politeness",
+      "prerequisites": [
+        "questions-answers"
+      ],
+      "title_kz": "Әңгімені түзету және сыпайылық",
+      "title_ru": "Как восстановить разговор и говорить вежливо",
+      "title_en": "Repairing a conversation and speaking politely"
+    },
+    {
+      "number": 8,
+      "id": "first-contact-mastery",
+      "prerequisites": [
+        "repair-politeness"
+      ],
+      "title_kz": "Бақылау нүктесі: алғашқы танысу",
+      "title_ru": "Контрольная точка: первое знакомство",
+      "title_en": "Mastery checkpoint: a first meeting"
+    }
   ],
   "second_block_lessons": [
-    {"number":9,"id":"short-vowels-y-i","prerequisites":["first-contact-mastery"],"title_kz":"Ы мен І: бәсең дыбыс — дыбыссыз әріп емес","title_ru":"Ы и І: тихий звук не означает немую букву","title_en":"Ы and І: a quiet sound is not a silent letter"},
-    {"number":10,"id":"family-who","prerequisites":["short-vowels-y-i"],"title_kz":"Бұл кім? Отбасы туралы дәл әрі әдеппен сөйлесеміз","title_ru":"Это кто? Говорим о семье точно и бережно","title_en":"Бұл кім? Talking about family accurately and respectfully"},
-    {"number":11,"id":"belonging-possessives","prerequisites":["family-who"],"title_kz":"Бұл кімнің үйі? Меншіктілік байланысын құрамыз","title_ru":"Чей это дом? Принадлежность без отдельного глагола «иметь»","title_en":"Whose home is it? Building possession as a two-sided link"},
-    {"number":12,"id":"plural-families","prerequisites":["belonging-possessives"],"title_kz":"Біреу ме, бірнешеу ме: көптік жалғауын жүйемен таңдаймыз","title_ru":"Один или несколько: шесть окончаний множественного числа без зубрёжки","title_en":"One or several: choosing six plural endings as one system"},
-    {"number":13,"id":"numbers-age","prerequisites":["plural-families"],"title_kz":"Адамдар мен бөлмелерді санаймыз: сан, жас және қысқа ырғақ","title_ru":"Считаем людей и комнаты: число, возраст и короткий ритм","title_en":"Counting people and rooms: numbers, age, and a short rhythm"},
-    {"number":14,"id":"home-locative","prerequisites":["numbers-age"],"title_kz":"Зат қайда тұр? Үй және -да/-де/-та/-те жалғаулары","title_ru":"Где находится предмет? Дом и окончания -да/-де/-та/-те","title_en":"Where is it? The home and -да/-де/-та/-те"},
-    {"number":15,"id":"there-is-have","prerequisites":["home-locative"],"title_kz":"Үйде не бар? «Бар» мен «жоқ» арқылы табиғи айтамыз","title_ru":"Что есть дома? Бар и жоқ вместо дословного «иметь»","title_en":"What is in the home? Бар and жоқ instead of a translated ‘have’"},
-    {"number":16,"id":"people-home-mastery","prerequisites":["there-is-have"],"title_kz":"Бақылау нүктесі: адамдар мен үйді дайын мәтінсіз сипаттау","title_ru":"Контрольная точка: люди и дом без готового текста","title_en":"Mastery checkpoint: people and home without a script"}
+    {
+      "number": 9,
+      "id": "short-vowels-y-i",
+      "prerequisites": [
+        "first-contact-mastery"
+      ],
+      "title_kz": "Ы мен І: бәсең дыбыс — дыбыссыз әріп емес",
+      "title_ru": "Ы и І: тихий звук не означает немую букву",
+      "title_en": "Ы and І: a quiet sound is not a silent letter"
+    },
+    {
+      "number": 10,
+      "id": "family-who",
+      "prerequisites": [
+        "short-vowels-y-i"
+      ],
+      "title_kz": "Бұл кім? Отбасы туралы дәл әрі әдеппен сөйлесеміз",
+      "title_ru": "Это кто? Говорим о семье точно и бережно",
+      "title_en": "Бұл кім? Talking about family accurately and respectfully"
+    },
+    {
+      "number": 11,
+      "id": "belonging-possessives",
+      "prerequisites": [
+        "family-who"
+      ],
+      "title_kz": "Бұл кімнің үйі? Меншіктілік байланысын құрамыз",
+      "title_ru": "Чей это дом? Принадлежность без отдельного глагола «иметь»",
+      "title_en": "Whose home is it? Building possession as a two-sided link"
+    },
+    {
+      "number": 12,
+      "id": "plural-families",
+      "prerequisites": [
+        "belonging-possessives"
+      ],
+      "title_kz": "Біреу ме, бірнешеу ме: көптік жалғауын жүйемен таңдаймыз",
+      "title_ru": "Один или несколько: шесть окончаний множественного числа без зубрёжки",
+      "title_en": "One or several: choosing six plural endings as one system"
+    },
+    {
+      "number": 13,
+      "id": "numbers-age",
+      "prerequisites": [
+        "plural-families"
+      ],
+      "title_kz": "Адамдар мен бөлмелерді санаймыз: сан, жас және қысқа ырғақ",
+      "title_ru": "Считаем людей и комнаты: число, возраст и короткий ритм",
+      "title_en": "Counting people and rooms: numbers, age, and a short rhythm"
+    },
+    {
+      "number": 14,
+      "id": "home-locative",
+      "prerequisites": [
+        "numbers-age"
+      ],
+      "title_kz": "Зат қайда тұр? Үй және -да/-де/-та/-те жалғаулары",
+      "title_ru": "Где находится предмет? Дом и окончания -да/-де/-та/-те",
+      "title_en": "Where is it? The home and -да/-де/-та/-те"
+    },
+    {
+      "number": 15,
+      "id": "there-is-have",
+      "prerequisites": [
+        "home-locative"
+      ],
+      "title_kz": "Үйде не бар? «Бар» мен «жоқ» арқылы табиғи айтамыз",
+      "title_ru": "Что есть дома? Бар и жоқ вместо дословного «иметь»",
+      "title_en": "What is in the home? Бар and жоқ instead of a translated ‘have’"
+    },
+    {
+      "number": 16,
+      "id": "people-home-mastery",
+      "prerequisites": [
+        "there-is-have"
+      ],
+      "title_kz": "Бақылау нүктесі: адамдар мен үйді дайын мәтінсіз сипаттау",
+      "title_ru": "Контрольная точка: люди и дом без готового текста",
+      "title_en": "Mastery checkpoint: people and home without a script"
+    }
   ],
   "third_block_lessons": [
-    {"number":17,"id":"school-map","prerequisites":["people-home-mastery"],"title_kz":"Мектеп карта ретінде: орындар және анық координаттар","title_ru":"Школа как карта: места и понятные координаты","title_en":"School as a map: places and clear coordinates"},
-    {"number":18,"id":"days-subjects","prerequisites":["school-map"],"title_kz":"Апта және пәндер: кестені мағынамен оқимыз","title_ru":"Неделя и школьные предметы: читаем расписание по смыслу","title_en":"Week and school subjects: reading a timetable by meaning"},
-    {"number":19,"id":"clock-time","prerequisites":["days-subjects"],"title_kz":"Сағат неше және сабақ қашан басталады: уақытты шатастырмаймыз","title_ru":"Который час и когда начинается урок: время без путаницы","title_en":"What time is it, and when does class begin?"},
-    {"number":20,"id":"directions-imperative","prerequisites":["clock-time"],"title_kz":"Тура, оңға, солға: адамды бағытпен әдепті жүргіземіз","title_ru":"Прямо, направо, налево: вежливо ведём человека по маршруту","title_en":"Straight, right, left: guiding someone politely"},
-    {"number":21,"id":"from-to-route","prerequisites":["directions-imperative"],"title_kz":"Қайдан, қайда және қай жерге дейін: толық бағыт құрамыз","title_ru":"Откуда, куда и до какого места: собираем весь путь","title_en":"From where, to where, and as far as where?"},
-    {"number":22,"id":"city-transport","prerequisites":["from-to-route"],"title_kz":"Қалада автобуспен және жаяу: қозғалыс тәсілін таңдаймыз","title_ru":"По городу на автобусе и пешком: выбираем способ движения","title_en":"Across the city by bus and on foot"},
-    {"number":23,"id":"rules-permission","prerequisites":["city-transport"],"title_kz":"Болады, болмайды және керек: ережені қорқытпай түсінеміз","title_ru":"Можно, нельзя и нужно: понимаем правила без угроз и зубрёжки","title_en":"May, must not, and need to: understanding rules"},
-    {"number":24,"id":"school-city-mastery","prerequisites":["rules-permission"],"title_kz":"Бақылау нүктесі: дайын мәтінсіз оқу күні және қала бағыты","title_ru":"Контрольная точка: учебный день и городской маршрут без сценария","title_en":"Mastery checkpoint: a school day and city route without a script"}
+    {
+      "number": 17,
+      "id": "school-map",
+      "prerequisites": [
+        "people-home-mastery"
+      ],
+      "title_kz": "Мектеп карта ретінде: орындар және анық координаттар",
+      "title_ru": "Школа как карта: места и понятные координаты",
+      "title_en": "School as a map: places and clear coordinates"
+    },
+    {
+      "number": 18,
+      "id": "days-subjects",
+      "prerequisites": [
+        "school-map"
+      ],
+      "title_kz": "Апта және пәндер: кестені мағынамен оқимыз",
+      "title_ru": "Неделя и школьные предметы: читаем расписание по смыслу",
+      "title_en": "Week and school subjects: reading a timetable by meaning"
+    },
+    {
+      "number": 19,
+      "id": "clock-time",
+      "prerequisites": [
+        "days-subjects"
+      ],
+      "title_kz": "Сағат неше және сабақ қашан басталады: уақытты шатастырмаймыз",
+      "title_ru": "Который час и когда начинается урок: время без путаницы",
+      "title_en": "What time is it, and when does class begin?"
+    },
+    {
+      "number": 20,
+      "id": "directions-imperative",
+      "prerequisites": [
+        "clock-time"
+      ],
+      "title_kz": "Тура, оңға, солға: адамды бағытпен әдепті жүргіземіз",
+      "title_ru": "Прямо, направо, налево: вежливо ведём человека по маршруту",
+      "title_en": "Straight, right, left: guiding someone politely"
+    },
+    {
+      "number": 21,
+      "id": "from-to-route",
+      "prerequisites": [
+        "directions-imperative"
+      ],
+      "title_kz": "Қайдан, қайда және қай жерге дейін: толық бағыт құрамыз",
+      "title_ru": "Откуда, куда и до какого места: собираем весь путь",
+      "title_en": "From where, to where, and as far as where?"
+    },
+    {
+      "number": 22,
+      "id": "city-transport",
+      "prerequisites": [
+        "from-to-route"
+      ],
+      "title_kz": "Қалада автобуспен және жаяу: қозғалыс тәсілін таңдаймыз",
+      "title_ru": "По городу на автобусе и пешком: выбираем способ движения",
+      "title_en": "Across the city by bus and on foot"
+    },
+    {
+      "number": 23,
+      "id": "rules-permission",
+      "prerequisites": [
+        "city-transport"
+      ],
+      "title_kz": "Болады, болмайды және керек: ережені қорқытпай түсінеміз",
+      "title_ru": "Можно, нельзя и нужно: понимаем правила без угроз и зубрёжки",
+      "title_en": "May, must not, and need to: understanding rules"
+    },
+    {
+      "number": 24,
+      "id": "school-city-mastery",
+      "prerequisites": [
+        "rules-permission"
+      ],
+      "title_kz": "Бақылау нүктесі: дайын мәтінсіз оқу күні және қала бағыты",
+      "title_ru": "Контрольная точка: учебный день и городской маршрут без сценария",
+      "title_en": "Mastery checkpoint: a school day and city route without a script"
+    }
+  ],
+  "fourth_block_lessons": [
+    {
+      "number": 25,
+      "id": "daily-routine",
+      "prerequisites": [
+        "school-city-mastery"
+      ],
+      "title_kz": "Менің күн тәртібім: таңнан кешке дейінгі әрекеттер",
+      "title_ru": "Мой обычный день: действия от утра до вечера",
+      "title_en": "My usual day: actions from morning to evening"
+    },
+    {
+      "number": 26,
+      "id": "sequence-connectors",
+      "prerequisites": [
+        "daily-routine"
+      ],
+      "title_kz": "Алдымен, кейін, соңында: тізімді әңгімеге айналдырамыз",
+      "title_ru": "Сначала, потом, наконец: превращаем список в рассказ",
+      "title_en": "First, then, finally: turning a list into a story"
+    },
+    {
+      "number": 27,
+      "id": "shop-quantity-price",
+      "prerequisites": [
+        "sequence-connectors"
+      ],
+      "title_kz": "Дүкенде: тауар, мөлшер, баға және сатып алуды тексеру",
+      "title_ru": "В магазине: товар, количество, цена и проверка покупки",
+      "title_en": "At a shop: product, quantity, price, and purchase check"
+    },
+    {
+      "number": 28,
+      "id": "cafe-order",
+      "prerequisites": [
+        "shop-quantity-price"
+      ],
+      "title_kz": "Кафеде: болжамсыз сыпайы тапсырыс",
+      "title_ru": "В кафе: вежливый заказ без догадок",
+      "title_en": "At a café: a polite order without guessing"
+    },
+    {
+      "number": 29,
+      "id": "appointment-time",
+      "prerequisites": [
+        "cafe-order"
+      ],
+      "title_kz": "Қызметке жазылу: уақытты таңдау және растау",
+      "title_ru": "Запись на услугу: выбираем и подтверждаем время",
+      "title_en": "Booking a service: choosing and confirming a time"
+    },
+    {
+      "number": 30,
+      "id": "health-pharmacy",
+      "prerequisites": [
+        "appointment-time"
+      ],
+      "title_kz": "Емханада және дәріханада: қажеттілікті дәл айту",
+      "title_ru": "В поликлинике и аптеке: точно описать потребность",
+      "title_en": "At a clinic or pharmacy: describing a need precisely"
+    },
+    {
+      "number": 31,
+      "id": "service-error-documents",
+      "prerequisites": [
+        "health-pharmacy"
+      ],
+      "title_kz": "Құжат және қызмет қатесі: сабырмен нақтылау және түзету",
+      "title_ru": "Документы и ошибка в услуге: спокойно уточнить и исправить",
+      "title_en": "Documents and a service error: clarify and correct it calmly"
+    },
+    {
+      "number": 32,
+      "id": "day-services-mastery",
+      "prerequisites": [
+        "service-error-documents"
+      ],
+      "title_kz": "A1 бақылау нүктесі: толық бір күнді дайын мәтінсіз өткізу",
+      "title_ru": "Контрольная точка A1: прожить целый день без сценария",
+      "title_en": "A1 mastery checkpoint: living a whole day without a script"
+    }
   ]
 }

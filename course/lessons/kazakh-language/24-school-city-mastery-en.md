@@ -74,4 +74,4 @@ Assemble version 0.3: a five-place school, a weekly table, three clock faces, sc
 - After seven days work with a new route or timetable and meet at least 7 of 10 criteria.
 - After thirty days use the construction in a safe real setting and mark the support you no longer need.
 
-[Course contents](/course/kazakh-language?lang=en)
+[Next lesson: My usual day: actions from morning to evening](/read/kazakh-language-25-daily-routine?lang=en)

@@ -13,6 +13,9 @@ on:
       - 'tools/course/generate_kazakh_language_people_home_maps.py'
       - 'tools/course/generate_kazakh_language_school_city.py'
       - 'tools/course/generate_kazakh_language_school_city_maps.py'
+      - 'tools/course/generate_kazakh_language_day_services.py'
+      - 'tools/course/generate_kazakh_language_day_services_maps.py'
+      - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
       - 'tools/course/prepare_kazakh_language_audio.py'
       - 'tools/course/test_kazakh_language_release.py'
@@ -30,6 +33,9 @@ on:
       - 'tools/course/generate_kazakh_language_people_home_maps.py'
       - 'tools/course/generate_kazakh_language_school_city.py'
       - 'tools/course/generate_kazakh_language_school_city_maps.py'
+      - 'tools/course/generate_kazakh_language_day_services.py'
+      - 'tools/course/generate_kazakh_language_day_services_maps.py'
+      - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
       - 'tools/course/prepare_kazakh_language_audio.py'
       - 'tools/course/test_kazakh_language_release.py'
@@ -49,6 +55,8 @@ jobs:
           python3 tools/course/generate_kazakh_language_people_home_maps.py
           python3 tools/course/generate_kazakh_language_school_city.py
           python3 tools/course/generate_kazakh_language_school_city_maps.py
+          python3 tools/course/generate_kazakh_language_day_services.py
+          python3 tools/course/generate_kazakh_language_day_services_maps.py
       - name: Verify generated files are committed
         run: git diff --exit-code
       - name: Validate completed blocks

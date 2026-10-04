@@ -1464,6 +1464,534 @@
         "24-school-city-mastery-kz.md",
         "24-school-city-mastery.md"
       ]
+    },
+    {
+      "id": "kz-132",
+      "phrase": "Мен сағат жетіде тұрамын.",
+      "file": "kz-132.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "25-daily-routine-en.md",
+        "25-daily-routine-kz.md",
+        "25-daily-routine.md"
+      ]
+    },
+    {
+      "id": "kz-133",
+      "phrase": "Таңертең бетімді жуамын.",
+      "file": "kz-133.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "25-daily-routine-en.md",
+        "25-daily-routine-kz.md",
+        "25-daily-routine.md"
+      ]
+    },
+    {
+      "id": "kz-134",
+      "phrase": "Мен таңғы ас ішемін.",
+      "file": "kz-134.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "25-daily-routine-en.md",
+        "25-daily-routine-kz.md",
+        "25-daily-routine.md"
+      ]
+    },
+    {
+      "id": "kz-135",
+      "phrase": "Сағат сегізде үйден шығамын.",
+      "file": "kz-135.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "25-daily-routine-en.md",
+        "25-daily-routine-kz.md",
+        "25-daily-routine.md"
+      ]
+    },
+    {
+      "id": "kz-136",
+      "phrase": "Күндіз оқимын және жұмыс істеймін.",
+      "file": "kz-136.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "25-daily-routine-en.md",
+        "25-daily-routine-kz.md",
+        "25-daily-routine.md"
+      ]
+    },
+    {
+      "id": "kz-137",
+      "phrase": "Кешке үйге қайтамын.",
+      "file": "kz-137.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "25-daily-routine-en.md",
+        "25-daily-routine-kz.md",
+        "25-daily-routine.md"
+      ]
+    },
+    {
+      "id": "kz-138",
+      "phrase": "Алдымен мен оянамын.",
+      "file": "kz-138.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "26-sequence-connectors-en.md",
+        "26-sequence-connectors-kz.md",
+        "26-sequence-connectors.md"
+      ]
+    },
+    {
+      "id": "kz-139",
+      "phrase": "Содан кейін төсегімді жинаймын.",
+      "file": "kz-139.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "26-sequence-connectors-en.md",
+        "26-sequence-connectors-kz.md",
+        "26-sequence-connectors.md"
+      ]
+    },
+    {
+      "id": "kz-140",
+      "phrase": "Одан соң киінемін.",
+      "file": "kz-140.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "26-sequence-connectors-en.md",
+        "26-sequence-connectors-kz.md",
+        "26-sequence-connectors.md"
+      ]
+    },
+    {
+      "id": "kz-141",
+      "phrase": "Сосын сөмкемді тексеремін.",
+      "file": "kz-141.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "26-sequence-connectors-en.md",
+        "26-sequence-connectors-kz.md",
+        "26-sequence-connectors.md"
+      ]
+    },
+    {
+      "id": "kz-142",
+      "phrase": "Соңында үйден шығамын.",
+      "file": "kz-142.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "26-sequence-connectors-en.md",
+        "26-sequence-connectors-kz.md",
+        "26-sequence-connectors.md"
+      ]
+    },
+    {
+      "id": "kz-143",
+      "phrase": "Бірінші не істейсіз?",
+      "file": "kz-143.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "26-sequence-connectors-en.md",
+        "26-sequence-connectors-kz.md",
+        "26-sequence-connectors.md"
+      ]
+    },
+    {
+      "id": "kz-144",
+      "phrase": "Маған бір бөлке нан беріңізші.",
+      "file": "kz-144.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "27-shop-quantity-price-en.md",
+        "27-shop-quantity-price-kz.md",
+        "27-shop-quantity-price.md"
+      ]
+    },
+    {
+      "id": "kz-145",
+      "phrase": "Бір келі алма керек.",
+      "file": "kz-145.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "27-shop-quantity-price-en.md",
+        "27-shop-quantity-price-kz.md",
+        "27-shop-quantity-price.md"
+      ]
+    },
+    {
+      "id": "kz-146",
+      "phrase": "Бұл қанша тұрады?",
+      "file": "kz-146.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "27-shop-quantity-price-en.md",
+        "27-shop-quantity-price-kz.md",
+        "27-shop-quantity-price.md"
+      ]
+    },
+    {
+      "id": "kz-147",
+      "phrase": "Ол сегіз жүз теңге тұрады.",
+      "file": "kz-147.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "27-shop-quantity-price-en.md",
+        "27-shop-quantity-price-kz.md",
+        "27-shop-quantity-price.md"
+      ]
+    },
+    {
+      "id": "kz-148",
+      "phrase": "Барлығы қанша болды?",
+      "file": "kz-148.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "27-shop-quantity-price-en.md",
+        "27-shop-quantity-price-kz.md",
+        "27-shop-quantity-price.md"
+      ]
+    },
+    {
+      "id": "kz-149",
+      "phrase": "Чекті беріңізші.",
+      "file": "kz-149.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "27-shop-quantity-price-en.md",
+        "27-shop-quantity-price-kz.md",
+        "27-shop-quantity-price.md"
+      ]
+    },
+    {
+      "id": "kz-150",
+      "phrase": "Мәзірді беріңізші.",
+      "file": "kz-150.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "28-cafe-order-en.md",
+        "28-cafe-order-kz.md",
+        "28-cafe-order.md"
+      ]
+    },
+    {
+      "id": "kz-151",
+      "phrase": "Бұл тағамның ішінде не бар?",
+      "file": "kz-151.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "28-cafe-order-en.md",
+        "28-cafe-order-kz.md",
+        "28-cafe-order.md"
+      ]
+    },
+    {
+      "id": "kz-152",
+      "phrase": "Маған көкөніс салатын беріңізші.",
+      "file": "kz-152.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "28-cafe-order-en.md",
+        "28-cafe-order-kz.md",
+        "28-cafe-order.md"
+      ]
+    },
+    {
+      "id": "kz-153",
+      "phrase": "Шайға қант қоспаңызшы.",
+      "file": "kz-153.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "28-cafe-order-en.md",
+        "28-cafe-order-kz.md",
+        "28-cafe-order.md"
+      ]
+    },
+    {
+      "id": "kz-154",
+      "phrase": "Тапсырысым дайын ба?",
+      "file": "kz-154.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "28-cafe-order-en.md",
+        "28-cafe-order-kz.md",
+        "28-cafe-order.md"
+      ]
+    },
+    {
+      "id": "kz-155",
+      "phrase": "Дәмді болды, рақмет.",
+      "file": "kz-155.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "28-cafe-order-en.md",
+        "28-cafe-order-kz.md",
+        "28-cafe-order.md"
+      ]
+    },
+    {
+      "id": "kz-156",
+      "phrase": "Мен қабылдауға жазылғым келеді.",
+      "file": "kz-156.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "29-appointment-time-en.md",
+        "29-appointment-time-kz.md",
+        "29-appointment-time.md"
+      ]
+    },
+    {
+      "id": "kz-157",
+      "phrase": "Бос уақыт бар ма?",
+      "file": "kz-157.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "29-appointment-time-en.md",
+        "29-appointment-time-kz.md",
+        "29-appointment-time.md"
+      ]
+    },
+    {
+      "id": "kz-158",
+      "phrase": "Сейсенбі күні сағат үшке бола ма?",
+      "file": "kz-158.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "29-appointment-time-en.md",
+        "29-appointment-time-kz.md",
+        "29-appointment-time.md"
+      ]
+    },
+    {
+      "id": "kz-159",
+      "phrase": "Иә, сағат үш бос.",
+      "file": "kz-159.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "29-appointment-time-en.md",
+        "29-appointment-time-kz.md",
+        "29-appointment-time.md"
+      ]
+    },
+    {
+      "id": "kz-160",
+      "phrase": "Менің атым — Аян.",
+      "file": "kz-160.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "29-appointment-time-en.md",
+        "29-appointment-time-kz.md",
+        "29-appointment-time.md"
+      ]
+    },
+    {
+      "id": "kz-161",
+      "phrase": "Сейсенбі, сағат үш, дұрыс па?",
+      "file": "kz-161.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "29-appointment-time-en.md",
+        "29-appointment-time-kz.md",
+        "29-appointment-time.md"
+      ]
+    },
+    {
+      "id": "kz-162",
+      "phrase": "Өзімді нашар сезініп тұрмын.",
+      "file": "kz-162.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "30-health-pharmacy-en.md",
+        "30-health-pharmacy-kz.md",
+        "30-health-pharmacy.md"
+      ]
+    },
+    {
+      "id": "kz-163",
+      "phrase": "Тамағым ауырып тұр.",
+      "file": "kz-163.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "30-health-pharmacy-en.md",
+        "30-health-pharmacy-kz.md",
+        "30-health-pharmacy.md"
+      ]
+    },
+    {
+      "id": "kz-164",
+      "phrase": "Дене қызуым бар.",
+      "file": "kz-164.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "30-health-pharmacy-en.md",
+        "30-health-pharmacy-kz.md",
+        "30-health-pharmacy.md"
+      ]
+    },
+    {
+      "id": "kz-165",
+      "phrase": "Бұл қашан басталды?",
+      "file": "kz-165.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "30-health-pharmacy-en.md",
+        "30-health-pharmacy-kz.md",
+        "30-health-pharmacy.md"
+      ]
+    },
+    {
+      "id": "kz-166",
+      "phrase": "Кеше кешке басталды.",
+      "file": "kz-166.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "30-health-pharmacy-en.md",
+        "30-health-pharmacy-kz.md",
+        "30-health-pharmacy.md"
+      ]
+    },
+    {
+      "id": "kz-167",
+      "phrase": "Маған дәрігердің көмегі керек.",
+      "file": "kz-167.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "30-health-pharmacy-en.md",
+        "30-health-pharmacy-kz.md",
+        "30-health-pharmacy.md"
+      ]
+    },
+    {
+      "id": "kz-168",
+      "phrase": "Маған өтініш бланкісі керек.",
+      "file": "kz-168.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "31-service-error-documents-en.md",
+        "31-service-error-documents-kz.md",
+        "31-service-error-documents.md"
+      ]
+    },
+    {
+      "id": "kz-169",
+      "phrase": "Мына жерді қалай толтырамын?",
+      "file": "kz-169.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "31-service-error-documents-en.md",
+        "31-service-error-documents-kz.md",
+        "31-service-error-documents.md"
+      ]
+    },
+    {
+      "id": "kz-170",
+      "phrase": "Құжатта қате бар.",
+      "file": "kz-170.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "31-service-error-documents-en.md",
+        "31-service-error-documents-kz.md",
+        "31-service-error-documents.md"
+      ]
+    },
+    {
+      "id": "kz-171",
+      "phrase": "Менің тегім дұрыс жазылмаған.",
+      "file": "kz-171.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "31-service-error-documents-en.md",
+        "31-service-error-documents-kz.md",
+        "31-service-error-documents.md"
+      ]
+    },
+    {
+      "id": "kz-172",
+      "phrase": "Түзетуге бола ма?",
+      "file": "kz-172.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "31-service-error-documents-en.md",
+        "31-service-error-documents-kz.md",
+        "31-service-error-documents.md"
+      ]
+    },
+    {
+      "id": "kz-173",
+      "phrase": "Дайын болғанда хабарлаңызшы.",
+      "file": "kz-173.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "31-service-error-documents-en.md",
+        "31-service-error-documents-kz.md",
+        "31-service-error-documents.md"
+      ]
+    },
+    {
+      "id": "kz-174",
+      "phrase": "Алдымен күн тәртібімді тексеремін.",
+      "file": "kz-174.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "32-day-services-mastery-en.md",
+        "32-day-services-mastery-kz.md",
+        "32-day-services-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-175",
+      "phrase": "Дүкеннен бір келі алма аламын.",
+      "file": "kz-175.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "32-day-services-mastery-en.md",
+        "32-day-services-mastery-kz.md",
+        "32-day-services-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-176",
+      "phrase": "Кафеде тағамның құрамын сұраймын.",
+      "file": "kz-176.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "32-day-services-mastery-en.md",
+        "32-day-services-mastery-kz.md",
+        "32-day-services-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-177",
+      "phrase": "Сағат үшке жазыламын.",
+      "file": "kz-177.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "32-day-services-mastery-en.md",
+        "32-day-services-mastery-kz.md",
+        "32-day-services-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-178",
+      "phrase": "Қажет болса, маманнан көмек сұраймын.",
+      "file": "kz-178.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "32-day-services-mastery-en.md",
+        "32-day-services-mastery-kz.md",
+        "32-day-services-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-179",
+      "phrase": "Соңында чекті тексеремін.",
+      "file": "kz-179.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "32-day-services-mastery-en.md",
+        "32-day-services-mastery-kz.md",
+        "32-day-services-mastery.md"
+      ]
     }
   ],
   "candidate": {
