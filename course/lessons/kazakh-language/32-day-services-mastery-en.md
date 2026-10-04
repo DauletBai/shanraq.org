@@ -74,4 +74,4 @@ Assemble My World 1.0: a safe daily timeline, four connectors, a shop list with 
 - After seven days complete a new everyday task and meet at least 7 of 10 criteria.
 - After thirty days use the construction in a safe real setting and mark the support you no longer need.
 
-[Course contents](/course/kazakh-language?lang=en)
+[Next lesson: Seven roles instead of seven rows: the complete case map](/read/kazakh-language-33-case-role-map?lang=en)

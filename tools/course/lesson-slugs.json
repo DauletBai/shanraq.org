@@ -3610,5 +3610,101 @@
   "kazakh-language/32-day-services-mastery-en": [
     "kazakh-language-32-day-services-mastery",
     "en"
+  ],
+  "kazakh-language/33-case-role-map": [
+    "kazakh-language-33-case-role-map",
+    "ru"
+  ],
+  "kazakh-language/33-case-role-map-kz": [
+    "kazakh-language-33-case-role-map",
+    "kz"
+  ],
+  "kazakh-language/33-case-role-map-en": [
+    "kazakh-language-33-case-role-map",
+    "en"
+  ],
+  "kazakh-language/34-genitive-relationship": [
+    "kazakh-language-34-genitive-relationship",
+    "ru"
+  ],
+  "kazakh-language/34-genitive-relationship-kz": [
+    "kazakh-language-34-genitive-relationship",
+    "kz"
+  ],
+  "kazakh-language/34-genitive-relationship-en": [
+    "kazakh-language-34-genitive-relationship",
+    "en"
+  ],
+  "kazakh-language/35-accusative-specific-object": [
+    "kazakh-language-35-accusative-specific-object",
+    "ru"
+  ],
+  "kazakh-language/35-accusative-specific-object-kz": [
+    "kazakh-language-35-accusative-specific-object",
+    "kz"
+  ],
+  "kazakh-language/35-accusative-specific-object-en": [
+    "kazakh-language-35-accusative-specific-object",
+    "en"
+  ],
+  "kazakh-language/36-dative-goal-recipient": [
+    "kazakh-language-36-dative-goal-recipient",
+    "ru"
+  ],
+  "kazakh-language/36-dative-goal-recipient-kz": [
+    "kazakh-language-36-dative-goal-recipient",
+    "kz"
+  ],
+  "kazakh-language/36-dative-goal-recipient-en": [
+    "kazakh-language-36-dative-goal-recipient",
+    "en"
+  ],
+  "kazakh-language/37-locative-place-time": [
+    "kazakh-language-37-locative-place-time",
+    "ru"
+  ],
+  "kazakh-language/37-locative-place-time-kz": [
+    "kazakh-language-37-locative-place-time",
+    "kz"
+  ],
+  "kazakh-language/37-locative-place-time-en": [
+    "kazakh-language-37-locative-place-time",
+    "en"
+  ],
+  "kazakh-language/38-ablative-source": [
+    "kazakh-language-38-ablative-source",
+    "ru"
+  ],
+  "kazakh-language/38-ablative-source-kz": [
+    "kazakh-language-38-ablative-source",
+    "kz"
+  ],
+  "kazakh-language/38-ablative-source-en": [
+    "kazakh-language-38-ablative-source",
+    "en"
+  ],
+  "kazakh-language/39-instrumental-companion-means": [
+    "kazakh-language-39-instrumental-companion-means",
+    "ru"
+  ],
+  "kazakh-language/39-instrumental-companion-means-kz": [
+    "kazakh-language-39-instrumental-companion-means",
+    "kz"
+  ],
+  "kazakh-language/39-instrumental-companion-means-en": [
+    "kazakh-language-39-instrumental-companion-means",
+    "en"
+  ],
+  "kazakh-language/40-space-cases-mastery": [
+    "kazakh-language-40-space-cases-mastery",
+    "ru"
+  ],
+  "kazakh-language/40-space-cases-mastery-kz": [
+    "kazakh-language-40-space-cases-mastery",
+    "kz"
+  ],
+  "kazakh-language/40-space-cases-mastery-en": [
+    "kazakh-language-40-space-cases-mastery",
+    "en"
   ]
 }

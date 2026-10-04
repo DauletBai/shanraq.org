@@ -69,7 +69,7 @@
     {
       "id": "space-cases",
       "range": "33-40",
-      "status": "planned",
+      "status": "audio_review",
       "lexical_target": 1100,
       "release": "1.1",
       "title_kz": "Кеңістік және септіктер",
@@ -451,6 +451,88 @@
       "title_kz": "A1 бақылау нүктесі: толық бір күнді дайын мәтінсіз өткізу",
       "title_ru": "Контрольная точка A1: прожить целый день без сценария",
       "title_en": "A1 mastery checkpoint: living a whole day without a script"
+    }
+  ],
+  "fifth_block_lessons": [
+    {
+      "number": 33,
+      "id": "case-role-map",
+      "prerequisites": [
+        "day-services-mastery"
+      ],
+      "title_kz": "Жеті жол емес, жеті рөл: септіктердің толық картасы",
+      "title_ru": "Семь ролей вместо семи строк: вся карта падежей",
+      "title_en": "Seven roles instead of seven rows: the complete case map"
+    },
+    {
+      "number": 34,
+      "id": "genitive-relationship",
+      "prerequisites": [
+        "case-role-map"
+      ],
+      "title_kz": "Кімнің бөлігі? Ілік септік екі атаудың арасындағы көпір",
+      "title_ru": "Чья часть? Родительный падеж как мост между двумя именами",
+      "title_en": "Whose part? Genitive as a bridge between two names"
+    },
+    {
+      "number": 35,
+      "id": "accusative-specific-object",
+      "prerequisites": [
+        "genitive-relationship"
+      ],
+      "title_kz": "Нақты не? Табыс септік және көрінетін әрекет нысаны",
+      "title_ru": "Что именно? Винительный падеж и видимый объект действия",
+      "title_en": "What exactly? Accusative and a visible affected object"
+    },
+    {
+      "number": 36,
+      "id": "dative-goal-recipient",
+      "prerequisites": [
+        "accusative-specific-object"
+      ],
+      "title_kz": "Кімге және қайда? Барыс септік мақсатқа көрсеткі сызады",
+      "title_ru": "Кому и куда? Дательный падеж рисует стрелку к цели",
+      "title_en": "To whom and where? Dative draws an arrow to a goal"
+    },
+    {
+      "number": 37,
+      "id": "locative-place-time",
+      "prerequisites": [
+        "dative-goal-recipient"
+      ],
+      "title_kz": "Қайда және қашан? Жатыс септік нүктені бекітеді",
+      "title_ru": "Где и когда? Местный падеж закрепляет точку",
+      "title_en": "Where and when? Locative fixes a point"
+    },
+    {
+      "number": 38,
+      "id": "ablative-source",
+      "prerequisites": [
+        "locative-place-time"
+      ],
+      "title_kz": "Қайдан және неден? Шығыс септік бастауды көрсетеді",
+      "title_ru": "Откуда и из чего? Исходный падеж показывает начало",
+      "title_en": "From where and made of what? Ablative shows a beginning"
+    },
+    {
+      "number": 39,
+      "id": "instrumental-companion-means",
+      "prerequisites": [
+        "ablative-source"
+      ],
+      "title_kz": "Кіммен және немен? Көмектес септік серікті, құралды және тәсілді қосады",
+      "title_ru": "С кем и чем? Творительный соединяет участника, средство и способ",
+      "title_en": "With whom and by what? Instrumental joins companion, tool, and means"
+    },
+    {
+      "number": 40,
+      "id": "space-cases-mastery",
+      "prerequisites": [
+        "instrumental-companion-means"
+      ],
+      "title_kz": "1.1 бақылау нүктесі: бір көрініс — жеті нақты рөл",
+      "title_ru": "Контрольная точка 1.1: одна сцена — семь точных ролей",
+      "title_en": "Mastery checkpoint 1.1: one scene, seven precise roles"
     }
   ]
 }

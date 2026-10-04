@@ -147,7 +147,13 @@ def main() -> None:
     audio = audio_by_phrase()
     OUT.mkdir(parents=True, exist_ok=True)
     for index, (stem, map_stem, localized) in enumerate(LESSONS):
-        next_entry = LESSONS[index + 1] if index + 1 < len(LESSONS) else None
+        next_entry = LESSONS[index + 1] if index + 1 < len(LESSONS) else (
+            "33-case-role-map", "33-case-map", {
+                "ru": {"title": "Семь ролей вместо семи строк: вся карта падежей"},
+                "kz": {"title": "Жеті жол емес, жеті рөл: септіктердің толық картасы"},
+                "en": {"title": "Seven roles instead of seven rows: the complete case map"},
+            },
+        )
         for lang, data in localized.items():
             suffix = "" if lang == "ru" else f"-{lang}"
             (OUT / f"{stem}{suffix}.md").write_text(render(lang, data, map_stem, next_entry, audio), encoding="utf-8")

@@ -185,7 +185,10 @@
       "lessons": [
         "04-sentence-skeleton-en.md",
         "04-sentence-skeleton-kz.md",
-        "04-sentence-skeleton.md"
+        "04-sentence-skeleton.md",
+        "35-accusative-specific-object-en.md",
+        "35-accusative-specific-object-kz.md",
+        "35-accusative-specific-object.md"
       ]
     },
     {
@@ -1968,7 +1971,10 @@
       "lessons": [
         "32-day-services-mastery-en.md",
         "32-day-services-mastery-kz.md",
-        "32-day-services-mastery.md"
+        "32-day-services-mastery.md",
+        "36-dative-goal-recipient-en.md",
+        "36-dative-goal-recipient-kz.md",
+        "36-dative-goal-recipient.md"
       ]
     },
     {
@@ -1991,6 +1997,512 @@
         "32-day-services-mastery-en.md",
         "32-day-services-mastery-kz.md",
         "32-day-services-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-180",
+      "phrase": "Бұл — кітап.",
+      "file": "kz-180.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "33-case-role-map-en.md",
+        "33-case-role-map-kz.md",
+        "33-case-role-map.md"
+      ]
+    },
+    {
+      "id": "kz-181",
+      "phrase": "Кітаптың мұқабасы көк.",
+      "file": "kz-181.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "33-case-role-map-en.md",
+        "33-case-role-map-kz.md",
+        "33-case-role-map.md"
+      ]
+    },
+    {
+      "id": "kz-182",
+      "phrase": "Мен кітапты ашамын.",
+      "file": "kz-182.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "33-case-role-map-en.md",
+        "33-case-role-map-kz.md",
+        "33-case-role-map.md"
+      ]
+    },
+    {
+      "id": "kz-183",
+      "phrase": "Кітапты досыма беремін.",
+      "file": "kz-183.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "33-case-role-map-en.md",
+        "33-case-role-map-kz.md",
+        "33-case-role-map.md"
+      ]
+    },
+    {
+      "id": "kz-184",
+      "phrase": "Кітап үстелде жатыр.",
+      "file": "kz-184.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "33-case-role-map-en.md",
+        "33-case-role-map-kz.md",
+        "33-case-role-map.md"
+      ]
+    },
+    {
+      "id": "kz-185",
+      "phrase": "Кітапты сөреден аламын.",
+      "file": "kz-185.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "33-case-role-map-en.md",
+        "33-case-role-map-kz.md",
+        "33-case-role-map.md"
+      ]
+    },
+    {
+      "id": "kz-186",
+      "phrase": "Мектептің ауласы кең.",
+      "file": "kz-186.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "34-genitive-relationship-en.md",
+        "34-genitive-relationship-kz.md",
+        "34-genitive-relationship.md"
+      ]
+    },
+    {
+      "id": "kz-187",
+      "phrase": "Қаланың картасы жаңа.",
+      "file": "kz-187.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "34-genitive-relationship-en.md",
+        "34-genitive-relationship-kz.md",
+        "34-genitive-relationship.md"
+      ]
+    },
+    {
+      "id": "kz-188",
+      "phrase": "Кітапхананың есігі ашық.",
+      "file": "kz-188.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "34-genitive-relationship-en.md",
+        "34-genitive-relationship-kz.md",
+        "34-genitive-relationship.md"
+      ]
+    },
+    {
+      "id": "kz-189",
+      "phrase": "Оқушының дәптері үстелде.",
+      "file": "kz-189.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "34-genitive-relationship-en.md",
+        "34-genitive-relationship-kz.md",
+        "34-genitive-relationship.md"
+      ]
+    },
+    {
+      "id": "kz-190",
+      "phrase": "Досымның үйі жақын.",
+      "file": "kz-190.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "34-genitive-relationship-en.md",
+        "34-genitive-relationship-kz.md",
+        "34-genitive-relationship.md"
+      ]
+    },
+    {
+      "id": "kz-191",
+      "phrase": "Бұл кімнің сөмкесі?",
+      "file": "kz-191.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "34-genitive-relationship-en.md",
+        "34-genitive-relationship-kz.md",
+        "34-genitive-relationship.md"
+      ]
+    },
+    {
+      "id": "kz-192",
+      "phrase": "Мен бұл кітапты оқимын.",
+      "file": "kz-192.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "35-accusative-specific-object-en.md",
+        "35-accusative-specific-object-kz.md",
+        "35-accusative-specific-object.md"
+      ]
+    },
+    {
+      "id": "kz-193",
+      "phrase": "Көк дәптерді ашыңызшы.",
+      "file": "kz-193.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "35-accusative-specific-object-en.md",
+        "35-accusative-specific-object-kz.md",
+        "35-accusative-specific-object.md"
+      ]
+    },
+    {
+      "id": "kz-194",
+      "phrase": "Картаны үстелге қойыңызшы.",
+      "file": "kz-194.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "35-accusative-specific-object-en.md",
+        "35-accusative-specific-object-kz.md",
+        "35-accusative-specific-object.md"
+      ]
+    },
+    {
+      "id": "kz-195",
+      "phrase": "Мен тапсырманы орындаймын.",
+      "file": "kz-195.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "35-accusative-specific-object-en.md",
+        "35-accusative-specific-object-kz.md",
+        "35-accusative-specific-object.md"
+      ]
+    },
+    {
+      "id": "kz-196",
+      "phrase": "Қай кітапты таңдайсыз?",
+      "file": "kz-196.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "35-accusative-specific-object-en.md",
+        "35-accusative-specific-object-kz.md",
+        "35-accusative-specific-object.md"
+      ]
+    },
+    {
+      "id": "kz-197",
+      "phrase": "Мен кітапханаға барамын.",
+      "file": "kz-197.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "36-dative-goal-recipient-en.md",
+        "36-dative-goal-recipient-kz.md",
+        "36-dative-goal-recipient.md"
+      ]
+    },
+    {
+      "id": "kz-198",
+      "phrase": "Картаны мұғалімге беремін.",
+      "file": "kz-198.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "36-dative-goal-recipient-en.md",
+        "36-dative-goal-recipient-kz.md",
+        "36-dative-goal-recipient.md"
+      ]
+    },
+    {
+      "id": "kz-199",
+      "phrase": "Досыма хабарлама жазамын.",
+      "file": "kz-199.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "36-dative-goal-recipient-en.md",
+        "36-dative-goal-recipient-kz.md",
+        "36-dative-goal-recipient.md"
+      ]
+    },
+    {
+      "id": "kz-201",
+      "phrase": "Балалар алаңына дейін барамыз.",
+      "file": "kz-201.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "36-dative-goal-recipient-en.md",
+        "36-dative-goal-recipient-kz.md",
+        "36-dative-goal-recipient.md"
+      ]
+    },
+    {
+      "id": "kz-202",
+      "phrase": "Сізге қалай көмектесемін?",
+      "file": "kz-202.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "36-dative-goal-recipient-en.md",
+        "36-dative-goal-recipient-kz.md",
+        "36-dative-goal-recipient.md"
+      ]
+    },
+    {
+      "id": "kz-203",
+      "phrase": "Кітапханада үйірме бар.",
+      "file": "kz-203.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "37-locative-place-time-en.md",
+        "37-locative-place-time-kz.md",
+        "37-locative-place-time.md"
+      ]
+    },
+    {
+      "id": "kz-204",
+      "phrase": "Үйірме сәрсенбіде өтеді.",
+      "file": "kz-204.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "37-locative-place-time-en.md",
+        "37-locative-place-time-kz.md",
+        "37-locative-place-time.md"
+      ]
+    },
+    {
+      "id": "kz-205",
+      "phrase": "Материалдар екінші қабатта.",
+      "file": "kz-205.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "37-locative-place-time-en.md",
+        "37-locative-place-time-kz.md",
+        "37-locative-place-time.md"
+      ]
+    },
+    {
+      "id": "kz-206",
+      "phrase": "Мен қазір сыныптамын.",
+      "file": "kz-206.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "37-locative-place-time-en.md",
+        "37-locative-place-time-kz.md",
+        "37-locative-place-time.md"
+      ]
+    },
+    {
+      "id": "kz-207",
+      "phrase": "Сөмкеде дәптер бар.",
+      "file": "kz-207.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "37-locative-place-time-en.md",
+        "37-locative-place-time-kz.md",
+        "37-locative-place-time.md"
+      ]
+    },
+    {
+      "id": "kz-208",
+      "phrase": "Сағат онда кездесейік.",
+      "file": "kz-208.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "37-locative-place-time-en.md",
+        "37-locative-place-time-kz.md",
+        "37-locative-place-time.md"
+      ]
+    },
+    {
+      "id": "kz-209",
+      "phrase": "Мен мектептен келемін.",
+      "file": "kz-209.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "38-ablative-source-en.md",
+        "38-ablative-source-kz.md",
+        "38-ablative-source.md"
+      ]
+    },
+    {
+      "id": "kz-210",
+      "phrase": "Дүкеннен қағаз алдым.",
+      "file": "kz-210.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "38-ablative-source-en.md",
+        "38-ablative-source-kz.md",
+        "38-ablative-source.md"
+      ]
+    },
+    {
+      "id": "kz-211",
+      "phrase": "Досымнан хабарлама келеді.",
+      "file": "kz-211.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "38-ablative-source-en.md",
+        "38-ablative-source-kz.md",
+        "38-ablative-source.md"
+      ]
+    },
+    {
+      "id": "kz-212",
+      "phrase": "Үстел ағаштан жасалған.",
+      "file": "kz-212.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "38-ablative-source-en.md",
+        "38-ablative-source-kz.md",
+        "38-ablative-source.md"
+      ]
+    },
+    {
+      "id": "kz-213",
+      "phrase": "Сағат тоғыздан бастап жұмыс істейміз.",
+      "file": "kz-213.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "38-ablative-source-en.md",
+        "38-ablative-source-kz.md",
+        "38-ablative-source.md"
+      ]
+    },
+    {
+      "id": "kz-214",
+      "phrase": "Сіз қайдан келесіз?",
+      "file": "kz-214.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "38-ablative-source-en.md",
+        "38-ablative-source-kz.md",
+        "38-ablative-source.md"
+      ]
+    },
+    {
+      "id": "kz-215",
+      "phrase": "Мен досыммен жұмыс істеймін.",
+      "file": "kz-215.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "39-instrumental-companion-means-en.md",
+        "39-instrumental-companion-means-kz.md",
+        "39-instrumental-companion-means.md"
+      ]
+    },
+    {
+      "id": "kz-216",
+      "phrase": "Суретті қарындашпен саламын.",
+      "file": "kz-216.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "39-instrumental-companion-means-en.md",
+        "39-instrumental-companion-means-kz.md",
+        "39-instrumental-companion-means.md"
+      ]
+    },
+    {
+      "id": "kz-217",
+      "phrase": "Мектепке автобуспен барамын.",
+      "file": "kz-217.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "39-instrumental-companion-means-en.md",
+        "39-instrumental-companion-means-kz.md",
+        "39-instrumental-companion-means.md"
+      ]
+    },
+    {
+      "id": "kz-218",
+      "phrase": "Мұғаліммен сөйлесемін.",
+      "file": "kz-218.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "39-instrumental-companion-means-en.md",
+        "39-instrumental-companion-means-kz.md",
+        "39-instrumental-companion-means.md"
+      ]
+    },
+    {
+      "id": "kz-219",
+      "phrase": "Қорапты қолмен ашпаңыз.",
+      "file": "kz-219.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "39-instrumental-companion-means-en.md",
+        "39-instrumental-companion-means-kz.md",
+        "39-instrumental-companion-means.md"
+      ]
+    },
+    {
+      "id": "kz-220",
+      "phrase": "Аружан мен Мария бірге оқиды.",
+      "file": "kz-220.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "39-instrumental-companion-means-en.md",
+        "39-instrumental-companion-means-kz.md",
+        "39-instrumental-companion-means.md"
+      ]
+    },
+    {
+      "id": "kz-221",
+      "phrase": "Оқушылар жобаны бастайды.",
+      "file": "kz-221.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "40-space-cases-mastery-en.md",
+        "40-space-cases-mastery-kz.md",
+        "40-space-cases-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-222",
+      "phrase": "Жобаның картасы үстелде.",
+      "file": "kz-222.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "40-space-cases-mastery-en.md",
+        "40-space-cases-mastery-kz.md",
+        "40-space-cases-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-223",
+      "phrase": "Картаны жаңа оқушыға беремін.",
+      "file": "kz-223.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "40-space-cases-mastery-en.md",
+        "40-space-cases-mastery-kz.md",
+        "40-space-cases-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-224",
+      "phrase": "Ол картаға белгі қояды.",
+      "file": "kz-224.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "40-space-cases-mastery-en.md",
+        "40-space-cases-mastery-kz.md",
+        "40-space-cases-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-225",
+      "phrase": "Белгіні қораптан аламыз.",
+      "file": "kz-225.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "40-space-cases-mastery-en.md",
+        "40-space-cases-mastery-kz.md",
+        "40-space-cases-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-226",
+      "phrase": "Тапсырманы тобымызбен орындаймыз.",
+      "file": "kz-226.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "40-space-cases-mastery-en.md",
+        "40-space-cases-mastery-kz.md",
+        "40-space-cases-mastery.md"
       ]
     }
   ],
