@@ -1,4 +1,4 @@
-"""Checks for the unpublished Kazakh Plans and Problems block."""
+"""Checks for the published Kazakh Plans and Problems block."""
 import json
 from pathlib import Path
 import re
@@ -9,7 +9,7 @@ from tools.course import generate_kazakh_language_plans_problems as draft
 from tools.course import prepare_kazakh_language
 
 
-class PlansProblemsDraftTest(unittest.TestCase):
+class PlansProblemsTest(unittest.TestCase):
     def test_eight_trilingual_lessons_are_complete_and_linked(self):
         self.assertEqual(len(draft.LESSONS), 8)
         self.assertEqual([int(row["stem"][:2]) for row in draft.LESSONS], list(range(49, 57)))
@@ -51,11 +51,16 @@ class PlansProblemsDraftTest(unittest.TestCase):
                 if lesson["stem"].startswith("51-"):
                     self.assertNotIn('M418 453h21', text)
 
-    def test_draft_not_in_published_route(self):
-        self.assertEqual(len(prepare_kazakh_language.ROUTE), 48)
-        self.assertFalse(any(stem.startswith("49-") for stem, _, _ in prepare_kazakh_language.ROUTE))
+    def test_approved_block_is_in_published_route(self):
+        self.assertEqual(len(prepare_kazakh_language.ROUTE), 56)
+        self.assertEqual(
+            [stem for stem, _, _ in prepare_kazakh_language.ROUTE[-8:]],
+            [lesson["stem"] for lesson in draft.LESSONS],
+        )
+        manifest = json.loads((draft.AUDIO / "manifest.json").read_text(encoding="utf-8"))
+        self.assertFalse(any(row["status"] == "candidate_review" for row in manifest["recordings"]))
         review = (draft.AUDIO / "review.html").read_text(encoding="utf-8")
-        self.assertIn("Планы и проблемы", review)
+        self.assertIn("Одобренные записи уроков 49–56", review)
         self.assertEqual(review.count('<audio controls'), 42)
 
 

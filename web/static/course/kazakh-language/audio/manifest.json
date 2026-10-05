@@ -3037,7 +3037,7 @@
       "id": "kz-275",
       "phrase": "Маған көмектесе аласыз ба?",
       "file": "kz-275.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "49-request-help-en.md",
         "49-request-help-kz.md",
@@ -3051,7 +3051,7 @@
       "id": "kz-276",
       "phrase": "Мына белгіні түсіндіріп бере аласыз ба?",
       "file": "kz-276.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "49-request-help-en.md",
         "49-request-help-kz.md",
@@ -3062,7 +3062,7 @@
       "id": "kz-277",
       "phrase": "Иә, бірге қарайық.",
       "file": "kz-277.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "49-request-help-en.md",
         "49-request-help-kz.md",
@@ -3073,7 +3073,7 @@
       "id": "kz-278",
       "phrase": "Қазір уақытым жоқ, кейін көмектесемін.",
       "file": "kz-278.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "49-request-help-en.md",
         "49-request-help-kz.md",
@@ -3084,7 +3084,7 @@
       "id": "kz-279",
       "phrase": "Қай белгі түсініксіз?",
       "file": "kz-279.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "49-request-help-en.md",
         "49-request-help-kz.md",
@@ -3095,7 +3095,7 @@
       "id": "kz-280",
       "phrase": "Рақмет, енді түсіндім.",
       "file": "kz-280.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "49-request-help-en.md",
         "49-request-help-kz.md",
@@ -3106,7 +3106,7 @@
       "id": "kz-281",
       "phrase": "Сізге қай уақыт ыңғайлы?",
       "file": "kz-281.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "50-agree-time-en.md",
         "50-agree-time-kz.md",
@@ -3120,7 +3120,7 @@
       "id": "kz-282",
       "phrase": "Сағат үште кездесуге бола ма?",
       "file": "kz-282.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "50-agree-time-en.md",
         "50-agree-time-kz.md",
@@ -3131,7 +3131,7 @@
       "id": "kz-283",
       "phrase": "Маған үште ыңғайсыз.",
       "file": "kz-283.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "50-agree-time-en.md",
         "50-agree-time-kz.md",
@@ -3142,7 +3142,7 @@
       "id": "kz-284",
       "phrase": "Онда төртте кездесейік.",
       "file": "kz-284.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "50-agree-time-en.md",
         "50-agree-time-kz.md",
@@ -3153,7 +3153,7 @@
       "id": "kz-285",
       "phrase": "Кітапханада кездесеміз бе?",
       "file": "kz-285.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "50-agree-time-en.md",
         "50-agree-time-kz.md",
@@ -3164,7 +3164,7 @@
       "id": "kz-286",
       "phrase": "Келістік: ертең сағат төртте кітапханада.",
       "file": "kz-286.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "50-agree-time-en.md",
         "50-agree-time-kz.md",
@@ -3178,7 +3178,7 @@
       "id": "kz-287",
       "phrase": "Экранды пайдалануға болады.",
       "file": "kz-287.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "51-possible-necessary-en.md",
         "51-possible-necessary-kz.md",
@@ -3189,7 +3189,7 @@
       "id": "kz-288",
       "phrase": "Экран бос болмауы мүмкін.",
       "file": "kz-288.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "51-possible-necessary-en.md",
         "51-possible-necessary-kz.md",
@@ -3200,7 +3200,7 @@
       "id": "kz-289",
       "phrase": "Файлды алдын ала сақтау керек.",
       "file": "kz-289.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "51-possible-necessary-en.md",
         "51-possible-necessary-kz.md",
@@ -3211,7 +3211,7 @@
       "id": "kz-290",
       "phrase": "Мұнда суретке түсіруге болмайды.",
       "file": "kz-290.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "51-possible-necessary-en.md",
         "51-possible-necessary-kz.md",
@@ -3222,7 +3222,7 @@
       "id": "kz-291",
       "phrase": "Қағаз картаны да дайындайық.",
       "file": "kz-291.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "51-possible-necessary-en.md",
         "51-possible-necessary-kz.md",
@@ -3233,7 +3233,7 @@
       "id": "kz-292",
       "phrase": "Бұл нұсқа бәріне ыңғайлы ма?",
       "file": "kz-292.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "51-possible-necessary-en.md",
         "51-possible-necessary-kz.md",
@@ -3247,7 +3247,7 @@
       "id": "kz-293",
       "phrase": "Файл ашылмай тұр.",
       "file": "kz-293.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "52-cause-consequence-en.md",
         "52-cause-consequence-kz.md",
@@ -3258,7 +3258,7 @@
       "id": "kz-294",
       "phrase": "Себебі бұл компьютерде бағдарлама жоқ.",
       "file": "kz-294.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "52-cause-consequence-en.md",
         "52-cause-consequence-kz.md",
@@ -3269,7 +3269,7 @@
       "id": "kz-295",
       "phrase": "Сондықтан қағаз картаны көрсетеміз.",
       "file": "kz-295.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "52-cause-consequence-en.md",
         "52-cause-consequence-kz.md",
@@ -3280,7 +3280,7 @@
       "id": "kz-296",
       "phrase": "Алдымен басқа файлды тексерейік.",
       "file": "kz-296.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "52-cause-consequence-en.md",
         "52-cause-consequence-kz.md",
@@ -3291,7 +3291,7 @@
       "id": "kz-297",
       "phrase": "Мәселе неден шықты?",
       "file": "kz-297.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "52-cause-consequence-en.md",
         "52-cause-consequence-kz.md",
@@ -3302,7 +3302,7 @@
       "id": "kz-298",
       "phrase": "Әзірге себебі белгісіз.",
       "file": "kz-298.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "52-cause-consequence-en.md",
         "52-cause-consequence-kz.md",
@@ -3316,7 +3316,7 @@
       "id": "kz-299",
       "phrase": "Егер проектор істесе, картаны экраннан көрсетеміз.",
       "file": "kz-299.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "53-if-plan-changes-en.md",
         "53-if-plan-changes-kz.md",
@@ -3327,7 +3327,7 @@
       "id": "kz-300",
       "phrase": "Егер проектор істемесе, қағаз картаны қолданамыз.",
       "file": "kz-300.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "53-if-plan-changes-en.md",
         "53-if-plan-changes-kz.md",
@@ -3341,7 +3341,7 @@
       "id": "kz-301",
       "phrase": "Жаңбыр жауса, үйде кездесеміз.",
       "file": "kz-301.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "53-if-plan-changes-en.md",
         "53-if-plan-changes-kz.md",
@@ -3352,7 +3352,7 @@
       "id": "kz-302",
       "phrase": "Уақыт жетпесе, екі аялдаманы ғана көрсетеміз.",
       "file": "kz-302.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "53-if-plan-changes-en.md",
         "53-if-plan-changes-kz.md",
@@ -3363,7 +3363,7 @@
       "id": "kz-303",
       "phrase": "Қай жолды таңдаймыз?",
       "file": "kz-303.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "53-if-plan-changes-en.md",
         "53-if-plan-changes-kz.md",
@@ -3374,7 +3374,7 @@
       "id": "kz-304",
       "phrase": "Алдымен проекторды тексерейік.",
       "file": "kz-304.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "53-if-plan-changes-en.md",
         "53-if-plan-changes-kz.md",
@@ -3385,7 +3385,7 @@
       "id": "kz-305",
       "phrase": "Менің телефонымда бет ашылмай тұр.",
       "file": "kz-305.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "54-explain-problem-en.md",
         "54-explain-problem-kz.md",
@@ -3396,7 +3396,7 @@
       "id": "kz-306",
       "phrase": "Басқа телефонда ашыла ма?",
       "file": "kz-306.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "54-explain-problem-en.md",
         "54-explain-problem-kz.md",
@@ -3407,7 +3407,7 @@
       "id": "kz-307",
       "phrase": "Сілтемені қайта тексеріп көрейік.",
       "file": "kz-307.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "54-explain-problem-en.md",
         "54-explain-problem-kz.md",
@@ -3418,7 +3418,7 @@
       "id": "kz-308",
       "phrase": "Мен қате туралы хабар көрдім.",
       "file": "kz-308.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "54-explain-problem-en.md",
         "54-explain-problem-kz.md",
@@ -3429,7 +3429,7 @@
       "id": "kz-309",
       "phrase": "Қандай хабар шықты?",
       "file": "kz-309.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "54-explain-problem-en.md",
         "54-explain-problem-kz.md",
@@ -3440,7 +3440,7 @@
       "id": "kz-310",
       "phrase": "Скриншотты жеке жіберуге бола ма?",
       "file": "kz-310.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "54-explain-problem-en.md",
         "54-explain-problem-kz.md",
@@ -3451,7 +3451,7 @@
       "id": "kz-311",
       "phrase": "Мен цифрлық картаны ұсынамын.",
       "file": "kz-311.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "55-choose-together-en.md",
         "55-choose-together-kz.md",
@@ -3462,7 +3462,7 @@
       "id": "kz-312",
       "phrase": "Меніңше, қағаз карта сенімдірек.",
       "file": "kz-312.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "55-choose-together-en.md",
         "55-choose-together-kz.md",
@@ -3473,7 +3473,7 @@
       "id": "kz-313",
       "phrase": "Мен келісемін, бірақ уақыт аз.",
       "file": "kz-313.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "55-choose-together-en.md",
         "55-choose-together-kz.md",
@@ -3484,7 +3484,7 @@
       "id": "kz-314",
       "phrase": "Бұл нұсқаны неге таңдадыңыз?",
       "file": "kz-314.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "55-choose-together-en.md",
         "55-choose-together-kz.md",
@@ -3495,7 +3495,7 @@
       "id": "kz-315",
       "phrase": "Екі нұсқаны бірге қолданайық.",
       "file": "kz-315.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "55-choose-together-en.md",
         "55-choose-together-kz.md",
@@ -3506,20 +3506,12 @@
       "id": "kz-316",
       "phrase": "Жақсы, алдымен цифрлық картаны тексерейік.",
       "file": "kz-316.wav",
-      "status": "candidate_review",
+      "status": "approved",
       "lessons": [
         "55-choose-together-en.md",
         "55-choose-together-kz.md",
         "55-choose-together.md"
       ]
     }
-  ],
-  "candidate": {
-    "provider": "Microsoft neural text to speech",
-    "voice": "kk-KZ-AigulNeural",
-    "locale": "kk-KZ",
-    "rate": "-8%",
-    "processing": "48 kHz mono PCM; loudness normalised",
-    "approval": "pending_owner_and_native_speaker_review"
-  }
+  ]
 }

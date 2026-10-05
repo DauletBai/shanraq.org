@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Draft the trilingual Plans and Problems block for pronunciation review.
-
-The resulting lessons stay outside the published route until their new Kazakh
-recordings have been listened to and approved.
-"""
+"""Generate the approved trilingual Plans and Problems block (49–56)."""
 from __future__ import annotations
 
 import html
@@ -14,7 +10,7 @@ import textwrap
 from tools.course.generate_kazakh_language_day_services import UI
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "course/drafts/kazakh-language"
+OUT = ROOT / "course/lessons/kazakh-language"
 MAPS = ROOT / "web/static/course/kazakh-language"
 AUDIO = MAPS / "audio"
 
@@ -252,7 +248,19 @@ def main() -> None:
             suffix = "" if lang == "ru" else f"-{lang}"
             (OUT / f"{lesson['stem']}{suffix}.md").write_text(render(lesson, lang, upcoming, audio), encoding="utf-8")
             (MAPS / f"map-{lesson['map']}-{lang}.svg").write_text(map_svg(lesson, lang), encoding="utf-8")
-    print(f"Prepared {len(LESSONS)*3} review lessons and maps; audio candidates are not approved")
+    previous = OUT / "48-action-time-mastery"
+    for lang in LANGS:
+        suffix = "" if lang == "ru" else f"-{lang}"
+        path = previous.with_name(previous.name + suffix + ".md")
+        body = path.read_text(encoding="utf-8")
+        catalogue = f"[{UI[lang][15]}](/course/kazakh-language?lang={lang})"
+        forward = f"[{UI[lang][14]}: {LESSONS[0]['title'][LANGS.index(lang)]}](/read/kazakh-language-{LESSONS[0]['stem']}?lang={lang})"
+        if catalogue in body:
+            body = body.replace(catalogue, forward)
+            path.write_text(body, encoding="utf-8")
+        elif forward not in body:
+            raise ValueError(f"lesson 48 has no hand-off: {path}")
+    print(f"Generated {len(LESSONS)*3} approved localized lessons and maps")
 
 
 if __name__ == "__main__":

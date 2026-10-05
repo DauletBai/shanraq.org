@@ -59,14 +59,21 @@ async def render() -> None:
     rows = data["recordings"]
     candidates = [row for row in rows if row["status"] == "candidate_review"]
     if not candidates:
+        approved_new = [row for row in rows if row["status"] == "approved" and int(row["id"][3:]) >= 275]
+        cards = "\n".join(
+            '<article><b>{id}</b><p lang="kk">{phrase}</p>'
+            '<audio controls preload="none" src="{file}"></audio></article>'.format(
+                id=html.escape(row["id"]), phrase=html.escape(row["phrase"]),
+                file=html.escape(row["file"]),
+            ) for row in approved_new
+        )
         REVIEW.write_text(
-            """<!doctype html><html lang=\"ru\"><meta charset=\"utf-8\">
-<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">
-<title>Казахский курс — аудио одобрено</title>
-<style>body{font:16px system-ui;max-width:920px;margin:30px auto;padding:0 18px;color:#242424}h1{font-size:30px}</style>
-<h1>Все аудиозаписи одобрены</h1>
-<p>273 казахские записи курса проверены и доступны урокам 1–48. Голос Aigul, язык kk-KZ. Новых кандидатов для прослушивания сейчас нет.</p>
-</html>\n""",
+            """<!doctype html><html lang="ru"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Казахский курс — одобренные записи</title>
+<style>body{font:16px system-ui;max-width:920px;margin:30px auto;padding:0 18px;color:#242424}h1{font-size:30px}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}article{border:1px solid #d8d8d8;border-radius:12px;padding:14px;box-shadow:0 3px 12px #0001}p{font-size:20px;min-height:48px}audio{width:100%}</style>
+<h1>Одобренные записи уроков 49–56</h1><p>Новые 42 записи прослушаны и одобрены автором курса. Они используются в уроках «Планы и проблемы»; записи уроков 1–48 сохранены.</p><section>"""
+            + cards + "</section></html>\n",
             encoding="utf-8",
         )
         print(f"review page -> {REVIEW.relative_to(ROOT)} (no pending candidates)")

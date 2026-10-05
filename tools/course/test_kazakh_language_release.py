@@ -27,6 +27,8 @@ MAP_STEMS = (
     "37-locative", "38-ablative", "39-instrumental", "40-mastery",
     "41-time-map", "42-habit", "43-progressive", "44-past",
     "45-future", "46-questions", "47-story", "48-mastery",
+    "49-request", "50-agreement", "51-possibility", "52-cause",
+    "53-condition", "54-problem", "55-choice", "56-mastery",
 )
 
 
@@ -42,12 +44,14 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(len(data["fourth_block_lessons"]), 8)
         self.assertEqual(len(data["fifth_block_lessons"]), 8)
         self.assertEqual(len(data["sixth_block_lessons"]), 8)
+        self.assertEqual(len(data["seventh_block_lessons"]), 8)
         self.assertEqual(data["blocks"][0]["status"], "ready")
         self.assertEqual(data["blocks"][1]["status"], "ready")
         self.assertEqual(data["blocks"][2]["status"], "ready")
         self.assertEqual(data["blocks"][3]["status"], "ready")
         self.assertEqual(data["blocks"][4]["status"], "ready")
         self.assertEqual(data["blocks"][5]["status"], "ready")
+        self.assertEqual(data["blocks"][6]["status"], "ready")
         self.assertEqual(data["blocks"][3]["lexical_target"], 800)
         self.assertEqual(data["blocks"][6]["lexical_target"], 1783)
         self.assertEqual(data["blocks"][-1]["lexical_target"], 2229)
@@ -102,13 +106,13 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         sql, expected = prepare_kazakh_language.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
-        self.assertEqual(sql.count("INSERT INTO articles("), 48)
-        self.assertEqual(sql.count("INSERT INTO article_translations("), 144)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 48)
-        self.assertEqual(len(expected), 144)
+        self.assertEqual(sql.count("INSERT INTO articles("), 56)
+        self.assertEqual(sql.count("INSERT INTO article_translations("), 168)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 56)
+        self.assertEqual(len(expected), 168)
         self.assertEqual(
             [position for _, _, position in prepare_kazakh_language.ROUTE],
-            list(range(10, 481, 10)),
+            list(range(10, 561, 10)),
         )
         self.assertIn("'kazakh-language'", sql)
         self.assertIn("'kazakh'", sql)
@@ -160,6 +164,13 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(cover.read_bytes()[:4], b"RIFF")
         self.assertIn(b"VP8", cover.read_bytes()[:32])
 
+    def test_seventh_block_cover_is_present_and_4k(self):
+        cover = ROOT / "web/static/covers/school/kazakh-language/plans-problems/07-plans-problems.webp"
+        self.assertTrue(cover.is_file())
+        self.assertGreater(cover.stat().st_size, 500_000)
+        self.assertEqual(cover.read_bytes()[:4], b"RIFF")
+        self.assertIn(b"VP8", cover.read_bytes()[:32])
+
     def test_every_spoken_phrase_has_a_valid_recording_and_review_state(self):
         audio = MAPS / "audio"
         manifest = json.loads((audio / "manifest.json").read_text(encoding="utf-8"))
@@ -172,20 +183,10 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 path.read_text(encoding="utf-8"),
             ))
 
-        approved = [row for row in recordings if row["status"] == "approved"]
-        candidates = [row for row in recordings if row["status"] == "candidate_review"]
-        self.assertEqual(len(approved), 273)
-        self.assertEqual(len(candidates), 42)
-        self.assertEqual(len(lesson_files), 846)
-        self.assertEqual({row["file"] for row in approved}, set(lesson_files))
-        draft_files = []
-        for path in (ROOT / "course/drafts/kazakh-language").glob("*.md"):
-            draft_files.extend(re.findall(
-                r"/static/course/kazakh-language/audio/(kz-\d{3}\.wav)",
-                path.read_text(encoding="utf-8"),
-            ))
-        self.assertEqual(len(draft_files), 144)
-        self.assertEqual({row["file"] for row in candidates}, set(draft_files) - set(lesson_files))
+        self.assertEqual(len(recordings), 315)
+        self.assertEqual(len(lesson_files), 990)
+        self.assertTrue(all(row["status"] == "approved" for row in recordings))
+        self.assertEqual({row["file"] for row in recordings}, set(lesson_files))
         review = (audio / "review.html").read_text(encoding="utf-8")
         frame_counts = set()
         for row in recordings:
@@ -203,7 +204,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                     for i in range(0, len(raw) - 2, 3)
                 )
                 self.assertGreater(peak, 10_000, path)
-            if row["status"] == "candidate_review":
+            if int(row["id"][3:]) >= 275:
                 self.assertIn(f'src="{row["file"]}"', review)
             else:
                 self.assertNotIn(f'src="{row["file"]}"', review)

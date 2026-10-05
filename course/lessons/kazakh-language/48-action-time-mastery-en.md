@@ -74,4 +74,4 @@ Assemble My World 1.2: a privacy-safe time panorama with completed steps, regula
 - After seven days describe yesterday, now, and tomorrow from unseen pictures and meet at least 7 of 10 criteria.
 - After thirty days record a one-minute account, find one time-related inaccuracy, and repair it independently.
 
-[Course contents](/course/kazakh-language?lang=en)
+[Next lesson: Ask for help and name the action](/read/kazakh-language-49-request-help?lang=en)
