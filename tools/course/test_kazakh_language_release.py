@@ -172,14 +172,23 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 path.read_text(encoding="utf-8"),
             ))
 
-        self.assertEqual(len(recordings), 273)
+        approved = [row for row in recordings if row["status"] == "approved"]
+        candidates = [row for row in recordings if row["status"] == "candidate_review"]
+        self.assertEqual(len(approved), 273)
+        self.assertEqual(len(candidates), 42)
         self.assertEqual(len(lesson_files), 846)
-        self.assertEqual({row["file"] for row in recordings}, set(lesson_files))
+        self.assertEqual({row["file"] for row in approved}, set(lesson_files))
+        draft_files = []
+        for path in (ROOT / "course/drafts/kazakh-language").glob("*.md"):
+            draft_files.extend(re.findall(
+                r"/static/course/kazakh-language/audio/(kz-\d{3}\.wav)",
+                path.read_text(encoding="utf-8"),
+            ))
+        self.assertEqual(len(draft_files), 144)
+        self.assertEqual({row["file"] for row in candidates}, set(draft_files) - set(lesson_files))
         review = (audio / "review.html").read_text(encoding="utf-8")
         frame_counts = set()
         for row in recordings:
-            expected_status = "approved"
-            self.assertEqual(row["status"], expected_status)
             path = audio / row["file"]
             self.assertTrue(path.is_file(), path)
             with wave.open(str(path), "rb") as wav:
@@ -194,7 +203,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                     for i in range(0, len(raw) - 2, 3)
                 )
                 self.assertGreater(peak, 10_000, path)
-            if expected_status == "candidate_review":
+            if row["status"] == "candidate_review":
                 self.assertIn(f'src="{row["file"]}"', review)
             else:
                 self.assertNotIn(f'src="{row["file"]}"', review)

@@ -96,6 +96,9 @@ jobs:
       - name: Kazakh AI lesson programs match their examples
         run: python3 tools/course/test_kazakh_ai_lessons.py
 
+      - name: Kazakh language release and draft block are complete
+        run: python3 -m unittest tools.course.test_kazakh_language_release tools.course.test_kazakh_language_plans_problems -q
+
       - name: Code speaks the language of its lesson
         run: python3 tools/coursecheck/langcheck.py course/lessons/*/*.md
 

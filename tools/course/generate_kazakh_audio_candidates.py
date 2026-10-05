@@ -117,8 +117,8 @@ async def render() -> None:
 h1{font-size:30px}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
 article{border:1px solid #d8d8d8;border-radius:12px;padding:14px;box-shadow:0 3px 12px #0001}
 p{font-size:20px;min-height:48px}audio{width:100%}</style>
-<h1>__COUNT__ новых реплик: блоки 3–6</h1>
-<p>Проверка произношения перед публикацией уроков 17–48: «Школа и город», «День и услуги», «Пространство и падежи» и «Действие и время». Голос Aigul, язык kk-KZ. Одобренные записи уроков 1–16 не изменялись.</p><section>"""
+<h1>__COUNT__ новых реплик: следующий блок курса</h1>
+<p>Проверка произношения перед публикацией уроков 49–56 «Планы и проблемы». Голос Aigul, язык kk-KZ. Одобренные записи уроков 1–48 не изменялись. Прослушайте каждую реплику: новые уроки пока не опубликованы.</p><section>"""
         .replace("__COUNT__", str(len(candidates)))
         + "\n".join(cards)
         + "</section></html>\n",

@@ -5,6 +5,7 @@ on:
     paths:
       - 'course/kazakh-language/**'
       - 'course/lessons/kazakh-language/**'
+      - 'course/drafts/kazakh-language/**'
       - 'docs/kazakh-language-course.md'
       - 'tools/course/generate_kazakh_language_foundations.py'
       - 'tools/course/kazakh_audio.py'
@@ -19,6 +20,8 @@ on:
       - 'tools/course/generate_kazakh_language_space_cases_maps.py'
       - 'tools/course/generate_kazakh_language_action_time.py'
       - 'tools/course/generate_kazakh_language_action_time_maps.py'
+      - 'tools/course/generate_kazakh_language_plans_problems.py'
+      - 'tools/course/test_kazakh_language_plans_problems.py'
       - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
       - 'tools/course/prepare_kazakh_language_audio.py'
@@ -29,6 +32,7 @@ on:
     paths:
       - 'course/kazakh-language/**'
       - 'course/lessons/kazakh-language/**'
+      - 'course/drafts/kazakh-language/**'
       - 'docs/kazakh-language-course.md'
       - 'tools/course/generate_kazakh_language_foundations.py'
       - 'tools/course/kazakh_audio.py'
@@ -43,6 +47,8 @@ on:
       - 'tools/course/generate_kazakh_language_space_cases_maps.py'
       - 'tools/course/generate_kazakh_language_action_time.py'
       - 'tools/course/generate_kazakh_language_action_time_maps.py'
+      - 'tools/course/generate_kazakh_language_plans_problems.py'
+      - 'tools/course/test_kazakh_language_plans_problems.py'
       - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
       - 'tools/course/prepare_kazakh_language_audio.py'
@@ -69,10 +75,11 @@ jobs:
           python3 tools/course/generate_kazakh_language_space_cases_maps.py
           python3 tools/course/generate_kazakh_language_action_time.py
           python3 tools/course/generate_kazakh_language_action_time_maps.py
+          python3 -m tools.course.generate_kazakh_language_plans_problems
       - name: Verify generated files are committed
         run: git diff --exit-code
       - name: Validate completed blocks
-        run: python3 -m unittest tools.course.test_kazakh_language_release
+        run: python3 -m unittest tools.course.test_kazakh_language_release tools.course.test_kazakh_language_plans_problems
       - name: Prepare atomic publication
         run: |
           python3 tools/course/prepare_kazakh_language.py \
