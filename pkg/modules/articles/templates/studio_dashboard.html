@@ -41,6 +41,7 @@
           {{ range langs }}
           <li><span class="stat__langs-code">{{ label . }}</span><b>{{ money (index $.Stats.ViewsByLang .) }}</b></li>
           {{ end }}
+          {{ if .Stats.UnattributedViews }}<li><span class="stat__langs-code">{{ t .Lang "studio.stat_lang_unknown" }}</span><b>{{ money .Stats.UnattributedViews }}</b></li>{{ end }}
         </ul>
       </div>
     </div>

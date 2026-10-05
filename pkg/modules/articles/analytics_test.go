@@ -600,3 +600,23 @@ func TestArticleCountersKeepHistoryAndAddNewViews(t *testing.T) {
 		t.Fatalf("Russian views = %d, want archived 9 + verified 4", stats.ViewsByLang["ru"])
 	}
 }
+
+func TestArchivedLanguageCountsCannotExceedArticleTotal(t *testing.T) {
+	app := newTestApp(t)
+	author := app.createUser("lang-"+uuid.NewString()+"@t.test", "Parol123!")
+	id, _ := app.seedArticle(author, "published")
+	app.exec(`UPDATE articles SET views_unverified=1 WHERE id=$1`, id)
+	app.exec(`INSERT INTO article_views_daily_unverified(article_id,lang,day,views)
+		VALUES ($1,'ru',CURRENT_DATE,63)`, id)
+	t.Cleanup(func() {
+		_, _ = app.pool.Exec(context.Background(),
+			`DELETE FROM article_views_daily_unverified WHERE article_id=$1`, id)
+	})
+	stats, err := NewStore(app.pool).AuthorStats(t.Context(), author)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if stats.TotalViews != 1 || stats.ViewsByLang["ru"] != 0 || stats.UnattributedViews != 1 {
+		t.Fatalf("inconsistent archived language data shown as %+v", stats)
+	}
+}

@@ -112,9 +112,10 @@ func (a *Article) AuthorName() string {
 
 // AuthorStats aggregates a single author's publishing activity for the dashboard.
 type AuthorStats struct {
-	TotalArticles int
-	Published     int
-	Drafts        int
-	TotalViews    int64
-	ViewsByLang   map[string]int64
+	TotalArticles     int
+	Published         int
+	Drafts            int
+	TotalViews        int64
+	ViewsByLang       map[string]int64
+	UnattributedViews int64
 }

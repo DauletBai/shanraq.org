@@ -398,12 +398,29 @@ func (s *Store) AuthorStats(ctx context.Context, authorID uuid.UUID) (AuthorStat
 		return st, fmt.Errorf("author stats: %w", err)
 	}
 
+	// Old daily rows predate a reset of crawler-inflated article counters.
+	// Where their sum exceeds the archived article total, the language split
+	// cannot be trusted. Keep the article total and leave its language unknown.
 	rows, err := s.db.Query(ctx, `
-		SELECT v.lang, COALESCE(SUM(v.views), 0)
-		FROM article_views_daily_display v
-		JOIN articles a ON a.id = v.article_id
-		WHERE a.author_id = $1
-		GROUP BY v.lang
+		WITH archive_by_lang AS (
+			SELECT article_id, lang, SUM(views) AS views
+			FROM article_views_daily_unverified GROUP BY article_id, lang
+		), archive_totals AS (
+			SELECT article_id, SUM(views) AS views
+			FROM archive_by_lang GROUP BY article_id
+		), known AS (
+			SELECT v.lang, v.views
+			FROM archive_by_lang v
+			JOIN archive_totals t ON t.article_id = v.article_id
+			JOIN articles a ON a.id = v.article_id
+			WHERE a.author_id = $1 AND t.views <= a.views_unverified
+			UNION ALL
+			SELECT v.lang, v.views
+			FROM article_views_daily v
+			JOIN articles a ON a.id = v.article_id
+			WHERE a.author_id = $1
+		)
+		SELECT lang, SUM(views) FROM known GROUP BY lang
 	`, authorID)
 	if err != nil {
 		return st, fmt.Errorf("views by lang: %w", err)
@@ -416,6 +433,13 @@ func (s *Store) AuthorStats(ctx context.Context, authorID uuid.UUID) (AuthorStat
 			return st, err
 		}
 		st.ViewsByLang[lang] = n
+	}
+	for _, n := range st.ViewsByLang {
+		st.UnattributedViews -= n
+	}
+	st.UnattributedViews += st.TotalViews
+	if st.UnattributedViews < 0 {
+		st.UnattributedViews = 0
 	}
 	return st, rows.Err()
 }
