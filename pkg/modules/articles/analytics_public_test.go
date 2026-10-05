@@ -139,3 +139,31 @@ func TestTheCountryPanelKeepsMoreRowsThanTheOthers(t *testing.T) {
 		t.Errorf("browsers kept %d rows and countries %d; countries should keep more", len(other), len(rows))
 	}
 }
+
+func TestCountryChartsExcludeHostingRequests(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+
+	app.exec(`INSERT INTO analytics_daily (day,kind,label,is_guest,n) VALUES
+		(CURRENT_DATE,'country','datacenter',true,10000),
+		(CURRENT_DATE,'geolang','datacenter|en',true,10000)
+		ON CONFLICT (day,kind,label,is_guest) DO UPDATE SET n=EXCLUDED.n`)
+	defer app.exec(`DELETE FROM analytics_daily WHERE day=CURRENT_DATE
+		AND is_guest AND ((kind='country' AND label='datacenter')
+		OR (kind='geolang' AND label='datacenter|en'))`)
+
+	g := app.module().guestAnalytics(t.Context(), "ru")
+	for _, row := range g.Countries {
+		if row.Name == datacenterLabel {
+			t.Fatal("hosting requests appeared among readers' countries")
+		}
+	}
+	for _, row := range g.EnglishBy {
+		if row.Name == datacenterLabel {
+			t.Fatal("hosting requests appeared among English readers' countries")
+		}
+	}
+	if len(g.VPNLangs) == 0 {
+		t.Fatal("hosting requests disappeared from their separate network panel")
+	}
+}

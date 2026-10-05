@@ -1025,7 +1025,9 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	g.Devices = m.simpleRows(ctx, metricDevice, "ag.device.", lang)
 	g.OS = m.simpleRows(ctx, metricOS, "ag.os.", lang)
 	g.Browsers = m.simpleRows(ctx, metricBrowser, "ag.browser.", lang)
-	g.Countries = m.simpleRowsN(ctx, metricCountry, "ag.country.", lang, countryRowsMax)
+	// Hosting/VPN requests are kept in the bot and masked-network panels. They
+	// are not countries or verified readers and must not dominate this chart.
+	g.Countries = m.simpleRowsNExcept(ctx, metricCountry, "ag.country.", lang, countryRowsMax, datacenterLabel)
 	g.Langs = m.simpleRows(ctx, metricLang, "ag.lang.", lang)
 	g.EnglishBy = m.englishByGeo(ctx, lang)
 	g.VPNLangs = m.langOfGeo(ctx, datacenterLabel, lang)
@@ -1069,7 +1071,9 @@ func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 		m.rt.Logger.Warn("guest analytics trend", zap.Error(err))
 	}
 
-	today := time.Now()
+	// Daily rows use the Kazakhstan calendar; the chart axis must use it too.
+	// The production host runs in UTC and crosses midnight five hours later.
+	today := siteNow()
 	out := make([]GuestTrendDay, 0, guestTrendDays)
 	var max int64
 	for i := guestTrendDays - 1; i >= 0; i-- {
@@ -1167,11 +1171,16 @@ func (m *Module) simpleRows(ctx context.Context, kind, i18nPrefix, lang string) 
 // simpleRowsN is simpleRows with the row cap named, for the panel that wants a
 // longer list than the rest.
 func (m *Module) simpleRowsN(ctx context.Context, kind, i18nPrefix, lang string, keep int) []GuestSimpleRow {
+	return m.simpleRowsNExcept(ctx, kind, i18nPrefix, lang, keep, "")
+}
+
+func (m *Module) simpleRowsNExcept(ctx context.Context, kind, i18nPrefix, lang string, keep int, excluded string) []GuestSimpleRow {
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT label, COALESCE(SUM(n), 0)
 		FROM analytics_daily_display
-		WHERE kind = $1 AND is_guest AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
-		GROUP BY label`, kind)
+		WHERE kind = $1 AND is_guest AND label <> $2
+		  AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
+		GROUP BY label`, kind, excluded)
 	if err != nil {
 		m.rt.Logger.Warn("guest analytics "+kind, zap.Error(err))
 		return nil
@@ -1219,19 +1228,17 @@ func (m *Module) simpleRowsN(ctx context.Context, kind, i18nPrefix, lang string,
 	return out
 }
 
-// englishByGeo returns where English-reading visits came from over the last 30
-// days — each origin bucket (a country code, or "datacenter" for hosting/VPN)
-// with its English read count, busiest first. This is the sharpest answer to
-// "are my English readers genuine foreigners?": English from a residential
-// foreign country is a real foreign reader; English from KZ is a curious local;
-// English from datacenter/VPN is masked traffic (e.g. a reader in a censored
-// country on a VPN). It reads the country|lang cross counted in trackTraffic.
+// englishByGeo reports the country of verified English-language page views.
+// Hosting/VPN requests are excluded; they are shown in the separate network
+// panel, and neither their language nor their IP establishes a reader's origin.
 func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow {
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT split_part(label, '|', 1) AS geo, COALESCE(SUM(n), 0)
 		FROM analytics_daily_display
-		WHERE kind = $1 AND is_guest AND label LIKE '%|en' AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
-		GROUP BY geo`, metricGeoLang)
+		WHERE kind = $1 AND is_guest AND label LIKE '%|en'
+		  AND split_part(label, '|', 1) <> $2
+		  AND day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 30
+		GROUP BY geo`, metricGeoLang, datacenterLabel)
 	if err != nil {
 		m.rt.Logger.Warn("guest analytics english-by-geo", zap.Error(err))
 		return nil
@@ -1265,12 +1272,9 @@ func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow
 	return out
 }
 
-// langOfGeo returns the reading-language split (kk/ru/en) for a single origin
-// bucket (e.g. "datacenter") over the last 30 days. For the masked VPN bucket
-// this is the key discriminator: Russian implies Russia/CIS (Russian speakers on
-// an always-on VPN), while English implies genuine international readers — China,
-// Iran, the West — who bridge through English rather than Russian. It reads the
-// country|lang cross counted in trackTraffic.
+// langOfGeo reports requested page languages for a network bucket. The
+// datacenter bucket includes unverified requests, including bots, so this
+// breakdown must not be interpreted as a reader-country or audience estimate.
 func (m *Module) langOfGeo(ctx context.Context, geo, lang string) []GuestSimpleRow {
 	rows, err := m.rt.DB.Query(ctx, `
 		SELECT split_part(label, '|', 2) AS lng, COALESCE(SUM(n), 0)

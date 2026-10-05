@@ -72,10 +72,7 @@
       <div class="adm-kpis">
         <div class="adm-kpi"><span class="adm-kpi__ic">◕</span><b>{{ .Stats.Users }}</b><span>{{ t .Lang "admin.users" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">▦</span><b>{{ .Stats.Articles }}</b><span>{{ t .Lang "admin.articles" }}</span></div>
-        {{/* This counter restarted when a visible first-party browser beacon
-             became mandatory. The date prevents the clean, deliberately short
-             series from being read as a sudden loss of audience. */}}
-        <div class="adm-kpi" title="{{ t .Lang "admin.views_since" }} {{ .SourcesSince }}"><span class="adm-kpi__ic">◎</span><b>{{ money .Stats.Views }}</b><span>{{ t .Lang "admin.views" }} <i class="adm-kpi__since">{{ t .Lang "admin.since_short" }} {{ .SourcesSince }}</i></span></div>
+        <div class="adm-kpi"><span class="adm-kpi__ic">◎</span><b>{{ money .Stats.Views }}</b><span>{{ t .Lang "admin.views" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">✎</span><b>{{ .Stats.Comments }}</b><span>{{ t .Lang "admin.comments" }}</span></div>
         <div class="adm-kpi"><span class="adm-kpi__ic">⌂</span><b>{{ .Stats.ListingsActive }}</b><span>{{ t .Lang "admin.listings" }}</span></div>
       </div>

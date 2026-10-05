@@ -22,9 +22,9 @@ import (
 // without crossing them with anything. A country is not a reader; a country
 // crossed with a page and a day can be.
 
-// publicStatsTTL is how long an assembled page is reused. The underlying rows
-// change once a day, so a shorter cache would only cost queries.
-const publicStatsTTL = time.Hour
+// Public aggregates are flushed throughout the day. Keep the cached panels
+// close to the live traffic chart, which is queried on every page load.
+const publicStatsTTL = time.Minute
 
 // PublicStats backs /analytics.
 type PublicStats struct {

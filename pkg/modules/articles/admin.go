@@ -240,10 +240,6 @@ type AdminPage struct {
 	// Confirmed reads: a view proves the page was visible, while this stricter
 	// beacon also requires the end and enough engaged reading time.
 	Reads ReadTotals
-	// SourcesSince is the first retained historical day. The interface also
-	// names the 03.10.2026 methodology boundary so old and new counts are not
-	// mistaken for one measurement method.
-	SourcesSince string
 	// AI model configuration (provider/model switch).
 	AI ai.AdminView
 	// Payment acquirer configuration (provider on/off/switch).
@@ -301,7 +297,6 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 	} else {
 		m.rt.Logger.Warn("read totals", zap.Error(err))
 	}
-	page.SourcesSince = analyticsHistorySince
 	page.CanManageUsers = canManageUsers(claims)
 	page.CanFinance = canViewFinance(claims)
 	page.CanModerate = canModerate(claims)
