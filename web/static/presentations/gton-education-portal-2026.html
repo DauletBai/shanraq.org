@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shanraq.org — единый портал организаций образования | G-TON 2026</title>
+  <style>
+    :root { color-scheme: light; font-family: Arial, Helvetica, sans-serif; color: #173044; background: #e9eff4; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    .slide { width: min(100vw, 1280px); min-height: 720px; margin: 0 auto 22px; padding: 56px 74px; background: #fff; position: relative; overflow: hidden; box-shadow: 0 10px 32px #15354a26; }
+    .slide::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 9px; background: linear-gradient(90deg,#11a2b6,#1b69ab,#f9a13f); }
+    .eyebrow { color: #0e8ca1; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: 16px; }
+    h1 { font-size: 58px; line-height: 1.07; letter-spacing: -.04em; margin: 34px 0 24px; max-width: 1060px; }
+    h2 { font-size: 43px; line-height: 1.12; letter-spacing: -.035em; margin: 24px 0 24px; }
+    h3 { font-size: 25px; margin: 0 0 12px; }
+    p, li, td, th { font-size: 23px; line-height: 1.38; }
+    p { margin: 0 0 18px; }
+    a { color: #116994; text-decoration: none; overflow-wrap: anywhere; }
+    .lead { font-size: 29px; max-width: 1000px; color: #3c5766; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+    .card { border-radius: 20px; padding: 28px; background: #eef7f9; min-height: 180px; }
+    .card.alt { background: #f2f5fb; }
+    .card.warm { background: #fff3e8; }
+    .card p { margin: 0; font-size: 21px; }
+    .number { font-size: 56px; line-height: 1; font-weight: 800; color: #0d8399; margin: 10px 0; }
+    .tag { display: inline-block; padding: 8px 14px; border-radius: 999px; background: #dceff3; color: #096c80; font-weight: 700; margin-bottom: 14px; font-size: 17px; }
+    ul { padding-left: 30px; margin: 8px 0; }
+    li { margin: 9px 0; }
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 36px; }
+    .timeline .card { padding: 24px; min-height: 270px; }
+    .timeline .card p { font-size: 19px; }
+    .timeline h3 { font-size: 22px; }
+    .footer { position: absolute; bottom: 25px; left: 74px; right: 74px; display: flex; justify-content: space-between; color: #657c87; font-size: 15px; }
+    .visual { margin-top: 35px; padding: 22px; background: #eaf2f6; border-radius: 20px; display: grid; grid-template-columns: 190px 1fr; gap: 18px; }
+    .visual div { background: #fff; border-radius: 13px; padding: 16px; font-size: 18px; }
+    .visual .region { background: #18445f; color: #fff; }
+    .visual .sites { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; background: transparent; padding: 0; }
+    .visual .sites div { border: 2px solid #cde4ed; }
+    .small { font-size: 18px; color: #526b77; }
+    .pill { display: inline-block; margin: 8px 8px 0 0; padding: 10px 16px; border-radius: 12px; background: #e8f2f7; font-size: 20px; font-weight: 700; }
+    .last { background: linear-gradient(135deg, #fff 60%, #e2f3f6); }
+    @page { size: 13.333in 7.5in; margin: 0; }
+    @media print { html, body { width: 13.333in; background: #fff; } .slide { width: 13.333in; height: 7.5in; min-height: 0; margin: 0; box-shadow: none; break-after: page; page-break-after: always; } .slide:last-child { break-after: auto; page-break-after: auto; } }
+    @media screen and (max-width: 700px) { .slide { min-height: 0; padding: 28px 22px 64px; } h1 { font-size: 39px; } h2 { font-size: 32px; } p, li { font-size: 18px; } .lead { font-size: 21px; } .grid, .grid.three, .timeline, .visual { grid-template-columns: 1fr; } .footer { left: 22px; right: 22px; } }
+  </style>
+</head>
+<body>
+  <section class="slide">
+    <div class="eyebrow">G-TON 2026 · Образование · Задача «Портал организаций образования»</div>
+    <h1>Один портал для школ и детских садов региона</h1>
+    <p class="lead">Отдельная региональная система на основе нашего Go-фреймворка. Действующий Shanraq.org показывает его возможности на работающем продукте.</p>
+    <div class="grid">
+      <div class="card"><span class="tag">Заявитель</span><h3>ТОО «Казна Технолоджис»</h3><p>Проект Shanraq.org · основан в 2025 году</p></div>
+      <div class="card alt"><span class="tag">Предложение</span><h3>Пилот за 2 месяца</h3><p>Собрать отдельное приложение для региона и проверить его на нескольких организациях.</p></div>
+    </div>
+    <div class="footer"><span>Д. Баймурзин · shanraq.org</span><span>05.10.2026 · 1/7</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">Проблема заказчика</div>
+    <h2>Сайты закупаются по отдельности каждый год</h2>
+    <p class="lead">В описании G-TON говорится примерно о 600 школах и детских садах, которым нужна единая платформа на сервере области, бесплатная для организаций.</p>
+    <div class="grid">
+      <div class="card warm"><h3>Сейчас</h3><p>Разрозненные сайты, повторные закупки, разные интерфейсы и процедуры публикации.</p></div>
+      <div class="card"><h3>Цель пилота</h3><p>Одна техническая основа, отдельное пространство каждой организации и единый порядок поддержки.</p></div>
+    </div>
+    <p class="small" style="margin-top:34px">Источник формулировки задачи: <a href="https://astanahub.com/ru/l/GTON">astanahub.com/ru/l/GTON</a>. KPI должен быть уточнён заказчиком.</p>
+    <div class="footer"><span>Shanraq.org · предложение к задаче G-TON</span><span>2/7</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">Что уже работает</div>
+    <h2>Фреймворк уже проверен работающим сайтом</h2>
+    <div class="grid three">
+      <div class="card"><div class="number">9</div><h3>открытых курсов</h3><p>Учебные направления уже опубликованы на Shanraq.org.</p></div>
+      <div class="card alt"><div class="number">365</div><h3>уроков</h3><p>Уникальные уроки в действующей базе.</p></div>
+      <div class="card warm"><div class="number">3</div><h3>языка контента</h3><p>Казахский, русский и английский; локализация зависит от материала.</p></div>
+    </div>
+    <p style="margin-top:36px">Shanraq.org работает на нашей модульной основе на Go: публикация материалов, учётные записи, роли, учебные страницы и аналитика. Для региона предлагается отдельное приложение с нужными ему функциями и собственной базой данных.</p>
+    <p class="small">Данные о курсах и уроках — с действующего сайта на 5 октября 2026 года. Демонстрация: <a href="https://shanraq.org/">shanraq.org</a></p>
+    <div class="footer"><span>Подтверждённый продуктовый MVP</span><span>3/7</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">Предлагаемое решение</div>
+    <h2>Общий сервер — самостоятельное пространство каждой организации</h2>
+    <div class="visual">
+      <div class="region"><strong>Администратор региона</strong><br><br>Подключение организаций<br><br>Правила публикации<br><br>Обновления и резервное копирование</div>
+      <div class="sites"><div><strong>Школа № 1</strong><br><br>Новости<br>Документы<br>Контакты</div><div><strong>Школа № 2</strong><br><br>Новости<br>Документы<br>Контакты</div><div><strong>Детский сад</strong><br><br>Новости<br>Документы<br>Контакты</div></div>
+    </div>
+    <p style="margin-top:22px;font-size:20px">Отдельное приложение на сервере региона: шаблоны страниц, разграничение данных и ролей, централизованное администрирование. Shanraq.org остаётся независимым действующим продуктом. Организации пользуются порталом бесплатно; поддержку согласуем с заказчиком.</p>
+    <div class="footer"><span>Схема целевой архитектуры пилота</span><span>4/7</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">Объём адаптации</div>
+    <h2>От продукта к региональному пилоту</h2>
+    <div class="grid">
+      <div class="card"><span class="tag">Есть сейчас</span><ul><li>Модульная основа на Go</li><li>Действующий сайт Shanraq.org</li><li>Редактор и публикация контента</li><li>Учётные записи и роли</li><li>Трёхъязычные материалы</li></ul></div>
+      <div class="card warm"><span class="tag">Разработать и проверить в пилоте</span><ul><li>Отдельную региональную сборку</li><li>Пространства школ и детсадов</li><li>Шаблоны и обязательные разделы</li><li>Разделение данных и прав</li><li>Развёртывание и поддержку в регионе</li></ul></div>
+    </div>
+    <p class="small" style="margin-top:22px">Региональный портал пока не внедрён: его готовность и масштабирование должны быть подтверждены пилотом.</p>
+    <div class="footer"><span>Прозрачная граница между MVP и планом пилота</span><span>5/7</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">Предлагаемый план · 2 месяца</div>
+    <h2>Быстро проверить решение на реальных организациях</h2>
+    <div class="timeline">
+      <div class="card"><span class="tag">Недели 1–2</span><h3>Согласовать</h3><p>Требования региона, обязательные разделы, роли, сервер и исходные показатели.</p></div>
+      <div class="card alt"><span class="tag">Недели 3–4</span><h3>Адаптировать</h3><p>Отдельная сборка, пространства организаций, шаблоны и доступ редакторов.</p></div>
+      <div class="card warm"><span class="tag">Недели 5–6</span><h3>Запустить</h3><p>Предлагаемый пилот с 3–5 школами или детсадами при согласии заказчика.</p></div>
+      <div class="card"><span class="tag">Недели 7–8</span><h3>Измерить</h3><p>Проверить работу редакторов, доступность, время публикации и план расширения.</p></div>
+    </div>
+    <p class="small" style="margin-top:26px">Количество пилотных организаций и KPI уточняются с регионом до запуска.</p>
+    <div class="footer"><span>План пилота, не утверждённый график заказчика</span><span>6/7</span></div>
+  </section>
+
+  <section class="slide last">
+    <div class="eyebrow">Команда и следующий шаг</div>
+    <h2>Проверить пилот с регионом G-TON</h2>
+    <p class="lead">Даулет Баймурзин — основатель, работает над проектом полный день. Команда заявителя: один человек. Для пилота потребуется рабочая группа заказчика и представители выбранных организаций.</p>
+    <div class="grid">
+      <div class="card"><h3>Что нужно от региона</h3><p>Ответственный за пилот, 3–5 заинтересованных организаций, доступ к требованиям и согласованная среда размещения.</p></div>
+      <div class="card alt"><h3>Что покажем</h3><p>Работающий продукт, демонстрацию редакторских сценариев и план адаптации с измеримыми результатами.</p></div>
+    </div>
+    <p style="margin-top:30px"><span class="pill"><a href="https://shanraq.org/">shanraq.org</a></span><span class="pill"><a href="https://shanraq.org/framework">shanraq.org/framework</a></span><span class="pill">baimurza.daulet@gmail.com</span></p>
+    <div class="footer"><span>ТОО «Казна Технолоджис» · Shanraq.org</span><span>7/7</span></div>
+  </section>
+</body>
+</html>
