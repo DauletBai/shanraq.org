@@ -117,6 +117,26 @@ func TestChangingAndWithdrawingAVote(t *testing.T) {
 	}
 }
 
+// A removed account cascades its votes through PostgreSQL without going through
+// Store.Vote. The article card must still show the score backed by real votes.
+func TestScoreFollowsCascadedVoterDeletion(t *testing.T) {
+	f := newFixture(t)
+	voter := f.user(t, uuid.New())
+	if _, err := f.store.Vote(f.ctx, f.article, voter, f.author, VoteUp); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := f.pool.Exec(f.ctx, `DELETE FROM auth_users WHERE id=$1`, voter); err != nil {
+		t.Fatal(err)
+	}
+	var score int
+	if err := f.pool.QueryRow(f.ctx, `SELECT score FROM articles WHERE id=$1`, f.article).Scan(&score); err != nil {
+		t.Fatal(err)
+	}
+	if score != 0 {
+		t.Fatalf("score after a voter's account was deleted = %d, want 0", score)
+	}
+}
+
 // The point of the weighting: a reader with standing moves a score further than
 // a fresh account, and the cap stops one voter from deciding it alone.
 func TestAVoteCarriesTheWeightOfItsVoter(t *testing.T) {

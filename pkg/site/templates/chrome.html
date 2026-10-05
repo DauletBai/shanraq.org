@@ -953,17 +953,31 @@
     // Only the previous hostname is sent for acquisition classification; no
     // previous path or query leaves the browser.
     (function () {
-      if (!navigator.sendBeacon || navigator.webdriver) return;
+      if (navigator.webdriver || (!navigator.sendBeacon && !window.fetch)) return;
       var sent = false, timer = 0, from = '';
       try { if (document.referrer) from = new URL(document.referrer).hostname; } catch (e) {}
       function send() {
         if (sent || document.visibilityState !== 'visible') return;
-        sent = true;
         if (timer) clearTimeout(timer);
-        try { navigator.sendBeacon('/api/view?from=' + encodeURIComponent(from)); } catch (e) {}
+        var url = '/api/view?from=' + encodeURIComponent(from);
+        try {
+          if (navigator.sendBeacon && navigator.sendBeacon(url)) { sent = true; return; }
+        } catch (e) {}
+        // A full beacon queue or a browser without sendBeacon must not turn a
+        // visible page into a silent zero. The request remains same-origin.
+        if (window.fetch) {
+          try {
+            fetch(url, { method: 'POST', credentials: 'same-origin', keepalive: true })
+              .catch(function () {});
+            sent = true;
+          } catch (e) {}
+        }
       }
       function arm() {
-        if (!sent && document.visibilityState === 'visible') timer = setTimeout(send, 1200);
+        if (!sent && document.visibilityState === 'visible') {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(send, 250);
+        }
       }
       ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (name) {
         window.addEventListener(name, function (ev) { if (ev.isTrusted) send(); }, { passive: true, once: true });
