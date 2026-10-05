@@ -1228,7 +1228,7 @@ func (m *Module) simpleRowsNExcept(ctx context.Context, kind, i18nPrefix, lang s
 	return out
 }
 
-// englishByGeo reports the country of verified English-language page views.
+// englishByGeo reports the country of English-language page views.
 // Hosting/VPN requests are excluded; they are shown in the separate network
 // panel, and neither their language nor their IP establishes a reader's origin.
 func (m *Module) englishByGeo(ctx context.Context, lang string) []GuestSimpleRow {

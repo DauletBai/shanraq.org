@@ -373,7 +373,7 @@ func (s *Store) RecordView(ctx context.Context, articleID uuid.UUID, lang string
 	}
 	if _, err := tx.Exec(ctx, `
 		INSERT INTO article_views_daily (article_id, lang, day, views)
-		VALUES ($1, $2, CURRENT_DATE, 1)
+		VALUES ($1, $2, (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date, 1)
 		ON CONFLICT (article_id, lang, day) DO UPDATE SET views = article_views_daily.views + 1
 	`, articleID, lang); err != nil {
 		return err

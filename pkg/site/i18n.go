@@ -1510,7 +1510,7 @@ var messages = map[string]map[string]string{
 	"ag.os_panel":        {"kz": "Операциялық жүйе (30 күн)", "ru": "ОС (30 дней)", "en": "OS (30 days)"},
 	"ag.browsers":        {"kz": "Браузерлер (30 күн)", "ru": "Браузеры (30 дней)", "en": "Browsers (30 days)"},
 	"ag.countries":       {"kz": "Елдер (30 күн)", "ru": "Страны (30 дней)", "en": "Countries (30 days)"},
-	"ag.countries_note":  {"kz": "Браузер арқылы расталған қаралымдардың елдері. Хостинг пен VPN желілерінің сұраулары бұл тізімге кірмейді.", "ru": "Страны подтверждённых просмотров в браузере. Запросы из хостинга и VPN здесь не учитываются.", "en": "Countries of browser-verified views. Requests from hosting and VPN networks are excluded."},
+	"ag.countries_note":  {"kz": "Қаралымдардың елдері. Хостинг пен VPN желілерінің сұраулары бұл тізімге кірмейді.", "ru": "Страны просмотров. Запросы из хостинга и VPN здесь не учитываются.", "en": "Countries of page views. Requests from hosting and VPN networks are excluded."},
 	"ag.langs":           {"kz": "Оқу тілі (30 күн)", "ru": "Язык чтения (30 дней)", "en": "Reading language (30 days)"},
 	"ag.lang.kz":         {"kz": "Қазақша", "ru": "Казахский", "en": "Kazakh"},
 	"ag.lang.ru":         {"kz": "Орысша", "ru": "Русский", "en": "Russian"},

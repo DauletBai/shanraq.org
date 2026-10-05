@@ -74,7 +74,7 @@ type saltCache struct {
 // On any database trouble it falls back to a process-local random key: losing
 // continuity across a restart is a worse report, never a leak.
 func (s *saltCache) salt(ctx context.Context, mt *Metrics) []byte {
-	day := time.Now().UTC().Format("2006-01-02")
+	day := siteNow().Format("2006-01-02")
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.day == day && len(s.key) > 0 {
@@ -234,7 +234,7 @@ func (mt *Metrics) purge(ctx context.Context) {
 		return
 	}
 	if _, err := mt.db.Exec(ctx,
-		`DELETE FROM analytics_salt WHERE day < CURRENT_DATE - INTERVAL '2 days'`); err != nil {
+		`DELETE FROM analytics_salt WHERE day < (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - INTERVAL '2 days'`); err != nil {
 		if mt.log != nil {
 			mt.log.Warn("analytics salt purge", zap.Error(err))
 		}
