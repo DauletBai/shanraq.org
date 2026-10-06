@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Render review candidates with a dedicated Kazakh neural voice.
+"""Render Kazakh lesson audio with the established Kazakh neural voice.
 
-These files are candidates, not approved lesson audio.  The generated review
-page lets a native speaker approve or reject every phrase before lesson links
-are changed. Microsoft lists the selected voice specifically for ``kk-KZ``;
-the owner's listening review remains the final pronunciation check.
+The review page remains available for spot checks and uncertain phrases.
+After technical and content checks, a complete block can be published without
+waiting for a separate owner review. Microsoft lists the voice for ``kk-KZ``.
 """
 
 from __future__ import annotations

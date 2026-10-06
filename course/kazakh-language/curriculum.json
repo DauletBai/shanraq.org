@@ -99,7 +99,7 @@
     {
       "id": "connected-speech",
       "range": "57-64",
-      "status": "audio-review",
+      "status": "ready",
       "lexical_target": 1950,
       "release": "2.0",
       "title_kz": "Байланысты сөз және тыңдалым",

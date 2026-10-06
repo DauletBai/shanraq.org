@@ -65,6 +65,14 @@ ROUTE = (
     ("54-explain-problem", "kazakh-language-54-explain-problem", 540),
     ("55-choose-together", "kazakh-language-55-choose-together", 550),
     ("56-plans-problems-mastery", "kazakh-language-56-plans-problems-mastery", 560),
+    ("57-speech-chunks", "kazakh-language-57-speech-chunks", 570),
+    ("58-question-intonation", "kazakh-language-58-question-intonation", 580),
+    ("59-listen-for-main-point", "kazakh-language-59-listen-for-main-point", 590),
+    ("60-repair-a-missed-word", "kazakh-language-60-repair-a-missed-word", 600),
+    ("61-short-story-chain", "kazakh-language-61-short-story-chain", 610),
+    ("62-unknown-word-context", "kazakh-language-62-unknown-word-context", 620),
+    ("63-retell-and-follow-up", "kazakh-language-63-retell-and-follow-up", 630),
+    ("64-connected-speech-mastery", "kazakh-language-64-connected-speech-mastery", 640),
 )
 SERIES_COVER = "/static/covers/school/kazakh-language/foundations/01-first-conversation.webp"
 BLOCK_COVERS = {
@@ -75,19 +83,20 @@ BLOCK_COVERS = {
     5: "/static/covers/school/kazakh-language/space-cases/05-space-cases.webp",
     6: "/static/covers/school/kazakh-language/action-time/06-action-time.webp",
     7: "/static/covers/school/kazakh-language/plans-problems/07-plans-problems.webp",
+    8: "/static/covers/school/kazakh-language/connected-speech/08-connected-speech.webp",
 }
 META = {
     "ru": (
         "Казахский язык: начинаем говорить с первой встречи",
-        "Бесплатный практический курс казахского языка от первых звуков до самостоятельного общения. 56 уроков учат знакомиться, ориентироваться в городе, решать бытовые задачи, выбирать падеж по смыслу, рассказывать о времени и вместе решать проблемы в проекте «Моя среда».",
+        "Бесплатный практический курс казахского языка от первых звуков до самостоятельного общения. 64 урока учат знакомиться, ориентироваться в городе, решать бытовые задачи, рассказывать о времени, договариваться, понимать связную речь и точно пересказывать услышанное в проекте «Моя среда».",
     ),
     "kz": (
         "Қазақ тілі: алғашқы кездесуден бастап сөйлейміз",
-        "Алғашқы дыбыстардан дербес қарым-қатынасқа дейінгі тегін тәжірибелік қазақ тілі курсы. 56 сабақ танысуды, қалада бағдарлауды, тұрмыстық міндеттерді, мағынаға сай септік таңдауды, уақытты баяндауды және мәселелерді бірлесіп шешуді «Менің ортам» жобасында дамытады.",
+        "Алғашқы дыбыстардан дербес қарым-қатынасқа дейінгі тегін тәжірибелік қазақ тілі курсы. 64 сабақ танысуды, қалада бағдарлауды, тұрмыстық міндеттерді шешуді, уақытты баяндауды, келісуді, байланысты сөзді түсінуді және естігенді дәл жеткізуді «Менің ортам» жобасында дамытады.",
     ),
     "en": (
         "Kazakh: start speaking from the first meeting",
-        "A free practical Kazakh course from first sounds to independent communication. Fifty-six lessons cover introductions, city routes, everyday services, meaning-based cases, past and planned actions, and solving problems together in the continuing My World project.",
+        "A free practical Kazakh course from first sounds to independent communication. Sixty-four lessons cover introductions, city routes, everyday services, past and planned actions, negotiation, connected speech, and accurate retelling in the continuing My World project.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -111,8 +120,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 56:
-        raise ValueError("the current release must contain exactly fifty-six lessons")
+    if len(ROUTE) != 64:
+        raise ValueError("the current release must contain exactly sixty-four lessons")
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-kazakh-language-course'));"]
     slugs = ",".join(literal(slug) for _, slug, _ in ROUTE)
     sql.append(f"""DO $guard$

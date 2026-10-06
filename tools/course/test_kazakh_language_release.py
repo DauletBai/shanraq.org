@@ -12,8 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / "course/lessons/kazakh-language"
 MAPS = ROOT / "web/static/course/kazakh-language"
 PUBLISHED_STEMS = tuple(stem for stem, _, _ in prepare_kazakh_language.ROUTE)
-REVIEW_STEMS = ()
-LESSON_STEMS = PUBLISHED_STEMS + REVIEW_STEMS
+LESSON_STEMS = PUBLISHED_STEMS
 MAP_STEMS = (
     "01-first-contact", "02-nine-sounds", "03-harmony", "04-sentence",
     "05-introduction", "06-questions", "07-repair", "08-mastery",
@@ -29,6 +28,8 @@ MAP_STEMS = (
     "45-future", "46-questions", "47-story", "48-mastery",
     "49-request", "50-agreement", "51-possibility", "52-cause",
     "53-condition", "54-problem", "55-choice", "56-mastery",
+    "57-chunks", "58-intonation", "59-gist", "60-repair",
+    "61-story", "62-context", "63-retell", "64-mastery",
 )
 
 
@@ -45,6 +46,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(len(data["fifth_block_lessons"]), 8)
         self.assertEqual(len(data["sixth_block_lessons"]), 8)
         self.assertEqual(len(data["seventh_block_lessons"]), 8)
+        self.assertEqual(len(data["eighth_block_lessons"]), 8)
         self.assertEqual(data["blocks"][0]["status"], "ready")
         self.assertEqual(data["blocks"][1]["status"], "ready")
         self.assertEqual(data["blocks"][2]["status"], "ready")
@@ -52,6 +54,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(data["blocks"][4]["status"], "ready")
         self.assertEqual(data["blocks"][5]["status"], "ready")
         self.assertEqual(data["blocks"][6]["status"], "ready")
+        self.assertEqual(data["blocks"][7]["status"], "ready")
         self.assertEqual(data["blocks"][3]["lexical_target"], 800)
         self.assertEqual(data["blocks"][6]["lexical_target"], 1783)
         self.assertEqual(data["blocks"][-1]["lexical_target"], 2229)
@@ -77,8 +80,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 self.assertNotIn("#speak-kz=", text, path)
                 self.assertIn("```kazakh\n", text, path)
                 self.assertIn(headings[lang], text, path)
-                threshold = minimum[lang] if stem in PUBLISHED_STEMS else 430
-                self.assertGreaterEqual(len(text.split()), threshold, path)
+                self.assertGreaterEqual(len(text.split()), minimum[lang], path)
                 self.assertNotRegex(text, r"\b(TODO|TBD)\b")
                 for phrase in forbidden.get(lang, ()):
                     self.assertNotIn(phrase, text, path)
@@ -106,13 +108,13 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         sql, expected = prepare_kazakh_language.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
-        self.assertEqual(sql.count("INSERT INTO articles("), 56)
-        self.assertEqual(sql.count("INSERT INTO article_translations("), 168)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 56)
-        self.assertEqual(len(expected), 168)
+        self.assertEqual(sql.count("INSERT INTO articles("), 64)
+        self.assertEqual(sql.count("INSERT INTO article_translations("), 192)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 64)
+        self.assertEqual(len(expected), 192)
         self.assertEqual(
             [position for _, _, position in prepare_kazakh_language.ROUTE],
-            list(range(10, 561, 10)),
+            list(range(10, 641, 10)),
         )
         self.assertIn("'kazakh-language'", sql)
         self.assertIn("'kazakh'", sql)
@@ -185,8 +187,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
 
         self.assertEqual(len(recordings), 363)
         self.assertEqual(len(lesson_files), 1134)
-        self.assertTrue(all(row["status"] == "approved" for row in recordings if int(row["id"][3:]) <= 316))
-        self.assertTrue(all(row["status"] == "candidate_review" for row in recordings if int(row["id"][3:]) >= 317))
+        self.assertTrue(all(row["status"] == "approved" for row in recordings))
         self.assertEqual({row["file"] for row in recordings}, set(lesson_files))
         review = (audio / "review.html").read_text(encoding="utf-8")
         frame_counts = set()
@@ -214,11 +215,11 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         # every asset identical; a few dozen distinct durations catches that case.
         self.assertGreater(len(frame_counts), 30)
 
-    def test_eighth_block_is_complete_but_awaits_audio_approval(self):
+    def test_eighth_block_is_complete_and_approved(self):
         from tools.course.generate_kazakh_language_connected_speech import LESSONS as BLOCK_LESSONS
 
         curriculum = json.loads((ROOT / "course/kazakh-language/curriculum.json").read_text())
-        self.assertEqual(curriculum["blocks"][7]["status"], "audio-review")
+        self.assertEqual(curriculum["blocks"][7]["status"], "ready")
         self.assertEqual(len(curriculum["eighth_block_lessons"]), 8)
         self.assertEqual([int(lesson["stem"][:2]) for lesson in BLOCK_LESSONS], list(range(57, 65)))
         for lesson in BLOCK_LESSONS:

@@ -75,3 +75,5 @@ Hold a four-minute exchange with two unseen cards and meet 8 of 10 criteria. Rep
 - After thirty days return to the project card, change one condition, and repair an unclear utterance yourself.
 
 [Course contents](/course/kazakh-language?lang=en)
+
+[Next lesson: Hear speech in meaningful chunks](/read/kazakh-language-57-speech-chunks?lang=en)

@@ -234,6 +234,12 @@ def render(lesson: dict, lang: str, next_lesson: dict | None, audio: dict[str, d
         parts.extend(("", f"[{ui[14]}: {next_lesson['title'][i]}](/read/kazakh-language-{next_lesson['stem']}?lang={lang})"))
     else:
         parts.extend(("", f"[{ui[15]}](/course/kazakh-language?lang={lang})"))
+        next_title = {
+            "ru": "Слышать речь смысловыми кусками",
+            "kz": "Сөзді мағыналық бөліктермен тыңдау",
+            "en": "Hear speech in meaningful chunks",
+        }[lang]
+        parts.extend(("", f"[{ui[14]}: {next_title}](/read/kazakh-language-57-speech-chunks?lang={lang})"))
     return "\n".join(parts) + "\n"
 
 

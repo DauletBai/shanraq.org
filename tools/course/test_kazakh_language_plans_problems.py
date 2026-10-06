@@ -52,9 +52,9 @@ class PlansProblemsTest(unittest.TestCase):
                     self.assertNotIn('M418 453h21', text)
 
     def test_approved_block_is_in_published_route(self):
-        self.assertEqual(len(prepare_kazakh_language.ROUTE), 56)
+        self.assertEqual(len(prepare_kazakh_language.ROUTE), 64)
         self.assertEqual(
-            [stem for stem, _, _ in prepare_kazakh_language.ROUTE[-8:]],
+            [stem for stem, _, _ in prepare_kazakh_language.ROUTE[48:56]],
             [lesson["stem"] for lesson in draft.LESSONS],
         )
         manifest = json.loads((draft.AUDIO / "manifest.json").read_text(encoding="utf-8"))
@@ -64,12 +64,7 @@ class PlansProblemsTest(unittest.TestCase):
         ]
         self.assertTrue(published)
         self.assertTrue(all(row["status"] == "approved" for row in published))
-        staged = [row for row in manifest["recordings"] if row["status"] == "candidate_review"]
-        self.assertEqual(len(staged), 48)
-        self.assertTrue(all(
-            all(57 <= int(name[:2]) <= 64 for name in row["lessons"])
-            for row in staged
-        ))
+        self.assertFalse(any(row["status"] == "candidate_review" for row in manifest["recordings"]))
         review = (draft.AUDIO / "review.html").read_text(encoding="utf-8")
         self.assertIn("уроков 57–64", review)
         self.assertEqual(review.count('<audio controls'), 48)
