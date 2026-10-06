@@ -182,6 +182,49 @@ func TestAdminActivitySurvivesPublicNoTrackCookie(t *testing.T) {
 	}
 }
 
+// A browser may keep the no-track cookie after switching from a staff account
+// to a regular reader. That cookie still excludes public counters, but it must
+// not silently erase the regular reader's signed-in activity report.
+func TestReaderActivitySurvivesInheritedNoTrackCookie(t *testing.T) {
+	app := newTestApp(t)
+	adminCookie, _ := adminSession(t, app, "cookie-admin@t.test")
+	readerID := app.createUser("cookie-reader@t.test", "Parol12345")
+	readerCookie := app.login("cookie-reader@t.test", "Parol12345")
+	articleID, slug := app.seedArticle(readerID, "published")
+	noTrack := &http.Cookie{Name: analyticsOptOutCookie, Value: "1"}
+
+	w := app.do(http.MethodPost, "/api/view", nil,
+		withCookie(readerCookie), withCookie(noTrack),
+		withHeader("Referer", app.origin+"/read/"+slug+"?lang=ru"),
+		withHeader("User-Agent", "Mozilla/5.0 Chrome/140 Safari/537.36"))
+	if w.Code != http.StatusNoContent {
+		t.Fatalf("reader view beacon = %d", w.Code)
+	}
+	w = app.do(http.MethodPost, "/read/"+slug+"/done?t=30&d=100&l=ru", nil,
+		withCookie(readerCookie), withCookie(noTrack),
+		withHeader("User-Agent", "Mozilla/5.0 Chrome/140 Safari/537.36"))
+	if w.Code != http.StatusNoContent {
+		t.Fatalf("reader reading beacon = %d", w.Code)
+	}
+	var events, publicViews int
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT count(*) FROM user_activity_events WHERE user_id=$1 AND article_id=$2`,
+		readerID, articleID).Scan(&events); err != nil {
+		t.Fatal(err)
+	}
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT views_count FROM articles WHERE id=$1`, articleID).Scan(&publicViews); err != nil {
+		t.Fatal(err)
+	}
+	if events != 2 || publicViews != 0 {
+		t.Fatalf("private events=%d, public article views=%d; want 2 and 0", events, publicViews)
+	}
+	w = app.do(http.MethodGet, "/admin/users/"+readerID.String()+"?lang=ru", nil, withCookie(adminCookie))
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "Тест заголовок") {
+		t.Fatalf("reader activity report did not show the visited article: status=%d", w.Code)
+	}
+}
+
 // Two layers stand between somebody and the register, which carries every name
 // and e-mail on the site. A plain reader never reaches the admin group at all
 // and is bounced to the login page. An editor does reach it — moderation lives
