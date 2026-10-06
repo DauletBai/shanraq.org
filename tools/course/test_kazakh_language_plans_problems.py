@@ -58,10 +58,21 @@ class PlansProblemsTest(unittest.TestCase):
             [lesson["stem"] for lesson in draft.LESSONS],
         )
         manifest = json.loads((draft.AUDIO / "manifest.json").read_text(encoding="utf-8"))
-        self.assertFalse(any(row["status"] == "candidate_review" for row in manifest["recordings"]))
+        published = [
+            row for row in manifest["recordings"]
+            if any(int(name[:2]) <= 56 for name in row["lessons"])
+        ]
+        self.assertTrue(published)
+        self.assertTrue(all(row["status"] == "approved" for row in published))
+        staged = [row for row in manifest["recordings"] if row["status"] == "candidate_review"]
+        self.assertEqual(len(staged), 48)
+        self.assertTrue(all(
+            all(57 <= int(name[:2]) <= 64 for name in row["lessons"])
+            for row in staged
+        ))
         review = (draft.AUDIO / "review.html").read_text(encoding="utf-8")
-        self.assertIn("Одобренные записи уроков 49–56", review)
-        self.assertEqual(review.count('<audio controls'), 42)
+        self.assertIn("уроков 57–64", review)
+        self.assertEqual(review.count('<audio controls'), 48)
 
 
 if __name__ == "__main__":

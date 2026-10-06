@@ -3512,6 +3512,542 @@
         "55-choose-together-kz.md",
         "55-choose-together.md"
       ]
+    },
+    {
+      "id": "kz-317",
+      "phrase": "Алдымен кітапханаға барамыз.",
+      "file": "kz-317.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "57-speech-chunks-en.md",
+        "57-speech-chunks-kz.md",
+        "57-speech-chunks.md"
+      ]
+    },
+    {
+      "id": "kz-318",
+      "phrase": "Содан кейін картаны қараймыз.",
+      "file": "kz-318.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "57-speech-chunks-en.md",
+        "57-speech-chunks-kz.md",
+        "57-speech-chunks.md"
+      ]
+    },
+    {
+      "id": "kz-319",
+      "phrase": "Түстен кейін жолды тексереміз.",
+      "file": "kz-319.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "57-speech-chunks-en.md",
+        "57-speech-chunks-kz.md",
+        "57-speech-chunks.md"
+      ]
+    },
+    {
+      "id": "kz-320",
+      "phrase": "Соңында нәтижені көрсетеміз.",
+      "file": "kz-320.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "57-speech-chunks-en.md",
+        "57-speech-chunks-kz.md",
+        "57-speech-chunks.md"
+      ]
+    },
+    {
+      "id": "kz-321",
+      "phrase": "Қайда алдымен барамыз?",
+      "file": "kz-321.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "57-speech-chunks-en.md",
+        "57-speech-chunks-kz.md",
+        "57-speech-chunks.md"
+      ]
+    },
+    {
+      "id": "kz-322",
+      "phrase": "Кітапханаға, содан кейін алаңға барамыз.",
+      "file": "kz-322.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "57-speech-chunks-en.md",
+        "57-speech-chunks-kz.md",
+        "57-speech-chunks.md"
+      ]
+    },
+    {
+      "id": "kz-323",
+      "phrase": "Бүгін сағат төртте кездесеміз.",
+      "file": "kz-323.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "58-question-intonation-en.md",
+        "58-question-intonation-kz.md",
+        "58-question-intonation.md"
+      ]
+    },
+    {
+      "id": "kz-324",
+      "phrase": "Бүгін сағат төртте кездесеміз бе?",
+      "file": "kz-324.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "58-question-intonation-en.md",
+        "58-question-intonation-kz.md",
+        "58-question-intonation.md"
+      ]
+    },
+    {
+      "id": "kz-325",
+      "phrase": "Иә, сағат төртте кездесеміз.",
+      "file": "kz-325.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "58-question-intonation-en.md",
+        "58-question-intonation-kz.md",
+        "58-question-intonation.md"
+      ]
+    },
+    {
+      "id": "kz-326",
+      "phrase": "Сіз бүгін келе аласыз ба?",
+      "file": "kz-326.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "58-question-intonation-en.md",
+        "58-question-intonation-kz.md",
+        "58-question-intonation.md"
+      ]
+    },
+    {
+      "id": "kz-327",
+      "phrase": "Жоқ, мен ертең келемін.",
+      "file": "kz-327.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "58-question-intonation-en.md",
+        "58-question-intonation-kz.md",
+        "58-question-intonation.md"
+      ]
+    },
+    {
+      "id": "kz-328",
+      "phrase": "Кездесу кітапханада ма?",
+      "file": "kz-328.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "58-question-intonation-en.md",
+        "58-question-intonation-kz.md",
+        "58-question-intonation.md"
+      ]
+    },
+    {
+      "id": "kz-329",
+      "phrase": "Назар аударыңыздар, кітапхана бүгін ерте жабылады.",
+      "file": "kz-329.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "59-listen-for-main-point-en.md",
+        "59-listen-for-main-point-kz.md",
+        "59-listen-for-main-point.md"
+      ]
+    },
+    {
+      "id": "kz-330",
+      "phrase": "Оқу залы сағат төртке дейін ашық.",
+      "file": "kz-330.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "59-listen-for-main-point-en.md",
+        "59-listen-for-main-point-kz.md",
+        "59-listen-for-main-point.md"
+      ]
+    },
+    {
+      "id": "kz-331",
+      "phrase": "Кітаптарды сағат үшке дейін қайтарыңыздар.",
+      "file": "kz-331.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "59-listen-for-main-point-en.md",
+        "59-listen-for-main-point-kz.md",
+        "59-listen-for-main-point.md"
+      ]
+    },
+    {
+      "id": "kz-332",
+      "phrase": "Ертең кітапхана әдеттегідей жұмыс істейді.",
+      "file": "kz-332.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "59-listen-for-main-point-en.md",
+        "59-listen-for-main-point-kz.md",
+        "59-listen-for-main-point.md"
+      ]
+    },
+    {
+      "id": "kz-333",
+      "phrase": "Бүгін не өзгерді?",
+      "file": "kz-333.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "59-listen-for-main-point-en.md",
+        "59-listen-for-main-point-kz.md",
+        "59-listen-for-main-point.md"
+      ]
+    },
+    {
+      "id": "kz-334",
+      "phrase": "Кітаптарды қашан қайтару керек?",
+      "file": "kz-334.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "59-listen-for-main-point-en.md",
+        "59-listen-for-main-point-kz.md",
+        "59-listen-for-main-point.md"
+      ]
+    },
+    {
+      "id": "kz-335",
+      "phrase": "Біз сағат бесте кітапхананың алдында кездесеміз.",
+      "file": "kz-335.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "60-repair-a-missed-word-en.md",
+        "60-repair-a-missed-word-kz.md",
+        "60-repair-a-missed-word.md"
+      ]
+    },
+    {
+      "id": "kz-336",
+      "phrase": "Кешіріңіз, соңғы сөзді қайталаңызшы.",
+      "file": "kz-336.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "60-repair-a-missed-word-en.md",
+        "60-repair-a-missed-word-kz.md",
+        "60-repair-a-missed-word.md"
+      ]
+    },
+    {
+      "id": "kz-337",
+      "phrase": "Кітапхананың алдында кездесеміз.",
+      "file": "kz-337.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "60-repair-a-missed-word-en.md",
+        "60-repair-a-missed-word-kz.md",
+        "60-repair-a-missed-word.md"
+      ]
+    },
+    {
+      "id": "kz-338",
+      "phrase": "Мен сізді дұрыс түсіндім бе?",
+      "file": "kz-338.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "60-repair-a-missed-word-en.md",
+        "60-repair-a-missed-word-kz.md",
+        "60-repair-a-missed-word.md"
+      ]
+    },
+    {
+      "id": "kz-339",
+      "phrase": "Сағат бесте, кітапхананың алдында ма?",
+      "file": "kz-339.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "60-repair-a-missed-word-en.md",
+        "60-repair-a-missed-word-kz.md",
+        "60-repair-a-missed-word.md"
+      ]
+    },
+    {
+      "id": "kz-340",
+      "phrase": "Иә, дәл солай.",
+      "file": "kz-340.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "60-repair-a-missed-word-en.md",
+        "60-repair-a-missed-word-kz.md",
+        "60-repair-a-missed-word.md"
+      ]
+    },
+    {
+      "id": "kz-341",
+      "phrase": "Кеше қағаз картаны таба алмадық.",
+      "file": "kz-341.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "61-short-story-chain-en.md",
+        "61-short-story-chain-kz.md",
+        "61-short-story-chain.md"
+      ]
+    },
+    {
+      "id": "kz-342",
+      "phrase": "Сондықтан жұмысты кеш бастадық.",
+      "file": "kz-342.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "61-short-story-chain-en.md",
+        "61-short-story-chain-kz.md",
+        "61-short-story-chain.md"
+      ]
+    },
+    {
+      "id": "kz-343",
+      "phrase": "Бір досымыз цифрлық картаны жіберді.",
+      "file": "kz-343.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "61-short-story-chain-en.md",
+        "61-short-story-chain-kz.md",
+        "61-short-story-chain.md"
+      ]
+    },
+    {
+      "id": "kz-344",
+      "phrase": "Содан кейін жолды белгіледік.",
+      "file": "kz-344.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "61-short-story-chain-en.md",
+        "61-short-story-chain-kz.md",
+        "61-short-story-chain.md"
+      ]
+    },
+    {
+      "id": "kz-345",
+      "phrase": "Қазір карта дайын.",
+      "file": "kz-345.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "61-short-story-chain-en.md",
+        "61-short-story-chain-kz.md",
+        "61-short-story-chain.md"
+      ]
+    },
+    {
+      "id": "kz-346",
+      "phrase": "Неге жұмысты кеш бастадыңыздар?",
+      "file": "kz-346.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "61-short-story-chain-en.md",
+        "61-short-story-chain-kz.md",
+        "61-short-story-chain.md"
+      ]
+    },
+    {
+      "id": "kz-347",
+      "phrase": "Көше қиылысында бағдаршам бар.",
+      "file": "kz-347.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "62-unknown-word-context-en.md",
+        "62-unknown-word-context-kz.md",
+        "62-unknown-word-context.md"
+      ]
+    },
+    {
+      "id": "kz-348",
+      "phrase": "Ол қызыл, сары және жасыл түстерді көрсетеді.",
+      "file": "kz-348.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "62-unknown-word-context-en.md",
+        "62-unknown-word-context-kz.md",
+        "62-unknown-word-context.md"
+      ]
+    },
+    {
+      "id": "kz-349",
+      "phrase": "Қызыл жанса, тоқтаймыз.",
+      "file": "kz-349.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "62-unknown-word-context-en.md",
+        "62-unknown-word-context-kz.md",
+        "62-unknown-word-context.md"
+      ]
+    },
+    {
+      "id": "kz-350",
+      "phrase": "Бағдаршам деген не?",
+      "file": "kz-350.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "62-unknown-word-context-en.md",
+        "62-unknown-word-context-kz.md",
+        "62-unknown-word-context.md"
+      ]
+    },
+    {
+      "id": "kz-351",
+      "phrase": "Бұл көлік пен жаяу жүргіншіге белгі береді.",
+      "file": "kz-351.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "62-unknown-word-context-en.md",
+        "62-unknown-word-context-kz.md",
+        "62-unknown-word-context.md"
+      ]
+    },
+    {
+      "id": "kz-352",
+      "phrase": "Демек, бұл бағдаршам ғой?",
+      "file": "kz-352.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "62-unknown-word-context-en.md",
+        "62-unknown-word-context-kz.md",
+        "62-unknown-word-context.md"
+      ]
+    },
+    {
+      "id": "kz-353",
+      "phrase": "Ертең сағат үште кітапханада кездесеміз.",
+      "file": "kz-353.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "63-retell-and-follow-up-en.md",
+        "63-retell-and-follow-up-kz.md",
+        "63-retell-and-follow-up.md"
+      ]
+    },
+    {
+      "id": "kz-354",
+      "phrase": "Алдымен картаны бірге қараймыз.",
+      "file": "kz-354.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "63-retell-and-follow-up-en.md",
+        "63-retell-and-follow-up-kz.md",
+        "63-retell-and-follow-up.md"
+      ]
+    },
+    {
+      "id": "kz-355",
+      "phrase": "Содан кейін бағытты таңдаймыз.",
+      "file": "kz-355.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "63-retell-and-follow-up-en.md",
+        "63-retell-and-follow-up-kz.md",
+        "63-retell-and-follow-up.md"
+      ]
+    },
+    {
+      "id": "kz-356",
+      "phrase": "Баспа картаны кім әкеледі?",
+      "file": "kz-356.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "63-retell-and-follow-up-en.md",
+        "63-retell-and-follow-up-kz.md",
+        "63-retell-and-follow-up.md"
+      ]
+    },
+    {
+      "id": "kz-357",
+      "phrase": "Мен оны әлі білмеймін.",
+      "file": "kz-357.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "63-retell-and-follow-up-en.md",
+        "63-retell-and-follow-up-kz.md",
+        "63-retell-and-follow-up.md"
+      ]
+    },
+    {
+      "id": "kz-358",
+      "phrase": "Дұрыс түсіндім бе: кездесу сағат үште ме?",
+      "file": "kz-358.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "63-retell-and-follow-up-en.md",
+        "63-retell-and-follow-up-kz.md",
+        "63-retell-and-follow-up.md"
+      ]
+    },
+    {
+      "id": "kz-359",
+      "phrase": "Бүгін үлкен зал бос емес.",
+      "file": "kz-359.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "64-connected-speech-mastery-en.md",
+        "64-connected-speech-mastery-kz.md",
+        "64-connected-speech-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-360",
+      "phrase": "Сондықтан кітапханадағы бөлмеде кездесеміз.",
+      "file": "kz-360.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "64-connected-speech-mastery-en.md",
+        "64-connected-speech-mastery-kz.md",
+        "64-connected-speech-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-361",
+      "phrase": "Кездесу сағат төртте басталады.",
+      "file": "kz-361.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "64-connected-speech-mastery-en.md",
+        "64-connected-speech-mastery-kz.md",
+        "64-connected-speech-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-362",
+      "phrase": "Картаның баспа нұсқасын әкеліңіздерші.",
+      "file": "kz-362.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "64-connected-speech-mastery-en.md",
+        "64-connected-speech-mastery-kz.md",
+        "64-connected-speech-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-363",
+      "phrase": "Кешіріңіз, қай бөлме екенін қайталаңызшы.",
+      "file": "kz-363.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "64-connected-speech-mastery-en.md",
+        "64-connected-speech-mastery-kz.md",
+        "64-connected-speech-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-364",
+      "phrase": "Дұрыс түсіндім: сағат төртте кітапханада ма?",
+      "file": "kz-364.wav",
+      "status": "candidate_review",
+      "lessons": [
+        "64-connected-speech-mastery-en.md",
+        "64-connected-speech-mastery-kz.md",
+        "64-connected-speech-mastery.md"
+      ]
     }
-  ]
+  ],
+  "candidate": {
+    "provider": "Microsoft neural text to speech",
+    "voice": "kk-KZ-AigulNeural",
+    "locale": "kk-KZ",
+    "rate": "-8%",
+    "processing": "48 kHz mono PCM; loudness normalised",
+    "approval": "pending_owner_and_native_speaker_review"
+  }
 }

@@ -183,9 +183,10 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 path.read_text(encoding="utf-8"),
             ))
 
-        self.assertEqual(len(recordings), 315)
-        self.assertEqual(len(lesson_files), 990)
-        self.assertTrue(all(row["status"] == "approved" for row in recordings))
+        self.assertEqual(len(recordings), 363)
+        self.assertEqual(len(lesson_files), 1134)
+        self.assertTrue(all(row["status"] == "approved" for row in recordings if int(row["id"][3:]) <= 316))
+        self.assertTrue(all(row["status"] == "candidate_review" for row in recordings if int(row["id"][3:]) >= 317))
         self.assertEqual({row["file"] for row in recordings}, set(lesson_files))
         review = (audio / "review.html").read_text(encoding="utf-8")
         frame_counts = set()
@@ -204,7 +205,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                     for i in range(0, len(raw) - 2, 3)
                 )
                 self.assertGreater(peak, 10_000, path)
-            if int(row["id"][3:]) >= 275:
+            if int(row["id"][3:]) >= 317:
                 self.assertIn(f'src="{row["file"]}"', review)
             else:
                 self.assertNotIn(f'src="{row["file"]}"', review)
@@ -212,6 +213,28 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         # phrases legitimately share a length. The failed local renderer made
         # every asset identical; a few dozen distinct durations catches that case.
         self.assertGreater(len(frame_counts), 30)
+
+    def test_eighth_block_is_complete_but_awaits_audio_approval(self):
+        from tools.course.generate_kazakh_language_connected_speech import LESSONS as BLOCK_LESSONS
+
+        curriculum = json.loads((ROOT / "course/kazakh-language/curriculum.json").read_text())
+        self.assertEqual(curriculum["blocks"][7]["status"], "audio-review")
+        self.assertEqual(len(curriculum["eighth_block_lessons"]), 8)
+        self.assertEqual([int(lesson["stem"][:2]) for lesson in BLOCK_LESSONS], list(range(57, 65)))
+        for lesson in BLOCK_LESSONS:
+            for lang, minimum in (("ru", 470), ("kz", 440), ("en", 570)):
+                suffix = "" if lang == "ru" else "-" + lang
+                path = LESSONS / f"{lesson['stem']}{suffix}.md"
+                text = path.read_text(encoding="utf-8")
+                self.assertGreaterEqual(len(text.split()), minimum, path)
+                self.assertEqual(text.count("/static/course/kazakh-language/audio/kz-"), 6, path)
+                self.assertIn("```kazakh\n", text, path)
+                self.assertIn("## " + {"ru": "Задание", "kz": "Тапсырма", "en": "Exercise"}[lang], text, path)
+                diagram = MAPS / f"map-{lesson['map']}-{lang}.svg"
+                root = ET.parse(diagram).getroot()
+                self.assertEqual(root.attrib["viewBox"], "0 0 1600 900")
+        cover = ROOT / "web/static/covers/school/kazakh-language/connected-speech/08-connected-speech.webp"
+        self.assertGreater(cover.stat().st_size, 500_000)
 
 
 if __name__ == "__main__":

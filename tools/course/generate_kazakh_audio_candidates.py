@@ -59,7 +59,7 @@ async def render() -> None:
     rows = data["recordings"]
     candidates = [row for row in rows if row["status"] == "candidate_review"]
     if not candidates:
-        approved_new = [row for row in rows if row["status"] == "approved" and int(row["id"][3:]) >= 275]
+        approved_new = [row for row in rows if row["status"] == "approved" and int(row["id"][3:]) >= 317]
         cards = "\n".join(
             '<article><b>{id}</b><p lang="kk">{phrase}</p>'
             '<audio controls preload="none" src="{file}"></audio></article>'.format(
@@ -72,7 +72,7 @@ async def render() -> None:
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Казахский курс — одобренные записи</title>
 <style>body{font:16px system-ui;max-width:920px;margin:30px auto;padding:0 18px;color:#242424}h1{font-size:30px}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}article{border:1px solid #d8d8d8;border-radius:12px;padding:14px;box-shadow:0 3px 12px #0001}p{font-size:20px;min-height:48px}audio{width:100%}</style>
-<h1>Одобренные записи уроков 49–56</h1><p>Новые 42 записи прослушаны и одобрены автором курса. Они используются в уроках «Планы и проблемы»; записи уроков 1–48 сохранены.</p><section>"""
+<h1>Одобренные записи уроков 57–64</h1><p>Новые записи прослушаны и одобрены автором курса. Они используются в уроках «Связная речь и слух»; более ранние записи сохранены.</p><section>"""
             + cards + "</section></html>\n",
             encoding="utf-8",
         )
@@ -125,7 +125,7 @@ h1{font-size:30px}section{display:grid;grid-template-columns:repeat(auto-fit,min
 article{border:1px solid #d8d8d8;border-radius:12px;padding:14px;box-shadow:0 3px 12px #0001}
 p{font-size:20px;min-height:48px}audio{width:100%}</style>
 <h1>__COUNT__ новых реплик: следующий блок курса</h1>
-<p>Проверка произношения перед публикацией уроков 49–56 «Планы и проблемы». Голос Aigul, язык kk-KZ. Одобренные записи уроков 1–48 не изменялись. Прослушайте каждую реплику: новые уроки пока не опубликованы.</p><section>"""
+<p>Проверка произношения перед публикацией уроков 57–64 «Связная речь и слух». Голос Aigul, язык kk-KZ. Ранее одобренные записи не изменялись. Прослушайте каждую реплику: новые уроки пока не опубликованы.</p><section>"""
         .replace("__COUNT__", str(len(candidates)))
         + "\n".join(cards)
         + "</section></html>\n",

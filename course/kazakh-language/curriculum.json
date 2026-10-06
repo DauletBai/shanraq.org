@@ -99,7 +99,7 @@
     {
       "id": "connected-speech",
       "range": "57-64",
-      "status": "planned",
+      "status": "audio-review",
       "lexical_target": 1950,
       "release": "2.0",
       "title_kz": "Байланысты сөз және тыңдалым",
@@ -610,5 +610,15 @@
     "Сообщение о проблеме без обвинения",
     "Уважительное обсуждение и общий выбор",
     "Контрольная точка A2: договорённость при препятствии"
+  ],
+  "eighth_block_lessons": [
+    {"number": 57, "id": "speech-chunks", "prerequisites": ["plans-problems-mastery"], "title_ru": "Слышать речь смысловыми кусками", "title_kz": "Сөзді мағыналық бөліктермен тыңдау", "title_en": "Hear speech in meaningful chunks"},
+    {"number": 58, "id": "question-intonation", "prerequisites": ["speech-chunks"], "title_ru": "Вопрос слышен до ответа: частица и интонация", "title_kz": "Жауапқа дейін сұрақты тану: шылау мен әуен", "title_en": "Hear a question before the answer: particle and intonation"},
+    {"number": 59, "id": "listen-for-main-point", "prerequisites": ["question-intonation"], "title_ru": "Сначала смысл, потом детали: слушаем объявление", "title_kz": "Әуелі негізгі ой, содан кейін деталь: хабарландыру", "title_en": "Gist first, details second: listen to an announcement"},
+    {"number": 60, "id": "repair-a-missed-word", "prerequisites": ["listen-for-main-point"], "title_ru": "Не расслышал — уточни, не угадывай", "title_kz": "Естілмеген сөзді болжағанша, нақтыла", "title_en": "Missed a word? Clarify instead of guessing"},
+    {"number": 61, "id": "short-story-chain", "prerequisites": ["repair-a-missed-word"], "title_ru": "История из четырёх кадров: причина, действие, итог", "title_kz": "Төрт кадрдан тұратын әңгіме: себеп, әрекет, нәтиже", "title_en": "A four-frame story: cause, action and outcome"},
+    {"number": 62, "id": "unknown-word-context", "prerequisites": ["short-story-chain"], "title_ru": "Незнакомое слово: сначала контекст, потом словарь", "title_kz": "Бейтаныс сөз: әуелі мәнмәтін, кейін сөздік", "title_en": "Unknown word: context before dictionary"},
+    {"number": 63, "id": "retell-and-follow-up", "prerequisites": ["unknown-word-context"], "title_ru": "Перескажи услышанное и задай следующий вопрос", "title_kz": "Естігеніңді баяндап, келесі сұрақты қой", "title_en": "Retell what you heard and ask the next question"},
+    {"number": 64, "id": "connected-speech-mastery", "prerequisites": ["retell-and-follow-up"], "title_ru": "Контрольная точка 2.0: слушай, уточняй, пересказывай", "title_kz": "2.0 бақылау нүктесі: тыңда, нақтыла, баянда", "title_en": "Mastery checkpoint 2.0: listen, clarify, retell"}
   ]
 }
