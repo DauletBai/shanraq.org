@@ -722,8 +722,8 @@ func (m *Module) handleView(w http.ResponseWriter, r *http.Request) {
 
 	// A signed-in reader gets a private activity journal even when their network
 	// is outside the public audience calculation (for example, a VPN). It still
-	// requires the same visible-tab, same-origin browser proof, and the explicit
-	// no-track/staff exclusions remain authoritative.
+	// requires the same visible-tab, same-origin browser proof. Staff and their
+	// no-track cookie remain excluded from public audience counters below.
 	if user, signedIn := m.activityUser(r); signedIn {
 		m.recordUserPageView(r, page, kind, readingLang(page), user)
 	}
@@ -1406,11 +1406,12 @@ func (s *UserActivityStore) Record(ctx context.Context, e UserActivityEvent) err
 	return nil
 }
 
-// activityUser resolves an account only for the private journal. The explicit
-// no-track cookie and staff/test exclusions still win: internal quality checks
-// must not become somebody's reading profile merely because they use a login.
+// activityUser resolves an account only for the private journal. Public audience
+// exclusions must not suppress this account-linked history: staff receive the
+// no-track cookie automatically, yet still need to see their own reading and
+// learning activity in the admin report.
 func (m *Module) activityUser(r *http.Request) (uuid.UUID, bool) {
-	if m.activity == nil || m.excluded(nil, r) {
+	if m.activity == nil {
 		return uuid.Nil, false
 	}
 	claims, ok := auth.ClaimsFromContext(r.Context())

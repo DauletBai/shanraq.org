@@ -170,8 +170,8 @@ func (m *Module) handleReadDone(w http.ResponseWriter, r *http.Request) {
 	finished := readCounts(depth, secs, expect)
 
 	// Unlike the public aggregate, the account journal may record a signed-in
-	// reader behind a VPN. No-track and staff exclusions are still honored by
-	// activityUser. A course lesson carries its course id; an ordinary article
+	// reader behind a VPN. Public staff exclusions do not erase the account's
+	// private history. A course lesson carries its course id; an ordinary article
 	// remains separate so the interest profile is not polluted by coursework.
 	if user, ok := m.activityUser(r); ok {
 		kind := "article"

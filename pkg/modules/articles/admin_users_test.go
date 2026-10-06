@@ -129,6 +129,59 @@ func TestAdminUserActivityTracksArticleInterest(t *testing.T) {
 	}
 }
 
+// Staff visits stay out of public audience totals, but their private account
+// history must not be empty. Visiting a public page stamps the no-track cookie;
+// the next article view and reading beacon must still appear in the profile.
+func TestAdminActivitySurvivesPublicNoTrackCookie(t *testing.T) {
+	app := newTestApp(t)
+	adminCookie, adminID := adminSession(t, app, "activity-owner@t.test")
+	articleID, slug := app.seedArticle(adminID, "published")
+
+	page := app.do(http.MethodGet, "/", nil, withCookie(adminCookie))
+	if page.Code != http.StatusOK {
+		t.Fatalf("home page = %d", page.Code)
+	}
+	var noTrack *http.Cookie
+	for _, cookie := range page.Result().Cookies() {
+		if cookie.Name == analyticsOptOutCookie {
+			noTrack = cookie
+		}
+	}
+	if noTrack == nil || noTrack.Value != "1" {
+		t.Fatal("admin browsing did not receive the public no-track cookie")
+	}
+
+	options := []reqOpt{withCookie(adminCookie), withCookie(noTrack),
+		withHeader("User-Agent", "Mozilla/5.0 Chrome/140 Safari/537.36")}
+	w := app.do(http.MethodPost, "/api/view", nil, append(options,
+		withHeader("Referer", app.origin+"/read/"+slug+"?lang=ru"))...)
+	if w.Code != http.StatusNoContent {
+		t.Fatalf("view beacon = %d", w.Code)
+	}
+	w = app.do(http.MethodPost, "/read/"+slug+"/done?t=30&d=100&l=ru", nil, options...)
+	if w.Code != http.StatusNoContent {
+		t.Fatalf("read beacon = %d", w.Code)
+	}
+
+	var events, publicViews int
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT count(*) FROM user_activity_events WHERE user_id=$1 AND article_id=$2`,
+		adminID, articleID).Scan(&events); err != nil {
+		t.Fatal(err)
+	}
+	if err := app.pool.QueryRow(context.Background(),
+		`SELECT views_count FROM articles WHERE id=$1`, articleID).Scan(&publicViews); err != nil {
+		t.Fatal(err)
+	}
+	if events != 2 || publicViews != 0 {
+		t.Fatalf("private events=%d, public article views=%d; want 2 and 0", events, publicViews)
+	}
+	w = app.do(http.MethodGet, "/admin/users/"+adminID.String()+"?lang=ru", nil, options...)
+	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), "Тест заголовок") {
+		t.Fatalf("owner activity report did not show the visited article: status=%d", w.Code)
+	}
+}
+
 // Two layers stand between somebody and the register, which carries every name
 // and e-mail on the site. A plain reader never reaches the admin group at all
 // and is bounced to the login page. An editor does reach it — moderation lives
