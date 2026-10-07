@@ -187,7 +187,9 @@ def render(lesson: dict, lang: str, following: dict | None, by_phrase: dict) -> 
     for heading,body in sections: parts.extend((f"## {heading}","",body,""))
     parts.extend((f"## {ui[13]}","",*('- '+x for x in c['repeat'])))
     if following: parts.extend(("",f"[{ui[14]}: {following['title'][idx]}](/read/kazakh-language-{following['stem']}?lang={lang})"))
-    else: parts.extend(("",f"[{ui[15]}](/course/kazakh-language?lang={lang})"))
+    else:
+        next_title={"ru":"Факт или мнение: что можно проверить?","kz":"Дерек пе, пікір ме: нені тексеруге болады?","en":"Fact or opinion: what can be checked?"}[lang]
+        parts.extend(("",f"[{ui[14]}: {next_title}](/read/kazakh-language-65-fact-or-opinion?lang={lang})"))
     return '\n'.join(parts)+'\n'
 
 def main() -> None:

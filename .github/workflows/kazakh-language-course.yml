@@ -21,6 +21,8 @@ on:
       - 'tools/course/generate_kazakh_language_action_time.py'
       - 'tools/course/generate_kazakh_language_action_time_maps.py'
       - 'tools/course/generate_kazakh_language_plans_problems.py'
+      - 'tools/course/generate_kazakh_language_connected_speech.py'
+      - 'tools/course/generate_kazakh_language_information_opinion.py'
       - 'tools/course/test_kazakh_language_plans_problems.py'
       - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
@@ -48,6 +50,8 @@ on:
       - 'tools/course/generate_kazakh_language_action_time.py'
       - 'tools/course/generate_kazakh_language_action_time_maps.py'
       - 'tools/course/generate_kazakh_language_plans_problems.py'
+      - 'tools/course/generate_kazakh_language_connected_speech.py'
+      - 'tools/course/generate_kazakh_language_information_opinion.py'
       - 'tools/course/test_kazakh_language_plans_problems.py'
       - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
@@ -76,6 +80,8 @@ jobs:
           python3 tools/course/generate_kazakh_language_action_time.py
           python3 tools/course/generate_kazakh_language_action_time_maps.py
           python3 -m tools.course.generate_kazakh_language_plans_problems
+          python3 -m tools.course.generate_kazakh_language_connected_speech
+          python3 -m tools.course.generate_kazakh_language_information_opinion
       - name: Verify generated files are committed
         run: git diff --exit-code
       - name: Validate completed blocks

@@ -3994,5 +3994,101 @@
   "kazakh-language/64-connected-speech-mastery-en": [
     "kazakh-language-64-connected-speech-mastery",
     "en"
+  ],
+  "kazakh-language/65-fact-or-opinion": [
+    "kazakh-language-65-fact-or-opinion",
+    "ru"
+  ],
+  "kazakh-language/65-fact-or-opinion-kz": [
+    "kazakh-language-65-fact-or-opinion",
+    "kz"
+  ],
+  "kazakh-language/65-fact-or-opinion-en": [
+    "kazakh-language-65-fact-or-opinion",
+    "en"
+  ],
+  "kazakh-language/66-source-date-context": [
+    "kazakh-language-66-source-date-context",
+    "ru"
+  ],
+  "kazakh-language/66-source-date-context-kz": [
+    "kazakh-language-66-source-date-context",
+    "kz"
+  ],
+  "kazakh-language/66-source-date-context-en": [
+    "kazakh-language-66-source-date-context",
+    "en"
+  ],
+  "kazakh-language/67-read-a-small-chart": [
+    "kazakh-language-67-read-a-small-chart",
+    "ru"
+  ],
+  "kazakh-language/67-read-a-small-chart-kz": [
+    "kazakh-language-67-read-a-small-chart",
+    "kz"
+  ],
+  "kazakh-language/67-read-a-small-chart-en": [
+    "kazakh-language-67-read-a-small-chart",
+    "en"
+  ],
+  "kazakh-language/68-compare-with-baseline": [
+    "kazakh-language-68-compare-with-baseline",
+    "ru"
+  ],
+  "kazakh-language/68-compare-with-baseline-kz": [
+    "kazakh-language-68-compare-with-baseline",
+    "kz"
+  ],
+  "kazakh-language/68-compare-with-baseline-en": [
+    "kazakh-language-68-compare-with-baseline",
+    "en"
+  ],
+  "kazakh-language/69-claim-evidence-reason": [
+    "kazakh-language-69-claim-evidence-reason",
+    "ru"
+  ],
+  "kazakh-language/69-claim-evidence-reason-kz": [
+    "kazakh-language-69-claim-evidence-reason",
+    "kz"
+  ],
+  "kazakh-language/69-claim-evidence-reason-en": [
+    "kazakh-language-69-claim-evidence-reason",
+    "en"
+  ],
+  "kazakh-language/70-respectful-evidence-dialogue": [
+    "kazakh-language-70-respectful-evidence-dialogue",
+    "ru"
+  ],
+  "kazakh-language/70-respectful-evidence-dialogue-kz": [
+    "kazakh-language-70-respectful-evidence-dialogue",
+    "kz"
+  ],
+  "kazakh-language/70-respectful-evidence-dialogue-en": [
+    "kazakh-language-70-respectful-evidence-dialogue",
+    "en"
+  ],
+  "kazakh-language/71-public-information-card": [
+    "kazakh-language-71-public-information-card",
+    "ru"
+  ],
+  "kazakh-language/71-public-information-card-kz": [
+    "kazakh-language-71-public-information-card",
+    "kz"
+  ],
+  "kazakh-language/71-public-information-card-en": [
+    "kazakh-language-71-public-information-card",
+    "en"
+  ],
+  "kazakh-language/72-information-opinion-mastery": [
+    "kazakh-language-72-information-opinion-mastery",
+    "ru"
+  ],
+  "kazakh-language/72-information-opinion-mastery-kz": [
+    "kazakh-language-72-information-opinion-mastery",
+    "kz"
+  ],
+  "kazakh-language/72-information-opinion-mastery-en": [
+    "kazakh-language-72-information-opinion-mastery",
+    "en"
   ]
 }

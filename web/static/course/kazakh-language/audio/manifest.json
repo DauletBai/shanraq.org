@@ -4040,6 +4040,534 @@
         "64-connected-speech-mastery-kz.md",
         "64-connected-speech-mastery.md"
       ]
+    },
+    {
+      "id": "kz-365",
+      "phrase": "Кітапхана сағат тоғызда ашылады.",
+      "file": "kz-365.wav",
+      "status": "approved",
+      "lessons": [
+        "65-fact-or-opinion-en.md",
+        "65-fact-or-opinion-kz.md",
+        "65-fact-or-opinion.md"
+      ]
+    },
+    {
+      "id": "kz-366",
+      "phrase": "Бұл өте ыңғайлы кітапхана.",
+      "file": "kz-366.wav",
+      "status": "approved",
+      "lessons": [
+        "65-fact-or-opinion-en.md",
+        "65-fact-or-opinion-kz.md",
+        "65-fact-or-opinion.md"
+      ]
+    },
+    {
+      "id": "kz-367",
+      "phrase": "Меніңше, бұл орын тыныш.",
+      "file": "kz-367.wav",
+      "status": "approved",
+      "lessons": [
+        "65-fact-or-opinion-en.md",
+        "65-fact-or-opinion-kz.md",
+        "65-fact-or-opinion.md"
+      ]
+    },
+    {
+      "id": "kz-368",
+      "phrase": "Кестені қайдан тексереміз?",
+      "file": "kz-368.wav",
+      "status": "approved",
+      "lessons": [
+        "65-fact-or-opinion-en.md",
+        "65-fact-or-opinion-kz.md",
+        "65-fact-or-opinion.md"
+      ]
+    },
+    {
+      "id": "kz-369",
+      "phrase": "Хабарландыруда тоғыз деп жазылған.",
+      "file": "kz-369.wav",
+      "status": "approved",
+      "lessons": [
+        "65-fact-or-opinion-en.md",
+        "65-fact-or-opinion-kz.md",
+        "65-fact-or-opinion.md"
+      ]
+    },
+    {
+      "id": "kz-370",
+      "phrase": "Бұл пікір, оны бәрі бірдей қабылдамауы мүмкін.",
+      "file": "kz-370.wav",
+      "status": "approved",
+      "lessons": [
+        "65-fact-or-opinion-en.md",
+        "65-fact-or-opinion-kz.md",
+        "65-fact-or-opinion.md"
+      ]
+    },
+    {
+      "id": "kz-371",
+      "phrase": "Бұл хабарландыру дүйсенбіде жарияланды.",
+      "file": "kz-371.wav",
+      "status": "approved",
+      "lessons": [
+        "66-source-date-context-en.md",
+        "66-source-date-context-kz.md",
+        "66-source-date-context.md"
+      ]
+    },
+    {
+      "id": "kz-372",
+      "phrase": "Жаңа кесте жұмада күшіне енеді.",
+      "file": "kz-372.wav",
+      "status": "approved",
+      "lessons": [
+        "66-source-date-context-en.md",
+        "66-source-date-context-kz.md",
+        "66-source-date-context.md"
+      ]
+    },
+    {
+      "id": "kz-373",
+      "phrase": "Бұл қай филиалға қатысты?",
+      "file": "kz-373.wav",
+      "status": "approved",
+      "lessons": [
+        "66-source-date-context-en.md",
+        "66-source-date-context-kz.md",
+        "66-source-date-context.md"
+      ]
+    },
+    {
+      "id": "kz-374",
+      "phrase": "Ескі хабарда сағат бес деп жазылған.",
+      "file": "kz-374.wav",
+      "status": "approved",
+      "lessons": [
+        "66-source-date-context-en.md",
+        "66-source-date-context-kz.md",
+        "66-source-date-context.md"
+      ]
+    },
+    {
+      "id": "kz-375",
+      "phrase": "Қазіргі кестеде сағат алты көрсетілген.",
+      "file": "kz-375.wav",
+      "status": "approved",
+      "lessons": [
+        "66-source-date-context-en.md",
+        "66-source-date-context-kz.md",
+        "66-source-date-context.md"
+      ]
+    },
+    {
+      "id": "kz-376",
+      "phrase": "Дереккөзді және күнін бірге көрсетейік.",
+      "file": "kz-376.wav",
+      "status": "approved",
+      "lessons": [
+        "66-source-date-context-en.md",
+        "66-source-date-context-kz.md",
+        "66-source-date-context.md"
+      ]
+    },
+    {
+      "id": "kz-377",
+      "phrase": "Дүйсенбіде он екі адам келді.",
+      "file": "kz-377.wav",
+      "status": "approved",
+      "lessons": [
+        "67-read-a-small-chart-en.md",
+        "67-read-a-small-chart-kz.md",
+        "67-read-a-small-chart.md"
+      ]
+    },
+    {
+      "id": "kz-378",
+      "phrase": "Сейсенбіде он сегіз адам келді.",
+      "file": "kz-378.wav",
+      "status": "approved",
+      "lessons": [
+        "67-read-a-small-chart-en.md",
+        "67-read-a-small-chart-kz.md",
+        "67-read-a-small-chart.md"
+      ]
+    },
+    {
+      "id": "kz-379",
+      "phrase": "Сәрсенбіде он бес адам келді.",
+      "file": "kz-379.wav",
+      "status": "approved",
+      "lessons": [
+        "67-read-a-small-chart-en.md",
+        "67-read-a-small-chart-kz.md",
+        "67-read-a-small-chart.md"
+      ]
+    },
+    {
+      "id": "kz-380",
+      "phrase": "Өлшем бірлігі — адам саны.",
+      "file": "kz-380.wav",
+      "status": "approved",
+      "lessons": [
+        "67-read-a-small-chart-en.md",
+        "67-read-a-small-chart-kz.md",
+        "67-read-a-small-chart.md"
+      ]
+    },
+    {
+      "id": "kz-381",
+      "phrase": "Ең биік баған сейсенбіге тиесілі.",
+      "file": "kz-381.wav",
+      "status": "approved",
+      "lessons": [
+        "67-read-a-small-chart-en.md",
+        "67-read-a-small-chart-kz.md",
+        "67-read-a-small-chart.md"
+      ]
+    },
+    {
+      "id": "kz-382",
+      "phrase": "Бұл дерек тек үш күнді қамтиды.",
+      "file": "kz-382.wav",
+      "status": "approved",
+      "lessons": [
+        "67-read-a-small-chart-en.md",
+        "67-read-a-small-chart-kz.md",
+        "67-read-a-small-chart.md"
+      ]
+    },
+    {
+      "id": "kz-383",
+      "phrase": "Сейсенбіде алты адамға көп келді.",
+      "file": "kz-383.wav",
+      "status": "approved",
+      "lessons": [
+        "68-compare-with-baseline-en.md",
+        "68-compare-with-baseline-kz.md",
+        "68-compare-with-baseline.md"
+      ]
+    },
+    {
+      "id": "kz-384",
+      "phrase": "Бастапқы сан — он екі.",
+      "file": "kz-384.wav",
+      "status": "approved",
+      "lessons": [
+        "68-compare-with-baseline-en.md",
+        "68-compare-with-baseline-kz.md",
+        "68-compare-with-baseline.md"
+      ]
+    },
+    {
+      "id": "kz-385",
+      "phrase": "Он сегіз он екіден бір жарым есе көп.",
+      "file": "kz-385.wav",
+      "status": "approved",
+      "lessons": [
+        "68-compare-with-baseline-en.md",
+        "68-compare-with-baseline-kz.md",
+        "68-compare-with-baseline.md"
+      ]
+    },
+    {
+      "id": "kz-386",
+      "phrase": "Екі есе болса, жиырма төрт болар еді.",
+      "file": "kz-386.wav",
+      "status": "approved",
+      "lessons": [
+        "68-compare-with-baseline-en.md",
+        "68-compare-with-baseline-kz.md",
+        "68-compare-with-baseline.md"
+      ]
+    },
+    {
+      "id": "kz-387",
+      "phrase": "Өсім бастапқы санның жартысына тең.",
+      "file": "kz-387.wav",
+      "status": "approved",
+      "lessons": [
+        "68-compare-with-baseline-en.md",
+        "68-compare-with-baseline-kz.md",
+        "68-compare-with-baseline.md"
+      ]
+    },
+    {
+      "id": "kz-388",
+      "phrase": "Негіз өзгерсе, пайыз да өзгереді.",
+      "file": "kz-388.wav",
+      "status": "approved",
+      "lessons": [
+        "68-compare-with-baseline-en.md",
+        "68-compare-with-baseline-kz.md",
+        "68-compare-with-baseline.md"
+      ]
+    },
+    {
+      "id": "kz-389",
+      "phrase": "Менің тұжырымым: сейсенбіде келуші көп.",
+      "file": "kz-389.wav",
+      "status": "approved",
+      "lessons": [
+        "69-claim-evidence-reason-en.md",
+        "69-claim-evidence-reason-kz.md",
+        "69-claim-evidence-reason.md"
+      ]
+    },
+    {
+      "id": "kz-390",
+      "phrase": "Кестеде он сегіз адам көрсетілген.",
+      "file": "kz-390.wav",
+      "status": "approved",
+      "lessons": [
+        "69-claim-evidence-reason-en.md",
+        "69-claim-evidence-reason-kz.md",
+        "69-claim-evidence-reason.md"
+      ]
+    },
+    {
+      "id": "kz-391",
+      "phrase": "Бұл тек үш күннің салыстыруы.",
+      "file": "kz-391.wav",
+      "status": "approved",
+      "lessons": [
+        "69-claim-evidence-reason-en.md",
+        "69-claim-evidence-reason-kz.md",
+        "69-claim-evidence-reason.md"
+      ]
+    },
+    {
+      "id": "kz-392",
+      "phrase": "Залда бос орын бар ма?",
+      "file": "kz-392.wav",
+      "status": "approved",
+      "lessons": [
+        "69-claim-evidence-reason-en.md",
+        "69-claim-evidence-reason-kz.md",
+        "69-claim-evidence-reason.md"
+      ]
+    },
+    {
+      "id": "kz-393",
+      "phrase": "Оны бұл кестеден біле алмаймыз.",
+      "file": "kz-393.wav",
+      "status": "approved",
+      "lessons": [
+        "69-claim-evidence-reason-en.md",
+        "69-claim-evidence-reason-kz.md",
+        "69-claim-evidence-reason.md"
+      ]
+    },
+    {
+      "id": "kz-394",
+      "phrase": "Алдымен орын санын тексерейік.",
+      "file": "kz-394.wav",
+      "status": "approved",
+      "lessons": [
+        "69-claim-evidence-reason-en.md",
+        "69-claim-evidence-reason-kz.md",
+        "69-claim-evidence-reason.md"
+      ]
+    },
+    {
+      "id": "kz-395",
+      "phrase": "Мен сіздің ойыңызды түсіндім.",
+      "file": "kz-395.wav",
+      "status": "approved",
+      "lessons": [
+        "70-respectful-evidence-dialogue-en.md",
+        "70-respectful-evidence-dialogue-kz.md",
+        "70-respectful-evidence-dialogue.md"
+      ]
+    },
+    {
+      "id": "kz-396",
+      "phrase": "Мен басқаша ойлаймын.",
+      "file": "kz-396.wav",
+      "status": "approved",
+      "lessons": [
+        "70-respectful-evidence-dialogue-en.md",
+        "70-respectful-evidence-dialogue-kz.md",
+        "70-respectful-evidence-dialogue.md"
+      ]
+    },
+    {
+      "id": "kz-397",
+      "phrase": "Кестеде келуші саны ғана бар.",
+      "file": "kz-397.wav",
+      "status": "approved",
+      "lessons": [
+        "70-respectful-evidence-dialogue-en.md",
+        "70-respectful-evidence-dialogue-kz.md",
+        "70-respectful-evidence-dialogue.md"
+      ]
+    },
+    {
+      "id": "kz-398",
+      "phrase": "Залдың бос уақытын да тексерейік.",
+      "file": "kz-398.wav",
+      "status": "approved",
+      "lessons": [
+        "70-respectful-evidence-dialogue-en.md",
+        "70-respectful-evidence-dialogue-kz.md",
+        "70-respectful-evidence-dialogue.md"
+      ]
+    },
+    {
+      "id": "kz-399",
+      "phrase": "Мүмкін, мен бір нәрсені байқамаған шығармын.",
+      "file": "kz-399.wav",
+      "status": "approved",
+      "lessons": [
+        "70-respectful-evidence-dialogue-en.md",
+        "70-respectful-evidence-dialogue-kz.md",
+        "70-respectful-evidence-dialogue.md"
+      ]
+    },
+    {
+      "id": "kz-400",
+      "phrase": "Дерек анықталса, шешімді бірге өзгертеміз.",
+      "file": "kz-400.wav",
+      "status": "approved",
+      "lessons": [
+        "70-respectful-evidence-dialogue-en.md",
+        "70-respectful-evidence-dialogue-kz.md",
+        "70-respectful-evidence-dialogue.md"
+      ]
+    },
+    {
+      "id": "kz-401",
+      "phrase": "Бұл — оқу мысалы, нақты есеп емес.",
+      "file": "kz-401.wav",
+      "status": "approved",
+      "lessons": [
+        "71-public-information-card-en.md",
+        "71-public-information-card-kz.md",
+        "71-public-information-card.md"
+      ]
+    },
+    {
+      "id": "kz-402",
+      "phrase": "Кесте үш күнді ғана қамтиды.",
+      "file": "kz-402.wav",
+      "status": "approved",
+      "lessons": [
+        "71-public-information-card-en.md",
+        "71-public-information-card-kz.md",
+        "71-public-information-card.md"
+      ]
+    },
+    {
+      "id": "kz-403",
+      "phrase": "Сейсенбіде он сегіз адам көрсетілген.",
+      "file": "kz-403.wav",
+      "status": "approved",
+      "lessons": [
+        "71-public-information-card-en.md",
+        "71-public-information-card-kz.md",
+        "71-public-information-card.md"
+      ]
+    },
+    {
+      "id": "kz-404",
+      "phrase": "Бұл басқа апталар туралы айтпайды.",
+      "file": "kz-404.wav",
+      "status": "approved",
+      "lessons": [
+        "71-public-information-card-en.md",
+        "71-public-information-card-kz.md",
+        "71-public-information-card.md"
+      ]
+    },
+    {
+      "id": "kz-405",
+      "phrase": "Дереккөз: топтың оқу кестесі.",
+      "file": "kz-405.wav",
+      "status": "approved",
+      "lessons": [
+        "71-public-information-card-en.md",
+        "71-public-information-card-kz.md",
+        "71-public-information-card.md"
+      ]
+    },
+    {
+      "id": "kz-406",
+      "phrase": "Жаңа мәлімет болса, жазбаны жаңартамыз.",
+      "file": "kz-406.wav",
+      "status": "approved",
+      "lessons": [
+        "71-public-information-card-en.md",
+        "71-public-information-card-kz.md",
+        "71-public-information-card.md"
+      ]
+    },
+    {
+      "id": "kz-407",
+      "phrase": "Бейсенбіде он төрт адам келді.",
+      "file": "kz-407.wav",
+      "status": "approved",
+      "lessons": [
+        "72-information-opinion-mastery-en.md",
+        "72-information-opinion-mastery-kz.md",
+        "72-information-opinion-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-408",
+      "phrase": "Жұмада жиырма адам келді.",
+      "file": "kz-408.wav",
+      "status": "approved",
+      "lessons": [
+        "72-information-opinion-mastery-en.md",
+        "72-information-opinion-mastery-kz.md",
+        "72-information-opinion-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-409",
+      "phrase": "Сенбіде он алты адам келді.",
+      "file": "kz-409.wav",
+      "status": "approved",
+      "lessons": [
+        "72-information-opinion-mastery-en.md",
+        "72-information-opinion-mastery-kz.md",
+        "72-information-opinion-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-410",
+      "phrase": "Жұмадағы сан бейсенбіден алтыға көп.",
+      "file": "kz-410.wav",
+      "status": "approved",
+      "lessons": [
+        "72-information-opinion-mastery-en.md",
+        "72-information-opinion-mastery-kz.md",
+        "72-information-opinion-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-411",
+      "phrase": "«Әр жұмада» деуге дерек жеткіліксіз.",
+      "file": "kz-411.wav",
+      "status": "approved",
+      "lessons": [
+        "72-information-opinion-mastery-en.md",
+        "72-information-opinion-mastery-kz.md",
+        "72-information-opinion-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-412",
+      "phrase": "Орын санын бөлек тексеру керек.",
+      "file": "kz-412.wav",
+      "status": "approved",
+      "lessons": [
+        "72-information-opinion-mastery-en.md",
+        "72-information-opinion-mastery-kz.md",
+        "72-information-opinion-mastery.md"
+      ]
     }
   ]
 }

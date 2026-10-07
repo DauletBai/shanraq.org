@@ -71,7 +71,7 @@ async def render() -> None:
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Казахский курс — одобренные записи</title>
 <style>body{font:16px system-ui;max-width:920px;margin:30px auto;padding:0 18px;color:#242424}h1{font-size:30px}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}article{border:1px solid #d8d8d8;border-radius:12px;padding:14px;box-shadow:0 3px 12px #0001}p{font-size:20px;min-height:48px}audio{width:100%}</style>
-<h1>Одобренные записи уроков 57–64</h1><p>Новые записи прослушаны и одобрены автором курса. Они используются в уроках «Связная речь и слух»; более ранние записи сохранены.</p><section>"""
+<h1>Казахские аудиозаписи курса</h1><p>Записи доступны для выборочной проверки произношения. Для новых блоков используется ранее одобренный голос Aigul; аудиофайлы проходят техническую проверку перед выпуском.</p><section>"""
             + cards + "</section></html>\n",
             encoding="utf-8",
         )
@@ -101,7 +101,7 @@ async def render() -> None:
         "locale": "kk-KZ",
         "rate": RATE,
         "processing": "48 kHz mono PCM; loudness normalised",
-        "approval": "pending_owner_and_native_speaker_review",
+        "approval": "technical_validation_before_release",
     }
     MANIFEST.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -124,7 +124,7 @@ h1{font-size:30px}section{display:grid;grid-template-columns:repeat(auto-fit,min
 article{border:1px solid #d8d8d8;border-radius:12px;padding:14px;box-shadow:0 3px 12px #0001}
 p{font-size:20px;min-height:48px}audio{width:100%}</style>
 <h1>__COUNT__ новых реплик: следующий блок курса</h1>
-<p>Проверка произношения перед публикацией уроков 57–64 «Связная речь и слух». Голос Aigul, язык kk-KZ. Ранее одобренные записи не изменялись. Прослушайте каждую реплику: новые уроки пока не опубликованы.</p><section>"""
+<p>Проверка произношения перед публикацией следующего блока. Голос Aigul, язык kk-KZ. Ранее одобренные записи не изменялись.</p><section>"""
         .replace("__COUNT__", str(len(candidates)))
         + "\n".join(cards)
         + "</section></html>\n",

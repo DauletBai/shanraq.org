@@ -109,7 +109,7 @@
     {
       "id": "information-opinion",
       "range": "65-72",
-      "status": "planned",
+      "status": "ready",
       "lexical_target": 2100,
       "release": "2.1",
       "title_kz": "Ақпарат және пікір",
@@ -620,5 +620,87 @@
     {"number": 62, "id": "unknown-word-context", "prerequisites": ["short-story-chain"], "title_ru": "Незнакомое слово: сначала контекст, потом словарь", "title_kz": "Бейтаныс сөз: әуелі мәнмәтін, кейін сөздік", "title_en": "Unknown word: context before dictionary"},
     {"number": 63, "id": "retell-and-follow-up", "prerequisites": ["unknown-word-context"], "title_ru": "Перескажи услышанное и задай следующий вопрос", "title_kz": "Естігеніңді баяндап, келесі сұрақты қой", "title_en": "Retell what you heard and ask the next question"},
     {"number": 64, "id": "connected-speech-mastery", "prerequisites": ["retell-and-follow-up"], "title_ru": "Контрольная точка 2.0: слушай, уточняй, пересказывай", "title_kz": "2.0 бақылау нүктесі: тыңда, нақтыла, баянда", "title_en": "Mastery checkpoint 2.0: listen, clarify, retell"}
+  ],
+  "ninth_block_lessons": [
+    {
+      "number": 65,
+      "id": "fact-or-opinion",
+      "prerequisites": [
+        "connected-speech-mastery"
+      ],
+      "title_ru": "Факт или мнение: что можно проверить?",
+      "title_kz": "Дерек пе, пікір ме: нені тексеруге болады?",
+      "title_en": "Fact or opinion: what can be checked?"
+    },
+    {
+      "number": 66,
+      "id": "source-date-context",
+      "prerequisites": [
+        "fact-or-opinion"
+      ],
+      "title_ru": "Источник, дата, место: когда сообщение ещё верно?",
+      "title_kz": "Дереккөз, күн, орын: хабар қашан дұрыс?",
+      "title_en": "Source, date and place: when is a claim still valid?"
+    },
+    {
+      "number": 67,
+      "id": "read-a-small-chart",
+      "prerequisites": [
+        "source-date-context"
+      ],
+      "title_ru": "Три столбца без догадок: читаем диаграмму",
+      "title_kz": "Үш бағанды дәл оқу: диаграмманы түсінеміз",
+      "title_en": "Read three bars without guessing"
+    },
+    {
+      "number": 68,
+      "id": "compare-with-baseline",
+      "prerequisites": [
+        "read-a-small-chart"
+      ],
+      "title_ru": "На шесть больше — не вдвое: сравниваем числа",
+      "title_kz": "Алтыға артық — екі есе емес: сандарды салыстырамыз",
+      "title_en": "Six more is not twice as many: compare with a baseline"
+    },
+    {
+      "number": 69,
+      "id": "claim-evidence-reason",
+      "prerequisites": [
+        "compare-with-baseline"
+      ],
+      "title_ru": "Вывод держится на данных: тезис, доказательство, связь",
+      "title_kz": "Қорытынды дерекке сүйенеді: тұжырым, дәлел, байланыс",
+      "title_en": "A claim needs evidence and a link between them"
+    },
+    {
+      "number": 70,
+      "id": "respectful-evidence-dialogue",
+      "prerequisites": [
+        "claim-evidence-reason"
+      ],
+      "title_ru": "Возразить уважительно и проверить вместе",
+      "title_kz": "Сыпайы келіспей, деректі бірге тексеру",
+      "title_en": "Disagree respectfully and check the evidence together"
+    },
+    {
+      "number": 71,
+      "id": "public-information-card",
+      "prerequisites": [
+        "respectful-evidence-dialogue"
+      ],
+      "title_ru": "Понятная заметка без лишних обещаний",
+      "title_kz": "Артық уәдесіз түсінікті хабарлама",
+      "title_en": "Write a clear public note without overclaiming"
+    },
+    {
+      "number": 72,
+      "id": "information-opinion-mastery",
+      "prerequisites": [
+        "public-information-card"
+      ],
+      "title_ru": "Контрольная точка 2.1: сообщить данные и защитить вывод",
+      "title_kz": "2.1 бақылау нүктесі: деректі айтып, қорытындыны қорғау",
+      "title_en": "Mastery checkpoint 2.1: report data and defend a conclusion"
+    }
   ]
 }

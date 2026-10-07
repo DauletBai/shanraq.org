@@ -74,4 +74,4 @@ Block assessment: listen twice without text, draw four boxes for cause, place, t
 - After seven days use the technique with a new recording containing a different time, place or object.
 - After thirty days retell what you heard to someone else and ask them to check its accuracy.
 
-[Course contents](/course/kazakh-language?lang=en)
+[Next lesson: Fact or opinion: what can be checked?](/read/kazakh-language-65-fact-or-opinion?lang=en)
