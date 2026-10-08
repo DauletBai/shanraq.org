@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Бақылау қосындысының пайдасы мен шегі">
+<defs><filter id="softShadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="13" flood-color="#416d89" flood-opacity="0.18"/></filter></defs>
+<rect x="0" y="0" width="1600" height="900" rx="0" fill="#f4f9fc" stroke="#f4f9fc" stroke-width="0"/>
+<text x="80" y="105" fill="#163c59" font-family="DejaVu Sans,Arial,sans-serif" font-size="47" font-weight="700" text-anchor="start">17  Бақылау қосындысының пайдасы мен шегі</text>
+<rect x="80" y="180" width="450" height="505" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="112" y="235" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Бастапқы дерек</text>
+<text x="305" y="395" fill="#27465e" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="600" text-anchor="middle">4 + 7 + 2 = 13</text>
+<text x="305" y="530" fill="#28704c" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="middle">қалдық =3</text>
+<rect x="570" y="180" width="450" height="505" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="602" y="235" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Өзгеріс байқалды</text>
+<text x="795" y="395" fill="#27465e" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="600" text-anchor="middle">4 + 8 + 2 = 14</text>
+<text x="795" y="530" fill="#b25936" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="middle">қалдық =4</text>
+<rect x="1060" y="180" width="450" height="505" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="1092" y="235" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Коллизия: бір қалдық</text>
+<text x="1285" y="395" fill="#27465e" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="600" text-anchor="middle">5 + 6 + 2 = 13</text>
+<text x="1285" y="530" fill="#28704c" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="middle">қалдық =3</text>
+<text x="800" y="795" fill="#17485f" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="600" text-anchor="middle">4,7,2 ≠ 5,6,2    |    3 = 3</text>
+</svg>

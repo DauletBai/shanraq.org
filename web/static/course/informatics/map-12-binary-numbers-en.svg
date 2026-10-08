@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Binary place weights">
+<defs><filter id="softShadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="13" flood-color="#416d89" flood-opacity="0.18"/></filter></defs>
+<rect x="0" y="0" width="1600" height="900" rx="0" fill="#f4f9fc" stroke="#f4f9fc" stroke-width="0"/>
+<text x="80" y="105" fill="#163c59" font-family="DejaVu Sans,Arial,sans-serif" font-size="47" font-weight="700" text-anchor="start">12  Binary place weights</text>
+<rect x="80" y="170" width="1440" height="540" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="112" y="225" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Digit  1101₂</text>
+<rect x="180" y="270" width="250" height="105" rx="16" fill="#e3f4fb" stroke="#d6e4ed" stroke-width="2"/>
+<text x="305" y="340" fill="#165f82" font-family="DejaVu Sans,Arial,sans-serif" font-size="62" font-weight="700" text-anchor="middle">1</text>
+<text x="305" y="455" fill="#477086" font-family="DejaVu Sans,Arial,sans-serif" font-size="46" font-weight="600" text-anchor="middle">8</text>
+<text x="305" y="570" fill="#b25033" font-family="DejaVu Sans,Arial,sans-serif" font-size="50" font-weight="700" text-anchor="middle">8</text>
+<rect x="510" y="270" width="250" height="105" rx="16" fill="#e3f4fb" stroke="#d6e4ed" stroke-width="2"/>
+<text x="635" y="340" fill="#165f82" font-family="DejaVu Sans,Arial,sans-serif" font-size="62" font-weight="700" text-anchor="middle">1</text>
+<text x="635" y="455" fill="#477086" font-family="DejaVu Sans,Arial,sans-serif" font-size="46" font-weight="600" text-anchor="middle">4</text>
+<text x="635" y="570" fill="#b25033" font-family="DejaVu Sans,Arial,sans-serif" font-size="50" font-weight="700" text-anchor="middle">4</text>
+<rect x="840" y="270" width="250" height="105" rx="16" fill="#e3f4fb" stroke="#d6e4ed" stroke-width="2"/>
+<text x="965" y="340" fill="#165f82" font-family="DejaVu Sans,Arial,sans-serif" font-size="62" font-weight="700" text-anchor="middle">0</text>
+<text x="965" y="455" fill="#477086" font-family="DejaVu Sans,Arial,sans-serif" font-size="46" font-weight="600" text-anchor="middle">2</text>
+<text x="965" y="570" fill="#b25033" font-family="DejaVu Sans,Arial,sans-serif" font-size="50" font-weight="700" text-anchor="middle">0</text>
+<rect x="1170" y="270" width="250" height="105" rx="16" fill="#e3f4fb" stroke="#d6e4ed" stroke-width="2"/>
+<text x="1295" y="340" fill="#165f82" font-family="DejaVu Sans,Arial,sans-serif" font-size="62" font-weight="700" text-anchor="middle">1</text>
+<text x="1295" y="455" fill="#477086" font-family="DejaVu Sans,Arial,sans-serif" font-size="46" font-weight="600" text-anchor="middle">1</text>
+<text x="1295" y="570" fill="#b25033" font-family="DejaVu Sans,Arial,sans-serif" font-size="50" font-weight="700" text-anchor="middle">1</text>
+<text x="110" y="455" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="26" font-weight="500" text-anchor="start">Weight</text>
+<text x="110" y="570" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="26" font-weight="500" text-anchor="start">Contribution</text>
+<text x="800" y="805" fill="#17485f" font-family="DejaVu Sans,Arial,sans-serif" font-size="39" font-weight="700" text-anchor="middle">Result: 8 + 4 + 0 + 1 = 13₁₀</text>
+</svg>

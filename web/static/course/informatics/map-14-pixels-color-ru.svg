@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Фотография как числовая сетка">
+<defs><filter id="softShadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="13" flood-color="#416d89" flood-opacity="0.18"/></filter></defs>
+<rect x="0" y="0" width="1600" height="900" rx="0" fill="#f4f9fc" stroke="#f4f9fc" stroke-width="0"/>
+<text x="80" y="105" fill="#163c59" font-family="DejaVu Sans,Arial,sans-serif" font-size="47" font-weight="700" text-anchor="start">14  Фотография как числовая сетка</text>
+<rect x="80" y="170" width="690" height="560" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="112" y="225" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Сетка 2 × 2</text>
+<rect x="810" y="170" width="710" height="560" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="842" y="225" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Каналы RGB</text>
+<rect x="180" y="280" width="165" height="150" rx="14" fill="#f04c45" stroke="#afbfcc" stroke-width="3"/>
+<text x="900" y="345" fill="#234056" font-family="DejaVu Sans,Arial,sans-serif" font-size="27" font-weight="600" text-anchor="start">255, 0, 0</text>
+<rect x="410" y="280" width="165" height="150" rx="14" fill="#37ba69" stroke="#afbfcc" stroke-width="3"/>
+<text x="1205" y="345" fill="#234056" font-family="DejaVu Sans,Arial,sans-serif" font-size="27" font-weight="600" text-anchor="start">0, 255, 0</text>
+<rect x="180" y="475" width="165" height="150" rx="14" fill="#427ded" stroke="#afbfcc" stroke-width="3"/>
+<text x="900" y="540" fill="#234056" font-family="DejaVu Sans,Arial,sans-serif" font-size="27" font-weight="600" text-anchor="start">0, 0, 255</text>
+<rect x="410" y="475" width="165" height="150" rx="14" fill="#ffffff" stroke="#afbfcc" stroke-width="3"/>
+<text x="1205" y="540" fill="#234056" font-family="DejaVu Sans,Arial,sans-serif" font-size="27" font-weight="600" text-anchor="start">255, 255, 255</text>
+<text x="800" y="810" fill="#17485f" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="700" text-anchor="middle">Сырые данные: 2 × 2 × 3 = 12 байтов</text>
+</svg>

@@ -21,6 +21,14 @@ RELEASE_STEMS = (
     "08-formats-software-licenses",
     "09-versions-collaboration-accessibility",
     "10-systems-mastery",
+    "11-bits-states",
+    "12-binary-numbers",
+    "13-text-unicode",
+    "14-pixels-color",
+    "15-sound-video-sampling",
+    "16-compression",
+    "17-integrity-errors",
+    "18-representation-mastery",
 )
 
 
@@ -87,6 +95,9 @@ class InformaticsReleaseTests(unittest.TestCase):
         first_cover = ROOT / "web" / self.data["blocks"][0]["cover"].lstrip("/")
         self.assertTrue(first_cover.is_file(), first_cover)
         self.assertEqual(first_cover.suffix, ".webp")
+        second_cover = ROOT / "web" / self.data["blocks"][1]["cover"].lstrip("/")
+        self.assertTrue(second_cover.is_file(), second_cover)
+        self.assertEqual(second_cover.suffix, ".webp")
         checkpoint = ROOT / "course/informatics-assistant/step-00/project-passport.template.md"
         self.assertTrue(checkpoint.is_file(), checkpoint)
         checkpoint_text = checkpoint.read_text(encoding="utf-8")
@@ -194,21 +205,56 @@ class InformaticsReleaseTests(unittest.TestCase):
                 for label in labels:
                     self.assertIn(label, text, (name, lang, label))
 
+    def test_representation_maps_and_examples_are_exact(self):
+        for lang in ("ru", "kz", "en"):
+            for number, stem in enumerate(RELEASE_STEMS[10:], 11):
+                map_stem = "map-" + stem
+                path = MAPS / f"{map_stem}-{lang}.svg"
+                root = ET.parse(path).getroot()
+                self.assertEqual(root.attrib.get("viewBox"), "0 0 1600 900", path)
+            cases = {
+                12: ("1101", "8 + 4 + 0 + 1"),
+                13: ("U+04D8", "D3 98", "U+042F", "D0 AF"),
+                14: ("255, 0, 0", "0, 255, 0", "0, 0, 255", "255, 255, 255"),
+                15: ("0.25", "0.75", "0.5"),
+                16: ("ААААБББ", "4А3Б", "201", "200"),
+                17: ("4 + 7 + 2 = 13", "4 + 8 + 2 = 14", "5 + 6 + 2 = 13"),
+                18: ("t-01", "t-02", "t-03", "false", "true"),
+            }
+            for number, labels in cases.items():
+                content = (MAPS / f"map-{RELEASE_STEMS[number-1]}-{lang}.svg").read_text()
+                for label in labels:
+                    self.assertIn(label, content)
+
+    def test_project_checkpoint_matches_lesson_eighteen(self):
+        sample = ROOT / "course/informatics-assistant/step-01/data/tasks.json"
+        data = json.loads(sample.read_text(encoding="utf-8"))
+        self.assertEqual(data["version"], "0.2")
+        self.assertEqual([item["id"] for item in data["tasks"]], ["t-01", "t-02", "t-03"])
+        self.assertEqual([item["done"] for item in data["tasks"]], [False, True, False])
+        for lang in ("ru", "kz", "en"):
+            self.assertTrue((ROOT / f"course/informatics-assistant/step-01/FORMAT-{lang}.md").is_file())
+            suffix = "" if lang == "ru" else f"-{lang}"
+            lesson = (LESSONS / f"18-representation-mastery{suffix}.md").read_text()
+            self.assertIn('"version":"0.2"', lesson)
+            self.assertIn('"title":"Кітап оқу"', lesson)
+            self.assertIn('8/10', lesson)
+            self.assertIn('7/10', lesson)
+
     def test_publication_is_atomic_and_complete(self):
         from tools.course.prepare_informatics import prepare
 
-        first = self.data["blocks"][0]
-        self.assertEqual(first["status"], "published")
+        self.assertEqual([block["status"] for block in self.data["blocks"][:2]], ["published", "published"])
         sql, expected = prepare()
-        self.assertEqual(len(expected), 30)
-        self.assertEqual(len({item["slug"] for item in expected}), 10)
+        self.assertEqual(len(expected), 54)
+        self.assertEqual(len({item["slug"] for item in expected}), 18)
         self.assertEqual({item["lang"] for item in expected}, {"ru", "kz", "en"})
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
-        self.assertEqual(sql.count("INSERT INTO article_series_items"), 10)
+        self.assertEqual(sql.count("INSERT INTO article_series_items"), 18)
         self.assertIn("shanraq-informatics-course", sql)
 
-    def test_first_release_has_no_missing_or_extra_pages(self):
+    def test_first_two_releases_have_no_missing_or_extra_pages(self):
         actual = {path.name for path in LESSONS.glob("*.md")}
         expected = {
             f"{stem}{suffix}.md"

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Таңба, код нүктесі және UTF-8 байттары">
+<defs><filter id="softShadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="13" flood-color="#416d89" flood-opacity="0.18"/></filter></defs>
+<rect x="0" y="0" width="1600" height="900" rx="0" fill="#f4f9fc" stroke="#f4f9fc" stroke-width="0"/>
+<text x="80" y="105" fill="#163c59" font-family="DejaVu Sans,Arial,sans-serif" font-size="47" font-weight="700" text-anchor="start">13  Таңба, код нүктесі және UTF-8 байттары</text>
+<rect x="80" y="175" width="1440" height="580" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="112" y="230" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Таңба, код нүктесі және UTF-8 байттары</text>
+<text x="170" y="285" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="27" font-weight="700" text-anchor="start">Таңба</text>
+<text x="500" y="285" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="27" font-weight="700" text-anchor="start">Код нүктесі</text>
+<text x="830" y="285" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="27" font-weight="700" text-anchor="start">UTF-8 байттары</text>
+<text x="1200" y="285" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="27" font-weight="700" text-anchor="start">Байт</text>
+<rect x="140" y="325" width="1330" height="94" rx="12" fill="#f4f9fc" stroke="#d6e4ed" stroke-width="2"/>
+<text x="170" y="385" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">A</text>
+<text x="500" y="385" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">U+0041</text>
+<text x="830" y="385" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">41</text>
+<text x="1200" y="385" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">1</text>
+<rect x="140" y="450" width="1330" height="94" rx="12" fill="#f4f9fc" stroke="#d6e4ed" stroke-width="2"/>
+<text x="170" y="510" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">Я</text>
+<text x="500" y="510" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">U+042F</text>
+<text x="830" y="510" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">D0 AF</text>
+<text x="1200" y="510" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">2</text>
+<rect x="140" y="575" width="1330" height="94" rx="12" fill="#f4f9fc" stroke="#d6e4ed" stroke-width="2"/>
+<text x="170" y="635" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">Ә</text>
+<text x="500" y="635" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">U+04D8</text>
+<text x="830" y="635" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">D3 98</text>
+<text x="1200" y="635" fill="#203d54" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="600" text-anchor="start">2</text>
+</svg>

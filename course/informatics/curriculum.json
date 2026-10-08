@@ -18,7 +18,7 @@
   "publication_policy": "complete-block-only",
   "blocks": [
     {"id":"foundations","range":"1-10","lesson_count":10,"status":"published","cover":"/static/covers/school/informatics/foundations/01-digital-world-computer-project.webp","title_ru":"Цифровой мир, компьютер и проект","title_kz":"Цифрлық әлем, компьютер және жоба","title_en":"The digital world, the computer, and the project","release":"0.1"},
-    {"id":"representation","range":"11-18","lesson_count":8,"status":"planned","title_ru":"Как информация становится данными","title_kz":"Ақпарат дерекке қалай айналады","title_en":"How information becomes data","release":"0.2"},
+    {"id":"representation","range":"11-18","lesson_count":8,"status":"published","cover":"/static/covers/school/informatics/representation/02-information-data.webp","title_ru":"Как информация становится данными","title_kz":"Ақпарат дерекке қалай айналады","title_en":"How information becomes data","release":"0.2"},
     {"id":"algorithms","range":"19-26","lesson_count":8,"status":"planned","title_ru":"Алгоритмическое мышление","title_kz":"Алгоритмдік ойлау","title_en":"Algorithmic thinking","release":"0.3"},
     {"id":"python","range":"27-38","lesson_count":12,"status":"planned","title_ru":"Программирование на Python","title_kz":"Python тілінде бағдарламалау","title_en":"Programming with Python","release":"1.0"},
     {"id":"web","range":"39-46","lesson_count":8,"status":"planned","title_ru":"Интернет, веб и облако","title_kz":"Интернет, веб және бұлт","title_en":"Internet, web, and cloud","release":"1.1"},

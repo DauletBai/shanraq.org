@@ -64,4 +64,4 @@ The readiness criterion is concrete: reproduce the signal without the page, corr
 
 Rebuild the signal tomorrow; solve an equivalent task after seven days; after thirty days, verify the decision in the project.
 
-[Next lesson: the bit: two distinguishable states](/course/informatics?lang=en)
+[Next lesson: the bit: two distinguishable states](/read/informatics-11-bits-states?lang=en)

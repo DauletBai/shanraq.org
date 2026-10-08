@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the first Informatics block as one atomic SQL publication."""
+"""Prepare the first two Informatics blocks as one atomic SQL publication."""
 import argparse
 import hashlib
 import json
@@ -19,20 +19,29 @@ ROUTE = (
     ("08-formats-software-licenses", "informatics-08-formats-software-licenses", 80),
     ("09-versions-collaboration-accessibility", "informatics-09-versions-collaboration-accessibility", 90),
     ("10-systems-mastery", "informatics-10-systems-mastery", 100),
+    ("11-bits-states", "informatics-11-bits-states", 110),
+    ("12-binary-numbers", "informatics-12-binary-numbers", 120),
+    ("13-text-unicode", "informatics-13-text-unicode", 130),
+    ("14-pixels-color", "informatics-14-pixels-color", 140),
+    ("15-sound-video-sampling", "informatics-15-sound-video-sampling", 150),
+    ("16-compression", "informatics-16-compression", 160),
+    ("17-integrity-errors", "informatics-17-integrity-errors", 170),
+    ("18-representation-mastery", "informatics-18-representation-mastery", 180),
 )
 COVER = "/static/covers/school/informatics/foundations/01-digital-world-computer-project.webp"
+REPRESENTATION_COVER = "/static/covers/school/informatics/representation/02-information-data.webp"
 META = {
     "ru": (
         "Информатика: создаём своего цифрового помощника",
-        "Первый бесплатный блок из 10 занятий: устройство компьютера, ввод и вывод, память, операционная система, файлы, форматы, лицензии, версии и доступность через один сквозной проект.",
+        "18 бесплатных занятий: устройство компьютера и представление информации битами, числами, текстом, изображениями и звуком. Сквозной проект — цифровой помощник.",
     ),
     "kz": (
         "Информатика: өз цифрлық көмекшімізді жасаймыз",
-        "10 сабақтан тұратын алғашқы тегін бөлім: бір жоба арқылы компьютер құрылысы, кіріс пен шығыс, жад, операциялық жүйе, файлдар, пішімдер, лицензиялар, нұсқалар және қолжетімділік.",
+        "18 тегін сабақ: компьютер құрылысы және ақпаратты бит, сан, мәтін, кескін мен дыбыс арқылы көрсету. Ортақ жоба — цифрлық көмекші.",
     ),
     "en": (
         "Informatics: build your own digital assistant",
-        "The first free 10-lesson block covers computer systems, input and output, memory, operating systems, files, formats, licences, versions, and accessibility through one continuing project.",
+        "18 free lessons cover computer systems and the representation of information as bits, numbers, text, images, and sound through one continuing digital-assistant project.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -57,8 +66,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 10:
-        raise ValueError("the first release must contain exactly ten lessons")
+    if len(ROUTE) != 18:
+        raise ValueError("the first two releases must contain exactly eighteen lessons")
     sql = [
         "BEGIN;",
         "SELECT pg_advisory_xact_lock(hashtext('shanraq-informatics-course'));",
@@ -92,8 +101,9 @@ SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
     for stem, slug_name, position in ROUTE:
         slug = literal(slug_name)
+        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
-SELECT id,{slug},'ru','society','education',{literal(COVER)},'published',now()
+SELECT id,{slug},'ru','society','education',{literal(lesson_cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'
 ON CONFLICT(slug) DO UPDATE SET category='society',subcategory='education',
 cover_url=EXCLUDED.cover_url,status='published',updated_at=now(),

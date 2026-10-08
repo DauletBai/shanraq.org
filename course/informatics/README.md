@@ -47,7 +47,14 @@ Run the structural release checks from the repository root:
 python3 -m unittest tools.course.test_informatics_release
 ```
 
-Prepare the first ten lessons as one reviewable database transaction:
+Release 0.2 adds lessons 11–18 about bits, binary numbers, Unicode and UTF-8,
+pixels, sampled sound and video, compression, integrity, and a documented data
+format. The reproducible project checkpoint is in
+`course/informatics-assistant/step-01/`; its three fictional tasks match lesson
+18 in all three languages. Its cover is
+`/static/covers/school/informatics/representation/02-information-data.webp`.
+
+Prepare the first eighteen lessons as one reviewable database transaction:
 
 ```sh
 python3 tools/course/prepare_informatics.py \

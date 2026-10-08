@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Сжатие: что можно восстановить?">
+<defs><filter id="softShadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="13" flood-color="#416d89" flood-opacity="0.18"/></filter></defs>
+<rect x="0" y="0" width="1600" height="900" rx="0" fill="#f4f9fc" stroke="#f4f9fc" stroke-width="0"/>
+<text x="80" y="105" fill="#163c59" font-family="DejaVu Sans,Arial,sans-serif" font-size="47" font-weight="700" text-anchor="start">16  Сжатие: что можно восстановить?</text>
+<rect x="80" y="170" width="690" height="560" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="112" y="225" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Без потерь</text>
+<rect x="810" y="170" width="710" height="560" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="842" y="225" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">С потерями</text>
+<text x="420" y="365" fill="#235579" font-family="DejaVu Sans,Arial,sans-serif" font-size="58" font-weight="700" text-anchor="middle">ААААБББ</text>
+<line x1="420" y1="408" x2="420" y2="470" stroke="#417e92" stroke-width="7"/>
+<path d="M403 455 L420 478 L437 455" fill="none" stroke="#417e92" stroke-width="7"/>
+<text x="420" y="555" fill="#235579" font-family="DejaVu Sans,Arial,sans-serif" font-size="58" font-weight="700" text-anchor="middle">4А3Б</text>
+<text x="420" y="655" fill="#28704c" font-family="DejaVu Sans,Arial,sans-serif" font-size="29" font-weight="700" text-anchor="middle">точно</text>
+<text x="1150" y="365" fill="#235579" font-family="DejaVu Sans,Arial,sans-serif" font-size="58" font-weight="700" text-anchor="middle">201</text>
+<line x1="1150" y1="408" x2="1150" y2="470" stroke="#b46636" stroke-width="7"/>
+<path d="M1133 455 L1150 478 L1167 455" fill="none" stroke="#b46636" stroke-width="7"/>
+<text x="1150" y="555" fill="#235579" font-family="DejaVu Sans,Arial,sans-serif" font-size="58" font-weight="700" text-anchor="middle">200</text>
+<text x="1150" y="655" fill="#a64e36" font-family="DejaVu Sans,Arial,sans-serif" font-size="29" font-weight="700" text-anchor="middle">не точно</text>
+<text x="800" y="810" fill="#17485f" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="600" text-anchor="middle">4А3Б = ААААБББ  |  200 ≠ 201</text>
+</svg>

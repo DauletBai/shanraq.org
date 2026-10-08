@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Формат помощника 0.2">
+<defs><filter id="softShadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="13" flood-color="#416d89" flood-opacity="0.18"/></filter></defs>
+<rect x="0" y="0" width="1600" height="900" rx="0" fill="#f4f9fc" stroke="#f4f9fc" stroke-width="0"/>
+<text x="80" y="105" fill="#163c59" font-family="DejaVu Sans,Arial,sans-serif" font-size="47" font-weight="700" text-anchor="start">18  Формат помощника 0.2</text>
+<rect x="80" y="180" width="450" height="535" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="112" y="235" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">UTF-8 JSON</text>
+<rect x="570" y="180" width="450" height="535" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="602" y="235" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Три задачи</text>
+<rect x="1060" y="180" width="450" height="535" rx="24" fill="#ffffff" stroke="#d6e4ed" stroke-width="2" filter="url(#softShadow)"/><text x="1092" y="235" fill="#136789" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" font-weight="700" text-anchor="start">Точная копия</text>
+<text x="140" y="360" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="35" font-weight="500" text-anchor="start">version: 0.2</text>
+<text x="140" y="450" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="35" font-weight="500" text-anchor="start">tasks: [ … ]</text>
+<text x="140" y="540" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="30" font-weight="500" text-anchor="start">encoding: UTF-8</text>
+<text x="625" y="335" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="500" text-anchor="start">t-01   false</text>
+<text x="625" y="425" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="500" text-anchor="start">t-02   true</text>
+<text x="625" y="515" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="500" text-anchor="start">t-03   false</text>
+<text x="1110" y="340" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="30" font-weight="500" text-anchor="start">разные id</text>
+<text x="1110" y="430" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="30" font-weight="500" text-anchor="start">один true</text>
+<text x="1110" y="520" fill="#18334b" font-family="DejaVu Sans,Arial,sans-serif" font-size="29" font-weight="500" text-anchor="start">сравнить байты</text>
+<text x="800" y="810" fill="#17485f" font-family="DejaVu Sans,Arial,sans-serif" font-size="37" font-weight="700" text-anchor="middle">3 задачи  |  3 id  |  1 true</text>
+</svg>

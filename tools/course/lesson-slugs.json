@@ -4186,5 +4186,101 @@
   "kazakh-language/80-independent-communication-mastery-en": [
     "kazakh-language-80-independent-communication-mastery",
     "en"
+  ],
+  "informatics/11-bits-states": [
+    "informatics-11-bits-states",
+    "ru"
+  ],
+  "informatics/11-bits-states-kz": [
+    "informatics-11-bits-states",
+    "kz"
+  ],
+  "informatics/11-bits-states-en": [
+    "informatics-11-bits-states",
+    "en"
+  ],
+  "informatics/12-binary-numbers": [
+    "informatics-12-binary-numbers",
+    "ru"
+  ],
+  "informatics/12-binary-numbers-kz": [
+    "informatics-12-binary-numbers",
+    "kz"
+  ],
+  "informatics/12-binary-numbers-en": [
+    "informatics-12-binary-numbers",
+    "en"
+  ],
+  "informatics/13-text-unicode": [
+    "informatics-13-text-unicode",
+    "ru"
+  ],
+  "informatics/13-text-unicode-kz": [
+    "informatics-13-text-unicode",
+    "kz"
+  ],
+  "informatics/13-text-unicode-en": [
+    "informatics-13-text-unicode",
+    "en"
+  ],
+  "informatics/14-pixels-color": [
+    "informatics-14-pixels-color",
+    "ru"
+  ],
+  "informatics/14-pixels-color-kz": [
+    "informatics-14-pixels-color",
+    "kz"
+  ],
+  "informatics/14-pixels-color-en": [
+    "informatics-14-pixels-color",
+    "en"
+  ],
+  "informatics/15-sound-video-sampling": [
+    "informatics-15-sound-video-sampling",
+    "ru"
+  ],
+  "informatics/15-sound-video-sampling-kz": [
+    "informatics-15-sound-video-sampling",
+    "kz"
+  ],
+  "informatics/15-sound-video-sampling-en": [
+    "informatics-15-sound-video-sampling",
+    "en"
+  ],
+  "informatics/16-compression": [
+    "informatics-16-compression",
+    "ru"
+  ],
+  "informatics/16-compression-kz": [
+    "informatics-16-compression",
+    "kz"
+  ],
+  "informatics/16-compression-en": [
+    "informatics-16-compression",
+    "en"
+  ],
+  "informatics/17-integrity-errors": [
+    "informatics-17-integrity-errors",
+    "ru"
+  ],
+  "informatics/17-integrity-errors-kz": [
+    "informatics-17-integrity-errors",
+    "kz"
+  ],
+  "informatics/17-integrity-errors-en": [
+    "informatics-17-integrity-errors",
+    "en"
+  ],
+  "informatics/18-representation-mastery": [
+    "informatics-18-representation-mastery",
+    "ru"
+  ],
+  "informatics/18-representation-mastery-kz": [
+    "informatics-18-representation-mastery",
+    "kz"
+  ],
+  "informatics/18-representation-mastery-en": [
+    "informatics-18-representation-mastery",
+    "en"
   ]
 }

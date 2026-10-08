@@ -9,6 +9,8 @@ on:
       - 'docs/informatics-course-proposal.md'
       - 'tools/course/generate_informatics_foundations.py'
       - 'tools/course/generate_informatics_maps.py'
+      - 'tools/course/generate_informatics_representation.py'
+      - 'tools/course/generate_informatics_representation_maps.py'
       - 'tools/course/prepare_informatics.py'
       - 'tools/course/test_informatics_release.py'
       - 'web/static/course/informatics/**'
@@ -21,6 +23,8 @@ on:
       - 'docs/informatics-course-proposal.md'
       - 'tools/course/generate_informatics_foundations.py'
       - 'tools/course/generate_informatics_maps.py'
+      - 'tools/course/generate_informatics_representation.py'
+      - 'tools/course/generate_informatics_representation_maps.py'
       - 'tools/course/prepare_informatics.py'
       - 'tools/course/test_informatics_release.py'
       - 'web/static/course/informatics/**'
@@ -35,9 +39,11 @@ jobs:
         run: |
           python3 tools/course/generate_informatics_foundations.py
           python3 tools/course/generate_informatics_maps.py
+          python3 tools/course/generate_informatics_representation.py
+          python3 tools/course/generate_informatics_representation_maps.py
       - name: Verify generated files are committed
         run: git diff --exit-code
-      - name: Validate first atomic release
+      - name: Validate two atomic releases
         run: python3 -m unittest tools.course.test_informatics_release
       - name: Prepare publication without remote changes
         run: |

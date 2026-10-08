@@ -1,0 +1,8 @@
+{
+  "version": "0.2",
+  "tasks": [
+    {"id": "t-01", "title": "Кітап оқу", "done": false},
+    {"id": "t-02", "title": "Сурет салу", "done": true},
+    {"id": "t-03", "title": "Есеп шығару", "done": false}
+  ]
+}
