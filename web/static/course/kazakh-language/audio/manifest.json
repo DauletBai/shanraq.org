@@ -4568,6 +4568,542 @@
         "72-information-opinion-mastery-kz.md",
         "72-information-opinion-mastery.md"
       ]
+    },
+    {
+      "id": "kz-413",
+      "phrase": "Бұл жолсілтеме жаңа тұрғындарға арналған.",
+      "file": "kz-413.wav",
+      "status": "approved",
+      "lessons": [
+        "73-guide-purpose-audience-en.md",
+        "73-guide-purpose-audience-kz.md",
+        "73-guide-purpose-audience.md"
+      ]
+    },
+    {
+      "id": "kz-414",
+      "phrase": "Олар кітапхананы іздеп жүр.",
+      "file": "kz-414.wav",
+      "status": "approved",
+      "lessons": [
+        "73-guide-purpose-audience-en.md",
+        "73-guide-purpose-audience-kz.md",
+        "73-guide-purpose-audience.md"
+      ]
+    },
+    {
+      "id": "kz-415",
+      "phrase": "Алдымен оларға бағыт керек.",
+      "file": "kz-415.wav",
+      "status": "approved",
+      "lessons": [
+        "73-guide-purpose-audience-en.md",
+        "73-guide-purpose-audience-kz.md",
+        "73-guide-purpose-audience.md"
+      ]
+    },
+    {
+      "id": "kz-416",
+      "phrase": "Бұл карта жолды табуға көмектеседі.",
+      "file": "kz-416.wav",
+      "status": "approved",
+      "lessons": [
+        "73-guide-purpose-audience-en.md",
+        "73-guide-purpose-audience-kz.md",
+        "73-guide-purpose-audience.md"
+      ]
+    },
+    {
+      "id": "kz-417",
+      "phrase": "Кімге қандай ақпарат қажет?",
+      "file": "kz-417.wav",
+      "status": "approved",
+      "lessons": [
+        "73-guide-purpose-audience-en.md",
+        "73-guide-purpose-audience-kz.md",
+        "73-guide-purpose-audience.md"
+      ]
+    },
+    {
+      "id": "kz-418",
+      "phrase": "Білмейтін мәліметті қоспаймыз.",
+      "file": "kz-418.wav",
+      "status": "approved",
+      "lessons": [
+        "73-guide-purpose-audience-en.md",
+        "73-guide-purpose-audience-kz.md",
+        "73-guide-purpose-audience.md"
+      ]
+    },
+    {
+      "id": "kz-419",
+      "phrase": "Аялдамадан тура жүріңіз.",
+      "file": "kz-419.wav",
+      "status": "approved",
+      "lessons": [
+        "74-verify-a-route-en.md",
+        "74-verify-a-route-kz.md",
+        "74-verify-a-route.md"
+      ]
+    },
+    {
+      "id": "kz-420",
+      "phrase": "Бірінші көшеден оңға бұрылыңыз.",
+      "file": "kz-420.wav",
+      "status": "approved",
+      "lessons": [
+        "74-verify-a-route-en.md",
+        "74-verify-a-route-kz.md",
+        "74-verify-a-route.md"
+      ]
+    },
+    {
+      "id": "kz-421",
+      "phrase": "Кітапхана сол жақта болады.",
+      "file": "kz-421.wav",
+      "status": "approved",
+      "lessons": [
+        "74-verify-a-route-en.md",
+        "74-verify-a-route-kz.md",
+        "74-verify-a-route.md"
+      ]
+    },
+    {
+      "id": "kz-422",
+      "phrase": "Өткел қай жерде екенін тексерейік.",
+      "file": "kz-422.wav",
+      "status": "approved",
+      "lessons": [
+        "74-verify-a-route-en.md",
+        "74-verify-a-route-kz.md",
+        "74-verify-a-route.md"
+      ]
+    },
+    {
+      "id": "kz-423",
+      "phrase": "Бұл бөлік әлі тексерілген жоқ.",
+      "file": "kz-423.wav",
+      "status": "approved",
+      "lessons": [
+        "74-verify-a-route-en.md",
+        "74-verify-a-route-kz.md",
+        "74-verify-a-route.md"
+      ]
+    },
+    {
+      "id": "kz-424",
+      "phrase": "Басқа қауіпсіз жол бар ма?",
+      "file": "kz-424.wav",
+      "status": "approved",
+      "lessons": [
+        "74-verify-a-route-en.md",
+        "74-verify-a-route-kz.md",
+        "74-verify-a-route.md"
+      ]
+    },
+    {
+      "id": "kz-425",
+      "phrase": "Бір сұрақ қоюыма бола ма?",
+      "file": "kz-425.wav",
+      "status": "approved",
+      "lessons": [
+        "75-interview-with-consent-en.md",
+        "75-interview-with-consent-kz.md",
+        "75-interview-with-consent.md"
+      ]
+    },
+    {
+      "id": "kz-426",
+      "phrase": "Сізге не ыңғайлы болды?",
+      "file": "kz-426.wav",
+      "status": "approved",
+      "lessons": [
+        "75-interview-with-consent-en.md",
+        "75-interview-with-consent-kz.md",
+        "75-interview-with-consent.md"
+      ]
+    },
+    {
+      "id": "kz-427",
+      "phrase": "Нені өзгерту керек деп ойлайсыз?",
+      "file": "kz-427.wav",
+      "status": "approved",
+      "lessons": [
+        "75-interview-with-consent-en.md",
+        "75-interview-with-consent-kz.md",
+        "75-interview-with-consent.md"
+      ]
+    },
+    {
+      "id": "kz-428",
+      "phrase": "Жауабыңызды жазып алсам бола ма?",
+      "file": "kz-428.wav",
+      "status": "approved",
+      "lessons": [
+        "75-interview-with-consent-en.md",
+        "75-interview-with-consent-kz.md",
+        "75-interview-with-consent.md"
+      ]
+    },
+    {
+      "id": "kz-429",
+      "phrase": "Атыңызды жарияламаймыз.",
+      "file": "kz-429.wav",
+      "status": "approved",
+      "lessons": [
+        "75-interview-with-consent-en.md",
+        "75-interview-with-consent-kz.md",
+        "75-interview-with-consent.md"
+      ]
+    },
+    {
+      "id": "kz-430",
+      "phrase": "Қаласаңыз, жауап бермеңіз.",
+      "file": "kz-430.wav",
+      "status": "approved",
+      "lessons": [
+        "75-interview-with-consent-en.md",
+        "75-interview-with-consent-kz.md",
+        "75-interview-with-consent.md"
+      ]
+    },
+    {
+      "id": "kz-431",
+      "phrase": "Алдымен мекенжайды тексеріңіз.",
+      "file": "kz-431.wav",
+      "status": "approved",
+      "lessons": [
+        "76-clear-guide-instructions-en.md",
+        "76-clear-guide-instructions-kz.md",
+        "76-clear-guide-instructions.md"
+      ]
+    },
+    {
+      "id": "kz-432",
+      "phrase": "Содан кейін аялдаманы табыңыз.",
+      "file": "kz-432.wav",
+      "status": "approved",
+      "lessons": [
+        "76-clear-guide-instructions-en.md",
+        "76-clear-guide-instructions-kz.md",
+        "76-clear-guide-instructions.md"
+      ]
+    },
+    {
+      "id": "kz-433",
+      "phrase": "Кіреберіс оң жақта орналасқан.",
+      "file": "kz-433.wav",
+      "status": "approved",
+      "lessons": [
+        "76-clear-guide-instructions-en.md",
+        "76-clear-guide-instructions-kz.md",
+        "76-clear-guide-instructions.md"
+      ]
+    },
+    {
+      "id": "kz-434",
+      "phrase": "Жұмыс уақытын ресми беттен қараңыз.",
+      "file": "kz-434.wav",
+      "status": "approved",
+      "lessons": [
+        "76-clear-guide-instructions-en.md",
+        "76-clear-guide-instructions-kz.md",
+        "76-clear-guide-instructions.md"
+      ]
+    },
+    {
+      "id": "kz-435",
+      "phrase": "Бұл қадам түсінікті ме?",
+      "file": "kz-435.wav",
+      "status": "approved",
+      "lessons": [
+        "76-clear-guide-instructions-en.md",
+        "76-clear-guide-instructions-kz.md",
+        "76-clear-guide-instructions.md"
+      ]
+    },
+    {
+      "id": "kz-436",
+      "phrase": "Түсініксіз сөзді бірге түзетейік.",
+      "file": "kz-436.wav",
+      "status": "approved",
+      "lessons": [
+        "76-clear-guide-instructions-en.md",
+        "76-clear-guide-instructions-kz.md",
+        "76-clear-guide-instructions.md"
+      ]
+    },
+    {
+      "id": "kz-437",
+      "phrase": "Сұрағыңызды дұрыс түсіндім бе?",
+      "file": "kz-437.wav",
+      "status": "approved",
+      "lessons": [
+        "77-unexpected-questions-en.md",
+        "77-unexpected-questions-kz.md",
+        "77-unexpected-questions.md"
+      ]
+    },
+    {
+      "id": "kz-438",
+      "phrase": "Сіз мереке күнін сұрап тұрсыз ба?",
+      "file": "kz-438.wav",
+      "status": "approved",
+      "lessons": [
+        "77-unexpected-questions-en.md",
+        "77-unexpected-questions-kz.md",
+        "77-unexpected-questions.md"
+      ]
+    },
+    {
+      "id": "kz-439",
+      "phrase": "Әдеттегі кесте менде бар.",
+      "file": "kz-439.wav",
+      "status": "approved",
+      "lessons": [
+        "77-unexpected-questions-en.md",
+        "77-unexpected-questions-kz.md",
+        "77-unexpected-questions.md"
+      ]
+    },
+    {
+      "id": "kz-440",
+      "phrase": "Мереке туралы мәлімет жоқ.",
+      "file": "kz-440.wav",
+      "status": "approved",
+      "lessons": [
+        "77-unexpected-questions-en.md",
+        "77-unexpected-questions-kz.md",
+        "77-unexpected-questions.md"
+      ]
+    },
+    {
+      "id": "kz-441",
+      "phrase": "Оны ресми беттен тексеремін.",
+      "file": "kz-441.wav",
+      "status": "approved",
+      "lessons": [
+        "77-unexpected-questions-en.md",
+        "77-unexpected-questions-kz.md",
+        "77-unexpected-questions.md"
+      ]
+    },
+    {
+      "id": "kz-442",
+      "phrase": "Тексерген соң жауап беремін.",
+      "file": "kz-442.wav",
+      "status": "approved",
+      "lessons": [
+        "77-unexpected-questions-en.md",
+        "77-unexpected-questions-kz.md",
+        "77-unexpected-questions.md"
+      ]
+    },
+    {
+      "id": "kz-443",
+      "phrase": "Ескертуіңізге рақмет.",
+      "file": "kz-443.wav",
+      "status": "approved",
+      "lessons": [
+        "78-revise-after-feedback-en.md",
+        "78-revise-after-feedback-kz.md",
+        "78-revise-after-feedback.md"
+      ]
+    },
+    {
+      "id": "kz-444",
+      "phrase": "Қай қадам түсініксіз болды?",
+      "file": "kz-444.wav",
+      "status": "approved",
+      "lessons": [
+        "78-revise-after-feedback-en.md",
+        "78-revise-after-feedback-kz.md",
+        "78-revise-after-feedback.md"
+      ]
+    },
+    {
+      "id": "kz-445",
+      "phrase": "Карта мен мәтін сәйкес келмейді.",
+      "file": "kz-445.wav",
+      "status": "approved",
+      "lessons": [
+        "78-revise-after-feedback-en.md",
+        "78-revise-after-feedback-kz.md",
+        "78-revise-after-feedback.md"
+      ]
+    },
+    {
+      "id": "kz-446",
+      "phrase": "Бастау орнын қайта тексерейік.",
+      "file": "kz-446.wav",
+      "status": "approved",
+      "lessons": [
+        "78-revise-after-feedback-en.md",
+        "78-revise-after-feedback-kz.md",
+        "78-revise-after-feedback.md"
+      ]
+    },
+    {
+      "id": "kz-447",
+      "phrase": "Мәтіндегі бағытты түзеттік.",
+      "file": "kz-447.wav",
+      "status": "approved",
+      "lessons": [
+        "78-revise-after-feedback-en.md",
+        "78-revise-after-feedback-kz.md",
+        "78-revise-after-feedback.md"
+      ]
+    },
+    {
+      "id": "kz-448",
+      "phrase": "Енді жолды қайта оқып көріңіз.",
+      "file": "kz-448.wav",
+      "status": "approved",
+      "lessons": [
+        "78-revise-after-feedback-en.md",
+        "78-revise-after-feedback-kz.md",
+        "78-revise-after-feedback.md"
+      ]
+    },
+    {
+      "id": "kz-449",
+      "phrase": "Бүгін сіздерге жолсілтемемізді көрсетеміз.",
+      "file": "kz-449.wav",
+      "status": "approved",
+      "lessons": [
+        "79-present-and-answer-en.md",
+        "79-present-and-answer-kz.md",
+        "79-present-and-answer.md"
+      ]
+    },
+    {
+      "id": "kz-450",
+      "phrase": "Ол жаңа тұрғындарға көмектеседі.",
+      "file": "kz-450.wav",
+      "status": "approved",
+      "lessons": [
+        "79-present-and-answer-en.md",
+        "79-present-and-answer-kz.md",
+        "79-present-and-answer.md"
+      ]
+    },
+    {
+      "id": "kz-451",
+      "phrase": "Бұл бағытты біз тексердік.",
+      "file": "kz-451.wav",
+      "status": "approved",
+      "lessons": [
+        "79-present-and-answer-en.md",
+        "79-present-and-answer-kz.md",
+        "79-present-and-answer.md"
+      ]
+    },
+    {
+      "id": "kz-452",
+      "phrase": "Жұмыс уақытын бөлек нақтылау керек.",
+      "file": "kz-452.wav",
+      "status": "approved",
+      "lessons": [
+        "79-present-and-answer-en.md",
+        "79-present-and-answer-kz.md",
+        "79-present-and-answer.md"
+      ]
+    },
+    {
+      "id": "kz-453",
+      "phrase": "Сұрақтарыңыз бар ма?",
+      "file": "kz-453.wav",
+      "status": "approved",
+      "lessons": [
+        "79-present-and-answer-en.md",
+        "79-present-and-answer-kz.md",
+        "79-present-and-answer.md"
+      ]
+    },
+    {
+      "id": "kz-454",
+      "phrase": "Сұрағыңызға рақмет, бірге тексерейік.",
+      "file": "kz-454.wav",
+      "status": "approved",
+      "lessons": [
+        "79-present-and-answer-en.md",
+        "79-present-and-answer-kz.md",
+        "79-present-and-answer.md"
+      ]
+    },
+    {
+      "id": "kz-455",
+      "phrase": "Бұл — біздің орта туралы жолсілтеме.",
+      "file": "kz-455.wav",
+      "status": "approved",
+      "lessons": [
+        "80-independent-communication-mastery-en.md",
+        "80-independent-communication-mastery-kz.md",
+        "80-independent-communication-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-456",
+      "phrase": "Ескі картада кіреберіс сол жақта.",
+      "file": "kz-456.wav",
+      "status": "approved",
+      "lessons": [
+        "80-independent-communication-mastery-en.md",
+        "80-independent-communication-mastery-kz.md",
+        "80-independent-communication-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-457",
+      "phrase": "Жаңа хабардың күшіне енетін күні белгісіз.",
+      "file": "kz-457.wav",
+      "status": "approved",
+      "lessons": [
+        "80-independent-communication-mastery-en.md",
+        "80-independent-communication-mastery-kz.md",
+        "80-independent-communication-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-458",
+      "phrase": "Қолжетімді жолды бөлек тексеру керек.",
+      "file": "kz-458.wav",
+      "status": "approved",
+      "lessons": [
+        "80-independent-communication-mastery-en.md",
+        "80-independent-communication-mastery-kz.md",
+        "80-independent-communication-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-459",
+      "phrase": "Сізге қай мәлімет керек?",
+      "file": "kz-459.wav",
+      "status": "approved",
+      "lessons": [
+        "80-independent-communication-mastery-en.md",
+        "80-independent-communication-mastery-kz.md",
+        "80-independent-communication-mastery.md"
+      ]
+    },
+    {
+      "id": "kz-460",
+      "phrase": "Түзетуді тексерген соң енгіземіз.",
+      "file": "kz-460.wav",
+      "status": "approved",
+      "lessons": [
+        "80-independent-communication-mastery-en.md",
+        "80-independent-communication-mastery-kz.md",
+        "80-independent-communication-mastery.md"
+      ]
     }
-  ]
+  ],
+  "candidate": {
+    "provider": "Microsoft neural text to speech",
+    "voice": "kk-KZ-AigulNeural",
+    "locale": "kk-KZ",
+    "rate": "-8%",
+    "processing": "48 kHz mono PCM; loudness normalised",
+    "approval": "technical_validation_before_release"
+  }
 }

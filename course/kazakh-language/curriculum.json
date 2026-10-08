@@ -119,7 +119,7 @@
     {
       "id": "independent-communication",
       "range": "73-80",
-      "status": "planned",
+      "status": "ready",
       "lexical_target": 2229,
       "release": "3.0",
       "title_kz": "Дербес қарым-қатынас",
@@ -539,7 +539,9 @@
     {
       "number": 41,
       "id": "time-scene-map",
-      "prerequisites": ["space-cases-mastery"],
+      "prerequisites": [
+        "space-cases-mastery"
+      ],
       "title_kz": "Уақыт көріністен байқалады: кеше, әдетте, қазір, ертең",
       "title_ru": "Время видно в сцене: вчера, обычно, сейчас, завтра",
       "title_en": "Time is visible in the scene: yesterday, usually, now, tomorrow"
@@ -547,7 +549,9 @@
     {
       "number": 42,
       "id": "habit-present-future",
-      "prerequisites": ["time-scene-map"],
+      "prerequisites": [
+        "time-scene-map"
+      ],
       "title_kz": "Әдетте не болады: дағды және -а/-е/-й формасы",
       "title_ru": "Что происходит обычно: привычка и форма -а/-е/-й",
       "title_en": "What happens regularly: habit and the -а/-е/-й form"
@@ -555,7 +559,9 @@
     {
       "number": 43,
       "id": "completed-past",
-      "prerequisites": ["habit-present-future"],
+      "prerequisites": [
+        "habit-present-future"
+      ],
       "title_kz": "Не болды: аяқталған өткен шақ -ды/-ді/-ты/-ті",
       "title_ru": "Что уже произошло: завершённое прошлое -ды/-ді/-ты/-ті",
       "title_en": "What has happened: completed past -ды/-ді/-ты/-ті"
@@ -563,7 +569,9 @@
     {
       "number": 44,
       "id": "action-now-progressive",
-      "prerequisites": ["completed-past"],
+      "prerequisites": [
+        "completed-past"
+      ],
       "title_kz": "Дәл қазір не болып жатыр: әрекет үдерісте",
       "title_ru": "Что происходит прямо сейчас: действие в процессе",
       "title_en": "What is happening right now: an action in progress"
@@ -571,7 +579,9 @@
     {
       "number": 45,
       "id": "future-plan-intention",
-      "prerequisites": ["action-now-progressive"],
+      "prerequisites": [
+        "action-now-progressive"
+      ],
       "title_kz": "Әрі қарай не болады: келісім, жоспар және ниет",
       "title_ru": "Что будет дальше: договорённость, план и намерение",
       "title_en": "What happens next: arrangement, plan, and intention"
@@ -579,7 +589,9 @@
     {
       "number": 46,
       "id": "time-questions-negation",
-      "prerequisites": ["future-plan-intention"],
+      "prerequisites": [
+        "future-plan-intention"
+      ],
       "title_kz": "Дәл сұрау және терістеу: әрекет қашан болмады",
       "title_ru": "Спросить и отрицать точно: когда действие не произошло",
       "title_en": "Ask and negate precisely: when an action did not happen"
@@ -587,7 +599,9 @@
     {
       "number": 47,
       "id": "linked-time-story",
-      "prerequisites": ["time-questions-negation"],
+      "prerequisites": [
+        "time-questions-negation"
+      ],
       "title_kz": "Кадрлардан әңгімеге: кеше, қазір және ертеңді байланыстырамыз",
       "title_ru": "Из кадров в рассказ: связываем вчера, сейчас и завтра",
       "title_en": "From frames to a story: connect yesterday, now, and tomorrow"
@@ -595,7 +609,9 @@
     {
       "number": 48,
       "id": "action-time-mastery",
-      "prerequisites": ["story-time"],
+      "prerequisites": [
+        "story-time"
+      ],
       "title_kz": "1.2 бақылау нүктесі: кеше, қазір және ертең дайын мәтінсіз",
       "title_ru": "Контрольная точка 1.2: вчера, сейчас и завтра без сценария",
       "title_en": "Mastery checkpoint 1.2: yesterday, now, and tomorrow unscripted"
@@ -612,14 +628,86 @@
     "Контрольная точка A2: договорённость при препятствии"
   ],
   "eighth_block_lessons": [
-    {"number": 57, "id": "speech-chunks", "prerequisites": ["plans-problems-mastery"], "title_ru": "Слышать речь смысловыми кусками", "title_kz": "Сөзді мағыналық бөліктермен тыңдау", "title_en": "Hear speech in meaningful chunks"},
-    {"number": 58, "id": "question-intonation", "prerequisites": ["speech-chunks"], "title_ru": "Вопрос слышен до ответа: частица и интонация", "title_kz": "Жауапқа дейін сұрақты тану: шылау мен әуен", "title_en": "Hear a question before the answer: particle and intonation"},
-    {"number": 59, "id": "listen-for-main-point", "prerequisites": ["question-intonation"], "title_ru": "Сначала смысл, потом детали: слушаем объявление", "title_kz": "Әуелі негізгі ой, содан кейін деталь: хабарландыру", "title_en": "Gist first, details second: listen to an announcement"},
-    {"number": 60, "id": "repair-a-missed-word", "prerequisites": ["listen-for-main-point"], "title_ru": "Не расслышал — уточни, не угадывай", "title_kz": "Естілмеген сөзді болжағанша, нақтыла", "title_en": "Missed a word? Clarify instead of guessing"},
-    {"number": 61, "id": "short-story-chain", "prerequisites": ["repair-a-missed-word"], "title_ru": "История из четырёх кадров: причина, действие, итог", "title_kz": "Төрт кадрдан тұратын әңгіме: себеп, әрекет, нәтиже", "title_en": "A four-frame story: cause, action and outcome"},
-    {"number": 62, "id": "unknown-word-context", "prerequisites": ["short-story-chain"], "title_ru": "Незнакомое слово: сначала контекст, потом словарь", "title_kz": "Бейтаныс сөз: әуелі мәнмәтін, кейін сөздік", "title_en": "Unknown word: context before dictionary"},
-    {"number": 63, "id": "retell-and-follow-up", "prerequisites": ["unknown-word-context"], "title_ru": "Перескажи услышанное и задай следующий вопрос", "title_kz": "Естігеніңді баяндап, келесі сұрақты қой", "title_en": "Retell what you heard and ask the next question"},
-    {"number": 64, "id": "connected-speech-mastery", "prerequisites": ["retell-and-follow-up"], "title_ru": "Контрольная точка 2.0: слушай, уточняй, пересказывай", "title_kz": "2.0 бақылау нүктесі: тыңда, нақтыла, баянда", "title_en": "Mastery checkpoint 2.0: listen, clarify, retell"}
+    {
+      "number": 57,
+      "id": "speech-chunks",
+      "prerequisites": [
+        "plans-problems-mastery"
+      ],
+      "title_ru": "Слышать речь смысловыми кусками",
+      "title_kz": "Сөзді мағыналық бөліктермен тыңдау",
+      "title_en": "Hear speech in meaningful chunks"
+    },
+    {
+      "number": 58,
+      "id": "question-intonation",
+      "prerequisites": [
+        "speech-chunks"
+      ],
+      "title_ru": "Вопрос слышен до ответа: частица и интонация",
+      "title_kz": "Жауапқа дейін сұрақты тану: шылау мен әуен",
+      "title_en": "Hear a question before the answer: particle and intonation"
+    },
+    {
+      "number": 59,
+      "id": "listen-for-main-point",
+      "prerequisites": [
+        "question-intonation"
+      ],
+      "title_ru": "Сначала смысл, потом детали: слушаем объявление",
+      "title_kz": "Әуелі негізгі ой, содан кейін деталь: хабарландыру",
+      "title_en": "Gist first, details second: listen to an announcement"
+    },
+    {
+      "number": 60,
+      "id": "repair-a-missed-word",
+      "prerequisites": [
+        "listen-for-main-point"
+      ],
+      "title_ru": "Не расслышал — уточни, не угадывай",
+      "title_kz": "Естілмеген сөзді болжағанша, нақтыла",
+      "title_en": "Missed a word? Clarify instead of guessing"
+    },
+    {
+      "number": 61,
+      "id": "short-story-chain",
+      "prerequisites": [
+        "repair-a-missed-word"
+      ],
+      "title_ru": "История из четырёх кадров: причина, действие, итог",
+      "title_kz": "Төрт кадрдан тұратын әңгіме: себеп, әрекет, нәтиже",
+      "title_en": "A four-frame story: cause, action and outcome"
+    },
+    {
+      "number": 62,
+      "id": "unknown-word-context",
+      "prerequisites": [
+        "short-story-chain"
+      ],
+      "title_ru": "Незнакомое слово: сначала контекст, потом словарь",
+      "title_kz": "Бейтаныс сөз: әуелі мәнмәтін, кейін сөздік",
+      "title_en": "Unknown word: context before dictionary"
+    },
+    {
+      "number": 63,
+      "id": "retell-and-follow-up",
+      "prerequisites": [
+        "unknown-word-context"
+      ],
+      "title_ru": "Перескажи услышанное и задай следующий вопрос",
+      "title_kz": "Естігеніңді баяндап, келесі сұрақты қой",
+      "title_en": "Retell what you heard and ask the next question"
+    },
+    {
+      "number": 64,
+      "id": "connected-speech-mastery",
+      "prerequisites": [
+        "retell-and-follow-up"
+      ],
+      "title_ru": "Контрольная точка 2.0: слушай, уточняй, пересказывай",
+      "title_kz": "2.0 бақылау нүктесі: тыңда, нақтыла, баянда",
+      "title_en": "Mastery checkpoint 2.0: listen, clarify, retell"
+    }
   ],
   "ninth_block_lessons": [
     {
@@ -701,6 +789,88 @@
       "title_ru": "Контрольная точка 2.1: сообщить данные и защитить вывод",
       "title_kz": "2.1 бақылау нүктесі: деректі айтып, қорытындыны қорғау",
       "title_en": "Mastery checkpoint 2.1: report data and defend a conclusion"
+    }
+  ],
+  "tenth_block_lessons": [
+    {
+      "number": 73,
+      "id": "guide-purpose-audience",
+      "prerequisites": [
+        "information-opinion-mastery"
+      ],
+      "title_ru": "Для кого ваш путеводитель: цель и слушатель",
+      "title_kz": "Жолсілтеме кімге арналған: мақсат пен тыңдаушы",
+      "title_en": "Who is your guide for? Purpose and audience"
+    },
+    {
+      "number": 74,
+      "id": "verify-a-route",
+      "prerequisites": [
+        "guide-purpose-audience"
+      ],
+      "title_ru": "Маршрут без догадок: проверьте каждый поворот",
+      "title_kz": "Болжамсыз бағыт: әр бұрылысты тексеру",
+      "title_en": "A route without guesses: verify each turn"
+    },
+    {
+      "number": 75,
+      "id": "interview-with-consent",
+      "prerequisites": [
+        "verify-a-route"
+      ],
+      "title_ru": "Спросить человека и сохранить его границы",
+      "title_kz": "Адамнан сұрап, оның шекарасын сақтау",
+      "title_en": "Ask a person and respect their boundaries"
+    },
+    {
+      "number": 76,
+      "id": "clear-guide-instructions",
+      "prerequisites": [
+        "interview-with-consent"
+      ],
+      "title_ru": "Написать так, чтобы другой смог повторить",
+      "title_kz": "Басқа адам қайталай алатындай жазу",
+      "title_en": "Write instructions another person can follow"
+    },
+    {
+      "number": 77,
+      "id": "unexpected-questions",
+      "prerequisites": [
+        "clear-guide-instructions"
+      ],
+      "title_ru": "Неожиданный вопрос: ответить или честно уточнить",
+      "title_kz": "Күтпеген сұрақ: жауап беру не ашық нақтылау",
+      "title_en": "An unexpected question: answer or clarify honestly"
+    },
+    {
+      "number": 78,
+      "id": "revise-after-feedback",
+      "prerequisites": [
+        "unexpected-questions"
+      ],
+      "title_ru": "После замечания исправить проект, а не спорить",
+      "title_kz": "Ескертуден кейін таласпай, жобаны түзету",
+      "title_en": "Revise the project after feedback"
+    },
+    {
+      "number": 79,
+      "id": "present-and-answer",
+      "prerequisites": [
+        "revise-after-feedback"
+      ],
+      "title_ru": "Пятиминутная защита: говорите свободно",
+      "title_kz": "Бес минуттық қорғау: еркін сөйлеу",
+      "title_en": "A five-minute presentation in your own words"
+    },
+    {
+      "number": 80,
+      "id": "independent-communication-mastery",
+      "prerequisites": [
+        "present-and-answer"
+      ],
+      "title_ru": "Итог курса: самостоятельный разговор и защита проекта",
+      "title_kz": "Курс қорытындысы: дербес әңгіме және жобаны қорғау",
+      "title_en": "Course finale: an independent conversation and project defence"
     }
   ]
 }

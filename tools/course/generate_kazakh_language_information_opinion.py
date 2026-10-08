@@ -267,7 +267,11 @@ def main():
         stem=f"{d['n']:02d}-{d['slug']}"
         for lang in LANGS:
             suffix='' if lang=='ru' else '-'+lang
-            (LESSONS_DIR/(stem+suffix+'.md')).write_text(render(d,lang,LESSONS[i+1] if i<7 else None,by_phrase),encoding='utf-8')
+            next_lesson = LESSONS[i+1] if i<7 else {
+                'n': 73, 'slug': 'guide-purpose-audience',
+                'title': ('Для кого ваш путеводитель: цель и слушатель', 'Жолсілтеме кімге арналған: мақсат пен тыңдаушы', 'Who is your guide for? Purpose and audience'),
+            }
+            (LESSONS_DIR/(stem+suffix+'.md')).write_text(render(d,lang,next_lesson,by_phrase),encoding='utf-8')
             (STATIC/f"map-{d['map']}-{lang}.svg").write_text(svg(d,lang),encoding='utf-8')
     print(f'{len(LESSONS)} lessons, {len(LESSONS)*3} translations, {len(LESSONS)*3} maps, {len(rows)-363} new recordings')
 

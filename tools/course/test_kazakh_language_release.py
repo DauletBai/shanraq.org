@@ -32,6 +32,8 @@ MAP_STEMS = (
     "61-story", "62-context", "63-retell", "64-mastery",
     "65-fact-opinion", "66-source-date", "67-small-chart", "68-baseline",
     "69-claim-evidence", "70-dialogue", "71-public-card", "72-mastery",
+    "73-purpose", "74-route", "75-interview", "76-instructions",
+    "77-questions", "78-revise", "79-present", "80-mastery",
 )
 
 
@@ -50,6 +52,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(len(data["seventh_block_lessons"]), 8)
         self.assertEqual(len(data["eighth_block_lessons"]), 8)
         self.assertEqual(len(data["ninth_block_lessons"]), 8)
+        self.assertEqual(len(data["tenth_block_lessons"]), 8)
         self.assertEqual(data["blocks"][0]["status"], "ready")
         self.assertEqual(data["blocks"][1]["status"], "ready")
         self.assertEqual(data["blocks"][2]["status"], "ready")
@@ -59,6 +62,7 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         self.assertEqual(data["blocks"][6]["status"], "ready")
         self.assertEqual(data["blocks"][7]["status"], "ready")
         self.assertEqual(data["blocks"][8]["status"], "ready")
+        self.assertEqual(data["blocks"][9]["status"], "ready")
         self.assertEqual(data["blocks"][3]["lexical_target"], 800)
         self.assertEqual(data["blocks"][6]["lexical_target"], 1783)
         self.assertEqual(data["blocks"][-1]["lexical_target"], 2229)
@@ -112,13 +116,13 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
         sql, expected = prepare_kazakh_language.prepare()
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
-        self.assertEqual(sql.count("INSERT INTO articles("), 72)
-        self.assertEqual(sql.count("INSERT INTO article_translations("), 216)
-        self.assertEqual(sql.count("INSERT INTO article_series_items("), 72)
-        self.assertEqual(len(expected), 216)
+        self.assertEqual(sql.count("INSERT INTO articles("), 80)
+        self.assertEqual(sql.count("INSERT INTO article_translations("), 240)
+        self.assertEqual(sql.count("INSERT INTO article_series_items("), 80)
+        self.assertEqual(len(expected), 240)
         self.assertEqual(
             [position for _, _, position in prepare_kazakh_language.ROUTE],
-            list(range(10, 721, 10)),
+            list(range(10, 801, 10)),
         )
         self.assertIn("'kazakh-language'", sql)
         self.assertIn("'kazakh'", sql)
@@ -189,8 +193,8 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                 path.read_text(encoding="utf-8"),
             ))
 
-        self.assertEqual(len(recordings), 411)
-        self.assertEqual(len(lesson_files), 1278)
+        self.assertEqual(len(recordings), 459)
+        self.assertEqual(len(lesson_files), 1422)
         self.assertTrue(all(row["status"] == "approved" for row in recordings))
         self.assertEqual({row["file"] for row in recordings}, set(lesson_files))
         review = (audio / "review.html").read_text(encoding="utf-8")
@@ -265,6 +269,28 @@ class KazakhLanguageReleaseTest(unittest.TestCase):
                         self.assertIn(f'>{example}</text>',svg,map_path)
         cover=ROOT/'web/static/covers/school/kazakh-language/information-opinion/09-information-opinion.webp'
         self.assertGreater(cover.stat().st_size,500_000)
+
+    def test_final_block_is_localized_and_has_4k_cover(self):
+        from tools.course.generate_kazakh_language_independent import LESSONS as BLOCK, MAP_EXAMPLES
+        self.assertEqual([d['n'] for d in BLOCK], list(range(73, 81)))
+        for d in BLOCK:
+            stem = f"{d['n']:02d}-{d['slug']}"
+            for lang, minimum in (('ru', 470), ('kz', 440), ('en', 570)):
+                suffix = '' if lang == 'ru' else '-' + lang
+                text = (LESSONS / f'{stem}{suffix}.md').read_text(encoding='utf-8')
+                self.assertGreaterEqual(len(text.split()), minimum)
+                self.assertEqual(text.count('/static/course/kazakh-language/audio/kz-'), 6)
+                self.assertIn('```kazakh\n', text)
+                path = MAPS / f"map-{d['map']}-{lang}.svg"
+                self.assertEqual(ET.parse(path).getroot().attrib['viewBox'], '0 0 1600 900')
+                svg_text = path.read_text(encoding='utf-8')
+                for label in d['labels'][{'ru':1,'kz':0,'en':2}[lang]]:
+                    self.assertIn(f'>{label}</text>', svg_text)
+                for example in MAP_EXAMPLES[d['n']][lang]:
+                    self.assertIn(f'>{example}</text>', svg_text)
+        cover = ROOT / 'web/static/covers/school/kazakh-language/independent-communication/10-independent-communication.webp'
+        self.assertGreater(cover.stat().st_size, 500_000)
+        self.assertEqual(cover.read_bytes()[:4], b'RIFF')
 
 
 if __name__ == "__main__":

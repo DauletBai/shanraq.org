@@ -74,4 +74,4 @@ Final task: hide the text, listen to six lines twice, draw three bars from zero,
 - After seven days apply the same map to a new fictional notice or a fresh set of numbers.
 - After thirty days explain your decision to someone else without the map and ask them to find an unsupported part.
 
-[Course contents](/course/kazakh-language?lang=en)
+[Next lesson: Who is your guide for? Purpose and audience](/read/kazakh-language-73-guide-purpose-audience?lang=en)

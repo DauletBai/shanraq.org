@@ -23,6 +23,7 @@ on:
       - 'tools/course/generate_kazakh_language_plans_problems.py'
       - 'tools/course/generate_kazakh_language_connected_speech.py'
       - 'tools/course/generate_kazakh_language_information_opinion.py'
+      - 'tools/course/generate_kazakh_language_independent.py'
       - 'tools/course/test_kazakh_language_plans_problems.py'
       - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
@@ -52,6 +53,7 @@ on:
       - 'tools/course/generate_kazakh_language_plans_problems.py'
       - 'tools/course/generate_kazakh_language_connected_speech.py'
       - 'tools/course/generate_kazakh_language_information_opinion.py'
+      - 'tools/course/generate_kazakh_language_independent.py'
       - 'tools/course/test_kazakh_language_plans_problems.py'
       - 'tools/course/generate_kazakh_audio_candidates.py'
       - 'tools/course/prepare_kazakh_language.py'
@@ -82,6 +84,7 @@ jobs:
           python3 -m tools.course.generate_kazakh_language_plans_problems
           python3 -m tools.course.generate_kazakh_language_connected_speech
           python3 -m tools.course.generate_kazakh_language_information_opinion
+          python3 -m tools.course.generate_kazakh_language_independent
       - name: Verify generated files are committed
         run: git diff --exit-code
       - name: Validate completed blocks
