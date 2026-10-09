@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Енгізу, шығару және дерек түрлері">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#07182a"/><stop offset="1" stop-color="#153954"/></linearGradient><linearGradient id="card" x2="1" y2="1"><stop stop-color="#203953"/><stop offset="1" stop-color="#10263c"/></linearGradient><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#a9d2eb" stroke-opacity=".09"/></pattern></defs>
+<style>.title{font:700 46px Arial,sans-serif;fill:#f1f8ff}.eyebrow{font:700 22px Arial,sans-serif;fill:#73dce2;letter-spacing:4px}.number{font:700 32px Arial,sans-serif;fill:#061b2d}.heading{font:700 30px Arial,sans-serif;fill:#f4fbff}.code{font:600 29px 'Courier New',monospace;fill:#ffffff}.result{font:600 27px Arial,sans-serif;fill:#d7effc}.foot{font:600 27px Arial,sans-serif;fill:#c1d9e8}</style>
+<rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#grid)"/>
+<text x="64" y="100" class="eyebrow">PYTHON · 28 / 38</text>
+<text x="64" y="183" class="title">Енгізу, шығару және дерек түрлері</text>
+<path d="M64 220 H1536" stroke="#648aa3" stroke-width="2"/>
+<g class="python-stage" transform="translate(58 300)">
+          <rect x="7" y="11" width="478" height="337" rx="24" fill="#061324" opacity=".54"/>
+          <rect width="478" height="337" rx="24" fill="url(#card)" stroke="#00c0ca" stroke-width="3"/>
+          <rect x="28" y="28" width="54" height="54" rx="15" fill="#00c0ca"/>
+          <text x="55" y="66" text-anchor="middle" class="number">1</text>
+          <text x="99" y="70" class="heading">Енгізу</text>
+          <path d="M28 106 H450" stroke="#314861" stroke-width="2"/>
+          <rect x="28" y="132" width="422" height="91" rx="13" fill="#071727"/>
+          <text x="239" y="190" text-anchor="middle" class="code">raw = &quot;2&quot;</text>
+          <text x="239" y="283" text-anchor="middle" class="result">түрі: str</text>
+        </g><g class="python-stage" transform="translate(570 300)">
+          <rect x="7" y="11" width="478" height="337" rx="24" fill="#061324" opacity=".54"/>
+          <rect width="478" height="337" rx="24" fill="url(#card)" stroke="#ffd36e" stroke-width="3"/>
+          <rect x="28" y="28" width="54" height="54" rx="15" fill="#ffd36e"/>
+          <text x="55" y="66" text-anchor="middle" class="number">2</text>
+          <text x="99" y="70" class="heading">Түрлендіру</text>
+          <path d="M28 106 H450" stroke="#314861" stroke-width="2"/>
+          <rect x="28" y="132" width="422" height="91" rx="13" fill="#071727"/>
+          <text x="239" y="190" text-anchor="middle" class="code">days = int(raw)</text>
+          <text x="239" y="283" text-anchor="middle" class="result">түрі: int</text>
+        </g><g class="python-stage" transform="translate(1082 300)">
+          <rect x="7" y="11" width="478" height="337" rx="24" fill="#061324" opacity=".54"/>
+          <rect width="478" height="337" rx="24" fill="url(#card)" stroke="#fa7268" stroke-width="3"/>
+          <rect x="28" y="28" width="54" height="54" rx="15" fill="#fa7268"/>
+          <text x="55" y="66" text-anchor="middle" class="number">3</text>
+          <text x="99" y="70" class="heading">Әрекет</text>
+          <path d="M28 106 H450" stroke="#314861" stroke-width="2"/>
+          <rect x="28" y="132" width="422" height="91" rx="13" fill="#071727"/>
+          <text x="239" y="190" text-anchor="middle" class="code">days + 1</text>
+          <text x="239" y="283" text-anchor="middle" class="result">нәтиже: 3</text>
+        </g><path d="M542 469 h20 m-10 -10 10 10 -10 10 M1054 469 h20 m-10 -10 10 10 -10 10" fill="none" stroke="#d3e6f3" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M64 726 H1536" stroke="#648aa3" stroke-width="2"/>
+<text x="800" y="799" text-anchor="middle" class="foot">Болжа → іске қос → өзгерт → түсіндір → тексер</text>
+</svg>

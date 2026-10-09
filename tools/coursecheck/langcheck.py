@@ -61,6 +61,9 @@ CYRILLIC_WORD = re.compile(r"[А-Яа-яЁёӘҒҚҢӨҰҮҺІәғқңөұүһі
 # Deliberate exceptions, documented in docs/go-course.md: a word the lesson is
 # about keeps its own language, because replacing it removes the subject.
 ALLOWED = {
+    # Informatics preserves a Kazakh task title verbatim to verify UTF-8.
+    ("33-python-text-dates", "ru"): {"әліппе", "оқу"},
+    ("35-python-files-json", "ru"): {"әліппе", "оқу"},
     ("go-joldar-men-runalar", "ru"): {"шаңырақ", "шаңыр"},
     ("article-go-runes", "ru"): {"шаңырақ", "шаңыр"},
     ("article-go-capstone", "en"): {"шаңырақ"},

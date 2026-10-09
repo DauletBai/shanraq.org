@@ -52,4 +52,4 @@ Check ten points: (1) goal and input; (2) output and failures; (3) state before/
 
 Tomorrow recall the function's five answers. In seven days perform a new acceptance check without this page. In a month compare 0.3 promises with Python 1.0 and repair differences before release.
 
-[All course lessons](/course/informatics?lang=en)
+[Next lesson: First program: state becomes code](/read/informatics-27-python-first-state?lang=en)

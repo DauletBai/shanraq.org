@@ -4378,5 +4378,149 @@
   "informatics/26-algorithms-mastery-en": [
     "informatics-26-algorithms-mastery",
     "en"
+  ],
+  "informatics/27-python-first-state": [
+    "informatics-27-python-first-state",
+    "ru"
+  ],
+  "informatics/27-python-first-state-kz": [
+    "informatics-27-python-first-state",
+    "kz"
+  ],
+  "informatics/27-python-first-state-en": [
+    "informatics-27-python-first-state",
+    "en"
+  ],
+  "informatics/28-python-input-output-types": [
+    "informatics-28-python-input-output-types",
+    "ru"
+  ],
+  "informatics/28-python-input-output-types-kz": [
+    "informatics-28-python-input-output-types",
+    "kz"
+  ],
+  "informatics/28-python-input-output-types-en": [
+    "informatics-28-python-input-output-types",
+    "en"
+  ],
+  "informatics/29-python-expressions": [
+    "informatics-29-python-expressions",
+    "ru"
+  ],
+  "informatics/29-python-expressions-kz": [
+    "informatics-29-python-expressions",
+    "kz"
+  ],
+  "informatics/29-python-expressions-en": [
+    "informatics-29-python-expressions",
+    "en"
+  ],
+  "informatics/30-python-conditions": [
+    "informatics-30-python-conditions",
+    "ru"
+  ],
+  "informatics/30-python-conditions-kz": [
+    "informatics-30-python-conditions",
+    "kz"
+  ],
+  "informatics/30-python-conditions-en": [
+    "informatics-30-python-conditions",
+    "en"
+  ],
+  "informatics/31-python-loops": [
+    "informatics-31-python-loops",
+    "ru"
+  ],
+  "informatics/31-python-loops-kz": [
+    "informatics-31-python-loops",
+    "kz"
+  ],
+  "informatics/31-python-loops-en": [
+    "informatics-31-python-loops",
+    "en"
+  ],
+  "informatics/32-python-collections": [
+    "informatics-32-python-collections",
+    "ru"
+  ],
+  "informatics/32-python-collections-kz": [
+    "informatics-32-python-collections",
+    "kz"
+  ],
+  "informatics/32-python-collections-en": [
+    "informatics-32-python-collections",
+    "en"
+  ],
+  "informatics/33-python-text-dates": [
+    "informatics-33-python-text-dates",
+    "ru"
+  ],
+  "informatics/33-python-text-dates-kz": [
+    "informatics-33-python-text-dates",
+    "kz"
+  ],
+  "informatics/33-python-text-dates-en": [
+    "informatics-33-python-text-dates",
+    "en"
+  ],
+  "informatics/34-python-functions": [
+    "informatics-34-python-functions",
+    "ru"
+  ],
+  "informatics/34-python-functions-kz": [
+    "informatics-34-python-functions",
+    "kz"
+  ],
+  "informatics/34-python-functions-en": [
+    "informatics-34-python-functions",
+    "en"
+  ],
+  "informatics/35-python-files-json": [
+    "informatics-35-python-files-json",
+    "ru"
+  ],
+  "informatics/35-python-files-json-kz": [
+    "informatics-35-python-files-json",
+    "kz"
+  ],
+  "informatics/35-python-files-json-en": [
+    "informatics-35-python-files-json",
+    "en"
+  ],
+  "informatics/36-python-errors-debugging": [
+    "informatics-36-python-errors-debugging",
+    "ru"
+  ],
+  "informatics/36-python-errors-debugging-kz": [
+    "informatics-36-python-errors-debugging",
+    "kz"
+  ],
+  "informatics/36-python-errors-debugging-en": [
+    "informatics-36-python-errors-debugging",
+    "en"
+  ],
+  "informatics/37-python-tests-modules": [
+    "informatics-37-python-tests-modules",
+    "ru"
+  ],
+  "informatics/37-python-tests-modules-kz": [
+    "informatics-37-python-tests-modules",
+    "kz"
+  ],
+  "informatics/37-python-tests-modules-en": [
+    "informatics-37-python-tests-modules",
+    "en"
+  ],
+  "informatics/38-python-cli-release": [
+    "informatics-38-python-cli-release",
+    "ru"
+  ],
+  "informatics/38-python-cli-release-kz": [
+    "informatics-38-python-cli-release",
+    "kz"
+  ],
+  "informatics/38-python-cli-release-en": [
+    "informatics-38-python-cli-release",
+    "en"
   ]
 }

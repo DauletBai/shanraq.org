@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the first three Informatics blocks as one atomic SQL publication."""
+"""Prepare the first four Informatics blocks as one atomic SQL publication."""
 import argparse
 import hashlib
 import json
@@ -35,22 +35,35 @@ ROUTE = (
     ("24-functions-contracts", "informatics-24-functions-contracts", 240),
     ("25-correctness-efficiency", "informatics-25-correctness-efficiency", 250),
     ("26-algorithms-mastery", "informatics-26-algorithms-mastery", 260),
+    ("27-python-first-state", "informatics-27-python-first-state", 270),
+    ("28-python-input-output-types", "informatics-28-python-input-output-types", 280),
+    ("29-python-expressions", "informatics-29-python-expressions", 290),
+    ("30-python-conditions", "informatics-30-python-conditions", 300),
+    ("31-python-loops", "informatics-31-python-loops", 310),
+    ("32-python-collections", "informatics-32-python-collections", 320),
+    ("33-python-text-dates", "informatics-33-python-text-dates", 330),
+    ("34-python-functions", "informatics-34-python-functions", 340),
+    ("35-python-files-json", "informatics-35-python-files-json", 350),
+    ("36-python-errors-debugging", "informatics-36-python-errors-debugging", 360),
+    ("37-python-tests-modules", "informatics-37-python-tests-modules", 370),
+    ("38-python-cli-release", "informatics-38-python-cli-release", 380),
 )
 COVER = "/static/covers/school/informatics/foundations/01-digital-world-computer-project.webp"
 REPRESENTATION_COVER = "/static/covers/school/informatics/representation/02-information-data.webp"
 ALGORITHMS_COVER = "/static/covers/school/informatics/algorithms/03-algorithmic-thinking.webp"
+PYTHON_COVER = "/static/covers/school/informatics/python/04-python-assistant.webp"
 META = {
     "ru": (
         "Информатика: создаём своего цифрового помощника",
-        "26 бесплатных занятий: устройство компьютера, представление информации и алгоритмы. Шаг за шагом создаём и проверяем цифрового помощника.",
+        "38 бесплатных занятий: устройство компьютера, данные, алгоритмы и Python. Шаг за шагом создаём и проверяем цифрового помощника.",
     ),
     "kz": (
         "Информатика: өз цифрлық көмекшімізді жасаймыз",
-        "26 тегін сабақ: компьютер құрылысы, ақпаратты көрсету және алгоритмдер. Цифрлық көмекшіні қадамдап құрып, тексереміз.",
+        "38 тегін сабақ: компьютер құрылысы, деректер, алгоритмдер және Python. Цифрлық көмекшіні қадамдап құрып, тексереміз.",
     ),
     "en": (
         "Informatics: build your own digital assistant",
-        "26 free lessons cover computer systems, data representation, and algorithms through one continuing, tested digital-assistant project.",
+        "38 free lessons cover computer systems, data, algorithms, and Python through one continuing, tested digital-assistant project.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -75,8 +88,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 26:
-        raise ValueError("the first three releases must contain exactly twenty-six lessons")
+    if len(ROUTE) != 38:
+        raise ValueError("the first four releases must contain exactly thirty-eight lessons")
     sql = [
         "BEGIN;",
         "SELECT pg_advisory_xact_lock(hashtext('shanraq-informatics-course'));",
@@ -110,7 +123,7 @@ SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
     for stem, slug_name, position in ROUTE:
         slug = literal(slug_name)
-        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER if position <= 180 else ALGORITHMS_COVER
+        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER if position <= 180 else ALGORITHMS_COVER if position <= 260 else PYTHON_COVER
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
 SELECT id,{slug},'ru','society','education',{literal(lesson_cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'

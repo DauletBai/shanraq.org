@@ -60,7 +60,14 @@ contracts, and independently checkable cases are in
 the next block. The cover is
 `/static/covers/school/informatics/algorithms/03-algorithmic-thinking.webp`.
 
-Prepare the first twenty-six lessons as one reviewable database transaction:
+Release 1.0 adds lessons 27–38. Learners turn the paper reminder contract
+into a Python program, keep the three fictional 0.2 records when migrating to
+1.0, validate ISO dates and UTF-8 JSON, diagnose errors, and run repeatable
+tests. The checked command-line project and localized quickstarts are in
+`course/informatics-assistant/step-03/`. The 4K 16:9 cover is
+`/static/covers/school/informatics/python/04-python-assistant.webp`.
+
+Prepare the first thirty-eight lessons as one reviewable database transaction:
 
 ```sh
 python3 tools/course/prepare_informatics.py \

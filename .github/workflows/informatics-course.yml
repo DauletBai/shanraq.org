@@ -15,6 +15,9 @@ on:
       - 'tools/course/generate_informatics_representation_maps.py'
       - 'tools/course/generate_informatics_algorithms.py'
       - 'tools/course/generate_informatics_algorithm_maps.py'
+      - 'tools/course/generate_informatics_python.py'
+      - 'tools/course/generate_informatics_python_maps.py'
+      - 'tools/course/informatics_python_content_*.py'
       - 'tools/course/informatics_enrichment.py'
       - 'tools/course/prepare_informatics.py'
       - 'tools/course/test_informatics_release.py'
@@ -34,6 +37,9 @@ on:
       - 'tools/course/generate_informatics_representation_maps.py'
       - 'tools/course/generate_informatics_algorithms.py'
       - 'tools/course/generate_informatics_algorithm_maps.py'
+      - 'tools/course/generate_informatics_python.py'
+      - 'tools/course/generate_informatics_python_maps.py'
+      - 'tools/course/informatics_python_content_*.py'
       - 'tools/course/informatics_enrichment.py'
       - 'tools/course/prepare_informatics.py'
       - 'tools/course/test_informatics_release.py'
@@ -53,10 +59,15 @@ jobs:
           python3 tools/course/generate_informatics_representation_maps.py
           python3 tools/course/generate_informatics_algorithms.py
           python3 tools/course/generate_informatics_algorithm_maps.py
+          python3 tools/course/generate_informatics_python.py
+          python3 tools/course/generate_informatics_python_maps.py
       - name: Verify generated files are committed
         run: git diff --exit-code
-      - name: Validate three atomic releases
-        run: python3 -m unittest tools.course.test_informatics_release
+      - name: Validate four atomic releases and Python checkpoint
+        run: |
+          python3 -m unittest tools.course.test_informatics_release
+          cd course/informatics-assistant/step-03
+          python3 -m unittest discover -s tests -v
       - name: Prepare publication without remote changes
         run: |
           python3 tools/course/prepare_informatics.py \

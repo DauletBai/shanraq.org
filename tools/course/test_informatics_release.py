@@ -1,6 +1,8 @@
 """Structural and content checks for the Informatics and AI course."""
 import json
 import re
+import subprocess
+import sys
 import unittest
 from pathlib import Path
 import xml.etree.ElementTree as ET
@@ -37,6 +39,18 @@ RELEASE_STEMS = (
     "24-functions-contracts",
     "25-correctness-efficiency",
     "26-algorithms-mastery",
+    "27-python-first-state",
+    "28-python-input-output-types",
+    "29-python-expressions",
+    "30-python-conditions",
+    "31-python-loops",
+    "32-python-collections",
+    "33-python-text-dates",
+    "34-python-functions",
+    "35-python-files-json",
+    "36-python-errors-debugging",
+    "37-python-tests-modules",
+    "38-python-cli-release",
 )
 
 
@@ -100,7 +114,7 @@ class InformaticsReleaseTests(unittest.TestCase):
         self.assertTrue(gate["requires_unseen_transfer"])
         self.assertTrue(gate["requires_project_evidence"])
 
-        for block in self.data["blocks"][:3]:
+        for block in self.data["blocks"][:4]:
             cover = ROOT / "web" / block["cover"].lstrip("/")
             self.assertTrue(cover.is_file(), cover)
             self.assertEqual(cover.suffix, ".webp")
@@ -263,7 +277,7 @@ class InformaticsReleaseTests(unittest.TestCase):
             self.assertEqual(case["has_duplicate"], len(case["ids"]) != len(set(case["ids"])))
         for lang in ("ru", "kz", "en"):
             self.assertTrue((ROOT / f"course/informatics-assistant/step-02/ALGORITHM-{lang}.md").is_file())
-            for stem in RELEASE_STEMS[18:]:
+            for stem in RELEASE_STEMS[18:26]:
                 path = MAPS / f"map-{stem}-{lang}.svg"
                 root = ET.parse(path).getroot()
                 self.assertEqual(root.attrib.get("viewBox"), "0 0 1600 900", path)
@@ -274,17 +288,17 @@ class InformaticsReleaseTests(unittest.TestCase):
     def test_publication_is_atomic_and_complete(self):
         from tools.course.prepare_informatics import prepare
 
-        self.assertEqual([block["status"] for block in self.data["blocks"][:3]], ["published"] * 3)
+        self.assertEqual([block["status"] for block in self.data["blocks"][:4]], ["published"] * 4)
         sql, expected = prepare()
-        self.assertEqual(len(expected), 78)
-        self.assertEqual(len({item["slug"] for item in expected}), 26)
+        self.assertEqual(len(expected), 114)
+        self.assertEqual(len({item["slug"] for item in expected}), 38)
         self.assertEqual({item["lang"] for item in expected}, {"ru", "kz", "en"})
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
-        self.assertEqual(sql.count("INSERT INTO article_series_items"), 26)
+        self.assertEqual(sql.count("INSERT INTO article_series_items"), 38)
         self.assertIn("shanraq-informatics-course", sql)
 
-    def test_first_three_releases_have_no_missing_or_extra_pages(self):
+    def test_first_four_releases_have_no_missing_or_extra_pages(self):
         actual = {path.name for path in LESSONS.glob("*.md")}
         expected = {
             f"{stem}{suffix}.md"
@@ -292,6 +306,31 @@ class InformaticsReleaseTests(unittest.TestCase):
             for suffix in ("", "-kz", "-en")
         }
         self.assertEqual(actual, expected)
+
+    def test_python_examples_run_and_match_all_three_pages(self):
+        project = ROOT / "course/informatics-assistant/step-03"
+        for stem in RELEASE_STEMS[26:]:
+            number = int(stem[:2])
+            for lang in ("ru", "kz", "en"):
+                suffix = "" if lang == "ru" else f"-{lang}"
+                page = (LESSONS / f"{stem}{suffix}.md").read_text(encoding="utf-8")
+                code = re.search(r"```python\n(.*?)\n```", page, re.S)
+                output = re.search(r"```text\n(.*?)\n```", page, re.S)
+                self.assertIsNotNone(code, (number, lang))
+                self.assertIsNotNone(output, (number, lang))
+                result = subprocess.run([sys.executable, "-c", code.group(1)], cwd=project,
+                                        capture_output=True, text=True, timeout=10)
+                self.assertEqual(result.returncode, 0, (number, lang, result.stderr))
+                self.assertEqual(result.stdout.strip(), output.group(1), (number, lang))
+                map_path = MAPS / f"map-{stem}-{lang}.svg"
+                root = ET.parse(map_path).getroot()
+                self.assertEqual(root.attrib["viewBox"], "0 0 1600 900")
+                self.assertEqual(map_path.read_text().count('class="python-stage"'), 3)
+        sample = json.loads((project / "tasks.json").read_text(encoding="utf-8"))
+        source = json.loads((ROOT / "course/informatics-assistant/step-01/data/tasks.json").read_text(encoding="utf-8"))
+        self.assertEqual(sample["version"], "1.0")
+        self.assertEqual([tuple(task[key] for key in ("id", "title", "done")) for task in sample["tasks"]],
+                         [tuple(task[key] for key in ("id", "title", "done")) for task in source["tasks"]])
 
 
 if __name__ == "__main__":

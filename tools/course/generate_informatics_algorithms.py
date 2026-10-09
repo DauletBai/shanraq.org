@@ -417,7 +417,8 @@ def render(number: int, lang: str) -> str:
     if number < 26:
         parts.append(f"[{h[12]}: {ROWS[number+1][f'title_{lang}']}](/read/informatics-{STEMS[number+1]}?lang={lang})")
     else:
-        parts.append(f"[{h[13]}](/course/informatics?lang={lang})")
+        next_title = ROWS[27][f'title_{lang}']
+        parts.append(f"[{h[12]}: {next_title}](/read/informatics-27-python-first-state?lang={lang})")
     return "\n\n".join(parts) + "\n"
 
 def main() -> None:
