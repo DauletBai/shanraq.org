@@ -43,7 +43,6 @@ func toFeedItems(arts []*Article, lang string) []FeedItem {
 			Published:      a.PublishedAt,
 			Views:          a.ViewsCount,
 			Score:          a.Score,
-			IsAI:           tr.Source == "ai",
 			AvailableLangs: a.AvailableLangs(),
 		})
 	}

@@ -539,7 +539,6 @@ var messages = map[string]map[string]string{
 	},
 
 	"meta.views": {"kz": "оқылым", "ru": "просмотров", "en": "views"},
-	"meta.ai":    {"kz": "ИИ аудармасы", "ru": "ИИ-перевод", "en": "AI translation"},
 
 	// Short units for compacted counters ("1,2 мың" / "1.2k"), see compactNum.
 	"num.thousand": {"kz": "мың", "ru": "тыс.", "en": "k"},
@@ -821,7 +820,6 @@ var messages = map[string]map[string]string{
 	"article.vote_login": {"kz": "Бағалау үшін кіріңіз", "ru": "Войдите, чтобы оценить", "en": "Sign in to vote"},
 	"article.vote_own":   {"kz": "Өз мақалаңызды бағалай алмайсыз", "ru": "Нельзя оценивать свою статью", "en": "You can't vote on your own story"},
 	"article.translated": {"kz": "Бұл нұсқа таңдалған тілде әзір жоқ — түпнұсқа тілінде көрсетілді.", "ru": "Эта версия пока недоступна на выбранном языке — показан оригинал.", "en": "This version isn't available in the selected language yet — showing the original."},
-	"article.ai_note":    {"kz": "Мәтін ИИ көмегімен аударылды.", "ru": "Текст переведён с помощью ИИ.", "en": "This text was translated with AI."},
 	"article.ai_opinion": {"kz": "ИИ пікірі", "ru": "Мнение ИИ", "en": "AI opinion"},
 
 	// The prediction ledger. The wording carries the whole idea, so it is written

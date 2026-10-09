@@ -114,7 +114,6 @@ type FeedItem struct {
 	Published      *time.Time
 	Views          int64
 	Score          int
-	IsAI           bool
 	AIAuthor       bool
 	AvailableLangs []string
 

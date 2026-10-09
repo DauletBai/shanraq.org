@@ -412,7 +412,6 @@ func feedItems(arts []*Article, lang string) []FeedItem {
 			Published:      a.PublishedAt,
 			Views:          a.ViewsCount,
 			Score:          a.Score,
-			IsAI:           tr.Source == "ai",
 			AvailableLangs: a.AvailableLangs(),
 		})
 	}
@@ -614,7 +613,6 @@ type ArticlePage struct {
 	Published     *time.Time
 	Updated       *time.Time // last edit, for dateModified in the article JSON-LD
 	Views         int64
-	IsAI          bool
 	AIAuthor      bool
 	Translated    bool
 
@@ -744,7 +742,6 @@ func (m *Module) handleArticle(w http.ResponseWriter, r *http.Request) {
 		page.Updated = &u
 	}
 	page.Views = a.ViewsCount
-	page.IsAI = tr.Source == "ai"
 	page.Translated = served != lang
 	page.AvailableLangs = a.AvailableLangs()
 

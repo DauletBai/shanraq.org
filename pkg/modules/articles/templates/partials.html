@@ -26,7 +26,6 @@
      it would push out. */}}
 {{ define "post_meta" }}
 <div class="post__meta">
-  {{ if .P.IsAI }}<span class="tag tag--ai">{{ t .Lang "meta.ai" }}</span>{{ end }}
   <span class="score metaic {{ if gt .P.Score 0 }}pos{{ else if lt .P.Score 0 }}neg{{ end }}" title="{{ t .Lang "author.rating" }}">{{ icon "thumb_up" }}{{ .P.Score }}</span>
   <span class="dot">·</span>
   <span class="metaic" title="{{ t .Lang "meta.views" }}">{{ icon "eye" }}{{ compactNum .Lang .P.Views }}</span>

@@ -96,7 +96,6 @@
         </div>
 
         {{ if .Translated }}<p class="notice">{{ t .Lang "article.translated" }}</p>{{ end }}
-        {{ if .IsAI }}<p class="notice">{{ t .Lang "article.ai_note" }}</p>{{ end }}
 
         <div class="prose" data-read-progress="{{ .Slug }}">{{ .Body }}</div>
 
