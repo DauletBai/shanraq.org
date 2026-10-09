@@ -10,8 +10,8 @@ on:
 # decided and every builder honours it.
 #
 # 'stable' was not equivalent, and the difference was not cosmetic: pinning
-# toolchain go1.26.6 for its seven standard-library security fixes left CI
-# green-lighting builds of 1.26.5 and reporting the very vulnerabilities the
+# toolchain go1.26.9 for its standard-library security fixes left CI
+# green-lighting builds of 1.26.8 and reporting the vulnerabilities the
 # pin had just closed. GOTOOLCHAIN stays on auto so a future bump of the
 # directive alone is enough.
 env:
