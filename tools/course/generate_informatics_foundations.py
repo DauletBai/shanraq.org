@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate trilingual lessons 5–10 for the first Informatics release block."""
 from pathlib import Path
+from informatics_enrichment import ENRICHMENT
 
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/"course/lessons/informatics"
@@ -54,9 +55,10 @@ EXT={
 
 def render(row,lang):
  n,slug,mapname,title,summary,model,signal,example,error,project,nxt=row; h=HEAD[lang]; c=COMMON[lang]
- x=EXT[lang]
- next_url=f"/read/informatics-11-bits-states?lang={lang}" if n==10 else f"/course/informatics?lang={lang}"
- parts=[f"# {title[lang]}",f"_{h[0]}:_ **{summary[lang]}**",f"## {h[1]}",summary[lang],x[0],f"![{title[lang]}](/static/course/informatics/{mapname}-{lang}.svg)",f"## {h[2]}",model[lang],f"## {h[3]}",c[0],f"## {h[4]}",f"`{signal}`",f"## {h[5]}",example[lang],f"## {h[6]}",x[1],f"## {h[7]}",c[1],x[2],f"## {h[8]}",error[lang],f"## {h[9]}",c[2],f"## {h[10]}",project[lang],x[3],f"## {h[11]}",f"**{h[13]}.** {c[3]}",f"**{h[14]}.** {c[4]}",f"**{h[15]}.** {c[5]}",x[4],f"## {h[12]}",c[6],f"[{h[16]}: {nxt[lang]}]({next_url})"]
+ x=EXT[lang]; enrich=ENRICHMENT[n][lang]
+ next_stem = f"{ROWS[n-4][0]:02d}-{ROWS[n-4][1]}" if n < 10 else "11-bits-states"
+ next_url=f"/read/informatics-{next_stem}?lang={lang}"
+ parts=[f"# {title[lang]}",f"_{h[0]}:_ **{summary[lang]}**",f"## {h[1]}",enrich["hook"],f"![{title[lang]}](/static/course/informatics/{mapname}-{lang}.svg)",f"## {h[2]}",model[lang],enrich["bridge"],f"## {h[3]}",c[0],f"## {h[4]}",f"`{signal}`",f"## {h[5]}",example[lang],f"## {h[6]}",x[1],f"## {h[7]}",c[1],x[2],f"## {h[8]}",error[lang],f"## {h[9]}",c[2],f"## {h[10]}",project[lang],x[3],f"## {h[11]}",f"**{h[13]}.** {c[3]}",f"**{h[14]}.** {c[4]}",f"**{h[15]}.** {c[5]}",x[4],f"## {h[12]}",c[6],f"[{h[16]}: {nxt[lang]}]({next_url})"]
  return "\n\n".join(parts)+"\n"
 
 def main():

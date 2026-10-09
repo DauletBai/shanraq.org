@@ -4282,5 +4282,101 @@
   "informatics/18-representation-mastery-en": [
     "informatics-18-representation-mastery",
     "en"
+  ],
+  "informatics/19-problem-decomposition": [
+    "informatics-19-problem-decomposition",
+    "ru"
+  ],
+  "informatics/19-problem-decomposition-kz": [
+    "informatics-19-problem-decomposition",
+    "kz"
+  ],
+  "informatics/19-problem-decomposition-en": [
+    "informatics-19-problem-decomposition",
+    "en"
+  ],
+  "informatics/20-state-variables": [
+    "informatics-20-state-variables",
+    "ru"
+  ],
+  "informatics/20-state-variables-kz": [
+    "informatics-20-state-variables",
+    "kz"
+  ],
+  "informatics/20-state-variables-en": [
+    "informatics-20-state-variables",
+    "en"
+  ],
+  "informatics/21-sequence-tracing": [
+    "informatics-21-sequence-tracing",
+    "ru"
+  ],
+  "informatics/21-sequence-tracing-kz": [
+    "informatics-21-sequence-tracing",
+    "kz"
+  ],
+  "informatics/21-sequence-tracing-en": [
+    "informatics-21-sequence-tracing",
+    "en"
+  ],
+  "informatics/22-conditions-boundaries": [
+    "informatics-22-conditions-boundaries",
+    "ru"
+  ],
+  "informatics/22-conditions-boundaries-kz": [
+    "informatics-22-conditions-boundaries",
+    "kz"
+  ],
+  "informatics/22-conditions-boundaries-en": [
+    "informatics-22-conditions-boundaries",
+    "en"
+  ],
+  "informatics/23-loops-invariants": [
+    "informatics-23-loops-invariants",
+    "ru"
+  ],
+  "informatics/23-loops-invariants-kz": [
+    "informatics-23-loops-invariants",
+    "kz"
+  ],
+  "informatics/23-loops-invariants-en": [
+    "informatics-23-loops-invariants",
+    "en"
+  ],
+  "informatics/24-functions-contracts": [
+    "informatics-24-functions-contracts",
+    "ru"
+  ],
+  "informatics/24-functions-contracts-kz": [
+    "informatics-24-functions-contracts",
+    "kz"
+  ],
+  "informatics/24-functions-contracts-en": [
+    "informatics-24-functions-contracts",
+    "en"
+  ],
+  "informatics/25-correctness-efficiency": [
+    "informatics-25-correctness-efficiency",
+    "ru"
+  ],
+  "informatics/25-correctness-efficiency-kz": [
+    "informatics-25-correctness-efficiency",
+    "kz"
+  ],
+  "informatics/25-correctness-efficiency-en": [
+    "informatics-25-correctness-efficiency",
+    "en"
+  ],
+  "informatics/26-algorithms-mastery": [
+    "informatics-26-algorithms-mastery",
+    "ru"
+  ],
+  "informatics/26-algorithms-mastery-kz": [
+    "informatics-26-algorithms-mastery",
+    "kz"
+  ],
+  "informatics/26-algorithms-mastery-en": [
+    "informatics-26-algorithms-mastery",
+    "en"
   ]
 }

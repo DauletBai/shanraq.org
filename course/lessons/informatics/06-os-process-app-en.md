@@ -4,15 +4,21 @@ _Lead (summary):_ **We separate a program file, a running process, and OS servic
 
 ## Where we are on the map
 
-We separate a program file, a running process, and OS services to understand launch, permissions, and errors.
-
-Start with an observation rather than a definition. Open an object on your device that relates to the lesson and record only what you can see: its name, location, action, and result. Write your explanation of the cause separately. This prevents a guess from becoming a fact. After the experiment, compare the explanation with the precise model and repair only the link that was wrong.
+The assistant icon stayed on screen, but its window vanished when you closed it. Did the program itself disappear? Let us break launch into observable steps.
 
 ![Operating system, process, and application](/static/course/informatics/map-06-os-process-en.svg)
 
 ## A familiar image and the precise model
 
 An icon refers to a program file. At launch, the OS allocates memory, creates a process, and connects it to files and devices. The OS manages processes, memory, files, devices, and access. A driver links a general OS command to hardware. Permission does not prove safety.
+
+## What actually starts
+
+A **program file** is saved instructions on storage; an **application** is a program intended to serve a user's task. A **process** is one running instance with allocated resources; two windows may belong to one process or several. The **operating system (OS)** allocates processor time and memory, opens files, and controls access to devices. A **resource** here is something a process uses: a file, memory, camera, or network. A **permission** is the right to perform a particular action, not evidence that the app is trustworthy.
+
+Act out the assistant's launch with cards labelled `application`, `OS`, `process`, `tasks.json`, and `screen`. The program file rests on storage; the OS checks launch and creates a process; the process asks for `tasks.json`; the OS checks the path and permission; the process displays the result. Remove the `tasks.json` card: the process may start but cannot find data. Remove read permission: the file exists, yet the OS denies access. You have now separated “not found,” “permission denied,” and “program did not start.”
+
+In the project, give each failure three lines: the action that failed, the message observed, and the first safe repair. Giving every permission at once is poor diagnosis: it hides the cause and expands access. The **principle of least privilege** means granting only the right needed for the intended action.
 
 ## The limit of the analogy
 
@@ -64,4 +70,4 @@ The readiness criterion is concrete: reproduce the signal without the page, corr
 
 Rebuild the signal tomorrow; solve an equivalent task after seven days; after thirty days, verify the decision in the project.
 
-[Next lesson: files, folders, and exact paths](/course/informatics?lang=en)
+[Next lesson: files, folders, and exact paths](/read/informatics-07-files-folders-paths?lang=en)

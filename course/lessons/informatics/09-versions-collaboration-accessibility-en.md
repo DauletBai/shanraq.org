@@ -4,15 +4,21 @@ _Lead (summary):_ **We preserve meaningful history, combine changes without over
 
 ## Where we are on the map
 
-We preserve meaningful history, combine changes without overwriting another person's work, and test accessibility.
-
-Start with an observation rather than a definition. Open an object on your device that relates to the lesson and record only what you can see: its name, location, action, and result. Write your explanation of the cause separately. This prevents a guess from becoming a fact. After the experiment, compare the explanation with the precise model and repair only the link that was wrong.
+Two people edited the same task at once. Which version should stay, and how do you see the difference? What if one person cannot distinguish the screen's colours?
 
 ![Versions, collaboration, and accessibility](/static/course/informatics/map-09-versions-en.svg)
 
 ## A familiar image and the precise model
 
 Files named `final2-new` do not explain ancestry. A version is a defined product state. A small change has a reason and check. Comparison shows differences, revert restores known state, and merge combines independent edits. Accessibility requires more than colour, keyboard reachability, and clear errors.
+
+## Make changes visible to everyone
+
+A **version** is a saved state of the project at a particular time. A **diff** shows added, removed, and changed lines. A **conflict** occurs when two people change the same part differently and no automatic choice is justified. **Accessibility** means a person can complete the task with different ways of perceiving or controlling the interface; colour must not be the only signal. **Keyboard focus** is the place where the next key press will act without a mouse.
+
+Copy `tasks.json` to `version-A.json` and `version-B.json`. In A, rename `t-01`; in B, change the `done` value of `t-01`. On paper, produce a final record containing both compatible edits. Now change the title differently in A and B: meaning must be discussed, not settled by “last save wins.” Record your decision and check that the final JSON opens correctly.
+
+Show task state with words such as “done” or “not done” as well as colour. Move through the project with Tab: can you see which item has focus, open the file, and understand an error? Give the project to another learner and ask them to repeat the action without prompts. That tests collaboration and accessibility together.
 
 ## The limit of the analogy
 
@@ -64,4 +70,4 @@ The readiness criterion is concrete: reproduce the signal without the page, corr
 
 Rebuild the signal tomorrow; solve an equivalent task after seven days; after thirty days, verify the decision in the project.
 
-[Next lesson: the first-block mastery checkpoint](/course/informatics?lang=en)
+[Next lesson: the first-block mastery checkpoint](/read/informatics-10-systems-mastery?lang=en)

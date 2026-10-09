@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the first two Informatics blocks as one atomic SQL publication."""
+"""Prepare the first three Informatics blocks as one atomic SQL publication."""
 import argparse
 import hashlib
 import json
@@ -27,21 +27,30 @@ ROUTE = (
     ("16-compression", "informatics-16-compression", 160),
     ("17-integrity-errors", "informatics-17-integrity-errors", 170),
     ("18-representation-mastery", "informatics-18-representation-mastery", 180),
+    ("19-problem-decomposition", "informatics-19-problem-decomposition", 190),
+    ("20-state-variables", "informatics-20-state-variables", 200),
+    ("21-sequence-tracing", "informatics-21-sequence-tracing", 210),
+    ("22-conditions-boundaries", "informatics-22-conditions-boundaries", 220),
+    ("23-loops-invariants", "informatics-23-loops-invariants", 230),
+    ("24-functions-contracts", "informatics-24-functions-contracts", 240),
+    ("25-correctness-efficiency", "informatics-25-correctness-efficiency", 250),
+    ("26-algorithms-mastery", "informatics-26-algorithms-mastery", 260),
 )
 COVER = "/static/covers/school/informatics/foundations/01-digital-world-computer-project.webp"
 REPRESENTATION_COVER = "/static/covers/school/informatics/representation/02-information-data.webp"
+ALGORITHMS_COVER = "/static/covers/school/informatics/algorithms/03-algorithmic-thinking.webp"
 META = {
     "ru": (
         "Информатика: создаём своего цифрового помощника",
-        "18 бесплатных занятий: устройство компьютера и представление информации битами, числами, текстом, изображениями и звуком. Сквозной проект — цифровой помощник.",
+        "26 бесплатных занятий: устройство компьютера, представление информации и алгоритмы. Шаг за шагом создаём и проверяем цифрового помощника.",
     ),
     "kz": (
         "Информатика: өз цифрлық көмекшімізді жасаймыз",
-        "18 тегін сабақ: компьютер құрылысы және ақпаратты бит, сан, мәтін, кескін мен дыбыс арқылы көрсету. Ортақ жоба — цифрлық көмекші.",
+        "26 тегін сабақ: компьютер құрылысы, ақпаратты көрсету және алгоритмдер. Цифрлық көмекшіні қадамдап құрып, тексереміз.",
     ),
     "en": (
         "Informatics: build your own digital assistant",
-        "18 free lessons cover computer systems and the representation of information as bits, numbers, text, images, and sound through one continuing digital-assistant project.",
+        "26 free lessons cover computer systems, data representation, and algorithms through one continuing, tested digital-assistant project.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -66,8 +75,8 @@ def lesson(path: Path):
 
 
 def prepare():
-    if len(ROUTE) != 18:
-        raise ValueError("the first two releases must contain exactly eighteen lessons")
+    if len(ROUTE) != 26:
+        raise ValueError("the first three releases must contain exactly twenty-six lessons")
     sql = [
         "BEGIN;",
         "SELECT pg_advisory_xact_lock(hashtext('shanraq-informatics-course'));",
@@ -101,7 +110,7 @@ SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
     for stem, slug_name, position in ROUTE:
         slug = literal(slug_name)
-        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER
+        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER if position <= 180 else ALGORITHMS_COVER
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
 SELECT id,{slug},'ru','society','education',{literal(lesson_cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'

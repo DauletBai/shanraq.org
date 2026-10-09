@@ -4,7 +4,7 @@ _Lead (summary):_ **Practice detecting changed data and see why a simple checksu
 
 ## Where we are on the map
 
-The previous block showed how to find files and separate a program from its data. Now we ask how data can carry meaning that another person and another program will read in the same way. State your first guess, test it with numbers, and record what you had to revise.
+Two files open without an error, but one says the task is no longer done. How can you prove the copy changed when it looks almost the same?
 
 ![How to detect damaged data](/static/course/informatics/map-17-integrity-errors-en.svg)
 
@@ -13,6 +13,14 @@ The previous block showed how to find files and separate a program from its data
 A cashier checks the number of items against a receipt. A mismatch shows a problem; a match does not prove that every item is unchanged. File transfers need a similar but more exact comparison.
 
 For a classroom checksum, add 4, 7, 2 and take the remainder after division by 10: 13 mod 10 = 3. If 7 changes to 8, the checksum becomes 14 mod 10 = 4, so the change is noticed. Yet 5, 6, 2 also gives 13 mod 10 = 3. Different data with the same checksum form a collision. Cryptographic hashes such as SHA-256 make accidental matches vastly less likely, but a hash without a trusted source does not prove who created a file.
+
+## Opening is not the same as matching
+
+**Integrity** means data has not changed unexpectedly. A **checksum** is a compact result computed from file contents; changing bytes usually changes it. A **SHA-256 hash** is one such check, but matching hashes without a trusted original value do not prove who created the file. **JSON syntax** gives the rules for valid writing; a **data schema** states which fields and types are needed; a **semantic check** asks whether the record makes sense for the task.
+
+Make two copies of `tasks.json`. In one, change `done: true` to `done: false` while keeping commas and quotes correct. Both may still pass a syntax check. Compare hashes: they differ. Next, change a title and restore it: the final files can match again even though their histories differ. A hash describes current bytes, not every action that happened.
+
+For the assistant, perform three checks: open JSON, verify required `id`, `title`, and `done` fields with their types, then verify the three expected fictional records. Compare a backup with its source immediately after creation. If you record its own hash only after corruption, you cannot detect the earlier loss; you need a value saved in advance.
 
 ## Where the analogy ends
 

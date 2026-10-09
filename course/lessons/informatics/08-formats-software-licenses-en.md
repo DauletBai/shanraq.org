@@ -4,15 +4,21 @@ _Lead (summary):_ **We separate bytes from reading rules, choose an open format,
 
 ## Where we are on the map
 
-We separate bytes from reading rules, choose an open format, and check a licence before adding someone else's material.
-
-Start with an observation rather than a definition. Open an object on your device that relates to the lesson and record only what you can see: its name, location, action, and result. Write your explanation of the cause separately. This prevents a guess from becoming a fact. After the experiment, compare the explanation with the precise model and repair only the link that was wrong.
+You renamed a photo from `.jpg` to `.png`, but the picture did not become a PNG. Why does changing the label leave the contents untouched?
 
 ![Formats, software, and the creator's permission](/static/course/informatics/map-08-formats-en.svg)
 
 ## A familiar image and the precise model
 
 A format defines data layout and meaning. An encoding maps numbers to characters. A MIME type describes exchanged content. A licence states permitted use; no licence does not mean freedom. Access to a file does not grant copying rights, and an extension does not change bytes.
+
+## Label, file rules, and the creator's permission
+
+A **format** is a set of rules for data inside a file: where its header sits, which values are valid, and how to read them. An **extension** is the end of a filename; it hints at a format but does not convert it. A **program** can correctly read only formats it knows. **Conversion** actually rewrites the data under another format's rules. A **license** states which uses the creator allows; being able to copy a file does not give you permission to publish it.
+
+Copy `tasks.json` as `tasks.txt`. Open both as plain text: the bytes remain the same. Rename the copy to `tasks.png`: an image viewer cannot turn the text into a picture. Real conversion needs software that reads the source and writes a new file using PNG rules. Compare a checksum or file size before and after renaming: the name changes, the contents do not. Next, break one quotation mark in the JSON and explain why the extension is still correct while the content no longer follows the format.
+
+For the assistant, keep a table: `asset — format — program that opens it — source — permission to redistribute`. Mark your fictional records as your own work. Check the original source's license before adding another person's image to the project.
 
 ## The limit of the analogy
 
@@ -64,4 +70,4 @@ The readiness criterion is concrete: reproduce the signal without the page, corr
 
 Rebuild the signal tomorrow; solve an equivalent task after seven days; after thirty days, verify the decision in the project.
 
-[Next lesson: versions, collaboration, and accessibility](/course/informatics?lang=en)
+[Next lesson: versions, collaboration, and accessibility](/read/informatics-09-versions-collaboration-accessibility?lang=en)

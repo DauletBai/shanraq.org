@@ -1,0 +1,27 @@
+{
+  "version": "0.3",
+  "fixed_today": "2026-10-09",
+  "calendar_timezone": "Asia/Qostanay",
+  "note": "Due-day counts are separate paper test inputs; step-01 tasks.json has no due-date field.",
+  "reminder_cases": [
+    {"id": "t-01", "done": false, "days_to_due": -1, "expected": "OVERDUE"},
+    {"id": "t-01", "done": false, "days_to_due": 0, "expected": "REMIND"},
+    {"id": "t-01", "done": false, "days_to_due": 1, "expected": "REMIND"},
+    {"id": "t-01", "done": false, "days_to_due": 2, "expected": "REMIND"},
+    {"id": "t-01", "done": false, "days_to_due": 3, "expected": "NOT_YET"},
+    {"id": "t-02", "done": true, "days_to_due": 0, "expected": "DONE"},
+    {"id": "t-03", "done": false, "days_to_due": null, "expected": "NO_DATE"},
+    {"id": "t-02", "done": true, "days_to_due": null, "expected": "DONE"}
+  ],
+  "count_cases": [
+    {"done_values": [], "expected": 0},
+    {"done_values": [false], "expected": 0},
+    {"done_values": [false, true, false], "expected": 1},
+    {"done_values": [true, true, true], "expected": 3}
+  ],
+  "duplicate_cases": [
+    {"ids": [], "has_duplicate": false},
+    {"ids": ["t-01", "t-02", "t-03"], "has_duplicate": false},
+    {"ids": ["t-01", "t-02", "t-02"], "has_duplicate": true}
+  ]
+}

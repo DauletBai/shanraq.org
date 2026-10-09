@@ -49,12 +49,18 @@ python3 -m unittest tools.course.test_informatics_release
 
 Release 0.2 adds lessons 11–18 about bits, binary numbers, Unicode and UTF-8,
 pixels, sampled sound and video, compression, integrity, and a documented data
-format. The reproducible project checkpoint is in
-`course/informatics-assistant/step-01/`; its three fictional tasks match lesson
-18 in all three languages. Its cover is
-`/static/covers/school/informatics/representation/02-information-data.webp`.
+format. Its project checkpoint is in `course/informatics-assistant/step-01/`.
 
-Prepare the first eighteen lessons as one reviewable database transaction:
+Release 0.3 adds lessons 19–26 about decomposition, state, tracing, conditions,
+loops, functions, correctness, and efficiency. It keeps the three fictional
+records in the 0.2 `tasks.json` unchanged. Due dates are separate test inputs:
+the earlier file has no due-date field. The paper algorithms, trilingual
+contracts, and independently checkable cases are in
+`course/informatics-assistant/step-02/`. Python implementation follows in
+the next block. The cover is
+`/static/covers/school/informatics/algorithms/03-algorithmic-thinking.webp`.
+
+Prepare the first twenty-six lessons as one reviewable database transaction:
 
 ```sh
 python3 tools/course/prepare_informatics.py \

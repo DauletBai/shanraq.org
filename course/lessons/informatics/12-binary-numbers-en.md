@@ -4,7 +4,7 @@ _Lead (summary):_ **See why 1101₂ means thirteen and check binary numbers by p
 
 ## Where we are on the map
 
-The previous block showed how to find files and separate a program from its data. Now we ask how data can carry meaning that another person and another program will read in the same way. State your first guess, test it with numbers, and record what you had to revise.
+The screen shows `1101`. Is that thirteen or one thousand one hundred and one? You need to know the number system first.
 
 ![How binary notation stores numbers](/static/course/informatics/map-12-binary-numbers-en.svg)
 
@@ -13,6 +13,14 @@ The previous block showed how to find files and separate a program from its data
 In decimal notation, position changes a digit’s weight: the 1 in 13 means one ten. Binary notation also has positions, but their weights from right to left are 1, 2, 4, and 8. Imagine a set of weights where each next piece is twice as heavy.
 
 The positions of 1101₂ have weights 8, 4, 2, and 1. Add the weights under ones: 8 + 4 + 0 + 1 = 13₁₀. Four places represent whole numbers from 0 through 15. A leading zero does not change the value: 01101₂ is still 13, although five positions are written. State the number base; otherwise 10 is ambiguous.
+
+## A digit's place changes its value
+
+A **number system** defines allowed digits and the values of places. Its **base** is the number of distinct digits: decimal has 10 and binary has 2. A **place** is a digit position; binary places from right to left have weights 1, 2, 4, 8, 16, and so on. Thus `1101₂` = 1 × 8 + 1 × 4 + 0 × 2 + 1 × 1 = 13₁₀. The subscript clarifies the base. The computer does not find such a subscript in every byte; the format tells a reader how to interpret the data.
+
+Lay cards labelled 8, 4, 2, 1 on a table. To make 13, choose 8 + 4 + 1 and place `1 1 0 1` above them. To make 10, choose 8 + 2: `1010`. Hide the example and convert 9 yourself. Check by adding backwards: `1001₂` = 8 + 1. The mistake `1101₂ = 1 + 1 + 0 + 1 = 3` ignores place values.
+
+In the project, do not turn task ID `t-01` into a number: it is a text label. Store the count of completed tasks in a separate numeric field. Similar-looking symbols can have different meanings under different type rules.
 
 ## Where the analogy ends
 

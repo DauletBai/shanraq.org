@@ -4,7 +4,7 @@ _Lead (summary):_ **Compare lossless and lossy compression, then choose what is 
 
 ## Where we are on the map
 
-The previous block showed how to find files and separate a program from its data. Now we ask how data can carry meaning that another person and another program will read in the same way. State your first guess, test it with numbers, and record what you had to revise.
+Why does a ZIP archive return the original text exactly, while a photo sent through a messenger may look softer? Both became smaller, but the methods make different promises.
 
 ![Why ZIP and a messenger compress differently](/static/course/informatics/map-16-compression-en.svg)
 
@@ -13,6 +13,14 @@ The previous block showed how to find files and separate a program from its data
 Writing “4А3Б” instead of “ААААБББ” describes repetition more briefly. Someone who knows the rule can restore the original exactly. Shrink a photograph, however, and fine details can disappear; merely unpacking it cannot bring them back.
 
 Lossless compression permits exact reconstruction. ZIP is in this category. Our “4А3Б” is only a teaching example: real size depends on encoded bytes, headers, and algorithms, so ZIP may make a short file larger. Lossy compression discards some information according to a rule for a smaller representation; the recovered picture or sound need not match byte for byte. A messenger may recompress media but may transfer an attachment as a file instead. Check the actual sending mode.
+
+## Two promises behind “compression”
+
+**Lossless compression** lets you reconstruct the original bytes exactly; documents and programs need this. **Lossy compression** discards some detail considered less noticeable, so exact recovery is impossible. A **compression ratio** compares sizes before and after, but does not measure quality. An **archive** is a container for one or more files and may use compression internally. Renaming an extension performs neither method.
+
+For the teaching string `ААААБББ`, the rule “count plus character” gives `4А3Б`. Decode it as “four А, three Б” and restore the original. On short text, the rules themselves can take extra space, so do not promise savings every time. Now imagine a photo containing shades 200 and 201 that a simple method rounds both to 200: size may fall, but the former 201 cannot be recovered. This models loss; it is not a literal description of JPEG.
+
+Copy `tasks.json`, put the copy in a ZIP file, and extract it. Compare the extracted and original files byte for byte or by SHA-256. A match proves exact restoration for this experiment. Assess a photo by visible quality and size as well; do not expect byte equality from a lossy format.
 
 ## Where the analogy ends
 

@@ -4,15 +4,21 @@ _Lead (summary):_ **We assemble version 0.1, check ten skills now and after seve
 
 ## Where we are on the map
 
-We assemble version 0.1, check ten skills now and after seven days, and prove transfer on a new device.
-
-Start with an observation rather than a definition. Open an object on your device that relates to the lesson and record only what you can see: its name, location, action, and result. Write your explanation of the cause separately. This prevents a guess from becoming a fact. After the experiment, compare the explanation with the precise model and repair only the link that was wrong.
+Can you say you understand the computer if three files open only on your own laptop and only while you give hints? This checkpoint tests another person's independent use.
 
 ![Mastery checkpoint: the project workspace](/static/course/informatics/map-10-mastery-en.svg)
 
 ## A familiar image and the precise model
 
 Viewing pages creates familiarity but does not prove recall. Mastery requires 8 of 10 now including transfer, and 7 of 10 after seven days. An error identifies the link to rebuild, and attempts are unlimited. Project evidence also matters: another person must locate data and explain its structure from the README.
+
+## Defend version 0.1 as a small investigation
+
+A **checkpoint** is a moment to test the result against known conditions. An **artifact** is a file, diagram, or table left by the work that someone else can inspect. **Reproducibility** means another person gets the same result from your instructions. **Transfer** is using a known rule in a new setting, such as another device. A **criterion** is an observable condition for success, not “I liked it.”
+
+Give a classmate the version 0.1 folder but do not touch their device. They must (1) find `README`; (2) use it to open three fictional records; (3) explain why an on-screen change does not prove saving; (4) name an exact path; (5) show which permission the app really needs; and (6) read task state without relying only on colour. If they ask where to begin, the instruction needs repair. Revise README and repeat with someone else.
+
+A ten-point quiz does not replace a working project. Show both answers and artifacts: the folder tree, input/output table, decision log, source register, and reproducible instructions. A week later solve an equivalent task with another file. A score of 7/10 signals retained knowledge, not a label for ability. Each error points to one step to rebuild.
 
 ## The limit of the analogy
 

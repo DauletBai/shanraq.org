@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">A function promises a result</title><desc id="desc">done? → date present? → days 0–2? → return outcome</desc>
+<defs><linearGradient id="bg" x2="0" y2="1"><stop stop-color="#edf7f9"/><stop offset="1" stop-color="#d8e9ee"/></linearGradient><linearGradient id="paper" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#e9f2f5"/></linearGradient><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0 H0 V40" fill="none" stroke="#80a6b6" stroke-opacity=".22" stroke-width="1"/></pattern><marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#285773"/></marker></defs>
+<style>.title{font:700 48px system-ui,Arial,sans-serif;fill:#1c3448}.card-num{font:700 27px system-ui,Arial,sans-serif;fill:white}.card-text{font:650 27px system-ui,Arial,sans-serif;fill:#1a3346}.outcome{font:650 35px system-ui,Arial,sans-serif;fill:#153d50}</style>
+<rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#grid)"/>
+<text class="title" x="72" y="117">A function promises a result</text><path d="M72 147 H1528" stroke="#86a8b6" stroke-width="3"/>
+<g transform="translate(66,255)">
+          <rect x="9" y="13" width="332" height="277" rx="18" fill="#162333" opacity=".20"/>
+          <rect width="332" height="277" rx="18" fill="url(#paper)" stroke="#b9c8d1" stroke-width="2"/>
+          <path d="M0 19 Q0 0 19 0 H313 Q332 0 332 19 V71 H0 Z" fill="#4d80ae"/>
+          <text x="24" y="49" class="card-num">01</text>
+          <text class="card-text" x="24" y="126"><tspan x="24" dy="0">done?</tspan></text>
+          <path d="M25 213 H304" stroke="#d7e2e7" stroke-width="2"/>
+          <circle cx="45" cy="238" r="8" fill="#4d80ae"/>
+          <circle cx="68" cy="238" r="8" fill="#4d80ae" opacity=".45"/>
+        </g><g transform="translate(443,255)">
+          <rect x="9" y="13" width="332" height="277" rx="18" fill="#162333" opacity=".20"/>
+          <rect width="332" height="277" rx="18" fill="url(#paper)" stroke="#b9c8d1" stroke-width="2"/>
+          <path d="M0 19 Q0 0 19 0 H313 Q332 0 332 19 V71 H0 Z" fill="#7163aa"/>
+          <text x="24" y="49" class="card-num">02</text>
+          <text class="card-text" x="24" y="126"><tspan x="24" dy="0">date present?</tspan></text>
+          <path d="M25 213 H304" stroke="#d7e2e7" stroke-width="2"/>
+          <circle cx="45" cy="238" r="8" fill="#7163aa"/>
+          <circle cx="68" cy="238" r="8" fill="#7163aa" opacity=".45"/>
+        </g><g transform="translate(820,255)">
+          <rect x="9" y="13" width="332" height="277" rx="18" fill="#162333" opacity=".20"/>
+          <rect width="332" height="277" rx="18" fill="url(#paper)" stroke="#b9c8d1" stroke-width="2"/>
+          <path d="M0 19 Q0 0 19 0 H313 Q332 0 332 19 V71 H0 Z" fill="#bd705b"/>
+          <text x="24" y="49" class="card-num">03</text>
+          <text class="card-text" x="24" y="126"><tspan x="24" dy="0">days 0–2?</tspan></text>
+          <path d="M25 213 H304" stroke="#d7e2e7" stroke-width="2"/>
+          <circle cx="45" cy="238" r="8" fill="#bd705b"/>
+          <circle cx="68" cy="238" r="8" fill="#bd705b" opacity=".45"/>
+        </g><g transform="translate(1197,255)">
+          <rect x="9" y="13" width="332" height="277" rx="18" fill="#162333" opacity=".20"/>
+          <rect width="332" height="277" rx="18" fill="url(#paper)" stroke="#b9c8d1" stroke-width="2"/>
+          <path d="M0 19 Q0 0 19 0 H313 Q332 0 332 19 V71 H0 Z" fill="#408d81"/>
+          <text x="24" y="49" class="card-num">04</text>
+          <text class="card-text" x="24" y="126"><tspan x="24" dy="0">return outcome</tspan></text>
+          <path d="M25 213 H304" stroke="#d7e2e7" stroke-width="2"/>
+          <circle cx="45" cy="238" r="8" fill="#408d81"/>
+          <circle cx="68" cy="238" r="8" fill="#408d81" opacity=".45"/>
+        </g><path d="M405 393 H428" stroke="#285773" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/><path d="M782 393 H805" stroke="#285773" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/><path d="M1159 393 H1182" stroke="#285773" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+<rect x="68" y="655" width="1464" height="122" rx="18" fill="#163a50" opacity=".18"/>
+<rect x="60" y="647" width="1464" height="122" rx="18" fill="white" stroke="#b4cbd4" stroke-width="2"/>
+<text class="outcome" x="90" y="722">Missing date → NO_DATE</text>
+</svg>

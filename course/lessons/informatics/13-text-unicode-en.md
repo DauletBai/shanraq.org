@@ -4,7 +4,7 @@ _Lead (summary):_ **Find out how one file can preserve Kazakh Ә, Russian Я, an
 
 ## Where we are on the map
 
-The previous block showed how to find files and separate a program from its data. Now we ask how data can carry meaning that another person and another program will read in the same way. State your first guess, test it with numbers, and record what you had to revise.
+A classmate sent a file named “Ән,” but their friend's screen showed strange marks. Find which step from character to bytes lost its rule.
 
 ![How a computer distinguishes Ә, Я, and A](/static/course/informatics/map-13-text-unicode-en.svg)
 
@@ -13,6 +13,14 @@ The previous block showed how to find files and separate a program from its data
 You send a friend the task name “Әлем.” If they see strange marks, the bytes may have been read using a different encoding from the one used to save them. Think of an address: one apartment number can take different amounts of space when written down.
 
 Unicode assigns code points to characters: A is U+0041, Я is U+042F, and Ә is U+04D8. UTF-8 turns code points into bytes: A → 41, Я → D0 AF, Ә → D3 98 (hexadecimal notation). Thus A takes one byte; Я and Ә take two bytes each in UTF-8. Counts of visible marks, code points, and bytes can differ, especially for combined characters.
+
+## Character, number, and bytes are different things
+
+A **character** is a unit of text such as `Ә`. A **Unicode code point** is its assigned number; `Ә` is U+04D8. **UTF-8 encoding** defines how to store that number as bytes: U+04D8 becomes `D3 98`. **Decoding** applies the same rule to recover a character. A **glyph** is the visible shape in a font; if the font lacks it, the bytes and encoding can be correct while the screen shows an empty box.
+
+Check three things in order. (1) Compare `Ә` and `A`: they are different letters. (2) Look up their numbers: U+04D8 and U+0041. (3) Save `Ә` as UTF-8 and inspect its bytes, `D3 98`; Latin `A` uses `41`. If text opens as nonsense, check the decoding first. If the bytes are right but a box appears, check the font. Do not call every display problem “bad Unicode.”
+
+Add a fictional task with a Kazakh letter to `tasks.json`, close the file, and reopen it. If the letter survives, writing and reading agree. State UTF-8 explicitly in `FORMAT.md` so another learner need not guess.
 
 ## Where the analogy ends
 

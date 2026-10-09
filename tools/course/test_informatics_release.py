@@ -29,6 +29,14 @@ RELEASE_STEMS = (
     "16-compression",
     "17-integrity-errors",
     "18-representation-mastery",
+    "19-problem-decomposition",
+    "20-state-variables",
+    "21-sequence-tracing",
+    "22-conditions-boundaries",
+    "23-loops-invariants",
+    "24-functions-contracts",
+    "25-correctness-efficiency",
+    "26-algorithms-mastery",
 )
 
 
@@ -92,12 +100,10 @@ class InformaticsReleaseTests(unittest.TestCase):
         self.assertTrue(gate["requires_unseen_transfer"])
         self.assertTrue(gate["requires_project_evidence"])
 
-        first_cover = ROOT / "web" / self.data["blocks"][0]["cover"].lstrip("/")
-        self.assertTrue(first_cover.is_file(), first_cover)
-        self.assertEqual(first_cover.suffix, ".webp")
-        second_cover = ROOT / "web" / self.data["blocks"][1]["cover"].lstrip("/")
-        self.assertTrue(second_cover.is_file(), second_cover)
-        self.assertEqual(second_cover.suffix, ".webp")
+        for block in self.data["blocks"][:3]:
+            cover = ROOT / "web" / block["cover"].lstrip("/")
+            self.assertTrue(cover.is_file(), cover)
+            self.assertEqual(cover.suffix, ".webp")
         checkpoint = ROOT / "course/informatics-assistant/step-00/project-passport.template.md"
         self.assertTrue(checkpoint.is_file(), checkpoint)
         checkpoint_text = checkpoint.read_text(encoding="utf-8")
@@ -121,7 +127,9 @@ class InformaticsReleaseTests(unittest.TestCase):
                 path = LESSONS / f"{stem}{suffix}.md"
                 self.assertTrue(path.is_file(), path)
                 text = path.read_text(encoding="utf-8")
-                for heading in required[lang]:
+                headings = required[lang] if stem in RELEASE_STEMS[:18] else (required[lang][0], required[lang][1],
+                    {"ru": "## Задание и доказательство", "kz": "## Тапсырма және дәлел", "en": "## Task and evidence"}[lang])
+                for heading in headings:
                     self.assertIn(heading, text, path)
                 for phrase in forbidden.get(lang, ()):
                     self.assertNotIn(phrase, text, path)
@@ -241,20 +249,42 @@ class InformaticsReleaseTests(unittest.TestCase):
             self.assertIn('8/10', lesson)
             self.assertIn('7/10', lesson)
 
+    def test_algorithm_release_keeps_contract_and_examples_aligned(self):
+        cases = json.loads((ROOT / "course/informatics-assistant/step-02/cases.json").read_text())
+        self.assertEqual(len(cases["reminder_cases"]), 8)
+        for case in cases["reminder_cases"]:
+            expected = ("DONE" if case["done"] else "NO_DATE" if case["days_to_due"] is None
+                        else "OVERDUE" if case["days_to_due"] < 0
+                        else "REMIND" if case["days_to_due"] <= 2 else "NOT_YET")
+            self.assertEqual(case["expected"], expected, case)
+        for case in cases["count_cases"]:
+            self.assertEqual(case["expected"], sum(case["done_values"]))
+        for case in cases["duplicate_cases"]:
+            self.assertEqual(case["has_duplicate"], len(case["ids"]) != len(set(case["ids"])))
+        for lang in ("ru", "kz", "en"):
+            self.assertTrue((ROOT / f"course/informatics-assistant/step-02/ALGORITHM-{lang}.md").is_file())
+            for stem in RELEASE_STEMS[18:]:
+                path = MAPS / f"map-{stem}-{lang}.svg"
+                root = ET.parse(path).getroot()
+                self.assertEqual(root.attrib.get("viewBox"), "0 0 1600 900", path)
+                self.assertEqual(path.read_text().count('class="card-text"'), 4, path)
+        source = json.loads((ROOT / "course/informatics-assistant/step-01/data/tasks.json").read_text())
+        self.assertTrue(all("due" not in task for task in source["tasks"]))
+
     def test_publication_is_atomic_and_complete(self):
         from tools.course.prepare_informatics import prepare
 
-        self.assertEqual([block["status"] for block in self.data["blocks"][:2]], ["published", "published"])
+        self.assertEqual([block["status"] for block in self.data["blocks"][:3]], ["published"] * 3)
         sql, expected = prepare()
-        self.assertEqual(len(expected), 54)
-        self.assertEqual(len({item["slug"] for item in expected}), 18)
+        self.assertEqual(len(expected), 78)
+        self.assertEqual(len({item["slug"] for item in expected}), 26)
         self.assertEqual({item["lang"] for item in expected}, {"ru", "kz", "en"})
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
-        self.assertEqual(sql.count("INSERT INTO article_series_items"), 18)
+        self.assertEqual(sql.count("INSERT INTO article_series_items"), 26)
         self.assertIn("shanraq-informatics-course", sql)
 
-    def test_first_two_releases_have_no_missing_or_extra_pages(self):
+    def test_first_three_releases_have_no_missing_or_extra_pages(self):
         actual = {path.name for path in LESSONS.glob("*.md")}
         expected = {
             f"{stem}{suffix}.md"

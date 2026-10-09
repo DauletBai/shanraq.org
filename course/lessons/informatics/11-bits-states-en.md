@@ -4,7 +4,7 @@ _Lead (summary):_ **Turn two reliably distinct states into a bit, then count how
 
 ## Where we are on the map
 
-The previous block showed how to find files and separate a program from its data. Now we ask how data can carry meaning that another person and another program will read in the same way. State your first guess, test it with numbers, and record what you had to revise.
+The assistant must distinguish “done” from “not done.” How can we send that difference to a device that does not understand English words? Start with two reliably distinct states.
 
 ![The bit: two distinguishable states](/static/course/informatics/map-11-bits-states-en.svg)
 
@@ -13,6 +13,14 @@ The previous block showed how to find files and separate a program from its data
 Imagine a lamp with two clearly distinguishable states: off and on. Agree to label them 0 and 1. Looking at two lamps in order gives 00, 01, 10, and 11: four messages. Three lamps give eight combinations. Order matters: 01 and 10 are different.
 
 A bit is one choice between two distinguishable states. Zero is a state too; it does not mean no data. Each additional bit doubles the number of possible sequences: one bit gives two, two give four, three give eight. Eight bits make one byte: 256 different sequences, from 00000000 to 11111111. A byte alone does not tell us whether it means a letter, number, or color. A reading rule supplies the meaning.
+
+## Meaning is not inside the zero
+
+A **state** is one possible condition of an object. A **code** records a state under an agreed rule. A **bit** chooses between two distinguishable states, usually written 0 or 1. A **byte** groups eight bits and has 2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 = 256 combinations. Zero is a valid code, not an empty slot. To **decode** is to apply the rule and recover meaning.
+
+Write four cards: `00`, `01`, `10`, `11`. Agree that 00 means new task, 01 in progress, and 10 done; leave 11 unused. Give the cards to a partner without the key: they cannot reliably guess the meanings. Add the key and decoding becomes repeatable. Add a fifth state: four codes are no longer enough, so a third bit is needed. Do not confuse bit count with the characters of `true` in JSON; a text format stores extra symbols.
+
+In the assistant's passport, document `done: false/true` and the human states it represents. Ask how to show “in progress”: another field or a larger state set? One bit cannot faithfully represent three distinct choices.
 
 ## Where the analogy ends
 

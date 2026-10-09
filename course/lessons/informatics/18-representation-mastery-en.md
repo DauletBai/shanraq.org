@@ -4,7 +4,7 @@ _Lead (summary):_ **Assemble version 0.2 of the Digital Assistant: a format for 
 
 ## Where we are on the map
 
-The previous block showed how to find files and separate a program from its data. Now we ask how data can carry meaning that another person and another program will read in the same way. State your first guess, test it with numbers, and record what you had to revise.
+Another learner must now receive your data and understand it without talking to you. Can they open a Kazakh title, add a task, and notice a damaged copy?
 
 ![Mastery checkpoint: the assistant's data format](/static/course/informatics/map-18-representation-mastery-en.svg)
 
@@ -13,6 +13,14 @@ The previous block showed how to find files and separate a program from its data
 Imagine handing the project to a classmate without an explanation. They must open the file, see three tasks, understand its fields, and recover the same data after copying. If they must call the author, the format is not ready.
 
 A data format is an agreement about structure and meaning. Version 0.2 uses UTF-8 JSON with a version field and a tasks array. Each task has a unique text id, a title, and a Boolean done. Three fictional records are t-01 “Кітап оқу” false; t-02 “Сурет салу” true; t-03 “Есеп шығару” false. JSON object field order does not change meaning, while array element order may matter for display. Store the file losslessly and compare an exact copy after transfer.
+
+## Defend the data contract
+
+A **format specification** is a written agreement about valid files and fields. A **type** limits a value: `done` is Boolean `true` or `false`, not the string `"true"`; `title` is nonempty text. An **identifier** `id` distinguishes records even if their titles match. **Format version** `0.2` says which rules to use to read the file; it is not a task count. **Backward compatibility** means a new version reads older valid records, if that promise has been stated.
+
+Give a partner only `tasks.json` and `FORMAT.md`. Without hints, they must add fictional task `t-04` with `Ә`, choose `done: false`, save in UTF-8, and explain why quoted `"false"` is wrong. They then change one byte in a copy: an integrity check should reveal the difference. If they must guess what `version` means or which `id` is valid, improve the contract and retry.
+
+For an 8/10 pass, three forms of evidence are essential: a readable file, transfer to a new record, and a backup matching the original before deliberate damage. Test again on a different example after seven days. A screenshot alone proves neither encoding, types, nor preservation of bytes.
 
 ## Where the analogy ends
 
@@ -62,4 +70,4 @@ Submit evidence that can be checked, rather than saying “I understood”: a ta
 
 Tomorrow recall the three task fields without the page. In seven days ask someone else to add a fictional record using FORMAT.md and check at least 7/10 items. In a month reopen the copy and explain the whole path from character to byte.
 
-[All course lessons](/course/informatics?lang=en)
+[Next lesson: Decompose a large problem without losing the goal](/read/informatics-19-problem-decomposition?lang=en)

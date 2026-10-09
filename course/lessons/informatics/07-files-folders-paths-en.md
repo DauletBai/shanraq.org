@@ -4,15 +4,21 @@ _Lead (summary):_ **We build a project tree and distinguish a name from a path, 
 
 ## Where we are on the map
 
-We build a project tree and distinguish a name from a path, a relative path from an absolute one, and a missing file from a wrong search location.
-
-Start with an observation rather than a definition. Open an object on your device that relates to the lesson and record only what you can see: its name, location, action, and result. Write your explanation of the cause separately. This prevents a guess from becoming a fact. After the experiment, compare the explanation with the precise model and repair only the link that was wrong.
+A friend insists that the file exists, yet the assistant says “not found.” The computer is not being stubborn: a file has an exact address.
 
 ![Files, folders, and exact paths](/static/course/informatics/map-07-paths-en.svg)
 
 ## A familiar image and the precise model
 
 Two files may be named `plan.txt`. A file is a named data sequence; a folder maps names; a path lists transitions. An absolute path begins at a root and a relative path at the working folder. Renaming `.txt` to `.jpg` does not turn text into a photo.
+
+## Find a file by its address
+
+A **file** is a named collection of data. A **folder** groups files and other folders. A **path** lists the folders from a chosen starting point to the file, such as `project/data/tasks.json`. The `.json` **extension** is part of the name and hints at a format, but does not prove the contents. The **current folder** is the starting point for a **relative path**; an **absolute path** starts at the file system's root. A street-address analogy helps, but a computer does not guess misspellings like a helpful post worker.
+
+Draw a `project/` tree with `data/` and `notes/`. Put `tasks.json` in `data/` and `plan.txt` in `notes/`. From `project/`, the task path is `data/tasks.json`. From `notes/`, the same file is at `../data/tasks.json`: `..` goes up one folder. Predict what happens if you open `data/task.json` without the `s`: that is a different address even if a person understands your intention. Check the path without renaming the source just to make the error disappear.
+
+For the project, record the folder tree and one exact path to each of the three fictional records. Ask another learner to locate the file using only your description. If they ask where to start, state the current folder. Fix “file not found” by checking the address, not by installing another app.
 
 ## The limit of the analogy
 
@@ -64,4 +70,4 @@ The readiness criterion is concrete: reproduce the signal without the page, corr
 
 Rebuild the signal tomorrow; solve an equivalent task after seven days; after thirty days, verify the decision in the project.
 
-[Next lesson: formats, software, and the creator's permission](/course/informatics?lang=en)
+[Next lesson: formats, software, and the creator's permission](/read/informatics-08-formats-software-licenses?lang=en)

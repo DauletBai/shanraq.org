@@ -7,10 +7,15 @@ on:
       - 'course/informatics/**'
       - 'course/informatics-assistant/**'
       - 'docs/informatics-course-proposal.md'
+      - 'docs/informatics-course-audit-2026-10-09.md'
+      - 'tools/course/lesson-slugs.json'
       - 'tools/course/generate_informatics_foundations.py'
       - 'tools/course/generate_informatics_maps.py'
       - 'tools/course/generate_informatics_representation.py'
       - 'tools/course/generate_informatics_representation_maps.py'
+      - 'tools/course/generate_informatics_algorithms.py'
+      - 'tools/course/generate_informatics_algorithm_maps.py'
+      - 'tools/course/informatics_enrichment.py'
       - 'tools/course/prepare_informatics.py'
       - 'tools/course/test_informatics_release.py'
       - 'web/static/course/informatics/**'
@@ -21,10 +26,15 @@ on:
       - 'course/informatics/**'
       - 'course/informatics-assistant/**'
       - 'docs/informatics-course-proposal.md'
+      - 'docs/informatics-course-audit-2026-10-09.md'
+      - 'tools/course/lesson-slugs.json'
       - 'tools/course/generate_informatics_foundations.py'
       - 'tools/course/generate_informatics_maps.py'
       - 'tools/course/generate_informatics_representation.py'
       - 'tools/course/generate_informatics_representation_maps.py'
+      - 'tools/course/generate_informatics_algorithms.py'
+      - 'tools/course/generate_informatics_algorithm_maps.py'
+      - 'tools/course/informatics_enrichment.py'
       - 'tools/course/prepare_informatics.py'
       - 'tools/course/test_informatics_release.py'
       - 'web/static/course/informatics/**'
@@ -41,9 +51,11 @@ jobs:
           python3 tools/course/generate_informatics_maps.py
           python3 tools/course/generate_informatics_representation.py
           python3 tools/course/generate_informatics_representation_maps.py
+          python3 tools/course/generate_informatics_algorithms.py
+          python3 tools/course/generate_informatics_algorithm_maps.py
       - name: Verify generated files are committed
         run: git diff --exit-code
-      - name: Validate two atomic releases
+      - name: Validate three atomic releases
         run: python3 -m unittest tools.course.test_informatics_release
       - name: Prepare publication without remote changes
         run: |

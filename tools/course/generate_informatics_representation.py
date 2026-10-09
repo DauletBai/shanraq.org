@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate the eight hand-authored, trilingual data-representation lessons."""
 from pathlib import Path
+from informatics_enrichment import ENRICHMENT
 import json
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -133,8 +134,8 @@ def render(number: int, lang: str) -> str:
     shared = SCAFFOLD[lang]
     image = f'/static/course/informatics/{STEMS[number][1]}-{lang}.svg'
     sections = [
-        shared['intro'] + f'\n\n![{title}]({image})',
-        row['scene'] + '\n\n' + row['model'],
+        ENRICHMENT[number][lang]['hook'] + f'\n\n![{title}]({image})',
+        row['scene'] + '\n\n' + row['model'] + '\n\n' + ENRICHMENT[number][lang]['bridge'],
         row['boundary'],
         '`' + row['signal'] + '`',
         row['worked'],
@@ -155,8 +156,9 @@ def render(number: int, lang: str) -> str:
         link_label = {'ru': 'Следующий урок', 'kz': 'Келесі сабақ', 'en': 'Next lesson'}[lang]
         body += f'[{link_label}: {next_title}](/read/{next_slug}?lang={lang})\n'
     else:
-        link_label = {'ru': 'Все уроки курса', 'kz': 'Курстың барлық сабақтары', 'en': 'All course lessons'}[lang]
-        body += f'[{link_label}](/course/informatics?lang={lang})\n'
+        link_label = {'ru': 'Следующий урок', 'kz': 'Келесі сабақ', 'en': 'Next lesson'}[lang]
+        next_title = next(item[f'title_{lang}'] for item in CURRICULUM['lessons'] if item['number'] == 19)
+        body += f'[{link_label}: {next_title}](/read/informatics-19-problem-decomposition?lang={lang})\n'
     return body
 
 def main():

@@ -4,15 +4,21 @@ _Lead (summary):_ **We separate execution, temporary state, and persistent stora
 
 ## Where we are on the map
 
-We separate execution, temporary state, and persistent storage, then decide what the assistant must keep.
-
-Start with an observation rather than a definition. Open an object on your device that relates to the lesson and record only what you can see: its name, location, action, and result. Write your explanation of the cause separately. This prevents a guess from becoming a fact. After the experiment, compare the explanation with the precise model and repair only the link that was wrong.
+You changed a task title, saw it on screen, and closed the app. The old title returned when you reopened it. Where did the edit go? Follow the data before blaming a button.
 
 ![Processor, working memory, and storage](/static/course/informatics/map-05-memory-en.svg)
 
 ## A familiar image and the precise model
 
 An edited note changes immediately, but an unsaved part may vanish after power loss. The processor executes instructions. RAM holds code and current process state. Persistent storage keeps files without power. Cache speeds access but does not replace saving.
+
+## Unpack the words with one experiment
+
+An **instruction** is one action the processor carries out; a program specifies an ordered set of instructions. **RAM** is the working area for a running program and its data; its ordinary contents disappear when power is removed. **Storage** keeps files that must survive shutdown. A **cache** is a small area holding recently used data: it can speed access but does not prove that a file was saved. To **save** is to ask the program to write changes to persistent storage; to **verify a save** is to close and reopen the file.
+
+Try this safely on a copy of `tasks.json`. Make a table with three moments: before opening, after editing one fictional task, and after reopening. Before pressing Save, predict where the new version exists. Save, close the editor, and reopen the file. If the change appeared only before closing, the screen showed a temporary state. If it survived, the data reached storage. Use a copy so the experiment cannot damage the original project.
+
+**Check your explanation.** A classmate says, “I can see the file, so it is saved.” Ask them to show a second read. Imagine cutting power before saving and after saving. The outcomes differ because screen, RAM, and storage have different jobs. This is a more useful explanation than any advertised number of gigabytes.
 
 ## The limit of the analogy
 
@@ -64,4 +70,4 @@ The readiness criterion is concrete: reproduce the signal without the page, corr
 
 Rebuild the signal tomorrow; solve an equivalent task after seven days; after thirty days, verify the decision in the project.
 
-[Next lesson: operating system, process, and application](/course/informatics?lang=en)
+[Next lesson: operating system, process, and application](/read/informatics-06-os-process-app?lang=en)

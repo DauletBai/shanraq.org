@@ -4,7 +4,7 @@ _Lead (summary):_ **Break a photograph into pixels and check how numbers can des
 
 ## Where we are on the map
 
-The previous block showed how to find files and separate a program from its data. Now we ask how data can carry meaning that another person and another program will read in the same way. State your first guess, test it with numbers, and record what you had to revise.
+A task photo was enlarged tenfold and its edges became blocky. Did we gain detail, or merely enlarge the existing little squares?
 
 ![A photograph as a grid of numbers](/static/course/informatics/map-14-pixels-color-en.svg)
 
@@ -13,6 +13,14 @@ The previous block showed how to find files and separate a program from its data
 Stand back from a mosaic and you see a picture. Come closer and you see its pieces. A raster image also has separate positions called pixels; the squares in our diagram simply make these positions easy to inspect.
 
 Each pixel has a position and a color. In a simple RGB model, three numbers from 0 to 255 describe red, green, and blue channels. Our 2 × 2 grid has red (255,0,0) and green (0,255,0) on top, blue (0,0,255) and white (255,255,255) below. If each channel uses eight bits without compression, color data requires 2 × 2 × 3 = 12 bytes.
+
+## A coloured cell and image size
+
+A **pixel** is one cell of a digital image with an assigned colour. **Image resolution** counts pixels across and down, for example 4 × 3 = 12 pixels; it is not the screen's physical size. The **RGB** model uses three channels: red, green, and blue. With eight bits per channel, each value from 0 to 255 sets an intensity. `(255, 0, 0)` is red, `(0, 0, 0)` black, and `(255, 255, 255)` white. **Scaling** stretches or recalculates existing pixels; it cannot recover details the camera never recorded.
+
+Draw a 4 × 3 grid. Colour the top row red, the middle green, and the bottom blue. There are 12 pixels, not three: each row colour appears in four cells. Change one cell to white and explain which three values change. Now draw an 8 × 6 grid by doubling each old pixel in both directions. You have 48 cells but no new information about the photographed scene.
+
+Design a task icon for the assistant on a 4 × 3 grid and compare its legibility with a more detailed grid. If its meaning depends only on red versus green, add words too: accessibility applies to images.
 
 ## Where the analogy ends
 
