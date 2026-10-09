@@ -166,6 +166,15 @@ def normalise(s):
     return "\n".join(line.rstrip() for line in s.strip().split("\n"))
 
 
+def live_series_shape(s):
+    """Keep table labels and layout while allowing official values to be revised."""
+    def value(match):
+        number = match.group()
+        return number if re.fullmatch(r"(?:19|20)\d{2}", number) else "#"
+
+    return re.sub(r"(?<![\w])[-+]?\d+(?:\.\d+)?", value, normalise(s))
+
+
 def run(program):
     """Return (stdout, error) with error set when the program did not finish."""
     with tempfile.TemporaryDirectory() as tmp:
@@ -206,10 +215,13 @@ def check_lessons(paths, strict=False):
                 print(f"  ! {os.path.basename(path)} #{n}: {err}")
                 continue
             ran += 1
-            if normalise(out) != normalise(printed):
+            live_series = "# WORLD_BANK_LIVE_SERIES" in program
+            expected = live_series_shape(printed) if live_series else normalise(printed)
+            actual = live_series_shape(out) if live_series else normalise(out)
+            if actual != expected:
                 bad += 1
                 print(f"  ! {os.path.basename(path)} #{n}: вывод разошёлся с уроком")
-                for line in diff(normalise(printed), normalise(out)):
+                for line in diff(expected, actual):
                     print("      " + line)
         solution, promised = task(path, text)
         if promised is not None:

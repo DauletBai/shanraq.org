@@ -24,6 +24,7 @@ program fetches the official numbers itself and counts with them.
 """
 
 import json
+# WORLD_BANK_LIVE_SERIES: values may be revised; printed output is a dated example.
 import urllib.request
 
 # The World Bank hands out country indicators with no key and no sign-up.
@@ -69,7 +70,9 @@ def main():
 main()
 ```
 
-Run `python3 tsena.py`. The output:
+Run `python3 tsena.py`. The output below is an example from when this lesson was prepared. The World Bank may revise historical series, so your live numbers can differ. Check the current API response; the fixed offline example below remains a reproducible exercise.
+
+Example output:
 
 ```
 == how many times prices grew in Kazakhstan

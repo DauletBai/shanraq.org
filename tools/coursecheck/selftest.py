@@ -171,6 +171,15 @@ def test_pyrun():
               pyrun.missing_library("ModuleNotFoundError: No module named 'sqlite3'"), "")
         check("другая ошибка библиотекой не объясняется",
               pyrun.missing_library("NameError: name 'x' is not defined"), "")
+        check("пересмотр живого числа не ломает структуру вывода",
+              pyrun.live_series_shape("индекс 2025: 348.1\nмир 8.1") ==
+              pyrun.live_series_shape("индекс 2025: 347.9\nмир 8.0"), True)
+        check("изменившаяся подпись живых данных остаётся ошибкой",
+              pyrun.live_series_shape("мир 8.1") ==
+              pyrun.live_series_shape("Казахстан 8.1"), False)
+        check("пропавший год остаётся ошибкой",
+              pyrun.live_series_shape("индекс 2025: 348.1") ==
+              pyrun.live_series_shape("индекс 2024: 348.1"), False)
 
 
 def test_pycheck():
