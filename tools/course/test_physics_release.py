@@ -25,11 +25,14 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertEqual([row["number"] for row in data["first_block_lessons"]], list(range(1, 9)))
 
     def test_every_language_has_the_same_experiment_and_working_assets(self):
+        slugs = json.loads((ROOT / "tools/course/lesson-slugs.json").read_text())
         for index, row in enumerate(DATA, 1):
             for lang in ("ru", "kz", "en"):
                 suffix = "" if lang == "ru" else f"-{lang}"
                 path = LESSONS / f"{row['stem']}{suffix}.md"
                 self.assertTrue(path.is_file(), path)
+                slug = f"physics-{index:02d}-{row['stem'][3:]}"
+                self.assertEqual(slugs.get(f"physics/{row['stem']}{suffix}"), [slug, lang])
                 title, summary, body = read_lesson(path)
                 self.assertTrue(title and summary)
                 self.assertGreater(len(body.split()), 250, path)

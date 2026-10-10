@@ -4930,5 +4930,101 @@
   "informatics/72-capstone-defense-en": [
     "informatics-72-capstone-defense",
     "en"
+  ],
+  "physics/01-why-physics": [
+    "physics-01-why-physics",
+    "ru"
+  ],
+  "physics/01-why-physics-kz": [
+    "physics-01-why-physics",
+    "kz"
+  ],
+  "physics/01-why-physics-en": [
+    "physics-01-why-physics",
+    "en"
+  ],
+  "physics/02-observe-explain": [
+    "physics-02-observe-explain",
+    "ru"
+  ],
+  "physics/02-observe-explain-kz": [
+    "physics-02-observe-explain",
+    "kz"
+  ],
+  "physics/02-observe-explain-en": [
+    "physics-02-observe-explain",
+    "en"
+  ],
+  "physics/03-predict-test": [
+    "physics-03-predict-test",
+    "ru"
+  ],
+  "physics/03-predict-test-kz": [
+    "physics-03-predict-test",
+    "kz"
+  ],
+  "physics/03-predict-test-en": [
+    "physics-03-predict-test",
+    "en"
+  ],
+  "physics/04-quantity-unit": [
+    "physics-04-quantity-unit",
+    "ru"
+  ],
+  "physics/04-quantity-unit-kz": [
+    "physics-04-quantity-unit",
+    "kz"
+  ],
+  "physics/04-quantity-unit-en": [
+    "physics-04-quantity-unit",
+    "en"
+  ],
+  "physics/05-measure-length": [
+    "physics-05-measure-length",
+    "ru"
+  ],
+  "physics/05-measure-length-kz": [
+    "physics-05-measure-length",
+    "kz"
+  ],
+  "physics/05-measure-length-en": [
+    "physics-05-measure-length",
+    "en"
+  ],
+  "physics/06-measure-time": [
+    "physics-06-measure-time",
+    "ru"
+  ],
+  "physics/06-measure-time-kz": [
+    "physics-06-measure-time",
+    "kz"
+  ],
+  "physics/06-measure-time-en": [
+    "physics-06-measure-time",
+    "en"
+  ],
+  "physics/07-table-graph": [
+    "physics-07-table-graph",
+    "ru"
+  ],
+  "physics/07-table-graph-kz": [
+    "physics-07-table-graph",
+    "kz"
+  ],
+  "physics/07-table-graph-en": [
+    "physics-07-table-graph",
+    "en"
+  ],
+  "physics/08-investigation-mastery": [
+    "physics-08-investigation-mastery",
+    "ru"
+  ],
+  "physics/08-investigation-mastery-kz": [
+    "physics-08-investigation-mastery",
+    "kz"
+  ],
+  "physics/08-investigation-mastery-en": [
+    "physics-08-investigation-mastery",
+    "en"
   ]
 }
