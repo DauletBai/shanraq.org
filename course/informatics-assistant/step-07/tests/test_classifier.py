@@ -1,8 +1,11 @@
 import unittest
+import sys
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 from classifier import read_examples, train, suggest, evaluate
 
-DATA = Path(__file__).resolve().parents[1] / 'labelled_tasks.csv'
+DATA = ROOT / 'labelled_tasks.csv'
 
 class ClassifierTests(unittest.TestCase):
     def test_holdout_never_enters_training_and_unknown_is_review(self):

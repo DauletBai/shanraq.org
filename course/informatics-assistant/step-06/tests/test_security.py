@@ -1,12 +1,12 @@
-import shutil
 import tempfile
 import unittest
+import sys
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 from data_store import create_database
 from security_assistant import backup, digest, restore, verify
-
-ROOT = Path(__file__).resolve().parents[1]
 
 class SecurityTests(unittest.TestCase):
     def test_backup_restore_and_tamper_detection(self):
