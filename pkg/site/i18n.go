@@ -2286,6 +2286,7 @@ var messages = map[string]map[string]string{
 	"footer.col_courses":     {"kz": "Курстар", "ru": "Курсы", "en": "Courses"},
 	"footer.col_school":      {"kz": "Мектеп", "ru": "Школа", "en": "School"},
 	"footer.mathematics":     {"kz": "Математика", "ru": "Математика", "en": "Mathematics"},
+	"footer.physics":         {"kz": "Физика", "ru": "Физика", "en": "Physics"},
 	"footer.informatics":     {"kz": "Информатика", "ru": "Информатика", "en": "Informatics"},
 	"footer.kazakh_language": {"kz": "Қазақ тілі", "ru": "Казахский язык", "en": "Kazakh"},
 	"footer.kazakh_ai":       {"kz": "ЖИ курсы", "ru": "Курс ИИ", "en": "AI course"},

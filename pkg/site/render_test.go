@@ -70,6 +70,13 @@ func TestRustFooterLinkPreservesLanguage(t *testing.T) {
 			if !strings.Contains(body.String(), `/static/brand/math.svg`) {
 				t.Fatal("footer missing mathematics mark")
 			}
+			physicsCourse := `href="/course/physics?lang=` + lang + `"`
+			if !strings.Contains(body.String(), physicsCourse) {
+				t.Fatalf("footer missing Physics link %s", physicsCourse)
+			}
+			if !strings.Contains(body.String(), `/static/brand/physics.svg`) {
+				t.Fatal("footer missing Physics mark")
+			}
 			informaticsCourse := `href="/course/informatics?lang=` + lang + `"`
 			if !strings.Contains(body.String(), informaticsCourse) {
 				t.Fatalf("footer missing Informatics link %s", informaticsCourse)

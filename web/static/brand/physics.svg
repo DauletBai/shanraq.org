@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Физика</title>
+  <desc id="desc">Атом с тремя орбитами и светящимся ядром</desc>
+  <defs>
+    <linearGradient id="tile" x1="8" y1="7" x2="55" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#294e87"/>
+      <stop offset="1" stop-color="#102a50"/>
+    </linearGradient>
+    <radialGradient id="nucleus" cx=".35" cy=".3" r=".8">
+      <stop stop-color="#fff4ac"/>
+      <stop offset=".48" stop-color="#ffbd4b"/>
+      <stop offset="1" stop-color="#ed692d"/>
+    </radialGradient>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#09223e" flood-opacity=".3"/>
+    </filter>
+  </defs>
+  <rect x="5" y="5" width="54" height="54" rx="14" fill="url(#tile)" filter="url(#shadow)"/>
+  <rect x="7" y="7" width="50" height="50" rx="12" fill="none" stroke="#8db4de" stroke-opacity=".45"/>
+  <g fill="none" stroke="#b9eaff" stroke-width="2.4" stroke-opacity=".94">
+    <ellipse cx="32" cy="32" rx="21" ry="9.5"/>
+    <ellipse cx="32" cy="32" rx="21" ry="9.5" transform="rotate(60 32 32)"/>
+    <ellipse cx="32" cy="32" rx="21" ry="9.5" transform="rotate(120 32 32)"/>
+  </g>
+  <circle cx="32" cy="32" r="6" fill="url(#nucleus)" stroke="#fff4c6" stroke-width="1"/>
+  <circle cx="53" cy="32" r="3.1" fill="#63d9ff" stroke="#e5faff" stroke-width=".8"/>
+  <circle cx="21.5" cy="13.8" r="3.1" fill="#63d9ff" stroke="#e5faff" stroke-width=".8"/>
+  <circle cx="21.5" cy="50.2" r="3.1" fill="#63d9ff" stroke="#e5faff" stroke-width=".8"/>
+</svg>
