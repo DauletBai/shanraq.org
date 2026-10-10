@@ -35,7 +35,7 @@ Worked data: 30 cm → 10.9, 11.1, 11.0 s; 60 cm → 15.5, 15.7, 15.6 s. Mean t�
 
 ## A common mistake
 
-'I proved a law for all pendulums' goes beyond the experiment. We compared two lengths, one weight, and a small starting tilt. We did not test mass or large tilts, or explain the motion using forces.
+'I proved a law for all pendulums' goes beyond the experiment. We compared two lengths, one weight, and a small starting tilt. We did not test a different weight or large tilts, or explain the motion using forces.
 
 ## A new situation
 

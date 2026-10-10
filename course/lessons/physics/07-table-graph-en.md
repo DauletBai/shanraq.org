@@ -14,7 +14,7 @@ Six time readings on separate scraps are hard to compare. A table gathers like m
 
 ## Words and meanings
 
-A **table** arranges data in rows and labelled columns. A **graph** puts pairs of values on two axes: the horizontal axis shows chosen length L, the vertical axis measured period T. A **data point** is one pair (L; T) from one case. Two points do not establish the precise shape of a whole relationship or what happens outside the tested lengths.
+A **table** arranges data in rows and labelled columns. A **graph** puts pairs of values on two axes: the horizontal axis shows chosen length L, the vertical axis measured period T. A **data point** is one pair (L; T) from one case. A **relationship** here tells how T changes as L changes. An **axis scale** states how many units one step on the drawing represents. Two points do not establish the precise shape of a whole relationship or what happens outside the tested lengths.
 
 ## Predict before checking
 

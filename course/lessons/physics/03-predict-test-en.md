@@ -30,7 +30,7 @@ Unfair comparison: count 10 swings at 30 cm but 20 at 60 cm. Fair comparison: co
 
 ## A common mistake
 
-'I changed one variable, so everything else was identical' is too strong. A person's reaction when starting the timer and moving air can still vary. That is why we repeat measurements.
+'I changed one condition, so everything else was identical' is too strong. A person's reaction when starting the timer and moving air can still vary. That is why we repeat measurements.
 
 ## A new situation
 

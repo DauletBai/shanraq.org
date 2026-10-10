@@ -14,7 +14,7 @@ You let go of a swing and it gradually stopped. You saw the stopping; the reason
 
 ## Words and meanings
 
-An **observation** reports what you saw or measured: 'after ten swings the motion was smaller.' An **explanation** proposes a cause: 'air and the pivot resisted the motion.' **Data** are recorded observations and numbers. A **data source** says who made a record, when, and how. If you did not count ten swings, do not add that number to make a sentence look scientific.
+A **pendulum** is a weight hung from a string so it can swing from side to side. An **observation** reports what you saw or measured: 'after ten swings the motion was smaller.' An **explanation** proposes a cause: 'air and the pivot resisted the motion.' **Data** are recorded observations and numbers. A **data source** says who made a record, when, and how. If you did not count ten swings, do not add that number to make a sentence look scientific.
 
 ## Predict before checking
 

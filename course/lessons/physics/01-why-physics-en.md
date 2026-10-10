@@ -14,7 +14,7 @@ From a window you see two playground swings moving. Why does one seem faster? Be
 
 ## Words and meanings
 
-**Physics** studies natural phenomena through observation, measurement, and explanations that can be checked. A **phenomenon** is a noticeable change, such as a moving swing. A **testable question** states what you will change or compare and what you will observe. 'Why is the world like this?' is too broad; 'does a swing with a longer rope take more time for one complete trip?' can be checked. A **model** is a simplified description useful for one question, not a complete copy of the world.
+**Physics** studies natural phenomena through observation, measurement, and explanations that can be checked. A **phenomenon** is a noticeable change, such as a moving swing. A **testable question** states what you will change or compare and what you will observe. One **complete trip** of a swing goes from one farthest position back to that same position. 'Why is the world like this?' is too broad; 'does a swing with a longer rope take more time for one complete trip?' can be checked. A **model** is a simplified description useful for one question, not a complete copy of the world.
 
 ## Predict before checking
 
