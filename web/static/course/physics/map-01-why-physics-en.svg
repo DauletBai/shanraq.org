@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Why physics matters and what makes a question testable</title><desc id="desc">One step from question to test</desc>
+<defs>
+ <linearGradient id="paper" x2="1" y2="1"><stop stop-color="#f9fdff"/><stop offset="1" stop-color="#e5f1fd"/></linearGradient>
+ <linearGradient id="blue" x2="1" y2="1"><stop stop-color="#35b9ee"/><stop offset="1" stop-color="#2868b7"/></linearGradient>
+ <linearGradient id="teal" x2="1" y2="1"><stop stop-color="#50d7c4"/><stop offset="1" stop-color="#168d99"/></linearGradient>
+ <linearGradient id="amber" x2="1" y2="1"><stop stop-color="#ffc867"/><stop offset="1" stop-color="#ed8150"/></linearGradient>
+ <filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="13" flood-color="#16446c" flood-opacity=".19"/></filter>
+ <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#b9d2e8" stroke-width="1" opacity=".5"/></pattern>
+</defs>
+<rect width="1600" height="900" fill="url(#paper)"/><rect width="1600" height="900" fill="url(#grid)"/>
+<text x="800" y="88" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="31" font-weight="800" fill="#143858">WHY PHYSICS MATTERS AND WHAT MAKES A QUESTION TESTABLE</text>
+<text x="800" y="132" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="23" font-weight="500" fill="#526e83">One step from question to test</text>
+
+<g filter="url(#shadow)"><rect x="82" y="290" width="420" height="300" rx="24" fill="url(#blue)" stroke="#fff" stroke-width="4"/></g>
+<text x="114" y="374" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800" fill="#fff">QUESTION</text>
+<text x="114" y="454" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="650" fill="#fff">What do we compare?</text>
+<path d="M520 440 H564" stroke="#dd4658" stroke-width="9" stroke-linecap="round"/>
+<path d="M563 440 l-17 -12 v24z" fill="#dd4658"/>
+<g filter="url(#shadow)"><rect x="590" y="290" width="420" height="300" rx="24" fill="url(#teal)" stroke="#fff" stroke-width="4"/></g>
+<text x="622" y="374" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800" fill="#fff">MEASURE</text>
+<text x="622" y="454" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="650" fill="#fff">Time for 10 swings</text>
+<path d="M1028 440 H1072" stroke="#dd4658" stroke-width="9" stroke-linecap="round"/>
+<path d="M1071 440 l-17 -12 v24z" fill="#dd4658"/>
+<g filter="url(#shadow)"><rect x="1098" y="290" width="420" height="300" rx="24" fill="url(#amber)" stroke="#fff" stroke-width="4"/></g>
+<text x="1130" y="374" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="800" fill="#fff">TEST</text>
+<text x="1130" y="454" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="650" fill="#fff">Two cases</text>
+</svg>

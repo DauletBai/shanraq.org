@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "course": "physics",
+  "lesson_count": 100,
+  "publication_policy": "complete-block-only",
+  "languages": ["ru", "kz", "en"],
+  "project": {
+    "title_ru": "Лабораторный журнал моего мира",
+    "title_kz": "Менің әлемімнің зертхана журналы",
+    "title_en": "My World Lab Notebook"
+  },
+  "blocks": [
+    {"id":"investigation","range":"1-8","lesson_count":8,"status":"ready","cover":"/static/covers/school/physics/investigation/01-observe-measure.webp","title_ru":"Как исследовать мир","title_kz":"Әлемді қалай зерттейміз","title_en":"How to investigate the world"},
+    {"id":"motion","range":"9-18","lesson_count":10,"status":"planned","title_ru":"Движение и графики","title_kz":"Қозғалыс және графиктер","title_en":"Motion and graphs"},
+    {"id":"forces-energy","range":"19-28","lesson_count":10,"status":"planned","title_ru":"Силы, равновесие и энергия","title_kz":"Күштер, тепе-теңдік және энергия","title_en":"Forces, equilibrium, and energy"},
+    {"id":"fluids","range":"29-36","lesson_count":8,"status":"planned","title_ru":"Давление, жидкости и газы","title_kz":"Қысым, сұйықтар және газдар","title_en":"Pressure, liquids, and gases"},
+    {"id":"heat","range":"37-46","lesson_count":10,"status":"planned","title_ru":"Частицы, тепло и термодинамика","title_kz":"Бөлшектер, жылу және термодинамика","title_en":"Particles, heat, and thermodynamics"},
+    {"id":"electricity","range":"47-56","lesson_count":10,"status":"planned","title_ru":"Электрические цепи","title_kz":"Электр тізбектері","title_en":"Electric circuits"},
+    {"id":"magnetism","range":"57-66","lesson_count":10,"status":"planned","title_ru":"Магнетизм и связь","title_kz":"Магнетизм және байланыс","title_en":"Magnetism and communication"},
+    {"id":"waves","range":"67-74","lesson_count":8,"status":"planned","title_ru":"Волны, звук и свет","title_kz":"Толқындар, дыбыс және жарық","title_en":"Waves, sound, and light"},
+    {"id":"astronomy","range":"75-84","lesson_count":10,"status":"planned","title_ru":"Земля, Солнечная система и Вселенная","title_kz":"Жер, Күн жүйесі және Ғалам","title_en":"Earth, the Solar System, and the Universe"},
+    {"id":"modern","range":"85-92","lesson_count":8,"status":"planned","title_ru":"Современная физика и границы моделей","title_kz":"Қазіргі физика және модельдердің шегі","title_en":"Modern physics and the limits of models"},
+    {"id":"capstone","range":"93-100","lesson_count":8,"status":"planned","title_ru":"Инженерное исследование и выпуск","title_kz":"Инженерлік зерттеу және қорытынды","title_en":"Engineering investigation and final project"}
+  ],
+  "first_block_lessons": [
+    {"number":1,"id":"why-physics","prerequisites":[],"title_ru":"Зачем нужна физика и что такое проверяемый вопрос","title_kz":"Физика не үшін керек және тексерілетін сұрақ деген не","title_en":"Why physics matters and what makes a question testable"},
+    {"number":2,"id":"observe-explain","prerequisites":["why-physics"],"title_ru":"Наблюдение, объяснение и честная запись","title_kz":"Бақылау, түсіндіру және адал жазба","title_en":"Observation, explanation, and honest records"},
+    {"number":3,"id":"predict-test","prerequisites":["observe-explain"],"title_ru":"Предсказание и опыт: меняем одно условие","title_kz":"Болжау және тәжірибе: бір шартты өзгертеміз","title_en":"Prediction and experiment: change one condition"},
+    {"number":4,"id":"quantity-unit","prerequisites":["predict-test"],"title_ru":"Величина, число и единица измерения","title_kz":"Шама, сан және өлшем бірлігі","title_en":"Quantity, number, and unit"},
+    {"number":5,"id":"measure-length","prerequisites":["quantity-unit"],"title_ru":"Измеряем длину: шкала, деление, повтор","title_kz":"Ұзындықты өлшейміз: шкала, бөлік, қайталау","title_en":"Measuring length: scale, division, repeat"},
+    {"number":6,"id":"measure-time","prerequisites":["measure-length"],"title_ru":"Измеряем время и период маятника","title_kz":"Уақытты және маятниктің периодын өлшейміз","title_en":"Measuring time and a pendulum's period"},
+    {"number":7,"id":"table-graph","prerequisites":["measure-time"],"title_ru":"Таблица, график и пределы вывода","title_kz":"Кесте, график және қорытындының шегі","title_en":"Tables, graphs, and limits of a conclusion"},
+    {"number":8,"id":"investigation-mastery","prerequisites":["table-graph"],"title_ru":"Контрольная точка: исследование маятника","title_kz":"Бақылау нүктесі: маятникті зерттеу","title_en":"Checkpoint: a pendulum investigation"}
+  ]
+}

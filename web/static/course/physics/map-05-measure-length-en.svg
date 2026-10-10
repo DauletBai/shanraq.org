@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Measuring length: scale, division, repeat</title><desc id="desc">Ruler: 1 cm between major marks</desc>
+<defs>
+ <linearGradient id="paper" x2="1" y2="1"><stop stop-color="#f9fdff"/><stop offset="1" stop-color="#e5f1fd"/></linearGradient>
+ <linearGradient id="blue" x2="1" y2="1"><stop stop-color="#35b9ee"/><stop offset="1" stop-color="#2868b7"/></linearGradient>
+ <linearGradient id="teal" x2="1" y2="1"><stop stop-color="#50d7c4"/><stop offset="1" stop-color="#168d99"/></linearGradient>
+ <linearGradient id="amber" x2="1" y2="1"><stop stop-color="#ffc867"/><stop offset="1" stop-color="#ed8150"/></linearGradient>
+ <filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="13" flood-color="#16446c" flood-opacity=".19"/></filter>
+ <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#b9d2e8" stroke-width="1" opacity=".5"/></pattern>
+</defs>
+<rect width="1600" height="900" fill="url(#paper)"/><rect width="1600" height="900" fill="url(#grid)"/>
+<text x="800" y="88" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="40" font-weight="800" fill="#143858">MEASURING LENGTH: SCALE, DIVISION, REPEAT</text>
+<text x="800" y="132" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="23" font-weight="500" fill="#526e83">Ruler: 1 cm between major marks</text>
+
+<g filter="url(#shadow)"><rect x="160" y="190" width="1280" height="650" rx="26" fill="#fff"/></g>
+<rect x="420" y="260" width="125" height="450" rx="14" fill="#dceaf6" stroke="#3074a7" stroke-width="4"/>
+<circle cx="840" cy="260" r="13" fill="#df634f"/>
+<line x1="840" y1="260" x2="840" y2="710" stroke="#294b67" stroke-width="5"/>
+<circle cx="840" cy="710" r="34" fill="url(#amber)" stroke="#8d483a" stroke-width="4"/>
+<line x1="540" y1="260" x2="805" y2="260" stroke="#2d9eaa" stroke-dasharray="12 8" stroke-width="3"/>
+<line x1="540" y1="710" x2="805" y2="710" stroke="#2d9eaa" stroke-dasharray="12 8" stroke-width="3"/>
+<line x1="450" y1="260" x2="520" y2="260" stroke="#284b6a" stroke-width="3"/>
+<text x="396" y="267" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="650" fill="#294b67">0</text>
+<line x1="470" y1="275" x2="520" y2="275" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="290" x2="520" y2="290" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="305" x2="520" y2="305" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="320" x2="520" y2="320" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="450" y1="335" x2="520" y2="335" stroke="#284b6a" stroke-width="3"/>
+<text x="396" y="342" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="650" fill="#294b67">5</text>
+<line x1="470" y1="350" x2="520" y2="350" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="365" x2="520" y2="365" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="380" x2="520" y2="380" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="395" x2="520" y2="395" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="450" y1="410" x2="520" y2="410" stroke="#284b6a" stroke-width="3"/>
+<text x="396" y="417" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="650" fill="#294b67">10</text>
+<line x1="470" y1="425" x2="520" y2="425" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="440" x2="520" y2="440" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="455" x2="520" y2="455" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="470" x2="520" y2="470" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="450" y1="485" x2="520" y2="485" stroke="#284b6a" stroke-width="3"/>
+<text x="396" y="492" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="650" fill="#294b67">15</text>
+<line x1="470" y1="500" x2="520" y2="500" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="515" x2="520" y2="515" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="530" x2="520" y2="530" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="545" x2="520" y2="545" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="450" y1="560" x2="520" y2="560" stroke="#284b6a" stroke-width="3"/>
+<text x="396" y="567" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="650" fill="#294b67">20</text>
+<line x1="470" y1="575" x2="520" y2="575" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="590" x2="520" y2="590" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="605" x2="520" y2="605" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="620" x2="520" y2="620" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="450" y1="635" x2="520" y2="635" stroke="#284b6a" stroke-width="3"/>
+<text x="396" y="642" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="650" fill="#294b67">25</text>
+<line x1="470" y1="650" x2="520" y2="650" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="665" x2="520" y2="665" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="680" x2="520" y2="680" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="470" y1="695" x2="520" y2="695" stroke="#284b6a" stroke-width="1.5"/>
+<line x1="450" y1="710" x2="520" y2="710" stroke="#284b6a" stroke-width="3"/>
+<text x="396" y="717" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="650" fill="#294b67">30</text>
+<text x="960" y="275" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="27" font-weight="800" fill="#194e70">HANGING POINT</text>
+<text x="960" y="710" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="27" font-weight="800" fill="#194e70">WEIGHT CENTRE</text>
+<text x="775" y="805" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="33" font-weight="800" fill="#bb5547">LENGTH = 30 cm</text>
+</svg>

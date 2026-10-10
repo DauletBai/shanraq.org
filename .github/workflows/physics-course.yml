@@ -1,0 +1,37 @@
+name: Physics course
+
+on:
+  push:
+    paths:
+      - 'course/lessons/physics/**'
+      - 'course/physics/**'
+      - 'docs/physics-course.md'
+      - 'tools/course/build_physics_block.py'
+      - 'tools/course/prepare_physics.py'
+      - 'tools/course/test_physics_release.py'
+      - 'web/static/course/physics/**'
+      - 'web/static/covers/school/physics/**'
+  pull_request:
+    paths:
+      - 'course/lessons/physics/**'
+      - 'course/physics/**'
+      - 'docs/physics-course.md'
+      - 'tools/course/build_physics_block.py'
+      - 'tools/course/prepare_physics.py'
+      - 'tools/course/test_physics_release.py'
+      - 'web/static/course/physics/**'
+      - 'web/static/covers/school/physics/**'
+
+jobs:
+  first-block:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Regenerate trilingual lessons and maps
+        run: python3 tools/course/build_physics_block.py
+      - name: Verify generated files are committed
+        run: git diff --exit-code
+      - name: Check curriculum, numbers, assets and guarded publication
+        run: |
+          python3 -m unittest tools.course.test_physics_release
+          python3 tools/course/prepare_physics.py --sql /tmp/physics-course.sql --expected /tmp/physics-course-expected.json
