@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare Informatics lessons 1–46 as an atomic SQL publication."""
+"""Prepare Informatics lessons 1–54 as an atomic SQL publication."""
 import argparse
 import hashlib
 import json
@@ -55,24 +55,33 @@ ROUTE = (
     ("44-http-browser-server", "informatics-44-http-browser-server", 440),
     ("45-html-css-accessibility", "informatics-45-html-css-accessibility", 450),
     ("46-web-cloud-release", "informatics-46-web-cloud-release", 460),
+    ("47-observations-data-schema", "informatics-47-observations-data-schema", 470),
+    ("48-spreadsheets-formulas", "informatics-48-spreadsheets-formulas", 480),
+    ("49-cleaning-provenance", "informatics-49-cleaning-provenance", 490),
+    ("50-charts-honesty", "informatics-50-charts-honesty", 500),
+    ("51-relational-keys", "informatics-51-relational-keys", 510),
+    ("52-sql-queries", "informatics-52-sql-queries", 520),
+    ("53-joins-reports", "informatics-53-joins-reports", 530),
+    ("54-data-release", "informatics-54-data-release", 540),
 )
 COVER = "/static/covers/school/informatics/foundations/01-digital-world-computer-project.webp"
 REPRESENTATION_COVER = "/static/covers/school/informatics/representation/02-information-data.webp"
 ALGORITHMS_COVER = "/static/covers/school/informatics/algorithms/03-algorithmic-thinking.webp"
 PYTHON_COVER = "/static/covers/school/informatics/python/04-python-assistant.webp"
 WEB_COVER = "/static/covers/school/informatics/web/05-internet-web-cloud.webp"
+DATA_COVER = "/static/covers/school/informatics/data/06-data-tables-databases.webp"
 META = {
     "ru": (
         "Информатика: создаём своего цифрового помощника",
-        "46 бесплатных занятий: компьютер, данные, алгоритмы, Python и основы веба. Шаг за шагом создаём и проверяем цифрового помощника.",
+        "54 бесплатных урока: компьютер, алгоритмы, Python, веб и базы данных. Шаг за шагом создаём и проверяем цифрового помощника.",
     ),
     "kz": (
         "Информатика: өз цифрлық көмекшімізді жасаймыз",
-        "46 тегін сабақ: компьютер, деректер, алгоритмдер, Python және веб негіздері. Цифрлық көмекшіні қадамдап құрып, тексереміз.",
+        "54 тегін сабақ: компьютер, алгоритмдер, Python, веб және дерекқорлар. Цифрлық көмекшіні қадамдап құрып, тексереміз.",
     ),
     "en": (
         "Informatics: build your own digital assistant",
-        "46 free lessons cover computer systems, data, algorithms, Python, and web basics through one continuing, tested digital-assistant project.",
+        "54 free lessons cover computer systems, algorithms, Python, the web, and databases through one continuing, tested digital-assistant project.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -97,9 +106,9 @@ def lesson(path: Path):
 
 
 def prepare(start=1):
-    if len(ROUTE) != 46 or start not in (1, 39):
-        raise ValueError("expected forty-six lessons; start must be 1 or 39")
-    active_route = ROUTE[start-1:]
+    if len(ROUTE) != 54 or start not in (1, 39, 47):
+        raise ValueError("expected fifty-four lessons; start must be 1, 39 or 47")
+    active_route = ROUTE[38:46] if start == 39 else ROUTE[start-1:]
     sql = [
         "BEGIN;",
         "SELECT pg_advisory_xact_lock(hashtext('shanraq-informatics-course'));",
@@ -133,7 +142,7 @@ SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
     for stem, slug_name, position in active_route:
         slug = literal(slug_name)
-        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER if position <= 180 else ALGORITHMS_COVER if position <= 260 else PYTHON_COVER if position <= 380 else WEB_COVER
+        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER if position <= 180 else ALGORITHMS_COVER if position <= 260 else PYTHON_COVER if position <= 380 else WEB_COVER if position <= 460 else DATA_COVER
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
 SELECT id,{slug},'ru','society','education',{literal(lesson_cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'
@@ -167,8 +176,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sql", type=Path, required=True)
     parser.add_argument("--expected", type=Path, required=True)
-    parser.add_argument("--start", type=int, choices=(1, 39), default=1,
-                        help="1 rebuilds the course; 39 publishes only the new web block")
+    parser.add_argument("--start", type=int, choices=(1, 39, 47), default=1,
+                        help="1 rebuilds all; 47 publishes only the new data block")
     args = parser.parse_args()
     sql, expected = prepare(args.start)
     args.sql.write_text(sql, encoding="utf-8")

@@ -59,6 +59,14 @@ RELEASE_STEMS = (
     "44-http-browser-server",
     "45-html-css-accessibility",
     "46-web-cloud-release",
+    "47-observations-data-schema",
+    "48-spreadsheets-formulas",
+    "49-cleaning-provenance",
+    "50-charts-honesty",
+    "51-relational-keys",
+    "52-sql-queries",
+    "53-joins-reports",
+    "54-data-release",
 )
 
 
@@ -122,7 +130,7 @@ class InformaticsReleaseTests(unittest.TestCase):
         self.assertTrue(gate["requires_unseen_transfer"])
         self.assertTrue(gate["requires_project_evidence"])
 
-        for block in self.data["blocks"][:5]:
+        for block in self.data["blocks"][:6]:
             cover = ROOT / "web" / block["cover"].lstrip("/")
             self.assertTrue(cover.is_file(), cover)
             self.assertEqual(cover.suffix, ".webp")
@@ -296,21 +304,25 @@ class InformaticsReleaseTests(unittest.TestCase):
     def test_publication_is_atomic_and_complete(self):
         from tools.course.prepare_informatics import prepare
 
-        self.assertEqual([block["status"] for block in self.data["blocks"][:5]], ["published"] * 5)
+        self.assertEqual([block["status"] for block in self.data["blocks"][:6]], ["published"] * 6)
         sql, expected = prepare()
-        self.assertEqual(len(expected), 138)
-        self.assertEqual(len({item["slug"] for item in expected}), 46)
+        self.assertEqual(len(expected), 162)
+        self.assertEqual(len({item["slug"] for item in expected}), 54)
         self.assertEqual({item["lang"] for item in expected}, {"ru", "kz", "en"})
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
-        self.assertEqual(sql.count("INSERT INTO article_series_items"), 46)
+        self.assertEqual(sql.count("INSERT INTO article_series_items"), 54)
         self.assertIn("shanraq-informatics-course", sql)
         web_sql, web_expected = prepare(39)
         self.assertEqual(len(web_expected), 24)
         self.assertEqual(web_sql.count("INSERT INTO article_series_items"), 8)
         self.assertNotIn("informatics-38-python-cli-release", web_sql)
+        data_sql, data_expected = prepare(47)
+        self.assertEqual(len(data_expected), 24)
+        self.assertEqual(data_sql.count("INSERT INTO article_series_items"), 8)
+        self.assertNotIn("informatics-46-web-cloud-release", data_sql)
 
-    def test_first_five_releases_have_no_missing_or_extra_pages(self):
+    def test_first_six_releases_have_no_missing_or_extra_pages(self):
         actual = {path.name for path in LESSONS.glob("*.md")}
         expected = {
             f"{stem}{suffix}.md"
@@ -366,6 +378,31 @@ class InformaticsReleaseTests(unittest.TestCase):
                 root = ET.parse(map_path).getroot()
                 self.assertEqual(root.attrib["viewBox"], "0 0 1600 900")
                 self.assertEqual(map_path.read_text().count('class="web-stage"'), 3)
+        for lang in ("ru", "kz", "en"):
+            self.assertTrue((project / f"README-{lang}.md").is_file())
+
+    def test_data_examples_match_three_languages_and_sqlite_checkpoint(self):
+        project = ROOT / "course/informatics-assistant/step-05"
+        self.assertEqual((project / "assistant_core.py").read_bytes(),
+                         (ROOT / "course/informatics-assistant/step-04/assistant_core.py").read_bytes())
+        self.assertEqual((project / "tasks.json").read_bytes(),
+                         (ROOT / "course/informatics-assistant/step-04/tasks.json").read_bytes())
+        for stem in RELEASE_STEMS[46:54]:
+            for lang in ("ru", "kz", "en"):
+                suffix = "" if lang == "ru" else f"-{lang}"
+                page = (LESSONS / f"{stem}{suffix}.md").read_text(encoding="utf-8")
+                code = re.search(r"```python\n(.*?)\n```", page, re.S)
+                output = re.search(r"```text\n(.*?)\n```", page, re.S)
+                self.assertIsNotNone(code, (stem, lang))
+                self.assertIsNotNone(output, (stem, lang))
+                result = subprocess.run([sys.executable, "-c", code.group(1)], cwd=project,
+                                        capture_output=True, text=True, timeout=10)
+                self.assertEqual(result.returncode, 0, (stem, lang, result.stderr))
+                self.assertEqual(result.stdout.strip(), output.group(1), (stem, lang))
+                map_path = MAPS / f"map-{stem}-{lang}.svg"
+                root = ET.parse(map_path).getroot()
+                self.assertEqual(root.attrib["viewBox"], "0 0 1600 900")
+                self.assertEqual(map_path.read_text().count('class="data-stage"'), 3)
         for lang in ("ru", "kz", "en"):
             self.assertTrue((project / f"README-{lang}.md").is_file())
 

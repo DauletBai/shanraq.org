@@ -4618,5 +4618,101 @@
   "informatics/46-web-cloud-release-en": [
     "informatics-46-web-cloud-release",
     "en"
+  ],
+  "informatics/47-observations-data-schema": [
+    "informatics-47-observations-data-schema",
+    "ru"
+  ],
+  "informatics/47-observations-data-schema-kz": [
+    "informatics-47-observations-data-schema",
+    "kz"
+  ],
+  "informatics/47-observations-data-schema-en": [
+    "informatics-47-observations-data-schema",
+    "en"
+  ],
+  "informatics/48-spreadsheets-formulas": [
+    "informatics-48-spreadsheets-formulas",
+    "ru"
+  ],
+  "informatics/48-spreadsheets-formulas-kz": [
+    "informatics-48-spreadsheets-formulas",
+    "kz"
+  ],
+  "informatics/48-spreadsheets-formulas-en": [
+    "informatics-48-spreadsheets-formulas",
+    "en"
+  ],
+  "informatics/49-cleaning-provenance": [
+    "informatics-49-cleaning-provenance",
+    "ru"
+  ],
+  "informatics/49-cleaning-provenance-kz": [
+    "informatics-49-cleaning-provenance",
+    "kz"
+  ],
+  "informatics/49-cleaning-provenance-en": [
+    "informatics-49-cleaning-provenance",
+    "en"
+  ],
+  "informatics/50-charts-honesty": [
+    "informatics-50-charts-honesty",
+    "ru"
+  ],
+  "informatics/50-charts-honesty-kz": [
+    "informatics-50-charts-honesty",
+    "kz"
+  ],
+  "informatics/50-charts-honesty-en": [
+    "informatics-50-charts-honesty",
+    "en"
+  ],
+  "informatics/51-relational-keys": [
+    "informatics-51-relational-keys",
+    "ru"
+  ],
+  "informatics/51-relational-keys-kz": [
+    "informatics-51-relational-keys",
+    "kz"
+  ],
+  "informatics/51-relational-keys-en": [
+    "informatics-51-relational-keys",
+    "en"
+  ],
+  "informatics/52-sql-queries": [
+    "informatics-52-sql-queries",
+    "ru"
+  ],
+  "informatics/52-sql-queries-kz": [
+    "informatics-52-sql-queries",
+    "kz"
+  ],
+  "informatics/52-sql-queries-en": [
+    "informatics-52-sql-queries",
+    "en"
+  ],
+  "informatics/53-joins-reports": [
+    "informatics-53-joins-reports",
+    "ru"
+  ],
+  "informatics/53-joins-reports-kz": [
+    "informatics-53-joins-reports",
+    "kz"
+  ],
+  "informatics/53-joins-reports-en": [
+    "informatics-53-joins-reports",
+    "en"
+  ],
+  "informatics/54-data-release": [
+    "informatics-54-data-release",
+    "ru"
+  ],
+  "informatics/54-data-release-kz": [
+    "informatics-54-data-release",
+    "kz"
+  ],
+  "informatics/54-data-release-en": [
+    "informatics-54-data-release",
+    "en"
   ]
 }

@@ -76,6 +76,21 @@ It binds only to 127.0.0.1; this is not a public cloud deployment or a
 production web server. The 4K cover is
 `/static/covers/school/informatics/web/05-internet-web-cloud.webp`.
 
+Release 1.2 adds lessons 47–54 about observations, spreadsheets, cleaning,
+honest charts, relational keys, SQL queries and joins. The local `step-05`
+checkpoint imports the same three fictional tasks and four fictional study
+sessions into SQLite, preserves the reminder rules, and reads the database
+through the existing loopback-only browser view. Its cover is
+`/static/covers/school/informatics/data/06-data-tables-databases.webp`.
+
+To prepare only lessons 47–54 without overwriting earlier course text:
+
+```sh
+python3 tools/course/prepare_informatics.py --start 47 \
+  --sql /tmp/informatics-data-release.sql \
+  --expected /tmp/informatics-data-expected.json
+```
+
 To prepare only this new block without rewriting the published 1–38 records:
 
 ```sh
@@ -84,7 +99,7 @@ python3 tools/course/prepare_informatics.py --start 39 \
   --expected /tmp/informatics-web-expected.json
 ```
 
-For a full rebuild, prepare all forty-six lessons as one reviewable transaction:
+For a full rebuild, prepare all fifty-four lessons as one reviewable transaction:
 
 ```sh
 python3 tools/course/prepare_informatics.py \

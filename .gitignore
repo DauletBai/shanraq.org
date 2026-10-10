@@ -47,3 +47,7 @@ configs/config.local.yaml
 # Python bytecode: written by any run of the course project.
 __pycache__/
 *.pyc
+
+# Each learner creates the SQLite checkpoint locally; no classroom database
+# is part of the course source.
+/course/informatics-assistant/step-05/assistant.db*

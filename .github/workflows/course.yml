@@ -107,6 +107,7 @@ jobs:
         run: |
           python3 -m unittest tools.course.test_informatics_release -q
           python3 -m unittest discover -s course/informatics-assistant/step-04/tests -q
+          python3 -m unittest discover -s course/informatics-assistant/step-05/tests -q
 
       - name: Code speaks the language of its lesson
         run: python3 tools/coursecheck/langcheck.py course/lessons/*/*.md
