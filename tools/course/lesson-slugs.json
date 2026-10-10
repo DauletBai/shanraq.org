@@ -4522,5 +4522,101 @@
   "informatics/38-python-cli-release-en": [
     "informatics-38-python-cli-release",
     "en"
+  ],
+  "informatics/39-network-message-journey": [
+    "informatics-39-network-message-journey",
+    "ru"
+  ],
+  "informatics/39-network-message-journey-kz": [
+    "informatics-39-network-message-journey",
+    "kz"
+  ],
+  "informatics/39-network-message-journey-en": [
+    "informatics-39-network-message-journey",
+    "en"
+  ],
+  "informatics/40-ip-router-packets": [
+    "informatics-40-ip-router-packets",
+    "ru"
+  ],
+  "informatics/40-ip-router-packets-kz": [
+    "informatics-40-ip-router-packets",
+    "kz"
+  ],
+  "informatics/40-ip-router-packets-en": [
+    "informatics-40-ip-router-packets",
+    "en"
+  ],
+  "informatics/41-dns-names": [
+    "informatics-41-dns-names",
+    "ru"
+  ],
+  "informatics/41-dns-names-kz": [
+    "informatics-41-dns-names",
+    "kz"
+  ],
+  "informatics/41-dns-names-en": [
+    "informatics-41-dns-names",
+    "en"
+  ],
+  "informatics/42-tcp-udp-delivery": [
+    "informatics-42-tcp-udp-delivery",
+    "ru"
+  ],
+  "informatics/42-tcp-udp-delivery-kz": [
+    "informatics-42-tcp-udp-delivery",
+    "kz"
+  ],
+  "informatics/42-tcp-udp-delivery-en": [
+    "informatics-42-tcp-udp-delivery",
+    "en"
+  ],
+  "informatics/43-tls-trust": [
+    "informatics-43-tls-trust",
+    "ru"
+  ],
+  "informatics/43-tls-trust-kz": [
+    "informatics-43-tls-trust",
+    "kz"
+  ],
+  "informatics/43-tls-trust-en": [
+    "informatics-43-tls-trust",
+    "en"
+  ],
+  "informatics/44-http-browser-server": [
+    "informatics-44-http-browser-server",
+    "ru"
+  ],
+  "informatics/44-http-browser-server-kz": [
+    "informatics-44-http-browser-server",
+    "kz"
+  ],
+  "informatics/44-http-browser-server-en": [
+    "informatics-44-http-browser-server",
+    "en"
+  ],
+  "informatics/45-html-css-accessibility": [
+    "informatics-45-html-css-accessibility",
+    "ru"
+  ],
+  "informatics/45-html-css-accessibility-kz": [
+    "informatics-45-html-css-accessibility",
+    "kz"
+  ],
+  "informatics/45-html-css-accessibility-en": [
+    "informatics-45-html-css-accessibility",
+    "en"
+  ],
+  "informatics/46-web-cloud-release": [
+    "informatics-46-web-cloud-release",
+    "ru"
+  ],
+  "informatics/46-web-cloud-release-kz": [
+    "informatics-46-web-cloud-release",
+    "kz"
+  ],
+  "informatics/46-web-cloud-release-en": [
+    "informatics-46-web-cloud-release",
+    "en"
   ]
 }

@@ -67,7 +67,24 @@ tests. The checked command-line project and localized quickstarts are in
 `course/informatics-assistant/step-03/`. The 4K 16:9 cover is
 `/static/covers/school/informatics/python/04-python-assistant.webp`.
 
-Prepare the first thirty-eight lessons as one reviewable database transaction:
+Release 1.1 adds lessons 39–46 about a message's network journey, IP,
+packets, DNS, TCP and UDP, TLS, HTTP, semantic HTML, CSS, accessibility,
+and an honest cloud model. Each lesson has manually localized Russian, Kazakh,
+and English text and an exact support map. `step-04` is a real **local,
+read-only** browser view of the same three fictional tasks and reminder rules.
+It binds only to 127.0.0.1; this is not a public cloud deployment or a
+production web server. The 4K cover is
+`/static/covers/school/informatics/web/05-internet-web-cloud.webp`.
+
+To prepare only this new block without rewriting the published 1–38 records:
+
+```sh
+python3 tools/course/prepare_informatics.py --start 39 \
+  --sql /tmp/informatics-web-release.sql \
+  --expected /tmp/informatics-web-expected.json
+```
+
+For a full rebuild, prepare all forty-six lessons as one reviewable transaction:
 
 ```sh
 python3 tools/course/prepare_informatics.py \

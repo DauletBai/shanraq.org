@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the first four Informatics blocks as one atomic SQL publication."""
+"""Prepare Informatics lessons 1–46 as an atomic SQL publication."""
 import argparse
 import hashlib
 import json
@@ -47,23 +47,32 @@ ROUTE = (
     ("36-python-errors-debugging", "informatics-36-python-errors-debugging", 360),
     ("37-python-tests-modules", "informatics-37-python-tests-modules", 370),
     ("38-python-cli-release", "informatics-38-python-cli-release", 380),
+    ("39-network-message-journey", "informatics-39-network-message-journey", 390),
+    ("40-ip-router-packets", "informatics-40-ip-router-packets", 400),
+    ("41-dns-names", "informatics-41-dns-names", 410),
+    ("42-tcp-udp-delivery", "informatics-42-tcp-udp-delivery", 420),
+    ("43-tls-trust", "informatics-43-tls-trust", 430),
+    ("44-http-browser-server", "informatics-44-http-browser-server", 440),
+    ("45-html-css-accessibility", "informatics-45-html-css-accessibility", 450),
+    ("46-web-cloud-release", "informatics-46-web-cloud-release", 460),
 )
 COVER = "/static/covers/school/informatics/foundations/01-digital-world-computer-project.webp"
 REPRESENTATION_COVER = "/static/covers/school/informatics/representation/02-information-data.webp"
 ALGORITHMS_COVER = "/static/covers/school/informatics/algorithms/03-algorithmic-thinking.webp"
 PYTHON_COVER = "/static/covers/school/informatics/python/04-python-assistant.webp"
+WEB_COVER = "/static/covers/school/informatics/web/05-internet-web-cloud.webp"
 META = {
     "ru": (
         "Информатика: создаём своего цифрового помощника",
-        "38 бесплатных занятий: устройство компьютера, данные, алгоритмы и Python. Шаг за шагом создаём и проверяем цифрового помощника.",
+        "46 бесплатных занятий: компьютер, данные, алгоритмы, Python и основы веба. Шаг за шагом создаём и проверяем цифрового помощника.",
     ),
     "kz": (
         "Информатика: өз цифрлық көмекшімізді жасаймыз",
-        "38 тегін сабақ: компьютер құрылысы, деректер, алгоритмдер және Python. Цифрлық көмекшіні қадамдап құрып, тексереміз.",
+        "46 тегін сабақ: компьютер, деректер, алгоритмдер, Python және веб негіздері. Цифрлық көмекшіні қадамдап құрып, тексереміз.",
     ),
     "en": (
         "Informatics: build your own digital assistant",
-        "38 free lessons cover computer systems, data, algorithms, and Python through one continuing, tested digital-assistant project.",
+        "46 free lessons cover computer systems, data, algorithms, Python, and web basics through one continuing, tested digital-assistant project.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -87,14 +96,15 @@ def lesson(path: Path):
     return lines[0][2:].strip(), lead.group(1), body
 
 
-def prepare():
-    if len(ROUTE) != 38:
-        raise ValueError("the first four releases must contain exactly thirty-eight lessons")
+def prepare(start=1):
+    if len(ROUTE) != 46 or start not in (1, 39):
+        raise ValueError("expected forty-six lessons; start must be 1 or 39")
+    active_route = ROUTE[start-1:]
     sql = [
         "BEGIN;",
         "SELECT pg_advisory_xact_lock(hashtext('shanraq-informatics-course'));",
     ]
-    slugs = ",".join(literal(slug) for _, slug, _ in ROUTE)
+    slugs = ",".join(literal(slug) for _, slug, _ in active_route)
     sql.append(f"""DO $guard$
 BEGIN
   IF (SELECT count(*) FROM auth_users WHERE email='baimurza.daulet@gmail.com') <> 1 THEN
@@ -121,9 +131,9 @@ WHERE slug='informatics' ON CONFLICT(series_id,lang) DO UPDATE
 SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
 
     expected = []
-    for stem, slug_name, position in ROUTE:
+    for stem, slug_name, position in active_route:
         slug = literal(slug_name)
-        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER if position <= 180 else ALGORITHMS_COVER if position <= 260 else PYTHON_COVER
+        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER if position <= 180 else ALGORITHMS_COVER if position <= 260 else PYTHON_COVER if position <= 380 else WEB_COVER
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
 SELECT id,{slug},'ru','society','education',{literal(lesson_cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'
@@ -157,8 +167,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sql", type=Path, required=True)
     parser.add_argument("--expected", type=Path, required=True)
+    parser.add_argument("--start", type=int, choices=(1, 39), default=1,
+                        help="1 rebuilds the course; 39 publishes only the new web block")
     args = parser.parse_args()
-    sql, expected = prepare()
+    sql, expected = prepare(args.start)
     args.sql.write_text(sql, encoding="utf-8")
     args.expected.write_text(json.dumps(expected, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Prepared {len(expected)} localized pages in one transaction; no remote changes")

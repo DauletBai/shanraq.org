@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="HTTP: разговор браузера с сервером">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#061525"/><stop offset="1" stop-color="#15405c"/></linearGradient><linearGradient id="panel" x2="1" y2="1"><stop stop-color="#23475f"/><stop offset="1" stop-color="#10283f"/></linearGradient><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#bedaf0" stroke-opacity=".11"/></pattern></defs>
+<style>.eyebrow{font:700 22px Arial,sans-serif;fill:#7be7e8;letter-spacing:3px}.title{font:700 43px Arial,sans-serif;fill:#f5f9ff}.number{font:700 30px Arial,sans-serif;fill:#102333}.label{font:700 29px Arial,sans-serif;fill:#fff}.input{font:600 26px 'Courier New',monospace;fill:#fff}.result{font:600 26px Arial,sans-serif;fill:#d8f2fa}.foot{font:600 27px Arial,sans-serif;fill:#e0f0f7}</style>
+<rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#grid)"/>
+<text x="64" y="77" class="eyebrow">WEB · 44 / 72</text><text x="64" y="157" class="title">HTTP: разговор браузера с сервером</text>
+<path d="M64 255 H1536" stroke="#6b94ab" stroke-width="2"/>
+<g class="web-stage" transform="translate(58 310)">
+<rect x="10" y="13" width="478" height="348" rx="22" fill="#071522" opacity=".7"/>
+<rect width="478" height="348" rx="22" fill="url(#panel)" stroke="#54dbe0" stroke-width="3"/>
+<rect x="26" y="27" width="56" height="56" rx="14" fill="#54dbe0"/>
+<text x="54" y="67" text-anchor="middle" class="number">1</text>
+<text x="100" y="67" class="label">Запрос</text>
+<path d="M30 105 H448" stroke="#6e91a9" stroke-width="2"/>
+<rect x="28" y="134" width="422" height="88" rx="13" fill="#081a2b" stroke="#456d89"/>
+<text x="239" y="190" text-anchor="middle" class="input">GET /?today=...</text>
+<text x="239" y="290" text-anchor="middle" class="result">чтение без записи</text>
+</g><g class="web-stage" transform="translate(570 310)">
+<rect x="10" y="13" width="478" height="348" rx="22" fill="#071522" opacity=".7"/>
+<rect width="478" height="348" rx="22" fill="url(#panel)" stroke="#ffd47a" stroke-width="3"/>
+<rect x="26" y="27" width="56" height="56" rx="14" fill="#ffd47a"/>
+<text x="54" y="67" text-anchor="middle" class="number">2</text>
+<text x="100" y="67" class="label">Проверка</text>
+<path d="M30 105 H448" stroke="#6e91a9" stroke-width="2"/>
+<rect x="28" y="134" width="422" height="88" rx="13" fill="#081a2b" stroke="#456d89"/>
+<text x="239" y="190" text-anchor="middle" class="input">дата существует?</text>
+<text x="239" y="290" text-anchor="middle" class="result">2026-02-29: нет</text>
+</g><g class="web-stage" transform="translate(1082 310)">
+<rect x="10" y="13" width="478" height="348" rx="22" fill="#071522" opacity=".7"/>
+<rect width="478" height="348" rx="22" fill="url(#panel)" stroke="#fa8b75" stroke-width="3"/>
+<rect x="26" y="27" width="56" height="56" rx="14" fill="#fa8b75"/>
+<text x="54" y="67" text-anchor="middle" class="number">3</text>
+<text x="100" y="67" class="label">Ответ</text>
+<path d="M30 105 H448" stroke="#6e91a9" stroke-width="2"/>
+<rect x="28" y="134" width="422" height="88" rx="13" fill="#081a2b" stroke="#456d89"/>
+<text x="239" y="190" text-anchor="middle" class="input">200 или 400</text>
+<text x="239" y="290" text-anchor="middle" class="result">нет пути: 404</text>
+</g>
+<path d="M541 484 h20 m-10 -10 10 10 -10 10 M1053 484 h20 m-10 -10 10 10 -10 10" fill="none" stroke="#d9edf9" stroke-width="5" stroke-linejoin="round"/>
+<path d="M64 755 H1536" stroke="#6b94ab" stroke-width="2"/>
+<text x="800" y="810" text-anchor="middle" class="foot">Предскажи → запусти → измени → объясни → проверь</text>
+</svg>
