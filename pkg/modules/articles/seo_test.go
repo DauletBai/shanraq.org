@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/google/uuid"
 )
 
 // The breadcrumb is what turns a bare URL in search results into a labelled
@@ -102,6 +104,57 @@ func TestNewsSitemapCarriesEveryFinishedLanguage(t *testing.T) {
 	app.exec(`UPDATE articles SET published_at = NOW() - interval '5 days' WHERE id = $1`, old)
 	if body := app.do(http.MethodGet, "/sitemap-news.xml", nil).Body.String(); strings.Contains(body, oldSlug) {
 		t.Error("статья старше двух суток попала в новостную карту")
+	}
+}
+
+func TestCourseLessonsAreDiscoverableWithoutBeingNews(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	author := app.createUser("education-sitemap@example.com", "Parol123!")
+	lessonID, lessonSlug := app.seedArticle(author, "published")
+	newsID, newsSlug := app.seedArticle(author, "published")
+	hiddenID, hiddenSlug := app.seedArticle(author, "published")
+	app.exec(`UPDATE articles SET published_at = NOW() WHERE id IN ($1, $2)`, lessonID, newsID)
+	app.exec(`UPDATE articles SET indexable = false WHERE id = $1`, hiddenID)
+	sid := app.seedSeries("course-sitemap-" + uuid.NewString()[:6])
+	defer app.exec(`DELETE FROM article_series WHERE id = $1`, sid)
+	mustAttach(t, NewSeriesStore(app.pool), sid, lessonID, 10)
+	mustAttach(t, NewSeriesStore(app.pool), sid, hiddenID, 20)
+
+	courses := app.do(http.MethodGet, "/sitemap-courses.xml", nil).Body.String()
+	for _, lang := range Langs {
+		if !strings.Contains(courses, "/read/"+lessonSlug+"?lang="+lang) {
+			t.Errorf("course sitemap lacks %s lesson", lang)
+		}
+	}
+	if strings.Contains(courses, "/read/"+newsSlug) {
+		t.Error("independent news article appeared in the course sitemap")
+	}
+	if strings.Contains(courses, "/read/"+hiddenSlug) {
+		t.Error("non-indexable lesson appeared in the course sitemap")
+	}
+	if !strings.Contains(courses, "/course/course-sitemap-") {
+		t.Error("course hub is missing from the course sitemap")
+	}
+	robots := app.do(http.MethodGet, "/robots.txt", nil).Body.String()
+	if !strings.Contains(robots, "/sitemap-courses.xml") {
+		t.Error("robots.txt does not advertise the course sitemap")
+	}
+
+	news := app.do(http.MethodGet, "/sitemap-news.xml", nil).Body.String()
+	if strings.Contains(news, "/read/"+lessonSlug) {
+		t.Error("lesson was described to Google News as a news report")
+	}
+	if !strings.Contains(news, "/read/"+newsSlug) {
+		t.Error("news report disappeared from the news sitemap")
+	}
+
+	lesson := app.do(http.MethodGet, "/read/"+lessonSlug+"?lang=ru", nil).Body.String()
+	if !strings.Contains(lesson, `"@type":"Article"`) || !strings.Contains(lesson, `"isPartOf"`) {
+		t.Error("lesson lacks educational article and course structured data")
+	}
+	if strings.Contains(lesson, `"@type":"NewsArticle"`) {
+		t.Error("lesson is incorrectly marked as NewsArticle")
 	}
 }
 

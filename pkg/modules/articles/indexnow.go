@@ -4,6 +4,8 @@ import (
 	"context"
 	"shanraq.org/pkg/site"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 // Telling search engines about the standing pages.
@@ -51,6 +53,17 @@ func (m *Module) runIndexNow(ctx context.Context) {
 	if m.rt.Pages != nil {
 		for _, pg := range m.rt.Pages.All(ctx) {
 			all = append(all, pg.Path)
+		}
+	}
+	// Course maps are published from the database, not from a static route
+	// table. Announce the hubs at start-up so IndexNow crawlers can follow their
+	// lesson links even when a course was released by a guarded SQL transaction.
+	if courses, err := m.series.List(ctx); err != nil {
+		m.rt.Logger.Warn("indexnow course maps", zap.Error(err))
+	} else if len(courses) > 0 {
+		all = append(all, "/courses")
+		for _, course := range courses {
+			all = append(all, "/course/"+course.Slug)
 		}
 	}
 	m.syndicate.SubmitURLs(m.pageURLs(all), "постоянные страницы")

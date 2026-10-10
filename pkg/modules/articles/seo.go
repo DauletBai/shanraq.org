@@ -78,7 +78,7 @@ func (m *Module) handleRobots(w http.ResponseWriter, r *http.Request) {
 		blocked = nil
 	}
 	m.aiRobotsGroup(w, blocked, err != nil)
-	fmt.Fprintf(w, "Sitemap: %s/sitemap.xml\nSitemap: %s/sitemap-listings.xml\nSitemap: %s/sitemap-news.xml\n", origin, origin, origin)
+	fmt.Fprintf(w, "Sitemap: %s/sitemap.xml\nSitemap: %s/sitemap-courses.xml\nSitemap: %s/sitemap-listings.xml\nSitemap: %s/sitemap-news.xml\n", origin, origin, origin, origin)
 }
 
 func seoURL(site, path, lang string) string {
@@ -244,6 +244,36 @@ func (m *Module) handleSitemap(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(doc)
 }
 
+// handleSitemapCourses lists the course hubs and their lessons separately so
+// search consoles can report how education is discovered and indexed. The
+// main sitemap continues to contain these canonical URLs too.
+func (m *Module) handleSitemapCourses(w http.ResponseWriter, r *http.Request) {
+	doc := m.sitemapDoc(func(emit func(path string, mod time.Time)) {
+		courses, err := m.series.List(r.Context())
+		if err != nil {
+			m.rt.Logger.Error("course sitemap hubs", zap.Error(err))
+			return
+		}
+		if len(courses) == 0 {
+			return
+		}
+		emit("/courses", time.Time{})
+		for _, course := range courses {
+			emit("/course/"+course.Slug, course.UpdatedAt)
+		}
+		lessons, err := m.store.SitemapCourseArticles(r.Context())
+		if err != nil {
+			m.rt.Logger.Error("course sitemap lessons", zap.Error(err))
+			return
+		}
+		for _, lesson := range lessons {
+			emit("/read/"+lesson.Slug, lesson.Updated)
+		}
+	})
+	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+	_, _ = w.Write(doc)
+}
+
 // handleSitemapNews emits the Google News sitemap: only articles published in
 // the last 48 hours, in the language each was written in.
 //
@@ -327,8 +357,9 @@ func clip(s string, n int) string {
 	return out + "…"
 }
 
-// applyArticleSEO fills the page's meta description, social image, and a
-// NewsArticle JSON-LD block from the already-populated article fields.
+// applyArticleSEO fills the page's meta description, social image, and
+// structured data. A lesson is an Article within its Course; a report is a
+// NewsArticle. Both retain their canonical URL, dates and author.
 func (m *Module) applyArticleSEO(page *ArticlePage) {
 	page.OGType = "article"
 	if page.Summary != "" {
@@ -341,9 +372,13 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 		page.OGImage = img
 	}
 	canonical := page.SiteURL + page.Path + "?lang=" + page.Lang
+	ldType := "NewsArticle"
+	if page.IsLesson {
+		ldType = "Article"
+	}
 	ld := map[string]any{
 		"@context":         "https://schema.org",
-		"@type":            "NewsArticle",
+		"@type":            ldType,
 		"headline":         page.Title,
 		"description":      page.Desc,
 		"inLanguage":       site.HTMLLang(page.ServedLang),
@@ -354,6 +389,18 @@ func (m *Module) applyArticleSEO(page *ArticlePage) {
 			"@type": "Organization", "name": "Shanraq.org",
 			"logo": map[string]any{"@type": "ImageObject", "url": page.SiteURL + "/static/brand/shanraq.svg"},
 		},
+	}
+	if page.IsLesson {
+		courses := make([]map[string]any, 0, len(page.SeriesPlaces))
+		for _, place := range page.SeriesPlaces {
+			courses = append(courses, map[string]any{
+				"@type": "Course",
+				"name":  place.Series.TitleIn(page.Lang),
+				"url":   page.SiteURL + "/course/" + place.Series.Slug + "?lang=" + page.Lang,
+			})
+		}
+		ld["isPartOf"] = courses
+		ld["learningResourceType"] = "Lesson"
 	}
 	if page.Category != "" {
 		ld["articleSection"] = site.T(page.Lang, "cat."+page.Category)
@@ -531,6 +578,7 @@ func (m *Module) applyCoursesSEO(page *CoursesPage) {
 		items = append(items, map[string]any{
 			"@type":    "ListItem",
 			"position": i + 1,
+			"url":      page.SiteURL + "/course/" + s.Slug + "?lang=" + page.Lang,
 			"item": map[string]any{
 				"@type":               "Course",
 				"name":                s.TitleIn(page.Lang),
@@ -583,7 +631,8 @@ type NewsItem struct {
 // an intention, and an intention announced as news is a page a reader opens for
 // nothing. Non-indexable articles are excluded on the same grounds as
 // everywhere else — a page kept out of the index has no business being pushed
-// as news.
+// as news. Course lessons are excluded too: publishing a lesson is not a news
+// event, even when it happened today.
 func (s *Store) NewsSitemapArticles(ctx context.Context) ([]NewsItem, error) {
 	rows, err := s.db.Query(ctx, `
 		SELECT a.slug, t.lang, t.title, a.published_at
@@ -594,6 +643,7 @@ func (s *Store) NewsSitemapArticles(ctx context.Context) ([]NewsItem, error) {
 		   AND a.published_at >= NOW() - INTERVAL '48 hours'
 		   AND t.title <> '' AND t.body_md <> ''
 		   AND (t.status = 'ready' OR t.lang = a.original_lang)
+		   AND NOT EXISTS (SELECT 1 FROM article_series_items i WHERE i.article_id = a.id)
 		 ORDER BY a.published_at DESC, t.lang
 		 LIMIT 1000`)
 	if err != nil {
@@ -615,6 +665,30 @@ func (s *Store) NewsSitemapArticles(ctx context.Context) ([]NewsItem, error) {
 func (s *Store) SitemapArticles(ctx context.Context) ([]SitemapItem, error) {
 	rows, err := s.db.Query(ctx, `SELECT slug, updated_at FROM articles
 		WHERE status = 'published' AND indexable ORDER BY updated_at DESC LIMIT 5000`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := []SitemapItem{}
+	for rows.Next() {
+		var it SitemapItem
+		if err := rows.Scan(&it.Slug, &it.Updated); err != nil {
+			return nil, err
+		}
+		out = append(out, it)
+	}
+	return out, rows.Err()
+}
+
+// SitemapCourseArticles returns indexable lessons of published courses once
+// each, including lessons shared by more than one course.
+func (s *Store) SitemapCourseArticles(ctx context.Context) ([]SitemapItem, error) {
+	rows, err := s.db.Query(ctx, `SELECT a.slug, a.updated_at FROM articles a
+		WHERE a.status = 'published' AND a.indexable
+		  AND EXISTS (SELECT 1 FROM article_series_items i
+		              JOIN article_series s ON s.id = i.series_id
+		              WHERE i.article_id = a.id AND s.status = 'published')
+		ORDER BY a.updated_at DESC`)
 	if err != nil {
 		return nil, err
 	}

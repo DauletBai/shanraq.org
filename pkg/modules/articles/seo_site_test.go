@@ -88,6 +88,23 @@ func TestCourseCardSaysTheCourseIsFree(t *testing.T) {
 	}
 }
 
+func TestCourseIndexListItemsHaveCanonicalURLs(t *testing.T) {
+	page := &CoursesPage{List: []*Series{{Slug: "go", Title: map[string]string{LangRU: "Go"}}}}
+	page.Lang = LangRU
+	page.SiteURL = "https://shanraq.org"
+	page.Nonce = "n0nce"
+	(&Module{}).applyCoursesSEO(page)
+	ld := unwrapLD(t, string(page.JSONLD))
+	items, ok := ld["itemListElement"].([]any)
+	if !ok || len(items) != 1 {
+		t.Fatalf("course index has no list item: %v", ld)
+	}
+	item := items[0].(map[string]any)
+	if item["url"] != "https://shanraq.org/course/go?lang=ru" {
+		t.Errorf("list item URL = %v", item["url"])
+	}
+}
+
 // An info page used to be handed to search with the site's own description, so
 // /about and /pricing were offered under the same sentence and neither said
 // what it held. The page's opening lines are what it says about itself.

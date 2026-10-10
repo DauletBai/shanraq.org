@@ -210,6 +210,7 @@ func (m *Module) browserRoutes(r chi.Router) {
 	r.Get("/robots.txt", m.handleRobots)
 	r.Get("/llms.txt", m.handleLLMS)
 	r.Get("/sitemap.xml", m.handleSitemap)
+	r.Get("/sitemap-courses.xml", m.handleSitemapCourses)
 	r.Get("/sitemap-listings.xml", m.handleSitemapListings)
 	r.Get("/sitemap-news.xml", m.handleSitemapNews)
 
