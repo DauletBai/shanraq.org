@@ -1,0 +1,17 @@
+title,label,split
+Кітап оқу,reading,train
+Кітап беттерін оқу,reading,train
+Мәтін оқу,reading,train
+Әңгіме оқу,reading,train
+Read a book,reading,train
+Read pages,reading,train
+Дробь есептеу,math,train
+Есеп шығару,math,train
+Қосу есебі,math,train
+Геометрия есебі,math,train
+Solve a sum,math,train
+Solve geometry,math,train
+Кітап туралы жазу,reading,test
+Read the story,reading,test
+Дробь және қосу,math,test
+Solve the sum,math,test

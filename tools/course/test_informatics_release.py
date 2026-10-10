@@ -67,6 +67,24 @@ RELEASE_STEMS = (
     "52-sql-queries",
     "53-joins-reports",
     "54-data-release",
+    "55-threat-model-cia",
+    "56-passwords-hashing-2fa",
+    "57-authorization-least-privilege",
+    "58-phishing-social-deepfakes",
+    "59-encryption-keys",
+    "60-backup-updates-logs",
+    "61-privacy-rights-wellbeing",
+    "62-security-release",
+    "63-rules-algorithms-models",
+    "64-features-labels-datasets",
+    "65-train-classifier",
+    "66-validation-metrics",
+    "67-bias-fairness-privacy",
+    "68-generative-ai-llm",
+    "69-ai-verification-sources",
+    "70-human-controlled-ai",
+    "71-release-testing-docs",
+    "72-capstone-defense",
 )
 
 
@@ -130,7 +148,7 @@ class InformaticsReleaseTests(unittest.TestCase):
         self.assertTrue(gate["requires_unseen_transfer"])
         self.assertTrue(gate["requires_project_evidence"])
 
-        for block in self.data["blocks"][:6]:
+        for block in self.data["blocks"]:
             cover = ROOT / "web" / block["cover"].lstrip("/")
             self.assertTrue(cover.is_file(), cover)
             self.assertEqual(cover.suffix, ".webp")
@@ -304,14 +322,14 @@ class InformaticsReleaseTests(unittest.TestCase):
     def test_publication_is_atomic_and_complete(self):
         from tools.course.prepare_informatics import prepare
 
-        self.assertEqual([block["status"] for block in self.data["blocks"][:6]], ["published"] * 6)
+        self.assertEqual([block["status"] for block in self.data["blocks"]], ["published"] * 8)
         sql, expected = prepare()
-        self.assertEqual(len(expected), 162)
-        self.assertEqual(len({item["slug"] for item in expected}), 54)
+        self.assertEqual(len(expected), 216)
+        self.assertEqual(len({item["slug"] for item in expected}), 72)
         self.assertEqual({item["lang"] for item in expected}, {"ru", "kz", "en"})
         self.assertTrue(sql.startswith("BEGIN;"))
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
-        self.assertEqual(sql.count("INSERT INTO article_series_items"), 54)
+        self.assertEqual(sql.count("INSERT INTO article_series_items"), 72)
         self.assertIn("shanraq-informatics-course", sql)
         web_sql, web_expected = prepare(39)
         self.assertEqual(len(web_expected), 24)
@@ -321,8 +339,42 @@ class InformaticsReleaseTests(unittest.TestCase):
         self.assertEqual(len(data_expected), 24)
         self.assertEqual(data_sql.count("INSERT INTO article_series_items"), 8)
         self.assertNotIn("informatics-46-web-cloud-release", data_sql)
+        final_sql, final_expected = prepare(55)
+        self.assertEqual(len(final_expected), 54)
+        self.assertEqual(final_sql.count("INSERT INTO article_series_items"), 18)
+        self.assertNotIn("informatics-54-data-release", final_sql)
+        ai_sql, ai_expected = prepare(63)
+        self.assertEqual(len(ai_expected), 30)
+        self.assertEqual(ai_sql.count("INSERT INTO article_series_items"), 10)
 
-    def test_first_six_releases_have_no_missing_or_extra_pages(self):
+    def test_final_examples_maps_and_checkpoint_boundaries(self):
+        for number, stem in enumerate(RELEASE_STEMS[54:], 55):
+            project = ROOT / "course/informatics-assistant" / ("step-06" if number <= 62 else "step-07")
+            for lang in ("ru", "kz", "en"):
+                suffix = "" if lang == "ru" else f"-{lang}"
+                page = (LESSONS / f"{stem}{suffix}.md").read_text(encoding="utf-8")
+                code = re.search(r"```python\n(.*?)\n```", page, re.S)
+                output = re.search(r"```text\n(.*?)\n```", page, re.S)
+                self.assertIsNotNone(code, (stem, lang))
+                self.assertIsNotNone(output, (stem, lang))
+                result = subprocess.run([sys.executable, "-c", code.group(1)], cwd=project,
+                                        capture_output=True, text=True, timeout=20)
+                self.assertEqual(result.returncode, 0, (stem, lang, result.stderr))
+                self.assertEqual(result.stdout.strip(), output.group(1), (stem, lang))
+                map_path = MAPS / f"map-{stem}-{lang}.svg"
+                root = ET.parse(map_path).getroot()
+                self.assertEqual(root.attrib["viewBox"], "0 0 1600 900")
+                self.assertEqual(map_path.read_text().count('class="final-stage"'), 3)
+        for step, previous in (("step-06", "step-05"), ("step-07", "step-06")):
+            project = ROOT / "course/informatics-assistant" / step
+            prior = ROOT / "course/informatics-assistant" / previous
+            self.assertEqual((project / "assistant_core.py").read_bytes(), (prior / "assistant_core.py").read_bytes())
+            self.assertEqual((project / "tasks.json").read_bytes(), (prior / "tasks.json").read_bytes())
+            self.assertEqual((project / "study_sessions.csv").read_bytes(), (prior / "study_sessions.csv").read_bytes())
+            for lang in ("ru", "kz", "en"):
+                self.assertTrue((project / f"README-{lang}.md").is_file())
+
+    def test_all_releases_have_no_missing_or_extra_pages(self):
         actual = {path.name for path in LESSONS.glob("*.md")}
         expected = {
             f"{stem}{suffix}.md"

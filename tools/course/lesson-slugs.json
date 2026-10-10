@@ -4714,5 +4714,221 @@
   "informatics/54-data-release-en": [
     "informatics-54-data-release",
     "en"
+  ],
+  "informatics/55-threat-model-cia": [
+    "informatics-55-threat-model-cia",
+    "ru"
+  ],
+  "informatics/55-threat-model-cia-kz": [
+    "informatics-55-threat-model-cia",
+    "kz"
+  ],
+  "informatics/55-threat-model-cia-en": [
+    "informatics-55-threat-model-cia",
+    "en"
+  ],
+  "informatics/56-passwords-hashing-2fa": [
+    "informatics-56-passwords-hashing-2fa",
+    "ru"
+  ],
+  "informatics/56-passwords-hashing-2fa-kz": [
+    "informatics-56-passwords-hashing-2fa",
+    "kz"
+  ],
+  "informatics/56-passwords-hashing-2fa-en": [
+    "informatics-56-passwords-hashing-2fa",
+    "en"
+  ],
+  "informatics/57-authorization-least-privilege": [
+    "informatics-57-authorization-least-privilege",
+    "ru"
+  ],
+  "informatics/57-authorization-least-privilege-kz": [
+    "informatics-57-authorization-least-privilege",
+    "kz"
+  ],
+  "informatics/57-authorization-least-privilege-en": [
+    "informatics-57-authorization-least-privilege",
+    "en"
+  ],
+  "informatics/58-phishing-social-deepfakes": [
+    "informatics-58-phishing-social-deepfakes",
+    "ru"
+  ],
+  "informatics/58-phishing-social-deepfakes-kz": [
+    "informatics-58-phishing-social-deepfakes",
+    "kz"
+  ],
+  "informatics/58-phishing-social-deepfakes-en": [
+    "informatics-58-phishing-social-deepfakes",
+    "en"
+  ],
+  "informatics/59-encryption-keys": [
+    "informatics-59-encryption-keys",
+    "ru"
+  ],
+  "informatics/59-encryption-keys-kz": [
+    "informatics-59-encryption-keys",
+    "kz"
+  ],
+  "informatics/59-encryption-keys-en": [
+    "informatics-59-encryption-keys",
+    "en"
+  ],
+  "informatics/60-backup-updates-logs": [
+    "informatics-60-backup-updates-logs",
+    "ru"
+  ],
+  "informatics/60-backup-updates-logs-kz": [
+    "informatics-60-backup-updates-logs",
+    "kz"
+  ],
+  "informatics/60-backup-updates-logs-en": [
+    "informatics-60-backup-updates-logs",
+    "en"
+  ],
+  "informatics/61-privacy-rights-wellbeing": [
+    "informatics-61-privacy-rights-wellbeing",
+    "ru"
+  ],
+  "informatics/61-privacy-rights-wellbeing-kz": [
+    "informatics-61-privacy-rights-wellbeing",
+    "kz"
+  ],
+  "informatics/61-privacy-rights-wellbeing-en": [
+    "informatics-61-privacy-rights-wellbeing",
+    "en"
+  ],
+  "informatics/62-security-release": [
+    "informatics-62-security-release",
+    "ru"
+  ],
+  "informatics/62-security-release-kz": [
+    "informatics-62-security-release",
+    "kz"
+  ],
+  "informatics/62-security-release-en": [
+    "informatics-62-security-release",
+    "en"
+  ],
+  "informatics/63-rules-algorithms-models": [
+    "informatics-63-rules-algorithms-models",
+    "ru"
+  ],
+  "informatics/63-rules-algorithms-models-kz": [
+    "informatics-63-rules-algorithms-models",
+    "kz"
+  ],
+  "informatics/63-rules-algorithms-models-en": [
+    "informatics-63-rules-algorithms-models",
+    "en"
+  ],
+  "informatics/64-features-labels-datasets": [
+    "informatics-64-features-labels-datasets",
+    "ru"
+  ],
+  "informatics/64-features-labels-datasets-kz": [
+    "informatics-64-features-labels-datasets",
+    "kz"
+  ],
+  "informatics/64-features-labels-datasets-en": [
+    "informatics-64-features-labels-datasets",
+    "en"
+  ],
+  "informatics/65-train-classifier": [
+    "informatics-65-train-classifier",
+    "ru"
+  ],
+  "informatics/65-train-classifier-kz": [
+    "informatics-65-train-classifier",
+    "kz"
+  ],
+  "informatics/65-train-classifier-en": [
+    "informatics-65-train-classifier",
+    "en"
+  ],
+  "informatics/66-validation-metrics": [
+    "informatics-66-validation-metrics",
+    "ru"
+  ],
+  "informatics/66-validation-metrics-kz": [
+    "informatics-66-validation-metrics",
+    "kz"
+  ],
+  "informatics/66-validation-metrics-en": [
+    "informatics-66-validation-metrics",
+    "en"
+  ],
+  "informatics/67-bias-fairness-privacy": [
+    "informatics-67-bias-fairness-privacy",
+    "ru"
+  ],
+  "informatics/67-bias-fairness-privacy-kz": [
+    "informatics-67-bias-fairness-privacy",
+    "kz"
+  ],
+  "informatics/67-bias-fairness-privacy-en": [
+    "informatics-67-bias-fairness-privacy",
+    "en"
+  ],
+  "informatics/68-generative-ai-llm": [
+    "informatics-68-generative-ai-llm",
+    "ru"
+  ],
+  "informatics/68-generative-ai-llm-kz": [
+    "informatics-68-generative-ai-llm",
+    "kz"
+  ],
+  "informatics/68-generative-ai-llm-en": [
+    "informatics-68-generative-ai-llm",
+    "en"
+  ],
+  "informatics/69-ai-verification-sources": [
+    "informatics-69-ai-verification-sources",
+    "ru"
+  ],
+  "informatics/69-ai-verification-sources-kz": [
+    "informatics-69-ai-verification-sources",
+    "kz"
+  ],
+  "informatics/69-ai-verification-sources-en": [
+    "informatics-69-ai-verification-sources",
+    "en"
+  ],
+  "informatics/70-human-controlled-ai": [
+    "informatics-70-human-controlled-ai",
+    "ru"
+  ],
+  "informatics/70-human-controlled-ai-kz": [
+    "informatics-70-human-controlled-ai",
+    "kz"
+  ],
+  "informatics/70-human-controlled-ai-en": [
+    "informatics-70-human-controlled-ai",
+    "en"
+  ],
+  "informatics/71-release-testing-docs": [
+    "informatics-71-release-testing-docs",
+    "ru"
+  ],
+  "informatics/71-release-testing-docs-kz": [
+    "informatics-71-release-testing-docs",
+    "kz"
+  ],
+  "informatics/71-release-testing-docs-en": [
+    "informatics-71-release-testing-docs",
+    "en"
+  ],
+  "informatics/72-capstone-defense": [
+    "informatics-72-capstone-defense",
+    "ru"
+  ],
+  "informatics/72-capstone-defense-kz": [
+    "informatics-72-capstone-defense",
+    "kz"
+  ],
+  "informatics/72-capstone-defense-en": [
+    "informatics-72-capstone-defense",
+    "en"
   ]
 }

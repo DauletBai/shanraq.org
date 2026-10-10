@@ -64,6 +64,12 @@ ALLOWED = {
     # Informatics preserves a Kazakh task title verbatim to verify UTF-8.
     ("33-python-text-dates", "ru"): {"әліппе", "оқу"},
     ("35-python-files-json", "ru"): {"әліппе", "оқу"},
+    # Final Informatics classifier uses the same fictional Kazakh task titles
+    # in all locales; their spelling is the actual UTF-8 input under test.
+    ("63-rules-algorithms-models", "ru"): {"кітап", "оқу"},
+    ("65-train-classifier", "ru"): {"кітап", "оқу", "геометрия", "есебі"},
+    ("70-human-controlled-ai", "ru"): {"кітап", "оқу"},
+    ("72-capstone-defense", "ru"): {"кітап", "оқу", "геометрия", "есебі"},
     ("go-joldar-men-runalar", "ru"): {"шаңырақ", "шаңыр"},
     ("article-go-runes", "ru"): {"шаңырақ", "шаңыр"},
     ("article-go-capstone", "en"): {"шаңырақ"},

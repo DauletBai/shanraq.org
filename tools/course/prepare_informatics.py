@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare Informatics lessons 1–54 as an atomic SQL publication."""
+"""Prepare Informatics lessons 1–72 as an atomic SQL publication."""
 import argparse
 import hashlib
 import json
@@ -63,6 +63,24 @@ ROUTE = (
     ("52-sql-queries", "informatics-52-sql-queries", 520),
     ("53-joins-reports", "informatics-53-joins-reports", 530),
     ("54-data-release", "informatics-54-data-release", 540),
+    ("55-threat-model-cia", "informatics-55-threat-model-cia", 550),
+    ("56-passwords-hashing-2fa", "informatics-56-passwords-hashing-2fa", 560),
+    ("57-authorization-least-privilege", "informatics-57-authorization-least-privilege", 570),
+    ("58-phishing-social-deepfakes", "informatics-58-phishing-social-deepfakes", 580),
+    ("59-encryption-keys", "informatics-59-encryption-keys", 590),
+    ("60-backup-updates-logs", "informatics-60-backup-updates-logs", 600),
+    ("61-privacy-rights-wellbeing", "informatics-61-privacy-rights-wellbeing", 610),
+    ("62-security-release", "informatics-62-security-release", 620),
+    ("63-rules-algorithms-models", "informatics-63-rules-algorithms-models", 630),
+    ("64-features-labels-datasets", "informatics-64-features-labels-datasets", 640),
+    ("65-train-classifier", "informatics-65-train-classifier", 650),
+    ("66-validation-metrics", "informatics-66-validation-metrics", 660),
+    ("67-bias-fairness-privacy", "informatics-67-bias-fairness-privacy", 670),
+    ("68-generative-ai-llm", "informatics-68-generative-ai-llm", 680),
+    ("69-ai-verification-sources", "informatics-69-ai-verification-sources", 690),
+    ("70-human-controlled-ai", "informatics-70-human-controlled-ai", 700),
+    ("71-release-testing-docs", "informatics-71-release-testing-docs", 710),
+    ("72-capstone-defense", "informatics-72-capstone-defense", 720),
 )
 COVER = "/static/covers/school/informatics/foundations/01-digital-world-computer-project.webp"
 REPRESENTATION_COVER = "/static/covers/school/informatics/representation/02-information-data.webp"
@@ -70,18 +88,20 @@ ALGORITHMS_COVER = "/static/covers/school/informatics/algorithms/03-algorithmic-
 PYTHON_COVER = "/static/covers/school/informatics/python/04-python-assistant.webp"
 WEB_COVER = "/static/covers/school/informatics/web/05-internet-web-cloud.webp"
 DATA_COVER = "/static/covers/school/informatics/data/06-data-tables-databases.webp"
+SECURITY_COVER = "/static/covers/school/informatics/security/07-digital-security.webp"
+AI_COVER = "/static/covers/school/informatics/ai-release/08-ai-final-project.webp"
 META = {
     "ru": (
         "Информатика: создаём своего цифрового помощника",
-        "54 бесплатных урока: компьютер, алгоритмы, Python, веб и базы данных. Шаг за шагом создаём и проверяем цифрового помощника.",
+        "72 бесплатных урока: компьютер, Python, веб, данные, безопасность и ИИ. Шаг за шагом создаём и защищаем цифрового помощника.",
     ),
     "kz": (
         "Информатика: өз цифрлық көмекшімізді жасаймыз",
-        "54 тегін сабақ: компьютер, алгоритмдер, Python, веб және дерекқорлар. Цифрлық көмекшіні қадамдап құрып, тексереміз.",
+        "72 тегін сабақ: компьютер, Python, веб, деректер, қауіпсіздік және ЖИ. Цифрлық көмекшіні қадамдап құрып, қорғаймыз.",
     ),
     "en": (
         "Informatics: build your own digital assistant",
-        "54 free lessons cover computer systems, algorithms, Python, the web, and databases through one continuing, tested digital-assistant project.",
+        "72 free lessons cover computing, Python, the web, data, security and AI through one continuing, tested digital-assistant project.",
     ),
 }
 LEAD = re.compile(r"_[^_]+:_\s*\*\*(.+)\*\*\s*$")
@@ -106,9 +126,9 @@ def lesson(path: Path):
 
 
 def prepare(start=1):
-    if len(ROUTE) != 54 or start not in (1, 39, 47):
-        raise ValueError("expected fifty-four lessons; start must be 1, 39 or 47")
-    active_route = ROUTE[38:46] if start == 39 else ROUTE[start-1:]
+    if len(ROUTE) != 72 or start not in (1, 39, 47, 55, 63):
+        raise ValueError("expected seventy-two lessons; start must be 1, 39, 47, 55 or 63")
+    active_route = ROUTE[38:46] if start == 39 else ROUTE[46:54] if start == 47 else ROUTE[start-1:]
     sql = [
         "BEGIN;",
         "SELECT pg_advisory_xact_lock(hashtext('shanraq-informatics-course'));",
@@ -142,7 +162,7 @@ SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
     for stem, slug_name, position in active_route:
         slug = literal(slug_name)
-        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER if position <= 180 else ALGORITHMS_COVER if position <= 260 else PYTHON_COVER if position <= 380 else WEB_COVER if position <= 460 else DATA_COVER
+        lesson_cover = COVER if position <= 100 else REPRESENTATION_COVER if position <= 180 else ALGORITHMS_COVER if position <= 260 else PYTHON_COVER if position <= 380 else WEB_COVER if position <= 460 else DATA_COVER if position <= 540 else SECURITY_COVER if position <= 620 else AI_COVER
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
 SELECT id,{slug},'ru','society','education',{literal(lesson_cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'
@@ -176,8 +196,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sql", type=Path, required=True)
     parser.add_argument("--expected", type=Path, required=True)
-    parser.add_argument("--start", type=int, choices=(1, 39, 47), default=1,
-                        help="1 rebuilds all; 47 publishes only the new data block")
+    parser.add_argument("--start", type=int, choices=(1, 39, 47, 55, 63), default=1,
+                        help="1 rebuilds all; 55 publishes both final blocks")
     args = parser.parse_args()
     sql, expected = prepare(args.start)
     args.sql.write_text(sql, encoding="utf-8")

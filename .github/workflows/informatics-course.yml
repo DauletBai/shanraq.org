@@ -23,6 +23,8 @@ on:
       - 'tools/course/generate_informatics_data.py'
       - 'tools/course/generate_informatics_data_maps.py'
       - 'tools/course/informatics_data_content.py'
+      - 'tools/course/informatics_final_content.py'
+      - 'tools/course/generate_informatics_final.py'
       - 'tools/course/informatics_python_content_*.py'
       - 'tools/course/informatics_enrichment.py'
       - 'tools/course/prepare_informatics.py'
@@ -51,6 +53,8 @@ on:
       - 'tools/course/generate_informatics_data.py'
       - 'tools/course/generate_informatics_data_maps.py'
       - 'tools/course/informatics_data_content.py'
+      - 'tools/course/informatics_final_content.py'
+      - 'tools/course/generate_informatics_final.py'
       - 'tools/course/informatics_python_content_*.py'
       - 'tools/course/informatics_enrichment.py'
       - 'tools/course/prepare_informatics.py'
@@ -77,9 +81,10 @@ jobs:
           python3 tools/course/generate_informatics_web_maps.py
           python3 tools/course/generate_informatics_data.py
           python3 tools/course/generate_informatics_data_maps.py
+          python3 tools/course/generate_informatics_final.py
       - name: Verify generated files are committed
         run: git diff --exit-code
-      - name: Validate six atomic releases and three Python checkpoints
+      - name: Validate eight atomic releases and five Python checkpoints
         run: |
           python3 -m unittest tools.course.test_informatics_release
           cd course/informatics-assistant/step-03
@@ -87,6 +92,10 @@ jobs:
           cd ../step-04
           python3 -m unittest discover -s tests -v
           cd ../step-05
+          python3 -m unittest discover -s tests -v
+          cd ../step-06
+          python3 -m unittest discover -s tests -v
+          cd ../step-07
           python3 -m unittest discover -s tests -v
       - name: Prepare publication without remote changes
         run: |

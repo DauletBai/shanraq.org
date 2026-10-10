@@ -1,0 +1,8 @@
+{
+  "version": "1.0",
+  "tasks": [
+    {"id": "t-01", "title": "Кітап оқу", "done": false, "due_date": "2026-10-11"},
+    {"id": "t-02", "title": "Сурет салу", "done": true, "due_date": null},
+    {"id": "t-03", "title": "Есеп шығару", "done": false, "due_date": null}
+  ]
+}
