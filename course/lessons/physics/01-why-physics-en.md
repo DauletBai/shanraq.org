@@ -40,4 +40,14 @@ A wide glass and a narrow glass of water stand in a warm room. Write a testable 
 
 Write three lines: question, what could change, what could be measured. Could another person identify the two cases you intend to compare? If not, make the question more precise.
 
+## Slow the idea down
+
+Imagine a friend saying, “This swing is faster.” Does it complete more whole swings in one minute, or does one whole swing take fewer seconds? Until you choose, you may be arguing about different meanings of “faster.” Draw two swings in your notebook and mark one farthest position. Begin counting as the seat passes that mark; count one only when it next returns to the same mark. Another person can then repeat your count.
+
+“Which swing is better?” depends on preference. A question about the time for ten swings allows evidence that could challenge your guess. For example, the two times might be indistinguishable with your stopwatch. That is useful evidence, not a failed investigation. Do not rewrite your question to fit the answer you hoped to get.
+
+## Explain it to someone else
+
+Say your question in one sentence, then explain which number you would record. If a friend asks, “Where does a swing begin and end?”, make the question clearer. Write “I predict…” and “I have not measured yet…” on separate lines.
+
 [Next lesson: Observation, explanation, and honest records](/read/physics-02-observe-explain?lang=en)

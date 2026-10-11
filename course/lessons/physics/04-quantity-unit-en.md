@@ -40,4 +40,14 @@ One note says 'time for ten swings: 11.0'; another says '11.0 s'. Which can ente
 
 Make a tiny notebook dictionary: length → cm or m; time → s. Convert 30 cm to metres and 0.6 m to centimetres. Answers: 0.30 m and 60 cm.
 
+## Slow the idea down
+
+If you say “I went 30,” nobody knows whether you mean steps, metres, or seconds. A measurement answers two questions: **what** was compared and **which unit** was used. For the string we choose length; for the swinging we choose time. The number 30 alone is not a length. Even “30 cm” needs an agreement about the two points between which the ruler lay.
+
+Units help catch mistakes before an experiment. If one table row says 30 cm and another says 0.60 m, first put them in the same unit: 0.60 m = 60 cm. You cannot add “30 cm + 10 s”: these are different quantities. Three apples and two minutes do not make five apples.
+
+## Check on paper
+
+Convert 75 cm to metres: 75 / 100 = 0.75 m. Convert 1.2 m to centimetres: 1.2 × 100 = 120 cm. Explain aloud why the number changed while the actual length did not.
+
 [Next lesson: Measuring length: scale, division, repeat](/read/physics-05-measure-length?lang=en)

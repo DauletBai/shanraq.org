@@ -40,4 +40,14 @@ Two equal damp towels dry, one in shade and one near a window. Which conditions 
 
 Record your prediction, the one changed condition, three held conditions, and one possible unwanted difference. Was the prediction written before the result?
 
+## Slow the idea down
+
+Think of testing two recipes. If you change the sugar, flour, and baking time together, you cannot tell which change affected the taste. Likewise, changing both a pendulum's length and its weight does not isolate the role of length. Here we deliberately change the distance from support to the weight's centre. We keep the weight, number of complete swings, and small starting tilt as similar as possible.
+
+That does not make every other condition perfectly equal. Someone might press the stopwatch late; the air might move; the weight may be released from a slightly different point. Several repeats at each length help reveal such variation. Write the prediction **before** seeing the results. A prediction written afterwards is just a disguised answer.
+
+## Rehearse on paper
+
+Write two lines: “30 cm — 10 swings — same weight” and “60 cm — 10 swings — same weight.” Circle the one condition you intend to change. Name one accidental difference that repeats may reveal.
+
 [Next lesson: Quantity, number, and unit](/read/physics-04-quantity-unit?lang=en)

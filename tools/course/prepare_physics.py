@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the first physics block as one guarded SQL transaction; no remote write."""
+"""Prepare complete physics blocks as one guarded SQL transaction; no remote write."""
 import argparse
 import hashlib
 import json
@@ -8,17 +8,20 @@ import re
 
 try:
     from .build_physics_block import DATA, LESSONS, ROOT
+    from .physics_motion_data import MOTION
 except ImportError:  # direct invocation: python3 tools/course/prepare_physics.py
     from build_physics_block import DATA, LESSONS, ROOT
+    from physics_motion_data import MOTION
 
 COVER = "/static/covers/school/physics/investigation/01-observe-measure.webp"
+MOTION_COVER = "/static/covers/school/physics/motion/02-motion-graphs.webp"
 META = {
     "ru": ("Физика вокруг нас: от первого опыта до своей лаборатории",
-           "Бесплатный курс физики без пропущенных шагов: наблюдаем, измеряем и проверяем объяснения. Первые восемь уроков посвящены исследованию маятника."),
+           "Бесплатный курс физики без пропущенных шагов: наблюдаем, измеряем и проверяем объяснения. После исследования маятника изучаем движение, скорость и графики."),
     "kz": ("Айналамыздағы физика: алғашқы тәжірибеден өз зертханамызға дейін",
-           "Тегін физика курсы: бақылаймыз, өлшейміз, түсіндірмені тексереміз. Алғашқы сегіз сабақта маятникті зерттейміз."),
+           "Тегін физика курсы: бақылаймыз, өлшейміз, түсіндірмені тексереміз. Маятниктен кейін қозғалыс, жылдамдық және графиктерді зерттейміз."),
     "en": ("Physics around us: from a first experiment to your own lab",
-           "A free physics course with no skipped steps: observe, measure, and test explanations. The first eight lessons investigate a pendulum."),
+           "A free physics course with no skipped steps: observe, measure, and test explanations. After the pendulum, investigate motion, speed, and graphs."),
 }
 LEAD = re.compile(r"_Лид \(summary\):_ \*\*(.+)\*\*$")
 
@@ -41,11 +44,12 @@ def read_lesson(path):
 
 
 def prepare():
-    if len(DATA) != 8:
-        raise ValueError("first block must contain eight lessons")
-    route = [(item["stem"], f"physics-{i:02d}-{item['stem'][3:]}", i*10)
-             for i, item in enumerate(DATA, 1)]
-    slug_list = ",".join(literal(slug) for _, slug, _ in route)
+    if len(DATA) != 8 or len(MOTION) != 10:
+        raise ValueError("physics release requires both complete blocks")
+    route = [(item["stem"], f"physics-{i:02d}-{item['stem'][3:]}", i*10,
+              COVER if i <= 8 else MOTION_COVER)
+             for i, item in enumerate([*DATA, *MOTION], 1)]
+    slug_list = ",".join(literal(slug) for _, slug, _, _ in route)
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-physics-course'));",
            f"""DO $guard$
 BEGIN
@@ -70,10 +74,10 @@ ON CONFLICT(slug) DO UPDATE SET cover_url=EXCLUDED.cover_url,status='published',
 SELECT id,'{lang}',{literal(title)},{literal(summary)} FROM article_series WHERE slug='physics'
 ON CONFLICT(series_id,lang) DO UPDATE SET title=EXCLUDED.title,summary=EXCLUDED.summary;""")
     expected = []
-    for stem, slug_name, position in route:
+    for stem, slug_name, position, cover in route:
         slug = literal(slug_name)
         sql.append(f"""INSERT INTO articles(author_id,slug,original_lang,category,subcategory,cover_url,status,published_at)
-SELECT id,{slug},'ru','society','education',{literal(COVER)},'published',now()
+SELECT id,{slug},'ru','society','education',{literal(cover)},'published',now()
 FROM auth_users WHERE email='baimurza.daulet@gmail.com'
 ON CONFLICT(slug) DO UPDATE SET category='society',subcategory='education',cover_url=EXCLUDED.cover_url,
 status='published',updated_at=now(),published_at=COALESCE(articles.published_at,now());""")

@@ -40,4 +40,14 @@ A friend measures from a knot in the string rather than the fixed hanging point 
 
 Record both ends of the measured segment, the ruler's smallest division, three results with units, and their mean. If you did not do the experiment, label the numbers 'worked example'.
 
+## Slow the idea down
+
+A ruler does not “know” the length by itself. You choose the two ends of the distance, place its zero mark at the first end, and look straight at the scale. For our pendulum the first point is the fixed support; the second is the centre of the weight. Measuring only the visible string misses the part of the distance inside the weight. Draw the two points before reaching for the ruler.
+
+If the small marks are 1 mm apart, the scale step is 0.1 cm. That does not promise the entire length is known exactly to 0.1 cm: finding the weight's centre and reading the ruler also introduce uncertainty. **Measurement error** here means a possible difference between the recorded value and the length we intended to measure; its exact size is usually unknown. Three repeats reveal spread, but not every source of error.
+
+## Check yourself
+
+If the ruler has a damaged edge, start at an intact 1 cm mark and subtract it from the final reading. For example, 31.0 cm − 1.0 cm = 30.0 cm. Explain why reporting 31.0 cm without subtracting is wrong.
+
 [Next lesson: Measuring time and a pendulum's period](/read/physics-06-measure-time?lang=en)

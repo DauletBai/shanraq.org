@@ -40,4 +40,14 @@ A friend gets t₁₀ = 12.0 s and writes T = 120 s. Explain why division by ten
 
 Record what counts as one swing, the length with its unit, three t₁₀ times, their mean, and T. Label supplied numbers as worked data. We have not yet derived a formula relating T to length.
 
+## Slow the idea down
+
+Call the leftmost position A and the rightmost B. A → B is only half a complete swing; A → B → A is one. Mark A on paper before the trial. Release a light weight without a push, and decide whether you will start the stopwatch on the first passage at A or when you release it. Use the same rule when stopping after the tenth return.
+
+Why time ten swings rather than one? A small delay in pressing a button matters more relative to one short swing than to ten together. Dividing the total by 10 reduces its relative effect, although it does not eliminate it. Compare the means of three repeats, and do not erase an unusual time: perhaps the weight brushed a table or received a push.
+
+## Check your count
+
+If you mistakenly count each passage through the middle as one swing, your ten “swings” amount to only five complete ones. Explain why to a friend without looking back. If the setup cannot be made safe, work only with the example numbers.
+
 [Next lesson: Tables, graphs, and limits of a conclusion](/read/physics-07-table-graph?lang=en)

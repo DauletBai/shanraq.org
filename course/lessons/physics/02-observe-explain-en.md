@@ -40,4 +40,14 @@ A phone became warm during a game. Name one observation and two possible causes 
 
 Make three notebook columns: 'observed', 'I think', and 'how I would test'. Mark the source: your own observation or a worked example. Check that the first column does not claim an invisible cause.
 
+## Slow the idea down
+
+Imagine the record: “On the sixth return, the weight no longer reached the mark on the paper.” That is an observation: someone nearby could check the mark. “Air resistance stopped it” is an explanation. You cannot see the air acting, and friction at the support might also matter. Write down both possibilities and ask what observation could distinguish them. Until then, neither is a demonstrated cause.
+
+Honest recording matters most when a result is inconvenient. If the weight touched the table during one repeat, note it beside the number; do not silently erase it. If you only read the table in this lesson, label it **worked data**, not your measurement. Record the date, method, and source in your notebook. No personal information is needed.
+
+## Check with a new case
+
+A puddle was large in the morning and smaller in the evening. “Its size changed” is an observation if you have comparable marks. “The sun evaporated the water” is one possible explanation. Name another cause and a safe way to test it.
+
 [Next lesson: Prediction and experiment: change one condition](/read/physics-03-predict-test?lang=en)

@@ -45,4 +45,14 @@ A friend measured 45 cm but lost the time record. Can a graph with two points te
 
 Put the table and graph in your notebook with units on both axes. State the result in one sentence and its limit in another: 'Only two lengths were tested.'
 
+## Slow the idea down
+
+Imagine two addresses: “length 30 cm, period 1.10 s” and “length 60 cm, period 1.56 s.” Each table row keeps one pair. On the graph length increases to the right and period increases upwards. The first point belongs above 30 at height 1.10; the second above 60 at height 1.56. Axis labels matter: without “cm” and “s,” a reader cannot tell what distances on the page mean.
+
+You may draw a line between the points as a visual guide, but it does not turn all intermediate values into measurements. Extending that line to 0 or 100 cm and calling the result a fact is even less justified. To learn the period at 45 cm, make a new measurement. An **interpolation** is a guess inside a studied range; it is not a recorded observation.
+
+## Check the graph
+
+Draw (60 cm, 1.56 s) in a second colour. Ask yourself: “Was a point at 45 cm obtained by experiment?” If not, do not give it the same mark as the measured points.
+
 [Next lesson: Checkpoint: a pendulum investigation](/read/physics-08-investigation-mastery?lang=en)

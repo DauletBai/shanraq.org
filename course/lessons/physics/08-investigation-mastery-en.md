@@ -44,3 +44,15 @@ Another team gets 11.2, 11.0, and 11.1 s at 30 cm. Their mean t₁₀ is 11.1 s 
 ## Notebook entry and self-check
 
 Submit seven parts: question, prediction, setup sketch, original numbers with units and source, calculation, graph, and a conclusion with a limit. Can another person tell where to start counting and where the length measurement ends?
+
+## Slow the idea down
+
+Imagine your notebook reaching a student in another town. They need more than two rows of numbers. What counts as one swing? Where did you put the ruler? How did you release the weight? If they cannot repeat those actions, matching numbers might be a coincidence. Label the source of every number: your measurement or a worked table. You can analyse a worked table honestly, but cannot present it as an experiment you performed.
+
+The difference 1.56 − 1.10 = 0.46 s belongs to these two worked means. It does not establish a law for every pendulum length. Compare it first with the spread of repeats: for each t₁₀ set, the largest minus smallest value is 0.2 s, or 0.02 s after dividing by ten for T. That helps show why the 0.46 s difference stands out in this example, but it does not replace checking other sources of error.
+
+## Defend your conclusion
+
+Ask someone to pose three questions: “What did you change?”, “How did you find the period?”, and “What did this experiment not test?” Answer from your notebook. If an answer is missing, add it before submitting.
+
+[Next lesson: Where is the cart? Reference point and position](/read/physics-09-position-reference?lang=en)

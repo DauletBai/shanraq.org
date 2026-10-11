@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Скорость как ответ на вопрос «сколько за сколько»"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#e9f4fa"/><stop offset="1" stop-color="#fff3e6"/></linearGradient><filter id="sh"><feDropShadow dx="0" dy="14" stdDeviation="13" flood-color="#315c78" flood-opacity=".22"/></filter></defs><rect width="1600" height="900" fill="url(#bg)"/><path d="M0 190H1600M0 390H1600M0 590H1600M0 790H1600M200 0V900M400 0V900M600 0V900M800 0V900M1000 0V900M1200 0V900M1400 0V900" fill="none" stroke="#cbdce6" stroke-opacity=".4" stroke-width="2"/>
+<text x="800" y="104" font-family="Arial,sans-serif" font-size="36" fill="#143853" font-weight="800" text-anchor="middle">Скорость как ответ на вопрос «сколько за сколько»</text>
+<text x="800" y="151" font-family="Arial,sans-serif" font-size="24" fill="#547083" font-weight="500" text-anchor="middle">Учебная модель · проверяемые числа</text>
+<g filter="url(#sh)"><rect x="130" y="205" width="1340" height="580" rx="26" fill="white"/></g>
+<rect x="195" y="345" width="350" height="260" rx="18" fill="#e5f3fa" stroke="#a8cad9" stroke-width="2"/>
+<text x="365" y="415" font-family="Arial,sans-serif" font-size="26" fill="#315d76" font-weight="600" text-anchor="middle">Путь</text>
+<text x="365" y="515" font-family="Arial,sans-serif" font-size="34" fill="#173b5e" font-weight="800" text-anchor="middle">12 м</text>
+<rect x="630" y="345" width="350" height="260" rx="18" fill="#e5f8f5" stroke="#a8cad9" stroke-width="2"/>
+<text x="800" y="415" font-family="Arial,sans-serif" font-size="26" fill="#315d76" font-weight="600" text-anchor="middle">Время</text>
+<text x="800" y="515" font-family="Arial,sans-serif" font-size="34" fill="#173b5e" font-weight="800" text-anchor="middle">4 с</text>
+<rect x="1065" y="345" width="350" height="260" rx="18" fill="#fff1df" stroke="#a8cad9" stroke-width="2"/>
+<text x="1235" y="415" font-family="Arial,sans-serif" font-size="26" fill="#315d76" font-weight="600" text-anchor="middle">Скорость</text>
+<text x="1235" y="515" font-family="Arial,sans-serif" font-size="34" fill="#173b5e" font-weight="800" text-anchor="middle">3 м/с</text>
+<text x="800" y="690" font-family="Arial,sans-serif" font-size="30" fill="#a34a43" font-weight="600" text-anchor="middle">Всегда записывайте единицы</text>
+</svg>

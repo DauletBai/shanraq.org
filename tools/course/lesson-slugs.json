@@ -5026,5 +5026,125 @@
   "physics/08-investigation-mastery-en": [
     "physics-08-investigation-mastery",
     "en"
+  ],
+  "physics/09-position-reference": [
+    "physics-09-position-reference",
+    "ru"
+  ],
+  "physics/09-position-reference-kz": [
+    "physics-09-position-reference",
+    "kz"
+  ],
+  "physics/09-position-reference-en": [
+    "physics-09-position-reference",
+    "en"
+  ],
+  "physics/10-path-displacement": [
+    "physics-10-path-displacement",
+    "ru"
+  ],
+  "physics/10-path-displacement-kz": [
+    "physics-10-path-displacement",
+    "kz"
+  ],
+  "physics/10-path-displacement-en": [
+    "physics-10-path-displacement",
+    "en"
+  ],
+  "physics/11-time-interval": [
+    "physics-11-time-interval",
+    "ru"
+  ],
+  "physics/11-time-interval-kz": [
+    "physics-11-time-interval",
+    "kz"
+  ],
+  "physics/11-time-interval-en": [
+    "physics-11-time-interval",
+    "en"
+  ],
+  "physics/12-speed": [
+    "physics-12-speed",
+    "ru"
+  ],
+  "physics/12-speed-kz": [
+    "physics-12-speed",
+    "kz"
+  ],
+  "physics/12-speed-en": [
+    "physics-12-speed",
+    "en"
+  ],
+  "physics/13-speed-units": [
+    "physics-13-speed-units",
+    "ru"
+  ],
+  "physics/13-speed-units-kz": [
+    "physics-13-speed-units",
+    "kz"
+  ],
+  "physics/13-speed-units-en": [
+    "physics-13-speed-units",
+    "en"
+  ],
+  "physics/14-average-speed": [
+    "physics-14-average-speed",
+    "ru"
+  ],
+  "physics/14-average-speed-kz": [
+    "physics-14-average-speed",
+    "kz"
+  ],
+  "physics/14-average-speed-en": [
+    "physics-14-average-speed",
+    "en"
+  ],
+  "physics/15-position-time-graph": [
+    "physics-15-position-time-graph",
+    "ru"
+  ],
+  "physics/15-position-time-graph-kz": [
+    "physics-15-position-time-graph",
+    "kz"
+  ],
+  "physics/15-position-time-graph-en": [
+    "physics-15-position-time-graph",
+    "en"
+  ],
+  "physics/16-graph-slope": [
+    "physics-16-graph-slope",
+    "ru"
+  ],
+  "physics/16-graph-slope-kz": [
+    "physics-16-graph-slope",
+    "kz"
+  ],
+  "physics/16-graph-slope-en": [
+    "physics-16-graph-slope",
+    "en"
+  ],
+  "physics/17-direction-stop": [
+    "physics-17-direction-stop",
+    "ru"
+  ],
+  "physics/17-direction-stop-kz": [
+    "physics-17-direction-stop",
+    "kz"
+  ],
+  "physics/17-direction-stop-en": [
+    "physics-17-direction-stop",
+    "en"
+  ],
+  "physics/18-motion-investigation": [
+    "physics-18-motion-investigation",
+    "ru"
+  ],
+  "physics/18-motion-investigation-kz": [
+    "physics-18-motion-investigation",
+    "kz"
+  ],
+  "physics/18-motion-investigation-en": [
+    "physics-18-motion-investigation",
+    "en"
   ]
 }

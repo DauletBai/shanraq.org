@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Путь и перемещение: почему это разные ответы"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#e9f4fa"/><stop offset="1" stop-color="#fff3e6"/></linearGradient><filter id="sh"><feDropShadow dx="0" dy="14" stdDeviation="13" flood-color="#315c78" flood-opacity=".22"/></filter></defs><rect width="1600" height="900" fill="url(#bg)"/><path d="M0 190H1600M0 390H1600M0 590H1600M0 790H1600M200 0V900M400 0V900M600 0V900M800 0V900M1000 0V900M1200 0V900M1400 0V900" fill="none" stroke="#cbdce6" stroke-opacity=".4" stroke-width="2"/>
+<text x="800" y="104" font-family="Arial,sans-serif" font-size="40" fill="#143853" font-weight="800" text-anchor="middle">Путь и перемещение: почему это разные ответы</text>
+<text x="800" y="151" font-family="Arial,sans-serif" font-size="24" fill="#547083" font-weight="500" text-anchor="middle">Учебная модель · проверяемые числа</text>
+<g filter="url(#sh)"><rect x="130" y="205" width="1340" height="580" rx="26" fill="white"/></g>
+<line x1="270" y1="505" x2="1320" y2="505" stroke="#234d70" stroke-width="6" stroke-linecap="round"/>
+<line x1="270" y1="489" x2="270" y2="521" stroke="#234d70" stroke-width="3" stroke-linecap="round"/>
+<text x="270" y="560" font-family="Arial,sans-serif" font-size="25" fill="#274d69" font-weight="600" text-anchor="middle">0</text>
+<line x1="375" y1="489" x2="375" y2="521" stroke="#234d70" stroke-width="3" stroke-linecap="round"/>
+<text x="375" y="560" font-family="Arial,sans-serif" font-size="25" fill="#274d69" font-weight="600" text-anchor="middle">1</text>
+<line x1="480" y1="489" x2="480" y2="521" stroke="#234d70" stroke-width="3" stroke-linecap="round"/>
+<text x="480" y="560" font-family="Arial,sans-serif" font-size="25" fill="#274d69" font-weight="600" text-anchor="middle">2</text>
+<line x1="585" y1="489" x2="585" y2="521" stroke="#234d70" stroke-width="3" stroke-linecap="round"/>
+<text x="585" y="560" font-family="Arial,sans-serif" font-size="25" fill="#274d69" font-weight="600" text-anchor="middle">3</text>
+<line x1="690" y1="489" x2="690" y2="521" stroke="#234d70" stroke-width="3" stroke-linecap="round"/>
+<text x="690" y="560" font-family="Arial,sans-serif" font-size="25" fill="#274d69" font-weight="600" text-anchor="middle">4</text>
+<line x1="795" y1="489" x2="795" y2="521" stroke="#234d70" stroke-width="3" stroke-linecap="round"/>
+<text x="795" y="560" font-family="Arial,sans-serif" font-size="25" fill="#274d69" font-weight="600" text-anchor="middle">5</text>
+<line x1="900" y1="489" x2="900" y2="521" stroke="#234d70" stroke-width="3" stroke-linecap="round"/>
+<text x="900" y="560" font-family="Arial,sans-serif" font-size="25" fill="#274d69" font-weight="600" text-anchor="middle">6</text>
+<line x1="1005" y1="489" x2="1005" y2="521" stroke="#234d70" stroke-width="3" stroke-linecap="round"/>
+<text x="1005" y="560" font-family="Arial,sans-serif" font-size="25" fill="#274d69" font-weight="600" text-anchor="middle">7</text>
+<line x1="1110" y1="489" x2="1110" y2="521" stroke="#234d70" stroke-width="3" stroke-linecap="round"/>
+<text x="1110" y="560" font-family="Arial,sans-serif" font-size="25" fill="#274d69" font-weight="600" text-anchor="middle">8</text>
+<text x="800" y="690" font-family="Arial,sans-serif" font-size="30" fill="#315d76" font-weight="600" text-anchor="middle">Ось положения x, м</text>
+<path d="M270 425 H882" fill="none" stroke="#258db9" stroke-width="12" stroke-linecap="round"/>
+<path d="M900 425 l-28 -18 v36z" fill="#258db9"/>
+<path d="M900 590 H498" fill="none" stroke="#e68250" stroke-width="12" stroke-linecap="round"/>
+<path d="M480 590 l28 -18 v36z" fill="#e68250"/>
+<text x="800" y="315" font-family="Arial,sans-serif" font-size="30" fill="#a34a43" font-weight="700" text-anchor="middle">0 → 6 → 2: путь 10 м, перемещение +2 м</text>
+</svg>

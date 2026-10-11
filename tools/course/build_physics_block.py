@@ -2,6 +2,12 @@
 """Build the hand-authored, trilingual first physics block and exact support maps."""
 from pathlib import Path
 from html import escape
+try:
+    from .physics_extras import EXTRAS
+    from .physics_motion_data import MOTION
+except ImportError:
+    from physics_extras import EXTRAS
+    from physics_motion_data import MOTION
 
 ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / "course/lessons/physics"
@@ -305,10 +311,14 @@ def lesson_markdown(index, item, lang):
         lines += [f"## {heading}", "", body, ""]
         if section_number == 4 and index in TABLES:
             lines += [TABLES[index][lang], ""]
+    lines += EXTRAS[index][lang].splitlines() + [""]
     if index < len(DATA):
         next_item = DATA[index]
         next_slug = f"physics-{index+1:02d}-{next_item['stem'][3:]}"
         lines += [f"[{NEXT[lang]}: {next_item[lang][0]}](/read/{next_slug}?lang={lang})", ""]
+    else:
+        next_item = MOTION[0]
+        lines += [f"[{NEXT[lang]}: {next_item[lang][0]}](/read/physics-{next_item['stem']}?lang={lang})", ""]
     return "\n".join(lines).rstrip() + "\n"
 
 

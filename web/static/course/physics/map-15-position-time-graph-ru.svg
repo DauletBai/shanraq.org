@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="График положения: история движения по точкам"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#e9f4fa"/><stop offset="1" stop-color="#fff3e6"/></linearGradient><filter id="sh"><feDropShadow dx="0" dy="14" stdDeviation="13" flood-color="#315c78" flood-opacity=".22"/></filter></defs><rect width="1600" height="900" fill="url(#bg)"/><path d="M0 190H1600M0 390H1600M0 590H1600M0 790H1600M200 0V900M400 0V900M600 0V900M800 0V900M1000 0V900M1200 0V900M1400 0V900" fill="none" stroke="#cbdce6" stroke-opacity=".4" stroke-width="2"/>
+<text x="800" y="104" font-family="Arial,sans-serif" font-size="40" fill="#143853" font-weight="800" text-anchor="middle">График положения: история движения по точкам</text>
+<text x="800" y="151" font-family="Arial,sans-serif" font-size="24" fill="#547083" font-weight="500" text-anchor="middle">Учебная модель · проверяемые числа</text>
+<g filter="url(#sh)"><rect x="130" y="205" width="1340" height="580" rx="26" fill="white"/></g>
+<line x1="300" y1="690" x2="1360" y2="690" stroke="#234d70" stroke-width="5" stroke-linecap="round"/>
+<line x1="300" y1="690" x2="300" y2="290" stroke="#234d70" stroke-width="5" stroke-linecap="round"/>
+<line x1="300" y1="681" x2="300" y2="699" stroke="#234d70" stroke-width="2" stroke-linecap="round"/>
+<text x="300" y="734" font-family="Arial,sans-serif" font-size="22" fill="#234d70" font-weight="600" text-anchor="middle">0</text>
+<line x1="600" y1="681" x2="600" y2="699" stroke="#234d70" stroke-width="2" stroke-linecap="round"/>
+<text x="600" y="734" font-family="Arial,sans-serif" font-size="22" fill="#234d70" font-weight="600" text-anchor="middle">2</text>
+<line x1="900" y1="681" x2="900" y2="699" stroke="#234d70" stroke-width="2" stroke-linecap="round"/>
+<text x="900" y="734" font-family="Arial,sans-serif" font-size="22" fill="#234d70" font-weight="600" text-anchor="middle">4</text>
+<line x1="1200" y1="681" x2="1200" y2="699" stroke="#234d70" stroke-width="2" stroke-linecap="round"/>
+<text x="1200" y="734" font-family="Arial,sans-serif" font-size="22" fill="#234d70" font-weight="600" text-anchor="middle">6</text>
+<line x1="291" y1="690" x2="309" y2="690" stroke="#234d70" stroke-width="2" stroke-linecap="round"/>
+<text x="270" y="698" font-family="Arial,sans-serif" font-size="22" fill="#234d70" font-weight="600" text-anchor="end">0</text>
+<line x1="291" y1="580" x2="309" y2="580" stroke="#234d70" stroke-width="2" stroke-linecap="round"/>
+<text x="270" y="588" font-family="Arial,sans-serif" font-size="22" fill="#234d70" font-weight="600" text-anchor="end">2</text>
+<line x1="291" y1="470" x2="309" y2="470" stroke="#234d70" stroke-width="2" stroke-linecap="round"/>
+<text x="270" y="478" font-family="Arial,sans-serif" font-size="22" fill="#234d70" font-weight="600" text-anchor="end">4</text>
+<line x1="291" y1="360" x2="309" y2="360" stroke="#234d70" stroke-width="2" stroke-linecap="round"/>
+<text x="270" y="368" font-family="Arial,sans-serif" font-size="22" fill="#234d70" font-weight="600" text-anchor="end">6</text>
+<line x1="291" y1="250" x2="309" y2="250" stroke="#234d70" stroke-width="2" stroke-linecap="round"/>
+<text x="270" y="258" font-family="Arial,sans-serif" font-size="22" fill="#234d70" font-weight="600" text-anchor="end">8</text>
+<text x="1370" y="735" font-family="Arial,sans-serif" font-size="25" fill="#234d70" font-weight="600" text-anchor="middle">t, с</text>
+<text x="210" y="305" font-family="Arial,sans-serif" font-size="25" fill="#234d70" font-weight="600" text-anchor="middle">x, м</text>
+<polyline points="300,690 600,470 900,250 1200,250" fill="none" stroke="#278eaf" stroke-width="7" stroke-linejoin="round"/>
+<circle cx="300" cy="690" r="13" fill="#e68250" stroke="white" stroke-width="3"/>
+<circle cx="600" cy="470" r="13" fill="#e68250" stroke="white" stroke-width="3"/>
+<circle cx="900" cy="250" r="13" fill="#e68250" stroke="white" stroke-width="3"/>
+<circle cx="1200" cy="250" r="13" fill="#e68250" stroke="white" stroke-width="3"/>
+<text x="800" y="760" font-family="Arial,sans-serif" font-size="23" fill="#a34a43" font-weight="600" text-anchor="middle">Пары (0;0), (2;4), (4;8), (6;8)</text>
+</svg>
