@@ -28,6 +28,7 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertEqual([row["number"] for row in data["second_block_lessons"]], list(range(9, 19)))
         self.assertEqual(data["blocks"][1]["status"], "published")
         self.assertEqual([row["number"] for row in data["third_block_lessons"]], list(range(19, 29)))
+        self.assertEqual(data["blocks"][2]["status"], "published")
 
     def test_every_language_has_the_same_experiment_and_working_assets(self):
         slugs = json.loads((ROOT / "tools/course/lesson-slugs.json").read_text())
