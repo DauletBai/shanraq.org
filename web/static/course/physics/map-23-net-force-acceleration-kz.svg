@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Үдеу: күш жылдамдықты қалай өзгертеді"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#e9f4fa"/><stop offset="1" stop-color="#fff3e6"/></linearGradient><filter id="sh"><feDropShadow dx="0" dy="14" stdDeviation="13" flood-color="#315c78" flood-opacity=".22"/></filter></defs><rect width="1600" height="900" fill="url(#bg)"/><path d="M0 190H1600M0 390H1600M0 590H1600M0 790H1600M200 0V900M400 0V900M600 0V900M800 0V900M1000 0V900M1200 0V900M1400 0V900" fill="none" stroke="#cbdce6" stroke-opacity=".4" stroke-width="2"/>
+<text x="800" y="104" font-family="Arial,sans-serif" font-size="44" fill="#143853" font-weight="800" text-anchor="middle">Үдеу: күш жылдамдықты қалай өзгертеді</text>
+<text x="800" y="151" font-family="Arial,sans-serif" font-size="24" fill="#547083" font-weight="500" text-anchor="middle">Тірек карта · оқу деректері</text>
+<g filter="url(#sh)"><rect x="130" y="205" width="1340" height="580" rx="26" fill="white"/></g>
+<rect x="185" y="275" width="800" height="425" rx="18" fill="#f2f9fc" stroke="#c8dce7" stroke-width="2"/>
+<rect x="1025" y="275" width="390" height="425" rx="18" fill="#fff7e9" stroke="#ecd6af" stroke-width="2"/>
+<line x1="260" y1="590" x2="915" y2="590" stroke="#426179" stroke-width="6" stroke-linecap="round"/>
+<rect x="505" y="455" width="175" height="110" rx="14" fill="#4b9bb9"/>
+<circle cx="540" cy="580" r="24" fill="#294964"/><circle cx="645" cy="580" r="24" fill="#294964"/>
+<line x1="690" y1="415" x2="870" y2="415" stroke="#258db9" stroke-width="8" stroke-linecap="round"/><path d="M870,415L848.0,403.0L848.0,427.0Z" fill="#258db9"/>
+<text x="1220" y="345" font-family="Arial,sans-serif" font-size="31" fill="#244a65" font-weight="700" text-anchor="middle">FΣ = 2 Н</text>
+<text x="1220" y="435" font-family="Arial,sans-serif" font-size="31" fill="#244a65" font-weight="700" text-anchor="middle">m = 0,5 кг</text>
+<text x="1220" y="525" font-family="Arial,sans-serif" font-size="31" fill="#244a65" font-weight="700" text-anchor="middle">a = 4 м/с²</text>
+<text x="1220" y="615" font-family="Arial,sans-serif" font-size="24" fill="#244a65" font-weight="700" text-anchor="middle">v: 0 → 4 → 8 м/с, t: 0, 1, 2</text>
+<text x="1220" y="646" font-family="Arial,sans-serif" font-size="24" fill="#244a65" font-weight="700" text-anchor="middle">с</text>
+</svg>

@@ -5146,5 +5146,125 @@
   "physics/18-motion-investigation-en": [
     "physics-18-motion-investigation",
     "en"
+  ],
+  "physics/19-interactions-force": [
+    "physics-19-interactions-force",
+    "ru"
+  ],
+  "physics/19-interactions-force-kz": [
+    "physics-19-interactions-force",
+    "kz"
+  ],
+  "physics/19-interactions-force-en": [
+    "physics-19-interactions-force",
+    "en"
+  ],
+  "physics/20-force-arrows-measurement": [
+    "physics-20-force-arrows-measurement",
+    "ru"
+  ],
+  "physics/20-force-arrows-measurement-kz": [
+    "physics-20-force-arrows-measurement",
+    "kz"
+  ],
+  "physics/20-force-arrows-measurement-en": [
+    "physics-20-force-arrows-measurement",
+    "en"
+  ],
+  "physics/21-mass-and-weight": [
+    "physics-21-mass-and-weight",
+    "ru"
+  ],
+  "physics/21-mass-and-weight-kz": [
+    "physics-21-mass-and-weight",
+    "kz"
+  ],
+  "physics/21-mass-and-weight-en": [
+    "physics-21-mass-and-weight",
+    "en"
+  ],
+  "physics/22-balanced-forces-inertia": [
+    "physics-22-balanced-forces-inertia",
+    "ru"
+  ],
+  "physics/22-balanced-forces-inertia-kz": [
+    "physics-22-balanced-forces-inertia",
+    "kz"
+  ],
+  "physics/22-balanced-forces-inertia-en": [
+    "physics-22-balanced-forces-inertia",
+    "en"
+  ],
+  "physics/23-net-force-acceleration": [
+    "physics-23-net-force-acceleration",
+    "ru"
+  ],
+  "physics/23-net-force-acceleration-kz": [
+    "physics-23-net-force-acceleration",
+    "kz"
+  ],
+  "physics/23-net-force-acceleration-en": [
+    "physics-23-net-force-acceleration",
+    "en"
+  ],
+  "physics/24-friction-resistance": [
+    "physics-24-friction-resistance",
+    "ru"
+  ],
+  "physics/24-friction-resistance-kz": [
+    "physics-24-friction-resistance",
+    "kz"
+  ],
+  "physics/24-friction-resistance-en": [
+    "physics-24-friction-resistance",
+    "en"
+  ],
+  "physics/25-work-force-distance": [
+    "physics-25-work-force-distance",
+    "ru"
+  ],
+  "physics/25-work-force-distance-kz": [
+    "physics-25-work-force-distance",
+    "kz"
+  ],
+  "physics/25-work-force-distance-en": [
+    "physics-25-work-force-distance",
+    "en"
+  ],
+  "physics/26-motion-height-energy": [
+    "physics-26-motion-height-energy",
+    "ru"
+  ],
+  "physics/26-motion-height-energy-kz": [
+    "physics-26-motion-height-energy",
+    "kz"
+  ],
+  "physics/26-motion-height-energy-en": [
+    "physics-26-motion-height-energy",
+    "en"
+  ],
+  "physics/27-energy-transfer-conservation": [
+    "physics-27-energy-transfer-conservation",
+    "ru"
+  ],
+  "physics/27-energy-transfer-conservation-kz": [
+    "physics-27-energy-transfer-conservation",
+    "kz"
+  ],
+  "physics/27-energy-transfer-conservation-en": [
+    "physics-27-energy-transfer-conservation",
+    "en"
+  ],
+  "physics/28-forces-energy-investigation": [
+    "physics-28-forces-energy-investigation",
+    "ru"
+  ],
+  "physics/28-forces-energy-investigation-kz": [
+    "physics-28-forces-energy-investigation",
+    "kz"
+  ],
+  "physics/28-forces-energy-investigation-en": [
+    "physics-28-forces-energy-investigation",
+    "en"
   ]
 }

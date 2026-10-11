@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Масса и вес: почему 0,5 кг — не 0,5 Н"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#e9f4fa"/><stop offset="1" stop-color="#fff3e6"/></linearGradient><filter id="sh"><feDropShadow dx="0" dy="14" stdDeviation="13" flood-color="#315c78" flood-opacity=".22"/></filter></defs><rect width="1600" height="900" fill="url(#bg)"/><path d="M0 190H1600M0 390H1600M0 590H1600M0 790H1600M200 0V900M400 0V900M600 0V900M800 0V900M1000 0V900M1200 0V900M1400 0V900" fill="none" stroke="#cbdce6" stroke-opacity=".4" stroke-width="2"/>
+<text x="800" y="104" font-family="Arial,sans-serif" font-size="44" fill="#143853" font-weight="800" text-anchor="middle">Масса и вес: почему 0,5 кг — не 0,5 Н</text>
+<text x="800" y="151" font-family="Arial,sans-serif" font-size="24" fill="#547083" font-weight="500" text-anchor="middle">Опорная карта · учебные данные</text>
+<g filter="url(#sh)"><rect x="130" y="205" width="1340" height="580" rx="26" fill="white"/></g>
+<rect x="185" y="275" width="800" height="425" rx="18" fill="#f2f9fc" stroke="#c8dce7" stroke-width="2"/>
+<rect x="1025" y="275" width="390" height="425" rx="18" fill="#fff7e9" stroke="#ecd6af" stroke-width="2"/>
+<rect x="440" y="470" width="300" height="110" rx="12" fill="#4b9bb9"/>
+<line x1="315" y1="610" x2="860" y2="610" stroke="#365c72" stroke-width="8" stroke-linecap="round"/>
+<line x1="525" y1="475" x2="525" y2="345" stroke="#50a580" stroke-width="8" stroke-linecap="round"/><path d="M525,345L513.0,367.0L537.0,367.0Z" fill="#50a580"/>
+<line x1="655" y1="470" x2="655" y2="585" stroke="#e1784a" stroke-width="8" stroke-linecap="round"/><path d="M655,585L667.0,563.0L643.0,563.0Z" fill="#e1784a"/>
+<text x="580" y="665" font-family="Arial,sans-serif" font-size="27" fill="#284960" font-weight="600" text-anchor="middle">m = 0,5 кг · g ≈ 10 Н/кг</text>
+<text x="1220" y="345" font-family="Arial,sans-serif" font-size="31" fill="#244a65" font-weight="700" text-anchor="middle">Сила Земли: 5 Н вниз</text>
+<text x="1220" y="435" font-family="Arial,sans-serif" font-size="31" fill="#244a65" font-weight="700" text-anchor="middle">Сила стола: 5 Н вверх</text>
+<text x="1220" y="525" font-family="Arial,sans-serif" font-size="27" fill="#244a65" font-weight="700" text-anchor="middle">m = 0,5 кг · g ≈ 10 Н/кг</text>
+<text x="1220" y="615" font-family="Arial,sans-serif" font-size="24" fill="#244a65" font-weight="700" text-anchor="middle">На арбе показаны две силы;</text>
+<text x="1220" y="646" font-family="Arial,sans-serif" font-size="24" fill="#244a65" font-weight="700" text-anchor="middle">вес действует на стол</text>
+</svg>

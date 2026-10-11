@@ -36,4 +36,4 @@ Close the worked example and explain aloud: what was given, what was calculated,
 
 Record the answer with units and one short limit: what does this example not yet prove? If you did not perform a trial, label the numbers “worked data.”
 
-[Physics course](/course/physics?lang=en)
+[Next lesson: Why a cart changes motion](/read/physics-19-interactions-force?lang=en)

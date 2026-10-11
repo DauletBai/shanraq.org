@@ -86,7 +86,7 @@ def markdown(index,row,lang):
  if index<18:
   other=MOTION[index-8]
   lines += [f'[{d["next"]}: {other[lang][0]}](/read/{slug(other)}?lang={lang})','']
- else: lines += [f'[Курс «Физика»](/course/physics?lang={lang})' if lang=='ru' else (f'[«Физика» курсы](/course/physics?lang={lang})' if lang=='kz' else f'[Physics course](/course/physics?lang={lang})'),'']
+ else: lines += [f'[{d["next"]}: '+{'ru':'Почему тележка меняет движение','kz':'Арба қозғалысы неге өзгереді','en':'Why a cart changes motion'}[lang]+f'](/read/physics-19-interactions-force?lang={lang})','']
  return '\n'.join(lines).rstrip()+'\n'
 
 def build():

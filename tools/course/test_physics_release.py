@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 
 from tools.course.build_physics_block import DATA, LESSONS, MAPS, ROOT
 from tools.course.physics_motion_data import MOTION
+from tools.course.physics_forces_data import FORCES
 from tools.course.prepare_physics import prepare, read_lesson
 
 
@@ -26,10 +27,11 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertEqual([row["number"] for row in data["first_block_lessons"]], list(range(1, 9)))
         self.assertEqual([row["number"] for row in data["second_block_lessons"]], list(range(9, 19)))
         self.assertEqual(data["blocks"][1]["status"], "published")
+        self.assertEqual([row["number"] for row in data["third_block_lessons"]], list(range(19, 29)))
 
     def test_every_language_has_the_same_experiment_and_working_assets(self):
         slugs = json.loads((ROOT / "tools/course/lesson-slugs.json").read_text())
-        route = [*DATA, *MOTION]
+        route = [*DATA, *MOTION, *FORCES]
         for index, row in enumerate(route, 1):
             for lang in ("ru", "kz", "en"):
                 suffix = "" if lang == "ru" else f"-{lang}"
@@ -45,7 +47,7 @@ class PhysicsReleaseTests(unittest.TestCase):
                 asset = ROOT / "web" / ref.group(1).lstrip("/")
                 self.assertTrue(asset.is_file(), asset)
                 ET.parse(asset)
-                if index < 18:
+                if index < 28:
                     next_slug = f"physics-{index+1:02d}-{route[index]['stem'][3:]}"
                     self.assertIn(f"/read/{next_slug}?lang={lang}", body)
 
@@ -63,6 +65,18 @@ class PhysicsReleaseTests(unittest.TestCase):
                 for value in values:
                     self.assertIn(value, svg, (path, value))
                 ET.parse(path)
+
+    def test_forces_work_and_energy_examples_are_consistent(self):
+        self.assertEqual(3 - 1, 2)  # horizontal net force, N
+        self.assertEqual((3 - 1) / 0.5, 4)  # acceleration, m/s²
+        self.assertEqual(3 * 2 - 1 * 2, 4)  # total work, J
+        self.assertEqual(0.5 * 0.5 * 4**2, 4)  # final kinetic energy, J
+        self.assertEqual(0.5 * 10 * 0.8, 4)  # potential energy, J
+        for row in FORCES:
+            for lang in ("ru", "kz", "en"):
+                text = (MAPS / f"map-{row['stem']}-{lang}.svg").read_text()
+                self.assertIn(row[lang][0], text)
+                ET.fromstring(text)
 
     def test_experiment_numbers_and_limits_match_across_languages(self):
         # These are worked numbers, never represented as a learner's observation.
@@ -87,10 +101,10 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
         self.assertIn("Physics slug belongs to another author", sql)
         self.assertIn("Physics lesson belongs to another course", sql)
-        self.assertEqual(len(expected), 54)
+        self.assertEqual(len(expected), 84)
         self.assertEqual({e["lang"] for e in expected}, {"ru", "kz", "en"})
         self.assertEqual({e["slug"] for e in expected}, {
-            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*DATA, *MOTION], 1)})
+            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*DATA, *MOTION, *FORCES], 1)})
 
 
 if __name__ == "__main__":

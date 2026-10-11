@@ -41,7 +41,8 @@
       "status": "planned",
       "title_ru": "Силы, равновесие и энергия",
       "title_kz": "Күштер, тепе-теңдік және энергия",
-      "title_en": "Forces, equilibrium, and energy"
+      "title_en": "Forces, equilibrium, and energy",
+      "cover": "/static/covers/school/physics/forces-energy/03-forces-energy.webp"
     },
     {
       "id": "fluids",
@@ -296,6 +297,108 @@
       "title_ru": "Контрольная точка: движение тележки от данных до вывода",
       "title_kz": "Бақылау нүктесі: арба қозғалысын деректен қорытындыға дейін",
       "title_en": "Checkpoint: a cart’s motion from data to conclusion"
+    }
+  ],
+  "third_block_lessons": [
+    {
+      "number": 19,
+      "id": "interactions-force",
+      "prerequisites": [
+        "motion-investigation"
+      ],
+      "title_ru": "Почему тележка меняет движение: взаимодействие и сила",
+      "title_kz": "Арба қозғалысы неге өзгереді: өзара әсер мен күш",
+      "title_en": "Why a cart changes motion: interactions and force"
+    },
+    {
+      "number": 20,
+      "id": "force-arrows-measurement",
+      "prerequisites": [
+        "interactions-force"
+      ],
+      "title_ru": "Как показать и измерить силу: стрелка и динамометр",
+      "title_kz": "Күшті көрсету және өлшеу: бағыттауыш пен динамометр",
+      "title_en": "Draw and measure force: arrows and a spring scale"
+    },
+    {
+      "number": 21,
+      "id": "mass-and-weight",
+      "prerequisites": [
+        "force-arrows-measurement"
+      ],
+      "title_ru": "Масса и вес: почему 0,5 кг — не 0,5 Н",
+      "title_kz": "Масса мен салмақ: 0,5 кг неге 0,5 Н емес",
+      "title_en": "Mass and weight: why 0.5 kg is not 0.5 N"
+    },
+    {
+      "number": 22,
+      "id": "balanced-forces-inertia",
+      "prerequisites": [
+        "mass-and-weight"
+      ],
+      "title_ru": "Равные силы и инерция: почему движение не требует постоянного толчка",
+      "title_kz": "Тең күштер мен инерция: қозғалысқа үздіксіз итеру керек пе",
+      "title_en": "Balanced forces and inertia: motion needs no continuous push"
+    },
+    {
+      "number": 23,
+      "id": "net-force-acceleration",
+      "prerequisites": [
+        "balanced-forces-inertia"
+      ],
+      "title_ru": "Ускорение: как сила меняет скорость",
+      "title_kz": "Үдеу: күш жылдамдықты қалай өзгертеді",
+      "title_en": "Acceleration: how force changes velocity"
+    },
+    {
+      "number": 24,
+      "id": "friction-resistance",
+      "prerequisites": [
+        "net-force-acceleration"
+      ],
+      "title_ru": "Трение и сопротивление: куда исчезает толчок",
+      "title_kz": "Үйкеліс пен кедергі: итерудің әсері қайда кетеді",
+      "title_en": "Friction and resistance: where did the push go?"
+    },
+    {
+      "number": 25,
+      "id": "work-force-distance",
+      "prerequisites": [
+        "friction-resistance"
+      ],
+      "title_ru": "Механическая работа: когда сила передаёт энергию",
+      "title_kz": "Механикалық жұмыс: күш энергияны қашан береді",
+      "title_en": "Mechanical work: when force transfers energy"
+    },
+    {
+      "number": 26,
+      "id": "motion-height-energy",
+      "prerequisites": [
+        "work-force-distance"
+      ],
+      "title_ru": "Энергия движения и высоты: два способа хранить возможность изменения",
+      "title_kz": "Қозғалыс пен биіктік энергиясы: екі түрлі мүмкіндік",
+      "title_en": "Energy of motion and height: two ways to store change"
+    },
+    {
+      "number": 27,
+      "id": "energy-transfer-conservation",
+      "prerequisites": [
+        "motion-height-energy"
+      ],
+      "title_ru": "Куда уходит энергия при торможении: перенос и сохранение",
+      "title_kz": "Тежелгенде энергия қайда кетеді: берілуі мен сақталуы",
+      "title_en": "Where energy goes when a cart stops: transfer and conservation"
+    },
+    {
+      "number": 28,
+      "id": "forces-energy-investigation",
+      "prerequisites": [
+        "energy-transfer-conservation"
+      ],
+      "title_ru": "Контрольная точка: одна тележка, силы, работа и энергия",
+      "title_kz": "Қорытынды тәжірибе: бір арба, күштер, жұмыс және энергия",
+      "title_en": "Checkpoint: one cart, forces, work, and energy"
     }
   ]
 }
