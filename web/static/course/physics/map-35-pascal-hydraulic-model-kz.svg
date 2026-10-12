@@ -17,7 +17,8 @@
 <path d="M250 570V350H450V570 M620 570V420H825V570 M350 565H720" fill="none" stroke="#527284" stroke-width="14"/>
 <path d="M260 470H440V560H635V485H815V560H260Z" fill="url(#water)"/>
 <path d="M255 465H445 M615 480H830" stroke="#be7652" stroke-width="22"/>
-<path d="M350 330v110m-18-18 18 18 18-18 M720 370v90m-18-18 18 18 18-18" fill="none" stroke="#ca684e" stroke-width="8"/>
+<path d="M350 330v110m-18-18 18 18 18-18" fill="none" stroke="#ca684e" stroke-width="8"/>
+<path d="M720 550V430m-18 18 18-18 18 18" fill="none" stroke="#238ca3" stroke-width="8"/>
 <text x="350" y="635" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="29" font-weight="600" fill="#203e57">2 см²</text>
 <text x="720" y="635" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="29" font-weight="600" fill="#203e57">10 см²</text>
 </svg>

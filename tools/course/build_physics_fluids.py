@@ -128,7 +128,8 @@ def svg(row,lang):
         out += ['<path d="M250 570V350H450V570 M620 570V420H825V570 M350 565H720" fill="none" stroke="#527284" stroke-width="14"/>',
                 '<path d="M260 470H440V560H635V485H815V560H260Z" fill="url(#water)"/>',
                 '<path d="M255 465H445 M615 480H830" stroke="#be7652" stroke-width="22"/>',
-                '<path d="M350 330v110m-18-18 18 18 18-18 M720 370v90m-18-18 18 18 18-18" fill="none" stroke="#ca684e" stroke-width="8"/>',
+                '<path d="M350 330v110m-18-18 18 18 18-18" fill="none" stroke="#ca684e" stroke-width="8"/>',
+                '<path d="M720 550V430m-18 18 18-18 18 18" fill="none" stroke="#238ca3" stroke-width="8"/>',
                 txt(350,635,'2 см²' if lang!='en' else '2 cm²',29,anchor='middle'),txt(720,635,'10 см²' if lang!='en' else '10 cm²',29,anchor='middle')]
     out += ['</svg>']
     return '\n'.join(out)+'\n'
