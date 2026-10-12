@@ -10,21 +10,24 @@ try:
     from .build_physics_block import DATA, LESSONS, ROOT
     from .physics_motion_data import MOTION
     from .physics_forces_data import FORCES
+    from .physics_fluids_data import FLUIDS
 except ImportError:  # direct invocation: python3 tools/course/prepare_physics.py
     from build_physics_block import DATA, LESSONS, ROOT
     from physics_motion_data import MOTION
     from physics_forces_data import FORCES
+    from physics_fluids_data import FLUIDS
 
 COVER = "/static/covers/school/physics/investigation/01-observe-measure.webp"
 MOTION_COVER = "/static/covers/school/physics/motion/02-motion-graphs.webp"
 FORCES_COVER = "/static/covers/school/physics/forces-energy/03-forces-energy.webp"
+FLUIDS_COVER = "/static/covers/school/physics/fluids/04-fluids-pressure.webp"
 META = {
     "ru": ("Физика вокруг нас: от первого опыта до своей лаборатории",
-           "Бесплатный курс физики без пропущенных шагов: наблюдаем, измеряем и проверяем объяснения. Изучаем движение, силы, работу и энергию."),
+           "Бесплатный курс физики без пропущенных шагов: измеряем и проверяем объяснения движения, сил, энергии, давления и плавания."),
     "kz": ("Айналамыздағы физика: алғашқы тәжірибеден өз зертханамызға дейін",
-           "Тегін физика курсы: бақылаймыз, өлшейміз, түсіндірмені тексереміз. Қозғалысты, күшті, жұмысты және энергияны зерттейміз."),
+           "Тегін физика курсы: қозғалыс, күш, энергия, қысым және жүзу туралы болжап, өлшеп, түсіндірмені тексереміз."),
     "en": ("Physics around us: from a first experiment to your own lab",
-           "A free physics course with no skipped steps: observe, measure, and test explanations. Investigate motion, forces, work, and energy."),
+           "A free physics course with no skipped steps: predict, measure, and test ideas about motion, forces, energy, pressure, and floating."),
 }
 LEAD = re.compile(r"_Лид \(summary\):_ \*\*(.+)\*\*$")
 
@@ -47,11 +50,11 @@ def read_lesson(path):
 
 
 def prepare():
-    if len(DATA) != 8 or len(MOTION) != 10 or len(FORCES) != 10:
-        raise ValueError("physics release requires three complete blocks")
+    if len(DATA) != 8 or len(MOTION) != 10 or len(FORCES) != 10 or len(FLUIDS) != 8:
+        raise ValueError("physics release requires four complete blocks")
     route = [(item["stem"], f"physics-{i:02d}-{item['stem'][3:]}", i*10,
-              COVER if i <= 8 else (MOTION_COVER if i <= 18 else FORCES_COVER))
-             for i, item in enumerate([*DATA, *MOTION, *FORCES], 1)]
+              COVER if i <= 8 else (MOTION_COVER if i <= 18 else (FORCES_COVER if i <= 28 else FLUIDS_COVER)))
+             for i, item in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS], 1)]
     slug_list = ",".join(literal(slug) for _, slug, _, _ in route)
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-physics-course'));",
            f"""DO $guard$

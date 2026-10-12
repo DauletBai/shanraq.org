@@ -3,9 +3,11 @@
 from html import escape
 try:
     from .physics_forces_data import FORCES
+    from .physics_fluids_data import FLUIDS
     from .build_physics_motion import LESSONS, MAPS, txt, line, base
 except ImportError:
     from physics_forces_data import FORCES
+    from physics_fluids_data import FLUIDS
     from build_physics_motion import LESSONS, MAPS, txt, line, base
 
 HEAD = {
@@ -99,7 +101,8 @@ def markdown(index,row,lang):
   nxt=FORCES[index-18]
   parts += [f'[{NEXT[lang]}: {nxt[lang][0]}](/read/physics-{nxt["stem"]}?lang={lang})','']
  else:
-  parts += [f'[{'Курс «Физика»' if lang=='ru' else ('«Физика» курсы' if lang=='kz' else 'Physics course')}](/course/physics?lang={lang})','']
+  nxt=FLUIDS[0]
+  parts += [f'[{NEXT[lang]}: {nxt[lang][0]}](/read/physics-{nxt["stem"]}?lang={lang})','']
  return '\n'.join(parts).rstrip()+'\n'
 
 def build():

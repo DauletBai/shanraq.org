@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Бақылау тапсырмасы: қауіпсіз жүзбелі тұғыр жобалаңыз</title>
+<desc id="desc">Тұғыр + жүк: 0,4 кг | Ауырлық күші: 4 Н | Ығыстыру: 0,4 л су | 0,1 м тереңдік: +1000 Па</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#d3e8ef" stroke-width="1"/></pattern><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#31516c" flood-opacity=".20"/></filter><linearGradient id="water" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#b3edf8"/><stop offset="1" stop-color="#168bbd"/></linearGradient><linearGradient id="plate" x1="0" x2="1"><stop stop-color="#f9fcff"/><stop offset="1" stop-color="#d7e9f0"/></linearGradient></defs>
+<rect width="1600" height="900" fill="#edf6f8"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="65" y="188" width="915" height="565" rx="22" fill="url(#plate)" stroke="#9fbfcb" stroke-width="3" filter="url(#shadow)"/>
+<rect x="1015" y="188" width="520" height="565" rx="22" fill="#ffffff" stroke="#a5c5d0" stroke-width="3" filter="url(#shadow)"/>
+<text x="80" y="80" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="43" font-weight="750" fill="#143e5a">Бақылау тапсырмасы: қауіпсіз жүзбелі тұғыр жобалаңыз</text>
+<rect x="1045" y="240" width="460" height="84" rx="12" fill="#e9f6fc" stroke="#d0e2e8"/>
+<text x="1070" y="274" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="29" font-weight="650" fill="#1d425c">Тұғыр + жүк: 0,4 кг</text>
+<rect x="1045" y="352" width="460" height="84" rx="12" fill="#edf8f4" stroke="#d0e2e8"/>
+<text x="1070" y="386" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="29" font-weight="650" fill="#1d425c">Ауырлық күші: 4 Н</text>
+<rect x="1045" y="464" width="460" height="84" rx="12" fill="#fff4e7" stroke="#d0e2e8"/>
+<text x="1070" y="498" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="29" font-weight="650" fill="#1d425c">Ығыстыру: 0,4 л су</text>
+<rect x="1045" y="576" width="460" height="84" rx="12" fill="#e9f0fa" stroke="#d0e2e8"/>
+<text x="1070" y="610" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="29" font-weight="650" fill="#1d425c">0,1 м тереңдік: +1000 Па</text>
+<path d="M205 365V650H850V365" fill="none" stroke="#416b82" stroke-width="11"/>
+<path d="M212 435H843V643H212Z" fill="url(#water)" opacity=".83"/>
+<path d="M212 435H843" stroke="white" stroke-width="7"/>
+<path d="M390 385L680 385L645 510L425 510Z" fill="#c97951" stroke="#8e4f39" stroke-width="6"/>
+<path d="M535 590V510m-18 18 18-18 18 18" fill="none" stroke="#fff8d8" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M535 290V365m-18-18 18 18 18-18" fill="none" stroke="#d26c5b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="735" y="350" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="32" font-weight="600" fill="#1c748b">Fₐ</text>
+<text x="590" y="600" text-anchor="start" font-family="Inter,Arial,sans-serif" font-size="32" font-weight="600" fill="white">V</text>
+</svg>

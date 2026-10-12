@@ -12,6 +12,8 @@ on:
       - 'tools/course/physics_motion_data.py'
       - 'tools/course/build_physics_forces.py'
       - 'tools/course/physics_forces_data.py'
+      - 'tools/course/build_physics_fluids.py'
+      - 'tools/course/physics_fluids_data.py'
       - 'tools/course/prepare_physics.py'
       - 'tools/course/test_physics_release.py'
       - 'web/static/course/physics/**'
@@ -27,6 +29,8 @@ on:
       - 'tools/course/physics_motion_data.py'
       - 'tools/course/build_physics_forces.py'
       - 'tools/course/physics_forces_data.py'
+      - 'tools/course/build_physics_fluids.py'
+      - 'tools/course/physics_fluids_data.py'
       - 'tools/course/prepare_physics.py'
       - 'tools/course/test_physics_release.py'
       - 'web/static/course/physics/**'
@@ -42,6 +46,7 @@ jobs:
           python3 tools/course/build_physics_block.py
           python3 tools/course/build_physics_motion.py
           python3 tools/course/build_physics_forces.py
+          python3 tools/course/build_physics_fluids.py
       - name: Verify generated files are committed
         run: git diff --exit-code
       - name: Check curriculum, numbers, assets and guarded publication

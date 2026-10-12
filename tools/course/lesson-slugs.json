@@ -5266,5 +5266,101 @@
   "physics/28-forces-energy-investigation-en": [
     "physics-28-forces-energy-investigation",
     "en"
+  ],
+  "physics/29-pressure-force-area": [
+    "physics-29-pressure-force-area",
+    "ru"
+  ],
+  "physics/29-pressure-force-area-kz": [
+    "physics-29-pressure-force-area",
+    "kz"
+  ],
+  "physics/29-pressure-force-area-en": [
+    "physics-29-pressure-force-area",
+    "en"
+  ],
+  "physics/30-pascal-conversion-area": [
+    "physics-30-pascal-conversion-area",
+    "ru"
+  ],
+  "physics/30-pascal-conversion-area-kz": [
+    "physics-30-pascal-conversion-area",
+    "kz"
+  ],
+  "physics/30-pascal-conversion-area-en": [
+    "physics-30-pascal-conversion-area",
+    "en"
+  ],
+  "physics/31-liquid-depth-pressure": [
+    "physics-31-liquid-depth-pressure",
+    "ru"
+  ],
+  "physics/31-liquid-depth-pressure-kz": [
+    "physics-31-liquid-depth-pressure",
+    "kz"
+  ],
+  "physics/31-liquid-depth-pressure-en": [
+    "physics-31-liquid-depth-pressure",
+    "en"
+  ],
+  "physics/32-connected-vessels-water-level": [
+    "physics-32-connected-vessels-water-level",
+    "ru"
+  ],
+  "physics/32-connected-vessels-water-level-kz": [
+    "physics-32-connected-vessels-water-level",
+    "kz"
+  ],
+  "physics/32-connected-vessels-water-level-en": [
+    "physics-32-connected-vessels-water-level",
+    "en"
+  ],
+  "physics/33-buoyancy-displaced-water": [
+    "physics-33-buoyancy-displaced-water",
+    "ru"
+  ],
+  "physics/33-buoyancy-displaced-water-kz": [
+    "physics-33-buoyancy-displaced-water",
+    "kz"
+  ],
+  "physics/33-buoyancy-displaced-water-en": [
+    "physics-33-buoyancy-displaced-water",
+    "en"
+  ],
+  "physics/34-floating-density": [
+    "physics-34-floating-density",
+    "ru"
+  ],
+  "physics/34-floating-density-kz": [
+    "physics-34-floating-density",
+    "kz"
+  ],
+  "physics/34-floating-density-en": [
+    "physics-34-floating-density",
+    "en"
+  ],
+  "physics/35-pascal-hydraulic-model": [
+    "physics-35-pascal-hydraulic-model",
+    "ru"
+  ],
+  "physics/35-pascal-hydraulic-model-kz": [
+    "physics-35-pascal-hydraulic-model",
+    "kz"
+  ],
+  "physics/35-pascal-hydraulic-model-en": [
+    "physics-35-pascal-hydraulic-model",
+    "en"
+  ],
+  "physics/36-fluids-investigation-mastery": [
+    "physics-36-fluids-investigation-mastery",
+    "ru"
+  ],
+  "physics/36-fluids-investigation-mastery-kz": [
+    "physics-36-fluids-investigation-mastery",
+    "kz"
+  ],
+  "physics/36-fluids-investigation-mastery-en": [
+    "physics-36-fluids-investigation-mastery",
+    "en"
   ]
 }

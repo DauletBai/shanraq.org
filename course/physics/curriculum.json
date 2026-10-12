@@ -48,10 +48,11 @@
       "id": "fluids",
       "range": "29-36",
       "lesson_count": 8,
-      "status": "planned",
+      "status": "published",
       "title_ru": "Давление, жидкости и газы",
       "title_kz": "Қысым, сұйықтар және газдар",
-      "title_en": "Pressure, liquids, and gases"
+      "title_en": "Pressure, liquids, and gases",
+      "cover": "/static/covers/school/physics/fluids/04-fluids-pressure.webp"
     },
     {
       "id": "heat",
@@ -399,6 +400,88 @@
       "title_ru": "Контрольная точка: одна тележка, силы, работа и энергия",
       "title_kz": "Қорытынды тәжірибе: бір арба, күштер, жұмыс және энергия",
       "title_en": "Checkpoint: one cart, forces, work, and energy"
+    }
+  ],
+  "fourth_block_lessons": [
+    {
+      "number": 29,
+      "id": "pressure-force-area",
+      "prerequisites": [
+        "forces-energy-investigation"
+      ],
+      "title_ru": "Почему лыжа не проваливается так же, как каблук?",
+      "title_kz": "Неге шаңғы өкше сияқты қарға батпайды?",
+      "title_en": "Why does a ski sink less than a narrow heel?"
+    },
+    {
+      "number": 30,
+      "id": "pascal-conversion-area",
+      "prerequisites": [
+        "pressure-force-area"
+      ],
+      "title_ru": "Почему квадратные сантиметры меняют ответ в десять тысяч раз?",
+      "title_kz": "Неге шаршы сантиметр жауапты он мың есе өзгерте алады?",
+      "title_en": "Why can square centimetres change an answer ten thousandfold?"
+    },
+    {
+      "number": 31,
+      "id": "liquid-depth-pressure",
+      "prerequisites": [
+        "pascal-conversion-area"
+      ],
+      "title_ru": "Почему на глубине давление воды больше?",
+      "title_kz": "Неге су тереңдеген сайын қысым артады?",
+      "title_en": "Why does water pressure rise with depth?"
+    },
+    {
+      "number": 32,
+      "id": "connected-vessels-water-level",
+      "prerequisites": [
+        "liquid-depth-pressure"
+      ],
+      "title_ru": "Почему вода в соединённых сосудах выходит на один уровень?",
+      "title_kz": "Неге жалғасқан ыдыстардағы су бір деңгейге келеді?",
+      "title_en": "Why do connected vessels settle at the same water level?"
+    },
+    {
+      "number": 33,
+      "id": "buoyancy-displaced-water",
+      "prerequisites": [
+        "connected-vessels-water-level"
+      ],
+      "title_ru": "Куда «исчезает» вес предмета в воде?",
+      "title_kz": "Судағы заттың салмағы қайда «жоғалады»?",
+      "title_en": "Where does an object’s weight “go” underwater?"
+    },
+    {
+      "number": 34,
+      "id": "floating-density",
+      "prerequisites": [
+        "buoyancy-displaced-water"
+      ],
+      "title_ru": "Почему стальной корабль плавает, а стальной шар тонет?",
+      "title_kz": "Неге болат кеме жүзеді, ал болат шар батады?",
+      "title_en": "Why does a steel ship float while a steel ball sinks?"
+    },
+    {
+      "number": 35,
+      "id": "pascal-hydraulic-model",
+      "prerequisites": [
+        "floating-density"
+      ],
+      "title_ru": "Как маленький поршень поднимает большую нагрузку?",
+      "title_kz": "Кішкентай поршень үлкен жүкті қалай қозғайды?",
+      "title_en": "How can a small piston move a larger load?"
+    },
+    {
+      "number": 36,
+      "id": "fluids-investigation-mastery",
+      "prerequisites": [
+        "pascal-hydraulic-model"
+      ],
+      "title_ru": "Контрольная точка: спроектируйте безопасную плавучую платформу",
+      "title_kz": "Бақылау тапсырмасы: қауіпсіз жүзбелі тұғыр жобалаңыз",
+      "title_en": "Checkpoint: design a safe floating platform"
     }
   ]
 }

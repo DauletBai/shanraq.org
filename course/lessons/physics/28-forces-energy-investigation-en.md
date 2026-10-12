@@ -36,4 +36,4 @@ Cover the calculation. Name the object receiving forces, their sources, and the 
 
 Write four lines: “What did I see?”, “What was given?”, “What did I calculate?”, and “Which assumptions does this conclusion need?” This separates observation from model and lets you revisit an error later.
 
-[Physics course](/course/physics?lang=en)
+[Next lesson: Why does a ski sink less than a narrow heel?](/read/physics-29-pressure-force-area?lang=en)
