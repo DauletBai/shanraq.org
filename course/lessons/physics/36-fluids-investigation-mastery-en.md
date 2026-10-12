@@ -14,7 +14,7 @@ A **criterion** is a success condition chosen in advance, such as “cargo stays
 
 ## Check the model with numbers
 
-Worked brief: platform plus cargo has mass 0.4 kg. Its weight is about 4 N, so floating equilibrium requires V = 4/(1000 × 10) = 0.0004 m³ = 0.4 L of displaced water. If cargo rests on a flat 0.02 m² patch, its average pressure there is 4/0.02 = 200 Pa; this is not water pressure at the bottom. At 0.1 m depth, water adds about 1000 Pa relative to its surface.
+Worked brief: platform plus cargo has mass 0.4 kg. Its weight is about 4 N, so floating equilibrium requires V = 4/(1000 × 10) = 0.0004 m³ = 0.4 L of displaced water. In a separate model, if the entire system pushes with 4 N on a flat 0.02 m² support, average pressure is 4/0.02 = 200 Pa. This is not water pressure at the bottom. At 0.1 m depth, water adds about 1000 Pa relative to its surface.
 
 ## A safe investigation
 
