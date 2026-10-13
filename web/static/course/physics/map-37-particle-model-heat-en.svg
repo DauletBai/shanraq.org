@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">What happens to water when it warms up?</title>
+<desc id="desc">Object: many particles | Warmer ≠ larger particles | Model: dots and motion | Observe: mixing</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#cfebf0"/></pattern><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="13" stdDeviation="12" flood-color="#375b74" flood-opacity=".2"/></filter><linearGradient id="card" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e0eef3"/></linearGradient></defs>
+<rect width="1600" height="900" fill="#eef8f8"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="75" y="200" width="900" height="550" rx="24" fill="url(#card)" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>
+<rect x="1015" y="200" width="510" height="550" rx="24" fill="#fff" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>
+<text x="76" y="83" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="43" fill="#173d58">What happens to water when it warms up?</text>
+<rect x="1044" y="235" width="450" height="94" rx="14" fill="#e4f5fa" stroke="#d3e4e9"/>
+<text x="1064" y="272" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Object: many particles</text>
+<rect x="1044" y="357" width="450" height="94" rx="14" fill="#fff0df" stroke="#d3e4e9"/>
+<text x="1064" y="394" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="26" fill="#173d58">Warmer ≠ larger particles</text>
+<rect x="1044" y="479" width="450" height="94" rx="14" fill="#e9f5ee" stroke="#d3e4e9"/>
+<text x="1064" y="516" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Model: dots and motion</text>
+<rect x="1044" y="601" width="450" height="94" rx="14" fill="#e9edfa" stroke="#d3e4e9"/>
+<text x="1064" y="638" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Observe: mixing</text>
+<path d="M195 320V575H455V320 M590 320V575H850V320" fill="none" stroke="#487f96" stroke-width="10"/>
+<path d="M201 400H449V569H201Z M596 400H844V569H596Z" fill="#92d1e4" opacity=".65"/>
+<path d="M201 400H449 M596 400H844" stroke="#fff" stroke-width="6"/>
+<circle cx="220" cy="430" r="9" fill="#3285a6"/>
+<circle cx="615" cy="430" r="9" fill="#ee8758"/>
+<circle cx="264" cy="430" r="9" fill="#3285a6"/>
+<circle cx="659" cy="430" r="9" fill="#ee8758"/>
+<circle cx="298" cy="430" r="9" fill="#3285a6"/>
+<circle cx="693" cy="430" r="9" fill="#ee8758"/>
+<circle cx="342" cy="430" r="9" fill="#3285a6"/>
+<circle cx="737" cy="430" r="9" fill="#ee8758"/>
+<circle cx="376" cy="430" r="9" fill="#3285a6"/>
+<circle cx="771" cy="430" r="9" fill="#ee8758"/>
+<circle cx="420" cy="430" r="9" fill="#3285a6"/>
+<circle cx="815" cy="430" r="9" fill="#ee8758"/>
+<circle cx="220" cy="485" r="9" fill="#3285a6"/>
+<circle cx="615" cy="485" r="9" fill="#ee8758"/>
+<circle cx="264" cy="485" r="9" fill="#3285a6"/>
+<circle cx="659" cy="485" r="9" fill="#ee8758"/>
+<circle cx="298" cy="485" r="9" fill="#3285a6"/>
+<circle cx="693" cy="485" r="9" fill="#ee8758"/>
+<circle cx="342" cy="485" r="9" fill="#3285a6"/>
+<circle cx="737" cy="485" r="9" fill="#ee8758"/>
+<circle cx="376" cy="485" r="9" fill="#3285a6"/>
+<circle cx="771" cy="485" r="9" fill="#ee8758"/>
+<circle cx="420" cy="485" r="9" fill="#3285a6"/>
+<circle cx="815" cy="485" r="9" fill="#ee8758"/>
+<circle cx="220" cy="540" r="9" fill="#3285a6"/>
+<circle cx="615" cy="540" r="9" fill="#ee8758"/>
+<circle cx="264" cy="540" r="9" fill="#3285a6"/>
+<circle cx="659" cy="540" r="9" fill="#ee8758"/>
+<circle cx="298" cy="540" r="9" fill="#3285a6"/>
+<circle cx="693" cy="540" r="9" fill="#ee8758"/>
+<circle cx="342" cy="540" r="9" fill="#3285a6"/>
+<circle cx="737" cy="540" r="9" fill="#ee8758"/>
+<circle cx="376" cy="540" r="9" fill="#3285a6"/>
+<circle cx="771" cy="540" r="9" fill="#ee8758"/>
+<circle cx="420" cy="540" r="9" fill="#3285a6"/>
+<circle cx="815" cy="540" r="9" fill="#ee8758"/>
+<path d="M645 355l33-30m40 65 35-23m-122 123 25-21" stroke="#e88255" stroke-width="5" stroke-linecap="round"/>
+<text x="525" y="680" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#315b72">Dots are a model, not a photograph</text>
+</svg>

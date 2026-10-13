@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Неге жылытқышты еденге жақын қояды?</title>
+<desc id="desc">Жылы ауа: 25 °C | Салқын ауа: 18 °C | Ауа қозғалады | Энергия ағынмен өтеді</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#cfebf0"/></pattern><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="13" stdDeviation="12" flood-color="#375b74" flood-opacity=".2"/></filter><linearGradient id="card" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e0eef3"/></linearGradient></defs>
+<rect width="1600" height="900" fill="#eef8f8"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="75" y="200" width="900" height="550" rx="24" fill="url(#card)" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>
+<rect x="1015" y="200" width="510" height="550" rx="24" fill="#fff" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>
+<text x="76" y="83" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="43" fill="#173d58">Неге жылытқышты еденге жақын қояды?</text>
+<rect x="1044" y="235" width="450" height="94" rx="14" fill="#e4f5fa" stroke="#d3e4e9"/>
+<text x="1064" y="272" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Жылы ауа: 25 °C</text>
+<rect x="1044" y="357" width="450" height="94" rx="14" fill="#fff0df" stroke="#d3e4e9"/>
+<text x="1064" y="394" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Салқын ауа: 18 °C</text>
+<rect x="1044" y="479" width="450" height="94" rx="14" fill="#e9f5ee" stroke="#d3e4e9"/>
+<text x="1064" y="516" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Ауа қозғалады</text>
+<rect x="1044" y="601" width="450" height="94" rx="14" fill="#e9edfa" stroke="#d3e4e9"/>
+<text x="1064" y="638" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Энергия ағынмен өтеді</text>
+<path d="M205 310V605H860V310" fill="none" stroke="#4e7183" stroke-width="12"/>
+<rect x="240" y="480" width="120" height="97" rx="12" fill="#ec9469" stroke="#a95c47" stroke-width="5"/>
+<path d="M400 525c-5-95 80-170 190-160s175 80 145 150c-17 45-70 58-144 55H415" fill="none" stroke="#e88356" stroke-width="10" stroke-linecap="round"/>
+<path d="m442 454-42 71-18-77 M493 548l-78 22 55 52" fill="none" stroke="#e88356" stroke-width="8" stroke-linejoin="round"/>
+<path d="M585 357c75 8 119 38 145 84" fill="none" stroke="#53a7bd" stroke-width="5" stroke-dasharray="11 11"/>
+<text x="305" y="640" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="30" fill="#173d58">25 °C</text>
+<text x="760" y="640" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="30" fill="#173d58">18 °C</text>
+<text x="525" y="680" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#315b72">Газдың не сұйықтың өзі қозғалады</text>
+</svg>

@@ -10,6 +10,7 @@ from tools.course.physics_motion_data import MOTION
 from tools.course.physics_forces_data import FORCES
 from tools.course.physics_fluids_data import FLUIDS
 from tools.course.build_physics_fluids import DIAGRAM
+from tools.course.physics_heat_data import HEAT
 from tools.course.prepare_physics import prepare, read_lesson
 
 
@@ -33,10 +34,13 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertEqual(data["blocks"][2]["status"], "published")
         self.assertEqual([row["number"] for row in data["fourth_block_lessons"]], list(range(29, 37)))
         self.assertEqual(data["blocks"][3]["status"], "published")
+        self.assertEqual([row["number"] for row in data["fifth_block_lessons"]], list(range(37, 47)))
+        self.assertEqual(data["blocks"][4]["status"], "published")
+        self.assertTrue((ROOT / "web" / data["blocks"][4]["cover"].lstrip("/")).is_file())
 
     def test_every_language_has_the_same_experiment_and_working_assets(self):
         slugs = json.loads((ROOT / "tools/course/lesson-slugs.json").read_text())
-        route = [*DATA, *MOTION, *FORCES, *FLUIDS]
+        route = [*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT]
         for index, row in enumerate(route, 1):
             for lang in ("ru", "kz", "en"):
                 suffix = "" if lang == "ru" else f"-{lang}"
@@ -52,7 +56,7 @@ class PhysicsReleaseTests(unittest.TestCase):
                 asset = ROOT / "web" / ref.group(1).lstrip("/")
                 self.assertTrue(asset.is_file(), asset)
                 ET.parse(asset)
-                if index < 36:
+                if index < 46:
                     next_slug = f"physics-{index+1:02d}-{route[index]['stem'][3:]}"
                     self.assertIn(f"/read/{next_slug}?lang={lang}", body)
 
@@ -102,6 +106,22 @@ class PhysicsReleaseTests(unittest.TestCase):
                     for token in label.split():
                         self.assertIn(token, map_text, (svg, token))
 
+    def test_heat_models_and_translations_match_their_maps(self):
+        self.assertEqual(50 + 20 - 30, 40)
+        self.assertEqual(.2 * 4200 * 5, 4200)
+        self.assertAlmostEqual(.1 * 334, 33.4)
+        self.assertEqual(600 - 200 - 100, 300)
+        self.assertEqual(600 - 150 - 100, 350)
+        for row in HEAT:
+            for lang in ("ru", "kz", "en"):
+                path = MAPS / f"map-{row['stem']}-{lang}.svg"
+                root = ET.parse(path).getroot()
+                self.assertEqual(root.attrib["viewBox"], "0 0 1600 900")
+                visible = " ".join(root.itertext())
+                self.assertIn(row[lang][0], visible)
+                for label in row["map"][lang]:
+                    self.assertIn(label, visible)
+
     def test_experiment_numbers_and_limits_match_across_languages(self):
         # These are worked numbers, never represented as a learner's observation.
         short = [10.9, 11.1, 11.0]
@@ -125,10 +145,15 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
         self.assertIn("Physics slug belongs to another author", sql)
         self.assertIn("Physics lesson belongs to another course", sql)
-        self.assertEqual(len(expected), 108)
+        self.assertEqual(len(expected), 138)
         self.assertEqual({e["lang"] for e in expected}, {"ru", "kz", "en"})
         self.assertEqual({e["slug"] for e in expected}, {
-            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS], 1)})
+            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT], 1)})
+        heat_sql, heat_expected = prepare(start=36)
+        self.assertEqual(len(heat_expected), 33)
+        self.assertEqual({e["slug"] for e in heat_expected}, {
+            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*FLUIDS[-1:], *HEAT], 36)})
+        self.assertNotIn("physics-35-pascal-hydraulic-model", heat_sql)
 
 
 if __name__ == "__main__":

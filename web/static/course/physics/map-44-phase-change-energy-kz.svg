@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Мұз ерігенде энергия қайда кетеді?</title>
+<desc id="desc">Мұз: m = 0,1 кг | Балқу: L = 334 кДж/кг | 0 °C кезінде: Q = mL | Q = 33,4 кДж</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#cfebf0"/></pattern><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="13" stdDeviation="12" flood-color="#375b74" flood-opacity=".2"/></filter><linearGradient id="card" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e0eef3"/></linearGradient></defs>
+<rect width="1600" height="900" fill="#eef8f8"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="75" y="200" width="900" height="550" rx="24" fill="url(#card)" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>
+<rect x="1015" y="200" width="510" height="550" rx="24" fill="#fff" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>
+<text x="76" y="83" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="43" fill="#173d58">Мұз ерігенде энергия қайда кетеді?</text>
+<rect x="1044" y="235" width="450" height="94" rx="14" fill="#e4f5fa" stroke="#d3e4e9"/>
+<text x="1064" y="272" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Мұз: m = 0,1 кг</text>
+<rect x="1044" y="357" width="450" height="94" rx="14" fill="#fff0df" stroke="#d3e4e9"/>
+<text x="1064" y="394" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Балқу: L = 334 кДж/кг</text>
+<rect x="1044" y="479" width="450" height="94" rx="14" fill="#e9f5ee" stroke="#d3e4e9"/>
+<text x="1064" y="516" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">0 °C кезінде: Q = mL</text>
+<rect x="1044" y="601" width="450" height="94" rx="14" fill="#e9edfa" stroke="#d3e4e9"/>
+<text x="1064" y="638" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Q = 33,4 кДж</text>
+<rect x="230" y="390" width="170" height="170" rx="8" fill="#d7f2fa" stroke="#64a7be" stroke-width="7"/>
+<path d="M435 475h190m-28-25 28 25-28 25" fill="none" stroke="#e88e62" stroke-width="10" stroke-linejoin="round"/>
+<path d="M660 370V565H840V370 M666 455H834V559H666Z" fill="#8ccde2" stroke="#4a849a" stroke-width="8"/>
+<text x="315" y="355" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="30" fill="#173d58">0 °C</text>
+<text x="750" y="345" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="30" fill="#173d58">0 °C</text>
+<text x="525" y="680" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#315b72">Балқу кезінде энергия күйді өзгертеді</text>
+</svg>

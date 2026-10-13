@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Почему металлическая ложка кажется холоднее деревянной?</title>
+<desc id="desc">Слева: 30 °C | Справа: 20 °C | Поток: слева направо | Потом: ближе к равновесию</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#cfebf0"/></pattern><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="13" stdDeviation="12" flood-color="#375b74" flood-opacity=".2"/></filter><linearGradient id="card" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e0eef3"/></linearGradient></defs>
+<rect width="1600" height="900" fill="#eef8f8"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="75" y="200" width="900" height="550" rx="24" fill="url(#card)" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>
+<rect x="1015" y="200" width="510" height="550" rx="24" fill="#fff" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>
+<text x="76" y="83" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="43" fill="#173d58">Почему металлическая ложка кажется холоднее</text>
+<text x="76" y="141" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="43" fill="#173d58">деревянной?</text>
+<rect x="1044" y="235" width="450" height="94" rx="14" fill="#e4f5fa" stroke="#d3e4e9"/>
+<text x="1064" y="272" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Слева: 30 °C</text>
+<rect x="1044" y="357" width="450" height="94" rx="14" fill="#fff0df" stroke="#d3e4e9"/>
+<text x="1064" y="394" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Справа: 20 °C</text>
+<rect x="1044" y="479" width="450" height="94" rx="14" fill="#e9f5ee" stroke="#d3e4e9"/>
+<text x="1064" y="516" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#173d58">Поток: слева направо</text>
+<rect x="1044" y="601" width="450" height="94" rx="14" fill="#e9edfa" stroke="#d3e4e9"/>
+<text x="1064" y="638" text-anchor="start" font-family="Arial,sans-serif" font-weight="650" font-size="26" fill="#173d58">Потом: ближе к равновесию</text>
+<rect x="230" y="370" width="620" height="145" rx="24" fill="#a8c7d5" stroke="#507b91" stroke-width="7"/>
+<rect x="230" y="370" width="160" height="145" rx="24" fill="#ec986a"/>
+<rect x="690" y="370" width="160" height="145" rx="24" fill="#78b7d9"/>
+<path d="M408 443h250m-28-24 28 24-28 24" fill="none" stroke="#f0794d" stroke-width="10" stroke-linejoin="round"/>
+<text x="310" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="31" fill="#173d58">30 °C</text>
+<text x="770" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="31" fill="#173d58">20 °C</text>
+<text x="525" y="680" text-anchor="middle" font-family="Arial,sans-serif" font-weight="650" font-size="28" fill="#315b72">Контакт переносит энергию</text>
+</svg>

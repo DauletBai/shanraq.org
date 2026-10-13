@@ -36,4 +36,4 @@ Cover the worked example. Redraw the situation, name the object and the forces a
 
 Write four lines: question; prediction; given data or observation; conclusion with a condition. Add one reason a real trial may differ from the ideal drawing. Return to this page after the next lesson and revise the conclusion if a new check changes it.
 
-[Return to the Physics course](/course/physics?lang=en)
+[Next lesson: What happens to water when it warms up?](/read/physics-37-particle-model-heat?lang=en)

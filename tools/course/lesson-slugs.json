@@ -5362,5 +5362,125 @@
   "physics/36-fluids-investigation-mastery-en": [
     "physics-36-fluids-investigation-mastery",
     "en"
+  ],
+  "physics/37-particle-model-heat": [
+    "physics-37-particle-model-heat",
+    "ru"
+  ],
+  "physics/37-particle-model-heat-kz": [
+    "physics-37-particle-model-heat",
+    "kz"
+  ],
+  "physics/37-particle-model-heat-en": [
+    "physics-37-particle-model-heat",
+    "en"
+  ],
+  "physics/38-temperature-thermometer": [
+    "physics-38-temperature-thermometer",
+    "ru"
+  ],
+  "physics/38-temperature-thermometer-kz": [
+    "physics-38-temperature-thermometer",
+    "kz"
+  ],
+  "physics/38-temperature-thermometer-en": [
+    "physics-38-temperature-thermometer",
+    "en"
+  ],
+  "physics/39-internal-energy": [
+    "physics-39-internal-energy",
+    "ru"
+  ],
+  "physics/39-internal-energy-kz": [
+    "physics-39-internal-energy",
+    "kz"
+  ],
+  "physics/39-internal-energy-en": [
+    "physics-39-internal-energy",
+    "en"
+  ],
+  "physics/40-conduction-contact": [
+    "physics-40-conduction-contact",
+    "ru"
+  ],
+  "physics/40-conduction-contact-kz": [
+    "physics-40-conduction-contact",
+    "kz"
+  ],
+  "physics/40-conduction-contact-en": [
+    "physics-40-conduction-contact",
+    "en"
+  ],
+  "physics/41-convection-currents": [
+    "physics-41-convection-currents",
+    "ru"
+  ],
+  "physics/41-convection-currents-kz": [
+    "physics-41-convection-currents",
+    "kz"
+  ],
+  "physics/41-convection-currents-en": [
+    "physics-41-convection-currents",
+    "en"
+  ],
+  "physics/42-radiation-distance": [
+    "physics-42-radiation-distance",
+    "ru"
+  ],
+  "physics/42-radiation-distance-kz": [
+    "physics-42-radiation-distance",
+    "kz"
+  ],
+  "physics/42-radiation-distance-en": [
+    "physics-42-radiation-distance",
+    "en"
+  ],
+  "physics/43-specific-heat-capacity": [
+    "physics-43-specific-heat-capacity",
+    "ru"
+  ],
+  "physics/43-specific-heat-capacity-kz": [
+    "physics-43-specific-heat-capacity",
+    "kz"
+  ],
+  "physics/43-specific-heat-capacity-en": [
+    "physics-43-specific-heat-capacity",
+    "en"
+  ],
+  "physics/44-phase-change-energy": [
+    "physics-44-phase-change-energy",
+    "ru"
+  ],
+  "physics/44-phase-change-energy-kz": [
+    "physics-44-phase-change-energy",
+    "kz"
+  ],
+  "physics/44-phase-change-energy-en": [
+    "physics-44-phase-change-energy",
+    "en"
+  ],
+  "physics/45-room-energy-budget": [
+    "physics-45-room-energy-budget",
+    "ru"
+  ],
+  "physics/45-room-energy-budget-kz": [
+    "physics-45-room-energy-budget",
+    "kz"
+  ],
+  "physics/45-room-energy-budget-en": [
+    "physics-45-room-energy-budget",
+    "en"
+  ],
+  "physics/46-heat-investigation-mastery": [
+    "physics-46-heat-investigation-mastery",
+    "ru"
+  ],
+  "physics/46-heat-investigation-mastery-kz": [
+    "physics-46-heat-investigation-mastery",
+    "kz"
+  ],
+  "physics/46-heat-investigation-mastery-en": [
+    "physics-46-heat-investigation-mastery",
+    "en"
   ]
 }

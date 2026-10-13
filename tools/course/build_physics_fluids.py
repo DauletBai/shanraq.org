@@ -6,8 +6,10 @@ import re
 
 try:
     from .physics_fluids_data import FLUIDS
+    from .physics_heat_data import HEAT
 except ImportError:
     from physics_fluids_data import FLUIDS
+    from physics_heat_data import HEAT
 
 ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / 'course/lessons/physics'
@@ -141,8 +143,8 @@ def markdown(index,row,lang):
               (h[4],mistake),(h[5],f'![{title}](/static/course/physics/map-{row["stem"]}-{lang}.svg)'),
               (h[6],challenge),(h[7],journal)]
     body='\n\n'.join(f'## {name}\n\n{text}' for name,text in sections)
-    if index < 36:
-        nxt=FLUIDS[index-28]
+    if index <= 36:
+        nxt=FLUIDS[index-28] if index < 36 else HEAT[0]
         label={'ru':'Следующий урок','kz':'Келесі сабақ','en':'Next lesson'}[lang]
         body+=f'\n\n[{label}: {nxt[lang][0]}](/read/physics-{nxt["stem"]}?lang={lang})'
     else:

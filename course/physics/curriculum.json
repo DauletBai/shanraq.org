@@ -58,10 +58,11 @@
       "id": "heat",
       "range": "37-46",
       "lesson_count": 10,
-      "status": "planned",
+      "status": "published",
       "title_ru": "Частицы, тепло и термодинамика",
       "title_kz": "Бөлшектер, жылу және термодинамика",
-      "title_en": "Particles, heat, and thermodynamics"
+      "title_en": "Particles, heat, and thermodynamics",
+      "cover": "/static/covers/school/physics/heat/05-heat-thermodynamics.webp"
     },
     {
       "id": "electricity",
@@ -482,6 +483,108 @@
       "title_ru": "Контрольная точка: спроектируйте безопасную плавучую платформу",
       "title_kz": "Бақылау тапсырмасы: қауіпсіз жүзбелі тұғыр жобалаңыз",
       "title_en": "Checkpoint: design a safe floating platform"
+    }
+  ],
+  "fifth_block_lessons": [
+    {
+      "number": 37,
+      "id": "particle-model-heat",
+      "prerequisites": [
+        "fluids-investigation-mastery"
+      ],
+      "title_ru": "Что происходит с водой, когда она нагревается?",
+      "title_kz": "Су қызғанда не болады?",
+      "title_en": "What happens to water when it warms up?"
+    },
+    {
+      "number": 38,
+      "id": "temperature-thermometer",
+      "prerequisites": [
+        "particle-model-heat"
+      ],
+      "title_ru": "Можно ли измерить тепло рукой?",
+      "title_kz": "Жылуды қолмен өлшеуге бола ма?",
+      "title_en": "Can you measure warmth with your hand?"
+    },
+    {
+      "number": 39,
+      "id": "internal-energy",
+      "prerequisites": [
+        "temperature-thermometer"
+      ],
+      "title_ru": "Почему ладони теплеют, когда их потереть?",
+      "title_kz": "Алақанды ысқылағанда неге жылиды?",
+      "title_en": "Why do your palms warm when you rub them?"
+    },
+    {
+      "number": 40,
+      "id": "conduction-contact",
+      "prerequisites": [
+        "internal-energy"
+      ],
+      "title_ru": "Почему металлическая ложка кажется холоднее деревянной?",
+      "title_kz": "Неге темір қасық ағаш қасықтан салқынырақ сезіледі?",
+      "title_en": "Why does a metal spoon feel colder than a wooden one?"
+    },
+    {
+      "number": 41,
+      "id": "convection-currents",
+      "prerequisites": [
+        "conduction-contact"
+      ],
+      "title_ru": "Зачем батарею отопления ставят у пола?",
+      "title_kz": "Неге жылытқышты еденге жақын қояды?",
+      "title_en": "Why is a room heater placed near the floor?"
+    },
+    {
+      "number": 42,
+      "id": "radiation-distance",
+      "prerequisites": [
+        "convection-currents"
+      ],
+      "title_ru": "Как Солнце согревает нас через пустоту космоса?",
+      "title_kz": "Күн ғарыштағы бос кеңістік арқылы қалай жылытады?",
+      "title_en": "How does the Sun warm us across space?"
+    },
+    {
+      "number": 43,
+      "id": "specific-heat-capacity",
+      "prerequisites": [
+        "radiation-distance"
+      ],
+      "title_ru": "Почему маленькая чашка воды греется быстрее большой?",
+      "title_kz": "Неге аз су көп суға қарағанда тезірек жылиды?",
+      "title_en": "Why can a small cup of water warm faster than a large one?"
+    },
+    {
+      "number": 44,
+      "id": "phase-change-energy",
+      "prerequisites": [
+        "specific-heat-capacity"
+      ],
+      "title_ru": "Куда уходит энергия, пока лёд тает?",
+      "title_kz": "Мұз ерігенде энергия қайда кетеді?",
+      "title_en": "Where does energy go while ice melts?"
+    },
+    {
+      "number": 45,
+      "id": "room-energy-budget",
+      "prerequisites": [
+        "phase-change-energy"
+      ],
+      "title_ru": "Почему комната остывает даже при закрытом окне?",
+      "title_kz": "Терезе жабық болса да бөлме неге суиды?",
+      "title_en": "Why can a room cool with the window shut?"
+    },
+    {
+      "number": 46,
+      "id": "heat-investigation-mastery",
+      "prerequisites": [
+        "room-energy-budget"
+      ],
+      "title_ru": "Контрольная точка: как сделать комнату теплее без лишней энергии?",
+      "title_kz": "Бақылау тапсырмасы: бөлмені артық энергиясыз қалай жылы ұстаймыз?",
+      "title_en": "Checkpoint: how can a room stay warmer without extra energy?"
     }
   ]
 }

@@ -11,23 +11,26 @@ try:
     from .physics_motion_data import MOTION
     from .physics_forces_data import FORCES
     from .physics_fluids_data import FLUIDS
+    from .physics_heat_data import HEAT
 except ImportError:  # direct invocation: python3 tools/course/prepare_physics.py
     from build_physics_block import DATA, LESSONS, ROOT
     from physics_motion_data import MOTION
     from physics_forces_data import FORCES
     from physics_fluids_data import FLUIDS
+    from physics_heat_data import HEAT
 
 COVER = "/static/covers/school/physics/investigation/01-observe-measure.webp"
 MOTION_COVER = "/static/covers/school/physics/motion/02-motion-graphs.webp"
 FORCES_COVER = "/static/covers/school/physics/forces-energy/03-forces-energy.webp"
 FLUIDS_COVER = "/static/covers/school/physics/fluids/04-fluids-pressure.webp"
+HEAT_COVER = "/static/covers/school/physics/heat/05-heat-thermodynamics.webp"
 META = {
     "ru": ("Физика вокруг нас: от первого опыта до своей лаборатории",
-           "Бесплатный курс физики без пропущенных шагов: измеряем и проверяем объяснения движения, сил, энергии, давления и плавания."),
+           "Бесплатный курс физики без пропущенных шагов: исследуем движение, силы, давление, плавание, тепло и энергию."),
     "kz": ("Айналамыздағы физика: алғашқы тәжірибеден өз зертханамызға дейін",
-           "Тегін физика курсы: қозғалыс, күш, энергия, қысым және жүзу туралы болжап, өлшеп, түсіндірмені тексереміз."),
+           "Тегін физика курсы: қозғалыс, күш, қысым, жүзу, жылу және энергияны болжап, өлшеп, түсіндірмені тексереміз."),
     "en": ("Physics around us: from a first experiment to your own lab",
-           "A free physics course with no skipped steps: predict, measure, and test ideas about motion, forces, energy, pressure, and floating."),
+           "A free physics course with no skipped steps: investigate motion, forces, pressure, floating, heat, and energy."),
 }
 LEAD = re.compile(r"_Лид \(summary\):_ \*\*(.+)\*\*$")
 
@@ -49,12 +52,14 @@ def read_lesson(path):
     return lines[0][2:].strip(), lead.group(1), "\n".join(lines[4:]).strip() + "\n"
 
 
-def prepare():
-    if len(DATA) != 8 or len(MOTION) != 10 or len(FORCES) != 10 or len(FLUIDS) != 8:
-        raise ValueError("physics release requires four complete blocks")
+def prepare(start=1):
+    if len(DATA) != 8 or len(MOTION) != 10 or len(FORCES) != 10 or len(FLUIDS) != 8 or len(HEAT) != 10:
+        raise ValueError("physics release requires five complete blocks")
+    if not 1 <= start <= 46:
+        raise ValueError("start must be a published lesson number from 1 to 46")
     route = [(item["stem"], f"physics-{i:02d}-{item['stem'][3:]}", i*10,
-              COVER if i <= 8 else (MOTION_COVER if i <= 18 else (FORCES_COVER if i <= 28 else FLUIDS_COVER)))
-             for i, item in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS], 1)]
+              COVER if i <= 8 else (MOTION_COVER if i <= 18 else (FORCES_COVER if i <= 28 else (FLUIDS_COVER if i <= 36 else HEAT_COVER))))
+             for i, item in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT], 1) if i >= start]
     slug_list = ",".join(literal(slug) for _, slug, _, _ in route)
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-physics-course'));",
            f"""DO $guard$
@@ -110,8 +115,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sql", type=Path, required=True)
     parser.add_argument("--expected", type=Path, required=True)
+    parser.add_argument("--start", type=int, default=1, help="first lesson to upsert; use 36 for the heat block and its incoming link")
     args = parser.parse_args()
-    sql, expected = prepare()
+    sql, expected = prepare(args.start)
     args.sql.write_text(sql, encoding="utf-8")
     args.expected.write_text(json.dumps(expected, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Prepared {len(expected)} localized pages; no remote changes")
