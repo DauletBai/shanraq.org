@@ -50,7 +50,7 @@ def text(x, y, value, size=28, color="#173d58", anchor="start"):
 
 def svg(row, lang):
     title, labels = row[lang][0], row["map"][lang]
-    if len(labels) != 4 or any(len(wrap(label, 27)) > 2 for label in labels):
+    if len(labels) != 4 or any(len(wrap(label, 24)) > 2 for label in labels):
         raise ValueError(f"Map label will not fit: {row['stem']} {lang}")
     out = [
         '<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">',
@@ -61,15 +61,15 @@ def svg(row, lang):
         '<rect x="75" y="200" width="900" height="550" rx="24" fill="url(#card)" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>',
         '<rect x="1015" y="200" width="510" height="550" rx="24" fill="#fff" stroke="#9bbecb" stroke-width="3" filter="url(#shadow)"/>',
     ]
-    title_lines = wrap(title, 54)
-    if len(title_lines) > 2:
+    title_lines = wrap(title, 32)
+    if len(title_lines) > 3:
         raise ValueError(f"Title will not fit: {row['stem']} {lang}")
     for i, line in enumerate(title_lines):
-        out.append(text(76, 83 + i * 58, line, 43))
+        out.append(text(76, 72 + i * 48, line, 34))
     for i, label in enumerate(labels):
         y = 235 + i * 122
         out.append(f'<rect x="1044" y="{y}" width="450" height="94" rx="14" fill="{("#e4f5fa", "#fff0df", "#e9f5ee", "#e9edfa")[i]}" stroke="#d3e4e9"/>')
-        for j, line in enumerate(wrap(label, 27)):
+        for j, line in enumerate(wrap(label, 24)):
             out.append(text(1064, y + 37 + j * 32, line, 28 if len(line) < 25 else 26))
     # The left drawing represents the physical process, while the right cards
     # carry the exact teaching data. Keep labels outside drawn objects.
