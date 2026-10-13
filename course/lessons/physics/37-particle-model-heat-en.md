@@ -4,7 +4,7 @@ _Лид (summary):_ **Move from a drop of water to a model of invisible particle
 
 ## A real-life question and prediction
 
-Put two identical closed cups of water at different temperatures on a desk. One cools; the other warms towards room temperature. Which part can you see, and which part requires a model? Imagine water as a very large number of tiny particles. Do not draw each as a miniature cup. Predict whether the mass of a closed cup changes just because its temperature changes.
+Put two identical closed cups on a desk: one contains water warmer than room air, the other cooler. The first cools and the second warms towards room temperature. Which part can you see, and which part requires a model? Imagine water as a very large number of tiny particles. Do not draw each as a miniature cup. Predict whether the mass of a closed cup changes just because its temperature changes.
 
 Pause before the explanation: what exactly do you expect to see, and why? Write a prediction before calculating. After the lesson, separate what you observed, what you calculated from supplied numbers, and what you only inferred about invisible particles. That record lets you correct a model without replacing evidence with a neat answer.
 
