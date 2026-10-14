@@ -158,8 +158,9 @@ def markdown(number, row, lang):
         label = {"ru": "Следующий урок", "kz": "Келесі сабақ", "en": "Next lesson"}[lang]
         result += f'\n\n[{label}: {next_row[lang][0]}](/read/physics-{next_row["stem"]}?lang={lang})'
     else:
-        label = {"ru": "Вернуться к курсу «Физика»", "kz": "«Физика» курсына оралу", "en": "Return to the Physics course"}[lang]
-        result += f'\n\n[{label}](/course/physics?lang={lang})'
+        label = {"ru": "Следующий урок", "kz": "Келесі сабақ", "en": "Next lesson"}[lang]
+        title = {"ru": "Почему шарик прилипает к стене?", "kz": "Шар неге қабырғаға жабысады?", "en": "Why does a balloon stick to a wall?"}[lang]
+        result += f'\n\n[{label}: {title}](/read/physics-47-electric-charge?lang={lang})'
     return f'# {title}\n\n_Лид (summary):_ **{summary}**\n\n{result}\n'
 
 def build():

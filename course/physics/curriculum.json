@@ -68,10 +68,11 @@
       "id": "electricity",
       "range": "47-56",
       "lesson_count": 10,
-      "status": "planned",
+      "status": "published",
       "title_ru": "Электрические цепи",
       "title_kz": "Электр тізбектері",
-      "title_en": "Electric circuits"
+      "title_en": "Electric circuits",
+      "cover": "/static/covers/school/physics/electricity/06-electric-circuits.webp"
     },
     {
       "id": "magnetism",
@@ -585,6 +586,108 @@
       "title_ru": "Контрольная точка: как сделать комнату теплее без лишней энергии?",
       "title_kz": "Бақылау тапсырмасы: бөлмені артық энергиясыз қалай жылы ұстаймыз?",
       "title_en": "Checkpoint: how can a room stay warmer without extra energy?"
+    }
+  ],
+  "sixth_block_lessons": [
+    {
+      "number": 47,
+      "id": "electric-charge",
+      "prerequisites": [
+        "heat-investigation-mastery"
+      ],
+      "title_ru": "Почему шарик прилипает к стене?",
+      "title_kz": "Шар неге қабырғаға жабысады?",
+      "title_en": "Why does a balloon stick to a wall?"
+    },
+    {
+      "number": 48,
+      "id": "closed-battery-circuit",
+      "prerequisites": [
+        "electric-charge"
+      ],
+      "title_ru": "Почему лампа не светится от одного провода?",
+      "title_kz": "Шам неге бір сыммен жанбайды?",
+      "title_en": "Why will a lamp not shine with one wire?"
+    },
+    {
+      "number": 49,
+      "id": "current-charge-time",
+      "prerequisites": [
+        "closed-battery-circuit"
+      ],
+      "title_ru": "Что показывает амперметр?",
+      "title_kz": "Амперметр нені көрсетеді?",
+      "title_en": "What does an ammeter show?"
+    },
+    {
+      "number": 50,
+      "id": "voltage-energy-charge",
+      "prerequisites": [
+        "current-charge-time"
+      ],
+      "title_ru": "Почему у батарейки написано 3 В?",
+      "title_kz": "Батареяда неге 3 В деп жазылған?",
+      "title_en": "Why is a battery marked 3 V?"
+    },
+    {
+      "number": 51,
+      "id": "resistance-ohms-law",
+      "prerequisites": [
+        "voltage-energy-charge"
+      ],
+      "title_ru": "Как резистор защищает цепь?",
+      "title_kz": "Резистор тізбекті қалай қорғайды?",
+      "title_en": "How does a resistor protect a circuit?"
+    },
+    {
+      "number": 52,
+      "id": "series-circuit",
+      "prerequisites": [
+        "resistance-ohms-law"
+      ],
+      "title_ru": "Почему одна перегоревшая лампа гасит всю гирлянду?",
+      "title_kz": "Бір шам сөнсе, бүкіл тізбек неге өшеді?",
+      "title_en": "Why can one failed lamp darken a whole string?"
+    },
+    {
+      "number": 53,
+      "id": "parallel-circuit",
+      "prerequisites": [
+        "series-circuit"
+      ],
+      "title_ru": "Почему дома лампы включаются независимо?",
+      "title_kz": "Үйдегі шамдар неге бір-біріне тәуелсіз қосылады?",
+      "title_en": "Why can household lamps switch independently?"
+    },
+    {
+      "number": 54,
+      "id": "measuring-and-diagnosing",
+      "prerequisites": [
+        "parallel-circuit"
+      ],
+      "title_ru": "Как найти обрыв, не гадая?",
+      "title_kz": "Үзілген жерді қалай тауып, болжамға сеніп қалмаймыз?",
+      "title_en": "How can you find a break without guessing?"
+    },
+    {
+      "number": 55,
+      "id": "electric-power-energy",
+      "prerequisites": [
+        "measuring-and-diagnosing"
+      ],
+      "title_ru": "Сколько энергии тратит маленькая лампа?",
+      "title_kz": "Кішкентай шам қанша энергия жұмсайды?",
+      "title_en": "How much energy does a tiny lamp use?"
+    },
+    {
+      "number": 56,
+      "id": "electricity-investigation-mastery",
+      "prerequisites": [
+        "electric-power-energy"
+      ],
+      "title_ru": "Контрольная точка: спроектируйте свет для модели комнаты",
+      "title_kz": "Бақылау тапсырмасы: бөлме макетіне жарық жобалаңыз",
+      "title_en": "Checkpoint: design lighting for a model room"
     }
   ]
 }

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Бір шам сөнсе, бүкіл тізбек неге өшеді?</title><desc id="desc">Бір тармақ: ток бірдей; Кернеулер қосылады; R₁ = 100 Ω; R₂ = 200 Ω; I = 10 мА; U₁+U₂ = 3 В</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d3e9ef"/></pattern><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#345d73" flood-opacity=".22"/></filter><linearGradient id="panel" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e6f2f5"/></linearGradient></defs>
+<rect width="1600" height="900" fill="#eff8fa"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="74" y="205" width="860" height="555" rx="20" fill="url(#panel)" stroke="#95b8c7" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="205" width="550" height="555" rx="20" fill="#fff" stroke="#95b8c7" stroke-width="3" filter="url(#shadow)"/>
+<text x="78" y="72" text-anchor="start" font-family="Arial,sans-serif" font-size="33" font-weight="650" fill="#17415a">Бір шам сөнсе, бүкіл тізбек неге</text>
+<text x="78" y="117" text-anchor="start" font-family="Arial,sans-serif" font-size="33" font-weight="650" fill="#17415a">өшеді?</text>
+<path d="M250 400V320H420 M570 320h68 M786 320h9 M795 320V610H250V520" fill="none" stroke="#1d6385" stroke-width="9"/>
+<path d="M250 403v42m-18 0h36m-10 14h20m-28 0v62" stroke="#194863" stroke-width="8" fill="none" stroke-linecap="round"/>
+<text x="220" y="441" text-anchor="start" font-family="Arial,sans-serif" font-size="30" font-weight="650" fill="#17415a">+</text>
+<text x="220" y="499" text-anchor="start" font-family="Arial,sans-serif" font-size="30" font-weight="650" fill="#17415a">−</text>
+<rect x="422" y="291" width="148" height="58" rx="8" fill="#f7c778" stroke="#b66b35" stroke-width="6"/>
+<text x="496" y="329" text-anchor="middle" font-family="Arial,sans-serif" font-size="27" font-weight="650" fill="#17415a">100 Ω</text>
+<rect x="638" y="291" width="148" height="58" rx="8" fill="#f7c778" stroke="#b66b35" stroke-width="6"/>
+<text x="712" y="329" text-anchor="middle" font-family="Arial,sans-serif" font-size="27" font-weight="650" fill="#17415a">200 Ω</text>
+<rect x="1002" y="238" width="494" height="99" rx="12" fill="#e8f5fb" stroke="#d1e2e9"/>
+<text x="1020" y="278" text-anchor="start" font-family="Arial,sans-serif" font-size="26" font-weight="650" fill="#17415a">Бір тармақ: ток бірдей</text>
+<rect x="1002" y="364" width="494" height="99" rx="12" fill="#fff0e2" stroke="#d1e2e9"/>
+<text x="1020" y="404" text-anchor="start" font-family="Arial,sans-serif" font-size="26" font-weight="650" fill="#17415a">Кернеулер қосылады</text>
+<rect x="1002" y="490" width="494" height="99" rx="12" fill="#eaf5ed" stroke="#d1e2e9"/>
+<text x="1020" y="530" text-anchor="start" font-family="Arial,sans-serif" font-size="26" font-weight="650" fill="#17415a">R₁ = 100 Ω; R₂ = 200 Ω</text>
+<rect x="1002" y="616" width="494" height="99" rx="12" fill="#edf0fa" stroke="#d1e2e9"/>
+<text x="1020" y="656" text-anchor="start" font-family="Arial,sans-serif" font-size="26" font-weight="650" fill="#17415a">I = 10 мА; U₁+U₂ = 3 В</text>
+</svg>

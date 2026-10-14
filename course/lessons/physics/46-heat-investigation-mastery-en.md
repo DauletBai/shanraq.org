@@ -1,4 +1,4 @@
-# Checkpoint: how can a room stay warmer without extra energy?
+# Why does a balloon stick to a wall?
 
 _Лид (summary):_ **Use the particle model, three transfer processes and an energy budget in one safe design project.**
 
@@ -36,4 +36,4 @@ Cover the worked solution. Draw a boundary around the system: what is inside and
 
 Write four lines: question; initial prediction; observation or supplied values; revised conclusion with its conditions. Identify one concrete source of error, such as a coarse thermometer, energy escaping into the room, or a changed amount of water. Return to the conclusion after the next lesson and see whether it survives a new situation.
 
-[Return to the Physics course](/course/physics?lang=en)
+[Next lesson: Why does a balloon stick to a wall?](/read/physics-47-electric-charge?lang=en)

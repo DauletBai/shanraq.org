@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">What does an ammeter show?</title><desc id="desc">Current = charge / time; Ammeter: in series; Δq = 6 C; Δt = 3 s; I = 2 A</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d3e9ef"/></pattern><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#345d73" flood-opacity=".22"/></filter><linearGradient id="panel" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e6f2f5"/></linearGradient></defs>
+<rect width="1600" height="900" fill="#eff8fa"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="74" y="205" width="860" height="555" rx="20" fill="url(#panel)" stroke="#95b8c7" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="205" width="550" height="555" rx="20" fill="#fff" stroke="#95b8c7" stroke-width="3" filter="url(#shadow)"/>
+<text x="78" y="72" text-anchor="start" font-family="Arial,sans-serif" font-size="33" font-weight="650" fill="#17415a">What does an ammeter show?</text>
+<path d="M225 465h570" stroke="#1d6385" stroke-width="16" stroke-linecap="round"/>
+<path d="M495 340v250" stroke="#ec906a" stroke-width="8" stroke-dasharray="13 13"/>
+<path d="M595 415h105m-25-22 25 22-25 22" fill="none" stroke="#e8895d" stroke-width="8"/>
+<text x="505" y="630" text-anchor="middle" font-family="Arial,sans-serif" font-size="38" font-weight="650" fill="#17415a">Δq / Δt</text>
+<rect x="1002" y="238" width="494" height="99" rx="12" fill="#e8f5fb" stroke="#d1e2e9"/>
+<text x="1020" y="278" text-anchor="start" font-family="Arial,sans-serif" font-size="26" font-weight="650" fill="#17415a">Current = charge / time</text>
+<rect x="1002" y="364" width="494" height="99" rx="12" fill="#fff0e2" stroke="#d1e2e9"/>
+<text x="1020" y="404" text-anchor="start" font-family="Arial,sans-serif" font-size="26" font-weight="650" fill="#17415a">Ammeter: in series</text>
+<rect x="1002" y="490" width="494" height="99" rx="12" fill="#eaf5ed" stroke="#d1e2e9"/>
+<text x="1020" y="530" text-anchor="start" font-family="Arial,sans-serif" font-size="26" font-weight="650" fill="#17415a">Δq = 6 C; Δt = 3 s</text>
+<rect x="1002" y="616" width="494" height="99" rx="12" fill="#edf0fa" stroke="#d1e2e9"/>
+<text x="1020" y="656" text-anchor="start" font-family="Arial,sans-serif" font-size="26" font-weight="650" fill="#17415a">I = 2 A</text>
+</svg>

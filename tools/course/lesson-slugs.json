@@ -5482,5 +5482,125 @@
   "physics/46-heat-investigation-mastery-en": [
     "physics-46-heat-investigation-mastery",
     "en"
+  ],
+  "physics/47-electric-charge": [
+    "physics-47-electric-charge",
+    "ru"
+  ],
+  "physics/47-electric-charge-kz": [
+    "physics-47-electric-charge",
+    "kz"
+  ],
+  "physics/47-electric-charge-en": [
+    "physics-47-electric-charge",
+    "en"
+  ],
+  "physics/48-closed-battery-circuit": [
+    "physics-48-closed-battery-circuit",
+    "ru"
+  ],
+  "physics/48-closed-battery-circuit-kz": [
+    "physics-48-closed-battery-circuit",
+    "kz"
+  ],
+  "physics/48-closed-battery-circuit-en": [
+    "physics-48-closed-battery-circuit",
+    "en"
+  ],
+  "physics/49-current-charge-time": [
+    "physics-49-current-charge-time",
+    "ru"
+  ],
+  "physics/49-current-charge-time-kz": [
+    "physics-49-current-charge-time",
+    "kz"
+  ],
+  "physics/49-current-charge-time-en": [
+    "physics-49-current-charge-time",
+    "en"
+  ],
+  "physics/50-voltage-energy-charge": [
+    "physics-50-voltage-energy-charge",
+    "ru"
+  ],
+  "physics/50-voltage-energy-charge-kz": [
+    "physics-50-voltage-energy-charge",
+    "kz"
+  ],
+  "physics/50-voltage-energy-charge-en": [
+    "physics-50-voltage-energy-charge",
+    "en"
+  ],
+  "physics/51-resistance-ohms-law": [
+    "physics-51-resistance-ohms-law",
+    "ru"
+  ],
+  "physics/51-resistance-ohms-law-kz": [
+    "physics-51-resistance-ohms-law",
+    "kz"
+  ],
+  "physics/51-resistance-ohms-law-en": [
+    "physics-51-resistance-ohms-law",
+    "en"
+  ],
+  "physics/52-series-circuit": [
+    "physics-52-series-circuit",
+    "ru"
+  ],
+  "physics/52-series-circuit-kz": [
+    "physics-52-series-circuit",
+    "kz"
+  ],
+  "physics/52-series-circuit-en": [
+    "physics-52-series-circuit",
+    "en"
+  ],
+  "physics/53-parallel-circuit": [
+    "physics-53-parallel-circuit",
+    "ru"
+  ],
+  "physics/53-parallel-circuit-kz": [
+    "physics-53-parallel-circuit",
+    "kz"
+  ],
+  "physics/53-parallel-circuit-en": [
+    "physics-53-parallel-circuit",
+    "en"
+  ],
+  "physics/54-measuring-and-diagnosing": [
+    "physics-54-measuring-and-diagnosing",
+    "ru"
+  ],
+  "physics/54-measuring-and-diagnosing-kz": [
+    "physics-54-measuring-and-diagnosing",
+    "kz"
+  ],
+  "physics/54-measuring-and-diagnosing-en": [
+    "physics-54-measuring-and-diagnosing",
+    "en"
+  ],
+  "physics/55-electric-power-energy": [
+    "physics-55-electric-power-energy",
+    "ru"
+  ],
+  "physics/55-electric-power-energy-kz": [
+    "physics-55-electric-power-energy",
+    "kz"
+  ],
+  "physics/55-electric-power-energy-en": [
+    "physics-55-electric-power-energy",
+    "en"
+  ],
+  "physics/56-electricity-investigation-mastery": [
+    "physics-56-electricity-investigation-mastery",
+    "ru"
+  ],
+  "physics/56-electricity-investigation-mastery-kz": [
+    "physics-56-electricity-investigation-mastery",
+    "kz"
+  ],
+  "physics/56-electricity-investigation-mastery-en": [
+    "physics-56-electricity-investigation-mastery",
+    "en"
   ]
 }
