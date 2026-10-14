@@ -19,6 +19,8 @@
 <path d="M480 345v40 M700 345v40" stroke="#e48859" stroke-width="8"/>
 <circle cx="480" cy="345" r="9" fill="#e48859"/><circle cx="480" cy="385" r="9" fill="#e48859"/>
 <circle cx="700" cy="345" r="9" fill="#e48859"/><circle cx="700" cy="385" r="9" fill="#e48859"/>
+<text x="480" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="27" font-weight="650" fill="#17415a">S₁</text>
+<text x="700" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="27" font-weight="650" fill="#17415a">S₂</text>
 <rect x="1002" y="238" width="494" height="99" rx="12" fill="#e8f5fb" stroke="#d1e2e9"/>
 <text x="1020" y="278" text-anchor="start" font-family="Arial,sans-serif" font-size="26" font-weight="650" fill="#17415a">Два независимых ключа</text>
 <rect x="1002" y="364" width="494" height="99" rx="12" fill="#fff0e2" stroke="#d1e2e9"/>
