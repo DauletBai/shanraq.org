@@ -78,10 +78,11 @@
       "id": "magnetism",
       "range": "57-66",
       "lesson_count": 10,
-      "status": "planned",
+      "status": "published",
       "title_ru": "Магнетизм и связь",
       "title_kz": "Магнетизм және байланыс",
-      "title_en": "Magnetism and communication"
+      "title_en": "Magnetism and communication",
+      "cover": "/static/covers/school/physics/magnetism/07-magnetism-communication.webp"
     },
     {
       "id": "waves",
@@ -688,6 +689,108 @@
       "title_ru": "Контрольная точка: спроектируйте свет для модели комнаты",
       "title_kz": "Бақылау тапсырмасы: бөлме макетіне жарық жобалаңыз",
       "title_en": "Checkpoint: design lighting for a model room"
+    }
+  ],
+  "seventh_block_lessons": [
+    {
+      "number": 57,
+      "id": "what-is-magnetic",
+      "prerequisites": [
+        "electricity-investigation-mastery"
+      ],
+      "title_ru": "Почему магнит поднимает скрепку, но не всякую монету?",
+      "title_kz": "Магнит неге қыстырғышты көтереді, ал тиынды көтермеуі мүмкін?",
+      "title_en": "Why can a magnet lift a clip but not every coin?"
+    },
+    {
+      "number": 58,
+      "id": "poles-and-field",
+      "prerequisites": [
+        "what-is-magnetic"
+      ],
+      "title_ru": "Почему два магнита то липнут, то отталкиваются?",
+      "title_kz": "Екі магнит неге бірде жабысып, бірде тебіледі?",
+      "title_en": "Why do two magnets sometimes stick and sometimes push apart?"
+    },
+    {
+      "number": 59,
+      "id": "compass-and-earth",
+      "prerequisites": [
+        "poles-and-field"
+      ],
+      "title_ru": "Почему стрелка компаса поворачивается без прикосновения?",
+      "title_kz": "Компас тілшесі жанаспай-ақ неге бұрылады?",
+      "title_en": "Why does a compass needle turn without a touch?"
+    },
+    {
+      "number": 60,
+      "id": "current-creates-field",
+      "prerequisites": [
+        "compass-and-earth"
+      ],
+      "title_ru": "Почему компас отклоняется рядом с проводом?",
+      "title_kz": "Компас сым жанында неге ауытқиды?",
+      "title_en": "Why does a compass turn beside a wire?"
+    },
+    {
+      "number": 61,
+      "id": "build-an-electromagnet",
+      "prerequisites": [
+        "current-creates-field"
+      ],
+      "title_ru": "Можно ли сделать магнит, который выключается?",
+      "title_kz": "Өшірілетін магнит жасауға бола ма?",
+      "title_en": "Can you make a magnet that switches off?"
+    },
+    {
+      "number": 62,
+      "id": "why-motor-turns",
+      "prerequisites": [
+        "build-an-electromagnet"
+      ],
+      "title_ru": "Как магнит и ток заставляют мотор вращаться?",
+      "title_kz": "Магнит пен ток моторды қалай айналдырады?",
+      "title_en": "How can a magnet and current turn a motor?"
+    },
+    {
+      "number": 63,
+      "id": "changing-field-induction",
+      "prerequisites": [
+        "why-motor-turns"
+      ],
+      "title_ru": "Почему движение магнита зажигает измеритель?",
+      "title_kz": "Магнит қозғалғанда өлшеуіш неге ауытқиды?",
+      "title_en": "Why does moving a magnet deflect a meter?"
+    },
+    {
+      "number": 64,
+      "id": "generator-energy-chain",
+      "prerequisites": [
+        "changing-field-induction"
+      ],
+      "title_ru": "Генератор создаёт электричество из ничего?",
+      "title_kz": "Генератор электрді жоқтан жасай ма?",
+      "title_en": "Does a generator make electricity from nothing?"
+    },
+    {
+      "number": 65,
+      "id": "how-a-message-travels",
+      "prerequisites": [
+        "generator-energy-chain"
+      ],
+      "title_ru": "Как сообщение доходит без перевозки бумаги?",
+      "title_kz": "Хабар қағаз тасымалдамай қалай жетеді?",
+      "title_en": "How can a message arrive without moving paper?"
+    },
+    {
+      "number": 66,
+      "id": "magnetism-communication-checkpoint",
+      "prerequisites": [
+        "how-a-message-travels"
+      ],
+      "title_ru": "Контрольная точка: спроектируйте сигнал открытой двери",
+      "title_kz": "Бақылау тапсырмасы: ашық есіктің белгісін жобалаңыз",
+      "title_en": "Checkpoint: design an open-door signal"
     }
   ]
 }

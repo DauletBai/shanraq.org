@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Why does a compass turn beside a wire?</title><desc id="desc">Current on: field; Current off; Direction reverses; Resistor required</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d4e8ed"/></pattern><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#e9f4f6"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#37657b" flood-opacity=".23"/></filter></defs>
+<rect width="1600" height="900" fill="#f1f9fb"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="195" width="875" height="590" rx="18" fill="url(#paper)" stroke="#99bbc8" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="195" width="555" height="590" rx="18" fill="#fff" stroke="#99bbc8" stroke-width="3" filter="url(#shadow)"/>
+<text x="75" y="76" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#16445e">Why does a compass turn beside a wire?</text>
+<path d="M175 430H850" stroke="#246381" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="500" cy="430" r="120" stroke="#91c7d4" stroke-width="6" fill="none"/>
+<circle cx="500" cy="430" r="190" stroke="#c2dde4" stroke-width="5" fill="none"/>
+<path d="M600 355l25 18-4-30" fill="#e78960"/>
+<circle cx="695" cy="625" r="55" fill="#e9f5f8" stroke="#7eb1c0" stroke-width="5"/>
+<path d="M695 588l-20 47 20-8z" fill="#ee8b69"/>
+<rect x="1005" y="224" width="495" height="105" rx="11" fill="#e6f5fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="269" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Current on: field</text>
+<rect x="1005" y="359" width="495" height="105" rx="11" fill="#fff0e4" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="404" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Current off</text>
+<rect x="1005" y="494" width="495" height="105" rx="11" fill="#eaf4e9" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="539" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Direction reverses</text>
+<rect x="1005" y="629" width="495" height="105" rx="11" fill="#edf0fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="674" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Resistor required</text>
+</svg>

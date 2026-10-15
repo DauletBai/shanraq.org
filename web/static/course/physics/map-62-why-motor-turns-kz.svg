@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Магнит пен ток моторды қалай айналдырады?</title><desc id="desc">Кіріс: 10 Дж; Қозғалыс: 6 Дж; Шығын: 4 Дж; Үлес: 60%</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d4e8ed"/></pattern><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#e9f4f6"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#37657b" flood-opacity=".23"/></filter></defs>
+<rect width="1600" height="900" fill="#f1f9fb"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="195" width="875" height="590" rx="18" fill="url(#paper)" stroke="#99bbc8" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="195" width="555" height="590" rx="18" fill="#fff" stroke="#99bbc8" stroke-width="3" filter="url(#shadow)"/>
+<text x="75" y="76" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#16445e">Магнит пен ток моторды қалай айналдырады?</text>
+<rect x="160" y="410" width="200" height="74" rx="10" fill="#ec8d76" stroke="#a55950" stroke-width="4"/><rect x="260" y="410" width="100" height="74" rx="10" fill="#80c6df"/>
+<rect x="670" y="410" width="200" height="74" rx="10" fill="#ec8d76" stroke="#a55950" stroke-width="4"/><rect x="770" y="410" width="100" height="74" rx="10" fill="#80c6df"/>
+<circle cx="520" cy="447" r="137" fill="#f8fbfc" stroke="#8caec0" stroke-width="6"/>
+<rect x="455" y="382" width="130" height="130" rx="9" fill="#fae8bf" stroke="#b8744d" stroke-width="6"/>
+<path d="M510 300q145 50 100 195" stroke="#df8a5e" stroke-width="8" fill="none"/>
+<path d="M610 495l-21-27 35 6" fill="#df8a5e"/>
+<text x="215" y="459" text-anchor="middle" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#16445e">N</text>
+<text x="825" y="459" text-anchor="middle" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#16445e">S</text>
+<rect x="1005" y="224" width="495" height="105" rx="11" fill="#e6f5fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="269" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Кіріс: 10 Дж</text>
+<rect x="1005" y="359" width="495" height="105" rx="11" fill="#fff0e4" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="404" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Қозғалыс: 6 Дж</text>
+<rect x="1005" y="494" width="495" height="105" rx="11" fill="#eaf4e9" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="539" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Шығын: 4 Дж</text>
+<rect x="1005" y="629" width="495" height="105" rx="11" fill="#edf0fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="674" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Үлес: 60%</text>
+</svg>

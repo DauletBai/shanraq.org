@@ -209,8 +209,8 @@ def markdown(row, number, lang):
         text={"ru":"Следующий урок","kz":"Келесі сабақ","en":"Next lesson"}[lang]
         body+=f'\n\n[{text}: {next_row[lang][0]}](/read/physics-{next_row["stem"]}?lang={lang})'
     else:
-        text={"ru":"Вернуться к курсу «Физика»","kz":"«Физика» курсына оралу","en":"Return to the Physics course"}[lang]
-        body+=f'\n\n[{text}](/course/physics?lang={lang})'
+        text={"ru":"Следующий урок: Почему магнит поднимает скрепку, но не всякую монету?","kz":"Келесі сабақ: Магнит неге қыстырғышты көтереді, ал тиынды көтермеуі мүмкін?","en":"Next lesson: Why can a magnet lift a clip but not every coin?"}[lang]
+        body+=f'\n\n[{text}](/read/physics-57-what-is-magnetic?lang={lang})'
     return f'# {title}\n\n_Лид (summary):_ **{summary}**\n\n{body}\n'
 
 

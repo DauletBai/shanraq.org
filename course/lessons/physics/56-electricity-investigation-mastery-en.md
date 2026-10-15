@@ -34,4 +34,4 @@ Suppose the cell voltage sags to 2.8 V with both branches on. Which earlier nume
 
 Add a page to My World Lab Notebook with four lines: question; prediction before reading the answer; observation or calculation from supplied numbers; revised conclusion and its conditions. If you did not do an experiment, do not write ‘measured’. After the diagram, explain where charge moves, where energy is transferred, and where the model simplifies a real device.
 
-[Return to the Physics course](/course/physics?lang=en)
+[Next lesson: Why can a magnet lift a clip but not every coin?](/read/physics-57-what-is-magnetic?lang=en)

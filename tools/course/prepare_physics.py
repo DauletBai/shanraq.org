@@ -13,6 +13,7 @@ try:
     from .physics_fluids_data import FLUIDS
     from .physics_heat_data import HEAT
     from .physics_electricity_data import ELECTRICITY
+    from .physics_magnetism_data import MAGNETISM
 except ImportError:  # direct invocation: python3 tools/course/prepare_physics.py
     from build_physics_block import DATA, LESSONS, ROOT
     from physics_motion_data import MOTION
@@ -20,6 +21,7 @@ except ImportError:  # direct invocation: python3 tools/course/prepare_physics.p
     from physics_fluids_data import FLUIDS
     from physics_heat_data import HEAT
     from physics_electricity_data import ELECTRICITY
+    from physics_magnetism_data import MAGNETISM
 
 COVER = "/static/covers/school/physics/investigation/01-observe-measure.webp"
 MOTION_COVER = "/static/covers/school/physics/motion/02-motion-graphs.webp"
@@ -27,13 +29,14 @@ FORCES_COVER = "/static/covers/school/physics/forces-energy/03-forces-energy.web
 FLUIDS_COVER = "/static/covers/school/physics/fluids/04-fluids-pressure.webp"
 HEAT_COVER = "/static/covers/school/physics/heat/05-heat-thermodynamics.webp"
 ELECTRICITY_COVER = "/static/covers/school/physics/electricity/06-electric-circuits.webp"
+MAGNETISM_COVER = "/static/covers/school/physics/magnetism/07-magnetism-communication.webp"
 META = {
     "ru": ("Физика вокруг нас: от первого опыта до своей лаборатории",
-           "Бесплатный курс физики без пропущенных шагов: исследуем движение, силы, тепло, электрические цепи и энергию."),
+           "Бесплатный курс физики без пропущенных шагов: исследуем движение, силы, тепло, электрические цепи, магнетизм и энергию."),
     "kz": ("Айналамыздағы физика: алғашқы тәжірибеден өз зертханамызға дейін",
-           "Тегін физика курсы: қозғалыс, күш, жылу, электр тізбектері мен энергияны болжап, өлшеп, тексереміз."),
+           "Тегін физика курсы: қозғалыс, күш, жылу, электр тізбектері, магнетизм мен энергияны болжап, өлшеп, тексереміз."),
     "en": ("Physics around us: from a first experiment to your own lab",
-           "A free physics course with no skipped steps: investigate motion, forces, heat, electric circuits, and energy."),
+           "A free physics course with no skipped steps: investigate motion, forces, heat, circuits, magnetism, and energy."),
 }
 LEAD = re.compile(r"_Лид \(summary\):_ \*\*(.+)\*\*$")
 
@@ -56,13 +59,13 @@ def read_lesson(path):
 
 
 def prepare(start=1):
-    if len(DATA) != 8 or len(MOTION) != 10 or len(FORCES) != 10 or len(FLUIDS) != 8 or len(HEAT) != 10 or len(ELECTRICITY) != 10:
-        raise ValueError("physics release requires six complete blocks")
-    if not 1 <= start <= 56:
-        raise ValueError("start must be a published lesson number from 1 to 56")
+    if len(DATA) != 8 or len(MOTION) != 10 or len(FORCES) != 10 or len(FLUIDS) != 8 or len(HEAT) != 10 or len(ELECTRICITY) != 10 or len(MAGNETISM) != 10:
+        raise ValueError("physics release requires seven complete blocks")
+    if not 1 <= start <= 66:
+        raise ValueError("start must be a published lesson number from 1 to 66")
     route = [(item["stem"], f"physics-{i:02d}-{item['stem'][3:]}", i*10,
-              COVER if i <= 8 else (MOTION_COVER if i <= 18 else (FORCES_COVER if i <= 28 else (FLUIDS_COVER if i <= 36 else (HEAT_COVER if i <= 46 else ELECTRICITY_COVER)))))
-             for i, item in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY], 1) if i >= start]
+              COVER if i <= 8 else (MOTION_COVER if i <= 18 else (FORCES_COVER if i <= 28 else (FLUIDS_COVER if i <= 36 else (HEAT_COVER if i <= 46 else (ELECTRICITY_COVER if i <= 56 else MAGNETISM_COVER))))))
+             for i, item in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM], 1) if i >= start]
     slug_list = ",".join(literal(slug) for _, slug, _, _ in route)
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-physics-course'));",
            f"""DO $guard$

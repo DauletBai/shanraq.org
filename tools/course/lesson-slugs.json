@@ -5602,5 +5602,125 @@
   "physics/56-electricity-investigation-mastery-en": [
     "physics-56-electricity-investigation-mastery",
     "en"
+  ],
+  "physics/57-what-is-magnetic": [
+    "physics-57-what-is-magnetic",
+    "ru"
+  ],
+  "physics/57-what-is-magnetic-kz": [
+    "physics-57-what-is-magnetic",
+    "kz"
+  ],
+  "physics/57-what-is-magnetic-en": [
+    "physics-57-what-is-magnetic",
+    "en"
+  ],
+  "physics/58-poles-and-field": [
+    "physics-58-poles-and-field",
+    "ru"
+  ],
+  "physics/58-poles-and-field-kz": [
+    "physics-58-poles-and-field",
+    "kz"
+  ],
+  "physics/58-poles-and-field-en": [
+    "physics-58-poles-and-field",
+    "en"
+  ],
+  "physics/59-compass-and-earth": [
+    "physics-59-compass-and-earth",
+    "ru"
+  ],
+  "physics/59-compass-and-earth-kz": [
+    "physics-59-compass-and-earth",
+    "kz"
+  ],
+  "physics/59-compass-and-earth-en": [
+    "physics-59-compass-and-earth",
+    "en"
+  ],
+  "physics/60-current-creates-field": [
+    "physics-60-current-creates-field",
+    "ru"
+  ],
+  "physics/60-current-creates-field-kz": [
+    "physics-60-current-creates-field",
+    "kz"
+  ],
+  "physics/60-current-creates-field-en": [
+    "physics-60-current-creates-field",
+    "en"
+  ],
+  "physics/61-build-an-electromagnet": [
+    "physics-61-build-an-electromagnet",
+    "ru"
+  ],
+  "physics/61-build-an-electromagnet-kz": [
+    "physics-61-build-an-electromagnet",
+    "kz"
+  ],
+  "physics/61-build-an-electromagnet-en": [
+    "physics-61-build-an-electromagnet",
+    "en"
+  ],
+  "physics/62-why-motor-turns": [
+    "physics-62-why-motor-turns",
+    "ru"
+  ],
+  "physics/62-why-motor-turns-kz": [
+    "physics-62-why-motor-turns",
+    "kz"
+  ],
+  "physics/62-why-motor-turns-en": [
+    "physics-62-why-motor-turns",
+    "en"
+  ],
+  "physics/63-changing-field-induction": [
+    "physics-63-changing-field-induction",
+    "ru"
+  ],
+  "physics/63-changing-field-induction-kz": [
+    "physics-63-changing-field-induction",
+    "kz"
+  ],
+  "physics/63-changing-field-induction-en": [
+    "physics-63-changing-field-induction",
+    "en"
+  ],
+  "physics/64-generator-energy-chain": [
+    "physics-64-generator-energy-chain",
+    "ru"
+  ],
+  "physics/64-generator-energy-chain-kz": [
+    "physics-64-generator-energy-chain",
+    "kz"
+  ],
+  "physics/64-generator-energy-chain-en": [
+    "physics-64-generator-energy-chain",
+    "en"
+  ],
+  "physics/65-how-a-message-travels": [
+    "physics-65-how-a-message-travels",
+    "ru"
+  ],
+  "physics/65-how-a-message-travels-kz": [
+    "physics-65-how-a-message-travels",
+    "kz"
+  ],
+  "physics/65-how-a-message-travels-en": [
+    "physics-65-how-a-message-travels",
+    "en"
+  ],
+  "physics/66-magnetism-communication-checkpoint": [
+    "physics-66-magnetism-communication-checkpoint",
+    "ru"
+  ],
+  "physics/66-magnetism-communication-checkpoint-kz": [
+    "physics-66-magnetism-communication-checkpoint",
+    "kz"
+  ],
+  "physics/66-magnetism-communication-checkpoint-en": [
+    "physics-66-magnetism-communication-checkpoint",
+    "en"
   ]
 }

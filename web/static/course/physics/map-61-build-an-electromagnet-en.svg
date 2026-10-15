@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Can you make a magnet that switches off?</title><desc id="desc">20 turns: 2; 40 turns: 4; Same current; Not a universal law</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d4e8ed"/></pattern><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#e9f4f6"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#37657b" flood-opacity=".23"/></filter></defs>
+<rect width="1600" height="900" fill="#f1f9fb"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="195" width="875" height="590" rx="18" fill="url(#paper)" stroke="#99bbc8" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="195" width="555" height="590" rx="18" fill="#fff" stroke="#99bbc8" stroke-width="3" filter="url(#shadow)"/>
+<text x="75" y="76" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#16445e">Can you make a magnet that switches off?</text>
+<rect x="260" y="350" width="420" height="165" rx="12" fill="#c7d3da" stroke="#899caa" stroke-width="5"/>
+<ellipse cx="305" cy="430" rx="21" ry="103" fill="none" stroke="#cf8657" stroke-width="9"/>
+<ellipse cx="349" cy="430" rx="21" ry="103" fill="none" stroke="#cf8657" stroke-width="9"/>
+<ellipse cx="393" cy="430" rx="21" ry="103" fill="none" stroke="#cf8657" stroke-width="9"/>
+<ellipse cx="437" cy="430" rx="21" ry="103" fill="none" stroke="#cf8657" stroke-width="9"/>
+<ellipse cx="481" cy="430" rx="21" ry="103" fill="none" stroke="#cf8657" stroke-width="9"/>
+<ellipse cx="525" cy="430" rx="21" ry="103" fill="none" stroke="#cf8657" stroke-width="9"/>
+<ellipse cx="569" cy="430" rx="21" ry="103" fill="none" stroke="#cf8657" stroke-width="9"/>
+<ellipse cx="613" cy="430" rx="21" ry="103" fill="none" stroke="#cf8657" stroke-width="9"/>
+<path d="M225 525v85h520v-85" stroke="#397595" stroke-width="7" fill="none"/>
+<rect x="420" y="600" width="135" height="36" rx="5" fill="#f1c87a" stroke="#aa8247"/>
+<rect x="1005" y="224" width="495" height="105" rx="11" fill="#e6f5fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="269" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">20 turns: 2</text>
+<rect x="1005" y="359" width="495" height="105" rx="11" fill="#fff0e4" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="404" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">40 turns: 4</text>
+<rect x="1005" y="494" width="495" height="105" rx="11" fill="#eaf4e9" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="539" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Same current</text>
+<rect x="1005" y="629" width="495" height="105" rx="11" fill="#edf0fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="674" text-anchor="start" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">Not a universal law</text>
+</svg>
