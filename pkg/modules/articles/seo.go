@@ -140,7 +140,7 @@ func (m *Module) sitemapDoc(build func(emit func(path string, mod time.Time))) [
 // knows about either goes unindexed or gets offered to a search engine twice.
 var publicPages = []string{
 	"/about", "/adam", "/framework", "/guide", "/formatting", "/pricing", "/support",
-	"/listings", "/predictions", "/analytics", "/rates", "/calculator", "/author/sana",
+	"/predictions", "/analytics", "/rates", "/calculator", "/author/sana",
 	"/offer",
 }
 
@@ -306,11 +306,11 @@ func (m *Module) handleSitemapNews(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte(b.String()))
 }
 
-// handleSitemapListings emits a sitemap of only real-estate listing detail
-// pages, so the classifieds can be submitted and tracked as their own section
-// in Google Search Console, separate from editorial content.
+// handleSitemapListings includes the permanent listings index even when no
+// individual listing is active. An empty urlset is rejected by Search Console.
 func (m *Module) handleSitemapListings(w http.ResponseWriter, r *http.Request) {
 	doc := m.sitemapDoc(func(emit func(path string, mod time.Time)) {
+		emit("/listings", time.Time{})
 		if lst, err := m.listings.SitemapListings(r.Context()); err != nil {
 			m.rt.Logger.Error("sitemap listings", zap.Error(err))
 		} else {

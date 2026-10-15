@@ -1,12 +1,40 @@
 package articles
 
 import (
+	"encoding/xml"
 	"net/http"
 	"strings"
 	"testing"
 
 	"github.com/google/uuid"
 )
+
+func TestListingsSitemapHasPermanentIndexWithoutActiveListings(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	body := app.do(http.MethodGet, "/sitemap-listings.xml", nil).Body.Bytes()
+	var doc struct {
+		URLs []struct {
+			Loc string `xml:"loc"`
+		} `xml:"url"`
+	}
+	if err := xml.Unmarshal(body, &doc); err != nil {
+		t.Fatalf("invalid sitemap XML: %v", err)
+	}
+	if len(doc.URLs) == 0 {
+		t.Fatal("listings sitemap is empty")
+	}
+	for _, entry := range doc.URLs {
+		if entry.Loc == "" {
+			t.Fatal("sitemap URL has no loc")
+		}
+	}
+	for _, lang := range []string{"ru", "kz", "en"} {
+		if !strings.Contains(string(body), "/listings?lang="+lang) {
+			t.Errorf("missing listings index for %s", lang)
+		}
+	}
+}
 
 // The breadcrumb is what turns a bare URL in search results into a labelled
 // trail. Google requires the last crumb to be the page itself and unlinked.
