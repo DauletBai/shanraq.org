@@ -462,7 +462,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
    2.5.8) — so the button is the target and the dot is drawn inside it. A
    listing may carry fifteen photos, and fifteen 24px targets are wider than a
    phone, hence the wrap. */
-.adcarousel__dots { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; max-width: calc(100% - 16px); gap: 0; z-index: 3; }
+.adcarousel__dots { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; width: max-content; max-width: calc(100% - 16px); gap: 0; z-index: 3; }
 .adcarousel__dots button { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: none; background: none; cursor: pointer; padding: 0; }
 .adcarousel__dots button::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transition: background 0.15s ease; }
 .adcarousel__dots button.is-active::before { background: #fff; }
