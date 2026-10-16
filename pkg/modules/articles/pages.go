@@ -103,6 +103,9 @@ Shanraq.org is a home where free voices meet.`},
 - **Автор.** Публикация статей открывается после подтверждения личности в разделе **Автор**.
 - **Организация.** Акимат, ЖКХ, ТОО, школа или поликлиника могут публиковать под своим названием — после того как заявку посмотрел человек. Раздел **Организация** в кабинете.
 
+### Как подтвердить телефон для публикации статьи
+В разделе **Автор** укажите настоящее имя и номер телефона в международном формате: **+7 701 234 56 78** для Казахстана или **+7 903 234 56 78** для России. Пробелы не мешают. Если вы введёте местный номер с начальной **8**, сайт автоматически заменит её на **+7**. Код подтверждения состоит из шести цифр и приходит в Telegram, привязанный к этому номеру; введите его на той же странице в течение 10 минут. Номер телефона не публикуется. Если код не пришёл, проверьте привязанный к номеру Telegram и повторите отправку; при повторной ошибке напишите через страницу [«Поддержка»](/support).
+
 ## Где вы живёте
 При регистрации есть поле «Где вы живёте»: страна, область, город или посёлок. Оно необязательное, и его можно заполнить или очистить позже в профиле.
 
@@ -308,6 +311,9 @@ Shanraq.org-та тіркелу бәріне ортақ — оқырманға, 
 - **Автор.** Мақала жариялау **Автор** бөлімінде жеке басты растағаннан кейін ашылады.
 - **Ұйым.** Әкімдік, ТКШ, ЖШС, мектеп немесе емхана өз атауымен жариялай алады — өтінішті адам қарағаннан кейін. Кабинеттегі **«Ұйым»** бөлімі.
 
+### Мақала жариялау үшін телефонды растау
+**Автор** бөлімінде шын аты-жөніңізді және телефон нөмірін халықаралық форматта көрсетіңіз: Қазақстан үшін **+7 701 234 56 78**, Ресей үшін **+7 903 234 56 78**. Бос орындар кедергі емес. Жергілікті нөмірді бастапқы **8** санымен енгізсеңіз, сайт оны автоматты түрде **+7** форматына ауыстырады. Алты таңбалы растау коды осы нөмірге тіркелген Telegram-ға келеді; кодты сол бетте 10 минут ішінде енгізіңіз. Телефон нөмірі жарияланбайды. Код келмесе, нөмірге тіркелген Telegram-ды тексеріп, қайта жіберіңіз; қате қайталанса, [«Қолдау»](/support) беті арқылы жазыңыз.
+
 ## Сіз қайда тұрасыз
 Тіркелу кезінде «Сіз қайда тұрасыз» өрісі бар: ел, облыс, қала немесе кент. Ол міндетті емес, кейін профильде толтыруға да, тазалауға да болады.
 
@@ -512,6 +518,9 @@ Shanraq.org has a single registration for everyone — there are no separate for
 - **Realtor, agency or developer.** Open the **Agent** section in your cabinet. The profile is reviewed by a moderator, after which every listing of yours carries a badge and your properties are collected on one public page.
 - **Author.** Publishing articles unlocks after identity verification in the **Author** section.
 - **Organisation.** An akimat, a housing utility, a company, a school, or a clinic can publish under its own name — once a person has reviewed the application. The **Organisation** section of your cabinet.
+
+### Verify your phone to publish an article
+In the **Author** section, enter your real name and phone number in international format: **+7 701 234 56 78** for Kazakhstan or **+7 903 234 56 78** for Russia. Spaces are fine. If you enter a domestic number beginning with **8**, the site automatically converts it to **+7**. A six-digit verification code arrives in Telegram linked to that number; enter it on the same page within 10 minutes. Your phone number is not published. If the code does not arrive, check Telegram linked to the number and request another code; if the error persists, use the [Support](/support) page.
 
 ## Where you live
 Registration has a "Where do you live" field: country, region, city, or town. It is optional, and you can fill it in or clear it later in your profile.
