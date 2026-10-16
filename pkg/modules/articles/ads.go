@@ -9,9 +9,8 @@ import (
 	"shanraq.org/pkg/site"
 )
 
-// houseAds fills the sidebar slot when nothing is sold for this surface. Every
-// slide sells the slot itself, which is the only honest thing an empty ad space
-// can advertise.
+// houseAds fills the sidebar slot when nothing is sold for this surface. It
+// introduces our own books and product before offering the advertising space.
 //
 // It replaced three invented car adverts with prices attached. Those implied
 // advertisers who do not exist, and a made-up price beside a made-up car is the
@@ -26,7 +25,9 @@ import (
 // crawlers and datacenter addresses, so any number quoted here would flatter.
 func houseAds(lang string) []Ad {
 	slides := []struct{ key, cta string }{
-		// Lead with the book so its cover is visible before the carousel turns.
+		// The new manuscript opens the carousel with its free excerpt.
+		{"tartar", tartarSampleURL},
+		// The Go book remains available on the next slide.
 		{"book", "/shop/go-book"},
 		{"adam", "/adam"},
 		{"free", "/advertise"},   // the direct offer
@@ -37,6 +38,10 @@ func houseAds(lang string) []Ad {
 	}
 	out := make([]Ad, 0, len(slides))
 	for _, s := range slides {
+		if s.key == "tartar" {
+			out = append(out, tartarSlide(lang))
+			continue
+		}
 		if s.key == "book" {
 			out = append(out, bookSlide(lang))
 			continue
@@ -46,7 +51,16 @@ func houseAds(lang string) []Ad {
 	return out
 }
 
-// bookSlide is the one house slide with a picture: the cover is the slide.
+const tartarSampleURL = "/static/shop/tartar-i-ya-sample/index.html"
+const tartarCoverURL = "/static/shop/tartar-i-ya-sample/cover.jpg"
+
+func tartarSlide(lang string) Ad {
+	ad := houseSlide(lang, "tartar", tartarSampleURL)
+	ad.Image = tartarCoverURL
+	return ad
+}
+
+// bookSlide shows the Go book cover as the whole slide.
 func bookSlide(lang string) Ad {
 	ad := houseSlide(lang, "book", "/shop/go-book")
 	ad.Image = bookCoverURL
@@ -77,14 +91,11 @@ func houseSlide(lang, key, cta string) Ad {
 // site by count. The thousand forecast pages alone carried nothing, and they
 // are the pages a stranger arrives on.
 //
-// Nothing is sold there, so nothing is displaced: the space shows what we sell
-// ourselves. Both products, not one: a single slide renders a still card with
-// no dots, so the book -- which has a cover worth looking at -- never reached
-// any of these pages at all, and the slot looked like a fixed banner rather
-// than the rotating slot it is everywhere else.
+// Nothing is sold there, so nothing is displaced: the space shows our books
+// and product as rotating slides.
 //
 // A product is left out on its own pages, where the slide would point at the
-// page the reader is already on: Adam on /adam, the book anywhere under /shop.
+// page the reader is already on: Adam on /adam, the Go book under /shop.
 // /advertise keeps the slot empty -- its whole subject is selling the space
 // rather than filling it.
 func ownAds(r *http.Request, lang string) []Ad {
@@ -92,7 +103,8 @@ func ownAds(r *http.Request, lang string) []Ad {
 	if strings.HasPrefix(p, "/advertise") {
 		return nil
 	}
-	out := make([]Ad, 0, 2)
+	out := make([]Ad, 0, 3)
+	out = append(out, tartarSlide(lang))
 	if !strings.HasPrefix(p, "/shop") {
 		out = append(out, bookSlide(lang))
 	}

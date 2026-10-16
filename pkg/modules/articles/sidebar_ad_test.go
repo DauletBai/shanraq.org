@@ -68,22 +68,19 @@ func TestHouseAdsAreFullyTranslated(t *testing.T) {
 	}
 }
 
-// A page outside the three sold surfaces -- a forecast, the rates, the shop --
-// used to get exactly one house slide. One slide renders no dots and never
-// turns, so the slot read as a fixed banner and the book, the only slide with a
-// cover worth showing, reached none of those pages.
-func TestOwnAdsCarryBothProductsSoTheSlotTurns(t *testing.T) {
+// Pages outside sold ad surfaces show both books and the other house product.
+func TestOwnAdsCarryAllHouseProducts(t *testing.T) {
 	for _, path := range []string{"/rates", "/weather/almaty", "/courses"} {
 		r, _ := http.NewRequest(http.MethodGet, path, nil)
 		ads := ownAds(r, LangRU)
-		if len(ads) != 2 {
-			t.Fatalf("%s: %d slides, want 2 — a carousel needs something to turn to", path, len(ads))
+		if len(ads) != 3 {
+			t.Fatalf("%s: %d slides, want 3", path, len(ads))
 		}
-		if ads[0].URL != "/shop/go-book" || ads[1].URL != "/adam" {
-			t.Errorf("%s: slides point at %q and %q", path, ads[0].URL, ads[1].URL)
+		if ads[0].URL != tartarSampleURL || ads[1].URL != "/shop/go-book" || ads[2].URL != "/adam" {
+			t.Errorf("%s: unexpected slide order: %+v", path, ads)
 		}
-		if ads[0].Image != bookCoverURL {
-			t.Errorf("%s: the book slide has no cover (%q)", path, ads[0].Image)
+		if ads[0].Image != tartarCoverURL || ads[1].Image != bookCoverURL {
+			t.Errorf("%s: a book slide has no cover", path)
 		}
 		for i, a := range ads {
 			if !a.House || a.Title == "" || a.Price == "" {
@@ -96,9 +93,9 @@ func TestOwnAdsCarryBothProductsSoTheSlotTurns(t *testing.T) {
 // A slide must not point at the page the reader is standing on.
 func TestOwnAdsLeaveOutTheProductWhosePageThisIs(t *testing.T) {
 	cases := map[string][]string{
-		"/adam":          {"/shop/go-book"},
-		"/shop":          {"/adam"},
-		"/shop/go-book":  {"/adam"},
+		"/adam":          {tartarSampleURL, "/shop/go-book"},
+		"/shop":          {tartarSampleURL, "/adam"},
+		"/shop/go-book":  {tartarSampleURL, "/adam"},
 		"/advertise":     {},
 		"/advertise/faq": {},
 	}
@@ -131,8 +128,8 @@ func TestBookSlideIsTheSameEverywhere(t *testing.T) {
 		}
 		r, _ := http.NewRequest(http.MethodGet, "/rates", nil)
 		own := ownAds(r, lang)
-		if own[0] != fromHouse {
-			t.Errorf("%s: the book differs between the two slots:\n house %+v\n own   %+v", lang, fromHouse, own[0])
+		if own[1] != fromHouse {
+			t.Errorf("%s: the book differs between the two slots:\n house %+v\n own   %+v", lang, fromHouse, own[1])
 		}
 	}
 }

@@ -568,8 +568,15 @@ var messages = map[string]map[string]string{
 
 	// Our own product rather than the slot. It runs on the same unsold-inventory
 	// path as the rest, so it costs nothing and never displaces a paying order.
-	// The book we are writing, second in the carousel: a slide that shows the
-	// cover, because a book is bought with the eyes first.
+	// Books use their covers as house advertising in unsold sidebar inventory.
+	"house.tartar_title": {"kz": "«Тартар и Я» — жаңа кітап", "ru": "«Тартар и Я» — новая книга", "en": "Tartar and I — a new book"},
+	"house.tartar_desc": {
+		"kz": "Тіл жады мен Еуразия туралы авторлық эссе. Орысша үзінді тегін.",
+		"ru": "Авторское эссе о памяти языка и Евразии. Ознакомительный фрагмент бесплатный.",
+		"en": "An author's essay on language and Eurasian memory. Free excerpt in Russian.",
+	},
+	"house.tartar_cta": {"kz": "Үзіндіні оқу", "ru": "Читать фрагмент", "en": "Read the excerpt"},
+
 	"house.book_title": {"kz": "Go бойынша жаңа кітап", "ru": "Новая книга по Go", "en": "A new book on Go"},
 	"house.book_desc": {
 		"kz": "Бірінші жолдан интернет-дүкенге дейін. Үзіндісі тегін.",
