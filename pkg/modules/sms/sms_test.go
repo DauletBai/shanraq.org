@@ -88,3 +88,26 @@ func TestSendSMSCError(t *testing.T) {
 		t.Fatal("smsc error payload: want error")
 	}
 }
+
+func TestSendSMSCTelegramCode(t *testing.T) {
+	var gotText, gotChannel string
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotText = r.URL.Query().Get("mes")
+		gotChannel = r.URL.Query().Get("tg")
+		w.Write([]byte(`{"id":42,"cnt":1}`))
+	}))
+	defer srv.Close()
+	c, _, err := New(Config{Provider: "smsc", Login: "me", Password: "pw", Channel: "telegram", BaseURL: srv.URL})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := c.SendSMS(context.Background(), "79036616890", "123456"); err != nil {
+		t.Fatal(err)
+	}
+	if gotText != "123456" || gotChannel != "1" {
+		t.Fatalf("telegram payload: mes=%q tg=%q", gotText, gotChannel)
+	}
+	if err := c.SendSMS(context.Background(), "79036616890", "Shanraq.org: 123456"); err == nil {
+		t.Fatal("Telegram must reject a nonnumeric message")
+	}
+}

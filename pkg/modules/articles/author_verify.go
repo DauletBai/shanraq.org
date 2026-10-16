@@ -15,6 +15,7 @@ type VerifyAuthorPage struct {
 	First         string
 	Last          string
 	Middle        string
+	Phone         string
 	PhoneVerified bool
 	CanPublish    bool
 	CodeSent      bool
@@ -74,17 +75,18 @@ func (m *Module) handleAuthorPhone(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_ = r.ParseForm()
+	phone := r.FormValue("phone")
 	if !m.auth.AllowAuthAttempt(r, "signin", r.FormValue("phone")) { // reuse the signin limiter for OTP sends
-		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Error: site.T(site.ResolveLang(w, r), "form.err_rate_limit")})
+		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Phone: phone, Error: site.T(site.ResolveLang(w, r), "form.err_rate_limit")})
 		return
 	}
-	if err := m.auth.StartPhoneVerification(r.Context(), uid, r.FormValue("phone")); err != nil {
+	if err := m.auth.StartPhoneVerification(r.Context(), uid, phone); err != nil {
 		if err == auth.ErrInvalidPhone {
-			http.Redirect(w, r, "/studio/author?phone=bad", http.StatusSeeOther)
+			m.renderVerifyAuthor(w, r, VerifyAuthorPage{Phone: phone, Error: site.T(site.ResolveLang(w, r), "author.err_phone")})
 			return
 		}
 		m.rt.Logger.Error("start phone verification", zap.Error(err))
-		http.Redirect(w, r, "/studio/author?phone=bad", http.StatusSeeOther)
+		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Phone: phone, Error: site.T(site.ResolveLang(w, r), "author.err_delivery")})
 		return
 	}
 	http.Redirect(w, r, "/studio/author?code=sent", http.StatusSeeOther)

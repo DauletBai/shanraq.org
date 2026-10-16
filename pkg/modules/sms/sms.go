@@ -133,6 +133,17 @@ func (c *Client) sendMobizon(ctx context.Context, to, text string) error {
 // --- SMSC.kz ---
 
 func (c *Client) sendSMSC(ctx context.Context, to, text string) error {
+	telegram := strings.EqualFold(c.cfg.Channel, "telegram") || strings.EqualFold(c.cfg.Channel, "tg")
+	if telegram {
+		if len(text) < 4 || len(text) > 8 {
+			return fmt.Errorf("sms smsc: Telegram verification code must be 4-8 digits")
+		}
+		for _, digit := range text {
+			if digit < '0' || digit > '9' {
+				return fmt.Errorf("sms smsc: Telegram verification code must be numeric")
+			}
+		}
+	}
 	base := c.cfg.BaseURL
 	if base == "" {
 		base = "https://smsc.kz"
@@ -144,7 +155,7 @@ func (c *Client) sendSMSC(ctx context.Context, to, text string) error {
 	q.Set("mes", text)
 	q.Set("fmt", "3") // JSON response
 	q.Set("charset", "utf-8")
-	if strings.EqualFold(c.cfg.Channel, "telegram") || strings.EqualFold(c.cfg.Channel, "tg") {
+	if telegram {
 		q.Set("tg", "1") // deliver the code via Telegram instead of SMS (no sender name, cheaper)
 	}
 	if c.cfg.From != "" {

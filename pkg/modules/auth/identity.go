@@ -44,6 +44,11 @@ func NormalizePhone(phone string) (normalized string, ok bool) {
 	if len(digits) < 10 || len(digits) > 15 {
 		return "", false
 	}
+	// Russia and Kazakhstan use 8 as a domestic trunk prefix. Gateways expect
+	// the international country code 7 instead.
+	if !plus && len(digits) == 11 && strings.HasPrefix(digits, "8") {
+		digits = "7" + digits[1:]
+	}
 	if plus {
 		return "+" + digits, true
 	}
@@ -77,8 +82,13 @@ func (m *Module) StartPhoneVerification(ctx context.Context, userID uuid.UUID, p
 	if err := m.store.CreatePhoneCode(ctx, userID, norm, hashToken(code), time.Now().Add(phoneCodeTTL)); err != nil {
 		return err
 	}
-	text := "Shanraq.org: код подтверждения / verification code: " + code
-	return m.deliverSMSOrDevLog(ctx, norm, text, code)
+	// SMSC's Telegram channel accepts only a 4–8 digit numeric message.
+	// A prefixed message is rejected even though an SMS gateway accepts it.
+	if err := m.deliverSMSOrDevLog(ctx, norm, code, code); err != nil {
+		_ = m.store.CancelPhoneCode(ctx, userID, hashToken(code))
+		return err
+	}
+	return nil
 }
 
 // ConfirmPhoneVerification checks the submitted code; on success the account's

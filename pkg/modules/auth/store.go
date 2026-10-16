@@ -570,6 +570,14 @@ func (s *Store) CreatePhoneCode(ctx context.Context, userID uuid.UUID, phone, co
 	return nil
 }
 
+// CancelPhoneCode invalidates a code when the gateway could not deliver it.
+func (s *Store) CancelPhoneCode(ctx context.Context, userID uuid.UUID, codeHash string) error {
+	_, err := s.db.Exec(ctx,
+		`UPDATE phone_verification_codes SET used_at = NOW()
+		 WHERE user_id = $1 AND code_hash = $2 AND used_at IS NULL`, userID, codeHash)
+	return err
+}
+
 // VerifyPhoneCode checks the newest unused code for the user. On a correct,
 // unexpired, under-attempt-limit match it marks the code used, stores the phone
 // on the account and stamps phone_verified_at — all in one transaction. It
