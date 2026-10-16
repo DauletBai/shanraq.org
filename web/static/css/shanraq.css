@@ -421,8 +421,8 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 /* Sized by ratio, not by a pixel height. Covers are 16:9; a fixed height made
    the box a different shape at every width, so the same picture was cropped
    27% off the top and bottom on a desktop and 18% off the sides on a phone.
-   The variants below (.adslot, --side) set an explicit height and keep it: a
-   definite height wins over aspect-ratio, which is what those slots want. */
+   Most variants below (.adslot, --side) set an explicit height. The book slot
+   uses its own portrait ratio so the cover grows with the available width. */
 .adcarousel { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; margin-bottom: 34px; }
 /* Slides live in a horizontal track that slides right-to-left between them. */
 .carousel__track { display: flex; height: 100%; transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform; }
@@ -468,9 +468,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
 .adcarousel__dots button.is-active::before { background: #fff; }
 
 /* sidebar variant of the ad carousel */
-/* The advertising slot. 300px on purpose: the hero carousel across the page is
-   300px, and the two sit on the same top line, so any other value reads as a
-   misalignment rather than a choice. */
+/* Regular advertising keeps its compact format. */
 .adslot {
   height: 300px;
   /* Zero rather than absent. The sidebar advertisement carries both classes,
@@ -478,6 +476,15 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
      open the gap further instead of closing it. The column's own gap does the
      spacing, and one source of spacing is enough. */
   margin-bottom: 0;
+}
+/* A slot that includes the book cover has the proportions of a book. Cap its
+   width when the sidebar expands to the full page on a tablet or phone. The
+   more specific selector keeps the ratio in the mobile layout too. */
+.adslot.adslot--book {
+  width: min(100%, 360px);
+  height: auto;
+  aspect-ratio: 3 / 4;
+  margin-inline: auto;
 }
 .adslot__slide {
   /* Centred, and clear of the dots: the copy used to sit hard against them at
@@ -1555,9 +1562,8 @@ a.tipbtn { display: inline-flex; align-items: center; justify-content: center; t
   .foot-nav { justify-content: center; }
   .wordmark__mark { width: 52px; height: 52px; }
   .hero__media { height: 200px; }
-  /* Only the sidebar advert keeps a fixed height on a phone — it carries a
-     title and two lines of copy, not a photograph, so a ratio buys it nothing.
-     The news hero stays 16:9 at every width. */
+  /* Regular sidebar advertising stays compact; the book slot keeps its
+     portrait ratio. The news hero stays 16:9 at every width. */
   .adslot { height: 210px; }
   .adslide { padding: 22px; }
   .adslide__text { font-size: var(--step-2); }

@@ -172,7 +172,9 @@
      authenticated cabinet page via the .cabinet two-column layout. */}}
 {{ define "sidebar_ad" }}
 {{ if .Ads }}
-<div class="adcarousel adslot" data-carousel>
+{{ $bookCover := false }}
+{{ range .Ads }}{{ if and .Image .House }}{{ $bookCover = true }}{{ end }}{{ end }}
+<div class="adcarousel adslot{{ if $bookCover }} adslot--book{{ end }}" data-carousel>
   <div class="carousel__track">
     {{ range $i, $ad := .Ads }}
     {{/* A slide of our own that has a picture IS the picture: a book cover

@@ -26,15 +26,9 @@ import (
 // crawlers and datacenter addresses, so any number quoted here would flatter.
 func houseAds(lang string) []Ad {
 	slides := []struct{ key, cta string }{
-		// Our own product leads. It used to sit last of six, which meant the
-		// footer -- which shows only the first -- never carried it at all, and
-		// the carousel reached it after five turns. Unsold inventory is worth
-		// more selling something we have than selling the space itself, and the
-		// offer to advertise loses nothing by following one slide later.
-		{"adam", "/adam"},
-		// The book follows it: it is the other thing we sell, it is new, and
-		// unlike the rest of these slides it has a picture worth showing.
+		// Lead with the book so its cover is visible before the carousel turns.
 		{"book", "/shop/go-book"},
+		{"adam", "/adam"},
 		{"free", "/advertise"},   // the direct offer
 		{"beside", "/advertise"}, // the format: beside the text, never over it
 		{"notrack", "/privacy"},  // no third-party tracking — a real difference
@@ -99,11 +93,11 @@ func ownAds(r *http.Request, lang string) []Ad {
 		return nil
 	}
 	out := make([]Ad, 0, 2)
-	if p != "/adam" {
-		out = append(out, houseSlide(lang, "adam", "/adam"))
-	}
 	if !strings.HasPrefix(p, "/shop") {
 		out = append(out, bookSlide(lang))
+	}
+	if p != "/adam" {
+		out = append(out, houseSlide(lang, "adam", "/adam"))
 	}
 	return out
 }

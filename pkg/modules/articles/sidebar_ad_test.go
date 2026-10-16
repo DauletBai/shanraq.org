@@ -20,7 +20,7 @@ func TestHomeSidebarCarriesTheAdSlotNotACopyOfTheHero(t *testing.T) {
 	// Exactly one. A second call sat at the foot of the sidebar and had rendered
 	// nothing for as long as the slot returned nil on an unsold surface; the
 	// moment it stopped doing that, the page carried two.
-	if n := strings.Count(body, `class="adcarousel adslot"`); n != 1 {
+	if n := strings.Count(body, `class="adcarousel adslot adslot--book"`); n != 1 {
 		t.Fatalf("the page has %d advertising slots, want exactly 1", n)
 	}
 	if strings.Contains(body, "adslide--news") {
@@ -79,11 +79,11 @@ func TestOwnAdsCarryBothProductsSoTheSlotTurns(t *testing.T) {
 		if len(ads) != 2 {
 			t.Fatalf("%s: %d slides, want 2 — a carousel needs something to turn to", path, len(ads))
 		}
-		if ads[0].URL != "/adam" || ads[1].URL != "/shop/go-book" {
+		if ads[0].URL != "/shop/go-book" || ads[1].URL != "/adam" {
 			t.Errorf("%s: slides point at %q and %q", path, ads[0].URL, ads[1].URL)
 		}
-		if ads[1].Image != bookCoverURL {
-			t.Errorf("%s: the book slide has no cover (%q)", path, ads[1].Image)
+		if ads[0].Image != bookCoverURL {
+			t.Errorf("%s: the book slide has no cover (%q)", path, ads[0].Image)
 		}
 		for i, a := range ads {
 			if !a.House || a.Title == "" || a.Price == "" {
@@ -131,8 +131,8 @@ func TestBookSlideIsTheSameEverywhere(t *testing.T) {
 		}
 		r, _ := http.NewRequest(http.MethodGet, "/rates", nil)
 		own := ownAds(r, lang)
-		if own[1] != fromHouse {
-			t.Errorf("%s: the book differs between the two slots:\n house %+v\n own   %+v", lang, fromHouse, own[1])
+		if own[0] != fromHouse {
+			t.Errorf("%s: the book differs between the two slots:\n house %+v\n own   %+v", lang, fromHouse, own[0])
 		}
 	}
 }
