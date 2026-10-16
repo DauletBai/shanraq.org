@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Жоғары ма, әлде қатты ма: неліктен бұл бір нәрсе емес?</title><desc id="desc">200 Гц: төмен үн; 400 Гц: жоғарырақ; Амплитуда ≠ жиілік; Алыста: әдетте бәсең</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d4e8ed"/></pattern><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e8f3f7"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#37657b" flood-opacity=".2"/></filter></defs>
+<rect width="1600" height="900" fill="#f2f9fb"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="195" width="875" height="590" rx="16" fill="url(#paper)" stroke="#99bac8" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="195" width="555" height="590" rx="16" fill="#fff" stroke="#99bac8" stroke-width="3" filter="url(#shadow)"/>
+<text x="75" y="76" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#16445e">Жоғары ма, әлде қатты ма: неліктен бұл бір нәрсе</text>
+<text x="75" y="126" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#16445e">емес?</text>
+<path d="M215 365H875" fill="none" stroke="#9cb9c6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="230,365 237,356 244,349 251,341 258,334 265,327 272,321 279,316 286,312 293,309 300,307 307,307 314,307 321,308 328,311 335,314 342,319 349,324 356,330 363,337 370,345 377,352 384,360 391,369 398,377 405,384 412,392 419,399 426,405 433,410 440,415 447,418 454,421 461,422 468,422 475,422 482,420 489,417 496,413 503,408 510,402 517,395 524,388 531,380 538,373 545,365 552,356 559,349 566,341 573,334 580,327 587,321 594,316 601,312 608,309 615,307 622,307 629,307 636,308 643,311 650,314 657,319 664,324 671,330 678,337 685,345 692,352 699,360 706,369 713,377 720,384 727,392 734,399 741,405 748,410 755,415 762,418 769,421 776,422 783,422 790,422 797,420 804,417 811,413 818,408 825,402 832,395 839,388 846,380 853,373 860,365" fill="none" stroke="#368ca8" stroke-width="7"/>
+<path d="M215 600H875" fill="none" stroke="#9cb9c6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="230,600 237,584 244,569 251,556 258,547 265,542 272,542 279,546 286,554 293,565 300,580 307,595 314,612 321,627 328,640 335,650 342,656 349,657 356,655 363,648 370,637 377,623 384,608 391,591 398,576 405,562 412,551 419,544 426,542 433,543 440,549 447,559 454,572 461,587 468,604 475,619 482,634 489,645 496,653 503,657 510,657 517,652 524,643 531,630 538,615 545,600 552,584 559,569 566,556 573,547 580,542 587,542 594,546 601,554 608,565 615,580 622,595 629,612 636,627 643,640 650,650 657,656 664,657 671,655 678,648 685,637 692,623 699,608 706,591 713,576 720,562 727,551 734,544 741,542 748,543 755,549 762,559 769,572 776,587 783,604 790,619 797,634 804,645 811,653 818,657 825,657 832,652 839,643 846,630 853,615 860,600" fill="none" stroke="#368ca8" stroke-width="7"/>
+<text x="176" y="372" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#16445e">A</text>
+<text x="176" y="607" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#16445e">B</text>
+<rect x="1005" y="220" width="495" height="110" rx="10" fill="#e6f5fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="266" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">200 Гц: төмен үн</text>
+<rect x="1005" y="358" width="495" height="110" rx="10" fill="#fff0e4" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="404" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">400 Гц: жоғарырақ</text>
+<rect x="1005" y="496" width="495" height="110" rx="10" fill="#eaf4e9" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="542" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">Амплитуда ≠ жиілік</text>
+<rect x="1005" y="634" width="495" height="110" rx="10" fill="#edf0fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="680" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">Алыста: әдетте бәсең</text>
+</svg>

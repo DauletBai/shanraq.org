@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Как часто идёт волна: период, частота и длина</title><desc id="desc">8 колебаний / 4 с; f = 2 Гц; T = 0,5 с; λ = 1,5 м; v = 3 м/с</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d4e8ed"/></pattern><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e8f3f7"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#37657b" flood-opacity=".2"/></filter></defs>
+<rect width="1600" height="900" fill="#f2f9fb"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="195" width="875" height="590" rx="16" fill="url(#paper)" stroke="#99bac8" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="195" width="555" height="590" rx="16" fill="#fff" stroke="#99bac8" stroke-width="3" filter="url(#shadow)"/>
+<text x="75" y="76" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#16445e">Как часто идёт волна: период, частота и длина</text>
+<polyline points="240,475 248,452 256,430 264,410 272,393 280,379 288,370 296,365 304,365 312,370 320,379 328,393 336,410 344,430 352,452 360,474 368,497 376,519 384,539 392,556 400,570 408,579 416,584 424,584 432,579 440,570 448,556 456,539 464,519 472,497 480,475 488,452 496,430 504,410 512,393 520,379 528,370 536,365 544,365 552,370 560,379 568,393 576,410 584,430 592,452 600,474 608,497 616,519 624,539 632,556 640,570 648,579 656,584 664,584 672,579 680,570 688,556 696,539 704,519 712,497 720,475 728,452 736,430 744,410 752,393 760,379 768,370 776,365 784,365 792,370 800,379 808,393 816,410 824,430 832,452 840,474" fill="none" stroke="#2784a4" stroke-width="8"/>
+<path d="M220 475H870" fill="none" stroke="#849fab" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M300 335V640" fill="none" stroke="#d39c67" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/>
+<path d="M540 335V640" fill="none" stroke="#d39c67" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/>
+<path d="M780 335V640" fill="none" stroke="#d39c67" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/>
+<text x="300" y="680" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#16445e">0 m</text>
+<text x="540" y="680" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#16445e">1.5 m</text>
+<text x="780" y="680" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#16445e">3 m</text>
+<path d="M300 320H540" fill="none" stroke="#d98754" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1005" y="220" width="495" height="110" rx="10" fill="#e6f5fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="266" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">8 колебаний / 4 с</text>
+<rect x="1005" y="358" width="495" height="110" rx="10" fill="#fff0e4" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="404" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">f = 2 Гц</text>
+<rect x="1005" y="496" width="495" height="110" rx="10" fill="#eaf4e9" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="542" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">T = 0,5 с</text>
+<rect x="1005" y="634" width="495" height="110" rx="10" fill="#edf0fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="680" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">λ = 1,5 м; v = 3 м/с</text>
+</svg>

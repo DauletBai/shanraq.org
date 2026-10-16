@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Бақылау тапсырмасы: есікке жарық белгісін жобалаңыз</title><desc id="desc">Жабық: 30° / 30°; Айна бұрылады: 10°; Сәуле өзгереді: 20°; Экран: тексеру</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#d4e8ed"/></pattern><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e8f3f7"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#37657b" flood-opacity=".2"/></filter></defs>
+<rect width="1600" height="900" fill="#f2f9fb"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="195" width="875" height="590" rx="16" fill="url(#paper)" stroke="#99bac8" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="195" width="555" height="590" rx="16" fill="#fff" stroke="#99bac8" stroke-width="3" filter="url(#shadow)"/>
+<text x="75" y="76" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#16445e">Бақылау тапсырмасы: есікке жарық белгісін жобалаңыз</text>
+<path d="M175 580H425" fill="none" stroke="#557f91" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M555 602L805 558" fill="none" stroke="#557f91" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M160 337L300 580L440 337" fill="none" stroke="#df8a54" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M540 337L680 580L723 337" fill="none" stroke="#df8a54" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M300 305V650" fill="none" stroke="#9cbac6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/>
+<path d="M633 313L708 740" fill="none" stroke="#9cbac6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 9"/>
+<text x="300" y="690" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">30° → 30°</text>
+<text x="680" y="690" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#16445e">10° → 20°</text>
+<path d="M460 445H520m-15-13 15 13-15 13" fill="none" stroke="#36859e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1005" y="220" width="495" height="110" rx="10" fill="#e6f5fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="266" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">Жабық: 30° / 30°</text>
+<rect x="1005" y="358" width="495" height="110" rx="10" fill="#fff0e4" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="404" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">Айна бұрылады: 10°</text>
+<rect x="1005" y="496" width="495" height="110" rx="10" fill="#eaf4e9" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="542" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">Сәуле өзгереді: 20°</text>
+<rect x="1005" y="634" width="495" height="110" rx="10" fill="#edf0fa" stroke="#d0e2e8" stroke-width="2"/>
+<text x="1027" y="680" text-anchor="start" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#16445e">Экран: тексеру</text>
+</svg>

@@ -1,7 +1,7 @@
 # Physics / Физика / Физика
 
 The 100-lesson route is described in `curriculum.json` and `docs/physics-course.md`.
-Only complete blocks are published. Blocks 1–7 cover lessons 1–66, in Russian, Kazakh, and English. The Russian filename is the base stem; Kazakh
+Only complete blocks are published. Blocks 1–8 cover lessons 1–74, in Russian, Kazakh, and English. The Russian filename is the base stem; Kazakh
 and English append `-kz` and `-en`. Maps use `-ru`, `-kz`, and `-en`.
 
 The learner maintains a laboratory notebook of fictional or self-measured,
@@ -9,7 +9,7 @@ non-personal data. The first release compares the period of a lightweight
 pendulum at two string lengths. It does not claim to have derived the formula
 for the period or established a universal law from two measurements.
 
-From the repository root, regenerate and validate all seven blocks:
+From the repository root, regenerate and validate all eight blocks:
 
 ```sh
 python3 tools/course/build_physics_block.py
@@ -19,6 +19,7 @@ python3 tools/course/build_physics_fluids.py
 python3 tools/course/build_physics_heat.py
 python3 tools/course/build_physics_electricity.py
 python3 tools/course/build_physics_magnetism.py
+python3 tools/course/build_physics_waves.py
 python3 -m unittest tools.course.test_physics_release
 python3 tools/course/prepare_physics.py \
   --sql /tmp/physics-course.sql \

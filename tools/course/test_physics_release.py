@@ -13,6 +13,7 @@ from tools.course.build_physics_fluids import DIAGRAM
 from tools.course.physics_heat_data import HEAT
 from tools.course.physics_electricity_data import ELECTRICITY
 from tools.course.physics_magnetism_data import MAGNETISM
+from tools.course.physics_waves_data import WAVES
 from tools.course.build_physics_magnetism import NOTES
 from tools.course.prepare_physics import prepare, read_lesson
 
@@ -46,10 +47,13 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertEqual([row["number"] for row in data["seventh_block_lessons"]], list(range(57, 67)))
         self.assertEqual(data["blocks"][6]["status"], "published")
         self.assertTrue((ROOT / "web" / data["blocks"][6]["cover"].lstrip("/")).is_file())
+        self.assertEqual([row["number"] for row in data["eighth_block_lessons"]], list(range(67, 75)))
+        self.assertEqual(data["blocks"][7]["status"], "published")
+        self.assertTrue((ROOT / "web" / data["blocks"][7]["cover"].lstrip("/")).is_file())
 
     def test_every_language_has_the_same_experiment_and_working_assets(self):
         slugs = json.loads((ROOT / "tools/course/lesson-slugs.json").read_text())
-        route = [*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM]
+        route = [*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES]
         for index, row in enumerate(route, 1):
             for lang in ("ru", "kz", "en"):
                 suffix = "" if lang == "ru" else f"-{lang}"
@@ -168,6 +172,26 @@ class PhysicsReleaseTests(unittest.TestCase):
             self.assertIn(words[0], (LESSONS / f'63-changing-field-induction{suffix}.md').read_text())
             self.assertIn(words[1], (LESSONS / f'66-magnetism-communication-checkpoint{suffix}.md').read_text())
 
+    def test_waves_block_numbers_and_visual_models(self):
+        self.assertEqual(8 / 4, 2)  # cycles per second
+        self.assertEqual(1.5 * 2, 3)  # wavelength times frequency
+        self.assertEqual(1 / 10 - 1 / 20, 1 / 20)  # thin-lens model
+        self.assertEqual(2 * 10, 20)  # reflected ray turns twice mirror angle
+        for row in WAVES:
+            for lang in ("ru", "kz", "en"):
+                image = MAPS / f"map-{row['stem']}-{lang}.svg"
+                root = ET.parse(image).getroot()
+                self.assertEqual(root.attrib["viewBox"], "0 0 1600 900")
+                visible = " ".join(root.itertext())
+                for label in row["map"][lang]:
+                    self.assertIn(label, visible)
+                lesson = (LESSONS / f"{row['stem']}{'' if lang == 'ru' else '-'+lang}.md").read_text()
+                self.assertIn(row[lang][0], lesson)
+        for lang in ("ru", "kz", "en"):
+            suffix = "" if lang == "ru" else "-" + lang
+            link = f"/read/physics-67-disturbance-and-wave?lang={lang}"
+            self.assertIn(link, (LESSONS / f"66-magnetism-communication-checkpoint{suffix}.md").read_text())
+
     def test_experiment_numbers_and_limits_match_across_languages(self):
         # These are worked numbers, never represented as a learner's observation.
         short = [10.9, 11.1, 11.0]
@@ -191,14 +215,14 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
         self.assertIn("Physics slug belongs to another author", sql)
         self.assertIn("Physics lesson belongs to another course", sql)
-        self.assertEqual(len(expected), 198)
+        self.assertEqual(len(expected), 222)
         self.assertEqual({e["lang"] for e in expected}, {"ru", "kz", "en"})
         self.assertEqual({e["slug"] for e in expected}, {
-            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM], 1)})
+            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES], 1)})
         electricity_sql, electricity_expected = prepare(start=46)
-        self.assertEqual(len(electricity_expected), 63)
+        self.assertEqual(len(electricity_expected), 87)
         self.assertEqual({e["slug"] for e in electricity_expected}, {
-            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*HEAT[-1:], *ELECTRICITY, *MAGNETISM], 46)})
+            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*HEAT[-1:], *ELECTRICITY, *MAGNETISM, *WAVES], 46)})
         self.assertNotIn("physics-45-room-energy-budget", electricity_sql)
 
 

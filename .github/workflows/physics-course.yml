@@ -20,6 +20,8 @@ on:
       - 'tools/course/physics_electricity_data.py'
       - 'tools/course/build_physics_magnetism.py'
       - 'tools/course/physics_magnetism_data.py'
+      - 'tools/course/build_physics_waves.py'
+      - 'tools/course/physics_waves_data.py'
       - 'tools/course/prepare_physics.py'
       - 'tools/course/test_physics_release.py'
       - 'web/static/course/physics/**'
@@ -43,6 +45,8 @@ on:
       - 'tools/course/physics_electricity_data.py'
       - 'tools/course/build_physics_magnetism.py'
       - 'tools/course/physics_magnetism_data.py'
+      - 'tools/course/build_physics_waves.py'
+      - 'tools/course/physics_waves_data.py'
       - 'tools/course/prepare_physics.py'
       - 'tools/course/test_physics_release.py'
       - 'web/static/course/physics/**'
@@ -62,6 +66,7 @@ jobs:
           python3 tools/course/build_physics_heat.py
           python3 tools/course/build_physics_electricity.py
           python3 tools/course/build_physics_magnetism.py
+          python3 tools/course/build_physics_waves.py
       - name: Verify generated files are committed
         run: git diff --exit-code
       - name: Check curriculum, numbers, assets and guarded publication

@@ -38,4 +38,4 @@ Close the explanation and say in your own words what was really observed, which 
 
 Add a page to My World Lab Notebook. Record the question, a prediction made before testing, a sketch and a table of conditions. Keep actual observations separate from supplied teaching numbers. In the final line say what changed, what stayed constant, what the evidence supports and what it does not yet prove. If you did no experiment, label the work 'calculation from supplied data' or 'prediction', never 'measured'.
 
-[Return to the Physics course](/course/physics?lang=en)
+[Next lesson](/read/physics-67-disturbance-and-wave?lang=en)

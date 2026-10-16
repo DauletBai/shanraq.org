@@ -5722,5 +5722,101 @@
   "physics/66-magnetism-communication-checkpoint-en": [
     "physics-66-magnetism-communication-checkpoint",
     "en"
+  ],
+  "physics/67-disturbance-and-wave": [
+    "physics-67-disturbance-and-wave",
+    "ru"
+  ],
+  "physics/67-disturbance-and-wave-kz": [
+    "physics-67-disturbance-and-wave",
+    "kz"
+  ],
+  "physics/67-disturbance-and-wave-en": [
+    "physics-67-disturbance-and-wave",
+    "en"
+  ],
+  "physics/68-period-frequency-wavelength": [
+    "physics-68-period-frequency-wavelength",
+    "ru"
+  ],
+  "physics/68-period-frequency-wavelength-kz": [
+    "physics-68-period-frequency-wavelength",
+    "kz"
+  ],
+  "physics/68-period-frequency-wavelength-en": [
+    "physics-68-period-frequency-wavelength",
+    "en"
+  ],
+  "physics/69-sound-vibration-medium": [
+    "physics-69-sound-vibration-medium",
+    "ru"
+  ],
+  "physics/69-sound-vibration-medium-kz": [
+    "physics-69-sound-vibration-medium",
+    "kz"
+  ],
+  "physics/69-sound-vibration-medium-en": [
+    "physics-69-sound-vibration-medium",
+    "en"
+  ],
+  "physics/70-pitch-loudness-distance": [
+    "physics-70-pitch-loudness-distance",
+    "ru"
+  ],
+  "physics/70-pitch-loudness-distance-kz": [
+    "physics-70-pitch-loudness-distance",
+    "kz"
+  ],
+  "physics/70-pitch-loudness-distance-en": [
+    "physics-70-pitch-loudness-distance",
+    "en"
+  ],
+  "physics/71-light-reflection": [
+    "physics-71-light-reflection",
+    "ru"
+  ],
+  "physics/71-light-reflection-kz": [
+    "physics-71-light-reflection",
+    "kz"
+  ],
+  "physics/71-light-reflection-en": [
+    "physics-71-light-reflection",
+    "en"
+  ],
+  "physics/72-refraction-and-medium": [
+    "physics-72-refraction-and-medium",
+    "ru"
+  ],
+  "physics/72-refraction-and-medium-kz": [
+    "physics-72-refraction-and-medium",
+    "kz"
+  ],
+  "physics/72-refraction-and-medium-en": [
+    "physics-72-refraction-and-medium",
+    "en"
+  ],
+  "physics/73-lens-and-image": [
+    "physics-73-lens-and-image",
+    "ru"
+  ],
+  "physics/73-lens-and-image-kz": [
+    "physics-73-lens-and-image",
+    "kz"
+  ],
+  "physics/73-lens-and-image-en": [
+    "physics-73-lens-and-image",
+    "en"
+  ],
+  "physics/74-waves-light-investigation": [
+    "physics-74-waves-light-investigation",
+    "ru"
+  ],
+  "physics/74-waves-light-investigation-kz": [
+    "physics-74-waves-light-investigation",
+    "kz"
+  ],
+  "physics/74-waves-light-investigation-en": [
+    "physics-74-waves-light-investigation",
+    "en"
   ]
 }

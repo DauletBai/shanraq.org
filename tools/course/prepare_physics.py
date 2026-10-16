@@ -14,6 +14,7 @@ try:
     from .physics_heat_data import HEAT
     from .physics_electricity_data import ELECTRICITY
     from .physics_magnetism_data import MAGNETISM
+    from .physics_waves_data import WAVES
 except ImportError:  # direct invocation: python3 tools/course/prepare_physics.py
     from build_physics_block import DATA, LESSONS, ROOT
     from physics_motion_data import MOTION
@@ -22,6 +23,7 @@ except ImportError:  # direct invocation: python3 tools/course/prepare_physics.p
     from physics_heat_data import HEAT
     from physics_electricity_data import ELECTRICITY
     from physics_magnetism_data import MAGNETISM
+    from physics_waves_data import WAVES
 
 COVER = "/static/covers/school/physics/investigation/01-observe-measure.webp"
 MOTION_COVER = "/static/covers/school/physics/motion/02-motion-graphs.webp"
@@ -30,13 +32,14 @@ FLUIDS_COVER = "/static/covers/school/physics/fluids/04-fluids-pressure.webp"
 HEAT_COVER = "/static/covers/school/physics/heat/05-heat-thermodynamics.webp"
 ELECTRICITY_COVER = "/static/covers/school/physics/electricity/06-electric-circuits.webp"
 MAGNETISM_COVER = "/static/covers/school/physics/magnetism/07-magnetism-communication.webp"
+WAVES_COVER = "/static/covers/school/physics/waves/08-waves-sound-light.webp"
 META = {
     "ru": ("Физика вокруг нас: от первого опыта до своей лаборатории",
-           "Бесплатный курс физики без пропущенных шагов: исследуем движение, силы, тепло, электрические цепи, магнетизм и энергию."),
+           "Бесплатный курс физики без пропущенных шагов: исследуем движение, силы, тепло, электрические цепи, магнетизм, волны, звук и свет."),
     "kz": ("Айналамыздағы физика: алғашқы тәжірибеден өз зертханамызға дейін",
-           "Тегін физика курсы: қозғалыс, күш, жылу, электр тізбектері, магнетизм мен энергияны болжап, өлшеп, тексереміз."),
+           "Тегін физика курсы: қозғалыс, күш, жылу, электр тізбектері, магнетизм, толқын, дыбыс пен жарықты зерттейміз."),
     "en": ("Physics around us: from a first experiment to your own lab",
-           "A free physics course with no skipped steps: investigate motion, forces, heat, circuits, magnetism, and energy."),
+           "A free physics course with no skipped steps: investigate motion, forces, heat, circuits, magnetism, waves, sound and light."),
 }
 LEAD = re.compile(r"_Лид \(summary\):_ \*\*(.+)\*\*$")
 
@@ -59,13 +62,13 @@ def read_lesson(path):
 
 
 def prepare(start=1):
-    if len(DATA) != 8 or len(MOTION) != 10 or len(FORCES) != 10 or len(FLUIDS) != 8 or len(HEAT) != 10 or len(ELECTRICITY) != 10 or len(MAGNETISM) != 10:
-        raise ValueError("physics release requires seven complete blocks")
-    if not 1 <= start <= 66:
-        raise ValueError("start must be a published lesson number from 1 to 66")
+    if len(DATA) != 8 or len(MOTION) != 10 or len(FORCES) != 10 or len(FLUIDS) != 8 or len(HEAT) != 10 or len(ELECTRICITY) != 10 or len(MAGNETISM) != 10 or len(WAVES) != 8:
+        raise ValueError("physics release requires eight complete blocks")
+    if not 1 <= start <= 74:
+        raise ValueError("start must be a published lesson number from 1 to 74")
     route = [(item["stem"], f"physics-{i:02d}-{item['stem'][3:]}", i*10,
-              COVER if i <= 8 else (MOTION_COVER if i <= 18 else (FORCES_COVER if i <= 28 else (FLUIDS_COVER if i <= 36 else (HEAT_COVER if i <= 46 else (ELECTRICITY_COVER if i <= 56 else MAGNETISM_COVER))))))
-             for i, item in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM], 1) if i >= start]
+              COVER if i <= 8 else (MOTION_COVER if i <= 18 else (FORCES_COVER if i <= 28 else (FLUIDS_COVER if i <= 36 else (HEAT_COVER if i <= 46 else (ELECTRICITY_COVER if i <= 56 else (MAGNETISM_COVER if i <= 66 else WAVES_COVER)))))))
+             for i, item in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES], 1) if i >= start]
     slug_list = ",".join(literal(slug) for _, slug, _, _ in route)
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-physics-course'));",
            f"""DO $guard$
