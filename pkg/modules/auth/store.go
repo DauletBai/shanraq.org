@@ -267,6 +267,23 @@ func (s *Store) CreateEmailVerification(ctx context.Context, userID uuid.UUID, t
 	return nil
 }
 
+// HasRecentEmailVerification prevents repeated verification mail for an account.
+func (s *Store) HasRecentEmailVerification(ctx context.Context, userID uuid.UUID) (bool, error) {
+	var recent bool
+	err := s.db.QueryRow(ctx,
+		`SELECT EXISTS (SELECT 1 FROM email_verification_tokens
+		 WHERE user_id = $1 AND used_at IS NULL
+		 AND created_at > NOW() - INTERVAL '5 minutes')`, userID).Scan(&recent)
+	return recent, err
+}
+
+func (s *Store) CancelEmailVerification(ctx context.Context, userID uuid.UUID, tokenHash string) error {
+	_, err := s.db.Exec(ctx,
+		`UPDATE email_verification_tokens SET used_at = NOW()
+		 WHERE user_id = $1 AND token_hash = $2 AND used_at IS NULL`, userID, tokenHash)
+	return err
+}
+
 // ConsumeEmailVerification validates an unused, unexpired token, marks the user
 // verified and the token used (in one transaction), and returns the user id.
 func (s *Store) ConsumeEmailVerification(ctx context.Context, tokenHash string) (uuid.UUID, error) {

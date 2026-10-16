@@ -82,6 +82,9 @@ func (m *Module) RecordConsent(ctx context.Context, r *http.Request, userID uuid
 // emailVerificationTTL is how long a verification link stays valid.
 const emailVerificationTTL = 48 * time.Hour
 
+var ErrEmailVerificationCooldown = errors.New("email verification recently requested")
+var ErrEmailAlreadyVerified = errors.New("email already verified")
+
 // IssueEmailVerification mints a verification token for the user and emails the
 // confirmation link. Best-effort: a delivery/store failure is returned but the
 // caller should not fail registration on it (the user can request a resend).
@@ -94,7 +97,35 @@ func (m *Module) IssueEmailVerification(ctx context.Context, userID uuid.UUID, e
 		return err
 	}
 	link := fmt.Sprintf("%s/auth/verify?token=%s", m.rt.Config.PublicBase(), token)
-	return m.sendVerificationEmail(ctx, email, link)
+	if err := m.sendVerificationEmail(ctx, email, link); err != nil {
+		_ = m.store.CancelEmailVerification(ctx, userID, hashToken(token))
+		return err
+	}
+	return nil
+}
+
+// ResendEmailVerification sends a fresh link to the address stored on the
+// authenticated account. Expired signup links can otherwise never be renewed.
+func (m *Module) ResendEmailVerification(ctx context.Context, userID uuid.UUID) error {
+	verified, err := m.store.IsEmailVerified(ctx, userID)
+	if err != nil {
+		return err
+	}
+	if verified {
+		return ErrEmailAlreadyVerified
+	}
+	recent, err := m.store.HasRecentEmailVerification(ctx, userID)
+	if err != nil {
+		return err
+	}
+	if recent {
+		return ErrEmailVerificationCooldown
+	}
+	user, err := m.store.GetByID(ctx, userID.String())
+	if err != nil {
+		return err
+	}
+	return m.IssueEmailVerification(ctx, userID, user.Email)
 }
 
 // VerifyEmail consumes a verification token and marks the email verified.

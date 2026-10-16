@@ -14,7 +14,42 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"shanraq.org/pkg/modules/auth"
 )
+
+type verificationMailer struct{ sent int }
+
+func (m *verificationMailer) Send(_ context.Context, _, _, _ string) error {
+	m.sent++
+	return nil
+}
+
+func TestResendEmailVerificationFromProfile(t *testing.T) {
+	mailer := &verificationMailer{}
+	app := newTestApp(t, auth.WithMailer(mailer))
+	defer app.cleanup()
+	email := "resend-" + uuid.NewString()[:8] + "@example.com"
+	uid := app.createUser(email, "Str0ng-Pass-123")
+	cookie := app.login(email, "Str0ng-Pass-123")
+
+	w := app.do(http.MethodGet, "/studio/profile", nil, withCookie(cookie))
+	if !strings.Contains(w.Body.String(), `action="/studio/profile/email/resend"`) {
+		t.Fatal("unverified account has no resend action")
+	}
+	w = app.do(http.MethodPost, "/studio/profile/email/resend", nil, withCookie(cookie))
+	if w.Code != http.StatusSeeOther || !strings.Contains(w.Header().Get("Location"), "email_sent") || mailer.sent != 1 {
+		t.Fatalf("first resend: status=%d location=%s sent=%d", w.Code, w.Header().Get("Location"), mailer.sent)
+	}
+	w = app.do(http.MethodPost, "/studio/profile/email/resend", nil, withCookie(cookie))
+	if w.Code != http.StatusSeeOther || !strings.Contains(w.Header().Get("Location"), "email_wait") || mailer.sent != 1 {
+		t.Fatalf("cooldown: status=%d location=%s sent=%d", w.Code, w.Header().Get("Location"), mailer.sent)
+	}
+	app.exec(`UPDATE auth_users SET email_verified_at = now() WHERE id = $1`, uid)
+	w = app.do(http.MethodGet, "/studio/profile", nil, withCookie(cookie))
+	if strings.Contains(w.Body.String(), `action="/studio/profile/email/resend"`) {
+		t.Fatal("verified account still shows resend action")
+	}
+}
 
 func (a *testApp) userExists(id uuid.UUID) bool {
 	var n int

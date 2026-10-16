@@ -8,6 +8,7 @@
     <section class="studio">
       <div class="studio__head"><h1>{{ t .Lang "prof.title" }}</h1></div>
       {{ with .Notice }}{{ template "saved" . }}{{ end }}
+      {{ if .Error }}<div class="alert alert--error">{{ .Error }}</div>{{ end }}
 
       <div class="cab-card">
         <h2>{{ t .Lang "prof.avatar" }}</h2>
@@ -62,6 +63,12 @@
             <tr><td>{{ t .Lang "prof.author_status" }}</td><td>{{ if or .PhoneVerified .CanPublish }}<span class="pill pill--published">{{ t .Lang "prof.author_yes" }}</span>{{ else }}<a href="/studio/author">{{ t .Lang "prof.author_no" }}</a>{{ end }}</td></tr>
           </tbody>
         </table>
+        {{ if not .EmailVerified }}
+        <p class="hint">{{ t .Lang "prof.email_unverified" }}</p>
+        <form method="post" action="/studio/profile/email/resend">
+          <button class="btn btn--ghost btn--sm" type="submit">{{ t .Lang "prof.email_resend" }}</button>
+        </form>
+        {{ end }}
       </div>
 
       <div class="cab-card cab-card--danger">

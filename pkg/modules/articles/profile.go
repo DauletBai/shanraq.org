@@ -27,6 +27,7 @@ type ProfilePage struct {
 	PhoneVerified bool
 	EmailVerified bool
 	Notice        string
+	Error         string
 
 	// PlaceID and PlaceLabel are where the reader says they live. Empty means
 	// they never said, and then everything is shown to them — which is what
@@ -45,6 +46,9 @@ func (m *Module) handleProfile(w http.ResponseWriter, r *http.Request) {
 	lang := site.ResolveLang(w, r)
 	page := ProfilePage{Base: m.base(r, site.T(lang, "prof.title"), lang)}
 	page.Notice = noticeText(lang, r.URL.Query().Get("ok"))
+	if code := r.URL.Query().Get("error"); code == "email_wait" || code == "email_failed" {
+		page.Error = site.T(lang, "prof."+code)
+	}
 
 	page.FirstName, page.LastName, page.PhoneVerified = m.auth.AuthorIdentity(r.Context(), authorID)
 	page.EmailVerified = m.auth.IsEmailVerified(r.Context(), authorID)
@@ -63,6 +67,33 @@ func (m *Module) handleProfile(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	m.render(w, "studio_profile", page)
+}
+
+// handleResendEmailVerification lets a signed-in user renew an expired link.
+func (m *Module) handleResendEmailVerification(w http.ResponseWriter, r *http.Request) {
+	uid, ok := m.authorID(r)
+	if !ok {
+		http.Redirect(w, r, "/studio/login", http.StatusSeeOther)
+		return
+	}
+	if !m.auth.AllowAuthAttempt(r, "signup", uid.String()) {
+		http.Redirect(w, r, "/studio/profile?error=email_wait", http.StatusSeeOther)
+		return
+	}
+	if err := m.auth.ResendEmailVerification(r.Context(), uid); err != nil {
+		if errors.Is(err, auth.ErrEmailAlreadyVerified) {
+			http.Redirect(w, r, "/studio/profile", http.StatusSeeOther)
+			return
+		}
+		if errors.Is(err, auth.ErrEmailVerificationCooldown) {
+			http.Redirect(w, r, "/studio/profile?error=email_wait", http.StatusSeeOther)
+			return
+		}
+		m.rt.Logger.Error("resend email verification", zap.Error(err))
+		http.Redirect(w, r, "/studio/profile?error=email_failed", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/studio/profile?ok=email_sent", http.StatusSeeOther)
 }
 
 // handleAvatarUpload accepts a profile photo, processes it (square, EXIF-stripped,
