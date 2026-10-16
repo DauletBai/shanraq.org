@@ -51,7 +51,7 @@ func houseAds(lang string) []Ad {
 	return out
 }
 
-const tartarSampleURL = "/static/shop/tartar-i-ya-sample/index.html"
+const tartarSampleURL = "/static/shop/tartar-i-ya-sample/"
 const tartarCoverURL = "/static/shop/tartar-i-ya-sample/cover.jpg"
 
 func tartarSlide(lang string) Ad {
