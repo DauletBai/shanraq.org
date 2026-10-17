@@ -25,6 +25,8 @@ func defaultRateLimitRules() map[string]rateLimitRule {
 		"password_reset":         {limit: rate.Every(time.Minute / 4), burst: 3},         // 4 attempts/min
 		"password_reset_confirm": {limit: rate.Every(time.Minute / 4), burst: 5},         // 4 attempts/min
 		"mfa_verify":             {limit: rate.Every(time.Minute / 6), burst: 6},         // 10 attempts/min approx
+		"phone_verify_telegram":  {limit: rate.Every(2 * time.Minute), burst: 5},
+		"phone_verify_sms":       {limit: rate.Every(30 * time.Minute), burst: 2},
 		// A listing carries up to fifteen photos, so the burst has to clear one
 		// form in one go; the refill is what stops a script from doing it all
 		// night. This bounds the rate, not the total — a storage quota is the

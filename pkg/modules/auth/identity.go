@@ -97,7 +97,8 @@ func (m *Module) StartPhoneVerificationVia(ctx context.Context, userID uuid.UUID
 		text = "Shanraq.org: " + code
 	}
 	if err := m.deliverSMSOrDevLog(ctx, norm, text, code, channel); err != nil {
-		_ = m.store.CancelPhoneCode(ctx, userID, hashToken(code))
+		// A timeout or broken response does not prove non-delivery: SMSC may have
+		// accepted and delivered the code. Keep it usable until its short expiry.
 		return err
 	}
 	return nil

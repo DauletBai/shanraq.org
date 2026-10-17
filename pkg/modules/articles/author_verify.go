@@ -85,13 +85,17 @@ func (m *Module) handleAuthorPhone(w http.ResponseWriter, r *http.Request) {
 	}
 	_ = r.ParseForm()
 	phone := r.FormValue("phone")
-	if !m.auth.AllowAuthAttempt(r, "signin", r.FormValue("phone")) { // reuse the signin limiter for OTP sends
-		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Phone: phone, Error: site.T(site.ResolveLang(w, r), "form.err_rate_limit")})
-		return
-	}
 	channel := r.FormValue("channel")
 	if channel != "telegram" && channel != "sms" {
 		channel = "sms"
+	}
+	action := "phone_verify_telegram"
+	if channel == "sms" {
+		action = "phone_verify_sms"
+	}
+	if !m.auth.AllowAuthAttempt(r, action, uid.String()) {
+		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Phone: phone, Error: site.T(site.ResolveLang(w, r), "form.err_rate_limit")})
+		return
 	}
 	if err := m.auth.StartPhoneVerificationVia(r.Context(), uid, phone, channel); err != nil {
 		if err == auth.ErrInvalidPhone {
