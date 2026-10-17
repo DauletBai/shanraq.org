@@ -111,3 +111,31 @@ func TestSendSMSCTelegramCode(t *testing.T) {
 		t.Fatal("Telegram must reject a nonnumeric message")
 	}
 }
+
+func TestSendSMSCOverrideToSMS(t *testing.T) {
+	var gotText, gotTelegram string
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotText = r.URL.Query().Get("mes")
+		gotTelegram = r.URL.Query().Get("tg")
+		w.Write([]byte(`{"id":43,"cnt":1}`))
+	}))
+	defer srv.Close()
+	c, _, _ := New(Config{Provider: "smsc", Login: "me", Password: "pw", Channel: "telegram", BaseURL: srv.URL})
+	if err := c.SendVerificationCode(context.Background(), "79036616890", "Shanraq.org: 123456", "sms"); err != nil {
+		t.Fatal(err)
+	}
+	if gotTelegram != "" || gotText != "Shanraq.org: 123456" {
+		t.Fatalf("SMS override not honored: tg=%q text=%q", gotTelegram, gotText)
+	}
+}
+
+func TestSendSMSCRequiresAcknowledgement(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`{}`))
+	}))
+	defer srv.Close()
+	c, _, _ := New(Config{Provider: "smsc", Login: "me", Password: "pw", BaseURL: srv.URL})
+	if err := c.SendSMS(context.Background(), "79036616890", "123456"); err == nil {
+		t.Fatal("empty gateway response must not be reported as accepted")
+	}
+}

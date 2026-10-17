@@ -66,6 +66,12 @@ func New(cfg Config) (*Client, bool, error) {
 // SendSMS delivers text to phone. The phone is reduced to bare digits (no '+'),
 // which both Kazakhstani gateways expect for local 77XXXXXXXXXX numbers.
 func (c *Client) SendSMS(ctx context.Context, phone, text string) error {
+	return c.SendVerificationCode(ctx, phone, text, c.cfg.Channel)
+}
+
+// SendVerificationCode lets the author choose SMS when Telegram delivery is
+// unavailable. The configured channel remains the default for other callers.
+func (c *Client) SendVerificationCode(ctx context.Context, phone, text, channel string) error {
 	to := digitsOnly(phone)
 	if to == "" {
 		return fmt.Errorf("sms: empty recipient")
@@ -74,7 +80,7 @@ func (c *Client) SendSMS(ctx context.Context, phone, text string) error {
 	case "mobizon":
 		return c.sendMobizon(ctx, to, text)
 	case "smsc":
-		return c.sendSMSC(ctx, to, text)
+		return c.sendSMSC(ctx, to, text, channel)
 	default:
 		return fmt.Errorf("sms: provider %q not wired", c.cfg.Provider)
 	}
@@ -132,8 +138,8 @@ func (c *Client) sendMobizon(ctx context.Context, to, text string) error {
 
 // --- SMSC.kz ---
 
-func (c *Client) sendSMSC(ctx context.Context, to, text string) error {
-	telegram := strings.EqualFold(c.cfg.Channel, "telegram") || strings.EqualFold(c.cfg.Channel, "tg")
+func (c *Client) sendSMSC(ctx context.Context, to, text, channel string) error {
+	telegram := strings.EqualFold(channel, "telegram") || strings.EqualFold(channel, "tg")
 	if telegram {
 		if len(text) < 4 || len(text) > 8 {
 			return fmt.Errorf("sms smsc: Telegram verification code must be 4-8 digits")
@@ -182,6 +188,9 @@ func (c *Client) sendSMSC(ctx context.Context, to, text string) error {
 	}
 	if out.Error != "" {
 		return fmt.Errorf("sms smsc: error %d: %s", out.ErrorCode, out.Error)
+	}
+	if resp.StatusCode != http.StatusOK || out.ErrorCode != 0 || out.ID <= 0 || out.Cnt <= 0 {
+		return fmt.Errorf("sms smsc: request not accepted (HTTP %d, error %d, id %d, count %d)", resp.StatusCode, out.ErrorCode, out.ID, out.Cnt)
 	}
 	return nil
 }

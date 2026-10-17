@@ -587,6 +587,19 @@ func (s *Store) CreatePhoneCode(ctx context.Context, userID uuid.UUID, phone, co
 	return nil
 }
 
+// PendingPhoneCode returns the number for the newest usable code, if any.
+// It restores the form after a redirect without putting the number in a URL.
+func (s *Store) PendingPhoneCode(ctx context.Context, userID uuid.UUID) (string, bool, error) {
+	var phone string
+	err := s.db.QueryRow(ctx, `SELECT phone FROM phone_verification_codes
+		WHERE user_id = $1 AND used_at IS NULL AND expires_at > NOW()
+		ORDER BY created_at DESC LIMIT 1`, userID).Scan(&phone)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return "", false, nil
+	}
+	return phone, err == nil, err
+}
+
 // CancelPhoneCode invalidates a code when the gateway could not deliver it.
 func (s *Store) CancelPhoneCode(ctx context.Context, userID uuid.UUID, codeHash string) error {
 	_, err := s.db.Exec(ctx,

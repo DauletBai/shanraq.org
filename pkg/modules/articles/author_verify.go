@@ -33,10 +33,19 @@ func (m *Module) renderVerifyAuthor(w http.ResponseWriter, r *http.Request, p Ve
 		p.First, p.Last, p.PhoneVerified = first, last, verified
 		p.Middle = m.auth.MiddleName(r.Context(), uid)
 		p.CanPublish = m.auth.CanPublish(r.Context(), uid)
+		if !verified {
+			if pending, active, err := m.auth.PendingPhoneCode(r.Context(), uid); err != nil {
+				m.rt.Logger.Error("load pending phone code", zap.Error(err))
+			} else if active {
+				p.CodeSent = true
+				if p.Phone == "" {
+					p.Phone = pending
+				}
+			}
+		}
 	}
 	q := r.URL.Query()
 	p.NeedPublish = q.Get("need") == "publish"
-	p.CodeSent = q.Get("code") == "sent" || p.CodeSent
 	switch {
 	case q.Get("name") == "ok":
 		p.Notice = site.T(lang, "author.name_saved")
@@ -80,15 +89,20 @@ func (m *Module) handleAuthorPhone(w http.ResponseWriter, r *http.Request) {
 		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Phone: phone, Error: site.T(site.ResolveLang(w, r), "form.err_rate_limit")})
 		return
 	}
-	if err := m.auth.StartPhoneVerification(r.Context(), uid, phone); err != nil {
+	channel := r.FormValue("channel")
+	if channel != "telegram" && channel != "sms" {
+		channel = "sms"
+	}
+	if err := m.auth.StartPhoneVerificationVia(r.Context(), uid, phone, channel); err != nil {
 		if err == auth.ErrInvalidPhone {
 			m.renderVerifyAuthor(w, r, VerifyAuthorPage{Phone: phone, Error: site.T(site.ResolveLang(w, r), "author.err_phone")})
 			return
 		}
-		m.rt.Logger.Error("start phone verification", zap.Error(err))
+		m.rt.Logger.Error("start phone verification", zap.String("user_id", uid.String()), zap.String("channel", channel), zap.Error(err))
 		m.renderVerifyAuthor(w, r, VerifyAuthorPage{Phone: phone, Error: site.T(site.ResolveLang(w, r), "author.err_delivery")})
 		return
 	}
+	m.rt.Logger.Info("phone verification request accepted", zap.String("user_id", uid.String()), zap.String("channel", channel))
 	http.Redirect(w, r, "/studio/author?code=sent", http.StatusSeeOther)
 }
 

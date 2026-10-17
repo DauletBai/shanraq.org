@@ -71,6 +71,14 @@ func generateNumericCode(n int) (string, error) {
 // (dev-logged when no gateway is configured, outside production). Returns
 // ErrInvalidPhone for a malformed number.
 func (m *Module) StartPhoneVerification(ctx context.Context, userID uuid.UUID, phone string) error {
+	return m.StartPhoneVerificationVia(ctx, userID, phone, "telegram")
+}
+
+// StartPhoneVerificationVia requests a code using the selected delivery rail.
+func (m *Module) StartPhoneVerificationVia(ctx context.Context, userID uuid.UUID, phone, channel string) error {
+	if channel != "telegram" && channel != "sms" {
+		return errors.New("invalid verification channel")
+	}
 	norm, ok := NormalizePhone(phone)
 	if !ok {
 		return ErrInvalidPhone
@@ -84,7 +92,11 @@ func (m *Module) StartPhoneVerification(ctx context.Context, userID uuid.UUID, p
 	}
 	// SMSC's Telegram channel accepts only a 4–8 digit numeric message.
 	// A prefixed message is rejected even though an SMS gateway accepts it.
-	if err := m.deliverSMSOrDevLog(ctx, norm, code, code); err != nil {
+	text := code
+	if channel == "sms" {
+		text = "Shanraq.org: " + code
+	}
+	if err := m.deliverSMSOrDevLog(ctx, norm, text, code, channel); err != nil {
 		_ = m.store.CancelPhoneCode(ctx, userID, hashToken(code))
 		return err
 	}
@@ -99,6 +111,10 @@ func (m *Module) ConfirmPhoneVerification(ctx context.Context, userID uuid.UUID,
 		return false, nil
 	}
 	return m.store.VerifyPhoneCode(ctx, userID, hashToken(code), phoneMaxAttempts)
+}
+
+func (m *Module) PendingPhoneCode(ctx context.Context, userID uuid.UUID) (string, bool, error) {
+	return m.store.PendingPhoneCode(ctx, userID)
 }
 
 // AuthorIdentity returns the user's real name and whether their phone is
@@ -149,10 +165,18 @@ func (m *Module) SetAuthorName(ctx context.Context, userID uuid.UUID, first, las
 	return m.store.SetName(ctx, userID, first, last, middle)
 }
 
-func (m *Module) deliverSMSOrDevLog(ctx context.Context, phone, text, code string) error {
+func (m *Module) deliverSMSOrDevLog(ctx context.Context, phone, text, code, channel string) error {
 	prod := strings.EqualFold(m.rt.Config.Environment, "production")
 	if m.sms != nil {
-		if err := m.sms.SendSMS(ctx, phone, text); err == nil {
+		var err error
+		if sender, ok := m.sms.(interface {
+			SendVerificationCode(context.Context, string, string, string) error
+		}); ok {
+			err = sender.SendVerificationCode(ctx, phone, text, channel)
+		} else {
+			err = m.sms.SendSMS(ctx, phone, text)
+		}
+		if err == nil {
 			return nil
 		} else if prod {
 			return err
