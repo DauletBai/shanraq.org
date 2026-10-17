@@ -7,8 +7,10 @@ import textwrap
 
 try:
     from .physics_waves_data import WAVES
+    from .physics_astronomy_data import ASTRONOMY
 except ImportError:
     from physics_waves_data import WAVES
+    from physics_astronomy_data import ASTRONOMY
 
 ROOT = Path(__file__).resolve().parents[2]
 LESSONS = ROOT / "course/lessons/physics"
@@ -151,8 +153,8 @@ def markdown(row, number, lang):
         label = {"ru": "Следующий урок", "kz": "Келесі сабақ", "en": "Next lesson"}[lang]
         body += f'\n\n[{label}: {next_row[lang][0]}](/read/physics-{next_row["stem"]}?lang={lang})'
     else:
-        label = {"ru": "Вернуться к курсу «Физика»", "kz": "«Физика» курсына оралу", "en": "Return to the Physics course"}[lang]
-        body += f'\n\n[{label}](/course/physics?lang={lang})'
+        label = {"ru": "Следующий урок", "kz": "Келесі сабақ", "en": "Next lesson"}[lang]
+        body += f'\n\n[{label}: {ASTRONOMY[0][lang][0]}](/read/physics-75-cosmic-scale?lang={lang})'
     return f'# {title}\n\n_Лид (summary):_ **{summary}**\n\n{body}\n'
 
 

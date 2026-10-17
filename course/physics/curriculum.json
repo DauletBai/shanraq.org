@@ -98,7 +98,8 @@
       "id": "astronomy",
       "range": "75-84",
       "lesson_count": 10,
-      "status": "planned",
+      "status": "published",
+      "cover": "/static/covers/school/physics/astronomy/09-earth-solar-system-universe.webp",
       "title_ru": "Земля, Солнечная система и Вселенная",
       "title_kz": "Жер, Күн жүйесі және Ғалам",
       "title_en": "Earth, the Solar System, and the Universe"
@@ -803,5 +804,17 @@
     {"number": 72, "id": "refraction-and-medium", "prerequisites": ["light-reflection"], "title_ru": "Почему карандаш в воде кажется сломанным? Свет на границе сред", "title_kz": "Судағы қарындаш неге сынғандай көрінеді? Жарық екі ортаның шекарасында", "title_en": "Why does a pencil look broken in water? Light at a boundary"},
     {"number": 73, "id": "lens-and-image", "prerequisites": ["refraction-and-medium"], "title_ru": "Как линза собирает изображение и почему экран важен?", "title_kz": "Линза кескінді қалай жасайды және экран не үшін керек?", "title_en": "How does a lens make an image, and why does the screen matter?"},
     {"number": 74, "id": "waves-light-investigation", "prerequisites": ["lens-and-image"], "title_ru": "Контрольная точка: спроектируйте оптический сигнал двери", "title_kz": "Бақылау тапсырмасы: есікке жарық белгісін жобалаңыз", "title_en": "Checkpoint: design an optical signal for a door"}
+  ],
+  "ninth_block_lessons": [
+    {"number": 75, "id": "cosmic-scale", "prerequisites": ["waves-light-investigation"], "title_ru": "Почему Луна на рисунках почти касается Земли?", "title_kz": "Неге суреттерде Ай Жерге тым жақын көрінеді?", "title_en": "Why does the Moon almost touch Earth in many drawings?"},
+    {"number": 76, "id": "rotation-and-day", "prerequisites": ["cosmic-scale"], "title_ru": "Кто движется: Солнце по небу или мы вместе с Землёй?", "title_kz": "Кім қозғалады: аспандағы Күн бе, әлде Жермен бірге біз бе?", "title_en": "Does the Sun cross the sky, or do we turn with Earth?"},
+    {"number": 77, "id": "orbit-and-year", "prerequisites": ["rotation-and-day"], "title_ru": "Почему в календаре год длиннее 365 суток?", "title_kz": "Неге күнтізбедегі жыл 365 тәуліктен ұзақ?", "title_en": "Why is a calendar year longer than 365 days?"},
+    {"number": 78, "id": "tilt-and-seasons", "prerequisites": ["orbit-and-year"], "title_ru": "Почему летом теплее, хотя Земля бывает дальше от Солнца?", "title_kz": "Жер Күннен алысырақ кезде неге жаз жылы болады?", "title_en": "Why can summer be warm when Earth is farther from the Sun?"},
+    {"number": 79, "id": "moon-phases", "prerequisites": ["tilt-and-seasons"], "title_ru": "Куда исчезает Луна между полнолуниями?", "title_kz": "Толған Айлардың арасында Ай қайда жоғалады?", "title_en": "Where does the Moon go between full moons?"},
+    {"number": 80, "id": "eclipse-geometry", "prerequisites": ["moon-phases"], "title_ru": "Почему затмение бывает не в каждое новолуние?", "title_kz": "Неге Күн әр жаңа айда тұтылмайды?", "title_en": "Why is there no eclipse at every new moon?"},
+    {"number": 81, "id": "gravity-and-orbit", "prerequisites": ["eclipse-geometry"], "title_ru": "Почему спутник не падает прямо на Землю?", "title_kz": "Жер серігі неге тіке құлап түспейді?", "title_en": "Why does an orbiting satellite not fall straight down?"},
+    {"number": 82, "id": "planets-and-au", "prerequisites": ["gravity-and-orbit"], "title_ru": "Почему планеты на плакате стоят слишком тесно?", "title_kz": "Неге плакаттағы планеталар тым тығыз орналасқан?", "title_en": "Why are the planets crowded together on posters?"},
+    {"number": 83, "id": "starlight-and-galaxies", "prerequisites": ["planets-and-au"], "title_ru": "Смотрим ли мы в прошлое, когда видим звезду?", "title_kz": "Жұлдызға қарағанда өткенді көреміз бе?", "title_en": "Do we look into the past when we see a star?"},
+    {"number": 84, "id": "sky-investigation", "prerequisites": ["starlight-and-galaxies"], "title_ru": "Небо как лаборатория: объясните сутки, сезон и фазу Луны", "title_kz": "Аспан зертхана ретінде: тәулік, маусым және Ай фазасын түсіндіріңіз", "title_en": "The sky as a lab: explain a day, a season and a Moon phase"}
   ]
 }
