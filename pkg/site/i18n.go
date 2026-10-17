@@ -2091,7 +2091,7 @@ var messages = map[string]map[string]string{
 	"author.channel_sms":     {"kz": "SMS арқылы", "ru": "По SMS", "en": "By SMS"},
 	"author.code":            {"kz": "Растау коды", "ru": "Код подтверждения", "en": "Verification code"},
 	"author.confirm":         {"kz": "Растау", "ru": "Подтвердить", "en": "Confirm"},
-	"author.code_sent":       {"kz": "Сервис код сұрауын қабылдады. Код 10 минут жарамды. Код келмесе, басқа жеткізу әдісін таңдаңыз.", "ru": "Сервис принял запрос на код. Код действует 10 минут. Если он не пришёл, выберите другой способ доставки.", "en": "The gateway accepted the code request. The code is valid for 10 minutes. If it does not arrive, try the other delivery method."},
+	"author.code_sent":       {"kz": "Сервис код сұрауын қабылдады. Код 30 минут жарамды. Код келмесе, басқа жеткізу әдісін таңдаңыз.", "ru": "Сервис принял запрос на код. Код действует 30 минут. Если он не пришёл, выберите другой способ доставки.", "en": "The gateway accepted the code request. The code is valid for 30 minutes. If it does not arrive, try the other delivery method."},
 	"author.code_bad":        {"kz": "Код қате немесе мерзімі өткен.", "ru": "Неверный или устаревший код.", "en": "Wrong or expired code."},
 	"author.phone_ok":        {"kz": "Телефон расталды.", "ru": "Телефон подтверждён.", "en": "Phone verified."},
 	"author.phone_verified":  {"kz": "Телефон расталған.", "ru": "Телефон подтверждён.", "en": "Phone is verified."},

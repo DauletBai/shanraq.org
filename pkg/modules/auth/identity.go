@@ -15,7 +15,7 @@ import (
 // Kazakhstan a SIM is registered to its owner's IIN, so phone verification ties
 // an account to a real person without collecting identity documents.
 const (
-	phoneCodeTTL     = 10 * time.Minute
+	phoneCodeTTL     = 30 * time.Minute
 	phoneMaxAttempts = 5
 	phoneCodeDigits  = 6
 )
