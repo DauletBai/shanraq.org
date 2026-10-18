@@ -11,7 +11,6 @@ package syndicate
 import (
 	"context"
 	"embed"
-	"fmt"
 	"html/template"
 	"net/http"
 	"strings"
@@ -165,30 +164,18 @@ func (m *Module) Start(ctx context.Context, _ *shanraq.Runtime) error {
 // TelegramEnabled reports whether Telegram auto-posting is configured.
 func (m *Module) TelegramEnabled() bool { return m.tgEnabled }
 
-// articleHasPlace reports whether an article was addressed to one place rather
-// than to everyone.
-func (m *Module) articleHasPlace(ctx context.Context, id uuid.UUID) (bool, error) {
-	var has bool
-	err := m.db.QueryRow(ctx,
-		`SELECT geo_node_id IS NOT NULL FROM articles WHERE id = $1`, id).Scan(&has)
-	if err != nil {
-		return false, fmt.Errorf("article place: %w", err)
-	}
-	return has, nil
-}
-
 // RegisterJobs attaches the Telegram publish handler to the queue.
 func (m *Module) RegisterJobs(j *jobs.Module) {
 	j.Handle(JobTelegram, m.handleTelegramJob)
 }
 
-// EnqueuePublish schedules a Telegram announcement for a newly published
-// article. It is a no-op when Telegram is not configured.
-func (m *Module) EnqueuePublish(ctx context.Context, store *jobs.Store, articleID uuid.UUID) error {
-	// Every publish path funnels through here, so IndexNow rides along and no
-	// caller has to remember it. Independent of Telegram: a site with no channel
-	// configured still wants search engines told. Guarded on the key so an
-	// unconfigured site does not pay for a lookup it will not use.
+// EnqueuePublish submits IndexNow for editor-driven publications. The deferred
+// articles trigger queues Telegram at commit for both editor and SQL publishes,
+// excluding course lessons. Keep this method for the existing editor callers.
+func (m *Module) EnqueuePublish(ctx context.Context, _ *jobs.Store, articleID uuid.UUID) error {
+	// Independent of Telegram: a site with no channel configured still wants
+	// search engines told. Guarded on the key so an unconfigured site does not
+	// pay for a lookup it will not use.
 	if m.indexNowKey != "" {
 		if slug, err := m.articleSlug(ctx, articleID); err != nil {
 			m.log.Warn("indexnow slug lookup", zap.Error(err))
@@ -196,27 +183,7 @@ func (m *Module) EnqueuePublish(ctx context.Context, store *jobs.Store, articleI
 			m.submitIndexNow(slug)
 		}
 	}
-	if !m.tgEnabled || store == nil {
-		return nil
-	}
-	// A channel has one audience: everybody subscribed to it. Material written
-	// for one town is not written for them, so it stays on its place page.
-	if local, err := m.articleHasPlace(ctx, articleID); err != nil {
-		m.log.Warn("place lookup before telegram", zap.Error(err))
-	} else if local {
-		return nil
-	}
-	payload, err := TelegramPayload(articleID)
-	if err != nil {
-		return err
-	}
-	return store.Enqueue(ctx, jobs.Job{
-		ID:          uuid.New(),
-		Name:        JobTelegram,
-		Payload:     payload,
-		RunAt:       time.Now(),
-		MaxAttempts: 3,
-	})
+	return nil
 }
 
 var _ interface {
