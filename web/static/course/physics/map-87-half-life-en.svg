@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">When will the last radioactive atom disappear?</title><desc id="desc">Calculate half-life without pretending to predict one nucleus&#x27;s date.</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#daeaf0"/></pattern><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e9f4f7"/></linearGradient><radialGradient id="nucleus"><stop stop-color="#fff5e7"/><stop offset="1" stop-color="#dc9b84"/></radialGradient><radialGradient id="cloud"><stop stop-color="#c6e6f3" stop-opacity=".9"/><stop offset="1" stop-color="#c6e6f3" stop-opacity="0"/></radialGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#315b74" flood-opacity=".16"/></filter></defs>
+<rect width="1600" height="900" fill="#f3f9fb"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="190" width="875" height="590" rx="13" fill="url(#paper)" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="190" width="555" height="590" rx="13" fill="#fff" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="75" y="100" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#153d59">Support map: modern physics</text>
+<rect x="180" y="345" width="96" height="320" rx="13" fill="#74b9d2" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="228" y="700" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#153d59">0</text>
+<text x="228" y="310" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#153d59">80</text>
+<rect x="360" y="505" width="96" height="160" rx="13" fill="#83c4d1" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="408" y="700" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#153d59">1</text>
+<text x="408" y="470" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#153d59">40</text>
+<rect x="540" y="585" width="96" height="80" rx="13" fill="#a6d0b4" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="588" y="700" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#153d59">2</text>
+<text x="588" y="550" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#153d59">20</text>
+<rect x="720" y="625" width="96" height="40" rx="13" fill="#e7c78d" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="768" y="700" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#153d59">3</text>
+<text x="768" y="590" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#153d59">10</text>
+<path d="M150 666H830" fill="none" stroke="#7e9eac" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="515" y="750" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#153d59">Number of half-lives</text>
+<rect x="1005" y="235" width="495" height="125" rx="13" fill="#e6f5fa" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="1025" y="296" text-anchor="start" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#153d59">0: 80</text>
+<rect x="1005" y="400" width="495" height="125" rx="13" fill="#fff0e4" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="1025" y="461" text-anchor="start" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#153d59">1 period: 40</text>
+<rect x="1005" y="565" width="495" height="125" rx="13" fill="#eaf4e9" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="1025" y="626" text-anchor="start" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#153d59">2 periods: 20</text>
+</svg>

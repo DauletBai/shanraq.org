@@ -15,6 +15,7 @@ from tools.course.physics_electricity_data import ELECTRICITY
 from tools.course.physics_magnetism_data import MAGNETISM
 from tools.course.physics_waves_data import WAVES
 from tools.course.physics_astronomy_data import ASTRONOMY
+from tools.course.physics_modern_data import MODERN
 from tools.course.build_physics_magnetism import NOTES
 from tools.course.prepare_physics import prepare, read_lesson
 
@@ -54,10 +55,13 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertEqual([row["number"] for row in data["ninth_block_lessons"]], list(range(75, 85)))
         self.assertEqual(data["blocks"][8]["status"], "published")
         self.assertTrue((ROOT / "web" / data["blocks"][8]["cover"].lstrip("/")).is_file())
+        self.assertEqual([row["number"] for row in data["tenth_block_lessons"]], list(range(85, 93)))
+        self.assertEqual(data["blocks"][9]["status"], "published")
+        self.assertTrue((ROOT / "web" / data["blocks"][9]["cover"].lstrip("/")).is_file())
 
     def test_every_language_has_the_same_experiment_and_working_assets(self):
         slugs = json.loads((ROOT / "tools/course/lesson-slugs.json").read_text())
-        route = [*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY]
+        route = [*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN]
         for index, row in enumerate(route, 1):
             for lang in ("ru", "kz", "en"):
                 suffix = "" if lang == "ru" else f"-{lang}"
@@ -73,7 +77,7 @@ class PhysicsReleaseTests(unittest.TestCase):
                 asset = ROOT / "web" / ref.group(1).lstrip("/")
                 self.assertTrue(asset.is_file(), asset)
                 ET.parse(asset)
-                if index < 84:
+                if index < 92:
                     next_slug = f"physics-{index+1:02d}-{route[index]['stem'][3:]}"
                     self.assertIn(f"/read/{next_slug}?lang={lang}", body)
 
@@ -215,6 +219,29 @@ class PhysicsReleaseTests(unittest.TestCase):
             self.assertIn('/read/physics-75-cosmic-scale?lang='+lang,
                           (LESSONS/f'74-waves-light-investigation{suffix}.md').read_text())
 
+    def test_modern_block_model_values_and_localized_maps(self):
+        self.assertEqual(6 + 8, 14)
+        self.assertEqual([80 // (2 ** n) for n in range(4)], [80, 40, 20, 10])
+        self.assertEqual(5 - 2, 3)
+        self.assertEqual(-7 + 45, 38)
+        self.assertEqual((MAPS / 'map-85-atom-evidence-ru.svg').read_text().count('fill="#4c83b3"'), 6)
+        for row in MODERN:
+            for lang in ('ru', 'kz', 'en'):
+                svg = MAPS / f"map-{row['stem']}-{lang}.svg"
+                root = ET.parse(svg).getroot()
+                self.assertEqual(root.attrib['viewBox'], '0 0 1600 900')
+                visible = ' '.join(root.itertext())
+                for label in row['map'][lang]:
+                    self.assertIn(label, visible, (svg, label))
+                body = (LESSONS / f"{row['stem']}{'' if lang == 'ru' else '-' + lang}.md").read_text()
+                self.assertIn(row[lang][0], body)
+                self.assertIn(row['source'], body)
+                self.assertIn('/static/course/physics/' + svg.name, body)
+        for lang in ('ru', 'kz', 'en'):
+            suffix = '' if lang == 'ru' else '-' + lang
+            self.assertIn('/read/physics-85-atom-evidence?lang=' + lang,
+                          (LESSONS / f'84-sky-investigation{suffix}.md').read_text())
+
     def test_experiment_numbers_and_limits_match_across_languages(self):
         # These are worked numbers, never represented as a learner's observation.
         short = [10.9, 11.1, 11.0]
@@ -238,17 +265,20 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
         self.assertIn("Physics slug belongs to another author", sql)
         self.assertIn("Physics lesson belongs to another course", sql)
-        self.assertEqual(len(expected), 252)
+        self.assertEqual(len(expected), 276)
         self.assertEqual({e["lang"] for e in expected}, {"ru", "kz", "en"})
         self.assertEqual({e["slug"] for e in expected}, {
-            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY], 1)})
+            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN], 1)})
         electricity_sql, electricity_expected = prepare(start=46)
-        self.assertEqual(len(electricity_expected), 117)
+        self.assertEqual(len(electricity_expected), 141)
         self.assertEqual({e["slug"] for e in electricity_expected}, {
-            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*HEAT[-1:], *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY], 46)})
+            f"physics-{i:02d}-{row['stem'][3:]}" for i, row in enumerate([*HEAT[-1:], *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN], 46)})
         astronomy_sql, astronomy_expected = prepare(start=74)
-        self.assertEqual(len(astronomy_expected), 33)
+        self.assertEqual(len(astronomy_expected), 57)
         self.assertIn('physics-75-cosmic-scale', astronomy_sql)
+        modern_sql, modern_expected = prepare(start=84)
+        self.assertEqual(len(modern_expected), 27)
+        self.assertIn('physics-85-atom-evidence', modern_sql)
         self.assertNotIn("physics-45-room-energy-budget", electricity_sql)
 
 

@@ -36,4 +36,4 @@ _Лид (summary):_ **Жатталған деректер тізімінің о�
 
 Сандар мен үлгінің дерек көзі: [NASA Science](https://science.nasa.gov/earth/facts/).
 
-[«Физика» курсына оралу](/course/physics?lang=kz)
+[Келесі сабақ: мектептегі суреттен атомды шынымен көруге бола ма?](/read/physics-85-atom-evidence?lang=kz)

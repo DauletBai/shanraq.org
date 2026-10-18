@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Көміртектің екі атомы қалай әртүрлі болады?</title><desc id="desc">Протон санын сақтап, нейтрон санын ғана өзгертеміз.</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#daeaf0"/></pattern><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e9f4f7"/></linearGradient><radialGradient id="nucleus"><stop stop-color="#fff5e7"/><stop offset="1" stop-color="#dc9b84"/></radialGradient><radialGradient id="cloud"><stop stop-color="#c6e6f3" stop-opacity=".9"/><stop offset="1" stop-color="#c6e6f3" stop-opacity="0"/></radialGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#315b74" flood-opacity=".16"/></filter></defs>
+<rect width="1600" height="900" fill="#f3f9fb"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="190" width="875" height="590" rx="13" fill="url(#paper)" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="190" width="555" height="590" rx="13" fill="#fff" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="75" y="100" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#153d59">Тірек карта: қазіргі физика</text>
+<rect x="145" y="322" width="330" height="345" rx="13" fill="#e9f6fa" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="310" y="375" text-anchor="middle" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#153d59">C-12</text>
+<circle cx="310" cy="500" r="86" fill="url(#nucleus)" stroke="#a75f65" stroke-width="3"/>
+<text x="310" y="492" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#153d59">6p</text>
+<text x="310" y="533" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#153d59">6n</text>
+<rect x="555" y="322" width="330" height="345" rx="13" fill="#e9f6fa" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="720" y="375" text-anchor="middle" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#153d59">C-14</text>
+<circle cx="720" cy="500" r="86" fill="url(#nucleus)" stroke="#a75f65" stroke-width="3"/>
+<text x="720" y="492" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#153d59">6p</text>
+<text x="720" y="533" text-anchor="middle" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#153d59">8n</text>
+<text x="515" y="735" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#153d59">Элементті 6 протон анықтайды</text>
+<rect x="1005" y="235" width="495" height="125" rx="13" fill="#e6f5fa" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="1025" y="296" text-anchor="start" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#153d59">C-12: 6p + 6n</text>
+<rect x="1005" y="400" width="495" height="125" rx="13" fill="#fff0e4" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="1025" y="461" text-anchor="start" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#153d59">C-14: 6p + 8n</text>
+<rect x="1005" y="565" width="495" height="125" rx="13" fill="#eaf4e9" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="1025" y="626" text-anchor="start" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#153d59">Протон саны бірдей</text>
+</svg>

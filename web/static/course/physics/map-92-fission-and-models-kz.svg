@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Ядро энергиясы розеткадағы электрге қалай айналады?</title><desc id="desc">Түрлену тізбегін жинап, үлгіміз қай жерде тоқтайтынын тексереміз.</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#daeaf0"/></pattern><linearGradient id="paper" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e9f4f7"/></linearGradient><radialGradient id="nucleus"><stop stop-color="#fff5e7"/><stop offset="1" stop-color="#dc9b84"/></radialGradient><radialGradient id="cloud"><stop stop-color="#c6e6f3" stop-opacity=".9"/><stop offset="1" stop-color="#c6e6f3" stop-opacity="0"/></radialGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#315b74" flood-opacity=".16"/></filter></defs>
+<rect width="1600" height="900" fill="#f3f9fb"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="190" width="875" height="590" rx="13" fill="url(#paper)" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<rect x="975" y="190" width="555" height="590" rx="13" fill="#fff" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="75" y="100" text-anchor="start" font-family="Arial,sans-serif" font-size="35" font-weight="700" fill="#153d59">Тірек карта: қазіргі физика</text>
+<rect x="122" y="393" width="175" height="160" rx="13" fill="#f8e1d7" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="209" y="478" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#153d59">Ядро</text>
+<path d="M302 475h12 m-11-9 11 9-11 9" fill="none" stroke="#ca8664" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="317" y="393" width="175" height="160" rx="13" fill="#fff0d5" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="404" y="478" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#153d59">Жылу</text>
+<path d="M497 475h12 m-11-9 11 9-11 9" fill="none" stroke="#ca8664" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="512" y="393" width="175" height="160" rx="13" fill="#e5f5ed" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="599" y="478" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#153d59">Турбина</text>
+<path d="M692 475h12 m-11-9 11 9-11 9" fill="none" stroke="#ca8664" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="707" y="393" width="175" height="160" rx="13" fill="#e4eff9" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="794" y="478" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#153d59">Генератор</text>
+<text x="515" y="680" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" font-weight="700" fill="#153d59">Энергияның бір бөлігі → ортаға</text>
+<rect x="1005" y="235" width="495" height="125" rx="13" fill="#e6f5fa" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="1025" y="296" text-anchor="start" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#153d59">Ядро бөлінуі</text>
+<rect x="1005" y="400" width="495" height="125" rx="13" fill="#fff0e4" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="1025" y="461" text-anchor="start" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#153d59">Жылу → бу</text>
+<rect x="1005" y="565" width="495" height="125" rx="13" fill="#eaf4e9" stroke="#88aec0" stroke-width="3" filter="url(#shadow)"/>
+<text x="1025" y="626" text-anchor="start" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#153d59">Турбина → генератор</text>
+</svg>

@@ -108,7 +108,8 @@
       "id": "modern",
       "range": "85-92",
       "lesson_count": 8,
-      "status": "planned",
+      "status": "published",
+      "cover": "/static/covers/school/physics/modern/10-atoms-light-models.webp",
       "title_ru": "Современная физика и границы моделей",
       "title_kz": "Қазіргі физика және модельдердің шегі",
       "title_en": "Modern physics and the limits of models"
@@ -816,5 +817,15 @@
     {"number": 82, "id": "planets-and-au", "prerequisites": ["gravity-and-orbit"], "title_ru": "Почему планеты на плакате стоят слишком тесно?", "title_kz": "Неге плакаттағы планеталар тым тығыз орналасқан?", "title_en": "Why are the planets crowded together on posters?"},
     {"number": 83, "id": "starlight-and-galaxies", "prerequisites": ["planets-and-au"], "title_ru": "Смотрим ли мы в прошлое, когда видим звезду?", "title_kz": "Жұлдызға қарағанда өткенді көреміз бе?", "title_en": "Do we look into the past when we see a star?"},
     {"number": 84, "id": "sky-investigation", "prerequisites": ["starlight-and-galaxies"], "title_ru": "Небо как лаборатория: объясните сутки, сезон и фазу Луны", "title_kz": "Аспан зертхана ретінде: тәулік, маусым және Ай фазасын түсіндіріңіз", "title_en": "The sky as a lab: explain a day, a season and a Moon phase"}
+  ],
+  "tenth_block_lessons": [
+    {"number": 85, "id": "atom-evidence", "prerequisites": ["sky-investigation"], "title_ru": "Можно ли увидеть атом на школьном рисунке?", "title_kz": "Мектептегі суреттен атомды шынымен көруге бола ма?", "title_en": "Can a school drawing really show an atom?"},
+    {"number": 86, "id": "isotopes", "prerequisites": ["atom-evidence"], "title_ru": "Как два атома углерода могут быть разными?", "title_kz": "Көміртектің екі атомы қалай әртүрлі болады?", "title_en": "How can two carbon atoms be different?"},
+    {"number": 87, "id": "half-life", "prerequisites": ["isotopes"], "title_ru": "Когда исчезнет последний радиоактивный атом?", "title_kz": "Соңғы радиоактивті атом қашан жоғалады?", "title_en": "When will the last radioactive atom disappear?"},
+    {"number": 88, "id": "radiation-and-protection", "prerequisites": ["half-life"], "title_ru": "Свет, рентген и радиоактивность — одно и то же?", "title_kz": "Жарық, рентген және радиоактивтілік бір нәрсе ме?", "title_en": "Are sunlight, X-rays and radioactivity the same thing?"},
+    {"number": 89, "id": "photons-and-photoelectric-effect", "prerequisites": ["radiation-and-protection"], "title_ru": "Почему яркий красный свет не всегда заменит слабый синий?", "title_kz": "Неге жарқын қызыл жарық әлсіз көк жарықты әрқашан алмастыра алмайды?", "title_en": "Why can bright red light fail where faint blue light works?"},
+    {"number": 90, "id": "atomic-spectra", "prerequisites": ["photons-and-photoelectric-effect"], "title_ru": "Почему у газа свой набор цветных линий?", "title_kz": "Неге газдың өзіне тән түрлі түсті сызықтары бар?", "title_en": "Why does a gas have its own set of coloured lines?"},
+    {"number": 91, "id": "relativity-and-navigation", "prerequisites": ["atomic-spectra"], "title_ru": "Почему часам спутника нельзя просто доверить время на Земле?", "title_kz": "Неге жерсерік сағатын Жердегі сағатпен жай ғана теңестіре алмаймыз?", "title_en": "Why can a satellite clock not simply copy time on Earth?"},
+    {"number": 92, "id": "fission-and-models", "prerequisites": ["relativity-and-navigation"], "title_ru": "Как энергия ядра становится электричеством в розетке?", "title_kz": "Ядро энергиясы розеткадағы электрге қалай айналады?", "title_en": "How does energy from a nucleus reach an electrical outlet?"}
   ]
 }

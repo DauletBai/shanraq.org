@@ -36,4 +36,4 @@ Add a line to My World Lab Notebook: question → prediction → controlled cond
 
 Source for values and model: [NASA Science](https://science.nasa.gov/earth/facts/).
 
-[Return to Physics course](/course/physics?lang=en)
+[Next lesson: can a school drawing really show an atom?](/read/physics-85-atom-evidence?lang=en)

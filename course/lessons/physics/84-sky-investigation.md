@@ -36,4 +36,4 @@ _Лид (summary):_ **Собираем проверяемое исследова
 
 Источник чисел и модели: [NASA Science](https://science.nasa.gov/earth/facts/).
 
-[Вернуться к курсу «Физика»](/course/physics?lang=ru)
+[Следующий урок: можно ли увидеть атом на школьном рисунке?](/read/physics-85-atom-evidence?lang=ru)
