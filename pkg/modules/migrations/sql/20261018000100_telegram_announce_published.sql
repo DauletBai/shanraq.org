@@ -6,6 +6,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS job_queue_telegram_article_once
     ON job_queue ((payload->>'article_id'))
     WHERE name = 'syndicate_telegram' AND payload ? 'article_id';
 
+-- +goose StatementBegin
 CREATE OR REPLACE FUNCTION enqueue_published_article_telegram() RETURNS trigger
 LANGUAGE plpgsql AS $$
 BEGIN
@@ -30,6 +31,7 @@ BEGIN
     RETURN NULL;
 END;
 $$;
+-- +goose StatementEnd
 
 CREATE CONSTRAINT TRIGGER articles_telegram_on_publish
     AFTER INSERT OR UPDATE OF status ON articles
