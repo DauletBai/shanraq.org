@@ -1,0 +1,46 @@
+{{ define "tartar_sample" }}
+{{ template "site_head" . }}
+<body>
+{{ template "site_header" . }}
+<main class="container tartar-sample" id="content">
+  <div class="layout">
+    <div class="layout__main">
+      {{ if .ChapterTitle }}
+        {{ template "backlink" (dict "Href" (printf "/book/tartar-i-ya?lang=%s" .Lang) "Label" (t .Lang "tartar.contents")) }}
+        <p class="kicker">{{ icon "book" }}{{ t .Lang "tartar.sample_label" }}</p>
+        <div class="section-head"><h1>{{ .ChapterTitle }}</h1></div>
+        <p class="tartar-sample__note">{{ t .Lang "tartar.russian_note" }}</p>
+        <article class="prose tartar-sample__reading" lang="ru">{{ .Content }}</article>
+        <nav class="tartar-sample__nav" aria-label="{{ t .Lang "tartar.navigation" }}">
+          {{ with .Previous }}<a href="/book/tartar-i-ya{{ if .Slug }}/{{ .Slug }}{{ end }}?lang={{ $.Lang }}">← {{ .Title }}</a>{{ end }}
+          {{ with .Next }}<a href="/book/tartar-i-ya/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }} →</a>{{ end }}
+        </nav>
+      {{ else }}
+        <div class="tartar-sample__intro">
+          <img src="/static/shop/tartar-i-ya-sample/cover.jpg" width="800" height="1200" alt="{{ t .Lang "tartar.cover_alt" }}" decoding="async">
+          <div>
+            <p class="kicker">{{ icon "book" }}{{ t .Lang "tartar.sample_label" }}</p>
+            <h1>Тартар и Я</h1>
+            <p class="place-lead">{{ t .Lang "tartar.sample_desc" }}</p>
+            <p>{{ t .Lang "tartar.author" }}</p>
+            <p class="hint">{{ t .Lang "tartar.edition" }}</p>
+          </div>
+        </div>
+        <section class="cab-card tartar-sample__contents" aria-labelledby="tartar-contents">
+          <h2 id="tartar-contents">{{ t .Lang "tartar.contents" }}</h2>
+          <p>{{ t .Lang "tartar.scope" }}</p>
+          <p class="tartar-sample__note">{{ t .Lang "tartar.russian_note" }}</p>
+          <ol>
+            {{ range .Sections }}
+              <li><a href="/book/tartar-i-ya/{{ .Slug }}?lang={{ $.Lang }}" lang="ru">{{ .Title }}</a></li>
+            {{ end }}
+          </ol>
+        </section>
+      {{ end }}
+      <p class="hint tartar-sample__disclaimer">{{ t .Lang "tartar.disclaimer" }}</p>
+    </div>
+    {{ template "sidebar" . }}
+  </div>
+</main>
+{{ template "site_footer" . }}
+{{ end }}

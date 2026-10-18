@@ -119,6 +119,21 @@ func (m *Module) Routes(r chi.Router) {
 	if m.renderer == nil {
 		return
 	}
+	// Earlier banners linked to a standalone book export. Keep those bookmarked
+	// addresses, but send readers to the same excerpt inside the site's frame.
+	for old, current := range map[string]string{
+		"/static/shop/tartar-i-ya-sample":                "/book/tartar-i-ya",
+		"/static/shop/tartar-i-ya-sample/":               "/book/tartar-i-ya",
+		"/static/shop/tartar-i-ya-sample/index.html":     "/book/tartar-i-ya",
+		"/static/shop/tartar-i-ya-sample/why.html":       "/book/tartar-i-ya/why",
+		"/static/shop/tartar-i-ya-sample/preface.html":   "/book/tartar-i-ya/preface",
+		"/static/shop/tartar-i-ya-sample/chapter-1.html": "/book/tartar-i-ya/chapter-1",
+		"/static/shop/tartar-i-ya-sample/chapter-2.html": "/book/tartar-i-ya/chapter-2",
+	} {
+		r.Get(old, func(w http.ResponseWriter, req *http.Request) {
+			http.Redirect(w, req, current, http.StatusMovedPermanently)
+		})
+	}
 	r.Handle("/static/*", http.StripPrefix("/static/", web.StaticHandler()))
 	// A real file, not a redirect to the SVG. Yandex reported "favicon not
 	// found" for months: its icon fetcher wants an image at the conventional

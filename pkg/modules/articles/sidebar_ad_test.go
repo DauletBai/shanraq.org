@@ -93,11 +93,13 @@ func TestOwnAdsCarryAllHouseProducts(t *testing.T) {
 // A slide must not point at the page the reader is standing on.
 func TestOwnAdsLeaveOutTheProductWhosePageThisIs(t *testing.T) {
 	cases := map[string][]string{
-		"/adam":          {tartarSampleURL, "/shop/go-book"},
-		"/shop":          {tartarSampleURL, "/adam"},
-		"/shop/go-book":  {tartarSampleURL, "/adam"},
-		"/advertise":     {},
-		"/advertise/faq": {},
+		"/adam":                       {tartarSampleURL, "/shop/go-book"},
+		"/book/tartar-i-ya":           {"/shop/go-book", "/adam"},
+		"/book/tartar-i-ya/chapter-1": {"/shop/go-book", "/adam"},
+		"/shop":                       {tartarSampleURL, "/adam"},
+		"/shop/go-book":               {tartarSampleURL, "/adam"},
+		"/advertise":                  {},
+		"/advertise/faq":              {},
 	}
 	for path, want := range cases {
 		r, _ := http.NewRequest(http.MethodGet, path, nil)

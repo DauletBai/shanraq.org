@@ -575,7 +575,29 @@ var messages = map[string]map[string]string{
 		"ru": "Авторское эссе о памяти языка и Евразии. Ознакомительный фрагмент бесплатный.",
 		"en": "An author's essay on language and Eurasian memory. Free excerpt in Russian.",
 	},
-	"house.tartar_cta": {"kz": "Үзіндіні оқу", "ru": "Читать фрагмент", "en": "Read the excerpt"},
+	"house.tartar_cta":    {"kz": "Үзіндіні оқу", "ru": "Читать фрагмент", "en": "Read the excerpt"},
+	"tartar.sample_label": {"kz": "Тегін танысу үзіндісі", "ru": "Бесплатный ознакомительный фрагмент", "en": "Free book excerpt"},
+	"tartar.sample_desc": {
+		"kz": "Тіл жады, әділ өлшем және Еуразияның өзара байланыстары туралы авторлық зерттеу эссесі.",
+		"ru": "Авторское исследовательское эссе о памяти языка, равной мере и скрытых связях Евразии.",
+		"en": "An author's research essay on language memory, fairness and the hidden connections of Eurasia.",
+	},
+	"tartar.cover_alt": {"kz": "«Тартар и Я» кітабының мұқабасы", "ru": "Обложка книги «Тартар и Я»", "en": "Cover of Tartar and I"},
+	"tartar.author":    {"kz": "Авторы: Даулет Баймурзин", "ru": "Автор: Даулет Баймурзин", "en": "By Daulet Baimurzin"},
+	"tartar.edition":   {"kz": "Жұмыс нұсқасы 0.74 · 15 қазан 2026 жыл", "ru": "Рабочая редакция 0.74 · 15 октября 2026 года", "en": "Working draft 0.74 · 15 October 2026"},
+	"tartar.contents":  {"kz": "Үзіндінің мазмұны", "ru": "Содержание фрагмента", "en": "Excerpt contents"},
+	"tartar.scope": {
+		"kz": "Атаудың түсіндірмесі, алғысөз және алғашқы екі тарау тегін қолжетімді. Үлкен пролог пен қалған тараулар толық қолжазбада қалады.",
+		"ru": "Бесплатно доступны объяснение названия, предисловие и две первые главы. Большой пролог и остальные главы остаются в полной рукописи.",
+		"en": "The title essay, preface and first two chapters are free to read. The longer prologue and remaining chapters belong to the full manuscript.",
+	},
+	"tartar.russian_note": {"kz": "Кітап үзіндісінің мәтіні әзірге орыс тілінде.", "ru": "Текст фрагмента опубликован на русском языке.", "en": "The excerpt text is currently available in Russian."},
+	"tartar.navigation":   {"kz": "Үзінді тараулары", "ru": "Навигация по фрагменту", "en": "Excerpt navigation"},
+	"tartar.disclaimer": {
+		"kz": "Бұл — авторлық ізденіс. Құжат, түсіндіру және болжамның дәлел дәрежесі әртүрлі; оларды ажыратып оқыңыз.",
+		"ru": "Это авторский поиск. Документ, интерпретация и гипотеза имеют разную степень доказанности — различайте их при чтении.",
+		"en": "This is an author's inquiry. Documents, interpretations and hypotheses carry different levels of evidence; read them accordingly.",
+	},
 
 	"house.book_title": {"kz": "Go бойынша жаңа кітап", "ru": "Новая книга по Go", "en": "A new book on Go"},
 	"house.book_desc": {

@@ -15,6 +15,7 @@ package shop
 import (
 	"context"
 	"embed"
+	"html/template"
 
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
@@ -34,6 +35,7 @@ type Module struct {
 	store    *Store
 	auth     *auth.Module
 	payments *payments.Module
+	tartar   map[string]template.HTML
 }
 
 // New returns the module. The auth module identifies the buyer and the staff
@@ -49,6 +51,11 @@ func (m *Module) Name() string { return "shop" }
 func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 	m.rt = rt
 	m.store = NewStore(rt.DB)
+	var err error
+	m.tartar, err = loadTartarExcerpt()
+	if err != nil {
+		return err
+	}
 	rt.Site.Add(nil, templateFiles, "templates/*.html")
 	// The sitemap is built elsewhere, but only this module knows which products
 	// are on show. A draft is not offered to a search engine: it 404s for
@@ -63,13 +70,16 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 // publicPages is the shop's contribution to the sitemap: its front page and
 // every product a reader can open.
 func (m *Module) publicPages(ctx context.Context) []site.Page {
+	out := make([]site.Page, 0, len(tartarSections)+2)
+	out = append(out, site.Page{Path: "/shop"}, site.Page{Path: tartarPath})
+	for _, section := range tartarSections {
+		out = append(out, site.Page{Path: tartarPath + "/" + section.Slug})
+	}
 	items, err := m.store.List(ctx, false)
 	if err != nil {
 		m.logger().Warn("shop pages for sitemap", zap.Error(err))
-		return nil
+		return out
 	}
-	out := make([]site.Page, 0, len(items)+1)
-	out = append(out, site.Page{Path: "/shop"})
 	for _, p := range items {
 		out = append(out, site.Page{Path: "/shop/" + p.Slug, Updated: p.UpdatedAt})
 	}
@@ -89,6 +99,8 @@ func (m *Module) Routes(r chi.Router) {
 		r.Get("/shop", m.handleIndex)
 		r.Get("/shop/{slug}", m.handleProduct)
 		r.Post("/shop/{slug}/notify", m.handleNotify)
+		r.Get(tartarPath, m.handleTartar)
+		r.Get(tartarPath+"/{section}", m.handleTartar)
 
 		r.Get("/admin/shop", m.handleAdmin)
 		r.Post("/admin/shop/{slug}", m.handleAdminSave)

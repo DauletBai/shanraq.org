@@ -51,7 +51,7 @@ func houseAds(lang string) []Ad {
 	return out
 }
 
-const tartarSampleURL = "/static/shop/tartar-i-ya-sample/"
+const tartarSampleURL = "/book/tartar-i-ya"
 const tartarCoverURL = "/static/shop/tartar-i-ya-sample/cover.jpg"
 
 func tartarSlide(lang string) Ad {
@@ -104,7 +104,9 @@ func ownAds(r *http.Request, lang string) []Ad {
 		return nil
 	}
 	out := make([]Ad, 0, 3)
-	out = append(out, tartarSlide(lang))
+	if !strings.HasPrefix(p, tartarSampleURL) {
+		out = append(out, tartarSlide(lang))
+	}
 	if !strings.HasPrefix(p, "/shop") {
 		out = append(out, bookSlide(lang))
 	}
