@@ -17,6 +17,7 @@ try:
     from .physics_waves_data import WAVES
     from .physics_astronomy_data import ASTRONOMY
     from .physics_modern_data import MODERN
+    from .physics_final_data import FINAL
 except ImportError:  # direct invocation: python3 tools/course/prepare_physics.py
     from build_physics_block import DATA, LESSONS, ROOT
     from physics_motion_data import MOTION
@@ -28,6 +29,7 @@ except ImportError:  # direct invocation: python3 tools/course/prepare_physics.p
     from physics_waves_data import WAVES
     from physics_astronomy_data import ASTRONOMY
     from physics_modern_data import MODERN
+    from physics_final_data import FINAL
 
 COVER = "/static/covers/school/physics/investigation/01-observe-measure.webp"
 MOTION_COVER = "/static/covers/school/physics/motion/02-motion-graphs.webp"
@@ -39,6 +41,7 @@ MAGNETISM_COVER = "/static/covers/school/physics/magnetism/07-magnetism-communic
 WAVES_COVER = "/static/covers/school/physics/waves/08-waves-sound-light.webp"
 ASTRONOMY_COVER = "/static/covers/school/physics/astronomy/09-earth-solar-system-universe.webp"
 MODERN_COVER = "/static/covers/school/physics/modern/10-atoms-light-models.webp"
+FINAL_COVER = "/static/covers/school/physics/final/11-investigation-defense.webp"
 META = {
     "ru": ("Физика вокруг нас: от первого опыта до своей лаборатории",
            "Бесплатный курс физики без пропущенных шагов: исследуем движение, силы, тепло, электрические цепи, свет, атомы и границы моделей."),
@@ -68,13 +71,22 @@ def read_lesson(path):
 
 
 def prepare(start=1):
-    if len(DATA) != 8 or len(MOTION) != 10 or len(FORCES) != 10 or len(FLUIDS) != 8 or len(HEAT) != 10 or len(ELECTRICITY) != 10 or len(MAGNETISM) != 10 or len(WAVES) != 8 or len(ASTRONOMY) != 10 or len(MODERN) != 8:
-        raise ValueError("physics release requires ten complete blocks")
-    if not 1 <= start <= 92:
-        raise ValueError("start must be a published lesson number from 1 to 92")
-    route = [(item["stem"], f"physics-{i:02d}-{item['stem'][3:]}", i*10,
-              COVER if i <= 8 else (MOTION_COVER if i <= 18 else (FORCES_COVER if i <= 28 else (FLUIDS_COVER if i <= 36 else (HEAT_COVER if i <= 46 else (ELECTRICITY_COVER if i <= 56 else (MAGNETISM_COVER if i <= 66 else (WAVES_COVER if i <= 74 else (ASTRONOMY_COVER if i <= 84 else MODERN_COVER)))))))))
-             for i, item in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN], 1) if i >= start]
+    blocks = (DATA, MOTION, FORCES, FLUIDS, HEAT, ELECTRICITY, MAGNETISM, WAVES, ASTRONOMY, MODERN, FINAL)
+    covers = (COVER, MOTION_COVER, FORCES_COVER, FLUIDS_COVER, HEAT_COVER, ELECTRICITY_COVER,
+              MAGNETISM_COVER, WAVES_COVER, ASTRONOMY_COVER, MODERN_COVER, FINAL_COVER)
+    expected_sizes = (8, 10, 10, 8, 10, 10, 10, 8, 10, 8, 8)
+    if tuple(map(len, blocks)) != expected_sizes:
+        raise ValueError("physics release requires eleven complete blocks")
+    if not 1 <= start <= 100:
+        raise ValueError("start must be a published lesson number from 1 to 100")
+    route = []
+    number = 0
+    for block, cover in zip(blocks, covers):
+        for item in block:
+            number += 1
+            if number >= start:
+                stem = item['stem']
+                route.append((stem, f'physics-{number:02d}-{stem.split("-", 1)[1]}', number * 10, cover))
     slug_list = ",".join(literal(slug) for _, slug, _, _ in route)
     sql = ["BEGIN;", "SELECT pg_advisory_xact_lock(hashtext('shanraq-physics-course'));",
            f"""DO $guard$
@@ -130,7 +142,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sql", type=Path, required=True)
     parser.add_argument("--expected", type=Path, required=True)
-    parser.add_argument("--start", type=int, default=1, help="first lesson to upsert; use 84 for the modern block and its incoming link")
+    parser.add_argument("--start", type=int, default=1, help="first lesson to upsert; use 92 for the final block and its incoming link")
     args = parser.parse_args()
     sql, expected = prepare(args.start)
     args.sql.write_text(sql, encoding="utf-8")

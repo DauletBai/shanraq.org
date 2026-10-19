@@ -36,4 +36,4 @@ _Лид (summary):_ **Собираем всю цепочку преобразо�
 
 Источник сведений: [www.iaea.org](https://www.iaea.org/newscenter/news/what-is-nuclear-energy-the-science-of-nuclear-power).
 
-[Вернуться к курсу «Физика»](/course/physics?lang=ru)
+[Следующий урок: Можно ли ответить на вопрос опытом?](/read/physics-93-testable-question?lang=ru)

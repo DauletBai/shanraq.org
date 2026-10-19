@@ -118,10 +118,11 @@
       "id": "capstone",
       "range": "93-100",
       "lesson_count": 8,
-      "status": "planned",
+      "status": "published",
       "title_ru": "Инженерное исследование и выпуск",
       "title_kz": "Инженерлік зерттеу және қорытынды",
-      "title_en": "Engineering investigation and final project"
+      "title_en": "Engineering investigation and final project",
+      "cover": "/static/covers/school/physics/final/11-investigation-defense.webp"
     }
   ],
   "first_block_lessons": [
@@ -827,5 +828,15 @@
     {"number": 90, "id": "atomic-spectra", "prerequisites": ["photons-and-photoelectric-effect"], "title_ru": "Почему у газа свой набор цветных линий?", "title_kz": "Неге газдың өзіне тән түрлі түсті сызықтары бар?", "title_en": "Why does a gas have its own set of coloured lines?"},
     {"number": 91, "id": "relativity-and-navigation", "prerequisites": ["atomic-spectra"], "title_ru": "Почему часам спутника нельзя просто доверить время на Земле?", "title_kz": "Неге жерсерік сағатын Жердегі сағатпен жай ғана теңестіре алмаймыз?", "title_en": "Why can a satellite clock not simply copy time on Earth?"},
     {"number": 92, "id": "fission-and-models", "prerequisites": ["relativity-and-navigation"], "title_ru": "Как энергия ядра становится электричеством в розетке?", "title_kz": "Ядро энергиясы розеткадағы электрге қалай айналады?", "title_en": "How does energy from a nucleus reach an electrical outlet?"}
+  ],
+  "final_block_lessons": [
+    {"number": 93, "id": "testable-question", "prerequisites": ["fission-and-models"], "title_ru": "Можно ли ответить на вопрос опытом?", "title_kz": "Сұраққа тәжірибемен жауап беруге бола ма?", "title_en": "Can an experiment answer this question?"},
+    {"number": 94, "id": "measurement-protocol", "prerequisites": ["testable-question"], "title_ru": "Где начинается измерение?", "title_kz": "Өлшеу қай жерден басталады?", "title_en": "Where does a measurement begin?"},
+    {"number": 95, "id": "repeats-and-uncertainty", "prerequisites": ["measurement-protocol"], "title_ru": "Почему одного результата мало?", "title_kz": "Неге бір нәтиже аз?", "title_en": "Why is one result not enough?"},
+    {"number": 96, "id": "fair-comparison", "prerequisites": ["repeats-and-uncertainty"], "title_ru": "Разница появилась только из-за покрытия?", "title_kz": "Айырманы тек төсеніш тудырды ма?", "title_en": "Did the surface alone cause the difference?"},
+    {"number": 97, "id": "graph-and-model", "prerequisites": ["fair-comparison"], "title_ru": "Как нарисовать данные без обмана?", "title_kz": "Деректерді алдамай қалай бейнелейміз?", "title_en": "How do we graph data without misleading people?"},
+    {"number": 98, "id": "evidence-and-sources", "prerequisites": ["graph-and-model"], "title_ru": "Что доказывают числа, а что — источник?", "title_kz": "Сандар нені, дереккөз нені дәлелдейді?", "title_en": "What do the numbers prove, and what does a source prove?"},
+    {"number": 99, "id": "design-iteration", "prerequisites": ["evidence-and-sources"], "title_ru": "Как измерение превращается в решение?", "title_kz": "Өлшеу қалай шешімге айналады?", "title_en": "How does measurement become a design decision?"},
+    {"number": 100, "id": "defend-investigation", "prerequisites": ["design-iteration"], "title_ru": "Как защитить исследование перед вопросами?", "title_kz": "Сұрақтар алдында зерттеуді қалай қорғаймыз?", "title_en": "How do you defend an investigation?"}
   ]
 }

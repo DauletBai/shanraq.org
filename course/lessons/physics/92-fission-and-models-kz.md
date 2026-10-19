@@ -36,4 +36,4 @@ _Лид (summary):_ **Түрлену тізбегін жинап, үлгіміз
 
 Мәлімет көзі: [www.iaea.org](https://www.iaea.org/newscenter/news/what-is-nuclear-energy-the-science-of-nuclear-power).
 
-[«Физика» курсына оралу](/course/physics?lang=kz)
+[Келесі сабақ: Сұраққа тәжірибемен жауап беруге бола ма?](/read/physics-93-testable-question?lang=kz)

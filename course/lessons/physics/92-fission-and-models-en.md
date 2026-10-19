@@ -36,4 +36,4 @@ Add a line to My World Lab Notebook: question → prediction → controlled cond
 
 Evidence source: [www.iaea.org](https://www.iaea.org/newscenter/news/what-is-nuclear-energy-the-science-of-nuclear-power).
 
-[Return to Physics course](/course/physics?lang=en)
+[Next lesson: Can an experiment answer this question?](/read/physics-93-testable-question?lang=en)

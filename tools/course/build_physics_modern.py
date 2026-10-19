@@ -132,8 +132,9 @@ def markdown(row, number, lang):
         label={"ru":"Следующий урок", "kz":"Келесі сабақ", "en":"Next lesson"}[lang]
         body+=f'\n\n[{label}: {nxt[lang][0]}](/read/physics-{nxt["stem"]}?lang={lang})'
     else:
-        label={"ru":"Вернуться к курсу «Физика»", "kz":"«Физика» курсына оралу", "en":"Return to Physics course"}[lang]
-        body+=f'\n\n[{label}](/course/physics?lang={lang})'
+        label={"ru":"Следующий урок", "kz":"Келесі сабақ", "en":"Next lesson"}[lang]
+        next_title={"ru":"Можно ли ответить на вопрос опытом?", "kz":"Сұраққа тәжірибемен жауап беруге бола ма?", "en":"Can an experiment answer this question?"}[lang]
+        body+=f'\n\n[{label}: {next_title}](/read/physics-93-testable-question?lang={lang})'
     return f'# {title}\n\n_Лид (summary):_ **{summary}**\n\n{body}\n'
 
 

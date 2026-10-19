@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Өлшеу қай жерден басталады?</title><desc id="desc">Басқа адам қайталай алатын тәртіп жазамыз.</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#dcecf1"/></pattern><linearGradient id="barBlue" x2="1" y2=".2"><stop stop-color="#9bd1e3"/><stop offset=".55" stop-color="#65abc3"/><stop offset="1" stop-color="#3e819e"/></linearGradient><linearGradient id="barPeach" x2="1" y2=".2"><stop stop-color="#f3c4a0"/><stop offset=".55" stop-color="#db9975"/><stop offset="1" stop-color="#af6b55"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="150%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#234c62" flood-opacity=".18"/></filter></defs>
+<rect width="1600" height="900" fill="#f5f9fa"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="190" width="875" height="590" rx="15" fill="#fff" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<rect x="975" y="190" width="555" height="590" rx="15" fill="#fff" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="74" y="105" text-anchor="start" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="#173c57">ФИЗИКА · ҚОРЫТЫНДЫ ЗЕРТТЕУ</text>
+<path d="M190 520H865" fill="none" stroke="#678fa3" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M200 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="200" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">0</text>
+<path d="M270 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="270" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">10</text>
+<path d="M340 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="340" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">20</text>
+<path d="M410 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="410" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">30</text>
+<path d="M480 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="480" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">40</text>
+<path d="M550 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="550" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">50</text>
+<path d="M620 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="620" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">60</text>
+<path d="M690 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="690" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">70</text>
+<path d="M760 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="760" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">80</text>
+<path d="M830 510V545" fill="none" stroke="#658fa2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="830" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">90</text>
+<path d="M214 415V635" fill="none" stroke="#d99270" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 8"/>
+<path d="M788 415V635" fill="none" stroke="#d99270" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 8"/>
+<path d="M214 420H788" fill="none" stroke="#e3a267" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="215" y="394" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#173c57">2 см</text>
+<text x="788" y="394" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#173c57">84 см</text>
+<text x="500" y="690" text-anchor="middle" font-family="Arial,sans-serif" font-size="32" font-weight="700" fill="#173c57">84 − 2 = 82 см</text>
+<rect x="1004" y="226" width="497" height="146" rx="15" fill="#e6f5fa" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="1020" y="263" text-anchor="start" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#173c57">Нөл еңістен шыққанда</text>
+<rect x="1004" y="397" width="497" height="146" rx="15" fill="#fff1df" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="1020" y="434" text-anchor="start" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#173c57">Жол = соңы − басы</text>
+<rect x="1004" y="568" width="497" height="146" rx="15" fill="#edf6e8" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="1020" y="605" text-anchor="start" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#173c57">Бірлікті ұмытпаңыз</text>
+</svg>

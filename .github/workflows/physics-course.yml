@@ -26,6 +26,8 @@ on:
       - 'tools/course/physics_astronomy_data.py'
       - 'tools/course/build_physics_modern.py'
       - 'tools/course/physics_modern_data.py'
+      - 'tools/course/build_physics_final.py'
+      - 'tools/course/physics_final_data.py'
       - 'tools/course/prepare_physics.py'
       - 'tools/course/test_physics_release.py'
       - 'web/static/course/physics/**'
@@ -55,6 +57,8 @@ on:
       - 'tools/course/physics_astronomy_data.py'
       - 'tools/course/build_physics_modern.py'
       - 'tools/course/physics_modern_data.py'
+      - 'tools/course/build_physics_final.py'
+      - 'tools/course/physics_final_data.py'
       - 'tools/course/prepare_physics.py'
       - 'tools/course/test_physics_release.py'
       - 'web/static/course/physics/**'
@@ -77,6 +81,7 @@ jobs:
           python3 tools/course/build_physics_waves.py
           python3 tools/course/build_physics_astronomy.py
           python3 tools/course/build_physics_modern.py
+          python3 tools/course/build_physics_final.py
       - name: Verify generated files are committed
         run: git diff --exit-code
       - name: Check curriculum, numbers, assets and guarded publication

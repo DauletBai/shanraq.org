@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Что доказывают числа, а что — источник?</title><desc id="desc">Разделяем свои данные, физическое объяснение и догадку.</desc>
+<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#dcecf1"/></pattern><linearGradient id="barBlue" x2="1" y2=".2"><stop stop-color="#9bd1e3"/><stop offset=".55" stop-color="#65abc3"/><stop offset="1" stop-color="#3e819e"/></linearGradient><linearGradient id="barPeach" x2="1" y2=".2"><stop stop-color="#f3c4a0"/><stop offset=".55" stop-color="#db9975"/><stop offset="1" stop-color="#af6b55"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="150%" height="150%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#234c62" flood-opacity=".18"/></filter></defs>
+<rect width="1600" height="900" fill="#f5f9fa"/><rect width="1600" height="900" fill="url(#grid)"/>
+<rect x="70" y="190" width="875" height="590" rx="15" fill="#fff" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<rect x="975" y="190" width="555" height="590" rx="15" fill="#fff" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="74" y="105" text-anchor="start" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="#173c57">ФИЗИКА · ИТОГОВОЕ ИССЛЕДОВАНИЕ</text>
+<rect x="140" y="350" width="220" height="215" rx="15" fill="#e2f2fa" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="250" y="420" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#173c57">ДАННЫЕ</text>
+<rect x="390" y="350" width="220" height="215" rx="15" fill="#f9eadb" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="500" y="420" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#173c57">ИСТОЧНИК</text>
+<rect x="640" y="350" width="220" height="215" rx="15" fill="#eaf5e9" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="750" y="420" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#173c57">ВЫВОД</text>
+<text x="250" y="505" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#173c57">83 / 45 см</text>
+<text x="500" y="505" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#173c57">OpenStax</text>
+<text x="750" y="505" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#173c57">при условиях</text>
+<rect x="1004" y="226" width="497" height="146" rx="15" fill="#e6f5fa" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="1020" y="263" text-anchor="start" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#173c57">Данные: учебная таблица</text>
+<rect x="1004" y="397" width="497" height="146" rx="15" fill="#fff1df" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="1020" y="434" text-anchor="start" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#173c57">Источник: объяснение</text>
+<rect x="1004" y="568" width="497" height="146" rx="15" fill="#edf6e8" stroke="#9ebfca" stroke-width="2" filter="url(#shadow)"/>
+<text x="1020" y="605" text-anchor="start" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#173c57">Вывод имеет границы</text>
+</svg>
