@@ -125,7 +125,7 @@ func (m *Module) Routes(r chi.Router) {
 		"/static/shop/tartar-i-ya-sample":                "/book/tartar-i-ya",
 		"/static/shop/tartar-i-ya-sample/":               "/book/tartar-i-ya",
 		"/static/shop/tartar-i-ya-sample/index.html":     "/book/tartar-i-ya",
-		"/static/shop/tartar-i-ya-sample/why.html":       "/book/tartar-i-ya/why",
+		"/static/shop/tartar-i-ya-sample/why.html":       "/book/tartar-i-ya",
 		"/static/shop/tartar-i-ya-sample/preface.html":   "/book/tartar-i-ya/preface",
 		"/static/shop/tartar-i-ya-sample/chapter-1.html": "/book/tartar-i-ya/chapter-1",
 		"/static/shop/tartar-i-ya-sample/chapter-2.html": "/book/tartar-i-ya/chapter-2",
@@ -134,6 +134,17 @@ func (m *Module) Routes(r chi.Router) {
 			http.Redirect(w, req, current, http.StatusMovedPermanently)
 		})
 	}
+	// The excerpt fragments are embedded for the framed book pages. Redirect
+	// direct requests so they are never presented as standalone HTML documents.
+	r.Get("/static/shop/tartar-i-ya-sample/sections/{section}.html", func(w http.ResponseWriter, req *http.Request) {
+		section := chi.URLParam(req, "section")
+		switch section {
+		case "preface", "prologue", "chapter-1", "chapter-2", "chapter-3", "chapter-4", "chapter-5":
+			http.Redirect(w, req, "/book/tartar-i-ya/"+section, http.StatusMovedPermanently)
+		default:
+			http.NotFound(w, req)
+		}
+	})
 	r.Handle("/static/*", http.StripPrefix("/static/", web.StaticHandler()))
 	// A real file, not a redirect to the SVG. Yandex reported "favicon not
 	// found" for months: its icon fetcher wants an image at the conventional

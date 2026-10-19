@@ -30,11 +30,12 @@
           <h2 id="tartar-contents">{{ t .Lang "tartar.contents" }}</h2>
           <p>{{ t .Lang "tartar.scope" }}</p>
           <p class="tartar-sample__note">{{ t .Lang "tartar.russian_note" }}</p>
-          <ol>
+          <ul>
             {{ range .Sections }}
+              {{ if eq .Slug "chapter-1" }}<li class="tartar-sample__part">Часть I. Имя народа и память речи</li>{{ end }}
               <li><a href="/book/tartar-i-ya/{{ .Slug }}?lang={{ $.Lang }}" lang="ru">{{ .Title }}</a></li>
             {{ end }}
-          </ol>
+          </ul>
         </section>
       {{ end }}
       <p class="hint tartar-sample__disclaimer">{{ t .Lang "tartar.disclaimer" }}</p>

@@ -22,8 +22,9 @@ func TestTartarExcerptUsesSiteFrameAndKeepsAllSections(t *testing.T) {
 	router.Get(tartarPath+"/{section}", module.handleTartar)
 
 	for _, path := range []string{
-		tartarPath, tartarPath + "/why", tartarPath + "/preface",
+		tartarPath, tartarPath + "/preface", tartarPath + "/prologue",
 		tartarPath + "/chapter-1", tartarPath + "/chapter-2",
+		tartarPath + "/chapter-3", tartarPath + "/chapter-4", tartarPath + "/chapter-5",
 	} {
 		response := httptest.NewRecorder()
 		router.ServeHTTP(response, httptest.NewRequest(http.MethodGet, path+"?lang=ru", nil))
@@ -39,6 +40,19 @@ func TestTartarExcerptUsesSiteFrameAndKeepsAllSections(t *testing.T) {
 		}
 		if strings.Contains(body, "href=\"chapter-1.html\"") {
 			t.Errorf("%s: old standalone navigation leaked into site page", path)
+		}
+	}
+	for path, marker := range map[string]string{
+		tartarPath:                "Часть I. Имя народа и память речи",
+		tartarPath + "/prologue":  "5 февраля 1936 года",
+		tartarPath + "/chapter-1": "Ру — Русь — Русский",
+		tartarPath + "/chapter-4": "atkinson-bashkirs-1803-detail.jpg",
+		tartarPath + "/chapter-5": "Источники и пояснения",
+	} {
+		response := httptest.NewRecorder()
+		router.ServeHTTP(response, httptest.NewRequest(http.MethodGet, path+"?lang=ru", nil))
+		if !strings.Contains(response.Body.String(), marker) {
+			t.Errorf("%s: missing %q", path, marker)
 		}
 	}
 

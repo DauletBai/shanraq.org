@@ -4081,13 +4081,21 @@ h1[tabindex="-1"]:focus, h1[tabindex="-1"]:focus-visible { outline: none; }
 .tartar-sample__intro { display: grid; grid-template-columns: minmax(150px, 230px) minmax(0, 1fr); gap: clamp(20px, 4vw, 38px); align-items: center; margin: 12px 0 30px; }
 .tartar-sample__intro img { display: block; width: 100%; height: auto; border-radius: var(--radius-sm); border: 1px solid var(--line); box-shadow: var(--card-shadow); }
 .tartar-sample__contents { max-width: 820px; }
-.tartar-sample__contents ol { margin: 20px 0 0; padding-left: 1.35em; }
+.tartar-sample__contents ul { margin: 20px 0 0; padding-left: 0; list-style: none; }
 .tartar-sample__contents li { padding: 9px 0; border-top: 1px solid var(--line); }
 .tartar-sample__contents a, .tartar-sample__nav a { color: var(--gold-strong); text-decoration: underline; text-underline-offset: 3px; }
 .tartar-sample__note { color: var(--muted); font-size: var(--step--1); }
 .tartar-sample__reading { max-width: 780px; overflow-wrap: anywhere; }
 .tartar-sample__reading .table-wrap { overflow-x: auto; }
 .tartar-sample__reading hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+.tartar-sample__reading figure { margin: 1.6em 0; }
+.tartar-sample__reading figure img { display: block; max-height: 780px; width: auto; max-width: 100%; height: auto; margin: 0 auto; }
+.tartar-sample__reading figcaption { color: var(--muted); font-size: var(--step--1); margin-top: 8px; text-align: center; }
+.tartar-sample__reading .source-ref { font-size: .72em; vertical-align: super; }
+.tartar-sample__reading .tartar-sample__sources { border-top: 1px solid var(--line); margin-top: 42px; padding-top: 20px; }
+.tartar-sample__reading .tartar-sample__sources ol { padding-left: 1.5em; font-size: var(--step--1); }
+.tartar-sample__reading .tartar-sample__sources li { padding: 5px 0; overflow-wrap: anywhere; }
+.tartar-sample__contents .tartar-sample__part { font-weight: 700; }
 .tartar-sample__nav { max-width: 780px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 18px; border-top: 1px solid var(--line); padding-top: 20px; margin: 36px 0; }
 .tartar-sample__disclaimer { max-width: 780px; margin: 26px 0 48px; }
 @media (max-width: 620px) {

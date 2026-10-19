@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"io/fs"
 	"net/http"
-	"strings"
 
 	"github.com/go-chi/chi/v5"
 	"shanraq.org/pkg/site"
@@ -23,10 +22,13 @@ type tartarSection struct {
 }
 
 var tartarSections = []tartarSection{
-	{Slug: "why", Title: "Почему книга называется «Тартар и Я»"},
 	{Slug: "preface", Title: "Предисловие. Не выбрать сторону, а искать след"},
-	{Slug: "chapter-1", Title: "Глава 1. Как читать слово"},
-	{Slug: "chapter-2", Title: "Глава 2. «Будь»"},
+	{Slug: "prologue", Title: "Пролог. Как Казак стал Казахом"},
+	{Slug: "chapter-1", Title: "Глава 1. Ру — Русь — Русский: как признак стал именем"},
+	{Slug: "chapter-2", Title: "Глава 2. Бегство к свободной земле"},
+	{Slug: "chapter-3", Title: "Глава 3. Бала — Лайық: имя инструмента как след"},
+	{Slug: "chapter-4", Title: "Глава 4. Аткинсон: свидетель двора на шве переодевания"},
+	{Slug: "chapter-5", Title: "Глава 5. Атаман, есаул и Арбат"},
 }
 
 type tartarPage struct {
@@ -38,25 +40,20 @@ type tartarPage struct {
 	Next         *tartarSection
 }
 
-// Keep one source of the excerpt's text: the already published, embedded HTML.
-// The wrapper and its relative navigation are replaced with the site's frame.
+// The excerpt is extracted from the revised print layout and embedded as
+// HTML fragments so each section uses the site's own page frame.
 func loadTartarExcerpt() (map[string]template.HTML, error) {
 	content := make(map[string]template.HTML, len(tartarSections))
 	for _, section := range tartarSections {
-		name := "shop/tartar-i-ya-sample/" + section.Slug + ".html"
+		name := "shop/tartar-i-ya-sample/sections/" + section.Slug + ".html"
 		data, err := fs.ReadFile(web.StaticFS(), name)
 		if err != nil {
 			return nil, fmt.Errorf("read Tartar excerpt %s: %w", name, err)
 		}
-		_, body, ok := strings.Cut(string(data), `<article class="reading">`)
-		if !ok {
-			return nil, fmt.Errorf("Tartar excerpt %s has no reading article", name)
+		if len(data) == 0 {
+			return nil, fmt.Errorf("Tartar excerpt %s is empty", name)
 		}
-		body, _, ok = strings.Cut(body, "</article>")
-		if !ok {
-			return nil, fmt.Errorf("Tartar excerpt %s has no article end", name)
-		}
-		content[section.Slug] = template.HTML(body) // trusted, embedded publication asset
+		content[section.Slug] = template.HTML(data) // trusted, embedded publication asset
 	}
 	return content, nil
 }
@@ -64,6 +61,10 @@ func loadTartarExcerpt() (map[string]template.HTML, error) {
 func (m *Module) handleTartar(w http.ResponseWriter, r *http.Request) {
 	lang := site.ResolveLang(w, r)
 	slug := chi.URLParam(r, "section")
+	if slug == "why" {
+		http.Redirect(w, r, tartarPath+"?lang="+lang, http.StatusMovedPermanently)
+		return
+	}
 	page := tartarPage{
 		Base:     m.rt.Site.Base(r, "Тартар и Я", lang),
 		Sections: tartarSections,

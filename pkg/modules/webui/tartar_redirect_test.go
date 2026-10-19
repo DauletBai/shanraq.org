@@ -13,8 +13,9 @@ func TestLegacyTartarExcerptRedirectsToFramedPages(t *testing.T) {
 	router := chi.NewRouter()
 	module.Routes(router)
 	for old, current := range map[string]string{
-		"/static/shop/tartar-i-ya-sample/":               "/book/tartar-i-ya",
-		"/static/shop/tartar-i-ya-sample/chapter-2.html": "/book/tartar-i-ya/chapter-2",
+		"/static/shop/tartar-i-ya-sample/":                        "/book/tartar-i-ya",
+		"/static/shop/tartar-i-ya-sample/chapter-2.html":          "/book/tartar-i-ya/chapter-2",
+		"/static/shop/tartar-i-ya-sample/sections/chapter-5.html": "/book/tartar-i-ya/chapter-5",
 	} {
 		response := httptest.NewRecorder()
 		router.ServeHTTP(response, httptest.NewRequest(http.MethodGet, old, nil))
