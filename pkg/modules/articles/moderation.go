@@ -67,6 +67,12 @@ type ModStore struct{ db *pgxpool.Pool }
 
 func NewModStore(db *pgxpool.Pool) *ModStore { return &ModStore{db: db} }
 
+// maxModerationExplanation is deliberately large enough for a moderator to
+// name every problem, quote the relevant passages and give concrete revision
+// instructions. The database stores TEXT; the limit protects the interface and
+// request size rather than compensating for a database restriction.
+const maxModerationExplanation = 5000
+
 // Log records a decision. It is deliberately the only way to hide something:
 // an action that leaves no row is an action nobody can appeal.
 func (s *ModStore) Log(ctx context.Context, a ModAction, subject *uuid.UUID, actor *uuid.UUID) (string, error) {

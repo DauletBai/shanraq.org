@@ -98,7 +98,7 @@ func (m *Module) handleAdminResolveAppeal(w http.ResponseWriter, r *http.Request
 	}
 	mid, _ := uuid.Parse(claims.Subject)
 	uphold := r.FormValue("decision") == "uphold"
-	if err := m.mods.Resolve(r.Context(), id, mid, uphold, clip(strings.TrimSpace(r.FormValue("note")), 1000)); err != nil {
+	if err := m.mods.Resolve(r.Context(), id, mid, uphold, clip(strings.TrimSpace(r.FormValue("note")), maxModerationExplanation)); err != nil {
 		m.rt.Logger.Error("resolve appeal", zap.Error(err))
 		http.Redirect(w, r, "/admin?err=appeal", http.StatusSeeOther)
 		return
@@ -124,6 +124,10 @@ func (m *Module) handleAdminDecideArticle(w http.ResponseWriter, r *http.Request
 	mid, _ := uuid.Parse(claims.Subject)
 	decision := r.FormValue("decision")
 	if err := m.DecideArticle(r.Context(), id, decision, mid, strings.TrimSpace(r.FormValue("note"))); err != nil {
+		if errors.Is(err, ErrDecisionNoteRequired) {
+			http.Redirect(w, r, "/admin?err=decision_note#moderation", http.StatusSeeOther)
+			return
+		}
 		m.rt.Logger.Error("decide article", zap.Error(err))
 		http.Redirect(w, r, "/admin?err=decide", http.StatusSeeOther)
 		return

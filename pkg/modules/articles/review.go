@@ -449,7 +449,13 @@ func (s *Store) ReviewQueue(ctx context.Context, limit int) ([]ReviewItem, error
 // ledger entry commit together: the review's central defect was that a status
 // could move without a matching record, so an article might publish with no
 // audit trail. Here they cannot diverge.
+var ErrDecisionNoteRequired = errors.New("moderation reason is required")
+
 func (m *Module) DecideArticle(ctx context.Context, id uuid.UUID, decision string, moderator uuid.UUID, note string) error {
+	note = strings.TrimSpace(note)
+	if (decision == "reject" || decision == "needs_work" || decision == "hide") && note == "" {
+		return ErrDecisionNoteRequired
+	}
 	var status, action, reason string
 	switch decision {
 	case "approve":
@@ -512,7 +518,7 @@ func (m *Module) DecideArticle(ctx context.Context, id uuid.UUID, decision strin
 		INSERT INTO moderation_actions
 		    (target_type, target_id, subject_id, title, action, reason_code, reason_note, actor_kind, actor_id, actor_name)
 		VALUES ('article', $1, $2, $3, $4, $5, $6, 'human', $7, '')`,
-		id.String(), author, clip(title, 120), action, reason, clip(note, 500), moderator); err != nil {
+		id.String(), author, clip(title, 120), action, reason, clip(note, maxModerationExplanation), moderator); err != nil {
 		return fmt.Errorf("decide: log: %w", err)
 	}
 	if err := tx.Commit(ctx); err != nil {

@@ -66,6 +66,7 @@
       <span class="adm__user">{{ .Email }} · <b>{{ .Role }}</b></span>
     </header>
     {{ if .Notice }}<div class="adm-notice">{{ t .Lang (printf "admin.%s" .Notice) }}</div>{{ end }}
+    {{ if .Error }}<div class="adm-notice adm-notice--warn">{{ .Error }}</div>{{ end }}
 
     <div class="adm-flow">
     <section id="overview" class="adm-section">
@@ -572,8 +573,8 @@
         </div>
         <p class="modrow__title"><a href="/read/{{ .Slug }}?preview=1" target="_blank" rel="noopener">«{{ .Title }}»</a></p>
         <form method="post" action="/admin/articles/{{ .ID }}/decide" class="modrow__actions">
-          <input class="input" name="note" maxlength="500" placeholder="{{ t $.Lang "aq.note" }}">
-          <button class="btn btn--primary btn--sm" type="submit" name="decision" value="approve">{{ t $.Lang "aq.approve" }}</button>
+          <textarea class="textarea modrow__notearea" name="note" rows="8" maxlength="5000" placeholder="{{ t $.Lang "aq.note" }}" required></textarea>
+          <button class="btn btn--primary btn--sm" type="submit" name="decision" value="approve" formnovalidate>{{ t $.Lang "aq.approve" }}</button>
           <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="needs_work">{{ t $.Lang "aq.return" }}</button>
           <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="reject">{{ t $.Lang "aq.reject" }}</button>
         </form>
@@ -599,7 +600,7 @@
         <p class="modrow__reason"><b>{{ t $.Lang "mod.reason" }}:</b> {{ t $.Lang (printf "mr.%s" .ReasonCode) }} · {{ .AuthorMail }}</p>
         <p class="modrow__note">{{ .Body }}</p>
         <form method="post" action="/admin/appeals/{{ .ID }}/resolve" class="modrow__actions">
-          <input class="input" name="note" maxlength="1000" placeholder="{{ t $.Lang "mod.note" }}">
+          <textarea class="textarea modrow__notearea" name="note" rows="6" maxlength="5000" placeholder="{{ t $.Lang "mod.note" }}"></textarea>
           <button class="btn btn--ghost btn--sm" type="submit" name="decision" value="uphold">{{ t $.Lang "mod.uphold" }}</button>
           <button class="btn btn--primary btn--sm" type="submit" name="decision" value="overturn">{{ t $.Lang "mod.overturn" }}</button>
         </form>

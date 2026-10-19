@@ -243,6 +243,54 @@ func TestStudioDeleteIsDraftOnly(t *testing.T) {
 	}
 }
 
+func TestStudioShowsModerationReasonBesideArticle(t *testing.T) {
+	renderer := buildTemplates(t)
+	now := time.Now()
+	var sb strings.Builder
+	page := StudioPage{Base: Base{Lang: "ru", Title: "T"}, Articles: []StudioRow{
+		{ID: "a1", Title: "Статья", Status: "needs_work", Updated: now},
+	}, ReviewAlerts: []ModAction{{
+		TargetType: "article", TargetID: "a1", Title: "Статья", Action: "reject",
+		ReasonCode: "rules_failed", Created: now,
+		Findings: []Finding{
+			{RuleCode: "disguised_ad", Severity: "block", Quote: "@SomeBot", Note: "Уберите рекламную ссылку."},
+			{RuleCode: "punctuation", Severity: "warn", Quote: "Telegram бота", Note: "Добавьте дефис."},
+		},
+	}}}
+	if err := renderer.Execute(&sb, "studio_dashboard", page); err != nil {
+		t.Fatal(err)
+	}
+	out := sb.String()
+	for _, want := range []string{"Нужно исправить", "Скрытая реклама", "@SomeBot", "Уберите рекламную ссылку.", "Пунктуация", "Telegram бота", "Добавьте дефис.", `/studio/a/a1`} {
+		if !strings.Contains(out, want) {
+			t.Errorf("dashboard does not show %q", want)
+		}
+	}
+}
+
+func TestAdminModerationAcceptsDetailedExplanation(t *testing.T) {
+	renderer := buildTemplates(t)
+	var sb strings.Builder
+	page := AdminPage{
+		Base:        Base{Lang: "ru", Title: "T"},
+		CanModerate: true,
+		Queue: []ReviewItem{{
+			ID: "a1", Slug: "article", Title: "Статья", Category: "society", Status: "review",
+		}},
+		Appeals: []ModAppeal{{ID: "p1", Title: "Статья", Action: "reject", ReasonCode: "rules_failed"}},
+	}
+	if err := renderer.Execute(&sb, "admin", page); err != nil {
+		t.Fatal(err)
+	}
+	out := sb.String()
+	if strings.Count(out, `maxlength="5000"`) < 2 {
+		t.Error("article decision and appeal response must both accept detailed explanations")
+	}
+	if !strings.Contains(out, `class="textarea modrow__notearea"`) {
+		t.Error("moderation explanation must be a multiline field")
+	}
+}
+
 func TestAgentKind(t *testing.T) {
 	// An unknown or empty kind must fall back to the least-privileged shape, so
 	// a bad value can never grant a company badge.

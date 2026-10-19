@@ -1,6 +1,12 @@
 package articles
 
-import "testing"
+import (
+	"context"
+	"errors"
+	"testing"
+
+	"github.com/google/uuid"
+)
 
 func TestParseVerdict(t *testing.T) {
 	// A clean article returns nothing.
@@ -24,5 +30,15 @@ func TestParseVerdict(t *testing.T) {
 	}
 	if _, err := parseVerdict("I could not check this article."); err == nil {
 		t.Fatal("unparseable output must be an error, not an empty pass")
+	}
+}
+
+func TestHumanRejectionRequiresActionableReason(t *testing.T) {
+	m := &Module{}
+	for _, decision := range []string{"reject", "needs_work", "hide"} {
+		err := m.DecideArticle(context.Background(), uuid.New(), decision, uuid.New(), "  ")
+		if !errors.Is(err, ErrDecisionNoteRequired) {
+			t.Errorf("%s: got %v, want ErrDecisionNoteRequired", decision, err)
+		}
 	}
 }

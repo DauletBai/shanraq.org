@@ -221,6 +221,7 @@ type AdminPage struct {
 	Users      []auth.AdminUser
 	UserSearch string
 	Notice     string
+	Error      string
 	Email      string
 	Role       string
 	// Moderation ledger: the work queue first, then the history.
@@ -331,6 +332,9 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	page.Notice = r.URL.Query().Get("ok")
+	if r.URL.Query().Get("err") == "decision_note" {
+		page.Error = site.T(lang, "admin.need_note")
+	}
 	if claims != nil {
 		page.Email = claims.Email
 		page.Role = claims.PrimaryRole
@@ -535,7 +539,7 @@ func (m *Module) handleAdminHideComment(w http.ResponseWriter, r *http.Request) 
 	if _, err := m.mods.Log(r.Context(), ModAction{
 		TargetType: "comment", TargetID: id.String(), Title: title,
 		Action: "hide", ReasonCode: reason,
-		ReasonNote: clip(strings.TrimSpace(r.FormValue("note")), 500),
+		ReasonNote: clip(strings.TrimSpace(r.FormValue("note")), maxModerationExplanation),
 		ActorKind:  "human",
 	}, subject, &mid); err != nil {
 		m.rt.Logger.Error("log moderation", zap.Error(err))

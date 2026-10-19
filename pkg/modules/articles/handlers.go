@@ -1369,6 +1369,11 @@ type StudioPage struct {
 	// Outcome of the last publish attempt, so the author is told what happened
 	// instead of being returned to an unchanged-looking dashboard.
 	Notice string
+	// ReviewAlerts puts the actionable moderation result on the dashboard itself.
+	// A status badge that sends an author to another page still leaves them to
+	// discover why the article was returned; the quote and requested correction
+	// belong beside the article that needs work.
+	ReviewAlerts []ModAction
 }
 
 func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
@@ -1458,6 +1463,38 @@ func (m *Module) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	page.Stats = stats
 	page.Karma = karma
 	page.Articles = rows
+
+	// Show the newest negative decision for every article that is still waiting
+	// for a correction. The complete append-only history remains on the
+	// moderation page; this is the short, actionable view in the user's cabinet.
+	needsWork := make(map[string]bool)
+	for _, row := range rows {
+		if row.Status == "needs_work" || row.Status == "flagged" {
+			needsWork[row.ID] = true
+		}
+	}
+	if len(needsWork) > 0 {
+		if acts, err := m.mods.ForSubject(r.Context(), authorID, 100); err != nil {
+			m.rt.Logger.Warn("studio moderation alerts", zap.Error(err))
+		} else {
+			seen := make(map[string]bool)
+			for _, act := range acts {
+				if act.TargetType != "article" || !needsWork[act.TargetID] || seen[act.TargetID] {
+					continue
+				}
+				if act.Action != "reject" && act.Action != "warn" && act.Action != "hide" {
+					continue
+				}
+				if fs, ferr := m.mods.FindingsFor(r.Context(), act.ID); ferr != nil {
+					m.rt.Logger.Warn("studio moderation findings", zap.String("action_id", act.ID), zap.Error(ferr))
+				} else {
+					act.Findings = fs
+				}
+				page.ReviewAlerts = append(page.ReviewAlerts, act)
+				seen[act.TargetID] = true
+			}
+		}
+	}
 	m.render(w, "studio_dashboard", page)
 }
 
