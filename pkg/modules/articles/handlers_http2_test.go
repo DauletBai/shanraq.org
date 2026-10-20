@@ -263,8 +263,12 @@ func TestAdvertiserValidationKeepsDraftWithoutPretendingRegistration(t *testing.
 		"lang": {"ru"}, "title": {"Тест"}, "target_url": {"https://example.org"},
 		"format": {"rectangle"}, "surface": {"home"}, "duration": {"7"},
 	}, withCookie(cookie))
-	if blocked.Code != http.StatusSeeOther || blocked.Header().Get("Location") != "/advertise" {
+	if blocked.Code != http.StatusSeeOther || blocked.Header().Get("Location") != "/advertise?blocked=orders" {
 		t.Fatalf("paused paid order must explain status in cabinet: %d, %q", blocked.Code, blocked.Header().Get("Location"))
+	}
+	message := app.do(http.MethodGet, blocked.Header().Get("Location")+"&lang=ru", nil, withCookie(cookie))
+	if message.Code != http.StatusOK || !strings.Contains(message.Body.String(), "Приём платных заказов сейчас приостановлен") {
+		t.Fatalf("paused paid order explanation missing: %d", message.Code)
 	}
 	var count int
 	if err := app.pool.QueryRow(t.Context(), `SELECT count(*) FROM ad_orders o JOIN advertisers a ON a.id = o.advertiser_id WHERE a.owner_id = $1`, uid).Scan(&count); err != nil {

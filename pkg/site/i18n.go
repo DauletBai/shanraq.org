@@ -721,6 +721,7 @@ var messages = map[string]map[string]string{
 	"adv.saved_company":   {"kz": "Компания сақталды.", "ru": "Компания сохранена.", "en": "Company saved."},
 	"adv.saved_order":     {"kz": "Өтінім қабылданды — төлемді күтуде.", "ru": "Заявка принята — ожидает оплаты.", "en": "Request received — pending payment."},
 	"adv.err_company":     {"kz": "Компания атауы, жауапты тұлға және телефон міндетті.", "ru": "Название компании, ответственное лицо и телефон обязательны.", "en": "Company name, responsible person, and phone are required."},
+	"adv.err_paused":      {"kz": "Ақылы тапсырыс сақталмады: оны қабылдау уақытша тоқтатылған. Тегін сынақ науқанын қолдау қызметі арқылы сұраңыз.", "ru": "Платный заказ не сохранён: приём платных заказов сейчас приостановлен. Бесплатный пилот можно запросить через поддержку.", "en": "The paid order was not saved: paid bookings are currently paused. You can request the free pilot through support."},
 	"adv.err_order":       {"kz": "Тақырып пен сілтеме міндетті.", "ru": "Заголовок и ссылка обязательны.", "en": "Title and link are required."},
 	"adv.company":         {"kz": "Компания", "ru": "Компания", "en": "Company"},
 	"adv.company_name":    {"kz": "Компания атауы", "ru": "Название компании", "en": "Company name"},

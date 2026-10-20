@@ -342,6 +342,9 @@ func (m *Module) handleAdvertise(w http.ResponseWriter, r *http.Request) {
 	page.Today = today.Format("2006-01-02")
 	page.Avail = m.surfaceAvailability(r.Context(), "rectangle", page.Today, today.AddDate(0, 0, 29).Format("2006-01-02"))
 	page.Saved = r.URL.Query().Get("saved")
+	if r.URL.Query().Get("blocked") == "orders" {
+		page.Error = site.T(lang, "adv.err_paused")
+	}
 	m.render(w, "advertise", page)
 }
 
@@ -394,7 +397,7 @@ func (m *Module) handleAdvertiseOrder(w http.ResponseWriter, r *http.Request) {
 	// Paid ordering may be in maintenance (e.g. during the beta, before Kaspi
 	// Pay is live). The cabinet page shows the notice; block the booking here.
 	if !m.flags.Available(SvcAdOrders) {
-		http.Redirect(w, r, "/advertise", http.StatusSeeOther)
+		http.Redirect(w, r, "/advertise?blocked=orders", http.StatusSeeOther)
 		return
 	}
 	_ = r.ParseForm()
