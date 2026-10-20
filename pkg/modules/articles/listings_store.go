@@ -507,7 +507,7 @@ func (s *ListingStore) Facets(ctx context.Context) (ListingFacets, error) {
 	return fc, typeRows.Err()
 }
 
-// PurgeExpired permanently deletes listings whose 21-day free window has ended,
+// PurgeExpired permanently deletes listings whose granted window has ended,
 // together with their dependent rows (reports, favorites) — enforcing the
 // "then all its data is deleted" policy. Runs from the background sweep, in one
 // transaction so an extend that lands mid-sweep can't orphan dependents.

@@ -36,6 +36,24 @@ func TestListingsSitemapHasPermanentIndexWithoutActiveListings(t *testing.T) {
 	}
 }
 
+func TestListingsSitemapUsesLastContentEdit(t *testing.T) {
+	app := newTestApp(t)
+	defer app.cleanup()
+	owner := app.createUser("listing-sitemap@example.com", "Parol123!")
+	id := app.seedListing(owner)
+	app.exec(`UPDATE listings SET status = 'published', created_at = '2026-01-01 12:00:00+00',
+		updated_at = '2026-10-20 12:00:00+00', expires_at = NOW() + interval '30 days'
+		WHERE id = $1`, id)
+
+	body := app.do(http.MethodGet, "/sitemap-listings.xml", nil).Body.String()
+	if !strings.Contains(body, "/listings/"+id.String()) {
+		t.Fatal("published listing is missing from sitemap")
+	}
+	if !strings.Contains(body, "<lastmod>2026-10-20</lastmod>") {
+		t.Fatal("listing sitemap did not use its last content edit")
+	}
+}
+
 // The breadcrumb is what turns a bare URL in search results into a labelled
 // trail. Google requires the last crumb to be the page itself and unlinked.
 func TestBreadcrumbLD(t *testing.T) {

@@ -71,7 +71,7 @@ func (m *Module) reminderLoop(ctx context.Context) {
 	}
 }
 
-// sweepExpired permanently deletes listings past their 21-day window and all
+// sweepExpired permanently deletes listings past their granted expiry and all
 // their data (owners were warned 2 days earlier by sweepReminders).
 func (m *Module) sweepExpired(ctx context.Context) {
 	n, err := m.listings.PurgeExpired(ctx)

@@ -9,7 +9,7 @@
     <h1>{{ t .Lang "re.my_listings" }}</h1>
     {{ if svcOff .Svc "listing_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "listing_submission" }}" aria-disabled="true">+ {{ t .Lang "re.post" }}</span>{{ else }}<a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>{{ end }}
   </div>
-  <p class="hint" style="margin:-6px 0 20px">{{ t .Lang "re.listing_policy" }}</p>
+  <p class="hint" style="margin:-6px 0 20px">{{ if listingCampaignActive }}{{ t .Lang "re.listing_policy_promo" }}{{ else }}{{ t .Lang "re.listing_policy" }}{{ end }}</p>
   {{ with index .Svc "listing_promo" }}{{ if not .On }}<p class="notice notice--warn" style="margin:0 0 20px">🛠 {{ .Msg }}</p>{{ end }}{{ end }}
 
   {{ if .Listings }}
@@ -43,7 +43,7 @@
         <form method="post" action="/listings/{{ .ID }}/delete" onsubmit="return confirm('{{ t $.Lang "re.delete_confirm" }}')">
           <button class="btn btn--danger btn--sm" type="submit" title="{{ t $.Lang "re.delete_hint" }}">{{ t $.Lang "re.delete" }}</button>
         </form>
-        <form method="post" action="/listings/{{ .ID }}/extend"><button class="btn btn--ghost btn--sm" type="submit">{{ t $.Lang "re.extend" }}</button></form>
+        <form method="post" action="/listings/{{ .ID }}/extend"><button class="btn btn--ghost btn--sm" type="submit">{{ if listingCampaignActive }}{{ t $.Lang "re.extend_promo" }}{{ else }}{{ t $.Lang "re.extend" }}{{ end }}</button></form>
         {{ if ge $.Credit 3 }}<form method="post" action="/listings/{{ .ID }}/promote-free"><button class="btn btn--teal btn--sm" type="submit">{{ t $.Lang "inv.promote_free" }}</button></form>{{ end }}
         {{ $paid := index $.Svc "listing_promo" }}
         {{ if $paid.On }}

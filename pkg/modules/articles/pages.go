@@ -249,12 +249,12 @@ Shanraq.org is a home where free voices meet.`},
 ## Что бесплатно, а что платно
 **Бесплатно и навсегда:** чтение всех материалов, подписка на рассылку, регистрация, ручная публикация статей (в том числе на трёх языках, если вы переводите сами), оценки, комментарии и карма.
 
-**Платные услуги** — это продвижение объявлений о недвижимости: поднятие и выделение. Само объявление разместить бесплатно. Актуальные цены — на странице [Тарифы](/pricing).
+**Размещение и продление объявления бесплатны** в период с 20 октября 2026 года по 19 апреля 2027 года включительно. Дополнительное продвижение — отдельная услуга. Условия — на странице [Тарифы](/pricing).
 
 ## Недвижимость и объявления
 Наш символ — шаңырақ, а значит, дом. В разделе **«Недвижимость»** можно подать объявление о продаже или аренде: квартиры, дома, земельного участка или коммерческого помещения.
 
-**Подача объявления бесплатна.** Объявление живёт 21 день, за два дня до окончания мы напомним. Платить нужно только за продвижение, если вы сами этого захотите.
+**С 20.10.2026 по 19.04.2027 размещение и продление бесплатны.** Новое объявление публикуется минимум на 183 дня, ранее активные сохраняются как минимум до 20.04.2027. За два дня до фактического окончания срока мы напомним. После акции действуют условия, показанные при подаче.
 
 ### Как подать за пять минут
 1. Нажмите **«Подать объявление»**.
@@ -262,6 +262,8 @@ Shanraq.org is a home where free voices meet.`},
 3. Впишите адрес: микрорайон (если есть), улицу и номер дома. Номер квартиры указывать не нужно — он не публикуется.
 4. Укажите тип, цену, площадь и напишите описание.
 5. Добавьте фотографии — объявления с фотографиями открывают в разы чаще, чем без них.
+
+Публикуйте только свой объект либо объект, который владелец или уполномоченный агент поручил вам разместить на Shanraq.org. Для чужих фотографий, текста и контактного телефона нужно разрешение на их размещение именно здесь; доступность объявления на другом сайте не заменяет такого разрешения. Аккаунт тестирования не должен выглядеть как аккаунт владельца. Укажите только проверенную локацию: точную метку ставьте лишь с согласия владельца и если это не раскрывает частный адрес вопреки его воле. По просьбе владельца исправьте или снимите объявление через [поддержку](/support).
 
 ### Чтобы метка встала на ваш дом
 Покупатели смотрят на карту и ищут по районам. Если метка стоит не там, ваше объявление не попадётся тем, кто ищет жильё именно в вашем дворе. Три шага, чтобы этого не случилось.
@@ -277,7 +279,7 @@ Shanraq.org is a home where free voices meet.`},
 Проверить себя можно по подписи в окошке метки на карте: **«Точное место»** — координаты ваши и всё в порядке; **«Центр населённого пункта»** — адрес не распознан, метка стоит приблизительно.
 
 ### Что дальше
-- **Продление.** Объявление можно продлить ещё на 21 день из раздела «Мои объявления».
+- **Продление.** В период акции объявление можно бесплатно продлить ещё на 183 дня из раздела «Мои объявления».
 - **Поднятие и выделение.** Платные и необязательные: поднятие возвращает объявление наверх списка, выделение подсвечивает его на неделю.
 - **Правки.** Цену, описание и фотографии можно менять в любой момент, объявление при этом не теряет срок.
 - **Контакты.** Показываются те, что вы указали в объявлении. Номер квартиры и точный адрес внутри дома не публикуются никогда.
@@ -459,12 +461,12 @@ Email растау сілтемесінің мерзімі өтіп кетсе, 
 ## Не тегін, не ақылы
 **Тегін әрі әрқашан:** барлық материалды оқу, жаңалық таратылымына жазылу, тіркелу, мақаланы жариялау (өзіңіз аударсаңыз, үш тілде де), бағалау, пікір және карма.
 
-**Ақылы қызметтер** — жылжымайтын мүлік хабарландыруын жылжыту: көтеру және ерекшелеу. Хабарландырудың өзін беру тегін. Ағымдағы бағалар — [Тарифтер](/pricing) бетінде.
+**Хабарландыру беру және ұзарту тегін** — 2026 жылғы 20 қазаннан 2027 жылғы 19 сәуірге дейін. Қосымша жылжыту — бөлек қызмет. Шарттар [Тарифтер](/pricing) бетінде.
 
 ## Жылжымайтын мүлік және хабарландырулар
 Біздің нышанымыз — шаңырақ, яғни үй. **«Жылжымайтын мүлік»** бөлімінде сату немесе жалға беру туралы хабарландыру беруге болады: пәтер, үй, жер учаскесі немесе коммерциялық орын.
 
-**Хабарландыру беру тегін.** Ол 21 күн тұрады, мерзімі аяқталардан екі күн бұрын еске саламыз. Ақы тек жылжыту үшін және тек өзіңіз қаласаңыз төленеді.
+**20.10.2026–19.04.2027 аралығында хабарландыру беру және ұзарту тегін.** Жаңа хабарландыру кемінде 183 күн, бұрынғы белсенділері кемінде 20.04.2027 дейін көрсетіледі. Нақты мерзім аяқталардан екі күн бұрын еске саламыз. Акциядан кейін жариялау кезінде көрсетілген шарттар қолданылады.
 
 ### Бес минутта қалай беруге болады
 1. **«Хабарландыру беру»** түймесін басыңыз.
@@ -472,6 +474,8 @@ Email растау сілтемесінің мерзімі өтіп кетсе, 
 3. Мекенжайды жазыңыз: шағын аудан (бар болса), көше және үй нөмірі. Пәтер нөмірін жазудың қажеті жоқ — ол жарияланбайды.
 4. Түрін, бағасын, ауданын көрсетіп, сипаттама жазыңыз.
 5. Фотосурет қосыңыз — суреті бар хабарландыруды әлдеқайда жиі ашады.
+
+Тек өз нысаныңызды немесе иесі не уәкілетті агенті Shanraq.org-та жариялауға рұқсат берген нысанды орналастырыңыз. Басқа сайттағы ашық хабарландыру оның фотосын, мәтінін және байланыс нөмірін осында көшіруге рұқсат болып саналмайды. Сынақ аккаунтын иесінің аккаунты ретінде көрсетпеңіз. Дәл карта белгісін иесінің келісімімен және жеке мекенжайын оның еркінен тыс ашпайтын жағдайда ғана қойыңыз. Иесі сұраса, хабарландыруды [қолдау](/support) арқылы түзетіңіз немесе алып тастаңыз.
 
 ### Белгі үйіңізге дәл қойылуы үшін
 Сатып алушылар картаға қарайды және аудан бойынша іздейді. Белгі басқа жерде тұрса, дәл сіздің ауладан пәтер іздеп жүрген адам хабарландыруыңызды көрмейді. Мұны болдырмаудың үш қадамы бар.
@@ -487,7 +491,7 @@ Email растау сілтемесінің мерзімі өтіп кетсе, 
 Өзіңізді картадағы белгінің терезесіндегі жазу арқылы тексере аласыз: **«Нақты орны»** — координаттар сіздікі, бәрі дұрыс; **«Елді мекеннің ортасы»** — мекенжай танылмаған, белгі шамамен тұр.
 
 ### Әрі қарай не бар
-- **Ұзарту.** Хабарландыруды «Менің хабарландыруларым» бөлімінен тағы 21 күнге ұзартуға болады.
+- **Ұзарту.** Акция кезінде хабарландыруды «Менің хабарландыруларым» бөлімінен тағы 183 күнге тегін ұзартуға болады.
 - **Көтеру мен ерекшелеу.** Ақылы әрі міндетті емес: көтеру хабарландыруды тізімнің басына қайтарады, ерекшелеу оны бір апта бойы бөліп көрсетеді.
 - **Түзету.** Бағаны, сипаттаманы және суреттерді кез келген уақытта өзгертуге болады, мерзім бұзылмайды.
 - **Байланыс.** Хабарландыруда өзіңіз көрсеткен деректер шығады. Пәтер нөмірі мен үй ішіндегі нақты мекенжай ешқашан жарияланбайды.
@@ -669,12 +673,12 @@ If the material is not about a particular place, leave the field empty: an analy
 ## What is free and what is paid
 **Free forever:** reading all content, the newsletter, registration, publishing articles (including in three languages, which you translate yourself), votes, comments, and karma.
 
-**Paid services** are the promotion of real-estate listings: a bump and a highlight. Posting a listing is free. Current prices are on the [Pricing](/pricing) page.
+**Posting and renewal are free** from 20 October 2026 through 19 April 2027. Extra promotion is a separate service. Terms are on the [Pricing](/pricing) page.
 
 ## Real estate and listings
 Our symbol is the shanyraq — a home. In the **Real Estate** section you can post a sale or rental listing: apartment, house, land, or commercial space.
 
-**Posting is free.** A listing stays up for 21 days, and we remind you two days before it expires. You pay only for promotion, and only if you want it.
+**From 20 Oct 2026 through 19 Apr 2027, posting and renewal are free.** A new listing stays up for at least 183 days; previously active listings remain through at least 20 Apr 2027. We remind you two days before the actual expiry. After the campaign, the terms displayed when posting apply.
 
 ### Posting in five minutes
 1. Press **Post a listing**.
@@ -682,6 +686,8 @@ Our symbol is the shanyraq — a home. In the **Real Estate** section you can po
 3. Enter the address: microdistrict if there is one, street, and house number. Leave out the flat number — it is never published.
 4. Give the type, price, area, and a description.
 5. Add photographs. Listings with photographs are opened many times more often than those without.
+
+Post only your own property or one the owner or an authorised agent has asked you to publish on Shanraq.org. A public listing elsewhere is not permission to copy its photos, text or contact number here. Do not present a test account as the owner's account. Use an exact map pin only with the owner's consent and without exposing a private address against their wishes. Correct or remove a listing at the owner's request via [support](/support).
 
 ### Getting the marker onto your building
 Buyers look at the map and search by neighbourhood. A marker in the wrong place means your listing never reaches the person looking for a home on your street. Three steps to avoid that.
@@ -697,7 +703,7 @@ Buyers look at the map and search by neighbourhood. A marker in the wrong place 
 You can check yourself by the line in the marker's popup: **"Exact location"** means the coordinates are yours and all is well; **"Settlement centre"** means the address was not recognised and the marker is approximate.
 
 ### After that
-- **Renewal.** A listing can be renewed for another 21 days from "My listings".
+- **Renewal.** During the campaign, a listing can be renewed free for another 183 days from "My listings".
 - **Bump and highlight.** Paid and optional: a bump returns the listing to the top of the list, a highlight makes it stand out for a week.
 - **Edits.** Price, description, and photographs can be changed at any time without losing the remaining days.
 - **Contacts.** Whatever you entered in the listing is shown. The flat number and the exact address inside the building are never published.
@@ -726,7 +732,7 @@ By publishing, you agree to these rules.`},
 	"pricing": {
 		"ru": {Title: "Тарифы", Body: `Мы верим, что доступ к информации и знанию должен быть бесплатным. Поэтому чтение, курсы и подписка не стоят ничего.
 
-> **Сейчас функции бесплатны.** Тарифы ниже вступят в силу с запуском платного биллинга — мы предупредим минимум за 60 дней. Платными будут только услуги, а не само участие.
+> **Размещение и продление недвижимости бесплатны до 19.04.2027 включительно.** Рекламные услуги и дополнительное продвижение имеют отдельные условия. Об изменении условий предупредим заранее.
 
 ## Бесплатно и навсегда
 - Чтение всех материалов на трёх языках
@@ -744,11 +750,13 @@ By publishing, you agree to these rules.`},
 Публикация статьи бесплатна. Платите только за ИИ-улучшения, которыми пользуетесь; цены рассчитаны от нашей себестоимости плюс небольшая наценка.
 
 ## Услуги для недвижимости
-Подача объявления **бесплатна**: оно активно **21 день** (3 недели), после чего все его данные удаляются. Об окончании срока напоминаем за 2 дня.
+С 20.10.2026 по 19.04.2027 размещение и продление **бесплатны**. Новое объявление доступно не менее **183 дней**; ранее активное — не менее чем до 20.04.2027. За два дня до его фактического окончания напомним. Срок каждого объявления виден владельцу в кабинете.
+
+С 20.04.2027 обычный срок нового объявления — 21 день, если к тому времени не опубликованы новые условия. Продление остаётся бесплатным; уже предоставленный срок не сокращается.
 
 | Услуга | Цена |
 | --- | --- |
-| Продление объявления (+21 день) | 499 ₸ |
+| Размещение и продление (+183 дня в период акции) | 0 ₸ |
 | Разовое поднятие в топ | 299 ₸ |
 | Выделение объявления (7 дней) | 499 ₸ |
 | Баннер в разделе недвижимости (1–7 суток) | от 990 ₸ |
@@ -781,7 +789,7 @@ By publishing, you agree to these rules.`},
 Все цены указаны в тенге и могут корректироваться. Об изменениях мы сообщаем заранее.`},
 		"kz": {Title: "Тарифтер", Body: `Ақпарат пен білімге қолжетімділік тегін болуы керек деп сенеміз. Сондықтан оқу да, курстар да, жазылу да тегін.
 
-> **Қазір функциялар тегін.** Төмендегі тарифтер ақылы биллинг іске қосылғанда күшіне енеді — кемінде 60 күн бұрын ескертеміз. Тек қызметтер ақылы, қатысудың өзі емес.
+> **Жылжымайтын мүлік хабарландыруын жариялау және ұзарту 19.04.2027 дейін тегін.** Жарнама мен қосымша жылжыту шарттары бөлек. Өзгерістер туралы алдын ала хабарлаймыз.
 
 ## Тегін әрі әрқашан
 - Барлық материалды үш тілде оқу
@@ -799,11 +807,13 @@ By publishing, you agree to these rules.`},
 Мақала жариялау тегін. Тек пайдаланған ИИ-жақсартулар үшін төлейсіз.
 
 ## Жылжымайтын мүлік қызметтері
-Хабарландыру беру **тегін**: ол **21 күн** (3 апта) белсенді, содан кейін оның барлық деректері жойылады. Мерзімнің аяқталуы туралы 2 күн бұрын ескертеміз.
+20.10.2026–19.04.2027 аралығында жариялау мен ұзарту **тегін**. Жаңа хабарландыру кемінде **183 күн**, бұрыннан белсенді хабарландыру кемінде 20.04.2027 дейін қолжетімді. Аяқталуына екі күн қалғанда ескертеміз. Әр хабарландырудың мерзімі кабинетте көрсетіледі.
+
+20.04.2027 бастап жаңа хабарландырудың әдеттегі мерзімі — 21 күн, егер сол уақытқа дейін жаңа шарттар жарияланбаса. Ұзарту тегін болып қалады; бұрын берілген мерзім қысқармайды.
 
 | Қызмет | Бағасы |
 | --- | --- |
-| Хабарландыруды ұзарту (+21 күн) | 499 ₸ |
+| Жариялау және ұзарту (акцияда +183 күн) | 0 ₸ |
 | Топқа бір реттік көтеру | 299 ₸ |
 | Хабарландыруды ерекшелеу (7 күн) | 499 ₸ |
 | Жылжымайтын мүлік бөліміндегі баннер (1–7 тәулік) | 990 ₸ бастап |
@@ -836,7 +846,7 @@ By publishing, you agree to these rules.`},
 Барлық баға теңгемен және өзгеруі мүмкін. Өзгерістер туралы алдын ала хабарлаймыз.`},
 		"en": {Title: "Pricing", Body: `We believe access to information and to knowledge should be free. Reading, the courses and the newsletter cost nothing.
 
-> **Everything is free for now.** The rates below take effect when paid billing launches — we will give at least 60 days' notice. Only services are paid, never participation itself.
+> **Posting and renewing a property listing are free through 19 April 2027.** Advertising and extra promotion have separate terms. We will announce changes in advance.
 
 ## Free forever
 - Reading all content in three languages
@@ -854,11 +864,13 @@ By publishing, you agree to these rules.`},
 Publishing an article is free. You pay only for the AI enhancements you use.
 
 ## Real-estate services
-Posting a listing is **free**: it stays active for **21 days** (3 weeks), after which all its data is deleted. We remind you 2 days before it expires.
+From 20 Oct 2026 through 19 Apr 2027, posting and renewal are **free**. A new listing remains available for at least **183 days**; previously active listings through at least 20 Apr 2027. We remind owners two days before actual expiry. Each listing’s expiry is shown in the owner account.
+
+From 20 April 2027 the ordinary term for a new listing is 21 days unless new terms have been published by then. Renewal remains free and previously granted terms are not shortened.
 
 | Service | Price |
 | --- | --- |
-| Extend a listing (+21 days) | 499 ₸ |
+| Posting and renewal (+183 days during the campaign) | 0 ₸ |
 | One-time raise to top | 299 ₸ |
 | Highlight a listing (7 days) | 499 ₸ |
 | Banner in the real-estate section (1–7 days) | from 990 ₸ |
@@ -1363,7 +1375,9 @@ For questions about data processing, contact us through the [support page](/supp
 Права на свои статьи, фотографии и объявления сохраняются за автором. Размещая контент, вы предоставляете Платформе неисключительную безвозмездную лицензию на его хранение, показ на трёх языках и продвижение в рамках работы сервиса. Товарные знаки и оформление Платформы принадлежат её владельцу.
 
 ## 12. Тарифы и платные услуги
-В период запуска публикация статей и объявлений бесплатна. О введении платных услуг мы уведомляем заранее; действующие цены публикуются на Платформе.
+С 20 октября 2026 года по 19 апреля 2027 года включительно размещение и продление объявлений о недвижимости бесплатны. Новые объявления, поданные в этот период, получают срок не менее 183 дней; уже активные на начало акции сохраняются минимум до 20 апреля 2027 года. Фактический срок виден в кабинете. По окончании акции новые объявления получают срок, указанный на странице [Тарифы](/pricing); ранее предоставленный срок не сокращается. Дополнительное продвижение и реклама оплачиваются отдельно по опубликованным условиям.
+
+Размещающий чужой объект подтверждает право на публикацию его описания, фотографий, телефона владельца и точной локации на Shanraq.org. Публикация на другой площадке сама по себе такого права не предоставляет.
 
 ## 13. Ответственность и отказ от гарантий
 Сервис предоставляется «как есть». Мы стремимся к бесперебойной работе, но не гарантируем отсутствие ошибок и перерывов. Платформа не отвечает за достоверность пользовательского контента и за действия пользователей в сделках; ответственность несёт лицо, разместившее контент, в пределах, допускаемых законодательством РК.
@@ -1438,7 +1452,9 @@ Shanraq.org платформасын пайдалана отырып, сіз о�
 Өз мақалаларына, фотосуреттеріне және хабарландыруларына деген құқықтар автордың өзінде сақталады. Контентті орналастыра отырып, сіз Платформаға оны сақтауға, үш тілде көрсетуге және сервистің жұмысы аясында ілгерілетуге айрықша емес, өтеусіз лицензия бересіз. Платформаның тауар белгілері мен безендірілуі оның иесіне тиесілі.
 
 ## 12. Тарифтер мен ақылы қызметтер
-Іске қосу кезеңінде мақалалар мен хабарландыруларды жариялау тегін. Ақылы қызметтердің енгізілуі туралы біз алдын ала хабарлаймыз; қолданыстағы бағалар Платформада жарияланады.
+2026 жылғы 20 қазаннан 2027 жылғы 19 сәуірге дейін жылжымайтын мүлік хабарландыруын жариялау және ұзарту тегін. Осы кезеңдегі жаңа хабарландыру кемінде 183 күнге жарияланады; акция басталғанда белсенді болған хабарландырулар кемінде 2027 жылғы 20 сәуірге дейін сақталады. Нақты мерзім кабинетте көрсетіледі. Акциядан кейінгі жаңа хабарландырудың мерзімі [Тарифтер](/pricing) бетінде көрсетіледі; бұрын берілген мерзім қысқармайды. Қосымша жылжыту мен жарнама бөлек төленеді.
+
+Басқа адамның нысанын жариялаушы оның сипаттамасын, фотоларын, иесінің телефонын және дәл орналасқан жерін Shanraq.org-та көрсетуге құқығы бар екенін растайды. Басқа платформадағы ашық хабарландыру мұндай құқық бермейді.
 
 ## 13. Жауапкершілік және кепілдіктерден бас тарту
 Сервис «сол қалпында» ұсынылады. Біз үздіксіз жұмысқа ұмтыламыз, бірақ қателер мен үзілістердің болмауына кепілдік бермейміз. Платформа пайдаланушы контентінің дұрыстығы үшін және пайдаланушылардың мәмілелердегі әрекеттері үшін жауап бермейді; жауапкершілікті контентті орналастырған тұлға ҚР заңнамасында жол берілген шектерде көтереді.
@@ -1513,7 +1529,9 @@ Nothing on the Platform disappears without trace. Every moderation decision is w
 Rights to your articles, photographs, and listings remain with the author. By posting content, you grant the Platform a non-exclusive, royalty-free license to store, display in the three languages, and promote it within the operation of the service. The Platform's trademarks and design belong to its owner.
 
 ## 12. Fees and Paid Services
-During the launch period, publishing articles and listings is free. We will give advance notice of the introduction of paid services; the current prices are published on the Platform.
+From 20 October 2026 through 19 April 2027, posting and renewing a property listing is free. New listings submitted during this period receive at least 183 days; listings active at the start remain available until at least 20 April 2027. The actual expiry is shown in the account. After the campaign, new listings receive the term stated on [Pricing](/pricing); an existing granted term is not shortened. Extra promotion and advertising are separate paid services.
+
+Anyone posting another person's property confirms their right to publish its description, photos, owner's phone number and exact location on Shanraq.org. A public listing on another platform does not itself grant that right.
 
 ## 13. Liability and Disclaimer of Warranties
 The service is provided "as is". We strive for uninterrupted operation but do not guarantee the absence of errors and interruptions. The Platform is not responsible for the accuracy of user content or for users' actions in transactions; liability rests with the person who posted the content, to the extent permitted by the legislation of the Republic of Kazakhstan.

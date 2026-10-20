@@ -27,6 +27,7 @@ func templateFuncs() template.FuncMap {
 		"amenities":        AmenityKeys,
 		"roomTypes":        RoomTypeKeys,
 		"bannerDays":       BannerDays,
+		"listingCampaignActive": listingCampaignActive,
 		// The report count that hides a listing, so the seller's warning quotes
 		// the real threshold instead of a number typed into a translation.
 		"reportHideAt":      func() int { return reportMinReports },

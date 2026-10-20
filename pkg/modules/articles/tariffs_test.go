@@ -1,6 +1,9 @@
 package articles
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 // With no operator overrides loaded, every pricing read must return the exact
 // figure the card is published at. The point is not that the numbers never
@@ -41,8 +44,25 @@ func TestPricingAccessorsMatchDefaults(t *testing.T) {
 	if got := FeaturePrice(); got != 499 {
 		t.Errorf("FeaturePrice() = %d, want 499", got)
 	}
-	if got := freeDaysVal(); got != 21 {
-		t.Errorf("freeDaysVal() = %d, want 21", got)
+	if got := listingFreeDaysAt(time.Date(2027, time.May, 1, 0, 0, 0, 0, time.UTC)); got != 21 {
+		t.Errorf("ordinary listing days = %d, want 21", got)
+	}
+}
+
+func TestListingFreeCampaignDates(t *testing.T) {
+	tariffCache.Store(nil)
+	for _, tt := range []struct {
+		at   time.Time
+		want int64
+	}{
+		{time.Date(2026, 10, 19, 23, 59, 59, 0, listingCampaignZone), 21},
+		{time.Date(2026, 10, 20, 0, 0, 0, 0, listingCampaignZone), 183},
+		{time.Date(2027, 4, 19, 23, 59, 59, 0, listingCampaignZone), 183},
+		{time.Date(2027, 4, 20, 0, 0, 0, 0, listingCampaignZone), 21},
+	} {
+		if got := listingFreeDaysAt(tt.at); got != tt.want {
+			t.Errorf("listingFreeDaysAt(%s) = %d, want %d", tt.at, got, tt.want)
+		}
 	}
 }
 

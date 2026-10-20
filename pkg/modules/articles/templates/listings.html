@@ -18,6 +18,7 @@
     </div>
   </div>
 
+  {{ if listingCampaignActive }}<p class="notice" style="margin:0 0 22px">{{ t .Lang "re.listing_policy_promo" }}</p>{{ end }}
   <form id="re-search" class="re-search{{ if .Searching }} is-open{{ end }}" method="get" action="/listings">
     <input type="hidden" name="lang" value="{{ .Lang }}">
     <div class="re-search__grid">

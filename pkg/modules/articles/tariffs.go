@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"sync/atomic"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -140,7 +141,7 @@ func bannerPriceVal(days int) int64 {
 }
 func promotePriceVal() int64 { return tariffVal("promote.price") }
 func featurePriceVal() int64 { return tariffVal("feature.price") }
-func freeDaysVal() int64     { return clampDays(tariffVal("listing.free_days")) }
+func freeDaysVal() int64     { return listingFreeDaysAt(time.Now()) }
 func promoteDaysVal() int64  { return clampDays(tariffVal("promote.days")) }
 func featureDaysVal() int64  { return clampDays(tariffVal("feature.days")) }
 
@@ -155,6 +156,28 @@ func clampDays(d int64) int64 {
 	}
 	return d
 }
+
+// The introductory real-estate campaign runs for six calendar months in
+// Kazakhstan. Existing published listings are extended by a matching migration;
+// new listings and free renewals receive at least 183 days during the campaign.
+// After it ends, the operator's ordinary listing duration applies again.
+var listingCampaignZone = time.FixedZone("Kazakhstan UTC+5", 5*60*60)
+
+func listingCampaignActiveAt(at time.Time) bool {
+	start := time.Date(2026, time.October, 20, 0, 0, 0, 0, listingCampaignZone)
+	end := time.Date(2027, time.April, 20, 0, 0, 0, 0, listingCampaignZone)
+	return !at.Before(start) && at.Before(end)
+}
+
+func listingFreeDaysAt(at time.Time) int64 {
+	days := clampDays(tariffVal("listing.free_days"))
+	if listingCampaignActiveAt(at) && days < 183 {
+		return 183
+	}
+	return days
+}
+
+func listingCampaignActive() bool { return listingCampaignActiveAt(time.Now()) }
 
 // PromotePrice/FeaturePrice expose the listing service prices to templates.
 func PromotePrice() int64 { return promotePriceVal() }

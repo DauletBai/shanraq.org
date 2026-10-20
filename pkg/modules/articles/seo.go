@@ -704,10 +704,10 @@ func (s *Store) SitemapCourseArticles(ctx context.Context) ([]SitemapItem, error
 	return out, rows.Err()
 }
 
-// SitemapListings returns active listing ids with their creation time.
+// SitemapListings returns active listing ids with the last content edit time.
 func (s *ListingStore) SitemapListings(ctx context.Context) ([]SitemapItem, error) {
-	rows, err := s.db.Query(ctx, `SELECT id, created_at FROM listings
-		WHERE status = 'published' AND expires_at > NOW() ORDER BY created_at DESC LIMIT 5000`)
+	rows, err := s.db.Query(ctx, `SELECT id, updated_at FROM listings
+		WHERE status = 'published' AND expires_at > NOW() ORDER BY updated_at DESC LIMIT 5000`)
 	if err != nil {
 		return nil, err
 	}
