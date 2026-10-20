@@ -92,11 +92,14 @@
       </div>
       {{ else }}
       <div class="empty">
-        <p style="margin-bottom:18px">{{ t .Lang "re.empty" }}</p>
+        <h2>{{ t .Lang "re.empty_heading" }}</h2>
+        <p>{{ t .Lang "re.empty_explain" }}</p>
         {{ if svcOff .Svc "listing_submission" }}<span class="btn btn--primary is-disabled" title="{{ svcMsg .Svc "listing_submission" }}" aria-disabled="true">+ {{ t .Lang "re.post" }}</span>
         {{ else if .Authed }}<a class="btn btn--primary" href="/listings/new">+ {{ t .Lang "re.post" }}</a>
         {{ else }}<a class="btn btn--primary" href="/studio/login">+ {{ t .Lang "re.post" }}</a>
         {{ end }}
+        <p style="margin:18px 0 0">{{ t .Lang "re.empty_agency" }} <a href="/support?lang={{ .Lang }}">{{ t .Lang "re.empty_contact" }}</a></p>
+        <p style="margin:12px 0 0"><a href="/guide?lang={{ .Lang }}">{{ t .Lang "re.empty_guide" }}</a></p>
       </div>
       {{ end }}
     </div>
