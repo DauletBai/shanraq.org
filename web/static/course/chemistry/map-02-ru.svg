@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 490" role="img" aria-labelledby="title desc">
+<title id="title">Стакан, стекло, прозрачность: три разных ответа</title><desc id="desc">Four-stage teaching model, enlarged and not to scale. Lesson 2.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0b1e35"/><stop offset="1" stop-color="#143b58"/></linearGradient>
+<linearGradient id="face" x2=".9" y2="1"><stop stop-color="#fffdf1"/><stop offset="1" stop-color="#d9eaf1"/></linearGradient>
+<radialGradient id="orb"><stop stop-color="#fff9c6"/><stop offset=".55" stop-color="#6bd4e3"/><stop offset="1" stop-color="#147d9b"/></radialGradient>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="8" dy="12" stdDeviation="9" flood-opacity=".42"/></filter></defs>
+<rect width="1280" height="490" rx="28" fill="url(#bg)"/>
+<text x="56" y="65" fill="#fff" font-family="Arial,sans-serif" font-size="31" font-weight="700">Стакан, стекло, прозрачность: три разных ответа</text>
+<text x="58" y="104" fill="#b5d4e4" font-family="Arial,sans-serif" font-size="18">Схема модели · объекты и частицы не в масштабе</text>
+<g filter="url(#shadow)"><path d="M53 155 L298 155 L317 175 L72 175 Z" fill="#00a7bd" opacity=".65"/>
+<rect x="44" y="168" width="266" height="244" rx="20" fill="url(#face)" stroke="#00a7bd" stroke-width="4"/></g>
+<circle cx="87" cy="210" r="25" fill="url(#orb)" stroke="#fff" stroke-width="2"/>
+<text x="66" y="219" fill="#073047" font-family="Arial,sans-serif" font-size="25" font-weight="700">1</text>
+<text x="64" y="287" fill="#26405a" font-family="Arial,sans-serif" font-size="20" font-weight="700">ПРЕДМЕТ</text>
+<text x="64" y="331" fill="#102d42" font-family="Arial,sans-serif" font-size="19" textLength="226" lengthAdjust="spacingAndGlyphs">Стакан</text>
+<circle cx="248" cy="210" r="13" fill="url(#orb)"/><circle cx="269" cy="225" r="8" fill="url(#orb)"/>
+
+<path d="M315 289 h28 m-11 -12 12 12 -12 12" stroke="#d7f5e8" stroke-width="4" fill="none"/>
+<g filter="url(#shadow)"><path d="M359 155 L604 155 L623 175 L378 175 Z" fill="#eba85c" opacity=".65"/>
+<rect x="350" y="168" width="266" height="244" rx="20" fill="url(#face)" stroke="#eba85c" stroke-width="4"/></g>
+<circle cx="393" cy="210" r="25" fill="url(#orb)" stroke="#fff" stroke-width="2"/>
+<text x="372" y="219" fill="#073047" font-family="Arial,sans-serif" font-size="25" font-weight="700">2</text>
+<text x="370" y="287" fill="#26405a" font-family="Arial,sans-serif" font-size="20" font-weight="700">МАТЕРИАЛ</text>
+<text x="370" y="331" fill="#102d42" font-family="Arial,sans-serif" font-size="19" textLength="226" lengthAdjust="spacingAndGlyphs">Стекло</text>
+<circle cx="554" cy="210" r="13" fill="url(#orb)"/><circle cx="575" cy="225" r="8" fill="url(#orb)"/>
+
+<path d="M621 289 h28 m-11 -12 12 12 -12 12" stroke="#d7f5e8" stroke-width="4" fill="none"/>
+<g filter="url(#shadow)"><path d="M665 155 L910 155 L929 175 L684 175 Z" fill="#a16ae3" opacity=".65"/>
+<rect x="656" y="168" width="266" height="244" rx="20" fill="url(#face)" stroke="#a16ae3" stroke-width="4"/></g>
+<circle cx="699" cy="210" r="25" fill="url(#orb)" stroke="#fff" stroke-width="2"/>
+<text x="678" y="219" fill="#073047" font-family="Arial,sans-serif" font-size="25" font-weight="700">3</text>
+<text x="676" y="287" fill="#26405a" font-family="Arial,sans-serif" font-size="20" font-weight="700">СВОЙСТВО</text>
+<text x="676" y="331" fill="#102d42" font-family="Arial,sans-serif" font-size="19" textLength="226" lengthAdjust="spacingAndGlyphs">Прозрачность</text>
+<circle cx="860" cy="210" r="13" fill="url(#orb)"/><circle cx="881" cy="225" r="8" fill="url(#orb)"/>
+
+<path d="M927 289 h28 m-11 -12 12 12 -12 12" stroke="#d7f5e8" stroke-width="4" fill="none"/>
+<g filter="url(#shadow)"><path d="M971 155 L1216 155 L1235 175 L990 175 Z" fill="#56bb83" opacity=".65"/>
+<rect x="962" y="168" width="266" height="244" rx="20" fill="url(#face)" stroke="#56bb83" stroke-width="4"/></g>
+<circle cx="1005" cy="210" r="25" fill="url(#orb)" stroke="#fff" stroke-width="2"/>
+<text x="984" y="219" fill="#073047" font-family="Arial,sans-serif" font-size="25" font-weight="700">4</text>
+<text x="982" y="287" fill="#26405a" font-family="Arial,sans-serif" font-size="20" font-weight="700">ПРОВЕРКА</text>
+<text x="982" y="331" fill="#102d42" font-family="Arial,sans-serif" font-size="19" textLength="226" lengthAdjust="spacingAndGlyphs">Признак ≠ состав</text>
+<circle cx="1166" cy="210" r="13" fill="url(#orb)"/><circle cx="1187" cy="225" r="8" fill="url(#orb)"/>
+
+</svg>

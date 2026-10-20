@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "course": "chemistry",
+  "languages": ["ru", "kz", "en"],
+  "publication_policy": "complete-block-only",
+  "project": {
+    "ru": "Дело о пропавшей соли: лабораторный дневник",
+    "kz": "Жоғалған тұздың сыры: зертхана күнделігі",
+    "en": "The Case of the Missing Salt: a lab notebook"
+  },
+  "blocks": [
+    {"id":"observe-safely","range":"1-5","status":"ready","ru":"Исследователь и вещество","kz":"Зерттеуші және зат","en":"Investigator and substance"},
+    {"id":"particles-atoms","range":"6-13","status":"planned","ru":"Частицы, атомы, молекулы","kz":"Бөлшектер, атомдар, молекулалар","en":"Particles, atoms and molecules"},
+    {"id":"elements-table","range":"14-22","status":"planned","ru":"Элементы и периодическая система","kz":"Элементтер мен периодтық жүйе","en":"Elements and the periodic table"},
+    {"id":"bonds-formulas","range":"23-31","status":"planned","ru":"Связи, формулы и язык химии","kz":"Байланыстар, формулалар және химия тілі","en":"Bonds, formulas and chemical language"},
+    {"id":"reactions","range":"32-40","status":"planned","ru":"Реакции и сохранение массы","kz":"Реакциялар және массаның сақталуы","en":"Reactions and conservation of mass"},
+    {"id":"quantities","range":"41-49","status":"planned","ru":"Счёт частиц и расчёты","kz":"Бөлшектерді санау және есептеулер","en":"Counting particles and calculations"},
+    {"id":"water-solutions","range":"50-58","status":"planned","ru":"Вода, растворы и концентрация","kz":"Су, ерітінділер және концентрация","en":"Water, solutions and concentration"},
+    {"id":"acids-bases","range":"59-67","status":"planned","ru":"Кислоты, основания и безопасность","kz":"Қышқылдар, негіздер және қауіпсіздік","en":"Acids, bases and safety"},
+    {"id":"metals-materials","range":"68-76","status":"planned","ru":"Металлы и материалы","kz":"Металдар мен материалдар","en":"Metals and materials"},
+    {"id":"carbon-life","range":"77-85","status":"planned","ru":"Углерод и химия жизни","kz":"Көміртек және тіршілік химиясы","en":"Carbon and the chemistry of life"},
+    {"id":"environment","range":"86-92","status":"planned","ru":"Химия воздуха, почвы и воды","kz":"Ауа, топырақ және су химиясы","en":"Chemistry of air, soil and water"},
+    {"id":"final-investigation","range":"93-100","status":"planned","ru":"Самостоятельное исследование","kz":"Өзіндік зерттеу","en":"Independent investigation"}
+  ]
+}

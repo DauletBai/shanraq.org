@@ -5908,5 +5908,20 @@
   "physics/103-power-energy-bill-en": ["physics-103-power-energy-bill", "en"],
   "physics/104-energy-claim-checkpoint": ["physics-104-energy-claim-checkpoint", "ru"],
   "physics/104-energy-claim-checkpoint-kz": ["physics-104-energy-claim-checkpoint", "kz"],
-  "physics/104-energy-claim-checkpoint-en": ["physics-104-energy-claim-checkpoint", "en"]
+  "physics/104-energy-claim-checkpoint-en": ["physics-104-energy-claim-checkpoint", "en"],
+  "chemistry/01-question-and-safety": ["chemistry-01-question-and-safety", "ru"],
+  "chemistry/01-question-and-safety-kz": ["chemistry-01-question-and-safety", "kz"],
+  "chemistry/01-question-and-safety-en": ["chemistry-01-question-and-safety", "en"],
+  "chemistry/02-object-material-property": ["chemistry-02-object-material-property", "ru"],
+  "chemistry/02-object-material-property-kz": ["chemistry-02-object-material-property", "kz"],
+  "chemistry/02-object-material-property-en": ["chemistry-02-object-material-property", "en"],
+  "chemistry/03-pure-or-mixture": ["chemistry-03-pure-or-mixture", "ru"],
+  "chemistry/03-pure-or-mixture-kz": ["chemistry-03-pure-or-mixture", "kz"],
+  "chemistry/03-pure-or-mixture-en": ["chemistry-03-pure-or-mixture", "en"],
+  "chemistry/04-dissolve-and-particles": ["chemistry-04-dissolve-and-particles", "ru"],
+  "chemistry/04-dissolve-and-particles-kz": ["chemistry-04-dissolve-and-particles", "kz"],
+  "chemistry/04-dissolve-and-particles-en": ["chemistry-04-dissolve-and-particles", "en"],
+  "chemistry/05-separate-and-explain": ["chemistry-05-separate-and-explain", "ru"],
+  "chemistry/05-separate-and-explain-kz": ["chemistry-05-separate-and-explain", "kz"],
+  "chemistry/05-separate-and-explain-en": ["chemistry-05-separate-and-explain", "en"]
 }

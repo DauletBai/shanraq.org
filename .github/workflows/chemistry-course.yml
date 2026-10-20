@@ -1,0 +1,43 @@
+name: Chemistry course
+
+on:
+  push:
+    paths:
+      - 'course/chemistry/**'
+      - 'course/lessons/chemistry/**'
+      - 'docs/chemistry-course.md'
+      - 'tools/course/chemistry_data.py'
+      - 'tools/course/build_chemistry_block.py'
+      - 'tools/course/prepare_chemistry.py'
+      - 'tools/course/test_chemistry_release.py'
+      - 'tools/course/lesson-slugs.json'
+      - 'web/static/course/chemistry/**'
+      - 'web/static/covers/school/chemistry/**'
+      - 'web/static/brand/chemistry.svg'
+  pull_request:
+    paths:
+      - 'course/chemistry/**'
+      - 'course/lessons/chemistry/**'
+      - 'docs/chemistry-course.md'
+      - 'tools/course/chemistry_data.py'
+      - 'tools/course/build_chemistry_block.py'
+      - 'tools/course/prepare_chemistry.py'
+      - 'tools/course/test_chemistry_release.py'
+      - 'tools/course/lesson-slugs.json'
+      - 'web/static/course/chemistry/**'
+      - 'web/static/covers/school/chemistry/**'
+      - 'web/static/brand/chemistry.svg'
+
+jobs:
+  first-block:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Regenerate lessons and maps
+        run: python3 tools/course/build_chemistry_block.py
+      - name: Ensure generated lessons and maps are committed
+        run: git diff --exit-code
+      - name: Check complete block and publication transaction
+        run: |
+          python3 -m unittest tools.course.test_chemistry_release
+          python3 tools/course/prepare_chemistry.py --sql /tmp/chemistry-course.sql --expected /tmp/chemistry-expected.json
