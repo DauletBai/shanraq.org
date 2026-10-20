@@ -2,6 +2,7 @@
 """Render the authored chemistry block and its large, depth-styled SVG maps."""
 from html import escape
 from pathlib import Path
+from textwrap import wrap
 
 try:
     from .chemistry_data import LESSONS
@@ -97,9 +98,13 @@ def map_svg(number, lang):
 <circle cx="{x+43}" cy="210" r="25" fill="url(#orb)" stroke="#fff" stroke-width="2"/>
 <text x="{x+22}" y="219" fill="#073047" font-family="Arial,sans-serif" font-size="25" font-weight="700">{i+1}</text>
 <text x="{x+20}" y="287" fill="#26405a" font-family="Arial,sans-serif" font-size="20" font-weight="700">{escape(top)}</text>
-<text x="{x+20}" y="331" fill="#102d42" font-family="Arial,sans-serif" font-size="19" textLength="226" lengthAdjust="spacingAndGlyphs">{escape(bottom)}</text>
 <circle cx="{x+204}" cy="210" r="13" fill="url(#orb)"/><circle cx="{x+225}" cy="225" r="8" fill="url(#orb)"/>
 ''')
+        # Preserve natural glyph proportions. Wrap long labels within the card.
+        lines = wrap(bottom, width=20, break_long_words=False, break_on_hyphens=False)
+        for line_number, line in enumerate(lines):
+            chunks.append(f'<text x="{x+20}" y="{329+line_number*30}" fill="#102d42" '
+                          f'font-family="Arial,sans-serif" font-size="19">{escape(line)}</text>')
         if i < 3:
             chunks.append(f'<path d="M{x+271} 289 h28 m-11 -12 12 12 -12 12" stroke="#d7f5e8" stroke-width="4" fill="none"/>')
     chunks.append('</svg>')

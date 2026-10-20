@@ -33,6 +33,7 @@ class ChemistryReleaseTests(unittest.TestCase):
                 map_path = MAP_DIR / f'map-{number:02d}-{lang}.svg'
                 self.assertEqual(map_path.read_text(), map_svg(number, lang))
                 ET.parse(map_path)
+                self.assertNotIn('textLength=', map_path.read_text())
                 if number < 5:
                     self.assertIn(f'/read/chemistry-{number+1:02d}-', body)
 

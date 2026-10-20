@@ -12,34 +12,34 @@
 <circle cx="87" cy="210" r="25" fill="url(#orb)" stroke="#fff" stroke-width="2"/>
 <text x="66" y="219" fill="#073047" font-family="Arial,sans-serif" font-size="25" font-weight="700">1</text>
 <text x="64" y="287" fill="#26405a" font-family="Arial,sans-serif" font-size="20" font-weight="700">ВИДНО</text>
-<text x="64" y="331" fill="#102d42" font-family="Arial,sans-serif" font-size="19" textLength="226" lengthAdjust="spacingAndGlyphs">Один цвет</text>
 <circle cx="248" cy="210" r="13" fill="url(#orb)"/><circle cx="269" cy="225" r="8" fill="url(#orb)"/>
 
+<text x="64" y="329" fill="#102d42" font-family="Arial,sans-serif" font-size="19">Один цвет</text>
 <path d="M315 289 h28 m-11 -12 12 12 -12 12" stroke="#d7f5e8" stroke-width="4" fill="none"/>
 <g filter="url(#shadow)"><path d="M359 155 L604 155 L623 175 L378 175 Z" fill="#eba85c" opacity=".65"/>
 <rect x="350" y="168" width="266" height="244" rx="20" fill="url(#face)" stroke="#eba85c" stroke-width="4"/></g>
 <circle cx="393" cy="210" r="25" fill="url(#orb)" stroke="#fff" stroke-width="2"/>
 <text x="372" y="219" fill="#073047" font-family="Arial,sans-serif" font-size="25" font-weight="700">2</text>
 <text x="370" y="287" fill="#26405a" font-family="Arial,sans-serif" font-size="20" font-weight="700">СОСТАВ</text>
-<text x="370" y="331" fill="#102d42" font-family="Arial,sans-serif" font-size="19" textLength="226" lengthAdjust="spacingAndGlyphs">Один или несколько?</text>
 <circle cx="554" cy="210" r="13" fill="url(#orb)"/><circle cx="575" cy="225" r="8" fill="url(#orb)"/>
 
+<text x="370" y="329" fill="#102d42" font-family="Arial,sans-serif" font-size="19">Один или несколько?</text>
 <path d="M621 289 h28 m-11 -12 12 12 -12 12" stroke="#d7f5e8" stroke-width="4" fill="none"/>
 <g filter="url(#shadow)"><path d="M665 155 L910 155 L929 175 L684 175 Z" fill="#a16ae3" opacity=".65"/>
 <rect x="656" y="168" width="266" height="244" rx="20" fill="url(#face)" stroke="#a16ae3" stroke-width="4"/></g>
 <circle cx="699" cy="210" r="25" fill="url(#orb)" stroke="#fff" stroke-width="2"/>
 <text x="678" y="219" fill="#073047" font-family="Arial,sans-serif" font-size="25" font-weight="700">3</text>
 <text x="676" y="287" fill="#26405a" font-family="Arial,sans-serif" font-size="20" font-weight="700">СМЕСЬ</text>
-<text x="676" y="331" fill="#102d42" font-family="Arial,sans-serif" font-size="19" textLength="226" lengthAdjust="spacingAndGlyphs">Доли меняются</text>
 <circle cx="860" cy="210" r="13" fill="url(#orb)"/><circle cx="881" cy="225" r="8" fill="url(#orb)"/>
 
+<text x="676" y="329" fill="#102d42" font-family="Arial,sans-serif" font-size="19">Доли меняются</text>
 <path d="M927 289 h28 m-11 -12 12 12 -12 12" stroke="#d7f5e8" stroke-width="4" fill="none"/>
 <g filter="url(#shadow)"><path d="M971 155 L1216 155 L1235 175 L990 175 Z" fill="#56bb83" opacity=".65"/>
 <rect x="962" y="168" width="266" height="244" rx="20" fill="url(#face)" stroke="#56bb83" stroke-width="4"/></g>
 <circle cx="1005" cy="210" r="25" fill="url(#orb)" stroke="#fff" stroke-width="2"/>
 <text x="984" y="219" fill="#073047" font-family="Arial,sans-serif" font-size="25" font-weight="700">4</text>
 <text x="982" y="287" fill="#26405a" font-family="Arial,sans-serif" font-size="20" font-weight="700">ВЫВОД</text>
-<text x="982" y="331" fill="#102d42" font-family="Arial,sans-serif" font-size="19" textLength="226" lengthAdjust="spacingAndGlyphs">Вид ≠ чистота</text>
 <circle cx="1166" cy="210" r="13" fill="url(#orb)"/><circle cx="1187" cy="225" r="8" fill="url(#orb)"/>
 
+<text x="982" y="329" fill="#102d42" font-family="Arial,sans-serif" font-size="19">Вид ≠ чистота</text>
 </svg>
