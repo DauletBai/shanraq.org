@@ -201,3 +201,76 @@ func TestAuthorVerifyPage(t *testing.T) {
 		t.Errorf("set author name = %d, want 303", w.Code)
 	}
 }
+
+// Exercises the real browser form and handler: a Russian agency must be able
+// to submit its 10-digit INN once both account contacts are verified.
+func TestRussianAgencyRegistrationJourney(t *testing.T) {
+	app := newTestApp(t)
+	uid := app.createUser("ru-agency-journey@t.test", "Parol12345")
+	cookie := app.login("ru-agency-journey@t.test", "Parol12345")
+	form := url.Values{
+		"lang": {"ru"}, "kind": {"agency"}, "first_name": {"Ирина"},
+		"last_name": {"Тестова"}, "agency": {"Тестовое агентство"},
+		"bin": {"1234567890"},
+	}
+	page := app.do(http.MethodGet, "/agent?lang=ru", nil, withCookie(cookie))
+	if page.Code != http.StatusOK || !strings.Contains(page.Body.String(), `pattern="[0-9]{10}([0-9]{2})?"`) {
+		t.Fatalf("agency form does not accept 10-digit INN: %d", page.Code)
+	}
+	blocked := app.do(http.MethodPost, "/agent", form, withCookie(cookie))
+	if blocked.Code != http.StatusOK || !strings.Contains(blocked.Body.String(), "подтвердите email и телефон") || !strings.Contains(blocked.Body.String(), "1234567890") {
+		t.Fatalf("unverified agency must see reason and keep entered INN: %d", blocked.Code)
+	}
+	app.exec(`UPDATE auth_users SET email_verified_at = now(), phone_verified_at = now() WHERE id = $1`, uid)
+	accepted := app.do(http.MethodPost, "/agent", form, withCookie(cookie))
+	if accepted.Code != http.StatusSeeOther || !strings.Contains(accepted.Header().Get("Location"), "saved=1") {
+		t.Fatalf("verified agency registration: %d, location %q", accepted.Code, accepted.Header().Get("Location"))
+	}
+	var status, bin string
+	if err := app.pool.QueryRow(t.Context(), `SELECT status, bin FROM re_agents WHERE user_id = $1`, uid).Scan(&status, &bin); err != nil {
+		t.Fatal(err)
+	}
+	if status != "pending" || bin != "1234567890" {
+		t.Fatalf("saved agency = status %q, INN %q", status, bin)
+	}
+}
+
+func TestAdvertiserValidationKeepsDraftWithoutPretendingRegistration(t *testing.T) {
+	app := newTestApp(t)
+	uid := app.createUser("advertiser-journey@t.test", "Parol12345")
+	cookie := app.login("advertiser-journey@t.test", "Parol12345")
+	bad := app.do(http.MethodPost, "/advertise/company", url.Values{
+		"lang": {"ru"}, "company_name": {"Компания Тест"},
+		"bin": {"1234567890"}, "contact_name": {"Ирина"},
+	}, withCookie(cookie))
+	if bad.Code != http.StatusOK || !strings.Contains(bad.Body.String(), "телефон обязательны") || !strings.Contains(bad.Body.String(), `value="Компания Тест"`) {
+		t.Fatalf("invalid company must explain missing phone and retain input: %d", bad.Code)
+	}
+	if strings.Contains(bad.Body.String(), "adv.new_order") || strings.Contains(bad.Body.String(), `action="/advertise/order"`) {
+		t.Fatal("invalid company is displayed as a registered advertiser")
+	}
+	good := app.do(http.MethodPost, "/advertise/company", url.Values{
+		"lang": {"ru"}, "company_name": {"Компания Тест"},
+		"bin": {"1234567890"}, "contact_name": {"Ирина"},
+		"contact_phone": {"+79030000000"},
+	}, withCookie(cookie))
+	if good.Code != http.StatusSeeOther || !strings.Contains(good.Header().Get("Location"), "saved=company") {
+		t.Fatalf("valid advertiser registration: %d", good.Code)
+	}
+	// The paid-order service is in maintenance. A direct HTTP POST must not
+	// bypass the disabled browser button and silently create an order.
+	blocked := app.do(http.MethodPost, "/advertise/order", url.Values{
+		"lang": {"ru"}, "title": {"Тест"}, "target_url": {"https://example.org"},
+		"format": {"rectangle"}, "surface": {"home"}, "duration": {"7"},
+	}, withCookie(cookie))
+	if blocked.Code != http.StatusSeeOther || blocked.Header().Get("Location") != "/advertise" {
+		t.Fatalf("paused paid order must explain status in cabinet: %d, %q", blocked.Code, blocked.Header().Get("Location"))
+	}
+	var count int
+	if err := app.pool.QueryRow(t.Context(), `SELECT count(*) FROM ad_orders o JOIN advertisers a ON a.id = o.advertiser_id WHERE a.owner_id = $1`, uid).Scan(&count); err != nil {
+		t.Fatal(err)
+	}
+	if count != 0 {
+		t.Fatalf("paused order unexpectedly created %d rows", count)
+	}
+}

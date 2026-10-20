@@ -17,16 +17,16 @@ import (
 // place and missing in the other.
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
-		"wallMaterials":    func() []string { return WallMaterials },
-		"maxPhotos":        func() int { return maxListingPhotos },
-		"maxDocs":          func() int { return maxListingDocs },
-		"wallKey":          WallMaterialKey,
-		"editorCategories": func() []string { return append([]string{CategoryGeneral}, Categories...) },
-		"dealTypes":        func() []string { return DealTypes },
-		"propertyTypes":    func() []string { return PropertyTypes },
-		"amenities":        AmenityKeys,
-		"roomTypes":        RoomTypeKeys,
-		"bannerDays":       BannerDays,
+		"wallMaterials":         func() []string { return WallMaterials },
+		"maxPhotos":             func() int { return maxListingPhotos },
+		"maxDocs":               func() int { return maxListingDocs },
+		"wallKey":               WallMaterialKey,
+		"editorCategories":      func() []string { return append([]string{CategoryGeneral}, Categories...) },
+		"dealTypes":             func() []string { return DealTypes },
+		"propertyTypes":         func() []string { return PropertyTypes },
+		"amenities":             AmenityKeys,
+		"roomTypes":             RoomTypeKeys,
+		"bannerDays":            BannerDays,
 		"listingCampaignActive": listingCampaignActive,
 		// The report count that hides a listing, so the seller's warning quotes
 		// the real threshold instead of a number typed into a translation.

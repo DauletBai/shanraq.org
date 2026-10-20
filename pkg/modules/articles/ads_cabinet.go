@@ -288,6 +288,7 @@ func (s *AdStore) ActiveBySurface(ctx context.Context, surface, lang string, pla
 type AdvertisePage struct {
 	Base
 	Advertiser *Advertiser
+	Draft      *Advertiser // entered company fields after a validation error
 	Orders     []AdOrder
 	Avail      []SurfaceAvail // free rotation slots per surface for the previewed period
 	Today      string         // YYYY-MM-DD, min bookable date
@@ -366,10 +367,7 @@ func (m *Module) handleAdvertiseCompany(w http.ResponseWriter, r *http.Request) 
 	}
 	if a.CompanyName == "" || a.ContactName == "" || a.ContactPhone == "" {
 		adv, _ := m.ads.ByOwner(r.Context(), uid)
-		page := AdvertisePage{Base: m.base(r, site.T(lang, "adv.title"), lang), Advertiser: adv, Error: site.T(lang, "adv.err_company")}
-		if adv == nil {
-			page.Advertiser = &a // echo entered values back into the form
-		}
+		page := AdvertisePage{Base: m.base(r, site.T(lang, "adv.title"), lang), Advertiser: adv, Draft: &a, Error: site.T(lang, "adv.err_company")}
 		m.render(w, "advertise", page)
 		return
 	}

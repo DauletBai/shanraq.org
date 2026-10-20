@@ -762,7 +762,9 @@ By publishing, you agree to these rules.`},
 | Баннер в разделе недвижимости (1–7 суток) | от 990 ₸ |
 
 ## Реклама для компаний
-Размещение баннеров — через кабинет рекламодателя: вы сами выбираете формат, разделы, срок, географию и способ оплаты. Цена считается на месте, до оплаты.
+Профиль рекламодателя бесплатен. С 20.10.2026 по 19.04.2027 можно запросить **одну бесплатную пилотную кампанию до 30 дней**: одна зона и один формат, без эксклюзивного места. Макет и ссылка проходят проверку; показ зависит от свободного места, число показов не гарантируется. Сохраните профиль в [кабинете рекламодателя](/advertise) и напишите на адрес со [страницы поддержки](/support): название компании, ссылку, макет, желаемые зону и срок. Заявка рассматривается вручную; ответ о решении придёт по email. Платный заказ через кабинет сейчас приостановлен.
+
+Опубликованный ниже прайс относится к платным размещениям после их запуска. Формат, разделы, срок и география влияют на цену; расчёт доступен в кабинете до заказа.
 
 ### Цена зависит от того, сколько людей вы охватываете
 Прайс — за всю страну. Выберете место поуже — цена снизится по квадратному корню из доли населения, которое это место охватывает. Верхний баннер на главной, 30 дней:
@@ -819,7 +821,9 @@ By publishing, you agree to these rules.`},
 | Жылжымайтын мүлік бөліміндегі баннер (1–7 тәулік) | 990 ₸ бастап |
 
 ## Компанияларға жарнама
-Баннер орналастыру — жарнама беруші кабинеті арқылы: пішімді, бөлімдерді, мерзімді, географияны және төлем тәсілін өзіңіз таңдайсыз. Баға төлемге дейін сол жерде есептеледі.
+Жарнама беруші профилі тегін. 20.10.2026–19.04.2027 аралығында **30 күнге дейін бір тегін сынақ науқанын** сұрауға болады: бір аймақ, бір пішім, айрықша орынсыз. Макет пен сілтеме тексеріледі; көрсету бос орынға байланысты, көрсетілім санына кепілдік берілмейді. [Жарнама кабинетінде](/advertise) профильді сақтап, [қолдау бетіндегі](/support) мекенжайға компания атауын, сілтемені, макетті, қажетті аймақ пен мерзімді жіберіңіз. Өтініш қолмен қаралады; шешім email арқылы келеді. Кабинет арқылы ақылы тапсырыс беру әзірге тоқтатылған.
+
+Төмендегі бағалар ақылы орналастыру іске қосылғаннан кейін қолданылады. Пішім, бөлім, мерзім және география бағаға әсер етеді; есеп кабинетте тапсырысқа дейін көрсетіледі.
 
 ### Баға қанша адамды қамтитыныңызға байланысты
 Прайстағы баға — бүкіл ел үшін. Тарлау жерді таңдасаңыз, баға сол жер қамтитын халық үлесінің квадрат түбіріне қарай төмендейді. Басты беттегі жоғарғы баннер, 30 күн:
@@ -876,7 +880,9 @@ From 20 April 2027 the ordinary term for a new listing is 21 days unless new ter
 | Banner in the real-estate section (1–7 days) | from 990 ₸ |
 
 ## Advertising for businesses
-Banners are booked from the advertiser cabinet: you choose the format, the sections, the period, the geography and how you pay. The price is worked out on the spot, before you pay.
+An advertiser profile is free. From 20 October 2026 through 19 April 2027, you may request **one free pilot campaign of up to 30 days** in one zone and one format, without exclusivity. We review the creative and destination; placement depends on available space and impressions are not guaranteed. Save your profile in the [advertiser cabinet](/advertise), then email the address on the [support page](/support) with your company name, destination link, creative, preferred zone and dates. Requests are reviewed manually; the decision arrives by email. Paid self-service orders are currently paused.
+
+The rate card below applies once paid booking launches. Format, sections, duration and geography determine the price, which the cabinet calculates before an order.
 
 ### The price follows how many people you reach
 The card price is for the whole country. Choose a narrower place and the price falls with the square root of the population share it covers. Top banner on the front page, 30 days:
@@ -1379,6 +1385,8 @@ For questions about data processing, contact us through the [support page](/supp
 
 Размещающий чужой объект подтверждает право на публикацию его описания, фотографий, телефона владельца и точной локации на Shanraq.org. Публикация на другой площадке сама по себе такого права не предоставляет.
 
+С 20.10.2026 по 19.04.2027 зарегистрированная компания может запросить одну бесплатную рекламную кампанию длительностью до 30 дней. Она проводится после проверки макета и ссылки, при наличии свободного места; гарантии числа показов нет. Условия пилота указаны на странице [Тарифы](/pricing).
+
 ## 13. Ответственность и отказ от гарантий
 Сервис предоставляется «как есть». Мы стремимся к бесперебойной работе, но не гарантируем отсутствие ошибок и перерывов. Платформа не отвечает за достоверность пользовательского контента и за действия пользователей в сделках; ответственность несёт лицо, разместившее контент, в пределах, допускаемых законодательством РК.
 
@@ -1456,6 +1464,8 @@ Shanraq.org платформасын пайдалана отырып, сіз о�
 
 Басқа адамның нысанын жариялаушы оның сипаттамасын, фотоларын, иесінің телефонын және дәл орналасқан жерін Shanraq.org-та көрсетуге құқығы бар екенін растайды. Басқа платформадағы ашық хабарландыру мұндай құқық бермейді.
 
+20.10.2026–19.04.2027 аралығында тіркелген компания 30 күнге дейін бір тегін жарнама науқанын сұрай алады. Макет пен сілтеме тексеріледі, орналастыру бос орын болғанда жүзеге асады; көрсетілім санына кепілдік берілмейді. Сынақ шарттары [Тарифтер](/pricing) бетінде көрсетілген.
+
 ## 13. Жауапкершілік және кепілдіктерден бас тарту
 Сервис «сол қалпында» ұсынылады. Біз үздіксіз жұмысқа ұмтыламыз, бірақ қателер мен үзілістердің болмауына кепілдік бермейміз. Платформа пайдаланушы контентінің дұрыстығы үшін және пайдаланушылардың мәмілелердегі әрекеттері үшін жауап бермейді; жауапкершілікті контентті орналастырған тұлға ҚР заңнамасында жол берілген шектерде көтереді.
 
@@ -1532,6 +1542,8 @@ Rights to your articles, photographs, and listings remain with the author. By po
 From 20 October 2026 through 19 April 2027, posting and renewing a property listing is free. New listings submitted during this period receive at least 183 days; listings active at the start remain available until at least 20 April 2027. The actual expiry is shown in the account. After the campaign, new listings receive the term stated on [Pricing](/pricing); an existing granted term is not shortened. Extra promotion and advertising are separate paid services.
 
 Anyone posting another person's property confirms their right to publish its description, photos, owner's phone number and exact location on Shanraq.org. A public listing on another platform does not itself grant that right.
+
+From 20 October 2026 through 19 April 2027, a registered company may request one free ad campaign of up to 30 days. We review the creative and destination, and placement requires an available slot; impressions are not guaranteed. Pilot terms appear on [Pricing](/pricing).
 
 ## 13. Liability and Disclaimer of Warranties
 The service is provided "as is". We strive for uninterrupted operation but do not guarantee the absence of errors and interruptions. The Platform is not responsible for the accuracy of user content or for users' actions in transactions; liability rests with the person who posted the content, to the extent permitted by the legislation of the Republic of Kazakhstan.
