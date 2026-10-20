@@ -319,13 +319,15 @@ func TestAgentKind(t *testing.T) {
 	}
 }
 
-func TestValidBIN(t *testing.T) {
-	if !validBIN("123456789012") {
-		t.Error("12 digits must be accepted")
+func TestValidCompanyID(t *testing.T) {
+	for _, id := range []string{"1234567890", "123456789012"} {
+		if !validCompanyID(id) {
+			t.Errorf("%d-digit company number must be accepted", len(id))
+		}
 	}
-	for _, bad := range []string{"", "12345678901", "1234567890123", "12345678901a", "1234 5678 9012"} {
-		if validBIN(bad) {
-			t.Errorf("validBIN(%q) = true, want false", bad)
+	for _, bad := range []string{"", "123456789", "12345678901", "1234567890123", "12345678901a", "1234 5678 9012"} {
+		if validCompanyID(bad) {
+			t.Errorf("validCompanyID(%q) = true, want false", bad)
 		}
 	}
 }

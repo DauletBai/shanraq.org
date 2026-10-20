@@ -354,9 +354,9 @@ var messages = map[string]map[string]string{
 	"agent.kind_agency":    {"kz": "Агенттік", "ru": "Агентство", "en": "Agency"},
 	"agent.kind_developer": {"kz": "Құрылыс компаниясы", "ru": "Застройщик", "en": "Developer"},
 	"agent.kind_help": {
-		"kz": "Бұдан белгі мен жария беттегі жазу тәуелді. Агенттік пен құрылыс компаниясы БСН көрсетеді.",
-		"ru": "От этого зависит бейдж на карточках и подпись на публичной странице. Агентству и застройщику нужен БИН.",
-		"en": "This sets the badge on your cards and the label on your public page. Agencies and developers must give a BIN.",
+		"kz": "Бұдан белгі мен жария беттегі жазу тәуелді. Қазақстан ұйымдары БСН, Ресей ұйымдары СТН көрсетеді.",
+		"ru": "От этого зависит бейдж и подпись на публичной странице. Организации Казахстана указывают БИН, России — ИНН.",
+		"en": "This sets the badge and public profile label. Organisations in Kazakhstan provide a BIN; those in Russia provide an INN.",
 	},
 	"agent.company": {"kz": "Ұйымның атауы", "ru": "Название организации", "en": "Organisation name"},
 	"agent.company_help": {
@@ -364,11 +364,11 @@ var messages = map[string]map[string]string{
 		"ru": "Название, под которым вас знают клиенты, — не обязательно как в уставе.",
 		"en": "The name your clients know you by — not necessarily the one in the charter.",
 	},
-	"agent.bin": {"kz": "БСН / ЖСН", "ru": "БИН / ИИН", "en": "BIN / IIN"},
+	"agent.bin": {"kz": "БСН / СТН", "ru": "БИН / ИНН", "en": "BIN / INN"},
 	"agent.bin_help": {
-		"kz": "12 сан. Модератор бұны ашық тізілім бойынша тексереді — сондықтан белгіге сенуге болады.",
-		"ru": "12 цифр. Модератор сверяет его с открытым реестром — именно поэтому бейджу можно доверять.",
-		"en": "12 digits. A moderator checks it against the public register — which is what makes the badge worth trusting.",
+		"kz": "Қазақстан БСН-і — 12 сан; Ресей СТН-і — 10 немесе 12 сан. Модератор оны тиісті тізілімнен тексереді.",
+		"ru": "БИН Казахстана — 12 цифр; ИНН России — 10 или 12. Модератор сверяет номер с соответствующим реестром.",
+		"en": "Kazakhstan BIN: 12 digits; Russian INN: 10 or 12. A moderator checks the relevant public register.",
 	},
 	"agent.phone_help": {
 		"kz": "Клиенттер қоңырау шалатын нөмір. Расталған болуы керек.",
@@ -381,7 +381,7 @@ var messages = map[string]map[string]string{
 		"en": "Experience, districts, specialisation. Shown on your public page.",
 	},
 	"agent.err_company":    {"kz": "Ұйымның атауын көрсетіңіз.", "ru": "Укажите название организации.", "en": "Please enter the organisation name."},
-	"agent.err_bin":        {"kz": "БСН/ЖСН — 12 сан.", "ru": "БИН/ИИН — это 12 цифр.", "en": "A BIN/IIN is 12 digits."},
+	"agent.err_bin":        {"kz": "БСН 12 саннан, СТН 10 немесе 12 саннан тұрады.", "ru": "Укажите БИН (12 цифр) или ИНН (10 либо 12 цифр).", "en": "Enter a BIN (12 digits) or INN (10 or 12 digits)."},
 	"agent.view_public":    {"kz": "Жеке бетті ашу", "ru": "Открыть личную страницу", "en": "View public page"},
 	"agent.listings_count": {"kz": "Белсенді хабарландырулар", "ru": "Активных объявлений", "en": "Active listings"},
 	"agent.listings_title": {"kz": "Агенттің хабарландырулары", "ru": "Объявления агента", "en": "Agent's listings"},

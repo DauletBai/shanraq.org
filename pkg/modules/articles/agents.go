@@ -26,7 +26,7 @@ type Agent struct {
 	Phone     string
 	About     string
 	Kind      string // private | agency | developer — see agentKinds
-	BIN       string // БИН/ИИН of the legal entity (agency and developer only)
+	BIN       string // Kazakhstan БИН or Russian ИНН (agency and developer only)
 	Status    string // pending | verified | rejected
 	Reason    string // rejection reason, shown to the agent
 	Email     string // owner email, for the admin queue
@@ -62,7 +62,7 @@ func NormalizeAgentKind(s string) string {
 }
 
 // IsCompany reports whether the profile stands for a legal entity rather than
-// an individual, which is when a БИН is expected.
+// an individual, which is when an organisation identifier is expected.
 func (a Agent) IsCompany() bool { return a.Kind == "agency" || a.Kind == "developer" }
 
 // KindLabelKey is the i18n key for this profile's kind, normalised so a profile
@@ -80,12 +80,29 @@ func isAgentStatus(s string) bool {
 	return s == agentPending || s == agentVerified || s == agentRejected
 }
 
-// validBIN checks the shape of a Kazakhstan БИН/ИИН: exactly 12 digits. This is
-// a format check, not a registry lookup — the real verification is a moderator
-// comparing the number against the public register before granting the badge.
+// validBIN checks the 12-digit Kazakhstan identifier also used by the
+// organisation-author application. Registry verification is a separate step.
 func validBIN(s string) bool {
 	s = strings.TrimSpace(s)
 	if len(s) != 12 {
+		return false
+	}
+	for _, r := range s {
+		if r < '0' || r > '9' {
+			return false
+		}
+	}
+	return true
+}
+
+// validCompanyID also accepts Russia's 10-digit legal-entity ИНН. A 12-digit
+// ИНН has the same shape as a Kazakhstan БИН and is checked by a moderator.
+func validCompanyID(s string) bool {
+	if validBIN(s) {
+		return true
+	}
+	s = strings.TrimSpace(s)
+	if len(s) != 10 {
 		return false
 	}
 	for _, r := range s {
@@ -251,7 +268,7 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 		BIN:       strings.TrimSpace(r.FormValue("bin")),
 	}
 	a.Name = composeName(a.FirstName, a.LastName)
-	// A БИН only means something for a legal entity; carrying one over from a
+	// A company number only means something for a legal entity; carrying one over from a
 	// kind the user switched away from would send the moderator a number that
 	// belongs to nobody on this profile.
 	if !a.IsCompany() {
@@ -268,7 +285,7 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 		fail(site.T(lang, "agent.err_name"))
 		return
 	}
-	// A company claims a brand, so it must name the entity and give the БИН a
+	// A company claims a brand, so it must name the entity and give a number a
 	// moderator can check against the public register before the badge is
 	// granted. A private realtor answers with their own name and needs neither.
 	if a.IsCompany() {
@@ -276,7 +293,7 @@ func (m *Module) handleAgentSave(w http.ResponseWriter, r *http.Request) {
 			fail(site.T(lang, "agent.err_company"))
 			return
 		}
-		if !validBIN(a.BIN) {
+		if !validCompanyID(a.BIN) {
 			fail(site.T(lang, "agent.err_bin"))
 			return
 		}
