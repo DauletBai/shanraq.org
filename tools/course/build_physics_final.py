@@ -179,9 +179,9 @@ def markdown(row, number, lang):
         link_label = {'ru':'Следующий урок', 'kz':'Келесі сабақ', 'en':'Next lesson'}[lang]
         body += f'\n\n[{link_label}: {next_title}](/read/physics-{next_row["stem"]}?lang={lang})'
     else:
-        link_label = {'ru':'Вернуться к курсу «Физика»', 'kz':'«Физика» курсына оралу',
-                      'en':'Return to Physics course'}[lang]
-        body += f'\n\n[{link_label}](/course/physics?lang={lang})'
+        link_label = {'ru':'Следующий урок: практикум по энергии', 'kz':'Келесі сабақ: энергия практикумы',
+                      'en':'Next lesson: energy practicum'}[lang]
+        body += f'\n\n[{link_label}](/read/physics-101-why-water-cools?lang={lang})'
     return f'# {title}\n\n_Лид (summary):_ **{summary}**\n\n{body}\n'
 
 

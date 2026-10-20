@@ -17,6 +17,7 @@ from tools.course.physics_waves_data import WAVES
 from tools.course.physics_astronomy_data import ASTRONOMY
 from tools.course.physics_modern_data import MODERN
 from tools.course.physics_final_data import FINAL
+from tools.course.physics_practicum_data import PRACTICUM
 from tools.course.build_physics_final import NOTES as FINAL_NOTES
 from tools.course.build_physics_magnetism import NOTES
 from tools.course.prepare_physics import prepare, read_lesson
@@ -25,7 +26,7 @@ from tools.course.prepare_physics import prepare, read_lesson
 class PhysicsReleaseTests(unittest.TestCase):
     def test_curriculum_has_contiguous_route_and_complete_first_block(self):
         data = json.loads((ROOT / "course/physics/curriculum.json").read_text())
-        self.assertEqual(data["lesson_count"], 100)
+        self.assertEqual(data["lesson_count"], 104)
         self.assertEqual(data["publication_policy"], "complete-block-only")
         self.assertEqual(data["languages"], ["ru", "kz", "en"])
         next_number = 1
@@ -34,7 +35,7 @@ class PhysicsReleaseTests(unittest.TestCase):
             self.assertEqual(first, next_number)
             self.assertEqual(last - first + 1, block["lesson_count"])
             next_number = last + 1
-        self.assertEqual(next_number, 101)
+        self.assertEqual(next_number, 105)
         self.assertEqual([row["number"] for row in data["first_block_lessons"]], list(range(1, 9)))
         self.assertEqual([row["number"] for row in data["second_block_lessons"]], list(range(9, 19)))
         self.assertEqual(data["blocks"][1]["status"], "published")
@@ -63,10 +64,13 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertEqual([row["number"] for row in data["final_block_lessons"]], list(range(93, 101)))
         self.assertEqual(data["blocks"][10]["status"], "published")
         self.assertTrue((ROOT / "web" / data["blocks"][10]["cover"].lstrip("/")).is_file())
+        self.assertEqual([row["number"] for row in data["practicum_block_lessons"]], list(range(101, 105)))
+        self.assertEqual(data["blocks"][11]["status"], "published")
+        self.assertTrue((ROOT / "web" / data["blocks"][11]["cover"].lstrip("/")).is_file())
 
     def test_every_language_has_the_same_experiment_and_working_assets(self):
         slugs = json.loads((ROOT / "tools/course/lesson-slugs.json").read_text())
-        route = [*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN, *FINAL]
+        route = [*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN, *FINAL, *PRACTICUM]
         for index, row in enumerate(route, 1):
             for lang in ("ru", "kz", "en"):
                 suffix = "" if lang == "ru" else f"-{lang}"
@@ -82,7 +86,7 @@ class PhysicsReleaseTests(unittest.TestCase):
                 asset = ROOT / "web" / ref.group(1).lstrip("/")
                 self.assertTrue(asset.is_file(), asset)
                 ET.parse(asset)
-                if index < 100:
+                if index < 104:
                     next_slug = f"physics-{index+1:02d}-{route[index]['stem'].split('-', 1)[1]}"
                     self.assertIn(f"/read/{next_slug}?lang={lang}", body)
 
@@ -272,6 +276,23 @@ class PhysicsReleaseTests(unittest.TestCase):
             self.assertIn('/read/physics-93-testable-question?lang=' + lang,
                           (LESSONS / f'92-fission-and-models{suffix}.md').read_text())
 
+    def test_energy_practicum_is_localized_and_calculations_are_consistent(self):
+        self.assertEqual(.2 * 4200 * 9, 7560)
+        self.assertEqual(.2 * 4200 * 6, 5040)
+        self.assertEqual(1 * 4200 * 40, 168000)
+        self.assertEqual(.06 * 3600000, 216000)
+        self.assertAlmostEqual((.060-.054)/.060, .10)
+        for row in PRACTICUM:
+            for lang in ('ru', 'kz', 'en'):
+                path = MAPS / f"map-{row['stem']}-{lang}.svg"
+                visible = ' '.join(ET.parse(path).getroot().itertext())
+                for label in row['map'][lang]:
+                    self.assertIn(label, visible)
+        for lang in ('ru', 'kz', 'en'):
+            suffix = '' if lang == 'ru' else '-' + lang
+            self.assertIn('/read/physics-101-why-water-cools?lang=' + lang,
+                          (LESSONS / f'100-defend-investigation{suffix}.md').read_text())
+
     def test_experiment_numbers_and_limits_match_across_languages(self):
         # These are worked numbers, never represented as a learner's observation.
         short = [10.9, 11.1, 11.0]
@@ -295,19 +316,19 @@ class PhysicsReleaseTests(unittest.TestCase):
         self.assertTrue(sql.rstrip().endswith("COMMIT;"))
         self.assertIn("Physics slug belongs to another author", sql)
         self.assertIn("Physics lesson belongs to another course", sql)
-        self.assertEqual(len(expected), 300)
+        self.assertEqual(len(expected), 312)
         self.assertEqual({e["lang"] for e in expected}, {"ru", "kz", "en"})
         self.assertEqual({e["slug"] for e in expected}, {
-            f"physics-{i:02d}-{row['stem'].split('-', 1)[1]}" for i, row in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN, *FINAL], 1)})
+            f"physics-{i:02d}-{row['stem'].split('-', 1)[1]}" for i, row in enumerate([*DATA, *MOTION, *FORCES, *FLUIDS, *HEAT, *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN, *FINAL, *PRACTICUM], 1)})
         electricity_sql, electricity_expected = prepare(start=46)
-        self.assertEqual(len(electricity_expected), 165)
+        self.assertEqual(len(electricity_expected), 177)
         self.assertEqual({e["slug"] for e in electricity_expected}, {
-            f"physics-{i:02d}-{row['stem'].split('-', 1)[1]}" for i, row in enumerate([*HEAT[-1:], *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN, *FINAL], 46)})
+            f"physics-{i:02d}-{row['stem'].split('-', 1)[1]}" for i, row in enumerate([*HEAT[-1:], *ELECTRICITY, *MAGNETISM, *WAVES, *ASTRONOMY, *MODERN, *FINAL, *PRACTICUM], 46)})
         astronomy_sql, astronomy_expected = prepare(start=74)
-        self.assertEqual(len(astronomy_expected), 81)
+        self.assertEqual(len(astronomy_expected), 93)
         self.assertIn('physics-75-cosmic-scale', astronomy_sql)
         modern_sql, modern_expected = prepare(start=84)
-        self.assertEqual(len(modern_expected), 51)
+        self.assertEqual(len(modern_expected), 63)
         self.assertIn('physics-85-atom-evidence', modern_sql)
         self.assertNotIn("physics-45-room-energy-budget", electricity_sql)
 

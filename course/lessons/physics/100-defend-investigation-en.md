@@ -34,4 +34,4 @@ Close the text and explain the left-to-right drawing to a new learner. Name an o
 
 Add a line to My World Lab Notebook: question → prediction → controlled conditions → changed condition → observation or calculation → conclusion → limit. Put a scale on a drawing or mark it 'schematic'. If you ran no experiment, write 'supplied calculation', not 'we measured'. Revisit the entry after the next lesson and note what became clearer.
 
-[Return to Physics course](/course/physics?lang=en)
+[Next lesson: energy practicum](/read/physics-101-why-water-cools?lang=en)

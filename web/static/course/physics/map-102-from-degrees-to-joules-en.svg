@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Can a temperature drop be converted into joules?</title><desc id="desc">Connect water mass, specific heat capacity and temperature change without mistaking a model for a meter.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#e7f5f5"/><stop offset="1" stop-color="#f7efe2"/></linearGradient><filter id="shadow"><feDropShadow dy="6" stdDeviation="9" flood-color="#24516a" flood-opacity=".13"/></filter></defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<text x="90" y="112" font-size="37" font-weight="700" fill="#20516a" font-family="Arial,sans-serif">PHYSICS · PRACTICUM</text>
+<path d="M110 660H1450" stroke="#8eafbb" stroke-width="5"/><path d="M1450 660l-20-15v30z" fill="#8eafbb"/>
+<rect x="110" y="270" width="430" height="290" rx="26" fill="#ddf0f4" stroke="#80aeba" stroke-width="3" filter="url(#shadow)"/>
+<circle cx="325" cy="336" r="28" fill="#245d78"/>
+<text x="325" y="346" text-anchor="middle" fill="white" font-size="27" font-weight="700" font-family="Arial,sans-serif">1</text>
+<text x="325" y="432" text-anchor="middle" fill="#183d55" font-size="26" font-weight="700" font-family="Arial,sans-serif" textLength="380" lengthAdjust="spacingAndGlyphs">m = 0.20 kg</text>
+<path d="M548 415h44m-15-15 15 15-15 15" fill="none" stroke="#c57858" stroke-width="6"/>
+<rect x="600" y="270" width="430" height="290" rx="26" fill="#e4f3df" stroke="#80aeba" stroke-width="3" filter="url(#shadow)"/>
+<circle cx="815" cy="336" r="28" fill="#245d78"/>
+<text x="815" y="346" text-anchor="middle" fill="white" font-size="27" font-weight="700" font-family="Arial,sans-serif">2</text>
+<text x="815" y="432" text-anchor="middle" fill="#183d55" font-size="26" font-weight="700" font-family="Arial,sans-serif" textLength="380" lengthAdjust="spacingAndGlyphs">Q = m·c·ΔT</text>
+<path d="M1038 415h44m-15-15 15 15-15 15" fill="none" stroke="#c57858" stroke-width="6"/>
+<rect x="1090" y="270" width="430" height="290" rx="26" fill="#fff0d8" stroke="#80aeba" stroke-width="3" filter="url(#shadow)"/>
+<circle cx="1305" cy="336" r="28" fill="#245d78"/>
+<text x="1305" y="346" text-anchor="middle" fill="white" font-size="27" font-weight="700" font-family="Arial,sans-serif">3</text>
+<text x="1305" y="432" text-anchor="middle" fill="#183d55" font-size="26" font-weight="700" font-family="Arial,sans-serif" textLength="380" lengthAdjust="spacingAndGlyphs">7560 and 5040 J</text>
+<text x="800" y="754" text-anchor="middle" fill="#3b6272" font-size="30" font-family="Arial,sans-serif">Supplied practice data · check the conditions</text>
+</svg>

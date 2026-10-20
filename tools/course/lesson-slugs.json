@@ -5896,5 +5896,17 @@
   "physics/99-design-iteration-en": ["physics-99-design-iteration", "en"],
   "physics/100-defend-investigation": ["physics-100-defend-investigation", "ru"],
   "physics/100-defend-investigation-kz": ["physics-100-defend-investigation", "kz"],
-  "physics/100-defend-investigation-en": ["physics-100-defend-investigation", "en"]
+  "physics/100-defend-investigation-en": ["physics-100-defend-investigation", "en"],
+  "physics/101-why-water-cools": ["physics-101-why-water-cools", "ru"],
+  "physics/101-why-water-cools-kz": ["physics-101-why-water-cools", "kz"],
+  "physics/101-why-water-cools-en": ["physics-101-why-water-cools", "en"],
+  "physics/102-from-degrees-to-joules": ["physics-102-from-degrees-to-joules", "ru"],
+  "physics/102-from-degrees-to-joules-kz": ["physics-102-from-degrees-to-joules", "kz"],
+  "physics/102-from-degrees-to-joules-en": ["physics-102-from-degrees-to-joules", "en"],
+  "physics/103-power-energy-bill": ["physics-103-power-energy-bill", "ru"],
+  "physics/103-power-energy-bill-kz": ["physics-103-power-energy-bill", "kz"],
+  "physics/103-power-energy-bill-en": ["physics-103-power-energy-bill", "en"],
+  "physics/104-energy-claim-checkpoint": ["physics-104-energy-claim-checkpoint", "ru"],
+  "physics/104-energy-claim-checkpoint-kz": ["physics-104-energy-claim-checkpoint", "kz"],
+  "physics/104-energy-claim-checkpoint-en": ["physics-104-energy-claim-checkpoint", "en"]
 }

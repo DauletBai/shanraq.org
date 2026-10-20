@@ -1,7 +1,7 @@
 {
   "version": 1,
   "course": "physics",
-  "lesson_count": 100,
+  "lesson_count": 104,
   "publication_policy": "complete-block-only",
   "languages": [
     "ru",
@@ -123,6 +123,16 @@
       "title_kz": "Инженерлік зерттеу және қорытынды",
       "title_en": "Engineering investigation and final project",
       "cover": "/static/covers/school/physics/final/11-investigation-defense.webp"
+    },
+    {
+      "id": "energy-practicum",
+      "range": "101-104",
+      "lesson_count": 4,
+      "status": "published",
+      "cover": "/static/covers/school/physics/energy-practicum/12-energy-practicum.webp",
+      "title_ru": "Практикум: тепло, энергия и проверка обещаний",
+      "title_kz": "Практикум: жылу, энергия және уәдені тексеру",
+      "title_en": "Practicum: heat, energy and testing claims"
     }
   ],
   "first_block_lessons": [
@@ -838,5 +848,11 @@
     {"number": 98, "id": "evidence-and-sources", "prerequisites": ["graph-and-model"], "title_ru": "Что доказывают числа, а что — источник?", "title_kz": "Сандар нені, дереккөз нені дәлелдейді?", "title_en": "What do the numbers prove, and what does a source prove?"},
     {"number": 99, "id": "design-iteration", "prerequisites": ["evidence-and-sources"], "title_ru": "Как измерение превращается в решение?", "title_kz": "Өлшеу қалай шешімге айналады?", "title_en": "How does measurement become a design decision?"},
     {"number": 100, "id": "defend-investigation", "prerequisites": ["design-iteration"], "title_ru": "Как защитить исследование перед вопросами?", "title_kz": "Сұрақтар алдында зерттеуді қалай қорғаймыз?", "title_en": "How do you defend an investigation?"}
+  ],
+  "practicum_block_lessons": [
+    {"number": 101, "id": "why-water-cools", "prerequisites": ["defend-investigation"], "title_ru": "Почему вода в двух стаканах остывает по-разному?", "title_kz": "Неге екі стақандағы су әртүрлі суиды?", "title_en": "Why do two cups of water cool differently?"},
+    {"number": 102, "id": "from-degrees-to-joules", "prerequisites": ["why-water-cools"], "title_ru": "Можно ли перевести падение температуры в джоули?", "title_kz": "Температураның төмендеуін джоульге айналдыра аламыз ба?", "title_en": "Can a temperature drop be converted into joules?"},
+    {"number": 103, "id": "power-energy-bill", "prerequisites": ["from-degrees-to-joules"], "title_ru": "Почему киловатт — не киловатт-час?", "title_kz": "Киловатт пен киловатт-сағат неге бірдей емес?", "title_en": "Why is a kilowatt not a kilowatt-hour?"},
+    {"number": 104, "id": "energy-claim-checkpoint", "prerequisites": ["power-energy-bill"], "title_ru": "«Экономит энергию»: как проверить такое обещание?", "title_kz": "«Энергияны үнемдейді»: мұндай уәдені қалай тексереміз?", "title_en": "“Saves energy”: how can we test that claim?"}
   ]
 }

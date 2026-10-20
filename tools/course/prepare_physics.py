@@ -18,6 +18,7 @@ try:
     from .physics_astronomy_data import ASTRONOMY
     from .physics_modern_data import MODERN
     from .physics_final_data import FINAL
+    from .physics_practicum_data import PRACTICUM
 except ImportError:  # direct invocation: python3 tools/course/prepare_physics.py
     from build_physics_block import DATA, LESSONS, ROOT
     from physics_motion_data import MOTION
@@ -30,6 +31,7 @@ except ImportError:  # direct invocation: python3 tools/course/prepare_physics.p
     from physics_astronomy_data import ASTRONOMY
     from physics_modern_data import MODERN
     from physics_final_data import FINAL
+    from physics_practicum_data import PRACTICUM
 
 COVER = "/static/covers/school/physics/investigation/01-observe-measure.webp"
 MOTION_COVER = "/static/covers/school/physics/motion/02-motion-graphs.webp"
@@ -42,6 +44,7 @@ WAVES_COVER = "/static/covers/school/physics/waves/08-waves-sound-light.webp"
 ASTRONOMY_COVER = "/static/covers/school/physics/astronomy/09-earth-solar-system-universe.webp"
 MODERN_COVER = "/static/covers/school/physics/modern/10-atoms-light-models.webp"
 FINAL_COVER = "/static/covers/school/physics/final/11-investigation-defense.webp"
+PRACTICUM_COVER = "/static/covers/school/physics/energy-practicum/12-energy-practicum.webp"
 META = {
     "ru": ("Физика вокруг нас: от первого опыта до своей лаборатории",
            "Бесплатный курс физики без пропущенных шагов: исследуем движение, силы, тепло, электрические цепи, свет, атомы и границы моделей."),
@@ -71,14 +74,14 @@ def read_lesson(path):
 
 
 def prepare(start=1):
-    blocks = (DATA, MOTION, FORCES, FLUIDS, HEAT, ELECTRICITY, MAGNETISM, WAVES, ASTRONOMY, MODERN, FINAL)
+    blocks = (DATA, MOTION, FORCES, FLUIDS, HEAT, ELECTRICITY, MAGNETISM, WAVES, ASTRONOMY, MODERN, FINAL, PRACTICUM)
     covers = (COVER, MOTION_COVER, FORCES_COVER, FLUIDS_COVER, HEAT_COVER, ELECTRICITY_COVER,
-              MAGNETISM_COVER, WAVES_COVER, ASTRONOMY_COVER, MODERN_COVER, FINAL_COVER)
-    expected_sizes = (8, 10, 10, 8, 10, 10, 10, 8, 10, 8, 8)
+              MAGNETISM_COVER, WAVES_COVER, ASTRONOMY_COVER, MODERN_COVER, FINAL_COVER, PRACTICUM_COVER)
+    expected_sizes = (8, 10, 10, 8, 10, 10, 10, 8, 10, 8, 8, 4)
     if tuple(map(len, blocks)) != expected_sizes:
-        raise ValueError("physics release requires eleven complete blocks")
-    if not 1 <= start <= 100:
-        raise ValueError("start must be a published lesson number from 1 to 100")
+        raise ValueError("physics release requires twelve complete blocks")
+    if not 1 <= start <= 104:
+        raise ValueError("start must be a lesson number from 1 to 104")
     route = []
     number = 0
     for block, cover in zip(blocks, covers):
@@ -142,7 +145,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sql", type=Path, required=True)
     parser.add_argument("--expected", type=Path, required=True)
-    parser.add_argument("--start", type=int, default=1, help="first lesson to upsert; use 92 for the final block and its incoming link")
+    parser.add_argument("--start", type=int, default=1, help="first lesson to upsert; use 100 for the practicum and its incoming link")
     args = parser.parse_args()
     sql, expected = prepare(args.start)
     args.sql.write_text(sql, encoding="utf-8")
