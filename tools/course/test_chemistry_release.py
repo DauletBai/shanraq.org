@@ -61,7 +61,7 @@ class ChemistryReleaseTests(unittest.TestCase):
     def test_second_block_is_complete_and_navigable(self):
         curriculum = json.loads((ROOT / 'course/chemistry/curriculum.json').read_text())
         self.assertEqual(curriculum['blocks'][1]['range'], '6-13')
-        self.assertEqual(curriculum['blocks'][1]['status'], 'prepared')
+        self.assertEqual(curriculum['blocks'][1]['status'], 'published')
         self.assertEqual(len(PARTICLE_LESSONS), 8)
         slugs = json.loads((ROOT / 'tools/course/lesson-slugs.json').read_text())
         self.assertEqual(len({row['stem'] for row in PARTICLE_LESSONS}), 8)
