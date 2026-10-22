@@ -2,7 +2,7 @@ module shanraq.org
 
 go 1.26.0
 
-toolchain go1.26.9
+toolchain go1.26.10
 
 require (
 	github.com/anthropics/anthropic-sdk-go v1.67.0
