@@ -73,7 +73,9 @@
   --st-off-line: #e3a7a7;
   --radius-sm: 8px;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  --maxw: 1180px;
+  /* Halve the outer gutters of the former 1180px layout on laptop and tablet
+     screens, while keeping a ceiling for very wide monitors. */
+  --maxw: min(1600px, calc(50vw + 590px));
   --readw: 700px;
 }
 
@@ -181,7 +183,7 @@ a:hover { text-decoration: underline; }
 h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.18; color: var(--ink); font-weight: 700; letter-spacing: -0.01em; margin: 0; }
 img { max-width: 100%; height: auto; display: block; }
 
-.container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+.container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(14px, 1.5vw, 22px); }
 
 /* kicker: uppercase category/section label */
 .kicker {
