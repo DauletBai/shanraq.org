@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry lesson 11: symbolic model</title>
+<desc id="desc">Teaching diagram, not a photograph. Particle sizes and distances are not to scale.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#081b2d"/><stop offset="1" stop-color="#145467"/></linearGradient></defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<text x="86" y="104" font-family="Arial,sans-serif" font-size="38" font-weight="bold" fill="#e9f5f2">CHEMISTRY · 11</text>
+<circle cx="180" cy="390" r="48" fill="#f1ad70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="265" cy="330" r="30" fill="#7bcdda" stroke="#ecffff" stroke-width="3"/>
+<circle cx="265" cy="450" r="30" fill="#7bcdda" stroke="#ecffff" stroke-width="3"/>
+<circle cx="490" cy="390" r="48" fill="#f1ad70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="575" cy="330" r="30" fill="#7bcdda" stroke="#ecffff" stroke-width="3"/>
+<circle cx="575" cy="450" r="30" fill="#7bcdda" stroke="#ecffff" stroke-width="3"/>
+<text x="370" y="605" text-anchor="middle" font-family="Arial,sans-serif" font-size="62" font-weight="bold" fill="#f5f8ef">H₂O</text>
+<circle cx="820" cy="302" r="32" fill="#eab275" stroke="#ecffff" stroke-width="3"/>
+<circle cx="898" cy="302" r="32" fill="#8bd1df" stroke="#ecffff" stroke-width="3"/>
+<circle cx="976" cy="302" r="32" fill="#eab275" stroke="#ecffff" stroke-width="3"/>
+<circle cx="1054" cy="302" r="32" fill="#8bd1df" stroke="#ecffff" stroke-width="3"/>
+<circle cx="820" cy="380" r="32" fill="#8bd1df" stroke="#ecffff" stroke-width="3"/>
+<circle cx="898" cy="380" r="32" fill="#eab275" stroke="#ecffff" stroke-width="3"/>
+<circle cx="976" cy="380" r="32" fill="#8bd1df" stroke="#ecffff" stroke-width="3"/>
+<circle cx="1054" cy="380" r="32" fill="#eab275" stroke="#ecffff" stroke-width="3"/>
+<circle cx="820" cy="458" r="32" fill="#eab275" stroke="#ecffff" stroke-width="3"/>
+<circle cx="898" cy="458" r="32" fill="#8bd1df" stroke="#ecffff" stroke-width="3"/>
+<circle cx="976" cy="458" r="32" fill="#eab275" stroke="#ecffff" stroke-width="3"/>
+<circle cx="1054" cy="458" r="32" fill="#8bd1df" stroke="#ecffff" stroke-width="3"/>
+<text x="945" y="605" text-anchor="middle" font-family="Arial,sans-serif" font-size="62" font-weight="bold" fill="#f5f8ef">NaCl</text>
+<path d="M645 245 V575" stroke="#f5f5e8" stroke-opacity=".6" stroke-width="4"/>
+</svg>

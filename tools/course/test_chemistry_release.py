@@ -7,6 +7,9 @@ import xml.etree.ElementTree as ET
 
 from tools.course.build_chemistry_block import LESSONS, LANGS, LESSON_DIR, MAP_DIR, ROOT, VISUAL_FILES, map_svg, render
 from tools.course.prepare_chemistry import prepare, read_lesson
+from tools.course.chemistry_particles_data import LESSONS as PARTICLE_LESSONS
+from tools.course.build_chemistry_particles import diagram, render as render_particles, slug as particle_slug, visual
+from tools.course.prepare_chemistry_particles import prepare as prepare_particles
 
 
 class ChemistryReleaseTests(unittest.TestCase):
@@ -53,6 +56,57 @@ class ChemistryReleaseTests(unittest.TestCase):
         self.assertIn('COMMIT;', sql)
         self.assertIn('pg_advisory_xact_lock', sql)
         self.assertIn("s.slug='chemistry'", sql)
+        self.assertNotIn('syndicate_telegram', sql)
+
+    def test_second_block_is_complete_and_navigable(self):
+        curriculum = json.loads((ROOT / 'course/chemistry/curriculum.json').read_text())
+        self.assertEqual(curriculum['blocks'][1]['range'], '6-13')
+        self.assertEqual(curriculum['blocks'][1]['status'], 'prepared')
+        self.assertEqual(len(PARTICLE_LESSONS), 8)
+        slugs = json.loads((ROOT / 'tools/course/lesson-slugs.json').read_text())
+        self.assertEqual(len({row['stem'] for row in PARTICLE_LESSONS}), 8)
+        for number in range(6, 14):
+            row = PARTICLE_LESSONS[number - 6]
+            article_slug = particle_slug(number, row['stem'])
+            cover = ROOT / f'web/static/course/chemistry/visuals/{number:02d}-particles.svg'
+            self.assertEqual(cover.read_text(), visual(number))
+            ET.parse(cover)
+            for lang in LANGS:
+                suffix = '' if lang == 'ru' else '-' + lang
+                path = LESSON_DIR / f'{row["stem"]}{suffix}.md'
+                body = path.read_text()
+                self.assertEqual(body, render_particles(number, lang))
+                self.assertGreater(len(body.split()), 350, path)
+                self.assertEqual(slugs[f'chemistry/{row["stem"]}{suffix}'], [article_slug, lang])
+                self.assertIn(f'/read/chemistry-{number-1:02d}-', body)
+                if number < 13:
+                    self.assertIn(f'/read/chemistry-{number+1:02d}-', body)
+                self.assertIn('![' , body)
+                for linked in re.findall(r'!\[[^]]+\]\((/static/[^)]+)\)', body):
+                    self.assertTrue((ROOT / 'web' / linked.lstrip('/')).is_file(), linked)
+                map_path = MAP_DIR / f'map-{number:02d}-{lang}.svg'
+                self.assertEqual(map_path.read_text(), diagram(number, lang))
+                ET.parse(map_path)
+                self.assertNotIn('<audio', body)
+
+    def test_particle_science_and_release_guards(self):
+        for lang, terms in {
+            'ru': ('NaCl', 'H₂O', '155 г'),
+            'kz': ('NaCl', 'H₂O', '155 г'),
+            'en': ('NaCl', 'H₂O', '155 g'),
+        }.items():
+            endings = '' if lang == 'ru' else '-' + lang
+            combined = '\n'.join((LESSON_DIR / f'{row["stem"]}{endings}.md').read_text()
+                                 for row in PARTICLE_LESSONS)
+            for term in terms:
+                self.assertIn(term, combined)
+        sql, expected = prepare_particles()
+        self.assertEqual(len(expected), 27)
+        self.assertEqual(len({(item['slug'], item['lang']) for item in expected}), 27)
+        for clause in ('BEGIN;', 'COMMIT;', 'pg_advisory_xact_lock',
+                       'First chemistry block incomplete', 'Particle lesson position occupied',
+                       "s.slug='chemistry'"):
+            self.assertIn(clause, sql)
         self.assertNotIn('syndicate_telegram', sql)
 
 

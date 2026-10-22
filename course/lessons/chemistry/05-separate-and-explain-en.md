@@ -57,3 +57,5 @@ New mixture: rice, sugar and water. What can a sieve retain, what stays dissolve
 Close the page and, after 10 minutes, reconstruct the map, define the terms in your own words and solve the new case. Repeat without hints after a day and a week. If an error persists, return to the worked example and write down the missing step.
 
 [Dissolving without vanishing: a particle model](/read/chemistry-04-dissolve-and-particles?lang=en)
+
+[Why does water flow while ice keeps its shape?](/read/chemistry-06-particle-model-and-states?lang=en)

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry lesson 12: symbolic model</title>
+<desc id="desc">Teaching diagram, not a photograph. Particle sizes and distances are not to scale.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#081b2d"/><stop offset="1" stop-color="#145467"/></linearGradient></defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<text x="86" y="104" font-family="Arial,sans-serif" font-size="38" font-weight="bold" fill="#e9f5f2">CHEMISTRY · 12</text>
+<text x="355" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-size="94" font-weight="bold" fill="#f5f8ef">H₂O</text>
+<text x="355" y="500" text-anchor="middle" font-family="Arial,sans-serif" font-size="70" font-weight="bold" fill="#f5f8ef">2H₂O</text>
+<text x="910" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-size="94" font-weight="bold" fill="#f5f8ef">CO₂</text>
+<text x="910" y="500" text-anchor="middle" font-family="Arial,sans-serif" font-size="70" font-weight="bold" fill="#f5f8ef">3CO₂</text>
+<path d="M620 205 V570" stroke="#7bced2" stroke-width="5"/>
+</svg>

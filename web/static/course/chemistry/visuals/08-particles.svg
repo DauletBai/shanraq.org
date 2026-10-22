@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry lesson 8: symbolic model</title>
+<desc id="desc">Teaching diagram, not a photograph. Particle sizes and distances are not to scale.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#081b2d"/><stop offset="1" stop-color="#145467"/></linearGradient></defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<text x="86" y="104" font-family="Arial,sans-serif" font-size="38" font-weight="bold" fill="#e9f5f2">CHEMISTRY · 08</text>
+<circle cx="385" cy="395" r="146" fill="#dcefeb" fill-opacity=".13" stroke="#8bd2d5" stroke-width="7"/>
+<circle cx="320" cy="360" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="363" cy="360" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="406" cy="360" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="449" cy="360" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="320" cy="404" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="363" cy="404" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<text x="385" y="620" text-anchor="middle" font-family="Arial,sans-serif" font-size="47" font-weight="bold" fill="#f5f8ef">C · 6 p</text>
+<circle cx="885" cy="395" r="146" fill="#dcefeb" fill-opacity=".13" stroke="#8bd2d5" stroke-width="7"/>
+<circle cx="820" cy="360" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="863" cy="360" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="906" cy="360" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="949" cy="360" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="820" cy="404" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="863" cy="404" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="906" cy="404" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<circle cx="949" cy="404" r="16" fill="#f1af70" stroke="#ecffff" stroke-width="3"/>
+<text x="885" y="620" text-anchor="middle" font-family="Arial,sans-serif" font-size="47" font-weight="bold" fill="#f5f8ef">O · 8 p</text>
+<path d="M560 395 H710" stroke="#f6eac9" stroke-width="7" stroke-dasharray="18 14"/>
+</svg>

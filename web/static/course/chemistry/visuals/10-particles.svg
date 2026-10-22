@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry lesson 10: symbolic model</title>
+<desc id="desc">Teaching diagram, not a photograph. Particle sizes and distances are not to scale.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#081b2d"/><stop offset="1" stop-color="#145467"/></linearGradient></defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<text x="86" y="104" font-family="Arial,sans-serif" font-size="38" font-weight="bold" fill="#e9f5f2">CHEMISTRY · 10</text>
+<circle cx="370" cy="405" r="151" fill="#cfe9e8" fill-opacity=".15" stroke="#85d5d8" stroke-width="7"/>
+<circle cx="292" cy="352" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="359" cy="352" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="426" cy="352" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="292" cy="416" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="359" cy="416" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="426" cy="416" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="285" cy="475" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="342" cy="475" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="399" cy="475" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="456" cy="475" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="285" cy="519" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="342" cy="519" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<text x="370" y="630" text-anchor="middle" font-family="Arial,sans-serif" font-size="54" font-weight="bold" fill="#f5f8ef">¹²C</text>
+<circle cx="910" cy="405" r="151" fill="#cfe9e8" fill-opacity=".15" stroke="#85d5d8" stroke-width="7"/>
+<circle cx="832" cy="352" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="899" cy="352" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="966" cy="352" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="832" cy="416" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="899" cy="416" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="966" cy="416" r="25" fill="#f2ad6d" stroke="#ecffff" stroke-width="3"/>
+<circle cx="825" cy="475" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="882" cy="475" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="939" cy="475" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="996" cy="475" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="825" cy="519" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="882" cy="519" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<circle cx="939" cy="519" r="19" fill="#b8a2ea" stroke="#ecffff" stroke-width="3"/>
+<text x="910" y="630" text-anchor="middle" font-family="Arial,sans-serif" font-size="54" font-weight="bold" fill="#f5f8ef">¹³C</text>
+<path d="M535 401 H744" stroke="#e5f4e9" stroke-width="7" stroke-dasharray="15 12"/>
+</svg>

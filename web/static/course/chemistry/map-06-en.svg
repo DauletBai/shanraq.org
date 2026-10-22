@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 490" role="img" aria-labelledby="title desc">
+<title id="title">Why does water flow while ice keeps its shape?</title><desc id="desc">Teaching model · particles and distances are not to scale</desc>
+<rect width="1280" height="490" rx="24" fill="#102b3b"/>
+<text x="45" y="68" fill="white" font-family="Arial,sans-serif" font-size="29" font-weight="bold">Why does water flow while ice keeps its shape?</text>
+<text x="45" y="105" fill="#bedde4" font-family="Arial,sans-serif" font-size="18">Teaching model · particles and distances are not to scale</text>
+<rect x="42" y="157" width="275" height="265" rx="22" fill="#f7faf7" stroke="#2db7c4" stroke-width="6"/>
+<circle cx="83" cy="205" r="22" fill="#2db7c4"/>
+<text x="75" y="213" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#143242">1</text>
+<text x="62" y="274" font-family="Arial,sans-serif" font-size="19" font-weight="bold" fill="#173749">OBSERVE</text>
+<text x="62" y="319" font-family="Arial,sans-serif" font-size="20" fill="#173749">Sample shape</text>
+<path d="M321 290 h24 m-10 -10 10 10 -10 10" fill="none" stroke="#d8e9e6" stroke-width="4"/>
+<rect x="350" y="157" width="275" height="265" rx="22" fill="#f7faf7" stroke="#f0ad58" stroke-width="6"/>
+<circle cx="391" cy="205" r="22" fill="#f0ad58"/>
+<text x="383" y="213" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#143242">2</text>
+<text x="370" y="274" font-family="Arial,sans-serif" font-size="19" font-weight="bold" fill="#173749">MODEL</text>
+<text x="370" y="319" font-family="Arial,sans-serif" font-size="20" fill="#173749">Particle motion</text>
+<path d="M629 290 h24 m-10 -10 10 10 -10 10" fill="none" stroke="#d8e9e6" stroke-width="4"/>
+<rect x="658" y="157" width="275" height="265" rx="22" fill="#f7faf7" stroke="#9d8bdb" stroke-width="6"/>
+<circle cx="699" cy="205" r="22" fill="#9d8bdb"/>
+<text x="691" y="213" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#143242">3</text>
+<text x="678" y="274" font-family="Arial,sans-serif" font-size="19" font-weight="bold" fill="#173749">COMPARE</text>
+<text x="678" y="319" font-family="Arial,sans-serif" font-size="20" fill="#173749">Ice and water</text>
+<path d="M937 290 h24 m-10 -10 10 10 -10 10" fill="none" stroke="#d8e9e6" stroke-width="4"/>
+<rect x="966" y="157" width="275" height="265" rx="22" fill="#f7faf7" stroke="#75c39c" stroke-width="6"/>
+<circle cx="1007" cy="205" r="22" fill="#75c39c"/>
+<text x="999" y="213" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#143242">4</text>
+<text x="986" y="274" font-family="Arial,sans-serif" font-size="19" font-weight="bold" fill="#173749">LIMIT</text>
+<text x="986" y="319" font-family="Arial,sans-serif" font-size="20" fill="#173749">Not a photo</text>
+</svg>

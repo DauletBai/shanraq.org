@@ -129,6 +129,13 @@ def render(number, lang):
     if number < len(LESSONS):
         following = LESSONS[number][lang][0]
         body.append(f'[{following}](/read/chemistry-{number+1:02d}-{LESSONS[number]["stem"].split("-",1)[1]}?lang={lang})')
+    elif number == 5:
+        try:
+            from .chemistry_particles_data import LESSONS as PARTICLE_LESSONS
+        except ImportError:
+            from chemistry_particles_data import LESSONS as PARTICLE_LESSONS
+        following = PARTICLE_LESSONS[0]
+        body.append(f'[{following[lang][0]}](/read/chemistry-06-{following["stem"].split("-",1)[1]}?lang={lang})')
     return '\n\n'.join(body) + '\n'
 
 
