@@ -97,6 +97,9 @@ SOURCES = (
     ('CIAAW: atomic weights', 'https://ciaaw.org/atomic-weights.htm'),
     ('RSC: periodic trends', 'https://periodic-table.rsc.org/trends'),
     ('CIAAW: mass and relative atomic mass', 'https://ciaaw.org/info.htm'),
+    ('RSC: sodium radii', 'https://periodic-table.rsc.org/element/11/sodium'),
+    ('RSC: magnesium radii', 'https://periodic-table.rsc.org/element/12/magnesium'),
+    ('RSC: aluminium radii', 'https://periodic-table.rsc.org/element/13/aluminium'),
 )
 
 
@@ -250,7 +253,7 @@ def render(number, lang):
     out.extend([f'## {exercise}', numbered, f'## {labels[4]}', answer,
                 f'## {labels[5]}', labels[6], f'## {headings[10]}', RETURN[lang], f'## {labels[7]}'])
     source_ids = ((0, 3, 5) if number in (14, 20) else (0, 2) if number == 18
-                  else (0, 4) if number == 19 else (0, 1))
+                  else (0, 4, 6, 7, 8) if number == 19 else (0, 1))
     out.append('\n'.join(f'- [{SOURCES[i][0]}]({SOURCES[i][1]})' for i in source_ids))
     previous = PREVIOUS[-1] if number == 14 else LESSONS[number-15]
     out.append(f'[{previous[lang][0]}](/read/{slug(number-1, previous["stem"])}?lang={lang})')

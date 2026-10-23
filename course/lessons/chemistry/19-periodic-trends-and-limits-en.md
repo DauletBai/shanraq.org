@@ -16,7 +16,7 @@ Proton count increases along Li, Na, K. Must the atom therefore become smaller? 
 
 ## New terms, fully explained
 
-A **periodic trend** is a recurring direction of change in a property within a specified part of the table. **Atomic radius** describes size under an agreed definition; an electron cloud has no hard boundary. Do not mix different radius definitions or compare atomic and ionic radii as though they were the same quantity. This lesson gives no numerical radii.
+A **periodic trend** is a recurring direction of change in a property within a specified part of the table. **Atomic radius** describes size under an agreed definition; an electron cloud has no hard boundary. Do not mix different radius definitions or compare atomic and ionic radii as though they were the same quantity. Here we compare covalent radii: half the distance between the nuclei of two identical atoms joined by a single chemical bond. The next block develops bonding; for now, keep the size definition consistent. This lesson gives no numerical radii.
 
 ## Predict first
 
@@ -24,7 +24,7 @@ Predict separately the size changes down Li → Na → K and across the short se
 
 ## Investigate or analyse given data
 
-Consistent qualitative data: Li is smaller than Na, and Na smaller than K; Na is larger than Mg, and Mg larger than Al. Beside these, write 2,1; 2,8,1; 2,8,8,1 and 2,8,1; 2,8,2; 2,8,3. Draw circles only to show the order of sizes. Label them “symbolic, not to scale”. Use paper rather than material samples.
+Qualitative data for the selected covalent radii: Li is smaller than Na, and Na smaller than K; Na is larger than Mg, and Mg larger than Al. Beside these, write 2,1; 2,8,1; 2,8,8,1 and 2,8,1; 2,8,2; 2,8,3. Draw circles only to show the order of sizes. Label them “symbolic, not to scale”. Use paper rather than material samples.
 
 ## Worked example
 
@@ -63,6 +63,9 @@ Close the page and, after 10 minutes, reconstruct the map, define the terms in y
 
 - [IUPAC: periodic table](https://iupac.org/what-we-do/periodic-table-of-elements/)
 - [RSC: periodic trends](https://periodic-table.rsc.org/trends)
+- [RSC: sodium radii](https://periodic-table.rsc.org/element/11/sodium)
+- [RSC: magnesium radii](https://periodic-table.rsc.org/element/12/magnesium)
+- [RSC: aluminium radii](https://periodic-table.rsc.org/element/13/aluminium)
 
 [Metals and nonmetals: what do properties show?](/read/chemistry-18-metals-and-nonmetals?lang=en)
 
