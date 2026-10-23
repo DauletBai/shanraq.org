@@ -11,7 +11,7 @@
   "blocks": [
     {"id":"observe-safely","range":"1-5","status":"published","ru":"Исследователь и вещество","kz":"Зерттеуші және зат","en":"Investigator and substance"},
     {"id":"particles-atoms","range":"6-13","status":"published","ru":"Частицы, атомы, молекулы","kz":"Бөлшектер, атомдар, молекулалар","en":"Particles, atoms and molecules"},
-    {"id":"elements-table","range":"14-22","status":"prepared","ru":"Элементы и периодическая система","kz":"Элементтер мен периодтық жүйе","en":"Elements and the periodic table"},
+    {"id":"elements-table","range":"14-22","status":"published","ru":"Элементы и периодическая система","kz":"Элементтер мен периодтық жүйе","en":"Elements and the periodic table"},
     {"id":"bonds-formulas","range":"23-31","status":"planned","ru":"Связи, формулы и язык химии","kz":"Байланыстар, формулалар және химия тілі","en":"Bonds, formulas and chemical language"},
     {"id":"reactions","range":"32-40","status":"planned","ru":"Реакции и сохранение массы","kz":"Реакциялар және массаның сақталуы","en":"Reactions and conservation of mass"},
     {"id":"quantities","range":"41-49","status":"planned","ru":"Счёт частиц и расчёты","kz":"Бөлшектерді санау және есептеулер","en":"Counting particles and calculations"},

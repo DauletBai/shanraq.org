@@ -4,7 +4,7 @@ The first block has five lessons and fifteen published language versions.
 The second block (particles and atoms) has eight lessons and twenty-four
 published language versions.
 The third block (elements and the periodic table, lessons 14–22) has nine
-prepared lessons and twenty-seven language versions.
+published lessons and twenty-seven language versions.
 `curriculum.json` sketches the 100-lesson route. See `docs/chemistry-course.md`
 for teaching method, evidence limits and safety rules.
 
