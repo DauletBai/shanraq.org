@@ -8,10 +8,12 @@ try:
     from .chemistry_particles_data import LESSONS
     from .build_chemistry_block import HEAD, RETURN, LANGS, LESSON_DIR, MAP_DIR
     from .chemistry_data import LESSONS as FIRST_BLOCK
+    from .chemistry_elements_data import LESSONS as ELEMENT_BLOCK
 except ImportError:
     from chemistry_particles_data import LESSONS
     from build_chemistry_block import HEAD, RETURN, LANGS, LESSON_DIR, MAP_DIR
     from chemistry_data import LESSONS as FIRST_BLOCK
+    from chemistry_elements_data import LESSONS as ELEMENT_BLOCK
 
 ROOT = Path(__file__).resolve().parents[2]
 VISUAL_DIR = MAP_DIR / 'visuals'
@@ -209,6 +211,9 @@ def render(number, lang):
     if number < 13:
         next_row = LESSONS[number - 5]
         out.append(f'[{next_row[lang][0]}](/read/{slug(number+1, next_row["stem"])}?lang={lang})')
+    else:
+        next_row = ELEMENT_BLOCK[0]
+        out.append(f'[{next_row[lang][0]}](/read/{slug(14, next_row["stem"])}?lang={lang})')
     return '\n\n'.join(out) + '\n'
 
 

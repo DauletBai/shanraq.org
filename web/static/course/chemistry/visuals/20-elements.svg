@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry 20: symbolic teaching diagram</title><desc id="desc">Original diagram. Sizes, colours and distances are symbolic, not to scale.</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="65" y="88" font-family="Arial,sans-serif" font-size="36" fill="#f1f7f2" text-anchor="start">CHEMISTRY · 20</text>
+<rect x="80" y="200" width="220" height="180" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="190" y="310" font-family="Arial,sans-serif" font-size="50" fill="#f1f7f2" text-anchor="middle">20 u</text>
+<rect x="380" y="200" width="220" height="180" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="490" y="310" font-family="Arial,sans-serif" font-size="50" fill="#f1f7f2" text-anchor="middle">20 u</text>
+<rect x="680" y="200" width="220" height="180" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="790" y="310" font-family="Arial,sans-serif" font-size="50" fill="#f1f7f2" text-anchor="middle">20 u</text>
+<rect x="980" y="200" width="220" height="180" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="1090" y="310" font-family="Arial,sans-serif" font-size="50" fill="#f1f7f2" text-anchor="middle">22 u</text>
+<text x="640" y="480" font-family="Arial,sans-serif" font-size="40" fill="#f1f7f2" text-anchor="middle">(20 + 20 + 20 + 22) / 4 = 20.5 u</text>
+<text x="640" y="585" font-family="Arial,sans-serif" font-size="65" fill="#f1f7f2" text-anchor="middle">Aᵣ = 20.5</text>
+<text x="640" y="665" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="middle">Invented mixture · given teaching masses</text>
+</svg>

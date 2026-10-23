@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry 14: symbolic teaching diagram</title><desc id="desc">Original diagram. Sizes, colours and distances are symbolic, not to scale.</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="65" y="88" font-family="Arial,sans-serif" font-size="36" fill="#f1f7f2" text-anchor="start">CHEMISTRY · 14</text>
+<rect x="175" y="190" width="335" height="365" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="343" y="260" font-family="Arial,sans-serif" font-size="40" fill="#f1f7f2" text-anchor="middle">Z = 11</text>
+<text x="343" y="400" font-family="Arial,sans-serif" font-size="110" fill="#f1f7f2" text-anchor="middle">Na</text>
+<text x="343" y="505" font-family="Arial,sans-serif" font-size="37" fill="#f1f7f2" text-anchor="middle">Aᵣ ≈ 22.99</text>
+<rect x="770" y="190" width="335" height="365" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="938" y="260" font-family="Arial,sans-serif" font-size="40" fill="#f1f7f2" text-anchor="middle">Z = 17</text>
+<text x="938" y="400" font-family="Arial,sans-serif" font-size="110" fill="#f1f7f2" text-anchor="middle">Cl</text>
+<text x="938" y="505" font-family="Arial,sans-serif" font-size="37" fill="#f1f7f2" text-anchor="middle">Aᵣ ≈ 35.45</text>
+</svg>

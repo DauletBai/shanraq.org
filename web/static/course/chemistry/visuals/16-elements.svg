@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry 16: symbolic teaching diagram</title><desc id="desc">Original diagram. Sizes, colours and distances are symbolic, not to scale.</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="65" y="88" font-family="Arial,sans-serif" font-size="36" fill="#f1f7f2" text-anchor="start">CHEMISTRY · 16</text>
+<text x="155" y="315" font-family="Arial,sans-serif" font-size="52" fill="#f1f7f2" text-anchor="middle">Na</text>
+<rect x="270" y="235" width="175" height="130" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="357" y="315" font-family="Arial,sans-serif" font-size="58" fill="#f1f7f2" text-anchor="middle">2</text>
+<rect x="485" y="235" width="175" height="130" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="572" y="315" font-family="Arial,sans-serif" font-size="58" fill="#f1f7f2" text-anchor="middle">8</text>
+<rect x="700" y="235" width="175" height="130" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="787" y="315" font-family="Arial,sans-serif" font-size="58" fill="#f1f7f2" text-anchor="middle">1</text>
+<text x="155" y="510" font-family="Arial,sans-serif" font-size="52" fill="#f1f7f2" text-anchor="middle">Ca</text>
+<rect x="270" y="430" width="175" height="130" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="357" y="510" font-family="Arial,sans-serif" font-size="58" fill="#f1f7f2" text-anchor="middle">2</text>
+<rect x="485" y="430" width="175" height="130" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="572" y="510" font-family="Arial,sans-serif" font-size="58" fill="#f1f7f2" text-anchor="middle">8</text>
+<rect x="700" y="430" width="175" height="130" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="787" y="510" font-family="Arial,sans-serif" font-size="58" fill="#f1f7f2" text-anchor="middle">8</text>
+<rect x="915" y="430" width="175" height="130" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="1002" y="510" font-family="Arial,sans-serif" font-size="58" fill="#f1f7f2" text-anchor="middle">2</text>
+<text x="640" y="645" font-family="Arial,sans-serif" font-size="31" fill="#f1f7f2" text-anchor="middle">neutral · ground state · Z ≤ 20</text>
+</svg>

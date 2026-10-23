@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry 22: symbolic teaching diagram</title><desc id="desc">Original diagram. Sizes, colours and distances are symbolic, not to scale.</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="65" y="88" font-family="Arial,sans-serif" font-size="36" fill="#f1f7f2" text-anchor="start">CHEMISTRY · 22</text>
+<circle cx="240" cy="240" r="52" fill="#efba7c"/>
+<text x="240" y="250" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Na⁺</text>
+<circle cx="400" cy="240" r="52" fill="#88d0d4"/>
+<text x="400" y="250" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Cl⁻</text>
+<circle cx="560" cy="240" r="52" fill="#efba7c"/>
+<text x="560" y="250" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Na⁺</text>
+<circle cx="720" cy="240" r="52" fill="#88d0d4"/>
+<text x="720" y="250" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Cl⁻</text>
+<circle cx="880" cy="240" r="52" fill="#efba7c"/>
+<text x="880" y="250" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Na⁺</text>
+<circle cx="1040" cy="240" r="52" fill="#88d0d4"/>
+<text x="1040" y="250" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Cl⁻</text>
+<circle cx="240" cy="365" r="52" fill="#88d0d4"/>
+<text x="240" y="375" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Cl⁻</text>
+<circle cx="400" cy="365" r="52" fill="#efba7c"/>
+<text x="400" y="375" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Na⁺</text>
+<circle cx="560" cy="365" r="52" fill="#88d0d4"/>
+<text x="560" y="375" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Cl⁻</text>
+<circle cx="720" cy="365" r="52" fill="#efba7c"/>
+<text x="720" y="375" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Na⁺</text>
+<circle cx="880" cy="365" r="52" fill="#88d0d4"/>
+<text x="880" y="375" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Cl⁻</text>
+<circle cx="1040" cy="365" r="52" fill="#efba7c"/>
+<text x="1040" y="375" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Na⁺</text>
+<circle cx="240" cy="490" r="52" fill="#efba7c"/>
+<text x="240" y="500" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Na⁺</text>
+<circle cx="400" cy="490" r="52" fill="#88d0d4"/>
+<text x="400" y="500" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Cl⁻</text>
+<circle cx="560" cy="490" r="52" fill="#efba7c"/>
+<text x="560" y="500" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Na⁺</text>
+<circle cx="720" cy="490" r="52" fill="#88d0d4"/>
+<text x="720" y="500" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Cl⁻</text>
+<circle cx="880" cy="490" r="52" fill="#efba7c"/>
+<text x="880" y="500" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Na⁺</text>
+<circle cx="1040" cy="490" r="52" fill="#88d0d4"/>
+<text x="1040" y="500" font-family="Arial,sans-serif" font-size="31" fill="#143242" text-anchor="middle">Cl⁻</text>
+<text x="640" y="655" font-family="Arial,sans-serif" font-size="40" fill="#f1f7f2" text-anchor="middle">Na⁺ : Cl⁻ = 1 : 1      +1 − 1 = 0</text>
+</svg>

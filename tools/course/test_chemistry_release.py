@@ -10,6 +10,9 @@ from tools.course.prepare_chemistry import prepare, read_lesson
 from tools.course.chemistry_particles_data import LESSONS as PARTICLE_LESSONS
 from tools.course.build_chemistry_particles import diagram, render as render_particles, slug as particle_slug, visual
 from tools.course.prepare_chemistry_particles import prepare as prepare_particles
+from tools.course.chemistry_elements_data import ELEMENTS, LESSONS as ELEMENT_LESSONS
+from tools.course.build_chemistry_elements import render as render_elements, diagram as element_diagram, table_svg, visual as element_visual
+from tools.course.prepare_chemistry_elements import prepare as prepare_elements
 
 
 class ChemistryReleaseTests(unittest.TestCase):
@@ -108,6 +111,90 @@ class ChemistryReleaseTests(unittest.TestCase):
                        "s.slug='chemistry'"):
             self.assertIn(clause, sql)
         self.assertNotIn('syndicate_telegram', sql)
+
+
+class ChemistryElementsReleaseTests(unittest.TestCase):
+    def test_complete_trilingual_route_and_assets(self):
+        curriculum = json.loads((ROOT / 'course/chemistry/curriculum.json').read_text())
+        self.assertEqual(curriculum['blocks'][2]['range'], '14-22')
+        self.assertIn(curriculum['blocks'][2]['status'], ('prepared', 'published'))
+        self.assertEqual(len(ELEMENT_LESSONS), 9)
+        slugs = json.loads((ROOT / 'tools/course/lesson-slugs.json').read_text())
+        for number, row in enumerate(ELEMENT_LESSONS, 14):
+            self.assertEqual(len(row['ru']), 10)
+            cover = MAP_DIR / f'visuals/{number:02d}-elements.svg'
+            self.assertEqual(cover.read_text(), element_visual(number))
+            ET.parse(cover)
+            for lang in LANGS:
+                suffix = '' if lang == 'ru' else f'-{lang}'
+                path = LESSON_DIR / f'{row["stem"]}{suffix}.md'
+                self.assertEqual(path.read_text(), render_elements(number, lang))
+                title, summary, body = read_lesson(path)
+                self.assertTrue(title and summary)
+                self.assertGreater(len(body.split()), 350, path)
+                self.assertEqual(slugs[f'chemistry/{row["stem"]}{suffix}'],
+                                 [particle_slug(number, row['stem']), lang])
+                self.assertIn(f'/read/chemistry-{number-1:02d}-', body)
+                if number < 22:
+                    self.assertIn(f'/read/chemistry-{number+1:02d}-', body)
+                else:
+                    self.assertNotIn('/read/chemistry-23-', body)
+                self.assertNotIn('<audio', body)
+                # Raw HTML is stripped by the site's safe Markdown renderer.
+                self.assertNotIn('<details', body)
+                for heading in {'ru': ('Задание', 'Ответы'), 'kz': ('Тапсырма', 'Жауаптар'),
+                                'en': ('Exercise', 'Answers')}[lang]:
+                    self.assertIn(f'## {heading}\n', body)
+                for linked in re.findall(r'!\[[^]]+\]\((/static/[^)]+)\)', body):
+                    self.assertTrue((ROOT / 'web' / linked.lstrip('/')).is_file(), linked)
+                map_path = MAP_DIR / f'map-{number:02d}-{lang}.svg'
+                self.assertEqual(map_path.read_text(), element_diagram(number, lang))
+                ET.parse(map_path)
+        for lang in LANGS:
+            suffix = '' if lang == 'ru' else f'-{lang}'
+            previous = (LESSON_DIR / f'13-particle-case-review{suffix}.md').read_text()
+            self.assertIn(f'/read/chemistry-14-read-element-card?lang={lang}', previous)
+
+    def test_shell_data_and_actual_periodic_table_geometry(self):
+        self.assertEqual([row[0] for row in ELEMENTS], list(range(1, 21)))
+        self.assertEqual(len({row[1] for row in ELEMENTS}), 20)
+        by_symbol = {row[1]: row for row in ELEMENTS}
+        for z, symbol, period, group, shells in ELEMENTS:
+            self.assertEqual(sum(shells), z, symbol)
+            self.assertEqual(len(shells), period, symbol)
+            self.assertLessEqual(shells[0], 2)
+            self.assertTrue(1 <= group <= 18)
+        self.assertEqual(by_symbol['He'][2:], (1, 18, (2,)))
+        self.assertEqual(by_symbol['B'][2:], (2, 13, (2, 3)))
+        self.assertEqual(by_symbol['K'][4], (2, 8, 8, 1))
+        self.assertEqual(by_symbol['Ca'][4], (2, 8, 8, 2))
+        for lang in LANGS:
+            path = MAP_DIR / f'first-20-{lang}.svg'
+            self.assertEqual(path.read_text(), table_svg(lang))
+            root = ET.parse(path).getroot()
+            cells = [node for node in root if 'data-z' in node.attrib]
+            self.assertEqual(len(cells), 20)
+            for cell, row in zip(cells, ELEMENTS, strict=True):
+                self.assertEqual(int(cell.attrib['data-z']), row[0])
+                self.assertEqual(int(cell.attrib['data-period']), row[2])
+                self.assertEqual(int(cell.attrib['data-group']), row[3])
+                self.assertEqual(int(cell.attrib['x']), 80+(row[3]-1)*63)
+                self.assertEqual(int(cell.attrib['y']), 200+(row[2]-1)*95)
+
+    def test_atomic_release_and_previous_lesson_bridge(self):
+        sql, expected = prepare_elements()
+        self.assertEqual(len(expected), 30)
+        self.assertEqual(len({(x['slug'], x['lang']) for x in expected}), 30)
+        self.assertEqual(sql.count('BEGIN;'), 1)
+        self.assertTrue(sql.rstrip().endswith('COMMIT;'))
+        self.assertEqual(sql.count('INSERT INTO article_series_items'), 9)
+        self.assertEqual(sql.count('INSERT INTO article_translations'), 27)
+        self.assertEqual(sql.count('UPDATE article_translations SET body_md='), 3)
+        self.assertNotIn('syndicate_telegram', sql)
+        for clause in ('pg_advisory_xact_lock', 'Previous chemistry translations incomplete',
+                       'Elements lesson position occupied', 'Elements lesson belongs to another course',
+                       'Elements block course membership incomplete', 'Elements block translations incomplete'):
+            self.assertIn(clause, sql)
 
 
 if __name__ == '__main__':

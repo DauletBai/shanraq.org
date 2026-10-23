@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry 18: symbolic teaching diagram</title><desc id="desc">Original diagram. Sizes, colours and distances are symbolic, not to scale.</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="65" y="88" font-family="Arial,sans-serif" font-size="36" fill="#f1f7f2" text-anchor="start">CHEMISTRY · 18</text>
+<rect x="55" y="210" width="360" height="330" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="235" y="300" font-family="Arial,sans-serif" font-size="43" fill="#f1f7f2" text-anchor="middle">Al</text>
+<text x="235" y="410" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="middle">conducts</text>
+<text x="235" y="475" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="middle">malleable</text>
+<rect x="460" y="210" width="360" height="330" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="640" y="300" font-family="Arial,sans-serif" font-size="43" fill="#f1f7f2" text-anchor="middle">C · graphite</text>
+<text x="640" y="410" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="middle">conducts</text>
+<text x="640" y="475" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="middle">brittle</text>
+<rect x="865" y="210" width="360" height="330" rx="22" fill="#e5f3ed" fill-opacity=".12" stroke="#70c7cb" stroke-width="4"/>
+<text x="1045" y="300" font-family="Arial,sans-serif" font-size="43" fill="#f1f7f2" text-anchor="middle">S</text>
+<text x="1045" y="410" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="middle">poor conductor</text>
+<text x="1045" y="475" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="middle">brittle</text>
+<text x="640" y="650" font-family="Arial,sans-serif" font-size="33" fill="#f1f7f2" text-anchor="middle">One property alone is insufficient</text>
+</svg>

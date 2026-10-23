@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Chemistry 19: symbolic teaching diagram</title><desc id="desc">Original diagram. Sizes, colours and distances are symbolic, not to scale.</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="65" y="88" font-family="Arial,sans-serif" font-size="36" fill="#f1f7f2" text-anchor="start">CHEMISTRY · 19</text>
+<circle cx="240" cy="350" r="95" fill="#83ccd0" fill-opacity=".35" stroke="#e2f1e8" stroke-width="4"/>
+<text x="240" y="360" font-family="Arial,sans-serif" font-size="42" fill="#f1f7f2" text-anchor="middle">Na</text>
+<circle cx="640" cy="350" r="75" fill="#83ccd0" fill-opacity=".35" stroke="#e2f1e8" stroke-width="4"/>
+<text x="640" y="360" font-family="Arial,sans-serif" font-size="42" fill="#f1f7f2" text-anchor="middle">Mg</text>
+<circle cx="1040" cy="350" r="55" fill="#83ccd0" fill-opacity=".35" stroke="#e2f1e8" stroke-width="4"/>
+<text x="1040" y="360" font-family="Arial,sans-serif" font-size="42" fill="#f1f7f2" text-anchor="middle">Al</text>
+<text x="640" y="535" font-family="Arial,sans-serif" font-size="42" fill="#f1f7f2" text-anchor="middle">Na &gt; Mg &gt; Al       Li &lt; Na &lt; K</text>
+<text x="640" y="635" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="middle">Qualitative atomic size · not to scale</text>
+</svg>

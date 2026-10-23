@@ -54,3 +54,5 @@ New case: 80 g of water and 10 g of sugar in a closed vessel weighing 40 g. Give
 Close the page and, after 10 minutes, reconstruct the map, define the terms in your own words and solve the new case. Repeat without hints after a day and a week. If an error persists, return to the worked example and write down the missing step.
 
 [How do we read H₂O, CO₂ and 2H₂O?](/read/chemistry-12-read-simple-formulas?lang=en)
+
+[What does an element card tell us?](/read/chemistry-14-read-element-card?lang=en)
