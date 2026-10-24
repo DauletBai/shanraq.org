@@ -28,13 +28,13 @@ SOURCES = {
 SOURCE_KEYS = [('energy',), ('covalent','lewis'), ('ionic',), ('shape',), ('solids',),
                ('naming',), ('lewis',), ('formulas','naming'), ('formulas','ionic','shape')]
 LABELS = {
- 'ru': ('Схема модели', 'Задание без подсказки', 'Ответы и объяснение', 'Дневник исследователя', 'Источники и границы',
+ 'ru': ('Схема модели', 'Задание', 'Ответы', 'Дневник исследователя', 'Источники и границы',
         'Только бумага и готовые данные. Не получайте газы, не нагревайте вещества, не используйте электрическое оборудование; неизвестные вещества не трогайте, не пробуйте и не нюхайте.',
         'Запишите свой первый ответ до чтения разбора. Для каждой ошибки отметьте конкретный шаг: модель частиц, счёт электронов, баланс зарядов, скобки или граница вывода. Исправьте объяснение, затем придумайте новый пример и решите его без подсказки.'),
- 'kz': ('Модель сызбасы', 'Кеңессіз тапсырма', 'Жауаптар мен түсіндіру', 'Зерттеуші күнделігі', 'Дереккөздер мен шектер',
+ 'kz': ('Модель сызбасы', 'Тапсырма', 'Жауаптар', 'Зерттеуші күнделігі', 'Дереккөздер мен шектер',
         'Тек қағаз бен дайын деректер. Газ алмаңыз, заттарды қыздырмаңыз, электр құралдарын қолданбаңыз; белгісіз заттарды ұстамаңыз, дәмін татпаңыз, иіскемеңіз.',
         'Талдауды оқымай тұрып алғашқы жауабыңызды жазыңыз. Әр қатенің қадамын белгілеңіз: бөлшек моделі, электрон санағы, заряд теңгерімі, жақша немесе қорытынды шегі. Түсіндіруді түзетіп, жаңа мысал ойлап тауып, оны кеңессіз шешіңіз.'),
- 'en': ('Model diagram', 'Exercise without hints', 'Answers and reasoning', 'Investigator’s notebook', 'Sources and limits',
+ 'en': ('Model diagram', 'Exercise', 'Answers', 'Investigator’s notebook', 'Sources and limits',
         'Use paper and supplied data only. Do not produce gases, heat substances or use electrical equipment; do not touch, taste or smell unknown substances.',
         'Record your first answer before reading the explanation. For each error, identify the step: particle model, electron count, charge balance, brackets or limits of inference. Correct the explanation, invent a new example and solve it without hints.'),
 }

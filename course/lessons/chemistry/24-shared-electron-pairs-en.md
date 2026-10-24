@@ -46,13 +46,13 @@ Try HCl: H contributes one outer electron to the total and Cl contributes seven.
 
 **Check:** eight valence electrons, one shared pair and three lone pairs on Cl. HCl denotes a molecule; Na⁺Cl⁻ indicates ions in a 1:1 ratio. The next lesson examines an ionic lattice. Draw H₂ and then Cl₂ from memory, checking that no dot has been lost.
 
-## Exercise without hints
+## Exercise
 
 1. How many shared pairs are in H₂?
 2. How many lone pairs are on each Cl in Cl₂?
 3. How many valence electrons are in HCl in total?
 
-## Answers and reasoning
+## Answers
 
 One; three on each; eight. A line represents two electrons, not the complete electron content of the atoms.
 

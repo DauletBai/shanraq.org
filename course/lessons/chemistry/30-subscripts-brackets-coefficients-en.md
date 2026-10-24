@@ -46,13 +46,13 @@ Analyse 3Mg(OH)₂ and 2Al₂(SO₄)₃ independently. Count each element’s at
 
 **Check:** 3 Mg,6 O,6 H;4 Al,6 S,24 O. Both 2O and O₂ contain two oxygen atoms, but 2O denotes separate atoms while O₂ denotes one diatomic molecule. Recall “inner group → subscript → unit composition → coefficient”. A simple formula does not establish a substance’s safety.
 
-## Exercise without hints
+## Exercise
 
 1. How many O atoms are in Al₂(SO₄)₃?
 2. How many H atoms are in 4H₂O?
 3. Do 2H and H₂ denote identical particles?
 
-## Answers and reasoning
+## Answers
 
 12;8; no: two separate atoms versus one molecule. Apply group subscripts first, then coefficients to the whole formula.
 

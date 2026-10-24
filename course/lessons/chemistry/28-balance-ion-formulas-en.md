@@ -46,13 +46,13 @@ Try Ca²⁺/N³⁻ and K⁺/S²⁻. Find the simplest neutral ratios and formula
 
 **Check:** Ca₃N₂ gives 3×2−2×3=0; K₂S gives 2−2=0. Iron gives FeCl₂ and FeCl₃ respectively. Recall “charges → counts → zero sum → reduce ratio → subscripts”. Explain why this procedure does not allow you to reduce a given molecular formula H₂O₂.
 
-## Exercise without hints
+## Exercise
 
 1. What formula combines Al³⁺ and Cl⁻?
 2. What is the charge sum for MgCl₂?
 3. Should Ca₂O₂ be reduced for specified Ca²⁺ and O²⁻?
 
-## Answers and reasoning
+## Answers
 
 AlCl₃; +2−2=0; yes, to CaO. Reduce the ion ratio, not an arbitrary molecular formula.
 

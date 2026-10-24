@@ -46,13 +46,13 @@ A new pair model has energy 0 far apart, −7 in its bonded state and +9 when to
 
 **Check:** −7; separation requires 7 arbitrary units. Colour and the composition of other substances remain unknown. Reconstruct “charges → interactions → suitable separation → lower energy”. State the limit: this is a qualitative model of the given pair, without real scales or a calculation of every possible substance.
 
-## Exercise without hints
+## Exercise
 
 1. Does breaking a bond into distant atoms require or release energy?
 2. Does H have a filled shell with two or eight electrons?
 3. Which state has lowest energy in a 0 / −5 / +8 model?
 
-## Answers and reasoning
+## Answers
 
 Requires energy; two; −5. Energy lowering for one bond does not determine the energy change of a whole reaction.
 

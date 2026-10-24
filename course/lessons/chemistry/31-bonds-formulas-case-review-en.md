@@ -46,14 +46,14 @@ Final transfer: use Ca²⁺ and Cl⁻ to build a formula; count atoms in 2CaCl�
 
 **Check:** CaCl₂;2 Ca and 4 Cl. H₂O₂ is one molecule containing 2:2 atoms; 2H₂O is two molecules totalling 4 H and 2 O. Breaking a bond requires energy. Assess five skills separately: identifying particles, balancing charge, reading formulas, explaining properties and limiting claims. Retry new cases tomorrow and a week later; the next block begins with evidence and notation for reactions.
 
-## Exercise without hints
+## Exercise
 
 1. What can white colour alone tell us about D?
 2. What formula combines Ca²⁺ and Cl⁻?
 3. How many Ca and Cl atoms are in 3CaCl₂?
 4. Does a polar bond guarantee molecular polarity?
 
-## Answers and reasoning
+## Answers
 
 Appearance only, not composition; CaCl₂;3 Ca and 6 Cl; no, shape matters. Assess each answer separately and correct the reason for any error.
 

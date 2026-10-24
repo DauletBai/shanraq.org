@@ -46,13 +46,13 @@ An unknown solid X does not conduct. Is this enough to choose between ice, salt 
 
 **Check:** the evidence is insufficient: all three can conduct poorly under the stated conditions. Reference melting temperatures and composition could help distinguish them. Recall the four models, naming particles and mobile carriers. Dissolving and solution conductivity need separate analysis: substances differ in solubility and not every solution is ionic.
 
-## Exercise without hints
+## Exercise
 
 1. Do H₂O molecules disappear when ice melts?
 2. Which carriers are mobile in molten NaCl?
 3. Must a conductor be a metal?
 
-## Answers and reasoning
+## Answers
 
 No; ions; no, graphite is a counterexample. These answers apply to the specified states and conditions.
 

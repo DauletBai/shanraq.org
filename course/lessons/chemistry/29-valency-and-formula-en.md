@@ -46,13 +46,13 @@ New diagrams are H—Cl and N≡N. A triple bond represents three shared pairs. 
 
 **Check:** Cl is I and each N is III; each N has one neighbour, with three shared pairs between them. N₂ is neutral; valency is not its charge. Make two columns: “how many bonds?” and “what particle charge?”. Give an example where equal numbers have different physical meanings.
 
-## Exercise without hints
+## Exercise
 
 1. What is O’s valency in double-bonded O₂?
 2. How many neighbours does each N have in N₂?
 3. Does IV for C in CH₄ imply charge +4?
 
-## Answers and reasoning
+## Answers
 
 II; one; no. A triple bond has three shared pairs; valency is not charge.
 

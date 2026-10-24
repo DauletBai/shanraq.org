@@ -46,13 +46,13 @@ A model molecule X—Y—X has identical bonds with density shifting from Y towa
 
 **Check:** the shifts cancel in the symmetric linear model but not in the bent model. Rotating an entire molecule does not change its polarity. Reconstruct three distinctions: bond versus molecule, partial versus full charge, formula versus shape. Explain them with CO₂ and H₂O rather than saying “oxygen means polar”.
 
-## Exercise without hints
+## Exercise
 
 1. Does δ⁻ mean one whole electron has been gained?
 2. Is symmetric linear CO₂ polar?
 3. Why is bent H₂O polar?
 
-## Answers and reasoning
+## Answers
 
 No; no; the electron-density shifts do not cancel. Distinguish a polar bond from a polar molecule.
 

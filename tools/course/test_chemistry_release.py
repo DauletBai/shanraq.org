@@ -226,7 +226,8 @@ class ChemistryElementsReleaseTests(unittest.TestCase):
                 self.assertNotIn('<details', body)
                 self.assertIn({'ru': 'Не получайте газы', 'kz': 'Газ алмаңыз',
                                'en': 'Do not produce gases'}[lang], body)
-                self.assertIn({'ru': 'Ответы', 'kz': 'Жауаптар', 'en': 'Answers'}[lang], body)
+                for heading in {'ru': ('Задание', 'Ответы'), 'kz': ('Тапсырма', 'Жауаптар'), 'en': ('Exercise', 'Answers')}[lang]:
+                    self.assertIn(f'## {heading}\n', body)
                 for linked in re.findall(r'!\[[^]]+\]\((/static/[^)]+)\)', body):
                     asset = ROOT / 'web' / linked.lstrip('/')
                     self.assertTrue(asset.is_file(), linked)

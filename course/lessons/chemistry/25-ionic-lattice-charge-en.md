@@ -46,13 +46,13 @@ A new condition specifies Mg²⁺ and O²⁻ in a neutral compound. Find the sim
 
 **Check:** 1:1, MgO; the total charge is +2−2=0. An ionic formula gives the simplest ratio; molecular H₂O₂ gives the actual atom count in one molecule. Reconstruct ion formation, attraction, lattice and formula unit from memory. Limit: these drawings have not identified an unknown sample.
 
-## Exercise without hints
+## Exercise
 
 1. How many electrons are in Na⁺ if Z=11?
 2. Is NaCl a separate molecule in its crystal?
 3. What is the simplest neutral ratio of Mg²⁺ to O²⁻?
 
-## Answers and reasoning
+## Answers
 
 10; no;1:1. Proton counts remain unchanged. A formula unit gives a lattice ratio.
 
