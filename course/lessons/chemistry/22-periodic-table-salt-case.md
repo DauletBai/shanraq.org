@@ -67,3 +67,5 @@ _Лид (summary):_ **Соберём доказательства из карт�
 - [ACS: energy-level models](https://www.acs.org/middleschoolchemistry/lessonplans/chapter4/lesson3.html)
 
 [Меняет ли ион место элемента в таблице?](/read/chemistry-21-ion-and-element-position?lang=ru)
+
+[Почему атомы образуют химические связи?](/read/chemistry-23-why-atoms-bond?lang=ru)

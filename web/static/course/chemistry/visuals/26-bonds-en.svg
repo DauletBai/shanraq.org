@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Can a shared electron pair be distributed unequally?</title><desc id="desc">Symbolic model, not to scale</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="45" y="55" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">26 · Can a shared electron pair be distributed unequally?</text>
+<text x="45" y="110" font-family="Arial,sans-serif" font-size="22" fill="#bedde4" text-anchor="start">Symbolic model, not to scale</text>
+<text x="640" y="180" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">Shape and density shifts</text>
+<text x="350" y="300" font-family="Arial,sans-serif" font-size="55" fill="#f1f7f2" text-anchor="middle">O ← C → O</text>
+<text x="350" y="405" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="middle">Linear: cancellation</text>
+<circle cx="950" cy="285" r="51" fill="#d4eee7"/>
+<text x="950" y="297" font-family="Arial,sans-serif" font-size="35" fill="#143242" text-anchor="middle">O</text>
+<circle cx="820" cy="415" r="51" fill="#d4eee7"/>
+<text x="820" y="427" font-family="Arial,sans-serif" font-size="35" fill="#143242" text-anchor="middle">H</text>
+<circle cx="1080" cy="415" r="51" fill="#d4eee7"/>
+<text x="1080" y="427" font-family="Arial,sans-serif" font-size="35" fill="#143242" text-anchor="middle">H</text>
+<path d="M840,390 L915,315" stroke="#8dd8d4" stroke-width="5"/>
+<path d="M1060,390 L985,315" stroke="#8dd8d4" stroke-width="5"/>
+<text x="950" y="495" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">Bent: no cancellation</text>
+<text x="350" y="565" font-family="Arial,sans-serif" font-size="58" fill="#f1f7f2" text-anchor="middle">CO₂</text>
+<text x="950" y="565" font-family="Arial,sans-serif" font-size="58" fill="#f1f7f2" text-anchor="middle">H₂O</text>
+<text x="640" y="665" font-family="Arial,sans-serif" font-size="39" fill="#f1f7f2" text-anchor="middle">δ⁺ ≠ +1     δ⁻ ≠ −1</text>
+</svg>

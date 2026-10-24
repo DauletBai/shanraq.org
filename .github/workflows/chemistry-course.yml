@@ -9,6 +9,9 @@ on:
       - 'tools/course/chemistry_data.py'
       - 'tools/course/chemistry_particles_data.py'
       - 'tools/course/chemistry_elements_data.py'
+      - 'tools/course/prepare_chemistry_bonds.py'
+      - 'tools/course/build_chemistry_bonds.py'
+      - 'tools/course/chemistry_bonds_data.py'
       - 'tools/course/build_chemistry_block.py'
       - 'tools/course/build_chemistry_particles.py'
       - 'tools/course/build_chemistry_elements.py'
@@ -28,6 +31,9 @@ on:
       - 'tools/course/chemistry_data.py'
       - 'tools/course/chemistry_particles_data.py'
       - 'tools/course/chemistry_elements_data.py'
+      - 'tools/course/prepare_chemistry_bonds.py'
+      - 'tools/course/build_chemistry_bonds.py'
+      - 'tools/course/chemistry_bonds_data.py'
       - 'tools/course/build_chemistry_block.py'
       - 'tools/course/build_chemistry_particles.py'
       - 'tools/course/build_chemistry_elements.py'
@@ -50,6 +56,7 @@ jobs:
           python3 tools/course/build_chemistry_block.py
           python3 tools/course/build_chemistry_particles.py
           python3 tools/course/build_chemistry_elements.py
+          python3 tools/course/build_chemistry_bonds.py
       - name: Ensure generated lessons and maps are committed
         run: git diff --exit-code
       - name: Check complete block and publication transaction
@@ -58,3 +65,4 @@ jobs:
           python3 tools/course/prepare_chemistry.py --sql /tmp/chemistry-course.sql --expected /tmp/chemistry-expected.json
           python3 tools/course/prepare_chemistry_particles.py --sql /tmp/chemistry-particles.sql --expected /tmp/chemistry-particles-expected.json
           python3 tools/course/prepare_chemistry_elements.py --sql /tmp/chemistry-elements.sql --expected /tmp/chemistry-elements-expected.json
+          python3 tools/course/prepare_chemistry_bonds.py --sql /tmp/chemistry-bonds.sql --expected /tmp/chemistry-bonds-expected.json

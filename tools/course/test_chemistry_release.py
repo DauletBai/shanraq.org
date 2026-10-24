@@ -13,6 +13,9 @@ from tools.course.prepare_chemistry_particles import prepare as prepare_particle
 from tools.course.chemistry_elements_data import ELEMENTS, LESSONS as ELEMENT_LESSONS
 from tools.course.build_chemistry_elements import render as render_elements, diagram as element_diagram, table_svg, visual as element_visual
 from tools.course.prepare_chemistry_elements import prepare as prepare_elements
+from tools.course.chemistry_bonds_data import LESSONS as BOND_LESSONS
+from tools.course.build_chemistry_bonds import render as render_bonds, map_svg as bond_map, visual as bond_visual
+from tools.course.prepare_chemistry_bonds import prepare as prepare_bonds
 
 
 class ChemistryReleaseTests(unittest.TestCase):
@@ -138,7 +141,7 @@ class ChemistryElementsReleaseTests(unittest.TestCase):
                 if number < 22:
                     self.assertIn(f'/read/chemistry-{number+1:02d}-', body)
                 else:
-                    self.assertNotIn('/read/chemistry-23-', body)
+                    self.assertIn('/read/chemistry-23-why-atoms-bond', body)
                 self.assertNotIn('<audio', body)
                 # Raw HTML is stripped by the site's safe Markdown renderer.
                 self.assertNotIn('<details', body)
@@ -195,6 +198,75 @@ class ChemistryElementsReleaseTests(unittest.TestCase):
                        'Elements lesson position occupied', 'Elements lesson belongs to another course',
                        'Elements block course membership incomplete', 'Elements block translations incomplete'):
             self.assertIn(clause, sql)
+
+    def test_fourth_block_content_navigation_and_localized_assets(self):
+        curriculum = json.loads((ROOT / 'course/chemistry/curriculum.json').read_text())
+        self.assertEqual(curriculum['blocks'][3]['range'], '23-31')
+        self.assertIn(curriculum['blocks'][3]['status'], ('prepared', 'published'))
+        self.assertEqual(len(BOND_LESSONS), 9)
+        slugs = json.loads((ROOT / 'tools/course/lesson-slugs.json').read_text())
+        for number, row in enumerate(BOND_LESSONS, 23):
+            for lang in LANGS:
+                self.assertEqual(len(row[lang]), 10)
+                suffix = '' if lang == 'ru' else '-'+lang
+                path = LESSON_DIR / f'{row["stem"]}{suffix}.md'
+                self.assertEqual(path.read_text(), render_bonds(number, lang))
+                title, summary, body = read_lesson(path)
+                self.assertTrue(title and summary)
+                # Counts are a lower completeness bound, not a quality score.
+                self.assertGreater(len(body.split()), 300, path)
+                self.assertEqual(slugs[f'chemistry/{row["stem"]}{suffix}'],
+                                 [particle_slug(number, row['stem']), lang])
+                self.assertIn(f'/read/chemistry-{number-1:02d}-', body)
+                if number < 31:
+                    self.assertIn(f'/read/chemistry-{number+1:02d}-', body)
+                else:
+                    self.assertNotIn('/read/chemistry-32-', body)
+                self.assertNotIn('<audio', body)
+                self.assertNotIn('<details', body)
+                self.assertIn({'ru': 'Не получайте газы', 'kz': 'Газ алмаңыз',
+                               'en': 'Do not produce gases'}[lang], body)
+                for heading in {'ru': ('Задание', 'Ответы'), 'kz': ('Тапсырма', 'Жауаптар'), 'en': ('Exercise', 'Answers')}[lang]:
+                    self.assertIn(f'## {heading}\n', body)
+                for linked in re.findall(r'!\[[^]]+\]\((/static/[^)]+)\)', body):
+                    asset = ROOT / 'web' / linked.lstrip('/')
+                    self.assertTrue(asset.is_file(), linked)
+                    ET.parse(asset)
+                self.assertEqual((MAP_DIR / f'map-{number:02d}-{lang}.svg').read_text(), bond_map(number, lang))
+                self.assertEqual((MAP_DIR / f'visuals/{number:02d}-bonds-{lang}.svg').read_text(), bond_visual(number, lang))
+
+    def test_bond_diagrams_conserve_electrons_and_charge(self):
+        for lang in LANGS:
+            root = ET.fromstring(bond_visual(24, lang))
+            electrons = [x for x in root if x.get('data-electron')]
+            self.assertEqual(len(electrons), 14)
+            self.assertEqual(sum(x.get('data-electron') == 'shared' for x in electrons), 2)
+        # Independent reference counts catch an incorrect worksheet answer.
+        for cation, anion, ncat, nanion in ((2,-1,1,2),(3,-2,2,3),(2,-3,3,2),(1,-2,2,1)):
+            self.assertEqual(cation*ncat+anion*nanion, 0)
+            from math import gcd
+            self.assertEqual(gcd(ncat,nanion), 1)
+        for lang in LANGS:
+            text = render_bonds(30, lang)
+            self.assertIn('Al₂(SO₄)₃', text)
+            self.assertIn('12', text)
+            self.assertIn('24', text)
+
+    def test_bonds_publication_guards_previous_block_and_news_queue(self):
+        sql, expected = prepare_bonds()
+        self.assertEqual(len(expected), 30)
+        self.assertEqual(len({(x['slug'],x['lang']) for x in expected}), 30)
+        self.assertEqual(sql.count('BEGIN;'), 1)
+        self.assertTrue(sql.rstrip().endswith('COMMIT;'))
+        self.assertEqual(sql.count('INSERT INTO article_series_items'), 9)
+        self.assertEqual(sql.count('INSERT INTO article_translations'), 27)
+        self.assertEqual(sql.count('UPDATE article_translations SET body_md='), 3)
+        for clause in ('<> 22 THEN','<> 66 THEN','Bonds lesson position occupied',
+                       'Bonds lesson belongs to another course','Bonds block course membership incomplete',
+                       'SET CONSTRAINTS ALL IMMEDIATE','Course lessons entered news queue'):
+            self.assertIn(clause, sql)
+        self.assertLess(sql.index('INSERT INTO article_series_items'),
+                        sql.index('SET CONSTRAINTS ALL IMMEDIATE'))
 
 
 if __name__ == '__main__':

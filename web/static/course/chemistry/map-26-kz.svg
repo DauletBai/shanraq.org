@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" role="img" aria-labelledby="title desc">
+<title id="title">Ортақ электрон жұбы біркелкі таралмауы мүмкін бе?</title><desc id="desc">Оқу моделі · бөлшектер мен арақашықтық масштабта емес</desc>
+<rect width="1280" height="560" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">Ортақ электрон жұбы біркелкі таралмауы мүмкін бе?</text>
+<text x="40" y="145" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Оқу моделі · бөлшектер мен арақашықтық масштабта емес</text>
+<rect x="40" y="195" width="275" height="295" rx="18" fill="#e6f4ef"/>
+<text x="58" y="244" font-family="Arial,sans-serif" font-size="21" fill="#143242" text-anchor="start">БАЙЛАНЫС</text>
+<text x="58" y="320" font-family="Arial,sans-serif" font-size="24" fill="#143242" text-anchor="start">Тығыздық біркелкі</text>
+<text x="58" y="356" font-family="Arial,sans-serif" font-size="24" fill="#143242" text-anchor="start">емес</text>
+<text x="323" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="350" y="195" width="275" height="295" rx="18" fill="#e6f4ef"/>
+<text x="368" y="244" font-family="Arial,sans-serif" font-size="21" fill="#143242" text-anchor="start">δ</text>
+<text x="368" y="320" font-family="Arial,sans-serif" font-size="24" fill="#143242" text-anchor="start">Ішінара заряд</text>
+<text x="633" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="660" y="195" width="275" height="295" rx="18" fill="#e6f4ef"/>
+<text x="678" y="244" font-family="Arial,sans-serif" font-size="21" fill="#143242" text-anchor="start">МОЛЕКУЛА</text>
+<text x="678" y="320" font-family="Arial,sans-serif" font-size="24" fill="#143242" text-anchor="start">Пішін маңызды</text>
+<text x="943" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="970" y="195" width="275" height="295" rx="18" fill="#e6f4ef"/>
+<text x="988" y="244" font-family="Arial,sans-serif" font-size="21" fill="#143242" text-anchor="start">CO₂ / H₂O</text>
+<text x="988" y="320" font-family="Arial,sans-serif" font-size="24" fill="#143242" text-anchor="start">Сызықтық /</text>
+<text x="988" y="356" font-family="Arial,sans-serif" font-size="24" fill="#143242" text-anchor="start">бұрыштық</text>
+</svg>

@@ -67,3 +67,5 @@ _Лид (summary):_ **Карточкалар, электрондық модел�
 - [ACS: energy-level models](https://www.acs.org/middleschoolchemistry/lessonplans/chapter4/lesson3.html)
 
 [Ион элементтің кестедегі орнын өзгерте ме?](/read/chemistry-21-ion-and-element-position?lang=kz)
+
+[Атомдар неліктен химиялық байланыс түзеді?](/read/chemistry-23-why-atoms-bond?lang=kz)

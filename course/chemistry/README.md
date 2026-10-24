@@ -5,6 +5,8 @@ The second block (particles and atoms) has eight lessons and twenty-four
 published language versions.
 The third block (elements and the periodic table, lessons 14–22) has nine
 published lessons and twenty-seven language versions.
+The fourth block (bonds and formulas, lessons 23–31) is prepared: nine lessons,
+27 language versions, 27 localized maps and 27 original teaching diagrams.
 `curriculum.json` sketches the 100-lesson route. See `docs/chemistry-course.md`
 for teaching method, evidence limits and safety rules.
 
@@ -14,10 +16,12 @@ Generate and validate from the repository root:
 python3 tools/course/build_chemistry_block.py
 python3 tools/course/build_chemistry_particles.py
 python3 tools/course/build_chemistry_elements.py
+python3 tools/course/build_chemistry_bonds.py
 python3 -m unittest tools.course.test_chemistry_release
 python3 tools/course/prepare_chemistry.py --sql /tmp/chemistry-course.sql --expected /tmp/chemistry-expected.json
 python3 tools/course/prepare_chemistry_particles.py --sql /tmp/chemistry-particles.sql --expected /tmp/chemistry-particles-expected.json
 python3 tools/course/prepare_chemistry_elements.py --sql /tmp/chemistry-elements.sql --expected /tmp/chemistry-elements-expected.json
+python3 tools/course/prepare_chemistry_bonds.py --sql /tmp/chemistry-bonds.sql --expected /tmp/chemistry-bonds-expected.json
 ```
 
 The prepare command never writes to production. Back up the database before
@@ -31,3 +35,8 @@ The third release also guards the thirteen existing lessons and their 39
 translations, updates lesson 13’s onward link, and attaches all nine new
 lessons to the course before commit. Its expected manifest includes 30 pages:
 the new 27 plus the previous lesson in three languages.
+
+The fourth release guards 22 prior lessons and 66 translations, bridges lesson
+22 and forces deferred triggers before checking that no new lesson entered
+the news queue. Its manifest contains the 27 new pages and lesson 22 in all
+three languages. Stage the transaction on a restored backup before production.
