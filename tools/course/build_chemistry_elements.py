@@ -260,6 +260,13 @@ def render(number, lang):
     if number < 22:
         following = LESSONS[number-13]
         out.append(f'[{following[lang][0]}](/read/{slug(number+1, following["stem"])}?lang={lang})')
+    if number == 22:
+        try:
+            from .chemistry_bonds_data import LESSONS as NEXT
+        except ImportError:
+            from chemistry_bonds_data import LESSONS as NEXT
+        following = NEXT[0]
+        out.append(f'[{following[lang][0]}](/read/{slug(23, following["stem"])}?lang={lang})')
     return '\n\n'.join(out)+'\n'
 
 

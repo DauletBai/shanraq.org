@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">How does structure help explain a substance’s properties?</title><desc id="desc">Symbolic model, not to scale</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="45" y="55" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">27 · How does structure help explain a substance’s properties?</text>
+<text x="45" y="110" font-family="Arial,sans-serif" font-size="22" fill="#bedde4" text-anchor="start">Symbolic model, not to scale</text>
+<text x="640" y="185" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">Particles and carriers</text>
+<text x="190" y="300" font-family="Arial,sans-serif" font-size="53" fill="#f1f7f2" text-anchor="middle">H₂O</text>
+<text x="190" y="395" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">molecules</text>
+<text x="190" y="525" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">—</text>
+<text x="490" y="300" font-family="Arial,sans-serif" font-size="53" fill="#f1f7f2" text-anchor="middle">NaCl</text>
+<text x="490" y="395" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">ions</text>
+<text x="490" y="525" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">ions</text>
+<text x="790" y="300" font-family="Arial,sans-serif" font-size="53" fill="#f1f7f2" text-anchor="middle">Cu</text>
+<text x="790" y="395" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">Cu</text>
+<text x="790" y="525" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">electrons</text>
+<text x="1090" y="300" font-family="Arial,sans-serif" font-size="53" fill="#f1f7f2" text-anchor="middle">C</text>
+<text x="1090" y="395" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">atom network</text>
+<text x="1090" y="525" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">—</text>
+<text x="640" y="640" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="middle">NaCl: molten · Cu: solid</text>
+</svg>

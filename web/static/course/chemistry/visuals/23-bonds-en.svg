@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Why do atoms form chemical bonds?</title><desc id="desc">Symbolic model, not to scale</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="45" y="55" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">23 · Why do atoms form chemical bonds?</text>
+<text x="45" y="110" font-family="Arial,sans-serif" font-size="22" fill="#bedde4" text-anchor="start">Symbolic model, not to scale</text>
+<text x="640" y="190" font-family="Arial,sans-serif" font-size="33" fill="#f1f7f2" text-anchor="middle">Invented energies</text>
+<text x="240" y="310" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="middle">far apart</text>
+<text x="240" y="440" font-family="Arial,sans-serif" font-size="80" fill="#f1f7f2" text-anchor="middle">0</text>
+<text x="640" y="310" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="middle">bonded</text>
+<text x="640" y="440" font-family="Arial,sans-serif" font-size="80" fill="#f1f7f2" text-anchor="middle">−4</text>
+<text x="1040" y="310" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="middle">too close</text>
+<text x="1040" y="440" font-family="Arial,sans-serif" font-size="80" fill="#f1f7f2" text-anchor="middle">+6</text>
+<text x="640" y="610" font-family="Arial,sans-serif" font-size="48" fill="#f1f7f2" text-anchor="middle">0 − (−4) = 4</text>
+</svg>

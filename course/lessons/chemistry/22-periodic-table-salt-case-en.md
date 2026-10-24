@@ -66,3 +66,5 @@ Close the page and, after 10 minutes, reconstruct the map, define the terms in y
 - [ACS: energy-level models](https://www.acs.org/middleschoolchemistry/lessonplans/chapter4/lesson3.html)
 
 [Does an ion move its element in the table?](/read/chemistry-21-ion-and-element-position?lang=en)
+
+[Why do atoms form chemical bonds?](/read/chemistry-23-why-atoms-bond?lang=en)
