@@ -9,6 +9,10 @@ on:
       - 'tools/course/chemistry_data.py'
       - 'tools/course/chemistry_particles_data.py'
       - 'tools/course/chemistry_elements_data.py'
+      - 'tools/course/prepare_chemistry_reactions.py'
+      - 'tools/course/build_chemistry_reactions.py'
+      - 'tools/course/chemistry_reactions_data.py'
+      - 'tools/course/test_chemistry_reactions.py'
       - 'tools/course/prepare_chemistry_bonds.py'
       - 'tools/course/build_chemistry_bonds.py'
       - 'tools/course/chemistry_bonds_data.py'
@@ -31,6 +35,10 @@ on:
       - 'tools/course/chemistry_data.py'
       - 'tools/course/chemistry_particles_data.py'
       - 'tools/course/chemistry_elements_data.py'
+      - 'tools/course/prepare_chemistry_reactions.py'
+      - 'tools/course/build_chemistry_reactions.py'
+      - 'tools/course/chemistry_reactions_data.py'
+      - 'tools/course/test_chemistry_reactions.py'
       - 'tools/course/prepare_chemistry_bonds.py'
       - 'tools/course/build_chemistry_bonds.py'
       - 'tools/course/chemistry_bonds_data.py'
@@ -57,12 +65,14 @@ jobs:
           python3 tools/course/build_chemistry_particles.py
           python3 tools/course/build_chemistry_elements.py
           python3 tools/course/build_chemistry_bonds.py
+          python3 tools/course/build_chemistry_reactions.py
       - name: Ensure generated lessons and maps are committed
         run: git diff --exit-code
       - name: Check complete block and publication transaction
         run: |
-          python3 -m unittest tools.course.test_chemistry_release
+          python3 -m unittest tools.course.test_chemistry_release tools.course.test_chemistry_reactions
           python3 tools/course/prepare_chemistry.py --sql /tmp/chemistry-course.sql --expected /tmp/chemistry-expected.json
           python3 tools/course/prepare_chemistry_particles.py --sql /tmp/chemistry-particles.sql --expected /tmp/chemistry-particles-expected.json
           python3 tools/course/prepare_chemistry_elements.py --sql /tmp/chemistry-elements.sql --expected /tmp/chemistry-elements-expected.json
           python3 tools/course/prepare_chemistry_bonds.py --sql /tmp/chemistry-bonds.sql --expected /tmp/chemistry-bonds-expected.json
+          python3 tools/course/prepare_chemistry_reactions.py --sql /tmp/chemistry-reactions.sql --expected /tmp/chemistry-reactions-expected.json

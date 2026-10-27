@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Атомдар сақталса да, таразыдағы масса неге өзгеруі мүмкін?</title><desc id="desc">Оқу моделі · бөлшектер мен арақашықтық масштабта емес</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">37 · Атомдар сақталса да, таразыдағы масса неге өзгеруі мүмкін?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Оқу моделі · бөлшектер мен арақашықтық масштабта емес</text>
+<rect x="40" y="200" width="1200" height="140" rx="18" fill="#173e4d"/>
+<text x="640" y="252" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">ЖАБЫҚ</text>
+<text x="640" y="308" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">100.00 g → 100.00 g</text>
+<rect x="40" y="358" width="1200" height="140" rx="18" fill="#173e4d"/>
+<text x="640" y="410" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">АШЫҚ</text>
+<text x="640" y="466" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">100 g = 97 g + 3 g</text>
+<rect x="40" y="516" width="1200" height="140" rx="18" fill="#173e4d"/>
+<text x="640" y="568" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">±0.02 g</text>
+<text x="640" y="624" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">100.00 g ≈ 100.01 g</text>
+</svg>
