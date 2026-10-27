@@ -861,7 +861,7 @@ type GuestPageRow struct {
 	Kind  string
 	Title string
 	A     Audience
-	Pct   int // guest share of the busiest kind, for the bar width
+	Pct   float64 // guest share of the busiest kind, for the bar width
 }
 
 // GuestClickRow is one named click event's counts over the window.
@@ -888,7 +888,7 @@ type GuestSimpleRow struct {
 	Name  string
 	Title string
 	N     int64
-	Pct   int
+	Pct   float64
 }
 
 // guestTrendDays is how far back the guest-views chart looks, and
@@ -902,7 +902,7 @@ const (
 type GuestTrendDay struct {
 	Label string
 	N     int64
-	Pct   int
+	Pct   float64
 	// Day is the day of the month. A full-width chart has room to number every
 	// bar, which reads faster than a date and shows where the month turns over.
 	Day int
@@ -1050,7 +1050,7 @@ func (m *Module) guestAnalytics(ctx context.Context, lang string) GuestAnalytics
 	return g
 }
 
-// guestTrend returns the last 14 calendar days of guest page views, oldest
+// guestTrend returns the last 30 calendar days of guest page views, oldest
 // first, with missing days present as zero so the sparkline is continuous.
 func (m *Module) guestTrend(ctx context.Context) []GuestTrendDay {
 	counts := map[string]int64{}

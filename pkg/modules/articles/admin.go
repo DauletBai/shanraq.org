@@ -47,13 +47,13 @@ func NewAdminStore(db *pgxpool.Pool) *AdminStore { return &AdminStore{db: db} }
 type RoleCount struct {
 	Role string
 	N    int
-	Pct  int
+	Pct  float64
 }
 type CatViews struct {
 	Slug  string
 	N     int
 	Views int64
-	Pct   int
+	Pct   float64
 }
 type TopArticle struct {
 	Slug  string
@@ -547,17 +547,16 @@ func (m *Module) handleAdminHideComment(w http.ResponseWriter, r *http.Request) 
 	http.Redirect(w, r, "/admin?ok=comment_hidden", http.StatusSeeOther)
 }
 
-// barPct scales v against max to a 0..100 width, with a small floor so
-// non-zero bars stay visible.
-func barPct(v, max int64) int {
+// barPct preserves the measured ratio, including small values and zero.
+// A visibility floor would make different counts look identical.
+func barPct(v, max int64) float64 {
 	if max <= 0 || v <= 0 {
 		return 0
 	}
-	p := int(v * 100 / max)
-	if p < 4 {
-		p = 4
+	if v >= max {
+		return 100
 	}
-	return p
+	return float64(v) / float64(max) * 100
 }
 
 func contains(ss []string, s string) bool {

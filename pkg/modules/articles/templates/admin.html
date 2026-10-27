@@ -233,7 +233,7 @@
               </div>
               <div class="spark__bars">
                 {{ range .Guests.Trend }}
-                <span class="spark__bar" title="{{ .Label }}: {{ money .N }}" style="height:{{ if .Pct }}{{ .Pct }}{{ else }}1{{ end }}%"></span>
+                <span class="spark__bar" title="{{ .Label }}: {{ money .N }}" style="height:{{ .Pct }}%"></span>
                 {{ end }}
               </div>
             </div>
