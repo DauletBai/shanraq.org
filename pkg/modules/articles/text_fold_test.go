@@ -103,10 +103,56 @@ func TestChemistryBondBlockAnswersFoldInEveryLanguage(t *testing.T) {
 			}
 			foldEnd := strings.Index(page, "</details>")
 			next := "Дневник исследователя"
-			if strings.Contains(base, "-kz") {
+			if strings.HasSuffix(base, "-kz.md") {
 				next = "Зерттеуші күнделігі"
 			}
-			if strings.Contains(base, "-en") {
+			if strings.HasSuffix(base, "-en.md") {
+				next = "Investigator’s notebook"
+			}
+			if strings.Index(page, next) < foldEnd {
+				t.Fatal("the notebook section was hidden with the answers")
+			}
+		})
+	}
+	if checked != 27 {
+		t.Fatalf("expected 27 language pages, got %d", checked)
+	}
+}
+
+// Exercise headings are an interface to the production renderer: adding words
+// to them silently exposes the answer before a learner attempts the task.
+func TestChemistryReactionBlockAnswersFoldInEveryLanguage(t *testing.T) {
+	files, err := filepath.Glob(filepath.Join("..", "..", "..", "course", "lessons", "chemistry", "*.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	checked := 0
+	for _, path := range files {
+		base := filepath.Base(path)
+		if base[:2] < "32" || base[:2] > "40" {
+			continue
+		}
+		checked++
+		t.Run(base, func(t *testing.T) {
+			content, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			parts := strings.SplitN(string(content), "\n", 5)
+			if len(parts) != 5 {
+				t.Fatal("missing lesson body")
+			}
+			html, _ := renderLessonTOC(parts[4])
+			page := string(html)
+			if strings.Count(page, `<details class="fold">`) != 1 {
+				t.Fatal("the self-check answers must fold exactly once")
+			}
+			foldEnd := strings.Index(page, "</details>")
+			next := "Дневник исследователя"
+			if strings.HasSuffix(base, "-kz.md") {
+				next = "Зерттеуші күнделігі"
+			}
+			if strings.HasSuffix(base, "-en.md") {
 				next = "Investigator’s notebook"
 			}
 			if strings.Index(page, next) < foldEnd {

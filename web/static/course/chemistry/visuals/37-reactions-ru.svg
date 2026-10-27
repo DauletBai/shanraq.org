@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Почему масса на весах может измениться, хотя атомы сохраняются?</title><desc id="desc">Учебная модель · частицы и расстояния не в масштабе</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">37 · Почему масса на весах может измениться, хотя атомы</text>
+<text x="40" y="92" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">сохраняются?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Учебная модель · частицы и расстояния не в масштабе</text>
+<rect x="40" y="200" width="1200" height="140" rx="18" fill="#173e4d"/>
+<text x="640" y="252" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">ЗАКРЫТАЯ</text>
+<text x="640" y="308" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">100.00 g → 100.00 g</text>
+<rect x="40" y="358" width="1200" height="140" rx="18" fill="#173e4d"/>
+<text x="640" y="410" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">ОТКРЫТАЯ</text>
+<text x="640" y="466" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">100 g = 97 g + 3 g</text>
+<rect x="40" y="516" width="1200" height="140" rx="18" fill="#173e4d"/>
+<text x="640" y="568" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">±0.02 g</text>
+<text x="640" y="624" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">100.00 g ≈ 100.01 g</text>
+</svg>

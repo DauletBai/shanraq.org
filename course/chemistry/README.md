@@ -40,3 +40,19 @@ The fourth release guards 22 prior lessons and 66 translations, bridges lesson
 22 and forces deferred triggers before checking that no new lesson entered
 the news queue. Its manifest contains the 27 new pages and lesson 22 in all
 three languages. Stage the transaction on a restored backup before production.
+
+Block five (32–40, reactions and conservation) adds 27 language pages, 27
+retrieval maps and 27 original diagram covers. Regenerate and validate with:
+
+```sh
+python3 tools/course/build_chemistry_reactions.py
+python3 -m unittest tools.course.test_chemistry_release tools.course.test_chemistry_reactions
+python3 tools/course/prepare_chemistry_reactions.py --sql /tmp/chemistry-reactions.sql --expected /tmp/chemistry-reactions-expected.json
+```
+
+Release block four first. Block five requires 31 published lessons and 93 ready
+translations, and bridges lesson 31 only inside its release transaction. The
+on-disk lesson 31 remains safe to release without block five. The manifest has
+30 pages. Tests independently count atoms in all reference equations, check
+minimal coefficients, mass and energy examples, particle diagrams, localized
+routes and assets, and the staged bridge. No lesson may enter news Telegram.
