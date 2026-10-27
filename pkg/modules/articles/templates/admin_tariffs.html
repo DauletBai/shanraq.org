@@ -20,7 +20,7 @@
             {{ range .AdFormats }}
             <tr>
               <td><b>{{ .Label }}</b></td>
-              {{ range .Cells }}<td><input class="input input--sm" type="number" min="0" name="{{ .Key }}" value="{{ .Value }}" style="width:104px"></td>{{ end }}
+              {{ range .Cells }}<td><input class="input input--sm tariff-input" type="number" min="0" name="{{ .Key }}" value="{{ .Value }}"></td>{{ end }}
             </tr>
             {{ end }}
           </tbody>
@@ -31,8 +31,8 @@
     <div class="cab-card">
       <h2 style="margin-top:0">{{ t .Lang "tar.weights" }} {{ template "fhelp" (t .Lang "tar.weights_hint") }}</h2>
       {{ range .Weights }}
-      <label style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="min-width:300px">{{ .Label }}</span>
-        <input class="input input--sm" type="number" min="1" name="{{ .Key }}" value="{{ .Value }}" style="width:104px"></label>
+      <label class="tariff-row"><span>{{ .Label }}</span>
+        <input class="input input--sm tariff-input" type="number" min="1" name="{{ .Key }}" value="{{ .Value }}"></label>
       {{ end }}
     </div>
 
@@ -41,7 +41,7 @@
       <div style="display:flex;flex-wrap:wrap;gap:14px">
         {{ range .Banner }}
         <label style="display:flex;flex-direction:column;font-size:13px;gap:4px">{{ .Label }} {{ t $.Lang "tar.days" }}
-          <input class="input input--sm" type="number" min="0" name="{{ .Key }}" value="{{ .Value }}" style="width:96px"></label>
+          <input class="input input--sm tariff-input" type="number" min="0" name="{{ .Key }}" value="{{ .Value }}"></label>
         {{ end }}
       </div>
     </div>
@@ -49,16 +49,16 @@
     <div class="cab-card">
       <h2 style="margin-top:0">{{ t .Lang "tar.services" }}</h2>
       {{ range .Services }}
-      <label style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="min-width:300px">{{ .Label }}</span>
-        <input class="input input--sm" type="number" min="0" name="{{ .Key }}" value="{{ .Value }}" style="width:104px"> ₸</label>
+      <label class="tariff-row"><span>{{ .Label }}</span>
+        <input class="input input--sm tariff-input" type="number" min="0" name="{{ .Key }}" value="{{ .Value }}"> ₸</label>
       {{ end }}
     </div>
 
     <div class="cab-card">
       <h2 style="margin-top:0">{{ t .Lang "tar.durations" }}</h2>
       {{ range .Durations }}
-      <label style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="min-width:300px">{{ .Label }}</span>
-        <input class="input input--sm" type="number" min="1" name="{{ .Key }}" value="{{ .Value }}" style="width:104px"></label>
+      <label class="tariff-row"><span>{{ .Label }}</span>
+        <input class="input input--sm tariff-input" type="number" min="1" name="{{ .Key }}" value="{{ .Value }}"></label>
       {{ end }}
     </div>
 

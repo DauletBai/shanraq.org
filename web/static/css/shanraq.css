@@ -4142,3 +4142,9 @@ h1[tabindex="-1"]:focus, h1[tabindex="-1"]:focus-visible { outline: none; }
 .shop-plan__list { flex: 1 1 auto; }
 .shop-plan__list ul { margin: 0 0 14px; padding-left: 20px; }
 .shop-plan__list li { margin: 4px 0; color: var(--ink-soft); }
+
+/* Tariff labels wrap above their controls instead of forcing a 300px label
+   plus a fixed input beyond a phone-width card. */
+.tariff-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-block: 4px; }
+.tariff-row > span { flex: 1 1 16rem; min-width: 0; }
+.tariff-input { width: 7em; max-width: 100%; }
