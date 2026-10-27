@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Ортақ электрон жұбы атомдарды қалай байланыстырады?</title><desc id="desc">Шартты модель, масштабсыз</desc>
+<rect width="1280" height="720" rx="24" fill="#102b3b"/>
+<text x="45" y="55" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">24 · Ортақ электрон жұбы атомдарды қалай байланыстырады?</text>
+<text x="45" y="110" font-family="Arial,sans-serif" font-size="22" fill="#bedde4" text-anchor="start">Шартты модель, масштабсыз</text>
+<text x="640" y="190" font-family="Arial,sans-serif" font-size="34" fill="#f1f7f2" text-anchor="middle">Сыртқы электрондар</text>
+<text x="640" y="280" font-family="Arial,sans-serif" font-size="55" fill="#f1f7f2" text-anchor="middle">H : H    →    H—H</text>
+<text x="480" y="460" font-family="Arial,sans-serif" font-size="64" fill="#f1f7f2" text-anchor="middle">Cl</text>
+<circle data-electron="lone" cx="466" cy="368" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="494" cy="368" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="466" cy="508" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="494" cy="508" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="375" cy="440" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="375" cy="468" r="7" fill="#8dd8d4"/>
+<text x="800" y="460" font-family="Arial,sans-serif" font-size="64" fill="#f1f7f2" text-anchor="middle">Cl</text>
+<circle data-electron="lone" cx="786" cy="368" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="814" cy="368" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="786" cy="508" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="814" cy="508" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="905" cy="440" r="7" fill="#8dd8d4"/>
+<circle data-electron="lone" cx="905" cy="468" r="7" fill="#8dd8d4"/>
+<circle data-electron="shared" cx="640" cy="422" r="7" fill="#ffd49c"/>
+<circle data-electron="shared" cx="640" cy="450" r="7" fill="#ffd49c"/>
+<text x="640" y="610" font-family="Arial,sans-serif" font-size="43" fill="#f1f7f2" text-anchor="middle">2 + 6 + 6 = 14 e</text>
+<text x="640" y="668" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">ортақ жұп = 2 e</text>
+</svg>
