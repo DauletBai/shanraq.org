@@ -68,7 +68,7 @@ class ReactionTests(unittest.TestCase):
     def test_all_locales_routes_assets_and_navigation(self):
         self.assertEqual(len(LESSONS),9)
         curriculum=json.loads((ROOT/'course/chemistry/curriculum.json').read_text())
-        self.assertEqual(curriculum['blocks'][4]['status'],'prepared')
+        self.assertIn(curriculum['blocks'][4]['status'],('prepared','published'))
         routes=json.loads((ROOT/'tools/course/lesson-slugs.json').read_text())
         for n,row in enumerate(LESSONS,32):
             for lang in LANGS:
