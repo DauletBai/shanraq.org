@@ -2,6 +2,7 @@ package articles
 
 import (
 	"context"
+	"math"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -618,5 +619,51 @@ func TestArchivedLanguageCountsCannotExceedArticleTotal(t *testing.T) {
 	}
 	if stats.TotalViews != 1 || stats.ViewsByLang["ru"] != 0 || stats.UnattributedViews != 1 {
 		t.Fatalf("inconsistent archived language data shown as %+v", stats)
+	}
+}
+
+func TestDataBarsPreserveSmallAndZeroCounts(t *testing.T) {
+	for _, c := range []struct {
+		n, top int64
+		want   float64
+	}{
+		{0, 2000, 0}, {5, 2000, .25}, {50, 2000, 2.5}, {1000, 2000, 50}, {2000, 2000, 100},
+		{1, 1000000, .0001}, {-5, 2000, 0}, {5, 0, 0}, {2500, 2000, 100},
+		{math.MaxInt64 / 2, math.MaxInt64, 50},
+	} {
+		if got := barPct(c.n, c.top); math.Abs(got-c.want) > 1e-9 {
+			t.Errorf("barPct(%d,%d)=%g, want %g", c.n, c.top, got, c.want)
+		}
+	}
+}
+
+func TestGuestChartsRenderFractionalHeightsAndTrueZero(t *testing.T) {
+	r := buildTemplates(t)
+	for _, lang := range Langs {
+		guests := GuestAnalytics{HasData: true, Trend: []GuestTrendDay{
+			{Label: "zero", N: 0, Pct: barPct(0, 2000)},
+			{Label: "five", N: 5, Pct: barPct(5, 2000)},
+			{Label: "fifty", N: 50, Pct: barPct(50, 2000)},
+		}, TrendTicks: axisTicks(1600)}
+		for _, c := range []struct {
+			name string
+			data any
+		}{
+			{"admin", AdminPage{Base: Base{Lang: lang}, Guests: guests}},
+			{"stats", PublicStats{Base: Base{Lang: lang}, Guests: guests}},
+		} {
+			var out strings.Builder
+			if err := r.Execute(&out, c.name, c.data); err != nil {
+				t.Fatal(err)
+			}
+			for _, height := range []string{`height:0%`, `height:0.25%`, `height:2.5%`} {
+				if !strings.Contains(out.String(), height) {
+					t.Errorf("%s/%s missing %s", c.name, lang, height)
+				}
+			}
+			if strings.Contains(out.String(), "ZgotmplZ") {
+				t.Errorf("%s/%s rejected a CSS percentage", c.name, lang)
+			}
+		}
 	}
 }
