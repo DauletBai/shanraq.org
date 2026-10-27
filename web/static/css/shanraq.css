@@ -2226,6 +2226,19 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
    to be deciphered is worse than a chart that takes more room. */
 .charts { display: grid; gap: 18px; grid-template-columns: 1fr; margin-bottom: 18px; }
 .charts > .chart { margin-bottom: 0; }
+/* Analytics cards use the width left beside the sidebar. A viewport breakpoint
+   would squeeze them when the outer layout introduces that sidebar. */
+.analytics-main { container-type: inline-size; }
+.charts--analytics { grid-template-columns: minmax(0, 1fr); }
+@container (min-width: 48rem) {
+  .charts--analytics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.charts--analytics .chart .adm-bar { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto; }
+.charts--analytics .chart .adm-bar__label { white-space: normal; overflow-wrap: anywhere; }
+.charts--analytics .chart .adm-bar__val { min-width: 0; }
+.charts--analytics .spark__y { min-width: 4em; }
+.charts--analytics .chart--trend .chart__body { max-height: none; }
+
 .chart {
   display: flex; flex-direction: column;
   /* The bottom margin is for lone cards — the ones outside the grid: without it a

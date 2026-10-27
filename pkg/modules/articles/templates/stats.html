@@ -4,7 +4,7 @@
 {{ template "site_header" . }}
 <main class="container">
   <div class="layout">
-    <div class="layout__main">
+    <div class="layout__main analytics-main">
 
       <div class="section-head"><h1>{{ t .Lang "stats.title" }}</h1></div>
       <p class="place-lead">{{ t .Lang "stats.lead" }}</p>
@@ -31,21 +31,14 @@
         <div class="stat-tile"><b>{{ money .Articles }}</b><span>{{ t .Lang "stats.articles" }}</span></div>
       </div>
 
-      {{/* Hosts, visitors, visits and views, under their own switches. It runs
-           above the older sparkline because it answers the question the page is
-           opened with, and the sparkline is a fourteen-day detail of one of its
-           four lines. */}}
-      <div class="charts">
+      {{/* One grid pairs the traffic and daily charts, then the breakdowns.
+           Its columns depend on the content width, not the viewport. */}}
+      <div class="charts charts--analytics">
         <div class="chart">
           <h2 class="chart__h">{{ t .Lang "tc.alt" }}</h2>
           {{ template "trafficchart" (dict "Chart" .Traffic "Lang" .Lang "Base" "/analytics" "Nonce" .Nonce) }}
         </div>
-      </div>
-
-      {{/* The daily chart runs full width: it has a time axis, and halving that
-           means reading a month in two goes. */}}
-      <div class="charts">
-        <div class="chart">
+        <div class="chart chart--trend">
           <h2 class="chart__h">{{ t .Lang "ag.trend" }}</h2>
           <div class="chart__body">
             {{ if .Guests.Trend }}
@@ -63,18 +56,15 @@
                   {{ end }}
                 </div>
               </div>
-              {{/* The full width allows every bar to carry its day of the
-                   month: that shows both the day and where the month turned. */}}
-              <div class="spark__x spark__x--days">
-                {{ range .Guests.Trend }}<span>{{ .Day }}</span>{{ end }}
+              {{/* Sparse dates remain readable in a half-width card. Every
+                   bar retains its complete date and value in the title. */}}
+              <div class="spark__x">
+                {{ range .Guests.Trend }}<span>{{ if .Tick }}{{ .Label }}{{ end }}</span>{{ end }}
               </div>
             </div>
             {{ else }}<p class="chart__note">—</p>{{ end }}
           </div>
         </div>
-      </div>
-
-      <div class="charts">
         {{ template "chart_pages" (dict "T" (t .Lang "stats.pages") "Rows" .Guests.Pages) }}
         {{ template "chart_countries" (dict "T" (t .Lang "ag.countries") "Rows" .Guests.Countries) }}
         {{ template "chart_rows" (dict "T" (t .Lang "ag.langs") "Rows" .Guests.Langs) }}
