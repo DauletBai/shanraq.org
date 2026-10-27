@@ -59,7 +59,7 @@
               {{/* Sparse dates remain readable in a half-width card. Every
                    bar retains its complete date and value in the title. */}}
               <div class="spark__x">
-                {{ range .Guests.Trend }}<span>{{ if .Tick }}{{ .Label }}{{ end }}</span>{{ end }}
+                {{ range .Guests.Trend }}<span>{{ if .Tick }}<b>{{ .Label }}</b>{{ end }}</span>{{ end }}
               </div>
             </div>
             {{ else }}<p class="chart__note">—</p>{{ end }}

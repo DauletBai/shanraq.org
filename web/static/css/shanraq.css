@@ -2237,6 +2237,11 @@ g[data-region]:hover .map-bubble { fill-opacity: 0.98; }
 .charts--analytics .chart .adm-bar__label { white-space: normal; overflow-wrap: anywhere; }
 .charts--analytics .chart .adm-bar__val { min-width: 0; }
 .charts--analytics .spark__y { min-width: 4em; }
+.charts--analytics .spark__x { min-height: 1.4em; }
+.charts--analytics .spark__x > span { position: relative; }
+.charts--analytics .spark__x b { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 400; }
+.charts--analytics .spark__x > span:last-child b { left: auto; right: 0; transform: none; }
+.charts--analytics .spark__x > span:first-child b { left: 0; transform: none; }
 .charts--analytics .chart--trend .chart__body { max-height: none; }
 
 .chart {
