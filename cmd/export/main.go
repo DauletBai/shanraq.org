@@ -34,8 +34,10 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -126,6 +128,36 @@ func copyCovers(arts []article, root, dst string) (copied, missing int) {
 	return copied, missing
 }
 
+// Only export database covers referenced by a published article. Parse the
+// UUID so a database value cannot write outside the export directory.
+func copyDatabaseCovers(ctx context.Context, pool *pgxpool.Pool, arts []article, dst string) (int, error) {
+	copied := 0
+	for _, a := range arts {
+		const prefix = "/article-covers/"
+		if !strings.HasPrefix(a.CoverURL, prefix) {
+			continue
+		}
+		id, err := uuid.Parse(strings.TrimPrefix(a.CoverURL, prefix))
+		if err != nil || a.CoverURL != prefix+id.String() {
+			return copied, fmt.Errorf("invalid database cover URL for %s", a.Slug)
+		}
+		var data []byte
+		if err := pool.QueryRow(ctx, `SELECT b.body FROM article_cover_blobs b
+			JOIN articles a ON a.id=b.article_id WHERE a.id=$1 AND a.status='published'`, id).Scan(&data); err != nil {
+			return copied, fmt.Errorf("database cover for %s: %w", a.Slug, err)
+		}
+		path := filepath.Join(dst, "article-covers", id.String())
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			return copied, err
+		}
+		if err := os.WriteFile(path, data, 0o644); err != nil {
+			return copied, err
+		}
+		copied++
+	}
+	return copied, nil
+}
+
 func copyFile(src, dst string) error {
 	in, err := os.Open(src)
 	if err != nil {
@@ -188,6 +220,11 @@ func main() {
 	} else {
 		log.Print("MEDIA_ROOT is not set — uploaded covers are NOT in this export")
 	}
+	dbCovers, err := copyDatabaseCovers(ctx, pool, arts, dir)
+	if err != nil {
+		log.Fatalf("database covers: %v", err)
+	}
+	covers += dbCovers
 
 	for name, v := range map[string]any{
 		"articles.json":    arts,
