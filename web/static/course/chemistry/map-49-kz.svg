@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 570" role="img" aria-labelledby="title desc">
+<title id="title">Тұздың сыры: есептеудің бүкіл тізбегін қалай тексереміз?</title><desc id="desc">Оқу есептік моделі · шамалар мен бөлшектер масштабта емес</desc>
+<rect width="1280" height="570" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">Тұздың сыры: есептеудің бүкіл тізбегін қалай тексереміз?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Оқу есептік моделі · шамалар мен бөлшектер масштабта емес</text>
+<rect x="40" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="58" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">ТАЗАЛЫҚ</text>
+<text x="58" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Реагент массасы</text>
+<text x="323" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="350" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="368" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">ШЕК</text>
+<text x="368" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Ең кіші n / ν</text>
+<text x="633" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="660" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="678" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">ӨНІМ</text>
+<text x="678" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Құрамды ескер</text>
+<text x="943" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="970" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="988" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">ШЫҒЫМ</text>
+<text x="988" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Негізді</text>
+<text x="988" y="355" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">сәйкестендір</text>
+</svg>

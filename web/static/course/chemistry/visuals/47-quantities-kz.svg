@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+<title id="title">Қай реагенттің жетпейтінін қалай анықтаймыз?</title><desc id="desc">Оқу есептік моделі · шамалар мен бөлшектер масштабта емес</desc>
+<rect width="1280" height="760" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">47 · Қай реагенттің жетпейтінін қалай анықтаймыз?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Оқу есептік моделі · шамалар мен бөлшектер масштабта емес</text>
+<rect x="40" y="200" width="1200" height="148" rx="18" fill="#173e4d"/>
+<text x="75" y="254" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">H₂</text>
+<text x="450" y="254" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">3 / 2</text>
+<text x="640" y="312" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">→ 1.5 mol</text>
+<rect x="40" y="368" width="1200" height="148" rx="18" fill="#173e4d"/>
+<text x="75" y="422" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">O₂</text>
+<text x="450" y="422" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">2 / 1</text>
+<text x="640" y="480" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">→ 2 mol</text>
+<rect x="40" y="536" width="1200" height="148" rx="18" fill="#173e4d"/>
+<text x="75" y="590" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">O₂</text>
+<text x="450" y="590" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">2 − 1.5</text>
+<text x="640" y="648" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">→ 0.5 mol</text>
+</svg>

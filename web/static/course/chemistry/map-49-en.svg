@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 570" role="img" aria-labelledby="title desc">
+<title id="title">The salt case: how can we check the entire calculation chain?</title><desc id="desc">Teaching calculation model · quantities and particles not to scale</desc>
+<rect width="1280" height="570" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">The salt case: how can we check the entire calculation</text>
+<text x="40" y="92" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">chain?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching calculation model · quantities and particles not to scale</text>
+<rect x="40" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="58" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">PURITY</text>
+<text x="58" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Reactant mass</text>
+<text x="323" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="350" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="368" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">LIMIT</text>
+<text x="368" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Minimum n / ν</text>
+<text x="633" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="660" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="678" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">PRODUCT</text>
+<text x="678" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Correct</text>
+<text x="678" y="355" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">composition</text>
+<text x="943" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="970" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="988" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">YIELD</text>
+<text x="988" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Consistent basis</text>
+</svg>

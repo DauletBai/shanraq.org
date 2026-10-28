@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+<title id="title">How can we calculate product mass from a reaction equation?</title><desc id="desc">Teaching calculation model · quantities and particles not to scale</desc>
+<rect width="1280" height="760" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">46 · How can we calculate product mass from a reaction equation?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching calculation model · quantities and particles not to scale</text>
+<rect x="40" y="200" width="1200" height="148" rx="18" fill="#173e4d"/>
+<text x="75" y="254" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">CaCO₃</text>
+<text x="450" y="254" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">10.0 g / 100 g/mol</text>
+<text x="640" y="312" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">→ 0.100 mol</text>
+<rect x="40" y="368" width="1200" height="148" rx="18" fill="#173e4d"/>
+<text x="75" y="422" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">CO₂</text>
+<text x="450" y="422" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">0.100 mol × 44 g/mol</text>
+<text x="640" y="480" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">→ 4.40 g</text>
+<rect x="40" y="536" width="1200" height="148" rx="18" fill="#173e4d"/>
+<text x="75" y="590" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">CaO</text>
+<text x="450" y="590" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">0.100 mol × 56 g/mol</text>
+<text x="640" y="648" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">→ 5.60 g</text>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+<title id="title">Как считать частицы, которые нельзя пересчитать по одной?</title><desc id="desc">Учебная расчётная модель · величины и частицы не в масштабе</desc>
+<rect width="1280" height="760" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">41 · Как считать частицы, которые нельзя пересчитать по одной?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Учебная расчётная модель · величины и частицы не в масштабе</text>
+<circle data-element="O" cx="300" cy="365" r="55" fill="#98d5d8"/>
+<text x="300" y="375" font-family="Arial,sans-serif" font-size="30" fill="#143242" text-anchor="middle">O</text>
+<circle data-element="H" cx="220" cy="440" r="34" fill="#f0c18b"/>
+<text x="220" y="450" font-family="Arial,sans-serif" font-size="30" fill="#143242" text-anchor="middle">H</text>
+<circle data-element="H" cx="380" cy="440" r="34" fill="#f0c18b"/>
+<text x="380" y="450" font-family="Arial,sans-serif" font-size="30" fill="#143242" text-anchor="middle">H</text>
+<text x="300" y="550" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">Одна условная молекула</text>
+<text x="650" y="310" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="start">1 mol молекул H₂O</text>
+<text x="650" y="400" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="start">2 mol атомов H</text>
+<text x="650" y="490" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="start">1 mol атомов O</text>
+<text x="640" y="680" font-family="Arial,sans-serif" font-size="36" fill="#f1f7f2" text-anchor="middle">Nₐ = 6.02214076 × 10²³ mol⁻¹</text>
+</svg>

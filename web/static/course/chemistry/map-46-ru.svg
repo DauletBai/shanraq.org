@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 570" role="img" aria-labelledby="title desc">
+<title id="title">Как рассчитать массу продукта по уравнению реакции?</title><desc id="desc">Учебная расчётная модель · величины и частицы не в масштабе</desc>
+<rect width="1280" height="570" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">Как рассчитать массу продукта по уравнению реакции?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Учебная расчётная модель · величины и частицы не в масштабе</text>
+<rect x="40" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="58" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">МАССА</text>
+<text x="58" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">m исходного</text>
+<text x="323" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="350" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="368" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">МОЛИ</text>
+<text x="368" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">n = m / M</text>
+<text x="633" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="660" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="678" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">ОТНОШЕНИЕ</text>
+<text x="678" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">n продукта</text>
+<text x="943" y="365" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="970" y="200" width="275" height="290" rx="18" fill="#e6f4ef"/>
+<text x="988" y="250" font-family="Arial,sans-serif" font-size="20" fill="#143242" text-anchor="start">МАССА</text>
+<text x="988" y="320" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">m = nM</text>
+</svg>
