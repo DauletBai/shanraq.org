@@ -1827,6 +1827,7 @@ type CommercialRow struct {
 	Label                                           string
 	Views, D25, D50, D75, D100, Impressions, Clicks int64
 	Rate                                            string
+	DepthTracked                                    bool
 }
 type CommercialReport struct {
 	Books, Ads, Actions []CommercialRow
@@ -1919,6 +1920,7 @@ func (m *Module) commercialReport(ctx context.Context) CommercialReport {
 	}
 	rows.Close()
 	for _, v := range books {
+		v.DepthTracked = v.Label != "tartar|contents"
 		parts := strings.SplitN(v.Label, "|", 2)
 		if len(parts) == 2 {
 			if parts[0] == "product" {
@@ -1934,7 +1936,11 @@ func (m *Module) commercialReport(ctx context.Context) CommercialReport {
 				v.Label = "Книга по Go · " + parts[1]
 			}
 		}
-		v.Rate = ratio(v.D100, v.Views)
+		if v.DepthTracked {
+			v.Rate = ratio(v.D100, v.Views)
+		} else {
+			v.Rate = "—"
+		}
 		out.Books = append(out.Books, *v)
 	}
 	for _, v := range ads {
