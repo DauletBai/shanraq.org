@@ -5,7 +5,7 @@ The second block (particles and atoms) has eight lessons and twenty-four
 published language versions.
 The third block (elements and the periodic table, lessons 14–22) has nine
 published lessons and twenty-seven language versions.
-The fourth block (bonds and formulas, lessons 23–31) is prepared: nine lessons,
+The fourth block (bonds and formulas, lessons 23–31) is published: nine lessons,
 27 language versions, 27 localized maps and 27 original teaching diagrams.
 `curriculum.json` sketches the 100-lesson route. See `docs/chemistry-course.md`
 for teaching method, evidence limits and safety rules.
@@ -40,6 +40,23 @@ The fourth release guards 22 prior lessons and 66 translations, bridges lesson
 22 and forces deferred triggers before checking that no new lesson entered
 the news queue. Its manifest contains the 27 new pages and lesson 22 in all
 three languages. Stage the transaction on a restored backup before production.
+
+Block six (41–49) is prepared: moles, molar mass, entity counts, elemental
+mass fractions, stoichiometry, limiting reactants and product yield. It adds
+27 pages, 27 retrieval maps and 27 localized vector diagram covers. Run:
+
+```sh
+python3 tools/course/build_chemistry_quantities.py
+python3 -m unittest tools.course.test_chemistry_release tools.course.test_chemistry_reactions tools.course.test_chemistry_quantities
+python3 tools/course/prepare_chemistry_quantities.py --sql /tmp/chemistry-quantities.sql --expected /tmp/chemistry-quantities-expected.json
+```
+
+Its transaction requires the 40 existing lessons and 120 ready translations.
+It attaches lessons before forcing publication triggers, checks the absence
+of news jobs, and adds lesson 40's onward link in the same transaction.
+Each translation receives its own localized cover. Numeric tests independently
+check formula masses, conservation, excess remaining, purity and yield. Audio
+is still unavailable; no missing audio links are introduced.
 
 Block five (32–40, reactions and conservation) adds 27 language pages, 27
 retrieval maps and 27 original diagram covers. Regenerate and validate with:

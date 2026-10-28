@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+<title id="title">Why do equal mole amounts have different masses?</title><desc id="desc">Teaching calculation model · quantities and particles not to scale</desc>
+<rect width="1280" height="760" rx="24" fill="#102b3b"/>
+<text x="40" y="55" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">42 · Why do equal mole amounts have different masses?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching calculation model · quantities and particles not to scale</text>
+<rect x="40" y="200" width="1200" height="148" rx="18" fill="#173e4d"/>
+<text x="75" y="254" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">H₂O</text>
+<text x="450" y="254" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">2 × 1 + 16</text>
+<text x="640" y="312" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">→ 18 g/mol</text>
+<rect x="40" y="368" width="1200" height="148" rx="18" fill="#173e4d"/>
+<text x="75" y="422" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">CO₂</text>
+<text x="450" y="422" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">12 + 2 × 16</text>
+<text x="640" y="480" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">→ 44 g/mol</text>
+<rect x="40" y="536" width="1200" height="148" rx="18" fill="#173e4d"/>
+<text x="75" y="590" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">Ca(OH)₂</text>
+<text x="450" y="590" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">40 + 2 × (16 + 1)</text>
+<text x="640" y="648" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">→ 74 g/mol</text>
+</svg>
