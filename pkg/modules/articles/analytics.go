@@ -733,7 +733,7 @@ func (m *Module) handleView(w http.ResponseWriter, r *http.Request) {
 	// is outside the public audience calculation (for example, a VPN). It still
 	// requires the same visible-tab, same-origin browser proof. Staff and their
 	// no-track cookie remain excluded from public audience counters below.
-	if user, signedIn := m.activityUser(r); signedIn {
+	if user, signedIn := m.activityUser(r); signedIn && kind != "book_sample" {
 		m.recordUserPageView(r, page, kind, readingLang(page), user)
 	}
 	if !m.countableAudience(r) {
