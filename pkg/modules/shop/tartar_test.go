@@ -3,6 +3,7 @@ package shop
 import (
 	"net/http"
 	"net/http/httptest"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -60,5 +61,25 @@ func TestTartarExcerptUsesSiteFrameAndKeepsAllSections(t *testing.T) {
 	router.ServeHTTP(response, httptest.NewRequest(http.MethodGet, tartarPath+"/missing?lang=ru", nil))
 	if response.Code != http.StatusNotFound {
 		t.Errorf("unknown section: status %d, want 404", response.Code)
+	}
+}
+
+// Every footnote in the excerpt must resolve on its own chapter page.
+func TestTartarExcerptFootnotesResolve(t *testing.T) {
+	content, err := loadTartarExcerpt()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ref := regexp.MustCompile(`href="#(source-[0-9]+)"`)
+	for slug, section := range content {
+		body := string(section)
+		for _, match := range ref.FindAllStringSubmatch(body, -1) {
+			if !strings.Contains(body, `id="`+match[1]+`"`) {
+				t.Errorf("%s: missing %s", slug, match[1])
+			}
+		}
+		if strings.Contains(body, "../assets/") {
+			t.Errorf("%s: print-only image path", slug)
+		}
 	}
 }
