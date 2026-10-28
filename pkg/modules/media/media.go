@@ -77,6 +77,7 @@ func (m *Module) Init(_ context.Context, rt *shanraq.Runtime) error {
 
 // Routes serves stored objects and registers the auth-gated upload endpoint.
 func (m *Module) Routes(r chi.Router) {
+	r.Get("/article-covers/{article}", m.handleArticleCover)
 	if fsStore, ok := m.store.(*FSStore); ok {
 		r.Handle(fsStore.Prefix()+"/*", fsStore.FileServer())
 	}
