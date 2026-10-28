@@ -41,7 +41,7 @@ The fourth release guards 22 prior lessons and 66 translations, bridges lesson
 the news queue. Its manifest contains the 27 new pages and lesson 22 in all
 three languages. Stage the transaction on a restored backup before production.
 
-Block six (41–49) is prepared: moles, molar mass, entity counts, elemental
+Block six (41–49) was published on 28 October 2026: moles, molar mass, entity counts, elemental
 mass fractions, stoichiometry, limiting reactants and product yield. It adds
 27 pages, 27 retrieval maps and 27 localized vector diagram covers. Run:
 
@@ -57,6 +57,12 @@ of news jobs, and adds lesson 40's onward link in the same transaction.
 Each translation receives its own localized cover. Numeric tests independently
 check formula masses, conservation, excess remaining, purity and yield. Audio
 is still unavailable; no missing audio links are introduced.
+
+Release verification: 49 published lessons and 147 ready translations;
+30 expected translation hashes matched; 87 live page, asset and course checks
+passed, as did 30 sitemap URL checks. There were no chemistry news jobs.
+Rehearsal used a schema-only production dump and synthetic author/course
+fixtures, without copying production user data. Backup remains on the server.
 
 Block five (32–40, reactions and conservation) adds 27 language pages, 27
 retrieval maps and 27 original diagram covers. Regenerate and validate with:
