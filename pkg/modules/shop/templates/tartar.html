@@ -10,7 +10,7 @@
         <p class="kicker">{{ icon "book" }}{{ t .Lang "tartar.sample_label" }}</p>
         <div class="section-head"><h1>{{ .ChapterTitle }}</h1></div>
         <p class="tartar-sample__note">{{ t .Lang "tartar.russian_note" }}</p>
-        <article class="prose tartar-sample__reading" lang="ru">{{ .Content }}</article>
+        <article class="prose tartar-sample__reading" data-book-progress lang="ru">{{ .Content }}</article>
         <nav class="tartar-sample__nav" aria-label="{{ t .Lang "tartar.navigation" }}">
           {{ with .Previous }}<a href="/book/tartar-i-ya{{ if .Slug }}/{{ .Slug }}{{ end }}?lang={{ $.Lang }}">← {{ .Title }}</a>{{ end }}
           {{ with .Next }}<a href="/book/tartar-i-ya/{{ .Slug }}?lang={{ $.Lang }}">{{ .Title }} →</a>{{ end }}

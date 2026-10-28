@@ -667,3 +667,66 @@ func TestGuestChartsRenderFractionalHeightsAndTrueZero(t *testing.T) {
 		}
 	}
 }
+
+func TestBookSectionRestrictsPaths(t *testing.T) {
+	tests := map[string]string{
+		"/book/tartar-i-ya":              "tartar|contents",
+		"/book/tartar-i-ya/chapter-1":    "tartar|chapter-1",
+		"/book/tartar-i-ya/../../secret": "",
+		"/book/tartar-i-yabad":           "",
+		"/static/shop/go-book-sample/0.21.0-sample/read/01-workspace.html": "go-book|01-workspace",
+		"/static/shop/go-book-sample/0.21.0-sample/read/99-bad.html":       "",
+	}
+	for p, want := range tests {
+		if got := bookSection(p); got != want {
+			t.Errorf("%s: got %q want %q", p, got, want)
+		}
+		if want != "" && pageKind(p) != "book_sample" {
+			t.Errorf("%s: not tracked as sample", p)
+		}
+	}
+}
+func TestCommercialReferrerAndSafeLabels(t *testing.T) {
+	m := &Module{metrics: NewMetrics(nil, nil)}
+	req := httptest.NewRequest("POST", "https://shanraq.org/api/commercial?e=depth&d=100", nil)
+	req.Header.Set("Referer", "https://shanraq.org/book/tartar-i-ya/chapter-1")
+	req.Header.Set("User-Agent", "Mozilla/5.0")
+	req.RemoteAddr = "93.184.216.34:1234"
+	w := httptest.NewRecorder()
+	m.handleCommercial(w, req)
+	if w.Code != 204 {
+		t.Fatalf("status %d", w.Code)
+	}
+	if m.metrics.buf[metricKey{"commercial", "book|tartar|chapter-1|depth100", true}] != 1 {
+		t.Fatalf("depth not recorded: %#v", m.metrics.buf)
+	}
+	req.Header.Set("Referer", "https://other.example/book/tartar-i-ya/chapter-1")
+	m.handleCommercial(httptest.NewRecorder(), req)
+	if m.metrics.buf[metricKey{"commercial", "book|tartar|chapter-1|depth100", true}] != 1 {
+		t.Fatal("cross-origin event counted")
+	}
+}
+func TestCommercialRatios(t *testing.T) {
+	if ratio(1, 0) != "—" || ratio(1, 4) != "25.0%" {
+		t.Fatal("wrong ratio")
+	}
+}
+
+func TestCommercialAdEventsRejectUnknownIDs(t *testing.T) {
+	m := &Module{metrics: NewMetrics(nil, nil)}
+	makeRequest := func(id string) *http.Request {
+		req := httptest.NewRequest("POST", "https://shanraq.org/api/commercial?e=impression&id="+id, nil)
+		req.Header.Set("Referer", "https://shanraq.org/")
+		req.Header.Set("User-Agent", "Mozilla/5.0")
+		req.RemoteAddr = "93.184.216.34:1234"
+		return req
+	}
+	m.handleCommercial(httptest.NewRecorder(), makeRequest("house-tartar"))
+	if m.metrics.buf[metricKey{"commercial", "ad|home|house-tartar|impression", true}] != 1 {
+		t.Fatal("house impression not counted")
+	}
+	m.handleCommercial(httptest.NewRecorder(), makeRequest("house-invented"))
+	if len(m.metrics.buf) != 1 {
+		t.Fatal("unknown creative counted")
+	}
+}

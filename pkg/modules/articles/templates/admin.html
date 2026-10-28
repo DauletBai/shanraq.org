@@ -153,6 +153,19 @@
 
     <section id="guests" class="adm-section">
       <h2 class="adm-section__h">{{ t .Lang "ag.title" }} {{ template "fhelp" (t .Lang "ag.note") }}</h2>
+      <div class="adm-panel">
+        <h2>Магазин и реклама · последние 30 дней</h2>
+        <p>Данные собираются с момента включения нового учёта; прошлые события восстановить нельзя. Служебные и известные автоматические просмотры исключены. События — не уникальные люди.</p>
+        {{ if .Commercial.Error }}<p class="alert alert--error">Не удалось загрузить отчёт. Повторите позже.</p>{{ else }}
+        <p>Просмотры магазина: <b>{{ money .Commercial.ShopViews }}</b></p>
+        <h3>Книги и фрагменты</h3>
+        <p>Процент — доля открытий, при которых достигнут конец страницы. Прокрутка не подтверждает прочтение. Повторные открытия учитываются отдельно.</p>
+        <div class="adm-xscroll"><table class="spec"><thead><tr><th>Книга / страница</th><th>Открытия</th><th>25%</th><th>50%</th><th>75%</th><th>Конец</th><th>Конец / открытия</th></tr></thead><tbody>{{ range .Commercial.Books }}<tr><td>{{ .Label }}</td><td>{{ .Views }}</td><td>{{ .D25 }}</td><td>{{ .D50 }}</td><td>{{ .D75 }}</td><td>{{ .D100 }}</td><td>{{ .Rate }}</td></tr>{{ else }}<tr><td colspan="7">Новых данных пока нет.</td></tr>{{ end }}</tbody></table></div>
+        <h3>Переходы к фрагментам и загрузкам</h3><div class="adm-xscroll"><table class="spec"><thead><tr><th>Действие</th><th>Клики</th></tr></thead><tbody>{{ range .Commercial.Actions }}<tr><td>{{ .Label }}</td><td>{{ .Clicks }}</td></tr>{{ else }}<tr><td colspan="2">Новых данных пока нет.</td></tr>{{ end }}</tbody></table></div>
+        <h3>Реклама по баннерам</h3><p>Показ: активный баннер виден хотя бы наполовину не менее одной секунды. Клики и показы — события; CTR может превышать 100% при повторных кликах. Главная и остальные страницы разделены.</p>
+        <div class="adm-xscroll"><table class="spec"><thead><tr><th>Раздел / баннер</th><th>Показы</th><th>Клики</th><th>Клики / показы</th></tr></thead><tbody>{{ range .Commercial.Ads }}<tr><td>{{ .Label }}</td><td>{{ .Impressions }}</td><td>{{ .Clicks }}</td><td>{{ .Rate }}</td></tr>{{ else }}<tr><td colspan="4">Новых данных пока нет.</td></tr>{{ end }}</tbody></table></div>
+        {{ end }}
+      </div>
       {{ if .Guests.HasData }}
       <div class="adm-kpis adm-kpis--fill">
         <div class="adm-kpi"><span class="adm-kpi__ic">☀</span><b>{{ money .Guests.Day.Total }}</b><span>{{ t .Lang "ag.views_day" }}</span></div>

@@ -234,7 +234,8 @@ type AdminPage struct {
 	// panel and the page an advertiser reads must never disagree.
 	Traffic TrafficChart
 	// Aggregate audience (guest vs registered) traffic.
-	Guests GuestAnalytics
+	Guests     GuestAnalytics
+	Commercial CommercialReport
 	// Course and lesson traffic, counted with the same audience filter and kept
 	// separate from historical raw article openings.
 	Courses CourseAnalytics
@@ -288,6 +289,7 @@ func (m *Module) handleAdmin(w http.ResponseWriter, r *http.Request) {
 		m.rt.Logger.Error("admin analytics", zap.Error(err))
 	}
 	page.Guests = m.guestAnalytics(r.Context(), lang)
+	page.Commercial = m.commercialReport(r.Context())
 	if courses, err := m.courseAnalytics(r.Context(), lang); err == nil {
 		page.Courses = courses
 	} else {
