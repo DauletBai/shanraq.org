@@ -730,3 +730,42 @@ func TestCommercialAdEventsRejectUnknownIDs(t *testing.T) {
 		t.Fatal("unknown creative counted")
 	}
 }
+
+func TestCommercialReportDatabase(t *testing.T) {
+	ctx := context.Background()
+	pool, err := pgxpool.New(ctx, requireTestDB(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer pool.Close()
+	_, err = pool.Exec(ctx, `INSERT INTO analytics_daily(day,kind,label,is_guest,n) VALUES ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date,'commercial','book|tartar|chapter-99|view',true,4), ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date,'commercial','book|tartar|chapter-99|depth100',true,2), ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date,'commercial','ad|home|house-tartar|impression',true,8), ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date,'commercial','ad|home|house-tartar|click',true,2) ON CONFLICT(day,kind,label,is_guest) DO UPDATE SET n=EXCLUDED.n`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer pool.Exec(ctx, `DELETE FROM analytics_daily WHERE kind='commercial' AND (label LIKE 'book|tartar|chapter-99|%' OR label LIKE 'ad|home|house-tartar|%')`)
+	m := &Module{rt: &shanraq.Runtime{DB: pool, Logger: zap.NewNop()}}
+	report := m.commercialReport(ctx)
+	if report.Error {
+		t.Fatal("report query failed")
+	}
+	foundBook, foundAd := false, false
+	for _, v := range report.Books {
+		if v.Label == "Тартар и Я · chapter-99" {
+			foundBook = true
+			if v.Views != 4 || v.D100 != 2 || v.Rate != "50.0%" {
+				t.Fatalf("book: %+v", v)
+			}
+		}
+	}
+	for _, v := range report.Ads {
+		if v.Label == "Главная · Тартар и Я" {
+			foundAd = true
+			if v.Impressions != 8 || v.Clicks != 2 || v.Rate != "25.0%" {
+				t.Fatalf("ad: %+v", v)
+			}
+		}
+	}
+	if !foundBook || !foundAd {
+		t.Fatalf("missing rows: %+v", report)
+	}
+}
