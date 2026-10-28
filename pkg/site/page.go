@@ -130,11 +130,12 @@ type FeedItem struct {
 // ribbon says which, so nothing ever implies a commercial relationship that does
 // not exist.
 type Ad struct {
-	Image string // /static/... illustration
-	Title string
-	Price string
-	Desc  string
-	URL   string // click target
+	AnalyticsID string // stable, non-personal creative identifier
+	Image       string // /static/... illustration
+	Title       string
+	Price       string
+	Desc        string
+	URL         string // click target
 	// House marks a slide that advertises the slot itself rather than a paying
 	// customer. Both kinds carry the "Реклама" ribbon — a house slide is still
 	// advertising — but a house slide takes the quieter graphite panel and keeps

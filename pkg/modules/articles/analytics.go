@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -97,6 +98,8 @@ func pageKind(path string) string {
 		return "place"
 	case onePathChild(path, "/archive/"):
 		return "archive"
+	case bookSection(path) != "":
+		return "book_sample"
 	case onePathChild(path, "/shop/"):
 		return "product"
 	}
@@ -118,13 +121,19 @@ func onePathChild(path, prefix string) bool {
 // trackedEvents is the closed set of click events the beacon may record. A
 // closed set keeps arbitrary strings out of the counter table.
 var trackedEvents = map[string]bool{
-	"show_contact":  true, // revealed a listing's phone/contact
-	"register_cta":  true, // clicked a sign-up call to action
-	"login_cta":     true, // clicked a sign-in call to action
-	"post_listing":  true, // clicked "post a listing"
-	"write_article": true, // clicked "write"
-	"follow_social": true, // clicked a social profile in the article-aside follow card
-	"view_contract": true, // opened a listing's published lease contract
+	"show_contact":        true, // revealed a listing's phone/contact
+	"register_cta":        true, // clicked a sign-up call to action
+	"login_cta":           true, // clicked a sign-in call to action
+	"post_listing":        true, // clicked "post a listing"
+	"write_article":       true, // clicked "write"
+	"follow_social":       true, // clicked a social profile in the article-aside follow card
+	"shop_free_course":    true,
+	"shop_preview_online": true,
+	"shop_preview_pdf":    true,
+	"shop_preview_epub":   true,
+	"shop_preview_html":   true,
+	"shop_preview":        true,
+	"view_contract":       true, // opened a listing's published lease contract
 }
 
 const (
@@ -724,7 +733,7 @@ func (m *Module) handleView(w http.ResponseWriter, r *http.Request) {
 	// is outside the public audience calculation (for example, a VPN). It still
 	// requires the same visible-tab, same-origin browser proof. Staff and their
 	// no-track cookie remain excluded from public audience counters below.
-	if user, signedIn := m.activityUser(r); signedIn {
+	if user, signedIn := m.activityUser(r); signedIn && kind != "book_sample" {
 		m.recordUserPageView(r, page, kind, readingLang(page), user)
 	}
 	if !m.countableAudience(r) {
@@ -784,6 +793,15 @@ func (m *Module) recordVerifiedPageView(r *http.Request, page *http.Request, kin
 					m.metrics.inc(metricCourseLesson, place.Series.Slug+"|"+a.Slug+"|"+served, guest)
 				}
 			}
+		}
+	case "product":
+		var exists bool
+		if m.rt.DB != nil && m.rt.DB.QueryRow(r.Context(), `SELECT EXISTS(SELECT 1 FROM shop_products WHERE slug=$1 AND status<>'draft')`, segment("/shop/")).Scan(&exists) == nil && exists {
+			m.metrics.inc("commercial", "product|"+segment("/shop/")+"|view", guest)
+		}
+	case "book_sample":
+		if id := bookSection(page.URL.Path); id != "" {
+			m.metrics.inc("commercial", "book|"+id+"|view", guest)
 		}
 	case "course":
 		s, err := m.series.BySlug(r.Context(), segment("/course/"), lang)
@@ -1722,4 +1740,249 @@ func (s *UserActivityStore) Report(ctx context.Context, user uuid.UUID, lang str
 		return out, err
 	}
 	return out, nil
+}
+
+// Only known public book sections can enter the aggregate labels. No query,
+// visitor identifier, address, or free-form title is stored.
+var goChapter = regexp.MustCompile(`^(0[0-9]|1[0-2])-[a-z0-9-]+\.html$`)
+var tartarChapter = regexp.MustCompile(`^(preface|chapter-[1-9][0-9]?)$`)
+
+func bookSection(p string) string {
+	const tartar = "/book/tartar-i-ya"
+	const goRoot = "/static/shop/go-book-sample/0.21.0-sample/read/"
+	if p == tartar || p == tartar+"/" {
+		return "tartar|contents"
+	}
+	if strings.HasPrefix(p, tartar+"/") {
+		section := strings.TrimPrefix(p, tartar+"/")
+		if tartarChapter.MatchString(section) {
+			return "tartar|" + section
+		}
+	}
+	if strings.HasPrefix(p, goRoot) {
+		name := strings.TrimPrefix(p, goRoot)
+		if goChapter.MatchString(name) || name == "toc.html" || name == "index.html" || name == "title-page.html" || name == "publication-details.html" {
+			return "go-book|" + strings.TrimSuffix(name, ".html")
+		}
+	}
+	return ""
+}
+
+var houseAdIDs = map[string]bool{"house-tartar": true, "house-book": true, "house-adam": true, "house-free": true, "house-beside": true, "house-notrack": true, "house-price": true, "house-realty": true}
+
+func (m *Module) handleCommercial(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Cache-Control", "no-store")
+	defer w.WriteHeader(http.StatusNoContent)
+	page, _, ok := verifiedPageRequest(r)
+	if !ok || !m.countableAudience(r) {
+		return
+	}
+	event := r.URL.Query().Get("e")
+	_, signed := auth.ClaimsFromContext(r.Context())
+	if event == "depth" {
+		section := bookSection(page.URL.Path)
+		depth := r.URL.Query().Get("d")
+		if depth != "25" && depth != "50" && depth != "75" && depth != "100" {
+			return
+		}
+		if section != "" {
+			m.metrics.inc("commercial", "book|"+section+"|depth"+depth, !signed)
+			return
+		}
+		if onePathChild(page.URL.Path, "/shop/") && m.rt.DB != nil {
+			slug := strings.TrimPrefix(page.URL.Path, "/shop/")
+			var exists bool
+			if m.rt.DB.QueryRow(r.Context(), `SELECT EXISTS(SELECT 1 FROM shop_products WHERE slug=$1 AND status<>'draft')`, slug).Scan(&exists) == nil && exists {
+				m.metrics.inc("commercial", "product|"+slug+"|depth"+depth, !signed)
+			}
+		}
+		return
+	}
+	if event != "click" && event != "impression" {
+		return
+	}
+	id := r.URL.Query().Get("id")
+	if !houseAdIDs[id] {
+		if !strings.HasPrefix(id, "order-") {
+			return
+		}
+		uid, err := uuid.Parse(strings.TrimPrefix(id, "order-"))
+		if err != nil || m.rt.DB == nil {
+			return
+		}
+		var exists bool
+		if err := m.rt.DB.QueryRow(r.Context(), `SELECT EXISTS(SELECT 1 FROM ad_orders WHERE id=$1)`, uid).Scan(&exists); err != nil || !exists {
+			return
+		}
+		id = "order-" + uid.String()
+	}
+	surface := "other"
+	if page.URL.Path == "/" {
+		surface = "home"
+	}
+	m.metrics.inc("commercial", "ad|"+surface+"|"+id+"|"+event, !signed)
+}
+
+type CommercialRow struct {
+	Label                                           string
+	Views, D25, D50, D75, D100, Impressions, Clicks int64
+	Rate                                            string
+	DepthTracked                                    bool
+}
+type CommercialReport struct {
+	Books, Ads, Actions []CommercialRow
+	ShopViews           int64
+	Error               bool
+}
+
+func ratio(n, d int64) string {
+	if d == 0 {
+		return "—"
+	}
+	return fmt.Sprintf("%.1f%%", float64(n)*100/float64(d))
+}
+func (m *Module) commercialReport(ctx context.Context) CommercialReport {
+	var out CommercialReport
+	rows, err := m.rt.DB.Query(ctx, `SELECT kind,label,SUM(n) FROM analytics_daily_display WHERE day >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date - 29 AND (kind='commercial' OR (kind='page' AND label='shop') OR (kind='click' AND label LIKE 'shop_%')) GROUP BY kind,label`)
+	if err != nil {
+		out.Error = true
+		return out
+	}
+	defer rows.Close()
+	books, ads, actions := map[string]*CommercialRow{}, map[string]*CommercialRow{}, map[string]*CommercialRow{}
+	for rows.Next() {
+		var kind, label string
+		var n int64
+		if rows.Scan(&kind, &label, &n) != nil {
+			out.Error = true
+			continue
+		}
+		if kind == "page" {
+			out.ShopViews += n
+			continue
+		}
+		if kind == "click" {
+			actions[label] = &CommercialRow{Label: label, Clicks: n}
+			continue
+		}
+		p := strings.Split(label, "|")
+		if len(p) == 4 && (p[0] == "book" || p[0] == "ad") {
+			key := p[1] + "|" + p[2]
+			target := books
+			if p[0] == "ad" {
+				target = ads
+			}
+			v := target[key]
+			if v == nil {
+				v = &CommercialRow{Label: key}
+				target[key] = v
+			}
+			switch p[3] {
+			case "view":
+				v.Views += n
+			case "depth25":
+				v.D25 += n
+			case "depth50":
+				v.D50 += n
+			case "depth75":
+				v.D75 += n
+			case "depth100":
+				v.D100 += n
+			case "impression":
+				v.Impressions += n
+			case "click":
+				v.Clicks += n
+			}
+		}
+		if len(p) == 3 && p[0] == "product" {
+			key := "product|" + p[1]
+			v := books[key]
+			if v == nil {
+				v = &CommercialRow{Label: key}
+				books[key] = v
+			}
+			switch p[2] {
+			case "view":
+				v.Views += n
+			case "depth25":
+				v.D25 += n
+			case "depth50":
+				v.D50 += n
+			case "depth75":
+				v.D75 += n
+			case "depth100":
+				v.D100 += n
+			}
+		}
+	}
+	if rows.Err() != nil {
+		out.Error = true
+	}
+	rows.Close()
+	for _, v := range books {
+		v.DepthTracked = v.Label != "tartar|contents"
+		parts := strings.SplitN(v.Label, "|", 2)
+		if len(parts) == 2 {
+			if parts[0] == "product" {
+				var title string
+				if m.rt.DB.QueryRow(ctx, `SELECT title_ru FROM shop_products WHERE slug=$1`, parts[1]).Scan(&title) == nil && title != "" {
+					v.Label = "Карточка: " + title
+				}
+			}
+			if parts[0] == "tartar" {
+				v.Label = "Тартар и Я · " + parts[1]
+			}
+			if parts[0] == "go-book" {
+				v.Label = "Книга по Go · " + parts[1]
+			}
+		}
+		if v.DepthTracked {
+			v.Rate = ratio(v.D100, v.Views)
+		} else {
+			v.Rate = "—"
+		}
+		out.Books = append(out.Books, *v)
+	}
+	for _, v := range ads {
+		parts := strings.SplitN(v.Label, "|", 2)
+		if len(parts) == 2 {
+			surface := "Другие страницы"
+			if parts[0] == "home" {
+				surface = "Главная"
+			}
+			title := map[string]string{"house-tartar": "Тартар и Я", "house-book": "Книга по Go", "house-adam": "Adam", "house-free": "Размещение рекламы", "house-beside": "Формат рекламы", "house-notrack": "Приватность", "house-price": "Прайс", "house-realty": "Недвижимость"}[parts[1]]
+			if strings.HasPrefix(parts[1], "order-") {
+				if id, err := uuid.Parse(strings.TrimPrefix(parts[1], "order-")); err == nil {
+					_ = m.rt.DB.QueryRow(ctx, `SELECT title FROM ad_orders WHERE id=$1`, id).Scan(&title)
+					if title == "" {
+						title = parts[1]
+					}
+				}
+			}
+			if title == "" {
+				title = parts[1]
+			}
+			v.Label = surface + " · " + title
+		}
+		v.Rate = ratio(v.Clicks, v.Impressions)
+		out.Ads = append(out.Ads, *v)
+	}
+	for _, v := range actions {
+		names := map[string]string{"shop_free_course": "Бесплатный курс Go", "shop_preview_online": "Читать фрагмент онлайн", "shop_preview_pdf": "Скачать PDF", "shop_preview_epub": "Скачать EPUB", "shop_preview_html": "Скачать HTML", "shop_preview": "Открыть фрагмент", "shop_notify": "Сообщить о выходе"}
+		if title := names[v.Label]; title != "" {
+			v.Label = title
+		}
+		out.Actions = append(out.Actions, *v)
+	}
+	sortCommercial(out.Books)
+	sortCommercial(out.Ads)
+	sortCommercial(out.Actions)
+	return out
+}
+func sortCommercial(rs []CommercialRow) {
+	for i := 1; i < len(rs); i++ {
+		for j := i; j > 0 && rs[j].Label < rs[j-1].Label; j-- {
+			rs[j], rs[j-1] = rs[j-1], rs[j]
+		}
+	}
 }

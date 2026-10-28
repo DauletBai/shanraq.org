@@ -75,11 +75,12 @@ const bookCoverURL = "/static/shop/go-book-sample/0.21.0-sample/read/cover/go-bo
 // houseSlide builds one house slide from its string key and where it leads.
 func houseSlide(lang, key, cta string) Ad {
 	return Ad{
-		URL:   cta,
-		Title: site.T(lang, "house."+key+"_title"),
-		Desc:  site.T(lang, "house."+key+"_desc"),
-		Price: site.T(lang, "house."+key+"_cta"),
-		House: true,
+		AnalyticsID: "house-" + key,
+		URL:         cta,
+		Title:       site.T(lang, "house."+key+"_title"),
+		Desc:        site.T(lang, "house."+key+"_desc"),
+		Price:       site.T(lang, "house."+key+"_cta"),
+		House:       true,
 	}
 }
 
@@ -166,7 +167,7 @@ func (m *Module) sidebarAds(r *http.Request, lang string) []Ad {
 		if cta == "" {
 			cta = site.T(lang, "ad.learn_more")
 		}
-		out = append(out, Ad{Image: o.ImageURL, Title: o.Title, Desc: o.Body, Price: cta, URL: url})
+		out = append(out, Ad{AnalyticsID: "order-" + o.ID, Image: o.ImageURL, Title: o.Title, Desc: o.Body, Price: cta, URL: url})
 	}
 	return out
 }

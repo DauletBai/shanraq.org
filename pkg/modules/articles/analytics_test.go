@@ -667,3 +667,105 @@ func TestGuestChartsRenderFractionalHeightsAndTrueZero(t *testing.T) {
 		}
 	}
 }
+
+func TestBookSectionRestrictsPaths(t *testing.T) {
+	tests := map[string]string{
+		"/book/tartar-i-ya":              "tartar|contents",
+		"/book/tartar-i-ya/chapter-1":    "tartar|chapter-1",
+		"/book/tartar-i-ya/../../secret": "",
+		"/book/tartar-i-yabad":           "",
+		"/static/shop/go-book-sample/0.21.0-sample/read/01-workspace.html": "go-book|01-workspace",
+		"/static/shop/go-book-sample/0.21.0-sample/read/99-bad.html":       "",
+	}
+	for p, want := range tests {
+		if got := bookSection(p); got != want {
+			t.Errorf("%s: got %q want %q", p, got, want)
+		}
+		if want != "" && pageKind(p) != "book_sample" {
+			t.Errorf("%s: not tracked as sample", p)
+		}
+	}
+}
+func TestCommercialReferrerAndSafeLabels(t *testing.T) {
+	m := &Module{metrics: NewMetrics(nil, nil)}
+	req := httptest.NewRequest("POST", "https://shanraq.org/api/commercial?e=depth&d=100", nil)
+	req.Header.Set("Referer", "https://shanraq.org/book/tartar-i-ya/chapter-1")
+	req.Header.Set("User-Agent", "Mozilla/5.0")
+	req.RemoteAddr = "93.184.216.34:1234"
+	w := httptest.NewRecorder()
+	m.handleCommercial(w, req)
+	if w.Code != 204 {
+		t.Fatalf("status %d", w.Code)
+	}
+	if m.metrics.buf[metricKey{"commercial", "book|tartar|chapter-1|depth100", true}] != 1 {
+		t.Fatalf("depth not recorded: %#v", m.metrics.buf)
+	}
+	req.Header.Set("Referer", "https://other.example/book/tartar-i-ya/chapter-1")
+	m.handleCommercial(httptest.NewRecorder(), req)
+	if m.metrics.buf[metricKey{"commercial", "book|tartar|chapter-1|depth100", true}] != 1 {
+		t.Fatal("cross-origin event counted")
+	}
+}
+func TestCommercialRatios(t *testing.T) {
+	if ratio(1, 0) != "—" || ratio(1, 4) != "25.0%" {
+		t.Fatal("wrong ratio")
+	}
+}
+
+func TestCommercialAdEventsRejectUnknownIDs(t *testing.T) {
+	m := &Module{metrics: NewMetrics(nil, nil)}
+	makeRequest := func(id string) *http.Request {
+		req := httptest.NewRequest("POST", "https://shanraq.org/api/commercial?e=impression&id="+id, nil)
+		req.Header.Set("Referer", "https://shanraq.org/")
+		req.Header.Set("User-Agent", "Mozilla/5.0")
+		req.RemoteAddr = "93.184.216.34:1234"
+		return req
+	}
+	m.handleCommercial(httptest.NewRecorder(), makeRequest("house-tartar"))
+	if m.metrics.buf[metricKey{"commercial", "ad|home|house-tartar|impression", true}] != 1 {
+		t.Fatal("house impression not counted")
+	}
+	m.handleCommercial(httptest.NewRecorder(), makeRequest("house-invented"))
+	if len(m.metrics.buf) != 1 {
+		t.Fatal("unknown creative counted")
+	}
+}
+
+func TestCommercialReportDatabase(t *testing.T) {
+	ctx := context.Background()
+	pool, err := pgxpool.New(ctx, requireTestDB(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer pool.Close()
+	_, err = pool.Exec(ctx, `INSERT INTO analytics_daily(day,kind,label,is_guest,n) VALUES ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date,'commercial','book|tartar|chapter-99|view',true,4), ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date,'commercial','book|tartar|chapter-99|depth100',true,2), ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date,'commercial','ad|home|house-tartar|impression',true,8), ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Almaty')::date,'commercial','ad|home|house-tartar|click',true,2) ON CONFLICT(day,kind,label,is_guest) DO UPDATE SET n=EXCLUDED.n`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer pool.Exec(ctx, `DELETE FROM analytics_daily WHERE kind='commercial' AND (label LIKE 'book|tartar|chapter-99|%' OR label LIKE 'ad|home|house-tartar|%')`)
+	m := &Module{rt: &shanraq.Runtime{DB: pool, Logger: zap.NewNop()}}
+	report := m.commercialReport(ctx)
+	if report.Error {
+		t.Fatal("report query failed")
+	}
+	foundBook, foundAd := false, false
+	for _, v := range report.Books {
+		if v.Label == "Тартар и Я · chapter-99" {
+			foundBook = true
+			if v.Views != 4 || v.D100 != 2 || v.Rate != "50.0%" {
+				t.Fatalf("book: %+v", v)
+			}
+		}
+	}
+	for _, v := range report.Ads {
+		if v.Label == "Главная · Тартар и Я" {
+			foundAd = true
+			if v.Impressions != 8 || v.Clicks != 2 || v.Rate != "25.0%" {
+				t.Fatalf("ad: %+v", v)
+			}
+		}
+	}
+	if !foundBook || !foundAd {
+		t.Fatalf("missing rows: %+v", report)
+	}
+}

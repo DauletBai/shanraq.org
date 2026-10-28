@@ -1181,6 +1181,8 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 **Что именно считается.** Просмотр записывается только после того, как страница отобразилась в видимой вкладке браузера. Визит объединяет просмотры одного браузера, пока между ними нет 30 минут бездействия; для этого браузер хранит технический cookie визита, а база — только его необратимый суточный HMAC. Хосты, посетители, визиты и просмотры разбиваются на Казахстан и остальной мир, мобильные и прочие устройства. Эти агрегированные цифры открыто показаны всем на странице «Аналитика».
 
+Отдельно мы агрегированно считаем открытия карточек книг и фрагментов, глубину прокрутки, видимые показы и клики отдельных рекламных баннеров. Это события, а не доказательство прочтения; данные не связываются с человеком и не передаются рекламодателям как история его действий.
+
 **Как устроена анонимная часть.** Посетитель, который не вошёл в аккаунт, считается по анонимному идентификатору. Он вычисляется из IP-адреса и строки браузера ключом, который создаётся заново каждые сутки; сам адрес нигде не сохраняется. Ключ вчерашнего дня не восстанавливается, поэтому один и тот же незарегистрированный посетитель в понедельник и во вторник даёт два несвязанных значения.
 
 **Для зарегистрированных пользователей** сохраняется история просмотренных статей, курсов и уроков, времени чтения и результатов заданий. Она доступна администраторам, используется для анализа интересов и обучения, не передаётся рекламодателям и удаляется вместе с аккаунтом.
@@ -1242,6 +1244,8 @@ Not sure about formatting? Just write the text as is: without a single Markdown 
 
 **Не саналады.** Қаралым бет браузердің көрінетін қойындысында көрсетілгеннен кейін ғана жазылады. Бір браузердің қаралымдары арасында 30 минут әрекетсіздік болмаса, олар бір кіруге біріктіріледі; бұл үшін браузер кірудің техникалық cookie файлын, ал дерекқор оның тек қайтарымсыз тәуліктік HMAC мәнін сақтайды. Хосттар, келушілер, кірулер және қаралымдар Қазақстан мен қалған әлемге, мобильді және өзге құрылғыларға бөлінеді. Бұл жинақталған сандар «Аналитика» бетінде барлығына ашық көрсетілген.
 
+Біз сондай-ақ кітап беттері мен үзінділердің ашылуын, айналдыру тереңдігін, жеке жарнама баннерлерінің көрінген көрсетілімдері мен басуларын жиынтық түрде санаймыз. Бұл — оқылғанын дәлелдемейтін оқиғалар; деректер адамға байланыстырылмайды және оның әрекеттер тарихы ретінде жарнама берушілерге берілмейді.
+
 **Анонимді бөлік қалай құрылған.** Есептік жазбаға кірмеген келуші анонимді идентификатормен саналады. Ол IP-мекенжай мен браузер жолынан күн сайын жаңадан жасалатын кілтпен есептеледі; мекенжайдың өзі еш жерде сақталмайды. Кешегі кілт қалпына келтірілмейді, сондықтан бір тіркелмеген келуші дүйсенбіде де, сейсенбіде де екі байланыссыз мән береді.
 
 **Тіркелген қолданушылар үшін** қаралған мақалалар, курстар мен сабақтар, оқу уақыты және тапсырма нәтижелері сақталады. Бұл тарих әкімшілерге қолжетімді, қызығушылық пен оқу барысын талдау үшін қолданылады, жарнама берушілерге берілмейді және есептік жазбамен бірге жойылады.
@@ -1302,6 +1306,8 @@ We use technically necessary cookies -- for the login session, the chosen langua
 **Why we count.** To show advertisers the size and shape of the audience, and to see what is read. Without those figures the advertising does not sell, and without that the site does not run.
 
 **What is counted.** A view is recorded only after the page has appeared in a visible browser tab. Views from one browser remain one visit until there has been 30 minutes without activity; the browser keeps a technical visit cookie and the database stores only its irreversible daily HMAC. Hosts, visitors, visits and views are split between Kazakhstan and the rest of the world and between mobile and other devices. These aggregate figures are shown openly to everyone on the Analytics page.
+
+We also count book and excerpt openings, scroll depth, visible impressions and clicks on individual advertisements in aggregate. These events do not prove reading, are not linked to an individual, and are not shared with advertisers as a person’s activity history.
 
 **How the anonymous part works.** A visitor who is not signed in is counted under an anonymous identifier, derived from the address and the browser string with a key that is generated afresh every day; the address itself is never stored anywhere. Yesterday's key cannot be recovered, so the same signed-out visitor on Monday and on Tuesday yields two unrelated values.
 

@@ -63,7 +63,7 @@
       <figure class="shop-cover"><img src="{{ .P.CoverURL }}" alt="{{ .Title }}" loading="lazy" decoding="async"></figure>
       {{ end }}
 
-      <div class="prose">
+      <div class="prose" data-book-progress>
         {{ .Body }}
         {{ if eq .P.Slug "go-book" }}
         <p>{{ t .Lang "shop.language_note" }}</p>
