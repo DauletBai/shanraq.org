@@ -198,7 +198,14 @@ def visual(number,lang):
         p.append('<path d="M180 540 H1120 M180 540 V220" fill="none" stroke="#d3e8eb" stroke-width="4"/>')
         p.append(text(660,605,'T / °C',27,anchor='middle'))
         p.append(text(180,200,'S / (g X / 100 g H₂O)',24))
-        for temp,s,x,y in [(20,30,430,400),(40,50,860,280)]:
+        p.append(text(160,570,'0',23,anchor='end'))
+        for value in (30,50):
+            y=540-6*value
+            p.append(text(160,y+8,value,24,anchor='end'))
+            p.append(f'<path d="M170 {y} H190" stroke="#d3e8eb" stroke-width="3"/>')
+        for temp,s in [(20,30),(40,50)]:
+            x=180+20*temp
+            y=540-6*s
             p.append(f'<circle data-temperature="{temp}" data-solubility="{s}" cx="{x}" cy="{y}" r="12" fill="#efbc7e"/>')
             p.append(text(x,575,temp,26,anchor='middle'))
             p.append(text(x,y-30,f'({temp}; {s})',30,anchor='middle'))

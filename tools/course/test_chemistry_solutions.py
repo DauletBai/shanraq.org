@@ -92,6 +92,12 @@ class SolutionsTests(unittest.TestCase):
             self.assertEqual(ions.count('Cl⁻'),4)
             points=[(n.get('data-temperature'),n.get('data-solubility')) for n in ET.fromstring(visual(53,lang)) if n.get('data-temperature')]
             self.assertEqual(points,[('20','30'),('40','50')])
+            dots=[n for n in ET.fromstring(visual(53,lang)) if n.get('data-temperature')]
+            # With the chart origin at (180,540), both axes have a linear scale.
+            xdist=[D(n.get('cx'))-180 for n in dots]
+            ydist=[540-D(n.get('cy')) for n in dots]
+            self.assertEqual(xdist[1]/xdist[0],D(40)/20)
+            self.assertEqual(ydist[1]/ydist[0],D(50)/30)
             water=[n.get('data-element') for n in ET.fromstring(visual(50,lang)) if n.get('data-element')]
             self.assertEqual(water.count('O'),1)
             self.assertEqual(water.count('H'),2)
