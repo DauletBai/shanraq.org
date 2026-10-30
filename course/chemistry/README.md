@@ -80,7 +80,7 @@ on-disk lesson 31 remains safe to release without block five. The manifest has
 minimal coefficients, mass and energy examples, particle diagrams, localized
 routes and assets, and the staged bridge. No lesson may enter news Telegram.
 
-Block seven (50–58), water and solutions, is prepared with 27 language pages,
+Block seven (50–58), water and solutions, was published on 30 October 2026 with 27 language pages,
 27 localized retrieval maps and 27 original vector diagram covers. Regenerate:
 
 ```sh
@@ -95,3 +95,13 @@ publication constraints run, and rejects any news Telegram job. Numerical
 tests check separate liquid/solid balances, percentages, millilitres, molarity,
 unequal-mass mixing and final-solution volume. Only paper and supplied data
 are used; no physical preparation or electrical experiments are assigned.
+
+Release verification: 58 published lessons and 174 ready translations; exact
+matches for the 30-page manifest; no news Telegram jobs for this release.
+The release was rehearsed on a restored backup, including rollback on a
+missing prior translation and an unchanged second run. All seven PR workflows
+passed, including Go race tests and template snapshots. Live verification
+passed 87 page/asset/course checks and 60 sitemap checks. Browser inspection
+covered Russian desktop, English tablet and Russian/Kazakh mobile layouts,
+including tables, navigation and answer disclosure. The database backup and
+previous application image were retained on the server.
