@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">How do we find component masses from a target fraction?</title><desc id="desc">250 g at 8%: 20 g solute and 230 g water, total 250 g.</desc>
+<rect width="1280" height="820" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">55 · How do we find component masses from a target fraction?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching model · particles and sizes are not to scale</text>
+<rect x="40" y="205" width="1200" height="130" rx="18" fill="#173e4d"/>
+<text x="65" y="247.0" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="start">250 g; 8%  →  0.08 × 250</text>
+<text x="65" y="296.0" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">20 g + 230 g</text>
+<rect x="40" y="355" width="1200" height="130" rx="18" fill="#173e4d"/>
+<text x="65" y="397.0" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="start">400 g; 5%  →  0.05 × 400</text>
+<text x="65" y="446.0" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">20 g + 380 g</text>
+<rect x="40" y="505" width="1200" height="130" rx="18" fill="#173e4d"/>
+<text x="65" y="547.0" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="start">8 g; 5%  →  8 / 0.05</text>
+<text x="65" y="596.0" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="start">160 g</text>
+<text x="40" y="725.0" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">250 g at 8%: 20 g solute and 230 g water, total 250 g.</text>
+</svg>

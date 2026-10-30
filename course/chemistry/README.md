@@ -79,3 +79,19 @@ on-disk lesson 31 remains safe to release without block five. The manifest has
 30 pages. Tests independently count atoms in all reference equations, check
 minimal coefficients, mass and energy examples, particle diagrams, localized
 routes and assets, and the staged bridge. No lesson may enter news Telegram.
+
+Block seven (50–58), water and solutions, is prepared with 27 language pages,
+27 localized retrieval maps and 27 original vector diagram covers. Regenerate:
+
+```sh
+python3 tools/course/build_chemistry_solutions.py
+python3 -m unittest tools.course.test_chemistry_solutions
+python3 tools/course/prepare_chemistry_solutions.py --sql /tmp/chemistry-solutions.sql --expected /tmp/chemistry-solutions-expected.json
+```
+
+Its release requires 49 prior lessons and 147 ready translations. It bridges
+lesson 49 only inside the transaction, attaches all nine lessons before
+publication constraints run, and rejects any news Telegram job. Numerical
+tests check separate liquid/solid balances, percentages, millilitres, molarity,
+unequal-mass mixing and final-solution volume. Only paper and supplied data
+are used; no physical preparation or electrical experiments are assigned.
