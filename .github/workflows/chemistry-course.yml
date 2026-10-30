@@ -5,6 +5,7 @@ on:
     paths:
       - 'course/chemistry/**'
       - 'tools/course/*chemistry_quantities*'
+      - 'tools/course/*chemistry_solutions*'
       - 'course/lessons/chemistry/**'
       - 'docs/chemistry-course.md'
       - 'tools/course/chemistry_data.py'
@@ -32,6 +33,7 @@ on:
     paths:
       - 'course/chemistry/**'
       - 'tools/course/*chemistry_quantities*'
+      - 'tools/course/*chemistry_solutions*'
       - 'course/lessons/chemistry/**'
       - 'docs/chemistry-course.md'
       - 'tools/course/chemistry_data.py'
@@ -69,14 +71,16 @@ jobs:
           python3 tools/course/build_chemistry_bonds.py
           python3 tools/course/build_chemistry_reactions.py
           python3 tools/course/build_chemistry_quantities.py
+          python3 tools/course/build_chemistry_solutions.py
       - name: Ensure generated lessons and maps are committed
         run: git diff --exit-code
       - name: Check complete block and publication transaction
         run: |
-          python3 -m unittest tools.course.test_chemistry_release tools.course.test_chemistry_reactions tools.course.test_chemistry_quantities
+          python3 -m unittest tools.course.test_chemistry_release tools.course.test_chemistry_reactions tools.course.test_chemistry_quantities tools.course.test_chemistry_solutions
           python3 tools/course/prepare_chemistry.py --sql /tmp/chemistry-course.sql --expected /tmp/chemistry-expected.json
           python3 tools/course/prepare_chemistry_particles.py --sql /tmp/chemistry-particles.sql --expected /tmp/chemistry-particles-expected.json
           python3 tools/course/prepare_chemistry_elements.py --sql /tmp/chemistry-elements.sql --expected /tmp/chemistry-elements-expected.json
           python3 tools/course/prepare_chemistry_bonds.py --sql /tmp/chemistry-bonds.sql --expected /tmp/chemistry-bonds-expected.json
           python3 tools/course/prepare_chemistry_reactions.py --sql /tmp/chemistry-reactions.sql --expected /tmp/chemistry-reactions-expected.json
           python3 tools/course/prepare_chemistry_quantities.py --sql /tmp/chemistry-quantities.sql --expected /tmp/chemistry-quantities-expected.json
+          python3 tools/course/prepare_chemistry_solutions.py --sql /tmp/chemistry-solutions.sql --expected /tmp/chemistry-solutions-expected.json

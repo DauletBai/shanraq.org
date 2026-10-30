@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">Зат неге әрі қарай ерімей қалады?</title><desc id="desc">Ойдан алынған X үшін 20 °C-та шек 100 г суға 30 г, 40 °C-та 50 г. Нүктелерді оқушы өлшемеген.</desc>
+<rect width="1280" height="820" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">53 · Зат неге әрі қарай ерімей қалады?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Оқу моделі · бөлшектер мен өлшемдер масштабта емес</text>
+<path d="M180 540 H1120 M180 540 V220" fill="none" stroke="#d3e8eb" stroke-width="4"/>
+<text x="660" y="605" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="middle">T / °C</text>
+<text x="180" y="200" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">S / (g X / 100 g H₂O)</text>
+<text x="160" y="570" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="end">0</text>
+<text x="160" y="368" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="end">30</text>
+<path d="M170 360 H190" stroke="#d3e8eb" stroke-width="3"/>
+<text x="160" y="248" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="end">50</text>
+<path d="M170 240 H190" stroke="#d3e8eb" stroke-width="3"/>
+<circle data-temperature="20" data-solubility="30" cx="580" cy="360" r="12" fill="#efbc7e"/>
+<text x="580" y="575" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">20</text>
+<text x="580" y="330" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="middle">(20; 30)</text>
+<circle data-temperature="40" data-solubility="50" cx="980" cy="240" r="12" fill="#efbc7e"/>
+<text x="980" y="575" font-family="Arial,sans-serif" font-size="26" fill="#f1f7f2" text-anchor="middle">40</text>
+<text x="980" y="210" font-family="Arial,sans-serif" font-size="30" fill="#f1f7f2" text-anchor="middle">(40; 50)</text>
+<text x="40" y="665.0" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">Ойдан алынған X үшін 20 °C-та шек 100 г суға 30 г, 40 °C-та 50 г. Нүктелерді</text>
+<text x="40" y="696.05" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">оқушы өлшемеген.</text>
+</svg>

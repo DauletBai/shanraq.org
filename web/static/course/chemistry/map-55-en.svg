@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 600" role="img" aria-labelledby="title desc">
+<title id="title">How do we find component masses from a target fraction?</title><desc id="desc">Teaching model · particles and sizes are not to scale</desc>
+<rect width="1280" height="600" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">How do we find component masses from a target fraction?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching model · particles and sizes are not to scale</text>
+<rect x="40" y="210" width="275" height="300" rx="18" fill="#e6f4ef"/>
+<text x="58" y="265.0" font-family="Arial,sans-serif" font-size="19" fill="#143242" text-anchor="start">TARGET</text>
+<text x="58" y="345.0" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Solution mass</text>
+<text x="322" y="385" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="350" y="210" width="275" height="300" rx="18" fill="#e6f4ef"/>
+<text x="368" y="265.0" font-family="Arial,sans-serif" font-size="19" fill="#143242" text-anchor="start">FRACTION</text>
+<text x="368" y="345.0" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Percent / 100</text>
+<text x="632" y="385" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="660" y="210" width="275" height="300" rx="18" fill="#e6f4ef"/>
+<text x="678" y="265.0" font-family="Arial,sans-serif" font-size="19" fill="#143242" text-anchor="start">SOLUTE</text>
+<text x="678" y="345.0" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">w × solution m</text>
+<text x="942" y="385" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="970" y="210" width="275" height="300" rx="18" fill="#e6f4ef"/>
+<text x="988" y="265.0" font-family="Arial,sans-serif" font-size="19" fill="#143242" text-anchor="start">WATER</text>
+<text x="988" y="345.0" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Mass difference</text>
+</svg>

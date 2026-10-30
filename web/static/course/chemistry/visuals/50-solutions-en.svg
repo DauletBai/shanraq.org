@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">Why is a water molecule polar?</title><desc id="desc">Bent H₂O: oxygen δ−, two hydrogens δ+; total charge zero. Water faces Na⁺ with oxygen.</desc>
+<rect width="1280" height="820" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">50 · Why is a water molecule polar?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching model · particles and sizes are not to scale</text>
+<circle cx="265" cy="350" r="60" fill="#e9bb80"/>
+<text x="265" y="362" font-family="Arial,sans-serif" font-size="38" fill="#102b3b" text-anchor="middle">Na⁺</text>
+<line x1="440" y1="350" x2="505" y2="305" stroke="#aecbd4" stroke-width="7"/>
+<line x1="440" y1="350" x2="505" y2="395" stroke="#aecbd4" stroke-width="7"/>
+<circle data-element="O" cx="440" cy="350" r="32" fill="#a1d9dd"/>
+<text x="440" y="358" font-family="Arial,sans-serif" font-size="24" fill="#102b3b" text-anchor="middle">O</text>
+<circle data-element="H" cx="505" cy="305" r="22" fill="#a1d9dd"/>
+<text x="505" y="313" font-family="Arial,sans-serif" font-size="24" fill="#102b3b" text-anchor="middle">H</text>
+<circle data-element="H" cx="505" cy="395" r="22" fill="#a1d9dd"/>
+<text x="505" y="403" font-family="Arial,sans-serif" font-size="24" fill="#102b3b" text-anchor="middle">H</text>
+<text x="427" y="305" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">δ−</text>
+<text x="528" y="305" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">δ+</text>
+<text x="850" y="350" font-family="Arial,sans-serif" font-size="44" fill="#f1f7f2" text-anchor="middle">H₂O</text>
+<text x="850" y="415" font-family="Arial,sans-serif" font-size="36" fill="#f1f7f2" text-anchor="middle">q = 0</text>
+<text x="40" y="610.0" font-family="Arial,sans-serif" font-size="25" fill="#f1f7f2" text-anchor="start">Bent H₂O: oxygen δ−, two hydrogens δ+; total charge zero. Water faces Na⁺</text>
+<text x="40" y="643.75" font-family="Arial,sans-serif" font-size="25" fill="#f1f7f2" text-anchor="start">with oxygen.</text>
+</svg>

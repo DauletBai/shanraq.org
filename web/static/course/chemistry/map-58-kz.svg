@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 600" role="img" aria-labelledby="title desc">
+<title id="title">Тұз туралы іс: ерітінді есебін қалай тексереміз?</title><desc id="desc">Оқу моделі · бөлшектер мен өлшемдер масштабта емес</desc>
+<rect width="1280" height="600" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">Тұз туралы іс: ерітінді есебін қалай тексереміз?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Оқу моделі · бөлшектер мен өлшемдер масштабта емес</text>
+<rect x="40" y="210" width="275" height="300" rx="18" fill="#e6f4ef"/>
+<text x="58" y="265.0" font-family="Arial,sans-serif" font-size="19" fill="#143242" text-anchor="start">ДЕРЕК</text>
+<text x="58" y="345.0" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Не белгілі?</text>
+<text x="322" y="385" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="350" y="210" width="275" height="300" rx="18" fill="#e6f4ef"/>
+<text x="368" y="265.0" font-family="Arial,sans-serif" font-size="19" fill="#143242" text-anchor="start">БАЛАНС</text>
+<text x="368" y="345.0" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Құрамдас, қоспа</text>
+<text x="632" y="385" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="660" y="210" width="275" height="300" rx="18" fill="#e6f4ef"/>
+<text x="678" y="265.0" font-family="Arial,sans-serif" font-size="19" fill="#143242" text-anchor="start">БІРЛІК</text>
+<text x="678" y="345.0" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Пайыз не mol/L</text>
+<text x="942" y="385" font-family="Arial,sans-serif" font-size="27" fill="#f1f7f2" text-anchor="start">→</text>
+<rect x="970" y="210" width="275" height="300" rx="18" fill="#e6f4ef"/>
+<text x="988" y="265.0" font-family="Arial,sans-serif" font-size="19" fill="#143242" text-anchor="start">ҚОРЫТЫНДЫ</text>
+<text x="988" y="345.0" font-family="Arial,sans-serif" font-size="23" fill="#143242" text-anchor="start">Не белгісіз?</text>
+</svg>
