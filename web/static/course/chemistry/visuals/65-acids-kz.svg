@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">Сұйылту pH-ты қалай өзгертеді және қарапайым ереженің шегі қандай?</title><desc id="desc">HCl-дың 0,00010 молі сақталады: соңғы көлем 0,010-нан 0,100 литрге, жуық pH 25 °C-та 2-ден 3-ке өзгереді.</desc>
+<rect width="1280" height="820" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">65 · Сұйылту pH-ты қалай өзгертеді және қарапайым ереженің</text>
+<text x="40" y="94.15" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">шегі қандай?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Оқу сызбасы · деректер берілген · тәжірибе нұсқауы емес</text>
+<rect x="40" y="205" width="1200" height="130" rx="18" fill="#173e4d"/>
+<text x="65" y="247.0" font-family="Arial,sans-serif" font-size="25" fill="#f1f7f2" text-anchor="start">0.010 L; 0.010 mol/L  →  n = 0.00010 mol</text>
+<text x="65" y="303.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">pH ≈ 2</text>
+<rect x="40" y="350" width="1200" height="130" rx="18" fill="#173e4d"/>
+<text x="65" y="392.0" font-family="Arial,sans-serif" font-size="25" fill="#f1f7f2" text-anchor="start">V₂ = 0.100 L  →  c₂ = 0.0010 mol/L</text>
+<text x="65" y="448.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">pH ≈ 3</text>
+<rect x="40" y="495" width="1200" height="130" rx="18" fill="#173e4d"/>
+<text x="65" y="537.0" font-family="Arial,sans-serif" font-size="25" fill="#f1f7f2" text-anchor="start">c(HCl) = 10⁻⁸ mol/L  →  судың үлесі маңызды</text>
+<text x="65" y="593.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">pH 8 емес</text>
+<text x="40" y="725.0" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">HCl-дың 0,00010 молі сақталады: соңғы көлем 0,010-нан 0,100 литрге, жуық pH 25 °C-та 2-ден</text>
+<text x="40" y="753.35" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">3-ке өзгереді.</text>
+</svg>
