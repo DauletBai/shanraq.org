@@ -1,0 +1,51 @@
+{
+  "edition": "0.88",
+  "edition_date": "2026-11-04",
+  "language": "ru",
+  "source_sha256": "4947f5f41432e4a2dae7c97831dd3b516e9af55ae5cbfefe45af490bfce4d873",
+  "pdf_sha256": "d7a93cd8353399112b1846a06fb243c8102b79ddf1ab548dabf9a6845a7501a6",
+  "sections": [
+    {
+      "slug": "preface",
+      "title": "Предисловие. Не выбрать сторону, а искать след",
+      "sha256": "8bb2587974eaad8bb17e2412101489a257fa18d8970c7a492e242cf92311afbc",
+      "sources": 2
+    },
+    {
+      "slug": "prologue",
+      "title": "Пролог. Как Казак стал Казахом",
+      "sha256": "9cc61f3e39352ffcac728b0f8e16c9d8c6710e2cfa9c455efb82a279c83d45ee",
+      "sources": 0
+    },
+    {
+      "slug": "chapter-1",
+      "title": "Глава 1. Ру — Русь — Русский: как признак стал именем",
+      "sha256": "5a845b420655f7f2c43e952c9353d04051b36b5dcd48557558699c1425435b8a",
+      "sources": 0
+    },
+    {
+      "slug": "chapter-2",
+      "title": "Глава 2. Бегство к свободной земле",
+      "sha256": "5a60d838036bd376cf320e3253fe01fbc49171778ee577bd4ae4f327ac265b1f",
+      "sources": 0
+    },
+    {
+      "slug": "chapter-3",
+      "title": "Глава 3. Бала — Лайық: имя инструмента как след",
+      "sha256": "78516f6142a0b8c2b8f3a1806e55a2321ddd97093ee4004fbfdc0e385f713fee",
+      "sources": 0
+    },
+    {
+      "slug": "chapter-4",
+      "title": "Глава 4. Аткинсон: между местным костюмом и мундиром",
+      "sha256": "49e6934a023b54f87ec331667d8617ee985422900b0d3063cacdb79365425827",
+      "sources": 5
+    },
+    {
+      "slug": "chapter-5",
+      "title": "Глава 5. Атаман, есаул и Арбат",
+      "sha256": "9ab428eb892d43dbe2f4bea4a7090822c4c07caabc3bb6df83186adec731f48e",
+      "sources": 40
+    }
+  ]
+}
