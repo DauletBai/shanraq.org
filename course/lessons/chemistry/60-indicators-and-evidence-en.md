@@ -45,7 +45,7 @@ Under the given scale, A is acidic, B neutral and C basic. D alone is insufficie
 
 ## Transfer to a new case
 
-Transfer case: card E reports blue litmus and colourless phenolphthalein, with interference excluded. Must the records contradict each other? Explain how a mildly basic region below phenolphthalein’s transition can allow both. Do not assign a precise pH when the intervals are insufficiently narrow.
+Transfer case: card E reports pH 7.8 at 25 °C and colourless phenolphthalein, with interference excluded. Must the records contradict each other? Explain how a mildly basic region below phenolphthalein’s transition can allow both. Distinguish the numerical instrument record from a conclusion based on colour alone.
 
 ## Answer and recall
 
