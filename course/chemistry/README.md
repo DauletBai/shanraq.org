@@ -107,7 +107,7 @@ including tables, navigation and answer disclosure. The database backup and
 previous application image were retained on the server.
 
 
-Block eight (59–67), acids, bases and safety, is prepared with 27 language
+Block eight (59–67), acids, bases and safety, was published on 5 November 2026 with 27 language
 pages, 27 retrieval maps and 27 original localized diagram covers. Run:
 
 ```sh
@@ -132,3 +132,15 @@ All activities use supplied data on paper, with no household mixing. Sources:
 OpenStax Chemistry 2e sections 14.1–14.3, 14.7 and 4.2, plus CCOHS product-label
 and cleaning-product safety guidance. No audio tracks or missing audio links
 are introduced.
+
+Release verification: 67 published lessons and 201 ready translations; all
+30 expected translation hashes match. The restored-backup rehearsal rejected
+a missing prior translation without partial writes, then passed and preserved
+content and timestamps on a second run. All seven PR workflows passed on
+`e87ad0d98815ce8223d5a6f5608541447e44bb21`, including Go race tests. After
+publication, 87 page/asset/course checks, 60 sitemap URL checks and six source
+checks passed. Browser QA covered 1366 px Russian desktop, 768 px English
+tablet and 390 px Russian/Kazakh mobile layouts, loaded diagrams, tables and
+answer disclosure. All 54 SVGs also passed browser text-bound checks.
+No lessons entered the news Telegram queue. The backup and previous app image
+remain on the server.
