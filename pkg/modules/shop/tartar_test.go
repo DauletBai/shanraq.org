@@ -1,9 +1,14 @@
 package shop
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"io/fs"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
+	"shanraq.org/web"
 	"strings"
 	"testing"
 
@@ -81,5 +86,43 @@ func TestTartarExcerptFootnotesResolve(t *testing.T) {
 		if strings.Contains(body, "../assets/") {
 			t.Errorf("%s: print-only image path", slug)
 		}
+	}
+}
+
+// The deployed excerpt must be exactly the seven sections verified at import.
+func TestTartarExcerptEditionMatchesEmbeddedContent(t *testing.T) {
+	data, err := fs.ReadFile(web.StaticFS(), "shop/tartar-i-ya-sample/edition.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var edition struct {
+		Edition  string `json:"edition"`
+		Date     string `json:"edition_date"`
+		Sections []struct {
+			Slug string `json:"slug"`
+			Hash string `json:"sha256"`
+		} `json:"sections"`
+	}
+	if err := json.Unmarshal(data, &edition); err != nil {
+		t.Fatal(err)
+	}
+	if edition.Edition != "0.88" || edition.Date != "2026-11-04" || len(edition.Sections) != len(tartarSections) {
+		t.Fatalf("unexpected excerpt manifest: %+v", edition)
+	}
+	content, err := loadTartarExcerpt()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i, section := range edition.Sections {
+		if section.Slug != tartarSections[i].Slug {
+			t.Fatalf("unexpected section order: %s", section.Slug)
+		}
+		sum := sha256.Sum256([]byte(content[section.Slug]))
+		if hex.EncodeToString(sum[:]) != section.Hash {
+			t.Errorf("%s differs from verified edition", section.Slug)
+		}
+	}
+	if !strings.Contains(string(content["preface"]), "Рудненский индустриальный институт") {
+		t.Error("updated author biography is missing")
 	}
 }
