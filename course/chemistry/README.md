@@ -105,3 +105,30 @@ passed 87 page/asset/course checks and 60 sitemap checks. Browser inspection
 covered Russian desktop, English tablet and Russian/Kazakh mobile layouts,
 including tables, navigation and answer disclosure. The database backup and
 previous application image were retained on the server.
+
+
+Block eight (59–67), acids, bases and safety, is prepared with 27 language
+pages, 27 retrieval maps and 27 original localized diagram covers. Run:
+
+```sh
+python3 tools/course/build_chemistry_acids.py
+python3 -m unittest tools.course.test_chemistry_acids
+python3 tools/course/prepare_chemistry_acids.py --sql /tmp/chemistry-acids.sql --expected /tmp/chemistry-acids-expected.json
+```
+
+The release guards 58 existing lessons and 174 ready translations, bridges
+lesson 58 and attaches all nine new lessons before checking deferred triggers
+and the absence of news Telegram jobs. Repeating an unchanged release preserves
+article and translation timestamps. Stage on a restored backup first.
+
+The block separates acid strength from concentration, pH from safety, and
+neutralisation from removal of dissolved salt. Concentration-based pH is an
+explicit dilute-solution approximation; neutral pH and pH+pOH=14 are qualified
+by temperature (25 °C for the examples). Very dilute acid requires water's
+contribution. Final volumes are supplied rather than assumed additive.
+Independent checks cover atom/charge conservation, limiting amounts, salt
+mass, excess-ion pH, dilution, ionisation fractions and proportional diagrams.
+All activities use supplied data on paper, with no household mixing. Sources:
+OpenStax Chemistry 2e sections 14.1–14.3, 14.7 and 4.2, plus CCOHS product-label
+and cleaning-product safety guidance. No audio tracks or missing audio links
+are introduced.

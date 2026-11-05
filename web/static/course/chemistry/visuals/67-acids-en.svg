@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">The salt case: what does neutralisation actually prove?</title><desc id="desc">Equal amounts form 0.0020 mol NaCl with mass 0.117 g. With 18 mL alkali, acid excess remains and model pH is approximately 2.28.</desc>
+<rect width="1280" height="820" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">67 · The salt case: what does neutralisation actually prove?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching schematic · supplied data · not an experiment procedure</text>
+<rect x="40" y="205" width="1200" height="130" rx="18" fill="#173e4d"/>
+<text x="65" y="247.0" font-family="Arial,sans-serif" font-size="25" fill="#f1f7f2" text-anchor="start">20 mL + 20 mL; 0.10 mol/L  →  n(NaCl) = 0.0020 mol</text>
+<text x="65" y="303.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">m = 0.117 g</text>
+<rect x="40" y="350" width="1200" height="130" rx="18" fill="#173e4d"/>
+<text x="65" y="392.0" font-family="Arial,sans-serif" font-size="25" fill="#f1f7f2" text-anchor="start">V = 0.040 L; 25 °C  →  c(NaCl) = 0.050 mol/L</text>
+<text x="65" y="448.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">pH ≈ 7 in model</text>
+<rect x="40" y="495" width="1200" height="130" rx="18" fill="#173e4d"/>
+<text x="65" y="537.0" font-family="Arial,sans-serif" font-size="25" fill="#f1f7f2" text-anchor="start">20 mL HCl + 18 mL NaOH  →  acid excess = 0.0002 mol</text>
+<text x="65" y="593.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">pH ≈ 2.28</text>
+<text x="40" y="725.0" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">Equal amounts form 0.0020 mol NaCl with mass 0.117 g. With 18 mL alkali, acid excess remains</text>
+<text x="40" y="753.35" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">and model pH is approximately 2.28.</text>
+</svg>

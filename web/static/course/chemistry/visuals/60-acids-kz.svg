@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">Индикатор түсі нені көрсетеді және нені дәлелдемейді?</title><desc id="desc">Лакмус карточкалары: қызыл — қышқыл, күлгін — бейтарап, көк — сілтілі орта. Түссіз фенолфталеин жеке өзі pH анықтамайды.</desc>
+<rect width="1280" height="820" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">60 · Индикатор түсі нені көрсетеді және нені дәлелдемейді?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Оқу сызбасы · деректер берілген · тәжірибе нұсқауы емес</text>
+<rect x="40" y="220" width="275" height="370" rx="18" fill="#173e4d"/>
+<text x="58" y="265.0" font-family="Arial,sans-serif" font-size="22" fill="#f1f7f2" text-anchor="start">A: лакмус</text>
+<circle cx="177" cy="365" r="42" fill="#e78b89"/>
+<text x="58" y="465.0" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">қызыл</text>
+<text x="58" y="525.0" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">қышқыл</text>
+<rect x="350" y="220" width="275" height="370" rx="18" fill="#173e4d"/>
+<text x="368" y="265.0" font-family="Arial,sans-serif" font-size="22" fill="#f1f7f2" text-anchor="start">B: лакмус</text>
+<circle cx="487" cy="365" r="42" fill="#a297ca"/>
+<text x="368" y="465.0" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">күлгін</text>
+<text x="368" y="525.0" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">бейтарап</text>
+<rect x="660" y="220" width="275" height="370" rx="18" fill="#173e4d"/>
+<text x="678" y="265.0" font-family="Arial,sans-serif" font-size="22" fill="#f1f7f2" text-anchor="start">C: лакмус</text>
+<circle cx="797" cy="365" r="42" fill="#85b4e8"/>
+<text x="678" y="465.0" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">көк</text>
+<text x="678" y="525.0" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">сілтілі</text>
+<rect x="970" y="220" width="275" height="370" rx="18" fill="#173e4d"/>
+<text x="988" y="265.0" font-family="Arial,sans-serif" font-size="22" fill="#f1f7f2" text-anchor="start">D: фенолфталеин</text>
+<circle cx="1107" cy="365" r="42" fill="#f1f4ef"/>
+<text x="988" y="465.0" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">түссіз</text>
+<text x="988" y="525.0" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">бір нәтиже</text>
+<text x="988" y="556.05" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">жеткіліксіз</text>
+<text x="40" y="725.0" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">Лакмус карточкалары: қызыл — қышқыл, күлгін — бейтарап, көк — сілтілі орта. Түссіз</text>
+<text x="40" y="753.35" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">фенолфталеин жеке өзі pH анықтамайды.</text>
+</svg>

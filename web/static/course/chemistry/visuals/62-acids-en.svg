@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">Why is a strong acid not necessarily concentrated?</title><desc id="desc">Ten acid units comprise nine HA and one A⁻, with one accompanying H₃O⁺. Supplied ionised fraction is one tenth and net charge zero; water is omitted.</desc>
+<rect width="1280" height="820" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">62 · Why is a strong acid not necessarily concentrated?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching schematic · supplied data · not an experiment procedure</text>
+<circle data-acid-unit="HA" cx="120" cy="270" r="48" fill="#a1d9dd"/>
+<text x="120" y="279" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">HA</text>
+<circle data-acid-unit="HA" cx="320" cy="270" r="48" fill="#a1d9dd"/>
+<text x="320" y="279" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">HA</text>
+<circle data-acid-unit="HA" cx="520" cy="270" r="48" fill="#a1d9dd"/>
+<text x="520" y="279" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">HA</text>
+<circle data-acid-unit="HA" cx="720" cy="270" r="48" fill="#a1d9dd"/>
+<text x="720" y="279" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">HA</text>
+<circle data-acid-unit="HA" cx="920" cy="270" r="48" fill="#a1d9dd"/>
+<text x="920" y="279" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">HA</text>
+<circle data-acid-unit="HA" cx="120" cy="420" r="48" fill="#a1d9dd"/>
+<text x="120" y="429" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">HA</text>
+<circle data-acid-unit="HA" cx="320" cy="420" r="48" fill="#a1d9dd"/>
+<text x="320" y="429" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">HA</text>
+<circle data-acid-unit="HA" cx="520" cy="420" r="48" fill="#a1d9dd"/>
+<text x="520" y="429" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">HA</text>
+<circle data-acid-unit="HA" cx="720" cy="420" r="48" fill="#a1d9dd"/>
+<text x="720" y="429" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">HA</text>
+<circle data-acid-unit="A⁻" cx="920" cy="420" r="48" fill="#e9bb80"/>
+<text x="920" y="429" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">A⁻</text>
+<circle data-hydronium="1" cx="1140" cy="420" r="58" fill="#e9bb80"/>
+<text x="1140" y="429" font-family="Arial,sans-serif" font-size="27" fill="#102b3b" text-anchor="middle">H₃O⁺</text>
+<text x="640" y="590" font-family="Arial,sans-serif" font-size="38" fill="#f1f7f2" text-anchor="middle">α = 1/10 = 0.10     q = 0</text>
+<text x="40" y="725.0" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">Ten acid units comprise nine HA and one A⁻, with one accompanying H₃O⁺. Supplied ionised</text>
+<text x="40" y="753.35" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">fraction is one tenth and net charge zero; water is omitted.</text>
+</svg>

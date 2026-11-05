@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">Why does one pH unit represent a tenfold difference?</title><desc id="desc">On the numerical pH scale, three and five differ by two units; the dilute-model hydronium-concentration ratio is one hundred. Neutral pH is near seven at 25 °C.</desc>
+<rect width="1280" height="820" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">61 · Why does one pH unit represent a tenfold difference?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching schematic · supplied data · not an experiment procedure</text>
+<rect data-ph="0" x="70" y="290" width="74" height="110" rx="10" fill="#ac685f"/>
+<text x="107" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">0</text>
+<rect data-ph="1" x="150" y="290" width="74" height="110" rx="10" fill="#ac685f"/>
+<text x="187" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">1</text>
+<rect data-ph="2" x="230" y="290" width="74" height="110" rx="10" fill="#ac685f"/>
+<text x="267" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">2</text>
+<rect data-ph="3" x="310" y="290" width="74" height="110" rx="10" fill="#ac685f"/>
+<text x="347" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">3</text>
+<rect data-ph="4" x="390" y="290" width="74" height="110" rx="10" fill="#ac685f"/>
+<text x="427" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">4</text>
+<rect data-ph="5" x="470" y="290" width="74" height="110" rx="10" fill="#ac685f"/>
+<text x="507" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">5</text>
+<rect data-ph="6" x="550" y="290" width="74" height="110" rx="10" fill="#ac685f"/>
+<text x="587" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">6</text>
+<rect data-ph="7" x="630" y="290" width="74" height="110" rx="10" fill="#77aaa2"/>
+<text x="667" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">7</text>
+<rect data-ph="8" x="710" y="290" width="74" height="110" rx="10" fill="#5e85b3"/>
+<text x="747" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">8</text>
+<rect data-ph="9" x="790" y="290" width="74" height="110" rx="10" fill="#5e85b3"/>
+<text x="827" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">9</text>
+<rect data-ph="10" x="870" y="290" width="74" height="110" rx="10" fill="#5e85b3"/>
+<text x="907" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">10</text>
+<rect data-ph="11" x="950" y="290" width="74" height="110" rx="10" fill="#5e85b3"/>
+<text x="987" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">11</text>
+<rect data-ph="12" x="1030" y="290" width="74" height="110" rx="10" fill="#5e85b3"/>
+<text x="1067" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">12</text>
+<rect data-ph="13" x="1110" y="290" width="74" height="110" rx="10" fill="#5e85b3"/>
+<text x="1147" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">13</text>
+<rect data-ph="14" x="1190" y="290" width="74" height="110" rx="10" fill="#5e85b3"/>
+<text x="1227" y="355" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">14</text>
+<path d="M347 410 V465" stroke="#efbc7e" stroke-width="4"/>
+<text x="347" y="510" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="middle">10⁻³ mol/L</text>
+<path d="M507 410 V465" stroke="#efbc7e" stroke-width="4"/>
+<text x="507" y="510" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="middle">10⁻⁵ mol/L</text>
+<text x="830" y="525" font-family="Arial,sans-serif" font-size="32" fill="#f1f7f2" text-anchor="middle">10⁻³ / 10⁻⁵ = 100</text>
+<text x="640" y="610" font-family="Arial,sans-serif" font-size="28" fill="#f1f7f2" text-anchor="middle">25 °C · pH ≈ 7 ↔ c(H₃O⁺) = c(OH⁻)</text>
+<text x="40" y="725.0" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">On the numerical pH scale, three and five differ by two units; the dilute-model</text>
+<text x="40" y="753.35" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">hydronium-concentration ratio is one hundred. Neutral pH is near seven at 25 °C.</text>
+</svg>

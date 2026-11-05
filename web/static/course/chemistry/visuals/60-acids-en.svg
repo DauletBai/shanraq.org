@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">What does an indicator colour show—and what can it not prove?</title><desc id="desc">Litmus cards: red acidic, purple neutral, blue basic. Colourless phenolphthalein alone does not determine pH.</desc>
+<rect width="1280" height="820" rx="24" fill="#102b3b"/>
+<text x="40" y="55.0" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">60 · What does an indicator colour show—and what can it not</text>
+<text x="40" y="94.15" font-family="Arial,sans-serif" font-size="29" fill="#f1f7f2" text-anchor="start">prove?</text>
+<text x="40" y="155" font-family="Arial,sans-serif" font-size="20" fill="#bedde4" text-anchor="start">Teaching schematic · supplied data · not an experiment procedure</text>
+<rect x="40" y="220" width="275" height="370" rx="18" fill="#173e4d"/>
+<text x="58" y="265.0" font-family="Arial,sans-serif" font-size="22" fill="#f1f7f2" text-anchor="start">A: litmus</text>
+<circle cx="177" cy="365" r="42" fill="#e78b89"/>
+<text x="58" y="465.0" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">red</text>
+<text x="58" y="525.0" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">acidic</text>
+<rect x="350" y="220" width="275" height="370" rx="18" fill="#173e4d"/>
+<text x="368" y="265.0" font-family="Arial,sans-serif" font-size="22" fill="#f1f7f2" text-anchor="start">B: litmus</text>
+<circle cx="487" cy="365" r="42" fill="#a297ca"/>
+<text x="368" y="465.0" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">purple</text>
+<text x="368" y="525.0" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">neutral</text>
+<rect x="660" y="220" width="275" height="370" rx="18" fill="#173e4d"/>
+<text x="678" y="265.0" font-family="Arial,sans-serif" font-size="22" fill="#f1f7f2" text-anchor="start">C: litmus</text>
+<circle cx="797" cy="365" r="42" fill="#85b4e8"/>
+<text x="678" y="465.0" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">blue</text>
+<text x="678" y="525.0" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">basic</text>
+<rect x="970" y="220" width="275" height="370" rx="18" fill="#173e4d"/>
+<text x="988" y="265.0" font-family="Arial,sans-serif" font-size="22" fill="#f1f7f2" text-anchor="start">D:</text>
+<text x="988" y="294.7" font-family="Arial,sans-serif" font-size="22" fill="#f1f7f2" text-anchor="start">phenolphthalein</text>
+<circle cx="1107" cy="365" r="42" fill="#f1f4ef"/>
+<text x="988" y="465.0" font-family="Arial,sans-serif" font-size="24" fill="#f1f7f2" text-anchor="start">colourless</text>
+<text x="988" y="525.0" font-family="Arial,sans-serif" font-size="23" fill="#f1f7f2" text-anchor="start">not enough alone</text>
+<text x="40" y="725.0" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">Litmus cards: red acidic, purple neutral, blue basic. Colourless phenolphthalein alone does</text>
+<text x="40" y="753.35" font-family="Arial,sans-serif" font-size="21" fill="#f1f7f2" text-anchor="start">not determine pH.</text>
+</svg>
