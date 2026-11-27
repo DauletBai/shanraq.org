@@ -626,7 +626,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
    so it appears on all covers — uploaded, demo, AI-column, or external URL.
    The SVG already carries ~50% transparency; the drop-shadow keeps it legible
    on both light and dark images. Avatars are unaffected (different class). ---- */
-.post__media::after, .article__media::after, .gallery::after {
+.post__media::after, .article__media::after, .gallery::after, .newshero::after {
   content: "";
   position: absolute; top: 8px; right: 8px;
   width: 21px; height: 21px;
@@ -635,7 +635,7 @@ a.kicker:hover { text-decoration: none; color: var(--gold); }
   pointer-events: none;
   z-index: 4;
 }
-.article__media::after, .gallery::after { width: 28px; height: 28px; top: 12px; right: 12px; }
+.article__media::after, .gallery::after, .newshero::after { width: 28px; height: 28px; top: 12px; right: 12px; }
 .hero__title { font-size: var(--step-4); margin: 12px 0 14px; }
 .hero__title a { color: var(--ink); }
 .hero__title a:hover { color: var(--gold-strong); text-decoration: none; }
